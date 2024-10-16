@@ -110,7 +110,6 @@ export class IFCViewerPageComponent
       component: WorkPackageCreateButtonComponent,
       inputs: {
         stateName$: of(this.newRoute),
-        allowed: ['work_packages.createWorkPackage', 'work_package.copy'],
       },
     },
     {
