@@ -39,8 +39,10 @@ export interface ISchemaProxy extends SchemaResource {
 }
 
 export class SchemaProxy implements ProxyHandler<SchemaResource> {
-  constructor(protected schema:SchemaResource,
-    protected resource:HalResource) {
+  constructor(
+    protected schema:SchemaResource,
+    protected resource:HalResource,
+  ) {
   }
 
   static create(schema:SchemaResource, resource:HalResource) {

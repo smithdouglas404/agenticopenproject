@@ -30,9 +30,7 @@ import {
   input,
   InputState,
 } from '@openproject/reactivestates';
-import { take } from 'rxjs/operators';
 
-import { SchemaResource } from 'core-app/features/hal/resources/schema-resource';
 import { FormResource } from 'core-app/features/hal/resources/form-resource';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import {
@@ -43,7 +41,7 @@ import {
 import { IFieldSchema } from 'core-app/shared/components/fields/field.base';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
 import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
-import { SchemaProxy } from 'core-app/features/hal/schemas/schema-proxy';
+import { ISchemaProxy, SchemaProxy } from 'core-app/features/hal/schemas/schema-proxy';
 import { IHalOptionalTitledLink } from 'core-app/core/state/hal-resource';
 import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
 import { firstValueFrom } from 'rxjs';
@@ -350,7 +348,7 @@ export class ResourceChangeset<T extends HalResource = HalResource> {
    * If loaded, return the form schema, which provides better information on writable status
    * and contains available values.
    */
-  public get schema():SchemaResource {
+  public get schema():ISchemaProxy {
     if (this.form$.hasValue()) {
       return SchemaProxy.create(this.form$.value!.schema, this.projectedResource);
     }

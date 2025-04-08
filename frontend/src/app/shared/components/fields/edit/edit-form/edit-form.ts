@@ -90,7 +90,7 @@ export abstract class EditForm<T extends HalResource = HalResource> {
   /**
    * Optional callback when the form is being saved
    */
-  protected onSaved(commit:ResourceChangesetCommit):void {
+  protected onSaved(_commit:ResourceChangesetCommit):void {
     // Does nothing by default
   }
 
@@ -134,7 +134,7 @@ export abstract class EditForm<T extends HalResource = HalResource> {
    * Activate the field unless it is marked active already
    * (e.g., already being activated).
    */
-  public activateWhenNeeded(fieldName:string):Promise<unknown> {
+  public activateWhenNeeded(fieldName:string):Promise<void|EditFieldHandler> {
     const activeField = this.activeFields[fieldName];
     if (activeField) {
       return Promise.resolve();
@@ -196,7 +196,7 @@ export abstract class EditForm<T extends HalResource = HalResource> {
           this.onSaved(result);
           this.change.inFlight = false;
         })
-        .catch((error:ErrorResource|unknown) => {
+        .catch((error:ErrorResource) => {
           this.halNotification.handleRawError(error, this.resource);
 
           if (error instanceof HalError && error.resource) {
@@ -247,26 +247,20 @@ export abstract class EditForm<T extends HalResource = HalResource> {
       return;
     }
 
-    this.setErrorsForFields(erroneousAttributes);
+    void this.setErrorsForFields(erroneousAttributes);
   }
 
-  private setErrorsForFields(erroneousFields:string[]) {
-    // Accumulate errors for the given response
-    const promises:Promise<any>[] = erroneousFields.map((fieldName:string) => this.requireVisible(fieldName).then(() => {
+  private async setErrorsForFields(erroneousFields:string[]) {
+    const promises = erroneousFields.map(async (fieldName) => {
+      await this.requireVisible(fieldName);
       if (this.activeFields[fieldName]) {
         this.activeFields[fieldName].setErrors(this.errorsPerAttribute[fieldName] || []);
       }
+      return this.activateWhenNeeded(fieldName);
+    });
 
-      return this.activateWhenNeeded(fieldName) as any;
-    }));
-
-    Promise.all(promises)
-      .then(() => {
-        setTimeout(() => this.focusOnFirstError());
-      })
-      .catch(() => {
-        console.error('Failed to activate all erroneous fields.');
-      });
+    await Promise.all(promises);
+    void setTimeout(() => this.focusOnFirstError());
   }
 
   /**
@@ -275,7 +269,7 @@ export abstract class EditForm<T extends HalResource = HalResource> {
    * @param fieldName
    */
   protected loadFieldSchema(fieldName:string, noWarnings = false):Promise<IFieldSchema> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.loadFormAndCheck(fieldName, noWarnings);
       const fieldSchema:IFieldSchema = this.change.schema.ofProperty(fieldName);
 
@@ -304,7 +298,7 @@ export abstract class EditForm<T extends HalResource = HalResource> {
           this.closeEditFields([fieldName]);
         }
       })
-      .catch((error:any) => {
+      .catch((error:ErrorResource) => {
         console.error('Failed to build edit field: %o', error);
         this.halNotification.handleRawError(error, this.resource);
         this.closeEditFields([fieldName]);
@@ -312,10 +306,12 @@ export abstract class EditForm<T extends HalResource = HalResource> {
   }
 
   private renderField(fieldName:string, schema:IFieldSchema):Promise<void|EditFieldHandler> {
-    const promise:Promise<EditFieldHandler> = this.activateField(this,
+    const promise:Promise<EditFieldHandler> = this.activateField(
+      this,
       schema,
       fieldName,
-      this.errorsPerAttribute[fieldName] || []);
+      this.errorsPerAttribute[fieldName] || [],
+    );
 
     return promise
       .then((fieldHandler:EditFieldHandler) => {
