@@ -31,6 +31,8 @@
 class WorkPackages::Reminder::RemindAtTime < ApplicationForm
   include Redmine::I18n
 
+  delegate :object, to: :@builder
+
   form do |reminder_form|
     reminder_form.text_field(
       name: :remind_at_time,
@@ -41,7 +43,8 @@ class WorkPackages::Reminder::RemindAtTime < ApplicationForm
       leading_visual: { icon: :clock },
       required: true,
       autofocus: false,
-      caption: formatted_time_zone_offset
+      caption: formatted_time_zone_offset,
+      auto_check_src: auto_check_src
     )
   end
 
@@ -49,5 +52,15 @@ class WorkPackages::Reminder::RemindAtTime < ApplicationForm
     super()
 
     @initial_value = initial_value
+  end
+
+  private
+
+  def auto_check_src
+    url_helpers.form_contract_check_work_package_reminders_path(
+      work_package_id: object.remindable_id,
+      name: :remind_at_time,
+      form_action: object.persisted? ? :update : :create
+    )
   end
 end

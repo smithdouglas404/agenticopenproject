@@ -265,7 +265,7 @@ Rails.application.reloader.to_prepare do
                        "work_packages/menus": %i[show],
                        "work_packages/hover_card": %i[show],
                        work_package_relations_tab: %i[index],
-                       "work_packages/reminders": %i[modal_body create update destroy]
+                       "work_packages/reminders": %i[modal_body create update destroy form_contract_check]
                      },
                      permissible_on: %i[work_package project],
                      contract_actions: { work_packages: %i[read] }

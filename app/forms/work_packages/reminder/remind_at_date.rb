@@ -29,6 +29,8 @@
 #++
 
 class WorkPackages::Reminder::RemindAtDate < ApplicationForm
+  delegate :object, to: :@builder
+
   form do |reminder_form|
     reminder_form.text_field(
       name: :remind_at_date,
@@ -38,7 +40,8 @@ class WorkPackages::Reminder::RemindAtDate < ApplicationForm
       label: I18n.t(:label_date),
       leading_visual: { icon: :calendar },
       required: true,
-      autofocus: false
+      autofocus: false,
+      auto_check_src:
     )
   end
 
@@ -46,5 +49,15 @@ class WorkPackages::Reminder::RemindAtDate < ApplicationForm
     super()
 
     @initial_value = initial_value
+  end
+
+  private
+
+  def auto_check_src
+    url_helpers.form_contract_check_work_package_reminders_path(
+      work_package_id: object.remindable_id,
+      name: :remind_at_date,
+      form_action: object.persisted? ? :update : :create
+    )
   end
 end

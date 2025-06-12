@@ -48,6 +48,37 @@ class WorkPackages::RemindersController < ApplicationController
     )
   end
 
+  def form_contract_check
+    attribute, value, form_action = params.values_at(:name, :value, :form_action)
+    if attribute.blank? || value.blank? || form_action.blank?
+      return render json: { valid: false, message: I18n.t(:error_blank) },
+                    status: :bad_request
+    end
+
+    contract_class = "Reminders::#{form_action.to_s.camelize}Contract".constantize
+    attribute = attribute.to_sym
+
+    set_attributes_service = Reminders::SetAttributesService.new(
+      user: current_user,
+      model: Reminder.new,
+      contract_class:
+    ).perform(remind_at: value)
+
+    if set_attributes_service.errors.include?(attribute)
+      render plain: set_attributes_service.errors.full_messages_for(attribute).to_sentence,
+             status: :unprocessable_entity
+    else
+      head :ok
+    end
+  rescue NameError
+    render plain: I18n.t(:error_invalid_form_action),
+           status: :bad_request
+  rescue StandardError => e
+    Rails.logger.error { "Error during form contract check: #{e.message}" }
+    render plain: I18n.t(:error_internal_server_error),
+           status: :internal_server_error
+  end
+
   def create
     service_result = Reminders::CreateService.new(user: current_user)
                                              .call(reminder_params)
