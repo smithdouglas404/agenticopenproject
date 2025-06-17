@@ -225,6 +225,12 @@ class PermittedParams
     user additional_params
   end
 
+  def user_invitation
+    params
+      .require(:user_invitation)
+      .permit(:project_id, :principal_type, :id_or_email, :role_id, :message)
+  end
+
   def type(args = {})
     permitted = permitted_attributes(:type, args)
 

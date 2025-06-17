@@ -112,11 +112,13 @@ Redmine::MenuManager.map :quick_add_menu do |menu|
             }
 
   menu.push :invite_user,
-            nil,
+            { controller: "/users/invite", action: :start_dialog },
             caption: :label_invite_user,
             icon: "person-add",
             html: {
-              "invite-user-modal-augment": "invite-user-modal-augment"
+              data: {
+                turbo_stream: true
+              }
             },
             if: ->(_) { User.current.allowed_in_any_project?(:manage_members) }
 end
