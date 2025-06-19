@@ -225,7 +225,7 @@ gem "yabeda-prometheus-mmap", require: false
 gem "yabeda-puma-plugin"
 gem "yabeda-rails"
 
-gem "view_component"
+gem "view_component", "~> 4.0.2"
 # Lookbook
 gem "lookbook", "2.3.13"
 

@@ -1256,10 +1256,9 @@ GEM
     vcr (6.3.1)
       base64
     vernier (1.8.0)
-    view_component (3.23.2)
-      activesupport (>= 5.2.0, < 8.1)
+    view_component (4.0.2)
+      activesupport (>= 7.1.0, < 8.1)
       concurrent-ruby (~> 1)
-      method_source (~> 1.0)
     virtus (2.0.0)
       axiom-types (~> 0.1)
       coercible (~> 1.0)
@@ -1536,7 +1535,7 @@ DEPENDENCIES
   validate_url
   vcr
   vernier
-  view_component
+  view_component (~> 4.0.2)
   warden (~> 1.2)
   warden-basic_auth (~> 0.2.1)
   webmock (~> 3.12)
@@ -1987,7 +1986,7 @@ CHECKSUMS
   validate_url (1.0.15) sha256=72fe164c0713d63a9970bd6700bea948babbfbdcec392f2342b6704042f57451
   vcr (6.3.1) sha256=37b56e157e720446a3f4d2d39919cabef8cb7b6c45936acffd2ef8229fec03ed
   vernier (1.8.0) sha256=c6cf9555c2a58affc25ebc45de0b4d45a993eb078f88f14f5b45d7bacb25acdd
-  view_component (3.23.2) sha256=3c2fed4b9e38bf074fa3d42ca55eedbb2cc070e0f3c31d7c13a50b0db530892b
+  view_component (4.0.2) sha256=80eb4a8ecf8ff4cf152aea4821a8748d071a2e3af04f0532efcbf5011e8e9f65
   virtus (2.0.0) sha256=8841dae4eb7fcc097320ba5ea516bf1839e5d056c61ee27138aa4bddd6e3d1c2
   warden (1.2.9) sha256=46684f885d35a69dbb883deabf85a222c8e427a957804719e143005df7a1efd0
   warden-basic_auth (0.2.1) sha256=bfc752e0109c0182c3e69e930284c5e1e81e7b4a354aeb2b5914ead1391f3c6e
