@@ -49,7 +49,7 @@
         grid.with_area(:presenter, tag: :div, classes: "ellipsis") do
           flex_layout(align_items: :flex_end) do |flex|
             flex.with_column(classes: "ellipsis custom-presenter-flex") do
-              render(Users::AvatarComponent.new(user: @meeting_agenda_item.presenter, size: "mini", title:, classes: "op-principal_flex"))
+              render(Users::AvatarComponent.new(user: @meeting_agenda_item.presenter, size: "mini", classes: "op-principal_flex"))
             end
           end
         end
