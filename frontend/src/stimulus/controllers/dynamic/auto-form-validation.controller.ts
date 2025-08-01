@@ -35,10 +35,10 @@ export default class AutoFormValidationController extends Controller<HTMLFormEle
   private turboRequests:TurboRequestsService;
 
   static values = {
-    validationUrl: String,
+    url: String,
   };
 
-  declare readonly validationUrlValue:string;
+  declare readonly urlValue:string;
 
   async connect() {
     const context = await window.OpenProject.getPluginContext();
@@ -49,7 +49,7 @@ export default class AutoFormValidationController extends Controller<HTMLFormEle
     void this.turboRequests.submitForm(
       this.element,
       null,
-      this.validationUrlValue,
+      this.urlValue,
     );
   }
 }
