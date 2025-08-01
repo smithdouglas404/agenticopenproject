@@ -65,6 +65,21 @@ module WorkPackages
         end
       end
 
+      def form_validation_path
+        if reminder.persisted?
+          url_helpers.form_contract_check_work_package_reminder_path(
+            work_package_id: remindable.id,
+            id: reminder.id,
+            form_action: :update
+          )
+        else
+          url_helpers.form_contract_check_work_package_reminders_path(
+            work_package_id: remindable.id,
+            form_action: :create
+          )
+        end
+      end
+
       def submit_button_text
         if @reminder.persisted?
           I18n.t(:button_save)

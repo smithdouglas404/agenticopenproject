@@ -2,7 +2,11 @@
   <%= primer_form_with(
         model: reminder,
         url: submit_path,
-        id: FORM_ID
+        id: FORM_ID,
+        data: {
+          controller: "auto-form-validation",
+          auto_form_validation_validation_url_value: form_validation_path
+        }
       ) do |f| %>
     <%= flex_layout(classes: "reminder-modal-body--form-flex-container") do |form_flex_container| %>
       <%= form_flex_container.with_row do %>

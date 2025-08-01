@@ -768,6 +768,7 @@ Rails.application.routes.draw do
               only: %i[create update destroy] do
       get :modal_body, on: :collection
       post :form_contract_check, on: :collection
+      patch :form_contract_check, on: :member
     end
 
     get "/export_dialog" => "work_packages#export_dialog", on: :collection, as: "export_dialog"

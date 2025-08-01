@@ -49,34 +49,13 @@ class WorkPackages::RemindersController < ApplicationController
   end
 
   def form_contract_check
-    attribute, value, form_action = params.values_at(:name, :value, :form_action)
-    if attribute.blank? || value.blank? || form_action.blank?
-      return render json: { valid: false, message: I18n.t(:error_blank) },
-                    status: :bad_request
-    end
+    contract_class, model = derive_form_validation_action
 
-    contract_class = "Reminders::#{form_action.to_s.camelize}Contract".constantize
-    attribute = attribute.to_sym
+    service_result = Reminders::SetAttributesService.new(user: current_user, model:,
+                                                         contract_class:).call(reminder_params)
 
-    set_attributes_service = Reminders::SetAttributesService.new(
-      user: current_user,
-      model: Reminder.new,
-      contract_class:
-    ).perform(remind_at: value)
-
-    if set_attributes_service.errors.include?(attribute)
-      render plain: set_attributes_service.errors.full_messages_for(attribute).to_sentence,
-             status: :unprocessable_entity
-    else
-      head :ok
-    end
-  rescue NameError
-    render plain: I18n.t(:error_invalid_form_action),
-           status: :bad_request
-  rescue StandardError => e
-    Rails.logger.error { "Error during form contract check: #{e.message}" }
-    render plain: I18n.t(:error_internal_server_error),
-           status: :internal_server_error
+    replace_modal_body_component(service_result)
+    respond_with_turbo_streams(status: service_result.success? ? :ok : :unprocessable_entity)
   end
 
   def create
@@ -125,6 +104,11 @@ class WorkPackages::RemindersController < ApplicationController
   end
 
   def respond_with_error_modal_component(service_result)
+    replace_modal_body_component(service_result)
+    respond_with_turbo_streams(status: :unprocessable_entity)
+  end
+
+  def replace_modal_body_component(service_result)
     replace_via_turbo_stream(
       component: WorkPackages::Reminder::ModalBodyComponent.new(
         remindable: @work_package,
@@ -134,8 +118,6 @@ class WorkPackages::RemindersController < ApplicationController
         remind_at_time: reminder_params[:remind_at_time]
       )
     )
-
-    respond_with_turbo_streams(status: :unprocessable_entity)
   end
 
   def reminder_chosen_time(reminder)
@@ -164,6 +146,16 @@ class WorkPackages::RemindersController < ApplicationController
 
   def reminders
     @work_package.reminders.upcoming_and_visible_to(User.current)
+  end
+
+  def derive_form_validation_action
+    form_action = params[:form_action].presence || :create
+    contract_class = "Reminders::#{form_action.to_s.camelize}Contract".constantize
+    model = form_action == :update ? find_reminder : @work_package.reminders.build
+    [contract_class, model]
+  rescue NameError
+    render_error_flash_message_via_turbo_stream(message: I18n.t(:error_invalid_form_action))
+    respond_with_turbo_streams(status: :bad_request)
   end
 
   def reminder_params

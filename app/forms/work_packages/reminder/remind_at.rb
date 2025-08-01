@@ -41,7 +41,8 @@ class WorkPackages::Reminder::RemindAt < ApplicationForm
         label: I18n.t(:label_date),
         leading_visual: { icon: :calendar },
         required: true,
-        autofocus: false
+        autofocus: false,
+        data: { action: auto_form_validation_action }
       )
 
       f.text_field(
@@ -53,7 +54,8 @@ class WorkPackages::Reminder::RemindAt < ApplicationForm
         leading_visual: { icon: :clock },
         required: true,
         autofocus: false,
-        caption: formatted_time_zone_offset
+        caption: formatted_time_zone_offset,
+        data: { action: auto_form_validation_action }
       )
     end
   end
@@ -65,4 +67,8 @@ class WorkPackages::Reminder::RemindAt < ApplicationForm
     @remind_at_date_initial_value = remind_at_date_initial_value
     @remind_at_time_initial_value = remind_at_time_initial_value
   end
+
+  private
+
+  def auto_form_validation_action = "input->auto-form-validation#validateForm"
 end
