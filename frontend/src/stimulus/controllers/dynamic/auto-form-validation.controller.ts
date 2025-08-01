@@ -30,6 +30,7 @@
 
 import { Controller } from '@hotwired/stimulus';
 import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
+import { debounce } from 'lodash';
 
 export default class AutoFormValidationController extends Controller<HTMLFormElement> {
   private turboRequests:TurboRequestsService;
@@ -46,6 +47,12 @@ export default class AutoFormValidationController extends Controller<HTMLFormEle
   }
 
   validateForm() {
+    this.debouncedSubmitForm();
+  }
+
+  private debouncedSubmitForm = debounce(() => { this.submitForm(); }, 300);
+
+  private submitForm() {
     void this.turboRequests.submitForm(
       this.element,
       null,
