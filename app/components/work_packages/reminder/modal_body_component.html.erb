@@ -6,10 +6,7 @@
       ) do |f| %>
     <%= flex_layout(classes: "reminder-modal-body--form-flex-container") do |form_flex_container| %>
       <%= form_flex_container.with_row do %>
-        <%= render(WorkPackages::Reminder::RemindAtDate.new(f, initial_value: remind_at_date_initial_value)) %>
-      <% end %>
-      <%= form_flex_container.with_row do %>
-        <%= render(WorkPackages::Reminder::RemindAtTime.new(f, initial_value: remind_at_time_initial_value)) %>
+        <%= render(WorkPackages::Reminder::RemindAt.new(f, remind_at_date_initial_value:, remind_at_time_initial_value:)) %>
       <% end %>
       <%= form_flex_container.with_row do %>
         <%= render(WorkPackages::Reminder::Note.new(f)) %>
