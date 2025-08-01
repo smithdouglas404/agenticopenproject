@@ -222,6 +222,10 @@ RSpec.describe "Work package reminder modal",
           # 30 minutes ago
           fill_in "Date", with: today
           fill_in "Time", with: thirty_minutes_ago.to_time
+
+          wait_for_network_idle
+          expect(page).to have_css(".FormControl-inlineValidation", text: "Time must be in the future.")
+
           click_link_or_button "Set reminder"
 
           wait_for_network_idle
@@ -230,6 +234,8 @@ RSpec.describe "Work package reminder modal",
           # 30 minutes from now
           fill_in "Date", with: today
           fill_in "Time", with: thirty_minutes_from_now.to_time
+          wait_for_network_idle
+          expect(page).to have_no_css(".FormControl-inlineValidation", text: "Time must be in the future.")
           click_link_or_button "Set reminder"
 
           wait_for_network_idle
@@ -348,6 +354,9 @@ RSpec.describe "Work package reminder modal",
           # Edit form renders validation errors
           fill_in "Date", with: ""
           fill_in "Time", with: ""
+          wait_for_network_idle
+          expect(page).to have_css(".FormControl-inlineValidation", text: "Date can't be blank.")
+          expect(page).to have_css(".FormControl-inlineValidation", text: "Time can't be blank.")
 
           click_link_or_button "Save"
 
@@ -355,8 +364,16 @@ RSpec.describe "Work package reminder modal",
           expect(page).to have_css(".FormControl-inlineValidation", text: "Date can't be blank.")
           expect(page).to have_css(".FormControl-inlineValidation", text: "Time can't be blank.")
           expect(page).to have_field("Date", with: "")
-          expect(page).to have_field("Time", with: "09:00") # Default time
+          expect(page).to have_field("Time", with: "")
           expect(page).to have_field("Note", with: reminder.note)
+
+          # Fill in the date and time
+          one_week_from_now = Time.now.in_time_zone(current_user.time_zone) + 1.week
+          fill_in "Date", with: one_week_from_now.to_date
+          fill_in "Time", with: one_week_from_now
+          wait_for_network_idle
+          expect(page).to have_no_css(".FormControl-inlineValidation", text: "Date can't be blank.")
+          expect(page).to have_no_css(".FormControl-inlineValidation", text: "Time can't be blank.")
         end
       end
     end
@@ -387,7 +404,7 @@ RSpec.describe "Work package reminder modal",
             .to have_css(".spot-modal--subheader",
                          text: "You will receive a notification for this work package at the chosen time.")
           expect(page).to have_field("Date", with: 1.day.from_now.to_date)
-          expect(page).to have_field("Time", with: "09:00")
+          expect(page).to have_field("Time", with: "09:00") # Default time
           expect(page).to have_field("Note")
           expect(page).to have_button("Set reminder")
         end
