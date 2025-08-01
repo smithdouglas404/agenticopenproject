@@ -111,8 +111,9 @@ module WorkPackages
         end
 
         return format_time(@reminder.remind_at, include_date: false, format: "%H:%M") if @reminder.remind_at
+        return DEFAULT_TIME if @preset
 
-        DEFAULT_TIME
+        nil
       end
 
       private
