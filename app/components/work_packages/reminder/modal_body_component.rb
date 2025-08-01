@@ -67,16 +67,9 @@ module WorkPackages
 
       def form_validation_path
         if reminder.persisted?
-          url_helpers.form_contract_check_work_package_reminder_path(
-            work_package_id: remindable.id,
-            id: reminder.id,
-            form_action: :update
-          )
+          url_helpers.update_form_work_package_reminder_path(remindable, reminder)
         else
-          url_helpers.form_contract_check_work_package_reminders_path(
-            work_package_id: remindable.id,
-            form_action: :create
-          )
+          url_helpers.create_form_work_package_reminders_path(remindable)
         end
       end
 
