@@ -42,7 +42,7 @@ class WorkPackages::Reminder::RemindAt < ApplicationForm
         leading_visual: { icon: :calendar },
         required: true,
         autofocus: false,
-        data: { action: auto_form_validation_action }
+        data: { action: auto_form_validation_blur_action }
       )
 
       f.text_field(
@@ -55,7 +55,7 @@ class WorkPackages::Reminder::RemindAt < ApplicationForm
         required: true,
         autofocus: false,
         caption: formatted_time_zone_offset,
-        data: { action: auto_form_validation_action }
+        data: { action: auto_form_validation_blur_action }
       )
     end
   end
@@ -70,5 +70,5 @@ class WorkPackages::Reminder::RemindAt < ApplicationForm
 
   private
 
-  def auto_form_validation_action = "input->auto-form-validation#validateForm"
+  def auto_form_validation_blur_action = "blur->auto-form-validation#validateForm"
 end

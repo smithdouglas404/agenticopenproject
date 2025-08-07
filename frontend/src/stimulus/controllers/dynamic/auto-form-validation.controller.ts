@@ -46,16 +46,20 @@ export default class AutoFormValidationController extends Controller<HTMLFormEle
     this.turboRequests = context.services.turboRequests;
   }
 
-  validateForm() {
-    this.debouncedSubmitForm();
+  validateForm(event:Event) {
+    const inputId = (event.currentTarget as HTMLInputElement).id; // e.g. "reminder_remind_at_date"
+    const inputIdWithoutPrefix = inputId.split('_').slice(1).join('_'); // -> "remind_at_date"
+    this.debouncedSubmitForm(inputIdWithoutPrefix);
   }
 
-  private debouncedSubmitForm = debounce(() => { this.submitForm(); }, 300);
+  private debouncedSubmitForm = debounce((inputId:string) => { this.submitForm(inputId); }, 300);
 
-  private submitForm() {
+  private submitForm(inputId:string) {
+    const params = new URLSearchParams({ input_id: inputId });
+
     void this.turboRequests.submitForm(
       this.element,
-      null,
+      params,
       this.urlValue,
     );
   }

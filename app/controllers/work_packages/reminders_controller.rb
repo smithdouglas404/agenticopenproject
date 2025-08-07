@@ -147,8 +147,9 @@ class WorkPackages::RemindersController < ApplicationController
   end
 
   def respond_with_validated_form(contract_class:, model:)
-    service_result = Reminders::SetAttributesService.new(user: current_user, model:,
-                                                         contract_class:).call(reminder_params)
+    service_result = Reminders::FormValidationService.new(user: current_user, model:, contract_class:,
+                                                          input_id: params[:input_id])
+                                                     .call(reminder_params)
 
     replace_modal_body_component(service_result)
     respond_with_turbo_streams(status: service_result.success? ? :ok : :unprocessable_entity)
