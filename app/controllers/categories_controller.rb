@@ -76,7 +76,7 @@ class CategoriesController < ApplicationController
     end
   end
 
-  def destroy
+  def destroy # rubocop:disable Metrics/AbcSize
     @issue_count = @category.work_packages.size
     if @issue_count == 0
       # No issue assigned to this category
