@@ -26,15 +26,16 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-// @ts-expect-error TS(2304): Cannot find name 'RB'.
-RB.EditableInplace = (function ($) {
-  // @ts-expect-error TS(2304): Cannot find name 'RB'.
-  return RB.Object.create(RB.Model, {
+type Constructor<T = {}> = new (...args:any[]) => T;
 
-    displayEditor(editor:any) {
+export function EditableInplace<TBase extends Constructor>(Base:TBase) {
+  return class extends Base {
+    declare $:JQuery;
+
+    displayEditor(editor:JQuery) {
       this.$.addClass('editing');
       editor.find('.editor').bind('keydown', this.handleKeydown);
-    },
+    }
 
     getEditor() {
       // Create the model editor container if it does not yet exist
@@ -46,21 +47,18 @@ RB.EditableInplace = (function ($) {
         editor.first().html('');
       }
       return editor;
-    },
+    }
 
     // For detecting Enter and ESC
-    handleKeydown(e:any) {
-      let j;
-      let that;
-
-      j = $(this).parents('.model').first();
-      that = j.data('this');
+    handleKeydown(e:JQuery.Event) {
+      const j = $(this).parents('.model').first();
+      const that = j.data('this');
 
       if (e.key === 'Enter') {
         that.saveEdits();
       } else if (e.key === 'Escape') {
         that.cancelEdit();
       }
-    },
-  });
-}(jQuery));
+    }
+  };
+}

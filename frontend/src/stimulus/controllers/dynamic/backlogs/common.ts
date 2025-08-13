@@ -26,83 +26,63 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
+import jQuery from 'jquery';
 import 'jquery.cookie';
 
-// @ts-expect-error TS(2339): Property 'RB' does not exist on type 'Window & typ... Remove this comment to see the full error message
-if (window.RB === null || window.RB === undefined) {
-  // @ts-expect-error TS(2339): Property 'RB' does not exist on type 'Window & typ... Remove this comment to see the full error message
-  window.RB = {};
+export interface RBGlobal {
+  constants:{
+    project_id:number
+    sprint_id:number|null
+  }
+  i18n:{
+    generating_graph:string
+    burndown_graph:string
+  }
+  urlFor:(routeName:string, options?:{
+    id?:string|number
+    project_id?:string|number
+    sprint_id?:string|number|null
+  }) => string
 }
 
-(function ($) {
-  let object:any;
-  let Factory;
-  let Dialog;
-  let UserPreferences;
+declare global {
+  interface Window {
+    RB:RBGlobal
+  }
+}
 
-  object = {
-    // Douglas Crockford's technique for object extension
-    // http://javascript.crockford.com/prototypal.html
-    create() {
-      let obj;
-      let i;
-      let methods;
-      let methodName;
+declare const RB:RBGlobal;
 
-      function F() {
-      }
+export interface SaveDirectives {
+  url:string;
+  method:string;
+  data:string;
+}
 
-      F.prototype = arguments[0];
-      // @ts-expect-error TS(7009): 'new' expression, whose target lacks a construct s... Remove this comment to see the full error message
-      obj = new F();
+export interface Editable {
+  $:JQuery;
+  displayEditor(editor:JQuery):void;
+  getEditor():JQuery;
+}
 
-      // Add all the other arguments as mixins that
-      // 'write over' any existing methods
-      for (i = 1; i < arguments.length; i += 1) {
-        methods = arguments[i];
-        if (typeof methods === 'object') {
-          for (methodName in methods) {
-            if (methods.hasOwnProperty(methodName)) {
-              obj[methodName] = methods[methodName];
-            }
-          }
-        }
-      }
-      return obj;
-    },
-  };
+// Utilities
+export class Dialog {
+  static msg(msg:string) {
+    let dialog;
+    let baseClasses;
 
-  // Object factory for chiliproject_backlogs
-  Factory = object.create({
+    baseClasses = 'ui-button ui-widget ui-state-default ui-corner-all';
 
-    initialize(objType:any, el:any) {
-      let obj;
+    if ($('#msgBox').length === 0) {
+      dialog = $('<div id="msgBox"></div>').appendTo('body');
+    } else {
+      dialog = $('#msgBox');
+    }
 
-      obj = object.create(objType);
-      obj.initialize(el);
-      return obj;
-    },
-
-  });
-
-  // Utilities
-  Dialog = object.create({
-    msg(msg:any) {
-      let dialog;
-      let baseClasses;
-
-      baseClasses = 'ui-button ui-widget ui-state-default ui-corner-all';
-
-      if ($('#msgBox').length === 0) {
-        dialog = $('<div id="msgBox"></div>').appendTo('body');
-      } else {
-        dialog = $('#msgBox');
-      }
-
-      dialog.html(msg);
-      dialog.dialog({
-        title: 'Backlogs Plugin',
-        buttons: [
+    dialog.html(msg);
+    dialog.dialog({
+      title: 'Backlogs Plugin',
+      buttons: [
         {
           text: 'OK',
           class: 'button -primary',
@@ -110,31 +90,21 @@ if (window.RB === null || window.RB === undefined) {
             $(this).dialog('close');
           },
         }],
-        modal: true,
-      });
-      $('.button').removeClass(baseClasses);
-      $('.ui-icon-closethick').prop('title', 'close');
-    },
-  });
+      modal: true,
+    });
+    $('.button').removeClass(baseClasses);
+    $('.ui-icon-closethick').prop('title', 'close');
+  }
+}
 
-  // Abstract the user preference from the rest of the RB objects
-  // so that we can change the underlying implementation as needed
-  UserPreferences = object.create({
-    get(key:any) {
-      return $.cookie(key);
-    },
+// Abstract the user preference from the rest of the RB objects
+// so that we can change the underlying implementation as needed
+export class UserPreferences {
+  static get(key:string) {
+    return jQuery.cookie(key);
+  }
 
-    set(key:any, value:any) {
-      $.cookie(key, value, { expires: 365 * 10 });
-    },
-  });
-
-  // @ts-expect-error TS(2304): Cannot find name 'RB'.
-  RB.Object = object;
-  // @ts-expect-error TS(2304): Cannot find name 'RB'.
-  RB.Factory = Factory;
-  // @ts-expect-error TS(2304): Cannot find name 'RB'.
-  RB.Dialog = Dialog;
-  // @ts-expect-error TS(2304): Cannot find name 'RB'.
-  RB.UserPreferences = UserPreferences;
-}(jQuery));
+  static set(key:string, value:any) {
+    jQuery.cookie(key, value, { expires: 365 * 10 });
+  }
+}

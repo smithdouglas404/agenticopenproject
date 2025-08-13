@@ -26,66 +26,61 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
+import { RBGlobal } from './common';
+import { Task } from './task';
+
+declare const RB:RBGlobal;
+
 /**************************************
   IMPEDIMENT
 ***************************************/
+export class Impediment extends Task {
+  constructor(el:HTMLElement) {
+    super(el);
 
-// @ts-expect-error TS(2304): Cannot find name 'RB'.
-RB.Impediment = (function ($) {
-  // @ts-expect-error TS(2304): Cannot find name 'RB'.
-  return RB.Object.create(RB.Task, {
+    const j = this.$; // This ensures that we use a local 'j' variable, not a global one.
 
-    initialize(el:any) {
-      let j; // This ensures that we use a local 'j' variable, not a global one.
+    j.addClass('impediment'); // If node is based on #task_template, it doesn't have the impediment class yet
 
-      this.$ = j = $(el);
-      this.el = el;
+    // Associate this object with the element for later retrieval
+    j.data('this', this);
 
-      j.addClass('impediment'); // If node is based on #task_template, it doesn't have the impediment class yet
+    j.on('mouseup', '.editable', this.handleClick);
+  }
 
-      // Associate this object with the element for later retrieval
-      j.data('this', this);
+  // Override saveDirectives of RB.Task
+  saveDirectives() {
+    let j;
+    let prev;
+    let statusID;
 
-      j.on('mouseup', '.editable', this.handleClick);
-    },
+    let method;
+    let url;
+    let data;
 
-    // Override saveDirectives of RB.Task
-    saveDirectives() {
-      let j;
-      let prev;
-      let statusID;
+    j = this.$;
+    prev = this.$.prev();
+    statusID = j.parent('td').first().attr('id')?.split('_')[1];
 
-      let method;
-      let url;
-      let data;
+    data = `${j.find('.editor').serialize()
+    }&is_impediment=true`
+                                + `&version_id=${RB.constants.sprint_id
+                                }&status_id=${statusID
+                                }&prev=${prev.length === 1 ? prev.data('this').getID() : ''
+                                }${this.isNew() ? '' : `&id=${j.children('.id').text()}`}`;
 
-      j = this.$;
-      prev = this.$.prev();
-      statusID = j.parent('td').first().attr('id').split('_')[1];
+    if (this.isNew()) {
+      url = RB.urlFor('create_impediment', { sprint_id: RB.constants.sprint_id });
+      method = 'post';
+    } else {
+      url = RB.urlFor('update_impediment', { id: this.getID(), sprint_id: RB.constants.sprint_id });
+      method = 'put';
+    }
 
-      data = `${j.find('.editor').serialize()
-                 }&is_impediment=true`
-                 // @ts-expect-error TS(2304): Cannot find name 'RB'.
-                 + `&version_id=${RB.constants.sprint_id
-                 }&status_id=${statusID
-                 }&prev=${prev.length === 1 ? prev.data('this').getID() : ''
-                 }${this.isNew() ? '' : `&id=${j.children('.id').text()}`}`;
-
-      if (this.isNew()) {
-        // @ts-expect-error TS(2304): Cannot find name 'RB'.
-        url = RB.urlFor('create_impediment', { sprint_id: RB.constants.sprint_id });
-        method = 'post';
-      } else {
-        // @ts-expect-error TS(2304): Cannot find name 'RB'.
-        url = RB.urlFor('update_impediment', { id: this.getID(), sprint_id: RB.constants.sprint_id });
-        method = 'put';
-      }
-
-      return {
-        url,
-        method,
-        data,
-      };
-    },
-  });
-}(jQuery));
+    return {
+      url,
+      method,
+      data,
+    };
+  }
+}

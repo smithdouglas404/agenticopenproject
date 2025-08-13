@@ -26,14 +26,15 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
+import { Taskboard } from './taskboard';
+
 // Initialize everything after DOM is loaded
 jQuery(($) => {
-  let defaultDialogColor:any; // this var is used as cache for some computation in
-                          // the inner function. -> Do not move to where it
-                          // actually belongs!
+  let defaultDialogColor:string; // this var is used as cache for some computation in
+  // the inner function. -> Do not move to where it
+  // actually belongs!
 
-  // @ts-expect-error TS(2304): Cannot find name 'RB'.
-  RB.Factory.initialize(RB.Taskboard, $('#taskboard'));
+  new Taskboard($('#taskboard')[0]);
 
   $('#assigned_to_id_options').change(function () {
     const selected = $(this).children(':selected');
@@ -42,7 +43,6 @@ jQuery(($) => {
       defaultDialogColor = $('#work_package_').css('background-color');
     }
     $(this).parents('.ui-dialog').css('background-color', selected.attr('color') || defaultDialogColor);
-    // @ts-expect-error TS(2339): Property 'colorcontrast' does not exist on type 'J... Remove this comment to see the full error message
     $(this).parents('.ui-dialog').colorcontrast();
   });
 });

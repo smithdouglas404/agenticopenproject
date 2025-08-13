@@ -26,6 +26,10 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
+import { Burndown } from './burndown';
+import { EditableSprint } from './sprint';
+import { EditableStory, EditableStoryType } from './story';
+
 /******************************************
   BACKLOG
   A backlog is a visual representation of
@@ -37,146 +41,137 @@
   sheet (or in Redmine Backlogs!) to
   visualize the sprint.
 ******************************************/
+export class Backlog {
+  private $:JQuery;
+  private el:HTMLElement;
+  burndown:Burndown;
 
-// @ts-expect-error TS(2304): Cannot find name 'RB'.
-RB.Backlog = (function ($) {
-  // @ts-expect-error TS(2304): Cannot find name 'RB'.
-  return RB.Object.create({
+  constructor(el:HTMLElement) {
+    this.$ = $(el);
+    this.el = el;
 
-    initialize(el:any) {
-      this.$ = $(el);
-      this.el = el;
+    // Associate this object with the element for later retrieval
+    this.$.data('this', this);
 
-      // Associate this object with the element for later retrieval
-      this.$.data('this', this);
+    // Make the list sortable
+    this.getList().sortable({
+      connectWith: '.stories',
+      dropOnEmpty: true,
+      start: this.dragStart,
+      stop: this.dragStop,
+      update: this.dragComplete,
+      receive: this.dragChanged,
+      remove: this.dragChanged,
+      containment: $('#backlogs_container'),
+      cancel: 'input, textarea, button, select, option, .prevent_drag',
+      scroll: true,
+      helper(ui) {
+        const $clone = $(ui).clone();
+        $clone.css('position', 'absolute');
+        return $clone.get(0) as unknown as Element;
+      },
+    });
 
-      // Make the list sortable
-      this.getList().sortable({
-        connectWith: '.stories',
-        dropOnEmpty: true,
-        start: this.dragStart,
-        stop: this.dragStop,
-        update: this.dragComplete,
-        receive: this.dragChanged,
-        remove: this.dragChanged,
-        containment: $('#backlogs_container'),
-        cancel: 'input, textarea, button, select, option, .prevent_drag',
-        scroll: true,
-        helper(event:any, ui:any) {
-          const $clone = $(ui).clone();
-          $clone.css('position', 'absolute');
-          return $clone.get(0);
-        },
-      });
+    // Observe menu items
+    this.$.find('.add_new_story').click(this.handleNewStoryClick);
 
-      // Observe menu items
-      this.$.find('.add_new_story').click(this.handleNewStoryClick);
+    if (this.isSprintBacklog()) {
+      new EditableSprint(this.getSprint()[0]);
+      this.burndown = new Burndown(this.$.find('.show_burndown_chart')[0]);
+      this.burndown.setSprintId(this.getSprint().data('this').getID());
+    }
 
-      if (this.isSprintBacklog()) {
-        // @ts-expect-error TS(2304): Cannot find name 'RB'.
-        RB.Factory.initialize(RB.Sprint, this.getSprint());
-        // @ts-expect-error TS(2304): Cannot find name 'RB'.
-        this.burndown = RB.Factory.initialize(RB.Burndown, this.$.find('.show_burndown_chart'));
-        this.burndown.setSprintId(this.getSprint().data('this').getID());
-      }
+    // Initialize each item in the backlog
+    this.getStories().each((index, element) => {
+      // refers to an element with class="story"
+      new EditableStory(element);
+    });
 
-      // Initialize each item in the backlog
-      this.getStories().each(function (this:any, index:any) {
-        // 'this' refers to an element with class="story"
-        // @ts-expect-error TS(2304): Cannot find name 'RB'.
-        RB.Factory.initialize(RB.Story, this);
-      });
+    if (this.isSprintBacklog()) {
+      this.refresh();
+    }
+  }
 
-      if (this.isSprintBacklog()) {
-        this.refresh();
-      }
-    },
+  dragChanged(e:JQueryEventObject, ui:JQueryUI.SortableUIParams) {
+    $(this).parents('.backlog').data('this').refresh();
+  }
 
-    dragChanged(e:any, ui:any) {
-      $(this).parents('.backlog').data('this').refresh();
-    },
+  dragComplete(e:JQueryEventObject, ui:JQueryUI.SortableUIParams) {
+    const isDropTarget = (ui.sender === null || ui.sender === undefined);
 
-    dragComplete(e:any, ui:any) {
-      const isDropTarget = (ui.sender === null || ui.sender === undefined);
+    // jQuery triggers dragComplete of source and target.
+    // Thus we have to check here. Otherwise, the story
+    // would be saved twice.
+    if (isDropTarget) {
+      ui.item.data('this').saveDragResult();
+    }
+  }
 
-      // jQuery triggers dragComplete of source and target.
-      // Thus we have to check here. Otherwise, the story
-      // would be saved twice.
-      if (isDropTarget) {
-        ui.item.data('this').saveDragResult();
-      }
-    },
+  dragStart(e:JQueryEventObject, ui:JQueryUI.SortableUIParams) {
+    ui.item.addClass('dragging');
+  }
 
-    dragStart(e:any, ui:any) {
-      ui.item.addClass('dragging');
-    },
+  dragStop(e:JQueryEventObject, ui:JQueryUI.SortableUIParams) {
+    ui.item.removeClass('dragging');
+  }
 
-    dragStop(e:any, ui:any) {
-      ui.item.removeClass('dragging');
-    },
+  getSprint() {
+    return $(this.el).find('.model.sprint').first();
+  }
 
-    getSprint() {
-      return $(this.el).find('.model.sprint').first();
-    },
+  getStories() {
+    return this.getList().children('.story');
+  }
 
-    getStories() {
-      return this.getList().children('.story');
-    },
+  getList() {
+    return this.$.children('.stories').first();
+  }
 
-    getList() {
-      return this.$.children('.stories').first();
-    },
+  handleNewStoryClick(e:JQuery.Event) {
+    const toggler = $(this).parents('.header').find('.toggler');
+    if (toggler.hasClass('closed')) {
+      toggler.click();
+    }
+    e.preventDefault();
+    this.newStory();
+  }
 
-    handleNewStoryClick(e:any) {
-      const toggler = $(this).parents('.header').find('.toggler');
-      if (toggler.hasClass('closed')) {
-        toggler.click();
-      }
-      e.preventDefault();
-      $(this).parents('.backlog').data('this').newStory();
-    },
+  // return true if backlog has an element with class="sprint"
+  isSprintBacklog() {
+    return $(this.el).find('.sprint').length === 1;
+  }
 
-    // return true if backlog has an element with class="sprint"
-    isSprintBacklog() {
-      return $(this.el).find('.sprint').length === 1;
-    },
+  newStory() {
+    const story = $('#story_template').children().first().clone();
+    this.getList().prepend(story);
 
-    newStory() {
-      let story;
-      let o;
+    const o = new EditableStory(story[0]);
+    o.edit();
 
-      story = $('#story_template').children().first().clone();
-      this.getList().prepend(story);
+    story.find('.editor').first().focus();
+  }
 
-      // @ts-expect-error TS(2304): Cannot find name 'RB'.
-      o = RB.Factory.initialize(RB.Story, story[0]);
-      o.edit();
+  refresh() {
+    this.recalcVelocity();
+    this.recalcOddity();
+  }
 
-      story.find('.editor').first().focus();
-    },
+  recalcVelocity() {
+    let total:any;
 
-    refresh() {
-      this.recalcVelocity();
-      this.recalcOddity();
-    },
+    if (!this.isSprintBacklog()) {
+      return;
+    }
 
-    recalcVelocity() {
-      let total:any;
+    total = 0;
+    this.getStories().each((index, element) => {
+      total += ($(element).data('this') as EditableStoryType).getPoints();
+    });
+    this.$.children('.header').children('.velocity').text(total);
+  }
 
-      if (!this.isSprintBacklog()) {
-        return;
-      }
-
-      total = 0;
-      this.getStories().each(function (this:any, index:any) {
-        total += $(this).data('this').getPoints();
-      });
-      this.$.children('.header').children('.velocity').text(total);
-    },
-
-    recalcOddity() {
-      this.$.find('.story:even').removeClass('odd').addClass('even');
-      this.$.find('.story:odd').removeClass('even').addClass('odd');
-    },
-  });
-}(jQuery));
+  recalcOddity() {
+    this.$.find('.story:even').removeClass('odd').addClass('even');
+    this.$.find('.story:odd').removeClass('even').addClass('odd');
+  }
+}

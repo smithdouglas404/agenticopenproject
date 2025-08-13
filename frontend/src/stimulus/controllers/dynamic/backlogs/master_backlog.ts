@@ -26,13 +26,14 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
+import { Backlog } from './backlog';
+
 // Initialize the backlogs after DOM is loaded
 jQuery(($) => {
   // Initialize each backlog
-  $('.backlog').each(function (index) {
-    // 'this' refers to an element with class="backlog"
-    // @ts-expect-error TS(2304): Cannot find name 'RB'.
-    RB.Factory.initialize(RB.Backlog, this);
+  $('.backlog').each((_index, element) => {
+    // refers to an element with class="backlog"
+    new Backlog(element);
   });
 
   $('.backlog .toggler').on('click', function () {

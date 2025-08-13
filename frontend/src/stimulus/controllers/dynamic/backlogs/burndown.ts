@@ -26,42 +26,43 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-// @ts-expect-error TS(2304): Cannot find name 'RB'.
-RB.Burndown = (function ($) {
-  // @ts-expect-error TS(2304): Cannot find name 'RB'.
-  return RB.Object.create({
+import { RBGlobal } from './common';
 
-    initialize(el:any) {
-      this.$ = $(el);
-      this.el = el;
+declare const RB:RBGlobal;
 
-      // Associate this object with the element for later retrieval
-      this.$.data('this', this);
+export class Burndown {
+  $:JQuery;
+  el:HTMLElement;
+  sprintId:number;
 
-      // Observe menu items
-      this.$.click(this.show);
-    },
+  constructor(el:HTMLElement) {
+    this.$ = $(el);
+    this.el = el;
 
-    setSprintId(sprintId:any) {
-      this.sprintId = sprintId;
-    },
+    // Associate this object with the element for later retrieval
+    this.$.data('this', this);
 
-    getSprintId() {
-      return this.sprintId;
-    },
+    // Observe menu items
+    this.$.click(this.show);
+  }
 
-    show(e:any) {
-      e.preventDefault();
+  setSprintId(sprintId:number) {
+    this.sprintId = sprintId;
+  }
 
-      if ($('#charts').length === 0) {
-        $('<div id="charts"></div>').appendTo('body');
-      }
-      // @ts-expect-error TS(2304): Cannot find name 'RB'.
-      $('#charts').html(`<div class='loading'>${RB.i18n.generating_graph}</div>`);
+  getSprintId() {
+    return this.sprintId;
+  }
 
-      // @ts-expect-error TS(2304): Cannot find name 'RB'.
-      const url = RB.urlFor('show_burndown_chart', { sprint_id: $(this).data('this').sprintId, project_id: RB.constants.project_id });
-      window.open(url);
-    },
-  });
-}(jQuery));
+  show(e:JQuery.Event) {
+    e.preventDefault();
+
+    if ($('#charts').length === 0) {
+      $('<div id="charts"></div>').appendTo('body');
+    }
+    $('#charts').html(`<div class='loading'>${RB.i18n.generating_graph}</div>`);
+
+    const url = RB.urlFor('show_burndown_chart', { sprint_id: $(this).data('this').sprintId, project_id: RB.constants.project_id });
+    window.open(url);
+  }
+}

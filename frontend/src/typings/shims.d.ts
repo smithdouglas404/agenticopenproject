@@ -71,11 +71,13 @@ declare global {
 
   interface JQuery {
     tablesorter:any;
+    colorcontrast:any;
   }
 
   interface JQueryStatic {
     metadata:any;
     tablesorter:any;
+    colorcontrast:any;
   }
 }
 

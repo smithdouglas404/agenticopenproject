@@ -26,102 +26,100 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
+import { RBGlobal } from './common';
+import { WorkPackage } from './work_package';
+
+declare const RB:RBGlobal;
+
 /**************************************
   TASK
 ***************************************/
+export class Task extends WorkPackage {
+  defaultColor:string; // editable inplace
 
-// @ts-expect-error TS(2304): Cannot find name 'RB'.
-RB.Task = (function ($) {
-  // @ts-expect-error TS(2304): Cannot find name 'RB'.
-  return RB.Object.create(RB.WorkPackage, {
+  constructor(el:HTMLElement) {
+    super(el);
 
-    initialize(el:any) {
-      this.$ = $(el);
-      this.el = el;
+    // If node is based on #task_template, it doesn't have the story class yet
+    this.$.addClass('task');
 
-      // If node is based on #task_template, it doesn't have the story class yet
-      this.$.addClass('task');
+    // Associate this object with the element for later retrieval
+    this.$.data('this', this);
+    this.$.on('mouseup', '.editable', this.handleClick);
+    this.defaultColor = $('#rb .task').css('background-color');
+  }
 
-      // Associate this object with the element for later retrieval
-      this.$.data('this', this);
-      this.$.on('mouseup', '.editable', this.handleClick);
-      this.defaultColor = $('#rb .task').css('background-color');
-    },
+  beforeSave() {
+    if (this.el && $(this.el).hasClass('dragging')) {
+      return;
+    }
+    const c = this.$.find('select.assigned_to_id').children(':selected').attr('color') || this.defaultColor;
+    this.$.css('background-color', c);
+    this.$.colorcontrast();
+  }
 
-    beforeSave: function name() {
-      if (this.el && $(this.el).hasClass('dragging')) {
-        return;
-      }
-      const c = this.$.find('select.assigned_to_id').children(':selected').attr('color') || this.defaultColor;
-      this.$.css('background-color', c);
-      this.$.colorcontrast();
-    },
+  editorDisplayed(dialog:any) {
+    dialog.parents('.ui-dialog').css('background-color', this.$.css('background-color'));
+    dialog.parents('.ui-dialog').colorcontrast();
+  }
 
-    editorDisplayed(dialog:any) {
-      dialog.parents('.ui-dialog').css('background-color', this.$.css('background-color'));
-      dialog.parents('.ui-dialog').colorcontrast();
-    },
+  getType() {
+    return 'Task';
+  }
 
-    getType() {
-      return 'Task';
-    },
+  markIfClosed() {
+    if (this.$.parent('td').first().hasClass('closed')) {
+      this.$.addClass('closed');
+    } else {
+      this.$.removeClass('closed');
+    }
+  }
 
-    markIfClosed() {
-      if (this.$.parent('td').first().hasClass('closed')) {
-        this.$.addClass('closed');
-      } else {
-        this.$.removeClass('closed');
-      }
-    },
+  saveDirectives() {
+    let prev;
+    let cellId;
 
-    saveDirectives() {
-      let prev;
-      let cellId;
+    let url;
+    let method;
+    let data;
 
-      let url;
-      let method;
-      let data;
+    prev = this.$.prev();
+    cellId = this.$.parent('td').first().attr('id')!.split('_');
 
-      prev = this.$.prev();
-      cellId = this.$.parent('td').first().attr('id').split('_');
+    data = `${this.$.find('.editor').serialize()
+    }&parent_id=${cellId[0]
+    }&status_id=${cellId[1]
+    }&prev=${prev.length === 1 ? prev.data('this').getID() : ''
+    }${this.isNew() ? '' : `&id=${this.$.children('.id').text()}`}`;
 
-      data = `${this.$.find('.editor').serialize()
-                 }&parent_id=${cellId[0]
-                 }&status_id=${cellId[1]
-                 }&prev=${prev.length === 1 ? prev.data('this').getID() : ''
-                 }${this.isNew() ? '' : `&id=${this.$.children('.id').text()}`}`;
+    if (this.isNew()) {
+      url = RB.urlFor('create_task', { sprint_id: RB.constants.sprint_id });
+      method = 'post';
+    } else {
+      url = RB.urlFor('update_task', { id: this.getID(), sprint_id: RB.constants.sprint_id });
+      method = 'put';
+    }
 
-      if (this.isNew()) {
-        // @ts-expect-error TS(2304): Cannot find name 'RB'.
-        url = RB.urlFor('create_task', { sprint_id: RB.constants.sprint_id });
-        method = 'post';
-      } else {
-        // @ts-expect-error TS(2304): Cannot find name 'RB'.
-        url = RB.urlFor('update_task', { id: this.getID(), sprint_id: RB.constants.sprint_id });
-        method = 'put';
-      }
+    return {
+      url,
+      method,
+      data,
+    };
+  }
 
-      return {
-        url,
-        method,
-        data,
-      };
-    },
+  beforeSaveDragResult() {
+    if (this.$.parent('td').first().hasClass('closed')) {
+      // This is only for the purpose of making the Remaining Hours reset
+      // instantaneously after dragging to a closed status. The server should
+      // still make sure to reset the value.
+      this.$.children('.remaining_hours.editor').val('');
+      this.$.children('.remaining_hours.editable').text('');
+    }
+  }
 
-    beforeSaveDragResult() {
-      if (this.$.parent('td').first().hasClass('closed')) {
-        // This is only for the purpose of making the Remaining Hours reset
-        // instantaneously after dragging to a closed status. The server should
-        // still make sure to reset the value.
-        this.$.children('.remaining_hours.editor').val('');
-        this.$.children('.remaining_hours.editable').text('');
-      }
-    },
+  refreshed() {
+    const remainingHours = this.$.children('.remaining_hours.editable');
 
-    refreshed() {
-      const remainingHours = this.$.children('.remaining_hours.editable');
-
-      remainingHours.toggleClass('empty', remainingHours.is(':empty'));
-    },
-  });
-}(jQuery));
+    remainingHours.toggleClass('empty', remainingHours.is(':empty'));
+  }
+}

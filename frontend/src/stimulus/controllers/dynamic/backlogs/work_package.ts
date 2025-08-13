@@ -26,32 +26,24 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
+import { Model } from './model';
+
 /**************************************
   WORK PACKAGE
 ***************************************/
-// @ts-expect-error TS(2304): Cannot find name 'RB'.
-RB.WorkPackage = (function ($) {
-  // @ts-expect-error TS(2304): Cannot find name 'RB'.
-  return RB.Object.create(RB.Model, {
+export abstract class WorkPackage extends Model {
+  beforeSaveDragResult() {
+    // Do nothing
+  }
 
-    initialize(el:any) {
-      this.$ = $(el);
-      this.el = el;
-    },
+  getType() {
+    return 'WorkPackage';
+  }
 
-    beforeSaveDragResult() {
-      // Do nothing
-    },
-
-    getType() {
-      return 'WorkPackage';
-    },
-
-    saveDragResult() {
-      this.beforeSaveDragResult();
-      if (!this.$.hasClass('editing')) {
-        this.saveEdits();
-      }
-    },
-  });
-}(jQuery));
+  saveDragResult() {
+    this.beforeSaveDragResult();
+    if (!this.$.hasClass('editing')) {
+      this.saveEdits();
+    }
+  }
+}
