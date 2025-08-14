@@ -27,12 +27,12 @@ if [ "$edition" = "bim" ]; then
 					# setting the DOTNET_ROOT later fails, leading to bugs like https://community.openproject.org/wp/50172.
 					;;
 				"20.04" | "18.04")
-					wget -qO- https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+          wget --quiet -O- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft.gpg -
 					wget -qO /etc/apt/sources.list.d/microsoft.list https://packages.microsoft.com/config/ubuntu/${OSVERSION}/prod.list
 					apt-get update -qq
 					;;
-				"12" | "11")
-					wget -qO- https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+				"13" | "12" | "11")
+          wget --quiet -O- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft.gpg -
 					wget -qO /etc/apt/sources.list.d/microsoft.list https://packages.microsoft.com/config/debian/${OSVERSION}/prod.list
 					apt-get update -qq
 					;;
@@ -65,10 +65,10 @@ if [ "$edition" = "bim" ]; then
 	fi
 
 	if ! ${CLI} run which IfcConvert &>/dev/null ||
-	   ! echo "2d48d5df36371fc5920a71f0d74b29449b0b166a  $(${CLI} run which IfcConvert)" | sha1sum -c - ; then
+	   ! echo "0c97131145667d90983e266871402def71153ad1 $(${CLI} run which IfcConvert)" | sha1sum -c - ; then
 		echo "Installing IfcConvert..."
-		cp "$APP_HOME/vendor/bim/IfcConvert-v0.7.11-fea8e3a-linux64.zip" .
-		unzip -qq IfcConvert-v0.7.11-fea8e3a-linux64.zip
+		cp "$APP_HOME/vendor/bim/IfcConvert-v0.8.0-0d3c73d-linux64.zip" .
+		unzip -qq IfcConvert-v0.8.0-0d3c73d-linux64.zip
 		mv IfcConvert "$APP_HOME/bin/IfcConvert"
 	fi
 
