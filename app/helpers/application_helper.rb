@@ -317,16 +317,17 @@ module ApplicationHelper
   end
 
   def user_theme_data_attributes
-    if User.current.pref.sync_with_os_theme?
-      # Theme will be set by inline script before body renders to prevent flickering
-      { auto_theme_switcher_mode_value: User.current.pref.theme,
+    current_user = User.current
+
+    if current_user.anonymous? || current_user.pref.sync_with_os_theme?
+      { auto_theme_switcher_mode_value: :sync_with_os,
         auto_theme_switcher_desktop_light_high_contrast_logo_class: "op-logo--link_high_contrast",
         auto_theme_switcher_mobile_white_logo_class: "op-logo--icon_white" }
     else
-      mode, _theme_suffix = User.current.pref.theme.split("_", 2)
+      mode, _theme_suffix = current_user.pref.theme.split("_", 2)
       {
         color_mode: mode,
-        "#{mode}_theme": User.current.pref.theme
+        "#{mode}_theme": current_user.pref.theme
       }
     end
   end
