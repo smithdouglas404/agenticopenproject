@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Acts::Journalized
   module DataClass
     def self.included(base) # :nodoc:

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "open_project/authentication/session_expiry"
 
 module OpenProject
@@ -31,7 +33,7 @@ module OpenProject
           end
 
           def xml_request_header_set?
-            request.env["HTTP_X_REQUESTED_WITH".freeze] == "XMLHttpRequest".freeze
+            request.env["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest"
           end
 
           def user_id

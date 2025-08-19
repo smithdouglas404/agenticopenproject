@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #   = Diff
 #   (({diff.rb})) - computes the differences between two arrays or
 #   strings. Copyright (C) 2001 Lars Christensen
