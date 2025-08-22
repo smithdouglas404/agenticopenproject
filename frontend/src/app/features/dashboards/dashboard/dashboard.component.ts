@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { GridPageComponent } from 'core-app/shared/components/grids/grid/page/grid-page.component';
 import { GRID_PROVIDERS } from 'core-app/shared/components/grids/grid/grid.component';
 
@@ -8,6 +8,7 @@ import { GRID_PROVIDERS } from 'core-app/shared/components/grids/grid/grid.compo
   styleUrls: ['../../../shared/components/grids/grid/page/grid-page.component.sass'],
   providers: GRID_PROVIDERS,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent extends GridPageComponent {
   protected i18nNamespace():string {
