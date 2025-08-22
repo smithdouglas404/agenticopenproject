@@ -43,7 +43,7 @@ export class GridResizeService {
   public start(resizedArea:GridWidgetArea) {
     this.resizedArea = resizedArea;
 
-    const resizeTargets = this.layout.gridAreas.filter((area) => {
+    const resizeTargets = this.layout.gridAreas().filter((area) => {
       // All areas on the same row which are after the current column are valid targets.
       const sameRow = area.startRow === this.resizedArea!.startRow
                      && area.startColumn >= this.resizedArea!.startColumn;
@@ -53,7 +53,7 @@ export class GridResizeService {
       // before or after the resized to area.
       const higherRow = area.startRow > this.resizedArea!.startRow
                       && area.startColumn >= this.resizedArea!.startColumn
-                      && this.layout.widgetAreas.some((fixedArea) => fixedArea.startRow === area.startRow
+                      && this.layout.widgetAreas().some((fixedArea) => fixedArea.startRow === area.startRow
                         // before
                         && (fixedArea.endColumn <= this.resizedArea!.startColumn
                           // after
@@ -67,15 +67,15 @@ export class GridResizeService {
 
   public moving() {
     if (!this.resizedArea
-      || !this.layout.mousedOverArea
-      || !this.targetIds.includes(this.layout.mousedOverArea.guid)) {
+      || !this.layout.mousedOverArea()
+      || !this.targetIds.includes(this.layout.mousedOverArea()!.guid)) {
       return;
     }
 
     this.layout.resetAreas();
 
-    this.resizedArea.endRow = this.layout.mousedOverArea.endRow;
-    this.resizedArea.endColumn = this.layout.mousedOverArea.endColumn;
+    this.resizedArea.endRow = this.layout.mousedOverArea()!.endRow;
+    this.resizedArea.endColumn = this.layout.mousedOverArea()!.endColumn;
 
     this.move.down(this.resizedArea, this.resizedArea);
   }

@@ -3,7 +3,7 @@
      [style.grid-template-rows]="gridRowStyle">
 
   <!-- Grid areas that have a widget in them -->
-  <div *ngFor="let area of layout.widgetAreas; trackBy: identifyGridArea;"
+  <div *ngFor="let area of layout.widgetAreas(); trackBy: identifyGridArea;"
        class="grid--area -widgeted"
        [ngClass]="{'-dragged': drag.isDragged(area),
                    '-passive': drag.isPassive(area) || resize.isPassive(area),
@@ -15,7 +15,7 @@
        cdkDropList
        [id]="area.guid"
        [cdkDropListData]="area"
-       [cdkDropListConnectedTo]="layout.gridAreaIds">
+       [cdkDropListConnectedTo]="layout.gridAreaIds()">
     <div class="grid--area-content widget-box"
          cdkDrag
          (cdkDragStarted)="drag.start(area)"
@@ -41,13 +41,13 @@
   </div>
 
   <!-- One grid area per cell (row x columns) -->
-  <div *ngFor="let area of layout.gridAreas; trackBy: identifyGridArea;"
+  <div *ngFor="let area of layout.gridAreas(); trackBy: identifyGridArea;"
        class="grid--area hidden-for-mobile"
        [ngClass] = "{'-drop-target': drag.currentlyDragging,
                      '-drop-only': drag.isDropOnlyArea(area),
                      '-resize-target': resize.isTarget(area),
                      '-addable': true,
-                     '-help-mode': layout.inHelpMode}"
+                     '-help-mode': layout.inHelpMode()}"
        [style.grid-row-start]="area.gridStartRow"
        [style.grid-row-end]="area.gridEndRow"
        [style.grid-column-start]="area.gridStartColumn"
@@ -58,7 +58,7 @@
        (mouseover)="layout.setMousedOverArea(area)"
        (focus)="layout.setMousedOverArea(area)"
        [cdkDropListData]="area"
-       [cdkDropListConnectedTo]="layout.gridAreaIds">
+       [cdkDropListConnectedTo]="layout.gridAreaIds()">
     <div class="grid--widget-add"
          *ngIf="add.isAllowed"
          [title]="add.addText"
@@ -75,10 +75,10 @@
     </div>
   </div>
 
-  <div *ngFor="let gap of layout.gridGaps; trackBy: identifyGridArea;"
+  <div *ngFor="let gap of layout.gridGaps(); trackBy: identifyGridArea;"
        class="grid--area -gap hidden-for-mobile"
        [ngClass] = "{'-addable': add.isAddable(gap),
-                     '-help-mode': layout.inHelpMode,
+                     '-help-mode': layout.inHelpMode(),
                      '-row': gap.isRow,
                      '-column': gap.isColumn}"
        [style.grid-row-start]="gap.gridStartRow"

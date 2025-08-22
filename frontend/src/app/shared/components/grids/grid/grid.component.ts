@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ComponentRef, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentRef, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
 import { GridResource } from 'core-app/features/hal/resources/grid-resource';
 import { DomSanitizer } from '@angular/platform-browser';
 import { GridWidgetsService } from 'core-app/shared/components/grids/widgets/widgets.service';
@@ -34,6 +34,7 @@ export const GRID_PROVIDERS = [
   templateUrl: './grid.component.html',
   selector: 'grid',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GridComponent implements OnDestroy, OnInit {
   public uiWidgets:ComponentRef<any>[] = [];
@@ -110,13 +111,13 @@ export class GridComponent implements OnDestroy, OnInit {
   }
 
   public get gridColumnStyle() {
-    return this.gridStyle(this.layout.numColumns,
-      `calc((100% - ${this.GRID_GAP_DIMENSION} * ${this.layout.numColumns + 1}) / ${this.layout.numColumns})`);
+    const numColumns = this.layout.numColumns();
+    return this.gridStyle(numColumns, `calc((100% - ${this.GRID_GAP_DIMENSION} * ${numColumns + 1}) / ${numColumns})`);
   }
 
   public get gridRowStyle() {
-    return this.gridStyle(this.layout.numRows,
-      this.GRID_AREA_HEIGHT);
+    const numRows = this.layout.numRows();
+    return this.gridStyle(numRows, this.GRID_AREA_HEIGHT);
   }
 
   public identifyGridArea(index:number, area:GridArea) {

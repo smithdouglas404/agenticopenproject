@@ -68,7 +68,7 @@ export class GridDragAndDropService implements OnDestroy {
   }
 
   public isDropOnlyArea(area:GridArea) {
-    return !this.currentlyDragging && area.endRow === this.layout.numRows + 2;
+    return !this.currentlyDragging && area.endRow === this.layout.numRows() + 2;
   }
 
   public isDragged(area:GridWidgetArea) {
@@ -119,17 +119,17 @@ export class GridDragAndDropService implements OnDestroy {
 
     // The first condition is aimed at the case when the user drags an element to the very last row
     // which is not reflected by the numRows.
-    if (source.startRow === this.layout.numRows + 1) {
-      sink.endRow = this.layout.numRows + 2;
-    } else if (source.startRow + sink.widget.height > this.layout.numRows + 1) {
-      sink.endRow = this.layout.numRows + 1;
+    if (source.startRow === this.layout.numRows() + 1) {
+      sink.endRow = this.layout.numRows() + 2;
+    } else if (source.startRow + sink.widget.height > this.layout.numRows() + 1) {
+      sink.endRow = this.layout.numRows() + 1;
     } else {
       sink.endRow = source.startRow + sink.widget.height;
     }
 
     sink.startColumn = source.startColumn;
-    if (source.startColumn + sink.widget.width > this.layout.numColumns + 1) {
-      sink.endColumn = this.layout.numColumns + 1;
+    if (source.startColumn + sink.widget.width > this.layout.numColumns() + 1) {
+      sink.endColumn = this.layout.numColumns() + 1;
     } else {
       sink.endColumn = source.startColumn + sink.widget.width;
     }
