@@ -1,6 +1,6 @@
 /* eslint-disable no-plusplus */
 
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, OnDestroy, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { GridWidgetArea } from 'core-app/shared/components/grids/areas/grid-widget-area';
 import { GridArea } from 'core-app/shared/components/grids/areas/grid-area';
@@ -22,8 +22,7 @@ export class GridAreaService {
   private readonly toastService = inject(ToastService);
   private readonly i18n = inject(I18nService);
 
-  private resource!:GridResource;
-
+  private _gridResource = signal<GridResource|null>(null);
   private _schema = signal<SchemaResource|null>(null);
   private _numColumns = signal(0);
   private _numRows = signal(0);
@@ -36,6 +35,9 @@ export class GridAreaService {
   private _helpMode = signal(false);
   private _mousedOverArea = signal<GridArea|null>(null);
 
+  readonly gridResource = this._gridResource.asReadonly();
+  readonly widgetResources = computed(() => this.gridResource()?.widgets ?? []);
+
   readonly schema = this._schema.asReadonly();
   readonly numColumns = this._numColumns.asReadonly();
   readonly numRows = this._numRows.asReadonly();
@@ -45,12 +47,36 @@ export class GridAreaService {
   readonly widgetAreas = this._widgetAreas.asReadonly();
   readonly gridAreaIds = this._gridAreaIds.asReadonly();
 
+  readonly isEditable = computed(() => this.gridResource()?.updateImmediately !== undefined);
   readonly isSingleCell = computed(() => this.numRows() === 1 && this.numColumns() === 1 && this.gridAreas().length === 0);
   readonly inHelpMode = computed(() => this._helpMode() || this.isSingleCell());
   readonly mousedOverArea = this._mousedOverArea.asReadonly();
 
   readonly $schema = toObservable(this._schema);
   readonly $mousedOverArea = toObservable(this._mousedOverArea);
+
+  constructor() {
+    effect(
+      () => {
+        const resource = this._gridResource();
+        if (!resource) return;
+
+        this.fetchAndApplySchemaFor(resource);
+        this.setGridSize(resource.columnCount, resource.rowCount);
+        this.buildAreas(true);
+      }
+    );
+  }
+
+  setGridResource(value:GridResource) {
+    this._gridResource.set(value);
+  }
+
+  addWidgetResource(widget:GridWidgetResource) {
+    this.updateGridResource((resource) => {
+      resource.widgets.push(widget);
+    });
+  }
 
   setSchema(schema:SchemaResource|null) {
     this._schema.set(schema);
@@ -105,18 +131,6 @@ export class GridAreaService {
     this._mousedOverArea.set(area);
   }
 
-  public set gridResource(value:GridResource) {
-    this.resource = value;
-    this.fetchSchema();
-
-    this.setGridSize(this.resource.columnCount, this.resource.rowCount);
-    this.buildAreas(true);
-  }
-
-  public get gridResource() {
-    return this.resource;
-  }
-
   public cleanupUnusedAreas() {
     // array containing Numbers from this.numRows to 1
     let unusedRows = _.range(this.numRows(), 0, -1);
@@ -166,21 +180,23 @@ export class GridAreaService {
         .sort((a, b) => a - b)
         .pop() ?? 2) - 1
     );
-    this.resource.rowCount = this.numRows();
-    this.resource.columnCount = this.numColumns();
+    this.updateGridResource((resource) => {
+      resource.rowCount = this.numRows();
+      resource.columnCount = this.numColumns();
+    });
 
     this.writeAreaChangesToWidgets();
-    return this.saveGrid(this.resource, this.schema()!);
+    return this.saveGrid(this.gridResource()!, this.schema()!);
   }
 
   public saveWidgetChangeset(changeset:WidgetChangeset) {
-    const payload = ApiV3GridForm.extractPayload(this.resource, this.schema()) as GridResource;
+    const payload = ApiV3GridForm.extractPayload(this.gridResource()!, this.schema()) as GridResource;
 
     const payloadWidget = payload.widgets.find((w) => w.id === changeset.pristineResource.id)!;
     Object.assign(payloadWidget, changeset.changes);
 
     // Adding the id so that the url can be deduced
-    payload.id = this.resource.id;
+    payload.id = this.gridResource()!.id;
 
     this.saveGrid(payload);
   }
@@ -202,7 +218,7 @@ export class GridAreaService {
   }
 
   private async saveGrid(resource:GridResource, schema?:SchemaResource):Promise<GridResource> {
-    const subscription = this
+    const observable = this
       .apiV3Service
       .grids
       .id(resource)
@@ -216,11 +232,11 @@ export class GridAreaService {
         }),
       );
 
-    return firstValueFrom(subscription);
+    return firstValueFrom(observable);
   }
 
   private assignAreasWidget(newGrid:GridResource) {
-    this.resource.widgets = newGrid.widgets;
+    this.updateGridResource((resource) => resource.widgets = newGrid.widgets);
 
     this._widgetAreas.update((areas) => {
       const takenIds = areas.map((a) => a.widget.id);
@@ -310,7 +326,7 @@ export class GridAreaService {
   }
 
   private buildGridWidgetAreas() {
-    return this.widgetResources.map((widget) => new GridWidgetArea(widget));
+    return this.widgetResources().map((widget) => new GridWidgetArea(widget));
   }
 
   // persist all changes to the areas caused by dragging/resizing
@@ -452,11 +468,7 @@ export class GridAreaService {
       return areas;
     });
 
-    this.setGridSize(this.resource.columnCount, this.resource.rowCount);
-  }
-
-  public get isEditable() {
-    return this.gridResource.updateImmediately !== undefined;
+    this.setGridSize(this.gridResource()!.columnCount, this.gridResource()!.rowCount);
   }
 
   private buildGridAreaIds() {
@@ -466,21 +478,29 @@ export class GridAreaService {
       .map((area) => area.guid);
   }
 
-  private fetchSchema() {
-    this
+  private async fetchAndApplySchemaFor(resource:GridResource) {
+    const { schema } = await this.fetchSchemaFor(resource);
+    this.setSchema(schema);
+  }
+
+  private async fetchSchemaFor(resource:GridResource) {
+    const observable =this
       .apiV3Service
       .grids
-      .id(this.resource)
+      .id(resource)
       .form
-      .post({})
-      .subscribe((form) => {
-        this.setSchema(form.schema);
-      });
+      .post({});
+
+    return firstValueFrom(observable);
   }
 
   public removeWidget(removedWidget:GridWidgetResource) {
-    let index = this.resource.widgets.findIndex((widget) => widget.id === removedWidget.id);
-    this.resource.widgets.splice(index, 1);
+    let index:number;
+
+    this.updateGridResource(({ widgets }) => {
+      index = widgets.findIndex((widget) => widget.id === removedWidget.id);
+      widgets.splice(index, 1);
+    });
 
     this._widgetAreas.update((areas) => {
       index = areas.findIndex((area) => area.widget.id === removedWidget.id);
@@ -492,10 +512,6 @@ export class GridAreaService {
     this.cleanupUnusedAreas();
 
     void this.rebuildAndPersist();
-  }
-
-  public get widgetResources() {
-    return this.resource.widgets;
   }
 
   private rowWidgets(row:number) {
@@ -524,7 +540,16 @@ export class GridAreaService {
     });
   }
 
+  private updateGridResource(updateFn:(r:GridResource) => void) {
+    this._gridResource.update(r => {
+      if (!r) return r;
+      updateFn(r);
+      return r;
+    });
+  }
+
   clear() {
+    this._gridResource.set(null);
     this._schema.set(null);
     this._numColumns.set(0);
     this._numRows.set(0);

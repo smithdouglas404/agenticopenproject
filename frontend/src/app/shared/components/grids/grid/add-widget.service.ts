@@ -99,7 +99,7 @@ export class GridAddWidgetService implements OnDestroy {
 
           const resource:GridWidgetResource = this.halResource.createHalResource(source);
 
-          resource.grid = this.layout.gridResource;
+          resource.grid = this.layout.gridResource()!;
 
           resolve(resource);
         });
@@ -132,13 +132,13 @@ export class GridAddWidgetService implements OnDestroy {
   private async persist(area:GridWidgetArea):Promise<GridResource> {
     area.writeAreaChangeToWidget();
     this.layout.addWidgetArea(area);
-    this.layout.widgetResources.push(area.widget);
+    this.layout.addWidgetResource(area.widget);
 
     return this.layout.rebuildAndPersist();
   }
 
   public get isAllowed() {
-    return this.layout.gridResource.updateImmediately !== undefined;
+    return this.layout.isEditable();
   }
 
   private async createNewWidget():Promise<void> {

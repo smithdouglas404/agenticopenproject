@@ -60,7 +60,7 @@ export class GridComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    this.layout.gridResource = this.grid;
+    this.layout.setGridResource(this.grid);
   }
 
   ngOnDestroy() {
@@ -125,7 +125,7 @@ export class GridComponent implements OnDestroy, OnInit {
   }
 
   public get isHeadersDisplayed() {
-    return this.layout.isEditable;
+    return this.layout.isEditable();
   }
 
   public get isMobileDevice() {

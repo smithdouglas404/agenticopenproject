@@ -80,7 +80,7 @@ export class GridDragAndDropService implements OnDestroy {
   }
 
   public get isDraggable() {
-    return this.layout.isEditable;
+    return this.layout.isEditable();
   }
 
   public start(area:GridWidgetArea) {

@@ -103,6 +103,6 @@ export class GridResizeService {
   }
 
   private get isAllowed() {
-    return this.layout.gridResource.updateImmediately;
+    return this.layout.isEditable();
   }
 }
