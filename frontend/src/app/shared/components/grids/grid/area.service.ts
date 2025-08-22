@@ -1,3 +1,5 @@
+/* eslint-disable no-plusplus */
+
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { GridWidgetArea } from 'core-app/shared/components/grids/areas/grid-widget-area';
@@ -20,7 +22,7 @@ export class GridAreaService {
   private readonly toastService = inject(ToastService);
   private readonly i18n = inject(I18nService);
 
-  private resource:GridResource;
+  private resource!:GridResource;
 
   private _schema = signal<SchemaResource|null>(null);
   private _numColumns = signal(0);
@@ -162,7 +164,7 @@ export class GridAreaService {
       (this.widgetAreas()
         .map((area) => area.endRow)
         .sort((a, b) => a - b)
-        .pop() || 2) - 1
+        .pop() ?? 2) - 1
     );
     this.resource.rowCount = this.numRows();
     this.resource.columnCount = this.numColumns();
@@ -172,9 +174,9 @@ export class GridAreaService {
   }
 
   public saveWidgetChangeset(changeset:WidgetChangeset) {
-    const payload:any = ApiV3GridForm.extractPayload(this.resource, this.schema());
+    const payload = ApiV3GridForm.extractPayload(this.resource, this.schema()) as GridResource;
 
-    const payloadWidget = payload.widgets.find((w:any) => w.id === changeset.pristineResource.id);
+    const payloadWidget = payload.widgets.find((w) => w.id === changeset.pristineResource.id)!;
     Object.assign(payloadWidget, changeset.changes);
 
     // Adding the id so that the url can be deduced
@@ -241,7 +243,7 @@ export class GridAreaService {
           )!;
         }
 
-        area.widget = newWidget!;
+        area.widget = newWidget;
       });
 
       return areas;
@@ -261,7 +263,7 @@ export class GridAreaService {
   }
 
   private buildGridGaps() {
-    const cells:GridArea[] = [];
+    const cells:GridGap[] = [];
 
     // special case where we want no gaps
     if (this.isSingleCell()) {
@@ -489,11 +491,11 @@ export class GridAreaService {
 
     this.cleanupUnusedAreas();
 
-    this.rebuildAndPersist();
+    void this.rebuildAndPersist();
   }
 
   public get widgetResources() {
-    return (this.resource && this.resource.widgets) || [];
+    return this.resource.widgets;
   }
 
   private rowWidgets(row:number) {

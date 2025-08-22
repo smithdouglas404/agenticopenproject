@@ -30,7 +30,7 @@ export class GridResizeService {
     this.layout.writeAreaChangesToWidgets();
     this.layout.cleanupUnusedAreas();
 
-    this.layout.rebuildAndPersist();
+    void this.layout.rebuildAndPersist();
   }
 
   public abort() {

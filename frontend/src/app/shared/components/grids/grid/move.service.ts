@@ -66,10 +66,6 @@ export class GridMoveService {
           toMoveArea = movableArea;
         }
       });
-
-      if (toMoveArea) {
-
-      }
     });
 
     if (toMoveArea !== null) {

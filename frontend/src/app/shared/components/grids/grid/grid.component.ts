@@ -17,7 +17,7 @@ import { BrowserDetector } from 'core-app/core/browser/browser-detector.service'
 export interface WidgetRegistration {
   identifier:string;
   title:string;
-  component:{ new (...args:any[]):AbstractWidgetComponent };
+  component:new (...args:any[]) => AbstractWidgetComponent;
   properties?:Record<string, unknown>;
 }
 
@@ -64,7 +64,7 @@ export class GridComponent implements OnDestroy, OnInit {
   }
 
   ngOnDestroy() {
-    this.uiWidgets.forEach((widget) => widget.destroy());
+    this.uiWidgets.forEach((widget) => { widget.destroy(); });
   }
 
   @HostListener('window:keyup', ['$event'])
@@ -82,7 +82,7 @@ export class GridComponent implements OnDestroy, OnInit {
     void this
       .add
       .widget(area)
-      .then(() => this.cdRef.detectChanges());
+      .then(() => { this.cdRef.detectChanges(); });
   }
 
   public widgetComponent(area:GridWidgetArea) {
@@ -106,7 +106,7 @@ export class GridComponent implements OnDestroy, OnInit {
     return { resource: area.widget };
   }
 
-  public widgetComponentOutput(area:GridWidgetArea) {
+  public widgetComponentOutput(_area:GridWidgetArea) {
     return { resourceChanged: this.layout.saveWidgetChangeset.bind(this.layout) };
   }
 
@@ -120,7 +120,7 @@ export class GridComponent implements OnDestroy, OnInit {
     return this.gridStyle(numRows, this.GRID_AREA_HEIGHT);
   }
 
-  public identifyGridArea(index:number, area:GridArea) {
+  public identifyGridArea(_index:number, area:GridArea) {
     return area.guid;
   }
 
@@ -138,7 +138,7 @@ export class GridComponent implements OnDestroy, OnInit {
       style += `${this.GRID_GAP_DIMENSION} ${itemStyle} `;
     }
 
-    style += `${this.GRID_GAP_DIMENSION}`;
+    style += this.GRID_GAP_DIMENSION;
 
     return this.sanitization.bypassSecurityTrustStyle(style);
   }

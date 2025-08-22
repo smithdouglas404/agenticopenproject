@@ -94,7 +94,7 @@ export class GridAddWidgetService implements OnDestroy {
             endRow: area.endRow,
             startColumn: area.startColumn,
             endColumn: area.endColumn,
-            options: registered.properties || {},
+            options: registered.properties ?? {},
           };
 
           const resource:GridWidgetResource = this.halResource.createHalResource(source);
@@ -138,7 +138,7 @@ export class GridAddWidgetService implements OnDestroy {
   }
 
   public get isAllowed() {
-    return this.layout.gridResource && this.layout.gridResource.updateImmediately;
+    return this.layout.gridResource.updateImmediately !== undefined;
   }
 
   private async createNewWidget():Promise<void> {
