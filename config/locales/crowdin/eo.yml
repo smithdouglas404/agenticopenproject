@@ -35,7 +35,7 @@ eo:
         label_sort_desc: "Newest on top"
         label_type_to_comment: "Add a comment. Type @ to notify people."
         label_submit_comment: "Submit comment"
-        label_who: Who?
+        label_who: Kiu?
         changed_on: "changed on"
         created_on: "created this on"
         changed: "changed"
@@ -171,7 +171,7 @@ eo:
     deleted_by_admin: "The quarantined file '%{filename}' has been deleted by an administrator."
     overridden_by_admin: "The quarantine for file '%{filename}' has been removed by %{user}. The file can now be acccessed."
     quarantined_attachments:
-      container: "Container"
+      container: "Ujo"
       delete: "Delete the quarantined file"
       title: "Quarantined attachments"
       error_cannot_act_self: "Cannot perform actions on your own uploaded files."
@@ -252,13 +252,13 @@ eo:
     index:
       no_results_title_text: Nun estas neniu koloro.
       no_results_content_text: Krei novan koloron
-      label_new_color: "New color"
+      label_new_color: "Nova koloro"
     new:
-      label_new_color: "New Color"
+      label_new_color: "Nova koloro"
     edit:
       label_edit_color: "Edit Color"
     form:
-      label_new_color: "New color"
+      label_new_color: "Nova koloro"
       label_edit_color: "Edit color"
     label_no_color: "Senkolora"
     label_properties: "Properties"
@@ -392,7 +392,7 @@ eo:
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
-      members: "Project members"
+      members: "Projektanoj"
       overviews: "Project overview"
       queries: "Work packages: saved views"
       wiki_page_attachments: "Wiki pages: attachments"
@@ -2373,7 +2373,7 @@ eo:
           options:
             days: "Days"
             weeks: "Weeks"
-            months: "Months"
+            months: "Monatoj"
             quarters: "Quarters"
         column_width:
           label: "Table column width"
