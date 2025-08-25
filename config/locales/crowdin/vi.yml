@@ -973,6 +973,8 @@ vi:
         admin_only: "Chỉ dành cho quản trị viên"
       custom_value:
         value: "Giá trị"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "ID Khách hàng"
         secret: "Bí mật khách hàng"
@@ -1281,6 +1283,7 @@ vi:
         odd: "phải là số lẻ"
         regex_match_failed: "không khớp với biểu thức chính quy %{expression}."
         regex_invalid: "có thể không được xác nhận với các biểu hiện thường xuyên liên kết."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "phải nhỏ hơn hoặc bằng với chiều dài tối đa"
         taken: "đã bị dùng rồi."
         too_long: "quá dài (tối đa %{count} ký tự)."
@@ -1857,7 +1860,7 @@ vi:
   button_duplicate: "Nhân đôi"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Chỉnh sửa"
-  button_edit_associated_wikipage: "Chỉnh sửa trang Wiki liên quan: %{page_title}"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Mở rộng tất cả"
   button_favorite: "Thêm vào yêu thích"
   button_filter: "Lọc"

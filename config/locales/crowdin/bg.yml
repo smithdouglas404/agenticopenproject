@@ -981,6 +981,8 @@ bg:
         admin_only: "Admin-only"
       custom_value:
         value: "Стойност"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "№ на клиент"
         secret: "Тайна на клиента"
@@ -1289,6 +1291,7 @@ bg:
         odd: "трябва да бъде нечетен."
         regex_match_failed: "не съответства на регулярния израз %{expression}."
         regex_invalid: "не може да бъде валидиран със съответния регулярен израз."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "трябва да бъде по-малка от или равна на максималната дължина."
         taken: "вече съществува."
         too_long: "е твърде дълго (максимума е %{count} знаци)."
@@ -1880,7 +1883,7 @@ bg:
   button_duplicate: "Дублиране"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Редактиране"
-  button_edit_associated_wikipage: "Редактиране на свързани Wiki страница: %{page_title}"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Разгъване на всички"
   button_favorite: "Добавяне към любими"
   button_filter: "Филтър"

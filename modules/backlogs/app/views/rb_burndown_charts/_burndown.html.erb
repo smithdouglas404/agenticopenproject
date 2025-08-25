@@ -28,7 +28,7 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%= nonced_javascript_tag do %>
-  jQuery(function ($) {
+  jQuery(function () {
     var Burndown = {
       datasets: <%= dataseries(burndown).to_json.html_safe %> ,
       previousPoint: null,
@@ -36,7 +36,7 @@ See COPYRIGHT and LICENSE files for more details.
       setDatasetColor: function () {
         var i = 0;
 
-        $.each(Burndown.datasets, function (key, val) {
+        jQuery.each(Burndown.datasets, function (key, val) {
           val.color = i;
           val.points = {show: false, radius: 2};
           val.lines = {show: true};
@@ -47,8 +47,8 @@ See COPYRIGHT and LICENSE files for more details.
       plotAccordingToChoices: function () {
         var data = [];
 
-        $('.burndown_control').find("input:checked").each(function () {
-          var key = $(this).attr('value');
+        jQuery('.burndown_control').find("input:checked").each(function () {
+          var key = jQuery(this).attr('value');
 
           if (key && Burndown.datasets[key]) {
             data.push(Burndown.datasets[key]);
@@ -64,7 +64,7 @@ See COPYRIGHT and LICENSE files for more details.
 
       plot: function (data) {
         if (data.length > 0) {
-          $.plot($(".burndown_chart"), data, {
+          jQuery.plot(jQuery(".burndown_chart"), data, {
             yaxis: { min: 0,
               ticks: [ <%= yaxis_labels(burndown) %> ] },
             xaxis: {
@@ -79,7 +79,7 @@ See COPYRIGHT and LICENSE files for more details.
       },
 
       showTooltip: function(x, y, contents) {
-         $('<div id="tooltip">' + contents + '</div>').css( {
+         jQuery('<div id="tooltip">' + contents + '</div>').css( {
              position: 'absolute',
              display: 'none',
              top: y + 5,
@@ -97,7 +97,7 @@ See COPYRIGHT and LICENSE files for more details.
           if (Burndown.previousPoint != item.dataIndex) {
             Burndown.previousPoint = item.dataIndex;
 
-            $("#tooltip").remove();
+            jQuery("#tooltip").remove();
             var x = item.datapoint[0].toFixed(0),
                 y = item.datapoint[1].toFixed(0);
 
@@ -106,7 +106,7 @@ See COPYRIGHT and LICENSE files for more details.
           }
         }
         else {
-          $("#tooltip").remove();
+          jQuery("#tooltip").remove();
           Burndown.previousPoint = null;
         }
       },
@@ -114,18 +114,18 @@ See COPYRIGHT and LICENSE files for more details.
       init: function () {
         Burndown.setDatasetColor();
 
-        $('.burndown_control input').click(Burndown.plotAccordingToChoices);
-        $(".burndown_chart").bind("plothover", Burndown.showTooltipOnHover);
+        jQuery('.burndown_control input').click(Burndown.plotAccordingToChoices);
+        jQuery(".burndown_chart").bind("plothover", Burndown.showTooltipOnHover);
 
         Burndown.plotAccordingToChoices();
       },
 
       saveInit: function() {
-        // Ensure $.plot is defined before progressing.
+        // Ensure jQuery.plot is defined before progressing.
         // This static page might already be ready but the webpack required
         // jquery.flot.js file might not be loaded yet.
 
-        if ($.plot) {
+        if (jQuery.plot) {
           this.init();
         } else {
           setTimeout(() => { this.saveInit()}, 50);

@@ -834,10 +834,10 @@ de:
         Die minimale Anzahl von Arbeitstagen zwischen den zwei Arbeitspaketen; kann auch negativ sein.
     relations:
       label_new_child_created: "Neues Arbeitspaket erstellt und als Unteraufgabe hinzugefügt"
-      label_relates_singular: "Beziehung mit"
-      label_relates_plural: "Beziehung mit"
-      label_relates_to_singular: "Beziehungen mit"
-      label_relates_to_plural: "Beziehungen mit"
+      label_relates_singular: "Verwandt mit"
+      label_relates_plural: "Verwandt mit"
+      label_relates_to_singular: "Verwandt mit"
+      label_relates_to_plural: "Verwandt mit"
       relates_description: "Erstellt eine sichtbare Beziehung zwischen den zwei Arbeitspaketen ohne weitere Auswirkungen"
       relates_to_description: "Erstellt eine sichtbare Beziehung zwischen den zwei Arbeitspaketen ohne weitere Auswirkungen"
       label_precedes_singular: "Nachfolger"
@@ -973,6 +973,8 @@ de:
         admin_only: "Nur für Administratoren"
       custom_value:
         value: "Wert"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "Client-ID"
         secret: "Clientschlüssel"
@@ -1281,6 +1283,7 @@ de:
         odd: "muss ungerade sein."
         regex_match_failed: "stimmt nicht mit dem regulären Ausdruck %{expression} überein."
         regex_invalid: "konnte nicht mit dem zugehörigen regulären Ausdruck überprüft werden."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "muss kleiner als oder gleich der maximalen Länge sein."
         taken: "ist bereits vergeben."
         too_long: "ist zu lang (nicht mehr als %{count} Zeichen)."
@@ -1872,7 +1875,7 @@ de:
   button_duplicate: "Duplizieren"
   button_duplicate_and_follow: "Duplizieren und folgen"
   button_edit: "Bearbeiten"
-  button_edit_associated_wikipage: "Zugehörige Wikiseite bearbeiten: %{page_title}"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Alle ausklappen"
   button_favorite: "Zu Favoriten hinzufügen"
   button_filter: "Filter"

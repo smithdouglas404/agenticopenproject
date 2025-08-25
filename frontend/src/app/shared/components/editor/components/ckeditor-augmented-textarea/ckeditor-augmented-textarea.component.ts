@@ -86,6 +86,8 @@ export class CkeditorAugmentedTextareaComponent extends UntilDestroyedMixin impl
 
   @Input() public showAttachments = true;
 
+  @Input() public storageKey?:string;
+
   // Output save requests (ctrl+enter and cmd+enter)
   @Output() saveRequested = new EventEmitter<string>();
 
@@ -164,6 +166,7 @@ export class CkeditorAugmentedTextareaComponent extends UntilDestroyedMixin impl
       field: this.wrappedTextArea.name,
       previewContext: this.previewContext,
       removePlugins: this.removePlugins,
+      storageKey: this.storageKey,
     };
     if (this.readOnly) {
       this.context.macros = 'none';

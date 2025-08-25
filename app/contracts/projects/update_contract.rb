@@ -32,11 +32,13 @@ module Projects
   class UpdateContract < BaseContract
     def writable_attributes
       if allow_project_attributes_only
-        with_custom_fields_only(super)
+        with_available_custom_fields_only(super)
       elsif allow_edit_attributes_only
         without_custom_fields(super)
       elsif allow_all_attributes
-        super
+        # When all attributes are updated (API-only case), allow writing to all available custom
+        # fields (including disabled ones) to maintain backward compatibility with the API.
+        with_all_available_custom_fields_only(super)
       else
         []
       end
@@ -63,7 +65,13 @@ module Projects
 
     def without_custom_fields(changes) = changes.grep_v(/^custom_field_/)
 
-    def with_custom_fields_only(changes) = changes.grep(/^custom_field_/)
+    def with_available_custom_fields_only(changes) = changes & available_custom_fields.map(&:attribute_name)
+
+    def with_all_available_custom_fields_only(changes)
+      allowed_attributes = changes.grep_v(/^custom_field_/)
+      allowed_attributes += changes & all_available_custom_fields.map(&:attribute_name)
+      allowed_attributes
+    end
 
     def manage_permission
       if changed_by_user == ["active"]

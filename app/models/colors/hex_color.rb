@@ -30,6 +30,9 @@
 
 module Colors
   module HexColor
+    RGB_HEX_FORMAT = /\A#[0-9A-F]{6}\z/
+    private_constant :RGB_HEX_FORMAT
+
     ##
     # Get the fill style for this color.
     # If the color is light, use a dark font.
@@ -76,11 +79,13 @@ module Colors
     end
 
     ##
-    # Splits the hexcode into rbg color array
+    # Splits the hexcode into rgb color array
     def rgb_colors
       hexcode
-        .delete("#") # Remove trailing #
+        .delete_prefix("#") # Remove leading #
+        .ljust(6, "0") # Pad to at least 6 chars
         .scan(/../) # Pair hex chars
+        .first(3)
         .map(&:hex) # to int
     end
 
@@ -111,20 +116,22 @@ module Colors
       "#%<r>02x%<g>02x%<b>02x" % { r:, g:, b: }
     end
 
-    # rubocop:disable Metrics/AbcSize
-    def normalize_hexcode
-      return unless hexcode.present? && hexcode_changed?
-
-      self.hexcode = hexcode.strip.upcase
-
-      unless hexcode.starts_with? "#"
-        self.hexcode = "##{hexcode}"
+    class Normalizer
+      def self.call(...)
+        new.call(...)
       end
 
-      if hexcode.size == 4 # =~ /#.../
-        self.hexcode = hexcode.gsub(/([^#])/, '\1\1')
+      def call(hex)
+        hex = hex.strip.delete_prefix("#")
+        case hex
+        when /\A[0-9a-fA-F]{3}\z/ # short form: #abc
+          "##{hex.chars.map { |c| c * 2 }.join.upcase}"
+        when /\A[0-9a-fA-F]{6}\z/ # long form: #aabbcc
+          "##{hex.upcase}"
+        else # do nothing
+          hex
+        end
       end
     end
-    # rubocop:enable Metrics/AbcSize
   end
 end

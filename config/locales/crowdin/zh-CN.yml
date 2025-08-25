@@ -969,6 +969,8 @@ zh-CN:
         admin_only: "仅管理员"
       custom_value:
         value: "值"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "客户端 ID"
         secret: "客户端密钥"
@@ -1277,6 +1279,7 @@ zh-CN:
         odd: "必须是奇数。"
         regex_match_failed: "与正则表达式 %{expression}不匹配。"
         regex_invalid: "无法与关联的正则表达式进行验证。"
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "必须小于或等于最大长度。"
         taken: "已经采取。"
         too_long: "太长 (最多 %{count} 个字符)。"
@@ -1853,7 +1856,7 @@ zh-CN:
   button_duplicate: "复制"
   button_duplicate_and_follow: "复制并跟踪"
   button_edit: "编辑"
-  button_edit_associated_wikipage: "编辑关联的维基页面： %{page_title}"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "全部展开"
   button_favorite: "添加至收藏夹"
   button_filter: "筛选器"

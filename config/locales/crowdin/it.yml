@@ -978,6 +978,8 @@ it:
         admin_only: "Solo amministratore"
       custom_value:
         value: "Valore"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "Client ID"
         secret: "Chiave segreta del client"
@@ -1286,6 +1288,7 @@ it:
         odd: "deve essere dispari."
         regex_match_failed: "non corrisponde all'espressione regolare %{expression}."
         regex_invalid: "non può essere convalidato con l'espressione regolare associata."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "deve essere minore o uguale alla lunghezza massima."
         taken: "è già stato usato."
         too_long: "è troppo lungo (il massimo è %{count} caratteri)."
@@ -1877,7 +1880,7 @@ it:
   button_duplicate: "Duplica"
   button_duplicate_and_follow: "Duplica e segui"
   button_edit: "Modifica"
-  button_edit_associated_wikipage: "Modifica pagina wiki associata: %{page_title}"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Espandi tutto"
   button_favorite: "Aggiunti ai preferiti"
   button_filter: "Filtro"

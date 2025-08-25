@@ -143,8 +143,8 @@ RSpec.describe WorkPackages::SetAttributesService,
 
   # Scenarios specified in https://community.openproject.org/wp/40749
   # Just checking that everything is correctly wired up. All other scenarios tested in:
-  # - spec/services/work_packages/set_attributes_service/update_progress_values_status_based_spec.rb
-  # - spec/services/work_packages/set_attributes_service/update_progress_values_work_based_spec.rb
+  # - spec/services/work_packages/set_attributes_service/derive_progress_values_status_based_spec.rb
+  # - spec/services/work_packages/set_attributes_service/derive_progress_values_work_based_spec.rb
   describe "deriving progress values attributes" do
     context "in status-based mode",
             with_settings: { work_package_done_ratio: "status" } do

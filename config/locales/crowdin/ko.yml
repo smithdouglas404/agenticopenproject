@@ -973,6 +973,8 @@ ko:
         admin_only: "관리자 전용"
       custom_value:
         value: "값"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "고객 ID"
         secret: "클라이언트 비밀번호"
@@ -1281,6 +1283,7 @@ ko:
         odd: "에 홀수를 입력해 주세요"
         regex_match_failed: "%{expression} 정규 표현식과 일치하지 않습니다."
         regex_invalid: "관련 정규 표현식으로 유효성을 확인할 수 없습니다."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "은(는) 최대 길이보다 같거나 작아야 합니다."
         taken: "은(는) 이미 존재합니다."
         too_long: "은(는) 너무 깁니다 (최대 %{count}자까지 가능합니다)"
@@ -1857,7 +1860,7 @@ ko:
   button_duplicate: "복제"
   button_duplicate_and_follow: "복제하고 팔로우"
   button_edit: "편집"
-  button_edit_associated_wikipage: "연결된 위키 페이지 %{page_title} 편집"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "모두 확장"
   button_favorite: "즐겨찾기에 추가"
   button_filter: "필터"

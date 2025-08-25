@@ -997,6 +997,8 @@ be:
         admin_only: "Admin-only"
       custom_value:
         value: "Value"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "Client ID"
         secret: "Client secret"
@@ -1305,6 +1307,7 @@ be:
         odd: "must be odd."
         regex_match_failed: "does not match the regular expression %{expression}."
         regex_invalid: "could not be validated with the associated regular expression."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "must be smaller than or equal to maximum length."
         taken: "has already been taken."
         too_long: "is too long (maximum is %{count} characters)."
@@ -1926,7 +1929,7 @@ be:
   button_duplicate: "Duplicate"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Рэдагаваць"
-  button_edit_associated_wikipage: "Edit associated Wiki page: %{page_title}"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Разгарнуць усё"
   button_favorite: "Add to favorites"
   button_filter: "Фільтр"

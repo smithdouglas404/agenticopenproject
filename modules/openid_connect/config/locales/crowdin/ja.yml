@@ -7,17 +7,17 @@ ja:
   activerecord:
     attributes:
       openid_connect/group_link:
-        oidc_group_name: OpenID group identifier
+        oidc_group_name: OpenIDグループ識別子
       openid_connect/provider:
         name: 名称
         slug: 一意な識別子
         display_name: 表示名
         client_id: クライアントID
         client_secret: クライアントシークレット
-        groups_claim: Groups claim
+        groups_claim: 各団体の主張
         secret: シークレット
         scope: スコープ
-        sync_groups: Synchronize groups
+        sync_groups: グループの同期
         grant_types_supported: サポートされている権限タイプ
         limit_self_registration: 自己登録を制限
         authorization_endpoint: 認証エンドポイント
@@ -52,85 +52,85 @@ ja:
         zero: 現在、このプロバイダを使用しているユーザーはいません。これ以上の操作は必要ありません。
         one: "1人のユーザーが現在このプロバイダーを使用しています。再招待または別のプロバイダーでログインする必要があります。"
         other: "%{count}人のユーザーが現在このプロバイダーを使用しています。再招待または別のプロバイダーでログインする必要があります。"
-      delete_result_direct: This provider is marked as a direct login provider. The setting will be removed and users will no longer be redirected to the provider for login.
+      delete_result_direct: このプロバイダは直接ログインプロバイダとしてマークされています。この設定は削除され、ユーザはログインのためにプロバイダにリダイレクトされなくなります。
   openid_connect:
     menu_title: OpenID プロバイダー
     delete_title: "OpenID Connectプロバイダの削除"
-    group_links_heading: OpenID Connect group links
+    group_links_heading: OpenID Connectグループリンク
     instructions:
       redirect_url: これは、OpenID Connectプロバイダがログイン成功後にOpenProjectにリダイレクトするために使用するリダイレクトURLです。
-      endpoint_url: The endpoint URL given to you by the OpenID Connect provider
-      group_regexes: One regular expression pattern per line. Please read [the documentation](docs_url) for more information on how to do this.
-      group_regexes_detail: Define patterns using regular expressions to match group names from the groups claim. For example, entering a pattern like <code>^Level1/Level2/([\w/]+)$</code> will extract the group “Groupname/SubGroup” from a response including “Level1/Level2/GroupName/SubGroup”.
-      group_sync: Automatically extract and synchronise group membership information from the identity provider.
-      groups_claim: Specify the name of the claim that's expected to indicate the group names that the user is a member of.
+      endpoint_url: OpenID Connectプロバイダーから与えられたエンドポイントURL
+      group_regexes: 1行に1つの正規表現パターン。この方法については[ドキュメント](docs_url)を読んでください。
+      group_regexes_detail: 正規表現を使用してパターンを定義し、グループ・クレームからグループ名を一致させます。例えば、<code>^Level1/Level2/([ \w/]+)$ の</code>ようなパターンを入力すると、"Level1/Level2/GroupName/SubGroup" を含む応答から "Groupname/SubGroup" というグループを抽出します。
+      group_sync: アイデンティティ・プロバイダからグループ・メンバーシップ情報を自動的に抽出し、同期する。
+      groups_claim: ユーザーがメンバーであるグループ名を示すと予想される請求の名前を指定する。
       metadata_none: この情報がありません
-      metadata_url: I have a discovery endpoint URL
-      client_id: This is the client ID given to you by your OpenID Connect provider
-      client_secret: This is the client secret given to you by your OpenID Connect provider
+      metadata_url: ディスカバリーのエンドポイントURL
+      client_id: これは、OpenID Connectプロバイダから与えられたクライアントIDです。
+      client_secret: これは、OpenID Connectプロバイダから与えられたクライアントシークレットです。
       limit_self_registration: 有効にした場合、ユーザーはプロバイダーのエンドに設定が許可されている場合にのみ、このプロバイダーを使用して登録できます。
       display_name: プロバイダーの名前。これはログインボタンとプロバイダーリストに表示されます。
-      tenant: 'Please replace the default tenant with your own if applicable. See <a href=" https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc#find-your-apps-openid-configuration-document-uri">this</a>.'
+      tenant: '該当する場合は、デフォルトのテナントをご自身のテナントに置き換えてください。<a href=" https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc#find-your-apps-openid-configuration-document-uri">こちらを</a>ご覧ください。'
       scope: カスタムスコープをリクエストしたい場合は、スペースで区切られた1つまたは複数のスコープ値を追加できます。 詳細については、[OpenID Connect documentation](docs_url)を参照してください。
-      post_logout_redirect_uri: The URL the OpenID Connect provider should redirect to after a logout request.
+      post_logout_redirect_uri: ログアウト要求後にOpenID ConnectプロバイダがリダイレクトすべきURL。
       claims: >
-        You can request additional claims for the userinfo and id token endpoints. Please see [our OpenID connect documentation](docs_url) for more information.
+        userinfoとidトークンのエンドポイントに対して追加のクレームを要求することができます。詳しくは [OpenID connect documentation](docs_url) を参照してください。
       acr_values: >
-        Request non-essential claims in an easier format. See [our documentation on acr_values](docs_url) for more information.
+        より簡単なフォーマットで非必須クレームをリクエストする。詳しくは[acr_valuesに関するドキュメント](docs_url)を参照のこと。
       mapping_login: >
-        Provide a custom mapping in the userinfo response to be used for the login attribute.
+        userinfoレスポンスに、ログイン属性に使用するカスタム・マッピングを指定する。
       mapping_email: >
-        Provide a custom mapping in the userinfo response to be used for the email attribute.
+        userinfo レスポンスに、email 属性に使用するカスタム・マッピングを指定します。
       mapping_first_name: >
-        Provide a custom mapping in the userinfo response to be used for the first name.
+        userinfoレスポンスに、ファーストネームに使用するカスタムマッピングを指定する。
       mapping_last_name: >
-        Provide a custom mapping in the userinfo response to be used for the last name.
+        userinfoレスポンスに、姓に使用するカスタムマッピングを指定する。
       mapping_admin: >
-        Provide a custom mapping in the userinfo response to be used for the admin status. It expects a boolean attribute to be returned.
+        userinfo レスポンスに、admin ステータスに使用するカスタムマッピングを指定します。boolean 属性が返されることを期待します。
     settings:
-      metadata_none: I don't have this information
-      metadata_url: I have a discovery endpoint URL
-      endpoint_url: Endpoint URL
+      metadata_none: 私はこの情報を持っていない
+      metadata_url: 私はディスカバリーエンドポイントURLを持っています
+      endpoint_url: エンドポイントURL
     providers:
-      label_providers: "Providers"
-      seeded_from_env: "This provider was seeded from the environment configuration. It cannot be edited."
+      label_providers: "プロバイダー"
+      seeded_from_env: "このプロバイダーは環境設定からシードされたものです。編集することはできません。"
       google:
-        name: Google
+        name: グーグル
       microsoft_entra:
-        name: Microsoft Entra
+        name: マイクロソフト・エントラ
       custom:
-        name: Custom
+        name: カスタム
       upsell:
-        title: "Single Sign-On (SSO) with OpenID connect"
-        description: Connect OpenProject to an OpenID connect identity provider
+        title: "OpenID connectによるシングルサインオン(SSO)"
+        description: OpenProjectをOpenIDコネクトIDプロバイダに接続する
       label_add_new: 新しい OpenID プロバイダーを追加
       label_edit: OpenID プロバイダー %{name} を編集
-      label_empty_title: No OpenID providers configured yet.
-      label_empty_description: Add a provider to see them here.
-      label_group_mapping: Group mapping
-      label_group_regexes: Pattern (regular expression)
-      label_metadata: OpenID Connect Discovery Endpoint
+      label_empty_title: OpenIDプロバイダはまだ設定されていません。
+      label_empty_description: プロバイダーを追加して、ここでご覧ください。
+      label_group_mapping: グループマッピング
+      label_group_regexes: パターン（正規表現）
+      label_metadata: OpenID Connectディスカバリー・エンドポイント
       label_automatic_configuration: 自動設定
-      label_optional_configuration: Optional configuration
-      label_advanced_configuration: Advanced configuration
+      label_optional_configuration: オプション構成
+      label_advanced_configuration: 高度な設定
       label_configuration_details: メタデータ
-      label_client_details: Client details
+      label_client_details: クライアント詳細
       label_attribute_mapping: 属性のマッピング
-      client_details_description: Configuration details of OpenProject as an OIDC client
+      client_details_description: OIDCクライアントとしてのOpenProjectの設定詳細
       no_results_table: プロバイダーが定義されていません。
       plural: OpenID プロバイダー
       singular: OpenID プロバイダー
       section_texts:
-        group_mapping: Map group names provided by the identity provider to groups in OpenProject.
-        metadata: Pre-fill configuration using an OpenID Connect discovery endpoint URL
-        metadata_form_banner: Editing the discovery endpoint may override existing pre-filled metadata values.
-        metadata_form_title: OpenID Connect Discovery endpoint
-        metadata_form_description: If your identity provider has a discovery endpoint URL. Use it below to pre-fill configuration.
-        configuration_metadata: The information has been pre-filled using the supplied discovery endpoint. In most cases, they do not require editing.
-        configuration: Configuration details of the OpenID Connect provider
-        display_name: The display name visible to users.
+        group_mapping: ID プロバイダが提供するグループ名を OpenProject のグループにマップします。
+        metadata: OpenID Connectディスカバリー・エンドポイントURLを使用したプリフィル設定
+        metadata_form_banner: ディスカバリーエンドポイントを編集すると、事前に入力された既存のメタデータ値が上書きされる場合があります。
+        metadata_form_title: OpenID Connectディスカバリー・エンドポイント
+        metadata_form_description: IDプロバイダがディスカバリ・エンドポイントURLを持っている場合。以下を使用して設定を事前に入力します。
+        configuration_metadata: 情報は、提供されたディスカバリー・エンドポイントを使用して事前に入力されている。ほとんどの場合、編集の必要はありません。
+        configuration: OpenID Connectプロバイダーの設定詳細
+        display_name: ユーザーに見える表示名。
         attribute_mapping: OpenProject と OpenID Connect プロバイダ間の属性のマッピングを設定します。
-        claims: Request additional claims for the ID token or userinfo response.
+        claims: ID トークンまたは userinfo レスポンスの追加クレームを要求する。
       side_panel:
         information_component:
           backchannel_logout_url: バックチャンネルのログアウトURL

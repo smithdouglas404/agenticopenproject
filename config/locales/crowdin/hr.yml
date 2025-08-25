@@ -989,6 +989,8 @@ hr:
         admin_only: "Admin-only"
       custom_value:
         value: "Vrijednost"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "Client ID"
         secret: "Client secret"
@@ -1297,6 +1299,7 @@ hr:
         odd: "mora biti neparan."
         regex_match_failed: "does not match the regular expression %{expression}."
         regex_invalid: "could not be validated with the associated regular expression."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "mora biti manje od ili jednako maksimalnom trajanju."
         taken: "već je zauzeto."
         too_long: "je predugo (maksimalno %{count} znakova)."
@@ -1903,7 +1906,7 @@ hr:
   button_duplicate: "Dupliciraj"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Uredi"
-  button_edit_associated_wikipage: "Uredi pripadajuće Wiki stranice: %{page_title}"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Proširi sve"
   button_favorite: "Add to favorites"
   button_filter: "Filter"

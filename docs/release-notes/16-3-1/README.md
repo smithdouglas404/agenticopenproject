@@ -11,9 +11,13 @@ release_date: 2025-08-13
 Release date: 2025-08-13
 
 We released OpenProject [OpenProject 16.3.1](https://community.openproject.org/versions/2218).
-The release contains several bug fixes and we recommend updating to the newest version.
-In these Release Notes, we will give an overview of important feature changes.
-At the end, you will find a complete list of all changes and bug fixes.
+
+A bug was identified that prevents the user account menu from displaying correctly if you use a [direct login provider](../../system-admin-guide/authentication/login-registration-settings/) instead of the standard login form.
+If you are not using a direct login provider, you are not affected by this.
+
+The release also contains some additional bug fixes that were not ready in time for the 16.3.0 release.
+
+Below, we will give an overview of all bug fixes
 
 <!--more-->
 

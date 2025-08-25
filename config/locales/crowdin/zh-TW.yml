@@ -969,6 +969,8 @@ zh-TW:
         admin_only: "僅限管理員"
       custom_value:
         value: "值"
+      design_color:
+        variable: "變數"
       doorkeeper/application:
         uid: "用戶端 ID"
         secret: "用戶端密鑰"
@@ -1277,6 +1279,7 @@ zh-TW:
         odd: "必須是奇數"
         regex_match_failed: "與正則表達式 %{expression} 不匹配。"
         regex_invalid: "不能被相關聯的正則運算式驗證。"
+        hexcode_invalid: "不是有效的六位數十六進位顏色代碼。"
         smaller_than_or_equal_to_max_length: "必須小於或等於最大長度。"
         taken: "已經被使用"
         too_long: "太長 (最長是 %{count} 個字元)"

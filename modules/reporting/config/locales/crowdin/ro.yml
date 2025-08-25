@@ -74,7 +74,7 @@ ro:
   label_group_by_add: "Adaugă atributul Grupează-după"
   label_inactive: "Inactiv"
   label_no: "Nu"
-  label_none: "Sincronizați datele"
+  label_none: "(fără date)"
   label_no_reports: "Nu există încă rapoarte de costuri."
   label_report: "Raportare"
   label_yes: "Da"

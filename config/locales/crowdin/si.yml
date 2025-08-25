@@ -981,6 +981,8 @@ si:
         admin_only: "Admin-only"
       custom_value:
         value: "අගය"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "සේවාලාභියා හැඳුනුම්පත"
         secret: "සේවාලාභියා රහස්"
@@ -1289,6 +1291,7 @@ si:
         odd: "අමුතු විය යුතුය."
         regex_match_failed: "does not match the regular expression %{expression}."
         regex_invalid: "ආශ්රිත නිත්ය ප්රකාශනය සමඟ වලංගු කළ නොහැකි විය."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "උපරිම දිගට වඩා කුඩා හෝ සමාන විය යුතුය."
         taken: "දැනටමත් ගෙන ඇත."
         too_long: "ඉතා දිගු වේ (උපරිම %{count} අක්ෂර)."
@@ -1880,7 +1883,7 @@ si:
   button_duplicate: "අනුපිටපත්"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "සංස්කරණය කරන්න"
-  button_edit_associated_wikipage: "ආශ්රිත විකි පිටුව සංස්කරණය කරන්න: %{page_title}"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "සියල්ල පුළුල්"
   button_favorite: "Add to favorites"
   button_filter: "පෙරහන්"

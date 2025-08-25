@@ -118,7 +118,7 @@ ro:
       sp_metadata_endpoint: >
         This is the URL where the OpenProject SAML metadata is available. Optionally use it to configure your identity provider.
       mapping: >
-        Configure the mapping between the SAML response and user attributes in OpenProject. You can configure multiple attribute names to look for. OpenProject will choose the first available attribute from the SAML response.
+        Configurează maparea dintre răspunsul SAML și atributele utilizatorului în OpenProject. Poți configura mai multe nume de atribut pentru a căuta. OpenProject va alege primul atribut disponibil din răspunsul SAML.
       mapping_login: >
         SAML attributes from the response used for the login.
       mapping_mail: >

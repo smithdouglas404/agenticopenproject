@@ -971,6 +971,8 @@ ms:
         admin_only: "Admin sahaja"
       custom_value:
         value: "Nilai"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "ID Pelanggan"
         secret: "Rahsia pelanggan"
@@ -1279,6 +1281,7 @@ ms:
         odd: "mesti ganjil."
         regex_match_failed: "tidak padan dengan ungkapan biasa %{expression}."
         regex_invalid: "tidak dapat disahkan dengan ungkapan biasa yang berkaitan."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "perlu kurang daripada atau sama dengan panjang maksima."
         taken: "sudah diguna pakai."
         too_long: "adalah terlalu panjang (maksimum adalah %{count} karakter)."
@@ -1855,7 +1858,7 @@ ms:
   button_duplicate: "Duplikasi"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Edit"
-  button_edit_associated_wikipage: "Edit halaman Wiki berkaitan: %{page_title}"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Kembangkan semua"
   button_favorite: "Tambah ke kegemaran"
   button_filter: "Penyaring"

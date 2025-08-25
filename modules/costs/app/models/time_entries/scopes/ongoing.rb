@@ -39,16 +39,10 @@ module TimeEntries::Scopes
         TimeEntry
           .where(
             entity_type: "WorkPackage",
-            entity_id: visible_work_packages(user).select(:id),
+            entity_id: WorkPackage.allowed_to_log_time(user).select(:id),
             user:,
             ongoing: true
           )
-      end
-
-      def visible_work_packages(user)
-        WorkPackage.allowed_to(user, :log_own_time).or(
-          WorkPackage.where(project_id: Project.allowed_to(User.current, :log_time))
-        )
       end
 
       def not_ongoing

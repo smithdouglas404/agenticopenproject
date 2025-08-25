@@ -31,9 +31,9 @@ ja:
         spent: "使用済"
         spent_on: "日付"
         logged_by: "によって記録"
-        entity: Logged for
-        entity_id: Logged for
-        entity_gid: Logged for
+        entity: ログ記録
+        entity_id: ログ記録
+        entity_gid: ログ記録
       cost_type:
         unit: "単位名"
         unit_plural: "単位名"
@@ -61,9 +61,9 @@ ja:
         start_time: 開始時間
         end_time: 終了時間
         time: 時間
-        entity: Logged for
-        entity_id: Logged for
-        entity_gid: Logged for
+        entity: ログ記録
+        entity_id: ログ記録
+        entity_gid: ログ記録
     models:
       time_entry:
         other: ""
@@ -79,7 +79,7 @@ ja:
         time_entry:
           invalid_time: "00:00 から 23:59 の間で設定してください。"
           cannot_log_for_this_work_package: "このワークパッケージには作業時間を記録できません。"
-          duplicate_ongoing: "An ongoing time entry already exists for this user."
+          duplicate_ongoing: "進行中のタイムエントリはすでにこのユーザーに存在します。"
         work_package:
           is_not_a_valid_target_for_cost_entries: "コストを再割り当てるには、作業項目#%{id}は対象外である。"
           nullify_is_not_valid_for_cost_entries: "コストエントリをプロジェクトに割り当てることはできません。"
@@ -97,7 +97,7 @@ ja:
   button_log_time: "ログ"
   button_add_activity: "活動"
   button_add_time_entry: "時間を記録"
-  button_stop_timer: "Stop timer"
+  button_stop_timer: "タイマー停止"
   caption_booked_on_project: "プロジェクトの予約"
   caption_default: "デフォルト"
   caption_default_rate_history_for: "%{user} のデフォルト率の履歴"
@@ -176,7 +176,7 @@ ja:
   label_day: "日"
   label_today_capitalized: "今日"
   label_view_mode_switcher: "表示を変更"
-  label_timer_since: "Started at %{time}"
+  label_timer_since: "%{time} で開始"
   placeholder_activity_select_work_package_first: まずワークパッケージを選択してください。
   notice_something_wrong: "エラーが発生しました。再試行してください。"
   notice_successful_restore: "復元処理が成功します。"
@@ -184,7 +184,7 @@ ja:
   notice_cost_logged_successfully: "単価が正常に記録されました。"
   notice_different_time_zones: "このユーザーは異なるタイムゾーン(%{tz})を使用しています。時間は異なるタイムゾーンで記録されます。"
   notice_time_entry_update_failed: "タイムエントリーの変更に失敗しました。エラー:%{errors}"
-  notice_time_entry_delete_failed: "Failed to delete time entry. Errors: %{errors}"
+  notice_time_entry_delete_failed: "タイムエントリの削除に失敗しました。エラー： %{errors}"
   permission_edit_cost_entries: "予約単価の編集"
   permission_edit_own_cost_entries: "自分が予約した単価の編集"
   permission_edit_hourly_rates: "時給の編集"
@@ -199,13 +199,13 @@ ja:
   permission_view_own_hourly_rate: "自分の時給の表示"
   permission_view_own_time_entries: "自分の使用済み時間の表示"
   project_module_costs: "時間とコスト"
-  setting_allow_tracking_start_and_end_times: "Allow start and finish times"
+  setting_allow_tracking_start_and_end_times: "開始時間と終了時間を許可する"
   setting_costs_currency: "通貨"
   setting_costs_currency_format: "通貨の形式"
   setting_enforce_tracking_start_and_end_times: "開始/終了時間を必須とする"
-  setting_enforce_without_allow: "Requiring start and finish times is not possible without allowing them"
+  setting_enforce_without_allow: "開始時間と終了時間を要求することは許可されていないとできません"
   setting_allow_tracking_start_and_end_times_caption: "時間を記録する際に、開始時間と終了時間を入力できるようにする。"
-  setting_enforce_tracking_start_and_end_times_caption: "Makes entering start and finish times mandatory when logging time."
+  setting_enforce_tracking_start_and_end_times_caption: "時間を記録する際、開始時間と終了時間の入力が必須となる。"
   text_assign_time_and_cost_entries_to_project: "報告された時間とコストをプロジェクトに割り当てる"
   text_destroy_cost_entries_question: "削除しようとしている作業項目が%{cost_entries} 件報告されました。どうしますか？"
   text_destroy_time_and_cost_entries: "報告された時間とコストを削除する"

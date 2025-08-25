@@ -217,9 +217,9 @@ ro:
         OpenProject va filtra întotdeauna pentru atributul de autentificare furnizat de utilizator pentru a identifica înregistrarea. Dacă furnizați un filtru aici,
         acesta va fi concatenat cu un AND. În mod implicit, ca filtru se va utiliza un "catch-all" (objectClass=*).
       onthefly_register: |
-        Dacă bifați această casetă, OpenProject va crea automat noi utilizatori din intrările LDAP ale acestora
+        Dacă bifezi această casetă, OpenProject va crea automat noi utilizatori din intrările LDAP ale acestora
         atunci când aceștia se autentifică pentru prima dată cu OpenProject.
-        Lăsați această casetă debifată pentru a permite doar conturilor existente în OpenProject să se autentifice prin LDAP!
+        Lasă această casetă debifată pentru a permite doar conturilor existente în OpenProject să se autentifice prin LDAP!
     connection_encryption: "Criptarea conexiunii"
     encryption_details: "Opțiuni LDAPS / STARTTLS"
     system_account: "Contul de sistem"
@@ -371,7 +371,7 @@ ro:
     edit:
       synchronized_groups: "Synchronized groups"
     index:
-      description: By grouping users together, you can add them as members to the same projects or assign the same global roles to them.
+      description: Prin gruparea utilizatorilor împreună, îi poți adăuga ca membri la aceleași proiecte sau le poți atribui aceleași roluri globale.
     table_component:
       blank_slate:
         description: You can define groups of users with specific names
@@ -494,7 +494,7 @@ ro:
       storage:
         no_results_title_text: Acest proiect nu consumă spațiu suplimentar pe disc.
       work_package_priorities:
-        new_label: "New priority"
+        new_label: "Prioritate nouă"
     status:
       button_edit: Edit project status
   lists:
@@ -608,19 +608,19 @@ ro:
       no_results_content_text: Adaugă știre nouă
   users:
     autologins:
-      prompt: "Stay logged in for %{num_days}"
+      prompt: "Rămâi conectat pentru %{num_days}"
     sessions:
-      remembered_devices: "Remembered devices"
-      remembered_devices_caption: "A list of all devices that logged into this account using the 'Stay logged in' option."
-      session_name: "%{browser_name} %{browser_version} on %{os_name}"
+      remembered_devices: "Dispozitive amintite"
+      remembered_devices_caption: "O listă cu toate dispozitivele care s-au conectat la acest cont folosind opțiunea \"Rămâi conectat\"."
+      session_name: "%{browser_name} %{browser_version} pe %{os_name}"
       browser: "Browser"
-      device: "Device / OS"
-      unknown_browser: "unknown browser"
+      device: "Dispozitiv / OS"
+      unknown_browser: "browser necunoscut"
       unknown_os: "unknown operating system"
-      current: "Current session"
-      title: "Session management"
-      instructions: "This is a list of devices that have logged into your account. Revoke any sessions that you do not recognize or you have no longer access to."
-      may_not_delete_current: "You cannot delete your current session."
+      current: "Sesiune curentă"
+      title: "Gestionarea sesiunii"
+      instructions: "Aceasta este o listă de dispozitive care s-au conectat la contul tău. Revocă orice sesiune pe care nu o recunoști sau la care nu mai ai acces."
+      may_not_delete_current: "Nu poți șterge sesiunea curentă."
     groups:
       member_in_these_groups: "Acest utilizator este în prezent membru al următoarelor grupuri:"
       no_results_title_text: Acest utilizator nu este în prezent membru în niciun grup.
@@ -645,11 +645,11 @@ ro:
   priorities:
     edit:
       priority_color_text: |
-        Click to assign or change the color of this priority.
-        It can be used for highlighting work packages in the table.
+        Clic pentru a desemna sau schimba culoarea acestui nivel de prioritate.
+        Poate fi utilizate pentru a evidenția pachetele de lucru dintr-un tabel.
     admin:
       default:
-        caption: Making this priority default will override the previous default priority.
+        caption: Dacă această prioritate este implicită va suprascrie prioritatea implicită anterioară.
   reactions:
     action_title: "React"
     add_reaction: "Add reaction"
@@ -672,8 +672,8 @@ ro:
       status_default_text: |-
         New work packages are by default set to this type. They cannot be read-only.
       status_excluded_from_totals_text: |-
-        Check this option to exclude work packages with this status from totals of Work,
-        Remaining work, and % Complete in a hierarchy.
+        Bifează această opțiune pentru a exclude pachetele de lucru cu acest statut din totalurile de lucrări,
+        muncă rămasă, și % complet într-o ierarhie.
       status_percent_complete_text: |-
         In <a href="%{href}">status-based progress calculation mode</a>, the % Complete of a work
         package is automatically set to this value when this status is selected.
@@ -690,11 +690,11 @@ ro:
         is_default: "Implicit"
         is_closed: "Închis"
         is_readonly: "Doar citire"
-        excluded_from_totals: "Excluded from totals"
+        excluded_from_totals: "Exclus din totaluri"
   themes:
     dark: "Dark"
-    light: "Light"
-    light_high_contrast: "Light high contrast"
+    light: "Luminos"
+    light_high_contrast: "Luminos contrast mare"
   types:
     index:
       no_results_title_text: În acest moment nu există tipuri.
@@ -989,6 +989,8 @@ ro:
         admin_only: "Doar administratorii"
       custom_value:
         value: "Valoare"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "ID Client"
         secret: "Client Secret"
@@ -1100,7 +1102,7 @@ ro:
         timeline_zoom_level: "Gantt chart zoom level"
         timestamps: "Baseline timestamps"
         sort_criteria: "Sort criteria"
-        highlighted_attributes: "Highlighted attributes"
+        highlighted_attributes: "Atribute evidențiate"
         highlighting_mode: "Mod evidențiere"
         display_representation: "Mod afişare"
         show_hierarchies: "Display mode"
@@ -1132,7 +1134,7 @@ ro:
       status:
         is_closed: "Pachet de lucru închis"
         is_readonly: "Pachet de lucru numai pentru citire"
-        excluded_from_totals: "Exclude from calculation of totals in hierarchy"
+        excluded_from_totals: "Exclude din calculul totalurilor în ierarhie"
         default_done_ratio: "% Finalizat"
       token/ical:
         calendar: "Calendar"
@@ -1174,22 +1176,22 @@ ro:
       group:
         identity_url: "Identity URL"
       user_preference:
-        header_look_and_feel: "Look and feel"
+        header_look_and_feel: "Aspect și stil"
         header_alerts: "Alerts"
         button_update_look_and_feel: "Actualizează aspectul și simțul"
         button_update_alerts: "Actualizează alerte"
-        comments_sorting: "Display work package activity sorted by"
-        disable_keyboard_shortcuts: "Disable keyboard shortcuts"
+        comments_sorting: "Afișează activitatea pachetelor de lucru sortate după"
+        disable_keyboard_shortcuts: "Dezactivează comenzile rapide pentru tastatură"
         disable_keyboard_shortcuts_caption_html: |-
-          You can choose to disable default <a href="%{href}">keyboard shortcuts</a> if you use a screen  reader or want to avoid accidentally triggering an action with a shortcut.
+          Poți alege să dezactivezi tastatura <a href="%{href}">cu comenzi rapide</a> dacă utilizezi un cititor de ecran sau dorești să eviți din greșeala declanșarea unei acțiuni cu o comandă rapidă.
         dismissed_enterprise_banners: "Hidden enterprise banners"
         impaired: "Mod accesibilitate"
         auto_hide_popups: "Automatically hide success banners"
-        auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
+        auto_hide_popups_caption: "Când este activată, bannerele de succes verzi vor dispărea automat după 5 secunde."
         warn_on_leaving_unsaved: "Avertizează când părăsesc un pachet de lucru cu modificări nesalvate"
-        theme: "Colour mode"
+        theme: "Mod culoare"
         time_zone: "Fus orar"
-        mode_guideline: "Some modes will overwrite custom theme colours for accessibility and legibility. Please select Light mode for full custom theme support."
+        mode_guideline: "Unele moduri vor suprascrie culori personalizate pentru accesibilitate si lizibilitate. Te rog selectează modul Lumină pentru suport complet pentru Teme."
         daily_reminders: "Daily reminders"
         workdays: "Zile lucrătoare"
       version:
@@ -1297,6 +1299,7 @@ ro:
         odd: "trebuie să fie impar."
         regex_match_failed: "does not match the regular expression %{expression}."
         regex_invalid: "nu a putut fi validată cu expresia regulată asociată."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "trebuie să fie mai mic sau egal cu lungimea maximă."
         taken: "este deja utilizat"
         too_long: "este prea lung (maximul admis este de %{count} caractere)."
@@ -1777,7 +1780,7 @@ ro:
     estimated_time: "Muncă"
     email: "E-mail"
     entity_type: "Entity"
-    expires_at: "Expires on"
+    expires_at: "Expiră în"
     firstname: "Prenume"
     filter: "Filtrează"
     group: "Grup"
@@ -1903,7 +1906,7 @@ ro:
   button_duplicate: "Duplicare"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Editare"
-  button_edit_associated_wikipage: "Editare pagină wiki asociată: %{page_title}"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Extindere totală"
   button_favorite: "Adaugă la favorite"
   button_filter: "Filtrează"
@@ -1963,12 +1966,12 @@ ro:
     failure_message: Consimţământul a eșuat, nu putem continua.
     title: Consimţământul utilizatorului
     decline_warning_message: Ați refuzat să fiți de acord și ați fost delogat.
-    user_has_consented: The user gave their consent to your [configured consent information text](consent_settings).
-    not_yet_consented: The user has not yet given their consent to your [configured consent information text](consent_settings). They will be reminded the next time they log in.
+    user_has_consented: Utilizatorul și-a dat acordul pentru [textul informațiilor de consimțământ configurate](consent_settings).
+    not_yet_consented: Utilizatorul nu și-a dat încă un consimțământ pentru [textul informațiilor de consimțământ configurate](consent_settings). Acestora li se va reaminti data viitoare când se vor conecta.
     contact_mail_instructions: Definiți adresa de e-mail pe care utilizatorii o pot utiliza pentru a ajunge la un responsabil cu securitatea datelor, pentru a efectua modificări de date sau solicitări de eliminare din înregistrări.
     contact_your_administrator: Contactați administratorul dvs. dacă doriți ștergerea contului dvs.
     contact_this_mail_address: Vă rugăm să contactați %{mail_address} dacă doriți ștergerea contului dvs.
-    text_update_consent_time: Bifați această casetă pentru a forța utilizatorii să consimtă din nou. Activați când ați modificat aspectul juridic al informațiilor privind consimțământul de mai sus.
+    text_update_consent_time: Bifează această casetă pentru a forța utilizatorii să consimtă din nou. Activează când ai modificat aspectul juridic al informațiilor privind consimțământul de mai sus.
     update_consent_last_time: "Ultima actualizare a consimțământului: %{update_time}"
   copy_project:
     title: 'Copiază proiectul "%{source_project_name}"'
@@ -2151,7 +2154,7 @@ ro:
   description_enter_text: "Introduceţi textul"
   description_filter: "Filtrează"
   description_filter_toggle: "Afișează/ascunde filtre"
-  description_category_reassign: "Alegeți categoria"
+  description_category_reassign: "Alege categoria"
   description_message_content: "Conținutul mesajului"
   description_my_project: "Sunteţi membru"
   description_notes: "Mențiuni"
@@ -2164,14 +2167,14 @@ ro:
   description_selected_columns: "Coloane selectate"
   description_sub_work_package: "Pachetul de lucru fiu"
   description_toc_toggle: "Afișare/ascundere cuprins"
-  description_wiki_subpages_reassign: "Alegeți noua pagină părinte"
+  description_wiki_subpages_reassign: "Alege noua pagină părinte"
   #Text direction: Left-to-Right (ltr) or Right-to-Left (rtl)
   direction: ltr
   ee:
     features:
       baseline_comparison: Baseline Comparisons
       board_view: Advanced Boards
-      conditional_highlighting: Conditional Highlighting
+      conditional_highlighting: Evidențiere condiționată
       internal_comments: Comentarii interne
       custom_actions: Custom Actions
       custom_field_hierarchies: Custom fields of type hierarchy
@@ -2224,7 +2227,7 @@ ro:
       customize_life_cycle:
         description: "Creează și organizează diferite faze de proiect decât cele furnizate de planificarea ciclului proiectului PM2."
       conditional_highlighting:
-        description: "Need certain work packages to stand out from the mass? Use conditional highlighting in the work packages table."
+        description: "Ai nevoie de anumite pachete de lucru pentru a ieși în evidență? Utilizează evidențierea condiționată în tabelul pachetelor de lucru."
       work_package_query_relation_columns:
         description: "Need to see relations or child elements in the work package list?"
       edit_attribute_groups:
@@ -2313,7 +2316,7 @@ ro:
   error_can_not_reopen_work_package_on_closed_version: "Un pachet de lucru atribuit la o versiune închisă nu poate fi redeschis"
   error_can_not_find_all_resources: "Nu s-au putut găsi toate resursele legate de această cerere."
   error_can_not_unarchive_project: "Acest proiect nu poate fi dezarhivat: %{errors}"
-  error_check_user_and_role: "Alegeți un utilizator și un rol."
+  error_check_user_and_role: "Alege un utilizator și un rol."
   error_code: "Eroare %{code}"
   error_color_could_not_be_saved: "Culoarea nu a putut fi salvată"
   error_cookie_missing: "Cookie-ul OpenProject lipseşte. Vă rugăm să verificați setările referitoare la cookies, această aplicație nu va funcţiona corespunzător fără acestea."
@@ -2389,7 +2392,7 @@ ro:
             label: "XLS"
       columns:
         input_label_report: "Adaugă coloane la tabelul de atribute"
-        input_caption_report: "By default all attributes added as columns in the work package list are selected. Long text fields are not available in the attribute table, but can be displayed below it."
+        input_caption_report: "În mod implicit, sunt selectate toate atributele adăugate ca și coloane în lista pachetelor de lucru. Câmpurile lungi de text nu sunt disponibile in tabelul atributului, dar pot fi afișate mai jos."
         input_caption_table: "By default all attributes added as columns in the work package list are selected. Long text fields are not available in table based exports."
         input_caption_required: "It is not possible to export the view without any column. Please add at least one column."
       pdf:
@@ -2425,7 +2428,7 @@ ro:
             very_wide: "Very wide"
         paper_size:
           label: "Paper size"
-          caption: "Depending on the chart size more than one page might be exported."
+          caption: "În funcție de dimensiunea graficului ar putea fi exportate pe mai mult de o pagină."
         long_text_fields:
           input_caption: "By default all long text fields are selected."
           input_label: "Add long text fields"
@@ -2563,8 +2566,8 @@ ro:
           working: "%{date} este acum lucrătoare"
           non_working: "%{date}  este acum nelucrătoare"
       progress_mode_changed_to_status_based: Progress calculation mode set to status-based
-      status_excluded_from_totals_set_to_false_message: now included in hierarchy totals
-      status_excluded_from_totals_set_to_true_message: now excluded from hierarchy totals
+      status_excluded_from_totals_set_to_false_message: acum inclus în totalurile ierarhice
+      status_excluded_from_totals_set_to_true_message: acum exclus din totalul ierarhiei
       status_percent_complete_changed: "% Complete changed from %{old_value}% to %{new_value}%"
       system_update:
         file_links_journal: >
@@ -2641,7 +2644,7 @@ ro:
       responsible: "Responsabil"
       shared: "Partajat"
       watched: "Observator"
-      reminder: "Reminder"
+      reminder: "Memento"
     facets:
       unread: "Necitite"
       unread_title: "Afișare necitite"
@@ -2661,7 +2664,7 @@ ro:
         responsible: "Ați devenit responsabil pentru %{work_package}"
         watched: "Urmăriți %{work_package}"
     query:
-      invalid_filter: "Invalid notification filter"
+      invalid_filter: "Filtru de notificare invalid"
   label_accessibility: "Accesibilitate"
   label_account: "Cont"
   label_active: "Activ"
@@ -2682,8 +2685,8 @@ ro:
   label_additional_workflow_transitions_for_assignee: "Tranziții suplimentare permise când utilizatorul este executantul"
   label_additional_workflow_transitions_for_author: "Tranziții suplimentare permise când utilizatorul este autorul"
   label_administration: "Administrare"
-  label_interface_colors: "Interface colors"
-  label_interface_colors_description: "These colors control how the application looks. If you modify them the theme will automatically be changed to Custom theme, but we can’t assure the compliance of the accessibility contrast minimums (WCAG 2.1). "
+  label_interface_colors: "Culori interfață"
+  label_interface_colors_description: "Aceste culori controlează cum arată aplicația. Dacă le modifici, tema va fi schimbată automat la tema personalizată, dar nu putem asigura conformitatea minimelor de accesibilitate (WCAG 2.1). "
   label_age: "Vârstă"
   label_ago: "zile în urmă"
   label_all: "toate"
@@ -2895,7 +2898,7 @@ ro:
   label_general: "General"
   label_generate_key: "Generare cheie"
   label_global_modules: "Global modules"
-  label_global_roles: "Global roles"
+  label_global_roles: "Roluri globale"
   label_git_path: "Calea catre directorul .git"
   label_greater_or_equal: ">="
   label_group_by: "Grupează după"
@@ -2927,7 +2930,7 @@ ro:
   label_information_plural: "Informații"
   label_installation_guides: "Ghiduri de instalare"
   label_integer: "Număr întreg"
-  label_interface: "Interface"
+  label_interface: "Interfață"
   label_internal: "Intern"
   label_introduction_video: "Video de introducere"
   label_invite_user: "Invită utilizator"
@@ -3039,7 +3042,7 @@ ro:
   label_no_due_date: "fără dată finalizare"
   label_no_start_date: "fără dată început"
   label_no_parent_page: "Pagină părinte:"
-  label_notification_center_plural: "Notifications"
+  label_notification_center_plural: "Notificări"
   label_nothing_display: "Nimic de afișat"
   label_nobody: "nimeni"
   label_not_configured: "Not configured"
@@ -3072,7 +3075,7 @@ ro:
   label_password_rule_special: "Caractere speciale"
   label_password_rule_uppercase: "Majuscule"
   label_path_encoding: "Codificare cale"
-  label_per_page: "Per page:"
+  label_per_page: "Per pagină:"
   label_people: "Persoane"
   label_permissions: "Drepturi"
   label_permissions_report: "Raport drepturi"
@@ -3096,7 +3099,7 @@ ro:
   label_product_version: "Versiune produs"
   label_profile: "Profil"
   label_percent_complete: "% finalizat"
-  label_progress_tracking: "Progress tracking"
+  label_progress_tracking: "Monitorizare progres"
   label_project: "Proiect"
   label_project_activity: "Activitate proiect"
   label_project_attribute_plural: "Atribute proiect"
@@ -3170,11 +3173,11 @@ ro:
   label_role_plural: "Roluri"
   label_role_search: "Atribuirea rolului noilor membri"
   label_scm: "SCM"
-  label_scroll_left: "Scroll left"
-  label_scroll_right: "Scroll right"
+  label_scroll_left: "Derulează la stânga"
+  label_scroll_right: "Derulează la dreapta"
   label_search: "Căutare"
   label_search_by_name: "Caută după nume"
-  label_send_information: "Send new credentials to the user"
+  label_send_information: "Trimite credențiale noi utilizatorului"
   label_send_test_email: "Trimite e-mail de test"
   label_session: "Sesiune"
   label_setting_plural: "Setări"
@@ -3253,7 +3256,7 @@ ro:
   label_user_plural: "Utilizatori"
   label_user_search: "Căutare utilizator"
   label_user_settings: "Setări utilizator"
-  label_users_settings: "Users settings"
+  label_users_settings: "Setări utilizatori"
   label_version_new: "Versiune nouă"
   label_version_edit: "Editați versiunea"
   label_version_plural: "Versiuni"
@@ -3399,9 +3402,9 @@ ro:
       see_all: "Vezi tot"
       updated_at: "Actualizat în %{timestamp} de %{user}"
     reminder_notifications:
-      subject: "Reminder: %{note}"
-      heading: "You have a new reminder"
-      note: "Note: “%{note}”"
+      subject: "Memento: %{note}"
+      heading: "Ai un memento nou"
+      note: "Notă: „%{note}”"
     sharing:
       work_packages:
         allowed_actions: "You may %{allowed_actions} this work package. This can change depending on your project role and permissions."
@@ -3975,7 +3978,7 @@ ro:
   setting_hours_per_day_explanation: >-
     This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).
   setting_invitation_expiration_days: "E-mailul de activare expiră după"
-  setting_invitation_expiration_days_caption: "Number of days after which the activation email expires."
+  setting_invitation_expiration_days_caption: "Numărul de zile după care e-mailul de activare expiră."
   setting_work_package_done_ratio: "Progress calculation mode"
   setting_work_package_done_ratio_field: "Work-based"
   setting_work_package_done_ratio_field_caption_html: >-
@@ -4077,7 +4080,7 @@ ro:
       registration: "Registration"
       single_sign_on: "Single Sign-On"
       omniauth_direct_login_hint_html: >
-        If this option is active, login requests will redirect to the configured omniauth provider. The login dropdown and sign-in page will be disabled. <br/> <strong>Note:</strong> Unless you also disable password logins, with this option enabled, users can still log in internally by visiting the <code>%{internal_path}</code> login page.
+        Dacă această opțiune este activă, cererile de conectare vor fi redirecționate către furnizorul omniauth configurat. Pagina de autentificare verticală și pagina de autentificare vor fi dezactivate. <br/> <strong>Notă:</strong> Dacă nu dezactivezi și autentificarea cu parole, cu această opțiune activată, utilizatorii încă se pot autentifica intern vizitând pagina de autentificare <code>%{internal_path}</code>.
     attachments:
       whitelist_text_html: >
         Definește o listă validă de extensii de fișiere și/sau tipuri mime pentru fișierele încărcate. <br/> Introdu extensii de fișiere (de ex. <code>%{ext_example}</code>) sau tipuri mime (e. ., <code>%{mime_example}</code>). <br/> Lasă gol pentru a permite oricărui tip de fișier să fie încărcat. Valori multiple permise (o linie pentru fiecare valoare).
@@ -4168,13 +4171,13 @@ ro:
     session: "Sesiune"
     user:
       default_preferences: "Preferințe implicite"
-      display_format: "Display format"
+      display_format: "Format afișare"
       deletion: "Ștergerea a eșuat: %s"
     working_days:
       section_work_week: "Săptămână de lucru"
       section_holidays_and_closures: "Holidays and closures"
     work_packages:
-      not_allowed_text: "You do not have the necessary permissions to view this page."
+      not_allowed_text: "Nu ai drepturile necesare pentru a vizualiza acest widget."
       activities:
         enable_internal_comments: "Activează comentariile interne"
         helper_text: "Comentariile interne permit unei echipe interne să comunice între ei în mod privat. Acestea sunt vizibile numai pentru rolurile selectate care au permisiunile necesare și nu vor fi vizibile public. %{link}"
@@ -4222,7 +4225,7 @@ ro:
   text_custom_export_cover_instructions: >
     This is the image that appears in the background of a cover page in your PDF exports. It needs to be an about 800px width by 500px height sized PNG or JPEG image file.
   text_custom_favicon_instructions: >
-    This is the tiny icon that appears in your browser window/tab next to the page's title. It needs to be a squared 32 by 32 pixels sized PNG image file with a transparent background.
+    Această pictogramă este afișată în fereastra/fila browserului lângă titlul site-ului. Aceasta trebuie să aibă dimensiunea de 32px pe 32px, să fie în format PNG și fundalul să fie transparent.
   text_custom_touch_icon_instructions: >
     This is the icon that appears in your mobile or tablet when you place a bookmark on your homescreen. It needs to be a squared 180 by 180 pixels sized PNG image file. Please make sure the image's background is not transparent otherwise it will look bad on iOS.
   text_database_allows_tsv: "Baza de date permite TSVector (opțional)"
@@ -4418,7 +4421,7 @@ ro:
   wiki_menu_item_for: 'Meniu pentru pagina wiki "%{title}"'
   wiki_menu_item_setting: "Vizibilitate"
   wiki_menu_item_new_main_item_explanation: >
-    Ștergeți doar meniul principal wiki. Va trebui să alegeți o altă pagină wiki pentru care se va genera meniul principal. Dacă doriți să ștergeți wiki-ul, modulul corespunzător poate fi dezactivat de către administratorii de proiect.
+    Șterge doar meniul principal wiki. Va trebui să alegi o altă pagină wiki pentru care se va genera meniul principal. Dacă vrei să ștergi wiki-ul, modulul corespunzător poate fi dezactivat de către administratorii de proiect.
   wiki_menu_item_delete_not_permitted: Meniul wiki pentru ultima pagină wiki nu poate fi șters.
   #TODO: merge with work_packages top level key
   work_package:
@@ -4666,7 +4669,7 @@ ro:
         redirect_uri_html: >
           URL-urile permise către care pot fi redirecționați utilizatorii autorizați. O intrare pe linie. <br/> Dacă înregistrezi o aplicație desktop, utilizează următoarea adresă URL.
         confidential: "Verificați dacă aplicația va fi utilizată în cazul în care secretul clientului poate fi păstrat confidențial. Aplicațiile mobile native și aplicațiile cu o singură pagină sunt considerate neconfidențiale."
-        scopes: "Bifați domeniile la care doriți ca aplicația să acorde acces. Dacă nu se bifează niciun domeniu de aplicare, se presupune api_v3."
+        scopes: "Bifează domeniile la care vrei ca aplicația să acorde acces. Dacă nu se bifează niciun domeniu de aplicare, se presupune api_v3."
         client_credential_user_id: "ID-ul de utilizator opțional pe care trebuie să se substituie atunci când clienții utilizează această aplicație. Lăsați gol pentru a permite doar accesul public"
         register_intro: "Dacă dezvoltați o aplicație client OAuth API pentru OpenProject, o puteți înregistra folosind acest formular pentru toți utilizatorii."
         default_scopes: ""

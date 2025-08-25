@@ -997,6 +997,8 @@ sk:
         admin_only: "Admin-only"
       custom_value:
         value: "Hodnota"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "ID klienta"
         secret: "Klient neverejné"
@@ -1305,6 +1307,7 @@ sk:
         odd: "musí byť nepárne."
         regex_match_failed: "does not match the regular expression %{expression}."
         regex_invalid: "nebolo možné overiť s príslušným regulárnym výrazom."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "musí byť menšie alebo rovné ako maximálne dĺžka."
         taken: "už existuje v systéme."
         too_long: "je príliš dlhý (maximum je %{count} znakov)."
@@ -1926,7 +1929,7 @@ sk:
   button_duplicate: "Duplikovať"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Upraviť"
-  button_edit_associated_wikipage: "Upraviť naviazanú Wiki stránku: %{page_title}"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Rozbaliť všetko"
   button_favorite: "Add to favorites"
   button_filter: "Filtrovať"

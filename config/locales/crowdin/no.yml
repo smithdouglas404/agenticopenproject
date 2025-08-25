@@ -980,6 +980,8 @@
         admin_only: "Kun administratorer"
       custom_value:
         value: "Verdi"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "Klient ID"
         secret: "Klient hemmlighet"
@@ -1288,6 +1290,7 @@
         odd: "må være oddetall."
         regex_match_failed: "samsvarer ikke med det regulære uttrykket %{expression}."
         regex_invalid: "kunne ikke valideres med det tilhørende regulære uttrykket."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "må være mindre enn eller lik maksimumslengden."
         taken: "er allerede tatt."
         too_long: "er for lang (maks antall tegn er %{count})."
@@ -1879,7 +1882,7 @@
   button_duplicate: "Kopier"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Rediger"
-  button_edit_associated_wikipage: "Rediger tilknyttet Wiki-side: %{page_title}"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Utvid alle"
   button_favorite: "Legg til i favoritter"
   button_filter: "Filter"

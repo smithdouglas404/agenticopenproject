@@ -977,6 +977,8 @@ nl:
         admin_only: "Alleen beheerders"
       custom_value:
         value: "Waarde"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "Client-ID"
         secret: "Client secret"
@@ -1285,6 +1287,7 @@ nl:
         odd: "moet oneven zijn."
         regex_match_failed: "does not match the regular expression %{expression}."
         regex_invalid: "kon niet worden gevalideerd met de bijbehorende reguliere expressie."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "moet kleiner zijn dan of even groot zijn als de maximale lengte."
         taken: "is al in gebruik."
         too_long: "is te lang (maximaal %{count} karakters)."
@@ -1876,7 +1879,7 @@ nl:
   button_duplicate: "Dupliceren"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Wijzig"
-  button_edit_associated_wikipage: "Bewerk gekoppelde wikipagina: %{page_title}"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Alles uitklappen"
   button_favorite: "Aan favorieten toevoegen"
   button_filter: "Filter"

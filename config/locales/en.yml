@@ -1059,6 +1059,8 @@ en:
         admin_only: "Admin-only"
       custom_value:
         value: "Value"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "Client ID"
         secret: "Client secret"
@@ -1368,6 +1370,7 @@ en:
         odd: "must be odd."
         regex_match_failed: "does not match the regular expression %{expression}."
         regex_invalid: "could not be validated with the associated regular expression."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "must be smaller than or equal to maximum length."
         taken: "has already been taken."
         too_long: "is too long (maximum is %{count} characters)."

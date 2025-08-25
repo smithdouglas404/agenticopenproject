@@ -35,7 +35,7 @@ ro:
       board_type:
         text: 'Tip panou'
         free: 'De baza'
-        select_board_type: 'Vă rugăm să alegeți tipul de placă de care aveți nevoie.'
+        select_board_type: 'Te rog să alegi tipul de placă de care ai nevoie.'
         free_text: >
           Începe de la zero cu o planșă albă. Adaugă manual cărți și coloane pe această planșă.
         action: 'Consiliul de acțiune'

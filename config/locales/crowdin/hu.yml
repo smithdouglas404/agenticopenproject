@@ -980,6 +980,8 @@ hu:
         admin_only: "Admin-only"
       custom_value:
         value: "Érték"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "Ügyfél azonosító"
         secret: "Kliens titok"
@@ -1288,6 +1290,7 @@ hu:
         odd: "páratlan kell legyen."
         regex_match_failed: "does not match the regular expression %{expression}."
         regex_invalid: "nem lehet a hozzárendelt reguláris kifejezéssel ellenőrizni."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "a maximális hossznak kisebbnek vagy egyenlőnek kell lennie."
         taken: "már foglalt."
         too_long: "túl hosszú (nem lehet több %{count} karakternél)."
@@ -1879,7 +1882,7 @@ hu:
   button_duplicate: "Másolás ide"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Szerkesztés"
-  button_edit_associated_wikipage: "A hozzárendelt Wiki oldal: %{page_title} szerkesztése"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Az összes kibontása"
   button_favorite: "Add to favorites"
   button_filter: "Szűrő"

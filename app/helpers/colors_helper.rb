@@ -122,8 +122,7 @@ module ColorsHelper
   end
 
   def icon_for_color(color, options = {})
-    return unless color
-    return if color.hexcode.blank?
+    return unless color&.valid_attribute?(:hexcode)
 
     style = join_style_arguments(
       "background-color: #{color.hexcode}",

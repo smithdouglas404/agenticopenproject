@@ -980,6 +980,8 @@ tr:
         admin_only: "Yalnızca yönetici"
       custom_value:
         value: "Değer"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "Müşteri Kimliği"
         secret: "Müşteri gizliliği"
@@ -1288,6 +1290,7 @@ tr:
         odd: "tek sayı olmalı."
         regex_match_failed: "%{expression} düzenli ifadesiyle eşleşmiyor."
         regex_invalid: "atanmış düzenli ifadeler ile doğrulanamadı."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "en fazla uzunluğa eşit veya daha küçük olmalıdır."
         taken: "zaten alınmıştır."
         too_long: "çok uzun (en fazla %{count} karakterdir)."
@@ -1879,7 +1882,7 @@ tr:
   button_duplicate: "Çoğalt"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Düzenle"
-  button_edit_associated_wikipage: "İlişkili Wiki sayfasını düzenle: %{page_title}"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Tümünü genişlet"
   button_favorite: "Favorilere Ekle"
   button_filter: "Filtre"

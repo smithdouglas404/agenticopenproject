@@ -156,7 +156,7 @@ ro:
               permission_not_set: could not set permissions on %{path}.
           error: An unexpected error occurred. Please ensure that your Nextcloud instance is reachable and check OpenProject worker logs for more information
           group_does_not_exist: "%{group} does not exist. Check your Nextcloud instance configuration."
-          insufficient_privileges: OpenProject does not have enough privileges to add %{user} to %{group}. Check you group settings in Nextcloud.
+          insufficient_privileges: OpenProject nu are suficiente privilegii pentru a adăuga %{user} la %{group}. Verifică setările de grup în Nextcloud.
           not_allowed: Nextcloud block the request.
           unauthorized: OpenProject could not sync with Nextcloud. Please check your storage and Nextcloud configuration.
           user_does_not_exist: "%{user} does not exist in Nextcloud."
@@ -346,7 +346,7 @@ ro:
       error_could_not_be_saved: Email notification settings could not be saved. Please try again.
       subscribe: Urmărește
       title: Notificări prin e-mail
-      unsubscribe: Unsubscribe
+      unsubscribe: Dezabonează-te
     help_texts:
       project_folder: The project folder is the default folder for file uploads for this project. Users can nevertheless still upload files to other locations.
       project_folder_bulk: The project folder is the default folder for file uploads for all the projects selected. You can modify this individually in each project settings. Users can nevertheless still upload files to other locations.
@@ -471,9 +471,9 @@ ro:
         subtitle: Add an external file storage in order to upload, link and manage files in work packages.
       managed_project_folders:
         subtitle: |-
-          Let OpenProject create folders per project automatically. This is recommended as it ensures that every team
-          member always has the correct access permissions.
-        subtitle_short: Let OpenProject create folders per project automatically.
+          Permite ca OpenProject să creeze dosare per proiect în mod automat. Este recomandat deoarece se asigură că fiecare membru al echipei
+          are întotdeauna permisiunile de acces corecte.
+        subtitle_short: Permite OpenProject să creeze dosare per proiect automat.
         title: Automatically managed project folders
       project_settings:
         delete: Delete file storage

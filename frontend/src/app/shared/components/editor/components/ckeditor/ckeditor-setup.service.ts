@@ -102,6 +102,7 @@ export class CKEditorSetupService {
         content: contentLanguage,
       },
       link: {},
+      storageKey: context.storageKey,
     };
 
     const allowedLinkProtocols = this.configurationService.allowedLinkProtocols;

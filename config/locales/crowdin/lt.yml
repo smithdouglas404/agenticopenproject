@@ -994,6 +994,8 @@ lt:
         admin_only: "Admin-only"
       custom_value:
         value: "Reikšmė"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "Kliento ID"
         secret: "Kliento paslaptis"
@@ -1302,6 +1304,7 @@ lt:
         odd: "turi būti nelyginis."
         regex_match_failed: "neatitinka reguliariosios išraiškos %{expression}."
         regex_invalid: "negalėjo būti patvirtintas su susieta reguliaria išraiška."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "turi būti mažesnis arba lygus didžiausiam ilgiui."
         taken: "jau užimtas."
         too_long: "yra per ilgas (daugiausiai galima %{count} simbolių)."
@@ -1923,7 +1926,7 @@ lt:
   button_duplicate: "Dublikuoti"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Redaguoti"
-  button_edit_associated_wikipage: "Redaguoti susijusį Wiki puslapį: %{page_title}"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Išskleisti visus"
   button_favorite: "Pridėti prie mėgstamų"
   button_filter: "Filtras"

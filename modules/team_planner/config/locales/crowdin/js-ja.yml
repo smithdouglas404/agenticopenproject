@@ -21,7 +21,7 @@ ja:
       cannot_drag_here: '権限または編集の制限により、ワークパッケージを削除できません。'
       cannot_drag_to_non_working_day: 'ワークパッケージの開始日時/終了日時を非稼働日に設定することはできません。'
       quick_add:
-        empty_state: 'Use the search field to find work packages and drag them to the planner to assign it to someone and define start and end dates.'
+        empty_state: '検索フィールドを使用して作業項目を見つけて、プランナーにドラッグして割り当て、開始日と終了日を定義します。'
         search_placeholder: '検索'
       modify:
         errors:

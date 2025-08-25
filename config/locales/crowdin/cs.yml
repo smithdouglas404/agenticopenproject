@@ -997,6 +997,8 @@ cs:
         admin_only: "Pouze pro správce"
       custom_value:
         value: "Hodnota"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "ID klienta"
         secret: "Tajný klíč klienta"
@@ -1305,6 +1307,7 @@ cs:
         odd: "musí být liché."
         regex_match_failed: "neodpovídá regulárnímu výrazu %{expression}."
         regex_invalid: "nelze ověřit s přidruženým regulárním výrazem."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "musí být menší než nebo rovno maximální délce."
         taken: "je již použito."
         too_long: "je příliš dlouhý (maximum je %{count} znaků)."
@@ -1926,7 +1929,7 @@ cs:
   button_duplicate: "Kopie"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Upravit"
-  button_edit_associated_wikipage: "Upravit přidruženou Wiki stránku: %{page_title}"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Rozbalit vše"
   button_favorite: "Přidat k oblíbeným"
   button_filter: "Filtr"

@@ -272,7 +272,7 @@ eo:
         auto: "Auto zoom"
         days: "Days"
         weeks: "Weeks"
-        months: "Months"
+        months: "Monatoj"
         quarters: "Quarters"
         years: "Years"
         description: >
@@ -452,7 +452,7 @@ eo:
     label_total_sum: "Total sum"
     label_subject: "Temo"
     label_this_week: "tiu ĉi semajno"
-    label_today: "Today"
+    label_today: "Hodiaŭ"
     label_time_entry_plural: "Uzata tempo"
     label_up: "Supren"
     label_user_plural: "Uzantoj"
@@ -564,7 +564,7 @@ eo:
         milestone_date: "Milestone date"
         overdue: "Overdue"
         overdue_since: "since %{difference_in_days}."
-        property_today: "is today."
+        property_today: "estas hodiaŭ."
         property_is: "is in %{difference_in_days}."
         property_was: "was %{difference_in_days} ago."
         property_is_deleted: "is deleted."
@@ -977,7 +977,7 @@ eo:
           edit: "Edit reminder"
         subtitle: "You will receive a notification for this work package at the chosen time."
         presets:
-          tomorrow: "Tomorrow"
+          tomorrow: "Morgaŭ"
           three_days: "En 3 tagoj"
           week: "En unu semajno"
           month: "En unu monato"
@@ -1033,7 +1033,7 @@ eo:
       time_relative:
         days: "tagoj"
         weeks: "weeks"
-        months: "months"
+        months: "monatoj"
     toolbar:
       settings:
         configure_view: "Configure view"

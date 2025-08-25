@@ -996,6 +996,8 @@ sl:
         admin_only: "Admin-only"
       custom_value:
         value: "vrednost"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "ID odjemalca"
         secret: "Skrivnost odjemalca"
@@ -1304,6 +1306,7 @@ sl:
         odd: "mora biti liho. "
         regex_match_failed: "does not match the regular expression %{expression}."
         regex_invalid: "ni bilo mogoče potrditi s pripadajočim stalnim izrazom."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "mora biti manjše ali enako največji dolžini."
         taken: "je že zasedeno."
         too_long: "je predolgo (največ %{count} znakov)."
@@ -1925,7 +1928,7 @@ sl:
   button_duplicate: "Podvoji"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Uredi"
-  button_edit_associated_wikipage: "Uredi povezano Wiki stran: %{page_title}"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Razširi vse"
   button_favorite: "Add to favorites"
   button_filter: "Filtriraj"

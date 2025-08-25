@@ -43,7 +43,12 @@ class ApplicationRecord < ActiveRecord::Base
   ##
   # Returns whether the given attribute is free of errors
   def valid_attribute?(attribute)
-    valid? # Ensure validations have run
+    errors.clear
+
+    # run validations for specified attribute only.
+    self.class.validators_on(attribute).each do |validator|
+      validator.validate_each(self, attribute, public_send(attribute))
+    end
 
     errors[attribute].empty?
   end

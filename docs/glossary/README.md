@@ -380,7 +380,7 @@ In OpenProject, the **project phase** is part of the overall [project life cycle
 
 ### Project settings
 
-Project settings means project-specific setting configuration. The project settings contain general settings (e.g. the name and [project identifier](#project-identifier)), configuration of [modules](#module), [work package categories](#work-package-categories) and [types](#work-package-type), [custom fields](#custom-field), [version](#versions) settings, [time tracking activities](#time-and-costs), required disk storage, [file storages](#file-storage) and [Backlogs](#backlogs) settings (if plugin is installed). [Read more about project settings in OpenProject](../user-guide/projects/#project-settings).
+Project settings means project-specific setting configuration. The project settings contain general settings (e.g. the name and [project identifier](#project-identifier)), configuration of [modules](#module), [work package categories](#work-package-category) and [types](#work-package-type), [custom fields](#custom-field), [version](#versions) settings, [time tracking activities](#time-and-costs), required disk storage, [file storages](#file-storage) and [Backlogs](#backlogs) settings (if plugin is installed). [Read more about project settings in OpenProject](../user-guide/projects/#project-settings).
 
 ### Project status
 
@@ -512,9 +512,13 @@ In OpenProject, a [work package](../user-guide/work-packages/#overview) is defin
 - [Read our user guide on work packages](../user-guide/work-packages/)
 - [Read a blog article on how to work with work packages](https://www.openproject.org/blog/how-to-work-with-work-packages/)
 
-### Work package categories
+### Work package category
 
-Work package categories are a functionality used to automatically assign a [member](#member) to a work package by specifying a category. [Read more about work package categories in OpenProject](../user-guide/projects/project-settings/work-packages/#work-package-categories).
+In OpenProject, categories are useful for classifying work packages. A new category is created on [project](#project) level and must be assigned to a [work package type](#work-package-type) on instance level. For example, a [system admin](#admin) could create a work package Type 'Color' and add the field 'category' to its form. A person with project admin rights could then create different categories (e.g. yellow, green, blue) and activate the Type 'Color' in their project. Additionally, you can add an assignee to each category. If the specific category is activated, the assignee updates automatically.
+
+If you need a Category that applies to all projects on your instance, we recommend using a [custom field](#custom-field) instead.
+
+Read more about work package categories in OpenProject](../user-guide/projects/project-settings/work-packages/#work-package-categories).
 
 ### Work package ID
 

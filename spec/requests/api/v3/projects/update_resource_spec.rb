@@ -46,7 +46,7 @@ RSpec.describe "API v3 Project resource update", content_type: :json do
   let(:custom_field) do
     create(:text_project_custom_field)
   end
-  let(:invisible_custom_field) do
+  let(:admin_only_custom_field) do
     create(:text_project_custom_field, admin_only: true)
   end
   let(:permissions) { %i[edit_project view_project_attributes edit_project_attributes] }
@@ -113,10 +113,10 @@ RSpec.describe "API v3 Project resource update", content_type: :json do
     end
   end
 
-  context "with an invisible custom field" do
+  context "with an admin only custom field" do
     let(:body) do
       {
-        invisible_custom_field.attribute_name(:camel_case) => {
+        admin_only_custom_field.attribute_name(:camel_case) => {
           raw: "CF text"
         }
       }
@@ -130,13 +130,13 @@ RSpec.describe "API v3 Project resource update", content_type: :json do
       end
 
       it "sets the cf value" do
-        expect(project.reload.send(invisible_custom_field.attribute_getter))
+        expect(project.reload.send(admin_only_custom_field.attribute_getter))
           .to eql("CF text")
       end
 
       it "automatically activates the cf for project if the value was provided" do
         expect(project.reload.project_custom_fields)
-          .to contain_exactly(invisible_custom_field)
+          .to contain_exactly(admin_only_custom_field)
       end
     end
 
@@ -153,11 +153,11 @@ RSpec.describe "API v3 Project resource update", content_type: :json do
 
       context "when the hidden field has a value already" do
         it "does not change the cf value" do
-          project.custom_field_values = { invisible_custom_field.id => "1234" }
+          project.custom_field_values = { admin_only_custom_field.id => "1234" }
           project.save
           patch path, body.to_json
 
-          expect(project.reload.custom_values.find_by(custom_field: invisible_custom_field).value)
+          expect(project.reload.custom_values.find_by(custom_field: admin_only_custom_field).value)
             .to eq "1234"
         end
       end

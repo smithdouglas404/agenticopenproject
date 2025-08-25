@@ -57,65 +57,64 @@ ja:
         item_0:
           name: アーキテクト
         item_1:
-          name: BIM Coordinators
+          name: BIMコーディネータ
         item_2:
-          name: BIM Managers
+          name: BIMマネージャー
         item_3:
-          name: BIM Modellers
+          name: BIMモデラー
         item_4:
-          name: Lead BIM Coordinators
+          name: リードBIMコーディネーター
         item_5:
-          name: MEP Engineers
+          name: MEPエンジニア
         item_6:
-          name: Planners
+          name: プランナー
         item_7:
-          name: Structural Engineers
+          name: ストラクチャーエンジニア
       welcome:
-        title: Welcome to OpenProject BIM edition!
+        title: OpenProject BIMエディションへようこそ！
         text: |
-          Checkout the demo projects to get started with some examples.
+          いくつかの例から始めるために、デモプロジェクトをチェックしてください。
 
-          * [(Demo) Construction project]({{opSetting:base_url}}/projects/demo-construction-project): Planning, BIM process, BCF management, and constructing, all at a glance.
-              * [(Demo) Planning & constructing]({{opSetting:base_url}}/projects/demo-planning-constructing-project): Classical planning and construction management.
-              * [(Demo) Bim project]({{opSetting:base_url}}/projects/demo-bim-project): BIM process and coordination.
-                  * [(Demo) BCF management]({{opSetting:base_url}}/projects/demo-bcf-management-project): BCF management.
+          * [(デモ)建設プロジェクト]({{opSetting:base_url}}/projects/demo-construction-project)：計画、BIMプロセス、BCF管理、施工、すべてが一目でわかります。
+              * [(Demo) Planning & constructing]({{opSetting:base_url}}/projects/demo-planning-constructing-project)：古典的な計画と施工管理。
+              * [(Demo) Bim project]({{opSetting:base_url}}/projects/demo-bim-project)：BIMのプロセスと調整。
+                  * [(Demo) BCF管理]({{opSetting:base_url}}/projects/demo-bcf-management-project): BCF管理：BCF管理。
 
-          Also, you can create a blank [new project]({{opSetting:base_url}}/projects/new).
+          また、空白の[新規プロジェクト]({{opSetting:base_url}}/projects/new)を作成することもできます。
 
-          Never stop collaborating. With open source and open mind.
+          コラボレーションを止めない。オープンソースとオープンマインドで。
 
-          You can change this welcome text [here]({{opSetting:base_url}}/admin/settings/general).
+          このウェルカムテキストは[ここで]変更できます({{opSetting:base_url}}/admin/settings/general)。
       projects:
         demo-construction-project:
-          name: "(Demo) Construction project"
-          status_explanation: All tasks and the sub-projects are on schedule. The people involved know their tasks. The system is completely set up.
-          description: This is a short summary of the goals of this demo construction project.
+          name: "(デモ) 建設プロジェクト"
+          status_explanation: すべてのタスクとサブプロジェクトは予定通りです。関係者は彼らのタスクを知っています。システムは完全に設定されています。
+          description: これは、このデモ建設プロジェクトの目標の概要です。
           news:
             item_0:
-              title: Welcome to your demo project
+              title: デモプロジェクトへようこそ
               summary: |
-                We are glad you joined.
-                In this module you can communicate project news to your team members.
-              description: The actual news
+                このモジュールでは、プロジェクトのニュースをチームメンバーに伝えることができます。
+              description: 実際のニュース
           categories:
-            item_0: Category 1 (to be changed in Project settings)
+            item_0: カテゴリ1（プロジェクト設定で変更）
           queries:
             item_0:
-              name: Project plan
+              name: プロジェクトプラン
             item_1:
               name: マイルストーン
             item_2:
-              name: Tasks
+              name: タスク
             item_3:
               name: チーム プランナー
           boards:
             bcf:
-              name: Simple drag'n drop workflow
+              name: シンプルなドラッグドロップワークフロー
           project-overview:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: ようこそ
               item_1:
                 options:
                   name: はじめに
@@ -149,32 +148,32 @@ ja:
                 options:
                   name: マイルストーン
         demo-planning-constructing-project:
-          name: "(Demo) Planning & constructing"
-          status_explanation: All tasks are on schedule. The people involved know their tasks. The system is completely set up.
-          description: This is a short summary of the goals of this demo planning and constructing project.
+          name: "(デモ) 計画と構築"
+          status_explanation: すべてのタスクがスケジュール通りに進んでいる。関係者は自分のタスクを把握している。システムは完全にセットアップされている。
+          description: これは、このデモ計画・建設プロジェクトの目標を簡単にまとめたものである。
           news:
             item_0:
-              title: Welcome to your demo project
+              title: デモ・プロジェクトへようこそ
               summary: |
-                We are glad you joined.
-                In this module you can communicate project news to your team members.
-              description: The actual news
+                ご参加ありがとうございます。
+                このモジュールでは、プロジェクトのニュースをチームメンバーに伝えることができます。
+              description: 実際のニュース
           categories:
-            item_0: Category 1 (to be changed in Project settings)
+            item_0: カテゴリー1（プロジェクト設定で変更可能）
           queries:
             item_0:
-              name: Project plan
+              name: プロジェクト計画
             item_1:
               name: マイルストーン
             item_2:
-              name: Tasks
+              name: タスク
             item_3:
               name: チーム プランナー
           project-overview:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: ようこそ
               item_1:
                 options:
                   name: はじめに
@@ -205,14 +204,14 @@ ja:
                   name: マイルストーン
           work_packages:
             item_0:
-              subject: Project kick off construction project
+              subject: プロジェクト・キックオフ建設プロジェクト
               description: |-
                 キックオフは、会社におけるプロジェクト開始の会議体です。このプロジェクトに参加する人全員をキックオフに招待し、最初のブリーフィングを行う。
 
                 次のステップは、[ガントチャート]({{opSetting:base_url}}/projects/demo-construction-project/work_packages?query_props=%7B%22c%22%3A%5B%22id%22%2C%22subject%22%2C%22startDate%22%2C%22dueDate%22%5D%2C%22tv%22%3Atrue%2C%22tzl%22%3A%22weeks%22%2C%22hi%22%3Atrue%2C%22g%22%3A%22%22%2C%22t%22%3A%22startDate%3Aasc%22%2C%22f%22%3A%5B%7B%22n%22%3A%22status%22%2C%22o%22%3A%22o%22%2C%22v%22%3A%5B%5D%7D%5D%2C%22pa%22%3A1%2C%22pp%22%3A100%7D)。
             item_1:
-              subject: Basic evaluation
-              description: This type is hierarchically a parent of the types &quot;Clash&quot; and &quot;Request&quot;, thus represents a general note.
+              subject: 基本評価
+              description: この型は階層的に &quot;Clash&quot; と &quot;Request&quot;型の親であるため、一般的なノートを表します。
               children:
                 item_0:
                   subject: Gathering first project information

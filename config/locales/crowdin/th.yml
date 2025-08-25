@@ -973,6 +973,8 @@ th:
         admin_only: "Admin-only"
       custom_value:
         value: "ค่า"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "Client ID"
         secret: "Client secret"
@@ -1281,6 +1283,7 @@ th:
         odd: "must be odd."
         regex_match_failed: "does not match the regular expression %{expression}."
         regex_invalid: "could not be validated with the associated regular expression."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "must be smaller than or equal to maximum length."
         taken: "has already been taken."
         too_long: "is too long (maximum is %{count} characters)."
@@ -1857,7 +1860,7 @@ th:
   button_duplicate: "ทำซ้ำ"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "แก้ไข"
-  button_edit_associated_wikipage: "แก้ไขหน้าวิกิที่เกี่ยวข้อง: %{page_title}"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "ขยายทั้งหมด"
   button_favorite: "Add to favorites"
   button_filter: "ตัวกรอง"

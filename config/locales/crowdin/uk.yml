@@ -990,6 +990,8 @@ uk:
         admin_only: "Тільки для адміністраторів"
       custom_value:
         value: "Значення"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "Ідентифікатор клієнта"
         secret: "Секретний ключ клієнта"
@@ -1298,6 +1300,7 @@ uk:
         odd: "має бути непарним."
         regex_match_failed: "не збігається з регулярним виразом %{expression}."
         regex_invalid: "неможливо перевірити з відповідним регулярним виразом."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "має бути меншою або дорівнює максимальній довжині."
         taken: "вже прийнято."
         too_long: "занадто довгий (максимум - %{count} characters).\n"
@@ -1919,7 +1922,7 @@ uk:
   button_duplicate: "Дублювати"
   button_duplicate_and_follow: "Дублювати й стежити"
   button_edit: "Редагувати"
-  button_edit_associated_wikipage: "Редагувати пов'язану Wiki сторінку: %{page_title}"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Розгорнути все"
   button_favorite: "Додати в обране"
   button_filter: "Фільтр"

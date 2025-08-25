@@ -989,6 +989,8 @@ lv:
         admin_only: "Admin-only"
       custom_value:
         value: "Vērtība"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "Client ID"
         secret: "Client secret"
@@ -1297,6 +1299,7 @@ lv:
         odd: "jābūt nepāra."
         regex_match_failed: "does not match the regular expression %{expression}."
         regex_invalid: "could not be validated with the associated regular expression."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "jābūt mazākam vai vienādam ar maksimālo garumu."
         taken: "jau tika aizņemts."
         too_long: "ir pārāk garš (maksimums ir %{count} rakstzīmes)."
@@ -1903,7 +1906,7 @@ lv:
   button_duplicate: "Duplicate"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Labot"
-  button_edit_associated_wikipage: "Edit associated Wiki page: %{page_title}"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Expand all"
   button_favorite: "Add to favorites"
   button_filter: "Filtrēt"

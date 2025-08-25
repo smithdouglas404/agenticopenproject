@@ -4,7 +4,7 @@ ro:
     label_preview: 'Previzualizează'
     button_update: 'Actualizează'
     avatars:
-      label_choose_avatar: "Alegeți Avatar din fișier"
+      label_choose_avatar: "Alege Avatar din fișier"
       uploading_avatar: "Se încarcă avatarul tău."
       text_upload_instructions: |
         Încarcă propriul avatar personalizat de 128 pe 128 pixeli. Fișierele mai mari vor fi redimensionate și decupate pentru a se potrivi.

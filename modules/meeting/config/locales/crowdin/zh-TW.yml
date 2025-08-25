@@ -504,6 +504,6 @@ zh-TW:
   text_agenda_item_move_next_meeting_cancelled: "由於下次會議已被取消，因此無法轉到下次會議。"
   text_work_package_add_to_meeting_hint: '使用"增加到會議"按鈕將此工作套件新增到即將舉行的會議。'
   text_work_package_has_no_past_meeting_agenda_items: "在過往會議中沒有提及本工作套件。"
-  text_email_updates_muted: "電子郵件行事曆更新已靜音。當您變更時，參與者將不會透過電子郵件收到更新的邀請。"
+  text_email_updates_muted: "將停止電子郵件通知「行事曆更新」。當您變更時，參與者將不會透過電子郵件收到更新的邀請。"
   text_email_updates_enabled: "已啟用電子郵件行事曆更新。當您作出變更時，所有參與者都會透過電子郵件收到更新的邀請。"
 

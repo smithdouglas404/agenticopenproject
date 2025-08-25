@@ -76,7 +76,7 @@ ro:
     unassigned: "Neasociate"
     user_preference:
       header_backlogs: "Modul Backlog-uri"
-      button_update_backlogs: "Actualizare modul backlogs"
+      button_update_backlogs: "Actualizează modul backlogs"
     x_more: "%{count} mai mult..."
   backlogs_active: "activ"
   backlogs_any: "oricare"

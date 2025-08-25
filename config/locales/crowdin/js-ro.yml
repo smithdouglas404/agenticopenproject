@@ -111,10 +111,10 @@ ro:
       highlighting:
         inline: "Evidențiați în linie:"
         entire_card_by: "Întreaga carte de"
-      remove_from_list: "Alegeți intervalul din listă"
+      remove_from_list: "Alege intervalul din listă"
     caption_rate_history: "Istoric cotă"
     clipboard:
-      browser_error: "Your browser doesn't support copying to clipboard. Please copy it manually: %{content}"
+      browser_error: "Browser-ul tău nu acceptă copierea în clipboard. Te rog să o copiezi manual: %{content}"
       copied_successful: "Copiat cu succes în clipboard!"
     chart:
       type: "Tipul de diagramă"
@@ -183,7 +183,7 @@ ro:
           button: "Creați pachet de lucru"
           type: "Tip pachet de lucru"
           button_style: "Folosește butonul de stil"
-          button_style_hint: "Optional: Bifați pentru a vedea comenzile macro sub formă de butoane, nu sub formă de link."
+          button_style_hint: "Opțional: Bifează pentru a vedea comenzile macro sub formă de butoane, nu sub formă de link."
           without_type: "Creați pachet de lucru"
           with_type: "Creați pachet de lucru (Tip: %{typename})"
         embedded_table:
@@ -297,7 +297,7 @@ ro:
           "16_3":
             standard:
               new_features_html: >
-                The release contains various new features and improvements, such as <br> <ul class="%{list_styling_class}"> <li>UX/UI improvements for a more modern look.</li> <li>Meetings: Option to mute email notifications and ICS.</li> <li>Ongoing timers shown in the My time tracking module.</li> <li>Progress reporting: % Complete sum also shown in Status-based mode.</li> <li>Nextcloud Health check: Indicate missing token exchange capability (Enterprise add-on).</li> </ul>
+                Versiunea conţine diverse caracteristici noi şi îmbunătăţiri, cum ar fi <br> <ul class="%{list_styling_class}"> <li>UX/UI îmbunătăţiri pentru un aspect mai modern.</li> <li>Întâlniri: Opțiunea de a dezactiva notificările prin e-mail și ICS.</li> <li>temporizatoare în curs afișate în modulul de urmărire a timpului meu.</li> <li>Raportare progresivă: % Suma completă este afișată și în modul Status.</li> <li>Verificarea stării de sănătate a Nextcloud: Indicați capacitatea de schimb a tokenurilor lipsă (Suplimentul Întreprinderilor).</li> </ul>
     ical_sharing_modal:
       title: "Subscribe to calendar"
       inital_setup_error_message: "An error occured while fetching data."
@@ -364,7 +364,7 @@ ro:
     label_expand: "Extindere"
     label_expanded: "extins"
     label_expand_all: "Extindere totală"
-    label_expand_project_menu: "Deschide meniul proiectului"
+    label_expand_project_menu: "Deschide meniu proiect"
     label_export: "Exportă"
     label_export_preparing: "Exportul este în curs de pregătire și va fi descărcat în curând."
     label_favorites: "Favorite"
@@ -377,7 +377,7 @@ ro:
     label_group_plural: "Grupuri"
     label_hide_attributes: "Arată mai puţin"
     label_hide_column: "Ascunde coloana"
-    label_hide_project_menu: "Închide meniul proiectului"
+    label_hide_project_menu: "Închide meniu proiect"
     label_in: "în"
     label_in_less_than: "în mai puțin de"
     label_in_more_than: "în mai mult de"
@@ -558,7 +558,7 @@ ro:
         prioritized: "Prioritizat"
         dateAlert: "Alertă dată"
         shared: "Partajat"
-        reminder: "Reminder"
+        reminder: "Memento"
       date_alerts:
         milestone_date: "Dată etapă"
         overdue: "Restanțe"
@@ -589,9 +589,9 @@ ro:
           no_selection: "Fă clic pe o notificare pentru a vizualiza toate detaliile activității."
         new_notifications:
           message: "Există notificări noi."
-          link_text: "Click here to load them."
+          link_text: "Click aici pentru a le încărca."
       reminders:
-        note: "Note: “%{note}”"
+        note: "Notă: „%{note}”"
       settings:
         change_notification_settings: 'Poți modifica setările <a target="_blank" href="%{url}">de notificare</a> pentru a te asigura că nu pierzi niciodată o actualizare importantă.'
         title: "Setări notificare"
@@ -645,10 +645,10 @@ ro:
       no_other_page: "Ești pe singura pagină."
       pages_skipped: "Pagini sărite."
       page_navigation: "Pagination navigation"
-      per_page_navigation: 'Items per page selection'
+      per_page_navigation: 'Elemente pe pagina de selecție'
       pages:
         page_number: Page %{number}
-        show_per_page: Show %{number} per page
+        show_per_page: Arată %{number} per pagină
     placeholders:
       default: "-"
       subject: "Introdu subiectul aici"
@@ -1006,7 +1006,7 @@ ro:
         hierarchy_hint: "Toate rezultatele tabelelor filtrate vor fi completate cu strămoșii lor. Ierarhiile pot fi extinse și restrânse."
         display_sums_hint: "Afișarea sumelor tuturor atributelor însumabile pe un rând sub rezultatele tabelului."
         show_timeline_hint: "Afișați o diagramă Gantt interactivă în partea dreaptă a tabelului. Puteți modifica lățimea acestuia trăgând de separatorul dintre tabel și graficul gantt."
-        highlighting: "Fără evidențiere"
+        highlighting: "Evidențiere"
         highlighting_mode:
           description: "Nicio culoare"
           none: "Fără evidențiere"
@@ -1017,7 +1017,7 @@ ro:
           priority: "Prioritate"
           type: "Tip"
         sorting_mode:
-          description: "Alegeți modul de sortare a pachetelor de lucru:"
+          description: "Alege modul de sortare a pachetelor de lucru:"
           automatic: "Automat"
           manually: "Manual"
           warning: "La activarea modului de sortare automată, veți pierde sortarea anterioară."
@@ -1211,9 +1211,9 @@ ro:
         next_button: "Continuă"
     exclusion_info:
       modal:
-        title: "Status excluded from hierarchy totals"
+        title: "Status exclus din totalul ierarhic"
         content: >-
-          The status '%{status_name}' has been configured to be excluded from hierarchy totals of Work, Remaining work, and % Complete. The totals do not take this value into account.
+          Starea '%{status_name}' a fost configurată pentru a fi exclusă din totalul ierarhiei de lucrări, muncă rămasă și % finalizată. Totalurile nu iau în considerare această valoare.
     favorite_projects:
       no_results: "You have no favorite projects"
       no_results_subtext: "Add one or multiple projects as favorite through their overview or in a project list."

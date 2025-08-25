@@ -981,6 +981,8 @@ fil:
         admin_only: "Admin-only"
       custom_value:
         value: "Halaga"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "Client ID"
         secret: "Client secret"
@@ -1289,6 +1291,7 @@ fil:
         odd: "dapat ay kakaiba."
         regex_match_failed: "does not match the regular expression %{expression}."
         regex_invalid: "hindi pwedeng mapatunayan sa nauugnay na mga regular na ekspresyon."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "dapat ay mas maliit kaysa o katumbas sa pinakamataas na haba."
         taken: "ay nakuha na."
         too_long: "ay masyadong mahaba (pinakamataas ay ang mga %{count} karakter)."
@@ -1880,7 +1883,7 @@ fil:
   button_duplicate: "Kapareha"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "I-edit"
-  button_edit_associated_wikipage: "I-edit ang kaugnay ng Wiki na pahina: %{page_title}"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Malakihin lahat"
   button_favorite: "Add to favorites"
   button_filter: "Salain"

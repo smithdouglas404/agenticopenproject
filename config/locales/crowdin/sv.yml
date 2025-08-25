@@ -981,6 +981,8 @@ sv:
         admin_only: "Admin-only"
       custom_value:
         value: "Värde"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "Client ID"
         secret: "Client secret"
@@ -1289,6 +1291,7 @@ sv:
         odd: "måste vara udda."
         regex_match_failed: "does not match the regular expression %{expression}."
         regex_invalid: "kunde inte valideras med det associerade reguljära uttrycket."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "måste vara mindre än eller lika med maximal längd."
         taken: "har redan använts."
         too_long: "är för långt (maximalt är %{count} tecken)."
@@ -1880,7 +1883,7 @@ sv:
   button_duplicate: "Duplicera"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Redigera"
-  button_edit_associated_wikipage: "Redigerade associerad wikisida: %{page_title}"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Expandera alla"
   button_favorite: "Lägg till i favoriter"
   button_filter: "Filter"

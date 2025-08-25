@@ -120,11 +120,11 @@ ru:
         label_token: "Токен доступа"
         one_time_hint: "Это единственный раз, когда Вы увидите токен. Убедитесь, что вы сохранили его."
       delete_scim_client_dialog_component:
-        title: "Delete SCIM client"
-        heading: "Are you sure you want to delete this SCIM client?"
+        title: "Удалить клиента SCIM"
+        heading: "Вы уверены, что хотите удалить этого клиента SCIM?"
         description: "Users managed by this SCIM client can no longer be updated by it."
       edit:
-        label_delete_scim_client: "Delete SCIM client"
+        label_delete_scim_client: "Удалить клиента SCIM"
       form:
         auth_provider_description: "Это служба, которую пользователи, добавленные провайдером SCIM, будут использовать для аутентификации в OpenProject."
         authentication_method_description_html: "This is how the SCIM client authenticates at OpenProject. Please ensure that OAuth tokens include the <code>scim_v2</code> scope."
@@ -133,9 +133,9 @@ ru:
         name_description: "Выберите имя, которое поможет другим администраторам лучше понять, зачем был настроен этот клиент."
       index:
         description: "SCIM clients configured here are able to interact with OpenProject SCIM server API to provision, update, and deprovision user accounts and groups."
-        label_create_button: "Add SCIM client"
+        label_create_button: "Добавить клиента SCIM"
       new:
-        title: "New SCIM client"
+        title: "Новый клиент SCIM"
       revoke_static_token_dialog_component:
         confirm_button: "Отменить"
         title: "Отменить статический токен"
@@ -143,7 +143,7 @@ ru:
         description: "The SCIM client that uses this token will no longer be able to access OpenProject's SCIM server API."
       table_component:
         blank_slate:
-          title: "No SCIM clients configured yet"
+          title: "Клиенты SCIM еще не настроены"
           description: "Добавьте клиентов, чтобы увидеть их здесь"
         user_count: "Пользователи"
       token_list_component:
@@ -967,7 +967,7 @@ ru:
         attribute_name: "Атрибут"
         help_text: "Текст справки"
       auth_provider:
-        scim_clients: "SCIM clients"
+        scim_clients: "Клиенты SCIM"
       capability:
         context: "Контекст"
       changeset:
@@ -995,6 +995,8 @@ ru:
         admin_only: "Только администратор"
       custom_value:
         value: "Значение"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "ID клиента"
         secret: "Секрет клиента"
@@ -1303,6 +1305,7 @@ ru:
         odd: "должно быть нечетным."
         regex_match_failed: "не соответствует регулярному выражению %{expression}."
         regex_invalid: "не может быть проверен связанным регулярным выражением."
+        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "должно быть меньше или равно максимальной длине."
         taken: "уже принято."
         too_long: "слишком длинно (максимум — %{count} знаков)."
@@ -1924,7 +1927,7 @@ ru:
   button_duplicate: "Дублировать"
   button_duplicate_and_follow: "Дублировать и следить"
   button_edit: "Правка"
-  button_edit_associated_wikipage: "Редактирование связанной wiki-страницы: %{page_title}"
+  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Развернуть все"
   button_favorite: "Добавить в избранное"
   button_filter: "Фильтр"
