@@ -55,16 +55,21 @@ module WorkPackagesControllerHelper
   end
 
   def load_and_validate_query
+    # rubocop:disable Rails/HelperInstanceVariable
     @query ||= retrieve_query(@project)
     @query.name = params[:title] if params[:title].present?
 
     return if @query.valid?
 
-    message = @query.errors.full_messages.to_sentence
+    respond_query_error(@query.errors.full_messages.to_sentence)
+    # rubocop:enable Rails/HelperInstanceVariable
+  end
+
+  def respond_query_error(message)
     respond_to do |format|
       format.turbo_stream do
         # Renders an error flash via Turbo Stream (existing helper)
-        render_error_flash_message_via_turbo_stream(message: message)
+        render_error_flash_message_via_turbo_stream(message:)
         # Use 422 so Turbo treats this as a validation error without a redirect
         response.status = :unprocessable_entity
         respond_with_turbo_streams
@@ -72,7 +77,7 @@ module WorkPackagesControllerHelper
 
       format.any do
         request.format = "html"
-        render_400(message: @query.errors.full_messages.join(". "))
+        render_400(message:)
       end
     end
   end
