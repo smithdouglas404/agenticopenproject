@@ -28,11 +28,40 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Queries::Versions
-  ::Queries::Register.register(VersionQuery) do
-    filter Filters::SharingFilter
-    filter Filters::NameFilter
+class Queries::Versions::Filters::NameFilter < Queries::Versions::Filters::VersionFilter
+  def type
+    :string
+  end
 
-    order Orders::DefaultOrder
+  def where
+    case operator
+    when "="
+      ["LOWER(versions.name) IN (?)", sql_value]
+    when "!"
+      ["LOWER(versions.name) NOT IN (?)", sql_value]
+    when "~", "**"
+      ["LOWER(versions.name) LIKE ?", "%#{sql_value}%"]
+    when "!~"
+      ["LOWER(versions.name) NOT LIKE ?", "%#{sql_value}%"]
+    end
+  end
+
+  def human_name
+    I18n.t(:label_name)
+  end
+
+  def self.key
+    :name
+  end
+
+  private
+
+  def sql_value
+    case operator
+    when "=", "!"
+      values.map { |val| self.class.connection.quote_string(val.downcase) }.join(",")
+    when "**", "~", "!~"
+      values.first.downcase
+    end
   end
 end
