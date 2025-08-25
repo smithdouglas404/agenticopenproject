@@ -47,33 +47,27 @@ See COPYRIGHT and LICENSE files for more details.
 %>
 
 <%=
-  if sidebar_enabled?
-    render(Primer::Alpha::Layout.new) do |component|
-      component.with_main do
-        angular_component_tag "opce-overview"
+  render(OpPrimer::ConditionalLayoutComponent.new(condition: sidebar_enabled?)) do |component|
+    component.with_sidebar(width: :narrow, col_placement: :end) do
+      if life_cycle_sidebar_enabled?
+        concat(
+          render_sidebar_turbo_frame(
+            "project-life-cycle-sidebar",
+            src: project_life_cycle_sidebar_path(project)
+          )
+        )
       end
 
-      component.with_sidebar(width: :narrow, col_placement: :end) do
-        if life_cycle_sidebar_enabled?
-          concat(
-            render_sidebar_turbo_frame(
-              "project-life-cycle-sidebar",
-              src: project_life_cycle_sidebar_path(project)
-            )
+      if custom_fields_sidebar_enabled?
+        concat(
+          render_sidebar_turbo_frame(
+            "project-custom-fields-sidebar",
+            src: project_custom_fields_sidebar_path(project)
           )
-        end
-
-        if custom_fields_sidebar_enabled?
-          concat(
-            render_sidebar_turbo_frame(
-              "project-custom-fields-sidebar",
-              src: project_custom_fields_sidebar_path(project)
-            )
-          )
-        end
+        )
       end
     end
-  else
+
     angular_component_tag "opce-overview"
   end
 %>
