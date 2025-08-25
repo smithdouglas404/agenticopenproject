@@ -40,10 +40,10 @@ module OpenProjectScimitar
       name: "OAuth Bearer Token",
       description: OpenProject::Static::Links.url_for(:sysadmin_docs, :scim_oauth2_client_credentials_authentication_method)
     ),
-    Scimitar::AuthenticationScheme.new(
-      type: "oidcjwt",
-      name: "OpenID Provider JWT",
-      description: OpenProject::Static::Links.url_for(:sysadmin_docs, :scim_jwt_authetication_method)
-    )
+    # Scimitar::AuthenticationScheme.new(
+    #   type: "oidcjwt",
+    #   name: "OpenID Provider JWT",
+    #   description: OpenProject::Static::Links.url_for(:sysadmin_docs, :scim_jwt_authetication_method)
+    # )
   ].freeze
 end
