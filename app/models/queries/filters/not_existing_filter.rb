@@ -50,7 +50,7 @@ module Queries
       validate :always_false
 
       def always_false
-        errors.add :base, I18n.t(:"errors.filter_not_found_or_invalid")
+        errors.add :base, I18n.t(:"activerecord.errors.messages.filter_does_not_exist")
       end
 
       # deactivating superclass validation
