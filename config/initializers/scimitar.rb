@@ -32,6 +32,7 @@ Rails.application.config.to_prepare do
   Scimitar.service_provider_configuration = Scimitar::ServiceProviderConfiguration.new(
     patch: Scimitar::Supportable.supported,
     authenticationSchemes: OpenProjectScimitar::AUTHENTICATION_SCHEMES
+
   )
   Scimitar.engine_configuration = Scimitar::EngineConfiguration.new(
     custom_authenticator: lambda do
