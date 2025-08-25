@@ -93,14 +93,19 @@
             <td class="buttons">
               <a *ngIf="item.entry && item.entry.updateImmediately"
                  (click)="editTimeEntry(item.entry)"
+                 (keyup.enter)="editTimeEntry(item.entry)"
+                 (keyup.space)="editTimeEntry(item.entry)"
+                 tabindex="0"
                  [title]="text.edit"
-                 attr.data-test-selector="edit-time-entry-{{ item.entry.id }}"
-              >
+                 attr.data-test-selector="edit-time-entry-{{ item.entry.id }}">
                 <op-icon icon-classes="icon-context icon-edit"></op-icon>
               </a>
               <a *ngIf="item.entry && item.entry.delete"
+                 tabindex="0"
                  (click)="deleteIfConfirmed($event, item.entry)"
-                 [title]="text.delete" >
+                 (keyup.enter)="deleteIfConfirmed($event, item.entry)"
+                 (keyup.space)="deleteIfConfirmed($event, item.entry)"
+                 [title]="text.delete">
                 <op-icon icon-classes="icon-context icon-delete"></op-icon>
               </a>
             </td>
