@@ -28,25 +28,6 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  if allowed_to_manage?
-    render(Primer::OpenProject::SubHeader.new) do |subheader|
-      subheader.with_action_button(
-        scheme: :primary,
-        leading_icon: :plus,
-        label: t(:label_widget_new),
-        data: {
-          controller: "overview--add-widgets",
-          action: "click->overview--add-widgets#addWidget"
-        },
-        test_selector: "overview--add-widgets-button"
-      ) do
-        t(:label_widget)
-      end
-    end
-  end
-%>
-
-<%=
   render(OpPrimer::ConditionalLayoutComponent.new(condition: sidebar_enabled?)) do |component|
     component.with_sidebar(width: :narrow, col_placement: :end) do
       if life_cycle_sidebar_enabled?
@@ -68,6 +49,25 @@ See COPYRIGHT and LICENSE files for more details.
       end
     end
 
-    angular_component_tag "opce-overview"
+    if allowed_to_manage?
+      concat(
+        render(Primer::OpenProject::SubHeader.new) do |subheader|
+          subheader.with_action_button(
+            scheme: :primary,
+            leading_icon: :plus,
+            label: t(:label_widget_new),
+            data: {
+              controller: "overview--add-widgets",
+              action: "click->overview--add-widgets#addWidget"
+            },
+            test_selector: "overview--add-widgets-button"
+          ) do
+            t(:label_widget)
+          end
+        end
+      )
+    end
+
+    concat(angular_component_tag("opce-overview"))
   end
 %>
