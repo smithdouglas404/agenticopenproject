@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Budgets
   class Engine < ::Rails::Engine
     include OpenProject::Plugins::ActsAsOpEngine
@@ -10,7 +12,9 @@ module Budgets
                    { budgets: %i[index show] },
                    permissible_on: :project
         permission :edit_budgets,
-                   { budgets: %i[index show edit update destroy destroy_info new create copy] },
+                   {
+                     budgets: %i[index show edit update destroy destroy_info new create copy]
+                   },
                    permissible_on: :project
       end
 
@@ -22,6 +26,8 @@ module Budgets
            caption: :budgets_title,
            icon: "op-budget"
     end
+
+    patch_with_namespace :Projects, :RowComponent
 
     add_api_path :budget do |id|
       "#{root}/budgets/#{id}"
@@ -59,6 +65,13 @@ module Budgets
 
       ::Queries::Register.register(::Query) do
         filter Queries::WorkPackages::Filter::BudgetFilter
+      end
+
+      ::Queries::Register.register(::ProjectQuery) do
+        select Queries::Projects::Selects::BudgetPlanned
+        select Queries::Projects::Selects::BudgetSpent
+        select Queries::Projects::Selects::BudgetSpentRatio
+        select Queries::Projects::Selects::BudgetAvailable
       end
     end
   end

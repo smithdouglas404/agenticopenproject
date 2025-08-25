@@ -47,12 +47,16 @@ class BudgetsController < ApplicationController
 
   helper :sort
   include SortHelper
+
   helper :projects
   include ProjectsHelper
+
   helper :attachments
   include AttachmentsHelper
+
   helper :costlog
   include CostlogHelper
+
   helper :budgets
   include BudgetsHelper
   include PaginationHelper
@@ -74,6 +78,7 @@ class BudgetsController < ApplicationController
 
   def show
     @edit_allowed = User.current.allowed_in_project?(:edit_budgets, @project)
+
     respond_to do |format|
       format.html { render action: "show", layout: !request.xhr? }
     end
@@ -102,6 +107,10 @@ class BudgetsController < ApplicationController
     render action: :new, layout: !request.xhr?
   end
 
+  def edit
+    @budget.attributes = permitted_params.budget if params[:budget]
+  end
+
   def create
     call = attachable_create_call ::Budgets::CreateService,
                                   args: permitted_params.budget.merge(project: @project)
@@ -113,10 +122,6 @@ class BudgetsController < ApplicationController
     else
       render action: "new", status: :unprocessable_entity, layout: !request.xhr?
     end
-  end
-
-  def edit
-    @budget.attributes = permitted_params.budget if params[:budget]
   end
 
   def update
@@ -197,7 +202,7 @@ class BudgetsController < ApplicationController
 
   def find_budget
     # This function comes directly from issues_controller.rb (Redmine 0.8.4)
-    @budget = Budget.includes(:project, :author).find_by(id: params[:id])
+    @budget = Budget.includes(:project, :author).find(params[:id])
     @project = @budget.project if @budget
   end
 

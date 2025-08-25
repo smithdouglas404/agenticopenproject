@@ -1,4 +1,6 @@
-#-- copyright
+# frozen_string_literal: true
+
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -24,32 +26,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-module CostlogHelper
-  def cost_types_collection_for_select_options(selected_type = nil)
-    cost_types = CostType.active.sort
-
-    if selected_type && !cost_types.include?(selected_type)
-      cost_types << selected_type
-      cost_types.sort
-    end
-    cost_types.map { |t| [t.name, t.id] }
+class Queries::Projects::Selects::BudgetPlanned < Queries::Selects::Base
+  def self.key
+    :budget_planned
   end
 
-  def user_collection_for_select_options(_options = {})
-    Principal
-      .possible_assignee(@project)
-      .where(type: "User")
-      .map { |t| [t.name, t.id] }
-  end
-
-  def extended_progress_bar(pcts, options = {})
-    options.reverse_merge!(hide_total_progress: true)
-    return progress_bar(pcts, options) unless pcts.is_a?(Numeric) && pcts > 100
-
-    closed = ((100.0 / pcts) * 100).round
-    done = 100.0 - ((100.0 / pcts) * 100).round
-    progress_bar([closed, done], options)
+  def caption
+    I18n.t(:label_budget_planned)
   end
 end
