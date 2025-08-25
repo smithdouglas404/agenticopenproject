@@ -27,7 +27,9 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-require_relative "../spec_helper"
+
+require "spec_helper"
+require_module_spec_helper
 
 RSpec.describe Document do
   let(:documentation_category) { create(:document_category, name: "User documentation") }
@@ -55,21 +57,21 @@ RSpec.describe Document do
   end
 
   describe "create with a valid document" do
-    let(:valid_document) { Document.new(title: "Test", project:, category: documentation_category) }
+    let(:valid_document) { build(:document, title: "Test", project:, category: documentation_category) }
 
     it "adds a document" do
-      expect  do
+      expect do
         valid_document.save
-      end.to change { Document.count }.by 1
+      end.to change(described_class, :count).by 1
     end
 
     it "sets a default-category, if none is given" do
       default_category = create(:document_category, name: "Technical documentation", is_default: true)
-      document = Document.new(project:, title: "New Document")
+      document = build(:document, project:, title: "New Document")
       expect(document.category).to eql default_category
       expect do
         document.save
-      end.to change { Document.count }.by 1
+      end.to change(described_class, :count).by 1
     end
 
     it "with attachments should change the updated_at-date on the document to the attachment's date" do
