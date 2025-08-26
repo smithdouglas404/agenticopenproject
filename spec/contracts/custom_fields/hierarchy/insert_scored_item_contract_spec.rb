@@ -46,6 +46,28 @@ RSpec.describe CustomFields::Hierarchy::InsertScoredItemContract do
       end
     end
 
+    context "when inputs are empty" do
+      let(:params) { { parent:, label: "", score: "" } }
+
+      it "is invalid" do
+        result = subject.call(params)
+        expect(result).to be_failure
+        expect(result.errors.to_h).to include(label: ["must be filled."])
+        expect(result.errors.to_h).to include(score: ["must be filled."])
+      end
+    end
+
+    context "when inputs are missing" do
+      let(:params) { { parent: } }
+
+      it "is invalid" do
+        result = subject.call(params)
+        expect(result).to be_failure
+        expect(result.errors.to_h).to include(label: ["is missing."])
+        expect(result.errors.to_h).to include(score: ["is missing."])
+      end
+    end
+
     context "when parent is not of type 'Item'" do
       let(:invalid_parent) { create(:custom_field) }
       let(:params) { { parent: invalid_parent, label: "Valid Label", score: 0.1337 } }

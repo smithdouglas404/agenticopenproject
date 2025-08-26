@@ -366,6 +366,7 @@ en:
       int?: "must be an integer."
       decimal?: "must be a decimal."
       filled?: "must be filled."
+      key?: "is missing."
       greater_or_equal_zero: "must be greater or equal to 0."
       not_found: "not found."
       rules:
@@ -388,6 +389,7 @@ en:
       depth: "Depth"
       item: "Item"
       label: "Label"
+      score: "Score"
       short: "Short name"
       parent: "Parent"
       blueprint: "Pattern blueprint"

@@ -62,7 +62,7 @@ module Admin
 
         def create
           item_service
-            .insert_item(contract: create_contract, **item_input)
+            .insert_item(contract_class: create_contract, **item_input)
             .either(
               lambda do |item|
                 redirect_to(
@@ -80,7 +80,7 @@ module Admin
         def update
           input = item_input
           item_service
-            .update_item(contract: update_contract,
+            .update_item(contract_class: update_contract,
                          item: @active_item,
                          label: input[:label],
                          short: input[:short],
@@ -163,7 +163,7 @@ module Admin
         end
 
         def add_errors_to_edit_form(validation_result)
-          @active_item.assign_attributes(**validation_result.to_h.slice(:label, :short))
+          @active_item.assign_attributes(**validation_result.to_h.slice(:label, :short, :score))
 
           validation_result.errors(full: true).to_h.each do |attribute, errors|
             @active_item.errors.add(attribute, errors.join(", "))
