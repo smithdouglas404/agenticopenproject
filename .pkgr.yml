@@ -7,6 +7,7 @@ license: "GPL"
 targets:
   debian-11: &debian
     build_dependencies:
+      - wget
       - libsqlite3-dev
     dependencies:
       - unzip
@@ -15,27 +16,27 @@ targets:
       - tesseract-ocr
       - catdoc
       - imagemagick
-  # debian-12:
-  #   <<: *debian
-  # ubuntu-20.04:
-  #   <<: *debian
-  # ubuntu-22.04:
-  #   <<: *debian
-  # centos-9:
-  #   env:
-  #     - NODE_ENV=production
-  #     - NPM_CONFIG_PRODUCTION=false
-  #     - SECRET_KEY_BASE=1
-  #   dependencies:
-  #     - epel-release
-  #     - ImageMagick
-  #     - unzip
-  #     - poppler-utils
-  # sles-15:
-  #   build_dependencies:
-  #     - sqlite3-devel
-  #   dependencies:
-  #     - ImageMagick
+  debian-12:
+    <<: *debian
+  ubuntu-20.04:
+    <<: *debian
+  ubuntu-22.04:
+    <<: *debian
+  centos-9:
+    env:
+      - NODE_ENV=production
+      - NPM_CONFIG_PRODUCTION=false
+      - SECRET_KEY_BASE=1
+    dependencies:
+      - epel-release
+      - ImageMagick
+      - unzip
+      - poppler-utils
+  sles-15:
+    build_dependencies:
+      - sqlite3-devel
+    dependencies:
+      - ImageMagick
 before_precompile: "packaging/setup"
 after_precompile: "packaging/teardown"
 services:
