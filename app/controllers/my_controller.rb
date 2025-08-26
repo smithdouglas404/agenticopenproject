@@ -129,7 +129,18 @@ class MyController < ApplicationController
   end
 
   def user_params
-    permitted_params.my_account_settings.to_h
+    raw = permitted_params.my_account_settings.to_h
+
+    if raw[:pref]
+      theme = raw[:pref][:theme]
+      increase = raw[:pref].delete(:increase_contrast)
+
+      if increase.to_s == "1" && theme.in?(%w[light dark])
+        raw[:pref][:theme] = "#{theme}_high_contrast"
+      end
+    end
+
+    raw
   end
 
   def notice_account_updated

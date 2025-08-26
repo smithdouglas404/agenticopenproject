@@ -30,6 +30,7 @@
 
 class My::LookAndFeelForm < ApplicationForm
   include ApplicationHelper
+
   form do |f|
     f.select_list(
       name: :theme,
@@ -45,6 +46,13 @@ class My::LookAndFeelForm < ApplicationForm
           label: theme[0]
         )
       end
+    end
+
+    unless User.current.pref.sync_with_os_theme?
+      f.check_box name: :increase_contrast,
+                  label: "Increase contrast",
+                  caption: "Enables high-contrast mode for the chosen colour mode.",
+                  checked: increase_contrast_checked?
     end
 
     f.select_list(
@@ -70,5 +78,10 @@ class My::LookAndFeelForm < ApplicationForm
     f.submit(name: :submit,
              label: I18n.t("activerecord.attributes.user_preference.button_update_look_and_feel"),
              scheme: :default)
+  end
+
+  def increase_contrast_checked?
+    # User.current.pref.theme ends with _high_contrast
+    User.current.pref.theme.to_s.end_with?("_high_contrast")
   end
 end
