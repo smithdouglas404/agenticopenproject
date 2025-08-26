@@ -270,8 +270,7 @@
                     edit_state:,
                     next_edit_state: :claims,
                     edit_mode:,
-                    heading: nil,
-                    extra_buttons: -> { render(OpenIDConnect::Groups::MatchPreviewDialogComponent.new) }
+                    heading: nil
                   )
                 )
               else
@@ -281,7 +280,7 @@
                     target_state: :group_mapping,
                     view_mode:,
                     heading: t("openid_connect.providers.label_group_mapping"),
-                    description: t("openid_connect.providers.section_texts.group_mapping"),
+                    description: t("openid_connect.providers.section_texts.group_mapping")
                   )
                 )
               end

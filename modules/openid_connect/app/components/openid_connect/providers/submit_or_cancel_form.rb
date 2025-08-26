@@ -43,17 +43,15 @@ module OpenIDConnect
         f.group(layout: :horizontal) do |button_group|
           button_group.submit(**@submit_button_options) unless @provider.seeded_from_env?
           button_group.button(**@cancel_button_options) unless @cancel_button_options[:hidden]
-          button_group.html_content(&@extra_content) if @extra_content
         end
       end
 
-      def initialize(provider:, state: nil, submit_button_options: {}, cancel_button_options: {}, extra_content: nil)
+      def initialize(provider:, state: nil, submit_button_options: {}, cancel_button_options: {})
         super()
         @state = state
         @provider = provider
         @submit_button_options = default_submit_button_options.merge(submit_button_options)
         @cancel_button_options = default_cancel_button_options.merge(cancel_button_options)
-        @extra_content = extra_content
       end
 
       private
