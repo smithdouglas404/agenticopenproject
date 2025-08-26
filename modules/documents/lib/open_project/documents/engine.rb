@@ -46,13 +46,20 @@ module OpenProject::Documents
 
       project_module :documents do |_map|
         permission :view_documents,
-                   { documents: %i[index show download] },
+                   { documents: %i[index show download],
+                     "documents/menus": %i[index] },
                    permissible_on: :project
         permission :manage_documents,
                    { documents: %i[new create edit update destroy] },
                    permissible_on: :project,
                    require: :loggedin
       end
+
+      menu :documents_menu,
+           { controller: "/documents", action: "index" },
+           parent: :documents,
+           partial: "documents/menus/menu",
+           caption: :label_document_plural
 
       menu :admin_menu,
            :document_categories,
