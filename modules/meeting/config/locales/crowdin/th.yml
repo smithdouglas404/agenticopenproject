@@ -44,7 +44,7 @@ th:
       meeting_agenda_item:
         title: "ชื่อเรื่อง"
         author: "ผู้เขียน"
-        duration_in_minutes: "Duration"
+        duration_in_minutes: "ระยะเวลา"
         description: "หมายเหตุ"
         presenter: "Presenter"
       meeting_section:
@@ -58,8 +58,13 @@ th:
         end_after: "Meeting series ends"
         end_date: "วันสิ้นสุด"
         iterations: "Occurrences"
+      meeting_participant:
+        invited: "Invited"
+        attended: "Attended"
     errors:
       models:
+        meeting_participant:
+          invalid_user: "%{name} is not a valid participant."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "There is one open meeting in the series that is not covered by the new schedule. Adjust the schedule to include all existing meetings."
@@ -92,7 +97,6 @@ th:
           updated: "changed from %{old_value} to %{value}"
           updated_html: "changed from <i>%{old_value}</i> to <i>%{value}</i>"
   description_attended: "attended"
-  description_invite: "invited"
   events:
     meeting: Meeting edited
     meeting_agenda: Meeting agenda edited
@@ -179,7 +183,7 @@ th:
         remove_participant: "Remove participant"
         manage_participants: "Manage participants"
         no_participants: "No participants"
-        show_all: "Show all"
+        show_all: "แสดงทั้งหมด"
       text:
         template: "These participants will be invited automatically to all future meetings as they are created."
         manage_participants: "Search for and add project members as participants to this meeting."
@@ -198,7 +202,7 @@ th:
       agenda_items: "Copy agenda items"
       agenda_text: "Copy the agenda of the old meeting"
       participants: "Copy list of participants"
-      to_clipboard: "Copy to clipboard"
+      to_clipboard: "คัดลอกไปยังคลิปบอร์ด"
     email:
       send_emails: "Email participants"
       send_invitation_emails: >
@@ -209,9 +213,9 @@ th:
       series:
         title: "[%{project_name}] Meeting series '%{title}'"
         summary: "%{actor} has set up a new meeting series '%{title}'"
-      series_rescheduled:
-        title: "[%{project_name}] Meeting series '%{title}' rescheduled"
-        summary: "%{actor} has changed the schedule for meeting series '%{title}'"
+      series_updated:
+        title: "[%{project_name}] Meeting series '%{title}' has been updated"
+        summary: "Meeting series '%{title}' has been updated by %{actor}"
         old_schedule: "Old schedule"
         new_schedule: "New schedule"
       invited:
@@ -224,13 +228,15 @@ th:
         summary_series: "Meeting series '%{title}' has been cancelled by %{actor}."
         summary: "'%{title}' has been cancelled by %{actor}."
         date_time: "Scheduled date/time"
-      rescheduled:
-        header: "Meeting '%{title}' has been rescheduled"
-        summary: "Meeting '%{title}' has been rescheduled by %{actor}"
-        body: "The meeting '%{title}' has been rescheduled by %{actor}."
+      updated:
+        header: "Meeting '%{title}' has been updated"
+        summary: "Meeting '%{title}' has been updated by %{actor}"
+        body: "The meeting '%{title}' has been updated by %{actor}."
         old_date_time: "Old date/time"
         new_date_time: "New date/time"
-    label_mail_all_participants: "Email calendar invite to all participants"
+        old_location: "Old location"
+        new_location: "New location"
+    label_mail_all_participants: "Send email invite to participants"
     types:
       one_time: "One-time"
       recurring: "Recurring"
@@ -258,8 +264,8 @@ th:
       your_meeting_export: "Meeting is being exported"
       minutes:
         footer_page_numbers: "P. %{current_page} of %{total_pages}"
-        author: "Author"
-        date: "Date"
+        author: "ผู้เขียน"
+        date: "วันที่"
         time: "Time"
         location: "Location"
         title: "Minutes"
@@ -268,7 +274,7 @@ th:
       description: Generate a printable PDF file of this meeting at the current state.
       templates:
         default:
-          label: Default
+          label: ค่าเริ่มต้น
           caption: The default template is suitable for most meetings and represent the current state.
         minutes:
           label: Minutes
@@ -277,7 +283,7 @@ th:
         label: First page header left
         caption: This text will appear on the first page at the left of the header.
       author:
-        label: Author
+        label: ผู้เขียน
         caption: The author of the minutes will be displayed in the subtitle.
       include_participants:
         label: Include list of participants
@@ -294,7 +300,7 @@ th:
       footer_text:
         label: Footer text
         caption: This text will appear on every page at the center of the footer.
-      submit_button: Download
+      submit_button: ดาวน์โหลด
     notifications:
       sidepanel:
         title: "Email calendar updates"
@@ -315,6 +321,11 @@ th:
           enable: "Enable email updates"
           disable: "Disable email updates"
       banner:
+        participants:
+          enabled: >
+            All participants will receive updated calendar invites via email when you add or remove participants.
+          disabled: >
+            Email calendar updates are disabled. Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             All participants will receive updated calendar invites via email informing them of your changes.
@@ -459,7 +470,7 @@ th:
   label_agenda_item_deleted_wp: "Deleted work package reference"
   label_agenda_item_actions: "Agenda items actions"
   label_agenda_item_move_to_next_title: "Move to next meeting?"
-  label_agenda_item_move: "Move"
+  label_agenda_item_move: "ย้าย"
   label_agenda_item_move_to_next: "Move to next meeting"
   label_agenda_item_move_to_backlog: "Move to backlog"
   label_agenda_item_move_to_current_meeting: "Move to current meeting"
@@ -511,9 +522,9 @@ th:
   label_meeting_reopen_action: "Reopen meeting"
   label_meeting_close_action: "Close meeting"
   label_meeting_in_progress_action: "Start meeting"
-  text_meeting_open_description: "This meeting is open. You can add/remove agenda items and edit them as you please. Once the agenda is ready, mark it as in progress to document outcomes."
+  text_meeting_open_description: "You can add/remove agenda items and participants. Once the agenda is ready, mark it as in progress to document outcomes."
   text_meeting_closed_description: "This meeting is closed. You cannot add/remove agenda items anymore."
-  text_meeting_in_progress_description: "This meeting is in progress. You can document outcomes for each agenda item, re-arrange them, and even add new ones. Once the meeting is complete, you can mark it as closed to lock it."
+  text_meeting_in_progress_description: "You can modify the agenda, document outcomes for each item and track attendance for participants. Once the meeting is complete, you can mark it as closed to lock it."
   text_meeting_open_dropdown_description: "Any existing outcomes will remain but users will not be able to add new outcomes."
   text_meeting_in_progress_dropdown_description: "Document outcomes like information needs or decisions taken during the meeting."
   text_meeting_closed_dropdown_description: "This meeting is closed. You cannot modify agenda items or outcomes anymore."

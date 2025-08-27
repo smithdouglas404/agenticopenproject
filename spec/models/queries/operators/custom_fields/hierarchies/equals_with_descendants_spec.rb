@@ -35,11 +35,12 @@ RSpec.describe Queries::Operators::CustomFields::Hierarchies::EqualsWithDescenda
 
   let(:custom_field) { create(:hierarchy_wp_custom_field, hierarchy_root: nil) }
   let!(:root) { service.generate_root(custom_field).value! }
-  let!(:germany) { service.insert_item(parent: root, label: "Germany", short: "DE").value! }
-  let!(:berlin) { service.insert_item(parent: germany, label: "Berlin").value! }
-  let!(:munich) { service.insert_item(parent: germany, label: "Munich").value! }
-  let!(:portugal) { service.insert_item(parent: root, label: "Portugal", short: "PT").value! }
-  let!(:lisbon) { service.insert_item(parent: portugal, label: "Lisboa").value! }
+  let(:contract_class) { CustomFields::Hierarchy::InsertListItemContract }
+  let!(:germany) { service.insert_item(contract_class:, parent: root, label: "Germany", short: "DE").value! }
+  let!(:berlin) { service.insert_item(contract_class:, parent: germany, label: "Berlin").value! }
+  let!(:munich) { service.insert_item(contract_class:, parent: germany, label: "Munich").value! }
+  let!(:portugal) { service.insert_item(contract_class:, parent: root, label: "Portugal", short: "PT").value! }
+  let!(:lisbon) { service.insert_item(contract_class:, parent: portugal, label: "Lisboa").value! }
   let(:service) { CustomFields::Hierarchy::HierarchicalItemService.new }
 
   let(:db_table) { "custom_values" }

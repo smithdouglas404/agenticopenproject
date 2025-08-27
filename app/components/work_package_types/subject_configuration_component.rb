@@ -75,7 +75,7 @@ module WorkPackageTypes
     end
 
     def supported_attributes
-      attribute_tokens = Patterns::TokenPropertyMapper.new.tokens_for_type(model)
+      enabled, disabled = Patterns::TokenPropertyMapper.new.partitioned_tokens_for_type(model)
 
       result = {
         work_package: {
@@ -92,10 +92,19 @@ module WorkPackageTypes
         }
       }
 
-      attribute_tokens.each_with_object(result) do |token, obj|
-        token_hash = { key: token.key, label: token.label, label_with_context: token.label_with_context }
-        obj[token.context][:tokens] << token_hash
-      end
+      enabled.each { |token| result.dig(token.context, :tokens) << token_to_hash(token, enabled: true) }
+      disabled.each { |token| result.dig(token.context, :tokens) << token_to_hash(token, enabled: false) }
+
+      result
+    end
+
+    def token_to_hash(token, enabled:)
+      {
+        key: token.key,
+        label: token.label,
+        label_with_context: token.label_with_context,
+        enabled:
+      }
     end
 
     def sort_attributes(attributes)

@@ -35,14 +35,16 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
     Class.new do
       include ActsAsCustomizable::CalculatedValue
 
-      attr_accessor :custom_field_values
+      def custom_field_values(*) = nil
+      attr_writer :custom_field_values
     end
   end
 
   let(:instance) { model_class.new }
 
   before do
-    allow(instance).to receive_messages(custom_field_values:, :custom_field_values= => nil)
+    allow(instance).to receive(:custom_field_values).with(all: true).and_return(custom_field_values)
+    allow(instance).to receive(:custom_field_values=)
   end
 
   def ref(custom_field) = "{{cf_#{custom_field.id}}}"

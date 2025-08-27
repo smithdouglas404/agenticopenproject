@@ -57,6 +57,7 @@ module OpenProject::Meeting
                      "recurring_meetings/schedule": %i[update_text],
                      "meetings/menus": %i[show]
                    },
+                   dependencies: :view_meetings,
                    permissible_on: :project,
                    require: :member,
                    contract_actions: { meetings: %i[create] }
@@ -70,6 +71,7 @@ module OpenProject::Meeting
                      meeting_participants: %i[create destroy mark_all_attended toggle_attendance manage_participants_dialog]
                    },
                    permissible_on: :project,
+                   dependencies: :view_meetings,
                    require: :member
         permission :delete_meetings,
                    {
@@ -77,10 +79,12 @@ module OpenProject::Meeting
                      recurring_meetings: %i[delete_dialog destroy delete_scheduled_dialog destroy_scheduled]
                    },
                    permissible_on: :project,
+                   dependencies: :view_meetings,
                    require: :member
         permission :send_meeting_invites_and_outcomes,
                    { meetings: %i[notify icalendar] },
                    permissible_on: :project,
+                   dependencies: :view_meetings,
                    require: :member
         permission :manage_agendas,
                    {
@@ -91,12 +95,14 @@ module OpenProject::Meeting
                                           clear_backlog clear_backlog_dialog]
                    },
                    permissible_on: :project, # TODO: Change this to :meeting when MeetingRoles are available
+                   dependencies: :view_meetings,
                    require: :member
         permission :manage_outcomes,
                    {
                      meeting_outcomes: %i[new cancel_new create edit cancel_edit update destroy]
                    },
                    permissible_on: :project,
+                   dependencies: :view_meetings,
                    require: :member
       end
 

@@ -73,7 +73,7 @@ RSpec.describe "Dashboard page members", :js do
     # within top-right area, add an additional widget
     dashboard_page.add_widget(1, 1, :within, "Members")
 
-    members_block = page.find(".widget-box", text: "MEMBERS")
+    members_block = page.find(".widget-box", text: "Members")
 
     within(members_block) do
       user_link = find("op-principal a", text: user.name)

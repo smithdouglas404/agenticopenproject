@@ -13,8 +13,6 @@ volumes:
 x-defaults: &defaults
   build:
     context: .
-    args:
-      OPENPROJECT_ANGULAR_BUILD: "fast"
   restart: unless-stopped
   env_file:
     - .env.pullpreview

@@ -22,10 +22,10 @@ pl:
         storage: Magazyn danych
         storage_url: Adres URL magazynu
       storages/sharepoint_storage:
-        host: Sharepoint Site URL
-        library: Library ID
-        name: Name
-        site: Site ID
+        host: Adres URL witryny Sharepoint
+        library: Identyfikator biblioteki
+        name: Nazwa
+        site: ID witryny
       storages/storage:
         authentication_method: Metoda uwierzytelniania
         creator: Twórca
@@ -195,10 +195,10 @@ pl:
       oauth_client_incomplete:
         nextcloud: Zezwalaj OpenProject na dostęp do danych Nextcloud przy użyciu OAuth.
         one_drive: Zezwalaj OpenProject na dostęp do danych Azure przy użyciu OAuth w celu połączenia z usługą OneDrive.
-        sharepoint: Allow OpenProject to access SharePoint data using OAuth.
+        sharepoint: Zezwalaj OpenProject na dostęp do danych SharePoint przy użyciu OAuth.
       redirect_uri_incomplete:
         one_drive: Ukończ konfigurację z poprawnym przekierowaniem identyfikatora URI.
-        sharepoint: Complete the setup with the correct URI redirection.
+        sharepoint: Ukończ konfigurację z poprawnym przekierowaniem identyfikatora URI.
     confirm_replace_oauth_application: Ta czynność zresetuje bieżące dane uwierzytelniające OAuth. Po potwierdzeniu będą Państwo musieli ponownie wprowadzić dane uwierzytelniające u dostawcy pamięci masowej, a wszyscy zdalni użytkownicy będą musieli ponownie autoryzować się w OpenProject. Czy na pewno chcą Państwo kontynuować?
     confirm_replace_oauth_client: Ta czynność spowoduje zresetowanie bieżących poświadczeń OAuth. Po potwierdzeniu będą Państwo musieli wprowadzić nowe dane uwierzytelniające od dostawcy pamięci masowej, a wszyscy użytkownicy będą musieli ponownie autoryzować się na stronie %{provider_type} . Czy na pewno chcą Państwo kontynuować?
     delete_warning:
@@ -400,10 +400,10 @@ pl:
       setting_up_storages: Aby skonfigurować magazyny plików, odwiedź
       setting_up_storages_non_admin: Administratorzy mogą skonfigurować magazyny plików w obszarze Administracja / Magazyny plików.
       sharepoint:
-        application_link_text: SharePoint site
-        integration: SharePoint Administration / OpenProject
-        oauth_configuration: Copy these values from the desired application in the %{application_link_text}.
-        provider_configuration: Please make sure you have administration privileges in the %{application_link_text} or contact your Microsoft administrator before doing the setup. In the portal, you also need to register an Azure application or use an existing one for authentication.
+        application_link_text: Witryna SharePoint
+        integration: Administracja SharePoint/OpenProject
+        oauth_configuration: Skopiuj te wartości z żądanej aplikacji w %{application_link_text}.
+        provider_configuration: Przed przystąpieniem do konfiguracji upewnij się, że masz uprawnienia administracyjne w %{application_link_text} lub skontaktuj się z administratorem z firmy Microsoft. W portalu musisz również zarejestrować aplikację Azure lub użyć istniejącej do uwierzytelniania.
       type: 'Upewnij się, że masz uprawnienia administracyjne w swojej instancji Nextcloud oraz zainstalowaną następującą aplikację, przed wykonaniem konfiguracji:'
       type_link_text: "“Integration OpenProject”"
     label_active: Aktywny
@@ -505,10 +505,10 @@ pl:
         name: OneDrive
         name_placeholder: np. OneDrive
       sharepoint:
-        label_oauth_client_id: Azure OAuth Application (client) ID
-        label_oauth_client_secret: Azure OAuth Client Secret Value
+        label_oauth_client_id: Identyfikator aplikacji OAuth Azure (klienta)
+        label_oauth_client_secret: Tajny klucz klienta OAuth Azure
         name: SharePoint
-        name_placeholder: e.g. SharePoint
+        name_placeholder: np. SharePoint
     show_attachments_toggle:
       description: Wyłączenie tej opcji spowoduje ukrycie listy załączników na karcie plików pakietów roboczych. Pliki załączone w opisie pakietu roboczego będą nadal przesyłane do wewnętrznego magazynu załączników.
       label: Pokaż załączniki na karcie plików pakietów roboczych

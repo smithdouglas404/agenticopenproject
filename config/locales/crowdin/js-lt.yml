@@ -324,7 +324,7 @@ lt:
     label_added_time_by: 'Pridėjo <a href="%{authorLink}">%{author}</a> %{age}'
     label_ago: "dienų prieš"
     label_all: "visi"
-    label_all_projects: "All projects"
+    label_all_projects: "Visi projektai"
     label_all_uppercase: "Visi"
     label_all_work_packages: "visi darbų paketai"
     label_and: "ir"
@@ -699,7 +699,7 @@ lt:
           last_day: "Paskutinė diena"
     text_are_you_sure: "Ar esate įsitikinę?"
     text_are_you_sure_to_cancel: "You have unsaved changes on this page. Are you sure you want to discard them?"
-    breadcrumb: "Breadcrumb"
+    breadcrumb: "Susijusi informacija"
     text_data_lost: "Visa įvesta informacija bus prarasta."
     text_user_wrote: "%{value} parašė:"
     types:
@@ -784,7 +784,7 @@ lt:
     autocompleter:
       placeholder: "Paieškai pradėkite rinkti tekstą"
       notFoundText: "Nieko nerasta"
-      search: "Search"
+      search: "Paieška"
       project:
         placeholder: "Pasirinkite projektą"
     repositories:
@@ -1233,12 +1233,14 @@ lt:
         all: "Visi projektai"
         selected: "Tik pasirinktus"
       search_placeholder: "Ieškoti projekte..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Įtraukti visus sub-projektus"
       tooltip:
         include_all_selected: "Projektas jau įtrauktas, nes įjungta parinktis įtraukti visus sub-projektus."
         current_project: "Tai dabartinis projektas, kuriame jūs esate."
         does_not_match_search: "Projektas neatitinka paieškos kriterijaus."
       no_results: "Nei vienas projektas neatitinka jūsų paieškos kriterijaus."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Bazinė linija"
       clear: "Išvalyti"

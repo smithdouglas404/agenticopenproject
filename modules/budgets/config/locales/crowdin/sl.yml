@@ -21,7 +21,7 @@
 #++
 sl:
   plugin_budgets_engine:
-    name: 'Proračuni'
+    name: "Proračuni"
   activerecord:
     attributes:
       budget:
@@ -36,6 +36,7 @@ sl:
         type: "Vrsta stroška"
         labor_budget: "Načrtovani stroški dela"
         material_budget: "Načrtovani stroški enote"
+        base_amount: "Base amount"
       work_package:
         budget_subject: "Naslov proračuna"
     models:
@@ -61,13 +62,19 @@ sl:
   help_currency_format: "Oblika prikazanih vrednosti valut. %n se nadomesti z vrednostjo valute, %u je zamenjan z enoto valute."
   help_override_rate: "Vnesite vrednost, da nadomestite privzeto stopnjo."
   label_budget: "Proračun"
-  label_budget_new: "Nov proračun"
-  label_budget_plural: "Proračuni"
+  label_budget_available: "Budget available"
   label_budget_id: "Proračun #%{id}"
+  label_budget_new: "Nov proračun"
+  label_budget_planned: "Budget planned"
+  label_budget_plural: "Proračuni"
+  label_budget_spent: "Budget spent"
+  label_budget_spent_ratio: "Budget spent ratio"
   label_deliverable: "Proračun"
-  label_example_placeholder: 'npr., %{decimal}'
+  label_example_placeholder: "npr., %{decimal}"
   label_view_all_budgets: "Oglejte si vse proračune"
   label_yes: "Da"
+  label_budget_totals: "Totals"
+  label_budget_details: "Budget details"
   notice_budget_conflict: "Delovni paketi morajo biti v istem projektu."
   notice_no_budgets_available: "Proračuni niso na voljo."
   permission_edit_budgets: "Uredi proračun"

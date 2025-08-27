@@ -8,10 +8,6 @@ $grid--widget-padding: 20px 20px 20px 20px
 @mixin grid--commons
   display: grid
 
-body.widget-grid-layout
-  #content, page-header
-    background-color: var(--grid-background-color)
-
 .grid--container
   @include grid--commons
 
@@ -35,10 +31,6 @@ body.widget-grid-layout
 
     .widget-box
       min-height: 200px
-      padding: $grid--widget-padding
-
-    &:hover icon-triggered-context-menu
-      visibility: visible
 
   &.-resizing
     @include modifying--placeholder
@@ -49,6 +41,7 @@ body.widget-grid-layout
     flex-direction: column
     justify-content: center
     align-items: center
+    border: 1px dashed var(--borderColor-default)
 
   &.-placeholder
     @include modifying--placeholder
@@ -71,10 +64,7 @@ body.widget-grid-layout
 
   .op-widget-box--header
     display: flex
-    gap: var(--base-size-6)
-
-  icon-triggered-context-menu
-    visibility: hidden
+    padding-left: 0
 
   &.-drop-target,
   &.-passive
@@ -106,17 +96,8 @@ body.widget-grid-layout
     opacity: 1
 
 .grid--area-drag-handle
-  margin-left: -19px
-  padding-right: 1px
-  padding-top: 4px
-  margin-top: 4px
   opacity: 0
   cursor: grab
-  float: left
-
-  &:before
-    padding: 0
-    color: var(--fgColor-muted)
 
   .grid--area.-widgeted:hover &
     opacity: 1
@@ -141,50 +122,6 @@ body.widget-grid-layout
   &.cdk-drag-placeholder
     visibility: hidden
 
-.grid--widget-content
-  height: 100%
-  overflow-x: auto
-  overflow-y: auto
-
-  &.-no-overflow
-    overflow-x: hidden
-    overflow-y: hidden
-    display: block
-
-  &.-allow-inner-overflow
-    .wiki
-      overflow-y: auto
-      @include styled-scroll-bar
-
-  // styles specific to the custom-text widget
-  &.-custom-text
-    a.inplace-editing--trigger-link
-      color: inherit
-      text-decoration: none
-
-    .op-ckeditor--wrapper
-      margin-bottom: 0
-
-    .ck-editor__top
-      position: sticky
-      top: 0
-
-    .inplace-edit--controls
-      position: initial
-
-      i
-        float: initial
-        padding: 0
-
-    edit-field-controls
-      display: flex
-      position: sticky
-      bottom: 0
-      justify-content: flex-end
-
-    .textarea-wrapper
-      margin-bottom: 0
-
 .grid--widget-limited-text
   max-height: 5rem
   position: relative
@@ -201,15 +138,10 @@ body.widget-grid-layout
 
 .grid--widget-add
   padding: 15px
-  background-color: var(--bgColor-neutral-emphasis)
-  border-radius: 50%
-  opacity: 0
-
-  &:before
-    @include icon-font-common
-    @include icon-mixin-add
+  color: var(--fgColor-muted)
 
   &.-gap
+    opacity: 0
     width: 100%
     height: 100%
     display: flex
@@ -218,15 +150,15 @@ body.widget-grid-layout
     padding: 0
     border-radius: initial
 
-    &:before
-      font-size: 0.75rem
+    svg
+      color: var(--fgColor-muted)
 
-  .grid--area.-addable:hover &, .grid--area.-addable.-help-mode &
+  .grid--widget-add-help-text
+    margin-left: 4px
+
+  .grid--area.-addable &,
+  .grid--area.-addable.-help-mode &
     opacity: 1
-    transition: opacity 1s ease
-
-  .grid--area.-addable:hover &
-    transition-delay: 0.3s
 
 .grid--widget-remove
   float: right
@@ -244,11 +176,6 @@ body.widget-grid-layout
   padding: 20px 5px
   cursor: pointer
   background: none
-  transition: background 4s ease
-
-  &:hover
-    background: var(--gray-light)
-    transition: background 1s ease
 
   &:last-of-type
     border-bottom: none

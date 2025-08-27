@@ -28,6 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
+require "icalendar"
 require_relative "../spec_helper"
 
 RSpec.describe MeetingSeriesMailer do
@@ -87,9 +88,9 @@ RSpec.describe MeetingSeriesMailer do
     end
   end
 
-  describe "rescheduled" do
-    let(:changes) { { old_schedule: "some old schedule" } }
-    let(:mail) { described_class.rescheduled(series, recipient, author, changes:) }
+  describe "updated" do
+    let(:changes) { { old_schedule: "some old schedule", old_location: "some old location" } }
+    let(:mail) { described_class.updated(series, recipient, author, changes:) }
 
     it "renders the headers" do
       expect(mail.subject).to include(series.project.name)
@@ -101,18 +102,22 @@ RSpec.describe MeetingSeriesMailer do
     it "renders the text body" do
       User.execute_as(recipient) do
         check_series_mail_content(mail.text_part.body)
-        expect(mail.text_part.body).to include("has changed the schedule")
+        expect(mail.text_part.body).to include("has been updated")
         expect(mail.text_part.body).to include("some old schedule")
+        expect(mail.text_part.body).to include("some old location")
         expect(mail.text_part.body).to include(series.full_schedule_in_words)
+        expect(mail.text_part.body).to include(series.location)
       end
     end
 
     it "renders the html body" do
       User.execute_as(recipient) do
         check_series_mail_content(mail.html_part.body)
-        expect(mail.html_part.body).to include("has changed the schedule")
+        expect(mail.html_part.body).to include("has been updated")
         expect(mail.html_part.body).to include("some old schedule")
+        expect(mail.text_part.body).to include("some old location")
         expect(mail.html_part.body).to include(series.full_schedule_in_words)
+        expect(mail.text_part.body).to include(series.location)
       end
     end
 

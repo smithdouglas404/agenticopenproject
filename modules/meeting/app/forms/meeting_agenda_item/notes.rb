@@ -38,6 +38,7 @@ class MeetingAgendaItem::Notes < ApplicationForm
       classes: "ck-editor-primer-adjusted",
       rich_text_options: {
         resource:,
+        storageKey: "meeting-#{object.meeting_id || 'new'}-agenda-item-#{object.id || 'new'}",
         showAttachments: false
       }
     )

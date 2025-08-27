@@ -57,6 +57,18 @@ module Admin
           end
         end
 
+        def secondary_input_format
+          field_format = root.custom_field.field_format
+          case field_format
+          when "hierarchy"
+            :short
+          when "scored_list"
+            :score
+          else
+            raise ArgumentError, "Unsupported field format: #{field_format}"
+          end
+        end
+
         private
 
         def root

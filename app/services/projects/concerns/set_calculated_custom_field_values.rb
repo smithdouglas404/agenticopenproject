@@ -63,7 +63,9 @@ module Projects::Concerns
       # admin_only check.
       affected_cfs = model.available_custom_fields.unscope(where: :admin_only).affected_calculated_fields(changed_cf_ids)
 
-      model.calculate_custom_fields(affected_cfs)
+      model.change_by_system do
+        model.calculate_custom_fields(affected_cfs)
+      end
     end
   end
 end

@@ -28,42 +28,36 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
-require_relative "shared_contract_examples"
+module API
+  module V3
+    module Projects
+      module Schemas
+        class ProjectCustomFieldSectionRepresenter < ::API::Decorators::Single
+          property :id,
+                   exec_context: :decorator
 
-RSpec.describe Projects::BaseContract do
-  let(:project) { Project.new(name: "Foo", identifier: "foo", templated: false) }
-  let(:contract) { described_class.new(project, current_user) }
+          property :name,
+                   exec_context: :decorator
 
-  subject { contract.validate }
+          property :attributes,
+                   exec_context: :decorator
 
-  describe "templated attribute" do
-    before do
-      # Assume the user may manage the project
-      allow(contract)
-        .to(receive(:validate_user_allowed_to_manage))
-        .and_return true
+          def _type
+            "ProjectFormCustomFieldSection"
+          end
 
-      # Assume templated attribute got changed
-      project.templated = true
-      expect(project.templated_changed?).to be true
-    end
+          delegate :id, :name, to: :represented
 
-    context "as admin" do
-      let(:current_user) { build_stubbed(:admin) }
+          def attributes
+            represented.custom_fields.map do |cf|
+              convert_property(cf.attribute_name)
+            end
+          end
 
-      it "validates the contract" do
-        expect(subject).to be true
-      end
-    end
-
-    context "as regular user" do
-      let(:current_user) { build_stubbed(:user) }
-
-      it "returns an error on validation" do
-        expect(subject).to be false
-        expect(contract.errors.symbols_for(:templated))
-          .to contain_exactly(:error_unauthorized)
+          def convert_property(attribute_name)
+            ::API::Utilities::PropertyNameConverter.from_ar_name(attribute_name)
+          end
+        end
       end
     end
   end

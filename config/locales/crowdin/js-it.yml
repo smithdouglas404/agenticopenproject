@@ -1225,12 +1225,14 @@ it:
         all: "Tutti i progetti"
         selected: "Solo selezionati"
       search_placeholder: "Cerca progetto..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Includi tutti i sotto-progetti"
       tooltip:
         include_all_selected: "Il progetto già stato incluso poiché è abilitata l'opzione Includi tutti i sotto-progetti."
         current_project: "Questo è il progetto corrente in cui ti trovi."
         does_not_match_search: "Il progetto non corrisponde ai criteri di ricerca."
       no_results: "Nessun progetto corrisponde ai tuoi criteri di ricerca"
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Base di riferimento"
       clear: "Pulisci"

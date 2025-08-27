@@ -324,7 +324,7 @@
     label_added_time_by: 'Lagt til av <a href="%{authorLink}">%{author}</a> i %{age}'
     label_ago: "dager siden"
     label_all: "alle"
-    label_all_projects: "All projects"
+    label_all_projects: "Alle prosjekter"
     label_all_uppercase: "Alle"
     label_all_work_packages: "alle arbeidspakker"
     label_and: "og"
@@ -697,7 +697,7 @@
           last_day: "Siste dag"
     text_are_you_sure: "Er du sikker?"
     text_are_you_sure_to_cancel: "You have unsaved changes on this page. Are you sure you want to discard them?"
-    breadcrumb: "Breadcrumb"
+    breadcrumb: "Brødsmule"
     text_data_lost: "Alle angitte data vil gå tapt."
     text_user_wrote: "%{value} skrev:"
     types:
@@ -782,7 +782,7 @@
     autocompleter:
       placeholder: "Skriv for å søke"
       notFoundText: "Ingen elementer funnet"
-      search: "Search"
+      search: "Søk"
       project:
         placeholder: "Velg prosjekt"
     repositories:
@@ -1225,12 +1225,14 @@
         all: "Alle prosjekter"
         selected: "Kun valgte"
       search_placeholder: "Søk i prosjekt..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Inkluder alle underprosjekter"
       tooltip:
         include_all_selected: "Prosjektet er allerede inkludert siden det alle underprosjekter er aktivert."
         current_project: "Dette er det nåværende prosjektet du er i."
         does_not_match_search: "Prosjektet samsvarer ikke med søkekriteriene."
       no_results: "Ingen treff på dine søkekriterier."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Grunnlinje"
       clear: "Nullstill"

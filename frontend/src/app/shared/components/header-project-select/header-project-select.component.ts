@@ -133,7 +133,9 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
       select: this.I18n.t('js.label_all_projects'),
     },
     search_placeholder: this.I18n.t('js.include_projects.search_placeholder'),
+    search_favorites_placeholder: this.I18n.t('js.include_projects.search_placeholder_favorites'),
     no_results: this.I18n.t('js.include_projects.no_results'),
+    no_favorite_results: this.I18n.t('js.include_projects.no_favorite_results'),
   };
 
   public displayMode:'all'|'favored';

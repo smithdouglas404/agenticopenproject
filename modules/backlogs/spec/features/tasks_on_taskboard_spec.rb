@@ -244,6 +244,8 @@ RSpec.describe "Tasks on taskboard", :js,
 
     click_button "Update backlogs module"
 
+    expect_and_dismiss_flash(message: "Account was successfully updated.")
+
     taskboard_page.visit!
 
     taskboard_page

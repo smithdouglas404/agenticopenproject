@@ -24,7 +24,7 @@ ka:
       storages/sharepoint_storage:
         host: Sharepoint Site URL
         library: Library ID
-        name: Name
+        name: სახელი
         site: Site ID
       storages/storage:
         authentication_method: Authentication Method

@@ -176,7 +176,7 @@ RSpec.describe Meetings::PDF::Default::Exporter do
           *meeting_head,
           "Participants (2)",
           "Export User", "  ", "Attended",
-          "Other Account", "  ", "Invited",
+          "Other Account",
 
           "Untitled section", "  ", "15 mins",
           "Agenda Item TOP 1", "  ", "15 mins", "  ", "Export User",

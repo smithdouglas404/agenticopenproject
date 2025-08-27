@@ -8,7 +8,7 @@ sk:
         row_count: "Počet riadkov"
         column_count: "Počet stĺpcov"
         widgets: "Miniaplikácie"
-        scope: "Scope"
+        scope: "Rozsah"
     errors:
       models:
         grids/grid:

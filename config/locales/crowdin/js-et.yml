@@ -324,7 +324,7 @@ et:
     label_added_time_by: 'Added by <a href="%{authorLink}">%{author}</a> at %{age}'
     label_ago: "päeva tagasi"
     label_all: "kõik"
-    label_all_projects: "All projects"
+    label_all_projects: "Kõik projektid"
     label_all_uppercase: "Kõik"
     label_all_work_packages: "kõik tööpaketid"
     label_and: "ja"
@@ -782,7 +782,7 @@ et:
     autocompleter:
       placeholder: "Type to search"
       notFoundText: "No items found"
-      search: "Search"
+      search: "Otsi"
       project:
         placeholder: "Select project"
     repositories:
@@ -977,7 +977,7 @@ et:
           edit: "Edit reminder"
         subtitle: "You will receive a notification for this work package at the chosen time."
         presets:
-          tomorrow: "Tomorrow"
+          tomorrow: "Homme"
           three_days: "In 3 days"
           week: "In a week"
           month: "In a month"
@@ -1225,12 +1225,14 @@ et:
         all: "Kõik projektid"
         selected: "Only selected"
       search_placeholder: "Search project..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Include all sub-projects"
       tooltip:
         include_all_selected: "Project already included since Include all sub-projects is enabled."
         current_project: "This is the current project you are in."
         does_not_match_search: "Project does not match the search criteria."
       no_results: "No project matches your search criteria."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Baseline"
       clear: "Tühjenda"

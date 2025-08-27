@@ -261,7 +261,13 @@ Rails.application.routes.draw do
     resource :menu, only: %i[show]
   end
 
-  resources :projects, except: %i[show edit update] do
+  # Extracted from the resources definition right below so that the
+  # default parameters can be defined.
+  resources :projects,
+            only: %i[new],
+            defaults: { workspace_type: "project" }
+
+  resources :projects, except: %i[new show edit update] do
     scope module: "projects" do
       namespace "settings" do
         resource :general, only: %i[show update], controller: "general" do
@@ -467,6 +473,16 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :portfolios,
+            only: %i[new],
+            defaults: { workspace_type: "portfolio" },
+            controller: "projects"
+
+  resources :programs,
+            only: %i[new],
+            defaults: { workspace_type: "program" },
+            controller: "projects"
+
   resources :project_phases, only: [] do
     member do
       get "/hover_card" => "project_phases/hover_card#show", as: "hover_card"
@@ -508,6 +524,12 @@ Rails.application.routes.draw do
     delete "design/export_logo" => "custom_styles#export_logo_delete", as: "custom_style_export_logo_delete"
     delete "design/export_cover" => "custom_styles#export_cover_delete", as: "custom_style_export_cover_delete"
     delete "design/export_footer" => "custom_styles#export_footer_delete", as: "custom_style_export_footer_delete"
+    delete "design/export_font_regular" => "custom_styles#export_font_regular_delete",
+           as: "custom_style_export_font_regular_delete"
+    delete "design/export_font_bold" => "custom_styles#export_font_bold_delete", as: "custom_style_export_font_bold_delete"
+    delete "design/export_font_italic" => "custom_styles#export_font_italic_delete", as: "custom_style_export_font_italic_delete"
+    delete "design/export_font_bold_italic" => "custom_styles#export_font_bold_italic_delete",
+           as: "custom_style_export_font_bold_italic_delete"
     delete "design/favicon" => "custom_styles#favicon_delete", as: "custom_style_favicon_delete"
     delete "design/touch_icon" => "custom_styles#touch_icon_delete", as: "custom_style_touch_icon_delete"
     post "design/colors" => "custom_styles#update_colors", as: "update_design_colors"
@@ -515,7 +537,9 @@ Rails.application.routes.draw do
     post "design/export_cover_text_color" => "custom_styles#update_export_cover_text_color",
          as: "update_custom_style_export_cover_text_color"
 
-    resource :custom_style, only: %i[update show create], path: "design"
+    resource :custom_style, only: %i[update show create], path: "design" do
+      get :export_demo_pdf_download
+    end
 
     resources :attribute_help_texts, only: %i(index new create edit update destroy)
 

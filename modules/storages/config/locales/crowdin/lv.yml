@@ -24,7 +24,7 @@ lv:
       storages/sharepoint_storage:
         host: Sharepoint Site URL
         library: Library ID
-        name: Name
+        name: Nosaukums
         site: Site ID
       storages/storage:
         authentication_method: Authentication Method

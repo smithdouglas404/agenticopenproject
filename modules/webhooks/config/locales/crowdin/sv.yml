@@ -31,7 +31,7 @@ sv:
       events:
         created: "Skapad"
         updated: "Uppdaterad"
-        comment: "Comment"
+        comment: "Kommentar"
         internal_comment: "Internal comment"
       explanation:
         text: >

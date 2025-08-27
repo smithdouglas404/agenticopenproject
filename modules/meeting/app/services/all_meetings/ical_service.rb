@@ -61,14 +61,14 @@ module AllMeetings
     private
 
     def recurring_meetings
-      @recurring_meetings ||= RecurringMeeting.visible(user)
+      @recurring_meetings ||= RecurringMeeting.visible(user).participated_by(user)
     end
 
     def single_meetings
       @single_meetings ||= if include_historic
-                             Meeting.not_recurring.visible(user)
+                             Meeting.not_recurring.visible(user).participated_by(user)
                            else
-                             Meeting.not_recurring.from_today.visible(user)
+                             Meeting.not_recurring.from_today.visible(user).participated_by(user)
                            end
     end
   end

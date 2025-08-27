@@ -24,7 +24,7 @@ et:
       storages/sharepoint_storage:
         host: Sharepoint Site URL
         library: Library ID
-        name: Name
+        name: Nimi
         site: Site ID
       storages/storage:
         authentication_method: Authentication Method
@@ -388,7 +388,7 @@ et:
         oauth_client_redirect_uri: Please copy this value to a new Web redirect URI under Redirect URIs.
         oauth_client_secret: In case there is no application client secret under Client credentials, please create a new one.
         oauth_configuration: Copy these values from the desired application in the %{application_link_text}.
-        provider_configuration: Please make sure you have administration privileges in the %{application_link_text} or contact your Microsoft administrator before doing the setup. In the portal, you also need to register an Azure application or use an existing one for authentication.
+        provider_configuration: Veenduge, et teil on administreerimisõigused aadressil %{application_link_text} või võtke enne seadistamist ühendust oma Microsofti administraatoriga. Portaalis tuleb registreerida ka Azure'i rakendus või kasutada autentimiseks olemasolevat rakendust.
         tenant_id: Please copy the Directory (tenant) ID from the desired application and App registrations in the %{application_link_text}.
         tenant_id_placeholder: Name or UUID
       setting_up_additional_storages: For setting up additional file storages, please visit
@@ -399,7 +399,7 @@ et:
         application_link_text: SharePoint site
         integration: SharePoint Administration / OpenProject
         oauth_configuration: Copy these values from the desired application in the %{application_link_text}.
-        provider_configuration: Please make sure you have administration privileges in the %{application_link_text} or contact your Microsoft administrator before doing the setup. In the portal, you also need to register an Azure application or use an existing one for authentication.
+        provider_configuration: Veenduge, et teil on administreerimisõigused aadressil %{application_link_text} või võtke enne seadistamist ühendust oma Microsofti administraatoriga. Portaalis tuleb registreerida ka Azure'i rakendus või kasutada autentimiseks olemasolevat rakendust.
       type: 'Please make sure you have administration privileges in your Nextcloud instance and have the following application installed before doing the setup:'
       type_link_text: "“Integration OpenProject”"
     label_active: Aktiivne

@@ -21,7 +21,7 @@
 #++
 da:
   plugin_budgets_engine:
-    name: 'Budgetter'
+    name: "Budgetter"
   activerecord:
     attributes:
       budget:
@@ -36,6 +36,7 @@ da:
         type: "Omkostningstype"
         labor_budget: "Planlagte lønomkostninger"
         material_budget: "Planlagte enhedsomkostninger"
+        base_amount: "Base amount"
       work_package:
         budget_subject: "Budgettitel"
     models:
@@ -61,13 +62,19 @@ da:
   help_currency_format: "Format for viste valutaværdier. %n erstattes med valutaværdien, %u erstattes med valutaenheden."
   help_override_rate: "Angiv en værdi for at tilsidesætte standardsatsen."
   label_budget: "Budget"
-  label_budget_new: "Nyt budget"
-  label_budget_plural: "Budgetter"
+  label_budget_available: "Budget available"
   label_budget_id: "Budget #%{id}"
+  label_budget_new: "Nyt budget"
+  label_budget_planned: "Budget planned"
+  label_budget_plural: "Budgetter"
+  label_budget_spent: "Budget spent"
+  label_budget_spent_ratio: "Budget spent ratio"
   label_deliverable: "Budget"
-  label_example_placeholder: 'f.eks. %{decimal}'
+  label_example_placeholder: "f.eks. %{decimal}"
   label_view_all_budgets: "Se alle budgetter"
   label_yes: "Ja"
+  label_budget_totals: "Totals"
+  label_budget_details: "Budget details"
   notice_budget_conflict: "Work packages must be of the same project."
   notice_no_budgets_available: "Ingen tilgængelige budgetter."
   permission_edit_budgets: "Redigér budgetter"

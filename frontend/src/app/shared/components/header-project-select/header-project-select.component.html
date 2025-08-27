@@ -44,7 +44,7 @@
     >
       <spot-text-field
         *ngIf="displayMode !== 'favored' || (favorites$ | async)?.length > 0"
-        [placeholder]="text.search_placeholder"
+        [placeholder]="displayMode === 'favored' ? text.search_favorites_placeholder : text.search_placeholder"
         [(ngModel)]="searchableProjectListService.searchText"
         [ngModelOptions]="{standalone: true}"
         data-test-selector="op-header-project-select--search"
@@ -91,7 +91,7 @@
           </div>
           <span *ngIf="!(displayMode === 'favored' && (favorites$ | async).length === 0)"
                 class="op-project-list-modal--no-results">
-            {{ text.no_results }}
+            {{ displayMode === 'favored' ? text.no_favorite_results : text.no_results }}
           </span>
         </ng-template>
       </ng-container>

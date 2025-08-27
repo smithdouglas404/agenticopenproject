@@ -324,7 +324,7 @@ nl:
     label_added_time_by: 'Toegevoegd door <a href="%{authorLink}">%{author}</a> op %{age}'
     label_ago: "dagen geleden"
     label_all: "alle"
-    label_all_projects: "All projects"
+    label_all_projects: "Alle projecten"
     label_all_uppercase: "Alle"
     label_all_work_packages: "alle werkpakketten"
     label_and: "en"
@@ -782,7 +782,7 @@ nl:
     autocompleter:
       placeholder: "Typ om te zoeken"
       notFoundText: "Geen items gevonden"
-      search: "Search"
+      search: "Zoeken"
       project:
         placeholder: "Select project"
     repositories:
@@ -1225,12 +1225,14 @@ nl:
         all: "Alle projecten"
         selected: "Alleen geselecteerd"
       search_placeholder: "Zoek project"
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Inclusief alle sub-projecten"
       tooltip:
         include_all_selected: "Project al opgenomen omdat alle subprojecten zijn ingeschakeld."
         current_project: "Dit is het huidige project waarin u zich bevindt."
         does_not_match_search: "Het project komt niet overeen met de zoekcriteria."
       no_results: "Geen enkel project komt overeen met uw zoekcriteria."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Baseline"
       clear: "Wissen"

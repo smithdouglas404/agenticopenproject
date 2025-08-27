@@ -100,8 +100,18 @@ RSpec.describe AllMeetings::ICalService, type: :model do # rubocop:disable RSpec
 
     let!(:invisible_meeting) do
       create(:meeting,
-             author: user, # creatd by the user but in a project the user cannot see
-             project: create(:project, name: "Invisible Project"),
+             author: user,
+             project: create(:project, name: "Invisible Project"), # in a project the user cannot see
+             title: "Important meeting",
+             location: "https://example.com/meet/important-meeting",
+             start_time: relevant_time + 1.week,
+             duration: 1.0)
+    end
+
+    let!(:not_invited_meeting) do
+      create(:meeting,
+             author: user,
+             project:,
              title: "Important meeting",
              location: "https://example.com/meet/important-meeting",
              start_time: relevant_time + 1.week,

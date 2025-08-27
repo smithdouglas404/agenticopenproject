@@ -69,16 +69,27 @@ module WorkPackageTypes
       ].freeze
       # rubocop:enable Layout/LineLength
 
-      def tokens_for_type(type)
-        [
+      def partitioned_tokens_for_type(type)
+        enabled_tokens = [
           *BASE_ATTRIBUTE_TOKENS,
           *tokenize(work_package_cfs_for(type)),
           *tokenize(project_cfs, "project_"),
           *tokenize(all_work_package_cfs, "parent_")
-        ]
+        ].to_set
+
+        all_tokens.partition { |token| enabled_tokens.include?(token) }
       end
 
       private
+
+      def all_tokens
+        [
+          *BASE_ATTRIBUTE_TOKENS,
+          *tokenize(all_work_package_cfs),
+          *tokenize(project_cfs, "project_"),
+          *tokenize(all_work_package_cfs, "parent_")
+        ]
+      end
 
       def default_tokens
         BASE_ATTRIBUTE_TOKENS.each_with_object({ work_package: {}, project: {}, parent: {} }) do |token, obj|

@@ -85,6 +85,10 @@ class Meeting < ApplicationRecord
       .merge(Project.allowed_to(args.first || User.current, :view_meetings))
   }
 
+  scope :participated_by, ->(user) {
+    joins(:participants).where(meeting_participants: { user_id: user.id })
+  }
+
   acts_as_attachable(
     after_remove: :attachments_changed,
     order: "#{Attachment.table_name}.file",
@@ -111,13 +115,13 @@ class Meeting < ApplicationRecord
 
   accepts_nested_attributes_for :participants, allow_destroy: true
 
-  validates_presence_of :title, :project_id
+  validates :title, :project_id, presence: true
 
-  validates_numericality_of :duration, greater_than: 0
+  validates :duration, numericality: { greater_than: 0 }
 
   before_save :add_new_participants_as_watcher
 
-  after_update :send_rescheduling_mail, if: -> { saved_change_to_start_time? || saved_change_to_duration? }
+  after_update :send_updated_mail, if: -> { saved_change_to_start_time? || saved_change_to_duration? || saved_change_to_location? }
 
   enum :state, {
     open: 0, # 0 -> default, leave values for future states between open and closed
@@ -267,17 +271,23 @@ class Meeting < ApplicationRecord
     end
   end
 
-  def send_rescheduling_mail
+  def send_updated_mail
     return if templated? || new_record? || !notify?
 
     MeetingNotificationService
       .new(self)
-      .call :rescheduled,
-            changes: {
-              old_start: saved_change_to_start_time? ? saved_change_to_start_time.first : start_time,
-              new_start: start_time,
-              old_duration: saved_change_to_duration? ? saved_change_to_duration.first : duration,
-              new_duration: duration
-            }
+      .call :updated,
+            changes: updated_mail_changes
+  end
+
+  def updated_mail_changes
+    {
+      old_start: saved_change_to_start_time? ? saved_change_to_start_time.first : start_time,
+      new_start: start_time,
+      old_duration: saved_change_to_duration? ? saved_change_to_duration.first : duration,
+      new_duration: duration,
+      old_location: saved_change_to_location? ? saved_change_to_location.first : location,
+      new_location: location
+    }
   end
 end

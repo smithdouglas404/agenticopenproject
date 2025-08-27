@@ -24,7 +24,7 @@ tr:
       storages/sharepoint_storage:
         host: Sharepoint Site URL
         library: Library ID
-        name: Name
+        name: İsim
         site: Site ID
       storages/storage:
         authentication_method: Kimlik Doğrulama Metodu
@@ -198,7 +198,7 @@ tr:
         sharepoint: Allow OpenProject to access SharePoint data using OAuth.
       redirect_uri_incomplete:
         one_drive: Doğru adres yönlendirmesi ile kurulumu tamamlayın.
-        sharepoint: Complete the setup with the correct URI redirection.
+        sharepoint: Doğru adres yönlendirmesi ile kurulumu tamamlayın.
     confirm_replace_oauth_application: This action will reset the current OAuth credentials. After confirming you will have to reenter the credentials at the storage provider and all remote users will have to authorize against OpenProject again. Are you sure you want to proceed?
     confirm_replace_oauth_client: This action will reset the current OAuth credentials. After confirming you will have to enter new credentials from the storage provider and all users will have to authorize against %{provider_type} again. Are you sure you want to proceed?
     delete_warning:
@@ -257,7 +257,7 @@ tr:
           group_folder_app: 'Dependency: Group Folders'
           group_folder_contents: Group folder has expected content
           group_folder_presence: Group folder exists
-          header: Automatically managed project folders
+          header: Otomatik olarak yönetilen proje klasörleri
           userless_access: Server-side request authentication
         authentication:
           existing_token: User token
@@ -398,8 +398,8 @@ tr:
       sharepoint:
         application_link_text: SharePoint site
         integration: SharePoint Administration / OpenProject
-        oauth_configuration: Copy these values from the desired application in the %{application_link_text}.
-        provider_configuration: Please make sure you have administration privileges in the %{application_link_text} or contact your Microsoft administrator before doing the setup. In the portal, you also need to register an Azure application or use an existing one for authentication.
+        oauth_configuration: Bu değerleri %{application_link_text} adresindeki istenen uygulamadan kopyalayın.
+        provider_configuration: Lütfen kurulumu yapmadan önce %{application_link_text} adresinde yönetim ayrıcalıklarına sahip olduğunuzdan emin olun veya Microsoft yöneticinize başvurun. Portalda ayrıca bir Azure uygulaması kaydetmeniz veya kimlik doğrulaması için mevcut bir uygulamayı kullanmanız gerekir.
       type: 'Lütfen Nextcloud bulut sunucunuzda yönetici ayrıcalıklarına sahip olduğunuzdan ve kurulumu yapmadan önce aşağıdaki uygulamanın kurulu olduğundan emin olun:'
       type_link_text: "“Entegrasyon OpenProject”"
     label_active: Aktif

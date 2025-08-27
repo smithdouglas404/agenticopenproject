@@ -30,10 +30,11 @@
 
 module Meetings
   class EmailUpdatesBannerComponent < ApplicationComponent
-    def initialize(meeting, override: nil)
+    def initialize(meeting, override: nil, type: nil)
       super
       @meeting = meeting
       @override = override
+      @type = type
     end
 
     def call
@@ -43,7 +44,9 @@ module Meetings
     private
 
     def type
-      if @meeting.is_a?(RecurringMeeting) || (@meeting.recurring? && @meeting.templated?)
+      if @type == :participants
+        "participants"
+      elsif @meeting.is_a?(RecurringMeeting) || (@meeting.recurring? && @meeting.templated?)
         "template"
       elsif @meeting.recurring?
         "occurrence"

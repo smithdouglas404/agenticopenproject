@@ -59,6 +59,10 @@ bg:
       tab_interface: "Interface"
       tab_branding: "Branding"
       tab_pdf_export_styles: "PDF export styles"
+      tab_pdf_export_font: "PDF export font"
+      fonts:
+        file_too_large: "is too large (maximum size is %{count} MB)."
+        file_is_invalid: "is not a valid TTF font file."
       colors:
         primary-button-color: "Основен бутон"
         accent-color: "Акцент"
@@ -137,15 +141,15 @@ bg:
       new:
         title: "New SCIM client"
       revoke_static_token_dialog_component:
-        confirm_button: "Revoke"
+        confirm_button: "Отмени"
         title: "Revoke static token"
-        heading: "Are you sure you want to revoke this token?"
+        heading: "Наистина ли искате да анулирате този токен?"
         description: "The SCIM client that uses this token will no longer be able to access OpenProject's SCIM server API."
       table_component:
         blank_slate:
           title: "No SCIM clients configured yet"
           description: "Add clients to see them here"
-        user_count: "Users"
+        user_count: "Потребители"
       token_list_component:
         description: "The tokens you generate here can be passed by a SCIM client to access the OpenProject SCIM API."
         heading: "Tokens"
@@ -297,6 +301,7 @@ bg:
         placeholder:
           label: "Item label"
           short: "Short name"
+          score: "Score"
       notice:
         remember_items_and_projects: "Remember to set items and projects in the respective tabs for this custom field."
       hierarchy:
@@ -334,7 +339,9 @@ bg:
     errors:
       defined: "must not be defined."
       int?: "must be an integer."
+      decimal?: "must be a decimal."
       filled?: "must be filled."
+      key?: "is missing."
       greater_or_equal_zero: "must be greater or equal to 0."
       not_found: "not found."
       rules:
@@ -357,6 +364,7 @@ bg:
       depth: "Depth"
       item: "Item"
       label: "Label"
+      score: "Score"
       short: "Short name"
       parent: "Горна категория"
       blueprint: "Pattern blueprint"
@@ -578,10 +586,10 @@ bg:
     access_token:
       dialog:
         token/api:
-          dialog_title: "Create new API token"
+          dialog_title: "Създайте нов API токен"
           attention_text: "Treat API tokens like passwords. Anyone with this token will have access to information from this instance, share it only with trusted users."
-          dialog_body: "This token will allow third-party applications to communicate with your instance. To differentiate the new API token, please give it a name."
-          create_button: "Create"
+          dialog_body: "Този токен ще позволи на приложенията на трети страни да комуникират с вашата инстанция. За да разграничите новия API токен, дайте му име."
+          create_button: "Създаване"
           name_label: "Token name"
       created_dialog:
         token/api:
@@ -642,8 +650,8 @@ bg:
   priorities:
     edit:
       priority_color_text: |
-        Click to assign or change the color of this priority.
-        It can be used for highlighting work packages in the table.
+        Щракнете, за да зададете или промените цвета на този приоритет.
+        Той може да се използва за подчертаване на работните пакети в таблицата.
     admin:
       default:
         caption: Making this priority default will override the previous default priority.
@@ -941,7 +949,7 @@ bg:
   activemodel:
     attributes:
       projects/copy_options:
-        dependencies: "Dependencies"
+        dependencies: "Зависимости"
   activerecord:
     attributes:
       announcements:
@@ -1067,16 +1075,17 @@ bg:
         types: "Видове"
         versions: "Версии"
         work_packages: "Работен пакет"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Required for all projects"
         custom_field_section: Раздел
       project/phase:
         date_range: "Период"
         definition: "Definition"
-        duration: "Duration"
-        start_date: "Start date"
+        duration: "Продължителност"
+        start_date: "Начална дата"
         start_date_caption: "Follows the previous phase."
-        finish_date: "Finish date"
+        finish_date: "Крайна дата"
       project/phase_definition:
         name: "Име"
         color: "Цвят"
@@ -1144,7 +1153,7 @@ bg:
         ongoing: "Ongoing"
       type:
         description: "Default text for description"
-        attribute_groups: "Form configuration"
+        attribute_groups: "Конфигурация на формата"
         is_in_roadmap: "Показване в пътната карта по подразбиране"
         is_default: "Активирано за нови проекти по подразбиране"
         is_milestone: "Е крайъгълен камък"
@@ -1171,7 +1180,7 @@ bg:
         password_confirmation: "Потвърждение"
         consented_at: "Съгласие в"
       group:
-        identity_url: "Identity URL"
+        identity_url: "URL адрес на идентичност"
       user_preference:
         header_look_and_feel: "Look and feel"
         header_alerts: "Alerts"
@@ -1296,7 +1305,7 @@ bg:
         odd: "трябва да бъде нечетен."
         regex_match_failed: "не съответства на регулярния израз %{expression}."
         regex_invalid: "не може да бъде валидиран със съответния регулярен израз."
-        regex_list_invalid: "could not be parsed as regular expression in lines %{invalid_lines}."
+        regex_list_invalid: "Lines %{invalid_lines} could not be parsed as regular expression."
         hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "трябва да бъде по-малка от или равна на максималната дължина."
         taken: "вече съществува."
@@ -1627,7 +1636,7 @@ bg:
         one: "Authentication provider"
         other: "Authentication providers"
       category: "Категория"
-      color: "Color"
+      color: "Цвят"
       comment: "Коментар"
       custom_action: "Custom action"
       custom_field: "Потребителски полета"
@@ -1975,7 +1984,7 @@ bg:
     copy_options:
       dependencies_label: "Copy from project"
   create_project:
-    template_label: "Use template"
+    template_label: "Използвайте шаблон"
     copy_options:
       dependencies_label: "Copy from template"
   create_wiki_page: "Create new wiki page"
@@ -2094,7 +2103,7 @@ bg:
         other: "%{count} секунди"
     units:
       minute_abbreviated:
-        one: "min"
+        one: "мин"
         other: "mins"
       hour:
         one: "час"
@@ -2183,7 +2192,7 @@ bg:
         installation_text: "Experienced software engineers guide you through the complete installation and setup process in your own infrastructure."
         premium_features: "Enterprise add-ons"
         premium_features_text: "Agile boards, custom theme and logo, graphs, intelligent workflows with custom actions, full text search for work package attachments and multi-select custom fields."
-        professional_support: "Professional support"
+        professional_support: "Професионална поддръжка"
         professional_support_text: "Get reliable, high-touch support from senior support engineers with expert knowledge about running OpenProject in business-critical environments."
       work_package_subject_generation:
         description: "Create automatically generated subjects using referenced attributes and text."
@@ -2417,6 +2426,10 @@ bg:
     your_projects_export: "Projects are being exported"
     succeeded: "Export completed"
     failed: "An error has occurred while trying to export the work packages: %{message}"
+    demo:
+      heading: "Demo PDF"
+      footer: "Generated by OpenProject"
+      button_text: Generate Demo PDF
     errors:
       embedded_table_with_too_many_columns: "This embedded work package table could not fit on the page, please reduce the number of columns."
     format:
@@ -2591,8 +2604,8 @@ bg:
       simple_revoke_confirmation: "Наистина ли искате да анулирате този токен?"
       token/api:
         title: "API"
-        text_hint: "API tokens allow third-party applications to communicate with this OpenProject instance via REST APIs."
-        disabled_text: "API tokens are not enabled by the administrator. Please contact your administrator to use this feature."
+        text_hint: "Токените за API позволяват на приложения от трети страни да комуникират с тази инстанция на OpenProject чрез REST API."
+        disabled_text: "API токените не са разрешени от администратора. Моля, свържете се с администратора си, за да използвате тази функция."
         add_button: "API Token"
       api:
         static_token_name: "API токен"
@@ -2788,7 +2801,7 @@ bg:
   label_dashboard: "Табло"
   label_database_version: "Версия на PostgreSQL"
   label_date: "Дата"
-  label_dates: "Dates"
+  label_dates: "Дати"
   label_date_and_time: "Дата и час"
   label_date_format: "Формат на датата"
   label_date_from: "От"
@@ -2948,6 +2961,7 @@ bg:
   label_link_url: "URL-адрес на връзката:"
   label_list: "Списък"
   label_loading: "Зареждане..."
+  label_locked: "locked"
   label_lock_user: "Заключване на потребител"
   label_logged_as: "Влезли сте като"
   label_login: "Влизане"
@@ -2955,6 +2969,10 @@ bg:
   label_custom_export_logo: "Персонализирано експортиране на лого"
   label_custom_export_cover: "Персонализирано експортиране на корицата"
   label_custom_export_footer: "Custom export footer image"
+  label_custom_export_font_regular: "Regular"
+  label_custom_export_font_bold: "Bold"
+  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Персонализирано експортиране овърлея на корицата"
   label_custom_export_cover_text_color: "Цвят на текста"
   label_custom_pdf_export_settings: "Потребителски настройки за експортиране на PDF"
@@ -3042,6 +3060,8 @@ bg:
   label_operator_equals_or: "is (OR)"
   label_operator_equals_all: "is (AND)"
   label_operator_shared_with_user_any: "всяко"
+  label_open: "отворен"
+  label_closed: "затворен"
   label_open_menu: "Open menu"
   label_open_work_packages: "отворен"
   label_open_work_packages_plural: "отворен"
@@ -3059,7 +3079,7 @@ bg:
   label_password_rule_special: "Special Characters"
   label_password_rule_uppercase: "Uppercase"
   label_path_encoding: "Path encoding"
-  label_per_page: "Per page:"
+  label_per_page: "За страница:"
   label_people: "Участници"
   label_permissions: "Права"
   label_permissions_report: "Доклади за права"
@@ -3108,6 +3128,10 @@ bg:
   label_project_view_all: "Покажи всички проекти"
   label_project_show_details: "Show project details"
   label_project_hide_details: "Hide project details"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
+  label_program: "Program"
+  label_program_new: "New program"
   label_public_projects: "Публични проекти"
   label_query_new: "Ново търсене"
   label_query_plural: "Потребителско търсене"
@@ -3256,6 +3280,8 @@ bg:
   label_watched_work_packages: "Наблюдавани работни пакети"
   label_what_is_this: "Какво е това?"
   label_week: "Седмица"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "Wiki страница добавена"
   label_wiki_content_updated: "Wiki страница обновена"
   label_wiki_toc: "Таблица на съдържанието"
@@ -3603,6 +3629,8 @@ bg:
   permission_add_work_packages: "Add work packages"
   permission_add_messages: "Post messages"
   permission_add_project: "Create projects"
+  permission_add_portfolios: "Create portfolios"
+  permission_add_programs: "Create programs"
   permission_add_work_package_attachments: "Add attachments"
   permission_add_work_package_attachments_explanation: "Allows adding attachments without Edit work packages permission"
   permission_add_internal_comments: "Write internal comments"
@@ -4060,7 +4088,7 @@ bg:
   setting_working_days: "Работни дни"
   settings:
     authentication:
-      login: "Login"
+      login: "Вход"
       registration: "Registration"
       sso: "Single Sign-On (SSO)"
       omniauth_direct_login_hint_html: >
@@ -4212,6 +4240,18 @@ bg:
     This is the image that appears in the background of a cover page in your PDF exports. It needs to be an about 800px width by 500px height sized PNG or JPEG image file.
   text_custom_export_footer_instructions: >
     PDF exports will include a graphical element positioned to the left of the footer. This image must be a PNG or JPEG file with approximately 200 pixels in width.
+  label_custom_export_font_instructions: >
+    Upload and manage custom TrueType (.ttf) fonts used in your PDF exports. For best results, use matching files from the same font family. If no font is provided, the default NotoSans font will be used.
+  label_custom_export_images_instructions: >
+    Upload and manage custom image files used in your PDF exports.
+  text_custom_export_font_regular_instructions: >
+    This is the font file for regular text. It needs to be in TTF format and is required.
+  text_custom_export_font_bold_instructions: >
+    This is the font file for bold text. It needs to be in TTF format.
+  text_custom_export_font_italic_instructions: >
+    This is the font file for italic text. It needs to be in TTF format.
+  text_custom_export_font_bold_italic_instructions: >
+    This is the font file for bold and italic text. It needs to be in TTF format.
   text_custom_favicon_instructions: >
     This is the tiny icon that appears in your browser window/tab next to the page's title. It needs to be a squared 32 by 32 pixels sized PNG image file with a transparent background.
   text_custom_touch_icon_instructions: >

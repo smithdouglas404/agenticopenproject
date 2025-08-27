@@ -24,7 +24,7 @@ vi:
       storages/sharepoint_storage:
         host: Sharepoint Site URL
         library: Library ID
-        name: Name
+        name: Tên
         site: Site ID
       storages/storage:
         authentication_method: Authentication Method
@@ -198,7 +198,7 @@ vi:
         sharepoint: Allow OpenProject to access SharePoint data using OAuth.
       redirect_uri_incomplete:
         one_drive: Hoàn tất cấu hình với URI chuyển hướng chính xác.
-        sharepoint: Complete the setup with the correct URI redirection.
+        sharepoint: Hoàn tất cấu hình với URI chuyển hướng chính xác.
     confirm_replace_oauth_application: Hành động này sẽ đặt lại các thông tin xác thực OAuth hiện tại. Sau khi xác nhận, bạn sẽ phải nhập lại thông tin xác thực tại nhà cung cấp lưu trữ và tất cả người dùng từ xa sẽ phải xác thực lại với OpenProject. Bạn có chắc chắn muốn tiếp tục không?
     confirm_replace_oauth_client: Hành động này sẽ đặt lại các thông tin xác thực OAuth hiện tại. Sau khi xác nhận, bạn sẽ phải nhập thông tin mới từ nhà cung cấp lưu trữ và tất cả người dùng sẽ phải xác thực lại với %{provider_type}. Bạn có chắc chắn muốn tiếp tục không?
     delete_warning:
@@ -257,7 +257,7 @@ vi:
           group_folder_app: 'Dependency: Group Folders'
           group_folder_contents: Group folder has expected content
           group_folder_presence: Group folder exists
-          header: Automatically managed project folders
+          header: Các thư mục dự án được quản lý tự động
           userless_access: Server-side request authentication
         authentication:
           existing_token: User token
@@ -396,8 +396,8 @@ vi:
       sharepoint:
         application_link_text: SharePoint site
         integration: SharePoint Administration / OpenProject
-        oauth_configuration: Copy these values from the desired application in the %{application_link_text}.
-        provider_configuration: Please make sure you have administration privileges in the %{application_link_text} or contact your Microsoft administrator before doing the setup. In the portal, you also need to register an Azure application or use an existing one for authentication.
+        oauth_configuration: Sao chép các giá trị này từ ứng dụng mong muốn trong %{application_link_text}.
+        provider_configuration: Vui lòng đảm bảo bạn có quyền quản trị trong %{application_link_text} hoặc liên hệ với quản trị viên Microsoft của bạn trước khi thực hiện cấu hình. Trong cổng thông tin, bạn cũng cần đăng ký một ứng dụng Azure hoặc sử dụng một cái hiện có để xác thực.
       type: 'Vui lòng đảm bảo bạn có quyền quản trị trong phiên bản Nextcloud của bạn và đã cài đặt ứng dụng sau đây trước khi thực hiện cấu hình:'
       type_link_text: "“Tích hợp OpenProject”"
     label_active: Đang hoạt động
@@ -499,8 +499,8 @@ vi:
         name: OneDrive
         name_placeholder: 'ví dụ: OneDrive'
       sharepoint:
-        label_oauth_client_id: Azure OAuth Application (client) ID
-        label_oauth_client_secret: Azure OAuth Client Secret Value
+        label_oauth_client_id: ID Ứng dụng OAuth Azure (khách hàng)
+        label_oauth_client_secret: Giá trị Bí mật khách hàng OAuth Azure
         name: SharePoint
         name_placeholder: e.g. SharePoint
     show_attachments_toggle:

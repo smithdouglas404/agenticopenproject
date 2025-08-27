@@ -30,11 +30,11 @@
  */
 
 import { Controller } from '@hotwired/stimulus';
-import { outputChronicDuration, parseChronicDuration } from 'core-app/shared/helpers/chronic_duration';
+import { durationStringToSeconds, formattedHour } from 'core-stimulus/helpers/chronic-duration-helper';
 
 export default class ChronicDurationController extends Controller<HTMLInputElement> {
-  private processChangeFn = () => this.onBlur();
-  private keyPressedFn = (evt:KeyboardEvent) => this.onKeyPress(evt);
+  private processChangeFn = () => { this.onBlur(); };
+  private keyPressedFn = (evt:KeyboardEvent) => { this.onKeyPress(evt); };
 
   connect() {
     this.element.addEventListener('blur', this.processChangeFn);
@@ -49,15 +49,8 @@ export default class ChronicDurationController extends Controller<HTMLInputEleme
   }
 
   private onBlur() {
-    const value = this.element.value;
-    const hours = parseChronicDuration(
-      value,
-      {
-        defaultUnit: 'hours', ignoreSecondsWhenColonSeperated: true,
-      },
-    );
-
-    this.element.value = outputChronicDuration(hours, { format: 'hours_only' }) || '';
+    const parsedSeconds = durationStringToSeconds(this.element.value);
+    this.element.value = formattedHour(parsedSeconds);
   }
 
   private onKeyPress(evt:KeyboardEvent) {

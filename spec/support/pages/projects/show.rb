@@ -76,6 +76,10 @@ module Pages
         within("[data-test-selector='project-custom-field-#{custom_field.id}']", &)
       end
 
+      def expect_no_custom_field(custom_field)
+        expect(page).to have_no_css("[data-test-selector='project-custom-field-#{custom_field.id}']")
+      end
+
       def open_edit_dialog_for_section(section)
         within_project_attributes_sidebar do
           scroll_to_element(page.find("[data-test-selector='project-custom-field-section-#{section.id}']"))

@@ -64,3 +64,6 @@ OpenProject::FeatureDecisions.add :minutes_styling_meeting_pdf,
 OpenProject::FeatureDecisions.add :scored_list_custom_fields,
                                   description: "Enables the use of the custom field type 'Scored List', which lets " \
                                                "the admin add scores to list items."
+
+OpenProject::FeatureDecisions.add :portfolio_models,
+                                  description: "Enables the creation and management of portfolio and program work spaces."

@@ -59,6 +59,10 @@ lv:
       tab_interface: "Interface"
       tab_branding: "Branding"
       tab_pdf_export_styles: "PDF export styles"
+      tab_pdf_export_font: "PDF export font"
+      fonts:
+        file_too_large: "is too large (maximum size is %{count} MB)."
+        file_is_invalid: "is not a valid TTF font file."
       colors:
         primary-button-color: "Primary button"
         accent-color: "Accent"
@@ -145,7 +149,7 @@ lv:
         blank_slate:
           title: "No SCIM clients configured yet"
           description: "Add clients to see them here"
-        user_count: "Users"
+        user_count: "Lietotāji"
       token_list_component:
         description: "The tokens you generate here can be passed by a SCIM client to access the OpenProject SCIM API."
         heading: "Tokens"
@@ -297,6 +301,7 @@ lv:
         placeholder:
           label: "Item label"
           short: "Short name"
+          score: "Score"
       notice:
         remember_items_and_projects: "Remember to set items and projects in the respective tabs for this custom field."
       hierarchy:
@@ -334,7 +339,9 @@ lv:
     errors:
       defined: "must not be defined."
       int?: "must be an integer."
+      decimal?: "must be a decimal."
       filled?: "must be filled."
+      key?: "is missing."
       greater_or_equal_zero: "must be greater or equal to 0."
       not_found: "not found."
       rules:
@@ -357,6 +364,7 @@ lv:
       depth: "Depth"
       item: "Item"
       label: "Label"
+      score: "Score"
       short: "Short name"
       parent: "Parent"
       blueprint: "Pattern blueprint"
@@ -587,7 +595,7 @@ lv:
           dialog_title: "Create new API token"
           attention_text: "Treat API tokens like passwords. Anyone with this token will have access to information from this instance, share it only with trusted users."
           dialog_body: "This token will allow third-party applications to communicate with your instance. To differentiate the new API token, please give it a name."
-          create_button: "Create"
+          create_button: "Izveidot"
           name_label: "Token name"
       created_dialog:
         token/api:
@@ -949,7 +957,7 @@ lv:
   activemodel:
     attributes:
       projects/copy_options:
-        dependencies: "Dependencies"
+        dependencies: "Saistītie projekti"
   activerecord:
     attributes:
       announcements:
@@ -1075,14 +1083,15 @@ lv:
         types: "Veidi"
         versions: "Versijas"
         work_packages: "Pieteikuma tipi"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Required for all projects"
         custom_field_section: Section
       project/phase:
         date_range: "Date range"
         definition: "Definition"
-        duration: "Duration"
-        start_date: "Start date"
+        duration: "Ilgums"
+        start_date: "Sākuma datums"
         start_date_caption: "Follows the previous phase."
         finish_date: "Finish date"
       project/phase_definition:
@@ -1304,7 +1313,7 @@ lv:
         odd: "jābūt nepāra."
         regex_match_failed: "does not match the regular expression %{expression}."
         regex_invalid: "could not be validated with the associated regular expression."
-        regex_list_invalid: "could not be parsed as regular expression in lines %{invalid_lines}."
+        regex_list_invalid: "Lines %{invalid_lines} could not be parsed as regular expression."
         hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "jābūt mazākam vai vienādam ar maksimālo garumu."
         taken: "jau tika aizņemts."
@@ -1638,7 +1647,7 @@ lv:
         one: "Authentication provider"
         other: "Authentication providers"
       category: "Sadaļa"
-      color: "Color"
+      color: "Krāsa"
       comment: "Komentârs"
       custom_action: "Custom action"
       custom_field: "Custom field"
@@ -2226,7 +2235,7 @@ lv:
         installation_text: "Experienced software engineers guide you through the complete installation and setup process in your own infrastructure."
         premium_features: "Enterprise add-ons"
         premium_features_text: "Agile boards, custom theme and logo, graphs, intelligent workflows with custom actions, full text search for work package attachments and multi-select custom fields."
-        professional_support: "Professional support"
+        professional_support: "Profesionāls atbalsts"
         professional_support_text: "Get reliable, high-touch support from senior support engineers with expert knowledge about running OpenProject in business-critical environments."
       work_package_subject_generation:
         description: "Create automatically generated subjects using referenced attributes and text."
@@ -2461,6 +2470,10 @@ lv:
     your_projects_export: "Projects are being exported"
     succeeded: "Export completed"
     failed: "An error has occurred while trying to export the work packages: %{message}"
+    demo:
+      heading: "Demo PDF"
+      footer: "Generated by OpenProject"
+      button_text: Generate Demo PDF
     errors:
       embedded_table_with_too_many_columns: "This embedded work package table could not fit on the page, please reduce the number of columns."
     format:
@@ -2523,7 +2536,7 @@ lv:
       tesseract: "Tesseract available (optional)"
   filterable_tree_view:
     filter_mode:
-      all: "All"
+      all: "Visi"
       label: "Filter mode"
       selected: "Selected"
     include_sub_items: "Include sub-items"
@@ -2992,6 +3005,7 @@ lv:
   label_link_url: "Link (URL)"
   label_list: "List"
   label_loading: "Notiek ielāde..."
+  label_locked: "locked"
   label_lock_user: "Lock user"
   label_logged_as: "Logged in as"
   label_login: "Ienākt"
@@ -2999,6 +3013,10 @@ lv:
   label_custom_export_logo: "Custom export logo"
   label_custom_export_cover: "Custom export cover background"
   label_custom_export_footer: "Custom export footer image"
+  label_custom_export_font_regular: "Regular"
+  label_custom_export_font_bold: "Bold"
+  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
   label_custom_pdf_export_settings: "Custom PDF export settings"
@@ -3086,6 +3104,8 @@ lv:
   label_operator_equals_or: "is (OR)"
   label_operator_equals_all: "is (AND)"
   label_operator_shared_with_user_any: "visi"
+  label_open: "aktīvi"
+  label_closed: "slēgti"
   label_open_menu: "Atvērt izvēlni"
   label_open_work_packages: "aktīvi"
   label_open_work_packages_plural: "aktīvi"
@@ -3103,7 +3123,7 @@ lv:
   label_password_rule_special: "Special Characters"
   label_password_rule_uppercase: "Uppercase"
   label_path_encoding: "Path encoding"
-  label_per_page: "Per page:"
+  label_per_page: "Katrā lappusē:"
   label_people: "Iesaistītie"
   label_permissions: "Permissions"
   label_permissions_report: "Permissions report"
@@ -3152,6 +3172,10 @@ lv:
   label_project_view_all: "Skatīt visus projektus"
   label_project_show_details: "Show project details"
   label_project_hide_details: "Hide project details"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
+  label_program: "Program"
+  label_program_new: "New program"
   label_public_projects: "Publiskie projekti"
   label_query_new: "New query"
   label_query_plural: "Custom queries"
@@ -3300,6 +3324,8 @@ lv:
   label_watched_work_packages: "Pieteikumi, kuriem tiek sekots"
   label_what_is_this: "What is this?"
   label_week: "Week"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "Wiki page added"
   label_wiki_content_updated: "Wiki page updated"
   label_wiki_toc: "Satura rādītājs"
@@ -3649,6 +3675,8 @@ lv:
   permission_add_work_packages: "Add work packages"
   permission_add_messages: "Post messages"
   permission_add_project: "Create projects"
+  permission_add_portfolios: "Create portfolios"
+  permission_add_programs: "Create programs"
   permission_add_work_package_attachments: "Add attachments"
   permission_add_work_package_attachments_explanation: "Allows adding attachments without Edit work packages permission"
   permission_add_internal_comments: "Write internal comments"
@@ -4106,7 +4134,7 @@ lv:
   setting_working_days: "Working days"
   settings:
     authentication:
-      login: "Login"
+      login: "Lietotājs"
       registration: "Registration"
       sso: "Single Sign-On (SSO)"
       omniauth_direct_login_hint_html: >
@@ -4258,6 +4286,18 @@ lv:
     This is the image that appears in the background of a cover page in your PDF exports. It needs to be an about 800px width by 500px height sized PNG or JPEG image file.
   text_custom_export_footer_instructions: >
     PDF exports will include a graphical element positioned to the left of the footer. This image must be a PNG or JPEG file with approximately 200 pixels in width.
+  label_custom_export_font_instructions: >
+    Upload and manage custom TrueType (.ttf) fonts used in your PDF exports. For best results, use matching files from the same font family. If no font is provided, the default NotoSans font will be used.
+  label_custom_export_images_instructions: >
+    Upload and manage custom image files used in your PDF exports.
+  text_custom_export_font_regular_instructions: >
+    This is the font file for regular text. It needs to be in TTF format and is required.
+  text_custom_export_font_bold_instructions: >
+    This is the font file for bold text. It needs to be in TTF format.
+  text_custom_export_font_italic_instructions: >
+    This is the font file for italic text. It needs to be in TTF format.
+  text_custom_export_font_bold_italic_instructions: >
+    This is the font file for bold and italic text. It needs to be in TTF format.
   text_custom_favicon_instructions: >
     This is the tiny icon that appears in your browser window/tab next to the page's title. It needs to be a squared 32 by 32 pixels sized PNG image file with a transparent background.
   text_custom_touch_icon_instructions: >

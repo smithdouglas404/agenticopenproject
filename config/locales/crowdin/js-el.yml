@@ -323,7 +323,7 @@ el:
     label_added_time_by: 'Added by <a href="%{authorLink}">%{author}</a> at %{age}'
     label_ago: "ημέρες πριν"
     label_all: "όλα"
-    label_all_projects: "All projects"
+    label_all_projects: "Όλα τα έργα"
     label_all_uppercase: "Όλα"
     label_all_work_packages: "όλα τα πακέτα εργασίας"
     label_and: "και"
@@ -781,7 +781,7 @@ el:
     autocompleter:
       placeholder: "Πληκτρολογήστε για αναζήτηση"
       notFoundText: "No items found"
-      search: "Search"
+      search: "Αναζήτηση"
       project:
         placeholder: "Select project"
     repositories:
@@ -1224,12 +1224,14 @@ el:
         all: "Όλα τα έργα"
         selected: "Only selected"
       search_placeholder: "Search project..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Include all sub-projects"
       tooltip:
         include_all_selected: "Project already included since Include all sub-projects is enabled."
         current_project: "This is the current project you are in."
         does_not_match_search: "Project does not match the search criteria."
       no_results: "No project matches your search criteria."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Baseline"
       clear: "Εκκαθάριση"

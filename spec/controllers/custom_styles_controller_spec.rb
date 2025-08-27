@@ -233,7 +233,7 @@ RSpec.describe CustomStylesController do
       end
     end
 
-    describe "#export_logo_download" do
+    describe "#export_logo_download", with_ee: %i[define_custom_style] do
       before do
         allow(CustomStyle).to receive(:current).and_return(custom_style)
         allow(controller).to receive(:send_file) { controller.head 200 }
@@ -294,7 +294,7 @@ RSpec.describe CustomStylesController do
       end
     end
 
-    describe "#export_cover_download" do
+    describe "#export_cover_download", with_ee: %i[define_custom_style] do
       before do
         allow(CustomStyle).to receive(:current).and_return(custom_style)
         allow(controller).to receive(:send_file) { controller.head 200 }
@@ -354,7 +354,7 @@ RSpec.describe CustomStylesController do
       end
     end
 
-    describe "#export_footer_download" do
+    describe "#export_footer_download", with_ee: %i[define_custom_style] do
       before do
         allow(CustomStyle).to receive(:current).and_return(custom_style)
         allow(controller).to receive(:send_file) { controller.head 200 }
@@ -642,6 +642,128 @@ RSpec.describe CustomStylesController do
         it "redirects to that tab" do
           post :update_colors, params: { tab: :branding, design_colors: [{ "primary-button-color" => "#110000" }] }
           expect(response).to redirect_to(action: :show, tab: :branding)
+        end
+      end
+    end
+
+    describe "update with export font uploads", with_ee: %i[define_custom_style] do
+      let(:custom_style) { create(:custom_style) }
+      let(:font_file) { Rack::Test::UploadedFile.new(Rails.public_path.join("fonts/noto-emoji/NotoEmoji.ttf"), "font/ttf") }
+
+      before do
+        allow(CustomStyle).to receive(:current).and_return(custom_style)
+      end
+
+      it "uploads regular font" do
+        post :update, params: { custom_style: { export_font_regular: font_file } }
+        expect(response).to redirect_to(action: :show)
+        expect(custom_style.reload.export_font_regular).to be_present
+        expect(File.basename(custom_style.reload.export_font_regular.file.path)).to eq("NotoEmoji.ttf")
+      end
+
+      it "uploads bold font" do
+        post :update, params: { custom_style: { export_font_bold: font_file } }
+        expect(response).to redirect_to(action: :show)
+        expect(custom_style.reload.export_font_bold).to be_present
+        expect(File.basename(custom_style.reload.export_font_bold.file.path)).to eq("NotoEmoji.ttf")
+      end
+
+      it "uploads italic font" do
+        post :update, params: { custom_style: { export_font_italic: font_file } }
+        expect(response).to redirect_to(action: :show)
+        expect(custom_style.reload.export_font_italic).to be_present
+        expect(File.basename(custom_style.reload.export_font_italic.file.path)).to eq("NotoEmoji.ttf")
+      end
+
+      it "uploads bold italic font" do
+        post :update, params: { custom_style: { export_font_bold_italic: font_file } }
+        expect(response).to redirect_to(action: :show)
+        expect(custom_style.reload.export_font_bold_italic).to be_present
+        expect(File.basename(custom_style.reload.export_font_bold_italic.file.path)).to eq("NotoEmoji.ttf")
+      end
+
+      describe "update with invalid file", with_ee: %i[define_custom_style] do
+        let(:font_file) { Rack::Test::UploadedFile.new(Rails.public_path.join("favicon.ico"), "font/ttf") }
+
+        it "does respect the file size limit" do
+          # rubocop:disable RSpec/AnyInstance
+          allow_any_instance_of(CarrierWave::SanitizedFile)
+             .to receive(:size)
+                   .and_return(40.megabytes)
+          # rubocop:enable RSpec/AnyInstance
+          post :update, params: { custom_style: { export_font_regular: font_file } }
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(custom_style.reload.export_font_regular).not_to be_present
+          expect(flash[:error].join).to include("is too large")
+        end
+
+        it "does not accept a non-font" do
+          post :update, params: { custom_style: { export_font_regular: font_file } }
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(custom_style.reload.export_font_regular).not_to be_present
+          expect(flash[:error].join).to include "not a valid TTF font file."
+        end
+      end
+    end
+
+    describe "export font deletions", with_ee: %i[define_custom_style] do
+      context "when style exists" do
+        it "deletes regular font" do
+          style = create(:custom_style_with_export_font_regular)
+          allow(CustomStyle).to receive(:current).and_return(style)
+          delete :export_font_regular_delete
+          expect(response).to redirect_to(action: :show)
+          expect(style.reload.export_font_regular).not_to be_present
+        end
+
+        it "deletes bold font" do
+          style = create(:custom_style_with_export_font_bold)
+          allow(CustomStyle).to receive(:current).and_return(style)
+          delete :export_font_bold_delete
+          expect(response).to redirect_to(action: :show)
+          expect(style.reload.export_font_bold).not_to be_present
+        end
+
+        it "deletes italic font" do
+          style = create(:custom_style_with_export_font_italic)
+          allow(CustomStyle).to receive(:current).and_return(style)
+          delete :export_font_italic_delete
+          expect(response).to redirect_to(action: :show)
+          expect(style.reload.export_font_italic).not_to be_present
+        end
+
+        it "deletes bold italic font" do
+          style = create(:custom_style_with_export_font_bold_italic)
+          allow(CustomStyle).to receive(:current).and_return(style)
+          delete :export_font_bold_italic_delete
+          expect(response).to redirect_to(action: :show)
+          expect(style.reload.export_font_bold_italic).not_to be_present
+        end
+      end
+
+      context "when no style exists" do
+        before do
+          allow(CustomStyle).to receive(:current).and_return(nil)
+        end
+
+        it "returns 404 for regular" do
+          delete :export_font_regular_delete
+          expect(response).to have_http_status :not_found
+        end
+
+        it "returns 404 for bold" do
+          delete :export_font_bold_delete
+          expect(response).to have_http_status :not_found
+        end
+
+        it "returns 404 for italic" do
+          delete :export_font_italic_delete
+          expect(response).to have_http_status :not_found
+        end
+
+        it "returns 404 for bold italic" do
+          delete :export_font_bold_italic_delete
+          expect(response).to have_http_status :not_found
         end
       end
     end

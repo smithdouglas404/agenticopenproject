@@ -1232,12 +1232,14 @@ ru:
         all: "Все проекты"
         selected: "Только выбранные"
       search_placeholder: "Поиск проекта..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Включить все подпроекты"
       tooltip:
         include_all_selected: "Проект уже включен, поскольку разрешено включение всех подпроектов."
         current_project: "Это текущий проект, в котором вы находитесь."
         does_not_match_search: "Ни один проект не соответствует критериям поиска."
       no_results: "Ни один проект не соответствует критериям поиска."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Базовый уровень"
       clear: "Очистить"

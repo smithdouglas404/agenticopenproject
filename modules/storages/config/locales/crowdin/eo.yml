@@ -24,7 +24,7 @@ eo:
       storages/sharepoint_storage:
         host: Sharepoint Site URL
         library: Library ID
-        name: Name
+        name: Nomo
         site: Site ID
       storages/storage:
         authentication_method: Authentication Method

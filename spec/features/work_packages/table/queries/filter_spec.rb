@@ -33,7 +33,7 @@ require "spec_helper"
 RSpec.describe "filter work packages", :js do
   include Components::Autocompleter::NgSelectAutocompleteHelpers
 
-  shared_let(:user) { create(:admin, preferences: { time_zone: "Etc/UTC" }) }
+  shared_let(:user) { create(:admin, preferences: { time_zone: "Europe/Kyiv" }) }
   shared_let(:watcher) { create(:user) }
   shared_let(:role) { create(:existing_project_role, permissions: [:view_work_packages]) }
   shared_let(:project) { create(:project, members: { watcher => role }) }
@@ -642,9 +642,9 @@ RSpec.describe "filter work packages", :js do
 
       # The frontend sends the date as a datetime string in utc where both bounds have the local offset deduced
       # e.g. ["2023-05-31T22:00:00Z", "2023-06-03T21:59:59Z"]
-      Time.use_zone(ActiveSupport::TimeZone[Time.now.getlocal.zone]) do
+      Time.use_zone(user.time_zone) do
         expect(date_filter.values)
-          .to eq [(Time.now.getlocal - 4.days).beginning_of_day.utc.iso8601, (Time.now.getlocal - 2.days).end_of_day.utc.iso8601]
+          .to eq [4.days.ago.beginning_of_day.utc.iso8601, 2.days.ago.end_of_day.utc.iso8601]
       end
 
       wp_table.visit_query(last_query)
@@ -695,8 +695,10 @@ RSpec.describe "filter work packages", :js do
 
       last_query = Query.where(name: "Some query name").first
       date_filter = last_query.filters.last
-      expect(date_filter.values)
-        .to eq [3.days.ago.utc.beginning_of_day.iso8601]
+      Time.use_zone(user.time_zone) do
+        expect(date_filter.values)
+          .to eq [3.days.ago.beginning_of_day.utc.iso8601]
+      end
 
       wp_table.visit_query(last_query)
 
@@ -746,8 +748,10 @@ RSpec.describe "filter work packages", :js do
 
       last_query = Query.where(name: "Some query name").first
       date_filter = last_query.filters.last
-      expect(date_filter.values)
-        .to eq ["", 4.days.ago.utc.end_of_day.iso8601]
+      Time.use_zone(user.time_zone) do
+        expect(date_filter.values)
+          .to eq ["", 4.days.ago.end_of_day.utc.iso8601]
+      end
 
       wp_table.visit_query(last_query)
 

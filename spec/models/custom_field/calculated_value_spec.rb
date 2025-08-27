@@ -33,7 +33,7 @@ require "spec_helper"
 RSpec.describe CustomField::CalculatedValue, with_flag: { calculated_value_project_attribute: true } do
   subject(:custom_field) { create(:calculated_value_project_custom_field, formula: "1 + 1") }
 
-  describe ".affected_calculated_fields" do
+  describe ".affected_calculated_fields", :aggregate_failures do
     let(:scope) { CustomField }
 
     def ref(custom_field) = "{{cf_#{custom_field.id}}}"
@@ -87,9 +87,9 @@ RSpec.describe CustomField::CalculatedValue, with_flag: { calculated_value_proje
       end
 
       context "when scope doesn't include some values" do
-        let(:scope) { CustomField.where(id: [cf2, cf3]) }
+        let(:scope) { CustomField.where.not(id: [cf_c, cf1]) }
 
-        it "receives referencing fields when passing referenced constant field ids" do
+        it "returns referencing fields when passing referenced constant field ids if both are in scope" do
           expect(scope.affected_calculated_fields([cf_a.id])).to contain_exactly(cf2)
           expect(scope.affected_calculated_fields([cf_b.id])).to contain_exactly(cf2, cf3)
           expect(scope.affected_calculated_fields([cf_c.id])).to be_empty
@@ -99,11 +99,11 @@ RSpec.describe CustomField::CalculatedValue, with_flag: { calculated_value_proje
           expect(scope.affected_calculated_fields([cf_a.id, cf_b.id, cf_c.id])).to contain_exactly(cf2, cf3)
         end
 
-        it "receives fields themselves when passing calculated field ids" do
+        it "returns fields themselves if they are in scope when passing calculated field ids" do
           expect(scope.affected_calculated_fields([cf1.id])).to be_empty
           expect(scope.affected_calculated_fields([cf2.id])).to contain_exactly(cf2)
           expect(scope.affected_calculated_fields([cf3.id])).to contain_exactly(cf3)
-          expect(scope.affected_calculated_fields([cf4.id])).to be_empty
+          expect(scope.affected_calculated_fields([cf4.id])).to contain_exactly(cf4)
         end
       end
     end
@@ -118,26 +118,44 @@ RSpec.describe CustomField::CalculatedValue, with_flag: { calculated_value_proje
       shared_let(:cf2) { create(:calculated_value_project_custom_field, :skip_validations, formula: "#{ref cf1} * #{ref cf_c}") }
       shared_let(:cf3) { create(:calculated_value_project_custom_field, :skip_validations, formula: "#{ref cf2} * #{ref cf_d}") }
 
-      it "receives referencing fields when passing referenced constant field ids" do
+      it "returns referencing fields when passing referenced constant field ids" do
         expect(scope.affected_calculated_fields([cf_a.id])).to contain_exactly(cf1, cf2, cf3)
         expect(scope.affected_calculated_fields([cf_b.id])).to contain_exactly(cf1, cf2, cf3)
         expect(scope.affected_calculated_fields([cf_c.id])).to contain_exactly(cf2, cf3)
         expect(scope.affected_calculated_fields([cf_d.id])).to contain_exactly(cf3)
       end
 
-      context "when scope doesn't include some values" do
-        let(:scope) { CustomField.where(id: [cf1, cf3]) }
+      it "returns fields themselves and referencing fields when passing calculated field ids" do
+        expect(scope.affected_calculated_fields([cf1.id])).to contain_exactly(cf1, cf2, cf3)
+        expect(scope.affected_calculated_fields([cf2.id])).to contain_exactly(cf2, cf3)
+        expect(scope.affected_calculated_fields([cf3.id])).to contain_exactly(cf3)
+      end
 
-        it "receives referencing fields when passing referenced constant field ids" do
+      context "when scope doesn't include some values" do
+        let(:scope) { CustomField.where.not(id: cf2) }
+
+        it "returns referencing fields when passing referenced constant field ids if whole paths are in scope" do
           expect(scope.affected_calculated_fields([cf_a.id])).to contain_exactly(cf1)
           expect(scope.affected_calculated_fields([cf_b.id])).to contain_exactly(cf1)
           expect(scope.affected_calculated_fields([cf_c.id])).to be_empty
           expect(scope.affected_calculated_fields([cf_d.id])).to contain_exactly(cf3)
+          expect(scope.affected_calculated_fields([cf_a.id, cf_b.id])).to contain_exactly(cf1)
+          expect(scope.affected_calculated_fields([cf_a.id, cf_c.id])).to contain_exactly(cf1)
+          expect(scope.affected_calculated_fields([cf_a.id, cf_d.id])).to contain_exactly(cf1, cf3)
+          expect(scope.affected_calculated_fields([cf_b.id, cf_c.id])).to contain_exactly(cf1)
+          expect(scope.affected_calculated_fields([cf_b.id, cf_d.id])).to contain_exactly(cf1, cf3)
+          expect(scope.affected_calculated_fields([cf_c.id, cf_d.id])).to contain_exactly(cf3)
+        end
+
+        it "returns fields themselves if they are in scope when passing calculated field ids" do
+          expect(scope.affected_calculated_fields([cf1.id])).to contain_exactly(cf1)
+          expect(scope.affected_calculated_fields([cf2.id])).to be_empty
+          expect(scope.affected_calculated_fields([cf3.id])).to contain_exactly(cf3)
         end
       end
     end
 
-    context "if given formulas with circular references" do
+    context "given formulas with circular references" do
       let!(:cf_a) { create(:integer_project_custom_field, default_value: 1) }
       let!(:cf_b) { create(:integer_project_custom_field, default_value: 2) }
       let!(:cf_c) { create(:integer_project_custom_field, default_value: 3) }
@@ -605,7 +623,7 @@ RSpec.describe CustomField::CalculatedValue, with_flag: { calculated_value_proje
 
       current_user { user }
 
-      it_behaves_like "invalid formula", "contains custom fields that are not allowed: int, float."
+      it_behaves_like "invalid formula", /contains custom fields that are not allowed: (int, float|float, int)./
     end
   end
 end

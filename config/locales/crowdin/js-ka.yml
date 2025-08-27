@@ -324,7 +324,7 @@ ka:
     label_added_time_by: 'Added by <a href="%{authorLink}">%{author}</a> at %{age}'
     label_ago: "დღის წინ"
     label_all: "ყველა"
-    label_all_projects: "All projects"
+    label_all_projects: "ყველა პროექტი"
     label_all_uppercase: "ყველა"
     label_all_work_packages: "all work packages"
     label_and: "და"
@@ -782,7 +782,7 @@ ka:
     autocompleter:
       placeholder: "მოსაძებნად აკრიფეთ"
       notFoundText: "ელემენტები ვერ ვიპოვე"
-      search: "Search"
+      search: "ძებნა"
       project:
         placeholder: "აირჩიეთ პროექტი"
     repositories:
@@ -1225,12 +1225,14 @@ ka:
         all: "ყველა პროექტი"
         selected: "მხოლოდ მონიშნული"
       search_placeholder: "Search project..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Include all sub-projects"
       tooltip:
         include_all_selected: "Project already included since Include all sub-projects is enabled."
         current_project: "This is the current project you are in."
         does_not_match_search: "Project does not match the search criteria."
       no_results: "No project matches your search criteria."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "ბაზისური ხაზი"
       clear: "გასუფთავება"

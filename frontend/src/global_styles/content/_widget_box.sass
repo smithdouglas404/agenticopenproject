@@ -64,7 +64,6 @@ $widget-box--enumeration-width: 20px
   .widget-box
     position: relative
     @include widget-box--style
-    padding: 20px
     min-height: 250px
     word-wrap: break-word
     overflow: hidden
@@ -107,17 +106,64 @@ $widget-box--enumeration-width: 20px
       grid-template-columns: auto auto
       grid-column-gap: 20px
 
+.op-widget-box--body
+  height: 100%
+  padding: var(--stack-padding-normal)
+  overflow-x: auto
+  overflow-y: auto
+
+  &.-no-overflow
+    overflow-x: hidden
+    overflow-y: hidden
+    display: block
+
+  &.-allow-inner-overflow
+    .wiki
+      overflow-y: auto
+      @include styled-scroll-bar
+
+  // styles specific to the custom-text widget
+  &.-custom-text
+    a.inplace-editing--trigger-link
+      color: inherit
+      text-decoration: none
+
+    .op-ckeditor--wrapper
+      margin-bottom: 0
+
+    .ck-editor__top
+      position: sticky
+      top: 0
+
+    .inplace-edit--controls
+      position: initial
+
+      i
+        float: initial
+        padding: 0
+
+    edit-field-controls
+      display: flex
+      position: sticky
+      bottom: 0
+      justify-content: flex-end
+
+    .textarea-wrapper
+      margin-bottom: 0
+
 .op-widget-box--header
   font-weight: var(--base-text-weight-bold)
-  font-size: 1.25rem
+  font-size: var(--body-font-size)
+  color: var(--fgColor-muted)
   display: flex
-  margin-top: 4px
-  margin-bottom: 13px
-  border-bottom: none
-  padding-bottom: 0
+  align-items: center
+  border-bottom: var(--borderWidth-thin) solid var(--borderColor-default)
+  padding: var(--stack-padding-normal)
+  background-color: var(--bgColor-muted)
 
   .help-text--entry
-    vertical-align: 2px
+    vertical-align: -1px
+    margin-right: 4px
 
 .op-widget-box--header-title
   vertical-align: middle
@@ -127,12 +173,15 @@ $widget-box--enumeration-width: 20px
 
   // Ensure style for read-only widget headers
   .editable-toolbar-title--fixed,
-  .toolbar--editable-toolbar
-    color: var(--fgColor-default)
+  .toolbar--editable-toolbar,
+  .editable-toolbar-title--input
     font-size: var(--body-font-size)
-    letter-spacing: 1px
-    text-transform: uppercase
     font-weight: var(--base-text-weight-bold)
+    color: var(--fgColor-muted) !important
+    padding: 0 !important
+
+  .toolbar--editable-toolbar
+    height: 20px
 
 .widget-box--arrow-links
   list-style: none

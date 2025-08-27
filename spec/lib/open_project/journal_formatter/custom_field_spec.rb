@@ -403,8 +403,9 @@ RSpec.describe OpenProject::JournalFormatter::CustomField do
 
     let!(:service) { CustomFields::Hierarchy::HierarchicalItemService.new }
     let!(:root) { custom_field.hierarchy_root }
-    let!(:luke) { service.insert_item(parent: root, label: "luke", short: "LS").value! }
-    let!(:mara) { service.insert_item(parent: luke, label: "mara").value! }
+    let(:contract_class) { CustomFields::Hierarchy::InsertListItemContract }
+    let!(:luke) { service.insert_item(contract_class:, parent: root, label: "luke", short: "LS").value! }
+    let!(:mara) { service.insert_item(contract_class:, parent: luke, label: "mara").value! }
 
     describe "first value being nil and second value a string" do
       let(:values) { [nil, mara.id.to_s] }

@@ -3,7 +3,7 @@ ja:
     upsell:
       ldap_groups:
         title: 'LDAP グループの同期'
-        description: 'Synchronize LDAP groups with OpenProject groups to manage users, change their permissions and facilitate user management across groups.'
+        description: 'LDAP グループを OpenProject グループと同期して、ユーザーを管理し、権限を変更し、グループ間のユーザー管理を容易にします。'
   plugin_openproject_ldap_groups:
     name: "OpenProject LDAP グループ"
     description: "LDAP グループメンバシップの同期。"

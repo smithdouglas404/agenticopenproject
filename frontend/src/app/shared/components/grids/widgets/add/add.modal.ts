@@ -27,7 +27,7 @@ export class AddGridWidgetModalComponent extends OpModalComponent implements OnI
     cancel_button: this.i18n.t('js.button_cancel'),
   };
 
-  public chosenWidget:WidgetRegistration;
+  public chosenWidget?:WidgetRegistration;
 
   public eeShowBanners = false;
 

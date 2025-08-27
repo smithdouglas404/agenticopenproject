@@ -59,6 +59,10 @@ ms:
       tab_interface: "Antara muka"
       tab_branding: "Penjenamaan"
       tab_pdf_export_styles: "Gaya eksport PDF"
+      tab_pdf_export_font: "PDF export font"
+      fonts:
+        file_too_large: "is too large (maximum size is %{count} MB)."
+        file_is_invalid: "is not a valid TTF font file."
       colors:
         primary-button-color: "Butang utama"
         accent-color: "Aksen"
@@ -137,15 +141,15 @@ ms:
       new:
         title: "New SCIM client"
       revoke_static_token_dialog_component:
-        confirm_button: "Revoke"
+        confirm_button: "Tarik balik"
         title: "Revoke static token"
-        heading: "Are you sure you want to revoke this token?"
+        heading: "Adakah anda pasti anda mahu membatalkan token ini?"
         description: "The SCIM client that uses this token will no longer be able to access OpenProject's SCIM server API."
       table_component:
         blank_slate:
           title: "No SCIM clients configured yet"
           description: "Add clients to see them here"
-        user_count: "Users"
+        user_count: "Pengguna-pengguna"
       token_list_component:
         description: "The tokens you generate here can be passed by a SCIM client to access the OpenProject SCIM API."
         heading: "Tokens"
@@ -296,6 +300,7 @@ ms:
         placeholder:
           label: "Label item"
           short: "Nama pendek"
+          score: "Score"
       notice:
         remember_items_and_projects: "Ingat untuk menetapkan item dan projek dalam tab masing-masing untuk medan tersuai ini."
       hierarchy:
@@ -333,7 +338,9 @@ ms:
     errors:
       defined: "must not be defined."
       int?: "mestilah integer."
+      decimal?: "must be a decimal."
       filled?: "mesti diisi."
+      key?: "is missing."
       greater_or_equal_zero: "mestilah lebih besar atau sama dengan 0."
       not_found: "tidak dijumpai."
       rules:
@@ -352,10 +359,11 @@ ms:
           not_descendant: "mestilah keturunan akar hierarki."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
+      enabled: "Didayakan"
       depth: "Kedalaman"
       item: "Item"
       label: "Label"
+      score: "Score"
       short: "Nama pendek"
       parent: "Induk"
       blueprint: "Pattern blueprint"
@@ -385,7 +393,7 @@ ms:
       no_results_title_text: Saat ini tiada projek yang menjadi sebahagian daripada kumpulan ini.
     synchronized_groups:
       blankslate:
-        action: Authentication settings
+        action: Tetapan pengesahan
         description: When this group is automatically synced with groups in external identity providers like OpenID, they will appear here. You can set this up in your Authentication settings.
         title: No synchronized groups yet
   incoming_mails:
@@ -571,10 +579,10 @@ ms:
     access_token:
       dialog:
         token/api:
-          dialog_title: "Create new API token"
+          dialog_title: "Cipta token API baharu"
           attention_text: "Treat API tokens like passwords. Anyone with this token will have access to information from this instance, share it only with trusted users."
-          dialog_body: "This token will allow third-party applications to communicate with your instance. To differentiate the new API token, please give it a name."
-          create_button: "Create"
+          dialog_body: "Token ini akan membenarkan aplikasi pihak ketiga berkomunikasi dengan contoh anda. Untuk membezakan token API baharu, sila beri nama."
+          create_button: "Cipta"
           name_label: "Token name"
       created_dialog:
         token/api:
@@ -635,8 +643,8 @@ ms:
   priorities:
     edit:
       priority_color_text: |
-        Click to assign or change the color of this priority.
-        It can be used for highlighting work packages in the table.
+        Klik untuk menugaskan atau menukar warna untuk keutamaan ini.
+        Ia boleh digunakan untuk menyoroti pakej kerja dalam jadual ini.
     admin:
       default:
         caption: Making this priority default will override the previous default priority.
@@ -993,12 +1001,12 @@ ms:
       enterprise_token:
         starts_at: "Sah sehingga"
         subscriber: "Pelanggan"
-        subscription: "Subscription"
-        plan: "Plan"
+        subscription: "Langganan"
+        plan: "Pelan"
         encoded_token: "Token sokongan Enterprise"
         active_user_count_restriction: "Active users"
       enterprise_trial:
-        company: "Company"
+        company: "Syarikat"
       grids/grid:
         page: "Halaman"
         row_count: "Bilangan baris"
@@ -1057,16 +1065,17 @@ ms:
         types: "Jenis"
         versions: "Versi-versi"
         work_packages: "Pakej Kerja"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Diperlukan untuk semua projek"
         custom_field_section: Bahagian
       project/phase:
         date_range: "Date range"
         definition: "Definition"
-        duration: "Duration"
-        start_date: "Start date"
+        duration: "Tempoh"
+        start_date: "Tarikh mula"
         start_date_caption: "Follows the previous phase."
-        finish_date: "Finish date"
+        finish_date: "Tarikh tamat"
       project/phase_definition:
         name: "Nama"
         color: "Warna"
@@ -1134,7 +1143,7 @@ ms:
         ongoing: "Sedang berlangsung"
       type:
         description: "Teks default untuk deskripsi"
-        attribute_groups: "Form configuration"
+        attribute_groups: "Konfigurasi borang"
         is_in_roadmap: "Dipaparkan dalam roadmap secara default"
         is_default: "Diaktifkan untuk projek baharu secara default"
         is_milestone: "Adalah pencapaian"
@@ -1161,7 +1170,7 @@ ms:
         password_confirmation: "Pengesahan"
         consented_at: "Dipersetujui di"
       group:
-        identity_url: "Identity URL"
+        identity_url: "Identiti URL"
       user_preference:
         header_look_and_feel: "Look and feel"
         header_alerts: "Alerts"
@@ -1247,7 +1256,7 @@ ms:
         error_unauthorized: "tidak boleh diakses."
         error_readonly: "telah cuba untuk menulis tetapi tidak dapat ditulis."
         error_conflict: "Sementara itu, maklumat telah dikemas kini oleh sekurang-kurangnya salah satu pengguna lain."
-        error_not_found: "not found."
+        error_not_found: "tidak dijumpai."
         email: "adalah bukan alamat e-mel yang sah."
         empty: "tidak boleh kosong."
         enterprise_plan_required: "requires at least the %{plan_name}."
@@ -1286,7 +1295,7 @@ ms:
         odd: "mesti ganjil."
         regex_match_failed: "tidak padan dengan ungkapan biasa %{expression}."
         regex_invalid: "tidak dapat disahkan dengan ungkapan biasa yang berkaitan."
-        regex_list_invalid: "could not be parsed as regular expression in lines %{invalid_lines}."
+        regex_list_invalid: "Lines %{invalid_lines} could not be parsed as regular expression."
         hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "perlu kurang daripada atau sama dengan panjang maksima."
         taken: "sudah diguna pakai."
@@ -1614,7 +1623,7 @@ ms:
       auth_provider:
         other: "Authentication providers"
       category: "Kategori"
-      color: "Color"
+      color: "Warna"
       comment: "Komen"
       custom_action: "Tindakan tersuai"
       custom_field: "Ruang tersuai"
@@ -1787,7 +1796,7 @@ ms:
     title: "Tajuk"
     type: "Jenis"
     typeahead: "Autocomplete"
-    uid: "Unique identifier"
+    uid: "Pengecam unik"
     updated_at: "Dikemas kini pada"
     updated_on: "Dikemas kini pada"
     uploader: "Pemuat naik\n"
@@ -1901,7 +1910,7 @@ ms:
   button_unwatch: "Berhenti memerhatikan"
   button_update: "Kemas kini"
   button_upgrade: "Naik taraf"
-  button_buy_now: "Buy now"
+  button_buy_now: "Beli sekarang"
   button_upload: "Muat naik"
   button_view: "Lihat"
   button_watch: "Perhati"
@@ -1950,7 +1959,7 @@ ms:
     copy_options:
       dependencies_label: "Copy from project"
   create_project:
-    template_label: "Use template"
+    template_label: "Guna templat"
     copy_options:
       dependencies_label: "Copy from template"
   create_wiki_page: "Create new wiki page"
@@ -2115,13 +2124,13 @@ ms:
       work_package_sharing: Share work packages with external users
       work_package_subject_generation: Work Package Subject Generation
     upsell:
-      buy_now_button: "Buy now"
+      buy_now_button: "Beli sekarang"
       plans_title: "Enterprise plans"
       title: "Alat tambah perusahaan"
       plan_title: "Enterprise %{plan} add-on"
       plan_name: "%{plan} enterprise plan"
       plan_text_html: "Available starting with the %{plan_name}."
-      unlimited: "Unlimited"
+      unlimited: "Tiada had"
       already_have_token: >
         Already have a token? Add it using the button below to upgrade to the booked Enterprise plan.
       hide_banner: "Hide this banner"
@@ -2131,15 +2140,15 @@ ms:
       baseline_comparison:
         description: Sorotkan perubahan yang dibuat ke senarai ini pada bila-bila masa lalu.
       benefits:
-        description: "What are the benefits of the Enterprise on-premises edition?"
-        high_security: "Security features"
-        high_security_text: "Single sign on (SAML, OpenID Connect, CAS), LDAP groups."
-        installation: "Installation support"
-        installation_text: "Experienced software engineers guide you through the complete installation and setup process in your own infrastructure."
-        premium_features: "Enterprise add-ons"
-        premium_features_text: "Agile boards, custom theme and logo, graphs, intelligent workflows with custom actions, full text search for work package attachments and multi-select custom fields."
-        professional_support: "Professional support"
-        professional_support_text: "Get reliable, high-touch support from senior support engineers with expert knowledge about running OpenProject in business-critical environments."
+        description: "Apakah manfaat edisi Enterprise di premis?"
+        high_security: "Fitur keselamatan"
+        high_security_text: "Log masuk tunggal (SAML, OpenID Connect, CAS), kumpulan LDAP."
+        installation: "Sokongan pemasangan"
+        installation_text: "Jurutera perisian berpengalaman membimbing anda melalui pemasangan lengkap dan proses persediaan dalam infrastruktur anda sendiri."
+        premium_features: "Tambahan Enterprise"
+        premium_features_text: "Board Agile, tema tersuai dan logo, graf, aliran kerja yang cerdas dengan tindakan tersuai, carian teks penuh untuk lampiran pakej kerja dan pelbagai pilihan ruang tersuai."
+        professional_support: "Sokongan profesional"
+        professional_support_text: "Dapatkan sokongan yang boleh dipercayai, sokongan peribadi yang berkualiti tinggi daripada jurutera sokongan berpengalaman dengan pengetahuan pakar tentang menjalankan OpenProject dalam persekitaran perniagaan yang kritikal."
       work_package_subject_generation:
         description: "Create automatically generated subjects using referenced attributes and text."
       customize_life_cycle:
@@ -2206,7 +2215,7 @@ ms:
       request_again: "Request again"
       resend_action: "Resend confirmation email"
       welcome_title: "Quick feature overview"
-      welcome_description: "Get a quick overview of project management and team collaboration with OpenProject Enterprise edition."
+      welcome_description: "Dapatkan gambaran keseluruhan ringkas pengurusan projek dan kolaborasi kumpulan dengan OpenProject edisi Enterprise."
       confirmation_info: >
         We sent you an email on %{date} to %{email} with all the information to start the free trial of OpenProject Enterprise. Please check your inbox and click the confirmation link provided to start your 14-day free trial.
       confirmation_subline: >
@@ -2371,6 +2380,10 @@ ms:
     your_projects_export: "Projects are being exported"
     succeeded: "Eksport selesai"
     failed: "Ralat telah berlaku semasa cuba mengeksport pakej kerja: %{message}"
+    demo:
+      heading: "Demo PDF"
+      footer: "Generated by OpenProject"
+      button_text: Generate Demo PDF
     errors:
       embedded_table_with_too_many_columns: "This embedded work package table could not fit on the page, please reduce the number of columns."
     format:
@@ -2433,7 +2446,7 @@ ms:
       tesseract: "Tesseract tersedia (pilihan)"
   filterable_tree_view:
     filter_mode:
-      all: "All"
+      all: "Semua"
       label: "Filter mode"
       selected: "Selected"
     include_sub_items: "Include sub-items"
@@ -2545,8 +2558,8 @@ ms:
       simple_revoke_confirmation: "Adakah anda pasti anda mahu membatalkan token ini?"
       token/api:
         title: "API"
-        text_hint: "API tokens allow third-party applications to communicate with this OpenProject instance via REST APIs."
-        disabled_text: "API tokens are not enabled by the administrator. Please contact your administrator to use this feature."
+        text_hint: "Token API membenarkan aplikasi pihak ketiga untuk berkomunikasi dengan OpenProject ini, contohnya, melalui REST API."
+        disabled_text: "Token API tidak didayakan oleh pentadbir. Sila hubungi pentadbir anda untuk menggunakan fitur ini."
         add_button: "API Token"
       api:
         static_token_name: "Token API"
@@ -2565,7 +2578,7 @@ ms:
         static_token_name: "Token RSS"
         disabled_text: "Token RSS tidak diaktifkan oleh pentadbir. Sila hubungi pentadbir anda untuk menggunakan fitur ini."
       storages:
-        title: "File storages"
+        title: "Simpanan fail"
         text_hint: "Token Storan Fail menyambungkan contoh OpenProject dengan Storan Fail luaran."
         empty_text_hint: "Tiada akses storan terpaut pada akaun anda."
         revoke_token: "Adakah anda ingin membuang token ini? Anda perlu log masuk semula di %{storage}"
@@ -2866,7 +2879,7 @@ ms:
   label_information_plural: "Maklumat"
   label_installation_guides: "Panduan pemasangan"
   label_integer: "Integer"
-  label_interface: "Interface"
+  label_interface: "Antara muka"
   label_internal: "Dalaman"
   label_introduction_video: "Video pengenalan"
   label_invite_user: "Jemput pengguna"
@@ -2902,6 +2915,7 @@ ms:
   label_link_url: "Pautan (URL) "
   label_list: "Senarai"
   label_loading: "Sedang memuatkan..."
+  label_locked: "locked"
   label_lock_user: "Kunci pengguna"
   label_logged_as: "Log masuk sebagai"
   label_login: "Daftar masuk"
@@ -2909,6 +2923,10 @@ ms:
   label_custom_export_logo: "Logo eksport tersuai"
   label_custom_export_cover: "Latar belakang penutup eksport tersuai"
   label_custom_export_footer: "Custom export footer image"
+  label_custom_export_font_regular: "Regular"
+  label_custom_export_font_bold: "Bold"
+  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Lapisan latar belakang penutup eksport tersuai"
   label_custom_export_cover_text_color: "Warna teks"
   label_custom_pdf_export_settings: "Tetapan eksport PDF tersuai"
@@ -2980,7 +2998,7 @@ ms:
   label_no_due_date: "tiada tarikh tamat"
   label_no_start_date: "tiada tarikh mula"
   label_no_parent_page: "Tiada halaman induk"
-  label_notification_center_plural: "Notifications"
+  label_notification_center_plural: "Pemberitahuan"
   label_nothing_display: "Tiada apa untuk dipaparkan"
   label_nobody: "tiada siapa"
   label_not_configured: "Tidak dikonfigurasikan"
@@ -2996,6 +3014,8 @@ ms:
   label_operator_equals_or: "adalah (ATAU)"
   label_operator_equals_all: "adalah (DAN)"
   label_operator_shared_with_user_any: "sebarang"
+  label_open: "buka"
+  label_closed: "ditutup"
   label_open_menu: "Buka menu"
   label_open_work_packages: "buka"
   label_open_work_packages_plural: "buka"
@@ -3013,7 +3033,7 @@ ms:
   label_password_rule_special: "Aksara Khas"
   label_password_rule_uppercase: "Huruf Besar"
   label_path_encoding: "Laluan pengekodan"
-  label_per_page: "Per page:"
+  label_per_page: "Setiap halaman:"
   label_people: "Orang"
   label_permissions: "Kebenaran"
   label_permissions_report: "Laporan kebenaran"
@@ -3056,12 +3076,16 @@ ms:
   label_project_custom_field_plural: "Atribut projek"
   label_project_settings: "Tetapan projek"
   label_project_attributes_settings: "Tetapan atribut projek"
-  label_project_storage_plural: "File storages"
+  label_project_storage_plural: "Simpanan fail"
   label_project_storage_project_folder: "File storages: Project folders"
   label_projects_disk_usage_information: "%{count} projek menggunakan %{used_disk_space} ruang cakera"
   label_project_view_all: "Lihat semua projek"
   label_project_show_details: "Paparkan butiran projek"
   label_project_hide_details: "Sembunyikan butiran projek"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
+  label_program: "Program"
+  label_program_new: "New program"
   label_public_projects: "Projek awam"
   label_query_new: "Pertanyaan baharu"
   label_query_plural: "Pertanyaan tersuai"
@@ -3210,6 +3234,8 @@ ms:
   label_watched_work_packages: "Pakej kerja yang dipantau"
   label_what_is_this: "Apakah ini?"
   label_week: "Minggu"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "Halaman wiki ditambah"
   label_wiki_content_updated: "Halaman wiki dikemas kini"
   label_wiki_toc: "Jadual Kandungan"
@@ -3554,6 +3580,8 @@ ms:
   permission_add_work_packages: "Tambah pakej kerja"
   permission_add_messages: "Pos mesej"
   permission_add_project: "Cipta projek"
+  permission_add_portfolios: "Create portfolios"
+  permission_add_programs: "Create programs"
   permission_add_work_package_attachments: "Tambah lampiran"
   permission_add_work_package_attachments_explanation: "Benarkan penambahan lampiran tanpa kebenaran Edit pakej kerja"
   permission_add_internal_comments: "Write internal comments"
@@ -4011,7 +4039,7 @@ ms:
   setting_working_days: "Hari bekerja"
   settings:
     authentication:
-      login: "Login"
+      login: "Log masuk"
       registration: "Registration"
       sso: "Single Sign-On (SSO)"
       omniauth_direct_login_hint_html: >
@@ -4163,6 +4191,18 @@ ms:
     Ini merupakan imej yang akan muncul pada latar belakang muka hadapan eksport PDF anda. Ia perlu menjadi fail imej PNG atau JPEG berukuran kira-kira 800px lebar dan 500px tinggi.
   text_custom_export_footer_instructions: >
     PDF exports will include a graphical element positioned to the left of the footer. This image must be a PNG or JPEG file with approximately 200 pixels in width.
+  label_custom_export_font_instructions: >
+    Upload and manage custom TrueType (.ttf) fonts used in your PDF exports. For best results, use matching files from the same font family. If no font is provided, the default NotoSans font will be used.
+  label_custom_export_images_instructions: >
+    Upload and manage custom image files used in your PDF exports.
+  text_custom_export_font_regular_instructions: >
+    This is the font file for regular text. It needs to be in TTF format and is required.
+  text_custom_export_font_bold_instructions: >
+    This is the font file for bold text. It needs to be in TTF format.
+  text_custom_export_font_italic_instructions: >
+    This is the font file for italic text. It needs to be in TTF format.
+  text_custom_export_font_bold_italic_instructions: >
+    This is the font file for bold and italic text. It needs to be in TTF format.
   text_custom_favicon_instructions: >
     ini ialah ikon kecil yang akan dipaparkan di tetingkap pelayar/tab di sebelah tajuk halaman tersebut. Ia perlulah menggunakan fail imej PNG yang bersaiz 32 kali 32 piksel kuasa dua bersertaan latar belakang telus.
   text_custom_touch_icon_instructions: >

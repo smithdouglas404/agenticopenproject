@@ -24,7 +24,7 @@
       storages/sharepoint_storage:
         host: Sharepoint Site URL
         library: Library ID
-        name: Name
+        name: Navn
         site: Site ID
       storages/storage:
         authentication_method: Authentication Method
@@ -198,7 +198,7 @@
         sharepoint: Allow OpenProject to access SharePoint data using OAuth.
       redirect_uri_incomplete:
         one_drive: Fullfør oppsettet med riktig URI omdirigering.
-        sharepoint: Complete the setup with the correct URI redirection.
+        sharepoint: Fullfør oppsettet med riktig URI omdirigering.
     confirm_replace_oauth_application: Denne handlingen vil tilbakestille gjeldende OAuth legitimasjon. Etter å ha bekreftet vil du måtte skrive inn innloggingsdetaljene hos lagringsleverandøren, og alle eksterne brukere må autorisere mot OpenProject igjen. Er du sikker på at du vil fortsette?
     confirm_replace_oauth_client: Denne handlingen vil tilbakestille gjeldende OAuth legitimasjon. Etter bekreftelse må du skrive inn ny påloggingsinformasjon fra leverandøren, og alle brukere må autorisere mot %{provider_type} igjen. Er du sikker på at du vil fortsette?
     delete_warning:
@@ -257,7 +257,7 @@
           group_folder_app: 'Dependency: Group Folders'
           group_folder_contents: Group folder has expected content
           group_folder_presence: Group folder exists
-          header: Automatically managed project folders
+          header: Automatisk administrerte prosjektmapper
           userless_access: Server-side request authentication
         authentication:
           existing_token: User token
@@ -398,8 +398,8 @@
       sharepoint:
         application_link_text: SharePoint site
         integration: SharePoint Administration / OpenProject
-        oauth_configuration: Copy these values from the desired application in the %{application_link_text}.
-        provider_configuration: Please make sure you have administration privileges in the %{application_link_text} or contact your Microsoft administrator before doing the setup. In the portal, you also need to register an Azure application or use an existing one for authentication.
+        oauth_configuration: Kopier disse verdiene fra den ønskede applikasjonen i %{application_link_text}.
+        provider_configuration: Kontroller at du har administrasjonsrettigheter i %{application_link_text} eller kontakt Microsoft-administratoren din før du gjennomfører oppsettet. I portalen må du også registrere et Azure-program eller bruke en eksisterende for autentisering.
       type: 'Sørg for at du har administrasjonsrettigheter i din Nextcloud-instans og har følgende applikasjon installert før du utfører oppsettet:'
       type_link_text: "«Integrasjon OpenProject»"
     label_active: Aktiv
@@ -502,8 +502,8 @@
         name: OneDrive
         name_placeholder: f.eks OneDrive
       sharepoint:
-        label_oauth_client_id: Azure OAuth Application (client) ID
-        label_oauth_client_secret: Azure OAuth Client Secret Value
+        label_oauth_client_id: Azure OAuth applikasjon (klient) ID
+        label_oauth_client_secret: Azure OAuth klient hemmelig verdi
         name: SharePoint
         name_placeholder: e.g. SharePoint
     show_attachments_toggle:

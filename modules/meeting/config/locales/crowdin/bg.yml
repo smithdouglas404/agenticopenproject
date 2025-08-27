@@ -45,7 +45,7 @@ bg:
       meeting_agenda_item:
         title: "Заглавие"
         author: "Автор"
-        duration_in_minutes: "Duration"
+        duration_in_minutes: "Продължителност"
         description: "Бележки"
         presenter: "Презентатор"
       meeting_section:
@@ -59,8 +59,13 @@ bg:
         end_after: "Meeting series ends"
         end_date: "Крайна дата"
         iterations: "Occurrences"
+      meeting_participant:
+        invited: "Invited"
+        attended: "Attended"
     errors:
       models:
+        meeting_participant:
+          invalid_user: "%{name} is not a valid participant."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "There is one open meeting in the series that is not covered by the new schedule. Adjust the schedule to include all existing meetings."
@@ -94,7 +99,6 @@ bg:
           updated: "променен от %{old_value} на %{value}"
           updated_html: "се променя от <i>%{old_value}</i> на <i>%{value}</i>"
   description_attended: "присъства"
-  description_invite: "Поканен"
   events:
     meeting: Срещата е редактирана
     meeting_agenda: Дневният ред на срещата е редактиран
@@ -177,20 +181,20 @@ bg:
   meeting:
     participants:
       label:
-        participants: "Participants"
+        participants: "Участници"
         attended: "Attended"
         mark_as_attended: "Mark as attended"
         mark_all_as_attended: "Mark all as attended"
         remove_participant: "Remove participant"
-        manage_participants: "Manage participants"
-        no_participants: "No participants"
-        show_all: "Show all"
+        manage_participants: "Управление на участниците"
+        no_participants: "Няма участници"
+        show_all: "Показване на всичко"
       text:
         template: "These participants will be invited automatically to all future meetings as they are created."
         manage_participants: "Search for and add project members as participants to this meeting."
         search_for_members: "Search for project members"
       blankslate:
-        heading: "No participants"
+        heading: "Няма участници"
         description: "There are no participants yet."
     attachments:
       template: "These attached files will be included in all future meetings in the series."
@@ -203,7 +207,7 @@ bg:
       agenda_items: "Copy agenda items"
       agenda_text: "Копиране на дневния ред от старата среща"
       participants: "Copy list of participants"
-      to_clipboard: "Copy to clipboard"
+      to_clipboard: "Копирай в буфер"
     email:
       send_emails: "Email participants"
       send_invitation_emails: >
@@ -214,9 +218,9 @@ bg:
       series:
         title: "[%{project_name}] Meeting series '%{title}'"
         summary: "%{actor} has set up a new meeting series '%{title}'"
-      series_rescheduled:
-        title: "[%{project_name}] Meeting series '%{title}' rescheduled"
-        summary: "%{actor} has changed the schedule for meeting series '%{title}'"
+      series_updated:
+        title: "[%{project_name}] Meeting series '%{title}' has been updated"
+        summary: "Meeting series '%{title}' has been updated by %{actor}"
         old_schedule: "Old schedule"
         new_schedule: "New schedule"
       invited:
@@ -229,13 +233,15 @@ bg:
         summary_series: "Meeting series '%{title}' has been cancelled by %{actor}."
         summary: "'%{title}' has been cancelled by %{actor}."
         date_time: "Scheduled date/time"
-      rescheduled:
-        header: "Meeting '%{title}' has been rescheduled"
-        summary: "Meeting '%{title}' has been rescheduled by %{actor}"
-        body: "The meeting '%{title}' has been rescheduled by %{actor}."
+      updated:
+        header: "Meeting '%{title}' has been updated"
+        summary: "Meeting '%{title}' has been updated by %{actor}"
+        body: "The meeting '%{title}' has been updated by %{actor}."
         old_date_time: "Стара дата/час"
         new_date_time: "Нова дата/час"
-    label_mail_all_participants: "Email calendar invite to all participants"
+        old_location: "Old location"
+        new_location: "New location"
+    label_mail_all_participants: "Send email invite to participants"
     types:
       one_time: "One-time"
       recurring: "Recurring"
@@ -263,26 +269,26 @@ bg:
       your_meeting_export: "Meeting is being exported"
       minutes:
         footer_page_numbers: "P. %{current_page} of %{total_pages}"
-        author: "Author"
-        date: "Date"
-        time: "Time"
-        location: "Location"
-        title: "Minutes"
+        author: "Автор"
+        date: "Дата"
+        time: "Час"
+        location: "Местоположение"
+        title: "Минути"
     export_pdf_dialog:
       title: Export PDF
       description: Generate a printable PDF file of this meeting at the current state.
       templates:
         default:
-          label: Default
+          label: По подразбиране
           caption: The default template is suitable for most meetings and represent the current state.
         minutes:
-          label: Minutes
+          label: Минути
           caption: The minutes template is suitable for closed and archived meetings.
       first_page_header_left:
         label: First page header left
         caption: This text will appear on the first page at the left of the header.
       author:
-        label: Author
+        label: Автор
         caption: The author of the minutes will be displayed in the subtitle.
       include_participants:
         label: Include list of participants
@@ -299,7 +305,7 @@ bg:
       footer_text:
         label: Footer text
         caption: This text will appear on every page at the center of the footer.
-      submit_button: Download
+      submit_button: Изтегли
     notifications:
       sidepanel:
         title: "Email calendar updates"
@@ -320,6 +326,11 @@ bg:
           enable: "Enable email updates"
           disable: "Disable email updates"
       banner:
+        participants:
+          enabled: >
+            All participants will receive updated calendar invites via email when you add or remove participants.
+          disabled: >
+            Email calendar updates are disabled. Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             All participants will receive updated calendar invites via email informing them of your changes.
@@ -466,7 +477,7 @@ bg:
   label_agenda_item_deleted_wp: "Deleted work package reference"
   label_agenda_item_actions: "Agenda items actions"
   label_agenda_item_move_to_next_title: "Move to next meeting?"
-  label_agenda_item_move: "Move"
+  label_agenda_item_move: "Премести"
   label_agenda_item_move_to_next: "Move to next meeting"
   label_agenda_item_move_to_backlog: "Move to backlog"
   label_agenda_item_move_to_current_meeting: "Move to current meeting"
@@ -518,9 +529,9 @@ bg:
   label_meeting_reopen_action: "Reopen meeting"
   label_meeting_close_action: "Затваряне на срещата"
   label_meeting_in_progress_action: "Start meeting"
-  text_meeting_open_description: "This meeting is open. You can add/remove agenda items and edit them as you please. Once the agenda is ready, mark it as in progress to document outcomes."
+  text_meeting_open_description: "You can add/remove agenda items and participants. Once the agenda is ready, mark it as in progress to document outcomes."
   text_meeting_closed_description: "Тази среща е закрита. Вече не можете да добавяте или изтривате точки от дневния ред."
-  text_meeting_in_progress_description: "This meeting is in progress. You can document outcomes for each agenda item, re-arrange them, and even add new ones. Once the meeting is complete, you can mark it as closed to lock it."
+  text_meeting_in_progress_description: "You can modify the agenda, document outcomes for each item and track attendance for participants. Once the meeting is complete, you can mark it as closed to lock it."
   text_meeting_open_dropdown_description: "Any existing outcomes will remain but users will not be able to add new outcomes."
   text_meeting_in_progress_dropdown_description: "Document outcomes like information needs or decisions taken during the meeting."
   text_meeting_closed_dropdown_description: "This meeting is closed. You cannot modify agenda items or outcomes anymore."

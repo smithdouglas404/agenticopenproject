@@ -323,7 +323,7 @@ sl:
     label_added_time_by: 'Added by <a href="%{authorLink}">%{author}</a> at %{age}'
     label_ago: "pred dnevi"
     label_all: "vsi"
-    label_all_projects: "All projects"
+    label_all_projects: "Vsi projekti"
     label_all_uppercase: "Vse"
     label_all_work_packages: "Vsi zahtevki"
     label_and: "in"
@@ -783,7 +783,7 @@ sl:
     autocompleter:
       placeholder: "Iskalni niz"
       notFoundText: "Ni najdenih elementov"
-      search: "Search"
+      search: "Išči"
       project:
         placeholder: "Select project"
     repositories:
@@ -1232,12 +1232,14 @@ sl:
         all: "Vsi projekti"
         selected: "Only selected"
       search_placeholder: "Search project..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Include all sub-projects"
       tooltip:
         include_all_selected: "Project already included since Include all sub-projects is enabled."
         current_project: "This is the current project you are in."
         does_not_match_search: "Project does not match the search criteria."
       no_results: "No project matches your search criteria."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Baseline"
       clear: "Počisti"

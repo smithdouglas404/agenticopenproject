@@ -31,9 +31,9 @@ vi:
         spent: "Đã chi"
         spent_on: "Ngày"
         logged_by: "Đã ghi bởi"
-        entity: Logged for
-        entity_id: Logged for
-        entity_gid: Logged for
+        entity: Ghi lại cho
+        entity_id: Ghi lại cho
+        entity_gid: Ghi lại cho
       cost_type:
         unit: "Tên đơn vị"
         unit_plural: "Tên đơn vị đa năng"
@@ -61,9 +61,9 @@ vi:
         start_time: Thời gian bắt đầu
         end_time: Thời gian hoàn thành
         time: Thời gian
-        entity: Logged for
-        entity_id: Logged for
-        entity_gid: Logged for
+        entity: Ghi lại cho
+        entity_id: Ghi lại cho
+        entity_gid: Ghi lại cho
     models:
       time_entry:
         other: "Time entries"

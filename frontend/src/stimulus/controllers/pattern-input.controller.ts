@@ -39,7 +39,14 @@ type FilteredSuggestions = Array<{
 
 type TokenElement = HTMLElement&{ dataset:{ role:'token', prop:string } };
 type ListElement = HTMLElement&{ dataset:{ role:'list_item', prop:string } };
-type AttributeToken = { key:string, label:string, label_with_context?:string, insert_as_text?:boolean };
+
+interface AttributeToken {
+  key:string;
+  label:string;
+  label_with_context?:string;
+  insert_as_text?:boolean;
+  enabled:boolean;
+};
 
 const COMPLETION_CHARACTER = '/';
 const TOKEN_REGEX = /{{([0-9A-Za-z_]+)}}/g;
@@ -47,6 +54,8 @@ const TOKEN_REGEX = /{{([0-9A-Za-z_]+)}}/g;
 // A zero-width space character, which is used
 // to have a caret position after tokens
 const CONTROL_SPACE = '\u200B';
+// A non-breaking space inserted by some browsers to preserve multiple consecutive spaces
+const NON_BREAKING_SPACE = '\u00A0';
 
 export default class PatternInputController extends Controller {
   static targets = [
@@ -84,11 +93,13 @@ export default class PatternInputController extends Controller {
   declare readonly insertAsTextTemplateValue:string;
 
   validTokenMap:Record<string, AttributeToken> = {};
+  validSuggestions:Record<string, { title:string, tokens:AttributeToken[] }> = {};
   currentRange:Range|undefined = undefined;
 
   connect() {
     this.validTokenMap = this.flatTokensKeyToLabelWithContext();
     this.contentTarget.innerHTML = this.toHtml(this.patternInitialValue) || ' ';
+    this.populateValidSuggestions();
     this.tagInvalidTokens();
     this.clearSuggestionsFilter();
   }
@@ -433,8 +444,8 @@ export default class PatternInputController extends Controller {
   }
 
   private getFilteredSuggestionsData(word:string):FilteredSuggestions {
-    return Object.keys(this.suggestionsInitialValue).map((key) => {
-      const group = this.suggestionsInitialValue[key];
+    return Object.keys(this.validSuggestions).map((key) => {
+      const group = this.validSuggestions[key];
       return {
         key,
         label: group.title,
@@ -445,16 +456,28 @@ export default class PatternInputController extends Controller {
     }).filter((group) => group.values.length > 0);
   }
 
+  private populateValidSuggestions():void {
+    for (const key of Object.keys(this.suggestionsInitialValue)) {
+      const group = this.suggestionsInitialValue[key];
+      this.validSuggestions[key] = {
+        title: group.title,
+        tokens: group.tokens.filter((token) => token.enabled)
+      };
+    }
+  }
+
   private tagInvalidTokens():void {
     this.contentTarget.querySelectorAll('[data-role="token"]').forEach((element:TokenElement) => {
-      const exists = Object.keys(this.validTokenMap).some((key) => key === element.dataset.prop);
-
-      if (exists) {
+      if (this.isSuggestable(element.dataset.prop)) {
         this.setStyle(element, 'accent');
       } else {
         this.setStyle(element, 'danger');
       }
     });
+  }
+
+  private isSuggestable(token:string):boolean {
+    return Object.keys(this.validTokenMap).some((key) => this.validTokenMap[key].enabled && token === key);
   }
 
   private setStyle(token:TokenElement, style:'accent'|'danger'|'secondary'):void {
@@ -487,9 +510,13 @@ export default class PatternInputController extends Controller {
   private sanitizeContent():void {
     this.contentTarget.childNodes.forEach((node) => {
       if (this.isToken(node)) {
-        this.setStyle(node, 'accent');
-
         const key = node.dataset.prop;
+        if(this.isSuggestable(key)) {
+          this.setStyle(node, 'accent');
+        } else {
+          this.setStyle(node, 'danger');
+        }
+
         if (node.textContent !== this.tokenText(key)) {
           if (this.containsCursor(node)) {
             this.setStyle(node, 'secondary');
@@ -568,9 +595,11 @@ export default class PatternInputController extends Controller {
       }
     });
 
-    // remove any padding whitespaces and control spaces,
-    // which were used for usability
-    return result.trim().replace(new RegExp(CONTROL_SPACE, 'g'), '');
+    // remove any padding whitespaces and control spaces, which were used for
+    // usability, and non-breaking spaces inserted by some browsers
+    return result.trim()
+      .replace(new RegExp(CONTROL_SPACE, 'g'), '')
+      .replace(new RegExp(NON_BREAKING_SPACE, 'g'), ' ');
   }
 
   private containsCursor(node:Node):boolean {

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -30,6 +31,8 @@
 class MeetingParticipant < ApplicationRecord
   belongs_to :meeting
   belongs_to :user
+
+  validates :user, :meeting, presence: true
 
   scope :invited, -> { where(invited: true) }
   scope :attended, -> { where(attended: true) }

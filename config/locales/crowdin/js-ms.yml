@@ -324,7 +324,7 @@ ms:
     label_added_time_by: 'Ditambah oleh <a href="%{authorLink}">%{author} pada %{age}'
     label_ago: "hari yang lalu"
     label_all: "semua"
-    label_all_projects: "All projects"
+    label_all_projects: "Semua projek"
     label_all_uppercase: "Semua"
     label_all_work_packages: "semua pakej kerja"
     label_and: "dan"
@@ -781,7 +781,7 @@ ms:
     autocompleter:
       placeholder: "Taip untuk cari"
       notFoundText: "Tiada item ditemui"
-      search: "Search"
+      search: "Cari"
       project:
         placeholder: "Pilih projek"
     repositories:
@@ -1221,12 +1221,14 @@ ms:
         all: "Semua projek"
         selected: "Hanya terpilih"
       search_placeholder: "Cari projek..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Termasuk semua sub-projek"
       tooltip:
         include_all_selected: "Projek sudah disertakan sejak Sertakan semua sub-projek didayakan."
         current_project: "Ini adalah projek yang anda terlibat dalam sekarang."
         does_not_match_search: "Projek tidak sepadan dengan kriteria carian."
       no_results: "Tiada projek yang sepadan dengan kriteria carian anda."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Garis panduan asas"
       clear: "Kosongkan"

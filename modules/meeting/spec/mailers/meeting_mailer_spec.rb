@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -62,6 +63,7 @@ RSpec.describe MeetingMailer do
     let(:i18n) do
       Class.new do
         include Redmine::I18n
+
         public :format_date, :format_time
       end
     end
@@ -128,6 +130,70 @@ RSpec.describe MeetingMailer do
 
           expect(mail.to).to contain_exactly(watcher1.mail)
         end
+      end
+    end
+  end
+
+  describe "updated" do
+    let(:meeting) do
+      create(:meeting,
+             author:,
+             project:,
+             start_time: "2021-11-09T23:00:00 +0100".to_datetime.utc)
+    end
+    let(:new_start) { "2021-11-12T23:00:00 +0100".to_datetime.utc }
+    let(:changes) do
+      { old_start: meeting.start_time,
+        new_start:,
+        old_duration: 1,
+        new_duration: 1,
+        old_location: nil,
+        new_location: "Some new location" }
+    end
+    let(:mail) { described_class.updated(meeting, watcher1, author, changes:) }
+    # this is needed to call module functions from Redmine::I18n
+    let(:i18n) do
+      Class.new do
+        include Redmine::I18n
+
+        public :format_date, :format_time
+      end
+    end
+
+    it "renders the headers" do
+      expect(mail.subject).to include(meeting.project.name)
+      expect(mail.subject).to include(meeting.title)
+      expect(mail.to).to contain_exactly(watcher1.mail)
+      expect(mail.from).to eq([Setting.mail_from])
+    end
+
+    describe "text body" do
+      subject(:body) { mail.text_part.body }
+
+      it "renders the text body" do
+        expect(body).to include("has been updated")
+        expect(body).to include(meeting.title)
+        expect(body).to include(i18n.format_date(meeting.start_time))
+        expect(body).to include(i18n.format_time(meeting.start_time, include_date: false))
+        expect(body).to include(i18n.format_date(new_start))
+        expect(body).to include(i18n.format_time(new_start, include_date: false))
+        expect(body).to include("-")
+        expect(body).to include("Some new location")
+      end
+    end
+
+    describe "renders the html body" do
+      subject(:body) { mail.html_part.body }
+
+      it "renders the text body" do
+        expect(body).to include("has been updated")
+        expect(body).to include(meeting.title)
+        expect(body).to include(i18n.format_date(meeting.start_time))
+        expect(body).to include(i18n.format_time(meeting.start_time, include_date: false))
+        expect(body).to include(i18n.format_date(new_start))
+        expect(body).to include(i18n.format_time(new_start, include_date: false))
+        expect(body).to include("-")
+        expect(body).to include("Some new location")
       end
     end
   end

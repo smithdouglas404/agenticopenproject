@@ -120,6 +120,20 @@ module OpenIDConnect
       redirect_to action: :index
     end
 
+    def match_groups
+      result = make_group_matcher
+      if result.success?
+        group_names = (params[:preview_group_names] || "").split("\n")
+        matched_groups = group_names.filter_map { |input| result.result.call(input) }
+      else
+        matched_groups = result.errors.map { |e| "#{OpenIDConnect::Provider.human_attribute_name(:group_regexes)} #{e}" }
+      end
+
+      update_via_turbo_stream(component: OpenIDConnect::Groups::MatchPreviewComponent.new(matched_groups))
+
+      respond_to_with_turbo_streams
+    end
+
     private
 
     def check_ee
@@ -184,6 +198,20 @@ module OpenIDConnect
 
     def fetch_metadata?
       params[:fetch_metadata] == "true"
+    end
+
+    def make_group_matcher
+      result = OpenIDConnect::Providers::SetAttributesService.new(
+        user: User.current,
+        model: OpenIDConnect::Provider.new,
+        contract_class: OpenIDConnect::Providers::CreateContract
+      ).call(group_regexes: params[:preview_regular_expressions])
+
+      if result.errors[:group_regexes].present?
+        ServiceResult.failure(errors: result.errors[:group_regexes])
+      else
+        ServiceResult.success(result: OpenIDConnect::Groups::GroupMatchService.new(result.result.group_matchers))
+      end
     end
   end
 end

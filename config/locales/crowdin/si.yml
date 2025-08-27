@@ -59,6 +59,10 @@ si:
       tab_interface: "Interface"
       tab_branding: "Branding"
       tab_pdf_export_styles: "PDF export styles"
+      tab_pdf_export_font: "PDF export font"
+      fonts:
+        file_too_large: "is too large (maximum size is %{count} MB)."
+        file_is_invalid: "is not a valid TTF font file."
       colors:
         primary-button-color: "Primary button"
         accent-color: "Accent"
@@ -137,7 +141,7 @@ si:
       new:
         title: "New SCIM client"
       revoke_static_token_dialog_component:
-        confirm_button: "Revoke"
+        confirm_button: "අවලංගු"
         title: "Revoke static token"
         heading: "Are you sure you want to revoke this token?"
         description: "The SCIM client that uses this token will no longer be able to access OpenProject's SCIM server API."
@@ -145,7 +149,7 @@ si:
         blank_slate:
           title: "No SCIM clients configured yet"
           description: "Add clients to see them here"
-        user_count: "Users"
+        user_count: "පරිශීලකයන්"
       token_list_component:
         description: "The tokens you generate here can be passed by a SCIM client to access the OpenProject SCIM API."
         heading: "Tokens"
@@ -297,6 +301,7 @@ si:
         placeholder:
           label: "Item label"
           short: "Short name"
+          score: "Score"
       notice:
         remember_items_and_projects: "Remember to set items and projects in the respective tabs for this custom field."
       hierarchy:
@@ -334,7 +339,9 @@ si:
     errors:
       defined: "must not be defined."
       int?: "must be an integer."
+      decimal?: "must be a decimal."
       filled?: "must be filled."
+      key?: "is missing."
       greater_or_equal_zero: "must be greater or equal to 0."
       not_found: "not found."
       rules:
@@ -357,6 +364,7 @@ si:
       depth: "Depth"
       item: "Item"
       label: "Label"
+      score: "Score"
       short: "Short name"
       parent: "මාපිය"
       blueprint: "Pattern blueprint"
@@ -581,7 +589,7 @@ si:
           dialog_title: "Create new API token"
           attention_text: "Treat API tokens like passwords. Anyone with this token will have access to information from this instance, share it only with trusted users."
           dialog_body: "This token will allow third-party applications to communicate with your instance. To differentiate the new API token, please give it a name."
-          create_button: "Create"
+          create_button: "සාදන්න"
           name_label: "Token name"
       created_dialog:
         token/api:
@@ -642,8 +650,8 @@ si:
   priorities:
     edit:
       priority_color_text: |
-        Click to assign or change the color of this priority.
-        It can be used for highlighting work packages in the table.
+        මෙම ප්රමුඛතාවයේ වර්ණය පැවරීම හෝ වෙනස් කිරීම සඳහා ක්ලික් කරන්න.
+        වගුවේ වැඩ පැකේජ අවධාරණය කිරීම සඳහා එය භාවිතා කළ හැකිය.
     admin:
       default:
         caption: Making this priority default will override the previous default priority.
@@ -941,7 +949,7 @@ si:
   activemodel:
     attributes:
       projects/copy_options:
-        dependencies: "Dependencies"
+        dependencies: "පරායත්තතා"
   activerecord:
     attributes:
       announcements:
@@ -1067,16 +1075,17 @@ si:
         types: "වර්ග"
         versions: "අනුවාද"
         work_packages: "වැඩ පැකේජ"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Required for all projects"
         custom_field_section: Section
       project/phase:
         date_range: "දිනය පරාසයක"
         definition: "Definition"
-        duration: "Duration"
-        start_date: "Start date"
+        duration: "කාල සීමාව"
+        start_date: "ආරම්භක දිනය"
         start_date_caption: "Follows the previous phase."
-        finish_date: "Finish date"
+        finish_date: "අවසන් දිනය"
       project/phase_definition:
         name: "නම"
         color: "වර්ණ"
@@ -1144,7 +1153,7 @@ si:
         ongoing: "Ongoing"
       type:
         description: "විස්තරය සඳහා පෙරනිමි පෙළ"
-        attribute_groups: "Form configuration"
+        attribute_groups: "ආකෘති වින්යාසය"
         is_in_roadmap: "පෙරනිමියෙන් මාර්ග සිතියමෙහි දර්ශනය වේ"
         is_default: "පෙරනිමියෙන් නව ව්යාපෘති සඳහා සක්රිය"
         is_milestone: "සන්ධිස්ථානයක්"
@@ -1296,7 +1305,7 @@ si:
         odd: "අමුතු විය යුතුය."
         regex_match_failed: "does not match the regular expression %{expression}."
         regex_invalid: "ආශ්රිත නිත්ය ප්රකාශනය සමඟ වලංගු කළ නොහැකි විය."
-        regex_list_invalid: "could not be parsed as regular expression in lines %{invalid_lines}."
+        regex_list_invalid: "Lines %{invalid_lines} could not be parsed as regular expression."
         hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "උපරිම දිගට වඩා කුඩා හෝ සමාන විය යුතුය."
         taken: "දැනටමත් ගෙන ඇත."
@@ -1627,7 +1636,7 @@ si:
         one: "Authentication provider"
         other: "Authentication providers"
       category: "ප්රවර්ගය"
-      color: "Color"
+      color: "වර්ණ"
       comment: "අදහස් දක්වන්න"
       custom_action: "අභිරුචි පියවර"
       custom_field: "අභිරුචි ක්ෂේත්රය"
@@ -2183,7 +2192,7 @@ si:
         installation_text: "Experienced software engineers guide you through the complete installation and setup process in your own infrastructure."
         premium_features: "Enterprise add-ons"
         premium_features_text: "Agile boards, custom theme and logo, graphs, intelligent workflows with custom actions, full text search for work package attachments and multi-select custom fields."
-        professional_support: "Professional support"
+        professional_support: "වෘත්තීය සහාය"
         professional_support_text: "Get reliable, high-touch support from senior support engineers with expert knowledge about running OpenProject in business-critical environments."
       work_package_subject_generation:
         description: "Create automatically generated subjects using referenced attributes and text."
@@ -2417,6 +2426,10 @@ si:
     your_projects_export: "Projects are being exported"
     succeeded: "Export completed"
     failed: "An error has occurred while trying to export the work packages: %{message}"
+    demo:
+      heading: "Demo PDF"
+      footer: "Generated by OpenProject"
+      button_text: Generate Demo PDF
     errors:
       embedded_table_with_too_many_columns: "This embedded work package table could not fit on the page, please reduce the number of columns."
     format:
@@ -2479,7 +2492,7 @@ si:
       tesseract: "ලබා ගත හැකි Tesseract (විකල්ප)"
   filterable_tree_view:
     filter_mode:
-      all: "All"
+      all: "සියලු"
       label: "Filter mode"
       selected: "Selected"
     include_sub_items: "Include sub-items"
@@ -2590,7 +2603,7 @@ si:
       indefinite_expiration: "කිසි විටෙකත්"
       simple_revoke_confirmation: "Are you sure you want to revoke this token?"
       token/api:
-        title: "API"
+        title: "යෙ.ක්‍ර.මු."
         text_hint: "API tokens allow third-party applications to communicate with this OpenProject instance via REST APIs."
         disabled_text: "API tokens are not enabled by the administrator. Please contact your administrator to use this feature."
         add_button: "API Token"
@@ -2788,7 +2801,7 @@ si:
   label_dashboard: "Dashboard"
   label_database_version: "PostgreSQL version"
   label_date: "දිනය"
-  label_dates: "Dates"
+  label_dates: "දිනයන්"
   label_date_and_time: "දිනය සහ වේලාව"
   label_date_format: "දිනය ආකෘතිය"
   label_date_from: "සිට"
@@ -2948,6 +2961,7 @@ si:
   label_link_url: "Link (URL)"
   label_list: "ලැයිස්තුව"
   label_loading: "පැටවීම..."
+  label_locked: "locked"
   label_lock_user: "පරිශීලක අගුළු"
   label_logged_as: "ලෙස ලොගින් වී"
   label_login: "පුරනය වන්න"
@@ -2955,6 +2969,10 @@ si:
   label_custom_export_logo: "Custom export logo"
   label_custom_export_cover: "Custom export cover background"
   label_custom_export_footer: "Custom export footer image"
+  label_custom_export_font_regular: "Regular"
+  label_custom_export_font_bold: "Bold"
+  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
   label_custom_pdf_export_settings: "Custom PDF export settings"
@@ -3042,6 +3060,8 @@ si:
   label_operator_equals_or: "is (OR)"
   label_operator_equals_all: "is (AND)"
   label_operator_shared_with_user_any: "ඔනෑම"
+  label_open: "විවෘත"
+  label_closed: "වසා"
   label_open_menu: "මෙනුව විවෘත කරන්න"
   label_open_work_packages: "විවෘත"
   label_open_work_packages_plural: "විවෘත"
@@ -3059,7 +3079,7 @@ si:
   label_password_rule_special: "විශේෂ චරිත"
   label_password_rule_uppercase: "මහකුරු"
   label_path_encoding: "මාර්ගය කේතන"
-  label_per_page: "Per page:"
+  label_per_page: "එක් පිටුවකට:"
   label_people: "ජනතාව"
   label_permissions: "අවසර"
   label_permissions_report: "අවසර වාර්තාව"
@@ -3108,6 +3128,10 @@ si:
   label_project_view_all: "සියලුම ව්යාපෘති බලන්න"
   label_project_show_details: "ව්යාපෘති විස්තර පෙන්වන්න"
   label_project_hide_details: "ව්යාපෘති විස්තර සඟවන්න"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
+  label_program: "Program"
+  label_program_new: "New program"
   label_public_projects: "පොදු ව්යාපෘති"
   label_query_new: "නව විමසුම"
   label_query_plural: "අභිරුචි විමසුම්"
@@ -3256,6 +3280,8 @@ si:
   label_watched_work_packages: "වැඩ පැකේජ නැරඹූ"
   label_what_is_this: "මොකක්ද මේ?"
   label_week: "සතියේ"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "විකි පිටුව එකතු කරන ලදි"
   label_wiki_content_updated: "විකි පිටුව යාවත්කාලීන කරන ලදි"
   label_wiki_toc: "පටුන වගුව"
@@ -3603,6 +3629,8 @@ si:
   permission_add_work_packages: "වැඩ පැකේජ එකතු කරන්න"
   permission_add_messages: "තැපැල් පණිවිඩ"
   permission_add_project: "Create projects"
+  permission_add_portfolios: "Create portfolios"
+  permission_add_programs: "Create programs"
   permission_add_work_package_attachments: "ඇමුණුම් එකතු කරන්න"
   permission_add_work_package_attachments_explanation: "Allows adding attachments without Edit work packages permission"
   permission_add_internal_comments: "Write internal comments"
@@ -4212,6 +4240,18 @@ si:
     This is the image that appears in the background of a cover page in your PDF exports. It needs to be an about 800px width by 500px height sized PNG or JPEG image file.
   text_custom_export_footer_instructions: >
     PDF exports will include a graphical element positioned to the left of the footer. This image must be a PNG or JPEG file with approximately 200 pixels in width.
+  label_custom_export_font_instructions: >
+    Upload and manage custom TrueType (.ttf) fonts used in your PDF exports. For best results, use matching files from the same font family. If no font is provided, the default NotoSans font will be used.
+  label_custom_export_images_instructions: >
+    Upload and manage custom image files used in your PDF exports.
+  text_custom_export_font_regular_instructions: >
+    This is the font file for regular text. It needs to be in TTF format and is required.
+  text_custom_export_font_bold_instructions: >
+    This is the font file for bold text. It needs to be in TTF format.
+  text_custom_export_font_italic_instructions: >
+    This is the font file for italic text. It needs to be in TTF format.
+  text_custom_export_font_bold_italic_instructions: >
+    This is the font file for bold and italic text. It needs to be in TTF format.
   text_custom_favicon_instructions: >
     This is the tiny icon that appears in your browser window/tab next to the page's title. It needs to be a squared 32 by 32 pixels sized PNG image file with a transparent background.
   text_custom_touch_icon_instructions: >

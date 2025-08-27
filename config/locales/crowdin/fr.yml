@@ -59,6 +59,10 @@ fr:
       tab_interface: "Interface"
       tab_branding: "Image de marque"
       tab_pdf_export_styles: "Styles d'exportation PDF"
+      tab_pdf_export_font: "PDF export font"
+      fonts:
+        file_too_large: "is too large (maximum size is %{count} MB)."
+        file_is_invalid: "is not a valid TTF font file."
       colors:
         primary-button-color: "Bouton principal"
         accent-color: "Couleur d'accentuation"
@@ -297,6 +301,7 @@ fr:
         placeholder:
           label: "Étiquette de l'élément"
           short: "Nom abrégé"
+          score: "Score"
       notice:
         remember_items_and_projects: "N'oubliez pas de définir les éléments et les projets dans les onglets respectifs de ce champ personnalisé."
       hierarchy:
@@ -332,16 +337,18 @@ fr:
     single: "ou"
   dry_validation:
     errors:
-      defined: "must not be defined."
+      defined: "ne doit pas être défini."
       int?: "doit être un nombre entier."
+      decimal?: "must be a decimal."
       filled?: "doit être rempli."
+      key?: "is missing."
       greater_or_equal_zero: "doit être supérieur ou égal à 0."
       not_found: "introuvable."
       rules:
         copy_workflow_from:
           workflow_missing: "n'a pas de flux de travail propre."
         custom_field:
-          format_not_supported: "format '%{field_format}' is unsupported."
+          format_not_supported: "le format '%{field_format}' n'est pas pris en charge."
         item:
           root_item: "ne peut pas être un élément racine."
           not_persisted: "doit être un élément déjà existant."
@@ -357,6 +364,7 @@ fr:
       depth: "Profondeur"
       item: "Élément"
       label: "Étiquette"
+      score: "Score"
       short: "Nom abrégé"
       parent: "Parent"
       blueprint: "Modèle de plan"
@@ -377,7 +385,7 @@ fr:
       description: En regroupant les utilisateurs, vous pouvez les ajouter en tant que membres aux mêmes projets ou leur attribuer les mêmes rôles globaux.
     table_component:
       blank_slate:
-        description: You can define named groups of users with specific permissions.
+        description: Vous pouvez définir des groupes nommés d'utilisateurs avec des permissions spécifiques.
         title: Aucun groupe n'a encore été configuré
       user_count: Nombre d'utilisateurs
     users:
@@ -578,15 +586,15 @@ fr:
     access_token:
       dialog:
         token/api:
-          dialog_title: "Create new API token"
+          dialog_title: "Créer un nouveau jeton API"
           attention_text: "Treat API tokens like passwords. Anyone with this token will have access to information from this instance, share it only with trusted users."
-          dialog_body: "This token will allow third-party applications to communicate with your instance. To differentiate the new API token, please give it a name."
-          create_button: "Create"
-          name_label: "Token name"
+          dialog_body: "Ce jeton permettra aux applications tierces de communiquer avec votre instance. Pour différencier le nouveau jeton d'API, veuillez lui donner un nom."
+          create_button: "Créer"
+          name_label: "Nom du jeton"
       created_dialog:
         token/api:
-          title: "The API token has been generated"
-          warning: "This is the only time you will see this token. Make sure to copy it now."
+          title: "Un jeton a été généré"
+          warning: "Note : Ceci est la seule fois où vous verrez ce jeton, veuillez le copier maintenant."
       errors:
         token_name_blank: "Veuillez fournir un nom de jeton d'API"
         token_name_in_use: "Ce nom de jeton d'API est déjà utilisé, veuillez en choisir un autre"
@@ -687,7 +695,7 @@ fr:
         excluded_from_totals: "Exclus des totaux"
   themes:
     dark: "Sombre"
-    dark_high_contrast: "Dark high contrast"
+    dark_high_contrast: "Sombre avec contraste élevé"
     light: "Clair"
     light_high_contrast: "Clair avec contraste élevé"
     sync_with_os: "Automatique (correspond au mode couleur du système d'exploitation)"
@@ -1065,6 +1073,7 @@ fr:
         types: "Types"
         versions: "Versions"
         work_packages: "Lots de Travaux"
+        workspace_type: "Type d'espace de travail"
       project_custom_field:
         is_required: "Requis pour tous les projets"
         custom_field_section: Section
@@ -1294,8 +1303,8 @@ fr:
         odd: "doit être impair."
         regex_match_failed: "ne correspond pas à l'expression régulière %{expression}."
         regex_invalid: "n’a pas pu être validé avec l’expression régulière associée."
-        regex_list_invalid: "n'a pas pu être analysé comme une expression régulière dans les lignes %{invalid_lines}."
-        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
+        regex_list_invalid: "Lines %{invalid_lines} could not be parsed as regular expression."
+        hexcode_invalid: "n'est pas un code couleur hexadécimal valide à 6 chiffres."
         smaller_than_or_equal_to_max_length: "doit être inférieur ou égal à la longueur maximale."
         taken: "a déjà été pris."
         too_long: "est trop long (le maximum est de %{count} caractères)."
@@ -2151,7 +2160,7 @@ fr:
       project_list_sharing: Partage de liste de projets
       readonly_work_packages: Lots de travaux en lecture seule
       scim_api: API du serveur SCIM
-      sso_auth_providers: Single Sign-On
+      sso_auth_providers: Authentification unique
       team_planner_view: Vue du planificateur d'équipe
       virus_scanning: Analyse antivirus
       work_package_query_relation_columns: Colonnes de relation de requête de lot de travaux
@@ -2221,7 +2230,7 @@ fr:
         title: "Clients SCIM"
         description: "Automatisez la gestion des utilisateurs dans OpenProject en intégrant de manière transparente des services d'identité externes tels que Microsoft Entra ou Keycloak via notre API de serveur SCIM. Disponible à partir de l'abonnement Enterprise."
       sso_auth_providers:
-        title: "Single Sign-On (SSO)"
+        title: "Authentification unique (SSO)"
         description: "Enable users to log in via external SSO providers using SAML or OpenID Connect for seamless access and integration with existing identity systems."
       virus_scanning:
         description: "Assurez-vous que les fichiers téléversés dans OpenProject sont analysés pour détecter les virus avant d'être accessibles aux autres utilisateurs."
@@ -2412,9 +2421,13 @@ fr:
           label: "Inclure des descriptions"
           caption: "Cette option permet d'ajouter une colonne de description au format brut."
     your_work_packages_export: "Les lots de travaux sont exportés"
-    your_projects_export: "Projects are being exported"
+    your_projects_export: "Les projets sont en cours d'exportation"
     succeeded: "Exportation terminée"
     failed: "Une erreur s'est produite lors de l'exportation des lots de travaux : %{message}"
+    demo:
+      heading: "Demo PDF"
+      footer: "Generated by OpenProject"
+      button_text: Generate Demo PDF
     errors:
       embedded_table_with_too_many_columns: "Ce tableau des lots de travaux ne tient pas sur la page. Veuillez réduire le nombre de colonnes."
     format:
@@ -2477,11 +2490,11 @@ fr:
       tesseract: "Tesseract disponible (optionnel)"
   filterable_tree_view:
     filter_mode:
-      all: "All"
-      label: "Filter mode"
-      selected: "Selected"
-    include_sub_items: "Include sub-items"
-    no_results_text: "No results"
+      all: "Tout"
+      label: "Mode de filtrage"
+      selected: "Sélectionné"
+    include_sub_items: "Inclure les sous-projets"
+    no_results_text: "Aucun résultat"
   general_csv_decimal_separator: ","
   general_csv_encoding: "UTF-8"
   general_csv_separator: "."
@@ -2589,9 +2602,9 @@ fr:
       simple_revoke_confirmation: "Voulez-vous vraiment révoquer ce jeton ?"
       token/api:
         title: "API"
-        text_hint: "API tokens allow third-party applications to communicate with this OpenProject instance via REST APIs."
-        disabled_text: "API tokens are not enabled by the administrator. Please contact your administrator to use this feature."
-        add_button: "API Token"
+        text_hint: "Les jetons d'API permettent aux applications tierces de communiquer avec cette instance OpenProject via les API REST."
+        disabled_text: "Les jetons d'API ne sont pas activés par l'administrateur. Veuillez contacter votre administrateur pour utiliser cette fonctionnalité."
+        add_button: "Jeton API"
       api:
         static_token_name: "Jeton d'API"
       ical:
@@ -2946,6 +2959,7 @@ fr:
   label_link_url: "Lien (URL)"
   label_list: "Liste"
   label_loading: "Chargement…"
+  label_locked: "locked"
   label_lock_user: "Verrouiller l’utilisateur"
   label_logged_as: "Connecté en tant que"
   label_login: "Connexion"
@@ -2953,6 +2967,10 @@ fr:
   label_custom_export_logo: "Logo d'exportation personnalisé"
   label_custom_export_cover: "Arrière-plan de la couverture d'exportation personnalisée"
   label_custom_export_footer: "Custom export footer image"
+  label_custom_export_font_regular: "Regular"
+  label_custom_export_font_bold: "Bold"
+  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Superposition de l'arrière-plan de la couverture d'exportation personnalisée"
   label_custom_export_cover_text_color: "Couleur du texte"
   label_custom_pdf_export_settings: "Paramètres d'exportation PDF personnalisés"
@@ -3040,6 +3058,8 @@ fr:
   label_operator_equals_or: "est (OU)"
   label_operator_equals_all: "est (ET)"
   label_operator_shared_with_user_any: "tous"
+  label_open: "ouvrir"
+  label_closed: "fermé"
   label_open_menu: "Ouvrir le menu"
   label_open_work_packages: "ouverts"
   label_open_work_packages_plural: "ouverts"
@@ -3106,6 +3126,10 @@ fr:
   label_project_view_all: "Afficher tous les projets"
   label_project_show_details: "Afficher les détails du projet"
   label_project_hide_details: "Masquer les détails du projet"
+  label_portfolio: "Portefeuille"
+  label_portfolio_new: "Nouveau portefeuille"
+  label_program: "Program"
+  label_program_new: "New program"
   label_public_projects: "Projets publics"
   label_query_new: "Nouvelle requête"
   label_query_plural: "Requêtes personnalisées"
@@ -3254,6 +3278,8 @@ fr:
   label_watched_work_packages: "Lots de travaux suivis"
   label_what_is_this: "Qu'est-ce que c'est?"
   label_week: "Semaine"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "Page wiki ajoutée"
   label_wiki_content_updated: "Page wiki mise à jour"
   label_wiki_toc: "Table des matières"
@@ -3601,6 +3627,8 @@ fr:
   permission_add_work_packages: "Ajouter des lots de travaux"
   permission_add_messages: "Poster des messages"
   permission_add_project: "Créer des projets"
+  permission_add_portfolios: "Create portfolios"
+  permission_add_programs: "Create programs"
   permission_add_work_package_attachments: "Ajouter pièces jointes"
   permission_add_work_package_attachments_explanation: "Permet d'ajouter des pièces jointes sans avoir le droit de modifier les lots de travaux"
   permission_add_internal_comments: "Écrire des commentaires internes"
@@ -4058,9 +4086,9 @@ fr:
   setting_working_days: "Jours ouvrés"
   settings:
     authentication:
-      login: "Login"
+      login: "Connexion"
       registration: "Inscription"
-      sso: "Single Sign-On (SSO)"
+      sso: "Authentification unique (SSO)"
       omniauth_direct_login_hint_html: >
         Si cette option est activée, les demandes de connexion seront redirigées vers le fournisseur omniauth configuré. La liste déroulante de connexion et la page de connexion seront désactivées. <br/> <strong>Remarque :</strong> lorsque cette option est activée, les utilisateurs peuvent toujours se connecter en interne en visitant la page de connexion <code>%{internal_path}</code>, sauf si vous désactivez également les connexions par mot de passe.
       remapping_existing_users_hint: >
@@ -4210,6 +4238,18 @@ fr:
     Il s'agit de l'image qui apparaît en arrière-plan de la page de couverture de vos exportations PDF. Elle doit être un fichier image PNG ou JPEG d'environ 800 px de largeur et 500 px de hauteur.
   text_custom_export_footer_instructions: >
     PDF exports will include a graphical element positioned to the left of the footer. This image must be a PNG or JPEG file with approximately 200 pixels in width.
+  label_custom_export_font_instructions: >
+    Upload and manage custom TrueType (.ttf) fonts used in your PDF exports. For best results, use matching files from the same font family. If no font is provided, the default NotoSans font will be used.
+  label_custom_export_images_instructions: >
+    Upload and manage custom image files used in your PDF exports.
+  text_custom_export_font_regular_instructions: >
+    This is the font file for regular text. It needs to be in TTF format and is required.
+  text_custom_export_font_bold_instructions: >
+    This is the font file for bold text. It needs to be in TTF format.
+  text_custom_export_font_italic_instructions: >
+    This is the font file for italic text. It needs to be in TTF format.
+  text_custom_export_font_bold_italic_instructions: >
+    This is the font file for bold and italic text. It needs to be in TTF format.
   text_custom_favicon_instructions: >
     Il s'agit de la petite icône qui apparaît dans la fenêtre/onglet de votre navigateur à côté du titre de la page. Il doit s'agir d'une image PNG carrée de 32 pixels x 32 pixels avec un fond transparent.
   text_custom_touch_icon_instructions: >

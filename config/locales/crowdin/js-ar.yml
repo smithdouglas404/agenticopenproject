@@ -452,7 +452,7 @@ ar:
     label_total_sum: "Total sum"
     label_subject: "الموضوع"
     label_this_week: "هذا الأسبوع"
-    label_today: "Today"
+    label_today: "اليوم"
     label_time_entry_plural: "الوقت المستهلك"
     label_up: "الأعلى"
     label_user_plural: "المستخدمين"
@@ -786,7 +786,7 @@ ar:
     autocompleter:
       placeholder: "Type to search"
       notFoundText: "No items found"
-      search: "Search"
+      search: "البحث"
       project:
         placeholder: "Select project"
     repositories:
@@ -1241,12 +1241,14 @@ ar:
         all: "All projects"
         selected: "Only selected"
       search_placeholder: "Search project..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Include all sub-projects"
       tooltip:
         include_all_selected: "Project already included since Include all sub-projects is enabled."
         current_project: "This is the current project you are in."
         does_not_match_search: "Project does not match the search criteria."
       no_results: "No project matches your search criteria."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Baseline"
       clear: "إزالة"

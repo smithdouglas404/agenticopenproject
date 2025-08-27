@@ -102,6 +102,75 @@ RSpec.describe API::V3::Projects::Schemas::ProjectSchemaRepresenter do
       end
     end
 
+    describe "_attributeGroups" do
+      context "without existing sections" do
+        it "renders an empty section attribute group" do
+          expect(subject)
+            .to be_json_eql([].to_json)
+            .at_path("_attributeGroups")
+        end
+      end
+
+      context "with existing sections" do
+        let!(:user_section) { create(:project_custom_field_section, name: "Common Project Attributes") }
+        let!(:user_custom_field) do
+          create(:text_project_custom_field, project_custom_field_section: user_section)
+        end
+        let!(:admin_section) { create(:project_custom_field_section, name: "Admin Project Attributes") }
+        let!(:admin_custom_field) do
+          create(:text_project_custom_field, project_custom_field_section: admin_section, admin_only: true)
+        end
+
+        before do
+          allow(contract.model)
+            .to receive(:available_custom_fields)
+            .and_return(ProjectCustomField.all)
+        end
+
+        context "with a user" do
+          it "renders section attribute group elements of the schema" do
+            expect(subject)
+              .to be_json_eql(
+                [
+                  {
+                    _type: "ProjectFormCustomFieldSection",
+                    id: user_section.id,
+                    name: "Common Project Attributes",
+                    attributes: ["customField#{user_custom_field.id}"]
+                  }
+                ].to_json
+              )
+              .at_path("_attributeGroups")
+          end
+        end
+
+        context "with an admin" do
+          let(:current_user) { build_stubbed(:admin) }
+
+          it "renders section attribute group elements of the schema" do
+            expect(subject)
+              .to be_json_eql(
+                [
+                  {
+                    _type: "ProjectFormCustomFieldSection",
+                    id: user_section.id,
+                    name: "Common Project Attributes",
+                    attributes: ["customField#{user_custom_field.id}"]
+                  },
+                  {
+                    _type: "ProjectFormCustomFieldSection",
+                    id: admin_section.id,
+                    name: "Admin Project Attributes",
+                    attributes: ["customField#{admin_custom_field.id}"]
+                  }
+                ].to_json
+              )
+              .at_path("_attributeGroups")
+          end
+        end
+      end
+    end
+
     describe "id" do
       let(:path) { "id" }
 

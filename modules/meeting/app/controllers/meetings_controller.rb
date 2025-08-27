@@ -453,7 +453,7 @@ class MeetingsController < ApplicationController
 
     @converted_params[:project] = @project if @project.present?
     @converted_params[:duration] = @converted_params[:duration].to_hours if @converted_params[:duration].present?
-    @converted_params[:send_notifications] = meeting_params[:notify] == "1" && params[:meeting][:copied_from_meeting_id].present?
+    @converted_params[:send_notifications] = meeting_params[:notify] == "1"
 
     # Handle participants separately for each meeting type
     @converted_params[:participants_attributes] ||= {}

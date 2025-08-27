@@ -62,9 +62,7 @@ module Projects
     def valid?(context = :saving_custom_fields) = super
 
     def assignable_parents
-      Project
-        .allowed_to(user, :add_subprojects)
-        .where.not(id: model.self_and_descendants)
+      Project.assignable_parents(user, model)
     end
 
     def available_custom_fields
@@ -100,7 +98,7 @@ module Projects
     def validate_parent_assignable
       if model.parent &&
          model.parent_id_changed? &&
-         !assignable_parents.where(id: parent.id).exists?
+         !assignable_parents.exists?(id: parent.id)
         errors.add(:parent, :does_not_exist)
       end
     end

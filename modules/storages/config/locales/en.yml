@@ -237,6 +237,7 @@ en:
       openproject_oauth: OpenProject OAuth
       project_folders: Project folders
       redirect_uri: Redirect URI
+      sharepoint_oauth: Azure OAuth
       storage_audience_blank: No audience has been configured.
       storage_audience_description: Exchanging tokens for audience "%{audience}".
       storage_audience_idp: Using access token obtained by identity provider during login, regardless of audience.
@@ -279,6 +280,7 @@ en:
           drive_id_exists: Drive exists
           drive_id_format: Drive ID format
           header: Configuration
+          host: Host URL
           host_url_accessible: Host URL accessible
           storage_configured: Configuration complete
           tenant_id: Tenant ID

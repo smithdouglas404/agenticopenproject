@@ -8,7 +8,7 @@
   </widget-menu>
 </widget-header>
 
-<div *ngIf="(projects$ | async) as projects" class="grid--widget-content">
+<div *ngIf="(projects$ | async) as projects" class="op-widget-box--body">
   <div class="op-header-project-select--no-favorites" *ngIf="projects.length === 0">
     <svg
       class="op-header-project-select--no-favorites-icon"

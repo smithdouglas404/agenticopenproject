@@ -324,7 +324,7 @@ ca:
     label_added_time_by: 'Afegit per <a href=%{authorLink}>%{author}</a> el %{age}'
     label_ago: "dies abans"
     label_all: "tot"
-    label_all_projects: "All projects"
+    label_all_projects: "Tots els projectes"
     label_all_uppercase: "Totes"
     label_all_work_packages: "tots els paquets de treball"
     label_and: "i"
@@ -782,7 +782,7 @@ ca:
     autocompleter:
       placeholder: "Escriviu per cercar"
       notFoundText: "Elements no trobats"
-      search: "Search"
+      search: "Cercar"
       project:
         placeholder: "Select project"
     repositories:
@@ -1225,12 +1225,14 @@ ca:
         all: "Tots els projectes"
         selected: "Només seleccionats"
       search_placeholder: "Cerca projecte..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Inclou tots els subprojectes"
       tooltip:
         include_all_selected: "Projecte ja inclòs, ja que \"Inclou tots els subprojectes\" està activat."
         current_project: "Aquest és el projecte actual."
         does_not_match_search: "El projecte no coincideix amb la cerca."
       no_results: "Cap projecte s'ajusta a la teva cerca."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Base de referència"
       clear: "Esborra"

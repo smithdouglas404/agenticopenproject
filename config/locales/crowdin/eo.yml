@@ -35,7 +35,7 @@ eo:
         label_sort_desc: "Newest on top"
         label_type_to_comment: "Add a comment. Type @ to notify people."
         label_submit_comment: "Submit comment"
-        label_who: Who?
+        label_who: Kiu?
         changed_on: "changed on"
         created_on: "created this on"
         changed: "changed"
@@ -59,6 +59,10 @@ eo:
       tab_interface: "Interface"
       tab_branding: "Branding"
       tab_pdf_export_styles: "PDF export styles"
+      tab_pdf_export_font: "PDF export font"
+      fonts:
+        file_too_large: "is too large (maximum size is %{count} MB)."
+        file_is_invalid: "is not a valid TTF font file."
       colors:
         primary-button-color: "Primary button"
         accent-color: "Accent"
@@ -137,7 +141,7 @@ eo:
       new:
         title: "New SCIM client"
       revoke_static_token_dialog_component:
-        confirm_button: "Revoke"
+        confirm_button: "Eksvalidigi"
         title: "Revoke static token"
         heading: "Are you sure you want to revoke this token?"
         description: "The SCIM client that uses this token will no longer be able to access OpenProject's SCIM server API."
@@ -145,7 +149,7 @@ eo:
         blank_slate:
           title: "No SCIM clients configured yet"
           description: "Add clients to see them here"
-        user_count: "Users"
+        user_count: "Uzantoj"
       token_list_component:
         description: "The tokens you generate here can be passed by a SCIM client to access the OpenProject SCIM API."
         heading: "Tokens"
@@ -171,7 +175,7 @@ eo:
     deleted_by_admin: "The quarantined file '%{filename}' has been deleted by an administrator."
     overridden_by_admin: "The quarantine for file '%{filename}' has been removed by %{user}. The file can now be acccessed."
     quarantined_attachments:
-      container: "Container"
+      container: "Ujo"
       delete: "Delete the quarantined file"
       title: "Quarantined attachments"
       error_cannot_act_self: "Cannot perform actions on your own uploaded files."
@@ -252,13 +256,13 @@ eo:
     index:
       no_results_title_text: Nun estas neniu koloro.
       no_results_content_text: Krei novan koloron
-      label_new_color: "New color"
+      label_new_color: "Nova koloro"
     new:
-      label_new_color: "New Color"
+      label_new_color: "Nova koloro"
     edit:
       label_edit_color: "Edit Color"
     form:
-      label_new_color: "New color"
+      label_new_color: "Nova koloro"
       label_edit_color: "Edit color"
     label_no_color: "Senkolora"
     label_properties: "Properties"
@@ -297,6 +301,7 @@ eo:
         placeholder:
           label: "Item label"
           short: "Short name"
+          score: "Score"
       notice:
         remember_items_and_projects: "Remember to set items and projects in the respective tabs for this custom field."
       hierarchy:
@@ -334,7 +339,9 @@ eo:
     errors:
       defined: "must not be defined."
       int?: "must be an integer."
+      decimal?: "must be a decimal."
       filled?: "must be filled."
+      key?: "is missing."
       greater_or_equal_zero: "must be greater or equal to 0."
       not_found: "not found."
       rules:
@@ -353,10 +360,11 @@ eo:
           not_descendant: "must be a descendant of the hierarchy root."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
+      enabled: "Ŝaltita"
       depth: "Depth"
       item: "Item"
       label: "Label"
+      score: "Score"
       short: "Short name"
       parent: "Patro"
       blueprint: "Pattern blueprint"
@@ -395,7 +403,7 @@ eo:
   projects:
     copy:
       #Contains custom strings for options when copying a project that cannot be found elsewhere.
-      members: "Project members"
+      members: "Projektanoj"
       overviews: "Project overview"
       queries: "Work packages: saved views"
       wiki_page_attachments: "Wiki pages: attachments"
@@ -581,7 +589,7 @@ eo:
           dialog_title: "Create new API token"
           attention_text: "Treat API tokens like passwords. Anyone with this token will have access to information from this instance, share it only with trusted users."
           dialog_body: "This token will allow third-party applications to communicate with your instance. To differentiate the new API token, please give it a name."
-          create_button: "Create"
+          create_button: "Krei"
           name_label: "Token name"
       created_dialog:
         token/api:
@@ -1067,6 +1075,7 @@ eo:
         types: "Specoj"
         versions: "Versioj"
         work_packages: "Laborpakaĵoj"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Required for all projects"
         custom_field_section: Section
@@ -1074,9 +1083,9 @@ eo:
         date_range: "Data intervalo"
         definition: "Definition"
         duration: "Duration"
-        start_date: "Start date"
+        start_date: "Komencdato"
         start_date_caption: "Follows the previous phase."
-        finish_date: "Finish date"
+        finish_date: "Findato"
       project/phase_definition:
         name: "Nomo"
         color: "Koloro"
@@ -1144,7 +1153,7 @@ eo:
         ongoing: "Ongoing"
       type:
         description: "Defaŭlta teksto por priskribo"
-        attribute_groups: "Form configuration"
+        attribute_groups: "Formulara agordo"
         is_in_roadmap: "Displayed in roadmap by default"
         is_default: "Activated for new projects by default"
         is_milestone: "Ĝi estas mejloŝtono"
@@ -1296,7 +1305,7 @@ eo:
         odd: "devas esti nepara."
         regex_match_failed: "does not match the regular expression %{expression}."
         regex_invalid: "could not be validated with the associated regular expression."
-        regex_list_invalid: "could not be parsed as regular expression in lines %{invalid_lines}."
+        regex_list_invalid: "Lines %{invalid_lines} could not be parsed as regular expression."
         hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "must be smaller than or equal to maximum length."
         taken: "jam prenita."
@@ -1627,7 +1636,7 @@ eo:
         one: "Authentication provider"
         other: "Authentication providers"
       category: "Kategorio"
-      color: "Color"
+      color: "Koloro"
       comment: "Komento"
       custom_action: "Adaptita ago"
       custom_field: "Propra kampo"
@@ -2183,7 +2192,7 @@ eo:
         installation_text: "Experienced software engineers guide you through the complete installation and setup process in your own infrastructure."
         premium_features: "Enterprise add-ons"
         premium_features_text: "Agile boards, custom theme and logo, graphs, intelligent workflows with custom actions, full text search for work package attachments and multi-select custom fields."
-        professional_support: "Professional support"
+        professional_support: "Profesia subteno"
         professional_support_text: "Get reliable, high-touch support from senior support engineers with expert knowledge about running OpenProject in business-critical environments."
       work_package_subject_generation:
         description: "Create automatically generated subjects using referenced attributes and text."
@@ -2389,7 +2398,7 @@ eo:
           options:
             days: "Days"
             weeks: "Weeks"
-            months: "Months"
+            months: "Monatoj"
             quarters: "Quarters"
         column_width:
           label: "Table column width"
@@ -2417,6 +2426,10 @@ eo:
     your_projects_export: "Projects are being exported"
     succeeded: "Export completed"
     failed: "An error has occurred while trying to export the work packages: %{message}"
+    demo:
+      heading: "Demo PDF"
+      footer: "Generated by OpenProject"
+      button_text: Generate Demo PDF
     errors:
       embedded_table_with_too_many_columns: "This embedded work package table could not fit on the page, please reduce the number of columns."
     format:
@@ -2479,7 +2492,7 @@ eo:
       tesseract: "Tesseract disponebla (nedeviga)"
   filterable_tree_view:
     filter_mode:
-      all: "All"
+      all: "Ĉiuj"
       label: "Filter mode"
       selected: "Selected"
     include_sub_items: "Include sub-items"
@@ -2948,6 +2961,7 @@ eo:
   label_link_url: "Link (URL)"
   label_list: "Listo"
   label_loading: "Loading..."
+  label_locked: "locked"
   label_lock_user: "Lock user"
   label_logged_as: "Logged in as"
   label_login: "Ensaluti"
@@ -2955,6 +2969,10 @@ eo:
   label_custom_export_logo: "Custom export logo"
   label_custom_export_cover: "Custom export cover background"
   label_custom_export_footer: "Custom export footer image"
+  label_custom_export_font_regular: "Regular"
+  label_custom_export_font_bold: "Bold"
+  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
   label_custom_pdf_export_settings: "Custom PDF export settings"
@@ -3042,6 +3060,8 @@ eo:
   label_operator_equals_or: "is (OR)"
   label_operator_equals_all: "is (AND)"
   label_operator_shared_with_user_any: "ajna"
+  label_open: "malfermita"
+  label_closed: "fermita"
   label_open_menu: "Malfermi menuon"
   label_open_work_packages: "malfermita"
   label_open_work_packages_plural: "malfermita"
@@ -3108,6 +3128,10 @@ eo:
   label_project_view_all: "Vidi ĉiujn projektojn"
   label_project_show_details: "Montri projektajn detalojn"
   label_project_hide_details: "Kaŝi projektajn detalojn"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
+  label_program: "Program"
+  label_program_new: "New program"
   label_public_projects: "Publikaj projektoj"
   label_query_new: "Nova informpeto"
   label_query_plural: "Propraj informpetoj"
@@ -3201,7 +3225,7 @@ eo:
   label_this_month: "tiu ĉi monato"
   label_this_week: "tiu ĉi semajno"
   label_this_year: "tiu ĉi jaro"
-  label_time: "Time"
+  label_time: "Tempo"
   label_time_entry_plural: "Uzata tempo"
   label_time_entry_activity_plural: "Spent time activities"
   label_title: "Titolo"
@@ -3256,6 +3280,8 @@ eo:
   label_watched_work_packages: "Watched work packages"
   label_what_is_this: "What is this?"
   label_week: "Semajno"
+  label_widget: "Kromprogrameto"
+  label_widget_new: "New widget"
   label_wiki_content_added: "Wiki page added"
   label_wiki_content_updated: "Wiki page updated"
   label_wiki_toc: "Table of Contents"
@@ -3603,6 +3629,8 @@ eo:
   permission_add_work_packages: "Add work packages"
   permission_add_messages: "Post messages"
   permission_add_project: "Create projects"
+  permission_add_portfolios: "Create portfolios"
+  permission_add_programs: "Create programs"
   permission_add_work_package_attachments: "Add attachments"
   permission_add_work_package_attachments_explanation: "Allows adding attachments without Edit work packages permission"
   permission_add_internal_comments: "Write internal comments"
@@ -4039,7 +4067,7 @@ eo:
   setting_start_of_week: "Week starts on"
   setting_sys_api_enabled: "Enable repository management web service"
   setting_sys_api_description: "The repository management web service provides integration and user authorization for accessing repositories."
-  setting_time_format: "Time"
+  setting_time_format: "Tempo"
   setting_total_percent_complete_mode: "Calculation of % Complete hierarchy totals"
   setting_total_percent_complete_mode_work_weighted_average: "Weighted by work"
   setting_total_percent_complete_mode_work_weighted_average_caption_html: >-
@@ -4212,6 +4240,18 @@ eo:
     This is the image that appears in the background of a cover page in your PDF exports. It needs to be an about 800px width by 500px height sized PNG or JPEG image file.
   text_custom_export_footer_instructions: >
     PDF exports will include a graphical element positioned to the left of the footer. This image must be a PNG or JPEG file with approximately 200 pixels in width.
+  label_custom_export_font_instructions: >
+    Upload and manage custom TrueType (.ttf) fonts used in your PDF exports. For best results, use matching files from the same font family. If no font is provided, the default NotoSans font will be used.
+  label_custom_export_images_instructions: >
+    Upload and manage custom image files used in your PDF exports.
+  text_custom_export_font_regular_instructions: >
+    This is the font file for regular text. It needs to be in TTF format and is required.
+  text_custom_export_font_bold_instructions: >
+    This is the font file for bold text. It needs to be in TTF format.
+  text_custom_export_font_italic_instructions: >
+    This is the font file for italic text. It needs to be in TTF format.
+  text_custom_export_font_bold_italic_instructions: >
+    This is the font file for bold and italic text. It needs to be in TTF format.
   text_custom_favicon_instructions: >
     This is the tiny icon that appears in your browser window/tab next to the page's title. It needs to be a squared 32 by 32 pixels sized PNG image file with a transparent background.
   text_custom_touch_icon_instructions: >

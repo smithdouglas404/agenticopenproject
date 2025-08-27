@@ -21,7 +21,7 @@
 #++
 et:
   plugin_budgets_engine:
-    name: 'Eelarved'
+    name: "Eelarved"
   activerecord:
     attributes:
       budget:
@@ -36,6 +36,7 @@ et:
         type: "Kulu liik"
         labor_budget: "Planned labor costs"
         material_budget: "Planned unit costs"
+        base_amount: "Base amount"
       work_package:
         budget_subject: "Budget title"
     models:
@@ -61,13 +62,19 @@ et:
   help_currency_format: "Format of displayed currency values. %n is replaced with the currency value, %u ist replaced with the currency unit."
   help_override_rate: "Enter a value here to override the default rate."
   label_budget: "Eelarve"
-  label_budget_new: "Uus eelarve"
-  label_budget_plural: "Eelarved"
+  label_budget_available: "Budget available"
   label_budget_id: "Eelarve #%{id}"
+  label_budget_new: "Uus eelarve"
+  label_budget_planned: "Budget planned"
+  label_budget_plural: "Eelarved"
+  label_budget_spent: "Budget spent"
+  label_budget_spent_ratio: "Budget spent ratio"
   label_deliverable: "Eelarve"
-  label_example_placeholder: 'nt., %{decimal}'
+  label_example_placeholder: "nt., %{decimal}"
   label_view_all_budgets: "View all budgets"
   label_yes: "Jah"
+  label_budget_totals: "Totals"
+  label_budget_details: "Budget details"
   notice_budget_conflict: "Work packages must be of the same project."
   notice_no_budgets_available: "Ühtegi eelarvet pole saadaval."
   permission_edit_budgets: "Eelarvete muutmine"

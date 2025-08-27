@@ -32,6 +32,7 @@ require "spec_helper"
 
 RSpec.describe Project do
   include BecomeMember
+
   shared_let(:admin) { create(:admin) }
 
   let(:active) { true }
@@ -182,6 +183,18 @@ RSpec.describe Project do
 
         expect(project.name).to eql("A new name")
       end
+    end
+  end
+
+  describe "workspace_type" do
+    it "is set to nil by default, to force having errors when it has not been set" do
+      # Would it make sense to have "project" as default value?
+      project = described_class.new
+      expect(project.workspace_type).to be_nil
+    end
+
+    it "must be one of the allowed values: #{described_class.workspace_types.keys}" do
+      expect(project).to validate_inclusion_of(:workspace_type).in_array(%w[project program portfolio])
     end
   end
 

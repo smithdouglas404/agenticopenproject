@@ -43,7 +43,7 @@ class MeetingMailer < UserMailer
     end
   end
 
-  def rescheduled(meeting, user, actor, changes:)
+  def updated(meeting, user, actor, changes:)
     @actor = actor
     @user = user
     @meeting = meeting
@@ -54,7 +54,7 @@ class MeetingMailer < UserMailer
 
     with_attached_ics(meeting, user) do
       subject = "[#{@meeting.project.name}] "
-      subject << I18n.t("meeting.email.rescheduled.header", title: @meeting.title)
+      subject << I18n.t("meeting.email.updated.header", title: @meeting.title)
       mail(to: user, subject:)
     end
   end

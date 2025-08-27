@@ -31,7 +31,7 @@ af:
       events:
         created: "Geskep"
         updated: "Updated"
-        comment: "Comment"
+        comment: "Opmerking"
         internal_comment: "Internal comment"
       explanation:
         text: >

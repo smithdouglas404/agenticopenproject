@@ -59,6 +59,10 @@ nl:
       tab_interface: "Interface"
       tab_branding: "Huisstijl"
       tab_pdf_export_styles: "PDF-exportstijlen"
+      tab_pdf_export_font: "PDF export font"
+      fonts:
+        file_too_large: "is too large (maximum size is %{count} MB)."
+        file_is_invalid: "is not a valid TTF font file."
       colors:
         primary-button-color: "Primaire knop"
         accent-color: "Accent"
@@ -137,15 +141,15 @@ nl:
       new:
         title: "New SCIM client"
       revoke_static_token_dialog_component:
-        confirm_button: "Revoke"
+        confirm_button: "Intrekken"
         title: "Revoke static token"
-        heading: "Are you sure you want to revoke this token?"
+        heading: "Weet u zeker dat u deze token wilt intrekken?"
         description: "The SCIM client that uses this token will no longer be able to access OpenProject's SCIM server API."
       table_component:
         blank_slate:
           title: "No SCIM clients configured yet"
           description: "Add clients to see them here"
-        user_count: "Users"
+        user_count: "Gebruikers"
       token_list_component:
         description: "The tokens you generate here can be passed by a SCIM client to access the OpenProject SCIM API."
         heading: "Tokens"
@@ -294,6 +298,7 @@ nl:
         placeholder:
           label: "Item label"
           short: "Verkorte Naam"
+          score: "Score"
       notice:
         remember_items_and_projects: "Vergeet niet om items en projecten in te stellen op de respectievelijke tabbladen voor dit aangepaste veld."
       hierarchy:
@@ -331,7 +336,9 @@ nl:
     errors:
       defined: "must not be defined."
       int?: "moet een geheel getal zijn."
+      decimal?: "must be a decimal."
       filled?: "moet ingevuld zijn."
+      key?: "is missing."
       greater_or_equal_zero: "moet groter dan, of gelijk zijn aan 0."
       not_found: "niet gevonden."
       rules:
@@ -350,10 +357,11 @@ nl:
           not_descendant: "moet een afstammeling zijn van de root van de hiërarchie."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
+      enabled: "Ingeschakeld"
       depth: "Diepte"
       item: "Item"
       label: "Label"
+      score: "Score"
       short: "Verkorte Naam"
       parent: "Bovenliggend werkpakket"
       blueprint: "Patroonblauwdruk"
@@ -575,11 +583,11 @@ nl:
     access_token:
       dialog:
         token/api:
-          dialog_title: "Create new API token"
+          dialog_title: "Nieuwe API-sleutel aanmaken"
           attention_text: "Treat API tokens like passwords. Anyone with this token will have access to information from this instance, share it only with trusted users."
-          dialog_body: "This token will allow third-party applications to communicate with your instance. To differentiate the new API token, please give it a name."
-          create_button: "Create"
-          name_label: "Token name"
+          dialog_body: "Deze sleutel zal applicaties van derden in staat stellen om met uw instantie te communiceren. Geef het nieuwe API-sleutel een naam om deze te onderscheiden."
+          create_button: "Maken"
+          name_label: "Tokennaam"
       created_dialog:
         token/api:
           title: "The API token has been generated"
@@ -639,8 +647,8 @@ nl:
   priorities:
     edit:
       priority_color_text: |
-        Click to assign or change the color of this priority.
-        It can be used for highlighting work packages in the table.
+        Klik op toewijzen of wijzigen van de kleur van deze prioriteit.
+        het kan worden gebruikt voor het benadrukken van de werkpakketten in de tabel.
     admin:
       default:
         caption: Making this priority default will override the previous default priority.
@@ -685,7 +693,7 @@ nl:
         excluded_from_totals: "Uitgesloten van totalen"
   themes:
     dark: "Donker"
-    dark_high_contrast: "Dark high contrast"
+    dark_high_contrast: "Donker hoog contrast"
     light: "Licht"
     light_high_contrast: "Licht hoog contrast"
     sync_with_os: "Automatic (match OS colour mode)"
@@ -937,7 +945,7 @@ nl:
   activemodel:
     attributes:
       projects/copy_options:
-        dependencies: "Dependencies"
+        dependencies: "Afhankelijkheden"
   activerecord:
     attributes:
       announcements:
@@ -999,12 +1007,12 @@ nl:
       enterprise_token:
         starts_at: "Geldig sinds"
         subscriber: "Abonnee"
-        subscription: "Subscription"
-        plan: "Plan"
+        subscription: "Abonnement"
+        plan: "Pakket"
         encoded_token: "Enterprise ondersteuningstoken"
         active_user_count_restriction: "Active users"
       enterprise_trial:
-        company: "Company"
+        company: "Bedrijfsnaam"
       grids/grid:
         page: "Pagina"
         row_count: "Aantal rijen"
@@ -1063,16 +1071,17 @@ nl:
         types: "Typen"
         versions: "Versies"
         work_packages: "Werkpakketten"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Vereist voor alle projecten"
         custom_field_section: Sectie
       project/phase:
         date_range: "Datumbereik"
         definition: "Definition"
-        duration: "Duration"
-        start_date: "Start date"
+        duration: "Duur"
+        start_date: "Startdatum"
         start_date_caption: "Follows the previous phase."
-        finish_date: "Finish date"
+        finish_date: "Einddatum"
       project/phase_definition:
         name: "Naam"
         color: "Kleur"
@@ -1140,7 +1149,7 @@ nl:
         ongoing: "Lopend"
       type:
         description: "Standaard tekst voor beschrijving"
-        attribute_groups: "Form configuration"
+        attribute_groups: "Formulierconfiguratie"
         is_in_roadmap: "Standaard weergegeven in roadmap"
         is_default: "Standaart ingesteld voor nieuwe projecten"
         is_milestone: "Is mijlpaal"
@@ -1167,7 +1176,7 @@ nl:
         password_confirmation: "Bevestiging"
         consented_at: "Ingestemd op"
       group:
-        identity_url: "Identity URL"
+        identity_url: "Identiteit URL"
       user_preference:
         header_look_and_feel: "Look and feel"
         header_alerts: "Alerts"
@@ -1253,7 +1262,7 @@ nl:
         error_unauthorized: "geen toegang."
         error_readonly: "werd geprobeerd te schrijven maar is niet schrijfbaar."
         error_conflict: "Informatie is in de tussentijd door ten minste één andere gebruiker bijgewerkt."
-        error_not_found: "not found."
+        error_not_found: "niet gevonden."
         email: "is geen geldig e-mailadres."
         empty: "mag niet leeg zijn."
         enterprise_plan_required: "requires at least the %{plan_name}."
@@ -1292,7 +1301,7 @@ nl:
         odd: "moet oneven zijn."
         regex_match_failed: "does not match the regular expression %{expression}."
         regex_invalid: "kon niet worden gevalideerd met de bijbehorende reguliere expressie."
-        regex_list_invalid: "could not be parsed as regular expression in lines %{invalid_lines}."
+        regex_list_invalid: "Lines %{invalid_lines} could not be parsed as regular expression."
         hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "moet kleiner zijn dan of even groot zijn als de maximale lengte."
         taken: "is al in gebruik."
@@ -1623,7 +1632,7 @@ nl:
         one: "Authentication provider"
         other: "Authentication providers"
       category: "Categorie"
-      color: "Color"
+      color: "Kleur"
       comment: "Commentaar"
       custom_action: "Aangepaste actie"
       custom_field: "Aangepast veld"
@@ -1753,7 +1762,7 @@ nl:
     derived_start_date: "Afgeleide startdatum"
     direction: "Direction"
     display_sums: "Bedragen weergeven"
-    domain: "Domain"
+    domain: "Domein"
     due_date: "Einddatum"
     estimated_hours: "Werk"
     estimated_time: "Werk"
@@ -1922,7 +1931,7 @@ nl:
   button_unwatch: "Niet meer volgen"
   button_update: "Bijwerken"
   button_upgrade: "Upgrade"
-  button_buy_now: "Buy now"
+  button_buy_now: "Koop nu"
   button_upload: "Upload"
   button_view: "Toon"
   button_watch: "Volgen"
@@ -1971,7 +1980,7 @@ nl:
     copy_options:
       dependencies_label: "Copy from project"
   create_project:
-    template_label: "Use template"
+    template_label: "Sjabloon gebruiken"
     copy_options:
       dependencies_label: "Copy from template"
   create_wiki_page: "Create new wiki page"
@@ -2156,13 +2165,13 @@ nl:
       work_package_sharing: Share work packages with external users
       work_package_subject_generation: Work Package Subject Generation
     upsell:
-      buy_now_button: "Buy now"
+      buy_now_button: "Koop nu"
       plans_title: "Enterprise plans"
       title: "Enterprise add-on"
       plan_title: "Enterprise %{plan} add-on"
       plan_name: "%{plan} enterprise plan"
       plan_text_html: "Available starting with the %{plan_name}."
-      unlimited: "Unlimited"
+      unlimited: "Onbeperkt"
       already_have_token: >
         Already have a token? Add it using the button below to upgrade to the booked Enterprise plan.
       hide_banner: "Hide this banner"
@@ -2173,14 +2182,14 @@ nl:
         description: Markeer wijzigingen die sindsdien in deze lijst zijn aangebracht.
       benefits:
         description: "What are the benefits of the Enterprise on-premises edition?"
-        high_security: "Security features"
+        high_security: "Beveiliging functies"
         high_security_text: "Single sign on (SAML, OpenID Connect, CAS), LDAP groups."
-        installation: "Installation support"
-        installation_text: "Experienced software engineers guide you through the complete installation and setup process in your own infrastructure."
+        installation: "Installatie ondersteuning"
+        installation_text: "Ervaren softwareingenieurs begeleiden u door het volledige installatieproces in uw eigen infrastructuur."
         premium_features: "Enterprise add-ons"
-        premium_features_text: "Agile boards, custom theme and logo, graphs, intelligent workflows with custom actions, full text search for work package attachments and multi-select custom fields."
-        professional_support: "Professional support"
-        professional_support_text: "Get reliable, high-touch support from senior support engineers with expert knowledge about running OpenProject in business-critical environments."
+        premium_features_text: "Agile borden, aangepast thema en logo, grafieken, intelligente workflows met aangepaste acties, volledige tekst zoeken voor werkpakket bijlagen en meervoudige aangepaste velden."
+        professional_support: "Professionele ondersteuning"
+        professional_support_text: "Krijg betrouwbare, krachtige ondersteuning van ervaren ondersteunende ingenieurs met deskundige kennis over het functioneren van OpenProject in zakelijke kritieke omgevingen."
       work_package_subject_generation:
         description: "Maak automatisch gegenereerde onderwerpen met behulp van kenmerken en tekst waarnaar verwezen wordt."
       customize_life_cycle:
@@ -2413,6 +2422,10 @@ nl:
     your_projects_export: "Projects are being exported"
     succeeded: "Export completed"
     failed: "An error has occurred while trying to export the work packages: %{message}"
+    demo:
+      heading: "Demo PDF"
+      footer: "Generated by OpenProject"
+      button_text: Generate Demo PDF
     errors:
       embedded_table_with_too_many_columns: "This embedded work package table could not fit on the page, please reduce the number of columns."
     format:
@@ -2475,7 +2488,7 @@ nl:
       tesseract: "Tesseract beschikbaar (optioneel)"
   filterable_tree_view:
     filter_mode:
-      all: "All"
+      all: "Alle"
       label: "Filter mode"
       selected: "Selected"
     include_sub_items: "Include sub-items"
@@ -2607,7 +2620,7 @@ nl:
         static_token_name: "RSS token"
         disabled_text: "RSS tokens are not enabled by the administrator. Please contact your administrator to use this feature."
       storages:
-        title: "File storages"
+        title: "Bestandsopslag"
         text_hint: "File Storage tokens connect this OpenProject instance with an external File Storage."
         empty_text_hint: "Er is geen opslagtoegang gekoppeld aan uw account."
         revoke_token: "Do you really want to remove this token? You will need to login again on %{storage}"
@@ -2784,7 +2797,7 @@ nl:
   label_dashboard: "Dashboard"
   label_database_version: "PostgreSQL versie"
   label_date: "Datum"
-  label_dates: "Dates"
+  label_dates: "Datums"
   label_date_and_time: "Datum en tijd"
   label_date_format: "Datumnotatie"
   label_date_from: "Van"
@@ -2944,6 +2957,7 @@ nl:
   label_link_url: "Link (URL)"
   label_list: "Lijst"
   label_loading: "Laden..."
+  label_locked: "locked"
   label_lock_user: "Gebruiker vergrendelen"
   label_logged_as: "Ingelogd als"
   label_login: "Aanmelden"
@@ -2951,6 +2965,10 @@ nl:
   label_custom_export_logo: "Custom export logo"
   label_custom_export_cover: "Custom export cover background"
   label_custom_export_footer: "Custom export footer image"
+  label_custom_export_font_regular: "Regular"
+  label_custom_export_font_bold: "Bold"
+  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Tekstkleur"
   label_custom_pdf_export_settings: "Aangepaste PDF-exportinstellingen"
@@ -3022,7 +3040,7 @@ nl:
   label_no_due_date: "geen einddatum"
   label_no_start_date: "geen startdatum"
   label_no_parent_page: "Geen bovenliggende pagina"
-  label_notification_center_plural: "Notifications"
+  label_notification_center_plural: "Meldingen"
   label_nothing_display: "Niets om weer te geven"
   label_nobody: "niemand"
   label_not_configured: "Not configured"
@@ -3038,6 +3056,8 @@ nl:
   label_operator_equals_or: "is (OR)"
   label_operator_equals_all: "is (AND)"
   label_operator_shared_with_user_any: "elke"
+  label_open: "open"
+  label_closed: "gesloten"
   label_open_menu: "Menu openen"
   label_open_work_packages: "Open"
   label_open_work_packages_plural: "Open"
@@ -3055,7 +3075,7 @@ nl:
   label_password_rule_special: "Speciale tekens"
   label_password_rule_uppercase: "Hoofdletters"
   label_path_encoding: "Pad codering"
-  label_per_page: "Per page:"
+  label_per_page: "Per pagina:"
   label_people: "Mensen"
   label_permissions: "Machtigingen"
   label_permissions_report: "Machtigingen verslag"
@@ -3098,12 +3118,16 @@ nl:
   label_project_custom_field_plural: "Projectkenmerken"
   label_project_settings: "Project Instellingen"
   label_project_attributes_settings: "Project kenmerken instellingen"
-  label_project_storage_plural: "File storages"
+  label_project_storage_plural: "Bestandsopslag"
   label_project_storage_project_folder: "File storages: Project folders"
   label_projects_disk_usage_information: "%{count} projecten die %{used_disk_space} schijfruimte gebruiken"
   label_project_view_all: "Bekijk alle projecten"
   label_project_show_details: "Toon project details"
   label_project_hide_details: "Verberg project details"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
+  label_program: "Program"
+  label_program_new: "New program"
   label_public_projects: "Publieke projecten"
   label_query_new: "Nieuwe query"
   label_query_plural: "Aangepaste query 's"
@@ -3252,6 +3276,8 @@ nl:
   label_watched_work_packages: "Gevolgde werkpakketten"
   label_what_is_this: "Wat is dit?"
   label_week: "Week"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "Wiki-pagina toegevoegd"
   label_wiki_content_updated: "Wiki-pagina bijgewerkt"
   label_wiki_toc: "Inhoudsopgave"
@@ -3598,6 +3624,8 @@ nl:
   permission_add_work_packages: "Werkpakketten toevoegen"
   permission_add_messages: "Berichten posten"
   permission_add_project: "Projecten aanmaken"
+  permission_add_portfolios: "Create portfolios"
+  permission_add_programs: "Create programs"
   permission_add_work_package_attachments: "Bijlagen toevoegen"
   permission_add_work_package_attachments_explanation: "Allows adding attachments without Edit work packages permission"
   permission_add_internal_comments: "Write internal comments"
@@ -4055,7 +4083,7 @@ nl:
   setting_working_days: "Werkdagen"
   settings:
     authentication:
-      login: "Login"
+      login: "Inloggen"
       registration: "Registration"
       sso: "Single Sign-On (SSO)"
       omniauth_direct_login_hint_html: >
@@ -4207,6 +4235,18 @@ nl:
     This is the image that appears in the background of a cover page in your PDF exports. It needs to be an about 800px width by 500px height sized PNG or JPEG image file.
   text_custom_export_footer_instructions: >
     PDF exports will include a graphical element positioned to the left of the footer. This image must be a PNG or JPEG file with approximately 200 pixels in width.
+  label_custom_export_font_instructions: >
+    Upload and manage custom TrueType (.ttf) fonts used in your PDF exports. For best results, use matching files from the same font family. If no font is provided, the default NotoSans font will be used.
+  label_custom_export_images_instructions: >
+    Upload and manage custom image files used in your PDF exports.
+  text_custom_export_font_regular_instructions: >
+    This is the font file for regular text. It needs to be in TTF format and is required.
+  text_custom_export_font_bold_instructions: >
+    This is the font file for bold text. It needs to be in TTF format.
+  text_custom_export_font_italic_instructions: >
+    This is the font file for italic text. It needs to be in TTF format.
+  text_custom_export_font_bold_italic_instructions: >
+    This is the font file for bold and italic text. It needs to be in TTF format.
   text_custom_favicon_instructions: >
     This is the tiny icon that appears in your browser window/tab next to the page's title. It needs to be a squared 32 by 32 pixels sized PNG image file with a transparent background.
   text_custom_touch_icon_instructions: >

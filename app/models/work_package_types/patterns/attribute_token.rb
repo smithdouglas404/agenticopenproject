@@ -54,6 +54,23 @@ module WorkPackageTypes
           :work_package
         end
       end
+
+      # --- Equality overrides ---
+      # We want to make sure that two tokens are considered equal if they represent the attribute. This is regardless
+      # of identity of the methods used to resolve their labels etc.
+
+      def ==(other)
+        eql?(other)
+      end
+
+      def eql?(other)
+        self.class == other.class && key == other.key
+      end
+
+      def hash
+        [self.class, key].hash
+      end
+      # --- END Equality overrides ---
     end
   end
 end

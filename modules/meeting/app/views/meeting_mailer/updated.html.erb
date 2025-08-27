@@ -31,7 +31,7 @@ See COPYRIGHT and LICENSE files for more details.
   <%= render partial: "mailer/mailer_header",
              locals: {
                user: @user,
-               summary: I18n.t("meeting.email.rescheduled.summary", title: @meeting.title, actor: @actor),
+               summary: I18n.t("meeting.email.updated.summary", title: @meeting.title, actor: @actor),
                bottom_spacing: false
              } %>
 
@@ -40,38 +40,74 @@ See COPYRIGHT and LICENSE files for more details.
       <%= placeholder_cell("24px", vertical: true) %>
       <td>
         <table>
-          <tr>
-            <td style="<%= placeholder_text_styles(width: "30%") %>">
-              <%= t("meeting.email.rescheduled.old_date_time") %>
-            </td>
-            <td style="<%= placeholder_text_styles %>">
-              <s>
-                <%= format_date @changes[:old_start] %> <%= format_time @changes[:old_start], include_date: false %>
-                -
-                <%= format_time (@changes[:old_start] + @changes[:old_duration].hours), include_date: false %> (<%= formatted_time_zone_offset %>)
-              </s>
-            </td>
-          </tr>
-          <tr>
-            <td style="<%= placeholder_text_styles(width: "30%") %>">
-              <%= t("meeting.email.rescheduled.new_date_time") %>
-            </td>
-            <td style="<%= placeholder_text_styles("font-weight": "bold") %>">
-              <%= format_date @changes[:new_start] %> <%= format_time @changes[:new_start], include_date: false %>
-              -
-              <%= format_time (@changes[:new_start] + @changes[:new_duration].hours), include_date: false %> (<%= formatted_time_zone_offset %>)
-            </td>
-          </tr>
-          <% if @meeting.location.present? %>
+          <% if @changes[:old_start] != @changes[:new_start] || @changes[:old_duration] != @changes[:new_duration] %>
             <tr>
               <td style="<%= placeholder_text_styles(width: "30%") %>">
-                <%= Meeting.human_attribute_name(:location) %>
+                <%= t("meeting.email.updated.old_date_time") %>
               </td>
               <td style="<%= placeholder_text_styles %>">
-                <%= auto_link @meeting.location %>
+                <s>
+                  <%= format_date @changes[:old_start] %> <%= format_time @changes[:old_start], include_date: false %>
+                  -
+                  <%= format_time (@changes[:old_start] + @changes[:old_duration].hours), include_date: false %> (<%= formatted_time_zone_offset %>)
+                </s>
+              </td>
+            </tr>
+            <tr>
+              <td style="<%= placeholder_text_styles(width: "30%") %>">
+                <%= t("meeting.email.updated.new_date_time") %>
+              </td>
+              <td style="<%= placeholder_text_styles(color: "#1f2328", "font-weight": "bold") %>">
+                <%= format_date @changes[:new_start] %> <%= format_time @changes[:new_start], include_date: false %>
+                -
+                <%= format_time (@changes[:new_start] + @changes[:new_duration].hours), include_date: false %> (<%= formatted_time_zone_offset %>)
+              </td>
+            </tr>
+          <% else %>
+            <tr>
+              <td style="<%= placeholder_text_styles(width: "30%") %>">
+                <%= I18n.t(:label_meeting_date_time) %>
+              </td>
+              <td style="<%= placeholder_text_styles %>">
+                <%= format_date @changes[:new_start] %> <%= format_time @changes[:new_start], include_date: false %>
+                -
+                <%= format_time (@changes[:new_start] + @changes[:new_duration].hours), include_date: false %> (<%= formatted_time_zone_offset %>)
               </td>
             </tr>
           <% end %>
+
+          <% if @changes[:old_location].present? || @changes[:new_location].present? %>
+            <% if @changes[:old_location] != @changes[:new_location] %>
+              <tr>
+                <td style="<%= placeholder_text_styles(width: "30%") %>">
+                  <%= t("meeting.email.updated.old_location") %>
+                </td>
+                <td style="<%= placeholder_text_styles %>">
+                  <s>
+                    <%= @changes[:old_location].presence || "-" %>
+                  </s>
+                </td>
+              </tr>
+              <tr>
+                <td style="<%= placeholder_text_styles(width: "30%") %>">
+                  <%= t("meeting.email.updated.new_location") %>
+                </td>
+                <td style="<%= placeholder_text_styles(color: "#1f2328", "font-weight": "bold") %>">
+                  <%= @changes[:new_location].blank? ? "-" : (auto_link @changes[:new_location]) %>
+                </td>
+              </tr>
+            <% else %>
+              <tr>
+                <td style="<%= placeholder_text_styles(width: "30%") %>">
+                  <%= Meeting.human_attribute_name(:location) %>
+                </td>
+                <td style="<%= placeholder_text_styles %>">
+                  <%= auto_link @changes[:new_location] %>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+
           <tr>
             <td style="<%= placeholder_text_styles(width: "30%") %>">
               <%= Meeting.human_attribute_name(:project) %>
@@ -88,6 +124,7 @@ See COPYRIGHT and LICENSE files for more details.
               <%= @meeting.author %>
             </td>
           </tr>
+
           <% if @meeting.participants.exists? %>
             <tr>
               <td style="<%= placeholder_text_styles(width: "30%") %>">
@@ -121,6 +158,7 @@ See COPYRIGHT and LICENSE files for more details.
     <%= link_to I18n.t(:"meeting.email.open_meeting_link"),
                 meeting_url(@meeting),
                 target: "_blank",
+                rel: "noopener",
                 style: "color: #333333; text-decoration: none; font-size: 14px;white-space: nowrap;" %>
   <% end %>
 <% end %>

@@ -6,4 +6,4 @@ vi:
       title: 'Lịch'
       too_many: 'Có tổng cộng %{count} công việc, nhưng chỉ có thể hiển thị %{max} công việc.'
       unsaved_title: 'Lịch không tên'
-      label_calendar_plural: 'Calendars'
+      label_calendar_plural: 'Các lịch'

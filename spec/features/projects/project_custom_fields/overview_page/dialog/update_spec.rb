@@ -759,7 +759,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
       let(:field) { FormFields::Primerized::InputField.new(custom_field) }
 
       before do
-        all_fields.without(string_project_custom_field).each { |cf| cf.update(admin_only: true) }
+        all_fields.without(string_project_custom_field).each { it.update_attribute!(:admin_only, true) }
       end
 
       it "does not clears them after a project admin updates" do
@@ -801,6 +801,49 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
         expect(custom_values).to eq(expected_custom_values)
         expect(project.project_custom_fields.reload).to eq(expected_custom_fields)
+      end
+    end
+
+    describe "with hidden calculated value CFs" do
+      let(:section) { section_for_input_fields }
+      let(:dialog) { Components::Projects::ProjectCustomFields::EditDialog.new(project, section) }
+      let(:custom_field) { integer_project_custom_field }
+      let(:field) { FormFields::Primerized::InputField.new(custom_field) }
+
+      before do
+        [
+          float_project_custom_field,
+          calculated_from_int_project_custom_field,
+          calculated_from_int_and_float_project_custom_field
+        ].each { it.update_attribute!(:admin_only, true) }
+      end
+
+      it "updates them when visible referencing field changes" do
+        # Checking that calculated value fields can be calculated even if they
+        # are hidden from the user changing referenced field values
+        # https://community.openproject.org/wp/66471
+
+        overview_page.visit_page
+
+        overview_page.open_edit_dialog_for_section(section)
+
+        field.fill_in(with: 567)
+
+        dialog.submit
+        dialog.expect_closed
+
+        overview_page.within_custom_field_container(custom_field) do
+          expect(page).to have_content "567"
+        end
+        overview_page.expect_no_custom_field(float_project_custom_field)
+        overview_page.expect_no_custom_field(calculated_from_int_project_custom_field)
+        overview_page.expect_no_custom_field(calculated_from_int_and_float_project_custom_field)
+
+        expect(project.reload.custom_value_attributes(all: true)).to include(
+          float_project_custom_field.id => "123.456",
+          calculated_from_int_project_custom_field.id => "1134",
+          calculated_from_int_and_float_project_custom_field.id => "69999.552"
+        )
       end
     end
   end

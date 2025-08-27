@@ -33,10 +33,11 @@ require "spec_helper"
 RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:custom_field_hierarchies] do
   let!(:custom_field) { create(:custom_field, field_format: "hierarchy", hierarchy_root: nil) }
   let!(:invalid_custom_field) { create(:custom_field, field_format: "text", hierarchy_root: nil) }
+  let!(:contract_class) { CustomFields::Hierarchy::InsertListItemContract }
 
   let!(:root) { service.generate_root(custom_field).value! }
-  let!(:luke) { service.insert_item(parent: root, label: "luke", short: "LS").value! }
-  let!(:mara) { service.insert_item(parent: luke, label: "mara").value! }
+  let!(:luke) { service.insert_item(contract_class:, parent: root, label: "luke", short: "LS").value! }
+  let!(:mara) { service.insert_item(contract_class:, parent: luke, label: "mara").value! }
 
   subject(:service) { described_class.new }
 
@@ -71,30 +72,30 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:cust
 
     context "with valid parameters" do
       it "inserts an item successfully without short" do
-        result = service.insert_item(parent: luke, label:)
+        result = service.insert_item(contract_class:, parent: luke, label:)
 
         expect(result).to be_success
         expect(luke.reload.children.count).to eq(2)
       end
 
       it "inserts an item successfully with short" do
-        result = service.insert_item(parent: root, label:, short:)
+        result = service.insert_item(contract_class:, parent: root, label:, short:)
         expect(result).to be_success
       end
 
       it "insert an item into a specific sort_order" do
-        leia = service.insert_item(parent: root, label: "leia").value!
+        leia = service.insert_item(contract_class:, parent: root, label: "leia").value!
         expect(root.reload.children).to contain_exactly(luke, leia)
 
-        bob = service.insert_item(parent: root, label: "Bob", sort_order: 1).value!
+        bob = service.insert_item(contract_class:, parent: root, label: "Bob", sort_order: 1).value!
         expect(root.reload.children).to contain_exactly(luke, bob, leia)
       end
 
       it "updates the position_cache" do
-        leia = service.insert_item(parent: root, label: "leia").value!
+        leia = service.insert_item(contract_class:, parent: root, label: "leia").value!
         expect(root.reload.position_cache).to eq(64)
 
-        service.insert_item(parent: root, label: "Bob", sort_order: 1).value!
+        service.insert_item(contract_class:, parent: root, label: "Bob", sort_order: 1).value!
         expect(leia.reload.position_cache).to eq(200)
       end
     end
@@ -104,7 +105,7 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:cust
         child = instance_double(CustomField::Hierarchy::Item, new_record?: true, errors: "some errors")
         allow(root.children).to receive(:create).and_return(child)
 
-        result = service.insert_item(parent: root, label:, short:)
+        result = service.insert_item(contract_class:, parent: root, label:, short:)
         expect(result).to be_failure
       end
     end
@@ -113,16 +114,18 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:cust
   describe "#update_item" do
     context "with valid parameters" do
       it "updates the item with new attributes" do
-        result = service.update_item(item: luke, label: "Luke Skywalker", short: "LS")
+        update_contract = CustomFields::Hierarchy::UpdateListItemContract
+        result = service.update_item(contract_class: update_contract, item: luke, label: "Luke Skywalker", short: "LS")
         expect(result).to be_success
       end
     end
 
     context "with invalid parameters" do
-      let!(:leia) { service.insert_item(parent: root, label: "leia").value! }
+      let!(:leia) { service.insert_item(contract_class:, parent: root, label: "leia").value! }
 
       it "refuses to update the item with new attributes" do
-        result = service.update_item(item: leia, label: "luke", short: "LS")
+        update_contract = CustomFields::Hierarchy::UpdateListItemContract
+        result = service.update_item(contract_class: update_contract, item: leia, label: "luke", short: "LS")
         expect(result).to be_failure
 
         errors = result.failure.errors
@@ -181,9 +184,9 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:cust
   end
 
   describe "#get_descendants" do
-    let!(:subitem) { service.insert_item(parent: mara, label: "Sub1").value! }
-    let!(:subitem2) { service.insert_item(parent: mara, label: "sub two").value! }
-    let!(:unrelated_subitem) { service.insert_item(parent: luke, label: "not related").value! }
+    let!(:subitem) { service.insert_item(contract_class:, parent: mara, label: "Sub1").value! }
+    let!(:subitem2) { service.insert_item(contract_class:, parent: mara, label: "sub two").value! }
+    let!(:unrelated_subitem) { service.insert_item(contract_class:, parent: luke, label: "not related").value! }
 
     context "with a non-root node" do
       it "returns all the descendants to that item" do
@@ -217,7 +220,7 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:cust
   end
 
   describe "#move_item" do
-    let(:lando) { service.insert_item(parent: root, label: "lando").value! }
+    let(:lando) { service.insert_item(contract_class:, parent: root, label: "lando").value! }
 
     it "move the node to the new parent" do
       expect { service.move_item(item: mara, new_parent: lando) }.to change { mara.reload.ancestors.first }.to(lando)
@@ -239,8 +242,8 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:cust
   end
 
   describe "#reorder_item" do
-    let!(:lando) { service.insert_item(parent: root, label: "lando").value! }
-    let!(:chewbacca) { service.insert_item(parent: root, label: "AWOOO").value! }
+    let!(:lando) { service.insert_item(contract_class:, parent: root, label: "lando").value! }
+    let!(:chewbacca) { service.insert_item(contract_class:, parent: root, label: "AWOOO").value! }
 
     it "reorders the item to the target position" do
       service.reorder_item(item: chewbacca, new_sort_order: 1)
@@ -307,9 +310,9 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:cust
   end
 
   describe "#hashed_subtree" do
-    let!(:lando) { service.insert_item(parent: root, label: "lando").value! }
-    let!(:chewbacca) { service.insert_item(parent: root, label: "AWOOO").value! }
-    let!(:lowbacca) { service.insert_item(parent: chewbacca, label: "ARWWWW").value! }
+    let!(:lando) { service.insert_item(contract_class:, parent: root, label: "lando").value! }
+    let!(:chewbacca) { service.insert_item(contract_class:, parent: root, label: "AWOOO").value! }
+    let!(:lowbacca) { service.insert_item(contract_class:, parent: chewbacca, label: "ARWWWW").value! }
 
     it "produces a hash version of the tree" do
       subtree = service.hashed_subtree(item: root, depth: -1)

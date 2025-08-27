@@ -19,7 +19,7 @@
           end
 
           container.with_row(mb: 3) do
-            render(Meetings::EmailUpdatesBannerComponent.new(@meeting))
+            render(Meetings::EmailUpdatesBannerComponent.new(@meeting, type: :participants))
           end
 
           container.with_row(mb: 3) do

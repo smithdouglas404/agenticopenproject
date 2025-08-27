@@ -24,7 +24,7 @@ nl:
       storages/sharepoint_storage:
         host: Sharepoint Site URL
         library: Library ID
-        name: Name
+        name: Naam
         site: Site ID
       storages/storage:
         authentication_method: Authentication Method
@@ -257,7 +257,7 @@ nl:
           group_folder_app: 'Dependency: Group Folders'
           group_folder_contents: Group folder has expected content
           group_folder_presence: Group folder exists
-          header: Automatically managed project folders
+          header: Automatisch beheerde projectmappen
           userless_access: Server-side request authentication
         authentication:
           existing_token: User token
@@ -388,7 +388,7 @@ nl:
         oauth_client_redirect_uri: Please copy this value to a new Web redirect URI under Redirect URIs.
         oauth_client_secret: In case there is no application client secret under Client credentials, please create a new one.
         oauth_configuration: Copy these values from the desired application in the %{application_link_text}.
-        provider_configuration: Please make sure you have administration privileges in the %{application_link_text} or contact your Microsoft administrator before doing the setup. In the portal, you also need to register an Azure application or use an existing one for authentication.
+        provider_configuration: Zorg ervoor dat u beheerdersrechten hebt op %{application_link_text} of neem contact op met uw Microsoft-beheerder voordat u de installatie uitvoert. In het portaal moet u ook een Azure toepassing registreren of een bestaande toepassing gebruiken voor verificatie.
         tenant_id: Please copy the Directory (tenant) ID from the desired application and App registrations in the %{application_link_text}.
         tenant_id_placeholder: Name or UUID
       setting_up_additional_storages: Voor het opzetten van extra bestandsopslag, bezoek a.u.b.
@@ -399,7 +399,7 @@ nl:
         application_link_text: SharePoint site
         integration: SharePoint Administration / OpenProject
         oauth_configuration: Copy these values from the desired application in the %{application_link_text}.
-        provider_configuration: Please make sure you have administration privileges in the %{application_link_text} or contact your Microsoft administrator before doing the setup. In the portal, you also need to register an Azure application or use an existing one for authentication.
+        provider_configuration: Zorg ervoor dat u beheerdersrechten hebt op %{application_link_text} of neem contact op met uw Microsoft-beheerder voordat u de installatie uitvoert. In het portaal moet u ook een Azure toepassing registreren of een bestaande toepassing gebruiken voor verificatie.
       type: 'Zorg ervoor dat u beheerrechten heeft in uw Nextcloud en dat de volgende applicatie geïnstalleerd is voordat u de installatie uitvoert:'
       type_link_text: "Integratie met OpenProject\""
     label_active: Actief

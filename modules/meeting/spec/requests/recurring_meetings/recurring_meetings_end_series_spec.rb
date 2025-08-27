@@ -162,6 +162,33 @@ RSpec.describe "Recurring meetings complete template",
     end
   end
 
+  context "when there is a scheduled instance for today and tomorrow" do
+    let!(:today) do
+      create :scheduled_meeting,
+             :persisted,
+             recurring_meeting:,
+             start_time: DateTime.parse("2024-12-05T10:00:00Z")
+    end
+    let!(:tomorrow) do
+      create :scheduled_meeting,
+             :persisted,
+             recurring_meeting:,
+             start_time: DateTime.parse("2024-12-06T10:00:00Z")
+    end
+
+    subject do
+      Timecop.freeze("2024-12-05T09:59:00Z".to_datetime) { request }
+    end
+
+    it "does delete this occurrence" do
+      expect { subject }.to change(recurring_meeting.scheduled_meetings, :count).by(-2)
+      expect(response).to be_redirect
+
+      recurring_meeting.reload
+      expect(recurring_meeting.end_date).to eq Date.parse("2024-12-05")
+    end
+  end
+
   context "when next occurrence is present" do
     let!(:schedule) do
       create :scheduled_meeting,

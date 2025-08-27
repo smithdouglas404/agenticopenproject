@@ -23,38 +23,37 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "rails_helper"
+require "spec_helper"
 
-RSpec.describe CustomFields::Hierarchy::UpdateItemContract do
+RSpec.describe CustomFields::Hierarchy::UpdateScoredItemContract do
   subject { described_class.new }
 
   # rubocop:disable Rails/DeprecatedActiveModelErrorsMethods
   describe "#call" do
-    let!(:vader) { create(:hierarchy_item) }
-    let!(:luke) { create(:hierarchy_item, label: "luke", short: "ls", parent: vader) }
-    let!(:leia) { create(:hierarchy_item, label: "leia", short: "lo", parent: vader) }
-    let!(:starkiller) { create(:hierarchy_item, label: "starkiller", parent: vader) }
+    let!(:impact) { create(:hierarchy_item) }
+    let!(:high) { create(:hierarchy_item, label: "HIGH", score: 1.17e-12, parent: impact) }
+    let!(:middle) { create(:hierarchy_item, label: "Middle", score: 1, parent: impact) }
+    let!(:low) { create(:hierarchy_item, label: "low", score: 9.81e6, parent: impact) }
 
     context "when all required fields are valid" do
       it "is valid" do
         [
-          { item: luke, label: "Luke Skywalker", short: "LS" },
-          { item: luke, label: "Luke Skywalker" },
-          { item: luke, label: "luke", short: "lu" },
-          { item: luke, short: "LS" },
-          { item: luke, short: "ls" },
-          { item: luke }
+          { item: high, label: "VERY HIGH", score: 1.17e-12 },
+          { item: high, label: "HIGH", score: 1.17e-11 },
+          { item: high, label: "VERY HIGH" },
+          { item: high, score: 1.17e-10 },
+          { item: high }
         ].each { |params| expect(subject.call(params)).to be_success }
       end
     end
 
     context "when item is a root item" do
-      let(:params) { { item: vader } }
+      let(:params) { { item: impact } }
 
       it("is invalid") do
         result = subject.call(params)
@@ -75,7 +74,7 @@ RSpec.describe CustomFields::Hierarchy::UpdateItemContract do
     end
 
     context "when item is not persisted" do
-      let(:item) { build(:hierarchy_item, parent: vader) }
+      let(:item) { build(:hierarchy_item, parent: impact) }
       let(:params) { { item: } }
 
       it "is invalid" do
@@ -86,7 +85,7 @@ RSpec.describe CustomFields::Hierarchy::UpdateItemContract do
     end
 
     context "when the label already exist in the same hierarchy level" do
-      let(:params) { { item: luke, label: "leia" } }
+      let(:params) { { item: high, label: "Middle" } }
 
       it "is invalid" do
         result = subject.call(params)
@@ -96,27 +95,15 @@ RSpec.describe CustomFields::Hierarchy::UpdateItemContract do
       end
     end
 
-    context "when the short already exist in the same hierarchy level" do
-      let(:params) { { item: luke, short: "lo" } }
-
-      it "is invalid" do
-        result = subject.call(params)
-
-        expect(result).to be_failure
-
-        expect(result.errors[:short]).to match_array("must be unique within the same hierarchy level.")
-      end
-    end
-
     context "when fields are invalid" do
       it "is invalid" do
         [
           {},
           { item: nil },
-          { item: luke, label: nil },
-          { item: luke, label: 42 },
-          { item: luke, short: nil },
-          { item: luke, short: 42 }
+          { item: high, label: nil },
+          { item: high, label: 42 },
+          { item: high, score: nil },
+          { item: high, score: "pi" }
         ].each { |params| expect(subject.call(params)).to be_failure }
       end
     end

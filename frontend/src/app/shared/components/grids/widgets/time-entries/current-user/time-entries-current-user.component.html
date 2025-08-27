@@ -9,13 +9,15 @@
   </widget-time-entries-current-user-menu>
 </widget-header>
 
-<op-time-entries-calendar
-  (entries)="updateEntries($event)"
-  [displayedDays]="displayedDays"
-></op-time-entries-calendar>
+<div class="op-widget-box--body">
+  <op-time-entries-calendar
+    (entries)="updateEntries($event)"
+    [displayedDays]="displayedDays"
+  ></op-time-entries-calendar>
 
-<ng-container>
-  <div class="total-hours">
-    <p>Total: <span [textContent]="total"></span></p>
-  </div>
-</ng-container>
+  <ng-container>
+    <div class="total-hours">
+      <p>Total: <span [textContent]="total"></span></p>
+    </div>
+  </ng-container>
+</div>

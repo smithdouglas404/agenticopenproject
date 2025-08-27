@@ -27,15 +27,19 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%= @series.project.name %>: <%= @series.title %> (<%= recurring_meeting_url(@series) %>)
-<%= @series.author %>
+<p><%= I18n.t(:label_custom_export_font_instructions) %></p>
 
-<%= t('meeting.email.series_rescheduled.summary',
-      actor: @actor,
-      title: @series.title) %>
+<%=
+  render(Primer::Beta::Button.new(
+    target: "_blank",
+    data: { turbo: false },
+    tag: :a,
+    href: export_demo_pdf_download_custom_style_path
+  )) do |_c|
+    t("export.demo.button_text")
+  end
+%>
 
-<%= t('meeting.email.series_rescheduled.old_schedule') %>:
-<%= @changes[:old_schedule] %> (<%= formatted_time_zone_offset %>)
-
-<%= t('meeting.email.series_rescheduled.new_schedule') %>:
-<%= @series.full_schedule_in_words %> (<%= formatted_time_zone_offset %>)
+<% export_fonts_fields(@custom_style).each do |font| %>
+  <%= render partial: "custom_styles/uploads/font",  locals: { font: } %>
+<% end %>

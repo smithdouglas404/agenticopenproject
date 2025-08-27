@@ -267,8 +267,8 @@ module Pages
 
         not_protected_columns = Regexp.new("^(?!#{(columns + ['Name']).join('$|')}$).*$")
 
-        while (item = page.all(".op-draggable-autocomplete--item", text: not_protected_columns)[0])
-          item.find(".op-draggable-autocomplete--remove-item").click
+        while (items = page.all(".op-draggable-autocomplete--item", text: not_protected_columns)[0]) # rubocop:disable Capybara/FindAllFirst
+          items.find(".op-draggable-autocomplete--remove-item").click
         end
 
         remaining_columns = page.all(".op-draggable-autocomplete--item").map { |i| i.text.downcase }
@@ -336,8 +336,8 @@ module Pages
         end
       end
 
-      def navigate_to_new_project_page_from_toolbar_items
-        page.find('[data-test-selector="project-new-button"]').click
+      def create_new_workspace
+        page.find('[data-test-selector="workspace-new-button"]').click
       end
 
       def save_query

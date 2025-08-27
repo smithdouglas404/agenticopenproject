@@ -61,8 +61,13 @@ uk:
         end_after: "Серія нарад завершується"
         end_date: "Дата завершення"
         iterations: "Повторення"
+      meeting_participant:
+        invited: "Запрошені"
+        attended: "Відвідано"
     errors:
       models:
+        meeting_participant:
+          invalid_user: "%{name} is not a valid participant."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Одна відкрита нарада в серії не входить у новий розклад. Налаштуйте розклад так, щоб він охоплював усі наявні наради."
@@ -98,7 +103,6 @@ uk:
           updated: "змінено з %{old_value} на %{value}"
           updated_html: "змінено з <i>%{old_value}</i> на <i>%{value}</i>"
   description_attended: "Участь"
-  description_invite: "Запрошені"
   events:
     meeting: Нотатки до зустрічі
     meeting_agenda: Порядок денний зустрічі редагувався
@@ -183,24 +187,24 @@ uk:
   label_version: "Версія"
   label_time_zone: "Часовий пояс"
   label_start_date: "Дата початку"
-  label_subscribe_icalendar: "Subscribe to calendar"
+  label_subscribe_icalendar: "Підписатися на календар"
   meeting:
     participants:
       label:
-        participants: "Participants"
-        attended: "Attended"
+        participants: "Учасники"
+        attended: "Відвідано"
         mark_as_attended: "Mark as attended"
         mark_all_as_attended: "Mark all as attended"
         remove_participant: "Remove participant"
-        manage_participants: "Manage participants"
-        no_participants: "No participants"
-        show_all: "Show all"
+        manage_participants: "Керувати учасниками"
+        no_participants: "Немає учасників"
+        show_all: "Показати всі"
       text:
-        template: "These participants will be invited automatically to all future meetings as they are created."
+        template: "Ці учасники автоматично отримуватимуть запрошення на всі майбутні наради, які ви створюватимете."
         manage_participants: "Search for and add project members as participants to this meeting."
         search_for_members: "Search for project members"
       blankslate:
-        heading: "No participants"
+        heading: "Немає учасників"
         description: "There are no participants yet."
     attachments:
       template: "Ці прикріплені файли додаватимуться до всіх майбутніх нарад серії."
@@ -224,9 +228,9 @@ uk:
       series:
         title: "[%{project_name}] – серія нарад «%{title}»"
         summary: "%{actor} створив(-ла) нову серію нарад «%{title}»"
-      series_rescheduled:
-        title: "[%{project_name}] – запланований час серії нарад «%{title}» змінено"
-        summary: "%{actor} змінив(-ла) запланований час серії нарад «%{title}»"
+      series_updated:
+        title: "[%{project_name}] Meeting series '%{title}' has been updated"
+        summary: "Meeting series '%{title}' has been updated by %{actor}"
         old_schedule: "Старий розклад"
         new_schedule: "Новий розклад"
       invited:
@@ -239,13 +243,15 @@ uk:
         summary_series: "Серію нарад «%{title}» скасував(-ла) %{actor}."
         summary: "«%{title}» скасував(-ла) %{actor}."
         date_time: "Заплановані дата/час"
-      rescheduled:
-        header: "Запланований час наради «%{title}» змінено"
-        summary: "Запланований час наради «%{title}» змінив(-ла) %{actor}"
-        body: "Запланований час наради «%{title}» змінив(-ла) %{actor}."
+      updated:
+        header: "Meeting '%{title}' has been updated"
+        summary: "Meeting '%{title}' has been updated by %{actor}"
+        body: "The meeting '%{title}' has been updated by %{actor}."
         old_date_time: "Стара дата/час"
         new_date_time: "Нова дата/час"
-    label_mail_all_participants: "Надсилати електронною поштою оновлення з календаря всім учасникам"
+        old_location: "Old location"
+        new_location: "New location"
+    label_mail_all_participants: "Send email invite to participants"
     types:
       one_time: "Одноразова"
       recurring: "Повторювана"
@@ -273,26 +279,26 @@ uk:
       your_meeting_export: "Нарада експортується"
       minutes:
         footer_page_numbers: "P. %{current_page} of %{total_pages}"
-        author: "Author"
-        date: "Date"
-        time: "Time"
-        location: "Location"
-        title: "Minutes"
+        author: "Автор"
+        date: "Дата"
+        time: "Час"
+        location: "Місцезнаходження"
+        title: "Хвилини"
     export_pdf_dialog:
       title: Експорт PDF
       description: Згенеруйте PDF-файл для друку з поточним змістом наради.
       templates:
         default:
-          label: Default
+          label: За замовчуванням
           caption: The default template is suitable for most meetings and represent the current state.
         minutes:
-          label: Minutes
+          label: Хвилини
           caption: The minutes template is suitable for closed and archived meetings.
       first_page_header_left:
         label: First page header left
         caption: This text will appear on the first page at the left of the header.
       author:
-        label: Author
+        label: Автор
         caption: The author of the minutes will be displayed in the subtitle.
       include_participants:
         label: Включити список учасників
@@ -330,6 +336,11 @@ uk:
           enable: "Увімкнути оновлення електронною поштою"
           disable: "Вимкнути оновлення електронною поштою"
       banner:
+        participants:
+          enabled: >
+            All participants will receive updated calendar invites via email when you add or remove participants.
+          disabled: >
+            Email calendar updates are disabled. Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             Усі учасники отримуватимуть електронною поштою оновлені запрошення з календаря, що інформуватимуть їх про зміни, які ви вносите.
@@ -480,7 +491,7 @@ uk:
   label_agenda_item_deleted_wp: "Посилання на видалений пакет робіт"
   label_agenda_item_actions: "Дії з пунктами порядку денного"
   label_agenda_item_move_to_next_title: "Move to next meeting?"
-  label_agenda_item_move: "Move"
+  label_agenda_item_move: "Перемістити"
   label_agenda_item_move_to_next: "Перейти до наступної наради"
   label_agenda_item_move_to_backlog: "Перемістити в чергу завдань"
   label_agenda_item_move_to_current_meeting: "Перемістити в поточну нараду"
@@ -532,9 +543,9 @@ uk:
   label_meeting_reopen_action: "Відкрити зустріч знову"
   label_meeting_close_action: "Закрити зустріч"
   label_meeting_in_progress_action: "Почати нараду"
-  text_meeting_open_description: "Це відкрита нарада. Ви можете додавати / вилучати пункти порядку денного й редагувати їх. Коли порядок денний буде готовий, позначте її як поточну в результатах документа."
+  text_meeting_open_description: "You can add/remove agenda items and participants. Once the agenda is ready, mark it as in progress to document outcomes."
   text_meeting_closed_description: "Це закрита нарада. Ви більше не можете додавати або вилучати пункти порядку денного."
-  text_meeting_in_progress_description: "Це поточна нарада. Ви можете документувати результати для кожного пункту порядку денного, перевпорядковувати їх і навіть додавати нові. Коли нараду буде завершено, позначте її як закриту, щоб заблокувати."
+  text_meeting_in_progress_description: "You can modify the agenda, document outcomes for each item and track attendance for participants. Once the meeting is complete, you can mark it as closed to lock it."
   text_meeting_open_dropdown_description: "Усі наявні результати будуть і надалі доступні, але користувачі не зможуть додавати нові."
   text_meeting_in_progress_dropdown_description: "Результати документа, такі як потреби в інформації або рішення, прийняті під час наради."
   text_meeting_closed_dropdown_description: "Це закрита нарада. Ви більше не можете змінювати пункти порядку денного або результати."
@@ -561,7 +572,7 @@ uk:
         text_hint: "iCalendar meeting tokens allow users to subscribe to all their meetings and view up-to-date meeting information in external clients."
         disabled_text: "iCalendar meeting subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
         empty_text_hint: 'To add an iCalendar meeting token, go to the <a href="%{path}">meetings section</a> and subscribe from there.'
-        add_button: "Subscribe to calendar"
+        add_button: "Підписатися на календар"
   my:
     access_token:
       dialog:
@@ -575,7 +586,7 @@ uk:
         token/ical_meeting:
           title: "An iCal meeting subscription token has been generated"
           body: "Treat the following URL as you would a password. Anyone who has access to it can view all your meetings."
-          warning: "This is the only time you will see this token. Make sure to copy it now."
+          warning: "Це єдиний раз, коли ви побачите цей маркер. Обов’язково скопіюйте його зараз."
       revocation:
         token/ical_meeting:
           notice_success: "The iCalendar meeting subscription has been revoked successfully."

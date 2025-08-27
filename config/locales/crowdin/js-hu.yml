@@ -323,7 +323,7 @@ hu:
     label_added_time_by: 'Added by <a href="%{authorLink}">%{author}</a> at %{age}'
     label_ago: "nappal ezelőtt"
     label_all: "mind"
-    label_all_projects: "All projects"
+    label_all_projects: "Minden projekt"
     label_all_uppercase: "Összes"
     label_all_work_packages: "minden feladatcsoport"
     label_and: "és"
@@ -419,7 +419,7 @@ hu:
     label_per_page: "Oldalanként:"
     label_please_wait: "Kérem várjon"
     label_project: "Projekt"
-    label_project_list: "Project lists"
+    label_project_list: "Projekt listák"
     label_project_plural: "Projektek"
     label_visibility_settings: "Láthatósági beállítások"
     label_quote_comment: "Hozzászólás idézése"
@@ -781,7 +781,7 @@ hu:
     autocompleter:
       placeholder: "Gépeljen a kereséshez"
       notFoundText: "Nem található elem"
-      search: "Search"
+      search: "Keresés"
       project:
         placeholder: "Select project"
     repositories:
@@ -934,7 +934,7 @@ hu:
         all_open: "Nyitottak"
         overdue: "Overdue"
         summary: "Összegzés"
-        shared_with_users: "Shared with users"
+        shared_with_users: "Megosztás felhasználókkal"
         shared_with_me: "Shared with me"
       jump_marks:
         pagination: "Ugrás a táblázat lapszámozásához"
@@ -1224,12 +1224,14 @@ hu:
         all: "Minden projekt"
         selected: "Csak a kijelölt"
       search_placeholder: "Projektek keresése"
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Összes alprojekt bevonása"
       tooltip:
         include_all_selected: "Project already included since Include all sub-projects is enabled."
         current_project: "Ez a jelenlegi projekt, amiben vagyunk."
         does_not_match_search: "Project does not match the search criteria."
       no_results: "No project matches your search criteria."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Baseline"
       clear: "Törlés"

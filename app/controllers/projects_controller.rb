@@ -39,6 +39,11 @@ class ProjectsController < ApplicationController
   before_action :authorize, only: %i[copy_form copy deactivate_work_package_attachments]
   before_action :authorize_global, only: %i[new create]
   before_action :require_admin, only: %i[destroy destroy_info]
+  before_action :not_authorized_on_feature_flag_inactive,
+                only: %i[new create],
+                if: -> {
+                  params[:workspace_type].in?(Project.workspace_types.values_at(:program, :portfolio))
+                }
   before_action :find_optional_template, only: %i[new create]
   before_action :find_optional_parent, only: :new
 
@@ -184,7 +189,7 @@ class ProjectsController < ApplicationController
   def from_template? = @template.present?
 
   def new_blank
-    @new_project = @parent&.children&.build || Project.new
+    @new_project = @parent&.children&.build(params.permit(:workspace_type)) || Project.new(params.permit(:workspace_type))
 
     render layout: "no_menu"
   end
@@ -268,6 +273,10 @@ class ProjectsController < ApplicationController
 
   def supported_export_formats
     ::Exports::Register.list_formats(Project).map(&:to_s)
+  end
+
+  def not_authorized_on_feature_flag_inactive
+    render_403 unless OpenProject::FeatureDecisions.portfolio_models_active?
   end
 
   helper_method :supported_export_formats

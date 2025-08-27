@@ -104,7 +104,7 @@ RSpec.describe "work package export", :js, :selenium do
     end
   end
 
-  def open_export_dialog!(query_target = :query)
+  def open_page!(query_target = :query)
     case query_target
     when :query
       wp_table.visit_query query
@@ -113,12 +113,19 @@ RSpec.describe "work package export", :js, :selenium do
     else
       raise ArgumentError, "query_target must be :query or :default"
     end
-
     work_packages_page.ensure_loaded
+  end
+
+  def show_export_dialog!
     settings_menu.open_and_choose I18n.t("js.toolbar.settings.export")
     expect(page).to have_css("#op-work-packages-export-dialog", wait: 5)
     click_on export_type
     sleep 0.1
+  end
+
+  def open_export_dialog!(query_target = :query)
+    open_page! query_target
+    show_export_dialog!
   end
 
   def export!
@@ -318,6 +325,26 @@ RSpec.describe "work package export", :js, :selenium do
 
       # show_descriptions is still unchecked
       expect(page.find_test_selector("show-descriptions-csv")).not_to be_checked
+    end
+  end
+
+  context "with default display_subprojects_work_packages and an unsaved query" do
+    let(:expected_params) { { includeSubprojects: "false" } }
+    let(:project_include) { Components::ProjectIncludeComponent.new }
+
+    before do
+      Setting.display_subprojects_work_packages = true
+      open_page!(:default)
+    end
+
+    it "does apply a disabled include_subprojects option" do
+      project_include.toggle!
+      project_include.expect_open
+      project_include.toggle_include_all_subprojects
+      project_include.expect_include_all_subprojects_unchecked
+      project_include.click_button("Apply")
+      show_export_dialog!
+      export!
     end
   end
 

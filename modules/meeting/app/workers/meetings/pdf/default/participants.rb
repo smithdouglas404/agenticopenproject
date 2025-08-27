@@ -88,8 +88,6 @@ module Meetings::PDF::Default::Participants
 
     content = if participant.attended?
                 I18n.t("description_attended")
-              elsif participant.invited?
-                I18n.t("description_invite")
               else
                 ""
               end

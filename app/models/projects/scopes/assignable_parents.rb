@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,36 +26,21 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-module CustomFields
-  module Hierarchy
-    class InsertItemContract < Dry::Validation::Contract
-      config.messages.backend = :i18n
+module Projects::Scopes
+  module AssignableParents
+    extend ActiveSupport::Concern
 
-      params do
-        required(:parent).filled(type?: CustomField::Hierarchy::Item)
-        required(:label).filled(:string)
-        optional(:short).filled(:string)
-      end
-
-      rule(:parent) do
-        next if schema_error?(:parent)
-
-        key.failure("must exist") unless value.persisted?
-      end
-
-      rule(:label) do
-        next if schema_error?(:parent)
-
-        key.failure(:not_unique) if values[:parent].children.exists?(label: value)
-      end
-
-      rule(:short) do
-        next if schema_error?(:parent)
-        next unless key?
-
-        key.failure(:not_unique) if values[:parent].children.exists?(short: value)
+    class_methods do
+      def assignable_parents(user, project)
+        if project.portfolio? || project.program?
+          Project.none
+        else
+          Project
+            .allowed_to(user, :add_subprojects)
+            .where.not(id: project.self_and_descendants)
+        end
       end
     end
   end

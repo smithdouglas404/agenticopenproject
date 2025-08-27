@@ -38,19 +38,15 @@ class MeetingParticipantsController < ApplicationController
   before_action :set_participant, only: %i[toggle_attendance destroy]
 
   def create
-    user_id = params[:meeting_participant][:user_id]
+    user_ids = Array(params.dig(:meeting_participant, :user_id)).compact_blank
 
-    if MeetingParticipant.exists?(user_id: user_id, meeting_id: @meeting.id) || user_id.blank?
+    if user_ids.empty?
       update_add_user_form_component_via_turbo_stream
       update_list_component_via_turbo_stream
-
-      respond_with_turbo_streams
-      return
+    else
+      create_new_participants(user_ids)
     end
 
-    create_new_participant(user_id)
-
-    update_list_component_via_turbo_stream
     respond_with_turbo_streams
   end
 
@@ -100,27 +96,20 @@ class MeetingParticipantsController < ApplicationController
     @participant = MeetingParticipant.find(params[:id])
   end
 
-  def send_notification(user)
-    if Journal::NotificationConfiguration.active? && !@meeting.templated? && @meeting.notify?
-      MeetingMailer.invited(@meeting, user, User.current).deliver_later
-    end
+  def create_new_participants(user_ids)
+    user_ids.each { |user_id| create_new_participant(user_id) }
+
+    update_list_component_via_turbo_stream
+    update_add_user_form_component_via_turbo_stream
+    update_sidebar_participants_component_via_turbo_stream(meeting: @meeting)
   end
 
   def create_new_participant(user_id)
-    participant = MeetingParticipant.create(
-      meeting: @meeting,
-      user_id:,
-      invited: true,
-      attended: false
-    )
-
-    if participant.persisted?
-      send_notification(User.find(user_id))
-
-      update_add_user_form_component_via_turbo_stream
-      update_sidebar_participants_component_via_turbo_stream(meeting: @meeting)
-    else
-      participant.errors.full_messages.each do |msg|
+    MeetingParticipants::CreateService
+      .new(user: User.current)
+      .call(meeting: @meeting, user_id: user_id, invited: true, attended: false)
+      .on_failure do |call|
+      call.errors.full_messages.each do |msg|
         @meeting.errors.add(:base, msg)
       end
     end

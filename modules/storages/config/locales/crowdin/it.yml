@@ -22,10 +22,10 @@ it:
         storage: Archivio
         storage_url: URL di archiviazione
       storages/sharepoint_storage:
-        host: Sharepoint Site URL
-        library: Library ID
-        name: Name
-        site: Site ID
+        host: URL sito di Sharepoint
+        library: ID Raccolta
+        name: Nome
+        site: ID Sito
       storages/storage:
         authentication_method: Metodo di autenticazione
         creator: Autore
@@ -195,10 +195,10 @@ it:
       oauth_client_incomplete:
         nextcloud: Consenti a OpenProject di accedere ai dati Nextcloud utilizzando OAuth.
         one_drive: Consenti a OpenProject di accedere ai dati Azure utilizzando OAuth per collegare OneDrive.
-        sharepoint: Allow OpenProject to access SharePoint data using OAuth.
+        sharepoint: Consenti a OpenProject di accedere ai dati SharePoint utilizzando OAuth.
       redirect_uri_incomplete:
         one_drive: Completa la configurazione con il corretto reindirizzamento URI.
-        sharepoint: Complete the setup with the correct URI redirection.
+        sharepoint: Completa la configurazione con il corretto reindirizzamento URI.
     confirm_replace_oauth_application: Questa azione reimposterà le credenziali OAuth correnti. Dopo la conferma sarà necessario reinserire le credenziali presso il provider di archiviazione e tutti gli utenti remoti dovranno autorizzarsi nuovamente nei confronti di OpenProject. Vuoi davvero procedere?
     confirm_replace_oauth_client: Questa azione reimposterà le credenziali OAuth correnti. Dopo la conferma dovrai inserire nuove credenziali dal provider di archiviazione e tutti gli utenti dovranno autorizzare nuovamente %{provider_type}. Vuoi davvero procedere?
     delete_warning:
@@ -396,10 +396,10 @@ it:
       setting_up_storages: Per impostare archivi file, visita
       setting_up_storages_non_admin: Gli amministratori possono impostare archivi file in Amministrazione / Archivi file.
       sharepoint:
-        application_link_text: SharePoint site
+        application_link_text: Sito SharePoint
         integration: SharePoint Administration / OpenProject
-        oauth_configuration: Copy these values from the desired application in the %{application_link_text}.
-        provider_configuration: Please make sure you have administration privileges in the %{application_link_text} or contact your Microsoft administrator before doing the setup. In the portal, you also need to register an Azure application or use an existing one for authentication.
+        oauth_configuration: Copia questi valori dall'applicazione desiderata nel %{application_link_text}.
+        provider_configuration: Assicurati di disporre dei privilegi di amministratore in %{application_link_text} o contatta il tuo amministratore Microsoft prima di eseguire la configurazione. Nel portale è inoltre necessario registrare un'applicazione Azure o utilizzarne una esistente per l'autenticazione.
       type: 'Assicurati di disporre dei privilegi di amministrazione nella tua istanza Nextcloud e di aver installato la seguente applicazione prima di eseguire l''installazione:'
       type_link_text: "“Integrazione OpenProject”"
     label_active: Attivo
@@ -502,10 +502,10 @@ it:
         name: OneDrive
         name_placeholder: es. OneDrive
       sharepoint:
-        label_oauth_client_id: Azure OAuth Application (client) ID
-        label_oauth_client_secret: Azure OAuth Client Secret Value
-        name: SharePoint
-        name_placeholder: e.g. SharePoint
+        label_oauth_client_id: ID dell'applicazione Azure OAuth (client)
+        label_oauth_client_secret: Valore segreto client Azure OAuth
+        name: Microsoft SharePoint Online
+        name_placeholder: es. SharePoint
     show_attachments_toggle:
       description: La disattivazione di questa opzione nasconderà l'elenco degli allegati nella scheda dei file delle macro-attività. I file allegati nella descrizione di una macro-attività verranno comunque caricati nell'archivio interno degli allegati.
       label: Mostra gli allegati nella scheda File delle macro-attività

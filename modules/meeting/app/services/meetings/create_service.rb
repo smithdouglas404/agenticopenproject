@@ -36,7 +36,6 @@ module Meetings
       meeting = call.result
 
       if call.success? && Journal::NotificationConfiguration.active? && meeting.notify?
-
         meeting.participants.where(invited: true).each do |participant|
           MeetingMailer
             .invited(meeting, participant.user, User.current)

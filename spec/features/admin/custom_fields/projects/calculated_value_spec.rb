@@ -124,7 +124,8 @@ RSpec.describe "Edit project custom field calculated value", :js, with_flag: { c
     end
 
     it "allows submitting formula by pressing Enter/Return" do
-      formula = "2 + 2"
+      # ensure multiple spaces are handled without problems
+      formula = "2 +  (1   +1)"
 
       pattern_input = find(:xpath, "//input[@id='custom_field_formula']/parent::div//div[@contenteditable='true']")
 

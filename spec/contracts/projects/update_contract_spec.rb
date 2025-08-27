@@ -57,6 +57,7 @@ RSpec.describe Projects::UpdateContract do
         p.name = project_name
         p.parent = project_parent
         p.identifier = project_identifier
+        p.templated = project_templated
       end
     end
     let(:project_permissions) { %i(edit_project) }

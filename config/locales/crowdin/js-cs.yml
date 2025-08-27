@@ -324,7 +324,7 @@ cs:
     label_added_time_by: 'Přidal <a href="%{authorLink}">%{author}</a> v %{age}'
     label_ago: "dnů před"
     label_all: "vše"
-    label_all_projects: "All projects"
+    label_all_projects: "Všechny projekty"
     label_all_uppercase: "Vše"
     label_all_work_packages: "všechny pracovní balíčky"
     label_and: "a"
@@ -784,7 +784,7 @@ cs:
     autocompleter:
       placeholder: "Zadejte hledaný text"
       notFoundText: "Nenalezeny žádné položky"
-      search: "Search"
+      search: "Vyhledávání"
       project:
         placeholder: "Vybrat projekt"
     repositories:
@@ -979,7 +979,7 @@ cs:
           edit: "Upravit připomínku"
         subtitle: "Za tento pracovní balíček obdržíte oznámení ve zvoleném čase."
         presets:
-          tomorrow: "Tomorrow"
+          tomorrow: "Zítra"
           three_days: "In 3 days"
           week: "In a week"
           month: "In a month"
@@ -1233,12 +1233,14 @@ cs:
         all: "Všechny projekty"
         selected: "Pouze vybrané"
       search_placeholder: "Hledat projekt..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Zahrnout všechny podprojekty"
       tooltip:
         include_all_selected: "Projekt je již zahrnut, protože Zahrnout všechny podprojekty je povoleno."
         current_project: "Toto je aktuální projekt, ve kterém se nacházíte."
         does_not_match_search: "Projekt neodpovídá kritériím vyhledávání."
       no_results: "Žádný projekt neodpovídá vašim kritériím vyhledávání."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Směrný plán"
       clear: "Vyčistit"

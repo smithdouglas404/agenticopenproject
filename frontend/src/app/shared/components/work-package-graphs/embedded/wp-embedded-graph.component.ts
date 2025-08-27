@@ -124,7 +124,7 @@ export class WorkPackageEmbeddedGraphComponent {
             backdropColor: this.isRadarChart() ? backdropColor : 'transparent',
             font: {
               weight: 'bold',
-              size: 16,
+              size: 14,
             },
           },
         },
@@ -162,7 +162,7 @@ export class WorkPackageEmbeddedGraphComponent {
           color: bodyFontColor,
           font: {
             weight: 'bold',
-            size: 16,
+            size: 14,
           },
         },
       },

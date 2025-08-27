@@ -733,7 +733,7 @@ ro:
       typeahead_placeholder: Căutarea de posibili observatori
     relation_labels:
       parent: "Părinte"
-      child: "Child"
+      child: "Copil"
       children: "Copii"
       relates: "În relație cu"
       duplicates: "Dublează"
@@ -782,7 +782,7 @@ ro:
     autocompleter:
       placeholder: "Tastează pentru a căuta"
       notFoundText: "Niciun articol găsit"
-      search: "Search"
+      search: "Căutare"
       project:
         placeholder: "Select project"
     repositories:
@@ -1228,12 +1228,14 @@ ro:
         all: "Toate Proiectele"
         selected: "Numai selecția"
       search_placeholder: "Caută proiect..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Include toate subproiectele"
       tooltip:
         include_all_selected: "Proiectul este deja inclus, din moment ce opțiunea Include toate subproiectele este activată."
         current_project: "Acesta este proiectul curent în care vă aflați."
         does_not_match_search: "Proiectul nu corespunde criteriilor de căutare."
       no_results: "Niciun proiect nu corespunde criteriilor de căutare."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Referință"
       clear: "Șterge"

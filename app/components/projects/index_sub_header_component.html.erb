@@ -17,18 +17,41 @@
           render(Projects::ProjectFilterButtonComponent.new(query: @query, disabled: @disable_buttons))
         end
 
-        if @current_user.allowed_globally?(:add_project)
+        for_a_single_new_allowed_type do |new_type|
           subheader.with_action_button(
             tag: :a,
-            href: new_project_path,
+            href: new_workspace_path(new_type),
             scheme: :primary,
             leading_icon: :plus,
-            label: I18n.t(:label_project_new),
+            label: new_workspace_label(new_type),
             disabled: @disable_buttons,
             size: :medium,
-            data: { "test-selector": "project-new-button" }
+            data: { "test-selector": "workspace-new-button" }
           ) do
-            Project.model_name.human
+            new_workspace_label(new_type)
+          end
+        end
+
+        for_multiple_new_allowed_types do |new_types|
+          subheader.with_action_menu(
+            leading_icon: :plus,
+            trailing_icon: :"triangle-down",
+            label: I18n.t(:button_add),
+            button_arguments: { scheme: :primary, "aria-label": I18n.t(:button_add) }
+          ) do |menu|
+            new_types.each do |new_type|
+              menu.with_item(
+                tag: :a,
+                href: new_workspace_path(new_type),
+                scheme: :default,
+                leading_icon: :plus,
+                label: new_workspace_label(new_type),
+                disabled: @disable_buttons,
+                size: :medium
+              ) do |item|
+                item.with_leading_visual_icon(icon: new_workspace_icon(new_type))
+              end
+            end
           end
         end
 

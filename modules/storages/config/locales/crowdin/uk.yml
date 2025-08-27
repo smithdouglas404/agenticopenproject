@@ -22,10 +22,10 @@ uk:
         storage: Сховище
         storage_url: URL-адреса сховища
       storages/sharepoint_storage:
-        host: Sharepoint Site URL
-        library: Library ID
-        name: Name
-        site: Site ID
+        host: URL-адреса сайту SharePoint
+        library: Ідентифікатор бібліотеки
+        name: Назва
+        site: Ідентифікатор сайту
       storages/storage:
         authentication_method: Метод автентифікації
         creator: Автор
@@ -195,10 +195,10 @@ uk:
       oauth_client_incomplete:
         nextcloud: Надайте OpenProject доступ до даних Nextcloud із використанням OAuth.
         one_drive: Надайте OpenProject доступ до даних Azure із використанням OAuth для підключення OneDrive.
-        sharepoint: Allow OpenProject to access SharePoint data using OAuth.
+        sharepoint: Надайте OpenProject доступ до даних SharePoint із використанням OAuth.
       redirect_uri_incomplete:
         one_drive: Завершіть налаштування за допомогою правильного URI переспрямування.
-        sharepoint: Complete the setup with the correct URI redirection.
+        sharepoint: Завершіть налаштування за допомогою правильного URI переспрямування.
     confirm_replace_oauth_application: Ця дія призведе до скидання поточних облікових даних OAuth. Коли ви підтвердите дію, вам потрібно буде повторно ввести облікові дані в системі постачальника сховища. У такому разі всім віддаленим користувачам знадобиться знову пройти автентифікацію в OpenProject. Продовжити?
     confirm_replace_oauth_client: Ця дія призведе до скидання поточних облікових даних OAuth. Коли ви підтвердите дію, вам потрібно буде ввести нові облікові дані в системі постачальника сховища. У такому разі всім користувачам знадобиться знову пройти автентифікацію в %{provider_type}. Продовжити?
     delete_warning:
@@ -400,10 +400,10 @@ uk:
       setting_up_storages: Щоб створити файлові сховища, перейдіть у
       setting_up_storages_non_admin: Адміністратори можуть налаштовувати файлові сховища в розділі «Адміністрування» / «Файлові сховища».
       sharepoint:
-        application_link_text: SharePoint site
-        integration: SharePoint Administration / OpenProject
-        oauth_configuration: Copy these values from the desired application in the %{application_link_text}.
-        provider_configuration: Please make sure you have administration privileges in the %{application_link_text} or contact your Microsoft administrator before doing the setup. In the portal, you also need to register an Azure application or use an existing one for authentication.
+        application_link_text: Сайт SharePoint
+        integration: Адміністрування SharePoint / OpenProject
+        oauth_configuration: 'Скопіюйте ці значення з потрібного додатка в цей: %{application_link_text}.'
+        provider_configuration: Перш ніж виконувати налаштування, переконайтеся, що у вас є права адміністратора в додатку %{application_link_text}, або зверніться до свого адміністратора Microsoft. На порталі вам також знадобиться зареєструвати додаток Azure або скористатися наявним під час автентифікації.
       type: 'Перш ніж виконувати налаштування, переконайтеся, що маєте права адміністратора у своєму екземплярі Nextcloud і що встановлено цей додаток:'
       type_link_text: "«Інтеграція OpenProject»"
     label_active: Активний
@@ -506,10 +506,10 @@ uk:
         name: OneDrive
         name_placeholder: напр. OneDrive
       sharepoint:
-        label_oauth_client_id: Azure OAuth Application (client) ID
-        label_oauth_client_secret: Azure OAuth Client Secret Value
+        label_oauth_client_id: Ідентифікатор (клієнт) додатка Azure OAuth
+        label_oauth_client_secret: Значення секрету клієнта Azure OAuth
         name: SharePoint
-        name_placeholder: e.g. SharePoint
+        name_placeholder: наприклад, SharePoint
     show_attachments_toggle:
       description: Якщо вимкнути цей параметр, список вкладень буде приховано на вкладці «Файли» пакетів робіт. Файли, вкладені в опис пакета робіт, усе одно буде додано у внутрішнє сховище вкладень.
       label: Показувати вкладення на вкладці «Файли» пакетів робіт

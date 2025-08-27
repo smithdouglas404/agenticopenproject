@@ -35,9 +35,6 @@ class CustomStylesController < ApplicationController
   menu_item :custom_style
 
   UNGUARDED_ACTIONS = %i[logo_download
-                         export_logo_download
-                         export_cover_download
-                         export_footer_download
                          favicon_download
                          touch_icon_download].freeze
 
@@ -76,6 +73,7 @@ class CustomStylesController < ApplicationController
   end
 
   def update
+    flash.clear
     @custom_style = get_or_create_custom_style
     if @custom_style.update(custom_style_params)
       redirect_to custom_style_path
@@ -141,6 +139,22 @@ class CustomStylesController < ApplicationController
     file_delete(:remove_favicon)
   end
 
+  def export_font_regular_delete
+    file_delete(:remove_export_font_regular)
+  end
+
+  def export_font_bold_delete
+    file_delete(:remove_export_font_bold)
+  end
+
+  def export_font_italic_delete
+    file_delete(:remove_export_font_italic)
+  end
+
+  def export_font_bold_italic_delete
+    file_delete(:remove_export_font_bold_italic)
+  end
+
   def touch_icon_delete
     file_delete(:remove_touch_icon)
   end
@@ -171,6 +185,19 @@ class CustomStylesController < ApplicationController
     redirect_to custom_style_path
   end
 
+  def export_demo_pdf_download
+    result = ::Exports::PDF::DemoGenerator.new.export!
+    expires_in 0, public: false
+    send_data result.content,
+              filename: result.title,
+              type: "application/pdf",
+              disposition: "inline"
+  rescue StandardError => e
+    Rails.logger.error "Failed to generate demo PDF: #{e.message}"
+    flash[:error] = e.message
+    redirect_to custom_style_path
+  end
+
   private
 
   def theme_from_params
@@ -192,13 +219,19 @@ class CustomStylesController < ApplicationController
   end
 
   def custom_style_params
-    params.expect(custom_style: %i[logo remove_logo
-                                   export_logo remove_export_logo
-                                   export_cover remove_export_cover
-                                   export_cover_text_color
-                                   export_footer remove_export_footer
-                                   favicon remove_favicon
-                                   touch_icon remove_touch_icon])
+    params.expect(custom_style: %i[
+                    logo remove_logo
+                    export_logo remove_export_logo
+                    export_cover remove_export_cover
+                    export_footer remove_export_footer
+                    favicon remove_favicon
+                    touch_icon remove_touch_icon
+                    export_font_regular remove_export_font_regular
+                    export_font_bold remove_export_font_bold
+                    export_font_italic remove_export_font_italic
+                    export_font_bold_italic remove_export_font_bold_italic
+                    export_cover_text_color
+                  ])
   end
 
   def file_download(path_method)

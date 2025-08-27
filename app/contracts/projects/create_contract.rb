@@ -30,9 +30,9 @@
 
 module Projects
   class CreateContract < BaseContract
-    attribute :workspace_type do
-      validate_workspace_type_included
-    end
+    # TODO: differentiate on allowed types based on permissions.
+    # Permissions will need to be added: project, program, portfolio.
+    attribute :workspace_type
 
     include AdminWritableTimestamps
 
@@ -49,12 +49,6 @@ module Projects
     end
 
     protected
-
-    def validate_workspace_type_included
-      # TODO: differentiate on allowed types based on permissions.
-      # Permissions will need to be added: project, program, portfolio.
-      errors.add(:workspace_type, :blank) if model.workspace_type.nil?
-    end
 
     def collect_available_custom_field_attributes
       model.all_visible_custom_fields.map(&:attribute_name)
@@ -76,9 +70,30 @@ module Projects
     def without_custom_fields(changes) = changes.grep_v(/^custom_field_/)
 
     def validate_user_allowed_to_manage
+      if model.project?
+        validate_user_allowed_to_manage_projects
+      elsif model.portfolio?
+        validate_user_allowed_to_manage_portfolios
+      elsif model.program?
+        validate_user_allowed_to_manage_programs
+      end
+    end
+
+    def validate_user_allowed_to_manage_portfolios
+      unless user.allowed_globally?(:add_portfolios)
+        errors.add :base, :error_unauthorized
+      end
+    end
+
+    def validate_user_allowed_to_manage_programs
+      unless user.allowed_globally?(:add_programs)
+        errors.add :base, :error_unauthorized
+      end
+    end
+
+    def validate_user_allowed_to_manage_projects
       unless user.allowed_globally?(:add_project) ||
              (model.parent && user.allowed_in_project?(:add_subprojects, model.parent))
-
         errors.add :base, :error_unauthorized
       end
     end

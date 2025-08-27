@@ -22,10 +22,10 @@ pt-PT:
         storage: Armazenamento
         storage_url: URL do armazenamento
       storages/sharepoint_storage:
-        host: Sharepoint Site URL
-        library: Library ID
-        name: Name
-        site: Site ID
+        host: URL do site SharePoint
+        library: ID da biblioteca
+        name: Nome
+        site: ID do site
       storages/storage:
         authentication_method: Método de autenticação
         creator: Criador
@@ -195,10 +195,10 @@ pt-PT:
       oauth_client_incomplete:
         nextcloud: Permitir que o OpenProject aceda os dados da Nextcloud através do OAuth.
         one_drive: Permitir que o OpenProject aceda aos dados do Azure com o OAuth para ligar OneDrive.
-        sharepoint: Allow OpenProject to access SharePoint data using OAuth.
+        sharepoint: Permitir que o OpenProject aceda aos dados do SharePoint com o OAuth.
       redirect_uri_incomplete:
         one_drive: Conclua a configuração com o redirecionamento correto da URI.
-        sharepoint: Complete the setup with the correct URI redirection.
+        sharepoint: Conclua a configuração com o redirecionamento correto da URI.
     confirm_replace_oauth_application: Esta ação irá repor as credenciais OAuth atuais. Após a confirmação, terá de voltar a introduzir as credenciais no fornecedor de armazenamento e todos os utilizadores remotos terão de autorizar novamente o OpenProject. Tem a certeza de que pretende continuar?
     confirm_replace_oauth_client: Esta ação irá repor as credenciais OAuth atuais. Depois de confirmar, terá de introduzir novas credenciais do fornecedor de armazenamento e todos os utilizadores terão de autorizar novamente em %{provider_type}. Tem a certeza de que pretende continuar?
     delete_warning:
@@ -396,10 +396,10 @@ pt-PT:
       setting_up_storages: Para configurar armazenamentos de ficheiros, visite
       setting_up_storages_non_admin: Os administradores podem configurar o armazenamento de ficheiros em Administração / Armazenamento de ficheiros.
       sharepoint:
-        application_link_text: SharePoint site
-        integration: SharePoint Administration / OpenProject
-        oauth_configuration: Copy these values from the desired application in the %{application_link_text}.
-        provider_configuration: Please make sure you have administration privileges in the %{application_link_text} or contact your Microsoft administrator before doing the setup. In the portal, you also need to register an Azure application or use an existing one for authentication.
+        application_link_text: Site do SharePoint
+        integration: Administração de SharePoint / OpenProject
+        oauth_configuration: Copie estes valores da aplicação pretendida no %{application_link_text}.
+        provider_configuration: Confirme se tem privilégios de administração em %{application_link_text} ou contacte o seu administrador da Microsoft antes de fazer a configuração. No portal, também é necessário registar uma aplicação do Azure ou utilizar uma aplicação existente para autenticação.
       type: 'Garanta que tem privilégios administrativos na sua instância de Nextcloud e tenha a seguinte aplicação instalada antes de fazer a configuração:'
       type_link_text: "“Integração OpenProject”"
     label_active: Ativo
@@ -501,10 +501,10 @@ pt-PT:
         name: OneDrive
         name_placeholder: p. ex., OneDrive
       sharepoint:
-        label_oauth_client_id: Azure OAuth Application (client) ID
-        label_oauth_client_secret: Azure OAuth Client Secret Value
+        label_oauth_client_id: ID da aplicação Azure OAuth (cliente)
+        label_oauth_client_secret: Valor Secreto do Cliente Azure OAuth
         name: SharePoint
-        name_placeholder: e.g. SharePoint
+        name_placeholder: 'ex: SharePoint'
     show_attachments_toggle:
       description: Se desativar esta opção, irá ocultar a lista de anexos no separador de ficheiros dos pacotes de trabalho. Os ficheiros anexados na descrição de um pacote de trabalho irão continuar a ser carregados no armazenamento interno de anexos.
       label: Mostrar anexos no separador dos ficheiros dos pacotes de trabalho

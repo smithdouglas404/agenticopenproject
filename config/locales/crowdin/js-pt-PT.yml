@@ -1225,12 +1225,14 @@ pt-PT:
         all: "Todos os projetos"
         selected: "Apenas os selecionados"
       search_placeholder: "Pesquisar projetos..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Incluir todos os subprojetos"
       tooltip:
         include_all_selected: "Projeto já incluído porque todos os subprojetos estão ativados."
         current_project: "Este é o projeto atual em que está."
         does_not_match_search: "O projeto não corresponde aos critérios de pesquisa."
       no_results: "Nenhum projeto corresponde aos seus critérios de pesquisa."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Linha de base"
       clear: "Limpar"

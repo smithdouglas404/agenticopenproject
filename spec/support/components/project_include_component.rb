@@ -55,6 +55,10 @@ module Components
       page.find("[data-qa-project-include-all-subprojects]").click
     end
 
+    def expect_include_all_subprojects_unchecked
+      expect(page.find("[data-qa-project-include-all-subprojects]")).not_to be_checked
+    end
+
     def toggle_checkbox(project_id)
       page.find("[data-qa-project-include-id='#{project_id}']").click
       clear_tooltips

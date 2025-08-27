@@ -305,9 +305,9 @@ RSpec.describe "Meetings CRUD",
 
     wait_for_network_idle
 
-    # check for email notification for the added participant
+    # check for email notifications for creator & added participant
     perform_enqueued_jobs
-    expect(ActionMailer::Base.deliveries.size).to eq 1
+    expect(ActionMailer::Base.deliveries.size).to eq 2
     ActionMailer::Base.deliveries.clear
 
     retry_block do

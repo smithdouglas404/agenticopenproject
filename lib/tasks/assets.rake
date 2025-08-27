@@ -62,14 +62,7 @@ namespace :assets do
 
     puts "Building angular frontend"
     Dir.chdir Rails.root.join("frontend") do
-      cmd =
-        if ENV["OPENPROJECT_ANGULAR_BUILD"] == "fast"
-          "npm run build:fast"
-        else
-          "npm run build"
-        end
-
-      sh(cmd) do |ok, res|
+      sh("npm run build") do |ok, res|
         raise "Failed to compile angular frontend: #{res.exitstatus}" if !ok
       end
     end

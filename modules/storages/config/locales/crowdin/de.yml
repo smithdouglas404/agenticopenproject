@@ -22,10 +22,10 @@ de:
         storage: Dateispeicher
         storage_url: Speicher-URL
       storages/sharepoint_storage:
-        host: Sharepoint Site URL
-        library: Library ID
+        host: Sharepoint Site-URL
+        library: Bibliotheks-ID
         name: Name
-        site: Site ID
+        site: Site-ID
       storages/storage:
         authentication_method: Authentifizierungsmethode
         creator: Ersteller
@@ -195,10 +195,10 @@ de:
       oauth_client_incomplete:
         nextcloud: Erlauben Sie OpenProject Zugriff auf Nextcloud Daten über OAuth.
         one_drive: Erlaube OpenProject auf Azure-Daten über OAuth zuzugreifen, um mit OneDrive zu verbinden.
-        sharepoint: Allow OpenProject to access SharePoint data using OAuth.
+        sharepoint: Erlauben Sie OpenProject Zugriff auf SharePoint Daten über OAuth.
       redirect_uri_incomplete:
         one_drive: Schließen Sie das Setup mit der korrekten Umleitungs-URI ab.
-        sharepoint: Complete the setup with the correct URI redirection.
+        sharepoint: Schließen Sie das Setup mit der korrekten Umleitungs-URI ab.
     confirm_replace_oauth_application: Diese Aktion setzt die aktuellen OAuth-Anmeldedaten zurück. Nach der Bestätigung müssen Sie die Anmeldedaten beim Speicheranbieter erneut eingeben und alle Remote-Benutzer müssen sich erneut gegenüber OpenProject autorisieren. Sind Sie sicher, dass Sie fortfahren möchten?
     confirm_replace_oauth_client: Diese Aktion setzt die aktuellen OAuth-Anmeldedaten zurück. Nach der Bestätigung müssen Sie neue Anmeldedaten vom Speicheranbieter eingeben und alle Benutzer müssen sich erneut für %{provider_type} autorisieren. Sind Sie sicher, dass Sie fortfahren möchten?
     delete_warning:
@@ -396,10 +396,10 @@ de:
       setting_up_storages: Zum Einrichten von Dateispeichern besuchen Sie bitte
       setting_up_storages_non_admin: Administratoren können Dateispeicher in Administration / Dateien einrichten.
       sharepoint:
-        application_link_text: SharePoint site
+        application_link_text: SharePoint-Seite
         integration: SharePoint Administration / OpenProject
-        oauth_configuration: Copy these values from the desired application in the %{application_link_text}.
-        provider_configuration: Please make sure you have administration privileges in the %{application_link_text} or contact your Microsoft administrator before doing the setup. In the portal, you also need to register an Azure application or use an existing one for authentication.
+        oauth_configuration: Kopieren Sie die Werte der gewünschten Anwendung im %{application_link_text}.
+        provider_configuration: Bitte stellen Sie sicher, dass Sie Administrationsrechte im %{application_link_text} haben oder kontaktieren Sie Ihre Microsoft-Administrator:innen, bevor Sie die Installation durchführen. Im Portal müssen Sie auch eine Azure-Anwendung registrieren oder eine vorhandene zur Authentifizierung verwenden.
       type: 'Bitte stellen Sie sicher, dass Sie Administrationsrechte in Ihrer Nextcloud-Instanz haben und die folgende Anwendung vor dem Setup installiert wurde:'
       type_link_text: "„OpenProject Integration“"
     label_active: Aktiv
@@ -501,10 +501,10 @@ de:
         name: OneDrive
         name_placeholder: z.B. OneDrive
       sharepoint:
-        label_oauth_client_id: Azure OAuth Application (client) ID
-        label_oauth_client_secret: Azure OAuth Client Secret Value
+        label_oauth_client_id: Azure OAuth Anwendungs-ID (Client)
+        label_oauth_client_secret: Azure OAuth Client-Geheimwert
         name: SharePoint
-        name_placeholder: e.g. SharePoint
+        name_placeholder: z.B. SharePoint
     show_attachments_toggle:
       description: Beim Deaktivieren dieser Option wird die Liste der Anhänge auf der Registerkarte Arbeitspakete ausgeblendet. Die in der Beschreibung eines Arbeitspakets angehängten Dateien werden weiterhin im internen Anhang gespeichert.
       label: Anhänge auf dem Dateien-Tab der Arbeitspakete anzeigen

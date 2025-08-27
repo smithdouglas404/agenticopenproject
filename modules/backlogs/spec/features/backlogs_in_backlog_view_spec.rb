@@ -29,8 +29,7 @@
 require "spec_helper"
 require_relative "../support/pages/backlogs"
 
-RSpec.describe "Backlogs in backlog view", :js,
-               :selenium do
+RSpec.describe "Backlogs in backlog view", :js do
   let!(:project) do
     create(:project,
            types: [story, task],
@@ -135,6 +134,7 @@ RSpec.describe "Backlogs in backlog view", :js,
     check "Show versions folded"
 
     click_button "Update backlogs module"
+    expect_and_dismiss_flash(message: "Account was successfully updated.")
 
     backlogs_page.visit!
 

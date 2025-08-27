@@ -1225,12 +1225,14 @@ fr:
         all: "Tous les projets"
         selected: "Uniquement la sélection"
       search_placeholder: "Rechercher un projet..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "inclure tous les sous-projets"
       tooltip:
         include_all_selected: "Projet déjà inclus puisque Include tous les sous-projets sont activés."
         current_project: "Ceci est le projet dans lequel vous vous trouvez actuellement."
         does_not_match_search: "Le projet ne correspond pas aux critères de recherche."
       no_results: "Aucun projet ne correspond à vos critères de recherche."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Référence"
       clear: "Effacer"

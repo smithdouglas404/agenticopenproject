@@ -92,9 +92,10 @@ RSpec.describe "Meeting notifications", :js do
       # check if notify is set correct
       expect(meeting.notify).to be true
 
-      # do not send initial mail
+      # send initial mail to meeting creator
       perform_enqueued_jobs
-      expect(ActionMailer::Base.deliveries.size).to eq 0
+      expect(ActionMailer::Base.deliveries.size).to eq 1
+      ActionMailer::Base.deliveries.clear
 
       show_page.visit!
 

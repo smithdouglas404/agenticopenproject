@@ -58,10 +58,21 @@ zh-TW:
     menu_title: OpenID 提供商
     delete_title: "刪除 OpenID Connect 提供者"
     group_links_heading: OpenID Connect 群組連結
+    groups:
+      match_preview_component:
+        title: Extracted group names
+        placeholder_none: No groups currently match the pattern.
+      match_preview_dialog_component:
+        description: This allows you to test your regular expression pattern against sample data to verify that the group names you want extracted are indeed extracted properly. You can modify your pattern here but the test string and matches themselves will not be saved with the configuration.
+        group_names_label: Test group names
+        group_names_description: Enter one group name per line as it would appear in the OIDC claim, to see how your regular expression patterns affect them.
+        show_button: Test pattern
+        title: Test regular expressions
     instructions:
       endpoint_url: OpenID Connect 提供者給予您的端點 URL
       group_regexes: 每行一個正則表達模式。請閱讀 [說明文件](docs_url) 以取得更多相關資訊。
       group_regexes_detail: 可選擇使用正規表達式定義模式，以從群組聲稱中匹配群組名稱。例如，輸入類似 ^Level1/Level2/<code>([\w/]+)$</code>的模式將從包含「Level1/Level2/GroupName/SubGroup」的回覆中抽取「Groupname/SubGroup」的群組。如果沒有模式匹配，群組會被忽略。留空可使用群組全名同步處理所有群組。
+      group_regexes_testing: "Click on 'Test pattern' to test your regular expression pattern against sample OIDC userinfo."
       group_sync: 自動從身分提供者擷取和同步群組成員資訊。
       groups_claim: 請指定用來表示使用者所屬群組名稱的 claim 名稱。
       metadata_none: 我沒有這些資訊

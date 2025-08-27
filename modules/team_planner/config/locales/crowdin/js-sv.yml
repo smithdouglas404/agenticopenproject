@@ -3,7 +3,7 @@ sv:
   js:
     team_planner:
       add_existing: 'Lägg till befintlig'
-      label_team_planner_plural: 'Team planners'
+      label_team_planner_plural: 'Team planerare'
       add_existing_title: 'Add existing work packages'
       create_label: 'Team planerare'
       create_title: 'Skapa ny teamplanerare'

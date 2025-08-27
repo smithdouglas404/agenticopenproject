@@ -3,7 +3,7 @@ fa:
   js:
     team_planner:
       add_existing: 'Add existing'
-      label_team_planner_plural: 'Team planners'
+      label_team_planner_plural: 'برنامه ریزهای تیم'
       add_existing_title: 'Add existing work packages'
       create_label: 'برنامه ریز تیم'
       create_title: 'ایجاد برنامه ریز جدید تیم'

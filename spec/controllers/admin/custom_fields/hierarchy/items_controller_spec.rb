@@ -36,7 +36,8 @@ RSpec.describe Admin::CustomFields::Hierarchy::ItemsController, with_ee: [:custo
   let(:custom_field) { create(:custom_field, field_format: "hierarchy", hierarchy_root: nil) }
   let(:service) { CustomFields::Hierarchy::HierarchicalItemService.new }
   let(:root) { service.generate_root(custom_field).value! }
-  let!(:luke) { service.insert_item(parent: root, label: "luke").value! }
+  let(:contract_class) { CustomFields::Hierarchy::InsertListItemContract }
+  let!(:luke) { service.insert_item(contract_class:, parent: root, label: "luke").value! }
 
   current_user { user }
 
@@ -141,9 +142,10 @@ RSpec.describe Admin::CustomFields::Hierarchy::ItemsController, with_ee: [:custo
 
   describe "PUT #move" do
     before do
-      service.insert_item(parent: root, label: "not relevant")
-      service.insert_item(parent: root, label: "not important")
-      service.insert_item(parent: root, label: "unused")
+      contract_class = CustomFields::Hierarchy::InsertListItemContract
+      service.insert_item(contract_class:, parent: root, label: "not relevant")
+      service.insert_item(contract_class:, parent: root, label: "not important")
+      service.insert_item(contract_class:, parent: root, label: "unused")
     end
 
     context "when it is successful" do

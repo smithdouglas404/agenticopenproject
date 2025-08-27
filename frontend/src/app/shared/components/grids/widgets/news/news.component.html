@@ -9,14 +9,14 @@
   </widget-menu>
 
 </widget-header>
-<div class="grid--widget-content">
+<div class="op-widget-box--body">
   <op-no-results
-    *ngIf="noEntries" 
+    *ngIf="noEntries"
     [title]="text.noResults"
   ></op-no-results>
   <ul class="widget-box--arrow-links">
     <li
-      class="widget-box--arrow-multiline" 
+      class="widget-box--arrow-multiline"
       *ngFor="let news of entries"
     >
       <op-principal
@@ -36,12 +36,12 @@
         ></a>
       </div>
       <div
-        *ngIf="news.author" 
+        *ngIf="news.author"
         class="widget-box--author news-author"
         [innerHTML]="text.addedBy(news)"
       ></div>
       <p
-        *ngIf="news.summary" 
+        *ngIf="news.summary"
         [textContent]="news.summary"
         class="widget-box--additional-info"
       ></p>

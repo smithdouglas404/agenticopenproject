@@ -1079,8 +1079,8 @@ de:
     notice_successful_delete: "Erfolgreich gelöscht."
     notice_successful_update: "Erfolgreich aktualisiert."
     notice_job_started: "Vorgang gestartet."
-    no_job_id: "No job ID returned from server."
-    invalid_job_response: "Invalid response from server."
+    no_job_id: "Keine Job-ID vom Server zurückgegeben."
+    invalid_job_response: "Ungültige Antwort vom Server."
     notice_bad_request: "Fehlerhafte Anfrage."
     relations:
       empty: Keine bestehenden Beziehungen
@@ -1224,12 +1224,14 @@ de:
         all: "Alle Projekte"
         selected: "Nur ausgewählte"
       search_placeholder: "Projekt durchsuchen..."
+      search_placeholder_favorites: "Favoriten suchen..."
       include_subprojects: "Alle Unterprojekte einbeziehen"
       tooltip:
         include_all_selected: "Das Projekt ist bereits enthalten, da alle Unterprojekte einbezogen sind."
         current_project: "Dies ist das aktuelle Projekt, in dem Sie sich befinden."
         does_not_match_search: "Projekt entspricht nicht den Suchkriterien."
       no_results: "Kein Projekt entspricht Ihren Suchkriterien."
+      no_favorite_results: "Kein favorisiertes Projekt entspricht Ihren Suchkriterien."
     baseline:
       toggle_title: "Grundlinie"
       clear: "Zurücksetzen"

@@ -784,7 +784,7 @@ sk:
     autocompleter:
       placeholder: "Type to search"
       notFoundText: "No items found"
-      search: "Search"
+      search: "Vyhľadávanie"
       project:
         placeholder: "Select project"
     repositories:
@@ -913,7 +913,7 @@ sk:
         percentageDone: "hotovo na (%)"
         priority: "Priorita"
         projectName: "Projekt"
-        remainingWork: "Remaining work"
+        remainingWork: "Zostávajúca práca"
         remainingWorkAlternative: "Zvyšné hodiny"
         responsible: "Zodpovedný"
         startDate: "Dátum začiatku"
@@ -927,7 +927,7 @@ sk:
         version: "Verzia"
         work: "Work"
         workAlternative: "Predpokladaný čas"
-        remainingTime: "Remaining work"
+        remainingTime: "Zostávajúca práca"
       default_queries:
         manually_sorted: "New manually sorted query"
         latest_activity: "Posledná aktivita"
@@ -1233,12 +1233,14 @@ sk:
         all: "All projects"
         selected: "Only selected"
       search_placeholder: "Search project..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Include all sub-projects"
       tooltip:
         include_all_selected: "Project already included since Include all sub-projects is enabled."
         current_project: "This is the current project you are in."
         does_not_match_search: "Project does not match the search criteria."
       no_results: "No project matches your search criteria."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Baseline"
       clear: "Vyčistiť"

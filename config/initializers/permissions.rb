@@ -37,6 +37,18 @@ Rails.application.reloader.to_prepare do
                      require: :loggedin,
                      contract_actions: { projects: %i[create] }
 
+      map.permission :add_portfolios,
+                     { projects: %i[new create] },
+                     permissible_on: :global,
+                     require: :loggedin,
+                     visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? }
+
+      map.permission :add_programs,
+                     { projects: %i[new create] },
+                     permissible_on: :global,
+                     require: :loggedin,
+                     visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? }
+
       map.permission :archive_project,
                      {
                        "projects/archive": %i[create]
