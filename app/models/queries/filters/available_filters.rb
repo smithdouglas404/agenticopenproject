@@ -73,7 +73,7 @@ module Queries
       rescue ::Queries::Filters::InvalidError => e
         Rails.logger.error "Failed to register filter for #{key}: #{e} \n" \
                            "Falling back to non-existing filter."
-        non_existing_filter(key)
+        non_existing_filter(key, e.message)
       rescue ::Queries::Filters::MissingError => e
         Rails.logger.error "Failed to find filter for #{key}: #{e} \n" \
                            "Falling back to non-existing filter."
@@ -82,12 +82,12 @@ module Queries
 
       private
 
-      def non_existing_filter(key)
+      def non_existing_filter(key, message = nil)
         case key.to_sym
         when :typeahead
           ::Queries::Filters::EmptyFilter.create!(name: key)
         else
-          ::Queries::Filters::NotExistingFilter.create!(name: key)
+          ::Queries::Filters::NotExistingFilter.create!(name: key, message:)
         end
       end
 
@@ -101,7 +101,15 @@ module Queries
         else
           initialize_filter(filter)
 
-          find_initialized_filter(key)
+          result = find_initialized_filter(key)
+
+          # we have a filter, but it is not available => e.g. CustomFieldFilter with a
+          # custom field that is not enabled for filtering or does no longer exist
+          if result.nil?
+            raise ::Queries::Filters::InvalidError, I18n.t(:"activerecord.errors.messages.filtering_not_available")
+          end
+
+          result
         end
       end
 

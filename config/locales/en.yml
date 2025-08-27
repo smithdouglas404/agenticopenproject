@@ -1355,6 +1355,7 @@ en:
         feature_disabled: is not available.
         file_too_large: "is too large (maximum size is %{count} Bytes)."
         filter_does_not_exist: "filter does not exist."
+        filtering_not_available: "is not available for filtering. Please remove it from your query filters."
         format: "does not match the expected format '%{expected}'."
         format_nested: "does not match the expected format '%{expected}' at path '%{path}'."
         greater_than: "must be greater than %{count}."

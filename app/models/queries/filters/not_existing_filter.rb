@@ -31,6 +31,13 @@
 module Queries
   module Filters
     class NotExistingFilter < Base
+      attr_reader :message
+
+      def initialize(name, options = {})
+        super
+        @message = options[:message]
+      end
+
       def available?
         false
       end
@@ -50,7 +57,7 @@ module Queries
       validate :always_false
 
       def always_false
-        errors.add :base, I18n.t(:"activerecord.errors.messages.filter_does_not_exist")
+        errors.add :base, message || I18n.t(:"activerecord.errors.messages.filter_does_not_exist")
       end
 
       # deactivating superclass validation
