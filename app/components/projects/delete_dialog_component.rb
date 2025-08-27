@@ -28,42 +28,25 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
+module Projects
+  class DeleteDialogComponent < ApplicationComponent
+    include ApplicationHelper
+    include OpTurbo::Streamable
 
-RSpec.describe "Projects#destroy", :js do
-  let!(:project) { create(:project, name: "foo", identifier: "foo") }
-  let(:project_page) { Pages::Projects::Settings::General.new(project) }
+    def initialize(project:)
+      super
 
-  current_user { create(:admin) }
-
-  before do
-    project_page.visit!
-    project_page.click_delete_action
-  end
-
-  it "destroys the project" do
-    expect(page).to have_modal "Delete project foo"
-    within_modal "Delete project foo" do
-      expect(page).to have_heading "Permanently delete project foo?"
-
-      expect(page).to have_unchecked_field "I understand that this deletion cannot be reversed"
-
-      # Without confirmation, the button is disabled
-      expect(page).to have_button "Delete permanently", disabled: true
-
-      # Confirm the deletion
-      check "I understand that this deletion cannot be reversed", allow_label_click: true
-      expect(page).to have_button "Delete permanently", disabled: false
-
-      click_on "Delete permanently"
+      @project = project
     end
-    expect(page).to have_no_modal "Delete project foo"
 
-    expect_flash type: :success, message: I18n.t("projects.delete.scheduled")
-    expect(project.reload).to eq(project)
+    private
 
-    perform_enqueued_jobs
+    def id = "delete-project-dialog"
 
-    expect { project.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    def has_managed_project_folders? = @project.project_storages.any?(&:project_folder_automatic?)
+
+    def subproject_names
+      @project.descendants.map(&:to_s)
+    end
   end
 end

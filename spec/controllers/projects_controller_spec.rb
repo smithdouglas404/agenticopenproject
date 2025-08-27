@@ -391,9 +391,9 @@ RSpec.describe ProjectsController do
     let(:project) { create(:project, identifier: "blog") }
 
     it "gets destroy info" do
-      get :destroy_info, params: { id: project.id }
+      get :destroy_info, params: { id: project.id }, format: :turbo_stream
       expect(response).to be_successful
-      expect(response).to render_template "destroy_info"
+      expect(response).to have_turbo_stream action: "dialog", target: "projects-delete-dialog-component"
 
       expect { project.reload }.not_to raise_error
     end

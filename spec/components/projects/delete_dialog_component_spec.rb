@@ -28,42 +28,38 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
+require "rails_helper"
 
-RSpec.describe "Projects#destroy", :js do
-  let!(:project) { create(:project, name: "foo", identifier: "foo") }
-  let(:project_page) { Pages::Projects::Settings::General.new(project) }
+RSpec.describe Projects::DeleteDialogComponent, type: :component do
+  include Rails.application.routes.url_helpers
 
-  current_user { create(:admin) }
+  let(:project) { build_stubbed(:project, name: "Top Secret Project") }
+  let(:user) { build_stubbed(:user) }
 
-  before do
-    project_page.visit!
-    project_page.click_delete_action
+  subject do
+    render_inline(described_class.new(project:))
+    page
   end
 
-  it "destroys the project" do
-    expect(page).to have_modal "Delete project foo"
-    within_modal "Delete project foo" do
-      expect(page).to have_heading "Permanently delete project foo?"
+  before do
+    login_as(user)
+  end
 
-      expect(page).to have_unchecked_field "I understand that this deletion cannot be reversed"
+  describe "dialog form" do
+    let(:project) { build_stubbed(:project) }
 
-      # Without confirmation, the button is disabled
-      expect(page).to have_button "Delete permanently", disabled: true
-
-      # Confirm the deletion
-      check "I understand that this deletion cannot be reversed", allow_label_click: true
-      expect(page).to have_button "Delete permanently", disabled: false
-
-      click_on "Delete permanently"
+    it "renders the correct form action" do
+      expect(subject).to have_element "form", action: project_path(project)
     end
-    expect(page).to have_no_modal "Delete project foo"
+  end
 
-    expect_flash type: :success, message: I18n.t("projects.delete.scheduled")
-    expect(project.reload).to eq(project)
+  describe "with a project" do
+    it "shows a heading" do
+      expect(subject).to have_text "Permanently delete project Top Secret Project?"
+    end
 
-    perform_enqueued_jobs
-
-    expect { project.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    it "shows a simple info message" do
+      expect(subject).to have_text "Deleting the project is an irreversible action. Please proceed with caution."
+    end
   end
 end

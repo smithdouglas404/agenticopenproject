@@ -109,7 +109,7 @@
           label: t(:button_delete),
           href: confirm_destroy_project_path(@project),
           content_arguments: {
-            data: { turbo: false },
+            data: { turbo_stream: true },
             test_selector: "project-settings--delete"
           }
         ) do |item|

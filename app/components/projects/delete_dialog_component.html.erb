@@ -1,0 +1,64 @@
+<%#-- copyright
+OpenProject is an open source project management software.
+Copyright (C) the OpenProject GmbH
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License version 3.
+
+OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+Copyright (C) 2006-2013 Jean-Philippe Lang
+Copyright (C) 2010-2013 the ChiliProject Team
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+See COPYRIGHT and LICENSE files for more details.
+
+++#%>
+
+<%=
+  render(
+    Primer::OpenProject::DangerDialog.new(
+      id:,
+      title: t(:"project.destroy.title", name: @project),
+      form_arguments: {
+        action: project_path(@project),
+        method: :delete,
+        data: { turbo: false }
+      }
+    )
+  ) do |dialog|
+    dialog.with_confirmation_message do |message|
+      message.with_heading(tag: :h2) { t(:"project.destroy.heading", name: @project) }
+      message.with_description do
+        t("project.destroy.info")
+      end
+    end
+    dialog.with_confirmation_check_box_content(I18n.t(:text_permanent_delete_confirmation_checkbox_label))
+    dialog.with_additional_details(display: :block) do
+%>
+    <p><%= t("project.destroy.confirmation", identifier: @project.identifier) %></p>
+    <ul class="mb-3">
+      <li><%= t("project.destroy.project_delete_result_1") %></li>
+      <% if has_managed_project_folders? %>
+        <li><%= t("project.destroy.project_delete_result_2") %></li>
+      <% end %>
+    </ul>
+    <% if subproject_names.any? %>
+      <%= t("project.destroy.subprojects_confirmation", value: subproject_names.to_sentence) %>
+    <% end %>
+<%
+    end
+  end
+%>
