@@ -46,7 +46,7 @@ export class ApiV3ProjectsPaths
   implements ApiV3ListResourceInterface<ProjectResource> {
   constructor(protected apiRoot:ApiV3Service,
     protected basePath:string) {
-    super(apiRoot, basePath, 'projects', ApiV3ProjectPaths);
+    super(apiRoot, basePath, 'workspaces', ApiV3ProjectPaths);
   }
 
   // /api/v3/projects/schema

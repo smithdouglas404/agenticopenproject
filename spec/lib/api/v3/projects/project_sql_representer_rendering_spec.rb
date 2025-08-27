@@ -70,6 +70,7 @@ RSpec.describe API::V3::Projects::ProjectSqlRepresenter, "rendering" do
             _type: "Project",
             name: project.name,
             identifier: project.identifier,
+            workspaceType: project.workspace_type,
             active: true,
             public: false,
             _links: {
@@ -100,6 +101,7 @@ RSpec.describe API::V3::Projects::ProjectSqlRepresenter, "rendering" do
             identifier: program.identifier,
             active: true,
             public: false,
+            workspaceType: "program",
             _links: {
               ancestors: [],
               self: {
@@ -128,6 +130,7 @@ RSpec.describe API::V3::Projects::ProjectSqlRepresenter, "rendering" do
             identifier: portfolio.identifier,
             active: true,
             public: false,
+            workspaceType: "portfolio",
             _links: {
               ancestors: [],
               self: {

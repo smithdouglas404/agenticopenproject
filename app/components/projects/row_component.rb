@@ -152,16 +152,19 @@ module Projects
     end
 
     def name
-      content = content_tag(:i, "", class: "projects-table--hierarchy-icon")
+      content = [content_tag(:i, "", class: "projects-table--hierarchy-icon")]
 
       if project.archived?
-        content << " "
         content << content_tag(:span, I18n.t("project.archive.archived"), class: "archived-label")
       end
 
-      content << " "
       content << helpers.link_to_project(project, {}, { data: { turbo: false } }, false)
-      content
+
+      if workspace_type_badge && OpenProject::FeatureDecisions.portfolio_models_active?
+        content << workspace_type_badge
+      end
+
+      safe_join(content, " ")
     end
 
     def project_status
@@ -423,6 +426,16 @@ module Projects
 
     def current_page
       table.model.current_page.to_s
+    end
+
+    def workspace_type_badge
+      # Only show icon and type for non-project workspaces
+      return unless project.workspace_type.in?(["portfolio", "program"])
+
+      render(Primer::Beta::Text.new(color: :muted)) do
+        icon = render(Primer::Beta::Octicon.new(icon: helpers.workspace_icon(project.workspace_type)))
+        safe_join([icon, " ", I18n.t(:"label_#{project.workspace_type}")])
+      end
     end
   end
 end

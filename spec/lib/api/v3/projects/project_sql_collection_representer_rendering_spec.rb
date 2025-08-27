@@ -83,6 +83,7 @@ RSpec.describe API::V3::Projects::ProjectSqlCollectionRepresenter, "rendering" d
               identifier: project.identifier,
               active: true,
               public: false,
+              workspaceType: "project",
               _links: {
                 ancestors: [],
                 self: {
@@ -180,6 +181,7 @@ RSpec.describe API::V3::Projects::ProjectSqlCollectionRepresenter, "rendering" d
               identifier: project.identifier,
               active: true,
               public: false,
+              workspaceType: "project",
               _links: {
                 ancestors: [],
                 self: {

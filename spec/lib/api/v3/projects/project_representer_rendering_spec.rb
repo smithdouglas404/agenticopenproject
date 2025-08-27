@@ -155,6 +155,10 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
       let(:value) { project.name }
     end
 
+    it_behaves_like "property", :workspaceType do
+      let(:value) { project.workspace_type }
+    end
+
     it_behaves_like "property", :active do
       let(:value) { project.active }
     end

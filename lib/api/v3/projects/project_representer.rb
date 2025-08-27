@@ -184,6 +184,7 @@ module API
         property :name,
                  render_nil: true
 
+        property :workspace_type
         property :active
         property :public
 
