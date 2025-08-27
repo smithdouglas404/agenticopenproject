@@ -91,7 +91,10 @@ module Admin
               end,
               lambda do |validation_result|
                 add_errors_to_edit_form(validation_result)
-                render action: :edit
+                update_via_turbo_stream(
+                  component: ItemComponent.new(item: @active_item, show_edit_form: true)
+                )
+                respond_with_turbo_streams
               end
             )
         end
