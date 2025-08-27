@@ -33,7 +33,7 @@ module CustomStylesControllerHelper
 
   def validate_font_uploads(custom_style_params)
     %i(export_font_regular export_font_bold export_font_italic export_font_bold_italic).each do |name|
-      if custom_style_params[name]&.is_a?(ActionDispatch::Http::UploadedFile)
+      if custom_style_params[name].is_a?(ActionDispatch::Http::UploadedFile)
         error = validate_font_file(name, custom_style_params[name].tempfile)
         return error if error
       end
@@ -50,7 +50,7 @@ module CustomStylesControllerHelper
   end
 
   def validate_font_file_format(name, filename)
-    "#{name.to_s.humanize} #{I18n.t("admin.custom_styles.fonts.file_is_invalid")}" unless valid_ttf?(filename)
+    "#{name.to_s.humanize} #{I18n.t('admin.custom_styles.fonts.file_is_invalid')}" unless valid_ttf?(filename)
   end
 
   def font_file_size(filename)
@@ -60,7 +60,8 @@ module CustomStylesControllerHelper
   def validate_font_file_size(name, filename)
     size = font_file_size(filename)
     if size >= MAX_FONT_UPLOAD_SIZE
-      "#{name.to_s.humanize} #{I18n.t("admin.custom_styles.fonts.file_too_large", count: (MAX_FONT_UPLOAD_SIZE / 1.megabyte).to_i)}"
+      "#{name.to_s.humanize} #{I18n.t('admin.custom_styles.fonts.file_too_large',
+                                      count: (MAX_FONT_UPLOAD_SIZE / 1.megabyte).to_i)}"
     end
   end
 
