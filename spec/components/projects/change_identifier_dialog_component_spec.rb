@@ -28,41 +28,38 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Projects::IdentifierController < ApplicationController
-  include OpTurbo::ComponentStream
-  include OpTurbo::FlashStreamHelper
+require "rails_helper"
 
-  before_action :find_project_by_project_id
-  before_action :authorize
+RSpec.describe Projects::ChangeIdentifierDialogComponent, type: :component do
+  include Rails.application.routes.url_helpers
 
-  def show
-    respond_with_dialog Projects::ChangeIdentifierDialogComponent.new(project: @project)
+  let(:project) { build_stubbed(:project) }
+  let(:user) { build_stubbed(:user) }
+
+  subject do
+    render_inline(described_class.new(project:))
+    page
   end
 
-  def check
-    @project.identifier = params.require(:value)
-    validators = Project.validators_on(:identifier)
-    validators.each { |validator| validator.validate(@project) }
+  before do
+    login_as(user)
+  end
 
-    if @project.errors[:identifier].any?
-      render status: :unprocessable_entity, plain: @project.errors.full_messages_for(:identifier).join(" ")
-    else
-      head :ok
+  describe "dialog form" do
+    let(:project) { build_stubbed(:project) }
+
+    it "renders the correct form action" do
+      expect(subject).to have_element "form", action: project_identifier_path(project)
     end
   end
 
-  def update
-    service_call = Projects::UpdateService
-                     .new(user: current_user,
-                          model: @project)
-                     .call(identifier: permitted_params.project[:identifier])
+  describe "with a project" do
+    it "shows a heading" do
+      expect(subject).to have_text "Change the project's identifier?"
+    end
 
-    if service_call.success?
-      flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to project_settings_general_path(@project)
-    else
-      message = t(:notice_unsuccessful_update_with_reason, reason: service_call.message)
-      respond_with_flash_error(message:)
+    it "shows a warning message about links" do
+      expect(subject).to have_text "Existing links to the project will no longer work."
     end
   end
 end

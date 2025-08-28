@@ -3909,9 +3909,10 @@ en:
       project_phase_any: "Project phase: Any"
       project_phase_gate: "Project phase gate: %{gate}"
     identifier:
+      heading: Change the project's identifier?
       warning_one: Members of the project will have to relocate the project's repositories.
       warning_two: Existing links to the project will no longer work.
-      title: Change the project's identifier
+      title: Change project identifier
     not_available: "Project N/A"
     template:
       copying: >

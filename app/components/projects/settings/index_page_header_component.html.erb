@@ -31,7 +31,8 @@
       size: :medium,
       href: project_identifier_path(@project),
       aria: { label: t("projects.settings.change_identifier") },
-      title: t("projects.settings.change_identifier")
+      title: t("projects.settings.change_identifier"),
+      data: { turbo_stream: true }
     ) do |button|
       button.with_leading_visual_icon(icon: :pencil)
       t("projects.settings.change_identifier")

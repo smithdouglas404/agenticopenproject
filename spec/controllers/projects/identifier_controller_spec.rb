@@ -34,9 +34,44 @@ RSpec.describe Projects::IdentifierController do
   let(:project) { create(:project) }
 
   current_user { create(:admin) }
-  render_views
 
-  describe "update" do
+  describe "#show" do
+    it "renders dialog" do
+      get :show, params: { project_id: project.id }, format: :turbo_stream
+
+      expect(response).to be_successful
+      expect(response).to have_turbo_stream action: "dialog", target: "projects-change-identifier-dialog-component"
+    end
+  end
+
+  describe "#check" do
+    before do
+      post :check, params: { project_id: project.id, value: }
+    end
+
+    context "when value is invalid" do
+      let(:value) { "123" }
+
+      it "renders message" do
+        expect(response).not_to be_successful
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.body).to eq "Identifier is invalid."
+      end
+    end
+
+    context "when value is valid" do
+      let(:value) { "abcd" }
+
+      it "renders nothing" do
+        expect(response).to be_successful
+        expect(response.body).to be_empty
+      end
+    end
+  end
+
+  describe "#update" do
+    render_views
+
     it "sets the project identifier to the provided value" do
       put :update, params: { project_id: project.id, project: { identifier: "new-identifier" } }
 
@@ -48,7 +83,7 @@ RSpec.describe Projects::IdentifierController do
     context "with an invalid identifier" do
       it "does not change the project identifier and correctly renders the view" do
         previous_identifier = project.identifier
-        put :update, params: { project_id: project.id, project: { identifier: "bad identifier" } }
+        put :update, params: { project_id: project.id, project: { identifier: "bad identifier" } }, format: :turbo_stream
 
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.body).to include("Identifier is invalid")

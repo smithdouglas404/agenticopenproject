@@ -137,7 +137,7 @@ RSpec.describe ProjectsController do
     end
   end
 
-  describe "miscellaneous" do
+  describe "archive" do
     it do
       expect(post("projects/123/archive")).to route_to(
         controller: "projects/archive", action: "create", project_id: "123"
@@ -147,6 +147,26 @@ RSpec.describe ProjectsController do
     it do
       expect(delete("projects/123/archive")).to route_to(
         controller: "projects/archive", action: "destroy", project_id: "123"
+      )
+    end
+  end
+
+  describe "identifier" do
+    it do
+      expect(get("projects/123/identifier")).to route_to(
+        controller: "projects/identifier", action: "show", project_id: "123"
+      )
+    end
+
+    it do
+      expect(patch("projects/123/identifier")).to route_to(
+        controller: "projects/identifier", action: "update", project_id: "123"
+      )
+    end
+
+    it do
+      expect(post("projects/123/identifier/check")).to route_to(
+        controller: "projects/identifier", action: "check", project_id: "123"
       )
     end
   end

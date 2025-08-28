@@ -28,41 +28,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Projects::IdentifierController < ApplicationController
-  include OpTurbo::ComponentStream
-  include OpTurbo::FlashStreamHelper
+module Projects
+  class ChangeIdentifierDialogComponent < ApplicationComponent
+    include ApplicationHelper
+    include OpTurbo::Streamable
 
-  before_action :find_project_by_project_id
-  before_action :authorize
+    def initialize(project:)
+      super
 
-  def show
-    respond_with_dialog Projects::ChangeIdentifierDialogComponent.new(project: @project)
-  end
-
-  def check
-    @project.identifier = params.require(:value)
-    validators = Project.validators_on(:identifier)
-    validators.each { |validator| validator.validate(@project) }
-
-    if @project.errors[:identifier].any?
-      render status: :unprocessable_entity, plain: @project.errors.full_messages_for(:identifier).join(" ")
-    else
-      head :ok
+      @project = project
     end
-  end
 
-  def update
-    service_call = Projects::UpdateService
-                     .new(user: current_user,
-                          model: @project)
-                     .call(identifier: permitted_params.project[:identifier])
+    private
 
-    if service_call.success?
-      flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to project_settings_general_path(@project)
-    else
-      message = t(:notice_unsuccessful_update_with_reason, reason: service_call.message)
-      respond_with_flash_error(message:)
-    end
+    def id = "change-project-identifier-dialog"
   end
 end

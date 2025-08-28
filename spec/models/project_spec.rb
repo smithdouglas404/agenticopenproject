@@ -565,5 +565,23 @@ RSpec.describe Project do
         end
       end
     end
+
+    context "having validations" do
+      subject { create(:project) }
+
+      it { is_expected.to validate_presence_of(:identifier) }
+      it { is_expected.to validate_uniqueness_of(:identifier) }
+      it { is_expected.to validate_length_of(:identifier).is_at_most(Project::IDENTIFIER_MAX_LENGTH) }
+      it { is_expected.to validate_exclusion_of(:identifier).in_array(Project::RESERVED_IDENTIFIERS) }
+
+      it { is_expected.to allow_value("12345a").for(:identifier) }
+      it { is_expected.to allow_value("alpha_beta_0").for(:identifier) }
+      it { is_expected.to allow_value("zeta-gamma-1").for(:identifier) }
+
+      it { is_expected.not_to allow_value("https://foo.com").for(:identifier) }
+      it { is_expected.not_to allow_value("12345").for(:identifier) }
+      it { is_expected.not_to allow_value("$@^&#").for(:identifier) }
+      it { is_expected.not_to allow_value("🙈").for(:identifier) }
+    end
   end
 end

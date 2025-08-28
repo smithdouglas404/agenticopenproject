@@ -51,32 +51,43 @@ RSpec.describe "Projects", "editing settings", :js do
   end
 
   describe "identifier edit" do
-    it "updates the project identifier" do
+    before do
       visit projects_path
       click_on project.name
       click_on "Project settings"
       click_on "Change identifier"
+    end
 
-      expect(page).to have_content "Change the project's identifier".upcase
-      expect(page).to have_current_path "/projects/foo-project/identifier"
+    it "updates the project identifier" do
+      expect(page).to have_modal "Change project identifier"
+      within_modal "Change project identifier" do
+        expect(page).to have_heading "Change the project's identifier?"
 
-      fill_in "project[identifier]", with: "foo-bar"
-      click_on "Update"
+        fill_in "Identifier", with: "foo-bar"
 
-      expect(page).to have_content "Successful update."
-      expect(page)
-        .to have_current_path %r{/projects/foo-bar/settings/general}
+        click_on "Change"
+      end
+      expect(page).to have_no_modal "Change project identifier"
+
+      expect_and_dismiss_flash type: :success, message: "Successful update."
+      expect(page).to have_current_path "/projects/foo-bar/settings/general"
+
       expect(Project.first.identifier).to eq "foo-bar"
     end
 
     it "displays error messages on invalid input" do
-      visit project_identifier_path(project)
+      expect(page).to have_modal "Change project identifier"
+      within_modal "Change project identifier" do
+        expect(page).to have_heading "Change the project's identifier?"
 
-      fill_in "project[identifier]", with: "FOOO"
-      click_on "Update"
+        fill_in "Identifier", with: "FOOO"
 
-      expect(page).to have_content "Identifier is invalid."
-      expect(page).to have_current_path "/projects/foo-project/identifier"
+        click_on "Change"
+      end
+      expect(page).to have_no_modal "Change project identifier"
+
+      expect_and_dismiss_flash type: :error, message: "Update failed: Identifier is invalid."
+      expect(page).to have_current_path "/projects/foo-project/settings/general"
     end
   end
 

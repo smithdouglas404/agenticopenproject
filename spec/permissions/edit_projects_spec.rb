@@ -64,6 +64,7 @@ RSpec.describe "edit_project permission", type: :controller do
 
   describe Projects::IdentifierController do
     check_permission_required_for("projects/identifier#show", :edit_project)
+    check_permission_required_for("projects/identifier#check", :edit_project)
     check_permission_required_for("projects/identifier#update", :edit_project)
   end
 
