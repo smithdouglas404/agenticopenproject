@@ -100,7 +100,7 @@ module RecurringMeetings
         ({ href: project_overview_path(@project.id), text: @project.name } if @project.present?),
         { href: @project.present? ? project_meetings_path(@project.id) : meetings_path,
           text: I18n.t(:label_meeting_plural) },
-        page_title(true)
+        helpers.nested_breadcrumb_element(I18n.t(:label_meeting_series), @meeting.title)
       ].compact
     end
   end
