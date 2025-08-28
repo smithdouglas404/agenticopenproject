@@ -54,3 +54,5 @@ It is important to note that OpenProject terminology can vary somewhat form PM²
 
 
 ![image-20250827195831397](image-20250827195831397.png)
+
+![image-20250828101631106](PM2-Artefacts.png)
