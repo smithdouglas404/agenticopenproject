@@ -102,7 +102,7 @@ da:
     button_save: "Gem"
     button_settings: "Indstillinger"
     button_uncheck_all: "Fjern alle markeringer"
-    button_update: "Opdater"
+    button_update: "Opdatér"
     button_export-atom: "Download Atom"
     button_generate_pdf: "Generate PDF"
     button_create: "Opret"
