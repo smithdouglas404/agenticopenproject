@@ -40,10 +40,11 @@ class My::LookAndFeelForm < ApplicationForm
       include_blank: false,
       input_width: :small
     ) do |select|
-      theme_options_for_select.each do |theme|
+      theme_options_for_select.each do |label, value|
         select.option(
-          value: theme[1],
-          label: theme[0]
+          value:,
+          label:,
+          selected: value == User.current.pref.theme.to_s.sub(/_high_contrast$/, "")
         )
       end
     end

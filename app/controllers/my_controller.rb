@@ -135,8 +135,8 @@ class MyController < ApplicationController
       theme = raw[:pref][:theme]
       increase = raw[:pref].delete(:increase_contrast)
 
-      if increase.to_s == "1" && theme.in?(%w[light dark])
-        raw[:pref][:theme] = "#{theme}_high_contrast"
+      if theme.in?(%w[light dark])
+        raw[:pref][:theme] = increase.to_s == "1" ? "#{theme}_high_contrast" : theme
       end
     end
 
