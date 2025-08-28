@@ -38,6 +38,7 @@ class MeetingAgendaItem::MeetingForm < ApplicationForm
       label: I18n.t("label_meeting"),
       caption: I18n.t("label_meeting_selection_caption"),
       autocomplete_options: {
+        component: "opce-meeting-autocompleter",
         multiple: false,
         decorated: true,
         append_to: append_to_container

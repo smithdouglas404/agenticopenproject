@@ -124,6 +124,9 @@ import {
 import {
   UserAutocompleterComponent,
 } from 'core-app/shared/components/autocompleter/user-autocompleter/user-autocompleter.component';
+import {
+  MeetingAutocompleterComponent,
+} from 'core-app/shared/components/autocompleter/meeting-autocompleter/meeting-autocompleter.component';
 import { AttributeValueMacroComponent } from 'core-app/shared/components/fields/macros/attribute-value-macro.component';
 import { AttributeLabelMacroComponent } from 'core-app/shared/components/fields/macros/attribute-label-macro.component';
 import {
@@ -382,6 +385,7 @@ export class OpenProjectModule implements DoBootstrap {
     registerCustomElement('opce-project-autocompleter', ProjectAutocompleterComponent, { injector });
     registerCustomElement('opce-members-autocompleter', MembersAutocompleterComponent, { injector });
     registerCustomElement('opce-user-autocompleter', UserAutocompleterComponent, { injector });
+    registerCustomElement('opce-meeting-autocompleter', MeetingAutocompleterComponent, { injector });
     registerCustomElement('opce-time-entries-work-package-autocompleter', TimeEntriesWorkPackageAutocompleterComponent, { injector });
     registerCustomElement('opce-macro-attribute-value', AttributeValueMacroComponent, { injector });
     registerCustomElement('opce-macro-attribute-label', AttributeLabelMacroComponent, { injector });
