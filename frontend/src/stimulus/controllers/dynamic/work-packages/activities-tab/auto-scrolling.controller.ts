@@ -71,7 +71,7 @@ export default class AutoScrollingController extends BaseController {
     window.location.hash = `#${anchorName}-${activityId}`;
   }
 
-  performAutoScrollingOnStreamsUpdate(journalsContainerAtBottom:boolean = false) {
+  performAutoScrollingOnStreamsUpdate(journalsContainerAtBottom = false) {
     if (this.indexOutlet.sortingAscending && journalsContainerAtBottom) {
       // scroll to (new) bottom if sorting is ascending and journals container was already at bottom before a new activity was added
       if (this.isMobile()) {
@@ -92,7 +92,7 @@ export default class AutoScrollingController extends BaseController {
     }
   }
 
-  scrollInputContainerIntoView(timeout:number = 0, behavior:ScrollBehavior = 'smooth') {
+  scrollInputContainerIntoView(timeout = 0, behavior:ScrollBehavior = 'smooth') {
     const inputContainer = this.inputContainer;
     setTimeout(() => {
       if (inputContainer) {
@@ -104,7 +104,7 @@ export default class AutoScrollingController extends BaseController {
     }, timeout);
   }
 
-  scrollJournalContainer(toBottom:boolean, smooth:boolean = false) {
+  scrollJournalContainer(toBottom:boolean, smooth = false) {
     const scrollableContainer = this.scrollableContainer;
     if (scrollableContainer) {
       if (smooth) {
@@ -154,16 +154,20 @@ export default class AutoScrollingController extends BaseController {
         scrollableContainer.scrollTop = relativeTop - topPadding;
       }, 50);
     } else if (attempts < maxAttempts) {
-      setTimeout(() => this.tryScroll(activityAnchorName, activityId, attempts + 1, maxAttempts), 1000);
+      setTimeout(() => {
+        this.tryScroll(activityElement, attempts + 1, maxAttempts);
+      }, 1000);
     }
   }
 
-  private tryScrollToBottom(attempts:number = 0, maxAttempts:number = 20, behavior:ScrollBehavior = 'smooth') {
+  private tryScrollToBottom(attempts = 0, maxAttempts = 20, behavior:ScrollBehavior = 'smooth') {
     const scrollableContainer = this.scrollableContainer;
 
     if (!scrollableContainer) {
       if (attempts < maxAttempts) {
-        setTimeout(() => this.tryScrollToBottom(attempts + 1, maxAttempts), 1000);
+        setTimeout(() => {
+          this.tryScrollToBottom(attempts + 1, maxAttempts);
+        }, 1000);
       }
       return;
     }
