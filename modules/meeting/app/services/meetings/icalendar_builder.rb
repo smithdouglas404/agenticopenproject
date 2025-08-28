@@ -32,12 +32,13 @@ require "icalendar/tzinfo"
 
 module Meetings
   class IcalendarBuilder
-    attr_reader :timezone, :calendar, :calendar_timezones
+    attr_reader :timezone, :calendar, :all_times, :tzid
 
     def initialize(timezone:)
       @timezone = timezone
+      @tzid = timezone.tzinfo.canonical_identifier
       @calendar = build_icalendar
-      @calendar_timezones = Set.new
+      @all_times = []
       @excluded_dates_cache = {}
       @instantiated_occurrences_cache = {}
       @series_cache_loaded = false
@@ -126,10 +127,7 @@ module Meetings
     end
 
     def to_ical
-      calendar_timezones.each do |ical_tzinfo|
-        calendar.add_timezone(ical_tzinfo)
-      end
-
+      calendar.add_timezone(build_single_vtimezone)
       calendar.to_ical
     end
 
@@ -163,10 +161,6 @@ module Meetings
       end
     end
 
-    def add_timezone_definition(time)
-      calendar_timezones << timezone.tzinfo.ical_timezone(time)
-    end
-
     def add_attendees(event:, meeting:)
       meeting.participants.includes(:user).find_each do |participant|
         user = participant.user
@@ -188,14 +182,34 @@ module Meetings
       end
     end
 
-    def tzid
-      @tzid ||= timezone.tzinfo.canonical_identifier
-    end
-
     def ical_datetime(time)
       time_in_time_zone = time.in_time_zone(timezone)
-      add_timezone_definition(time_in_time_zone)
+      all_times << time_in_time_zone
       Icalendar::Values::DateTime.new time_in_time_zone, "tzid" => tzid
+    end
+
+    def format_ical_offset(offset_seconds)
+      hours = offset_seconds / 3600
+      minutes = (offset_seconds.abs / 60) % 60
+      sprintf("%<hours>+03d%<minutes>02d", hours:, minutes:)
+    end
+
+    # Helper to build a VTZIMEZONE with all relevant transitions
+    def build_single_vtimezone # rubocop:disable Metrics/AbcSize
+      tz = Icalendar::Timezone.new
+      tz.tzid = tzid
+
+      transitions = timezone.tzinfo.transitions_up_to(all_times.max, all_times.min)
+      transitions.each do |tr|
+        comp = tr.offset.dst? ? Icalendar::Timezone::Daylight.new : Icalendar::Timezone::Standard.new
+        comp.dtstart = tr.at.utc.strftime("%Y%m%dT%H%M%SZ")
+        comp.tzoffsetfrom = format_ical_offset(tr.previous_offset.utc_total_offset)
+        comp.tzoffsetto = format_ical_offset(tr.offset.utc_total_offset)
+        comp.tzname = tr.offset.abbreviation.to_s
+        tz.add_component(comp)
+      end
+
+      tz
     end
 
     def ical_organizer
