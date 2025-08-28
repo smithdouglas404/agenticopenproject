@@ -133,19 +133,19 @@ setup_tests() {
 run_units() {
 	shopt -s extglob
 	reset_dbs
-	execute "time bundle exec turbo_tests --verbose -n $JOBS --runtime-log spec/support/runtime-logs/turbo_runtime_units.log {,modules/*/}spec/!(features)"
+	execute "time bundle exec turbo_tests --verbose -n $JOBS --format RSpec::Github::Formatter --runtime-log spec/support/runtime-logs/turbo_runtime_units.log {,modules/*/}spec/!(features)"
 	cleanup
 }
 
 run_features() {
 	reset_dbs
-	execute "time bundle exec turbo_tests --verbose -n $JOBS --runtime-log spec/support/runtime-logs/turbo_runtime_features.log {,modules/*/}spec/features"
+	execute "time bundle exec turbo_tests --verbose -n $JOBS --format RSpec::Github::Formatter --runtime-log spec/support/runtime-logs/turbo_runtime_features.log {,modules/*/}spec/features"
 	cleanup
 }
 
 run_all() {
 	reset_dbs
-	execute "time bundle exec turbo_tests --verbose -n $JOBS --runtime-log spec/support/runtime-logs/turbo_runtime_all.log {,modules/*/}spec"
+	execute "time bundle exec turbo_tests --verbose -n $JOBS --format RSpec::Github::Formatter --runtime-log spec/support/runtime-logs/turbo_runtime_all.log {,modules/*/}spec"
 	cleanup
 }
 

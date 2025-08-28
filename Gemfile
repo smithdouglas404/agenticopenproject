@@ -303,6 +303,7 @@ group :test do
   gem "shoulda-matchers", "~> 6.0", require: nil
 
   gem "parallel_tests", "~> 4.0"
+  gem "rspec-github", "~> 3.0"
 end
 
 group :ldap do
