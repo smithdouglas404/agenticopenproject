@@ -62,7 +62,7 @@ RSpec.describe "My account Interface settings",
 
     expect(page).to have_css("body[data-color-mode='dark'][data-dark-theme='dark_high_contrast']")
 
-    select "Automatic (match OS  mode)", from: "Color mode"
+    select "Automatic (match OS color mode)", from: "Color mode"
     click_on "Update look and feel"
 
     expect(page).to have_css("body[data-auto-theme-switcher-mode-value='sync_with_os']")
