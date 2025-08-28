@@ -3840,13 +3840,15 @@ pl:
       one: "1 projekt"
       other: "Liczba projektów: %{count}"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. You will:"
-      project_delete_result_1: "Usuń wszystkie powiązane dane."
-      project_delete_result_2: "Usuń wszystkie zarządzane foldery projektów w dołączonych magazynach."
-      info: "Deleting the project is an irreversible action. Please proceed with caution."
-      subprojects_confirmation: "Podprojekt(y): %{value} zostaną także usunięte."
-      title: "Delete project %{name}"
-      heading: "Permanently delete project %{name}?"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Faza projektu: %{phase}"
       project_phase_any: "Faza projektu: dowolna"

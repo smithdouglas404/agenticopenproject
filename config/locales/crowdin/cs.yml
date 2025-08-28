@@ -3844,13 +3844,15 @@ cs:
       one: "1 projekt"
       other: "%{count} projektů"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. You will:"
-      project_delete_result_1: "Odstranit všechna související data."
-      project_delete_result_2: "Odstranit všechny spravované složky projektu v přiložených úložištích."
-      info: "Deleting the project is an irreversible action. Please proceed with caution."
-      subprojects_confirmation: "Jeho podprojek(y): %{value} budou také smazány."
-      title: "Delete project %{name}"
-      heading: "Permanently delete project %{name}?"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Project phase: %{phase}"
       project_phase_any: "Project phase: Any"

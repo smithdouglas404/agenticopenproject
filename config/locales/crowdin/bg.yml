@@ -3751,13 +3751,15 @@ bg:
       one: "1 проект"
       other: "%{count} проекти"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. You will:"
-      project_delete_result_1: "Изтрийте всички свързани данни."
-      project_delete_result_2: "Изтрийте всички управлявани папки на проекта в приложените хранилища."
-      info: "Deleting the project is an irreversible action. Please proceed with caution."
-      subprojects_confirmation: "Неговият(те) подпроект(и): %{value} също ще бъде изтрит(и)."
-      title: "Delete project %{name}"
-      heading: "Permanently delete project %{name}?"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Project phase: %{phase}"
       project_phase_any: "Project phase: Any"

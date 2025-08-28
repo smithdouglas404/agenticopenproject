@@ -3703,13 +3703,15 @@ ko:
       one: "1개 프로젝트"
       other: "%{count}개 프로젝트"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. You will:"
-      project_delete_result_1: "모든 관련 데이터를 삭제합니다."
-      project_delete_result_2: "연결된 저장소의 관리되는 프로젝트 폴더를 모두 삭제합니다."
-      info: "Deleting the project is an irreversible action. Please proceed with caution."
-      subprojects_confirmation: "하위 프로젝트 %{value}도 삭제됩니다."
-      title: "Delete project %{name}"
-      heading: "Permanently delete project %{name}?"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "프로젝트 단계: %{phase}"
       project_phase_any: "프로젝트 단계: 모두"

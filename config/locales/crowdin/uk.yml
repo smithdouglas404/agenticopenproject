@@ -3836,13 +3836,15 @@ uk:
       one: "1 проєкт"
       other: "Проєктів: %{count}"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. You will:"
-      project_delete_result_1: "буде видалено всі пов’язані дані;"
-      project_delete_result_2: "буде видалено всі керовані папки проєкту у вкладених сховищах."
-      info: "Deleting the project is an irreversible action. Please proceed with caution."
-      subprojects_confirmation: "Підпроекти: %{value} також будуть видалені."
-      title: "Delete project %{name}"
-      heading: "Permanently delete project %{name}?"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Етап проєкту: %{phase}"
       project_phase_any: "Етап проєкту: будь-який"

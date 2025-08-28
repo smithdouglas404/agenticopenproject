@@ -3697,13 +3697,15 @@ zh-CN:
       one: "1个项目"
       other: "%{count} 个项目"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. You will:"
-      project_delete_result_1: "删除所有相关数据。"
-      project_delete_result_2: "删除附加存储中所有托管的项目文件夹。"
-      info: "Deleting the project is an irreversible action. Please proceed with caution."
-      subprojects_confirmation: "其 子项目(s): %{value} 也将被删除。"
-      title: "Delete project %{name}"
-      heading: "Permanently delete project %{name}?"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "项目阶段：%{phase}"
       project_phase_any: "项目阶段：任何阶段"
