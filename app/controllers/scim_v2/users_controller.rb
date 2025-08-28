@@ -107,7 +107,6 @@ module ScimV2
         .left_joins(:groups, :user_auth_provider_links)
         .includes(:groups, :user_auth_provider_links)
         .not_builtin
-        .where.not(status: User.statuses[:deleted])
     end
   end
 end
