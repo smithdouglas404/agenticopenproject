@@ -144,8 +144,8 @@ RSpec.describe Meetings::IcalendarBuilder,
       expect(vtimezone_block).to be_present
       standard_count = vtimezone_block.scan("BEGIN:STANDARD").size
       daylight_count = vtimezone_block.scan("BEGIN:DAYLIGHT").size
-      expect(standard_count).to eq(2)
-      expect(daylight_count).to eq(2)
+      expect(standard_count).to eq(4)
+      expect(daylight_count).to eq(4)
     end
   end
 end

@@ -199,14 +199,19 @@ module Meetings
       tz = Icalendar::Timezone.new
       tz.tzid = tzid
 
-      transitions = timezone.tzinfo.transitions_up_to(all_times.max, all_times.min)
-      transitions.each do |tr|
-        comp = tr.offset.dst? ? Icalendar::Timezone::Daylight.new : Icalendar::Timezone::Standard.new
-        comp.dtstart = tr.at.utc.strftime("%Y%m%dT%H%M%SZ")
-        comp.tzoffsetfrom = format_ical_offset(tr.previous_offset.utc_total_offset)
-        comp.tzoffsetto = format_ical_offset(tr.offset.utc_total_offset)
-        comp.tzname = tr.offset.abbreviation.to_s
-        tz.add_component(comp)
+      # We are investigating how to properly build this ... for now let's
+      # just include everything from min - 6 months to max + 6 months
+      if all_times.present?
+        transitions = timezone.tzinfo.transitions_up_to(all_times.max + 6.months, all_times.min - 6.months)
+
+        transitions.each do |tr|
+          comp = tr.offset.dst? ? Icalendar::Timezone::Daylight.new : Icalendar::Timezone::Standard.new
+          comp.dtstart = tr.at.utc.strftime("%Y%m%dT%H%M%SZ")
+          comp.tzoffsetfrom = format_ical_offset(tr.previous_offset.utc_total_offset)
+          comp.tzoffsetto = format_ical_offset(tr.offset.utc_total_offset)
+          comp.tzname = tr.offset.abbreviation.to_s
+          tz.add_component(comp)
+        end
       end
 
       tz
