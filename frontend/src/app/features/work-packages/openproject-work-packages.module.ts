@@ -406,6 +406,7 @@ import {
 } from 'core-app/features/work-packages/components/wp-buttons/wp-reminder-button/wp-reminder-context-menu.directive';
 import { WorkPackageFullCopyEntryComponent } from 'core-app/features/work-packages/routing/wp-full-copy/wp-full-copy-entry.component';
 import { WorkPackageFullCreateEntryComponent } from 'core-app/features/work-packages/routing/wp-full-create/wp-full-create-entry.component';
+import { WorkPackageFullViewEntryComponent } from 'core-app/features/work-packages/routing/wp-full-view/wp-full-view-entry.component';
 
 @NgModule({
   imports: [
@@ -600,6 +601,7 @@ import { WorkPackageFullCreateEntryComponent } from 'core-app/features/work-pack
 
     // Full view
     WorkPackagesFullViewComponent,
+    WorkPackageFullViewEntryComponent,
     WorkPackageFullCopyEntryComponent,
     WorkPackageFullCreateEntryComponent,
 

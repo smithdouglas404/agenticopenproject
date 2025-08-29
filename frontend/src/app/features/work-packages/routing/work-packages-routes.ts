@@ -68,38 +68,6 @@ export const WORK_PACKAGES_ROUTES:Ng2StateDeclaration[] = [
     },
   },
   {
-    name: 'work-packages.show',
-    url: '/{workPackageId:[0-9]+}',
-    // Redirect to 'activity' by default.
-    redirectTo: (trans) => {
-      const params = trans.params('to');
-      const keepTab = trans.injector().get(KeepTabService) as KeepTabService;
-      const tabIdentifier = keepTab.currentShowTab;
-      return {
-        state: 'work-packages.show.tabs',
-        params: { ...params, tabIdentifier: tabIdentifier || 'activity' },
-      };
-    },
-    component: WorkPackagesFullViewComponent,
-    data: {
-      baseRoute: 'work-packages',
-      bodyClasses: ['router--work-packages-full-view', 'router--work-packages-base'],
-      newRoute: 'work-packages.new',
-      menuItem: menuItemClass,
-      sideMenuOptions,
-    },
-  },
-  {
-    name: 'work-packages.show.tabs',
-    url: '/:tabIdentifier',
-    component: WpTabWrapperComponent,
-    data: {
-      parent: 'work-packages.show',
-      menuItem: menuItemClass,
-      sideMenuOptions,
-    },
-  },
-  {
     name: 'work-packages.partitioned',
     component: WorkPackageViewPageComponent,
     url: '',

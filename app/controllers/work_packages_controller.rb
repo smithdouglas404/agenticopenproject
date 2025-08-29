@@ -44,7 +44,7 @@ class WorkPackagesController < ApplicationController
 
   before_action :load_and_authorize_in_optional_project, only: %i[index new copy export_dialog]
   before_action :authorize, only: %i[show_conflict_flash_message share_upsell]
-  authorization_checked! :index, :show, :copy, :export_dialog, :generate_pdf_dialog, :generate_pdf
+  authorization_checked! :index, :show, :new, :copy, :export_dialog, :generate_pdf_dialog, :generate_pdf
 
   before_action :load_and_validate_query, only: %i[index copy], unless: -> { request.format.html? }
 
@@ -73,8 +73,7 @@ class WorkPackagesController < ApplicationController
     respond_to do |format|
       format.html do
         render :show,
-               locals: { work_package:, menu_name: project_or_global_menu },
-               layout: "angular/angular"
+               locals: { work_package:, menu_name: project_or_global_menu }
       end
 
       format.any(*supported_single_formats) do
