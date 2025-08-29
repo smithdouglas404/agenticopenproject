@@ -77,6 +77,7 @@ module Admin
             )
         end
 
+        # rubocop:disable Metrics/AbcSize
         def update
           input = item_input
           item_service
@@ -86,15 +87,15 @@ module Admin
                          short: input[:short],
                          score: input[:score])
             .either(
-              lambda do |_|
-                redirect_to(custom_field_item_path(@custom_field, @active_item.parent), status: :see_other)
-              end,
+              ->(*) { redirect_to(custom_field_item_path(@custom_field, @active_item.parent), status: :see_other) },
               lambda do |validation_result|
                 add_errors_to_edit_form(validation_result)
-                render action: :edit
+                update_via_turbo_stream(component: ItemComponent.new(item: @active_item, show_edit_form: true))
+                respond_with_turbo_streams
               end
             )
         end
+        # rubocop:enable Metrics/AbcSize
 
         def move
           item_service
