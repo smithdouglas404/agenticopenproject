@@ -29,33 +29,35 @@
 #++
 
 require "spec_helper"
-require_module_spec_helper
 
-RSpec.describe "Appendix of default CSP for external file storage hosts" do
+RSpec.describe "" do
   include CspHelper
 
-  shared_let(:project) { create(:project) }
-  shared_let(:storage) { create(:nextcloud_storage) }
-  shared_let(:project_storage) { create(:project_storage, project:, storage:) }
+  current_user { create(:user) }
 
   describe "GET /" do
-    context "when logged in" do
-      current_user { create(:user, member_with_permissions: { project => %i[manage_file_links] }) }
-
-      it "appends storage host to the connect-src CSP" do
+    context "when collaborative_editing_hocuspocus_url is set as a valid URI" do
+      it "responds with 200 and appends storage host to the connect-src CSP",
+         with_settings: { collaborative_editing_hocuspocus_url: "wss://hocuspocus.local" } do
         get "/"
 
+        expect(last_response).to have_http_status(200)
         csp = parse_csp(last_response.headers["Content-Security-Policy"])
-        expect(csp["connect-src"]).to include(storage.host.chomp("/"))
+        expect(csp["connect-src"]).to include("wss://hocuspocus.local")
       end
     end
 
-    context "when not logged in" do
-      it "does not append host to connect-src CSP" do
+    context "when collaborative_editing_hocuspocus_url is set to an invalid URI" do
+      it "responds with 200 and logs the problem",
+         with_settings: { collaborative_editing_hocuspocus_url: "://hocuspocus.local" } do
+        allow(OpenProject.logger).to receive(:info)
+
         get "/"
 
-        csp = parse_csp(last_response.headers["Content-Security-Policy"])
-        expect(csp["connect-src"]).not_to include(storage.host.chomp("/"))
+        expect(last_response).to have_http_status(200)
+        expect(OpenProject.logger).to have_received(:info) do |&blk|
+          expect(blk.call).to eq "Setting.collaborative_editing_hocuspocus_url is set to an invalid URI: ://hocuspocus.local"
+        end
       end
     end
   end

@@ -566,7 +566,7 @@ module Settings
         description: "Additional allowed host names for the application.",
         default: []
       },
-     collaborative_editing_hocuspocus_url: {
+      collaborative_editing_hocuspocus_url: {
         format: :string,
         default: nil,
         description: "The URL of the hocuspocus server used by BlockNoteJS editor to enable collaborative editing.",

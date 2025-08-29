@@ -32,8 +32,7 @@ import { Controller } from '@hotwired/stimulus';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import OpBlockNoteContainer from '../../../react/OpBlockNoteContainer';
-// import OpBlockNoteContainer from 'react/OpBlockNoteContainer';
-import { User } from "@blocknote/core/comments";
+import { User } from '@blocknote/core/comments';
 
 export default class extends Controller {
   static targets = [
@@ -53,7 +52,7 @@ export default class extends Controller {
   declare readonly blockNoteEditorTarget:HTMLElement;
   declare readonly blockNoteInputFieldTarget:HTMLInputElement;
   declare readonly inputTextValue:string;
-  declare readonly usersValue:Array<User>;
+  declare readonly usersValue:User[];
   declare readonly activeUserValue:User;
   declare readonly hocuspocusUrlValue:string;
   declare readonly hocuspocusAccessTokenValue:string;

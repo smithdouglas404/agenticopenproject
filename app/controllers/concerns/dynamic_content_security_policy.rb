@@ -54,15 +54,22 @@ module DynamicContentSecurityPolicy
     end
   end
 
- private
+  private
 
   def add_hocuspocus_host_to_csp
     hocuspocus_url = Setting.collaborative_editing_hocuspocus_url
     if hocuspocus_url.present?
-      uri = URI.parse(hocuspocus_url)
-      base_url = "#{uri.scheme}://#{uri.host}"
-
-      append_content_security_policy_directives(connect_src: [base_url])
+      uri = begin
+        URI.parse(hocuspocus_url)
+      rescue URI::InvalidURIError
+        OpenProject.logger.info do
+          "Setting.collaborative_editing_hocuspocus_url is set to an invalid URI: #{hocuspocus_url}"
+        end
+        nil
+      end
+      if uri.present?
+        append_content_security_policy_directives(connect_src: ["#{uri.scheme}://#{uri.host}"])
+      end
     end
   end
 end

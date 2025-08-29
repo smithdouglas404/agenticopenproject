@@ -1,11 +1,6 @@
 services:
   hocuspocus:
-    command: sh -c "npm install && node index.js"
-    image: node:20
-    working_dir: /app
-    volumes:
-      - ./app:/app
-      - node_modules:/app/node_modules
+    image:  openproject/hocuspocus:main-88913ad0
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.hocuspocus.rule=Host(`hocuspocus.local`)"
@@ -13,10 +8,10 @@ services:
       - "traefik.http.routers.hocuspocus.tls=true"
       - "traefik.http.services.hocuspocus-service.loadbalancer.server.port=1234"
       - "traefik.http.routers.hocuspocus.tls.certresolver=step"
-      # - "traefik.http.serversTransports.insecureTransport.insecureSkipVerify=true"
-      # - "traefik.http.services.my-wss-service.loadBalancer.serversTransport=insecureTransport"
     networks:
       - gateway
+    environment:
+      - SECRET=secret12345
 networks:
   gateway:
     external: true
