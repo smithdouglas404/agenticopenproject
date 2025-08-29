@@ -27,29 +27,31 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-
-module HomescreenHelper
-  ##
-  # Homescreen name
-  def organization_name
-    Setting.app_title || Setting.software_name
+class Homescreen::NewFeaturesComponent < ApplicationComponent
+  def feature_version
+    [
+      OpenProject::VERSION::MAJOR,
+      OpenProject::VERSION::MINOR
+    ].join("_")
   end
 
-  ##
-  # Homescreen organization icon
-  def organization_icon
-    op_icon("icon-context icon-enterprise")
+  def feature_teaser_image
+    "#{feature_version}_features.svg"
   end
 
-  ##
-  # Determine whether we should render the links on homescreen?
-  def show_homescreen_links?
-    OpenProject::Configuration.show_community_links?
+  def new_features_header
+    I18n.t("homescreen.blocks.new_features.header")
   end
 
-  ##
-  # Determine whether we should render the onboarding modal
-  def show_onboarding_modal?
-    OpenProject::Configuration.onboarding_enabled? && params[:first_time_user]
+  def learn_more_link_text
+    I18n.t("homescreen.blocks.new_features.learn_about")
+  end
+
+  def new_features_title
+    I18n.t("homescreen.blocks.new_features.#{feature_version}.new_features_title")
+  end
+
+  def new_features
+    I18n.t("homescreen.blocks.new_features.#{feature_version}.new_features_list")
   end
 end
