@@ -407,6 +407,7 @@ import { OpenprojectEnterpriseModule } from 'core-app/features/enterprise/openpr
 import {
   WorkPackageReminderContextMenuDirective,
 } from 'core-app/features/work-packages/components/wp-buttons/wp-reminder-button/wp-reminder-context-menu.directive';
+import { WorkPackageFullCopyEntryComponent } from 'core-app/features/work-packages/routing/wp-full-copy/wp-full-copy-entry.component';
 
 @NgModule({
   imports: [
@@ -602,6 +603,7 @@ import {
 
     // Full view
     WorkPackagesFullViewComponent,
+    WorkPackageFullCopyEntryComponent,
 
     // Modals
     WpTableConfigurationModalComponent,

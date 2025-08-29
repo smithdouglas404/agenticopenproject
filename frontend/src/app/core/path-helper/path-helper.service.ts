@@ -286,7 +286,11 @@ export class PathHelperService {
     return `${this.staticBase}/wp/${id}`;
   }
 
-  public workPackageCopyPath(workPackageId:string|number) {
+  public workPackageCopyPath(projectIdentifier:string|null, workPackageId:string|number) {
+    if (projectIdentifier) {
+      return `${this.workPackagesPath(projectIdentifier)}/${workPackageId}/copy`;
+    }
+
     return `${this.workPackagePath(workPackageId)}/copy`;
   }
 
@@ -298,6 +302,7 @@ export class PathHelperService {
     return `${this.workPackagesPath(projectIdentifier)}/details/${workPackageId}`;
   }
 
+  // Todo: Remove?
   public workPackageDetailsCopyPath(projectIdentifier:string, workPackageId:string|number) {
     return this.workPackageDetailsPath(projectIdentifier, workPackageId, 'copy');
   }
