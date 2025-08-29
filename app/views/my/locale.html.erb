@@ -27,34 +27,16 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<% html_title(t(:label_my_account), t(:label_setting_plural)) %>
+<% html_title(t(:label_my_account), t(:label_locale)) %>
 
 <%=
   render(Primer::OpenProject::PageHeader.new) do |header|
-    header.with_title { t(:label_setting_plural) }
+    header.with_title { t(:label_locale) }
     header.with_breadcrumbs(
       [{ href: my_account_path, text: t(:label_my_account) },
-       t(:label_setting_plural)]
+       t(:label_locale)]
     )
   end
 %>
 
-<%= error_messages_for "user" %>
-<%= labelled_tabular_form_for @user, as: :user, url: { action: "update_settings" },
-                                     lang: current_language,
-                                     html: { id: "my_account_form", class: "form -wide-labels" } do |f| %>
-  <fieldset class="form--fieldset">
-    <div class="form--field">
-      <%= f.select :language, lang_options_for_select, container_class: "-middle" %>
-    </div>
-    <%= fields_for :pref, @user.pref, builder: TabularFormBuilder, lang: current_language do |pref_fields| %>
-      <%= render Settings::TimeZoneSettingComponent.new(
-            "time_zone",
-            form: pref_fields,
-            include_blank: false,
-            container_class: "-middle"
-          ) %>
-      <% end %>
-  </fieldset>
-  <%= styled_button_tag t(:button_save), class: "-primary -with-icon icon-checkmark" %>
-<% end %>
+<%= render My::LocaleComponent.new(@user) %>

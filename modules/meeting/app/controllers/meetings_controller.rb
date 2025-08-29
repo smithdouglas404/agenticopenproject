@@ -106,7 +106,7 @@ class MeetingsController < ApplicationController
       text = I18n.t(:notice_successful_create)
       unless User.current.pref.time_zone?
         link = I18n.t(:notice_timezone_missing, zone: formatted_time_zone_offset)
-        text += " #{view_context.link_to(link, { controller: '/my', action: :settings, anchor: 'pref_time_zone' },
+        text += " #{view_context.link_to(link, { controller: '/my', action: :locale, anchor: 'pref_time_zone' },
                                          class: 'link_to_profile')}"
       end
       flash[:notice] = text.html_safe # rubocop:disable Rails/OutputSafety

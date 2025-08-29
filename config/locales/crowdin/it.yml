@@ -1046,6 +1046,7 @@ it:
         active_value:
           true: "Rimosso dall'archivio"
           false: "archiviato"
+        attribute_groups: "Attribute Groups"
         description: "Descrizione"
         enabled_modules: "Moduli abilitati"
         identifier: "Identificatore"
@@ -1167,7 +1168,7 @@ it:
         identity_url: "URL identificativo"
         current_password: "Password corrente"
         force_password_change: "Richiedi la modifica della password al prossimo login"
-        language: "Linguaggio"
+        language: "Lingua"
         last_login_on: "Ultimo accesso"
         failed_login_count: "Tentativi di accesso falliti"
         first_name: "Nome"
@@ -1337,6 +1338,9 @@ it:
               minimum: "necessità di includere almeno un filtro per il principale, per il contesto o per l'id con l'operatore '='."
         custom_field:
           at_least_one_custom_option: "Deve essere disponibile almeno un'opzione."
+          referenced_in_other_fields_html:
+            one: "%{name} is used in project attribute calculation %{links}."
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2691,6 +2695,7 @@ it:
   label_api_access_key: "Chiave di accesso API"
   label_api_access_key_created_on: "Chiave di accesso API creata %{value} fa"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'Token di iCalendar "%{token_name}" per "%{calendar_name}" in "%{project_name}"'
   label_ical_access_key_not_present: "Token di iCalendar non presenti."
@@ -2937,8 +2942,9 @@ it:
   label_show_more: "Mostra di più"
   label_journal: "Diario"
   label_journal_diff: "Confronto Descrizione"
-  label_language: "Linguaggio"
+  label_language: "Lingua"
   label_languages: "Lingue"
+  label_locale: "Language and Region"
   label_jump_to_a_project: "Salta ad altro progetto..."
   label_keyword_plural: "Parole chiave"
   label_language_based: "Basato sulla lingua dell'utente"
@@ -3742,13 +3748,15 @@ it:
       one: "1 progetto"
       other: "%{count} progetti"
     destroy:
-      confirmation: "Se continui, il progetto %{identifier} verrà distrutto definitivamente. Per confermare questa azione, inserisci il nome del progetto nel campo sottostante, questa operazione:"
-      project_delete_result_1: "Eliminerà tutti i salvataggi remoti"
-      project_delete_result_2: "Eliminerà tutte le cartelle di progetto gestite negli archivi allegati."
-      info: "L'eliminazione del progetto è un'operazione irreversibile."
-      project_verification: "Immettere il nome del progetto %{name} per verificare l'eliminazione."
-      subprojects_confirmation: "Anche il suo sottoprogetto(i): %{value} sarà eliminato(i)."
-      title: "Elimina il progetto %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Fase di progetto: %{phase}"
       project_phase_any: "Fase di progetto: Qualsiasi"
@@ -3962,7 +3970,7 @@ it:
   setting_cross_project_work_package_relations: "Consenti di correlare macro-attività tra più progetti"
   setting_first_week_of_year: "La prima settimana dell'anno contiene"
   setting_date_format: "Data"
-  setting_default_language: "Linguaggio predefinito"
+  setting_default_language: "Lingua predefinita"
   setting_default_projects_modules: "Moduli abilitati in automatico su nuovi progetti"
   setting_default_projects_public: "I nuovi progetti sono pubblici come impostazione predefinita"
   setting_disable_password_login: "Disabilita l'autenticazione con password"
@@ -4201,6 +4209,7 @@ it:
   status_invited: invitato
   status_locked: bloccato
   status_registered: registrato
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

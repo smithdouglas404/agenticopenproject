@@ -1049,6 +1049,7 @@ si:
         active_value:
           true: "unarchived"
           false: "සංරක්ෂිත"
+        attribute_groups: "Attribute Groups"
         description: "විස්තරය"
         enabled_modules: "සක්රීය මොඩියුල"
         identifier: "හඳුනාගැනීමේ"
@@ -1340,6 +1341,9 @@ si:
               minimum: "need to include at least one filter for principal, context or id with the '=' operator."
         custom_field:
           at_least_one_custom_option: "අවම වශයෙන් එක් විකල්පයක් ලබා ගත යුතුය."
+          referenced_in_other_fields_html:
+            one: "%{name} is used in project attribute calculation %{links}."
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2694,6 +2698,7 @@ si:
   label_api_access_key: "API ප්රවේශ යතුර"
   label_api_access_key_created_on: "%{value} පෙර නිර්මාණය කරන ලද API ප්රවේශ යතුර"
   label_api_access_key_type: "යෙ.ක්‍ර.මු."
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar token "%{token_name}" for "%{calendar_name}" in "%{project_name}"'
   label_ical_access_key_not_present: "iCalendar token(s) not present."
@@ -2942,6 +2947,7 @@ si:
   label_journal_diff: "විස්තරය සංසන්දනය"
   label_language: " "
   label_languages: "Languages"
+  label_locale: "Language and Region"
   label_jump_to_a_project: "ව්යාපෘතියකට පනින්න..."
   label_keyword_plural: "මූල පද"
   label_language_based: "පරිශීලකයාගේ භාෂාව මත පදනම්ව"
@@ -3745,13 +3751,15 @@ si:
       one: "1 ව්යාපෘතිය"
       other: "%{count} ව්යාපෘති"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. To confirm this action please introduce the project name in the field below, this will:"
-      project_delete_result_1: "Delete all related data."
-      project_delete_result_2: "Delete all managed project folders in the attached storages."
-      info: "ව්යාපෘතිය මකා දැමීම ආපසු හැරවිය නොහැකි ක්රියාවකි."
-      project_verification: "මකාදැමීම සත්යාපනය කිරීම සඳහා ව්යාපෘතියේ නම %{name} ඇතුළත් කරන්න."
-      subprojects_confirmation: "එහි උප ව්යාපෘතිය (ය): %{value} ද මකා දැමෙනු ඇත."
-      title: "ව්යාපෘතිය මකන්න %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Project phase: %{phase}"
       project_phase_any: "Project phase: Any"
@@ -4204,6 +4212,7 @@ si:
   status_invited: ආරාධනා
   status_locked: අගුළු දමා ඇත
   status_registered: ලියාපදිංචි
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

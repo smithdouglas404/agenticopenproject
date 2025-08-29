@@ -1039,6 +1039,7 @@ ms:
         active_value:
           true: "tidak diarkibkan"
           false: "diarkibkan"
+        attribute_groups: "Attribute Groups"
         description: "Deskripsi"
         enabled_modules: "Modul yang diaktifkan"
         identifier: "Pengenalan"
@@ -1330,6 +1331,8 @@ ms:
               minimum: "perlu sertakan sekurang-kurangnya satu saringan utama, konteks, atau id dengan operator '='."
         custom_field:
           at_least_one_custom_option: "Sekurang-kurangnya satu pilihan perlu tersedia."
+          referenced_in_other_fields_html:
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2648,6 +2651,7 @@ ms:
   label_api_access_key: "Kunci akses API"
   label_api_access_key_created_on: "Kunci akses API dicipta %{value} yang lalu"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'Token iCalendar "%{token_name}" untuk "%{calendar_name}" dalam "%{project_name}"'
   label_ical_access_key_not_present: "Token iCalendar tidak ada."
@@ -2896,6 +2900,7 @@ ms:
   label_journal_diff: "Perbandingan Deskripsi"
   label_language: "Bahasa"
   label_languages: "Bahasa-bahasa"
+  label_locale: "Language and Region"
   label_jump_to_a_project: "Lompat ke projek..."
   label_keyword_plural: "Kata kunci"
   label_language_based: "Berdasarkan bahasa pengguna"
@@ -3696,13 +3701,15 @@ ms:
       one: "1 projek"
       other: "%{count} projek"
     destroy:
-      confirmation: "Jika anda teruskan, projek %{identifier} tersebut akan dimusnahkan selama-lamanya. Untuk mengesahkan tindakan ini sila perkenalkan nama projek dalam ruang dibawah, ini akan:"
-      project_delete_result_1: "Padam semua data berkaitan"
-      project_delete_result_2: "Padam semua projek yang diuruskan dalam storan yang dilampirkan."
-      info: "Memadam projek tersebut adalah tindakan yang tidak dapat dipulihkan."
-      project_verification: "Masukkan nama projek %{name} untuk mengesahkan pemadaman."
-      subprojects_confirmation: "Subprojeknya: %{value} juga akan dipadamkan."
-      title: "Padamkan projek %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Project phase: %{phase}"
       project_phase_any: "Project phase: Any"
@@ -4155,6 +4162,7 @@ ms:
   status_invited: dijemput
   status_locked: dikunci
   status_registered: berdaftar
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

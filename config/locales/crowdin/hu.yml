@@ -1048,6 +1048,7 @@ hu:
         active_value:
           true: "unarchived"
           false: "archivált"
+        attribute_groups: "Attribute Groups"
         description: "Leírás"
         enabled_modules: "Engedélyezett modulok"
         identifier: "Azonosító"
@@ -1339,6 +1340,9 @@ hu:
               minimum: "tartalmaznia kell legalább egy szűrőt a fő, kontextus vagy azonosító számára a '=' operátorral.\n"
         custom_field:
           at_least_one_custom_option: "Minimum egy opciónak elérhetőnek kell lennie."
+          referenced_in_other_fields_html:
+            one: "%{name} is used in project attribute calculation %{links}."
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2693,6 +2697,7 @@ hu:
   label_api_access_key: "API-hozzáférés kulcs"
   label_api_access_key_created_on: "APIhozzáférési kulcs készítette: %{value} ezelőtt"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar token "%{token_name}" for "%{calendar_name}" in "%{project_name}"'
   label_ical_access_key_not_present: "iCalendar token(s) not present."
@@ -2941,6 +2946,7 @@ hu:
   label_journal_diff: "Leírás összehasonlítás"
   label_language: "Nyelv"
   label_languages: "Languages"
+  label_locale: "Language and Region"
   label_jump_to_a_project: "Ugrás a projekthez"
   label_keyword_plural: "Kulcsszavak"
   label_language_based: "A felhasználói nyelv alapján"
@@ -3743,13 +3749,15 @@ hu:
       one: "1 projekt"
       other: "%{count} projekt"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. To confirm this action please introduce the project name in the field below, this will:"
-      project_delete_result_1: "Delete all related data."
-      project_delete_result_2: "Delete all managed project folders in the attached storages."
-      info: "A felhasználói hozzáférés törlése visszafordíthatatlan művelet."
-      project_verification: "Adja meg a projekt nevét %{name} a törlés megerősítéséhez."
-      subprojects_confirmation: "Az alprojekt(ek): %{value} is törlődni fog."
-      title: "A projekt %{name} törlése"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Project phase: %{phase}"
       project_phase_any: "Project phase: Any"
@@ -4202,6 +4210,7 @@ hu:
   status_invited: meghívott
   status_locked: zárolt
   status_registered: regisztrált
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

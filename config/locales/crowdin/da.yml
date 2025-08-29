@@ -1047,6 +1047,7 @@ da:
         active_value:
           true: "unarchived"
           false: "archived"
+        attribute_groups: "Attribute Groups"
         description: "Beskrivelse"
         enabled_modules: "Aktiverede moduler"
         identifier: "ID"
@@ -1338,6 +1339,9 @@ da:
               minimum: "need to include at least one filter for principal, context or id with the '=' operator."
         custom_field:
           at_least_one_custom_option: "At least one option needs to be available."
+          referenced_in_other_fields_html:
+            one: "%{name} is used in project attribute calculation %{links}."
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2692,6 +2696,7 @@ da:
   label_api_access_key: "API adgangsnøgle"
   label_api_access_key_created_on: "API adgangsnøgle oprettet for %{value} siden"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar token "%{token_name}" for "%{calendar_name}" in "%{project_name}"'
   label_ical_access_key_not_present: "iCalendar token(s) not present."
@@ -2940,6 +2945,7 @@ da:
   label_journal_diff: "Sammenligning af beskrivelser"
   label_language: "Sprog"
   label_languages: "Languages"
+  label_locale: "Language and Region"
   label_jump_to_a_project: "Gå til et projekt..."
   label_keyword_plural: "Keywords"
   label_language_based: "Baseret på brugerens sprog"
@@ -3743,13 +3749,15 @@ da:
       one: "1 projekt"
       other: "%{count} projekter"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. To confirm this action please introduce the project name in the field below, this will:"
-      project_delete_result_1: "Delete all related data."
-      project_delete_result_2: "Delete all managed project folders in the attached storages."
-      info: "Sletning af projektet er en irreversibel handling."
-      project_verification: "Angiv projektnavnet %{name}, for at bekræfte sletningen."
-      subprojects_confirmation: "Dets underprojekt(-er): %{value} vil ligeledes blive slettet."
-      title: "Slet projektet %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Project phase: %{phase}"
       project_phase_any: "Project phase: Any"
@@ -4200,6 +4208,7 @@ da:
   status_invited: inviteret
   status_locked: Spærret
   status_registered: registreret
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

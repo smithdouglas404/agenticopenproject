@@ -1041,6 +1041,7 @@ th:
         active_value:
           true: "unarchived"
           false: "archived"
+        attribute_groups: "Attribute Groups"
         description: "คำอธิบาย"
         enabled_modules: "Enabled modules"
         identifier: "รหัส"
@@ -1332,6 +1333,8 @@ th:
               minimum: "ต้องมีตัวกรองอย่างน้อยหนึ่งตัวสำหรับตัวการ บริบท หรือรหัสที่มีตัวดำเนินการ '=' "
         custom_field:
           at_least_one_custom_option: "At least one option needs to be available."
+          referenced_in_other_fields_html:
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2650,6 +2653,7 @@ th:
   label_api_access_key: "คีย์การเข้าถึง API"
   label_api_access_key_created_on: "คีย์การเข้าถึง API ซึ่งสร้างเมื่อ %{value} ที่ผ่านมา"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar token "%{token_name}" for "%{calendar_name}" in "%{project_name}"'
   label_ical_access_key_not_present: "iCalendar token(s) not present."
@@ -2898,6 +2902,7 @@ th:
   label_journal_diff: "เปรียบเทียบคำอธิบาย"
   label_language: "ภาษา"
   label_languages: "Languages"
+  label_locale: "Language and Region"
   label_jump_to_a_project: "ไปยังโครงการ..."
   label_keyword_plural: "Keywords"
   label_language_based: "ตามภาษาของผู้ใช้"
@@ -3699,13 +3704,15 @@ th:
       one: "1 project"
       other: "%{count} โครงการ"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. To confirm this action please introduce the project name in the field below, this will:"
-      project_delete_result_1: "Delete all related data."
-      project_delete_result_2: "Delete all managed project folders in the attached storages."
-      info: "Deleting the project is an irreversible action."
-      project_verification: "Enter the project's name %{name} to verify the deletion."
-      subprojects_confirmation: "Its subproject(s): %{value} will also be deleted."
-      title: "Delete the project %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Project phase: %{phase}"
       project_phase_any: "Project phase: Any"
@@ -4158,6 +4165,7 @@ th:
   status_invited: invited
   status_locked: ล็อก
   status_registered: ลงทะเบียน
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

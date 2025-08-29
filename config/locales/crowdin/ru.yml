@@ -1063,6 +1063,7 @@ ru:
         active_value:
           true: "Разархивирован"
           false: "Архивирован"
+        attribute_groups: "Attribute Groups"
         description: "Описание"
         enabled_modules: "Включенные модули"
         identifier: "Идентификатор"
@@ -1354,6 +1355,11 @@ ru:
               minimum: "необходимо включить хотя бы один фильтр для основного, контекста или id с оператором '='."
         custom_field:
           at_least_one_custom_option: "По крайней мере один параметр должен быть доступен."
+          referenced_in_other_fields_html:
+            one: "%{name} is used in project attribute calculation %{links}."
+            few: "%{name} is used in project attribute calculations: %{links}."
+            many: "%{name} is used in project attribute calculations: %{links}."
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2780,6 +2786,7 @@ ru:
   label_api_access_key: "Ключ доступа к API"
   label_api_access_key_created_on: "Ключ доступа к API, созданный %{value} назад"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'токен iCalendar "%{token_name}" для "%{calendar_name}" в "%{project_name}"'
   label_ical_access_key_not_present: "iCalendar токен(ы) не представлены."
@@ -3028,6 +3035,7 @@ ru:
   label_journal_diff: "Описание сравнения"
   label_language: "Язык"
   label_languages: "Языки"
+  label_locale: "Language and Region"
   label_jump_to_a_project: "Перейти к проекту..."
   label_keyword_plural: "Ключевые слова"
   label_language_based: "Основанный на языке пользователя"
@@ -3834,13 +3842,15 @@ ru:
       one: "1 проект"
       other: "%{count} проектов"
     destroy:
-      confirmation: "Если вы продолжите, проект %{identifier} будет уничтожен навсегда. Чтобы подтвердить это действие, пожалуйста, введите название проекта в поле ниже:"
-      project_delete_result_1: "Удалить все связанные данные."
-      project_delete_result_2: "Удалить все папки управляемых проектов в приложенных хранилищах."
-      info: "Удаление проекта – действие необратимое."
-      project_verification: "Введите название проекта %{name} для проверки удаления."
-      subprojects_confirmation: "Его подпроекты: %{value} также будут удалены."
-      title: "Удаление проекта %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Этап проекта: %{phase}"
       project_phase_any: "Этап проекта: Любой"
@@ -4291,6 +4301,7 @@ ru:
   status_invited: приглашено
   status_locked: заблокировано
   status_registered: Зарегистрирован
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

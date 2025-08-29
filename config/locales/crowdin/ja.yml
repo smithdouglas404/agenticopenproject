@@ -1040,6 +1040,7 @@ ja:
         active_value:
           true: "アーカイブされていません"
           false: "アーカイブ済"
+        attribute_groups: "Attribute Groups"
         description: "説明"
         enabled_modules: "有効なモジュール"
         identifier: "識別子"
@@ -1331,6 +1332,8 @@ ja:
               minimum: "プリンシパル、コンテキスト、または '= ' 演算子の id に少なくとも 1 つのフィルタを含める必要があります。"
         custom_field:
           at_least_one_custom_option: "少なくとも 1 つオプションが有効である必要があります。"
+          referenced_in_other_fields_html:
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2649,6 +2652,7 @@ ja:
   label_api_access_key: "APIアクセスキー"
   label_api_access_key_created_on: "APIアクセスキーが%{value}前に作成されました"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar トークン「%{token_name}」は「%{calendar_name}」カレンダーの「%{project_name}」プロジェクト用です。'
   label_ical_access_key_not_present: "iCalendar トークンが存在しません。"
@@ -2897,6 +2901,7 @@ ja:
   label_journal_diff: "説明の比較"
   label_language: "言語"
   label_languages: "言語"
+  label_locale: "Language and Region"
   label_jump_to_a_project: "プロジェクトへ移動..."
   label_keyword_plural: "キーワード"
   label_language_based: "ユーザの言語設定に基づく"
@@ -3698,13 +3703,15 @@ ja:
       one: "1 プロジェクト"
       other: "%{count} プロジェクト"
     destroy:
-      confirmation: "続行すると、プロジェクト %{identifier} は完全に破棄されます。この操作を確認するには、以下のフィールドにプロジェクト名を紹介してください："
-      project_delete_result_1: "すべての関連データを削除します。"
-      project_delete_result_2: "添付されているストレージ内のすべての管理対象プロジェクトフォルダを削除します。"
-      info: "プロジェクトの削除は復元できない操作です。"
-      project_verification: "削除を確認するため、プロジェクト名 %{name} を入力してください。"
-      subprojects_confirmation: "子プロジェクト: %{value} も削除されます。"
-      title: "プロジェクト %{name} を削除"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "プロジェクトフェーズ: %{phase}"
       project_phase_any: "プロジェクトフェーズ: すべて"
@@ -4157,6 +4164,7 @@ ja:
   status_invited: 招待済み
   status_locked: ロック済み
   status_registered: 登録済み
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

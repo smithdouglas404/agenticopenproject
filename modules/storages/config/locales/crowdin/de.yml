@@ -236,10 +236,11 @@ de:
       openproject_oauth: OpenProject OAuth
       project_folders: Projektordner
       redirect_uri: Umleitungs-URI
+      sharepoint_oauth: Azure OAuth
       storage_audience_blank: Keine Audience wurde konfiguriert.
       storage_audience_description: Tokenaustausch für Audience "%{audience}".
       storage_audience_idp: Verwende den Access Tokens, den der Identity Provider beim Login erhalten hat, unabhängig von der Audience.
-      storage_oauth: Nextcloud OAuth
+      storage_oauth: Storage OAuth
       storage_provider: Speicheranbieter
       token_exchange: Tokenaustausch
     health:
@@ -278,6 +279,7 @@ de:
           drive_id_exists: Laufwerk existiert
           drive_id_format: Laufwerks-ID-Format
           header: Konfiguration
+          host: Host URL
           host_url_accessible: Host-URL erreichbar
           storage_configured: Konfiguration abgeschlossen
           tenant_id: Tenant ID

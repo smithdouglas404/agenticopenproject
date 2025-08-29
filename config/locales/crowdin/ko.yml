@@ -1041,6 +1041,7 @@ ko:
         active_value:
           true: "보관 취소됨"
           false: "보관됨"
+        attribute_groups: "Attribute Groups"
         description: "설명"
         enabled_modules: "사용 가능한 모듈"
         identifier: "식별자"
@@ -1332,6 +1333,8 @@ ko:
               minimum: "'=' 연산자를 사용하여 주체, 컨텍스트 또는 ID에 대해 하나 이상의 필터를 포함시켜야 합니다."
         custom_field:
           at_least_one_custom_option: "하나 이상의 옵션을 사용할 수 있어야 합니다."
+          referenced_in_other_fields_html:
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2650,6 +2653,7 @@ ko:
   label_api_access_key: "API 액세스 키"
   label_api_access_key_created_on: "API 액세스 키가 %{value} 전에 생성되었습니다."
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: '"%{project_name}"의 "%{calendar_name}"에 대한 iCalendar 토큰 "%{token_name}"'
   label_ical_access_key_not_present: "iCalendar 토큰이 없습니다."
@@ -2898,6 +2902,7 @@ ko:
   label_journal_diff: "설명 비교"
   label_language: "언어"
   label_languages: "언어"
+  label_locale: "Language and Region"
   label_jump_to_a_project: "프로젝트로 이동..."
   label_keyword_plural: "키워드"
   label_language_based: "사용자 언어에 따름"
@@ -3698,13 +3703,15 @@ ko:
       one: "1개 프로젝트"
       other: "%{count}개 프로젝트"
     destroy:
-      confirmation: "계속하면 %{identifier} 프로젝트가 영구적으로 제거됩니다. 이 작업을 확인하려면 아래 필드에 프로젝트 이름을 입력하세요. 이렇게 하면 다음이 허용됩니다."
-      project_delete_result_1: "모든 관련 데이터를 삭제합니다."
-      project_delete_result_2: "연결된 저장소의 관리되는 프로젝트 폴더를 모두 삭제합니다."
-      info: "프로젝트 삭제는 취소할 수 없는 작업입니다."
-      project_verification: "삭제를 확인하려면 프로젝트 이름 %{name}(을)를 입력하세요."
-      subprojects_confirmation: "하위 프로젝트 %{value}도 삭제됩니다."
-      title: "프로젝트 %{name} 삭제"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "프로젝트 단계: %{phase}"
       project_phase_any: "프로젝트 단계: 모두"
@@ -4155,6 +4162,7 @@ ko:
   status_invited: 초대됨
   status_locked: 잠김
   status_registered: 등록됨
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

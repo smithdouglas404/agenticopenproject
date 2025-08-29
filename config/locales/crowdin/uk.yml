@@ -1058,6 +1058,7 @@ uk:
         active_value:
           true: "розархівовано"
           false: "заархівовано"
+        attribute_groups: "Attribute Groups"
         description: "Опис"
         enabled_modules: "Увімкнені модулі"
         identifier: "Ідентифікатор"
@@ -1349,6 +1350,11 @@ uk:
               minimum: "має містити принаймні один фільтр для адміністратора доступу, контексту або адміністратора з оператором «=»."
         custom_field:
           at_least_one_custom_option: "Необхідно мати принаймні один варіант."
+          referenced_in_other_fields_html:
+            one: "%{name} is used in project attribute calculation %{links}."
+            few: "%{name} is used in project attribute calculations: %{links}."
+            many: "%{name} is used in project attribute calculations: %{links}."
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2775,6 +2781,7 @@ uk:
   label_api_access_key: "Ключ доступу до API"
   label_api_access_key_created_on: "Ключ доступу до API створено %{value} тому"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'Маркер iCalendar «%{token_name}» для календаря «%{calendar_name}» у проєкті «%{project_name}»'
   label_ical_access_key_not_present: "Немає маркерів iCalendar."
@@ -3023,6 +3030,7 @@ uk:
   label_journal_diff: "Опис Порівняння"
   label_language: "Мова"
   label_languages: "Мови"
+  label_locale: "Language and Region"
   label_jump_to_a_project: "Перейти до проекту..."
   label_keyword_plural: "Ключові слова"
   label_language_based: "На основі мови користувача"
@@ -3828,13 +3836,15 @@ uk:
       one: "1 проєкт"
       other: "Проєктів: %{count}"
     destroy:
-      confirmation: "Якщо продовжити, проєкт %{identifier} буде остаточно видалено. Щоб підтвердити дію, введіть назву проєкту в поле нижче: Після цього:"
-      project_delete_result_1: "буде видалено всі пов’язані дані;"
-      project_delete_result_2: "буде видалено всі керовані папки проєкту у вкладених сховищах."
-      info: "Видалення проекту є незворотною дією."
-      project_verification: "Введіть ім'я проекту %{name}, щоб верифікувати видалення."
-      subprojects_confirmation: "Підпроекти: %{value} також будуть видалені."
-      title: "Видалити проект %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Етап проєкту: %{phase}"
       project_phase_any: "Етап проєкту: будь-який"
@@ -4287,6 +4297,7 @@ uk:
   status_invited: запрошені
   status_locked: Заблоковано
   status_registered: Зареєстровано
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

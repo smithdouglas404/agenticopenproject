@@ -1037,6 +1037,7 @@ id:
         active_value:
           true: "tidak diarsipkan"
           false: "diarsipkan"
+        attribute_groups: "Attribute Groups"
         description: "Deskripsi"
         enabled_modules: "Enabled modules"
         identifier: "Pengenal"
@@ -1328,6 +1329,8 @@ id:
               minimum: "perlu menyertakan setidaknya satu filter untuk prinsipal, konteks, atau id dengan operator '='."
         custom_field:
           at_least_one_custom_option: "Paling tidak, satu pilihan dibutuhkan untuk tersedia."
+          referenced_in_other_fields_html:
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2646,6 +2649,7 @@ id:
   label_api_access_key: "API access key"
   label_api_access_key_created_on: "API access key dibuat %{value} yg lalu"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'Token iCalendar "%{token_name}" untuk "%{calendar_name}" di "%{project_name}"'
   label_ical_access_key_not_present: "Token iCalendar tidak ada."
@@ -2894,6 +2898,7 @@ id:
   label_journal_diff: "Deskripsi perbandingan"
   label_language: "Bahasa"
   label_languages: "Bahasa"
+  label_locale: "Language and Region"
   label_jump_to_a_project: "Lompat ke Project..."
   label_keyword_plural: "Kata kunci"
   label_language_based: "Berdasarkan bahasa user"
@@ -3694,13 +3699,15 @@ id:
       one: "1 project"
       other: "%{count} proyek"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. To confirm this action please introduce the project name in the field below, this will:"
-      project_delete_result_1: "Delete all related data."
-      project_delete_result_2: "Delete all managed project folders in the attached storages."
-      info: "Deleting the project is an irreversible action."
-      project_verification: "Enter the project's name %{name} to verify the deletion."
-      subprojects_confirmation: "Its subproject(s): %{value} will also be deleted."
-      title: "Delete the project %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Project phase: %{phase}"
       project_phase_any: "Project phase: Any"
@@ -4151,6 +4158,7 @@ id:
   status_invited: invited
   status_locked: terkunci
   status_registered: telah terdaftar
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

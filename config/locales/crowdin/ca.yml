@@ -1046,6 +1046,7 @@ ca:
         active_value:
           true: "desarxivat"
           false: "arxivat"
+        attribute_groups: "Attribute Groups"
         description: "Descripció"
         enabled_modules: "Mòduls habilitats"
         identifier: "Identificador"
@@ -1337,6 +1338,9 @@ ca:
               minimum: "necessita d'incloure almenys un filtre per a principal, a context o id amb l'operador '='."
         custom_field:
           at_least_one_custom_option: "Al menys hi ha d'haver una opció disponible."
+          referenced_in_other_fields_html:
+            one: "%{name} is used in project attribute calculation %{links}."
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2691,6 +2695,7 @@ ca:
   label_api_access_key: "Clau d'accés API"
   label_api_access_key_created_on: "Clau d'accés API creada fa %{value}"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar roken "%{token_name}" per "%{calendar_name}" en "%{project_name}"'
   label_ical_access_key_not_present: "Token/s iCalendar no present."
@@ -2939,6 +2944,7 @@ ca:
   label_journal_diff: "Descripció de comparació"
   label_language: "Idioma"
   label_languages: "Idiomes"
+  label_locale: "Language and Region"
   label_jump_to_a_project: "Anar al projecte..."
   label_keyword_plural: "Paraules clau"
   label_language_based: "Basat en l'idioma de l'usuari"
@@ -3738,13 +3744,15 @@ ca:
       one: "1 projecte"
       other: "%{count} projectes"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. To confirm this action please introduce the project name in the field below, this will:"
-      project_delete_result_1: "Delete all related data."
-      project_delete_result_2: "Delete all managed project folders in the attached storages."
-      info: "Suprimir el projecte és una acció irreversible."
-      project_verification: "Introdueixi el nom del projecte %{name} per verificar la supressió."
-      subprojects_confirmation: "Els subproject(s): %{value} també es suprimiran."
-      title: "Suprimir el projecte %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Project phase: %{phase}"
       project_phase_any: "Project phase: Any"
@@ -4195,6 +4203,7 @@ ca:
   status_invited: convidat
   status_locked: bloquejat
   status_registered: registrat
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

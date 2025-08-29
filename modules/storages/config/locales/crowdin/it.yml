@@ -236,10 +236,11 @@ it:
       openproject_oauth: OpenProject OAuth
       project_folders: Cartelle del progetto
       redirect_uri: URI di reindirizzamento
+      sharepoint_oauth: Azure OAuth
       storage_audience_blank: Non è stato configurato nessun pubblico.
       storage_audience_description: Scambio di token per il pubblico "%{audience}".
       storage_audience_idp: Utilizzando il token di accesso ottenuto dal provider di identità durante l'accesso, indipendentemente dal pubblico.
-      storage_oauth: Nextcloud OAuth
+      storage_oauth: Storage OAuth
       storage_provider: Fornitore di archiviazione
       token_exchange: Scambio token
     health:
@@ -278,6 +279,7 @@ it:
           drive_id_exists: L'unità esiste
           drive_id_format: Formato ID unità
           header: Configurazione
+          host: Host URL
           host_url_accessible: Host URL accessibile
           storage_configured: Configurazione completa
           tenant_id: ID tenant

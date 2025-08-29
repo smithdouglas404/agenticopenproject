@@ -1065,6 +1065,7 @@ sk:
         active_value:
           true: "unarchived"
           false: "archivované"
+        attribute_groups: "Attribute Groups"
         description: "Popis"
         enabled_modules: "Zapnuté moduly"
         identifier: "Identifikátor"
@@ -1356,6 +1357,11 @@ sk:
               minimum: "need to include at least one filter for principal, context or id with the '=' operator."
         custom_field:
           at_least_one_custom_option: "Musí byť k dispozícii aspoň jedna možnosť."
+          referenced_in_other_fields_html:
+            one: "%{name} is used in project attribute calculation %{links}."
+            few: "%{name} is used in project attribute calculations: %{links}."
+            many: "%{name} is used in project attribute calculations: %{links}."
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2782,6 +2788,7 @@ sk:
   label_api_access_key: "Prístupový kľúč API"
   label_api_access_key_created_on: "Prístupový kľúč pre API vytvorený %{value} vzad"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar token "%{token_name}" for "%{calendar_name}" in "%{project_name}"'
   label_ical_access_key_not_present: "iCalendar token(s) not present."
@@ -3030,6 +3037,7 @@ sk:
   label_journal_diff: "Porovnanie popisu"
   label_language: "Jazyk"
   label_languages: "Languages"
+  label_locale: "Language and Region"
   label_jump_to_a_project: "Skok do projektu..."
   label_keyword_plural: "Kľúčové slová"
   label_language_based: "Založené na jazyku používateľa"
@@ -3836,13 +3844,15 @@ sk:
       one: "1 projekt"
       other: "%{count} projektov"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. To confirm this action please introduce the project name in the field below, this will:"
-      project_delete_result_1: "Delete all related data."
-      project_delete_result_2: "Delete all managed project folders in the attached storages."
-      info: "Odstránenie projektu je nevratná akcia."
-      project_verification: "Zadajte názov projektu %{name} pre potvrdenie odstránenia."
-      subprojects_confirmation: "Podprojekt (podprojekty): %{value} budú taktiež odstránené."
-      title: "Odstrániť projekt %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Project phase: %{phase}"
       project_phase_any: "Project phase: Any"
@@ -4295,6 +4305,7 @@ sk:
   status_invited: pozvaný
   status_locked: zamknuté
   status_registered: registrovaný
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

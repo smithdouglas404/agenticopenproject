@@ -1049,6 +1049,7 @@ sv:
         active_value:
           true: "unarchived"
           false: "arkiverad"
+        attribute_groups: "Attribute Groups"
         description: "Beskrivning"
         enabled_modules: "Aktiverad Moduler"
         identifier: "Identifierare"
@@ -1340,6 +1341,9 @@ sv:
               minimum: "need to include at least one filter for principal, context or id with the '=' operator."
         custom_field:
           at_least_one_custom_option: "Minst ett alternativ måste vara tillgängligt."
+          referenced_in_other_fields_html:
+            one: "%{name} is used in project attribute calculation %{links}."
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2694,6 +2698,7 @@ sv:
   label_api_access_key: "API åtkomstnyckel"
   label_api_access_key_created_on: "API åtkomstnyckel skapade %{value} sedan"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar token "%{token_name}" for "%{calendar_name}" in "%{project_name}"'
   label_ical_access_key_not_present: "iCalendar token(s) not present."
@@ -2942,6 +2947,7 @@ sv:
   label_journal_diff: "Jämför beskrivning"
   label_language: "Språk"
   label_languages: "Språk"
+  label_locale: "Language and Region"
   label_jump_to_a_project: "Hoppa till projekt..."
   label_keyword_plural: "Nyckelord"
   label_language_based: "Baserat på användarens språk"
@@ -3745,13 +3751,15 @@ sv:
       one: "Ett projekt"
       other: "%{count} projekt"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. To confirm this action please introduce the project name in the field below, this will:"
-      project_delete_result_1: "Delete all related data."
-      project_delete_result_2: "Delete all managed project folders in the attached storages."
-      info: "Att radera ett projekt går inte att ångra."
-      project_verification: "Ange projektnamn %{name} för att verifiera raderingen."
-      subprojects_confirmation: "Följande delprojekt kommer också raderas: %{value}."
-      title: "Radera projektet %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Project phase: %{phase}"
       project_phase_any: "Project phase: Any"
@@ -4202,6 +4210,7 @@ sv:
   status_invited: inbjuden
   status_locked: låst
   status_registered: Registrerad
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

@@ -1062,6 +1062,7 @@ lt:
         active_value:
           true: "išarchyvuota"
           false: "suarchyvuotas"
+        attribute_groups: "Attribute Groups"
         description: "Aprašymas"
         enabled_modules: "Įgalinti moduliai"
         identifier: "Identifikatorius"
@@ -1353,6 +1354,11 @@ lt:
               minimum: "turite įtraukti bent vieną nario, konteksto ar id filtrą su „=“ operatoriumi."
         custom_field:
           at_least_one_custom_option: "Turi būti prieinama bent viena savybė."
+          referenced_in_other_fields_html:
+            one: "%{name} is used in project attribute calculation %{links}."
+            few: "%{name} is used in project attribute calculations: %{links}."
+            many: "%{name} is used in project attribute calculations: %{links}."
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2779,6 +2785,7 @@ lt:
   label_api_access_key: "API prieigos raktas"
   label_api_access_key_created_on: "API prieigos raktas sukurtas prieš %{value}"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar žetonas „%{token_name}“ skirtas „%{calendar_name}“ projekte „%{project_name}“'
   label_ical_access_key_not_present: "iCalendar žetono(ų) nėra."
@@ -3027,6 +3034,7 @@ lt:
   label_journal_diff: "Aprašymų palyginimas"
   label_language: "Kalba"
   label_languages: "Kalbos"
+  label_locale: "Language and Region"
   label_jump_to_a_project: "Peršokti į projektą..."
   label_keyword_plural: "Raktažodžiai"
   label_language_based: "Paremta vartotojo kalba"
@@ -3833,13 +3841,15 @@ lt:
       one: "1 projektas"
       other: "%{count} projektai (-as, -ų)"
     destroy:
-      confirmation: "Jei tęsite, projektas %{identifier} bus galutinai sunaikintas. Šio veiksmo patvirtinimui prašome įvesti projekto pavadinimą į žemiau pateiktą lauką. Tai padarys:"
-      project_delete_result_1: "Ištrins visus susijusius duomenis."
-      project_delete_result_2: "Ištrins visus projekto valdomus aplankus susijusiose saugyklose."
-      info: "Projekto ištrynimas yra negrįžtamas veiksmas."
-      project_verification: "Įveskite projekto pavadinimą %{name}, kad patvirtintumėte ištrynimą."
-      subprojects_confirmation: "Jo sub-projektas(-ai): %{value} taip pat bus ištrintas(-i)."
-      title: "Ištrinti projektą %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Project phase: %{phase}"
       project_phase_any: "Project phase: Any"
@@ -4290,6 +4300,7 @@ lt:
   status_invited: pakviestas
   status_locked: užrakintas
   status_registered: registruotas
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

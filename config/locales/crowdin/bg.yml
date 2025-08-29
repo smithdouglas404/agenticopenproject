@@ -1049,6 +1049,7 @@ bg:
         active_value:
           true: "unarchived"
           false: "archived"
+        attribute_groups: "Attribute Groups"
         description: "Описание"
         enabled_modules: "Разрешени модули"
         identifier: "Идентификатор"
@@ -1340,6 +1341,9 @@ bg:
               minimum: "need to include at least one filter for principal, context or id with the '=' operator."
         custom_field:
           at_least_one_custom_option: "At least one option needs to be available."
+          referenced_in_other_fields_html:
+            one: "%{name} is used in project attribute calculation %{links}."
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2694,6 +2698,7 @@ bg:
   label_api_access_key: "API ключ за достъп"
   label_api_access_key_created_on: "API ключ за достъп е създаден преди %{value}"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar token "%{token_name}" for "%{calendar_name}" in "%{project_name}"'
   label_ical_access_key_not_present: "iCalendar token(s) not present."
@@ -2942,6 +2947,7 @@ bg:
   label_journal_diff: "Сравнение на описание"
   label_language: "Език"
   label_languages: "Езици"
+  label_locale: "Language and Region"
   label_jump_to_a_project: "Отиди на проект..."
   label_keyword_plural: "Ключови думи"
   label_language_based: "Въз основа на езика на потребителя"
@@ -3745,13 +3751,15 @@ bg:
       one: "1 проект"
       other: "%{count} проекти"
     destroy:
-      confirmation: "Ако продължите, проектът %{identifier} ще бъде окончателно унищожен. За да потвърдите това действие, моля въведете името на проекта в полето по-долу, това ще:"
-      project_delete_result_1: "Изтрийте всички свързани данни."
-      project_delete_result_2: "Изтрийте всички управлявани папки на проекта в приложените хранилища."
-      info: "Изтриването на проекта е необратимо действие."
-      project_verification: "Въведете името на проекта %{name} , за да потвърдите изтриването."
-      subprojects_confirmation: "Неговият(те) подпроект(и): %{value} също ще бъде изтрит(и)."
-      title: "Изтриване на проекта %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Project phase: %{phase}"
       project_phase_any: "Project phase: Any"
@@ -4204,6 +4212,7 @@ bg:
   status_invited: Поканен
   status_locked: locked
   status_registered: registered
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

@@ -1047,6 +1047,7 @@ fr:
         active_value:
           true: "désarchivé"
           false: "archivé"
+        attribute_groups: "Attribute Groups"
         description: "Description"
         enabled_modules: "Modules activés"
         identifier: "Identifiant"
@@ -1338,6 +1339,9 @@ fr:
               minimum: "devez inclure au moins un filtre pour le principal, le contexte ou l'identifiant avec l'opérateur '='."
         custom_field:
           at_least_one_custom_option: "Au moins une option doit être disponible."
+          referenced_in_other_fields_html:
+            one: "%{name} is used in project attribute calculation %{links}."
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2692,6 +2696,7 @@ fr:
   label_api_access_key: "Clé d'accès API"
   label_api_access_key_created_on: "Clé d'accès API créé il y a %{value}"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'Jeton iCalendar « %{token_name} » pour « %{calendar_name} » dans « %{project_name} »'
   label_ical_access_key_not_present: "Jeton(s) iCalendar absent(s)."
@@ -2940,6 +2945,7 @@ fr:
   label_journal_diff: "Comparaison de description"
   label_language: "Langue"
   label_languages: "Langues"
+  label_locale: "Language and Region"
   label_jump_to_a_project: "Aller à un projet…"
   label_keyword_plural: "Mots clés"
   label_language_based: "Basé sur le langage de l'utilisateur"
@@ -3743,13 +3749,15 @@ fr:
       one: "1 projet"
       other: "%{count} projets"
     destroy:
-      confirmation: "Si vous continuez, le projet %{identifier} sera définitivement supprimé. Pour confirmer cette action, veuillez saisir le nom du projet dans le champ ci-dessous. Cela va :"
-      project_delete_result_1: "Supprimer toutes les données associées."
-      project_delete_result_2: "Supprimer tous les dossiers de projet gérés dans les unités de stockage attachées."
-      info: "La suppression du projet est une action irréversible."
-      project_verification: "Saisissez le nom du projet %{name} pour valider la suppression."
-      subprojects_confirmation: "Son(ses) sous-projet(s): %{value} sera(seront) également supprimé(s)."
-      title: "Supprimer le projet %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Phase du projet : %{phase}"
       project_phase_any: "Phase du projet : toutes"
@@ -4202,6 +4210,7 @@ fr:
   status_invited: invité
   status_locked: verrouillé
   status_registered: enregistré
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:
