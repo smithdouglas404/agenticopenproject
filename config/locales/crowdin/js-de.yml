@@ -136,7 +136,7 @@ de:
     description_available_columns: "Verfügbare Spalten"
     description_current_position: "Sie sind hier: "
     description_select_work_package: "Arbeitspaket #%{id} auswählen"
-    description_subwork_package: "Unteraufgabe von Arbeitspaket #%{id}"
+    description_subwork_package: "Kind von Arbeitspaket #%{id}"
     editor:
       revisions: "Lokale Änderungen anzeigen"
       no_revisions: "Keine lokalen Änderungen gefunden"
@@ -460,7 +460,7 @@ de:
     label_total_progress: "%{percent}% Gesamtfortschritt"
     label_total_amount: "Gesamt: %{amount}"
     label_updated_on: "aktualisiert am"
-    label_value_derived_from_children: "(aggregierter Wert von Unteraufgaben)"
+    label_value_derived_from_children: "(aggregierter Wert von Kindelementen)"
     label_children_derived_duration: "Aggregierte Dauer der Unteraufgaben"
     label_warning: "Warnung"
     label_work_package: "Arbeitspaket"
@@ -872,7 +872,7 @@ de:
         title: "Neues Arbeitspaket"
         header: "Neu: %{type}"
         header_no_type: "Neues Arbeitspaket (Typ noch nicht gesetzt)"
-        header_with_parent: "Neu: %{type} (Unteraufgabe von %{parent_type} #%{id})"
+        header_with_parent: "Neu: %{type} (Kind von %{parent_type} #%{id})"
         button: "Erstellen"
       duplicate:
         title: "Arbeitspaket duplizieren"
@@ -1069,7 +1069,7 @@ de:
         single_text: "Sind Sie sicher, dass Sie das Arbeitspaket löschen möchten?"
         bulk_text: "Sind Sie sicher, dass Sie die folgenden %{label} löschen möchten?"
         has_children: "Dieses Arbeitspaket hat %{childUnits}:"
-        confirm_deletion_children: "Ich bestätige, dass alle Unteraufgaben der hier aufgeführten Arbeitspakete rekursiv entfernt werden."
+        confirm_deletion_children: "Ich bestätige, dass alle untergordneten Elemente der hier aufgeführten Arbeitspakete rekursiv entfernt werden."
         deletes_children: "Alle Unteraufgaben und deren Nachkommen werden auch rekursiv gelöscht."
       destroy_time_entry:
         title: "Löschen der Zeitbuchung bestätigen"
