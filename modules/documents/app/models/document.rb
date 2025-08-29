@@ -34,6 +34,8 @@ class Document < ApplicationRecord
     collaborative: "collaborative"
   }
 
+  after_initialize :set_default_category
+
   belongs_to :author, class_name: "User", optional: true
   belongs_to :category, class_name: "DocumentCategory", optional: true
   belongs_to :project
@@ -68,13 +70,11 @@ class Document < ApplicationRecord
       .references(:attachments)
   }
 
-  after_initialize :set_default_category
-
   def visible?(user = User.current)
     !user.nil? && user.allowed_in_project?(:view_documents, project)
   end
 
   def set_default_category
-    self.category ||= DocumentCategory.default if new_record?
+    self.category ||= DocumentCategory.default if new_record? && classic?
   end
 end
