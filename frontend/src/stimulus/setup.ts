@@ -26,6 +26,7 @@ import StemsController from './controllers/dynamic/work-packages/activities-tab/
 import EditorController from './controllers/dynamic/work-packages/activities-tab/editor.controller';
 
 import AutoSubmit from '@stimulus-components/auto-submit';
+import interfaceAccountSettings from './controllers/interface-account-settings.controller';
 import AutoThemeSwitcher from './controllers/auto-theme-switcher.controller';
 import { OpenProjectStimulusApplication } from 'core-stimulus/openproject-stimulus-application';
 import { Application } from '@hotwired/stimulus';
@@ -65,6 +66,7 @@ OpenProjectStimulusApplication.preregister('work-packages--activities-tab--stems
 OpenProjectStimulusApplication.preregister('work-packages--activities-tab--editor', EditorController);
 OpenProjectStimulusApplication.preregister('beforeunload', BeforeunloadController);
 OpenProjectStimulusApplication.preregister('auto-theme-switcher', AutoThemeSwitcher);
+OpenProjectStimulusApplication.preregister('interface-account-settings', interfaceAccountSettings);
 
 const instance = OpenProjectStimulusApplication.start();
 window.Stimulus = instance;
