@@ -61,7 +61,7 @@ module OpenProject
         end
 
         def docs_url?(url)
-          url.start_with?(docs_url)
+          url&.start_with?(docs_url)
         end
 
         def docs_url
