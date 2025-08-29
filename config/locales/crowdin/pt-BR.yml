@@ -697,7 +697,7 @@ pt-BR:
     dark_high_contrast: "Alto contraste escuro"
     light: "Claro"
     light_high_contrast: "Contraste alto claro"
-    sync_with_os: "Automático (corresponde ao modo de cor do sistema operacional)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: Atualmente, não há nenhum tipo.
@@ -1193,9 +1193,9 @@ pt-BR:
         auto_hide_popups: "Ocultar automaticamente as notificações de sucesso"
         auto_hide_popups_caption: "Quando habilitado, as notificações verdes de sucesso desaparecem automaticamente após 5 segundos."
         warn_on_leaving_unsaved: "Alertar-me ao sair de um pacote de trabalho sem salvar as alterações"
-        theme: "Modo de cor"
+        theme: "Color mode"
         time_zone: "Fuso horário"
-        mode_guideline: "Alguns modos substituirão as cores personalizadas do tema para melhorar acessibilidade e legibilidade. Selecione o modo Claro para suporte total ao tema personalizado."
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Lembretes diários"
         workdays: "Dias úteis"
       version:
@@ -3747,13 +3747,15 @@ pt-BR:
       one: "1 projeto"
       other: "%{count} projetos"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. You will:"
-      project_delete_result_1: "Excluir todos os dados relacionados."
-      project_delete_result_2: "Excluir todas as pastas de projetos nos armazenamentos anexados."
-      info: "Deleting the project is an irreversible action. Please proceed with caution."
-      subprojects_confirmation: "Seu(s) subprojeto(s): %{value} também será(ão) excluído(s)."
-      title: "Delete project %{name}"
-      heading: "Permanently delete project %{name}?"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Fase de projeto: %{phase}"
       project_phase_any: "Fase de projeto: Qualquer"

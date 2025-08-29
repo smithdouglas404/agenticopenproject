@@ -712,7 +712,7 @@ ru:
     dark_high_contrast: "Темный высокий контраст"
     light: "Светлая"
     light_high_contrast: "Светлый высокий контраст"
-    sync_with_os: "Automatic (match OS colour mode)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: В данный момент типы отсутствуют.
@@ -1210,9 +1210,9 @@ ru:
         auto_hide_popups: "Автоматически скрывать успешные баннеры"
         auto_hide_popups_caption: "Когда эта функция включена, зеленые успешные баннеры автоматически исчезают через 5 секунд."
         warn_on_leaving_unsaved: "При покидании рабочего пакета предупреждать о не сохраненных изменениях"
-        theme: "Цветовой режим"
+        theme: "Color mode"
         time_zone: "Часовой пояс"
-        mode_guideline: "Некоторые режимы перезапишут пользовательские цвета для доступности и читаемости. Пожалуйста, выберите легкий режим для полной поддержки пользовательских тем."
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Ежедневные напоминания"
         workdays: "Рабочие дни"
       version:
@@ -3842,13 +3842,15 @@ ru:
       one: "1 проект"
       other: "%{count} проектов"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. You will:"
-      project_delete_result_1: "Удалить все связанные данные."
-      project_delete_result_2: "Удалить все папки управляемых проектов в приложенных хранилищах."
-      info: "Deleting the project is an irreversible action. Please proceed with caution."
-      subprojects_confirmation: "Его подпроекты: %{value} также будут удалены."
-      title: "Delete project %{name}"
-      heading: "Permanently delete project %{name}?"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Этап проекта: %{phase}"
       project_phase_any: "Этап проекта: Любой"

@@ -33,6 +33,8 @@ module Projects
     include ApplicationHelper
     include OpTurbo::Streamable
 
+    attr_reader :project
+
     def initialize(project:)
       super
 
@@ -43,10 +45,18 @@ module Projects
 
     def id = "delete-project-dialog"
 
-    def has_managed_project_folders? = @project.project_storages.any?(&:project_folder_automatic?)
+    def render_subproject_list(**options)
+      content_tag(:ul, options) do
+        safe_join(
+          subprojects.map do |subproject|
+            content_tag(:li, subproject.name)
+          end
+        )
+      end
+    end
 
-    def subproject_names
-      @project.descendants.map(&:to_s)
+    def subprojects
+      project.descendants
     end
   end
 end

@@ -39,40 +39,40 @@ RSpec.describe "My account Interface settings",
     visit my_account_path
   end
 
-  it "allows the user to specify their preferred colour mode" do
+  it "allows the user to specify their preferred color mode" do
     click_on "Interface"
 
-    select "Light", from: "Colour mode"
+    select "Light", from: "Color mode"
     click_on "Update look and feel"
 
     expect(page).to have_css("body[data-color-mode='light'][data-light-theme='light']")
 
-    select "Light high contrast", from: "Colour mode"
+    select "Light high contrast", from: "Color mode"
     click_on "Update look and feel"
 
     expect(page).to have_css("body[data-color-mode='light'][data-light-theme='light_high_contrast']")
 
-    select "Dark", from: "Colour mode"
+    select "Dark", from: "Color mode"
     click_on "Update look and feel"
 
     expect(page).to have_css("body[data-color-mode='dark'][data-dark-theme='dark']")
 
-    select "Dark high contrast", from: "Colour mode"
+    select "Dark high contrast", from: "Color mode"
     click_on "Update look and feel"
 
     expect(page).to have_css("body[data-color-mode='dark'][data-dark-theme='dark_high_contrast']")
 
-    select "Automatic (match OS colour mode)", from: "Colour mode"
+    select "Automatic (match OS color mode)", from: "Color mode"
     click_on "Update look and feel"
 
     expect(page).to have_css("body[data-auto-theme-switcher-mode-value='sync_with_os']")
   end
 
-  describe "Automatic (match OS colour mode)" do
+  describe "Automatic (match OS color  mode)" do
     def set_automatic_mode_with_reload
       click_on "Interface"
 
-      select "Automatic (match OS colour mode)", from: "Colour mode"
+      select "Automatic (match OS color mode)", from: "Color mode"
       click_on "Update look and feel"
     end
 

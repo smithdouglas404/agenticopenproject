@@ -691,7 +691,7 @@ ja:
     dark_high_contrast: "暗い高コントラスト"
     light: "ライト"
     light_high_contrast: "明るいハイコントラスト"
-    sync_with_os: "自動 (OS カラーモードに一致)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: 現在、種類はありません。
@@ -1186,9 +1186,9 @@ ja:
         auto_hide_popups: "サクセスバナーを自動的に隠す"
         auto_hide_popups_caption: "有効にすると、緑色のサクセスバナーは5秒後に自動的に消えます。"
         warn_on_leaving_unsaved: "変更を保存せずにワークパッケージから移動するときに警告"
-        theme: "カラーモード"
+        theme: "Color mode"
         time_zone: "タイムゾーン"
-        mode_guideline: "一部のモードでは、アクセシビリティと読みやすさのためにカスタムテーマの色を上書きします。完全なカスタムテーマサポートのためにライトモードを選択してください。"
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "毎日の通知"
         workdays: "営業時間"
       version:
@@ -3702,13 +3702,15 @@ ja:
       one: "1 プロジェクト"
       other: "%{count} プロジェクト"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. You will:"
-      project_delete_result_1: "すべての関連データを削除します。"
-      project_delete_result_2: "添付されているストレージ内のすべての管理対象プロジェクトフォルダを削除します。"
-      info: "Deleting the project is an irreversible action. Please proceed with caution."
-      subprojects_confirmation: "子プロジェクト: %{value} も削除されます。"
-      title: "Delete project %{name}"
-      heading: "Permanently delete project %{name}?"
+      title: "プロジェクトを削除"
+      heading: "プロジェクトを完全に削除しますか？"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          プロジェクト<strong>%{name}</strong> に関連するすべてのデータを完全に削除しようとしています。
+        one: >
+          プロジェクト <strong>%{name}</strong> とこのサブプロジェクトに関連するすべてのデータを完全に削除しようとしています：
+        other: >
+          プロジェクト <strong>%{name}</strong> とこれらのサブプロジェクトに関連するすべてのデータを完全に削除しようとしています：
     filters:
       project_phase: "プロジェクトフェーズ: %{phase}"
       project_phase_any: "プロジェクトフェーズ: すべて"

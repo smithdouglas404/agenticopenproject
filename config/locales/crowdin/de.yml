@@ -693,7 +693,7 @@ de:
     dark_high_contrast: "Dunkel (hoher Kontrast)"
     light: "Hell"
     light_high_contrast: "Hell (hoher Kontrast)"
-    sync_with_os: "Automatic (match OS colour mode)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: Derzeit gibt es keine Typen.
@@ -1188,9 +1188,9 @@ de:
         auto_hide_popups: "Automatisches Ausblenden von Erfolgsbannern"
         auto_hide_popups_caption: "Wenn diese Funktion aktiviert ist, verschwinden die grünen Erfolgsbanner automatisch nach 5 Sekunden."
         warn_on_leaving_unsaved: "Beim Verlassen einer Arbeitspaket-Seite mit ungespeichertem Text warnen"
-        theme: "Farbmodus"
+        theme: "Color mode"
         time_zone: "Zeitzone"
-        mode_guideline: "Einige Modi überschreiben benutzerdefinierte Theme-Farben zur Verbesserung von Barrierefreiheit und Lesbarkeit. Bitte wählen Sie den Hellmodus für die vollständige Unterstützung Ihres benutzerdefinierten Themes."
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Tägliche Erinnerungen"
         workdays: "Arbeitstage"
       version:
@@ -2939,7 +2939,7 @@ de:
   label_journal_diff: "Beschreibungsvergleich"
   label_language: "Sprache"
   label_languages: "Sprachen"
-  label_locale: "Language and Region"
+  label_locale: "Sprache und Region"
   label_jump_to_a_project: "Zu einem Projekt springen..."
   label_keyword_plural: "Schlüsselwörter"
   label_language_based: "Sprachabhängig"
@@ -3743,13 +3743,15 @@ de:
       one: "1 Projekt"
       other: "%{count} Projekte"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. You will:"
-      project_delete_result_1: "Alle zugehörigen Daten löschen."
-      project_delete_result_2: "Alle verwalteten Projektordner in den angehängten Speichern löschen."
-      info: "Deleting the project is an irreversible action. Please proceed with caution."
-      subprojects_confirmation: "Sein(e) Unterprojekt(e): %{value} werden ebenfalls gelöscht."
-      title: "Delete project %{name}"
-      heading: "Permanently delete project %{name}?"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Projektphase: %{phase}"
       project_phase_any: "Projektphase: Alle"

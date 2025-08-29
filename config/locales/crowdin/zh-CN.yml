@@ -689,7 +689,7 @@ zh-CN:
     dark_high_contrast: "深色高对比度"
     light: "浅色模式"
     light_high_contrast: "高对比度模式"
-    sync_with_os: "自动（匹配操作系统颜色模式）"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: 目前没有类型。
@@ -1184,9 +1184,9 @@ zh-CN:
         auto_hide_popups: "自动隐藏成功横幅"
         auto_hide_popups_caption: "启用后，绿色成功横幅将在 5 秒后自动消失。"
         warn_on_leaving_unsaved: "离开未保存更改的工作包时提示我"
-        theme: "颜色模式"
+        theme: "Color mode"
         time_zone: "时区"
-        mode_guideline: "某些模式将覆盖自定义主题颜色，以提高可访问性和可读性。请选择“浅色”模式，以获得完全的自定义主题支持。"
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "每日提醒"
         workdays: "工作日"
       version:
@@ -3697,13 +3697,15 @@ zh-CN:
       one: "1个项目"
       other: "%{count} 个项目"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. You will:"
-      project_delete_result_1: "删除所有相关数据。"
-      project_delete_result_2: "删除附加存储中所有托管的项目文件夹。"
-      info: "Deleting the project is an irreversible action. Please proceed with caution."
-      subprojects_confirmation: "其 子项目(s): %{value} 也将被删除。"
-      title: "Delete project %{name}"
-      heading: "Permanently delete project %{name}?"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "项目阶段：%{phase}"
       project_phase_any: "项目阶段：任何阶段"

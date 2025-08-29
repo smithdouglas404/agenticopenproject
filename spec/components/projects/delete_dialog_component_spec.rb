@@ -55,11 +55,11 @@ RSpec.describe Projects::DeleteDialogComponent, type: :component do
 
   describe "with a project" do
     it "shows a heading" do
-      expect(subject).to have_text "Permanently delete project Top Secret Project?"
+      expect(subject).to have_text "Permanently delete this project?"
     end
 
     it "shows a simple info message" do
-      expect(subject).to have_text "Deleting the project is an irreversible action. Please proceed with caution."
+      expect(subject).to have_text "You are about to permanently delete all data relating to project Top Secret Project."
     end
   end
 end

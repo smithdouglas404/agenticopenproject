@@ -35,7 +35,7 @@ eo:
   documents:
     label_attachment_author: "Aŭtoro de la kunsendaĵo"
     label_categories: "Categories"
-    new_category: "New category"
+    new_category: "Nova kategorio"
   label_document_added: "Dokumento aldonita"
   label_document_new: "Nova dokumento"
   label_document_plural: "Dokumentoj"

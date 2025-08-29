@@ -707,7 +707,7 @@ ro:
     dark_high_contrast: "Dark high contrast"
     light: "Luminos"
     light_high_contrast: "Luminos contrast mare"
-    sync_with_os: "Automat (potrivește modul de culoare OS)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: În acest moment nu există tipuri.
@@ -1204,9 +1204,9 @@ ro:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "Când este activată, bannerele de succes verzi vor dispărea automat după 5 secunde."
         warn_on_leaving_unsaved: "Avertizează când părăsesc un pachet de lucru cu modificări nesalvate"
-        theme: "Mod culoare"
+        theme: "Color mode"
         time_zone: "Fus orar"
-        mode_guideline: "Unele moduri vor suprascrie culori personalizate pentru accesibilitate si lizibilitate. Te rog selectează modul Lumină pentru suport complet pentru Teme."
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Daily reminders"
         workdays: "Zile lucrătoare"
       version:
@@ -3797,13 +3797,15 @@ ro:
       one: "un proiect"
       other: "%{count} proiecte"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. You will:"
-      project_delete_result_1: "Delete all related data."
-      project_delete_result_2: "Delete all managed project folders in the attached storages."
-      info: "Deleting the project is an irreversible action. Please proceed with caution."
-      subprojects_confirmation: "Se vor șterge și sub-proiectul/sub-proiectele: %{value}."
-      title: "Delete project %{name}"
-      heading: "Permanently delete project %{name}?"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Fază proiect: %{phase}"
       project_phase_any: "Fază proiect: Oricare"

@@ -697,7 +697,7 @@ it:
     dark_high_contrast: "Scuro ad alto contrasto"
     light: "Chiaro"
     light_high_contrast: "Chiaro ad alto contrasto"
-    sync_with_os: "Automatico (abbina modalità colore del sistema operativo)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: Al momento non esistono tipi.
@@ -1193,9 +1193,9 @@ it:
         auto_hide_popups: "Nascondi automaticamente i banner di successo"
         auto_hide_popups_caption: "Se l'opzione è abilitata, i banner di successo verdi scompariranno automaticamente dopo 5 secondi."
         warn_on_leaving_unsaved: "Avvisami quando sto lasciando una macro-attività non salvata"
-        theme: "Modalità colore"
+        theme: "Color mode"
         time_zone: "Fuso orario"
-        mode_guideline: "Alcune modalità sovrascriveranno i colori personalizzati del tema per l'accessibilità e la leggibilità. Seleziona la modalità Chiara per il supporto completo del tema personalizzato."
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Promemoria giornalieri"
         workdays: "Giorni lavorativi"
       version:
@@ -2944,7 +2944,7 @@ it:
   label_journal_diff: "Confronto Descrizione"
   label_language: "Lingua"
   label_languages: "Lingue"
-  label_locale: "Language and Region"
+  label_locale: "Lingua e regione"
   label_jump_to_a_project: "Salta ad altro progetto..."
   label_keyword_plural: "Parole chiave"
   label_language_based: "Basato sulla lingua dell'utente"
@@ -3748,13 +3748,15 @@ it:
       one: "1 progetto"
       other: "%{count} progetti"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. You will:"
-      project_delete_result_1: "Eliminerà tutti i salvataggi remoti"
-      project_delete_result_2: "Eliminerà tutte le cartelle di progetto gestite negli archivi allegati."
-      info: "Deleting the project is an irreversible action. Please proceed with caution."
-      subprojects_confirmation: "Anche il suo sottoprogetto(i): %{value} sarà eliminato(i)."
-      title: "Delete project %{name}"
-      heading: "Permanently delete project %{name}?"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Fase di progetto: %{phase}"
       project_phase_any: "Fase di progetto: Qualsiasi"

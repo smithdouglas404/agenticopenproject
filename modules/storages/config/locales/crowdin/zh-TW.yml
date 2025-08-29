@@ -240,7 +240,7 @@ zh-TW:
       storage_audience_blank: 尚未設定受眾。
       storage_audience_description: 正在為『%{audience}』交換存取令牌(Token)。
       storage_audience_idp: 不論受眾為何，將使用登入時由身份提供者發出的存取令牌(Token)。
-      storage_oauth: Storage OAuth
+      storage_oauth: 儲存服務器 OAuth
       storage_provider: 儲存空間提供商
       token_exchange: 令牌(Token)交換
     health:
@@ -279,7 +279,7 @@ zh-TW:
           drive_id_exists: 硬碟已存在
           drive_id_format: 硬碟ID格式
           header: 配置
-          host: Host URL
+          host: 主機網址
           host_url_accessible: 主機URL可存取
           storage_configured: 設定完成
           tenant_id: 租戶ID

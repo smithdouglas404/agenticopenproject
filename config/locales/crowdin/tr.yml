@@ -699,7 +699,7 @@ tr:
     dark_high_contrast: "Dark high contrast"
     light: "Açık"
     light_high_contrast: "Yüksek kontrastlı açık"
-    sync_with_os: "Automatic (match OS colour mode)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: Şu anda hiç tip yok.
@@ -1195,9 +1195,9 @@ tr:
         auto_hide_popups: "Başarı uyarılarını otomatik olarak gizle"
         auto_hide_popups_caption: "Etkinleştirildiğinde, yeşil başarı uyarıları 5 saniye sonra otomatik olarak kaybolacaktır."
         warn_on_leaving_unsaved: "İş paketlerinden ayrılırken kaydedilmemiş değişiklik olduğunda beni uyar"
-        theme: "Renk modu"
+        theme: "Color mode"
         time_zone: "Zaman dilimi"
-        mode_guideline: "Bazı modlar, erişilebilirlik ve okunabilirlik için özel tema renklerinin üzerine yazacaktır. Tam özel tema desteği için lütfen Açık modunu seçin."
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Günlük hatırlatmalar"
         workdays: "İş Günleri"
       version:
@@ -3748,13 +3748,15 @@ tr:
       one: "1 proje"
       other: "%{count} proje"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. You will:"
-      project_delete_result_1: "İlgili tüm verileri silin."
-      project_delete_result_2: "Delete all managed project folders in the attached storages."
-      info: "Deleting the project is an irreversible action. Please proceed with caution."
-      subprojects_confirmation: "Alt projeleri:% {value} de silinecek. %{value}"
-      title: "Delete project %{name}"
-      heading: "Permanently delete project %{name}?"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Proje aşaması: %{phase}"
       project_phase_any: "Proje aşaması: Herhangi bir"

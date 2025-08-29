@@ -42,9 +42,9 @@ RSpec.describe "Projects#destroy", :js do
   end
 
   it "destroys the project" do
-    expect(page).to have_modal "Delete project foo"
-    within_modal "Delete project foo" do
-      expect(page).to have_heading "Permanently delete project foo?"
+    expect(page).to have_modal "Delete project"
+    within_modal "Delete project" do
+      expect(page).to have_heading "Permanently delete this project?"
 
       expect(page).to have_unchecked_field "I understand that this deletion cannot be reversed"
 
