@@ -298,9 +298,6 @@ import {
   WorkPackageSingleViewComponent,
 } from 'core-app/features/work-packages/components/wp-single-view/wp-single-view.component';
 import {
-  WorkPackageCopySplitViewComponent,
-} from 'core-app/features/work-packages/components/wp-copy/wp-copy-split-view.component';
-import {
   WorkPackageFormAttributeGroupComponent,
 } from 'core-app/features/work-packages/components/wp-form-group/wp-attribute-group.component';
 import { WorkPackagesGridComponent } from 'core-app/features/work-packages/components/wp-grid/wp-grid.component';
@@ -492,7 +489,6 @@ import { WorkPackageFullCopyEntryComponent } from 'core-app/features/work-packag
 
     // WP Copy
     WorkPackageCopyFullViewComponent,
-    WorkPackageCopySplitViewComponent,
 
     // Embedded table
     WorkPackageEmbeddedTableComponent,
