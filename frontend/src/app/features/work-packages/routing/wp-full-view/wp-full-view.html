@@ -75,7 +75,11 @@
     <div class="work-packages-full-view--split-right work-packages-tab-view--overflow">
       <div class="work-packages--panel-inner">
         <span class="sr-only" tabindex="-1"  [textContent]="focusAnchorLabel"></span>
-        <op-wp-tabs [workPackage]="workPackage" [view]="'full'"></op-wp-tabs>
+        <op-wp-tabs [workPackage]="workPackage"
+                    [currentTabId]="activeTab"
+                    [view]="'full'"
+                    [routedFromAngular]="routedFromAngular"
+        ></op-wp-tabs>
 
         <div class="tabcontent"
              data-notification-selector='notification-scroll-container'>
