@@ -16,49 +16,126 @@ We released [OpenProject 16.4.0](https://community.openproject.org/versions/2211
 
 ### Option to automatically sync the color mode with operating system preference
 
-Text
+Users can now enable **automatic color mode** under *Account settings → Interface* to match OpenProject’s color mode with their operating system (OS) preference. When enabled, OpenProject automatically switches between light and dark modes based on the OS setting. Please note that your operating system must also be set to automatic switching.
+
+> [!NOTE]
+> If a user has enabled dark mode — either by default or through automatic switching — this overrides the instance’s design settings for that user.
 
 Screenshot
 
+If your OS is set to use high contrast, OpenProject will automatically switch to **light high contrast or dark high contrast** accordingly.
+
+
 #### Dark high contrast mode for improved accessibility
 
-Text
+Together with the automatic color mode, we have introduced a dark high contrast mode. This improves readability for users who need stronger visual contrast and enhances accessibility.
 
 Screenshot
 
 ### PDF export of project lists
 
-Text
+Project managers can now export project lists as PDFs. This makes it easy to create structured reports of all projects without duplicating information.
+
+The exported PDF includes:
+
+- A table of contents with the hierarchy of all exported projects (if more than one project is included).
+- A cover page for clear presentation.
+- Projects indexed according to their hierarchy (e.g. 1, 1.1, 1.2).
+- All selected attributes from the project list, shown in the same order as in the table.
+- Section titles linked to the respective project in OpenProject.
+
+To export a project list, open the More (three dots) in the top right corner of the list and select Export. In the export modal, you can choose between XLS, CSV, or PDF.
 
 Screenshot
 
 ### Custom font for all PDF exports (Enterprise add-on)
 
-Text
+Administrators on the Enterprise Basic plan and higher can now upload a custom font to be used in all PDF exports. This makes it possible to comply with organization-specific requirements, such as corporate design guidelines.
+
+A new section has been added under *Administration → Design → PDF export font* where administrators can:
+
+- Upload one font family in TTF format (regular required; bold, italic, and bold italic optional).
+- Remove previously uploaded fonts.
+- Generate a preview PDF to test the uploaded font.
+
+Once uploaded, the font is applied to **all future PDF exports across the instance**.
 
 Screenshot
 
 ### Improved meeting participants dialog
 
-Text
+The meeting participants dialog has been redesigned to make managing participants easier and more efficient. Two major improvements have been added:
+
+#### Autocomplete and multi-select for inviting users
+
+When preparing a meeting agenda, you can now search and select participants using an **autocomplete** field. This is especially helpful in projects with many members.
+
+#### Simplified attendance tracking
+
+If the meeting is set to *In progress*, a **toggle switch next to each participant lets you mark attendance directly**. You can also use a header action to Mark all as attended.
+
+Other meetings improvements include:
+
+- Consistent design with the sharing dialog for work packages.
+- Ability to remove participants directly from the dialog.
+- Cleaner display in the meeting right side and PDF export: only Attended is shown (no more “Invited” label).
 
 Screenshot
 
+### Synchronise group information / OIDC (Enterprise add-on)
+
+OpenProject 16.4 introduces the ability to synchronize group memberships from your OpenID Connect (OIDC) provider. This makes it easier to manage user groups and permissions centrally in your identity provider. It ensures that group memberships in OpenProject reflect those settings whenever users log in.
+
+Key capabilities include:
+
+- Enable or disable group synchronization per OIDC provider.
+- Filter which groups are imported, or extract specific substrings from group names.
+- Automatically create groups in OpenProject if they do not yet exist.
+- Distinguish between locally managed and synchronized memberships.
+- Retain full administrative control to rename or delete synced groups and memberships.
+
+This feature provides flexibility for organizations, especially when self-registration is enabled. Unlike LDAP synchronization, group updates are applied on login, giving admins full control over membership changes.
+
+This feature was developed with the support of Helmholtz-Zentrum Berlin.
+
 ### Improved budget handling in project queries and budget planning
 
-Text
+With OpenProject 16.4, it is now easier to set up and track budgets. When creating a budget, you can now define a **Base amount** — a fixed sum of money — without having to plan material or labor costs in detail (though you still can if needed, of course). This makes it much faster to allocate lump sums, especially for high-level budgets.
+
+In addition, **project lists** now include columns for planned budget, spent budget, spent percentage, and available budget, giving you a clearer overview across projects.
+
+These updates make budgeting more practical for everyday use, and we will continue to expand budgets and cost management in future releases.
 
 Screenshot
 
 ### Updated Home and Project overview page
 
-Text
+OpenProject 16.4 introduces **UI improvements** to the existing widgets on the application home page and the Project overview page.
+
+Changes include:
+
+- Refreshed styling with white backgrounds in Light mode, rounded corners, and improved dark mode support.
+- The More (three dots) menu is now always visible.
+- The “add widgets” placeholder is easier to spot and clickable.
+- A new **+ Widget button** in the subheader opens the widget selection modal, with new widgets placed at the top of the page.
+
+These updates make widgets clearer and faster to use, while work continues on the upcoming Overview dashboard.
 
 Screenshot
 
-## Important updates and breaking changes
+## Important technical updates
 
-<!-- Remove this section if empty, add to it in pull requests linking to tickets and provide information -->
+### SCIM improvements
+
+The SCIM server functionality introduced in OpenProject 16.2 has been further improved in 16.4:
+
+- **Deleted user status**: When a user is deleted via SCIM, their status is now set to deleted instead of locked. Deleted users no longer appear in queries, API v3, or the SCIM API, but remain visible in the admin user list until the deletion is complete.
+
+- **ServiceProviderConfig endpoint**: The /scim_v2/ServiceProviderConfig endpoint now responds with limited output even without authorization, showing available authentication schemes. Full information is still only returned with valid authorization.
+
+- **Clear error for insufficient plan**: If the Enterprise subscription level does not include SCIM, the server now returns a 403 Forbidden with a clear message instead of a generic 401 error.
+
+These changes make SCIM integrations more robust and transparent, improving interoperability with identity providers.
 
 <!--more-->
 
@@ -154,7 +231,7 @@ Screenshot
 
 ## Contributions
 
-A very special thank you goes to City of Cologne, Deutsche Bahn and ZenDiS for sponsoring released or upcoming features. Your support, alongside the efforts of our amazing Community, helps drive these innovations. Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes. Special thanks for reporting and finding bugs go to Björn Schümann, Harald Herz, James Neale, Rince wind, Alexander Aleschenko, Sam Yelman, Stefan Weiberg, Tom Gugel, Johannes Baumgarten, and Christoph Nodes.
+A very special thank you goes to Helmholtz-Zentrum Berlin, City of Cologne, Deutsche Bahn and ZenDiS for sponsoring released or upcoming features. Your support, alongside the efforts of our amazing Community, helps drive these innovations. Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes. Special thanks for reporting and finding bugs go to Björn Schümann, Harald Herz, James Neale, Rince wind, Alexander Aleschenko, Sam Yelman, Stefan Weiberg, Tom Gugel, Johannes Baumgarten, and Christoph Nodes.
 
 Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to particularly thank the following users:
 
