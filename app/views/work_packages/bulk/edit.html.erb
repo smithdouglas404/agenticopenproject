@@ -204,6 +204,14 @@ See COPYRIGHT and LICENSE files for more details.
                                         } %>
             </div>
           </div>
+          <% if WorkPackage.work_based_mode? %>
+            <div class="form--field">
+              <%= styled_label_tag :work_package_done_ratio, WorkPackage.human_attribute_name(:done_ratio) %>
+              <div class="form--field-container">
+                <%= styled_text_field_tag "work_package[done_ratio]", "", type: :number, size: 10 %>
+              </div>
+            </div>
+          <% end %>
         </div>
       </div>
     </fieldset>
