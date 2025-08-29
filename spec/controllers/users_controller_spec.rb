@@ -473,26 +473,22 @@ RSpec.describe UsersController do
     end
 
     it "to be success" do
-      expect(response)
-        .to have_http_status(:ok)
+      expect(response).to have_http_status(:ok)
     end
 
     it "renders the index" do
-      expect(response)
-        .to have_rendered("index")
+      expect(response).to have_rendered("index")
     end
 
     it "assigns users" do
-      expect(assigns(:users))
-        .to contain_exactly(user, admin)
+      expect(assigns(:users)).to contain_exactly(user, admin)
     end
 
     context "with a name filter" do
       let(:params) { { name: user.firstname } }
 
       it "assigns users" do
-        expect(assigns(:users))
-          .to contain_exactly(user)
+        expect(assigns(:users)).to contain_exactly(user)
       end
     end
 
@@ -504,8 +500,15 @@ RSpec.describe UsersController do
       end
 
       it "assigns users" do
-        expect(assigns(:users))
-          .to contain_exactly(user)
+        expect(assigns(:users)).to contain_exactly(user)
+      end
+    end
+
+    context "with a user scheduled for deletion present" do
+      let!(:deleted_user) { create(:user_marked_for_deletion) }
+
+      it "does not include this user to the users list" do
+        expect(assigns(:users)).to contain_exactly(user, admin)
       end
     end
   end

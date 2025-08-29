@@ -59,7 +59,6 @@ export abstract class DatePickerEditFieldComponent extends EditFieldComponent im
 
   @InjectField() deviceService:DeviceService;
 
-  turboFrameSrc:string;
   opened = false;
 
   private createHandler:EventListener = this.handleSuccessfulCreate.bind(this);
@@ -82,7 +81,6 @@ export abstract class DatePickerEditFieldComponent extends EditFieldComponent im
 
   ngOnInit():void {
     super.ngOnInit();
-    this.turboFrameSrc = `${this.pathHelper.workPackageDatepickerDialogContentPath(this.change.id)}?field=${this.name}`;
 
     document.addEventListener('date-picker-modal:create', this.createHandler);
     document.addEventListener('date-picker-modal:update', this.updateHandler);
@@ -95,6 +93,18 @@ export abstract class DatePickerEditFieldComponent extends EditFieldComponent im
     document.removeEventListener('date-picker-modal:create', this.createHandler);
     document.removeEventListener('date-picker-modal:update', this.updateHandler);
     document.removeEventListener('date-picker-modal:cancel', this.cancelHandler);
+  }
+
+  public onInputFocused():void {
+    this
+      .change
+      .getForm(true)
+      .then(() => {
+        this.showDatePickerModal();
+      })
+      .catch(() => {
+        this.handler.deactivate(false);
+      });
   }
 
   public showDatePickerModal():void {
@@ -111,9 +121,9 @@ export abstract class DatePickerEditFieldComponent extends EditFieldComponent im
             if (this.opened) {
               this.onModalClosed();
             }
-        });
+          });
 
-       this.opened = true;
+        this.opened = true;
       });
   }
 

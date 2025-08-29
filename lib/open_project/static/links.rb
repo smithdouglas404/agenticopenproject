@@ -61,6 +61,10 @@ module OpenProject
             help: {
               href: help_link,
               label: "top_menu.help_and_support"
+            },
+            current_release_notes: {
+              href: current_release_notes_link,
+              label: :label_release_notes
             }
           }
 
@@ -72,6 +76,11 @@ module OpenProject
           end
 
           dynamic
+        end
+
+        def current_release_notes_link
+          version = OpenProject::VERSION.to_semver(separator: "-", include_special: false)
+          "https://www.openproject.org/docs/release-notes/#{version}"
         end
 
         def static_links

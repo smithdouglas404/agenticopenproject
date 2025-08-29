@@ -50,6 +50,7 @@ RSpec.describe MeetingSeriesMailer do
   let(:i18n) do
     Class.new do
       include Redmine::I18n
+
       public :format_date, :format_time
     end
   end
@@ -136,8 +137,8 @@ RSpec.describe MeetingSeriesMailer do
       expect(parsed).to be_a Array
       expect(parsed.length).to eq 1
 
-      expect(entry.summary).to eq "[My project] Recurring Standup"
-      expect(entry.description).to eq "[My project] Meeting series: Recurring Standup"
+      expect(entry.summary).to eq "Recurring Standup"
+      expect(entry.description).to eq "Recurring Standup"
       expect(entry.location).to eq(series.template&.location.presence)
     end
   end
