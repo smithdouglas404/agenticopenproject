@@ -1,30 +1,3 @@
-//-- copyright
-// OpenProject is an open source project management software.
-// Copyright (C) the OpenProject GmbH
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License version 3.
-//
-// OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
-// Copyright (C) 2006-2013 Jean-Philippe Lang
-// Copyright (C) 2010-2013 the ChiliProject Team
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-//
-// See COPYRIGHT and LICENSE files for more details.
-//++
 
 import {
   AfterViewInit,
@@ -64,6 +37,7 @@ import {
 } from 'core-app/core/apiv3/endpoints/work_packages/api-v3-work-package-cached-subresource';
 import { RecentItemsService } from 'core-app/core/recent-items.service';
 import { populateInputsFromDataset } from 'core-app/shared/components/dataset-inputs';
+import { ApiV3FilterBuilder } from 'core-app/shared/helpers/api-v3/api-v3-filter-builder';
 
 interface SearchResultItem {
   id:string;
@@ -312,18 +286,7 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
     }
 
     if (!query.length) {
-      return this.recentItemsService.recentItems$.pipe(
-        switchMap((wpIds) => {
-          // It is needed, because otherwise we get infinite spin running
-          // in the searchbar with no recent workpackages IDs inside localStorage
-          if (wpIds.length === 0) {
-            return of([]);
-          }
-
-          void this.apiV3Service.work_packages.requireAll(wpIds);
-          return this.apiV3Service.work_packages.cache.observeSome(wpIds);
-        }),
-      );
+      return this.loadRecentItems();
     }
 
     // Reset the currently selected item.
@@ -345,7 +308,43 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
       );
   }
 
-  // Remove ID marker # when searching for #<number>
+  private loadRecentItems() {
+    return this.recentItemsService.recentItems$.pipe(
+      switchMap((wpIds) => {
+        // It is needed, because otherwise we get infinite spin running
+        // in the searchbar with no recent workpackages IDs inside localStorage
+        if (wpIds.length === 0) {
+          return of([]);
+        }
+
+
+        // Ensure we only load the five recent items
+        // in case none of them are available in the cache
+        const filters = new ApiV3FilterBuilder().add('id', '=', wpIds);
+        const params = {
+          offset: '1',
+          pageSize: '5',
+          valid_subset: 'true',
+        };
+
+        return this
+          .apiV3Service
+          .work_packages
+          .filtered(filters, params)
+          .get()
+          .pipe(
+            map((collection) => {
+              // In case none of the wpIds exist anymore or are not accessible
+              // this API call would return five arbitrary work packages, as that's the way valid_subset works
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              return collection.elements.filter((wp) => wpIds.includes(wp.id!));
+            })
+          );
+      }),
+    );
+  }
+
+// Remove ID marker # when searching for #<number>
   private queryWithoutHash(query:string):string {
     if (/^#(\d+)/.exec(query)) {
       return query.substr(1);
