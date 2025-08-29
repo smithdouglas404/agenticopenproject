@@ -3,20 +3,58 @@ title: OpenProject 16.4.0
 sidebar_navigation:
     title: 16.4.0
 release_version: 16.4.0
-release_date: 2025-08-27
+release_date: 2025-09-10
 ---
 
 # OpenProject 16.4.0
 
-Release date: 2025-08-27
+Release date: 2025-09-10
 
-We released OpenProject [OpenProject 16.4.0](https://community.openproject.org/versions/2211).
-The release contains several bug fixes and we recommend updating to the newest version.
-In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
+We released [OpenProject 16.4.0](https://community.openproject.org/versions/2211). The release contains several bug fixes and we recommend updating to the newest version. In these Release Notes, we will give an overview of important feature changes and important technical changes. At the end, you will find a complete list of all changes and bug fixes. 
 
 ## Important feature changes
 
-<!-- Inform about the major features in this section -->
+### Option to automatically sync the color mode with operating system preference
+
+Text
+
+Screenshot
+
+#### Dark high contrast mode for improved accessibility
+
+Text
+
+Screenshot
+
+### PDF export of project lists
+
+Text
+
+Screenshot
+
+### Custom font for all PDF exports (Enterprise add-on)
+
+Text
+
+Screenshot
+
+### Improved meeting participants dialog
+
+Text
+
+Screenshot
+
+### Improved budget handling in project queries and budget planning
+
+Text
+
+Screenshot
+
+### Updated Home and Project overview page
+
+Text
+
+Screenshot
 
 ## Important updates and breaking changes
 
@@ -115,12 +153,12 @@ In these Release Notes, we will give an overview of important feature changes. A
 <!-- Warning: Anything above this line will be automatically removed by the release script -->
 
 ## Contributions
-A very special thank you goes to our sponsors for this release.
-Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes.
-Special thanks for reporting and finding bugs go to Björn Schümann, Harald Herz, James Neale, Rince wind, Alexander Aleschenko, Sam Yelman, Stefan Weiberg, Tom Gugel, Johannes Baumgarten, Christoph Nodes, Not GivenByUser.
 
-Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings!
-Would you like to help out with translations yourself?
-Then take a look at our translation guide and find out exactly how you can contribute.
-It is very much appreciated!
+A very special thank you goes to City of Cologne, Deutsche Bahn and ZenDiS for sponsoring released or upcoming features. Your support, alongside the efforts of our amazing Community, helps drive these innovations. Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes. Special thanks for reporting and finding bugs go to Björn Schümann, Harald Herz, James Neale, Rince wind, Alexander Aleschenko, Sam Yelman, Stefan Weiberg, Tom Gugel, Johannes Baumgarten, and Christoph Nodes.
 
+Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to particularly thank the following users:
+
+- [name](https://crowdin.com/profile/deconfcom), for a great number of translations into Language.
+
+
+Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
