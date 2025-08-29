@@ -49,14 +49,14 @@ Here you can update the information and **save** your changes. If you're changin
 
 ## Profile settings
 
-Within the **Settings** on **Account settings** page you can change the language of OpenProject and adapt the time zone.
+Within the **Language and Region** section of **Account settings** page you can change the language of OpenProject and adapt the time zone.
 
 ![OpenProject personal account settings](openproject_account_settings_settings.png)
 
 
 ### Change your language
 
-To change the language in OpenProject, navigate to the **Account settings** and choose the menu point **Settings**.
+To change the language in OpenProject, navigate to the **Account settings** and choose the menu point **Language and Region**.
 
 Here you can choose between multiple languages.
 
