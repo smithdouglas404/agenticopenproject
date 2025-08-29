@@ -43,7 +43,8 @@ module API
           "version" => "Version",
           "list" => "CustomOption",
           "hierarchy" => "CustomField::Hierarchy::Item",
-          "scored_list" => "CustomField::Hierarchy::Item"
+          "scored_list" => "CustomField::Hierarchy::Item",
+          "calculated_value" => "CalculatedValue"
         }.freeze
 
         LINK_FORMATS = %w(list user version hierarchy).freeze
@@ -197,7 +198,8 @@ module API
                         min_length: cf_min_length(custom_field),
                         max_length: cf_max_length(custom_field),
                         regular_expression: cf_regexp(custom_field),
-                        options: cf_options(custom_field)
+                        options: cf_options(custom_field),
+                        formula: cf_formula(custom_field)
         end
 
         def inject_link_value(custom_field, config)
@@ -322,6 +324,12 @@ module API
 
         def cf_regexp(custom_field)
           custom_field.regexp.presence
+        end
+
+        def cf_formula(custom_field)
+          if custom_field.field_format_calculated_value?
+            custom_field.formula_string
+          end
         end
 
         def cf_options(custom_field)
