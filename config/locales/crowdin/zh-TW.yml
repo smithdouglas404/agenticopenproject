@@ -3698,15 +3698,15 @@ zh-TW:
       one: "1 個專案"
       other: "%{count} 個專案"
     destroy:
-      title: "Delete project"
-      heading: "Permanently delete this project?"
+      title: "刪除專案"
+      heading: "永久刪除此專案？"
       confirmation_message_for_subprojects_html:
         zero: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+          您即將永久刪除與專案相關的所有資料 <strong>%{name}</strong>。
         one: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+          您即將永久刪除與專案 <strong>%{name}</strong>和此子專案相關的所有資料：
         other: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
+          您即將永久刪除與專案 <strong>%{name}</strong>和這些子專案相關的所有資料：
     filters:
       project_phase: "專案階段﹔ %{phase}"
       project_phase_any: "專案階段﹔任意"

@@ -74,7 +74,7 @@ eo:
       messages:
         invalid_time_format: "is not a valid time. Required format: HH:MM"
     models:
-      recurring_meeting: "Recurring meeting"
+      recurring_meeting: "Ripeta renkontiĝo"
       meeting: "One-time meeting"
       meeting_agenda_item: "Agenda item"
       meeting_agenda: "Agenda"

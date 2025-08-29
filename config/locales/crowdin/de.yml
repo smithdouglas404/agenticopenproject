@@ -2939,7 +2939,7 @@ de:
   label_journal_diff: "Beschreibungsvergleich"
   label_language: "Sprache"
   label_languages: "Sprachen"
-  label_locale: "Language and Region"
+  label_locale: "Sprache und Region"
   label_jump_to_a_project: "Zu einem Projekt springen..."
   label_keyword_plural: "Schlüsselwörter"
   label_language_based: "Sprachabhängig"

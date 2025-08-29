@@ -3703,15 +3703,15 @@ ja:
       one: "1 プロジェクト"
       other: "%{count} プロジェクト"
     destroy:
-      title: "Delete project"
-      heading: "Permanently delete this project?"
+      title: "プロジェクトを削除"
+      heading: "プロジェクトを完全に削除しますか？"
       confirmation_message_for_subprojects_html:
         zero: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+          プロジェクト<strong>%{name}</strong> に関連するすべてのデータを完全に削除しようとしています。
         one: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+          プロジェクト <strong>%{name}</strong> とこのサブプロジェクトに関連するすべてのデータを完全に削除しようとしています：
         other: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
+          プロジェクト <strong>%{name}</strong> とこれらのサブプロジェクトに関連するすべてのデータを完全に削除しようとしています：
     filters:
       project_phase: "プロジェクトフェーズ: %{phase}"
       project_phase_any: "プロジェクトフェーズ: すべて"
