@@ -23,7 +23,9 @@
 
     <div class="work-packages--details-toolbar-container">
       <wp-edit-actions-bar
-        (onCancel)="cancelAndBackToList()">
+        (onCancel)="cancelAndBackToList()"
+        (onSave)="showNewSplitWorkPackage($event)"
+      >
       </wp-edit-actions-bar>
     </div>
 

@@ -781,11 +781,11 @@ Rails.application.routes.draw do
         on: :member
 
     get "/copy" => "work_packages#copy", on: :member, as: "copy"
+    get "/new" => "work_packages#new", on: :collection, as: "new"
 
     # states managed by client-side (angular) routing on work_package#show
     get "/" => "work_packages#index", on: :collection, as: "index"
     get "/create_new" => "work_packages#index", on: :collection, as: "new_split"
-    get "/new" => "work_packages#index", on: :collection, as: "new", state: "new"
     # We do not want to match the work package export routes
     get "(/*state)" => "work_packages#show", on: :member, as: "", constraints: { id: /\d+/, state: /(?!(shares|split_view|copy)).+/ }
     get "/share_upsell" => "work_packages#share_upsell", on: :collection, as: "share_upsell"

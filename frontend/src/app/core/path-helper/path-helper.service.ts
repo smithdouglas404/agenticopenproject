@@ -202,6 +202,10 @@ export class PathHelperService {
     return `${this.staticBase}/work_packages`;
   }
 
+  public workPackageNewPath():string {
+    return `${this.staticBase}/work_packages/new`;
+  }
+
   public projectWorkPackageNewPath(projectId:string) {
     return `${this.workPackagesPath(projectId)}/new`;
   }

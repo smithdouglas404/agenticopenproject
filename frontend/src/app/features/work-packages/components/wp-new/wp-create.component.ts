@@ -30,6 +30,7 @@ import {
   ChangeDetectorRef,
   Directive,
   Injector,
+  Input,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -80,6 +81,8 @@ export class WorkPackageCreateComponent extends UntilDestroyedMixin implements O
     button_settings: this.I18n.t('js.button_settings'),
   };
 
+  @Input() public routedFromAngular:boolean = true;
+
   @ViewChild(EditFormComponent, { static: false }) protected editForm:EditFormComponent;
 
   /** Explicitly remember destroy state in this abstract base */
@@ -115,8 +118,8 @@ export class WorkPackageCreateComponent extends UntilDestroyedMixin implements O
   }
 
   public switchToFullscreen() {
-    const type = idFromLink(this.change.value<HalResource>('type')?.href);
-    void this.$state.go('work-packages.new', { ...this.$state.params, type });
+    const link = this.stateParams.projectPath ? this.pathHelper.projectWorkPackageNewPath(this.stateParams.projectPath) : this.pathHelper.workPackageNewPath();
+    window.location.href = link + window.location.search;
   }
 
   public onSaved(params:{ savedResource:WorkPackageResource, isInitial:boolean }) {
@@ -187,7 +190,26 @@ export class WorkPackageCreateComponent extends UntilDestroyedMixin implements O
 
   public cancelAndBackToList() {
     this.wpCreate.cancelCreation();
-    this.$state.go(this.cancelState, this.$state.params);
+
+    if (this.routedFromAngular) {
+      this.$state.go(this.cancelState, this.$state.params);
+    } else {
+      const link = this.stateParams.projectPath ? this.pathHelper.workPackagesPath(this.stateParams.projectPath) : this.pathHelper.workPackagesPath(null);
+      Turbo.visit(link + window.location.search, { frame: 'content-bodyRight', action: 'advance' });
+    }
+  }
+
+  public showNewSplitWorkPackage(wp:WorkPackageResource) {
+    if (wp.id) {
+      const link = this.pathHelper.workPackageDetailsPath(wp.project.identifier, wp.id) + window.location.search;
+      Turbo.visit(link, { frame: 'content-bodyRight', action: 'advance' });
+    }
+  }
+
+  public showNewFullWorkPackage(wp:WorkPackageResource) {
+    if (wp.id) {
+      window.location.href = this.pathHelper.projectWorkPackagePath(wp.project.identifier, wp.id) + window.location.search;
+    }
   }
 
   protected createdWorkPackage() {

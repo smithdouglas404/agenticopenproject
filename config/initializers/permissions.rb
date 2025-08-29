@@ -258,7 +258,7 @@ Rails.application.reloader.to_prepare do
                      {
                        versions: %i[index show status_by],
                        journals: %i[index],
-                       work_packages: %i[show index show_conflict_flash_message share_upsell copy],
+                       work_packages: %i[show index show_conflict_flash_message share_upsell],
                        work_packages_api: [:get],
                        "work_packages/reports": %i[report report_details],
                        "work_packages/activities_tab": %i[index update_streams update_sorting update_filter],
@@ -272,7 +272,8 @@ Rails.application.reloader.to_prepare do
 
       wpt.permission :add_work_packages,
                      {
-                       work_package_relations: %i[new create]
+                       work_package_relations: %i[new create],
+                       work_packages: %i[new]
                      },
                      permissible_on: :project,
                      dependencies: :view_work_packages,
@@ -295,7 +296,10 @@ Rails.application.reloader.to_prepare do
                      contract_actions: { work_packages: %i[move] }
 
       wpt.permission :copy_work_packages,
-                     { "work_packages/moves": %i[new create] },
+                     {
+                       "work_packages/moves": %i[new create],
+                       work_packages: %i[copy]
+                     },
                      permissible_on: %i[work_package project],
                      require: :loggedin,
                      dependencies: :view_work_packages,
