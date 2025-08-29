@@ -1,0 +1,23 @@
+<div class="op-new-features">
+  <p class="widget-box--additional-info">
+    <%= new_features_header %>
+  </p>
+  <div class="widget-box--description">
+    <div>
+      <p><%= new_features_title %></p>
+      <ul>
+        <% new_features.values.each do |line| %>
+          <li><%= line %></li>
+        <% end %>
+      </ul>
+    </div>
+    <img
+      class="widget-box--teaser-image op-new-features--teaser-image"
+      role="presentation"
+      src="<%= asset_path(feature_teaser_image) %>"
+      alt=""
+      />
+  </div>
+
+  <%= helpers.static_link_to :current_release_notes, label: learn_more_link_text %>
+</div>
