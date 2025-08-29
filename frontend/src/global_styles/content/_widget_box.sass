@@ -108,7 +108,7 @@ $widget-box--enumeration-width: 20px
 
 .op-widget-box--body
   height: 100%
-  padding: var(--stack-padding-normal)
+  padding: 0 var(--stack-padding-normal) var(--stack-padding-normal) var(--stack-padding-normal)
   overflow-x: auto
   overflow-y: auto
 
@@ -157,9 +157,8 @@ $widget-box--enumeration-width: 20px
   color: var(--fgColor-muted)
   display: flex
   align-items: center
-  border-bottom: var(--borderWidth-thin) solid var(--borderColor-default)
   padding: var(--stack-padding-normal)
-  background-color: var(--bgColor-muted)
+  background-color: var(--body-background)
 
   .help-text--entry
     vertical-align: -1px
