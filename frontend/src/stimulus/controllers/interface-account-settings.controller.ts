@@ -34,8 +34,8 @@ export default class interfaceAccountSettings extends Controller {
 
   static targets = ['themeSelect', 'contrastContainer'];
 
-  declare readonly themeSelectTarget:HTMLLinkElement;
-  declare readonly contrastContainerTarget:HTMLLinkElement;
+  declare readonly themeSelectTarget:HTMLSelectElement;
+  declare readonly contrastContainerTarget:HTMLElement;
 
   connect() {
     // Set initial visibility on page load
