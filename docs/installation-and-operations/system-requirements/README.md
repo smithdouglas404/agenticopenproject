@@ -231,7 +231,7 @@ If you want to use the feature of [automatically managed project folders](../../
 
 OpenProject will be tested against the following versions:
 
-* [Keycloak 26.2.4](https://github.com/keycloak/keycloak/releases/tag/26.2.4)
+* [Keycloak 26.3.3](https://github.com/keycloak/keycloak/releases/tag/26.3.3)
 
 ## Frequently asked questions (FAQ)
 
