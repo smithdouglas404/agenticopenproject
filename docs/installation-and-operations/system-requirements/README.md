@@ -197,7 +197,7 @@ OpenProject supports the latest versions of the major browsers.
 
 ### openDesk
 
-* [openDesk 1.4](https://gitlab.opencode.de/bmi/opendesk/deployment/opendesk/-/blob/main/CHANGELOG.md)
+* [openDesk 1.9](https://gitlab.opencode.de/bmi/opendesk/deployment/opendesk/-/blob/main/CHANGELOG.md)
 
 ### Nextcloud Hub
 
