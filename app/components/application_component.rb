@@ -29,6 +29,8 @@
 #++
 
 class ApplicationComponent < ViewComponent::Base
+  prepend TranslationsOverride
+
   attr_reader :model, :options
 
   def initialize(model = nil, **options)
