@@ -23,12 +23,12 @@ Users can now enable **automatic color mode** under *Account settings → Interf
 
 Screenshot
 
-If your OS is set to use high contrast, OpenProject will automatically switch to **light high contrast or dark high contrast** accordingly.
-
-
 #### Dark high contrast mode for improved accessibility
 
-Together with the automatic color mode, we have introduced a dark high contrast mode. This improves readability for users who need stronger visual contrast and enhances accessibility.
+Together with the automatic color mode, we have introduced a dark high contrast mode, in addition to the already existing light high contrast mode. This improves readability for users who need stronger visual contrast and enhances accessibility.
+
+> [!NOTE]
+> If your OS is set to use high contrast and you enable the new **automatic color mode**, OpenProject will automatically switch to **light high contrast or dark high contrast** accordingly.
 
 Screenshot
 
@@ -44,7 +44,7 @@ The exported PDF includes:
 - All selected attributes from the project list, shown in the same order as in the table.
 - Section titles linked to the respective project in OpenProject.
 
-To export a project list, open the More (three dots) in the top right corner of the list and select Export. In the export modal, you can choose between XLS, CSV, or PDF.
+To export a project list, open the **More (three dots)** menu in the top right corner of the list and select Export. In the export modal, you can choose between XLS, CSV, or PDF.
 
 Screenshot
 
@@ -72,17 +72,17 @@ When preparing a meeting agenda, you can now search and select participants usin
 
 #### Simplified attendance tracking
 
-If the meeting is set to *In progress*, a **toggle switch next to each participant lets you mark attendance directly**. You can also use a header action to Mark all as attended.
+If the meeting is set to *In progress*, a **toggle switch next to each participant lets you mark attendance directly**. You can also use a header action to 'Mark all as attended'.
 
 Other meetings improvements include:
 
 - Consistent design with the sharing dialog for work packages.
 - Ability to remove participants directly from the dialog.
-- Cleaner display in the meeting right side and PDF export: only Attended is shown (no more “Invited” label).
+- Cleaner display in the meeting right side and PDF export: only Attended is shown (no more 'Invited' label).
 
 Screenshot
 
-### Synchronise group information / OIDC (Enterprise add-on)
+### Synchronize group information / OIDC (Enterprise add-on)
 
 OpenProject 16.4 introduces the ability to synchronize group memberships from your OpenID Connect (OIDC) provider. This makes it easier to manage user groups and permissions centrally in your identity provider. It ensures that group memberships in OpenProject reflect those settings whenever users log in.
 
@@ -94,7 +94,7 @@ Key capabilities include:
 - Distinguish between locally managed and synchronized memberships.
 - Retain full administrative control to rename or delete synced groups and memberships.
 
-This feature provides flexibility for organizations, especially when self-registration is enabled. Unlike LDAP synchronization, group updates are applied on login, giving admins full control over membership changes.
+This provides flexibility for organizations, especially when self-registration is enabled. Unlike LDAP synchronization, group updates are applied on login, giving admins full control over membership changes.
 
 This feature was developed with the support of Helmholtz-Zentrum Berlin.
 
@@ -116,7 +116,7 @@ Changes include:
 
 - Refreshed styling with white backgrounds in Light mode, rounded corners, and improved dark mode support.
 - The More (three dots) menu is now always visible.
-- The “add widgets” placeholder is easier to spot and clickable.
+- The 'add widgets' placeholder is easier to spot and clickable.
 - A new **+ Widget button** in the subheader opens the widget selection modal, with new widgets placed at the top of the page.
 
 These updates make widgets clearer and faster to use, while work continues on the upcoming Overview dashboard.
