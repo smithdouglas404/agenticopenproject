@@ -1,0 +1,1 @@
+The code comment in this commit is incorrect. The issue is the wrong @virtual_path value on view context.
