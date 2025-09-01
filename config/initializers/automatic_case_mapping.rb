@@ -41,7 +41,7 @@ module AutomaticCaseMapping
   def self.use_turkic_case_mapping?(options)
     options.empty? && User.current&.language&.in?(TURKIC_LOCALES)
   # during reloading, `User` and `User.current` may not be available
-  rescue StandardError
+  rescue StandardError, LoadError
     false
   end
 
@@ -82,7 +82,7 @@ AutomaticCaseMappingForSymbol = AutomaticCaseMapping.create_module(
   ]
 )
 
-Rails.application.config.after_initialize do
-  String.prepend(AutomaticCaseMappingForString)
-  Symbol.prepend(AutomaticCaseMappingForSymbol)
-end
+# Rails.application.config.after_initialize do
+#   String.prepend(AutomaticCaseMappingForString)
+#   Symbol.prepend(AutomaticCaseMappingForSymbol)
+# end
