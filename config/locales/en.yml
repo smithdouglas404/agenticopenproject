@@ -3094,7 +3094,7 @@ en:
   label_journal_diff: "Description Comparison"
   label_language: "Language"
   label_languages: "Languages"
-  label_locale: "Language and Region"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Jump to a project..."
   label_keyword_plural: "Keywords"
   label_language_based: "Based on user's language"

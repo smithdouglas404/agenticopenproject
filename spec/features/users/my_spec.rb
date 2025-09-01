@@ -74,7 +74,7 @@ RSpec.describe "my", :js do
       context "with a default time zone", with_settings: { user_default_timezone: "Asia/Tokyo" } do
         it "override user time zone" do
           expect(user.pref.time_zone).to eq "Asia/Tokyo"
-          expect(page).to have_heading "Language and Region"
+          expect(page).to have_heading "Language and region"
 
           expect(page).to have_select "Time zone", selected: "(UTC+09:00) Tokyo"
           select "(UTC+01:00) Paris", from: "Time zone"
@@ -89,7 +89,7 @@ RSpec.describe "my", :js do
 
       it "updates user language" do
         expect(user.language).to eq "en"
-        expect(page).to have_heading "Language and Region"
+        expect(page).to have_heading "Language and region"
 
         expect(page).to have_select "Language", selected: "English"
         select "Español", from: "Language"
@@ -103,7 +103,7 @@ RSpec.describe "my", :js do
 
       it "updates user language with change visible on navigating to other settings (regression #66951)" do
         expect(user.language).to eq "en"
-        expect(page).to have_heading "Language and Region"
+        expect(page).to have_heading "Language and region"
 
         expect(page).to have_select "Language", selected: "English"
         select "Português do brasil", from: "Language"
