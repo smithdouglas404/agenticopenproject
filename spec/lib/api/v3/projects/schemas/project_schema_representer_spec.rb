@@ -55,25 +55,16 @@ RSpec.describe API::V3::Projects::Schemas::ProjectSchemaRepresenter do
     end
 
     allow(contract)
-      .to receive(:available_custom_fields)
-      .and_return([custom_field])
-
-    allow(contract)
       .to receive(:assignable_values)
       .with(:status_code, current_user)
       .and_return(allowed_status)
 
     allow(contract)
-      .to receive(:model)
-      .and_return(model)
+      .to receive_messages(available_custom_fields: [custom_field], model: model)
+
 
     allow(model)
-      .to receive(:new_record?)
-      .and_return(new_record)
-
-    allow(model)
-      .to receive(:id)
-      .and_return(model_id)
+      .to receive_messages(new_record?: new_record, id: model_id)
 
     contract
   end
