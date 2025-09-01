@@ -29,7 +29,7 @@ See COPYRIGHT and LICENSE files for more details.
 <%= render(Primer::Beta::Heading.new(tag: :h3, font_size: 4, mb: 2)) { @custom_field.name } %>
 
 <%=
-  render(Primer::OpenProject::TreeView.new(node_variant: :anchor)) do |tree_view|
+  render(Primer::Alpha::TreeView.new(node_variant: :anchor)) do |tree_view|
     add_sub_tree(tree_view, hierarchy_items)
   end
 %>

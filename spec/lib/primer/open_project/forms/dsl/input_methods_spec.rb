@@ -121,6 +121,12 @@ RSpec.describe Primer::OpenProject::Forms::Dsl::InputMethods, type: :forms do
     include_examples "input class", Primer::Forms::Separator
   end
 
+  describe "#html_content" do
+    let(:field_group) { form_dsl.html_content { "content" } }
+
+    include_examples "input class", Primer::OpenProject::Forms::HtmlContent
+  end
+
   describe "text input methods" do
     describe "#text_field" do
       let(:field_group) { form_dsl.text_field(name:, label:, **options) }
@@ -196,12 +202,6 @@ RSpec.describe Primer::OpenProject::Forms::Dsl::InputMethods, type: :forms do
 
       include_examples "input class", Primer::OpenProject::Forms::Dsl::ColorSelectInput
       it_behaves_like "supporting help texts"
-    end
-
-    describe "#html_content" do
-      let(:field_group) { form_dsl.html_content(name:, label:, **options) }
-
-      include_examples "input class", Primer::OpenProject::Forms::Dsl::HtmlContentInput
     end
 
     describe "#project_autocompleter" do

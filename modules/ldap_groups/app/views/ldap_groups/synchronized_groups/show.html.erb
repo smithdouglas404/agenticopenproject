@@ -2,7 +2,7 @@
 
 <%=
   render Primer::OpenProject::PageHeader.new do |header|
-    header.with_title { h(@group.dn) }
+    header.with_title_content(@group.dn)
     header.with_breadcrumbs(
       [{ href: admin_index_path, text: t(:label_administration) },
        { href: admin_settings_authentication_path, text: t(:label_authentication) },
