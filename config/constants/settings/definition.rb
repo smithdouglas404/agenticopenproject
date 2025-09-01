@@ -340,7 +340,7 @@ module Settings
         default: false
       },
       default_language: {
-        default: "tr",
+        default: "en",
         allowed: -> { Redmine::I18n.all_languages }
       },
       default_projects_modules: {
