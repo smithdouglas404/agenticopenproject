@@ -35,23 +35,35 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
 
   subject(:generated) { representer.to_json }
 
+  let(:available_custom_fields) { [int_custom_field, version_custom_field] }
+  let(:all_available_custom_fields) { [int_custom_field, version_custom_field] }
   let(:project) do
     build_stubbed(:project,
                   :with_status,
                   parent: parent_project,
                   description: "some description").tap do |p|
-      allow(p).to receive_messages(available_custom_fields: [int_custom_field, version_custom_field],
-                                   all_available_custom_fields: [int_custom_field, version_custom_field],
+      allow(p).to receive_messages(available_custom_fields:,
+                                   all_available_custom_fields:,
                                    ancestors_from_root: ancestors)
 
-      allow(p)
-        .to receive(int_custom_field.attribute_getter)
-              .and_return(int_custom_value.value)
+      if available_custom_fields.include?(int_custom_field)
+        allow(p)
+          .to receive(int_custom_field.attribute_getter)
+                .and_return(int_custom_value.value)
+      end
 
-      allow(p)
-        .to receive(:custom_value_for)
-              .with(version_custom_field)
-              .and_return(version_custom_value)
+      if available_custom_fields.include?(version_custom_field)
+        allow(p)
+          .to receive(:custom_value_for)
+                .with(version_custom_field)
+                .and_return(version_custom_value)
+      end
+
+      if available_custom_fields.include?(calculated_value_custom_field)
+        allow(p)
+          .to receive(calculated_value_custom_field.attribute_getter)
+                .and_return(calculated_custom_value.value)
+      end
     end
   end
 
@@ -71,6 +83,14 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
         .to receive(:typed_value)
               .and_return(version)
     end
+  end
+  let(:calculated_value_custom_field) do
+    build_stubbed(:calculated_value_project_custom_field, :skip_validations, admin_only: false, formula: "21 + 3")
+  end
+  let(:calculated_custom_value) do
+    CustomValue.new(custom_field: calculated_value_custom_field,
+                    value: "24.0",
+                    customized: nil)
   end
   let(:permissions) { %i[view_project add_work_packages view_members] }
   let(:parent_project) do
@@ -185,6 +205,17 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
         it "has no property for the int custom field" do
           expect(subject).not_to have_json_path("customField#{int_custom_field.id}")
         end
+      end
+    end
+
+    describe "calculated value custom field" do
+      let(:available_custom_fields) { [calculated_value_custom_field] }
+      let(:all_available_custom_fields) { [calculated_value_custom_field] }
+      let(:cf_path) { "customField#{calculated_value_custom_field.id}" }
+
+      it "has a property for the calculated value custom field" do
+        expect(subject).to be_json_eql(calculated_custom_value.value.to_json)
+                             .at_path(cf_path)
       end
     end
   end
