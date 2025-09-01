@@ -690,7 +690,7 @@ zh-TW:
     dark_high_contrast: "深色高對比模式"
     light: "白色主題"
     light_high_contrast: "高對比白色主題"
-    sync_with_os: "Automatic (match OS color mode)"
+    sync_with_os: "自動（配合作業系統顏色模式）"
   types:
     index:
       no_results_title_text: 目前沒有類型
@@ -906,7 +906,7 @@ zh-TW:
   account:
     delete: "刪除帳號"
     delete_confirmation: "您確定要刪除這個帳號嗎？"
-    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
+    deletion_pending: "帳戶已排定刪除。請注意，此過程會在背景中進行。在完全刪除使用者之前，可能會花費一些時間。"
     deletion_info:
       data_consequences:
         other: '使用者所建立的資料（例如電子郵件、偏好設定、工作套件、維基條目）將盡可能被刪除。但請注意，像工作套件和維基條目等資料若刪除，會影響其他使用者的工作，因此這些資料會被重新指派給名為「已刪除使用者」的帳號。由於所有被刪除帳號的資料都會集中指派至此帳號，因此無法區分該使用者所建立的資料與其他已刪除帳號的資料。'
@@ -1184,9 +1184,9 @@ zh-TW:
         auto_hide_popups: "自動關閉成功通知"
         auto_hide_popups_caption: "啟用時，綠色的成功通知會在 5 秒內自動關閉。"
         warn_on_leaving_unsaved: "離開尚未儲存的工作套件時提示我"
-        theme: "Color mode"
+        theme: "色彩模式"
         time_zone: "時區"
-        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
+        mode_guideline: "某些模式會覆蓋自訂主題的顏色，以提高可訪問性和可存取性。請選擇「Light」模式，以獲得完整的自訂主題支援。"
         daily_reminders: "每日提醒"
         workdays: "工作日"
       version:
@@ -2475,20 +2475,20 @@ zh-TW:
       upsell:
         title: "升級到企業版"
       new_features:
-        header: "Read about new features and product updates."
-        learn_about: "Learn more about all new features"
+        header: "閱讀關於新功能和產品更新的資訊。"
+        learn_about: "進一步瞭解所有新功能"
         #We need to include the version to invalidate outdated translations in other locales
         "16_4":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            該版本包含多種新功能和改進，例如：
           new_features_list:
-            line_0: Option to auto-sync system color + contrast mode.
-            line_1: Dark high contrast mode for improved accessibility.
-            line_2: PDF export of project lists.
-            line_3: Custom font for all PDF exports (Enterprise add-on).
-            line_4: Improved meeting participants dialog.
-            line_5: Improved budget handling in project queries and budget planning.
-            line_6: Updated Home and Project overview page.
+            line_0: 可選擇自動同步系統色彩 + 對比模式。
+            line_1: 深色高對比度模式可提高可存取性。
+            line_2: PDF 匯出專案清單。
+            line_3: 所有 PDF 匯出的自訂字型（企業附加元件）。
+            line_4: 改善會議與會者的對話。
+            line_5: 改善專案查詢和預算規劃中的預算處理。
+            line_6: 更新首頁與專案總覽頁面。
     links:
       upgrade_enterprise_edition: "升級到企業版"
       postgres_migration: "將您的安裝遷移到 PostgreSQL"
