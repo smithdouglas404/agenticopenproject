@@ -4,9 +4,14 @@
   [attr.data-indicator-name]="'table'"
   style="position: relative"
 >
+  <primer-button 
+    variant="primary" 
+    leading-visual="HeartIcon"
+    [content]="'foobar'"
+  >Foobar</primer-button>
   <button
     *ngIf="memoizedCreateAllowed"
-    class="button te-calendar--create-button"
+    class="Button te-calendar--create-button"
     [attr.aria-label]="text.logTime"
     (click)="addEventToday()"
   >

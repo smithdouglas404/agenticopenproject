@@ -31,3 +31,19 @@ import 'hammerjs';
 // Global scripts previously part of the application.js
 // Avoid require.context since that crashes angular regularly
 import './globals/openproject';
+
+import r2wc from "@r2wc/react-to-web-component"
+import { Button } from '@primer/react';
+import {withContentProp, withSlot} from './with-content-prop';
+
+const ButtonWithContent = withSlot(Button);
+
+const PrimerButton = r2wc(ButtonWithContent, {
+  shadow: "open",
+  props: {
+    variant: "string",
+    loading: "boolean",
+  }
+});
+
+customElements.define("primer-button", PrimerButton);

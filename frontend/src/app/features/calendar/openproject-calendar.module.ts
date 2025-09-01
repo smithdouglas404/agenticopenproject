@@ -27,7 +27,7 @@
 //++
 
 import { OpSharedModule } from 'core-app/shared/shared.module';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { WorkPackagesCalendarComponent } from 'core-app/features/calendar/wp-calendar/wp-calendar.component';
@@ -74,6 +74,7 @@ import { QueryGetIcalUrlModalComponent } from 'core-app/shared/components/modals
     WorkPackagesCalendarComponent,
     TimeEntryCalendarComponent,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class OpenprojectCalendarModule {
 }
