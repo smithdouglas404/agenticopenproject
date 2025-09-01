@@ -21,7 +21,7 @@ Users can now enable **automatic color mode** under *Account settings → Interf
 > [!NOTE]
 > If a user has enabled dark mode — either by default or through automatic switching — this overrides the instance’s design settings for that user.
 
-Screenshot
+![Screenshot of OpenProject 16.4: Account settings to adjust color mode, Automatic mode selected](openproject-16-4-color-mode-light-1.png)
 
 #### Dark high contrast mode for improved accessibility
 
@@ -30,7 +30,7 @@ Together with the automatic color mode, we have introduced a dark high contrast 
 > [!NOTE]
 > If your OS is set to use high contrast and you enable the new **automatic color mode**, OpenProject will automatically switch to **light high contrast or dark high contrast** accordingly.
 
-Screenshot
+![Screenshot of OpenProject 16.4: Account settings to adjust color mode to new options like high contrast and Automatic mode](openproject-16-4-color-mode.png)
 
 ### PDF export of project lists
 
@@ -46,7 +46,7 @@ The exported PDF includes:
 
 To export a project list, open the **More (three dots)** menu in the top right corner of the list and select Export. In the export modal, you can choose between XLS, CSV, or PDF.
 
-Screenshot
+![Screenshot of OpenProject 16.4: Export modal for PDF export of project lists, choosing the file format - XLS, CSV and PDF](openproject-16-4-export-project-list-highlighted.png)
 
 ### Custom font for all PDF exports (Enterprise add-on)
 
@@ -60,7 +60,7 @@ A new section has been added under *Administration → Design → PDF export fon
 
 Once uploaded, the font is applied to **all future PDF exports across the instance**.
 
-Screenshot
+![Screenshot of OpenProject 16.4: Administration / Design / PDF export font - options to upload fonts for regular, bold and italic and generate Demo PDF](openproject-16-4-pdf-export-font-highlighted.png)
 
 ### Improved meeting participants dialog
 
@@ -80,7 +80,7 @@ Other meetings improvements include:
 - Ability to remove participants directly from the dialog.
 - Cleaner display in the meeting right side and PDF export: only Attended is shown (no more 'Invited' label).
 
-Screenshot
+![Screenshot of OpenProject 16.4: Meeting participants modal with autocomplete and 'Mark as attended' button](openproject-16-4-meeting-participants.png)
 
 ### Synchronize group information / OIDC (Enterprise add-on)
 
@@ -106,7 +106,7 @@ In addition, **project lists** now include columns for planned budget, spent bud
 
 These updates make budgeting more practical for everyday use, and we will continue to expand budgets and cost management in future releases.
 
-Screenshot
+![Screenshot of OpenProject 16.4: New budget with highlighted Base amount](openproject-16-4-budgets-highlighted.png)
 
 ### Updated Home and Project overview page
 
@@ -120,8 +120,6 @@ Changes include:
 - A new **+ Widget button** in the subheader opens the widget selection modal, with new widgets placed at the top of the page.
 
 These updates make widgets clearer and faster to use, while work continues on the upcoming Overview dashboard.
-
-Screenshot
 
 ## Important technical updates
 
