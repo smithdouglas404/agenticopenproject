@@ -131,27 +131,8 @@ class MyController < ApplicationController
   def user_params
     raw = permitted_params.my_account_settings.to_h
 
-    if raw[:pref]
-      theme = raw[:pref][:theme]
-
-      if theme.in?(%w[light dark])
-        increase = raw[:pref].delete(:increase_contrast)
-        raw[:pref][:theme] = increase.to_s == "1" ? "#{theme}_high_contrast" : theme
-      elsif theme == "sync_with_os"
-        light = raw[:pref].delete(:sync_with_os_light_high_contrast) == "1"
-        dark  = raw[:pref].delete(:sync_with_os_dark_high_contrast) == "1"
-
-        raw[:pref][:theme] =
-          if light && dark
-            "sync_with_os_high_contrast"
-          elsif light
-            "sync_with_os_light_high_contrast"
-          elsif dark
-            "sync_with_os_dark_high_contrast"
-          else
-            "sync_with_os"
-          end
-      end
+    if raw[:pref] && raw[:pref][:theme]
+      raw[:pref][:theme] = resolved_theme(raw[:pref])
     end
 
     raw
@@ -174,5 +155,29 @@ class MyController < ApplicationController
 
   def get_current_layout
     @user.pref[:my_page_layout] || DEFAULT_LAYOUT.dup
+  end
+
+  def resolved_theme(pref)
+    theme = pref[:theme]
+
+    case theme
+    when "light", "dark"
+      pref.delete(:increase_contrast).to_s == "1" ? "#{theme}_high_contrast" : theme
+    when "sync_with_os"
+      light = pref.delete(:sync_with_os_light_high_contrast) == "1"
+      dark  = pref.delete(:sync_with_os_dark_high_contrast) == "1"
+
+      if light && dark
+        "sync_with_os_high_contrast"
+      elsif light
+        "sync_with_os_light_high_contrast"
+      elsif dark
+        "sync_with_os_dark_high_contrast"
+      else
+        "sync_with_os"
+      end
+    else
+      theme
+    end
   end
 end

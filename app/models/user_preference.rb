@@ -38,7 +38,16 @@ class UserPreference < ApplicationRecord
 
   WORKDAYS_FROM_MONDAY_TO_FRIDAY = [1, 2, 3, 4, 5].freeze
 
-  THEMES = %w[light light_high_contrast dark dark_high_contrast sync_with_os sync_with_os_high_contrast sync_with_os_light_high_contrast sync_with_os_dark_high_contrast].freeze
+  THEMES = %w[
+    light
+    light_high_contrast
+    dark
+    dark_high_contrast
+    sync_with_os
+    sync_with_os_high_contrast
+    sync_with_os_light_high_contrast
+    sync_with_os_dark_high_contrast
+  ].freeze
 
   ##
   # Retrieve keys from settings, and allow accessing
