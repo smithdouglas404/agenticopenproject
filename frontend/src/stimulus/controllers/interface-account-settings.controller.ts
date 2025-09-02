@@ -45,13 +45,13 @@ export default class interfaceAccountSettings extends Controller {
 
   toggleCheckbox() {
     if (this.modeSelectTarget.value === 'sync_with_os') {
-      this.increaseContrastCheckboxTarget.parentElement?.style.setProperty('display', 'none');
-      this.autoLightCheckboxTarget.parentElement?.style.setProperty('display', 'inline-grid');
-      this.autoDarkCheckboxTarget.parentElement?.style.setProperty('display', 'inline-grid');
+      this.increaseContrastCheckboxTarget.parentElement?.parentElement?.style.setProperty('display', 'none');
+      this.autoLightCheckboxTarget.parentElement?.parentElement?.style.setProperty('display', 'inline-grid');
+      this.autoDarkCheckboxTarget.parentElement?.parentElement?.style.setProperty('display', 'inline-grid');
     } else {
-      this.increaseContrastCheckboxTarget.parentElement?.style.setProperty('display', 'inline-grid');
-      this.autoLightCheckboxTarget.parentElement?.style.setProperty('display', 'none');
-      this.autoDarkCheckboxTarget.parentElement?.style.setProperty('display', 'none');
+      this.increaseContrastCheckboxTarget.parentElement?.parentElement?.style.setProperty('display', 'inline-grid');
+      this.autoLightCheckboxTarget.parentElement?.parentElement?.style.setProperty('display', 'none');
+      this.autoDarkCheckboxTarget.parentElement?.parentElement?.style.setProperty('display', 'none');
     }
   }
 }

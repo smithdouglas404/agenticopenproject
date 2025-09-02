@@ -61,20 +61,20 @@ class My::LookAndFeelForm < ApplicationForm
     end
 
     f.check_box name: :increase_contrast,
-                label: "Increase contrast",
-                caption: "Enables high-contrast mode for the chosen colour mode.",
+                label: I18n.t("activerecord.attributes.user_preference.increase_contrast"),
+                caption: I18n.t("activerecord.attributes.user_preference.increase_contrast_caption"),
                 checked: increase_contrast_checked?,
                 data: { "interface-account-settings-target": "increaseContrastCheckbox" }
 
     f.check_box name: :sync_with_os_light_high_contrast,
-                label: "Force high-contrast when in Light mode",
-                caption: "Uses the high-contrast version of Light mode when automatic color mode is selected.",
+                label: I18n.t("activerecord.attributes.user_preference.sync_with_os_light_high_contrast"),
+                caption: I18n.t("activerecord.attributes.user_preference.sync_with_os_light_high_contrast_caption"),
                 checked: sync_with_os_light_checked?,
                 data: { "interface-account-settings-target": "autoLightCheckbox" }
 
     f.check_box name: :sync_with_os_dark_high_contrast,
-                label: "Force high-contrast when in Dark mode",
-                caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected.",
+                label: I18n.t("activerecord.attributes.user_preference.sync_with_os_dark_high_contrast"),
+                caption: I18n.t("activerecord.attributes.user_preference.sync_with_os_dark_high_contrast_caption"),
                 checked: sync_with_os_dark_checked?,
                 data: { "interface-account-settings-target": "autoDarkCheckbox" }
 
