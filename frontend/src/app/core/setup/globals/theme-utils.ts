@@ -46,8 +46,9 @@ export class ThemeUtils {
     return this.prefersSystemLightMode() ? 'light' : 'dark';
   }
 
-  public prefersSystemLightHighContrast():boolean {
-    return this.prefersSystemLightMode() && this.prefersSystemHighContrast();
+  public prefersSystemLightHighContrast(theme?:OpTheme):boolean {
+    return (this.prefersSystemLightMode() && this.prefersSystemHighContrast()) ||
+      (theme === 'sync_with_os_light_high_contrast' || theme === 'sync_with_os_high_contrast');
   }
 
   public prefersSystemLightMode():boolean {
@@ -58,15 +59,15 @@ export class ThemeUtils {
     return window.matchMedia('(prefers-contrast: more)').matches;
   }
 
-  public isHighContrast(mode?:OpTheme, colorMode?:OpColorMode):boolean {
-    return mode === 'sync_with_os_high_contrast'
-      || (mode === 'sync_with_os_light_high_contrast' && colorMode === 'light')
-      || (mode === 'sync_with_os_dark_high_contrast' && colorMode === 'dark');
+  public isHighContrast(theme?:OpTheme, colorMode?:OpColorMode):boolean {
+    return theme === 'sync_with_os_high_contrast'
+      || (theme === 'sync_with_os_light_high_contrast' && colorMode === 'light')
+      || (theme === 'sync_with_os_dark_high_contrast' && colorMode === 'dark');
   }
 
-  public applyThemeToBody(colorMode:OpColorMode, modeValue?:OpTheme):void {
+  public applyThemeToBody(colorMode:OpColorMode, theme?:OpTheme):void {
     const body = document.body;
-    const increaseContrast = this.prefersSystemHighContrast() || this.isHighContrast(modeValue, colorMode);
+    const increaseContrast = this.prefersSystemHighContrast() || this.isHighContrast(theme, colorMode);
     const otherColorMode = (colorMode === 'light' ? 'dark' : 'light');
 
     body.setAttribute('data-color-mode', colorMode);

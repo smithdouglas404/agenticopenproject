@@ -73,7 +73,7 @@ export default class AutoThemeSwitcher extends Controller {
   }
 
   private updateOpLogoContrast():void {
-    const prefersSystemLightHighContrast = window.OpenProject.theme.prefersSystemLightHighContrast();
+    const prefersSystemLightHighContrast = window.OpenProject.theme.prefersSystemLightHighContrast(this.modeValue);
     this.desktopLogoTarget.classList.toggle(this.desktopLightHighContrastLogoClass, prefersSystemLightHighContrast);
     this.mobileLogoTarget.classList.toggle(this.mobileWhiteLogoClass, !prefersSystemLightHighContrast);
   }
