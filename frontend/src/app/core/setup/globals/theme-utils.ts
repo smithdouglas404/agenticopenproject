@@ -58,13 +58,15 @@ export class ThemeUtils {
     return window.matchMedia('(prefers-contrast: more)').matches;
   }
 
-  public isHighContrast(mode?:string) {
-    return typeof mode === 'string' && mode.endsWith('high_contrast');
+  public isHighContrast(mode?:OpTheme, colorMode?:OpColorMode):boolean {
+    return mode === 'sync_with_os_high_contrast'
+      || (mode === 'sync_with_os_light_high_contrast' && colorMode === 'light')
+      || (mode === 'sync_with_os_dark_high_contrast' && colorMode === 'dark');
   }
 
   public applyThemeToBody(colorMode:OpColorMode, modeValue?:OpTheme):void {
     const body = document.body;
-    const increaseContrast = this.prefersSystemHighContrast() || this.isHighContrast(modeValue);
+    const increaseContrast = this.prefersSystemHighContrast() || this.isHighContrast(modeValue, colorMode);
     const otherColorMode = (colorMode === 'light' ? 'dark' : 'light');
 
     body.setAttribute('data-color-mode', colorMode);
