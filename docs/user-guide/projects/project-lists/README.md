@@ -18,10 +18,10 @@ Your projects can be available publicly or internally. OpenProject does not limi
 | [Select project lists](#select-project-lists)                | Get an overview of all your projects in the project lists.   |
 | [Filter project lists](#project-lists-filters)               | Adjust filters in the project lists.                         |
 | [Favorite project lists](#favorite-project-lists)            | Mark project lists as favorite.                              |
-| [Share project lists with individual users and groups (Enterprise add-on)](#share-project-lists-with-individual-users-and-groups-enterprise-add-on) | Share project lists with individual users and groups.                   |
+| [Share project lists with individual users and groups (Enterprise add-on)](#share-project-lists-with-individual-users-and-groups-enterprise-add-on) | Share project lists with individual users and groups.        |
 | [Share project lists with everyone](#share-with-everyone-at-openproject) | Share project lists with everyone within your OpenProject instance. |
-| [Export project list](#export-project-lists)                 | You can export the project list to XLS or CSV.               |
-| [Project overarching reports](#project-overarching-reports)  | How to create project overarching reports across multiple projects. |
+| [Export project list](#export-project-lists)                 | Export project lists as XLS, CSV or PDF.                     |
+| [Project overarching reports](#project-overarching-reports)  | Create project overarching reports across multiple projects. |
 
 ## Select project lists
 
@@ -252,13 +252,13 @@ If a project list has already been shared, you will see the list of users that h
 
 ## Export project lists
 
-You can export a project list by clicking on the three dots in the upper right hand corner and selecting > **Export**.
+You can export a project list by clicking on the three dots in the upper right hand corner and selecting **Export**.
 
 ![Export projects in OpenProject](export-projects.png)
 
 Next, you can select the format in which you want to export the project list.
 
-It can be exported as .xls or .csv.
+It can be exported as XLS, CSV or PDF file.
 
 ![Export project list formats](export-project-list-formats.png)
 
