@@ -930,7 +930,7 @@ pl:
   account:
     delete: "Usuń konto"
     delete_confirmation: "Czy na pewno chcesz usunąć to konto?"
-    deletion_pending: "Konto zostało zablokowane i zaplanowane do usunięcia. Pamiętaj, że ten proces odbywa się w tle. Może upłynąć trochę czasu, zanim użytkownik zostanie w pełni usunięty."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Dane użytkownika (np. e-mail, preferencje, pakiety pracy, wpisy wiki) będą usunięte w miarę możliwości. Jednakże, takie dane jak Zadania i wpisy wiki nie mogą być usunięte bez wpływu na pracę pozostałych użytkowników i mogą ją utrudnić. Te dane zostaną przypisane do konta "Użytkownik usunięty". Wszystkie dane z usuwanego konta zostaną przypisane do tego ww. konta uniemożliwiając ich późniejszą identyfikację.'
@@ -1590,7 +1590,8 @@ pl:
               cant_exceed_work: "nie może być wyższa niż Praca."
               must_be_set_when_work_is_set: "wymagane, gdy ustawiona jest opcja Praca."
               must_be_set_when_work_and_percent_complete_are_set: "wymagane, gdy ustawione są opcje Praca i % ukończenia."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 musi być puste, gdy Praca jest pusta, a % ukończenia wynosi 100%.
           readonly_status: "Pakiet roboczy ma status tylko do odczytu, więc jego atrybutów nie można zmienić."
@@ -2609,6 +2610,21 @@ pl:
       community: "Społeczność OpenProject"
       upsell:
         title: "Aktualizuj do wersji Enterprise"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "Aktualizuj do wersji Enterprise"
       postgres_migration: "Migrowanie instalacji do PostgreSQL"
@@ -3033,7 +3049,7 @@ pl:
   label_journal_diff: "Opis porównania"
   label_language: "Język"
   label_languages: "Języki"
-  label_locale: "Language and Region"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Skok do projektu..."
   label_keyword_plural: "Słowa kluczowe"
   label_language_based: "Na podstawie języka użytkownika"

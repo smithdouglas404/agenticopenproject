@@ -914,7 +914,7 @@ nl:
   account:
     delete: "Account Verwijderen"
     delete_confirmation: "Weet je zeker dat je dit account wilt verwijderen?"
-    deletion_pending: "Account is vergrendeld en is ingepland voor verwijdering. Let op dat dit proces op de achtergrond plaatsvindt. Het kan even duren voordat de gebruiker volledig verwijderd is."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Van de gegevens die de gebruiker heeft gemaakt (bijvoorbeeld e-mail, voorkeuren, werkpakketten, wiki-inzendingen) zal zoveel mogelijk worden verwijderd. Let echter op dat gegevens zoals werkpakketten en wiki-items niet kunnen worden verwijderd zonder het belemmeren van het werk van de andere gebruikers. Dergelijke gegevens worden dus opnieuw toegewezen aan een account genaamd "Verwijderde gebruiker". Zodra de gegevens van elk verwijderd account zijn toegewezen aan dit account, zal het niet mogelijk zijn om gegevens die de gebruiker heeft gemaakt te onderscheiden van de gegevens van een ander verwijderd account.'
@@ -1572,7 +1572,8 @@ nl:
               cant_exceed_work: "kan niet hoger zijn dan Werk."
               must_be_set_when_work_is_set: "vereist wanneer Werk is ingesteld."
               must_be_set_when_work_and_percent_complete_are_set: "vereist wanneer Werk en % Voltooid zijn ingesteld."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 moet leeg zijn als Werk leeg is en % Voltooid 100% is.
           readonly_status: "Het werkpakket heeft een alleen-lezen status dus kunne attributen niet worden gewijzigd."
@@ -2519,6 +2520,21 @@ nl:
       community: "OpenProject gemeenschap"
       upsell:
         title: "Upgrade naar Enterprise-editie"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "Upgrade naar Enterprise-editie"
       postgres_migration: "Uw installatie overzetten naar PostgreSQL"
@@ -2943,7 +2959,7 @@ nl:
   label_journal_diff: "Beschrijving vergelijking"
   label_language: "Taal"
   label_languages: "Talen"
-  label_locale: "Language and Region"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Ga naar een project..."
   label_keyword_plural: "Trefwoorden"
   label_language_based: "Op basis van de taal van gebruiker"

@@ -84,7 +84,7 @@ eo:
         other: "iCal Meeting subscription"
   activity:
     filter:
-      meeting: "Meetings"
+      meeting: "Renkontiĝoj"
     item:
       meeting_agenda_item:
         duration:
@@ -109,8 +109,8 @@ eo:
   error_notification: "Failed to send notification."
   error_notification_with_errors: "Failed to send notification. The following recipients could not be notified: %{recipients}"
   label_meeting: "Meeting"
-  label_meeting_plural: "Meetings"
-  label_meeting_new: "New Meeting"
+  label_meeting_plural: "Renkontiĝoj"
+  label_meeting_new: "Nova renkontiĝo"
   label_meeting_new_dynamic: "New one-time meeting"
   label_meeting_new_recurring: "New recurring meeting"
   label_meeting_create: "Create meeting"
@@ -156,12 +156,12 @@ eo:
   label_meeting_more:
     one: "There is one more meeting."
     other: "There are %{count} more meetings."
-  label_my_meetings: "My meetings"
-  label_all_meetings: "All meetings"
-  label_upcoming_meetings: "Upcoming meetings"
-  label_past_meetings: "Past meetings"
-  label_upcoming_meetings_short: "Upcoming"
-  label_past_meetings_short: "Past"
+  label_my_meetings: "Miaj renkontiĝoj"
+  label_all_meetings: "Ĉiaj renkontiĝoj"
+  label_upcoming_meetings: "Venontaj renkontiĝoj"
+  label_past_meetings: "Pasintaj renkontiĝoj"
+  label_upcoming_meetings_short: "Venonta"
+  label_past_meetings_short: "Pasinta"
   label_involvement: "Involvement"
   label_invitations: "Invitations"
   label_invited_user: "Invited user"

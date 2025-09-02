@@ -534,6 +534,38 @@ RSpec.describe WorkPackages::BulkController, with_settings: { journal_aggregatio
             end
           end
         end
+
+        describe "#done_ratio" do
+          before do
+            put :update,
+                params: {
+                  ids: work_package_ids,
+                  work_package: { done_ratio: }
+                }
+          end
+
+          context "with a valid done_ratio" do
+            let(:done_ratio) { 55 }
+
+            subject { work_packages.map(&:done_ratio).uniq }
+
+            it { is_expected.to contain_exactly(55) }
+          end
+
+          context "with an invalid done_ratio" do
+            let(:done_ratio) { 150 }
+
+            subject { work_packages.map(&:done_ratio).uniq }
+
+            it "does not succeed" do
+              expect(flash[:error])
+                .to include(I18n.t(:"work_packages.bulk.none_could_be_saved",
+                                   total: 2))
+
+              expect(subject).to contain_exactly(nil)
+            end
+          end
+        end
       end
     end
 

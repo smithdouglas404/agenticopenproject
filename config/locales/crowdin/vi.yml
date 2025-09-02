@@ -910,7 +910,7 @@ vi:
   account:
     delete: "Xoá tài khoản"
     delete_confirmation: "Bạn có chắc chắn muốn xoá tài khoản chứ?"
-    deletion_pending: "Tài khoản đã bị khóa và đã được lên lịch xóa. Lưu ý rằng quá trình này diễn ra trong nền. Có thể mất một vài phút cho đến khi người dùng được xóa hoàn toàn."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Dữ liệu mà người dùng tạo ra (ví dụ: email, sở thích, gói công việc, mục wiki) sẽ được xóa nhiều nhất có thể. Tuy nhiên, dữ liệu như gói công việc và mục wiki không thể bị xóa mà không cản trở công việc của các người dùng khác. Do đó, dữ liệu như vậy sẽ được gán lại cho một tài khoản gọi là "Người dùng đã xóa". Vì dữ liệu của mỗi tài khoản bị xóa đều được gán lại cho tài khoản này, sẽ không thể phân biệt dữ liệu mà người dùng tạo ra với dữ liệu của một tài khoản bị xóa khác.'
@@ -1567,7 +1567,8 @@ vi:
               cant_exceed_work: "không thể cao hơn Công việc."
               must_be_set_when_work_is_set: "cần thiết khi Công việc được thiết lập."
               must_be_set_when_work_and_percent_complete_are_set: "bắt buộc khi Công việc và % Hoàn thành được thiết lập."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 phải trống khi Công việc trống và % Hoàn thành là 100%.
           readonly_status: "Gói công việc đang ở trạng thái chỉ đọc nên các thuộc tính của nó không thể bị thay đổi."
@@ -2478,6 +2479,21 @@ vi:
       community: "Cộng đồng OpenProject"
       upsell:
         title: "Nâng cấp lên phiên bản Enterprise"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "Nâng cấp lên phiên bản Enterprise"
       postgres_migration: "Di chuyển cài đặt của bạn lên PostgreSQL"
@@ -2902,7 +2918,7 @@ vi:
   label_journal_diff: "So sánh mô tả"
   label_language: "Ngôn ngữ"
   label_languages: "Ngôn ngữ"
-  label_locale: "Language and Region"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Nhảy đến dự án..."
   label_keyword_plural: "Từ khóa"
   label_language_based: "Dựa trên ngôn ngữ của người dùng"

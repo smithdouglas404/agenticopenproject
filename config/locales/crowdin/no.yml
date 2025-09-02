@@ -917,7 +917,7 @@
   account:
     delete: "Slett konto"
     delete_confirmation: "Er du sikker på at du vil slette kontoen?"
-    deletion_pending: "Kontoen er låst og ble planlagt slettet. Merk at denne prosessen skjer i bakgrunnen. Det kan ta noe tid til brukeren er fullstendig slettet."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Av dataene brukeren opprettet (f.eks. e-post, innstillinger, arbeidspakker, wiki-oppføringer) vil så mye som mulig bli slettet. Merk imidlertid at data som arbeidspakker og wiki-oppføringer ikke kan slettes uten å påvirke arbeidet til de andre brukerne. Slike data blir derfor flyttet til en konto kalt "Slettet bruker". Fordi dataene til hver slettede konto blir flyttet til denne kontoen vil det ikke være mulig å skille data brukeren har opprettet fra data for en annen slettet konto.'
@@ -1575,7 +1575,8 @@
               cant_exceed_work: "kan ikke være høyere enn Arbeid."
               must_be_set_when_work_is_set: "kreves når Arbeid er satt."
               must_be_set_when_work_and_percent_complete_are_set: "påkrevd når gjenværende arbeid og % Fullført er satt."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 må være tom når arbeidet er tomt og % Komplett er 100%.
           readonly_status: "Arbeidspakken er i skrivebeskyttet status slik at egenskapene ikke kan endres."
@@ -2522,6 +2523,21 @@
       community: "OpenProject fellesskap"
       upsell:
         title: "Oppgrader til Enterprise utgaven"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "Oppgrader til Enterprise utgaven"
       postgres_migration: "Overføre installasjonen til PostgreSQL"
@@ -2946,7 +2962,7 @@
   label_journal_diff: "Sammenligning av beskrivelse"
   label_language: "Språk"
   label_languages: "Språk"
-  label_locale: "Language and Region"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Gå til et prosjekt..."
   label_keyword_plural: "Nøkkelord"
   label_language_based: "Basert på brukerens språk"

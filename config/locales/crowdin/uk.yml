@@ -927,7 +927,7 @@ uk:
   account:
     delete: "Видалити обліковий запис"
     delete_confirmation: "Ви дійсно бажаєте видалити цей обліковий запис?"
-    deletion_pending: "Обліковий запис заблоковано й позначено як такий, що буде видалено. Зверніть увагу, що цей процес відбувається у фоновому режимі. Остаточне видалення даних користувача може зайняти кілька хвилин."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'З даних, створених користувачем (наприклад, електронною поштою, налаштуваннями, робочими пакетами, вікі-записами), буде максимально вилучено. Зауважте, що дані, такі як робочі пакети та записи вікі, не можуть бути видалені без перешкод роботі інших користувачів. Таким чином, такі дані перепризначено до облікового запису, який називається "Видалений користувач". Оскільки дані кожного видаленого облікового запису перепризначені для цього облікового запису, неможливо буде розрізняти дані, створені користувачем, з даних іншого видаленого облікового запису.'
@@ -1587,7 +1587,8 @@ uk:
               cant_exceed_work: "не може перевищувати значення атрибута «Робота»."
               must_be_set_when_work_is_set: "потрібно вказати, якщо визначено атрибут «Робота»."
               must_be_set_when_work_and_percent_complete_are_set: "потрібно вказати, якщо визначено атрибути «Робота» й «% завершення»."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 має бути пустим, якщо визначено атрибути «Робота» й «% завершення».
           readonly_status: "Пакет робіт перебуває в стані лише для читання, тому його атрибути не можна змінити."
@@ -2606,6 +2607,21 @@ uk:
       community: "Спільнота OpenProject"
       upsell:
         title: "Оновлення до версії Enterprise"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "Оновлення до версії Enterprise"
       postgres_migration: "Міграція інсталяції в PostgreSQL"
@@ -3030,7 +3046,7 @@ uk:
   label_journal_diff: "Опис Порівняння"
   label_language: "Мова"
   label_languages: "Мови"
-  label_locale: "Language and Region"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Перейти до проекту..."
   label_keyword_plural: "Ключові слова"
   label_language_based: "На основі мови користувача"

@@ -926,7 +926,7 @@ ro:
   account:
     delete: "Ştergere cont"
     delete_confirmation: "Sunteţi sigur că doriţi să ştergeţi contul?"
-    deletion_pending: "Contul a fost blocat și a fost programat pentru ștergere. Reține că acest proces are loc în fundal. Poate dura câteva momente până când utilizatorul este complet șters."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Vor fi șterse cât mai multe din datele create de utilizator (e.g. email, preferințe, pachete de lucru, contribuții wiki). De reținut, totuși, că date precum pachete de lucru și contribuții wiki nu pot fi șterse fără a afecta activitatea altor utilizatori. Prin urmare, astfel de date sunt realocate la un cont numit "Utilizator șters". Deoarece datele fiecărui cont șters sunt realocate acestui cont, nu va mai fi posibil să se facă distincția între datele create de utilizator și datele altui cont șters.'
@@ -1585,7 +1585,8 @@ ro:
               cant_exceed_work: "cannot be higher than Work."
               must_be_set_when_work_is_set: "required when Work is set."
               must_be_set_when_work_and_percent_complete_are_set: "required when Work and % Complete are set."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 must be empty when Work is empty and % Complete is 100%.
           readonly_status: "Pachetul de lucru este într-o stare doar citire, astfel, atributele sale nu pot fi modificate."
@@ -2568,6 +2569,21 @@ ro:
       community: "Comunitatea OpenProject"
       upsell:
         title: "Actualizează la ediția Enterprise"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "Actualizează la ediția Enterprise"
       postgres_migration: "Migrarea instalației dvs. către PostgreSQL"
@@ -2992,7 +3008,7 @@ ro:
   label_journal_diff: "Comparare descriere"
   label_language: "Limbă"
   label_languages: "Languages"
-  label_locale: "Language and Region"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Salt la un proiect..."
   label_keyword_plural: "Cuvinte cheie"
   label_language_based: "Bazat pe limba utilizatorului"

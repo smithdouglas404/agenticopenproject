@@ -934,7 +934,7 @@ cs:
   account:
     delete: "Odstranit účet"
     delete_confirmation: "Jste si jisti, že chcete odstranit tento účet?"
-    deletion_pending: "Účet byl uzamčen a byl naplánován na odstranění. Tento proces probíhá na pozadí. Může to chvíli trvat, než bude uživatel plně smazán."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Z dat, která uživatel vytvořil (např. e-mail, nastavení, pracovní balíčky, wiki položky), bude co nejvíce smazáno. Všimněte si však, že data jako pracovní balíčky a wiki nelze odstranit, aniž by to bránilo práci ostatních uživatelů. Tyto údaje jsou proto přeřazeny na účet nazvaný „Smazaný uživatel“. Vzhledem k tomu, že data každého smazaného účtu jsou znovu přiřazena k tomuto účtu, nebude možné rozlišit data, která uživatel vytvořil od dat jiného smazaného účtu.'
@@ -1594,7 +1594,8 @@ cs:
               cant_exceed_work: "nemůže být vyšší než Práce."
               must_be_set_when_work_is_set: "vyžadováno, když je nastavena Práce."
               must_be_set_when_work_and_percent_complete_are_set: "je vyžadováno, když je nastavena práce a % Dokončit."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 musí být prázdný, pokud je položka Práce prázdná a % Dokončeno je 100 %.
           readonly_status: "Pracovní balíček je ve stavu jen pro čtení, takže jeho atributy nelze změnit."
@@ -2613,6 +2614,21 @@ cs:
       community: "OpenProject komunita"
       upsell:
         title: "Upgradovat na Enterprise Edici"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "Upgradovat na Enterprise Edici"
       postgres_migration: "Migrujte vaši instalaci na PostgreSQL"
@@ -3037,7 +3053,7 @@ cs:
   label_journal_diff: "Popis porovnání"
   label_language: "Jazyk"
   label_languages: "Jazyky"
-  label_locale: "Language and Region"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Přejít na projekt..."
   label_keyword_plural: "Klíčová slova"
   label_language_based: "Na základě jazyka uživatele"

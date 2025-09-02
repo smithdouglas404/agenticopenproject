@@ -108,7 +108,7 @@ $widget-box--enumeration-width: 20px
 
 .op-widget-box--body
   height: 100%
-  padding: var(--stack-padding-normal)
+  padding: 0 var(--stack-padding-normal) var(--stack-padding-normal) var(--stack-padding-normal)
   overflow-x: auto
   overflow-y: auto
 
@@ -154,12 +154,11 @@ $widget-box--enumeration-width: 20px
 .op-widget-box--header
   font-weight: var(--base-text-weight-bold)
   font-size: var(--body-font-size)
-  color: var(--fgColor-muted)
+  color: var(--fgColor-default)
   display: flex
   align-items: center
-  border-bottom: var(--borderWidth-thin) solid var(--borderColor-default)
   padding: var(--stack-padding-normal)
-  background-color: var(--bgColor-muted)
+  background-color: var(--body-background)
 
   .help-text--entry
     vertical-align: -1px
@@ -177,7 +176,7 @@ $widget-box--enumeration-width: 20px
   .editable-toolbar-title--input
     font-size: var(--body-font-size)
     font-weight: var(--base-text-weight-bold)
-    color: var(--fgColor-muted) !important
+    color: var(--fgColor-default) !important
     padding: 0 !important
 
   .toolbar--editable-toolbar

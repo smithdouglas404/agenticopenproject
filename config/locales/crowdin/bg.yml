@@ -918,7 +918,7 @@ bg:
   account:
     delete: "Изтриване на профил"
     delete_confirmation: "Наистина ли искате да изтриете акаунта?"
-    deletion_pending: "Account has been locked and was scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'От данните, създадени от потребителя (например, електронна поща, предпочитания, работни пакети, уики страници), колкото е възможно, ще бъдат изтрити. Имайте предвид обаче, че данните като работни пакети и уики страници не могат да бъдат изтрити без възпрепятстване на работата на другите потребители. Такива данни се преразпределят към профил, наречен "Изтрит потребител". Тъй като данните от всеки изтрит профил се записват в този профил, то няма да бъде възможно да се разграничат данните създадени от потребителя от данни от друг изтрит профил.'
@@ -1576,7 +1576,8 @@ bg:
               cant_exceed_work: "cannot be higher than Work."
               must_be_set_when_work_is_set: "required when Work is set."
               must_be_set_when_work_and_percent_complete_are_set: "required when Work and % Complete are set."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 must be empty when Work is empty and % Complete is 100%.
           readonly_status: "Работният пакет е в състояние само за четене, така че атрибутите му не могат да бъдат променяни."
@@ -2523,6 +2524,21 @@ bg:
       community: "OpenProject Общността"
       upsell:
         title: "Upgrade to Enterprise edition"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "Upgrade to Enterprise edition"
       postgres_migration: "Migrating your installation to PostgreSQL"
@@ -2947,7 +2963,7 @@ bg:
   label_journal_diff: "Сравнение на описание"
   label_language: "Език"
   label_languages: "Езици"
-  label_locale: "Language and Region"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Отиди на проект..."
   label_keyword_plural: "Ключови думи"
   label_language_based: "Въз основа на езика на потребителя"

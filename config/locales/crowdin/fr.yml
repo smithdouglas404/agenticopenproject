@@ -59,10 +59,10 @@ fr:
       tab_interface: "Interface"
       tab_branding: "Image de marque"
       tab_pdf_export_styles: "Styles d'exportation PDF"
-      tab_pdf_export_font: "PDF export font"
+      tab_pdf_export_font: "Police d'exportation PDF"
       fonts:
-        file_too_large: "is too large (maximum size is %{count} MB)."
-        file_is_invalid: "is not a valid TTF font file."
+        file_too_large: "est trop important (la taille maximale est de %{count} MB)."
+        file_is_invalid: "n'est pas un fichier de police TTF valide."
       colors:
         primary-button-color: "Bouton principal"
         accent-color: "Couleur d'accentuation"
@@ -339,9 +339,9 @@ fr:
     errors:
       defined: "ne doit pas être défini."
       int?: "doit être un nombre entier."
-      decimal?: "must be a decimal."
+      decimal?: "doit être une décimale."
       filled?: "doit être rempli."
-      key?: "is missing."
+      key?: "est manquante."
       greater_or_equal_zero: "doit être supérieur ou égal à 0."
       not_found: "introuvable."
       rules:
@@ -587,7 +587,7 @@ fr:
       dialog:
         token/api:
           dialog_title: "Créer un nouveau jeton API"
-          attention_text: "Treat API tokens like passwords. Anyone with this token will have access to information from this instance, share it only with trusted users."
+          attention_text: "Traitez les jetons API comme des mots de passe. Toute personne possédant ce jeton aura accès aux informations de cette instance, ne le partagez qu'avec des utilisateurs de confiance."
           dialog_body: "Ce jeton permettra aux applications tierces de communiquer avec votre instance. Pour différencier le nouveau jeton d'API, veuillez lui donner un nom."
           create_button: "Créer"
           name_label: "Nom du jeton"
@@ -698,7 +698,7 @@ fr:
     dark_high_contrast: "Sombre avec contraste élevé"
     light: "Clair"
     light_high_contrast: "Clair avec contraste élevé"
-    sync_with_os: "Automatic (match OS color mode)"
+    sync_with_os: "Automatique (correspond au mode de couleur du système d'exploitation)"
   types:
     index:
       no_results_title_text: Il n'y a actuellement aucun type.
@@ -916,7 +916,7 @@ fr:
   account:
     delete: "Supprimer le compte"
     delete_confirmation: "Êtes-vous sûr de vouloir supprimer le compte ?"
-    deletion_pending: "Le compte a été verrouillé et a été programmé pour suppression. Notez que ce processus a lieu en arrière-plan. Cela peut prendre quelques instants avant que l'utilisateur soit complètement supprimé."
+    deletion_pending: "La suppression du compte a été programmée. Notez que ce processus se déroule en arrière-plan. La suppression complète de l'utilisateur peut prendre quelques instants."
     deletion_info:
       data_consequences:
         other: 'Les données créées par l''utilisateur (e.g. e-mail, préférences, lots de travaux, entrées wiki) seront supprimées autant que possible. Notez toutefois que les données comme les lots de travaux et les entrées wiki ne peuvent pas être supprimées sans impacter le travail des autres utilisateurs. Ces données sont donc réaffectées à un compte appelé «Utilisateur supprimé». Étant donné que les données de chaque compte supprimé sont réaffectées à ce compte, il ne sera plus possible de distinguer les données créées par cet utilisateur de celles d''un autre compte supprimé.'
@@ -1047,7 +1047,7 @@ fr:
         active_value:
           true: "désarchivé"
           false: "archivé"
-        attribute_groups: "Attribute Groups"
+        attribute_groups: "Groupes d'attributs"
         description: "Description"
         enabled_modules: "Modules activés"
         identifier: "Identifiant"
@@ -1194,9 +1194,9 @@ fr:
         auto_hide_popups: "Masquer automatiquement les bannières de réussite"
         auto_hide_popups_caption: "Lorsque cette option est activée, les bannières vertes de réussite disparaissent automatiquement après 5 secondes."
         warn_on_leaving_unsaved: "M'avertir lorsque je quitte un lot de travaux contenant des modifications non enregistrées"
-        theme: "Color mode"
+        theme: "Mode couleur"
         time_zone: "Fuseau horaire"
-        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
+        mode_guideline: "Certains modes écrasent les couleurs des thèmes personnalisés pour des raisons d'accessibilité et de lisibilité. Veuillez sélectionner le mode léger pour une prise en charge complète des thèmes personnalisés."
         daily_reminders: "Rappels quotidiens"
         workdays: "Jours ouvrés"
       version:
@@ -1304,7 +1304,7 @@ fr:
         odd: "doit être impair."
         regex_match_failed: "ne correspond pas à l'expression régulière %{expression}."
         regex_invalid: "n’a pas pu être validé avec l’expression régulière associée."
-        regex_list_invalid: "Lines %{invalid_lines} could not be parsed as regular expression."
+        regex_list_invalid: "Les lignes %{invalid_lines} n'ont pas pu être analysées comme des expressions régulières."
         hexcode_invalid: "n'est pas un code couleur hexadécimal valide à 6 chiffres."
         smaller_than_or_equal_to_max_length: "doit être inférieur ou égal à la longueur maximale."
         taken: "a déjà été pris."
@@ -1340,8 +1340,8 @@ fr:
         custom_field:
           at_least_one_custom_option: "Au moins une option doit être disponible."
           referenced_in_other_fields_html:
-            one: "%{name} is used in project attribute calculation %{links}."
-            other: "%{name} is used in project attribute calculations: %{links}."
+            one: "%{name} est utilisé dans le calcul des attributs du projet %{links}."
+            other: "%{name} est utilisé dans les calculs des attributs du projet : %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1574,7 +1574,8 @@ fr:
               cant_exceed_work: "ne peut être supérieur à Travail."
               must_be_set_when_work_is_set: "requis lorsque le Travail est défini."
               must_be_set_when_work_and_percent_complete_are_set: "requis lorsque le Travail et le % Complété sont définis."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 doit être vide lorsque le Travail est vide et le % Complété est de 100 %.
           readonly_status: "Le lot de travaux est en lecture seule, ses attributs ne peuvent donc pas être changés."
@@ -1900,7 +1901,7 @@ fr:
   button_duplicate: "Dupliquer"
   button_duplicate_and_follow: "Dupliquer et suivre"
   button_edit: "Éditer"
-  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
+  button_edit_associated_wikipage: "Modifier la page wiki associée : %{page_title}"
   button_expand_all: "Tout déplier"
   button_favorite: "Ajouter aux favoris"
   button_filter: "Filtrer"
@@ -2235,7 +2236,7 @@ fr:
         description: "Automatisez la gestion des utilisateurs dans OpenProject en intégrant de manière transparente des services d'identité externes tels que Microsoft Entra ou Keycloak via notre API de serveur SCIM. Disponible à partir de l'abonnement Enterprise."
       sso_auth_providers:
         title: "Authentification unique (SSO)"
-        description: "Enable users to log in via external SSO providers using SAML or OpenID Connect for seamless access and integration with existing identity systems."
+        description: "Permettez aux utilisateurs de se connecter via des fournisseurs SSO externes utilisant SAML ou OpenID Connect pour un accès transparent et une intégration avec les systèmes d'identité existants."
       virus_scanning:
         description: "Assurez-vous que les fichiers téléversés dans OpenProject sont analysés pour détecter les virus avant d'être accessibles aux autres utilisateurs."
       placeholder_users:
@@ -2429,9 +2430,9 @@ fr:
     succeeded: "Exportation terminée"
     failed: "Une erreur s'est produite lors de l'exportation des lots de travaux : %{message}"
     demo:
-      heading: "Demo PDF"
-      footer: "Generated by OpenProject"
-      button_text: Generate Demo PDF
+      heading: "PDF de démo"
+      footer: "Généré par OpenProject"
+      button_text: Générer un PDF de démo
     errors:
       embedded_table_with_too_many_columns: "Ce tableau des lots de travaux ne tient pas sur la page. Veuillez réduire le nombre de colonnes."
     format:
@@ -2521,6 +2522,21 @@ fr:
       community: "Communauté OpenProject"
       upsell:
         title: "Passer à la version Entreprise"
+      new_features:
+        header: "Découvrez les nouvelles fonctionnalités et les mises à jour des produits."
+        learn_about: "En savoir plus sur les nouvelles fonctionnalités"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que
+          new_features_list:
+            line_0: Option de synchronisation automatique de la couleur du système et du mode de contraste.
+            line_1: Mode foncé à fort contraste pour une meilleure accessibilité.
+            line_2: Exportation des listes de projets au format PDF.
+            line_3: Police personnalisée pour toutes les exportations PDF (module complémentaire Enterprise).
+            line_4: Amélioration du dialogue entre les participants à la réunion.
+            line_5: Amélioration de la gestion du budget dans les requêtes de projet et la planification budgétaire.
+            line_6: Mise à jour de la page d'accueil et de la page d'aperçu du projet.
     links:
       upgrade_enterprise_edition: "Passer à la version Entreprise"
       postgres_migration: "Migration de votre installation vers PostgreSQL"
@@ -2934,7 +2950,7 @@ fr:
   label_invite_user: "Inviter utilisateur"
   label_item: "Élément"
   label_item_plural: "Éléments"
-  label_scored_list: "Scored list"
+  label_scored_list: "Liste courte"
   label_share: "Partager"
   label_share_project_list: "Partager la liste des projets"
   label_share_work_package: "Partager le lot de travaux"
@@ -2945,7 +2961,7 @@ fr:
   label_journal_diff: "Comparaison de description"
   label_language: "Langue"
   label_languages: "Langues"
-  label_locale: "Langue et région"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Aller à un projet…"
   label_keyword_plural: "Mots clés"
   label_language_based: "Basé sur le langage de l'utilisateur"
@@ -2965,18 +2981,18 @@ fr:
   label_link_url: "Lien (URL)"
   label_list: "Liste"
   label_loading: "Chargement…"
-  label_locked: "locked"
+  label_locked: "Verrouillé"
   label_lock_user: "Verrouiller l’utilisateur"
   label_logged_as: "Connecté en tant que"
   label_login: "Connexion"
   label_custom_logo: "Logo personnalisé"
   label_custom_export_logo: "Logo d'exportation personnalisé"
   label_custom_export_cover: "Arrière-plan de la couverture d'exportation personnalisée"
-  label_custom_export_footer: "Custom export footer image"
-  label_custom_export_font_regular: "Regular"
-  label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
-  label_custom_export_font_bold_italic: "Bold Italic"
+  label_custom_export_footer: "Image de pied de page d'exportation personnalisée"
+  label_custom_export_font_regular: "Régulière"
+  label_custom_export_font_bold: "Gras"
+  label_custom_export_font_italic: "Italique"
+  label_custom_export_font_bold_italic: "Gras Italique"
   label_custom_export_cover_overlay: "Superposition de l'arrière-plan de la couverture d'exportation personnalisée"
   label_custom_export_cover_text_color: "Couleur du texte"
   label_custom_pdf_export_settings: "Paramètres d'exportation PDF personnalisés"
@@ -3134,8 +3150,8 @@ fr:
   label_project_hide_details: "Masquer les détails du projet"
   label_portfolio: "Portefeuille"
   label_portfolio_new: "Nouveau portefeuille"
-  label_program: "Program"
-  label_program_new: "New program"
+  label_program: "Programme"
+  label_program_new: "Nouveau programme"
   label_public_projects: "Projets publics"
   label_query_new: "Nouvelle requête"
   label_query_plural: "Requêtes personnalisées"
@@ -3285,7 +3301,7 @@ fr:
   label_what_is_this: "Qu'est-ce que c'est?"
   label_week: "Semaine"
   label_widget: "Widget"
-  label_widget_new: "New widget"
+  label_widget_new: "Nouveau widget"
   label_wiki_content_added: "Page wiki ajoutée"
   label_wiki_content_updated: "Page wiki mise à jour"
   label_wiki_toc: "Table des matières"
@@ -3633,8 +3649,8 @@ fr:
   permission_add_work_packages: "Ajouter des lots de travaux"
   permission_add_messages: "Poster des messages"
   permission_add_project: "Créer des projets"
-  permission_add_portfolios: "Create portfolios"
-  permission_add_programs: "Create programs"
+  permission_add_portfolios: "Créer des portefeuilles"
+  permission_add_programs: "Créer le programme"
   permission_add_work_package_attachments: "Ajouter pièces jointes"
   permission_add_work_package_attachments_explanation: "Permet d'ajouter des pièces jointes sans avoir le droit de modifier les lots de travaux"
   permission_add_internal_comments: "Écrire des commentaires internes"
@@ -3749,15 +3765,15 @@ fr:
       one: "1 projet"
       other: "%{count} projets"
     destroy:
-      title: "Delete project"
-      heading: "Permanently delete this project?"
+      title: "Supprimer un projet"
+      heading: "Supprimer définitivement ce projet ?"
       confirmation_message_for_subprojects_html:
         zero: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+          Vous êtes sur le point de supprimer définitivement toutes les données relatives au projet <strong>%{name}</strong>.
         one: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+          Vous êtes sur le point de supprimer définitivement toutes les données relatives au projet <strong>%{name}</strong> et à ce sous-projet :
         other: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
+          Vous êtes sur le point de supprimer définitivement toutes les données relatives au projet <strong>%{name}</strong> et à ces sous-projets :
     filters:
       project_phase: "Phase du projet : %{phase}"
       project_phase_any: "Phase du projet : toutes"
@@ -3933,7 +3949,7 @@ fr:
   setting_attachment_whitelist: "Liste blanche de téléversement des pièces jointes"
   setting_email_delivery_method: "Méthode de livraison d'e-mail"
   setting_emails_salutation: "S'adresser à l'utilisateur dans les e-mails avec"
-  setting_oauth_allow_remapping_of_existing_users: "Allow remapping of existing users"
+  setting_oauth_allow_remapping_of_existing_users: "Permettre le remappage des utilisateurs existants"
   setting_sendmail_location: "Emplacement de l’exécutable sendmail"
   setting_smtp_enable_starttls_auto: "Utiliser automatiquement STARTTLS si disponible"
   setting_smtp_ssl: "Utiliser la connexion SSL"
@@ -4100,7 +4116,7 @@ fr:
       omniauth_direct_login_hint_html: >
         Si cette option est activée, les demandes de connexion seront redirigées vers le fournisseur omniauth configuré. La liste déroulante de connexion et la page de connexion seront désactivées. <br/> <strong>Remarque :</strong> lorsque cette option est activée, les utilisateurs peuvent toujours se connecter en interne en visitant la page de connexion <code>%{internal_path}</code>, sauf si vous désactivez également les connexions par mot de passe.
       remapping_existing_users_hint: >
-        If enabled, allows any configured identity provider to login existing users based on their email address, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
+        Si activé, permet à n'importe quel fournisseur d'identité configuré de connecter les utilisateurs existants en se basant sur leur adresse email, même si l'utilisateur ne s'est jamais connecté via ce fournisseur auparavant. Ceci peut être utile lors de la migration de l'instance OpenProject vers un nouveau fournisseur SSO, mais n'est pas recommandé lors de l'utilisation d'un fournisseur qui n'est pas reconnu par tous les utilisateurs de votre instance.
     attachments:
       whitelist_text_html: >
         Définissez une liste d'extensions de fichiers et/ou de types MIME valides pour les fichiers téléversés. <br/> Entrez les extensions de fichier (par exemple, <code>%{ext_example}</code>) ou les types mime (par exemple, <code>%{mime_example}</code>). <br/> Laissez vide pour permettre le téléversement de tout type de fichier. Plusieurs valeurs autorisées (une ligne pour chaque valeur).
@@ -4210,7 +4226,7 @@ fr:
   status_invited: invité
   status_locked: verrouillé
   status_registered: enregistré
-  status_deleted: deleted
+  status_deleted: supprimé
   #Used in array.to_sentence.
   support:
     array:
@@ -4246,19 +4262,19 @@ fr:
   text_custom_export_cover_instructions: >
     Il s'agit de l'image qui apparaît en arrière-plan de la page de couverture de vos exportations PDF. Elle doit être un fichier image PNG ou JPEG d'environ 800 px de largeur et 500 px de hauteur.
   text_custom_export_footer_instructions: >
-    PDF exports will include a graphical element positioned to the left of the footer. This image must be a PNG or JPEG file with approximately 200 pixels in width.
+    Les exportations PDF comprendront un élément graphique placé à gauche du pied de page. Cette image doit être un fichier PNG ou JPEG d'une largeur d'environ 200 pixels.
   label_custom_export_font_instructions: >
-    Upload and manage custom TrueType (.ttf) fonts used in your PDF exports. For best results, use matching files from the same font family. If no font is provided, the default NotoSans font will be used.
+    Téléchargez et gérez les polices TrueType (.ttf) personnalisées utilisées dans vos exportations PDF. Pour de meilleurs résultats, utilisez des fichiers correspondants de la même famille de polices. Si aucune police n'est fournie, la police NotoSans par défaut sera utilisée.
   label_custom_export_images_instructions: >
-    Upload and manage custom image files used in your PDF exports.
+    Téléchargez et gérez des fichiers images personnalisés utilisés dans vos exportations PDF.
   text_custom_export_font_regular_instructions: >
-    This is the font file for regular text. It needs to be in TTF format and is required.
+    Il s'agit du fichier de police pour le texte normal. Il doit être obligatoirement au format TTF.
   text_custom_export_font_bold_instructions: >
-    This is the font file for bold text. It needs to be in TTF format.
+    Il s'agit du fichier de police pour le texte en gras. Il doit être au format TTF.
   text_custom_export_font_italic_instructions: >
-    This is the font file for italic text. It needs to be in TTF format.
+    Il s'agit du fichier de police pour le texte en italique. Il doit être au format TTF.
   text_custom_export_font_bold_italic_instructions: >
-    This is the font file for bold and italic text. It needs to be in TTF format.
+    Il s'agit du fichier de police pour le texte en gras et en italique. Il doit être au format TTF.
   text_custom_favicon_instructions: >
     Il s'agit de la petite icône qui apparaît dans la fenêtre/onglet de votre navigateur à côté du titre de la page. Il doit s'agir d'une image PNG carrée de 32 pixels x 32 pixels avec un fond transparent.
   text_custom_touch_icon_instructions: >
@@ -4598,8 +4614,8 @@ fr:
       code_500_missing_enterprise_token: "La requête ne peut pas être traitée en raison d'un jeton Enterprise invalide ou manquant."
       bad_request:
         emoji_reactions_activity_type_not_supported: "Ce type d'activité ne prend pas en charge les réactions via émojis."
-        invalid_link: "The link under key '%{key}' is not valid."
-        links_not_an_object: "_links must be a JSON object."
+        invalid_link: "Le lien sous la clé '%{key}' n'est pas valide."
+        links_not_an_object: "_links doit être un objet JSON."
       conflict:
         multiple_reminders_not_allowed: |-
           Vous ne pouvez définir qu'un seul rappel à la fois pour un lot de travaux. Veuillez supprimer ou mettre à jour le rappel existant.

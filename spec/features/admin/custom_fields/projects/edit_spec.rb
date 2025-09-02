@@ -102,5 +102,50 @@ RSpec.describe "Edit project custom fields", :js do
       expect(page).to have_css(".PageHeader-title", text: original_name)
       expect(boolean_project_custom_field.reload.name).to eq(original_name)
     end
+
+    context "when editing a calculated value" do
+      using CustomFieldFormulaReferencing
+
+      let!(:calculated_from_int_project_custom_field) do
+        create(
+          :calculated_value_project_custom_field,
+          :skip_validations,
+          name: "Calculated field using int",
+          formula: "#{integer_project_custom_field} * 2",
+          project_custom_field_section: section_for_input_fields
+        )
+      end
+
+      before do
+        login_as(admin)
+        visit edit_admin_settings_project_custom_field_path(calculated_from_int_project_custom_field)
+      end
+
+      it "allows editing the formula via pattern input component" do
+        expect(page).to have_css(".PageHeader-title", text: calculated_from_int_project_custom_field.name)
+
+        expect(page).to have_css("input#custom_field_formula[value='#{integer_project_custom_field} * 2']",
+                                 visible: :hidden)
+
+        # Suggestions drop down is hidden
+        expect(page).to have_no_css(".op-pattern-input--suggestions-dropdown .ActionListItem")
+
+        pattern_input = page.find(".op-pattern-input--text-field")
+        pattern_input.click
+        pattern_input.send_keys(" + ")
+        expect(page).to have_no_css(".op-pattern-input--suggestions-dropdown .ActionListItem")
+
+        # Open suggestion list
+        pattern_input.send_keys("/")
+        within ".op-pattern-input--suggestions-dropdown" do
+          expect(page).to have_css(".ActionListItem", text: float_project_custom_field.name)
+          click_on(float_project_custom_field.name)
+        end
+
+        click_on("Save")
+        new_formula = calculated_from_int_project_custom_field.reload.formula_string
+        expect(new_formula).to eq("#{integer_project_custom_field} * 2 + #{float_project_custom_field}")
+      end
+    end
   end
 end

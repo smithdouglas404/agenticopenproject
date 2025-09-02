@@ -287,17 +287,6 @@ pt-BR:
         format:
           date: "%{attribute} não é uma data válida - AAAA-MM-DD esperado."
         general: "Ocorreu um erro."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Ler sobre os novos recursos e atualizações de produtos."
-          learn_about: "Saiba mais sobre todos os novos recursos"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                A versão traz várias novidades e melhorias, como <br> <ul class="%{list_styling_class}"> <li>Interface UX/UI renovada para um visual mais moderno.</li> <li>Reuniões: opção para silenciar notificações por e-mail e arquivos ICS.</li> <li>Temporizadores ativos exibidos no módulo Meu controle de tempo.</li> <li>Relatórios de progresso: soma da % concluída também exibida no modo com base em status.</li> <li>Verificação de integridade do Nextcloud: alerta sobre falta da capacidade de troca de token (complementos Enterprise).</li> </ul>
     ical_sharing_modal:
       title: "Assinar calendário"
       inital_setup_error_message: "Ocorreu um erro ao buscar dados."
@@ -1223,7 +1212,7 @@ pt-BR:
       selected_filter:
         all: "Todos os projetos"
         selected: "Somente selecionados"
-      search_placeholder: "Pesquisar projetos..."
+      search_placeholder: "Search projects..."
       search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Incluir todos os subprojetos"
       tooltip:

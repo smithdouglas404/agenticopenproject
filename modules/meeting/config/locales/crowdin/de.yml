@@ -567,13 +567,13 @@ de:
           dialog_body: "Dieses Token generiert eine iCal-URL, mit der Sie alle Ihre Termine in einer externen Kalenderanwendung anzeigen können."
           create_button: "Abonnement erstellen"
           name_label: "Tokenname"
-          name_caption: 'You can name it after where you will use it, such as"My phone" or "Work computer.'
+          name_caption: 'Sie können den Token beliebig nennen, z. B. passend zum Gerät an dem es eingesetzt wird, wie "Mein Handy" oder "Arbeitsrechner".'
       created_dialog:
         token/ical_meeting:
-          title: "An iCal meeting subscription token has been generated"
-          body: "Treat the following URL as you would a password. Anyone who has access to it can view all your meetings."
+          title: "Ein iCal-Abonnement-Token für Besprechungen wurde erstellt"
+          body: "Behandeln Sie die folgende URL wie ein Passwort. Jeder, der Zugriff darauf hat, kann alle Ihre Meetings einsehen."
           warning: "Dies ist das einzige Mal, dass dieses Token angezeigt wird. Stellen Sie sicher, dass Sie es jetzt kopieren."
       revocation:
         token/ical_meeting:
-          notice_success: "The iCalendar meeting subscription has been revoked successfully."
-          notice_failure: "Failed to revoke iCalendar meeting subscription: %{error}"
+          notice_success: "Das iCal-Abonnement-Token für Besprechungen wurde erfolgreich widerrufen."
+          notice_failure: "iCal-Abonnement-Token für Besprechungen konnte nicht widerrufen werden: %{error}"

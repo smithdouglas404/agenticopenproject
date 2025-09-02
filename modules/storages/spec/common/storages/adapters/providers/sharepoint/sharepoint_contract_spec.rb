@@ -35,7 +35,7 @@ module Storages
   module Adapters
     module Providers
       module Sharepoint
-        RSpec.describe SharepointContract, :storage_server_helpers, :webmock do
+        RSpec.describe SharepointContract, :storage_server_helpers, :webmock, with_flag: { sharepoint_storage: true } do
           let(:current_user) { create(:admin) }
           let(:storage) { build(:sharepoint_storage, :with_tenant_id) }
 

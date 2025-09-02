@@ -915,7 +915,7 @@ pt-PT:
   account:
     delete: "Eliminar conta"
     delete_confirmation: "Tem certeza que deseja eliminar a conta?"
-    deletion_pending: "A conta foi bloqueada e a sua eliminação foi agendada. Tenha em atenção que este processo ocorre em segundo plano. Pode demorar alguns minutos até que o utilizador seja totalmente eliminado."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Dos dados que o utilizador criou (ex: email, preferências, pacotes de trabalho, entradas wiki), será apagado o máximo possível. No entanto note que esses dados, como pacotes de trabalho e entradas wiki, não podem ser apagados sem impedir o trabalho de outros utilizadores. Esses dados serão então reatribuídos para uma conta chamada "Utilizador apagado". Uma vez que todas as contas apagadas são reatribuídas para esta conta, não será possível distinguir os dados que o utilizador criou dos dados de outra conta apagada.'
@@ -1573,7 +1573,8 @@ pt-PT:
               cant_exceed_work: "não pode ser superior a Trabalho."
               must_be_set_when_work_is_set: "obrigatório quando o Trabalho está definido."
               must_be_set_when_work_and_percent_complete_are_set: "obrigatório quando o Trabalho e % de conclusão estão definidos."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 tem de estar vazio quando o Trabalho está vazio e % de conclusão é 100 %.
           readonly_status: "O pacote de trabalho está em estado de apenas leitura, por isso os seus atributos não podem ser alterados."
@@ -2520,6 +2521,21 @@ pt-PT:
       community: "Comunidade de OpenProject"
       upsell:
         title: "Aprimorar para a edição Enterprise"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "Aprimorar para a edição Enterprise"
       postgres_migration: "A migrar a sua instalação para PostgreSQL"
@@ -2944,7 +2960,7 @@ pt-PT:
   label_journal_diff: "Comparação de descrição"
   label_language: "Idioma"
   label_languages: "Idiomas"
-  label_locale: "Language and Region"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Saltar para um projeto..."
   label_keyword_plural: "Palavras-chave"
   label_language_based: "Com base no idioma do utilizador"

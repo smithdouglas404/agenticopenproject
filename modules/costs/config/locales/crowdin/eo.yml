@@ -204,7 +204,7 @@ eo:
   permission_view_own_time_entries: "View own spent time"
   project_module_costs: "Tempo kaj kostoj"
   setting_allow_tracking_start_and_end_times: "Allow start and finish times"
-  setting_costs_currency: "Currency"
+  setting_costs_currency: "Valuto"
   setting_costs_currency_format: "Format of currency"
   setting_enforce_tracking_start_and_end_times: "Require start and finish times"
   setting_enforce_without_allow: "Requiring start and finish times is not possible without allowing them"

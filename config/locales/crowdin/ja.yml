@@ -908,7 +908,7 @@ ja:
   account:
     delete: "アカウントを削除"
     delete_confirmation: "アカウントを削除してもよろしいですか？"
-    deletion_pending: "アカウントがロックされ、削除がスケジュールされました。このプロセスはバックグラウンドで行われることに注意してください。 ユーザーが完全に削除されるまで数分かかる場合があります。"
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'ユーザーが作成した殆どのデータ (例えば電子メール、設定、ワークパッケージ 、wiki記載 )が削除されます。ただし、他のユーザーの作業を妨害することがなくワークパッケージやwiki 記載のようなデータは削除することはできません。それ故に、このようなデータは「削除されたユーザー」と呼ばれるアカウントに再割り当てされます。削除された各アカウントのデータがこのアカウントに再割り当てされるので、そのユーザーが作成したデータと削除された別のユーザーのデータとを区別することができなくなります。'
@@ -1565,7 +1565,8 @@ ja:
               cant_exceed_work: "仕事より高くすることはできません。"
               must_be_set_when_work_is_set: "作業が設定されている場合に必要です。"
               must_be_set_when_work_and_percent_complete_are_set: "「作業」と「完了率」が設定されている場合に必要です。"
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- 作業が設定されている場合は0hでなければなりません。完了率は100%です。'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 「Work」が空で「% Complete」が100%の場合、必ず空でなければなりません。
           readonly_status: "ワークパッケージは読み取り専用の状態になっているため、その属性は変更できません。"
@@ -2476,6 +2477,21 @@ ja:
       community: "OpenProject コミュニティ"
       upsell:
         title: "エンタープライズ版にアップグレード"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "エンタープライズ版にアップグレード"
       postgres_migration: "PostgreSQL にインストールを移行しています"
@@ -2900,7 +2916,7 @@ ja:
   label_journal_diff: "説明の比較"
   label_language: "言語"
   label_languages: "言語"
-  label_locale: "Language and Region"
+  label_locale: "Language and region"
   label_jump_to_a_project: "プロジェクトへ移動..."
   label_keyword_plural: "キーワード"
   label_language_based: "ユーザの言語設定に基づく"
