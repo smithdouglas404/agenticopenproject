@@ -29,7 +29,7 @@
 #++
 class FixMissingMeetingsAttachments < ActiveRecord::Migration[8.0]
   def up
-    execute <<-SQL
+    execute <<-SQL.squish
       UPDATE attachments
       SET container_type = 'Meeting',
           container_id = (
