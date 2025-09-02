@@ -81,7 +81,7 @@ class GroupMeetingsService
     groups
   end
 
-  # Flattens groups into autocompleter options
+  # Flatten groups into autocompleter options
   def build_options
     group_meetings.flat_map do |key, meetings|
       label = I18n.t("label_meeting_index_#{key}")

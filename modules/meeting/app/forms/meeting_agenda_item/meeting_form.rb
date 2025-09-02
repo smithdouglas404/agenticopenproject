@@ -39,6 +39,7 @@ class MeetingAgendaItem::MeetingForm < ApplicationForm
       caption: I18n.t("label_meeting_selection_caption"),
       autocomplete_options: {
         component: "opce-meeting-autocompleter",
+        hiddenFieldAction: "change->refresh-on-form-changes#triggerTurboStream",
         items: meeting_options,
         group_by: "group_label",
         focus_directly: true,
@@ -46,16 +47,22 @@ class MeetingAgendaItem::MeetingForm < ApplicationForm
         bindLabel: "name",
         bindValue: "id",
         multiple: false,
-        append_to: append_to_container
+        append_to: append_to_container,
+        model: meeting_options.detect { |option| option[:id] == model.meeting_id },
+        inputValue: model.meeting_id,
+        virtualScroll: false
       }
     )
   end
 
   def initialize(disabled: false, wrapper_id: nil)
     super()
+
     @disabled = disabled
     @wrapper_id = wrapper_id
   end
+
+  private
 
   def meeting_options
     meetings = MeetingAgendaItems::CreateContract
