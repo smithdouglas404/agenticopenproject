@@ -47,7 +47,7 @@ export default class AutoThemeSwitcher extends Controller {
   declare readonly mobileWhiteLogoClass:string;
 
   connect() {
-    if (this.modeValue !== 'sync_with_os') return;
+    if (!this.modeValue.startsWith('sync_with_os')) return;
 
     useMatchMedia(this, {
       mediaQueries: {
@@ -56,7 +56,7 @@ export default class AutoThemeSwitcher extends Controller {
       },
     });
 
-    this.applySystemTheme();
+    this.applySystemTheme(this.modeValue);
   }
 
   lightModeChanged():void {
@@ -67,8 +67,8 @@ export default class AutoThemeSwitcher extends Controller {
     this.applySystemTheme();
   }
 
-  private applySystemTheme():void {
-    window.OpenProject.theme.applySystemThemeImmediately();
+  private applySystemTheme(modeValue?:OpTheme):void {
+    window.OpenProject.theme.applySystemThemeImmediately(modeValue);
     this.updateOpLogoContrast();
   }
 

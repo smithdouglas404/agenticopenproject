@@ -32,24 +32,26 @@ import { Controller } from '@hotwired/stimulus';
 
 export default class interfaceAccountSettings extends Controller {
 
-  static targets = ['themeSelect', 'contrastContainer'];
+  static targets = ['modeSelect', 'increaseContrastCheckbox', 'autoLightCheckbox', 'autoDarkCheckbox'];
 
-  declare readonly themeSelectTarget:HTMLSelectElement;
-  declare readonly contrastContainerTarget:HTMLElement;
+  declare readonly modeSelectTarget:HTMLSelectElement;
+  declare readonly increaseContrastCheckboxTarget:HTMLElement;
+  declare readonly autoLightCheckboxTarget:HTMLElement;
+  declare readonly autoDarkCheckboxTarget:HTMLElement;
 
   connect() {
-    // Set initial visibility on page load
     this.toggleCheckbox();
-
-    // Update visibility when the select changes
-    this.themeSelectTarget.addEventListener('change', () => { this.toggleCheckbox(); });
   }
 
   toggleCheckbox() {
-    if (this.themeSelectTarget.value === 'sync_with_os') {
-      this.contrastContainerTarget.style.display = 'none';
+    if (this.modeSelectTarget.value === 'sync_with_os') {
+      this.increaseContrastCheckboxTarget.parentElement?.style.setProperty('display', 'none');
+      this.autoLightCheckboxTarget.parentElement?.style.setProperty('display', 'inline-grid');
+      this.autoDarkCheckboxTarget.parentElement?.style.setProperty('display', 'inline-grid');
     } else {
-      this.contrastContainerTarget.style.display = 'block';
+      this.increaseContrastCheckboxTarget.parentElement?.style.setProperty('display', 'inline-grid');
+      this.autoLightCheckboxTarget.parentElement?.style.setProperty('display', 'none');
+      this.autoDarkCheckboxTarget.parentElement?.style.setProperty('display', 'none');
     }
   }
 }

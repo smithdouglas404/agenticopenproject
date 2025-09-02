@@ -30,12 +30,12 @@
 
 export type OpColorMode = 'light' | 'dark';
 
-export type OpTheme = OpColorMode | `${OpColorMode}_high_contrast` | 'sync_with_os';
+export type OpTheme = OpColorMode | `${OpColorMode}_high_contrast` | 'sync_with_os' | 'sync_with_os_high_contrast' | 'sync_with_os_light_high_contrast' | 'sync_with_os_dark_high_contrast';
 
 export class ThemeUtils {
-  public applySystemThemeImmediately():void {
+  public applySystemThemeImmediately(modeValue?:OpTheme):void {
     const colorMode = this.detectSystemColorMode();
-    this.applyThemeToBody(colorMode);
+    this.applyThemeToBody(colorMode, modeValue);
   }
 
   public detectOpColorMode():OpColorMode {
@@ -58,9 +58,13 @@ export class ThemeUtils {
     return window.matchMedia('(prefers-contrast: more)').matches;
   }
 
-  public applyThemeToBody(colorMode:OpColorMode):void {
+  public isHighContrast(mode?:string) {
+    return typeof mode === 'string' && mode.endsWith('high_contrast');
+  }
+
+  public applyThemeToBody(colorMode:OpColorMode, modeValue?:OpTheme):void {
     const body = document.body;
-    const increaseContrast = this.prefersSystemHighContrast();
+    const increaseContrast = this.prefersSystemHighContrast() || this.isHighContrast(modeValue);
     const otherColorMode = (colorMode === 'light' ? 'dark' : 'light');
 
     body.setAttribute('data-color-mode', colorMode);

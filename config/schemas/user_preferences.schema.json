@@ -11,7 +11,7 @@
                 },
                 "theme": {
                   "type": "string",
-                  "enum": ["light", "light_high_contrast", "dark", "dark_high_contrast", "sync_with_os"]
+                  "enum": ["light", "light_high_contrast", "dark", "dark_high_contrast", "sync_with_os", "sync_with_os_high_contrast", "sync_with_os_light_high_contrast", "sync_with_os_dark_high_contrast"]
                 },
                 "disable_keyboard_shortcuts": {
                     "type": "boolean"

@@ -267,6 +267,8 @@ class PermittedParams
     params.fetch(:pref, {}).permit(:time_zone,
                                    :theme,
                                    :increase_contrast,
+                                   :sync_with_os_light_high_contrast,
+                                   :sync_with_os_dark_high_contrast,
                                    :comments_sorting,
                                    :disable_keyboard_shortcuts,
                                    :warn_on_leaving_unsaved,

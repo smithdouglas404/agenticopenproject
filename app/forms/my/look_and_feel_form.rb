@@ -38,23 +38,45 @@ class My::LookAndFeelForm < ApplicationForm
       caption: I18n.t("activerecord.attributes.user_preference.mode_guideline"),
       required: true,
       include_blank: false,
-      input_width: :small
+      input_width: :small,
+      data: {
+        action: "change->interface-account-settings#toggleCheckbox",
+        "interface-account-settings-target": "modeSelect"
+      }
     ) do |select|
       theme_options_for_select.each do |label, value|
+        selected_value =
+          if User.current.pref.theme.to_s.start_with?("sync_with_os")
+            "sync_with_os"
+          else
+            User.current.pref.theme.to_s.sub(/_high_contrast$/, "")
+          end
+
         select.option(
-          value:,
-          label:,
-          selected: value == User.current.pref.theme.to_s.sub(/_high_contrast$/, "")
+          value: value,
+          label: label,
+          selected: value == selected_value
         )
       end
     end
 
-    unless User.current.pref.sync_with_os_theme?
-      f.check_box name: :increase_contrast,
-                  label: "Increase contrast",
-                  caption: "Enables high-contrast mode for the chosen colour mode.",
-                  checked: increase_contrast_checked?
-    end
+    f.check_box name: :increase_contrast,
+                label: "Increase contrast",
+                caption: "Enables high-contrast mode for the chosen colour mode.",
+                checked: increase_contrast_checked?,
+                data: { "interface-account-settings-target": "increaseContrastCheckbox" }
+
+    f.check_box name: :sync_with_os_light_high_contrast,
+                label: "Force high-contrast when in Light mode",
+                caption: "Uses the high-contrast version of Light mode when automatic color mode is selected.",
+                checked: sync_with_os_light_checked?,
+                data: { "interface-account-settings-target": "autoLightCheckbox" }
+
+    f.check_box name: :sync_with_os_dark_high_contrast,
+                label: "Force high-contrast when in Dark mode",
+                caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected.",
+                checked: sync_with_os_dark_checked?,
+                data: { "interface-account-settings-target": "autoDarkCheckbox" }
 
     f.select_list(
       name: :comments_sorting,
@@ -84,5 +106,14 @@ class My::LookAndFeelForm < ApplicationForm
   def increase_contrast_checked?
     # User.current.pref.theme ends with _high_contrast
     User.current.pref.theme.to_s.end_with?("_high_contrast")
+  end
+
+  def sync_with_os_light_checked?
+    %w[sync_with_os_high_contrast sync_with_os_light_high_contrast].include?(User.current.pref.theme.to_s)
+  end
+
+  # Returns true if the theme should force high-contrast in Dark mode
+  def sync_with_os_dark_checked?
+    %w[sync_with_os_high_contrast sync_with_os_dark_high_contrast].include?(User.current.pref.theme.to_s)
   end
 end
