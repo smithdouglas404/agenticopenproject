@@ -123,9 +123,9 @@ These updates make widgets clearer and faster to use, while work continues on th
 
 ## Important technical updates
 
-### SCIM improvements
+### SCIM improvements (Enterprise add-on)
 
-The SCIM server functionality introduced in OpenProject 16.2 has been further improved in 16.4:
+The SCIM server functionality (Enterprise add-on) introduced in OpenProject 16.2 has been further improved in 16.4:
 
 - **Deleted user status**: When a user is deleted via SCIM, their status is now set to deleted instead of locked. Deleted users no longer appear in queries, API v3, or the SCIM API, but remain visible in the admin user list until the deletion is complete.
 
