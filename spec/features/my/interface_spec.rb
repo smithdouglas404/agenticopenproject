@@ -47,7 +47,8 @@ RSpec.describe "My account Interface settings",
 
     expect(page).to have_css("body[data-color-mode='light'][data-light-theme='light']")
 
-    select "Light high contrast", from: "Color mode"
+    select "Light", from: "Color mode"
+    check "Increase contrast"
     click_on "Update look and feel"
 
     expect(page).to have_css("body[data-color-mode='light'][data-light-theme='light_high_contrast']")
@@ -55,12 +56,17 @@ RSpec.describe "My account Interface settings",
     select "Dark", from: "Color mode"
     click_on "Update look and feel"
 
-    expect(page).to have_css("body[data-color-mode='dark'][data-dark-theme='dark']")
+    expect(page).to have_css("body[data-color-mode='dark'][data-dark-theme='dark_high_contrast']")
 
-    select "Dark high contrast", from: "Color mode"
+    uncheck "Increase contrast"
     click_on "Update look and feel"
 
-    expect(page).to have_css("body[data-color-mode='dark'][data-dark-theme='dark_high_contrast']")
+    expect(page).to have_css("body[data-color-mode='dark'][data-dark-theme='dark']")
+
+    uncheck "Increase contrast"
+    click_on "Update look and feel"
+
+    expect(page).to have_css("body[data-color-mode='dark'][data-dark-theme='dark']")
 
     select "Automatic (match OS color mode)", from: "Color mode"
     click_on "Update look and feel"
@@ -68,7 +74,7 @@ RSpec.describe "My account Interface settings",
     expect(page).to have_css("body[data-auto-theme-switcher-mode-value='sync_with_os']")
   end
 
-  describe "Automatic (match OS color  mode)" do
+  describe "Automatic (match OS color mode)" do
     def set_automatic_mode_with_reload
       click_on "Interface"
 
@@ -81,6 +87,37 @@ RSpec.describe "My account Interface settings",
         set_automatic_mode_with_reload
         expect(page).to have_css("body[data-color-mode='dark'][data-dark-theme='dark']")
       end
+    end
+
+    it "enables high contrast in light mode when configured" do
+      click_on "Interface"
+
+      select "Automatic (match OS color mode)", from: "Color mode"
+      check "Force high-contrast when in Light mode"
+      click_on "Update look and feel"
+
+      expect(page).to have_css("body[data-auto-theme-switcher-mode-value='sync_with_os_light_high_contrast']")
+    end
+
+    it "enables high contrast in dark mode when configured" do
+      click_on "Interface"
+
+      select "Automatic (match OS color mode)", from: "Color mode"
+      check "Force high-contrast when in Dark mode"
+      click_on "Update look and feel"
+
+      expect(page).to have_css("body[data-auto-theme-switcher-mode-value='sync_with_os_dark_high_contrast']")
+    end
+
+    it "enables full high contrast in automatic mode when both are checked" do
+      click_on "Interface"
+
+      select "Automatic (match OS color mode)", from: "Color mode"
+      check "Force high-contrast when in Light mode"
+      check "Force high-contrast when in Dark mode"
+      click_on "Update look and feel"
+
+      expect(page).to have_css("body[data-auto-theme-switcher-mode-value='sync_with_os_high_contrast']")
     end
   end
 end
