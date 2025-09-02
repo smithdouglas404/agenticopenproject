@@ -53,10 +53,17 @@ RSpec.describe "SCIM API Users", with_ee: [:scim_api] do
         group
       end
 
-      it "responds with users list" do
+      it "responds with users list including locked(not_active users) and excluding users marked for deletion" do
+        user_marked_for_deletion = create(:user_marked_for_deletion)
+        locked_user = create(:locked_user)
+
         get "/scim_v2/Users", {}, headers
 
         response_body = JSON.parse(last_response.body)
+        ids = response_body["Resources"].map { |item| item["id"] }
+        expect(ids).to include(locked_user.id.to_s)
+        expect(response_body["Resources"].find { |resource| resource["id"] == locked_user.id.to_s }["active"]).to eq(false)
+        expect(ids).not_to include(user_marked_for_deletion.id.to_s)
         expect(response_body).to match("Resources" => include({ "active" => true,
                                                                 "emails" => [{ "primary" => true,
                                                                                "type" => "work",
@@ -90,7 +97,7 @@ RSpec.describe "SCIM API Users", with_ee: [:scim_api] do
                                        "itemsPerPage" => 100,
                                        "schemas" => ["urn:ietf:params:scim:api:messages:2.0:ListResponse"],
                                        "startIndex" => 1,
-                                       "totalResults" => 4)
+                                       "totalResults" => 5)
       end
 
       it "filters results by familyName case-insensitively" do
@@ -464,28 +471,20 @@ RSpec.describe "SCIM API Users", with_ee: [:scim_api] do
 
           get "/scim_v2/Users/#{user.id}", "", headers
 
+          expect(last_response).to have_http_status(404)
           response_body = JSON.parse(last_response.body)
-          expect(response_body).to eq("active" => false,
-                                      "emails" => [{ "primary" => true,
-                                                     "type" => "work",
-                                                     "value" => user.mail }],
-                                      "externalId" => external_user_id,
-                                      "groups" => [{ "value" => group.id.to_s }],
-                                      "id" => user.id.to_s,
-                                      "meta" => { "created" => user.created_at.iso8601,
-                                                  "lastModified" => user.updated_at.iso8601,
-                                                  "location" => "http://test.host/scim_v2/Users/#{user.id}",
-                                                  "resourceType" => "User" },
-                                      "name" => { "familyName" => user.lastname,
-                                                  "givenName" => user.firstname },
-                                      "schemas" => ["urn:ietf:params:scim:schemas:core:2.0:User"],
-                                      "userName" => user.login)
+          expect(response_body).to eq(
+            "detail" => "Resource \"#{user.id}\" not found",
+            "schemas" => ["urn:ietf:params:scim:api:messages:2.0:Error"],
+            "status" => "404"
+          )
 
           perform_enqueued_jobs
           assert_performed_jobs 1
 
           get "/scim_v2/Users/#{user.id}", "", headers
 
+          expect(last_response).to have_http_status(404)
           response_body = JSON.parse(last_response.body)
           expect(response_body).to eq(
             "detail" => "Resource \"#{user.id}\" not found",

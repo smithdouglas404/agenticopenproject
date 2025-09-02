@@ -288,17 +288,6 @@ ko:
         format:
           date: "%{attribute}은(는) 유효한 날짜가 아닙니다. YYYY-MM-DD여야 합니다."
         general: "오류가 발생했습니다."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "새로운 기능 및 제품 업데이트에 대해 읽어보십시오."
-          learn_about: "새로운 모든 기능에 대해 자세히 알아보기"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                이 릴리스에는 다음과 같은 다양한 새로운 기능과 개선 사항이 포함되어 있습니다. <br> <ul class="%{list_styling_class}"> <li>더욱 현대적인 디자인의 UX/UI 개선.</li> <li>미팅: ICS 및 이메일 알림 음소거 옵션.</li> <li>내 시간 추적 모듈에 표시되는 진행 중인 타이머.</li> <li>진행률 보고: 상태 기반 모드에서도 표시되는 완료 %.</li> <li>Nextcloud 상태 확인: 누락된 토큰 교환 기능 표시(Enterprise 추가 기능).</li> </ul>
     ical_sharing_modal:
       title: "캘린더 구독"
       inital_setup_error_message: "데이터를 가져오는 중에 오류가 발생했습니다."
@@ -1220,7 +1209,7 @@ ko:
       selected_filter:
         all: "모든 프로젝트"
         selected: "선택한 항목만"
-      search_placeholder: "프로젝트 검색..."
+      search_placeholder: "Search projects..."
       search_placeholder_favorites: "Search favorites..."
       include_subprojects: "모든 하위 프로젝트 포함"
       tooltip:

@@ -287,17 +287,6 @@ hu:
         format:
           date: "A(z) %{attribute} nem felel meg az -ÉÉÉÉ-HH-NN- dátumformátumnak."
         general: "Hiba történt."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Itt találhatóak az új funkciók és a frissítések"
-          learn_about: "Learn more about all new features"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                The release contains various new features and improvements, such as <br> <ul class="%{list_styling_class}"> <li>UX/UI improvements for a more modern look.</li> <li>Meetings: Option to mute email notifications and ICS.</li> <li>Ongoing timers shown in the My time tracking module.</li> <li>Progress reporting: % Complete sum also shown in Status-based mode.</li> <li>Nextcloud Health check: Indicate missing token exchange capability (Enterprise add-on).</li> </ul>
     ical_sharing_modal:
       title: "Subscribe to calendar"
       inital_setup_error_message: "An error occured while fetching data."
@@ -323,7 +312,7 @@ hu:
     label_added_time_by: 'Added by <a href="%{authorLink}">%{author}</a> at %{age}'
     label_ago: "nappal ezelőtt"
     label_all: "mind"
-    label_all_projects: "All projects"
+    label_all_projects: "Minden projekt"
     label_all_uppercase: "Összes"
     label_all_work_packages: "minden feladatcsoport"
     label_and: "és"
@@ -419,7 +408,7 @@ hu:
     label_per_page: "Oldalanként:"
     label_please_wait: "Kérem várjon"
     label_project: "Projekt"
-    label_project_list: "Project lists"
+    label_project_list: "Projekt listák"
     label_project_plural: "Projektek"
     label_visibility_settings: "Láthatósági beállítások"
     label_quote_comment: "Hozzászólás idézése"
@@ -781,7 +770,7 @@ hu:
     autocompleter:
       placeholder: "Gépeljen a kereséshez"
       notFoundText: "Nem található elem"
-      search: "Search"
+      search: "Keresés"
       project:
         placeholder: "Select project"
     repositories:
@@ -934,7 +923,7 @@ hu:
         all_open: "Nyitottak"
         overdue: "Overdue"
         summary: "Összegzés"
-        shared_with_users: "Shared with users"
+        shared_with_users: "Megosztás felhasználókkal"
         shared_with_me: "Shared with me"
       jump_marks:
         pagination: "Ugrás a táblázat lapszámozásához"
@@ -1223,7 +1212,7 @@ hu:
       selected_filter:
         all: "Minden projekt"
         selected: "Csak a kijelölt"
-      search_placeholder: "Projektek keresése"
+      search_placeholder: "Search projects..."
       search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Összes alprojekt bevonása"
       tooltip:

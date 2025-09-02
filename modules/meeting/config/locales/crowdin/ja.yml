@@ -59,8 +59,8 @@ ja:
         end_date: "完了日"
         iterations: "回数"
       meeting_participant:
-        invited: "Invited"
-        attended: "Attended"
+        invited: "招待済み"
+        attended: "出席"
     errors:
       models:
         meeting_participant:
@@ -216,8 +216,8 @@ ja:
       series_updated:
         title: "[%{project_name}] Meeting series '%{title}' has been updated"
         summary: "Meeting series '%{title}' has been updated by %{actor}"
-        old_schedule: "Old schedule"
-        new_schedule: "New schedule"
+        old_schedule: "古いスケジュール"
+        new_schedule: "新しいスケジュール"
       invited:
         summary: "%{actor} がミーティング「%{title}」への招待を送信しました"
       cancelled:
@@ -232,8 +232,8 @@ ja:
         header: "Meeting '%{title}' has been updated"
         summary: "Meeting '%{title}' has been updated by %{actor}"
         body: "The meeting '%{title}' has been updated by %{actor}."
-        old_date_time: "Old date/time"
-        new_date_time: "New date/time"
+        old_date_time: "古い日付/時刻"
+        new_date_time: "新しい日付/時刻"
         old_location: "Old location"
         new_location: "New location"
     label_mail_all_participants: "Send email invite to participants"

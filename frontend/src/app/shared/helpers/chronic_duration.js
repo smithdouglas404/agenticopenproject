@@ -125,18 +125,38 @@ function durationUnitsSecondsMultiplier(unit, opts) {
 
 function calculateFromWords(string, opts) {
   let val = 0;
+  let lastExplicitUnit = null;
   const words = string.split(' ');
+
   words.forEach((v, k) => {
     if (v === '') {
       return;
     }
     if (v.search(FLOAT_MATCHER) >= 0) {
-      val +=
-        convertToNumber(v) *
-        durationUnitsSecondsMultiplier(
-          words[parseInt(k, 10) + 1] || opts.defaultUnit || 'seconds',
-          opts,
-        );
+      const nextWord = words[parseInt(k, 10) + 1];
+      let unit;
+
+      if (nextWord && DURATION_UNITS_LIST.includes(nextWord)) {
+        // Next word is a valid unit, use it and remember as last explicit unit
+        unit = nextWord;
+        lastExplicitUnit = nextWord;
+      } else if (lastExplicitUnit) {
+        // No explicit unit, but we have a previous unit - use next smaller unit
+        const currentIndex = DURATION_UNITS_LIST.indexOf(lastExplicitUnit);
+        if (currentIndex > 0) {
+          // Use next smaller unit (lower index in array)
+          unit = DURATION_UNITS_LIST[currentIndex - 1];
+        } else {
+          // Already at smallest unit (seconds), keep using it
+          unit = lastExplicitUnit;
+        }
+        lastExplicitUnit = unit;
+      } else {
+        // No explicit unit and no previous unit, fall back to default
+        unit = opts.defaultUnit || 'seconds';
+      }
+
+      val += convertToNumber(v) * durationUnitsSecondsMultiplier(unit, opts);
     }
   });
   return val;

@@ -686,22 +686,19 @@ RSpec.describe CustomStylesController do
         let(:font_file) { Rack::Test::UploadedFile.new(Rails.public_path.join("favicon.ico"), "font/ttf") }
 
         it "does respect the file size limit" do
-          # rubocop:disable RSpec/AnyInstance
-          allow_any_instance_of(CarrierWave::SanitizedFile)
-             .to receive(:size)
-                   .and_return(40.megabytes)
-          # rubocop:enable RSpec/AnyInstance
+          controller.singleton_class.include(CustomStylesControllerHelper)
+          allow(controller).to receive(:font_file_size).and_return(40.megabytes)
           post :update, params: { custom_style: { export_font_regular: font_file } }
           expect(response).to have_http_status(:unprocessable_entity)
           expect(custom_style.reload.export_font_regular).not_to be_present
-          expect(flash[:error].join).to include("is too large")
+          expect(flash[:error]).to include("is too large")
         end
 
         it "does not accept a non-font" do
           post :update, params: { custom_style: { export_font_regular: font_file } }
           expect(response).to have_http_status(:unprocessable_entity)
           expect(custom_style.reload.export_font_regular).not_to be_present
-          expect(flash[:error].join).to include "not a valid TTF font file."
+          expect(flash[:error]).to include "not a valid TTF font file."
         end
       end
     end

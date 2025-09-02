@@ -31,7 +31,7 @@ th:
       events:
         created: "ที่ถูกสร้างขึ้น"
         updated: "Updated"
-        comment: "Comment"
+        comment: "ความคิดเห็น"
         internal_comment: "Internal comment"
       explanation:
         text: >

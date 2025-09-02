@@ -62,8 +62,8 @@ ru:
         end_date: "Дате окончания"
         iterations: "События"
       meeting_participant:
-        invited: "Invited"
-        attended: "Attended"
+        invited: "Приглашённые"
+        attended: "Участвовал"
     errors:
       models:
         meeting_participant:
@@ -187,24 +187,24 @@ ru:
   label_version: "Версия"
   label_time_zone: "Часовой пояс"
   label_start_date: "Дата начала"
-  label_subscribe_icalendar: "Subscribe to calendar"
+  label_subscribe_icalendar: "Подписаться на календарь"
   meeting:
     participants:
       label:
-        participants: "Participants"
-        attended: "Attended"
+        participants: "Участники"
+        attended: "Участвовал"
         mark_as_attended: "Mark as attended"
         mark_all_as_attended: "Mark all as attended"
         remove_participant: "Remove participant"
-        manage_participants: "Manage participants"
-        no_participants: "No participants"
-        show_all: "Show all"
+        manage_participants: "Управление участниками"
+        no_participants: "Нет участников"
+        show_all: "Показывать всё"
       text:
-        template: "These participants will be invited automatically to all future meetings as they are created."
+        template: "Эти участники будут автоматически приглашаться на все будущие совещания по мере их создания."
         manage_participants: "Search for and add project members as participants to this meeting."
         search_for_members: "Search for project members"
       blankslate:
-        heading: "No participants"
+        heading: "Нет участников"
         description: "There are no participants yet."
     attachments:
       template: "Эти прикрепленные файлы будут включены во все последующие совещания этой серии."
@@ -231,8 +231,8 @@ ru:
       series_updated:
         title: "[%{project_name}] Meeting series '%{title}' has been updated"
         summary: "Meeting series '%{title}' has been updated by %{actor}"
-        old_schedule: "Old schedule"
-        new_schedule: "New schedule"
+        old_schedule: "Старое расписание"
+        new_schedule: "Новое расписание"
       invited:
         summary: "%{actor} отправил вам приглашение на совещание '%{title}'"
       cancelled:
@@ -247,8 +247,8 @@ ru:
         header: "Meeting '%{title}' has been updated"
         summary: "Meeting '%{title}' has been updated by %{actor}"
         body: "The meeting '%{title}' has been updated by %{actor}."
-        old_date_time: "Old date/time"
-        new_date_time: "New date/time"
+        old_date_time: "Старые дата/время"
+        new_date_time: "Новые дата/время"
         old_location: "Old location"
         new_location: "New location"
     label_mail_all_participants: "Send email invite to participants"
@@ -572,7 +572,7 @@ ru:
         text_hint: "iCalendar meeting tokens allow users to subscribe to all their meetings and view up-to-date meeting information in external clients."
         disabled_text: "iCalendar meeting subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
         empty_text_hint: 'To add an iCalendar meeting token, go to the <a href="%{path}">meetings section</a> and subscribe from there.'
-        add_button: "Subscribe to calendar"
+        add_button: "Подписаться на календарь"
   my:
     access_token:
       dialog:
@@ -580,13 +580,13 @@ ru:
           dialog_title: "New iCal subscription token for meetings"
           dialog_body: "This token will generate an iCal subscription URL that lets you view all your meetings in an external calendar application."
           create_button: "Create subscription"
-          name_label: "Token name"
+          name_label: "Имя токена"
           name_caption: 'You can name it after where you will use it, such as"My phone" or "Work computer.'
       created_dialog:
         token/ical_meeting:
           title: "An iCal meeting subscription token has been generated"
           body: "Treat the following URL as you would a password. Anyone who has access to it can view all your meetings."
-          warning: "This is the only time you will see this token. Make sure to copy it now."
+          warning: "Это единственный раз, когда Вы увидите токен. Убедитесь, что вы сохранили его."
       revocation:
         token/ical_meeting:
           notice_success: "The iCalendar meeting subscription has been revoked successfully."

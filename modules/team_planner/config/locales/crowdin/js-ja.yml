@@ -3,7 +3,7 @@ ja:
   js:
     team_planner:
       add_existing: '既存を追加'
-      label_team_planner_plural: 'Team planners'
+      label_team_planner_plural: 'チーム プランナー'
       add_existing_title: '既存のワークパッケージの追加'
       create_label: 'チーム プランナー'
       create_title: '新しいチームプランナーを作成'

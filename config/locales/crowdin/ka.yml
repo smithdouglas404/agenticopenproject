@@ -59,6 +59,10 @@ ka:
       tab_interface: "Interface"
       tab_branding: "Branding"
       tab_pdf_export_styles: "PDF export styles"
+      tab_pdf_export_font: "PDF export font"
+      fonts:
+        file_too_large: "is too large (maximum size is %{count} MB)."
+        file_is_invalid: "is not a valid TTF font file."
       colors:
         primary-button-color: "Primary button"
         accent-color: "Accent"
@@ -137,7 +141,7 @@ ka:
       new:
         title: "New SCIM client"
       revoke_static_token_dialog_component:
-        confirm_button: "Revoke"
+        confirm_button: "გაუქმება"
         title: "Revoke static token"
         heading: "Are you sure you want to revoke this token?"
         description: "The SCIM client that uses this token will no longer be able to access OpenProject's SCIM server API."
@@ -145,7 +149,7 @@ ka:
         blank_slate:
           title: "No SCIM clients configured yet"
           description: "Add clients to see them here"
-        user_count: "Users"
+        user_count: "მომხმარებლები"
       token_list_component:
         description: "The tokens you generate here can be passed by a SCIM client to access the OpenProject SCIM API."
         heading: "Tokens"
@@ -335,7 +339,9 @@ ka:
     errors:
       defined: "must not be defined."
       int?: "must be an integer."
+      decimal?: "must be a decimal."
       filled?: "must be filled."
+      key?: "is missing."
       greater_or_equal_zero: "must be greater or equal to 0."
       not_found: "not found."
       rules:
@@ -358,6 +364,7 @@ ka:
       depth: "Depth"
       item: "Item"
       label: "Label"
+      score: "Score"
       short: "Short name"
       parent: "მშობელი"
       blueprint: "Pattern blueprint"
@@ -582,7 +589,7 @@ ka:
           dialog_title: "Create new API token"
           attention_text: "Treat API tokens like passwords. Anyone with this token will have access to information from this instance, share it only with trusted users."
           dialog_body: "This token will allow third-party applications to communicate with your instance. To differentiate the new API token, please give it a name."
-          create_button: "Create"
+          create_button: "შექმნა"
           name_label: "Token name"
       created_dialog:
         token/api:
@@ -693,7 +700,7 @@ ka:
     dark_high_contrast: "Dark high contrast"
     light: "ღია"
     light_high_contrast: "Light high contrast"
-    sync_with_os: "Automatic (match OS colour mode)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: There are currently no types.
@@ -911,7 +918,7 @@ ka:
   account:
     delete: "ანგარიშის წაშლა"
     delete_confirmation: "Are you sure you want to delete the account?"
-    deletion_pending: "Account has been locked and was scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Of the data the user created (e.g. email, preferences, work packages, wiki entries) as much as possible will be deleted. Note however, that data like work packages and wiki entries can not be deleted without impeding the work of the other users. Such data is hence reassigned to an account called "Deleted user". As the data of every deleted account is reassigned to this account it will not be possible to distinguish the data the user created from the data of another deleted account.'
@@ -1004,12 +1011,12 @@ ka:
       enterprise_token:
         starts_at: "მოქმედების დაწყების დრო"
         subscriber: "გამომწერი"
-        subscription: "Subscription"
-        plan: "Plan"
+        subscription: "გამოწერა"
+        plan: "გეგმა"
         encoded_token: "Enterprise support token"
         active_user_count_restriction: "Active users"
       enterprise_trial:
-        company: "Company"
+        company: "კომპანია"
       grids/grid:
         page: "გვერდი"
         row_count: "მწკრივების რაოდენობა"
@@ -1042,6 +1049,7 @@ ka:
         active_value:
           true: "გაშლილი"
           false: "დაარქივებულია"
+        attribute_groups: "Attribute Groups"
         description: "აღწერა"
         enabled_modules: "Enabled modules"
         identifier: "იდენტიფიკატორი"
@@ -1075,10 +1083,10 @@ ka:
       project/phase:
         date_range: "Date range"
         definition: "Definition"
-        duration: "Duration"
-        start_date: "Start date"
+        duration: "ხანგრძლივობა"
+        start_date: "დაწყების თარიღი"
         start_date_caption: "Follows the previous phase."
-        finish_date: "Finish date"
+        finish_date: "დასრულების თარიღი"
       project/phase_definition:
         name: "სახელი"
         color: "ფერი"
@@ -1173,7 +1181,7 @@ ka:
         password_confirmation: "დასტური"
         consented_at: "ეთანხმება"
       group:
-        identity_url: "Identity URL"
+        identity_url: "იდენტიფიკაციის URL"
       user_preference:
         header_look_and_feel: "Look and feel"
         header_alerts: "Alerts"
@@ -1188,9 +1196,9 @@ ka:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "Warn me when leaving a work package with unsaved changes"
-        theme: "Colour mode"
+        theme: "Color mode"
         time_zone: "დროის სარტყელი"
-        mode_guideline: "Some modes will overwrite custom theme colours for accessibility and legibility. Please select Light mode for full custom theme support."
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Daily reminders"
         workdays: "სამუშაო დღეები"
       version:
@@ -1298,7 +1306,7 @@ ka:
         odd: "კენტი უნდა იყოს."
         regex_match_failed: "does not match the regular expression %{expression}."
         regex_invalid: "could not be validated with the associated regular expression."
-        regex_list_invalid: "could not be parsed as regular expression in lines %{invalid_lines}."
+        regex_list_invalid: "Lines %{invalid_lines} could not be parsed as regular expression."
         hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "must be smaller than or equal to maximum length."
         taken: "has already been taken."
@@ -1333,6 +1341,9 @@ ka:
               minimum: "need to include at least one filter for principal, context or id with the '=' operator."
         custom_field:
           at_least_one_custom_option: "At least one option needs to be available."
+          referenced_in_other_fields_html:
+            one: "%{name} is used in project attribute calculation %{links}."
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1629,7 +1640,7 @@ ka:
         one: "Authentication provider"
         other: "Authentication providers"
       category: "კატეგორია"
-      color: "Color"
+      color: "ფერი"
       comment: "კომენტარი"
       custom_action: "მორგებული ქმედება"
       custom_field: "მორგებადი ველი"
@@ -1759,7 +1770,7 @@ ka:
     derived_start_date: "Derived start date"
     direction: "Direction"
     display_sums: "ჯამების ჩვენება"
-    domain: "Domain"
+    domain: "დომენი"
     due_date: "დასრულების თარიღი"
     estimated_hours: "სამუშაო"
     estimated_time: "სამუშაო"
@@ -1928,7 +1939,7 @@ ka:
   button_unwatch: "მეთვალყურეობის გაუქმება"
   button_update: "განახლება"
   button_upgrade: "განახლება"
-  button_buy_now: "Buy now"
+  button_buy_now: "შეიძინეთ ახლავე"
   button_upload: "ატვირთვა"
   button_view: "ხედი"
   button_watch: "თვალის დევნება"
@@ -1977,7 +1988,7 @@ ka:
     copy_options:
       dependencies_label: "Copy from project"
   create_project:
-    template_label: "Use template"
+    template_label: "შაბლონის გამოყენება"
     copy_options:
       dependencies_label: "Copy from template"
   create_wiki_page: "Create new wiki page"
@@ -2162,13 +2173,13 @@ ka:
       work_package_sharing: Share work packages with external users
       work_package_subject_generation: Work Package Subject Generation
     upsell:
-      buy_now_button: "Buy now"
+      buy_now_button: "შეიძინეთ ახლავე"
       plans_title: "Enterprise plans"
       title: "Enterprise add-on"
       plan_title: "Enterprise %{plan} add-on"
       plan_name: "%{plan} enterprise plan"
       plan_text_html: "Available starting with the %{plan_name}."
-      unlimited: "Unlimited"
+      unlimited: "შეუზღუდავი"
       already_have_token: >
         Already have a token? Add it using the button below to upgrade to the booked Enterprise plan.
       hide_banner: "Hide this banner"
@@ -2276,6 +2287,9 @@ ka:
   enumeration_reported_project_statuses: "Reported project status"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "Single Sign-On (SSO) for user '%{value}' failed"
   error_can_not_archive_project: "This project cannot be archived: %{errors}"
   error_can_not_delete_entry: "Unable to delete entry"
@@ -2419,6 +2433,10 @@ ka:
     your_projects_export: "Projects are being exported"
     succeeded: "Export completed"
     failed: "An error has occurred while trying to export the work packages: %{message}"
+    demo:
+      heading: "Demo PDF"
+      footer: "Generated by OpenProject"
+      button_text: Generate Demo PDF
     errors:
       embedded_table_with_too_many_columns: "This embedded work package table could not fit on the page, please reduce the number of columns."
     format:
@@ -2481,7 +2499,7 @@ ka:
       tesseract: "Tesseract available (optional)"
   filterable_tree_view:
     filter_mode:
-      all: "All"
+      all: "ყველა"
       label: "Filter mode"
       selected: "Selected"
     include_sub_items: "Include sub-items"
@@ -2508,6 +2526,26 @@ ka:
       community: "OpenProject community"
       upsell:
         title: "Upgrade to Enterprise edition"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "Upgrade to Enterprise edition"
       postgres_migration: "Migrating your installation to PostgreSQL"
@@ -2613,7 +2651,7 @@ ka:
         static_token_name: "RSS კოდი"
         disabled_text: "RSS tokens are not enabled by the administrator. Please contact your administrator to use this feature."
       storages:
-        title: "File storages"
+        title: "ფაილების საცავი"
         text_hint: "File Storage tokens connect this OpenProject instance with an external File Storage."
         empty_text_hint: "There is no storage access linked to your account."
         revoke_token: "Do you really want to remove this token? You will need to login again on %{storage}"
@@ -2683,6 +2721,7 @@ ka:
   label_api_access_key: "API-ის წვდომის გასაღები"
   label_api_access_key_created_on: "API access key created %{value} ago"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar token "%{token_name}" for "%{calendar_name}" in "%{project_name}"'
   label_ical_access_key_not_present: "iCalendar token(s) not present."
@@ -2931,6 +2970,7 @@ ka:
   label_journal_diff: "Description Comparison"
   label_language: "ენა"
   label_languages: "ენები"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Jump to a project..."
   label_keyword_plural: "საკვანძო სიტყვები"
   label_language_based: "Based on user's language"
@@ -2950,6 +2990,7 @@ ka:
   label_link_url: "Link (URL)"
   label_list: "სია"
   label_loading: "იტვირთება..."
+  label_locked: "locked"
   label_lock_user: "მომხმარებლის დაბლოკვა"
   label_logged_as: "შესული ხართ როგორც"
   label_login: "შესვლა"
@@ -2957,6 +2998,10 @@ ka:
   label_custom_export_logo: "Custom export logo"
   label_custom_export_cover: "Custom export cover background"
   label_custom_export_footer: "Custom export footer image"
+  label_custom_export_font_regular: "Regular"
+  label_custom_export_font_bold: "Bold"
+  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "ტექსტის ფერი"
   label_custom_pdf_export_settings: "Custom PDF export settings"
@@ -3028,7 +3073,7 @@ ka:
   label_no_due_date: "დასრულების თარიღის გარეშე"
   label_no_start_date: "დაწყების თარიღის გარეშე"
   label_no_parent_page: "მშობელი გვერდის გარეშე"
-  label_notification_center_plural: "Notifications"
+  label_notification_center_plural: "შეტყობინებები"
   label_nothing_display: "Nothing to display"
   label_nobody: "არავინ"
   label_not_configured: "Not configured"
@@ -3044,6 +3089,8 @@ ka:
   label_operator_equals_or: "არის (ან)"
   label_operator_equals_all: "არის (და)"
   label_operator_shared_with_user_any: "ნებისმიერი"
+  label_open: "გახსნა"
+  label_closed: "დახურულია"
   label_open_menu: "მენიუს გახსნა"
   label_open_work_packages: "გახსნა"
   label_open_work_packages_plural: "გახსნა"
@@ -3061,7 +3108,7 @@ ka:
   label_password_rule_special: "Special Characters"
   label_password_rule_uppercase: "მაღალი რეგისტრი"
   label_path_encoding: "ბილიკის კოდირება"
-  label_per_page: "Per page:"
+  label_per_page: "თითოეულ გვერდზე:"
   label_people: "ხალხი"
   label_permissions: "წვდომები"
   label_permissions_report: "Permissions report"
@@ -3104,7 +3151,7 @@ ka:
   label_project_custom_field_plural: "Project attributes"
   label_project_settings: "Project settings"
   label_project_attributes_settings: "Project attributes settings"
-  label_project_storage_plural: "File storages"
+  label_project_storage_plural: "ფაილების საცავი"
   label_project_storage_project_folder: "File storages: Project folders"
   label_projects_disk_usage_information: "%{count} projects using %{used_disk_space} disk space"
   label_project_view_all: "View all projects"
@@ -3727,13 +3774,15 @@ ka:
       one: "1 პროექტი"
       other: "%{count} projects"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. To confirm this action please introduce the project name in the field below, this will:"
-      project_delete_result_1: "Delete all related data."
-      project_delete_result_2: "Delete all managed project folders in the attached storages."
-      info: "Deleting the project is an irreversible action."
-      project_verification: "Enter the project's name %{name} to verify the deletion."
-      subprojects_confirmation: "Its subproject(s): %{value} will also be deleted."
-      title: "Delete the project %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Project phase: %{phase}"
       project_phase_any: "Project phase: Any"
@@ -3968,6 +4017,8 @@ ka:
   setting_feeds_limit: "Feed content limit"
   setting_file_max_size_displayed: "Max size of text files displayed inline"
   setting_host_name: "ჰოსტის სახელი"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Hours per day"
   setting_hours_per_day_explanation: >-
     This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).
@@ -4186,6 +4237,7 @@ ka:
   status_invited: მოწვეულია
   status_locked: დაბლოკილია
   status_registered: რეგისტრირებული
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:
@@ -4222,6 +4274,18 @@ ka:
     This is the image that appears in the background of a cover page in your PDF exports. It needs to be an about 800px width by 500px height sized PNG or JPEG image file.
   text_custom_export_footer_instructions: >
     PDF exports will include a graphical element positioned to the left of the footer. This image must be a PNG or JPEG file with approximately 200 pixels in width.
+  label_custom_export_font_instructions: >
+    Upload and manage custom TrueType (.ttf) fonts used in your PDF exports. For best results, use matching files from the same font family. If no font is provided, the default NotoSans font will be used.
+  label_custom_export_images_instructions: >
+    Upload and manage custom image files used in your PDF exports.
+  text_custom_export_font_regular_instructions: >
+    This is the font file for regular text. It needs to be in TTF format and is required.
+  text_custom_export_font_bold_instructions: >
+    This is the font file for bold text. It needs to be in TTF format.
+  text_custom_export_font_italic_instructions: >
+    This is the font file for italic text. It needs to be in TTF format.
+  text_custom_export_font_bold_italic_instructions: >
+    This is the font file for bold and italic text. It needs to be in TTF format.
   text_custom_favicon_instructions: >
     This is the tiny icon that appears in your browser window/tab next to the page's title. It needs to be a squared 32 by 32 pixels sized PNG image file with a transparent background.
   text_custom_touch_icon_instructions: >

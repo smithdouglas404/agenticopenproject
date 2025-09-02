@@ -45,7 +45,7 @@ tr:
       meeting_agenda_item:
         title: "Başlık"
         author: "Yazar"
-        duration_in_minutes: "Duration"
+        duration_in_minutes: "Süre"
         description: "Notlar"
         presenter: "Sunucu"
       meeting_section:
@@ -60,12 +60,12 @@ tr:
         end_date: "Bitiş tarihi"
         iterations: "Yineleme sayısı"
       meeting_participant:
-        invited: "Invited"
-        attended: "Attended"
+        invited: "Davet edilen"
+        attended: "Katıldığım"
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} is not a valid participant."
+          invalid_user: "%{name} geçerli bir katılımcı değildir."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Seride yeni zamanlamaya uymayan ve açık bir toplantı bulunmakta. Mevcut toplantıları kapsaması için zamanlayın."
@@ -80,7 +80,7 @@ tr:
       meeting_agenda: "Gündem"
       meeting_section: "Bölüm"
       token/ical_meeting:
-        one: "iCal Meeting subscription"
+        one: "iCal Toplantı aboneliği"
         other: "iCal Meeting subscription"
   activity:
     filter:
@@ -126,7 +126,7 @@ tr:
   label_meeting_date_time: "Tarih/Saat"
   label_meeting_date_and_time: "Tarih ve zaman"
   label_meeting_diff: "Fark"
-  label_meeting_send_updates: "Send email calendar updates"
+  label_meeting_send_updates: "E-posta takvim güncellemeleri gönder"
   label_recurring_meeting: "Yinelenen toplantı"
   label_recurring_meeting_part_of: "Toplantı serisinin bir parçası"
   label_recurring_meeting_new: "Yeni yinelenen toplantı"
@@ -177,24 +177,24 @@ tr:
   label_version: "Sürüm"
   label_time_zone: "Saat dilim"
   label_start_date: "Başlama tarihi"
-  label_subscribe_icalendar: "Subscribe to calendar"
+  label_subscribe_icalendar: "Takvime abone ol"
   meeting:
     participants:
       label:
-        participants: "Participants"
-        attended: "Attended"
-        mark_as_attended: "Mark as attended"
-        mark_all_as_attended: "Mark all as attended"
-        remove_participant: "Remove participant"
-        manage_participants: "Manage participants"
-        no_participants: "No participants"
-        show_all: "Show all"
+        participants: "Katılımcılar"
+        attended: "Katıldığım"
+        mark_as_attended: "Katıldı olarak işaretle"
+        mark_all_as_attended: "Tümünü katıldı olarak işaretle"
+        remove_participant: "Katılımcıyı kaldır"
+        manage_participants: "Katılımcıları yönet"
+        no_participants: "Katılımcı yok"
+        show_all: "Tümünü göster"
       text:
-        template: "These participants will be invited automatically to all future meetings as they are created."
+        template: "Oluşturuldukça bu katılımcılar, gelecekteki tüm toplantılara otomatik olarak davet edilecektir."
         manage_participants: "Search for and add project members as participants to this meeting."
         search_for_members: "Search for project members"
       blankslate:
-        heading: "No participants"
+        heading: "Katılımcı yok"
         description: "There are no participants yet."
     attachments:
       template: "Bu ekli dosyalar serinin gelecekteki tüm toplantılarına dahil edilecektir."
@@ -221,8 +221,8 @@ tr:
       series_updated:
         title: "[%{project_name}] Meeting series '%{title}' has been updated"
         summary: "Meeting series '%{title}' has been updated by %{actor}"
-        old_schedule: "Old schedule"
-        new_schedule: "New schedule"
+        old_schedule: "Eski plan"
+        new_schedule: "Yeni plan"
       invited:
         summary: "%{actor} size '%{title}' toplantısı için bir davet gönderdi"
       cancelled:
@@ -237,10 +237,10 @@ tr:
         header: "Meeting '%{title}' has been updated"
         summary: "Meeting '%{title}' has been updated by %{actor}"
         body: "The meeting '%{title}' has been updated by %{actor}."
-        old_date_time: "Old date/time"
-        new_date_time: "New date/time"
-        old_location: "Old location"
-        new_location: "New location"
+        old_date_time: "Eski tarih/saat"
+        new_date_time: "Yeni tarih/saat"
+        old_location: "Eski konum"
+        new_location: "Yeni konum"
     label_mail_all_participants: "Send email invite to participants"
     types:
       one_time: "Tek seferlik"
@@ -269,26 +269,26 @@ tr:
       your_meeting_export: "Toplantı dışa aktarılıyor"
       minutes:
         footer_page_numbers: "P. %{current_page} of %{total_pages}"
-        author: "Author"
-        date: "Date"
-        time: "Time"
-        location: "Location"
-        title: "Minutes"
+        author: "Sahibi"
+        date: "Tarih"
+        time: "Zaman"
+        location: "Yer"
+        title: "Notlar"
     export_pdf_dialog:
       title: PDF olarak dışa aktar
       description: Mevcut hali ile toplantının yazdırılabilir bir PDF çıktısını üret.
       templates:
         default:
-          label: Default
+          label: Varsayılan
           caption: The default template is suitable for most meetings and represent the current state.
         minutes:
-          label: Minutes
+          label: Notlar
           caption: The minutes template is suitable for closed and archived meetings.
       first_page_header_left:
         label: First page header left
         caption: This text will appear on the first page at the left of the header.
       author:
-        label: Author
+        label: Sahibi
         caption: The author of the minutes will be displayed in the subtitle.
       include_participants:
         label: Katılımcı listesini içer
@@ -304,7 +304,7 @@ tr:
         caption: Eğer toplantı sonuçları gizli bir bilgiye sahip ise bunları dışarı aktarırken dahil edilmemesini seçebilirsiniz.
       footer_text:
         label: Altbilgi metni
-        caption: This text will appear on every page at the center of the footer.
+        caption: Bu metin her sayfada altbilginin ortasında görünecektir.
       submit_button: İndir
     notifications:
       sidepanel:
@@ -477,7 +477,7 @@ tr:
   label_agenda_item_deleted_wp: "Silinmiş iş parçsına referans"
   label_agenda_item_actions: "Gündem maddeleri için eylemler"
   label_agenda_item_move_to_next_title: "Move to next meeting?"
-  label_agenda_item_move: "Move"
+  label_agenda_item_move: "Taşı"
   label_agenda_item_move_to_next: "Sonraki toplantıya taşı"
   label_agenda_item_move_to_backlog: "Birikmiş iş listesine taşı"
   label_agenda_item_move_to_current_meeting: "Şuanki toplantıya taşı"
@@ -558,7 +558,7 @@ tr:
         text_hint: "iCalendar meeting tokens allow users to subscribe to all their meetings and view up-to-date meeting information in external clients."
         disabled_text: "iCalendar meeting subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
         empty_text_hint: 'To add an iCalendar meeting token, go to the <a href="%{path}">meetings section</a> and subscribe from there.'
-        add_button: "Subscribe to calendar"
+        add_button: "Takvime abone ol"
   my:
     access_token:
       dialog:

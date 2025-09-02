@@ -60,8 +60,8 @@ pt-PT:
         end_date: "Data de fim"
         iterations: "Ocorrências"
       meeting_participant:
-        invited: "Invited"
-        attended: "Attended"
+        invited: "Convidados"
+        attended: "Participou"
     errors:
       models:
         meeting_participant:
@@ -177,24 +177,24 @@ pt-PT:
   label_version: "Versão"
   label_time_zone: "Fuso horário"
   label_start_date: "Data de início"
-  label_subscribe_icalendar: "Subscribe to calendar"
+  label_subscribe_icalendar: "Subscrever o calendário"
   meeting:
     participants:
       label:
-        participants: "Participants"
-        attended: "Attended"
+        participants: "Participantes"
+        attended: "Participou"
         mark_as_attended: "Mark as attended"
         mark_all_as_attended: "Mark all as attended"
         remove_participant: "Remove participant"
-        manage_participants: "Manage participants"
-        no_participants: "No participants"
-        show_all: "Show all"
+        manage_participants: "Gerir participantes"
+        no_participants: "Sem participantes"
+        show_all: "Mostrar todos"
       text:
-        template: "These participants will be invited automatically to all future meetings as they are created."
+        template: "Estes participantes serão convidados automaticamente para todas as reuniões futuras à medida que forem sendo criadas."
         manage_participants: "Search for and add project members as participants to this meeting."
         search_for_members: "Search for project members"
       blankslate:
-        heading: "No participants"
+        heading: "Sem participantes"
         description: "There are no participants yet."
     attachments:
       template: "Estes ficheiros em anexo serão incluídos em todas as futuras reuniões da série."
@@ -221,8 +221,8 @@ pt-PT:
       series_updated:
         title: "[%{project_name}] Meeting series '%{title}' has been updated"
         summary: "Meeting series '%{title}' has been updated by %{actor}"
-        old_schedule: "Old schedule"
-        new_schedule: "New schedule"
+        old_schedule: "Calendário antigo"
+        new_schedule: "Novo calendário"
       invited:
         summary: "%{actor} enviou-lhe um convite para a reunião \"%{title}\""
       cancelled:
@@ -237,8 +237,8 @@ pt-PT:
         header: "Meeting '%{title}' has been updated"
         summary: "Meeting '%{title}' has been updated by %{actor}"
         body: "The meeting '%{title}' has been updated by %{actor}."
-        old_date_time: "Old date/time"
-        new_date_time: "New date/time"
+        old_date_time: "Data/hora antiga"
+        new_date_time: "Nova data/hora"
         old_location: "Old location"
         new_location: "New location"
     label_mail_all_participants: "Send email invite to participants"
@@ -269,26 +269,26 @@ pt-PT:
       your_meeting_export: "A reunião está a ser exportada"
       minutes:
         footer_page_numbers: "P. %{current_page} of %{total_pages}"
-        author: "Author"
-        date: "Date"
-        time: "Time"
-        location: "Location"
-        title: "Minutes"
+        author: "Autor"
+        date: "Data"
+        time: "Hora"
+        location: "Localização"
+        title: "Minutos"
     export_pdf_dialog:
       title: Exportar PDF
       description: Gerar um ficheiro PDF para impressão desta reunião no estado atual.
       templates:
         default:
-          label: Default
+          label: Predefinido
           caption: The default template is suitable for most meetings and represent the current state.
         minutes:
-          label: Minutes
+          label: Minutos
           caption: The minutes template is suitable for closed and archived meetings.
       first_page_header_left:
         label: First page header left
         caption: This text will appear on the first page at the left of the header.
       author:
-        label: Author
+        label: Autor
         caption: The author of the minutes will be displayed in the subtitle.
       include_participants:
         label: Incluir lista de participantes
@@ -477,7 +477,7 @@ pt-PT:
   label_agenda_item_deleted_wp: "Referência do pacote de trabalho excluída"
   label_agenda_item_actions: "Ações dos itens da agenda"
   label_agenda_item_move_to_next_title: "Move to next meeting?"
-  label_agenda_item_move: "Move"
+  label_agenda_item_move: "Mover"
   label_agenda_item_move_to_next: "Ir para a próxima reunião"
   label_agenda_item_move_to_backlog: "Mover para o backlog"
   label_agenda_item_move_to_current_meeting: "Mover para reunião atual"
@@ -558,7 +558,7 @@ pt-PT:
         text_hint: "iCalendar meeting tokens allow users to subscribe to all their meetings and view up-to-date meeting information in external clients."
         disabled_text: "iCalendar meeting subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
         empty_text_hint: 'To add an iCalendar meeting token, go to the <a href="%{path}">meetings section</a> and subscribe from there.'
-        add_button: "Subscribe to calendar"
+        add_button: "Subscrever o calendário"
   my:
     access_token:
       dialog:
@@ -572,7 +572,7 @@ pt-PT:
         token/ical_meeting:
           title: "An iCal meeting subscription token has been generated"
           body: "Treat the following URL as you would a password. Anyone who has access to it can view all your meetings."
-          warning: "This is the only time you will see this token. Make sure to copy it now."
+          warning: "Esta é a única vez que verá este token. Não se esqueça de o copiar agora."
       revocation:
         token/ical_meeting:
           notice_success: "The iCalendar meeting subscription has been revoked successfully."

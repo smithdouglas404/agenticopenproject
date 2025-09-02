@@ -288,17 +288,6 @@ uk:
         format:
           date: "%{attribute} не є дійсною датою - очікується YYYY-MM-DD."
         general: "Сталася помилка."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Читайте про нові функції та оновлення продуктів."
-          learn_about: "Докладніше про всі нові функції"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                Випуск містить різні нові функції і покращення, зокрема: <br> <ul class="%{list_styling_class}"> <li>вдосконалення UX/UI для сучаснішого вигляду;</li> <li>можливість тимчасово вимкнути надсилання електронних листів зі сповіщеннями й ICS для нарад;</li> <li>поточні таймери, що відображаються в модулі «Мій облік часу»;</li> <li>відображення «% завершення» в підсумках звітів про перебіг виконання також у режимі «На основі статусу»;</li> <li>виявлення відсутньої можливості обміну маркерами при перевірці стану Nextcloud (у доповненні версії Enterprise).</li> </ul>
     ical_sharing_modal:
       title: "Підписатися на календар"
       inital_setup_error_message: "Під час отримання даних сталася помилка."
@@ -1232,7 +1221,7 @@ uk:
       selected_filter:
         all: "Усі проєкти"
         selected: "Тільки вибране"
-      search_placeholder: "Пошук у проєкті…"
+      search_placeholder: "Search projects..."
       search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Включити всі підпроєкти"
       tooltip:

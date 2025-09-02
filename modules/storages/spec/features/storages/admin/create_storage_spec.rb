@@ -76,7 +76,7 @@ RSpec.describe "Admin Create a new file storage",
         expect(page).not_to have_test_selector("label-openproject_oauth_application_configured-status")
 
         # OAuth client
-        wait_for { page }.to have_test_selector("storage-oauth-client-label", text: "Nextcloud OAuth")
+        wait_for { page }.to have_test_selector("storage-oauth-client-label", text: "Storage OAuth")
         expect(page).not_to have_test_selector("label-storage_oauth_client_configured-status")
         expect(page).to have_test_selector("storage-oauth-client-id-description",
                                            text: "Allow OpenProject to access Nextcloud data using OAuth.")

@@ -23,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -62,7 +62,7 @@ module Admin
 
         def create
           item_service
-            .insert_item(**item_input)
+            .insert_item(contract_class: create_contract, **item_input)
             .either(
               lambda do |item|
                 redirect_to(
@@ -77,19 +77,25 @@ module Admin
             )
         end
 
+        # rubocop:disable Metrics/AbcSize
         def update
+          input = item_input
           item_service
-            .update_item(item: @active_item, label: item_input[:label], short: item_input[:short])
+            .update_item(contract_class: update_contract,
+                         item: @active_item,
+                         label: input[:label],
+                         short: input[:short],
+                         score: input[:score])
             .either(
-              lambda do |_|
-                redirect_to(custom_field_item_path(@custom_field, @active_item.parent), status: :see_other)
-              end,
+              ->(*) { redirect_to(custom_field_item_path(@custom_field, @active_item.parent), status: :see_other) },
               lambda do |validation_result|
                 add_errors_to_edit_form(validation_result)
-                render action: :edit
+                update_via_turbo_stream(component: ItemComponent.new(item: @active_item, show_edit_form: true))
+                respond_with_turbo_streams
               end
             )
         end
+        # rubocop:enable Metrics/AbcSize
 
         def move
           item_service
@@ -119,12 +125,35 @@ module Admin
           ::CustomFields::Hierarchy::HierarchicalItemService.new
         end
 
-        def item_input
+        def item_input # rubocop:disable Metrics/AbcSize
           input = { parent: @active_item, label: params[:label] }
           input[:short] = params[:short] if params[:short].present?
+          input[:score] = params[:score] if params[:score].present?
           input[:sort_order] = params[:sort_order].to_i if params[:sort_order].present?
 
           input
+        end
+
+        def create_contract
+          case @custom_field.field_format
+          when "hierarchy"
+            ::CustomFields::Hierarchy::InsertListItemContract
+          when "scored_list"
+            ::CustomFields::Hierarchy::InsertScoredItemContract
+          else
+            raise ArgumentError, "unsupported custom field format '#{@custom_field.field_format}'"
+          end
+        end
+
+        def update_contract
+          case @custom_field.field_format
+          when "hierarchy"
+            ::CustomFields::Hierarchy::UpdateListItemContract
+          when "scored_list"
+            ::CustomFields::Hierarchy::UpdateScoredItemContract
+          else
+            raise ArgumentError, "unsupported custom field format '#{@custom_field.field_format}'"
+          end
         end
 
         def add_errors_to_form(validation_result)
@@ -135,7 +164,7 @@ module Admin
         end
 
         def add_errors_to_edit_form(validation_result)
-          @active_item.assign_attributes(**validation_result.to_h.slice(:label, :short))
+          @active_item.assign_attributes(**validation_result.to_h.slice(:label, :short, :score))
 
           validation_result.errors(full: true).to_h.each do |attribute, errors|
             @active_item.errors.add(attribute, errors.join(", "))

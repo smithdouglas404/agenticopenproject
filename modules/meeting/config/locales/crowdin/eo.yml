@@ -74,7 +74,7 @@ eo:
       messages:
         invalid_time_format: "is not a valid time. Required format: HH:MM"
     models:
-      recurring_meeting: "Recurring meeting"
+      recurring_meeting: "Ripeta renkontiĝo"
       meeting: "One-time meeting"
       meeting_agenda_item: "Agenda item"
       meeting_agenda: "Agenda"
@@ -84,7 +84,7 @@ eo:
         other: "iCal Meeting subscription"
   activity:
     filter:
-      meeting: "Meetings"
+      meeting: "Renkontiĝoj"
     item:
       meeting_agenda_item:
         duration:
@@ -109,8 +109,8 @@ eo:
   error_notification: "Failed to send notification."
   error_notification_with_errors: "Failed to send notification. The following recipients could not be notified: %{recipients}"
   label_meeting: "Meeting"
-  label_meeting_plural: "Meetings"
-  label_meeting_new: "New Meeting"
+  label_meeting_plural: "Renkontiĝoj"
+  label_meeting_new: "Nova renkontiĝo"
   label_meeting_new_dynamic: "New one-time meeting"
   label_meeting_new_recurring: "New recurring meeting"
   label_meeting_create: "Create meeting"
@@ -156,12 +156,12 @@ eo:
   label_meeting_more:
     one: "There is one more meeting."
     other: "There are %{count} more meetings."
-  label_my_meetings: "My meetings"
-  label_all_meetings: "All meetings"
-  label_upcoming_meetings: "Upcoming meetings"
-  label_past_meetings: "Past meetings"
-  label_upcoming_meetings_short: "Upcoming"
-  label_past_meetings_short: "Past"
+  label_my_meetings: "Miaj renkontiĝoj"
+  label_all_meetings: "Ĉiaj renkontiĝoj"
+  label_upcoming_meetings: "Venontaj renkontiĝoj"
+  label_past_meetings: "Pasintaj renkontiĝoj"
+  label_upcoming_meetings_short: "Venonta"
+  label_past_meetings_short: "Pasinta"
   label_involvement: "Involvement"
   label_invitations: "Invitations"
   label_invited_user: "Invited user"
@@ -207,7 +207,7 @@ eo:
       agenda_items: "Copy agenda items"
       agenda_text: "Copy the agenda of the old meeting"
       participants: "Copy list of participants"
-      to_clipboard: "Copy to clipboard"
+      to_clipboard: "Kopii al la tondujo"
     email:
       send_emails: "Email participants"
       send_invitation_emails: >
@@ -269,9 +269,9 @@ eo:
       your_meeting_export: "Meeting is being exported"
       minutes:
         footer_page_numbers: "P. %{current_page} of %{total_pages}"
-        author: "Author"
-        date: "Date"
-        time: "Time"
+        author: "Aŭtoro"
+        date: "Dato"
+        time: "Tempo"
         location: "Location"
         title: "Minutes"
     export_pdf_dialog:
@@ -279,7 +279,7 @@ eo:
       description: Generate a printable PDF file of this meeting at the current state.
       templates:
         default:
-          label: Default
+          label: Defaŭlte
           caption: The default template is suitable for most meetings and represent the current state.
         minutes:
           label: Minutes
@@ -288,7 +288,7 @@ eo:
         label: First page header left
         caption: This text will appear on the first page at the left of the header.
       author:
-        label: Author
+        label: Aŭtoro
         caption: The author of the minutes will be displayed in the subtitle.
       include_participants:
         label: Include list of participants
@@ -305,7 +305,7 @@ eo:
       footer_text:
         label: Footer text
         caption: This text will appear on every page at the center of the footer.
-      submit_button: Download
+      submit_button: Elŝuti
     notifications:
       sidepanel:
         title: "Email calendar updates"
@@ -477,7 +477,7 @@ eo:
   label_agenda_item_deleted_wp: "Deleted work package reference"
   label_agenda_item_actions: "Agenda items actions"
   label_agenda_item_move_to_next_title: "Move to next meeting?"
-  label_agenda_item_move: "Move"
+  label_agenda_item_move: "Movi"
   label_agenda_item_move_to_next: "Move to next meeting"
   label_agenda_item_move_to_backlog: "Move to backlog"
   label_agenda_item_move_to_current_meeting: "Move to current meeting"

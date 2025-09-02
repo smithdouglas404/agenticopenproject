@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -107,8 +109,50 @@ module API
           schema :updated_at,
                  type: "DateTime"
 
-          def self.represented_class
-            ::Project
+          # Cannot be cached here due to custom field visibility checks on a user level.
+          # However caching is still applied further down in the `section_representation` method.
+          property :attribute_groups,
+                   name_source: ->(*) { I18n.t("activerecord.attributes.project.attribute_groups") },
+                   as: "_attributeGroups",
+                   exec_context: :decorator,
+                   uncacheable: true
+
+          class << self
+            def represented_class
+              ::Project
+            end
+          end
+
+          def attribute_groups
+            project_custom_field_sections.map do |section|
+              section_representation(section)
+            end
+          end
+
+          private
+
+          def project_custom_field_sections
+            @project_custom_field_sections ||= ProjectCustomFieldSection
+                                                .joins(:custom_fields)
+                                                .includes(:custom_fields)
+                                                .merge(ProjectCustomField.visible(current_user))
+                                                .group(:id, "custom_fields.id")
+                                                .order(:position, :position_in_custom_field_section)
+          end
+
+          def section_representation(section)
+            OpenProject::Cache.fetch(*section_cache_key(section)) do
+              ::API::V3::Projects::Schemas::ProjectCustomFieldSectionRepresenter
+                .new(section, current_user:)
+            end
+          end
+
+          def section_cache_key(section)
+            ["project_schema_custom_field_section",
+             section.id,
+             I18n.locale,
+             represented.model,
+             *represented.model.available_custom_fields.sort_by(&:id)]
           end
         end
       end

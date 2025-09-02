@@ -45,7 +45,7 @@ ca:
       meeting_agenda_item:
         title: "Títol"
         author: "Autor/a"
-        duration_in_minutes: "Duration"
+        duration_in_minutes: "Durada"
         description: "Notes"
         presenter: "Presentador"
       meeting_section:
@@ -186,15 +186,15 @@ ca:
         mark_as_attended: "Mark as attended"
         mark_all_as_attended: "Mark all as attended"
         remove_participant: "Remove participant"
-        manage_participants: "Manage participants"
-        no_participants: "No participants"
-        show_all: "Show all"
+        manage_participants: "Gestiona els participants"
+        no_participants: "No hi ha participants"
+        show_all: "Mostrar tots"
       text:
         template: "These participants will be invited automatically to all future meetings as they are created."
         manage_participants: "Search for and add project members as participants to this meeting."
         search_for_members: "Search for project members"
       blankslate:
-        heading: "No participants"
+        heading: "No hi ha participants"
         description: "There are no participants yet."
     attachments:
       template: "These attached files will be included in all future meetings in the series."
@@ -207,7 +207,7 @@ ca:
       agenda_items: "Copy agenda items"
       agenda_text: "Copia l'agenda de l'antiga reunió"
       participants: "Copy list of participants"
-      to_clipboard: "Copy to clipboard"
+      to_clipboard: "Copiar al porta-retalls"
     email:
       send_emails: "Email participants"
       send_invitation_emails: >
@@ -237,8 +237,8 @@ ca:
         header: "Meeting '%{title}' has been updated"
         summary: "Meeting '%{title}' has been updated by %{actor}"
         body: "The meeting '%{title}' has been updated by %{actor}."
-        old_date_time: "Old date/time"
-        new_date_time: "New date/time"
+        old_date_time: "Data/hora antiga"
+        new_date_time: "Data/hora nova"
         old_location: "Old location"
         new_location: "New location"
     label_mail_all_participants: "Send email invite to participants"
@@ -269,26 +269,26 @@ ca:
       your_meeting_export: "Meeting is being exported"
       minutes:
         footer_page_numbers: "P. %{current_page} of %{total_pages}"
-        author: "Author"
-        date: "Date"
-        time: "Time"
-        location: "Location"
-        title: "Minutes"
+        author: "Autor/a"
+        date: "Data"
+        time: "Hora"
+        location: "Ubicació"
+        title: "Acta"
     export_pdf_dialog:
       title: Export PDF
       description: Generate a printable PDF file of this meeting at the current state.
       templates:
         default:
-          label: Default
+          label: Per defecte
           caption: The default template is suitable for most meetings and represent the current state.
         minutes:
-          label: Minutes
+          label: Acta
           caption: The minutes template is suitable for closed and archived meetings.
       first_page_header_left:
         label: First page header left
         caption: This text will appear on the first page at the left of the header.
       author:
-        label: Author
+        label: Autor/a
         caption: The author of the minutes will be displayed in the subtitle.
       include_participants:
         label: Include list of participants
@@ -305,7 +305,7 @@ ca:
       footer_text:
         label: Footer text
         caption: This text will appear on every page at the center of the footer.
-      submit_button: Download
+      submit_button: Descàrrega
     notifications:
       sidepanel:
         title: "Email calendar updates"
@@ -470,14 +470,14 @@ ca:
   label_meeting_index_later: "Next week and later"
   label_agenda_items: "Punts de l'ordre del dia"
   label_agenda_items_reordered: "reordenat"
-  label_agenda_item_add: "Add agenda item"
-  label_agenda_item_remove_from_agenda: "Remove from agenda"
+  label_agenda_item_add: "Afegeix element d'agenda"
+  label_agenda_item_remove_from_agenda: "Suprimeix de l'agenda"
   label_agenda_item_remove_from_backlog: "Remove from backlog"
   label_agenda_item_undisclosed_wp: "Paquet de treball #%{id} no visible"
   label_agenda_item_deleted_wp: "Referència de paquet de treball eliminada"
   label_agenda_item_actions: "Accions d'element de l'agenda"
   label_agenda_item_move_to_next_title: "Move to next meeting?"
-  label_agenda_item_move: "Move"
+  label_agenda_item_move: "Moure"
   label_agenda_item_move_to_next: "Move to next meeting"
   label_agenda_item_move_to_backlog: "Move to backlog"
   label_agenda_item_move_to_current_meeting: "Move to current meeting"
@@ -566,7 +566,7 @@ ca:
           dialog_title: "New iCal subscription token for meetings"
           dialog_body: "This token will generate an iCal subscription URL that lets you view all your meetings in an external calendar application."
           create_button: "Create subscription"
-          name_label: "Token name"
+          name_label: "Nom del token"
           name_caption: 'You can name it after where you will use it, such as"My phone" or "Work computer.'
       created_dialog:
         token/ical_meeting:

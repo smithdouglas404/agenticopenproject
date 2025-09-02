@@ -44,7 +44,7 @@ ms:
       meeting_agenda_item:
         title: "Tajuk"
         author: "Pengarang"
-        duration_in_minutes: "Duration"
+        duration_in_minutes: "Tempoh"
         description: "Nota-nota"
         presenter: "Penyampai"
       meeting_section:
@@ -59,8 +59,8 @@ ms:
         end_date: "End date"
         iterations: "Kejadian"
       meeting_participant:
-        invited: "Invited"
-        attended: "Attended"
+        invited: "Telah dijemput"
+        attended: "Dihadiri"
     errors:
       models:
         meeting_participant:
@@ -172,24 +172,24 @@ ms:
   label_version: "Versi"
   label_time_zone: "Zon waktu"
   label_start_date: "Tarikh mula"
-  label_subscribe_icalendar: "Subscribe to calendar"
+  label_subscribe_icalendar: "Langgan kalendar"
   meeting:
     participants:
       label:
-        participants: "Participants"
-        attended: "Attended"
+        participants: "Peserta-peserta"
+        attended: "Dihadiri"
         mark_as_attended: "Mark as attended"
         mark_all_as_attended: "Mark all as attended"
         remove_participant: "Remove participant"
-        manage_participants: "Manage participants"
-        no_participants: "No participants"
-        show_all: "Show all"
+        manage_participants: "Urus peserta"
+        no_participants: "Tiada peserta"
+        show_all: "Paparkan semua"
       text:
-        template: "These participants will be invited automatically to all future meetings as they are created."
+        template: "Peserta ini akan dijemput secara automatik ke semua mesyuarat akan datang apabila ia dibuat."
         manage_participants: "Search for and add project members as participants to this meeting."
         search_for_members: "Search for project members"
       blankslate:
-        heading: "No participants"
+        heading: "Tiada peserta"
         description: "There are no participants yet."
     attachments:
       template: "Fail yang dilampirkan ini akan disertakan dalam semua mesyuarat akan datang dalam siri ini."
@@ -202,7 +202,7 @@ ms:
       agenda_items: "Salin item agenda"
       agenda_text: "Salin agenda mesyuarat lama"
       participants: "Salin senarai peserta"
-      to_clipboard: "Copy to clipboard"
+      to_clipboard: "Salin ke papan klip"
     email:
       send_emails: "E-mel peserta"
       send_invitation_emails: >
@@ -232,8 +232,8 @@ ms:
         header: "Meeting '%{title}' has been updated"
         summary: "Meeting '%{title}' has been updated by %{actor}"
         body: "The meeting '%{title}' has been updated by %{actor}."
-        old_date_time: "Old date/time"
-        new_date_time: "New date/time"
+        old_date_time: "Tarikh/masa lama"
+        new_date_time: "Tarikh/masa baharu"
         old_location: "Old location"
         new_location: "New location"
     label_mail_all_participants: "Send email invite to participants"
@@ -264,11 +264,11 @@ ms:
       your_meeting_export: "Meeting is being exported"
       minutes:
         footer_page_numbers: "P. %{current_page} of %{total_pages}"
-        author: "Author"
-        date: "Date"
-        time: "Time"
-        location: "Location"
-        title: "Minutes"
+        author: "Pengarang"
+        date: "Tarikh"
+        time: "Masa"
+        location: "Lokasi"
+        title: "Minit Mesyuarat"
     export_pdf_dialog:
       title: Export PDF
       description: Generate a printable PDF file of this meeting at the current state.
@@ -277,13 +277,13 @@ ms:
           label: Default
           caption: The default template is suitable for most meetings and represent the current state.
         minutes:
-          label: Minutes
+          label: Minit Mesyuarat
           caption: The minutes template is suitable for closed and archived meetings.
       first_page_header_left:
         label: First page header left
         caption: This text will appear on the first page at the left of the header.
       author:
-        label: Author
+        label: Pengarang
         caption: The author of the minutes will be displayed in the subtitle.
       include_participants:
         label: Include list of participants
@@ -300,7 +300,7 @@ ms:
       footer_text:
         label: Footer text
         caption: This text will appear on every page at the center of the footer.
-      submit_button: Download
+      submit_button: Muat turun
     notifications:
       sidepanel:
         title: "Email calendar updates"
@@ -463,14 +463,14 @@ ms:
   label_meeting_index_later: "Next week and later"
   label_agenda_items: "Item-item agenda"
   label_agenda_items_reordered: "disusun semula"
-  label_agenda_item_add: "Add agenda item"
-  label_agenda_item_remove_from_agenda: "Remove from agenda"
+  label_agenda_item_add: "Tambah item agenda"
+  label_agenda_item_remove_from_agenda: "Keluarkan daripada agenda"
   label_agenda_item_remove_from_backlog: "Remove from backlog"
   label_agenda_item_undisclosed_wp: "Pakej kerja #%{id} tidak kelihatan"
   label_agenda_item_deleted_wp: " Rujukan pakej kerja yang dipadam"
   label_agenda_item_actions: "Tindakan item agenda"
   label_agenda_item_move_to_next_title: "Move to next meeting?"
-  label_agenda_item_move: "Move"
+  label_agenda_item_move: "Alih"
   label_agenda_item_move_to_next: "Move to next meeting"
   label_agenda_item_move_to_backlog: "Move to backlog"
   label_agenda_item_move_to_current_meeting: "Move to current meeting"
@@ -551,7 +551,7 @@ ms:
         text_hint: "iCalendar meeting tokens allow users to subscribe to all their meetings and view up-to-date meeting information in external clients."
         disabled_text: "iCalendar meeting subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
         empty_text_hint: 'To add an iCalendar meeting token, go to the <a href="%{path}">meetings section</a> and subscribe from there.'
-        add_button: "Subscribe to calendar"
+        add_button: "Langgan kalendar"
   my:
     access_token:
       dialog:

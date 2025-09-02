@@ -59,6 +59,10 @@ zh-TW:
       tab_interface: "介面"
       tab_branding: "品牌化"
       tab_pdf_export_styles: "PDF 匯出類型"
+      tab_pdf_export_font: "PDF 匯出字型"
+      fonts:
+        file_too_large: "太大 (最大為 %{count} MB)。"
+        file_is_invalid: "不是有效的 TTF 字型檔案。"
       colors:
         primary-button-color: "主按鈕"
         accent-color: "強調（Accent）"
@@ -334,7 +338,9 @@ zh-TW:
     errors:
       defined: "必須未被定義。"
       int?: "必須是整數"
+      decimal?: "必須是十進位。"
       filled?: "必填"
+      key?: "遺失。"
       greater_or_equal_zero: "必須大於或等於 0"
       not_found: "未找到"
       rules:
@@ -357,6 +363,7 @@ zh-TW:
       depth: "深度"
       item: "項目"
       label: "標籤"
+      score: "評分"
       short: "簡稱"
       parent: "上層"
       blueprint: "樣式藍圖"
@@ -683,7 +690,7 @@ zh-TW:
     dark_high_contrast: "深色高對比模式"
     light: "白色主題"
     light_high_contrast: "高對比白色主題"
-    sync_with_os: "自動（匹配 OS 顏色模式）"
+    sync_with_os: "自動（配合作業系統顏色模式）"
   types:
     index:
       no_results_title_text: 目前沒有類型
@@ -899,7 +906,7 @@ zh-TW:
   account:
     delete: "刪除帳號"
     delete_confirmation: "您確定要刪除這個帳號嗎？"
-    deletion_pending: "帳戶已被鎖定且預計刪除。 請注意，此過程背景執行。 可能需要一些時間才能完全刪除使用者。"
+    deletion_pending: "帳戶已排定刪除。請注意，此過程會在背景中進行。在完全刪除使用者之前，可能會花費一些時間。"
     deletion_info:
       data_consequences:
         other: '使用者所建立的資料（例如電子郵件、偏好設定、工作套件、維基條目）將盡可能被刪除。但請注意，像工作套件和維基條目等資料若刪除，會影響其他使用者的工作，因此這些資料會被重新指派給名為「已刪除使用者」的帳號。由於所有被刪除帳號的資料都會集中指派至此帳號，因此無法區分該使用者所建立的資料與其他已刪除帳號的資料。'
@@ -1030,6 +1037,7 @@ zh-TW:
         active_value:
           true: "解除封存"
           false: "已封存"
+        attribute_groups: "屬性群組"
         description: "說明"
         enabled_modules: "啟用的模組"
         identifier: "識別碼"
@@ -1176,9 +1184,9 @@ zh-TW:
         auto_hide_popups: "自動關閉成功通知"
         auto_hide_popups_caption: "啟用時，綠色的成功通知會在 5 秒內自動關閉。"
         warn_on_leaving_unsaved: "離開尚未儲存的工作套件時提示我"
-        theme: "顏色模式"
+        theme: "色彩模式"
         time_zone: "時區"
-        mode_guideline: "某些模式會為了無障礙與可讀性而覆蓋自訂主題色彩。若需完整支援自訂主題，請選擇「亮色模式」。"
+        mode_guideline: "某些模式會覆蓋自訂主題的顏色，以提高可訪問性和可存取性。請選擇「Light」模式，以獲得完整的自訂主題支援。"
         daily_reminders: "每日提醒"
         workdays: "工作日"
       version:
@@ -1286,7 +1294,7 @@ zh-TW:
         odd: "必須是奇數"
         regex_match_failed: "與正則表達式 %{expression} 不匹配。"
         regex_invalid: "不能被相關聯的正則運算式驗證。"
-        regex_list_invalid: "在 %{invalid_lines}行中，無法以正則表 達式進行解析。"
+        regex_list_invalid: "%{invalid_lines} 行無法解析為正規表示式。"
         hexcode_invalid: "不是有效的六位數十六進位顏色代碼。"
         smaller_than_or_equal_to_max_length: "必須小於或等於最大長度。"
         taken: "已經被使用"
@@ -1321,6 +1329,8 @@ zh-TW:
               minimum: "需要為主體、上下文或 id 至少包含一個帶有“=”運算符的過濾器"
         custom_field:
           at_least_one_custom_option: "需要至少一個選項可用。"
+          referenced_in_other_fields_html:
+            other: "%{name} 用於專案屬性計算： %{links}。"
         custom_fields_project:
           attributes:
             project_ids:
@@ -1897,7 +1907,7 @@ zh-TW:
   button_unarchive: "取消封存"
   button_uncheck_all: "取消全選"
   button_unlock: "解除鎖定"
-  button_unfavorite: "從我的最愛移除"
+  button_unfavorite: "從我的收藏中移除"
   button_unwatch: "取消監看"
   button_update: "更新"
   button_upgrade: "升級"
@@ -2228,6 +2238,9 @@ zh-TW:
   enumeration_reported_project_statuses: "報告的專案狀態"
   enumeration_caption_order_changed: "成功更改排序。"
   enumeration_could_not_be_moved: "無法移動枚舉。"
+  enterprise_trials:
+    dialog_component:
+      title: 試用企業版
   error_auth_source_sso_failed: "單一登入 (SSO) 使用者 '%{value}' 失敗"
   error_can_not_archive_project: "這個專案無法封存：%{errors}"
   error_can_not_delete_entry: "無法刪除項目"
@@ -2371,6 +2384,10 @@ zh-TW:
     your_projects_export: "正在匯出專案"
     succeeded: "匯出完成"
     failed: "嘗試匯出工作套件時發生錯誤： %{message}"
+    demo:
+      heading: "範例 PDF"
+      footer: "由 OpenProject 產生"
+      button_text: 產生示範 PDF
     errors:
       embedded_table_with_too_many_columns: "此內嵌工作套件表格無法符合頁面大小，請減少欄位數量。"
     format:
@@ -2460,6 +2477,26 @@ zh-TW:
       community: "OpenProject 社群"
       upsell:
         title: "升級到企業版"
+      new_features:
+        header: "閱讀關於新功能和產品更新的資訊。"
+        learn_about: "進一步瞭解所有新功能"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            該版本包含多種新功能和改進，例如：
+          new_features_list:
+            line_0: 可選擇自動同步系統色彩 + 對比模式。
+            line_1: 深色高對比度模式可提高可存取性。
+            line_2: PDF 匯出專案清單。
+            line_3: 所有 PDF 匯出的自訂字型（企業附加元件）。
+            line_4: 改善會議與會者的對話。
+            line_5: 改善專案查詢和預算規劃中的預算處理。
+            line_6: 更新首頁與專案總覽頁面。
+        "16_5":
+          new_features_title: >
+            該版本包含多種新功能和改進，例如：
+          new_features_list:
+            line_0: 新功能和改進即將推出。請隨時回來查看！
     links:
       upgrade_enterprise_edition: "升級到企業版"
       postgres_migration: "將您的安裝遷移到 PostgreSQL"
@@ -2635,6 +2672,7 @@ zh-TW:
   label_api_access_key: "API金鑰"
   label_api_access_key_created_on: "API金鑰在 %{value} 以前被建立"
   label_api_access_key_type: "API"
+  label_auto_option: "(自動)"
   label_ical_access_key_type: "iCalendar "
   label_ical_access_key_description: 'iCalendar令牌"%{token_name}" 為"%{calendar_name}" 屬於 "%{project_name}"'
   label_ical_access_key_not_present: "iCalendar 令牌(Token) 不存在。"
@@ -2811,7 +2849,7 @@ zh-TW:
   label_expanded_click_to_collapse: "已展開。按一下可收合"
   label_f_hour: "%{value} 小時"
   label_f_hour_plural: "%{value} 個小時"
-  label_favorite: "最愛"
+  label_favorite: "收藏"
   label_feed_plural: "串流"
   label_feeds_access_key: "RSS 金鑰"
   label_feeds_access_key_created_on: "RSS 金鑰在 %{value} 前已建立"
@@ -2883,6 +2921,7 @@ zh-TW:
   label_journal_diff: "內容對比"
   label_language: "語言"
   label_languages: "語言"
+  label_locale: "語言和地區"
   label_jump_to_a_project: "前往一個專案..."
   label_keyword_plural: "關鍵字"
   label_language_based: "根據使用者的語言"
@@ -2902,6 +2941,7 @@ zh-TW:
   label_link_url: "連結(URL)"
   label_list: "清單"
   label_loading: "讀取中..."
+  label_locked: "鎖定"
   label_lock_user: "鎖定使用者"
   label_logged_as: "登入為"
   label_login: "登入"
@@ -2909,6 +2949,10 @@ zh-TW:
   label_custom_export_logo: "客製匯出的Logo"
   label_custom_export_cover: "自訂匯出封面背景圖"
   label_custom_export_footer: "自訂匯出頁尾圖片"
+  label_custom_export_font_regular: "常規"
+  label_custom_export_font_bold: "粗體"
+  label_custom_export_font_italic: "斜體"
+  label_custom_export_font_bold_italic: "粗斜體"
   label_custom_export_cover_overlay: "自訂匯出封面背景色"
   label_custom_export_cover_text_color: "文字顏色"
   label_custom_pdf_export_settings: "匯出PDF設定"
@@ -2996,6 +3040,8 @@ zh-TW:
   label_operator_equals_or: "包含(多選)"
   label_operator_equals_all: "包含"
   label_operator_shared_with_user_any: "任何"
+  label_open: "開啟中"
+  label_closed: "已關閉"
   label_open_menu: "開啟選單"
   label_open_work_packages: "開啟中"
   label_open_work_packages_plural: "開啟中"
@@ -3064,8 +3110,8 @@ zh-TW:
   label_project_hide_details: "隱藏專案詳細資訊"
   label_portfolio: "個人檔案"
   label_portfolio_new: "新投資組合"
-  label_program: "Program"
-  label_program_new: "New program"
+  label_program: "方案"
+  label_program_new: "新方案"
   label_public_projects: "公開專案"
   label_query_new: "新增查詢"
   label_query_plural: "自訂查詢"
@@ -3560,7 +3606,7 @@ zh-TW:
   permission_add_messages: "張貼訊息"
   permission_add_project: "建立專案"
   permission_add_portfolios: "建立投資組合"
-  permission_add_programs: "Create programs"
+  permission_add_programs: "建立方案"
   permission_add_work_package_attachments: "新增附件"
   permission_add_work_package_attachments_explanation: "允許在沒有編輯工作套件權限的情況下新增附件"
   permission_add_internal_comments: "撰寫內部留言"
@@ -3675,13 +3721,15 @@ zh-TW:
       one: "1 個專案"
       other: "%{count} 個專案"
     destroy:
-      confirmation: "如果繼續操作，項目 %{identifier} 將被永久銷毀。為確認此操作，請在下方的字段中輸入項目名稱，此操作將會："
-      project_delete_result_1: "刪除所有相關數據。"
-      project_delete_result_2: "刪除附加存儲中所有托管的專案文件夾。"
-      info: "刪除這個專案是不可逆的動作"
-      project_verification: "輸入專案的名稱 %{name} 來確認刪除"
-      subprojects_confirmation: "它的子專案: %{value} 將會一併刪除"
-      title: "刪除專案 %{name}"
+      title: "刪除專案"
+      heading: "永久刪除此專案？"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          您即將永久刪除與專案相關的所有資料 <strong>%{name}</strong>。
+        one: >
+          您即將永久刪除與專案 <strong>%{name}</strong>和此子專案相關的所有資料：
+        other: >
+          您即將永久刪除與專案 <strong>%{name}</strong>和這些子專案相關的所有資料：
     filters:
       project_phase: "專案階段﹔ %{phase}"
       project_phase_any: "專案階段﹔任意"
@@ -3916,6 +3964,8 @@ zh-TW:
   setting_feeds_limit: "Feed 內容限制"
   setting_file_max_size_displayed: "直接显示文字文件內容的最大檔案容量"
   setting_host_name: "主機名稱"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus 伺服器 URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus 伺服器秘鑰"
   setting_hours_per_day: "每天小時數"
   setting_hours_per_day_explanation: >-
     這定義了在以天和小時為單位顯示持續時間時，什麼是一"天"(例如，如果一天是 8 小時，32 小時就是 4 天)。
@@ -4134,6 +4184,7 @@ zh-TW:
   status_invited: 已邀請
   status_locked: 已停用
   status_registered: 已註冊
+  status_deleted: 已刪除
   #Used in array.to_sentence.
   support:
     array:
@@ -4170,6 +4221,18 @@ zh-TW:
     這是出現在 PDF 匯出的封面背景中的圖像。 它需要是大約 800 像素寬 x 500 像素高大小的 PNG 或 JPEG 影像檔案。
   text_custom_export_footer_instructions: >
     PDF 匯出將在頁尾左側包含一個圖形元素。此圖像必須為 PNG 或 JPEG 檔案，寬度約 200 像素。
+  label_custom_export_font_instructions: >
+    上傳和管理 PDF 匯出中使用的自訂 TrueType (.ttf) 字型。若要獲得最佳效果，請使用相同字型系列的匹配檔案。如果沒有提供字型，則會使用預設的 NotoSans 字型。
+  label_custom_export_images_instructions: >
+    上傳及管理 PDF 匯出中使用的自訂影像檔案。
+  text_custom_export_font_regular_instructions: >
+    這是一般文字的字型檔案。必須是 TTF 格式。
+  text_custom_export_font_bold_instructions: >
+    這是粗體文字的字型檔案。需要使用 TTF 格式。
+  text_custom_export_font_italic_instructions: >
+    這是斜體文字的字型檔案。需要使用 TTF 格式。
+  text_custom_export_font_bold_italic_instructions: >
+    這是粗體和斜體文字的字型檔案。必須是 TTF 格式。
   text_custom_favicon_instructions: >
     這是顯示在您的瀏覽器視窗/標籤頁的標題旁邊的小圖示。它必需要是 32px X 32px 大小背景透明的 PNG 圖像檔。
   text_custom_touch_icon_instructions: >

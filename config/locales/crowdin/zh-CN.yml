@@ -59,6 +59,10 @@ zh-CN:
       tab_interface: "界面"
       tab_branding: "品牌"
       tab_pdf_export_styles: "PDF 导出样式"
+      tab_pdf_export_font: "PDF export font"
+      fonts:
+        file_too_large: "is too large (maximum size is %{count} MB)."
+        file_is_invalid: "is not a valid TTF font file."
       colors:
         primary-button-color: "主按钮色"
         accent-color: "强调色"
@@ -332,7 +336,9 @@ zh-CN:
     errors:
       defined: "must not be defined."
       int?: "必须为整数"
+      decimal?: "must be a decimal."
       filled?: "必须填写"
+      key?: "is missing."
       greater_or_equal_zero: "必须大于或等于 0"
       not_found: "未找到"
       rules:
@@ -355,6 +361,7 @@ zh-CN:
       depth: "深"
       item: "条目"
       label: "标签"
+      score: "Score"
       short: "简称"
       parent: "父级"
       blueprint: "图案蓝图"
@@ -570,15 +577,15 @@ zh-CN:
     access_token:
       dialog:
         token/api:
-          dialog_title: "Create new API token"
+          dialog_title: "创建新的 API 令牌"
           attention_text: "Treat API tokens like passwords. Anyone with this token will have access to information from this instance, share it only with trusted users."
-          dialog_body: "This token will allow third-party applications to communicate with your instance. To differentiate the new API token, please give it a name."
-          create_button: "Create"
-          name_label: "Token name"
+          dialog_body: "此令牌将允许第三方应用程序与您的实例通信。为了区分新的 API 令牌，请为其命名。"
+          create_button: "创建"
+          name_label: "令牌名称"
       created_dialog:
         token/api:
-          title: "The API token has been generated"
-          warning: "This is the only time you will see this token. Make sure to copy it now."
+          title: "API 令牌已生成"
+          warning: "这将是您看到此令牌的唯一机会。请务必立即复制。"
       errors:
         token_name_blank: "请提供一个 API 令牌名称"
         token_name_in_use: "此 API 令牌名称已经在使用，请选择一个不同的名称"
@@ -679,10 +686,10 @@ zh-CN:
         excluded_from_totals: "不包括在总计中"
   themes:
     dark: "暗黑"
-    dark_high_contrast: "Dark high contrast"
+    dark_high_contrast: "深色高对比度"
     light: "浅色模式"
     light_high_contrast: "高对比度模式"
-    sync_with_os: "自动（匹配操作系统颜色模式）"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: 目前没有类型。
@@ -899,7 +906,7 @@ zh-CN:
   account:
     delete: "删除帐户"
     delete_confirmation: "您确认想要删除您的账户？"
-    deletion_pending: "账户已被锁定并计划删除。请注意，这个过程是在后台进行的。可能需要一些时间才能完全删除用户。"
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: '创建的用户数据 (如电子邮件，首选项，工作包，维基条目) 将尽可能的删除。但是，请注意不会删除像工作包和维基条目类这些会影响其他用户工作的数据。这种数据因此会重新分配到称为"删除用户"的帐户。因为每个已删除帐户的数据被重新分配给此帐户，所以不可能区分不同用户所创建的数据。'
@@ -976,7 +983,7 @@ zh-CN:
       custom_value:
         value: "值"
       design_color:
-        variable: "Variable"
+        variable: "变量"
       doorkeeper/application:
         uid: "客户端 ID"
         secret: "客户端密钥"
@@ -1030,6 +1037,7 @@ zh-CN:
         active_value:
           true: "未归档"
           false: "已归档"
+        attribute_groups: "Attribute Groups"
         description: "描述"
         enabled_modules: "启用的模块"
         identifier: "标识符"
@@ -1176,9 +1184,9 @@ zh-CN:
         auto_hide_popups: "自动隐藏成功横幅"
         auto_hide_popups_caption: "启用后，绿色成功横幅将在 5 秒后自动消失。"
         warn_on_leaving_unsaved: "离开未保存更改的工作包时提示我"
-        theme: "颜色模式"
+        theme: "Color mode"
         time_zone: "时区"
-        mode_guideline: "某些模式将覆盖自定义主题颜色，以提高可访问性和可读性。请选择“浅色”模式，以获得完全的自定义主题支持。"
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "每日提醒"
         workdays: "工作日"
       version:
@@ -1286,8 +1294,8 @@ zh-CN:
         odd: "必须是奇数。"
         regex_match_failed: "与正则表达式 %{expression}不匹配。"
         regex_invalid: "无法与关联的正则表达式进行验证。"
-        regex_list_invalid: "%{invalid_lines}行中的正则表达式无法被解析。"
-        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
+        regex_list_invalid: "Lines %{invalid_lines} could not be parsed as regular expression."
+        hexcode_invalid: "不是有效的 6 位十六进制颜色代码。"
         smaller_than_or_equal_to_max_length: "必须小于或等于最大长度。"
         taken: "已经采取。"
         too_long: "太长 (最多 %{count} 个字符)。"
@@ -1321,6 +1329,8 @@ zh-CN:
               minimum: "需要包含至少一个采用“=”运算符的主体、上下文或 ID 筛选器。"
         custom_field:
           at_least_one_custom_option: "至少有需要一个可用选项。"
+          referenced_in_other_fields_html:
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1614,7 +1624,7 @@ zh-CN:
       auth_provider:
         other: "身份验证提供方"
       category: "类别"
-      color: "Color"
+      color: "颜色"
       comment: "评论"
       custom_action: "自定义操作"
       custom_field: "自定义字段"
@@ -2108,7 +2118,7 @@ zh-CN:
       project_list_sharing: 项目列表共享
       readonly_work_packages: 只读工作包
       scim_api: SCIM 服务器 API
-      sso_auth_providers: Single Sign-On
+      sso_auth_providers: 单点登录
       team_planner_view: 工作组规划器视图
       virus_scanning: 反病毒扫描
       work_package_query_relation_columns: 工作包查询关系列
@@ -2178,7 +2188,7 @@ zh-CN:
         title: "SCIM 客户端"
         description: "通过我们的 SCIM 服务器 API 无缝集成外部身份服务（例如，Microsoft Entra 或 Keycloak），在 OpenProject 中自动执行用户管理。该功能现已在 Enterprise 公司方案中提供。"
       sso_auth_providers:
-        title: "Single Sign-On (SSO)"
+        title: "单点登录（SSO）"
         description: "Enable users to log in via external SSO providers using SAML or OpenID Connect for seamless access and integration with existing identity systems."
       virus_scanning:
         description: "确保在 OpenProject 中上传的文件在被其他用户访问之前进行病毒扫描。"
@@ -2228,6 +2238,9 @@ zh-CN:
   enumeration_reported_project_statuses: "报告的项目状态"
   enumeration_caption_order_changed: "顺序修改成功。"
   enumeration_could_not_be_moved: "无法移动枚举。"
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "用户 \"%{value}\" 的单次登录 (SSO) 失败"
   error_can_not_archive_project: "此项目无法存档：%{errors}"
   error_can_not_delete_entry: "无法删除条目"
@@ -2371,6 +2384,10 @@ zh-CN:
     your_projects_export: "Projects are being exported"
     succeeded: "导出完成"
     failed: "在尝试导出工作包时发生错误： %{message}"
+    demo:
+      heading: "Demo PDF"
+      footer: "Generated by OpenProject"
+      button_text: Generate Demo PDF
     errors:
       embedded_table_with_too_many_columns: "此嵌入式工作包表无法放在此页面上，请减少列数。"
     format:
@@ -2433,11 +2450,11 @@ zh-CN:
       tesseract: "Tesseract 可用 (可选)"
   filterable_tree_view:
     filter_mode:
-      all: "All"
-      label: "Filter mode"
-      selected: "Selected"
+      all: "全部"
+      label: "筛选模式"
+      selected: "已选择"
     include_sub_items: "Include sub-items"
-    no_results_text: "No results"
+    no_results_text: "无结果"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
@@ -2460,6 +2477,26 @@ zh-CN:
       community: "OpenProject 社区"
       upsell:
         title: "升级到企业版"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "升级到企业版"
       postgres_migration: "将您的安装迁移到 PostgreSQL"
@@ -2545,9 +2582,9 @@ zh-CN:
       simple_revoke_confirmation: "确定要撤销此令牌吗？"
       token/api:
         title: "API"
-        text_hint: "API tokens allow third-party applications to communicate with this OpenProject instance via REST APIs."
-        disabled_text: "API tokens are not enabled by the administrator. Please contact your administrator to use this feature."
-        add_button: "API Token"
+        text_hint: "API 令牌允许第三方应用程序通过 REST API 与此 OpenProject 实例通信。"
+        disabled_text: "管理员未启用 API 令牌。请联系管理员以使用此功能。"
+        add_button: "API 令牌"
       api:
         static_token_name: "API 令牌"
       ical:
@@ -2635,6 +2672,7 @@ zh-CN:
   label_api_access_key: "API 访问键"
   label_api_access_key_created_on: "API 访问密钥创建于 %{value} 前"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar令牌"%{token_name}" 为"%{calendar_name}" 属于 "%{project_name}"'
   label_ical_access_key_not_present: "iCalendar 令牌不存在。"
@@ -2883,6 +2921,7 @@ zh-CN:
   label_journal_diff: "描述的对比"
   label_language: "语言"
   label_languages: "语言"
+  label_locale: "Language and region"
   label_jump_to_a_project: "跳转到一个项目..."
   label_keyword_plural: "关键词"
   label_language_based: "基于用户的语言"
@@ -2902,6 +2941,7 @@ zh-CN:
   label_link_url: "链接（URL）"
   label_list: "列表"
   label_loading: "正在加载..."
+  label_locked: "locked"
   label_lock_user: "锁定用户"
   label_logged_as: "登录用户名"
   label_login: "登录"
@@ -2909,6 +2949,10 @@ zh-CN:
   label_custom_export_logo: "自定义导出徽标"
   label_custom_export_cover: "自定义导出封面背景"
   label_custom_export_footer: "Custom export footer image"
+  label_custom_export_font_regular: "Regular"
+  label_custom_export_font_bold: "Bold"
+  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "自定义导出封面背景叠加"
   label_custom_export_cover_text_color: "文本颜色"
   label_custom_pdf_export_settings: "自定义 PDF 导出设置"
@@ -2996,6 +3040,8 @@ zh-CN:
   label_operator_equals_or: "是 (OR)"
   label_operator_equals_all: "是 (AND)"
   label_operator_shared_with_user_any: "任一"
+  label_open: "打开"
+  label_closed: "已关闭"
   label_open_menu: "打开菜单"
   label_open_work_packages: "打开"
   label_open_work_packages_plural: "打开"
@@ -3214,8 +3260,8 @@ zh-CN:
   label_watched_work_packages: "受关注的工作包"
   label_what_is_this: "这是什么?"
   label_week: "周"
-  label_widget: "Widget"
-  label_widget_new: "New widget"
+  label_widget: "微件"
+  label_widget_new: "添加微件"
   label_wiki_content_added: "添加维基页面"
   label_wiki_content_updated: "更新维基页面"
   label_wiki_toc: "目录"
@@ -3674,13 +3720,15 @@ zh-CN:
       one: "1个项目"
       other: "%{count} 个项目"
     destroy:
-      confirmation: "如果继续操作，项目 %{identifier} 将被永久销毁。为确认此操作，请在下方的字段中输入项目名称，此操作将会："
-      project_delete_result_1: "删除所有相关数据。"
-      project_delete_result_2: "删除附加存储中所有托管的项目文件夹。"
-      info: "删除项目是一个不可逆转的操作。"
-      project_verification: "输入项目的名称 %{name}，以确认删除。"
-      subprojects_confirmation: "其 子项目(s): %{value} 也将被删除。"
-      title: "删除项目 %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "项目阶段：%{phase}"
       project_phase_any: "项目阶段：任何阶段"
@@ -3913,6 +3961,8 @@ zh-CN:
   setting_feeds_limit: "Feed 内容限制"
   setting_file_max_size_displayed: "内联显示的文本文件的最大大小"
   setting_host_name: "主机名"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "每天小时数"
   setting_hours_per_day_explanation: >-
     这定义了在以天和小时为单位显示持续时间时，什么是一"天"（例如，如果一天是 8 小时，32 小时就是 4 天）。
@@ -4015,9 +4065,9 @@ zh-CN:
   setting_working_days: "工作日"
   settings:
     authentication:
-      login: "Login"
+      login: "登录"
       registration: "注册"
-      sso: "Single Sign-On (SSO)"
+      sso: "单点登录（SSO）"
       omniauth_direct_login_hint_html: >
         如果激活该选项，登录请求将重定向到已配置的 omniauth 提供商。登录下拉菜单和登录页面将被禁用。 <br/> <strong>注意：</strong>除非同时禁用密码登录，否则启用此选项后，用户仍可通过访问 <code>%{internal_path}</code>登录页面。
       remapping_existing_users_hint: >
@@ -4131,6 +4181,7 @@ zh-CN:
   status_invited: 已邀请
   status_locked: 锁定
   status_registered: 已注册
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:
@@ -4167,6 +4218,18 @@ zh-CN:
     这是在您的 PDF 导出的封面页面背景中显示的图像。 它需要是大约800像素宽度 × 500像素高度的 PNG 或 JPEG 图像文件。
   text_custom_export_footer_instructions: >
     PDF exports will include a graphical element positioned to the left of the footer. This image must be a PNG or JPEG file with approximately 200 pixels in width.
+  label_custom_export_font_instructions: >
+    Upload and manage custom TrueType (.ttf) fonts used in your PDF exports. For best results, use matching files from the same font family. If no font is provided, the default NotoSans font will be used.
+  label_custom_export_images_instructions: >
+    Upload and manage custom image files used in your PDF exports.
+  text_custom_export_font_regular_instructions: >
+    This is the font file for regular text. It needs to be in TTF format and is required.
+  text_custom_export_font_bold_instructions: >
+    This is the font file for bold text. It needs to be in TTF format.
+  text_custom_export_font_italic_instructions: >
+    This is the font file for italic text. It needs to be in TTF format.
+  text_custom_export_font_bold_italic_instructions: >
+    This is the font file for bold and italic text. It needs to be in TTF format.
   text_custom_favicon_instructions: >
     这是显示在浏览器窗口/选项卡中页面标题旁边的小图标。它是具有透明背景，大小为 32x32 像素的正方形 PNG 图像文件。
   text_custom_touch_icon_instructions: >

@@ -29,6 +29,8 @@
 #++
 
 RSpec.shared_context "with seeded project custom fields" do
+  using CustomFieldFormulaReferencing
+
   shared_let(:admin) { create(:admin) }
   shared_let(:non_admin) { create(:user) }
 
@@ -64,6 +66,26 @@ RSpec.shared_context "with seeded project custom fields" do
   let!(:text_project_custom_field) do
     create(:text_project_custom_field,  name: "Text field",
                                         project_custom_field_section: section_for_input_fields)
+  end
+
+  let!(:calculated_from_int_project_custom_field) do
+    create(
+      :calculated_value_project_custom_field,
+      :skip_validations,
+      name: "Calculated field using int",
+      formula: "#{integer_project_custom_field} * 2",
+      project_custom_field_section: section_for_input_fields
+    )
+  end
+
+  let!(:calculated_from_int_and_float_project_custom_field) do
+    create(
+      :calculated_value_project_custom_field,
+      :skip_validations,
+      name: "Calculated field using int and float",
+      formula: "#{float_project_custom_field} * #{integer_project_custom_field}",
+      project_custom_field_section: section_for_input_fields
+    )
   end
 
   let!(:list_project_custom_field) do

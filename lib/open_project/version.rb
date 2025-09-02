@@ -32,7 +32,7 @@ require "open3"
 module OpenProject
   module VERSION # :nodoc:
     MAJOR = 16
-    MINOR = 4
+    MINOR = 5
     PATCH = 0
 
     class << self
@@ -97,8 +97,14 @@ module OpenProject
 
       def to_s; STRING end
 
-      def to_semver
-        [MAJOR, MINOR, PATCH].join(".") + special
+      def to_semver(separator: ".", include_special: true)
+        base = [MAJOR, MINOR, PATCH].join(separator)
+
+        if include_special
+          base + special
+        else
+          base
+        end
       end
 
       private

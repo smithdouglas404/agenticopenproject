@@ -46,7 +46,7 @@ lv:
       meeting_agenda_item:
         title: "Virsraksts"
         author: "Autors"
-        duration_in_minutes: "Duration"
+        duration_in_minutes: "Ilgums"
         description: "Piezīmes"
         presenter: "Presenter"
       meeting_section:
@@ -186,14 +186,14 @@ lv:
   meeting:
     participants:
       label:
-        participants: "Participants"
+        participants: "Dalībnieki"
         attended: "Attended"
         mark_as_attended: "Mark as attended"
         mark_all_as_attended: "Mark all as attended"
         remove_participant: "Remove participant"
         manage_participants: "Manage participants"
         no_participants: "No participants"
-        show_all: "Show all"
+        show_all: "Rādīt visus"
       text:
         template: "These participants will be invited automatically to all future meetings as they are created."
         manage_participants: "Search for and add project members as participants to this meeting."
@@ -212,7 +212,7 @@ lv:
       agenda_items: "Copy agenda items"
       agenda_text: "Copy the agenda of the old meeting"
       participants: "Copy list of participants"
-      to_clipboard: "Copy to clipboard"
+      to_clipboard: "Kopēt uz starpliktuvi"
     email:
       send_emails: "Email participants"
       send_invitation_emails: >
@@ -274,11 +274,11 @@ lv:
       your_meeting_export: "Meeting is being exported"
       minutes:
         footer_page_numbers: "P. %{current_page} of %{total_pages}"
-        author: "Author"
-        date: "Date"
-        time: "Time"
-        location: "Location"
-        title: "Minutes"
+        author: "Autors"
+        date: "Datums"
+        time: "Laiks"
+        location: "Atrašanās vieta"
+        title: "Protokols"
     export_pdf_dialog:
       title: Export PDF
       description: Generate a printable PDF file of this meeting at the current state.
@@ -287,13 +287,13 @@ lv:
           label: Default
           caption: The default template is suitable for most meetings and represent the current state.
         minutes:
-          label: Minutes
+          label: Protokols
           caption: The minutes template is suitable for closed and archived meetings.
       first_page_header_left:
         label: First page header left
         caption: This text will appear on the first page at the left of the header.
       author:
-        label: Author
+        label: Autors
         caption: The author of the minutes will be displayed in the subtitle.
       include_participants:
         label: Include list of participants

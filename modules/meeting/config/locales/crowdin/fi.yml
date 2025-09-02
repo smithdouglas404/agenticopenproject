@@ -45,7 +45,7 @@ fi:
       meeting_agenda_item:
         title: "Otsikko"
         author: "Tekijä"
-        duration_in_minutes: "Duration"
+        duration_in_minutes: "Kesto"
         description: "Kommentit"
         presenter: "Presenter"
       meeting_section:
@@ -181,14 +181,14 @@ fi:
   meeting:
     participants:
       label:
-        participants: "Participants"
+        participants: "Osallistujat"
         attended: "Attended"
         mark_as_attended: "Mark as attended"
         mark_all_as_attended: "Mark all as attended"
         remove_participant: "Remove participant"
         manage_participants: "Manage participants"
         no_participants: "No participants"
-        show_all: "Show all"
+        show_all: "Näytä kaikki"
       text:
         template: "These participants will be invited automatically to all future meetings as they are created."
         manage_participants: "Search for and add project members as participants to this meeting."
@@ -207,7 +207,7 @@ fi:
       agenda_items: "Copy agenda items"
       agenda_text: "Copy the agenda of the old meeting"
       participants: "Copy list of participants"
-      to_clipboard: "Copy to clipboard"
+      to_clipboard: "Kopioi leikepöydälle"
     email:
       send_emails: "Email participants"
       send_invitation_emails: >
@@ -269,26 +269,26 @@ fi:
       your_meeting_export: "Meeting is being exported"
       minutes:
         footer_page_numbers: "P. %{current_page} of %{total_pages}"
-        author: "Author"
-        date: "Date"
-        time: "Time"
-        location: "Location"
-        title: "Minutes"
+        author: "Tekijä"
+        date: "Päivämäärä"
+        time: "Aika"
+        location: "Sijainti"
+        title: "Pöytäkirja"
     export_pdf_dialog:
       title: Export PDF
       description: Generate a printable PDF file of this meeting at the current state.
       templates:
         default:
-          label: Default
+          label: Oletus
           caption: The default template is suitable for most meetings and represent the current state.
         minutes:
-          label: Minutes
+          label: Pöytäkirja
           caption: The minutes template is suitable for closed and archived meetings.
       first_page_header_left:
         label: First page header left
         caption: This text will appear on the first page at the left of the header.
       author:
-        label: Author
+        label: Tekijä
         caption: The author of the minutes will be displayed in the subtitle.
       include_participants:
         label: Include list of participants
@@ -305,7 +305,7 @@ fi:
       footer_text:
         label: Footer text
         caption: This text will appear on every page at the center of the footer.
-      submit_button: Download
+      submit_button: Lataa
     notifications:
       sidepanel:
         title: "Email calendar updates"
@@ -477,7 +477,7 @@ fi:
   label_agenda_item_deleted_wp: "Deleted work package reference"
   label_agenda_item_actions: "Agenda items actions"
   label_agenda_item_move_to_next_title: "Move to next meeting?"
-  label_agenda_item_move: "Move"
+  label_agenda_item_move: "Siirrä"
   label_agenda_item_move_to_next: "Move to next meeting"
   label_agenda_item_move_to_backlog: "Move to backlog"
   label_agenda_item_move_to_current_meeting: "Move to current meeting"

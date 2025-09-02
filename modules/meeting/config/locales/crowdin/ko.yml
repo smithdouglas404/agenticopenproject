@@ -59,8 +59,8 @@ ko:
         end_date: "종료 날짜"
         iterations: "항목"
       meeting_participant:
-        invited: "Invited"
-        attended: "Attended"
+        invited: "초대됨"
+        attended: "참석함"
     errors:
       models:
         meeting_participant:
@@ -172,24 +172,24 @@ ko:
   label_version: "버전"
   label_time_zone: "표준 시간대"
   label_start_date: "시작일"
-  label_subscribe_icalendar: "Subscribe to calendar"
+  label_subscribe_icalendar: "캘린더 구독"
   meeting:
     participants:
       label:
-        participants: "Participants"
-        attended: "Attended"
+        participants: "참가자"
+        attended: "참석함"
         mark_as_attended: "Mark as attended"
         mark_all_as_attended: "Mark all as attended"
         remove_participant: "Remove participant"
-        manage_participants: "Manage participants"
-        no_participants: "No participants"
-        show_all: "Show all"
+        manage_participants: "참가자 관리"
+        no_participants: "참가자 없음"
+        show_all: "모두 표시"
       text:
-        template: "These participants will be invited automatically to all future meetings as they are created."
+        template: "이러한 참가자는 향후 생성되는 모든 미팅에 자동으로 초대됩니다."
         manage_participants: "Search for and add project members as participants to this meeting."
         search_for_members: "Search for project members"
       blankslate:
-        heading: "No participants"
+        heading: "참가자 없음"
         description: "There are no participants yet."
     attachments:
       template: "이러한 첨부 파일은 시리즈의 모든 향후 미팅에 포함됩니다."
@@ -216,8 +216,8 @@ ko:
       series_updated:
         title: "[%{project_name}] Meeting series '%{title}' has been updated"
         summary: "Meeting series '%{title}' has been updated by %{actor}"
-        old_schedule: "Old schedule"
-        new_schedule: "New schedule"
+        old_schedule: "이전 스케줄"
+        new_schedule: "새로운 스케줄"
       invited:
         summary: "%{actor} 님이 '%{title}' 미팅 초대장을 귀하에게 보냈습니다"
       cancelled:
@@ -232,8 +232,8 @@ ko:
         header: "Meeting '%{title}' has been updated"
         summary: "Meeting '%{title}' has been updated by %{actor}"
         body: "The meeting '%{title}' has been updated by %{actor}."
-        old_date_time: "Old date/time"
-        new_date_time: "New date/time"
+        old_date_time: "이전 날짜/시간"
+        new_date_time: "새로운 날짜/시간"
         old_location: "Old location"
         new_location: "New location"
     label_mail_all_participants: "Send email invite to participants"
@@ -264,26 +264,26 @@ ko:
       your_meeting_export: "미팅을 내보내는 중입니다"
       minutes:
         footer_page_numbers: "P. %{current_page} of %{total_pages}"
-        author: "Author"
-        date: "Date"
-        time: "Time"
-        location: "Location"
-        title: "Minutes"
+        author: "작성자"
+        date: "날짜"
+        time: "시간"
+        location: "위치"
+        title: "의사록"
     export_pdf_dialog:
       title: PDF 내보내기
       description: 현재 상태에서 이 미팅에 대한 인쇄 가능한 PDF 파일을 생성합니다.
       templates:
         default:
-          label: Default
+          label: 기본
           caption: The default template is suitable for most meetings and represent the current state.
         minutes:
-          label: Minutes
+          label: 의사록
           caption: The minutes template is suitable for closed and archived meetings.
       first_page_header_left:
         label: First page header left
         caption: This text will appear on the first page at the left of the header.
       author:
-        label: Author
+        label: 작성자
         caption: The author of the minutes will be displayed in the subtitle.
       include_participants:
         label: 참가자 목록 포함
@@ -470,7 +470,7 @@ ko:
   label_agenda_item_deleted_wp: "삭제된 작업 패키지 참조"
   label_agenda_item_actions: "의제 항목 작업"
   label_agenda_item_move_to_next_title: "Move to next meeting?"
-  label_agenda_item_move: "Move"
+  label_agenda_item_move: "이동"
   label_agenda_item_move_to_next: "다음 미팅으로 이동"
   label_agenda_item_move_to_backlog: "백로그로 이동"
   label_agenda_item_move_to_current_meeting: "현재 미팅으로 이동"
@@ -551,7 +551,7 @@ ko:
         text_hint: "iCalendar meeting tokens allow users to subscribe to all their meetings and view up-to-date meeting information in external clients."
         disabled_text: "iCalendar meeting subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
         empty_text_hint: 'To add an iCalendar meeting token, go to the <a href="%{path}">meetings section</a> and subscribe from there.'
-        add_button: "Subscribe to calendar"
+        add_button: "캘린더 구독"
   my:
     access_token:
       dialog:
@@ -565,7 +565,7 @@ ko:
         token/ical_meeting:
           title: "An iCal meeting subscription token has been generated"
           body: "Treat the following URL as you would a password. Anyone who has access to it can view all your meetings."
-          warning: "This is the only time you will see this token. Make sure to copy it now."
+          warning: "이번에만 이 토큰이 표시됩니다. 지금 이 토큰을 복사해야 합니다."
       revocation:
         token/ical_meeting:
           notice_success: "The iCalendar meeting subscription has been revoked successfully."

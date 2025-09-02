@@ -94,7 +94,7 @@ RSpec.describe "Admin Edit File storage",
                                            text: "OAuth Client ID: #{oauth_application.uid}")
 
         # OAuth client
-        expect(page).to have_test_selector("storage-oauth-client-label", text: "Nextcloud OAuth")
+        expect(page).to have_test_selector("storage-oauth-client-label", text: "Storage OAuth")
         expect(page).to have_test_selector("label-storage_oauth_client_configured-status", text: "Completed")
         expect(page).to have_test_selector("storage-oauth-client-id-description",
                                            text: "OAuth Client ID: #{oauth_client.client_id}")

@@ -905,7 +905,7 @@ Rails.application.routes.draw do
     post "/my/change_password", action: "change_password"
 
     get "/my/account", action: "account"
-    get "/my/settings", action: "settings"
+    get "/my/locale", action: "locale"
     get "/my/interface", action: "interface"
     get "/my/notifications", action: "notifications"
     get "/my/reminders", action: "reminders"

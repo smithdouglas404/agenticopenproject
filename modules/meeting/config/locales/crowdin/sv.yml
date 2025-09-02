@@ -45,7 +45,7 @@ sv:
       meeting_agenda_item:
         title: "Titel"
         author: "Upphovsman"
-        duration_in_minutes: "Duration"
+        duration_in_minutes: "Varaktighet"
         description: "Anteckningar"
         presenter: "Presenter"
       meeting_section:
@@ -181,20 +181,20 @@ sv:
   meeting:
     participants:
       label:
-        participants: "Participants"
+        participants: "Deltagare"
         attended: "Attended"
         mark_as_attended: "Mark as attended"
         mark_all_as_attended: "Mark all as attended"
         remove_participant: "Remove participant"
-        manage_participants: "Manage participants"
-        no_participants: "No participants"
-        show_all: "Show all"
+        manage_participants: "Hantera deltagare"
+        no_participants: "Inga deltagare"
+        show_all: "Visa alla"
       text:
         template: "These participants will be invited automatically to all future meetings as they are created."
         manage_participants: "Search for and add project members as participants to this meeting."
         search_for_members: "Search for project members"
       blankslate:
-        heading: "No participants"
+        heading: "Inga deltagare"
         description: "There are no participants yet."
     attachments:
       template: "These attached files will be included in all future meetings in the series."
@@ -207,7 +207,7 @@ sv:
       agenda_items: "Copy agenda items"
       agenda_text: "Copy the agenda of the old meeting"
       participants: "Kopiera deltagarlista"
-      to_clipboard: "Copy to clipboard"
+      to_clipboard: "Kopiera till Urklipp"
     email:
       send_emails: "Email participants"
       send_invitation_emails: >
@@ -269,26 +269,26 @@ sv:
       your_meeting_export: "Meeting is being exported"
       minutes:
         footer_page_numbers: "P. %{current_page} of %{total_pages}"
-        author: "Author"
-        date: "Date"
-        time: "Time"
-        location: "Location"
-        title: "Minutes"
+        author: "Upphovsman"
+        date: "Datum"
+        time: "Tid"
+        location: "Plats"
+        title: "Protokoll"
     export_pdf_dialog:
       title: Export PDF
       description: Generate a printable PDF file of this meeting at the current state.
       templates:
         default:
-          label: Default
+          label: Standard
           caption: The default template is suitable for most meetings and represent the current state.
         minutes:
-          label: Minutes
+          label: Protokoll
           caption: The minutes template is suitable for closed and archived meetings.
       first_page_header_left:
         label: First page header left
         caption: This text will appear on the first page at the left of the header.
       author:
-        label: Author
+        label: Upphovsman
         caption: The author of the minutes will be displayed in the subtitle.
       include_participants:
         label: Include list of participants
@@ -305,7 +305,7 @@ sv:
       footer_text:
         label: Footer text
         caption: This text will appear on every page at the center of the footer.
-      submit_button: Download
+      submit_button: Ladda ner
     notifications:
       sidepanel:
         title: "Email calendar updates"
@@ -477,7 +477,7 @@ sv:
   label_agenda_item_deleted_wp: "Deleted work package reference"
   label_agenda_item_actions: "Agenda items actions"
   label_agenda_item_move_to_next_title: "Move to next meeting?"
-  label_agenda_item_move: "Move"
+  label_agenda_item_move: "Flytta"
   label_agenda_item_move_to_next: "Move to next meeting"
   label_agenda_item_move_to_backlog: "Move to backlog"
   label_agenda_item_move_to_current_meeting: "Move to current meeting"

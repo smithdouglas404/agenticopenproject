@@ -45,7 +45,7 @@ si:
       meeting_agenda_item:
         title: "මාතෘකාව"
         author: "කර්තෘ"
-        duration_in_minutes: "Duration"
+        duration_in_minutes: "කාල සීමාව"
         description: "සටහන්"
         presenter: "Presenter"
       meeting_section:
@@ -188,7 +188,7 @@ si:
         remove_participant: "Remove participant"
         manage_participants: "Manage participants"
         no_participants: "No participants"
-        show_all: "Show all"
+        show_all: "සියල්ල පෙන්වන්න"
       text:
         template: "These participants will be invited automatically to all future meetings as they are created."
         manage_participants: "Search for and add project members as participants to this meeting."
@@ -207,7 +207,7 @@ si:
       agenda_items: "Copy agenda items"
       agenda_text: "Copy the agenda of the old meeting"
       participants: "Copy list of participants"
-      to_clipboard: "Copy to clipboard"
+      to_clipboard: "පසුරු පුවරුවට පිටපත් කරන්න"
     email:
       send_emails: "Email participants"
       send_invitation_emails: >
@@ -269,8 +269,8 @@ si:
       your_meeting_export: "Meeting is being exported"
       minutes:
         footer_page_numbers: "P. %{current_page} of %{total_pages}"
-        author: "Author"
-        date: "Date"
+        author: "කර්තෘ"
+        date: "දිනය"
         time: "Time"
         location: "Location"
         title: "Minutes"
@@ -279,7 +279,7 @@ si:
       description: Generate a printable PDF file of this meeting at the current state.
       templates:
         default:
-          label: Default
+          label: පෙරනිමි
           caption: The default template is suitable for most meetings and represent the current state.
         minutes:
           label: Minutes
@@ -288,7 +288,7 @@ si:
         label: First page header left
         caption: This text will appear on the first page at the left of the header.
       author:
-        label: Author
+        label: කර්තෘ
         caption: The author of the minutes will be displayed in the subtitle.
       include_participants:
         label: Include list of participants
@@ -305,7 +305,7 @@ si:
       footer_text:
         label: Footer text
         caption: This text will appear on every page at the center of the footer.
-      submit_button: Download
+      submit_button: බාගත කරන්න
     notifications:
       sidepanel:
         title: "Email calendar updates"
@@ -477,7 +477,7 @@ si:
   label_agenda_item_deleted_wp: "Deleted work package reference"
   label_agenda_item_actions: "Agenda items actions"
   label_agenda_item_move_to_next_title: "Move to next meeting?"
-  label_agenda_item_move: "Move"
+  label_agenda_item_move: "ගෙනයන්න"
   label_agenda_item_move_to_next: "Move to next meeting"
   label_agenda_item_move_to_backlog: "Move to backlog"
   label_agenda_item_move_to_current_meeting: "Move to current meeting"

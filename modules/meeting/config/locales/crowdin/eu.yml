@@ -45,7 +45,7 @@ eu:
       meeting_agenda_item:
         title: "Title"
         author: "Author"
-        duration_in_minutes: "Duration"
+        duration_in_minutes: "Iraupena"
         description: "Notes"
         presenter: "Presenter"
       meeting_section:
@@ -181,7 +181,7 @@ eu:
   meeting:
     participants:
       label:
-        participants: "Participants"
+        participants: "Parte-hartzaileak"
         attended: "Attended"
         mark_as_attended: "Mark as attended"
         mark_all_as_attended: "Mark all as attended"
@@ -271,9 +271,9 @@ eu:
         footer_page_numbers: "P. %{current_page} of %{total_pages}"
         author: "Author"
         date: "Date"
-        time: "Time"
-        location: "Location"
-        title: "Minutes"
+        time: "Ordua"
+        location: "Lekua"
+        title: "Aktak"
     export_pdf_dialog:
       title: Export PDF
       description: Generate a printable PDF file of this meeting at the current state.
@@ -282,7 +282,7 @@ eu:
           label: Default
           caption: The default template is suitable for most meetings and represent the current state.
         minutes:
-          label: Minutes
+          label: Aktak
           caption: The minutes template is suitable for closed and archived meetings.
       first_page_header_left:
         label: First page header left

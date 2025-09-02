@@ -59,6 +59,10 @@ ja:
       tab_interface: "インターフェース"
       tab_branding: "ブランディング"
       tab_pdf_export_styles: "PDF export styles"
+      tab_pdf_export_font: "PDF export font"
+      fonts:
+        file_too_large: "is too large (maximum size is %{count} MB)."
+        file_is_invalid: "is not a valid TTF font file."
       colors:
         primary-button-color: "プライマリボタン"
         accent-color: "アクセント"
@@ -333,7 +337,9 @@ ja:
     errors:
       defined: "を定義してはならない。"
       int?: "は整数でなければなりません。"
+      decimal?: "must be a decimal."
       filled?: "を入力する必要があります。"
+      key?: "is missing."
       greater_or_equal_zero: "は 0 以上でなければなりません。"
       not_found: "見つかりません。"
       rules:
@@ -356,6 +362,7 @@ ja:
       depth: "深さ"
       item: "アイテム"
       label: "Label"
+      score: "Score"
       short: "ショートネーム"
       parent: "親項目"
       blueprint: "パターンの建設計画"
@@ -685,7 +692,7 @@ ja:
     dark_high_contrast: "暗い高コントラスト"
     light: "ライト"
     light_high_contrast: "明るいコントラストが高い"
-    sync_with_os: "自動 (OS カラーモードに一致)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: 現在、種類はありません。
@@ -902,7 +909,7 @@ ja:
   account:
     delete: "アカウントを削除"
     delete_confirmation: "アカウントを削除してもよろしいですか？"
-    deletion_pending: "アカウントがロックされ、削除がスケジュールされました。このプロセスはバックグラウンドで行われることに注意してください。 ユーザーが完全に削除されるまで数分かかる場合があります。"
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'ユーザーが作成した殆どのデータ (例えば電子メール、設定、ワークパッケージ 、wiki記載 )が削除されます。ただし、他のユーザーの作業を妨害することがなくワークパッケージやwiki 記載のようなデータは削除することはできません。それ故に、このようなデータは「削除されたユーザー」と呼ばれるアカウントに再割り当てされます。削除された各アカウントのデータがこのアカウントに再割り当てされるので、そのユーザーが作成したデータと削除された別のユーザーのデータとを区別することができなくなります。'
@@ -1033,6 +1040,7 @@ ja:
         active_value:
           true: "アーカイブされていません"
           false: "アーカイブ済"
+        attribute_groups: "Attribute Groups"
         description: "説明"
         enabled_modules: "有効なモジュール"
         identifier: "識別子"
@@ -1179,9 +1187,9 @@ ja:
         auto_hide_popups: "サクセスバナーを自動的に隠す"
         auto_hide_popups_caption: "有効にすると、緑色のサクセスバナーは5秒後に自動的に消えます。"
         warn_on_leaving_unsaved: "変更を保存せずにワークパッケージから移動するときに警告"
-        theme: "カラーモード"
+        theme: "Color mode"
         time_zone: "タイムゾーン"
-        mode_guideline: "一部のモードでは、アクセシビリティと読みやすさのためにカスタムテーマの色を上書きします。完全なカスタムテーマサポートのためにライトモードを選択してください。"
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "毎日の通知"
         workdays: "営業時間"
       version:
@@ -1289,7 +1297,7 @@ ja:
         odd: "は奇数にしてください。"
         regex_match_failed: "正規表現 %{expression}と一致しません。"
         regex_invalid: "関連付けられた正規表現を検証できませんでした。"
-        regex_list_invalid: "%{invalid_lines} 行目で正規表現として解析できませんでした。"
+        regex_list_invalid: "Lines %{invalid_lines} could not be parsed as regular expression."
         hexcode_invalid: "は有効な6桁の16進カラーコードではない。"
         smaller_than_or_equal_to_max_length: "は最大長さより以下でなければなりません。"
         taken: "は既に使用されています。"
@@ -1324,6 +1332,8 @@ ja:
               minimum: "プリンシパル、コンテキスト、または '= ' 演算子の id に少なくとも 1 つのフィルタを含める必要があります。"
         custom_field:
           at_least_one_custom_option: "少なくとも 1 つオプションが有効である必要があります。"
+          referenced_in_other_fields_html:
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1790,7 +1800,7 @@ ja:
     title: "タイトル"
     type: "タイプ"
     typeahead: "オートコンプリート"
-    uid: "Unique identifier"
+    uid: "一意な識別子"
     updated_at: "更新日時"
     updated_on: "更新日時"
     uploader: "アップロード"
@@ -1953,7 +1963,7 @@ ja:
     copy_options:
       dependencies_label: "Copy from project"
   create_project:
-    template_label: "Use template"
+    template_label: "テンプレートを使用"
     copy_options:
       dependencies_label: "Copy from template"
   create_wiki_page: "Create new wiki page"
@@ -2111,14 +2121,14 @@ ja:
       project_list_sharing: Project List Sharing
       readonly_work_packages: Readonly Work Packages
       scim_api: SCIMサーバーAPI
-      sso_auth_providers: Single Sign-On
+      sso_auth_providers: シングルサインオン
       team_planner_view: Team Planner View
       virus_scanning: Antivirus Scanning
       work_package_query_relation_columns: Work Package Query Relation Columns
       work_package_sharing: Share work packages with external users
       work_package_subject_generation: Work Package Subject Generation
     upsell:
-      buy_now_button: "Buy now"
+      buy_now_button: "今すぐ購入"
       plans_title: "Enterprise plans"
       title: "Enterprise add-on"
       plan_title: "Enterprise %{plan} add-on"
@@ -2175,7 +2185,7 @@ ja:
         title: "カスタムアクション"
         description: "カスタムアクションは、ステータスに基づいて特定のワークパッケージで利用できる、事前に定義されたアクションです。"
       nextcloud_sso:
-        title: "Single Sign-On for Nextcloud Storage"
+        title: "Nextcloudストレージのシングルサインオン。"
         description: "シングルサインオンでNextcloudストレージのシームレスかつセキュアな認証を可能にします。アクセス管理を簡素化し、ユーザーの利便性を向上させます。"
       scim_api:
         title: "SCIMクライアント"
@@ -2231,6 +2241,9 @@ ja:
   enumeration_reported_project_statuses: "報告されるプロジェクト進捗状況"
   enumeration_caption_order_changed: "オーダーの変更に成功しました。"
   enumeration_could_not_be_moved: "列挙は移動できなかった。"
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "ユーザー '%{value}' のシングルサインオン (SSO) に失敗しました"
   error_can_not_archive_project: "このプロジェクトはアーカイブできません: %{errors}"
   error_can_not_delete_entry: "エントリを削除できません"
@@ -2374,6 +2387,10 @@ ja:
     your_projects_export: "プロジェクトはエクスポートされています"
     succeeded: "エクスポート完了"
     failed: "作業項目のエクスポート中にエラーが発生しました: %{message}"
+    demo:
+      heading: "Demo PDF"
+      footer: "Generated by OpenProject"
+      button_text: Generate Demo PDF
     errors:
       embedded_table_with_too_many_columns: "この埋め込まれた作業項目テーブルはページに収まりませんでした。列数を減らしてください。"
     format:
@@ -2463,6 +2480,26 @@ ja:
       community: "OpenProject コミュニティ"
       upsell:
         title: "エンタープライズ版にアップグレード"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "エンタープライズ版にアップグレード"
       postgres_migration: "PostgreSQL にインストールを移行しています"
@@ -2638,6 +2675,7 @@ ja:
   label_api_access_key: "APIアクセスキー"
   label_api_access_key_created_on: "APIアクセスキーが%{value}前に作成されました"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar トークン「%{token_name}」は「%{calendar_name}」カレンダーの「%{project_name}」プロジェクト用です。'
   label_ical_access_key_not_present: "iCalendar トークンが存在しません。"
@@ -2886,6 +2924,7 @@ ja:
   label_journal_diff: "説明の比較"
   label_language: "言語"
   label_languages: "言語"
+  label_locale: "Language and region"
   label_jump_to_a_project: "プロジェクトへ移動..."
   label_keyword_plural: "キーワード"
   label_language_based: "ユーザの言語設定に基づく"
@@ -2905,6 +2944,7 @@ ja:
   label_link_url: "リンク (URL)"
   label_list: "リスト"
   label_loading: "読み込み中..."
+  label_locked: "locked"
   label_lock_user: "ユーザーをロック"
   label_logged_as: "ログイン中"
   label_login: "ログイン"
@@ -2912,6 +2952,10 @@ ja:
   label_custom_export_logo: "カスタムエクスポートロゴ"
   label_custom_export_cover: "カスタムエクスポートカバーの背景"
   label_custom_export_footer: "カスタムエクスポートフッター画像"
+  label_custom_export_font_regular: "Regular"
+  label_custom_export_font_bold: "Bold"
+  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "カスタムエクスポートカバーの背景をオーバーレイする"
   label_custom_export_cover_text_color: "テキストの色"
   label_custom_pdf_export_settings: "PDF エクスポートの設定"
@@ -2999,6 +3043,8 @@ ja:
   label_operator_equals_or: "は (OR)"
   label_operator_equals_all: "は (AND)"
   label_operator_shared_with_user_any: "全て"
+  label_open: "未完了"
+  label_closed: "完了"
   label_open_menu: "メニューを開く"
   label_open_work_packages: "未完了"
   label_open_work_packages_plural: "未完了"
@@ -3680,13 +3726,15 @@ ja:
       one: "1 プロジェクト"
       other: "%{count} プロジェクト"
     destroy:
-      confirmation: "続行すると、プロジェクト %{identifier} は完全に破棄されます。この操作を確認するには、以下のフィールドにプロジェクト名を紹介してください："
-      project_delete_result_1: "すべての関連データを削除します。"
-      project_delete_result_2: "添付されているストレージ内のすべての管理対象プロジェクトフォルダを削除します。"
-      info: "プロジェクトの削除は復元できない操作です。"
-      project_verification: "削除を確認するため、プロジェクト名 %{name} を入力してください。"
-      subprojects_confirmation: "子プロジェクト: %{value} も削除されます。"
-      title: "プロジェクト %{name} を削除"
+      title: "プロジェクトを削除"
+      heading: "プロジェクトを完全に削除しますか？"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          プロジェクト<strong>%{name}</strong> に関連するすべてのデータを完全に削除しようとしています。
+        one: >
+          プロジェクト <strong>%{name}</strong> とこのサブプロジェクトに関連するすべてのデータを完全に削除しようとしています：
+        other: >
+          プロジェクト <strong>%{name}</strong> とこれらのサブプロジェクトに関連するすべてのデータを完全に削除しようとしています：
     filters:
       project_phase: "プロジェクトフェーズ: %{phase}"
       project_phase_any: "プロジェクトフェーズ: すべて"
@@ -3921,6 +3969,8 @@ ja:
   setting_feeds_limit: "フィードの項目数の上限"
   setting_file_max_size_displayed: "画面表示するテキストファイルの最大サイズ"
   setting_host_name: "ホスト名"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "1日あたりの時間"
   setting_hours_per_day_explanation: >-
     1営業日あたりの稼働時間を定義します (例えば、 1日が8時間で32時間稼働した場合は4日間です)。
@@ -4139,6 +4189,7 @@ ja:
   status_invited: 招待済み
   status_locked: ロック済み
   status_registered: 登録済み
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:
@@ -4175,6 +4226,18 @@ ja:
     これは、PDFエクスポートのカバーページの背景に表示される画像です。 幅800px×高さ500pxのPNGまたはJPEG画像ファイルである必要があります。
   text_custom_export_footer_instructions: >
     PDFエクスポートには、フッターの左に配置されたグラフィカル要素が含まれます。 画像の幅は約 200 ピクセルの PNG または JPEG ファイルでなければなりません。
+  label_custom_export_font_instructions: >
+    Upload and manage custom TrueType (.ttf) fonts used in your PDF exports. For best results, use matching files from the same font family. If no font is provided, the default NotoSans font will be used.
+  label_custom_export_images_instructions: >
+    Upload and manage custom image files used in your PDF exports.
+  text_custom_export_font_regular_instructions: >
+    This is the font file for regular text. It needs to be in TTF format and is required.
+  text_custom_export_font_bold_instructions: >
+    This is the font file for bold text. It needs to be in TTF format.
+  text_custom_export_font_italic_instructions: >
+    This is the font file for italic text. It needs to be in TTF format.
+  text_custom_export_font_bold_italic_instructions: >
+    This is the font file for bold and italic text. It needs to be in TTF format.
   text_custom_favicon_instructions: >
     これは、ページのタイトルの横にあるブラウザのウィンドウ/タブに表示される小さなアイコンです。 透明な背景を持つ32×32ピクセルサイズのPNG画像ファイルである必要があります。
   text_custom_touch_icon_instructions: >

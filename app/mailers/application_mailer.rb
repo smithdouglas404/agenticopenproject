@@ -128,7 +128,7 @@ class ApplicationMailer < ActionMailer::Base
     if to
       raise ArgumentError, "Recipient needs to be instance of User" unless to.is_a?(User)
 
-      if to.locked?
+      if to.locked? || to.deleted?
         Rails.logger.info "Not sending #{action_name} mail to locked user #{to.id} (#{to.login})"
         return
       end

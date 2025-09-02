@@ -96,7 +96,9 @@
         </ng-template>
       </ng-container>
 
-      <div class="spot-action-bar">
+      <div
+        *ngIf="!portfolioModelsEnabled"
+        class="spot-action-bar">
         <div class="spot-action-bar--right">
           <a
             class="button spot-action-bar--action"

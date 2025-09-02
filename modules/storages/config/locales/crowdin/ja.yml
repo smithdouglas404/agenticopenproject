@@ -236,10 +236,11 @@ ja:
       openproject_oauth: OpenProject OAuth
       project_folders: プロジェクトフォルダ
       redirect_uri: リダイレクトURI
+      sharepoint_oauth: Azure OAuth
       storage_audience_blank: 観客は設定されていない。
       storage_audience_description: オーディエンス「%{audience}」のトークンを交換します。
       storage_audience_idp: 視聴者に関係なく、ログイン時にIDプロバイダが取得したアクセストークンを使用する。
-      storage_oauth: NextcloudのOAuth
+      storage_oauth: Storage OAuth
       storage_provider: ストレージ・プロバイダー
       token_exchange: トークン交換
     health:
@@ -278,6 +279,7 @@ ja:
           drive_id_exists: ドライブは存在する
           drive_id_format: ドライブIDフォーマット
           header: 構成
+          host: Host URL
           host_url_accessible: ホスト URL アクセス
           storage_configured: 設定完了
           tenant_id: Tenant ID

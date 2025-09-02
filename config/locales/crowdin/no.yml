@@ -59,6 +59,10 @@
       tab_interface: "Grensesnitt"
       tab_branding: "Merkevarebygging"
       tab_pdf_export_styles: "PDF export styles"
+      tab_pdf_export_font: "PDF export font"
+      fonts:
+        file_too_large: "is too large (maximum size is %{count} MB)."
+        file_is_invalid: "is not a valid TTF font file."
       colors:
         primary-button-color: "Primærknapp"
         accent-color: "Uthevet"
@@ -137,15 +141,15 @@
       new:
         title: "New SCIM client"
       revoke_static_token_dialog_component:
-        confirm_button: "Revoke"
+        confirm_button: "Tilbakekall"
         title: "Revoke static token"
-        heading: "Are you sure you want to revoke this token?"
+        heading: "Er du sikker på at du vil oppheve denne nøkkelen?"
         description: "The SCIM client that uses this token will no longer be able to access OpenProject's SCIM server API."
       table_component:
         blank_slate:
           title: "No SCIM clients configured yet"
           description: "Add clients to see them here"
-        user_count: "Users"
+        user_count: "Brukere"
       token_list_component:
         description: "The tokens you generate here can be passed by a SCIM client to access the OpenProject SCIM API."
         heading: "Tokens"
@@ -335,7 +339,9 @@
     errors:
       defined: "must not be defined."
       int?: "must be an integer."
+      decimal?: "must be a decimal."
       filled?: "must be filled."
+      key?: "is missing."
       greater_or_equal_zero: "must be greater or equal to 0."
       not_found: "not found."
       rules:
@@ -354,10 +360,11 @@
           not_descendant: "must be a descendant of the hierarchy root."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
+      enabled: "Aktivert"
       depth: "Depth"
       item: "Element"
       label: "Label"
+      score: "Score"
       short: "Short name"
       parent: "Overordnet"
       blueprint: "Pattern blueprint"
@@ -387,7 +394,7 @@
       no_results_title_text: Det er for tiden ingen prosjekter i denne gruppen.
     synchronized_groups:
       blankslate:
-        action: Authentication settings
+        action: Autentiseringsinnstillinger
         description: When this group is automatically synced with groups in external identity providers like OpenID, they will appear here. You can set this up in your Authentication settings.
         title: No synchronized groups yet
   incoming_mails:
@@ -579,10 +586,10 @@
     access_token:
       dialog:
         token/api:
-          dialog_title: "Create new API token"
+          dialog_title: "Opprett nytt API-token"
           attention_text: "Treat API tokens like passwords. Anyone with this token will have access to information from this instance, share it only with trusted users."
-          dialog_body: "This token will allow third-party applications to communicate with your instance. To differentiate the new API token, please give it a name."
-          create_button: "Create"
+          dialog_body: "Dette tokenet tillater tredjepartsprogrammer å kommunisere med forekomsten. For å differensiere den nye API-token, vennligst gi den et navn."
+          create_button: "Opprett"
           name_label: "Token name"
       created_dialog:
         token/api:
@@ -643,8 +650,8 @@
   priorities:
     edit:
       priority_color_text: |
-        Click to assign or change the color of this priority.
-        It can be used for highlighting work packages in the table.
+        Klikk for å tildele eller endre fargen for denne prioriteten.
+        Det kan brukes til å fremheve arbeidspakker i tabellen.
     admin:
       default:
         caption: Making this priority default will override the previous default priority.
@@ -692,7 +699,7 @@
     dark_high_contrast: "Dark high contrast"
     light: "Lyst"
     light_high_contrast: "Lys høy kontrast"
-    sync_with_os: "Automatic (match OS colour mode)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: Det finnes for øyeblikket ingen typer.
@@ -910,7 +917,7 @@
   account:
     delete: "Slett konto"
     delete_confirmation: "Er du sikker på at du vil slette kontoen?"
-    deletion_pending: "Kontoen er låst og ble planlagt slettet. Merk at denne prosessen skjer i bakgrunnen. Det kan ta noe tid til brukeren er fullstendig slettet."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Av dataene brukeren opprettet (f.eks. e-post, innstillinger, arbeidspakker, wiki-oppføringer) vil så mye som mulig bli slettet. Merk imidlertid at data som arbeidspakker og wiki-oppføringer ikke kan slettes uten å påvirke arbeidet til de andre brukerne. Slike data blir derfor flyttet til en konto kalt "Slettet bruker". Fordi dataene til hver slettede konto blir flyttet til denne kontoen vil det ikke være mulig å skille data brukeren har opprettet fra data for en annen slettet konto.'
@@ -941,7 +948,7 @@
   activemodel:
     attributes:
       projects/copy_options:
-        dependencies: "Dependencies"
+        dependencies: "Avhengigheter"
   activerecord:
     attributes:
       announcements:
@@ -1003,12 +1010,12 @@
       enterprise_token:
         starts_at: "Gyldig siden"
         subscriber: "Abonnent"
-        subscription: "Subscription"
-        plan: "Plan"
+        subscription: "Abonnement"
+        plan: "Abonnement"
         encoded_token: "Enterprise support nøkkel"
         active_user_count_restriction: "Active users"
       enterprise_trial:
-        company: "Company"
+        company: "Firma"
       grids/grid:
         page: "Side"
         row_count: "Antall rader"
@@ -1041,6 +1048,7 @@
         active_value:
           true: "Ikke arkivert"
           false: "arkivert"
+        attribute_groups: "Attribute Groups"
         description: "Beskrivelse"
         enabled_modules: "Aktiverte moduler"
         identifier: "Identifikator"
@@ -1074,10 +1082,10 @@
       project/phase:
         date_range: "Datointervall"
         definition: "Definisjon"
-        duration: "Duration"
-        start_date: "Start date"
+        duration: "Varighet"
+        start_date: "Startdato"
         start_date_caption: "Follows the previous phase."
-        finish_date: "Finish date"
+        finish_date: "Sluttdato"
       project/phase_definition:
         name: "Navn"
         color: "Farge"
@@ -1145,7 +1153,7 @@
         ongoing: "Pågående"
       type:
         description: "Standardtekst for beskrivelse"
-        attribute_groups: "Form configuration"
+        attribute_groups: "Skjema konfigurering"
         is_in_roadmap: "Vist i roadmap som standard"
         is_default: "Aktivert for nye prosjekter som standard"
         is_milestone: "Er milepæl"
@@ -1172,7 +1180,7 @@
         password_confirmation: "Bekreftelse"
         consented_at: "Godkjent"
       group:
-        identity_url: "Identity URL"
+        identity_url: "Identitet URL"
       user_preference:
         header_look_and_feel: "Look and feel"
         header_alerts: "Alerts"
@@ -1187,9 +1195,9 @@
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "Varsle meg når jeg forlater en arbeidspakke med ulagrede endringer"
-        theme: "Colour mode"
+        theme: "Color mode"
         time_zone: "Tidssone"
-        mode_guideline: "Some modes will overwrite custom theme colours for accessibility and legibility. Please select Light mode for full custom theme support."
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Daily reminders"
         workdays: "Arbeidsdager"
       version:
@@ -1297,7 +1305,7 @@
         odd: "må være oddetall."
         regex_match_failed: "samsvarer ikke med det regulære uttrykket %{expression}."
         regex_invalid: "kunne ikke valideres med det tilhørende regulære uttrykket."
-        regex_list_invalid: "could not be parsed as regular expression in lines %{invalid_lines}."
+        regex_list_invalid: "Lines %{invalid_lines} could not be parsed as regular expression."
         hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "må være mindre enn eller lik maksimumslengden."
         taken: "er allerede tatt."
@@ -1332,6 +1340,9 @@
               minimum: "må inkludere minst ett filter for prinsipp, kontekst eller id med '='-operatøren."
         custom_field:
           at_least_one_custom_option: "Minst ett alternativ må være tilgjengelig."
+          referenced_in_other_fields_html:
+            one: "%{name} is used in project attribute calculation %{links}."
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1628,7 +1639,7 @@
         one: "Authentication provider"
         other: "Authentication providers"
       category: "Kategori"
-      color: "Color"
+      color: "Farge"
       comment: "Kommentar"
       custom_action: "Tilpasset handling"
       custom_field: "Egendefinert felt"
@@ -1758,7 +1769,7 @@
     derived_start_date: "Utledet startdato"
     direction: "Direction"
     display_sums: "Vis summer"
-    domain: "Domain"
+    domain: "Domene"
     due_date: "Sluttdato"
     estimated_hours: "Arbeid"
     estimated_time: "Arbeid"
@@ -1927,7 +1938,7 @@
   button_unwatch: "Stopp overvåking"
   button_update: "Oppdatèr"
   button_upgrade: "Oppgrader"
-  button_buy_now: "Buy now"
+  button_buy_now: "Kjøp nå"
   button_upload: "Last opp"
   button_view: "Vis"
   button_watch: "Overvåk"
@@ -1976,7 +1987,7 @@
     copy_options:
       dependencies_label: "Copy from project"
   create_project:
-    template_label: "Use template"
+    template_label: "Bruk mal"
     copy_options:
       dependencies_label: "Copy from template"
   create_wiki_page: "Create new wiki page"
@@ -2095,7 +2106,7 @@
         other: "%{count} sekunder"
     units:
       minute_abbreviated:
-        one: "min"
+        one: "minutter"
         other: "mins"
       hour:
         one: "time"
@@ -2161,13 +2172,13 @@
       work_package_sharing: Share work packages with external users
       work_package_subject_generation: Work Package Subject Generation
     upsell:
-      buy_now_button: "Buy now"
+      buy_now_button: "Kjøp nå"
       plans_title: "Enterprise plans"
       title: "Enterprise programtillegg"
       plan_title: "Enterprise %{plan} add-on"
       plan_name: "%{plan} enterprise plan"
       plan_text_html: "Available starting with the %{plan_name}."
-      unlimited: "Unlimited"
+      unlimited: "Ubegrenset"
       already_have_token: >
         Already have a token? Add it using the button below to upgrade to the booked Enterprise plan.
       hide_banner: "Skjul banneret"
@@ -2177,15 +2188,15 @@
       baseline_comparison:
         description: Marker endringer som er gjort på denne listen tidligere.
       benefits:
-        description: "What are the benefits of the Enterprise on-premises edition?"
-        high_security: "Security features"
-        high_security_text: "Single sign on (SAML, OpenID Connect, CAS), LDAP groups."
-        installation: "Installation support"
-        installation_text: "Experienced software engineers guide you through the complete installation and setup process in your own infrastructure."
-        premium_features: "Enterprise add-ons"
-        premium_features_text: "Agile boards, custom theme and logo, graphs, intelligent workflows with custom actions, full text search for work package attachments and multi-select custom fields."
-        professional_support: "Professional support"
-        professional_support_text: "Get reliable, high-touch support from senior support engineers with expert knowledge about running OpenProject in business-critical environments."
+        description: "Hva er fordelene ved Enterprise on-premises-utgaven?"
+        high_security: "Sikkerhetsfunksjoner"
+        high_security_text: "Engangs pålogging (SAML, OpenID Connect, CAS), LDAP-grupper."
+        installation: "Installasjons støtte"
+        installation_text: "Erfarne programvareingeniører veileder deg gjennom hele installerings- og installasjonsprosessen på din egen infrastruktur."
+        premium_features: "Enterprise tillegg"
+        premium_features_text: "Dynamiske tavler, egendefinert tema og logo, grafer, intelligente arbeidsprosesser med egendefinerte handlinger, fulltekst søk etter vedlegg til arbeidspakke og tilpassede felter."
+        professional_support: "Profesjonell hjelp"
+        professional_support_text: "Få pålitelig, høykvalitets støtte fra seniorstøtteteknikere med ekspertkunnskap om å drive OpenProject i forretningskritiske omgivelser."
       work_package_subject_generation:
         description: "Create automatically generated subjects using referenced attributes and text."
       customize_life_cycle:
@@ -2253,7 +2264,7 @@
       request_again: "Request again"
       resend_action: "Resend confirmation email"
       welcome_title: "Quick feature overview"
-      welcome_description: "Get a quick overview of project management and team collaboration with OpenProject Enterprise edition."
+      welcome_description: "Få en rask oversikt over prosjektledelse og teamsamarbeid med OpenProject Enterprise-utgaven."
       confirmation_info: >
         We sent you an email on %{date} to %{email} with all the information to start the free trial of OpenProject Enterprise. Please check your inbox and click the confirmation link provided to start your 14-day free trial.
       confirmation_subline: >
@@ -2275,6 +2286,9 @@
   enumeration_reported_project_statuses: "Rapportert prosjektstatus"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "Single Sign-On (SSO) for bruker '%{value}' mislyktes"
   error_can_not_archive_project: "Prosjektet kan ikke arkiveres: %{errors}"
   error_can_not_delete_entry: "Kan ikke slette oppføring"
@@ -2418,6 +2432,10 @@
     your_projects_export: "Projects are being exported"
     succeeded: "Eksport fullført"
     failed: "Det oppstod en feil ved forsøk på å eksportere arbeidspakker: %{message}"
+    demo:
+      heading: "Demo PDF"
+      footer: "Generated by OpenProject"
+      button_text: Generate Demo PDF
     errors:
       embedded_table_with_too_many_columns: "This embedded work package table could not fit on the page, please reduce the number of columns."
     format:
@@ -2480,7 +2498,7 @@
       tesseract: "Tesseract tilgjengelig (valgfritt)"
   filterable_tree_view:
     filter_mode:
-      all: "All"
+      all: "Alle"
       label: "Filter mode"
       selected: "Selected"
     include_sub_items: "Include sub-items"
@@ -2507,6 +2525,26 @@
       community: "OpenProject fellesskap"
       upsell:
         title: "Oppgrader til Enterprise utgaven"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "Oppgrader til Enterprise utgaven"
       postgres_migration: "Overføre installasjonen til PostgreSQL"
@@ -2592,8 +2630,8 @@
       simple_revoke_confirmation: "Er du sikker på at du vil oppheve denne nøkkelen?"
       token/api:
         title: "API"
-        text_hint: "API tokens allow third-party applications to communicate with this OpenProject instance via REST APIs."
-        disabled_text: "API tokens are not enabled by the administrator. Please contact your administrator to use this feature."
+        text_hint: "API-tokens tillater tredjepartsapplikasjoner å kommunisere med denne OpenProject instansen via REST APIs."
+        disabled_text: "API-nøkler er ikke aktivert av administratoren. Kontakt systemansvarlig for å bruke denne funksjonen."
         add_button: "API Token"
       api:
         static_token_name: "API-token"
@@ -2612,7 +2650,7 @@
         static_token_name: "RSS nøkkel"
         disabled_text: "RSS-nøkler er ikke aktivert av administrator. Kontakt systemansvarlig for å bruke denne funksjonen."
       storages:
-        title: "File storages"
+        title: "Fillagringer"
         text_hint: "Fillagrings-nøkler kobler til dette OpenProjectets instansen med et eksternt fillager."
         empty_text_hint: "Det er ingen lagringstilgang knyttet til kontoen din."
         revoke_token: "Vil du virkelig fjerne denne nøkkelen? Du må logge inn igjen på %{storage}"
@@ -2682,6 +2720,7 @@
   label_api_access_key: "API adgangsnøkkel"
   label_api_access_key_created_on: "API adgangsnøkkel ble opprettet for %{value} siden"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar nøkkel "%{token_name}" for "%{calendar_name}" i "%{project_name}"'
   label_ical_access_key_not_present: "iCalendar nøkkel(nøkler) ikke tilstede."
@@ -2789,7 +2828,7 @@
   label_dashboard: "Kontrollsenter"
   label_database_version: "PostgreSQL versjon"
   label_date: "Dato"
-  label_dates: "Dates"
+  label_dates: "Datoer"
   label_date_and_time: "Dato og tid"
   label_date_format: "Datoformat"
   label_date_from: "Fra"
@@ -2913,7 +2952,7 @@
   label_information_plural: "Informasjon"
   label_installation_guides: "Installasjons guider"
   label_integer: "Heltall"
-  label_interface: "Interface"
+  label_interface: "Grensesnitt"
   label_internal: "Intern"
   label_introduction_video: "Introduksjonsvideo"
   label_invite_user: "Inviter bruker"
@@ -2930,6 +2969,7 @@
   label_journal_diff: "Sammenligning av beskrivelse"
   label_language: "Språk"
   label_languages: "Språk"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Gå til et prosjekt..."
   label_keyword_plural: "Nøkkelord"
   label_language_based: "Basert på brukerens språk"
@@ -2949,6 +2989,7 @@
   label_link_url: "Lenke (URL)"
   label_list: "Liste"
   label_loading: "Laster..."
+  label_locked: "locked"
   label_lock_user: "Lås bruker"
   label_logged_as: "Innlogget som"
   label_login: "Logg inn"
@@ -2956,6 +2997,10 @@
   label_custom_export_logo: "Tilpasset eksportlogo"
   label_custom_export_cover: "Egendefinert eksport forsidebakgrunn"
   label_custom_export_footer: "Custom export footer image"
+  label_custom_export_font_regular: "Regular"
+  label_custom_export_font_bold: "Bold"
+  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Egendefinert eksport fremside bakgrunnsoverlegg"
   label_custom_export_cover_text_color: "Tekstfarge"
   label_custom_pdf_export_settings: "Egendefinerte PDF eksportinnstillinger"
@@ -3027,7 +3072,7 @@
   label_no_due_date: "ingen ferdigmeldingsdato"
   label_no_start_date: "ingen startdato"
   label_no_parent_page: "Ingen overordnet side"
-  label_notification_center_plural: "Notifications"
+  label_notification_center_plural: "Varsler"
   label_nothing_display: "Ingenting å vise"
   label_nobody: "ingen"
   label_not_configured: "Ikke konfigurert"
@@ -3043,6 +3088,8 @@
   label_operator_equals_or: "is (OR)"
   label_operator_equals_all: "is (AND)"
   label_operator_shared_with_user_any: "hvilken som helst"
+  label_open: "åpne"
+  label_closed: "lukket"
   label_open_menu: "Åpne meny"
   label_open_work_packages: "åpne"
   label_open_work_packages_plural: "åpne"
@@ -3060,7 +3107,7 @@
   label_password_rule_special: "Spesialtegn"
   label_password_rule_uppercase: "Store bokstaver"
   label_path_encoding: "Koding av sti"
-  label_per_page: "Per page:"
+  label_per_page: "Pr. side:"
   label_people: "Personer"
   label_permissions: "Tilganger"
   label_permissions_report: "Tilgangsrapport"
@@ -3103,7 +3150,7 @@
   label_project_custom_field_plural: "Prosjektegenskaper"
   label_project_settings: "Prosjektinnstillinger"
   label_project_attributes_settings: "Innstillinger for prosjektegenskaper"
-  label_project_storage_plural: "File storages"
+  label_project_storage_plural: "Fillagringer"
   label_project_storage_project_folder: "File storages: Project folders"
   label_projects_disk_usage_information: "%{count} prosjekter som bruker %{used_disk_space} diskplass"
   label_project_view_all: "Vis alle prosjekter"
@@ -3726,13 +3773,15 @@
       one: "1 prosjekt"
       other: "%{count} prosjekter"
     destroy:
-      confirmation: "Hvis du fortsetter, vil %{identifier} bli ødelagt permanent. For å bekrefte denne handlingen, vennligst skriv prosjektnavnet i feltet nedenfor, dette vil:"
-      project_delete_result_1: "Slett alle relaterte data."
-      project_delete_result_2: "Slett alle håndterte prosjektmapper i vedlagte lagringer."
-      info: "Sletting av prosjektet kan ikke angres."
-      project_verification: "Skriv inn prosjektets navn %{name} for å bekrefte slettingen."
-      subprojects_confirmation: "Underprosjekt(ene): %{value} vil også bli slettet."
-      title: "Slett prosjektet %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Project phase: %{phase}"
       project_phase_any: "Project phase: Any"
@@ -3967,6 +4016,8 @@
   setting_feeds_limit: "Innholdsgrense for Feed"
   setting_file_max_size_displayed: "Maks størrelse på tekstfiler som vises inline"
   setting_host_name: "Vertsnavn"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Timer per dag"
   setting_hours_per_day_explanation: >-
     Dette vil definere hva som anses som en "dag" når varigheten vises i dager og timer (for eksempel hvis dagen er 8 timer, vil 32 timer være 4 dager).
@@ -4069,7 +4120,7 @@
   setting_working_days: "Arbeidsdager"
   settings:
     authentication:
-      login: "Login"
+      login: "Brukernavn"
       registration: "Registration"
       sso: "Single Sign-On (SSO)"
       omniauth_direct_login_hint_html: >
@@ -4185,6 +4236,7 @@
   status_invited: invitert
   status_locked: låst
   status_registered: registrert
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:
@@ -4221,6 +4273,18 @@
     Dette er bildet som vises i bakgrunnen for en omslagsside i din PDF-eksport. Det må være en ca 800px bredde med 500px høydestørrelse PNG eller JPEG bildefil.
   text_custom_export_footer_instructions: >
     PDF exports will include a graphical element positioned to the left of the footer. This image must be a PNG or JPEG file with approximately 200 pixels in width.
+  label_custom_export_font_instructions: >
+    Upload and manage custom TrueType (.ttf) fonts used in your PDF exports. For best results, use matching files from the same font family. If no font is provided, the default NotoSans font will be used.
+  label_custom_export_images_instructions: >
+    Upload and manage custom image files used in your PDF exports.
+  text_custom_export_font_regular_instructions: >
+    This is the font file for regular text. It needs to be in TTF format and is required.
+  text_custom_export_font_bold_instructions: >
+    This is the font file for bold text. It needs to be in TTF format.
+  text_custom_export_font_italic_instructions: >
+    This is the font file for italic text. It needs to be in TTF format.
+  text_custom_export_font_bold_italic_instructions: >
+    This is the font file for bold and italic text. It needs to be in TTF format.
   text_custom_favicon_instructions: >
     Dette er det lille ikonet som vises i nettleservinduet/fanen ved siden av sidens tittel. Det må være et kvadrat 32 piksler stor PNG-bildefil med gjennomsiktig bakgrunn.
   text_custom_touch_icon_instructions: >

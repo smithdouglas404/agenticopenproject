@@ -375,7 +375,7 @@ module Projects
           icon: :trash,
           label: I18n.t(:button_delete),
           href: confirm_destroy_project_path(project),
-          data: { turbo: false }
+          data: { turbo_stream: true }
         }
       end
     end

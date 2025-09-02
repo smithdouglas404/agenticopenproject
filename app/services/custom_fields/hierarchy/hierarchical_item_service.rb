@@ -23,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -45,28 +45,34 @@ module CustomFields
       end
 
       # Insert a new node on the hierarchy tree at a desired position or at the end if no sort_order is passed.
+      # @param contract_class [Class<CustomFields::Hierarchy::InsertListItemContract>, Class<CustomFields::Hierarchy::InsertScoredItemContract>]
+      #   the params validation contract class
       # @param parent [CustomField::Hierarchy::Item] the parent of the node
       # @param label [String] the node label/name that must be unique at the same tree level
       # @param short [String] an alias for the node
+      # @param score [Decimal] a numeric value for the node
       # @param sort_order [Integer] the position into which insert the item.
       # @return [Success(CustomField::Hierarchy::Item), Failure(Dry::Validation::Result), Failure(ActiveModel::Errors)]
-      def insert_item(parent:, label:, short: nil, sort_order: nil)
-        CustomFields::Hierarchy::InsertItemContract
+      def insert_item(contract_class:, parent:, label:, short: nil, score: nil, sort_order: nil)
+        contract_class
           .new
-          .call({ parent:, label:, short: }.compact)
+          .call({ parent:, label:, short:, score: }.compact)
           .to_monad
           .bind { |validation| create_child_item(validation:, sort_order:) }
       end
 
       # Updates an item/node
+      # @param contract_class [Class<CustomFields::Hierarchy::UpdateListItemContract>, Class<CustomFields::Hierarchy::UpdateScoredItemContract>]
+      #   the params validation contract class
       # @param item [CustomField::Hierarchy::Item] the item to be updated
       # @param label [String] the node label/name that must be unique at the same tree level
       # @param short [String] an alias for the node
+      # @param score [Decimal] a numeric value for the node
       # @return [Success(CustomField::Hierarchy::Item), Failure(Dry::Validation::Result), Failure(ActiveModel::Errors)]
-      def update_item(item:, label: nil, short: nil)
-        CustomFields::Hierarchy::UpdateItemContract
+      def update_item(contract_class:, item:, label: nil, short: nil, score: nil)
+        contract_class
           .new
-          .call({ item:, label:, short: }.compact)
+          .call({ item:, label:, short:, score: }.compact)
           .to_monad
           .bind { |attributes| update_item_attributes(item:, attributes:) }
       end
@@ -173,7 +179,7 @@ module CustomFields
       end
 
       def update_item_attributes(item:, attributes:)
-        if item.update(label: attributes[:label], short: attributes[:short])
+        if item.update(label: attributes[:label], short: attributes[:short], score: attributes[:score])
           Success(item)
         else
           Failure(item.errors)

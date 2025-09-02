@@ -73,8 +73,9 @@ describe('parseChronicDuration', () => {
     '2 months': 3600 * 24 * 30 * 2,
     '18 months': 3600 * 24 * 30 * 18,
     '1 year 6 months': 3600 * 24 * (365.25 + 6 * 30),
-    day: 3600 * 24,
+    'day': 3600 * 24,
     'minute 30s': 90,
+    '5d 2 3 9': (5 * 24 * 3600) + (2 * 3600) + (3 * 60) + 9, // 5 days, 2 hours, 3 minutes, 9 seconds
   };
 
   describe("when string can't be parsed", () => {
@@ -115,6 +116,11 @@ describe('parseChronicDuration', () => {
     expect(parseChronicDuration('5', { defaultUnit: 'minutes' })).toBe(300);
   });
 
+  /* The cecile case */
+  it('it parses 2h15 correctly to 2h 15 minutes even when the default unit is hours', () => {
+    expect(parseChronicDuration('2h15', { defaultUnit: 'hours' })).toBe(2 * 3600 + 15 * 60);
+  });
+
   Object.entries(EXEMPLARS).forEach(([k, v]) => {
     it(`parses a duration like ${k}`, () => {
       expect(parseChronicDuration(k)).toBe(v);
@@ -139,6 +145,7 @@ describe('parseChronicDuration', () => {
       expect(parseChronicDuration('1mo', { daysPerMonth: 30, hoursPerDay: 24 })).toBe(
         30 * 24 * 60 * 60,
       );
+
       expect(parseChronicDuration('1mo', { daysPerMonth: 20, hoursPerDay: 8 })).toBe(
         20 * 8 * 60 * 60,
       );
@@ -146,6 +153,7 @@ describe('parseChronicDuration', () => {
       expect(parseChronicDuration('1w', { daysPerMonth: 30, hoursPerDay: 24 })).toBe(
         7 * 24 * 60 * 60,
       );
+
       expect(parseChronicDuration('1w', { daysPerMonth: 20, hoursPerDay: 8 })).toBe(
         5 * 8 * 60 * 60,
       );
@@ -322,6 +330,7 @@ describe('outputChronicDuration', () => {
       expect(outputChronicDuration(7 * 24 * 60 * 60, { weeks: true, daysPerMonth: 30 })).toBe(
         '1 wk',
       );
+
       expect(outputChronicDuration(7 * 24 * 60 * 60, { weeks: true, daysPerMonth: 20 })).toBe(
         '1 wk 2 days',
       );
@@ -331,6 +340,7 @@ describe('outputChronicDuration', () => {
       expect(
         outputChronicDuration(7 * 24 * 60 * 60, { weeks: true, daysPerMonth: 30, hoursPerDay: 24 }),
       ).toBe('1 wk');
+
       expect(
         outputChronicDuration(5 * 8 * 60 * 60, { weeks: true, daysPerMonth: 20, hoursPerDay: 8 }),
       ).toBe('1 wk');
@@ -340,6 +350,7 @@ describe('outputChronicDuration', () => {
       expect(outputChronicDuration(30 * 24 * 60 * 60, { daysPerMonth: 30, hoursPerDay: 24 })).toBe(
         '1 mo',
       );
+
       expect(
         outputChronicDuration(30 * 24 * 60 * 60, {
           daysPerMonth: 30,
@@ -351,6 +362,7 @@ describe('outputChronicDuration', () => {
       expect(outputChronicDuration(20 * 8 * 60 * 60, { daysPerMonth: 20, hoursPerDay: 8 })).toBe(
         '1 mo',
       );
+
       expect(
         outputChronicDuration(20 * 8 * 60 * 60, { daysPerMonth: 20, hoursPerDay: 8, weeks: true }),
       ).toBe('1 mo');
@@ -392,6 +404,7 @@ describe('outputChronicDuration', () => {
 describe('work week', () => {
   it('should parse knowing the work week', () => {
     const week = parseChronicDuration('5d', { hoursPerDay: 8, daysPerMonth: 20 });
+
     expect(parseChronicDuration('40h', { hoursPerDay: 8, daysPerMonth: 20 })).toBe(week);
     expect(parseChronicDuration('1w', { hoursPerDay: 8, daysPerMonth: 20 })).toBe(week);
   });

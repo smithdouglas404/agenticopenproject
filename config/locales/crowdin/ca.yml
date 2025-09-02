@@ -59,6 +59,10 @@ ca:
       tab_interface: "Interface"
       tab_branding: "Branding"
       tab_pdf_export_styles: "PDF export styles"
+      tab_pdf_export_font: "PDF export font"
+      fonts:
+        file_too_large: "is too large (maximum size is %{count} MB)."
+        file_is_invalid: "is not a valid TTF font file."
       colors:
         primary-button-color: "Botó principal"
         accent-color: "Accent"
@@ -137,7 +141,7 @@ ca:
       new:
         title: "New SCIM client"
       revoke_static_token_dialog_component:
-        confirm_button: "Revoke"
+        confirm_button: "Revoca"
         title: "Revoke static token"
         heading: "Are you sure you want to revoke this token?"
         description: "The SCIM client that uses this token will no longer be able to access OpenProject's SCIM server API."
@@ -145,7 +149,7 @@ ca:
         blank_slate:
           title: "No SCIM clients configured yet"
           description: "Add clients to see them here"
-        user_count: "Users"
+        user_count: "Usuaris"
       token_list_component:
         description: "The tokens you generate here can be passed by a SCIM client to access the OpenProject SCIM API."
         heading: "Tokens"
@@ -332,7 +336,9 @@ ca:
     errors:
       defined: "must not be defined."
       int?: "must be an integer."
+      decimal?: "must be a decimal."
       filled?: "must be filled."
+      key?: "is missing."
       greater_or_equal_zero: "must be greater or equal to 0."
       not_found: "not found."
       rules:
@@ -355,6 +361,7 @@ ca:
       depth: "Depth"
       item: "Item"
       label: "Label"
+      score: "Score"
       short: "Short name"
       parent: "Pare"
       blueprint: "Pattern blueprint"
@@ -579,8 +586,8 @@ ca:
           dialog_title: "Create new API token"
           attention_text: "Treat API tokens like passwords. Anyone with this token will have access to information from this instance, share it only with trusted users."
           dialog_body: "This token will allow third-party applications to communicate with your instance. To differentiate the new API token, please give it a name."
-          create_button: "Create"
-          name_label: "Token name"
+          create_button: "Crear"
+          name_label: "Nom del token"
       created_dialog:
         token/api:
           title: "The API token has been generated"
@@ -640,8 +647,8 @@ ca:
   priorities:
     edit:
       priority_color_text: |
-        Click to assign or change the color of this priority.
-        It can be used for highlighting work packages in the table.
+        Cliqueu per assignar o canviar el color d'aquesta prioritat.
+        Pot fer-se servir per a destacar paquets de treball en la taula.
     admin:
       default:
         caption: Making this priority default will override the previous default priority.
@@ -690,7 +697,7 @@ ca:
     dark_high_contrast: "Dark high contrast"
     light: "Clar"
     light_high_contrast: "Clar alt contrast"
-    sync_with_os: "Automatic (match OS colour mode)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: Actualment no hi ha cap tipus.
@@ -908,7 +915,7 @@ ca:
   account:
     delete: "Elimina el compte"
     delete_confirmation: "Segur que vols eliminar aquest compte?"
-    deletion_pending: "El compte ha estat bloquejat i està programada per eliminar-se. Tingues en compte que aquesta acció es processa de fons. Pot tardar uns moments fins que l'usuari estigui eliminat completament."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'De les dades de l''usuari ha creat (per exemple, correu electrònic, preferències, paquets de treball, wiki entrades) se n''esborraran tantes com sigui possible. Fixeu-vos que dades com paquets de treball i entrades de la wiki no es poden suprimir sense que obstaculitzin la feina d''altres usuaris. Aquestes dades es reassignaran a un compte genèric anomenat "Usuari esborrat". Com que les dades de cada usuari suprimit es reassignen sempre a aquest compte genèric no serà possible distingir les dades d''aquest usuari de les dades d''un altre usuari esborrat.'
@@ -939,7 +946,7 @@ ca:
   activemodel:
     attributes:
       projects/copy_options:
-        dependencies: "Dependencies"
+        dependencies: "Dependències"
   activerecord:
     attributes:
       announcements:
@@ -1001,12 +1008,12 @@ ca:
       enterprise_token:
         starts_at: "Vàlid des de"
         subscriber: "Subscriptor"
-        subscription: "Subscription"
-        plan: "Plan"
+        subscription: "Subscripció"
+        plan: "Pla"
         encoded_token: "Token de suport Enterprise"
         active_user_count_restriction: "Active users"
       enterprise_trial:
-        company: "Company"
+        company: "Empresa"
       grids/grid:
         page: "Pàgina"
         row_count: "Nombre de files"
@@ -1039,6 +1046,7 @@ ca:
         active_value:
           true: "desarxivat"
           false: "arxivat"
+        attribute_groups: "Attribute Groups"
         description: "Descripció"
         enabled_modules: "Mòduls habilitats"
         identifier: "Identificador"
@@ -1072,10 +1080,10 @@ ca:
       project/phase:
         date_range: "Interval de dates"
         definition: "Definition"
-        duration: "Duration"
-        start_date: "Start date"
+        duration: "Durada"
+        start_date: "Data d'inici"
         start_date_caption: "Follows the previous phase."
-        finish_date: "Finish date"
+        finish_date: "Data final"
       project/phase_definition:
         name: "Nom"
         color: "Color"
@@ -1143,7 +1151,7 @@ ca:
         ongoing: "En curs"
       type:
         description: "Text per defecte per la descripció"
-        attribute_groups: "Form configuration"
+        attribute_groups: "Configuració del formulari"
         is_in_roadmap: "Es mostra al full de ruta per defecte "
         is_default: "Actiu per defecte als nous projectes "
         is_milestone: "És una fita"
@@ -1170,7 +1178,7 @@ ca:
         password_confirmation: "Confirmació"
         consented_at: "Consentit a"
       group:
-        identity_url: "Identity URL"
+        identity_url: "URL d'identitat"
       user_preference:
         header_look_and_feel: "Look and feel"
         header_alerts: "Alerts"
@@ -1185,9 +1193,9 @@ ca:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "Avisa quan es deixi un paquet de treball amb canvis no desats"
-        theme: "Colour mode"
+        theme: "Color mode"
         time_zone: "Zona horària"
-        mode_guideline: "Some modes will overwrite custom theme colours for accessibility and legibility. Please select Light mode for full custom theme support."
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Daily reminders"
         workdays: "Dies laborals"
       version:
@@ -1295,7 +1303,7 @@ ca:
         odd: "ha de ser senar."
         regex_match_failed: "no coincideix amb l'expressió regular %{expression}."
         regex_invalid: "no s'ha pogut validar amb l'expressió regular associada."
-        regex_list_invalid: "could not be parsed as regular expression in lines %{invalid_lines}."
+        regex_list_invalid: "Lines %{invalid_lines} could not be parsed as regular expression."
         hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "ha de ser inferior o igual a la longitud màxima."
         taken: "ja s'està utilitzant."
@@ -1330,6 +1338,9 @@ ca:
               minimum: "necessita d'incloure almenys un filtre per a principal, a context o id amb l'operador '='."
         custom_field:
           at_least_one_custom_option: "Al menys hi ha d'haver una opció disponible."
+          referenced_in_other_fields_html:
+            one: "%{name} is used in project attribute calculation %{links}."
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1756,7 +1767,7 @@ ca:
     derived_start_date: "Data d'inici derivada"
     direction: "Direction"
     display_sums: "Mostra les sumes"
-    domain: "Domain"
+    domain: "Domini"
     due_date: "Data final"
     estimated_hours: "Treball"
     estimated_time: "Treball"
@@ -1925,7 +1936,7 @@ ca:
   button_unwatch: "Deixa de Seguir"
   button_update: "Actualitza"
   button_upgrade: "Actualitza"
-  button_buy_now: "Buy now"
+  button_buy_now: "Compra ara"
   button_upload: "Carrega"
   button_view: "Mostra"
   button_watch: "Observa"
@@ -1974,7 +1985,7 @@ ca:
     copy_options:
       dependencies_label: "Copy from project"
   create_project:
-    template_label: "Use template"
+    template_label: "Utilitzar plantilla"
     copy_options:
       dependencies_label: "Copy from template"
   create_wiki_page: "Create new wiki page"
@@ -2159,13 +2170,13 @@ ca:
       work_package_sharing: Share work packages with external users
       work_package_subject_generation: Work Package Subject Generation
     upsell:
-      buy_now_button: "Buy now"
+      buy_now_button: "Compra ara"
       plans_title: "Enterprise plans"
       title: "Enterprise add-on"
       plan_title: "Enterprise %{plan} add-on"
       plan_name: "%{plan} enterprise plan"
       plan_text_html: "Available starting with the %{plan_name}."
-      unlimited: "Unlimited"
+      unlimited: "Il·limitat"
       already_have_token: >
         Already have a token? Add it using the button below to upgrade to the booked Enterprise plan.
       hide_banner: "Hide this banner"
@@ -2175,15 +2186,15 @@ ca:
       baseline_comparison:
         description: Destaca canvis efectuats en aquesta llista des de qualsevol punt del passat.
       benefits:
-        description: "What are the benefits of the Enterprise on-premises edition?"
-        high_security: "Security features"
-        high_security_text: "Single sign on (SAML, OpenID Connect, CAS), LDAP groups."
-        installation: "Installation support"
-        installation_text: "Experienced software engineers guide you through the complete installation and setup process in your own infrastructure."
-        premium_features: "Enterprise add-ons"
-        premium_features_text: "Agile boards, custom theme and logo, graphs, intelligent workflows with custom actions, full text search for work package attachments and multi-select custom fields."
-        professional_support: "Professional support"
-        professional_support_text: "Get reliable, high-touch support from senior support engineers with expert knowledge about running OpenProject in business-critical environments."
+        description: "Quins són els beneficis de l'edició Enterprise on-premises?"
+        high_security: "Funcions de seguretat"
+        high_security_text: "Inici de sessió únic (SAML, OpenID Conenct, CAS), grups LDAP."
+        installation: "Suport d'instal·lació"
+        installation_text: "Enginyers de programari amb experiència et guien durant tot el procés d'instal·lació i configuració de la teva pròpia estructura."
+        premium_features: "Extensions Enterprise"
+        premium_features_text: "Taulells \"agile\", tema personalitzat i logotip, gràfiques, fluxos de treball amb accions personalitzades, cerca de text completa per a fitxers adjunt en paquets de treball i la selecció múltiple de camps personalitzats."
+        professional_support: "Suport professional"
+        professional_support_text: "Obté un suport de confiança i d'alt nivell dels nostres enginyers de suport sèniors amb experiència en manegar OpenProject en ambients empresarials crítics."
       work_package_subject_generation:
         description: "Create automatically generated subjects using referenced attributes and text."
       customize_life_cycle:
@@ -2251,7 +2262,7 @@ ca:
       request_again: "Request again"
       resend_action: "Resend confirmation email"
       welcome_title: "Quick feature overview"
-      welcome_description: "Get a quick overview of project management and team collaboration with OpenProject Enterprise edition."
+      welcome_description: "Obté una visió general ràpida de la gestió de projectes i col·laboració d'equips amb l'edició Enterprise d'OpenProject."
       confirmation_info: >
         We sent you an email on %{date} to %{email} with all the information to start the free trial of OpenProject Enterprise. Please check your inbox and click the confirmation link provided to start your 14-day free trial.
       confirmation_subline: >
@@ -2273,6 +2284,9 @@ ca:
   enumeration_reported_project_statuses: "Estats de projecte notificats"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "Inici de sessió únic (SSO) per usuari \"%{value}\" fallat"
   error_can_not_archive_project: "Aquest projecte no es pot arxivar: %{errors}"
   error_can_not_delete_entry: "No s'ha pogut esborrar l'entrada"
@@ -2416,6 +2430,10 @@ ca:
     your_projects_export: "Projects are being exported"
     succeeded: "Export completed"
     failed: "An error has occurred while trying to export the work packages: %{message}"
+    demo:
+      heading: "Demo PDF"
+      footer: "Generated by OpenProject"
+      button_text: Generate Demo PDF
     errors:
       embedded_table_with_too_many_columns: "This embedded work package table could not fit on the page, please reduce the number of columns."
     format:
@@ -2478,7 +2496,7 @@ ca:
       tesseract: "Tesseract disponible (opcional)"
   filterable_tree_view:
     filter_mode:
-      all: "All"
+      all: "Totes"
       label: "Filter mode"
       selected: "Selected"
     include_sub_items: "Include sub-items"
@@ -2505,6 +2523,26 @@ ca:
       community: "Comunitat OpenProject"
       upsell:
         title: "Actualitza a l'edició Enterprise"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "Actualitza a l'edició Enterprise"
       postgres_migration: "Migrant la teva instal·lació a PostgreSQL"
@@ -2610,7 +2648,7 @@ ca:
         static_token_name: "RSS token"
         disabled_text: "RSS tokens are not enabled by the administrator. Please contact your administrator to use this feature."
       storages:
-        title: "File storages"
+        title: "Emmagatzematges de fitxers"
         text_hint: "File Storage tokens connect this OpenProject instance with an external File Storage."
         empty_text_hint: "There is no storage access linked to your account."
         revoke_token: "Do you really want to remove this token? You will need to login again on %{storage}"
@@ -2680,6 +2718,7 @@ ca:
   label_api_access_key: "Clau d'accés API"
   label_api_access_key_created_on: "Clau d'accés API creada fa %{value}"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar roken "%{token_name}" per "%{calendar_name}" en "%{project_name}"'
   label_ical_access_key_not_present: "Token/s iCalendar no present."
@@ -2928,6 +2967,7 @@ ca:
   label_journal_diff: "Descripció de comparació"
   label_language: "Idioma"
   label_languages: "Idiomes"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Anar al projecte..."
   label_keyword_plural: "Paraules clau"
   label_language_based: "Basat en l'idioma de l'usuari"
@@ -2947,6 +2987,7 @@ ca:
   label_link_url: "Link (URL)"
   label_list: "Llista"
   label_loading: "Carregant..."
+  label_locked: "locked"
   label_lock_user: "Bloqueja usuari"
   label_logged_as: "Connectat com a"
   label_login: "Iniciar sessió"
@@ -2954,6 +2995,10 @@ ca:
   label_custom_export_logo: "Exportar logo personalitzat"
   label_custom_export_cover: "Custom export cover background"
   label_custom_export_footer: "Custom export footer image"
+  label_custom_export_font_regular: "Regular"
+  label_custom_export_font_bold: "Bold"
+  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
   label_custom_pdf_export_settings: "Custom PDF export settings"
@@ -3025,7 +3070,7 @@ ca:
   label_no_due_date: "sense data de final"
   label_no_start_date: "no hi ha data d'inici"
   label_no_parent_page: "Sense pàgina pare"
-  label_notification_center_plural: "Notifications"
+  label_notification_center_plural: "Notificacions"
   label_nothing_display: "Res a mostrar"
   label_nobody: "ningú"
   label_not_configured: "Not configured"
@@ -3041,6 +3086,8 @@ ca:
   label_operator_equals_or: "és (OR)"
   label_operator_equals_all: "és (AND)"
   label_operator_shared_with_user_any: "qualsevol"
+  label_open: "obrir"
+  label_closed: "tancat"
   label_open_menu: "Obrir menú"
   label_open_work_packages: "obrir"
   label_open_work_packages_plural: "obrir"
@@ -3058,7 +3105,7 @@ ca:
   label_password_rule_special: "Caràcters especials"
   label_password_rule_uppercase: "Majúscules"
   label_path_encoding: "Codificació de les rutes"
-  label_per_page: "Per page:"
+  label_per_page: "Per pàgina:"
   label_people: "Persones"
   label_permissions: "Permisos"
   label_permissions_report: "Informe de permisos"
@@ -3101,7 +3148,7 @@ ca:
   label_project_custom_field_plural: "Atributs de projecte"
   label_project_settings: "Configuració del projecte"
   label_project_attributes_settings: "Project attributes settings"
-  label_project_storage_plural: "File storages"
+  label_project_storage_plural: "Emmagatzematges de fitxers"
   label_project_storage_project_folder: "File storages: Project folders"
   label_projects_disk_usage_information: "%{count} projects using %{used_disk_space} disk space"
   label_project_view_all: "Veure tots els projectes"
@@ -3720,13 +3767,15 @@ ca:
       one: "1 projecte"
       other: "%{count} projectes"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. To confirm this action please introduce the project name in the field below, this will:"
-      project_delete_result_1: "Delete all related data."
-      project_delete_result_2: "Delete all managed project folders in the attached storages."
-      info: "Suprimir el projecte és una acció irreversible."
-      project_verification: "Introdueixi el nom del projecte %{name} per verificar la supressió."
-      subprojects_confirmation: "Els subproject(s): %{value} també es suprimiran."
-      title: "Suprimir el projecte %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Project phase: %{phase}"
       project_phase_any: "Project phase: Any"
@@ -3959,6 +4008,8 @@ ca:
   setting_feeds_limit: "Límit de contingut del canals"
   setting_file_max_size_displayed: "Mida màxima dels fitxers de text mostrats en línia"
   setting_host_name: "Nom del servidor"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Hours per day"
   setting_hours_per_day_explanation: >-
     This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).
@@ -4061,7 +4112,7 @@ ca:
   setting_working_days: "Dies laborals"
   settings:
     authentication:
-      login: "Login"
+      login: "Entrar"
       registration: "Registration"
       sso: "Single Sign-On (SSO)"
       omniauth_direct_login_hint_html: >
@@ -4177,6 +4228,7 @@ ca:
   status_invited: convidat
   status_locked: bloquejat
   status_registered: registrat
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:
@@ -4213,6 +4265,18 @@ ca:
     This is the image that appears in the background of a cover page in your PDF exports. It needs to be an about 800px width by 500px height sized PNG or JPEG image file.
   text_custom_export_footer_instructions: >
     PDF exports will include a graphical element positioned to the left of the footer. This image must be a PNG or JPEG file with approximately 200 pixels in width.
+  label_custom_export_font_instructions: >
+    Upload and manage custom TrueType (.ttf) fonts used in your PDF exports. For best results, use matching files from the same font family. If no font is provided, the default NotoSans font will be used.
+  label_custom_export_images_instructions: >
+    Upload and manage custom image files used in your PDF exports.
+  text_custom_export_font_regular_instructions: >
+    This is the font file for regular text. It needs to be in TTF format and is required.
+  text_custom_export_font_bold_instructions: >
+    This is the font file for bold text. It needs to be in TTF format.
+  text_custom_export_font_italic_instructions: >
+    This is the font file for italic text. It needs to be in TTF format.
+  text_custom_export_font_bold_italic_instructions: >
+    This is the font file for bold and italic text. It needs to be in TTF format.
   text_custom_favicon_instructions: >
     Aquest és la icona petita que apareix a la pantalla del navegador just al costat del títol de la pàgina. Ha de ser un PNG de 32 per 32 píxels amb un fons transparent.
   text_custom_touch_icon_instructions: >

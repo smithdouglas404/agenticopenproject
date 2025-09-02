@@ -59,6 +59,10 @@ es:
       tab_interface: "Interfaz"
       tab_branding: "Personalización de marca"
       tab_pdf_export_styles: "Estilos de exportación PDF"
+      tab_pdf_export_font: "PDF export font"
+      fonts:
+        file_too_large: "is too large (maximum size is %{count} MB)."
+        file_is_invalid: "is not a valid TTF font file."
       colors:
         primary-button-color: "Botón primario"
         accent-color: "Acento"
@@ -333,7 +337,9 @@ es:
     errors:
       defined: "must not be defined."
       int?: "debe ser un entero."
+      decimal?: "must be a decimal."
       filled?: "debe rellenarse."
+      key?: "is missing."
       greater_or_equal_zero: "debe ser mayor o igual a 0."
       not_found: "no encontrado."
       rules:
@@ -356,6 +362,7 @@ es:
       depth: "Profundidad"
       item: "Elemento"
       label: "Etiqueta"
+      score: "Score"
       short: "Nombre corto"
       parent: "Principal"
       blueprint: "Plano de patrón"
@@ -577,15 +584,15 @@ es:
     access_token:
       dialog:
         token/api:
-          dialog_title: "Create new API token"
+          dialog_title: "Crear nuevo token API"
           attention_text: "Treat API tokens like passwords. Anyone with this token will have access to information from this instance, share it only with trusted users."
-          dialog_body: "This token will allow third-party applications to communicate with your instance. To differentiate the new API token, please give it a name."
-          create_button: "Create"
+          dialog_body: "Este token permitirá a las aplicaciones de terceros comunicarse con su instancia. Para diferenciar el nuevo token de API, asígnele un nombre."
+          create_button: "Crear"
           name_label: "Token name"
       created_dialog:
         token/api:
           title: "The API token has been generated"
-          warning: "This is the only time you will see this token. Make sure to copy it now."
+          warning: "Esta es la única vez que verá este token. Asegúrese de copiarlo ahora."
       errors:
         token_name_blank: "Por favor, proporcione un nombre de token de API"
         token_name_in_use: "Este nombre de token de API ya está en uso, por favor seleccione uno diferente"
@@ -688,10 +695,10 @@ es:
         excluded_from_totals: "Excluido de totales"
   themes:
     dark: "Oscuro"
-    dark_high_contrast: "Dark high contrast"
+    dark_high_contrast: "Contraste alto oscuro"
     light: "Claro"
     light_high_contrast: "Contraste alto claro"
-    sync_with_os: "Automático (coincide con el modo de color del SO)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: Actualmente no existen tipos.
@@ -908,7 +915,7 @@ es:
   account:
     delete: "Borrar cuenta"
     delete_confirmation: "¿Está seguro que desea eliminar la cuenta?"
-    deletion_pending: "La cuenta ha sido bloqueada y está programada para su eliminación. Tenga en cuenta que este proceso tiene lugar en segundo plano. Puede tardar un tiempo hasta que el usuario se borre por completo."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'De los datos del usuario creado (por ejemplo correo electrónico, preferencias, paquetes de trabajo, entradas wiki) serán eliminados, en la medida de lo posible. Sin embargo, tenga en cuenta que no se pueden eliminar datos como entradas wiki y paquetes de trabajo sin obstaculizar el trabajo de los demás usuarios. Dichos datos, por lo tanto, serán reasignados a una cuenta denominada "Usuarios Eliminados". Como los datos de cada cuenta borrada son reasignados al eliminarla, no será posible distinguir los datos del usuario creado a partir de los datos de otra cuenta eliminada.'
@@ -1039,6 +1046,7 @@ es:
         active_value:
           true: "desarchivado"
           false: "archivado"
+        attribute_groups: "Attribute Groups"
         description: "Descripción"
         enabled_modules: "Módulos activados"
         identifier: "Identificador"
@@ -1185,9 +1193,9 @@ es:
         auto_hide_popups: "Ocultar automáticamente los banners de éxito"
         auto_hide_popups_caption: "Si se habilitan, los banners verdes de éxito desaparecerán automáticamente al cabo de 5 segundos."
         warn_on_leaving_unsaved: "Avisarme cuando salga de un paquete de trabajo con cambios sin guardar"
-        theme: "Modo de color"
+        theme: "Color mode"
         time_zone: "Zona horaria"
-        mode_guideline: "Algunos modos sobrescribirán los colores de los temas personalizados por motivos de accesibilidad y legibilidad. Seleccione el modo Claro para obtener una compatibilidad total con los temas personalizados."
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Recordatorios diarios"
         workdays: "Días laborables"
       version:
@@ -1295,7 +1303,7 @@ es:
         odd: "debe ser impar."
         regex_match_failed: "no coincide con la expresión regular %{expression}."
         regex_invalid: "no se pudo validar con la expresión regular asociada."
-        regex_list_invalid: "no pudo analizarse como expresión regular en las líneas %{invalid_lines}."
+        regex_list_invalid: "Lines %{invalid_lines} could not be parsed as regular expression."
         hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "Debe ser menor o igual que el tamaño maximo."
         taken: "Ya se ha tomado."
@@ -1330,6 +1338,9 @@ es:
               minimum: "necesita incluir como mínimo un filtro de entidad de seguridad, contexto o identificador con el operador «=»."
         custom_field:
           at_least_one_custom_option: "Como mínimo, tiene que estar disponible una opción."
+          referenced_in_other_fields_html:
+            one: "%{name} is used in project attribute calculation %{links}."
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -2152,7 +2163,7 @@ es:
       project_list_sharing: Compartición de la lista de proyectos
       readonly_work_packages: Paquetes de trabajo de solo lectura
       scim_api: API del servidor SCIM
-      sso_auth_providers: Single Sign-On
+      sso_auth_providers: Inicio de sesión único (SSO)
       team_planner_view: Vista del planificador de equipo
       virus_scanning: Análisis de antivirus
       work_package_query_relation_columns: Columnas de relación de consulta de paquetes de trabajo
@@ -2273,6 +2284,9 @@ es:
   enumeration_reported_project_statuses: "Estatus del proyecto reportado"
   enumeration_caption_order_changed: "Orden cambiado con éxito."
   enumeration_could_not_be_moved: "No se ha podido mover la enumeración."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "El intento de inicio de sesión único (SSO) para el usuario “%{value}” falló"
   error_can_not_archive_project: "Este proyecto no se puede archivar: %{errors}"
   error_can_not_delete_entry: "No se puede eliminar la entrada"
@@ -2416,6 +2430,10 @@ es:
     your_projects_export: "Projects are being exported"
     succeeded: "Exportación completada"
     failed: "Se ha producido un error al intentar exportar los paquetes de trabajo: %{message}"
+    demo:
+      heading: "Demo PDF"
+      footer: "Generated by OpenProject"
+      button_text: Generate Demo PDF
     errors:
       embedded_table_with_too_many_columns: "Esta tabla de paquetes de trabajo incrustada no cabía en la página, reduzca el número de columnas."
     format:
@@ -2478,7 +2496,7 @@ es:
       tesseract: "Tesseract disponible (opcional)"
   filterable_tree_view:
     filter_mode:
-      all: "All"
+      all: "Todos"
       label: "Filter mode"
       selected: "Selected"
     include_sub_items: "Include sub-items"
@@ -2505,6 +2523,26 @@ es:
       community: "OpenProject Community"
       upsell:
         title: "Actualizar a la edición Enterprise"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "Actualizar a Enterprise"
       postgres_migration: "Migrando su instalación a PostgreSQL"
@@ -2590,8 +2628,8 @@ es:
       simple_revoke_confirmation: "¿Seguro que desea revocar este token?"
       token/api:
         title: "API"
-        text_hint: "API tokens allow third-party applications to communicate with this OpenProject instance via REST APIs."
-        disabled_text: "API tokens are not enabled by the administrator. Please contact your administrator to use this feature."
+        text_hint: "Los tokens API permiten a las aplicaciones de terceros comunicarse con esta instancia de OpenProject a través de las API REST."
+        disabled_text: "Los tokens API no están habilitados por el administrador. Póngase en contacto con su administrador para utilizar esta función."
         add_button: "API Token"
       api:
         static_token_name: "Token API"
@@ -2680,6 +2718,7 @@ es:
   label_api_access_key: "Código de acceso API"
   label_api_access_key_created_on: "Código de acceso API creado  hace %{value}"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'Token de iCalendar «%{token_name}» para «%{calendar_name}» en «%{project_name}»'
   label_ical_access_key_not_present: "Token(s) de iCalendar no presente(s)."
@@ -2928,6 +2967,7 @@ es:
   label_journal_diff: "Comparación de la descripción"
   label_language: "Idioma"
   label_languages: "Idiomas"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Saltar a un proyecto..."
   label_keyword_plural: "Palabras clave"
   label_language_based: "Basado en el idioma del usuario"
@@ -2947,6 +2987,7 @@ es:
   label_link_url: "Enlace (URL)"
   label_list: "Lista"
   label_loading: "Cargando..."
+  label_locked: "locked"
   label_lock_user: "Bloquear usuario"
   label_logged_as: "Sesión iniciada como"
   label_login: "Ingresar"
@@ -2954,6 +2995,10 @@ es:
   label_custom_export_logo: "Logotipo de exportación personalizado"
   label_custom_export_cover: "Exportación personalizada de fondo de portada"
   label_custom_export_footer: "Custom export footer image"
+  label_custom_export_font_regular: "Regular"
+  label_custom_export_font_bold: "Bold"
+  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Fondo de portada (cobertura) de exportación personalizado"
   label_custom_export_cover_text_color: "Color del texto"
   label_custom_pdf_export_settings: "Ajustes personalizados de exportación PDF"
@@ -3041,6 +3086,8 @@ es:
   label_operator_equals_or: "es (OR)"
   label_operator_equals_all: "es (AND)"
   label_operator_shared_with_user_any: "cualquiera"
+  label_open: "abierto"
+  label_closed: "cerrado"
   label_open_menu: "Abrir menú"
   label_open_work_packages: "abierto"
   label_open_work_packages_plural: "abierto"
@@ -3723,13 +3770,15 @@ es:
       one: "1 proyecto"
       other: "%{count} projectos"
     destroy:
-      confirmation: "Si continúas, el proyecto %{identifier} será eliminado permanentemente. Para confirmar esta acción, por favor introduce el nombre del proyecto en el campo de abajo, este será:"
-      project_delete_result_1: "Eliminar todos los datos relacionados."
-      project_delete_result_2: "Eliminar todas las carpetas de proyecto gestionadas en los almacenamientos adjuntos."
-      info: "La eliminación del proyecto no se puede deshacer."
-      project_verification: "Introduzca el nombre del proyecto %{name} para confirmar la eliminación."
-      subprojects_confirmation: "Los sub-proyecto(s): %{value} también serán eliminado."
-      title: "Borrar el proyecto %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Fase del proyecto: %{phase}"
       project_phase_any: "Fase del proyecto: Cualquiera"
@@ -3964,6 +4013,8 @@ es:
   setting_feeds_limit: "Limite de contenido de feed"
   setting_file_max_size_displayed: "Tamaño máximo de archivos de texto mostrado en linea"
   setting_host_name: "Nombre de host"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Horas al día"
   setting_hours_per_day_explanation: >-
     Define lo que se considera un "día" cuando se muestra la duración en días y horas (por ejemplo, si un día tiene 8 horas, 32 horas serían 4 días).
@@ -4066,7 +4117,7 @@ es:
   setting_working_days: "Días laborables"
   settings:
     authentication:
-      login: "Login"
+      login: "Ingresar"
       registration: "Registro"
       sso: "Single Sign-On (SSO)"
       omniauth_direct_login_hint_html: >
@@ -4182,6 +4233,7 @@ es:
   status_invited: invitado
   status_locked: bloqueado
   status_registered: Registrado
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:
@@ -4218,6 +4270,18 @@ es:
     Esta es la imagen que aparece en el fondo de una página de portada en sus exportaciones PDF. Tiene que ser un archivo de imagen PNG o JPEG de aproximadamente un ancho 800px por 500px de alto.
   text_custom_export_footer_instructions: >
     PDF exports will include a graphical element positioned to the left of the footer. This image must be a PNG or JPEG file with approximately 200 pixels in width.
+  label_custom_export_font_instructions: >
+    Upload and manage custom TrueType (.ttf) fonts used in your PDF exports. For best results, use matching files from the same font family. If no font is provided, the default NotoSans font will be used.
+  label_custom_export_images_instructions: >
+    Upload and manage custom image files used in your PDF exports.
+  text_custom_export_font_regular_instructions: >
+    This is the font file for regular text. It needs to be in TTF format and is required.
+  text_custom_export_font_bold_instructions: >
+    This is the font file for bold text. It needs to be in TTF format.
+  text_custom_export_font_italic_instructions: >
+    This is the font file for italic text. It needs to be in TTF format.
+  text_custom_export_font_bold_italic_instructions: >
+    This is the font file for bold and italic text. It needs to be in TTF format.
   text_custom_favicon_instructions: >
     Es el icono diminuto que aparece en la ventana o pestaña del navegador, junto al título de la página. Tiene que ser una imagen PNG cuadrada de 32 × 32 píxeles con un fondo transparente.
   text_custom_touch_icon_instructions: >

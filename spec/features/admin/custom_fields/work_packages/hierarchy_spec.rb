@@ -195,13 +195,14 @@ RSpec.describe "work package custom fields of type hierarchy", :js do
     let(:service) { CustomFields::Hierarchy::HierarchicalItemService.new }
     let(:custom_field) { create(:wp_custom_field, name: "Hogwarts", field_format: "hierarchy", hierarchy_root: nil) }
     let!(:root) { service.generate_root(custom_field).value! }
-    let!(:ravenclaw) { service.insert_item(parent: root, label: "Ravenclaw").value! }
-    let!(:slytherin) { service.insert_item(parent: root, label: "Slytherin").value! }
-    let!(:hufflepuff) { service.insert_item(parent: root, label: "Hufflepuff").value! }
-    let!(:gryffindor) { service.insert_item(parent: root, label: "Gryffindor").value! }
-    let!(:luna) { service.insert_item(parent: ravenclaw, label: "Luna Lovegood").value! }
-    let!(:harry) { service.insert_item(parent: gryffindor, label: "Harry Potter").value! }
-    let!(:hermione) { service.insert_item(parent: gryffindor, label: "Hermione Granger").value! }
+    let(:contract_class) { CustomFields::Hierarchy::InsertListItemContract }
+    let!(:ravenclaw) { service.insert_item(contract_class:, parent: root, label: "Ravenclaw").value! }
+    let!(:slytherin) { service.insert_item(contract_class:, parent: root, label: "Slytherin").value! }
+    let!(:hufflepuff) { service.insert_item(contract_class:, parent: root, label: "Hufflepuff").value! }
+    let!(:gryffindor) { service.insert_item(contract_class:, parent: root, label: "Gryffindor").value! }
+    let!(:luna) { service.insert_item(contract_class:, parent: ravenclaw, label: "Luna Lovegood").value! }
+    let!(:harry) { service.insert_item(contract_class:, parent: gryffindor, label: "Harry Potter").value! }
+    let!(:hermione) { service.insert_item(contract_class:, parent: gryffindor, label: "Hermione Granger").value! }
     let(:tree_view) { Components::TreeView.new }
 
     before do

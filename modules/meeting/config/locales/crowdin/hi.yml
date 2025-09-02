@@ -188,7 +188,7 @@ hi:
         remove_participant: "Remove participant"
         manage_participants: "Manage participants"
         no_participants: "No participants"
-        show_all: "Show all"
+        show_all: "सभी दिखाएँ"
       text:
         template: "These participants will be invited automatically to all future meetings as they are created."
         manage_participants: "Search for and add project members as participants to this meeting."
@@ -270,7 +270,7 @@ hi:
       minutes:
         footer_page_numbers: "P. %{current_page} of %{total_pages}"
         author: "Author"
-        date: "Date"
+        date: "तिथि"
         time: "Time"
         location: "Location"
         title: "Minutes"
@@ -305,7 +305,7 @@ hi:
       footer_text:
         label: Footer text
         caption: This text will appear on every page at the center of the footer.
-      submit_button: Download
+      submit_button: डाउनलोड
     notifications:
       sidepanel:
         title: "Email calendar updates"
@@ -477,7 +477,7 @@ hi:
   label_agenda_item_deleted_wp: "Deleted work package reference"
   label_agenda_item_actions: "Agenda items actions"
   label_agenda_item_move_to_next_title: "Move to next meeting?"
-  label_agenda_item_move: "Move"
+  label_agenda_item_move: "स्थानांतरित करें"
   label_agenda_item_move_to_next: "Move to next meeting"
   label_agenda_item_move_to_backlog: "Move to backlog"
   label_agenda_item_move_to_current_meeting: "Move to current meeting"

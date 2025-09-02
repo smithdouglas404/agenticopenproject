@@ -3,7 +3,7 @@ bg:
   js:
     team_planner:
       add_existing: 'Add existing'
-      label_team_planner_plural: 'Team planners'
+      label_team_planner_plural: 'Екипни плановици'
       add_existing_title: 'Add existing work packages'
       create_label: 'Екипен плановик'
       create_title: 'Създайте нов екипен плановик'

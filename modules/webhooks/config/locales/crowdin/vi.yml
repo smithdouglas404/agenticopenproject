@@ -31,7 +31,7 @@ vi:
       events:
         created: "Đã tạo"
         updated: "Đã cập nhật"
-        comment: "Comment"
+        comment: "Nhận xét"
         internal_comment: "Internal comment"
       explanation:
         text: >

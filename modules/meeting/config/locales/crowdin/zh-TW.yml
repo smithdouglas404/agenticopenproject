@@ -59,12 +59,12 @@ zh-TW:
         end_date: "結束日期"
         iterations: "出現次數"
       meeting_participant:
-        invited: "Invited"
-        attended: "Attended"
+        invited: "已邀請"
+        attended: "已出席"
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} is not a valid participant."
+          invalid_user: "%{name} 不是有效的參與者。"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "該系列中有一個公開會議未包含在新的時間表中。調整時間表以包含所有現有會議。"
@@ -214,10 +214,10 @@ zh-TW:
         title: "[%{project_name}] 會議系列 '%{title}'"
         summary: "%{actor} 已設立新的會議系列 '%{title}'"
       series_updated:
-        title: "[%{project_name}] Meeting series '%{title}' has been updated"
-        summary: "Meeting series '%{title}' has been updated by %{actor}"
-        old_schedule: "Old schedule"
-        new_schedule: "New schedule"
+        title: "[%{project_name}] 會議系列 '%{title}' 已更新"
+        summary: "會議系列 '%{title}' 已由 %{actor}更新"
+        old_schedule: "舊排程"
+        new_schedule: "新增排程"
       invited:
         summary: "%{actor} 已向您發出會議邀請 '%{title}'"
       cancelled:
@@ -229,13 +229,13 @@ zh-TW:
         summary: "%{title}' 已被 %{actor}取消。"
         date_time: "排定日期/時間"
       updated:
-        header: "Meeting '%{title}' has been updated"
-        summary: "Meeting '%{title}' has been updated by %{actor}"
-        body: "The meeting '%{title}' has been updated by %{actor}."
-        old_date_time: "Old date/time"
-        new_date_time: "New date/time"
-        old_location: "Old location"
-        new_location: "New location"
+        header: "會議 '%{title}' 已更新"
+        summary: "會議 '%{title}' 已由 %{actor}更新"
+        body: "會議 '%{title}' 已由 %{actor}更新。"
+        old_date_time: "舊日期/時間"
+        new_date_time: "新日期/時間"
+        old_location: "舊位置"
+        new_location: "新位置"
     label_mail_all_participants: "發送電子郵件邀請參加者"
     types:
       one_time: "一次性"
@@ -323,9 +323,9 @@ zh-TW:
       banner:
         participants:
           enabled: >
-            All participants will receive updated calendar invites via email when you add or remove participants.
+            當您新增或移除參與者時，所有參與者都會透過電子郵件收到更新的行事曆邀請。
           disabled: >
-            Email calendar updates are disabled. Participants will not receive an email informing them when you add or remove participants.
+            電子郵件行事曆更新已停用。當您新增或移除參與者時，參與者將不會收到通知他們的電子郵件。
         onetime:
           enabled: >
             所有參與者都會透過電子郵件收到更新的行事曆邀請，通知他們您的變更。
@@ -522,9 +522,9 @@ zh-TW:
   label_meeting_reopen_action: "重新開啟會議"
   label_meeting_close_action: "關閉會議"
   label_meeting_in_progress_action: "會議開始"
-  text_meeting_open_description: "You can add/remove agenda items and participants. Once the agenda is ready, mark it as in progress to document outcomes."
+  text_meeting_open_description: "您可以新增/移除議程項目和與會者。一旦議程準備就緒，請將它標記為進行中，以記錄結果。"
   text_meeting_closed_description: "此會議已關閉。您不能再新增/移除議程項目。"
-  text_meeting_in_progress_description: "You can modify the agenda, document outcomes for each item and track attendance for participants. Once the meeting is complete, you can mark it as closed to lock it."
+  text_meeting_in_progress_description: "您可以修改議程、記錄每個項目的結果，並追蹤與會者的出席率。會議結束後，您可以將會議標記為關閉，以鎖定會議。"
   text_meeting_open_dropdown_description: "任何現有的結果都會保留，但使用者將無法新增新的結果。"
   text_meeting_in_progress_dropdown_description: "記錄會議期間的結果，例如資訊需求或所做的決策。"
   text_meeting_closed_dropdown_description: "此會議已結束，您無法再修改議程項目或結果。"

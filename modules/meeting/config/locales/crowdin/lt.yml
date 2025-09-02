@@ -47,7 +47,7 @@ lt:
       meeting_agenda_item:
         title: "Pavadinimas"
         author: "Autorius"
-        duration_in_minutes: "Duration"
+        duration_in_minutes: "Trukmė"
         description: "Pastabos"
         presenter: "Pateikėjas"
       meeting_section:
@@ -62,7 +62,7 @@ lt:
         end_date: "Pabaigos data"
         iterations: "Occurrences"
       meeting_participant:
-        invited: "Invited"
+        invited: "Pakviesti"
         attended: "Attended"
     errors:
       models:
@@ -187,24 +187,24 @@ lt:
   label_version: "Versija"
   label_time_zone: "Laiko juosta"
   label_start_date: "Pradžios data"
-  label_subscribe_icalendar: "Subscribe to calendar"
+  label_subscribe_icalendar: "Prenumeruoti kalendorių"
   meeting:
     participants:
       label:
-        participants: "Participants"
+        participants: "Dalyviai"
         attended: "Attended"
         mark_as_attended: "Mark as attended"
         mark_all_as_attended: "Mark all as attended"
         remove_participant: "Remove participant"
-        manage_participants: "Manage participants"
-        no_participants: "No participants"
-        show_all: "Show all"
+        manage_participants: "Valdyti dalyvius"
+        no_participants: "Nėra dalyvių"
+        show_all: "Rodyti viską"
       text:
         template: "These participants will be invited automatically to all future meetings as they are created."
         manage_participants: "Search for and add project members as participants to this meeting."
         search_for_members: "Search for project members"
       blankslate:
-        heading: "No participants"
+        heading: "Nėra dalyvių"
         description: "There are no participants yet."
     attachments:
       template: "These attached files will be included in all future meetings in the series."
@@ -217,7 +217,7 @@ lt:
       agenda_items: "Copy agenda items"
       agenda_text: "Kopijuoti seno susitikimo darbotvarkę"
       participants: "Copy list of participants"
-      to_clipboard: "Copy to clipboard"
+      to_clipboard: "Kopijuoti į iškarpinę"
     email:
       send_emails: "Email participants"
       send_invitation_emails: >
@@ -247,8 +247,8 @@ lt:
         header: "Meeting '%{title}' has been updated"
         summary: "Meeting '%{title}' has been updated by %{actor}"
         body: "The meeting '%{title}' has been updated by %{actor}."
-        old_date_time: "Old date/time"
-        new_date_time: "New date/time"
+        old_date_time: "Sena data/laikas"
+        new_date_time: "Nauja data/laikas"
         old_location: "Old location"
         new_location: "New location"
     label_mail_all_participants: "Send email invite to participants"
@@ -279,26 +279,26 @@ lt:
       your_meeting_export: "Meeting is being exported"
       minutes:
         footer_page_numbers: "P. %{current_page} of %{total_pages}"
-        author: "Author"
-        date: "Date"
-        time: "Time"
-        location: "Location"
-        title: "Minutes"
+        author: "Autorius"
+        date: "Data"
+        time: "Laikas"
+        location: "Vieta"
+        title: "Minutės"
     export_pdf_dialog:
       title: Export PDF
       description: Generate a printable PDF file of this meeting at the current state.
       templates:
         default:
-          label: Default
+          label: Numatytasis
           caption: The default template is suitable for most meetings and represent the current state.
         minutes:
-          label: Minutes
+          label: Minutės
           caption: The minutes template is suitable for closed and archived meetings.
       first_page_header_left:
         label: First page header left
         caption: This text will appear on the first page at the left of the header.
       author:
-        label: Author
+        label: Autorius
         caption: The author of the minutes will be displayed in the subtitle.
       include_participants:
         label: Include list of participants
@@ -315,7 +315,7 @@ lt:
       footer_text:
         label: Footer text
         caption: This text will appear on every page at the center of the footer.
-      submit_button: Download
+      submit_button: Atsiųsti
     notifications:
       sidepanel:
         title: "Email calendar updates"
@@ -484,14 +484,14 @@ lt:
   label_meeting_index_later: "Next week and later"
   label_agenda_items: "Darbotvarkės klausimai"
   label_agenda_items_reordered: "perrikiuota"
-  label_agenda_item_add: "Add agenda item"
-  label_agenda_item_remove_from_agenda: "Remove from agenda"
+  label_agenda_item_add: "Pridėti darbotvarkės klausimą"
+  label_agenda_item_remove_from_agenda: "Išimti iš plano"
   label_agenda_item_remove_from_backlog: "Remove from backlog"
   label_agenda_item_undisclosed_wp: "Darbo paketo #%{id} nematomas"
   label_agenda_item_deleted_wp: "Ištrinta darbo paketo nuoroda"
   label_agenda_item_actions: "Darbotvarkės elemento veiksmai"
   label_agenda_item_move_to_next_title: "Move to next meeting?"
-  label_agenda_item_move: "Move"
+  label_agenda_item_move: "Perkelti"
   label_agenda_item_move_to_next: "Move to next meeting"
   label_agenda_item_move_to_backlog: "Move to backlog"
   label_agenda_item_move_to_current_meeting: "Move to current meeting"
@@ -572,7 +572,7 @@ lt:
         text_hint: "iCalendar meeting tokens allow users to subscribe to all their meetings and view up-to-date meeting information in external clients."
         disabled_text: "iCalendar meeting subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
         empty_text_hint: 'To add an iCalendar meeting token, go to the <a href="%{path}">meetings section</a> and subscribe from there.'
-        add_button: "Subscribe to calendar"
+        add_button: "Prenumeruoti kalendorių"
   my:
     access_token:
       dialog:
@@ -580,7 +580,7 @@ lt:
           dialog_title: "New iCal subscription token for meetings"
           dialog_body: "This token will generate an iCal subscription URL that lets you view all your meetings in an external calendar application."
           create_button: "Create subscription"
-          name_label: "Token name"
+          name_label: "Žetono pavadinimas"
           name_caption: 'You can name it after where you will use it, such as"My phone" or "Work computer.'
       created_dialog:
         token/ical_meeting:

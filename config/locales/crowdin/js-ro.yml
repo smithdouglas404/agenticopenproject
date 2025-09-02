@@ -287,17 +287,6 @@ ro:
         format:
           date: "%{attribute} nu este o dată validă - Este necesar formatul AAAA-LL-ZZ."
         general: "A apărut o eroare."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Citește despre noile caracteristici și actualizări de produse."
-          learn_about: "Learn more about all new features"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                Versiunea conţine diverse caracteristici noi şi îmbunătăţiri, cum ar fi <br> <ul class="%{list_styling_class}"> <li>UX/UI îmbunătăţiri pentru un aspect mai modern.</li> <li>Întâlniri: Opțiunea de a dezactiva notificările prin e-mail și ICS.</li> <li>temporizatoare în curs afișate în modulul de urmărire a timpului meu.</li> <li>Raportare progresivă: % Suma completă este afișată și în modul Status.</li> <li>Verificarea stării de sănătate a Nextcloud: Indicați capacitatea de schimb a tokenurilor lipsă (Suplimentul Întreprinderilor).</li> </ul>
     ical_sharing_modal:
       title: "Subscribe to calendar"
       inital_setup_error_message: "An error occured while fetching data."
@@ -733,7 +722,7 @@ ro:
       typeahead_placeholder: Căutarea de posibili observatori
     relation_labels:
       parent: "Părinte"
-      child: "Child"
+      child: "Copil"
       children: "Copii"
       relates: "În relație cu"
       duplicates: "Dublează"
@@ -782,7 +771,7 @@ ro:
     autocompleter:
       placeholder: "Tastează pentru a căuta"
       notFoundText: "Niciun articol găsit"
-      search: "Search"
+      search: "Căutare"
       project:
         placeholder: "Select project"
     repositories:
@@ -1227,7 +1216,7 @@ ro:
       selected_filter:
         all: "Toate Proiectele"
         selected: "Numai selecția"
-      search_placeholder: "Caută proiect..."
+      search_placeholder: "Search projects..."
       search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Include toate subproiectele"
       tooltip:

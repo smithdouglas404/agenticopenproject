@@ -44,7 +44,7 @@ vi:
       meeting_agenda_item:
         title: "Tiêu đề"
         author: "Tác giả"
-        duration_in_minutes: "Duration"
+        duration_in_minutes: "Thời gian"
         description: "Ghi chú"
         presenter: "Người trình bày"
       meeting_section:
@@ -59,8 +59,8 @@ vi:
         end_date: "End date"
         iterations: "Số lần xuất hiện"
       meeting_participant:
-        invited: "Invited"
-        attended: "Attended"
+        invited: "Đã mời"
+        attended: "Đã tham dự"
     errors:
       models:
         meeting_participant:
@@ -172,24 +172,24 @@ vi:
   label_version: "0886055830 "
   label_time_zone: "Múi giờ"
   label_start_date: "Ngày bắt đầu"
-  label_subscribe_icalendar: "Subscribe to calendar"
+  label_subscribe_icalendar: "Đăng ký lịch"
   meeting:
     participants:
       label:
-        participants: "Participants"
-        attended: "Attended"
+        participants: "Người tham gia"
+        attended: "Đã tham dự"
         mark_as_attended: "Mark as attended"
         mark_all_as_attended: "Mark all as attended"
         remove_participant: "Remove participant"
-        manage_participants: "Manage participants"
-        no_participants: "No participants"
-        show_all: "Show all"
+        manage_participants: "Quản lý người tham gia"
+        no_participants: "Không có người tham gia"
+        show_all: "Hiển thị tất cả"
       text:
-        template: "These participants will be invited automatically to all future meetings as they are created."
+        template: "Những người này sẽ được mời tham gia tự động tất cả các cuộc họp được tạo trong tương lai."
         manage_participants: "Search for and add project members as participants to this meeting."
         search_for_members: "Search for project members"
       blankslate:
-        heading: "No participants"
+        heading: "Không có người tham gia"
         description: "There are no participants yet."
     attachments:
       template: "Những tệp đính kèm này sẽ được bổ sung trong tất cả các cuộc họp tương lai trong chuỗi."
@@ -202,7 +202,7 @@ vi:
       agenda_items: "Chép mục chương trình nghị sự"
       agenda_text: "Sao chép chương trình nghị sự của cuộc họp cũ"
       participants: "Chép danh sách người tham gia"
-      to_clipboard: "Copy to clipboard"
+      to_clipboard: "Sao chép vào bảng tạm"
     email:
       send_emails: "Gửi email cho người tham gia"
       send_invitation_emails: >
@@ -232,8 +232,8 @@ vi:
         header: "Meeting '%{title}' has been updated"
         summary: "Meeting '%{title}' has been updated by %{actor}"
         body: "The meeting '%{title}' has been updated by %{actor}."
-        old_date_time: "Old date/time"
-        new_date_time: "New date/time"
+        old_date_time: "Ngày/giờ cũ"
+        new_date_time: "Ngày/giờ mới"
         old_location: "Old location"
         new_location: "New location"
     label_mail_all_participants: "Send email invite to participants"
@@ -264,26 +264,26 @@ vi:
       your_meeting_export: "Meeting is being exported"
       minutes:
         footer_page_numbers: "P. %{current_page} of %{total_pages}"
-        author: "Author"
-        date: "Date"
-        time: "Time"
-        location: "Location"
-        title: "Minutes"
+        author: "Tác giả"
+        date: "Ngày"
+        time: "Thời gian"
+        location: "Địa điểm"
+        title: "Biên bản cuộc họp"
     export_pdf_dialog:
       title: Export PDF
       description: Generate a printable PDF file of this meeting at the current state.
       templates:
         default:
-          label: Default
+          label: Mặc định
           caption: The default template is suitable for most meetings and represent the current state.
         minutes:
-          label: Minutes
+          label: Biên bản cuộc họp
           caption: The minutes template is suitable for closed and archived meetings.
       first_page_header_left:
         label: First page header left
         caption: This text will appear on the first page at the left of the header.
       author:
-        label: Author
+        label: Tác giả
         caption: The author of the minutes will be displayed in the subtitle.
       include_participants:
         label: Include list of participants
@@ -300,7 +300,7 @@ vi:
       footer_text:
         label: Footer text
         caption: This text will appear on every page at the center of the footer.
-      submit_button: Download
+      submit_button: Tải
     notifications:
       sidepanel:
         title: "Email calendar updates"
@@ -463,14 +463,14 @@ vi:
   label_meeting_index_later: "Next week and later"
   label_agenda_items: "Các mục chương trình nghị sự"
   label_agenda_items_reordered: "đã sắp xếp lại"
-  label_agenda_item_add: "Add agenda item"
-  label_agenda_item_remove_from_agenda: "Remove from agenda"
+  label_agenda_item_add: "Thêm mục chương trình nghị sự"
+  label_agenda_item_remove_from_agenda: "Gỡ bỏ khỏi chương trình nghị sự"
   label_agenda_item_remove_from_backlog: "Remove from backlog"
   label_agenda_item_undisclosed_wp: "Gói công việc #%{id} không hiển thị"
   label_agenda_item_deleted_wp: "Tham chiếu gói công việc đã bị xóa"
   label_agenda_item_actions: "Các hành động mục chương trình nghị sự"
   label_agenda_item_move_to_next_title: "Move to next meeting?"
-  label_agenda_item_move: "Move"
+  label_agenda_item_move: "Di chuyển"
   label_agenda_item_move_to_next: "Move to next meeting"
   label_agenda_item_move_to_backlog: "Move to backlog"
   label_agenda_item_move_to_current_meeting: "Move to current meeting"
@@ -551,7 +551,7 @@ vi:
         text_hint: "iCalendar meeting tokens allow users to subscribe to all their meetings and view up-to-date meeting information in external clients."
         disabled_text: "iCalendar meeting subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
         empty_text_hint: 'To add an iCalendar meeting token, go to the <a href="%{path}">meetings section</a> and subscribe from there.'
-        add_button: "Subscribe to calendar"
+        add_button: "Đăng ký lịch"
   my:
     access_token:
       dialog:

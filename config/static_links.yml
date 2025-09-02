@@ -149,11 +149,11 @@ storage_docs:
     href: https://portal.azure.com/
   one_drive_setup:
     href: https://www.openproject.org/docs/system-admin-guide/integrations/one-drive/
-  share_point_drive_id_guide:
+  sharepoint_drive_id_guide:
     href: https://www.openproject.org/docs/system-admin-guide/integrations/one-drive/drive-guide/
-  share_point_oauth_application:
+  sharepoint_oauth_application:
     href: https://portal.azure.com/
-  share_point_setup:
+  sharepoint_setup:
     href: https://www.openproject.org/docs/system-admin-guide/integrations/one-drive/
   troubleshooting:
     href: https://www.openproject.org/docs/user-guide/file-management/nextcloud-integration/#possible-errors-and-troubleshooting

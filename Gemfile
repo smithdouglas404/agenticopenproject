@@ -225,7 +225,7 @@ gem "yabeda-prometheus-mmap", require: false
 gem "yabeda-puma-plugin"
 gem "yabeda-rails"
 
-gem "view_component"
+gem "view_component", "~> 4.0.2"
 # Lookbook
 gem "lookbook", "2.3.13"
 
@@ -414,6 +414,6 @@ gemfiles.each do |file|
   send(:eval_gemfile, file) if File.readable?(file)
 end
 
-gem "openproject-octicons", "~>19.27.0"
-gem "openproject-octicons_helper", "~>19.27.0"
-gem "openproject-primer_view_components", "~>0.71.0"
+gem "openproject-octicons", "~>19.27.1"
+gem "openproject-octicons_helper", "~>19.27.1"
+gem "openproject-primer_view_components", "~>0.72.0"

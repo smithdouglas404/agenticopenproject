@@ -288,17 +288,6 @@ es:
         format:
           date: "%{attribute} no es una fecha válida -se espera YYYY-MM-DD."
         general: "Ha ocurrido un error."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Obtenga información sobre nuevas funciones y actualizaciones de productos."
-          learn_about: "Más información sobre todas las nuevas funciones"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                La versión contiene varias funciones nuevas y mejoras, como <br>. <ul class="%{list_styling_class}"> <li>mejoras de UX/UI para tener un aspecto más moderno.</li> <li>Reuniones: Opción para silenciar las notificaciones por correo electrónico y de ICS.</li> <li>Temporizadores en curso mostrados en el módulo Mi seguimiento del tiempo.</li> <li>Informes de progreso: La suma de % completado también se muestra en el modo basado en el estado.</li> <li>Comprobación de salud de Nextcloud: Indica la ausencia de la función de intercambio de tokens (complemento de Enterprise).</li> </ul>
     ical_sharing_modal:
       title: "Suscribirse al calendario"
       inital_setup_error_message: "Se ha producido un error al obtener los datos."
@@ -1224,7 +1213,7 @@ es:
       selected_filter:
         all: "Todos los proyectos"
         selected: "Solo seleccionados"
-      search_placeholder: "Buscar proyecto…"
+      search_placeholder: "Search projects..."
       search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Incluir todos los subproyectos"
       tooltip:

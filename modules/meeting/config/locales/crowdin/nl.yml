@@ -45,7 +45,7 @@ nl:
       meeting_agenda_item:
         title: "Titel"
         author: "Auteur"
-        duration_in_minutes: "Duration"
+        duration_in_minutes: "Duur"
         description: "Notities"
         presenter: "Presentator"
       meeting_section:
@@ -60,8 +60,8 @@ nl:
         end_date: "Einddatum"
         iterations: "Gebeurtenissen"
       meeting_participant:
-        invited: "Invited"
-        attended: "Attended"
+        invited: "Uitgenodigd"
+        attended: "Deelgenomen"
     errors:
       models:
         meeting_participant:
@@ -177,24 +177,24 @@ nl:
   label_version: "Versie"
   label_time_zone: "Tijdzone"
   label_start_date: "Startdatum"
-  label_subscribe_icalendar: "Subscribe to calendar"
+  label_subscribe_icalendar: "Abonneren op agenda"
   meeting:
     participants:
       label:
-        participants: "Participants"
-        attended: "Attended"
+        participants: "Deelnemers"
+        attended: "Deelgenomen"
         mark_as_attended: "Mark as attended"
         mark_all_as_attended: "Mark all as attended"
         remove_participant: "Remove participant"
-        manage_participants: "Manage participants"
-        no_participants: "No participants"
-        show_all: "Show all"
+        manage_participants: "Deelnemers beheren"
+        no_participants: "Geen deelnemers"
+        show_all: "Toon alle"
       text:
-        template: "These participants will be invited automatically to all future meetings as they are created."
+        template: "Deze deelnemers worden automatisch uitgenodigd voor alle toekomstige vergaderingen wanneer deze worden aangemaakt."
         manage_participants: "Search for and add project members as participants to this meeting."
         search_for_members: "Search for project members"
       blankslate:
-        heading: "No participants"
+        heading: "Geen deelnemers"
         description: "There are no participants yet."
     attachments:
       template: "Deze bijgevoegde bestanden zullen in alle toekomstige vergaderingen in de serie worden opgenomen."
@@ -207,7 +207,7 @@ nl:
       agenda_items: "Agendapunten kopiëren"
       agenda_text: "Kopieer de agenda van de oude vergadering"
       participants: "Kopieer lijst van deelnemers"
-      to_clipboard: "Copy to clipboard"
+      to_clipboard: "Kopiëren naar het klembord"
     email:
       send_emails: "Email participants"
       send_invitation_emails: >
@@ -237,8 +237,8 @@ nl:
         header: "Meeting '%{title}' has been updated"
         summary: "Meeting '%{title}' has been updated by %{actor}"
         body: "The meeting '%{title}' has been updated by %{actor}."
-        old_date_time: "Old date/time"
-        new_date_time: "New date/time"
+        old_date_time: "Oude datum/tijd"
+        new_date_time: "Nieuwe datum/tijd"
         old_location: "Old location"
         new_location: "New location"
     label_mail_all_participants: "Send email invite to participants"
@@ -269,26 +269,26 @@ nl:
       your_meeting_export: "Meeting is being exported"
       minutes:
         footer_page_numbers: "P. %{current_page} of %{total_pages}"
-        author: "Author"
-        date: "Date"
-        time: "Time"
-        location: "Location"
-        title: "Minutes"
+        author: "Auteur"
+        date: "Datum"
+        time: "Tijd"
+        location: "Locatie"
+        title: "Notulen"
     export_pdf_dialog:
       title: Export PDF
       description: Generate a printable PDF file of this meeting at the current state.
       templates:
         default:
-          label: Default
+          label: Standaard
           caption: The default template is suitable for most meetings and represent the current state.
         minutes:
-          label: Minutes
+          label: Notulen
           caption: The minutes template is suitable for closed and archived meetings.
       first_page_header_left:
         label: First page header left
         caption: This text will appear on the first page at the left of the header.
       author:
-        label: Author
+        label: Auteur
         caption: The author of the minutes will be displayed in the subtitle.
       include_participants:
         label: Include list of participants
@@ -305,7 +305,7 @@ nl:
       footer_text:
         label: Footer text
         caption: This text will appear on every page at the center of the footer.
-      submit_button: Download
+      submit_button: Downloaden
     notifications:
       sidepanel:
         title: "Email calendar updates"
@@ -470,14 +470,14 @@ nl:
   label_meeting_index_later: "Next week and later"
   label_agenda_items: "Agendapunten"
   label_agenda_items_reordered: "herschikken"
-  label_agenda_item_add: "Add agenda item"
-  label_agenda_item_remove_from_agenda: "Remove from agenda"
+  label_agenda_item_add: "Agendapunt toevoegen"
+  label_agenda_item_remove_from_agenda: "Van de agenda schrappen"
   label_agenda_item_remove_from_backlog: "Remove from backlog"
   label_agenda_item_undisclosed_wp: "Werkpakket #%{id} niet zichtbaar"
   label_agenda_item_deleted_wp: "Verwijderde verwijzing naar het werkpakket"
   label_agenda_item_actions: "Agenda items acties"
   label_agenda_item_move_to_next_title: "Move to next meeting?"
-  label_agenda_item_move: "Move"
+  label_agenda_item_move: "Verplaatsen"
   label_agenda_item_move_to_next: "Move to next meeting"
   label_agenda_item_move_to_backlog: "Move to backlog"
   label_agenda_item_move_to_current_meeting: "Move to current meeting"
@@ -558,7 +558,7 @@ nl:
         text_hint: "iCalendar meeting tokens allow users to subscribe to all their meetings and view up-to-date meeting information in external clients."
         disabled_text: "iCalendar meeting subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
         empty_text_hint: 'To add an iCalendar meeting token, go to the <a href="%{path}">meetings section</a> and subscribe from there.'
-        add_button: "Subscribe to calendar"
+        add_button: "Abonneren op agenda"
   my:
     access_token:
       dialog:
@@ -566,7 +566,7 @@ nl:
           dialog_title: "New iCal subscription token for meetings"
           dialog_body: "This token will generate an iCal subscription URL that lets you view all your meetings in an external calendar application."
           create_button: "Create subscription"
-          name_label: "Token name"
+          name_label: "Tokennaam"
           name_caption: 'You can name it after where you will use it, such as"My phone" or "Work computer.'
       created_dialog:
         token/ical_meeting:

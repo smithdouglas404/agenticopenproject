@@ -46,7 +46,7 @@ ro:
       meeting_agenda_item:
         title: "Titlu"
         author: "Autor"
-        duration_in_minutes: "Duration"
+        duration_in_minutes: "Durată"
         description: "Mențiuni"
         presenter: "Prezentator"
       meeting_section:
@@ -61,8 +61,8 @@ ro:
         end_date: "Dată sfârșit"
         iterations: "Apariţii"
       meeting_participant:
-        invited: "Invited"
-        attended: "Attended"
+        invited: "Invitat"
+        attended: "Participat"
     errors:
       models:
         meeting_participant:
@@ -99,7 +99,7 @@ ro:
           updated: "reordonat"
         work_package:
           updated: "schimbat de la %{old_value} la %{value}"
-          updated_html: "changed from <i>%{old_value}</i> to <i>%{value}</i>"
+          updated_html: "schimbat de la <i>%{old_value}</i> la <i>%{value}</i>"
   description_attended: "a participat"
   events:
     meeting: Întâlnire editată
@@ -114,7 +114,7 @@ ro:
   label_meeting_plural: "Întâlniri"
   label_meeting_new: "Noua întâlnire"
   label_meeting_new_dynamic: "New one-time meeting"
-  label_meeting_new_recurring: "New recurring meeting"
+  label_meeting_new_recurring: "Întâlnire periodică nouă"
   label_meeting_create: "Creează întâlnire"
   label_meeting_copy: "Copiază întâlnirea"
   label_meeting_edit: "Editare Întâlnire"
@@ -177,7 +177,7 @@ ro:
   label_notify: "Trimiteți pentru revizuire"
   label_icalendar: "Trimiteți iCalendar"
   label_icalendar_download: "Download iCalendar event"
-  label_view_meeting_series: "View meeting series"
+  label_view_meeting_series: "Vezi seria de întâlniri"
   label_meeting_series: "Serie şedinţe"
   label_version: "Versiune"
   label_time_zone: "Fus orar"
@@ -186,14 +186,14 @@ ro:
   meeting:
     participants:
       label:
-        participants: "Participants"
-        attended: "Attended"
+        participants: "Participanţi"
+        attended: "Participat"
         mark_as_attended: "Mark as attended"
         mark_all_as_attended: "Mark all as attended"
         remove_participant: "Remove participant"
         manage_participants: "Manage participants"
         no_participants: "No participants"
-        show_all: "Show all"
+        show_all: "Afișare completă"
       text:
         template: "These participants will be invited automatically to all future meetings as they are created."
         manage_participants: "Search for and add project members as participants to this meeting."
@@ -274,26 +274,26 @@ ro:
       your_meeting_export: "Se exportă întâlnirea"
       minutes:
         footer_page_numbers: "P. %{current_page} of %{total_pages}"
-        author: "Author"
-        date: "Date"
-        time: "Time"
-        location: "Location"
-        title: "Minutes"
+        author: "Autor"
+        date: "Dată"
+        time: "Timp"
+        location: "Locație"
+        title: "Minute"
     export_pdf_dialog:
       title: Exportă PDF
       description: Generează un fișier PDF printabil pentru aceasta întâlnire in starea curenta.
       templates:
         default:
-          label: Default
+          label: Implicit
           caption: The default template is suitable for most meetings and represent the current state.
         minutes:
-          label: Minutes
+          label: Minute
           caption: The minutes template is suitable for closed and archived meetings.
       first_page_header_left:
         label: First page header left
         caption: This text will appear on the first page at the left of the header.
       author:
-        label: Author
+        label: Autor
         caption: The author of the minutes will be displayed in the subtitle.
       include_participants:
         label: Include list of participants
@@ -467,7 +467,7 @@ ro:
   label_meeting_empty_action: "Add agenda item"
   label_meeting_actions: "Meeting actions"
   label_meeting_edit_title: "Edit meeting title"
-  label_meeting_delete: "Delete meeting"
+  label_meeting_delete: "Șterge întâlnire"
   label_meeting_created_by: "Creat de"
   label_meeting_last_updated: "Ultima actualizare"
   label_meeting_reload: "Reîncarcă"
@@ -504,7 +504,7 @@ ro:
   text_outcome_not_editable_anymore: "This outcome is not editable anymore."
   text_outcome_cannot_be_added: "An outcome can no longer be added."
   label_backlog_clear: "Clear backlog"
-  label_backlog_clear_button: "Clear all"
+  label_backlog_clear_button: "Șterge tot"
   text_backlog_clear_error: "One or more errors occurred while trying to clear the backlog."
   label_agenda_backlog: "Agenda backlog"
   text_agenda_backlog: >

@@ -42,9 +42,6 @@ class ApplicationForm < Primer::Forms::Base
     Rails.application.routes.url_helpers
   end
 
-  # @return [ActionView::Base] the view helper instance
-  delegate :helpers, to: :@view_context
-
   # @return [ActiveRecord::Base] the model instance given to the form builder
   def model
     @builder.object

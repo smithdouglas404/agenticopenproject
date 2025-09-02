@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "rails_helper"
+require "spec_helper"
 
 RSpec.describe CustomFields::Hierarchy::GenerateRootContract,
                with_ee: [:custom_field_hierarchies],

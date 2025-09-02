@@ -287,17 +287,6 @@ de:
         format:
           date: "%{attribute} ist kein gültiges Datum - Erwartetes Format: YYY-MM-DD."
         general: "Ein Fehler ist aufgetreten."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Lesen Sie über neue Funktionen und Updates."
-          learn_about: "Erfahren Sie mehr über die neuen Funktionen"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                Die Version enthält verschiedene neue Funktionen und Verbesserungen, wie z.B. <br> <ul class="%{list_styling_class}"> <li>UX/UI-Verbesserungen für ein moderneres Aussehen.</li> <li>Besprechungen: Option zum Stummschalten von E-Mail-Benachrichtigungen und ICS.</li> <li>Laufende Timer werden im Modul Meine Zeiterfassung angezeigt.</li> <li>Fortschrittsberichte: Summe in % abgeschlossen wird auch im statusbasierten Modus angezeigt.</li> <li>Nextcloud Gesundheitscheck: Anzeige der fehlenden Fähigkeit zum Austausch von Token (Enterprise Add-on).</li> </ul>
     ical_sharing_modal:
       title: "Kalender abonnieren"
       inital_setup_error_message: "Beim Abrufen der Daten ist ein Fehler aufgetreten."
@@ -1079,8 +1068,8 @@ de:
     notice_successful_delete: "Erfolgreich gelöscht."
     notice_successful_update: "Erfolgreich aktualisiert."
     notice_job_started: "Vorgang gestartet."
-    no_job_id: "No job ID returned from server."
-    invalid_job_response: "Invalid response from server."
+    no_job_id: "Keine Job-ID vom Server zurückgegeben."
+    invalid_job_response: "Ungültige Antwort vom Server."
     notice_bad_request: "Fehlerhafte Anfrage."
     relations:
       empty: Keine bestehenden Beziehungen
@@ -1223,15 +1212,15 @@ de:
       selected_filter:
         all: "Alle Projekte"
         selected: "Nur ausgewählte"
-      search_placeholder: "Projekt durchsuchen..."
-      search_placeholder_favorites: "Search favorites..."
+      search_placeholder: "Search projects..."
+      search_placeholder_favorites: "Favoriten suchen..."
       include_subprojects: "Alle Unterprojekte einbeziehen"
       tooltip:
         include_all_selected: "Das Projekt ist bereits enthalten, da alle Unterprojekte einbezogen sind."
         current_project: "Dies ist das aktuelle Projekt, in dem Sie sich befinden."
         does_not_match_search: "Projekt entspricht nicht den Suchkriterien."
       no_results: "Kein Projekt entspricht Ihren Suchkriterien."
-      no_favorite_results: "No favorite project matches your search criteria."
+      no_favorite_results: "Kein favorisiertes Projekt entspricht Ihren Suchkriterien."
     baseline:
       toggle_title: "Grundlinie"
       clear: "Zurücksetzen"

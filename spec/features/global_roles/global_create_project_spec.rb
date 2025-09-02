@@ -103,4 +103,32 @@ RSpec.describe "Global role: Global Create project",
       projects_page.expect_no_project_create_button
     end
   end
+
+  describe "portfolio_models feature flag" do
+    context "when enabled", with_flag: { portfolio_models: true } do
+      let(:projects_menu) { Components::Projects::TopMenu.new }
+
+      current_user { admin }
+
+      it "does not show the button for project creation and list" do
+        projects_page.visit!
+        projects_menu.toggle!
+        projects_menu.expect_no_project_create_button
+        projects_menu.expect_no_project_list_button
+      end
+    end
+
+    describe "when disabled", with_flag: { portfolio_models: false } do
+      let(:projects_menu) { Components::Projects::TopMenu.new }
+
+      current_user { admin }
+
+      it "shows the button for project creation and list" do
+        projects_page.visit!
+        projects_menu.toggle!
+        projects_menu.expect_project_create_button
+        projects_menu.expect_project_list_button
+      end
+    end
+  end
 end
