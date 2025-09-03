@@ -11,6 +11,9 @@ updates:
       angular:
         patterns:
           - '@angular*'
+      blocknote:
+        patterns:
+          - '@blocknote/*'
       fullcalendar:
         patterns:
           - '@fullcalendar*'
