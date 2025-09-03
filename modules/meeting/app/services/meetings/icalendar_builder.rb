@@ -171,7 +171,7 @@ module Meetings
           {
             "CN" => user.name,
             "EMAIL" => user.mail,
-            "PARTSTAT" => "NEEDS-ACTION",
+            "PARTSTAT" => "ACCEPTED", # until we handle RSVPs properly, we assume participants have accepted
             "RSVP" => "TRUE",
             "CUTYPE" => "INDIVIDUAL",
             "ROLE" => "REQ-PARTICIPANT"
