@@ -2678,7 +2678,8 @@ en:
       shortcuts: "Shortcuts"
       blog: "OpenProject blog"
       forums: "Community forum"
-      newsletter: "Security alerts / Newsletter"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
 
   image_conversion:
     imagemagick: "Imagemagick"
