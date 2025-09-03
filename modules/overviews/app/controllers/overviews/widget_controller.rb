@@ -27,24 +27,10 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-module Projects
-  module Settings
-    class StatusForm < ApplicationForm
-      extend Dry::Initializer
 
-      option :hide_label, default: -> { false }
+class Overviews::WidgetController < Grids::BaseInProjectController
+  include OpTurbo::ComponentStream
+  include OpTurbo::FlashStreamHelper
 
-      form do |f|
-        f.rich_text_area(
-          name: :status_explanation,
-          label: attribute_name(:status_explanation),
-          visually_hide_label: hide_label,
-          rich_text_options: {
-            showAttachments: false,
-            data: { qa_field_name: "statusExplanation" }
-          }
-        )
-      end
-    end
-  end
+  layout -> { "turbo_rails/frame" }
 end

@@ -226,15 +226,13 @@ export function initializeServices(injector:Injector) {
       contextMenu.register();
       inviteUserAugmentService.setupListener();
       timeEntryTimerService.initialize();
+      currentProject.detect();
     };
     runOnRenderAndLoad();
 
     // Register on turbo:render, turbo:load
     document.addEventListener('turbo:render', runOnRenderAndLoad);
-    document.addEventListener('turbo:load', () => {
-      runOnRenderAndLoad();
-      currentProject.detect();
-    });
+    document.addEventListener('turbo:load', runOnRenderAndLoad);
 
     keyboardShortcuts.register();
 

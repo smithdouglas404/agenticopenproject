@@ -27,23 +27,27 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-module Projects
-  module Settings
-    class StatusForm < ApplicationForm
-      extend Dry::Initializer
 
-      option :hide_label, default: -> { false }
+module Overviews
+  module Widgets
+    class ProjectStatusComponent < ApplicationComponent
+      include ApplicationHelper
+      include OpPrimer::ComponentHelpers
+      include OpTurbo::Streamable
 
-      form do |f|
-        f.rich_text_area(
-          name: :status_explanation,
-          label: attribute_name(:status_explanation),
-          visually_hide_label: hide_label,
-          rich_text_options: {
-            showAttachments: false,
-            data: { qa_field_name: "statusExplanation" }
-          }
-        )
+      attr_reader :project, :current_user
+
+      def initialize(project:, current_user:)
+        super()
+
+        @project = project
+        @current_user = current_user
+      end
+
+      private
+
+      def edit_enabled?
+        current_user.allowed_in_project?(:edit_project, project)
       end
     end
   end

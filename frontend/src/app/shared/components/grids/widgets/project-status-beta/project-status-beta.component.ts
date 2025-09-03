@@ -27,19 +27,14 @@
 //++
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { GridPageComponent } from 'core-app/shared/components/grids/grid/page/grid-page.component';
-import { GRID_PROVIDERS } from 'core-app/shared/components/grids/grid/grid.component';
+import { AbstractTurboWidgetComponent } from 'core-app/shared/components/grids/widgets/abstract-turbo-widget.component';
 
 @Component({
-  selector: 'overview',
+  templateUrl: './project-status-beta.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: '../../shared/components/grids/grid/page/grid-page.component.html',
-  styleUrls: ['../../shared/components/grids/grid/page/grid-page.component.sass'],
-  providers: GRID_PROVIDERS,
   standalone: false,
 })
-export class OverviewComponent extends GridPageComponent {
-  protected gridScopePath():string {
-    return this.pathHelper.projectPath(this.currentProject.identifier ?? '');
-  }
+export class WidgetProjectStatusBetaComponent extends AbstractTurboWidgetComponent {
+  override frameId = 'overviews-widgets-project-status-component';
+  override name = 'project_status';
 }

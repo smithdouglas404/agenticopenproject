@@ -26,20 +26,25 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { GridPageComponent } from 'core-app/shared/components/grids/grid/page/grid-page.component';
-import { GRID_PROVIDERS } from 'core-app/shared/components/grids/grid/grid.component';
+import { Directive, inject } from '@angular/core';
+import { AbstractWidgetComponent } from 'core-app/shared/components/grids/widgets/abstract-widget.component';
+import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 
-@Component({
-  selector: 'overview',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: '../../shared/components/grids/grid/page/grid-page.component.html',
-  styleUrls: ['../../shared/components/grids/grid/page/grid-page.component.sass'],
-  providers: GRID_PROVIDERS,
-  standalone: false,
-})
-export class OverviewComponent extends GridPageComponent {
-  protected gridScopePath():string {
-    return this.pathHelper.projectPath(this.currentProject.identifier ?? '');
+@Directive()
+export abstract class AbstractTurboWidgetComponent extends AbstractWidgetComponent {
+  protected readonly currentProject = inject(CurrentProjectService);
+  protected readonly pathHelper = inject(PathHelperService);
+
+  abstract readonly frameId:string;
+  abstract readonly name:string;
+
+  protected get src():string|null {
+    if (!this.currentProject.identifier) return null;
+    return this.pathHelper.projectWidgetPath(this.currentProject.identifier, this.name);
+  }
+
+  public override get isEditable():boolean {
+    return false;
   }
 }

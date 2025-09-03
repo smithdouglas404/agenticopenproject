@@ -27,24 +27,13 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-module Projects
-  module Settings
-    class StatusForm < ApplicationForm
-      extend Dry::Initializer
 
-      option :hide_label, default: -> { false }
+require "spec_helper"
+require "support/permission_specs"
 
-      form do |f|
-        f.rich_text_area(
-          name: :status_explanation,
-          label: attribute_name(:status_explanation),
-          visually_hide_label: hide_label,
-          rich_text_options: {
-            showAttachments: false,
-            data: { qa_field_name: "statusExplanation" }
-          }
-        )
-      end
-    end
-  end
+RSpec.describe Overviews::Widgets::ProjectStatusesController, "permissions", type: :controller do # rubocop:disable RSpec/EmptyExampleGroup,RSpec/SpecFilePathFormat
+  include PermissionSpecs
+
+  check_permission_required_for("overviews/widgets/project_statuses#show", :view_project)
+  check_permission_required_for("overviews/widgets/project_statuses#update", :edit_project)
 end

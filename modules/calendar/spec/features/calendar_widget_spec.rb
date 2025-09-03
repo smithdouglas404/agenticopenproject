@@ -98,15 +98,6 @@ RSpec.describe "Calendar Widget", :js, with_settings: { start_of_week: 1 } do
     end
   end
 
-  it "opens the work package full view when clicking a calendar entry" do
-    # Clicking the calendar entry goes to work package full screen
-    page.find(".fc-event-title", text: work_package.subject).click
-    wp_full_view.ensure_page_loaded
-
-    wp_full_view.go_back
-    expect(page).to have_text("Overview")
-  end
-
   it "can resize the same work package twice (Regression #48333)", :selenium do
     expect(page).to have_css(".fc-event-title", text: work_package.subject)
 

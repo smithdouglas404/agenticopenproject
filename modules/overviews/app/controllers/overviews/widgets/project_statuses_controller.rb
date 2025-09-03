@@ -27,24 +27,20 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-module Projects
-  module Settings
-    class StatusForm < ApplicationForm
-      extend Dry::Initializer
 
-      option :hide_label, default: -> { false }
+class Overviews::Widgets::ProjectStatusesController < Overviews::WidgetController
+  def update
+    call = Projects::UpdateService
+      .new(model: @project, user: current_user)
+      .call(permitted_params.project_status)
 
-      form do |f|
-        f.rich_text_area(
-          name: :status_explanation,
-          label: attribute_name(:status_explanation),
-          visually_hide_label: hide_label,
-          rich_text_options: {
-            showAttachments: false,
-            data: { qa_field_name: "statusExplanation" }
-          }
-        )
-      end
+    if call.success?
+      @project = call.result
+      update_via_turbo_stream(component: Overviews::Widgets::ProjectStatusComponent.new(project: @project, current_user:))
+      render_success_flash_message_via_turbo_stream(message: t(:notice_successful_update))
+      respond_with_turbo_streams
+    else
+      respond_with_flash_error(message: t(:notice_unsuccessful_update_with_reason, reason: call.message))
     end
   end
 end

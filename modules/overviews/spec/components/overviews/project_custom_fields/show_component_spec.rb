@@ -28,53 +28,31 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Projects::StatusButtonComponent < ApplicationComponent
-  include ApplicationHelper
-  include OpTurbo::Streamable
-  include OpPrimer::ComponentHelpers
-  include ProjectStatusHelper
+require "rails_helper"
 
-  attr_reader :project, :user, :hide_help_text
-  alias :hide_help_text? :hide_help_text
+RSpec.describe Overviews::ProjectCustomFields::ShowComponent, type: :component do
+  include Rails.application.routes.url_helpers
 
-  def initialize(project:, user:, size: :medium, hide_help_text: false)
-    super
-
-    @project = project
-    @user = user
-    @size = size
-    @hide_help_text = hide_help_text
-
-    @status = find_status(project.status_code)
+  def render_component(...)
+    render_inline(described_class.new(...))
   end
 
-  private
+  let(:project) { build(:project) }
+  let(:project_custom_field_section) { build(:project_custom_field_section, name: "Special Section") }
+  let(:project_custom_fields) { create_list(:project_custom_field, 2, projects: [project]) }
+  let(:user) { build_stubbed(:user) }
 
-  def edit_enabled?
-    user.allowed_in_project?(:edit_project, project)
+  current_user { user }
+
+  subject(:rendered_component) do
+    render_component(project:, project_custom_field_section:, project_custom_fields:)
   end
 
-  def find_status(code)
-    Projects::Statuses::AVAILABLE.find(-> { Projects::Statuses::NOT_SET }) { it.code&.to_s == code }
+  it "renders a section" do
+    expect(rendered_component).to have_section "Special Section"
   end
 
-  def build_items
-    Projects::Statuses::AVAILABLE.map { build_item(it) }
-  end
-
-  def build_item(status)
-    OpPrimer::StatusButtonOption.new(
-      name: project_status_name(status.code),
-      color_namespace: :project_status,
-      color_ref: status.id,
-      icon: status.icon,
-      item_id: status.id,
-      tag: :a,
-      href: project_status_path(project, status_code: status.value),
-      content_arguments: {
-        data: { turbo_method: status.value ? :put : :delete },
-        aria: { current: (true if status == @status) }
-      }
-    )
+  it "renders two custom fields" do
+    expect(rendered_component).to have_css ".op-project-custom-field-container", count: 2
   end
 end
