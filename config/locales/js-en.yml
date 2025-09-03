@@ -1199,6 +1199,7 @@ en:
       current_project_and_all_descendants: "In this project + subprojects"
       current_project: "In this project"
       recently_viewed: "Recently viewed"
+      search_placeholder_expanded: "Search work packages by subject, project, type or status"
       title:
         all_projects: "all projects"
         project_and_subprojects: "and all subprojects"
