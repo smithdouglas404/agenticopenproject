@@ -12,7 +12,7 @@
         section.with_action_icon(
           icon: :pencil,
           tag: :a,
-          href: project_custom_field_section_dialog_path(project_id: @project.id, section_id: @project_custom_field_section.id),
+          href: show_dialog_project_custom_field_section_path(project_id: @project.id, id: @project_custom_field_section.id),
           data: {
             controller: "async-dialog"
           },

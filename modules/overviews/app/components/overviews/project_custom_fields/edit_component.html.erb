@@ -6,7 +6,7 @@
       model: @project,
       method: :put,
       data: { turbo: true, turbo_stream: true, "test-selector": "async-dialog-content" },
-      url: project_update_custom_values_path(project_id: @project.id, section_id: @project_custom_field_section.id)
+      url: project_custom_field_section_path(project_id: @project.id, id: @project_custom_field_section.id)
     ) do |f|
       render(
         Projects::CustomFields::Form.new(

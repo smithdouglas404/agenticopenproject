@@ -9,10 +9,10 @@ Rails.application.routes.draw do
         controller :overviews do
           get "project_custom_fields_sidebar" => :project_custom_fields_sidebar, as: :custom_fields_sidebar
           get "project_life_cycle_sidebar" => :project_life_cycle_sidebar, as: :life_cycle_sidebar
+        end
 
-          get "project_custom_field_section_dialog/:section_id" => :project_custom_field_section_dialog,
-              as: :custom_field_section_dialog
-          put "project_update_custom_values/:section_id" => :project_update_custom_values, as: :update_custom_values
+        resources :project_custom_field_sections, only: [:update], as: :custom_field_sections do
+          get :show_dialog, on: :member
         end
 
         namespace :widgets do
@@ -23,8 +23,6 @@ Rails.application.routes.draw do
   end
 
   resources :project_phases, controller: "overviews/project_phases", only: %i[edit update] do
-    member do
-      put :preview
-    end
+    put :preview, on: :member
   end
 end
