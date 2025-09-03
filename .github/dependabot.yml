@@ -17,6 +17,9 @@ updates:
       fullcalendar:
         patterns:
           - '@fullcalendar*'
+      html-eslint:
+        patterns:
+          - '@html-eslint/*'
       appsignal:
         patterns:
           - '@appsignal*'
