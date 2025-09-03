@@ -28,46 +28,14 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
+module Token
+  class Named < HashedToken
+    store_attribute :data, :token_name, :string
 
-RSpec.describe APITokens::CreateContract do
-  let(:current_user) { create(:admin) }
-  let(:token_name) { "my token name" }
-  let(:token) { build_stubbed(:api_token, token_name:, user: current_user) }
+    protected
 
-  subject(:contract) { described_class.new(token, current_user) }
-
-  def expect_valid(valid, symbols = {})
-    expect(contract.validate).to eq(valid)
-
-    symbols.each do |key, arr|
-      expect(contract.errors.symbols_for(key)).to match_array arr
-    end
-  end
-
-  describe "validation" do
-    context "when token_name is set" do
-      it "is valid" do
-        expect_valid(true)
-      end
-    end
-
-    context "if the token_name is nil" do
-      let(:token_name) { nil }
-
-      it "is invalid" do
-        expect_valid(false, token_name: %i(blank))
-      end
-    end
-
-    context "if the token_name is taken for current user" do
-      before do
-        create(:api_token, token_name:, user: current_user)
-      end
-
-      it "is invalid" do
-        expect_valid(false, token_name: %i(in_use))
-      end
+    def single_value?
+      false
     end
   end
 end
