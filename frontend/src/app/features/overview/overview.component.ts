@@ -39,44 +39,6 @@ import { GRID_PROVIDERS } from 'core-app/shared/components/grids/grid/grid.compo
   standalone: false,
 })
 export class OverviewComponent extends GridPageComponent {
-  showToolbar = false;
-
-  protected i18nNamespace():string {
-    return 'overviews';
-  }
-
-  protected isTurboFrameSidebarEnabled():boolean {
-    return this.isCustomFieldsSidebarEnabled() || this.isLifeCycleSidebarEnabled();
-  }
-
-  protected isCustomFieldsSidebarEnabled():boolean {
-    const customFieldsSidebarEnabledTag:HTMLMetaElement|null = document.querySelector('meta[name="custom_fields_sidebar_enabled"]');
-
-    return customFieldsSidebarEnabledTag?.dataset.enabled === 'true';
-  }
-
-  protected isLifeCycleSidebarEnabled():boolean {
-    const lifeCycleSidebarEnabledTag:HTMLMetaElement|null = document.querySelector('meta[name="life_cycle_sidebar_enabled"]');
-
-    return lifeCycleSidebarEnabledTag?.dataset.enabled === 'true';
-  }
-
-  protected lifeCycleSidebarSrc():string {
-    return `${this.pathHelper.staticBase}/projects/${this.currentProject.identifier ?? ''}/project_life_cycle_sidebar`;
-  }
-
-  protected lifeCycleSidebarId():string {
-    return 'project-life-cycle-sidebar';
-  }
-
-  protected projectCustomFieldsSidebarSrc():string {
-    return `${this.pathHelper.staticBase}/projects/${this.currentProject.identifier ?? ''}/project_custom_fields_sidebar`;
-  }
-
-  protected projectCustomFieldsSidebarId():string {
-    return 'project-custom-fields-sidebar';
-  }
-
   protected gridScopePath():string {
     return this.pathHelper.projectPath(this.currentProject.identifier ?? '');
   }

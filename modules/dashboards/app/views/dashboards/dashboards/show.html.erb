@@ -1,0 +1,23 @@
+<%=
+  render(Primer::OpenProject::PageHeader.new) do |header|
+    header.with_title(variant: :medium) { t("dashboards.label") }
+    header.with_breadcrumbs(
+      [
+        { href: project_path(@project), text: @project.name, skip_for_mobile: true },
+        t("dashboards.label")
+      ]
+    )
+    header.with_action_icon_button(
+      icon: :"screen-full",
+      mobile_icon: :"screen-full",
+      label: I18n.t("js.button_show_fullscreen"),
+      data: {
+        controller: "projects-zen-mode",
+        target: "projects-zen-mode.button",
+        action: "click->projects-zen-mode#performAction"
+      }
+    )
+  end
+%>
+
+<%= angular_component_tag "opce-dashboard" %>

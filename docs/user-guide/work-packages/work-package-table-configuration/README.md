@@ -79,7 +79,7 @@ Multi-select attributes also have one extra options:
 
 - **is (AND)**: returns all work packages that match _all_ of the entered values.
 
-Other attributes like Status might offer additional criteria like _open_ or _closed_. Required attributes might only offer two options, _is (OR)_ and _is not_, since they cannot be empty.
+Other attributes like Version might offer additional criteria like *open*, *closed* or *locked*. Required attributes might only offer two options, _is (OR)_ and _is not_, since they cannot be empty.
 
 ### Filter by text
 

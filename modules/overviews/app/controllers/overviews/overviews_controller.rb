@@ -31,13 +31,8 @@ module ::Overviews
     include OpTurbo::ComponentStream
 
     before_action :jump_to_project_menu_item
-    before_action :set_sidebar_enabled
 
     menu_item :overview
-
-    def show
-      render
-    end
 
     def project_custom_fields_sidebar
       render :project_custom_fields_sidebar, layout: false
@@ -90,15 +85,6 @@ module ::Overviews
 
     def find_project_custom_field_section
       ProjectCustomFieldSection.find(params[:section_id])
-    end
-
-    def set_sidebar_enabled
-      @custom_fields_sidebar_enabled =
-        User.current.allowed_in_project?(:view_project_attributes, @project) &&
-        @project.project_custom_fields.visible.any?
-      @life_cycle_sidebar_enabled =
-        User.current.allowed_in_project?(:view_project_phases, @project) &&
-        @project.phases.active.any?
     end
 
     def handle_errors(project_with_errors, section)

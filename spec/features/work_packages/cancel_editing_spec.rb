@@ -192,7 +192,7 @@ RSpec.describe "Cancel editing work package", :js, :selenium do
       create(:user_preference, user:, others: { warn_on_leaving_unsaved: false })
     end
 
-    it "does not alert when moving anywhere" do
+    it "does alert when moving to a new page" do
       # Moving to angular states
       expect_active_edit(new_split_work_packages_path)
       wp_table.expect_work_package_listed(work_package2)
@@ -205,7 +205,7 @@ RSpec.describe "Cancel editing work package", :js, :selenium do
 
       # Moving somewhere else
       expect_active_edit(new_split_work_packages_path)
-      move_to_home_page(alert: false)
+      move_to_home_page(alert: true)
     end
   end
 end

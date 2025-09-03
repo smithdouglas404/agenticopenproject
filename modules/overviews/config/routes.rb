@@ -14,6 +14,14 @@ Rails.application.routes.draw do
 
     get "projects/:project_id/project_life_cycle_sidebar",
         to: "overviews/overviews#project_life_cycle_sidebar", as: :project_life_cycle_sidebar
+
+    scope "projects/:project_id", as: "project" do
+      scope module: "overviews" do
+        namespace :widgets do
+          resource :project_status, only: %i[show update]
+        end
+      end
+    end
   end
 
   resources :project_phases, controller: "overviews/project_phases", only: %i[edit update] do

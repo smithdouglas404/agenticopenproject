@@ -10,10 +10,6 @@ import { GRID_PROVIDERS } from 'core-app/shared/components/grids/grid/grid.compo
   standalone: false,
 })
 export class DashboardComponent extends GridPageComponent {
-  protected i18nNamespace():string {
-    return 'dashboards';
-  }
-
   protected gridScopePath():string {
     return this.pathHelper.projectDashboardsPath(this.currentProject.identifier!);
   }

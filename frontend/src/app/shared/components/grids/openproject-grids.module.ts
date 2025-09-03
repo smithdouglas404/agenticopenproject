@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Injector, NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Injector, NgModule } from '@angular/core';
 import { DynamicModule } from 'ng-dynamic-component';
 import { HookService } from 'core-app/features/plugins/hook-service';
 import { OpSharedModule } from 'core-app/shared/shared.module';
@@ -73,6 +73,9 @@ import { WidgetMembersComponent } from 'core-app/shared/components/grids/widgets
 import {
   WidgetProjectStatusComponent,
 } from 'core-app/shared/components/grids/widgets/project-status/project-status.component';
+import {
+  WidgetProjectStatusBetaComponent,
+} from 'core-app/shared/components/grids/widgets/project-status-beta/project-status-beta.component';
 import { OpenprojectTimeEntriesModule } from 'core-app/shared/components/time_entries/openproject-time-entries.module';
 import {
   WidgetTimeEntriesCurrentUserMenuComponent,
@@ -127,6 +130,7 @@ import { OpenprojectEnterpriseModule } from 'core-app/features/enterprise/openpr
     WidgetWpGraphComponent,
     WidgetProjectDescriptionComponent,
     WidgetProjectStatusComponent,
+    WidgetProjectStatusBetaComponent,
     WidgetSubprojectsComponent,
     WidgetProjectFavoritesComponent,
     WidgetTimeEntriesCurrentUserComponent,
@@ -146,6 +150,7 @@ import { OpenprojectEnterpriseModule } from 'core-app/features/enterprise/openpr
   exports: [
     GridComponent,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class OpenprojectGridsModule {
   constructor(injector:Injector) {
@@ -331,6 +336,14 @@ export function registerWidgets(injector:Injector) {
         title: i18n.t('js.grid.widgets.project_status.title'),
         properties: {
           name: i18n.t('js.grid.widgets.project_status.title'),
+        },
+      },
+      {
+        identifier: 'project_status_beta',
+        component: WidgetProjectStatusBetaComponent,
+        title: i18n.t('js.grid.widgets.project_status_beta.title'),
+        properties: {
+          name: i18n.t('js.grid.widgets.project_status_beta.title'),
         },
       },
       {
