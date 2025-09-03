@@ -267,7 +267,9 @@ en:
     enumeration_doc_categories: "Document categories"
     enumeration_work_package_priorities: "Work package priorities"
     filter:
+      text_invalid_filter: "Invalid Filter"
       more_values_not_shown: "There are %{total} more results, search to filter results."
+      field_not_available: "This field is no longer available as a filter. Please remove it."
       description:
         text_open_filter: "Open this filter with 'ALT' and arrow keys."
         text_close_filter: "To select an entry leave the focus for example by pressing enter. To leave without filter select the first (empty) entry."

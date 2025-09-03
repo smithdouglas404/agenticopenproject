@@ -85,6 +85,7 @@ export class QueryFiltersComponent extends UntilDestroyedMixin implements OnInit
     close_filter: this.I18n.t('js.filter.description.text_close_filter'),
     close_form: this.I18n.t('js.close_form_title'),
     selected_filter_list: this.I18n.t('js.label_selected_filter_list'),
+    filter_not_available: this.I18n.t("js.filter.field_not_available"),
     button_delete: this.I18n.t('js.button_delete'),
     please_select: this.I18n.t('js.placeholders.selection'),
     filter_by_text: this.I18n.t('js.work_packages.label_filter_by_text'),
@@ -152,7 +153,7 @@ export class QueryFiltersComponent extends UntilDestroyedMixin implements OnInit
 
   public get isSecondSpacerVisible():boolean {
     const hasSearch = !!_.find(this.filters, (f) => f.id === 'search');
-    const hasAvailableFilter = !!this.filters.find((f) => f.id !== 'search' && this.isFilterAvailable(f));
+    const hasAvailableFilter = !!this.filters.find((f) => f.id !== 'search' && !this.isFilterHidden(f));
 
     return hasSearch && hasAvailableFilter;
   }
@@ -181,10 +182,13 @@ export class QueryFiltersComponent extends UntilDestroyedMixin implements OnInit
     return this.filters[index];
   }
 
-  public isFilterAvailable(filter:QueryFilterResource):boolean {
-    return (this.wpTableFilters.availableFilters.some((availableFilter) => availableFilter.id === filter.id)
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      && !(this.wpTableFilters.hidden.includes(filter.id) || filter.isTemplated()));
+  public isFilterUnavailable(filter:QueryFilterResource):boolean {
+    return !this.wpTableFilters.availableFilters.some((availableFilter) => availableFilter.id === filter.id);
+  }
+
+  public isFilterHidden(filter:QueryFilterResource):boolean {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    return !!(this.wpTableFilters.hidden.includes(filter.id) || filter.isTemplated());
   }
 
   public onOpen() {

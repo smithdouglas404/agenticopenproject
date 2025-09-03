@@ -106,7 +106,7 @@ module Queries
           # we have a filter, but it is not available => e.g. CustomFieldFilter with a
           # custom field that is not enabled for filtering or does no longer exist
           if result.nil?
-            raise ::Queries::Filters::InvalidError, I18n.t(:"activerecord.errors.messages.filtering_not_available")
+            raise ::Queries::Filters::InvalidError, I18n.t(:"activerecord.errors.messages.filter_not_available")
           end
 
           result
