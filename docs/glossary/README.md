@@ -194,13 +194,13 @@ In OpenProject, global modules are defined as a menu to access all [modules](#mo
 
 ### Group
 
-A Group in OpenProject is defined as a list of users which can be added as a member to projects with a selected [role](#role). Groups can also be assigned to work packages. New groups can be defined in Administration -> Users and permissions -> Groups.
+A group in OpenProject is defined as a list of users which can be added as a member to projects with a selected [role](#role). Groups can also be assigned to work packages. New groups can be defined in *Administration → Users and permissions → Groups*.
 
 ## H
 
 ### High contrast mode
 
-OpenProject offers a high contrast mode to make it easier for visually impaired people to use the software. This mode can be selected in the personal [account settings](../user-guide/account-settings/) and will only affect the individual user's experience.
+OpenProject offers light and dark high contrast modes to make it easier for visually impaired people to use the software. These modes can be selected in the personal [account settings](../user-guide/account-settings/) and will only affect the individual user's experience.
 
 ### Home page
 
