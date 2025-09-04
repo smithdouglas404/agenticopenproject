@@ -54,6 +54,11 @@ module Meetings
       calendar.event do |e|
         e.dtstart = ical_datetime(meeting.start_time)
         e.dtend = ical_datetime(meeting.end_time)
+
+        e.created = meeting.created_at.utc
+        e.last_modified = meeting.updated_at.utc
+        e.sequence = meeting.lock_version
+
         e.url = url_helpers.meeting_url(meeting)
         e.summary = meeting.title
         e.description = meeting.title
@@ -76,6 +81,10 @@ module Meetings
         e.summary = recurring_meeting.title
         e.description = recurring_meeting.title
         e.organizer = ical_organizer
+
+        e.created = recurring_meeting.template.created_at.utc
+        e.last_modified = [recurring_meeting.template.updated_at, recurring_meeting.updated_at].max.utc
+        e.sequence = recurring_meeting.template.lock_version
 
         e.rrule = recurring_meeting.schedule.rrules.first.to_ical # We currently only have one recurrence rule
         e.dtstart = ical_datetime(recurring_meeting.template.start_time)
@@ -108,12 +117,15 @@ module Meetings
         e.description = recurring_meeting.title
         e.organizer = ical_organizer
 
+        e.created = meeting.created_at.utc
+        e.last_modified = meeting.updated_at.utc
+        e.sequence = meeting.lock_version
+
         e.recurrence_id = ical_datetime(scheduled_meeting.start_time)
         e.dtstart = ical_datetime(meeting.start_time)
         e.dtend = ical_datetime(meeting.end_time)
         e.url = url_helpers.project_meeting_url(meeting.project, meeting)
         e.location = meeting.location.presence
-        e.sequence = meeting.lock_version
 
         add_attendees(event: e, meeting: meeting)
         e.status = if scheduled_meeting.cancelled?
