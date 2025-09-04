@@ -29,6 +29,15 @@ RSpec.describe Meetings::IcalendarBuilder,
         expect(current_user_attendee.ical_params["cutype"]).to eq(["INDIVIDUAL"])
         expect(current_user_attendee.ical_params["role"]).to eq(["REQ-PARTICIPANT"])
       end
+
+      it "sets created and last_modified timestamps correctly" do
+        builder.add_single_meeting_event(meeting:)
+        builder.update_calendar_status(cancelled: false)
+
+        event = parsed_calendar.events.first
+        expect(event.created.to_time).to be_within(1.second).of(meeting.created_at.utc)
+        expect(event.last_modified.to_time).to be_within(1.second).of(meeting.updated_at.utc)
+      end
     end
 
     context "when current user has accepted all invitations" do
@@ -235,6 +244,30 @@ RSpec.describe Meetings::IcalendarBuilder,
           expect(other_user_override.ical_params["rsvp"]).to eq(["FALSE"])
         end
       end
+
+      it "sets created and last_modified timestamps correctly for recurring series" do
+        builder.add_series_event(recurring_meeting:)
+
+        master = parsed_calendar.events.find { |e| e.rrule.present? && e.recurrence_id.blank? }
+        overrides = parsed_calendar.events.select { |e| e.recurrence_id.present? }
+
+        # Check master event timestamps
+        expect(master.created.to_time).to be_within(1.second).of(recurring_meeting.template.created_at.utc)
+        expect(master.last_modified.to_time).to be_within(1.second).of(recurring_meeting.template.updated_at.utc)
+
+        # Check override event timestamps
+        overrides.each do |override_event|
+          # Find the corresponding scheduled meeting for this override
+          scheduled_meeting = [second_occurrence, third_occurence].find do |sm|
+            sm.meeting && override_event.recurrence_id.to_time.utc.to_i == sm.start_time.utc.to_i
+          end
+
+          if scheduled_meeting&.meeting
+            expect(override_event.created.to_time).to be_within(1.second).of(scheduled_meeting.meeting.created_at.utc)
+            expect(override_event.last_modified.to_time).to be_within(1.second).of(scheduled_meeting.meeting.updated_at.utc)
+          end
+        end
+      end
     end
 
     context "when current user has accepted all invitations" do
@@ -267,6 +300,30 @@ RSpec.describe Meetings::IcalendarBuilder,
             expect(attendee.ical_params["rsvp"]).to eq(["FALSE"])
             expect(attendee.ical_params["cutype"]).to eq(["INDIVIDUAL"])
             expect(attendee.ical_params["role"]).to eq(["REQ-PARTICIPANT"])
+          end
+        end
+      end
+
+      it "sets created and last_modified timestamps correctly for recurring series when accepted" do
+        builder.add_series_event(recurring_meeting:)
+
+        master = parsed_calendar.events.find { |e| e.rrule.present? && e.recurrence_id.blank? }
+        overrides = parsed_calendar.events.select { |e| e.recurrence_id.present? }
+
+        # Check master event timestamps
+        expect(master.created.to_time).to be_within(1.second).of(recurring_meeting.template.created_at.utc)
+        expect(master.last_modified.to_time).to be_within(1.second).of(recurring_meeting.template.updated_at.utc)
+
+        # Check override event timestamps
+        overrides.each do |override_event|
+          # Find the corresponding scheduled meeting for this override
+          scheduled_meeting = [second_occurrence, third_occurence].find do |sm|
+            sm.meeting && override_event.recurrence_id.to_time.utc.to_i == sm.start_time.utc.to_i
+          end
+
+          if scheduled_meeting&.meeting
+            expect(override_event.created.to_time).to be_within(1.second).of(scheduled_meeting.meeting.created_at.utc)
+            expect(override_event.last_modified.to_time).to be_within(1.second).of(scheduled_meeting.meeting.updated_at.utc)
           end
         end
       end
