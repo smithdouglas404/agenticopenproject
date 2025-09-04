@@ -121,6 +121,8 @@ Changes include:
 
 These updates make widgets clearer and faster to use, while work continues on the upcoming Overview dashboard.
 
+![Screenshot of OpenProject 16.4: New design for the project overview page](open_project_user_guide_project_settings_overview.png)
+
 ## Important technical updates
 
 ### SCIM improvements (Enterprise add-on)
