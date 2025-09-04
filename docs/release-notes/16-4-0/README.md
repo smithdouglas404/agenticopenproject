@@ -104,7 +104,7 @@ With OpenProject 16.4, it is now easier to set up and track budgets. When creati
 
 In addition, **project lists** now include columns for planned budget, spent budget, spent percentage, and available budget, giving you a clearer overview across projects.
 
-These updates make budgeting more practical for everyday use, and we will continue to expand budgets and cost management in future releases.
+These updates make budgeting more practical for everyday use, and we will continue to expand budgets and cost management in future releases. [Read more about budgets in our user guide](../../user-guide/budgets/).
 
 ![Screenshot of OpenProject 16.4: New budget with highlighted Base amount](openproject-16-4-budgets-highlighted.png)
 
