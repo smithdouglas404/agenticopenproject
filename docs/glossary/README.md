@@ -74,7 +74,7 @@ BIM stands for Building Information Modeling. In OpenProject, we offer a special
 
 ### Board
 
-A board in OpenProject is a view that allows you to see your work packages as cards divided into columns. A board is a typical element in [agile project management](#agile-project-management), supporting methodologies such as Scrum or Kanban. As a [Community user](#community-edition) of OpenProject, you can use a [basic board](../user-guide/agile-boards/#basic-board-community-edition). [Advanced action boards](../user-guide/agile-boards/#action-boards-enterprise-add-on) are part of the [Enterprise add-on](#enterprise-add-on). Use advanced action boards to quickly change attributes of your work package. [Read more about boards for agile project management](../user-guide/agile-boards/)
+A board in OpenProject is a view that allows you to see your work packages as cards divided into columns. A board is a typical element in [agile project management](#agile-project-management), supporting methodologies such as Scrum or Kanban. As a [Community user](#community-edition) of OpenProject, you can use a [basic board](../user-guide/agile-boards/#basic-board-community-edition). [Advanced action boards](../user-guide/agile-boards/#action-boards-enterprise-add-on) are part of the [Enterprise add-on](#enterprise-add-on). Use advanced action boards to quickly change attributes of your work package. [Read more about boards for agile project management](../user-guide/agile-boards/).
 
 **More information on boards in OpenProject**
 
@@ -190,7 +190,7 @@ The Gantt charts [module](#module) in OpenProject displays the work packages in 
 
 ### Global modules
 
-In OpenProject, global modules are defined as a menu to access all [modules](#module) for *all* your projects. With global modules you can easily see all your project-overarching information at one place, e.g. for work packages, boards, calendars or meetings. To access the Global modules side menu, simply navigate to your [home page](#home-page) by clicking on the logo in the header, or use the grid icon in the top right corner. [Read more about global modules in OpenProject](../user-guide/home/global-modules/).
+In OpenProject, global modules are defined as a menu to access all [modules](#module) for *all* your projects. With global modules you can easily see all your project-overarching information at one place, e.g. for work packages, boards, calendars or meetings. Click on the left button in the header menu to access the global modules. [Read more about global modules in OpenProject](../user-guide/home/global-modules/).
 
 ### Group
 
@@ -204,7 +204,7 @@ OpenProject offers a high contrast mode to make it easier for visually impaired 
 
 ### Home page
 
-In the OpenProject application, the home page is defined as a start page for your instance, where you get an overview about important information. From the home page you can access all global [modules](#module) of OpenProject. To get to the OpenProject application home page, click on the logo in the header of the application. [Read more about the OpenProject application home page](../user-guide/home/#application-home-page)
+In the OpenProject application, the home page is defined as a start page for your instance, where you get an overview about important information. From the home page you can access all global [modules](#module) of OpenProject. To get to the OpenProject application home page, click on the logo in the header of the application. [Read more about the OpenProject application home page](../user-guide/home/#application-home-page).
 
 ### Hybrid project management
 
@@ -283,8 +283,7 @@ OAuth is an open authorization standard. It allows you to access certain informa
 OpenProject offers a OneDrive [integration](#integration) as an [Enterprise add-on](#enterprise-add-on). It must be
 setup by an administrator before members can use it. With this integration, users can link files and folders that are
 stored in OneDrive with work packages in OpenProject. They can also view, open and download files and folders
-linked to a work
-package. [Read more about OpenProject's OneDrive integration](../user-guide/file-management/one-drive-integration/).
+linked to a work package. [Read more about OpenProject's OneDrive integration](../user-guide/file-management/one-drive-integration/).
 
 ### On-premises
 
@@ -326,6 +325,10 @@ Your activated plugins are listed together with your [modules](#module) in your 
 
 PM² is a project management framework developed by the European Commission to support the successful delivery of projects, especially in the public sector. It combines best practices from various methodologies and provides clear guidance, templates, and governance structures. In OpenProject, the [project life cycle](#project-life-cycle) can be structured according to PM², with predefined [project phases](#phase), [phase gates](#phase-gate), and roles based on this framework. [Read more about PM² and its role for OpenProject](https://www.openproject.org/pm2/).
 
+### PMflex
+
+PMflex is is a comprehensive and flexible project management system based on the European [PM²](#pm--pm2) standard and further developed for public administration in Germany. [Read more about how to use PMflex with OpenProject](https://www.openproject.org/pmflex).
+
 ### Primer design system
 
 OpenProject started adopting [Github's Primer Design System](https://primer.style/) in 2023. New features will be developed using Primer and existing features will will be gradually revised. Relevant reusable components from Primer as well as common patterns and compositions of these components will be documented in our [Lookbook](https://qa.openproject-edge.com/lookbook/pages/how_to_use). [Read more about OpenProject's decision to use Primer](https://www.openproject.org/blog/primer-design-system/).
@@ -362,7 +365,7 @@ Phases and phase gates are visible on the [project overview](#project-overview) 
 
 ### Project lists
 
-In OpenProject, project lists are very useful for project portfolio managers to get an overview of all their [projects](#project) on the instance. Access your project lists on OpenProject by either navigating to the "select a project" menu and clicking on the "Project list" button, or via the [Global modules](#global-modules). [Read more about project lists OpenProject](../user-guide/projects/project-lists/).
+In OpenProject, project lists are very useful for project portfolio managers to get an overview of all their [projects](#project) on the instance. Access your project lists on OpenProject by either navigating to the "All projects" menu and clicking on the "Project lists" button, or via the [Global modules](#global-modules). [Read more about project lists OpenProject](../user-guide/projects/project-lists/).
 
 ### Project navigation
 
@@ -498,8 +501,6 @@ To make it easier for project managers to work with work package hierarchies, Op
 ### Workflow
 
 A workflow in OpenProject is defined as the allowed transitions between status for a [role](#role) and a type, i.e. which status changes can a certain role implement depending on the [work package type](#work-package-type). Workflows can be defined in the admin settings. For example, you might only want developers to be able to set the status "developed". [Read more about work package workflows in OpenProject](../system-admin-guide/manage-work-packages/work-package-workflows/#manage-work-package-workflows).
-
-![glossary-openproject-sys-admin-edit-workflow](glossary-openproject-sys-admin-edit-workflow.png)
 
 ### Work package
 
