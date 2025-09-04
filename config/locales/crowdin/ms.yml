@@ -588,9 +588,6 @@ ms:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Sila berikan nama token API"
-        token_name_in_use: "Nama token API ini sudah digunakan, sila pilih yang lain"
       failed_to_reset_token: "Gagal untuk set semula token akses: %{error}"
       failed_to_create_token: "Gagal membuat token akses: %{error}"
       failed_to_revoke_token: "Gagal menarik balik token akses: %{error}"
@@ -691,7 +688,7 @@ ms:
     dark_high_contrast: "Dark high contrast"
     light: "Terang"
     light_high_contrast: "Kontras tinggi yang terang"
-    sync_with_os: "Automatic (match OS colour mode)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: Tiada jenis buat masa ini.
@@ -908,7 +905,7 @@ ms:
   account:
     delete: "Padam akaun"
     delete_confirmation: "Adakah anda pasti anda mahu memadam akaun?"
-    deletion_pending: "Akaun telah dikunci dan dijadualkan untuk pemadaman. Ambil perhatian bahawa proses ini berlaku di latar belakang. Ia mungkin mengambil beberapa saat sehingga pengguna dipadamkan sepenuhnya."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Data yang dicipta oleh pengguna (cth. e-mel, keutamaan, pakej kerja, entri wiki) akan dipadam sebanyak mungkin. Namun, perlu diingat bahawa data seperti pakej kerja dan entri wiki tidak boleh dipadam tanpa mengganggu kerja pengguna lain. Data tersebut kemudian ditugaskan semula ke akaun dipanggil "Pengguna yang dipadam", kerana data setiap akaun yang dipadam, ditugaskan semula ke akaun ini tidak akan dapat untuk membezakan data yang dicipta oleh pengguna daripada data akaun lain yang dipadam.'
@@ -1039,6 +1036,7 @@ ms:
         active_value:
           true: "tidak diarkibkan"
           false: "diarkibkan"
+        attribute_groups: "Attribute Groups"
         description: "Deskripsi"
         enabled_modules: "Modul yang diaktifkan"
         identifier: "Pengenalan"
@@ -1132,6 +1130,8 @@ ms:
         is_readonly: "Pakej kerja baca-sahaja"
         excluded_from_totals: "Dikecualikan daripada pengiraan jumlah dalam hierarki"
         default_done_ratio: "% Lengkap"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Kalendar"
         ical_token_query_assignment: "Query assignment"
@@ -1185,9 +1185,9 @@ ms:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "Beri amaran kepada saya apabila meninggalkan pakej kerja dengan perubahan yang belum disimpan."
-        theme: "Colour mode"
+        theme: "Color mode"
         time_zone: "Zon waktu"
-        mode_guideline: "Some modes will overwrite custom theme colours for accessibility and legibility. Please select Light mode for full custom theme support."
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Daily reminders"
         workdays: "Hari bekerja"
       version:
@@ -1330,6 +1330,8 @@ ms:
               minimum: "perlu sertakan sekurang-kurangnya satu saringan utama, konteks, atau id dengan operator '='."
         custom_field:
           at_least_one_custom_option: "Sekurang-kurangnya satu pilihan perlu tersedia."
+          referenced_in_other_fields_html:
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1562,7 +1564,8 @@ ms:
               cant_exceed_work: "tidak boleh lebih tinggi daripada Kerja."
               must_be_set_when_work_is_set: "diperlukan apabila Kerja ditetapkan."
               must_be_set_when_work_and_percent_complete_are_set: "diperlukan apabila Kerja dan % Selesai ditetapkan."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 mesti kosong apabila Kerja kosong dan % Selesai ialah 100%.
           readonly_status: "Pakej kerja berada dalam status baca sahaja maka atributnya tidak boleh diubah."
@@ -1609,9 +1612,11 @@ ms:
         version:
           undeletable_archived_projects: "Versi tidak dapat dipadam kerana ia mempunyai pakej kerja yang dilampirkan padanya."
           undeletable_work_packages_attached: "Versi tidak dapat dipadam kerana ia mempunyai pakej kerja yang dilampirkan padanya."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Sila semak ruang-ruang yang berikut:"
@@ -2237,6 +2242,9 @@ ms:
   enumeration_reported_project_statuses: "Status projek yang dilaporkan"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "Log masuk satu kali (SSO) untuk pengguna '%{value}' gagal"
   error_can_not_archive_project: "Projek ini tidak boleh diarkibkan: %{errors}"
   error_can_not_delete_entry: "Tidak dapat membuang entri"
@@ -2473,6 +2481,26 @@ ms:
       community: "Komuniti OpenProject"
       upsell:
         title: "Naik taraf ke edisi Enterprise"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "Naik taraf ke edisi Enterprise"
       postgres_migration: "Mengalihkan pemasangan anda ke PostgreSQL"
@@ -2483,7 +2511,8 @@ ms:
       shortcuts: "Pintasan"
       blog: "Blog OpenProject"
       forums: "Forum komuniti"
-      newsletter: "Amaran keselamatan / Surat berita"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2648,6 +2677,7 @@ ms:
   label_api_access_key: "Kunci akses API"
   label_api_access_key_created_on: "Kunci akses API dicipta %{value} yang lalu"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'Token iCalendar "%{token_name}" untuk "%{calendar_name}" dalam "%{project_name}"'
   label_ical_access_key_not_present: "Token iCalendar tidak ada."
@@ -2896,6 +2926,7 @@ ms:
   label_journal_diff: "Perbandingan Deskripsi"
   label_language: "Bahasa"
   label_languages: "Bahasa-bahasa"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Lompat ke projek..."
   label_keyword_plural: "Kata kunci"
   label_language_based: "Berdasarkan bahasa pengguna"
@@ -3696,13 +3727,15 @@ ms:
       one: "1 projek"
       other: "%{count} projek"
     destroy:
-      confirmation: "Jika anda teruskan, projek %{identifier} tersebut akan dimusnahkan selama-lamanya. Untuk mengesahkan tindakan ini sila perkenalkan nama projek dalam ruang dibawah, ini akan:"
-      project_delete_result_1: "Padam semua data berkaitan"
-      project_delete_result_2: "Padam semua projek yang diuruskan dalam storan yang dilampirkan."
-      info: "Memadam projek tersebut adalah tindakan yang tidak dapat dipulihkan."
-      project_verification: "Masukkan nama projek %{name} untuk mengesahkan pemadaman."
-      subprojects_confirmation: "Subprojeknya: %{value} juga akan dipadamkan."
-      title: "Padamkan projek %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Project phase: %{phase}"
       project_phase_any: "Project phase: Any"
@@ -3937,6 +3970,8 @@ ms:
   setting_feeds_limit: "Had kandungan feed "
   setting_file_max_size_displayed: "Saiz maksimum fail teks ditampilkan sebaris "
   setting_host_name: "Nama hos"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Jam sehari"
   setting_hours_per_day_explanation: >-
     Ini mentakrifkan perkara yang dianggap sebagai "hari" apabila memaparkan tempoh dalam hari dan jam (contohnya, jika sehari ialah 8 jam, 32 jam ialah 4 hari).
@@ -4155,6 +4190,7 @@ ms:
   status_invited: dijemput
   status_locked: dikunci
   status_registered: berdaftar
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

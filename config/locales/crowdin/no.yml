@@ -595,9 +595,6 @@
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Vennligst oppgi navn på API-token"
-        token_name_in_use: "Dette API-token-navnet er allerede i bruk, velg et annet"
       failed_to_reset_token: "Tilgangstoken kunne ikke tilbakestilles: %{error}"
       failed_to_create_token: "Tilgangsnøkkelen kunne ikke opprettes: %{error}"
       failed_to_revoke_token: "Kunne ikke oppheve tilgangstoken: %{error}"
@@ -699,7 +696,7 @@
     dark_high_contrast: "Dark high contrast"
     light: "Lyst"
     light_high_contrast: "Lys høy kontrast"
-    sync_with_os: "Automatic (match OS colour mode)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: Det finnes for øyeblikket ingen typer.
@@ -917,7 +914,7 @@
   account:
     delete: "Slett konto"
     delete_confirmation: "Er du sikker på at du vil slette kontoen?"
-    deletion_pending: "Kontoen er låst og ble planlagt slettet. Merk at denne prosessen skjer i bakgrunnen. Det kan ta noe tid til brukeren er fullstendig slettet."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Av dataene brukeren opprettet (f.eks. e-post, innstillinger, arbeidspakker, wiki-oppføringer) vil så mye som mulig bli slettet. Merk imidlertid at data som arbeidspakker og wiki-oppføringer ikke kan slettes uten å påvirke arbeidet til de andre brukerne. Slike data blir derfor flyttet til en konto kalt "Slettet bruker". Fordi dataene til hver slettede konto blir flyttet til denne kontoen vil det ikke være mulig å skille data brukeren har opprettet fra data for en annen slettet konto.'
@@ -1048,6 +1045,7 @@
         active_value:
           true: "Ikke arkivert"
           false: "arkivert"
+        attribute_groups: "Attribute Groups"
         description: "Beskrivelse"
         enabled_modules: "Aktiverte moduler"
         identifier: "Identifikator"
@@ -1141,6 +1139,8 @@
         is_readonly: "Arbeidspakken er skrivebeskyttet"
         excluded_from_totals: "Unnta fra beregning av totaler i hierarki"
         default_done_ratio: "% Ferdig "
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Kalender"
         ical_token_query_assignment: "Query assignment"
@@ -1194,9 +1194,9 @@
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "Varsle meg når jeg forlater en arbeidspakke med ulagrede endringer"
-        theme: "Colour mode"
+        theme: "Color mode"
         time_zone: "Tidssone"
-        mode_guideline: "Some modes will overwrite custom theme colours for accessibility and legibility. Please select Light mode for full custom theme support."
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Daily reminders"
         workdays: "Arbeidsdager"
       version:
@@ -1339,6 +1339,9 @@
               minimum: "må inkludere minst ett filter for prinsipp, kontekst eller id med '='-operatøren."
         custom_field:
           at_least_one_custom_option: "Minst ett alternativ må være tilgjengelig."
+          referenced_in_other_fields_html:
+            one: "%{name} is used in project attribute calculation %{links}."
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1571,7 +1574,8 @@
               cant_exceed_work: "kan ikke være høyere enn Arbeid."
               must_be_set_when_work_is_set: "kreves når Arbeid er satt."
               must_be_set_when_work_and_percent_complete_are_set: "påkrevd når gjenværende arbeid og % Fullført er satt."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 må være tom når arbeidet er tomt og % Komplett er 100%.
           readonly_status: "Arbeidspakken er i skrivebeskyttet status slik at egenskapene ikke kan endres."
@@ -1619,9 +1623,11 @@
         version:
           undeletable_archived_projects: "Versjonen kan ikke slettes ettersom den har arbeidspakker knyttet til den."
           undeletable_work_packages_attached: "Versjonen kan ikke slettes ettersom den har arbeidspakker knyttet til den."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Kontroller følgende felter:"
@@ -2282,6 +2288,9 @@
   enumeration_reported_project_statuses: "Rapportert prosjektstatus"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "Single Sign-On (SSO) for bruker '%{value}' mislyktes"
   error_can_not_archive_project: "Prosjektet kan ikke arkiveres: %{errors}"
   error_can_not_delete_entry: "Kan ikke slette oppføring"
@@ -2518,6 +2527,26 @@
       community: "OpenProject fellesskap"
       upsell:
         title: "Oppgrader til Enterprise utgaven"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "Oppgrader til Enterprise utgaven"
       postgres_migration: "Overføre installasjonen til PostgreSQL"
@@ -2528,7 +2557,8 @@
       shortcuts: "Snarveier"
       blog: "OpenProject blogg"
       forums: "Brukerforum"
-      newsletter: "Sikkerhetsvarsler / Nyhetsbrev"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2693,6 +2723,7 @@
   label_api_access_key: "API adgangsnøkkel"
   label_api_access_key_created_on: "API adgangsnøkkel ble opprettet for %{value} siden"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar nøkkel "%{token_name}" for "%{calendar_name}" i "%{project_name}"'
   label_ical_access_key_not_present: "iCalendar nøkkel(nøkler) ikke tilstede."
@@ -2941,6 +2972,7 @@
   label_journal_diff: "Sammenligning av beskrivelse"
   label_language: "Språk"
   label_languages: "Språk"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Gå til et prosjekt..."
   label_keyword_plural: "Nøkkelord"
   label_language_based: "Basert på brukerens språk"
@@ -3744,13 +3776,15 @@
       one: "1 prosjekt"
       other: "%{count} prosjekter"
     destroy:
-      confirmation: "Hvis du fortsetter, vil %{identifier} bli ødelagt permanent. For å bekrefte denne handlingen, vennligst skriv prosjektnavnet i feltet nedenfor, dette vil:"
-      project_delete_result_1: "Slett alle relaterte data."
-      project_delete_result_2: "Slett alle håndterte prosjektmapper i vedlagte lagringer."
-      info: "Sletting av prosjektet kan ikke angres."
-      project_verification: "Skriv inn prosjektets navn %{name} for å bekrefte slettingen."
-      subprojects_confirmation: "Underprosjekt(ene): %{value} vil også bli slettet."
-      title: "Slett prosjektet %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Project phase: %{phase}"
       project_phase_any: "Project phase: Any"
@@ -3985,6 +4019,8 @@
   setting_feeds_limit: "Innholdsgrense for Feed"
   setting_file_max_size_displayed: "Maks størrelse på tekstfiler som vises inline"
   setting_host_name: "Vertsnavn"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Timer per dag"
   setting_hours_per_day_explanation: >-
     Dette vil definere hva som anses som en "dag" når varigheten vises i dager og timer (for eksempel hvis dagen er 8 timer, vil 32 timer være 4 dager).
@@ -4203,6 +4239,7 @@
   status_invited: invitert
   status_locked: låst
   status_registered: registrert
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

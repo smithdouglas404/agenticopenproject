@@ -288,17 +288,6 @@ zh-CN:
         format:
           date: "%{attribute} 不是有效日期 - 需要 YYYY-MM-DD。"
         general: "发生错误。"
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "了解新功能和产品更新。"
-          learn_about: "详细了解所有新功能"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                该版本包含多种新功能和改进，例如<br> <ul class="%{list_styling_class}"> <li>UX/UI 改进，外观更加现代。</li> <li>会议：可选择静音电子邮件通知和 ICS。</li> <li>“我的工时记录”模块中显示正在进行的计时器。</li> <li>进度报告：基于状态的模式中还会显示完成百分比总和。</li> <li>Nextcloud 健康检查：指示缺少令牌交换功能（企业附加组件）。</li> </ul>
     ical_sharing_modal:
       title: "订阅日历"
       inital_setup_error_message: "获取数据时发生错误。"
@@ -1220,7 +1209,7 @@ zh-CN:
       selected_filter:
         all: "所有项目"
         selected: "仅限所选"
-      search_placeholder: "搜索项目…"
+      search_placeholder: "Search projects..."
       search_placeholder_favorites: "Search favorites..."
       include_subprojects: "包含所有子项目"
       tooltip:

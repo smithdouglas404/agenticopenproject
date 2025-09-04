@@ -31,6 +31,12 @@ class EnterpriseToken < ApplicationRecord
   EXPIRING_SOON_DAYS = 30
 
   class << self
+    def get_feature_plan(feature)
+      OpenProject::Token::FEATURES_PER_PLAN.find do |_plan, features|
+        features.include?(feature.to_sym)
+      end&.first
+    end
+
     def all_tokens
       all.sort_by(&:sort_key)
     end

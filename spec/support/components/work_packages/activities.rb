@@ -389,16 +389,11 @@ module Components
       end
 
       def set_journal_sorting(sorting, default_filter: :all)
-        page.find_test_selector("op-wp-journals-sorting-menu").click
-
-        case sorting
-        when :asc
-          page.find_test_selector("op-wp-journals-sorting-asc").click
-        when :desc
-          page.find_test_selector("op-wp-journals-sorting-desc").click
+        retry_block do
+          page.find_test_selector("op-wp-journals-sorting-menu").click
+          page.find_test_selector("op-wp-journals-sorting-#{sorting}").click
+          expect(page).to have_test_selector("op-wp-journals-#{default_filter}-#{sorting}")
         end
-
-        wait_for { page }.to have_test_selector("op-wp-journals-#{default_filter}-#{sorting}")
       end
 
       def trigger_update_streams_poll

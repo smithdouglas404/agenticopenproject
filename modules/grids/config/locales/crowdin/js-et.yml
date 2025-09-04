@@ -33,6 +33,8 @@ et:
           not_set: 'Not set'
           finished: 'Lõpetatud'
           discontinued: 'Lopetatud'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Alamprojektid'
           no_results: 'No subprojects.'

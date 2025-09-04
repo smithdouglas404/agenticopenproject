@@ -32,7 +32,7 @@ class Storages::OpenProjectStorageModalComponent < ViewComponent::Base
   attr_reader :controller, :project_storage_open_url, :redirect_url, :state
 
   def initialize(project_storage_open_url:, redirect_url:, state:, **options)
-    super
+    super()
     @controller = "storages--open-project-storage-modal"
     @project_storage_open_url = project_storage_open_url
     @redirect_url = redirect_url

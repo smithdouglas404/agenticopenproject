@@ -59,10 +59,10 @@ de:
       tab_interface: "Benutzeroberfläche"
       tab_branding: "Branding"
       tab_pdf_export_styles: "PDF-Exportstile"
-      tab_pdf_export_font: "PDF export font"
+      tab_pdf_export_font: "Schriftart für den PDF-Export"
       fonts:
-        file_too_large: "is too large (maximum size is %{count} MB)."
-        file_is_invalid: "is not a valid TTF font file."
+        file_too_large: "ist zu groß (maximale Größe ist %{count} MB)."
+        file_is_invalid: "ist keine gültige TTF-Schriftdatei."
       colors:
         primary-button-color: "Primäre Schaltfläche"
         accent-color: "Akzent"
@@ -298,7 +298,7 @@ de:
         placeholder:
           label: "Elementbezeichnung"
           short: "Kurzname"
-          score: "Score"
+          score: "Wert"
       notice:
         remember_items_and_projects: "Denken Sie daran, Einträge und Projekte in den jeweiligen Registerkarten für dieses benutzerdefinierte Feld festzulegen."
       hierarchy:
@@ -334,18 +334,18 @@ de:
     single: "oder"
   dry_validation:
     errors:
-      defined: "must not be defined."
+      defined: "darf nicht definiert werden."
       int?: "muss eine ganze Zahl sein."
-      decimal?: "must be a decimal."
+      decimal?: "muss eine Dezimalzahl sein."
       filled?: "muss ausgefüllt werden."
-      key?: "is missing."
+      key?: "fehlt."
       greater_or_equal_zero: "muss größer oder gleich 0 sein."
       not_found: "nicht gefunden."
       rules:
         copy_workflow_from:
           workflow_missing: "hat keinen eigenen Workflow."
         custom_field:
-          format_not_supported: "format '%{field_format}' is unsupported."
+          format_not_supported: "format '%{field_format}' wird nicht unterstützt."
         item:
           root_item: "kann keine Hierarchiewurzel sein."
           not_persisted: "muss ein bereits vorhandenes Element sein."
@@ -361,7 +361,7 @@ de:
       depth: "Tiefe"
       item: "Element"
       label: "Bezeichnung"
-      score: "Score"
+      score: "Wert"
       short: "Kurzname"
       parent: "Übergeordnetes Arbeitspaket"
       blueprint: "Blaupause für Muster"
@@ -382,7 +382,7 @@ de:
       description: Durch die Gruppierung von Benutzern können Sie diese den gleichen globalen Rollen oder den gleichen Projekten als Mitglieder zuweisen.
     table_component:
       blank_slate:
-        description: You can define named groups of users with specific permissions.
+        description: Sie können Gruppen von Benutzern mit eigenen Berechtigungen erstellen.
         title: Noch keine Gruppen eingerichtet
       user_count: Benutzeranzahl
     users:
@@ -584,17 +584,14 @@ de:
       dialog:
         token/api:
           dialog_title: "Einen API-Token erstellen"
-          attention_text: "Treat API tokens like passwords. Anyone with this token will have access to information from this instance, share it only with trusted users."
+          attention_text: "Behandeln Sie API-Tokens wie Passwörter. Jeder, der über diesen Link verfügt, hat Zugang zu den Informationen dieser Instanz."
           dialog_body: "Dieses Token ermöglicht es Anwendungen von Drittanbietern, mit Ihrer Instanz zu kommunizieren. Um das neue API-Token zu unterscheiden, geben Sie ihm bitte einen Namen."
           create_button: "Anlegen"
           name_label: "Tokenname"
       created_dialog:
         token/api:
-          title: "The API token has been generated"
+          title: "Der API-Token wurde generiert"
           warning: "Dies ist das einzige Mal, dass dieses Token angezeigt wird. Stellen Sie sicher, dass Sie es jetzt kopieren."
-      errors:
-        token_name_blank: "Bitte geben Sie einen Namen für den API-Token an"
-        token_name_in_use: "Dieser API-Token-Name ist bereits in Verwendung, bitte wählen Sie einen anderen"
       failed_to_reset_token: "Zusatztoken konnte nicht zurückgesetzt werden: %{error}"
       failed_to_create_token: "Zugriffstoken konnte nicht erstellt werden: %{error}"
       failed_to_revoke_token: "Zugriffstoken kann nicht widerrufen werden: %{error}"
@@ -693,7 +690,7 @@ de:
     dark_high_contrast: "Dunkel (hoher Kontrast)"
     light: "Hell"
     light_high_contrast: "Hell (hoher Kontrast)"
-    sync_with_os: "Automatic (match OS colour mode)"
+    sync_with_os: "Automatisch (entsprechend dem OS-Farbschema)"
   types:
     index:
       no_results_title_text: Derzeit gibt es keine Typen.
@@ -910,7 +907,7 @@ de:
   account:
     delete: "Konto löschen"
     delete_confirmation: "Sind Sie sicher, dass Sie das Konto löschen wollen?"
-    deletion_pending: "Das Konto wurde gesperrt und zur Löschung vorgesehen. Beachten Sie, dass dieser Vorgang im Hintergrund abläuft. Es kann ein paar Momente dauern, bis der Benutzer vollständig gelöscht ist."
+    deletion_pending: "Das Konto wurde Löschung vorgesehen. Beachten Sie, dass dieser Vorgang im Hintergrund abläuft. Es kann ein paar Momente dauern, bis der Benutzer vollständig gelöscht ist."
     deletion_info:
       data_consequences:
         other: 'Von den vom Nutzer im Zuge der Nutzung der Anwendung erstellen Daten (z.B. E-Mail-Adresse, Systemeinstellungen, Arbeitspakete, Wiki-Einträgen) werden so viele wie möglich gelöscht. Bitte beachten Sie allerdings, dass Daten wie Arbeitspakete und Wiki-Einträge nicht gelöscht werden können, da dies die Arbeit der anderen Nutzer behindern würde. Solche Daten werden daher einem "Gelöschten Nutzer" zugewiesen. Da die Daten aller gelöschten Accounts dem "Gelöschten Nutzer" zugewiesen werden, ist es unmöglich, die vom Nutzer erstellten Daten diesem Nutzer zuzuordnen.'
@@ -1041,6 +1038,7 @@ de:
         active_value:
           true: "nicht archiviert"
           false: "archiviert"
+        attribute_groups: "Attributgruppen"
         description: "Beschreibung"
         enabled_modules: "Aktivierte Module"
         identifier: "Kennung"
@@ -1067,7 +1065,7 @@ de:
         types: "Typen"
         versions: "Versionen"
         work_packages: "Arbeitspakete"
-        workspace_type: "Workspace type"
+        workspace_type: "Arbeitsbereichstyp"
       project_custom_field:
         is_required: "In allen Projekten erforderlich"
         custom_field_section: Abschnitt
@@ -1134,6 +1132,8 @@ de:
         is_readonly: "Arbeitspakete schreibgeschützt"
         excluded_from_totals: "Von der Berechnung der Gesamtsumme in der Hierarchie ausschließen"
         default_done_ratio: "% abgeschlossen"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Kalender"
         ical_token_query_assignment: "Zuordnung der Abfrage"
@@ -1297,8 +1297,8 @@ de:
         odd: "muss ungerade sein."
         regex_match_failed: "stimmt nicht mit dem regulären Ausdruck %{expression} überein."
         regex_invalid: "konnte nicht mit dem zugehörigen regulären Ausdruck überprüft werden."
-        regex_list_invalid: "Lines %{invalid_lines} could not be parsed as regular expression."
-        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
+        regex_list_invalid: "Die Zeilen %{invalid_lines} konnten nicht als regulärer Ausdruck gelesen werden."
+        hexcode_invalid: "ist kein gültiger 6-stelliger hexadezimaler Farbcode."
         smaller_than_or_equal_to_max_length: "muss kleiner als oder gleich der maximalen Länge sein."
         taken: "ist bereits vergeben."
         too_long: "ist zu lang (nicht mehr als %{count} Zeichen)."
@@ -1332,6 +1332,9 @@ de:
               minimum: "müssen mindestens einen Filter für Principal, Kontext oder ID mit dem '=' Operator enthalten."
         custom_field:
           at_least_one_custom_option: "Mindestens ein Wert muss verfügbar sein."
+          referenced_in_other_fields_html:
+            one: "%{name} wird bei der Berechnung eines Projektattributs verwendet %{links}."
+            other: "%{name} wird bei der Berechnung von Projektattribute verwendet %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1564,7 +1567,8 @@ de:
               cant_exceed_work: "Kann nicht größer als der Aufwand sein."
               must_be_set_when_work_is_set: "Ist erforderlich, wenn Aufwand gesetzt ist."
               must_be_set_when_work_and_percent_complete_are_set: "ist erforderlich, wenn Aufwand und % abgeschlossen eingestellt sind."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                muss 0h sein, wenn Aufwand gesetzt und % abgeschlossen 100% ist.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 muss leer bleiben, wenn Aufwand gesetzt und % abgeschlossen 100% ist.
           readonly_status: "Das Arbeitspaket befindet sich in einem schreibgeschützten Status, so dass seine Attribute nicht geändert werden können."
@@ -1612,9 +1616,11 @@ de:
         version:
           undeletable_archived_projects: "Die Version kann nicht gelöscht werden, da sie Arbeitspakete enthält, die an sie angeschlossen sind."
           undeletable_work_packages_attached: "Die Version kann nicht gelöscht werden, da sie Arbeitspakete enthält, die an sie angeschlossen sind."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Bitte überprüfen Sie die folgenden Felder:"
@@ -1890,7 +1896,7 @@ de:
   button_duplicate: "Duplizieren"
   button_duplicate_and_follow: "Duplizieren und folgen"
   button_edit: "Bearbeiten"
-  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
+  button_edit_associated_wikipage: "Zugehörige Wikiseite bearbeiten: %{page_title}"
   button_expand_all: "Alle ausklappen"
   button_favorite: "Zu Favoriten hinzufügen"
   button_filter: "Filter"
@@ -2225,7 +2231,7 @@ de:
         description: "Automatisieren Sie die Benutzerverwaltung in OpenProject durch nahtlose Integration externer Identitätsdienste wie Microsoft Entra oder Keycloak über unsere SCIM Server API. Verfügbar ab dem Enterprise Corporate Plan."
       sso_auth_providers:
         title: "Single Sign-On (SSO)"
-        description: "Enable users to log in via external SSO providers using SAML or OpenID Connect for seamless access and integration with existing identity systems."
+        description: "Ermöglichen Sie es Benutzern, sich über externe SSO-Anbieter mit SAML oder OpenID Connect anzumelden, um einen nahtlosen Zugriff und die Integration mit bestehenden Identitätssystemen zu ermöglichen."
       virus_scanning:
         description: "Stellen Sie sicher, dass hochgeladene Dateien in OpenProject auf Viren gescannt werden, bevor sie für andere Benutzer zugänglich sind."
       placeholder_users:
@@ -2275,6 +2281,9 @@ de:
   enumeration_reported_project_statuses: "Gemeldeter Projektstatus"
   enumeration_caption_order_changed: "Reihenfolge erfolgreich geändert."
   enumeration_could_not_be_moved: "Aufzählung konnte nicht verschoben werden."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Testversion
   error_auth_source_sso_failed: "Single Sign-On (SSO) für Nutzer '%{value}' fehlgeschlagen"
   error_can_not_archive_project: "Dieses Projekt kann nicht archiviert werden: %{errors}"
   error_can_not_delete_entry: "Eintrag kann nicht gelöscht werden"
@@ -2419,9 +2428,9 @@ de:
     succeeded: "Export abgeschlossen"
     failed: "Beim Versuch, die Arbeitspakete zu exportieren, ist ein Fehler aufgetreten: %{message}"
     demo:
-      heading: "Demo PDF"
-      footer: "Generated by OpenProject"
-      button_text: Generate Demo PDF
+      heading: "Demo-PDF"
+      footer: "Von OpenProject generiert"
+      button_text: Demo-PDF generieren
     errors:
       embedded_table_with_too_many_columns: "Diese eingebettete Arbeitspakettabelle passte nicht auf die Seite. Bitte reduzieren Sie die Anzahl der Spalten."
     format:
@@ -2485,10 +2494,10 @@ de:
   filterable_tree_view:
     filter_mode:
       all: "Alle"
-      label: "Filter mode"
-      selected: "Selected"
-    include_sub_items: "Include sub-items"
-    no_results_text: "No results"
+      label: "Filtermodus"
+      selected: "Ausgewählt"
+    include_sub_items: "Unterelemente einbeziehen"
+    no_results_text: "Keine Ergebnisse"
   general_csv_decimal_separator: ","
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
@@ -2510,9 +2519,29 @@ de:
     blocks:
       community: "OpenProject Community"
       upsell:
-        title: "Auf Enterprise edition upgraden"
+        title: "Auf Enterprise Edition upgraden"
+      new_features:
+        header: "Lesen Sie über neue Funktionen und Updates."
+        learn_about: "Erfahren Sie mehr über die neuen Funktionen"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            Dieses Release enthält verschiedene neue Funktionen und Verbesserungen, wie z. B:
+          new_features_list:
+            line_0: Option zur automatischen Synchronisierung von Systemfarbschema und Kontrastmodus.
+            line_1: Hochkontrastmodus im Dark Mode für bessere Zugänglichkeit.
+            line_2: PDF-Export von Projektlisten.
+            line_3: Benutzerdefinierte Schriftart für alle PDF-Exporte (Enterprise Add-on).
+            line_4: Verbesserter Dialog zum Verwalten von Teilnehmern an Besprechungen.
+            line_5: Verbesserte Budgetplanung und -verwaltung bei Projektabfragen.
+            line_6: Aktualisierte Startseite und Projektübersicht.
+        "16_5":
+          new_features_title: >
+            Dieses Release enthält verschiedene neue Funktionen und Verbesserungen, wie z. B:
+          new_features_list:
+            line_0: Weitere Funktionen und Verbesserungen folgen in Kürze. Schauen Sie immer wieder vorbei!
     links:
-      upgrade_enterprise_edition: "Auf Enterprise edition upgraden"
+      upgrade_enterprise_edition: "Auf Enterprise Edition upgraden"
       postgres_migration: "Migration Ihrer Installation zu PostgreSQL"
       user_guides: "Benutzerhandbuch"
       faq: "Häufig gestellte Fragen"
@@ -2521,7 +2550,8 @@ de:
       shortcuts: "Tastenkürzel"
       blog: "OpenProject Blog"
       forums: "Community Forum"
-      newsletter: "Sicherheitswarnungen / Newsletter"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "ImageMagick"
   journals:
@@ -2598,7 +2628,7 @@ de:
         title: "Schnittstelle (API)"
         text_hint: "API-Token erlauben es Drittanbieter-Anwendungen, mit dieser OpenProject-Instanz über REST-APIs zu kommunizieren."
         disabled_text: "API-Token sind vom Administrator nicht aktiviert. Bitte kontaktieren Sie Ihren Administrator, um diese Funktion zu nutzen."
-        add_button: "API Token"
+        add_button: "API-Token"
       api:
         static_token_name: "API-Token"
       ical:
@@ -2686,6 +2716,7 @@ de:
   label_api_access_key: "API-Zugriffsschlüssel"
   label_api_access_key_created_on: "Der API-Zugriffsschlüssel wurde vor %{value} erstellt"
   label_api_access_key_type: "Schnittstelle (API)"
+  label_auto_option: "(automatisch)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar-Token „%{token_name}“ für „%{calendar_name}“ in „%{project_name}“'
   label_ical_access_key_not_present: "iCalendar-Token(s) nicht vorhanden."
@@ -2934,6 +2965,7 @@ de:
   label_journal_diff: "Beschreibungsvergleich"
   label_language: "Sprache"
   label_languages: "Sprachen"
+  label_locale: "Sprache und region"
   label_jump_to_a_project: "Zu einem Projekt springen..."
   label_keyword_plural: "Schlüsselwörter"
   label_language_based: "Sprachabhängig"
@@ -2953,7 +2985,7 @@ de:
   label_link_url: "Link (URL)"
   label_list: "Liste"
   label_loading: "Lade..."
-  label_locked: "locked"
+  label_locked: "gesperrt"
   label_lock_user: "Benutzer sperren"
   label_logged_as: "Angemeldet als"
   label_login: "Anmelden"
@@ -2961,10 +2993,10 @@ de:
   label_custom_export_logo: "Selbstdefiniertes Logo für PDF-Export"
   label_custom_export_cover: "Hintergrund für Export Cover"
   label_custom_export_footer: "Selbstdefiniertes Fußzeilen-Bild für PDF-Export"
-  label_custom_export_font_regular: "Regular"
-  label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
-  label_custom_export_font_bold_italic: "Bold Italic"
+  label_custom_export_font_regular: "Normal"
+  label_custom_export_font_bold: "Fett"
+  label_custom_export_font_italic: "Kursiv"
+  label_custom_export_font_bold_italic: "Fett Kursiv"
   label_custom_export_cover_overlay: "Eigenes Deckblatt für Export"
   label_custom_export_cover_text_color: "Textfarbe"
   label_custom_pdf_export_settings: "Benutzerdefinierte PDF-Export-Einstellungen"
@@ -3121,9 +3153,9 @@ de:
   label_project_show_details: "Projektdetails anzeigen"
   label_project_hide_details: "Projektdetails verstecken"
   label_portfolio: "Portfolio"
-  label_portfolio_new: "New portfolio"
-  label_program: "Program"
-  label_program_new: "New program"
+  label_portfolio_new: "Neues Portfolio"
+  label_program: "Programm"
+  label_program_new: "Neues Programm"
   label_public_projects: "Öffentliche Projekte"
   label_query_new: "Neuer Bericht"
   label_query_plural: "Benutzerdefinierte Berichte"
@@ -3737,13 +3769,15 @@ de:
       one: "1 Projekt"
       other: "%{count} Projekte"
     destroy:
-      confirmation: "Wenn Sie fortfahren, wird das Projekt %{identifier} dauerhaft zerstört. Um diese Aktion zu bestätigen, geben Sie bitte den Projektnamen in das untenstehende Feld ein:"
-      project_delete_result_1: "Alle zugehörigen Daten löschen."
-      project_delete_result_2: "Alle verwalteten Projektordner in den angehängten Speichern löschen."
-      info: "Die Löschung des Projekts kann nicht rückgängig gemacht werden."
-      project_verification: "Geben Sie den Projektnamen %{name} ein um die Löschung zu bestätigen."
-      subprojects_confirmation: "Sein(e) Unterprojekt(e): %{value} werden ebenfalls gelöscht."
-      title: "Projekt %{name} löschen"
+      title: "Projekt löschen"
+      heading: "Dieses Projekt unwiderruflich löschen?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          Sie sind dabei, alle Daten im Zusammenhang mit dem Projekt <strong>%{name}</strong> dauerhaft zu löschen.
+        one: >
+          Sie sind dabei, alle Daten im Zusammenhang mit dem Projekt <strong>%{name}</strong> und diesem Unterprojekt dauerhaft zu löschen:
+        other: >
+          Sie sind dabei, alle Daten im Zusammenhang mit dem Projekt <strong>%{name}</strong> und diesen Unterprojekten dauerhaft zu löschen:
     filters:
       project_phase: "Projektphase: %{phase}"
       project_phase_any: "Projektphase: Alle"
@@ -3978,6 +4012,8 @@ de:
   setting_feeds_limit: "Max. Anzahl Einträge pro Atom-Feed"
   setting_file_max_size_displayed: "Maximale Größe inline angezeigter Textdateien"
   setting_host_name: "Hostname"
+  setting_collaborative_editing_hocuspocus_url: "Hokuspokus-Server-URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hokuspokus-Server-Schlüssel"
   setting_hours_per_day: "Stunden pro Tag"
   setting_hours_per_day_explanation: >-
     Dies legt fest, was als "Tag" angesehen wird, wenn eine zeitliche Dauer angezeigt werden (zum Beispiel: Wenn die Länge eines Tages 8 Stunden beträgt, wird eine Eingabe von 32 Stunden als 4 Tage angezeigt).
@@ -4196,6 +4232,7 @@ de:
   status_invited: eingeladen
   status_locked: gesperrt
   status_registered: angemeldet
+  status_deleted: gelöscht
   #Used in array.to_sentence.
   support:
     array:
@@ -4233,17 +4270,17 @@ de:
   text_custom_export_footer_instructions: >
     Ein grafisches Element für PDF-Exporte, das links neben der Fußzeile positioniert wird. Dieses Bild muss eine PNG- oder JPEG-Datei mit etwa 200 Pixeln Breite sein.
   label_custom_export_font_instructions: >
-    Upload and manage custom TrueType (.ttf) fonts used in your PDF exports. For best results, use matching files from the same font family. If no font is provided, the default NotoSans font will be used.
+    Laden Sie benutzerdefinierte TrueType-Schriften (.ttf), für PDF-Exporte hoch. Die besten Ergebnisse erzielen Sie, wenn Sie passende Dateien aus der gleichen Schriftfamilie verwenden. Wenn keine Schriftart angegeben wird, wird die Standardschriftart NotoSans verwendet.
   label_custom_export_images_instructions: >
-    Upload and manage custom image files used in your PDF exports.
+    Laden Sie benutzerdefinierte Bilddateien für Ihre PDF-Exporte hoch.
   text_custom_export_font_regular_instructions: >
-    This is the font file for regular text. It needs to be in TTF format and is required.
+    Dies ist die Schriftartdatei für normalen Text. Sie muss im TTF-Format vorliegen und ist erforderlich.
   text_custom_export_font_bold_instructions: >
-    This is the font file for bold text. It needs to be in TTF format.
+    Dies ist die Schriftdatei für fetten Text. Sie ist optional, und muss wenn angegeben im TTF-Format vorliegen.
   text_custom_export_font_italic_instructions: >
-    This is the font file for italic text. It needs to be in TTF format.
+    Dies ist die Schriftdatei für kursiven Text. Sie ist optional, und muss wenn angegeben im TTF-Format vorliegen.
   text_custom_export_font_bold_italic_instructions: >
-    This is the font file for bold and italic text. It needs to be in TTF format.
+    Dies ist die Schriftdatei für fett-kursiven Text. Sie ist optional, und muss wenn angegeben im TTF-Format vorliegen.
   text_custom_favicon_instructions: >
     Dies ist das kleine Symbol, das in Ihrem Browser-Fenster/Tab neben dem Seitentitel angezeigt wird. Es muss ein quadratisches 32 x 32 Pixel großes PNG mit transparentem Hintergrund sein.
   text_custom_touch_icon_instructions: >

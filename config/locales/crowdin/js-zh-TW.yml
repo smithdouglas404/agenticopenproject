@@ -287,17 +287,6 @@ zh-TW:
         format:
           date: "%{attribute} 不是有效日期 - 需要 YYYY-MM-DD。"
         general: "發生錯誤。"
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "了解新功能和產品更新。"
-          learn_about: "瞭解更多新功能的資訊"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                此版本包含多項新功能與改進，例如：<br> <ul class="%{list_styling_class}"> <li>UX/UI 改進，帶來更現代化的外觀。</li> <li>會議：可選擇停用電子郵件通知與 ICS。</li> <li>「我的時間追蹤」模組中顯示進行中的計時器。</li> <li>進度回報：在依狀態模式中也顯示「完成百分比總和」。</li> <li>Nextcloud 健康檢查：提示缺少令牌(token)交換功能（企業附加元件）。</li> </ul>
     ical_sharing_modal:
       title: "訂閱日曆"
       inital_setup_error_message: "更新資料時發生錯誤"
@@ -1219,7 +1208,7 @@ zh-TW:
       selected_filter:
         all: "所有專案"
         selected: "僅所選專案"
-      search_placeholder: "搜尋專案 ..."
+      search_placeholder: "搜尋專案..."
       search_placeholder_favorites: "搜尋我的收藏..."
       include_subprojects: "包含子專案"
       tooltip:

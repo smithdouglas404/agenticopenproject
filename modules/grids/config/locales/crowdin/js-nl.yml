@@ -33,6 +33,8 @@ nl:
           not_set: 'Niet ingesteld'
           finished: 'Afgewerkt'
           discontinued: 'Stopgezet'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Subprojecten'
           no_results: 'Geen subprojecten.'

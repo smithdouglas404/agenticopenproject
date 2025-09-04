@@ -65,7 +65,7 @@ tr:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} is not a valid participant."
+          invalid_user: "%{name} geçerli bir katılımcı değildir."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Seride yeni zamanlamaya uymayan ve açık bir toplantı bulunmakta. Mevcut toplantıları kapsaması için zamanlayın."
@@ -80,7 +80,7 @@ tr:
       meeting_agenda: "Gündem"
       meeting_section: "Bölüm"
       token/ical_meeting:
-        one: "iCal Meeting subscription"
+        one: "iCal Toplantı aboneliği"
         other: "iCal Meeting subscription"
   activity:
     filter:
@@ -126,7 +126,7 @@ tr:
   label_meeting_date_time: "Tarih/Saat"
   label_meeting_date_and_time: "Tarih ve zaman"
   label_meeting_diff: "Fark"
-  label_meeting_send_updates: "Send email calendar updates"
+  label_meeting_send_updates: "E-posta takvim güncellemeleri gönder"
   label_recurring_meeting: "Yinelenen toplantı"
   label_recurring_meeting_part_of: "Toplantı serisinin bir parçası"
   label_recurring_meeting_new: "Yeni yinelenen toplantı"
@@ -183,9 +183,9 @@ tr:
       label:
         participants: "Katılımcılar"
         attended: "Katıldığım"
-        mark_as_attended: "Mark as attended"
-        mark_all_as_attended: "Mark all as attended"
-        remove_participant: "Remove participant"
+        mark_as_attended: "Katıldı olarak işaretle"
+        mark_all_as_attended: "Tümünü katıldı olarak işaretle"
+        remove_participant: "Katılımcıyı kaldır"
         manage_participants: "Katılımcıları yönet"
         no_participants: "Katılımcı yok"
         show_all: "Tümünü göster"
@@ -239,8 +239,8 @@ tr:
         body: "The meeting '%{title}' has been updated by %{actor}."
         old_date_time: "Eski tarih/saat"
         new_date_time: "Yeni tarih/saat"
-        old_location: "Old location"
-        new_location: "New location"
+        old_location: "Eski konum"
+        new_location: "Yeni konum"
     label_mail_all_participants: "Send email invite to participants"
     types:
       one_time: "Tek seferlik"

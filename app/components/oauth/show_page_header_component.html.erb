@@ -29,7 +29,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%=
   render Primer::OpenProject::PageHeader.new do |header|
-    header.with_title { h(@application.name) }
+    header.with_title_content(@application.name)
     header.with_breadcrumbs(breadcrumb_items)
 
     unless @application.builtin?

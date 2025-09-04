@@ -46,6 +46,7 @@ module AllMeetings
         end
 
         calendar.preload_for_recurring_meetings(recurring_meetings: recurring_meetings)
+        calendar.treat_participations_from_user_as_accepted!
 
         recurring_meetings.each do |recurring_meeting|
           calendar.add_series_event(recurring_meeting:, cancelled: false)

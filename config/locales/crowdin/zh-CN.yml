@@ -586,9 +586,6 @@ zh-CN:
         token/api:
           title: "API 令牌已生成"
           warning: "这将是您看到此令牌的唯一机会。请务必立即复制。"
-      errors:
-        token_name_blank: "请提供一个 API 令牌名称"
-        token_name_in_use: "此 API 令牌名称已经在使用，请选择一个不同的名称"
       failed_to_reset_token: "无法重置访问令牌: %{error}"
       failed_to_create_token: "创建访问令牌失败： %{error}"
       failed_to_revoke_token: "撤销访问令牌失败： %{error}"
@@ -689,7 +686,7 @@ zh-CN:
     dark_high_contrast: "深色高对比度"
     light: "浅色模式"
     light_high_contrast: "高对比度模式"
-    sync_with_os: "自动（匹配操作系统颜色模式）"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: 目前没有类型。
@@ -906,7 +903,7 @@ zh-CN:
   account:
     delete: "删除帐户"
     delete_confirmation: "您确认想要删除您的账户？"
-    deletion_pending: "账户已被锁定并计划删除。请注意，这个过程是在后台进行的。可能需要一些时间才能完全删除用户。"
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: '创建的用户数据 (如电子邮件，首选项，工作包，维基条目) 将尽可能的删除。但是，请注意不会删除像工作包和维基条目类这些会影响其他用户工作的数据。这种数据因此会重新分配到称为"删除用户"的帐户。因为每个已删除帐户的数据被重新分配给此帐户，所以不可能区分不同用户所创建的数据。'
@@ -1037,6 +1034,7 @@ zh-CN:
         active_value:
           true: "未归档"
           false: "已归档"
+        attribute_groups: "Attribute Groups"
         description: "描述"
         enabled_modules: "启用的模块"
         identifier: "标识符"
@@ -1130,6 +1128,8 @@ zh-CN:
         is_readonly: "只读工作包"
         excluded_from_totals: "从层次结构的总计中排除"
         default_done_ratio: "% 完成"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "日历"
         ical_token_query_assignment: "查询任务"
@@ -1183,9 +1183,9 @@ zh-CN:
         auto_hide_popups: "自动隐藏成功横幅"
         auto_hide_popups_caption: "启用后，绿色成功横幅将在 5 秒后自动消失。"
         warn_on_leaving_unsaved: "离开未保存更改的工作包时提示我"
-        theme: "颜色模式"
+        theme: "Color mode"
         time_zone: "时区"
-        mode_guideline: "某些模式将覆盖自定义主题颜色，以提高可访问性和可读性。请选择“浅色”模式，以获得完全的自定义主题支持。"
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "每日提醒"
         workdays: "工作日"
       version:
@@ -1328,6 +1328,8 @@ zh-CN:
               minimum: "需要包含至少一个采用“=”运算符的主体、上下文或 ID 筛选器。"
         custom_field:
           at_least_one_custom_option: "至少有需要一个可用选项。"
+          referenced_in_other_fields_html:
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1560,7 +1562,8 @@ zh-CN:
               cant_exceed_work: "不能高于工时。"
               must_be_set_when_work_is_set: "设置“工时”时必填。"
               must_be_set_when_work_and_percent_complete_are_set: "设置“工时”和“完成%”时必填。"
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 当“工时”为空，且“完成%”为 100% 时，必须为空。
           readonly_status: "工作包处于只读状态，因此无法更改其属性。"
@@ -1607,9 +1610,11 @@ zh-CN:
         version:
           undeletable_archived_projects: "无法删除该版本，因为它连接了工作包。"
           undeletable_work_packages_attached: "无法删除该版本，因为它连接了工作包。"
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "请检查以下字段："
@@ -2235,6 +2240,9 @@ zh-CN:
   enumeration_reported_project_statuses: "报告的项目状态"
   enumeration_caption_order_changed: "顺序修改成功。"
   enumeration_could_not_be_moved: "无法移动枚举。"
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "用户 \"%{value}\" 的单次登录 (SSO) 失败"
   error_can_not_archive_project: "此项目无法存档：%{errors}"
   error_can_not_delete_entry: "无法删除条目"
@@ -2471,6 +2479,26 @@ zh-CN:
       community: "OpenProject 社区"
       upsell:
         title: "升级到企业版"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "升级到企业版"
       postgres_migration: "将您的安装迁移到 PostgreSQL"
@@ -2481,7 +2509,8 @@ zh-CN:
       shortcuts: "快捷键"
       blog: "OpenProject 博客"
       forums: "社区论坛"
-      newsletter: "安全警报/通信"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick软件"
   journals:
@@ -2646,6 +2675,7 @@ zh-CN:
   label_api_access_key: "API 访问键"
   label_api_access_key_created_on: "API 访问密钥创建于 %{value} 前"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar令牌"%{token_name}" 为"%{calendar_name}" 属于 "%{project_name}"'
   label_ical_access_key_not_present: "iCalendar 令牌不存在。"
@@ -2894,6 +2924,7 @@ zh-CN:
   label_journal_diff: "描述的对比"
   label_language: "语言"
   label_languages: "语言"
+  label_locale: "Language and region"
   label_jump_to_a_project: "跳转到一个项目..."
   label_keyword_plural: "关键词"
   label_language_based: "基于用户的语言"
@@ -3692,13 +3723,15 @@ zh-CN:
       one: "1个项目"
       other: "%{count} 个项目"
     destroy:
-      confirmation: "如果继续操作，项目 %{identifier} 将被永久销毁。为确认此操作，请在下方的字段中输入项目名称，此操作将会："
-      project_delete_result_1: "删除所有相关数据。"
-      project_delete_result_2: "删除附加存储中所有托管的项目文件夹。"
-      info: "删除项目是一个不可逆转的操作。"
-      project_verification: "输入项目的名称 %{name}，以确认删除。"
-      subprojects_confirmation: "其 子项目(s): %{value} 也将被删除。"
-      title: "删除项目 %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "项目阶段：%{phase}"
       project_phase_any: "项目阶段：任何阶段"
@@ -3931,6 +3964,8 @@ zh-CN:
   setting_feeds_limit: "Feed 内容限制"
   setting_file_max_size_displayed: "内联显示的文本文件的最大大小"
   setting_host_name: "主机名"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "每天小时数"
   setting_hours_per_day_explanation: >-
     这定义了在以天和小时为单位显示持续时间时，什么是一"天"（例如，如果一天是 8 小时，32 小时就是 4 天）。
@@ -4149,6 +4184,7 @@ zh-CN:
   status_invited: 已邀请
   status_locked: 锁定
   status_registered: 已注册
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

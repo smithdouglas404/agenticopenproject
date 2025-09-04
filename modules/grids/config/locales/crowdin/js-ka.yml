@@ -33,6 +33,8 @@ ka:
           not_set: 'არ არის დაყენებული'
           finished: 'დასრულებულია'
           discontinued: 'დასრულდა'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'ქვეპროექტები'
           no_results: 'No subprojects.'

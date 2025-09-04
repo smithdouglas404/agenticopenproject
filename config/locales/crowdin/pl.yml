@@ -604,9 +604,6 @@ pl:
         token/api:
           title: "The API token has been generated"
           warning: "Jest to jedyny raz, gdy zobaczysz ten token. Koniecznie skopiuj go teraz."
-      errors:
-        token_name_blank: "Podaj nazwę tokena API"
-        token_name_in_use: "Ta nazwa tokena API jest już używana, wybierz inną"
       failed_to_reset_token: "Nie można zresetować tokena dostępu: %{error}"
       failed_to_create_token: "Nie można utworzyć tokena dostępu: %{error}"
       failed_to_revoke_token: "Nie można unieważnić tokena dostępu: %{error}"
@@ -711,7 +708,7 @@ pl:
     dark_high_contrast: "Ciemny, wysoki kontrast"
     light: "Jasny"
     light_high_contrast: "Jasny, wysoki kontrast"
-    sync_with_os: "Automatycznie (dopasuj do trybu koloru systemu)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: Nie ma jeszcze żadnych typów.
@@ -930,7 +927,7 @@ pl:
   account:
     delete: "Usuń konto"
     delete_confirmation: "Czy na pewno chcesz usunąć to konto?"
-    deletion_pending: "Konto zostało zablokowane i zaplanowane do usunięcia. Pamiętaj, że ten proces odbywa się w tle. Może upłynąć trochę czasu, zanim użytkownik zostanie w pełni usunięty."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Dane użytkownika (np. e-mail, preferencje, pakiety pracy, wpisy wiki) będą usunięte w miarę możliwości. Jednakże, takie dane jak Zadania i wpisy wiki nie mogą być usunięte bez wpływu na pracę pozostałych użytkowników i mogą ją utrudnić. Te dane zostaną przypisane do konta "Użytkownik usunięty". Wszystkie dane z usuwanego konta zostaną przypisane do tego ww. konta uniemożliwiając ich późniejszą identyfikację.'
@@ -1061,6 +1058,7 @@ pl:
         active_value:
           true: "niezarchiwizowane"
           false: "w archiwum"
+        attribute_groups: "Attribute Groups"
         description: "Opis"
         enabled_modules: "Włączone moduły"
         identifier: "Identyfikator"
@@ -1154,6 +1152,8 @@ pl:
         is_readonly: "Pakiet roboczy tylko do odczytu"
         excluded_from_totals: "Wyłącz z obliczania sum w hierarchii"
         default_done_ratio: "% ukończenia"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Kalendarz"
         ical_token_query_assignment: "Przypisanie zapytania"
@@ -1207,9 +1207,9 @@ pl:
         auto_hide_popups: "Automatycznie ukrywaj banery sukcesu"
         auto_hide_popups_caption: "Po włączeniu tej funkcji zielone banery sukcesu będą automatycznie znikać po 5 sekundach."
         warn_on_leaving_unsaved: "Ostrzegaj mnie, gdy opuszczam zadanie z niezapisanymi zmianami"
-        theme: "Tryb koloru"
+        theme: "Color mode"
         time_zone: "Strefa czasowa"
-        mode_guideline: "Niektóre tryby zastąpią niestandardowe kolory motywów w celu zapewnienia dostępności i czytelności. W celu pełnej obsługi motywów niestandardowych wybierz tryb Jasny."
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Codzienne przypomnienia"
         workdays: "Dni robocze"
       version:
@@ -1352,6 +1352,11 @@ pl:
               minimum: "musi zawierać co najmniej jeden filtr nazwy głównej, kontekstu lub identyfikatora z operatorem „=”."
         custom_field:
           at_least_one_custom_option: "Przynajmniej jedna opcja musi być dostępna."
+          referenced_in_other_fields_html:
+            one: "%{name} is used in project attribute calculation %{links}."
+            few: "%{name} is used in project attribute calculations: %{links}."
+            many: "%{name} is used in project attribute calculations: %{links}."
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1584,7 +1589,8 @@ pl:
               cant_exceed_work: "nie może być wyższa niż Praca."
               must_be_set_when_work_is_set: "wymagane, gdy ustawiona jest opcja Praca."
               must_be_set_when_work_and_percent_complete_are_set: "wymagane, gdy ustawione są opcje Praca i % ukończenia."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 musi być puste, gdy Praca jest pusta, a % ukończenia wynosi 100%.
           readonly_status: "Pakiet roboczy ma status tylko do odczytu, więc jego atrybutów nie można zmienić."
@@ -1634,9 +1640,11 @@ pl:
         version:
           undeletable_archived_projects: "Wersji nie można usunąć, ponieważ dołączone są do niej pakiety robocze."
           undeletable_work_packages_attached: "Wersji nie można usunąć, ponieważ dołączone są do niej pakiety robocze."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Sprawdź następujące pola:"
@@ -2367,6 +2375,9 @@ pl:
   enumeration_reported_project_statuses: "Status zgłoszonego projektu"
   enumeration_caption_order_changed: "Kolejność została zmieniona."
   enumeration_could_not_be_moved: "Nie można przenieść wyliczenia."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "Pojedyncze logowanie (SSO) dla użytkownika '%{value}' nie powiodło się"
   error_can_not_archive_project: "Tego projektu nie można zarchiwizować: %{errors}"
   error_can_not_delete_entry: "Nie można usunąć wpisu"
@@ -2603,6 +2614,26 @@ pl:
       community: "Społeczność OpenProject"
       upsell:
         title: "Aktualizuj do wersji Enterprise"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "Aktualizuj do wersji Enterprise"
       postgres_migration: "Migrowanie instalacji do PostgreSQL"
@@ -2613,7 +2644,8 @@ pl:
       shortcuts: "Podpowiedzi"
       blog: "Blog OpenProject"
       forums: "Forum społeczności"
-      newsletter: "Powiadomienia bezpieczeństwa / Newsletter"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2778,6 +2810,7 @@ pl:
   label_api_access_key: "Klucz dostępu API"
   label_api_access_key_created_on: "Klucz API utworzony %{value} temu"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'Token iCalendar „%{token_name}” kalendarza „%{calendar_name}” w projekcie „%{project_name}”'
   label_ical_access_key_not_present: "Brak tokenów iCalendar."
@@ -3026,6 +3059,7 @@ pl:
   label_journal_diff: "Opis porównania"
   label_language: "Język"
   label_languages: "Języki"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Skok do projektu..."
   label_keyword_plural: "Słowa kluczowe"
   label_language_based: "Na podstawie języka użytkownika"
@@ -3832,13 +3866,15 @@ pl:
       one: "1 projekt"
       other: "Liczba projektów: %{count}"
     destroy:
-      confirmation: "Jeśli będziesz kontynuować, projekt %{identifier} zostanie bezpowrotnie zniszczony. Aby potwierdzić to działanie, wprowadź nazwę projektu w poniższym polu:"
-      project_delete_result_1: "Usuń wszystkie powiązane dane."
-      project_delete_result_2: "Usuń wszystkie zarządzane foldery projektów w dołączonych magazynach."
-      info: "Usuniecie projektu jest operacją nieodwracalną."
-      project_verification: "Wpisz nazwę projektu %{name} aby potwierdzić usunięcie."
-      subprojects_confirmation: "Podprojekt(y): %{value} zostaną także usunięte."
-      title: "Usuń projekt %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Faza projektu: %{phase}"
       project_phase_any: "Faza projektu: dowolna"
@@ -4071,6 +4107,8 @@ pl:
   setting_feeds_limit: "Feed content limit"
   setting_file_max_size_displayed: "Maksymalny rozmiar plików tekstowych wyświetlanych w treści"
   setting_host_name: "Nazwa hosta"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Liczba godzin dziennie"
   setting_hours_per_day_explanation: >-
     To definiuje, co jest uważane za „dzień” podczas wyświetlania czasu trwania w dniach i godzinach (na przykład, jeśli dzień ma 8 godzin, 32 godziny będą 4 dniami).
@@ -4289,6 +4327,7 @@ pl:
   status_invited: zaproszony
   status_locked: zablokowane
   status_registered: zarejestrowany
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

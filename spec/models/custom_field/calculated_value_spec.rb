@@ -31,22 +31,49 @@
 require "spec_helper"
 
 RSpec.describe CustomField::CalculatedValue, with_flag: { calculated_value_project_attribute: true } do
+  using CustomFieldFormulaReferencing
+
   subject(:custom_field) { create(:calculated_value_project_custom_field, formula: "1 + 1") }
+
+  describe ".with_formula_referencing", :aggregate_failures do
+    shared_let(:cf_a) { create(:integer_project_custom_field, default_value: 1) }
+    shared_let(:cf_b) { create(:integer_project_custom_field, default_value: 2) }
+    shared_let(:cf_c) { create(:integer_project_custom_field, default_value: 3) }
+
+    shared_let(:cf1) { create(:calculated_value_project_custom_field, :skip_validations, formula: "#{cf_a} + #{cf_b}") }
+    shared_let(:cf2) { create(:calculated_value_project_custom_field, :skip_validations, formula: "#{cf_b} + #{cf1}") }
+
+    let(:scope) { CustomField }
+
+    it "finds all fields referencing given id" do
+      expect(scope.with_formula_referencing(cf_a.id)).to contain_exactly(cf1)
+      expect(scope.with_formula_referencing(cf_b.id)).to contain_exactly(cf1, cf2)
+      expect(scope.with_formula_referencing(cf_c.id)).to be_empty
+      expect(scope.with_formula_referencing(cf1.id)).to contain_exactly(cf2)
+      expect(scope.with_formula_referencing(cf2.id)).to be_empty
+    end
+
+    it "finds all fields referencing given custom field" do
+      expect(scope.with_formula_referencing(cf_a)).to contain_exactly(cf1)
+      expect(scope.with_formula_referencing(cf_b)).to contain_exactly(cf1, cf2)
+      expect(scope.with_formula_referencing(cf_c)).to be_empty
+      expect(scope.with_formula_referencing(cf1)).to contain_exactly(cf2)
+      expect(scope.with_formula_referencing(cf2)).to be_empty
+    end
+  end
 
   describe ".affected_calculated_fields", :aggregate_failures do
     let(:scope) { CustomField }
-
-    def ref(custom_field) = "{{cf_#{custom_field.id}}}"
 
     context "given simple formulas" do
       shared_let(:cf_a) { create(:integer_project_custom_field, default_value: 1) }
       shared_let(:cf_b) { create(:integer_project_custom_field, default_value: 2) }
       shared_let(:cf_c) { create(:integer_project_custom_field, default_value: 3) }
       shared_let(:cf_d) { create(:integer_project_custom_field, default_value: 4) }
-      shared_let(:cf1) { create(:calculated_value_project_custom_field, :skip_validations, formula: "#{ref cf_a} * 2") }
-      shared_let(:cf2) { create(:calculated_value_project_custom_field, :skip_validations, formula: "#{ref cf_a} + #{ref cf_b}") }
-      shared_let(:cf3) { create(:calculated_value_project_custom_field, :skip_validations, formula: "#{ref cf_b} * 2") }
-      shared_let(:cf4) { create(:calculated_value_project_custom_field, :skip_validations, formula: "#{ref cf_c} * 2") }
+      shared_let(:cf1) { create(:calculated_value_project_custom_field, :skip_validations, formula: "#{cf_a} * 2") }
+      shared_let(:cf2) { create(:calculated_value_project_custom_field, :skip_validations, formula: "#{cf_a} + #{cf_b}") }
+      shared_let(:cf3) { create(:calculated_value_project_custom_field, :skip_validations, formula: "#{cf_b} * 2") }
+      shared_let(:cf4) { create(:calculated_value_project_custom_field, :skip_validations, formula: "#{cf_c} * 2") }
 
       it "returns an empty array if argument is empty" do
         expect(scope.affected_calculated_fields([])).to eq([])
@@ -114,9 +141,9 @@ RSpec.describe CustomField::CalculatedValue, with_flag: { calculated_value_proje
       shared_let(:cf_c) { create(:integer_project_custom_field, default_value: 3) }
       shared_let(:cf_d) { create(:integer_project_custom_field, default_value: 4) }
 
-      shared_let(:cf1) { create(:calculated_value_project_custom_field, :skip_validations, formula: "#{ref cf_a} + #{ref cf_b}") }
-      shared_let(:cf2) { create(:calculated_value_project_custom_field, :skip_validations, formula: "#{ref cf1} * #{ref cf_c}") }
-      shared_let(:cf3) { create(:calculated_value_project_custom_field, :skip_validations, formula: "#{ref cf2} * #{ref cf_d}") }
+      shared_let(:cf1) { create(:calculated_value_project_custom_field, :skip_validations, formula: "#{cf_a} + #{cf_b}") }
+      shared_let(:cf2) { create(:calculated_value_project_custom_field, :skip_validations, formula: "#{cf1} * #{cf_c}") }
+      shared_let(:cf3) { create(:calculated_value_project_custom_field, :skip_validations, formula: "#{cf2} * #{cf_d}") }
 
       it "returns referencing fields when passing referenced constant field ids" do
         expect(scope.affected_calculated_fields([cf_a.id])).to contain_exactly(cf1, cf2, cf3)
@@ -166,9 +193,9 @@ RSpec.describe CustomField::CalculatedValue, with_flag: { calculated_value_proje
 
       before do
         {
-          cf1 => "#{ref cf_a} + #{ref cf2}",
-          cf2 => "#{ref cf_b} + #{ref cf3}",
-          cf3 => "#{ref cf_c} + #{ref cf1}"
+          cf1 => "#{cf_a} + #{cf2}",
+          cf2 => "#{cf_b} + #{cf3}",
+          cf3 => "#{cf_c} + #{cf1}"
         }.each do |cf, formula|
           cf.formula = formula
           cf.save!(validate: false)

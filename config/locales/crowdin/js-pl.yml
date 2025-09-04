@@ -288,17 +288,6 @@ pl:
         format:
           date: "Atrybut %{attribute} jest nieprawidłową datą. Oczekiwany format: RRRR-MM-DD."
         general: "Wystapił błąd."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Przeczytaj o nowych funkcjach i aktualizacjach produktów."
-          learn_about: "Dowiedz się więcej o wszystkich nowych funkcjach"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                Wersja zawiera różne nowe funkcje i ulepszenia, takie jak <br> <ul class="%{list_styling_class}"> <li>Ulepszenia UX/UI zapewniające nowocześniejszy wygląd.</li> <li>Spotkania: opcja wyciszenia powiadomień e-mail i ICS.</li> <li>Liczniki upływu czasu wyświetlane w module Moje śledzenie czasu.</li> <li>Raportowanie postępów: suma % ukończenia wyświetlana jest również w trybie opartym na statusie.</li> <li>Kontrola kondycji Nextcloud: wskazanie braku funkcji wymiany tokenów (dodatek Enterprise).</li> </ul>
     ical_sharing_modal:
       title: "Subskrybuj kalendarz"
       inital_setup_error_message: "Podczas pobierania danych wystąpił błąd."
@@ -1232,7 +1221,7 @@ pl:
       selected_filter:
         all: "Wszystkie projekty"
         selected: "Tylko zaznaczone"
-      search_placeholder: "Wyszukaj projekt..."
+      search_placeholder: "Search projects..."
       search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Uwzględnij wszystkie podprojekty"
       tooltip:

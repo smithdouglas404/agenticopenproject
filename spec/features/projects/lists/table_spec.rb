@@ -272,6 +272,26 @@ RSpec.describe "Projects lists table display and actions", :js, with_settings: {
         expect(project).not_to be_favored_by(admin)
       end
 
+      specify "project can be deleted" do
+        login_as(admin)
+        visit projects_path
+
+        projects_page.activate_menu_of(project) do |menu|
+          expect(menu).to have_text("Delete")
+          click_link_or_button "Delete"
+        end
+
+        expect(page).to have_modal "Delete project"
+
+        within_modal "Delete project" do
+          expect(page).to have_heading "Permanently delete this project?"
+
+          # We test the actual deletion in spec/features/projects/destroy_spec.rb
+          click_on "Cancel"
+        end
+        expect(page).to have_no_modal "Delete project"
+      end
+
       specify "flash sortBy is being escaped" do
         login_as(admin)
         visit projects_path(sortBy: "[[\"><script src='/foobar.js'></script>\",\"\"]]")

@@ -33,6 +33,8 @@ lt:
           not_set: 'Nenustatyta'
           finished: 'Baigta'
           discontinued: 'Nutrauktas'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Sub-projektai'
           no_results: 'Nėra subprojektų.'

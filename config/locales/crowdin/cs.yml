@@ -607,9 +607,6 @@ cs:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Zadejte prosím název tokenu API"
-        token_name_in_use: "Tento název tokenu API je již používán, vyberte prosím jiný"
       failed_to_reset_token: "Nepodařilo se obnovit přístupový token: %{error}"
       failed_to_create_token: "Nepodařilo se vytvořit přístupový token: %{error}"
       failed_to_revoke_token: "Nepodařilo se odvolat přístupový token: %{error}"
@@ -714,7 +711,7 @@ cs:
     dark_high_contrast: "Tmavý vysoký kontrast"
     light: "Světlý"
     light_high_contrast: "Světlý kontrast"
-    sync_with_os: "Automatic (match OS colour mode)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: V současné době neexistují žádné typy.
@@ -934,7 +931,7 @@ cs:
   account:
     delete: "Odstranit účet"
     delete_confirmation: "Jste si jisti, že chcete odstranit tento účet?"
-    deletion_pending: "Účet byl uzamčen a byl naplánován na odstranění. Tento proces probíhá na pozadí. Může to chvíli trvat, než bude uživatel plně smazán."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Z dat, která uživatel vytvořil (např. e-mail, nastavení, pracovní balíčky, wiki položky), bude co nejvíce smazáno. Všimněte si však, že data jako pracovní balíčky a wiki nelze odstranit, aniž by to bránilo práci ostatních uživatelů. Tyto údaje jsou proto přeřazeny na účet nazvaný „Smazaný uživatel“. Vzhledem k tomu, že data každého smazaného účtu jsou znovu přiřazena k tomuto účtu, nebude možné rozlišit data, která uživatel vytvořil od dat jiného smazaného účtu.'
@@ -1065,6 +1062,7 @@ cs:
         active_value:
           true: "odarchivováno"
           false: "archivováno"
+        attribute_groups: "Attribute Groups"
         description: "Popis"
         enabled_modules: "Povolené moduly"
         identifier: "Identifikátor"
@@ -1158,6 +1156,8 @@ cs:
         is_readonly: "Pracovní balíček jen pro čtení"
         excluded_from_totals: "Vyloučit z výpočtu úhrnů v hierarchii"
         default_done_ratio: "% Dokončeno"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Kalendář"
         ical_token_query_assignment: "Query assignment"
@@ -1211,9 +1211,9 @@ cs:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "Upozornit mě při opuštění pracovního balíčku s neuloženými změnami"
-        theme: "Colour mode"
+        theme: "Color mode"
         time_zone: "Časové pásmo"
-        mode_guideline: "Some modes will overwrite custom theme colours for accessibility and legibility. Please select Light mode for full custom theme support."
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Denní připomenutí"
         workdays: "Pracovní dny"
       version:
@@ -1356,6 +1356,11 @@ cs:
               minimum: "musí obsahovat alespoň jeden filtr pro hlavní, kontext nebo id operátora „=“."
         custom_field:
           at_least_one_custom_option: "Alespoň jedna možnost musí být k dispozici."
+          referenced_in_other_fields_html:
+            one: "%{name} is used in project attribute calculation %{links}."
+            few: "%{name} is used in project attribute calculations: %{links}."
+            many: "%{name} is used in project attribute calculations: %{links}."
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1588,7 +1593,8 @@ cs:
               cant_exceed_work: "nemůže být vyšší než Práce."
               must_be_set_when_work_is_set: "vyžadováno, když je nastavena Práce."
               must_be_set_when_work_and_percent_complete_are_set: "je vyžadováno, když je nastavena práce a % Dokončit."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 musí být prázdný, pokud je položka Práce prázdná a % Dokončeno je 100 %.
           readonly_status: "Pracovní balíček je ve stavu jen pro čtení, takže jeho atributy nelze změnit."
@@ -1638,9 +1644,11 @@ cs:
         version:
           undeletable_archived_projects: "Verze nemůže být odstraněna, protože jsou k ní připojeny pracovní balíčky."
           undeletable_work_packages_attached: "Verze nemůže být odstraněna, protože jsou k ní připojeny pracovní balíčky."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Zkontrolujte, prosím, následující pole:"
@@ -2371,6 +2379,9 @@ cs:
   enumeration_reported_project_statuses: "Nahlášený stav projektu"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "Jednotné přihlášení (SSO) pro uživatele '%{value}' selhalo"
   error_can_not_archive_project: "Tento projekt nelze archivovat: %{errors}"
   error_can_not_delete_entry: "Nelze odstranit položku"
@@ -2607,6 +2618,26 @@ cs:
       community: "OpenProject komunita"
       upsell:
         title: "Upgradovat na Enterprise Edici"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "Upgradovat na Enterprise Edici"
       postgres_migration: "Migrujte vaši instalaci na PostgreSQL"
@@ -2617,7 +2648,8 @@ cs:
       shortcuts: "Klávesové zkratky"
       blog: "OpenProject blog"
       forums: "Komunitní fórum"
-      newsletter: "Bezpečnostní upozornění / newsletter"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2782,6 +2814,7 @@ cs:
   label_api_access_key: "Přístupový klíč pro API"
   label_api_access_key_created_on: "API přístupový klíč vytvořen před %{value}"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'token iCalendar "%{token_name}" pro "%{calendar_name}" v "%{project_name}"'
   label_ical_access_key_not_present: "toket iCalendar není přítomen."
@@ -3030,6 +3063,7 @@ cs:
   label_journal_diff: "Popis porovnání"
   label_language: "Jazyk"
   label_languages: "Jazyky"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Přejít na projekt..."
   label_keyword_plural: "Klíčová slova"
   label_language_based: "Na základě jazyka uživatele"
@@ -3836,13 +3870,15 @@ cs:
       one: "1 projekt"
       other: "%{count} projektů"
     destroy:
-      confirmation: "Pokud budete pokračovat, projekt %{identifier} bude natrvalo zničen. Pro potvrzení této akce prosím vložte název projektu do níže uvedeného pole, toto bude:"
-      project_delete_result_1: "Odstranit všechna související data."
-      project_delete_result_2: "Odstranit všechny spravované složky projektu v přiložených úložištích."
-      info: "Odstranění projektu je nevratná akce."
-      project_verification: "Zadejte název projektu %{name} pro potvrzení odstranění."
-      subprojects_confirmation: "Jeho podprojek(y): %{value} budou také smazány."
-      title: "Odstranit projekt %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Project phase: %{phase}"
       project_phase_any: "Project phase: Any"
@@ -4077,6 +4113,8 @@ cs:
   setting_feeds_limit: "Limit obsahu kanálů"
   setting_file_max_size_displayed: "Maximální velikost textových souborů zobrazených přímo na stránce"
   setting_host_name: "Název serveru"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Hodiny za den"
   setting_hours_per_day_explanation: >-
     This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).
@@ -4295,6 +4333,7 @@ cs:
   status_invited: pozván
   status_locked: uzamčeno
   status_registered: registrován
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

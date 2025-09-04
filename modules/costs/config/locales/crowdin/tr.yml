@@ -31,9 +31,9 @@ tr:
         spent: "Harcanan"
         spent_on: "Tarih"
         logged_by: "Giriş yapan:"
-        entity: Logged for
-        entity_id: Logged for
-        entity_gid: Logged for
+        entity: Şunun için kaydedildi
+        entity_id: Şunun için kaydedildi
+        entity_gid: Şunun için kaydedildi
       cost_type:
         unit: "Birim adı"
         unit_plural: "Birimin çoğul adı"
@@ -61,9 +61,9 @@ tr:
         start_time: Başlama tarihi
         end_time: Bitiş zamanı
         time: Zaman
-        entity: Logged for
-        entity_id: Logged for
-        entity_gid: Logged for
+        entity: Şunun için kaydedildi
+        entity_id: Şunun için kaydedildi
+        entity_gid: Şunun için kaydedildi
     models:
       time_entry:
         one: "Zaman girişi"
@@ -188,7 +188,7 @@ tr:
   notice_cost_logged_successfully: "Birim maliyet başarıyla kaydedildi."
   notice_different_time_zones: "Bu kullanıcı farklı bir saat dilimine sahiptir (%{tz}). Zaman, onun zaman dilimi kullanılarak kaydedilecektir."
   notice_time_entry_update_failed: "Zaman girişi güncellenemedi. Hatalar: %{errors}"
-  notice_time_entry_delete_failed: "Failed to delete time entry. Errors: %{errors}"
+  notice_time_entry_delete_failed: "Zaman girişi silinemedi. Hatalar: %{errors}"
   permission_edit_cost_entries: "Rezervasyon birimi maliyetlerini düzenle"
   permission_edit_own_cost_entries: "Kendi rezervasyonu birim maliyetlerini düzenleme"
   permission_edit_hourly_rates: "Saatlik oranları düzenleme"

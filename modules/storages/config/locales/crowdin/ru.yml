@@ -236,10 +236,11 @@ ru:
       openproject_oauth: OpenProject OAuth
       project_folders: Папки проекта
       redirect_uri: URI перенаправления
+      sharepoint_oauth: Azure OAuth
       storage_audience_blank: Аудитория не была настроена.
       storage_audience_description: Обмен токенами для аудитории "%{audience}".
       storage_audience_idp: Использование токена доступа, полученного поставщиком идентификационных данных при входе в систему, независимо от аудитории.
-      storage_oauth: Nextcloud OAuth
+      storage_oauth: Storage OAuth
       storage_provider: Поставщик хранилища
       token_exchange: Обмен токенами
     health:
@@ -278,6 +279,7 @@ ru:
           drive_id_exists: Диск существует
           drive_id_format: Формат ID диска
           header: Конфигурация
+          host: Host URL
           host_url_accessible: Адрес хоста доступен
           storage_configured: Настройка завершена
           tenant_id: Идентификатор арендатора

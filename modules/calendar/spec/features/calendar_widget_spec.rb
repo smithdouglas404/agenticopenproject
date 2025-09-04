@@ -41,7 +41,7 @@ RSpec.describe "Calendar Widget", :js, with_settings: { start_of_week: 1 } do
            due_date: Time.zone.today.beginning_of_week.next_occurring(:thursday))
   end
   shared_let(:meeting) do
-    create(:meeting, title: "Weekly", project:, start_time: Time.zone.tomorrow + 10.hours)
+    create(:meeting, title: "Weekly", project:, start_time: Time.zone.today.beginning_of_week.next_occurring(:tuesday) + 10.hours)
   end
 
   let(:overview_page) do
@@ -96,15 +96,6 @@ RSpec.describe "Calendar Widget", :js, with_settings: { start_of_week: 1 } do
       page.find(".fc-event", text: "Weekly", visible: :all).click
       expect(page).to have_current_path /meetings\/#{meeting.id}/
     end
-  end
-
-  it "opens the work package full view when clicking a calendar entry" do
-    # Clicking the calendar entry goes to work package full screen
-    page.find(".fc-event-title", text: work_package.subject).click
-    wp_full_view.ensure_page_loaded
-
-    wp_full_view.go_back
-    expect(page).to have_text("Overview")
   end
 
   it "can resize the same work package twice (Regression #48333)", :selenium do

@@ -589,9 +589,6 @@ vi:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Vui lòng cung cấp tên API token"
-        token_name_in_use: "Tên API token này đã được sử dụng, vui lòng chọn tên khác"
       failed_to_reset_token: "Lỗi cập nhật mã truy cập: %{error}"
       failed_to_create_token: "Không thể tạo token truy cập: %{error}"
       failed_to_revoke_token: "Không thể thu hồi token truy cập: %{error}"
@@ -693,7 +690,7 @@ vi:
     dark_high_contrast: "Dark high contrast"
     light: "Sáng"
     light_high_contrast: "Sáng, độ tương phản cao"
-    sync_with_os: "Automatic (match OS colour mode)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: Hiện tại không có loại nào.
@@ -910,7 +907,7 @@ vi:
   account:
     delete: "Xoá tài khoản"
     delete_confirmation: "Bạn có chắc chắn muốn xoá tài khoản chứ?"
-    deletion_pending: "Tài khoản đã bị khóa và đã được lên lịch xóa. Lưu ý rằng quá trình này diễn ra trong nền. Có thể mất một vài phút cho đến khi người dùng được xóa hoàn toàn."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Dữ liệu mà người dùng tạo ra (ví dụ: email, sở thích, gói công việc, mục wiki) sẽ được xóa nhiều nhất có thể. Tuy nhiên, dữ liệu như gói công việc và mục wiki không thể bị xóa mà không cản trở công việc của các người dùng khác. Do đó, dữ liệu như vậy sẽ được gán lại cho một tài khoản gọi là "Người dùng đã xóa". Vì dữ liệu của mỗi tài khoản bị xóa đều được gán lại cho tài khoản này, sẽ không thể phân biệt dữ liệu mà người dùng tạo ra với dữ liệu của một tài khoản bị xóa khác.'
@@ -1041,6 +1038,7 @@ vi:
         active_value:
           true: "chưa lưu trữ"
           false: "đã lưu trữ"
+        attribute_groups: "Attribute Groups"
         description: "Mô tả"
         enabled_modules: "Các mô-đun đã bật"
         identifier: "Định danh"
@@ -1134,6 +1132,8 @@ vi:
         is_readonly: "Work package chỉ đọc"
         excluded_from_totals: "Loại trừ khỏi tính tổng trong phân cấp"
         default_done_ratio: "% Hoàn thành"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Lịch"
         ical_token_query_assignment: "Query assignment"
@@ -1187,9 +1187,9 @@ vi:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "Cảnh báo tôi khi rời khỏi gói công việc với thay đổi chưa lưu"
-        theme: "Colour mode"
+        theme: "Color mode"
         time_zone: "Múi giờ"
-        mode_guideline: "Some modes will overwrite custom theme colours for accessibility and legibility. Please select Light mode for full custom theme support."
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Daily reminders"
         workdays: "Ngày làm việc"
       version:
@@ -1332,6 +1332,8 @@ vi:
               minimum: "cần bao gồm ít nhất một bộ lọc cho principal, context hoặc id với toán tử '='."
         custom_field:
           at_least_one_custom_option: "Ít nhất một lựa chọn cần phải được cung cấp."
+          referenced_in_other_fields_html:
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1564,7 +1566,8 @@ vi:
               cant_exceed_work: "không thể cao hơn Công việc."
               must_be_set_when_work_is_set: "cần thiết khi Công việc được thiết lập."
               must_be_set_when_work_and_percent_complete_are_set: "bắt buộc khi Công việc và % Hoàn thành được thiết lập."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 phải trống khi Công việc trống và % Hoàn thành là 100%.
           readonly_status: "Gói công việc đang ở trạng thái chỉ đọc nên các thuộc tính của nó không thể bị thay đổi."
@@ -1611,9 +1614,11 @@ vi:
         version:
           undeletable_archived_projects: "Phiên bản không thể bị xóa vì nó có các gói công việc gắn liền với nó."
           undeletable_work_packages_attached: "Phiên bản không thể bị xóa vì nó có các gói công việc gắn liền với nó."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Vui lòng kiểm tra các mục sau đây:"
@@ -2239,6 +2244,9 @@ vi:
   enumeration_reported_project_statuses: "Tình trạng dự án đã báo cáo"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "Đăng nhập một lần (SSO) cho người dùng '%{value}' không thành công"
   error_can_not_archive_project: "Dự án này không thể lưu trữ: %{errors}"
   error_can_not_delete_entry: "Không thể xoá"
@@ -2475,6 +2483,26 @@ vi:
       community: "Cộng đồng OpenProject"
       upsell:
         title: "Nâng cấp lên phiên bản Enterprise"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "Nâng cấp lên phiên bản Enterprise"
       postgres_migration: "Di chuyển cài đặt của bạn lên PostgreSQL"
@@ -2485,7 +2513,8 @@ vi:
       shortcuts: "Phím tắt"
       blog: "OpenProject blog"
       forums: "Diễn đàn cộng đồng"
-      newsletter: "Cảnh báo bảo mật / Bản tin"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2650,6 +2679,7 @@ vi:
   label_api_access_key: "Khoá truy cập API"
   label_api_access_key_created_on: "Khoá truy cập API đựơc tạo cách đây %{value}"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'Mã iCalendar "%{token_name}" cho "%{calendar_name}" trong "%{project_name}"'
   label_ical_access_key_not_present: "không có mã thông báo(s) iCalendar."
@@ -2898,6 +2928,7 @@ vi:
   label_journal_diff: "So sánh mô tả"
   label_language: "Ngôn ngữ"
   label_languages: "Ngôn ngữ"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Nhảy đến dự án..."
   label_keyword_plural: "Từ khóa"
   label_language_based: "Dựa trên ngôn ngữ của người dùng"
@@ -3699,13 +3730,15 @@ vi:
       one: "một dự án"
       other: "%{count} dự án"
     destroy:
-      confirmation: "Nếu bạn tiếp tục, dự án %{identifier} sẽ bị xóa vĩnh viễn. Để xác nhận hành động này, hãy nhập tên dự án vào trường bên dưới, điều này sẽ:"
-      project_delete_result_1: "Xóa tất cả dữ liệu liên quan."
-      project_delete_result_2: "Xóa tất cả thư mục dự án được quản lý trong các lưu trữ đính kèm."
-      info: "Việc xóa dự án là hành động không thể khôi phục."
-      project_verification: "Nhập tên dự án %{name} để xác minh việc xóa."
-      subprojects_confirmation: "Các dự án con(s) của nó: %{value} cũng sẽ bị xóa."
-      title: "Xóa dự án %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Project phase: %{phase}"
       project_phase_any: "Project phase: Any"
@@ -3940,6 +3973,8 @@ vi:
   setting_feeds_limit: "Giới hạn nội dung của feed"
   setting_file_max_size_displayed: "Kích thước tối đa của tệp văn bản hiển thị nội tuyến"
   setting_host_name: "Tên máy chủ"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Giờ mỗi ngày"
   setting_hours_per_day_explanation: >-
     Điều này xác định cái gì được coi là một "ngày" khi hiển thị thời gian theo ngày và giờ (ví dụ, nếu một ngày là 8 giờ, 32 giờ sẽ là 4 ngày).
@@ -4158,6 +4193,7 @@ vi:
   status_invited: được mời
   status_locked: đã khóa
   status_registered: đã đăng ký
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

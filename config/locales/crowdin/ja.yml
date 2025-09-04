@@ -587,9 +587,6 @@ ja:
         token/api:
           title: "API トークンが生成されました"
           warning: "このトークンが表示される唯一の時間です。今すぐコピーしてください。"
-      errors:
-        token_name_blank: "APIトークン名を入力してください"
-        token_name_in_use: "この API トークン名は既に使用されています。別のトークンを選択してください"
       failed_to_reset_token: "アクセストークンをリセットできませんでした: %{error}"
       failed_to_create_token: "アクセストークンの作成に失敗しました: %{error}"
       failed_to_revoke_token: "アクセストークンの取り消しに失敗しました: %{error}"
@@ -692,7 +689,7 @@ ja:
     dark_high_contrast: "暗い高コントラスト"
     light: "ライト"
     light_high_contrast: "明るいコントラストが高い"
-    sync_with_os: "自動 (OS カラーモードに一致)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: 現在、種類はありません。
@@ -909,7 +906,7 @@ ja:
   account:
     delete: "アカウントを削除"
     delete_confirmation: "アカウントを削除してもよろしいですか？"
-    deletion_pending: "アカウントがロックされ、削除がスケジュールされました。このプロセスはバックグラウンドで行われることに注意してください。 ユーザーが完全に削除されるまで数分かかる場合があります。"
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'ユーザーが作成した殆どのデータ (例えば電子メール、設定、ワークパッケージ 、wiki記載 )が削除されます。ただし、他のユーザーの作業を妨害することがなくワークパッケージやwiki 記載のようなデータは削除することはできません。それ故に、このようなデータは「削除されたユーザー」と呼ばれるアカウントに再割り当てされます。削除された各アカウントのデータがこのアカウントに再割り当てされるので、そのユーザーが作成したデータと削除された別のユーザーのデータとを区別することができなくなります。'
@@ -1040,6 +1037,7 @@ ja:
         active_value:
           true: "アーカイブされていません"
           false: "アーカイブ済"
+        attribute_groups: "Attribute Groups"
         description: "説明"
         enabled_modules: "有効なモジュール"
         identifier: "識別子"
@@ -1133,6 +1131,8 @@ ja:
         is_readonly: "読み取り専用のワークパッケージ"
         excluded_from_totals: "階層内の合計の計算から除外"
         default_done_ratio: "%完了率"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "カレンダー"
         ical_token_query_assignment: "クエリの割り当て"
@@ -1186,9 +1186,9 @@ ja:
         auto_hide_popups: "サクセスバナーを自動的に隠す"
         auto_hide_popups_caption: "有効にすると、緑色のサクセスバナーは5秒後に自動的に消えます。"
         warn_on_leaving_unsaved: "変更を保存せずにワークパッケージから移動するときに警告"
-        theme: "カラーモード"
+        theme: "Color mode"
         time_zone: "タイムゾーン"
-        mode_guideline: "一部のモードでは、アクセシビリティと読みやすさのためにカスタムテーマの色を上書きします。完全なカスタムテーマサポートのためにライトモードを選択してください。"
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "毎日の通知"
         workdays: "営業時間"
       version:
@@ -1331,6 +1331,8 @@ ja:
               minimum: "プリンシパル、コンテキスト、または '= ' 演算子の id に少なくとも 1 つのフィルタを含める必要があります。"
         custom_field:
           at_least_one_custom_option: "少なくとも 1 つオプションが有効である必要があります。"
+          referenced_in_other_fields_html:
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1563,7 +1565,8 @@ ja:
               cant_exceed_work: "仕事より高くすることはできません。"
               must_be_set_when_work_is_set: "作業が設定されている場合に必要です。"
               must_be_set_when_work_and_percent_complete_are_set: "「作業」と「完了率」が設定されている場合に必要です。"
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- 作業が設定されている場合は0hでなければなりません。完了率は100%です。'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 「Work」が空で「% Complete」が100%の場合、必ず空でなければなりません。
           readonly_status: "ワークパッケージは読み取り専用の状態になっているため、その属性は変更できません。"
@@ -1610,9 +1613,11 @@ ja:
         version:
           undeletable_archived_projects: "ワークパッケージが添付されているため、バージョンを削除できません。"
           undeletable_work_packages_attached: "ワークパッケージが添付されているため、バージョンを削除できません。"
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "次のフィールドをチェックしてください："
@@ -2238,6 +2243,9 @@ ja:
   enumeration_reported_project_statuses: "報告されるプロジェクト進捗状況"
   enumeration_caption_order_changed: "オーダーの変更に成功しました。"
   enumeration_could_not_be_moved: "列挙は移動できなかった。"
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "ユーザー '%{value}' のシングルサインオン (SSO) に失敗しました"
   error_can_not_archive_project: "このプロジェクトはアーカイブできません: %{errors}"
   error_can_not_delete_entry: "エントリを削除できません"
@@ -2474,6 +2482,26 @@ ja:
       community: "OpenProject コミュニティ"
       upsell:
         title: "エンタープライズ版にアップグレード"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "エンタープライズ版にアップグレード"
       postgres_migration: "PostgreSQL にインストールを移行しています"
@@ -2484,7 +2512,8 @@ ja:
       shortcuts: "ショートカット"
       blog: "OpenProject ブログ"
       forums: "コミュニティ フォーラム"
-      newsletter: "セキュリティアラート / ニュースレター"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2649,6 +2678,7 @@ ja:
   label_api_access_key: "APIアクセスキー"
   label_api_access_key_created_on: "APIアクセスキーが%{value}前に作成されました"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar トークン「%{token_name}」は「%{calendar_name}」カレンダーの「%{project_name}」プロジェクト用です。'
   label_ical_access_key_not_present: "iCalendar トークンが存在しません。"
@@ -2897,6 +2927,7 @@ ja:
   label_journal_diff: "説明の比較"
   label_language: "言語"
   label_languages: "言語"
+  label_locale: "Language and region"
   label_jump_to_a_project: "プロジェクトへ移動..."
   label_keyword_plural: "キーワード"
   label_language_based: "ユーザの言語設定に基づく"
@@ -3698,13 +3729,15 @@ ja:
       one: "1 プロジェクト"
       other: "%{count} プロジェクト"
     destroy:
-      confirmation: "続行すると、プロジェクト %{identifier} は完全に破棄されます。この操作を確認するには、以下のフィールドにプロジェクト名を紹介してください："
-      project_delete_result_1: "すべての関連データを削除します。"
-      project_delete_result_2: "添付されているストレージ内のすべての管理対象プロジェクトフォルダを削除します。"
-      info: "プロジェクトの削除は復元できない操作です。"
-      project_verification: "削除を確認するため、プロジェクト名 %{name} を入力してください。"
-      subprojects_confirmation: "子プロジェクト: %{value} も削除されます。"
-      title: "プロジェクト %{name} を削除"
+      title: "プロジェクトを削除"
+      heading: "プロジェクトを完全に削除しますか？"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          プロジェクト<strong>%{name}</strong> に関連するすべてのデータを完全に削除しようとしています。
+        one: >
+          プロジェクト <strong>%{name}</strong> とこのサブプロジェクトに関連するすべてのデータを完全に削除しようとしています：
+        other: >
+          プロジェクト <strong>%{name}</strong> とこれらのサブプロジェクトに関連するすべてのデータを完全に削除しようとしています：
     filters:
       project_phase: "プロジェクトフェーズ: %{phase}"
       project_phase_any: "プロジェクトフェーズ: すべて"
@@ -3939,6 +3972,8 @@ ja:
   setting_feeds_limit: "フィードの項目数の上限"
   setting_file_max_size_displayed: "画面表示するテキストファイルの最大サイズ"
   setting_host_name: "ホスト名"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "1日あたりの時間"
   setting_hours_per_day_explanation: >-
     1営業日あたりの稼働時間を定義します (例えば、 1日が8時間で32時間稼働した場合は4日間です)。
@@ -4157,6 +4192,7 @@ ja:
   status_invited: 招待済み
   status_locked: ロック済み
   status_registered: 登録済み
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

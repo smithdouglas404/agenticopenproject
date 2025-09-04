@@ -42,23 +42,26 @@ module API
           "user" => "User",
           "version" => "Version",
           "list" => "CustomOption",
-          "hierarchy" => "CustomField::Hierarchy::Item"
+          "hierarchy" => "CustomField::Hierarchy::Item",
+          "scored_list" => "CustomField::Hierarchy::Item"
         }.freeze
 
         LINK_FORMATS = %w(list user version hierarchy).freeze
 
         NAMESPACE_MAP = {
-          "user" => ["users", "groups", "placeholder_users"],
+          "user" => %w[users groups placeholder_users],
           "version" => "versions",
           "list" => "custom_options",
-          "hierarchy" => "custom_field_items"
+          "hierarchy" => "custom_field_items",
+          "scored_list" => "custom_field_items"
         }.freeze
 
         REPRESENTER_MAP = {
           "user" => "::API::V3::Principals::PrincipalRepresenterFactory",
           "version" => "::API::V3::Versions::VersionRepresenter",
           "list" => "::API::V3::CustomOptions::CustomOptionRepresenter",
-          "hierarchy" => "::API::V3::CustomFields::Hierarchy::HierarchyItemRepresenter"
+          "hierarchy" => "::API::V3::CustomFields::Hierarchy::HierarchyItemRepresenter",
+          "scored_list" => "::API::V3::CustomFields::Hierarchy::HierarchyItemRepresenter"
         }.freeze
 
         class << self
@@ -115,7 +118,7 @@ module API
             inject_user_schema(custom_field)
           when "list"
             inject_list_schema(custom_field)
-          when "hierarchy"
+          when "hierarchy", "scored_list"
             inject_hierarchy_schema(custom_field)
           else
             inject_basic_schema(custom_field)

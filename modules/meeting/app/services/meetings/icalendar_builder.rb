@@ -32,15 +32,22 @@ require "icalendar/tzinfo"
 
 module Meetings
   class IcalendarBuilder
-    attr_reader :timezone, :calendar, :calendar_timezones
+    attr_reader :timezone, :calendar, :all_times, :tzid, :calendar_generated_for_user
 
-    def initialize(timezone:)
+    def initialize(timezone:, user: User.current)
+      @calendar_generated_for_user = user
       @timezone = timezone
+      @tzid = timezone.tzinfo.canonical_identifier
       @calendar = build_icalendar
-      @calendar_timezones = Set.new
+      @all_times = []
       @excluded_dates_cache = {}
       @instantiated_occurrences_cache = {}
       @series_cache_loaded = false
+      @action_needed_from_user_as_attendee = true
+    end
+
+    def treat_participations_from_user_as_accepted!
+      @action_needed_from_user_as_attendee = false
     end
 
     def add_single_meeting_event(meeting:, cancelled: false) # rubocop:disable Metrics/AbcSize
@@ -48,8 +55,8 @@ module Meetings
         e.dtstart = ical_datetime(meeting.start_time)
         e.dtend = ical_datetime(meeting.end_time)
         e.url = url_helpers.meeting_url(meeting)
-        e.summary = "[#{meeting.project.name}] #{meeting.title}"
-        e.description = "[#{meeting.project.name}] #{I18n.t(:label_meeting)}: #{meeting.title}"
+        e.summary = meeting.title
+        e.description = meeting.title
         e.uid = meeting.uid
         e.organizer = ical_organizer
         e.location = meeting.location.presence
@@ -66,8 +73,8 @@ module Meetings
     def add_series_event(recurring_meeting:, cancelled: false) # rubocop:disable Metrics/AbcSize
       calendar.event do |e|
         e.uid = recurring_meeting.uid
-        e.summary = "[#{recurring_meeting.project.name}] #{recurring_meeting.title}"
-        e.description = "[#{recurring_meeting.project.name}] #{I18n.t(:label_meeting_series)}: #{recurring_meeting.title}"
+        e.summary = recurring_meeting.title
+        e.description = recurring_meeting.title
         e.organizer = ical_organizer
 
         e.rrule = recurring_meeting.schedule.rrules.first.to_ical # We currently only have one recurrence rule
@@ -97,8 +104,8 @@ module Meetings
 
       calendar.event do |e|
         e.uid = recurring_meeting.uid
-        e.summary = "[#{recurring_meeting.project.name}] #{recurring_meeting.title}"
-        e.description = "[#{recurring_meeting.project.name}] #{I18n.t(:label_meeting_series)}: #{recurring_meeting.title}"
+        e.summary = recurring_meeting.title
+        e.description = recurring_meeting.title
         e.organizer = ical_organizer
 
         e.recurrence_id = ical_datetime(scheduled_meeting.start_time)
@@ -126,10 +133,7 @@ module Meetings
     end
 
     def to_ical
-      calendar_timezones.each do |ical_tzinfo|
-        calendar.add_timezone(ical_tzinfo)
-      end
-
+      calendar.add_timezone(build_single_vtimezone)
       calendar.to_ical
     end
 
@@ -163,10 +167,6 @@ module Meetings
       end
     end
 
-    def add_timezone_definition(time)
-      calendar_timezones << timezone.tzinfo.ical_timezone(time)
-    end
-
     def add_attendees(event:, meeting:)
       meeting.participants.includes(:user).find_each do |participant|
         user = participant.user
@@ -177,8 +177,8 @@ module Meetings
           {
             "CN" => user.name,
             "EMAIL" => user.mail,
-            "PARTSTAT" => "NEEDS-ACTION",
-            "RSVP" => "TRUE",
+            "PARTSTAT" => attendee_participation_status(user),
+            "RSVP" => attendee_rsvp_needed?(user) ? "TRUE" : "FALSE",
             "CUTYPE" => "INDIVIDUAL",
             "ROLE" => "REQ-PARTICIPANT"
           }
@@ -188,14 +188,51 @@ module Meetings
       end
     end
 
-    def tzid
-      @tzid ||= timezone.tzinfo.canonical_identifier
+    def attendee_participation_status(user)
+      if calendar_generated_for_user == user && @action_needed_from_user_as_attendee
+        "NEEDS-ACTION"
+      else
+        "ACCEPTED" # until we handle RSVPs properly, we assume participants have accepted
+      end
+    end
+
+    def attendee_rsvp_needed?(user)
+      calendar_generated_for_user == user && @action_needed_from_user_as_attendee
     end
 
     def ical_datetime(time)
       time_in_time_zone = time.in_time_zone(timezone)
-      add_timezone_definition(time_in_time_zone)
+      all_times << time_in_time_zone
       Icalendar::Values::DateTime.new time_in_time_zone, "tzid" => tzid
+    end
+
+    def format_ical_offset(offset_seconds)
+      hours = offset_seconds / 3600
+      minutes = (offset_seconds.abs / 60) % 60
+      sprintf("%<hours>+03d%<minutes>02d", hours:, minutes:)
+    end
+
+    # Helper to build a VTZIMEZONE with all relevant transitions
+    def build_single_vtimezone # rubocop:disable Metrics/AbcSize
+      tz = Icalendar::Timezone.new
+      tz.tzid = tzid
+
+      # We are investigating how to properly build this ... for now let's
+      # just include everything from min - 6 months to max + 6 months
+      if all_times.present?
+        transitions = timezone.tzinfo.transitions_up_to(all_times.max + 6.months, all_times.min - 6.months)
+
+        transitions.each do |tr|
+          comp = tr.offset.dst? ? Icalendar::Timezone::Daylight.new : Icalendar::Timezone::Standard.new
+          comp.dtstart = tr.at.utc.strftime("%Y%m%dT%H%M%SZ")
+          comp.tzoffsetfrom = format_ical_offset(tr.previous_offset.utc_total_offset)
+          comp.tzoffsetto = format_ical_offset(tr.offset.utc_total_offset)
+          comp.tzname = tr.offset.abbreviation.to_s
+          tz.add_component(comp)
+        end
+      end
+
+      tz
     end
 
     def ical_organizer

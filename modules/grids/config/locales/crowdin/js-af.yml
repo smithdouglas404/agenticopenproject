@@ -33,6 +33,8 @@ af:
           not_set: 'Not set'
           finished: 'Finished'
           discontinued: 'Discontinued'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Subprojekte'
           no_results: 'No subprojects.'

@@ -236,10 +236,11 @@ uk:
       openproject_oauth: OpenProject OAuth
       project_folders: Папки проєкту
       redirect_uri: URI переспрямування
+      sharepoint_oauth: Azure OAuth
       storage_audience_blank: Аудиторію не налаштовано.
       storage_audience_description: Триває обмін маркерів для аудиторії «%{audience}».
       storage_audience_idp: Використання маркера доступу, отриманого від постачальника ідентифікаційних даних під час входу, незалежно від аудиторії.
-      storage_oauth: Nextcloud OAuth
+      storage_oauth: Storage OAuth
       storage_provider: Постачальник сховища
       token_exchange: Обмін маркерів
     health:
@@ -278,6 +279,7 @@ uk:
           drive_id_exists: Диск існує
           drive_id_format: Формат ID Диска
           header: Конфігурація
+          host: Host URL
           host_url_accessible: URL-адреса хосту доступна
           storage_configured: Налаштування завершено
           tenant_id: ID клієнта

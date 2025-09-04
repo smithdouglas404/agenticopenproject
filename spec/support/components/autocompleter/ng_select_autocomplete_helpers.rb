@@ -33,11 +33,7 @@ module Components::Autocompleter
     end
 
     def ng_click_autocompleter(target)
-      if using_cuprite?
-        target.click
-      else
-        page.execute_script("arguments[0].click();", target.native)
-      end
+      target.click
     end
 
     def ng_find_dropdown(element, results_selector: nil)

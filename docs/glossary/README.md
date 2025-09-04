@@ -518,7 +518,7 @@ In OpenProject, categories are useful for classifying work packages. A new categ
 
 If you need a Category that applies to all projects on your instance, we recommend using a [custom field](#custom-field) instead.
 
-Read more about work package categories in OpenProject](../user-guide/projects/project-settings/work-packages/#work-package-categories).
+[Read more about work package categories in OpenProject](../user-guide/projects/project-settings/work-packages/#work-package-categories).
 
 ### Work package ID
 

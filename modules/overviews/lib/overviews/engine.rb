@@ -47,7 +47,14 @@ module Overviews
         OpenProject::AccessControl.permission(:view_project)
           .controller_actions
           .push(
-            "overviews/overviews/show"
+            "overviews/overviews/show",
+            "overviews/widgets/project_statuses/show"
+          )
+
+        OpenProject::AccessControl.permission(:edit_project)
+          .controller_actions
+          .push(
+            "overviews/widgets/project_statuses/update"
           )
 
         OpenProject::AccessControl.permission(:view_project_attributes)

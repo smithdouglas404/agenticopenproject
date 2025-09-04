@@ -289,17 +289,6 @@ ja:
         format:
           date: "%{attribute} は有効な日付ではありません - YYYY-MM-DDの形式で入力してください。"
         general: "エラーが発生しました。"
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "新しい機能と製品の更新について紹介します。"
-          learn_about: "新機能の詳細"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                このリリースには、<br> のような様々な新機能や改善が含まれています。 <ul class="%{list_styling_class}"> <li>UX/UIが改善され、よりモダンな外観になりました。</li> <li>ミーティング：メール通知とICSをミュートするオプション。</li> <li>進行中のタイマーがマイタイムトラッキングモジュールに表示されます。</li> <li>進捗報告: ステータスベースのモードでも、完了率の合計が表示されます。</li> <li>Nextcloudヘルスチェック：トークン交換機能（Enterpriseアドオン）がないことを表示します。</li> </ul>
     ical_sharing_modal:
       title: "カレンダーを購読する"
       inital_setup_error_message: "データ取得中にエラーが発生しました。"
@@ -1221,7 +1210,7 @@ ja:
       selected_filter:
         all: "すべてのプロジェクト"
         selected: "選択したもののみ"
-      search_placeholder: "プロジェクトを検索…"
+      search_placeholder: "Search projects..."
       search_placeholder_favorites: "Search favorites..."
       include_subprojects: "すべてのサブプロジェクトを含む"
       tooltip:

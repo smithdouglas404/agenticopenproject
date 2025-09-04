@@ -46,12 +46,32 @@ module OpenProject
           @links ||= static_links.merge(dynamic_links)
         end
 
-        def url_for(*items)
-          links.dig(*items, :href)
+        def url_for(*items, localize_url: true)
+          href = links.dig(*items, :href)
+
+          if localize_url && docs_url?(href)
+            with_locale_param(href)
+          else
+            href
+          end
         end
 
         def has?(name)
           @links.key? name
+        end
+
+        def docs_url?(url)
+          url&.start_with?(docs_url)
+        end
+
+        def docs_url
+          links[:openproject_docs][:href]
+        end
+
+        def with_locale_param(href)
+          url = Addressable::URI.parse(href)
+          url.query_values = (url.query_values || {}).merge(go_to_locale: I18n.locale)
+          url.to_s
         end
 
         private
@@ -61,6 +81,10 @@ module OpenProject
             help: {
               href: help_link,
               label: "top_menu.help_and_support"
+            },
+            current_release_notes: {
+              href: current_release_notes_link,
+              label: :label_release_notes
             }
           }
 
@@ -72,6 +96,11 @@ module OpenProject
           end
 
           dynamic
+        end
+
+        def current_release_notes_link
+          version = OpenProject::VERSION.to_semver(separator: "-", include_special: false)
+          "https://www.openproject.org/docs/release-notes/#{version}"
         end
 
         def static_links

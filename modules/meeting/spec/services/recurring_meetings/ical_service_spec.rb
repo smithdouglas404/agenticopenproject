@@ -75,10 +75,10 @@ RSpec.describe RecurringMeetings::ICalService, type: :model do # rubocop:disable
     it "contains serise and template information" do
       expect(parsed_events.count).to eq(1)
       expect(series_ical).to include("LOCATION:https://example.com/meet/important-meeting")
-      expect(series_ical).to include("SUMMARY:[My Project] Weekly")
+      expect(series_ical).to include("SUMMARY:Weekly")
       expect(series_ical).to include("CN=OpenProject:mailto:openproject@example.net")
       expect(series_ical).to include("ATTENDEE;CN=Bob Barker;EMAIL=bob@example.com;PARTSTAT=NEEDS-ACTION;RSVP=TRU")
-      expect(series_ical).to include("ATTENDEE;CN=Foo Fooer;EMAIL=foo@example.com;PARTSTAT=NEEDS-ACTION;RSVP=TRUE")
+      expect(series_ical).to include("ATTENDEE;CN=Foo Fooer;EMAIL=foo@example.com;PARTSTAT=ACCEPTED;RSVP=FALSE")
       expect(series_ical).to include("RRULE:FREQ=WEEKLY;UNTIL=20251202T000000Z")
     end
   end
@@ -97,9 +97,9 @@ RSpec.describe RecurringMeetings::ICalService, type: :model do # rubocop:disable
     it "contains serise and template information" do
       expect(parsed_events.count).to eq(1)
       expect(series_ical).to include("LOCATION:https://example.com/meet/important-meeting")
-      expect(series_ical).to include("SUMMARY:[My Project] Weekly")
+      expect(series_ical).to include("SUMMARY:Weekly")
       expect(series_ical).to include("ATTENDEE;CN=Bob Barker;EMAIL=bob@example.com;PARTSTAT=NEEDS-ACTION;RSVP=TRU")
-      expect(series_ical).to include("ATTENDEE;CN=Foo Fooer;EMAIL=foo@example.com;PARTSTAT=NEEDS-ACTION;RSVP=TRUE")
+      expect(series_ical).to include("ATTENDEE;CN=Foo Fooer;EMAIL=foo@example.com;PARTSTAT=ACCEPTED;RSVP=FALSE")
       expect(series_ical).to include("RRULE:FREQ=WEEKLY")
     end
   end

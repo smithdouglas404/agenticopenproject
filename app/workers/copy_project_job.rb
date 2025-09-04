@@ -153,14 +153,14 @@ class CopyProjectJob < ApplicationJob
     result
   end
 
-  def enqueue_copy_project_folder_jobs(copied_storages, work_packages_map, only)
+  def enqueue_copy_project_folder_jobs(copied_project_storages, work_packages_map, only)
     return unless only.intersect?(%w[file_links storage_project_folders])
 
-    Array(copied_storages).each do |storage_pair|
+    Array(copied_project_storages).each do |project_storage_pair|
       batch.enqueue do
         Storages::CopyProjectFoldersJob
-          .perform_later(source: storage_pair[:source],
-                         target: storage_pair[:target],
+          .perform_later(source: project_storage_pair[:source],
+                         target: project_storage_pair[:target],
                          work_packages_map: work_packages_map.stringify_keys)
       end
     end

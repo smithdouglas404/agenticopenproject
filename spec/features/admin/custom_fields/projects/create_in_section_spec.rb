@@ -34,7 +34,7 @@ require_relative "shared_context"
 RSpec.describe "Create project custom fields in sections", :js do
   include_context "with seeded project custom fields"
 
-  let(:cf_index_page) { Pages::Admin::CustomFields::CustomFieldsProjects::Index.new }
+  let(:cf_index_page) { Pages::Admin::Settings::ProjectCustomFields::Index.new }
 
   context "with insufficient permissions" do
     it "is not accessible" do

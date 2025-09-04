@@ -236,10 +236,11 @@ ko:
       openproject_oauth: OpenProject OAuth
       project_folders: 프로젝트 폴더
       redirect_uri: 리디렉션 URI
+      sharepoint_oauth: Azure OAuth
       storage_audience_blank: 오디언스가 구성되지 않았습니다.
       storage_audience_description: 오디언스 "%{audience}"의 토큰을 교환하는 중입니다.
       storage_audience_idp: 오디언스에 관계없이, 로그인 시 ID 공급자가 얻은 액세스 토큰을 사용합니다.
-      storage_oauth: Nextcloud OAuth
+      storage_oauth: Storage OAuth
       storage_provider: 저장소 공급자
       token_exchange: 토큰 교환
     health:
@@ -278,6 +279,7 @@ ko:
           drive_id_exists: 드라이브가 존재합니다
           drive_id_format: 드라이브 ID 형식
           header: 구성
+          host: Host URL
           host_url_accessible: 호스트 URL 액세스 가능
           storage_configured: 구성 완료
           tenant_id: 테넌트 ID

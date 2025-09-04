@@ -601,9 +601,6 @@ ro:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Please provide an API token name"
-        token_name_in_use: "This API token name is already in use, please select a different one"
       failed_to_reset_token: "Resetarea tokenului de acces nu a reușit: %{error}"
       failed_to_create_token: "Failed to create access token: %{error}"
       failed_to_revoke_token: "Failed to revoke access token: %{error}"
@@ -707,7 +704,7 @@ ro:
     dark_high_contrast: "Dark high contrast"
     light: "Luminos"
     light_high_contrast: "Luminos contrast mare"
-    sync_with_os: "Automat (potrivește modul de culoare OS)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: În acest moment nu există tipuri.
@@ -926,7 +923,7 @@ ro:
   account:
     delete: "Ştergere cont"
     delete_confirmation: "Sunteţi sigur că doriţi să ştergeţi contul?"
-    deletion_pending: "Contul a fost blocat și a fost programat pentru ștergere. Reține că acest proces are loc în fundal. Poate dura câteva momente până când utilizatorul este complet șters."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Vor fi șterse cât mai multe din datele create de utilizator (e.g. email, preferințe, pachete de lucru, contribuții wiki). De reținut, totuși, că date precum pachete de lucru și contribuții wiki nu pot fi șterse fără a afecta activitatea altor utilizatori. Prin urmare, astfel de date sunt realocate la un cont numit "Utilizator șters". Deoarece datele fiecărui cont șters sunt realocate acestui cont, nu va mai fi posibil să se facă distincția între datele create de utilizator și datele altui cont șters.'
@@ -1057,6 +1054,7 @@ ro:
         active_value:
           true: "dezarhivat"
           false: "arhivat"
+        attribute_groups: "Attribute Groups"
         description: "Descriere"
         enabled_modules: "Module activate"
         identifier: "Identificator"
@@ -1150,6 +1148,8 @@ ro:
         is_readonly: "Pachet de lucru numai pentru citire"
         excluded_from_totals: "Exclude din calculul totalurilor în ierarhie"
         default_done_ratio: "% Finalizat"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Calendar"
         ical_token_query_assignment: "Query assignment"
@@ -1203,9 +1203,9 @@ ro:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "Când este activată, bannerele de succes verzi vor dispărea automat după 5 secunde."
         warn_on_leaving_unsaved: "Avertizează când părăsesc un pachet de lucru cu modificări nesalvate"
-        theme: "Mod culoare"
+        theme: "Color mode"
         time_zone: "Fus orar"
-        mode_guideline: "Unele moduri vor suprascrie culori personalizate pentru accesibilitate si lizibilitate. Te rog selectează modul Lumină pentru suport complet pentru Teme."
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Daily reminders"
         workdays: "Zile lucrătoare"
       version:
@@ -1348,6 +1348,10 @@ ro:
               minimum: "trebuie să includeți cel puțin un filtru pentru principal, context sau id cu operatorul \"=\"."
         custom_field:
           at_least_one_custom_option: "Cel puțin o opțiune trebuie să fie disponibilă."
+          referenced_in_other_fields_html:
+            one: "%{name} is used in project attribute calculation %{links}."
+            few: "%{name} is used in project attribute calculations: %{links}."
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1580,7 +1584,8 @@ ro:
               cant_exceed_work: "cannot be higher than Work."
               must_be_set_when_work_is_set: "required when Work is set."
               must_be_set_when_work_and_percent_complete_are_set: "required when Work and % Complete are set."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 must be empty when Work is empty and % Complete is 100%.
           readonly_status: "Pachetul de lucru este într-o stare doar citire, astfel, atributele sale nu pot fi modificate."
@@ -1629,9 +1634,11 @@ ro:
         version:
           undeletable_archived_projects: "Versiunea nu poate fi ștearsă, deoarece are atașate pachete de lucru."
           undeletable_work_packages_attached: "Versiunea nu poate fi ștearsă, deoarece are atașate pachete de lucru."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Verificaţi următoarele câmpuri:"
@@ -2327,6 +2334,9 @@ ro:
   enumeration_reported_project_statuses: "Stările proiectului raportat"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "Autentificarea unică (SSO) pentru utilizatorul '%{value}' a eșuat"
   error_can_not_archive_project: "Acest proiect nu poate fi arhivat: %{errors}"
   error_can_not_delete_entry: "Nu se poate șterge intrarea"
@@ -2563,6 +2573,26 @@ ro:
       community: "Comunitatea OpenProject"
       upsell:
         title: "Actualizează la ediția Enterprise"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "Actualizează la ediția Enterprise"
       postgres_migration: "Migrarea instalației dvs. către PostgreSQL"
@@ -2573,7 +2603,8 @@ ro:
       shortcuts: "Scurtături"
       blog: "Blog-ul OpenProject"
       forums: "Forum comunitate"
-      newsletter: "Alerte de securitate / Buletin informativ"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2738,6 +2769,7 @@ ro:
   label_api_access_key: "Cheie de acces API"
   label_api_access_key_created_on: "Cheia de acces creată acum %{value}"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar token "%{token_name}" for "%{calendar_name}" in "%{project_name}"'
   label_ical_access_key_not_present: "iCalendar token(s) not present."
@@ -2986,6 +3018,7 @@ ro:
   label_journal_diff: "Comparare descriere"
   label_language: "Limbă"
   label_languages: "Languages"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Salt la un proiect..."
   label_keyword_plural: "Cuvinte cheie"
   label_language_based: "Bazat pe limba utilizatorului"
@@ -3790,13 +3823,15 @@ ro:
       one: "un proiect"
       other: "%{count} proiecte"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. To confirm this action please introduce the project name in the field below, this will:"
-      project_delete_result_1: "Delete all related data."
-      project_delete_result_2: "Delete all managed project folders in the attached storages."
-      info: "Ștergerea proiectului este o acțiune ireversibilă."
-      project_verification: "Completează numele proiectului %{name} spre a confirma ștergerea."
-      subprojects_confirmation: "Se vor șterge și sub-proiectul/sub-proiectele: %{value}."
-      title: "Ștergere proiect %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Fază proiect: %{phase}"
       project_phase_any: "Fază proiect: Oricare"
@@ -4031,6 +4066,8 @@ ro:
   setting_feeds_limit: "Limită conținut flux"
   setting_file_max_size_displayed: "Numărul maxim de linii afișat în text"
   setting_host_name: "Numele serverului"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Hours per day"
   setting_hours_per_day_explanation: >-
     This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).
@@ -4249,6 +4286,7 @@ ro:
   status_invited: invitat
   status_locked: blocat
   status_registered: înregistrat
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:

@@ -64,6 +64,8 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
 
   public textFieldFocused = false;
 
+  public portfolioModelsEnabled = this.configuration.activeFeatureFlags.includes('portfolioModels');
+
   public canCreateNewProjects$ = this.currentUserService.hasCapabilities$('projects/create', 'global');
 
   public projects$ = combineLatest([

@@ -33,6 +33,8 @@
           not_set: 'Ikke angitt'
           finished: 'Fullført'
           discontinued: 'Utløpt'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Underprosjekter'
           no_results: 'Ingen delprosjekter.'

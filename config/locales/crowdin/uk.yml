@@ -603,9 +603,6 @@ uk:
         token/api:
           title: "The API token has been generated"
           warning: "Це єдиний раз, коли ви побачите цей маркер. Обов’язково скопіюйте його зараз."
-      errors:
-        token_name_blank: "Укажіть ім’я маркера API"
-        token_name_in_use: "Це ім’я маркера API уже використовується; виберіть інше"
       failed_to_reset_token: "Не вдалося відновити маркер доступу: %{error}"
       failed_to_create_token: "Не вдалося створити маркер доступу: %{error}"
       failed_to_revoke_token: "Не вдалося відкликати маркер доступу: %{error}"
@@ -708,7 +705,7 @@ uk:
     dark_high_contrast: "Темна, високий контраст"
     light: "Світла"
     light_high_contrast: "Світла, високий контраст"
-    sync_with_os: "Автоматично (колірний режим ОС)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: Наразі немає типів.
@@ -927,7 +924,7 @@ uk:
   account:
     delete: "Видалити обліковий запис"
     delete_confirmation: "Ви дійсно бажаєте видалити цей обліковий запис?"
-    deletion_pending: "Обліковий запис заблоковано й позначено як такий, що буде видалено. Зверніть увагу, що цей процес відбувається у фоновому режимі. Остаточне видалення даних користувача може зайняти кілька хвилин."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'З даних, створених користувачем (наприклад, електронною поштою, налаштуваннями, робочими пакетами, вікі-записами), буде максимально вилучено. Зауважте, що дані, такі як робочі пакети та записи вікі, не можуть бути видалені без перешкод роботі інших користувачів. Таким чином, такі дані перепризначено до облікового запису, який називається "Видалений користувач". Оскільки дані кожного видаленого облікового запису перепризначені для цього облікового запису, неможливо буде розрізняти дані, створені користувачем, з даних іншого видаленого облікового запису.'
@@ -1058,6 +1055,7 @@ uk:
         active_value:
           true: "розархівовано"
           false: "заархівовано"
+        attribute_groups: "Attribute Groups"
         description: "Опис"
         enabled_modules: "Увімкнені модулі"
         identifier: "Ідентифікатор"
@@ -1151,6 +1149,8 @@ uk:
         is_readonly: "Пакет робіт лише для перегляду"
         excluded_from_totals: "Виключити з підрахунку підсумків в ієрархії"
         default_done_ratio: "% завершення"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Календар"
         ical_token_query_assignment: "Призначення запиту"
@@ -1204,9 +1204,9 @@ uk:
         auto_hide_popups: "Автоматично приховувати банери про успішне виконання"
         auto_hide_popups_caption: "Якщо ввімкнено, зелені банери про успішне виконання автоматично зникатимуть через 5 секунд."
         warn_on_leaving_unsaved: "Попереджати мене, коли залишив робочий пакет із незбереженими змінами"
-        theme: "Колірний режим"
+        theme: "Color mode"
         time_zone: "Часовий пояс"
-        mode_guideline: "Деякі режими перезаписують користувацькі кольори теми, щоб поліпшити доступність і читабельність. Виберіть світлий режим, якщо потрібна повна підтримка користувацької теми."
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Щоденні нагадування"
         workdays: "Робочі дні"
       version:
@@ -1349,6 +1349,11 @@ uk:
               minimum: "має містити принаймні один фільтр для адміністратора доступу, контексту або адміністратора з оператором «=»."
         custom_field:
           at_least_one_custom_option: "Необхідно мати принаймні один варіант."
+          referenced_in_other_fields_html:
+            one: "%{name} is used in project attribute calculation %{links}."
+            few: "%{name} is used in project attribute calculations: %{links}."
+            many: "%{name} is used in project attribute calculations: %{links}."
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1581,7 +1586,8 @@ uk:
               cant_exceed_work: "не може перевищувати значення атрибута «Робота»."
               must_be_set_when_work_is_set: "потрібно вказати, якщо визначено атрибут «Робота»."
               must_be_set_when_work_and_percent_complete_are_set: "потрібно вказати, якщо визначено атрибути «Робота» й «% завершення»."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 має бути пустим, якщо визначено атрибути «Робота» й «% завершення».
           readonly_status: "Пакет робіт перебуває в стані лише для читання, тому його атрибути не можна змінити."
@@ -1631,9 +1637,11 @@ uk:
         version:
           undeletable_archived_projects: "Версію не можна видалити, оскільки до неї приєднані робочі пакети."
           undeletable_work_packages_attached: "Версію не можна видалити, оскільки до неї приєднані робочі пакети."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Перевірте наступні поля:"
@@ -2364,6 +2372,9 @@ uk:
   enumeration_reported_project_statuses: "Повідомлення про статус проекту"
   enumeration_caption_order_changed: "Порядок змінено."
   enumeration_could_not_be_moved: "Неможливо перенести перелічення."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "Єдиний вхід (SSO) для користувача %{value} не вдалося "
   error_can_not_archive_project: "Цей проєкт не можна архівувати: %{errors}"
   error_can_not_delete_entry: "Неможливо видалити запис"
@@ -2600,6 +2611,26 @@ uk:
       community: "Спільнота OpenProject"
       upsell:
         title: "Оновлення до версії Enterprise"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "Оновлення до версії Enterprise"
       postgres_migration: "Міграція інсталяції в PostgreSQL"
@@ -2610,7 +2641,8 @@ uk:
       shortcuts: "Ярлики"
       blog: "Openproject блог"
       forums: "Форум спільноти"
-      newsletter: "Сигнали безпеки / Інформаційний бюлетень"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2775,6 +2807,7 @@ uk:
   label_api_access_key: "Ключ доступу до API"
   label_api_access_key_created_on: "Ключ доступу до API створено %{value} тому"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'Маркер iCalendar «%{token_name}» для календаря «%{calendar_name}» у проєкті «%{project_name}»'
   label_ical_access_key_not_present: "Немає маркерів iCalendar."
@@ -3023,6 +3056,7 @@ uk:
   label_journal_diff: "Опис Порівняння"
   label_language: "Мова"
   label_languages: "Мови"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Перейти до проекту..."
   label_keyword_plural: "Ключові слова"
   label_language_based: "На основі мови користувача"
@@ -3828,13 +3862,15 @@ uk:
       one: "1 проєкт"
       other: "Проєктів: %{count}"
     destroy:
-      confirmation: "Якщо продовжити, проєкт %{identifier} буде остаточно видалено. Щоб підтвердити дію, введіть назву проєкту в поле нижче: Після цього:"
-      project_delete_result_1: "буде видалено всі пов’язані дані;"
-      project_delete_result_2: "буде видалено всі керовані папки проєкту у вкладених сховищах."
-      info: "Видалення проекту є незворотною дією."
-      project_verification: "Введіть ім'я проекту %{name}, щоб верифікувати видалення."
-      subprojects_confirmation: "Підпроекти: %{value} також будуть видалені."
-      title: "Видалити проект %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Етап проєкту: %{phase}"
       project_phase_any: "Етап проєкту: будь-який"
@@ -4069,6 +4105,8 @@ uk:
   setting_feeds_limit: "Обмеження вмісту каналу"
   setting_file_max_size_displayed: "Максимальний розмір текстового файлу для відображення"
   setting_host_name: "Ім'я хоста"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Годин на день"
   setting_hours_per_day_explanation: >-
     Визначає, що вважати днем, якщо тривалість представлено в днях і годинах (наприклад, якщо день триває 8 годин, то 32 години – це 4 дні).
@@ -4287,6 +4325,7 @@ uk:
   status_invited: запрошені
   status_locked: Заблоковано
   status_registered: Зареєстровано
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:
