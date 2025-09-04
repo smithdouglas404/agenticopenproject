@@ -4,12 +4,6 @@ multi-ecosystem-groups:
   primer:
     schedule:
       interval: "daily"
-      target-branch: "dev"
-
-  octicons:
-    schedule:
-      interval: "daily"
-      target-branch: "dev"
 
 updates:
   - package-ecosystem: "npm"
@@ -47,13 +41,6 @@ updates:
       - "@primer/*"
     multi-ecosystem-group: "primer"
 
-  - package-ecosystem: "npm"
-    directory: "/frontend"
-    versioning-strategy: increase
-    patterns:
-      - "@openproject/octicons-angular"
-    multi-ecosystem-group: "octicons"
-
   - package-ecosystem: "bundler"
     directory: "/"
     schedule:
@@ -72,13 +59,6 @@ updates:
     patterns:
       - "openproject-primer_view_components"
     multi-ecosystem-group: "primer"
-
-  - package-ecosystem: "bundler"
-    directory: "/"
-    versioning-strategy: increase
-    patterns:
-      - "openproject-octicons*"
-    multi-ecosystem-group: "octicons"
 
   - package-ecosystem: "github-actions"
     directory: "/"
