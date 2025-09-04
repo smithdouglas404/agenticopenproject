@@ -392,7 +392,7 @@ gem "disposable", "~> 0.6.2"
 gem "dentaku", "~> 3.5", git: "https://github.com/rubysolo/dentaku", ref: "f17d427b63ef7e9ed8f914b5cb1d0645a37f9ebb"
 
 group :postgres do
-  gem "pg", "~> 1.5.0"
+  gem "pg", "~> 1.6.2"
 end
 
 # Support application loading when no database exists yet.
