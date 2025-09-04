@@ -1777,7 +1777,6 @@ en:
       one: "Additionally, there was a problem with the following field:"
       other: "Additionally, there were problems with the following fields:"
     field_erroneous_label: "This field is invalid: %{full_errors}\nPlease enter a valid value."
-    filter_not_found_or_invalid: "The filter does not exists or the field is not enabled for filtering. Please adjust your query."
   activity:
     item:
       created_by_on: "created by %{user} on %{datetime}"

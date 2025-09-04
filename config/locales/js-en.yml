@@ -267,7 +267,6 @@ en:
     enumeration_doc_categories: "Document categories"
     enumeration_work_package_priorities: "Work package priorities"
     filter:
-      text_invalid_filter: "Invalid Filter"
       more_values_not_shown: "There are %{total} more results, search to filter results."
       field_not_available: "This field is no longer available as a filter. Please remove it."
       description:
