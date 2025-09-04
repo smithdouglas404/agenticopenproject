@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { WorkPackageTableConfiguration } from 'core-app/features/work-packages/components/wp-table/wp-table-configuration';
 import { ChartOptions } from 'chart.js';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
@@ -32,7 +32,7 @@ interface ChartDataSet {
     provideCharts(withDefaultRegisterables(ChartDataLabels, PrimerColorsPlugin)),
   ]
 })
-export class WorkPackageEmbeddedGraphComponent {
+export class WorkPackageEmbeddedGraphComponent implements OnChanges {
   @Input() public datasets:WorkPackageEmbeddedGraphDataset[];
 
   @Input() public chartOptions:ChartOptions;
@@ -79,10 +79,10 @@ export class WorkPackageEmbeddedGraphComponent {
     }, [])) as string[];
 
     const labelCountMaps = this.datasets.map((dataset) => {
-      const countMap = (dataset.groups || []).reduce((hash, group) => ({
+      const countMap = (dataset.groups || []).reduce<any>((hash, group) => ({
         ...hash,
         [group.value]: group.count,
-      }), {} as any);
+      }), {});
 
       return {
         label: dataset.label,
@@ -206,11 +206,11 @@ export class WorkPackageEmbeddedGraphComponent {
   private setHeight() {
     if (this.chartType === 'horizontalBar' && this.datasets && this.datasets[0]) {
       const labels:string[] = [];
-      this.datasets.forEach((d) => d.groups!.forEach((g) => {
+      this.datasets.forEach((d) => { d.groups!.forEach((g) => {
         if (!labels.includes(g.value)) {
           labels.push(g.value);
         }
-      }));
+      }); });
       let height = labels.length * 40;
 
       if (this.datasets.length > 1) {
