@@ -55,6 +55,9 @@ import { WorkPackageStatesInitializationService } from './wp-states-initializati
 import { WorkPackagesListInvalidQueryService } from './wp-list-invalid-query.service';
 import { WorkPackagesQueryViewService } from 'core-app/features/work-packages/components/wp-list/wp-query-view.service';
 import { SubmenuService } from 'core-app/core/main-menu/submenu.service';
+import {
+  WorkPackageViewFiltersService
+} from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-filters.service';
 
 export interface QueryDefinition {
   queryParams:{ query_id?:string|null, query_props?:string|null };
@@ -103,6 +106,7 @@ export class WorkPackagesListService {
     protected wpTablePagination:WorkPackageViewPaginationService,
     protected wpStatesInitialization:WorkPackageStatesInitializationService,
     protected wpListInvalidQueryService:WorkPackagesListInvalidQueryService,
+    protected wpTableFilters:WorkPackageViewFiltersService,
     protected wpQueryView:WorkPackagesQueryViewService,
     protected submenuService:SubmenuService,
   ) { }
@@ -254,6 +258,7 @@ export class WorkPackagesListService {
     const form = this.querySpace.queryForm.value!;
 
     query.name = name;
+    query.filters = query.filters.filter(filter=> this.wpTableFilters.isAvailable(filter));
 
     const promise = firstValueFrom(this.createQueryAndView(query, form))
       .then((createdQuery) => {
@@ -298,6 +303,8 @@ export class WorkPackagesListService {
     const query = givenQuery || this.currentQuery;
 
     const form = await this.querySpace.queryForm.valuesPromise();
+
+    query.filters = query.filters.filter(filter=> this.wpTableFilters.isAvailable(filter));
 
     const promise = this
       .apiV3Service

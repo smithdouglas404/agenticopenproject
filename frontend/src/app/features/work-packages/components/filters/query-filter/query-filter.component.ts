@@ -40,7 +40,6 @@ import {
   compareByHref,
   halHref,
 } from 'core-app/shared/helpers/angular/tracking-functions';
-import { BannersService } from 'core-app/core/enterprise/banners.service';
 import { WorkPackageViewFiltersService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-filters.service';
 import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
@@ -71,8 +70,6 @@ export class QueryFilterComponent implements OnInit {
   public availableOperators:any;
 
   public showValuesInput = false;
-
-  public eeShowBanners = false;
 
   public baselineIncompatibleFilter = false;
 
@@ -119,6 +116,9 @@ export class QueryFilterComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (!this.available) {
+      return;
+    }
     this.availableOperators = this.schemaCache.of(this.filter).availableOperators;
     this.showValuesInput = this.showValues();
     this.baselineIncompatibleFilter = this.wpTableBaseline.isActive() && this.wpTableBaseline.isIncompatibleFilter(this.filter.id);

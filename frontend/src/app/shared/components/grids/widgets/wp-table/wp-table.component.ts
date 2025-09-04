@@ -24,6 +24,9 @@ import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import {
   WorkPackageIsolatedQuerySpaceDirective,
 } from 'core-app/features/work-packages/directives/query-space/wp-isolated-query-space.directive';
+import {
+  WorkPackageViewFiltersService
+} from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-filters.service';
 
 @Component({
   selector: 'widget-wp-table',
@@ -54,6 +57,7 @@ export class WidgetWpTableComponent extends AbstractWidgetComponent implements O
     protected urlParamsHelper:UrlParamsHelperService,
     protected readonly state:StateService,
     protected readonly querySpace:IsolatedQuerySpace,
+    protected readonly wpTableFilters:WorkPackageViewFiltersService,
     protected readonly apiV3Service:ApiV3Service) {
     super(i18n, injector);
   }
@@ -114,6 +118,8 @@ export class WidgetWpTableComponent extends AbstractWidgetComponent implements O
 
   private saveQuery(query:QueryResource, form:QueryFormResource) {
     this.inFlight = true;
+
+    query.filters = query.filters.filter(filter=> this.wpTableFilters.isAvailable(filter));
 
     this
       .apiV3Service
