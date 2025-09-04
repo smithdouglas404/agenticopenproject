@@ -1,4 +1,16 @@
 version: 2
+
+multi-ecosystem-groups:
+  primer:
+    schedule:
+      interval: "daily"
+      target-branch: "dev"
+
+  octicons:
+    schedule:
+      interval: "daily"
+      target-branch: "dev"
+
 updates:
   - package-ecosystem: "npm"
     directory: "/frontend"
@@ -11,16 +23,37 @@ updates:
       angular:
         patterns:
           - '@angular*'
+      blocknote:
+        patterns:
+          - '@blocknote/*'
       fullcalendar:
         patterns:
-          - '@fullcalendar*'
+          - '@fullcalendar/*'
+      html-eslint:
+        patterns:
+          - '@html-eslint/*'
       appsignal:
         patterns:
-          - '@appsignal*'
+          - '@appsignal/*'
     ignore:
       - dependency-name: "@angular*"
         update-types: ["version-update:semver-major"]
-      - dependency-name: "@openproject/primer-view-components"
+
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    versioning-strategy: increase
+    patterns:
+      - "@openproject/primer-view-components"
+      - "@primer/*"
+    multi-ecosystem-group: "primer"
+
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    versioning-strategy: increase
+    patterns:
+      - "@openproject/octicons-angular"
+    multi-ecosystem-group: "octicons"
+
   - package-ecosystem: "bundler"
     directory: "/"
     schedule:
@@ -32,8 +65,21 @@ updates:
       aws-gems:
         patterns:
           - "aws-*"
-    ignore:
-      - dependency-name: "openproject-primer_view_components"
+
+  - package-ecosystem: "bundler"
+    directory: "/"
+    versioning-strategy: increase
+    patterns:
+      - "openproject-primer_view_components"
+    multi-ecosystem-group: "primer"
+
+  - package-ecosystem: "bundler"
+    directory: "/"
+    versioning-strategy: increase
+    patterns:
+      - "openproject-octicons*"
+    multi-ecosystem-group: "octicons"
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

@@ -595,9 +595,6 @@ tr:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Lütfen API anahtarı için bir ad girin"
-        token_name_in_use: "Bu API anahtarı adı kullanılmaktadır, lütfen başka bir tane seçin"
       failed_to_reset_token: "Erişim anahtarı sıfırlaması başarısız oldu: %{error}"
       failed_to_create_token: "Erişim anahtarı oluşturması başarısız oldu: %{error}"
       failed_to_revoke_token: "Failed to revoke access token: %{error}"
@@ -1142,6 +1139,8 @@ tr:
         is_readonly: "İş paketi salt okunur"
         excluded_from_totals: "Hiyerarşideki toplamların hesaplanmasından hariç tut"
         default_done_ratio: "Tamamlanma yüzdesi"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Takvim"
         ical_token_query_assignment: "Sorgu ataması"
@@ -1624,9 +1623,11 @@ tr:
         version:
           undeletable_archived_projects: "Eklenmiş iş paketleri olduğu için sürüm silinemez."
           undeletable_work_packages_attached: "Eklenmiş iş paketleri olduğu için sürüm silinemez."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Lütfen aşağıdaki alanları kontrol edin:"
@@ -2287,6 +2288,9 @@ tr:
   enumeration_reported_project_statuses: "Bildirilen proje durumları"
   enumeration_caption_order_changed: "Sıralama başarıyla değiştirildi."
   enumeration_could_not_be_moved: "Numaralandırma taşınamadı."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "Çoklu oturum açma (SSO) için kullanıcı '%{value}' başarısız oldu"
   error_can_not_archive_project: "Bu proje arşivlenemiyor: %{errors}"
   error_can_not_delete_entry: "Girdi silinemiyor"
@@ -2538,6 +2542,11 @@ tr:
             line_4: Improved meeting participants dialog.
             line_5: Improved budget handling in project queries and budget planning.
             line_6: Updated Home and Project overview page.
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "Enterprise sürümüne yükseltin"
       postgres_migration: "Kurulumunuzu PostgreSQL'e taşıyın"
@@ -2548,7 +2557,8 @@ tr:
       shortcuts: "Kısayollar"
       blog: "OpenProject blog"
       forums: "Topluluk forumu"
-      newsletter: "Güvenlik uyarıları / Haber bülteni"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Resim büyüsü"
   journals:
@@ -4007,6 +4017,8 @@ tr:
   setting_feeds_limit: "Akış içeriği sınırı"
   setting_file_max_size_displayed: "Satır içi görüntülenen maksimum metin dosyası boyutu"
   setting_host_name: "Ana bilgisayar adı"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Gün başına saat"
   setting_hours_per_day_explanation: >-
     Bu, süreyi gün ve saat olarak görüntülerken neyin "gün" olarak kabul edildiğini tanımlar (örneğin, bir gün 8 saat ise, 32 saat 4 gün olacaktır).

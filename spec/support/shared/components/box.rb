@@ -28,11 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "view_component/test_helpers"
-require "capybara/rspec"
+RSpec.shared_examples_for "rendering Box" do |row_count:, header: true, footer: false|
+  it "renders Box" do
+    expect(rendered_component).to have_css ".Box"
+  end
 
-RSpec.configure do |config|
-  config.include ViewComponent::TestHelpers, type: :component
-  config.include ViewComponent::SystemTestHelpers, type: :component
-  config.include Capybara::RSpecMatchers, type: :component
+  if header
+    it "renders Box header" do
+      expect(rendered_component).to have_css ".Box-header"
+    end
+  end
+
+  it "renders #{row_count} Box rows" do
+    expect(rendered_component).to have_css ".Box-row", count: row_count
+  end
+
+  if footer
+    it "renders Box footer" do
+      expect(rendered_component).to have_css ".Box-footer"
+    end
+  end
 end
