@@ -40,6 +40,7 @@ import { WorkPackageOverviewGraphComponent } from 'core-app/shared/components/wo
 import { OpenprojectTabsModule } from 'core-app/shared/components/tabs/openproject-tabs.module';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import PrimerColorsPlugin from './plugin.primer-colors';
 
 @NgModule({
   imports: [
@@ -75,7 +76,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
     WorkPackageOverviewGraphComponent,
   ],
   providers: [
-    provideCharts(withDefaultRegisterables(ChartDataLabels)),
+    provideCharts(withDefaultRegisterables(ChartDataLabels, PrimerColorsPlugin)),
   ],
 })
 export class OpenprojectWorkPackageGraphsModule {} // eslint-disable-line @typescript-eslint/no-extraneous-class
