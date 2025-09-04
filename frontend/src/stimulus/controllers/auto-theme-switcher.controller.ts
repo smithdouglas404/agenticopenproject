@@ -30,25 +30,33 @@
 
 import { Controller } from '@hotwired/stimulus';
 import { useMatchMedia } from 'stimulus-use';
-import { OpTheme } from 'core-app/core/setup/globals/theme-utils';
+import { OpColorMode, OpTheme } from 'core-app/core/setup/globals/theme-utils';
 
 export default class AutoThemeSwitcher extends Controller {
   static values = {
-    mode: String,
+    theme: String,
+    increaseContrast: Boolean,
   };
 
   static targets = ['desktopLogo', 'mobileLogo'];
   static classes = ['desktopLightHighContrastLogo', 'mobileWhiteLogo'];
 
-  declare readonly modeValue:OpTheme;
+  declare readonly themeValue:OpTheme;
+  declare readonly increaseContrastValue:boolean;
   declare readonly desktopLogoTarget:HTMLLinkElement;
   declare readonly mobileLogoTarget:HTMLLinkElement;
   declare readonly desktopLightHighContrastLogoClass:string;
   declare readonly mobileWhiteLogoClass:string;
 
   connect() {
-    if (this.modeValue !== 'sync_with_os') return;
+    if (this.themeValue === 'sync_with_os') {
+      this.syncWithOS();
+    } else {
+      this.applyTheme(this.themeValue, this.increaseContrastValue);
+    }
+  }
 
+  syncWithOS():void {
     useMatchMedia(this, {
       mediaQueries: {
         lightMode: '(prefers-color-scheme: light)',
@@ -57,6 +65,11 @@ export default class AutoThemeSwitcher extends Controller {
     });
 
     this.applySystemTheme();
+  }
+
+  applyTheme(theme:OpColorMode, increaseContrast:boolean):void {
+    window.OpenProject.theme.applyThemeToBody(theme, increaseContrast);
+    this.updateOpLogoContrast(increaseContrast);
   }
 
   lightModeChanged():void {
@@ -72,9 +85,8 @@ export default class AutoThemeSwitcher extends Controller {
     this.updateOpLogoContrast();
   }
 
-  private updateOpLogoContrast():void {
-    const prefersSystemLightHighContrast = window.OpenProject.theme.prefersSystemLightHighContrast();
-    this.desktopLogoTarget.classList.toggle(this.desktopLightHighContrastLogoClass, prefersSystemLightHighContrast);
-    this.mobileLogoTarget.classList.toggle(this.mobileWhiteLogoClass, !prefersSystemLightHighContrast);
+  private updateOpLogoContrast(increaseContrast = window.OpenProject.theme.prefersSystemLightHighContrast()):void {
+    this.desktopLogoTarget.classList.toggle(this.desktopLightHighContrastLogoClass, increaseContrast);
+    this.mobileLogoTarget.classList.toggle(this.mobileWhiteLogoClass, !increaseContrast);
   }
 }

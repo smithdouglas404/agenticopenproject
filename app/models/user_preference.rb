@@ -132,12 +132,24 @@ class UserPreference < ApplicationRecord
     super.presence || Setting.user_default_theme
   end
 
+  def increase_theme_contrast=(value)
+    settings[:increase_theme_contrast] = to_boolean(value)
+  end
+
   %w[dark light].each do |base_theme_name|
     define_method("base_theme_#{base_theme_name}?") { theme.split("_", 2)[0] == base_theme_name.to_s }
   end
 
   THEMES.each do |theme_name|
     define_method("#{theme_name}_theme?") { theme == theme_name.to_s }
+  end
+
+  def light_high_contrast_theme?
+    light_theme? && increase_theme_contrast?
+  end
+
+  def dark_high_contrast_theme?
+    dark_theme? && increase_theme_contrast?
   end
 
   def time_zone

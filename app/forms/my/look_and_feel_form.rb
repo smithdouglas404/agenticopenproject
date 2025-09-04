@@ -30,6 +30,7 @@
 
 class My::LookAndFeelForm < ApplicationForm
   include ApplicationHelper
+
   form do |f|
     f.select_list(
       name: :theme,
@@ -46,6 +47,11 @@ class My::LookAndFeelForm < ApplicationForm
         )
       end
     end
+
+    f.check_box name: :increase_theme_contrast,
+                label: I18n.t("activerecord.attributes.user_preference.increase_contrast"),
+                checked: User.current.pref.increase_theme_contrast?,
+                caption: I18n.t("activerecord.attributes.user_preference.increase_contrast_caption")
 
     f.select_list(
       name: :comments_sorting,

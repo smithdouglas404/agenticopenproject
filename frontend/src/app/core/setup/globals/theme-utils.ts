@@ -30,7 +30,7 @@
 
 export type OpColorMode = 'light' | 'dark';
 
-export type OpTheme = OpColorMode | `${OpColorMode}_high_contrast` | 'sync_with_os';
+export type OpTheme = OpColorMode | 'sync_with_os';
 
 export class ThemeUtils {
   public applySystemThemeImmediately():void {
@@ -58,9 +58,8 @@ export class ThemeUtils {
     return window.matchMedia('(prefers-contrast: more)').matches;
   }
 
-  public applyThemeToBody(colorMode:OpColorMode):void {
+  public applyThemeToBody(colorMode:OpColorMode, increaseContrast = this.prefersSystemHighContrast()):void {
     const body = document.body;
-    const increaseContrast = this.prefersSystemHighContrast();
     const otherColorMode = (colorMode === 'light' ? 'dark' : 'light');
 
     body.setAttribute('data-color-mode', colorMode);
