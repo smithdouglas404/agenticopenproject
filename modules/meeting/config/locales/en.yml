@@ -504,6 +504,14 @@ en:
   text_meeting_minutes_for_meeting: 'minutes for the meeting "%{meeting}"'
   text_notificiation_invited: "This mail contains an ics entry for the meeting below:"
 
+  text_meeting_ics_description: >-
+    Link to meeting: %{url}
+  text_meeting_ics_meeting_series_description: >-
+    Link to meeting series: %{url}
+  text_meeting_occurrence_ics_description: >-
+    Link to meeting occurrence: %{url}
+
+    Link to meeting series: %{series_url}
   text_meeting_empty_heading: "Your meeting is empty"
   text_meeting_empty_description1: "Start by adding agenda items below. Each item can be as simple as just a title, but you can also add additional details like duration and notes."
   text_meeting_empty_description2: 'You can also add references to existing work packages. When you do, related notes will automatically be visible in the work package''s "Meetings" tab.'

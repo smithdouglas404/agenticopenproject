@@ -209,7 +209,7 @@ class RecurringMeetingsController < ApplicationController
       if params[:occurrence_id].present?
         occurrence = @recurring_meeting.meetings.find_by(id: params[:occurrence_id])
         ["#{@recurring_meeting.title} - #{occurrence.start_time.to_date.iso8601}",
-         service.generate_occurrence(occurrence)]
+         service.generate_single_occurrence(meeting: occurrence)]
       else
         [@recurring_meeting.title, service.generate_series]
       end

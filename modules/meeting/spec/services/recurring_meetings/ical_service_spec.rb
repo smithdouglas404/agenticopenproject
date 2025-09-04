@@ -159,15 +159,15 @@ RSpec.describe RecurringMeetings::ICalService, type: :model do # rubocop:disable
 
       expect(first).to include("DTSTART;TZID=America/New_York:20241208T050000")
       expect(first).to include("DTEND;TZID=America/New_York:20241208T060000")
-      expect(first).to include("URL:http://#{Setting.host_name}/projects/my-project/meetings/#{schedule.meeting_id}")
+      expect(first).to include("URL:http://#{Setting.host_name}/meetings/#{schedule.meeting_id}")
 
       expect(second).to include("DTSTART;TZID=America/New_York:20250216T050000")
       expect(second).to include("DTEND;TZID=America/New_York:20250216T060000")
-      expect(second).to include("URL:http://#{Setting.host_name}/projects/my-project/meetings/#{schedule2.meeting_id}")
+      expect(second).to include("URL:http://#{Setting.host_name}/meetings/#{schedule2.meeting_id}")
 
       expect(moved).to include("DTSTART;TZID=America/New_York:20241216T063000")
       expect(moved).to include("DTEND;TZID=America/New_York:20241216T073000")
-      expect(moved).to include("URL:http://#{Setting.host_name}/projects/my-project/meetings/#{moved_schedule.meeting_id}")
+      expect(moved).to include("URL:http://#{Setting.host_name}/meetings/#{moved_schedule.meeting_id}")
     end
   end
 end

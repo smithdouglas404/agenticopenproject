@@ -59,9 +59,12 @@ module Meetings
         e.last_modified = meeting.updated_at.utc
         e.sequence = meeting.lock_version
 
-        e.url = url_helpers.meeting_url(meeting)
+        url = url_helpers.meeting_url(meeting)
+        e.url = url
+
+        e.description = I18n.t(:text_meeting_ics_description, url:)
         e.summary = meeting.title
-        e.description = meeting.title
+
         e.uid = meeting.uid
         e.organizer = ical_organizer
         e.location = meeting.location.presence
@@ -79,7 +82,10 @@ module Meetings
       calendar.event do |e|
         e.uid = recurring_meeting.uid
         e.summary = recurring_meeting.title
-        e.description = recurring_meeting.title
+
+        url = url_helpers.recurring_meeting_url(recurring_meeting)
+        e.url = url
+        e.description = I18n.t(:text_meeting_ics_meeting_series_description, url:)
         e.organizer = ical_organizer
 
         e.created = recurring_meeting.template.created_at.utc
@@ -89,7 +95,6 @@ module Meetings
         e.rrule = recurring_meeting.schedule.rrules.first.to_ical # We currently only have one recurrence rule
         e.dtstart = ical_datetime(recurring_meeting.template.start_time)
         e.dtend = ical_datetime(recurring_meeting.template.end_time)
-        e.url = url_helpers.project_recurring_meeting_url(recurring_meeting.project, recurring_meeting)
         e.location = recurring_meeting.template.location.presence
         e.status = if cancelled
                      "CANCELLED"
@@ -114,7 +119,12 @@ module Meetings
       calendar.event do |e|
         e.uid = recurring_meeting.uid
         e.summary = recurring_meeting.title
-        e.description = recurring_meeting.title
+
+        occurrence_url = url_helpers.meeting_url(meeting)
+        e.url = occurrence_url
+        e.description = I18n.t(:text_meeting_occurrence_ics_description,
+                               series_url: url_helpers.recurring_meeting_url(recurring_meeting),
+                               url: occurrence_url)
         e.organizer = ical_organizer
 
         e.created = meeting.created_at.utc
@@ -124,7 +134,6 @@ module Meetings
         e.recurrence_id = ical_datetime(scheduled_meeting.start_time)
         e.dtstart = ical_datetime(meeting.start_time)
         e.dtend = ical_datetime(meeting.end_time)
-        e.url = url_helpers.project_meeting_url(meeting.project, meeting)
         e.location = meeting.location.presence
 
         add_attendees(event: e, meeting: meeting)
