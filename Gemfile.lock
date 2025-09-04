@@ -124,12 +124,6 @@ PATH
     costs (1.0.0)
 
 PATH
-  remote: modules/dashboards
-  specs:
-    dashboards (1.0.0)
-      grids
-
-PATH
   remote: modules/documents
   specs:
     openproject-documents (1.0.0)
@@ -1370,7 +1364,6 @@ DEPENDENCIES
   cuprite (~> 0.17.0)
   daemons
   dalli (~> 3.2.0)
-  dashboards!
   date_validator (~> 0.12.0)
   deckar01-task_list (~> 2.3.1)
   dentaku (~> 3.5)!
@@ -1635,7 +1628,6 @@ CHECKSUMS
   cuprite (0.17) sha256=b140d5dc70d08b97ad54bcf45cd95d0bd430e291e9dffe76fff851fddd57c12b
   daemons (1.4.1) sha256=8fc76d76faec669feb5e455d72f35bd4c46dc6735e28c420afb822fac1fa9a1d
   dalli (3.2.8) sha256=2e63595084d91fae2655514a02c5d4fc0f16c0799893794abe23bf628bebaaa5
-  dashboards (1.0.0)
   date (3.4.1) sha256=bf268e14ef7158009bfeaec40b5fa3c7271906e88b196d958a89d4b408abe64f
   date_validator (0.12.0) sha256=68c9834da240347b9c17441c553a183572508617ebfbe8c020020f3192ce3058
   deckar01-task_list (2.3.4) sha256=66abdc7e009ea759732bb53867e1ea42de550e2aa03ac30a015cbf42a04c1667
