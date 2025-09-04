@@ -28,19 +28,12 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  args = system_arguments.dup
-
-  # Only set default padding if no padding keys are given
-  unless args.key?(:p) || args.key?(:pt) || args.key?(:pb) || args.key?(:pl) || args.key?(:pr)
-    args[:p] = 3
-  end
-
   render(
     Primer::Box.new(
       border:,
       border_radius: 2,
       bg: :inset,
-      **args
+      **system_arguments
     )
   ) do
     content

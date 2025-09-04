@@ -1,7 +1,7 @@
 <%=
 container.with_row do
   render(
-    OpPrimer::InsetBoxComponent.new
+    OpPrimer::InsetBoxComponent.new(p: 3)
   ) do
     content_tag(:div, class: tooltip_wrapper_classes, data: { tooltip: tooltip_message }) do
       render(
