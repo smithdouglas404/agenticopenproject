@@ -125,16 +125,16 @@ class ApplicationController < ActionController::Base
     rescue_from StandardError do |exception|
       render_500 exception:
     end
+
+    rescue_from ActionController::UnknownFormat do
+      render body: "406 Not Acceptable: invalid request format",
+             status: :not_acceptable
+    end
   end
 
   rescue_from ActionController::ParameterMissing do |exception|
     render body: "Required parameter missing: #{exception.param}",
            status: :bad_request
-  end
-
-  rescue_from ActionController::UnknownFormat do
-    render body: "Invalid request format",
-           status: :not_acceptable
   end
 
   rescue_from ActiveRecord::ConnectionTimeoutError do |exception|
