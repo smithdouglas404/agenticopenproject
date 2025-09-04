@@ -83,7 +83,7 @@ module Meetings
         e.organizer = ical_organizer
 
         e.created = recurring_meeting.template.created_at.utc
-        e.last_modified = recurring_meeting.template.updated_at.utc
+        e.last_modified = [recurring_meeting.template.updated_at, recurring_meeting.updated_at].max.utc
         e.sequence = recurring_meeting.template.lock_version
 
         e.rrule = recurring_meeting.schedule.rrules.first.to_ical # We currently only have one recurrence rule
