@@ -46,7 +46,7 @@ export class GridAddWidgetService implements OnDestroy {
   public isAddable(area:GridArea) {
     return !this.drag.currentlyDragging
       && !this.resize.currentlyResizing
-      && (this.layout.mousedOverArea === area || this.layout.isSingleCell || this.layout.inHelpMode)
+      && (this.layout.mousedOverArea() === area || this.layout.isSingleCell() || this.layout.inHelpMode())
       && this.isAllowed;
   }
 
@@ -94,12 +94,12 @@ export class GridAddWidgetService implements OnDestroy {
             endRow: area.endRow,
             startColumn: area.startColumn,
             endColumn: area.endColumn,
-            options: registered.properties || {},
+            options: registered.properties ?? {},
           };
 
           const resource:GridWidgetResource = this.halResource.createHalResource(source);
 
-          resource.grid = this.layout.gridResource;
+          resource.grid = this.layout.gridResource()!;
 
           resolve(resource);
         });
@@ -120,9 +120,9 @@ export class GridAddWidgetService implements OnDestroy {
   // try to set it to a layout with a height of 1 and as wide as possible
   // but shrink if that is outside the grid or overlaps any other widget
   private setMaxWidth(area:GridWidgetArea) {
-    area.endColumn = this.layout.numColumns + 1;
+    area.endColumn = this.layout.numColumns() + 1;
 
-    this.layout.widgetAreas.forEach((existingArea) => {
+    this.layout.widgetAreas().forEach((existingArea) => {
       if (area.startColumnOverlaps(existingArea)) {
         area.endColumn = existingArea.startColumn;
       }
@@ -131,14 +131,14 @@ export class GridAddWidgetService implements OnDestroy {
 
   private async persist(area:GridWidgetArea):Promise<GridResource> {
     area.writeAreaChangeToWidget();
-    this.layout.widgetAreas.push(area);
-    this.layout.widgetResources.push(area.widget);
+    this.layout.addWidgetArea(area);
+    this.layout.addWidgetResource(area.widget);
 
     return this.layout.rebuildAndPersist();
   }
 
   public get isAllowed() {
-    return this.layout.gridResource && this.layout.gridResource.updateImmediately;
+    return this.layout.isEditable();
   }
 
   private async createNewWidget():Promise<void> {

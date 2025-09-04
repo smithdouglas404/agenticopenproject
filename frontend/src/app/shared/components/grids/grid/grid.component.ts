@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ComponentRef, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentRef, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
 import { GridResource } from 'core-app/features/hal/resources/grid-resource';
 import { DomSanitizer } from '@angular/platform-browser';
 import { GridWidgetsService } from 'core-app/shared/components/grids/widgets/widgets.service';
@@ -17,7 +17,7 @@ import { BrowserDetector } from 'core-app/core/browser/browser-detector.service'
 export interface WidgetRegistration {
   identifier:string;
   title:string;
-  component:{ new (...args:any[]):AbstractWidgetComponent };
+  component:new (...args:any[]) => AbstractWidgetComponent;
   properties?:Record<string, unknown>;
 }
 
@@ -34,6 +34,7 @@ export const GRID_PROVIDERS = [
   templateUrl: './grid.component.html',
   selector: 'grid',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GridComponent implements OnDestroy, OnInit {
   public uiWidgets:ComponentRef<any>[] = [];
@@ -59,11 +60,11 @@ export class GridComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    this.layout.gridResource = this.grid;
+    this.layout.setGridResource(this.grid);
   }
 
   ngOnDestroy() {
-    this.uiWidgets.forEach((widget) => widget.destroy());
+    this.uiWidgets.forEach((widget) => { widget.destroy(); });
   }
 
   @HostListener('window:keyup', ['$event'])
@@ -81,7 +82,7 @@ export class GridComponent implements OnDestroy, OnInit {
     void this
       .add
       .widget(area)
-      .then(() => this.cdRef.detectChanges());
+      .then(() => { this.cdRef.detectChanges(); });
   }
 
   public widgetComponent(area:GridWidgetArea) {
@@ -105,26 +106,26 @@ export class GridComponent implements OnDestroy, OnInit {
     return { resource: area.widget };
   }
 
-  public widgetComponentOutput(area:GridWidgetArea) {
+  public widgetComponentOutput(_area:GridWidgetArea) {
     return { resourceChanged: this.layout.saveWidgetChangeset.bind(this.layout) };
   }
 
   public get gridColumnStyle() {
-    return this.gridStyle(this.layout.numColumns,
-      `calc((100% - ${this.GRID_GAP_DIMENSION} * ${this.layout.numColumns + 1}) / ${this.layout.numColumns})`);
+    const numColumns = this.layout.numColumns();
+    return this.gridStyle(numColumns, `calc((100% - ${this.GRID_GAP_DIMENSION} * ${numColumns + 1}) / ${numColumns})`);
   }
 
   public get gridRowStyle() {
-    return this.gridStyle(this.layout.numRows,
-      this.GRID_AREA_HEIGHT);
+    const numRows = this.layout.numRows();
+    return this.gridStyle(numRows, this.GRID_AREA_HEIGHT);
   }
 
-  public identifyGridArea(index:number, area:GridArea) {
+  public identifyGridArea(_index:number, area:GridArea) {
     return area.guid;
   }
 
   public get isHeadersDisplayed() {
-    return this.layout.isEditable;
+    return this.layout.isEditable();
   }
 
   public get isMobileDevice() {
@@ -137,7 +138,7 @@ export class GridComponent implements OnDestroy, OnInit {
       style += `${this.GRID_GAP_DIMENSION} ${itemStyle} `;
     }
 
-    style += `${this.GRID_GAP_DIMENSION}`;
+    style += this.GRID_GAP_DIMENSION;
 
     return this.sanitization.bypassSecurityTrustStyle(style);
   }

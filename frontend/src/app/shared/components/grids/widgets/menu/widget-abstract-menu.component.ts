@@ -62,6 +62,6 @@ export abstract class WidgetAbstractMenuComponent {
   }
 
   public get hasMenu() {
-    return this.layout.isEditable;
+    return this.layout.isEditable();
   }
 }
