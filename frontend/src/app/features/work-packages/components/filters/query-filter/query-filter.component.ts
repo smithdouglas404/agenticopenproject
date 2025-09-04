@@ -60,6 +60,8 @@ export class QueryFilterComponent implements OnInit {
 
   @Input() public shouldFocus = false;
 
+  @Input() public available = true;
+
   @Input() public filter:QueryFilterInstanceResource;
 
   @Output() public filterChanged = new EventEmitter<QueryFilterResource>();
@@ -86,6 +88,7 @@ export class QueryFilterComponent implements OnInit {
     upsell_link: this.I18n.t('js.filter.upsell_link'),
     button_delete: this.I18n.t('js.button_delete'),
     incompatible_filter: this.I18n.t('js.work_packages.filters.baseline_incompatible'),
+    filter_not_available: this.I18n.t('js.filter.field_not_available')
   };
 
   constructor(

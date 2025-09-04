@@ -13,6 +13,7 @@
       class="spot-icon spot-icon_warning"></span>
   </label>
 
+  @if (available) {
   <!-- Operator -->
   <div class="advanced-filters--filter-operator">
 
@@ -130,6 +131,13 @@
     class="advanced-filters--filter-value"
     *ngIf="!showValuesInput"
   ></div>
+
+  } @else {
+
+      <div class="advanced-filters--filter-value --warning">{{ text.filter_not_available }}</div>
+      <div class="advanced-filters--filter-value"></div>
+
+  }
 
   <div class="advanced-filters--remove-filter">
     <button

@@ -32,12 +32,10 @@
               query-filter
               [shouldFocus]="index === focusElementIndex"
               [filter]="filter" (deactivateFilter)="deactivateFilter($event)"
+              [available]="isFilterAvailable(filter)"
               (filterChanged)="filtersChanged.emit(filters)"
               class="advanced-filters--filter">
             </li>
-            @if (isFilterUnavailable(filter)) {
-                <li class="advanced-filters--filter-warning">{{ text.filter_not_available }}</li>
-            }
         }
     </ng-container>
 
