@@ -426,9 +426,10 @@ GEM
     childprocess (5.1.0)
       logger (~> 1.5)
     climate_control (1.2.0)
-    closure_tree (9.0.0)
+    closure_tree (9.1.1)
       activerecord (>= 7.2.0)
       with_advisory_lock (>= 7.0.0)
+      zeitwerk (~> 2.7)
     coderay (1.1.3)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
@@ -445,7 +446,7 @@ GEM
     compare-xml (0.66)
       nokogiri (~> 1.8)
     concurrent-ruby (1.3.5)
-    connection_pool (2.5.3)
+    connection_pool (2.5.4)
     cookiejar (0.3.4)
     cose (1.3.1)
       cbor (~> 0.5.9)
@@ -1355,7 +1356,7 @@ DEPENDENCIES
   carrierwave (~> 1.3.4)
   carrierwave_direct (~> 2.1.0)
   climate_control
-  closure_tree (~> 9.0.0)
+  closure_tree (~> 9.1.1)
   colored2
   commonmarker (~> 2.3.0)
   compare-xml (~> 0.66)
@@ -1603,7 +1604,7 @@ CHECKSUMS
   cgi (0.5.0) sha256=fe99f65bb2c146e294372ebb27602adbc3b4c008e9ea7038c6bd48c1ec9759da
   childprocess (5.1.0) sha256=9a8d484be2fd4096a0e90a0cd3e449a05bc3aa33f8ac9e4d6dcef6ac1455b6ec
   climate_control (1.2.0) sha256=36b21896193fa8c8536fa1cd843a07cf8ddbd03aaba43665e26c53ec1bd70aa5
-  closure_tree (9.0.0) sha256=0aefc60e5e4b812ebaa34c38d8de5d7add2600f888485f266485787b17f034a8
+  closure_tree (9.1.1) sha256=3f4fdd72f847f7f8fb0179953cf72286eb5fb95d6bee4a14817fcf4363c8f269
   coderay (1.1.3) sha256=dc530018a4684512f8f38143cd2a096c9f02a1fc2459edcfe534787a7fc77d4b
   coercible (1.0.0) sha256=5081ad24352cc8435ce5472bc2faa30260c7ea7f2102cc6a9f167c4d9bffaadc
   color_conversion (0.1.2) sha256=99bea5fa412e1527a11389975aa6ad445ff8528ebae202c11d08c45ea2b94c96
@@ -1617,7 +1618,7 @@ CHECKSUMS
   commonmarker (2.3.2-x86_64-linux-musl) sha256=1d88a929e91a4c9456fdfefa1a6ace2126b9993e5d930fb9e11462f7c7f5472e
   compare-xml (0.66) sha256=e21aa5c0f69ef1177eced997c688fd4df989084e74a1b612257af32e1dd05319
   concurrent-ruby (1.3.5) sha256=813b3e37aca6df2a21a3b9f1d497f8cbab24a2b94cab325bffe65ee0f6cbebc6
-  connection_pool (2.5.3) sha256=cfd74a82b9b094d1ce30c4f1a346da23ee19dc8a062a16a85f58eab1ced4305b
+  connection_pool (2.5.4) sha256=e9e1922327416091f3f6542f5f4446c2a20745276b9aa796dd0bb2fd0ea1e70a
   cookiejar (0.3.4) sha256=11b16acfc4baf7a0f463c21a6212005e04e25f5554d4d9f24d97f3492dfda0df
   cose (1.3.1) sha256=d5d4dbcd6b035d513edc4e1ab9bc10e9ce13b4011c96e3d1b8fe5e6413fd6de5
   costs (1.0.0)
