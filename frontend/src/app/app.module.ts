@@ -52,7 +52,6 @@ import { OpenprojectGlobalSearchModule } from 'core-app/core/global_search/openp
 import {
   OpenprojectWorkPackageGraphsModule,
 } from 'core-app/shared/components/work-package-graphs/openproject-work-package-graphs.module';
-import { OpenprojectOverviewModule } from 'core-app/features/overview/openproject-overview.module';
 import { OpenprojectMyPageModule } from 'core-app/features/my-page/openproject-my-page.module';
 import { KeyboardShortcutService } from 'core-app/shared/directives/a11y/keyboard-shortcut.service';
 import { CopyToClipboardService } from 'core-app/shared/components/copy-to-clipboard/copy-to-clipboard.service';
@@ -302,9 +301,6 @@ export function runBootstrap(appRef:ApplicationRef) {
     OpenprojectWorkPackageGraphsModule,
     // Calendar module
     OpenprojectCalendarModule,
-
-    // Overview
-    OpenprojectOverviewModule,
 
     // MyPage
     OpenprojectMyPageModule,

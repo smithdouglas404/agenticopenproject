@@ -29,14 +29,19 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { GridPageComponent } from 'core-app/shared/components/grids/grid/page/grid-page.component';
 import { GRID_PROVIDERS } from 'core-app/shared/components/grids/grid/grid.component';
+import { OpSharedModule } from 'core-app/shared/shared.module';
+import { OpenprojectGridsModule } from 'core-app/shared/components/grids/openproject-grids.module';
 
 @Component({
-  selector: 'dashboard',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: '../../shared/components/grids/grid/page/grid-page.component.html',
   styleUrls: ['../../shared/components/grids/grid/page/grid-page.component.sass'],
+  imports: [
+    OpSharedModule,
+    OpenprojectGridsModule,
+  ],
   providers: GRID_PROVIDERS,
-  standalone: false,
+  standalone: true,
 })
 export class DashboardComponent extends GridPageComponent {
   protected gridScopePath():string {
