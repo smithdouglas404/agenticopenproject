@@ -2492,7 +2492,7 @@ zh-CN:
             line_2: PDF export of project lists.
             line_3: Custom font for all PDF exports (Enterprise add-on).
             line_4: Improved meeting participants dialog.
-            line_5: Improved budget handling in project queries and budget planning.
+            line_5: 改了进项目查询和预算规划中的预算处理。
             line_6: 更新了主页和项目概览页面。
         "16_5":
           new_features_title: >
@@ -2913,7 +2913,7 @@ zh-CN:
   label_invite_user: "邀请用户"
   label_item: "条目"
   label_item_plural: "条目"
-  label_scored_list: "Scored list"
+  label_scored_list: "评分列表 "
   label_share: "共享"
   label_share_project_list: "共享项目列表"
   label_share_work_package: "共享工作包"
@@ -4222,15 +4222,15 @@ zh-CN:
   text_custom_export_footer_instructions: >
     PDF 导出将包含位于页脚左侧的图形元素。该图像必须是 PNG 或 JPEG 文件，宽度约为 200 像素。
   label_custom_export_font_instructions: >
-    Upload and manage custom TrueType (.ttf) fonts used in your PDF exports. For best results, use matching files from the same font family. If no font is provided, the default NotoSans font will be used.
+    上传并管理在您 PDF 导出中使用的自定义 TrueType (.ttf) 字体。为获得最佳效果，请使用同一字体族中的匹配文件。如果未提供字体，则将使用默认的 NotoSans 字体。
   label_custom_export_images_instructions: >
-    Upload and manage custom image files used in your PDF exports.
+    上传并管理在您 PDF 导出中使用的自定义图像文件。
   text_custom_export_font_regular_instructions: >
-    This is the font file for regular text. It needs to be in TTF format and is required.
+    这是用于常规文本的字体文件。该文件需为 TTF 格式，且必须提供。
   text_custom_export_font_bold_instructions: >
-    This is the font file for bold text. It needs to be in TTF format.
+    这是用于粗体文本的字体文件。该文件需为 TTF 格式。
   text_custom_export_font_italic_instructions: >
-    This is the font file for italic text. It needs to be in TTF format.
+    这是用于斜体文本的字体文件。该文件需为 TTF 格式。
   text_custom_export_font_bold_italic_instructions: >
     This is the font file for bold and italic text. It needs to be in TTF format.
   text_custom_favicon_instructions: >
