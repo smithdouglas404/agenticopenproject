@@ -207,7 +207,7 @@ hu:
       agenda_items: "Napirendi pontok másolása"
       agenda_text: "A régi megbeszélés napirendjének másolása"
       participants: "A résztvevők listájának másolása"
-      to_clipboard: "Másolás a vágólapra"
+      to_clipboard: "Copy link to clipboard"
     email:
       send_emails: "Email participants"
       send_invitation_emails: >

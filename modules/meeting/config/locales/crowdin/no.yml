@@ -207,7 +207,7 @@
       agenda_items: "Copy agenda items"
       agenda_text: "Kopier sakslisten fra det forrige møtet"
       participants: "Copy list of participants"
-      to_clipboard: "Kopier til utklippstavlen"
+      to_clipboard: "Copy link to clipboard"
     email:
       send_emails: "Send e-post til deltakere"
       send_invitation_emails: >

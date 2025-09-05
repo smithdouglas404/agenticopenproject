@@ -49,7 +49,6 @@ import {
 import { BrowserModule } from '@angular/platform-browser';
 import { OpenprojectCalendarModule } from 'core-app/features/calendar/openproject-calendar.module';
 import { OpenprojectGlobalSearchModule } from 'core-app/core/global_search/openproject-global-search.module';
-import { OpenprojectDashboardsModule } from 'core-app/features/dashboards/openproject-dashboards.module';
 import {
   OpenprojectWorkPackageGraphsModule,
 } from 'core-app/shared/components/work-package-graphs/openproject-work-package-graphs.module';
@@ -207,7 +206,6 @@ import { OpInviteUserModalAugmentService } from 'core-app/features/invite-user-m
 import { TimeEntryTimerService } from 'core-app/shared/components/time_entries/services/time-entry-timer.service';
 import { MyPageComponent } from './features/my-page/my-page.component';
 import { OverviewComponent } from './features/overview/overview.component';
-import { DashboardComponent } from './features/dashboards/dashboard/dashboard.component';
 
 export function initializeServices(injector:Injector) {
   return () => {
@@ -301,9 +299,6 @@ export function runBootstrap(appRef:ApplicationRef) {
     OpenprojectWorkPackageGraphsModule,
     // Calendar module
     OpenprojectCalendarModule,
-
-    // Dashboards
-    OpenprojectDashboardsModule,
 
     // Overview
     OpenprojectOverviewModule,
@@ -429,6 +424,5 @@ export class OpenProjectModule implements DoBootstrap {
 
     registerCustomElement('opce-my-page', MyPageComponent, { injector });
     registerCustomElement('opce-overview', OverviewComponent, { injector });
-    registerCustomElement('opce-dashboard', DashboardComponent, { injector });
   }
 }

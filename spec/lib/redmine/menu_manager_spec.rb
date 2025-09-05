@@ -66,7 +66,6 @@ RSpec.describe Redmine::MenuManager do
                       :gantt,
                       :team_planner_view,
                       :boards,
-                      :dashboards,
                       :backlogs,
                       :news,
                       :costs,

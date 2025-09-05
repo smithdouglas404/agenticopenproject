@@ -217,7 +217,7 @@ ru:
       agenda_items: "Копировать пункты повестки дня"
       agenda_text: "Копировать повестку старого совещания"
       participants: "Копировать список участников"
-      to_clipboard: "Копировать в буфер обмена"
+      to_clipboard: "Copy link to clipboard"
     email:
       send_emails: "Отправить email участникам"
       send_invitation_emails: >

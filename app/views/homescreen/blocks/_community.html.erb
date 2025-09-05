@@ -23,6 +23,14 @@
     </li>
     <li>
       <%= link_to(
+            t("homescreen.links.security_alerts"), "#{OpenProject::Static::Links.links[:security_alerts][:href]}/?utm_source=unknown&utm_medium=op-instance&utm_campaign=security-alerts-home-screen",
+            { aria: { label: t("homescreen.links.security_alerts") },
+              target: "_blank",
+              title: t("homescreen.links.security_alerts"), rel: "noopener" }
+          ) %>
+    </li>
+    <li>
+      <%= link_to(
             t("homescreen.links.newsletter"), "#{OpenProject::Static::Links.links[:newsletter][:href]}/?utm_source=unknown&utm_medium=op-instance&utm_campaign=newsletter-home-screen",
             { aria: { label: t("homescreen.links.newsletter") },
               target: "_blank",

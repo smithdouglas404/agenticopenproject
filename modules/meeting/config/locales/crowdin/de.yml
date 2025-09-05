@@ -207,7 +207,7 @@ de:
       agenda_items: "Tagesordnungspunkte kopieren"
       agenda_text: "Tagesordnung der alten Besprechung kopieren"
       participants: "Liste der Teilnehmer kopieren"
-      to_clipboard: "In Zwischenablage kopieren"
+      to_clipboard: "Copy link to clipboard"
     email:
       send_emails: "E-Mail an Teilnehmer"
       send_invitation_emails: >

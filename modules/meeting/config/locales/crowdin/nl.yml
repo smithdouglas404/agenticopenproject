@@ -207,7 +207,7 @@ nl:
       agenda_items: "Agendapunten kopiëren"
       agenda_text: "Kopieer de agenda van de oude vergadering"
       participants: "Kopieer lijst van deelnemers"
-      to_clipboard: "Kopiëren naar het klembord"
+      to_clipboard: "Copy link to clipboard"
     email:
       send_emails: "Email participants"
       send_invitation_emails: >

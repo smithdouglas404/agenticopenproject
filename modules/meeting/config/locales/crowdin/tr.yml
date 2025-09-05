@@ -207,7 +207,7 @@ tr:
       agenda_items: "Gündem maddesini kopyala"
       agenda_text: "Eski toplantının gündemini kopyalayın"
       participants: "Katılımcı listesini kopyala"
-      to_clipboard: "Panoya kopyala"
+      to_clipboard: "Copy link to clipboard"
     email:
       send_emails: "Katılımcılara e-posta gönder"
       send_invitation_emails: >

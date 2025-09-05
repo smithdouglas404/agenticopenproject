@@ -49,6 +49,14 @@ module Admin
           "(#{model.short})"
         end
 
+        def secondary_text
+          if model.short.present?
+            "(#{model.short})"
+          elsif model.score.present?
+            model.score.to_s
+          end
+        end
+
         def show_form? = @show_edit_form || model.new_record?
 
         def children_count

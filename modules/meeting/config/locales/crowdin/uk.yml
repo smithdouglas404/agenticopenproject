@@ -217,7 +217,7 @@ uk:
       agenda_items: "Копіювати пункти порядку денного"
       agenda_text: "Копіювати порядок денний старої наради"
       participants: "Копіювати список учасників"
-      to_clipboard: "Копіювати в буфер обміну"
+      to_clipboard: "Copy link to clipboard"
     email:
       send_emails: "Надіслати електронні листи учасникам"
       send_invitation_emails: >

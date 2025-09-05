@@ -217,7 +217,7 @@ lt:
       agenda_items: "Copy agenda items"
       agenda_text: "Kopijuoti seno susitikimo darbotvarkę"
       participants: "Copy list of participants"
-      to_clipboard: "Kopijuoti į iškarpinę"
+      to_clipboard: "Copy link to clipboard"
     email:
       send_emails: "Email participants"
       send_invitation_emails: >

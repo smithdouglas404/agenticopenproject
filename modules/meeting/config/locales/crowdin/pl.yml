@@ -217,7 +217,7 @@ pl:
       agenda_items: "Skopiuj pozycje porządku obrad"
       agenda_text: "Skopiuj agendę starego spotkania"
       participants: "Skopiuj listę uczestników"
-      to_clipboard: "Skopiuj do schowka"
+      to_clipboard: "Copy link to clipboard"
     email:
       send_emails: "Wyślij wiadomość e-mail do uczestników"
       send_invitation_emails: >

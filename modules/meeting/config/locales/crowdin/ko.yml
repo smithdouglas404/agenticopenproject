@@ -202,7 +202,7 @@ ko:
       agenda_items: "의제 항목 복사"
       agenda_text: "이전 미팅의 의제 복사"
       participants: "참가자 목록 복사"
-      to_clipboard: "클립보드에 복사"
+      to_clipboard: "Copy link to clipboard"
     email:
       send_emails: "참가자에게 이메일 보내기"
       send_invitation_emails: >

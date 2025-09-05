@@ -96,6 +96,9 @@ manual_installation:
 newsletter:
   href: https://www.openproject.org/newsletter
   label: homescreen.links.newsletter
+security_alerts:
+  href: https://www.openproject.org/security-and-privacy/#mailing-list
+  label: homescreen.links.security_alerts
 oauth_authorization_code_flow:
   href: https://oauth.net/2/grant-types/authorization-code/
   label: oauth.flows.authorization_code
@@ -127,7 +130,7 @@ report_bug:
   href: https://www.openproject.org/docs/development/report-a-bug/
   label: :label_report_bug
 roadmap:
-  href: https://community.openproject.org/projects/openproject/roadmap
+  href: https://www.openproject.org/roadmap/
   label: :label_development_roadmap
 security_badge_documentation:
   href: https://www.openproject.org/docs/system-admin-guide/information/#security-badge

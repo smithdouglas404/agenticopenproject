@@ -207,7 +207,7 @@ es:
       agenda_items: "Copiar elementos de agenda"
       agenda_text: "Copiar la agenda de la reunión anterior"
       participants: "Copie la lista de participantes"
-      to_clipboard: "Copiar al portapapeles"
+      to_clipboard: "Copy link to clipboard"
     email:
       send_emails: "Envíe un correo electrónico a los participantes"
       send_invitation_emails: >

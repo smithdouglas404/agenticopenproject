@@ -202,7 +202,7 @@ id:
       agenda_items: "Copy agenda items"
       agenda_text: "Salin agenda rapat lama"
       participants: "Copy list of participants"
-      to_clipboard: "Copy to clipboard"
+      to_clipboard: "Copy link to clipboard"
     email:
       send_emails: "Email participants"
       send_invitation_emails: >

@@ -543,14 +543,16 @@ class Formatter
     end
   end
 
-  def display_pull_request_info(workflow_run)
+  def display_pull_request_info(workflow_run) # rubocop:disable Metrics/AbcSize
     return unless workflow_run["event"] == "pull_request"
 
     if pr = workflow_run["pull_requests"].first
       pr_number = "##{pr['number']}"
       pr_html_url = "#{GITHUB_HTML_OPENPROJECT_PREFIX}/pull/#{pr['number']}"
-      pr_display_title = "#{workflow_run['display_title']} #{pr_number.white.dark} #{pr_html_url.white.dark}"
+      pr_display_title = "#{workflow_run['display_title'].bold} #{pr_number.white.dark} #{pr_html_url.white.dark}"
       warn "  Pull Request: #{pr_display_title} "
+      warn "    base branch: #{pr.dig('base', 'ref').bold}"
+      warn "    base SHA: #{pr.dig('base', 'sha').bold}"
     else
       warn "  Pull Request: not found; perhaps it is already merged or closed?"
     end
@@ -618,7 +620,8 @@ class Formatter
         end
       rescue Errno::ENOENT => e
         warn e
-        warn "To display image inline, you need to have a compatible terminal like iTerm2 or Konsole, and the 'imgcat' command installed."
+        warn "To display image inline, you need to have a compatible terminal like iTerm2 " \
+             "or Konsole, and the 'imgcat' command installed."
         warn "See https://iterm2.com/documentation-images.html to know more."
       end
     end

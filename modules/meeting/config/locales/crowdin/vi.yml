@@ -202,7 +202,7 @@ vi:
       agenda_items: "Chép mục chương trình nghị sự"
       agenda_text: "Sao chép chương trình nghị sự của cuộc họp cũ"
       participants: "Chép danh sách người tham gia"
-      to_clipboard: "Sao chép vào bảng tạm"
+      to_clipboard: "Copy link to clipboard"
     email:
       send_emails: "Gửi email cho người tham gia"
       send_invitation_emails: >

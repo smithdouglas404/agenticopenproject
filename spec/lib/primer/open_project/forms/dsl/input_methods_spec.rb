@@ -121,6 +121,12 @@ RSpec.describe Primer::OpenProject::Forms::Dsl::InputMethods, type: :forms do
     include_examples "input class", Primer::Forms::Separator
   end
 
+  describe "#html_content" do
+    let(:field_group) { form_dsl.html_content { "content" } }
+
+    include_examples "input class", Primer::OpenProject::Forms::HtmlContent
+  end
+
   describe "text input methods" do
     describe "#text_field" do
       let(:field_group) { form_dsl.text_field(name:, label:, **options) }
@@ -198,12 +204,6 @@ RSpec.describe Primer::OpenProject::Forms::Dsl::InputMethods, type: :forms do
       it_behaves_like "supporting help texts"
     end
 
-    describe "#html_content" do
-      let(:field_group) { form_dsl.html_content(name:, label:, **options) }
-
-      include_examples "input class", Primer::OpenProject::Forms::Dsl::HtmlContentInput
-    end
-
     describe "#project_autocompleter" do
       let(:field_group) { form_dsl.project_autocompleter(name:, label:, autocomplete_options: {}, **options) }
 
@@ -233,7 +233,7 @@ RSpec.describe Primer::OpenProject::Forms::Dsl::InputMethods, type: :forms do
     end
 
     describe "#block_note_editor" do
-      let(:field_group) { form_dsl.block_note_editor(name:, label:, value: "", suggestions: [], **options) }
+      let(:field_group) { form_dsl.block_note_editor(name:, label:, value: "", document_id: "123asdzxc", suggestions: [], **options) }
 
       include_examples "input class", Primer::OpenProject::Forms::Dsl::BlockNoteEditorInput
       it_behaves_like "supporting help texts"

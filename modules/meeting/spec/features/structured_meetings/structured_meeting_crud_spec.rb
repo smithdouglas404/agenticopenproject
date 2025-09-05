@@ -206,7 +206,7 @@ RSpec.describe "Meetings CRUD",
     expect(page).to have_test_selector("op-meeting-agenda-actions", count: 3)
 
     show_page.open_menu(second) do
-      expect(page).to have_css(".ActionListItem-label", text: "Copy to clipboard")
+      expect(page).to have_css(".ActionListItem-label", text: "Copy link to clipboard")
       expect(page).to have_css(".ActionListItem-label", count: 1)
     end
   end

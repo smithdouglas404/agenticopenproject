@@ -595,9 +595,6 @@ bg:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Моля, посочете име на API токен"
-        token_name_in_use: "Този API токен вече се използва, моля изберете друго."
       failed_to_reset_token: "Неуспешно нулиране на токена за достъп: %{error}"
       failed_to_create_token: "Неуспешно създаване на токен за достъп: %{error}"
       failed_to_revoke_token: "Неуспешно нулиране на токена за достъп: %{error}"
@@ -1143,6 +1140,8 @@ bg:
         is_readonly: "Work package read-only"
         excluded_from_totals: "Exclude from calculation of totals in hierarchy"
         default_done_ratio: "% Complete"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Календар"
         ical_token_query_assignment: "Query assignment"
@@ -1625,9 +1624,11 @@ bg:
         version:
           undeletable_archived_projects: "Версията не може да бъде изтрита, тъй като към нея са прикрепени работни пакети."
           undeletable_work_packages_attached: "Версията не може да бъде изтрита, тъй като към нея са прикрепени работни пакети."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Моля проверете следните полета:"
@@ -2288,6 +2289,9 @@ bg:
   enumeration_reported_project_statuses: "Докладвани статуси на проект"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "Неуспешно единично влизане (SSO) за потребител '%{value}'"
   error_can_not_archive_project: "Този проект не може да бъде архивиран: %{errors}"
   error_can_not_delete_entry: "Unable to delete entry"
@@ -2539,6 +2543,11 @@ bg:
             line_4: Improved meeting participants dialog.
             line_5: Improved budget handling in project queries and budget planning.
             line_6: Updated Home and Project overview page.
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "Upgrade to Enterprise edition"
       postgres_migration: "Migrating your installation to PostgreSQL"
@@ -2549,7 +2558,8 @@ bg:
       shortcuts: "Кратки клавишни комбинации"
       blog: "OpenProject блог"
       forums: "Форум на Общността"
-      newsletter: "Сигнали за сигурност / Бюлетин"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Магия на изображението"
   journals:
@@ -4010,6 +4020,8 @@ bg:
   setting_feeds_limit: "Feed content limit"
   setting_file_max_size_displayed: "Max size of text files displayed inline"
   setting_host_name: "Име на хост"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Hours per day"
   setting_hours_per_day_explanation: >-
     This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).

@@ -202,7 +202,7 @@ zh-CN:
       agenda_items: "复制议程项目"
       agenda_text: "复制之前会议的议程"
       participants: "复制与会者列表"
-      to_clipboard: "复制到剪贴板"
+      to_clipboard: "Copy link to clipboard"
     email:
       send_emails: "电子邮件参与者"
       send_invitation_emails: >

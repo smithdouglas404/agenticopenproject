@@ -207,7 +207,7 @@ fr:
       agenda_items: "Copier les points de l'ordre du jour"
       agenda_text: "Copier l'ordre du jour de l'ancienne réunion"
       participants: "Copier la liste des participants"
-      to_clipboard: "Copier dans le presse-papiers"
+      to_clipboard: "Copy link to clipboard"
     email:
       send_emails: "Envoyer un e-mail aux participants"
       send_invitation_emails: >

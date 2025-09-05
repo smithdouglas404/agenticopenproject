@@ -202,7 +202,7 @@ ms:
       agenda_items: "Salin item agenda"
       agenda_text: "Salin agenda mesyuarat lama"
       participants: "Salin senarai peserta"
-      to_clipboard: "Salin ke papan klip"
+      to_clipboard: "Copy link to clipboard"
     email:
       send_emails: "E-mel peserta"
       send_invitation_emails: >
