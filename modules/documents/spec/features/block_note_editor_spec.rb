@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
+require "rails_helper"
 
 RSpec.describe "BlockNote editor rendering", :js do
   let(:admin) { create(:admin) }
