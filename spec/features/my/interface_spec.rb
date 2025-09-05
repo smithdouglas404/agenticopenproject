@@ -29,9 +29,12 @@
 #++
 
 require "spec_helper"
+require_relative "support/theme_matchers"
 
 RSpec.describe "My account Interface settings",
                :js, :selenium do
+  include ThemeTestHelpers
+
   let(:user) { create(:user) }
 
   before do
@@ -40,26 +43,20 @@ RSpec.describe "My account Interface settings",
   end
 
   it "allows the user to specify their preferred color mode" do
-    click_on "Interface"
+    navigate_to_interface_settings
 
-    select "Light", from: "Color mode"
-    click_on "Update look and feel"
+    select_theme "Light"
+    expect(page).to have_theme("light")
 
-    expect(page).to have_css("body[data-color-mode='light'][data-light-theme='light']")
+    select_theme "Dark"
+    expect(page).to have_theme("dark")
 
-    select "Dark", from: "Color mode"
-    click_on "Update look and feel"
-
-    expect(page).to have_css("body[data-color-mode='dark'][data-dark-theme='dark']")
-
-    select "Automatic (match OS color mode)", from: "Color mode"
-    click_on "Update look and feel"
-
-    expect(page).to have_css("body[data-auto-theme-switcher-theme-value='sync_with_os']")
+    select_theme "Automatic (match OS color mode)"
+    expect(page).to have_auto_theme_config({})
   end
 
   it "allows user to increase contrast for single theme modes" do
-    click_on "Interface"
+    navigate_to_interface_settings
 
     select "Light", from: "Color mode"
 
@@ -67,21 +64,16 @@ RSpec.describe "My account Interface settings",
     expect(page).to have_no_field("Force high-contrast when in Light mode")
     expect(page).to have_no_field("Force high-contrast when in Dark mode")
 
-    check "Increase contrast"
-    click_on "Update look and feel"
-
-    expect(page).to have_css("body[data-color-mode='light'][data-light-theme='light_high_contrast']")
+    enable_contrast_for_single_theme
+    expect(page).to have_theme("light", high_contrast: true)
 
     select "Dark", from: "Color mode"
-
-    check "Increase contrast"
-    click_on "Update look and feel"
-
-    expect(page).to have_css("body[data-color-mode='dark'][data-dark-theme='dark_high_contrast']")
+    enable_contrast_for_single_theme
+    expect(page).to have_theme("dark", high_contrast: true)
   end
 
   it "shows appropriate contrast options based on theme selection" do
-    click_on "Interface"
+    navigate_to_interface_settings
 
     select "Light", from: "Color mode"
     expect(page).to have_field("Increase contrast")
@@ -101,30 +93,26 @@ RSpec.describe "My account Interface settings",
 
   describe "Automatic (match OS color mode)" do
     def set_automatic_mode_with_reload
-      click_on "Interface"
-
-      select "Automatic (match OS color mode)", from: "Color mode"
-      click_on "Update look and feel"
+      navigate_to_interface_settings
+      select_theme "Automatic (match OS color mode)"
     end
 
     it "allows user to configure auto-contrast for both light and dark modes" do
-      click_on "Interface"
+      navigate_to_interface_settings
 
       select "Automatic (match OS color mode)", from: "Color mode"
+      configure_auto_contrast(light: true, dark: true)
 
-      check "Force high-contrast when in Light mode"
-      check "Force high-contrast when in Dark mode"
-      click_on "Update look and feel"
-
-      expect(page).to have_css("body[data-auto-theme-switcher-theme-value='sync_with_os']")
-      expect(page).to have_css("body[data-auto-theme-switcher-enable-auto-light-theme-contrast-value='true']")
-      expect(page).to have_css("body[data-auto-theme-switcher-enable-auto-dark-theme-contrast-value='true']")
+      expect(page).to have_auto_theme_config(
+        enable_auto_light_contrast: true,
+        enable_auto_dark_contrast: true
+      )
     end
 
     context "with OS in dark mode", driver: :chrome_dark_mode do
       it "syncs with OS colour mode" do
         set_automatic_mode_with_reload
-        expect(page).to have_css("body[data-color-mode='dark'][data-dark-theme='dark']")
+        expect(page).to have_theme("dark")
       end
     end
   end
