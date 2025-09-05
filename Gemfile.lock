@@ -445,7 +445,7 @@ GEM
     compare-xml (0.66)
       nokogiri (~> 1.8)
     concurrent-ruby (1.3.5)
-    connection_pool (2.5.3)
+    connection_pool (2.5.4)
     cookiejar (0.3.4)
     cose (1.3.1)
       cbor (~> 0.5.9)
@@ -550,7 +550,7 @@ GEM
     erblint-github (1.0.1)
     erubi (1.13.1)
     escape_utils (1.3.0)
-    et-orbi (1.2.11)
+    et-orbi (1.3.0)
       tzinfo
     eventmachine (1.2.7)
     eventmachine_httpserver (0.2.1)
@@ -608,7 +608,7 @@ GEM
     friendly_id (5.5.1)
       activerecord (>= 4.0.0)
     front_matter_parser (1.0.1)
-    fugit (1.11.1)
+    fugit (1.11.2)
       et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
     fuubar (2.5.1)
@@ -617,13 +617,13 @@ GEM
     glob (0.4.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    good_job (3.99.1)
-      activejob (>= 6.0.0)
-      activerecord (>= 6.0.0)
-      concurrent-ruby (>= 1.0.2)
-      fugit (>= 1.1)
-      railties (>= 6.0.0)
-      thor (>= 0.14.1)
+    good_job (4.11.2)
+      activejob (>= 6.1.0)
+      activerecord (>= 6.1.0)
+      concurrent-ruby (>= 1.3.1)
+      fugit (>= 1.11.0)
+      railties (>= 6.1.0)
+      thor (>= 1.0.0)
     google-apis-core (0.18.0)
       addressable (~> 2.5, >= 2.5.1)
       googleauth (~> 1.9)
@@ -1386,7 +1386,7 @@ DEPENDENCIES
   friendly_id (~> 5.5.0)
   fuubar (~> 2.5.0)
   globalid (~> 1.2)
-  good_job (= 3.99.1)
+  good_job (= 4.11.2)
   google-apis-gmail_v1
   googleauth
   grape (~> 2.3.0)
@@ -1617,7 +1617,7 @@ CHECKSUMS
   commonmarker (2.3.2-x86_64-linux-musl) sha256=1d88a929e91a4c9456fdfefa1a6ace2126b9993e5d930fb9e11462f7c7f5472e
   compare-xml (0.66) sha256=e21aa5c0f69ef1177eced997c688fd4df989084e74a1b612257af32e1dd05319
   concurrent-ruby (1.3.5) sha256=813b3e37aca6df2a21a3b9f1d497f8cbab24a2b94cab325bffe65ee0f6cbebc6
-  connection_pool (2.5.3) sha256=cfd74a82b9b094d1ce30c4f1a346da23ee19dc8a062a16a85f58eab1ced4305b
+  connection_pool (2.5.4) sha256=e9e1922327416091f3f6542f5f4446c2a20745276b9aa796dd0bb2fd0ea1e70a
   cookiejar (0.3.4) sha256=11b16acfc4baf7a0f463c21a6212005e04e25f5554d4d9f24d97f3492dfda0df
   cose (1.3.1) sha256=d5d4dbcd6b035d513edc4e1ab9bc10e9ce13b4011c96e3d1b8fe5e6413fd6de5
   costs (1.0.0)
@@ -1661,7 +1661,7 @@ CHECKSUMS
   erblint-github (1.0.1) sha256=9f28f7dc381a0dc68a0093ef7af3424ed9d2bb2b3e39bdc8e8cba86a0d31f2d0
   erubi (1.13.1) sha256=a082103b0885dbc5ecf1172fede897f9ebdb745a4b97a5e8dc63953db1ee4ad9
   escape_utils (1.3.0) sha256=dffb7010922880ace6ceed642156c64e2a64620f27e0849f43bc4f68fd3c2c09
-  et-orbi (1.2.11) sha256=d26e868cc21db88280a9ec1a50aa3da5d267eb9b2037ba7b831d6c2731f5df64
+  et-orbi (1.3.0) sha256=56716ce1c40f56412d6acb0721ebede6bd23b66525dab008a95d77df00c7d260
   eventmachine (1.2.7) sha256=994016e42aa041477ba9cff45cbe50de2047f25dd418eba003e84f0d16560972
   eventmachine_httpserver (0.2.1) sha256=5db5e8a23754204d43592e5fcc2160457c57c870babe6307c4e61fc95019b809
   excon (1.2.8) sha256=150f57a0f3919b8d2b3f74535596f9876389c6dde157e0bfac8f26631eb135d0
@@ -1691,11 +1691,11 @@ CHECKSUMS
   formatador (1.1.1) sha256=cd0870fb00738204c98e9239f81fadc6f7966724d8037ba471684ed180fabbeb
   friendly_id (5.5.1) sha256=e018f2b89bfc143276fee6d378a64792385cd4fddd3d4fce501f59ec19c06207
   front_matter_parser (1.0.1) sha256=bae298bda01db95788a4d6452f1670a3d198c6716c8d3727db9a95533deb7b7b
-  fugit (1.11.1) sha256=e89485e7be22226d8e9c6da411664d0660284b4b1c08cacb540f505907869868
+  fugit (1.11.2) sha256=4c2e234f750c78d4514d0ca343a0b923847eac3846976fdb23ed4245d8fde6fe
   fuubar (2.5.1) sha256=b272a7804b282661c7fab583a3764f92543cb482c365ae39c685cd218fdd4880
   glob (0.4.0) sha256=893dc9e2d24abe13dda907ce0cda576f680ff382f2a6cf9e543f98ecbe29238c
   globalid (1.2.1) sha256=70bf76711871f843dbba72beb8613229a49429d1866828476f9c9d6ccc327ce9
-  good_job (3.99.1) sha256=7d3869d8a8ee8ef7048fee5d746f41c21987b7822c20038a2f773036bef0830a
+  good_job (4.11.2) sha256=23c5b5ee70ef9651ea19e3ee3401d350503c058b69357b0555db21513fb4b34a
   google-apis-core (0.18.0) sha256=96b057816feeeab448139ed5b5c78eab7fc2a9d8958f0fbc8217dedffad054ee
   google-apis-gmail_v1 (0.45.0) sha256=28b12356de6b78e136b5290976633978b23dc0013797b0d25f49bd36882cde78
   google-cloud-env (2.3.1) sha256=0faac01eb27be78c2591d64433663b1a114f8f7af55a4f819755426cac9178e7
