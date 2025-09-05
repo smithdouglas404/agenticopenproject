@@ -94,7 +94,7 @@ RSpec.describe "Meetings CRUD",
 
           show_page.edit_agenda_item(item) do
             fill_in "Title", with: "Updated title"
-            click_on "Save"
+            show_page.click_save_and_wait_for_agenda_item_update
           end
 
           # Expect no notification in window1
@@ -285,6 +285,7 @@ RSpec.describe "Meetings CRUD",
             next_occurrence_page.edit_agenda_item(item) do
               fill_in "Title", with: "Edited title"
               click_on "Save"
+              sleep 0.5 # wait for save to apply
             end
 
             next_occurrence_page.trigger_change_poll

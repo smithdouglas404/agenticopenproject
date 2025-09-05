@@ -33,6 +33,7 @@ require_relative "base"
 module Pages::Meetings
   class Show < Base
     include ::Components::Autocompleter::NgSelectAutocompleteHelpers
+
     attr_accessor :meeting
 
     def initialize(meeting)
@@ -116,10 +117,12 @@ module Pages::Meetings
         click_on type.model_name.human
       end
 
+      created_id = nil
       in_agenda_form do
         yield
-        click_on("Save") if save
+        created_id = click_save_and_wait_for_agenda_item_creation if save
       end
+      expect(page).to have_css("#meeting-agenda-items-item-component-#{created_id}") if created_id
     end
 
     def expect_modal(...)
@@ -134,10 +137,12 @@ module Pages::Meetings
       select_section_action(section, "Add #{type.model_name.human.downcase}")
 
       within("#meeting-sections-show-component-#{section.id}") do
+        created_id = nil
         in_agenda_form do
           yield
-          click_on("Save") if save
+          created_id = click_save_and_wait_for_agenda_item_creation if save
         end
+        expect(page).to have_css("#meeting-agenda-items-item-component-#{created_id}") if created_id
       end
     end
 
@@ -370,11 +375,34 @@ module Pages::Meetings
       select_backlog_action("Add #{type.model_name.human.downcase}")
 
       within("#meeting-sections-backlogs-container-component") do
+        created_id = nil
         in_agenda_form do
           yield
-          click_on("Save")
+          created_id = click_save_and_wait_for_agenda_item_creation
         end
+        expect(page).to have_css("#meeting-agenda-items-item-component-#{created_id}")
       end
+    end
+
+    def click_save_and_wait_for_agenda_item_creation
+      initial_db_items_count = MeetingAgendaItem.count
+      click_on("Save")
+
+      # wait for db save
+      wait_for { MeetingAgendaItem.count }.not_to eq(initial_db_items_count)
+
+      # return created item id so that caller can wait for it (can't do it here
+      # because of being "in_agenda_form" scope)
+      MeetingAgendaItem.maximum(:id)
+    end
+
+    # warning: does not work when using `travel_to` because time is stopped.
+    def click_save_and_wait_for_agenda_item_update
+      initial_db_items_updated_at = MeetingAgendaItem.order(:id).pluck(:updated_at)
+      click_on("Save")
+
+      # wait for db save
+      wait_for { MeetingAgendaItem.order(:id).pluck(:updated_at) }.not_to eq(initial_db_items_updated_at)
     end
 
     def select_backlog_action(action)
