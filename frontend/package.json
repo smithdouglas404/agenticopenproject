@@ -175,7 +175,7 @@
     "turbo_power": "^0.6.2",
     "typedjson": "^1.5.1",
     "urijs": "^1.19.11",
-    "uuid": "^8.3.2",
+    "uuid": "^11.1.0",
     "zone.js": "~0.15.1"
   },
   "optionalDependencies": {
