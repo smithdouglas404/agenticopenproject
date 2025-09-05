@@ -12,7 +12,7 @@ As an OpenProject Enterprise add-on you can replace the default OpenProject logo
 Navigate to *Administration* → *Design* in order to customize your OpenProject theme and logo.
 
 The design page provides several options to customize your OpenProject Enterprise edition, grouped in four tabs, **Interface, Branding, PDF export styles and PDF export font**. 
-You can [choose a color theme](#choose-a-color-theme) in the first two any of these tabs. 
+You can [choose a color theme](#choose-a-color-theme) in the first two tabs. 
 
 Under **Interface** you can also choose [custom colors](#interface-colors) for elements of the interface, such as the primary button color, accent color, the background of the top navigation header and the main menu.
 
@@ -28,10 +28,10 @@ meetings, timesheets…
 
 You can
 
-* upload a logo to be used in the head of an exported PDF
+* upload a logo to be used in the exported PDF header
 * upload a custom background image for exports with a cover page
 * adjust the text color of the text overlay at the custom background image of the cover page
-* upload a design image that is place left of the footer
+* upload a design image that is placed on the left side of the footer
 
 > [!TIP]
 > You can generate a demo PDF to see a preview of your settings. Click the **Generate Demo PDF** button.
@@ -41,8 +41,8 @@ You can
 
 ![PDF export styles settings in OpenProject administration](openproject_system_guide_design_pdf_export_styles.png)
 
-Under **PDF export font** you can upload a font family to be used in all PDF exports (e.g. Work packages report, Gantt, Meetings, Timesheet).
-The font files must be in the TrueType Font (TTF) format. Maximal font file size is 40 MB.
+Under **PDF export font** tab you can upload a font family to be used in all PDF exports (e.g. Work packages report, Gantt, Meetings, Timesheet).
+The font files must be in the TrueType Font (TTF) format. Maximum font file size is 40 MB.
 
 > [!TIP]
 > You can generate a demo PDF to see a preview of your settings. Click the **Generate Demo PDF** button.
