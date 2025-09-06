@@ -1068,8 +1068,8 @@ zh-CN:
     notice_successful_delete: "成功删除。"
     notice_successful_update: "成功更新。"
     notice_job_started: "作业已开始。"
-    no_job_id: "No job ID returned from server."
-    invalid_job_response: "Invalid response from server."
+    no_job_id: "服务器未返回作业 ID。"
+    invalid_job_response: "服务器发出的响应无效。"
     notice_bad_request: "错误的请求。"
     relations:
       empty: 不存在关联
@@ -1210,14 +1210,14 @@ zh-CN:
         all: "所有项目"
         selected: "仅限所选"
       search_placeholder: "搜索项目…"
-      search_placeholder_favorites: "Search favorites..."
+      search_placeholder_favorites: "搜索收藏夹…"
       include_subprojects: "包含所有子项目"
       tooltip:
         include_all_selected: "自启用“包含所有子项目”后已包含的项目。"
         current_project: "这是您当前所在的项目。"
         does_not_match_search: "项目不符合搜索条件。"
       no_results: "没有项目符合您的搜索条件。"
-      no_favorite_results: "No favorite project matches your search criteria."
+      no_favorite_results: "没有收藏的项目符合您的搜索条件。"
     baseline:
       toggle_title: "基线"
       clear: "清除"

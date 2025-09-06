@@ -240,7 +240,7 @@ uk:
       storage_audience_blank: Аудиторію не налаштовано.
       storage_audience_description: Триває обмін маркерів для аудиторії «%{audience}».
       storage_audience_idp: Використання маркера доступу, отриманого від постачальника ідентифікаційних даних під час входу, незалежно від аудиторії.
-      storage_oauth: Storage OAuth
+      storage_oauth: OAuth сховища
       storage_provider: Постачальник сховища
       token_exchange: Обмін маркерів
     health:
@@ -279,7 +279,7 @@ uk:
           drive_id_exists: Диск існує
           drive_id_format: Формат ID Диска
           header: Конфігурація
-          host: Host URL
+          host: URL-адреса хосту
           host_url_accessible: URL-адреса хосту доступна
           storage_configured: Налаштування завершено
           tenant_id: ID клієнта
@@ -325,15 +325,15 @@ uk:
         oidc_token_acquisition_failed: Ваша конфігурація OpenID Connect не передбачає наявності необхідної аудиторії та можливостей обміну маркерів. Щоб дізнатися більше, ознайомтеся з нашою документацією.
         oidc_token_exchange_failed: Схоже, виникла проблема з конфігурацією Token Exchange у вашого постачальника OpenID Connect. Перевірте конфігурацію і повторіть спробу.
         oidc_token_refresh_failed: Під час перевірки доступу до сховища сталася помилка. Щоб отримати додаткову інформацію, перевірте журнали сервера.
-        sp_client_cant_delete_folder: The client is having trouble deleting folders in SharePoint. Please check the setup documentation for your storage.
-        sp_client_id_missing: The configured OAuth 2 client id is missing for SharePoint. Please check the configuration.
-        sp_client_secret_missing: The configured OAuth 2 client secret is missing for SharePoint. Please check the configuration.
-        sp_client_write_permission_missing: The client seems to have write permissions missing in SharePoint. Please check the setup documentation for your storage.
-        sp_existing_test_folder: The folder %{folder_name} needed for testing already exists in SharePoint. Please delete it and try again.
-        sp_oauth_request_error: The user-bound request to SharePoint failed. Please check the server logs for further information.
-        sp_oauth_token_missing: OpenProject cannot test the user level communication with SharePoint as the user did not yet link their SharePoint account.
-        sp_tenant_id_missing: The configured directory (tenant) id is missing for SharePoint. Please check the configuration.
-        sp_unexpected_content: Unexpected content found in the SharePoint drive.
+        sp_client_cant_delete_folder: У клієнта виникли проблеми з видаленням папок у SharePoint. Ознайомтеся з документацією щодо конфігурації для свого сховища.
+        sp_client_id_missing: Бракує налаштованого ідентифікатора клієнта OAuth 2. Перевірте конфігурацію.
+        sp_client_secret_missing: Бракує налаштованого секрету клієнта OAuth 2. Перевірте конфігурацію.
+        sp_client_write_permission_missing: Схоже, клієнту бракує дозволів на записування в SharePoint. Ознайомтеся з документацією щодо конфігурації для свого сховища.
+        sp_existing_test_folder: Папка «%{folder_name}», необхідна для тестування, уже існує в SharePoint. Видаліть її і повторіть спробу.
+        sp_oauth_request_error: Не вдалося виконати пов’язаний із користувачем запит до SharePoint. Докладні відомості наведено в журналах сервера.
+        sp_oauth_token_missing: OpenProject не може перевірити з’єднання на рівні користувача із SharePoint, оскільки користувач досі не прив’язав свій обліковий запис SharePoint.
+        sp_tenant_id_missing: Бракує налаштованого ідентифікатора каталогу (клієнта). Перевірте конфігурацію.
+        sp_unexpected_content: На диску SharePoint знайдено неочікуваний контент.
         unknown_error: Не вдалося перевірити підключення. Сталася невідома помилка. Щоб дізнатися більше, перегляньте журнали сервера.
       label_error: Помилка
       label_failed: Не пройдено

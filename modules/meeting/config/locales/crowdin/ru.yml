@@ -67,7 +67,7 @@ ru:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} is not a valid participant."
+          invalid_user: "%{name} не является допустимым участником."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "В серии есть одно открытое совещание, которое не включено в новый график. Измените график, чтобы включить все существующие совещания."
@@ -193,9 +193,9 @@ ru:
       label:
         participants: "Участники"
         attended: "Участвовал"
-        mark_as_attended: "Mark as attended"
-        mark_all_as_attended: "Mark all as attended"
-        remove_participant: "Remove participant"
+        mark_as_attended: "Пометить как посещённое"
+        mark_all_as_attended: "Пометить все как посещённые"
+        remove_participant: "Исключить участника"
         manage_participants: "Управление участниками"
         no_participants: "Нет участников"
         show_all: "Показывать всё"
@@ -229,7 +229,7 @@ ru:
         title: "[%{project_name}] Серия совещаний '%{title}'"
         summary: "%{actor} создал новую серию совещаний '%{title}'"
       series_updated:
-        title: "[%{project_name}] Meeting series '%{title}' has been updated"
+        title: "[%{project_name}] Серия встреч '%{title}' была обновлена"
         summary: "Meeting series '%{title}' has been updated by %{actor}"
         old_schedule: "Старое расписание"
         new_schedule: "Новое расписание"
@@ -244,7 +244,7 @@ ru:
         summary: "'%{title}' было отменено %{actor}."
         date_time: "Запланированная дата/время"
       updated:
-        header: "Meeting '%{title}' has been updated"
+        header: "Встреча '%{title}' была обновлена"
         summary: "Meeting '%{title}' has been updated by %{actor}"
         body: "The meeting '%{title}' has been updated by %{actor}."
         old_date_time: "Старые дата/время"

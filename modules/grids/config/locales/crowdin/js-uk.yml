@@ -34,7 +34,7 @@ uk:
           finished: 'Завершено'
           discontinued: 'Припинено'
         project_status_beta:
-          title: 'Project status (BETA)'
+          title: 'Статус проєкту (BETA)'
         subprojects:
           title: 'Підпроекти'
           no_results: 'Немає підпроектів.'

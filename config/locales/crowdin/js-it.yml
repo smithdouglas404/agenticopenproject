@@ -1069,8 +1069,8 @@ it:
     notice_successful_delete: "Cancellato con successo."
     notice_successful_update: "Aggiornato con successo."
     notice_job_started: "job partito."
-    no_job_id: "No job ID returned from server."
-    invalid_job_response: "Invalid response from server."
+    no_job_id: "Nessun ID job restituito dal server."
+    invalid_job_response: "Risposta dal server non valida."
     notice_bad_request: "Richiesta non valida."
     relations:
       empty: Non esiste alcuna relazione
@@ -1213,15 +1213,15 @@ it:
       selected_filter:
         all: "Tutti i progetti"
         selected: "Solo selezionati"
-      search_placeholder: "Search projects..."
-      search_placeholder_favorites: "Search favorites..."
+      search_placeholder: "Cerca progetti..."
+      search_placeholder_favorites: "Cerca tra i preferiti..."
       include_subprojects: "Includi tutti i sotto-progetti"
       tooltip:
         include_all_selected: "Il progetto già stato incluso poiché è abilitata l'opzione Includi tutti i sotto-progetti."
         current_project: "Questo è il progetto corrente in cui ti trovi."
         does_not_match_search: "Il progetto non corrisponde ai criteri di ricerca."
       no_results: "Nessun progetto corrisponde ai tuoi criteri di ricerca"
-      no_favorite_results: "No favorite project matches your search criteria."
+      no_favorite_results: "Nessun progetto preferito corrisponde ai tuoi criteri di ricerca."
     baseline:
       toggle_title: "Base di riferimento"
       clear: "Pulisci"

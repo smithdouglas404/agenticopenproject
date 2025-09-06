@@ -1068,8 +1068,8 @@ ko:
     notice_successful_delete: "삭제에 성공했습니다."
     notice_successful_update: "업데이트에 성공했습니다."
     notice_job_started: "작업이 시작되었습니다."
-    no_job_id: "No job ID returned from server."
-    invalid_job_response: "Invalid response from server."
+    no_job_id: "서버에서 반환된 작업 ID가 없습니다."
+    invalid_job_response: "서버의 잘못된 응답입니다."
     notice_bad_request: "잘못된 요청입니다."
     relations:
       empty: 관계가 없습니다.
@@ -1209,15 +1209,15 @@ ko:
       selected_filter:
         all: "모든 프로젝트"
         selected: "선택한 항목만"
-      search_placeholder: "Search projects..."
-      search_placeholder_favorites: "Search favorites..."
+      search_placeholder: "프로젝트 검색..."
+      search_placeholder_favorites: "즐겨찾기 검색..."
       include_subprojects: "모든 하위 프로젝트 포함"
       tooltip:
         include_all_selected: "'모든 하위 프로젝트 포함'이 활성화되어 있으므로 프로젝트가 이미 포함되어 있습니다."
         current_project: "작업 중인 현재 프로젝트입니다."
         does_not_match_search: "프로젝트가 검색 기준과 일치하지 않습니다."
       no_results: "검색 기준과 일치하는 프로젝트가 없습니다."
-      no_favorite_results: "No favorite project matches your search criteria."
+      no_favorite_results: "검색 기준과 일치하는 프로젝트 즐겨찾기가 없습니다."
     baseline:
       toggle_title: "기준선"
       clear: "선택 취소"

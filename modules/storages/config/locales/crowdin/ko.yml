@@ -240,7 +240,7 @@ ko:
       storage_audience_blank: 오디언스가 구성되지 않았습니다.
       storage_audience_description: 오디언스 "%{audience}"의 토큰을 교환하는 중입니다.
       storage_audience_idp: 오디언스에 관계없이, 로그인 시 ID 공급자가 얻은 액세스 토큰을 사용합니다.
-      storage_oauth: Storage OAuth
+      storage_oauth: 저장소 OAuth
       storage_provider: 저장소 공급자
       token_exchange: 토큰 교환
     health:
@@ -279,7 +279,7 @@ ko:
           drive_id_exists: 드라이브가 존재합니다
           drive_id_format: 드라이브 ID 형식
           header: 구성
-          host: Host URL
+          host: 호스트 URL
           host_url_accessible: 호스트 URL 액세스 가능
           storage_configured: 구성 완료
           tenant_id: 테넌트 ID
@@ -319,15 +319,15 @@ ko:
         oidc_token_acquisition_failed: 해당 OpenID Connect 설정은 필요한 오디언스를 제공하지 않으며, 토큰 교환 기능도 제공하지 않습니다. 자세한 내용은 설명서를 확인하세요.
         oidc_token_exchange_failed: OpenID Connect 공급자의 Token Exchange 설정에 문제가 있는 것 같습니다. 해당 구성을 확인하고 다시 시도하세요.
         oidc_token_refresh_failed: 저장소에 대한 액세스를 확인하는 동안 오류가 발생했습니다. 자세한 내용은 서버 로그를 확인하세요.
-        sp_client_cant_delete_folder: The client is having trouble deleting folders in SharePoint. Please check the setup documentation for your storage.
-        sp_client_id_missing: The configured OAuth 2 client id is missing for SharePoint. Please check the configuration.
-        sp_client_secret_missing: The configured OAuth 2 client secret is missing for SharePoint. Please check the configuration.
-        sp_client_write_permission_missing: The client seems to have write permissions missing in SharePoint. Please check the setup documentation for your storage.
-        sp_existing_test_folder: The folder %{folder_name} needed for testing already exists in SharePoint. Please delete it and try again.
-        sp_oauth_request_error: The user-bound request to SharePoint failed. Please check the server logs for further information.
-        sp_oauth_token_missing: OpenProject cannot test the user level communication with SharePoint as the user did not yet link their SharePoint account.
-        sp_tenant_id_missing: The configured directory (tenant) id is missing for SharePoint. Please check the configuration.
-        sp_unexpected_content: Unexpected content found in the SharePoint drive.
+        sp_client_cant_delete_folder: 클라이언트가 SharePoint에서 폴더를 삭제하는 중에 문제가 발생했습니다. 저장소에 대한 설정 설명서를 확인하세요.
+        sp_client_id_missing: 구성된 OAuth 2 클라이언트 ID가 SharePoint에서 누락되었습니다. 구성을 확인하세요.
+        sp_client_secret_missing: 구성된 OAuth 2 클라이언트 비밀번호가 SharePoint에서 누락되었습니다. 구성을 확인하세요.
+        sp_client_write_permission_missing: 클라이언트가 SharePoint에서 쓰기 권한이 없는 것 같습니다. 저장소에 대한 설정 설명서를 확인하세요.
+        sp_existing_test_folder: 테스트에 필요한 %{folder_name} 폴더가 SharePoint에 이미 있습니다. 이 폴더를 삭제한 후에 다시 시도하세요.
+        sp_oauth_request_error: SharePoint에 대한 사용자 바인딩 요청이 실패했습니다. 자세한 내용은 서버 로그를 확인하세요.
+        sp_oauth_token_missing: 사용자가 아직 SharePoint 계정을 링크하지 않았기 때문에 OpenProject가 SharePoint와의 사용자 수준 통신을 테스트할 수 없습니다.
+        sp_tenant_id_missing: 구성된 디렉터리(테넌트) ID가 SharePoint에서 누락되었습니다. 구성을 확인하세요.
+        sp_unexpected_content: SharePoint 드라이브에서 예기치 않은 콘텐츠가 발견되었습니다.
         unknown_error: 연결에 대한 유효성 검사를 할 수 없습니다. 알 수 없는 오류가 발생했습니다. 자세한 내용은 서버 로그를 확인하세요.
       label_error: 오류
       label_failed: 실패함

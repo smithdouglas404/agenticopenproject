@@ -62,7 +62,7 @@ zh-CN:
       tab_pdf_export_font: "PDF 导出字体"
       fonts:
         file_too_large: "太大 (最大大小为 %{count} MB)。"
-        file_is_invalid: "不是有效的 TTF 字体文件"
+        file_is_invalid: "不是有效的 TTF 字体文件。"
       colors:
         primary-button-color: "主按钮色"
         accent-color: "强调色"
@@ -361,7 +361,7 @@ zh-CN:
       depth: "深"
       item: "条目"
       label: "标签"
-      score: "Score"
+      score: "分数"
       short: "简称"
       parent: "父级"
       blueprint: "图案蓝图"
@@ -382,7 +382,7 @@ zh-CN:
       description: 通过将用户分组到一起，您可以将他们添加为同一项目的成员，也可以将相同的全局角色分配给他们。
     table_component:
       blank_slate:
-        description: You can define named groups of users with specific permissions.
+        description: 您可以定义具有特定权限的命名用户组。
         title: 尚未设置群组
       user_count: 用户数
     users:
@@ -578,7 +578,7 @@ zh-CN:
       dialog:
         token/api:
           dialog_title: "创建新的 API 令牌"
-          attention_text: "Treat API tokens like passwords. Anyone with this token will have access to information from this instance, share it only with trusted users."
+          attention_text: "将 API 令牌视为密码。任何拥有此令牌的人都可以访问此实例中的信息，仅可将此令牌分享给受信任的用户。"
           dialog_body: "此令牌将允许第三方应用程序与您的实例通信。为了区分新的 API 令牌，请为其命名。"
           create_button: "创建"
           name_label: "令牌名称"
@@ -689,7 +689,7 @@ zh-CN:
     dark_high_contrast: "深色高对比度"
     light: "浅色模式"
     light_high_contrast: "高对比度模式"
-    sync_with_os: "Automatic (match OS color mode)"
+    sync_with_os: "自动（匹配操作系统颜色模式）"
   types:
     index:
       no_results_title_text: 目前没有类型。
@@ -906,7 +906,7 @@ zh-CN:
   account:
     delete: "删除帐户"
     delete_confirmation: "您确认想要删除您的账户？"
-    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
+    deletion_pending: "帐户已计划删除。请注意，此过程是在后台进行的。可能需要一些时间才能完全删除用户。"
     deletion_info:
       data_consequences:
         other: '创建的用户数据 (如电子邮件，首选项，工作包，维基条目) 将尽可能的删除。但是，请注意不会删除像工作包和维基条目类这些会影响其他用户工作的数据。这种数据因此会重新分配到称为"删除用户"的帐户。因为每个已删除帐户的数据被重新分配给此帐户，所以不可能区分不同用户所创建的数据。'
@@ -1037,7 +1037,7 @@ zh-CN:
         active_value:
           true: "未归档"
           false: "已归档"
-        attribute_groups: "Attribute Groups"
+        attribute_groups: "属性组"
         description: "描述"
         enabled_modules: "启用的模块"
         identifier: "标识符"
@@ -1064,7 +1064,7 @@ zh-CN:
         types: "类型"
         versions: "版本"
         work_packages: "工作包"
-        workspace_type: "Workspace type"
+        workspace_type: "工作空间类型"
       project_custom_field:
         is_required: "在所有项目中应用"
         custom_field_section: 单元
@@ -1184,9 +1184,9 @@ zh-CN:
         auto_hide_popups: "自动隐藏成功横幅"
         auto_hide_popups_caption: "启用后，绿色成功横幅将在 5 秒后自动消失。"
         warn_on_leaving_unsaved: "离开未保存更改的工作包时提示我"
-        theme: "Color mode"
+        theme: "颜色模式"
         time_zone: "时区"
-        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
+        mode_guideline: "某些模式将覆盖自定义主题颜色，以提高可访问性和可读性。请选择“浅色”模式，以实现对自定义主题的全面支持。"
         daily_reminders: "每日提醒"
         workdays: "工作日"
       version:
@@ -1294,7 +1294,7 @@ zh-CN:
         odd: "必须是奇数。"
         regex_match_failed: "与正则表达式 %{expression}不匹配。"
         regex_invalid: "无法与关联的正则表达式进行验证。"
-        regex_list_invalid: "Lines %{invalid_lines} could not be parsed as regular expression."
+        regex_list_invalid: "行 %{invalid_lines} 无法解析为正则表达式。"
         hexcode_invalid: "不是有效的 6 位十六进制颜色代码。"
         smaller_than_or_equal_to_max_length: "必须小于或等于最大长度。"
         taken: "已经采取。"
@@ -1330,7 +1330,7 @@ zh-CN:
         custom_field:
           at_least_one_custom_option: "至少有需要一个可用选项。"
           referenced_in_other_fields_html:
-            other: "%{name} is used in project attribute calculations: %{links}."
+            other: "%{name} 用于项目属性计算中：%{links}。"
         custom_fields_project:
           attributes:
             project_ids:
@@ -1564,7 +1564,7 @@ zh-CN:
               must_be_set_when_work_is_set: "设置“工时”时必填。"
               must_be_set_when_work_and_percent_complete_are_set: "设置“工时”和“完成%”时必填。"
               must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                must be 0h when Work is set and % Complete is 100%.
+                如果已设置“工时”，且“完成百分比”为 100% 时，必须为 0h 。
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 当“工时”为空，且“完成%”为 100% 时，必须为空。
           readonly_status: "工作包处于只读状态，因此无法更改其属性。"
@@ -1875,7 +1875,7 @@ zh-CN:
   button_duplicate: "复制"
   button_duplicate_and_follow: "复制并跟踪"
   button_edit: "编辑"
-  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
+  button_edit_associated_wikipage: "编辑关联的维基页面：%{page_title}"
   button_expand_all: "全部展开"
   button_favorite: "添加至收藏夹"
   button_filter: "筛选器"
@@ -2190,7 +2190,7 @@ zh-CN:
         description: "通过我们的 SCIM 服务器 API 无缝集成外部身份服务（例如，Microsoft Entra 或 Keycloak），在 OpenProject 中自动执行用户管理。该功能现已在 Enterprise 公司方案中提供。"
       sso_auth_providers:
         title: "单点登录（SSO）"
-        description: "Enable users to log in via external SSO providers using SAML or OpenID Connect for seamless access and integration with existing identity systems."
+        description: "允许用户使用 SAML 或 OpenID Connect 通过外部 SSO 提供商登录，以实现无缝访问，并可与现有身份系统集成。"
       virus_scanning:
         description: "确保在 OpenProject 中上传的文件在被其他用户访问之前进行病毒扫描。"
       placeholder_users:
@@ -2379,13 +2379,13 @@ zh-CN:
           label: "包含描述"
           caption: "该选项将添加原始格式的描述列。"
     your_work_packages_export: "正在导出工作包"
-    your_projects_export: "Projects are being exported"
+    your_projects_export: "正在导出项目"
     succeeded: "导出完成"
     failed: "在尝试导出工作包时发生错误： %{message}"
     demo:
-      heading: "Demo PDF"
-      footer: "Generated by OpenProject"
-      button_text: Generate Demo PDF
+      heading: "演示 PDF"
+      footer: "由 OpenProject 生成"
+      button_text: 生成演示 PDF
     errors:
       embedded_table_with_too_many_columns: "此嵌入式工作包表无法放在此页面上，请减少列数。"
     format:
@@ -2451,7 +2451,7 @@ zh-CN:
       all: "全部"
       label: "筛选模式"
       selected: "已选择"
-    include_sub_items: "Include sub-items"
+    include_sub_items: "包含子项目"
     no_results_text: "无结果"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
@@ -2476,19 +2476,19 @@ zh-CN:
       upsell:
         title: "升级到企业版"
       new_features:
-        header: "Read about new features and product updates."
-        learn_about: "Learn more about all new features"
+        header: "了解新功能和产品更新。"
+        learn_about: "详细了解所有新功能"
         #We need to include the version to invalidate outdated translations in other locales
         "16_4":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            此版本包含各种新功能和改进，例如：
           new_features_list:
-            line_0: Option to auto-sync system color + contrast mode.
-            line_1: Dark high contrast mode for improved accessibility.
-            line_2: PDF export of project lists.
-            line_3: Custom font for all PDF exports (Enterprise add-on).
-            line_4: Improved meeting participants dialog.
-            line_5: 改了进项目查询和预算规划中的预算处理。
+            line_0: 自动同步系统颜色 + 对比度模式的选项。
+            line_1: 深色高对比度模式可提高可访问性。
+            line_2: 项目列表的 PDF 导出文件。
+            line_3: 所有 PDF 导出文件的自定义列表（企业版附加组件）。
+            line_4: 改进了与会者对话框。
+            line_5: 改进了项目查询和预算规划中的预算处理。
             line_6: 更新了主页和项目概览页面。
     links:
       upgrade_enterprise_edition: "升级到企业版"
@@ -3713,15 +3713,15 @@ zh-CN:
       one: "1个项目"
       other: "%{count} 个项目"
     destroy:
-      title: "Delete project"
-      heading: "Permanently delete this project?"
+      title: "删除项目"
+      heading: "永久删除该项目？"
       confirmation_message_for_subprojects_html:
         zero: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+          您即将永久删除与项目 <strong>%{name}</strong> 相关的所有数据。
         one: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+          您即将永久删除与项目 <strong>%{name}</strong> 及该子项目相关的所有数据。
         other: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
+          您即将永久删除与项目 <strong>%{name}</strong> 及这些子项目相关的所有数据：
     filters:
       project_phase: "项目阶段：%{phase}"
       project_phase_any: "项目阶段：任何阶段"
@@ -4062,7 +4062,7 @@ zh-CN:
       omniauth_direct_login_hint_html: >
         如果激活该选项，登录请求将重定向到已配置的 omniauth 提供商。登录下拉菜单和登录页面将被禁用。 <br/> <strong>注意：</strong>除非同时禁用密码登录，否则启用此选项后，用户仍可通过访问 <code>%{internal_path}</code>登录页面。
       remapping_existing_users_hint: >
-        If enabled, allows any configured identity provider to login existing users based on their email address, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
+        如果启用此设置，则任何已配置的身份提供商均可根据电子邮件地址允许现有用户登录，即使用户此前从未通过该提供商登录过也是如此。在将 OpenProject 实例迁移到新的 SSO 提供商时，此功能会有一定的帮助，但如果使用的提供商并非受到您实例所有用户的信任，则不建议启用。
     attachments:
       whitelist_text_html: >
         为上传的文件定义有效文件扩展名和/或 MIME 类型列表。<br/>输入文件扩展名（例如 <code>%{ext_example}</code>）或 MIME 类型（例如 <code>%{mime_example}</code>）。<br/>留空以允许上传任何文件类型。允许输入多个值（每个值一行）。
@@ -4208,11 +4208,11 @@ zh-CN:
   text_custom_export_cover_instructions: >
     这是在您的 PDF 导出的封面页面背景中显示的图像。 它需要是大约800像素宽度 × 500像素高度的 PNG 或 JPEG 图像文件。
   text_custom_export_footer_instructions: >
-    PDF 导出将包含位于页脚左侧的图形元素。该图像必须是 PNG 或 JPEG 文件，宽度约为 200 像素。
+    PDF 导出文件将包含位于页脚左侧的图形元素。该图像必须是 PNG 或 JPEG 文件，宽度约为 200 像素。
   label_custom_export_font_instructions: >
-    上传并管理在您 PDF 导出中使用的自定义 TrueType (.ttf) 字体。为获得最佳效果，请使用同一字体族中的匹配文件。如果未提供字体，则将使用默认的 NotoSans 字体。
+    上传并管理在您 PDF 导出文件中使用的自定义 TrueType (.ttf) 字体。为获得最佳效果，请使用同一字体族中的匹配文件。如果未提供字体，则将使用默认的 NotoSans 字体。
   label_custom_export_images_instructions: >
-    上传并管理在您 PDF 导出中使用的自定义图像文件。
+    上传并管理在您 PDF 导出文件中使用的自定义图像文件。
   text_custom_export_font_regular_instructions: >
     这是用于常规文本的字体文件。该文件需为 TTF 格式，且必须提供。
   text_custom_export_font_bold_instructions: >
@@ -4220,7 +4220,7 @@ zh-CN:
   text_custom_export_font_italic_instructions: >
     这是用于斜体文本的字体文件。该文件需为 TTF 格式。
   text_custom_export_font_bold_italic_instructions: >
-    This is the font file for bold and italic text. It needs to be in TTF format.
+    这是用于斜体加粗文本的字体文件。该文件需为 TTF 格式。
   text_custom_favicon_instructions: >
     这是显示在浏览器窗口/选项卡中页面标题旁边的小图标。它是具有透明背景，大小为 32x32 像素的正方形 PNG 图像文件。
   text_custom_touch_icon_instructions: >
@@ -4559,8 +4559,8 @@ zh-CN:
       code_500_missing_enterprise_token: "由于企业令牌是无效的或缺失的，故无法处理该请求。"
       bad_request:
         emoji_reactions_activity_type_not_supported: "此活动类型不支持表情符号回应。"
-        invalid_link: "The link under key '%{key}' is not valid."
-        links_not_an_object: "_links must be a JSON object."
+        invalid_link: "密钥 '%{key}' 下的链接无效。"
+        links_not_an_object: "_links 必须是 JSON 对象。"
       conflict:
         multiple_reminders_not_allowed: |-
           您每次只能设置一个工作包提醒。请删除或更新现有提醒。

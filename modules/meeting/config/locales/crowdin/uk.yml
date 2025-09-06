@@ -67,7 +67,7 @@ uk:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} не дійсний учасник."
+          invalid_user: "%{name} не є дійсним учасником."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Одна відкрита нарада в серії не входить у новий розклад. Налаштуйте розклад так, щоб він охоплював усі наявні наради."
@@ -82,10 +82,10 @@ uk:
       meeting_agenda: "Порядок денний"
       meeting_section: "Розділ"
       token/ical_meeting:
-        one: "Підписка на нараду iCal"
-        few: "Підписка на наради iCal"
-        many: "Підписка на наради iCal"
-        other: "Підписка на наради iCal"
+        one: "Підписка на наради iCal"
+        few: "Підписки на наради iCal"
+        many: "Підписки на наради iCal"
+        other: "Підписки на наради iCal"
   activity:
     filter:
       meeting: "Наради"
@@ -193,7 +193,7 @@ uk:
       label:
         participants: "Учасники"
         attended: "Відвідано"
-        mark_as_attended: "Позначити як присутнього"
+        mark_as_attended: "Позначити учасника як присутнього"
         mark_all_as_attended: "Позначити всіх як присутніх"
         remove_participant: "Вилучити учасника"
         manage_participants: "Керувати учасниками"
@@ -201,7 +201,7 @@ uk:
         show_all: "Показати всі"
       text:
         template: "Ці учасники автоматично отримуватимуть запрошення на всі майбутні наради, які ви створюватимете."
-        manage_participants: "Знайдіть учасників проєкту й додайте їх у цю нараду як учасників."
+        manage_participants: "Знайдіть учасників проєкту й додайте їх у цю нараду в ролі учасників."
         search_for_members: "Пошук учасників проєкту"
       blankslate:
         heading: "Немає учасників"
@@ -469,11 +469,11 @@ uk:
   text_meeting_minutes_for_meeting: 'протокол засідання %{meeting}'
   text_notificiation_invited: "У цьому листі міститься запис ics для зустрічі нижче:"
   text_meeting_ics_description: >-
-    Link to meeting: %{url}
+    Посилання на нараду: %{url}
   text_meeting_ics_meeting_series_description: >-
-    Link to meeting series: %{url}
+    Посилання на серію нарад: %{url}
   text_meeting_occurrence_ics_description: >-
-    Link to meeting occurrence: %{url} Link to meeting series: %{series_url}
+    Посилання на нараду серії: %{url} Посилання на серію нарад: %{series_url}
   text_meeting_empty_heading: "Ваша нарада пуста"
   text_meeting_empty_description1: "Спочатку додайте пункти порядку денного нижче. Для кожного з них можна ввести лише назву, але також можна вказати додаткові відомості, наприклад тривалість і примітки."
   text_meeting_empty_description2: 'Крім того, можна додати посилання на наявні пакети робіт. У такому разі пов’язані примітки автоматично з’являться на вкладці «Наради» пакета робіт.'
@@ -549,9 +549,9 @@ uk:
   label_meeting_reopen_action: "Відкрити зустріч знову"
   label_meeting_close_action: "Закрити зустріч"
   label_meeting_in_progress_action: "Почати нараду"
-  text_meeting_open_description: "You can add/remove agenda items and participants. Once the agenda is ready, mark it as in progress to document outcomes."
+  text_meeting_open_description: "Ви можете додавати/вилучати пункти порядку денного й учасників. Коли порядок денний буде готовий, позначте його як поточний, щоб задокументувати результати."
   text_meeting_closed_description: "Це закрита нарада. Ви більше не можете додавати або вилучати пункти порядку денного."
-  text_meeting_in_progress_description: "You can modify the agenda, document outcomes for each item and track attendance for participants. Once the meeting is complete, you can mark it as closed to lock it."
+  text_meeting_in_progress_description: "Ви можете змінювати порядок денний, документувати результати для кожного пункту й відстежувати відвідування учасниками. Після завершення наради можна позначити її як закриту, щоб заблокувати."
   text_meeting_open_dropdown_description: "Усі наявні результати будуть і надалі доступні, але користувачі не зможуть додавати нові."
   text_meeting_in_progress_dropdown_description: "Результати документа, такі як потреби в інформації або рішення, прийняті під час наради."
   text_meeting_closed_dropdown_description: "Це закрита нарада. Ви більше не можете змінювати пункти порядку денного або результати."
@@ -563,7 +563,7 @@ uk:
   text_add_work_package_to_meeting_description: "Пакет робіт можна додати до однієї або кількох нарад для обговорення. Тут також з’являться всі пов’язані з ним примітки."
   text_agenda_item_no_notes: "Примітки не надано"
   text_agenda_item_not_editable_anymore: "Цей пункт порядку денного більше не можна редагувати."
-  text_agenda_item_move_next_meeting: "This item will be moved to the next meeting on %{date} at %{time}."
+  text_agenda_item_move_next_meeting: "Цей пункт буде перенесено на наступну нараду, що відбудеться %{date} о %{time}."
   text_agenda_item_moved_to_next_meeting: "Пункт порядку денного переміщено в нову нараду, що відбудеться %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "Цей пакет робіт ще не заплановано в порядку денному майбутньої наради."
   text_agenda_item_move_next_meeting_cancelled: "Не вдається перейти до наступної наради, оскільки її скасовано."
@@ -575,9 +575,9 @@ uk:
     access_tokens:
       token/ical_meeting:
         title: "iCalendar для нарад"
-        text_hint: "Маркери нарад iCalendar дають змогу користувачам підписуватися на всі свої наради й переглядати актуальну інформацію про них у зовнішніх клієнтах."
+        text_hint: "Маркери iCalendar для нарад дають змогу користувачам підписуватися на всі свої наради й переглядати актуальну інформацію про них у зовнішніх клієнтах."
         disabled_text: "Підписки на наради iCalendar не активував адміністратор. Зв’яжіться з ним, щоб використовувати цю функцію."
-        empty_text_hint: 'Щоб додати маркер нарад iCalendar, перейдіть у <a href="%{path}">розділ нарад</a> і підпишіться там.'
+        empty_text_hint: 'Щоб додати маркер iCalendar для нарад, перейдіть у <a href="%{path}">розділ нарад</a> і підпишіться там.'
         add_button: "Підписатися на календар"
   my:
     access_token:
@@ -587,7 +587,7 @@ uk:
           dialog_body: "Маркер згенерує URL-адресу підписки iCal, за допомогою якої ви зможете переглядати всі свої наради в зовнішньому додатку календаря."
           create_button: "Створити підписку"
           name_label: "Ім’я маркера"
-          name_caption: 'You can name it after where you will use it, such as "My phone" or "Work computer".'
+          name_caption: 'Можна назвати відповідно до місця використання, наприклад «Мій телефон» або «Робочий комп’ютер».'
       created_dialog:
         token/ical_meeting:
           title: "Маркер підписки на наради iCal створено"

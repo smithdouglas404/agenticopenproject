@@ -59,10 +59,10 @@ ko:
       tab_interface: "인터페이스"
       tab_branding: "브랜딩"
       tab_pdf_export_styles: "PDF 내보내기 스타일"
-      tab_pdf_export_font: "PDF export font"
+      tab_pdf_export_font: "PDF 내보내기 글꼴"
       fonts:
-        file_too_large: "is too large (maximum size is %{count} MB)."
-        file_is_invalid: "is not a valid TTF font file."
+        file_too_large: "- 너무 큽니다(최대 크기 %{count}MB)."
+        file_is_invalid: "- 유효한 TTF 글꼴 파일이 아닙니다."
       colors:
         primary-button-color: "기본 버튼"
         accent-color: "강조 색"
@@ -301,7 +301,7 @@ ko:
         placeholder:
           label: "항목 레이블"
           short: "짧은 이름"
-          score: "Score"
+          score: "점수"
       notice:
         remember_items_and_projects: "이 사용자 지정 필드의 각 탭에서 항목과 프로젝트를 설정해야 합니다."
       hierarchy:
@@ -337,18 +337,18 @@ ko:
     single: "또는"
   dry_validation:
     errors:
-      defined: "must not be defined."
+      defined: "- 정의해서는 안 됩니다."
       int?: "- 정수여야 합니다."
-      decimal?: "must be a decimal."
+      decimal?: "- 소수여야 합니다."
       filled?: "- 입력해야 합니다."
-      key?: "is missing."
+      key?: "- 누락되었습니다."
       greater_or_equal_zero: "- 0보다 크거나 같아야 합니다."
       not_found: "- 찾을 수 없습니다."
       rules:
         copy_workflow_from:
           workflow_missing: "- 고유한 워크플로가 없습니다."
         custom_field:
-          format_not_supported: "format '%{field_format}' is unsupported."
+          format_not_supported: "'%{field_format}' 형식은 지원되지 않습니다."
         item:
           root_item: "- 루트 항목일 수 없습니다."
           not_persisted: "- 이미 존재하는 항목이어야 합니다."
@@ -364,7 +364,7 @@ ko:
       depth: "깊이"
       item: "항목"
       label: "레이블"
-      score: "Score"
+      score: "점수"
       short: "짧은 이름"
       parent: "부모"
       blueprint: "패턴 청사진"
@@ -385,7 +385,7 @@ ko:
       description: 사용자를 그룹화하여 동일한 프로젝트에 멤버로 추가하거나 동일한 글로벌 역할을 할당할 수 있습니다.
     table_component:
       blank_slate:
-        description: You can define named groups of users with specific permissions.
+        description: 명명된 사용자 그룹을 특정 권한을 사용하여 정의할 수 있습니다.
         title: 아직 설정된 그룹 없음
       user_count: 사용자 수
     users:
@@ -581,13 +581,13 @@ ko:
       dialog:
         token/api:
           dialog_title: "새 API 토큰 만들기"
-          attention_text: "Treat API tokens like passwords. Anyone with this token will have access to information from this instance, share it only with trusted users."
+          attention_text: "API 토큰을 암호처럼 취급하세요. 이 토큰이 있으면 누구든지 이 인스턴스의 정보에 액세스할 수 있습니다. 신뢰할 수 있는 사용자와만 공유하세요."
           dialog_body: "이 토큰을 사용하면 타사 애플리케이션이 해당 인스턴스와 통신할 수 있습니다. 새 API 토큰을 구별하려면 이름을 지정하세요."
           create_button: "만들기"
-          name_label: "Token name"
+          name_label: "토큰 이름"
       created_dialog:
         token/api:
-          title: "The API token has been generated"
+          title: "API 토큰이 생성되었습니다"
           warning: "이번에만 이 토큰이 표시됩니다. 지금 이 토큰을 복사해야 합니다."
       errors:
         token_name_blank: "API 토큰 이름을 입력하세요"
@@ -693,7 +693,7 @@ ko:
     dark_high_contrast: "다크 하이 콘트라스트"
     light: "라이트"
     light_high_contrast: "라이트 하이 콘트라스트"
-    sync_with_os: "Automatic (match OS color mode)"
+    sync_with_os: "자동(OS 색상 모드와 일치)"
   types:
     index:
       no_results_title_text: 타입이 없습니다.
@@ -910,7 +910,7 @@ ko:
   account:
     delete: "계정 삭제"
     delete_confirmation: "이 계정을 정말로 삭제합니까?"
-    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
+    deletion_pending: "계정 삭제가 예약되었습니다. 이 프로세스는 백그라운드에서 수행됩니다. 사용자가 완전히 삭제될 때까지 몇 분 정도 걸릴 수 있습니다."
     deletion_info:
       data_consequences:
         other: '이 사용자에 대한 데이터(예를 들어 이메일, 환경 설정, 일감, 위키 항목)를 가능한 범위까지 지울 것입니다. 다만 일감이나 위키 항목과 같은 데이터는 지워버릴 경우 다른 사용자의 작업을 방해하게 됩니다. 따라서 그러한 데이터는 "삭제된 사용자" 계정에 귀속됩니다. 삭제된 사용자의 작업물이 하나의 계정으로 귀속되기에, 작업물을 만든 원래 사용자가 누구인지 구분할 수 없게 됩니다.'
@@ -987,7 +987,7 @@ ko:
       custom_value:
         value: "값"
       design_color:
-        variable: "Variable"
+        variable: "변수"
       doorkeeper/application:
         uid: "고객 ID"
         secret: "클라이언트 비밀번호"
@@ -1041,7 +1041,7 @@ ko:
         active_value:
           true: "보관 취소됨"
           false: "보관됨"
-        attribute_groups: "Attribute Groups"
+        attribute_groups: "특성 그룹"
         description: "설명"
         enabled_modules: "사용 가능한 모듈"
         identifier: "식별자"
@@ -1068,7 +1068,7 @@ ko:
         types: "유형"
         versions: "버전"
         work_packages: "작업 패키지"
-        workspace_type: "Workspace type"
+        workspace_type: "워크스페이스 유형"
       project_custom_field:
         is_required: "모든 프로젝트에 필수"
         custom_field_section: 섹션
@@ -1188,9 +1188,9 @@ ko:
         auto_hide_popups: "성공 배너 자동으로 숨기기"
         auto_hide_popups_caption: "활성화하면 녹색 성공 배너가 5초 후에 자동으로 사라집니다."
         warn_on_leaving_unsaved: "저장하지 않고 작업 패키지를 벗어날 때 알려주세요."
-        theme: "Color mode"
+        theme: "색상 모드"
         time_zone: "표준 시간대"
-        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
+        mode_guideline: "일부 모드에서는 접근성과 가독성을 위해 사용자 지정 테마 색상을 덮어씁니다. 전체 사용자 지정 테마 지원을 위해서는 라이트 모드를 선택하세요."
         daily_reminders: "일일 미리 알림"
         workdays: "근무일"
       version:
@@ -1298,8 +1298,8 @@ ko:
         odd: "에 홀수를 입력해 주세요"
         regex_match_failed: "%{expression} 정규 표현식과 일치하지 않습니다."
         regex_invalid: "관련 정규 표현식으로 유효성을 확인할 수 없습니다."
-        regex_list_invalid: "Lines %{invalid_lines} could not be parsed as regular expression."
-        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
+        regex_list_invalid: "%{invalid_lines} 라인을 정규 표현식으로 구문 분석할 수 없습니다."
+        hexcode_invalid: "- 유효한 6자리 16진수 색상 코드가 아닙니다."
         smaller_than_or_equal_to_max_length: "은(는) 최대 길이보다 같거나 작아야 합니다."
         taken: "은(는) 이미 존재합니다."
         too_long: "은(는) 너무 깁니다 (최대 %{count}자까지 가능합니다)"
@@ -1334,7 +1334,7 @@ ko:
         custom_field:
           at_least_one_custom_option: "하나 이상의 옵션을 사용할 수 있어야 합니다."
           referenced_in_other_fields_html:
-            other: "%{name} is used in project attribute calculations: %{links}."
+            other: "%{name}은(는) 프로젝트 특성 계산에 사용됩니다: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1568,7 +1568,7 @@ ko:
               must_be_set_when_work_is_set: "- 작업이 설정된 경우 필수입니다."
               must_be_set_when_work_and_percent_complete_are_set: "- 작업 및 완료 %가 설정된 경우 필수입니다."
               must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                must be 0h when Work is set and % Complete is 100%.
+                - 작업이 설정되고 완료 %가 100%인 경우 0시간이어야 합니다.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 - 작업이 비어 있고 완료 %가 100%인 경우 비어 있어야 합니다.
           readonly_status: "작업 패키지가 읽기 전용 상태이므로 해당 속성을 변경할 수 없습니다."
@@ -1879,7 +1879,7 @@ ko:
   button_duplicate: "복제"
   button_duplicate_and_follow: "복제하고 팔로우"
   button_edit: "편집"
-  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
+  button_edit_associated_wikipage: "연결된 위키 페이지 편집: %{page_title}"
   button_expand_all: "모두 확장"
   button_favorite: "즐겨찾기에 추가"
   button_filter: "필터"
@@ -2193,8 +2193,8 @@ ko:
         title: "SCIM 클라이언트"
         description: "SCIM 서버 API를 통해 Microsoft Entra 또는 Keycloak 같은 외부 ID 서비스를 원활하게 통합하여 OpenProject에서 사용자 관리를 자동화하세요. Enterprise 기업 플랜부터 사용할 수 있습니다."
       sso_auth_providers:
-        title: "Single Sign-On (SSO)"
-        description: "Enable users to log in via external SSO providers using SAML or OpenID Connect for seamless access and integration with existing identity systems."
+        title: "SSO(Single Sign-On)"
+        description: "기존 ID 시스템에서 원활하게 액세스하고 통합할 수 있도록 SAML 또는 OpenID Connect를 사용하여 외부 SSO 공급자를 통해 사용자가 로그인할 수 있게 합니다."
       virus_scanning:
         description: "OpenProject에서 업로드된 파일은 바이러스 검사를 수행한 후에 다른 사용자가 액세스해야 합니다."
       placeholder_users:
@@ -2383,13 +2383,13 @@ ko:
           label: "설명 포함"
           caption: "이 옵션은 원시 형식으로 설명 열을 추가합니다."
     your_work_packages_export: "작업 패키지를 내보내는 중입니다."
-    your_projects_export: "Projects are being exported"
+    your_projects_export: "프로젝트를 내보내는 중입니다"
     succeeded: "내보내기 완료"
     failed: "작업 패키지를 내보내려는 중에 오류가 발생했습니다: %{message}"
     demo:
-      heading: "Demo PDF"
-      footer: "Generated by OpenProject"
-      button_text: Generate Demo PDF
+      heading: "데모 PDF"
+      footer: "OpenProject에서 생성함"
+      button_text: 데모 PDF 생성
     errors:
       embedded_table_with_too_many_columns: "이 포함된 작업 패키지 테이블은 페이지에 맞지 않습니다. 열 수를 줄여주세요."
     format:
@@ -2453,10 +2453,10 @@ ko:
   filterable_tree_view:
     filter_mode:
       all: "모두"
-      label: "Filter mode"
-      selected: "Selected"
-    include_sub_items: "Include sub-items"
-    no_results_text: "No results"
+      label: "필터 모드"
+      selected: "선택됨"
+    include_sub_items: "하위 항목 포함"
+    no_results_text: "결과 없음"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
@@ -2480,20 +2480,20 @@ ko:
       upsell:
         title: "Enterprise Edition으로 업그레이드"
       new_features:
-        header: "Read about new features and product updates."
-        learn_about: "Learn more about all new features"
+        header: "새로운 기능 및 제품 업데이트에 대해 알아보세요."
+        learn_about: "새로운 모든 기능에 대해 자세히 알아보기"
         #We need to include the version to invalidate outdated translations in other locales
         "16_4":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            이 릴리스에는 다음과 같은 다양한 새로운 기능과 개선 사항이 포함되어 있습니다.
           new_features_list:
-            line_0: Option to auto-sync system color + contrast mode.
-            line_1: Dark high contrast mode for improved accessibility.
-            line_2: PDF export of project lists.
-            line_3: Custom font for all PDF exports (Enterprise add-on).
-            line_4: Improved meeting participants dialog.
-            line_5: Improved budget handling in project queries and budget planning.
-            line_6: Updated Home and Project overview page.
+            line_0: 시스템 색상 + 대비 모드를 자동 동기화하는 옵션.
+            line_1: 접근성 향상을 위한 다크 고대비 모드.
+            line_2: 프로젝트 목록의 PDF 내보내기.
+            line_3: 모든 PDF 내보내기를 위한 사용자 지정 글꼴(Enterprise 추가 기능).
+            line_4: 개선된 미팅 참가자 대화 상자.
+            line_5: 프로젝트 쿼리 및 예산 계획의 개선된 예산 처리.
+            line_6: 업데이트된 홈 및 프로젝트 개요 페이지.
     links:
       upgrade_enterprise_edition: "Enterprise Edition으로 업그레이드"
       postgres_migration: "설치를 PostgreSQL로 마이그레이션"
@@ -2581,7 +2581,7 @@ ko:
         title: "API"
         text_hint: "API 토큰을 사용하면 타사 애플리케이션이 REST API를 통해 이 OpenProject 인스턴스와 통신할 수 있습니다."
         disabled_text: "관리자가 API 토큰을 활성화하지 않았습니다. 이 기능을 사용하려면 관리자에게 문의하세요."
-        add_button: "API Token"
+        add_button: "API 토큰"
       api:
         static_token_name: "API 토큰"
       ical:
@@ -2669,7 +2669,7 @@ ko:
   label_api_access_key: "API 액세스 키"
   label_api_access_key_created_on: "API 액세스 키가 %{value} 전에 생성되었습니다."
   label_api_access_key_type: "API"
-  label_auto_option: "(auto)"
+  label_auto_option: "(자동)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: '"%{project_name}"의 "%{calendar_name}"에 대한 iCalendar 토큰 "%{token_name}"'
   label_ical_access_key_not_present: "iCalendar 토큰이 없습니다."
@@ -2907,7 +2907,7 @@ ko:
   label_invite_user: "사용자 초대"
   label_item: "항목"
   label_item_plural: "항목"
-  label_scored_list: "Scored list"
+  label_scored_list: "점수 목록"
   label_share: "공유"
   label_share_project_list: "프로젝트 목록 공유"
   label_share_work_package: "작업 패키지 공유"
@@ -2918,7 +2918,7 @@ ko:
   label_journal_diff: "설명 비교"
   label_language: "언어"
   label_languages: "언어"
-  label_locale: "Language and region"
+  label_locale: "언어 및 지역"
   label_jump_to_a_project: "프로젝트로 이동..."
   label_keyword_plural: "키워드"
   label_language_based: "사용자 언어에 따름"
@@ -2938,18 +2938,18 @@ ko:
   label_link_url: "링크(URL)"
   label_list: "목록"
   label_loading: "로드 중..."
-  label_locked: "locked"
+  label_locked: "잠김"
   label_lock_user: "사용자 잠금"
   label_logged_as: "로그인한 계정:"
   label_login: "로그인"
   label_custom_logo: "사용자 정의 로고"
   label_custom_export_logo: "사용자 지정 내보내기 로고"
   label_custom_export_cover: "사용자 지정 내보내기 커버 배경"
-  label_custom_export_footer: "Custom export footer image"
-  label_custom_export_font_regular: "Regular"
-  label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
-  label_custom_export_font_bold_italic: "Bold Italic"
+  label_custom_export_footer: "사용자 지정 내보내기 바닥글 이미지"
+  label_custom_export_font_regular: "일반"
+  label_custom_export_font_bold: "굵게"
+  label_custom_export_font_italic: "기울임꼴"
+  label_custom_export_font_bold_italic: "굵은 기울임꼴"
   label_custom_export_cover_overlay: "사용자 지정 내보내기 커버 배경 오버레이"
   label_custom_export_cover_text_color: "텍스트 색상"
   label_custom_pdf_export_settings: "사용자 지정 PDF 내보내기 설정"
@@ -3105,10 +3105,10 @@ ko:
   label_project_view_all: "모든 프로젝트 보기"
   label_project_show_details: "프로젝트 세부 정보 표시"
   label_project_hide_details: "프로젝트 세부 정보 숨기기"
-  label_portfolio: "Portfolio"
-  label_portfolio_new: "New portfolio"
-  label_program: "Program"
-  label_program_new: "New program"
+  label_portfolio: "포트폴리오"
+  label_portfolio_new: "새 포트폴리오"
+  label_program: "프로그램"
+  label_program_new: "새 프로그램"
   label_public_projects: "공용 프로젝트"
   label_query_new: "새 쿼리"
   label_query_plural: "사용자 지정 쿼리"
@@ -3257,8 +3257,8 @@ ko:
   label_watched_work_packages: "주시하는 작업 패키지"
   label_what_is_this: "이게 뭐예요?"
   label_week: "주"
-  label_widget: "Widget"
-  label_widget_new: "New widget"
+  label_widget: "위젯"
+  label_widget_new: "새 위젯"
   label_wiki_content_added: "위키 페이지 추가됨"
   label_wiki_content_updated: "위키 페이지 업데이트됨"
   label_wiki_toc: "목차"
@@ -3603,8 +3603,8 @@ ko:
   permission_add_work_packages: "작업 패키지 추가"
   permission_add_messages: "메시지 게시"
   permission_add_project: "프로젝트 만들기"
-  permission_add_portfolios: "Create portfolios"
-  permission_add_programs: "Create programs"
+  permission_add_portfolios: "포트폴리오 만들기"
+  permission_add_programs: "프로그램 만들기"
   permission_add_work_package_attachments: "첨부 파일 추가"
   permission_add_work_package_attachments_explanation: "작업 패키지 편집 권한 없이 첨부 파일 추가를 허용합니다."
   permission_add_internal_comments: "내부 코멘트 작성"
@@ -3719,15 +3719,15 @@ ko:
       one: "1개 프로젝트"
       other: "%{count}개 프로젝트"
     destroy:
-      title: "Delete project"
-      heading: "Permanently delete this project?"
+      title: "프로젝트 삭제"
+      heading: "이 프로젝트를 영구적으로 삭제하시겠습니까?"
       confirmation_message_for_subprojects_html:
         zero: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+          <strong>%{name}</strong> 프로젝트와 관련된 모든 데이터를 영구적으로 삭제하려고 합니다.
         one: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+          <strong>%{name}</strong> 프로젝트 및 이 하위 프로젝트와 관련된 모든 데이터를 영구적으로 삭제하려고 합니다:
         other: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
+          <strong>%{name}</strong> 프로젝트 및 해당 하위 프로젝트와 관련된 모든 데이터를 영구적으로 삭제하려고 합니다:
     filters:
       project_phase: "프로젝트 단계: %{phase}"
       project_phase_any: "프로젝트 단계: 모두"
@@ -3901,7 +3901,7 @@ ko:
   setting_attachment_whitelist: "첨부 파일 업로드 허용 목록"
   setting_email_delivery_method: "이메일 배달 방법"
   setting_emails_salutation: "이메일의 주소 사용자:"
-  setting_oauth_allow_remapping_of_existing_users: "Allow remapping of existing users"
+  setting_oauth_allow_remapping_of_existing_users: "기존 사용자의 다시 매핑 허용"
   setting_sendmail_location: "sendmail 실행 파일의 위치"
   setting_smtp_enable_starttls_auto: "사용 가능한 경우 자동으로 STARTTLS 사용"
   setting_smtp_ssl: "SSL 연결 사용"
@@ -4064,11 +4064,11 @@ ko:
     authentication:
       login: "로그인"
       registration: "등록"
-      sso: "Single Sign-On (SSO)"
+      sso: "SSO(Single Sign-On)"
       omniauth_direct_login_hint_html: >
         이 옵션이 활성화된 경우, 로그인 요청은 구성된 omniauth 공급자로 리디렉션됩니다. 로그인 드롭다운 및 로그인 페이지가 비활성화됩니다. <br/> <strong>참고:</strong> 또한 암호 로그인을 비활성화하지 않는 경우에는 이 옵션이 활성화된 상태에서 사용자가 <code>%{internal_path}</code> 로그인 페이지를 방문하여 내부에서 계속 로그인할 수 있습니다.
       remapping_existing_users_hint: >
-        If enabled, allows any configured identity provider to login existing users based on their email address, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
+        활성화된 경우, 사용자가 이전에 해당 공급자를 통해 로그인한 적이 없더라도, 구성된 모든 ID 공급자가 이메일 주소를 기반으로 기존 사용자에 로그인하도록 허용합니다. 이 옵션은 OpenProject 인스턴스를 새 SSO 공급자로 마이그레이션할 때 유용할 수 있지만 인스턴스의 일부 사용자가 신뢰하지 않는 공급자를 이용할 때는 권장되지 않습니다.
     attachments:
       whitelist_text_html: >
         업로드된 파일의 유효한 파일 확장명 및/또는 MIME 형식 목록을 정의합니다. <br/> 파일 확장명(예: <code>%{ext_example}</code>) 또는 MIME 형식(예: <code>%{mime_example}</code>)을 입력합니다. <br/> 모든 파일 형식을 업로드할 수 있도록 허용하려면 비워 둡니다. 여러 값이 허용됩니다(각 값에 대해 한 줄).
@@ -4178,7 +4178,7 @@ ko:
   status_invited: 초대됨
   status_locked: 잠김
   status_registered: 등록됨
-  status_deleted: deleted
+  status_deleted: 삭제됨
   #Used in array.to_sentence.
   support:
     array:
@@ -4214,19 +4214,19 @@ ko:
   text_custom_export_cover_instructions: >
     PDF 내보내기의 커버 페이지 배경에 나타나는 이미지입니다. 약 800px 너비, 500px 높이의 PNG 또는 JPEG 이미지 파일이어야 합니다.
   text_custom_export_footer_instructions: >
-    PDF exports will include a graphical element positioned to the left of the footer. This image must be a PNG or JPEG file with approximately 200 pixels in width.
+    PDF 내보내기에는 바닥글 왼쪽에 있는 그래픽 요소가 포함됩니다. 이 이미지는 너비가 약 200픽셀인 PNG 또는 JPEG 파일이어야 합니다.
   label_custom_export_font_instructions: >
-    Upload and manage custom TrueType (.ttf) fonts used in your PDF exports. For best results, use matching files from the same font family. If no font is provided, the default NotoSans font will be used.
+    PDF 내보내기에 사용되는 사용자 지정 TrueType(.ttf) 글꼴을 업로드하고 관리하세요. 최상의 결과를 얻으려면 동일한 글꼴 패밀리의 일치하는 파일을 사용하세요. 글꼴이 제공되지 않으면 기본 NotoSans 글꼴이 사용됩니다.
   label_custom_export_images_instructions: >
-    Upload and manage custom image files used in your PDF exports.
+    PDF 내보내기에 사용되는 사용자 지정 이미지 파일을 업로드하고 관리하세요.
   text_custom_export_font_regular_instructions: >
-    This is the font file for regular text. It needs to be in TTF format and is required.
+    일반 텍스트용 글꼴 파일입니다. TTF 형식이어야 하며 필수입니다.
   text_custom_export_font_bold_instructions: >
-    This is the font file for bold text. It needs to be in TTF format.
+    굵은 텍스트용 글꼴 파일입니다. TTF 형식이어야 합니다.
   text_custom_export_font_italic_instructions: >
-    This is the font file for italic text. It needs to be in TTF format.
+    기울임꼴 텍스트용 글꼴 파일입니다. TTF 형식이어야 합니다.
   text_custom_export_font_bold_italic_instructions: >
-    This is the font file for bold and italic text. It needs to be in TTF format.
+    굵은 기울임꼴 텍스트용 글꼴 파일입니다. TTF 형식이어야 합니다.
   text_custom_favicon_instructions: >
     페이지 제목 옆의 브라우저 창/탭에 나타나는 작은 아이콘입니다. 투명한 배경을 가진 정사각형 32x32 픽셀 크기의 PNG 이미지 파일이어야 합니다.
   text_custom_touch_icon_instructions: >
@@ -4566,8 +4566,8 @@ ko:
       code_500_missing_enterprise_token: "Enterprise 토큰이 유효하지 않거나 누락되어 요청을 처리할 수 없습니다."
       bad_request:
         emoji_reactions_activity_type_not_supported: "이 활동 유형은 이모티콘 반응을 지원하지 않습니다."
-        invalid_link: "The link under key '%{key}' is not valid."
-        links_not_an_object: "_links must be a JSON object."
+        invalid_link: "'%{key}' 키 아래의 링크가 유효하지 않습니다."
+        links_not_an_object: "_links는 JSON 개체여야 합니다."
       conflict:
         multiple_reminders_not_allowed: |-
           작업 패키지에 대해 한 번에 하나의 미리 알림만 설정할 수 있습니다. 기존 미리 알림을 삭제하거나 업데이트하세요.

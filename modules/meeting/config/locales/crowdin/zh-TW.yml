@@ -448,11 +448,11 @@ zh-TW:
   text_meeting_minutes_for_meeting: '%{meeting} 的會議記錄'
   text_notificiation_invited: "此郵件包含以下會議的 ics 條目:"
   text_meeting_ics_description: >-
-    Link to meeting: %{url}
+    會議連結： %{url}
   text_meeting_ics_meeting_series_description: >-
-    Link to meeting series: %{url}
+    連至系列會議： %{url}
   text_meeting_occurrence_ics_description: >-
-    Link to meeting occurrence: %{url} Link to meeting series: %{series_url}
+    會議單次連結：%{url} 會議系列連結：%{series_url}
   text_meeting_empty_heading: "暫無會議資料(會議建立後，請記得點選右上角功能「發送電子郵件給所有參與者」)"
   text_meeting_empty_description1: "可以點選下幫「增加」來新增項目。 每個項目可以像標題一樣簡單，但您也可以加上其他詳細信息，例如開會時間與備註。"
   text_meeting_empty_description2: '你也可以引用到現有工作套件。當您這樣做時，相關的紀錄將自動呈現於於工作套件的「會議」標籤。'
@@ -566,7 +566,7 @@ zh-TW:
           dialog_body: "此令牌(Tokens)將產生一個 iCal 訂閱網址，讓您能在外部行事曆應用程式中檢視所有會議。"
           create_button: "建立訂閱"
           name_label: "令牌名稱"
-          name_caption: 'You can name it after where you will use it, such as "My phone" or "Work computer".'
+          name_caption: '您可以根據使用地點來命名，例如「我的手機」或「工作電腦」。'
       created_dialog:
         token/ical_meeting:
           title: "已生成一個 iCal 會議訂閱令牌(Token)。"

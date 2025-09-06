@@ -61,7 +61,7 @@ fr:
       tab_pdf_export_styles: "Styles d'exportation PDF"
       tab_pdf_export_font: "Police d'exportation PDF"
       fonts:
-        file_too_large: "est trop important (la taille maximale est de %{count} MB)."
+        file_too_large: "est trop volumineux (la taille maximale est de %{count} Mo)."
         file_is_invalid: "n'est pas un fichier de police TTF valide."
       colors:
         primary-button-color: "Bouton principal"
@@ -587,7 +587,7 @@ fr:
       dialog:
         token/api:
           dialog_title: "Créer un nouveau jeton API"
-          attention_text: "Traitez les jetons API comme des mots de passe. Toute personne possédant ce jeton aura accès aux informations de cette instance, ne le partagez qu'avec des utilisateurs de confiance."
+          attention_text: "Traitez les jetons API comme des mots de passe. Toute personne possédant ce jeton aura accès aux informations de cette instance. Partagez-le uniquement avec des utilisateurs de confiance."
           dialog_body: "Ce jeton permettra aux applications tierces de communiquer avec votre instance. Pour différencier le nouveau jeton d'API, veuillez lui donner un nom."
           create_button: "Créer"
           name_label: "Nom du jeton"
@@ -597,7 +597,7 @@ fr:
           warning: "Note : Ceci est la seule fois où vous verrez ce jeton, veuillez le copier maintenant."
       errors:
         token_name_blank: "Veuillez fournir un nom de jeton d'API"
-        token_name_in_use: "Ce nom de jeton d'API est déjà utilisé, veuillez en choisir un autre"
+        token_name_in_use: "Ce nom de jeton d'API est déjà utilisé. Veuillez en choisir un autre"
       failed_to_reset_token: "Impossible de réinitialiser le jeton d’accès : %{error}"
       failed_to_create_token: "Impossible de créer le jeton d'accès : %{error}"
       failed_to_revoke_token: "Impossible de révoquer le jeton d'accès : %{error}"
@@ -1194,9 +1194,9 @@ fr:
         auto_hide_popups: "Masquer automatiquement les bannières de réussite"
         auto_hide_popups_caption: "Lorsque cette option est activée, les bannières vertes de réussite disparaissent automatiquement après 5 secondes."
         warn_on_leaving_unsaved: "M'avertir lorsque je quitte un lot de travaux contenant des modifications non enregistrées"
-        theme: "Mode couleur"
+        theme: "Mode de couleur"
         time_zone: "Fuseau horaire"
-        mode_guideline: "Certains modes écrasent les couleurs des thèmes personnalisés pour des raisons d'accessibilité et de lisibilité. Veuillez sélectionner le mode léger pour une prise en charge complète des thèmes personnalisés."
+        mode_guideline: "Certains modes écrasent les couleurs des thèmes personnalisés pour des raisons d'accessibilité et de lisibilité. Veuillez sélectionner le mode Clair pour une prise en charge complète des thèmes personnalisés."
         daily_reminders: "Rappels quotidiens"
         workdays: "Jours ouvrés"
       version:
@@ -1575,7 +1575,7 @@ fr:
               must_be_set_when_work_is_set: "requis lorsque le Travail est défini."
               must_be_set_when_work_and_percent_complete_are_set: "requis lorsque le Travail et le % Complété sont définis."
               must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                must be 0h when Work is set and % Complete is 100%.
+                doit être de 0 h lorsque le Travail est défini et que le % d'achèvement est de 100 %.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 doit être vide lorsque le Travail est vide et le % Complété est de 100 %.
           readonly_status: "Le lot de travaux est en lecture seule, ses attributs ne peuvent donc pas être changés."
@@ -2236,7 +2236,7 @@ fr:
         description: "Automatisez la gestion des utilisateurs dans OpenProject en intégrant de manière transparente des services d'identité externes tels que Microsoft Entra ou Keycloak via notre API de serveur SCIM. Disponible à partir de l'abonnement Enterprise."
       sso_auth_providers:
         title: "Authentification unique (SSO)"
-        description: "Permettez aux utilisateurs de se connecter via des fournisseurs SSO externes utilisant SAML ou OpenID Connect pour un accès transparent et une intégration avec les systèmes d'identité existants."
+        description: "Permettez aux utilisateurs de se connecter via des fournisseurs SSO externes utilisant SAML ou OpenID Connect pour assurer un accès transparent et une intégration fluide avec les systèmes d'identité existants."
       virus_scanning:
         description: "Assurez-vous que les fichiers téléversés dans OpenProject sont analysés pour détecter les virus avant d'être accessibles aux autres utilisateurs."
       placeholder_users:
@@ -2528,12 +2528,12 @@ fr:
         #We need to include the version to invalidate outdated translations in other locales
         "16_4":
           new_features_title: >
-            Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que
+            Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que :
           new_features_list:
             line_0: Option de synchronisation automatique de la couleur du système et du mode de contraste.
-            line_1: Mode foncé à fort contraste pour une meilleure accessibilité.
+            line_1: Mode sombre à fort contraste permettant une meilleure accessibilité.
             line_2: Exportation des listes de projets au format PDF.
-            line_3: Police personnalisée pour toutes les exportations PDF (module complémentaire Enterprise).
+            line_3: Police personnalisée pour toutes les exportations PDF (add-on Enterprise).
             line_4: Amélioration du dialogue entre les participants à la réunion.
             line_5: Amélioration de la gestion du budget dans les requêtes de projet et la planification budgétaire.
             line_6: Mise à jour de la page d'accueil et de la page d'aperçu du projet.
@@ -2547,7 +2547,7 @@ fr:
       shortcuts: "Raccourcis"
       blog: "Blog OpenProject"
       forums: "Forum de la communauté"
-      newsletter: "Alertes de sécurité / Lettre d’information"
+      newsletter: "Alertes de sécurité/lettre d'information"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2950,7 +2950,7 @@ fr:
   label_invite_user: "Inviter utilisateur"
   label_item: "Élément"
   label_item_plural: "Éléments"
-  label_scored_list: "Liste courte"
+  label_scored_list: "Liste notée"
   label_share: "Partager"
   label_share_project_list: "Partager la liste des projets"
   label_share_work_package: "Partager le lot de travaux"
@@ -2961,7 +2961,7 @@ fr:
   label_journal_diff: "Comparaison de description"
   label_language: "Langue"
   label_languages: "Langues"
-  label_locale: "Language and region"
+  label_locale: "Langue et région"
   label_jump_to_a_project: "Aller à un projet…"
   label_keyword_plural: "Mots clés"
   label_language_based: "Basé sur le langage de l'utilisateur"
@@ -2981,7 +2981,7 @@ fr:
   label_link_url: "Lien (URL)"
   label_list: "Liste"
   label_loading: "Chargement…"
-  label_locked: "Verrouillé"
+  label_locked: "verrouillé"
   label_lock_user: "Verrouiller l’utilisateur"
   label_logged_as: "Connecté en tant que"
   label_login: "Connexion"
@@ -2989,7 +2989,7 @@ fr:
   label_custom_export_logo: "Logo d'exportation personnalisé"
   label_custom_export_cover: "Arrière-plan de la couverture d'exportation personnalisée"
   label_custom_export_footer: "Image de pied de page d'exportation personnalisée"
-  label_custom_export_font_regular: "Régulière"
+  label_custom_export_font_regular: "Normale"
   label_custom_export_font_bold: "Gras"
   label_custom_export_font_italic: "Italique"
   label_custom_export_font_bold_italic: "Gras Italique"
@@ -3650,7 +3650,7 @@ fr:
   permission_add_messages: "Poster des messages"
   permission_add_project: "Créer des projets"
   permission_add_portfolios: "Créer des portefeuilles"
-  permission_add_programs: "Créer le programme"
+  permission_add_programs: "Créer des programmes"
   permission_add_work_package_attachments: "Ajouter pièces jointes"
   permission_add_work_package_attachments_explanation: "Permet d'ajouter des pièces jointes sans avoir le droit de modifier les lots de travaux"
   permission_add_internal_comments: "Écrire des commentaires internes"
@@ -3765,7 +3765,7 @@ fr:
       one: "1 projet"
       other: "%{count} projets"
     destroy:
-      title: "Supprimer un projet"
+      title: "Supprimer le projet"
       heading: "Supprimer définitivement ce projet ?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4116,7 +4116,7 @@ fr:
       omniauth_direct_login_hint_html: >
         Si cette option est activée, les demandes de connexion seront redirigées vers le fournisseur omniauth configuré. La liste déroulante de connexion et la page de connexion seront désactivées. <br/> <strong>Remarque :</strong> lorsque cette option est activée, les utilisateurs peuvent toujours se connecter en interne en visitant la page de connexion <code>%{internal_path}</code>, sauf si vous désactivez également les connexions par mot de passe.
       remapping_existing_users_hint: >
-        Si activé, permet à n'importe quel fournisseur d'identité configuré de connecter les utilisateurs existants en se basant sur leur adresse email, même si l'utilisateur ne s'est jamais connecté via ce fournisseur auparavant. Ceci peut être utile lors de la migration de l'instance OpenProject vers un nouveau fournisseur SSO, mais n'est pas recommandé lors de l'utilisation d'un fournisseur qui n'est pas reconnu par tous les utilisateurs de votre instance.
+        Si cette option est activée, elle permet à tout fournisseur d'identité configuré de connecter des utilisateurs existants en fonction de leur adresse e-mail, même si l'utilisateur ne s'est jamais connecté auparavant via ce fournisseur. Cela peut être utile lors de la migration de l'instance OpenProject vers un nouveau fournisseur SSO, mais n'est pas recommandé si vous utilisez un fournisseur qui n'est pas approuvé par l'ensemble des utilisateurs de votre instance.
     attachments:
       whitelist_text_html: >
         Définissez une liste d'extensions de fichiers et/ou de types MIME valides pour les fichiers téléversés. <br/> Entrez les extensions de fichier (par exemple, <code>%{ext_example}</code>) ou les types mime (par exemple, <code>%{mime_example}</code>). <br/> Laissez vide pour permettre le téléversement de tout type de fichier. Plusieurs valeurs autorisées (une ligne pour chaque valeur).
@@ -4264,9 +4264,9 @@ fr:
   text_custom_export_footer_instructions: >
     Les exportations PDF comprendront un élément graphique placé à gauche du pied de page. Cette image doit être un fichier PNG ou JPEG d'une largeur d'environ 200 pixels.
   label_custom_export_font_instructions: >
-    Téléchargez et gérez les polices TrueType (.ttf) personnalisées utilisées dans vos exportations PDF. Pour de meilleurs résultats, utilisez des fichiers correspondants de la même famille de polices. Si aucune police n'est fournie, la police NotoSans par défaut sera utilisée.
+    Téléversez et gérez des polices TrueType (.ttf) personnalisées utilisées dans vos exportations PDF. Pour assurer de meilleurs résultats, utilisez des fichiers correspondants issus de la même famille de polices. Si aucune police n'est fournie, la police NotoSans par défaut sera utilisée.
   label_custom_export_images_instructions: >
-    Téléchargez et gérez des fichiers images personnalisés utilisés dans vos exportations PDF.
+    Téléversez et gérez des fichiers image personnalisés utilisés dans vos exportations PDF.
   text_custom_export_font_regular_instructions: >
     Il s'agit du fichier de police pour le texte normal. Il doit être obligatoirement au format TTF.
   text_custom_export_font_bold_instructions: >

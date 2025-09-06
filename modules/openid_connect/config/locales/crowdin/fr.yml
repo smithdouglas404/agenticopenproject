@@ -63,16 +63,16 @@ fr:
         title: Noms de groupe extraits
         placeholder_none: Aucun groupe ne correspond actuellement au modèle.
       match_preview_dialog_component:
-        description: Cela vous permet de tester votre motif d'expression régulière par rapport à un échantillon de données afin de vérifier que les noms de groupes que vous souhaitez extraire sont effectivement extraits correctement. Vous pouvez modifier votre motif ici, mais la chaîne de test et les correspondances elles-mêmes ne seront pas sauvegardées avec la configuration.
+        description: Cela vous permet de tester votre modèle d'expression régulière sur des données d'exemple afin de vérifier que les noms de groupes que vous souhaitez extraire sont extraits correctement. Vous pouvez modifier votre modèle ici, mais la chaîne de test et les correspondances ne seront pas enregistrées dans la configuration.
         group_names_label: Noms des groupes de test
         group_names_description: Saisissez un nom de groupe par ligne tel qu'il apparaîtrait dans la demande de l'OIDC, afin de voir comment vos expressions régulières les affectent.
         show_button: Modèle de test
-        title: Testez les expressions régulières
+        title: Tester les expressions régulières
     instructions:
       endpoint_url: L'URL du point de terminaison qui vous a été communiquée par le fournisseur OpenID Connect
       group_regexes: Un motif d'expression régulière par ligne. Veuillez lire [la documentation](docs_url) pour en savoir plus sur la manière de procéder.
       group_regexes_detail: Vous pouvez également définir des motifs à l'aide d'expressions régulières pour faire correspondre les noms de groupes aux revendications de groupes. Par exemple, si vous saisissez un motif tel que <code>^Level1/Level2/([\w/]+)$</code>, le groupe « Groupname/SubGroup » sera extrait d'une réponse comprenant « Level1/Level2/GroupName/SubGroup ». Si aucun motif ne correspond, le groupe est ignoré. Laissez le champ vide pour synchroniser tous les groupes en utilisant leur nom complet.
-      group_regexes_testing: "Cliquez sur \"Test pattern\" pour tester votre motif d'expression régulière par rapport à un exemple de Userinfo de l'OIDC."
+      group_regexes_testing: "Cliquez sur « Tester le modèle » pour tester votre expression régulière par rapport aux informations userinfo OIDC."
       group_sync: Extraire et synchroniser automatiquement les informations relatives à l'appartenance à un groupe à partir du fournisseur d'identité.
       groups_claim: Indiquez le nom de la revendication censée indiquer les noms des groupes dont l'utilisateur est membre.
       metadata_none: Je ne dispose pas de cette information

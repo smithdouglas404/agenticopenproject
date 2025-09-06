@@ -1068,8 +1068,8 @@ pt-BR:
     notice_successful_delete: "Excluído com sucesso"
     notice_successful_update: "Atualizado com sucesso."
     notice_job_started: "trabalho iniciado."
-    no_job_id: "No job ID returned from server."
-    invalid_job_response: "Invalid response from server."
+    no_job_id: "Nenhum ID de tarefa retornado pelo servidor."
+    invalid_job_response: "Resposta inválida do servidor."
     notice_bad_request: "Requisição Inválida."
     relations:
       empty: Nenhuma relação existente
@@ -1212,15 +1212,15 @@ pt-BR:
       selected_filter:
         all: "Todos os projetos"
         selected: "Somente selecionados"
-      search_placeholder: "Search projects..."
-      search_placeholder_favorites: "Search favorites..."
+      search_placeholder: "Buscar projetos..."
+      search_placeholder_favorites: "Pesquisar favoritos..."
       include_subprojects: "Incluir todos os subprojetos"
       tooltip:
         include_all_selected: "Como a opção Incluir todos os sub-projetos está habilitada, o projeto já foi incluído."
         current_project: "Este é o projeto atual em que você está."
         does_not_match_search: "O projeto não corresponde ao critério de pesquisa"
       no_results: "Nenhum projeto corresponde ao seu critério de busca."
-      no_favorite_results: "No favorite project matches your search criteria."
+      no_favorite_results: "Nenhum projeto favorito corresponde aos seus critérios de busca."
     baseline:
       toggle_title: "Linha base"
       clear: "Remover"

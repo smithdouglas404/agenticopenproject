@@ -455,9 +455,9 @@ de:
   text_meeting_minutes_for_meeting: 'das Protokoll für die Besprechung "%{meeting}"'
   text_notificiation_invited: "Diese Email enthält einen ics Eintrag für die untenstehende Besprechung:"
   text_meeting_ics_description: >-
-    Link to meeting: %{url}
+    Link zur Besprechung: %{url}
   text_meeting_ics_meeting_series_description: >-
-    Link to meeting series: %{url}
+    Link zur Terminserie: %{url}
   text_meeting_occurrence_ics_description: >-
     Link to meeting occurrence: %{url} Link to meeting series: %{series_url}
   text_meeting_empty_heading: "Ihre Besprechung ist leer"

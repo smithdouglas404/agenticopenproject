@@ -28,9 +28,9 @@ eo:
       activity_tab:
         no_results_title_text: No activity to display
         no_results_description_text: 'Choose "Show everything" to show all activity and comments'
-        label_activity_show_all: "Show everything"
-        label_activity_show_only_comments: "Show comments only"
-        label_activity_show_only_changes: "Show changes only"
+        label_activity_show_all: "Montru ĉio"
+        label_activity_show_only_comments: "Montru nur komentoj"
+        label_activity_show_only_changes: "Montru nur ŝanĝiĝoj"
         label_sort_asc: "Newest at the bottom"
         label_sort_desc: "Newest on top"
         label_type_to_comment: "Add a comment. Type @ to notify people."
@@ -2676,7 +2676,7 @@ eo:
         assigned: "You have been assigned to %{work_package}"
         subscribed: "You subscribed to %{work_package}"
         mentioned: "You have been mentioned in %{work_package}"
-        responsible: "You have become accountable for %{work_package}"
+        responsible: "Vi fariĝas responsa pri %{work_package}"
         watched: "You are watching %{work_package}"
     query:
       invalid_filter: "Invalid notification filter"
@@ -3355,7 +3355,7 @@ eo:
     other: "%{count} malfermitaj"
     zero: "0 malfermita"
   label_x_work_packages:
-    one: "1 work package"
+    one: "1 laborpakaĵo"
     other: "%{count} work packages"
     zero: "No work packages"
   label_x_projects:
@@ -3430,7 +3430,7 @@ eo:
         date_alert_start_date: "Date alert"
         date_alert_due_date: "Date alert"
         reminder: "Memorigilo"
-      see_all: "See all"
+      see_all: "Rigardu ĉiujn"
       updated_at: "Updated at %{timestamp} by %{user}"
     reminder_notifications:
       subject: "Reminder: %{note}"
