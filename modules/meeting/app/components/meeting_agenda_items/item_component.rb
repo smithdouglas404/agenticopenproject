@@ -85,6 +85,7 @@ module MeetingAgendaItems
       {
         pl: 0,
         scheme: :default,
+        id: "item-#{@meeting_agenda_item.id}",
         data: {
           id: @meeting_agenda_item.id,
           "draggable-id": @meeting_agenda_item.id,
