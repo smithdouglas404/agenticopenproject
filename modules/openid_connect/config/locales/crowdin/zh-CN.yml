@@ -60,12 +60,12 @@ zh-CN:
     group_links_heading: OpenID Connect 群组链接
     groups:
       match_preview_component:
-        title: 提取的组名称
+        title: 提取的群组名称
         placeholder_none: 目前没有与模式匹配的组。
       match_preview_dialog_component:
-        description: 这样，您便可根据样本数据测试正则表达式模式，以验证您希望提取的组名称是否已正确提取。您可以在此修改模式，但测试字符串和匹配项本身不会随配置一起保存。
-        group_names_label: 测试组名称
-        group_names_description: 每行输入一个与 OIDC 声明中显示形式一致的组名称，以查看正则表达式模式对组名称的影响。
+        description: 这样，您便可根据样本数据测试正则表达式模式，以验证您希望提取的群组名称是否已正确提取。您可以在此处修改模式，但测试字符串和匹配项本身不会随配置一起保存。
+        group_names_label: 测试群组名称
+        group_names_description: 每行输入一个与 OIDC 声明中显示形式一致的群组名称，以查看正则表达式模式对群组名称的影响。
         show_button: 测试模式
         title: 测试正则表达式
     instructions:
@@ -77,7 +77,7 @@ zh-CN:
       groups_claim: 指定预期表示用户所属群组名称的声明的名称。
       metadata_none: 我没有这个信息
       metadata_url: 我有一个发现端点网址
-      oidc_information: 需要使用这些值对 OpenID Connect 提供商进行配置。
+      oidc_information: 配置 OpenID Connect 提供商需要使用这些值。
       client_id: 这是您的 OpenID Connect 提供商给您的客户端 ID
       client_secret: 这是您的 OpenID Connect 提供商给您的客户端密钥
       limit_self_registration: 如果启用，用户只能在提供商的配置允许的情况下使用该提供商进行注册。

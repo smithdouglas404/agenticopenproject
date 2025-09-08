@@ -64,7 +64,7 @@ zh-CN:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} 不是有效的与会者。"
+          invalid_user: "%{name} 不是有效的参与者。"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "该系列会议中有一次公开会议未列入新时间表。请调整时间表，将会议包含在内。"
@@ -79,7 +79,7 @@ zh-CN:
       meeting_agenda: "议程"
       meeting_section: "节"
       token/ical_meeting:
-        other: "iCal Meeting 订阅"
+        other: "iCal 会议订阅"
   activity:
     filter:
       meeting: "会议"
@@ -180,13 +180,13 @@ zh-CN:
         attended: "已参加"
         mark_as_attended: "标记为已参加"
         mark_all_as_attended: "将所有标记为已参加"
-        remove_participant: "移除与会者"
+        remove_participant: "移除参与者"
         manage_participants: "管理与会者"
         no_participants: "无参加者"
         show_all: "显示全部"
       text:
         template: "这些参加者将被自动邀请参加今后创建的所有会议。"
-        manage_participants: "搜索并添加项目成员作为本次会议的与会者。"
+        manage_participants: "搜索并添加项目成员作为本次会议的参与者。"
         search_for_members: "搜索项目成员"
       blankslate:
         heading: "无参加者"
@@ -236,7 +236,7 @@ zh-CN:
         new_date_time: "新日期/时间"
         old_location: "原位置"
         new_location: "新位置"
-    label_mail_all_participants: "向与会者发送电子邮件邀请"
+    label_mail_all_participants: "向参与者发送电子邮件邀请"
     types:
       one_time: "动态"
       recurring: "定期"
@@ -278,10 +278,10 @@ zh-CN:
           caption: 默认模板适用于大多数会议，并反映当前状态。
         minutes:
           label: 会议记录
-          caption: 会议记录模板适用于已关闭会议和已存档会议。
+          caption: 会议记录模板适用于已关闭会议和已归档会议。
       first_page_header_left:
         label: 第一页页眉左侧
-        caption: 此文本将出现在每一页的页眉左侧。
+        caption: 此文本将出现在第一页的页眉左侧。
       author:
         label: 作者
         caption: 会议记录的作者将显示在副标题中。
@@ -323,9 +323,9 @@ zh-CN:
       banner:
         participants:
           enabled: >
-            当您添加或移除与会者时，所有与会者都将通过电子邮件收到更新的日历邀请。
+            当您添加或移除参与者时，所有参与者都将通过电子邮件收到更新的日历邀请。
           disabled: >
-            电子邮件日历更新已禁用。在您添加或移除与会者时，与会者不会收到电子邮件通知。
+            电子邮件日历更新已禁用。在您添加或移除参与者时，参与者不会收到电子邮件通知。
         onetime:
           enabled: >
             所有与会者都将通过电子邮件收到更新的日历邀请，向其通知您所做的更改。
@@ -475,7 +475,7 @@ zh-CN:
   label_agenda_item_undisclosed_wp: "工作包 #%{id} 不可见"
   label_agenda_item_deleted_wp: "已删除工作包引用"
   label_agenda_item_actions: "议程项目行动"
-  label_agenda_item_move_to_next_title: "移至下一次会议？"
+  label_agenda_item_move_to_next_title: "是否移至下一次会议？"
   label_agenda_item_move: "移动"
   label_agenda_item_move_to_next: "移动到下次会议"
   label_agenda_item_move_to_backlog: "移动到待办事项"
@@ -528,9 +528,9 @@ zh-CN:
   label_meeting_reopen_action: "重新开放会议"
   label_meeting_close_action: "关闭会议"
   label_meeting_in_progress_action: "开始会议"
-  text_meeting_open_description: "您可以添加/移除议程项目和与会者。议程准备就绪后，请将其标记为“进行中”，以记录结果。"
+  text_meeting_open_description: "您可以添加/移除议程项目和参与者。议程准备就绪后，请将其标记为“进行中”，以记录结果。"
   text_meeting_closed_description: "此会议已关闭。您不能再添加/移除议程项目。"
-  text_meeting_in_progress_description: "您可以修改议程、记录每个项目的结果，并可跟踪与会者的出席情况。会议结束后，您可以将其标记为“已关闭”，以锁定会议。"
+  text_meeting_in_progress_description: "您可以修改议程、记录每个条目的结果，以及跟踪参与者的出席情况。会议结束后，您可以将其标记为“已关闭”，以锁定会议。"
   text_meeting_open_dropdown_description: "任何现有成果都将继续存在，但用户将无法添加新成果。"
   text_meeting_in_progress_dropdown_description: "记录会议期间的信息需求或决策等成果。"
   text_meeting_closed_dropdown_description: "此会议已关闭。您不能再修改议程项目或成果。"
@@ -542,7 +542,7 @@ zh-CN:
   text_add_work_package_to_meeting_description: "一个工作包可以添加到一个或多个会议供讨论。与此相关的任何说明也可在这里看到。"
   text_agenda_item_no_notes: "未提供备注"
   text_agenda_item_not_editable_anymore: "此议程项目已不可编辑。"
-  text_agenda_item_move_next_meeting: "此项目将移至 %{date} %{time} 召开的下一次会议。"
+  text_agenda_item_move_next_meeting: "此条目将被移至 %{date} %{time} 召开的下一次会议。"
   text_agenda_item_moved_to_next_meeting: "议程项目移至下次会议，日期 %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "该工作包尚未被安排到即将举行的会议议程中。"
   text_agenda_item_move_next_meeting_cancelled: "无法移动到下次会议，因为它已被取消。"
@@ -563,7 +563,7 @@ zh-CN:
       dialog:
         token/ical_meeting:
           dialog_title: "新的 iCal 会议订阅令牌"
-          dialog_body: "该令牌将生成一个 iCal 订阅 URL，您可以通过该 URL 在外部日历应用程序中查看您的所有会议。"
+          dialog_body: "此令牌将生成一个 iCal 订阅 URL，您可以通过该 URL 在外部日历应用程序中查看您的所有会议。"
           create_button: "创建订阅"
           name_label: "令牌名称"
           name_caption: '您可以根据使用位置为其命名，如“我的手机”或“工作计算机”。'

@@ -320,13 +320,13 @@ zh-CN:
         oidc_token_exchange_failed: 您的 OpenID Connect 提供商上的 Token Exchange 设置似乎存在问题。请检查其配置并重试。
         oidc_token_refresh_failed: 当检查你对这个存储的访问权限时出现错误。详情请查看服务器日志。
         sp_client_cant_delete_folder: 客户在删除 SharePoint 中的文件夹时遇到问题。请查看存储的设置文档。
-        sp_client_id_missing: 没有为 SharePoint 配置 OAuth 2 客户端 id。请检查配置。
-        sp_client_secret_missing: 没有为 SharePoint 配置 OAuth 2 客户端密钥。请检查配置。
-        sp_client_write_permission_missing: 客户端似乎在 SharePoint 中没有写入权限。请查看您存储的设置文档。
+        sp_client_id_missing: SharePoint 缺少配置的 OAuth 2 客户端 id。请检查配置。
+        sp_client_secret_missing: SharePoint 缺少配置的 OAuth 2 客户端密钥。请检查配置。
+        sp_client_write_permission_missing: 客户端似乎在 SharePoint 中没有写入权限。请查看您的存储空间的设置文档。
         sp_existing_test_folder: 测试所需的文件夹 %{folder_name} 已存在于 SharePoint 中。请删除此文件夹并重试。
         sp_oauth_request_error: 向 SharePoint 发送的用户绑定请求失败。请查看服务器日志以获取更多信息。
-        sp_oauth_token_missing: OpenProject 无法测试用户与 SharePoint 的用户级通信，因为用户尚未关联他们的 SharePoint 帐户。
-        sp_tenant_id_missing: 没有为 SharePoint 配置目录（租户）id。请检查配置。
+        sp_oauth_token_missing: OpenProject 无法测试与 SharePoint 的用户级通信，因为用户尚未关联他们的 SharePoint 帐户。
+        sp_tenant_id_missing: SharePoint 缺少配置的目录（租户）id。请检查配置。
         sp_unexpected_content: 在 SharePoint 驱动器中发现意外内容。
         unknown_error: 连接无法验证。出现未知错误。请查看服务器日志以获取更多信息。
       label_error: 错误
