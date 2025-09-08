@@ -9,7 +9,7 @@ keywords: authentication settings, login settings, registration settings, OpenPr
 
 To adapt general system **login and registration settings** in OpenProject, navigate to *Administration -> Authentication* and choose -> *Login and registration*.
 
-Here you can adapt various settings related to login and registration in OpenProject, grouped under fourtabs: 
+Here you can adapt various settings related to login and registration in OpenProject, grouped under four tabs: 
 
 - Login 
 
