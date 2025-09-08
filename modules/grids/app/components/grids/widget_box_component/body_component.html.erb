@@ -1,4 +1,5 @@
 <%#-- copyright
+
 OpenProject is an open source project management software.
 Copyright (C) the OpenProject GmbH
 
@@ -27,4 +28,6 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%= render Overviews::Widgets::ProjectStatusComponent.new(@project, current_user:) %>
+<%= render(Primer::BaseComponent.new(**@system_arguments)) do %>
+  <%= content %>
+<% end %>

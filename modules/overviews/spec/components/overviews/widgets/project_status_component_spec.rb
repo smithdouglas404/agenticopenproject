@@ -43,7 +43,7 @@ RSpec.describe Overviews::Widgets::ProjectStatusComponent, type: :component do
   current_user { user }
 
   subject(:rendered_component) do
-    render_component(project:, current_user:)
+    render_component(project, current_user:)
   end
 
   it "renders turbo-frame component wrapper" do
