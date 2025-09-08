@@ -36,4 +36,8 @@ class CustomValueError < ApplicationRecord
   ].freeze
 
   validates :error_code, inclusion: { in: VALID_ERROR_CODES }
+
+  def error_message
+    "TODO: humanize error code into a nice, translated error message"
+  end
 end

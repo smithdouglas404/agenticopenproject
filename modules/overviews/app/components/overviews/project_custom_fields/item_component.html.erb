@@ -8,7 +8,7 @@
     }
   ) do |custom_field_value_container|
     # temporarily using inline styles in order to align the content as desired
-    custom_field_value_container.with_row(mb: 1) do |attribute_name|
+    custom_field_value_container.with_row(mb: 1) do
       render OpenProject::Common::AttributeLabelComponent.new(
         attribute: @project_custom_field.attribute_name,
         model: @project
@@ -22,6 +22,12 @@
         render(Primer::Beta::Text.new) { t("placeholders.default") }
       else
         render_value
+      end
+    end
+
+    if custom_field_value_has_error?
+      custom_field_value_container.with_row(w: :full) do
+        render_error
       end
     end
   end
