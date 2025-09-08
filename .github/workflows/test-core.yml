@@ -24,8 +24,13 @@ jobs:
   all:
     name: Units + Features
     if: github.repository == 'opf/openproject'
+    strategy:
+      matrix:
+        runner:
+          - "runs-on=${{ github.run_id }}/image=ubuntu24-full-x64/family=m7+c7+r7+i7+r8+m8/ram=128+256/cpu=32"
+          - ubuntu-latest
     runs-on:
-      labels: "runs-on=${{ github.run_id }}/image=ubuntu24-full-x64/family=m7+c7+r7+i7+r8/ram=128+256/cpu=32"
+      labels: ${{ matrix.runner }}
     timeout-minutes: 40
     env:
       DOCKER_BUILDKIT: 1
