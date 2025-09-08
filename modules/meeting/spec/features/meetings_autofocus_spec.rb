@@ -95,7 +95,6 @@ RSpec.describe "Meetings autofocus", :js do
       show_page.expect_focused_input("form_#{item.id}_meeting_agenda_item_title")
 
       fill_in "Title", with: "Updated title"
-      click_on "Save"
     end
     show_page.expect_agenda_item title: "Updated title"
 
@@ -146,7 +145,7 @@ RSpec.describe "Meetings autofocus", :js do
     expect(wp_item).to be_present
 
     # edit wp item
-    show_page.edit_agenda_item(wp_item) do
+    show_page.edit_agenda_item(wp_item, save: false) do
       show_page.expect_focused_input("form_#{wp_item.id}_meeting_agenda_item_work_package_id")
       click_on "Cancel"
     end
@@ -208,7 +207,6 @@ RSpec.describe "Meetings autofocus", :js do
       show_page.expect_focused_input("form_#{item.id}_meeting_agenda_item_title")
 
       fill_in "Title", with: "Updated title"
-      click_on "Save"
     end
     show_page.expect_agenda_item title: "Updated title"
 
@@ -259,7 +257,7 @@ RSpec.describe "Meetings autofocus", :js do
     expect(wp_item).to be_present
 
     # edit wp item
-    show_page.edit_agenda_item(wp_item) do
+    show_page.edit_agenda_item(wp_item, save: false) do
       show_page.expect_focused_input("form_#{wp_item.id}_meeting_agenda_item_work_package_id")
       click_on "Cancel"
     end
@@ -302,7 +300,6 @@ RSpec.describe "Meetings autofocus", :js do
       show_page.expect_focused_input("form_#{item.id}_meeting_agenda_item_title")
 
       fill_in "Title", with: "Updated title"
-      click_on "Save"
     end
     show_page.expect_agenda_item title: "Updated title"
 
@@ -329,7 +326,7 @@ RSpec.describe "Meetings autofocus", :js do
     expect(wp_item).to be_present
 
     # edit wp item
-    show_page.edit_agenda_item(wp_item) do
+    show_page.edit_agenda_item(wp_item, save: false) do
       show_page.expect_focused_input("form_#{wp_item.id}_meeting_agenda_item_work_package_id")
       click_on "Cancel"
     end

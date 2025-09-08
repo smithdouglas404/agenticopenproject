@@ -101,7 +101,6 @@ RSpec.describe "Meetings CRUD",
     # Can update
     show_page.edit_agenda_item(item) do
       fill_in "Title", with: "Updated title"
-      click_on "Save"
     end
 
     show_page.expect_no_agenda_item title: "My agenda item"
@@ -138,7 +137,7 @@ RSpec.describe "Meetings CRUD",
     show_page.assert_agenda_order! "First", "Updated title", "Second"
 
     # Can edit and cancel with escape
-    show_page.edit_agenda_item(first) do
+    show_page.edit_agenda_item(first, save: false) do
       find_field("Title").send_keys :escape
     end
     show_page.expect_item_edit_form(first, visible: false)
@@ -159,16 +158,16 @@ RSpec.describe "Meetings CRUD",
     expect(wp_item).to be_present
 
     # Can edit and validate a work package item
-    show_page.edit_agenda_item(wp_item) do
+    show_page.edit_agenda_item(wp_item, save: false) do
       show_page.clear_item_edit_work_package_title
-      click_on "Save"
+      click_on "Save" # triggers an error
     end
 
     show_page.expect_item_edit_field_error(wp_item, "Work package can't be blank.")
     show_page.cancel_edit_form(wp_item)
 
     # Keeping the editing state of an agenda item while modifying other items
-    show_page.edit_agenda_item(second) do
+    show_page.edit_agenda_item(second, save: false) do
       fill_in "Title", with: "Second edited"
     end
 
@@ -185,7 +184,6 @@ RSpec.describe "Meetings CRUD",
 
     show_page.edit_agenda_item(my_item) do
       fill_in "Title", with: "My agenda item edited"
-      click_on "Save"
     end
 
     show_page.remove_agenda_item my_item
@@ -275,12 +273,12 @@ RSpec.describe "Meetings CRUD",
     show_page.expect_agenda_item title: "My agenda item"
     item = MeetingAgendaItem.find_by!(title: "My agenda item")
 
-    show_page.edit_agenda_item(item) do
+    show_page.edit_agenda_item(item, save: false) do
       # Side effect: update the item
       item.update!(title: "Updated title")
 
       fill_in "Title", with: "My agenda item edited"
-      click_on "Save"
+      click_on "Save" # triggers an error
     end
 
     expect(page).to have_css(".flash", text: I18n.t("activerecord.errors.messages.error_conflict"))
@@ -489,7 +487,6 @@ RSpec.describe "Meetings CRUD",
 
         show_page.edit_agenda_item(item_in_second_section) do
           fill_in "Duration", with: "15"
-          click_on "Save"
         end
 
         # duration gets updated
