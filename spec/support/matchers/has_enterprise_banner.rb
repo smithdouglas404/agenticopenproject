@@ -51,7 +51,6 @@ RSpec::Matchers.define :have_enterprise_banner do |**args|
   end
 
   failure_message_when_negated do
-    puts Capybara::Screenshot.screenshot_and_save_page
     banner_text = page.find(test_selector("op-enterprise-banner")).text
     <<~MESSAGE
       Expected page not to have Enterprise banner, but it is present and visible.
