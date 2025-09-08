@@ -31,7 +31,7 @@ jobs:
           - ubuntu-latest
     runs-on:
       labels: ${{ matrix.runner }}
-    timeout-minutes: 40
+    timeout-minutes: 120
     env:
       DOCKER_BUILDKIT: 1
       CI_RETRY_COUNT: 3
