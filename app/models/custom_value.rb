@@ -31,6 +31,7 @@
 class CustomValue < ApplicationRecord
   belongs_to :custom_field
   belongs_to :customized, polymorphic: true
+  has_many :custom_value_errors, dependent: :destroy
 
   validate :validate_presence_of_required_value
   validate :validate_format_of_value
