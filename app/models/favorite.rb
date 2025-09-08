@@ -31,7 +31,4 @@
 class Favorite < ApplicationRecord
   belongs_to :user
   belongs_to :favorited, polymorphic: true
-
-  validates :user, presence: true
-  validates :favorited, presence: true
 end
