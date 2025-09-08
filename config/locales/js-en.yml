@@ -473,7 +473,7 @@ en:
     label_sort_lower: "Move down"
     label_sorting: "Sorting"
     label_spent_time: "Spent time"
-    label_star_query: "Favored"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Press enter to save."
     label_public_query: "Public"
     label_sum: "Sum"
