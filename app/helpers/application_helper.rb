@@ -313,15 +313,27 @@ module ApplicationHelper
   end
 
   def user_theme_data_attributes
-    theme = User.current.pref.theme
+    pref = User.current.pref
+    theme = pref.theme
 
-    { auto_theme_switcher_theme_value: theme,
-      auto_theme_switcher_increase_contrast_value: User.current.pref.increase_theme_contrast?,
-      auto_theme_switcher_enable_auto_light_theme_contrast_value: User.current.pref.enable_auto_light_theme_contrast?,
-      auto_theme_switcher_enable_auto_dark_theme_contrast_value: User.current.pref.enable_auto_dark_theme_contrast?,
+    theme_options = {
+      auto_theme_switcher_theme_value: theme,
       auto_theme_switcher_desktop_light_high_contrast_logo_class: "op-logo--link_high_contrast",
-      auto_theme_switcher_mobile_white_logo_class: "op-logo--icon_white",
-      color_mode: theme, "#{theme}_theme": theme }
+      auto_theme_switcher_mobile_white_logo_class: "op-logo--icon_white"
+    }
+
+    if pref.sync_with_os_theme?
+      theme_options[:auto_theme_switcher_enable_auto_light_theme_contrast_value] =
+        pref.enable_auto_light_theme_contrast?
+      theme_options[:auto_theme_switcher_enable_auto_dark_theme_contrast_value] =
+        pref.enable_auto_dark_theme_contrast?
+    else
+      theme_options[:color_mode] = theme
+      theme_options[:"#{theme}_theme"] = theme
+      theme_options[:auto_theme_switcher_increase_contrast_value] = pref.increase_theme_contrast?
+    end
+
+    theme_options
   end
 
   def highlight_default_language(lang_options)
