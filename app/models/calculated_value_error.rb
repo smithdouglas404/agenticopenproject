@@ -28,12 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class CustomValueError < ApplicationRecord
-  belongs_to :custom_value
+class CalculatedValueError < ApplicationRecord
+  belongs_to :project
+  belongs_to :custom_field
 
   VALID_ERROR_CODES = %w[
     ERROR_MATHEMATICAL
   ].freeze
+
+  validates :project_id, presence: true
+  validates :custom_field_id, presence: true
 
   validates :error_code, inclusion: { in: VALID_ERROR_CODES }
 

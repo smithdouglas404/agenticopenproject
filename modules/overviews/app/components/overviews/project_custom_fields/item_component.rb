@@ -49,18 +49,14 @@ module Overviews
         @project_custom_field_values.empty? || @project_custom_field_values.all? { |cf_value| cf_value.value.blank? }
       end
 
-      def custom_field_value_has_error?
-        @project_custom_field_values.any? do |cf_value|
-          puts "FOO custom value errors: #{cf_value.custom_value_errors.inspect}"
-          cf_value.custom_value_errors.any?
-        end
+      def calculation_error?
+        @project_custom_field.field_format_calculated_value? &&
+          @project_custom_field.calculated_value_errors.where(project: @project).any?
       end
 
-      def render_error
+      def render_calculation_error
         render(Primer::Beta::Text.new(color: :danger)) do
-          @project_custom_field_values&.flat_map do |cf_value|
-            cf_value.custom_value_errors.map(&:error_message).join(" ")
-          end&.join(" ")
+          @project_custom_field.calculated_value_errors.where(project: @project).map(&:error_message).join(" ")
         end
       end
 

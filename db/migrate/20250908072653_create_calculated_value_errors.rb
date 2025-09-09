@@ -28,10 +28,11 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class CreateCustomValueErrors < ActiveRecord::Migration[8.0]
+class CreateCalculatedValueErrors < ActiveRecord::Migration[8.0]
   def change
-    create_table :custom_value_errors do |t|
-      t.references :custom_value, foreign_key: true
+    create_table :calculated_value_errors do |t|
+      t.references :project, foreign_key: true
+      t.references :custom_field, foreign_key: true
       t.string :error_code, null: false
 
       t.timestamps

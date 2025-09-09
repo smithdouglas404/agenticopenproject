@@ -55,6 +55,14 @@ module ActsAsCustomizable::CalculatedValue
       )
 
       self.custom_field_values = custom_fields.to_h { [it.id, result[it.column_name]] }
+
+      result.each do |cf_id, calculation_result|
+        if calculation_result.nil? && is_a?(Project)
+          CalculatedValueError.create!(project: self,
+                                       custom_field_id: cf_id.sub("cf_", "").to_i,
+                                       error_code: "ERROR_MATHEMATICAL")
+        end
+      end
     end
 
     private
@@ -63,7 +71,7 @@ module ActsAsCustomizable::CalculatedValue
       calculator = CustomField::CalculatedValue.calculator_instance
       calculator.store(given)
 
-      calculator.solve(to_compute).reject { |_, value| value == :undefined }
+      calculator.solve(to_compute).transform_values { |value| value == :undefined ? nil : value }
     end
 
     def calculated_value_fields_given(custom_fields:, enabled_ids:)
