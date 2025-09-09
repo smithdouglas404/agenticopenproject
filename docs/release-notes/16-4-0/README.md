@@ -21,6 +21,8 @@ Users can now enable **automatic color mode** under *Account settings → Interf
 > [!NOTE]
 > If a user has enabled dark mode — either by default or through automatic switching — this overrides the instance’s design settings for that user.
 
+[Learn more about the *Look and feel* options in OpenProject](../../user-guide/account-settings/#look-and-feel). 
+
 ![Screenshot of OpenProject 16.4: Account settings to adjust color mode, Automatic mode selected](openproject-16-4-color-mode-light-1.png)
 
 #### Dark high contrast mode for improved accessibility
@@ -80,6 +82,8 @@ Other meetings improvements include:
 - Ability to remove participants directly from the dialog.
 - Cleaner display in the meeting right side and PDF export: only Attended is shown (no more 'Invited' label).
 
+[Learn more about meeting management with OpenProject](../../user-guide/meetings/#meeting-management).
+
 ![Screenshot of OpenProject 16.4: Meeting participants modal with autocomplete and 'Mark as attended' button](openproject-16-4-meeting-participants.png)
 
 ### Synchronize group information / OIDC (Enterprise add-on)
@@ -135,7 +139,7 @@ The SCIM server functionality (Enterprise add-on) introduced in OpenProject 16.2
 
 - **Clear error for insufficient plan**: If the Enterprise subscription level does not include SCIM, the server now returns a 403 Forbidden with a clear message instead of a generic 401 error.
 
-These changes make SCIM integrations more robust and transparent, improving interoperability with identity providers.
+These changes make SCIM integrations more robust and transparent, improving interoperability with identity providers. [Read more about SCIM provisioning in our documentation](../../system-admin-guide/authentication/scim/).
 
 <!--more-->
 
