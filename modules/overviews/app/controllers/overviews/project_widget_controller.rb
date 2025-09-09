@@ -28,34 +28,9 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Overviews
-  module Widgets
-    class NewsComponent < ApplicationComponent
-      NEWS_LIMIT = 5
+class Overviews::ProjectWidgetController < Grids::BaseInProjectController
+  include OpTurbo::ComponentStream
+  include OpTurbo::FlashStreamHelper
 
-      include ApplicationHelper
-      include OpPrimer::ComponentHelpers
-      include OpTurbo::Streamable
-
-      attr_reader :project, :current_user
-
-      def initialize(project:, current_user:)
-        super()
-
-        @project = project
-        @current_user = current_user
-        @news =
-          if project
-            project.news.visible(current_user).newest_first
-          else
-            News
-              .visible(current_user)
-              .newest_first
-              .includes(:project)
-          end
-
-        @newest = @news.limit(NEWS_LIMIT).to_a
-      end
-    end
-  end
+  layout -> { "turbo_rails/frame" }
 end

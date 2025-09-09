@@ -28,34 +28,12 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Overviews
-  module Widgets
-    class NewsComponent < ApplicationComponent
-      NEWS_LIMIT = 5
+module ::Grids
+  class BaseInOptionalProjectController < ::ApplicationController
+    before_action :load_and_authorize_in_optional_project
 
-      include ApplicationHelper
-      include OpPrimer::ComponentHelpers
-      include OpTurbo::Streamable
-
-      attr_reader :project, :current_user
-
-      def initialize(project:, current_user:)
-        super()
-
-        @project = project
-        @current_user = current_user
-        @news =
-          if project
-            project.news.visible(current_user).newest_first
-          else
-            News
-              .visible(current_user)
-              .newest_first
-              .includes(:project)
-          end
-
-        @newest = @news.limit(NEWS_LIMIT).to_a
-      end
+    def show
+      render
     end
   end
 end

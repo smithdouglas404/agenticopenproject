@@ -34,7 +34,33 @@ See COPYRIGHT and LICENSE files for more details.
         box.with_box(mt: 2, pb: 2, border: i == @newest.count - 1 ? false : :bottom) do
           component_collection do |body|
             body.with_component(
-              render(Primer::Beta::Link.new(font_weight: :bold, underline: true, href: news_path(news))) { news.title }
+              if @project
+                render(
+                  Primer::Beta::Link.new(
+                    font_weight: :bold,
+                    underline: true,
+                    href: news_path(news)
+                  )
+                ) { news.title }
+              else
+                render(Primer::OpenProject::FlexLayout.new) do |layout|
+                  layout.with_column do
+                    render(
+                      Primer::Beta::Link.new(
+                        font_weight: :bold,
+                        scheme: :secondary,
+                        underline: false,
+                        href: project_path(news.project)
+                      )
+                    ) { "#{news.project.name}:" }
+                  end
+
+                  layout.with_column do
+                    render(Primer::Beta::Link.new(ml: 1, font_weight: :bold, underline: true, href: news_path(news))) { news.title }
+                  end
+                end
+
+              end
             )
             body.with_component(
               render(Primer::Beta::Text.new(tag: :p, color: :subtle)) { helpers.authoring_at(format_time(news.created_at), news.author) }

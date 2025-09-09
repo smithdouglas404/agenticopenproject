@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Overviews::WidgetController < Grids::BaseInProjectController
+class Overviews::WidgetController < Grids::BaseInOptionalProjectController
   include OpTurbo::ComponentStream
   include OpTurbo::FlashStreamHelper
 

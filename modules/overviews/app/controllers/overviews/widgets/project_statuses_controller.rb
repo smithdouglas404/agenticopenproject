@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Overviews::Widgets::ProjectStatusesController < Overviews::WidgetController
+class Overviews::Widgets::ProjectStatusesController < Overviews::ProjectWidgetController
   def update
     call = Projects::UpdateService
       .new(model: @project, user: current_user)

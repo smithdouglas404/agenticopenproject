@@ -23,6 +23,12 @@ Rails.application.routes.draw do
     end
   end
 
+  scope module: "overviews" do
+    namespace :widgets do
+      resource :news, only: %i[show]
+    end
+  end
+
   resources :project_phases, controller: "overviews/project_phases", only: %i[edit update] do
     put :preview, on: :member
   end

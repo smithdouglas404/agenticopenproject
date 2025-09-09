@@ -282,6 +282,10 @@ export class PathHelperService {
     return `${this.staticBase}/versions/${id}`;
   }
 
+  public widgetPath(widgetName:string) {
+    return `${this.staticBase}/widgets/${widgetName}`;
+  }
+
   public workPackagePath(id:string|number) {
     return `${this.staticBase}/work_packages/${id}`;
   }
