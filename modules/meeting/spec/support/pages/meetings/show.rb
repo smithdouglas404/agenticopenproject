@@ -442,15 +442,18 @@ module Pages::Meetings
       end
     end
 
-    def edit_agenda_item(item, save: true, &)
+    def edit_agenda_item(item, save: true, wait_for_reference_update: false, &)
       select_action item, "Edit"
       expect_item_edit_form(item)
+      reference_value = meeting_reference_value
       page.within("#meeting-agenda-items-form-component-#{item.id}") do
         yield
         if save
           click_save_and_wait_for_agenda_item_update
         end
       end
+
+      wait_for_reference_changed(reference_value) if save && wait_for_reference_update
     end
 
     def expect_item_edit_form(item, visible: true)
@@ -703,6 +706,17 @@ module Pages::Meetings
       input = page.find_by_id("meeting_start_time_hour")
       page.execute_script("arguments[0].value = arguments[1]", input.native, time)
       page.execute_script("arguments[0].dispatchEvent(new Event('input'))", input.native)
+    end
+
+    def meeting_reference_value
+      page_header = page.find("#meetings-header-component page-header")
+      page_header["data-reference-value"]
+    end
+
+    def wait_for_reference_changed(old_reference_value)
+      expect(page).to have_css("#meetings-header-component page-header") do |element|
+        element["data-reference-value"] != old_reference_value
+      end
     end
   end
 end

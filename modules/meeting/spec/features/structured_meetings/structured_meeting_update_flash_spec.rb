@@ -92,7 +92,7 @@ RSpec.describe "Meetings CRUD",
         within_window(first_window) do
           item = MeetingAgendaItem.find_by(title: "Update toast test item")
 
-          show_page.edit_agenda_item(item) do
+          show_page.edit_agenda_item(item, wait_for_reference_update: true) do
             fill_in "Title", with: "Updated title"
           end
 
