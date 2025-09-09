@@ -1,4 +1,4 @@
-name: Docker Release
+name: Docker / Tagged builds
 
 on:
   push:
@@ -11,10 +11,10 @@ on:
         required: false
 
 jobs:
-  compute-tags:
+  compute-inputs:
     runs-on: ubuntu-latest
     outputs:
-      tags: ${{ steps.compute.outputs.tags }}
+      tag: ${{ steps.compute.outputs.tag }}
       branch: ${{ steps.compute.outputs.branch }}
     steps:
       - name: Checkout
@@ -25,7 +25,7 @@ jobs:
         id: compute
         run: |
           if [[ ${{ github.event_name }} == 'push' ]]; then
-            # Tag push: v14.1.0
+            # Tag push e.g. refs/tags/v16.3.0 => v16.3.0
             TAG_REF="${GITHUB_REF#refs/tags/}"
             BRANCH_REF="$GITHUB_REF"
           elif [[ ${{ github.event_name }} == 'workflow_dispatch' && -n "${{ inputs.tag }}" ]]; then
@@ -39,15 +39,33 @@ jobs:
           fi
 
           echo "branch=$BRANCH_REF" >> "$GITHUB_OUTPUT"
-
-          # Use Ruby script to generate tags
-          TAGS=$(./script/gh/docker-tags.rb --semver "$TAG_REF")
-          echo "tags=$TAGS" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG_REF" >> "$GITHUB_OUTPUT"
 
   build:
-    needs: compute-tags
+    needs: compute-inputs
     uses: ./.github/workflows/docker.yml
     with:
-      branch: ${{ needs.compute-tags.outputs.branch }}
-      tags: ${{ needs.compute-tags.outputs.tags }}
+      branch: ${{ needs.compute-inputs.outputs.branch }}
+      tag: ${{ needs.compute-inputs.outputs.tag }}
     secrets: inherit
+
+  trigger_helm_release:
+    if: ${{ github.repository == 'opf/openproject' }}
+    needs: [compute-inputs, build]
+    permissions:
+      contents: none
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Helm charts release
+        env:
+          TOKEN: ${{ secrets.OPENPROJECT_CI_TOKEN }}
+          REPOSITORY: opf/helm-charts
+          WORKFLOW_ID: core_release.yml
+        run: |
+          # FIXME: re-enable once workflows are confirmed to be doing the right thing
+          echo "Would have triggered helm charts release with tag: ${{ needs.compute-inputs.outputs.tag }}"
+          exit 0
+          curl -i --fail-with-body -H"authorization: Bearer $TOKEN" \
+            -XPOST -H"Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/$REPOSITORY/actions/workflows/$WORKFLOW_ID/dispatches \
+            -d '{"ref": "main", "inputs": { "tag" : "${{ needs.compute-inputs.outputs.tag }}" }}'

@@ -1,14 +1,15 @@
-name: Docker Build (Reusable)
+name: Docker
+run-name: Build docker image from branch ${{ inputs.branch }} with tag ${{ inputs.tag }}
 
 on:
   workflow_call:
     inputs:
       branch:
-        description: "The branch to checkout and build"
+        description: "The branch or tag to checkout and build"
         required: true
         type: string
-      tags:
-        description: "Comma-separated list of docker tags to use (e.g., 'dev' or '14.1.0,14.1,14')"
+      tag:
+        description: "The main docker tag to use (e.g., 'dev' or '16.3.0')"
         required: true
         type: string
 
@@ -30,15 +31,8 @@ jobs:
       - name: Set version outputs and convert tags
         id: extract_version
         run: |
-          # Use Ruby script to format tags and get version
-          FORMATTED_TAGS=$(./script/gh/docker-tags.rb --tags "${{ inputs.tags }}" --format)
-          VERSION=$(./script/gh/docker-tags.rb --tags "${{ inputs.tags }}" --version)
-          
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "checkout_ref=${{ inputs.branch }}" >> "$GITHUB_OUTPUT"
-          echo "formatted_tags<<EOF" >> "$GITHUB_OUTPUT"
-          echo "$FORMATTED_TAGS" >> "$GITHUB_OUTPUT"
-          echo "EOF" >> "$GITHUB_OUTPUT"
+          echo "version=$(./script/gh/docker-tags.rb "${{ inputs.tag }}" --version)" >> "$GITHUB_OUTPUT"
+          echo "docker_tags=$(./script/gh/docker-tags.rb "${{ inputs.tag }}" --format-for-docker)" >> "$GITHUB_OUTPUT"
       - name: Cache NPM
         uses: runs-on/cache@v4
         with:
@@ -78,18 +72,13 @@ jobs:
           include-hidden-files: true
     outputs:
       version: ${{ steps.extract_version.outputs.version }}
-      checkout_ref: ${{ steps.extract_version.outputs.checkout_ref }}
-      formatted_tags: ${{ steps.extract_version.outputs.formatted_tags }}
+      docker_tags: ${{ steps.extract_version.outputs.docker_tags }}
   build:
+    if: github.repository == 'opf/openproject'
     needs:
       - setup
-    if: github.repository == 'opf/openproject'
     runs-on:
-      labels:
-        - runs-on
-        - ssh=false
-        - run-id=${{ github.run_id }}
-        - ${{ matrix.runner }}
+      labels: "runs-on=${{ github.run_id }}/ssh=false/${{ matrix.runner }}"
     strategy:
       matrix:
         include:
@@ -162,7 +151,7 @@ jobs:
             org.opencontainers.image.documentation=https://www.openproject.org/docs/installation-and-operations/installation/
             org.opencontainers.image.vendor=OpenProject GmbH
           tags: |
-            ${{ needs.setup.outputs.formatted_tags }}
+            ${{ needs.setup.outputs.docker_tags }}
           images: |
             ${{ env.REGISTRY_IMAGE }}
       - name: Restore vendor/bundle
@@ -298,7 +287,7 @@ jobs:
             latest=false
             suffix=${{ steps.set_suffix.outputs.suffix }}
           tags: |
-            ${{ needs.setup.outputs.formatted_tags }}
+            ${{ needs.setup.outputs.docker_tags }}
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -320,20 +309,3 @@ jobs:
     with:
       subject: "Docker build failed"
       body: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-  trigger_helm_release:
-    needs: [setup, build, merge]
-    permissions:
-      contents: none
-    if: ${{ github.repository == 'opf/openproject' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger Helm charts release
-        env:
-          TOKEN: ${{ secrets.OPENPROJECT_CI_TOKEN }}
-          REPOSITORY: opf/helm-charts
-          WORKFLOW_ID: core_release.yml
-        run: |
-          curl -i --fail-with-body -H"authorization: Bearer $TOKEN" \
-            -XPOST -H"Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/$REPOSITORY/actions/workflows/$WORKFLOW_ID/dispatches \
-            -d '{"ref": "main", "inputs": { "tag" : "${{ needs.setup.outputs.version }}" }}'

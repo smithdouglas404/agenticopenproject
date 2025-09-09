@@ -3,79 +3,52 @@
 
 require "optparse"
 
-class DockerTagsGenerator
-  def initialize(tags_input)
-    @tags_input = tags_input.strip
+class Tag
+  def initialize(tag)
+    @tag = tag
   end
 
-  def generate_formatted_tags
-    tags = parse_tags(@tags_input)
-    format_for_docker_metadata(tags)
+  def semver?
+    @tag.match?(/^v(\d+\.\d+\.\d+.*)$/)
   end
 
-  def generate_version
-    parse_tags(@tags_input).first
+  def version
+    @tag.sub(/^v/, "")
   end
 
-  def self.generate_semver_tags(tag_ref)
-    return [tag_ref] unless tag_ref.match?(/^v(\d+\.\d+\.\d+.*)$/)
+  def to_semver_docker_tags
+    if semver?
+      [
+        "type=semver,pattern={{version}},value=#{version}",
+        "type=semver,pattern={{major}}.{{minor}},value=#{version}",
+        "type=semver,pattern={{major}},value=#{version}",
+      ]
+    else
+      ["type=raw,value=#{version}"]
+    end
+  end
+  
+  def major
+    return unless semver?
 
-    version = tag_ref.sub(/^v/, "")
-    parts = version.split(".")
-    major = parts[0]
-    minor = "#{major}.#{parts[1]}" if parts[1]
-
-    tags = [version]
-    tags << minor if minor
-    tags << major
-    tags.uniq
+    version.split(".")[0]
   end
 
-  private
+  def minor
+    return unless semver?
 
-  def parse_tags(input)
-    input.split(",").map(&:strip).reject(&:empty?)
-  end
-
-  def format_for_docker_metadata(tags)
-    tags.map { |tag| "type=raw,value=#{tag}" }.join("\n")
-  end
-end
-
-def handle_semver_option(options)
-  tags = DockerTagsGenerator.generate_semver_tags(options[:semver])
-  if options[:format]
-    generator = DockerTagsGenerator.new(tags.join(","))
-    puts generator.generate_formatted_tags
-  else
-    puts tags.join(",")
+    version.split(".")[1]
   end
 end
 
-def handle_tags_option(options)
-  generator = DockerTagsGenerator.new(options[:tags])
-  if options[:format]
-    puts generator.generate_formatted_tags
-  elsif options[:version]
-    puts generator.generate_version
-  else
-    puts options[:tags]
-  end
-end
 
 # rubocop:disable Metrics/AbcSize
 def main
   options = {}
   OptionParser.new do |opts|
-    opts.banner = "Usage: #{$0} [options]"
-    opts.on("--tags TAGS", "Comma-separated list of tags") do |tags|
-      options[:tags] = tags
-    end
-    opts.on("--semver TAG_REF", "Generate semver tags from tag reference") do |tag_ref|
-      options[:semver] = tag_ref
-    end
-    opts.on("--format", "Output formatted tags for docker metadata") do
-      options[:format] = true
+    opts.banner = "Usage: #{$0} [TAG] [options]"
+    opts.on("--format-for-docker", "Output formatted tags for docker metadata") do
+      options[:format_for_docker] = true
     end
     opts.on("--version", "Output first tag as version") do
       options[:version] = true
@@ -86,12 +59,13 @@ def main
     end
   end.parse!
 
-  if options[:semver]
-    handle_semver_option(options)
-  elsif options[:tags]
-    handle_tags_option(options)
+  tag = Tag.new(ARGV.first)
+  if options[:version]
+    puts tag.version
+  elsif options[:format_for_docker]
+    puts tag.to_semver_docker_tags.join("\n")
   else
-    puts "Error: Must specify either --tags or --semver"
+    puts "Error: Must specify either --version or --format-for-docker"
     exit 1
   end
 end
