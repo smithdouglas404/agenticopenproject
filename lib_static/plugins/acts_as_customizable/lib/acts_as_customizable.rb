@@ -200,6 +200,11 @@ module Redmine
         def ensure_custom_values_complete
           return unless custom_values.loaded? && (custom_values.any?(&:changed?) || custom_value_destroyed)
 
+          custom_values.select(&:marked_for_destruction?).each do |custom_value|
+            # Avoid foreign key constraint violations
+            custom_value.custom_value_errors.delete_all
+          end
+
           self.custom_values = custom_field_values(all: true)
         end
 
