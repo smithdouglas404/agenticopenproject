@@ -86,9 +86,9 @@ After adding related work packages, they are listed in the Relations tab. Relate
 
 The predecessor/successor relation is the only one that can constrain or affect the dates of work packages.
 
-In **manual scheduling** mode, work packages in a predecessor/successor relationship do not need to immediately follow one another; there can be a gap. You can move either work package forwards or backwards in time without affecting the other, as long as the finish date of the predecessor is before the start date of the successor. 
-
 In **automatic scheduling** mode, the successor is by default scheduled to start immediately after the predecessor finishes. You cannot move the predecessor freely without affecting the successor. If the predecessor is delayed, the successor will automatically be pushed into the future. To create a planned gap between them, you can apply a **lag** to the relation.
+
+In **manual scheduling** mode, work packages in a predecessor/successor relationship will retain the relationship but can be individually free scheduled without constraint. A successor can even be moved such that it begins and ends _before_ a predecessor. 
 
 ## Display relations in a work package table (Enterprise add-on)
 
