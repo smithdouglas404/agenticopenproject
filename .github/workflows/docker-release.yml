@@ -1,0 +1,53 @@
+name: Docker Release
+
+on:
+  push:
+    tags:
+      - v*
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "The tag to release. Note that this happens by default on the tag push. Only run this action when something went wrong!"
+        required: false
+
+jobs:
+  compute-tags:
+    runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.compute.outputs.tags }}
+      branch: ${{ steps.compute.outputs.branch }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref }}
+      - name: Compute tags and branch
+        id: compute
+        run: |
+          if [[ ${{ github.event_name }} == 'push' ]]; then
+            # Tag push: v14.1.0
+            TAG_REF="${GITHUB_REF#refs/tags/}"
+            BRANCH_REF="$GITHUB_REF"
+          elif [[ ${{ github.event_name }} == 'workflow_dispatch' && -n "${{ inputs.tag }}" ]]; then
+            # Manual dispatch with tag
+            TAG_REF="${{ inputs.tag }}"
+            BRANCH_REF="${{ inputs.tag }}"
+          else
+            # Fallback to dev
+            TAG_REF="dev"
+            BRANCH_REF="dev"
+          fi
+
+          echo "branch=$BRANCH_REF" >> "$GITHUB_OUTPUT"
+
+          # Use Ruby script to generate tags
+          TAGS=$(./script/gh/docker-tags.rb --semver "$TAG_REF")
+          echo "tags=$TAGS" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: compute-tags
+    uses: ./.github/workflows/docker.yml
+    with:
+      branch: ${{ needs.compute-tags.outputs.branch }}
+      tags: ${{ needs.compute-tags.outputs.tags }}
+    secrets: inherit
