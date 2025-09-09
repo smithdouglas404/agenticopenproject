@@ -74,7 +74,7 @@ RSpec.shared_examples_for "progress modal help links" do
 
       expect(page)
         .to have_link("Learn more",
-                      href: OpenProject::Static::Links.links[:progress_tracking_docs][:href])
+                      href: OpenProject::Static::Links.url_for(:progress_tracking_docs))
     end
   end
 end

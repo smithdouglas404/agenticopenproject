@@ -22,9 +22,9 @@
       <p>
         <%= t("two_factor_authentication.settings.text_configuration") %>
         <br>
-        <% configuration_link = OpenProject::Static::Links.links.fetch :configuration_guide %>
+        <% configuration_link = OpenProject::Static::Links.url_for :configuration_guide %>
         <%= link_to t("two_factor_authentication.settings.text_configuration_guide"),
-                    configuration_link[:href],
+                    configuration_link,
                     target: "_blank" %>
       </p>
       <%= render(AttributeGroups::AttributeGroupComponent.new) do |component|

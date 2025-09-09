@@ -81,6 +81,8 @@ get_started_videos:
 glossary:
   href: https://www.openproject.org/docs/glossary/
   label: homescreen.links.glossary
+github:
+  href: https://github.com/opf/openproject
 ical_docs:
   href: https://www.openproject.org/docs/user-guide/calendar/#subscribe-to-a-calendar
 installation_guides:
