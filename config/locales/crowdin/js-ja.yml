@@ -1210,7 +1210,7 @@ ja:
       selected_filter:
         all: "すべてのプロジェクト"
         selected: "選択したもののみ"
-      search_placeholder: "Search projects..."
+      search_placeholder: "プロジェクトを検索…"
       search_placeholder_favorites: "Search favorites..."
       include_subprojects: "すべてのサブプロジェクトを含む"
       tooltip:

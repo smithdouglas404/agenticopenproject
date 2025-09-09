@@ -34,7 +34,7 @@ es:
           finished: 'Terminado'
           discontinued: 'Discontinuado'
         project_status_beta:
-          title: 'Project status (BETA)'
+          title: 'Estado del proyecto (BETA)'
         subprojects:
           title: 'Subproyectos'
           no_results: 'No hay subproyectos.'

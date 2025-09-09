@@ -1133,7 +1133,7 @@ de:
         excluded_from_totals: "Von der Berechnung der Gesamtsumme in der Hierarchie ausschließen"
         default_done_ratio: "% abgeschlossen"
       token/named:
-        token_name: "Token name"
+        token_name: "Token-Name"
       token/ical:
         calendar: "Kalender"
         ical_token_query_assignment: "Zuordnung der Abfrage"
@@ -1619,8 +1619,8 @@ de:
         token/named:
           attributes:
             token_name:
-              blank: "Please provide a token name"
-              in_use: "This token name is already in use, please select a different one"
+              blank: "Bitte geben Sie einen Namen für den Token an"
+              in_use: "Dieser Token-Name ist bereits in Verwendung, bitte wählen Sie einen anderen"
               format: "%{message}"
       template:
         body: "Bitte überprüfen Sie die folgenden Felder:"
@@ -2954,7 +2954,7 @@ de:
   label_invite_user: "Nutzer einladen"
   label_item: "Element"
   label_item_plural: "Elemente"
-  label_scored_list: "Scored list"
+  label_scored_list: "Bewertete Liste"
   label_share: "Teilen"
   label_share_project_list: "Projektliste teilen"
   label_share_work_package: "Arbeitspaket teilen"

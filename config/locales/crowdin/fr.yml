@@ -341,7 +341,7 @@ fr:
       int?: "doit être un nombre entier."
       decimal?: "doit être une décimale."
       filled?: "doit être rempli."
-      key?: "est manquante."
+      key?: "est manquant(e)."
       greater_or_equal_zero: "doit être supérieur ou égal à 0."
       not_found: "introuvable."
       rules:
