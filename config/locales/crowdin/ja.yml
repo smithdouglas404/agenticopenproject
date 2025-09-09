@@ -691,7 +691,7 @@ ja:
     dark_high_contrast: "暗い高コントラスト"
     light: "ライト"
     light_high_contrast: "明るいハイコントラスト"
-    sync_with_os: "Automatic (match OS color mode)"
+    sync_with_os: "自動(OSのテーマ設定に追従)"
   types:
     index:
       no_results_title_text: 現在、種類はありません。
@@ -1186,9 +1186,9 @@ ja:
         auto_hide_popups: "サクセスバナーを自動的に隠す"
         auto_hide_popups_caption: "有効にすると、緑色のサクセスバナーは5秒後に自動的に消えます。"
         warn_on_leaving_unsaved: "変更を保存せずにワークパッケージから移動するときに警告"
-        theme: "Color mode"
+        theme: "カラーモード"
         time_zone: "タイムゾーン"
-        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
+        mode_guideline: "いくつかのモードはアクセシビリティや読みやすさのために選択したテーマカラーを上書きします。\n完全なカスタムテーマを使用するにはライトモードを選択してください。"
         daily_reminders: "毎日の通知"
         workdays: "営業時間"
       version:
@@ -1566,7 +1566,7 @@ ja:
               must_be_set_when_work_is_set: "作業が設定されている場合に必要です。"
               must_be_set_when_work_and_percent_complete_are_set: "「作業」と「完了率」が設定されている場合に必要です。"
               must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                must be 0h when Work is set and % Complete is 100%.
+                工数が設定されていて，完了率が 100%になっている場合，必ず0hになっている必要があります。
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 「Work」が空で「% Complete」が100%の場合、必ず空でなければなりません。
           readonly_status: "ワークパッケージは読み取り専用の状態になっているため、その属性は変更できません。"

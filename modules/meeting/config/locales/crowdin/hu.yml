@@ -57,7 +57,7 @@ hu:
         start_time: "Kezdés"
         start_time_hour: "Kezdés"
         end_after: "Az ismétlődő megbeszélés véget ér"
-        end_date: "Záró dátuma"
+        end_date: "Záró dátum"
         iterations: "Előfordulások"
       meeting_participant:
         invited: "Meghívott"
@@ -219,7 +219,7 @@ hu:
         title: "[%{project_name}] Meeting series '%{title}'"
         summary: "%{actor} has set up a new meeting series '%{title}'"
       series_updated:
-        title: "[%{project_name}] Meeting series '%{title}' has been updated"
+        title: "[%{project_name}] A '%{title}' ismétlődő megbeszélést frissítették"
         summary: "A(z) \"%{title}\" ismétlődő megbeszélést %{actor} frissítette"
         old_schedule: "Korábbi ütemterv"
         new_schedule: "Új ütemterv"
@@ -286,66 +286,66 @@ hu:
           caption: A perc sablon alkalmas befejezett és archivált megbeszélésekhez.
       first_page_header_left:
         label: Első oldal fejléc balra
-        caption: This text will appear on the first page at the left of the header.
+        caption: Ez a szöveg az első oldalon, a fejléc bal oldalán fog megjelenni.
       author:
         label: Szerző
         caption: The author of the minutes will be displayed in the subtitle.
       include_participants:
-        label: Include list of participants
+        label: A résztvevők listájának hozzáadása
         caption: A list of participants will be preset above the meeting agenda.
       include_attachments:
-        label: Include list of attachments
+        label: A melléklet lista csatolása
         caption: A list containing the filenames of attachments will be appended at the end.
       include_backlog:
-        label: Include backlog
+        label: Teendők csatolása
         caption: Backlog elements are not normally considered part of a meeting occurrence but you can choose to include them.
       include_outcomes:
-        label: Include agenda outcomes
+        label: Napirendi pont megoldásának csatolása
         caption: If your agenda outcomes contain confidential information, you can choose to not include them in the export.
       footer_text:
-        label: Footer text
-        caption: This text will appear on every page at the center of the footer.
+        label: Lábléc szöveg
+        caption: Ez a szöveg minden oldalon, a fejléc közepén fog megjelenni.
       submit_button: Letöltés
     notifications:
       sidepanel:
-        title: "Email calendar updates"
+        title: "E-mail naptárfrissítések"
         description:
-          disabled: "Participants will not receive an email informing them of changes."
-          enabled: "All participants will receive updated calendar invites via email informing them of changes."
-          change_via_template: "To change this, edit the series template."
+          disabled: "A résztvevők nem fognak e-mailt kapni a módosításokról."
+          enabled: "Minden résztvevő e-mail meghívót fog kapni az új módosításokkal."
+          change_via_template: "Az elem szerkesztéséhez a sorozat sablont kell szerkeszteni."
       dialog:
         title:
-          enable: "Enable email calendar updates?"
-          disable: "Disable email calendar updates?"
+          enable: "E-mail naptárfrissítések engedélyezése?"
+          disable: "E-mail naptárfrissítések letiltása?"
         message:
           enable: >
             All participants will receive updated calendar invites via email every time there is a change to the meeting date, time, location or participants. Once enabled, an email will be sent out immediately to all participants.
           disable: >
-            Participants will no longer receive updated calendar invites via email when there are changes to the meeting date, time, location or participants. If they already had an invite for this meeting, it might no longer be accurate.
+            A résztvevők nem fognak új naptármeghívót kapni e-mailben az alábbiak módosításakor: megbeszélés dátuma, ideje, helye vagy résztvevői. Amennyiben már kaptak meghívót, az pontatlanná válaht.
         confirm_label:
-          enable: "Enable email updates"
-          disable: "Disable email updates"
+          enable: "E-mail frissítések engedélyezése"
+          disable: "E-mail frissítések tiltása"
       banner:
         participants:
           enabled: >
-            All participants will receive updated calendar invites via email when you add or remove participants.
+            Minden résztvevő e-mail meghívót fog kapni az új módosításokkal amikor a résztvevőket módosították.
           disabled: >
-            Email calendar updates are disabled. Participants will not receive an email informing them when you add or remove participants.
+            E-mail naptárfrissítések letiltva. A résztvevők nemkapnak e-mailt a résztvevők módisításáról.
         onetime:
           enabled: >
-            All participants will receive updated calendar invites via email informing them of your changes.
+            Minden résztvevő e-mailben kap egy frissített naptármeghívót, amelyben tájékoztatjuk őket a változásokról.
           disabled: >
-            Email calendar updates are disabled. Participants will not receive an email informing them of your changes.
+            E-mail naptárfrissítések letiltva. A résztvevők nem fognak e-mail értesítést kapni a változtatásokról.
         occurrence:
           enabled: >
-            Email calendar updates are enabled for the meeting series. All participants will receive updated calendar invites informing them of your changes to this occurrence.
+            E-mail naptárfrissítések engedélyezve az ismétlődő megbeszélésnek. Minden résztvevő frissített naptármeghívót kap, amelyben tájékoztatják őket az eseményre vonatkozó változtatásokról.
           disabled: >
-            Email calendar updates are disabled for the meeting series. Participants will not receive an email informing them of your changes to this occurrence.
+            E-mail naptárfrissítések le vannak tiltva az ismétlődő megbeszéléshez. A résztvevők nem fognak frissített naptármeghívót kapni, amelyben tájékoztatják őket az eseményre vonatkozó változtatásokról.
         template:
           enabled: >
-            Email calendar updates are enabled for the meeting series. All participants will receive updated calendar invites informing them of your changes to this template or to individual occurrences.
+            E-mail naptárfrissítések engedélyezve az ismétlődő megbeszélésnek. Minden résztvevő frissített naptármeghívót kap, amelyben tájékoztatják őket a sablon, vagy egyedi esemény változásairól.
           disabled: >
-            Email calendar updates are disabled for the meeting series. Participants will not receive an email informing them of your changes to this template or to individual occurrences.
+            E-mail naptárfrissítések le vannak tiltva az ismétlődő megbeszéléshez. A résztvevők nem fognak e-mail értesítőt kapni a sablon, vagy egyedi esemény változásairól.
   meeting_section:
     untitled_title: "Untitled section"
     delete_confirmation: "Deleting the section will also delete all of its agenda items. Are you sure you want to do this?"
@@ -357,45 +357,45 @@ hu:
       description: >
         The dates below are referencing the time zone of the meeting series (%{actual_zone}), not your local time zone (%{user_zone}).
     ended_blankslate:
-      title: "Meeting series ended"
-      message: "This meeting series has come to an end. There are no upcoming meetings. "
-      action: "You can still view past occurrences or edit the meeting series to extend it."
+      title: "Az ismétlődő megbeszélés véget ért"
+      message: "Az ismétlődő megbeszélés véget ért. Nincs több megbeszélés. "
+      action: "Továbbra is megtekintheti a korábbi eseményeket, vagy szerkesztheti az ismétlődő megbeszélést annak meghosszabbítása érdekében."
     occurrence:
-      infoline: "This meeting is part of a recurring meeting series."
-      error_no_next: "There is no next occurrence for this meeting."
-      first_already_exists: "The first occurrence of this meeting series is already instantiated."
+      infoline: "Ez a megbeszélés egy ismétlődő megbeszélés része."
+      error_no_next: "Ennek a megbeszélésnek nincs következő időpontja."
+      first_already_exists: "Az első megbeszélés már megtörtént."
       first_created: >
-        The first meeting has been successfuly created from template. All future meetings will be created automatically at the time of the previous occurrence.
+        Az első megbeszélés sikeresen létrehozásra került a sablonból. Az összes jövőbeli megbeszélés automatikusan létrehozásra kerül az előző megbeszélés időpontjában.
     template:
       button_finalize: "Open first meeting"
-      blank_title: "Your meeting series template is empty"
+      blank_title: "Az ismétlődő megbeszélés sablonja üres"
       description: >
-        This template will be used whenever new meetings in the series get created. You can add agenda items, participants, and attachments to this template.
+        Minden alkalommal ez a sablon lesz használva, amikor új megbeszélés jön létre az ismételt megbeszélésben. Ebbe a sablonba napirendi pontokat, résztvevőket és mellékleteket is felvehet.
       blankslate_finalize: >
-        When you're done preparing this template, click the '%{button_title}' button above to finish the setup and schedule the first meeting of the series.
-      label_view_template: "View template"
-      label_edit_template: "Edit template"
+        Ha elkészült a sablon, kattintson a fenti "%{button_title}" gombra a beállítás befejezéséhez és az első megbeszélés ütemezéséhez.
+      label_view_template: "Sablon megtekintése"
+      label_edit_template: "Sablon szerkesztése"
       banner_html: >
-        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already created meetings.
+        Jelenleg egy ismétlődő megbeszélés sablonját szerkeszti: %{link}. Minden új megbeszélés ezt a sablont fogja használni. A változtatások nem érintik a múltbeli vagy már létrehozott megbeszéléseket.
     frequency:
       x_daily:
-        one: "Every day"
-        other: "Every %{count} days"
+        one: "Minden nap"
+        other: "Minden %{count}-ik nap"
       x_weekly:
-        one: "Every week"
-        other: "Every %{count} weeks"
-      every_weekday: "Every %{day_of_the_week}"
-      working_days: "Every working day"
+        one: "Minden %{count}-ik héten"
+        other: "Minden %{count}-ik héten"
+      every_weekday: "Minden %{day_of_the_week} napon"
+      working_days: "Minden munkanap"
     end_after:
-      never: "never"
-      specific_date: "after a specific date"
-      iterations: "after a number of occurrences"
-    starts: "Starts"
+      never: "soha"
+      specific_date: "egy megadott dátum után"
+      iterations: "megadott előfordulás után"
+    starts: "Indul"
     in_words:
-      daily_interval: "Every %{interval} days"
-      working_days: "Every working day"
-      weekly: "Every week on %{weekday}"
-      weekly_interval: "Every %{interval} weeks on %{weekday}"
+      daily_interval: "Minden %{interval} nap"
+      working_days: "Minden munkanap"
+      weekly: "Minden héten ekkor: %{weekday}"
+      weekly_interval: "Minden %{interval}. héten ekkor: %{weekday}"
       frequency: "%{base} at %{time}"
       full: "%{base} at %{time}, ends on %{end_date}"
       full_past: "%{base} at %{time}, ended on %{end_date}"

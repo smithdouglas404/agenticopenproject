@@ -459,7 +459,7 @@ de:
   text_meeting_ics_meeting_series_description: >-
     Link zur Terminserie: %{url}
   text_meeting_occurrence_ics_description: >-
-    Link to meeting occurrence: %{url} Link to meeting series: %{series_url}
+    URL der Besprechung: %{url} URL der Terminserie: %{series_url}
   text_meeting_empty_heading: "Ihre Besprechung ist leer"
   text_meeting_empty_description1: "Beginnen Sie unten mit dem Hinzufügen von Tagesordnungspunkten. Jeder Eintrag kann zunächst nur aus einem Titel bestehen. Optional können Sie zusätzliche Details wie Dauer und Notizen hinzufügen."
   text_meeting_empty_description2: 'Sie können auch Verweise auf bestehende Arbeitspakete hinzufügen. So werden angehängte Notizen automatisch auch im "Besprechungen"-Tab des Arbeitspakets angezeigt.'
@@ -573,7 +573,7 @@ de:
           dialog_body: "Dieses Token generiert eine iCal-URL, mit der Sie alle Ihre Termine in einer externen Kalenderanwendung anzeigen können."
           create_button: "Abonnement erstellen"
           name_label: "Tokenname"
-          name_caption: 'You can name it after where you will use it, such as "My phone" or "Work computer".'
+          name_caption: 'Sie können den Token beliebig nennen, z. B. passend zum Gerät an dem es eingesetzt wird, wie "Mein Handy" oder "Arbeitsrechner".'
       created_dialog:
         token/ical_meeting:
           title: "Ein iCal-Abonnement-Token für Besprechungen wurde erstellt"
