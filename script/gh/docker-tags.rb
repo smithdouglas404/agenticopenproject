@@ -63,6 +63,7 @@ def handle_tags_option(options)
   end
 end
 
+# rubocop:disable Metrics/AbcSize
 def main
   options = {}
   OptionParser.new do |opts|
