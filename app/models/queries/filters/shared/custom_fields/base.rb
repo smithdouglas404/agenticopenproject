@@ -53,7 +53,7 @@ module Queries::Filters::Shared
       end
 
       def available?
-        custom_field.present?
+        custom_field.present? && custom_field_context.custom_fields(context).include?(custom_field)
       end
 
       def order
