@@ -94,12 +94,12 @@ This mode is recommended for users with visuals impairment.
 
 ![High contrast mode in OpenProject account settings](openproject_account_settings_settings_light_high_contrast_mode.png)
 
-#### Select the dark mode
+#### Select dark mode
 
-In the dropdown menu **Color mode** you can pick the color mode. The default setting is the **Light mode**. You can also select the **Dark** or **Dark high contrast** , which will change the color theme of the OpenProject instance for you.
+In the dropdown menu **Color mode** you can pick the color mode. The default setting is **Light mode**. You can also alternatively select **Dark** or **Dark high contrast** modes.
 
 > [!NOTE]
-> The dark mode ignores parts of the configured design. Top header and side menu colors are entirely overridden for this  mode. Only the accent color and the primary button color are kept, but are calculated to brighter variants.
+> Custom colors and themes are only supported in Light mode and changing color modes may override most or all custom configuration. Only some colors (accent and primary button color) are kept but adapted for appropriate contrast in certain modes like dark mode.
 
 ![Dark mode in OpenProject account settings](openproject_account_settings_dark_mode.png)
 
