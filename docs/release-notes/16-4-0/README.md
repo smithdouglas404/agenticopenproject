@@ -14,6 +14,10 @@ We released [OpenProject 16.4.0](https://community.openproject.org/versions/2211
 
 ## Important feature changes
 
+Take a look at our release video showing the most important features introduced in OpenProject 16.4.0:
+
+![Release video of OpenProject 16.4](https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject_16_4_release.mp4)
+
 ### Option to automatically sync the color mode with operating system preference
 
 Users can now enable **automatic color mode** under *Account settings → Interface* to match OpenProject’s color mode with their operating system (OS) preference. When enabled, OpenProject automatically switches between light and dark modes based on the OS setting. Please note that your operating system must also be set to automatic switching.
