@@ -26,20 +26,29 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, Input, OnInit } from '@angular/core';
 import { GridPageComponent } from 'core-app/shared/components/grids/grid/page/grid-page.component';
 import { GRID_PROVIDERS } from 'core-app/shared/components/grids/grid/grid.component';
+import { populateInputsFromDataset } from 'core-app/shared/components/dataset-inputs';
 
 @Component({
-  selector: 'overview',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: '../../shared/components/grids/grid/page/grid-page.component.html',
   styleUrls: ['../../shared/components/grids/grid/page/grid-page.component.sass'],
   providers: GRID_PROVIDERS,
   standalone: false,
 })
-export class OverviewComponent extends GridPageComponent {
+export class OverviewComponent extends GridPageComponent implements OnInit {
+  @Input() projectIdentifier:string;
+
+  readonly elementRef = inject(ElementRef);
+
+  ngOnInit() {
+    populateInputsFromDataset(this);
+    super.ngOnInit();
+  }
+
   protected gridScopePath():string {
-    return this.pathHelper.projectPath(this.currentProject.identifier ?? '');
+    return this.pathHelper.projectPath(this.projectIdentifier);
   }
 }

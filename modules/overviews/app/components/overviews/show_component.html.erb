@@ -73,6 +73,6 @@ See COPYRIGHT and LICENSE files for more details.
       )
     end
 
-    concat(angular_component_tag("opce-overview"))
+    concat(angular_component_tag("opce-overview", inputs: { projectIdentifier: @project.identifier }))
   end
 %>
