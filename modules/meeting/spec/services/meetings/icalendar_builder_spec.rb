@@ -6,6 +6,21 @@ RSpec.describe Meetings::IcalendarBuilder,
                with_settings: { mail_from: "openproject@example.org", app_title: "OpenProject Testing" } do
   let(:timezone) { ActiveSupport::TimeZone["Europe/Berlin"] }
 
+  it "sets the PRODID parameter to the correct value" do
+    builder = described_class.new(timezone:)
+
+    calendar = Icalendar::Calendar.parse(builder.to_ical).first
+    expect(calendar.prodid).to eq("-//OpenProject GmbH//#{OpenProject::VERSION}//Meeting//EN")
+  end
+
+  it "allows setting a custom calendar title" do
+    builder = described_class.new(timezone:)
+    builder.calendar_title = "Custom Title"
+
+    calendar = Icalendar::Calendar.parse(builder.to_ical).first
+    expect(calendar.x_wr_calname.first).to eq("Custom Title")
+  end
+
   context "with a single meeting" do
     let(:meeting) { create(:meeting, :author_participates, start_time: Time.zone.parse("2025-08-30 10:00")) }
 

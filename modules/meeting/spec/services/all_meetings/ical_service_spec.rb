@@ -29,6 +29,7 @@
 #++
 
 require "spec_helper"
+require "icalendar"
 
 RSpec.describe AllMeetings::ICalService, type: :model do # rubocop:disable RSpec/SpecFilePathFormat
   let(:user) do
@@ -67,6 +68,10 @@ RSpec.describe AllMeetings::ICalService, type: :model do # rubocop:disable RSpec
         expect(subject.message).to eq("Oh noes")
       end
     end
+  end
+
+  it "sets the correct title" do
+    expect(ical.x_wr_calname.first).to eq("#{Setting.app_title} - #{I18n.t('label_my_meetings')}")
   end
 
   context "with only single meetings" do
