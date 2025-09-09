@@ -94,7 +94,7 @@ This mode is recommended for users with visuals impairment.
 
 ![High contrast mode in OpenProject account settings](openproject_account_settings_settings_light_high_contrast_mode.png)
 
-#### Select dark mode
+#### Select the dark mode
 
 In the dropdown menu **Color mode** you can pick the color mode. The default setting is **Light mode**. You can also alternatively select **Dark** or **Dark high contrast** modes.
 
