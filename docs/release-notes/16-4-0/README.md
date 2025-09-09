@@ -50,7 +50,7 @@ To export a project list, open the **More (three dots)** menu in the top right c
 
 ![Screenshot of OpenProject 16.4: Export modal for PDF export of project lists, choosing the file format - XLS, CSV and PDF](openproject-16-4-export-project-list-highlighted.png)
 
-### Custom font for all PDF exports (Enterprise add-on)
+### Custom fonts for all PDF exports (Enterprise add-on)
 
 Administrators for the Enterprise Basic plan and higher can now upload a custom font to be used in all PDF exports. This makes it possible to comply with organization-specific requirements, such as corporate design guidelines.
 
