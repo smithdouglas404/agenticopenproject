@@ -79,7 +79,7 @@ module WorkPackages
       end
 
       def learn_more_href
-        OpenProject::Static::Links.links[:progress_tracking_docs][:href]
+        OpenProject::Static::Links.url_for(:progress_tracking_docs)
       end
 
       private

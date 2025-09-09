@@ -96,7 +96,7 @@ See COPYRIGHT and LICENSE files for more details.
         <%= t(
               :text_notice_security_badge_displayed_html,
               information_panel_label: t(:label_information),
-              more_info_url: ::OpenProject::Static::Links[:security_badge_documentation][:href],
+              more_info_url: ::OpenProject::Static::Links.url_for(:security_badge_documentation),
               information_panel_path: info_admin_index_path
             ) %>
       </span>

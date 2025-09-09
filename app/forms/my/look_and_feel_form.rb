@@ -30,6 +30,7 @@
 
 class My::LookAndFeelForm < ApplicationForm
   include ApplicationHelper
+
   form do |f|
     f.select_list(
       name: :theme,
@@ -65,7 +66,7 @@ class My::LookAndFeelForm < ApplicationForm
     f.check_box name: :disable_keyboard_shortcuts,
                 label: I18n.t("activerecord.attributes.user_preference.disable_keyboard_shortcuts"),
                 caption: I18n.t("activerecord.attributes.user_preference.disable_keyboard_shortcuts_caption_html",
-                                href: OpenProject::Static::Links.links[:shortcuts][:href]).html_safe
+                                href: OpenProject::Static::Links.url_for(:shortcuts)).html_safe
 
     f.submit(name: :submit,
              label: I18n.t("activerecord.attributes.user_preference.button_update_look_and_feel"),

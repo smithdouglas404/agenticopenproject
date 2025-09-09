@@ -51,11 +51,18 @@ See COPYRIGHT and LICENSE files for more details.
   <section class="homescreen--links">
 
   <% @homescreen[:links].each do |link| %>
-    <% title = I18n.t(link[:label], scope: "homescreen.links") %>
-    <a class="homescreen--links--item" href="<%= link[:url] %>" target="_blank" aria-label="<%= title %>">
-      <%= op_icon(link[:icon]) %>
-      <%= title %>
-    </a>
+    <% url = link[:url] || OpenProject::Static::Links.url_for(link[:url_key]) %>
+
+    <% if url %>
+      <% title = I18n.t(link[:label], scope: "homescreen.links") %>
+      <%= link_to url,
+                  class: "homescreen--links--item",
+                  target: "_blank",
+                  aria_label: title do %>
+        <%= op_icon(link[:icon]) %>
+        <%= title %>
+      <% end %>
+    <% end %>
   <% end %>
   </section>
 <% end %>

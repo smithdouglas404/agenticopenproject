@@ -57,7 +57,7 @@ class Storages::OpenProjectStorageModalComponent < ViewComponent::Base
   end
 
   def subtitle_timeout_text
-    href = OpenProject::Static::Links[:storage_docs][:health_status][:href]
+    href = OpenProject::Static::Links.url_for(:storage_docs, :health_status)
     I18n.t(
       "storages.open_project_storage_modal.timeout.subtitle",
       storages_health_link: render(Primer::Beta::Link.new(href:, target: "_blank", underline: true)) do

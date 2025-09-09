@@ -37,22 +37,28 @@ module OpenProject
         end
 
         def help_link
-          OpenProject::Configuration.force_help_link.presence || static_links[:user_guides]
+          OpenProject::Configuration.force_help_link.presence || static_links[:user_guides][:href]
         end
 
-        delegate :[], to: :links
-
-        def links
-          @links ||= static_links.merge(dynamic_links)
+        def cache_key
+          @cache_key ||= OpenProject::Cache::CacheKey.expand(links)
         end
 
-        def url_for(*items, localize_url: true)
-          href = links.dig(*items, :href)
+        def label_for(*path)
+          key = links.dig(*path, :label)
+          return if key.nil?
 
-          if localize_url && docs_url?(href)
-            with_locale_param(href)
+          I18n.t(key)
+        end
+
+        def url_for(*path, localize_url: true, url_params: {})
+          href = links.dig(*path, :href)
+          return if href.nil?
+
+          if localize_url && website_link?(href)
+            url_with_query(href, **url_params, go_to_locale: I18n.locale)
           else
-            href
+            url_with_query(href, **url_params)
           end
         end
 
@@ -60,21 +66,27 @@ module OpenProject
           @links.key? name
         end
 
-        def docs_url?(url)
-          url&.start_with?(docs_url)
+        def website_link?(url)
+          url&.start_with?(website_url)
         end
 
-        def docs_url
-          links[:openproject_docs][:href]
-        end
-
-        def with_locale_param(href)
-          url = Addressable::URI.parse(href)
-          url.query_values = (url.query_values || {}).merge(go_to_locale: I18n.locale)
-          url.to_s
+        def website_url
+          links[:website][:href]
         end
 
         private
+
+        def links
+          @links ||= static_links.merge(dynamic_links)
+        end
+
+        def url_with_query(href, **params)
+          return href if params.empty?
+
+          url = Addressable::URI.parse(href)
+          url.query_values = (url.query_values || {}).merge(params)
+          url.to_s
+        end
 
         def dynamic_links
           dynamic = {
