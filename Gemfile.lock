@@ -61,15 +61,6 @@ GIT
       parallel_tests (>= 3.3.0, < 5)
       rspec (>= 3.10)
 
-GIT
-  remote: https://github.com/rubysolo/dentaku
-  revision: f17d427b63ef7e9ed8f914b5cb1d0645a37f9ebb
-  ref: f17d427b63ef7e9ed8f914b5cb1d0645a37f9ebb
-  specs:
-    dentaku (3.5.4)
-      bigdecimal
-      concurrent-ruby
-
 PATH
   remote: modules/auth_plugins
   specs:
@@ -470,6 +461,9 @@ GEM
     deckar01-task_list (2.3.4)
       html-pipeline (~> 2.0)
     declarative (0.0.20)
+    dentaku (3.5.5)
+      bigdecimal
+      concurrent-ruby
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     diff-lcs (1.6.2)
@@ -1371,7 +1365,7 @@ DEPENDENCIES
   dalli (~> 3.2.0)
   date_validator (~> 0.12.0)
   deckar01-task_list (~> 2.3.1)
-  dentaku (~> 3.5)!
+  dentaku (~> 3.5, >= 3.5.5)
   disposable (~> 0.6.2)
   doorkeeper (~> 5.8.0)
   dotenv-rails
@@ -1637,7 +1631,7 @@ CHECKSUMS
   date_validator (0.12.0) sha256=68c9834da240347b9c17441c553a183572508617ebfbe8c020020f3192ce3058
   deckar01-task_list (2.3.4) sha256=66abdc7e009ea759732bb53867e1ea42de550e2aa03ac30a015cbf42a04c1667
   declarative (0.0.20) sha256=8021dd6cb17ab2b61233c56903d3f5a259c5cf43c80ff332d447d395b17d9ff9
-  dentaku (3.5.4)
+  dentaku (3.5.5) sha256=b08a37b5ca5b6d5b70048b90640c2c23a36cb0a5a0b445eaa8a5a373f5e23b61
   descendants_tracker (0.0.4) sha256=e9c41dd4cfbb85829a9301ea7e7c48c2a03b26f09319db230e6479ccdc780897
   diff-lcs (1.6.2) sha256=9ae0d2cba7d4df3075fe8cd8602a8604993efc0dfa934cff568969efb1909962
   disposable (0.6.3) sha256=7f2a3fb251bff6cd83f25b164043d4ec3531209b51b066ed476a9df9c2d384cc
