@@ -10,19 +10,19 @@ keywords: my account, account settings, change language
 
 Change your personal settings under Account settings (earlier called My account). Here you can adapt, e.g. the language, edit notifications, or add an avatar. Moreover you can manage access tokens and sessions.
 
-| Topic                                                        | Content                                                      |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| [Open account settings](#open-account-settings)              | How to open your personal settings in OpenProject            |
-| [Edit your user information](#edit-your-user-information)    | How to change the name or email address in OpenProject       |
-| [Profile settings: change your language, time zone or display of comments](#profile-settings) | How to change the language, time zone or display of comments in OpenProject |
-| [Change password](#change-password)                          | How to change my password                                    |
-| [Two-factor authentication](#two-factor-authentication)      | How to set up a two-factor authentication                    |
-| [Access tokens](#access-tokens)                              | How to set up access tokens in OpenProject                   |
-| [Session management](#sessions-management)                   | How to manage your OpenProject sessions                      |
-| [Notifications settings](#notifications-settings)            | How to change in-app notifications in OpenProject            |
-| [Email reminders](#email-reminders)                          | How to change email reminders sent by OpenProject            |
-| [Set an Avatar](#set-an-avatar)                              | How to set an avatar in OpenProject and change the profile picture |
-| [Delete account](#delete-account)                            | How to delete my own account                                 |
+| Topic                                                     | Content                                                      |
+| --------------------------------------------------------- | ------------------------------------------------------------ |
+| [Open account settings](#open-account-settings)           | How to open your personal settings in OpenProject            |
+| [Edit your user information](#edit-your-user-information) | How to change the name or email address in OpenProject       |
+| [Language and region](#language-and-region-settings)      | How to change the language and the time zone in OpenProject  |
+| [Change password](#change-password)                       | How to change my password                                    |
+| [Two-factor authentication](#two-factor-authentication)   | How to set up a two-factor authentication                    |
+| [Access tokens](#access-tokens)                           | How to set up access tokens in OpenProject                   |
+| [Session management](#sessions-management)                | How to manage your OpenProject sessions                      |
+| [Notifications settings](#notifications-settings)         | How to change in-app notifications in OpenProject            |
+| [Email reminders](#email-reminders)                       | How to change email reminders sent by OpenProject            |
+| [Set an Avatar](#set-an-avatar)                           | How to set an avatar in OpenProject and change the profile picture |
+| [Delete account](#delete-account)                         | How to delete my own account                                 |
 
 ## Open account settings
 
@@ -47,16 +47,16 @@ Here you can update the information and **save** your changes. If you're changin
 
 ![Profile settings in OpenProject](openproject_account_settings_profile.png)
 
-## Profile settings
+## Language and region settings
 
-Within the **Settings** on **Account settings** page you can change the language of OpenProject and adapt the time zone.
+Within the **Language and region** section of **Account settings** page you can change the language of OpenProject and adapt the time zone.
 
-![OpenProject personal account settings](openproject_account_settings_settings.png)
+![OpenProject personal account settings](openproject_account_settings_language_and_regions.png)
 
 
 ### Change your language
 
-To change the language in OpenProject, navigate to the **Account settings** and choose the menu point **Settings**.
+To change the language in OpenProject, navigate to the **Account settings** and choose the menu point **Language and region**.
 
 Here you can choose between multiple languages.
 
@@ -64,7 +64,7 @@ OpenProject is translated to more than 30 languages, like German, Chinese, Frenc
 
 Pressing the **Save** button will save your changes.
 
-If you want to help us to add further languages or to add the translations in your language, you can contribute to the CrowdIn translations project [here](https://crowdin.com/project/openproject).
+If you want to help us to add further languages or to add the translations in your language, you can contribute to the Crowdin translations project [here](https://crowdin.com/project/openproject).
 
 ### Change your time zone
 
@@ -74,11 +74,11 @@ Pressing the **Save** button will save your changes.
 
 ## Interface
 
-Under **Interface** section of project settings you can adjust the color mode, activate alerts and adjust backlog settings. Settings here are grouped into three sections: *Look and feel*, *Alerts* and *Backlogs module*.
+Under the **Interface** section of project settings you can adjust the color mode, activate alerts and adjust backlog settings. Settings here are grouped into three sections: *Look and feel*, *Alerts* and *Backlogs module*.
 
 ### Look and feel
 
-In the **Look and feel** section under **Interface** in your profile settings (accessible via the left-hand menu), you can select your preferred display mode and adjust the order in which comments appear in the **Activity list** for work packages.
+In the **Look and feel** section under **Interface** in your profile settings (accessible via the left-hand menu), you can select your preferred display color mode and adjust the order in which comments appear in the **Activity list** for work packages.
 
 You can also **disable keyboard shortcuts** . This is useful if you rely on a screen reader or want to avoid triggering actions by accident.
 
@@ -96,12 +96,25 @@ This mode is recommended for users with visuals impairment.
 
 #### Select the dark mode
 
-In the dropdown menu **Mode** you can pick the color mode. The default setting is the **Light mode**. You can also select the **Dark mode**, which will change the color theme of the OpenProject instance for you.
+In the dropdown menu **Color mode** you can pick the color mode. The default setting is **Light mode**. You can also alternatively select **Dark** or **Dark high contrast** modes.
 
 > [!NOTE]
-> The dark mode ignores parts of the configured design. Top header and side menu colors are entirely overridden for this  mode. Only the accent color and the primary button color are kept, but are calculated to brighter variants.
+> Custom colors and themes are only supported in Light mode and changing color modes may override most or all custom configuration. Only some colors (accent and primary button color) are kept but adapted for appropriate contrast in certain modes like dark mode.
 
 ![Dark mode in OpenProject account settings](openproject_account_settings_dark_mode.png)
+
+#### Select automatic color mode
+
+In the dropdown menu Color mode, you can now also select the **Automatic option, which will match the color mode of your operating system**.
+
+![Automatic color mode in OpenProject account settings](openproject_account_settings_automatic_os_mode.png)
+
+If this option is selected, OpenProject will automatically match your operating system’s light or dark theme.
+
+If your operating system is set to high contrast mode, OpenProject will also automatically switch to the corresponding high contrast mode (light or dark).
+
+> [!NOTE]
+> This is a user-specific preference and only affects your own account.
 
 #### Change the order to display comments
 
