@@ -51,7 +51,7 @@ module Storages
               let(:file_id) { "#{drive_id}:01ANJ53W5UJK2CQO6IY5HLBVYBVNJ4TKHZ" }
               let(:file_info) do
                 Results::StorageFileInfo.new(
-                  id: "01ANJ53W5UJK2CQO6IY5HLBVYBVNJ4TKHZ",
+                  id: file_id,
                   status: "ok",
                   status_code: 200,
                   name: "release_meme.jpg",
@@ -75,7 +75,7 @@ module Storages
               let(:file_id) { "#{drive_id}:01ANJ53WYP6TBC6T4G2RHIU4SVNEYGL6MF" }
               let(:file_info) do
                 Results::StorageFileInfo.new(
-                  id: "01ANJ53WYP6TBC6T4G2RHIU4SVNEYGL6MF",
+                  id: file_id,
                   status: "ok",
                   status_code: 200,
                   name: "Ümlæûts",
@@ -100,7 +100,7 @@ module Storages
               let(:file_id) { "#{drive_id}:01ANJ53W7BT4LBZ3PNORCYAXKILWJBLEBV" }
               let(:file_info) do
                 Results::StorageFileInfo.new(
-                  id: "01ANJ53W7BT4LBZ3PNORCYAXKILWJBLEBV",
+                  id: file_id,
                   status: "ok",
                   status_code: 200,
                   name: "written_in_stone.webp",

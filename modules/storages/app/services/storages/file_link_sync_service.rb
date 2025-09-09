@@ -92,7 +92,7 @@ module Storages
                                     :error
                                   end
 
-        file_link.save
+        file_link.save!
         file_link
       end
     end
