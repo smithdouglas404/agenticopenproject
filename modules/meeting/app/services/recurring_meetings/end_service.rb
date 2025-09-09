@@ -29,22 +29,45 @@
 #++
 
 module RecurringMeetings
-  class EndSeriesContract < BaseContract
-    include Redmine::I18n
+  class EndService < ::BaseServices::BaseCallable
+    attr_reader :recurring_meeting, :current_user
 
-    validate :user_allowed_to_edit
-    validate :meeting_ended
+    def initialize(recurring_meeting, current_user:)
+      super()
 
-    def user_allowed_to_edit
-      unless user.allowed_in_project?(:edit_meetings, model.project)
-        errors.add :base, :error_unauthorized
-      end
+      @recurring_meeting = recurring_meeting
+      @current_user = current_user
     end
 
-    def meeting_ended
-      return if model.end_date == Time.zone.yesterday
+    def call
+      # When we want the meeting to have ended today,
+      # yesterday remains the last possible occurrence, so we set end_date = yesterday.
+      # We do not want any occurrences today to remain.
+      result = ::RecurringMeetings::UpdateService
+        .new(model: recurring_meeting, user: current_user, contract_class: RecurringMeetings::EndSeriesContract)
+        .call(end_after: "specific_date", end_date: Time.zone.yesterday)
 
-      errors.add :end_date, :invalid
+      result.on_success do
+        remove_scheduled_meetings
+        remove_future_occurrences
+      end
+
+      result
+    end
+
+    private
+
+    ##
+    # Remove any upcoming scheduled meetings (e.g., those that are instantiated or cancelled)
+    def remove_scheduled_meetings
+      recurring_meeting.scheduled_meetings.upcoming.destroy_all
+    end
+
+    ##
+    # Remove all actual future occurrences of the meeting that remained.
+    # We do not use the DeleteService as that would send out notifications
+    def remove_future_occurrences
+      recurring_meeting.scheduled_instances.destroy_all
     end
   end
 end

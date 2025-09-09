@@ -136,15 +136,11 @@ class RecurringMeetingsController < ApplicationController
   end
 
   def end_series
-    call = ::RecurringMeetings::UpdateService
-      .new(model: @recurring_meeting, user: current_user, contract_class: RecurringMeetings::EndSeriesContract)
-      .call(end_after: "specific_date", end_date: Time.zone.today)
+    call = ::RecurringMeetings::EndService
+      .new(@recurring_meeting, current_user:)
+      .call
 
-    if call.success?
-      @recurring_meeting.scheduled_meetings.upcoming.destroy_all
-    else
-      flash[:error] = call.message
-    end
+    call.apply_flash_message!(flash)
     redirect_to action: :show
   end
 
