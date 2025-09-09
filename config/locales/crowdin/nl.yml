@@ -592,9 +592,6 @@ nl:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Geef een API-sleutel naam op"
-        token_name_in_use: "Deze API token naam is al in gebruik, kies een andere a.u.b."
       failed_to_reset_token: "Reset-toegangstoken mislukt: %{error}"
       failed_to_create_token: "Aanmaken van toegang sleutel is mislukt: %{error}"
       failed_to_revoke_token: "Intrekken van toegang sleutel mislukt: %{error}"
@@ -1139,6 +1136,8 @@ nl:
         is_readonly: "Werkpakket is alleen-lezen"
         excluded_from_totals: "Uitsluiten van berekening van totalen in hiërarchie"
         default_done_ratio: "% Voltooid"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Kalender"
         ical_token_query_assignment: "Query assignment"
@@ -1621,9 +1620,11 @@ nl:
         version:
           undeletable_archived_projects: "De versie kan niet worden verwijderd omdat er werkpakketten aan zijn gekoppeld."
           undeletable_work_packages_attached: "De versie kan niet worden verwijderd omdat er werkpakketten aan zijn gekoppeld."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Controleer de volgende velden:"
@@ -2284,6 +2285,9 @@ nl:
   enumeration_reported_project_statuses: "Gerapporteerde projectstatus"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "Single Sign-On (SSO) voor gebruiker '%{value}' is mislukt"
   error_can_not_archive_project: "Dit project kan niet worden gearchiveerd: %{errors}"
   error_can_not_delete_entry: "Niet in staat om ingave te verwijderen"
@@ -2535,6 +2539,11 @@ nl:
             line_4: Improved meeting participants dialog.
             line_5: Improved budget handling in project queries and budget planning.
             line_6: Updated Home and Project overview page.
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "Upgrade naar Enterprise-editie"
       postgres_migration: "Uw installatie overzetten naar PostgreSQL"
@@ -2545,7 +2554,8 @@ nl:
       shortcuts: "Snelkoppelingen"
       blog: "OpenProject blog"
       forums: "Gemeenschapsforum"
-      newsletter: "Beveiligingswaarschuwingen / nieuwsbrief"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -4005,6 +4015,8 @@ nl:
   setting_feeds_limit: "Feed inhoud limiet"
   setting_file_max_size_displayed: "Maximale grootte van tekstbestanden inline weergegeven"
   setting_host_name: "Hostnaam"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Uren per dag"
   setting_hours_per_day_explanation: >-
     This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).

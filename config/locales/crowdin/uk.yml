@@ -603,9 +603,6 @@ uk:
         token/api:
           title: "Маркер API згенеровано"
           warning: "Це єдиний раз, коли ви побачите цей маркер. Обов’язково скопіюйте його зараз."
-      errors:
-        token_name_blank: "Укажіть ім’я маркера API"
-        token_name_in_use: "Це ім’я маркера API уже використовується; виберіть інше"
       failed_to_reset_token: "Не вдалося відновити маркер доступу: %{error}"
       failed_to_create_token: "Не вдалося створити маркер доступу: %{error}"
       failed_to_revoke_token: "Не вдалося відкликати маркер доступу: %{error}"
@@ -1152,6 +1149,8 @@ uk:
         is_readonly: "Пакет робіт лише для перегляду"
         excluded_from_totals: "Виключити з підрахунку підсумків в ієрархії"
         default_done_ratio: "% завершення"
+      token/named:
+        token_name: "Ім’я маркера"
       token/ical:
         calendar: "Календар"
         ical_token_query_assignment: "Призначення запиту"
@@ -1638,9 +1637,11 @@ uk:
         version:
           undeletable_archived_projects: "Версію не можна видалити, оскільки до неї приєднані робочі пакети."
           undeletable_work_packages_attached: "Версію не можна видалити, оскільки до неї приєднані робочі пакети."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Укажіть ім’я маркера"
+              in_use: "Це ім’я маркера вже використовується; виберіть інше"
               format: "%{message}"
       template:
         body: "Перевірте наступні поля:"
@@ -2371,6 +2372,9 @@ uk:
   enumeration_reported_project_statuses: "Повідомлення про статус проекту"
   enumeration_caption_order_changed: "Порядок змінено."
   enumeration_could_not_be_moved: "Неможливо перенести перелічення."
+  enterprise_trials:
+    dialog_component:
+      title: Пробна версія Enterprise
   error_auth_source_sso_failed: "Єдиний вхід (SSO) для користувача %{value} не вдалося "
   error_can_not_archive_project: "Цей проєкт не можна архівувати: %{errors}"
   error_can_not_delete_entry: "Неможливо видалити запис"
@@ -2622,6 +2626,11 @@ uk:
             line_4: покращене діалогове вікно учасників наради;
             line_5: покращена робота з бюджетом у запитах, пов’язаних із проєктами, і при плануванні бюджету;
             line_6: оновлена головна сторінка, а також сторінка «Огляд проєкту».
+        "16_5":
+          new_features_title: >
+            Випуск включає різноманітні нові функції і покращення, такі як:
+          new_features_list:
+            line_0: Незабаром ми додамо нові функції і покращення. Слідкуйте за новинами!
     links:
       upgrade_enterprise_edition: "Оновлення до версії Enterprise"
       postgres_migration: "Міграція інсталяції в PostgreSQL"
@@ -2632,7 +2641,8 @@ uk:
       shortcuts: "Ярлики"
       blog: "Openproject блог"
       forums: "Форум спільноти"
-      newsletter: "Сигнали безпеки / Інформаційний бюлетень"
+      security_alerts: "Сповіщення системи безпеки"
+      newsletter: "Інформаційний лист"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -3027,7 +3037,7 @@ uk:
   label_index_by_title: "Індекс за назвою"
   label_information: "Інформація"
   label_information_plural: "Інформація"
-  label_installation_guides: "Інструкції із встановлення"
+  label_installation_guides: "Інструкції зі встановлення"
   label_integer: "Ціле число"
   label_interface: "Інтерфейс"
   label_internal: "Власне"
@@ -4095,6 +4105,8 @@ uk:
   setting_feeds_limit: "Обмеження вмісту каналу"
   setting_file_max_size_displayed: "Максимальний розмір текстового файлу для відображення"
   setting_host_name: "Ім'я хоста"
+  setting_collaborative_editing_hocuspocus_url: "URL-адреса сервера Hocuspocus"
+  setting_collaborative_editing_hocuspocus_secret: "Секрет сервера Hocuspocus"
   setting_hours_per_day: "Годин на день"
   setting_hours_per_day_explanation: >-
     Визначає, що вважати днем, якщо тривалість представлено в днях і годинах (наприклад, якщо день триває 8 годин, то 32 години – це 4 дні).

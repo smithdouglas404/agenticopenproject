@@ -601,9 +601,6 @@ ro:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Please provide an API token name"
-        token_name_in_use: "This API token name is already in use, please select a different one"
       failed_to_reset_token: "Resetarea tokenului de acces nu a reușit: %{error}"
       failed_to_create_token: "Failed to create access token: %{error}"
       failed_to_revoke_token: "Failed to revoke access token: %{error}"
@@ -1151,6 +1148,8 @@ ro:
         is_readonly: "Pachet de lucru numai pentru citire"
         excluded_from_totals: "Exclude din calculul totalurilor în ierarhie"
         default_done_ratio: "% Finalizat"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Calendar"
         ical_token_query_assignment: "Query assignment"
@@ -1635,9 +1634,11 @@ ro:
         version:
           undeletable_archived_projects: "Versiunea nu poate fi ștearsă, deoarece are atașate pachete de lucru."
           undeletable_work_packages_attached: "Versiunea nu poate fi ștearsă, deoarece are atașate pachete de lucru."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Verificaţi următoarele câmpuri:"
@@ -2333,6 +2334,9 @@ ro:
   enumeration_reported_project_statuses: "Stările proiectului raportat"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "Autentificarea unică (SSO) pentru utilizatorul '%{value}' a eșuat"
   error_can_not_archive_project: "Acest proiect nu poate fi arhivat: %{errors}"
   error_can_not_delete_entry: "Nu se poate șterge intrarea"
@@ -2584,6 +2588,11 @@ ro:
             line_4: Improved meeting participants dialog.
             line_5: Improved budget handling in project queries and budget planning.
             line_6: Updated Home and Project overview page.
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "Actualizează la ediția Enterprise"
       postgres_migration: "Migrarea instalației dvs. către PostgreSQL"
@@ -2594,7 +2603,8 @@ ro:
       shortcuts: "Scurtături"
       blog: "Blog-ul OpenProject"
       forums: "Forum comunitate"
-      newsletter: "Alerte de securitate / Buletin informativ"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2905,7 +2915,7 @@ ro:
   label_duplicated_by: "dublat de"
   label_duplicate: "duplicat"
   label_duplicates: "dublează"
-  label_edit: "Editează"
+  label_edit: "Editare"
   label_edit_x: "Editare: %{x}"
   label_enable_multi_select: "Comutare selecție multiplă"
   label_enabled_project_custom_fields: "Câmpuri personalizate activate"
@@ -2962,7 +2972,7 @@ ro:
   label_global_roles: "Roluri globale"
   label_git_path: "Calea catre directorul .git"
   label_greater_or_equal: ">="
-  label_group_by: "Grupează după"
+  label_group_by: "Grupare după"
   label_group_new: "Grupare nouă"
   label_group: "Grup"
   label_group_named: "Grup %{name}"
@@ -4056,6 +4066,8 @@ ro:
   setting_feeds_limit: "Limită conținut flux"
   setting_file_max_size_displayed: "Numărul maxim de linii afișat în text"
   setting_host_name: "Numele serverului"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Hours per day"
   setting_hours_per_day_explanation: >-
     This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).

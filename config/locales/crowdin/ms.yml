@@ -588,9 +588,6 @@ ms:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Sila berikan nama token API"
-        token_name_in_use: "Nama token API ini sudah digunakan, sila pilih yang lain"
       failed_to_reset_token: "Gagal untuk set semula token akses: %{error}"
       failed_to_create_token: "Gagal membuat token akses: %{error}"
       failed_to_revoke_token: "Gagal menarik balik token akses: %{error}"
@@ -1133,6 +1130,8 @@ ms:
         is_readonly: "Pakej kerja baca-sahaja"
         excluded_from_totals: "Dikecualikan daripada pengiraan jumlah dalam hierarki"
         default_done_ratio: "% Lengkap"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Kalendar"
         ical_token_query_assignment: "Query assignment"
@@ -1613,9 +1612,11 @@ ms:
         version:
           undeletable_archived_projects: "Versi tidak dapat dipadam kerana ia mempunyai pakej kerja yang dilampirkan padanya."
           undeletable_work_packages_attached: "Versi tidak dapat dipadam kerana ia mempunyai pakej kerja yang dilampirkan padanya."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Sila semak ruang-ruang yang berikut:"
@@ -2241,6 +2242,9 @@ ms:
   enumeration_reported_project_statuses: "Status projek yang dilaporkan"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "Log masuk satu kali (SSO) untuk pengguna '%{value}' gagal"
   error_can_not_archive_project: "Projek ini tidak boleh diarkibkan: %{errors}"
   error_can_not_delete_entry: "Tidak dapat membuang entri"
@@ -2492,6 +2496,11 @@ ms:
             line_4: Improved meeting participants dialog.
             line_5: Improved budget handling in project queries and budget planning.
             line_6: Updated Home and Project overview page.
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "Naik taraf ke edisi Enterprise"
       postgres_migration: "Mengalihkan pemasangan anda ke PostgreSQL"
@@ -2502,7 +2511,8 @@ ms:
       shortcuts: "Pintasan"
       blog: "Blog OpenProject"
       forums: "Forum komuniti"
-      newsletter: "Amaran keselamatan / Surat berita"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -3960,6 +3970,8 @@ ms:
   setting_feeds_limit: "Had kandungan feed "
   setting_file_max_size_displayed: "Saiz maksimum fail teks ditampilkan sebaris "
   setting_host_name: "Nama hos"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Jam sehari"
   setting_hours_per_day_explanation: >-
     Ini mentakrifkan perkara yang dianggap sebagai "hari" apabila memaparkan tempoh dalam hari dan jam (contohnya, jika sehari ialah 8 jam, 32 jam ialah 4 hari).

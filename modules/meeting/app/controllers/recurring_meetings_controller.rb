@@ -26,7 +26,7 @@ class RecurringMeetingsController < ApplicationController
         RecurringMeeting.visible
       end
 
-    @recurring_meetings = show_more_pagination(results)
+    @recurring_meetings = show_more_pagination(results, limit: params[:limit])
 
     respond_to do |format|
       format.html do

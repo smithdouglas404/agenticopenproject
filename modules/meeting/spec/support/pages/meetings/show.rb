@@ -33,6 +33,7 @@ require_relative "base"
 module Pages::Meetings
   class Show < Base
     include ::Components::Autocompleter::NgSelectAutocompleteHelpers
+
     attr_accessor :meeting
 
     def initialize(meeting)
@@ -116,10 +117,12 @@ module Pages::Meetings
         click_on type.model_name.human
       end
 
+      created_id = nil
       in_agenda_form do
         yield
-        click_on("Save") if save
+        created_id = click_save_and_wait_for_agenda_item_creation if save
       end
+      expect(page).to have_css("#meeting-agenda-items-item-component-#{created_id}") if created_id
     end
 
     def expect_modal(...)
@@ -134,10 +137,12 @@ module Pages::Meetings
       select_section_action(section, "Add #{type.model_name.human.downcase}")
 
       within("#meeting-sections-show-component-#{section.id}") do
+        created_id = nil
         in_agenda_form do
           yield
-          click_on("Save") if save
+          created_id = click_save_and_wait_for_agenda_item_creation if save
         end
+        expect(page).to have_css("#meeting-agenda-items-item-component-#{created_id}") if created_id
       end
     end
 
@@ -370,11 +375,37 @@ module Pages::Meetings
       select_backlog_action("Add #{type.model_name.human.downcase}")
 
       within("#meeting-sections-backlogs-container-component") do
+        created_id = nil
         in_agenda_form do
           yield
-          click_on("Save")
+          created_id = click_save_and_wait_for_agenda_item_creation
         end
+        expect(page).to have_css("#meeting-agenda-items-item-component-#{created_id}")
       end
+    end
+
+    # Clicks "Save" button and waits until the number of agenda items in the database has
+    # changed.
+    def click_save_and_wait_for_agenda_item_creation
+      initial_db_items_count = MeetingAgendaItem.count
+      click_on("Save")
+
+      # wait for db save
+      wait_for { MeetingAgendaItem.count }.not_to eq(initial_db_items_count)
+
+      # return created item id so that caller can wait for it (can't do it here
+      # because of being "in_agenda_form" scope)
+      MeetingAgendaItem.maximum(:id)
+    end
+
+    # Clicks "Save" button and waits until some agenda items have a different
+    # `lock_version` value in the database.
+    def click_save_and_wait_for_agenda_item_update
+      initial_db_items_versions = MeetingAgendaItem.order(:id).pluck(:lock_version)
+      click_on("Save")
+
+      # wait for db save
+      wait_for { MeetingAgendaItem.order(:id).pluck(:lock_version) }.not_to eq(initial_db_items_versions)
     end
 
     def select_backlog_action(action)
@@ -411,10 +442,15 @@ module Pages::Meetings
       end
     end
 
-    def edit_agenda_item(item, &)
+    def edit_agenda_item(item, save: true, &)
       select_action item, "Edit"
       expect_item_edit_form(item)
-      page.within("#meeting-agenda-items-form-component-#{item.id}", &)
+      page.within("#meeting-agenda-items-form-component-#{item.id}") do
+        yield
+        if save
+          click_save_and_wait_for_agenda_item_update
+        end
+      end
     end
 
     def expect_item_edit_form(item, visible: true)

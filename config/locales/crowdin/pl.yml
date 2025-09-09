@@ -604,9 +604,6 @@ pl:
         token/api:
           title: "Token interfejsu API został wygenerowany"
           warning: "Jest to jedyny raz, gdy zobaczysz ten token. Koniecznie skopiuj go teraz."
-      errors:
-        token_name_blank: "Podaj nazwę tokena API"
-        token_name_in_use: "Ta nazwa tokena API jest już używana, wybierz inną"
       failed_to_reset_token: "Nie można zresetować tokena dostępu: %{error}"
       failed_to_create_token: "Nie można utworzyć tokena dostępu: %{error}"
       failed_to_revoke_token: "Nie można unieważnić tokena dostępu: %{error}"
@@ -1155,6 +1152,8 @@ pl:
         is_readonly: "Pakiet roboczy tylko do odczytu"
         excluded_from_totals: "Wyłącz z obliczania sum w hierarchii"
         default_done_ratio: "% ukończenia"
+      token/named:
+        token_name: "Nazwa tokena"
       token/ical:
         calendar: "Kalendarz"
         ical_token_query_assignment: "Przypisanie zapytania"
@@ -1641,9 +1640,11 @@ pl:
         version:
           undeletable_archived_projects: "Wersji nie można usunąć, ponieważ dołączone są do niej pakiety robocze."
           undeletable_work_packages_attached: "Wersji nie można usunąć, ponieważ dołączone są do niej pakiety robocze."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Podaj nazwę tokena"
+              in_use: "Ta nazwa tokena jest już używana, wybierz inną"
               format: "%{message}"
       template:
         body: "Sprawdź następujące pola:"
@@ -2374,6 +2375,9 @@ pl:
   enumeration_reported_project_statuses: "Status zgłoszonego projektu"
   enumeration_caption_order_changed: "Kolejność została zmieniona."
   enumeration_could_not_be_moved: "Nie można przenieść wyliczenia."
+  enterprise_trials:
+    dialog_component:
+      title: Wersja próbna Enterprise
   error_auth_source_sso_failed: "Pojedyncze logowanie (SSO) dla użytkownika '%{value}' nie powiodło się"
   error_can_not_archive_project: "Tego projektu nie można zarchiwizować: %{errors}"
   error_can_not_delete_entry: "Nie można usunąć wpisu"
@@ -2625,6 +2629,11 @@ pl:
             line_4: Ulepszone okno dialogowe uczestników spotkania.
             line_5: Ulepszona obsługa budżetu w zapytaniach dotyczących projektów i planowanie budżetu.
             line_6: Zaktualizowano stronę główną i stronę Przegląd projektu.
+        "16_5":
+          new_features_title: >
+            Wydanie zawiera różne nowe funkcje i ulepszenia, takie jak:
+          new_features_list:
+            line_0: Nowe funkcje i ulepszenia już wkrótce. Zaglądaj tu!
     links:
       upgrade_enterprise_edition: "Aktualizuj do wersji Enterprise"
       postgres_migration: "Migrowanie instalacji do PostgreSQL"
@@ -2635,7 +2644,8 @@ pl:
       shortcuts: "Podpowiedzi"
       blog: "Blog OpenProject"
       forums: "Forum społeczności"
-      newsletter: "Powiadomienia bezpieczeństwa / Newsletter"
+      security_alerts: "Alerty zabezpieczeń"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -4097,6 +4107,8 @@ pl:
   setting_feeds_limit: "Feed content limit"
   setting_file_max_size_displayed: "Maksymalny rozmiar plików tekstowych wyświetlanych w treści"
   setting_host_name: "Nazwa hosta"
+  setting_collaborative_editing_hocuspocus_url: "Adres URL serwera Hocuspocus"
+  setting_collaborative_editing_hocuspocus_secret: "Klucz tajny serwera Hocuspocus"
   setting_hours_per_day: "Liczba godzin dziennie"
   setting_hours_per_day_explanation: >-
     To definiuje, co jest uważane za „dzień” podczas wyświetlania czasu trwania w dniach i godzinach (na przykład, jeśli dzień ma 8 godzin, 32 godziny będą 4 dniami).

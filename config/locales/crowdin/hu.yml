@@ -594,9 +594,6 @@ hu:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Please provide an API token name"
-        token_name_in_use: "This API token name is already in use, please select a different one"
       failed_to_reset_token: "Hozzáférési token helyreállítása sikertelen: %{error}"
       failed_to_create_token: "Failed to create access token: %{error}"
       failed_to_revoke_token: "Failed to revoke access token: %{error}"
@@ -1142,6 +1139,8 @@ hu:
         is_readonly: "Munkacsomag csak olvasható"
         excluded_from_totals: "Exclude from calculation of totals in hierarchy"
         default_done_ratio: "% Complete"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Naptár"
         ical_token_query_assignment: "Query assignment"
@@ -1624,10 +1623,12 @@ hu:
         version:
           undeletable_archived_projects: "Nem lehet a verziót törölni amíg hozzá van rendelve munkacsomagokhoz."
           undeletable_work_packages_attached: "Nem lehet a verziót törölni amíg hozzá van rendelve munkacsomagokhoz."
-        token/api:
+        token/named:
           attributes:
             token_name:
-              format: "%{message}\n"
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
+              format: "%{message}"
       template:
         body: "Kérjük, ellenőrizze az alábbi mezőket:"
         header:
@@ -2287,6 +2288,9 @@ hu:
   enumeration_reported_project_statuses: "Projekt állapot beszámoló"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "Single Sign-On (SSO) a '%{value}' felhasználóval sikertelen"
   error_can_not_archive_project: "Ezt a projektet nem lehet archiválni: %{errors}"
   error_can_not_delete_entry: "Bejegyzését nem lehet törölni"
@@ -2538,6 +2542,11 @@ hu:
             line_4: Improved meeting participants dialog.
             line_5: Improved budget handling in project queries and budget planning.
             line_6: Updated Home and Project overview page.
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "Váltás Vállalati Verzióra"
       postgres_migration: "A rendszer költöztetése PostreSQL-re"
@@ -2548,7 +2557,8 @@ hu:
       shortcuts: "Parancsikonok"
       blog: "OpenProject blog"
       forums: "Közösségi fórum"
-      newsletter: "Biztonsági figyelmeztetések / hírlevél"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Képmásoló"
   journals:
@@ -4008,6 +4018,8 @@ hu:
   setting_feeds_limit: "Tartalom szintjének a korlátja"
   setting_file_max_size_displayed: "A szöveg fájl sorainak maximum mérete megjelenítéskor"
   setting_host_name: "Gazdagép neve"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Hours per day"
   setting_hours_per_day_explanation: >-
     This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).

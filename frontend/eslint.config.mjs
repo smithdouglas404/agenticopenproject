@@ -20,7 +20,7 @@ const config = defineConfig([
     }
   },
   {
-    files: ['**/*.ts'],
+    files: ['**/*.{ts,tsx}'],
     extends: [
       eslint.configs.recommended,
       ...tseslint.configs.strictTypeChecked,

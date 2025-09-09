@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -21,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -42,23 +44,26 @@ module API
           "user" => "User",
           "version" => "Version",
           "list" => "CustomOption",
-          "hierarchy" => "CustomField::Hierarchy::Item"
+          "hierarchy" => "CustomField::Hierarchy::Item",
+          "scored_list" => "CustomField::Hierarchy::Item"
         }.freeze
 
-        LINK_FORMATS = %w(list user version hierarchy).freeze
+        LINK_FORMATS = %w(list user version hierarchy scored_list).freeze
 
         NAMESPACE_MAP = {
-          "user" => ["users", "groups", "placeholder_users"],
+          "user" => %w[users groups placeholder_users],
           "version" => "versions",
           "list" => "custom_options",
-          "hierarchy" => "custom_field_items"
+          "hierarchy" => "custom_field_items",
+          "scored_list" => "custom_field_items"
         }.freeze
 
         REPRESENTER_MAP = {
           "user" => "::API::V3::Principals::PrincipalRepresenterFactory",
           "version" => "::API::V3::Versions::VersionRepresenter",
           "list" => "::API::V3::CustomOptions::CustomOptionRepresenter",
-          "hierarchy" => "::API::V3::CustomFields::Hierarchy::HierarchyItemRepresenter"
+          "hierarchy" => "::API::V3::CustomFields::Hierarchy::HierarchyItemRepresenter",
+          "scored_list" => "::API::V3::CustomFields::Hierarchy::HierarchyItemRepresenter"
         }.freeze
 
         class << self
@@ -115,7 +120,7 @@ module API
             inject_user_schema(custom_field)
           when "list"
             inject_list_schema(custom_field)
-          when "hierarchy"
+          when "hierarchy", "scored_list"
             inject_hierarchy_schema(custom_field)
           else
             inject_basic_schema(custom_field)
@@ -248,9 +253,9 @@ module API
             # Do not embed list, hierarchies or multi values as their links contain all the
             # information needed (title and href) already.
             next if represented.available_custom_fields.exclude?(custom_field) ||
-              custom_field.list? ||
-              custom_field.field_format_hierarchy? ||
-              custom_field.multi_value?
+                    custom_field.list? ||
+                    custom_field.hierarchical_list? ||
+                    custom_field.multi_value?
 
             value = represented.send custom_field.attribute_getter
 

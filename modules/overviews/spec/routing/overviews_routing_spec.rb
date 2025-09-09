@@ -47,26 +47,6 @@ RSpec.describe Overviews::OverviewsController do
     end
 
     it do
-      expect(get("/projects/my-project/project_custom_field_section_dialog/33"))
-        .to route_to(
-          controller: "overviews/overviews",
-          action: "project_custom_field_section_dialog",
-          project_id: "my-project",
-          section_id: "33"
-        )
-    end
-
-    it do
-      expect(put("/projects/my-project/update_project_custom_values/44"))
-        .to route_to(
-          controller: "overviews/overviews",
-          action: "update_project_custom_values",
-          project_id: "my-project",
-          section_id: "44"
-        )
-    end
-
-    it do
       expect(get("/projects/my-project/project_life_cycle_sidebar"))
         .to route_to(
           controller: "overviews/overviews",
@@ -88,26 +68,6 @@ RSpec.describe Overviews::OverviewsController do
       expect(get(project_custom_fields_sidebar_path("my-project")))
         .to route_to(
           controller: "overviews/overviews", action: "project_custom_fields_sidebar", project_id: "my-project"
-        )
-    end
-
-    it do
-      expect(get(project_custom_field_section_dialog_path("my-project", 33)))
-        .to route_to(
-          controller: "overviews/overviews",
-          action: "project_custom_field_section_dialog",
-          project_id: "my-project",
-          section_id: "33"
-        )
-    end
-
-    it do
-      expect(put(update_project_custom_values_path("my-project", 44)))
-        .to route_to(
-          controller: "overviews/overviews",
-          action: "update_project_custom_values",
-          project_id: "my-project",
-          section_id: "44"
         )
     end
 

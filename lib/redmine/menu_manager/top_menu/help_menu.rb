@@ -134,6 +134,10 @@ module Redmine::MenuManager::TopMenu::HelpMenu
         href_suffix: "/?utm_source=unknown&utm_medium=op-instance&utm_campaign=website-help-menu"
       ))
       menu_group.with_item(**link_options_for(
+        :security_alerts,
+        href_suffix: "/?utm_source=unknown&utm_medium=op-instance&utm_campaign=security-help-menu"
+      ))
+      menu_group.with_item(**link_options_for(
         :newsletter,
         href_suffix: "/?utm_source=unknown&utm_medium=op-instance&utm_campaign=newsletter-help-menu"
       ))

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -66,6 +68,21 @@ RSpec.describe "Custom field filter in boards",
 
     wp.save
     wp
+  end
+
+  let!(:workflow_open_to_closed) do
+    create(:workflow,
+           type:,
+           role:,
+           old_status_id: open_status.id,
+           new_status_id: closed_status.id)
+  end
+  let!(:workflow_closed_to_open) do
+    create(:workflow,
+           type:,
+           role:,
+           old_status_id: closed_status.id,
+           new_status_id: open_status.id)
   end
 
   let(:filters) { Components::WorkPackages::Filters.new }

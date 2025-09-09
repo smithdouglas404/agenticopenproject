@@ -593,9 +593,6 @@ es:
         token/api:
           title: "Se ha generado el token de API"
           warning: "Esta es la única vez que verá este token. Asegúrese de copiarlo ahora."
-      errors:
-        token_name_blank: "Por favor, proporcione un nombre de token de API"
-        token_name_in_use: "Este nombre de token de API ya está en uso, por favor seleccione uno diferente"
       failed_to_reset_token: "No se pudo restablecer el token de acceso: %{error}"
       failed_to_create_token: "Error al crear el token de acceso: %{error}"
       failed_to_revoke_token: "Fallo al revocar el token de acceso: %{error}"
@@ -768,7 +765,7 @@ es:
           automatic_with_children: "Fechas determinadas por paquetes de trabajo secundarios."
           automatic_with_predecessor: "La fecha de inicio la fija un predecesor."
           manual_mobile: "Programado manualmente."
-          manually_scheduled: "Programado manualmente. No afectadas por relaciones."
+          manually_scheduled: "Programado manualmente. Fechas no afectadas por relaciones."
       blankslate:
         title: "Sin predecesores"
         description: "Para activar la programación automática, este paquete de trabajo debe tener al menos un predecesor. Entonces se programará automáticamente para que comience después del predecesor más cercano."
@@ -1140,6 +1137,8 @@ es:
         is_readonly: "Paquete de trabajo de solo lectura"
         excluded_from_totals: "Excluir del cálculo de totales en la jerarquía"
         default_done_ratio: "% compleado"
+      token/named:
+        token_name: "Nombre del token"
       token/ical:
         calendar: "Calendario"
         ical_token_query_assignment: "Asignación de consultas"
@@ -1622,9 +1621,11 @@ es:
         version:
           undeletable_archived_projects: "La versión no puede borrarse cuando tiene paquetes de trabajos adjuntos."
           undeletable_work_packages_attached: "La versión no puede borrarse cuando tiene paquetes de trabajos adjuntos."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Proporcione un nombre de token"
+              in_use: "Este nombre de token ya está en uso; seleccione uno diferente"
               format: "%{message}"
       template:
         body: "Por favor revise los siguientes campos:"
@@ -2285,6 +2286,9 @@ es:
   enumeration_reported_project_statuses: "Estatus del proyecto reportado"
   enumeration_caption_order_changed: "Orden cambiado con éxito."
   enumeration_could_not_be_moved: "No se ha podido mover la enumeración."
+  enterprise_trials:
+    dialog_component:
+      title: Prueba Enterprise
   error_auth_source_sso_failed: "El intento de inicio de sesión único (SSO) para el usuario “%{value}” falló"
   error_can_not_archive_project: "Este proyecto no se puede archivar: %{errors}"
   error_can_not_delete_entry: "No se puede eliminar la entrada"
@@ -2536,6 +2540,11 @@ es:
             line_4: Diálogo mejorado de participantes en la reunión.
             line_5: Mejora de la gestión del presupuesto en consultas de proyectos y planificación presupuestaria.
             line_6: Página de inicio y descripción general del proyecto actualizadas.
+        "16_5":
+          new_features_title: >
+            El lanzamiento incluye varias funciones nuevas y mejoras, tales como:
+          new_features_list:
+            line_0: Próximamente habrá nuevas funciones y mejoras. ¡No deje de visitarnos!
     links:
       upgrade_enterprise_edition: "Actualizar a Enterprise"
       postgres_migration: "Migrando su instalación a PostgreSQL"
@@ -2546,7 +2555,8 @@ es:
       shortcuts: "Accesos directos"
       blog: "Blog de OpenProject"
       forums: "Foro de Community"
-      newsletter: "Alertas de seguridad / boletín"
+      security_alerts: "Alertas de seguridad"
+      newsletter: "Boletín de noticias"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -4006,6 +4016,8 @@ es:
   setting_feeds_limit: "Limite de contenido de feed"
   setting_file_max_size_displayed: "Tamaño máximo de archivos de texto mostrado en linea"
   setting_host_name: "Nombre de host"
+  setting_collaborative_editing_hocuspocus_url: "URL del servidor Hocuspocus"
+  setting_collaborative_editing_hocuspocus_secret: "Secreto del servidor Hocuspocus"
   setting_hours_per_day: "Horas al día"
   setting_hours_per_day_explanation: >-
     Define lo que se considera un "día" cuando se muestra la duración en días y horas (por ejemplo, si un día tiene 8 horas, 32 horas serían 4 días).

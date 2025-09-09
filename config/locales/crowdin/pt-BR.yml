@@ -594,9 +594,6 @@ pt-BR:
         token/api:
           title: "O token de API foi gerado"
           warning: "Esta é a única vez que você verá este token. Certifique-se de copiá-lo agora."
-      errors:
-        token_name_blank: "Forneça um nome para o token de API."
-        token_name_in_use: "Este nome de token de API já está em uso, escolha outro."
       failed_to_reset_token: "Falha ao redefinir o token de acesso: %{error}"
       failed_to_create_token: "Falha ao criar o token de acesso: %{error}"
       failed_to_revoke_token: "Falha ao revogar o token de acesso: %{error}"
@@ -1140,6 +1137,8 @@ pt-BR:
         is_readonly: "Pacote de trabalho somente leitura"
         excluded_from_totals: "Excluir do cálculo de totais na hierarquia"
         default_done_ratio: "% de conclusão"
+      token/named:
+        token_name: "Nome do token"
       token/ical:
         calendar: "Calendário"
         ical_token_query_assignment: "Atribuição de consulta"
@@ -1622,9 +1621,11 @@ pt-BR:
         version:
           undeletable_archived_projects: "A versão não pode ser excluída pois tem pacotes de trabalho anexados a ela."
           undeletable_work_packages_attached: "A versão não pode ser excluída pois tem pacotes de trabalho anexados a ela."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Forneça um nome para o token"
+              in_use: "Este nome de token já está em uso, escolha outro"
               format: "%{message}"
       template:
         body: "Por favor, verifique os seguintes campos:"
@@ -2285,6 +2286,9 @@ pt-BR:
   enumeration_reported_project_statuses: "Situação de projeto comunicada"
   enumeration_caption_order_changed: "Ordem alterada com sucesso."
   enumeration_could_not_be_moved: "Enumeração não pôde ser movida."
+  enterprise_trials:
+    dialog_component:
+      title: Versão de avaliação corporativa
   error_auth_source_sso_failed: "Single Sign-On (SSO) para o usuário '%{value}' falhou"
   error_can_not_archive_project: "Este projeto não pode ser arquivado: %{errors}"
   error_can_not_delete_entry: "Não é possível excluir a entrada"
@@ -2536,6 +2540,11 @@ pt-BR:
             line_4: Diálogo de participantes da reunião aprimorado.
             line_5: Melhoria no gerenciamento de orçamento em consultas de projeto e planejamento orçamentário.
             line_6: Página inicial e visão geral do projeto atualizadas.
+        "16_5":
+          new_features_title: >
+            A versão contém diversos novos recursos e melhorias, como:
+          new_features_list:
+            line_0: Novos recursos e melhorias em breve. Continue conferindo!
     links:
       upgrade_enterprise_edition: "Atualizar para a edição Enterprise"
       postgres_migration: "Migrando sua instalação para PostgreSQL"
@@ -2546,7 +2555,8 @@ pt-BR:
       shortcuts: "Atalhos"
       blog: "Blog do OpenProject"
       forums: "Fórum da Comunidade"
-      newsletter: "Alertas de segurança / Newsletter"
+      security_alerts: "Alertas de segurança"
+      newsletter: "Boletim informativo"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -4006,6 +4016,8 @@ pt-BR:
   setting_feeds_limit: "Limite de conteúdo de feed"
   setting_file_max_size_displayed: "Tamanho máximo de arquivos de texto exibidos em linha"
   setting_host_name: "Nome do servidor"
+  setting_collaborative_editing_hocuspocus_url: "URL do servidor Hocuspocus"
+  setting_collaborative_editing_hocuspocus_secret: "Segredo do servidor Hocuspocus"
   setting_hours_per_day: "Horas por dia"
   setting_hours_per_day_explanation: >-
     Isso define o que é considerado um "dia" ao exibir a duração em dias e horas (por exemplo, se um dia tem 8 horas, 32 horas serão exibidas como 4 dias).

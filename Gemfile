@@ -64,7 +64,7 @@ gem "scimitar", "~> 2.12"
 gem "acts_as_list", "~> 1.2.0"
 gem "acts_as_tree", "~> 2.9.0"
 gem "awesome_nested_set", "~> 3.8.0"
-gem "closure_tree", "~> 9.0.0"
+gem "closure_tree", "~> 9.1.1"
 gem "rubytree", "~> 2.1.0"
 
 gem "addressable", "~> 2.8.0"
@@ -92,7 +92,7 @@ gem "deckar01-task_list", "~> 2.3.1"
 # Requires escape-utils for faster escaping
 gem "escape_utils", "~> 1.3"
 # Syntax highlighting used in html-pipeline with rouge
-gem "rouge", "~> 4.5.1"
+gem "rouge", "~> 4.6.0"
 # HTML sanitization used for html-pipeline
 gem "sanitize", "~> 7.0.0"
 # HTML autolinking for mails and urls (replaces autolink)
@@ -225,7 +225,7 @@ gem "yabeda-prometheus-mmap", require: false
 gem "yabeda-puma-plugin"
 gem "yabeda-rails"
 
-gem "view_component"
+gem "view_component", "~> 4.0.2"
 # Lookbook
 gem "lookbook", "2.3.13"
 
@@ -392,7 +392,7 @@ gem "disposable", "~> 0.6.2"
 gem "dentaku", "~> 3.5", git: "https://github.com/rubysolo/dentaku", ref: "f17d427b63ef7e9ed8f914b5cb1d0645a37f9ebb"
 
 group :postgres do
-  gem "pg", "~> 1.5.0"
+  gem "pg", "~> 1.6.2"
 end
 
 # Support application loading when no database exists yet.
@@ -414,6 +414,6 @@ gemfiles.each do |file|
   send(:eval_gemfile, file) if File.readable?(file)
 end
 
-gem "openproject-octicons", "~>19.27.1"
-gem "openproject-octicons_helper", "~>19.27.1"
-gem "openproject-primer_view_components", "~>0.71.0"
+gem "openproject-octicons", "~>19.28.0"
+gem "openproject-octicons_helper", "~>19.28.0"
+gem "openproject-primer_view_components", "~>0.72.0"
