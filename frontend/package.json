@@ -140,7 +140,7 @@
     "glob": "^11.0.3",
     "hammerjs": "^2.0.8",
     "i18n-js": "^4.3.0",
-    "idiomorph": "^0.3.0",
+    "idiomorph": "^0.7.3",
     "jquery": "^3.7.1",
     "jquery-ujs": "^1.2.3",
     "jquery.caret": "^0.3.1",
