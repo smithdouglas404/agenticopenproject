@@ -1,6 +1,4 @@
-<%= render "homescreen/blocks/header", title: t(:label_news_latest) %>
-
-<div class="op-widget-box--body">
+<%= render Grids::WidgetBoxComponent.new(title: t(:label_news_latest), classes: "news") do %>
   <% unless @news.empty? %>
     <ul class="widget-box--arrow-links">
     <% @news.each do |news| %>
@@ -16,4 +14,4 @@
     <% end %>
     </ul>
   <% end %>
-</div>
+<% end %>

@@ -75,7 +75,7 @@ RSpec.describe Overviews::ShowComponent, type: :component do
   end
 
   it "renders overview grid" do
-    expect(rendered_component).to have_css ".op-portfolio-overview"
+    expect(rendered_component).to have_css ".widget-boxes"
   end
 
   context "when project has neither project attributes or life cycle" do

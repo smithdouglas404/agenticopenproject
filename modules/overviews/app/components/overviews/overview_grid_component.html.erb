@@ -28,12 +28,9 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  grid_layout("op-portfolio-overview", tag: :div, align_items: :flex_start) do |grid|
-    grid.with_area(:description, tag: :div) do
-      render(Overviews::Widgets::DescriptionComponent.new(@project))
-    end
-    grid.with_area(:subitems, tag: :div) do
-      render(Overviews::Widgets::SubitemsComponent.new(@project))
-    end
+  render(Grids::WidgetGridComponent.new) do |grid|
+    grid.with_widget(Overviews::Widgets::DescriptionComponent, @project)
+    grid.with_widget(Overviews::Widgets::SubitemsComponent, @project)
+    grid.with_widget(Overviews::Widgets::ProjectStatusComponent, @project)
   end
 %>

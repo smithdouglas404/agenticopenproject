@@ -1,6 +1,4 @@
-<%= render "homescreen/blocks/header", title: t(:label_administration) %>
-
-<div class="op-widget-box--body">
+<%= render Grids::WidgetBoxComponent.new(title: t(:label_administration), classes: "administration") do %>
   <ul class="widget-box--arrow-links">
     <li>
       <%= link_to t(:label_project_plural), projects_path,
@@ -56,4 +54,4 @@
                 class: "security-badge--help-icon icon-context icon-help1",
                 target: "_blank", rel: "noopener" %>
   <% end if display_security_badge_graphic? %>
-</div>
+<% end %>

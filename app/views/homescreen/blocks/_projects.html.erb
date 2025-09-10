@@ -1,6 +1,4 @@
-<%= render "homescreen/blocks/header", title: t(:label_project_plural) %>
-
-<div class="op-widget-box--body">
+<%= render Grids::WidgetBoxComponent.new(title: t(:label_project_plural), classes: "projects") do %>
   <% if @favorite_projects.any? %>
     <p class="widget-box--additional-info"><%= t("projects.lists.favored") %></p>
     <ul class="widget-box--arrow-links">
@@ -56,4 +54,4 @@
                   title: t(:label_project_view_all) %>
     <% end %>
   </div>
-</div>
+<% end %>

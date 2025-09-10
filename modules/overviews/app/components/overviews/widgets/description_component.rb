@@ -30,14 +30,14 @@
 
 module Overviews
   module Widgets
-    class DescriptionComponent < ApplicationComponent
-      include OpTurbo::Streamable
-      include OpPrimer::ComponentHelpers
-      include ApplicationHelper
-
-      def project = model
+    class DescriptionComponent < Grids::WidgetComponent
+      param :project
 
       delegate :description, to: :project
+
+      def title
+        Project.human_attribute_name(:description)
+      end
     end
   end
 end

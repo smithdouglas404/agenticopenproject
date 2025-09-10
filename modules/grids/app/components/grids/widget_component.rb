@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,28 +26,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module Overviews
-  module Widgets
-    class SubitemsComponent < Grids::WidgetComponent
-      include OpPrimer::ComponentHelpers
-
-      param :project
-
-      delegate :description, to: :project
-
-      def title
-        I18n.t("overviews.widgets.subitems.in_this_#{project.workspace_type}")
-      end
-
-      def children
-        @children ||= project.children.visible
-      end
-
-      def wrapper_arguments
-        { content_padding: :none }
-      end
-    end
+module Grids
+  class WidgetComponent < Primer::BaseComponent
+    extend Dry::Initializer
+    include WidgetedComponent
   end
 end

@@ -1,5 +1,3 @@
-<%= render "homescreen/blocks/header", title: t(:label_new_features) %>
-
-<div class="op-widget-box--body">
+<%= render Grids::WidgetBoxComponent.new(title: t(:label_new_features), classes: "new_features") do %>
   <%= render Homescreen::NewFeaturesComponent.new %>
-</div>
+<% end %>

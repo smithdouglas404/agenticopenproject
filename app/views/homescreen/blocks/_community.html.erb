@@ -1,6 +1,4 @@
-<%= render "homescreen/blocks/header", title: t("homescreen.blocks.community") %>
-
-<div class="op-widget-box--body">
+<%= render Grids::WidgetBoxComponent.new(title: t("homescreen.blocks.community"), classes: "community") do %>
   <ul class="widget-box--arrow-links">
     <li>
       <%= static_link_to :user_guides %>
@@ -89,4 +87,4 @@
       <%= static_link_to :api_docs %>
     </li>
   </ul>
-</div>
+<% end %>

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,28 +26,31 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module Overviews
-  module Widgets
-    class SubitemsComponent < Grids::WidgetComponent
-      include OpPrimer::ComponentHelpers
+module Grids
+  class WidgetGridComponent < ApplicationComponent
+    renders_many :widgets, ->(widget_class, *widget_args, **system_arguments) {
+      build_widget(widget_class, *widget_args, **system_arguments)
+    }
 
-      param :project
+    def initialize(**system_arguments)
+      super()
 
-      delegate :description, to: :project
+      @system_arguments = system_arguments
+      @system_arguments[:tag] = :section
+      @system_arguments[:classes] = class_names(
+        @system_arguments[:classes],
+        "widget-boxes",
+        "-flex"
+      )
+    end
 
-      def title
-        I18n.t("overviews.widgets.subitems.in_this_#{project.workspace_type}")
-      end
+    def build_widget(widget_class, *widget_args, **system_arguments)
+      widget = widget_class.new(*widget_args, **system_arguments)
+      raise "Widget must be WidgetedComponent" unless widget.is_a?(WidgetedComponent)
 
-      def children
-        @children ||= project.children.visible
-      end
-
-      def wrapper_arguments
-        { content_padding: :none }
-      end
+      widget
     end
   end
 end

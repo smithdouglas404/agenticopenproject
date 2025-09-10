@@ -1,25 +1,23 @@
-<%= render "homescreen/blocks/header", title: t(:label_user_plural) %>
+<%= render Grids::WidgetBoxComponent.new(title: t(:label_user_plural), classes: "users") do %>
+  <p class="widget-box--additional-info"><%= t("homescreen.additional.users") %></p>
 
-<div class="op-widget-box--body">
-    <p class="widget-box--additional-info"><%= t("homescreen.additional.users") %></p>
-
-    <% unless @newest_users.empty? %>
-    <ul class="widget-box--arrow-links">
-      <% @newest_users.each do |user| %>
-        <li>
-          <%= link_to_user user %>
-          <small>(<%= format_date(user.created_at) %>)</small>
-        </li>
-      <% end %>
-    </ul>
+  <% unless @newest_users.empty? %>
+  <ul class="widget-box--arrow-links">
+    <% @newest_users.each do |user| %>
+      <li>
+        <%= link_to_user user %>
+        <small>(<%= format_date(user.created_at) %>)</small>
+      </li>
     <% end %>
+  </ul>
+  <% end %>
 
-    <div class="widget-box--buttons">
-      <% if User.current.admin? %>
-        <%= link_to new_user_path, class: "button -primary" do %>
-          <%= op_icon("button--icon icon-add") %>
-          <span class="button--text"><%= t(:label_invite_user) %></span>
-        <% end %>
+  <div class="widget-box--buttons">
+    <% if User.current.admin? %>
+      <%= link_to new_user_path, class: "button -primary" do %>
+        <%= op_icon("button--icon icon-add") %>
+        <span class="button--text"><%= t(:label_invite_user) %></span>
       <% end %>
-    </div>
-</div>
+    <% end %>
+  </div>
+<% end %>

@@ -39,9 +39,7 @@ See COPYRIGHT and LICENSE files for more details.
   <section class="widget-boxes -flex">
   <% @homescreen[:blocks].each do |block| %>
     <% if block[:if].nil? || instance_eval(&block[:if]) %>
-      <div class="widget-box <%= block[:partial] %>">
-        <%= render partial: "homescreen/blocks/#{block[:partial]}", locals: block[:locals] || {} %>
-      </div>
+      <%= render partial: "homescreen/blocks/#{block[:partial]}", locals: block[:locals] || {} %>
     <% end %>
   <% end %>
   </section>

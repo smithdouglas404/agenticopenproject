@@ -29,15 +29,7 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  component_wrapper do
-    render(Primer::Beta::BorderBox.new) do |component|
-      component.with_header do
-        render(Primer::Beta::Text.new) { Project.human_attribute_name(:description) }
-      end
-
-      component.with_row do
-        helpers.format_text project, :description
-      end
-    end
+  widget_wrapper do
+    helpers.format_text project, :description
   end
 %>
