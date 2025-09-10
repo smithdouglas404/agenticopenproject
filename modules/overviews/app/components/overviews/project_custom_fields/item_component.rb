@@ -55,8 +55,18 @@ module Overviews
       end
 
       def render_calculation_error
-        render(Primer::Beta::Text.new(color: :danger)) do
-          @project_custom_field.calculated_value_errors.where(project: @project).map(&:error_message).join(" ")
+        errors = @project_custom_field.calculated_value_errors.where(project: @project)
+
+        # FIXME: this is a copy from the project list row component. Reuse it here.
+        render(Primer::OpenProject::FlexLayout.new(align_items: :center)) do |container|
+          container.with_column do
+            render Primer::Beta::Octicon.new(icon: :"alert-fill", color: :danger)
+          end
+          container.with_column(ml: 2) do
+            render Primer::Beta::Text.new(color: :danger) do
+              errors.map(&:error_message).join(" ")
+            end
+          end
         end
       end
 
