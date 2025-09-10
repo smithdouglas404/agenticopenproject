@@ -6,7 +6,7 @@ import { GroupObject } from 'core-app/features/hal/resources/wp-collection-resou
 import { CommonModule } from '@angular/common';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import PrimerColorsPlugin from './../plugin.primer-colors';
+import PrimerColorsPlugin, { getCSSVariable } from './../plugin.primer-colors';
 
 export interface WorkPackageEmbeddedGraphDataset {
   label:string;
@@ -110,12 +110,10 @@ export class WorkPackageEmbeddedGraphComponent implements OnChanges {
     const bodyFontColor= getComputedStyle(document.body).getPropertyValue('--body-font-color');
     const gridLineColor= getComputedStyle(document.body).getPropertyValue('--borderColor-muted');
     const backdropColor= getComputedStyle(document.body).getPropertyValue('--overlay-backdrop-bgColor');
+    const onEmphasisColor = getComputedStyle(document.body).getPropertyValue('--fgColor-onEmphasis');
 
-    const defaults:ChartOptions = {
-      color: bodyFontColor,
-      responsive: true,
-      maintainAspectRatio: false,
-      indexAxis: this.chartType === 'horizontalBar' ? 'y' : 'x',
+
+    const barChartOptions = {
       scales: {
         r: {
           angleLines: {
@@ -157,22 +155,35 @@ export class WorkPackageEmbeddedGraphComponent implements OnChanges {
           border: {
             color: this.isBarChart() ? bodyFontColor : 'transparent',
           },
-        },
-      },
+        }
+      }
+    }
+
+    const defaults:ChartOptions = {
+      color: bodyFontColor,
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: this.chartType === 'horizontalBar' ? 'y' : 'x',
       plugins: {
         legend: {
           // Only display legends if more than one dataset is provided.
           display: this.datasets.length > 1,
+          labels: {
+            font: {
+              family: "Times New Roman, serif", // getCSSVariable("--fontStack-sansSerif")
+              //size: 14
+            }
+          }
         },
-        datalabels: {
-          anchor: 'center',
-          align: this.chartType === 'bar' ? 'top' : 'center',
-          color: bodyFontColor,
-          font: {
-            weight: 'bold',
-            size: 14,
-          },
-        },
+        // datalabels: {
+        //   anchor: 'center',
+        //   align: this.chartType === 'bar' ? 'top' : 'center',
+        //   color: onEmphasisColor,
+        //   font: {
+        //     weight: 'bold',
+        //     size: 14,
+        //   },
+        // },
       },
     };
 
