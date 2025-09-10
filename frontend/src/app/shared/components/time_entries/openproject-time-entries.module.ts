@@ -33,12 +33,15 @@ import { OpenprojectFieldsModule } from 'core-app/shared/components/fields/openp
 import { TimeEntryCreateModalComponent } from 'core-app/shared/components/time_entries/create/create.modal';
 import { TimeEntryEditModalComponent } from 'core-app/shared/components/time_entries/edit/edit.modal';
 import { TimeEntryFormComponent } from 'core-app/shared/components/time_entries/form/form.component';
-import { TimeEntryEditService } from 'core-app/shared/components/time_entries/edit/edit.service';
 import { TriggerActionsEntryComponent } from 'core-app/shared/components/time_entries/edit/trigger-actions-entry.component';
 import { TimeEntryTimerService } from 'core-app/shared/components/time_entries/services/time-entry-timer.service';
 import { CommonModule } from '@angular/common';
 import { TimerAccountMenuComponent } from 'core-app/shared/components/time_entries/timer/timer-account-menu.component';
 import { StopExistingTimerModalComponent } from 'core-app/shared/components/time_entries/timer/stop-existing-timer-modal.component';
+import { TimeEntryCreateService } from 'core-app/shared/components/time_entries/create/create.service';
+import {
+  HalResourceEditingService
+} from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
 
 @NgModule({
   imports: [
@@ -59,6 +62,7 @@ import { StopExistingTimerModalComponent } from 'core-app/shared/components/time
     StopExistingTimerModalComponent,
   ],
   providers: [
+    TimeEntryCreateService,
     TimeEntryTimerService,
   ],
 })

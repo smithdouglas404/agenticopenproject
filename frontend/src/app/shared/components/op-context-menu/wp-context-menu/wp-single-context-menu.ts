@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, Injector, Input, OnDestroy } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, inject, Injector, Input, OnDestroy } from '@angular/core';
 import { StateService } from '@uirouter/core';
 import { isClickedWithModifier } from 'core-app/shared/helpers/link-handling/link-handling';
 import { AuthorisationService } from 'core-app/core/model-auth/model-auth.service';
@@ -27,6 +27,7 @@ export class WorkPackageSingleContextMenuDirective extends OpContextMenuTrigger 
   @Input('wpSingleContextMenu-workPackage') public workPackage:WorkPackageResource;
 
   private currentTimer:TimeEntryResource|null = null;
+
 
   constructor(
     readonly HookService:HookService,
@@ -80,10 +81,10 @@ export class WorkPackageSingleContextMenuDirective extends OpContextMenuTrigger 
         window.location.href = `${this.PathHelper.staticBase}/work_packages/move/new?copy=true&ids[]=${this.workPackage.id as string}`;
         break;
       case 'start_timer':
-        // do stuff
+        this.timeEntryService.start(this.workPackage);
         break;
       case 'stop_timer':
-        // do stuff
+        this.timeEntryService.stop();
         break;
       case 'copy':
         this.$state.go('work-packages.copy', { copiedFromWorkPackageId: this.workPackage.id });
@@ -141,31 +142,11 @@ export class WorkPackageSingleContextMenuDirective extends OpContextMenuTrigger 
     }
   }
 
-  private removeTimerActions(actions:WorkPackageAction[]):WorkPackageAction[] {
-    return actions.filter((action) => action.key !== 'start_timer' && action.key !== 'stop_timer');
-  }
-
   private getPermittedActions(authorization:WorkPackageAuthorization) {
     let actions:WorkPackageAction[] = authorization.permittedActionsWithLinks(PERMITTED_CONTEXT_MENU_ACTIONS);
 
-    if (this.hasTimerPermission()) {
-      const requiredTimerAction = this.getTimerAction();
-      actions = actions.filter((action) => {
-        // Show one action
-        if (action.key === requiredTimerAction) {
-          return true;
-        }
-
-        // Hide the other
-        if (action.key === 'start_timer' || action.key === 'stop_timer') {
-          return false;
-        }
-
-        return true;
-      });
-    } else {
-      actions = this.removeTimerActions(actions);
-    }
+    // Reduce the available actions on timers
+    actions = this.reduceTimerAction(actions);
 
     // Splice plugin actions onto the core actions
     _.each(this.getPermittedPluginActions(authorization), (action:WorkPackageAction) => {
@@ -174,6 +155,23 @@ export class WorkPackageSingleContextMenuDirective extends OpContextMenuTrigger 
     });
 
     return actions;
+  }
+
+  private reduceTimerAction(actions:WorkPackageAction[]) {
+    const requiredTimerAction = this.getTimerAction();
+    return actions.filter((action) => {
+      // Show one action
+      if (action.key === requiredTimerAction) {
+        return true;
+      }
+
+      // Hide the other
+      if (action.key === 'start_timer' || action.key === 'stop_timer') {
+        return false;
+      }
+
+      return true;
+    });
   }
 
   private getPermittedPluginActions(authorization:WorkPackageAuthorization) {
