@@ -97,8 +97,18 @@ module Projects
         errors = cf.calculated_value_errors.where(project:)
 
         if errors.any?
-          # TODO: format like an error
-          errors.map(&:error_message).join(" ")
+          # TODO: move into a dedicated component?
+          render(Primer::OpenProject::FlexLayout.new(align_items: :center)) do |container|
+            container.with_column do
+              render Primer::Beta::Octicon.new(icon: :"alert-fill", color: :danger)
+            end
+            container.with_column(ml: 2) do
+              # FIXME: text content gets cut off if the column is not wide enough.
+              render Primer::Beta::Text.new(color: :danger) do
+                errors.map(&:error_message).join(" ")
+              end
+            end
+          end
         else
           custom_value
         end
