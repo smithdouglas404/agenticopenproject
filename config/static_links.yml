@@ -166,6 +166,8 @@ storage_docs:
   troubleshooting:
     href: https://www.openproject.org/docs/user-guide/file-management/nextcloud-integration/#possible-errors-and-troubleshooting
 sysadmin_docs:
+  ldap:
+    href: https://www.openproject.org/docs/system-admin-guide/authentication/ldap-connections/
   oidc:
     href: https://www.openproject.org/docs/system-admin-guide/authentication/openid-providers/
   oidc_acr_values:

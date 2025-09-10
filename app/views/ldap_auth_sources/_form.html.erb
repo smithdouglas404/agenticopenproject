@@ -38,7 +38,14 @@ See COPYRIGHT and LICENSE files for more details.
   <div class="op-toast -info">
     <a title="close" class="op-toast--close icon-context icon-close"></a>
     <div class="op-toast--content">
-      <%= t("ldap_auth_sources.technical_warning_html") %>
+      <%=
+        link_translate(
+          "ldap_auth_sources.technical_warning",
+          links: {
+            docs_url: %i[sysadmin_docs ldap]
+          }
+        )
+      %>
     </div>
   </div>
 <% end %>
