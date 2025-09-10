@@ -27,14 +27,21 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-
 module Users
   module Sessions
-    class TableComponent < ::TableComponent
+    class TableComponent < ::OpPrimer::BorderBoxTableComponent
       columns :is_current, :browser, :device, :updated_at
       sortable_columns :updated_at
       options :current_session
+      mobile_columns :is_current, :browser, :device, :updated_at
 
+      def mobile_title
+        t("users.sessions.title")
+      end
+
+      def has_actions?
+        true
+      end
       def initial_sort
         %i[updated_at desc]
       end

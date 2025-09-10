@@ -30,7 +30,7 @@
 
 module Users
   module Sessions
-    class RowComponent < ::RowComponent
+    class RowComponent < ::OpPrimer::BorderBoxRowComponent
       property :firstname, :lastname
       delegate :current_session, to: :table
 
@@ -47,9 +47,7 @@ module Users
       end
 
       def is_current # rubocop:disable Naming/PredicateName
-        if current?
-          helpers.op_icon "icon-yes"
-        end
+        helpers.op_icon("icon-yes") if current?
       end
 
       def device
@@ -74,22 +72,47 @@ module Users
         end
       end
 
-      def button_links
-        [delete_link].compact
+      def actions
+        action_menu
       end
 
-      def delete_link
+      private
+
+      def button_links
+        [action_menu]
+      end
+
+      def action_menu
+        render(Primer::Alpha::ActionMenu.new(anchor_align: :end)) do |menu|
+          menu.with_show_button(
+            icon: "kebab-horizontal",
+            "aria-label": t(:label_more),
+            scheme: :invisible,
+
+            data: { "test-selector": "more-button" }
+          )
+          delete_action(menu)
+        end
+      end
+
+      def delete_action(menu)
         return if current?
 
-        link_to(
-          helpers.op_icon("icon icon-delete"),
-          { controller: "/my/sessions", action: "destroy", id: session },
-          class: "button--link",
-          role: :button,
-          method: :delete,
-          data: { confirm: I18n.t(:text_are_you_sure), disable_with: I18n.t(:label_loading) },
-          title: I18n.t(:button_delete)
-        )
+        menu.with_item(
+          label: I18n.t(:button_delete),
+          scheme: :danger,
+          href: url_for({ controller: "/my/sessions", action: "destroy", id: session }),
+          tag: :button,
+          form_arguments: { method: :delete },
+          content_arguments: {
+            data: {
+              confirm: I18n.t(:text_are_you_sure),
+              disable_with: I18n.t(:label_loading)
+            }
+          }
+        ) do |item|
+          item.with_leading_visual_icon(icon: :trash)
+        end
       end
     end
   end
