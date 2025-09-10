@@ -103,6 +103,6 @@ export class WorkPackageTimerButtonComponent extends UntilDestroyedMixin {
   }
 
   stop():void {
-   this.timeEntryService.stop();
+   void this.timeEntryService.stop();
   }
 }

@@ -5,13 +5,18 @@ import { AuthorisationService } from 'core-app/core/model-auth/model-auth.servic
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { HookService } from 'core-app/features/plugins/hook-service';
-import { OpContextMenuTrigger } from 'core-app/shared/components/op-context-menu/handlers/op-context-menu-trigger.directive';
-import { OPContextMenuService } from 'core-app/shared/components/op-context-menu/op-context-menu.service';
+import {
+  OpContextMenuTrigger,
+} from 'core-app/shared/components/op-context-menu/handlers/op-context-menu-trigger.directive';
 import { OpContextMenuItem } from 'core-app/shared/components/op-context-menu/op-context-menu.types';
-import { PERMITTED_CONTEXT_MENU_ACTIONS } from 'core-app/shared/components/op-context-menu/wp-context-menu/wp-static-context-menu-actions';
+import {
+  PERMITTED_CONTEXT_MENU_ACTIONS,
+} from 'core-app/shared/components/op-context-menu/wp-context-menu/wp-static-context-menu-actions';
 import { OpModalService } from 'core-app/shared/components/modal/modal.service';
 import { CopyToClipboardService } from 'core-app/shared/components/copy-to-clipboard/copy-to-clipboard.service';
-import { WorkPackageAction } from 'core-app/features/work-packages/components/wp-table/context-menu-helper/wp-context-menu-helper.service';
+import {
+  WorkPackageAction,
+} from 'core-app/features/work-packages/components/wp-table/context-menu-helper/wp-context-menu-helper.service';
 import { WpDestroyModalComponent } from 'core-app/shared/components/modals/wp-destroy-modal/wp-destroy.modal';
 import { WorkPackageAuthorization } from 'core-app/features/work-packages/services/work-package-authorization.service';
 import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
@@ -20,31 +25,27 @@ import { TimeEntryTimerService } from 'core-app/shared/components/time_entries/s
 import { TimeEntryResource } from 'core-app/features/hal/resources/time-entry-resource';
 
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[wpSingleContextMenu]',
   standalone: false,
 })
 export class WorkPackageSingleContextMenuDirective extends OpContextMenuTrigger implements AfterViewInit, OnDestroy {
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('wpSingleContextMenu-workPackage') public workPackage:WorkPackageResource;
 
   private currentTimer:TimeEntryResource|null = null;
 
-
-  constructor(
-    readonly HookService:HookService,
-    readonly $state:StateService,
-    readonly injector:Injector,
-    readonly PathHelper:PathHelperService,
-    readonly elementRef:ElementRef,
-    readonly opModalService:OpModalService,
-    readonly turboRequests:TurboRequestsService,
-    readonly apiV3Service:ApiV3Service,
-    readonly opContextMenuService:OPContextMenuService,
-    readonly authorisationService:AuthorisationService,
-    readonly timeEntryService:TimeEntryTimerService,
-    protected copyToClipboardService:CopyToClipboardService,
-  ) {
-    super(elementRef, opContextMenuService);
-  }
+  readonly HookService = inject(HookService);
+  readonly $state = inject(StateService);
+  readonly injector = inject(Injector);
+  readonly PathHelper = inject(PathHelperService);
+  readonly elementRef = inject(ElementRef);
+  readonly opModalService = inject(OpModalService);
+  readonly turboRequests = inject(TurboRequestsService);
+  readonly apiV3Service = inject(ApiV3Service);
+  readonly authorisationService = inject(AuthorisationService);
+  readonly timeEntryService = inject(TimeEntryTimerService);
+  protected copyToClipboardService = inject(CopyToClipboardService);
 
   private closeDialogHandler:EventListener = this.handleTimeEntryDialogClose.bind(this);
 
@@ -78,13 +79,14 @@ export class WorkPackageSingleContextMenuDirective extends OpContextMenuTrigger 
 
     switch (key) {
       case 'copy_to_other_project':
-        window.location.href = `${this.PathHelper.staticBase}/work_packages/move/new?copy=true&ids[]=${this.workPackage.id as string}`;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        window.location.href = `${this.PathHelper.staticBase}/work_packages/move/new?copy=true&ids[]=${this.workPackage.id!}`;
         break;
       case 'start_timer':
         this.timeEntryService.start(this.workPackage);
         break;
       case 'stop_timer':
-        this.timeEntryService.stop();
+        void this.timeEntryService.stop();
         break;
       case 'copy':
         this.$state.go('work-packages.copy', { copiedFromWorkPackageId: this.workPackage.id });
