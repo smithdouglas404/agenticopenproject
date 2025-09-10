@@ -93,6 +93,15 @@ module Projects
         )
       elsif custom_value.is_a?(Array)
         safe_join(Array(custom_value).compact_blank, ", ")
+      elsif cf.calculated_value?
+        errors = cf.calculated_value_errors.where(project:)
+
+        if errors.any?
+          # TODO: format like an error
+          errors.map(&:error_message).join(" ")
+        else
+          custom_value
+        end
       else
         custom_value
       end

@@ -325,6 +325,8 @@ class CustomField < ApplicationRecord
     field_format == "calculated_value"
   end
 
+  def calculated_value? = field_format_calculated_value?
+
   def hierarchical_list?
     field_format_hierarchy? || field_format_scored_list?
   end
