@@ -55,14 +55,7 @@ module ActsAsCustomizable::CalculatedValue
       )
 
       self.custom_field_values = custom_fields.to_h { [it.id, result[it.column_name]] }
-
-      result.each do |cf_id, calculation_result|
-        if calculation_result.nil? && is_a?(Project)
-          CalculatedValueError.create!(project: self,
-                                       custom_field_id: cf_id.sub("cf_", "").to_i,
-                                       error_code: "ERROR_MATHEMATICAL")
-        end
-      end
+      refresh_calculation_errors!(result)
     end
 
     private
@@ -87,6 +80,33 @@ module ActsAsCustomizable::CalculatedValue
       custom_fields
         .select { it.id.in?(enabled_ids) }
         .to_h { [it.column_name, it.formula_str_without_patterns] }
+    end
+
+    def to_id(cf_id)
+      cf_id.sub("cf_", "").to_i
+    end
+
+    def refresh_calculation_errors!(result)
+      return unless is_a?(Project)
+
+      failed_calculations, successful_calculations = result.partition do |_, calculation_result|
+        calculation_result.nil?
+      end
+
+      successfully_calculated_cfs = successful_calculations.map { |cf_id, _| to_id(cf_id) }
+      remove_calculated_value_errors(successfully_calculated_cfs)
+
+      failed_calculations.to_h.each_key do |cf_id|
+        create_calculated_value_error(to_id(cf_id), "ERROR_MATHEMATICAL")
+      end
+    end
+
+    def create_calculated_value_error(custom_field_id, error_code)
+      CalculatedValueError.create!(project: self, custom_field_id:, error_code:)
+    end
+
+    def remove_calculated_value_errors(custom_field_ids = [])
+      CalculatedValueError.where(project: self, custom_field_id: custom_field_ids).delete_all
     end
   end
 end
