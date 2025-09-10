@@ -13,6 +13,13 @@ Stay up to date and get an overview of the new features included in the releases
 <!--- New release notes are generated below. Do not remove comment. -->
 <!--- RELEASE MARKER -->
 
+## 16.4.0
+
+Release date: 2025-09-10
+
+[Release Notes](16-4-0/)
+
+
 ## 16.3.2
 
 Release date: 2025-08-25
