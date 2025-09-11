@@ -46,7 +46,6 @@ import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destr
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { Subject } from 'rxjs';
 import { compareByHref } from 'core-app/shared/helpers/angular/tracking-functions';
-import { repositionDropdownBugfix } from 'core-app/shared/components/autocompleter/op-autocompleter/autocompleter.helper';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-redundant-type-constituents
 type AddTagFn = (term:string) => any | Promise<any>;
@@ -149,7 +148,6 @@ export class CreateAutocompleterComponent extends UntilDestroyedMixin implements
   }
 
   public opened() {
-    repositionDropdownBugfix(this.ngSelectComponent);
     this.onOpen.emit();
   }
 

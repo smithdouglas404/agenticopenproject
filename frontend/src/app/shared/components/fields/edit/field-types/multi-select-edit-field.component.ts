@@ -151,12 +151,6 @@ export class MultiSelectEditFieldComponent extends EditFieldComponent implements
     // Nothing to do
   }
 
-  public repositionDropdown() {
-    if (this.ngSelectComponent && this.ngSelectComponent.dropdownPanel) {
-      setTimeout(() => this.ngSelectComponent.dropdownPanel.adjustPosition(), 0);
-    }
-  }
-
   private openAutocompleteSelectField() {
     // The timeout takes care that the opening is added to the end of the current call stack.
     // Thus we can be sure that the autocompleter is rendered and ready to be opened.

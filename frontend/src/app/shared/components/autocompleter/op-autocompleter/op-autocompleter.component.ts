@@ -41,9 +41,6 @@ import { OpAutocompleterService } from './services/op-autocompleter.service';
 import { OpAutocompleterHeaderTemplateDirective } from './directives/op-autocompleter-header-template.directive';
 import { OpAutocompleterLabelTemplateDirective } from './directives/op-autocompleter-label-template.directive';
 import { OpAutocompleterOptionTemplateDirective } from './directives/op-autocompleter-option-template.directive';
-import {
-  repositionDropdownBugfix,
-} from 'core-app/shared/components/autocompleter/op-autocompleter/autocompleter.helper';
 import { populateInputsFromDataset } from 'core-app/shared/components/dataset-inputs';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ID } from '@datorama/akita';
@@ -382,12 +379,7 @@ export class OpAutocompleterComponent<T extends IAutocompleteItem = IAutocomplet
     return this.model[this.inputBindValue as 'id'] as string;
   }
 
-  public repositionDropdown() {
-    repositionDropdownBugfix(this.ngSelectInstance);
-  }
-
   public opened():void { // eslint-disable-line no-unused-vars
-    this.repositionDropdown();
     this.open.emit();
   }
 

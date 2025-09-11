@@ -16,9 +16,6 @@ import { DragulaService, Group } from 'ng2-dragula';
 import { DomAutoscrollService } from 'core-app/shared/helpers/drag-and-drop/dom-autoscroll.service';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { setBodyCursor } from 'core-app/shared/helpers/dom/set-window-cursor.helper';
-import {
-  repositionDropdownBugfix,
-} from 'core-app/shared/components/autocompleter/op-autocompleter/autocompleter.helper';
 import { QueryFilterResource } from 'core-app/features/hal/resources/query-filter-resource';
 import { AlternativeSearchService } from 'core-app/shared/components/work-packages/alternative-search.service';
 import { populateInputsFromDataset } from 'core-app/shared/components/dataset-inputs';
@@ -207,10 +204,6 @@ export class DraggableAutocompleteComponent extends UntilDestroyedMixin implemen
 
   get isArrayOfValues() {
     return this.name.endsWith('[]');
-  }
-
-  opened() {
-    repositionDropdownBugfix(this.ngSelectComponent);
   }
 
   searchFunction = (term:string, currentItem:QueryFilterResource):boolean => {

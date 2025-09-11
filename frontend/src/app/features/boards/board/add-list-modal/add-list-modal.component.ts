@@ -193,7 +193,6 @@ export class AddListModalComponent extends OpModalComponent implements OnInit {
       })
       .catch(() => {});
     this.showWarning = this.ngSelectComponent.ngSelectInstance.searchTerm !== undefined && (values.length === 0);
-    this.ngSelectComponent.repositionDropdown();
     this.cdRef.detectChanges();
   }
 }

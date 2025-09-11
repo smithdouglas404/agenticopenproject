@@ -91,19 +91,6 @@ export class WorkPackageRelationsAutocompleteComponent extends OpAutocompleterCo
     }
   }
 
-  opened() {
-    // Force reposition as a workaround for BUG
-    // https://github.com/ng-select/ng-select/issues/1259
-    this.ngZone.runOutsideAngular(() => {
-      setTimeout(() => {
-        this.ngSelectInstance.dropdownPanel.adjustPosition();
-        jQuery(this.hiddenOverflowContainer).one('scroll', () => {
-          this.ngSelectInstance.close();
-        });
-      }, 25);
-    });
-  }
-
   getAutocompleterData(query:string|null):Observable<HalResource[]> {
     // Return when the search string is empty
     if (query === null || query.length === 0) {

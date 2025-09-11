@@ -36,7 +36,6 @@ import {
 } from 'core-app/shared/components/fields/helpers/project-status-helper';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
-import { repositionDropdownBugfix } from 'core-app/shared/components/autocompleter/op-autocompleter/autocompleter.helper';
 
 interface ProjectStatusOption {
   href:string
@@ -94,8 +93,6 @@ export class ProjectStatusEditFieldComponent extends EditFieldComponent implemen
   }
 
   public onOpen() {
-    repositionDropdownBugfix(this.ngSelectComponent);
-
     jQuery(this.hiddenOverflowContainer).one('scroll.autocompleteContainer', () => {
       this.ngSelectComponent.close();
     });
