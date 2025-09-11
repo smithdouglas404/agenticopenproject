@@ -33,7 +33,8 @@ class CalculatedValueError < ApplicationRecord
   belongs_to :custom_field
 
   ERROR_TRANSLATIONS = {
-    "ERROR_MATHEMATICAL" => "calculated_values.errors.mathematical"
+    "ERROR_MATHEMATICAL" => "calculated_values.errors.mathematical",
+    "ERROR_MISSING_VALUE" => "calculated_values.errors.missing_value"
   }.freeze
 
   VALID_ERROR_CODES = ERROR_TRANSLATIONS.keys.freeze
