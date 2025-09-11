@@ -102,7 +102,9 @@ module ActsAsCustomizable::CalculatedValue
     end
 
     def create_calculated_value_error(custom_field_id, error_code)
-      CalculatedValueError.create!(project: self, custom_field_id:, error_code:)
+      unless CalculatedValueError.exists?(project: self, custom_field_id:, error_code:)
+        CalculatedValueError.create!(project: self, custom_field_id:, error_code:)
+      end
     end
 
     def remove_calculated_value_errors(custom_field_ids = [])
