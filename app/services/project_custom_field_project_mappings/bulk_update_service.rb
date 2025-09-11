@@ -91,6 +91,8 @@ module ProjectCustomFieldProjectMappings
       @project.project_custom_field_project_mappings
         .where(custom_field_id: custom_field_ids)
         .delete_all
+
+      reset_associations
     end
 
     def existing_mappings(custom_field_ids)
@@ -105,6 +107,13 @@ module ProjectCustomFieldProjectMappings
           custom_field_ids.map { |id| { custom_field_id: id } },
           unique_by: %i[project_id custom_field_id]
         )
+
+      reset_associations
+    end
+
+    def reset_associations
+      @project.project_custom_field_project_mappings.reset
+      @project.project_custom_fields.reset
     end
   end
 end
