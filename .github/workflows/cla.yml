@@ -47,7 +47,7 @@ jobs:
             cbliard,
             corinnaguenther,
             crohr,
-            dependabot,
+            dependabot[bot],
             dombesz,
             dominic-brauenlein,
             dsteiner,
