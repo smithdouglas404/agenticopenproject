@@ -76,6 +76,7 @@ See COPYRIGHT and LICENSE files for more details.
                        ::OpenProject::Static::Links.url_for(:security_badge_documentation),
                        title: t(:label_what_is_this),
                        class: "security-badge--help-icon icon-context icon-help1",
+                       aria: { label: t(:label_what_is_this), describedby: "open-blank-target-link-description" },
                        target: "_blank"
     component.with_attribute(key: "", value: content)
   end

@@ -334,7 +334,7 @@ en:
       warning: "Please don't share this URL with other users. Anyone with this link will be able to view work package details without an account or password."
       token_name_label: "Where will you be using this?"
       token_name_placeholder: 'Type a name, e.g. "Phone"'
-      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="my/access_token", target="_blank">access tokens</a> list.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="my/access_token", target="_blank" aria-describedby="open-blank-target-link-description">access tokens</a> list.'
       copy_url_label: "Copy URL"
       ical_generation_error_text: "An error occured while generating the calendar URL."
       success_message: 'The URL "%{name}" was successfully copied to your clipboard. Paste it in your calendar client to complete the subscription.'
@@ -625,7 +625,7 @@ en:
       reminders:
         note: "Note: “%{note}”"
       settings:
-        change_notification_settings: 'You can modify your <a target="_blank" href="%{url}">notification settings</a> to ensure you never miss an important update.'
+        change_notification_settings: 'You can modify your <a target="_blank" aria-describedby="open-blank-target-link-description" href="%{url}">notification settings</a> to ensure you never miss an important update.'
         title: "Notification settings"
         notify_me: "Notify me"
         reminders:
@@ -1238,7 +1238,7 @@ en:
           title_no_ee: "Placeholder user (Enterprise edition only add-on)"
           description: "Has no access to the project and no emails are sent out."
           description_no_ee: 'Has no access to the project and no emails are sent out.
-            <br>Check out the <a href="%{eeHref}" target="_blank">Enterprise edition</a>'
+            <br>Check out the <a href="%{eeHref}" target="_blank" aria-describedby="open-blank-target-link-description">Enterprise edition</a>'
 
       principal:
         label:
@@ -1263,7 +1263,7 @@ en:
           This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see.
           <a
           href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions"
-          target="_blank">
+          target="_blank" aria-describedby="open-blank-target-link-description">
           Learn more about roles and permissions.
           </a>
         required: "Please select a role"

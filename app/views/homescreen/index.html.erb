@@ -58,7 +58,8 @@ See COPYRIGHT and LICENSE files for more details.
       <%= link_to url,
                   class: "homescreen--links--item",
                   target: "_blank",
-                  aria_label: title do %>
+                  title: title,
+                  aria: { label: title, describedby: "open-blank-target-link-description" } do %>
         <%= op_icon(link[:icon]) %>
         <%= title %>
       <% end %>
