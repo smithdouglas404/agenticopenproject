@@ -1,0 +1,59 @@
+# Accessibility for Links that Open in a New Tab
+
+Links that open in a new browser tab or window (`target="_blank"`) can be confusing for users, especially for those using assistive technologies. To ensure accessibility, we need to provide clear context so that all users understand that the link will open in a new tab.
+
+## Why `_blank` Links Need Accessible Hints
+
+- Users may lose track of their current page if a link opens in a new tab unexpectedly.
+- Screen reader users may not be aware of the new tab unless it is explicitly communicated.
+- Providing a description improves usability and ensures compliance with WCAG guidelines.
+
+---
+
+## Recommended Attributes
+
+To make `_blank` links accessible, we rely on:
+
+- **`aria-describedby`**: Points to a hidden element describing the new tab behavior.
+- **`aria-label`** *(optional)*: Can include context about the link and new tab behavior.
+- **`title`** *(optional)*: Provides a tooltip for sighted users.
+
+---
+
+## Hidden Description in `base.html`
+
+We include a single hidden element in `base.html` so that all `_blank` links can reference it:
+
+```erb
+<span id="open-blank-target-link-description" class="sr-only">
+  <%= I18n.t("open_link_in_a_new_tab") %>
+</span>
+```
+
+- Using a **single, centralized hidden element** ensures consistency across the application.
+- The element uses a **translation key** (`open_link_in_a_new_tab`) for multilingual support.
+- The `sr-only` class visually hides the element but keeps it accessible to screen readers.
+
+---
+
+## Example HTML Implementation
+
+```html
+<a href="https://www.openproject.org/docs/user-guide/"
+   target="_blank"
+   aria-describedby="open-blank-target-link-description"
+   aria-label="User guides">
+  User guides
+</a>
+```
+
+- The `aria-describedby` points to the hidden description in `base.html`.
+- The `aria-label` can provide a more explicit announcement for screen readers.
+- The `title` provides a tooltip for sighted users.
+- Screen readers announce the link text and the hidden description automatically.
+
+## Notes
+
+- Always indicate links opening in a new tab to assistive technology users.
+- Prefer `aria-describedby` and `aria-label` over relying solely on `title`.
+- Centralizing the hidden description in `base.html` ensures consistency and reduces duplication.
