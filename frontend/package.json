@@ -120,7 +120,7 @@
     "@stimulus-components/auto-submit": "^6.0.0",
     "@types/hotwired__turbo": "^8.0.1",
     "@types/jquery.cookie": "^1.4.36",
-    "@uirouter/angular": "^13.0.0",
+    "@uirouter/angular": "^17.0.0",
     "@uirouter/core": "^6.1.0",
     "@uirouter/rx": "^1.0.0",
     "@w11k/ngx-componentdestroyed": "^5.0.2",
