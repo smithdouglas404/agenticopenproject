@@ -47,6 +47,7 @@ export default class extends Controller {
     hocuspocusUrl: String,
     hocuspocusAccessToken: String,
     documentId: String,
+    openProjectUrl: String,
   };
 
   declare readonly blockNoteEditorTarget:HTMLElement;
@@ -57,6 +58,7 @@ export default class extends Controller {
   declare readonly hocuspocusUrlValue:string;
   declare readonly hocuspocusAccessTokenValue:string;
   declare readonly documentIdValue:string;
+  declare readonly openProjectUrlValue:string;
 
   connect() {
     const root = createRoot(this.blockNoteEditorTarget);
@@ -72,6 +74,7 @@ export default class extends Controller {
       hocuspocusUrl: this.hocuspocusUrlValue,
       hocuspocusAccessToken: this.hocuspocusAccessTokenValue,
       documentId: this.documentIdValue,
+      openProjectUrl: this.openProjectUrlValue,
     });
   }
 }
