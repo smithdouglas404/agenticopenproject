@@ -392,5 +392,12 @@ RSpec.describe Meetings::IcalendarBuilder,
       expect(standard_count).to eq(4)
       expect(daylight_count).to eq(4)
     end
+
+    it "does not add the timezone multiple times when `to_ical` is called multiple times" do
+      meetings.each { |m| builder.add_single_meeting_event(meeting: m) }
+      builder.to_ical
+      builder.to_ical
+      expect(parsed_calendar.timezones.size).to eq(1)
+    end
   end
 end
