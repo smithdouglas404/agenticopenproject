@@ -1,6 +1,9 @@
 api_docs:
   href: https://www.openproject.org/docs/api/
   label: :label_api_doc
+api:
+  authentication_basic_auth:
+    href: https://www.openproject.org/docs/api/introduction/#api-key-through-basic-auth
 blog:
   href: https://www.openproject.org/blog
   label: homescreen.links.blog
@@ -163,6 +166,8 @@ storage_docs:
   troubleshooting:
     href: https://www.openproject.org/docs/user-guide/file-management/nextcloud-integration/#possible-errors-and-troubleshooting
 sysadmin_docs:
+  ldap:
+    href: https://www.openproject.org/docs/system-admin-guide/authentication/ldap-connections/
   oidc:
     href: https://www.openproject.org/docs/system-admin-guide/authentication/openid-providers/
   oidc_acr_values:
@@ -208,6 +213,9 @@ upsell_get_quote:
 user_guides:
   href: https://www.openproject.org/docs/user-guide/
   label: homescreen.links.user_guides
+user_guide:
+  access_tokens:
+    href: https://www.openproject.org/docs/user-guide/account-settings/#access-tokens
 webinar_videos:
   href: https://www.youtube.com/watch?v=un6zCm8_FT4
 website:
