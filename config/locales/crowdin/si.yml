@@ -335,14 +335,23 @@ si:
       no_results_content_text: නව අභිරුචි ක්ෂේත්‍රයක් සාදන්න
   concatenation:
     single: "හෝ"
-  dry_validation:
+  op_dry_validation:
+    or: "or"
     errors:
-      defined: "must not be defined."
-      int?: "must be an integer."
+      array?: "must be an array."
       decimal?: "must be a decimal."
+      defined: "must not be defined."
+      eql?: "must be equal to %{left}."
       filled?: "must be filled."
-      key?: "is missing."
       greater_or_equal_zero: "must be greater or equal to 0."
+      gteq?: "must be greater than or equal to %{num}."
+      hash?: "must be a hash."
+      included_in?:
+        arg:
+          default: "must be one of: %{list}."
+          range: "must be one of: %{list_left} - %{list_right}."
+      int?: "must be an integer."
+      key?: "is missing."
       not_found: "not found."
       rules:
         copy_workflow_from:
@@ -358,6 +367,8 @@ si:
           not_unique: "must be unique within the same hierarchy level."
         parent:
           not_descendant: "must be a descendant of the hierarchy root."
+      str?: "must be a string."
+      type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
       enabled: "Enabled"
@@ -366,7 +377,7 @@ si:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "මාපිය"
+      parent: "Parent"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -595,9 +606,6 @@ si:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Please provide an API token name"
-        token_name_in_use: "This API token name is already in use, please select a different one"
       failed_to_reset_token: "ප්රවේශ ටෝකනය නැවත සකස් කිරීමට අපොහොසත් විය: %{error}"
       failed_to_create_token: "Failed to create access token: %{error}"
       failed_to_revoke_token: "Failed to revoke access token: %{error}"
@@ -1143,6 +1151,8 @@ si:
         is_readonly: "වැඩ පැකේජය කියවීමට-පමණි"
         excluded_from_totals: "Exclude from calculation of totals in hierarchy"
         default_done_ratio: "% Complete"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "දින දර්ශනය"
         ical_token_query_assignment: "Query assignment"
@@ -1576,7 +1586,8 @@ si:
               cant_exceed_work: "cannot be higher than Work."
               must_be_set_when_work_is_set: "required when Work is set."
               must_be_set_when_work_and_percent_complete_are_set: "required when Work and % Complete are set."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 must be empty when Work is empty and % Complete is 100%.
           readonly_status: "The work package is in a readonly status so its attributes cannot be changed."
@@ -1624,9 +1635,11 @@ si:
         version:
           undeletable_archived_projects: "එය අමුණා ඇති වැඩ පැකේජ ඇති බැවින් අනුවාදය මකා දැමිය නොහැක."
           undeletable_work_packages_attached: "එය අමුණා ඇති වැඩ පැකේජ ඇති බැවින් අනුවාදය මකා දැමිය නොහැක."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "කරුණාකර පහත සඳහන් ක්ෂේත්ර පරීක්ෂා කරන්න:"
@@ -2556,7 +2569,8 @@ si:
       shortcuts: "කෙටිමං"
       blog: "OpenProject බ්ලොග්"
       forums: "ප්රජා සංසදය"
-      newsletter: "ආරක්ෂක ඇඟවීම්/පුවත් ලිපි"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:

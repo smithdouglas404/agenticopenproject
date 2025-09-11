@@ -1100,6 +1100,7 @@ vi:
         other: "công việc"
       child_work_packages:
         other: "%{count} tác phẩm gói phần mềm trẻ em"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} giờ"

@@ -334,39 +334,50 @@ ru:
       no_results_content_text: Создать новое настраиваемое поле
   concatenation:
     single: "или"
-  dry_validation:
+  op_dry_validation:
+    or: "or"
     errors:
-      defined: "must not be defined."
-      int?: "должно быть целым числом."
+      array?: "must be an array."
       decimal?: "must be a decimal."
-      filled?: "должно быть заполнено."
+      defined: "must not be defined."
+      eql?: "must be equal to %{left}."
+      filled?: "must be filled."
+      greater_or_equal_zero: "must be greater or equal to 0."
+      gteq?: "must be greater than or equal to %{num}."
+      hash?: "must be a hash."
+      included_in?:
+        arg:
+          default: "must be one of: %{list}."
+          range: "must be one of: %{list_left} - %{list_right}."
+      int?: "must be an integer."
       key?: "is missing."
-      greater_or_equal_zero: "должно быть больше или равно 0."
-      not_found: "не найдено."
+      not_found: "not found."
       rules:
         copy_workflow_from:
-          workflow_missing: "не имеет собственного рабочего процесса."
+          workflow_missing: "has no own workflow."
         custom_field:
           format_not_supported: "format '%{field_format}' is unsupported."
         item:
-          root_item: "не может быть корневым элементом."
-          not_persisted: "должно быть уже существующим элементом."
+          root_item: "cannot be a root item."
+          not_persisted: "must be an already existing item."
         label:
-          not_unique: "должно быть уникальным в пределах одного уровня иерархии."
+          not_unique: "must be unique within the same hierarchy level."
         short:
-          not_unique: "должно быть уникальным в пределах одного уровня иерархии."
+          not_unique: "must be unique within the same hierarchy level."
         parent:
-          not_descendant: "должно быть потомком корневого уровня иерархии."
+          not_descendant: "must be a descendant of the hierarchy root."
+      str?: "must be a string."
+      type?: "must be %{type}."
     rules:
-      copy_workflow_from: "Тип копии рабочего процесса"
-      enabled: "Включено"
-      depth: "Глубина"
-      item: "Элемент"
-      label: "Метка"
+      copy_workflow_from: "Type for workflow copy"
+      enabled: "Enabled"
+      depth: "Depth"
+      item: "Item"
+      label: "Label"
       score: "Score"
-      short: "Краткое имя"
-      parent: "Родитель"
-      blueprint: "Шаблон чертежа"
+      short: "Short name"
+      parent: "Parent"
+      blueprint: "Pattern blueprint"
   global_search:
     title:
       all_projects: 'Поиск "%{search_term}" во всех проектах'
@@ -606,9 +617,6 @@ ru:
         token/api:
           title: "The API token has been generated"
           warning: "Это единственный раз, когда Вы увидите токен. Убедитесь, что вы сохранили его."
-      errors:
-        token_name_blank: "Пожалуйста, укажите имя токена API"
-        token_name_in_use: "Это имя токена API уже используется, пожалуйста, выберите другое"
       failed_to_reset_token: "Не удалось сбросить маркер доступа: %{error}"
       failed_to_create_token: "Не удалось создать токен доступа: %{error}"
       failed_to_revoke_token: "Не удалось отозвать токен доступа: %{error}"
@@ -1157,6 +1165,8 @@ ru:
         is_readonly: "Пакет работ только для просмотра"
         excluded_from_totals: "Исключить из расчета итогов в иерархии"
         default_done_ratio: "% завершения"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Календарь"
         ical_token_query_assignment: "Задание запроса"
@@ -1592,7 +1602,8 @@ ru:
               cant_exceed_work: "не может быть больше, чем Предполагаемое время."
               must_be_set_when_work_is_set: "требуется, если установлен параметр Предполагаемое время."
               must_be_set_when_work_and_percent_complete_are_set: "требуется, если установлены параметры Предполагаемое время и % завершения."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 должно быть пустым, если параметр Предполагаемое время не установлен, а % завершения равен 100%.
           readonly_status: "Пакет работ находится в статусе доступном только для чтения, поэтому его атрибуты не могут быть изменены."
@@ -1642,9 +1653,11 @@ ru:
         version:
           undeletable_archived_projects: "Версия не может быть удалена, так как имеет пакеты работ, прикрепленные к ней."
           undeletable_work_packages_attached: "Версия не может быть удалена, так как имеет пакеты работ, прикрепленные к ней."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Пожалуйста, проверьте следующие поля:"
@@ -2644,7 +2657,8 @@ ru:
       shortcuts: "Ярлыки"
       blog: "Openproject блог"
       forums: "Форум сообщества"
-      newsletter: "Оповещения системы безопасности / Новости"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:

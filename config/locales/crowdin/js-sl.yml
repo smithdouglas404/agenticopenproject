@@ -1108,6 +1108,7 @@ sl:
         two: "%{count} podrejeni delovni paketi"
         few: "%{count} podrejeni delovni paketi"
         other: "%{count} podrejeni delovni paketi"
+      hour_string: "%{hours} h"
       hour:
         one: "1 ura"
         other: "%{count} ur"

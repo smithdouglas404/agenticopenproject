@@ -138,7 +138,7 @@ RSpec.describe MeetingSeriesMailer do
       expect(parsed.length).to eq 1
 
       expect(entry.summary).to eq "Recurring Standup"
-      expect(entry.description).to eq "Recurring Standup"
+      expect(entry.description).to eq "Link to meeting series: http://#{Setting.host_name}/recurring_meetings/#{series.id}"
       expect(entry.location).to eq(series.template&.location.presence)
     end
   end

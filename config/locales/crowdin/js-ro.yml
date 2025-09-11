@@ -1105,6 +1105,7 @@ ro:
         one: "Un pachet de lucru descendent"
         few: "%{count} descendenți ai pachetului de lucru"
         other: "%{count} copii din pachetul de lucru"
+      hour_string: "%{hours} h"
       hour:
         one: "1 oră"
         other: "%{count} ora"

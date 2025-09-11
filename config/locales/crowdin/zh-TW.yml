@@ -334,39 +334,50 @@ zh-TW:
       no_results_content_text: 建立一個新的自定義欄位
   concatenation:
     single: "或者"
-  dry_validation:
+  op_dry_validation:
+    or: "or"
     errors:
-      defined: "必須未被定義。"
-      int?: "必須是整數"
-      decimal?: "必須是十進位。"
-      filled?: "必填"
-      key?: "遺失。"
-      greater_or_equal_zero: "必須大於或等於 0"
-      not_found: "未找到"
+      array?: "must be an array."
+      decimal?: "must be a decimal."
+      defined: "must not be defined."
+      eql?: "must be equal to %{left}."
+      filled?: "must be filled."
+      greater_or_equal_zero: "must be greater or equal to 0."
+      gteq?: "must be greater than or equal to %{num}."
+      hash?: "must be a hash."
+      included_in?:
+        arg:
+          default: "must be one of: %{list}."
+          range: "must be one of: %{list_left} - %{list_right}."
+      int?: "must be an integer."
+      key?: "is missing."
+      not_found: "not found."
       rules:
         copy_workflow_from:
-          workflow_missing: "沒有自己的工作流程。"
+          workflow_missing: "has no own workflow."
         custom_field:
-          format_not_supported: "格式 '%{field_format}' 不支援。"
+          format_not_supported: "format '%{field_format}' is unsupported."
         item:
-          root_item: "不能為根項目"
-          not_persisted: "必須是已存在的項目"
+          root_item: "cannot be a root item."
+          not_persisted: "must be an already existing item."
         label:
-          not_unique: "在同一階層內必須唯一"
+          not_unique: "must be unique within the same hierarchy level."
         short:
-          not_unique: "在同一階層內必須唯一"
+          not_unique: "must be unique within the same hierarchy level."
         parent:
-          not_descendant: "必須是層級展開的"
+          not_descendant: "must be a descendant of the hierarchy root."
+      str?: "must be a string."
+      type?: "must be %{type}."
     rules:
-      copy_workflow_from: "工作流程複本的類型"
-      enabled: "啟用"
-      depth: "深度"
-      item: "項目"
-      label: "標籤"
-      score: "評分"
-      short: "簡稱"
-      parent: "上層"
-      blueprint: "樣式藍圖"
+      copy_workflow_from: "Type for workflow copy"
+      enabled: "Enabled"
+      depth: "Depth"
+      item: "Item"
+      label: "Label"
+      score: "Score"
+      short: "Short name"
+      parent: "Parent"
+      blueprint: "Pattern blueprint"
   global_search:
     title:
       all_projects: '在所有專案中搜尋 "%{search_term}"'
@@ -588,9 +599,6 @@ zh-TW:
         token/api:
           title: "API 令牌(Token)已生成。"
           warning: "這是您唯一一次看到此令牌(Token)的機會，請務必立即複製。"
-      errors:
-        token_name_blank: "請提供API token名稱"
-        token_name_in_use: "此 API token名稱已被使用，請選擇其他名稱"
       failed_to_reset_token: "無法重置訪問令牌(Token): %{error}"
       failed_to_create_token: "無法建立訪問令牌(Token): %{error}"
       failed_to_revoke_token: "無法撤銷訪問令牌(Token): %{error}"
@@ -1131,6 +1139,8 @@ zh-TW:
         is_readonly: "設定「工作套件」唯讀"
         excluded_from_totals: "從層次結構的總計中排除"
         default_done_ratio: "% 完成"
+      token/named:
+        token_name: "令牌名稱"
       token/ical:
         calendar: "行事曆"
         ical_token_query_assignment: "指派查詢"
@@ -1563,7 +1573,8 @@ zh-TW:
               cant_exceed_work: "不能高於工時。"
               must_be_set_when_work_is_set: "工時已設定時必填"
               must_be_set_when_work_and_percent_complete_are_set: "工時 和 完成百分比 已設置時必填。"
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: 當工時設定後，其完成度100%時，剩餘工時必須為 0。
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                設定為 Work 且 % 完成度為 100% 時，必須為 0h。
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 工時未設定設定，但完成度100%時，剩餘工時必須是空白。
           readonly_status: "工作套件處於唯讀狀態，因此無法變更其屬性。"
@@ -1610,9 +1621,11 @@ zh-TW:
         version:
           undeletable_archived_projects: "該版本無法刪除，因為包含工作套件。"
           undeletable_work_packages_attached: "該版本無法刪除，因為它附帶了工作套件。"
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "請提供令牌名稱"
+              in_use: "此令牌名稱已被使用，請選擇其他名稱"
               format: "%{message}"
       template:
         body: "請檢查下列欄位："
@@ -2507,7 +2520,8 @@ zh-TW:
       shortcuts: "快捷鍵"
       blog: "Openproject 部落格"
       forums: "社群討論區"
-      newsletter: "資通安全通知 / 電子報"
+      security_alerts: "安全警示"
+      newsletter: "電子報"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:

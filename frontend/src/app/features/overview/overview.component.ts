@@ -26,58 +26,29 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, Input, OnInit } from '@angular/core';
 import { GridPageComponent } from 'core-app/shared/components/grids/grid/page/grid-page.component';
 import { GRID_PROVIDERS } from 'core-app/shared/components/grids/grid/grid.component';
+import { populateInputsFromDataset } from 'core-app/shared/components/dataset-inputs';
 
 @Component({
-  selector: 'overview',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: '../../shared/components/grids/grid/page/grid-page.component.html',
   styleUrls: ['../../shared/components/grids/grid/page/grid-page.component.sass'],
   providers: GRID_PROVIDERS,
   standalone: false,
 })
-export class OverviewComponent extends GridPageComponent {
-  showToolbar = false;
+export class OverviewComponent extends GridPageComponent implements OnInit {
+  @Input() projectIdentifier:string;
 
-  protected i18nNamespace():string {
-    return 'overviews';
-  }
+  readonly elementRef = inject(ElementRef);
 
-  protected isTurboFrameSidebarEnabled():boolean {
-    return this.isCustomFieldsSidebarEnabled() || this.isLifeCycleSidebarEnabled();
-  }
-
-  protected isCustomFieldsSidebarEnabled():boolean {
-    const customFieldsSidebarEnabledTag:HTMLMetaElement|null = document.querySelector('meta[name="custom_fields_sidebar_enabled"]');
-
-    return customFieldsSidebarEnabledTag?.dataset.enabled === 'true';
-  }
-
-  protected isLifeCycleSidebarEnabled():boolean {
-    const lifeCycleSidebarEnabledTag:HTMLMetaElement|null = document.querySelector('meta[name="life_cycle_sidebar_enabled"]');
-
-    return lifeCycleSidebarEnabledTag?.dataset.enabled === 'true';
-  }
-
-  protected lifeCycleSidebarSrc():string {
-    return `${this.pathHelper.staticBase}/projects/${this.currentProject.identifier ?? ''}/project_life_cycle_sidebar`;
-  }
-
-  protected lifeCycleSidebarId():string {
-    return 'project-life-cycle-sidebar';
-  }
-
-  protected projectCustomFieldsSidebarSrc():string {
-    return `${this.pathHelper.staticBase}/projects/${this.currentProject.identifier ?? ''}/project_custom_fields_sidebar`;
-  }
-
-  protected projectCustomFieldsSidebarId():string {
-    return 'project-custom-fields-sidebar';
+  ngOnInit() {
+    populateInputsFromDataset(this);
+    super.ngOnInit();
   }
 
   protected gridScopePath():string {
-    return this.pathHelper.projectPath(this.currentProject.identifier ?? '');
+    return this.pathHelper.projectPath(this.projectIdentifier);
   }
 }

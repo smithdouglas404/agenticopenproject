@@ -91,7 +91,7 @@ RSpec.describe "Global role: Global Create project",
 
       click_on "Create"
 
-      expect(page).to have_current_path "/projects/new-project-name/"
+      expect(page).to have_current_path "/projects/new-project-name"
     end
   end
 

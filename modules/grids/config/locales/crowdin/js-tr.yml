@@ -33,6 +33,8 @@ tr:
           not_set: 'Ayarlanmadı'
           finished: 'Tamamlandı'
           discontinued: 'Durduruldu'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Alt Projeler'
           no_results: 'Alt proje yok.'

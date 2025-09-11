@@ -107,6 +107,8 @@ $widget-box--enumeration-width: 20px
       grid-column-gap: 20px
 
 .op-widget-box--body
+  display: flex
+  flex-direction: column
   height: 100%
   padding: 0 var(--stack-padding-normal) var(--stack-padding-normal) var(--stack-padding-normal)
   overflow-x: auto
@@ -154,7 +156,7 @@ $widget-box--enumeration-width: 20px
 .op-widget-box--header
   font-weight: var(--base-text-weight-bold)
   font-size: var(--body-font-size)
-  color: var(--fgColor-muted)
+  color: var(--fgColor-default)
   display: flex
   align-items: center
   padding: var(--stack-padding-normal)
@@ -176,7 +178,7 @@ $widget-box--enumeration-width: 20px
   .editable-toolbar-title--input
     font-size: var(--body-font-size)
     font-weight: var(--base-text-weight-bold)
-    color: var(--fgColor-muted) !important
+    color: var(--fgColor-default) !important
     padding: 0 !important
 
   .toolbar--editable-toolbar

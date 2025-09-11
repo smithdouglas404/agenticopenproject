@@ -1103,6 +1103,7 @@ tr:
       child_work_packages:
         one: "bir alt iş paketi"
         other: "%{count} alt iş paketi"
+      hour_string: "%{hours} h"
       hour:
         one: "1 saat"
         other: "%{count} saat"

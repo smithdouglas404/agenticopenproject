@@ -1069,8 +1069,8 @@ es:
     notice_successful_delete: "Eliminación exitosa."
     notice_successful_update: "Actualización exitosa."
     notice_job_started: "trabajo iniciado."
-    no_job_id: "No job ID returned from server."
-    invalid_job_response: "Invalid response from server."
+    no_job_id: "No se ha devuelto ningún ID de trabajo desde el servidor."
+    invalid_job_response: "Respuesta invalida de el servidor."
     notice_bad_request: "Petición incorrecta."
     relations:
       empty: No existen relaciones
@@ -1103,6 +1103,7 @@ es:
       child_work_packages:
         one: "un sub-paquete de trabajo"
         other: "%{count} paquetes de trabajo secundarios"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"
@@ -1213,15 +1214,15 @@ es:
       selected_filter:
         all: "Todos los proyectos"
         selected: "Solo seleccionados"
-      search_placeholder: "Search projects..."
-      search_placeholder_favorites: "Search favorites..."
+      search_placeholder: "Buscar proyectos..."
+      search_placeholder_favorites: "Buscar favoritos..."
       include_subprojects: "Incluir todos los subproyectos"
       tooltip:
         include_all_selected: "Proyecto ya incluido, ya que \"Incluir todos los subproyectos\" está activada."
         current_project: "Este es el proyecto actual."
         does_not_match_search: "El proyecto no coincide con los criterios de búsqueda."
       no_results: "Ningún producto coincide con tu criterio de búsqueda"
-      no_favorite_results: "No favorite project matches your search criteria."
+      no_favorite_results: "Ningún proyecto favorito coincide con sus criterios de búsqueda."
     baseline:
       toggle_title: "Referencia"
       clear: "Despejar"

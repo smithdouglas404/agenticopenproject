@@ -1109,6 +1109,7 @@ lt:
         few: "%{count} darbo paketo vaikai"
         many: "%{count} darbo paketo vaikų"
         other: "%{count} darbų paketo vaikai"
+      hour_string: "%{hours} h"
       hour:
         one: "1 val"
         other: "%{count} val"

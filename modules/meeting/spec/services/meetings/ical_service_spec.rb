@@ -85,7 +85,7 @@ RSpec.describe Meetings::ICalService, type: :model do # rubocop:disable RSpec/Sp
       expect(entry.dtstart.utc).to eq meeting.start_time
       expect(entry.dtend.utc).to eq meeting.start_time + 1.hour
       expect(entry.summary).to eq "Important meeting"
-      expect(entry.description).to eq "Important meeting"
+      expect(entry.description).to eq "Link to meeting: http://#{Setting.host_name}/meetings/#{meeting.id}"
       expect(entry.location).to eq(meeting.location.presence)
       expect(entry.dtstart).to eq Time.zone.parse("2021-01-19T10:00:00Z").in_time_zone("Europe/Berlin")
       expect(entry.dtend).to eq (Time.zone.parse("2021-01-19T10:00:00Z") + 1.hour).in_time_zone("Europe/Berlin")
@@ -95,8 +95,8 @@ RSpec.describe Meetings::ICalService, type: :model do # rubocop:disable RSpec/Sp
       real_standard = Time.zone.parse("01-11-2020 06:00:00")
       daylight = daylight_zone.dtstart.to_time
       real_daylight = Time.zone.parse("14-03-2021 07:00:00")
-      expect(standard.strftime("%a, %d %b %Y %H:%M:%S")).to eq (real_standard.strftime("%a, %d %b %Y %H:%M:%S"))
-      expect(daylight.strftime("%a, %d %b %Y %H:%M:%S")).to eq (real_daylight.strftime("%a, %d %b %Y %H:%M:%S"))
+      expect(standard.strftime("%a, %d %b %Y %H:%M:%S")).to eq(real_standard.strftime("%a, %d %b %Y %H:%M:%S"))
+      expect(daylight.strftime("%a, %d %b %Y %H:%M:%S")).to eq(real_daylight.strftime("%a, %d %b %Y %H:%M:%S"))
     end
   end
 end

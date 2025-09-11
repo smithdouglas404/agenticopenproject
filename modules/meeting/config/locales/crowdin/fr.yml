@@ -207,7 +207,7 @@ fr:
       agenda_items: "Copier les points de l'ordre du jour"
       agenda_text: "Copier l'ordre du jour de l'ancienne réunion"
       participants: "Copier la liste des participants"
-      to_clipboard: "Copier dans le presse-papiers"
+      to_clipboard: "Copier le lien dans le presse-papiers"
     email:
       send_emails: "Envoyer un e-mail aux participants"
       send_invitation_emails: >
@@ -454,6 +454,12 @@ fr:
   text_meeting_agenda_open_are_you_sure: "Ceci va écraser toutes les modifications dans les minutes ! Voulez-vous continuer ?"
   text_meeting_minutes_for_meeting: 'Minutes de la réunion "%{meeting}"'
   text_notificiation_invited: "Cet e-mail contient une entrée ics pour la réunion ci-dessous :"
+  text_meeting_ics_description: >-
+    Lien vers la réunion : %{url}
+  text_meeting_ics_meeting_series_description: >-
+    Lien vers la série de réunions : %{url}
+  text_meeting_occurrence_ics_description: >-
+    Lien vers l'occurrence de la réunion : %{url} Lien vers la série de réunions : %{series_url}
   text_meeting_empty_heading: "Votre réunion est vide"
   text_meeting_empty_description1: "Démarrez en ajoutant des points à l'ordre du jour ci-dessous. Chaque élément peut être aussi simple qu'un titre, mais vous pouvez également ajouter des détails supplémentaires comme la durée et des notes."
   text_meeting_empty_description2: 'Vous pouvez également ajouter des références aux lots de travaux existants. Les notes connexes seront automatiquement visibles dans l''onglet "Réunions" du lot de travaux concerné.'
@@ -537,9 +543,13 @@ fr:
   text_meeting_closed_dropdown_description: "Cette réunion est terminée. Vous ne pouvez plus modifier les points de l'ordre du jour ou les résultats."
   text_meeting_not_editable_anymore: "Cette réunion n'est plus modifiable."
   text_meeting_not_present_anymore: "Cette réunion a été supprimée. Veuillez sélectionner une autre réunion."
-  label_add_work_package_to_meeting_dialog_title: "Ajouter ce lot de travaux à une réunion"
+  label_add_work_package_to_meeting_dialog_title: "Select meeting"
+  label_add_work_package_to_meeting_section_label: "Add to section"
   label_add_work_package_to_meeting_dialog_button: "Ajouter à la réunion"
-  label_meeting_selection_caption: "Il n'est possible d'ajouter ce lot de travaux qu'aux réunions ouvertes à venir ou en cours."
+  label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."
+  label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."
+  placeholder_section_select_meeting_first: "Meeting selection is required first"
+  text_add_work_package_to_meeting_form: "The work package will be added to the selected meeting or backlog as an agenda item."
   text_add_work_package_to_meeting_description: "Un lot de travaux peut être ajouté à une ou plusieurs réunions pour y être discuté. Les éventuelles notes le concernant sont également visibles ici."
   text_agenda_item_no_notes: "Aucune note fournie"
   text_agenda_item_not_editable_anymore: "Ce point d'ordre du jour n'est plus modifiable."
@@ -567,7 +577,7 @@ fr:
           dialog_body: "Ce jeton va générer une URL d'abonnement iCal qui vous permet de visualiser toutes vos réunions dans une application de calendrier externe."
           create_button: "Créer un abonnement"
           name_label: "Nom du jeton"
-          name_caption: 'Vous pouvez lui donner le nom de l''endroit où vous l''utiliserez, par exemple "Mon téléphone" ou "Ordinateur de travail".'
+          name_caption: 'Vous pouvez lui donner le nom de l''endroit où vous l''utiliserez, par exemple « Mon téléphone » ou « Ordinateur de travail ».'
       created_dialog:
         token/ical_meeting:
           title: "Un jeton d'abonnement à une réunion iCal a été généré"

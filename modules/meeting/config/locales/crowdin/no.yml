@@ -207,7 +207,7 @@
       agenda_items: "Copy agenda items"
       agenda_text: "Kopier sakslisten fra det forrige møtet"
       participants: "Copy list of participants"
-      to_clipboard: "Kopier til utklippstavlen"
+      to_clipboard: "Copy link to clipboard"
     email:
       send_emails: "Send e-post til deltakere"
       send_invitation_emails: >
@@ -454,6 +454,12 @@
   text_meeting_agenda_open_are_you_sure: "Dette vil overskrive alle endringer i referatet! Vil du fortsette?"
   text_meeting_minutes_for_meeting: 'referat for møtet "%{meeting}"'
   text_notificiation_invited: "Denne e-posten inneholder ny informasjon for møtet nedenfor:"
+  text_meeting_ics_description: >-
+    Link to meeting: %{url}
+  text_meeting_ics_meeting_series_description: >-
+    Link to meeting series: %{url}
+  text_meeting_occurrence_ics_description: >-
+    Link to meeting occurrence: %{url} Link to meeting series: %{series_url}
   text_meeting_empty_heading: "Ditt møte er tomt"
   text_meeting_empty_description1: "Start ved å legge til sakspunkter nedenfor. Hvert punkt kan være like enkelt som en tittel, men du kan også legge til flere detaljer som for eksempel varighet og notater."
   text_meeting_empty_description2: 'Du kan også legge til referanser til eksisterende arbeidspakker. Når du gjør det, vil relaterte notater automatisk være synlige i arbeidspakkens fane "møter".'
@@ -537,9 +543,13 @@
   text_meeting_closed_dropdown_description: "This meeting is closed. You cannot modify agenda items or outcomes anymore."
   text_meeting_not_editable_anymore: "Dette møtet er ikke lenger redigerbart."
   text_meeting_not_present_anymore: "Dette møtet ble slettet. Velg et annet møte."
-  label_add_work_package_to_meeting_dialog_title: "Legg til arbeidspakke i møte"
+  label_add_work_package_to_meeting_dialog_title: "Select meeting"
+  label_add_work_package_to_meeting_section_label: "Add to section"
   label_add_work_package_to_meeting_dialog_button: "Legg til i møte"
-  label_meeting_selection_caption: "Det er bare mulig å legge til denne arbeidspakken til kommende eller pågående møter."
+  label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."
+  label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."
+  placeholder_section_select_meeting_first: "Meeting selection is required first"
+  text_add_work_package_to_meeting_form: "The work package will be added to the selected meeting or backlog as an agenda item."
   text_add_work_package_to_meeting_description: "En arbeidspakke kan legges til ett eller flere møter for diskusjon. Eventuelle notater som vedrører den er også synlig her."
   text_agenda_item_no_notes: "Ingen merknader finnes"
   text_agenda_item_not_editable_anymore: "Denne dagsorden er ikke redigerbar lenger."
@@ -567,7 +577,7 @@
           dialog_body: "This token will generate an iCal subscription URL that lets you view all your meetings in an external calendar application."
           create_button: "Create subscription"
           name_label: "Token name"
-          name_caption: 'You can name it after where you will use it, such as"My phone" or "Work computer.'
+          name_caption: 'You can name it after where you will use it, such as "My phone" or "Work computer".'
       created_dialog:
         token/ical_meeting:
           title: "An iCal meeting subscription token has been generated"

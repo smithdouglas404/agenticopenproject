@@ -335,22 +335,31 @@ ro:
       no_results_content_text: Creează câmp personalizat nou
   concatenation:
     single: "sau"
-  dry_validation:
+  op_dry_validation:
+    or: "or"
     errors:
-      defined: "must not be defined."
-      int?: "trebuie să fie un număr întreg."
+      array?: "must be an array."
       decimal?: "must be a decimal."
-      filled?: "trebuie completat"
+      defined: "must not be defined."
+      eql?: "must be equal to %{left}."
+      filled?: "must be filled."
+      greater_or_equal_zero: "must be greater or equal to 0."
+      gteq?: "must be greater than or equal to %{num}."
+      hash?: "must be a hash."
+      included_in?:
+        arg:
+          default: "must be one of: %{list}."
+          range: "must be one of: %{list_left} - %{list_right}."
+      int?: "must be an integer."
       key?: "is missing."
-      greater_or_equal_zero: "trebuie să fie mai mare sau egal cu 0."
-      not_found: "nu a fost găsit."
+      not_found: "not found."
       rules:
         copy_workflow_from:
-          workflow_missing: "nu are un flux de lucru propriu."
+          workflow_missing: "has no own workflow."
         custom_field:
           format_not_supported: "format '%{field_format}' is unsupported."
         item:
-          root_item: "nu poate fi un element root."
+          root_item: "cannot be a root item."
           not_persisted: "must be an already existing item."
         label:
           not_unique: "must be unique within the same hierarchy level."
@@ -358,15 +367,17 @@ ro:
           not_unique: "must be unique within the same hierarchy level."
         parent:
           not_descendant: "must be a descendant of the hierarchy root."
+      str?: "must be a string."
+      type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Activat"
-      depth: "Adâncime"
-      item: "Element"
-      label: "Etichetă"
+      enabled: "Enabled"
+      depth: "Depth"
+      item: "Item"
+      label: "Label"
       score: "Score"
-      short: "Nume scurt"
-      parent: "Părinte"
+      short: "Short name"
+      parent: "Parent"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -601,9 +612,6 @@ ro:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Please provide an API token name"
-        token_name_in_use: "This API token name is already in use, please select a different one"
       failed_to_reset_token: "Resetarea tokenului de acces nu a reușit: %{error}"
       failed_to_create_token: "Failed to create access token: %{error}"
       failed_to_revoke_token: "Failed to revoke access token: %{error}"
@@ -1151,6 +1159,8 @@ ro:
         is_readonly: "Pachet de lucru numai pentru citire"
         excluded_from_totals: "Exclude din calculul totalurilor în ierarhie"
         default_done_ratio: "% Finalizat"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Calendar"
         ical_token_query_assignment: "Query assignment"
@@ -1585,7 +1595,8 @@ ro:
               cant_exceed_work: "cannot be higher than Work."
               must_be_set_when_work_is_set: "required when Work is set."
               must_be_set_when_work_and_percent_complete_are_set: "required when Work and % Complete are set."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 must be empty when Work is empty and % Complete is 100%.
           readonly_status: "Pachetul de lucru este într-o stare doar citire, astfel, atributele sale nu pot fi modificate."
@@ -1634,9 +1645,11 @@ ro:
         version:
           undeletable_archived_projects: "Versiunea nu poate fi ștearsă, deoarece are atașate pachete de lucru."
           undeletable_work_packages_attached: "Versiunea nu poate fi ștearsă, deoarece are atașate pachete de lucru."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Verificaţi următoarele câmpuri:"
@@ -2601,7 +2614,8 @@ ro:
       shortcuts: "Scurtături"
       blog: "Blog-ul OpenProject"
       forums: "Forum comunitate"
-      newsletter: "Alerte de securitate / Buletin informativ"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:

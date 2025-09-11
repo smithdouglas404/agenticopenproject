@@ -1103,6 +1103,7 @@ fa:
       child_work_packages:
         one: "یک زیر بسته"
         other: "%{count} زیر بسته"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"

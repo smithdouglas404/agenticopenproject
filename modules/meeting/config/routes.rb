@@ -82,6 +82,7 @@ Rails.application.routes.draw do
       collection do
         get :dialog, controller: "work_package_meetings_tab", action: :add_work_package_to_meeting_dialog
         post :create, controller: "work_package_meetings_tab", action: :add_work_package_to_meeting
+        get :refresh_form, controller: "work_package_meetings_tab", action: :refresh_form
       end
     end
   end

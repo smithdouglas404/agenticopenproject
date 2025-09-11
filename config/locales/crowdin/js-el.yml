@@ -1102,6 +1102,7 @@ el:
       child_work_packages:
         one: "ένα παιδί πακέτο εργασίας"
         other: "%{count} παιδιά πακέτα εργασίας"
+      hour_string: "%{hours} h"
       hour:
         one: "1 ώρα"
         other: "%{count} ώρες"

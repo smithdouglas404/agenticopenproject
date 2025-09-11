@@ -65,7 +65,7 @@ module Storages
                   Results::StorageFileInfo.new(
                     status: "ok",
                     status_code: 200,
-                    id: "01ANJ53WYLXAJW5PXSCJB2CFCD42UPDKMI",
+                    id: "#{drive_id}:01ANJ53WYLXAJW5PXSCJB2CFCD42UPDKMI",
                     name: "Folder",
                     size: 232311,
                     mime_type: "application/x-op-directory",
@@ -80,7 +80,7 @@ module Storages
                   Results::StorageFileInfo.new(
                     status: "ok",
                     status_code: 200,
-                    id: "01ANJ53W4ELLSQL3JZHNA2MHKKHKAUQWNS",
+                    id: "#{drive_id}:01ANJ53W4ELLSQL3JZHNA2MHKKHKAUQWNS",
                     name: "authurl.txt",
                     size: 144,
                     mime_type: "text/plain",
@@ -95,7 +95,7 @@ module Storages
                   Results::StorageFileInfo.new(
                     status: "ok",
                     status_code: 200,
-                    id: "01ANJ53W5UJK2CQO6IY5HLBVYBVNJ4TKHZ",
+                    id: "#{drive_id}:01ANJ53W5UJK2CQO6IY5HLBVYBVNJ4TKHZ",
                     name: "release_meme.jpg",
                     size: 46264,
                     mime_type: "image/jpeg",
@@ -121,7 +121,7 @@ module Storages
                   Results::StorageFileInfo.new(
                     status: "ok",
                     status_code: 200,
-                    id: "01ANJ53W4ELLSQL3JZHNA2MHKKHKAUQWNS",
+                    id: "#{drive_id}:01ANJ53W4ELLSQL3JZHNA2MHKKHKAUQWNS",
                     name: "authurl.txt",
                     size: 144,
                     mime_type: "text/plain",
@@ -136,7 +136,7 @@ module Storages
                   Results::StorageFileInfo.new(
                     status: :not_found,
                     status_code: 404,
-                    id: "not_existent"
+                    id: "#{drive_id}:not_existent"
                   )
                 ]
               end

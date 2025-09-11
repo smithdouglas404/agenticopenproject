@@ -39,7 +39,7 @@ gem "activemodel-serializers-xml", "~> 1.0.1"
 gem "activerecord-import", "~> 2.2.0"
 gem "activerecord-session_store", "~> 2.2.0"
 gem "ox"
-gem "rails", "~> 8.0.1"
+gem "rails", "~> 8.0.2", ">= 8.0.2.1"
 gem "responders", "~> 3.0"
 
 gem "ffi", "~> 1.15"
@@ -64,7 +64,7 @@ gem "scimitar", "~> 2.12"
 gem "acts_as_list", "~> 1.2.0"
 gem "acts_as_tree", "~> 2.9.0"
 gem "awesome_nested_set", "~> 3.8.0"
-gem "closure_tree", "~> 9.0.0"
+gem "closure_tree", "~> 9.1.1"
 gem "rubytree", "~> 2.1.0"
 
 gem "addressable", "~> 2.8.0"
@@ -92,7 +92,7 @@ gem "deckar01-task_list", "~> 2.3.1"
 # Requires escape-utils for faster escaping
 gem "escape_utils", "~> 1.3"
 # Syntax highlighting used in html-pipeline with rouge
-gem "rouge", "~> 4.5.1"
+gem "rouge", "~> 4.6.0"
 # HTML sanitization used for html-pipeline
 gem "sanitize", "~> 7.0.0"
 # HTML autolinking for mails and urls (replaces autolink)
@@ -239,7 +239,7 @@ gem "turbo-rails", "~> 2.0.0"
 
 # There is a problem with version 1.4.0. Do not update until you're sure there is no infinite hang
 # happenning in failing tests when WebMock or VCR stub cannot be found.
-gem "httpx", "~> 1.3.4"
+gem "httpx", "~> 1.6.0"
 
 # Brings actual deep freezing to most ruby objects
 gem "ice_nine"
@@ -306,7 +306,7 @@ group :test do
 end
 
 group :ldap do
-  gem "net-ldap", "~> 0.19.0"
+  gem "net-ldap", "~> 0.20.0"
 end
 
 group :development do
@@ -372,8 +372,8 @@ end
 gem "bootsnap", "~> 1.18.0", require: false
 
 # API gems
-gem "grape", "~> 2.3.0"
-gem "grape_logging", "~> 2.1.1"
+gem "grape", "~> 2.4.0"
+gem "grape_logging", "~> 3.0.0"
 gem "roar", "~> 1.2.0"
 
 # CORS for API
@@ -387,12 +387,10 @@ gem "googleauth", require: false
 gem "disposable", "~> 0.6.2"
 
 # Used for formula evaluation of calculated values
-# Dentaku 3.5.4 and earlier contains a division by zero error when performing modulo operations.
-# Reference commit that fixes this until a new version of dentaku is released:
-gem "dentaku", "~> 3.5", git: "https://github.com/rubysolo/dentaku", ref: "f17d427b63ef7e9ed8f914b5cb1d0645a37f9ebb"
+gem "dentaku", "~> 3.5", ">= 3.5.5"
 
 group :postgres do
-  gem "pg", "~> 1.5.0"
+  gem "pg", "~> 1.6.2"
 end
 
 # Support application loading when no database exists yet.
@@ -414,6 +412,6 @@ gemfiles.each do |file|
   send(:eval_gemfile, file) if File.readable?(file)
 end
 
-gem "openproject-octicons", "~>19.27.1"
-gem "openproject-octicons_helper", "~>19.27.1"
+gem "openproject-octicons", "~>19.28.0"
+gem "openproject-octicons_helper", "~>19.28.0"
 gem "openproject-primer_view_components", "~>0.72.0"

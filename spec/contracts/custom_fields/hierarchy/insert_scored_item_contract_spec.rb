@@ -46,9 +46,7 @@ RSpec.describe CustomFields::Hierarchy::InsertScoredItemContract do
       end
     end
 
-    context "when inputs are empty",
-            skip: "dry validation custom locales are not loaded correctly when running this spec together " \
-                  "with others from this folder." do
+    context "when inputs are empty" do
       let(:params) { { parent:, label: "", score: "" } }
 
       it "is invalid" do
@@ -59,9 +57,7 @@ RSpec.describe CustomFields::Hierarchy::InsertScoredItemContract do
       end
     end
 
-    context "when inputs are missing",
-            skip: "dry validation custom locales are not loaded correctly when running this spec together " \
-                  "with others from this folder." do
+    context "when inputs are missing" do
       let(:params) { { parent: } }
 
       it "is invalid" do
@@ -79,7 +75,7 @@ RSpec.describe CustomFields::Hierarchy::InsertScoredItemContract do
       it "is invalid" do
         result = subject.call(params)
         expect(result).to be_failure
-        expect(result.errors.to_h).to include(parent: ["must be CustomField::Hierarchy::Item"])
+        expect(result.errors.to_h).to include(parent: ["must be CustomField::Hierarchy::Item."])
       end
     end
 
@@ -91,7 +87,7 @@ RSpec.describe CustomFields::Hierarchy::InsertScoredItemContract do
       it "is invalid" do
         result = subject.call(params)
         expect(result).to be_failure
-        expect(result.errors.to_h).to include(label: [I18n.t("dry_validation.errors.rules.label.not_unique")])
+        expect(result.errors.to_h).to include(label: ["must be unique within the same hierarchy level."])
       end
 
       context "if another locale is set" do
@@ -101,7 +97,7 @@ RSpec.describe CustomFields::Hierarchy::InsertScoredItemContract do
           I18n.config.enforce_available_locales = false
           I18n.backend.store_translations(
             :mo,
-            { dry_validation: {
+            { op_dry_validation: {
               errors: { rules: { label: { not_unique: mordor } } }
             } }
           )
@@ -127,7 +123,7 @@ RSpec.describe CustomFields::Hierarchy::InsertScoredItemContract do
       it "is invalid with localized validation errors" do
         result = subject.call(params)
         expect(result).to be_failure
-        expect(result.errors.to_h).to include(score: [I18n.t("dry_validation.errors.decimal?")])
+        expect(result.errors.to_h).to include(score: ["must be a decimal."])
       end
     end
 

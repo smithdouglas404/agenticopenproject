@@ -67,7 +67,7 @@ ru:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} is not a valid participant."
+          invalid_user: "%{name} не является допустимым участником."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "В серии есть одно открытое совещание, которое не включено в новый график. Измените график, чтобы включить все существующие совещания."
@@ -193,9 +193,9 @@ ru:
       label:
         participants: "Участники"
         attended: "Участвовал"
-        mark_as_attended: "Mark as attended"
-        mark_all_as_attended: "Mark all as attended"
-        remove_participant: "Remove participant"
+        mark_as_attended: "Пометить как посещённое"
+        mark_all_as_attended: "Пометить все как посещённые"
+        remove_participant: "Исключить участника"
         manage_participants: "Управление участниками"
         no_participants: "Нет участников"
         show_all: "Показывать всё"
@@ -217,7 +217,7 @@ ru:
       agenda_items: "Копировать пункты повестки дня"
       agenda_text: "Копировать повестку старого совещания"
       participants: "Копировать список участников"
-      to_clipboard: "Копировать в буфер обмена"
+      to_clipboard: "Копировать ссылку в буфер обмена"
     email:
       send_emails: "Отправить email участникам"
       send_invitation_emails: >
@@ -229,7 +229,7 @@ ru:
         title: "[%{project_name}] Серия совещаний '%{title}'"
         summary: "%{actor} создал новую серию совещаний '%{title}'"
       series_updated:
-        title: "[%{project_name}] Meeting series '%{title}' has been updated"
+        title: "[%{project_name}] Серия встреч '%{title}' была обновлена"
         summary: "Meeting series '%{title}' has been updated by %{actor}"
         old_schedule: "Старое расписание"
         new_schedule: "Новое расписание"
@@ -244,7 +244,7 @@ ru:
         summary: "'%{title}' было отменено %{actor}."
         date_time: "Запланированная дата/время"
       updated:
-        header: "Meeting '%{title}' has been updated"
+        header: "Встреча '%{title}' была обновлена"
         summary: "Meeting '%{title}' has been updated by %{actor}"
         body: "The meeting '%{title}' has been updated by %{actor}."
         old_date_time: "Старые дата/время"
@@ -468,6 +468,12 @@ ru:
   text_meeting_agenda_open_are_you_sure: "Все изменения в протоколах будут перезаписаны! Продолжить?"
   text_meeting_minutes_for_meeting: 'Протокол совещания «%{meeting}»'
   text_notificiation_invited: "Это сообщение содержит запись ics для совещания ниже:"
+  text_meeting_ics_description: >-
+    Link to meeting: %{url}
+  text_meeting_ics_meeting_series_description: >-
+    Link to meeting series: %{url}
+  text_meeting_occurrence_ics_description: >-
+    Link to meeting occurrence: %{url} Link to meeting series: %{series_url}
   text_meeting_empty_heading: "Совещание пусто"
   text_meeting_empty_description1: "Начните с добавления пунктов повестки ниже. Каждый пункт может быть простым, как заголовок, но вы также можете добавить дополнительные сведения, такие как продолжительность и примечания."
   text_meeting_empty_description2: 'Вы также можете добавить ссылки на существующие пакеты работ. Когда вы это сделаете, соответствующие заметки будут автоматически отображаться на вкладке «Совещания» пакета работ.'
@@ -551,9 +557,13 @@ ru:
   text_meeting_closed_dropdown_description: "Совещание закрыто. Вы больше не можете изменять пункты повестки дня или его результаты."
   text_meeting_not_editable_anymore: "Это совещание больше нельзя редактировать."
   text_meeting_not_present_anymore: "Это совещание было удалено. Пожалуйста, выберите другое."
-  label_add_work_package_to_meeting_dialog_title: "Добавить пакет работ в совещание"
+  label_add_work_package_to_meeting_dialog_title: "Select meeting"
+  label_add_work_package_to_meeting_section_label: "Add to section"
   label_add_work_package_to_meeting_dialog_button: "Добавить в совещание"
-  label_meeting_selection_caption: "Этот пакет работ можно добавить только к открытым предстоящим встречам."
+  label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."
+  label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."
+  placeholder_section_select_meeting_first: "Meeting selection is required first"
+  text_add_work_package_to_meeting_form: "The work package will be added to the selected meeting or backlog as an agenda item."
   text_add_work_package_to_meeting_description: "Пакет работ может быть добавлен к одному или нескольким совещаниям для обсуждения. Любые заметки об этом также видны здесь."
   text_agenda_item_no_notes: "Примечания отсутствуют"
   text_agenda_item_not_editable_anymore: "Этот пункт повестки больше не редактируется."
@@ -581,7 +591,7 @@ ru:
           dialog_body: "This token will generate an iCal subscription URL that lets you view all your meetings in an external calendar application."
           create_button: "Create subscription"
           name_label: "Имя токена"
-          name_caption: 'You can name it after where you will use it, such as"My phone" or "Work computer.'
+          name_caption: 'You can name it after where you will use it, such as "My phone" or "Work computer".'
       created_dialog:
         token/ical_meeting:
           title: "An iCal meeting subscription token has been generated"

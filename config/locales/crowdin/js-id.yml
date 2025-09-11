@@ -1100,6 +1100,7 @@ id:
         other: "paket kerja"
       child_work_packages:
         other: "Paket kerja %{count} turunan"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"

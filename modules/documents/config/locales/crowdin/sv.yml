@@ -34,7 +34,7 @@ sv:
   enumeration_doc_categories: "Dokumentkategorier"
   documents:
     label_attachment_author: "Författare för bilaga"
-    label_categories: "Categories"
+    label_categories: "Kategorier"
     new_category: "Ny kategori"
   label_document_added: "Dokumentet tillagt"
   label_document_new: "Nytt dokument"

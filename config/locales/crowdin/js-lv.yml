@@ -1106,6 +1106,7 @@ lv:
         zero: "%{count} work package children"
         one: "one child work package"
         other: "%{count} work package children"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"

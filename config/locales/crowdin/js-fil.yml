@@ -1103,6 +1103,7 @@ fil:
       child_work_packages:
         one: "isang bata work package"
         other: "%{count} work package mga bata"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"

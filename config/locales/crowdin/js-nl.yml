@@ -1103,6 +1103,7 @@ nl:
       child_work_packages:
         one: "één onderliggend werkpakket"
         other: "%{count} werkpakket kinderen"
+      hour_string: "%{hours} h"
       hour:
         one: "1 u"
         other: "%{count} u"

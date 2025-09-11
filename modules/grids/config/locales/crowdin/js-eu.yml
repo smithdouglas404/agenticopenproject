@@ -33,6 +33,8 @@ eu:
           not_set: 'Not set'
           finished: 'Finished'
           discontinued: 'Discontinued'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Subprojects'
           no_results: 'No subprojects.'

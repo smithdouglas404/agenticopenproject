@@ -1100,6 +1100,7 @@ ms:
         other: "pakej kerja"
       child_work_packages:
         other: "%{count} pakej kerja anak"
+      hour_string: "%{hours} h"
       hour:
         one: "1 j"
         other: "%{count} j"

@@ -1109,6 +1109,7 @@ sk:
         few: "%{count} podradených pracovných balíčkov"
         many: "%{count} podradených pracovných balíčkov"
         other: "%{count} podradených pracovných balíčkov"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"

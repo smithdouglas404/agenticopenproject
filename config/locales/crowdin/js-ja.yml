@@ -1101,6 +1101,7 @@ ja:
         other: "ワークパッケージ"
       child_work_packages:
         other: "%{count} の子ワークパッケージ"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"
@@ -1210,7 +1211,7 @@ ja:
       selected_filter:
         all: "すべてのプロジェクト"
         selected: "選択したもののみ"
-      search_placeholder: "Search projects..."
+      search_placeholder: "プロジェクトを検索…"
       search_placeholder_favorites: "Search favorites..."
       include_subprojects: "すべてのサブプロジェクトを含む"
       tooltip:

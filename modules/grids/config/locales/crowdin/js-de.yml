@@ -33,6 +33,8 @@ de:
           not_set: 'Nicht gesetzt'
           finished: 'Abgeschlossen'
           discontinued: 'Eingestellt'
+        project_status_beta:
+          title: 'Projektstatus (BETA)'
         subprojects:
           title: 'Unterprojekte'
           no_results: 'Keine Unterprojekte.'

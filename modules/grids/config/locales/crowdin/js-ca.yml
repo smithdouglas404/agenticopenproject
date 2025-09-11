@@ -33,6 +33,8 @@ ca:
           not_set: 'No configurat'
           finished: 'Finalitzat'
           discontinued: 'Discontinuat'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Subprojectes'
           no_results: 'Sense subprojectes.'

@@ -1109,6 +1109,7 @@ cs:
         few: "%{count} podřazených pracovních balíčků"
         many: "%{count} podřazených pracovních balíčků"
         other: "%{count} podřazených pracovních balíčků"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"

@@ -1100,6 +1100,7 @@ th:
         other: "work packages"
       child_work_packages:
         other: "%{count} work package children"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"

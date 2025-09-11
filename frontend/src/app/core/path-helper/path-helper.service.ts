@@ -221,6 +221,10 @@ export class PathHelperService {
     return `${this.projectPath(projectIdentifier)}/dashboards`;
   }
 
+  public projectWidgetPath(projectIdentifier:string, widgetName:string) {
+    return `${this.projectPath(projectIdentifier)}/widgets/${widgetName}`;
+  }
+
   public timeEntriesPath(workPackageId:string|number) {
     const suffix = '/time_entries';
 

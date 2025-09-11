@@ -202,7 +202,7 @@ vi:
       agenda_items: "Chép mục chương trình nghị sự"
       agenda_text: "Sao chép chương trình nghị sự của cuộc họp cũ"
       participants: "Chép danh sách người tham gia"
-      to_clipboard: "Sao chép vào bảng tạm"
+      to_clipboard: "Copy link to clipboard"
     email:
       send_emails: "Gửi email cho người tham gia"
       send_invitation_emails: >
@@ -447,6 +447,12 @@ vi:
   text_meeting_agenda_open_are_you_sure: "Điều này sẽ ghi đè tất cả các thay đổi trong biên bản! Bạn có muốn tiếp tục không?"
   text_meeting_minutes_for_meeting: 'biên bản cuộc họp "%{meeting}"'
   text_notificiation_invited: "Email này chứa một mục ics cho cuộc họp dưới đây:"
+  text_meeting_ics_description: >-
+    Link to meeting: %{url}
+  text_meeting_ics_meeting_series_description: >-
+    Link to meeting series: %{url}
+  text_meeting_occurrence_ics_description: >-
+    Link to meeting occurrence: %{url} Link to meeting series: %{series_url}
   text_meeting_empty_heading: "Cuộc họp của bạn trống"
   text_meeting_empty_description1: "Bắt đầu bằng cách thêm các mục chương trình nghị sự dưới đây. Mỗi mục có thể đơn giản chỉ là tiêu đề, nhưng bạn cũng có thể thêm các chi tiết bổ sung như thời gian và ghi chú."
   text_meeting_empty_description2: 'Bạn cũng có thể thêm các tham chiếu đến các gói công việc hiện có. Khi bạn làm như vậy, các ghi chú liên quan sẽ tự động hiển thị trong tab "Cuộc họp" của gói công việc.'
@@ -530,9 +536,13 @@ vi:
   text_meeting_closed_dropdown_description: "This meeting is closed. You cannot modify agenda items or outcomes anymore."
   text_meeting_not_editable_anymore: "Cuộc họp này không còn có thể chỉnh sửa nữa."
   text_meeting_not_present_anymore: "Cuộc họp này đã bị xóa. Vui lòng chọn cuộc họp khác."
-  label_add_work_package_to_meeting_dialog_title: "Thêm gói công việc vào cuộc họp"
+  label_add_work_package_to_meeting_dialog_title: "Select meeting"
+  label_add_work_package_to_meeting_section_label: "Add to section"
   label_add_work_package_to_meeting_dialog_button: "Thêm vào cuộc họp"
-  label_meeting_selection_caption: "Chỉ có thể thêm gói công việc này vào các cuộc họp sắp tới hoặc đang mở."
+  label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."
+  label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."
+  placeholder_section_select_meeting_first: "Meeting selection is required first"
+  text_add_work_package_to_meeting_form: "The work package will be added to the selected meeting or backlog as an agenda item."
   text_add_work_package_to_meeting_description: "Một gói công việc có thể được thêm vào một hoặc nhiều cuộc họp để thảo luận. Bất kỳ ghi chú nào liên quan cũng sẽ hiển thị ở đây."
   text_agenda_item_no_notes: "Không có ghi chú được cung cấp"
   text_agenda_item_not_editable_anymore: "Mục chương trình nghị sự này không còn có thể chỉnh sửa nữa."
@@ -560,7 +570,7 @@ vi:
           dialog_body: "This token will generate an iCal subscription URL that lets you view all your meetings in an external calendar application."
           create_button: "Create subscription"
           name_label: "Token name"
-          name_caption: 'You can name it after where you will use it, such as"My phone" or "Work computer.'
+          name_caption: 'You can name it after where you will use it, such as "My phone" or "Work computer".'
       created_dialog:
         token/ical_meeting:
           title: "An iCal meeting subscription token has been generated"

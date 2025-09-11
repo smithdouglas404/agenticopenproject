@@ -1071,8 +1071,8 @@ pl:
     notice_successful_delete: "Usuwanie zakończone sukcesem."
     notice_successful_update: "Aktualizacja zakończona sukcesem."
     notice_job_started: "zadanie rozpoczęte."
-    no_job_id: "No job ID returned from server."
-    invalid_job_response: "Invalid response from server."
+    no_job_id: "Serwer nie zwrócił identyfikatora zadania."
+    invalid_job_response: "Niepoprawna odpowiedź z serwera."
     notice_bad_request: "Nieprawidłowe żądanie."
     relations:
       empty: Brak relacji
@@ -1109,6 +1109,7 @@ pl:
         few: "%{count} potomnych pakietów roboczych"
         many: "%{count} potomnych pakietów roboczych"
         other: "%{count} potomnych pakietów roboczych"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"
@@ -1221,15 +1222,15 @@ pl:
       selected_filter:
         all: "Wszystkie projekty"
         selected: "Tylko zaznaczone"
-      search_placeholder: "Search projects..."
-      search_placeholder_favorites: "Search favorites..."
+      search_placeholder: "Wyszukaj projekty..."
+      search_placeholder_favorites: "Wyszukaj ulubione..."
       include_subprojects: "Uwzględnij wszystkie podprojekty"
       tooltip:
         include_all_selected: "Projekt już uwzględniony, ponieważ włączenie wszystkich podprojektów jest włączone."
         current_project: "To jest bieżący projekt, w którym jesteś."
         does_not_match_search: "Projekt nie spełnia kryteriów wyszukiwania."
       no_results: "Żaden projekt nie spełnia kryteriów wyszukiwania."
-      no_favorite_results: "No favorite project matches your search criteria."
+      no_favorite_results: "Żaden ulubiony projekt nie spełnia kryteriów wyszukiwania."
     baseline:
       toggle_title: "Linia odniesienia"
       clear: "Wyczyść"

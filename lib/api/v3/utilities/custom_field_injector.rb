@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -21,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -46,7 +48,7 @@ module API
           "scored_list" => "CustomField::Hierarchy::Item"
         }.freeze
 
-        LINK_FORMATS = %w(list user version hierarchy).freeze
+        LINK_FORMATS = %w(list user version hierarchy scored_list).freeze
 
         NAMESPACE_MAP = {
           "user" => %w[users groups placeholder_users],
@@ -251,9 +253,9 @@ module API
             # Do not embed list, hierarchies or multi values as their links contain all the
             # information needed (title and href) already.
             next if represented.available_custom_fields.exclude?(custom_field) ||
-              custom_field.list? ||
-              custom_field.field_format_hierarchy? ||
-              custom_field.multi_value?
+                    custom_field.list? ||
+                    custom_field.hierarchical_list? ||
+                    custom_field.multi_value?
 
             value = represented.send custom_field.attribute_getter
 

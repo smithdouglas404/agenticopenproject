@@ -1108,6 +1108,7 @@ ru:
         few: "пакетов работ с %{count} дочерними"
         many: "пакет работ с %{count} дочерними"
         other: "пакет работ с %{count} дочерними"
+      hour_string: "%{hours} h"
       hour:
         one: "1 ч"
         other: "%{count} ч"

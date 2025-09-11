@@ -1102,6 +1102,7 @@ de:
       child_work_packages:
         one: "eine Unteraufgabe"
         other: "%{count} untergeordnete Arbeitspakete"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"
@@ -1212,8 +1213,8 @@ de:
       selected_filter:
         all: "Alle Projekte"
         selected: "Nur ausgewählte"
-      search_placeholder: "Search projects..."
-      search_placeholder_favorites: "Favoriten suchen..."
+      search_placeholder: "Projekte durchsuchen..."
+      search_placeholder_favorites: "Favoriten durchsuchen..."
       include_subprojects: "Alle Unterprojekte einbeziehen"
       tooltip:
         include_all_selected: "Das Projekt ist bereits enthalten, da alle Unterprojekte einbezogen sind."

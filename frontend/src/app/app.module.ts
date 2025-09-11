@@ -49,7 +49,6 @@ import {
 import { BrowserModule } from '@angular/platform-browser';
 import { OpenprojectCalendarModule } from 'core-app/features/calendar/openproject-calendar.module';
 import { OpenprojectGlobalSearchModule } from 'core-app/core/global_search/openproject-global-search.module';
-import { OpenprojectDashboardsModule } from 'core-app/features/dashboards/openproject-dashboards.module';
 import {
   OpenprojectWorkPackageGraphsModule,
 } from 'core-app/shared/components/work-package-graphs/openproject-work-package-graphs.module';
@@ -125,6 +124,9 @@ import {
 import {
   UserAutocompleterComponent,
 } from 'core-app/shared/components/autocompleter/user-autocompleter/user-autocompleter.component';
+import {
+  MeetingAutocompleterComponent,
+} from 'core-app/shared/components/autocompleter/meeting-autocompleter/meeting-autocompleter.component';
 import { AttributeValueMacroComponent } from 'core-app/shared/components/fields/macros/attribute-value-macro.component';
 import { AttributeLabelMacroComponent } from 'core-app/shared/components/fields/macros/attribute-label-macro.component';
 import {
@@ -205,6 +207,8 @@ import {
 } from 'core-app/shared/components/datepicker/wp-date-picker-modal/wp-date-picker-instance.component';
 import { OpInviteUserModalAugmentService } from 'core-app/features/invite-user-modal/invite-user-modal-augment.service';
 import { TimeEntryTimerService } from 'core-app/shared/components/time_entries/services/time-entry-timer.service';
+import { MyPageComponent } from './features/my-page/my-page.component';
+import { OverviewComponent } from './features/overview/overview.component';
 
 export function initializeServices(injector:Injector) {
   return () => {
@@ -223,15 +227,13 @@ export function initializeServices(injector:Injector) {
       contextMenu.register();
       inviteUserAugmentService.setupListener();
       timeEntryTimerService.initialize();
+      currentProject.detect();
     };
     runOnRenderAndLoad();
 
     // Register on turbo:render, turbo:load
     document.addEventListener('turbo:render', runOnRenderAndLoad);
-    document.addEventListener('turbo:load', () => {
-      runOnRenderAndLoad();
-      currentProject.detect();
-    });
+    document.addEventListener('turbo:load', runOnRenderAndLoad);
 
     keyboardShortcuts.register();
 
@@ -300,9 +302,6 @@ export function runBootstrap(appRef:ApplicationRef) {
     OpenprojectWorkPackageGraphsModule,
     // Calendar module
     OpenprojectCalendarModule,
-
-    // Dashboards
-    OpenprojectDashboardsModule,
 
     // Overview
     OpenprojectOverviewModule,
@@ -386,6 +385,7 @@ export class OpenProjectModule implements DoBootstrap {
     registerCustomElement('opce-project-autocompleter', ProjectAutocompleterComponent, { injector });
     registerCustomElement('opce-members-autocompleter', MembersAutocompleterComponent, { injector });
     registerCustomElement('opce-user-autocompleter', UserAutocompleterComponent, { injector });
+    registerCustomElement('opce-meeting-autocompleter', MeetingAutocompleterComponent, { injector });
     registerCustomElement('opce-time-entries-work-package-autocompleter', TimeEntriesWorkPackageAutocompleterComponent, { injector });
     registerCustomElement('opce-macro-attribute-value', AttributeValueMacroComponent, { injector });
     registerCustomElement('opce-macro-attribute-label', AttributeLabelMacroComponent, { injector });
@@ -425,5 +425,8 @@ export class OpenProjectModule implements DoBootstrap {
     registerCustomElement('opce-custom-date-action-admin', CustomDateActionAdminComponent, { injector });
     registerCustomElement('opce-zen-mode-toggle-button', ZenModeButtonComponent, { injector });
     registerCustomElement('opce-colors-autocompleter', ColorsAutocompleterComponent, { injector });
+
+    registerCustomElement('opce-my-page', MyPageComponent, { injector });
+    registerCustomElement('opce-overview', OverviewComponent, { injector });
   }
 }

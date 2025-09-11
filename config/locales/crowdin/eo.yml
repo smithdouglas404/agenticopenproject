@@ -28,9 +28,9 @@ eo:
       activity_tab:
         no_results_title_text: No activity to display
         no_results_description_text: 'Choose "Show everything" to show all activity and comments'
-        label_activity_show_all: "Show everything"
-        label_activity_show_only_comments: "Show comments only"
-        label_activity_show_only_changes: "Show changes only"
+        label_activity_show_all: "Montru ĉio"
+        label_activity_show_only_comments: "Montru nur komentoj"
+        label_activity_show_only_changes: "Montru nur ŝanĝiĝoj"
         label_sort_asc: "Newest at the bottom"
         label_sort_desc: "Newest on top"
         label_type_to_comment: "Add a comment. Type @ to notify people."
@@ -335,14 +335,23 @@ eo:
       no_results_content_text: Krei novan adaptitan kampon
   concatenation:
     single: "aŭ"
-  dry_validation:
+  op_dry_validation:
+    or: "or"
     errors:
-      defined: "must not be defined."
-      int?: "must be an integer."
+      array?: "must be an array."
       decimal?: "must be a decimal."
+      defined: "must not be defined."
+      eql?: "must be equal to %{left}."
       filled?: "must be filled."
-      key?: "is missing."
       greater_or_equal_zero: "must be greater or equal to 0."
+      gteq?: "must be greater than or equal to %{num}."
+      hash?: "must be a hash."
+      included_in?:
+        arg:
+          default: "must be one of: %{list}."
+          range: "must be one of: %{list_left} - %{list_right}."
+      int?: "must be an integer."
+      key?: "is missing."
       not_found: "not found."
       rules:
         copy_workflow_from:
@@ -358,15 +367,17 @@ eo:
           not_unique: "must be unique within the same hierarchy level."
         parent:
           not_descendant: "must be a descendant of the hierarchy root."
+      str?: "must be a string."
+      type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Ŝaltita"
+      enabled: "Enabled"
       depth: "Depth"
       item: "Item"
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Patro"
+      parent: "Parent"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -595,9 +606,6 @@ eo:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Please provide an API token name"
-        token_name_in_use: "This API token name is already in use, please select a different one"
       failed_to_reset_token: "Eraro dum restarigo de la alirĵetono: %{error}"
       failed_to_create_token: "Failed to create access token: %{error}"
       failed_to_revoke_token: "Failed to revoke access token: %{error}"
@@ -1143,6 +1151,8 @@ eo:
         is_readonly: "Nurlega laborpakaĵo"
         excluded_from_totals: "Exclude from calculation of totals in hierarchy"
         default_done_ratio: "% Complete"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Kalendaro"
         ical_token_query_assignment: "Query assignment"
@@ -1273,7 +1283,7 @@ eo:
         enterprise_plan_required: "requires at least the %{plan_name}."
         even: "must be even."
         exclusion: "rezervita."
-        feature_disabled: is not available.
+        feature_disabled: ne estas disponebla.
         file_too_large: "is too large (maximum size is %{count} Bytes)."
         filter_does_not_exist: "filter does not exist."
         format: "does not match the expected format '%{expected}'."
@@ -1576,7 +1586,8 @@ eo:
               cant_exceed_work: "cannot be higher than Work."
               must_be_set_when_work_is_set: "required when Work is set."
               must_be_set_when_work_and_percent_complete_are_set: "required when Work and % Complete are set."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 must be empty when Work is empty and % Complete is 100%.
           readonly_status: "The work package is in a readonly status so its attributes cannot be changed."
@@ -1624,9 +1635,11 @@ eo:
         version:
           undeletable_archived_projects: "The version cannot be deleted as it has work packages attached to it."
           undeletable_work_packages_attached: "The version cannot be deleted as it has work packages attached to it."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Bonvolu kontroli la jenajn kampojn:"
@@ -2556,7 +2569,8 @@ eo:
       shortcuts: "Fulmoklavoj"
       blog: "Blogo de OpenProject"
       forums: "Komunuma forumo"
-      newsletter: "Sekurecaj avertoj / Nnovaĵoletero"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2683,7 +2697,7 @@ eo:
         assigned: "You have been assigned to %{work_package}"
         subscribed: "You subscribed to %{work_package}"
         mentioned: "You have been mentioned in %{work_package}"
-        responsible: "You have become accountable for %{work_package}"
+        responsible: "Vi fariĝas responsa pri %{work_package}"
         watched: "You are watching %{work_package}"
     query:
       invalid_filter: "Invalid notification filter"
@@ -3362,7 +3376,7 @@ eo:
     other: "%{count} malfermitaj"
     zero: "0 malfermita"
   label_x_work_packages:
-    one: "1 work package"
+    one: "1 laborpakaĵo"
     other: "%{count} work packages"
     zero: "No work packages"
   label_x_projects:
@@ -3437,7 +3451,7 @@ eo:
         date_alert_start_date: "Date alert"
         date_alert_due_date: "Date alert"
         reminder: "Memorigilo"
-      see_all: "See all"
+      see_all: "Rigardu ĉiujn"
       updated_at: "Updated at %{timestamp} by %{user}"
     reminder_notifications:
       subject: "Reminder: %{note}"
@@ -3977,7 +3991,7 @@ eo:
   setting_antivirus_scan_action: "Infected file action"
   setting_autofetch_changesets: "Autofetch repository changes"
   setting_autologin: "Autologin"
-  setting_available_languages: "Available languages"
+  setting_available_languages: "Disponeblaj lingvoj"
   setting_bcc_recipients: "Blind carbon copy recipients (bcc)"
   setting_brute_force_block_after_failed_logins: "Block user after this number of failed login attempts"
   setting_brute_force_block_minutes: "Time the user is blocked for"

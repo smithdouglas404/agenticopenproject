@@ -1103,6 +1103,7 @@ si:
       child_work_packages:
         one: "එක් ළමා වැඩ පැකේජය"
         other: "%{count} වැඩ පැකේජය දරුවන්"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} ඌ"

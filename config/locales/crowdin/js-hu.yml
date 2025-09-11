@@ -1102,6 +1102,7 @@ hu:
       child_work_packages:
         one: "egy gyermek munkacsomag"
         other: "%{count} gyermek feladatcsoport"
+      hour_string: "%{hours} h"
       hour:
         one: "1 óra"
         other: "%{count} ó"

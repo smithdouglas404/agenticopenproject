@@ -1103,6 +1103,7 @@
       child_work_packages:
         one: "en underordnet arbeidspakke"
         other: "%{count} underordnet arbeidspakke"
+      hour_string: "%{hours} h"
       hour:
         one: "1 t"
         other: "%{count} t"

@@ -1103,6 +1103,7 @@ ca:
       child_work_packages:
         one: "un paquet de treball fill"
         other: "%{count} paquets de treball fills"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"

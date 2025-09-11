@@ -381,41 +381,13 @@ class MeetingsController < ApplicationController
 
     # We group meetings into individual groups, but only for upcoming meetings
     if params[:upcoming] == "false"
-      @meetings = show_more_pagination(@query.results)
+      @meetings = show_more_pagination(@query.results, limit: params[:limit])
     else
-      @grouped_meetings = group_meetings(@query.results)
+      service = ::GroupMeetingsService.new(@query.results, limit: params[:limit])
+      call = service.call
+
+      @grouped_meetings = call.result
     end
-  end
-
-  def group_meetings(all_meetings) # rubocop:disable Metrics/AbcSize
-    next_week = Time
-      .current
-      .next_occurring(OpenProject::Internationalization::Date.beginning_of_week)
-      .beginning_of_day
-    groups = Hash.new { |h, k| h[k] = [] }
-    groups[:later] = show_more_pagination(all_meetings
-                                            .where(start_time: next_week..)
-                                            .order(start_time: :asc))
-
-    all_meetings
-      .where(start_time: ...next_week)
-      .order(start_time: :asc)
-      .each do |meeting|
-      start_date = in_user_zone(meeting.start_time).to_date
-
-      group_key =
-        if start_date == Time.zone.today
-          :today
-        elsif start_date == Time.zone.tomorrow
-          :tomorrow
-        else
-          :this_week
-        end
-
-      groups[group_key] << meeting
-    end
-
-    groups
   end
 
   def build_meeting

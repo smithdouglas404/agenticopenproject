@@ -1103,6 +1103,7 @@ eo:
       child_work_packages:
         one: "unu laborpakaĵa filo"
         other: "%{count} work package children"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"

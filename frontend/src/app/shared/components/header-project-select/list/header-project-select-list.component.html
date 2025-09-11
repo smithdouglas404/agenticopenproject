@@ -12,7 +12,7 @@
       'spot-list--item-action_disabled': project.disabled,
       'spot-list--item-action_active': (searchableProjectListService.selectedItemID$ | async) === project.id
     }"
-    [href]="extendedUrl(project.id)"
+    [href]="extendedUrl(project.identifier)"
     [attr.data-list-selector]="projectListActionIdentifier"
     [attr.data-project-id]="project.id"
     [attr.data-test-selector]="currentProjectService.id === project.id.toString() ? 'op-header-project-select--active-item' : null"

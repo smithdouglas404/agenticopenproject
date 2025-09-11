@@ -1069,7 +1069,7 @@ fr:
     notice_successful_delete: "Suppression réussie."
     notice_successful_update: "Mise à jour réussie."
     notice_job_started: "tâche démarrée."
-    no_job_id: "Le serveur n'a pas renvoyé d'identifiant de travail."
+    no_job_id: "Aucun ID de tâche n'a été renvoyé par le serveur."
     invalid_job_response: "Réponse invalide du serveur."
     notice_bad_request: "Mauvaise requête."
     relations:
@@ -1103,6 +1103,7 @@ fr:
       child_work_packages:
         one: "un lot de travaux enfant"
         other: "%{count} lots de travaux enfant"
+      hour_string: "%{hours} h"
       hour:
         one: "1h"
         other: "%{count} h"
@@ -1213,7 +1214,7 @@ fr:
       selected_filter:
         all: "Tous les projets"
         selected: "Uniquement la sélection"
-      search_placeholder: "Search projects..."
+      search_placeholder: "Recherche de projets..."
       search_placeholder_favorites: "Recherche de favoris..."
       include_subprojects: "inclure tous les sous-projets"
       tooltip:
