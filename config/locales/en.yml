@@ -4505,6 +4505,7 @@ en:
   text_access_token_hint: "Access tokens allow you to grant external applications access to resources in OpenProject."
   text_analyze: "Further analyze: %{subject}"
   text_are_you_sure: "Are you sure?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Are you sure you want to continue?"
   text_are_you_sure_with_children: "Delete work package and all child work packages?"
   text_are_you_sure_with_project_custom_fields: "Deleting this attribute will also delete its values in all projects. Are you sure you want to do this?"
