@@ -43,6 +43,9 @@ class CalculatedValueError < ApplicationRecord
 
   validates :error_code, inclusion: { in: VALID_ERROR_CODES }
 
+  # It makes no sense to have the exact same error multiple times.
+  validates :project_id, uniqueness: { scope: %i[custom_field_id error_code] }
+
   def error_message
     translation_key = ERROR_TRANSLATIONS.fetch(error_code, "calculated_values.errors.unknown")
 
