@@ -32,9 +32,11 @@ class CalculatedValueError < ApplicationRecord
   belongs_to :project
   belongs_to :custom_field
 
-  VALID_ERROR_CODES = %w[
-    ERROR_MATHEMATICAL
-  ].freeze
+  ERROR_TRANSLATIONS = {
+    "ERROR_MATHEMATICAL" => "calculated_values.errors.mathematical"
+  }.freeze
+
+  VALID_ERROR_CODES = ERROR_TRANSLATIONS.keys.freeze
 
   validates :project_id, presence: true
   validates :custom_field_id, presence: true
@@ -42,6 +44,8 @@ class CalculatedValueError < ApplicationRecord
   validates :error_code, inclusion: { in: VALID_ERROR_CODES }
 
   def error_message
-    "TODO: humanize error code into a nice, translated error message"
+    translation_key = ERROR_TRANSLATIONS.fetch(error_code, "calculated_values.errors.unknown")
+
+    I18n.t(translation_key)
   end
 end

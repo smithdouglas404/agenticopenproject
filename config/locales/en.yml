@@ -360,6 +360,11 @@ en:
       no_results_title_text: There are currently no custom fields.
       no_results_content_text: Create a new custom field
 
+  calculated_values:
+    errors:
+      unknown: "An unknown error occurred during calculation. Please review the formula and try again."
+      mathematical: "A mathematical error occurred. Please review the formula and try again."
+
   concatenation:
     single: "or"
 
