@@ -9,6 +9,9 @@ on:
     paths-ignore:
       - 'docs/**'
       - 'help/**'
+      - 'docker/prod/**'
+      - 'docker/dev/**'
+      - 'docker/pullpreview/**'
   pull_request:
     types: [opened, reopened, synchronize]
     paths-ignore:
@@ -16,6 +19,9 @@ on:
       - 'help/**'
       - 'packaging/**'
       - '.pkgr.yml'
+      - 'docker/prod/**'
+      - 'docker/dev/**'
+      - 'docker/pullpreview/**'
 
 permissions:
   contents: read
