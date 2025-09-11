@@ -154,6 +154,7 @@ module Meetings
     end
 
     def to_ical
+      calendar.timezones.clear
       calendar.add_timezone(build_single_vtimezone)
       calendar.to_ical
     end
