@@ -334,39 +334,50 @@ zh-TW:
       no_results_content_text: 建立一個新的自定義欄位
   concatenation:
     single: "或者"
-  dry_validation:
+  op_dry_validation:
+    or: "or"
     errors:
-      defined: "必須未被定義。"
-      int?: "必須是整數"
-      decimal?: "必須是十進位。"
-      filled?: "必填"
-      key?: "遺失。"
-      greater_or_equal_zero: "必須大於或等於 0"
-      not_found: "未找到"
+      array?: "must be an array."
+      decimal?: "must be a decimal."
+      defined: "must not be defined."
+      eql?: "must be equal to %{left}."
+      filled?: "must be filled."
+      greater_or_equal_zero: "must be greater or equal to 0."
+      gteq?: "must be greater than or equal to %{num}."
+      hash?: "must be a hash."
+      included_in?:
+        arg:
+          default: "must be one of: %{list}."
+          range: "must be one of: %{list_left} - %{list_right}."
+      int?: "must be an integer."
+      key?: "is missing."
+      not_found: "not found."
       rules:
         copy_workflow_from:
-          workflow_missing: "沒有自己的工作流程。"
+          workflow_missing: "has no own workflow."
         custom_field:
-          format_not_supported: "格式 '%{field_format}' 不支援。"
+          format_not_supported: "format '%{field_format}' is unsupported."
         item:
-          root_item: "不能為根項目"
-          not_persisted: "必須是已存在的項目"
+          root_item: "cannot be a root item."
+          not_persisted: "must be an already existing item."
         label:
-          not_unique: "在同一階層內必須唯一"
+          not_unique: "must be unique within the same hierarchy level."
         short:
-          not_unique: "在同一階層內必須唯一"
+          not_unique: "must be unique within the same hierarchy level."
         parent:
-          not_descendant: "必須是層級展開的"
+          not_descendant: "must be a descendant of the hierarchy root."
+      str?: "must be a string."
+      type?: "must be %{type}."
     rules:
-      copy_workflow_from: "工作流程複本的類型"
-      enabled: "啟用"
-      depth: "深度"
-      item: "項目"
-      label: "標籤"
-      score: "評分"
-      short: "簡稱"
-      parent: "上層"
-      blueprint: "樣式藍圖"
+      copy_workflow_from: "Type for workflow copy"
+      enabled: "Enabled"
+      depth: "Depth"
+      item: "Item"
+      label: "Label"
+      score: "Score"
+      short: "Short name"
+      parent: "Parent"
+      blueprint: "Pattern blueprint"
   global_search:
     title:
       all_projects: '在所有專案中搜尋 "%{search_term}"'

@@ -335,38 +335,49 @@ tr:
       no_results_content_text: Yeni bir özel alan oluştur
   concatenation:
     single: "ya da"
-  dry_validation:
+  op_dry_validation:
+    or: "or"
     errors:
-      defined: "must not be defined."
-      int?: "bir tamsayı olmalıdır."
+      array?: "must be an array."
       decimal?: "must be a decimal."
-      filled?: "doldurulmalı."
+      defined: "must not be defined."
+      eql?: "must be equal to %{left}."
+      filled?: "must be filled."
+      greater_or_equal_zero: "must be greater or equal to 0."
+      gteq?: "must be greater than or equal to %{num}."
+      hash?: "must be a hash."
+      included_in?:
+        arg:
+          default: "must be one of: %{list}."
+          range: "must be one of: %{list_left} - %{list_right}."
+      int?: "must be an integer."
       key?: "is missing."
-      greater_or_equal_zero: "sıfıra eşit ya da büyük olmalı."
-      not_found: "bulunamadı."
+      not_found: "not found."
       rules:
         copy_workflow_from:
           workflow_missing: "has no own workflow."
         custom_field:
           format_not_supported: "format '%{field_format}' is unsupported."
         item:
-          root_item: "bir kök öğe olamaz."
-          not_persisted: "zaten var olan bir öğe olmalıdır."
+          root_item: "cannot be a root item."
+          not_persisted: "must be an already existing item."
         label:
-          not_unique: "aynı hiyerarşi seviyesi içinde benzersiz olmalıdır."
+          not_unique: "must be unique within the same hierarchy level."
         short:
-          not_unique: "aynı hiyerarşi seviyesi içinde benzersiz olmalıdır."
+          not_unique: "must be unique within the same hierarchy level."
         parent:
           not_descendant: "must be a descendant of the hierarchy root."
+      str?: "must be a string."
+      type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Etkin"
-      depth: "Derinlik"
-      item: "Öğe"
-      label: "Etiket"
+      enabled: "Enabled"
+      depth: "Depth"
+      item: "Item"
+      label: "Label"
       score: "Score"
-      short: "Kısa adı"
-      parent: "Üst"
+      short: "Short name"
+      parent: "Parent"
       blueprint: "Pattern blueprint"
   global_search:
     title:

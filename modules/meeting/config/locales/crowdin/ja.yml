@@ -64,7 +64,7 @@ ja:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} is not a valid participant."
+          invalid_user: "%{name}は有効な参加者ではありません。"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "新しいスケジュールではカバーされていない一連の会議があります。すべての会議を含むようにスケジュールを調整してください。"
@@ -79,7 +79,7 @@ ja:
       meeting_agenda: "アジェンダ"
       meeting_section: "セクション"
       token/ical_meeting:
-        other: "iCal Meeting subscription"
+        other: "iCal Meeting サブスクリプション"
   activity:
     filter:
       meeting: "会議"
@@ -150,7 +150,7 @@ ja:
   label_recurring_meeting_series_end: "一連の会議を終了"
   label_recurring_meeting_series_end_now: "シリーズを今すぐ終了する"
   label_meeting_more:
-    other: "There are %{count} more meetings."
+    other: "あと%{count}の会議があります。"
   label_my_meetings: "私の会議"
   label_all_meetings: "すべての会議"
   label_upcoming_meetings: "今後の会議"
@@ -202,7 +202,7 @@ ja:
       agenda_items: "議題項目をコピー"
       agenda_text: "古い会議の議題をコピー"
       participants: "参加者リストをコピー"
-      to_clipboard: "Copy link to clipboard"
+      to_clipboard: "リンクをクリップボードにコピー"
     email:
       send_emails: "参加者にメールを送信"
       send_invitation_emails: >
@@ -214,7 +214,7 @@ ja:
         title: "[%{project_name}] ミーティングシリーズ '%{title}'"
         summary: "%{actor} は新しいミーティングシリーズ '%{title}' を立ち上げた"
       series_updated:
-        title: "[%{project_name}] Meeting series '%{title}' has been updated"
+        title: "[%{project_name}]の一連の会議 「%{title}」が更新されました"
         summary: "Meeting series '%{title}' has been updated by %{actor}"
         old_schedule: "古いスケジュール"
         new_schedule: "新しいスケジュール"

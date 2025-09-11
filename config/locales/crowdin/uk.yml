@@ -331,39 +331,50 @@ uk:
       no_results_content_text: Створіть нове спеціальне поле
   concatenation:
     single: "або"
-  dry_validation:
+  op_dry_validation:
+    or: "or"
     errors:
-      defined: "не має визначатися."
-      int?: "має бути цілим числом."
-      decimal?: "має бути десятковим числом."
-      filled?: "має бути заповнено."
-      key?: "— відсутній елемент."
-      greater_or_equal_zero: "має дорівнювати нулю або перевищувати його."
-      not_found: "не знайдено."
+      array?: "must be an array."
+      decimal?: "must be a decimal."
+      defined: "must not be defined."
+      eql?: "must be equal to %{left}."
+      filled?: "must be filled."
+      greater_or_equal_zero: "must be greater or equal to 0."
+      gteq?: "must be greater than or equal to %{num}."
+      hash?: "must be a hash."
+      included_in?:
+        arg:
+          default: "must be one of: %{list}."
+          range: "must be one of: %{list_left} - %{list_right}."
+      int?: "must be an integer."
+      key?: "is missing."
+      not_found: "not found."
       rules:
         copy_workflow_from:
-          workflow_missing: "не має власного робочого процесу."
+          workflow_missing: "has no own workflow."
         custom_field:
-          format_not_supported: "формат «%{field_format}» не підтримується."
+          format_not_supported: "format '%{field_format}' is unsupported."
         item:
-          root_item: "не може бути кореневим елементом."
-          not_persisted: "має бути вже наявним елементом."
+          root_item: "cannot be a root item."
+          not_persisted: "must be an already existing item."
         label:
-          not_unique: "має бути унікальним у межах одного рівня ієрархії."
+          not_unique: "must be unique within the same hierarchy level."
         short:
-          not_unique: "має бути унікальним у межах одного рівня ієрархії."
+          not_unique: "must be unique within the same hierarchy level."
         parent:
-          not_descendant: "має бути нащадком кореня ієрархії."
+          not_descendant: "must be a descendant of the hierarchy root."
+      str?: "must be a string."
+      type?: "must be %{type}."
     rules:
-      copy_workflow_from: "Тип копії робочого процесу"
-      enabled: "Увімкнено"
-      depth: "Глибина"
-      item: "Елемент"
-      label: "Мітка"
-      score: "Оцінка"
-      short: "Коротка назва"
-      parent: "Батьківський елемент"
-      blueprint: "Шаблон плану"
+      copy_workflow_from: "Type for workflow copy"
+      enabled: "Enabled"
+      depth: "Depth"
+      item: "Item"
+      label: "Label"
+      score: "Score"
+      short: "Short name"
+      parent: "Parent"
+      blueprint: "Pattern blueprint"
   global_search:
     title:
       all_projects: 'Пошук за терміном «%{search_term}» у всіх проєктах'

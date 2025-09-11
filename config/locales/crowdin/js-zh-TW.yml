@@ -1099,7 +1099,7 @@ zh-TW:
         other: "工作套件"
       child_work_packages:
         other: "%{count} 個子工作套件"
-      hour_string: "%{hours} h"
+      hour_string: "%{hours} 小時"
       hour:
         one: "1 小時"
         other: "%{count} 小時"

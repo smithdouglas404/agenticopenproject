@@ -335,39 +335,50 @@ ko:
       no_results_content_text: 새 사용자 필드 생성
   concatenation:
     single: "또는"
-  dry_validation:
+  op_dry_validation:
+    or: "or"
     errors:
-      defined: "- 정의해서는 안 됩니다."
-      int?: "- 정수여야 합니다."
-      decimal?: "- 소수여야 합니다."
-      filled?: "- 입력해야 합니다."
-      key?: "- 누락되었습니다."
-      greater_or_equal_zero: "- 0보다 크거나 같아야 합니다."
-      not_found: "- 찾을 수 없습니다."
+      array?: "must be an array."
+      decimal?: "must be a decimal."
+      defined: "must not be defined."
+      eql?: "must be equal to %{left}."
+      filled?: "must be filled."
+      greater_or_equal_zero: "must be greater or equal to 0."
+      gteq?: "must be greater than or equal to %{num}."
+      hash?: "must be a hash."
+      included_in?:
+        arg:
+          default: "must be one of: %{list}."
+          range: "must be one of: %{list_left} - %{list_right}."
+      int?: "must be an integer."
+      key?: "is missing."
+      not_found: "not found."
       rules:
         copy_workflow_from:
-          workflow_missing: "- 고유한 워크플로가 없습니다."
+          workflow_missing: "has no own workflow."
         custom_field:
-          format_not_supported: "'%{field_format}' 형식은 지원되지 않습니다."
+          format_not_supported: "format '%{field_format}' is unsupported."
         item:
-          root_item: "- 루트 항목일 수 없습니다."
-          not_persisted: "- 이미 존재하는 항목이어야 합니다."
+          root_item: "cannot be a root item."
+          not_persisted: "must be an already existing item."
         label:
-          not_unique: "- 동일한 계층 수준 내에서 고유해야 합니다."
+          not_unique: "must be unique within the same hierarchy level."
         short:
-          not_unique: "- 동일한 계층 수준 내에서 고유해야 합니다."
+          not_unique: "must be unique within the same hierarchy level."
         parent:
-          not_descendant: "- 계층 루트의 하위 항목이어야 합니다."
+          not_descendant: "must be a descendant of the hierarchy root."
+      str?: "must be a string."
+      type?: "must be %{type}."
     rules:
-      copy_workflow_from: "워크플로 복사의 유형"
-      enabled: "활성화됨"
-      depth: "깊이"
-      item: "항목"
-      label: "레이블"
-      score: "점수"
-      short: "짧은 이름"
-      parent: "부모"
-      blueprint: "패턴 청사진"
+      copy_workflow_from: "Type for workflow copy"
+      enabled: "Enabled"
+      depth: "Depth"
+      item: "Item"
+      label: "Label"
+      score: "Score"
+      short: "Short name"
+      parent: "Parent"
+      blueprint: "Pattern blueprint"
   global_search:
     title:
       all_projects: '모든 프로젝트에서 "%{search_term}" 검색'

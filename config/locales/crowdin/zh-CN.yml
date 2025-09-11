@@ -332,39 +332,50 @@ zh-CN:
       no_results_content_text: 创建新的自定义字段
   concatenation:
     single: "或"
-  dry_validation:
+  op_dry_validation:
+    or: "or"
     errors:
-      defined: "不得定义。"
-      int?: "必须为整数"
-      decimal?: "必须为小数。"
-      filled?: "必须填写"
-      key?: "缺失。"
-      greater_or_equal_zero: "必须大于或等于 0"
-      not_found: "未找到"
+      array?: "must be an array."
+      decimal?: "must be a decimal."
+      defined: "must not be defined."
+      eql?: "must be equal to %{left}."
+      filled?: "must be filled."
+      greater_or_equal_zero: "must be greater or equal to 0."
+      gteq?: "must be greater than or equal to %{num}."
+      hash?: "must be a hash."
+      included_in?:
+        arg:
+          default: "must be one of: %{list}."
+          range: "must be one of: %{list_left} - %{list_right}."
+      int?: "must be an integer."
+      key?: "is missing."
+      not_found: "not found."
       rules:
         copy_workflow_from:
-          workflow_missing: "没有自己的工作流。"
+          workflow_missing: "has no own workflow."
         custom_field:
-          format_not_supported: "格式 '%{field_format}' 不受支持。"
+          format_not_supported: "format '%{field_format}' is unsupported."
         item:
-          root_item: "不能为根项目"
-          not_persisted: "必须是已存在的项目"
+          root_item: "cannot be a root item."
+          not_persisted: "must be an already existing item."
         label:
-          not_unique: "在同一层级内必须是唯一的"
+          not_unique: "must be unique within the same hierarchy level."
         short:
-          not_unique: "在同一层级内必须是唯一的"
+          not_unique: "must be unique within the same hierarchy level."
         parent:
-          not_descendant: "必须是层次结构根的后代"
+          not_descendant: "must be a descendant of the hierarchy root."
+      str?: "must be a string."
+      type?: "must be %{type}."
     rules:
-      copy_workflow_from: "工作流副本的类型"
-      enabled: "已启用"
-      depth: "深"
-      item: "条目"
-      label: "标签"
-      score: "分数"
-      short: "简称"
-      parent: "父级"
-      blueprint: "图案蓝图"
+      copy_workflow_from: "Type for workflow copy"
+      enabled: "Enabled"
+      depth: "Depth"
+      item: "Item"
+      label: "Label"
+      score: "Score"
+      short: "Short name"
+      parent: "Parent"
+      blueprint: "Pattern blueprint"
   global_search:
     title:
       all_projects: '在所有项目中搜索“%{search_term}”'

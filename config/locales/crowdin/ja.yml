@@ -333,39 +333,50 @@ ja:
       no_results_content_text: 新しいカスタム フィールドを作成
   concatenation:
     single: "または"
-  dry_validation:
+  op_dry_validation:
+    or: "or"
     errors:
-      defined: "を定義してはならない。"
-      int?: "は整数でなければなりません。"
-      decimal?: "10進数である必要があります。"
-      filled?: "を入力する必要があります。"
-      key?: "は見つかりません。"
-      greater_or_equal_zero: "は 0 以上でなければなりません。"
-      not_found: "見つかりません。"
+      array?: "must be an array."
+      decimal?: "must be a decimal."
+      defined: "must not be defined."
+      eql?: "must be equal to %{left}."
+      filled?: "must be filled."
+      greater_or_equal_zero: "must be greater or equal to 0."
+      gteq?: "must be greater than or equal to %{num}."
+      hash?: "must be a hash."
+      included_in?:
+        arg:
+          default: "must be one of: %{list}."
+          range: "must be one of: %{list_left} - %{list_right}."
+      int?: "must be an integer."
+      key?: "is missing."
+      not_found: "not found."
       rules:
         copy_workflow_from:
-          workflow_missing: "独自のワークフローはありません。"
+          workflow_missing: "has no own workflow."
         custom_field:
-          format_not_supported: "フォーマット '%{field_format}' はサポートされていません。"
+          format_not_supported: "format '%{field_format}' is unsupported."
         item:
-          root_item: "をルート・アイテムにすることはできません。"
-          not_persisted: "は既存のアイテムである必要があります。"
+          root_item: "cannot be a root item."
+          not_persisted: "must be an already existing item."
         label:
-          not_unique: "は、同じ階層レベル内で一意である必要があります。"
+          not_unique: "must be unique within the same hierarchy level."
         short:
-          not_unique: "は、同じ階層レベル内で一意である必要があります。"
+          not_unique: "must be unique within the same hierarchy level."
         parent:
-          not_descendant: "階層ルートの子孫でなければなりません。"
+          not_descendant: "must be a descendant of the hierarchy root."
+      str?: "must be a string."
+      type?: "must be %{type}."
     rules:
-      copy_workflow_from: "ワークフローコピーのタイプ"
-      enabled: "有効"
-      depth: "深さ"
-      item: "アイテム"
+      copy_workflow_from: "Type for workflow copy"
+      enabled: "Enabled"
+      depth: "Depth"
+      item: "Item"
       label: "Label"
-      score: "スコア"
-      short: "ショートネーム"
-      parent: "親項目"
-      blueprint: "パターンの建設計画"
+      score: "Score"
+      short: "Short name"
+      parent: "Parent"
+      blueprint: "Pattern blueprint"
   global_search:
     title:
       all_projects: 'すべてのプロジェクトで "%{search_term}" を検索'

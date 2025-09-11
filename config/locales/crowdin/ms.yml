@@ -334,38 +334,49 @@ ms:
       no_results_content_text: Cipta ruangan tersuai baharu
   concatenation:
     single: "atau"
-  dry_validation:
+  op_dry_validation:
+    or: "or"
     errors:
-      defined: "must not be defined."
-      int?: "mestilah integer."
+      array?: "must be an array."
       decimal?: "must be a decimal."
-      filled?: "mesti diisi."
+      defined: "must not be defined."
+      eql?: "must be equal to %{left}."
+      filled?: "must be filled."
+      greater_or_equal_zero: "must be greater or equal to 0."
+      gteq?: "must be greater than or equal to %{num}."
+      hash?: "must be a hash."
+      included_in?:
+        arg:
+          default: "must be one of: %{list}."
+          range: "must be one of: %{list_left} - %{list_right}."
+      int?: "must be an integer."
       key?: "is missing."
-      greater_or_equal_zero: "mestilah lebih besar atau sama dengan 0."
-      not_found: "tidak dijumpai."
+      not_found: "not found."
       rules:
         copy_workflow_from:
           workflow_missing: "has no own workflow."
         custom_field:
           format_not_supported: "format '%{field_format}' is unsupported."
         item:
-          root_item: "tidak boleh menjadi punca item."
-          not_persisted: "mestilah item yang sedia ada."
+          root_item: "cannot be a root item."
+          not_persisted: "must be an already existing item."
         label:
-          not_unique: "mestilah unik dalam tahap hierarki yang sama."
+          not_unique: "must be unique within the same hierarchy level."
         short:
-          not_unique: "mestilah unik dalam tahap hierarki yang sama."
+          not_unique: "must be unique within the same hierarchy level."
         parent:
-          not_descendant: "mestilah keturunan akar hierarki."
+          not_descendant: "must be a descendant of the hierarchy root."
+      str?: "must be a string."
+      type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Didayakan"
-      depth: "Kedalaman"
+      enabled: "Enabled"
+      depth: "Depth"
       item: "Item"
       label: "Label"
       score: "Score"
-      short: "Nama pendek"
-      parent: "Induk"
+      short: "Short name"
+      parent: "Parent"
       blueprint: "Pattern blueprint"
   global_search:
     title:

@@ -333,39 +333,50 @@ it:
       no_results_content_text: Crea un nuovo campo personalizzato
   concatenation:
     single: "oppure"
-  dry_validation:
+  op_dry_validation:
+    or: "or"
     errors:
-      defined: "non deve essere definito."
-      int?: "deve essere un intero."
-      decimal?: "deve essere un decimale."
-      filled?: "deve essere compilato."
-      key?: "manca."
-      greater_or_equal_zero: "deve essere maggiore o uguale a 0."
-      not_found: "non trovato."
+      array?: "must be an array."
+      decimal?: "must be a decimal."
+      defined: "must not be defined."
+      eql?: "must be equal to %{left}."
+      filled?: "must be filled."
+      greater_or_equal_zero: "must be greater or equal to 0."
+      gteq?: "must be greater than or equal to %{num}."
+      hash?: "must be a hash."
+      included_in?:
+        arg:
+          default: "must be one of: %{list}."
+          range: "must be one of: %{list_left} - %{list_right}."
+      int?: "must be an integer."
+      key?: "is missing."
+      not_found: "not found."
       rules:
         copy_workflow_from:
-          workflow_missing: "non ha un proprio flusso di lavoro."
+          workflow_missing: "has no own workflow."
         custom_field:
-          format_not_supported: "il formato '%{field_format}' non è supportato."
+          format_not_supported: "format '%{field_format}' is unsupported."
         item:
-          root_item: "non può essere un elemento radice."
-          not_persisted: "deve essere un elemento già esistente."
+          root_item: "cannot be a root item."
+          not_persisted: "must be an already existing item."
         label:
-          not_unique: "deve essere unico all'interno dello stesso livello gerarchico."
+          not_unique: "must be unique within the same hierarchy level."
         short:
-          not_unique: "deve essere unico all'interno dello stesso livello gerarchico."
+          not_unique: "must be unique within the same hierarchy level."
         parent:
-          not_descendant: "deve essere un discendente della radice gerarchica."
+          not_descendant: "must be a descendant of the hierarchy root."
+      str?: "must be a string."
+      type?: "must be %{type}."
     rules:
-      copy_workflow_from: "Tipo per la copia del flusso di lavoro"
-      enabled: "Attivata"
-      depth: "Profondità"
-      item: "Elemento"
-      label: "Etichetta"
-      score: "Punteggio"
-      short: "Abbreviazione"
-      parent: "Genitore"
-      blueprint: "Schema del modello"
+      copy_workflow_from: "Type for workflow copy"
+      enabled: "Enabled"
+      depth: "Depth"
+      item: "Item"
+      label: "Label"
+      score: "Score"
+      short: "Short name"
+      parent: "Parent"
+      blueprint: "Pattern blueprint"
   global_search:
     title:
       all_projects: 'Cerca "%{search_term}" in tutti i progetti'

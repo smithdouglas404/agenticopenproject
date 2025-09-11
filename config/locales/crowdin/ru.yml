@@ -334,39 +334,50 @@ ru:
       no_results_content_text: Создать новое настраиваемое поле
   concatenation:
     single: "или"
-  dry_validation:
+  op_dry_validation:
+    or: "or"
     errors:
-      defined: "must not be defined."
-      int?: "должно быть целым числом."
+      array?: "must be an array."
       decimal?: "must be a decimal."
-      filled?: "должно быть заполнено."
+      defined: "must not be defined."
+      eql?: "must be equal to %{left}."
+      filled?: "must be filled."
+      greater_or_equal_zero: "must be greater or equal to 0."
+      gteq?: "must be greater than or equal to %{num}."
+      hash?: "must be a hash."
+      included_in?:
+        arg:
+          default: "must be one of: %{list}."
+          range: "must be one of: %{list_left} - %{list_right}."
+      int?: "must be an integer."
       key?: "is missing."
-      greater_or_equal_zero: "должно быть больше или равно 0."
-      not_found: "не найдено."
+      not_found: "not found."
       rules:
         copy_workflow_from:
-          workflow_missing: "не имеет собственного рабочего процесса."
+          workflow_missing: "has no own workflow."
         custom_field:
           format_not_supported: "format '%{field_format}' is unsupported."
         item:
-          root_item: "не может быть корневым элементом."
-          not_persisted: "должно быть уже существующим элементом."
+          root_item: "cannot be a root item."
+          not_persisted: "must be an already existing item."
         label:
-          not_unique: "должно быть уникальным в пределах одного уровня иерархии."
+          not_unique: "must be unique within the same hierarchy level."
         short:
-          not_unique: "должно быть уникальным в пределах одного уровня иерархии."
+          not_unique: "must be unique within the same hierarchy level."
         parent:
-          not_descendant: "должно быть потомком корневого уровня иерархии."
+          not_descendant: "must be a descendant of the hierarchy root."
+      str?: "must be a string."
+      type?: "must be %{type}."
     rules:
-      copy_workflow_from: "Тип копии рабочего процесса"
-      enabled: "Включено"
-      depth: "Глубина"
-      item: "Элемент"
-      label: "Метка"
+      copy_workflow_from: "Type for workflow copy"
+      enabled: "Enabled"
+      depth: "Depth"
+      item: "Item"
+      label: "Label"
       score: "Score"
-      short: "Краткое имя"
-      parent: "Родитель"
-      blueprint: "Шаблон чертежа"
+      short: "Short name"
+      parent: "Parent"
+      blueprint: "Pattern blueprint"
   global_search:
     title:
       all_projects: 'Поиск "%{search_term}" во всех проектах'
