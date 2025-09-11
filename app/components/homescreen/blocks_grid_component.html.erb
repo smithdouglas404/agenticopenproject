@@ -26,35 +26,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
+
 <%=
-  render(Primer::OpenProject::PageHeader.new) do |header|
-    header.with_title { I18n.t("label_home") }
-    header.with_breadcrumbs([I18n.t(:label_home)], skip_home_on_mobile: true)
+  render(Grids::WidgetGridComponent.new) do |grid|
+    blocks.each do |block|
+      grid.with_widget(block)
+    end
   end
 %>
-
-<%= render partial: "announcements/show" %>
-
-<%= render Homescreen::BlocksGridComponent.new(homescreen: @homescreen) %>
-
-<% if show_homescreen_links? && @homescreen[:links].any? %>
-  <section class="homescreen--links">
-
-  <% @homescreen[:links].each do |link| %>
-    <% url = link[:url] || OpenProject::Static::Links.url_for(link[:url_key]) %>
-
-    <% if url %>
-      <% title = I18n.t(link[:label], scope: "homescreen.links") %>
-      <%= link_to url,
-                  class: "homescreen--links--item",
-                  target: "_blank",
-                  aria_label: title do %>
-        <%= op_icon(link[:icon]) %>
-        <%= title %>
-      <% end %>
-    <% end %>
-  <% end %>
-  </section>
-<% end %>
-
-<%= call_hook :homescreen_after_links %>

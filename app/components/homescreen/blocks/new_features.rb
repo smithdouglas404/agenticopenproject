@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,36 +26,43 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class HomescreenController < ApplicationController
-  skip_before_action :check_if_login_required, only: [:robots]
-  no_authorization_required! :index, :robots
-  before_action :jump_to_module
+module Homescreen
+  module Blocks
+    class NewFeatures < Grids::WidgetComponent
+      def title
+        I18n.t(:label_new_features)
+      end
 
-  layout "global"
+      def feature_teaser_image
+        "#{feature_version}_features.svg"
+      end
 
-  def index
-    @announcement = Announcement.active_and_current
-    @homescreen = OpenProject::Static::Homescreen
-  end
+      def new_features_header
+        I18n.t("homescreen.blocks.new_features.header")
+      end
 
-  current_menu_item [:index] do
-    :home
-  end
+      def learn_more_link_text
+        I18n.t("homescreen.blocks.new_features.learn_about")
+      end
 
-  def robots
-    if Setting.login_required?
-      render template: "homescreen/robots-login-required", format: :text
-    else
-      @projects = Project.active.public_projects
-    end
-  end
+      def new_features_title
+        I18n.t("homescreen.blocks.new_features.#{feature_version}.new_features_title")
+      end
 
-  def jump_to_module
-    if params[:jump]
-      # try to redirect to the requested menu item
-      redirect_to_global_menu_item(params[:jump]) && return
+      def new_features
+        I18n.t("homescreen.blocks.new_features.#{feature_version}.new_features_list")
+      end
+
+      private
+
+      def feature_version
+        [
+          OpenProject::VERSION::MAJOR,
+          OpenProject::VERSION::MINOR
+        ].join("_")
+      end
     end
   end
 end

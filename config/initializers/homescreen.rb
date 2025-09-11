@@ -34,38 +34,37 @@ require "open_project/static/links"
 OpenProject::Static::Homescreen.manage :blocks do |blocks|
   blocks.push(
     {
-      partial: "welcome",
+      name: "welcome",
       if: Proc.new { Setting.welcome_on_homescreen? && Setting.welcome_text.present? }
     },
     {
-      partial: "projects"
+      name: "projects"
     },
     {
-      partial: "new_features",
+      name: "new_features",
       if: Proc.new { OpenProject::Configuration.show_community_links? }
     },
     {
-      partial: "users",
+      name: "users",
       if: Proc.new { User.current.admin? }
     },
     {
-      partial: "my_account",
+      name: "my_account",
       if: Proc.new { User.current.logged? }
     },
     {
-      partial: "news",
-      if: Proc.new { !@news.empty? }
+      name: "news"
     },
     {
-      partial: "community",
+      name: "community",
       if: Proc.new { OpenProject::Configuration.show_community_links? }
     },
     {
-      partial: "administration",
+      name: "administration",
       if: Proc.new { User.current.admin? }
     },
     {
-      partial: "upsell",
+      name: "upsell",
       if: Proc.new { !(EnterpriseToken.active? || EnterpriseToken.hide_banners?) || EnterpriseToken.trial_only? }
     }
   )

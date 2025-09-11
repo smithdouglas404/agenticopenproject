@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,36 +26,24 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class HomescreenController < ApplicationController
-  skip_before_action :check_if_login_required, only: [:robots]
-  no_authorization_required! :index, :robots
-  before_action :jump_to_module
+module Homescreen
+  module Blocks
+    class Users < Grids::WidgetComponent
+      include IconsHelper
+      include OpenProject::ObjectLinking
+      include Redmine::I18n
 
-  layout "global"
+      def initialize(*)
+        super
 
-  def index
-    @announcement = Announcement.active_and_current
-    @homescreen = OpenProject::Static::Homescreen
-  end
+        @newest_users = User.active.newest.take(3)
+      end
 
-  current_menu_item [:index] do
-    :home
-  end
-
-  def robots
-    if Setting.login_required?
-      render template: "homescreen/robots-login-required", format: :text
-    else
-      @projects = Project.active.public_projects
-    end
-  end
-
-  def jump_to_module
-    if params[:jump]
-      # try to redirect to the requested menu item
-      redirect_to_global_menu_item(params[:jump]) && return
+      def title
+        I18n.t(:label_user_plural)
+      end
     end
   end
 end
