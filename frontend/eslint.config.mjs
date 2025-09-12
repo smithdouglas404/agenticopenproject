@@ -148,10 +148,10 @@ export default defineConfig([
     ],
   },
   {
-    files: ["**/*.d.ts"],
+    files: ['**/*.d.ts'],
     rules: {
-      "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": "off",
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
     },
   },
   {
