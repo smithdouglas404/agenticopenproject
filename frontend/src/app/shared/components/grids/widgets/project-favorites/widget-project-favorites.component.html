@@ -25,7 +25,7 @@
         </p>
       </div>
     }
-    @if (projects.length > 0) {
+    @else {
       <ul class="op-widget-project-favorites--list">
         @for (project of projects; track project) {
           <li>
@@ -39,18 +39,9 @@
               [href]="projectPath(project)"
               [textContent]="project.name">
             </a>
-          }
-          <svg
-            star-fill-icon
-            class="op-primer--star-icon"
-            size="small"
-          ></svg>
-          <a
-            class="op-widget-project-favorites--link"
-            [href]="projectPath(project)"
-            [textContent]="project.name">
-          </a>
-        </ul>
-      }
-    </div>
-  }
+          </li>
+        }
+      </ul>
+    }
+  </div>
+}
