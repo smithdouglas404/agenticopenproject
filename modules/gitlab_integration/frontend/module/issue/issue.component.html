@@ -29,12 +29,6 @@
 
 <div class="op-issue--info_created">
   {{ text.label_created_by }}
-  <!-- <img
-  alt='Issue author avatar'
-  class='op-issue--avatar op-avatar op-avatar_mini'
-  [src]="gitlabIssue.gitlabUser.avatarUrl"
-  *ngIf="gitlabIssue.gitlabUser"
-  />&nbsp; -->
   <span class='op-issue--user'>
     @if (gitlabIssue.gitlabUser) {
       <a
