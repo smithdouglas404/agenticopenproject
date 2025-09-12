@@ -33,19 +33,13 @@
         ></a> -
       </div>
     }
-    <div
-      class="op-ian-item--reason-wrapper"
-      >
-      @for (item of translatedReasons | keyvalue; track item; let first = $first; let last = $last) {
-        <span
-          class="op-ian-item--reason"
-          >
-          {{ item.key }}@if (!last) {
-          ,
-        }
-      </span>
-    }
-  </div>
+    <div class="op-ian-item--reason-wrapper">
+      @for (item of translatedReasons | keyvalue; track item.key; let last = $last) {
+        <span class="op-ian-item--reason">
+          {{ item.key }}@if (!last) {, }
+        </span>
+      }
+    </div>
   @if (!notification.readIAN) {
     <span
       class="op-ian-item--reason-count"
