@@ -89,17 +89,18 @@ module ActsAsCustomizable::CalculatedValue
     def refresh_calculation_errors!(referenced_values, calculated_field_ids, result)
       return unless is_a?(Project)
 
-      failed_calculations, successful_calculations = result.partition do |_, calculation_result|
-        calculation_result.nil?
+      remove_calculated_value_errors(calculated_field_ids)
+
+      cvs_with_errors = create_errors_for_missing_attributes(referenced_values, calculated_field_ids)
+
+      failed_calculations = result.filter_map do |cf_id, calculation_result|
+        to_id(cf_id) if calculation_result.nil?
       end
 
-      successfully_calculated_cfs = successful_calculations.map { |cf_id, _| to_id(cf_id) }
-      remove_calculated_value_errors(successfully_calculated_cfs)
+      failed_calculations.each do |cf_id|
+        next if cvs_with_errors.include?(cf_id)
 
-      create_errors_for_missing_attributes(referenced_values, calculated_field_ids)
-
-      failed_calculations.to_h.each_key do |cf_id|
-        create_calculated_value_error(to_id(cf_id), "ERROR_MATHEMATICAL")
+        create_calculated_value_error(cf_id, "ERROR_MATHEMATICAL")
       end
     end
 
@@ -108,13 +109,19 @@ module ActsAsCustomizable::CalculatedValue
     end
 
     def create_errors_for_missing_attributes(referenced_values, calculated_field_ids)
+      errors_created = []
+
       cf_ids_with_missing_values = referenced_values.filter_map { |k, v| to_id(k) if v.nil? }
       cf_ids_with_missing_values.each do |_missing_cf_id|
         calculated_field_ids.each do |calculated_cf_id|
           # TODO: insert missing custom field name into the error message:
-          create_calculated_value_error(calculated_cf_id, "ERROR_MISSING_VALUE")
+          if create_calculated_value_error(calculated_cf_id, "ERROR_MISSING_VALUE")
+            errors_created << calculated_cf_id
+          end
         end
       end
+
+      errors_created
     end
 
     def remove_calculated_value_errors(custom_field_ids = [])
