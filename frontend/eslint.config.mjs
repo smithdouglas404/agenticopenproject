@@ -7,7 +7,7 @@ import stylistic from '@stylistic/eslint-plugin';
 
 import { defineConfig, globalIgnores } from 'eslint/config';
 
-const config = defineConfig([
+export default defineConfig([
   {
     files: ['**/*.{js,mjs,cjs}'],
     extends: [
@@ -221,5 +221,3 @@ const config = defineConfig([
     'src/app/shared/helpers/chronic_duration.js',
   ]),
 ]);
-
-export default tseslint.config(config);
