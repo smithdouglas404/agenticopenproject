@@ -59,7 +59,7 @@ gem "will_paginate", "~> 4.0.0"
 
 gem "friendly_id", "~> 5.5.0"
 
-gem "scimitar", "~> 2.12"
+gem "scimitar", "~> 2.13"
 
 gem "acts_as_list", "~> 1.2.0"
 gem "acts_as_tree", "~> 2.9.0"
