@@ -364,7 +364,7 @@ en:
     errors:
       unknown: "An unknown error occurred during calculation. Please review the formula and try again."
       mathematical: "A mathematical error occurred during calculation. Please review the formula and try again."
-      missing_value: "The attribute TODO is not set. Please set all attributes required for the calculation."
+      missing_value: "The attribute %{custom_field_name} is not set. Please set all attributes required for the calculation."
 
   concatenation:
     single: "or"

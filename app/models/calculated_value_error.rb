@@ -49,7 +49,19 @@ class CalculatedValueError < ApplicationRecord
 
   def error_message
     translation_key = ERROR_TRANSLATIONS.fetch(error_code, "calculated_values.errors.unknown")
+    translation_options = {}
 
-    I18n.t(translation_key)
+    if error_code == "ERROR_MISSING_VALUE"
+      # To keep the error message short, we only show the first custom field with a missing value.
+      cf = CustomField.find(missing_custom_field_ids.first)
+
+      if cf
+        translation_options[:custom_field_name] = cf.name
+      else
+        translation_key = "calculated_values.errors.unknown"
+      end
+    end
+
+    I18n.t(translation_key, **translation_options)
   end
 end
