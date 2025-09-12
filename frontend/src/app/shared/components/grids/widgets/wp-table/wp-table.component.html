@@ -8,8 +8,10 @@
 </widget-header>
 
 <div class="op-widget-box--body">
-  <wp-embedded-table [queryId]="queryId"
-                     [configuration]="configuration"
-                     *ngIf="queryId">
-  </wp-embedded-table>
+  @if (queryId) {
+    <wp-embedded-table [queryId]="queryId"
+      [configuration]="configuration"
+      >
+    </wp-embedded-table>
+  }
 </div>

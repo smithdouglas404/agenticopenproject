@@ -9,15 +9,17 @@
 </widget-header>
 
 <div class="op-widget-box--body">
-  <ng-container *ngIf="{hasCapability: hasCapability$ | async} as context">
-    <div class="op-toast -error" *ngIf="context.hasCapability === false">
-      <span [textContent]="text.missing_permission"></span>
-    </div>
-
-    <op-wp-calendar
-      *ngIf="context.hasCapability === true"
-      [showMeetings]="true"
-      [static]="true"
-    ></op-wp-calendar>
-  </ng-container>
+  @if ({hasCapability: hasCapability$ | async}; as context) {
+    @if (context.hasCapability === false) {
+      <div class="op-toast -error">
+        <span [textContent]="text.missing_permission"></span>
+      </div>
+    }
+    @if (context.hasCapability === true) {
+      <op-wp-calendar
+        [showMeetings]="true"
+        [static]="true"
+      ></op-wp-calendar>
+    }
+  }
 </div>

@@ -8,33 +8,49 @@
   </widget-menu>
 </widget-header>
 
-<div *ngIf="(projects$ | async) as projects" class="op-widget-box--body">
-  <div class="op-header-project-select--no-favorites" *ngIf="projects.length === 0">
-    <svg
-      class="op-header-project-select--no-favorites-icon"
-      star-icon
-      size="medium"
-    ></svg>
-    <p>
-      <strong [textContent]="text.no_favorites"></strong>
-      <br/>
-      <span class="op-header-project-select--no-favorites-subtext"
-            [textContent]="text.no_favorites_subtext"></span>
-    </p>
-  </div>
-  <ng-container *ngIf="projects.length > 0">
-    <ul class="op-widget-project-favorites--list">
-      <li *ngFor="let project of projects">
+@if ((projects$ | async); as projects) {
+  <div class="op-widget-box--body">
+    @if (projects.length === 0) {
+      <div class="op-header-project-select--no-favorites">
         <svg
-          star-fill-icon
-          class="op-primer--star-icon"
-          size="small"
+          class="op-header-project-select--no-favorites-icon"
+          star-icon
+          size="medium"
         ></svg>
-        <a
-          class="op-widget-project-favorites--link"
-          [href]="projectPath(project)"
-          [textContent]="project.name">
-        </a>
-    </ul>
-  </ng-container>
-</div>
+        <p>
+          <strong [textContent]="text.no_favorites"></strong>
+          <br/>
+          <span class="op-header-project-select--no-favorites-subtext"
+          [textContent]="text.no_favorites_subtext"></span>
+        </p>
+      </div>
+    }
+    @if (projects.length > 0) {
+      <ul class="op-widget-project-favorites--list">
+        @for (project of projects; track project) {
+          <li>
+            <svg
+              star-fill-icon
+              class="op-primer--star-icon"
+              size="small"
+            ></svg>
+            <a
+              class="op-widget-project-favorites--link"
+              [href]="projectPath(project)"
+              [textContent]="project.name">
+            </a>
+          }
+          <svg
+            star-fill-icon
+            class="op-primer--star-icon"
+            size="small"
+          ></svg>
+          <a
+            class="op-widget-project-favorites--link"
+            [href]="projectPath(project)"
+            [textContent]="project.name">
+          </a>
+        </ul>
+      }
+    </div>
+  }

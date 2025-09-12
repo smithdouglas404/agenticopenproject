@@ -1,6 +1,7 @@
-<turbo-frame
-  [id]="frameID"
-  *ngIf="visible"
-  [src]="frameURL"
->
-</turbo-frame>
+@if (visible) {
+  <turbo-frame
+    [id]="frameID"
+    [src]="frameURL"
+    >
+  </turbo-frame>
+}

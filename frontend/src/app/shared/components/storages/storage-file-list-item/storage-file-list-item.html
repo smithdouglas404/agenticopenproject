@@ -13,7 +13,7 @@
       'spot-list--item-action_disabled': content.disabled,
       'op-file-list--item-action_view-not-allowed': content.isConstrained
     }"
-  >
+    >
     @if (!!content.checkbox) {
       <spot-checkbox
         [checked]="content.disabled || content.checkbox.selected"
@@ -103,14 +103,15 @@
       <span class="op-file-list--item-text" [textContent]="content.timestamp"></span>
     }
 
-    <op-principal
-      *ngIf="!content.isDirectory"
-      class="op-file-list--item-avatar"
-      [principal]="principal"
-      [hideName]="true"
-      [size]="'mini'"
-      [link]="false"
-    ></op-principal>
+    @if (!content.isDirectory) {
+      <op-principal
+        class="op-file-list--item-avatar"
+        [principal]="principal"
+        [hideName]="true"
+        [size]="'mini'"
+        [link]="false"
+      ></op-principal>
+    }
 
     @if (content.isDirectory) {
       <button
@@ -119,7 +120,7 @@
         (click)="content.enterDirectory()"
         (keydown.enter)="content.enterDirectory()"
         (keydown.space)="content.enterDirectory()"
-      >
+        >
         <svg chevron-right-icon size="small"></svg>
       </button>
     }

@@ -3,14 +3,16 @@
     <span [textContent]="text.filter_work_packages_by_relation_type"></span>
     &ngsp;
     <select class="form--select form--inline-select"
-            id=""
-            [(ngModel)]="selectedRelationFilter"
-            (ngModelChange)="onRelationFilterSelected()"
-            [compareWith]="compareRelationFilters">
-      <option *ngFor="let filter of availableRelationFilters"
-              [textContent]="text[filter.id]"
-              [ngValue]="filter">
-      </option>
+      id=""
+      [(ngModel)]="selectedRelationFilter"
+      (ngModelChange)="onRelationFilterSelected()"
+      [compareWith]="compareRelationFilters">
+      @for (filter of availableRelationFilters; track filter) {
+        <option
+          [textContent]="text[filter.id]"
+          [ngValue]="filter">
+        </option>
+      }
     </select>
   </h5>
 </div>

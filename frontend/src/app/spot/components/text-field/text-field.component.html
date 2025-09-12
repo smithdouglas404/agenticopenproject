@@ -12,13 +12,14 @@
   (focus)="onInputFocus($event)"
   (blur)="onInputBlur($event)"
   #input
-/>
-<button
-  *ngIf="showClearButton && value !== '' && !disabled"
-  (click)="valueChanged('')"
-  type="button"
-  class="spot-text-field--clear-button"
->
-  <span class="spot-icon spot-icon_close"></span>
-</button>
+  />
+@if (showClearButton && value !== '' && !disabled) {
+  <button
+    (click)="valueChanged('')"
+    type="button"
+    class="spot-text-field--clear-button"
+    >
+    <span class="spot-icon spot-icon_close"></span>
+  </button>
+}
 <ng-content select="[slot=after]"></ng-content>

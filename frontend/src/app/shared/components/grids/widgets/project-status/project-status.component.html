@@ -3,8 +3,8 @@
   [editable]="isEditable">
 
   <attribute-help-text slot="prepend"
-                       attribute="status"
-                       [attributeScope]="'Project'"></attribute-help-text>
+    attribute="status"
+  [attributeScope]="'Project'"></attribute-help-text>
 
   <widget-menu
     slot="menu"
@@ -13,17 +13,19 @@
 </widget-header>
 
 <div class="op-widget-box--body -allow-inner-overflow">
-  <edit-form *ngIf="(project$ | async) as project" [resource]="project">
-    <div class="project-status--container">
-      <op-editable-attribute-field [resource]="project"
-                                fieldName="status"
-                                wrapperClasses="project-status--display-field">
-      </op-editable-attribute-field>
-    </div>
-    <div class="project-status-explanation--container">
-      <op-editable-attribute-field [resource]="project"
-                                fieldName="statusExplanation">
-      </op-editable-attribute-field>
-    </div>
-  </edit-form>
+  @if ((project$ | async); as project) {
+    <edit-form [resource]="project">
+      <div class="project-status--container">
+        <op-editable-attribute-field [resource]="project"
+          fieldName="status"
+          wrapperClasses="project-status--display-field">
+        </op-editable-attribute-field>
+      </div>
+      <div class="project-status-explanation--container">
+        <op-editable-attribute-field [resource]="project"
+          fieldName="statusExplanation">
+        </op-editable-attribute-field>
+      </div>
+    </edit-form>
+  }
 </div>

@@ -1,10 +1,9 @@
-<ng-container
-  *ngIf="available"
->
-  <wp-custom-action
-      *ngFor="let action of actions; trackBy: trackByHref"
+@if (available) {
+  @for (action of actions; track trackByHref($index, action)) {
+    <wp-custom-action
       [workPackage]="workPackage"
       [action]="action"
       class="custom-action">
-  </wp-custom-action>
-</ng-container>
+    </wp-custom-action>
+  }
+}

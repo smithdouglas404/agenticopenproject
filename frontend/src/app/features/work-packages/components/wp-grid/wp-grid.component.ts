@@ -45,26 +45,28 @@ import { WorkPackageViewOutputs } from 'core-app/features/work-packages/routing/
   selector: 'wp-grid',
   template: `
     <wp-card-view [dragOutOfHandler]="canDragOutOf"
-                  [dragInto]="dragInto"
-                  [cardsRemovable]="false"
-                  [highlightingMode]="highlightingMode"
-                  [showStatusButton]="true"
-                  [orientation]="gridOrientation"
-                  (onMoved)="switchToManualSorting()"
-                  (selectionChanged)="selectionChanged.emit($event)"
-                  (itemClicked)="itemClicked.emit($event)"
-                  (stateLinkClicked)="stateLinkClicked.emit($event)"
-                  [showEmptyResultsBox]="true"
-                  [showInfoButton]="true"
-                  [shrinkOnMobile]="true">
+      [dragInto]="dragInto"
+      [cardsRemovable]="false"
+      [highlightingMode]="highlightingMode"
+      [showStatusButton]="true"
+      [orientation]="gridOrientation"
+      (onMoved)="switchToManualSorting()"
+      (selectionChanged)="selectionChanged.emit($event)"
+      (itemClicked)="itemClicked.emit($event)"
+      (stateLinkClicked)="stateLinkClicked.emit($event)"
+      [showEmptyResultsBox]="true"
+      [showInfoButton]="true"
+      [shrinkOnMobile]="true">
     </wp-card-view>
-
-    <div *ngIf="showResizer"
-         class="hidden-for-mobile hide-when-print">
-      <wp-resizer [elementClass]="resizerClass"
-                  [localStorageKey]="resizerStorageKey"></wp-resizer>
-    </div>
-  `,
+    
+    @if (showResizer) {
+      <div
+        class="hidden-for-mobile hide-when-print">
+        <wp-resizer [elementClass]="resizerClass"
+        [localStorageKey]="resizerStorageKey"></wp-resizer>
+      </div>
+    }
+    `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     DragAndDropService,

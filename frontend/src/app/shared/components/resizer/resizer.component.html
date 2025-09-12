@@ -1,4 +1,6 @@
-<div [ngClass]="resizerClass"
-     *ngIf="!customHandler">
-</div>
+@if (!customHandler) {
+  <div [ngClass]="resizerClass"
+    >
+  </div>
+}
 <ng-content></ng-content>
