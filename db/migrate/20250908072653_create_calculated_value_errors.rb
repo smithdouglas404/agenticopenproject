@@ -38,5 +38,10 @@ class CreateCalculatedValueErrors < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
+
+    add_index :calculated_value_errors,
+              %i[project_id custom_field_id error_code],
+              unique: true,
+              name: "index_unique_calc_val_error_per_project_and_cf"
   end
 end
