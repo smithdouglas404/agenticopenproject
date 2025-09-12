@@ -161,9 +161,9 @@ describe('parseChronicDuration', () => {
     });
   });
 
-  describe('with .ignoreSecondsWhenColonSeperated param', () => {
+  describe('with .ignoreSecondsWhenColonSeparated param', () => {
     it('parses 8:15 to 8 hours 15 minutes when seconds are ignored', () => {
-      expect(parseChronicDuration('8:15', { ignoreSecondsWhenColonSeperated: true })).toBe(8 * 3600 + 15 * 60);
+      expect(parseChronicDuration('8:15', { ignoreSecondsWhenColonSeparated: true })).toBe(8 * 3600 + 15 * 60);
     });
 
     it('parses 8:15 to 8 minutes 15 seconds when seconds are not ignored', () => {

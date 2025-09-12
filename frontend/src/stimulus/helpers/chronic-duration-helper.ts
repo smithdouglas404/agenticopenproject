@@ -39,7 +39,7 @@ export function durationStringToSeconds(value:string):number {
 
     return parseChronicDuration(normalizedValue, {
       defaultUnit: 'hours',
-      ignoreSecondsWhenColonSeperated: true,
+      ignoreSecondsWhenColonSeparated: true,
     }) || 0;
   }
 

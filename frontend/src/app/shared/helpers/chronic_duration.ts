@@ -57,7 +57,7 @@ export interface ChronicDurationOptions {
   daysPerMonth?:number;
   defaultUnit?:DurationUnit;
   raiseExceptions?:boolean;
-  ignoreSecondsWhenColonSeperated?:boolean;
+  ignoreSecondsWhenColonSeparated?:boolean;
   keepZero?:boolean;
   format?:DurationFormat;
   joiner?:string;
@@ -187,7 +187,7 @@ function calculateFromWords(string:string, opts:ChronicDurationOptions):number {
 function filterByType(string:string, opts:ChronicDurationOptions):string {
   const chronoUnitsList = DURATION_UNITS_LIST.filter(function (value) {
     if (value === 'weeks') { return false; }
-    if (opts.ignoreSecondsWhenColonSeperated && value === 'seconds') { return false; }
+    if (opts.ignoreSecondsWhenColonSeparated && value === 'seconds') { return false; }
 
     return true;
   });
