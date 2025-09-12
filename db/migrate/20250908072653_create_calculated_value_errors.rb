@@ -34,6 +34,7 @@ class CreateCalculatedValueErrors < ActiveRecord::Migration[8.0]
       t.references :project, foreign_key: true
       t.references :custom_field, foreign_key: true
       t.string :error_code, null: false
+      t.integer :missing_custom_field_ids, array: true, default: [], null: false
 
       t.timestamps
     end
