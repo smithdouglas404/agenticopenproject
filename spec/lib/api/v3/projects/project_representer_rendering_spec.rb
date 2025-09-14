@@ -88,9 +88,7 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
     build_stubbed(:calculated_value_project_custom_field, :skip_validations, admin_only: false, formula: "21 + 3")
   end
   let(:calculated_custom_value) do
-    CustomValue.new(custom_field: calculated_value_custom_field,
-                    value: "24.0",
-                    customized: nil)
+    build(:custom_value, custom_field: calculated_value_custom_field, value: "24.0")
   end
   let(:permissions) { %i[view_project add_work_packages view_members] }
   let(:parent_project) do
