@@ -36,8 +36,8 @@ export default class AutoThemeSwitcher extends Controller {
   static values = {
     theme: String,
     increaseContrast: Boolean,
-    enableAutoLightThemeContrast: Boolean,
-    enableAutoDarkThemeContrast: Boolean,
+    forceLightContrast: Boolean,
+    forceDarkContrast: Boolean,
   };
 
   static targets = ['desktopLogo', 'mobileLogo'];
@@ -45,8 +45,8 @@ export default class AutoThemeSwitcher extends Controller {
 
   declare readonly themeValue:OpTheme;
   declare readonly increaseContrastValue:boolean;
-  declare readonly enableAutoLightThemeContrastValue:boolean;
-  declare readonly enableAutoDarkThemeContrastValue:boolean;
+  declare readonly forceLightContrastValue:boolean;
+  declare readonly forceDarkContrastValue:boolean;
   declare readonly desktopLogoTarget:HTMLLinkElement;
   declare readonly mobileLogoTarget:HTMLLinkElement;
   declare readonly desktopLightHighContrastLogoClass:string;
@@ -64,8 +64,8 @@ export default class AutoThemeSwitcher extends Controller {
 
   syncWithOS():void {
     this.colorModeContrastPreferences = {
-      light: this.enableAutoLightThemeContrastValue,
-      dark: this.enableAutoDarkThemeContrastValue,
+      light: this.forceLightContrastValue,
+      dark: this.forceDarkContrastValue,
     };
 
     useMatchMedia(this, {

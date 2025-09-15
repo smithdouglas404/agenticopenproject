@@ -16,10 +16,10 @@
                 "increase_theme_contrast": {
                   "type": "boolean"
                 },
-                "enable_auto_light_theme_contrast": {
+                "force_light_theme_contrast": {
                   "type": "boolean"
                 },
-                "enable_auto_dark_theme_contrast": {
+                "force_dark_theme_contrast": {
                   "type": "boolean"
                 },
                 "disable_keyboard_shortcuts": {

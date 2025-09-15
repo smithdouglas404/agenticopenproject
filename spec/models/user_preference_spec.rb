@@ -329,8 +329,8 @@ RSpec.describe UserPreference do
 
       it "defaults contrast settings to false" do
         expect(subject).not_to be_increase_theme_contrast
-        expect(subject).not_to be_enable_auto_light_theme_contrast
-        expect(subject).not_to be_enable_auto_dark_theme_contrast
+        expect(subject).not_to be_force_light_theme_contrast
+        expect(subject).not_to be_force_dark_theme_contrast
         expect(subject).not_to be_a_light_high_contrast_theme
         expect(subject).not_to be_a_dark_high_contrast_theme
       end
@@ -343,11 +343,11 @@ RSpec.describe UserPreference do
                     :increase_theme_contrast?
 
     it_behaves_like "accepts real and false booleans",
-                    :enable_auto_light_theme_contrast=,
-                    :enable_auto_light_theme_contrast?
+                    :force_light_theme_contrast=,
+                    :force_light_theme_contrast?
 
     it_behaves_like "accepts real and false booleans",
-                    :enable_auto_dark_theme_contrast=,
-                    :enable_auto_dark_theme_contrast?
+                    :force_dark_theme_contrast=,
+                    :force_dark_theme_contrast?
   end
 end

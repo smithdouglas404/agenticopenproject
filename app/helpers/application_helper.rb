@@ -323,10 +323,8 @@ module ApplicationHelper
     }
 
     if pref.sync_with_os_theme?
-      theme_options[:auto_theme_switcher_enable_auto_light_theme_contrast_value] =
-        pref.enable_auto_light_theme_contrast?
-      theme_options[:auto_theme_switcher_enable_auto_dark_theme_contrast_value] =
-        pref.enable_auto_dark_theme_contrast?
+      theme_options[:auto_theme_switcher_force_light_contrast_value] = pref.force_light_theme_contrast?
+      theme_options[:auto_theme_switcher_force_dark_contrast_value] = pref.force_dark_theme_contrast?
     else
       theme_options[:color_mode] = theme
       theme_options[:"#{theme}_theme"] = theme

@@ -67,26 +67,26 @@ Capybara.add_selector :auto_theme_config do
     xpath
   end
 
-  expression_filter(:enable_auto_light_contrast) do |expr, enabled|
+  expression_filter(:force_light_contrast) do |expr, enabled|
     if enabled
-      builder(expr).add_attribute_conditions("data-auto-theme-switcher-enable-auto-light-theme-contrast-value": "true")
+      builder(expr).add_attribute_conditions("data-auto-theme-switcher-force-light-contrast-value": "true")
     else
       expr
     end
   end
 
-  expression_filter(:enable_auto_dark_contrast) do |expr, enabled|
+  expression_filter(:force_dark_contrast) do |expr, enabled|
     if enabled
-      builder(expr).add_attribute_conditions("data-auto-theme-switcher-enable-auto-dark-theme-contrast-value": "true")
+      builder(expr).add_attribute_conditions("data-auto-theme-switcher-force-dark-contrast-value": "true")
     else
       expr
     end
   end
 
-  describe_expression_filters do |enable_auto_light_contrast: nil, enable_auto_dark_contrast: nil, **|
+  describe_expression_filters do |force_light_contrast: nil, force_dark_contrast: nil, **|
     desc = +""
-    desc << " with auto light contrast" if enable_auto_light_contrast
-    desc << " with auto dark contrast" if enable_auto_dark_contrast
+    desc << " with forced light contrast" if force_light_contrast
+    desc << " with forced dark contrast" if force_dark_contrast
     desc
   end
 end
@@ -101,10 +101,10 @@ module Capybara
       Matchers::NegatedMatcher.new(have_theme(locator, **, &))
     end
 
-    def have_auto_theme_config(enable_auto_light_contrast: false, enable_auto_dark_contrast: false, **, &)
+    def have_auto_theme_config(force_light_contrast: false, force_dark_contrast: false, **, &)
       Matchers::HaveSelector.new(:auto_theme_config, nil,
-                                 enable_auto_light_contrast:,
-                                 enable_auto_dark_contrast:,
+                                 force_light_contrast:,
+                                 force_dark_contrast:,
                                  **, &)
     end
   end

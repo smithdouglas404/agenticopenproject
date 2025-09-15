@@ -137,12 +137,12 @@ class UserPreference < ApplicationRecord
     settings[:increase_theme_contrast] = to_boolean(value)
   end
 
-  def enable_auto_light_theme_contrast=(value)
-    settings[:enable_auto_light_theme_contrast] = to_boolean(value)
+  def force_light_theme_contrast=(value)
+    settings[:force_light_theme_contrast] = to_boolean(value)
   end
 
-  def enable_auto_dark_theme_contrast=(value)
-    settings[:enable_auto_dark_theme_contrast] = to_boolean(value)
+  def force_dark_theme_contrast=(value)
+    settings[:force_dark_theme_contrast] = to_boolean(value)
   end
 
   COLOR_MODES.each do |base_theme_name|

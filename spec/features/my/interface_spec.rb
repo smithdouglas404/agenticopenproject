@@ -101,8 +101,8 @@ RSpec.describe "My account Interface settings",
       configure_auto_contrast(light: true, dark: true)
 
       expect(page).to have_auto_theme_config(
-        enable_auto_light_contrast: true,
-        enable_auto_dark_contrast: true
+        force_light_contrast: true,
+        force_dark_contrast: true
       )
     end
 

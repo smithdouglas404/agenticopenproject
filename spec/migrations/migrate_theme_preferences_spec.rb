@@ -53,8 +53,8 @@ RSpec.describe MigrateThemePreferences, type: :model do
       expect(user.pref.settings["time_zone"]).to eq("UTC")
 
       # Verify model methods work correctly for unset auto-contrast settings
-      expect(user.pref).not_to be_enable_auto_light_theme_contrast
-      expect(user.pref).not_to be_enable_auto_dark_theme_contrast
+      expect(user.pref).not_to be_force_light_theme_contrast
+      expect(user.pref).not_to be_force_dark_theme_contrast
     end
 
     it "converts dark_high_contrast to new structure" do
