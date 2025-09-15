@@ -113,7 +113,7 @@ module OpenProject
       # @display min_height 200px
       # @param expanded [Boolean] toggle
       def file_tree(expanded: true)
-        render(Primer::OpenProject::FileTreeView.new) do |component|
+        render(Primer::Alpha::FileTreeView.new) do |component|
           component.with_directory(label: "src", expanded: expanded) do |dir|
             dir.with_trailing_visual_icon(icon: :"diff-modified")
 
