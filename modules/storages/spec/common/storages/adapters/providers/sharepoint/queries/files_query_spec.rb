@@ -55,62 +55,62 @@ module Storages
                       name: "OpenProject",
                       mime_type: "application/x-op-drive",
                       location: "/OpenProject",
-                      permissions: %i[readable writeable]
+                      permissions: %i[readable]
                     ),
                     Results::StorageFile.new(
                       id: "b!FeOZEMfQx0eGQKqVBLcP__BG8mq-4-9FuRqOyk3MXY87vnZ6fgfvQanZHX-XCAyw",
                       name: "Shared Documents",
                       mime_type: "application/x-op-drive",
                       location: "/Shared%20Documents",
-                      permissions: %i[readable writeable]
+                      permissions: %i[readable]
                     ),
                     Results::StorageFile.new(
                       id: "b!FeOZEMfQx0eGQKqVBLcP__BG8mq-4-9FuRqOyk3MXY8Pmdpc8mQ1QJkyIbbWQJol",
                       name: "Selected Permissions",
                       mime_type: "application/x-op-drive",
                       location: "/Selected%20Permissions",
-                      permissions: %i[readable writeable]
+                      permissions: %i[readable]
                     ),
                     Results::StorageFile.new(
                       id: "b!FeOZEMfQx0eGQKqVBLcP__BG8mq-4-9FuRqOyk3MXY_YoKf1JPvYSJeFRsyx4zF_",
                       name: "Chris document library",
                       mime_type: "application/x-op-drive",
                       location: "/Chris%20document%20library",
-                      permissions: %i[readable writeable]
+                      permissions: %i[readable]
                     ),
                     Results::StorageFile.new(
                       id: "b!FeOZEMfQx0eGQKqVBLcP__BG8mq-4-9FuRqOyk3MXY8CfNaHr_0ERYs5kgmEWFrX",
                       name: "Marcello AMPF",
                       mime_type: "application/x-op-drive",
                       location: "/Marcello%20AMPF",
-                      permissions: %i[readable writeable]
+                      permissions: %i[readable]
                     ),
                     Results::StorageFile.new(
                       id: "b!FeOZEMfQx0eGQKqVBLcP__BG8mq-4-9FuRqOyk3MXY8opHtYeMANTahXlS54FgHn",
                       name: "Dominic",
                       mime_type: "application/x-op-drive",
                       location: "/Dominic",
-                      permissions: %i[readable writeable]
+                      permissions: %i[readable]
                     ),
                     Results::StorageFile.new(
                       id: "b!FeOZEMfQx0eGQKqVBLcP__BG8mq-4-9FuRqOyk3MXY93AQ5rgPKoR7tMwpspgj95",
                       name: "Markus",
                       mime_type: "application/x-op-drive",
                       location: "/Markus",
-                      permissions: %i[readable writeable]
+                      permissions: %i[readable]
                     ),
                     Results::StorageFile.new(
                       id: "b!FeOZEMfQx0eGQKqVBLcP__BG8mq-4-9FuRqOyk3MXY9jo6leJDqrT7muzvmiWjFW",
                       name: "Marcello VCR",
                       mime_type: "application/x-op-drive",
                       location: "/Marcello%20VCR",
-                      permissions: %i[readable writeable]
+                      permissions: %i[readable]
                     )
                   ],
                   parent: Results::StorageFile.new(id: "1269877d26360587caf07834bc72ee3ad3c3698f1651bf85d8562e7fda19aa0f",
                                                    name: "OPTest",
                                                    location: "/",
-                                                   permissions: %i[readable writeable]),
+                                                   permissions: %i[readable]),
                   ancestors: []
                 )
               end
