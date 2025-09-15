@@ -45,6 +45,7 @@ export default class AutoThemeSwitcher extends Controller {
   declare readonly mobileLogoTarget:HTMLLinkElement;
   declare readonly desktopLightHighContrastLogoClass:string;
   declare readonly mobileWhiteLogoClass:string;
+  declare readonly hasMobileLogoTarget:boolean;
 
   connect() {
     if (this.modeValue !== 'sync_with_os') return;
@@ -74,7 +75,11 @@ export default class AutoThemeSwitcher extends Controller {
 
   private updateOpLogoContrast():void {
     const prefersSystemLightHighContrast = window.OpenProject.theme.prefersSystemLightHighContrast();
+
     this.desktopLogoTarget.classList.toggle(this.desktopLightHighContrastLogoClass, prefersSystemLightHighContrast);
-    this.mobileLogoTarget.classList.toggle(this.mobileWhiteLogoClass, !prefersSystemLightHighContrast);
+    // Custom logos are not supported on mobile
+    if (this.hasMobileLogoTarget) {
+      this.mobileLogoTarget.classList.toggle(this.mobileWhiteLogoClass, !prefersSystemLightHighContrast);
+    }
   }
 }
