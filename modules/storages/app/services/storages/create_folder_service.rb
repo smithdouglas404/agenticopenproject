@@ -53,7 +53,7 @@ module Storages
         end
       end
 
-      add_error(:base, error)
+      add_error(:base, error.failure)
     end
 
     private
