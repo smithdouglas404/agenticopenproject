@@ -34,7 +34,7 @@ module OpenProject
 
     class_attribute :registered, default: {}
 
-    attr_reader :name, :order, :label, :edit_as, :class_names, :enterprise_feature
+    attr_reader :name, :order, :label, :edit_as, :class_names
 
     def initialize(name,
                    label:,
@@ -73,6 +73,10 @@ module OpenProject
       !enabled?
     end
 
+    def enterprise_feature_allowed?
+      !@enterprise_feature || EnterpriseToken.allows_to?(@enterprise_feature)
+    end
+
     class << self
       def map(&)
         yield self
@@ -85,7 +89,7 @@ module OpenProject
 
       def available
         registered.select do |_, format|
-          format.enabled? && (!format.enterprise_feature || EnterpriseToken.allows_to?(format.enterprise_feature))
+          format.enabled? && format.enterprise_feature_allowed?
         end
       end
 
