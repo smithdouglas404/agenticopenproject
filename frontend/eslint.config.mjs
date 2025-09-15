@@ -7,7 +7,7 @@ import stylistic from '@stylistic/eslint-plugin';
 
 import { defineConfig, globalIgnores } from 'eslint/config';
 
-const config = defineConfig([
+export default defineConfig([
   {
     files: ['**/*.{js,mjs,cjs}'],
     extends: [
@@ -23,7 +23,7 @@ const config = defineConfig([
     files: ['**/*.{ts,tsx}'],
     extends: [
       eslint.configs.recommended,
-      ...tseslint.configs.strictTypeChecked,
+      ...tseslint.configs.recommendedTypeChecked,
       ...tseslint.configs.stylisticTypeChecked,
       ...angular.configs.tsRecommended
     ],
@@ -148,6 +148,13 @@ const config = defineConfig([
     ],
   },
   {
+    files: ['**/*.d.ts'],
+    rules: {
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
+    },
+  },
+  {
     files: ['**/*.spec.ts'],
     plugins: { jasmine },
     extends: [
@@ -214,5 +221,3 @@ const config = defineConfig([
     'src/app/shared/helpers/chronic_duration.js',
   ]),
 ]);
-
-export default tseslint.config(config);

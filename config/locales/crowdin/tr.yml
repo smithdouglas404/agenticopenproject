@@ -195,10 +195,9 @@ tr:
     ldap_auth_failed: "LDAP sunucusunda kimlik doğrulaması yapılamadı."
     sync_failed: "LDAP'den senkronizasyon başarısız oldu: %{message}."
     back_to_index: "Bağlantı listesine geri dönmek için buraya tıklayın."
-    technical_warning_html: |
+    technical_warning: |
       This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Please visit our documentation for detailed instructions</a>.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: LDAP bağlantısının keyfi adı
       host: LDAP ana bilgisayar adı veya IP adresi
@@ -440,7 +439,7 @@ tr:
     lists:
       active: "Aktif projeler"
       my: "Projelerim"
-      favored: "Favori projeler"
+      favorited: "Favorite projects"
       archived: "Arşivlenmiş projeler"
       shared: "Paylaşılan proje listeleri"
       my_lists: "Proje listem"
@@ -1024,6 +1023,8 @@ tr:
         active_user_count_restriction: "Active users"
       enterprise_trial:
         company: "Şirket"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Sayfa"
         row_count: "Satır sayısı"
@@ -1384,6 +1385,8 @@ tr:
           only_one_trial: "Only one trial token can be active. Please delete the previous trial token before adding another."
           unreadable: "okunamıyor. Desteklenen bir destek anahtarı olduğuna emin misiniz?"
           already_added: "This token has already been added."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "üst üste gelmek."
           outside: "Grup dışında görünmektedir."
@@ -1758,6 +1761,7 @@ tr:
     attachments: "Ekler"
     actor: "Aktör"
     action: "Eylem"
+    api_key: "API key"
     author: "Sahibi"
     avatar: "Avatar"
     base: "Genel Hata:"
@@ -2651,7 +2655,7 @@ tr:
         static_token_name: "API anahtarı"
       ical:
         title: "iCalendar"
-        text_hint: 'iCalendar belirteçleri, kullanıcıların <a href="%{path}" target="_blank">OpenProject takvimlerine abone</a> olmalarını ve harici istemcilerden gelen güncel iş paketi bilgilerini görüntülemelerini sağlar.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "iCalendar abonelikleri yönetici tarafından etkinleştirilmemiştir. Bu özelliği kullanmak için lütfen yöneticinize başvurun."
         empty_text_hint: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
       oauth:

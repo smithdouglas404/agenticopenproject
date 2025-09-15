@@ -195,10 +195,9 @@ lt:
     ldap_auth_failed: "LDAP serveryje autentifikacija nepavyko."
     sync_failed: "Nepavyko sinchronizuoti su LDAP: %{message}."
     back_to_index: "Spauskite čia, kad gryžtumėte į jungčių sąrašą."
-    technical_warning_html: |
+    technical_warning: |
       This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Please visit our documentation for detailed instructions</a>.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: LDAP prisijungimui suteiktas pavadinimas
       host: LDAP serverio vardas arba IP adresas
@@ -437,7 +436,7 @@ lt:
     lists:
       active: "Aktyvūs projektai"
       my: "Mano projektai"
-      favored: "Mėgstami projektai"
+      favorited: "Favorite projects"
       archived: "Archyvuoti projektai"
       shared: "Shared project lists"
       my_lists: "Mano projektų sąrašai"
@@ -1038,6 +1037,8 @@ lt:
         active_user_count_restriction: "Active users"
       enterprise_trial:
         company: "Kompanija"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Puslapis"
         row_count: "Eilučių skaičius"
@@ -1400,6 +1401,8 @@ lt:
           only_one_trial: "Only one trial token can be active. Please delete the previous trial token before adding another."
           unreadable: "neįmanoma perskaityti. Ar tai tikrai yra paramos raktas?"
           already_added: "This token has already been added."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "persidengia."
           outside: "yra už tinklelio."
@@ -1804,6 +1807,7 @@ lt:
     attachments: "Priedai"
     actor: "Actor"
     action: "Veiksmas"
+    api_key: "API key"
     author: "Autorius"
     avatar: "Nuotrauka"
     base: "Bendroji klaida:"
@@ -2739,7 +2743,7 @@ lt:
         static_token_name: "API žetonas"
       ical:
         title: "iCalendar"
-        text_hint: 'iCalendar žetonai leidžia naudotojams <a href="%{path}" target="_blank">prenumeruoti OpenProject kalendorius</a> ir gauti naujausią darbų paketų informaciją išoriniuose klientuose.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "Administratorius neįjungė iCalendar prenumeratų. Prašome susisiekti su administratoriumi, kad galėtumėte naudoti šią savybę."
         empty_text_hint: "Norėdami pridėti iCalendar žetoną, prenumeruokite naują ar esamą kalendorių iš projekto kalendoriaus modulio. Jūs turite turėti reikiamas teises."
       oauth:

@@ -195,10 +195,9 @@ zh-CN:
     ldap_auth_failed: "无法在 LDAP 服务器上验证身份。"
     sync_failed: "无法从 LDAP 同步：%{message}。"
     back_to_index: "点击此处返回到连接列表。"
-    technical_warning_html: |
-      此 LDAP 表单需要您的 LDAP / Active Directory 设置的技术知识。
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">请访问我们的文档以了解详细说明</a>。
+    technical_warning: |
+      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: LDAP 连接的任意名称
       host: LDAP 主机名或 IP 地址
@@ -437,7 +436,7 @@ zh-CN:
     lists:
       active: "有效项目"
       my: "我的项目"
-      favored: "收藏的项目"
+      favorited: "Favorite projects"
       archived: "归档项目"
       shared: "共享项目列表"
       my_lists: "我的项目列表"
@@ -1013,6 +1012,8 @@ zh-CN:
         active_user_count_restriction: "活跃用户"
       enterprise_trial:
         company: "公司"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "页"
         row_count: "行数"
@@ -1372,6 +1373,8 @@ zh-CN:
           only_one_trial: "只能有一个试用令牌处于有效状态。请先删除上一个试用令牌，然后再添加另一个。"
           unreadable: "无法读取。是否确定为支持令牌？"
           already_added: "此令牌已添加。"
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "重叠."
           outside: "不在网格内。"
@@ -1731,6 +1734,7 @@ zh-CN:
     attachments: "附件"
     actor: "执行者"
     action: "操作"
+    api_key: "API key"
     author: "作者"
     avatar: "头像"
     base: "一般错误："
@@ -2603,7 +2607,7 @@ zh-CN:
         static_token_name: "API 令牌"
       ical:
         title: "iCalendar"
-        text_hint: 'iCalendar 令牌允许用户<a href="%{path}" target="_blank">订阅 OpenProject 日历</a>并查看外部客户端中的最新工作包信息。'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "管理员未启用 iCalendar 订阅。请联系管理员以使用此功能。"
         empty_text_hint: "要添加 iCalendar 令牌，请从项目的日历模块中订阅新的或现有日历。您必须拥有必要的权限。"
       oauth:

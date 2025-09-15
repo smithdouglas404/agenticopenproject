@@ -195,9 +195,9 @@ uk:
     ldap_auth_failed: "Не вдалося перевірити автентичність через LDAP-сервер."
     sync_failed: "Не вдалося виконати синхронізацію з LDAP: %{message}."
     back_to_index: "Натисніть тут, щоб повернутися до списку підключень."
-    technical_warning_html: |
-      Для заповнення форми LDAP вам знадобляться технічні знання щодо конфігурації LDAP / Active Directory.
-      <br><a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Щоб отримати докладніші вказівки, ознайомтеся з нашою документацією</a>.
+    technical_warning: |
+      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: Назва атрибута LDAP-підключення
       host: Назва хосту LDAP або IP-адреса
@@ -436,7 +436,7 @@ uk:
     lists:
       active: "Активні проєкти"
       my: "Мої проєкти"
-      favored: "Обрані проєкти"
+      favorited: "Favorite projects"
       archived: "Заархівовані проєкти"
       shared: "Спільні проєкти"
       my_lists: "Мої списки проєктів"
@@ -1034,6 +1034,8 @@ uk:
         active_user_count_restriction: "Активні користувачі"
       enterprise_trial:
         company: "Компанія"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Сторінка"
         row_count: "Кількість рядків"
@@ -1396,6 +1398,8 @@ uk:
           only_one_trial: "Активним може бути лише один пробний маркер. Видаліть попередній, перш ніж додавати новий."
           unreadable: "неможливо прочитати. Ви впевнені, що це маркер підтримки?"
           already_added: "Цей маркер уже додано."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "перекриваються."
           outside: "знаходиться за межами сітки."
@@ -1800,6 +1804,7 @@ uk:
     attachments: "Вкладення"
     actor: "Виконавець"
     action: "Дія"
+    api_key: "API key"
     author: "Автор"
     avatar: "Аватар"
     base: "Загальна помилка:"
@@ -2735,7 +2740,7 @@ uk:
         static_token_name: "Маркер API"
       ical:
         title: "iCalendar"
-        text_hint: 'Маркери iCalendar дають змогу користувачам <a href="%{path}" target="_blank">підписуватися на календарі OpenProject</a> і переглядати інформацію про пакети робіт із зовнішніх клієнтів.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "Підписки на iCalendar не дозволено адміністратором. Зверніться до нього, якщо вам потрібна ця функція."
         empty_text_hint: "Щоб додати маркер iCalendar, підпишіться на новий або наявний календар у модулі календаря проєкту. У вас мають бути необхідні дозволи."
       oauth:

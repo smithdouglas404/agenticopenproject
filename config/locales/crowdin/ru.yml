@@ -195,10 +195,9 @@ ru:
     ldap_auth_failed: "Не удалось проверить подлинность через LDAP-сервер."
     sync_failed: "Не удалось синхронизировать с LDAP: %{message}."
     back_to_index: "Нажмите здесь, чтобы вернуться к списку подключений."
-    technical_warning_html: |
-      Эта форма LDAP требует технических знаний о Вашей настройке LDAP / Active Directory.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Пожалуйста, посетите документацию для получения подробных инструкций</a>.
+    technical_warning: |
+      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: Произвольное имя подключения LDAP
       host: Имя хоста или IP-адрес LDAP
@@ -439,7 +438,7 @@ ru:
     lists:
       active: "Активные проекты"
       my: "Мои проекты"
-      favored: "Избранные проекты"
+      favorited: "Favorite projects"
       archived: "Архивные проекты"
       shared: "Общедоступные проекты"
       my_lists: "Мои списки проектов"
@@ -1039,6 +1038,8 @@ ru:
         active_user_count_restriction: "Активные пользователи"
       enterprise_trial:
         company: "Компания"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Страница"
         row_count: "Количество строк"
@@ -1401,6 +1402,8 @@ ru:
           only_one_trial: "Только один пробный токен может быть активен. Пожалуйста, удалите предыдущий пробный токен перед добавлением другого."
           unreadable: "невозможно прочитать. Вы уверены, что это маркер поддержки?"
           already_added: "Этот токен уже был добавлен."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "перекрытие."
           outside: "за пределами сетки."
@@ -1805,6 +1808,7 @@ ru:
     attachments: "Вложения"
     actor: "Источник"
     action: "Действие"
+    api_key: "API key"
     author: "Автор"
     avatar: "Аватар\n"
     base: "Общая ошибка:"
@@ -2740,7 +2744,7 @@ ru:
         static_token_name: "Токен API"
       ical:
         title: "iCalendar"
-        text_hint: 'Токены iCalendar позволяют пользователям <a href="%{path}" target="_blank"> подписываться на календари OpenProject</a> и просматривать актуальную информацию о рабочих пакетах от внешних клиентов.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "Подписки на iCalendar не включены администратором. Обратитесь к администратору для использования этой функции."
         empty_text_hint: "Чтобы добавить токен iCalendar, подпишитесь на новый или существующий календарь из модуля календаря проекта. Вы должны иметь необходимые разрешения."
       oauth:

@@ -40,7 +40,7 @@ import { TimezoneService } from 'core-app/core/datetime/timezone.service';
       (keydown.enter)="handler.handleUserSubmit()"
       (picked)="handler.handleUserSubmit()"
       class="inline-edit--field"
-      [inputId]="handler.htmlId"
+      [id]="handler.htmlId"
       [required]="required"
       [disabled]="inFlight"
       [opAutofocus]="autofocus"

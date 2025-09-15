@@ -195,10 +195,9 @@ fr:
     ldap_auth_failed: "Authentification impossible sur le serveur LDAP."
     sync_failed: "Échec de la synchronisation à partir de LDAP : %{message}."
     back_to_index: "Cliquez ici pour revenir à la liste des connexions."
-    technical_warning_html: |
-      Ce formulaire LDAP nécessite une connaissance technique de votre configuration LDAP/Active Directory.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Veuillez consulter notre documentation pour obtenir des instructions détaillées</a>.
+    technical_warning: |
+      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: Nom arbitraire de la connexion LDAP
       host: Nom d'hôte ou adresse IP du serveur LDAP
@@ -440,7 +439,7 @@ fr:
     lists:
       active: "Projets actifs"
       my: "Mes projets"
-      favored: "Projets favoris"
+      favorited: "Favorite projects"
       archived: "Projets archivés"
       shared: "Listes de projets partagées"
       my_lists: "Mes listes de projets"
@@ -1023,6 +1022,8 @@ fr:
         active_user_count_restriction: "Utilisateurs actifs"
       enterprise_trial:
         company: "Entreprise"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Page"
         row_count: "Nombre de lignes"
@@ -1383,6 +1384,8 @@ fr:
           only_one_trial: "Un seul jeton d'essai peut être actif. Veuillez supprimer le jeton d'essai précédent avant d'en ajouter un autre."
           unreadable: "ne peut être lu. Êtes-vous sûr qu'il s'agisse d'une licence Entreprise ?"
           already_added: "Ce jeton a déjà été ajouté."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "superposition."
           outside: "est hors de la grille."
@@ -1757,6 +1760,7 @@ fr:
     attachments: "Fichiers"
     actor: "Acteur"
     action: "Action"
+    api_key: "API key"
     author: "Auteur"
     avatar: "Avatar"
     base: "Erreur générale :"
@@ -2650,7 +2654,7 @@ fr:
         static_token_name: "Jeton d'API"
       ical:
         title: "iCalendar"
-        text_hint: 'Les jetons iCalendar permettent aux utilisateurs de <a href="%{path}" target="_blank">s''abonner aux calendriers OpenProject</a> et d''afficher des informations à jour sur les lots de travaux provenant de clients externes.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "Les abonnements iCalendar ne sont pas activés par l'administrateur. Veuillez contacter votre administrateur pour utiliser cette fonctionnalité."
         empty_text_hint: "Pour ajouter un jeton iCalendar, abonnez-vous à un nouveau calendrier ou à un calendrier existant depuis le module Calendrier d'un projet. Vous devez avoir les autorisations nécessaires."
       oauth:

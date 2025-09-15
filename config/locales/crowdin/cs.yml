@@ -195,10 +195,9 @@ cs:
     ldap_auth_failed: "Nelze autentizovat u serveru LDAP."
     sync_failed: "Nepodařilo se synchronizovat z LDAP: %{message}."
     back_to_index: "Kliknutím sem se vrátíte do seznamu připojení."
-    technical_warning_html: |
+    technical_warning: |
       This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Please visit our documentation for detailed instructions</a>.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: Rozhodčí název spojení LDAP
       host: LDAP název hostitele nebo IP adresa
@@ -440,7 +439,7 @@ cs:
     lists:
       active: "Aktivní projekty"
       my: "Moje projekty"
-      favored: "Oblíbené projekty"
+      favorited: "Favorite projects"
       archived: "Archivované projekty"
       shared: "Sdílené seznamy projektů"
       my_lists: "Moje seznamy projektů"
@@ -1041,6 +1040,8 @@ cs:
         active_user_count_restriction: "Aktivní uživatelé"
       enterprise_trial:
         company: "Společnost"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Stránka"
         row_count: "Počet řádků"
@@ -1403,6 +1404,8 @@ cs:
           only_one_trial: "Only one trial token can be active. Please delete the previous trial token before adding another."
           unreadable: "nelze číst. Jste si jisti, že se jedná o token podpory?"
           already_added: "This token has already been added."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "se překrývá."
           outside: "je mimo mřížku."
@@ -1807,6 +1810,7 @@ cs:
     attachments: "Přílohy"
     actor: "Actor"
     action: "Akce"
+    api_key: "API key"
     author: "Autor"
     avatar: "Avatar"
     base: "Obecná chyba:"
@@ -2742,7 +2746,7 @@ cs:
         static_token_name: "API Token"
       ical:
         title: "iCalendar"
-        text_hint: 'Tokeny iCalendar umožňují uživatelům <a href="%{path}" target="_blank">přihlásit se k odběru kalendářů OpenProject</a> a zobrazovat aktuální informace o pracovních balíčcích od externích klientů.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "iCalendar odběr není administrátorem povolen. Pro použití této funkce kontaktujte svého správce."
         empty_text_hint: "Chcete-li přidat token iCalendar, přihlaste se do nového nebo existujícího kalendáře v rámci modulu kalendáře projektu. Musíte mít potřebná oprávnění."
       oauth:

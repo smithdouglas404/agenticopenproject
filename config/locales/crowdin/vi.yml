@@ -195,10 +195,9 @@ vi:
     ldap_auth_failed: "Không thể xác thực tại máy chủ LDAP."
     sync_failed: "Không thể đồng bộ hóa từ LDAP: %{message}."
     back_to_index: "Nhấp vào đây để quay lại danh sách kết nối."
-    technical_warning_html: |
+    technical_warning: |
       This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Please visit our documentation for detailed instructions</a>.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: Tên tùy ý của kết nối LDAP
       host: Tên máy chủ LDAP hoặc địa chỉ IP
@@ -440,7 +439,7 @@ vi:
     lists:
       active: "Các dự án đang hoạt động"
       my: "Dự án của tôi"
-      favored: "Dự án yêu thích"
+      favorited: "Favorite projects"
       archived: "Các dự án đã lưu trữ"
       shared: "Danh sách dự án được chia sẻ"
       my_lists: "Danh sách dự án của tôi"
@@ -1017,6 +1016,8 @@ vi:
         active_user_count_restriction: "Active users"
       enterprise_trial:
         company: "Công ty"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Trang"
         row_count: "Số dòng"
@@ -1376,6 +1377,8 @@ vi:
           only_one_trial: "Only one trial token can be active. Please delete the previous trial token before adding another."
           unreadable: "không thể đọc được. Bạn có chắc đó là mã thông báo hỗ trợ không?"
           already_added: "This token has already been added."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "chồng lấn."
           outside: "nằm ngoài bảng dữ liệu."
@@ -1735,6 +1738,7 @@ vi:
     attachments: "Đính kèm"
     actor: "Actor"
     action: "Hành động"
+    api_key: "API key"
     author: "Tác giả"
     avatar: "Ảnh đại diện"
     base: "Lỗi tổng quan:"
@@ -2607,7 +2611,7 @@ vi:
         static_token_name: "Mã thông báo API"
       ical:
         title: "iCalendar"
-        text_hint: 'Mã iCalendar cho phép người dùng <a href="%{path}" target="_blank">đăng ký các lịch OpenProject</a> và xem thông tin gói công việc cập nhật từ các khách hàng bên ngoài.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "Đăng ký iCalendar không được kích hoạt bởi quản trị viên. Vui lòng liên hệ với quản trị viên của bạn để sử dụng tính năng này."
         empty_text_hint: "Để thêm mã iCalendar, hãy đăng ký một lịch mới hoặc hiện có từ module Lịch của một dự án. Bạn phải có quyền cần thiết."
       oauth:

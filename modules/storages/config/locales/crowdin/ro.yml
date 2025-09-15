@@ -230,7 +230,7 @@ ro:
         subtitle: Access management
       access_management_section: Access and project folders
       automatically_managed_folders: Automatically managed folders
-      general_information: General information
+      general_information: Informatii generale
       oauth_configuration: OAuth configuration
       one_drive_oauth: Azure OAuth
       openproject_oauth: OpenProject OAuth
@@ -300,7 +300,7 @@ ro:
         nc_group_folder_not_found: The group folder could not be found.
         nc_host_not_found: No Nextcloud server found at the configured host url. Please check the configuration.
         nc_oauth_request_not_found: The endpoint to fetch the currently connected user was not found. Please check the server logs for further information.
-        nc_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
+        nc_oauth_request_unauthorized: Utilizatorul curent nu este autorizat să acceseze spațiul de stocare de la distanță. Te rog să verifici jurnalele serverului pentru informații suplimentare.
         nc_oauth_token_missing: OpenProject cannot test the user level communication with Nextcloud as the user did not yet link their Nextcloud account.
         nc_unexpected_content: Unexpected content found in the managed group folder.
         nc_userless_access_denied: The configured app password is invalid.
@@ -310,7 +310,7 @@ ro:
         od_drive_id_invalid: The configured drive id seems invalid. Please check the configuration.
         od_drive_id_not_found: The configured drive id could not be found. Please check the configuration.
         od_oauth_request_not_found: The endpoint to fetch the currently connected user was not found. Please check the server logs for further information.
-        od_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
+        od_oauth_request_unauthorized: Utilizatorul curent nu este autorizat să acceseze spațiul de stocare de la distanță. Te rog să verifici jurnalele serverului pentru informații suplimentare.
         od_oauth_token_missing: OpenProject cannot test the user level communication with OneDrive as the user did not yet link their Microsoft account.
         od_tenant_id_wrong: The configured directory (tenant) id is invalid. Please check the configuration.
         od_test_folder_exists: The folder %{folder_name} needed for testing already exists. Please delete it and try again.
@@ -368,7 +368,7 @@ ro:
       host: Vă rugăm să adăugați adresa de găzduire a spațiului de stocare, inclusiv https://. Nu trebuie să fie mai lungă de 255 de caractere.
       managed_project_folders_application_password_caption: 'Enable automatic managed folders by copying this value from: %{provider_type_link}.'
       name: Dați un nume stocării pentru ca utilizatorii să poată diferenția între mai multe spațiul de stocare.
-      new_storage: Read our documentation on <a target='_blank' href='%{provider_link}'>setting up a %{provider_name} file storage</a> integration for more information.
+      new_storage: Citește documentația noastră despre <a target='_blank' href='%{provider_link}'>de configurare a integrării fișierului %{provider_name}</a> pentru mai multe informații.
       nextcloud:
         application_link_text: application “Integration OpenProject”
         integration: Administrare Nextcloud / OpenProject
@@ -492,7 +492,7 @@ ro:
       project_storage_members:
         subtitle: Check the connection status for the storage %{storage_name_link} of all project members.
         title: Members connection status
-    permission_header_explanation: 'File permissions on external storages are applied only to folders and files within automatically managed project folders. Note that not all file permissions are supported by all storage providers. Please check the documentation on <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>file storage permissions</a> for more information.'
+    permission_header_explanation: 'Permisiunile de fișiere pe memoria externă sunt aplicate numai dosarelor și fișierelor din dosarele de proiect administrate automat. Ține cont că nu toate permisiunile fișierelor sunt acceptate de toți furnizorii de stocare. Te rog să verifici documentația pe <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>permisiuni de stocare a fișierului</a> pentru mai multe informații.'
     provider_types:
       label: Tip flux
       nextcloud:

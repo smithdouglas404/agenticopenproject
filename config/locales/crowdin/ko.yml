@@ -195,10 +195,9 @@ ko:
     ldap_auth_failed: "LDAP 서버에서 인증할 수 없습니다."
     sync_failed: "LDAP에서 동기화하지 못했습니다: %{message}."
     back_to_index: "연결 목록으로 돌아가려면 여기를 클릭하세요."
-    technical_warning_html: |
-      이 LDAP 양식에는 LDAP/Active Directory 설정에 대한 기술적 지식이 필요합니다.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">자세한 지침은 설명서를 참조하세요</a>.
+    technical_warning: |
+      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: LDAP 연결의 임의 이름
       host: LDAP 호스트 이름 또는 IP 주소
@@ -440,7 +439,7 @@ ko:
     lists:
       active: "활성 프로젝트"
       my: "내 프로젝트"
-      favored: "즐겨 찾는 프로젝트"
+      favorited: "Favorite projects"
       archived: "보관된 프로젝트"
       shared: "공유된 프로젝트 목록"
       my_lists: "내 프로젝트 목록"
@@ -1017,6 +1016,8 @@ ko:
         active_user_count_restriction: "활성 사용자"
       enterprise_trial:
         company: "회사"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "페이지"
         row_count: "행 수"
@@ -1376,6 +1377,8 @@ ko:
           only_one_trial: "평가판 토큰은 하나만 활성화할 수 있습니다. 다른 평가판 토큰을 추가하기 전에 이전 토큰을 삭제하세요."
           unreadable: "읽을 수 없습니다. 지원하는 토큰이 확실한가요?"
           already_added: "이미 추가된 토큰입니다."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "오버랩"
           outside: "- 그리드의 외부에 있습니다."
@@ -1735,6 +1738,7 @@ ko:
     attachments: "첨부 파일"
     actor: "수행자"
     action: "액션"
+    api_key: "API key"
     author: "작성자"
     avatar: "아바타"
     base: "일반 오류:"
@@ -2607,7 +2611,7 @@ ko:
         static_token_name: "API 토큰"
       ical:
         title: "iCalendar"
-        text_hint: 'iCalendar 토큰을 사용하면 사용자가 <a href="%{path}" target="_blank">OpenProject 캘린더를 구독</a>하고 외부 클라이언트의 최신 작업 패키지 정보를 볼 수 있습니다.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "관리자가 iCalendar 구독을 활성화하지 않았습니다. 이 기능을 사용하려면 관리자에게 문의하세요."
         empty_text_hint: "iCalendar 토큰을 추가하려면 프로젝트의 캘린더 모듈 내에서 새 캘린더 또는 기존 캘린더를 구독하세요. 필요한 권한이 있어야 합니다."
       oauth:

@@ -195,10 +195,9 @@ hu:
     ldap_auth_failed: "A hitelesítés meghiúsult az LDAP-kiszolgálón."
     sync_failed: "Sikertelen szinkronizálás az LDAP-ból: %{message}."
     back_to_index: "Kattintson ide, ha vissza szeretne térni a kapcsolati listához."
-    technical_warning_html: |
+    technical_warning: |
       This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Please visit our documentation for detailed instructions</a>.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: Az LDAP kapcsolat tetszőleges neve
       host: LDAP Kiszolgáló neve vagy IP címe
@@ -439,7 +438,7 @@ hu:
     lists:
       active: "Aktív projektek"
       my: "Az én projektjeim"
-      favored: "Kedvenc projektek"
+      favorited: "Favorite projects"
       archived: "Archivált projektek"
       shared: "Shared project lists"
       my_lists: "Projekt listáim"
@@ -1024,6 +1023,8 @@ hu:
         active_user_count_restriction: "Active users"
       enterprise_trial:
         company: "Cég"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Oldal"
         row_count: "Sorok száma"
@@ -1384,6 +1385,8 @@ hu:
           only_one_trial: "Only one trial token can be active. Please delete the previous trial token before adding another."
           unreadable: "nem olvasható. Biztos vagy benne, hogy ez támogatási token?"
           already_added: "This token has already been added."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "átfedés"
           outside: "hatókörön kívül van."
@@ -1758,6 +1761,7 @@ hu:
     attachments: "Csatolmány"
     actor: "Actor"
     action: "Művelet"
+    api_key: "API key"
     author: "Szerző"
     avatar: "Profilkép"
     base: "Általános hiba:"
@@ -2651,7 +2655,7 @@ hu:
         static_token_name: "API token"
       ical:
         title: "iCalendar"
-        text_hint: 'iCalendar tokens allow users to <a href="%{path}" target="_blank">subscribe to OpenProject calendars</a> and view up-to-date work package information from external clients.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "iCalendar subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
         empty_text_hint: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
       oauth:

@@ -195,10 +195,9 @@ da:
     ldap_auth_failed: "Kunne ikke godkendes på LDAP-serveren."
     sync_failed: "Failed to synchronize from LDAP: %{message}."
     back_to_index: "Click here to go back to the list of connection."
-    technical_warning_html: |
+    technical_warning: |
       This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Please visit our documentation for detailed instructions</a>.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: Vilkårlig navn på LDAP- forbindelsen
       host: LDAP værtsnavn eller IP-adresse
@@ -438,7 +437,7 @@ da:
     lists:
       active: "Active projects"
       my: "Mine projekter"
-      favored: "Favorite projects"
+      favorited: "Favorite projects"
       archived: "Archived projects"
       shared: "Shared project lists"
       my_lists: "My project lists"
@@ -1023,6 +1022,8 @@ da:
         active_user_count_restriction: "Active users"
       enterprise_trial:
         company: "Virksomhed"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Page"
         row_count: "Number of rows"
@@ -1383,6 +1384,8 @@ da:
           only_one_trial: "Only one trial token can be active. Please delete the previous trial token before adding another."
           unreadable: "can't be read. Are you sure it is a support token?"
           already_added: "This token has already been added."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "overlap."
           outside: "is outside of the grid."
@@ -1757,6 +1760,7 @@ da:
     attachments: "Vedhæftninger"
     actor: "Actor"
     action: "Handling"
+    api_key: "API key"
     author: "Forfatter"
     avatar: "Avatar"
     base: "Generel fejl:"
@@ -2650,7 +2654,7 @@ da:
         static_token_name: "API token"
       ical:
         title: "iCalendar"
-        text_hint: 'iCalendar tokens allow users to <a href="%{path}" target="_blank">subscribe to OpenProject calendars</a> and view up-to-date work package information from external clients.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "iCalendar subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
         empty_text_hint: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
       oauth:

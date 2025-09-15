@@ -195,10 +195,9 @@ ca:
     ldap_auth_failed: "No s'ha pogut autenticar en el servidor de LDAP."
     sync_failed: "No s'ha pogut sincronitzar des de LDAP: %{message}."
     back_to_index: "Fes clic aquí per tornar a la llista de connexions."
-    technical_warning_html: |
+    technical_warning: |
       This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Please visit our documentation for detailed instructions</a>.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: Nom arbitrari de la connexió LDAP
       host: Nom d'amfitrió o adreça IP de LDAP
@@ -437,7 +436,7 @@ ca:
     lists:
       active: "Projectes actius"
       my: "Els meus projectes"
-      favored: "Projectes preferits"
+      favorited: "Favorite projects"
       archived: "Projectes arxivats"
       shared: "Shared project lists"
       my_lists: "My project lists"
@@ -1022,6 +1021,8 @@ ca:
         active_user_count_restriction: "Active users"
       enterprise_trial:
         company: "Empresa"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Pàgina"
         row_count: "Nombre de files"
@@ -1382,6 +1383,8 @@ ca:
           only_one_trial: "Only one trial token can be active. Please delete the previous trial token before adding another."
           unreadable: "no es pot llegir. Estàs segur que és un token de suport?"
           already_added: "This token has already been added."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "superposició."
           outside: "és fora de la graella."
@@ -1756,6 +1759,7 @@ ca:
     attachments: "Fitxers adjunts"
     actor: "Actor"
     action: "Acció"
+    api_key: "API key"
     author: "Autor/a"
     avatar: "Avatar"
     base: "Error General:"
@@ -2649,7 +2653,7 @@ ca:
         static_token_name: "API token"
       ical:
         title: "iCalendar"
-        text_hint: 'iCalendar tokens allow users to <a href="%{path}" target="_blank">subscribe to OpenProject calendars</a> and view up-to-date work package information from external clients.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "iCalendar subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
         empty_text_hint: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
       oauth:

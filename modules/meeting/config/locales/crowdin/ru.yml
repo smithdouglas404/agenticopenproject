@@ -205,7 +205,7 @@ ru:
         search_for_members: "Search for project members"
       blankslate:
         heading: "Нет участников"
-        description: "There are no participants yet."
+        description: "Пока нет участников."
     attachments:
       template: "Эти прикрепленные файлы будут включены во все последующие совещания этой серии."
       text: "Прикрепленные файлы доступны всем участникам совещания. Вы также можете перенести их в примечания к пунктам повестки дня."
@@ -230,7 +230,7 @@ ru:
         summary: "%{actor} создал новую серию совещаний '%{title}'"
       series_updated:
         title: "[%{project_name}] Серия встреч '%{title}' была обновлена"
-        summary: "Meeting series '%{title}' has been updated by %{actor}"
+        summary: "Серия совещаний '%{title}' была обновлена пользователем %{actor}"
         old_schedule: "Старое расписание"
         new_schedule: "Новое расписание"
       invited:
@@ -245,13 +245,13 @@ ru:
         date_time: "Запланированная дата/время"
       updated:
         header: "Встреча '%{title}' была обновлена"
-        summary: "Meeting '%{title}' has been updated by %{actor}"
-        body: "The meeting '%{title}' has been updated by %{actor}."
+        summary: "Совещание '%{title}' было обновлено пользователем %{actor}"
+        body: "Совещание '%{title}' было обновлено пользователем %{actor}."
         old_date_time: "Старые дата/время"
         new_date_time: "Новые дата/время"
         old_location: "Old location"
         new_location: "New location"
-    label_mail_all_participants: "Send email invite to participants"
+    label_mail_all_participants: "Отправить письмо всем участникам"
     types:
       one_time: "Однократная"
       recurring: "Периодичность"
@@ -278,7 +278,7 @@ ru:
     export:
       your_meeting_export: "Совещание экспортируется"
       minutes:
-        footer_page_numbers: "P. %{current_page} of %{total_pages}"
+        footer_page_numbers: "Стр. %{current_page} из %{total_pages}"
         author: "Автор"
         date: "Дата"
         time: "Время"
@@ -557,7 +557,7 @@ ru:
   text_meeting_closed_dropdown_description: "Совещание закрыто. Вы больше не можете изменять пункты повестки дня или его результаты."
   text_meeting_not_editable_anymore: "Это совещание больше нельзя редактировать."
   text_meeting_not_present_anymore: "Это совещание было удалено. Пожалуйста, выберите другое."
-  label_add_work_package_to_meeting_dialog_title: "Select meeting"
+  label_add_work_package_to_meeting_dialog_title: "Выберите совещание"
   label_add_work_package_to_meeting_section_label: "Add to section"
   label_add_work_package_to_meeting_dialog_button: "Добавить в совещание"
   label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."

@@ -195,10 +195,9 @@
     ldap_auth_failed: "Kan ikke autentisere mot LDAP-Server."
     sync_failed: "Kan ikke synkronisere fra LDAP: %{message}."
     back_to_index: "Klikk her for å gå tilbake til listen over tilkoblinger."
-    technical_warning_html: |
+    technical_warning: |
       This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Please visit our documentation for detailed instructions</a>.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: Tabellnavn på LDAP-tilkoblingen
       host: LDAP-vertsnavn eller IP-adresse
@@ -440,7 +439,7 @@
     lists:
       active: "Aktive prosjekter"
       my: "Mine prosjekter"
-      favored: "Favorittprosjekter"
+      favorited: "Favorite projects"
       archived: "Arkiverte prosjekter"
       shared: "Offentlige prosjektlister"
       my_lists: "My project lists"
@@ -1024,6 +1023,8 @@
         active_user_count_restriction: "Active users"
       enterprise_trial:
         company: "Firma"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Side"
         row_count: "Antall rader"
@@ -1384,6 +1385,8 @@
           only_one_trial: "Only one trial token can be active. Please delete the previous trial token before adding another."
           unreadable: "kan ikke leses. Er du sikker på at det er en brukerstøttenøkkel?"
           already_added: "This token has already been added."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "overlapp."
           outside: "er utenfor rutenett."
@@ -1758,6 +1761,7 @@
     attachments: "Vedlegg"
     actor: "Aktør"
     action: "Handling"
+    api_key: "API key"
     author: "Forfatter"
     avatar: "Profilbilde"
     base: "Generell feil:"
@@ -2651,7 +2655,7 @@
         static_token_name: "API-token"
       ical:
         title: "iCalendar"
-        text_hint: 'iCalendar nøkler tillater brukere <a href="%{path}" target="_blank"> å abbonnere på OpneProject kalendere og se oppdatert informasjon om arbeidspakker fra eskterne klienter.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "iCalendar-abonnement er ikke aktivert av administratoren. Vennligst kontakt systemansvarlig for å bruke denne funksjonen."
         empty_text_hint: "For å legge til et iCalendar-nøkkel, abonnér på en ny eller eksisterende kalender fra kalender-modulen til et prosjekt. Du må ha de nødvendige tillatelsene."
       oauth:

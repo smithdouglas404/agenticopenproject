@@ -195,10 +195,9 @@ bg:
     ldap_auth_failed: "Could not authenticate at the LDAP-Server."
     sync_failed: "Failed to synchronize from LDAP: %{message}."
     back_to_index: "Click here to go back to the list of connection."
-    technical_warning_html: |
+    technical_warning: |
       This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Please visit our documentation for detailed instructions</a>.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: Произволно име на LDAP връзката
       host: LDAP име на хост или IP адрес
@@ -440,7 +439,7 @@ bg:
     lists:
       active: "Активни проекти"
       my: "Моите проекти"
-      favored: "Любими проекти"
+      favorited: "Favorite projects"
       archived: "Архивирани проекти"
       shared: "Споделени списъци с проекти"
       my_lists: "My project lists"
@@ -1025,6 +1024,8 @@ bg:
         active_user_count_restriction: "Active users"
       enterprise_trial:
         company: "Company"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Страница"
         row_count: "Брой редове"
@@ -1385,6 +1386,8 @@ bg:
           only_one_trial: "Only one trial token can be active. Please delete the previous trial token before adding another."
           unreadable: "can't be read. Are you sure it is a support token?"
           already_added: "This token has already been added."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "припокриване."
           outside: "е извън мрежата."
@@ -1759,6 +1762,7 @@ bg:
     attachments: "Прикачени файлове"
     actor: "Actor"
     action: "Действие"
+    api_key: "API key"
     author: "Автор"
     avatar: "Аватар"
     base: "Обща грешка:"
@@ -2652,7 +2656,7 @@ bg:
         static_token_name: "API токен"
       ical:
         title: "iCalendar"
-        text_hint: 'iCalendar токените позволяват на потребителите да <a href="%{path}" target="_blank">се абонират за календарите на OpenProject</a> и да виждат актуална информация за работните пакети от външни клиенти.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "Абонаментите за iCalendar не са разрешени от администратора. Моля, свържете се с администратора си, за да използвате тази функция."
         empty_text_hint: "За да добавите токен на iCalendar, абонирайте се за нов или съществуващ календар от модула Календар на проекта. Трябва да имате необходимите разрешения."
       oauth:

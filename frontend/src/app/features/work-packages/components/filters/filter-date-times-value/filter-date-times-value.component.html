@@ -3,7 +3,7 @@
   [value]="isoDateFormatter(begin)"
   [opAutofocus]="shouldFocus"
   required="true"
-  [inputId]="'values-' + filter.id + '-begin'"
+  [id]="'values-' + filter.id + '-begin'"
   [name]="'v[' + filter.id + ']-begin'"
   classes="advanced-filters--date-field"
 ></op-basic-single-date-picker>
@@ -14,7 +14,7 @@
 <op-basic-single-date-picker
   (valueChange)="parseEnd($event)"
   [value]="isoDateFormatter(end)"
-  [inputId]="'values-' + filter.id + '-end'"
+  [id]="'values-' + filter.id + '-end'"
   [name]="'v[' + filter.id + ']-end'"
   classes="advanced-filters--date-field"
 ></op-basic-single-date-picker>

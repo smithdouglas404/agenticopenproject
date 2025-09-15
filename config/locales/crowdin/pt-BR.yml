@@ -195,10 +195,9 @@ pt-BR:
     ldap_auth_failed: "Não foi possível autenticar com o servidor LDAP."
     sync_failed: "Não foi possível sincronizar do LDAP: %{message}."
     back_to_index: "Clique aqui para voltar para a lista de conexão."
-    technical_warning_html: |
-      Este formulário LDAP requer conhecimento técnico da sua configuração LDAP / Active Directory.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Consulte nossa documentação para obter instruções detalhadas</a>.
+    technical_warning: |
+      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: Nome arbitrário da conexão LDAP
       host: Nome ou endereço IP do host LDAP
@@ -439,7 +438,7 @@ pt-BR:
     lists:
       active: "Projetos ativos"
       my: "Meus projetos"
-      favored: "Projetos favoritos"
+      favorited: "Favorite projects"
       archived: "Projetos arquivados"
       shared: "Listas de projetos compartilhados"
       my_lists: "Minhas listas de projetos"
@@ -1022,6 +1021,8 @@ pt-BR:
         active_user_count_restriction: "Usuários ativos"
       enterprise_trial:
         company: "Empresa"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Página"
         row_count: "Número de linhas"
@@ -1382,6 +1383,8 @@ pt-BR:
           only_one_trial: "Apenas um token de avaliação pode estar ativo. Exclua o token de avaliação anterior antes de adicionar outro."
           unreadable: "não pode ser lido. Tem certeza que é um token de suporte?"
           already_added: "Este token já foi adicionado."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "sobreposição."
           outside: "está fora da grade."
@@ -1756,6 +1759,7 @@ pt-BR:
     attachments: "Anexos"
     actor: "Ator"
     action: "Ação"
+    api_key: "API key"
     author: "Autor"
     avatar: "Avatar"
     base: "Erro geral:"
@@ -2649,7 +2653,7 @@ pt-BR:
         static_token_name: "Token de API"
       ical:
         title: "iCalendar"
-        text_hint: 'Tokens de iCalendar permitem que os usuários <a href="%{path}" target="_blank">assinem calendários do OpenProject</a> e vejam informações atualizadas dos pacotes de trabalho de clientes externos.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "As assinaturas do iCalendar não estão habilitadas pelo administrador. Entre em contato com o administrador para utilizar este recurso."
         empty_text_hint: "Para adicionar um token de iCalendário, assine um calendário novo ou existente no módulo Calendário de um projeto. Você precisa possuir as permissões necessárias."
       oauth:

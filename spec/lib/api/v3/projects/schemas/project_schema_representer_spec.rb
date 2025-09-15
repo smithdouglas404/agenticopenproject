@@ -41,6 +41,9 @@ RSpec.describe API::V3::Projects::Schemas::ProjectSchemaRepresenter do
   let(:custom_field) do
     build_stubbed(:integer_project_custom_field)
   end
+  let(:calculated_value_cf) do
+    build_stubbed(:calculated_value_project_custom_field, formula: "23 + {{cf_#{custom_field.id}}}")
+  end
   let(:allowed_status) { ["some status"] }
   let(:contract) do
     contract = double("contract")
@@ -55,25 +58,15 @@ RSpec.describe API::V3::Projects::Schemas::ProjectSchemaRepresenter do
     end
 
     allow(contract)
-      .to receive(:available_custom_fields)
-      .and_return([custom_field])
-
-    allow(contract)
       .to receive(:assignable_values)
       .with(:status_code, current_user)
       .and_return(allowed_status)
 
     allow(contract)
-      .to receive(:model)
-      .and_return(model)
+      .to receive_messages(available_custom_fields: [custom_field, calculated_value_cf], model: model)
 
     allow(model)
-      .to receive(:new_record?)
-      .and_return(new_record)
-
-    allow(model)
-      .to receive(:id)
-      .and_return(model_id)
+      .to receive_messages(new_record?: new_record, id: model_id)
 
     contract
   end
@@ -93,7 +86,7 @@ RSpec.describe API::V3::Projects::Schemas::ProjectSchemaRepresenter do
     end
   end
 
-  context "generation" do
+  describe "generation" do
     subject(:generated) { representer.to_json }
 
     describe "_type" do
@@ -303,6 +296,18 @@ RSpec.describe API::V3::Projects::Schemas::ProjectSchemaRepresenter do
       it_behaves_like "has basic schema properties" do
         let(:type) { "Integer" }
         let(:name) { custom_field.name }
+        let(:required) { false }
+        let(:writable) { false }
+      end
+    end
+
+    describe "calculated value custom field" do
+      let(:path) { "customField#{calculated_value_cf.id}" }
+
+      it_behaves_like "has basic schema properties" do
+        let(:type) { "CalculatedValue" }
+        let(:name) { calculated_value_cf.name }
+        let(:formula) { "23 + {{cf_#{custom_field.id}}}" }
         let(:required) { false }
         let(:writable) { false }
       end

@@ -235,33 +235,33 @@ module Storages
             end
 
             context "when requesting a sub folder", vcr: "sharepoint/files_query_sub_folder" do
-              let(:folder) { "/Marcello VCR/data/subfolder" }
+              let(:folder) { "/Marcello VCR/Ümlæûts/data" }
               let(:files_result) do
                 Results::StorageFileCollection.new(
                   files: [
                     Results::StorageFile.new(
-                      id: "b!FeOZEMfQx0eGQKqVBLcP__BG8mq-4-9FuRqOyk3MXY9jo6leJDqrT7muzvmiWjFW:01ANJ53W7MUYDYQAA3WVEYDJQNZVSKNPGD",
-                      name: "fw13-easy-effects.json",
-                      size: 11845,
-                      mime_type: "application/json",
-                      created_at: Time.zone.parse("2025-07-28 15:06:31.000000000 UTC +00:00"),
-                      last_modified_at: Time.zone.parse("2025-07-28 15:06:31.000000000 UTC +00:00"),
+                      id: "b!FeOZEMfQx0eGQKqVBLcP__BG8mq-4-9FuRqOyk3MXY9jo6leJDqrT7muzvmiWjFW:01ANJ53WZDKAGBGPSC2VGJGLYJX4DBZE7V",
+                      name: "written_in_stone.webp",
+                      size: 190656,
+                      mime_type: "application/octet-stream",
+                      created_at: Time.zone.parse("2025-09-10T13:08:15Z"),
+                      last_modified_at: Time.zone.parse("2025-09-10T13:08:15Z"),
                       created_by_name: "Eric Schubert",
                       last_modified_by_name: "Eric Schubert",
-                      location: "/Marcello%20VCR/data/subfolder/fw13-easy-effects.json",
+                      location: "/Marcello%20VCR/%C3%9Cml%C3%A6%C3%BBts/data/written_in_stone.webp",
                       permissions: %i[readable writeable]
                     )
                   ],
                   parent: Results::StorageFile.new(
-                    id: "b!FeOZEMfQx0eGQKqVBLcP__BG8mq-4-9FuRqOyk3MXY9jo6leJDqrT7muzvmiWjFW:01ANJ53W6DBDYX553L4REYNOMUI6XVMTO6",
-                    name: "subfolder",
-                    location: "/Marcello%20VCR/data/subfolder",
+                    id: "b!FeOZEMfQx0eGQKqVBLcP__BG8mq-4-9FuRqOyk3MXY9jo6leJDqrT7muzvmiWjFW:01ANJ53W552X5C42XRLBCL2EC4BBBZYA5Y",
+                    name: "data",
+                    location: "/Marcello%20VCR/%C3%9Cml%C3%A6%C3%BBts/data",
                     permissions: %i[readable writeable]
                   ),
                   ancestors: [
                     Results::StorageFileAncestor.new(name: "OPTest", location: "/"),
                     Results::StorageFileAncestor.new(name: "Marcello VCR", location: "/Marcello VCR"),
-                    Results::StorageFileAncestor.new(name: "data", location: "/Marcello VCR/data")
+                    Results::StorageFileAncestor.new(name: "Ümlæûts", location: "/Marcello VCR/Ümlæûts")
                   ]
                 )
               end

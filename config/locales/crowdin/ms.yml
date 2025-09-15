@@ -195,10 +195,9 @@ ms:
     ldap_auth_failed: "Tidak boleh mengesahkan di Server-LDAP."
     sync_failed: "Gagal untuk diselaraskan daripada LDAP: %{message}."
     back_to_index: "Klik di sini untuk kembali ke senarai sambungan."
-    technical_warning_html: |
+    technical_warning: |
       This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Please visit our documentation for detailed instructions</a>.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: Nama arbitrari sambungan LDAP
       host: Nama hos atau alamat IP LDAP
@@ -439,7 +438,7 @@ ms:
     lists:
       active: "Projek yang aktif"
       my: "Projek saya"
-      favored: "Projek-projek kegemaran"
+      favorited: "Favorite projects"
       archived: "Projek yang diarkibkan"
       shared: "Senarai projek yang dikongsi"
       my_lists: "Senarai projek saya"
@@ -1015,6 +1014,8 @@ ms:
         active_user_count_restriction: "Active users"
       enterprise_trial:
         company: "Syarikat"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Halaman"
         row_count: "Bilangan baris"
@@ -1374,6 +1375,8 @@ ms:
           only_one_trial: "Only one trial token can be active. Please delete the previous trial token before adding another."
           unreadable: "tidak boleh dibaca. Adakah anda pasti ia adalah token sokongan?"
           already_added: "This token has already been added."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "bertindih."
           outside: "luar daripada grid."
@@ -1733,6 +1736,7 @@ ms:
     attachments: "Lampiran"
     actor: "Actor"
     action: "Tindakan"
+    api_key: "API key"
     author: "Pengarang"
     avatar: "Avatar"
     base: "Ralat Umum:"
@@ -2605,7 +2609,7 @@ ms:
         static_token_name: "Token API"
       ical:
         title: "iCalendar"
-        text_hint: 'Token iCalendar membenarkan pengguna untuk <a href="%{path}" target="_blank">melanggan kalendar OpenProject</a> dan lihat maklumat pakej kerja terkini daripada pelanggan luaran.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "Langganan iCalendar tidak didayakan oleh pentadbir. Sila hubungi pentadbir anda untuk menggunakan fitur ini."
         empty_text_hint: "Untuk menambah token iCalendar, langgan kalendar baharu atau kalendar yang sedia ada dalam modul Kalendar projek. Anda perlu mempunyai kebenaran yang diperlukan."
       oauth:

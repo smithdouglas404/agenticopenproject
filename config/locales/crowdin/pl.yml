@@ -195,10 +195,9 @@ pl:
     ldap_auth_failed: "Nie można uwierzytelnić na serwerze LDAP."
     sync_failed: "Nie udało się zsynchronizować z usługi LDAP: %{message}."
     back_to_index: "Kliknij tutaj, aby wrócić do listy połączeń."
-    technical_warning_html: |
-      Ten formularz LDAP wymaga wiedzy technicznej na temat Twojej konfiguracji usługi LDAP / Active Directory.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Odwiedź naszą dokumentację, aby uzyskać szczegółowe instrukcje</a>.
+    technical_warning: |
+      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: Dowolna nazwa połączenia LDAP
       host: Nazwa hosta LDAP lub adres IP
@@ -437,7 +436,7 @@ pl:
     lists:
       active: "Aktywne projekty"
       my: "Moje projekty"
-      favored: "Ulubione projekty"
+      favorited: "Favorite projects"
       archived: "Zarchiwizowane projekty"
       shared: "Udostępnione listy projektów"
       my_lists: "Moje listy projektów"
@@ -1037,6 +1036,8 @@ pl:
         active_user_count_restriction: "Aktywni użytkownicy"
       enterprise_trial:
         company: "Firma"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Strona"
         row_count: "Liczba wierszy"
@@ -1399,6 +1400,8 @@ pl:
           only_one_trial: "Aktywny może być tylko jeden token próbny. Usuń poprzedni token próbny przed dodaniem kolejnego."
           unreadable: "nie można odczytać. Czy na pewno jest to token wsparcia?"
           already_added: "Ten token został już dodany."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "nałożenie."
           outside: "jest poza siatką."
@@ -1803,6 +1806,7 @@ pl:
     attachments: "Załączniki"
     actor: "Aktor"
     action: "Działanie"
+    api_key: "API key"
     author: "Autor"
     avatar: "Awatar"
     base: "Błąd ogólny:"
@@ -2738,7 +2742,7 @@ pl:
         static_token_name: "Token API"
       ical:
         title: "iCalendar"
-        text_hint: 'Tokeny iCalendar pozwalają użytkownikom <a href="%{path}" target="_blank">subskrybować kalendarze OpenProject</a> i przeglądać aktualne informacje o pakietach roboczych z klientów zewnętrznych.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "Subskrypcje iCalendar nie zostały włączone przez administratora. Aby użyć tej funkcji, skontaktuj się z administratorem."
         empty_text_hint: "Aby dodać token iCalendar, subskrybuj nowy lub istniejący kalendarz z modułu Kalendarz projektu. Musisz mieć niezbędne uprawnienia."
       oauth:

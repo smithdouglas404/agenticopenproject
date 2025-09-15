@@ -383,7 +383,7 @@ hu:
         other: "Minden %{count}-ik nap"
       x_weekly:
         one: "Minden héten"
-        other: "Every %{count} weeks"
+        other: "Minden %{count}-ik héten"
       every_weekday: "Minden %{day_of_the_week} napon"
       working_days: "Minden munkanap"
     end_after:
