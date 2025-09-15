@@ -269,6 +269,9 @@ module API
         end
 
         def inject_property_value(custom_field, config)
+          # TODO: inject calculated value error message somewhere around here as a sibling of this property.
+          # customField20Errors: [{ error_code: "MISSING_VALUE", error_message: "message"}, {...}]
+
           @class.property custom_field.attribute_name.to_sym,
                           as: property_name(custom_field),
                           getter: property_value_getter_for(custom_field),
