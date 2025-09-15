@@ -38,7 +38,6 @@ export default class LookAndFeelController extends Controller {
   declare singleThemeContrastTarget:HTMLElement;
 
   private syncWithOsValue = 'sync_with_os';
-  private displayNoneClass = 'd-none';
   private viewComponentSelector = '[data-view-component="true"]';
 
   connect() {
@@ -57,7 +56,9 @@ export default class LookAndFeelController extends Controller {
   }
 
   private toggleElementVisibility(targetElement:HTMLElement, shouldShow:boolean) {
-    const container = targetElement.closest(this.viewComponentSelector);
-    container?.classList.toggle(this.displayNoneClass, !shouldShow);
+    const viewComponentContainer = targetElement.closest(this.viewComponentSelector);
+    if (viewComponentContainer) {
+      (viewComponentContainer as HTMLElement).hidden = !shouldShow;
+    }
   }
 }
