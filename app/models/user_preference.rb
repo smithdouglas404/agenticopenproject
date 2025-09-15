@@ -145,8 +145,8 @@ class UserPreference < ApplicationRecord
     settings[:force_dark_theme_contrast] = to_boolean(value)
   end
 
-  COLOR_MODES.each do |base_theme_name|
-    define_method("base_theme_#{base_theme_name}?") { theme.split("_", 2)[0] == base_theme_name.to_s }
+  COLOR_MODES.each do |color_mode|
+    define_method("#{color_mode}_color_mode?") { theme.split("_", 2)[0] == color_mode.to_s }
   end
 
   THEMES.each do |theme_name|
