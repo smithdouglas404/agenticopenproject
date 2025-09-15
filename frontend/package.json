@@ -39,7 +39,7 @@
     "@types/webpack-env": "^1.16.0",
     "@typescript-eslint/eslint-plugin": "7.11.0",
     "@typescript-eslint/parser": "7.11.0",
-    "angular-eslint": "^20.1.1",
+    "angular-eslint": "^20.3.0",
     "browserslist": "^4.23.0",
     "eslint": "^9.33.0",
     "eslint-plugin-import": "^2.32.0",
