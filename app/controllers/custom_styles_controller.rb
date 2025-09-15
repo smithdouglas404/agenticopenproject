@@ -30,6 +30,7 @@
 
 class CustomStylesController < ApplicationController
   include EnterpriseHelper
+  include CustomStylesControllerHelper
 
   layout "admin"
   menu_item :custom_style
@@ -75,10 +76,12 @@ class CustomStylesController < ApplicationController
   def update
     flash.clear
     @custom_style = get_or_create_custom_style
-    if @custom_style.update(custom_style_params)
+    parameters = custom_style_params
+    error = validate_font_uploads(parameters)
+    if !error && @custom_style.update(parameters)
       redirect_to custom_style_path
     else
-      flash[:error] = @custom_style.errors.full_messages
+      flash[:error] = error || @custom_style.errors.full_messages
       render action: :show, status: :unprocessable_entity
     end
   end
