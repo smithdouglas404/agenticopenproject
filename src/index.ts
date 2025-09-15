@@ -1,13 +1,10 @@
 import { Server } from "@hocuspocus/server";
-import { createVerifier } from 'fast-jwt'
+import { createVerifier } from 'fast-jwt';
 import { ServerBlockNoteEditor } from "@blocknote/server-util";
 import {
   BlockNoteSchema,
   defaultBlockSpecs,
-  defaultInlineContentSpecs,
-  defaultStyleSpecs,
 } from "@blocknote/core";
-import * as Y from "yjs";
 
 const secret = process.env.SECRET;
 if (!secret) {
@@ -18,13 +15,13 @@ if (!secret) {
 const verifyToken = createVerifier({
   key: async () => secret,
   algorithms: ['HS256'],
-})
+});
 
 const server = new Server({
   port: 1234,
-  quite: false,
+  quiet: false,
   extensions: [],
-  onConnect(data) {
+  async onConnect(data) {
     console.log('CONNECTED: documentName: %0, socketId %0', data.documentName, data.socketId);
   },
   async afterUnloadDocument(data) {
@@ -45,21 +42,20 @@ const server = new Server({
       return doc;
     }
   },
-
   async onAuthenticate(data) {
     const { token, documentName } = data;
     if (!token) {
-      throw new Error('Unauthorized: Token missing.')
+      throw new Error('Unauthorized: Token missing.');
     }
     let tokenPayload;
     try {
-      tokenPayload = await verifyToken(token)
+      tokenPayload = await verifyToken(token);
     } catch (err) {
-      throw new Error('Unauthorized: Invalid token.')
+      throw new Error('Unauthorized: Invalid token.');
     }
     console.log('Token payload:', tokenPayload);
     if(documentName != tokenPayload.document_id) {
-      throw new Error('Unauthorized: Invalid token. This document cannot be accessed with this token.')
+      throw new Error('Unauthorized: Invalid token. This document cannot be accessed with this token.');
     }
     data.context.document_text = tokenPayload.document_text;
   },
