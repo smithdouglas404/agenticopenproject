@@ -149,6 +149,7 @@ RSpec.describe ProjectQuery do
                             budget_planned
                             budget_spent
                             budget_spent_ratio
+                            updated_at
                           ])
       end
     end
@@ -177,6 +178,7 @@ RSpec.describe ProjectQuery do
                             budget_planned
                             budget_spent
                             budget_spent_ratio
+                            updated_at
                           ])
       end
     end
