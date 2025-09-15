@@ -55,7 +55,7 @@ module ActsAsCustomizable::CalculatedValue
       )
 
       self.custom_field_values = custom_fields.to_h { [it.id, result[it.column_name]] }
-      refresh_calculation_errors!(given, custom_fields.map(&:id), result)
+      refresh_calculation_errors!(given, custom_fields, result)
     end
 
     private
@@ -86,37 +86,54 @@ module ActsAsCustomizable::CalculatedValue
       cf_id.sub("cf_", "").to_i
     end
 
-    def refresh_calculation_errors!(referenced_values, calculated_field_ids, result)
+    def refresh_calculation_errors!(referenced_values, calculated_fields, result)
       return unless is_a?(Project)
 
-      remove_calculated_value_errors(calculated_field_ids)
+      remove_calculated_value_errors(calculated_fields.map(&:id))
 
-      cvs_with_errors = create_errors_for_missing_attributes(referenced_values, calculated_field_ids)
-
-      failed_calculations = result.filter_map do |cf_id, calculation_result|
-        to_id(cf_id) if calculation_result.nil?
+      failed_calculations = result.filter do |_, calculation_result|
+        calculation_result.nil?
       end
 
-      failed_calculations.each do |cf_id|
+      unsuccessfully_calculated_cfs = failed_calculations.map { |cf_id, _| to_id(cf_id) }
+
+      if unsuccessfully_calculated_cfs.any?
+        cvs_with_errors = create_errors_for_missing_attributes(referenced_values, calculated_fields)
+      end
+
+      unsuccessfully_calculated_cfs.each do |cf_id|
         next if cvs_with_errors.include?(cf_id)
 
         create_calculated_value_error(cf_id, "ERROR_MATHEMATICAL")
       end
     end
 
-    def create_calculated_value_error(custom_field_id, error_code)
-      CalculatedValueError.create(project: self, custom_field_id:, error_code:)
+    def create_calculated_value_error(custom_field_id, error_code, missing_custom_field_ids = [])
+      CalculatedValueError.create(project: self, custom_field_id:, error_code:, missing_custom_field_ids:)
     end
 
-    def create_errors_for_missing_attributes(referenced_values, calculated_field_ids)
+    def create_errors_for_missing_attributes(referenced_values, calculated_fields)
       errors_created = []
 
       cf_ids_with_missing_values = referenced_values.filter_map { |k, v| to_id(k) if v.nil? }
-      cf_ids_with_missing_values.each do |_missing_cf_id|
-        calculated_field_ids.each do |calculated_cf_id|
-          # TODO: insert missing custom field name into the error message:
-          if create_calculated_value_error(calculated_cf_id, "ERROR_MISSING_VALUE")
-            errors_created << calculated_cf_id
+
+      calculated_fields.each do |cv|
+        missing_values_for_this_cv = cv.formula_referenced_custom_field_ids & cf_ids_with_missing_values
+
+        if missing_values_for_this_cv.any?
+          # This hits if a directly used field is `nil`
+          if create_calculated_value_error(cv.id, "ERROR_MISSING_VALUE", missing_values_for_this_cv)
+            errors_created << cv.id
+          end
+        else
+          indirectly_missing = cv.formula_referenced_custom_field_ids.select do |ref_id|
+            calculated_fields.any? { it.id == ref_id }
+          end
+
+          next if indirectly_missing.empty?
+
+          if create_calculated_value_error(cv.id, "ERROR_MISSING_VALUE", indirectly_missing)
+            errors_created << cv.id
           end
         end
       end
