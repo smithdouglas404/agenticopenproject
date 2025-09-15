@@ -28,20 +28,17 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-Rails.application.routes.draw do
-  constraints(Constraints::ProjectIdentifier) do
-    scope "projects/:project_id", as: "project" do
-      scope module: "grids" do
-        namespace :widgets do
-          resource :news, only: %i[show]
-        end
-      end
-    end
-  end
+module Constraints
+  class ProjectIdentifier
+    RESERVED = Project::RESERVED_IDENTIFIERS
+    private_constant :RESERVED
 
-  scope module: "grids" do
-    namespace :widgets do
-      resource :news, only: %i[show]
+    REGEX = /\A(?!#{Regexp.union(RESERVED)}\z)[\w-]+\z/
+    private_constant :REGEX
+
+    def self.matches?(request)
+      project_id = request.path_parameters[:project_id] || request.params[:project_id]
+      REGEX === project_id
     end
   end
 end
