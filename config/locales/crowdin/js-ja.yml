@@ -136,8 +136,8 @@ ja:
         could_not_load: "グラフを表示するデータを読み込みできませんでした。 必要な権限が不足している可能性があります。"
     description_available_columns: "利用できる項目"
     description_current_position: "現在の位置: "
-    description_select_work_package: "作業項目を選択 #%{id}"
-    description_subwork_package: "作業項目の子 #%{id}"
+    description_select_work_package: "ワークパッケージを選択 #%{id}"
+    description_subwork_package: "ワークパッケージの子 #%{id}"
     editor:
       revisions: "ローカルの変更を表示"
       no_revisions: "ローカルの変更は見つかりませんでした"
@@ -182,15 +182,15 @@ ja:
             タイトルやスラッグを指定して別のwikiページの内容を含める。
             次の例のように、別のプロジェクトのwikiページをコロンで区切って含めることができます。
         work_package_button:
-          button: "作業項目作成ボタンを挿入"
-          type: "作業項目の種類"
+          button: "ワークパッケージ作成ボタンを挿入"
+          type: "ワークパッケージの種類"
           button_style: "ボタンスタイルを使用する"
           button_style_hint: "オプション: マクロをリンクではなくボタンとして表示するかどうかをチェックします。"
-          without_type: "作業項目を作成"
-          with_type: "作業項目を作成 (種類: %{typename})"
+          without_type: "ワークパッケージを作成"
+          with_type: "ワークパッケージを作成 (種類: %{typename})"
         embedded_table:
-          button: "作業項目表を埋め込む"
-          text: "[Placeholder] 埋め込まれた作業項目表"
+          button: "ワークパッケージ表を埋め込む"
+          text: "[Placeholder] 埋め込まれたワークパッケージ表"
         embedded_calendar:
           text: "[Placeholder] 埋め込みカレンダー"
     admin:
@@ -213,7 +213,7 @@ ja:
         change_button: "保存してスケジュールを変更"
         change_title: "営業日を変更する"
         removed_title: "以下の日を非稼働日リストから削除します："
-        change_description: "営業日とみなす曜日を変更すると、このインスタンス内のすべてのプロジェクトのすべての作業項目の開始日と終了日に影響を与える可能性があります。"
+        change_description: "営業日とみなす曜日を変更すると、このサイト内のすべてのプロジェクトのすべてのワークパッケージの開始日と終了日に影響を与える可能性があります。"
         warning: >
           変更の反映には時間がかかる場合があります。関連するすべてのワークパッケージとプロジェクトライフサイクルが更新されたら、通知されます。
           本当に続けますか？
@@ -316,7 +316,7 @@ ja:
     label_all: "全て"
     label_all_projects: "すべてのプロジェクト"
     label_all_uppercase: "全て"
-    label_all_work_packages: "全ての作業項目"
+    label_all_work_packages: "全てのワークパッケージ"
     label_and: "及び"
     label_ascending: "昇順"
     label_author: "作者: %{user}"
@@ -456,15 +456,15 @@ ja:
     label_warning: "注意"
     label_work_package: "ワーク パッケージ"
     label_work_package_parent: "親のワークパッケージ"
-    label_work_package_plural: "作業項目"
+    label_work_package_plural: "ワークパッケージ"
     label_watch: "ウォッチする"
-    label_watch_work_package: "作業項目をウォッチ"
+    label_watch_work_package: "ワークパッケージをウォッチ"
     label_watcher_added_successfully: "ウォッチャーが正常に追加されました ！"
     label_watcher_deleted_successfully: "ウォッチャーが正常に削除されました ！"
     label_work_package_details_you_are_here: "あなたは %{tab} %{type} %{subject} のタブにいます。"
-    label_work_package_context_menu: "作業項目のコンテキスト メニュー"
+    label_work_package_context_menu: "ワークパッケージのコンテキスト メニュー"
     label_unwatch: "ウォッチしない"
-    label_unwatch_work_package: "作業項目のウォッチを削除"
+    label_unwatch_work_package: "ワークパッケージのウォッチを削除"
     label_uploaded_by: "アップロードした人"
     label_default_queries: "既定の項目"
     label_starred_queries: "お気に入り"
@@ -482,14 +482,14 @@ ja:
     label_remove_all_files: 全てのファイルを削除
     label_add_description: "%{file} の説明を追加"
     label_upload_notification: "ファイルをアップロード中..."
-    label_work_package_upload_notification: "作業項目#%{id}: %{subject} 用ファイルをアップロード中"
+    label_work_package_upload_notification: "ワークパッケージ#%{id}: %{subject} 用ファイルをアップロード中"
     label_wp_id_added_by: "#%{id} が %{author} によって追加されました"
     label_files_to_upload: "これらのファイルをアップロードします:"
     label_rejected_files: "これらのファイルをアップロードできません："
     label_rejected_files_reason: "ファイルサイズが %{maximumFilesize} を越えたために、これらのファイルをアップロードできません"
     label_wait: "構成をお待ちください..."
     label_upload_counter: "%{done} / %{count} 個のファイルが完了"
-    label_validation_error: "次のエラーのために作業項目を保存できませんでした:"
+    label_validation_error: "次のエラーのためにワークパッケージを保存できませんでした:"
     label_version_plural: "バージョン"
     label_view_has_changed: "このビューには未保存の変更があります。 クリックすると保存します。"
     help_texts:
@@ -825,7 +825,7 @@ ja:
       comment_added: "正常にコメントを追加しました。"
       comment_send_failed: "エラーが発生しました。コメントを投稿できませんでした。"
       comment_updated: "正常にコメントを更新しました。"
-      confirm_edit_cancel: "作業項目の編集をキャンセルしてもよろしいですか？"
+      confirm_edit_cancel: "ワークパッケージの編集をキャンセルしてもよろしいですか？"
       description_filter: "フィルタ"
       description_enter_text: "テキスト"
       description_options_hide: "オプションを非表示"
@@ -838,11 +838,11 @@ ja:
       label_filter_by_text: "テキストで絞り込む"
       label_options: "オプション"
       label_column_multiselect: "結合されたドロップダウンフィールド: 矢印キーで選択する、エンターキーで選択を確認する、バックスペースキーで削除する"
-      message_error_during_bulk_delete: 作業項目を削除する際にエラーが発生しました。
-      message_successful_bulk_delete: 作業項目が正常に削除されました。
-      message_successful_show_in_fullscreen: "クリックすると全画面表示でこの作業項目を開きます。"
+      message_error_during_bulk_delete: ワークパッケージを削除する際にエラーが発生しました。
+      message_successful_bulk_delete: ワークパッケージが正常に削除されました。
+      message_successful_show_in_fullscreen: "クリックすると全画面表示でこのワークパッケージを開きます。"
       message_view_spent_time: "このワークパッケージに費やした時間を表示する"
-      message_work_package_read_only: "作業項目はこの状態でロックされています。 ステータス以外の属性は変更できません。"
+      message_work_package_read_only: "ワークパッケージはこの状態でロックされています。 ステータス以外の属性は変更できません。"
       message_work_package_status_blocked: "ステータスがクローズでクローズされたバージョンが割り当てられているため、ワークパッケージのステータスは書き込みできません。"
       placeholder_filter_by_text: "タイトル、説明、コメント、..."
       progress:
@@ -857,7 +857,7 @@ ja:
         baseline_incompatible: "このフィルター属性はベースラインモードでは考慮されません。"
         baseline_warning: "ベースラインモードはオンですが、アクティブなフィルターの一部は比較に含まれません。"
       inline_create:
-        title: "クリックしてこのリストに新しい作業項目を追加します"
+        title: "クリックしてこのリストに新しいワークパッケージを追加します"
       create:
         title: "新しいワークパッケージ"
         header: "新しい %{type}"
@@ -874,12 +874,12 @@ ja:
         children_collapsed: "階層レベル %{level} を折りたたみました。クリックすると、フィルターされた子を表示します"
         children_expanded: "階層レベル %{level} を展開しました。クリックすると、フィルターされた子を折りたたみます"
       faulty_query:
-        title: 作業項目が読み込めませんでした。
+        title: ワークパッケージが読み込めませんでした。
         description: あなたの ビューは間違っており、処理できませんでした。
       no_results:
-        title: 表示できる作業項目がありません。
-        description: 作業項目が作成されていないかすべての作業項目が除外されています。
-      limited_results: 手動ソートモードで表示できるのは、 %{count} 作業項目だけです。フィルタリングするか、自動ソートに切り替えてください。
+        title: 表示できるワークパッケージがありません。
+        description: ワークパッケージが作成されていないかすべてのワークパッケージが除外されています。
+      limited_results: 手動ソートモードで表示できるのは、 %{count} ワークパッケージだけです。フィルタリングするか、自動ソートに切り替えてください。
       property_groups:
         details: "詳細"
         people: "人"
@@ -928,7 +928,7 @@ ja:
         shared_with_me: "私と共有"
       jump_marks:
         pagination: "表のページ設定に移動する"
-        label_pagination: "ここをクリックすると、作業項目表をスキップしてページ設定に移動します"
+        label_pagination: "ここをクリックすると、ワークパッケージ表をスキップしてページ設定に移動します"
         content: "コンテンツにジャンプ"
         label_content: "ここをクリックすると、メニューをスキップして、コンテンツへ移動します"
       placeholders:
@@ -979,13 +979,13 @@ ja:
         show_all_users: "ワークパッケージが共有されたすべてのユーザーを表示"
       table:
         configure_button: "ワークパッケージテーブルを設定する"
-        summary: "作業項目の行と、作業項目の属性の列から成る表。"
+        summary: "ワークパッケージの行と、ワークパッケージの属性の列から成る表。"
         text_inline_edit: "この表のほとんどのセルは、属性のインライン編集機能を有効にするボタンです。"
         text_sort_hint: "テーブル見出しのリンクで、並べ替え、グループ化、再並べ替え、削除、およびテーブルの列を追加ができます。"
         text_select_hint: "選択ボックスは 'ALT'と矢印キーで開きます。"
       table_configuration:
         button: "このワークパッケージテーブルを設定する"
-        choose_display_mode: "作業項目を次のように表示する"
+        choose_display_mode: "ワークパッケージを次のように表示する"
         modal_title: "ワークパッケージ一覧の設定"
         embedded_tab_disabled: "この設定タブは、編集中の埋め込みビューでは使用できません。"
         default: "デフォルト"
@@ -1059,8 +1059,8 @@ ja:
         single_text: "ワークパッケージを削除してもよろしいですか？"
         bulk_text: "%{label}を削除してもよろしいですか？"
         has_children: "ワークパッケージは %{childUnits} あります。"
-        confirm_deletion_children: "列挙された作業項目のすべての子孫が再帰的に削除されることを承認します。"
-        deletes_children: "すべての子作業項目とその子孫も再帰的に削除されます。"
+        confirm_deletion_children: "列挙されたワークパッケージのすべての子孫が再帰的に削除されることを承認します。"
+        deletes_children: "すべての子ワークパッケージとその子孫も再帰的に削除されます。"
       destroy_time_entry:
         title: "タイムエントリの削除を確認"
         text: "次のタイムエントリを削除してもよろしいですか？"
@@ -1117,7 +1117,7 @@ ja:
     global_search:
       all_projects: "すべてのプロジェクトで"
       close_search: "検索を閉じる"
-      current_project_and_all_descendants: "このプロジェクトとサブプロジェクトでは"
+      current_project_and_all_descendants: "このプロジェクトと子プロジェクトでは"
       current_project: "このプロジェクトでは"
       recently_viewed: "最近閲覧した記事"
       title:
@@ -1212,9 +1212,9 @@ ja:
         selected: "選択したもののみ"
       search_placeholder: "プロジェクトを検索…"
       search_placeholder_favorites: "Search favorites..."
-      include_subprojects: "すべてのサブプロジェクトを含む"
+      include_subprojects: "すべての子プロジェクトを含む"
       tooltip:
-        include_all_selected: "すべてのサブプロジェクトを含める」が有効になっているため、プロジェクトはすでに含まれている。"
+        include_all_selected: "すべての子プロジェクトを含める」が有効になっているため、プロジェクトはすでに含まれている。"
         current_project: "これが現在あなたが参加しているプロジェクトです。"
         does_not_match_search: "プロジェクトが検索条件に一致しません。"
       no_results: "検索条件に一致するプロジェクトはありません。"

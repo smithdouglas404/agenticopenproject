@@ -326,7 +326,7 @@ ja:
       editable: "ユーザー自身がフィールドを編集できるようにする。"
       admin_only: "この属性を管理者にのみ表示する場合チェックします。管理者権限を持たないユーザーは、管理者権限を持つユーザーがこの属性を表示または編集できません。"
       is_filter: >
-        作業項目ビューのフィルタでカスタム項目を使用できるようにします。 「すべてのプロジェクトについて」が選択されている場合のみ、カスタムフィールドはグローバルビューに表示されます。
+        ワークパッケージビューのフィルタでカスタム項目を使用できるようにします。 「すべてのプロジェクトについて」が選択されている場合のみ、カスタムフィールドはグローバルビューに表示されます。
       formula: "数値またはタイプ / を追加して属性または数学演算子を検索します。"
     tab:
       no_results_title_text: 現在、カスタム フィールドはありません。
@@ -370,7 +370,7 @@ ja:
     title:
       all_projects: 'すべてのプロジェクトで "%{search_term}" を検索'
       current_project: '%{search_term}で " %{project_name} " を検索'
-      project_and_subprojects: '%{search_term}とすべてのサブプロジェクトで「 %{project_name} 」を検索します'
+      project_and_subprojects: '%{search_term}とすべての子プロジェクトで「 %{project_name} 」を検索します'
     placeholder: "%{app_title}で検索"
     overwritten_tabs:
       all: "全て"
@@ -416,7 +416,7 @@ ja:
       failed_text: "プロジェクト%{name} の削除要求が失敗しました。 プロジェクトはアーカイブされたままです。"
       completed: "プロジェクト%{name} の削除が完了しました"
       completed_text: "プロジェクト '%{name}'を削除要求は完了しました。"
-      completed_text_children: "さらに、次のサブプロジェクトが削除されました:"
+      completed_text_children: "さらに、次の子プロジェクトが削除されました:"
     index:
       open_as_gantt: "ガントビューとして開く"
       no_results_title_text: 現在、プロジェクトはありません
@@ -441,21 +441,21 @@ ja:
       header_details: 基本情報
       header_status: プロジェクトの進捗状況
       header_relations: プロジェクトの関係
-      button_update_details: アップデートの詳細
-      button_update_status_description: ステータスの説明を更新
+      button_update_details: 基本情報の更新
+      button_update_status_description: ステータスの概要を更新
       button_update_parent_project: 親プロジェクトを更新
       public_warning: >
-        このプロジェクトは公開されています。このインスタンスにアクセスできる人は誰でも、自分の役割と関連する権限に応じて、このプロジェクトを表示し、操作することができます。サブプロジェクトは影響を受けず、独自の設定を持ちます。
+        このプロジェクトは公開されています。このサイトにアクセスできる人は誰でも、自分の役割と関連する権限に応じて、このプロジェクトを表示し、操作することができます。子プロジェクトは影響を受けず、独自の設定を持ちます。
       public_confirmation:
         checkbox: "これにより、非公開だったコンテンツが公開されることを理解しています"
         title: "このプロジェクトを公開しますか？"
         description: >
-          このプロジェクトは公開されています。このインスタンスにアクセスできる人は誰でも、自分の役割と関連する権限に応じて、このプロジェクトを表示し、操作することができます。サブプロジェクトは影響を受けず、独自の設定を持ちます。
+          このプロジェクトは公開されています。このサイトにアクセスできる人は誰でも、自分の役割と関連する権限に応じて、このプロジェクトを表示し、操作することができます。子プロジェクトは影響を受けず、独自の設定を持ちます。
       private_confirmation:
         checkbox: "これにより、公開されていたコンテンツが非公開になることを理解しています。"
         title: "このプロジェクトを非公開にしますか？"
         description: >
-          プロジェクトは、その役割と関連する権限に応じてプロジェクトメンバーにのみ表示されます。サブプロジェクトは影響を受けず、独自の設定があります。
+          プロジェクトは、その役割と関連する権限に応じてプロジェクトメンバーにのみ表示されます。子プロジェクトは影響を受けず、独自の設定があります。
       change_identifier: 識別子の変更
       actions:
         label_enable_all: "全て有効"
@@ -483,7 +483,7 @@ ja:
       project_custom_fields:
         header:
           title: "プロジェクトの属性"
-          description_html: 'これらのプロジェクト属性は、<a href=%{overview_url} target="_blank">プロジェクト概要ページ</a> 、それぞれのセクションの下に表示されます。個々の属性を有効にしたり、無効にしたりすることができます。プロジェクトの属性とセクションは、インスタンスの管理者が<a href=%{admin_settings_url} target="_blank">管理設定</a> で定義します。 '
+          description_html: 'これらのプロジェクト属性は、<a href=%{overview_url} target="_blank">プロジェクト概要ページ</a> 、それぞれのセクションの下に表示されます。個々の属性を有効にしたり、無効にしたりすることができます。プロジェクトの属性とセクションは、サイトの管理者が<a href=%{admin_settings_url} target="_blank">管理設定</a> で定義します。 '
         filter:
           label: "プロジェクトの属性を検索"
         actions:
@@ -534,7 +534,7 @@ ja:
     menu:
       all: "全て"
       invited: "招待済み"
-      locked: "ロックされている"
+      locked: "ロック中"
       project_roles: "プロジェクトロール"
       wp_shares: "ワークパッケージの共有"
       groups: "グループ"
@@ -548,13 +548,13 @@ ja:
         other: "ただし、 %{shared_work_packages_link} もこのグループと共有されています。"
       remove_work_packages_shared_with_user_too: "メンバーから削除されたユーザーは、まだ共有ワークパッケージにアクセスできます。共有も削除しますか？"
       remove_work_packages_shared_with_group_too: "メンバーから削除されたグループは、まだ共有ワークパッケージにアクセスできます。共有も削除しますか？"
-      will_not_affect_inherited_shares: "(これはグループと共有されている作業項目には影響しません)。"
+      will_not_affect_inherited_shares: "(これはグループと共有されているワークパッケージには影響しません)。"
       can_remove_direct_but_not_shared_roles: "このユーザーを直接プロジェクトメンバーとして削除することはできますが、彼らが参加しているグループはこのプロジェクトのメンバーでもあります。 グループを経由して引き続きメンバーになっていきます。"
       also_work_packages_shared_with_user_html:
         other: "また、 %{shared_work_packages_link} はこのユーザーと共有されています。"
       remove_project_membership_or_work_package_shares_too: "直接のメンバーとしてのユーザーだけを削除したい（および共有を維持したい）、またはワークパッケージの共有も削除しますか？"
-      will_remove_all_user_access_priveleges: "このメンバーを削除すると、プロジェクトへのユーザーのすべてのアクセス権が削除されます。ユーザーはまだインスタンスの一部として存在します。"
-      will_remove_all_group_access_priveleges: "このメンバを削除すると、プロジェクトに対するグループのすべてのアクセス権が削除されます。グループはインスタンスの一部としてまだ存在します。"
+      will_remove_all_user_access_priveleges: "このメンバーを削除すると、プロジェクトへのユーザーのすべてのアクセス権が削除されます。ユーザーはまだサイトの一部として存在します。"
+      will_remove_all_group_access_priveleges: "このメンバを削除すると、プロジェクトに対するグループのすべてのアクセス権が削除されます。グループはサイトの一部としてまだ存在します。"
       cannot_delete_inherited_membership: "このプロジェクトのメンバーであるグループに所属しているため、このメンバーを削除することはできません。"
       cannot_delete_inherited_membership_note_admin_html: "%{administration_settings_link}で、プロジェクトのメンバーとしてグループを削除することも、特定のメンバーをグループから削除することもできます。"
       cannot_delete_inherited_membership_note_non_admin: "プロジェクトのメンバーとしてグループを削除するか、管理者に連絡してこの特定のメンバーをグループから削除することができます。"
@@ -579,8 +579,8 @@ ja:
       dialog:
         token/api:
           dialog_title: "新しいAPIトークンを作成"
-          attention_text: "APIトークンをパスワードのように扱う。このトークンを持っている人は誰でもこのインスタンスの情報にアクセスすることができるので、信頼できるユーザーのみと共有しましょう。"
-          dialog_body: "このトークンによって、サードパーティのアプリケーションがあなたのインスタンスと通信できるようになります。新しいAPIトークンを区別するために、名前を付けてください。"
+          attention_text: "APIトークンをパスワードのように扱う。このトークンを持っている人は誰でもこのサイトの情報にアクセスすることができるので、信頼できるユーザーのみと共有しましょう。"
+          dialog_body: "このトークンによって、サードパーティのアプリケーションがあなたのサイトと通信できるようになります。新しいAPIトークンを区別するために、名前を付けてください。"
           create_button: "作成"
           name_label: "トークン名"
       created_dialog:
@@ -706,15 +706,15 @@ ja:
         select_projects_description: このタイプを使用するプロジェクトを選択します。
       settings:
         tab: "設定"
-        type_color_text: 選択された色は、ガントチャートまたは作業項目の表で異なるタイプを区別します。したがって、強い色を使用することをお勧めします。
+        type_color_text: 選択された色は、ガントチャートまたはワークパッケージの表で異なるタイプを区別します。したがって、強い色を使用することをお勧めします。
       subject_configuration:
         tab: "件名の設定"
         manually_editable_subjects:
           label: "手動で編集可能な件名"
-          caption: "ユーザは、制限なしに作業項目を手動で入力および編集できます。"
+          caption: "ユーザは、制限なしにワークパッケージを手動で入力および編集できます。"
         automatically_generated_subjects:
           label: "自動生成された件名"
-          caption: "作業項目を自動的に生成するために、参照属性とテキストを使用してパターンを定義します。ユーザーは手動で件名を編集することはできません。"
+          caption: "ワークパッケージを自動的に生成するために、参照属性とテキストを使用してパターンを定義します。ユーザーは手動で件名を編集することはできません。"
         token:
           label_with_context: "%{attribute_context}: %{attribute_label}"
           context:
@@ -736,7 +736,7 @@ ja:
   versions:
     overview:
       work_packages_in_archived_projects: "バージョンは、まだこのバージョンにワークパッケージが割り当てられているアーカイブされたプロジェクトと共有されます。 これらはカウントされますが、リンクされたビューには表示されません。"
-      no_results_title_text: このバージョンに割り当てられている作業項目はありません。
+      no_results_title_text: このバージョンに割り当てられているワークパッケージはありません。
   wiki:
     page_not_editable_index: 要求されたページは (まだ) 存在しません。すべてのwikiページの索引にリダイレクトされました。
     no_results_title_text: 現在、Wikiページはありません。
@@ -782,21 +782,21 @@ ja:
         blankslate:
           predecessors:
             title: "前任者なし"
-            description: "この作業項目には前任者はありません。"
+            description: "このワークパッケージには前任者はありません。"
           successors:
             title: "後継者なし"
-            description: "この作業項目には後継者がありません。"
+            description: "このワークパッケージには後継者がありません。"
           children:
             title: "子要素がありません"
-            description: "この作業項目には子がありません。"
+            description: "このワークパッケージには子がありません。"
     x_descendants:
-      other: "%{count} つの作業項目の子孫"
+      other: "%{count} つのワークパッケージの子孫"
     bulk:
-      copy_failed: "作業項目をコピーできませんでした。"
-      move_failed: "作業項目を移動できませんでした。"
+      copy_failed: "ワークパッケージをコピーできませんでした。"
+      move_failed: "ワークパッケージを移動できませんでした。"
       could_not_be_saved: "次のワークパッケージを保存できませんでした:"
       none_could_be_saved: "%{total} 作業パッケージのどれも更新できませんでした。"
-      x_out_of_y_could_be_saved: "%{failing} の %{total} 作業項目のうち、 %{success} を更新できませんでした。"
+      x_out_of_y_could_be_saved: "%{failing} の %{total} ワークパッケージのうち、 %{success} を更新できませんでした。"
       selected_because_descendants: "%{selected} のワークパッケージが選択されたが、合計 %{total} のワークパッケージが影響を受け、その中には子孫も含まれる。"
       descendant: "選択された子孫"
     move:
@@ -808,8 +808,8 @@ ja:
         ワークパッケージの現在のタイプがターゲットプロジェクトで有効になっていません。変更しない場合は、ターゲットプロジェクトでタイプを有効にしてください。そうでない場合は、リストからターゲットプロジェクトで使用可能なタイプを選択してください。
     sharing:
       missing_workflow_warning:
-        title: "作業項目の共有のためのワークフローがありません"
-        message: "「作業項目エディタ」ロールに対してワークフローが設定されていません。ワークフローがなければ、ユーザーと共有された作業項目のステータスは変更できません。 ワークフローをコピーすることができます。ソースタイプ(例:「タスク」)とソースロール(例:「メンバー」)を選択します。 次に、ターゲットタイプを選択します。最初に、すべてのタイプをターゲットとして選択できます。 最後に、「作業項目の編集」ロールをターゲットとして選択し、「コピー」を押します。 このようにしてデフォルトを作成した後、他のすべてのロールに対して行うようにワークフローを微調整します。"
+        title: "ワークパッケージの共有のためのワークフローがありません"
+        message: "「ワークパッケージエディタ」ロールに対してワークフローが設定されていません。ワークフローがなければ、ユーザーと共有されたワークパッケージのステータスは変更できません。 ワークフローをコピーすることができます。ソースタイプ(例:「タスク」)とソースロール(例:「メンバー」)を選択します。 次に、ターゲットタイプを選択します。最初に、すべてのタイプをターゲットとして選択できます。 最後に、「ワークパッケージの編集」ロールをターゲットとして選択し、「コピー」を押します。 このようにしてデフォルトを作成した後、他のすべてのロールに対して行うようにワークフローを微調整します。"
         link_message: "管理画面でワークフローを構成します。"
     templated_subject_hint: '%{type}タイプで自動生成されます'
     summary:
@@ -833,7 +833,7 @@ ja:
       action_bar_title: "他のワークパッケージとのリレーションを追加して、それらの間にリンクを作成する。"
       no_results_title_text: 現在、利用可能な関係はない。
       blankslate_heading: "関係なし"
-      blankslate_description: "この作業項目にはまだリレーションがありません。"
+      blankslate_description: "このワークパッケージにはまだリレーションがありません。"
     label_add_child_button: "子要素"
     label_add_x: "%{x} を追加"
     label_edit_x: "%{x} を編集"
@@ -841,26 +841,26 @@ ja:
     lag:
       subject: "遅延"
       caption: |-
-        2つの作業項目の間に保持される最小営業日数。
+        2つのワークパッケージの間に保持される最小営業日数。
         負にすることもできます。
     relations:
-      label_new_child_created: "新しい作業項目が作成され、子として追加されました"
+      label_new_child_created: "新しいワークパッケージが作成され、子として追加されました"
       label_relates_singular: "関連している"
       label_relates_plural: "関連している"
       label_relates_to_singular: "関連している"
       label_relates_to_plural: "関連している"
-      relates_description: "追加の効果なしで2つの作業項目の間に表示されるリンクを作成します"
-      relates_to_description: "追加の効果なしで2つの作業項目の間に表示されるリンクを作成します"
+      relates_description: "追加の効果なしで2つのワークパッケージの間に表示されるリンクを作成します"
+      relates_to_description: "追加の効果なしで2つのワークパッケージの間に表示されるリンクを作成します"
       label_precedes_singular: "後継者（後）"
       label_precedes_plural: "後継者（あと）"
-      precedes_description: "関連する作業項目は、この作業が終了した後に開始する必要があります"
+      precedes_description: "関連するワークパッケージは、この作業が終了した後に開始する必要があります"
       label_follows_singular: "前身（以前）"
       label_follows_plural: "前任者(前任者)"
-      follows_description: "この作業を開始する前に関連する作業項目は必ず終了する必要があります"
+      follows_description: "この作業を開始する前に関連するワークパッケージは必ず終了する必要があります"
       label_child_singular: "子供"
       label_child_plural: "子供"
       new_child: "子関係を作成"
-      new_child_description: "現在の（親）作業項目のサブ項目として関連する作業項目を作成します"
+      new_child_description: "現在の（親）ワークパッケージのサブ項目として関連するワークパッケージを作成します"
       child: "子要素"
       child_description: "関連するワークパッケージを現在の(親)ワークパッケージのサブ項目にします。"
       parent: "親項目"
@@ -868,37 +868,37 @@ ja:
       label_closest: "最も近い"
       label_blocks_singular: "ブロックしている"
       label_blocks_plural: "ブロックしている"
-      blocks_description: "この作業項目が最初に閉じられるまで、関連する作業項目を閉じることはできません"
+      blocks_description: "このワークパッケージが最初に閉じられるまで、関連するワークパッケージを閉じることはできません"
       label_blocked_singular: "ブロックされている"
       label_blocked_plural: "ブロックされている"
       label_blocked_by_singular: "ブロックされている"
       label_blocked__by_plural: "ブロックされている"
-      blocked_description: "この作業項目は、関連するものが最初に閉じられるまで閉じることはできません"
-      blocked_by_description: "この作業項目は、関連するものが最初に閉じられるまで閉じることはできません"
+      blocked_description: "このワークパッケージは、関連するものが最初に閉じられるまで閉じることはできません"
+      blocked_by_description: "このワークパッケージは、関連するものが最初に閉じられるまで閉じることはできません"
       label_duplicates_singular: "次と重複"
       label_duplicates_plural: "次と重複"
-      duplicates_description: "これは関連する作業項目のコピーです"
+      duplicates_description: "これは関連するワークパッケージのコピーです"
       label_duplicated_singular: "次の項目が重複"
       label_duplicated_plural: "次の項目が重複"
       label_duplicated_by_singular: "次の項目が重複"
       label_duplicated_by_plural: "次の項目が重複"
-      duplicated_by_description: "関連する作業項目はこれのコピーです"
-      duplicated_description: "関連する作業項目はこれのコピーです"
+      duplicated_by_description: "関連するワークパッケージはこれのコピーです"
+      duplicated_description: "関連するワークパッケージはこれのコピーです"
       label_includes_singular: "インクルード"
       label_includes_plural: "インクルード"
-      includes_description: "関連する作業項目をこの作業項目を含めて追加の効果がないとマークします"
+      includes_description: "関連するワークパッケージをこのワークパッケージを含めて追加の効果がないとマークします"
       label_partof_singular: "以下の一部："
       label_partof_plural: "以下の一部："
       label_part_of_singular: "以下の一部："
       label_part_of_plural: "以下の一部："
-      partof_description: "関連する作業項目をこの作業項目の一部として追加の効果はありません"
-      part_of_description: "関連する作業項目をこの作業項目の一部として追加の効果はありません"
+      partof_description: "関連するワークパッケージをこのワークパッケージの一部として追加の効果はありません"
+      part_of_description: "関連するワークパッケージをこのワークパッケージの一部として追加の効果はありません"
       label_requires_singular: "要求"
       label_requires_plural: "要求"
-      requires_description: "この作業項目に対する要件として関連する作業項目をマークします"
+      requires_description: "このワークパッケージに対する要件として関連するワークパッケージをマークします"
       label_required_singular: "に必要"
       label_required_plural: "に必要"
-      required_description: "この作業項目を関連するものの要件としてマークする"
+      required_description: "このワークパッケージを関連するものの要件としてマークする"
       label_parent_singular: "親"
       label_parent_plural: "親"
       label_other_relations: "その他の関係"
@@ -1044,14 +1044,14 @@ ja:
         enabled_modules: "有効なモジュール"
         identifier: "識別子"
         latest_activity_at: "最新の活動"
-        parent: "親プロジェクト名"
+        parent: "親プロジェクト"
         public_value:
           title: "可視性"
           true: "公開"
           false: "非公開"
         queries: "クエリ"
         status_code: "プロジェクトステータス"
-        status_explanation: "プロジェクトステータスの説明"
+        status_explanation: "プロジェクト進捗の概要"
         status_codes:
           not_started: "未着手"
           on_track: "順調"
@@ -1090,7 +1090,7 @@ ja:
         column_names: "列"
         relations_to_type_column: "%{type} との関連"
         relations_of_type_column: "%{type} 関連"
-        child_work_packages: "子作業項目"
+        child_work_packages: "子ワークパッケージ"
         group_by: "グループ化"
         sort_by: "結果を並べ替える"
         filters: "フィルタ"
@@ -1106,8 +1106,8 @@ ja:
         starred: "お気に入り"
         hidden: "隠された"
         manual_sorting: "手動ソート順"
-        ordered_work_packages: "作業項目の順序"
-        include_subprojects: "サブプロジェクトを含める"
+        ordered_work_packages: "ワークパッケージの順序"
+        include_subprojects: "子プロジェクトを含める"
         results: "検索結果"
       relation:
         lag: "遅延"
@@ -1177,7 +1177,7 @@ ja:
         header_alerts: "アラート"
         button_update_look_and_feel: "ルック＆フィールを更新"
         button_update_alerts: "アラートの更新"
-        comments_sorting: "作業項目のアクティビティを並べ替えて表示する"
+        comments_sorting: "ワークパッケージのアクティビティを並べ替えて表示する"
         disable_keyboard_shortcuts: "キーボードショートカットを無効にする"
         disable_keyboard_shortcuts_caption_html: |-
           スクリーンリーダーを使用している場合や、ショートカットでアクションを誤ってトリガーすることを避けたい場合は、デフォルトの <a href="%{href}">キーボードショートカット</a> を無効にすることができます。
@@ -1402,7 +1402,7 @@ ja:
           foreign_wps_reference_version: "子孫でないプロジェクトのワークパッケージが、プロジェクトまたはその子孫のバージョンを参照しています。"
           attributes:
             base:
-              archive_permission_missing_on_subprojects: "すべてのサブプロジェクトをアーカイブするために必要な権限がありません。管理者に連絡してください。"
+              archive_permission_missing_on_subprojects: "すべての子プロジェクトをアーカイブするために必要な権限がありません。管理者に連絡してください。"
             types:
               in_use_by_work_packages: "まだワークパッケージによって使用されています: %{types}"
             enabled_modules:
@@ -1455,7 +1455,7 @@ ja:
         queries/principals/filters/internal_mentionable_on_work_package_filter:
           attributes:
             values:
-              single_value_requirement: "は単一の作業項目でなければなりません"
+              single_value_requirement: "は単一のワークパッケージでなければなりません"
         relation:
           typed_dag:
             circular_dependency: "関係が、関係のループを作ります。"
@@ -1687,7 +1687,7 @@ ja:
       removed_on: "%{datetime} で削除されました"
       removed_by_on: "removed by %{user} on %{datetime}"
       parent_without_of: "子プロジェクト"
-      parent_no_longer: "もはやサブプロジェクトではありません"
+      parent_no_longer: "もはや子プロジェクトではありません"
       time_entry:
         hour:
           other: "%{count} 時間"
@@ -1700,7 +1700,7 @@ ja:
       message: "フォーラム"
       news: "ニュース"
       project_details: "プロジェクトの詳細"
-      subproject: "サブプロジェクトを含める"
+      subproject: "子プロジェクトを含める"
       time_entry: "作業時間の記録"
       wiki_edit: "Wiki"
       work_package: "ワークパッケージ"
@@ -1922,11 +1922,11 @@ ja:
   button_add_menu_entry: "メニュー項目の追加"
   button_configure_menu_entry: "メニュー項目の設定"
   button_delete_menu_entry: "メニュー項目の削除"
-  button_view_shared_work_packages: "共有作業項目の表示"
+  button_view_shared_work_packages: "共有ワークパッケージの表示"
   button_manage_roles: "役割の管理"
   button_remove_member: "メンバーを削除"
   button_remove_member_and_shares: "メンバーを削除して共有します"
-  button_revoke_work_package_shares: "作業項目の共有を取り消す"
+  button_revoke_work_package_shares: "ワークパッケージの共有を取り消す"
   button_revoke_access: "アクセスを取り消す"
   button_revoke_all: "すべて取り消し"
   button_revoke_only: "%{shared_role_name} のみ取り消し"
@@ -2158,7 +2158,7 @@ ja:
       customize_life_cycle:
         description: "PM2プロジェクトサイクル計画で提供されるものとは異なるプロジェクトフェーズを作成して整理します。"
       conditional_highlighting:
-        description: "質量から目立つ特定の作業項目が必要ですか? ワークパッケージテーブルで条件付きハイライトを使用します。"
+        description: "質量から目立つ特定のワークパッケージが必要ですか? ワークパッケージテーブルで条件付きハイライトを使用します。"
       work_package_query_relation_columns:
         description: "ワークパッケージの一覧で関係を表示しますか？"
       edit_attribute_groups:
@@ -2166,15 +2166,15 @@ ja:
         features:
           groups: "新しい属性グループを追加"
           rename: "属性グループの名前を変更"
-          related: "関連する作業項目のテーブルを追加"
+          related: "関連するワークパッケージのテーブルを追加"
       readonly_work_packages:
-        description: "特定のステータスの作業項目を読み取り専用としてマークします。"
+        description: "特定のステータスのワークパッケージを読み取り専用としてマークします。"
       custom_field_hierarchies:
-        description: "階層のカスタム項目では、マルチレベル選択リストを使用して作業項目内の階層構造を整理できます。"
+        description: "階層のカスタム項目では、マルチレベル選択リストを使用してワークパッケージ内の階層構造を整理できます。"
       date_alerts:
         description: "日付アラートでは、重要な期限を逃したり忘れたりすることは決してないように、今後の開始または終了日が通知されます。"
       work_package_sharing:
-        description: "プロジェクトのメンバーではないユーザーと作業項目を共有します。"
+        description: "プロジェクトのメンバーではないユーザーとワークパッケージを共有します。"
       project_list_sharing:
         description: "プロジェクトリストを個々のユーザーと共有します。"
       define_custom_style:
@@ -2273,11 +2273,11 @@ ja:
   error_token_authenticity: "クロスサイトリクエスト偽造トークンを確認できません。 複数のブラウザやタブでデータを送信しようとしましたか？ すべてのタブを閉じてもう一度やり直してください。"
   error_reminder_not_found: "リマインダーが見つからないか、すでに通知されています。"
   error_work_package_not_found_in_project: "ワークパッケージが見つからないか、このプロジェクトに属していません。"
-  error_work_package_id_not_found: "作業項目が見つかりません。"
+  error_work_package_id_not_found: "ワークパッケージが見つかりません。"
   error_must_be_project_member: "プロジェクトのメンバーである必要があります。"
   error_migrations_are_pending: "OpenProject のインストールはデータベースの移行が保留中です。前回のアップグレード時に移行の実行を行っていない可能性があります。アップグレードガイドを確認して、適切にインストールをアップグレードしてください。"
   error_migrations_visit_upgrade_guides: "アップグレードガイドのドキュメントをご覧ください"
-  error_no_default_work_package_status: '｀ワークパッケージ目の既定のステータスが定義されていません。 設定をご確認してください（管理→作業項目ステータス）。'
+  error_no_default_work_package_status: '｀ワークパッケージ目の既定のステータスが定義されていません。 設定をご確認してください（管理→ワークパッケージステータス）。'
   error_no_type_in_project: "このプロジェクトには関連付けられているワークパッケージの種類がありません。プロジェクトの設定をご確認してください。"
   error_omniauth_registration_timed_out: "外部認証プロバイダーを経由して登録がタイムアウトしました。もう一度やり直してください。"
   error_omniauth_invalid_auth: "IDプロバイダーから返された認証情報が無効です。詳細については管理者に連絡してください"
@@ -2313,7 +2313,7 @@ ja:
     work_package_note: "仕事項目の注記が追加されました。"
     title:
       project: "プロジェクト: %{name}"
-      subproject: "サブプロジェクト: %{name}"
+      subproject: "子プロジェクト: %{name}"
   export:
     dialog:
       title: "エクスポート"
@@ -2331,8 +2331,8 @@ ja:
             label: "XLS"
       columns:
         input_label_report: "属性テーブルに列を追加"
-        input_caption_report: "デフォルトでは、作業項目リストの列として追加されたすべての属性が選択されます。 長いテキストフィールドは、属性テーブルでは使用できませんが、その下に表示することができます。"
-        input_caption_table: "デフォルトでは、作業項目リストの列として追加されたすべての属性が選択されています。長いテキスト項目はテーブルベースのエクスポートでは使用できません。"
+        input_caption_report: "デフォルトでは、ワークパッケージリストの列として追加されたすべての属性が選択されます。 長いテキストフィールドは、属性テーブルでは使用できませんが、その下に表示することができます。"
+        input_caption_table: "デフォルトでは、ワークパッケージリストの列として追加されたすべての属性が選択されています。長いテキスト項目はテーブルベースのエクスポートでは使用できません。"
         input_caption_required: "列なしでビューをエクスポートすることはできません。少なくとも1つの列を追加してください。"
       pdf:
         export_type:
@@ -2340,10 +2340,10 @@ ja:
           options:
             table:
               label: "表"
-              caption: "作業項目リストを目的の列とともにテーブルにエクスポートします。"
+              caption: "ワークパッケージリストを目的の列とともにテーブルにエクスポートします。"
             report:
               label: "レポート"
-              caption: "リスト内のすべての作業項目の詳細レポートに作業項目をエクスポートします。"
+              caption: "リスト内のすべてのワークパッケージの詳細レポートにワークパッケージをエクスポートします。"
             gantt:
               label: "ガントチャート"
               caption: "ガントチャート表示で作業パッケージ一覧をエクスポートします。"
@@ -2380,16 +2380,16 @@ ja:
         include_descriptions:
           label: "説明を含める"
           caption: "このオプションは、説明列をraw形式で追加します。"
-    your_work_packages_export: "作業項目をエクスポートしています"
+    your_work_packages_export: "ワークパッケージをエクスポートしています"
     your_projects_export: "プロジェクトはエクスポートされています"
     succeeded: "エクスポート完了"
-    failed: "作業項目のエクスポート中にエラーが発生しました: %{message}"
+    failed: "ワークパッケージのエクスポート中にエラーが発生しました: %{message}"
     demo:
       heading: "デモPDF"
       footer: "OpenProject によって生成"
       button_text: デモPDFを生成
     errors:
-      embedded_table_with_too_many_columns: "この埋め込まれた作業項目テーブルはページに収まりませんでした。列数を減らしてください。"
+      embedded_table_with_too_many_columns: "この埋め込まれたワークパッケージテーブルはページに収まりませんでした。列数を減らしてください。"
     format:
       atom: "Atom"
       csv: "CSV"
@@ -2416,13 +2416,13 @@ ja:
       caption: デフォルトテンプレートを使用して、現在のフォーム構成に存在するすべての属性。
     template_contract:
       label: "契約"
-      caption: 標準的なドイツの契約フォームにフォーマットされた作業項目の詳細。
+      caption: 標準的なドイツの契約フォームにフォーマットされたワークパッケージの詳細。
     dialog:
       title: PDFを生成
       submit: ダウンロード
       templates:
         label: "テンプレート"
-        none_enabled: "この作業項目タイプで有効になっているテンプレートはありません"
+        none_enabled: "このワークパッケージタイプで有効になっているテンプレートはありません"
       footer_center:
         label: フッターテキスト
         caption: このテキストはフッターの中央にあるすべてのページに表示されます。
@@ -2470,9 +2470,9 @@ ja:
   gui_validation_error_plural: "%{count}つエラー"
   homescreen:
     additional:
-      projects: "このインスタンスの最新の可視化プロジェクト。"
-      no_visible_projects: "このインスタンスに表示されているプロジェクトはありません。"
-      users: "このインスタンスの最新の登録ユーザー。"
+      projects: "このサイトの最新の可視化プロジェクト。"
+      no_visible_projects: "このサイトに表示されているプロジェクトはありません。"
+      users: "このサイトの最新の登録ユーザー。"
     blocks:
       community: "OpenProject コミュニティ"
       upsell:
@@ -2487,7 +2487,7 @@ ja:
           new_features_list:
             line_0: システムカラーとコントラストモードを自動同期するオプション。
             line_1: アクセシビリティを向上させるためのダークハイコントラストモード。
-            line_2: プロジェクト リストの PDF エクスポート。
+            line_2: プロジェクト一覧をPDFでエクスポート
             line_3: PDFエクスポートのカスタムフォント (Enterpriseアドオン)。
             line_4: 改善されたミーティング参加者のダイアログ。
             line_5: プロジェクトクエリと予算計画の予算処理を改善しました。
@@ -2513,7 +2513,7 @@ ja:
       progress_mode_changed_to_status_based: "進捗の計算が更新されました"
       status_changed: "状態 '%{status_name}'"
       system_update: "OpenProject システムの更新："
-      work_package_duplicate_closed: "重複作業項目の更新："
+      work_package_duplicate_closed: "重複ワークパッケージの更新："
       total_percent_complete_mode_changed_to_work_weighted_average: "作業で加重された全体合計の%を計算します。"
       total_percent_complete_mode_changed_to_simple_average: "%の計算 完全な合計は、単純な平均のみに基づいています。"
     cause_descriptions:
@@ -2521,8 +2521,8 @@ ja:
       work_package_parent_changed_times: 親の%{link}の変更により
       work_package_children_changed_times: 子 %{link}への変更によって
       work_package_related_changed_times: 関連する %{link} への変更によって
-      work_package_duplicate_closed: このステータスは重複した作業項目 %{link}によって自動的に更新されました
-      unaccessable_work_package_changed: 関連する作業項目に変更を加えることで
+      work_package_duplicate_closed: このステータスは重複したワークパッケージ %{link}によって自動的に更新されました
+      unaccessable_work_package_changed: 関連するワークパッケージに変更を加えることで
       working_days_changed:
         changed: "営業日数の変更 (%{changes})"
         days:
@@ -2545,7 +2545,7 @@ ja:
         scheduling_mode_adjusted: >-
           スケジュールモードはバージョンアップ時に自動的に調整されます。
         totals_removed_from_childless_work_packages: >-
-          <a href="%{href}" target="_blank">バージョンアップデート</a>を伴う親でない作業項目に対して作業と進捗の合計が自動的に削除されます。 これはメンテナンス作業であり、無視することができます。
+          <a href="%{href}" target="_blank">バージョンアップデート</a>を伴う親でないワークパッケージに対して作業と進捗の合計が自動的に削除されます。 これはメンテナンス作業であり、無視することができます。
       total_percent_complete_mode_changed_to_work_weighted_average: >-
         「Work」が含まれていない子作業パッケージは無視されます。
       total_percent_complete_mode_changed_to_simple_average: >-
@@ -2577,7 +2577,7 @@ ja:
       simple_revoke_confirmation: "このトークンを取り消してもよろしいですか？"
       token/api:
         title: "API"
-        text_hint: "API トークンを使用すると、サードパーティのアプリケーションが REST API 経由でこの OpenProject インスタンスと通信できます。"
+        text_hint: "API トークンを使用すると、サードパーティのアプリケーションが REST API 経由でこの OpenProject サイトと通信できます。"
         disabled_text: "API トークンは管理者によって有効化されていません。この機能を使用するには管理者に問い合わせてください。"
         add_button: "API トークン"
       api:
@@ -2589,16 +2589,16 @@ ja:
         empty_text_hint: "iCalendar トークンを追加するには、プロジェクトの Calendar モジュール内から新規または既存のカレンダーを購読します。 必要な権限が必要です。"
       oauth:
         title: "OAuth"
-        text_hint: "OAuth トークンにより、サードパーティ製アプリケーションがこの OpenProject インスタンスと接続できます。"
+        text_hint: "OAuth トークンにより、サードパーティ製アプリケーションがこの OpenProject サイトと接続できます。"
         empty_text_hint: "サードパーティーのアプリケーションへのアクセスが設定されておらず、アクティブになっていません。この機能を有効にするには管理者に問い合わせてください。"
       rss:
         title: "RSS"
-        text_hint: "RSS トークンにより、ユーザーは外部 RSS リーダーを介してこの OpenProject インスタンスの最新の変更に追いつくことができます。"
+        text_hint: "RSS トークンにより、ユーザーは外部 RSS リーダーを介してこの OpenProject サイトの最新の変更に追いつくことができます。"
         static_token_name: "RSS トークン"
         disabled_text: "RSSトークンは管理者によって有効になっていません。この機能を使用するには管理者に問い合わせてください。"
       storages:
         title: "ファイルストレージ"
-        text_hint: "ファイルストレージトークンは、このOpenProjectインスタンスを外部ファイルストレージと接続します。"
+        text_hint: "ファイルストレージトークンは、このOpenProjectサイトを外部ファイルストレージと接続します。"
         empty_text_hint: "アカウントにリンクされたストレージへのアクセス権がありません。"
         revoke_token: "本当にこのトークンを削除しますか？ %{storage}に再度ログインする必要があります"
         removed: "ファイルストレージトークンを削除しました"
@@ -2614,7 +2614,7 @@ ja:
       watched: "ウォッチャー"
       reminder: "通知"
     facets:
-      unread: "未読です"
+      unread: "未読"
       unread_title: "未読を表示"
       all: "全て"
       all_title: "全てを表示"
@@ -2892,7 +2892,7 @@ ja:
   label_incoming_emails: "受信メール"
   label_includes: "インクルード"
   label_incomplete: 未完了
-  label_include_sub_projects: サブプロジェクトを含める
+  label_include_sub_projects: 子プロジェクトを含める
   label_index_by_date: "索引（日付順）"
   label_index_by_title: "索引（名前順）"
   label_information: "情報"
@@ -2908,7 +2908,7 @@ ja:
   label_scored_list: "得点リスト"
   label_share: "共有"
   label_share_project_list: "プロジェクト一覧を共有"
-  label_share_work_package: "作業項目を共有"
+  label_share_work_package: "ワークパッケージを共有"
   label_show_all_registered_users: "すべての登録ユーザーを表示"
   label_show_less: "非表示にする"
   label_show_more: "詳細を表示"
@@ -3279,7 +3279,7 @@ ja:
   label_work_package_attachments: "ワークパッケージの添付ファイル"
   label_work_package_category_new: "新規カテゴリ"
   label_work_package_category_plural: "ワークパッケージのカテゴリ"
-  label_work_package_comments: "作業項目のコメント"
+  label_work_package_comments: "ワークパッケージのコメント"
   label_work_package_hierarchy: "ワークパッケージの階層"
   label_work_package_new: "新しいワークパッケージ"
   label_work_package_edit: "ワークパッケージ %{name} を編集"
@@ -3308,9 +3308,9 @@ ja:
     other: "%{count}件未完了"
     zero: "0 オープン"
   label_x_work_packages:
-    one: "1つの作業項目"
-    other: "%{count} 作業項目"
-    zero: "作業項目がありません"
+    one: "1つのワークパッケージ"
+    other: "%{count} ワークパッケージ"
+    zero: "ワークパッケージがありません"
   label_x_projects:
     one: "1 プロジェクト"
     other: "%{count} プロジェクト"
@@ -3369,7 +3369,7 @@ ja:
       mentioned: "あなたは<b>コメントでメンション</b>されています"
       mentioned_by: "%{user} さんがコメントであなたをメンションしました"
       more_to_see:
-        other: "通知付きの %{count} 件以上の作業項目があります。"
+        other: "通知付きの %{count} 件以上のワークパッケージがあります。"
       open_in_browser: "ブラウザで開く"
       reason:
         watched: "ウォッチ済み"
@@ -3391,13 +3391,13 @@ ja:
     sharing:
       work_packages:
         allowed_actions: "この作業パッケージは %{allowed_actions} 可能です。プロジェクトのロールと権限によって変更できます。"
-        create_account: "この作業項目にアクセスするには、 %{instance} のアカウントを作成して有効化する必要があります。"
-        open_work_package: "作業項目を開く"
-        subject: "作業項目%{id} があなたと共有されました"
-        enterprise_text: "プロジェクトのメンバーではないユーザーと作業項目を共有します。"
+        create_account: "このワークパッケージにアクセスするには、 %{instance} のアカウントを作成して有効化する必要があります。"
+        open_work_package: "ワークパッケージを開く"
+        subject: "ワークパッケージ%{id} があなたと共有されました"
+        enterprise_text: "プロジェクトのメンバーではないユーザーとワークパッケージを共有します。"
         summary:
           user: "%{user} がワークパッケージを %{role_rights} 権限で共有しました"
-          group: "%{user} があなたがメンバーである %{group} グループと作業項目を共有しました"
+          group: "%{user} があなたがメンバーである %{group} グループとワークパッケージを共有しました"
     storages:
       health:
         plaintext:
@@ -3562,7 +3562,7 @@ ja:
   notice_unsuccessful_update: "更新に失敗しました。"
   notice_unsuccessful_update_with_reason: "更新失敗： %{reason}"
   notice_successful_update_custom_fields_added_to_project: |
-    更新に成功しました。有効化されたタイプのカスタムフィールドは、作業項目フォームで
+    更新に成功しました。有効化されたタイプのカスタムフィールドは、ワークパッケージフォームで
     自動的に有効化されます。 <a href="%{url}" target="_blank">詳細は</a> を参照してください。
   notice_to_many_principals_to_display: "検索結果が多すぎです。新たにメンバー名（またはグループ名）を入力して検索を絞り込んでください。"
   notice_user_missing_authentication_method: ユーザーは、サインインのパスワードまたは別の方法を選択する必要があります。
@@ -3605,7 +3605,7 @@ ja:
   permission_add_portfolios: "ポートフォリオを作成"
   permission_add_programs: "プログラムの作成"
   permission_add_work_package_attachments: "添付ファイルを追加"
-  permission_add_work_package_attachments_explanation: "作業項目の編集権限なしで添付ファイルを追加できます"
+  permission_add_work_package_attachments_explanation: "ワークパッケージの編集権限なしで添付ファイルを追加できます"
   permission_add_internal_comments: "内部コメントの追加"
   permission_archive_project: "プロジェクトをアーカイブ"
   permission_create_user: "ユーザーの作成"
@@ -3617,7 +3617,7 @@ ja:
   permission_browse_repository: "リポジトリに読み取り専用のアクセス (参照およびチェックアウト)"
   permission_change_wiki_parent_page: "親Wikiページの変更"
   permission_change_work_package_status: "ワークパッケージのステータス変更"
-  permission_change_work_package_status_explanation: "作業項目の編集権限なしで状態を変更できます"
+  permission_change_work_package_status_explanation: "ワークパッケージの編集権限なしで状態を変更できます"
   permission_comment_news: "ニュースへのコメント"
   permission_commit_access: "リポジトリに読み取り/書き込みアクセス (コミット)"
   permission_copy_projects: "プロジェクトのコピー"
@@ -3676,7 +3676,7 @@ ja:
   permission_select_project_phases: "プロジェクトフェーズの選択"
   permission_select_project_phases_explanation: "プロジェクトのフェーズを有効/無効にします。 アクティブでないフェーズとしてプロジェクトに適したライフサイクルを選択できるようにすると、プロジェクト概要ページやプロジェクト リストには表示されません。"
   permission_select_project_modules: "プロジェクトでモジュールの選択"
-  permission_share_work_packages: "作業項目を共有"
+  permission_share_work_packages: "ワークパッケージを共有"
   permission_manage_types: "ワークパッケージのタイプを選択"
   permission_manage_own_reminders: "自分のリマインダーを作成する"
   permission_view_project: "プロジェクトを表示"
@@ -3690,7 +3690,7 @@ ja:
   permission_view_news: "ニュースの閲覧"
   permission_view_members: "メンバーを表示"
   permission_view_reportings: "レポートの閲覧"
-  permission_view_shared_work_packages: "作業項目の共有を表示"
+  permission_view_shared_work_packages: "ワークパッケージの共有を表示"
   permission_view_time_entries: "作業時間記録の閲覧"
   permission_view_timelines: "タイムラインの閲覧"
   permission_view_user_email: "ユーザーのメールアドレス閲覧"
@@ -3724,9 +3724,9 @@ ja:
         zero: >
           プロジェクト<strong>%{name}</strong> に関連するすべてのデータを完全に削除しようとしています。
         one: >
-          プロジェクト <strong>%{name}</strong> とこのサブプロジェクトに関連するすべてのデータを完全に削除しようとしています：
+          プロジェクト <strong>%{name}</strong> とこの子プロジェクトに関連するすべてのデータを完全に削除しようとしています：
         other: >
-          プロジェクト <strong>%{name}</strong> とこれらのサブプロジェクトに関連するすべてのデータを完全に削除しようとしています：
+          プロジェクト <strong>%{name}</strong> とこれらの子プロジェクトに関連するすべてのデータを完全に削除しようとしています：
     filters:
       project_phase: "プロジェクトフェーズ: %{phase}"
       project_phase_any: "プロジェクトフェーズ: すべて"
@@ -3759,10 +3759,10 @@ ja:
     assignee_or_group: "担当者または所属グループ"
     member_of_group: "担当者のグループ"
     name_or_identifier: "名前または ID"
-    only_subproject_id: "サブプロジェクトのみ"
+    only_subproject_id: "子プロジェクトのみ"
     shared_with_user: "ユーザーと共有"
     shared_with_me: "自分と共有"
-    subproject_id: "サブプロジェクトを含む"
+    subproject_id: "子プロジェクトを含む"
   repositories:
     at_identifier: "%{identifier} で"
     atom_revision_feed: "Atom リビジョンフィード"
@@ -3927,7 +3927,7 @@ ja:
   setting_brute_force_block_minutes: "ユーザーがロックされている期間"
   setting_cache_formatted_text: "書式化されたテキストをキャッシュする"
   setting_use_wysiwyg_description: "すべてのユーザーに対してデフォルトで CKEditor5 WYSIWYGエディタ を有効にする場合に選択します。 CKEditor は GFM Markdown の機能が制限されています。"
-  setting_column_options: "デフォルトの作業項目は列を一覧表示します"
+  setting_column_options: "デフォルトのワークパッケージは列を一覧表示します"
   setting_commit_fix_keywords: "修正用キーワード"
   setting_commit_logs_encoding: "メッセージのエンコードをコミット"
   setting_commit_logtime_activity_id: "コミット時に作業時間を記録する"
@@ -4021,7 +4021,7 @@ ja:
   setting_rest_api_enabled: "RESTによるWebサービスを有効にする"
   setting_self_registration: "ユーザーよるアカウント登録"
   setting_self_registration_caption: >
-    ユーザーの自己登録メカニズムを選択する。オプションによっては、ユーザが自分のアカウントをこのインスタンスにアクティベートできるものもあるので、選択する設定には注意してください。
+    ユーザーの自己登録メカニズムを選択する。オプションによっては、ユーザが自分のアカウントをこのサイトにアクティベートできるものもあるので、選択する設定には注意してください。
   setting_self_registration_warning: >
     ユーザーは自分のアカウントを有効にすることができます。これにより、すべての公開プロジェクトとそのコンテンツにアクセスできるようになります。公開プロジェクトでは、機密データや個人データが公開されないようにしてください。
   setting_self_registration_disabled: "無効"
@@ -4069,7 +4069,7 @@ ja:
       omniauth_direct_login_hint_html: >
         このオプションが有効な場合、ログイン要求は設定された omniauth プロバイダにリダイレクトされます。ログインドロップダウンとサインインページは無効になります。 <br/> <strong>注意:</strong>パスワードログインも無効にしない限り、このオプションを有効にした場合でも、ユーザは内部的に <code>%{internal_path}</code>ログインページにアクセスしてログインすることができます。
       remapping_existing_users_hint: >
-        有効にすると、設定された ID プロバイダは、ユーザが以前にそのプロバイダを通してサインインしたことがなくても、メールアドレスに基づいて既存のユーザにログインできるようになります。これは、OpenProject インスタンスを新しい SSO プロバイダに移行するときに便利ですが、インスタンスのすべてのユーザから信頼されていないプロバイダを使用するときには推奨されません。
+        有効にすると、設定された ID プロバイダは、ユーザが以前にそのプロバイダを通してサインインしたことがなくても、メールアドレスに基づいて既存のユーザにログインできるようになります。これは、OpenProject サイトを新しい SSO プロバイダに移行するときに便利ですが、サイトのすべてのユーザから信頼されていないプロバイダを使用するときには推奨されません。
     attachments:
       whitelist_text_html: >
         アップロードされたファイルに有効なファイル拡張子および/または MIME タイプのリストを定義します。 <br/> ファイル拡張子（例． <code>%{ext_example}</code>)またはMIMEタイプ(例、 <code>%{mime_example}</code>). <br/> 任意のファイル タイプをアップロードできるようにするには、空のままにします。複数の値を指定できます (各値に 1 行)。
@@ -4116,7 +4116,7 @@ ja:
       enable_subscriptions_text_html: 必要な権限を持つユーザーが、OpenProject のカレンダーを購読し、外部のカレンダークライアントを介してワークパッケージ情報にアクセスできるようにします。<strong>注意:</strong>この機能を有効にする前に、<a href="%{link}" target="_blank">iCalendar サブスクリプションについてを</a>読み、潜在的なセキュリティリスクを理解してください。
     language_name_being_default: "%{language_name} (デフォルト)"
     notifications:
-      events_explanation: "メールが送信されるイベントを管理します。 作業項目はすべてのユーザーに特に設定できるため、リストから除外されます。"
+      events_explanation: "メールが送信されるイベントを管理します。 ワークパッケージはすべてのユーザーに特に設定できるため、リストから除外されます。"
       delay_minutes_explanation: "メール送信を遅らせることで、アプリ内通知を設定したユーザーが、メールを送信前にアプリケーション内で通知を確認できるようにすることができます。 アプリケーション内で通知を読んだユーザーは、すでに読んだ通知の電子メールを受け取りません。"
     other: "その他"
     passwords: "パスワード"
@@ -4401,9 +4401,9 @@ ja:
   warning_registration_token_expired: |
     アクティベーションメールの有効期限が切れています。%{email} に新しいメールを送りました。メール内のリンクをクリックして、アカウントを有効にしてください。
   warning_user_limit_reached: >
-    ユーザーを追加すると、現在の制限を超えます。外部ユーザがこのインスタンスにアクセスできるようにするため、ユーザ制限を増やすには管理者に連絡してください。
+    ユーザーを追加すると、現在の制限を超えます。外部ユーザがこのサイトにアクセスできるようにするため、ユーザ制限を増やすには管理者に連絡してください。
   warning_user_limit_reached_admin: >
-    ユーザーを追加すると、現在の制限を超えます。外部ユーザーがこのインスタンスにアクセスできるように、<a href="%{upgrade_url}">プランをアップグレードして</a>ください。
+    ユーザーを追加すると、現在の制限を超えます。外部ユーザーがこのサイトにアクセスできるように、<a href="%{upgrade_url}">プランをアップグレードして</a>ください。
   warning_user_limit_reached_instructions: >
     ユーザー制限(%{current}/%{max} アクティブユーザー)に達しました。 sales@openproject.com に連絡してEnterprise Editionプランをアップグレードし、ユーザーを追加してください。
   warning_protocol_mismatch_html: >
@@ -4535,12 +4535,12 @@ ja:
         message: "個人ユーザーとのプロジェクトリストの共有は、エンタープライズアドオンです。"
   working_days:
     info: >
-      選択されていない曜日は、作業項目やプロジェクトのライフサイクルをスケジュールするときにスキップされます(その日数には含まれません)。 これらはワークパッケージレベルで上書きできます。
+      選択されていない曜日は、ワークパッケージやプロジェクトのライフサイクルをスケジュールするときにスキップされます(その日数には含まれません)。 これらはワークパッケージレベルで上書きできます。
     instance_wide_info: >
       以下のリストに追加された日付は非稼働日とみなされ、ワークパッケージのスケジュール時にスキップされます。
     change_button: "営業日を変更する"
     warning: >
-      営業日とみなす曜日を変更すると、このインスタンス内のすべてのプロジェクトのすべての作業項目の開始日と終了日に影響を与える可能性があります。
+      営業日とみなす曜日を変更すると、このサイト内のすべてのプロジェクトのすべてのワークパッケージの開始日と終了日に影響を与える可能性があります。
     journal_note:
       changed: _**営業日**変更（%{changes}）_
       days:
@@ -4570,9 +4570,9 @@ ja:
         links_not_an_object: "_links は JSON オブジェクトでなければなりません。"
       conflict:
         multiple_reminders_not_allowed: |-
-          作業項目に一度に1つのリマインダーのみを設定できます。既存のリマインダーを削除または更新してください。
+          ワークパッケージに一度に1つのリマインダーのみを設定できます。既存のリマインダーを削除または更新してください。
       not_found:
-        work_package: "探している作業項目が見つからないか、削除されています。"
+        work_package: "探しているワークパッケージが見つからないか、削除されています。"
         reminder: "お探しのリマインダーが見つからないか、削除されました。"
       expected:
         date: "YYYY-MM-DD (ISO 8601 日付のみ)"
@@ -4600,8 +4600,8 @@ ja:
         unsupported_context: "指定されたリソースは、コンテキストとしてはサポートされません。"
         context_object_not_found: "コンテキストで指定されたリソースが見つかりません。"
       validation:
-        due_date: "終了日は親作業項目には設定できません。"
-        invalid_user_assigned_to_work_package: "選択されたユーザーは、この作業項目の'%{property}' にすることはできません。"
+        due_date: "終了日は親ワークパッケージには設定できません。"
+        invalid_user_assigned_to_work_package: "選択されたユーザーは、このワークパッケージの'%{property}' にすることはできません。"
         start_date: "開始日は、親ワークパッケージに設定できません。"
       eprops:
         invalid_gzip: "無効なgzipです: %{message}"
@@ -4656,7 +4656,7 @@ ja:
     close_warning: "この警告を無視する。"
   oauth:
     application:
-      builtin: 内蔵インスタンス・アプリケーション
+      builtin: 内蔵サイト・アプリケーション
       confidential: 機密
       singular: "OAuthアプリケーション"
       scopes: "範囲"

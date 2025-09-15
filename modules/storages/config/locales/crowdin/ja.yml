@@ -473,7 +473,7 @@ ja:
     page_titles:
       file_storages:
         delete: ファイルストレージを削除
-        subtitle: 作業項目内のファイルをアップロード、リンク、管理するために、外部ファイルストレージを追加します。
+        subtitle: ワークパッケージ内のファイルをアップロード、リンク、管理するために、外部ファイルストレージを追加します。
       managed_project_folders:
         subtitle: |-
           OpenProjectにプロジェクトごとにフォルダを自動的に作成させます。これは、すべてのチーム
