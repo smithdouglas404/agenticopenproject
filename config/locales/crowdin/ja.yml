@@ -2156,7 +2156,7 @@ ja:
         すでにトークンをお持ちですか？予約済みのエンタープライズプランにアップグレードするには、下のボタンを使用して追加してください。
       hide_banner: "このバナーを非表示"
       homescreen_description: >
-        Enterpriseプランでは、現在使用しているOpenProjectのコミュニティエディションが拡張されます。 これらには、あらゆる規模の組織が一緒に素晴らしいことを達成できるようにするアドオン、追加機能、専門的なサポートが含まれます。
+        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
       homescreen_subline: アップグレードすることで、オープンソースプロジェクトをサポートすることもできます。
       baseline_comparison:
         description: 過去の任意の点からこのリストに加えられた変更を強調表示します。

@@ -2157,7 +2157,7 @@ ko:
         이미 토큰이 있으신가요? 아래 버튼을 사용하여 토큰을 추가하고 예약한 Enterprise 플랜으로 업그레이드하세요.
       hide_banner: "이 배너 숨기기"
       homescreen_description: >
-        Enterprise 플랜은 현재 사용 중인 Community 버전의 OpenProject를 확장합니다. 여기에는 추가 기능, 기타 기능 및 전문가 지원이 포함되어 있으므로 모든 규모의 조직이 함께 탁월한 성과를 달성할 수 있습니다.
+        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
       homescreen_subline: 업그레이드하면 오픈 소스 프로젝트도 지원하게 됩니다.
       baseline_comparison:
         description: 과거 어느 시점 이후에 이 목록에서 변경된 사항을 강조 표시합니다.

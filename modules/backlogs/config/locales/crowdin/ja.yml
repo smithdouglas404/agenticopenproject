@@ -77,7 +77,7 @@ ja:
     user_preference:
       header_backlogs: "バックログモジュール"
       button_update_backlogs: "バックログモジュールを更新"
-    x_more: "残%{count}件..."
+    x_more: "残り%{count}件…"
   backlogs_active: "アクティブ"
   backlogs_any: "全て"
   backlogs_inactive: "プロジェクトの活動がありません。"

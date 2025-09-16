@@ -30,9 +30,9 @@ ja:
       delete_confirmation: |
         本当に、このファイルを削除してもよろしいですか? この操作は元に戻すことができません。
       draggable_hint: |
-        インライン画像または参照添付ファイルをエディタ領域にドラッグします。
-        ドラッグしつづけると閉じられたエディタ領域が開きます。
-      quarantined_hint: "ウイルスが発見されたように、ファイルは隔離されています。ダウンロードできません。"
+        埋め込み画像または添付ファイルをエディタにドラッグします。
+        ドラッグしつづけると閉じているエディタ領域が開きます。
+      quarantined_hint: "ウイルスが発見されたため，ファイルは隔離されています。ダウンロードできません。"
     autocomplete_ng_select:
       add_tag: "項目を追加"
       clear_all: "すべてクリア"
@@ -46,13 +46,13 @@ ja:
       remove: "%{name} を削除"
       active: "アクティブ %{label} %{name}"
     backup:
-      attachments_disabled: 添付ファイルは、許容されている最大サイズを超えているため、含まれない場合があります。これは、設定で変更できます（サーバーの再起動が必要です）。
+      attachments_disabled: 添付ファイルは、許容されている最大サイズを超えているため、添付されないかもしれません。許容サイズは設定で変更できます（サーバーの再起動が必要です）。
       info: >
         ここでは、バックアップを開始することができます。データ（特に添付ファイル）の量によっては、処理に時間がかかる場合があります。準備が整うとメールが届きます。
       note: >
-        新しいバックアップは以前のバックアップを上書きします。1日にリクエストできるバックアップの数には限りがあります。
-      last_backup: 前回バックアップ
-      last_backup_from: 前回バックアップ日
+        新しいバックアップは以前のバックアップを上書きします。1日に作成できるバックアップの数には限りがあります。
+      last_backup: 前回のバックアップ
+      last_backup_from: 前回のバックアップ日
       title: OpenProject のバックアップ
       options: オプション
       include_attachments: 添付ファイルを含める
@@ -115,10 +115,10 @@ ja:
         inline: "インラインを強調表示："
         entire_card_by: "カード全体で"
       remove_from_list: "リストからカードを削除"
-    caption_rate_history: "進捗履歴"
+    caption_rate_history: "単価設定(予算とコスト)"
     clipboard:
       browser_error: "お使いのブラウザーはクリップボードへのコピーをサポートしていません。手動でコピーしてください: %{content}"
-      copied_successful: "クリップボードにコピーしました"
+      copied_successful: "クリップボードにコピーしました！"
     chart:
       type: "グラフの種類"
       axis_criteria: "座標条件"

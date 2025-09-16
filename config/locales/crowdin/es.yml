@@ -2198,7 +2198,7 @@ es:
         ¿Ya tiene un token? Añádalo utilizando el botón de abajo para actualizar al plan Enterprise reservado.
       hide_banner: "Ocultar este banner"
       homescreen_description: >
-        Los planes Enterprise amplían la edición Community de OpenProject que está utilizando actualmente. Incluyen complementos, funciones adicionales y asistencia profesional que permiten a organizaciones de todos los tamaños lograr grandes cosas juntas.
+        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
       homescreen_subline: Al mejorar su plan, también estará apoyando un proyecto de código abierto.
       baseline_comparison:
         description: Resalte los cambios realizados en esta lista desde cualquier momento en el pasado.

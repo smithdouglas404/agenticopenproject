@@ -26,7 +26,7 @@ The Inset Box supports the following options:
 - **Border** – can be disabled with `border: false`.
 - **Other system arguments** – all `Primer::Box` arguments are passed through.
 
-<%= embed OpPrimer::InsetBoxComponentPreview, :default %>
+<%= embed OpPrimer::InsetBoxComponentPreview, :borderless %>
 
 ## Uses
 
@@ -55,6 +55,6 @@ If content needs more structure (e.g., with headers, actions, or multiple items)
 
 ## Technical notes
 
-<%= embed OpPrimer::InsetBoxComponentPreview, :default %>
+<%= embed OpPrimer::InsetBoxComponentPreview, :playground, panels: %i[params source] %>
 
 The Inset Box is implemented as a wrapper around `Primer::Box` with opinionated defaults for border, padding, border radius, and background. It passes through all other `system_arguments` to `Primer::Box`.

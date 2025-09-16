@@ -2200,7 +2200,7 @@ tr:
         Already have a token? Add it using the button below to upgrade to the booked Enterprise plan.
       hide_banner: "Hide this banner"
       homescreen_description: >
-        Kurumsal planlar şu anda kullanmakta olduğunuz OpenProject'in Topluluk sürümünü genişletir. Eklentiler, ek özellikler ve her büyüklükteki kuruluşun birlikte harika işler başarmasını sağlayan profesyonel destek içerirler.
+        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
       homescreen_subline: Yükseltme yaparak açık kaynaklı bir projeyi de desteklemiş olacaksınız.
       baseline_comparison:
         description: Geçmişte herhangi bir noktadan bu yana bu listede yapılan değişiklikleri vurgulayın.

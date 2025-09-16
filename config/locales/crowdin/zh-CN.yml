@@ -332,23 +332,23 @@ zh-CN:
   concatenation:
     single: "或"
   op_dry_validation:
-    or: "or"
+    or: "或"
     errors:
-      array?: "must be an array."
-      decimal?: "must be a decimal."
-      defined: "must not be defined."
-      eql?: "must be equal to %{left}."
-      filled?: "must be filled."
-      greater_or_equal_zero: "must be greater or equal to 0."
-      gteq?: "must be greater than or equal to %{num}."
-      hash?: "must be a hash."
+      array?: "必须为一个数组。"
+      decimal?: "必须为一个小数。"
+      defined: "不可被定义。"
+      eql?: "必须等于 %{left}。"
+      filled?: "必须填写。"
+      greater_or_equal_zero: "必须大于或等于 0。"
+      gteq?: "必须大于或等于 %{num}。"
+      hash?: "必须是一个哈希值。"
       included_in?:
         arg:
-          default: "must be one of: %{list}."
-          range: "must be one of: %{list_left} - %{list_right}."
-      int?: "must be an integer."
-      key?: "is missing."
-      not_found: "not found."
+          default: "必须是其中之一： %{list}。"
+          range: "必须是其中之一： %{list_left} - %{list_right}。"
+      int?: "必须为一个整数。"
+      key?: "已缺失。"
+      not_found: "未找到。"
       rules:
         copy_workflow_from:
           workflow_missing: "has no own workflow."
@@ -2153,7 +2153,7 @@ zh-CN:
         已经有令牌？使用下方按钮添加以升级到预订的 Enterprise 方案。
       hide_banner: "隐藏此广告"
       homescreen_description: >
-        企业方案可以扩展您当前正在使用的 OpenProject 社区版。它们包括附加组件、额外功能和专业支持，使各种规模的组织能够共同实现伟大目标。
+        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
       homescreen_subline: 通过升级，您也将支持一个开源项目。
       baseline_comparison:
         description: 高亮显示自从过去任意时间点以来对此列表所做的更改。
@@ -2586,7 +2586,7 @@ zh-CN:
       aggregation: "聚合"
       api_and_webhooks: "API 和 Webhook"
     quick_add:
-      label: "添加..."
+      label: "添加…"
   my_account:
     access_tokens:
       no_results:

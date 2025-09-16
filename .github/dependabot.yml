@@ -18,6 +18,9 @@ updates:
       html-eslint:
         patterns:
           - '@html-eslint/*'
+      ng-select:
+        patterns:
+          - '@ng-select/*'
       appsignal:
         patterns:
           - '@appsignal/*'

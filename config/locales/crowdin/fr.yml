@@ -335,42 +335,42 @@ fr:
   concatenation:
     single: "ou"
   op_dry_validation:
-    or: "or"
+    or: "ou"
     errors:
-      array?: "must be an array."
-      decimal?: "must be a decimal."
-      defined: "must not be defined."
-      eql?: "must be equal to %{left}."
-      filled?: "must be filled."
-      greater_or_equal_zero: "must be greater or equal to 0."
-      gteq?: "must be greater than or equal to %{num}."
-      hash?: "must be a hash."
+      array?: "doit être un tableau"
+      decimal?: "doit être une décimale."
+      defined: "ne doit pas être défini."
+      eql?: "doit être égal à %{left}."
+      filled?: "doivent être remplis."
+      greater_or_equal_zero: "doit être supérieur ou égal à 0."
+      gteq?: "doit être supérieur ou égal à %{num}."
+      hash?: "doit être un hachage."
       included_in?:
         arg:
-          default: "must be one of: %{list}."
-          range: "must be one of: %{list_left} - %{list_right}."
-      int?: "must be an integer."
-      key?: "is missing."
-      not_found: "not found."
+          default: "doit être l'un des suivants : %{list}."
+          range: "doit être l'un des suivants : %{list_left} - %{list_right}."
+      int?: "doit être un nombre entier."
+      key?: "est manquante."
+      not_found: "n'a pas été trouvée."
       rules:
         copy_workflow_from:
-          workflow_missing: "has no own workflow."
+          workflow_missing: "n'a pas de flux de travail propre."
         custom_field:
-          format_not_supported: "format '%{field_format}' is unsupported."
+          format_not_supported: "Le format '%{field_format}' n'est pas pris en charge."
         item:
-          root_item: "cannot be a root item."
-          not_persisted: "must be an already existing item."
+          root_item: "ne peut pas être un élément racine."
+          not_persisted: "doit être un élément déjà existant."
         label:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "doit être unique au sein d'un même niveau hiérarchique."
         short:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "doit être unique au sein d'un même niveau hiérarchique."
         parent:
-          not_descendant: "must be a descendant of the hierarchy root."
-      str?: "must be a string."
-      type?: "must be %{type}."
+          not_descendant: "doit être un descendant de la racine de la hiérarchie."
+      str?: "doit être une chaîne de caractères."
+      type?: "doit être %{type}."
     rules:
-      copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
+      copy_workflow_from: "Type pour la copie du workflow"
+      enabled: "Activé"
       depth: "Depth"
       item: "Item"
       label: "Label"
@@ -2199,7 +2199,7 @@ fr:
         Vous avez déjà un jeton ? Ajoutez-le en utilisant le bouton ci-dessous pour passer à l'abonnement Enterprise réservé.
       hide_banner: "Masquer cette bannière"
       homescreen_description: >
-        Les abonnements Enterprise prolongent l'édition Community d'OpenProject que vous utilisez actuellement. Ils comprennent des add-ons, des fonctionnalités supplémentaires et une assistance professionnelle qui permet aux organisations de toutes tailles de réaliser de grandes choses ensemble.
+        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
       homescreen_subline: En optant pour une formule d'abonnement supérieure, vous soutiendrez également un projet open source.
       baseline_comparison:
         description: Mettre en évidence les modifications apportées à cette liste depuis n'importe quel point dans le passé.
