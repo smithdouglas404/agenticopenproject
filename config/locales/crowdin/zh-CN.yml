@@ -2561,7 +2561,7 @@ zh-CN:
       aggregation: "聚合"
       api_and_webhooks: "API 和 Webhook"
     quick_add:
-      label: "添加..."
+      label: "添加…"
   my_account:
     access_tokens:
       no_results:
