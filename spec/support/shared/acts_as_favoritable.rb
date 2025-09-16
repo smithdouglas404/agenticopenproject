@@ -41,9 +41,10 @@ RSpec.shared_examples_for "acts_as_favoritable included" do
       .with_foreign_key(:favored_id)
       .with_foreign_type(:favored_type)
       .dependent(:delete_all)
+      .validate(false)
   }
 
-  it { is_expected.to have_many(:favoriting_users).through(:favorites) }
+  it { is_expected.to have_many(:favoriting_users).through(:favorites).validate(false) }
 
   describe ".favorited_by" do
     it "returns instance for favoriting user" do
