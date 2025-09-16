@@ -94,8 +94,4 @@ class My::LookAndFeelForm < ApplicationForm
     attribute_name(:disable_keyboard_shortcuts_caption_html,
                    href: OpenProject::Static::Links.url_for(:shortcuts)).html_safe # rubocop:disable Rails/OutputSafety
   end
-
-  def attribute_name(...)
-    UserPreference.human_attribute_name(...)
-  end
 end
