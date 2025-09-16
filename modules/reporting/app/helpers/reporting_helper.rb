@@ -71,7 +71,7 @@ module ReportingHelper
   end
 
   def month_name(index)
-    Date::MONTHNAMES[index].to_s
+    I18n.t("date.month_names")[index].to_s
   end
 
   # ======================= SHARED CODE END
