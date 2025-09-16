@@ -28,6 +28,8 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
+# WARNING: FIXME: "BURN 🔥 AFTER MIGRATING"
+#   This migration file should be deleted before 16.5 is released.
 class RenameFavoritesFavoritedToFavored < ActiveRecord::Migration[8.0]
   def change
     rename_column :favorites, :favorited_id, :favored_id
