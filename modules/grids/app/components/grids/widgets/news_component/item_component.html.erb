@@ -32,16 +32,8 @@ See COPYRIGHT and LICENSE files for more details.
     render(Primer::Box.new(mt: 2, pb: 2)) do
       component_collection do |body|
         body.with_component(
-          if project
-            render(
-              Primer::Beta::Link.new(
-                font_weight: :bold,
-                underline: true,
-                href: news_path(item)
-              )
-            ) { item.title }
-          else
-            render(Primer::OpenProject::FlexLayout.new) do |layout|
+          flex_layout do |layout|
+            unless project
               layout.with_column do
                 render(
                   Primer::Beta::Link.new(
@@ -52,10 +44,10 @@ See COPYRIGHT and LICENSE files for more details.
                   )
                 ) { "#{item.project.name}:" }
               end
+            end
 
-              layout.with_column do
-                render(Primer::Beta::Link.new(ml: 1, font_weight: :bold, underline: true, href: news_path(item))) { item.title }
-              end
+            layout.with_column do
+              render(Primer::Beta::Link.new(ml: 1, font_weight: :bold, underline: true, href: news_path(item))) { item.title }
             end
           end
         )
