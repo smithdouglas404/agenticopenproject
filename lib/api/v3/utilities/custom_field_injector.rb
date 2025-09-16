@@ -269,15 +269,19 @@ module API
         end
 
         def inject_property_value(custom_field, config)
-          # TODO: inject calculated value error message somewhere around here as a sibling of this property.
-          # customField20Errors: [{ error_code: "MISSING_VALUE", error_message: "message"}, {...}]
-
           @class.property custom_field.attribute_name.to_sym,
                           as: property_name(custom_field),
                           getter: property_value_getter_for(custom_field),
                           setter: property_value_setter_for(custom_field),
                           cache_if: config[:cache_if],
                           render_nil: true
+
+          if custom_field.calculated_value?
+            @class.property :"#{custom_field.attribute_name}errors",
+                            getter: calculated_value_error_getter(custom_field),
+                            cache_if: config[:cache_if],
+                            render_nil: false
+          end
         end
 
         def property_value_getter_for(custom_field)
@@ -302,6 +306,18 @@ module API
                       fragment
                     end
             send(custom_field.attribute_setter, value)
+          }
+        end
+
+        def calculated_value_error_getter(custom_field)
+          ->(*) {
+            next unless custom_field.calculated_value?
+            next unless available_custom_fields.include?(custom_field)
+
+            errors = custom_field.calculated_value_errors.where(project_id: id)
+            errors.map do |err|
+              { error_code: err.error_code, error_message: err.error_message }
+            end
           }
         end
 

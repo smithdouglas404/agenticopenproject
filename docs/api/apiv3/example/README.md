@@ -229,6 +229,24 @@ The schema can instruct the client where to set them properly. All properties wi
 }
 ```
 
+#### Custom field errors
+
+Custom fields with a field format of `calculated_value` may produce errors during calculation. In such a case, their scalar value is set to `null` and an additional property is returned.
+Note that multiple errors may be present in the array. Each error consists of a machine-readable error code and a localized error string intended for humans.
+
+If there are no errors, this field is missing.
+
+```json5
+{
+  "customFieldXerrors": [
+    {
+      "error_code": "ERROR_MATHEMATICAL",
+      "error_message": "A mathematical error occurred during calculation. Please review the formula and try again."
+    }
+  ]
+}
+```
+
 ## Filtering work packages
 
 Once a work package is created, it can also be retrieved again.
