@@ -66,12 +66,6 @@ plugin :tmp_restart unless ENV["RAILS_ENV"] == "production"
 
 plugin :appsignal if ENV["APPSIGNAL_ENABLED"] == "true"
 
-if ENV["OPENPROJECT_PROMETHEUS_EXPORT"] == "true"
-  activate_control_app
-  plugin :yabeda
-  plugin :yabeda_prometheus
-end
-
 # activate statsd plugin only if a host is configured explicitly
 if OpenProject::Configuration.statsd_host.present?
   module ConfigurationViaOpenProject
@@ -89,4 +83,61 @@ if OpenProject::Configuration.statsd_host.present?
   StatsdConnector.prepend ConfigurationViaOpenProject
 
   plugin :statsd
+end
+
+if OpenProject::Configuration.metrics["enabled"]
+  require "prometheus_exporter/instrumentation"
+
+  # module AdditionalPumaStats
+  #   def collect_worker_status(metric, status)
+  #     super
+
+  #     metric[:requests_count] ||= 0
+  #     metric[:requests_count] += status["requests_count"]
+
+  #     puts "Metrics: #{metric.inspect}"
+  #   end
+
+  #   def collect_puma_stats(metric)
+  #     super
+
+  #     puts "COLLECT PUMA STATS METRIC: #{metric.inspect}"
+  #     puts "  #{::Puma.stats}"
+  #   end
+  # end
+
+  # PrometheusExporter::Instrumentation::Puma.prepend AdditionalPumaStats
+
+  def instrument_puma!
+    require "prometheus_exporter/client"
+
+    unless PrometheusExporter::Instrumentation::Puma.started?
+      PrometheusExporter::Client.default = PrometheusExporter::Client.new(
+        host: "localhost",
+        port: OpenProject::Configuration.metrics["port"]
+      )
+
+      PrometheusExporter::Instrumentation::Puma.start
+    end
+  end
+
+  def start_exporter!
+    require "prometheus_exporter/server"
+
+    server = PrometheusExporter::Server::WebServer.new bind: "0.0.0.0", port: OpenProject::Configuration.metrics["port"]
+    server.start
+  end
+
+  if OpenProject::Configuration.web["workers"] > 0
+    before_fork do
+      start_exporter!
+    end
+
+    after_worker_boot do
+      instrument_puma!
+    end
+  else
+    start_exporter!
+    instrument_puma!
+  end
 end

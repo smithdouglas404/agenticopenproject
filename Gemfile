@@ -219,15 +219,11 @@ gem "store_attribute", "~> 2.0"
 # Appsignal integration
 gem "appsignal", "~> 4.2", require: false
 
-# Yabeda integration
-gem "yabeda-activerecord"
-gem "yabeda-prometheus-mmap", require: false
-gem "yabeda-puma-plugin"
-gem "yabeda-rails"
-
 gem "view_component", "~> 4.0.2"
 # Lookbook
 gem "lookbook", "2.3.13"
+
+gem "prometheus_exporter", "~> 2.3"
 
 # Require factory_bot for usage with openproject plugins testing
 gem "factory_bot", "~> 6.5.0", require: false

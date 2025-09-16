@@ -1144,6 +1144,14 @@ module Settings
         },
         writable: false
       },
+      metrics: {
+        description: "Publish prometheus metrics (currently puma only)",
+        default: {
+          "enabled" => false,
+          "port" => 9394
+        },
+        writable: false
+      },
       sys_api_enabled: {
         description: "Enable internal system API for setting up managed repositories",
         default: false

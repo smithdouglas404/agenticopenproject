@@ -327,8 +327,6 @@ GEM
     airbrake-ruby (6.2.2)
       rbtree3 (~> 0.6)
     android_key_attestation (0.3.0)
-    anyway_config (2.7.2)
-      ruby-next-core (~> 1.0)
     appsignal (4.7.0)
       logger
       rack (>= 2.0.0)
@@ -904,41 +902,8 @@ GEM
       prawn (>= 1.3.0, < 3.0.0)
     prettyprint (0.2.0)
     prism (1.4.0)
-    prometheus-client-mmap (1.2.10)
-      base64
-      bigdecimal
-      logger
-      rb_sys (~> 0.9.109)
-    prometheus-client-mmap (1.2.10-aarch64-linux-gnu)
-      base64
-      bigdecimal
-      logger
-      rb_sys (~> 0.9.109)
-    prometheus-client-mmap (1.2.10-aarch64-linux-musl)
-      base64
-      bigdecimal
-      logger
-      rb_sys (~> 0.9.109)
-    prometheus-client-mmap (1.2.10-arm64-darwin)
-      base64
-      bigdecimal
-      logger
-      rb_sys (~> 0.9.109)
-    prometheus-client-mmap (1.2.10-x86_64-darwin)
-      base64
-      bigdecimal
-      logger
-      rb_sys (~> 0.9.109)
-    prometheus-client-mmap (1.2.10-x86_64-linux-gnu)
-      base64
-      bigdecimal
-      logger
-      rb_sys (~> 0.9.109)
-    prometheus-client-mmap (1.2.10-x86_64-linux-musl)
-      base64
-      bigdecimal
-      logger
-      rb_sys (~> 0.9.109)
+    prometheus_exporter (2.3.0)
+      webrick
     pry (0.15.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -1141,7 +1106,6 @@ GEM
       activesupport (>= 3.0.0)
       i18n
       iso8601
-    ruby-next-core (1.1.2)
     ruby-ole (1.2.13.1)
     ruby-prof (1.7.2)
       base64
@@ -1291,25 +1255,6 @@ GEM
       zeitwerk (>= 2.7)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    yabeda (0.14.0)
-      anyway_config (>= 1.0, < 3)
-      concurrent-ruby
-      dry-initializer
-    yabeda-activerecord (0.1.1)
-      activerecord (>= 6.0)
-      yabeda (~> 0.6)
-    yabeda-prometheus-mmap (0.4.0)
-      prometheus-client-mmap
-      yabeda (~> 0.10)
-    yabeda-puma-plugin (0.8.0)
-      json
-      puma
-      yabeda (~> 0.5)
-    yabeda-rails (0.10.0)
-      activesupport
-      anyway_config (>= 1.3, < 3)
-      railties
-      yabeda (~> 0.8)
     yard (0.9.37)
     zeitwerk (2.7.3)
 
@@ -1460,6 +1405,7 @@ DEPENDENCIES
   pg (~> 1.6.2)
   plaintext (~> 0.3.2)
   prawn (~> 2.4)
+  prometheus_exporter (~> 2.3)
   pry-byebug (~> 3.11.0)
   pry-rails (~> 0.3.6)
   pry-rescue (~> 1.6.0)
@@ -1536,10 +1482,6 @@ DEPENDENCIES
   webmock (~> 3.12)
   will_paginate (~> 4.0.0)
   with_advisory_lock (~> 7.0.1)
-  yabeda-activerecord
-  yabeda-prometheus-mmap
-  yabeda-puma-plugin
-  yabeda-rails
 
 CHECKSUMS
   Ascii85 (2.0.1) sha256=15cb5d941808543cbb9e7e6aea3c8ec3877f154c3461e8b3673e97f7ecedbe5a
@@ -1568,7 +1510,6 @@ CHECKSUMS
   airbrake (13.0.5) sha256=901f5074c25d5ef77ed87f5bde7a28400a7324f5d7013a8a12d07e0099cc31b6
   airbrake-ruby (6.2.2) sha256=293e34fb36e763e1b6d67ab584cce7c5b6fe9eea1a70c26d8c13c0f5d7de2fbc
   android_key_attestation (0.3.0) sha256=467eb01a99d2bb48ef9cf24cc13712669d7056cba5a52d009554ff037560570b
-  anyway_config (2.7.2) sha256=30f6b087c0b41afdd43fe46c81d65a16f052a8489dab453abaeb4ea67aa74bad
   appsignal (4.7.0) sha256=9037199709e91aa0315c9c3d7f6ad5a6417922c0d60cdd3b587bce98612500af
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
   attr_required (1.0.2) sha256=f0ebfc56b35e874f4d0ae799066dbc1f81efefe2364ca3803dc9ea6a4de6cb99
@@ -1846,13 +1787,7 @@ CHECKSUMS
   prawn-table (0.2.2) sha256=336d46e39e003f77bf973337a958af6a68300b941c85cb22288872dc2b36addb
   prettyprint (0.2.0) sha256=2bc9e15581a94742064a3cc8b0fb9d45aae3d03a1baa6ef80922627a0766f193
   prism (1.4.0) sha256=dc0e3e00e93160213dc2a65519d9002a4a1e7b962db57d444cf1a71565bb703e
-  prometheus-client-mmap (1.2.10) sha256=46d4ce67a05cd77910ebe9a64682206fd1c8f5fd2e4da7373713e16dc43e1444
-  prometheus-client-mmap (1.2.10-aarch64-linux-gnu) sha256=a014e7748ba72928e58538f155b18479ce315396e9c7ab2115a80ea0a86001ac
-  prometheus-client-mmap (1.2.10-aarch64-linux-musl) sha256=ba6c4b091c8a249b207ed7e482bcf58095b2631d29c3e51a463ab7f6cc01b8bd
-  prometheus-client-mmap (1.2.10-arm64-darwin) sha256=1c9956cd3db419330b5797cb7e0ab4a1684351d82da38c14291be39d067d62d7
-  prometheus-client-mmap (1.2.10-x86_64-darwin) sha256=4ca9c299079fe9e52a27cf34095357e2547c8cae9741728ffa502c814f61512e
-  prometheus-client-mmap (1.2.10-x86_64-linux-gnu) sha256=6eee9f81a5a34829bbbca20ccd75597af4a2538f1109d1efebee9a3c8b40390e
-  prometheus-client-mmap (1.2.10-x86_64-linux-musl) sha256=a47e54d4c28196806b49f00ef9182da42812269d1ebd3e9bb4cb1ca8d68300da
+  prometheus_exporter (2.3.0) sha256=bfe5dd9bce74e41e302c611a6d290fc86fba31441d6a88930fb80dd458fe2875
   pry (0.15.2) sha256=12d54b8640d3fa29c9211dd4ffb08f3fd8bf7a4fd9b5a73ce5b59c8709385b6b
   pry-byebug (3.11.0) sha256=0b0abb7d309bc7f00044d512a3c8567274f7012b944b38becc8440439a1cea72
   pry-rails (0.3.11) sha256=a69e28e24a34d75d1f60bcf241192a54253f8f7ef8a62cba1e75750a9653593d
@@ -1923,7 +1858,6 @@ CHECKSUMS
   rubocop-rspec (3.7.0) sha256=b7b214da112034db9c6d00f2d811a354847e870f7b6ed2482b29649c3d42058f
   rubocop-rspec_rails (2.31.0) sha256=775375e18a26a1184a812ef3054b79d218e85601b9ae897f38f8be24dddf1f45
   ruby-duration (3.2.3) sha256=eb3d13b1df85067a015a8fb2ed8f1eec842a3b721e47c9b6fd74d2f356069784
-  ruby-next-core (1.1.2) sha256=1b095fe2e45929f2581b3ecdb8d92b601ce4d72c12a466057c10e23b6f0c4512
   ruby-ole (1.2.13.1) sha256=578d10dd2a797a2b35a1286c6fb2c9525f67c24791346fc8015d39f0ffa3cb72
   ruby-prof (1.7.2) sha256=270424fcac37e611f2d15a55226c4628e234f8434e1d7c25ca8a2155b9fc4340
   ruby-progressbar (1.13.0) sha256=80fc9c47a9b640d6834e0dc7b3c94c9df37f08cb072b7761e4a71e22cff29b33
@@ -1998,11 +1932,6 @@ CHECKSUMS
   will_paginate (4.0.1) sha256=107b226ebe1d393d274575956a7c472e1eefdd97d8828e01b72d425d15a875b9
   with_advisory_lock (7.0.1) sha256=58b8a0a9a428e2d335e3791b745c9e98d092a6d5ee92dfafe400b40e8bcfde8a
   xpath (3.2.0) sha256=6dfda79d91bb3b949b947ecc5919f042ef2f399b904013eb3ef6d20dd3a4082e
-  yabeda (0.14.0) sha256=bc517bf22d692ebd80a29fc9fd2246c257aaf92d10b2735a775e2419351a43bf
-  yabeda-activerecord (0.1.1) sha256=ae338213c264f20d8642e8bf47ac6058c49a6f7c8c00c892cd5765332914f45f
-  yabeda-prometheus-mmap (0.4.0) sha256=1a66120756d6f931f03a7784e08e79060d71681ff83a9f5287df2ff756e9e2c9
-  yabeda-puma-plugin (0.8.0) sha256=91ec807106058551860260a638d1de21fbf22ce5c12847b08401840e68092c86
-  yabeda-rails (0.10.0) sha256=0a85bd829961494f66241d20192368e5d042f836f91986a1eac02f8dcb04237c
   yard (0.9.37) sha256=a6e910399e78e613f80ba9add9ba7c394b1a935f083cccbef82903a3d2a26992
   zeitwerk (2.7.3) sha256=b2e86b4a9b57d26ba68a15230dcc7fe6f040f06831ce64417b0621ad96ba3e85
 
