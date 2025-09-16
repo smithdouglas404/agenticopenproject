@@ -28,33 +28,37 @@
  * ++
  */
 
-export type OpColorMode = 'light' | 'dark';
+import { Controller } from '@hotwired/stimulus';
 
-export type OpTheme = OpColorMode | 'sync_with_os';
+export default class LookAndFeelController extends Controller {
+  static targets = ['themeSelect', 'autoThemeContrast', 'singleThemeContrast'];
 
-export class ThemeUtils {
-  public detectOpColorMode():OpColorMode {
-    return document.body.getAttribute('data-color-mode') as OpColorMode;
+  declare themeSelectTarget:HTMLSelectElement;
+  declare autoThemeContrastTarget:HTMLElement;
+  declare singleThemeContrastTarget:HTMLElement;
+
+  private syncWithOsValue = 'sync_with_os';
+  private viewComponentSelector = '[data-view-component="true"]';
+
+  connect() {
+    this.toggleOptionGroups();
   }
 
-  public detectSystemColorMode():OpColorMode {
-    return this.prefersSystemLightMode() ? 'light' : 'dark';
+  updateContrastOptions() {
+    this.toggleOptionGroups();
   }
 
-  public prefersSystemLightMode():boolean {
-    return window.matchMedia('(prefers-color-scheme: light)').matches;
+  private toggleOptionGroups() {
+    const isSyncWithOs = this.themeSelectTarget.value === this.syncWithOsValue;
+
+    this.toggleElementVisibility(this.autoThemeContrastTarget, isSyncWithOs);
+    this.toggleElementVisibility(this.singleThemeContrastTarget, !isSyncWithOs);
   }
 
-  public prefersSystemHighContrast():boolean {
-    return window.matchMedia('(prefers-contrast: more)').matches;
-  }
-
-  public applyThemeToBody(colorMode:OpColorMode, increaseContrast:boolean):void {
-    const body = document.body;
-    const otherColorMode = (colorMode === 'light' ? 'dark' : 'light');
-
-    body.setAttribute('data-color-mode', colorMode);
-    body.setAttribute(`data-${colorMode}-theme`, increaseContrast ? `${colorMode}_high_contrast` : colorMode);
-    body.removeAttribute(`data-${otherColorMode}-theme`);
+  private toggleElementVisibility(targetElement:HTMLElement, shouldShow:boolean) {
+    const viewComponentContainer = targetElement.closest(this.viewComponentSelector);
+    if (viewComponentContainer) {
+      (viewComponentContainer as HTMLElement).hidden = !shouldShow;
+    }
   }
 }
