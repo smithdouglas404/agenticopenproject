@@ -29,8 +29,22 @@
 #++
 
 class Favorite < ApplicationRecord
+  # @!attribute [rw] favorited_id
+  #   @return [Number]
+  # @!attribute [rw] favored_id
+  #   @deprecated use {favorited_id} instead.
+  #   @return [Number]
+  alias_attribute :favorited_id, :favored_id
+
+  # @!attribute [rw] favorited_type
+  #   @return [String]
+  # @!attribute [rw] favored_type
+  #   @deprecated use {favorited_type} instead.
+  #   @return [String]
+  alias_attribute :favorited_type, :favored_type
+
   belongs_to :user
-  belongs_to :favorited, polymorphic: true
+  belongs_to :favorited, polymorphic: true, foreign_key: :favored_id, foreign_type: :favored_type
 
   validates :favorited_id, uniqueness: { scope: %i[favorited_type user_id], message: :already_favorited }
 end

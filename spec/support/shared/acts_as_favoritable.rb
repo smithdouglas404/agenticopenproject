@@ -36,7 +36,13 @@ RSpec.shared_examples_for "acts_as_favoritable included" do
     Favorite.create(user: favoriting_user, favorited: instance)
   end
 
-  it { is_expected.to have_many(:favorites).dependent(:delete_all) }
+  it {
+    expect(subject).to have_many(:favorites)
+      .with_foreign_key(:favored_id)
+      .with_foreign_type(:favored_type)
+      .dependent(:delete_all)
+  }
+
   it { is_expected.to have_many(:favoriting_users).through(:favorites) }
 
   describe ".favorited_by" do

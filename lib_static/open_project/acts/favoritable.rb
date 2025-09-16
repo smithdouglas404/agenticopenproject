@@ -51,7 +51,11 @@ module OpenProject
           class_eval do
             prepend InstanceMethods
 
-            has_many :favorites, as: :favorited, dependent: :delete_all, validate: false
+            has_many :favorites, as: :favorited,
+                                 foreign_key: :favored_id,
+                                 foreign_type: :favored_type,
+                                 dependent: :delete_all,
+                                 validate: false
             has_many :favoriting_users, through: :favorites, source: :user, validate: false
 
             scope :favorited_by, ->(user_id) {

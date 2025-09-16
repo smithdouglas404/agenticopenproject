@@ -36,6 +36,16 @@ RSpec.describe Favorite do
 
   subject(:favorite) { create(:favorite, user:, favorited:) }
 
+  describe "associations" do
+    it { is_expected.to belong_to(:user) }
+
+    it {
+      expect(subject).to belong_to(:favorited)
+        .with_foreign_key(:favored_id)
+        .with_foreign_type(:favored_type)
+    }
+  end
+
   describe "validations" do
     before do
       favorite
