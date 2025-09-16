@@ -73,13 +73,13 @@ RSpec.describe Relations::DeleteContract do
              })
     end
 
-    it_behaves_like "contract is invalid", base: :error_unauthorized
+    it_behaves_like "contract is invalid", base: :error_not_deletable
   end
 
   context "when user has no permissions for either work package" do
     let(:current_user) { create(:user) }
 
-    it_behaves_like "contract is invalid", base: :error_unauthorized
+    it_behaves_like "contract is invalid", base: :error_not_deletable
   end
 
   context "when user is an admin" do

@@ -401,8 +401,8 @@ RSpec.describe "API v3 Relation resource", content_type: :json do
     context "lacking the permission" do
       let(:permissions) { %i[view_work_packages] }
 
-      it "returns 403" do
-        expect(last_response).to have_http_status :forbidden
+      it "returns 422" do
+        expect(last_response).to have_http_status :unprocessable_entity
       end
 
       it "leaves the relation" do
