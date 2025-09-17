@@ -4,6 +4,7 @@ import { AttributeHelpTextModalService } from './attribute-help-text-modal.servi
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
 import { ToastService } from '../toaster/toast.service';
+import { MutationHelper } from 'core-stimulus/helpers/mutation-helper';
 
 describe('AttributeHelpTextModalService', () => {
   let fetchSpy:jasmine.Spy<Window['fetch']>;
@@ -152,36 +153,27 @@ describe('AttributeHelpTextModalService', () => {
   });
 });
 
-function waitForNativeElement<T extends Element>(selector:string):Promise<T> {
-  let element = document.querySelector<T>(selector);
+function waitForNativeElement<E extends Element>(selector:string):Promise<E> {
+  const element = document.querySelector<E>(selector);
   if (element) {
     return Promise.resolve(element);
   }
 
-  return new Promise<T>((resolve) => {
-    const observer = new MutationObserver(() => {
-      element = document.querySelector<T>(selector);
-      if (element) {
-        observer.disconnect();
-        resolve(element);
-      }
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-  });
+  return MutationHelper.observeOnce(document, selector);
 }
 
-function waitForElementMutation<T extends Element>(
-  element:T,
-  predicate:(mutation:MutationRecord) => boolean = () => true,
-):Promise<MutationRecord> {
-  return new Promise((resolve) => {
-    const observer = new MutationObserver((mutationList) => {
-      const record = mutationList.find(predicate);
-      if (record) {
-        observer.disconnect();
-        resolve(record);
-      }
-    });
-    observer.observe(element, { childList: true, subtree: true, characterData: true });
+function waitForElementMutation(element:Element):Promise<MutationRecord> {
+  return new Promise<MutationRecord>((resolve) => {
+    const helper = new MutationHelper(
+      element,
+      {
+        onAnyRecord: (record) => {
+          helper.disconnect();
+          resolve(record);
+        }
+      },
+      { observerInit: { childList: true, subtree: true, characterData: true } }
+    );
+    helper.observe();
   });
 }
