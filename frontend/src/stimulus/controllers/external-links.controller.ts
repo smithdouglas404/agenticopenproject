@@ -26,46 +26,26 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { ApplicationController } from 'stimulus-use';
-import { useMutation } from 'stimulus-use';
+import { Controller } from '@hotwired/stimulus';
+import { MutationHelper } from 'core-stimulus/helpers/mutation-helper';
 
 const BLANK_LINK_QUERY = 'a[target="_blank"]';
 const BLANK_LINK_DESCRIPTION_ID = 'open-blank-target-link-description';
 
-const isElement = (node:Node):node is Element => node.nodeType === Node.ELEMENT_NODE;
-const isBlankLink = (elem:Element):elem is HTMLAnchorElement => elem.matches(BLANK_LINK_QUERY);
+export default class ExternalLinksController extends Controller<HTMLBodyElement> {
+  private helper = MutationHelper.forAttributes(
+    this.element,
+    BLANK_LINK_QUERY,
+    applyLinkDescription,
+    { attributeFilter: ['target'], debounceMs: 50 }
+  );
 
-export default class ExternalLinksController extends ApplicationController {
   connect() {
-    useMutation(this, { attributes: true, childList: true, subtree: true, attributeFilter: ['target'] });
-
-    // initial pass
-    document.querySelectorAll(BLANK_LINK_QUERY).forEach(applyLinkDescription);
+    this.helper.observe();
   }
 
-  mutate(mutations:MutationRecord[]) {
-    mutations.forEach((mutation) => {
-      mutation.addedNodes.forEach((node) => {
-        if (isElement(node)) {
-          // added element itself is a blank link
-          if (isBlankLink(node)) {
-            applyLinkDescription(node);
-          }
-          // added sub-trees
-          node.querySelectorAll(BLANK_LINK_QUERY).forEach(applyLinkDescription);
-        }
-      });
-
-      // attribute changes
-      if (
-        mutation.type === 'attributes' &&
-        mutation.attributeName === 'target' &&
-        isElement(mutation.target) &&
-        isBlankLink(mutation.target)
-      ) {
-        applyLinkDescription(mutation.target);
-      }
-    });
+  disconnect() {
+    this.helper.disconnect();
   }
 }
 
