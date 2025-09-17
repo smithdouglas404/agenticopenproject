@@ -33,8 +33,8 @@ module Grids
   class WidgetBoxComponent < ApplicationComponent
     attr_reader :title, :content_padding
 
-    renders_one :header, HeaderComponent
-    renders_one :body, BodyComponent
+    renders_one :header, Header
+    renders_one :body, Body
 
     # Use Rows to add rows with borders and maintain the same padding.
     #
@@ -57,7 +57,7 @@ module Grids
       key:,
       title:,
       turbo_enabled: true,
-      content_padding: BodyComponent::DEFAULT_PADDING,
+      content_padding: Body::DEFAULT_PADDING,
       full_width: false,
       **system_arguments
     )
@@ -90,11 +90,11 @@ module Grids
     end
 
     def default_header
-      HeaderComponent.new(title:)
+      Header.new(title:)
     end
 
     def default_body
-      BodyComponent.new(padding: content_padding).with_content(content) if content
+      Body.new(padding: content_padding).with_content(content) if content
     end
 
     private

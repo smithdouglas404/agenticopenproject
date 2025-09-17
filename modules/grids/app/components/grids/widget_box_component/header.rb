@@ -30,7 +30,7 @@
 
 module Grids
   class WidgetBoxComponent < ApplicationComponent
-    class HeaderComponent < ApplicationComponent
+    class Header < ApplicationComponent
       attr_reader :id, :title
 
       # @param system_arguments [Hash] <%= link_to_system_arguments_docs %>

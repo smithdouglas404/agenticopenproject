@@ -30,7 +30,7 @@
 
 module Grids
   class WidgetBoxComponent < ApplicationComponent
-    class BodyComponent < ApplicationComponent
+    class Body < ApplicationComponent
       include Primer::FetchOrFallbackHelper
 
       DEFAULT_PADDING = :default
