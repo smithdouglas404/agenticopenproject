@@ -32,6 +32,16 @@ import { MutationHelper } from 'core-stimulus/helpers/mutation-helper';
 const BLANK_LINK_QUERY = 'a[target="_blank"]';
 const BLANK_LINK_DESCRIPTION_ID = 'open-blank-target-link-description';
 
+/**
+ * Observes all external links and sets their ARIA `describedby` attribute to
+ * {BLANK_LINK_DESCRIPTION_ID} - this element should exist in the DOM and
+ * provide localized text content along the lines of "Open link in a new tab".
+ *
+ * The goal is to make users of Assistive Technology aware that they may have to
+ * switch tabs on clicking a link.
+ *
+ * We consider links with a `target` attribute set to "_blank" as "external".
+ */
 export default class ExternalLinksController extends Controller<HTMLBodyElement> {
   private helper = MutationHelper.forAttributes(
     this.element,
