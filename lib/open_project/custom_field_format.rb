@@ -65,6 +65,10 @@ module OpenProject
       Kernel.const_get(@formatter)
     end
 
+    def available?
+      enabled? && enterprise_feature_allowed?
+    end
+
     def enabled?
       @enabled.call
     end
@@ -89,7 +93,7 @@ module OpenProject
 
       def available
         registered.select do |_, format|
-          format.enabled? && format.enterprise_feature_allowed?
+          format.available?
         end
       end
 
