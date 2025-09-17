@@ -21,9 +21,11 @@
           </p>
           <ul>
             @for (child of singleWorkPackageChildren; track child) {
-              <li>
-                #<span [textContent]="child.id"></span>
-                <span [textContent]="child.subject || ''"></span>
+              <li class="spot-list--item">
+                <div class="spot-list--item-title">
+                  #<span [textContent]="child.id"></span>
+                  <span [textContent]="child.subject || ''"></span>
+                </div>
               </li>
             }
           </ul>
@@ -40,15 +42,14 @@
       </p>
       <ul>
         @for (wp of workPackages; track wp) {
-          <li>
-            #<span [textContent]="wp.id"></span>
-            &ngsp;
-            <span [textContent]="wp.subject"></span>
-            @if (children(wp).length > 0) {
-              <strong>
+          <li class="spot-list--item">
+            <div class="spot-list--item-title">
+              #<span [textContent]="wp.id"></span>
+              <span [textContent]="wp.subject"></span>
+              <strong *ngIf="children(wp).length > 0">
                 (+ {{ text.childCount(wp) }})
               </strong>
-            }
+            </div>
           </li>
         }
       </ul>
