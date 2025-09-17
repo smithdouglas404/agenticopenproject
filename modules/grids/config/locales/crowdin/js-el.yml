@@ -21,6 +21,8 @@ el:
           title: 'Νέα'
           at: 'στο'
           no_results: 'Τίποτα νέο για αναφορά.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Περιγραφή έργου'
           no_results: "Δεν έχει γραφτεί ακόμα περιγραφή. Μπορεί να παρασχεθεί μια στις 'Ρυθμίσεις έργου'."

@@ -195,9 +195,9 @@ uk:
     ldap_auth_failed: "Не вдалося перевірити автентичність через LDAP-сервер."
     sync_failed: "Не вдалося виконати синхронізацію з LDAP: %{message}."
     back_to_index: "Натисніть тут, щоб повернутися до списку підключень."
-    technical_warning_html: |
-      Для заповнення форми LDAP вам знадобляться технічні знання щодо конфігурації LDAP / Active Directory.
-      <br><a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Щоб отримати докладніші вказівки, ознайомтеся з нашою документацією</a>.
+    technical_warning: |
+      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: Назва атрибута LDAP-підключення
       host: Назва хосту LDAP або IP-адреса
@@ -331,39 +331,50 @@ uk:
       no_results_content_text: Створіть нове спеціальне поле
   concatenation:
     single: "або"
-  dry_validation:
+  op_dry_validation:
+    or: "or"
     errors:
-      defined: "не має визначатися."
-      int?: "має бути цілим числом."
-      decimal?: "має бути десятковим числом."
-      filled?: "має бути заповнено."
-      key?: "— відсутній елемент."
-      greater_or_equal_zero: "має дорівнювати нулю або перевищувати його."
-      not_found: "не знайдено."
+      array?: "must be an array."
+      decimal?: "must be a decimal."
+      defined: "must not be defined."
+      eql?: "must be equal to %{left}."
+      filled?: "must be filled."
+      greater_or_equal_zero: "must be greater or equal to 0."
+      gteq?: "must be greater than or equal to %{num}."
+      hash?: "must be a hash."
+      included_in?:
+        arg:
+          default: "must be one of: %{list}."
+          range: "must be one of: %{list_left} - %{list_right}."
+      int?: "must be an integer."
+      key?: "is missing."
+      not_found: "not found."
       rules:
         copy_workflow_from:
-          workflow_missing: "не має власного робочого процесу."
+          workflow_missing: "has no own workflow."
         custom_field:
-          format_not_supported: "формат «%{field_format}» не підтримується."
+          format_not_supported: "format '%{field_format}' is unsupported."
         item:
-          root_item: "не може бути кореневим елементом."
-          not_persisted: "має бути вже наявним елементом."
+          root_item: "cannot be a root item."
+          not_persisted: "must be an already existing item."
         label:
-          not_unique: "має бути унікальним у межах одного рівня ієрархії."
+          not_unique: "must be unique within the same hierarchy level."
         short:
-          not_unique: "має бути унікальним у межах одного рівня ієрархії."
+          not_unique: "must be unique within the same hierarchy level."
         parent:
-          not_descendant: "має бути нащадком кореня ієрархії."
+          not_descendant: "must be a descendant of the hierarchy root."
+      str?: "must be a string."
+      type?: "must be %{type}."
     rules:
-      copy_workflow_from: "Тип копії робочого процесу"
-      enabled: "Увімкнено"
-      depth: "Глибина"
-      item: "Елемент"
-      label: "Мітка"
-      score: "Оцінка"
-      short: "Коротка назва"
-      parent: "Батьківський елемент"
-      blueprint: "Шаблон плану"
+      copy_workflow_from: "Type for workflow copy"
+      enabled: "Enabled"
+      depth: "Depth"
+      item: "Item"
+      label: "Label"
+      score: "Score"
+      short: "Short name"
+      parent: "Parent"
+      blueprint: "Pattern blueprint"
   global_search:
     title:
       all_projects: 'Пошук за терміном «%{search_term}» у всіх проєктах'
@@ -425,7 +436,7 @@ uk:
     lists:
       active: "Активні проєкти"
       my: "Мої проєкти"
-      favored: "Обрані проєкти"
+      favorited: "Favorite projects"
       archived: "Заархівовані проєкти"
       shared: "Спільні проєкти"
       my_lists: "Мої списки проєктів"
@@ -603,9 +614,6 @@ uk:
         token/api:
           title: "Маркер API згенеровано"
           warning: "Це єдиний раз, коли ви побачите цей маркер. Обов’язково скопіюйте його зараз."
-      errors:
-        token_name_blank: "Укажіть ім’я маркера API"
-        token_name_in_use: "Це ім’я маркера API уже використовується; виберіть інше"
       failed_to_reset_token: "Не вдалося відновити маркер доступу: %{error}"
       failed_to_create_token: "Не вдалося створити маркер доступу: %{error}"
       failed_to_revoke_token: "Не вдалося відкликати маркер доступу: %{error}"
@@ -705,9 +713,7 @@ uk:
         excluded_from_totals: "Виключено з підсумків"
   themes:
     dark: "Темна"
-    dark_high_contrast: "Темна, високий контраст"
     light: "Світла"
-    light_high_contrast: "Світла, високий контраст"
     sync_with_os: "Автоматично (колірний режим ОС)"
   types:
     index:
@@ -1026,6 +1032,8 @@ uk:
         active_user_count_restriction: "Активні користувачі"
       enterprise_trial:
         company: "Компанія"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Сторінка"
         row_count: "Кількість рядків"
@@ -1152,6 +1160,8 @@ uk:
         is_readonly: "Пакет робіт лише для перегляду"
         excluded_from_totals: "Виключити з підрахунку підсумків в ієрархії"
         default_done_ratio: "% завершення"
+      token/named:
+        token_name: "Ім’я маркера"
       token/ical:
         calendar: "Календар"
         ical_token_query_assignment: "Призначення запиту"
@@ -1205,6 +1215,13 @@ uk:
         auto_hide_popups: "Автоматично приховувати банери про успішне виконання"
         auto_hide_popups_caption: "Якщо ввімкнено, зелені банери про успішне виконання автоматично зникатимуть через 5 секунд."
         warn_on_leaving_unsaved: "Попереджати мене, коли залишив робочий пакет із незбереженими змінами"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Колірний режим"
         time_zone: "Часовий пояс"
         mode_guideline: "Деякі режими перезаписують користувацькі кольори теми, щоб поліпшити доступність і читабельність. Виберіть світлий режим, якщо потрібна повна підтримка користувацької теми."
@@ -1386,6 +1403,8 @@ uk:
           only_one_trial: "Активним може бути лише один пробний маркер. Видаліть попередній, перш ніж додавати новий."
           unreadable: "неможливо прочитати. Ви впевнені, що це маркер підтримки?"
           already_added: "Цей маркер уже додано."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "перекриваються."
           outside: "знаходиться за межами сітки."
@@ -1482,10 +1501,19 @@ uk:
           typed_dag:
             circular_dependency: "Відносини створюють коло відносин."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "не можна змінити для наявних зв’язків."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "не можна змінити для наявних зв’язків."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "Постачальник SCM недоступний"
           not_whitelisted: "не дозволяється конфігурацією."
@@ -1638,9 +1666,11 @@ uk:
         version:
           undeletable_archived_projects: "Версію не можна видалити, оскільки до неї приєднані робочі пакети."
           undeletable_work_packages_attached: "Версію не можна видалити, оскільки до неї приєднані робочі пакети."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Укажіть ім’я маркера"
+              in_use: "Це ім’я маркера вже використовується; виберіть інше"
               format: "%{message}"
       template:
         body: "Перевірте наступні поля:"
@@ -1788,6 +1818,7 @@ uk:
     attachments: "Вкладення"
     actor: "Виконавець"
     action: "Дія"
+    api_key: "API key"
     author: "Автор"
     avatar: "Аватар"
     base: "Загальна помилка:"
@@ -2266,7 +2297,7 @@ uk:
         Уже маєте маркер? Додайте його за допомогою кнопки нижче, щоб перейти на вже замовлений план Enterprise.
       hide_banner: "Приховати цей банер"
       homescreen_description: >
-        Плани Enterprise розширюють можливості вашого випуску OpenProject Community. Вони включають доповнення, додаткові функції та професійну підтримку, що дає організаціям усіх розмірів досягати кращих результатів разом.
+        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
       homescreen_subline: Підвищивши рівень, ви також долучитеся до підтримки проєкту з відкритим кодом.
       baseline_comparison:
         description: Виділяйте зміни, внесені в цей список із будь-якого моменту часу в минулому.
@@ -2371,6 +2402,9 @@ uk:
   enumeration_reported_project_statuses: "Повідомлення про статус проекту"
   enumeration_caption_order_changed: "Порядок змінено."
   enumeration_could_not_be_moved: "Неможливо перенести перелічення."
+  enterprise_trials:
+    dialog_component:
+      title: Пробна версія Enterprise
   error_auth_source_sso_failed: "Єдиний вхід (SSO) для користувача %{value} не вдалося "
   error_can_not_archive_project: "Цей проєкт не можна архівувати: %{errors}"
   error_can_not_delete_entry: "Неможливо видалити запис"
@@ -2622,6 +2656,11 @@ uk:
             line_4: покращене діалогове вікно учасників наради;
             line_5: покращена робота з бюджетом у запитах, пов’язаних із проєктами, і при плануванні бюджету;
             line_6: оновлена головна сторінка, а також сторінка «Огляд проєкту».
+        "16_5":
+          new_features_title: >
+            Випуск включає різноманітні нові функції і покращення, такі як:
+          new_features_list:
+            line_0: Незабаром ми додамо нові функції і покращення. Слідкуйте за новинами!
     links:
       upgrade_enterprise_edition: "Оновлення до версії Enterprise"
       postgres_migration: "Міграція інсталяції в PostgreSQL"
@@ -2632,7 +2671,8 @@ uk:
       shortcuts: "Ярлики"
       blog: "Openproject блог"
       forums: "Форум спільноти"
-      newsletter: "Сигнали безпеки / Інформаційний бюлетень"
+      security_alerts: "Сповіщення системи безпеки"
+      newsletter: "Інформаційний лист"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2714,7 +2754,7 @@ uk:
         static_token_name: "Маркер API"
       ical:
         title: "iCalendar"
-        text_hint: 'Маркери iCalendar дають змогу користувачам <a href="%{path}" target="_blank">підписуватися на календарі OpenProject</a> і переглядати інформацію про пакети робіт із зовнішніх клієнтів.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "Підписки на iCalendar не дозволено адміністратором. Зверніться до нього, якщо вам потрібна ця функція."
         empty_text_hint: "Щоб додати маркер iCalendar, підпишіться на новий або наявний календар у модулі календаря проєкту. У вас мають бути необхідні дозволи."
       oauth:
@@ -3027,7 +3067,7 @@ uk:
   label_index_by_title: "Індекс за назвою"
   label_information: "Інформація"
   label_information_plural: "Інформація"
-  label_installation_guides: "Інструкції із встановлення"
+  label_installation_guides: "Інструкції зі встановлення"
   label_integer: "Ціле число"
   label_interface: "Інтерфейс"
   label_internal: "Власне"
@@ -4095,6 +4135,8 @@ uk:
   setting_feeds_limit: "Обмеження вмісту каналу"
   setting_file_max_size_displayed: "Максимальний розмір текстового файлу для відображення"
   setting_host_name: "Ім'я хоста"
+  setting_collaborative_editing_hocuspocus_url: "URL-адреса сервера Hocuspocus"
+  setting_collaborative_editing_hocuspocus_secret: "Секрет сервера Hocuspocus"
   setting_hours_per_day: "Годин на день"
   setting_hours_per_day_explanation: >-
     Визначає, що вважати днем, якщо тривалість представлено в днях і годинах (наприклад, якщо день триває 8 годин, то 32 години – це 4 дні).

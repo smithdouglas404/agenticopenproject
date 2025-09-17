@@ -88,6 +88,8 @@ si:
     button_list_view: "ලැයිස්තුව දැක්ම"
     button_show_view: "පූර්ණ තිර දර්ශනය"
     button_log_time: "ලොග් වේලාව"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "තවත්"
     button_open_details: "විවෘත විස්තර දැක්ම"
     button_close_details: "වසන්න විස්තර දැක්ම"
@@ -433,7 +435,7 @@ si:
     label_sort_lower: "පහළට ගෙනයන්න"
     label_sorting: "තෝරා බේරා ගැනීමේ"
     label_spent_time: "වැය කළ කාලය"
-    label_star_query: "අනුග්රහය"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "සුරැකීමට ඔබන්න ඇතුල් කරන්න."
     label_public_query: "පොදු"
     label_sum: "මුදල"
@@ -1103,6 +1105,7 @@ si:
       child_work_packages:
         one: "එක් ළමා වැඩ පැකේජය"
         other: "%{count} වැඩ පැකේජය දරුවන්"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} ඌ"

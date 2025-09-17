@@ -21,6 +21,8 @@ hu:
           title: 'Hírek'
           at: '-kor'
           no_results: 'Semmi új jelenteni való.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Projekt leírása'
           no_results: "Még nem írt leírást. Az egyik megtalálható a 'Projekt beállításai' részben."

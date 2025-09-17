@@ -195,10 +195,9 @@ fr:
     ldap_auth_failed: "Authentification impossible sur le serveur LDAP."
     sync_failed: "Échec de la synchronisation à partir de LDAP : %{message}."
     back_to_index: "Cliquez ici pour revenir à la liste des connexions."
-    technical_warning_html: |
-      Ce formulaire LDAP nécessite une connaissance technique de votre configuration LDAP/Active Directory.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Veuillez consulter notre documentation pour obtenir des instructions détaillées</a>.
+    technical_warning: |
+      Ce formulaire LDAP nécessite une connaissance technique de votre configuration LDAP / Active Directory.
+      [Veuillez consulter notre documentation pour des instructions détaillées](docs_url).
     attribute_texts:
       name: Nom arbitraire de la connexion LDAP
       host: Nom d'hôte ou adresse IP du serveur LDAP
@@ -335,20 +334,29 @@ fr:
       no_results_content_text: Créer un nouveau champ personnalisé
   concatenation:
     single: "ou"
-  dry_validation:
+  op_dry_validation:
+    or: "ou"
     errors:
-      defined: "ne doit pas être défini."
-      int?: "doit être un nombre entier."
+      array?: "doit être un tableau"
       decimal?: "doit être une décimale."
-      filled?: "doit être rempli."
-      key?: "est manquant(e)."
+      defined: "ne doit pas être défini."
+      eql?: "doit être égal à %{left}."
+      filled?: "doivent être remplis."
       greater_or_equal_zero: "doit être supérieur ou égal à 0."
-      not_found: "introuvable."
+      gteq?: "doit être supérieur ou égal à %{num}."
+      hash?: "doit être un hachage."
+      included_in?:
+        arg:
+          default: "doit être l'un des suivants : %{list}."
+          range: "doit être l'un des suivants : %{list_left} - %{list_right}."
+      int?: "doit être un nombre entier."
+      key?: "est manquante."
+      not_found: "n'a pas été trouvée."
       rules:
         copy_workflow_from:
           workflow_missing: "n'a pas de flux de travail propre."
         custom_field:
-          format_not_supported: "le format '%{field_format}' n'est pas pris en charge."
+          format_not_supported: "Le format '%{field_format}' n'est pas pris en charge."
         item:
           root_item: "ne peut pas être un élément racine."
           not_persisted: "doit être un élément déjà existant."
@@ -358,14 +366,16 @@ fr:
           not_unique: "doit être unique au sein d'un même niveau hiérarchique."
         parent:
           not_descendant: "doit être un descendant de la racine de la hiérarchie."
+      str?: "doit être une chaîne de caractères."
+      type?: "doit être %{type}."
     rules:
-      copy_workflow_from: "Type de copie du flux de travail"
+      copy_workflow_from: "Type pour la copie du workflow"
       enabled: "Activé"
       depth: "Profondeur"
-      item: "Élément"
+      item: "Objet"
       label: "Étiquette"
       score: "Score"
-      short: "Nom abrégé"
+      short: "Nom court"
       parent: "Parent"
       blueprint: "Modèle de plan"
   global_search:
@@ -429,7 +439,7 @@ fr:
     lists:
       active: "Projets actifs"
       my: "Mes projets"
-      favored: "Projets favoris"
+      favorited: "Projets favoris"
       archived: "Projets archivés"
       shared: "Listes de projets partagées"
       my_lists: "Mes listes de projets"
@@ -595,9 +605,6 @@ fr:
         token/api:
           title: "Un jeton a été généré"
           warning: "Note : Ceci est la seule fois où vous verrez ce jeton, veuillez le copier maintenant."
-      errors:
-        token_name_blank: "Veuillez fournir un nom de jeton d'API"
-        token_name_in_use: "Ce nom de jeton d'API est déjà utilisé. Veuillez en choisir un autre"
       failed_to_reset_token: "Impossible de réinitialiser le jeton d’accès : %{error}"
       failed_to_create_token: "Impossible de créer le jeton d'accès : %{error}"
       failed_to_revoke_token: "Impossible de révoquer le jeton d'accès : %{error}"
@@ -695,9 +702,7 @@ fr:
         excluded_from_totals: "Exclus des totaux"
   themes:
     dark: "Sombre"
-    dark_high_contrast: "Sombre avec contraste élevé"
     light: "Clair"
-    light_high_contrast: "Clair avec contraste élevé"
     sync_with_os: "Automatique (correspond au mode de couleur du système d'exploitation)"
   types:
     index:
@@ -1015,6 +1020,8 @@ fr:
         active_user_count_restriction: "Utilisateurs actifs"
       enterprise_trial:
         company: "Entreprise"
+      favorite:
+        favorited: "Objet"
       grids/grid:
         page: "Page"
         row_count: "Nombre de lignes"
@@ -1141,6 +1148,8 @@ fr:
         is_readonly: "Paquet de travail en lecture seule"
         excluded_from_totals: "Exclure du calcul des totaux dans la hiérarchie"
         default_done_ratio: "% Réalisé"
+      token/named:
+        token_name: "Nom du jeton"
       token/ical:
         calendar: "Calendrier"
         ical_token_query_assignment: "Affectation d'une requête"
@@ -1194,6 +1203,13 @@ fr:
         auto_hide_popups: "Masquer automatiquement les bannières de réussite"
         auto_hide_popups_caption: "Lorsque cette option est activée, les bannières vertes de réussite disparaissent automatiquement après 5 secondes."
         warn_on_leaving_unsaved: "M'avertir lorsque je quitte un lot de travaux contenant des modifications non enregistrées"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Mode de couleur"
         time_zone: "Fuseau horaire"
         mode_guideline: "Certains modes écrasent les couleurs des thèmes personnalisés pour des raisons d'accessibilité et de lisibilité. Veuillez sélectionner le mode Clair pour une prise en charge complète des thèmes personnalisés."
@@ -1373,6 +1389,8 @@ fr:
           only_one_trial: "Un seul jeton d'essai peut être actif. Veuillez supprimer le jeton d'essai précédent avant d'en ajouter un autre."
           unreadable: "ne peut être lu. Êtes-vous sûr qu'il s'agisse d'une licence Entreprise ?"
           already_added: "Ce jeton a déjà été ajouté."
+        favorite:
+          already_favorited: "a déjà été mis en favoris."
         grids/grid:
           overlaps: "superposition."
           outside: "est hors de la grille."
@@ -1469,10 +1487,19 @@ fr:
           typed_dag:
             circular_dependency: "La relation créée un cercle de relations."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "ne peut pas être modifié pour les relations existantes."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "ne peut pas être modifié pour les relations existantes."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "Le fournisseur de gestion de contrôle de sources n'est pas disponible"
           not_whitelisted: "n'est pas autorisé par la configuration."
@@ -1623,9 +1650,11 @@ fr:
         version:
           undeletable_archived_projects: "La version ne peut pas être supprimée, car des lots de travaux y sont attachés."
           undeletable_work_packages_attached: "La version ne peut pas être supprimée car des lots de travaux y sont attachés."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Veuillez fournir un nom de jeton"
+              in_use: "Ce nom de jeton est déjà utilisé. Veuillez en choisir un autre"
               format: "%{message}"
       template:
         body: "Veuillez vérifier les champs suivants :"
@@ -1745,6 +1774,7 @@ fr:
     attachments: "Fichiers"
     actor: "Acteur"
     action: "Action"
+    api_key: "Clé API"
     author: "Auteur"
     avatar: "Avatar"
     base: "Erreur générale :"
@@ -2183,7 +2213,7 @@ fr:
         Vous avez déjà un jeton ? Ajoutez-le en utilisant le bouton ci-dessous pour passer à l'abonnement Enterprise réservé.
       hide_banner: "Masquer cette bannière"
       homescreen_description: >
-        Les abonnements Enterprise prolongent l'édition Community d'OpenProject que vous utilisez actuellement. Ils comprennent des add-ons, des fonctionnalités supplémentaires et une assistance professionnelle qui permet aux organisations de toutes tailles de réaliser de grandes choses ensemble.
+        Les plans d'entreprise prolongent l'édition communautaire d'OpenProject avec des [modules d'entreprise] supplémentaires (enterprise_url) et un support professionnel, idéal pour les organisations qui utilisent OpenProject dans un environnement critique.
       homescreen_subline: En optant pour une formule d'abonnement supérieure, vous soutiendrez également un projet open source.
       baseline_comparison:
         description: Mettre en évidence les modifications apportées à cette liste depuis n'importe quel point dans le passé.
@@ -2286,6 +2316,9 @@ fr:
   enumeration_reported_project_statuses: "Statuts de projet signalés"
   enumeration_caption_order_changed: "La commande a été modifiée avec succès."
   enumeration_could_not_be_moved: "L'énumération n'a pas pu être déplacée."
+  enterprise_trials:
+    dialog_component:
+      title: Essai Enterprise
   error_auth_source_sso_failed: "Single Sign-On (SSO) pour l’utilisateur '%{value}' a échoué"
   error_can_not_archive_project: "Ce projet ne peut être archivé : %{errors}"
   error_can_not_delete_entry: "Impossible de supprimer l’élément"
@@ -2537,6 +2570,11 @@ fr:
             line_4: Amélioration du dialogue entre les participants à la réunion.
             line_5: Amélioration de la gestion du budget dans les requêtes de projet et la planification budgétaire.
             line_6: Mise à jour de la page d'accueil et de la page d'aperçu du projet.
+        "16_5":
+          new_features_title: >
+            Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que :
+          new_features_list:
+            line_0: De nouvelles fonctionnalités et améliorations seront bientôt disponibles. N'hésitez pas à revenir nous voir !
     links:
       upgrade_enterprise_edition: "Passer à la version Entreprise"
       postgres_migration: "Migration de votre installation vers PostgreSQL"
@@ -2547,7 +2585,8 @@ fr:
       shortcuts: "Raccourcis"
       blog: "Blog OpenProject"
       forums: "Forum de la communauté"
-      newsletter: "Alertes de sécurité/lettre d'information"
+      security_alerts: "Alertes de sécurité"
+      newsletter: "Lettre d'information"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2629,7 +2668,7 @@ fr:
         static_token_name: "Jeton d'API"
       ical:
         title: "iCalendar"
-        text_hint: 'Les jetons iCalendar permettent aux utilisateurs de <a href="%{path}" target="_blank">s''abonner aux calendriers OpenProject</a> et d''afficher des informations à jour sur les lots de travaux provenant de clients externes.'
+        text_hint_link: 'Les jetons iCalendar permettent aux utilisateurs de [s''abonner aux calendriers OpenProject](docs_url) et de voir les informations mises à jour du lot de travaux de clients externes.'
         disabled_text: "Les abonnements iCalendar ne sont pas activés par l'administrateur. Veuillez contacter votre administrateur pour utiliser cette fonctionnalité."
         empty_text_hint: "Pour ajouter un jeton iCalendar, abonnez-vous à un nouveau calendrier ou à un calendrier existant depuis le module Calendrier d'un projet. Vous devez avoir les autorisations nécessaires."
       oauth:
@@ -4008,6 +4047,8 @@ fr:
   setting_feeds_limit: "Limite du contenu du flux"
   setting_file_max_size_displayed: "Taille maximale de l'affichage du fichers texte inline"
   setting_host_name: "Nom d'hôte"
+  setting_collaborative_editing_hocuspocus_url: "URL du serveur Hocuspocus"
+  setting_collaborative_editing_hocuspocus_secret: "Secret du serveur Hocuspocus"
   setting_hours_per_day: "Heures par jour"
   setting_hours_per_day_explanation: >-
     Cela définit ce qui est considéré comme un « jour » lors de l'affichage de la durée en jours et en heures (par exemple, si un jour dure 8 heures, 32 heures représentent 4 jours).

@@ -40,7 +40,7 @@ RSpec.describe Projects::RowComponent, type: :component do
   let(:project) { build_stubbed(:project, name: "My Project No. 1", identifier: "myproject_no_1") }
   let(:table) do
     instance_double(Projects::TableComponent, columns: [Queries::Projects::Selects::Default.new(:name)],
-                                              favored_project_ids: [])
+                                              favorited_project_ids: [])
   end
 
   let(:user) { build_stubbed(:user) }

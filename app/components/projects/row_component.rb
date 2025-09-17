@@ -30,7 +30,7 @@
 module Projects
   class RowComponent < ::RowComponent
     delegate :identifier, to: :project
-    delegate :favored_project_ids,
+    delegate :favorited_project_ids,
              :project_phase_by_definition,
              to: :table
 
@@ -47,25 +47,25 @@ module Projects
       ""
     end
 
-    def favored
+    def favorited
       render(Primer::Beta::IconButton.new(
-               icon: currently_favored? ? "star-fill" : "star",
+               icon: currently_favorited? ? "star-fill" : "star",
                scheme: :invisible,
-               mobile_icon: currently_favored? ? "star-fill" : "star",
+               mobile_icon: currently_favorited? ? "star-fill" : "star",
                size: :medium,
                tag: :a,
                tooltip_direction: :e,
                href: helpers.build_favorite_path(project, format: :html),
-               data: { "turbo-method": currently_favored? ? :delete : :post },
-               classes: currently_favored? ? "op-primer--star-icon " : "op-project-row-component--favorite",
-               label: currently_favored? ? I18n.t(:button_unfavorite) : I18n.t(:button_favorite),
-               aria: { label: currently_favored? ? I18n.t(:button_unfavorite) : I18n.t(:button_favorite) },
+               data: { "turbo-method": currently_favorited? ? :delete : :post },
+               classes: currently_favorited? ? "op-primer--star-icon " : "op-project-row-component--favorite",
+               label: currently_favorited? ? I18n.t(:button_unfavorite) : I18n.t(:button_favorite),
+               aria: { label: currently_favorited? ? I18n.t(:button_unfavorite) : I18n.t(:button_favorite) },
                test_selector: "project-list-favorite-button"
              ))
     end
 
-    def currently_favored?
-      @currently_favored ||= favored_project_ids.include?(project.id)
+    def currently_favorited?
+      @currently_favorited ||= favorited_project_ids.include?(project.id)
     end
 
     def column_value(column)
@@ -215,10 +215,10 @@ module Projects
 
     def additional_css_class(column)
       if column.attribute == :name
-        "project--hierarchy #{project.archived? ? 'archived' : ''}"
+        "project--hierarchy #{'archived' if project.archived?}"
       elsif %i[status_explanation description].include?(column.attribute)
         "project-long-text-container"
-      elsif column.attribute == :favored
+      elsif column.attribute == :favorited
         "-w-abs-45"
       elsif custom_field_column?(column)
         cf = column.custom_field
@@ -267,7 +267,7 @@ module Projects
     end
 
     def more_menu_favorite_item
-      return if currently_favored?
+      return if currently_favorited?
 
       {
         scheme: :default,
@@ -280,7 +280,7 @@ module Projects
     end
 
     def more_menu_unfavorite_item
-      return unless currently_favored?
+      return unless currently_favorited?
 
       {
         scheme: :default,

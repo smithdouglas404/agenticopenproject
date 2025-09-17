@@ -30,9 +30,7 @@
 
 module CustomFields
   module Hierarchy
-    class GenerateRootContract < Dry::Validation::Contract
-      config.messages.backend = :i18n
-
+    class GenerateRootContract < DryApplicationContract
       params do
         required(:custom_field).filled(type?: CustomField)
       end

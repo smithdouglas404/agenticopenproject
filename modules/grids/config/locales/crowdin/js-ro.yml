@@ -21,6 +21,8 @@ ro:
           title: 'Noutăţi'
           at: 'la'
           no_results: 'Nimic nou de raportat.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Descriere proiect'
           no_results: "Nu a fost scrisă încă nicio descriere. Aceasta poate fi adăugată în \"Setări proiect\"."

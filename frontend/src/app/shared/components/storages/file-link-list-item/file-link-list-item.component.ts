@@ -241,7 +241,7 @@ export class FileLinkListItemComponent implements OnInit, OnChanges, AfterViewIn
 
   private downloadAction():FloatingAction {
     return new FloatingAction(
-      'download-arrow',
+      'download',
       this.text.title.downloadFileLink,
       undefined,
       { url: this.fileLink._links.staticOriginDownload.href, target: '_self' },

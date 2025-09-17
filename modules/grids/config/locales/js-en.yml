@@ -21,6 +21,8 @@ en:
           title: 'News'
           at: 'at'
           no_results: 'Nothing new to report.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Project description'
           no_results: "No description has been written yet. One can be provided in the 'Project settings'."

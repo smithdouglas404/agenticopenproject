@@ -42,7 +42,7 @@ Clicking on the **Team planners** entry on the left sidebar takes you to the tea
 5. New team planners by default appear under the **Private** heading in the left menu bar. These are visible only to you.
 
 > [!TIP]
-> Both *public* and *private* team planners can be added as **favored** planners.
+> Both *public* and *private* team planners can be added as **favorited** planners.
 
 ## Team planner basics
 

@@ -1,13 +1,14 @@
 <%=
   component_wrapper do
-    render(Primer::Box.new(pt: 3, pl: 3, pr: 3, classes: "outcome-container", border_radius: 2)) do
+    # TODO: validate paddings (InsetBox would probably overwrite "p" here, giving an unintended padding at the bottom)
+    render(OpPrimer::InsetBoxComponent.new(border: false, classes: "outcome-container")) do
       grid_layout("op-meeting-outcome-notes", tag: :div, id: "outcome-#{@meeting_outcome.id}") do |grid|
         grid.with_area(:title, tag: :span, classes: "title") do
           render(Primer::Beta::Heading.new(tag: :h5)) { t(:label_agenda_outcome) }
         end
 
         grid.with_area(:content, tag: :div) do
-          render(Primer::Box.new(classes: "op-uc-container", mt: 1)) do
+          render(Primer::Box.new(classes: "op-uc-container", mt: 1, pb: 0)) do
             format_text(@meeting_outcome, :notes)
           end
         end

@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { A11yModule } from '@angular/cdk/a11y';
 
 import { I18nService } from 'core-app/core/i18n/i18n.service';
+import { IconModule } from 'core-app/shared/components/icon/icon.module';
 import { SpotCheckboxComponent } from './components/checkbox/checkbox.component';
 import { SpotSwitchComponent } from './components/switch/switch.component';
 import { SpotToggleComponent } from './components/toggle/toggle.component';
@@ -26,6 +27,7 @@ import { SpotDropModalPortalComponent } from './components/drop-modal/drop-modal
     ReactiveFormsModule,
     CommonModule,
     A11yModule,
+    IconModule,
   ],
 
   providers: [
@@ -64,4 +66,5 @@ import { SpotDropModalPortalComponent } from './components/drop-modal/drop-modal
     SpotSelectorFieldComponent,
   ],
 })
-export class OpSpotModule { }
+
+export class OpSpotModule {}

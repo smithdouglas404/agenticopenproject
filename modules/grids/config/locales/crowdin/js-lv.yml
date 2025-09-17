@@ -21,6 +21,8 @@ lv:
           title: 'Jaunumi'
           at: 'at'
           no_results: 'Nav jaunu ziņojumu.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Projekta apraksts'
           no_results: "No description has been written yet. One can be provided in the 'Project settings'."

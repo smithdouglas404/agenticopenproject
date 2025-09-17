@@ -99,14 +99,17 @@ See COPYRIGHT and LICENSE files for more details.
       <% end %>
       <div class="form--field">
         <%= render partial: "custom_fields/custom_options", locals: { custom_field: @custom_field, f: f } %>
-        <button
-          type="button"
-          class="spot-link"
-          data-test-selector="add-custom-option"
-          data-action="admin--custom-fields#addOption">
-          <span class="spot-icon spot-icon_1_25 spot-icon_add"></span>
-          <span><%= t(:button_add) %></span>
-        </button>
+        <%=
+          render Primer::Beta::Button.new(
+            scheme: :link,
+            test_selector: "add-custom-option",
+            data: { action: "admin--custom-fields#addOption" },
+            mt: 2
+          ) do |button|
+            button.with_leading_visual_icon(icon: :plus)
+            t(:button_add)
+          end
+        %>
       </div>
     </fieldset>
   <% end %>

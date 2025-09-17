@@ -88,6 +88,8 @@ pt-PT:
     button_list_view: "Ver lista"
     button_show_view: "Ver em ecrã completo"
     button_log_time: "Tempo de registro"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "Mais"
     button_open_details: "Abrir visão detalhada"
     button_close_details: "Fechar visão detalhada"
@@ -433,7 +435,7 @@ pt-PT:
     label_sort_lower: "Descer"
     label_sorting: "Ordenação"
     label_spent_time: "Tempo usado"
-    label_star_query: "Favoritos"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Pressione Enter para guardar."
     label_public_query: "Público"
     label_sum: "Soma"
@@ -1103,6 +1105,7 @@ pt-PT:
       child_work_packages:
         one: "pacote de trabalho infantil"
         other: "%{count} pacotes de trabalho filhos"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"

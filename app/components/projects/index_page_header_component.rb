@@ -106,9 +106,9 @@ class Projects::IndexPageHeaderComponent < ApplicationComponent
     query.persisted?
   end
 
-  def can_toggle_favor? = query.persisted?
+  def can_toggle_favorite? = query.persisted?
 
-  def currently_favored? = query.favored_by?(current_user)
+  def currently_favorited? = query.favorited_by?(current_user)
 
   def breadcrumb_items
     [

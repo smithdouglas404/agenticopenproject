@@ -41,8 +41,7 @@ import { fromEvent } from 'rxjs';
              cursorClass="col-resize"
              (resizeFinished)="resizeEnd()"
              (resizeStarted)="resizeStart()"
-             (move)="resizeMove($event)">
-    </op-resizer>
+             (move)="resizeMove($event)" />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,

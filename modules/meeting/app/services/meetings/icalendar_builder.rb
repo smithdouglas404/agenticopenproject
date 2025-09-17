@@ -50,6 +50,10 @@ module Meetings
       @action_needed_from_user_as_attendee = false
     end
 
+    def calendar_title=(title)
+      calendar.x_wr_calname = title
+    end
+
     def add_single_meeting_event(meeting:, cancelled: false) # rubocop:disable Metrics/AbcSize
       calendar.event do |e|
         e.dtstart = ical_datetime(meeting.start_time)

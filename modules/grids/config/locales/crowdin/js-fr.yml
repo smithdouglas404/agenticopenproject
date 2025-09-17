@@ -21,6 +21,8 @@ fr:
           title: 'Actualités'
           at: 'à'
           no_results: 'Rien de nouveau à signaler.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Description du projet'
           no_results: "Aucune description n'a encore été écrite. Vous pouvez en trouver une dans les \"Paramètres du projet\"."

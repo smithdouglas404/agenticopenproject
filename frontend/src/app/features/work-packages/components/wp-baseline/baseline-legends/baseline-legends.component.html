@@ -1,12 +1,13 @@
 <span class="op-baseline-legends--filter">
   <span [textContent]="legendDescription"></span>
   &ngsp;
-  <span
-    *ngIf="userOffset !== offset"
-    data-test-selector="baseline-legend-time-offset"
-    class="spot-icon spot-icon_1 spot-icon_info2"
-    title="{{ text.in_your_timezone }} {{ localDate }}"
-  ></span>
+  @if (userOffset !== offset) {
+    <span
+      data-test-selector="baseline-legend-time-offset"
+      class="spot-icon spot-icon_1 spot-icon_info2"
+      title="{{ text.in_your_timezone }} {{ localDate }}"
+    ></span>
+  }
 </span>
 <div class="op-baseline-legends--details hidden-for-mobile">
   <span class="spot-icon spot-icon_1 spot-icon_arrow-in op-baseline-legends--details-icon-added"></span>

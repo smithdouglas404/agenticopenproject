@@ -276,7 +276,7 @@ In this example, the table was filtered for work packages assigned to me which h
 
 **Public:** Check the public checkbox if you want to have this work package view accessible also for other users from this project.
 
-**Favored:** Check this favored checkbox if you want to have this work package as a menu item in your favorite views.
+**Favorited:** Check this favorited checkbox if you want to have this work package as a menu item in your favorite views.
 
 Press the **Save** button to save your view.
 
@@ -284,7 +284,7 @@ Press the **Save** button to save your view.
 
 The view will then be saved in the work packages menu in your **Favorite views**:
 
-![Favorite view in work package module menu](openproject_user_guide_wp_favored_view_saved.png)
+![Favorited view in work package module menu](openproject_user_guide_wp_favorited_view_saved.png)
 
 If you check the public visibility, the view will be saved under your public views in the work package menu:
 

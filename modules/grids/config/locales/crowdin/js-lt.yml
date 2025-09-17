@@ -21,6 +21,8 @@ lt:
           title: 'Naujienos'
           at: '>'
           no_results: 'Nėra jokių ataskaitų.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Projekto aprašymas'
           no_results: "Dar neįrašytas aprašymas. Jį galima nurodyti „Projekto nustatymuose“."

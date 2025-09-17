@@ -32,7 +32,6 @@ group :opf_plugins do
 
   gem 'grids',                                 path: 'modules/grids'
   gem 'my_page',                               path: 'modules/my_page'
-  gem 'dashboards',                            path: 'modules/dashboards'
   gem 'openproject-boards',                    path: 'modules/boards'
   gem 'overviews',                             path: 'modules/overviews'
   gem 'budgets',                               path: 'modules/budgets'

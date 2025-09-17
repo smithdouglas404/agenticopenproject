@@ -88,6 +88,8 @@ ko:
     button_list_view: "목록 보기"
     button_show_view: "전체화면 보기"
     button_log_time: "작업시간 기록"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "기타"
     button_open_details: "자세히 보기"
     button_close_details: "디테일 닫기"
@@ -433,7 +435,7 @@ ko:
     label_sort_lower: "아래로 이동"
     label_sorting: "정렬"
     label_spent_time: "소비한 시간"
-    label_star_query: "호감"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "저장하려면 Enter를 누르세요."
     label_public_query: "공용"
     label_sum: "합계"
@@ -1100,6 +1102,7 @@ ko:
         other: "작업 패키지"
       child_work_packages:
         other: "%{count}개의 작업 패키지 자식"
+      hour_string: "%{hours} h"
       hour:
         one: "1시간"
         other: "%{count}시간"

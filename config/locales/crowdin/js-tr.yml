@@ -88,6 +88,8 @@ tr:
     button_list_view: "Liste görünümü"
     button_show_view: "Tam ekran görünümü"
     button_log_time: "Zaman kaydet"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "Daha"
     button_open_details: "Ayrıntılar görünümünü aç"
     button_close_details: "Ayrıntılar görünümünü kapat"
@@ -433,7 +435,7 @@ tr:
     label_sort_lower: "Aşağı taşı"
     label_sorting: "Sıralama"
     label_spent_time: "Harcanan zaman"
-    label_star_query: "Favori"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Kaydetmek için enter tuşuna basın."
     label_public_query: "Herkese Açık"
     label_sum: "Toplam"
@@ -1103,6 +1105,7 @@ tr:
       child_work_packages:
         one: "bir alt iş paketi"
         other: "%{count} alt iş paketi"
+      hour_string: "%{hours} h"
       hour:
         one: "1 saat"
         other: "%{count} saat"

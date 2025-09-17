@@ -59,12 +59,12 @@ gem "will_paginate", "~> 4.0.0"
 
 gem "friendly_id", "~> 5.5.0"
 
-gem "scimitar", "~> 2.12"
+gem "scimitar", "~> 2.13"
 
 gem "acts_as_list", "~> 1.2.0"
 gem "acts_as_tree", "~> 2.9.0"
 gem "awesome_nested_set", "~> 3.8.0"
-gem "closure_tree", "~> 9.0.0"
+gem "closure_tree", "~> 9.1.1"
 gem "rubytree", "~> 2.1.0"
 
 gem "addressable", "~> 2.8.0"
@@ -82,7 +82,7 @@ gem "htmldiff"
 gem "stringex", "~> 2.8.5"
 
 # CommonMark markdown parser with GFM extension
-gem "commonmarker", "~> 2.3.0"
+gem "commonmarker", "~> 2.4.0"
 
 # HTML pipeline for transformations on text formatter output
 # such as sanitization or additional features
@@ -92,7 +92,7 @@ gem "deckar01-task_list", "~> 2.3.1"
 # Requires escape-utils for faster escaping
 gem "escape_utils", "~> 1.3"
 # Syntax highlighting used in html-pipeline with rouge
-gem "rouge", "~> 4.5.1"
+gem "rouge", "~> 4.6.0"
 # HTML sanitization used for html-pipeline
 gem "sanitize", "~> 7.0.0"
 # HTML autolinking for mails and urls (replaces autolink)
@@ -151,7 +151,7 @@ gem "structured_warnings", "~> 0.5.0"
 # don't require by default, instead load on-demand when actually configured
 gem "airbrake", "~> 13.0.0", require: false
 
-gem "markly", "~> 0.13" # another markdown parser like commonmarker, but with AST support used in PDF export
+gem "markly", "~> 0.14" # another markdown parser like commonmarker, but with AST support used in PDF export
 gem "md_to_pdf", git: "https://github.com/opf/md-to-pdf", ref: "6c565541bfa390c58d90d49aa9b487777704fc66"
 gem "prawn", "~> 2.4"
 gem "ttfunk", "~> 1.7.0" # remove after https://github.com/prawnpdf/prawn/issues/1346 resolved.
@@ -188,7 +188,7 @@ gem "puma", "~> 6.5"
 gem "puma-plugin-statsd", "~> 2.0"
 gem "rack-timeout", "~> 0.7.0", require: "rack/timeout/base"
 
-gem "nokogiri", "~> 1.18.8"
+gem "nokogiri", "~> 1.18.10"
 
 gem "carrierwave", "~> 1.3.4"
 gem "carrierwave_direct", "~> 2.1.0"
@@ -225,7 +225,7 @@ gem "yabeda-prometheus-mmap", require: false
 gem "yabeda-puma-plugin"
 gem "yabeda-rails"
 
-gem "view_component"
+gem "view_component", "~> 4.0.2"
 # Lookbook
 gem "lookbook", "2.3.13"
 
@@ -239,7 +239,7 @@ gem "turbo-rails", "~> 2.0.0"
 
 # There is a problem with version 1.4.0. Do not update until you're sure there is no infinite hang
 # happenning in failing tests when WebMock or VCR stub cannot be found.
-gem "httpx", "~> 1.3.4"
+gem "httpx", "~> 1.6.0"
 
 # Brings actual deep freezing to most ruby objects
 gem "ice_nine"
@@ -279,7 +279,7 @@ group :test do
   gem "rails-controller-testing", "~> 1.0.2"
 
   gem "capybara", "~> 3.40.0"
-  gem "capybara_accessible_selectors", git: "https://github.com/citizensadvice/capybara_accessible_selectors", tag: "v0.12.0"
+  gem "capybara_accessible_selectors", git: "https://github.com/citizensadvice/capybara_accessible_selectors", tag: "v0.13.0"
   gem "capybara-screenshot", "~> 1.0.17"
   gem "cuprite", "~> 0.17.0"
   gem "rspec-wait"
@@ -306,7 +306,7 @@ group :test do
 end
 
 group :ldap do
-  gem "net-ldap", "~> 0.19.0"
+  gem "net-ldap", "~> 0.20.0"
 end
 
 group :development do
@@ -372,8 +372,8 @@ end
 gem "bootsnap", "~> 1.18.0", require: false
 
 # API gems
-gem "grape", "~> 2.3.0"
-gem "grape_logging", "~> 2.1.1"
+gem "grape", "~> 2.4.0"
+gem "grape_logging", "~> 3.0.0"
 gem "roar", "~> 1.2.0"
 
 # CORS for API
@@ -387,12 +387,10 @@ gem "googleauth", require: false
 gem "disposable", "~> 0.6.2"
 
 # Used for formula evaluation of calculated values
-# Dentaku 3.5.4 and earlier contains a division by zero error when performing modulo operations.
-# Reference commit that fixes this until a new version of dentaku is released:
-gem "dentaku", "~> 3.5", git: "https://github.com/rubysolo/dentaku", ref: "f17d427b63ef7e9ed8f914b5cb1d0645a37f9ebb"
+gem "dentaku", "~> 3.5", ">= 3.5.5"
 
 group :postgres do
-  gem "pg", "~> 1.5.0"
+  gem "pg", "~> 1.6.2"
 end
 
 # Support application loading when no database exists yet.
@@ -414,6 +412,6 @@ gemfiles.each do |file|
   send(:eval_gemfile, file) if File.readable?(file)
 end
 
-gem "openproject-octicons", "~>19.27.1"
-gem "openproject-octicons_helper", "~>19.27.1"
-gem "openproject-primer_view_components", "~>0.71.0"
+gem "openproject-octicons", "~>19.28.0"
+gem "openproject-octicons_helper", "~>19.28.0"
+gem "openproject-primer_view_components", "~>0.72.0"

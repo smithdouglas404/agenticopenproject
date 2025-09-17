@@ -21,6 +21,8 @@ ca:
           title: 'Notícies'
           at: 'a'
           no_results: 'Res nou a informar.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Descripció del projecte'
           no_results: "No s'ha escrit cap descripció encara. Aquesta pot ser afegida en la configuració del projecte."

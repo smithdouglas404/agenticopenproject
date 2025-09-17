@@ -84,7 +84,7 @@ export class OpModalSingleDatePickerComponent implements ControlValueAccessor, O
     return this._value;
   }
 
-  @Input() inputId = `flatpickr-input-${+(new Date())}`;
+  @Input() id = `flatpickr-input-${+(new Date())}`;
 
   @Input() name = '';
 
@@ -230,7 +230,7 @@ export class OpModalSingleDatePickerComponent implements ControlValueAccessor, O
 
     this.datePickerInstance = new DatePicker(
       this.injector,
-      this.inputId,
+      this.id,
       this.workingDate || '',
       {
         mode: 'single',

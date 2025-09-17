@@ -87,7 +87,7 @@ zh-CN:
         token_placeholder: "在此处粘贴您的企业版支持令牌"
       add_token: "上传企业版支持令牌"
       replace_token: "替换您当前的支持令牌"
-      order: "订购本地部署版的 Enterprise edition"
+      order: "订购本地部署的 Enterprise edition"
       paste: "粘贴您企业版的支持令牌"
       required_for_feature: "此功能仅限具激活的企业版支持令牌的订阅者使用。"
       enterprise_link: "如需了解详细信息，请单击此处。"
@@ -195,10 +195,9 @@ zh-CN:
     ldap_auth_failed: "无法在 LDAP 服务器上验证身份。"
     sync_failed: "无法从 LDAP 同步：%{message}。"
     back_to_index: "点击此处返回到连接列表。"
-    technical_warning_html: |
-      此 LDAP 表单需要您的 LDAP / Active Directory 设置的技术知识。
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">请访问我们的文档以了解详细说明</a>。
+    technical_warning: |
+      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: LDAP 连接的任意名称
       host: LDAP 主机名或 IP 地址
@@ -332,39 +331,50 @@ zh-CN:
       no_results_content_text: 创建新的自定义字段
   concatenation:
     single: "或"
-  dry_validation:
+  op_dry_validation:
+    or: "或"
     errors:
-      defined: "不得定义。"
-      int?: "必须为整数"
-      decimal?: "必须为小数。"
-      filled?: "必须填写"
-      key?: "缺失。"
-      greater_or_equal_zero: "必须大于或等于 0"
-      not_found: "未找到"
+      array?: "必须为一个数组。"
+      decimal?: "必须为一个小数。"
+      defined: "不可被定义。"
+      eql?: "必须等于 %{left}。"
+      filled?: "必须填写。"
+      greater_or_equal_zero: "必须大于或等于 0。"
+      gteq?: "必须大于或等于 %{num}。"
+      hash?: "必须是一个哈希值。"
+      included_in?:
+        arg:
+          default: "必须是其中之一： %{list}。"
+          range: "必须是其中之一： %{list_left} - %{list_right}。"
+      int?: "必须为一个整数。"
+      key?: "已缺失。"
+      not_found: "未找到。"
       rules:
         copy_workflow_from:
-          workflow_missing: "没有自己的工作流。"
+          workflow_missing: "has no own workflow."
         custom_field:
-          format_not_supported: "格式 '%{field_format}' 不受支持。"
+          format_not_supported: "format '%{field_format}' is unsupported."
         item:
-          root_item: "不能为根项目"
-          not_persisted: "必须是已存在的项目"
+          root_item: "cannot be a root item."
+          not_persisted: "must be an already existing item."
         label:
-          not_unique: "在同一层级内必须是唯一的"
+          not_unique: "must be unique within the same hierarchy level."
         short:
-          not_unique: "在同一层级内必须是唯一的"
+          not_unique: "must be unique within the same hierarchy level."
         parent:
-          not_descendant: "必须是层次结构根的后代"
+          not_descendant: "must be a descendant of the hierarchy root."
+      str?: "must be a string."
+      type?: "must be %{type}."
     rules:
-      copy_workflow_from: "工作流副本的类型"
-      enabled: "已启用"
-      depth: "深"
-      item: "条目"
-      label: "标签"
-      score: "分数"
-      short: "简称"
-      parent: "父级"
-      blueprint: "图案蓝图"
+      copy_workflow_from: "Type for workflow copy"
+      enabled: "Enabled"
+      depth: "Depth"
+      item: "Item"
+      label: "Label"
+      score: "Score"
+      short: "Short name"
+      parent: "Parent"
+      blueprint: "Pattern blueprint"
   global_search:
     title:
       all_projects: '在所有项目中搜索“%{search_term}”'
@@ -426,7 +436,7 @@ zh-CN:
     lists:
       active: "有效项目"
       my: "我的项目"
-      favored: "收藏的项目"
+      favorited: "Favorite projects"
       archived: "归档项目"
       shared: "共享项目列表"
       my_lists: "我的项目列表"
@@ -586,9 +596,6 @@ zh-CN:
         token/api:
           title: "API 令牌已生成"
           warning: "这将是您看到此令牌的唯一机会。请务必立即复制。"
-      errors:
-        token_name_blank: "请提供一个 API 令牌名称"
-        token_name_in_use: "此 API 令牌名称已经在使用，请选择一个不同的名称"
       failed_to_reset_token: "无法重置访问令牌: %{error}"
       failed_to_create_token: "创建访问令牌失败： %{error}"
       failed_to_revoke_token: "撤销访问令牌失败： %{error}"
@@ -686,9 +693,7 @@ zh-CN:
         excluded_from_totals: "不包括在总计中"
   themes:
     dark: "暗黑"
-    dark_high_contrast: "深色高对比度"
     light: "浅色模式"
-    light_high_contrast: "高对比度模式"
     sync_with_os: "自动（匹配操作系统颜色模式）"
   types:
     index:
@@ -1005,11 +1010,13 @@ zh-CN:
         active_user_count_restriction: "活跃用户"
       enterprise_trial:
         company: "公司"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "页"
         row_count: "行数"
         column_count: "列数"
-        widgets: "微件"
+        widgets: "小部件"
       journal:
         notes: "备注"
         cause_type: "Cause 类型"
@@ -1131,6 +1138,8 @@ zh-CN:
         is_readonly: "只读工作包"
         excluded_from_totals: "从层次结构的总计中排除"
         default_done_ratio: "% 完成"
+      token/named:
+        token_name: "令牌名称"
       token/ical:
         calendar: "日历"
         ical_token_query_assignment: "查询任务"
@@ -1184,6 +1193,13 @@ zh-CN:
         auto_hide_popups: "自动隐藏成功横幅"
         auto_hide_popups_caption: "启用后，绿色成功横幅将在 5 秒后自动消失。"
         warn_on_leaving_unsaved: "离开未保存更改的工作包时提示我"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "颜色模式"
         time_zone: "时区"
         mode_guideline: "某些模式将覆盖自定义主题颜色，以提升无障碍性和可读性。请选择“浅色”模式，以实现对自定义主题的全面支持。"
@@ -1362,6 +1378,8 @@ zh-CN:
           only_one_trial: "只能有一个试用令牌处于有效状态。请先删除上一个试用令牌，然后再添加另一个。"
           unreadable: "无法读取。是否确定为支持令牌？"
           already_added: "此令牌已添加。"
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "重叠."
           outside: "不在网格内。"
@@ -1458,10 +1476,19 @@ zh-CN:
           typed_dag:
             circular_dependency: "关系会创建关系的循环。"
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "无法针对现有关系更改。"
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "无法针对现有关系更改。"
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "SCM提供商不可用"
           not_whitelisted: "配置所不允许的。"
@@ -1611,9 +1638,11 @@ zh-CN:
         version:
           undeletable_archived_projects: "无法删除该版本，因为它连接了工作包。"
           undeletable_work_packages_attached: "无法删除该版本，因为它连接了工作包。"
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "请提供令牌名称"
+              in_use: "此令牌名称已被使用，请选择其他令牌名称"
               format: "%{message}"
       template:
         body: "请检查以下字段："
@@ -1719,6 +1748,7 @@ zh-CN:
     attachments: "附件"
     actor: "执行者"
     action: "操作"
+    api_key: "API key"
     author: "作者"
     avatar: "头像"
     base: "一般错误："
@@ -2137,7 +2167,7 @@ zh-CN:
         已经有令牌？使用下方按钮添加以升级到预订的 Enterprise 方案。
       hide_banner: "隐藏此广告"
       homescreen_description: >
-        企业方案可以扩展您当前正在使用的 OpenProject 社区版。它们包括附加组件、额外功能和专业支持，使各种规模的组织能够共同实现伟大目标。
+        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
       homescreen_subline: 通过升级，您也将支持一个开源项目。
       baseline_comparison:
         description: 高亮显示自从过去任意时间点以来对此列表所做的更改。
@@ -2239,6 +2269,9 @@ zh-CN:
   enumeration_reported_project_statuses: "报告的项目状态"
   enumeration_caption_order_changed: "顺序修改成功。"
   enumeration_could_not_be_moved: "无法移动枚举。"
+  enterprise_trials:
+    dialog_component:
+      title: 企业版试用
   error_auth_source_sso_failed: "用户 \"%{value}\" 的单次登录 (SSO) 失败"
   error_can_not_archive_project: "此项目无法存档：%{errors}"
   error_can_not_delete_entry: "无法删除条目"
@@ -2490,6 +2523,11 @@ zh-CN:
             line_4: 改进了会议参与者对话框。
             line_5: 改进了项目查询和预算规划中的预算处理。
             line_6: 更新了首页和项目概览页面。
+        "16_5":
+          new_features_title: >
+            此版本包含各种新功能和改进，例如：
+          new_features_list:
+            line_0: 新功能和改进即将上线。请持续关注！
     links:
       upgrade_enterprise_edition: "升级到企业版"
       postgres_migration: "将您的安装迁移到 PostgreSQL"
@@ -2500,7 +2538,8 @@ zh-CN:
       shortcuts: "快捷键"
       blog: "OpenProject 博客"
       forums: "社区论坛"
-      newsletter: "安全警报/通信"
+      security_alerts: "安全警报"
+      newsletter: "简报"
   image_conversion:
     imagemagick: "Imagemagick软件"
   journals:
@@ -2582,7 +2621,7 @@ zh-CN:
         static_token_name: "API 令牌"
       ical:
         title: "iCalendar"
-        text_hint: 'iCalendar 令牌允许用户<a href="%{path}" target="_blank">订阅 OpenProject 日历</a>并查看外部客户端中的最新工作包信息。'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "管理员未启用 iCalendar 订阅。请联系管理员以使用此功能。"
         empty_text_hint: "要添加 iCalendar 令牌，请从项目的日历模块中订阅新的或现有日历。您必须拥有必要的权限。"
       oauth:
@@ -3144,7 +3183,7 @@ zh-CN:
   label_revision_id: "修订版本 %{value}"
   label_revision_plural: "修订"
   label_roadmap: "路线图"
-  label_roadmap_edit: "编辑路线图%{name}"
+  label_roadmap_edit: "编辑路线图 %{name}"
   label_roadmap_due_in: "%{value} 到期"
   label_roadmap_no_work_packages: "该版本没有工作包。"
   label_roadmap_overdue: "%{value} 超时"
@@ -3840,7 +3879,7 @@ zh-CN:
       managed: "在 OpenProject 中创建新的存储库"
     storage:
       not_available: "磁盘存储开销不可用于此存储库。"
-      update_timeout: "在 N 分钟内保留存储库最后所需的磁盘空间信息。由于计算存储库所需的磁盘空间可能增加系统开销，增加该值可以减少性能影响。"
+      update_timeout: "在 N 分钟内保留存储库最后所需磁盘空间的信息。由于计算存储库所需的磁盘空间可能增加系统开销，增加该值可以减少性能影响。"
       oauth_application_details: "关闭此窗口后，将无法再次访问客户端密钥值。请将这些值复制到 Nextcloud OpenProject 集成设置中："
       oauth_application_details_link_text: "转到设置页面"
       setup_documentation_details: "如果您在配置新文件存储方面需要帮助，请查看文档："
@@ -3954,6 +3993,8 @@ zh-CN:
   setting_feeds_limit: "Feed 内容限制"
   setting_file_max_size_displayed: "内联显示的文本文件的最大大小"
   setting_host_name: "主机名"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus 服务器 URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus 服务器密钥"
   setting_hours_per_day: "每天小时数"
   setting_hours_per_day_explanation: >-
     这定义了在以天和小时为单位显示持续时间时，什么是一"天"（例如，如果一天是 8 小时，32 小时就是 4 天）。
@@ -4033,7 +4074,7 @@ zh-CN:
   setting_session_ttl_hint: "当设置的值低于5时，其作用类似于禁用。"
   setting_session_ttl_enabled: "会话过期"
   setting_start_of_week: "一周起始日"
-  setting_sys_api_enabled: "启用存储库管理网页服务"
+  setting_sys_api_enabled: "启用版本库管理 web 服务"
   setting_sys_api_description: "存储库管理网页服务提供了集成的，用户授权的存储库访问。"
   setting_time_format: "时间"
   setting_total_percent_complete_mode: "计算 完成% 层次结构总数"
@@ -4398,7 +4439,7 @@ zh-CN:
   warning_user_limit_reached_admin: >
     添加额外的用户将超出当前限制。请<a href="%{upgrade_url}">升级您的计划</a>，以确保外部用户能够访问此实例。
   warning_user_limit_reached_instructions: >
-    您已达到用户限制（%{current}/%{max} 活跃用户）。请联系 sales@openproject.com 升级您的企业版计划以添加额外用户。
+    您达到了用户限制（%{current}/%{max}活跃用户）。 请联系sales@openproject.com以升级您的Enterprise edition计划并添加其他用户。
   warning_protocol_mismatch_html: >
 
   warning_bar:

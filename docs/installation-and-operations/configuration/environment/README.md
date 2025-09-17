@@ -206,7 +206,7 @@ OPENPROJECT_EMAILS__FOOTER (default={"en" => ""}) Emails footer
 OPENPROJECT_EMAILS__HEADER (default={"en" => ""}) Emails header
 OPENPROJECT_EMAILS__SALUTATION (default=:firstname) Address user in emails with
 OPENPROJECT_ENABLE__INTERNAL__ASSETS__SERVER (default=false) Serve assets through the Rails internal asset server
-OPENPROJECT_ENABLED__PROJECTS__COLUMNS (default=["favored", "name", "project_status", "public", "created_at", "latest_activity_at", "required_disk_space"]) Columns in a projects list displayed by default
+OPENPROJECT_ENABLED__PROJECTS__COLUMNS (default=["favorited", "name", "project_status", "public", "created_at", "latest_activity_at", "required_disk_space"]) Columns in a projects list displayed by default
 OPENPROJECT_ENABLED__SCM (default=["subversion", "git"]) Enabled SCM
 OPENPROJECT_ENFORCE__TRACKING__START__AND__END__TIMES (default=false) Require start and finish times
 OPENPROJECT_ENTERPRISE__CHARGEBEE__SITE (default="openproject-enterprise") Site name for EE trial service

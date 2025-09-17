@@ -210,7 +210,7 @@ You can mark project lists as favorites, both shared and private, but not the st
 
 ![Mark project list as favorite in OpenProject](star-project-list.png)
 
-The star will turn yellow and the favorite project list will move to the top of the list within the respective sidebar section. If multiple project lists are favored, they will be listed alphabetically.
+The star will turn yellow and the favorite project list will move to the top of the list within the respective sidebar section. If multiple project lists are favorited, they will be listed alphabetically.
 
 ![Favorite project list in OpenProject](star-yellow-project-list.png)
 

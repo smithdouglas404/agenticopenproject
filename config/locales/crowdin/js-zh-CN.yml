@@ -88,6 +88,8 @@ zh-CN:
     button_list_view: "列表视图"
     button_show_view: "全屏视图"
     button_log_time: "记录时间"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "更多"
     button_open_details: "打开详情视图"
     button_close_details: "关闭详情视图"
@@ -433,7 +435,7 @@ zh-CN:
     label_sort_lower: "向下移动"
     label_sorting: "排序"
     label_spent_time: "已耗工时"
-    label_star_query: "收藏夹"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "按回车键可以保存。"
     label_public_query: "公开"
     label_sum: "总计"
@@ -1100,6 +1102,7 @@ zh-CN:
         other: "工作包"
       child_work_packages:
         other: "%{count} 子工作包"
+      hour_string: "%{hours} h"
       hour:
         one: "1 小时"
         other: "%{count} 小时"
