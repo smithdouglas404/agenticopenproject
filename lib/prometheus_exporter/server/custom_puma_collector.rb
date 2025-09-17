@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "prometheus_exporter/server"
+
 module PrometheusExporter::Server
   class CustomPumaCollector < PumaCollector
     CUSTOM_PUMA_GAUGES = PUMA_GAUGES.merge(
