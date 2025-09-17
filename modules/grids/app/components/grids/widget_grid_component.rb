@@ -48,7 +48,7 @@ module Grids
 
     def build_widget(widget_class, *widget_args, **system_arguments)
       widget = widget_class.new(*widget_args, **system_arguments)
-      raise "Widget must be WidgetedComponent" unless widget.is_a?(WidgetedComponent)
+      raise "Widget must be WidgetedComponent" unless widget.is_a?(WidgetComponent)
 
       widget
     end

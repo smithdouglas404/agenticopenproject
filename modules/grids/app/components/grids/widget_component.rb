@@ -31,6 +31,22 @@
 module Grids
   class WidgetComponent < Primer::BaseComponent
     extend Dry::Initializer
-    include WidgetedComponent
+
+    include OpPrimer::ComponentHelpers
+    include OpTurbo::Streamable
+
+    option :current_user, default: -> { User.current }
+
+    def title
+      raise NotImplementedError
+    end
+
+    def widget_wrapper(**, &)
+      component_wrapper tag: "turbo-frame", **, &
+    end
+
+    def wrapper_arguments
+      {}
+    end
   end
 end
