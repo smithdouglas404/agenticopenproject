@@ -21,6 +21,8 @@ de:
           title: 'Neuigkeiten'
           at: 'um'
           no_results: 'Nichts Neues zu berichten.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Projektbeschreibung'
           no_results: "Noch keine Beschreibung festgelegt. Sie kann in den 'Projekteinstellungen' erstellt werden."

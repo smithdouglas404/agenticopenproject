@@ -21,6 +21,8 @@ ko:
           title: '뉴스'
           at: '-'
           no_results: '새로 보고할 것이 없음'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: '프로젝트 설명'
           no_results: "설명이 아직 작성되지 않았습니다. '프로젝트 설정'에서 입력할 수 있습니다."

@@ -196,8 +196,8 @@ fr:
     sync_failed: "Échec de la synchronisation à partir de LDAP : %{message}."
     back_to_index: "Cliquez ici pour revenir à la liste des connexions."
     technical_warning: |
-      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      [Please visit our documentation for detailed instructions](docs_url).
+      Ce formulaire LDAP nécessite une connaissance technique de votre configuration LDAP / Active Directory.
+      [Veuillez consulter notre documentation pour des instructions détaillées](docs_url).
     attribute_texts:
       name: Nom arbitraire de la connexion LDAP
       host: Nom d'hôte ou adresse IP du serveur LDAP
@@ -371,13 +371,13 @@ fr:
     rules:
       copy_workflow_from: "Type pour la copie du workflow"
       enabled: "Activé"
-      depth: "Depth"
-      item: "Item"
-      label: "Label"
+      depth: "Profondeur"
+      item: "Objet"
+      label: "Étiquette"
       score: "Score"
-      short: "Short name"
+      short: "Nom court"
       parent: "Parent"
-      blueprint: "Pattern blueprint"
+      blueprint: "Modèle de plan"
   global_search:
     title:
       all_projects: 'Recherche de "%{search_term}" dans tous les projets'
@@ -439,7 +439,7 @@ fr:
     lists:
       active: "Projets actifs"
       my: "Mes projets"
-      favorited: "Favorite projects"
+      favorited: "Projets favoris"
       archived: "Projets archivés"
       shared: "Listes de projets partagées"
       my_lists: "Mes listes de projets"
@@ -702,9 +702,7 @@ fr:
         excluded_from_totals: "Exclus des totaux"
   themes:
     dark: "Sombre"
-    dark_high_contrast: "Sombre avec contraste élevé"
     light: "Clair"
-    light_high_contrast: "Clair avec contraste élevé"
     sync_with_os: "Automatique (correspond au mode de couleur du système d'exploitation)"
   types:
     index:
@@ -1023,7 +1021,7 @@ fr:
       enterprise_trial:
         company: "Entreprise"
       favorite:
-        favorited: "Item"
+        favorited: "Objet"
       grids/grid:
         page: "Page"
         row_count: "Nombre de lignes"
@@ -1205,6 +1203,13 @@ fr:
         auto_hide_popups: "Masquer automatiquement les bannières de réussite"
         auto_hide_popups_caption: "Lorsque cette option est activée, les bannières vertes de réussite disparaissent automatiquement après 5 secondes."
         warn_on_leaving_unsaved: "M'avertir lorsque je quitte un lot de travaux contenant des modifications non enregistrées"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Mode de couleur"
         time_zone: "Fuseau horaire"
         mode_guideline: "Certains modes écrasent les couleurs des thèmes personnalisés pour des raisons d'accessibilité et de lisibilité. Veuillez sélectionner le mode Clair pour une prise en charge complète des thèmes personnalisés."
@@ -1385,7 +1390,7 @@ fr:
           unreadable: "ne peut être lu. Êtes-vous sûr qu'il s'agisse d'une licence Entreprise ?"
           already_added: "Ce jeton a déjà été ajouté."
         favorite:
-          already_favorited: "has already been favorited."
+          already_favorited: "a déjà été mis en favoris."
         grids/grid:
           overlaps: "superposition."
           outside: "est hors de la grille."
@@ -1482,10 +1487,19 @@ fr:
           typed_dag:
             circular_dependency: "La relation créée un cercle de relations."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "ne peut pas être modifié pour les relations existantes."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "ne peut pas être modifié pour les relations existantes."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "Le fournisseur de gestion de contrôle de sources n'est pas disponible"
           not_whitelisted: "n'est pas autorisé par la configuration."
@@ -1760,7 +1774,7 @@ fr:
     attachments: "Fichiers"
     actor: "Acteur"
     action: "Action"
-    api_key: "API key"
+    api_key: "Clé API"
     author: "Auteur"
     avatar: "Avatar"
     base: "Erreur générale :"
@@ -2199,7 +2213,7 @@ fr:
         Vous avez déjà un jeton ? Ajoutez-le en utilisant le bouton ci-dessous pour passer à l'abonnement Enterprise réservé.
       hide_banner: "Masquer cette bannière"
       homescreen_description: >
-        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
+        Les plans d'entreprise prolongent l'édition communautaire d'OpenProject avec des [modules d'entreprise] supplémentaires (enterprise_url) et un support professionnel, idéal pour les organisations qui utilisent OpenProject dans un environnement critique.
       homescreen_subline: En optant pour une formule d'abonnement supérieure, vous soutiendrez également un projet open source.
       baseline_comparison:
         description: Mettre en évidence les modifications apportées à cette liste depuis n'importe quel point dans le passé.
@@ -2654,7 +2668,7 @@ fr:
         static_token_name: "Jeton d'API"
       ical:
         title: "iCalendar"
-        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
+        text_hint_link: 'Les jetons iCalendar permettent aux utilisateurs de [s''abonner aux calendriers OpenProject](docs_url) et de voir les informations mises à jour du lot de travaux de clients externes.'
         disabled_text: "Les abonnements iCalendar ne sont pas activés par l'administrateur. Veuillez contacter votre administrateur pour utiliser cette fonctionnalité."
         empty_text_hint: "Pour ajouter un jeton iCalendar, abonnez-vous à un nouveau calendrier ou à un calendrier existant depuis le module Calendrier d'un projet. Vous devez avoir les autorisations nécessaires."
       oauth:

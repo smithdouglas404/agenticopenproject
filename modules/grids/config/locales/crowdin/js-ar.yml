@@ -21,6 +21,8 @@ ar:
           title: 'الأخبار'
           at: 'at'
           no_results: 'لا شيء جديد للتقرير.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'وصف المشروع'
           no_results: "No description has been written yet. One can be provided in the 'Project settings'."

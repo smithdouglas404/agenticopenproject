@@ -702,9 +702,7 @@ es:
         excluded_from_totals: "Excluido de totales"
   themes:
     dark: "Oscuro"
-    dark_high_contrast: "Contraste alto oscuro"
     light: "Claro"
-    light_high_contrast: "Contraste alto claro"
     sync_with_os: "Automático (coincide con el modo de color del SO)"
   types:
     index:
@@ -1204,6 +1202,13 @@ es:
         auto_hide_popups: "Ocultar automáticamente los banners de éxito"
         auto_hide_popups_caption: "Si se habilitan, los banners verdes de éxito desaparecerán automáticamente al cabo de 5 segundos."
         warn_on_leaving_unsaved: "Avisarme cuando salga de un paquete de trabajo con cambios sin guardar"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Modo de color"
         time_zone: "Zona horaria"
         mode_guideline: "Algunos modos sobrescribirán los colores de los temas personalizados por motivos de accesibilidad y legibilidad. Seleccione el modo Claro para obtener una compatibilidad total con los temas personalizados."
@@ -1481,10 +1486,19 @@ es:
           typed_dag:
             circular_dependency: "La relación crea un bucle de relaciones."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "no se puede cambiar para las relaciones existentes."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "no se puede cambiar para las relaciones existentes."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "El proveedor SMC no está disponible"
           not_whitelisted: "no está permitido por la configuración."

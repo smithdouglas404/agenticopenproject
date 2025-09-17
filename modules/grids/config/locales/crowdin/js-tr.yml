@@ -21,6 +21,8 @@ tr:
           title: 'Haberler'
           at: 'en'
           no_results: 'Rapor için yeni birşey bulunamadı.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Proje tanımı'
           no_results: "Henüz bir açıklama yazılmadı. Biri 'Proje ayarları' içinde sağlanabilir."

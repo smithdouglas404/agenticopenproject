@@ -693,9 +693,7 @@ zh-CN:
         excluded_from_totals: "不包括在总计中"
   themes:
     dark: "暗黑"
-    dark_high_contrast: "深色高对比度"
     light: "浅色模式"
-    light_high_contrast: "高对比度模式"
     sync_with_os: "自动（匹配操作系统颜色模式）"
   types:
     index:
@@ -1195,6 +1193,13 @@ zh-CN:
         auto_hide_popups: "自动隐藏成功横幅"
         auto_hide_popups_caption: "启用后，绿色成功横幅将在 5 秒后自动消失。"
         warn_on_leaving_unsaved: "离开未保存更改的工作包时提示我"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "颜色模式"
         time_zone: "时区"
         mode_guideline: "某些模式将覆盖自定义主题颜色，以提升无障碍性和可读性。请选择“浅色”模式，以实现对自定义主题的全面支持。"
@@ -1471,10 +1476,19 @@ zh-CN:
           typed_dag:
             circular_dependency: "关系会创建关系的循环。"
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "无法针对现有关系更改。"
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "无法针对现有关系更改。"
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "SCM提供商不可用"
           not_whitelisted: "配置所不允许的。"

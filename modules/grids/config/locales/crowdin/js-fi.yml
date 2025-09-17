@@ -21,6 +21,8 @@ fi:
           title: 'Uutiset'
           at: 'at'
           no_results: 'Ei uutta raportoitavaa.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Projektin kuvaus'
           no_results: "No description has been written yet. One can be provided in the 'Project settings'."
