@@ -42,7 +42,9 @@ module Grids
     end
 
     def widget_wrapper(**, &)
-      component_wrapper tag: "turbo-frame", **, &
+      render(WidgetBoxComponent.new(title:, **wrapper_arguments)) do
+        component_wrapper tag: :"turbo-frame", **, &
+      end
     end
 
     def wrapper_arguments

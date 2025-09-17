@@ -30,8 +30,6 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%= render(Primer::BaseComponent.new(**@system_arguments)) do %>
   <% widgets.each do |widget| %>
-    <%= render(Grids::WidgetBoxComponent.new(title: widget.title, **widget.wrapper_arguments)) do %>
-      <%= widget %>
-    <% end %> 
+    <%= widget %>
   <% end %>
 <% end %>
