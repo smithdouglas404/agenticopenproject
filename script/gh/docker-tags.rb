@@ -2,6 +2,8 @@
 # frozen_string_literal: true
 
 require "optparse"
+require "net/http"
+require "json"
 
 class Tag
   def initialize(tag)
@@ -12,8 +14,24 @@ class Tag
     @tag.match?(/^v(\d+\.\d+\.\d+.*)$/)
   end
 
+  def rc?
+    @tag.match?(/-rc$/)
+  end
+
   def version
-    @tag.sub(/^v/, "")
+    @tag.sub(/^v/, "").sub(/-rc$/, "")
+  end
+
+  def latest_release_major_minor
+    uri = URI("https://api.github.com/repos/opf/openproject/releases/latest")
+    res = Net::HTTP.get_response(uri)
+    if res.is_a?(Net::HTTPSuccess)
+      tag_name = JSON.parse(res.body)["tag_name"]
+      tag_name[/^v?(\d+\.\d+)/, 1]
+    end
+  rescue
+    puts "Error getting latest release major: #{$!}"
+    nil
   end
 
   def to_semver_docker_tags
@@ -23,19 +41,31 @@ class Tag
         "type=semver,pattern={{major}}.{{minor}},value=#{version}",
         "type=semver,pattern={{major}},value=#{version}",
       ]
+    elsif rc?
+      latest_major_minor = latest_release_major_minor
+      tags = [
+        "type=raw,value=#{major}.#{minor}-rc",
+        "type=raw,value=#{major}-rc",
+      ]
+      if latest_major_minor && latest_major_minor == [major, minor].join(".")
+        tags << [
+          "type=raw,value=rc"
+        ]
+      end
+      tags
     else
       ["type=raw,value=#{version}"]
     end
   end
   
   def major
-    return unless semver?
+    return unless semver? || rc?
 
     version.split(".")[0]
   end
 
   def minor
-    return unless semver?
+    return unless semver? || rc?
 
     version.split(".")[1]
   end
