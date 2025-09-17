@@ -5,6 +5,7 @@ import {
   BlockNoteSchema,
   defaultBlockSpecs,
 } from "@blocknote/core";
+import { OpenProjectApi } from "./extensions/open-project-api";
 
 const secret = process.env.SECRET;
 if (!secret) {
@@ -20,7 +21,12 @@ const verifyToken = createVerifier({
 const server = new Server({
   port: 1234,
   quiet: false,
-  extensions: [],
+  extensions: [
+    new OpenProjectApi({
+      apiUrl: process.env.API_URL || "https://openproject.local",
+      token: process.env.API_TOKEN || "",
+    }),
+  ],
   async onConnect(data) {
     console.log('CONNECTED: documentName: %0, socketId %0', data.documentName, data.socketId);
   },
@@ -30,7 +36,7 @@ const server = new Server({
   async onChange(data) {
     console.log(`Document ${data.documentName} was changed`);
   },
-  async onLoadDocument({ context, documentName, document }) {
+  async onLoadDocument({ context, document }) {
     const fragment = document.getXmlFragment('document-store');
     if (fragment.length === 0) {
       const schema = BlockNoteSchema.create({
@@ -50,7 +56,7 @@ const server = new Server({
     let tokenPayload;
     try {
       tokenPayload = await verifyToken(token);
-    } catch (err) {
+    } catch (_err) {
       throw new Error('Unauthorized: Invalid token.');
     }
     console.log('Token payload:', tokenPayload);
