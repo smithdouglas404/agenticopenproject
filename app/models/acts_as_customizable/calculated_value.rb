@@ -49,13 +49,14 @@ module ActsAsCustomizable::CalculatedValue
 
       enabled_ids = enabled_custom_field_ids
       given = calculated_value_fields_given(custom_fields:, enabled_ids:)
+
       result = calculate_custom_fields_result(
         given:,
         to_compute: calculated_value_fields_to_compute(custom_fields:, enabled_ids:)
       )
 
       self.custom_field_values = custom_fields.to_h { [it.id, result[it.column_name]] }
-      refresh_calculation_errors!(given, custom_fields, result)
+      refresh_calculation_errors!(given, enabled_ids, custom_fields, result)
     end
 
     private
@@ -86,7 +87,7 @@ module ActsAsCustomizable::CalculatedValue
       cf_id.sub("cf_", "").to_i
     end
 
-    def refresh_calculation_errors!(referenced_values, calculated_fields, result)
+    def refresh_calculation_errors!(given_cfs, enabled_ids, calculated_fields, result)
       return unless is_a?(Project)
 
       remove_calculated_value_errors(calculated_fields.map(&:id))
@@ -97,8 +98,16 @@ module ActsAsCustomizable::CalculatedValue
 
       unsuccessfully_calculated_cfs = failed_calculations.map { |cf_id, _| to_id(cf_id) }
 
+      cvs_with_errors = []
       if unsuccessfully_calculated_cfs.any?
-        cvs_with_errors = create_errors_for_missing_attributes(referenced_values, calculated_fields)
+        # There are two reasons for unsuccessful calculations here.
+        # 1. The value of a referenced custom field is missing (nil)
+        cvs_with_errors.concat(create_errors_for_missing_attributes(given_cfs, calculated_fields))
+
+        # 2. A referenced custom field disabled (not present in the enabled_ids list)
+        unsuccessful_cvs = calculated_fields.filter { unsuccessfully_calculated_cfs.include?(it.id) }
+        disabled_errors = create_errors_for_disabled_attributes(unsuccessful_cvs, enabled_ids)
+        cvs_with_errors.concat(disabled_errors)
       end
 
       unsuccessfully_calculated_cfs.each do |cf_id|
@@ -126,7 +135,7 @@ module ActsAsCustomizable::CalculatedValue
             errors_created << cv.id
           end
         else
-          indirectly_missing = cv.formula_referenced_custom_field_ids.select do |ref_id|
+          indirectly_missing = cv.formula_referenced_custom_field_ids.filter do |ref_id|
             calculated_fields.any? { it.id == ref_id }
           end
 
@@ -135,6 +144,19 @@ module ActsAsCustomizable::CalculatedValue
           if create_calculated_value_error(cv.id, "ERROR_MISSING_VALUE", indirectly_missing)
             errors_created << cv.id
           end
+        end
+      end
+
+      errors_created
+    end
+
+    def create_errors_for_disabled_attributes(calculated_fields, enabled_ids)
+      errors_created = []
+
+      calculated_fields.each do |cv|
+        disabled_ids = cv.formula_referenced_custom_field_ids - enabled_ids
+        if disabled_ids.any? && create_calculated_value_error(cv.id, "ERROR_DISABLED_VALUE", disabled_ids)
+          errors_created << cv.id
         end
       end
 
