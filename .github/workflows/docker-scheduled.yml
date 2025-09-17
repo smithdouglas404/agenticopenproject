@@ -13,8 +13,8 @@ jobs:
         include:
           - branch: dev
             tag: "dev"
-          - branch: release/16.3
-            tag: "16.3-pre"
+          - branch: release/16.4
+            tag: "16.4-rc,16-rc,rc"
     uses: ./.github/workflows/docker.yml
     with:
       branch: ${{ matrix.branch }}
