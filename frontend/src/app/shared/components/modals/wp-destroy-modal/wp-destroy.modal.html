@@ -46,9 +46,9 @@
             <div class="spot-list--item-title">
               #<span [textContent]="wp.id"></span>
               <span [textContent]="wp.subject"></span>
-              <strong *ngIf="children(wp).length > 0">
-                (+ {{ text.childCount(wp) }})
-              </strong>
+              @if (children(wp).length > 0) {
+                <strong>(+ {{ text.childCount(wp) }})</strong>
+              }
             </div>
           </li>
         }
