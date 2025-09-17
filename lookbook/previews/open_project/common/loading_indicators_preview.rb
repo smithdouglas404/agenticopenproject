@@ -30,9 +30,17 @@
 
 module OpenProject
   module Common
-    # @logical_path OpenProject/Common
-    class LoadingIndicatorPreview < Lookbook::Preview
-      def default; end
+    # @hidden
+    class LoadingIndicatorsPreview < Lookbook::Preview
+      # @label SkeletonBox
+      def skeleton_box
+        render_with_template
+      end
+
+      # @label Spinner
+      def spinner
+        render(Primer::Beta::Spinner.new)
+      end
     end
   end
 end
