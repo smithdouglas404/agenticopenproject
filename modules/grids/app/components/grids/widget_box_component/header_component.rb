@@ -44,6 +44,10 @@ module Grids
           "op-widget-box--header"
         )
       end
+
+      def render?
+        title.present?
+      end
     end
   end
 end
