@@ -29,7 +29,7 @@ Use `SkeletonBox` when:
 ### Example Use Case
 
 * Loading activity entries in the activity tab
-* Loading the notifications in the notification center
+* Loading the notifications in notification center
 
 ## Spinner
 
@@ -43,9 +43,9 @@ Use `SkeletonBox` when:
 
 Use `Spinner` when:
 
-- The content being loaded is small
+- The content being loaded is bound within a small container
 - The content layout is not known at all
-- You're waiting for a server response without a visual response to show
+- You're waiting for a server response without a visual response to show (eg. content will not be replaced)
 
 ### Example Use Case
 
@@ -53,12 +53,10 @@ Use `Spinner` when:
 
 ### LoadingIndicator (Deprecated)
 
-⚠️ Do not use ⚠️
+⚠️ **Do not use** ⚠️
 
 <%= embed OpenProject::Deprecated::LoadingIndicatorPreview, :default %>
 
-The LoadingIndicator component is implemented in Angular and is considered deprecated.
+The LoadingIndicator component was implemented in Angular and is now considered deprecated.
 
-It does not conform to current design or technical standards.
-
-All usages should be replaced with either `SkeletonBox` or `Spinner` depending on context.
+It does not conform to current design or technical standards. All usages should be replaced with either `SkeletonBox` or `Spinner` depending on context.
