@@ -29,17 +29,44 @@
 #++
 
 module Grids
+  # `WidgetBoxComponent` is a Box component with a border.
   class WidgetBoxComponent < ApplicationComponent
     attr_reader :title, :content_padding
 
     renders_one :header, HeaderComponent
     renders_one :body, BodyComponent
 
-    def initialize(title:, content_padding: BodyComponent::DEFAULT_PADDING, full_width: false, **system_arguments)
+    # Use Rows to add rows with borders and maintain the same padding.
+    #
+    # @param system_arguments [Hash] <%= link_to_system_arguments_docs %>
+    renders_many :rows, lambda { |**system_arguments|
+      system_arguments[:classes] = class_names(
+        "op-widget-box--row",
+        system_arguments[:classes]
+      )
+
+      OpPrimer::ListComponent::Item.new(**system_arguments)
+    }
+
+    # @param key [String] The unique key of the widget.
+    # @param title [String] The title that appears in the widget header.
+    # @param turbo_enabled [Boolean] whether to wrap the widget content in a `turbo-frame` element.
+    # @param content_padding [Symbol] <%= one_of(Grids::WidgetBox::HeaderComponent::PADDING_MAPPINGS.keys) %>
+    # @param system_arguments [Hash] <%= link_to_system_arguments_docs %>
+    def initialize(
+      key:,
+      title:,
+      turbo_enabled: true,
+      content_padding: BodyComponent::DEFAULT_PADDING,
+      full_width: false,
+      **system_arguments
+    )
       super()
 
+      @key = key
       @title = title
       @content_padding = content_padding
+
       @system_arguments = system_arguments
       @system_arguments[:tag] = :div
       @system_arguments[:classes] = class_names(
@@ -47,6 +74,19 @@ module Grids
         "widget-box",
         "widget-box_full-width" => full_width
       )
+      @system_arguments[:id] ||= "#{key}-box"
+
+      @turbo_enabled = turbo_enabled
+      @turbo_frame_arguments = { tag: :"turbo-frame", id: key }
+      @turbo_frame_arguments[:style] = "display:contents"
+
+      @list_arguments = { tag: :ul }
+      @list_arguments[:id] = "#{key}-list"
+      @list_arguments[:classes] = "op-widget-box--rows"
+    end
+
+    def render?
+      rows.any? || header? || body?
     end
 
     def default_header
@@ -55,6 +95,14 @@ module Grids
 
     def default_body
       BodyComponent.new(padding: content_padding).with_content(content) if content
+    end
+
+    private
+
+    def before_render
+      return unless header
+
+      @list_arguments[:aria] = { labelledby: header.id }
     end
   end
 end

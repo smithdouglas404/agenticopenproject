@@ -35,9 +35,13 @@ module Grids
   # @abstract Subclass and implement {#title} to create a new widget.
   class WidgetComponent < Primer::BaseComponent
     extend Dry::Initializer
-
     include OpPrimer::ComponentHelpers
-    include OpTurbo::Streamable
+
+    def self.wrapper_key
+      name.underscore.tr("/", "-").tr("_", "-")
+    end
+
+    delegate :wrapper_key, to: :class
 
     option :current_user, default: -> { User.current }
 
@@ -48,7 +52,7 @@ module Grids
     end
 
     def widget_wrapper(**, &)
-      component_wrapper tag: "turbo-frame", **, &
+      render(WidgetBoxComponent.new(key: wrapper_key, title:, **wrapper_arguments, **), &)
     end
 
     def wrapper_arguments

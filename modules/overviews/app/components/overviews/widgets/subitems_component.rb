@@ -44,10 +44,6 @@ module Overviews
       def children
         @children ||= project.children.visible
       end
-
-      def wrapper_arguments
-        { content_padding: :none }
-      end
     end
   end
 end

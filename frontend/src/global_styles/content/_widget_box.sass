@@ -127,10 +127,6 @@ $widget-box--enumeration-width: 20px
     padding-bottom: 0
     padding-left: 0
 
-    // apply special treatment for nested boxes, e.g. Border Box
-    .Box
-      border: unset
-
   &.-allow-inner-overflow
     .wiki
       overflow-y: auto
@@ -195,6 +191,24 @@ $widget-box--enumeration-width: 20px
 
   .toolbar--editable-toolbar
     height: 20px
+
+.op-widget-box--rows
+  margin: 0
+
+.op-widget-box--row
+  padding: var(--stack-padding-normal)
+  margin-top: calc(var(--borderWidth-thin) * -1)
+  list-style-type: none /* To account for applying Box component to a list */
+  border-top-color: var(--borderColor-muted)
+  border-top-style: solid
+  border-top-width: var(--borderWidth-thin)
+
+  &:first-of-type
+    border-top: none
+
+  &:last-of-type
+    border-bottom-right-radius: var(--borderRadius-medium)
+    border-bottom-left-radius: var(--borderRadius-medium)
 
 .widget-box--arrow-links
   list-style: none

@@ -31,18 +31,21 @@
 module Grids
   class WidgetBoxComponent < ApplicationComponent
     class HeaderComponent < ApplicationComponent
-      attr_reader :title
+      attr_reader :id, :title
 
+      # @param system_arguments [Hash] <%= link_to_system_arguments_docs %>
       def initialize(title:, **system_arguments)
         super()
         @title = title
         @system_arguments = system_arguments
         @system_arguments[:tag] = :header
+        @system_arguments[:id] ||= self.class.generate_id
         @system_arguments[:test_selector] = "op-widget-box--header"
         @system_arguments[:classes] = class_names(
           @system_arguments[:classes],
           "op-widget-box--header"
         )
+        @id = @system_arguments[:id]
       end
 
       def render?

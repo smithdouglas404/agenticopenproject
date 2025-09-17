@@ -41,4 +41,8 @@ RSpec.describe Grids::WidgetBoxComponent, type: :component do
   it "renders a widget box" do
     expect(rendered_component).to have_css ".widget-box"
   end
+
+  it "renders turbo-frame around content" do
+    expect(rendered_component).to have_element :"turbo-frame", id: "cool_widget"
+  end
 end

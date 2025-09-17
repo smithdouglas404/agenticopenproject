@@ -29,39 +29,33 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  widget_wrapper do
-    render(Primer::Beta::BorderBox.new) do |container|
-      container.with_header(classes: "sr-only") do
-        title
+  widget_wrapper do |container|
+    if children.empty?
+      container.with_row do
+        render(Primer::Beta::Text.new(color: :subtle)) { I18n.t("overviews.widgets.subitems.no_visible_children") }
       end
-
-      if children.empty?
+    else
+      children.find_each do |child|
         container.with_row do
-          render(Primer::Beta::Text.new(color: :subtle)) { I18n.t("overviews.widgets.subitems.no_visible_children") }
-        end
-      else
-        children.find_each do |child|
-          container.with_row do
-            flex_layout do |row|
-              row.with_column do
-                render(Primer::Beta::Text.new(color: :subtle)) do
-                  concat render Primer::Beta::Octicon.new(
-                    icon: helpers.workspace_icon(child),
-                    mr: 1,
-                    color: :subtle,
-                    "aria-label": child.workspace_label
-                  )
-                  concat child.workspace_label
-                end
+          flex_layout do |row|
+            row.with_column do
+              render(Primer::Beta::Text.new(color: :subtle)) do
+                concat render Primer::Beta::Octicon.new(
+                  icon: helpers.workspace_icon(child),
+                  mr: 1,
+                  color: :subtle,
+                  "aria-label": child.workspace_label
+                )
+                concat child.workspace_label
               end
+            end
 
-              row.with_column(ml: 2) do
-                render(Primer::Beta::Link.new(href: project_path(child))) { child.name }
-              end
+            row.with_column(ml: 2) do
+              render(Primer::Beta::Link.new(href: project_path(child))) { child.name }
+            end
 
-              row.with_column(ml: 2) do
-                render(Projects::StatusBadgeComponent.new(project: child))
-              end
+            row.with_column(ml: 2) do
+              render(Projects::StatusBadgeComponent.new(project: child))
             end
           end
         end
