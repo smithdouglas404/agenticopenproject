@@ -159,15 +159,8 @@ RSpec.describe WorkPackages::CopyService, "integration", type: :model do
       end
 
       context "required custom field in the target project" do
+        let(:custom_field) { create(:work_package_custom_field, field_format: "text", is_required: true, is_for_all: false) }
         let(:target_custom_fields) { [custom_field] }
-
-        before do
-          custom_field.update(
-            field_format: "text",
-            is_required: true,
-            is_for_all: false
-          )
-        end
 
         it "does not copy the work package" do
           expect(service_result).to be_failure
