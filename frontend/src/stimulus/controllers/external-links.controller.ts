@@ -80,7 +80,10 @@ export default class ExternalLinksController extends ApplicationController {
 }
 
 function applyLinkDescription(link:HTMLAnchorElement) {
-  if (!link.hasAttribute('aria-describedby')) {
+  const existingValue = link.getAttribute('aria-describedby');
+  if (!existingValue) {
     link.setAttribute('aria-describedby', BLANK_LINK_DESCRIPTION_ID);
+  } else if (!existingValue.split(/\s+/).includes(BLANK_LINK_DESCRIPTION_ID)) {
+    link.setAttribute('aria-describedby', existingValue + ' ' + BLANK_LINK_DESCRIPTION_ID);
   }
 }
