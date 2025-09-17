@@ -34,7 +34,7 @@ module OpenProject
 
     class_attribute :registered_by_name, default: {}
 
-    attr_reader :name, :order, :label, :edit_as, :class_names
+    attr_reader :name, :order, :label, :edit_as
 
     def initialize(name,
                    label:,
@@ -81,6 +81,10 @@ module OpenProject
       !@enterprise_feature || EnterpriseToken.allows_to?(@enterprise_feature)
     end
 
+    def for_class_name?(class_name)
+      @class_names.nil? || @class_names.include?(class_name)
+    end
+
     class << self
       def registered = registered_by_name.values
 
@@ -109,9 +113,8 @@ module OpenProject
 
       def available_for_class_name(class_name)
         available
-          .select { |field| field.class_names.nil? || field.class_names.include?(class_name) }
+          .select { |format| format.for_class_name?(class_name) && !format.label.nil? }
           .sort_by(&:order)
-          .reject { |format| format.label.nil? }
       end
 
       def disabled_formats
