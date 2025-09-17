@@ -34,7 +34,8 @@ class CalculatedValueError < ApplicationRecord
 
   ERROR_TRANSLATIONS = {
     "ERROR_MATHEMATICAL" => "calculated_values.errors.mathematical",
-    "ERROR_MISSING_VALUE" => "calculated_values.errors.missing_value"
+    "ERROR_MISSING_VALUE" => "calculated_values.errors.missing_value",
+    "ERROR_DISABLED_VALUE" => "calculated_values.errors.disabled_value"
   }.freeze
 
   VALID_ERROR_CODES = ERROR_TRANSLATIONS.keys.freeze
@@ -51,8 +52,8 @@ class CalculatedValueError < ApplicationRecord
     translation_key = ERROR_TRANSLATIONS.fetch(error_code, "calculated_values.errors.unknown")
     translation_options = {}
 
-    if error_code == "ERROR_MISSING_VALUE"
-      # To keep the error message short, we only show the first custom field with a missing value.
+    if %w[ERROR_MISSING_VALUE ERROR_DISABLED_VALUE].include?(error_code)
+      # To keep the error message short, we only show the first custom field with a missing/disabled value.
       cf = CustomField.find(missing_custom_field_ids.first)
 
       if cf
