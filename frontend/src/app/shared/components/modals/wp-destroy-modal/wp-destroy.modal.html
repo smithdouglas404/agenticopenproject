@@ -80,7 +80,7 @@
         class="button button_no-margin -danger spot-action-bar--action"
         [attr.disabled]="busy || blockedDueToUnconfirmedChildren || undefined"
         (click)="confirmDeletion($event)">
-        <span class="spot-icon spot-icon_delete"></span>
+        <svg trash-icon size="small" />
         {{ text.confirm }}
       </button>
     </div>

@@ -77,8 +77,7 @@ module Admin
             )
         end
 
-        # rubocop:disable Metrics/AbcSize
-        def update
+        def update # rubocop:disable Metrics/AbcSize
           input = item_input
           item_service
             .update_item(contract_class: update_contract,
@@ -95,13 +94,20 @@ module Admin
               end
             )
         end
-        # rubocop:enable Metrics/AbcSize
 
         def move
           item_service
             .reorder_item(item: @active_item, new_sort_order: params.require(:new_sort_order))
 
           redirect_to(custom_field_item_path(@custom_field, @active_item.parent), status: :see_other)
+        end
+
+        def change_parent
+          permitted = params.expect(custom_field_hierarchy_forms_new_parent_form_model: [:new_parent])
+          new_parent = CustomField::Hierarchy::Item.including_children.find(permitted[:new_parent])
+          item_service.move_item(item: @active_item, new_parent:)
+
+          redirect_to(custom_field_item_path(@custom_field, new_parent), status: :see_other)
         end
 
         def destroy
@@ -117,6 +123,13 @@ module Admin
 
         def deletion_dialog
           respond_with_dialog DeleteItemDialogComponent.new(custom_field: @custom_field, hierarchy_item: @active_item)
+        end
+
+        def change_parent_dialog
+          respond_with_dialog ChangeItemParentDialogComponent.new(
+            custom_field: @custom_field,
+            hierarchy_item: @active_item
+          )
         end
 
         private

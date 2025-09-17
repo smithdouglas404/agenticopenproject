@@ -4,10 +4,7 @@
   data-test-selector="op-add-existing-pane--search-input"
   [placeholder]="text.placeholder"
   >
-  <span
-    slot="before"
-    class="spot-icon spot-icon_search"
-  ></span>
+  <svg search-icon slot="before" size="small" />
 </spot-text-field>
 
 @if ((isLoading$ | async) === false) {
@@ -55,4 +52,3 @@
     <svg:rect x="0" y="32" width="100%" height="12" rx="1" />
   </op-content-loader>
 }
-

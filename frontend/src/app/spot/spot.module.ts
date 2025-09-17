@@ -12,7 +12,6 @@ import { SpotCheckboxComponent } from './components/checkbox/checkbox.component'
 import { SpotSwitchComponent } from './components/switch/switch.component';
 import { SpotToggleComponent } from './components/toggle/toggle.component';
 import { SpotTextFieldComponent } from './components/text-field/text-field.component';
-import { SpotFilterChipComponent } from './components/filter-chip/filter-chip.component';
 import { SpotDropModalComponent } from './components/drop-modal/drop-modal.component';
 import { SpotTooltipComponent } from './components/tooltip/tooltip.component';
 import { SpotFormFieldComponent } from './components/form-field/form-field.component';
@@ -40,7 +39,6 @@ import { SpotDropModalPortalComponent } from './components/drop-modal/drop-modal
     SpotSwitchComponent,
     SpotToggleComponent,
     SpotTextFieldComponent,
-    SpotFilterChipComponent,
     SpotDropModalComponent,
     SpotDropModalPortalComponent,
     SpotDropModalPortalComponent,
@@ -56,7 +54,6 @@ import { SpotDropModalPortalComponent } from './components/drop-modal/drop-modal
     SpotSwitchComponent,
     SpotToggleComponent,
     SpotTextFieldComponent,
-    SpotFilterChipComponent,
     SpotDropModalComponent,
     SpotDropModalPortalComponent,
     SpotDropModalPortalComponent,

@@ -53,10 +53,7 @@
             (inputFocus)="textFieldFocused = true"
             (inputBlur)="textFieldFocused = false"
             >
-            <span
-              slot="before"
-              class="spot-icon spot-icon_search"
-            ></span>
+            <svg search-icon slot="before" size="small" />
           </spot-text-field>
         }
         @if ((loading$ | async) === false) {
@@ -108,7 +105,7 @@
                 class="button spot-action-bar--action"
                 [href]="allProjectsPath()"
                 >
-                <span class="spot-icon spot-icon_unordered-list"></span>
+                <svg list-unordered-icon size="small" />
                 <span [textContent]="text.project.list"></span>
               </a>
               @if (canCreateNewProjects$ | async) {
@@ -116,7 +113,7 @@
                   class="button -primary spot-action-bar--action"
                   [href]="newProjectPath()"
                   >
-                  <span class="spot-icon spot-icon_add"></span>
+                  <svg plus-icon size="small" />
                   <span [textContent]="text.project.singular"></span>
                 </a>
               }

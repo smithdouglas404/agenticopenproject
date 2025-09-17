@@ -54,9 +54,7 @@
         data-test-selector="confirmation-modal--cancel"
         (click)="close($event)"
         >
-        @if (icon.cancel; as clazz) {
-          <span class="spot-icon spot-icon_{{clazz}}"></span>
-        }
+        <svg x-icon size="small"></svg>
         <span>{{text.button_cancel}}</span>
       </button>
       <button
@@ -66,8 +64,13 @@
         [ngClass]="dangerHighlighting ? '-danger': '-primary'"
         (click)="confirmAndClose($event)"
         >
-        @if (icon.continue; as clazz) {
-          <span class="spot-icon spot-icon_{{clazz}}"></span>
+        @switch (icon.continue) {
+          @case ('trash') {
+            <svg trash-icon size="small"></svg>
+          }
+          @case ('unlink') {
+            <svg unlink-icon size="small"></svg>
+          }
         }
         <span>{{text.button_continue}}</span>
       </button>

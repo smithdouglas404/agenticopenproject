@@ -1,20 +1,32 @@
-import { inject, Injectable, Injector } from '@angular/core';
-import { filter, map, tap } from 'rxjs/operators';
+import {
+  inject,
+  Injectable,
+  Injector,
+} from '@angular/core';
+import {
+  filter,
+  map,
+  tap,
+} from 'rxjs/operators';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { TimeEntryResource } from 'core-app/features/hal/resources/time-entry-resource';
 import { ApiV3FilterBuilder } from 'core-app/shared/helpers/api-v3/api-v3-filter-builder';
-import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
+import {
+  BehaviorSubject,
+  firstValueFrom,
+  Observable,
+} from 'rxjs';
 import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import moment from 'moment/moment';
-import {
-  StopExistingTimerModalComponent,
-} from 'core-app/shared/components/time_entries/timer/stop-existing-timer-modal.component';
+import { StopExistingTimerModalComponent } from 'core-app/shared/components/time_entries/timer/stop-existing-timer-modal.component';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { OpModalService } from 'core-app/shared/components/modal/modal.service';
 import { HalResourceService } from 'core-app/features/hal/services/hal-resource.service';
+import { octionElement } from 'core-app/shared/helpers/op-icon-builder';
+import { clockIconData } from '@openproject/octicons-angular';
 
 @Injectable()
 export class TimeEntryTimerService {
@@ -106,9 +118,8 @@ export class TimeEntryTimerService {
 
   private renderTimer() {
     const timerElement = document.createElement('span');
-    const icon = document.createElement('span');
+    const icon = octionElement(clockIconData, 'xsmall');
     timerElement.classList.add('op-principal--timer');
-    icon.classList.add('spot-icon', 'spot-icon_time', 'spot-icon_1_25');
     timerElement.appendChild(icon);
 
     const avatar = document.querySelector<HTMLElement>('.op-top-menu-user-avatar');

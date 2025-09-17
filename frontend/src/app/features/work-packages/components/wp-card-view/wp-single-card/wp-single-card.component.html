@@ -131,12 +131,23 @@
              />
         }
         @if (baselineIcon(workPackage) !== null) {
-          <span
-            class="spot-icon spot-icon_1 spot-icon_flex op-wp-single-card--content-baseline"
-            [ngClass]="baselineMode==='added' ? 'spot-icon_flex spot-icon_arrow-in op-table-baseline--icon-added' : (baselineMode==='removed' ? 'spot-icon_arrow-out op-table-baseline--icon-removed' : 'spot-icon_delta-triangle op-table-baseline--icon-changed')"
-            title="{{ baselineMode==='added' ? text.baseLineIconAdded : (baselineMode==='removed' ? text.baseLineIconRemoved : text.baseLineIconChanged) }}"
-            >
-          </span>
+          @switch (baselineMode) {
+            @case ('added') {
+              <span title="{{ text.baseLineIconAdded }}">
+                <svg op-arrow-in-icon size="small" class="op-table-baseline--icon-added"></svg>
+              </span>
+            }
+            @case ('removed') {
+              <span title="{{ text.baseLineIconRemoved }}">
+                <svg reply-icon size="small" class="op-table-baseline--icon-removed"></svg>
+              </span>
+            }
+            @default {
+              <span title="{{ text.baseLineIconChanged }}">
+                <svg op-triangle-delta-icon size="small" class="op-table-baseline--icon-changed"></svg>
+              </span>
+            }
+          }
         }
       </div>
       @if (workPackage.assignee) {

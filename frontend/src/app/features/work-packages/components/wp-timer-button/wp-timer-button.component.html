@@ -7,7 +7,7 @@
       [title]="text.stop_timer"
       (click)="stop()"
       >
-      <span class="spot-icon spot-icon_time-tracking-stop"></span>
+      <svg op-stopwatch-stop-icon size="small" />
       <span class="button--text">
         {{ elapsed$ | async }}
       </span>
@@ -21,7 +21,8 @@
       [title]="text.start_timer"
       (click)="start()"
       >
-      <span class="spot-icon spot-icon_time-tracking-start"></span>
+
+      <svg op-stopwatch-start-icon size="small" />
     </button>
   }
 }
