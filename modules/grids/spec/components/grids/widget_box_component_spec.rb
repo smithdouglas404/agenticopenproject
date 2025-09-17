@@ -30,15 +30,15 @@
 require "rails_helper"
 
 RSpec.describe Grids::WidgetBoxComponent, type: :component do
-  def render_component(**args)
-    render_inline(described_class.new(**args))
+  def render_component(...)
+    render_inline(described_class.new(...))
   end
 
-  subject(:rendered) { render_component(title: "Cool Widget") }
+  subject(:rendered_component) do
+    render_component(key: "cool_widget", title: "Cool Widget")
+  end
 
-  it "renders with default inset styles" do
-    puts rendered
-
-    expect(rendered).to have_css ".widget-box"
+  it "renders a widget box" do
+    expect(rendered_component).to have_css ".widget-box"
   end
 end
