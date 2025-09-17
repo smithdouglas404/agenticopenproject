@@ -29,7 +29,14 @@
 #++
 
 module CustomFields
-  class UpdateContract < BaseContract
-    include CustomFields::EnterpriseGuard
+  module EnterpriseGuard
+    extend ActiveSupport::Concern
+
+    include ::RequiresEnterpriseGuard
+
+    included do
+      self.enterprise_action = :calculated_values
+      self.enterprise_condition = ->(*) { model.field_format_calculated_value? }
+    end
   end
 end
