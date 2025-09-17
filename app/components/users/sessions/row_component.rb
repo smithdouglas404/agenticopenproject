@@ -68,10 +68,8 @@ module Users
       def expires_on
         if token?
           format_expires(token_expires_at)
-        elsif session? && record.respond_to?(:expires_at) && record.expires_at.present?
-          format_expires(record.expires_at)
         else
-          "-"
+          I18n.t("users.sessions.unknown")
         end
       end
 

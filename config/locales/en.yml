@@ -673,6 +673,7 @@ en:
       device: "Device / OS"
       unknown_browser: "unknown browser"
       unknown_os: "unknown operating system"
+      unknown: "(unknown)"
       current: "Current (this device)"
       title: "Session management"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
