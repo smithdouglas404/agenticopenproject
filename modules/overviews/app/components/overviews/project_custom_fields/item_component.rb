@@ -58,7 +58,10 @@ module Overviews
         errors = @project_custom_field.calculated_value_errors.where(project: @project)
 
         # FIXME: this is a copy from the project list row component. Reuse it here.
-        render(Primer::OpenProject::FlexLayout.new(align_items: :center)) do |container|
+        render(Primer::OpenProject::FlexLayout.new(align_items: :center,
+                                                   data: {
+                                                     test_selector: "error-cf-#{@project_custom_field.id}"
+                                                   })) do |container|
           container.with_column do
             render Primer::Beta::Octicon.new(icon: :"alert-fill", color: :danger)
           end
