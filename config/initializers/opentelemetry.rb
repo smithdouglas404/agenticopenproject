@@ -48,6 +48,15 @@ Rails.application.configure do
           OpenTelemetry::Exporter::OTLP::Exporter.new
         )
       )
+
+      c.resource = OpenTelemetry::SDK::Resources::Resource.create(
+        {
+          "deployment.environment" => Rails.env,
+          "service.namespace" => "openproject",
+          "service.instance.id" => Socket.gethostname
+        }
+      )
+
       c.use_all
     end
 
