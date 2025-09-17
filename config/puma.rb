@@ -85,46 +85,56 @@ if OpenProject::Configuration.statsd_host.present?
   plugin :statsd
 end
 
-if OpenProject::Configuration.metrics["enabled"]
+metrics_enabled = OpenProject::Configuration.metrics["enabled"]
+# we keep this around for compatibility purposes in 15.5 @todo remove in 16.6
+metrics_enabled ||= ENV["OPENPROJECT_PROMETHEUS_EXPORT"] == "true"
+
+if metrics_enabled
   require "prometheus_exporter/instrumentation"
 
-  # module AdditionalPumaStats
-  #   def collect_worker_status(metric, status)
-  #     super
-
-  #     metric[:requests_count] ||= 0
-  #     metric[:requests_count] += status["requests_count"]
-
-  #     puts "Metrics: #{metric.inspect}"
-  #   end
-
-  #   def collect_puma_stats(metric)
-  #     super
-
-  #     puts "COLLECT PUMA STATS METRIC: #{metric.inspect}"
-  #     puts "  #{::Puma.stats}"
-  #   end
-  # end
-
-  # PrometheusExporter::Instrumentation::Puma.prepend AdditionalPumaStats
-
+  ##
+  # Starts the instrumentation (a background thread) watching our metrics.
+  # If using puma in clustered mode, this has to be called after forking
+  # in one of the puma worker processes by calling this in `after_worker_boot`.
+  #
+  # The actual thread has to be started only in one of the processes
+  # as the puma metrics retrieved via `Puma.stats` contain the metrics for
+  # all puma workers.
   def instrument_puma!
+    require "socket"
     require "prometheus_exporter/client"
 
     unless PrometheusExporter::Instrumentation::Puma.started?
       PrometheusExporter::Client.default = PrometheusExporter::Client.new(
         host: "localhost",
-        port: OpenProject::Configuration.metrics["port"]
+        port: OpenProject::Configuration.metrics["port"],
+        custom_labels: {
+          hostname: Socket.gethostname,
+          pid: Process.pid
+        }
       )
 
-      PrometheusExporter::Instrumentation::Puma.start
+      PrometheusExporter::Instrumentation::CustomPuma.start
+      PrometheusExporter::Instrumentation::Process.start(type: "master")
     end
   end
 
+  ##
+  # Starts the prometheus exporter. We want to do this only once in the puma master
+  # process if in clustered mode. So if that, only call this in `before_fork`.
   def start_exporter!
     require "prometheus_exporter/server"
+    require "prometheus_exporter/server/custom_puma_collector"
 
-    server = PrometheusExporter::Server::WebServer.new bind: "0.0.0.0", port: OpenProject::Configuration.metrics["port"]
+    collector = PrometheusExporter::Server::Collector.new logger: WEBrick::Log.new(File::NULL)
+    collector.register_collector PrometheusExporter::Server::CustomPumaCollector.new
+
+    server = PrometheusExporter::Server::WebServer.new(
+      bind: "0.0.0.0",
+      port: OpenProject::Configuration.metrics["port"],
+      collector: collector
+    )
+
     server.start
   end
 
