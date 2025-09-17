@@ -226,6 +226,5 @@ export default defineConfig([
     '**/.eslintrc.js',
     'coverage/',
     '**/vendor',
-    'src/app/shared/helpers/chronic_duration.js',
   ]),
 ]);

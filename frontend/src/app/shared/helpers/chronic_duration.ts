@@ -35,7 +35,6 @@
  * lib/chronic_duration.rb.
  */
 
-/* eslint-disable */
 export class DurationParseError extends Error {
 }
 
@@ -49,9 +48,28 @@ const HOURS_PER_DAY = 24;
 const DAYS_PER_MONTH = 30;
 
 const FLOAT_MATCHER = /[0-9]*\.?[0-9]+/g;
-const DURATION_UNITS_LIST = ['seconds', 'minutes', 'hours', 'days', 'weeks', 'months', 'years'];
+const DURATION_UNITS_LIST = ['seconds', 'minutes', 'hours', 'days', 'weeks', 'months', 'years'] as const;
+export type DurationUnit = typeof DURATION_UNITS_LIST[number];
+export type DurationFormat = 'micro'|'short'|'long'|'days_and_hours'|'hours_only'|'chrono'|'default';
 
-const MAPPINGS = {
+export interface ChronicDurationOptions {
+  hoursPerDay?:number;
+  daysPerMonth?:number;
+  defaultUnit?:DurationUnit;
+  raiseExceptions?:boolean;
+  ignoreSecondsWhenColonSeparated?:boolean;
+  keepZero?:boolean;
+  format?:DurationFormat;
+  joiner?:string;
+  limitToHours?:boolean;
+  weeks?:boolean;
+  units?:number;
+  hoursOnly?:boolean;
+}
+
+type Dividers = Partial<Record<DurationUnit, string>> & { pluralize?:boolean; keepZero?:boolean};
+
+const MAPPINGS:Record<string, DurationUnit> = {
   seconds: 'seconds',
   second: 'seconds',
   secs: 'seconds',
@@ -89,18 +107,22 @@ const MAPPINGS = {
 
 const JOIN_WORDS = ['and', 'with', 'plus'];
 
-function convertToNumber(string) {
+function convertToNumber(string:string):number {
   const f = parseFloat(string);
   return f % 1 > 0 ? f : parseInt(string, 10);
 }
 
-function durationUnitsSecondsMultiplier(unit, opts) {
-  if (!DURATION_UNITS_LIST.includes(unit)) {
+function isDurationUnit(unit:string):unit is DurationUnit {
+  return (DURATION_UNITS_LIST as readonly string[]).includes(unit);
+}
+
+function durationUnitsSecondsMultiplier(unit:string, opts:ChronicDurationOptions):number {
+  if (!isDurationUnit(unit)) {
     return 0;
   }
 
-  const hoursPerDay = opts.hoursPerDay || HOURS_PER_DAY;
-  const daysPerMonth = opts.daysPerMonth || DAYS_PER_MONTH;
+  const hoursPerDay = opts.hoursPerDay ?? HOURS_PER_DAY;
+  const daysPerMonth = opts.daysPerMonth ?? DAYS_PER_MONTH;
   const daysPerWeek = Math.trunc(daysPerMonth / FULL_WEEKS_PER_MONTH);
 
   switch (unit) {
@@ -123,9 +145,9 @@ function durationUnitsSecondsMultiplier(unit, opts) {
   }
 }
 
-function calculateFromWords(string, opts) {
+function calculateFromWords(string:string, opts:ChronicDurationOptions):number {
   let val = 0;
-  let lastExplicitUnit = null;
+  let lastExplicitUnit:DurationUnit|null = null;
   const words = string.split(' ');
 
   words.forEach((v, k) => {
@@ -133,10 +155,10 @@ function calculateFromWords(string, opts) {
       return;
     }
     if (v.search(FLOAT_MATCHER) >= 0) {
-      const nextWord = words[parseInt(k, 10) + 1];
-      let unit;
+      const nextWord = words[k + 1];
+      let unit:DurationUnit;
 
-      if (nextWord && DURATION_UNITS_LIST.includes(nextWord)) {
+      if (nextWord && isDurationUnit(nextWord)) {
         // Next word is a valid unit, use it and remember as last explicit unit
         unit = nextWord;
         lastExplicitUnit = nextWord;
@@ -153,7 +175,7 @@ function calculateFromWords(string, opts) {
         lastExplicitUnit = unit;
       } else {
         // No explicit unit and no previous unit, fall back to default
-        unit = opts.defaultUnit || 'seconds';
+        unit = opts.defaultUnit ?? 'seconds';
       }
 
       val += convertToNumber(v) * durationUnitsSecondsMultiplier(unit, opts);
@@ -163,12 +185,12 @@ function calculateFromWords(string, opts) {
 }
 
 // Parse 3:41:59 and return 3 hours 41 minutes 59 seconds
-function filterByType(string, opts) {
+function filterByType(string:string, opts:ChronicDurationOptions):string {
   const chronoUnitsList = DURATION_UNITS_LIST.filter(function (value) {
-    if (value === "weeks") { return false }
-    if (opts.ignoreSecondsWhenColonSeperated && value === "seconds") { return false }
+    if (value === 'weeks') { return false; }
+    if (opts.ignoreSecondsWhenColonSeparated && value === 'seconds') { return false; }
 
-    return true
+    return true;
   });
 
   if (
@@ -176,7 +198,7 @@ function filterByType(string, opts) {
       .replace(/ +/g, '')
       .search(RegExp(`${FLOAT_MATCHER.source}(:${FLOAT_MATCHER.source})+`, 'g')) >= 0
   ) {
-    const res = [];
+    const res:string[] = [];
     string
       .replace(/ +/g, '')
       .split(':')
@@ -194,8 +216,8 @@ function filterByType(string, opts) {
 
 // Get rid of unknown words and map found
 // words to defined time units
-function filterThroughWhiteList(string, opts) {
-  const res = [];
+function filterThroughWhiteList(string:string, opts:ChronicDurationOptions):string {
+  const res:(string|number)[] = [];
   string.split(' ').forEach((word) => {
     if (word === '') {
       return;
@@ -214,13 +236,13 @@ function filterThroughWhiteList(string, opts) {
     }
   });
   // add '1' at front if string starts with something recognizable but not with a number, like 'day' or 'minute 30sec'
-  if (res.length > 0 && MAPPINGS[res[0]]) {
+  if (res.length > 0 && typeof res[0] === 'string' && MAPPINGS[res[0]]) {
     res.splice(0, 0, 1);
   }
   return res.join(' ');
 }
 
-function cleanup(string, opts) {
+function cleanup(string:string, opts:ChronicDurationOptions):string {
   let res = string.toLowerCase();
   res = filterByType(res, opts);
   res = res
@@ -230,7 +252,12 @@ function cleanup(string, opts) {
   return filterThroughWhiteList(res, opts);
 }
 
-function humanizeTimeUnit(number, unit, pluralize, keepZero) {
+function humanizeTimeUnit(
+  number:string,
+  unit:string|undefined,
+  pluralize?:boolean,
+  keepZero?:boolean
+):string|null {
   if (number === '0' && !keepZero) {
     return null;
   }
@@ -248,15 +275,25 @@ function humanizeTimeUnit(number, unit, pluralize, keepZero) {
 // Given a string representation of elapsed time,
 // return an integer (or float, if fractions of a
 // second are input)
-export function parseChronicDuration(string, opts = {}) {
+export function parseChronicDuration(string:string, opts:ChronicDurationOptions = {}):number|null {
   const result = calculateFromWords(cleanup(string, opts), opts);
   return !opts.keepZero && result === 0 ? null : result;
 }
 
 // Given an integer and an optional format,
 // returns a formatted string representing elapsed time
-export function outputChronicDuration(seconds, opts = {}) {
-  const units = {
+export function outputChronicDuration(seconds:number, opts:ChronicDurationOptions = {}):string|null {
+  if (opts.hoursOnly) {
+    const decimalHours = seconds / 3600;
+    const hours = Math.floor(decimalHours);
+    if (decimalHours % 1 !== 0) {
+      const minutes = Math.round((decimalHours % 1) * 60);
+      return `${hours}h ${minutes}m`;
+    }
+    return `${hours}h`;
+  }
+
+  const units:Record<DurationUnit, number> = {
     years: 0,
     months: 0,
     weeks: 0,
@@ -266,8 +303,8 @@ export function outputChronicDuration(seconds, opts = {}) {
     seconds,
   };
 
-  const hoursPerDay = opts.hoursPerDay || HOURS_PER_DAY;
-  const daysPerMonth = opts.daysPerMonth || DAYS_PER_MONTH;
+  const hoursPerDay = opts.hoursPerDay ?? HOURS_PER_DAY;
+  const daysPerMonth = opts.daysPerMonth ?? DAYS_PER_MONTH;
   const daysPerWeek = Math.trunc(daysPerMonth / FULL_WEEKS_PER_MONTH);
 
   const decimalPlaces =
@@ -317,10 +354,10 @@ export function outputChronicDuration(seconds, opts = {}) {
     }
   }
 
-  let joiner = opts.joiner || ' ';
-  let process = null;
+  let joiner = opts.joiner ?? ' ';
+  let process:((_str:string) => string)|null = null;
 
-  let dividers;
+  let dividers:Dividers;
   switch (opts.format) {
     case 'micro':
       dividers = {
@@ -347,7 +384,6 @@ export function outputChronicDuration(seconds, opts = {}) {
       break;
     case 'long':
       dividers = {
-        /* eslint-disable @gitlab/require-i18n-strings */
         years: ' year',
         months: ' month',
         weeks: ' week',
@@ -355,7 +391,6 @@ export function outputChronicDuration(seconds, opts = {}) {
         hours: ' hour',
         minutes: ' minute',
         seconds: ' second',
-        /* eslint-enable @gitlab/require-i18n-strings */
         pluralize: true,
       };
       break;
@@ -365,29 +400,29 @@ export function outputChronicDuration(seconds, opts = {}) {
         keepZero: true,
       };
 
-      units.days += units.weeks * daysPerWeek
-      units.weeks = 0
-      units.days += units.months * daysPerMonth
-      units.months = 0
-      units.days += Math.floor(units.years * SECONDS_PER_YEAR / 3600 / 24)
-      units.years = 0
+      units.days += units.weeks * daysPerWeek;
+      units.weeks = 0;
+      units.days += units.months * daysPerMonth;
+      units.months = 0;
+      units.days += Math.floor(units.years * SECONDS_PER_YEAR / 3600 / 24);
+      units.years = 0;
       if (units.days > 0) {
         dividers.days = 'd';
       }
 
-      units.hours += (((units.minutes * 60) + units.seconds) / 3600.0)
-      units.hours = parseFloat(Math.round(units.hours * 100)) / 100;
+      units.hours += (((units.minutes * 60) + units.seconds) / 3600.0);
+      units.hours = parseFloat(Math.round(units.hours * 100) / 100 + '');
 
-      break
+      break;
     case 'hours_only':
       dividers = {
         hours: 'h',
         keepZero: true,
       };
 
-      units.hours = parseFloat(Math.round(units.hours * 100)) / 100;
+      units.hours = parseFloat(Math.round(units.hours * 100) / 100 + '');
 
-      break
+      break;
     case 'chrono':
       dividers = {
         years: ':',
@@ -405,7 +440,7 @@ export function outputChronicDuration(seconds, opts = {}) {
         // Get rid of lead off zero
         // Get rid of trailing:
         const divider = ':';
-        const processed = [];
+        const processed:string[] = [];
         str.split(divider).forEach((n) => {
           if (n === '') {
             return;
@@ -414,8 +449,8 @@ export function outputChronicDuration(seconds, opts = {}) {
           if (n.search('\\.') >= 0) {
             processed.push(
               parseFloat(n)
-                .toFixed(decimalPlaces)
-                .padStart(3 + decimalPlaces, '0'),
+                .toFixed(decimalPlaces ?? 0)
+                .padStart(3 + (decimalPlaces ?? 0), '0'),
             );
           } else {
             processed.push(n.padStart(2, '0'));
@@ -431,7 +466,6 @@ export function outputChronicDuration(seconds, opts = {}) {
       break;
     default:
       dividers = {
-        /* eslint-disable @gitlab/require-i18n-strings */
         years: ' yr',
         months: ' mo',
         weeks: ' wk',
@@ -439,25 +473,22 @@ export function outputChronicDuration(seconds, opts = {}) {
         hours: ' hr',
         minutes: ' min',
         seconds: ' sec',
-        /* eslint-enable @gitlab/require-i18n-strings */
         pluralize: true,
       };
       break;
   }
 
-  let result = [];
-  ['years', 'months', 'weeks', 'days', 'hours', 'minutes', 'seconds'].forEach((t) => {
+  let result:string[] = [];
+  [...DURATION_UNITS_LIST].reverse().forEach((t) => {
     if (t === 'weeks' && !opts.weeks) {
       return;
     }
     let num = units[t];
     if (t === 'seconds' && num % 0 !== 0) {
-      num = num.toFixed(decimalPlaces);
-    } else {
-      num = num.toString();
+      num = parseFloat(num.toFixed(decimalPlaces ?? 0));
     }
     const keepZero = !dividers.keepZero && t === 'seconds' ? opts.keepZero : dividers.keepZero;
-    const humanized = humanizeTimeUnit(num, dividers[t], dividers.pluralize, keepZero);
+    const humanized = humanizeTimeUnit(num.toString(), dividers[t], dividers.pluralize, keepZero);
     if (humanized !== null) {
       result.push(humanized);
     }
@@ -467,11 +498,11 @@ export function outputChronicDuration(seconds, opts = {}) {
     result = result.slice(0, opts.units);
   }
 
-  result = result.join(joiner);
+  let resultStr = result.join(joiner);
 
   if (process) {
-    result = process(result);
+    resultStr = process(resultStr);
   }
 
-  return result.length === 0 ? null : result;
+  return resultStr.length === 0 ? null : resultStr;
 }
