@@ -7,14 +7,22 @@ on:
   workflow_dispatch: # Allow manual trigger
 
 jobs:
+  generate-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate matrix
+        id: set-matrix
+        run: |
+          matrix=$(ruby script/gh/docker-tags.rb --matrix)
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+
   build:
+    needs: generate-matrix
     strategy:
-      matrix:
-        include:
-          - branch: dev
-            tag: "dev"
-          - branch: release/16.4
-            tag: "16.4-rc"
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
     uses: ./.github/workflows/docker.yml
     with:
       branch: ${{ matrix.branch }}
