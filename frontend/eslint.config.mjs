@@ -59,7 +59,7 @@ export default defineConfig([
       ],
 
       // Sometimes we need to shush the TypeScript compiler
-      'no-unused-vars': ['error', { varsIgnorePattern: '^_', argsIgnorePattern: '^_' }],
+      'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^_', argsIgnorePattern: '^_' }],
 
       // Allow short circuit evaluations
