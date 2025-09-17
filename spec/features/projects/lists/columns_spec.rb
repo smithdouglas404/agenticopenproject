@@ -437,5 +437,34 @@ RSpec.describe "Projects lists columns", :js, with_settings: { login_required?: 
           .to have_css(".cf_#{static_int_calculated_value.id}", text: 2)
       end
     end
+
+    context "when there is a calculation error" do
+      let!(:division_by_zero_calculated_value) do
+        create(:calculated_value_project_custom_field,
+               name: "Calculated value error field",
+               formula: "6 / 0",
+               projects: [project])
+      end
+
+      before do
+        login_as(admin)
+
+        project.calculate_custom_fields([division_by_zero_calculated_value])
+        project.save!
+
+        projects_page.visit!
+      end
+
+      it "displays the error in the value cell" do
+        projects_page.set_columns("Name", division_by_zero_calculated_value.name)
+
+        projects_page.within_row(project) do
+          expect(page)
+            .to have_css(".name", text: project.name)
+          expect(page)
+            .to have_css(".cf_#{division_by_zero_calculated_value.id}", text: I18n.t("calculated_values.errors.mathematical"))
+        end
+      end
+    end
   end
 end
