@@ -6,7 +6,6 @@ get:
   description: |- 
     Lists users. Only administrators or users with the following global permission can access this resource:
     - `manage_user`
-
   tags:
     - Users
     - Principals
