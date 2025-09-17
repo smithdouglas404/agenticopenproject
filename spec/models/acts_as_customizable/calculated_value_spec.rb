@@ -33,26 +33,26 @@ require "spec_helper"
 RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_value_project_attribute: true } do
   using CustomFieldFormulaReferencing
 
-  let(:model_class) do
-    Class.new do
-      include ActsAsCustomizable::CalculatedValue
-
-      def enabled_custom_field_ids = nil
-
-      def custom_field_values(*) = nil
-      attr_writer :custom_field_values
-    end
-  end
-
-  let(:instance) { model_class.new }
-
-  before do
-    allow(instance).to receive(:enabled_custom_field_ids).and_return(enabled_custom_field_ids)
-    allow(instance).to receive(:custom_field_values).with(all: true).and_return(custom_field_values)
-    allow(instance).to receive(:custom_field_values=)
-  end
-
   describe "#calculate_custom_fields" do
+    let(:model_class) do
+      Class.new do
+        include ActsAsCustomizable::CalculatedValue
+
+        def enabled_custom_field_ids = nil
+
+        def custom_field_values(*) = nil
+        attr_writer :custom_field_values
+      end
+    end
+
+    let(:instance) { model_class.new }
+
+    before do
+      allow(instance).to receive(:enabled_custom_field_ids).and_return(enabled_custom_field_ids)
+      allow(instance).to receive(:custom_field_values).with(all: true).and_return(custom_field_values)
+      allow(instance).to receive(:custom_field_values=)
+    end
+
     context "when calling with empty array" do
       let(:enabled_custom_field_ids) { [42] }
       let(:custom_field_values) { [:foo] }
@@ -378,6 +378,93 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
         instance.calculate_custom_fields([cf2, cf3, cf4])
         expect(instance).to have_received(:custom_field_values=)
           .with(cf2.id => 3 * 5 * 7 * 11, cf3.id => 5 * 7 * 11, cf4.id => 5 * 7).once
+      end
+    end
+  end
+
+  describe "#calculate_custom_fields error handling" do
+    def expect_calculated_value_error(calc_val_cf, project, error_code, message_part = nil)
+      errors = calc_val_cf.calculated_value_errors.where(project:)
+      expect(errors.size).to be >= 1
+      expect(errors.first&.error_code).to eq(error_code)
+
+      if message_part
+        expect(errors.first&.error_message).to include(message_part)
+      end
+    end
+
+    let(:project) { create(:project) }
+    let(:enabled_custom_fields) { {} }
+
+    before do
+      enabled_custom_fields.each do |cf, value|
+        create(:custom_value, customized: project, custom_field: cf, value:)
+      end
+    end
+
+    describe "division by zero" do
+      let(:cf_div) { create(:calculated_value_project_custom_field, projects: [project], formula: "5 / 0") }
+      let(:cf_add) { create(:calculated_value_project_custom_field, projects: [project], formula: "5 + 0") }
+
+      let(:enabled_custom_fields) do
+        { cf_div => nil, cf_add => nil }
+      end
+
+      it "creates a mathematical error for division by zero" do
+        project.calculate_custom_fields([cf_div, cf_add])
+
+        expect(cf_add.calculated_value_errors.where(project:)).to be_empty
+
+        errors = cf_div.calculated_value_errors.where(project:)
+        expect(errors.size).to eq(1)
+        expect(errors.first&.error_code).to eq("ERROR_MATHEMATICAL")
+      end
+    end
+
+    describe "missing value" do
+      let(:cf_int) { create(:integer_project_custom_field, projects: [project]) }
+      let(:cv1) do
+        create(:calculated_value_project_custom_field, :skip_validations, projects: [project], formula: "5 + #{cf_int}")
+      end
+      let(:cv2) { create(:calculated_value_project_custom_field, :skip_validations, projects: [project], formula: "5 + #{cv1}") }
+      let(:cv3) { create(:calculated_value_project_custom_field, :skip_validations, projects: [project], formula: "5 + 5") }
+
+      let(:enabled_custom_fields) do
+        { cv1 => nil, cv2 => nil, cf_int => nil, cv3 => nil }
+      end
+
+      it "creates a missing value error" do
+        project.calculate_custom_fields([cv1, cv2, cv3])
+
+        expect(cv3.calculated_value_errors.where(project:)).to be_empty
+
+        expect_calculated_value_error(cv1, project, "ERROR_MISSING_VALUE", cf_int.name)
+        expect_calculated_value_error(cv2, project, "ERROR_MISSING_VALUE", cv1.name)
+      end
+    end
+
+    describe "disabled value" do
+      let(:cf_int) { create(:integer_project_custom_field) }
+      let(:cv1) do
+        create(:calculated_value_project_custom_field, :skip_validations, projects: [project], formula: "5 + #{cf_int}")
+      end
+      let(:cv2) { create(:calculated_value_project_custom_field, :skip_validations, projects: [project], formula: "5 + #{cv1}") }
+      let(:cv3) { create(:calculated_value_project_custom_field, :skip_validations, projects: [project], formula: "5 + 5") }
+
+      let(:enabled_custom_fields) do
+        { cv1 => nil, cv2 => nil, cv3 => nil }
+      end
+
+      it "creates a disabled value error" do
+        project.calculate_custom_fields([cv1, cv2, cv3])
+
+        expect(cv3.calculated_value_errors.where(project:)).to be_empty
+
+        # The referenced int field is disabled, we thus expect a `disabled` error.
+        expect_calculated_value_error(cv1, project, "ERROR_DISABLED_VALUE", cf_int.name)
+
+        # Since cv1 cannot be calculated, it leads to a missing value error in cv2.
+        expect_calculated_value_error(cv2, project, "ERROR_MISSING_VALUE", cv1.name)
       end
     end
   end

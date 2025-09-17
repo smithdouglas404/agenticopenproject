@@ -56,6 +56,7 @@ module ActsAsCustomizable::CalculatedValue
       )
 
       self.custom_field_values = custom_fields.to_h { [it.id, result[it.column_name]] }
+
       refresh_calculation_errors!(given, enabled_ids, custom_fields, result)
     end
 
