@@ -57,8 +57,7 @@ module Overviews
       def render_calculation_error
         errors = @project_custom_field.calculated_value_errors.where(project: @project)
 
-        # FIXME: this is a copy from the project list row component. Reuse it here.
-        render(Primer::OpenProject::FlexLayout.new(align_items: :center,
+        render(Primer::OpenProject::FlexLayout.new(align_items: :flex_start,
                                                    data: {
                                                      test_selector: "error-cf-#{@project_custom_field.id}"
                                                    })) do |container|
