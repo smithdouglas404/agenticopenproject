@@ -23,10 +23,10 @@ def generate_matrix
 
   {
     "include" => [
-      {
-        "branch" => "dev",
-        "tag" => "dev"
-      },
+      # {
+      #   "branch" => "dev",
+      #   "tag" => "dev"
+      # },
       {
         "branch" => "release/#{latest_version}",
         "tag" => "#{latest_version}-rc"
