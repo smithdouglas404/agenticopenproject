@@ -92,6 +92,11 @@ end
 def write_to_github_output(key, value)
   return unless ENV["GITHUB_OUTPUT"]
 
+  if value.nil? || value.strip.empty?
+    puts "Error: #{key} output is empty"
+    exit 1
+  end
+
   File.open(ENV["GITHUB_OUTPUT"], "a") do |f|
     if value.include?("\n")
       f.puts "#{key}<<EOF"
