@@ -16,8 +16,9 @@ jobs:
       - name: Generate matrix
         id: set-matrix
         run: |
+          set -eo pipefail
           matrix=$(ruby script/gh/docker-tags.rb --matrix)
-          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+          echo "matrix=$matrix" | tee -a $GITHUB_OUTPUT
 
   build:
     needs: generate-matrix

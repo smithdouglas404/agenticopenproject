@@ -31,9 +31,9 @@ jobs:
       - name: Set version outputs and convert tags
         id: extract_version
         run: |
-          set -e
-          echo "version=$(./script/gh/docker-tags.rb "${{ inputs.tag }}" --version)" >> "$GITHUB_OUTPUT"
-          echo "docker_tags=$(./script/gh/docker-tags.rb "${{ inputs.tag }}" --format-for-docker)" >> "$GITHUB_OUTPUT"
+          set -eo pipefail
+          echo "version=$(./script/gh/docker-tags.rb "${{ inputs.tag }}" --version)" | tee -a "$GITHUB_OUTPUT"
+          echo "docker_tags=$(./script/gh/docker-tags.rb "${{ inputs.tag }}" --format-for-docker)" | tee -a "$GITHUB_OUTPUT"
       - name: Cache NPM
         uses: runs-on/cache@v4
         with:
