@@ -54,7 +54,7 @@ export class SharepointUploadStrategy implements IUploadStrategy {
 
   private uploadSingle<T>(href:string, uploadFile:IUploadFile):Observable<HttpEvent<T>> {
     const contentRangeHeader = `bytes 0-${uploadFile.file.size - 1}/${uploadFile.file.size}`;
-
+    const driveId = (uploadFile.location ?? '').split(':')[0];
     return this.http.request<SharepointFileUploadResponse>(
       'put',
       href,
@@ -72,7 +72,7 @@ export class SharepointUploadStrategy implements IUploadStrategy {
       share(),
       map((event) =>
         convertHttpEvent(event, (responseBody) => ({
-          id: `${ uploadFile.location }:${ responseBody.id }`,
+          id: `${ driveId }:${ responseBody.id }`,
           name: responseBody.name,
           size: responseBody.size,
           mimeType: responseBody.file.mimeType,
