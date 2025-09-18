@@ -111,7 +111,7 @@ def main # rubocop:disable Metrics/AbcSize
   if options[:matrix]
     matrix = generate_matrix
     if matrix
-      puts JSON.pretty_generate(matrix)
+      puts JSON.generate(matrix)
     else
       puts "Error: Could not generate matrix"
       exit 1
