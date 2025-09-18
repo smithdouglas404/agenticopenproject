@@ -879,8 +879,8 @@ fr:
       parent: "Parent"
       parent_description: "Fait du lot de travaux lié un parent du lot de travaux actuel (enfant)"
       label_closest: "Le plus proche"
-      label_blocks_singular: "blocs"
-      label_blocks_plural: "blocs"
+      label_blocks_singular: "bloque"
+      label_blocks_plural: "blocages"
       blocks_description: "Le lot de travaux associé ne peut pas être fermé avant que celui-ci soit fermé en premier"
       label_blocked_singular: "bloqué par"
       label_blocked_plural: "bloqués par"
@@ -1905,6 +1905,7 @@ fr:
   button_add_watcher: "Ajouter observateur"
   button_annotate: "Annoter"
   button_apply: "Appliquer"
+  button_apply_changes: "Appliquer les modifications"
   button_archive: "Archiver"
   button_back: "Retour"
   button_cancel: "Annuler"
@@ -1954,8 +1955,8 @@ fr:
   button_rollback: "Revenir à cette version"
   button_save: "Enregistrer"
   button_save_as: "Enregistrer sous"
-  button_apply_changes: "Appliquer les modifications"
   button_save_back: "Enregistrer et revenir"
+  button_select: "Select"
   button_set_reminder: "Définir un rappel"
   button_show: "Afficher"
   button_sort: "Trier"
@@ -2554,7 +2555,7 @@ fr:
     blocks:
       community: "Communauté OpenProject"
       upsell:
-        title: "Passer à la version Entreprise"
+        title: "Passer à la version Enterprise"
       new_features:
         header: "Découvrez les nouvelles fonctionnalités et les mises à jour des produits."
         learn_about: "En savoir plus sur les nouvelles fonctionnalités"
@@ -2810,6 +2811,7 @@ fr:
   label_required_disk_storage: "Espace disque requis"
   label_send_invitation: Envoyer une invitation
   label_calculated_value: "Valeur calculée"
+  label_change_parent: "Change parent"
   label_change_plural: "Changements"
   label_change_properties: "Modifier les propriétés"
   label_change_status: "Changer le statut"
