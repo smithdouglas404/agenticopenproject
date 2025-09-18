@@ -97,17 +97,11 @@ module Projects
         errors = cf.calculated_value_errors.where(project:)
 
         if errors.any?
-          # TODO: move into a dedicated component?
-          render(Primer::OpenProject::FlexLayout.new(align_items: :center)) do |container|
-            container.with_column do
-              render Primer::Beta::Octicon.new(icon: :"alert-fill", color: :danger)
-            end
-            container.with_column(ml: 2) do
-              # FIXME: text content gets cut off if the column is not wide enough.
-              render Primer::Beta::Text.new(color: :danger) do
-                errors.map(&:error_message).join(" ")
-              end
-            end
+          render(Primer::Alpha::Dialog.new(title: I18n.t("calculated_values.error_dialog.title"))) do |dialog|
+            dialog.with_show_button(icon: "alert-fill",
+                                    "aria-label": I18n.t("calculated_values.error_dialog.title"),
+                                    scheme: :invisible)
+            dialog.with_body { errors.map(&:error_message).join(" ") }
           end
         else
           custom_value

@@ -361,6 +361,8 @@ en:
       no_results_content_text: Create a new custom field
 
   calculated_values:
+    error_dialog:
+      title: "Error with calculated value"
     errors:
       unknown: "An unknown error occurred. Please review the formula for this calculated value."
       mathematical: "A mathematical error occurred during calculation."
