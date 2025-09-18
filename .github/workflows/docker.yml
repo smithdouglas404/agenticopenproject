@@ -33,11 +33,8 @@ jobs:
         run: |
           set -e
           echo "Processing tag: ${{ inputs.tag }}"
-          echo "GITHUB_OUTPUT file: $GITHUB_OUTPUT"
           ./script/gh/docker-tags.rb "${{ inputs.tag }}" --version
           ./script/gh/docker-tags.rb "${{ inputs.tag }}" --format-for-docker
-          echo "--- GITHUB_OUTPUT contents ---"
-          cat "$GITHUB_OUTPUT"
       - name: Verify outputs
         run: |
           if [ -z "${{ steps.extract_version.outputs.version }}" ]; then
