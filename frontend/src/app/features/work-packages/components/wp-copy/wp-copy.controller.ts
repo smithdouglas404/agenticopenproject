@@ -63,6 +63,17 @@ export class WorkPackageCopyController extends WorkPackageCreateComponent {
       });
   }
 
+  public cancelAndBack() {
+    this.wpCreate.cancelCreation();
+
+    if (this.routedFromAngular) {
+      this.$state.go(this.cancelState, this.$state.params);
+    } else {
+      const link = this.pathHelper.genericWorkPackagePath(this.currentProjectService.id, this.copiedWorkPackageId);
+      window.location.href = (link + window.location.search);
+    }
+  }
+
   protected createdWorkPackage() {
     this.copiedWorkPackageId = this.stateParams.copiedFromWorkPackageId;
     return new Promise<WorkPackageChangeset>((resolve, reject) => {

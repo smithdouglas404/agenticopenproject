@@ -121,10 +121,8 @@ export class OpTypesContextMenuDirective extends OpContextMenuTrigger {
           this.$state.go(this.stateName, { type: type.id });
         } else {
           const link = new URL(`${window.location.origin}${this.pathHelper.projectWorkPackageNewPath(this.currentProject.id!)}`);
-          if (type.id) {
-            link.searchParams.set('type', type.id);
-          }
-          window.location.href = link.href;
+
+          window.location.href = link.href + window.location.search + `&type=${type.id}`;
         }
         return true;
       },

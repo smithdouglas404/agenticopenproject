@@ -397,9 +397,9 @@ RSpec.describe "new work package", :js do
 
     let(:paths) do
       [
-        new_work_packages_path,
+        new_work_package_path,
         new_split_work_packages_path,
-        new_project_work_packages_path(project),
+        new_project_work_package_path(project),
         new_split_project_work_packages_path(project)
       ]
     end
@@ -418,7 +418,7 @@ RSpec.describe "new work package", :js do
     let(:wp_page) { Pages::FullWorkPackageCreate.new }
 
     before do
-      visit new_project_work_packages_path(project)
+      visit new_project_work_package_path(project)
     end
 
     it "can create the work package, but not update it after saving" do
@@ -444,9 +444,9 @@ RSpec.describe "new work package", :js do
 
     let(:paths) do
       [
-        new_work_packages_path,
+        new_work_package_path,
         new_split_work_packages_path,
-        new_project_work_packages_path(project),
+        new_project_work_package_path(project),
         new_split_project_work_packages_path(project)
       ]
     end

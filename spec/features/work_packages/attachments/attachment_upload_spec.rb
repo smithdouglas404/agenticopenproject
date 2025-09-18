@@ -157,7 +157,7 @@ RSpec.describe "Upload attachment to work package", :js, :selenium do
         let(:post_conditions) { nil }
 
         before do
-          visit new_project_work_packages_path(project.identifier, type: type.id)
+          visit new_project_work_package_path(project.identifier, type: type.id)
         end
 
         it "can upload an image via drag & drop (Regression #28189)" do |_example|
