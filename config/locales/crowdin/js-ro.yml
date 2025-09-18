@@ -88,6 +88,8 @@ ro:
     button_list_view: "Vizualizare listă"
     button_show_view: "Vizualizare pe tot ecranul"
     button_log_time: "Înregistrare timp"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "Mai mult"
     button_open_details: "Deschide vizualizare detaliată"
     button_close_details: "Închide vizualizare detalii"
@@ -287,17 +289,6 @@ ro:
         format:
           date: "%{attribute} nu este o dată validă - Este necesar formatul AAAA-LL-ZZ."
         general: "A apărut o eroare."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Citește despre noile caracteristici și actualizări de produse."
-          learn_about: "Learn more about all new features"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                Versiunea conţine diverse caracteristici noi şi îmbunătăţiri, cum ar fi <br> <ul class="%{list_styling_class}"> <li>UX/UI îmbunătăţiri pentru un aspect mai modern.</li> <li>Întâlniri: Opțiunea de a dezactiva notificările prin e-mail și ICS.</li> <li>temporizatoare în curs afișate în modulul de urmărire a timpului meu.</li> <li>Raportare progresivă: % Suma completă este afișată și în modul Status.</li> <li>Verificarea stării de sănătate a Nextcloud: Indicați capacitatea de schimb a tokenurilor lipsă (Suplimentul Întreprinderilor).</li> </ul>
     ical_sharing_modal:
       title: "Subscribe to calendar"
       inital_setup_error_message: "An error occured while fetching data."
@@ -392,7 +383,7 @@ ro:
     label_less_than_ago: "acum mai puțin de zile"
     label_loading: "Se încarcă..."
     label_mail_notification: "Notificări prin e-mail"
-    label_manage_columns: "Manage and reorder columns"
+    label_manage_columns: "Gestionează și reordonează coloanele"
     label_me: "eu"
     label_meeting_agenda: "Agendă"
     label_meeting_minutes: "Minute"
@@ -443,7 +434,7 @@ ro:
     label_sort_lower: "Mută în jos"
     label_sorting: "Sortare"
     label_spent_time: "Timp consumat"
-    label_star_query: "Favorite"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Apăsați tasta ”Enter” pentru a salva."
     label_public_query: "Public"
     label_sum: "Sumă"
@@ -1116,6 +1107,7 @@ ro:
         one: "Un pachet de lucru descendent"
         few: "%{count} descendenți ai pachetului de lucru"
         other: "%{count} copii din pachetul de lucru"
+      hour_string: "%{hours} h"
       hour:
         one: "1 oră"
         other: "%{count} ora"
@@ -1227,8 +1219,8 @@ ro:
       selected_filter:
         all: "Toate Proiectele"
         selected: "Numai selecția"
-      search_placeholder: "Caută proiect..."
-      search_placeholder_favorites: "Search favorites..."
+      search_placeholder: "Caută proiecte..."
+      search_placeholder_favorites: "Caută favorite..."
       include_subprojects: "Include toate subproiectele"
       tooltip:
         include_all_selected: "Proiectul este deja inclus, din moment ce opțiunea Include toate subproiectele este activată."

@@ -88,6 +88,8 @@ it:
     button_list_view: "Vista elenco"
     button_show_view: "Visualizzazione a schermo intero"
     button_log_time: "Registra l'orario effettuato"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "Più"
     button_open_details: "Mostra dettagli"
     button_close_details: "Nascondi dettagli"
@@ -288,17 +290,6 @@ it:
         format:
           date: "%{attribute} data non valida - atteso YYYY-MM-DD."
         general: "Si è verificato un errore."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Informati sulle nuove funzionalità e sugli aggiornamenti dei prodotti."
-          learn_about: "Scopri di più su tutte le nuove funzionalità"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                Questa release contiene varie nuove funzionalità e miglioramenti, come <br> <ul class="%{list_styling_class}"> <li>Miglioramenti UX/UI per un aspetto più moderno.</li> <li>Riunioni: opzione per disattivare le notifiche email e ICS.</li> <li>Timer in corso mostrati nel modulo Il mio monitoraggio del tempo.</li> <li>Report di avanzamento: somma % completamento mostrata anche in modalità basata sullo stato.</li> <li>Verifica stato di Nextcloud: indicazione della mancanza della capacità di scambio token (componente aggiuntivo Enterprise).</li> </ul>
     ical_sharing_modal:
       title: "Iscriviti al calendario"
       inital_setup_error_message: "Si è verificato un errore recuperando i dati."
@@ -444,7 +435,7 @@ it:
     label_sort_lower: "Sposta giu"
     label_sorting: "Ordinamento"
     label_spent_time: "Tempo speso"
-    label_star_query: "Preferito"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Premi Invio per salvare."
     label_public_query: "Pubblico"
     label_sum: "Somma"
@@ -1080,8 +1071,8 @@ it:
     notice_successful_delete: "Cancellato con successo."
     notice_successful_update: "Aggiornato con successo."
     notice_job_started: "job partito."
-    no_job_id: "No job ID returned from server."
-    invalid_job_response: "Invalid response from server."
+    no_job_id: "Nessun ID job restituito dal server."
+    invalid_job_response: "Risposta dal server non valida."
     notice_bad_request: "Richiesta non valida."
     relations:
       empty: Non esiste alcuna relazione
@@ -1114,6 +1105,7 @@ it:
       child_work_packages:
         one: "una macro-attività subordinata"
         other: "%{count} macro-attività subordinate"
+      hour_string: "%{hours} h"
       hour:
         one: "1 o"
         other: "%{count} o"
@@ -1224,15 +1216,15 @@ it:
       selected_filter:
         all: "Tutti i progetti"
         selected: "Solo selezionati"
-      search_placeholder: "Cerca progetto..."
-      search_placeholder_favorites: "Search favorites..."
+      search_placeholder: "Cerca progetti..."
+      search_placeholder_favorites: "Cerca tra i preferiti..."
       include_subprojects: "Includi tutti i sotto-progetti"
       tooltip:
         include_all_selected: "Il progetto già stato incluso poiché è abilitata l'opzione Includi tutti i sotto-progetti."
         current_project: "Questo è il progetto corrente in cui ti trovi."
         does_not_match_search: "Il progetto non corrisponde ai criteri di ricerca."
       no_results: "Nessun progetto corrisponde ai tuoi criteri di ricerca"
-      no_favorite_results: "No favorite project matches your search criteria."
+      no_favorite_results: "Nessun progetto preferito corrisponde ai tuoi criteri di ricerca."
     baseline:
       toggle_title: "Base di riferimento"
       clear: "Pulisci"

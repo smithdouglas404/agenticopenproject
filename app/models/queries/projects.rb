@@ -36,7 +36,7 @@ module Queries::Projects
     filter Filters::AvailableProjectAttributesFilter
     filter Filters::CreatedAtFilter
     filter Filters::CustomFieldFilter
-    filter Filters::FavoredFilter
+    filter Filters::FavoritedFilter
     filter Filters::IdFilter
     filter Filters::LatestActivityAtFilter
     filter Filters::ProjectPhaseAnyFilter
@@ -67,7 +67,7 @@ module Queries::Projects
     select Selects::CreatedAt
     select Selects::CustomField
     select Selects::Default
-    select Selects::Favored
+    select Selects::Favorited
     select Selects::LatestActivityAt
     select Selects::ProjectPhase
     select Selects::RequiredDiskSpace

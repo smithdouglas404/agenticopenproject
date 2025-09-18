@@ -195,10 +195,9 @@ nl:
     ldap_auth_failed: "Kon niet authenticeren met LDAP-server."
     sync_failed: "Synchronisatie met LDAP mislukt: %{message}."
     back_to_index: "Klik hier om terug te gaan naar de connectielijst."
-    technical_warning_html: |
+    technical_warning: |
       This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Please visit our documentation for detailed instructions</a>.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: Willekeurige naam van de LDAP-verbinding
       host: LDAP hostnaam of IP-adres
@@ -332,44 +331,55 @@ nl:
       no_results_content_text: Maak een nieuw aangepast veld
   concatenation:
     single: "of"
-  dry_validation:
+  op_dry_validation:
+    or: "or"
     errors:
-      defined: "must not be defined."
-      int?: "moet een geheel getal zijn."
+      array?: "must be an array."
       decimal?: "must be a decimal."
-      filled?: "moet ingevuld zijn."
+      defined: "must not be defined."
+      eql?: "must be equal to %{left}."
+      filled?: "must be filled."
+      greater_or_equal_zero: "must be greater or equal to 0."
+      gteq?: "must be greater than or equal to %{num}."
+      hash?: "must be a hash."
+      included_in?:
+        arg:
+          default: "must be one of: %{list}."
+          range: "must be one of: %{list_left} - %{list_right}."
+      int?: "must be an integer."
       key?: "is missing."
-      greater_or_equal_zero: "moet groter dan, of gelijk zijn aan 0."
-      not_found: "niet gevonden."
+      not_found: "not found."
       rules:
         copy_workflow_from:
           workflow_missing: "has no own workflow."
         custom_field:
           format_not_supported: "format '%{field_format}' is unsupported."
         item:
-          root_item: "kan geen root-item zijn."
-          not_persisted: "moet een reeds bestaand item zijn."
+          root_item: "cannot be a root item."
+          not_persisted: "must be an already existing item."
         label:
-          not_unique: "moet uniek zijn binnen hetzelfde hiërarchieniveau."
+          not_unique: "must be unique within the same hierarchy level."
         short:
-          not_unique: "moet uniek zijn binnen hetzelfde hiërarchieniveau."
+          not_unique: "must be unique within the same hierarchy level."
         parent:
-          not_descendant: "moet een afstammeling zijn van de root van de hiërarchie."
+          not_descendant: "must be a descendant of the hierarchy root."
+      str?: "must be a string."
+      type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Ingeschakeld"
-      depth: "Diepte"
+      enabled: "Enabled"
+      depth: "Depth"
       item: "Item"
       label: "Label"
       score: "Score"
-      short: "Verkorte Naam"
-      parent: "Bovenliggend werkpakket"
-      blueprint: "Patroonblauwdruk"
+      short: "Short name"
+      parent: "Parent"
+      blueprint: "Pattern blueprint"
   global_search:
     title:
-      all_projects: 'Search for "%{search_term}" in all projects'
-      current_project: 'Search for "%{search_term}" in %{project_name}'
-      project_and_subprojects: 'Search for "%{search_term}" in %{project_name} and all subprojects'
+      all_projects: 'Zoek naar "%{search_term}" in alle projecten'
+      current_project: 'Zoek naar "%{search_term}" in %{project_name}'
+      project_and_subprojects: 'Zoek naar "%{search_term}" in %{project_name} en alle subprojecten'
     placeholder: "Zoeken in %{app_title}"
     overwritten_tabs:
       all: "Alle"
@@ -426,7 +436,7 @@ nl:
     lists:
       active: "Actieve projecten"
       my: "Mijn projecten"
-      favored: "Favoriete projecten"
+      favorited: "Favorite projects"
       archived: "Gearchiveerde projecten"
       shared: "Gedeelde projectlijsten"
       my_lists: "Mijn projectlijsten"
@@ -451,8 +461,8 @@ nl:
         description: >
           Anyone who has access to this instance will be able to view and interact with this project depending on their role and authentication settings. Sub-projects are not affected and have their own settings.
       private_confirmation:
-        checkbox: "I understand that this will make the previously public content private."
-        title: "Make this project private?"
+        checkbox: "Ik begrijp dat dit de voorheen openbare inhoud privé maakt."
+        title: "Dit project privé maken?"
         description: >
           The project will only be visible to project members depending on their role and associated permissions. Sub-projects are not affected and have their own settings.
       change_identifier: Change identifier
@@ -592,9 +602,6 @@ nl:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Geef een API-sleutel naam op"
-        token_name_in_use: "Deze API token naam is al in gebruik, kies een andere a.u.b."
       failed_to_reset_token: "Reset-toegangstoken mislukt: %{error}"
       failed_to_create_token: "Aanmaken van toegang sleutel is mislukt: %{error}"
       failed_to_revoke_token: "Intrekken van toegang sleutel mislukt: %{error}"
@@ -693,10 +700,8 @@ nl:
         excluded_from_totals: "Uitgesloten van totalen"
   themes:
     dark: "Donker"
-    dark_high_contrast: "Donker hoog contrast"
     light: "Licht"
-    light_high_contrast: "Licht hoog contrast"
-    sync_with_os: "Automatic (match OS colour mode)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: Er zijn momenteel geen types.
@@ -914,7 +919,7 @@ nl:
   account:
     delete: "Account Verwijderen"
     delete_confirmation: "Weet je zeker dat je dit account wilt verwijderen?"
-    deletion_pending: "Account is vergrendeld en is ingepland voor verwijdering. Let op dat dit proces op de achtergrond plaatsvindt. Het kan even duren voordat de gebruiker volledig verwijderd is."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Van de gegevens die de gebruiker heeft gemaakt (bijvoorbeeld e-mail, voorkeuren, werkpakketten, wiki-inzendingen) zal zoveel mogelijk worden verwijderd. Let echter op dat gegevens zoals werkpakketten en wiki-items niet kunnen worden verwijderd zonder het belemmeren van het werk van de andere gebruikers. Dergelijke gegevens worden dus opnieuw toegewezen aan een account genaamd "Verwijderde gebruiker". Zodra de gegevens van elk verwijderd account zijn toegewezen aan dit account, zal het niet mogelijk zijn om gegevens die de gebruiker heeft gemaakt te onderscheiden van de gegevens van een ander verwijderd account.'
@@ -1013,6 +1018,8 @@ nl:
         active_user_count_restriction: "Active users"
       enterprise_trial:
         company: "Bedrijfsnaam"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Pagina"
         row_count: "Aantal rijen"
@@ -1139,6 +1146,8 @@ nl:
         is_readonly: "Werkpakket is alleen-lezen"
         excluded_from_totals: "Uitsluiten van berekening van totalen in hiërarchie"
         default_done_ratio: "% Voltooid"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Kalender"
         ical_token_query_assignment: "Query assignment"
@@ -1192,9 +1201,16 @@ nl:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "Mij waarschuwen bij het verlaten van een werkpakket met niet-opgeslagen wijzigingen"
-        theme: "Colour mode"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
+        theme: "Color mode"
         time_zone: "Tijdzone"
-        mode_guideline: "Some modes will overwrite custom theme colours for accessibility and legibility. Please select Light mode for full custom theme support."
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Daily reminders"
         workdays: "Werkdagen"
       version:
@@ -1371,6 +1387,8 @@ nl:
           only_one_trial: "Only one trial token can be active. Please delete the previous trial token before adding another."
           unreadable: "kan niet worden gelezen. Weet u zeer dat het een support token is?"
           already_added: "This token has already been added."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "overlap."
           outside: "is buiten het raster."
@@ -1467,10 +1485,19 @@ nl:
           typed_dag:
             circular_dependency: "De relatie wordt gemaakt van een kring van relaties."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "SCM-leverancier is niet beschikbaar"
           not_whitelisted: "is niet toegestaan door de configuratie."
@@ -1572,7 +1599,8 @@ nl:
               cant_exceed_work: "kan niet hoger zijn dan Werk."
               must_be_set_when_work_is_set: "vereist wanneer Werk is ingesteld."
               must_be_set_when_work_and_percent_complete_are_set: "vereist wanneer Werk en % Voltooid zijn ingesteld."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 moet leeg zijn als Werk leeg is en % Voltooid 100% is.
           readonly_status: "Het werkpakket heeft een alleen-lezen status dus kunne attributen niet worden gewijzigd."
@@ -1620,9 +1648,11 @@ nl:
         version:
           undeletable_archived_projects: "De versie kan niet worden verwijderd omdat er werkpakketten aan zijn gekoppeld."
           undeletable_work_packages_attached: "De versie kan niet worden verwijderd omdat er werkpakketten aan zijn gekoppeld."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Controleer de volgende velden:"
@@ -1742,6 +1772,7 @@ nl:
     attachments: "Bijlagen"
     actor: "Actor"
     action: "Actie"
+    api_key: "API key"
     author: "Auteur"
     avatar: "Avatar"
     base: "Algemene fout:"
@@ -1872,6 +1903,7 @@ nl:
   button_add_watcher: "Watcher toevoegen"
   button_annotate: "Aantekeningen"
   button_apply: "Toepassen"
+  button_apply_changes: "Veranderingen doorvoeren"
   button_archive: "Archief"
   button_back: "Terug"
   button_cancel: "Annuleren"
@@ -1921,8 +1953,8 @@ nl:
   button_rollback: "Terugdraaien naar deze versie"
   button_save: "Opslaan"
   button_save_as: "Opslaan als"
-  button_apply_changes: "Veranderingen doorvoeren"
   button_save_back: "Opslaan en terug"
+  button_select: "Select"
   button_set_reminder: "Set reminder"
   button_show: "Toon"
   button_sort: "Sorteren"
@@ -2180,7 +2212,7 @@ nl:
         Already have a token? Add it using the button below to upgrade to the booked Enterprise plan.
       hide_banner: "Hide this banner"
       homescreen_description: >
-        Enterprise plans extend the Community edition of OpenProject you are currently using. They include add-ons, additional features and professional support that enables organisations of all sizes to achieve great things together.
+        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
       homescreen_subline: By upgrading, you will also be supporting an open source project.
       baseline_comparison:
         description: Markeer wijzigingen die sindsdien in deze lijst zijn aangebracht.
@@ -2283,6 +2315,9 @@ nl:
   enumeration_reported_project_statuses: "Gerapporteerde projectstatus"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "Single Sign-On (SSO) voor gebruiker '%{value}' is mislukt"
   error_can_not_archive_project: "Dit project kan niet worden gearchiveerd: %{errors}"
   error_can_not_delete_entry: "Niet in staat om ingave te verwijderen"
@@ -2519,6 +2554,26 @@ nl:
       community: "OpenProject gemeenschap"
       upsell:
         title: "Upgrade naar Enterprise-editie"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "Upgrade naar Enterprise-editie"
       postgres_migration: "Uw installatie overzetten naar PostgreSQL"
@@ -2529,7 +2584,8 @@ nl:
       shortcuts: "Snelkoppelingen"
       blog: "OpenProject blog"
       forums: "Gemeenschapsforum"
-      newsletter: "Beveiligingswaarschuwingen / nieuwsbrief"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2611,7 +2667,7 @@ nl:
         static_token_name: "API-sleutel"
       ical:
         title: "iCalendar"
-        text_hint: 'iCalendar tokens allow users to <a href="%{path}" target="_blank">subscribe to OpenProject calendars</a> and view up-to-date work package information from external clients.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "iCalendar subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
         empty_text_hint: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
       oauth:
@@ -2753,6 +2809,7 @@ nl:
   label_required_disk_storage: "Vereiste schijfruimte"
   label_send_invitation: Verstuur uitnodiging
   label_calculated_value: "Calculated value"
+  label_change_parent: "Change parent"
   label_change_plural: "Wijzigingen"
   label_change_properties: "Eigenschappen wijzigen"
   label_change_status: "Status wijzigen"
@@ -2943,7 +3000,7 @@ nl:
   label_journal_diff: "Beschrijving vergelijking"
   label_language: "Taal"
   label_languages: "Talen"
-  label_locale: "Language and Region"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Ga naar een project..."
   label_keyword_plural: "Trefwoorden"
   label_language_based: "Op basis van de taal van gebruiker"
@@ -3989,6 +4046,8 @@ nl:
   setting_feeds_limit: "Feed inhoud limiet"
   setting_file_max_size_displayed: "Maximale grootte van tekstbestanden inline weergegeven"
   setting_host_name: "Hostnaam"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Uren per dag"
   setting_hours_per_day_explanation: >-
     This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).

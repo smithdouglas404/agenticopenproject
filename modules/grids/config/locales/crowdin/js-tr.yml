@@ -21,6 +21,8 @@ tr:
           title: 'Haberler'
           at: 'en'
           no_results: 'Rapor için yeni birşey bulunamadı.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Proje tanımı'
           no_results: "Henüz bir açıklama yazılmadı. Biri 'Proje ayarları' içinde sağlanabilir."
@@ -33,6 +35,8 @@ tr:
           not_set: 'Ayarlanmadı'
           finished: 'Tamamlandı'
           discontinued: 'Durduruldu'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Alt Projeler'
           no_results: 'Alt proje yok.'

@@ -36,7 +36,7 @@ RSpec.describe ProjectQuery do
   shared_let(:user) { create(:user) }
   shared_let(:admin) { create(:admin) }
 
-  it_behaves_like "acts_as_favorable included" do
+  it_behaves_like "acts_as_favoritable included" do
     let(:instance) { create(:project_query) }
   end
 
@@ -137,7 +137,7 @@ RSpec.describe ProjectQuery do
                             id
                             identifier
                             name
-                            favored
+                            favorited
                             public
                             description
                             hierarchy
@@ -162,7 +162,7 @@ RSpec.describe ProjectQuery do
                             id
                             identifier
                             name
-                            favored
+                            favorited
                             public
                             description
                             hierarchy

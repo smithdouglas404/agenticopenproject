@@ -120,10 +120,11 @@ export class WorkPackageTableTimelineRelations extends UntilDestroyedMixin imple
     // for all visible WorkPackage rows...
     combineLatest([
       this.querySpace.renderedWorkPackages.values$(),
+      this.wpRelations.observeAll(),
       this.wpTableTimeline.live$(),
     ])
       .pipe(
-        filter(([_, timeline]) => timeline.visible),
+        filter(([_render, _relations, timeline]) => timeline.visible),
         this.untilDestroyed(),
         map(([rendered, _]) => rendered),
       )

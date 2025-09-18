@@ -18,7 +18,7 @@ sv:
         group_regexes: Patterns (regular expressions)
         secret: Hemlighet
         scope: Omfattning
-        sync_groups: Synchronize groups
+        sync_groups: Synkronisera grupper
         grant_types_supported: Supported grant types
         limit_self_registration: Limit self registration
         authorization_endpoint: Authorization endpoint
@@ -30,9 +30,9 @@ sv:
         issuer: Issuer
         tenant: Tenant
         metadata_url: Metadata URL
-        icon: Custom icon
+        icon: Anpassad ikon
         claims: Claims
-        acr_values: ACR values
+        acr_values: ACR-värden
         redirect_url: Redirect URL
     errors:
       models:
@@ -66,7 +66,7 @@ sv:
         description: This allows you to test your regular expression pattern against sample data to verify that the group names you want extracted are indeed extracted properly. You can modify your pattern here but the test string and matches themselves will not be saved with the configuration.
         group_names_label: Test group names
         group_names_description: Enter one group name per line as it would appear in the OIDC claim, to see how your regular expression patterns affect them.
-        show_button: Test pattern
+        show_button: Testmönster
         title: Test regular expressions
     instructions:
       endpoint_url: The endpoint URL given to you by the OpenID Connect provider
@@ -111,7 +111,7 @@ sv:
       microsoft_entra:
         name: Microsoft Entra
       custom:
-        name: Custom
+        name: Anpassad
       upsell:
         title: "Single Sign-On (SSO) with OpenID connect"
         description: Connect OpenProject to an OpenID connect identity provider

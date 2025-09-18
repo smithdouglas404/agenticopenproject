@@ -88,6 +88,8 @@ ko:
     button_list_view: "목록 보기"
     button_show_view: "전체화면 보기"
     button_log_time: "작업시간 기록"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "기타"
     button_open_details: "자세히 보기"
     button_close_details: "디테일 닫기"
@@ -288,17 +290,6 @@ ko:
         format:
           date: "%{attribute}은(는) 유효한 날짜가 아닙니다. YYYY-MM-DD여야 합니다."
         general: "오류가 발생했습니다."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "새로운 기능 및 제품 업데이트에 대해 읽어보십시오."
-          learn_about: "새로운 모든 기능에 대해 자세히 알아보기"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                이 릴리스에는 다음과 같은 다양한 새로운 기능과 개선 사항이 포함되어 있습니다. <br> <ul class="%{list_styling_class}"> <li>더욱 현대적인 디자인의 UX/UI 개선.</li> <li>미팅: ICS 및 이메일 알림 음소거 옵션.</li> <li>내 시간 추적 모듈에 표시되는 진행 중인 타이머.</li> <li>진행률 보고: 상태 기반 모드에서도 표시되는 완료 %.</li> <li>Nextcloud 상태 확인: 누락된 토큰 교환 기능 표시(Enterprise 추가 기능).</li> </ul>
     ical_sharing_modal:
       title: "캘린더 구독"
       inital_setup_error_message: "데이터를 가져오는 중에 오류가 발생했습니다."
@@ -444,7 +435,7 @@ ko:
     label_sort_lower: "아래로 이동"
     label_sorting: "정렬"
     label_spent_time: "소비한 시간"
-    label_star_query: "호감"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "저장하려면 Enter를 누르세요."
     label_public_query: "공용"
     label_sum: "합계"
@@ -1079,8 +1070,8 @@ ko:
     notice_successful_delete: "삭제에 성공했습니다."
     notice_successful_update: "업데이트에 성공했습니다."
     notice_job_started: "작업이 시작되었습니다."
-    no_job_id: "No job ID returned from server."
-    invalid_job_response: "Invalid response from server."
+    no_job_id: "서버에서 반환된 작업 ID가 없습니다."
+    invalid_job_response: "서버의 잘못된 응답입니다."
     notice_bad_request: "잘못된 요청입니다."
     relations:
       empty: 관계가 없습니다.
@@ -1111,6 +1102,7 @@ ko:
         other: "작업 패키지"
       child_work_packages:
         other: "%{count}개의 작업 패키지 자식"
+      hour_string: "%{hours} h"
       hour:
         one: "1시간"
         other: "%{count}시간"
@@ -1221,14 +1213,14 @@ ko:
         all: "모든 프로젝트"
         selected: "선택한 항목만"
       search_placeholder: "프로젝트 검색..."
-      search_placeholder_favorites: "Search favorites..."
+      search_placeholder_favorites: "즐겨찾기 검색..."
       include_subprojects: "모든 하위 프로젝트 포함"
       tooltip:
         include_all_selected: "'모든 하위 프로젝트 포함'이 활성화되어 있으므로 프로젝트가 이미 포함되어 있습니다."
         current_project: "작업 중인 현재 프로젝트입니다."
         does_not_match_search: "프로젝트가 검색 기준과 일치하지 않습니다."
       no_results: "검색 기준과 일치하는 프로젝트가 없습니다."
-      no_favorite_results: "No favorite project matches your search criteria."
+      no_favorite_results: "검색 기준과 일치하는 프로젝트 즐겨찾기가 없습니다."
     baseline:
       toggle_title: "기준선"
       clear: "선택 취소"

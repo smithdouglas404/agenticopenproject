@@ -49,15 +49,9 @@ RSpec.describe EnterpriseEdition::BannerComponent, type: :component do
       }.compact
     }
   end
-  let(:static_links) do
-    {
-      enterprise_features: {
-        some_enterprise_feature: {
-          href:
-        }
-      }
-    }
-  end
+
+  let(:enterprise_feature_link) { href }
+
   let(:translations) do
     {
       ee: {
@@ -82,8 +76,13 @@ RSpec.describe EnterpriseEdition::BannerComponent, type: :component do
 
   before do
     allow(OpenProject::Static::Links)
-      .to receive(:links)
-            .and_return(static_links)
+      .to receive(:url_for)
+      .and_call_original
+
+    allow(OpenProject::Static::Links)
+      .to receive(:url_for)
+      .with(:enterprise_features, :some_enterprise_feature)
+      .and_return(enterprise_feature_link)
 
     allow(OpenProject::Token)
       .to receive(:lowest_plan_for)
@@ -248,16 +247,7 @@ RSpec.describe EnterpriseEdition::BannerComponent, type: :component do
   end
 
   context "without a link key in the static_link file" do
-    let(:static_links) do
-      {
-        enterprise_features: {
-          default: {
-            href: "https://example.com"
-          },
-          some_enterprise_feature: {}
-        }
-      }
-    end
+    let(:enterprise_feature_link) { nil }
 
     it "uses the default" do
       render_component_in_mo
@@ -266,7 +256,8 @@ RSpec.describe EnterpriseEdition::BannerComponent, type: :component do
 
       expect(component).to have_text(expected_title)
       expect(component).to have_text(expected_description)
-      expect(component).to have_link("More information", href: "https://example.com")
+
+      expect(component).to have_link("More information", href: "https://www.openproject.org/enterprise-edition?go_to_locale=mo")
     end
   end
 

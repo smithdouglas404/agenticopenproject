@@ -21,6 +21,8 @@ ro:
           title: 'Noutăţi'
           at: 'la'
           no_results: 'Nimic nou de raportat.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Descriere proiect'
           no_results: "Nu a fost scrisă încă nicio descriere. Aceasta poate fi adăugată în \"Setări proiect\"."
@@ -33,6 +35,8 @@ ro:
           not_set: 'Nesetat'
           finished: 'Finalizat'
           discontinued: 'Anulat'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Subproiecte'
           no_results: 'Cu subproiecte'

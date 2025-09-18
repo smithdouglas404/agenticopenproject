@@ -31,7 +31,7 @@ ja:
   two_factor_authentication:
     error_2fa_disabled: "2FAの配信が無効になっています。"
     notice_not_writable: "2FA 設定は環境変数を通じて提供され、上書きすることはできない。"
-    error_no_device: "このインスタンスに必要であるにもかかわらず、このユーザーに登録された2FAデバイスが見つかりませんでした。"
+    error_no_device: "このサイトに必要であるにもかかわらず、このユーザーに登録された2FAデバイスが見つかりませんでした。"
     error_no_matching_strategy: "このユーザーに対応する2FA方法はありません。管理者に連絡してください。"
     error_is_enforced_not_active: "構成エラー：2ファクター認証が実施されていますが、有効な方法はありません。"
     error_invalid_backup_code: "2FAバックアップコードが無効です"
@@ -84,7 +84,7 @@ ja:
       only_sms_allowed: "他のユーザーにはSMS配信のみ設定可能です。"
     upsell:
       title: "2要素認証"
-      description: "すべてのプロジェクトメンバーに2要素認証を提供(または強制)することで、OpenProjectインスタンスのセキュリティを強化します。"
+      description: "すべてのプロジェクトメンバーに2要素認証を提供(または強制)することで、OpenProjectサイトのセキュリティを強化します。"
     backup_codes:
       none_found: このアカウントのバックアップコードはありません。
       singular: バックアップコード

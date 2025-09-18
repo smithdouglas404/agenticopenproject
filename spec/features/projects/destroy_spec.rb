@@ -57,7 +57,7 @@ RSpec.describe "Projects#destroy", :js do
 
       click_on "Delete permanently"
     end
-    expect(page).to have_no_modal "Delete project foo"
+    expect(page).to have_no_modal "Delete project"
 
     expect_flash type: :success, message: I18n.t("projects.delete.scheduled")
     expect(project.reload).to eq(project)

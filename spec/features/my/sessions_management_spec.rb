@@ -60,7 +60,6 @@ RSpec.describe "My account session management", :js, :selenium do
       expect(trs[0]).to have_text("unknown browser")
       expect(trs[0]).to have_text("unknown operating system")
       expect(trs[0]).to have_no_css(".buttons a")
-      expect(trs[1]).to have_no_css(".spot-icon_yes")
       expect(trs[1]).to have_text("Mozilla Firefox (Version 12.3)")
       expect(trs[1]).to have_text("Linux")
       expect(trs[1]).to have_text format_time(old_session_time)

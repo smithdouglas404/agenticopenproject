@@ -46,7 +46,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 
 @Component({
   template: `
-    <op-dynamic-form [formControl]="control"></op-dynamic-form>`,
+    <op-dynamic-form [formControl]="control" />`,
   providers: [],
   standalone: false,
 })

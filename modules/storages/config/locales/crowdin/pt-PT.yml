@@ -240,7 +240,7 @@ pt-PT:
       storage_audience_blank: Não foi configurado nenhum público.
       storage_audience_description: Intercâmbio de tokens para audiência "%{audience}".
       storage_audience_idp: Utilizar o token de acesso obtido pelo fornecedor de identidade durante o início de sessão, independentemente da audiência.
-      storage_oauth: Storage OAuth
+      storage_oauth: Armazenamento OAuth
       storage_provider: Fornecedor de armazenamento
       token_exchange: Intercâmbio de Tokens
     health:
@@ -279,7 +279,7 @@ pt-PT:
           drive_id_exists: A unidade existe
           drive_id_format: Formato da ID da unidade
           header: Configuração
-          host: Host URL
+          host: URL do anfitrião
           host_url_accessible: URL do anfitrião acessível
           storage_configured: Configuração concluída
           tenant_id: ID do Inquilino
@@ -321,15 +321,15 @@ pt-PT:
         oidc_token_acquisition_failed: A sua configuração do OpenID Connect não fornece a audiência necessária, nem fornece capacidades de intercâmbio de tokens. Consulte a nossa documentação para mais informações.
         oidc_token_exchange_failed: Parece haver um problema com a configuração do Token Exchange no seu fornecedor OpenID Connect. Verifique a sua configuração e tente novamente.
         oidc_token_refresh_failed: Ocorreu um erro ao tentar verificar o seu acesso ao armazenamento. Consulte os registos do servidor para mais informações.
-        sp_client_cant_delete_folder: The client is having trouble deleting folders in SharePoint. Please check the setup documentation for your storage.
-        sp_client_id_missing: The configured OAuth 2 client id is missing for SharePoint. Please check the configuration.
-        sp_client_secret_missing: The configured OAuth 2 client secret is missing for SharePoint. Please check the configuration.
-        sp_client_write_permission_missing: The client seems to have write permissions missing in SharePoint. Please check the setup documentation for your storage.
-        sp_existing_test_folder: The folder %{folder_name} needed for testing already exists in SharePoint. Please delete it and try again.
-        sp_oauth_request_error: The user-bound request to SharePoint failed. Please check the server logs for further information.
-        sp_oauth_token_missing: OpenProject cannot test the user level communication with SharePoint as the user did not yet link their SharePoint account.
-        sp_tenant_id_missing: The configured directory (tenant) id is missing for SharePoint. Please check the configuration.
-        sp_unexpected_content: Unexpected content found in the SharePoint drive.
+        sp_client_cant_delete_folder: O cliente está a ter problemas a eliminar pastas no SharePoint. Consulte a documentação de configuração para o seu armazenamento.
+        sp_client_id_missing: O ID de cliente OAuth 2 configurado está em falta no SharePoint. Verifique a configuração.
+        sp_client_secret_missing: O segredo de cliente OAuth 2 configurado está em falta no SharePoint. Verifique a configuração.
+        sp_client_write_permission_missing: O cliente parece ter permissões de escrita em falta no SharePoint. Verifique a documentação de configuração do seu armazenamento.
+        sp_existing_test_folder: A pasta %{folder_name} necessária para os testes já existe no SharePoint. Elimine-a e tente novamente.
+        sp_oauth_request_error: O pedido de ligação do utilizador ao SharePoint falhou. Verifique os registos do servidor para mais informações.
+        sp_oauth_token_missing: O OpenProject não consegue testar a comunicação ao nível do utilizador com o SharePoint, visto que o utilizador ainda não associou a sua conta SharePoint.
+        sp_tenant_id_missing: O ID do diretório (inquilino) configurado está em falta no SharePoint. Verifique a configuração.
+        sp_unexpected_content: Conteúdo inesperado encontrado na unidade do SharePoint.
         unknown_error: Não foi possível validar a ligação. Ocorreu um erro desconhecido. Consulte os registos do servidor para obter mais informações.
       label_error: Erro
       label_failed: Não aprovado

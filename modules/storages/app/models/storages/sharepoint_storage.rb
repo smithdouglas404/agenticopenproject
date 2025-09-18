@@ -42,7 +42,7 @@ module Storages
     # For now SharePoint is visible only in tests.
     # This is to prevent it from being shown in the UI, as it is not ready yet.
     def self.visible?
-      OpenProject::FeatureDecisions.sharepoint_storage_active? || Rails.env.local?
+      OpenProject::FeatureDecisions.sharepoint_storage_active?
     end
 
     def self.short_provider_name = :sharepoint
@@ -94,7 +94,8 @@ module Storages
         storage_oauth_client_configured: oauth_client.present?,
         storage_redirect_uri_configured: oauth_client&.persisted?,
         storage_tenant_drive_configured: tenant_id.present?,
-        access_management_configured: !automatic_management_unspecified?,
+        # FIXME: Reenable the check once AMPF is configurable
+        # access_management_configured: !automatic_management_unspecified?,
         name_configured: name.present?
       }
     end

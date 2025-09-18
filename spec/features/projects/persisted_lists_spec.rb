@@ -411,17 +411,17 @@ RSpec.describe "Persisted lists on projects index page",
       projects_page.expect_no_columns("Public")
     end
 
-    it "allows favoring persisted query" do
-      projects_page.expect_sidebar_filter("Persisted query", favored: false)
+    it "allows favoriting persisted query" do
+      projects_page.expect_sidebar_filter("Persisted query", favorited: false)
 
       projects_page.set_sidebar_filter("Persisted query")
-      projects_page.expect_sidebar_filter("Persisted query", selected: true, favored: false)
+      projects_page.expect_sidebar_filter("Persisted query", selected: true, favorited: false)
 
       projects_page.mark_query_favorite
-      projects_page.expect_sidebar_filter("Persisted query", selected: true, favored: true)
+      projects_page.expect_sidebar_filter("Persisted query", selected: true, favorited: true)
 
       projects_page.unmark_query_favorite
-      projects_page.expect_sidebar_filter("Persisted query", selected: true, favored: false)
+      projects_page.expect_sidebar_filter("Persisted query", selected: true, favorited: false)
     end
 
     it "loads the query with a custom field filter (Regression#57298)" do

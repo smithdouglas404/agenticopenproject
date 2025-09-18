@@ -21,6 +21,8 @@ uk:
           title: 'Новини'
           at: 'на'
           no_results: 'Нічого нового для звітування.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Опис проекту'
           no_results: "Опис ще не створено. Можна вказати в налаштуваннях проекту."
@@ -33,6 +35,8 @@ uk:
           not_set: 'Не встановлено'
           finished: 'Завершено'
           discontinued: 'Припинено'
+        project_status_beta:
+          title: 'Статус проєкту (BETA)'
         subprojects:
           title: 'Підпроекти'
           no_results: 'Немає підпроектів.'

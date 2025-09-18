@@ -21,6 +21,8 @@ pl:
           title: 'Aktualności'
           at: 'w'
           no_results: 'Utwórz nowy raport.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Opis projektu'
           no_results: "Nie napisano jeszcze opisu. Można go podać w sekcji Ustawienia projektu."
@@ -33,6 +35,8 @@ pl:
           not_set: 'Nie ustawione'
           finished: 'Zakończone'
           discontinued: 'Przerwane'
+        project_status_beta:
+          title: 'Status projektu (BETA)'
         subprojects:
           title: 'Podprojekty'
           no_results: 'Brak podprojektów.'

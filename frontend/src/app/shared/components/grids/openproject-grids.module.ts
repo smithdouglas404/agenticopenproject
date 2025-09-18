@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Injector, NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Injector, NgModule } from '@angular/core';
 import { DynamicModule } from 'ng-dynamic-component';
 import { HookService } from 'core-app/features/plugins/hook-service';
 import { OpSharedModule } from 'core-app/shared/shared.module';
@@ -44,6 +44,7 @@ import { GridComponent } from 'core-app/shared/components/grids/grid/grid.compon
 import { AddGridWidgetModalComponent } from 'core-app/shared/components/grids/widgets/add/add.modal';
 import { WidgetDocumentsComponent } from 'core-app/shared/components/grids/widgets/documents/documents.component';
 import { WidgetNewsComponent } from 'core-app/shared/components/grids/widgets/news/news.component';
+import { WidgetNewsBetaComponent } from 'core-app/shared/components/grids/widgets/news-beta/news-beta.component';
 import { WidgetWpTableComponent } from 'core-app/shared/components/grids/widgets/wp-table/wp-table.component';
 import { WidgetMenuComponent } from 'core-app/shared/components/grids/widgets/menu/widget-menu.component';
 import { WidgetWpTableMenuComponent } from 'core-app/shared/components/grids/widgets/wp-table/wp-table-menu.component';
@@ -73,6 +74,9 @@ import { WidgetMembersComponent } from 'core-app/shared/components/grids/widgets
 import {
   WidgetProjectStatusComponent,
 } from 'core-app/shared/components/grids/widgets/project-status/project-status.component';
+import {
+  WidgetProjectStatusBetaComponent,
+} from 'core-app/shared/components/grids/widgets/project-status-beta/project-status-beta.component';
 import { OpenprojectTimeEntriesModule } from 'core-app/shared/components/time_entries/openproject-time-entries.module';
 import {
   WidgetTimeEntriesCurrentUserMenuComponent,
@@ -120,6 +124,7 @@ import { OpenprojectEnterpriseModule } from 'core-app/features/enterprise/openpr
     WidgetDocumentsComponent,
     WidgetMembersComponent,
     WidgetNewsComponent,
+    WidgetNewsBetaComponent,
     WidgetWpCalendarComponent,
     WidgetWpOverviewComponent,
     WidgetWpTableComponent,
@@ -127,6 +132,7 @@ import { OpenprojectEnterpriseModule } from 'core-app/features/enterprise/openpr
     WidgetWpGraphComponent,
     WidgetProjectDescriptionComponent,
     WidgetProjectStatusComponent,
+    WidgetProjectStatusBetaComponent,
     WidgetSubprojectsComponent,
     WidgetProjectFavoritesComponent,
     WidgetTimeEntriesCurrentUserComponent,
@@ -146,6 +152,7 @@ import { OpenprojectEnterpriseModule } from 'core-app/features/enterprise/openpr
   exports: [
     GridComponent,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class OpenprojectGridsModule {
   constructor(injector:Injector) {
@@ -307,6 +314,14 @@ export function registerWidgets(injector:Injector) {
         },
       },
       {
+        identifier: 'news_beta',
+        component: WidgetNewsBetaComponent,
+        title: i18n.t('js.grid.widgets.news_beta.title'),
+        properties: {
+          name: i18n.t('js.grid.widgets.news_beta.title'),
+        },
+      },
+      {
         identifier: 'project_description',
         component: WidgetProjectDescriptionComponent,
         title: i18n.t('js.grid.widgets.project_description.title'),
@@ -331,6 +346,14 @@ export function registerWidgets(injector:Injector) {
         title: i18n.t('js.grid.widgets.project_status.title'),
         properties: {
           name: i18n.t('js.grid.widgets.project_status.title'),
+        },
+      },
+      {
+        identifier: 'project_status_beta',
+        component: WidgetProjectStatusBetaComponent,
+        title: i18n.t('js.grid.widgets.project_status_beta.title'),
+        properties: {
+          name: i18n.t('js.grid.widgets.project_status_beta.title'),
         },
       },
       {

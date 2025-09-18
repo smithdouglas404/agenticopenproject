@@ -195,10 +195,9 @@ vi:
     ldap_auth_failed: "Không thể xác thực tại máy chủ LDAP."
     sync_failed: "Không thể đồng bộ hóa từ LDAP: %{message}."
     back_to_index: "Nhấp vào đây để quay lại danh sách kết nối."
-    technical_warning_html: |
+    technical_warning: |
       This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Please visit our documentation for detailed instructions</a>.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: Tên tùy ý của kết nối LDAP
       host: Tên máy chủ LDAP hoặc địa chỉ IP
@@ -335,14 +334,23 @@ vi:
       no_results_content_text: Tạo trường tùy chỉnh mới
   concatenation:
     single: "hoặc"
-  dry_validation:
+  op_dry_validation:
+    or: "or"
     errors:
-      defined: "must not be defined."
-      int?: "must be an integer."
+      array?: "must be an array."
       decimal?: "must be a decimal."
+      defined: "must not be defined."
+      eql?: "must be equal to %{left}."
       filled?: "must be filled."
-      key?: "is missing."
       greater_or_equal_zero: "must be greater or equal to 0."
+      gteq?: "must be greater than or equal to %{num}."
+      hash?: "must be a hash."
+      included_in?:
+        arg:
+          default: "must be one of: %{list}."
+          range: "must be one of: %{list_left} - %{list_right}."
+      int?: "must be an integer."
+      key?: "is missing."
       not_found: "not found."
       rules:
         copy_workflow_from:
@@ -358,15 +366,17 @@ vi:
           not_unique: "must be unique within the same hierarchy level."
         parent:
           not_descendant: "must be a descendant of the hierarchy root."
+      str?: "must be a string."
+      type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Đã kích hoạt"
+      enabled: "Enabled"
       depth: "Depth"
       item: "Item"
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Cha"
+      parent: "Parent"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -429,7 +439,7 @@ vi:
     lists:
       active: "Các dự án đang hoạt động"
       my: "Dự án của tôi"
-      favored: "Dự án yêu thích"
+      favorited: "Favorite projects"
       archived: "Các dự án đã lưu trữ"
       shared: "Danh sách dự án được chia sẻ"
       my_lists: "Danh sách dự án của tôi"
@@ -589,9 +599,6 @@ vi:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Vui lòng cung cấp tên API token"
-        token_name_in_use: "Tên API token này đã được sử dụng, vui lòng chọn tên khác"
       failed_to_reset_token: "Lỗi cập nhật mã truy cập: %{error}"
       failed_to_create_token: "Không thể tạo token truy cập: %{error}"
       failed_to_revoke_token: "Không thể thu hồi token truy cập: %{error}"
@@ -690,10 +697,8 @@ vi:
         excluded_from_totals: "Loại trừ khỏi tổng số"
   themes:
     dark: "Dark"
-    dark_high_contrast: "Dark high contrast"
     light: "Sáng"
-    light_high_contrast: "Sáng, độ tương phản cao"
-    sync_with_os: "Automatic (match OS colour mode)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: Hiện tại không có loại nào.
@@ -910,7 +915,7 @@ vi:
   account:
     delete: "Xoá tài khoản"
     delete_confirmation: "Bạn có chắc chắn muốn xoá tài khoản chứ?"
-    deletion_pending: "Tài khoản đã bị khóa và đã được lên lịch xóa. Lưu ý rằng quá trình này diễn ra trong nền. Có thể mất một vài phút cho đến khi người dùng được xóa hoàn toàn."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Dữ liệu mà người dùng tạo ra (ví dụ: email, sở thích, gói công việc, mục wiki) sẽ được xóa nhiều nhất có thể. Tuy nhiên, dữ liệu như gói công việc và mục wiki không thể bị xóa mà không cản trở công việc của các người dùng khác. Do đó, dữ liệu như vậy sẽ được gán lại cho một tài khoản gọi là "Người dùng đã xóa". Vì dữ liệu của mỗi tài khoản bị xóa đều được gán lại cho tài khoản này, sẽ không thể phân biệt dữ liệu mà người dùng tạo ra với dữ liệu của một tài khoản bị xóa khác.'
@@ -1009,6 +1014,8 @@ vi:
         active_user_count_restriction: "Active users"
       enterprise_trial:
         company: "Công ty"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Trang"
         row_count: "Số dòng"
@@ -1135,6 +1142,8 @@ vi:
         is_readonly: "Work package chỉ đọc"
         excluded_from_totals: "Loại trừ khỏi tính tổng trong phân cấp"
         default_done_ratio: "% Hoàn thành"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Lịch"
         ical_token_query_assignment: "Query assignment"
@@ -1188,9 +1197,16 @@ vi:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "Cảnh báo tôi khi rời khỏi gói công việc với thay đổi chưa lưu"
-        theme: "Colour mode"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
+        theme: "Color mode"
         time_zone: "Múi giờ"
-        mode_guideline: "Some modes will overwrite custom theme colours for accessibility and legibility. Please select Light mode for full custom theme support."
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Daily reminders"
         workdays: "Ngày làm việc"
       version:
@@ -1366,6 +1382,8 @@ vi:
           only_one_trial: "Only one trial token can be active. Please delete the previous trial token before adding another."
           unreadable: "không thể đọc được. Bạn có chắc đó là mã thông báo hỗ trợ không?"
           already_added: "This token has already been added."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "chồng lấn."
           outside: "nằm ngoài bảng dữ liệu."
@@ -1462,10 +1480,19 @@ vi:
           typed_dag:
             circular_dependency: "Mối quan hệ tạo ra một vòng tròn các mối quan hệ."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "Nhà cung cấp SCM không có sẵn"
           not_whitelisted: "không được cấu hình cho phép."
@@ -1567,7 +1594,8 @@ vi:
               cant_exceed_work: "không thể cao hơn Công việc."
               must_be_set_when_work_is_set: "cần thiết khi Công việc được thiết lập."
               must_be_set_when_work_and_percent_complete_are_set: "bắt buộc khi Công việc và % Hoàn thành được thiết lập."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 phải trống khi Công việc trống và % Hoàn thành là 100%.
           readonly_status: "Gói công việc đang ở trạng thái chỉ đọc nên các thuộc tính của nó không thể bị thay đổi."
@@ -1614,9 +1642,11 @@ vi:
         version:
           undeletable_archived_projects: "Phiên bản không thể bị xóa vì nó có các gói công việc gắn liền với nó."
           undeletable_work_packages_attached: "Phiên bản không thể bị xóa vì nó có các gói công việc gắn liền với nó."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Vui lòng kiểm tra các mục sau đây:"
@@ -1722,6 +1752,7 @@ vi:
     attachments: "Đính kèm"
     actor: "Actor"
     action: "Hành động"
+    api_key: "API key"
     author: "Tác giả"
     avatar: "Ảnh đại diện"
     base: "Lỗi tổng quan:"
@@ -1852,6 +1883,7 @@ vi:
   button_add_watcher: "Thêm người theo dõi"
   button_annotate: "Chú giải"
   button_apply: "Áp dụng"
+  button_apply_changes: "Áp dụng thay đổi"
   button_archive: "Lưu trữ"
   button_back: "Quay lại"
   button_cancel: "Hủy"
@@ -1901,8 +1933,8 @@ vi:
   button_rollback: "Quay trở lại phiên bản này"
   button_save: "Lưu"
   button_save_as: "Lưu dưới dạng"
-  button_apply_changes: "Áp dụng thay đổi"
   button_save_back: "Lưu và trở lại"
+  button_select: "Select"
   button_set_reminder: "Set reminder"
   button_show: "Hiện"
   button_sort: "Sắp xếp"
@@ -2140,7 +2172,7 @@ vi:
         Already have a token? Add it using the button below to upgrade to the booked Enterprise plan.
       hide_banner: "Hide this banner"
       homescreen_description: >
-        Enterprise plans extend the Community edition of OpenProject you are currently using. They include add-ons, additional features and professional support that enables organisations of all sizes to achieve great things together.
+        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
       homescreen_subline: By upgrading, you will also be supporting an open source project.
       baseline_comparison:
         description: Nổi bật các thay đổi đã thực hiện đối với danh sách này kể từ bất kỳ thời điểm nào trong quá khứ.
@@ -2242,6 +2274,9 @@ vi:
   enumeration_reported_project_statuses: "Tình trạng dự án đã báo cáo"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "Đăng nhập một lần (SSO) cho người dùng '%{value}' không thành công"
   error_can_not_archive_project: "Dự án này không thể lưu trữ: %{errors}"
   error_can_not_delete_entry: "Không thể xoá"
@@ -2478,6 +2513,26 @@ vi:
       community: "Cộng đồng OpenProject"
       upsell:
         title: "Nâng cấp lên phiên bản Enterprise"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "Nâng cấp lên phiên bản Enterprise"
       postgres_migration: "Di chuyển cài đặt của bạn lên PostgreSQL"
@@ -2488,7 +2543,8 @@ vi:
       shortcuts: "Phím tắt"
       blog: "OpenProject blog"
       forums: "Diễn đàn cộng đồng"
-      newsletter: "Cảnh báo bảo mật / Bản tin"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2570,7 +2626,7 @@ vi:
         static_token_name: "Mã thông báo API"
       ical:
         title: "iCalendar"
-        text_hint: 'Mã iCalendar cho phép người dùng <a href="%{path}" target="_blank">đăng ký các lịch OpenProject</a> và xem thông tin gói công việc cập nhật từ các khách hàng bên ngoài.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "Đăng ký iCalendar không được kích hoạt bởi quản trị viên. Vui lòng liên hệ với quản trị viên của bạn để sử dụng tính năng này."
         empty_text_hint: "Để thêm mã iCalendar, hãy đăng ký một lịch mới hoặc hiện có từ module Lịch của một dự án. Bạn phải có quyền cần thiết."
       oauth:
@@ -2712,6 +2768,7 @@ vi:
   label_required_disk_storage: "Ổ đĩa lưu trữ bắt buộc"
   label_send_invitation: Gửi lời mời
   label_calculated_value: "Calculated value"
+  label_change_parent: "Change parent"
   label_change_plural: "Thay đổi"
   label_change_properties: "Thay đổi những thuộc tính"
   label_change_status: "Đổi trạng thái"
@@ -2902,7 +2959,7 @@ vi:
   label_journal_diff: "So sánh mô tả"
   label_language: "Ngôn ngữ"
   label_languages: "Ngôn ngữ"
-  label_locale: "Language and Region"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Nhảy đến dự án..."
   label_keyword_plural: "Từ khóa"
   label_language_based: "Dựa trên ngôn ngữ của người dùng"
@@ -3947,6 +4004,8 @@ vi:
   setting_feeds_limit: "Giới hạn nội dung của feed"
   setting_file_max_size_displayed: "Kích thước tối đa của tệp văn bản hiển thị nội tuyến"
   setting_host_name: "Tên máy chủ"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Giờ mỗi ngày"
   setting_hours_per_day_explanation: >-
     Điều này xác định cái gì được coi là một "ngày" khi hiển thị thời gian theo ngày và giờ (ví dụ, nếu một ngày là 8 giờ, 32 giờ sẽ là 4 ngày).

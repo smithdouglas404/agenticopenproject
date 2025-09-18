@@ -88,6 +88,8 @@ fr:
     button_list_view: "Vue en liste"
     button_show_view: "Affichage plein écran"
     button_log_time: "Afficher l'horodatage"
+    button_start_timer: "Démarrer le minuteur"
+    button_stop_timer: "Arrêter le minuteur"
     button_more: "Plus"
     button_open_details: "Ouvrir la vue détaillée"
     button_close_details: "Fermer la vue détaillée"
@@ -288,17 +290,6 @@ fr:
         format:
           date: "%{attribute} n’est pas une date valide. Format attendu : AAAA-MM-JJ."
         general: "Une erreur s'est produite."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "En savoir plus sur les nouvelles fonctionnalités et les mises à jour des produits."
-          learn_about: "En savoir plus sur les nouvelles fonctionnalités"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que <br> <ul class="%{list_styling_class}"> <li>Améliorations UX/UI pour un look plus moderne.</li> <li>Réunions : option permettant de désactiver les notifications par e-mail et ICS.</li> <li>Les minuteries en cours sont affichées dans le module de suivi du temps.</li> <li>Rapport d'avancement : la somme du % d'achèvement est également affichée dans le mode basé sur l'état.</li> <li>Bilan de santé Nextcloud : indique la capacité d'échange de jetons manquante (add-on Enterprise).</li> </ul>
     ical_sharing_modal:
       title: "S'abonner au calendrier"
       inital_setup_error_message: "Une erreur est survenue lors de la récupération des données."
@@ -444,7 +435,7 @@ fr:
     label_sort_lower: "Déplacer vers le bas"
     label_sorting: "Tri"
     label_spent_time: "Temps passé"
-    label_star_query: "Favori"
+    label_star_query: "Favoris"
     label_press_enter_to_save: "Appuyer sur \"entrée\" pour enregistrer."
     label_public_query: "Public"
     label_sum: "Total"
@@ -1080,8 +1071,8 @@ fr:
     notice_successful_delete: "Suppression réussie."
     notice_successful_update: "Mise à jour réussie."
     notice_job_started: "tâche démarrée."
-    no_job_id: "No job ID returned from server."
-    invalid_job_response: "Invalid response from server."
+    no_job_id: "Aucun ID de tâche n'a été renvoyé par le serveur."
+    invalid_job_response: "Réponse invalide du serveur."
     notice_bad_request: "Mauvaise requête."
     relations:
       empty: Aucune relation n'existe
@@ -1114,6 +1105,7 @@ fr:
       child_work_packages:
         one: "un lot de travaux enfant"
         other: "%{count} lots de travaux enfant"
+      hour_string: "%{hours} h"
       hour:
         one: "1h"
         other: "%{count} h"
@@ -1224,15 +1216,15 @@ fr:
       selected_filter:
         all: "Tous les projets"
         selected: "Uniquement la sélection"
-      search_placeholder: "Rechercher un projet..."
-      search_placeholder_favorites: "Search favorites..."
+      search_placeholder: "Recherche de projets..."
+      search_placeholder_favorites: "Recherche de favoris..."
       include_subprojects: "inclure tous les sous-projets"
       tooltip:
         include_all_selected: "Projet déjà inclus puisque Include tous les sous-projets sont activés."
         current_project: "Ceci est le projet dans lequel vous vous trouvez actuellement."
         does_not_match_search: "Le projet ne correspond pas aux critères de recherche."
       no_results: "Aucun projet ne correspond à vos critères de recherche."
-      no_favorite_results: "No favorite project matches your search criteria."
+      no_favorite_results: "Aucun projet favori ne correspond à vos critères de recherche."
     baseline:
       toggle_title: "Référence"
       clear: "Effacer"

@@ -88,6 +88,8 @@ hr:
     button_list_view: "Prikaz popisa"
     button_show_view: "Prikaz na cijelom ekranu"
     button_log_time: "Vrijeme pristupa"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "Više"
     button_open_details: "Otvorite pregled pojedinosti"
     button_close_details: "Close details view"
@@ -288,17 +290,6 @@ hr:
         format:
           date: "%{attribute} is no valid date - YYYY-MM-DD expected."
         general: "Došlo je do pogreške."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Informirajte se o novim značajkama i ažuriranjima proizvoda."
-          learn_about: "Learn more about all new features"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                The release contains various new features and improvements, such as <br> <ul class="%{list_styling_class}"> <li>UX/UI improvements for a more modern look.</li> <li>Meetings: Option to mute email notifications and ICS.</li> <li>Ongoing timers shown in the My time tracking module.</li> <li>Progress reporting: % Complete sum also shown in Status-based mode.</li> <li>Nextcloud Health check: Indicate missing token exchange capability (Enterprise add-on).</li> </ul>
     ical_sharing_modal:
       title: "Subscribe to calendar"
       inital_setup_error_message: "An error occured while fetching data."
@@ -444,7 +435,7 @@ hr:
     label_sort_lower: "Pomakni dolje"
     label_sorting: "Sortiranje"
     label_spent_time: "Utrošeno vrijeme"
-    label_star_query: "Favored"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Press enter to save."
     label_public_query: "Javno"
     label_sum: "Zbroj"
@@ -1117,6 +1108,7 @@ hr:
         one: "one child work package"
         few: "%{count} work package children"
         other: "%{count} work package children"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"
@@ -1228,7 +1220,7 @@ hr:
       selected_filter:
         all: "All projects"
         selected: "Only selected"
-      search_placeholder: "Search project..."
+      search_placeholder: "Search projects..."
       search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Include all sub-projects"
       tooltip:

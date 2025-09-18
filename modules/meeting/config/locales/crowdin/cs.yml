@@ -217,7 +217,7 @@ cs:
       agenda_items: "Kopírovat položky agendy"
       agenda_text: "Zkopírujte program staré schůzky"
       participants: "Kopírovat seznam účastníků"
-      to_clipboard: "Kopírovat do schránky"
+      to_clipboard: "Copy link to clipboard"
     email:
       send_emails: "Účastníci e-mailu"
       send_invitation_emails: >
@@ -468,6 +468,12 @@ cs:
   text_meeting_agenda_open_are_you_sure: "Toto přepíše všechny změny v zápisech! Chcete pokračovat?"
   text_meeting_minutes_for_meeting: 'zápis pro schůzku "%{meeting}"'
   text_notificiation_invited: "Tento e-mail obsahuje ics záznam pro následující setkání:"
+  text_meeting_ics_description: >-
+    Link to meeting: %{url}
+  text_meeting_ics_meeting_series_description: >-
+    Link to meeting series: %{url}
+  text_meeting_occurrence_ics_description: >-
+    Link to meeting occurrence: %{url} Link to meeting series: %{series_url}
   text_meeting_empty_heading: "Vaše schůzka je prázdná"
   text_meeting_empty_description1: "Začněte přidáním bodů programu schůzky níže. Každá položka může být tak jednoduchá jako jen název, ale můžete také přidat další podrobnosti jako doba trvání a poznámky."
   text_meeting_empty_description2: 'Můžete také přidat odkazy na existující pracovní balíčky. Pokud tak učiníte, související poznámky budou automaticky viditelné v záložce "Schůzky" pracovního balíčku.'
@@ -551,9 +557,13 @@ cs:
   text_meeting_closed_dropdown_description: "This meeting is closed. You cannot modify agenda items or outcomes anymore."
   text_meeting_not_editable_anymore: "Tato schůzka již není upravitelná."
   text_meeting_not_present_anymore: "Tato schůzka byla odstraněna. Vyberte prosím jinou schůzku."
-  label_add_work_package_to_meeting_dialog_title: "Přidat pracovní balíček k schůzce"
+  label_add_work_package_to_meeting_dialog_title: "Select meeting"
+  label_add_work_package_to_meeting_section_label: "Add to section"
   label_add_work_package_to_meeting_dialog_button: "Přidat do schůzky"
-  label_meeting_selection_caption: "tento pracovní balíček je možné přidat  pouze k nadcházejícím nebo probíhajícím otevřeným schůzkám."
+  label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."
+  label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."
+  placeholder_section_select_meeting_first: "Meeting selection is required first"
+  text_add_work_package_to_meeting_form: "The work package will be added to the selected meeting or backlog as an agenda item."
   text_add_work_package_to_meeting_description: "Pracovní balíček může být přidán na jedno nebo více jednání k diskusi."
   text_agenda_item_no_notes: "Nebyly poskytnuty žádné poznámky"
   text_agenda_item_not_editable_anymore: "Tento bod pořadu jednání již není upravitelný."
@@ -581,7 +591,7 @@ cs:
           dialog_body: "This token will generate an iCal subscription URL that lets you view all your meetings in an external calendar application."
           create_button: "Create subscription"
           name_label: "Název tokenu"
-          name_caption: 'You can name it after where you will use it, such as"My phone" or "Work computer.'
+          name_caption: 'You can name it after where you will use it, such as "My phone" or "Work computer".'
       created_dialog:
         token/ical_meeting:
           title: "An iCal meeting subscription token has been generated"

@@ -291,9 +291,7 @@ module ApplicationHelper
   def theme_options_for_select
     [
       [I18n.t("themes.light"), "light"],
-      [I18n.t("themes.light_high_contrast"), "light_high_contrast"],
       [I18n.t("themes.dark"), "dark"],
-      [I18n.t("themes.dark_high_contrast"), "dark_high_contrast"],
       [I18n.t("themes.sync_with_os"), "sync_with_os"]
     ]
   end
@@ -315,18 +313,25 @@ module ApplicationHelper
   end
 
   def user_theme_data_attributes
-    if User.current.pref.sync_with_os_theme?
-      # Theme will be set by inline script before body renders to prevent flickering
-      { auto_theme_switcher_mode_value: User.current.pref.theme,
-        auto_theme_switcher_desktop_light_high_contrast_logo_class: "op-logo--link_high_contrast",
-        auto_theme_switcher_mobile_white_logo_class: "op-logo--icon_white" }
+    pref = User.current.pref
+    theme = pref.theme
+
+    theme_options = {
+      auto_theme_switcher_theme_value: theme,
+      auto_theme_switcher_desktop_light_high_contrast_logo_class: "op-logo--link_high_contrast",
+      auto_theme_switcher_mobile_white_logo_class: "op-logo--icon_white"
+    }
+
+    if pref.sync_with_os_theme?
+      theme_options[:auto_theme_switcher_force_light_contrast_value] = pref.force_light_theme_contrast?
+      theme_options[:auto_theme_switcher_force_dark_contrast_value] = pref.force_dark_theme_contrast?
     else
-      mode, _theme_suffix = User.current.pref.theme.split("_", 2)
-      {
-        color_mode: mode,
-        "#{mode}_theme": User.current.pref.theme
-      }
+      theme_options[:color_mode] = theme
+      theme_options[:"#{theme}_theme"] = theme
+      theme_options[:auto_theme_switcher_increase_contrast_value] = pref.increase_theme_contrast?
     end
+
+    theme_options
   end
 
   def highlight_default_language(lang_options)

@@ -225,6 +225,10 @@ export class PathHelperService {
     return `${this.projectPath(projectIdentifier)}/dashboards`;
   }
 
+  public projectWidgetPath(projectIdentifier:string, widgetName:string) {
+    return `${this.projectPath(projectIdentifier)}/widgets/${widgetName}`;
+  }
+
   public timeEntriesPath(workPackageId:string|number) {
     const suffix = '/time_entries';
 
@@ -280,6 +284,10 @@ export class PathHelperService {
 
   public versionShowPath(id:string|number) {
     return `${this.staticBase}/versions/${id}`;
+  }
+
+  public widgetPath(widgetName:string) {
+    return `${this.staticBase}/widgets/${widgetName}`;
   }
 
   public workPackagePath(id:string|number) {

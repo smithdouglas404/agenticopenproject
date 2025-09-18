@@ -88,6 +88,8 @@ pt-BR:
     button_list_view: "Lista"
     button_show_view: "Visualização em tela cheia"
     button_log_time: "Registro de tempo"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "Mais"
     button_open_details: "Abrir visão detalhada"
     button_close_details: "Fechar visão detalhada"
@@ -287,17 +289,6 @@ pt-BR:
         format:
           date: "%{attribute} não é uma data válida - AAAA-MM-DD esperado."
         general: "Ocorreu um erro."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Ler sobre os novos recursos e atualizações de produtos."
-          learn_about: "Saiba mais sobre todos os novos recursos"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                A versão traz várias novidades e melhorias, como <br> <ul class="%{list_styling_class}"> <li>Interface UX/UI renovada para um visual mais moderno.</li> <li>Reuniões: opção para silenciar notificações por e-mail e arquivos ICS.</li> <li>Temporizadores ativos exibidos no módulo Meu controle de tempo.</li> <li>Relatórios de progresso: soma da % concluída também exibida no modo com base em status.</li> <li>Verificação de integridade do Nextcloud: alerta sobre falta da capacidade de troca de token (complementos Enterprise).</li> </ul>
     ical_sharing_modal:
       title: "Assinar calendário"
       inital_setup_error_message: "Ocorreu um erro ao buscar dados."
@@ -443,7 +434,7 @@ pt-BR:
     label_sort_lower: "Mover para baixo"
     label_sorting: "Ordenação"
     label_spent_time: "Tempo gasto"
-    label_star_query: "Favorecido"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Pressione enter para salvar."
     label_public_query: "Público"
     label_sum: "Soma"
@@ -1079,8 +1070,8 @@ pt-BR:
     notice_successful_delete: "Excluído com sucesso"
     notice_successful_update: "Atualizado com sucesso."
     notice_job_started: "trabalho iniciado."
-    no_job_id: "No job ID returned from server."
-    invalid_job_response: "Invalid response from server."
+    no_job_id: "Nenhum ID de tarefa retornado pelo servidor."
+    invalid_job_response: "Resposta inválida do servidor."
     notice_bad_request: "Requisição Inválida."
     relations:
       empty: Nenhuma relação existente
@@ -1113,6 +1104,7 @@ pt-BR:
       child_work_packages:
         one: "um pacote de trabalho filho"
         other: "%{count} pacotes de trabalho filhos"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} hs"
@@ -1223,15 +1215,15 @@ pt-BR:
       selected_filter:
         all: "Todos os projetos"
         selected: "Somente selecionados"
-      search_placeholder: "Pesquisar projetos..."
-      search_placeholder_favorites: "Search favorites..."
+      search_placeholder: "Buscar projetos..."
+      search_placeholder_favorites: "Pesquisar favoritos..."
       include_subprojects: "Incluir todos os subprojetos"
       tooltip:
         include_all_selected: "Como a opção Incluir todos os sub-projetos está habilitada, o projeto já foi incluído."
         current_project: "Este é o projeto atual em que você está."
         does_not_match_search: "O projeto não corresponde ao critério de pesquisa"
       no_results: "Nenhum projeto corresponde ao seu critério de busca."
-      no_favorite_results: "No favorite project matches your search criteria."
+      no_favorite_results: "Nenhum projeto favorito corresponde aos seus critérios de busca."
     baseline:
       toggle_title: "Linha base"
       clear: "Remover"

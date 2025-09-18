@@ -237,17 +237,10 @@ For example: Keycloak allows you to map custom properties of the user. This allo
 
 #### Step 7: Group mapping
 
-> [!IMPORTANT]
-> Group mapping is an experimental feature that's not yet intended for production usage. It must be enabled on the page for experimental
-> features of your OpenProject instance (found under `/admin/settings/experimental`). Future versions might change this feature in a breaking
-> way, as we still look for user feedback on this feature.
-
-OpenProject can optionally synchronize groups of users when they log in. If you want to enable this, you have to enable the checkbox
-"Synchronize groups". OpenProject will expect a claim with an array of group names that the user is a member of. By default this claim
+OpenProject can optionally synchronize groups of users when they log in. If you want to enable this, you have to enable the checkbox "Synchronize groups". OpenProject will expect a claim with an array of group names that the user is a member of. By default this claim
 is expected to be named `groups`, but you can change this if desired.
 
-The default behaviour of OpenProject is to create a new group for each unknown group listed in this claim. It will match existing groups
-by their name before creating a new group. You can later rename groups created this way in the group management UI, they will still be linked
+The default behaviour of OpenProject is to create a new group for each unknown group listed in this claim. It will match existing groups by their name before creating a new group. You can later rename groups created this way in the group management UI, they will still be linked
 to the ID with which they are referenced in OpenID Connect claims and recognized that way.
 
 ##### Matching groups with regular expressions

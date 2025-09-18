@@ -58,6 +58,9 @@ OpenProject::FeatureDecisions.add :scim_api,
 OpenProject::FeatureDecisions.add :block_note_editor,
                                   description: "Enables the block note editor for rich text fields where available."
 
+OpenProject::FeatureDecisions.add :beta_widgets,
+                                  description: "Enables BETA versions of widgets."
+
 OpenProject::FeatureDecisions.add :minutes_styling_meeting_pdf,
                                   description: "Allow exporting a meeting with FITKO styling. " \
                                                "See #65124 for details."
@@ -68,3 +71,7 @@ OpenProject::FeatureDecisions.add :scored_list_custom_fields,
 
 OpenProject::FeatureDecisions.add :portfolio_models,
                                   description: "Enables the creation and management of portfolio and program work spaces."
+
+OpenProject::FeatureDecisions.add :change_hierarchy_item_parent,
+                                  description: "Enables a functionality to change the parent of a hierarchy item of " \
+                                               "custom fields of type hierarchy and scored list."

@@ -63,10 +63,10 @@ nl:
       attribute_mapping_text: >
         De volgende velden bepalen welke kenmerken verstrekt door de SAML identity provider worden gebruikt om gebruikers kenmerken te verstrekken in OpenProject
       metadata:
-        dialog: "This is the URL where the OpenProject SAML metadata is available. Optionally use it to configure your identity provider:"
+        dialog: "Dit is de URL waar de OpenProject SAML metadata beschikbaar is. Gebruik deze optioneel om uw identity provider te configureren:"
       upsell:
-        title: "Single Sign-On (SSO) with SAML"
-        description: Connect OpenProject to a SAML identity provider
+        title: "Single Sign-On (SSO) met SAML"
+        description: Apenproject verbinden met een SAML identity provider
       request_attributes:
         title: 'Gevraagde kenmerken'
         legend: >
@@ -74,11 +74,11 @@ nl:
         name: 'Gevraagde kenmerk sleutel'
         format: 'Kenmerk formaat'
       section_headers:
-        configuration: "Primary configuration"
+        configuration: "Primaire configuratie"
         attributes: "Kenmerken"
       section_texts:
-        display_name: "Configure the display name of the SAML provider."
-        metadata: "Pre-fill configuration using a metadata URL or by pasting metadata XML"
+        display_name: "Configureer de weergavenaam van de SAML provider."
+        metadata: "Configuratie vooraf invullen met behulp van een metadata URL of door metadata XML te plakken"
         metadata_form: "If your identity provider has a metadata endpoint or XML download, add it below to pre-fill the configuration."
         metadata_form_banner: "Editing the metadata may override existing values in other sections. "
         configuration: "Configure the endpoint URLs for the identity provider, certificates, and further SAML options."
@@ -89,7 +89,7 @@ nl:
         requested_attributes: "Definieer de set kenmerken die moet worden opgevraagd in het SAML-verzoek dat naar uw identity provider wordt gestuurd."
       seeded_from_env: "Deze provider is geplaatst vanuit de omgevingsconfiguratie. Deze kan niet worden bewerkt."
     settings:
-      metadata_none: "I don't have metadata"
+      metadata_none: "Ik heb geen metadata"
       metadata_url: "Metagegevens URL"
       metadata_xml: "Metadata XML"
     instructions:

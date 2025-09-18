@@ -88,6 +88,8 @@ th:
     button_list_view: "มุมมองรายการ"
     button_show_view: "มุมมองแบบเต็มหน้าจอ"
     button_log_time: "เวลาที่ถูกบันทึก"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "เพิ่มเติม"
     button_open_details: "Open details view"
     button_close_details: "Close details view"
@@ -288,17 +290,6 @@ th:
         format:
           date: "%{attribute} is no valid date - YYYY-MM-DD expected."
         general: "An error has occurred."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Read about new features and product updates."
-          learn_about: "Learn more about all new features"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                The release contains various new features and improvements, such as <br> <ul class="%{list_styling_class}"> <li>UX/UI improvements for a more modern look.</li> <li>Meetings: Option to mute email notifications and ICS.</li> <li>Ongoing timers shown in the My time tracking module.</li> <li>Progress reporting: % Complete sum also shown in Status-based mode.</li> <li>Nextcloud Health check: Indicate missing token exchange capability (Enterprise add-on).</li> </ul>
     ical_sharing_modal:
       title: "Subscribe to calendar"
       inital_setup_error_message: "An error occured while fetching data."
@@ -444,7 +435,7 @@ th:
     label_sort_lower: "เลื่อนลง"
     label_sorting: "การเรียงลำดับ"
     label_spent_time: "เวลาที่ใช้"
-    label_star_query: "Favored"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Press enter to save."
     label_public_query: "สาธารณะ"
     label_sum: "Sum"
@@ -1111,6 +1102,7 @@ th:
         other: "work packages"
       child_work_packages:
         other: "%{count} work package children"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"
@@ -1220,7 +1212,7 @@ th:
       selected_filter:
         all: "All projects"
         selected: "Only selected"
-      search_placeholder: "Search project..."
+      search_placeholder: "Search projects..."
       search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Include all sub-projects"
       tooltip:

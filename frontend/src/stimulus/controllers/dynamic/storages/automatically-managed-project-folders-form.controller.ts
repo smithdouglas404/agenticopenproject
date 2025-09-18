@@ -33,7 +33,6 @@ import { Controller } from '@hotwired/stimulus';
 export default class AutomaticallyManagedProjectFoldersFormController extends Controller {
   static targets = [
     'applicationPasswordInput',
-    'oneDriveInformationText',
     'submitButton',
   ];
 
@@ -46,17 +45,13 @@ export default class AutomaticallyManagedProjectFoldersFormController extends Co
 
   declare readonly applicationPasswordInputTarget:HTMLElement;
   declare readonly hasApplicationPasswordInputTarget:boolean;
-  declare readonly oneDriveInformationTextTarget:HTMLElement;
-  declare readonly hasOneDriveInformationTextTarget:boolean;
   declare readonly submitButtonTarget:HTMLElement;
 
-  declare providerTypeValue:string;
   declare isAutomaticallyManagedValue:boolean;
   declare doneCompleteLabelValue:string;
   declare doneCompleteWithoutLabelValue:string;
 
   connect():void {
-    // On first load if isAutomaticallyManaged is true, show the applicationPasswordInput
     this.toggleApplicationPasswordDisplay(this.isAutomaticallyManagedValue);
   }
 
@@ -65,35 +60,16 @@ export default class AutomaticallyManagedProjectFoldersFormController extends Co
   }
 
   toggleApplicationPasswordDisplay(automaticManagementEnabled:boolean):void {
-    switch (this.providerTypeValue) {
-      case 'Storages::NextcloudStorage':
-        if (!this.hasApplicationPasswordInputTarget) {
-          return;
-        }
+    if (!this.hasApplicationPasswordInputTarget) {
+      return;
+    }
 
-        if (automaticManagementEnabled) {
-          this.applicationPasswordInputTarget.classList.remove('d-none');
-          this.submitButtonTarget.textContent = this.doneCompleteLabelValue;
-        } else {
-          this.applicationPasswordInputTarget.classList.add('d-none');
-          this.submitButtonTarget.textContent = this.doneCompleteWithoutLabelValue;
-        }
-
-        break;
-      case 'Storages::OneDriveStorage':
-        if (!this.hasOneDriveInformationTextTarget) {
-          return;
-        }
-
-        if (automaticManagementEnabled) {
-          this.oneDriveInformationTextTarget.classList.remove('d-none');
-        } else {
-          this.oneDriveInformationTextTarget.classList.add('d-none');
-        }
-
-        break;
-      default:
-        throw new Error('unknown storage provider type');
+    if (automaticManagementEnabled) {
+      this.applicationPasswordInputTarget.classList.remove('d-none');
+      this.submitButtonTarget.textContent = this.doneCompleteLabelValue;
+    } else {
+      this.applicationPasswordInputTarget.classList.add('d-none');
+      this.submitButtonTarget.textContent = this.doneCompleteWithoutLabelValue;
     }
   }
 }

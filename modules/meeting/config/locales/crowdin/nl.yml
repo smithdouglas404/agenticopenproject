@@ -65,7 +65,7 @@ nl:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} is not a valid participant."
+          invalid_user: "%{name} is geen geldige deelnemer."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "There is one open meeting in the series that is not covered by the new schedule. Adjust the schedule to include all existing meetings."
@@ -80,8 +80,8 @@ nl:
       meeting_agenda: "Agenda"
       meeting_section: "Sectie"
       token/ical_meeting:
-        one: "iCal Meeting subscription"
-        other: "iCal Meeting subscription"
+        one: "iCal Meeting abonnement"
+        other: "iCal Meeting abonnement"
   activity:
     filter:
       meeting: "Vergaderingen"
@@ -183,19 +183,19 @@ nl:
       label:
         participants: "Deelnemers"
         attended: "Deelgenomen"
-        mark_as_attended: "Mark as attended"
-        mark_all_as_attended: "Mark all as attended"
-        remove_participant: "Remove participant"
+        mark_as_attended: "Als aanwezig markeren"
+        mark_all_as_attended: "Alles markeren als aanwezig"
+        remove_participant: "Deelnemer verwijderen"
         manage_participants: "Deelnemers beheren"
         no_participants: "Geen deelnemers"
         show_all: "Toon alle"
       text:
         template: "Deze deelnemers worden automatisch uitgenodigd voor alle toekomstige vergaderingen wanneer deze worden aangemaakt."
-        manage_participants: "Search for and add project members as participants to this meeting."
-        search_for_members: "Search for project members"
+        manage_participants: "Zoek projectleden en voeg ze toe als deelnemers aan deze vergadering."
+        search_for_members: "Projectleden zoeken"
       blankslate:
         heading: "Geen deelnemers"
-        description: "There are no participants yet."
+        description: "Er zijn nog geen deelnemers."
     attachments:
       template: "Deze bijgevoegde bestanden zullen in alle toekomstige vergaderingen in de serie worden opgenomen."
       text: "Bijgevoegde bestanden zijn beschikbaar voor alle deelnemers aan de vergadering. U kunt deze ook naar agendapunt notities slepen."
@@ -207,14 +207,14 @@ nl:
       agenda_items: "Agendapunten kopiëren"
       agenda_text: "Kopieer de agenda van de oude vergadering"
       participants: "Kopieer lijst van deelnemers"
-      to_clipboard: "Kopiëren naar het klembord"
+      to_clipboard: "Link naar klembord kopiëren"
     email:
       send_emails: "Email participants"
       send_invitation_emails: >
         Stuur onmiddellijk een e-mailuitnodiging naar de hierboven geselecteerde deelnemers. U kunt dit ook later op elk gewenst moment handmatig doen.
       send_invitation_emails_structured: "Stuur onmiddellijk een e-mailuitnodiging naar de hierboven geselecteerde deelnemers. U kunt dit ook later op elk gewenst moment handmatig doen."
       open_meeting_link: "Open vergadering"
-      open_my_meetings_link: "Go to My meetings"
+      open_my_meetings_link: "Ga naar Mijn vergaderingen"
       series:
         title: "[%{project_name}] Meeting series '%{title}'"
         summary: "%{actor} has set up a new meeting series '%{title}'"
@@ -241,7 +241,7 @@ nl:
         new_date_time: "Nieuwe datum/tijd"
         old_location: "Old location"
         new_location: "New location"
-    label_mail_all_participants: "Send email invite to participants"
+    label_mail_all_participants: "E-mailuitnodiging naar deelnemers sturen"
     types:
       one_time: "Eenmalig"
       recurring: "Terugkerend"
@@ -264,9 +264,9 @@ nl:
     blankslate:
       title: "Geen vergaderingen om weer te geven"
       desc: "Er zijn geen vergaderingen die voldoen aan de actieve filtercriteria."
-    label_export_pdf: "Export PDF"
+    label_export_pdf: "Exporteren als PDF"
     export:
-      your_meeting_export: "Meeting is being exported"
+      your_meeting_export: "Meeting wordt geëxporteerd"
       minutes:
         footer_page_numbers: "P. %{current_page} of %{total_pages}"
         author: "Auteur"
@@ -275,7 +275,7 @@ nl:
         location: "Locatie"
         title: "Notulen"
     export_pdf_dialog:
-      title: Export PDF
+      title: Exporteren als PDF
       description: Generate a printable PDF file of this meeting at the current state.
       templates:
         default:
@@ -291,26 +291,26 @@ nl:
         label: Auteur
         caption: The author of the minutes will be displayed in the subtitle.
       include_participants:
-        label: Include list of participants
+        label: Lijst van deelnemers toevoegen
         caption: A list of participants will be preset above the meeting agenda.
       include_attachments:
-        label: Include list of attachments
+        label: Lijst met bijlagen toevoegen
         caption: A list containing the filenames of attachments will be appended at the end.
       include_backlog:
-        label: Include backlog
+        label: Backlog toevoegen
         caption: Backlog elements are not normally considered part of a meeting occurrence but you can choose to include them.
       include_outcomes:
         label: Include agenda outcomes
         caption: If your agenda outcomes contain confidential information, you can choose to not include them in the export.
       footer_text:
-        label: Footer text
-        caption: This text will appear on every page at the center of the footer.
+        label: Voettekst
+        caption: Deze tekst verschijnt op elke pagina in het midden van de voettekst.
       submit_button: Downloaden
     notifications:
       sidepanel:
         title: "Email calendar updates"
         description:
-          disabled: "Participants will not receive an email informing them of changes."
+          disabled: "Deelnemers ontvangen geen e-mail om hen op de hoogte te stellen van wijzigingen."
           enabled: "All participants will receive updated calendar invites via email informing them of changes."
           change_via_template: "To change this, edit the series template."
       dialog:
@@ -454,6 +454,12 @@ nl:
   text_meeting_agenda_open_are_you_sure: "Dit overschrijft alle wijzigingen in de aantekeningen! Wilt u doorgaan?"
   text_meeting_minutes_for_meeting: 'minuten voor de vergadering "%{meeting}"'
   text_notificiation_invited: "Deze mail bevat een ics item voor de vergadering hieronder:"
+  text_meeting_ics_description: >-
+    Link to meeting: %{url}
+  text_meeting_ics_meeting_series_description: >-
+    Link to meeting series: %{url}
+  text_meeting_occurrence_ics_description: >-
+    Link to meeting occurrence: %{url} Link to meeting series: %{series_url}
   text_meeting_empty_heading: "Je vergadering is leeg"
   text_meeting_empty_description1: "Begin met het toevoegen van agendapunten hieronder. Elk item kan zo eenvoudig zijn als alleen een titel, maar u kunt ook extra gegevens toevoegen, zoals duur en aantekeningen."
   text_meeting_empty_description2: 'Je kunt ook verwijzingen naar bestaande werkpakketten toevoegen. Wanneer je dit doet, zullen gerelateerde notities automatisch zichtbaar zijn in het tabblad "Vergaderingen" van het werkpakket.'
@@ -537,9 +543,13 @@ nl:
   text_meeting_closed_dropdown_description: "This meeting is closed. You cannot modify agenda items or outcomes anymore."
   text_meeting_not_editable_anymore: "Deze vergadering kan niet meer bewerkt worden."
   text_meeting_not_present_anymore: "Deze vergadering is verwijderd. Selecteer een andere vergadering."
-  label_add_work_package_to_meeting_dialog_title: "Werkpakket aan vergadering toevoegen"
+  label_add_work_package_to_meeting_dialog_title: "Select meeting"
+  label_add_work_package_to_meeting_section_label: "Add to section"
   label_add_work_package_to_meeting_dialog_button: "Toevoegen aan vergadering"
-  label_meeting_selection_caption: "It's only possible to add this work package to upcoming or ongoing open meetings."
+  label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."
+  label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."
+  placeholder_section_select_meeting_first: "Meeting selection is required first"
+  text_add_work_package_to_meeting_form: "The work package will be added to the selected meeting or backlog as an agenda item."
   text_add_work_package_to_meeting_description: "Een werkpakket kan worden toegevoegd aan één of meerdere vergaderingen voor bespreking. Eventuele notities zijn hier ook zichtbaar."
   text_agenda_item_no_notes: "Geen aantekeningen voorzien"
   text_agenda_item_not_editable_anymore: "Dit agendapunt kan niet meer bewerkt worden."
@@ -567,7 +577,7 @@ nl:
           dialog_body: "This token will generate an iCal subscription URL that lets you view all your meetings in an external calendar application."
           create_button: "Create subscription"
           name_label: "Tokennaam"
-          name_caption: 'You can name it after where you will use it, such as"My phone" or "Work computer.'
+          name_caption: 'You can name it after where you will use it, such as "My phone" or "Work computer".'
       created_dialog:
         token/ical_meeting:
           title: "An iCal meeting subscription token has been generated"

@@ -88,6 +88,8 @@ eo:
     button_list_view: "Lista vidigo"
     button_show_view: "Plenekrana vidigo"
     button_log_time: "Tempoprotokolo"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "Pli"
     button_open_details: "Malfermi detalan vidon"
     button_close_details: "Fermi detalan vidon"
@@ -288,17 +290,6 @@ eo:
         format:
           date: "%{attribute} estas nevalida dato - JJJJ-MM-TT atendita."
         general: "Eraro okazis."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Legu pri novaj plibonigoj kaj aktualigoj de produkto."
-          learn_about: "Learn more about all new features"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                The release contains various new features and improvements, such as <br> <ul class="%{list_styling_class}"> <li>UX/UI improvements for a more modern look.</li> <li>Meetings: Option to mute email notifications and ICS.</li> <li>Ongoing timers shown in the My time tracking module.</li> <li>Progress reporting: % Complete sum also shown in Status-based mode.</li> <li>Nextcloud Health check: Indicate missing token exchange capability (Enterprise add-on).</li> </ul>
     ical_sharing_modal:
       title: "Subscribe to calendar"
       inital_setup_error_message: "An error occured while fetching data."
@@ -444,7 +435,7 @@ eo:
     label_sort_lower: "Move down"
     label_sorting: "Sorting"
     label_spent_time: "Uzata tempo"
-    label_star_query: "Favored"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Klavu enter por registri."
     label_public_query: "Publika"
     label_sum: "Sumo"
@@ -1114,6 +1105,7 @@ eo:
       child_work_packages:
         one: "unu laborpakaĵa filo"
         other: "%{count} work package children"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"
@@ -1224,7 +1216,7 @@ eo:
       selected_filter:
         all: "All projects"
         selected: "Only selected"
-      search_placeholder: "Search project..."
+      search_placeholder: "Search projects..."
       search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Include all sub-projects"
       tooltip:

@@ -170,7 +170,7 @@ module Projects::Exports::PDFExport
     end
 
     def can_view_attribute?(_project, attribute)
-      attribute && %i[name favored].exclude?(attribute)
+      attribute && %i[name favorited].exclude?(attribute)
     end
 
     def user_can_view_project_phases?(project)

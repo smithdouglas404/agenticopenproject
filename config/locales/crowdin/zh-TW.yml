@@ -195,10 +195,9 @@ zh-TW:
     ldap_auth_failed: "無法在 LDAP 伺服器上驗證"
     sync_failed: "LDAP同步失敗：%{message} 。"
     back_to_index: "按一下此處返回連線清單。"
-    technical_warning_html: |
-      此 LDAP 設定表需要您提供 LDAP / Active Directory 設定參數。
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">請連到我們的參考文件以取得詳細說明</a>。
+    technical_warning: |
+      此 LDAP 表單需要具備您 LDAP / Active Directory 設定的技術知識。
+      [請參閱我們的文件以取得詳細操作說明](docs_url)。
     attribute_texts:
       name: LDAP 連線名稱
       host: LDAP 主機名稱或 IP 位址
@@ -334,31 +333,42 @@ zh-TW:
       no_results_content_text: 建立一個新的自定義欄位
   concatenation:
     single: "或者"
-  dry_validation:
+  op_dry_validation:
+    or: "或"
     errors:
-      defined: "必須未被定義。"
-      int?: "必須是整數"
-      decimal?: "必須是十進位。"
-      filled?: "必填"
+      array?: "必須是陣列。"
+      decimal?: "必須是有效的小數數值。"
+      defined: "不可被定義。"
+      eql?: "必須等於 %{left}。"
+      filled?: "必填。"
+      greater_or_equal_zero: "必須大於或等於 0。"
+      gteq?: "必須大於或等於 %{num}。"
+      hash?: "必須是一個 hash 值。"
+      included_in?:
+        arg:
+          default: "必須是以下其中之一：%{list}。"
+          range: "必須是以下其中之一：%{list_left} - %{list_right}。"
+      int?: "必須是整數。"
       key?: "遺失。"
-      greater_or_equal_zero: "必須大於或等於 0"
-      not_found: "未找到"
+      not_found: "未找到。"
       rules:
         copy_workflow_from:
           workflow_missing: "沒有自己的工作流程。"
         custom_field:
           format_not_supported: "格式 '%{field_format}' 不支援。"
         item:
-          root_item: "不能為根項目"
-          not_persisted: "必須是已存在的項目"
+          root_item: "不能為根項目。"
+          not_persisted: "必須是已存在的項目。"
         label:
-          not_unique: "在同一階層內必須唯一"
+          not_unique: "在相同的階層層級內必須是唯一的。"
         short:
-          not_unique: "在同一階層內必須唯一"
+          not_unique: "在相同階層層級內必須唯一。"
         parent:
-          not_descendant: "必須是層級展開的"
+          not_descendant: "必須是階層根節點的子層。"
+      str?: "必須為字串。"
+      type?: "必須是 %{type}。"
     rules:
-      copy_workflow_from: "工作流程複本的類型"
+      copy_workflow_from: "工作流程複製的類型"
       enabled: "啟用"
       depth: "深度"
       item: "項目"
@@ -428,7 +438,7 @@ zh-TW:
     lists:
       active: "啟用中的專案"
       my: "我的專案"
-      favored: "收藏的專案"
+      favorited: "收藏的專案"
       archived: "封存專案"
       shared: "共享專案清單"
       my_lists: "我的專案列表"
@@ -588,9 +598,6 @@ zh-TW:
         token/api:
           title: "API 令牌(Token)已生成。"
           warning: "這是您唯一一次看到此令牌(Token)的機會，請務必立即複製。"
-      errors:
-        token_name_blank: "請提供API token名稱"
-        token_name_in_use: "此 API token名稱已被使用，請選擇其他名稱"
       failed_to_reset_token: "無法重置訪問令牌(Token): %{error}"
       failed_to_create_token: "無法建立訪問令牌(Token): %{error}"
       failed_to_revoke_token: "無法撤銷訪問令牌(Token): %{error}"
@@ -687,10 +694,8 @@ zh-TW:
         excluded_from_totals: "不包括在總計中"
   themes:
     dark: "深色主題"
-    dark_high_contrast: "深色高對比模式"
     light: "白色主題"
-    light_high_contrast: "高對比白色主題"
-    sync_with_os: "自動（匹配 OS 顏色模式）"
+    sync_with_os: "自動（配合作業系統顏色模式）"
   types:
     index:
       no_results_title_text: 目前沒有類型
@@ -906,7 +911,7 @@ zh-TW:
   account:
     delete: "刪除帳號"
     delete_confirmation: "您確定要刪除這個帳號嗎？"
-    deletion_pending: "帳戶已被鎖定且預計刪除。 請注意，此過程背景執行。 可能需要一些時間才能完全刪除使用者。"
+    deletion_pending: "帳戶已排定刪除。請注意，此過程會在背景中進行。在完全刪除使用者之前，可能會花費一些時間。"
     deletion_info:
       data_consequences:
         other: '使用者所建立的資料（例如電子郵件、偏好設定、工作套件、維基條目）將盡可能被刪除。但請注意，像工作套件和維基條目等資料若刪除，會影響其他使用者的工作，因此這些資料會被重新指派給名為「已刪除使用者」的帳號。由於所有被刪除帳號的資料都會集中指派至此帳號，因此無法區分該使用者所建立的資料與其他已刪除帳號的資料。'
@@ -1005,6 +1010,8 @@ zh-TW:
         active_user_count_restriction: "活躍使用者"
       enterprise_trial:
         company: "公司"
+      favorite:
+        favorited: "項目"
       grids/grid:
         page: "頁面"
         row_count: "列數"
@@ -1131,6 +1138,8 @@ zh-TW:
         is_readonly: "設定「工作套件」唯讀"
         excluded_from_totals: "從層次結構的總計中排除"
         default_done_ratio: "% 完成"
+      token/named:
+        token_name: "令牌名稱"
       token/ical:
         calendar: "行事曆"
         ical_token_query_assignment: "指派查詢"
@@ -1184,9 +1193,16 @@ zh-TW:
         auto_hide_popups: "自動關閉成功通知"
         auto_hide_popups_caption: "啟用時，綠色的成功通知會在 5 秒內自動關閉。"
         warn_on_leaving_unsaved: "離開尚未儲存的工作套件時提示我"
-        theme: "顏色模式"
+        increase_theme_contrast: "增加主題對比"
+        increase_contrast: "增加對比度"
+        increase_contrast_caption: "啟用所選色彩模式的高對比模式。"
+        force_light_theme_contrast: "在「明亮」模式下強制使用高對比度"
+        force_dark_theme_contrast: "在黑暗模式中強制高對比度"
+        force_light_theme_contrast_caption: "選取自動色彩模式時，使用高對比度版本的「明亮」模式。"
+        force_dark_theme_contrast_caption: "選擇自動色彩模式時，使用高對比度版本的暗色模式。"
+        theme: "色彩模式"
         time_zone: "時區"
-        mode_guideline: "某些模式會為了無障礙與可讀性而覆蓋自訂主題色彩。若需完整支援自訂主題，請選擇「亮色模式」。"
+        mode_guideline: "某些模式會覆蓋自訂主題的顏色，以提高可訪問性和可存取性。請選擇「Light」模式，以獲得完整的自訂主題支援。"
         daily_reminders: "每日提醒"
         workdays: "工作日"
       version:
@@ -1362,6 +1378,8 @@ zh-TW:
           only_one_trial: "只能啟用一個試用令牌。請先刪除前一個試用令牌後，再新增另一個。"
           unreadable: "無法讀取，確定是一個 support token?"
           already_added: "此令牌已經新增過。"
+        favorite:
+          already_favorited: "已收藏。"
         grids/grid:
           overlaps: "重疊"
           outside: "不在網格(grid)內。"
@@ -1458,10 +1476,19 @@ zh-TW:
           typed_dag:
             circular_dependency: "無限迴圈的關聯。"
           attributes:
+            base:
+              error_not_deletable: "由於您沒有所選工作套件的編輯權限，因此無法刪除此關係。"
+              error_not_editable: "由於您沒有所選工作套件的編輯權限，因此無法編輯此關係。"
             to_id:
+              format: "選取的工作套件 %{message}"
+              error_not_found: "無法找到。"
               error_readonly: "無法變更現有的關係。"
+              error_not_manageable: "無法新增，因為您沒有所選工作套件的編輯權限。"
             from_id:
+              format: "選取的工作套件 %{message}"
+              error_not_found: "無法找到。"
               error_readonly: "無法變更現有的關係。"
+              error_not_manageable: "無法新增，因為您沒有所選工作套件的編輯權限。"
         repository:
           not_available: "版本控制無法使用"
           not_whitelisted: "不被設定所允許"
@@ -1563,7 +1590,8 @@ zh-TW:
               cant_exceed_work: "不能高於工時。"
               must_be_set_when_work_is_set: "工時已設定時必填"
               must_be_set_when_work_and_percent_complete_are_set: "工時 和 完成百分比 已設置時必填。"
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: 當工時設定後，其完成度100%時，剩餘工時必須為 0。
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                設定為 Work 且 % 完成度為 100% 時，必須為 0h。
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 工時未設定設定，但完成度100%時，剩餘工時必須是空白。
           readonly_status: "工作套件處於唯讀狀態，因此無法變更其屬性。"
@@ -1610,9 +1638,11 @@ zh-TW:
         version:
           undeletable_archived_projects: "該版本無法刪除，因為包含工作套件。"
           undeletable_work_packages_attached: "該版本無法刪除，因為它附帶了工作套件。"
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "請提供令牌名稱"
+              in_use: "此令牌名稱已被使用，請選擇其他名稱"
               format: "%{message}"
       template:
         body: "請檢查下列欄位："
@@ -1718,6 +1748,7 @@ zh-TW:
     attachments: "附加檔"
     actor: "行動者"
     action: "動作"
+    api_key: "API 金鑰"
     author: "工作套件發起者"
     avatar: "大頭貼"
     base: "一般錯誤:"
@@ -1848,6 +1879,7 @@ zh-TW:
   button_add_watcher: "新增監看者"
   button_annotate: "注釋"
   button_apply: "套用"
+  button_apply_changes: "套用設定"
   button_archive: "封存"
   button_back: "返回"
   button_cancel: "取消"
@@ -1897,8 +1929,8 @@ zh-TW:
   button_rollback: "回復到此版本"
   button_save: "儲存"
   button_save_as: "另存為"
-  button_apply_changes: "套用設定"
   button_save_back: "儲存並返回"
+  button_select: "Select"
   button_set_reminder: "設定提醒"
   button_show: "顯示"
   button_sort: "排序"
@@ -2136,7 +2168,7 @@ zh-TW:
         已經有令牌了嗎？請使用下方按鈕新增，以升級至預約的 Enterprise 方案。
       hide_banner: "隱藏此廣告"
       homescreen_description: >
-        企業方案擴展您目前使用的 OpenProject 社群版，包含附加元件、額外功能和專業支援，讓各規模組織都能共同達成卓越目標。
+        企業方案在 OpenProject 社群版的基礎上，提供額外的 [企業附加元件](enterprise_url)與專業支援，特別適合在關鍵任務環境中使用 OpenProject 的組織。
       homescreen_subline: 升級即是對開源專案的一種支持。
       baseline_comparison:
         description: 突顯自過去任一時間點以來對此清單所做的變更。
@@ -2238,6 +2270,9 @@ zh-TW:
   enumeration_reported_project_statuses: "報告的專案狀態"
   enumeration_caption_order_changed: "成功更改排序。"
   enumeration_could_not_be_moved: "無法移動枚舉。"
+  enterprise_trials:
+    dialog_component:
+      title: 試用企業版
   error_auth_source_sso_failed: "單一登入 (SSO) 使用者 '%{value}' 失敗"
   error_can_not_archive_project: "這個專案無法封存：%{errors}"
   error_can_not_delete_entry: "無法刪除項目"
@@ -2474,6 +2509,26 @@ zh-TW:
       community: "OpenProject 社群"
       upsell:
         title: "升級到企業版"
+      new_features:
+        header: "閱讀關於新功能和產品更新的資訊。"
+        learn_about: "進一步瞭解所有新功能"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            該版本包含多種新功能和改進，例如：
+          new_features_list:
+            line_0: 可選擇自動同步系統色彩 + 對比模式。
+            line_1: 深色高對比度模式可提高可存取性。
+            line_2: PDF 匯出專案清單。
+            line_3: 所有 PDF 匯出的自訂字型（企業附加元件）。
+            line_4: 改善會議與會者的對話。
+            line_5: 改善專案查詢和預算規劃中的預算處理。
+            line_6: 更新首頁與專案總覽頁面。
+        "16_5":
+          new_features_title: >
+            該版本包含多種新功能和改進，例如：
+          new_features_list:
+            line_0: 新功能和改進即將推出。請隨時回來查看！
     links:
       upgrade_enterprise_edition: "升級到企業版"
       postgres_migration: "將您的安裝遷移到 PostgreSQL"
@@ -2484,7 +2539,8 @@ zh-TW:
       shortcuts: "快捷鍵"
       blog: "Openproject 部落格"
       forums: "社群討論區"
-      newsletter: "資通安全通知 / 電子報"
+      security_alerts: "安全警示"
+      newsletter: "電子報"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2566,7 +2622,7 @@ zh-TW:
         static_token_name: "API 令牌(Token)"
       ical:
         title: "iCalendar "
-        text_hint: 'iCalendar 令牌(Token)允許使用者<a href="%{path}" target="_blank">訂閱專案管理系統日曆</a>，並查看來自外部客戶端的最新工作資訊。'
+        text_hint_link: 'iCalendar 權杖可讓使用者[訂閱 OpenProject 行事曆](docs_url)，並在外部用戶端中檢視最新的工作套件資訊。'
         disabled_text: "管理員未啟用 iCalendar 訂閱。 請聯絡您的管理員以使用此功能。"
         empty_text_hint: "新增 iCalendar 令牌(Token)，可訂閱各專案裡面的日曆( 需擁有相關權限)。"
       oauth:
@@ -2708,6 +2764,7 @@ zh-TW:
   label_required_disk_storage: "所使用的磁碟空間"
   label_send_invitation: 發送邀請
   label_calculated_value: "計算值"
+  label_change_parent: "Change parent"
   label_change_plural: "更改"
   label_change_properties: "更改屬性"
   label_change_status: "更改狀態"
@@ -3941,6 +3998,8 @@ zh-TW:
   setting_feeds_limit: "Feed 內容限制"
   setting_file_max_size_displayed: "直接显示文字文件內容的最大檔案容量"
   setting_host_name: "主機名稱"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus 伺服器 URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus 伺服器秘鑰"
   setting_hours_per_day: "每天小時數"
   setting_hours_per_day_explanation: >-
     這定義了在以天和小時為單位顯示持續時間時，什麼是一"天"(例如，如果一天是 8 小時，32 小時就是 4 天)。

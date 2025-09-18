@@ -21,6 +21,8 @@ it:
           title: 'Notizie'
           at: 'a'
           no_results: 'Niente di nuovo da segnalare.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Descrizione del progetto'
           no_results: "Nessuna descrizione ancora scritta. Una può essere fornita nelle \"Impostazioni di progetto\"."
@@ -33,6 +35,8 @@ it:
           not_set: 'Non impostato'
           finished: 'Terminato'
           discontinued: 'Interrotto'
+        project_status_beta:
+          title: 'Stato del progetto (BETA)'
         subprojects:
           title: 'Sotto-progetti'
           no_results: 'Nessun sotto-progetto.'

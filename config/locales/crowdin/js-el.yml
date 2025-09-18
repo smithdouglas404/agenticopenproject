@@ -88,6 +88,8 @@ el:
     button_list_view: "Προβολή λίστας"
     button_show_view: "Προβολή πλήρης οθόνης"
     button_log_time: "Ιστορικό χρόνου"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "Περισσότερα"
     button_open_details: "Άνοιγμα προβολής λεπτομερειών"
     button_close_details: "Κλείσιμο προβολής λεπτομερειών"
@@ -287,17 +289,6 @@ el:
         format:
           date: "%{attribute} δεν είναι έγκυρη ημερομηνία - αναμένεται ΕΕΕΕ-ΜΜ-ΗΗ."
         general: "Παρουσιάστηκε σφάλμα."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Διαβάστε για τις νέες λειτουργίες και τις ενημερώσεις προϊόντων."
-          learn_about: "Learn more about all new features"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                The release contains various new features and improvements, such as <br> <ul class="%{list_styling_class}"> <li>UX/UI improvements for a more modern look.</li> <li>Meetings: Option to mute email notifications and ICS.</li> <li>Ongoing timers shown in the My time tracking module.</li> <li>Progress reporting: % Complete sum also shown in Status-based mode.</li> <li>Nextcloud Health check: Indicate missing token exchange capability (Enterprise add-on).</li> </ul>
     ical_sharing_modal:
       title: "Subscribe to calendar"
       inital_setup_error_message: "An error occured while fetching data."
@@ -443,7 +434,7 @@ el:
     label_sort_lower: "Μετακίνηση προς τα κάτω"
     label_sorting: "Ταξινόμηση"
     label_spent_time: "Χρόνος που δαπανήθηκε"
-    label_star_query: "Αγαπημένο"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Πατήστε enter για αποθήκευση."
     label_public_query: "Δημόσιο"
     label_sum: "Άθροισμα"
@@ -1113,6 +1104,7 @@ el:
       child_work_packages:
         one: "ένα παιδί πακέτο εργασίας"
         other: "%{count} παιδιά πακέτα εργασίας"
+      hour_string: "%{hours} h"
       hour:
         one: "1 ώρα"
         other: "%{count} ώρες"
@@ -1223,7 +1215,7 @@ el:
       selected_filter:
         all: "Όλα τα έργα"
         selected: "Only selected"
-      search_placeholder: "Search project..."
+      search_placeholder: "Search projects..."
       search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Include all sub-projects"
       tooltip:

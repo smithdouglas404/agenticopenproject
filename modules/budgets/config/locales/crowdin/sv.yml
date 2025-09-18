@@ -36,7 +36,7 @@ sv:
         type: "Kostnadstyp"
         labor_budget: "Planerade arbetskostnader"
         material_budget: "Planerade enhetskostnader"
-        base_amount: "Base amount"
+        base_amount: "Basbelopp"
       work_package:
         budget_subject: "Budgettitel"
     models:

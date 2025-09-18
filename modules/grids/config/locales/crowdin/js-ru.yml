@@ -21,6 +21,8 @@ ru:
           title: 'Новости'
           at: 'на'
           no_results: 'Ничего нового для отчета.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Описание проекта'
           no_results: "Описания еще нет. Его можно добавить в настройках проекта."
@@ -33,6 +35,8 @@ ru:
           not_set: 'Не задано'
           finished: 'Завершен'
           discontinued: 'Прекращен'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Подпроекты'
           no_results: 'Подпроектов нет.'

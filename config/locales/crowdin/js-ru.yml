@@ -88,6 +88,8 @@ ru:
     button_list_view: "В виде списка"
     button_show_view: "Полноэкранный просмотр"
     button_log_time: "Журналировать время"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "Ещё"
     button_open_details: "Открыть детальный просмотр"
     button_close_details: "Закрыть детальный просмотр"
@@ -287,17 +289,6 @@ ru:
         format:
           date: "%{attribute} не соответствует дате - ожидается гггг-мм-дд."
         general: "Произошла ошибка."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Читайте о новых возможностях и обновлениях продуктов."
-          learn_about: "Узнайте больше о всех новых функциях"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                The release contains various new features and improvements, such as <br> <ul class="%{list_styling_class}"> <li>UX/UI improvements for a more modern look.</li> <li>Meetings: Option to mute email notifications and ICS.</li> <li>Ongoing timers shown in the My time tracking module.</li> <li>Progress reporting: % Complete sum also shown in Status-based mode.</li> <li>Nextcloud Health check: Indicate missing token exchange capability (Enterprise add-on).</li> </ul>
     ical_sharing_modal:
       title: "Подписаться на календарь"
       inital_setup_error_message: "Произошла ошибка при получении данных."
@@ -443,7 +434,7 @@ ru:
     label_sort_lower: "Переместить вниз"
     label_sorting: "Сортировка"
     label_spent_time: "Затраченное время"
-    label_star_query: "Добавлено в избранное"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Нажмите ввод для сохранения."
     label_public_query: "Общий"
     label_sum: "Сумма"
@@ -1119,6 +1110,7 @@ ru:
         few: "пакетов работ с %{count} дочерними"
         many: "пакет работ с %{count} дочерними"
         other: "пакет работ с %{count} дочерними"
+      hour_string: "%{hours} h"
       hour:
         one: "1 ч"
         other: "%{count} ч"
@@ -1231,7 +1223,7 @@ ru:
       selected_filter:
         all: "Все проекты"
         selected: "Только выбранные"
-      search_placeholder: "Поиск проекта..."
+      search_placeholder: "Search projects..."
       search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Включить все подпроекты"
       tooltip:

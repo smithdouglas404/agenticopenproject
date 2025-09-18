@@ -77,7 +77,7 @@ module Admin
             )
         end
 
-        def update
+        def update # rubocop:disable Metrics/AbcSize
           input = item_input
           item_service
             .update_item(contract_class: update_contract,
@@ -86,12 +86,11 @@ module Admin
                          short: input[:short],
                          score: input[:score])
             .either(
-              lambda do |_|
-                redirect_to(custom_field_item_path(@custom_field, @active_item.parent), status: :see_other)
-              end,
+              ->(*) { redirect_to(custom_field_item_path(@custom_field, @active_item.parent), status: :see_other) },
               lambda do |validation_result|
                 add_errors_to_edit_form(validation_result)
-                render action: :edit
+                update_via_turbo_stream(component: ItemComponent.new(item: @active_item, show_edit_form: true))
+                respond_with_turbo_streams
               end
             )
         end
@@ -101,6 +100,14 @@ module Admin
             .reorder_item(item: @active_item, new_sort_order: params.require(:new_sort_order))
 
           redirect_to(custom_field_item_path(@custom_field, @active_item.parent), status: :see_other)
+        end
+
+        def change_parent
+          permitted = params.expect(custom_field_hierarchy_forms_new_parent_form_model: [:new_parent])
+          new_parent = CustomField::Hierarchy::Item.including_children.find(permitted[:new_parent])
+          item_service.move_item(item: @active_item, new_parent:)
+
+          redirect_to(custom_field_item_path(@custom_field, new_parent), status: :see_other)
         end
 
         def destroy
@@ -116,6 +123,13 @@ module Admin
 
         def deletion_dialog
           respond_with_dialog DeleteItemDialogComponent.new(custom_field: @custom_field, hierarchy_item: @active_item)
+        end
+
+        def change_parent_dialog
+          respond_with_dialog ChangeItemParentDialogComponent.new(
+            custom_field: @custom_field,
+            hierarchy_item: @active_item
+          )
         end
 
         private

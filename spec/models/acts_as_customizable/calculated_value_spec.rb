@@ -37,6 +37,8 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
     Class.new do
       include ActsAsCustomizable::CalculatedValue
 
+      def enabled_custom_field_ids = nil
+
       def custom_field_values(*) = nil
       attr_writer :custom_field_values
     end
@@ -45,12 +47,14 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
   let(:instance) { model_class.new }
 
   before do
+    allow(instance).to receive(:enabled_custom_field_ids).and_return(enabled_custom_field_ids)
     allow(instance).to receive(:custom_field_values).with(all: true).and_return(custom_field_values)
     allow(instance).to receive(:custom_field_values=)
   end
 
   describe "#calculate_custom_fields" do
     context "when calling with empty array" do
+      let(:enabled_custom_field_ids) { [42] }
       let(:custom_field_values) { [:foo] }
 
       it "doesn't calculate anything" do
@@ -61,17 +65,19 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
     end
 
     context "when calling with non calculated value custom fields" do
+      let(:static_custom_field) { build_stubbed(:integer_project_custom_field) }
+      let(:enabled_custom_field_ids) { [static_custom_field.id] }
       let(:custom_field_values) { [:foo] }
 
       it "raises an exception when" do
         expect do
-          instance.calculate_custom_fields([build(:integer_project_custom_field)])
+          instance.calculate_custom_fields([static_custom_field])
         end.to raise_error(ArgumentError, "Expected array of calculated value custom fields")
       end
 
       it "doesn't calculate anything" do
         begin
-          instance.calculate_custom_fields([build(:integer_project_custom_field)])
+          instance.calculate_custom_fields([static_custom_field])
         rescue ArgumentError
           # ignore
         end
@@ -81,7 +87,7 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
     end
 
     describe "operations" do
-      let(:cfs) do
+      let(:by_op) do
         {
           add: build_stubbed(:calculated_value_project_custom_field, formula: "1 + 2"),
           sub: build_stubbed(:calculated_value_project_custom_field, formula: "2 - 3"),
@@ -92,21 +98,24 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
           group: build_stubbed(:calculated_value_project_custom_field, formula: "2 * (1 + 2)")
         }
       end
+      let(:custom_fields) { by_op.values }
+      let(:ids) { by_op.transform_values(&:id) }
 
+      let(:enabled_custom_field_ids) { custom_fields.map(&:id) }
       let(:custom_field_values) { [] }
 
       it "handles all available operations" do
-        instance.calculate_custom_fields(cfs.values)
+        instance.calculate_custom_fields(custom_fields)
 
         expect(instance).to have_received(:custom_field_values=)
           .with(
-            cfs[:add].id => 3,
-            cfs[:sub].id => -1,
-            cfs[:mul].id => 12,
-            cfs[:div].id => 5/4r,
-            cfs[:mod].id => 1,
-            cfs[:percent].id => 607/100r,
-            cfs[:group].id => 6
+            ids[:add] => 3,
+            ids[:sub] => -1,
+            ids[:mul] => 12,
+            ids[:div] => 5/4r,
+            ids[:mod] => 1,
+            ids[:percent] => 607/100r,
+            ids[:group] => 6
           )
       end
     end
@@ -116,6 +125,7 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
       let(:cf_mod) { build_stubbed(:calculated_value_project_custom_field, formula: "5 % 0") }
       let(:cf_add) { build_stubbed(:calculated_value_project_custom_field, formula: "1 + 2") }
 
+      let(:enabled_custom_field_ids) { [cf_div, cf_mod, cf_add].map(&:id) }
       let(:custom_field_values) { [] }
 
       it "blanks field with division by zero, but calculates other field" do
@@ -146,6 +156,7 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
       let(:cf1) { build_stubbed(:calculated_value_project_custom_field, formula: "#{cf_a} + #{cf_b}") }
       let(:cf2) { build_stubbed(:calculated_value_project_custom_field, formula: "#{cf_a} * #{cf_b}") }
 
+      let(:enabled_custom_field_ids) { [cf_a, cf_b, cf1, cf2].map(&:id) }
       let(:custom_field_values) do
         {
           cf_a => 2,
@@ -170,6 +181,7 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
       let(:cf2) { build_stubbed(:calculated_value_project_custom_field, formula: "1 + 2") }
       let(:cf3) { build_stubbed(:calculated_value_project_custom_field, formula: "#{cf1} * #{cf2}") }
 
+      let(:enabled_custom_field_ids) { [cf1, cf2, cf3].map(&:id) }
       let(:custom_field_values) do
         {
           cf1 => 5,
@@ -210,6 +222,7 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
       let(:cf_using_unavailable) { build_stubbed(:calculated_value_project_custom_field, formula: "2 + #{cf_unavailable}") }
       let(:cf_other) { build_stubbed(:calculated_value_project_custom_field, formula: "1 + 2") }
 
+      let(:enabled_custom_field_ids) { [cf_missing, cf_unavailable, cf_using_missing, cf_using_unavailable, cf_other].map(&:id) }
       let(:custom_field_values) do
         {
           cf_missing => nil
@@ -226,6 +239,39 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
       end
     end
 
+    context "with disabled fields" do
+      let(:cf_a) { build_stubbed(:integer_project_custom_field) }
+      let(:cf_b) { build_stubbed(:integer_project_custom_field) }
+
+      let(:cf1) { build_stubbed(:calculated_value_project_custom_field, formula: "#{cf_a} * 5") }
+      let(:cf2) { build_stubbed(:calculated_value_project_custom_field, formula: "#{cf_b} * 7") }
+
+      let(:custom_field_values) do
+        {
+          cf_a => 2,
+          cf_b => 3
+        }.map { |custom_field, value| build_stubbed(:custom_value, custom_field:, value:) }
+      end
+
+      context "when a referenced field is disabled" do
+        let(:enabled_custom_field_ids) { [cf_b, cf1, cf2].map(&:id) }
+
+        it "considers its value to be blank" do
+          instance.calculate_custom_fields([cf1, cf2])
+          expect(instance).to have_received(:custom_field_values=).with(cf1.id => nil, cf2.id => 3 * 7).once
+        end
+      end
+
+      context "when a calculated field is disabled" do
+        let(:enabled_custom_field_ids) { [cf_a, cf_b, cf1].map(&:id) }
+
+        it "blanks its value" do
+          instance.calculate_custom_fields([cf1, cf2])
+          expect(instance).to have_received(:custom_field_values=).with(cf1.id => 2 * 5, cf2.id => nil).once
+        end
+      end
+    end
+
     context "when calling with custom fields having circular reference" do
       let(:cf_a) { build_stubbed(:integer_project_custom_field) }
       let(:cf_b) { build_stubbed(:integer_project_custom_field) }
@@ -237,6 +283,7 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
       let(:cf3) { build_stubbed(:calculated_value_project_custom_field) }
       let(:cf4) { build_stubbed(:calculated_value_project_custom_field) }
 
+      let(:enabled_custom_field_ids) { [cf_a, cf_b, cf_c, cf_d, cf1, cf2, cf3, cf4].map(&:id) }
       let(:custom_field_values) do
         {
           cf_a => 2,

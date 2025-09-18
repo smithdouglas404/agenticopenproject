@@ -8,7 +8,7 @@ sv:
         url: 'Payload-URL'
         secret: 'Signeringshemlighet'
         events: 'Händelser'
-        enabled: 'Enabled'
+        enabled: 'Aktiverad'
         projects: 'Aktiverade projekt'
       webhooks/log:
         event_name: 'Händelsenamn'
@@ -32,7 +32,7 @@ sv:
         created: "Skapad"
         updated: "Uppdaterad"
         comment: "Kommentar"
-        internal_comment: "Internal comment"
+        internal_comment: "Intern kommentar"
       explanation:
         text: >
           Upon the occurrence of an event like the creation of a work package or an update on a project, OpenProject will send a POST request to the configured web endpoints. Oftentimes, the event is sent after the %{link} has passed.

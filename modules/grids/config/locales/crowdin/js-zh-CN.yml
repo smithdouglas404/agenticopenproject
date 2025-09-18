@@ -21,6 +21,8 @@ zh-CN:
           title: '新闻'
           at: '位置：'
           no_results: '没有新消息报告。'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: '项目描述'
           no_results: "尚未写入任何描述。可以在“项目设置”中提供一个描述。"
@@ -33,6 +35,8 @@ zh-CN:
           not_set: '未设置'
           finished: '已完成'
           discontinued: '已中断'
+        project_status_beta:
+          title: '项目状态（测试版）'
         subprojects:
           title: '子项目'
           no_results: '无子项目。'

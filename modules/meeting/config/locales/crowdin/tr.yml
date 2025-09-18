@@ -65,7 +65,7 @@ tr:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} is not a valid participant."
+          invalid_user: "%{name} geçerli bir katılımcı değildir."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Seride yeni zamanlamaya uymayan ve açık bir toplantı bulunmakta. Mevcut toplantıları kapsaması için zamanlayın."
@@ -80,7 +80,7 @@ tr:
       meeting_agenda: "Gündem"
       meeting_section: "Bölüm"
       token/ical_meeting:
-        one: "iCal Meeting subscription"
+        one: "iCal Toplantı aboneliği"
         other: "iCal Meeting subscription"
   activity:
     filter:
@@ -126,7 +126,7 @@ tr:
   label_meeting_date_time: "Tarih/Saat"
   label_meeting_date_and_time: "Tarih ve zaman"
   label_meeting_diff: "Fark"
-  label_meeting_send_updates: "Send email calendar updates"
+  label_meeting_send_updates: "E-posta takvim güncellemeleri gönder"
   label_recurring_meeting: "Yinelenen toplantı"
   label_recurring_meeting_part_of: "Toplantı serisinin bir parçası"
   label_recurring_meeting_new: "Yeni yinelenen toplantı"
@@ -183,9 +183,9 @@ tr:
       label:
         participants: "Katılımcılar"
         attended: "Katıldığım"
-        mark_as_attended: "Mark as attended"
-        mark_all_as_attended: "Mark all as attended"
-        remove_participant: "Remove participant"
+        mark_as_attended: "Katıldı olarak işaretle"
+        mark_all_as_attended: "Tümünü katıldı olarak işaretle"
+        remove_participant: "Katılımcıyı kaldır"
         manage_participants: "Katılımcıları yönet"
         no_participants: "Katılımcı yok"
         show_all: "Tümünü göster"
@@ -207,7 +207,7 @@ tr:
       agenda_items: "Gündem maddesini kopyala"
       agenda_text: "Eski toplantının gündemini kopyalayın"
       participants: "Katılımcı listesini kopyala"
-      to_clipboard: "Panoya kopyala"
+      to_clipboard: "Copy link to clipboard"
     email:
       send_emails: "Katılımcılara e-posta gönder"
       send_invitation_emails: >
@@ -239,8 +239,8 @@ tr:
         body: "The meeting '%{title}' has been updated by %{actor}."
         old_date_time: "Eski tarih/saat"
         new_date_time: "Yeni tarih/saat"
-        old_location: "Old location"
-        new_location: "New location"
+        old_location: "Eski konum"
+        new_location: "Yeni konum"
     label_mail_all_participants: "Send email invite to participants"
     types:
       one_time: "Tek seferlik"
@@ -454,6 +454,12 @@ tr:
   text_meeting_agenda_open_are_you_sure: "Bu, dakikalardaki tüm değişikliklerin üzerine yazacaktır! Devam etmek istiyor musun?"
   text_meeting_minutes_for_meeting: 'toplantı için dakikalar "%{meeting}"'
   text_notificiation_invited: "Bu posta, aşağıdaki toplantı için bir ics girişi içermektedir:"
+  text_meeting_ics_description: >-
+    Link to meeting: %{url}
+  text_meeting_ics_meeting_series_description: >-
+    Link to meeting series: %{url}
+  text_meeting_occurrence_ics_description: >-
+    Link to meeting occurrence: %{url} Link to meeting series: %{series_url}
   text_meeting_empty_heading: "Toplantınız boş"
   text_meeting_empty_description1: "Gündem maddelerini aşağıya ekleyerek başlayın. Her bir madde sadece başlık içerecek kadar basit olabilir ama toplantı süresi ve notları gibi ek detaylar da ekleyebilirsiniz."
   text_meeting_empty_description2: 'Ayrıca mevcut iş parçalarına referans ekleyebilirsiniz. Bu takdirde, ilişkili notlar iş parçacığının "Toplantılar" sekmesine eklenecektir.'
@@ -537,9 +543,13 @@ tr:
   text_meeting_closed_dropdown_description: "Bu toplantı kapalı. Gündem maddelerini ya da sonuçları artık düzenleyemezsiniz."
   text_meeting_not_editable_anymore: "Bu toplantıyı artık düzenleyemezsiniz."
   text_meeting_not_present_anymore: "Toplantı silinmiş. Başka bir toplantı seçin lütfen."
-  label_add_work_package_to_meeting_dialog_title: "Toplantıya iş parçası ekleyin"
+  label_add_work_package_to_meeting_dialog_title: "Select meeting"
+  label_add_work_package_to_meeting_section_label: "Add to section"
   label_add_work_package_to_meeting_dialog_button: "Toplantıya ekle"
-  label_meeting_selection_caption: "Bu çalışma paketini yalnızca yaklaşan veya devam eden açık toplantılara eklemek mümkündür."
+  label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."
+  label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."
+  placeholder_section_select_meeting_first: "Meeting selection is required first"
+  text_add_work_package_to_meeting_form: "The work package will be added to the selected meeting or backlog as an agenda item."
   text_add_work_package_to_meeting_description: "Bir iş paketi tartışılmak üzere bir veya birden fazla toplantıya eklenebilir. Bununla ilgili tüm notlar da burada görülebilir."
   text_agenda_item_no_notes: "Not verilmemiştir"
   text_agenda_item_not_editable_anymore: "Bu takvim maddesi artık düzenlenemez."
@@ -567,7 +577,7 @@ tr:
           dialog_body: "This token will generate an iCal subscription URL that lets you view all your meetings in an external calendar application."
           create_button: "Create subscription"
           name_label: "Token name"
-          name_caption: 'You can name it after where you will use it, such as"My phone" or "Work computer.'
+          name_caption: 'You can name it after where you will use it, such as "My phone" or "Work computer".'
       created_dialog:
         token/ical_meeting:
           title: "An iCal meeting subscription token has been generated"
