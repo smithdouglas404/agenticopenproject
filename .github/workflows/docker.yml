@@ -65,7 +65,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           path: public/
-          name: public-assets-${{ inputs.branch }}-${{ github.sha }}
+          name: public-assets-${{ inputs.tag }}-${{ github.sha }}
           overwrite: true
           # Since v4.4, hidden files are excluded by default.
           # We need to include public/assets/.sprockets-manifest-*.json
@@ -113,7 +113,7 @@ jobs:
       - name: Download precompiled public assets
         uses: actions/download-artifact@v5
         with:
-          name: public-assets-${{ inputs.branch }}-${{ github.sha }}
+          name: public-assets-${{ inputs.tag }}-${{ github.sha }}
           path: public/
       - name: Setup precompiled assets
         run: |
@@ -240,7 +240,7 @@ jobs:
       - name: Upload digest
         uses: actions/upload-artifact@v4
         with:
-          name: digests-${{ inputs.branch }}-${{ matrix.target }}-${{ matrix.digest }}
+          name: digests-${{ inputs.tag }}-${{ matrix.target }}-${{ matrix.digest }}
           path: /tmp/digests/*
           if-no-files-found: error
           retention-days: 1
@@ -256,13 +256,13 @@ jobs:
       - name: Merge digests
         uses: actions/upload-artifact/merge@v4
         with:
-          pattern: "digests-${{ inputs.branch }}-${{ matrix.target }}-${{ matrix.digest }}*"
+          pattern: "digests-${{ inputs.tag }}-${{ matrix.target }}-${{ matrix.digest }}*"
           overwrite: true
-          name: "merged-digests-${{ inputs.branch }}-${{ matrix.target }}-${{ github.run_number }}-${{ github.run_attempt }}"
+          name: "merged-digests-${{ inputs.tag }}-${{ matrix.target }}-${{ github.run_number }}-${{ github.run_attempt }}"
       - name: Download digests
         uses: actions/download-artifact@v5
         with:
-          name: "merged-digests-${{ inputs.branch }}-${{ matrix.target }}-${{ github.run_number }}-${{ github.run_attempt }}"
+          name: "merged-digests-${{ inputs.tag }}-${{ matrix.target }}-${{ github.run_number }}-${{ github.run_attempt }}"
           path: /tmp/digests
       - name: Set suffix
         id: set_suffix
