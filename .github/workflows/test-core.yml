@@ -27,8 +27,8 @@ jobs:
     strategy:
       matrix:
         runner:
-          - "runs-on=${{ github.run_id }}/image=ubuntu24-full-x64/family=m7+c7+r7+i7+r8+m8/ram=128+256/cpu=32"
-          - ubuntu-latest
+          - "runs-on=${{ github.run_id }}/image=ubuntu24-full-x64/family=c8+r8+m8/ram=128+256/cpu=32"
+          # - ubuntu-latest
     runs-on:
       labels: ${{ matrix.runner }}
     timeout-minutes: 300
