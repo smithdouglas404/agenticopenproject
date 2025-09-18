@@ -37,15 +37,15 @@ if [ "$edition" = "bim" ]; then
 					apt-get update -qq
 					;;
 				esac
-				apt-get install -y dotnet-runtime-6.0
+				apt-get install -y dotnet-runtime-9.0
 			;;
 		"redhat")
 			case "$(wiz_fact "osversion")" in
 				9*)
-					dnf install -y dotnet-runtime-6.0
+					dnf install -y dotnet-runtime-9.0
 					;;
 				8*)
-					dnf install -y dotnet-runtime-6.0
+					dnf install -y dotnet-runtime-9.0
 					;;
 			esac
 			;;

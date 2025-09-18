@@ -14,7 +14,7 @@ fi
 
 # Specifics for BIM edition (Ubuntu)
 apt-get update -qq
-apt-get install -y dotnet-runtime-6.0 wget unzip
+apt-get install -y dotnet-runtime-9.0 wget unzip
 
 tmpdir=$(mktemp -d)
 cd $tmpdir
