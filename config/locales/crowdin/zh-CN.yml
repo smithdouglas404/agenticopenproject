@@ -195,10 +195,9 @@ zh-CN:
     ldap_auth_failed: "无法在 LDAP 服务器上验证身份。"
     sync_failed: "无法从 LDAP 同步：%{message}。"
     back_to_index: "点击此处返回到连接列表。"
-    technical_warning_html: |
-      此 LDAP 表单需要您的 LDAP / Active Directory 设置的技术知识。
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">请访问我们的文档以了解详细说明</a>。
+    technical_warning: |
+      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: LDAP 连接的任意名称
       host: LDAP 主机名或 IP 地址
@@ -333,23 +332,23 @@ zh-CN:
   concatenation:
     single: "或"
   op_dry_validation:
-    or: "or"
+    or: "或"
     errors:
-      array?: "must be an array."
-      decimal?: "must be a decimal."
-      defined: "must not be defined."
-      eql?: "must be equal to %{left}."
-      filled?: "must be filled."
-      greater_or_equal_zero: "must be greater or equal to 0."
-      gteq?: "must be greater than or equal to %{num}."
-      hash?: "must be a hash."
+      array?: "必须为一个数组。"
+      decimal?: "必须为一个小数。"
+      defined: "不可被定义。"
+      eql?: "必须等于 %{left}。"
+      filled?: "必须填写。"
+      greater_or_equal_zero: "必须大于或等于 0。"
+      gteq?: "必须大于或等于 %{num}。"
+      hash?: "必须是一个哈希值。"
       included_in?:
         arg:
-          default: "must be one of: %{list}."
-          range: "must be one of: %{list_left} - %{list_right}."
-      int?: "must be an integer."
-      key?: "is missing."
-      not_found: "not found."
+          default: "必须是其中之一： %{list}。"
+          range: "必须是其中之一： %{list_left} - %{list_right}。"
+      int?: "必须为一个整数。"
+      key?: "已缺失。"
+      not_found: "未找到。"
       rules:
         copy_workflow_from:
           workflow_missing: "has no own workflow."
@@ -437,7 +436,7 @@ zh-CN:
     lists:
       active: "有效项目"
       my: "我的项目"
-      favored: "收藏的项目"
+      favorited: "Favorite projects"
       archived: "归档项目"
       shared: "共享项目列表"
       my_lists: "我的项目列表"
@@ -694,9 +693,7 @@ zh-CN:
         excluded_from_totals: "不包括在总计中"
   themes:
     dark: "暗黑"
-    dark_high_contrast: "深色高对比度"
     light: "浅色模式"
-    light_high_contrast: "高对比度模式"
     sync_with_os: "自动（匹配操作系统颜色模式）"
   types:
     index:
@@ -1013,6 +1010,8 @@ zh-CN:
         active_user_count_restriction: "活跃用户"
       enterprise_trial:
         company: "公司"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "页"
         row_count: "行数"
@@ -1194,6 +1193,13 @@ zh-CN:
         auto_hide_popups: "自动隐藏成功横幅"
         auto_hide_popups_caption: "启用后，绿色成功横幅将在 5 秒后自动消失。"
         warn_on_leaving_unsaved: "离开未保存更改的工作包时提示我"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "颜色模式"
         time_zone: "时区"
         mode_guideline: "某些模式将覆盖自定义主题颜色，以提升无障碍性和可读性。请选择“浅色”模式，以实现对自定义主题的全面支持。"
@@ -1372,6 +1378,8 @@ zh-CN:
           only_one_trial: "只能有一个试用令牌处于有效状态。请先删除上一个试用令牌，然后再添加另一个。"
           unreadable: "无法读取。是否确定为支持令牌？"
           already_added: "此令牌已添加。"
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "重叠."
           outside: "不在网格内。"
@@ -1468,10 +1476,19 @@ zh-CN:
           typed_dag:
             circular_dependency: "关系会创建关系的循环。"
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "无法针对现有关系更改。"
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "无法针对现有关系更改。"
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "SCM提供商不可用"
           not_whitelisted: "配置所不允许的。"
@@ -1731,6 +1748,7 @@ zh-CN:
     attachments: "附件"
     actor: "执行者"
     action: "操作"
+    api_key: "API key"
     author: "作者"
     avatar: "头像"
     base: "一般错误："
@@ -2149,7 +2167,7 @@ zh-CN:
         已经有令牌？使用下方按钮添加以升级到预订的 Enterprise 方案。
       hide_banner: "隐藏此广告"
       homescreen_description: >
-        企业方案可以扩展您当前正在使用的 OpenProject 社区版。它们包括附加组件、额外功能和专业支持，使各种规模的组织能够共同实现伟大目标。
+        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
       homescreen_subline: 通过升级，您也将支持一个开源项目。
       baseline_comparison:
         description: 高亮显示自从过去任意时间点以来对此列表所做的更改。
@@ -2582,7 +2600,7 @@ zh-CN:
       aggregation: "聚合"
       api_and_webhooks: "API 和 Webhook"
     quick_add:
-      label: "添加..."
+      label: "添加…"
   my_account:
     access_tokens:
       no_results:
@@ -2603,7 +2621,7 @@ zh-CN:
         static_token_name: "API 令牌"
       ical:
         title: "iCalendar"
-        text_hint: 'iCalendar 令牌允许用户<a href="%{path}" target="_blank">订阅 OpenProject 日历</a>并查看外部客户端中的最新工作包信息。'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "管理员未启用 iCalendar 订阅。请联系管理员以使用此功能。"
         empty_text_hint: "要添加 iCalendar 令牌，请从项目的日历模块中订阅新的或现有日历。您必须拥有必要的权限。"
       oauth:

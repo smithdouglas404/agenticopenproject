@@ -71,7 +71,7 @@ following command:
 
 ```shell
 docker run -it -p 8080:80 \
-  -e OPENPROJECT_SECRET_KEY_BASE=secret \
+  -e SECRET_KEY_BASE=secret \
   -e OPENPROJECT_HOST__NAME=localhost:8080 \
   -e OPENPROJECT_HTTPS=false \
   -e OPENPROJECT_DEFAULT__LANGUAGE=en \
@@ -81,7 +81,7 @@ docker run -it -p 8080:80 \
 Explanation of the used configuration values:
 
 - `-p 8080:80` binds the port 80 of the container to 8080 on the machine running docker.
-- `OPENPROJECT_SECRET_KEY_BASE` sets the secret key base for Rails. Please use a pseudo-random value for this and treat it like a password.
+- `SECRET_KEY_BASE` sets the secret key base for Rails. Please use a pseudo-random value for this and treat it like a password.
 - `OPENPROJECT_HOST__NAME` sets the host name of the application. This value is used for generating forms and links in emails, and needs to match the external request host name (The value users are seeing in their browsers).
 - `OPENPROJECT_HTTPS=false` disables the on-by-default HTTPS mode of OpenProject so you can access the instance over HTTP-only. For all production systems we strongly advise not to set this to false, and instead set up a proper TLS/SSL termination on your outer web server.
 - `OPENPROJECT_DEFAULT__LANGUAGE` does two things. It controls for the very first installation, in which language basic data (such as types, status names, etc.) and demo data is being created in. It also sets the default fallback language for new users.
@@ -102,7 +102,7 @@ achieved with the `-d` flag:
 
 ```shell
 docker run -d -p 8080:80 \
-  -e OPENPROJECT_SECRET_KEY_BASE=secret \
+  -e SECRET_KEY_BASE=secret \
   -e OPENPROJECT_HOST__NAME=localhost:8080 \
   -e OPENPROJECT_HTTPS=false \
   openproject/openproject:16
@@ -134,7 +134,7 @@ sudo mkdir -p /var/lib/openproject/{pgdata,assets}
 
 docker run -d -p 8080:80 --name openproject \
   -e OPENPROJECT_HOST__NAME=openproject.example.com \
-  -e OPENPROJECT_SECRET_KEY_BASE=secret \
+  -e SECRET_KEY_BASE=secret \
   -v /var/lib/openproject/pgdata:/var/openproject/pgdata \
   -v /var/lib/openproject/assets:/var/openproject/assets \
   openproject/openproject:16
@@ -474,7 +474,7 @@ The first way is to mount the root certificate via the ```--mount``` option into
 
 ```shell
 sudo docker run -it -p 8080:80 \
-  -e OPENPROJECT_SECRET_KEY_BASE=secret \
+  -e SECRET_KEY_BASE=secret \
   -e OPENPROJECT_HOST__NAME=localhost:8080 \
   -e OPENPROJECT_HTTPS=false \
   -e OPENPROJECT_DEFAULT__LANGUAGE=en \

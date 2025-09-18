@@ -472,7 +472,7 @@ RSpec.describe Project do
     end
   end
 
-  it_behaves_like "acts_as_favorable included" do
+  it_behaves_like "acts_as_favoritable included" do
     let(:instance) { project }
   end
 

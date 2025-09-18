@@ -21,6 +21,8 @@ pt-BR:
           title: 'Notícias'
           at: 'em'
           no_results: 'Nada de novo para relatar.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Descrição do projeto'
           no_results: "Nenhuma descrição foi escrita. Uma pode ser fornecida nas 'Configurações do Projeto'."

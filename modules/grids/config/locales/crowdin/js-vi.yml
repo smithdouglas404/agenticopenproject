@@ -21,6 +21,8 @@ vi:
           title: 'Tin tức'
           at: 'tại'
           no_results: 'Không có tin tức mới để báo cáo.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Mô tả dự án'
           no_results: "Chưa có mô tả nào được viết. Có thể cung cấp trong 'Cài đặt dự án'."

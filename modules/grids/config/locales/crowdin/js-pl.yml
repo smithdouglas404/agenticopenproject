@@ -21,6 +21,8 @@ pl:
           title: 'Aktualności'
           at: 'w'
           no_results: 'Utwórz nowy raport.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Opis projektu'
           no_results: "Nie napisano jeszcze opisu. Można go podać w sekcji Ustawienia projektu."

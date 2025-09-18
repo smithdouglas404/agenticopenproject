@@ -195,10 +195,9 @@ es:
     ldap_auth_failed: "No puede autenticarse en el servidor LDAP."
     sync_failed: "Error al sincronizar desde LDAP: %{message}."
     back_to_index: "Haga clic aquí para volver a la lista de conexión."
-    technical_warning_html: |
-      Este formulario LDAP requiere conocimientos técnicos de su configuración LDAP / Active Directory.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Visite nuestra documentación para obtener instrucciones detalladas</a>.
+    technical_warning: |
+      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: Nombre arbitrario de la conexión LDAP
       host: Nombre del host LDAP o dirección IP
@@ -438,7 +437,7 @@ es:
     lists:
       active: "Proyectos activos"
       my: "Mis proyectos"
-      favored: "Proyectos favoritos"
+      favorited: "Favorite projects"
       archived: "Proyectos archivados"
       shared: "Listas de proyectos compartidas"
       my_lists: "Mis listas de proyectos"
@@ -703,9 +702,7 @@ es:
         excluded_from_totals: "Excluido de totales"
   themes:
     dark: "Oscuro"
-    dark_high_contrast: "Contraste alto oscuro"
     light: "Claro"
-    light_high_contrast: "Contraste alto claro"
     sync_with_os: "Automático (coincide con el modo de color del SO)"
   types:
     index:
@@ -1022,6 +1019,8 @@ es:
         active_user_count_restriction: "Usuarios activos"
       enterprise_trial:
         company: "Empresa"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Página"
         row_count: "Número de filas"
@@ -1203,6 +1202,13 @@ es:
         auto_hide_popups: "Ocultar automáticamente los banners de éxito"
         auto_hide_popups_caption: "Si se habilitan, los banners verdes de éxito desaparecerán automáticamente al cabo de 5 segundos."
         warn_on_leaving_unsaved: "Avisarme cuando salga de un paquete de trabajo con cambios sin guardar"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Modo de color"
         time_zone: "Zona horaria"
         mode_guideline: "Algunos modos sobrescribirán los colores de los temas personalizados por motivos de accesibilidad y legibilidad. Seleccione el modo Claro para obtener una compatibilidad total con los temas personalizados."
@@ -1382,6 +1388,8 @@ es:
           only_one_trial: "Solo puede haber un token de prueba activo. Elimine el token de prueba anterior antes de añadir otro."
           unreadable: "no se puede leer. ¿Seguro que es un token de soporte?"
           already_added: "Este token ya se ha añadido."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "superpuesto."
           outside: "está fuera de la red."
@@ -1478,10 +1486,19 @@ es:
           typed_dag:
             circular_dependency: "La relación crea un bucle de relaciones."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "no se puede cambiar para las relaciones existentes."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "no se puede cambiar para las relaciones existentes."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "El proveedor SMC no está disponible"
           not_whitelisted: "no está permitido por la configuración."
@@ -1756,6 +1773,7 @@ es:
     attachments: "Archivos adjuntos"
     actor: "Actor"
     action: "Acción"
+    api_key: "API key"
     author: "Autor"
     avatar: "Avatar"
     base: "Error general:"
@@ -2194,7 +2212,7 @@ es:
         ¿Ya tiene un token? Añádalo utilizando el botón de abajo para actualizar al plan Enterprise reservado.
       hide_banner: "Ocultar este banner"
       homescreen_description: >
-        Los planes Enterprise amplían la edición Community de OpenProject que está utilizando actualmente. Incluyen complementos, funciones adicionales y asistencia profesional que permiten a organizaciones de todos los tamaños lograr grandes cosas juntas.
+        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
       homescreen_subline: Al mejorar su plan, también estará apoyando un proyecto de código abierto.
       baseline_comparison:
         description: Resalte los cambios realizados en esta lista desde cualquier momento en el pasado.
@@ -2649,7 +2667,7 @@ es:
         static_token_name: "Token API"
       ical:
         title: "iCalendar"
-        text_hint: 'Los tokens iCalendar permiten a los usuarios <a href="%{path}" target="_blank">suscribirse a los calendarios de OpenProject</a> y ver la información actualizada de los paquetes de trabajo de clientes externos.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "Las suscripciones a iCalendar no están habilitadas por el administrador. Póngase en contacto con su administrador para utilizar esta función."
         empty_text_hint: "Para añadir un token de iCalendar, suscríbase a un calendario nuevo o existente desde el módulo Calendario de un proyecto. Debe disponer de los permisos necesarios."
       oauth:

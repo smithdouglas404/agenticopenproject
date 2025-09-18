@@ -21,6 +21,8 @@ fil:
           title: 'Mga balita'
           at: 'at'
           no_results: 'Walang bago para ireport.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Project description'
           no_results: "No description has been written yet. One can be provided in the 'Project settings'."

@@ -195,10 +195,9 @@ fr:
     ldap_auth_failed: "Authentification impossible sur le serveur LDAP."
     sync_failed: "Échec de la synchronisation à partir de LDAP : %{message}."
     back_to_index: "Cliquez ici pour revenir à la liste des connexions."
-    technical_warning_html: |
-      Ce formulaire LDAP nécessite une connaissance technique de votre configuration LDAP/Active Directory.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Veuillez consulter notre documentation pour obtenir des instructions détaillées</a>.
+    technical_warning: |
+      Ce formulaire LDAP nécessite une connaissance technique de votre configuration LDAP / Active Directory.
+      [Veuillez consulter notre documentation pour des instructions détaillées](docs_url).
     attribute_texts:
       name: Nom arbitraire de la connexion LDAP
       host: Nom d'hôte ou adresse IP du serveur LDAP
@@ -336,49 +335,49 @@ fr:
   concatenation:
     single: "ou"
   op_dry_validation:
-    or: "or"
+    or: "ou"
     errors:
-      array?: "must be an array."
-      decimal?: "must be a decimal."
-      defined: "must not be defined."
-      eql?: "must be equal to %{left}."
-      filled?: "must be filled."
-      greater_or_equal_zero: "must be greater or equal to 0."
-      gteq?: "must be greater than or equal to %{num}."
-      hash?: "must be a hash."
+      array?: "doit être un tableau"
+      decimal?: "doit être une décimale."
+      defined: "ne doit pas être défini."
+      eql?: "doit être égal à %{left}."
+      filled?: "doivent être remplis."
+      greater_or_equal_zero: "doit être supérieur ou égal à 0."
+      gteq?: "doit être supérieur ou égal à %{num}."
+      hash?: "doit être un hachage."
       included_in?:
         arg:
-          default: "must be one of: %{list}."
-          range: "must be one of: %{list_left} - %{list_right}."
-      int?: "must be an integer."
-      key?: "is missing."
-      not_found: "not found."
+          default: "doit être l'un des suivants : %{list}."
+          range: "doit être l'un des suivants : %{list_left} - %{list_right}."
+      int?: "doit être un nombre entier."
+      key?: "est manquante."
+      not_found: "n'a pas été trouvée."
       rules:
         copy_workflow_from:
-          workflow_missing: "has no own workflow."
+          workflow_missing: "n'a pas de flux de travail propre."
         custom_field:
-          format_not_supported: "format '%{field_format}' is unsupported."
+          format_not_supported: "Le format '%{field_format}' n'est pas pris en charge."
         item:
-          root_item: "cannot be a root item."
-          not_persisted: "must be an already existing item."
+          root_item: "ne peut pas être un élément racine."
+          not_persisted: "doit être un élément déjà existant."
         label:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "doit être unique au sein d'un même niveau hiérarchique."
         short:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "doit être unique au sein d'un même niveau hiérarchique."
         parent:
-          not_descendant: "must be a descendant of the hierarchy root."
-      str?: "must be a string."
-      type?: "must be %{type}."
+          not_descendant: "doit être un descendant de la racine de la hiérarchie."
+      str?: "doit être une chaîne de caractères."
+      type?: "doit être %{type}."
     rules:
-      copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
-      depth: "Depth"
-      item: "Item"
-      label: "Label"
+      copy_workflow_from: "Type pour la copie du workflow"
+      enabled: "Activé"
+      depth: "Profondeur"
+      item: "Objet"
+      label: "Étiquette"
       score: "Score"
-      short: "Short name"
+      short: "Nom court"
       parent: "Parent"
-      blueprint: "Pattern blueprint"
+      blueprint: "Modèle de plan"
   global_search:
     title:
       all_projects: 'Recherche de "%{search_term}" dans tous les projets'
@@ -440,7 +439,7 @@ fr:
     lists:
       active: "Projets actifs"
       my: "Mes projets"
-      favored: "Projets favoris"
+      favorited: "Projets favoris"
       archived: "Projets archivés"
       shared: "Listes de projets partagées"
       my_lists: "Mes listes de projets"
@@ -703,9 +702,7 @@ fr:
         excluded_from_totals: "Exclus des totaux"
   themes:
     dark: "Sombre"
-    dark_high_contrast: "Sombre avec contraste élevé"
     light: "Clair"
-    light_high_contrast: "Clair avec contraste élevé"
     sync_with_os: "Automatique (correspond au mode de couleur du système d'exploitation)"
   types:
     index:
@@ -1023,6 +1020,8 @@ fr:
         active_user_count_restriction: "Utilisateurs actifs"
       enterprise_trial:
         company: "Entreprise"
+      favorite:
+        favorited: "Objet"
       grids/grid:
         page: "Page"
         row_count: "Nombre de lignes"
@@ -1204,6 +1203,13 @@ fr:
         auto_hide_popups: "Masquer automatiquement les bannières de réussite"
         auto_hide_popups_caption: "Lorsque cette option est activée, les bannières vertes de réussite disparaissent automatiquement après 5 secondes."
         warn_on_leaving_unsaved: "M'avertir lorsque je quitte un lot de travaux contenant des modifications non enregistrées"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Mode de couleur"
         time_zone: "Fuseau horaire"
         mode_guideline: "Certains modes écrasent les couleurs des thèmes personnalisés pour des raisons d'accessibilité et de lisibilité. Veuillez sélectionner le mode Clair pour une prise en charge complète des thèmes personnalisés."
@@ -1383,6 +1389,8 @@ fr:
           only_one_trial: "Un seul jeton d'essai peut être actif. Veuillez supprimer le jeton d'essai précédent avant d'en ajouter un autre."
           unreadable: "ne peut être lu. Êtes-vous sûr qu'il s'agisse d'une licence Entreprise ?"
           already_added: "Ce jeton a déjà été ajouté."
+        favorite:
+          already_favorited: "a déjà été mis en favoris."
         grids/grid:
           overlaps: "superposition."
           outside: "est hors de la grille."
@@ -1479,10 +1487,19 @@ fr:
           typed_dag:
             circular_dependency: "La relation créée un cercle de relations."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "ne peut pas être modifié pour les relations existantes."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "ne peut pas être modifié pour les relations existantes."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "Le fournisseur de gestion de contrôle de sources n'est pas disponible"
           not_whitelisted: "n'est pas autorisé par la configuration."
@@ -1757,6 +1774,7 @@ fr:
     attachments: "Fichiers"
     actor: "Acteur"
     action: "Action"
+    api_key: "Clé API"
     author: "Auteur"
     avatar: "Avatar"
     base: "Erreur générale :"
@@ -2195,7 +2213,7 @@ fr:
         Vous avez déjà un jeton ? Ajoutez-le en utilisant le bouton ci-dessous pour passer à l'abonnement Enterprise réservé.
       hide_banner: "Masquer cette bannière"
       homescreen_description: >
-        Les abonnements Enterprise prolongent l'édition Community d'OpenProject que vous utilisez actuellement. Ils comprennent des add-ons, des fonctionnalités supplémentaires et une assistance professionnelle qui permet aux organisations de toutes tailles de réaliser de grandes choses ensemble.
+        Les plans d'entreprise prolongent l'édition communautaire d'OpenProject avec des [modules d'entreprise] supplémentaires (enterprise_url) et un support professionnel, idéal pour les organisations qui utilisent OpenProject dans un environnement critique.
       homescreen_subline: En optant pour une formule d'abonnement supérieure, vous soutiendrez également un projet open source.
       baseline_comparison:
         description: Mettre en évidence les modifications apportées à cette liste depuis n'importe quel point dans le passé.
@@ -2650,7 +2668,7 @@ fr:
         static_token_name: "Jeton d'API"
       ical:
         title: "iCalendar"
-        text_hint: 'Les jetons iCalendar permettent aux utilisateurs de <a href="%{path}" target="_blank">s''abonner aux calendriers OpenProject</a> et d''afficher des informations à jour sur les lots de travaux provenant de clients externes.'
+        text_hint_link: 'Les jetons iCalendar permettent aux utilisateurs de [s''abonner aux calendriers OpenProject](docs_url) et de voir les informations mises à jour du lot de travaux de clients externes.'
         disabled_text: "Les abonnements iCalendar ne sont pas activés par l'administrateur. Veuillez contacter votre administrateur pour utiliser cette fonctionnalité."
         empty_text_hint: "Pour ajouter un jeton iCalendar, abonnez-vous à un nouveau calendrier ou à un calendrier existant depuis le module Calendrier d'un projet. Vous devez avoir les autorisations nécessaires."
       oauth:

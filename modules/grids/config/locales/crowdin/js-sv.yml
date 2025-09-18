@@ -21,6 +21,8 @@ sv:
           title: 'Nyheter'
           at: 'vid'
           no_results: 'Inget nytt att rapportera.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Projektbeskrivning'
           no_results: "Ingen beskrivning har skrivits ännu. Den kan anges i 'Projektinställningar'."

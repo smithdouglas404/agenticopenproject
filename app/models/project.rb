@@ -108,7 +108,7 @@ class Project < ApplicationRecord
   store_attribute :settings, :deactivate_work_package_attachments, :boolean
   store_attribute :settings, :enabled_internal_comments, :boolean
 
-  acts_as_favorable
+  acts_as_favoritable
 
   acts_as_customizable validate_on: :saving_custom_fields
   # extended in Projects::CustomFields in order to support sections

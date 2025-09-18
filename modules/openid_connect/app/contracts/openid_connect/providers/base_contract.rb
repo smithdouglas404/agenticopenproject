@@ -67,7 +67,7 @@ module OpenIDConnect
       end
 
       attribute :groups_claim
-      validates :groups_claim, presence: true
+      validates :groups_claim, presence: true, if: -> { model.sync_groups? }
 
       attribute :group_regexes
       validate :group_regexes_parseable

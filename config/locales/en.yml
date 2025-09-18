@@ -473,7 +473,7 @@ en:
     lists:
       active: "Active projects"
       my: "My projects"
-      favored: "Favorite projects"
+      favorited: "Favorite projects"
       archived: "Archived projects"
       shared: "Shared project lists"
       my_lists: "My project lists"
@@ -758,9 +758,7 @@ en:
 
   themes:
     dark: "Dark"
-    dark_high_contrast: "Dark high contrast"
     light: "Light"
-    light_high_contrast: "Light high contrast"
     sync_with_os: "Automatic (match OS color mode)"
 
   types:
@@ -1102,6 +1100,8 @@ en:
         active_user_count_restriction: "Active users"
       enterprise_trial:
         company: "Company"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Page"
         row_count: "Number of rows"
@@ -1283,6 +1283,13 @@ en:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "Warn me when leaving a work package with unsaved changes"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Color mode"
         time_zone: "Time zone"
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
@@ -1463,6 +1470,8 @@ en:
           only_one_trial: "Only one trial token can be active. Please delete the previous trial token before adding another."
           unreadable: "can't be read. Are you sure it is a support token?"
           already_added: "This token has already been added."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "overlap."
           outside: "is outside of the grid."
@@ -1559,10 +1568,19 @@ en:
           typed_dag:
             circular_dependency: "The relationship creates a circle of relationships."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "SCM vendor is not available"
           not_whitelisted: "is not allowed by the configuration."
@@ -1979,6 +1997,7 @@ en:
   button_add_watcher: "Add watcher"
   button_annotate: "Annotate"
   button_apply: "Apply"
+  button_apply_changes: "Apply changes"
   button_archive: "Archive"
   button_back: "Back"
   button_cancel: "Cancel"
@@ -2028,8 +2047,8 @@ en:
   button_rollback: "Rollback to this version"
   button_save: "Save"
   button_save_as: "Save as"
-  button_apply_changes: "Apply changes"
   button_save_back: "Save and back"
+  button_select: "Select"
   button_set_reminder: "Set reminder"
   button_show: "Show"
   button_sort: "Sort"
@@ -2299,8 +2318,7 @@ en:
         Already have a token? Add it using the button below to upgrade to the booked Enterprise plan.
       hide_banner: "Hide this banner"
       homescreen_description: >
-        Enterprise plans extend the Community edition of OpenProject you are currently using.
-        They include add-ons, additional features and professional support that enables organisations of all sizes to achieve great things together.
+        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
       homescreen_subline: By upgrading, you will also be supporting an open source project.
       baseline_comparison:
         description: Highlight changes made to this list since any point in the past.
@@ -2925,6 +2943,7 @@ en:
   label_required_disk_storage: "Required disk storage"
   label_send_invitation: Send invitation
   label_calculated_value: "Calculated value"
+  label_change_parent: "Change parent"
   label_change_plural: "Changes"
   label_change_properties: "Change properties"
   label_change_status: "Change status"

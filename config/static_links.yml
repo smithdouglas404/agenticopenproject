@@ -58,6 +58,8 @@ enterprise_features:
     href: https://www.openproject.org/docs/system-admin-guide/projects/project-life-cycle/
   default:
     href: https://www.openproject.org/enterprise-edition
+  feature_comparison:
+    href: https://www.openproject.org/pricing/#features
   form_configuration:
     href: https://www.openproject.org/docs/system-admin-guide/manage-work-packages/work-package-types/#work-package-form-configuration-enterprise-add-on
   internal_comments:

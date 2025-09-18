@@ -195,10 +195,9 @@ ko:
     ldap_auth_failed: "LDAP 서버에서 인증할 수 없습니다."
     sync_failed: "LDAP에서 동기화하지 못했습니다: %{message}."
     back_to_index: "연결 목록으로 돌아가려면 여기를 클릭하세요."
-    technical_warning_html: |
-      이 LDAP 양식에는 LDAP/Active Directory 설정에 대한 기술적 지식이 필요합니다.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">자세한 지침은 설명서를 참조하세요</a>.
+    technical_warning: |
+      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: LDAP 연결의 임의 이름
       host: LDAP 호스트 이름 또는 IP 주소
@@ -440,7 +439,7 @@ ko:
     lists:
       active: "활성 프로젝트"
       my: "내 프로젝트"
-      favored: "즐겨 찾는 프로젝트"
+      favorited: "Favorite projects"
       archived: "보관된 프로젝트"
       shared: "공유된 프로젝트 목록"
       my_lists: "내 프로젝트 목록"
@@ -698,9 +697,7 @@ ko:
         excluded_from_totals: "합계에서 제외됨"
   themes:
     dark: "다크"
-    dark_high_contrast: "다크 하이 콘트라스트"
     light: "라이트"
-    light_high_contrast: "라이트 하이 콘트라스트"
     sync_with_os: "자동(OS 색상 모드와 일치)"
   types:
     index:
@@ -1017,6 +1014,8 @@ ko:
         active_user_count_restriction: "활성 사용자"
       enterprise_trial:
         company: "회사"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "페이지"
         row_count: "행 수"
@@ -1198,6 +1197,13 @@ ko:
         auto_hide_popups: "성공 배너 자동으로 숨기기"
         auto_hide_popups_caption: "활성화하면 녹색 성공 배너가 5초 후에 자동으로 사라집니다."
         warn_on_leaving_unsaved: "저장하지 않고 작업 패키지를 벗어날 때 알려주세요."
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "색상 모드"
         time_zone: "표준 시간대"
         mode_guideline: "일부 모드에서는 접근성과 가독성을 위해 사용자 지정 테마 색상을 덮어씁니다. 전체 사용자 지정 테마 지원을 위해서는 라이트 모드를 선택하세요."
@@ -1376,6 +1382,8 @@ ko:
           only_one_trial: "평가판 토큰은 하나만 활성화할 수 있습니다. 다른 평가판 토큰을 추가하기 전에 이전 토큰을 삭제하세요."
           unreadable: "읽을 수 없습니다. 지원하는 토큰이 확실한가요?"
           already_added: "이미 추가된 토큰입니다."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "오버랩"
           outside: "- 그리드의 외부에 있습니다."
@@ -1472,10 +1480,19 @@ ko:
           typed_dag:
             circular_dependency: "이 관계는 관계의 원을 만듭니다."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "- 기존 관계에 대해서는 변경할 수 없습니다."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "- 기존 관계에 대해서는 변경할 수 없습니다."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "SCM 업체가 가용하지 않습니다."
           not_whitelisted: "은(는) 설절에 허용되지 않습니다."
@@ -1735,6 +1752,7 @@ ko:
     attachments: "첨부 파일"
     actor: "수행자"
     action: "액션"
+    api_key: "API key"
     author: "작성자"
     avatar: "아바타"
     base: "일반 오류:"
@@ -2153,7 +2171,7 @@ ko:
         이미 토큰이 있으신가요? 아래 버튼을 사용하여 토큰을 추가하고 예약한 Enterprise 플랜으로 업그레이드하세요.
       hide_banner: "이 배너 숨기기"
       homescreen_description: >
-        Enterprise 플랜은 현재 사용 중인 Community 버전의 OpenProject를 확장합니다. 여기에는 추가 기능, 기타 기능 및 전문가 지원이 포함되어 있으므로 모든 규모의 조직이 함께 탁월한 성과를 달성할 수 있습니다.
+        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
       homescreen_subline: 업그레이드하면 오픈 소스 프로젝트도 지원하게 됩니다.
       baseline_comparison:
         description: 과거 어느 시점 이후에 이 목록에서 변경된 사항을 강조 표시합니다.
@@ -2607,7 +2625,7 @@ ko:
         static_token_name: "API 토큰"
       ical:
         title: "iCalendar"
-        text_hint: 'iCalendar 토큰을 사용하면 사용자가 <a href="%{path}" target="_blank">OpenProject 캘린더를 구독</a>하고 외부 클라이언트의 최신 작업 패키지 정보를 볼 수 있습니다.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "관리자가 iCalendar 구독을 활성화하지 않았습니다. 이 기능을 사용하려면 관리자에게 문의하세요."
         empty_text_hint: "iCalendar 토큰을 추가하려면 프로젝트의 캘린더 모듈 내에서 새 캘린더 또는 기존 캘린더를 구독하세요. 필요한 권한이 있어야 합니다."
       oauth:

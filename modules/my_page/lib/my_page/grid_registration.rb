@@ -13,7 +13,8 @@ module MyPage
             "work_packages_table",
             "time_entries_current_user",
             "project_favorites",
-            "news"
+            "news",
+            "news_beta"
 
     wp_table_strategy_proc = Proc.new do
       after_destroy -> { ::Query.find_by(id: options[:queryId])&.destroy }

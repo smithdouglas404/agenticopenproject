@@ -57,7 +57,7 @@ Rails.application.configure do |application|
       formatter Project, Projects::Exports::Formatters::Description
       formatter Project, Projects::Exports::Formatters::Public
       formatter Project, Projects::Exports::Formatters::Active
-      formatter Project, Projects::Exports::Formatters::Favored
+      formatter Project, Projects::Exports::Formatters::Favorited
       formatter Project, Projects::Exports::Formatters::RequiredDiskSpace
     end
   end

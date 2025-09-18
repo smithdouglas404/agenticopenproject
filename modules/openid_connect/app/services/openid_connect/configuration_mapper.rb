@@ -65,7 +65,9 @@ module OpenIDConnect
         "mapping_email" => options.dig("attribute_map", "email"),
         "mapping_first_name" => options.dig("attribute_map", "first_name"),
         "mapping_last_name" => options.dig("attribute_map", "last_name"),
-        "mapping_admin" => options.dig("attribute_map", "admin")
+        "mapping_admin" => options.dig("attribute_map", "admin"),
+        "sync_groups" => options["sync_groups"] == "true",
+        "groups_claim" => options["groups_claim"]
       }.compact
     end
 

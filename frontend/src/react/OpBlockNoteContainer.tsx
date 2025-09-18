@@ -31,7 +31,7 @@
 import { BlockNoteSchema, defaultBlockSpecs, filterSuggestionItems } from '@blocknote/core';
 import { BlockNoteView } from '@blocknote/mantine';
 import { getDefaultReactSlashMenuItems, SuggestionMenuController, useCreateBlockNote } from '@blocknote/react';
-import { getDefaultOpenProjectSlashMenuItems, openProjectWorkPackageBlockSpec } from 'op-blocknote-extensions';
+import { initOpenProjectApi, getDefaultOpenProjectSlashMenuItems, openProjectWorkPackageBlockSpec } from 'op-blocknote-extensions';
 import { useEffect, useState } from 'react';
 import { OpColorMode } from 'core-app/core/setup/globals/theme-utils';
 import { HocuspocusProvider } from '@hocuspocus/provider';
@@ -50,6 +50,7 @@ export interface OpBlockNoteContainerProps {
   users:User[];
   activeUser:User;
   documentId:string;
+  openProjectUrl:string;
 }
 
 const schema = BlockNoteSchema.create({
@@ -67,7 +68,10 @@ export default function OpBlockNoteContainer({ inputField,
                                                activeUser,
                                                hocuspocusUrl,
                                                hocuspocusAccessToken,
-                                               documentId }:OpBlockNoteContainerProps) {
+                                               documentId,
+                                               openProjectUrl }:OpBlockNoteContainerProps) {
+  initOpenProjectApi({ baseUrl: openProjectUrl});
+
   const [isLoading, setIsLoading] = useState(true);
 
   let collaboration:any;

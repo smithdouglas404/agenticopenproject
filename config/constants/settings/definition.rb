@@ -28,6 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
+# rubocop:disable Metrics/CollectionLiteralLength
 module Settings
   class Definition
     ENV_PREFIX = "OPENPROJECT_"
@@ -463,7 +464,7 @@ module Settings
         default: false
       },
       enabled_projects_columns: {
-        default: %w[favored name project_status public created_at latest_activity_at required_disk_space],
+        default: %w[favorited name project_status public created_at latest_activity_at required_disk_space],
         allowed: -> { ProjectQuery.new.available_selects.map { |s| s.attribute.to_s } }
       },
       enabled_scm: {
@@ -881,6 +882,10 @@ module Settings
         writable: false,
         allowed: (0..),
         default: 20
+      },
+      opentelemetry_enabled: {
+        description: "Enable OpenTelemetry metrics",
+        default: false
       },
       rate_limiting: {
         default: {},
@@ -1658,3 +1663,4 @@ module Settings
     end
   end
 end
+# rubocop:enable Metrics/CollectionLiteralLength

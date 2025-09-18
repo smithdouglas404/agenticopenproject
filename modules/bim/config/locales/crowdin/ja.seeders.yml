@@ -88,7 +88,7 @@ ja:
       projects:
         demo-construction-project:
           name: "(デモ) 建設プロジェクト"
-          status_explanation: すべてのタスクとサブプロジェクトは予定通りです。関係者は彼らのタスクを知っています。システムは完全に設定されています。
+          status_explanation: すべてのタスクと子プロジェクトは予定通りです。関係者は彼らのタスクを知っています。システムは完全に設定されています。
           description: これは、このデモ建設プロジェクトの目標の概要です。
           news:
             item_0:
@@ -403,7 +403,7 @@ ja:
                     *   Bring some drinks, snacks and your smile
         demo-bim-project:
           name: "(デモ) BIM プロジェクト"
-          status_explanation: "すべてのタスクとサブプロジェクトは予定通りです。\n関係者はタスクを認知しています。システムは完全にセットアップされています。"
+          status_explanation: "すべてのタスクと子プロジェクトは予定通りです。\n関係者はタスクを認知しています。システムは完全にセットアップされています。"
           description: これはデモBIMプロジェクトのゴールの概要です。
           news:
             item_0:

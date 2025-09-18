@@ -1,5 +1,5 @@
 import { StreamActions, StreamElement } from '@hotwired/turbo';
-import Idiomorph from 'idiomorph/dist/idiomorph.cjs';
+import { Idiomorph } from 'idiomorph';
 
 export function registerDialogStreamAction() {
   StreamActions.closeDialog = function closeDialogStreamAction(this:StreamElement) {

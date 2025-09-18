@@ -44,6 +44,7 @@ import { GridComponent } from 'core-app/shared/components/grids/grid/grid.compon
 import { AddGridWidgetModalComponent } from 'core-app/shared/components/grids/widgets/add/add.modal';
 import { WidgetDocumentsComponent } from 'core-app/shared/components/grids/widgets/documents/documents.component';
 import { WidgetNewsComponent } from 'core-app/shared/components/grids/widgets/news/news.component';
+import { WidgetNewsBetaComponent } from 'core-app/shared/components/grids/widgets/news-beta/news-beta.component';
 import { WidgetWpTableComponent } from 'core-app/shared/components/grids/widgets/wp-table/wp-table.component';
 import { WidgetMenuComponent } from 'core-app/shared/components/grids/widgets/menu/widget-menu.component';
 import { WidgetWpTableMenuComponent } from 'core-app/shared/components/grids/widgets/wp-table/wp-table-menu.component';
@@ -123,6 +124,7 @@ import { OpenprojectEnterpriseModule } from 'core-app/features/enterprise/openpr
     WidgetDocumentsComponent,
     WidgetMembersComponent,
     WidgetNewsComponent,
+    WidgetNewsBetaComponent,
     WidgetWpCalendarComponent,
     WidgetWpOverviewComponent,
     WidgetWpTableComponent,
@@ -309,6 +311,14 @@ export function registerWidgets(injector:Injector) {
         title: i18n.t('js.grid.widgets.news.title'),
         properties: {
           name: i18n.t('js.grid.widgets.news.title'),
+        },
+      },
+      {
+        identifier: 'news_beta',
+        component: WidgetNewsBetaComponent,
+        title: i18n.t('js.grid.widgets.news_beta.title'),
+        properties: {
+          name: i18n.t('js.grid.widgets.news_beta.title'),
         },
       },
       {

@@ -13,7 +13,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { TabDefinition } from 'core-app/shared/components/tabs/tab.interface';
-import { trackByProperty } from 'core-app/shared/helpers/angular/tracking-functions';
 import {
   RawParams,
   StateService,
@@ -53,8 +52,6 @@ export class ScrollableTabsComponent extends UntilDestroyedMixin implements Afte
   @Output() public tabSelected = new EventEmitter<TabDefinition>();
 
   @InjectField() uiRouterGlobals:UIRouterGlobals;
-
-  trackById = trackByProperty('id');
 
   counters:Record<string, Observable<number>> = {};
 

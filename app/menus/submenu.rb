@@ -29,6 +29,7 @@
 # ++
 class Submenu
   include Rails.application.routes.url_helpers
+
   attr_reader :view_type, :project, :params
 
   def initialize(view_type:, params:, project: nil)
@@ -117,7 +118,7 @@ class Submenu
                                     icon: icon_map.fetch(icon_key, icon_key),
                                     count:,
                                     selected:,
-                                    favored: favored?(query_params),
+                                    favorited: favorited?(query_params),
                                     show_enterprise_icon:)
   end
 
@@ -129,14 +130,14 @@ class Submenu
       end
     end
 
-    if query_params.empty? && (%i[filters query_props query_id name].any? { |k| params.key? k })
+    if query_params.empty? && %i[filters query_props query_id name].any? { |k| params.key? k }
       return false
     end
 
     true
   end
 
-  def favored?(_query_params)
+  def favorited?(_query_params)
     false
   end
 

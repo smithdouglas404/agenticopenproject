@@ -35,7 +35,7 @@ ja:
         internal_comment: "内部コメント"
       explanation:
         text: >
-          作業項目の作成やプロジェクトの更新などのイベントが発生するとします。 OpenProjectは設定されたWebエンドポイントにPOSTリクエストを送信します。 多くの場合、イベントは %{link} が過ぎた後に送信されます。
+          ワークパッケージの作成やプロジェクトの更新などのイベントが発生するとします。 OpenProjectは設定されたWebエンドポイントにPOSTリクエストを送信します。 多くの場合、イベントは %{link} が過ぎた後に送信されます。
         link: 集計期間を設定する
       status:
         enabled: 'Webhookは有効です'

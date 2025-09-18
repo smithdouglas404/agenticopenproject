@@ -195,10 +195,9 @@ hu:
     ldap_auth_failed: "A hitelesítés meghiúsult az LDAP-kiszolgálón."
     sync_failed: "Sikertelen szinkronizálás az LDAP-ból: %{message}."
     back_to_index: "Kattintson ide, ha vissza szeretne térni a kapcsolati listához."
-    technical_warning_html: |
+    technical_warning: |
       This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Please visit our documentation for detailed instructions</a>.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: Az LDAP kapcsolat tetszőleges neve
       host: LDAP Kiszolgáló neve vagy IP címe
@@ -439,7 +438,7 @@ hu:
     lists:
       active: "Aktív projektek"
       my: "Az én projektjeim"
-      favored: "Kedvenc projektek"
+      favorited: "Favorite projects"
       archived: "Archivált projektek"
       shared: "Shared project lists"
       my_lists: "Projekt listáim"
@@ -704,9 +703,7 @@ hu:
         excluded_from_totals: "Excluded from totals"
   themes:
     dark: "Dark"
-    dark_high_contrast: "Dark high contrast"
     light: "Világos"
-    light_high_contrast: "Világos, nagy kontraszt"
     sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
@@ -1024,6 +1021,8 @@ hu:
         active_user_count_restriction: "Active users"
       enterprise_trial:
         company: "Cég"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Oldal"
         row_count: "Sorok száma"
@@ -1205,6 +1204,13 @@ hu:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "Figyelmeztess, ha úgy hagyom el a munkacsomagot, hogy nem mentett változások vannak rajta"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Color mode"
         time_zone: "Idő zóna"
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
@@ -1384,6 +1390,8 @@ hu:
           only_one_trial: "Only one trial token can be active. Please delete the previous trial token before adding another."
           unreadable: "nem olvasható. Biztos vagy benne, hogy ez támogatási token?"
           already_added: "This token has already been added."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "átfedés"
           outside: "hatókörön kívül van."
@@ -1480,10 +1488,19 @@ hu:
           typed_dag:
             circular_dependency: "A kapcsolat körkörös függőséget hoz létre."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "SCM szolgáltató nem elérhető"
           not_whitelisted: "a konfiguráció nem engedélyezi."
@@ -1758,6 +1775,7 @@ hu:
     attachments: "Csatolmány"
     actor: "Actor"
     action: "Művelet"
+    api_key: "API key"
     author: "Szerző"
     avatar: "Profilkép"
     base: "Általános hiba:"
@@ -2196,7 +2214,7 @@ hu:
         Already have a token? Add it using the button below to upgrade to the booked Enterprise plan.
       hide_banner: "Hide this banner"
       homescreen_description: >
-        Enterprise plans extend the Community edition of OpenProject you are currently using. They include add-ons, additional features and professional support that enables organisations of all sizes to achieve great things together.
+        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
       homescreen_subline: By upgrading, you will also be supporting an open source project.
       baseline_comparison:
         description: Highlight changes made to this list since any point in the past.
@@ -2651,7 +2669,7 @@ hu:
         static_token_name: "API token"
       ical:
         title: "iCalendar"
-        text_hint: 'iCalendar tokens allow users to <a href="%{path}" target="_blank">subscribe to OpenProject calendars</a> and view up-to-date work package information from external clients.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "iCalendar subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
         empty_text_hint: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
       oauth:

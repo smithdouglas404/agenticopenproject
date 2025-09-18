@@ -179,7 +179,7 @@ RSpec.describe ProjectQueries::SetAttributesService, type: :model do
       subject
 
       expect(model_instance.selects.map(&:attribute))
-        .to eql %i[favored name cf_1]
+        .to eql %i[favorited name cf_1]
     end
 
     it "assigns default selects for admin",
@@ -191,7 +191,7 @@ RSpec.describe ProjectQueries::SetAttributesService, type: :model do
       subject
 
       expect(model_instance.selects.map(&:attribute))
-        .to eql %i[favored name created_at cf_1]
+        .to eql %i[favorited name created_at cf_1]
     end
     # rubocop:enable Naming/VariableNumber
   end

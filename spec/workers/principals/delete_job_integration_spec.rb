@@ -477,12 +477,12 @@ RSpec.describe Principals::DeleteJob, type: :model do
 
       describe "favorites" do
         before do
-          project.add_favoring_user(principal)
+          project.add_favoriting_user(principal)
           job
         end
 
         it "removes the assigned_to association to the principal" do
-          expect(project.favoring_users.reload).to be_empty
+          expect(project.favoriting_users.reload).to be_empty
         end
       end
     end

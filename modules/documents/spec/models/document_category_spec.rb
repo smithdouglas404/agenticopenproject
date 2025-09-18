@@ -29,6 +29,8 @@
 #++
 require_relative "../spec_helper"
 
+require Rails.root.join("spec/models/enumerations/shared_enumeration_examples").to_s
+
 RSpec.describe DocumentCategory do
   let(:project) { create(:project) }
 
@@ -57,5 +59,9 @@ RSpec.describe DocumentCategory do
       create(:document_category, name: "new default", project:, is_default: true)
       old_default.reload
     end.to change { old_default.is_default? }.from(true).to(false)
+  end
+
+  it_behaves_like "enumeration#active handling", true do
+    let(:enumeration) { described_class.new(attributes_for(:document_category)) }
   end
 end

@@ -195,10 +195,9 @@ de:
     ldap_auth_failed: "Die Authentifizierung gegenüber des LDAP-Servers ist fehlgeschlagen."
     sync_failed: "Fehler beim Synchronisieren von LDAP: %{message}."
     back_to_index: "Klicken Sie hier, um zur Liste der Verbindungen zurückzukehren."
-    technical_warning_html: |
-      Dieses LDAP-Formular erfordert technische Kenntnisse über Ihre LDAP/Active Directory-Einrichtung.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Bitte besuchen Sie unsere Dokumentation für detaillierte Anweisungen</a>.
+    technical_warning: |
+      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: Beliebiger Name der LDAP-Verbindung
       host: LDAP-Hostname oder IP-Adresse
@@ -333,44 +332,44 @@ de:
   concatenation:
     single: "oder"
   op_dry_validation:
-    or: "or"
+    or: "oder"
     errors:
-      array?: "must be an array."
-      decimal?: "must be a decimal."
-      defined: "must not be defined."
+      array?: "muss ein Array sein."
+      decimal?: "muss eine Dezimalzahl sein."
+      defined: "darf nicht definiert werden."
       eql?: "must be equal to %{left}."
-      filled?: "must be filled."
-      greater_or_equal_zero: "must be greater or equal to 0."
+      filled?: "muss ausgefüllt werden."
+      greater_or_equal_zero: "muss größer oder gleich 0 sein."
       gteq?: "must be greater than or equal to %{num}."
-      hash?: "must be a hash."
+      hash?: "muss ein Hash sein."
       included_in?:
         arg:
           default: "must be one of: %{list}."
           range: "must be one of: %{list_left} - %{list_right}."
-      int?: "must be an integer."
-      key?: "is missing."
-      not_found: "not found."
+      int?: "muss eine ganze Zahl sein."
+      key?: "fehlt."
+      not_found: "nicht gefunden."
       rules:
         copy_workflow_from:
-          workflow_missing: "has no own workflow."
+          workflow_missing: "hat keinen eigenen Workflow."
         custom_field:
           format_not_supported: "format '%{field_format}' is unsupported."
         item:
           root_item: "cannot be a root item."
-          not_persisted: "must be an already existing item."
+          not_persisted: "muss ein bereits vorhandenes Element sein."
         label:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "muss innerhalb der gleichen Hierarchieebene eindeutig sein."
         short:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "muss innerhalb der gleichen Hierarchieebene eindeutig sein."
         parent:
-          not_descendant: "must be a descendant of the hierarchy root."
-      str?: "must be a string."
+          not_descendant: "muss ein Unterelement der Hierarchiewurzel sein."
+      str?: "muss eine Zeichenkette sein."
       type?: "must be %{type}."
     rules:
-      copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
+      copy_workflow_from: "Typ für Workflow-Kopie"
+      enabled: "Aktiviert"
       depth: "Depth"
-      item: "Item"
+      item: "Element"
       label: "Label"
       score: "Score"
       short: "Short name"
@@ -437,7 +436,7 @@ de:
     lists:
       active: "Aktive Projekte"
       my: "Meine Projekte"
-      favored: "Favorisierte Projekte"
+      favorited: "Favorite projects"
       archived: "Archivierte Projekte"
       shared: "Geteilte Projektlisten"
       my_lists: "Meine Projektlisten"
@@ -698,9 +697,7 @@ de:
         excluded_from_totals: "Von Gesamtsumme auschließen"
   themes:
     dark: "Dunkel"
-    dark_high_contrast: "Dunkel (hoher Kontrast)"
     light: "Hell"
-    light_high_contrast: "Hell (hoher Kontrast)"
     sync_with_os: "Automatisch (entsprechend dem OS-Farbschema)"
   types:
     index:
@@ -1017,6 +1014,8 @@ de:
         active_user_count_restriction: "Aktive Nutzer"
       enterprise_trial:
         company: "Unternehmen"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Seite"
         row_count: "Anzahl der Zeilen"
@@ -1198,6 +1197,13 @@ de:
         auto_hide_popups: "Automatisches Ausblenden von Erfolgsbannern"
         auto_hide_popups_caption: "Wenn diese Funktion aktiviert ist, verschwinden die grünen Erfolgsbanner automatisch nach 5 Sekunden."
         warn_on_leaving_unsaved: "Beim Verlassen einer Arbeitspaket-Seite mit ungespeichertem Text warnen"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Farbmodus"
         time_zone: "Zeitzone"
         mode_guideline: "Einige Modi überschreiben benutzerdefinierte Theme-Farben zur Verbesserung von Barrierefreiheit und Lesbarkeit. Bitte wählen Sie den Hellmodus für die vollständige Unterstützung Ihres benutzerdefinierten Themes."
@@ -1377,6 +1383,8 @@ de:
           only_one_trial: "Es kann nur ein Test-Token aktiv sein. Bitte löschen Sie den vorherigen Test-Token, bevor Sie einen weiteren hinzufügen."
           unreadable: "kann nicht gelesen werden. Ist dies ein Enterprise edition Support Token?"
           already_added: "Dieser Token wurde bereits hinzugefügt."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "überlappen."
           outside: "ist außerhalb des Rasters."
@@ -1473,10 +1481,19 @@ de:
           typed_dag:
             circular_dependency: "Die Beziehung erzeugt eine zirkuläre Abhängigkeit."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "kann für bestehende Beziehungen nicht geändert werden."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "kann für bestehende Beziehungen nicht geändert werden."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "SCM-Anbieter ist nicht verfügbar"
           not_whitelisted: "wird durch die Konfiguration nicht erlaubt."
@@ -1751,6 +1768,7 @@ de:
     attachments: "Anhänge"
     actor: "Ausführender Benutzer"
     action: "Aktion"
+    api_key: "API key"
     author: "Autor"
     avatar: "Profilfoto"
     base: "Allgemeiner Fehler:"
@@ -2189,7 +2207,7 @@ de:
         Haben Sie bereits ein Token? Fügen Sie es über den Button unten hinzu, um zum gebuchten Enterprise-Plan zu wechseln.
       hide_banner: "Dieses Banner ausblenden"
       homescreen_description: >
-        Enterprise-Pläne erweitern die Community Edition von OpenProject, welche Sie derzeit verwenden. Sie beinhalten Add-ons, zusätzliche Funktionen und professionelle Unterstützung, die es Organisationen aller Größenordnungen ermöglicht, gemeinsam Großartiges zu erreichen.
+        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
       homescreen_subline: Durch ein Upgrade unterstützen Sie zudem ein Open-Source-Projekt.
       baseline_comparison:
         description: An dieser Liste vorgenommene Änderungen seit einem beliebigen Zeitpunkt in der Vergangenheit hervorheben.
@@ -2644,7 +2662,7 @@ de:
         static_token_name: "API-Token"
       ical:
         title: "iCalendar"
-        text_hint: 'iCalendar Token erlauben es Benutzern <a href="%{path}" target="_blank">OpenProject Kalender</a> zu abonnieren und aktuelle Arbeitspaket-Informationen auf externen Clients anzuzeigen.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "iCalendar Abonnements sind vom Administrator nicht aktiviert. Bitte kontaktieren Sie Ihren Administrator, um diese Funktion zu nutzen."
         empty_text_hint: "Um einen iCalendar Token hinzuzufügen, abonnieren Sie einen neuen oder bestehenden Kalender innerhalb des Kalender-Moduls eines Projekts. Sie müssen über die erforderlichen Berechtigungen verfügen."
       oauth:

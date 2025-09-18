@@ -29,9 +29,28 @@
 #++
 
 module OpPrimer
+  # @logical_path OpenProject/Primer
   class InsetBoxComponentPreview < ViewComponent::Preview
     def default
       render OpPrimer::InsetBoxComponent.new do
+        "I am a text inside InsetBox Component."
+      end
+    end
+
+    # @param border [Boolean]
+    # @param content [String]
+    def playground(border: true, content: "Group some information here")
+      puts "border: "
+      puts border
+      puts border.class
+
+      render OpPrimer::InsetBoxComponent.new(border: ActiveModel::Type::Boolean.new.cast(border)) do
+        content
+      end
+    end
+
+    def borderless
+      render OpPrimer::InsetBoxComponent.new(border: false) do
         "I am a text inside InsetBox Component."
       end
     end

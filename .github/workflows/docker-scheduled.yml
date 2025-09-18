@@ -1,0 +1,30 @@
+name: Docker / Scheduled builds
+
+on:
+  # build dev and release branches daily
+  schedule:
+    - cron: "20 2 * * *" # Daily at 02:20
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  generate-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate matrix
+        id: set-matrix
+        run: |
+          matrix=$(ruby script/gh/docker-tags.rb --matrix)
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+
+  build:
+    needs: generate-matrix
+    strategy:
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+    uses: ./.github/workflows/docker.yml
+    with:
+      branch: ${{ matrix.branch }}
+      tag: ${{ matrix.tag }}
+    secrets: inherit

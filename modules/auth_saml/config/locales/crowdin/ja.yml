@@ -106,7 +106,7 @@ ja:
       limit_self_registration: >
         有効にした場合、ユーザーは自己登録設定が許可されている場合にのみ、このプロバイダを使用して登録することができます。
       sp_entity_id: >
-        サービスプロバイダー(SP)のエンティティID。Audience と呼ばれることもあります。OpenProject インスタンスの一意のクライアント識別子です。
+        サービスプロバイダー(SP)のエンティティID。Audience と呼ばれることもあります。OpenProject サイトの一意のクライアント識別子です。
       idp_sso_service_url: >
         IDプロバイダのログイン・エンドポイントのURL。
       idp_slo_service_url: >
