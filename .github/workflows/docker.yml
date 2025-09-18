@@ -240,7 +240,7 @@ jobs:
       - name: Upload digest
         uses: actions/upload-artifact@v4
         with:
-          name: digests-${{ matrix.target }}-${{ matrix.digest }}
+          name: digests-${{ inputs.branch }}-${{ matrix.target }}-${{ matrix.digest }}
           path: /tmp/digests/*
           if-no-files-found: error
           retention-days: 1
@@ -256,13 +256,13 @@ jobs:
       - name: Merge digests
         uses: actions/upload-artifact/merge@v4
         with:
-          pattern: "digests-${{ matrix.target }}-*"
+          pattern: "digests-${{ inputs.branch }}-${{ matrix.target }}-${{ matrix.digest }}*"
           overwrite: true
-          name: "merged-digests-${{ matrix.target }}-${{ github.run_number }}-${{ github.run_attempt }}"
+          name: "merged-digests-${{ inputs.branch }}-${{ matrix.target }}-${{ github.run_number }}-${{ github.run_attempt }}"
       - name: Download digests
         uses: actions/download-artifact@v5
         with:
-          name: "merged-digests-${{ matrix.target }}-${{ github.run_number }}-${{ github.run_attempt }}"
+          name: "merged-digests-${{ inputs.branch }}-${{ matrix.target }}-${{ github.run_number }}-${{ github.run_attempt }}"
           path: /tmp/digests
       - name: Set suffix
         id: set_suffix
