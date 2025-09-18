@@ -5,7 +5,7 @@ import {
   BlockNoteSchema,
   defaultBlockSpecs,
 } from "@blocknote/core";
-import { OpenProjectApi } from "./extensions/open-project-api";
+import { OpenProjectApi } from "./extensions/openProjectApi";
 
 const secret = process.env.SECRET;
 if (!secret) {
@@ -60,10 +60,11 @@ const server = new Server({
       throw new Error('Unauthorized: Invalid token.');
     }
     console.log('Token payload:', tokenPayload);
-    if(documentName != tokenPayload.document_id) {
+    if(documentName != tokenPayload.document_name) {
       throw new Error('Unauthorized: Invalid token. This document cannot be accessed with this token.');
     }
     data.context.document_text = tokenPayload.document_text;
+    data.context.document_id = tokenPayload.document_id;
   },
 });
 

@@ -1,32 +1,7 @@
 import { Extension } from "@hocuspocus/server";
 import type { onLoadDocumentPayload, onStoreDocumentPayload } from "@hocuspocus/server";
+import type { Document, OpenProjectApiConfiguration, ApiResponseDocument } from "../types";
 
-interface ApiResponseDocument {
-  _embedded: {
-    attachments: { total: number, count: number },
-    project: { name: string },
-  },
-  _type: string,
-  id: string,
-  title: string,
-  description: {
-    format: string,
-    raw: string,
-    html: string,
-  },
-  createdAt: string,
-  updatedAt: string,
-}
-export interface Document {
-  id: string;
-  title: string;
-  content: string;
-}
-
-export interface OpenProjectApiConfiguration {
-  apiUrl: string;
-  token: string;
-}
 export class OpenProjectApi implements Extension {
   configuration: OpenProjectApiConfiguration = {
     apiUrl: "https://openproject.local",
@@ -44,15 +19,16 @@ export class OpenProjectApi implements Extension {
     try {
       // We need to pass on the context the actual documentId.
       // This needs to happen in OpenProject.
-      const documentId = data.context.documentId;
+      const { document_id } = data.context;
+
+      console.log(`ZZZZ making request to ${this.configuration.apiUrl}/api/v3/documents/${document_id}`);
 
       // Did not check the URL. Might be wrong
-      const response = await fetch(`${this.configuration.apiUrl}/api/v3/documents/${documentId}`, {
+      const response = await fetch(`${this.configuration.apiUrl}/api/v3/documents/${document_id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          // There is probably a better way than token based. Need to investigate.
-          "Authorization": `token ${data.context.token}`,
+          "Authorization": `Basic YXBpa2V5OjE4ZjY2NTQzYjU0ODAzZDkzYzc1ZGU1MjY0YzdjZWRlYjllNzU5MWEzOWE4NmZiYzhhOGFjZTJmOTVhMjA4N2E=`,
         },
       });
 
@@ -81,11 +57,8 @@ export class OpenProjectApi implements Extension {
     * an API call to the server, sending the binary data AND a text
     * data
     */
-  async onStoreDocument(data: onStoreDocumentPayload): Promise<void> {
-    setTimeout(
-      () => { console.log("Simulating storing document...", data); },
-      500
-    );
+  async onStoreDocument(_data: onStoreDocumentPayload): Promise<void> {
+    console.log("Storing document");
   }
 }
 

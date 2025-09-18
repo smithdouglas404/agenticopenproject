@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "main": "src/index.ts",
   "scripts": {
-    "start": "node src/index.ts",
+    "start": "node --import=tsx src/index.ts",
     "lint": "eslint . --ext .ts"
   },
   "repository": {
@@ -22,7 +22,8 @@
     "@blocknote/server-util": "^0.37.0",
     "@hocuspocus/extension-sqlite": "^3.2.3",
     "@hocuspocus/server": "^3.2.3",
-    "fast-jwt": "^6.0.2"
+    "fast-jwt": "^6.0.2",
+    "tsx": "^4.20.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.35.0",
