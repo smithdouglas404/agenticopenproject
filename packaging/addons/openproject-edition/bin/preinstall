@@ -37,15 +37,15 @@ if [ "$edition" = "bim" ]; then
 					apt-get update -qq
 					;;
 				esac
-				apt-get install -y dotnet-runtime-9.0
+				apt-get install -y dotnet-runtime-7.0
 			;;
 		"redhat")
 			case "$(wiz_fact "osversion")" in
 				9*)
-					dnf install -y dotnet-runtime-9.0
+					dnf install -y dotnet-runtime-7.0
 					;;
 				8*)
-					dnf install -y dotnet-runtime-9.0
+					dnf install -y dotnet-runtime-7.0
 					;;
 			esac
 			;;
@@ -73,7 +73,7 @@ if [ "$edition" = "bim" ]; then
 	fi
 
 	if ! ${CLI} run which xeokit-metadata &>/dev/null ||
-	   ! echo "f960fb98106280223a664d176daaeb7ca7904e6f  $(${CLI} run which xeokit-metadata)" | sha1sum -c - ; then
+	   ! echo "542c0d55a0a1d407b83910ab1d59b640f3d49a04  $(${CLI} run which xeokit-metadata)" | sha1sum -c - ; then
 		echo "Installing xeokit-metadata..."
 		cp "$APP_HOME/vendor/bim/xeokit-metadata-linux-x64.tar.gz" .
 		tar -zxf xeokit-metadata-linux-x64.tar.gz

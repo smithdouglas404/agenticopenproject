@@ -14,7 +14,7 @@ fi
 
 # Specifics for BIM edition (Ubuntu)
 apt-get update -qq
-apt-get install -y dotnet-runtime-9.0 wget unzip
+apt-get install -y dotnet-runtime-7.0 wget unzip
 
 tmpdir=$(mktemp -d)
 cd $tmpdir
@@ -29,7 +29,7 @@ wget --quiet https://s3.amazonaws.com/ifcopenshell-builds/IfcConvert-v0.8.0-0d3c
 unzip -q IfcConvert-v0.8.0-0d3c73d-linux64.zip
 mv IfcConvert "/usr/local/bin/IfcConvert"
 
-wget --quiet https://github.com/bimspot/xeokit-metadata/releases/download/1.0.1/xeokit-metadata-linux-x64.tar.gz
+wget --quiet https://github.com/bimspot/xeokit-metadata/releases/download/1.0.2/xeokit-metadata-linux-x64.tar.gz
 tar -zxvf xeokit-metadata-linux-x64.tar.gz
 chmod +x xeokit-metadata-linux-x64/xeokit-metadata
 cp -rT xeokit-metadata-linux-x64 "/usr/lib/xeokit-metadata"

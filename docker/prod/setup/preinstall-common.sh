@@ -67,7 +67,7 @@ if [ ! "$BIM_SUPPORT" = "false" ]; then
 	rm /tmp/packages-microsoft-prod.deb
 
 	apt-get update -qq
-	apt-get install -y dotnet-runtime-9.0 # required for BIM edition
+	apt-get install -y dotnet-runtime-7.0 # required for BIM edition
 
 	tmpdir=$(mktemp -d)
 	cd $tmpdir
@@ -85,7 +85,7 @@ if [ ! "$BIM_SUPPORT" = "false" ]; then
 	unzip -q IfcConvert-v0.8.0-0d3c73d-linux64.zip
 	mv IfcConvert "/usr/local/bin/IfcConvert"
 
-	wget --quiet https://github.com/bimspot/xeokit-metadata/releases/download/1.0.1/xeokit-metadata-linux-x64.tar.gz
+	wget --quiet https://github.com/bimspot/xeokit-metadata/releases/download/1.0.2/xeokit-metadata-linux-x64.tar.gz
 	tar -zxvf xeokit-metadata-linux-x64.tar.gz
 	chmod +x xeokit-metadata-linux-x64/xeokit-metadata
 	cp -r xeokit-metadata-linux-x64/ "/usr/lib/xeokit-metadata"
