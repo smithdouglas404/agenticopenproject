@@ -92,6 +92,8 @@ end
 def write_to_github_output(key, value)
   return unless ENV["GITHUB_OUTPUT"]
 
+  puts "Writing #{key} to GitHub output..."
+
   if value.nil? || value.strip.empty?
     puts "Error: #{key} output is empty"
     exit 1
