@@ -50,12 +50,11 @@ module Overviews
       end
 
       def calculation_error?
-        @project_custom_field.field_format_calculated_value? &&
-          @project_custom_field.calculated_value_errors.where(project: @project).any?
+        @project_custom_field.calculation_error(project: @project).present?
       end
 
       def render_calculation_error
-        errors = @project_custom_field.calculated_value_errors.where(project: @project)
+        error = @project_custom_field.calculation_error(project: @project)
 
         render(Primer::OpenProject::FlexLayout.new(align_items: :flex_start,
                                                    data: {
@@ -66,7 +65,7 @@ module Overviews
           end
           container.with_column(ml: 2) do
             render Primer::Beta::Text.new(color: :danger) do
-              errors.map(&:error_message).join(" ")
+              error&.error_message
             end
           end
         end

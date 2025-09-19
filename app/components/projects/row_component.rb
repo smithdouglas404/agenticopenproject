@@ -94,16 +94,14 @@ module Projects
       elsif custom_value.is_a?(Array)
         safe_join(Array(custom_value).compact_blank, ", ")
       elsif cf.calculated_value?
-        calculated_value_or_error(cf, custom_value)
+        render_calculated_value(cf, custom_value)
       else
         custom_value
       end
     end
 
-    def calculated_value_or_error(calculated_value, custom_value)
-      errors = calculated_value.calculated_value_errors.where(project:)
-
-      if errors.any?
+    def render_calculated_value(calculated_value, custom_value)
+      if (error = calculated_value.calculation_error(project:))
         render(Primer::Alpha::Dialog.new(title: I18n.t("calculated_values.error_dialog.title"),
                                          data: {
                                            test_selector: "calculated-value-error-dialog-#{calculated_value.id}"
@@ -112,7 +110,7 @@ module Projects
                                   "aria-label": I18n.t("calculated_values.error_dialog.title"),
                                   data: { test_selector: "calculated-value-error-btn-#{calculated_value.id}" },
                                   scheme: :invisible)
-          dialog.with_body { errors.map(&:error_message).join(" ") }
+          dialog.with_body { error.error_message }
         end
       else
         custom_value
