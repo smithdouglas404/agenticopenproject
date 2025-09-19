@@ -88,35 +88,38 @@ module ActsAsCustomizable::CalculatedValue
       cf_id.sub("cf_", "").to_i
     end
 
-    # FIXME: refactor this method to reduce complexity
     def refresh_calculation_errors!(given_cfs, enabled_ids, calculated_fields, result)
       return unless is_a?(Project)
 
       remove_calculated_value_errors(calculated_fields.map(&:id))
+      create_new_calculated_value_errors(given_cfs, enabled_ids, calculated_fields, result)
+    end
 
-      failed_calculations = result.filter do |_, calculation_result|
-        calculation_result.nil?
+    def create_new_calculated_value_errors(given_cfs, enabled_ids, calculated_fields, result)
+      unsuccessfully_calculated_cfs = result.filter_map do |cf_id, calculation|
+        to_id(cf_id) if calculation.nil?
       end
 
-      unsuccessfully_calculated_cfs = failed_calculations.map { |cf_id, _| to_id(cf_id) }
-
       cvs_with_errors = []
+      calculated_fields_without_value = calculated_fields.filter { unsuccessfully_calculated_cfs.include?(it.id) }
+
       if unsuccessfully_calculated_cfs.any?
-        # There are two reasons for unsuccessful calculations here.
+        # There are multiple reasons why a calculation could not complete:
         # 1. The value of a referenced custom field is missing (nil)
         cvs_with_errors.concat(create_errors_for_missing_attributes(given_cfs, calculated_fields))
 
         # 2. A referenced custom field is disabled (not present in the enabled_ids list)
-        unsuccessful_cvs = calculated_fields.filter { unsuccessfully_calculated_cfs.include?(it.id) }
-        disabled_errors = create_errors_for_disabled_attributes(unsuccessful_cvs, enabled_ids)
+        disabled_errors = create_errors_for_disabled_attributes(calculated_fields_without_value, enabled_ids)
         cvs_with_errors.concat(disabled_errors)
       end
 
-      # For missing calculation results without obvious other errors, we create a generic mathematical error.
-      unsuccessfully_calculated_cfs.each do |cf_id|
-        next if cvs_with_errors.include?(cf_id)
+      # When no value could be calculated, but all required variables in the formula are present,
+      # we must assume that a mathematical error occurred:
+      calculated_fields_without_value.each do |cf|
+        # Skip if we already created an error for this calculated value
+        next if cvs_with_errors.include?(cf.id)
 
-        create_calculated_value_error(cf_id, "ERROR_MATHEMATICAL")
+        create_calculated_value_error(cf.id, "ERROR_MATHEMATICAL")
       end
     end
 
