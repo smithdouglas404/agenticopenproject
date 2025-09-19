@@ -1060,6 +1060,8 @@ en:
         help_text: "Help text"
       auth_provider:
         scim_clients: "SCIM clients"
+      calculated_value_error:
+        error_code: "Error code"
       capability:
         context: "Context"
       changeset:
