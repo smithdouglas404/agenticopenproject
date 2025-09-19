@@ -115,6 +115,10 @@ module ActsAsCustomizable::CalculatedValue
 
       # When no value could be calculated, but all required variables in the formula are present,
       # we must assume that a mathematical error occurred:
+      create_mathematical_errors(calculated_fields_without_value, cvs_with_errors)
+    end
+
+    def create_mathematical_errors(calculated_fields_without_value, cvs_with_errors = [])
       calculated_fields_without_value.each do |cf|
         # Skip if we already created an error for this calculated value
         next if cvs_with_errors.include?(cf.id)
