@@ -97,9 +97,11 @@ module Projects
         errors = cf.calculated_value_errors.where(project:)
 
         if errors.any?
-          render(Primer::Alpha::Dialog.new(title: I18n.t("calculated_values.error_dialog.title"))) do |dialog|
+          render(Primer::Alpha::Dialog.new(title: I18n.t("calculated_values.error_dialog.title"),
+                                           data: { test_selector: "calculated-value-error-dialog-#{cf.id}" })) do |dialog|
             dialog.with_show_button(icon: "alert-fill",
                                     "aria-label": I18n.t("calculated_values.error_dialog.title"),
+                                    data: { test_selector: "calculated-value-error-btn-#{cf.id}" },
                                     scheme: :invisible)
             dialog.with_body { errors.map(&:error_message).join(" ") }
           end
