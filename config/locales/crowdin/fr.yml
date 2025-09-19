@@ -875,7 +875,7 @@ fr:
       parent_description: "Fait du lot de travaux lié un parent du lot de travaux actuel (enfant)"
       label_closest: "Le plus proche"
       label_blocks_singular: "bloque"
-      label_blocks_plural: "blocages"
+      label_blocks_plural: "bloquent"
       blocks_description: "Le lot de travaux associé ne peut pas être fermé avant que celui-ci soit fermé en premier"
       label_blocked_singular: "bloqué par"
       label_blocked_plural: "bloqués par"
