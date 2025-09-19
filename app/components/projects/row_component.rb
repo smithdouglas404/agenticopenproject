@@ -78,7 +78,7 @@ module Projects
       end
     end
 
-    def custom_field_column(column)
+    def custom_field_column(column) # rubocop:disable Metrics/AbcSize
       return nil unless user_can_view_project?
 
       cf = column.custom_field
@@ -94,19 +94,25 @@ module Projects
       elsif custom_value.is_a?(Array)
         safe_join(Array(custom_value).compact_blank, ", ")
       elsif cf.calculated_value?
-        errors = cf.calculated_value_errors.where(project:)
+        calculated_value_or_error(cf, custom_value)
+      else
+        custom_value
+      end
+    end
 
-        if errors.any?
-          render(Primer::Alpha::Dialog.new(title: I18n.t("calculated_values.error_dialog.title"),
-                                           data: { test_selector: "calculated-value-error-dialog-#{cf.id}" })) do |dialog|
-            dialog.with_show_button(icon: "alert-fill",
-                                    "aria-label": I18n.t("calculated_values.error_dialog.title"),
-                                    data: { test_selector: "calculated-value-error-btn-#{cf.id}" },
-                                    scheme: :invisible)
-            dialog.with_body { errors.map(&:error_message).join(" ") }
-          end
-        else
-          custom_value
+    def calculated_value_or_error(calculated_value, custom_value)
+      errors = calculated_value.calculated_value_errors.where(project:)
+
+      if errors.any?
+        render(Primer::Alpha::Dialog.new(title: I18n.t("calculated_values.error_dialog.title"),
+                                         data: {
+                                           test_selector: "calculated-value-error-dialog-#{calculated_value.id}"
+                                         })) do |dialog|
+          dialog.with_show_button(icon: "alert-fill",
+                                  "aria-label": I18n.t("calculated_values.error_dialog.title"),
+                                  data: { test_selector: "calculated-value-error-btn-#{calculated_value.id}" },
+                                  scheme: :invisible)
+          dialog.with_body { errors.map(&:error_message).join(" ") }
         end
       else
         custom_value
