@@ -88,6 +88,7 @@ module ActsAsCustomizable::CalculatedValue
       cf_id.sub("cf_", "").to_i
     end
 
+    # FIXME: refactor this method to reduce complexity
     def refresh_calculation_errors!(given_cfs, enabled_ids, calculated_fields, result)
       return unless is_a?(Project)
 
@@ -105,12 +106,13 @@ module ActsAsCustomizable::CalculatedValue
         # 1. The value of a referenced custom field is missing (nil)
         cvs_with_errors.concat(create_errors_for_missing_attributes(given_cfs, calculated_fields))
 
-        # 2. A referenced custom field disabled (not present in the enabled_ids list)
+        # 2. A referenced custom field is disabled (not present in the enabled_ids list)
         unsuccessful_cvs = calculated_fields.filter { unsuccessfully_calculated_cfs.include?(it.id) }
         disabled_errors = create_errors_for_disabled_attributes(unsuccessful_cvs, enabled_ids)
         cvs_with_errors.concat(disabled_errors)
       end
 
+      # For missing calculation results without obvious other errors, we create a generic mathematical error.
       unsuccessfully_calculated_cfs.each do |cf_id|
         next if cvs_with_errors.include?(cf_id)
 
@@ -122,6 +124,7 @@ module ActsAsCustomizable::CalculatedValue
       CalculatedValueError.create(project: self, custom_field_id:, error_code:, missing_custom_field_ids:)
     end
 
+    # FIXME: refactor this method to reduce complexity
     def create_errors_for_missing_attributes(referenced_values, calculated_fields)
       errors_created = []
 
