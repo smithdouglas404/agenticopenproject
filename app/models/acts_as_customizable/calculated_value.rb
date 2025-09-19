@@ -124,30 +124,15 @@ module ActsAsCustomizable::CalculatedValue
       CalculatedValueError.create(project: self, custom_field_id:, error_code:, missing_custom_field_ids:)
     end
 
-    # FIXME: refactor this method to reduce complexity
     def create_errors_for_missing_attributes(referenced_values, calculated_fields)
       errors_created = []
 
       cf_ids_with_missing_values = referenced_values.filter_map { |k, v| to_id(k) if v.nil? }
 
       calculated_fields.each do |cv|
-        missing_values_for_this_cv = cv.formula_referenced_custom_field_ids & cf_ids_with_missing_values
-
-        if missing_values_for_this_cv.any?
-          # This hits if a directly used field is `nil`
-          if create_calculated_value_error(cv.id, "ERROR_MISSING_VALUE", missing_values_for_this_cv)
-            errors_created << cv.id
-          end
-        else
-          indirectly_missing = cv.formula_referenced_custom_field_ids.filter do |ref_id|
-            calculated_fields.any? { it.id == ref_id }
-          end
-
-          next if indirectly_missing.empty?
-
-          if create_calculated_value_error(cv.id, "ERROR_MISSING_VALUE", indirectly_missing)
-            errors_created << cv.id
-          end
+        if handle_missing_value_error(cv, cf_ids_with_missing_values) ||
+           handle_indirectly_missing_value_error(cv, calculated_fields)
+          errors_created << cv.id
         end
       end
 
@@ -171,6 +156,29 @@ module ActsAsCustomizable::CalculatedValue
       return if custom_field_ids.empty?
 
       CalculatedValueError.where(project: self, custom_field_id: custom_field_ids).delete_all
+    end
+
+    # Creates an error if a value that is directly required for the calculation is missing.
+    # This is true for example for a formula like `2 + {{cf_12}}` where `cf_12` has no value set.
+    def handle_missing_value_error(calculated_value, cf_ids_with_missing_values)
+      missing_values_for_this_cv = calculated_value.formula_referenced_custom_field_ids & cf_ids_with_missing_values
+
+      if missing_values_for_this_cv.any?
+        create_calculated_value_error(calculated_value.id, "ERROR_MISSING_VALUE", missing_values_for_this_cv)
+      end
+    end
+
+    # Creates an error if a value that is indirectly required for the calculation is missing.
+    # This is true for example for a formula like `2 + {{cf_12}}` where `cf_12` is a calculated value itself
+    # that cannot be calculated because it references a custom field with no value set.
+    def handle_indirectly_missing_value_error(calculated_value, calculated_fields)
+      indirectly_missing = calculated_value.formula_referenced_custom_field_ids.filter do |ref_id|
+        calculated_fields.any? { it.id == ref_id }
+      end
+
+      return false if indirectly_missing.empty?
+
+      create_calculated_value_error(calculated_value.id, "ERROR_MISSING_VALUE", indirectly_missing)
     end
   end
 end
