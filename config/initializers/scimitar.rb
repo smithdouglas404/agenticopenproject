@@ -36,7 +36,7 @@ Rails.application.config.to_prepare do
   Scimitar.engine_configuration = Scimitar::EngineConfiguration.new(
     custom_authenticator: lambda do
       if !EnterpriseToken.allows_to?(:scim_api)
-        plan = EnterpriseToken.get_feature_plan(:scim_api)
+        plan = OpenProject::Token.lowest_plan_for(:scim_api)
         error = Scimitar::ErrorResponse.new(
           status: 403,
           detail: "This endpoint requires an enterprise subscription of at least #{plan}"
