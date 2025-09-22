@@ -26,8 +26,24 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-@import mixins
+.homescreen--links--item
+  flex: 1
+  display: flex
+  flex-direction: column
+  row-gap: var(--base-size-8)
+  align-items: center
+  color: var(--control-iconColor-rest)
 
-.controller-homescreen .widget-boxes
-  .widget-box
-    box-shadow: none
+  svg
+    height: 3rem
+    width: 3rem
+
+  &:hover
+    text-decoration: none
+    color: var(--accent-color)
+
+@media screen and (max-width: $breakpoint-sm)
+  .homescreen--links--item
+    flex: auto
+    margin: 20px 0
+    width: 50%

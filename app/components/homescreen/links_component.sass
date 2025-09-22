@@ -26,8 +26,14 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-@import mixins
+.homescreen--links
+  margin: 10px 0
+  display: flex
+  padding: 20px 15%
+  align-items: center
+  justify-content: center
 
-.controller-homescreen .widget-boxes
-  .widget-box
-    box-shadow: none
+@media screen and (max-width: $breakpoint-sm)
+  .homescreen--links
+    padding: 20px
+    flex-wrap: wrap

@@ -32,6 +32,6 @@ See COPYRIGHT and LICENSE files for more details.
             target: "_blank",
             aria_label: title,
             rel: "noopener" do %>
-  <%= op_icon(link[:icon]) %>
+  <%= render(Primer::Beta::Octicon.new(icon: link[:icon], size: :medium)) %>
   <%= title %>
 <% end %>
