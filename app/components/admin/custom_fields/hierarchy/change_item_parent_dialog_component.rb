@@ -48,17 +48,50 @@ module Admin
 
         def form_arguments
           {
-            form_id:,
+            id: form_id,
             url: change_parent_custom_field_item_path(custom_field_id: @custom_field.id, id: @hierarchy_item.id),
             model: form_model,
             method: :post
           }
         end
 
+        def hierarchy_items
+          hashed_hierarchy = @custom_field.hierarchy_root.hash_tree
+          hashed_hierarchy.keys.first.label = @custom_field.name
+
+          hashed_hierarchy
+        end
+
+        def add_sub_tree(tree, hierarchy_hash)
+          hierarchy_hash.each do |item, child_hash|
+            if child_hash.empty?
+              tree.with_leaf(**item_options(item))
+            else
+              expanded = current?(item) || child_hash.any? { |child, _| current?(child) }
+
+              tree.with_sub_tree(expanded:, **item_options(item)) do |sub_tree|
+                add_sub_tree(sub_tree, child_hash)
+              end
+            end
+          end
+        end
+
         private
 
         def form_model
-          CustomField::Hierarchy::Forms::NewParentFormModel.new(new_parent: nil)
+          CustomField::Hierarchy::Forms::NewParentFormModel.new(new_parent: [])
+        end
+
+        def item_options(item)
+          {
+            label: item.label,
+            current: current?(item),
+            value: item.id
+          }
+        end
+
+        def current?(item)
+          item.id == @hierarchy_item.id
         end
       end
     end
