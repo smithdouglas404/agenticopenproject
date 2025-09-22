@@ -27,58 +27,57 @@
 //++
 
 import { Observable } from 'rxjs';
-import { ID } from '@datorama/akita';
-import { Injectable } from '@angular/core';
+import { map, share } from 'rxjs/operators';
 import { HttpClient, HttpEvent } from '@angular/common/http';
 
-import { IUploadFile, OpUploadService } from 'core-app/core/upload/upload.service';
+import { IUploadFile } from 'core-app/core/upload/upload.service';
+import { EXTERNAL_REQUEST_HEADER } from 'core-app/features/hal/http/openproject-header-interceptor';
 import { IUploadStrategy } from 'core-app/shared/components/storages/upload/upload-strategy';
-import { NextcloudUploadStrategy } from 'core-app/shared/components/storages/upload/nextcloud-upload.strategy';
-import { nextcloud, oneDrive, sharepoint } from 'core-app/shared/components/storages/storages-constants.const';
-import { OneDriveUploadStrategy } from 'core-app/shared/components/storages/upload/one-drive-upload.strategy';
-import { SharepointUploadStrategy } from 'core-app/shared/components/storages/upload/sharepoint-upload.strategy';
+import convertHttpEvent from 'core-app/core/upload/convert-http-event';
 
-export interface IStorageFileUploadResponse {
-  id:ID;
+export interface SharepointFileUploadResponse {
+  id:string;
   name:string;
-  mimeType:string;
+  file:{ mimeType:string };
   size:number;
 }
 
-@Injectable()
-export class StorageUploadService extends OpUploadService {
-  private uploadStrategy:IUploadStrategy;
+export class SharepointUploadStrategy implements IUploadStrategy {
+  // eslint-disable-next-line no-unused-vars
+  constructor(private readonly http:HttpClient) { }
 
-  constructor(
-    private readonly http:HttpClient,
-  ) {
-    super();
-  }
-
-  public upload<T>(
+  public execute<T>(
     href:string,
     uploadFiles:IUploadFile[],
   ):Observable<HttpEvent<T>>[] {
-    if (!this.uploadStrategy) {
-      throw new Error('missing strategy');
-    }
-
-    return this.uploadStrategy.execute(href, uploadFiles);
+    return uploadFiles.map((file) => this.uploadSingle(href, file));
   }
 
-  public setUploadStrategy(storageType:string):void {
-    switch (storageType) {
-      case nextcloud:
-        this.uploadStrategy = new NextcloudUploadStrategy(this.http);
-        break;
-      case oneDrive:
-        this.uploadStrategy = new OneDriveUploadStrategy(this.http);
-        break;
-      case sharepoint:
-        this.uploadStrategy = new SharepointUploadStrategy(this.http);
-        break;
-      default:
-        throw new Error('unknown storage type');
-    }
+  private uploadSingle<T>(href:string, uploadFile:IUploadFile):Observable<HttpEvent<T>> {
+    const contentRangeHeader = `bytes 0-${uploadFile.file.size - 1}/${uploadFile.file.size}`;
+    const driveId = (uploadFile.location ?? '').split(':')[0];
+    return this.http.request<SharepointFileUploadResponse>(
+      'put',
+      href,
+      {
+        body: uploadFile.file,
+        headers: {
+          [EXTERNAL_REQUEST_HEADER]: 'true',
+          'Content-Range': contentRangeHeader,
+        },
+        observe: 'events',
+        reportProgress: true,
+        responseType: 'json',
+      },
+    ).pipe(
+      share(),
+      map((event) =>
+        convertHttpEvent(event, (responseBody) => ({
+          id: `${ driveId }:${ responseBody.id }`,
+          name: responseBody.name,
+          size: responseBody.size,
+          mimeType: responseBody.file.mimeType,
+        } as T))),
+    );
   }
 }
