@@ -32,6 +32,7 @@ module Overviews
   module Widgets
     class ProjectStatusComponent < Grids::WidgetComponent
       include ApplicationHelper
+      include OpTurbo::Streamable
 
       param :project
 

@@ -29,28 +29,30 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%=
   widget_wrapper do
-    flex_layout do |flex|
-      flex.with_row(mb: 3) do
-        render(Projects::StatusButtonComponent.new(project:, user: current_user, hide_help_text: true))
-      end
+    component_wrapper do
+      flex_layout do |flex|
+        flex.with_row(mb: 3) do
+          render(Projects::StatusButtonComponent.new(project:, user: current_user, hide_help_text: true))
+        end
 
-      flex.with_row do
-        if edit_enabled?
-          settings_primer_form_with(
-            model: project,
-            url: project_widgets_project_status_path(project),
-            method: :patch,
-            data: { turbo: true }
-          ) do |f|
-            render(
-              Primer::Forms::FormList.new(
-                Projects::Settings::StatusForm.new(f, hide_label: true),
-                Projects::Settings::Submit.new(f, label: I18n.t("projects.settings.button_update_status_description"))
+        flex.with_row do
+          if edit_enabled?
+            settings_primer_form_with(
+              model: project,
+              url: project_widgets_project_status_path(project),
+              method: :patch,
+              data: { turbo: true }
+            ) do |f|
+              render(
+                Primer::Forms::FormList.new(
+                  Projects::Settings::StatusForm.new(f, hide_label: true),
+                  Projects::Settings::Submit.new(f, label: I18n.t("projects.settings.button_update_status_description"))
+                )
               )
-            )
+            end
+          else
+            format_text(project, :status_explanation)
           end
-        else
-          format_text(project, :status_explanation)
         end
       end
     end
