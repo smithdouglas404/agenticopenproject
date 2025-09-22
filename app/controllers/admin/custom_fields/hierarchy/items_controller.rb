@@ -103,14 +103,14 @@ module Admin
           redirect_to(custom_field_item_path(@custom_field, @active_item.parent), status: :see_other)
         end
 
-        def change_parent # rubocop:disable Metrics/AbcSize
-          input = params.require(:custom_field_hierarchy_forms_new_parent_form_model).require(:new_parent)
-
-          parse_parent_input(input).bind do |new_parent|
+        def change_parent
+          result = parse_parent_input(new_parent_params).bind do |new_parent|
             validate_new_parent(new_parent).bind do
               item_service.move_item(item: @active_item, new_parent:)
             end
-          end.either(
+          end
+
+          result.either(
             ->(result) do
               redirect_to(
                 custom_field_item_path(@custom_field, result.parent),
@@ -162,6 +162,10 @@ module Admin
           input
         end
 
+        def new_parent_params
+          params.require(:custom_field_hierarchy_forms_new_parent_form_model).require(:new_parent)
+        end
+
         def create_contract
           case @custom_field.field_format
           when "hierarchy"
@@ -203,16 +207,21 @@ module Admin
           case new_parent_input
           in [new_parent]
             input = MultiJson.load(new_parent, symbolize_keys: true)[:value]
-            new_parent = CustomField::Hierarchy::Item.including_children.find(input)
-            Success(new_parent)
+            new_parent = CustomField::Hierarchy::Item.including_children.find_by(id: input)
+
+            if new_parent.present?
+              Success(new_parent)
+            else
+              Failure("Cannot find parent with id: #{input}")
+            end
           else
             Failure("Invalid input: #{new_parent_input}")
           end
         end
 
         def validate_new_parent(new_parent)
-          return Failure(I18n.t(:notice_change_parent_same_target)) if @active_item.parent.id == new_parent.id
-          return Failure(I18n.t(:notice_change_parent_to_self)) if @active_item.id == new_parent.id
+          return Failure("Parent must not be the same as before.") if @active_item.parent.id == new_parent.id
+          return Failure("Parent must not be the current item.") if @active_item.id == new_parent.id
 
           Success()
         end

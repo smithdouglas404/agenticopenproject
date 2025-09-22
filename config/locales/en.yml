@@ -3749,8 +3749,6 @@ en:
   notice_auth_stage_wrong_stage: "Expected to finish authentication stage '%{expected}', but '%{actual}' returned."
   notice_auth_stage_error: "Authentication stage '%{stage}' failed."
   notice_can_t_change_password: "This account uses an external authentication source. Impossible to change the password."
-  notice_change_parent_same_target: "The selected item is already the parent."
-  notice_change_parent_to_self: "Cannot change parent to itself."
   notice_custom_options_deleted: "Option '%{option_value}' and its %{num_deleted} occurrences were deleted."
   notice_email_error: "An error occurred while sending mail (%{value})"
   notice_email_sent: "An email was sent to %{value}"

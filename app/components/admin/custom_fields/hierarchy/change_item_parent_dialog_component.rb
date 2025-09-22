@@ -57,7 +57,9 @@ module Admin
 
         def hierarchy_items
           hashed_hierarchy = @custom_field.hierarchy_root.hash_tree
-          hashed_hierarchy.nil? ? {} : hashed_hierarchy.first[1]
+          hashed_hierarchy.keys.first.label = @custom_field.name
+
+          hashed_hierarchy
         end
 
         def add_sub_tree(tree, hierarchy_hash)
@@ -67,7 +69,7 @@ module Admin
             else
               expanded = current?(item) || child_hash.any? { |child, _| current?(child) }
 
-              tree.with_sub_tree(expanded: expanded, **item_options(item)) do |sub_tree|
+              tree.with_sub_tree(expanded:, **item_options(item)) do |sub_tree|
                 add_sub_tree(sub_tree, child_hash)
               end
             end
