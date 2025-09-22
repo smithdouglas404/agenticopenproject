@@ -42,6 +42,7 @@ RSpec.describe Meetings::IcalendarBuilder, "TimeZones",
   end
 
   let(:builder) { described_class.new(user: user, timezone: tz_europe_berlin) }
+  let(:parsed) { Icalendar::Calendar.parse(builder.to_ical).first }
 
   context "with a recurring meeting scheduled in UTC" do
     let!(:recurring_meeting) do
@@ -60,11 +61,158 @@ RSpec.describe Meetings::IcalendarBuilder, "TimeZones",
       builder.add_series_event(recurring_meeting: recurring_meeting)
     end
 
-    it "does something" do
-      puts builder.to_ical
+    it "generates all meeting occurences in UTC, starting at 8:00 UTC" do # rubocop:disable RSpec/ExampleLength
+      event = parsed.events.first
+
+      rrule_value = event.rrule.first.value_ical
+      ics_schedule = IceCube::Schedule.new(event.dtstart.to_time)
+      ics_schedule.add_recurrence_rule(IceCube::Rule.from_ical(rrule_value))
+
+      actual_start_times = ics_schedule.all_occurrences.map(&:to_time)
+
+      expected_start_times = [
+        tz_utc.local(2025, 1, 16, 8, 0, 0),
+        tz_utc.local(2025, 1, 23, 8, 0, 0),
+        tz_utc.local(2025, 1, 30, 8, 0, 0),
+        tz_utc.local(2025, 2, 6, 8, 0, 0),
+        tz_utc.local(2025, 2, 13, 8, 0, 0),
+        tz_utc.local(2025, 2, 20, 8, 0, 0),
+        tz_utc.local(2025, 2, 27, 8, 0, 0),
+        tz_utc.local(2025, 3, 6, 8, 0, 0),
+        tz_utc.local(2025, 3, 13, 8, 0, 0),
+        tz_utc.local(2025, 3, 20, 8, 0, 0),
+        tz_utc.local(2025, 3, 27, 8, 0, 0),
+        tz_utc.local(2025, 4, 3, 8, 0, 0), # from here on there's DST in Berlin
+        tz_utc.local(2025, 4, 10, 8, 0, 0),
+        tz_utc.local(2025, 4, 17, 8, 0, 0),
+        tz_utc.local(2025, 4, 24, 8, 0, 0),
+        tz_utc.local(2025, 5, 1, 8, 0, 0),
+        tz_utc.local(2025, 5, 8, 8, 0, 0),
+        tz_utc.local(2025, 5, 15, 8, 0, 0),
+        tz_utc.local(2025, 5, 22, 8, 0, 0),
+        tz_utc.local(2025, 5, 29, 8, 0, 0),
+        tz_utc.local(2025, 6, 5, 8, 0, 0),
+        tz_utc.local(2025, 6, 12, 8, 0, 0),
+        tz_utc.local(2025, 6, 19, 8, 0, 0),
+        tz_utc.local(2025, 6, 26, 8, 0, 0),
+        tz_utc.local(2025, 7, 3, 8, 0, 0),
+        tz_utc.local(2025, 7, 10, 8, 0, 0),
+        tz_utc.local(2025, 7, 17, 8, 0, 0),
+        tz_utc.local(2025, 7, 24, 8, 0, 0),
+        tz_utc.local(2025, 7, 31, 8, 0, 0),
+        tz_utc.local(2025, 8, 7, 8, 0, 0),
+        tz_utc.local(2025, 8, 14, 8, 0, 0),
+        tz_utc.local(2025, 8, 21, 8, 0, 0),
+        tz_utc.local(2025, 8, 28, 8, 0, 0),
+        tz_utc.local(2025, 9, 4, 8, 0, 0),
+        tz_utc.local(2025, 9, 11, 8, 0, 0),
+        tz_utc.local(2025, 9, 18, 8, 0, 0),
+        tz_utc.local(2025, 9, 25, 8, 0, 0),
+        tz_utc.local(2025, 10, 2, 8, 0, 0),
+        tz_utc.local(2025, 10, 9, 8, 0, 0),
+        tz_utc.local(2025, 10, 16, 8, 0, 0),
+        tz_utc.local(2025, 10, 23, 8, 0, 0),
+        tz_utc.local(2025, 10, 30, 8, 0, 0), # from here on there's no DST in Berlin
+        tz_utc.local(2025, 11, 6, 8, 0, 0),
+        tz_utc.local(2025, 11, 13, 8, 0, 0),
+        tz_utc.local(2025, 11, 20, 8, 0, 0),
+        tz_utc.local(2025, 11, 27, 8, 0, 0),
+        tz_utc.local(2025, 12, 4, 8, 0, 0),
+        tz_utc.local(2025, 12, 11, 8, 0, 0),
+        tz_utc.local(2025, 12, 18, 8, 0, 0),
+        tz_utc.local(2025, 12, 25, 8, 0, 0),
+        tz_utc.local(2026, 1, 1, 8, 0, 0),
+        tz_utc.local(2026, 1, 8, 8, 0, 0),
+        tz_utc.local(2026, 1, 15, 8, 0, 0)
+      ]
+
+      expect(actual_start_times).to match_array(expected_start_times)
     end
   end
 
   context "with a recurring meeting scheduled in Europe/Berlin" do
+    let!(:recurring_meeting) do
+      create(:recurring_meeting,
+             project: project,
+             start_time: tz_europe_berlin.local(2025, 1, 16, 8, 0, 0),
+             duration: 1.0,
+             end_date: tz_europe_berlin.local(2026, 1, 16, 0, 0, 0),
+             frequency: "weekly",
+             end_after: "specific_date",
+             uid: "OpenProject--meeting-series-31",
+             time_zone: tz_europe_berlin.name)
+    end
+
+    before do
+      builder.add_series_event(recurring_meeting: recurring_meeting)
+    end
+
+    it "generates all meeting occurences in Europe/Berlin, starting at 8:00 CET/CEST" do # rubocop:disable RSpec/ExampleLength
+      event = parsed.events.first
+
+      rrule_value = event.rrule.first.value_ical
+      ics_schedule = IceCube::Schedule.new(event.dtstart.to_time)
+      ics_schedule.add_recurrence_rule(IceCube::Rule.from_ical(rrule_value))
+
+      actual_start_times = ics_schedule.all_occurrences.map(&:to_time)
+
+      expected_start_times = [
+        tz_europe_berlin.local(2025, 1, 16, 8, 0, 0),
+        tz_europe_berlin.local(2025, 1, 23, 8, 0, 0),
+        tz_europe_berlin.local(2025, 1, 30, 8, 0, 0),
+        tz_europe_berlin.local(2025, 2, 6, 8, 0, 0),
+        tz_europe_berlin.local(2025, 2, 13, 8, 0, 0),
+        tz_europe_berlin.local(2025, 2, 20, 8, 0, 0),
+        tz_europe_berlin.local(2025, 2, 27, 8, 0, 0),
+        tz_europe_berlin.local(2025, 3, 6, 8, 0, 0),
+        tz_europe_berlin.local(2025, 3, 13, 8, 0, 0),
+        tz_europe_berlin.local(2025, 3, 20, 8, 0, 0),
+        tz_europe_berlin.local(2025, 3, 27, 8, 0, 0),
+        tz_europe_berlin.local(2025, 4, 3, 8, 0, 0), # from here on there's DST in Berlin
+        tz_europe_berlin.local(2025, 4, 10, 8, 0, 0),
+        tz_europe_berlin.local(2025, 4, 17, 8, 0, 0),
+        tz_europe_berlin.local(2025, 4, 24, 8, 0, 0),
+        tz_europe_berlin.local(2025, 5, 1, 8, 0, 0),
+        tz_europe_berlin.local(2025, 5, 8, 8, 0, 0),
+        tz_europe_berlin.local(2025, 5, 15, 8, 0, 0),
+        tz_europe_berlin.local(2025, 5, 22, 8, 0, 0),
+        tz_europe_berlin.local(2025, 5, 29, 8, 0, 0),
+        tz_europe_berlin.local(2025, 6, 5, 8, 0, 0),
+        tz_europe_berlin.local(2025, 6, 12, 8, 0, 0),
+        tz_europe_berlin.local(2025, 6, 19, 8, 0, 0),
+        tz_europe_berlin.local(2025, 6, 26, 8, 0, 0),
+        tz_europe_berlin.local(2025, 7, 3, 8, 0, 0),
+        tz_europe_berlin.local(2025, 7, 10, 8, 0, 0),
+        tz_europe_berlin.local(2025, 7, 17, 8, 0, 0),
+        tz_europe_berlin.local(2025, 7, 24, 8, 0, 0),
+        tz_europe_berlin.local(2025, 7, 31, 8, 0, 0),
+        tz_europe_berlin.local(2025, 8, 7, 8, 0, 0),
+        tz_europe_berlin.local(2025, 8, 14, 8, 0, 0),
+        tz_europe_berlin.local(2025, 8, 21, 8, 0, 0),
+        tz_europe_berlin.local(2025, 8, 28, 8, 0, 0),
+        tz_europe_berlin.local(2025, 9, 4, 8, 0, 0),
+        tz_europe_berlin.local(2025, 9, 11, 8, 0, 0),
+        tz_europe_berlin.local(2025, 9, 18, 8, 0, 0),
+        tz_europe_berlin.local(2025, 9, 25, 8, 0, 0),
+        tz_europe_berlin.local(2025, 10, 2, 8, 0, 0),
+        tz_europe_berlin.local(2025, 10, 9, 8, 0, 0),
+        tz_europe_berlin.local(2025, 10, 16, 8, 0, 0),
+        tz_europe_berlin.local(2025, 10, 23, 8, 0, 0),
+        tz_europe_berlin.local(2025, 10, 30, 8, 0, 0), # from here on there's no DST in Berlin
+        tz_europe_berlin.local(2025, 11, 6, 8, 0, 0),
+        tz_europe_berlin.local(2025, 11, 13, 8, 0, 0),
+        tz_europe_berlin.local(2025, 11, 20, 8, 0, 0),
+        tz_europe_berlin.local(2025, 11, 27, 8, 0, 0),
+        tz_europe_berlin.local(2025, 12, 4, 8, 0, 0),
+        tz_europe_berlin.local(2025, 12, 11, 8, 0, 0),
+        tz_europe_berlin.local(2025, 12, 18, 8, 0, 0),
+        tz_europe_berlin.local(2025, 12, 25, 8, 0, 0),
+        tz_europe_berlin.local(2026, 1, 1, 8, 0, 0),
+        tz_europe_berlin.local(2026, 1, 8, 8, 0, 0),
+        tz_europe_berlin.local(2026, 1, 15, 8, 0, 0)
+      ]
+
+      expect(actual_start_times).to match_array(expected_start_times)
+    end
   end
 end
