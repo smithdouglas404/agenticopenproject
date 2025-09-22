@@ -33,7 +33,12 @@ module Grids
   class WidgetBoxComponent < ApplicationComponent
     attr_reader :title, :content_padding
 
-    renders_one :header, Header
+    renders_one :header, lambda { |title:, **system_arguments|
+      system_arguments[:id] = @header_id
+
+      Header.new(title:, **system_arguments)
+    }
+
     renders_one :body, Body
 
     # Use Rows to add rows with borders and maintain the same padding.
@@ -51,7 +56,7 @@ module Grids
     # @param key [String] The unique key of the widget.
     # @param title [String] The title that appears in the widget header.
     # @param turbo_enabled [Boolean] whether to wrap the widget content in a `turbo-frame` element.
-    # @param content_padding [Symbol] <%= one_of(Grids::WidgetBox::HeaderComponent::PADDING_MAPPINGS.keys) %>
+    # @param content_padding [Symbol] <%= one_of(Grids::WidgetBox::Body::PADDING_MAPPINGS.keys) %>
     # @param system_arguments [Hash] <%= link_to_system_arguments_docs %>
     def initialize(
       key:,
@@ -66,6 +71,7 @@ module Grids
       @key = key
       @title = title
       @content_padding = content_padding
+      @header_id = "#{key}-header"
 
       @system_arguments = system_arguments
       @system_arguments[:tag] = :div
@@ -90,7 +96,7 @@ module Grids
     end
 
     def default_header
-      Header.new(title:)
+      Header.new(title:, id: @header_id)
     end
 
     def default_body
@@ -101,8 +107,7 @@ module Grids
 
     def before_render
       return unless header
-
-      @list_arguments[:aria] = { labelledby: header.id }
+      @list_arguments[:aria] = { labelledby: @header_id }
     end
   end
 end

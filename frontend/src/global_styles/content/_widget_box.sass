@@ -197,11 +197,8 @@ $widget-box--enumeration-width: 20px
 
 .op-widget-box--row
   padding: var(--stack-padding-normal)
-  margin-top: calc(var(--borderWidth-thin) * -1)
   list-style-type: none /* To account for applying Box component to a list */
-  border-top-color: var(--borderColor-muted)
-  border-top-style: solid
-  border-top-width: var(--borderWidth-thin)
+  border-top: var(--borderWidth-thin) solid var(--borderColor-muted)
 
   &:first-of-type
     border-top: none
