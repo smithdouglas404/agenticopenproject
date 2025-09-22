@@ -38,7 +38,7 @@ module Homescreen
       end
 
       def wrapper_arguments
-        { content_padding: :none }
+        { content_padding: :none, full_width: true }
       end
     end
   end
