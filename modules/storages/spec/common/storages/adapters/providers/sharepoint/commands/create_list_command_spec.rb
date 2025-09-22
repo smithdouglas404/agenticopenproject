@@ -41,10 +41,10 @@ module Storages
 
             let(:site_url) { URI.parse(storage.host).host }
             let(:input_data) do
-              ProviderInput::CreateList.new(
+              ProviderInput::CreateList.build(
                 name: "OpenProject Test",
                 description: "A document library used in testing the Create List Command"
-              )
+              ).value!
             end
 
             let(:auth_strategy) { Registry["sharepoint.authentication.userless"].call }

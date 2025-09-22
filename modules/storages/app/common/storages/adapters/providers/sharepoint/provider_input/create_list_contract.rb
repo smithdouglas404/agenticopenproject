@@ -33,10 +33,10 @@ module Storages
     module Providers
       module Sharepoint
         module ProviderInput
-          CreateList = Data.define(:name, :description) do
-            private_class_method :new
-            def self.build(name:, description: nil, contract: CreateListContract.new)
-              contract.call(name:, description:).to_monad.fmap { new(**it.to_h) }
+          class CreateListContract < Dry::Validation::Contract
+            params do
+              required(:name).filled(:string)
+              required(:description).maybe(:string)
             end
           end
         end
