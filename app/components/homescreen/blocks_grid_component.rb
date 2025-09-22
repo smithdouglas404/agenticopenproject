@@ -28,26 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Grids
-  class WidgetBoxComponent < ApplicationComponent
-    class HeaderComponent < ApplicationComponent
-      attr_reader :title
+module Homescreen
+  class BlocksGridComponent < ApplicationComponent
+    attr_reader :blocks
 
-      def initialize(title:, **system_arguments)
-        super()
-        @title = title
-        @system_arguments = system_arguments
-        @system_arguments[:tag] = :header
-        @system_arguments[:test_selector] = "op-widget-box--header"
-        @system_arguments[:classes] = class_names(
-          @system_arguments[:classes],
-          "op-widget-box--header"
-        )
-      end
+    def initialize(homescreen:)
+      super
 
-      def render?
-        title.present?
-      end
+      @blocks = (homescreen[:blocks] || [])
+        .select { |block| block[:if].nil? || block[:if].call }
+        .filter_map { it[:name] }
+        .filter_map { "homescreen/blocks/#{it}".camelize.safe_constantize }
+    end
+
+    def render?
+      blocks.any?
     end
   end
 end

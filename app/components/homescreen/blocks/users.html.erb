@@ -1,4 +1,4 @@
-<%= render Grids::WidgetBoxComponent.new(title: t(:label_user_plural), classes: "users") do %>
+<%= widget_wrapper do %>
   <p class="widget-box--additional-info"><%= t("homescreen.additional.users") %></p>
 
   <% unless @newest_users.empty? %>
@@ -13,7 +13,7 @@
   <% end %>
 
   <div class="widget-box--buttons">
-    <% if User.current.admin? %>
+    <% if current_user.admin? %>
       <%= link_to new_user_path, class: "button -primary" do %>
         <%= op_icon("button--icon icon-add") %>
         <span class="button--text"><%= t(:label_invite_user) %></span>

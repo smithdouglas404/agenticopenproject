@@ -1,4 +1,4 @@
-<%= render Grids::WidgetBoxComponent.new(title: t(:label_news_latest), classes: "news") do %>
+<%= widget_wrapper do %>
   <% unless @news.empty? %>
     <ul class="widget-box--arrow-links">
     <% @news.each do |news| %>

@@ -1,4 +1,4 @@
-<%= render Grids::WidgetBoxComponent.new(title: t("label_my_account"), classes: "my_account") do %>
+<%= widget_wrapper do %>
   <ul class="widget-box--arrow-links">
     <li>
       <%= link_to t(:label_profile), my_account_path, title: t(:label_profile) %>
@@ -11,4 +11,4 @@
       <%= link_to t(:button_change_password), my_password_path, title: t(:button_change_password) %>
     </li>
   </ul>
- <% end %>
+<% end %>

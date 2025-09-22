@@ -28,26 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Grids
-  class WidgetBoxComponent < ApplicationComponent
-    class HeaderComponent < ApplicationComponent
-      attr_reader :title
+module Homescreen
+  class LinksComponent < ApplicationComponent
+    include HomescreenHelper
+    include IconsHelper
 
-      def initialize(title:, **system_arguments)
-        super()
-        @title = title
-        @system_arguments = system_arguments
-        @system_arguments[:tag] = :header
-        @system_arguments[:test_selector] = "op-widget-box--header"
-        @system_arguments[:classes] = class_names(
-          @system_arguments[:classes],
-          "op-widget-box--header"
-        )
-      end
+    attr_reader :links
 
-      def render?
-        title.present?
-      end
+    def initialize(homescreen:)
+      super
+
+      @links = homescreen[:links] || []
+    end
+
+    def render?
+      show_homescreen_links? && links.any?
     end
   end
 end

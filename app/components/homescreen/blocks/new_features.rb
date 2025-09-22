@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,27 +26,42 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-module Grids
-  class WidgetBoxComponent < ApplicationComponent
-    class HeaderComponent < ApplicationComponent
-      attr_reader :title
-
-      def initialize(title:, **system_arguments)
-        super()
-        @title = title
-        @system_arguments = system_arguments
-        @system_arguments[:tag] = :header
-        @system_arguments[:test_selector] = "op-widget-box--header"
-        @system_arguments[:classes] = class_names(
-          @system_arguments[:classes],
-          "op-widget-box--header"
-        )
+module Homescreen
+  module Blocks
+    class NewFeatures < Grids::WidgetComponent
+      def title
+        I18n.t(:label_new_features)
       end
 
-      def render?
-        title.present?
+      def feature_teaser_image
+        "#{feature_version}_features.svg"
+      end
+
+      def new_features_header
+        I18n.t("homescreen.blocks.new_features.header")
+      end
+
+      def learn_more_link_text
+        I18n.t("homescreen.blocks.new_features.learn_about")
+      end
+
+      def new_features_title
+        I18n.t("homescreen.blocks.new_features.#{feature_version}.new_features_title")
+      end
+
+      def new_features
+        I18n.t("homescreen.blocks.new_features.#{feature_version}.new_features_list")
+      end
+
+      private
+
+      def feature_version
+        [
+          OpenProject::VERSION::MAJOR,
+          OpenProject::VERSION::MINOR
+        ].join("_")
       end
     end
   end

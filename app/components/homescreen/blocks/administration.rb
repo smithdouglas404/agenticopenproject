@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,32 +26,17 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
-class Homescreen::NewFeaturesComponent < ApplicationComponent
-  def feature_version
-    [
-      OpenProject::VERSION::MAJOR,
-      OpenProject::VERSION::MINOR
-    ].join("_")
-  end
+# ++
 
-  def feature_teaser_image
-    "#{feature_version}_features.svg"
-  end
+module Homescreen
+  module Blocks
+    class Administration < Grids::WidgetComponent
+      include HookHelper
+      include SecurityBadgeHelper
 
-  def new_features_header
-    I18n.t("homescreen.blocks.new_features.header")
-  end
-
-  def learn_more_link_text
-    I18n.t("homescreen.blocks.new_features.learn_about")
-  end
-
-  def new_features_title
-    I18n.t("homescreen.blocks.new_features.#{feature_version}.new_features_title")
-  end
-
-  def new_features
-    I18n.t("homescreen.blocks.new_features.#{feature_version}.new_features_list")
+      def title
+        I18n.t(:label_administration)
+      end
+    end
   end
 end

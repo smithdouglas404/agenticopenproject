@@ -26,17 +26,5 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
-<%=
-  render(Primer::OpenProject::PageHeader.new) do |header|
-    header.with_title { I18n.t("label_home") }
-    header.with_breadcrumbs([I18n.t(:label_home)], skip_home_on_mobile: true)
-  end
-%>
 
-<%= render Homescreen::AnnouncementComponent.new(announcement: @announcement) %>
-
-<%= render Homescreen::BlocksGridComponent.new(homescreen: @homescreen) %>
-
-<%= render Homescreen::LinksComponent.new(homescreen: @homescreen) %>
-
-<%= call_hook :homescreen_after_links %>
+<%= render(Primer::Alpha::Banner.new(scheme: :default)) { format_text announcement.text } %>

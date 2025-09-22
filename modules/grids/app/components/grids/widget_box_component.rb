@@ -35,7 +35,7 @@ module Grids
     renders_one :header, HeaderComponent
     renders_one :body, BodyComponent
 
-    def initialize(title:, content_padding: BodyComponent::DEFAULT_PADDING, **system_arguments)
+    def initialize(title:, content_padding: BodyComponent::DEFAULT_PADDING, full_width: false, **system_arguments)
       super()
 
       @title = title
@@ -44,7 +44,8 @@ module Grids
       @system_arguments[:tag] = :div
       @system_arguments[:classes] = class_names(
         @system_arguments[:classes],
-        "widget-box"
+        "widget-box",
+        "widget-box_full-width" => full_width
       )
     end
 

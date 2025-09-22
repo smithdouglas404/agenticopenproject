@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,27 +26,24 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-module Grids
-  class WidgetBoxComponent < ApplicationComponent
-    class HeaderComponent < ApplicationComponent
-      attr_reader :title
+module Homescreen
+  module Blocks
+    class Projects < Grids::WidgetComponent
+      include IconsHelper
+      include ProjectsHelper
+      include Redmine::I18n
 
-      def initialize(title:, **system_arguments)
-        super()
-        @title = title
-        @system_arguments = system_arguments
-        @system_arguments[:tag] = :header
-        @system_arguments[:test_selector] = "op-widget-box--header"
-        @system_arguments[:classes] = class_names(
-          @system_arguments[:classes],
-          "op-widget-box--header"
-        )
+      def initialize(*)
+        super
+
+        @favorite_projects = Project.visible.active.favorited_by(current_user)
+        @newest_projects = Project.visible.newest.take(3)
       end
 
-      def render?
-        title.present?
+      def title
+        I18n.t(:label_project_plural)
       end
     end
   end

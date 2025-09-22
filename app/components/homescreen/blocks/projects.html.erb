@@ -1,4 +1,4 @@
-<%= render Grids::WidgetBoxComponent.new(title: t(:label_project_plural), classes: "projects") do %>
+<%= widget_wrapper do %>
   <% if @favorite_projects.any? %>
     <p class="widget-box--additional-info"><%= t("projects.lists.favorited") %></p>
     <ul class="widget-box--arrow-links">
@@ -37,7 +37,7 @@
   <% end %>
 
   <div class="widget-box--blocks--buttons">
-    <% if User.current.allowed_globally?(:add_project) %>
+    <% if current_user.allowed_globally?(:add_project) %>
       <%= link_to new_project_path,
                   { class: "button -primary",
                     aria: { label: t(:label_project_new) },

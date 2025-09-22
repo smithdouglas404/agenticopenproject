@@ -28,26 +28,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Grids
-  class WidgetBoxComponent < ApplicationComponent
-    class HeaderComponent < ApplicationComponent
-      attr_reader :title
+module Homescreen
+  class AnnouncementComponent < ApplicationComponent
+    include OpenProject::TextFormatting
 
-      def initialize(title:, **system_arguments)
-        super()
-        @title = title
-        @system_arguments = system_arguments
-        @system_arguments[:tag] = :header
-        @system_arguments[:test_selector] = "op-widget-box--header"
-        @system_arguments[:classes] = class_names(
-          @system_arguments[:classes],
-          "op-widget-box--header"
-        )
-      end
+    attr_reader :announcement
 
-      def render?
-        title.present?
-      end
+    def initialize(announcement:)
+      super
+
+      @announcement = announcement
+    end
+
+    def render?
+      announcement.present?
     end
   end
 end
