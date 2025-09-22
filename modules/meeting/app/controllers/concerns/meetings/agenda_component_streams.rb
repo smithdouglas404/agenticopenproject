@@ -107,7 +107,7 @@ module Meetings
 
         agenda_items.each do |meeting_agenda_item|
           update_via_turbo_stream(
-            component: MeetingAgendaItems::ItemComponent::ShowComponent.new(meeting_agenda_item:, first_and_last:)
+            component: MeetingAgendaItems::ItemComponent.new(meeting_agenda_item:, first_and_last:)
           )
         end
       end
@@ -204,18 +204,26 @@ module Meetings
         update_new_button_via_turbo_stream(disabled: false, meeting:) if form_hidden == true
       end
 
-      def update_item_via_turbo_stream(state: :show, meeting_agenda_item: @meeting_agenda_item, display_notes_input: nil)
+      def update_item_via_turbo_stream(meeting_agenda_item: @meeting_agenda_item)
         update_via_turbo_stream(
           component: MeetingAgendaItems::ItemComponent.new(
-            state:,
             meeting_agenda_item:,
-            display_notes_input:
           )
         )
         update_show_items_via_turbo_stream
       end
 
-      def add_item_via_turbo_stream(meeting_agenda_item: @meeting_agenda_item, clear_slate: false) # rubocop:disable Metrics/AbcSize
+      def edit_item_via_turbo_stream(meeting_agenda_item: @meeting_agenda_item, display_notes_input: nil)
+        update_via_turbo_stream(
+          component: MeetingAgendaItems::EditComponent.new(
+            meeting_agenda_item:,
+            display_notes_input:
+          )
+        )
+      end
+
+      def add_item_via_turbo_stream(meeting_agenda_item: @meeting_agenda_item, clear_slate: false)
+        # rubocop:disable Metrics/AbcSize
         if clear_slate
           update_list_via_turbo_stream(form_hidden: false, form_type: @agenda_item_type)
         elsif meeting_agenda_item.meeting.agenda_items.count == 1 && meeting_agenda_item.meeting.sections.present?
@@ -261,11 +269,7 @@ module Meetings
             update_section_via_turbo_stream(meeting_section: meeting_agenda_item.meeting_section)
           else
             remove_via_turbo_stream(
-              component: MeetingAgendaItems::ItemComponent.new(
-                state: :show,
-                meeting_agenda_item:,
-                display_notes_input: nil
-              )
+              component: MeetingAgendaItems::ItemComponent.new(meeting_agenda_item:)
             )
           end
         end
@@ -327,27 +331,24 @@ module Meetings
           end
         end
       end
+
       # rubocop:enable Metrics/AbcSize, Metrics/PerceivedComplexity
 
       def move_item_via_turbo_stream(meeting_agenda_item: @meeting_agenda_item)
         # Note: The `remove_component` and the `component` are pointing to the same
         # component, but we still need to instantiate them separately, otherwise re-adding
         # of the item will render and empty component.
-        remove_component = MeetingAgendaItems::ItemComponent.new(state: :show, meeting_agenda_item:)
+        remove_component = MeetingAgendaItems::ItemComponent.new(meeting_agenda_item:)
         remove_via_turbo_stream(component: remove_component)
 
-        component = MeetingAgendaItems::ItemComponent.new(state: :show, meeting_agenda_item:)
+        component = MeetingAgendaItems::ItemComponent.new(meeting_agenda_item:)
 
-        target_component = if meeting_agenda_item.lower_item
-                             MeetingAgendaItems::ItemComponent.new(
-                               state: :show,
-                               meeting_agenda_item: meeting_agenda_item.lower_item
-                             )
-                           else
-                             MeetingSections::ShowComponent.new(
-                               meeting_section: meeting_agenda_item.meeting_section
-                             )
-                           end
+        target_component =
+          if meeting_agenda_item.lower_item
+            MeetingAgendaItems::ItemComponent.new(meeting_agenda_item: meeting_agenda_item.lower_item)
+          else
+            MeetingSections::ShowComponent.new(meeting_section: meeting_agenda_item.meeting_section)
+          end
 
         add_before_via_turbo_stream(component:, target_component:)
       end
@@ -446,7 +447,7 @@ module Meetings
             target_component: MeetingSections::ShowComponent.new(
               meeting_section: meeting_section.lower_item,
               insert_target_modified: false
-              # insert target is modified for agenda items in this section, but not for sections
+            # insert target is modified for agenda items in this section, but not for sections
             )
           )
         else

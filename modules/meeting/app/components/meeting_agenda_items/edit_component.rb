@@ -28,9 +28,10 @@
 #++
 
 module MeetingAgendaItems
-  class ItemComponent::EditComponent < ApplicationComponent
+  class EditComponent < ApplicationComponent
     include ApplicationHelper
     include OpPrimer::ComponentHelpers
+    include OpTurbo::Streamable
 
     def initialize(meeting_agenda_item:, display_notes_input: nil)
       super
@@ -40,18 +41,24 @@ module MeetingAgendaItems
       @display_notes_input = display_notes_input
     end
 
+    def wrapper_key
+      "meeting-agenda-items-#{@meeting_agenda_item.id}"
+    end
+
     def call
-      render(Primer::Box.new(pl: 3)) do
-        render(MeetingAgendaItems::FormComponent.new(
-                 meeting: @meeting_agenda_item.meeting,
-                 meeting_section: @meeting_agenda_item.meeting_section,
-                 meeting_agenda_item: @meeting_agenda_item,
-                 method: :put,
-                 submit_path: meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item, format: :turbo_stream),
-                 cancel_path: cancel_edit_meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item),
-                 type: @type,
-                 display_notes_input: @display_notes_input
-               ))
+      component_wrapper do
+        render(
+          MeetingAgendaItems::FormComponent.new(
+            meeting: @meeting_agenda_item.meeting,
+            meeting_section: @meeting_agenda_item.meeting_section,
+            meeting_agenda_item: @meeting_agenda_item,
+            method: :put,
+            submit_path: meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item, format: :turbo_stream),
+            cancel_path: cancel_edit_meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item),
+            type: @type,
+            display_notes_input: @display_notes_input
+          )
+        )
       end
     end
   end

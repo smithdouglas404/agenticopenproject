@@ -76,6 +76,17 @@ class MeetingAgendaItemsController < ApplicationController
     respond_with_turbo_streams
   end
 
+  def edit
+    if @meeting_agenda_item.editable?
+      edit_item_via_turbo_stream(display_notes_input: params[:display_notes_input])
+    else
+      update_all_via_turbo_stream
+      render_error_flash_message_via_turbo_stream(message: t("text_meeting_not_editable_anymore"))
+    end
+
+    respond_with_turbo_streams
+  end
+
   def create # rubocop:disable Metrics/AbcSize
     call = ::MeetingAgendaItems::CreateService
       .new(user: current_user)
@@ -104,17 +115,6 @@ class MeetingAgendaItemsController < ApplicationController
         hidden: false, meeting_agenda_item: @meeting_agenda_item, type: @agenda_item_type
       )
       render_base_error_in_flash_message_via_turbo_stream(call.errors)
-    end
-
-    respond_with_turbo_streams
-  end
-
-  def edit
-    if @meeting_agenda_item.editable?
-      update_item_via_turbo_stream(state: :edit, display_notes_input: params[:display_notes_input])
-    else
-      update_all_via_turbo_stream
-      render_error_flash_message_via_turbo_stream(message: t("text_meeting_not_editable_anymore"))
     end
 
     respond_with_turbo_streams
