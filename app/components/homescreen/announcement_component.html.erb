@@ -27,10 +27,4 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<div id="announcement">
-  <div class="op-toast -info">
-    <div class="op-toast--content op-uc-container">
-      <%= format_text announcement.text %>
-    </div>
-  </div>
-</div>
+<%= render(Primer::Alpha::Banner.new(scheme: :default)) { format_text announcement.text } %>
