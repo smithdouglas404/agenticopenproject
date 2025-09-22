@@ -41,17 +41,7 @@ module Grids
 
     renders_one :body, Body
 
-    # Use Rows to add rows with borders and maintain the same padding.
-    #
-    # @param system_arguments [Hash] <%= link_to_system_arguments_docs %>
-    renders_many :rows, lambda { |**system_arguments|
-      system_arguments[:classes] = class_names(
-        "op-widget-box--row",
-        system_arguments[:classes]
-      )
-
-      OpPrimer::ListComponent::Item.new(**system_arguments)
-    }
+    renders_many :rows, Row
 
     # @param key [String] The unique key of the widget.
     # @param title [String] The title that appears in the widget header.
