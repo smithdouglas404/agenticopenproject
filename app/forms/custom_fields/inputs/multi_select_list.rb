@@ -82,6 +82,7 @@ class CustomFields::Inputs::MultiSelectList < CustomFields::Inputs::Base::Autoco
     CustomFields::Hierarchy::HierarchicalItemService.new
       .get_descendants(item: @custom_field.hierarchy_root, include_self: false)
       .value_or([])
+      .sort_by(&:ancestry_path)
   end
 
   def selected?(custom_option)
