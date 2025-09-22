@@ -15,6 +15,7 @@ require "pry"
 require "time"
 require "yaml"
 require "httpx"
+require "cgi"
 
 GITHUB_API_OPENPROJECT_PREFIX = "https://api.github.com/repos/opf/openproject"
 GITHUB_HTML_OPENPROJECT_PREFIX = "https://github.com/opf/openproject"

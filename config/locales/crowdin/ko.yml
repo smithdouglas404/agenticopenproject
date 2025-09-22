@@ -697,9 +697,7 @@ ko:
         excluded_from_totals: "합계에서 제외됨"
   themes:
     dark: "다크"
-    dark_high_contrast: "다크 하이 콘트라스트"
     light: "라이트"
-    light_high_contrast: "라이트 하이 콘트라스트"
     sync_with_os: "자동(OS 색상 모드와 일치)"
   types:
     index:
@@ -1199,6 +1197,13 @@ ko:
         auto_hide_popups: "성공 배너 자동으로 숨기기"
         auto_hide_popups_caption: "활성화하면 녹색 성공 배너가 5초 후에 자동으로 사라집니다."
         warn_on_leaving_unsaved: "저장하지 않고 작업 패키지를 벗어날 때 알려주세요."
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "색상 모드"
         time_zone: "표준 시간대"
         mode_guideline: "일부 모드에서는 접근성과 가독성을 위해 사용자 지정 테마 색상을 덮어씁니다. 전체 사용자 지정 테마 지원을 위해서는 라이트 모드를 선택하세요."
@@ -1475,10 +1480,19 @@ ko:
           typed_dag:
             circular_dependency: "이 관계는 관계의 원을 만듭니다."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "- 기존 관계에 대해서는 변경할 수 없습니다."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "- 기존 관계에 대해서는 변경할 수 없습니다."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "SCM 업체가 가용하지 않습니다."
           not_whitelisted: "은(는) 설절에 허용되지 않습니다."
@@ -1869,6 +1883,7 @@ ko:
   button_add_watcher: "주시자 추가"
   button_annotate: "주석 달기"
   button_apply: "적용"
+  button_apply_changes: "변경 사항 적용"
   button_archive: "보관"
   button_back: "뒤로"
   button_cancel: "취소"
@@ -1918,8 +1933,8 @@ ko:
   button_rollback: "이 버전으로 롤백"
   button_save: "저장"
   button_save_as: "다른 이름으로 저장"
-  button_apply_changes: "변경 사항 적용"
   button_save_back: "저장하고 돌아가기"
+  button_select: "Select"
   button_set_reminder: "미리 알림 설정"
   button_show: "표시"
   button_sort: "분류"
@@ -2753,6 +2768,7 @@ ko:
   label_required_disk_storage: "필요한 디스크 스토리지"
   label_send_invitation: 초대장 보내기
   label_calculated_value: "계산된 값"
+  label_change_parent: "Change parent"
   label_change_plural: "변경"
   label_change_properties: "속성 변경"
   label_change_status: "상태 변경"
@@ -4215,6 +4231,7 @@ ko:
   text_access_token_hint: "액세스 토큰을 사용하여 OpenProject의 리소스에 대한 외부 응용 프로그램 액세스 권한을 부여할 수 있습니다."
   text_analyze: "추가 분석: %{subject}"
   text_are_you_sure: "계속하시겠습니까?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "계속하시겠습니까?"
   text_are_you_sure_with_children: "작업 패키지 및 모든 자식 작업 패키지를 삭제하시겠습니까?"
   text_are_you_sure_with_project_custom_fields: "이 특성을 삭제하면 모든 프로젝트에서 해당 값도 삭제됩니다. 계속하시겠습니까?"

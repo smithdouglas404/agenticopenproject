@@ -697,9 +697,7 @@ th:
         excluded_from_totals: "Excluded from totals"
   themes:
     dark: "Dark"
-    dark_high_contrast: "Dark high contrast"
     light: "Light"
-    light_high_contrast: "Light high contrast"
     sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
@@ -1199,6 +1197,13 @@ th:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "Warn me when leaving a work package with unsaved changes"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Color mode"
         time_zone: "โซนเวลา"
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
@@ -1475,10 +1480,19 @@ th:
           typed_dag:
             circular_dependency: "The relationship creates a circle of relationships."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "SCM vendor is not available"
           not_whitelisted: "is not allowed by the configuration."
@@ -1869,6 +1883,7 @@ th:
   button_add_watcher: "เพิ่มผู้ดูข้อมูล"
   button_annotate: "ใส่คำอธิบายประกอบ"
   button_apply: "นำไปใช้"
+  button_apply_changes: "Apply changes"
   button_archive: "คลังเก็บข้อมูล"
   button_back: "ย้อนกลับ"
   button_cancel: "ยกเลิก"
@@ -1918,8 +1933,8 @@ th:
   button_rollback: "ย้อนกลับมาที่รุ่นนี้"
   button_save: "บันทึก"
   button_save_as: "บันทึกเป็น"
-  button_apply_changes: "Apply changes"
   button_save_back: "Save and back"
+  button_select: "Select"
   button_set_reminder: "Set reminder"
   button_show: "แสดง"
   button_sort: "เรียงลำดับ"
@@ -2753,6 +2768,7 @@ th:
   label_required_disk_storage: "Required disk storage"
   label_send_invitation: Send invitation
   label_calculated_value: "Calculated value"
+  label_change_parent: "Change parent"
   label_change_plural: "การเปลี่ยนแปลง"
   label_change_properties: "เปลี่ยนแปลงคุณสมบัติ"
   label_change_status: "เปลี่ยนสถานะ"
@@ -4218,6 +4234,7 @@ th:
   text_access_token_hint: "Access tokens allow you to grant external applications access to resources in OpenProject."
   text_analyze: "การวิเคราะห์เพิ่มเติม: %{subject}"
   text_are_you_sure: "คุณแน่ใจหรือไม่ ?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Are you sure you want to continue?"
   text_are_you_sure_with_children: "ลบชุดภารกิจและ ชุดภารกิจย่อยที่เกี่ยวข้องทั้งหมดหรือไม่?"
   text_are_you_sure_with_project_custom_fields: "Deleting this attribute will also delete its values in all projects. Are you sure you want to do this?"

@@ -20,7 +20,7 @@
       </div>
     }
 
-    <spot-breadcrumbs [content]="breadcrumbs"></spot-breadcrumbs>
+    <spot-breadcrumbs [content]="breadcrumbs" />
 
     @switch (loading$ | async) {
       @case ('success') {
@@ -58,7 +58,7 @@
         </div>
       }
       @case ('loading') {
-        <op-loading-file-list class="spot-body-small"></op-loading-file-list>
+        <op-loading-file-list class="spot-body-small" />
       }
     }
   </div>

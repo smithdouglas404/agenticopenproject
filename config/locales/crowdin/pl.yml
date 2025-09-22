@@ -715,9 +715,7 @@ pl:
         excluded_from_totals: "Wyłączono z sum"
   themes:
     dark: "Ciemny"
-    dark_high_contrast: "Ciemny, wysoki kontrast"
     light: "Jasny"
-    light_high_contrast: "Jasny, wysoki kontrast"
     sync_with_os: "Automatycznie (dopasuj do trybu kolorów systemu)"
   types:
     index:
@@ -1219,6 +1217,13 @@ pl:
         auto_hide_popups: "Automatycznie ukrywaj banery sukcesu"
         auto_hide_popups_caption: "Po włączeniu tej funkcji zielone banery sukcesu będą automatycznie znikać po 5 sekundach."
         warn_on_leaving_unsaved: "Ostrzegaj mnie, gdy opuszczam zadanie z niezapisanymi zmianami"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Tryb kolorów"
         time_zone: "Strefa czasowa"
         mode_guideline: "Niektóre tryby zastąpią niestandardowe kolory motywów w celu zapewnienia dostępności i czytelności. W celu pełnej obsługi motywów niestandardowych wybierz tryb Jasny."
@@ -1498,10 +1503,19 @@ pl:
           typed_dag:
             circular_dependency: "Relacja tworzy krąg relacji."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "nie można zmienić dla istniejących relacji."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "nie można zmienić dla istniejących relacji."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "Producent SCM nie jest dostępny"
           not_whitelisted: "nie jest dozwolone w tej konfiguracji."
@@ -1937,6 +1951,7 @@ pl:
   button_add_watcher: "Dodaj obserwatora"
   button_annotate: "Adnotacja"
   button_apply: "Zastosuj"
+  button_apply_changes: "Zastosuj zmiany"
   button_archive: "Archiwum"
   button_back: "Wstecz"
   button_cancel: "Anuluj"
@@ -1986,8 +2001,8 @@ pl:
   button_rollback: "Wycofaj do tej wersji"
   button_save: "Zapisz"
   button_save_as: "Zapisz jako"
-  button_apply_changes: "Zastosuj zmiany"
   button_save_back: "Zapisz i wróć"
+  button_select: "Select"
   button_set_reminder: "Ustaw przypomnienie"
   button_show: "Pokaż"
   button_sort: "Sortowanie"
@@ -2884,6 +2899,7 @@ pl:
   label_required_disk_storage: "Wymagane miejsce na dysku"
   label_send_invitation: Wyślij zaproszenie
   label_calculated_value: "Obliczona wartość"
+  label_change_parent: "Change parent"
   label_change_plural: "Zmiany"
   label_change_properties: "Zmiana właściwości"
   label_change_status: "Zmiana stanu"
@@ -4352,6 +4368,7 @@ pl:
   text_access_token_hint: "Tokeny dostępu umożliwiają zewnętrznym aplikacjom dostęp do zasobów w OpenProject."
   text_analyze: "Further analyze: %{subject}"
   text_are_you_sure: "Jesteś pewien?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Czy na pewno chcesz kontynuować?"
   text_are_you_sure_with_children: "Usunąć pakiet roboczy i wszystkie podrzędne pakiety?"
   text_are_you_sure_with_project_custom_fields: "Usunięcie tego atrybutu spowoduje również usunięcie jego wartości we wszystkich projektach. Czy na pewno chcesz to zrobić?"

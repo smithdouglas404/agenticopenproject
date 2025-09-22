@@ -173,7 +173,7 @@ export class FileLinkListItemComponent implements OnInit, OnChanges, AfterViewIn
         button_continue: this.text.removalButtonLabel,
       },
       icon: {
-        continue: 'remove-link',
+        continue: 'unlink',
       },
     };
     void this.confirmDialogService

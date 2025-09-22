@@ -28,6 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
+# rubocop:disable Metrics/CollectionLiteralLength
 module Settings
   class Definition
     ENV_PREFIX = "OPENPROJECT_"
@@ -882,6 +883,10 @@ module Settings
         allowed: (0..),
         default: 20
       },
+      opentelemetry_enabled: {
+        description: "Enable OpenTelemetry metrics",
+        default: false
+      },
       rate_limiting: {
         default: {},
         description: "Configure rate limiting for various endpoint rules. See configuration documentation for details."
@@ -1658,3 +1663,4 @@ module Settings
     end
   end
 end
+# rubocop:enable Metrics/CollectionLiteralLength

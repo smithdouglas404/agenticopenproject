@@ -1,18 +1,17 @@
 name: Docker
+run-name: Build docker image from branch ${{ inputs.branch }} with tag ${{ inputs.tag }}
 
 on:
-  # build dev daily
-  schedule:
-    - cron: "20 2 * * *" # Daily at 02:20
-
-  push:
-    tags:
-      - v*
-  workflow_dispatch:
+  workflow_call:
     inputs:
+      branch:
+        description: "The branch or tag to checkout and build"
+        required: true
+        type: string
       tag:
-        description: "The tag to release. Note that this happens by default on the tag push. Only run this action when something went wrong!"
-        required: false
+        description: "The main docker tag to use (e.g., 'dev' or '16.3.0')"
+        required: true
+        type: string
 
 permissions:
   contents: read # to fetch code (actions/checkout)
@@ -24,42 +23,29 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
-      - name: Extract version
-        id: extract_version
-        run: |
-          if [[ ${{ github.event_name }} == 'push' ]]; then
-            TAG_REF=${GITHUB_REF#refs/tags/}
-            CHECKOUT_REF=$GITHUB_REF
-          elif [[ ${{ github.event_name }} == 'schedule' ]]; then
-            TAG_REF=dev
-            CHECKOUT_REF=refs/heads/dev
-          elif [[ ${{ github.event_name }} == 'workflow_dispatch' ]]; then
-            TAG_REF=${{ inputs.tag }}
-            CHECKOUT_REF=${{ inputs.tag }}
-
-            if [ -z "$TAG_REF" ]; then
-              TAG_REF=dev
-              CHECKOUT_REF=dev
-            fi
-          else
-            echo "Unsupported event"
-            exit 1
-          fi
-
-          if [ -z "$TAG_REF" ] || [ -z "$CHECKOUT_REF" ]; then
-            echo "No TAG_REF or CHECKOUT_REF set. Aborting"
-            exit 1
-          fi
-
-          VERSION=${TAG_REF#v}
-          echo "Version: $VERSION"
-          echo "Checkout REF: $CHECKOUT_REF"
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "checkout_ref=$CHECKOUT_REF" >> "$GITHUB_OUTPUT"
       - name: Checkout
         uses: actions/checkout@v5
         with:
-          ref: ${{ steps.extract_version.outputs.checkout_ref }}
+          ref: ${{ inputs.branch }}
+      - name: Set version outputs and convert tags
+        id: extract_version
+        run: |
+          set -e
+          echo "Processing tag: ${{ inputs.tag }}"
+          ./script/gh/docker-tags.rb "${{ inputs.tag }}" --version
+          ./script/gh/docker-tags.rb "${{ inputs.tag }}" --format-for-docker
+      - name: Verify outputs
+        run: |
+          if [ -z "${{ steps.extract_version.outputs.version }}" ]; then
+            echo "Error: version output is empty"
+            exit 1
+          fi
+          if [ -z "${{ steps.extract_version.outputs.docker_tags }}" ]; then
+            echo "Error: docker_tags output is empty"
+            exit 1
+          fi
+          echo "✓ version: ${{ steps.extract_version.outputs.version }}"
+          echo "✓ docker_tags: ${{ steps.extract_version.outputs.docker_tags }}"
       - name: Cache NPM
         uses: runs-on/cache@v4
         with:
@@ -92,24 +78,20 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           path: public/
-          name: public-assets-${{ github.sha }}
+          name: public-assets-${{ inputs.tag }}-${{ github.sha }}
           overwrite: true
           # Since v4.4, hidden files are excluded by default.
           # We need to include public/assets/.sprockets-manifest-*.json
           include-hidden-files: true
     outputs:
       version: ${{ steps.extract_version.outputs.version }}
-      checkout_ref: ${{ steps.extract_version.outputs.checkout_ref }}
+      docker_tags: ${{ steps.extract_version.outputs.docker_tags }}
   build:
+    if: github.repository == 'opf/openproject'
     needs:
       - setup
-    if: github.repository == 'opf/openproject'
     runs-on:
-      labels:
-        - runs-on
-        - ssh=false
-        - run-id=${{ github.run_id }}
-        - ${{ matrix.runner }}
+      labels: "runs-on=${{ github.run_id }}/ssh=false/${{ matrix.runner }}"
     strategy:
       matrix:
         include:
@@ -137,14 +119,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
         with:
-          ref: ${{ needs.setup.outputs.checkout_ref }}
+          ref: ${{ inputs.branch }}
       - name: Prepare docker files
         run: |
           cp ./docker/prod/Dockerfile ./Dockerfile
       - name: Download precompiled public assets
         uses: actions/download-artifact@v5
         with:
-          name: public-assets-${{ github.sha }}
+          name: public-assets-${{ inputs.tag }}-${{ github.sha }}
           path: public/
       - name: Setup precompiled assets
         run: |
@@ -157,8 +139,8 @@ jobs:
           echo '!/config/frontend_assets.manifest.json' >> .dockerignore
       - name: Add build information
         run: |
-          echo "${{ needs.setup.outputs.checkout_ref }}" > PRODUCT_VERSION
-          echo "https://github.com/opf/openproject/commits/${{ needs.setup.outputs.checkout_ref }}" > PRODUCT_URL
+          echo "${{ inputs.branch }}" > PRODUCT_VERSION
+          echo "https://github.com/opf/openproject/commits/${{ inputs.branch }}" > PRODUCT_URL
           date -u +"%Y-%m-%dT%H:%M:%SZ" > RELEASE_DATE
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -182,7 +164,7 @@ jobs:
             org.opencontainers.image.documentation=https://www.openproject.org/docs/installation-and-operations/installation/
             org.opencontainers.image.vendor=OpenProject GmbH
           tags: |
-            type=semver,pattern={{version}},value=${{ needs.setup.outputs.version }}
+            ${{ needs.setup.outputs.docker_tags }}
           images: |
             ${{ env.REGISTRY_IMAGE }}
       - name: Restore vendor/bundle
@@ -271,7 +253,7 @@ jobs:
       - name: Upload digest
         uses: actions/upload-artifact@v4
         with:
-          name: digests-${{ matrix.target }}-${{ matrix.digest }}
+          name: digests-${{ inputs.tag }}-${{ matrix.target }}-${{ matrix.digest }}
           path: /tmp/digests/*
           if-no-files-found: error
           retention-days: 1
@@ -287,13 +269,13 @@ jobs:
       - name: Merge digests
         uses: actions/upload-artifact/merge@v4
         with:
-          pattern: "digests-${{ matrix.target }}-*"
+          pattern: "digests-${{ inputs.tag }}-${{ matrix.target }}-${{ matrix.digest }}*"
           overwrite: true
-          name: "merged-digests-${{ matrix.target }}-${{ github.run_number }}-${{ github.run_attempt }}"
+          name: "merged-digests-${{ inputs.tag }}-${{ matrix.target }}-${{ github.run_number }}-${{ github.run_attempt }}"
       - name: Download digests
         uses: actions/download-artifact@v5
         with:
-          name: "merged-digests-${{ matrix.target }}-${{ github.run_number }}-${{ github.run_attempt }}"
+          name: "merged-digests-${{ inputs.tag }}-${{ matrix.target }}-${{ github.run_number }}-${{ github.run_attempt }}"
           path: /tmp/digests
       - name: Set suffix
         id: set_suffix
@@ -318,10 +300,7 @@ jobs:
             latest=false
             suffix=${{ steps.set_suffix.outputs.suffix }}
           tags: |
-            type=semver,pattern={{version}},value=${{ needs.setup.outputs.version }}
-            type=semver,pattern={{major}}.{{minor}},value=${{ needs.setup.outputs.version }}
-            type=semver,pattern={{major}},value=${{ needs.setup.outputs.version }}
-            type=raw,value=dev,priority=200,enable={{is_default_branch}}
+            ${{ needs.setup.outputs.docker_tags }}
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -343,20 +322,3 @@ jobs:
     with:
       subject: "Docker build failed"
       body: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-  trigger_helm_release:
-    needs: [setup, build, merge]
-    permissions:
-      contents: none
-    if: ${{ github.repository == 'opf/openproject' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger Helm charts release
-        env:
-          TOKEN: ${{ secrets.OPENPROJECT_CI_TOKEN }}
-          REPOSITORY: opf/helm-charts
-          WORKFLOW_ID: core_release.yml
-        run: |
-          curl -i --fail-with-body -H"authorization: Bearer $TOKEN" \
-            -XPOST -H"Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/$REPOSITORY/actions/workflows/$WORKFLOW_ID/dispatches \
-            -d '{"ref": "main", "inputs": { "tag" : "${{ needs.setup.outputs.version }}" }}'

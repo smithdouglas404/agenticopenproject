@@ -41,6 +41,18 @@ RSpec.describe OpenIDConnect::Providers::UpdateContract do
     let(:current_user) { build_stubbed(:admin) }
 
     it_behaves_like "contract is valid"
+
+    context "when the groups_claim is empty" do
+      let(:provider) { build_stubbed(:oidc_provider, groups_claim: "", sync_groups: true) }
+
+      it_behaves_like "contract is invalid", groups_claim: :blank
+
+      context "and when we don't want to synchronize groups" do
+        let(:provider) { build_stubbed(:oidc_provider, groups_claim: "", sync_groups: false) }
+
+        it_behaves_like "contract is valid"
+      end
+    end
   end
 
   context "when non-admin" do

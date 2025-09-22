@@ -704,9 +704,7 @@ fi:
         excluded_from_totals: "Excluded from totals"
   themes:
     dark: "Dark"
-    dark_high_contrast: "Dark high contrast"
     light: "Light"
-    light_high_contrast: "Light high contrast"
     sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
@@ -1207,6 +1205,13 @@ fi:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "Varoita tallentamattomista muutoksista"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Color mode"
         time_zone: "Aikavyöhyke"
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
@@ -1484,10 +1489,19 @@ fi:
           typed_dag:
             circular_dependency: "The relationship creates a circle of relationships."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "SCM vendor is not available"
           not_whitelisted: "ei ole sallittu kokoonpanossa."
@@ -1893,6 +1907,7 @@ fi:
   button_add_watcher: "Lisää seuraaja"
   button_annotate: "Lisää selitys"
   button_apply: "Ota käyttöön"
+  button_apply_changes: "Apply changes"
   button_archive: "Arkistoi"
   button_back: "Takaisin"
   button_cancel: "Peruuta"
@@ -1942,8 +1957,8 @@ fi:
   button_rollback: "Siirry takaisin tähän versioon"
   button_save: "Tallenna"
   button_save_as: "Tallenna nimellä"
-  button_apply_changes: "Apply changes"
   button_save_back: "Tallenna ja palaa"
+  button_select: "Select"
   button_set_reminder: "Set reminder"
   button_show: "Näytä"
   button_sort: "Järjestä"
@@ -2798,6 +2813,7 @@ fi:
   label_required_disk_storage: "Tarvittava levytila"
   label_send_invitation: Lähetä kutsu
   label_calculated_value: "Calculated value"
+  label_change_parent: "Change parent"
   label_change_plural: "Muutokset"
   label_change_properties: "Vaihda asetuksia"
   label_change_status: "Muuta tila"
@@ -4265,6 +4281,7 @@ fi:
   text_access_token_hint: "API-salasanojen avulla voit sallia integraatioiden pääsyn OpenProject rajapintoihin."
   text_analyze: "Further analyze: %{subject}"
   text_are_you_sure: "Oletko varma?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Are you sure you want to continue?"
   text_are_you_sure_with_children: "Delete work package and all child work packages?"
   text_are_you_sure_with_project_custom_fields: "Deleting this attribute will also delete its values in all projects. Are you sure you want to do this?"

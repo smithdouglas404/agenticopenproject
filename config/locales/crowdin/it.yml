@@ -701,9 +701,7 @@ it:
         excluded_from_totals: "Escluso dai totali"
   themes:
     dark: "Scuro"
-    dark_high_contrast: "Scuro ad alto contrasto"
     light: "Chiaro"
-    light_high_contrast: "Chiaro ad alto contrasto"
     sync_with_os: "Automatico (abbina modalità colore del sistema operativo)"
   types:
     index:
@@ -1204,6 +1202,13 @@ it:
         auto_hide_popups: "Nascondi automaticamente i banner di successo"
         auto_hide_popups_caption: "Se l'opzione è abilitata, i banner di successo verdi scompariranno automaticamente dopo 5 secondi."
         warn_on_leaving_unsaved: "Avvisami quando sto lasciando una macro-attività non salvata"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Modalità colore"
         time_zone: "Fuso orario"
         mode_guideline: "Alcune modalità sovrascriveranno i colori personalizzati del tema per l'accessibilità e la leggibilità. Seleziona la modalità Chiara per il supporto completo del tema personalizzato."
@@ -1481,10 +1486,19 @@ it:
           typed_dag:
             circular_dependency: "La relazione crea un riferimento circolare."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "non può essere modificato per le relazioni esistenti."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "non può essere modificato per le relazioni esistenti."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "Il gestore SCM non è disponibile"
           not_whitelisted: "non è consentito dalla configurazione."
@@ -1890,6 +1904,7 @@ it:
   button_add_watcher: "Aggiungi osservatore"
   button_annotate: "Annota"
   button_apply: "Applica"
+  button_apply_changes: "Applica modifiche"
   button_archive: "Archivo"
   button_back: "Indietro"
   button_cancel: "Cancella"
@@ -1939,8 +1954,8 @@ it:
   button_rollback: "Ripristina a questa versione"
   button_save: "Salva"
   button_save_as: "Salva come"
-  button_apply_changes: "Applica modifiche"
   button_save_back: "Salva e ritorna"
+  button_select: "Select"
   button_set_reminder: "Imposta promemoria"
   button_show: "Mostra"
   button_sort: "Ordina"
@@ -2795,6 +2810,7 @@ it:
   label_required_disk_storage: "Spazio disco richiesto"
   label_send_invitation: Invia invito
   label_calculated_value: "Valore calcolato"
+  label_change_parent: "Change parent"
   label_change_plural: "Modifiche"
   label_change_properties: "Cambia proprietà"
   label_change_status: "Cambia stato"
@@ -4262,6 +4278,7 @@ it:
   text_access_token_hint: "I token di accesso consentono di concedere ad applicazioni esterne l'accesso alle risorse in OpenProject."
   text_analyze: "Analizzare ulteriormente: %{subject}"
   text_are_you_sure: "Sei sicuro?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Vuoi davvero continuare?"
   text_are_you_sure_with_children: "Eliminare la macro-attività e tutte le sue sotto-attività?"
   text_are_you_sure_with_project_custom_fields: "L'eliminazione di questo attributo eliminerà anche i suoi valori in tutti i progetti. Continuare?"

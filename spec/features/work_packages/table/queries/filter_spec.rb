@@ -613,6 +613,7 @@ RSpec.describe "filter work packages", :js do
 
     it "filters between date by updated_at" do
       wp_table.visit!
+      wait_for_network_idle
       loading_indicator_saveguard
       wp_table.expect_work_package_listed wp_updated_today, wp_updated_3d_ago, wp_updated_5d_ago
 
@@ -623,7 +624,7 @@ RSpec.describe "filter work packages", :js do
                             [4.days.ago.to_date.iso8601, 2.days.ago.to_date.iso8601],
                             "updatedAt"
 
-      wait_for_reload
+      wait_for_network_idle
       loading_indicator_saveguard
 
       wp_table.expect_work_package_listed wp_updated_3d_ago
@@ -633,7 +634,7 @@ RSpec.describe "filter work packages", :js do
 
       filters.remove_filter "updatedAt"
 
-      wait_for_reload
+      wait_for_network_idle
       loading_indicator_saveguard
       wp_table.expect_work_package_listed wp_updated_today, wp_updated_3d_ago, wp_updated_5d_ago
 
@@ -649,6 +650,7 @@ RSpec.describe "filter work packages", :js do
 
       wp_table.visit_query(last_query)
 
+      wait_for_network_idle
       loading_indicator_saveguard
       wp_table.expect_work_package_listed wp_updated_3d_ago
       wp_table.ensure_work_package_not_listed! wp_updated_today, wp_updated_5d_ago

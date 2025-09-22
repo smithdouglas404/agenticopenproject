@@ -143,7 +143,7 @@ module Admin
             label: I18n.t(:label_change_parent),
             tag: :a,
             content_arguments: { data: { controller: "async-dialog" } },
-            href: change_parent_dialog_custom_field_item_path(custom_field_id: @root.custom_field_id, id: model.id)
+            href: change_parent_custom_field_item_path(custom_field_id: @root.custom_field_id, id: model.id)
           ) { it.with_leading_visual_icon(icon: "arrow-switch") }
         end
 
@@ -199,7 +199,7 @@ module Admin
           menu.with_item(label: I18n.t(:button_delete),
                          scheme: :danger,
                          tag: :a,
-                         href: deletion_dialog_custom_field_item_path(custom_field_id: @root.custom_field_id, id: model.id),
+                         href: delete_custom_field_item_path(custom_field_id: @root.custom_field_id, id: model.id),
                          content_arguments: { data: { controller: "async-dialog" } }) do |item|
             item.with_leading_visual_icon(icon: :trash)
           end

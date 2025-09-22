@@ -697,9 +697,7 @@ vi:
         excluded_from_totals: "Loại trừ khỏi tổng số"
   themes:
     dark: "Dark"
-    dark_high_contrast: "Dark high contrast"
     light: "Sáng"
-    light_high_contrast: "Sáng, độ tương phản cao"
     sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
@@ -1199,6 +1197,13 @@ vi:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "Cảnh báo tôi khi rời khỏi gói công việc với thay đổi chưa lưu"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Color mode"
         time_zone: "Múi giờ"
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
@@ -1475,10 +1480,19 @@ vi:
           typed_dag:
             circular_dependency: "Mối quan hệ tạo ra một vòng tròn các mối quan hệ."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "Nhà cung cấp SCM không có sẵn"
           not_whitelisted: "không được cấu hình cho phép."
@@ -1869,6 +1883,7 @@ vi:
   button_add_watcher: "Thêm người theo dõi"
   button_annotate: "Chú giải"
   button_apply: "Áp dụng"
+  button_apply_changes: "Áp dụng thay đổi"
   button_archive: "Lưu trữ"
   button_back: "Quay lại"
   button_cancel: "Hủy"
@@ -1918,8 +1933,8 @@ vi:
   button_rollback: "Quay trở lại phiên bản này"
   button_save: "Lưu"
   button_save_as: "Lưu dưới dạng"
-  button_apply_changes: "Áp dụng thay đổi"
   button_save_back: "Lưu và trở lại"
+  button_select: "Select"
   button_set_reminder: "Set reminder"
   button_show: "Hiện"
   button_sort: "Sắp xếp"
@@ -2753,6 +2768,7 @@ vi:
   label_required_disk_storage: "Ổ đĩa lưu trữ bắt buộc"
   label_send_invitation: Gửi lời mời
   label_calculated_value: "Calculated value"
+  label_change_parent: "Change parent"
   label_change_plural: "Thay đổi"
   label_change_properties: "Thay đổi những thuộc tính"
   label_change_status: "Đổi trạng thái"
@@ -4218,6 +4234,7 @@ vi:
   text_access_token_hint: "Mã truy cập cho phép bạn cấp quyền cho các ứng dụng bên ngoài truy cập tài nguyên trong OpenProject."
   text_analyze: "Phân tích thêm: %{subject}"
   text_are_you_sure: "Bạn có chắc không?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Bạn có chắc chắn muốn tiếp tục không?"
   text_are_you_sure_with_children: "Xóa gói công việc và tất cả các gói công việc con?"
   text_are_you_sure_with_project_custom_fields: "Xóa thuộc tính này cũng sẽ xóa các giá trị của nó trong tất cả các dự án. Bạn có chắc chắn muốn làm điều này không?"

@@ -812,7 +812,7 @@ RSpec.describe Queries::Factory,
     end
 
     context "without id, as non admin and with a non existing custom field id",
-            with_settings: { enabled_projects_columns: %w[name created_at cf_1 cf_42] } do
+            with_settings: { enabled_projects_columns: %w[name latest_activity_at cf_1 cf_42] } do
       before do
         custom_field
       end

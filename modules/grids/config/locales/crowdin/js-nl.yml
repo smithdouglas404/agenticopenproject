@@ -21,6 +21,8 @@ nl:
           title: 'Nieuws'
           at: 'bij'
           no_results: 'Niets nieuws om te rapporteren.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Projectbeschrijving'
           no_results: "Er is nog geen beschrijving geschreven. Er kan een vermelding worden verstrekt in de 'Projectinstellingen'."

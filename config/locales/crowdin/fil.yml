@@ -704,9 +704,7 @@ fil:
         excluded_from_totals: "Excluded from totals"
   themes:
     dark: "Dark"
-    dark_high_contrast: "Dark high contrast"
     light: "Light"
-    light_high_contrast: "Light high contrast"
     sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
@@ -1207,6 +1205,13 @@ fil:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "Balaan mo ako kung aalais ng worj package na walang pag-save ng pagbabago"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Color mode"
         time_zone: "Time zone"
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
@@ -1484,10 +1489,19 @@ fil:
           typed_dag:
             circular_dependency: "Ang relasyon ay lumilikha ng mga bilog na relasyon."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "Ang SCM vendor ay hindi available"
           not_whitelisted: "ay hindi pinayagan ng kumpigurasyon."
@@ -1893,6 +1907,7 @@ fil:
   button_add_watcher: "Magdagdag ng manunuod"
   button_annotate: "Anotasyon"
   button_apply: "Ilagay"
+  button_apply_changes: "Apply changes"
   button_archive: "I-archive"
   button_back: "Bumalik"
   button_cancel: "Kanselahin"
@@ -1942,8 +1957,8 @@ fil:
   button_rollback: "Pagbabalik ng bersyon ito"
   button_save: "I-save"
   button_save_as: "I-save bilang"
-  button_apply_changes: "Apply changes"
   button_save_back: "I-save at bumalik"
+  button_select: "Select"
   button_set_reminder: "Set reminder"
   button_show: "Ipakita"
   button_sort: "Ayusin"
@@ -2798,6 +2813,7 @@ fil:
   label_required_disk_storage: "Kinakailangan lalagyan ng disk"
   label_send_invitation: Magpadala ng imbitasyon
   label_calculated_value: "Calculated value"
+  label_change_parent: "Change parent"
   label_change_plural: "Pagbabago"
   label_change_properties: "Baguhin ang mga properry"
   label_change_status: "Baguhin ang estado"
@@ -4263,6 +4279,7 @@ fil:
   text_access_token_hint: "Ang access token ay pinayagan kang pagbigyan ang external applications access sa pinagkukunan sa OpenProject."
   text_analyze: "Karagdagang pagsusuri: %{subject}"
   text_are_you_sure: "Sigurado ka ba?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Are you sure you want to continue?"
   text_are_you_sure_with_children: "Burahi ang work packaage at lahag ng batang work pckage?"
   text_are_you_sure_with_project_custom_fields: "Deleting this attribute will also delete its values in all projects. Are you sure you want to do this?"

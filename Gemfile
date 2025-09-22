@@ -198,7 +198,7 @@ gem "aws-sdk-core", "~> 3.107"
 # File upload via fog + screenshots on travis
 gem "aws-sdk-s3", "~> 1.91"
 
-gem "openproject-token", "~> 7.3.0"
+gem "openproject-token", "~> 7.4.0"
 
 gem "plaintext", "~> 0.3.2"
 
@@ -217,13 +217,18 @@ gem "dry-validation"
 gem "store_attribute", "~> 2.0"
 
 # Appsignal integration
-gem "appsignal", "~> 4.2", require: false
+gem "appsignal", "~> 4.7", require: false
 
 # Yabeda integration
 gem "yabeda-activerecord"
 gem "yabeda-prometheus-mmap", require: false
 gem "yabeda-puma-plugin"
 gem "yabeda-rails"
+
+# opentelemetry
+gem "opentelemetry-exporter-otlp", "~> 0.30.0", require: false
+gem "opentelemetry-instrumentation-all", "~> 0.82.0", require: false
+gem "opentelemetry-sdk", "~> 1.9", require: false
 
 gem "view_component", "~> 4.0.2"
 # Lookbook
@@ -412,6 +417,6 @@ gemfiles.each do |file|
   send(:eval_gemfile, file) if File.readable?(file)
 end
 
-gem "openproject-octicons", "~>19.28.0"
-gem "openproject-octicons_helper", "~>19.28.0"
-gem "openproject-primer_view_components", "~>0.72.0"
+gem "openproject-octicons", "~>19.29.0"
+gem "openproject-octicons_helper", "~>19.29.0"
+gem "openproject-primer_view_components", "~>0.72.1"

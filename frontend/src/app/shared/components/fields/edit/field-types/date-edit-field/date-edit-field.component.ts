@@ -34,8 +34,7 @@ import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 
 @Component({
   template: `
-    <op-basic-single-date-picker
-      [(ngModel)]="value"
+    <op-basic-single-date-picker [(ngModel)]="value"
       (keydown.escape)="onCancel()"
       (keydown.enter)="handler.handleUserSubmit()"
       (picked)="handler.handleUserSubmit()"
@@ -44,7 +43,7 @@ import { TimezoneService } from 'core-app/core/datetime/timezone.service';
       [required]="required"
       [disabled]="inFlight"
       [opAutofocus]="autofocus"
-    ></op-basic-single-date-picker>
+     />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,

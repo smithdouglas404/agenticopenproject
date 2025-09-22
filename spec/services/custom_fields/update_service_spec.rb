@@ -52,6 +52,19 @@ RSpec.describe CustomFields::UpdateService, type: :model do
       allow(contract_class).to receive(:new).with(custom_field, user, options: {}).and_return(contract_instance)
     end
 
+    describe "field_format attribute" do
+      context "when trying to change it" do
+        let!(:custom_field) { create(:boolean_wp_custom_field) }
+        let(:attributes) { { field_format: "text" } }
+
+        it "is ignored" do
+          expect(subject).to be_success
+
+          expect(custom_field.reload).to have_attributes(field_format: "bool")
+        end
+      end
+    end
+
     describe "calculated value custom field", with_flag: { calculated_value_project_attribute: true } do
       shared_let(:project1) { create(:project) }
       shared_let(:project2) { create(:project) }

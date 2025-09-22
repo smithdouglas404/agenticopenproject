@@ -31,6 +31,7 @@ import moment from 'moment';
 
 import { ConfigurationResource } from 'core-app/features/hal/resources/configuration-resource';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
+import { type DurationFormat } from 'core-app/shared/helpers/chronic_duration';
 
 @Injectable({ providedIn: 'root' })
 export class ConfigurationService {
@@ -103,7 +104,7 @@ export class ConfigurationService {
     return this.systemPreference('dateFormat');
   }
 
-  public durationFormat():string {
+  public durationFormat():DurationFormat {
     return this.systemPreference('durationFormat');
   }
 

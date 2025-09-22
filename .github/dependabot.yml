@@ -27,6 +27,7 @@ updates:
     ignore:
       - dependency-name: "@angular*"
         update-types: ["version-update:semver-major"]
+      - dependency-name: "@openproject/octicons"
       - dependency-name: "@openproject/primer-view-components"
   - package-ecosystem: "bundler"
     directory: "/"
@@ -38,6 +39,8 @@ updates:
         patterns:
           - "aws-*"
     ignore:
+      - dependency_name: "openproject-octicons"
+      - dependency-name: "openproject-octicons_helper"
       - dependency-name: "openproject-primer_view_components"
   - package-ecosystem: "github-actions"
     directory: "/"

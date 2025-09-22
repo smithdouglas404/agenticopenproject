@@ -119,10 +119,9 @@
               [href]="action.href.url"
               [target]="action.href.target"
             >
-              <ng-container
-                [ngTemplateOutlet]="floatingAction"
+              <ng-container [ngTemplateOutlet]="floatingAction"
                 [ngTemplateOutletContext]="{icon:action.iconClass}"
-              ></ng-container>
+               />
             </a>
           } @else if (!!action.action) {
             <button
@@ -130,10 +129,9 @@
               [title]="action.title"
               (click)="action.action()"
             >
-              <ng-container
-                [ngTemplateOutlet]="floatingAction"
+              <ng-container [ngTemplateOutlet]="floatingAction"
                 [ngTemplateOutletContext]="{icon:action.iconClass}"
-              ></ng-container>
+               />
             </button>
           }
         }

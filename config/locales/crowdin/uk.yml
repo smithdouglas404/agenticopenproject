@@ -713,9 +713,7 @@ uk:
         excluded_from_totals: "Виключено з підсумків"
   themes:
     dark: "Темна"
-    dark_high_contrast: "Темна, високий контраст"
     light: "Світла"
-    light_high_contrast: "Світла, високий контраст"
     sync_with_os: "Автоматично (колірний режим ОС)"
   types:
     index:
@@ -1217,6 +1215,13 @@ uk:
         auto_hide_popups: "Автоматично приховувати банери про успішне виконання"
         auto_hide_popups_caption: "Якщо ввімкнено, зелені банери про успішне виконання автоматично зникатимуть через 5 секунд."
         warn_on_leaving_unsaved: "Попереджати мене, коли залишив робочий пакет із незбереженими змінами"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Колірний режим"
         time_zone: "Часовий пояс"
         mode_guideline: "Деякі режими перезаписують користувацькі кольори теми, щоб поліпшити доступність і читабельність. Виберіть світлий режим, якщо потрібна повна підтримка користувацької теми."
@@ -1496,10 +1501,19 @@ uk:
           typed_dag:
             circular_dependency: "Відносини створюють коло відносин."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "не можна змінити для наявних зв’язків."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "не можна змінити для наявних зв’язків."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "Постачальник SCM недоступний"
           not_whitelisted: "не дозволяється конфігурацією."
@@ -1935,6 +1949,7 @@ uk:
   button_add_watcher: "Додати спостерігача"
   button_annotate: "Коментувати"
   button_apply: "Застосувати"
+  button_apply_changes: "Застосувати зміни"
   button_archive: "Архів"
   button_back: "Назад"
   button_cancel: "Скасувати"
@@ -1984,8 +1999,8 @@ uk:
   button_rollback: "Відкотити до даної версії"
   button_save: "Зберегти"
   button_save_as: "Зберегти як"
-  button_apply_changes: "Застосувати зміни"
   button_save_back: "Зберегти та повернутися назад"
+  button_select: "Select"
   button_set_reminder: "Установити нагадування"
   button_show: "Показати"
   button_sort: "Сортувати"
@@ -2882,6 +2897,7 @@ uk:
   label_required_disk_storage: "Необхідне місце на диску"
   label_send_invitation: Надіслати запрошення
   label_calculated_value: "Розраховане значення"
+  label_change_parent: "Change parent"
   label_change_plural: "Зміни"
   label_change_properties: "Змінити властивості"
   label_change_status: "Змінити статус"
@@ -4351,6 +4367,7 @@ uk:
   text_access_token_hint: "Маркери доступу дозволяють надавати зовнішнім програмам доступ до ресурсів у OpenProject."
   text_analyze: "Подальший аналіз: %{subject}"
   text_are_you_sure: "Ви впевненені?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Хочете продовжити?"
   text_are_you_sure_with_children: "Видалити робочий пакет і всі дочірні робочі пакети?"
   text_are_you_sure_with_project_custom_fields: "Видалення цього атрибута також призведе до видалення його значень у всіх проєктах. Ви впевнені?"

@@ -716,9 +716,7 @@ ru:
         excluded_from_totals: "Исключен из итогов"
   themes:
     dark: "Тёмная"
-    dark_high_contrast: "Темный высокий контраст"
     light: "Светлая"
-    light_high_contrast: "Светлый высокий контраст"
     sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
@@ -1221,6 +1219,13 @@ ru:
         auto_hide_popups: "Автоматически скрывать успешные баннеры"
         auto_hide_popups_caption: "Когда эта функция включена, зеленые успешные баннеры автоматически исчезают через 5 секунд."
         warn_on_leaving_unsaved: "При покидании рабочего пакета предупреждать о не сохраненных изменениях"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Color mode"
         time_zone: "Часовой пояс"
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
@@ -1500,10 +1505,19 @@ ru:
           typed_dag:
             circular_dependency: "Зацикливание зависимостей."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "не может быть изменен для существующих отношений."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "не может быть изменен для существующих отношений."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "SCM поставщик не доступен"
           not_whitelisted: "не допускается конфигурацией."
@@ -1939,6 +1953,7 @@ ru:
   button_add_watcher: "Добавить наблюдателя"
   button_annotate: "Комментировать"
   button_apply: "Применить"
+  button_apply_changes: "Применить изменения"
   button_archive: "Архив"
   button_back: "Назад"
   button_cancel: "Отмена"
@@ -1988,8 +2003,8 @@ ru:
   button_rollback: "Откатиться до этого этапа"
   button_save: "Сохранить"
   button_save_as: "Сохранить как"
-  button_apply_changes: "Применить изменения"
   button_save_back: "Сохранить и вернуться"
+  button_select: "Select"
   button_set_reminder: "Установить напоминание"
   button_show: "Показать"
   button_sort: "Сортировать"
@@ -2886,6 +2901,7 @@ ru:
   label_required_disk_storage: "Требуется место на диске"
   label_send_invitation: Отправить приглашение
   label_calculated_value: "Рассчитанное значение"
+  label_change_parent: "Change parent"
   label_change_plural: "Изменения"
   label_change_properties: "Изменить свойства"
   label_change_status: "Изменить статус"
@@ -3076,7 +3092,7 @@ ru:
   label_journal_diff: "Описание сравнения"
   label_language: "Язык"
   label_languages: "Языки"
-  label_locale: "Language and region"
+  label_locale: "Язык и регион"
   label_jump_to_a_project: "Перейти к проекту..."
   label_keyword_plural: "Ключевые слова"
   label_language_based: "Основанный на языке пользователя"
@@ -4354,6 +4370,7 @@ ru:
   text_access_token_hint: "Маркеры доступа позволяют предоставить внешним приложениям доступ к ресурсам в OpenProject."
   text_analyze: "Дополнительный анализ: %{subject}"
   text_are_you_sure: "Вы уверены?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Вы уверены, что хотите продолжить?"
   text_are_you_sure_with_children: "Удалить пакет работ и все дочерние пакеты работ?"
   text_are_you_sure_with_project_custom_fields: "Удаление этого атрибута также приведет к удалению его значений во всех проектах. Вы уверены, что хотите это сделать?"

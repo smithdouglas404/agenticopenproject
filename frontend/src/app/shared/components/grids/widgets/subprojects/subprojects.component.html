@@ -1,21 +1,23 @@
 <widget-header
-    [name]="widgetName"
-    [editable]="isEditable">
+  [name]="widgetName"
+  [editable]="isEditable">
 
-  <widget-menu
-      slot="menu"
-      [resource]="resource">
-  </widget-menu>
+  <widget-menu slot="menu"
+    [resource]="resource" />
 </widget-header>
 
 <div class="op-widget-box--body">
-  <op-no-results *ngIf="noEntries"
-              [title]="text.noResults">
-  </op-no-results>
-  <span *ngFor="let project of projects; let last = last">
-    <a [href]="projectPath(project)"
-       [textContent]="projectName(project)">
-    </a>
-    <span *ngIf="!last">, </span>
-  </span>
+  @if (noEntries) {
+    <op-no-results [title]="text.noResults" />
+  }
+  @for (project of projects; track project; let last = $last) {
+    <span>
+      <a [href]="projectPath(project)"
+        [textContent]="projectName(project)">
+      </a>
+      @if (!last) {
+        <span>, </span>
+      }
+    </span>
+  }
 </div>

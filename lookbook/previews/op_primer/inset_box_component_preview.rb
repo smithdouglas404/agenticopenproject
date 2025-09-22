@@ -29,6 +29,7 @@
 #++
 
 module OpPrimer
+  # @logical_path OpenProject/Primer
   class InsetBoxComponentPreview < ViewComponent::Preview
     def default
       render OpPrimer::InsetBoxComponent.new do

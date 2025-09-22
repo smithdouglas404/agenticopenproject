@@ -23,7 +23,7 @@
       </div>
     }
 
-    <spot-breadcrumbs [content]="breadcrumbs"></spot-breadcrumbs>
+    <spot-breadcrumbs [content]="breadcrumbs" />
 
     @switch (loading$ | async) {
       @case ('success') {
@@ -60,10 +60,9 @@
         </div>
       }
       @case ('loading') {
-        <op-loading-file-list
-          class="spot-body-small"
+        <op-loading-file-list class="spot-body-small"
           data-test-selector="op-file-list--loading-indicator"
-        ></op-loading-file-list>
+         />
       }
     }
   </div>

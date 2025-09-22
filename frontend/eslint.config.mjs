@@ -146,6 +146,13 @@ export default defineConfig([
       ...angular.configs.templateRecommended,
       ...angular.configs.templateAccessibility,
     ],
+    rules: {
+      '@angular-eslint/template/elements-content': [
+        'error',
+        { 'allowList': ['textContent'] }
+      ],
+      '@angular-eslint/template/prefer-control-flow': 'error'
+    }
   },
   {
     files: ['**/*.d.ts'],
@@ -217,7 +224,7 @@ export default defineConfig([
   },
   globalIgnores([
     '**/.eslintrc.js',
+    'coverage/',
     '**/vendor',
-    'src/app/shared/helpers/chronic_duration.js',
   ]),
 ]);

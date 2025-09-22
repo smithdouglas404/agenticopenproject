@@ -42,6 +42,7 @@ module Primer
                     :active_user,
                     :hocuspocus_url,
                     :hocuspocus_access_token,
+                    :open_project_url,
                     :document_id
 
         delegate :name, to: :@input
@@ -65,6 +66,7 @@ module Primer
           @document_id = document_id
           @hocuspocus_url = Setting.collaborative_editing_hocuspocus_url
           @hocuspocus_access_token = ::CollaborativeEditing::DocumentAccessTokenGenerator.call(document_id, value)
+          @open_project_url = root_url
         end
       end
     end

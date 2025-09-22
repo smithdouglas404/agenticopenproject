@@ -711,9 +711,7 @@ ro:
         excluded_from_totals: "Exclus din totaluri"
   themes:
     dark: "Dark"
-    dark_high_contrast: "Dark high contrast"
     light: "Luminos"
-    light_high_contrast: "Luminos contrast mare"
     sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
@@ -1215,6 +1213,13 @@ ro:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "Când este activată, bannerele de succes verzi vor dispărea automat după 5 secunde."
         warn_on_leaving_unsaved: "Avertizează când părăsesc un pachet de lucru cu modificări nesalvate"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Color mode"
         time_zone: "Fus orar"
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
@@ -1493,10 +1498,19 @@ ro:
           typed_dag:
             circular_dependency: "Relația creează un cerc închis."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "nu poate fi schimbat pentru relaţiile existente."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "nu poate fi schimbat pentru relaţiile existente."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "Nu este disponibil furnizorul de SCM"
           not_whitelisted: "nu este permisă de configurație."
@@ -1917,6 +1931,7 @@ ro:
   button_add_watcher: "Adaugă observator"
   button_annotate: "Adnotare"
   button_apply: "Aplică"
+  button_apply_changes: "Aplică modificările"
   button_archive: "Arhivează"
   button_back: "Înapoi"
   button_cancel: "Anulează"
@@ -1966,8 +1981,8 @@ ro:
   button_rollback: "Revenire la această versiune"
   button_save: "Salvează"
   button_save_as: "Salvează ca"
-  button_apply_changes: "Aplică modificările"
   button_save_back: "Salvează și înapoi"
+  button_select: "Select"
   button_set_reminder: "Setează memento"
   button_show: "Afişare"
   button_sort: "Sortare"
@@ -2843,6 +2858,7 @@ ro:
   label_required_disk_storage: "Spațiu pe disc necesar"
   label_send_invitation: Trimite invitație
   label_calculated_value: "Calculated value"
+  label_change_parent: "Change parent"
   label_change_plural: "Modificări"
   label_change_properties: "Modificare proprietăţi"
   label_change_status: "Modificare stare"
@@ -4311,6 +4327,7 @@ ro:
   text_access_token_hint: "Tichetele de acces permit aplicaţiilor externe accesul la resurse din OpenProject."
   text_analyze: "Continuare analiză: %{subject}"
   text_are_you_sure: "Sunteți sigur?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Sigur dorești să continui?"
   text_are_you_sure_with_children: "Doriți ștergerea pachetului de lucru și a tuturor pachetelor fii?"
   text_are_you_sure_with_project_custom_fields: "Deleting this attribute will also delete its values in all projects. Are you sure you want to do this?"

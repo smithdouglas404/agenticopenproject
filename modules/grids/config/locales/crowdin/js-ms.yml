@@ -21,6 +21,8 @@ ms:
           title: 'Berita'
           at: 'pada'
           no_results: 'Tiada perkara baharu untuk dilaporkan.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Deskripsi projek'
           no_results: "Tiada deskripsi yang tertulis lagi. Deskripsi boleh diberikan di 'Tetapan Projek'."

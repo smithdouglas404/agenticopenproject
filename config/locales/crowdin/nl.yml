@@ -700,9 +700,7 @@ nl:
         excluded_from_totals: "Uitgesloten van totalen"
   themes:
     dark: "Donker"
-    dark_high_contrast: "Donker hoog contrast"
     light: "Licht"
-    light_high_contrast: "Licht hoog contrast"
     sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
@@ -1203,6 +1201,13 @@ nl:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "Mij waarschuwen bij het verlaten van een werkpakket met niet-opgeslagen wijzigingen"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Color mode"
         time_zone: "Tijdzone"
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
@@ -1480,10 +1485,19 @@ nl:
           typed_dag:
             circular_dependency: "De relatie wordt gemaakt van een kring van relaties."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "SCM-leverancier is niet beschikbaar"
           not_whitelisted: "is niet toegestaan door de configuratie."
@@ -1889,6 +1903,7 @@ nl:
   button_add_watcher: "Watcher toevoegen"
   button_annotate: "Aantekeningen"
   button_apply: "Toepassen"
+  button_apply_changes: "Veranderingen doorvoeren"
   button_archive: "Archief"
   button_back: "Terug"
   button_cancel: "Annuleren"
@@ -1938,8 +1953,8 @@ nl:
   button_rollback: "Terugdraaien naar deze versie"
   button_save: "Opslaan"
   button_save_as: "Opslaan als"
-  button_apply_changes: "Veranderingen doorvoeren"
   button_save_back: "Opslaan en terug"
+  button_select: "Select"
   button_set_reminder: "Set reminder"
   button_show: "Toon"
   button_sort: "Sorteren"
@@ -2794,6 +2809,7 @@ nl:
   label_required_disk_storage: "Vereiste schijfruimte"
   label_send_invitation: Verstuur uitnodiging
   label_calculated_value: "Calculated value"
+  label_change_parent: "Change parent"
   label_change_plural: "Wijzigingen"
   label_change_properties: "Eigenschappen wijzigen"
   label_change_status: "Status wijzigen"
@@ -4260,6 +4276,7 @@ nl:
   text_access_token_hint: "Toegangstokens kunnen u externe toepassingen toegang verlenen tot bronnen in OpenProject."
   text_analyze: "Verdere analyse: %{subject}"
   text_are_you_sure: "Weet u het zeker?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Weet u zeker dat u wilt doorgaan?"
   text_are_you_sure_with_children: "Verwijder werk pakket en alle kinderen daarvan?"
   text_are_you_sure_with_project_custom_fields: "Deleting this attribute will also delete its values in all projects. Are you sure you want to do this?"

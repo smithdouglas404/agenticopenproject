@@ -32,7 +32,20 @@ class Queries::Projects::Filters::FavoritedFilter < Queries::Projects::Filters::
   include Queries::Filters::Shared::BooleanFilter
 
   def self.key
-    :favorited
+    # The filter used to be called favored.
+    # To support:
+    # * Stored queries
+    # * API clients
+    # having that filter, the old key is also supported.
+    /favorited|favored/
+  end
+
+  def self.all_for(context = nil)
+    # Override superclass method to support the old name of the filter (see above).
+    [
+      create!(name: :favorited, context:),
+      create!(name: :favored, context:)
+    ]
   end
 
   def human_name

@@ -696,9 +696,7 @@ ja:
         excluded_from_totals: "合計から除外"
   themes:
     dark: "ダーク"
-    dark_high_contrast: "暗い高コントラスト"
     light: "ライト"
-    light_high_contrast: "明るいコントラストが高い"
     sync_with_os: "自動(OSのテーマ設定に追従)"
   types:
     index:
@@ -1198,6 +1196,13 @@ ja:
         auto_hide_popups: "サクセスバナーを自動的に隠す"
         auto_hide_popups_caption: "有効にすると、緑色のサクセスバナーは5秒後に自動的に消えます。"
         warn_on_leaving_unsaved: "変更を保存せずにワークパッケージから移動するときに警告"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "カラーモード"
         time_zone: "タイムゾーン"
         mode_guideline: "いくつかのモードはアクセシビリティや読みやすさのために選択したテーマカラーを上書きします。\n完全なカスタムテーマを使用するにはライトモードを選択してください。"
@@ -1474,10 +1479,19 @@ ja:
           typed_dag:
             circular_dependency: "関係が、関係のループを作ります。"
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "既存のリレーションを変更することはできません。"
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "既存のリレーションを変更することはできません。"
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "SCMベンダーは使用できません。"
           not_whitelisted: "は設定で許可されていません。"
@@ -1868,6 +1882,7 @@ ja:
   button_add_watcher: "ウォッチャーを追加"
   button_annotate: "注釈を付ける"
   button_apply: "適用"
+  button_apply_changes: "保存"
   button_archive: "アーカイブ"
   button_back: "戻る"
   button_cancel: "キャンセル"
@@ -1917,8 +1932,8 @@ ja:
   button_rollback: "このバージョンにロールバック"
   button_save: "保存"
   button_save_as: "名前をつけて保存"
-  button_apply_changes: "保存"
   button_save_back: "保存して戻る"
+  button_select: "Select"
   button_set_reminder: "リマインダーを設定"
   button_show: "表示"
   button_sort: "並べ替え"
@@ -2752,6 +2767,7 @@ ja:
   label_required_disk_storage: "必要なディスク ストレージ"
   label_send_invitation: 招待状を送信
   label_calculated_value: "計算された値"
+  label_change_parent: "Change parent"
   label_change_plural: "変更"
   label_change_properties: "プロパティの変更"
   label_change_status: "ステータスの変更"
@@ -3379,7 +3395,7 @@ ja:
       including_mention_plural: "%{number_mentioned} のメンションを含む"
       unread_notification_singular: "1通の未読通知"
       unread_notification_plural: "%{number_unread} 未読の通知"
-      you_have: "持っている"
+      you_have: "あなたへの"
     logo_alt_text: "ロゴ"
     mention:
       subject: "%{user_name} さんが #%{id} - %{subject} であなたをメンションしました"
@@ -3387,7 +3403,7 @@ ja:
       center: "通知センターへ"
       see_in_center: "通知センターにコメントを表示"
       settings: "メール設定の変更"
-    salutation: "こんにちは %{user}"
+    salutation: "%{user}さん，こんにちは"
     salutation_full_name: "フルネーム"
     work_packages:
       created_at: "%{timestamp} で %{user} によって作成されました "
@@ -4217,6 +4233,7 @@ ja:
   text_access_token_hint: "アクセストークンで、外部アプリケーションが OpenProject のリソースへのアクセスを許可することができます。"
   text_analyze: "さらに分析: %{subject}"
   text_are_you_sure: "よろしいですか？"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "続行してもよろしいですか？"
   text_are_you_sure_with_children: "仕事項目と子項目を削除してもよろしいですか？"
   text_are_you_sure_with_project_custom_fields: "この属性を削除すると、すべてのプロジェクトの値も削除されます。よろしいですか？"

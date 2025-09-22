@@ -704,9 +704,7 @@ si:
         excluded_from_totals: "Excluded from totals"
   themes:
     dark: "Dark"
-    dark_high_contrast: "Dark high contrast"
     light: "Light"
-    light_high_contrast: "Light high contrast"
     sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
@@ -1207,6 +1205,13 @@ si:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "නොගැලවූ වෙනස්කම් සහිත වැඩ පැකේජයකින් පිටවන විට මට අනතුරු අඟවන්න"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Color mode"
         time_zone: "වේලා කලාපය"
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
@@ -1484,10 +1489,19 @@ si:
           typed_dag:
             circular_dependency: "සම්බන්ධතාවය සබඳතා කවයක් නිර්මාණය කරයි."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "SCM වෙළෙන්දා ලබා ගත නොහැක"
           not_whitelisted: "වින්යාසය මගින් අවසර නැත."
@@ -1893,6 +1907,7 @@ si:
   button_add_watcher: "මුරකරු එකතු කරන්න"
   button_annotate: "ඇනෝටේට්"
   button_apply: "අයදුම් කරන්න"
+  button_apply_changes: "Apply changes"
   button_archive: "ලේඛනාගාරය"
   button_back: "ආපසු"
   button_cancel: "අවලංගු කරන්න"
@@ -1942,8 +1957,8 @@ si:
   button_rollback: "මෙම අනුවාදය වෙත ආපසු යන්න"
   button_save: "සුරකින්න"
   button_save_as: "ලෙස සුරකින්න"
-  button_apply_changes: "Apply changes"
   button_save_back: "සුරකින්න සහ නැවත"
+  button_select: "Select"
   button_set_reminder: "Set reminder"
   button_show: "පෙන්වන්න"
   button_sort: "වර්ග"
@@ -2798,6 +2813,7 @@ si:
   label_required_disk_storage: "අවශ්ය තැටි ගබඩා"
   label_send_invitation: ආරාධනය යවන්න
   label_calculated_value: "Calculated value"
+  label_change_parent: "Change parent"
   label_change_plural: "වෙනස්කම්"
   label_change_properties: "ගුණාංග වෙනස් කරන්න"
   label_change_status: "තත්ත්වය වෙනස් කරන්න"
@@ -4265,6 +4281,7 @@ si:
   text_access_token_hint: "ප්රවේශ ටෝකන ඔබට OpenProject හි සම්පත් සඳහා බාහිර යෙදුම් ප්රවේශය ලබා දීමට ඉඩ සලසයි."
   text_analyze: "තවදුරටත් විශ්ලේෂණය: %{subject}"
   text_are_you_sure: "ඔබට විශ්වාසද?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Are you sure you want to continue?"
   text_are_you_sure_with_children: "වැඩ පැකේජය සහ සියලුම ළමා වැඩ පැකේජ මකන්න?"
   text_are_you_sure_with_project_custom_fields: "Deleting this attribute will also delete its values in all projects. Are you sure you want to do this?"

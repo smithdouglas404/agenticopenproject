@@ -703,9 +703,7 @@ tr:
         excluded_from_totals: "Toplamlardan hariç tutulanlar"
   themes:
     dark: "Koyu"
-    dark_high_contrast: "Dark high contrast"
     light: "Açık"
-    light_high_contrast: "Yüksek kontrastlı açık"
     sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
@@ -1206,6 +1204,13 @@ tr:
         auto_hide_popups: "Başarı uyarılarını otomatik olarak gizle"
         auto_hide_popups_caption: "Etkinleştirildiğinde, yeşil başarı uyarıları 5 saniye sonra otomatik olarak kaybolacaktır."
         warn_on_leaving_unsaved: "İş paketlerinden ayrılırken kaydedilmemiş değişiklik olduğunda beni uyar"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Color mode"
         time_zone: "Zaman dilimi"
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
@@ -1483,10 +1488,19 @@ tr:
           typed_dag:
             circular_dependency: "İlişki, bir ilişki çemberi oluşturur."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "mevcut ilişkiler için değiştirilemez."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "mevcut ilişkiler için değiştirilemez."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "SCM satıcısı yok"
           not_whitelisted: "yapılandırmasına izin verilmiyor."
@@ -1892,6 +1906,7 @@ tr:
   button_add_watcher: "Takip eden ekle"
   button_annotate: "Atanan"
   button_apply: "Uygula"
+  button_apply_changes: "Değişiklikleri uygula"
   button_archive: "Arşivle"
   button_back: "Geri"
   button_cancel: "İptal"
@@ -1941,8 +1956,8 @@ tr:
   button_rollback: "Bu sürüme geri al"
   button_save: "Kaydet"
   button_save_as: "Farklı kaydet"
-  button_apply_changes: "Değişiklikleri uygula"
   button_save_back: "Kaydet ve geri dön"
+  button_select: "Select"
   button_set_reminder: "Hatırlatma ayarla"
   button_show: "Göster"
   button_sort: "Sırala"
@@ -2797,6 +2812,7 @@ tr:
   label_required_disk_storage: "Gerekli disk alanı"
   label_send_invitation: Davet gönder
   label_calculated_value: "Calculated value"
+  label_change_parent: "Change parent"
   label_change_plural: "Değişiklikler"
   label_change_properties: "Özellikleri değiştir"
   label_change_status: "Durumu değiştir"
@@ -4262,6 +4278,7 @@ tr:
   text_access_token_hint: "Erişim belirteçleri, OpenProject içindeki kaynaklara harici uygulamalar erişimi vermenizi sağlar."
   text_analyze: "Daha fazla analiz: %{subject}"
   text_are_you_sure: "Emin misiniz?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Devam etmek istediğinize emin misiniz?"
   text_are_you_sure_with_children: "Sil iş paketi ve tüm alt çalışma paketlerini?"
   text_are_you_sure_with_project_custom_fields: "Deleting this attribute will also delete its values in all projects. Are you sure you want to do this?"

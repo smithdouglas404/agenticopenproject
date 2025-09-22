@@ -21,6 +21,8 @@ uk:
           title: 'Новини'
           at: 'на'
           no_results: 'Нічого нового для звітування.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Опис проекту'
           no_results: "Опис ще не створено. Можна вказати в налаштуваннях проекту."

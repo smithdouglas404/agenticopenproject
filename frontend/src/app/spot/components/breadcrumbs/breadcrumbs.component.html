@@ -16,7 +16,7 @@
         (click)="crumb.navigate()"
       >
         @if (crumb.icon) {
-          <ng-container [ngTemplateOutlet]="crumbIcon" [ngTemplateOutletContext]="{icon:crumb.icon}"></ng-container>
+          <ng-container [ngTemplateOutlet]="crumbIcon" [ngTemplateOutletContext]="{icon:crumb.icon}" />
         }
 
         <span [textContent]="crumb.text" class="spot-breadcrumbs--crumb-action-item-text"></span>
@@ -36,7 +36,7 @@
   @if (last) {
     <div class="spot-breadcrumbs--crumb spot-breadcrumbs--crumb_last" data-test-selector="op-breadcrumb">
       @if (crumb.icon) {
-        <ng-container [ngTemplateOutlet]="crumbIcon" [ngTemplateOutletContext]="{icon:crumb.icon}"></ng-container>
+        <ng-container [ngTemplateOutlet]="crumbIcon" [ngTemplateOutletContext]="{icon:crumb.icon}" />
       }
 
       <span class="spot-breadcrumbs--crumb-action-item-text" [textContent]="crumb.text"></span>

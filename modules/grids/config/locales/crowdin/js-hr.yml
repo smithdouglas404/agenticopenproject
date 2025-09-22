@@ -21,6 +21,8 @@ hr:
           title: 'Vijesti'
           at: 'at'
           no_results: 'Nema promjena za izvjestiti.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Opis projekta'
           no_results: "No description has been written yet. One can be provided in the 'Project settings'."

@@ -116,6 +116,10 @@ module Projects
       helpers.format_date(project.latest_activity_at)
     end
 
+    def updated_at
+      helpers.format_date(project.updated_at)
+    end
+
     def required_disk_space
       return "" unless project.required_disk_space.to_i > 0
 

@@ -52,6 +52,7 @@ module Queries::Projects
     filter Filters::TemplatedFilter
     filter Filters::TypeFilter
     filter Filters::TypeaheadFilter
+    filter Filters::UpdatedAtFilter
     filter Filters::UserActionFilter
     filter Filters::VisibleFilter
 
@@ -63,6 +64,7 @@ module Queries::Projects
     order Orders::ProjectStatusOrder
     order Orders::RequiredDiskSpaceOrder
     order Orders::TypeaheadOrder
+    order Orders::UpdatedAtOrder
 
     select Selects::CreatedAt
     select Selects::CustomField
@@ -72,5 +74,6 @@ module Queries::Projects
     select Selects::ProjectPhase
     select Selects::RequiredDiskSpace
     select Selects::Status
+    select Selects::UpdatedAt
   end
 end

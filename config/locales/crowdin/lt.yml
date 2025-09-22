@@ -715,9 +715,7 @@ lt:
         excluded_from_totals: "Excluded from totals"
   themes:
     dark: "Tamsi"
-    dark_high_contrast: "Tamsi kontrastinga"
     light: "Šviesi"
-    light_high_contrast: "Šviesi kontrastinga"
     sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
@@ -1220,6 +1218,13 @@ lt:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "Įspėti mane, kai palieku darbų paketą su neišsaugotais pakeitimais"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Color mode"
         time_zone: "Laiko juosta"
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
@@ -1499,10 +1504,19 @@ lt:
           typed_dag:
             circular_dependency: "Ryšys sukuria ryšių ciklą."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "SCM tiekėjas neprieinamas"
           not_whitelisted: "neleidžiama pagal konfigūraciją."
@@ -1938,6 +1952,7 @@ lt:
   button_add_watcher: "Pridėti stebėtojų"
   button_annotate: "Rašyti pastabą"
   button_apply: "Taikyti"
+  button_apply_changes: "Pritaikyti pakeitimus"
   button_archive: "Archyvuoti"
   button_back: "Atgal"
   button_cancel: "Atšaukti"
@@ -1987,8 +2002,8 @@ lt:
   button_rollback: "Grąžinti į šią versiją"
   button_save: "Išsaugoti"
   button_save_as: "Įrašyti kaip"
-  button_apply_changes: "Pritaikyti pakeitimus"
   button_save_back: "Įrašyti ir grįžti atgal"
+  button_select: "Select"
   button_set_reminder: "Set reminder"
   button_show: "Rodyti"
   button_sort: "Rūšiuoti"
@@ -2885,6 +2900,7 @@ lt:
   label_required_disk_storage: "Reikalinga vieta diske"
   label_send_invitation: Siųsti pakvietimą
   label_calculated_value: "Calculated value"
+  label_change_parent: "Change parent"
   label_change_plural: "Pakeitimai"
   label_change_properties: "Pakeisti nustatymus"
   label_change_status: "Pakeisti būseną"
@@ -4353,6 +4369,7 @@ lt:
   text_access_token_hint: "Prieigos raktai leidžia išorinėms aplikacijoms pasiekti OpenProject resursus."
   text_analyze: "Toliau analizuoti: %{subject}"
   text_are_you_sure: "Ar esate įsitikinę?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Ar tikrai norite tęsti?"
   text_are_you_sure_with_children: "Ištrinti darbų paketą ir visus jo vaikų paketus?"
   text_are_you_sure_with_project_custom_fields: "Ištrynus šį atributą taipogi bus ištrintos ir jo reikšmės visuose projektuose. Ar tikrai norite tai padaryti?"

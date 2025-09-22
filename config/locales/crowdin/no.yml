@@ -703,9 +703,7 @@
         excluded_from_totals: "Unntatt fra totaler"
   themes:
     dark: "Mørk"
-    dark_high_contrast: "Dark high contrast"
     light: "Lyst"
-    light_high_contrast: "Lys høy kontrast"
     sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
@@ -1206,6 +1204,13 @@
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "Varsle meg når jeg forlater en arbeidspakke med ulagrede endringer"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Color mode"
         time_zone: "Tidssone"
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
@@ -1483,10 +1488,19 @@
           typed_dag:
             circular_dependency: "Forholdet skaper en sirkel av forhold."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "SCM leverandør er ikke tilgjengelig"
           not_whitelisted: "er ikke tillatt av konfigurasjonen."
@@ -1892,6 +1906,7 @@
   button_add_watcher: "Legg til overvåker"
   button_annotate: "Kommentèr"
   button_apply: "Bruk"
+  button_apply_changes: "Bruk endringer"
   button_archive: "Arkiv"
   button_back: "Tilbake"
   button_cancel: "Avbryt"
@@ -1941,8 +1956,8 @@
   button_rollback: "Rull tilbake til denne versjonen"
   button_save: "Lagre"
   button_save_as: "Lagre som"
-  button_apply_changes: "Bruk endringer"
   button_save_back: "Lagre og tilbake"
+  button_select: "Select"
   button_set_reminder: "Set reminder"
   button_show: "Vis"
   button_sort: "Sortèr"
@@ -2797,6 +2812,7 @@
   label_required_disk_storage: "Nødvendig lagringsplass"
   label_send_invitation: Send invitasjon
   label_calculated_value: "Calculated value"
+  label_change_parent: "Change parent"
   label_change_plural: "Endringer"
   label_change_properties: "Endre egenskaper"
   label_change_status: "Endre status"
@@ -4264,6 +4280,7 @@
   text_access_token_hint: "Tilgang til nøkler tillater deg å gi eksterne applikasjoner tilgang til ressurser i OpenProject."
   text_analyze: "Videre analyse: %{subject}"
   text_are_you_sure: "Er du sikker?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Er du sikker på at du vil fortsette?"
   text_are_you_sure_with_children: "Slette arbeidspakken og alle underordnede arbeidspakker?"
   text_are_you_sure_with_project_custom_fields: "Hvis du sletter dette attributtet, slettes også dets verdier i alle prosjekter. Er du sikker på at du vil gjøre dette?"
