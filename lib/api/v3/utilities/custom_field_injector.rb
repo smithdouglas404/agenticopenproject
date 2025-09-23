@@ -276,12 +276,10 @@ module API
                           cache_if: config[:cache_if],
                           render_nil: true
 
-          if custom_field.calculated_value?
-            @class.property :"#{custom_field.attribute_name}errors",
-                            getter: calculated_value_error_getter(custom_field),
-                            cache_if: config[:cache_if],
-                            render_nil: false
-          end
+          @class.property :"#{custom_field.attribute_name}errors",
+                          getter: calculated_value_error_getter(custom_field),
+                          cache_if: config[:cache_if],
+                          render_nil: false
         end
 
         def property_value_getter_for(custom_field)
