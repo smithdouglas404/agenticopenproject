@@ -59,7 +59,7 @@ tr:
       tab_interface: "Arayüz"
       tab_branding: "Markalama"
       tab_pdf_export_styles: "PDF dışa aktarma biçimi"
-      tab_pdf_export_font: "PDF export font"
+      tab_pdf_export_font: "PDF dışa aktarma yazı tipi"
       fonts:
         file_too_large: "çok büyük (maksimum boyut %{count} MB'dir)."
         file_is_invalid: "geçerli bir TTF yazı tipi dosyası değildir."
