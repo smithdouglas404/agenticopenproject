@@ -362,12 +362,12 @@ en:
 
   calculated_values:
     error_dialog:
-      title: "Error with calculated value"
+      title: "Error with Calculated Value"
     errors:
-      unknown: "An unknown error occurred. Please review the formula for this calculated value."
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
       mathematical: "A mathematical error occurred during calculation."
-      missing_value: The attribute "%{custom_field_name}" is required by this calculated value but is empty.
-      disabled_value: The attribute "%{custom_field_name}" is required by this calculated value but is disabled for the project.
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
 
   concatenation:
     single: "or"
@@ -2954,7 +2954,7 @@ en:
   label_select_main_menu_item: Select new main menu item
   label_required_disk_storage: "Required disk storage"
   label_send_invitation: Send invitation
-  label_calculated_value: "Calculated value"
+  label_calculated_value: "Calculated Value"
   label_change_parent: "Change parent"
   label_change_plural: "Changes"
   label_change_properties: "Change properties"
