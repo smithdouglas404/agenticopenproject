@@ -121,8 +121,7 @@ class MeetingAgendaItemsController < ApplicationController
   end
 
   def cancel_edit
-    update_item_via_turbo_stream(state: :show)
-
+    update_item_via_turbo_stream
     respond_with_turbo_streams
   end
 
@@ -141,7 +140,7 @@ class MeetingAgendaItemsController < ApplicationController
       update_section_header_via_turbo_stream(meeting_section: @meeting_agenda_item.meeting_section)
     else
       # show errors
-      update_item_via_turbo_stream(state: :edit)
+      edit_item_via_turbo_stream
       render_base_error_in_flash_message_via_turbo_stream(call.errors)
     end
 

@@ -41,8 +41,8 @@ module MeetingAgendaItems
       @display_notes_input = display_notes_input
     end
 
-    def wrapper_key
-      "meeting-agenda-items-#{@meeting_agenda_item.id}"
+    def wrapper_uniq_by
+      @meeting_agenda_item
     end
 
     def call

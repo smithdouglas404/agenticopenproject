@@ -214,11 +214,12 @@ module Meetings
       end
 
       def edit_item_via_turbo_stream(meeting_agenda_item: @meeting_agenda_item, display_notes_input: nil)
-        update_via_turbo_stream(
+        replace_via_turbo_stream(
           component: MeetingAgendaItems::EditComponent.new(
             meeting_agenda_item:,
-            display_notes_input:
-          )
+            display_notes_input:,
+          ),
+          target: MeetingAgendaItems::ItemComponent.component_id(meeting_agenda_item)
         )
       end
 
@@ -238,10 +239,7 @@ module Meetings
           update_section_header_via_turbo_stream(meeting_section: meeting_agenda_item.meeting_section)
 
           add_before_via_turbo_stream(
-            component: MeetingAgendaItems::ItemComponent.new(
-              state: :show,
-              meeting_agenda_item:
-            ),
+            component: MeetingAgendaItems::ItemComponent.new(meeting_agenda_item:),
             target_component: MeetingSections::ShowComponent.new(
               meeting_section: @meeting_agenda_item.meeting_section
             )

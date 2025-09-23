@@ -51,8 +51,8 @@ module MeetingAgendaItems
       @first_and_last = first_and_last
     end
 
-    def wrapper_key
-      "meeting-agenda-items-#{@meeting_agenda_item.id}"
+    def wrapper_uniq_by
+      @meeting_agenda_item
     end
 
     private

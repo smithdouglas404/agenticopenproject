@@ -194,7 +194,7 @@ module Pages::Meetings
 
     def expect_agenda_link(item)
       if item.is_a?(WorkPackage)
-        expect(page).to have_css("[id^='meeting-agenda-items-item-component-']", text: item.subject)
+        expect(page).to have_css("[id^='meeting-agenda-items-']", text: item.subject)
       else
         expect(page).to have_css("#meeting-agenda-items-item-component-#{item.id}", text: item.work_package.subject)
       end
