@@ -68,5 +68,4 @@ RSpec.describe CalculatedValueError do
       expect(subject).to validate_inclusion_of(:error_code).in_array(described_class::VALID_ERROR_CODES)
     end
   end
-
 end
