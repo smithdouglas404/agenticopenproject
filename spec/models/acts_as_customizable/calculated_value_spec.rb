@@ -487,5 +487,89 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
         expect(disabled_cv.first_calculation_error(project:)).to be_blank
       end
     end
+
+    describe "nesting multiple custom fields into one formula" do
+      let(:a) { create(:integer_project_custom_field) }
+      let(:b) { create(:integer_project_custom_field) }
+      let(:a_plus_b) do
+        create(:calculated_value_project_custom_field, :skip_validations, projects: [project], formula: "#{a} + #{b}")
+      end
+      let(:a_minus_b) do
+        create(:calculated_value_project_custom_field, :skip_validations, projects: [project], formula: "#{a} - #{b}")
+      end
+      let(:nested_calculation) do
+        create(:calculated_value_project_custom_field,
+               :skip_validations,
+               projects: [project],
+               formula: "#{a_plus_b} / #{a_minus_b}")
+      end
+
+      let(:enabled_custom_fields) do
+        { a => 1, b => 2, a_plus_b => nil, a_minus_b => nil, nested_calculation => nil }
+      end
+
+      it "calculates the result correctly and does not produce an error" do
+        project.calculate_custom_fields([a_plus_b, a_minus_b, nested_calculation])
+
+        custom_values = project.custom_field_values.to_h { |cv| [cv.custom_field_id, cv.value] }
+        expect(custom_values).to eq({
+                                      a_plus_b.id => "3",
+                                      a_minus_b.id => "-1",
+                                      nested_calculation.id => "-3.0"
+                                    })
+
+        expect(a_plus_b.first_calculation_error(project:)).to be_blank
+        expect(a_minus_b.first_calculation_error(project:)).to be_blank
+        expect(nested_calculation.first_calculation_error(project:)).to be_blank
+      end
+
+      describe "with a_minus_b being disabled" do
+        let(:a_minus_b) do
+          create(:calculated_value_project_custom_field, :skip_validations, projects: [], formula: "#{a} - #{b}")
+        end
+
+        let(:enabled_custom_fields) do
+          { a => 1, b => 2, a_plus_b => nil, nested_calculation => nil }
+        end
+
+        it "produces an error for the disabled field" do
+          project.calculate_custom_fields([a_plus_b, a_minus_b, nested_calculation])
+
+          expect(a_plus_b.first_calculation_error(project:)).to be_blank
+          expect_calculated_value_error(nested_calculation, project, "ERROR_DISABLED_VALUE", a_minus_b.name)
+        end
+      end
+
+      describe "with a_plus_b being disabled" do
+        let(:a_plus_b) do
+          create(:calculated_value_project_custom_field, :skip_validations, projects: [], formula: "#{a} + #{b}")
+        end
+
+        let(:enabled_custom_fields) do
+          { a => 1, b => 2, a_minus_b => nil, nested_calculation => nil }
+        end
+
+        it "produces an error for the disabled field" do
+          project.calculate_custom_fields([a_plus_b, a_minus_b, nested_calculation])
+
+          expect(a_minus_b.first_calculation_error(project:)).to be_blank
+          expect_calculated_value_error(nested_calculation, project, "ERROR_DISABLED_VALUE", a_plus_b.name)
+        end
+      end
+
+      describe "resulting in a division by zero error" do
+        let(:enabled_custom_fields) do
+          { a => 1, b => 1, a_plus_b => nil, a_minus_b => nil, nested_calculation => nil }
+        end
+
+        it "produces a mathematical error" do
+          project.calculate_custom_fields([a_plus_b, a_minus_b, nested_calculation])
+
+          expect(a_plus_b.first_calculation_error(project:)).to be_blank
+          expect(a_minus_b.first_calculation_error(project:)).to be_blank
+          expect_calculated_value_error(nested_calculation, project, "ERROR_MATHEMATICAL")
+        end
+      end
+    end
   end
 end
