@@ -3,7 +3,7 @@
 class ConvertProjectToCustomizedInCalculatedValueErrors < ActiveRecord::Migration[8.0]
   def up
     rename_column :calculated_value_errors, :project_id, :customized_id
-    add_column :calculated_value_errors, :customized_type, :string, null: false
+    add_column :calculated_value_errors, :customized_type, :string, null: false # rubocop:disable Rails/NotNullColumn
 
     CalculatedValueError.reset_column_information # Reload schema
     CalculatedValueError.update_all(customized_type: "Project")
