@@ -54,6 +54,11 @@ export default class InternalCommentController extends BaseController {
 
   declare isInternalValue:boolean;
 
+  connect():void {
+    super.connect();
+    this.restoreInternalState();
+  }
+
   onSubmitEnd(_event:CustomEvent):void {
     if (this.hasInternalCheckboxTarget) {
       this.toggleInternal();
@@ -62,7 +67,7 @@ export default class InternalCommentController extends BaseController {
 
   toggleInternal():void {
     const isChecked = this.internalCheckboxTarget.checked;
-    this.setInternalState(isChecked);
+    this.setInternalStateWithPersistence(isChecked);
 
     if (isChecked) {
       void this.sanitizeInternalMentions();
@@ -83,17 +88,16 @@ export default class InternalCommentController extends BaseController {
           this.editorOutlet.focusEditor();
         } else {
           this.internalCheckboxTarget.checked = true;
-          this.setInternalState(this.internalCheckboxTarget.checked);
+          this.setInternalStateWithPersistence(this.internalCheckboxTarget.checked);
           this.editorOutlet.focusEditor();
         }
       }
     }
   }
 
-  private setInternalState(isChecked:boolean):void {
-    this.formContainerTarget.classList.toggle(this.highlightClass, isChecked);
-    this.toggleLearnMoreLink(isChecked);
-    this.isInternalValue = isChecked;
+  private setInternalStateWithPersistence(isChecked:boolean):void {
+    this.setInternalStateWithoutPersistence(isChecked);
+    this.persistInternalState(isChecked);
   }
 
   private toggleLearnMoreLink(isChecked:boolean):void {
@@ -107,7 +111,7 @@ export default class InternalCommentController extends BaseController {
       const editorData = this.ckEditorInstance.getData({ trim: false });
       if (editorData.length === 0) return;
 
-      const sanitizePath = `/work_packages/${this.indexOutlet.workPackageIdValue}/activities/sanitize_internal_mentions`;
+      const sanitizePath = `/work_packages/${this.workPackageId}/activities/sanitize_internal_mentions`;
 
       try {
         const response = await fetch(sanitizePath, {
@@ -149,7 +153,44 @@ export default class InternalCommentController extends BaseController {
     });
   }
 
+  private persistInternalState(isChecked:boolean):void {
+    try {
+      localStorage.setItem(this.storageKey, JSON.stringify(isChecked));
+    } catch (error) {
+      console.warn('Failed to persist internal comment state:', error);
+    }
+  }
+
+  private restoreInternalState():void {
+    if (!this.hasInternalCheckboxTarget) return;
+
+    try {
+      const storedState = localStorage.getItem(this.storageKey);
+      if (storedState !== null) {
+        const isChecked = JSON.parse(storedState) as boolean;
+        this.internalCheckboxTarget.checked = isChecked;
+        this.setInternalStateWithoutPersistence(isChecked);
+      }
+    } catch (error) {
+      console.warn('Failed to restore internal comment state:', error);
+    }
+  }
+
+  private setInternalStateWithoutPersistence(isChecked:boolean):void {
+    this.formContainerTarget.classList.toggle(this.highlightClass, isChecked);
+    this.toggleLearnMoreLink(isChecked);
+    this.isInternalValue = isChecked;
+  }
+
   private get ckEditorInstance() {
     return this.editorOutlet.ckEditorInstance;
+  }
+
+  private get storageKey():string {
+    return `work-package-${this.workPackageId}-internal-comment-state`;
+  }
+
+  private get workPackageId():string {
+    return String(this.indexOutlet.workPackageIdValue);
   }
 }
