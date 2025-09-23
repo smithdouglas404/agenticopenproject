@@ -73,7 +73,7 @@ Rails.application.config.after_initialize do
       # Allow connections to S3 for BIM
       if OpenProject::Configuration.fog_directory.present?
         connect_src += [
-          "#{OpenProject::Configuration.fog_directory}.s3-#{OpenProject::Configuration.fog_credentials[:region]}.amazonaws.com"
+          OpenProject::Configuration.fog_s3_upload_host
         ]
       end
 
