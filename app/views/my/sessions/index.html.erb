@@ -39,16 +39,8 @@ See COPYRIGHT and LICENSE files for more details.
   end
 %>
 
-<%# Collect a “fingerprint” of each token: user_id + platform + browser %>
-<% token_fingerprints = @autologin_tokens.map { |t| [t.user_id, t.data["platform"], t.data["browser"]] } %>
-
-<%# Reject sessions that match any token fingerprint %>
-<% rows = @sessions.reject do |s|
-     token_fingerprints.include?([s.user_id, s.data["platform"], s.data["browser"]])
-   end + @autologin_tokens %>
-
 <%= render ::Users::Sessions::TableComponent.new(
-      rows: rows,
+      rows: @autologin_tokens + @unmapped_sessions,
       current_session: session,
       current_token: @current_token
     ) %>

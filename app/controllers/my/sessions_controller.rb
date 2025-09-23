@@ -44,13 +44,14 @@ module My
     menu_item :sessions
 
     def index
-      @sessions = ::Sessions::UserSession
-        .for_user(current_user)
-        .order(updated_at: :desc)
-
       @autologin_tokens = ::Token::AutoLogin
         .for_user(current_user)
         .order(expires_on: :asc)
+
+      @unmapped_sessions = ::Sessions::UserSession
+        .for_user(current_user)
+        .order(updated_at: :desc)
+        .where.not(id: ::Sessions::AutologinSessionLink.where(token_id: @autologin_tokens.select(:id)).select(:session_id))
 
       token = cookies[OpenProject::Configuration["autologin_cookie_name"]]
       if token

@@ -41,6 +41,11 @@ module My
     def destroy
       @token.destroy
 
+      # Destroy all linked sessions to it
+      linked_sessions = Sessions::AutologinSessionLink.where(token_id: @token.id)
+      Sessions::UserSession.where(id: linked_sessions.select(:session_id)).delete_all
+      linked_sessions.delete_all
+
       flash[:notice] = I18n.t(:notice_successful_delete)
       redirect_to my_sessions_path
     end
