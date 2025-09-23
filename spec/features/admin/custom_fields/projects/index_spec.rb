@@ -159,7 +159,7 @@ RSpec.describe "List project custom fields", :js do
     describe "managing project custom fields" do
       context "with calculated value feature flag active", with_flag: { calculated_value_project_attribute: true } do
         it "offers the type for creation" do
-          cf_index_page.expect_having_create_item("Calculated value")
+          cf_index_page.expect_having_create_item(I18n.t("label_calculated_value"))
         end
 
         context "with fields of type calculated value" do
