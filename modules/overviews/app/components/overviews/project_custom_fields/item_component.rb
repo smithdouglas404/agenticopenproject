@@ -32,6 +32,7 @@ module Overviews
   module ProjectCustomFields
     class ItemComponent < ApplicationComponent
       include ApplicationHelper
+      include CalculatedValues::ErrorsHelper
       include CustomFieldsHelper
       include OpPrimer::ComponentHelpers
 
@@ -65,7 +66,7 @@ module Overviews
           end
           container.with_column(ml: 2) do
             render Primer::Beta::Text.new(color: :danger) do
-              error&.error_message
+              calculated_value_error_msg(error)
             end
           end
         end

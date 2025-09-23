@@ -314,7 +314,8 @@ module API
 
             errors = custom_field.calculated_value_errors.where(project_id: id)
             errors.map do |err|
-              { error_code: err.error_code, error_message: err.error_message }
+              { error_code: err.error_code,
+                error_message: CalculatedValues::ErrorsHelper.calculated_value_error_msg(err) }
             end
           }
         end

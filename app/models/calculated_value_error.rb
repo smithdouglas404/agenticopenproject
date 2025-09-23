@@ -32,13 +32,9 @@ class CalculatedValueError < ApplicationRecord
   belongs_to :project
   belongs_to :custom_field
 
-  ERROR_TRANSLATIONS = {
-    "ERROR_MATHEMATICAL" => "calculated_values.errors.mathematical",
-    "ERROR_MISSING_VALUE" => "calculated_values.errors.missing_value",
-    "ERROR_DISABLED_VALUE" => "calculated_values.errors.disabled_value"
-  }.freeze
-
-  VALID_ERROR_CODES = ERROR_TRANSLATIONS.keys.freeze
+  VALID_ERROR_CODES = %w[ERROR_MATHEMATICAL
+                         ERROR_MISSING_VALUE
+                         ERROR_DISABLED_VALUE].freeze
 
   validates :project_id, presence: true
   validates :custom_field_id, presence: true
@@ -47,22 +43,4 @@ class CalculatedValueError < ApplicationRecord
 
   # It makes no sense to have the exact same error multiple times.
   validates :project_id, uniqueness: { scope: %i[custom_field_id error_code] }
-
-  def error_message
-    translation_key = ERROR_TRANSLATIONS.fetch(error_code, "calculated_values.errors.unknown")
-    translation_options = {}
-
-    if %w[ERROR_MISSING_VALUE ERROR_DISABLED_VALUE].include?(error_code)
-      # To keep the error message short, we only show the first custom field with a missing/disabled value.
-      cf = CustomField.find(missing_custom_field_ids.first)
-
-      if cf
-        translation_options[:custom_field_name] = cf.name
-      else
-        translation_key = "calculated_values.errors.unknown"
-      end
-    end
-
-    I18n.t(translation_key, **translation_options)
-  end
 end

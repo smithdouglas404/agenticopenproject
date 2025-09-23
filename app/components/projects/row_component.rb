@@ -29,6 +29,8 @@
 #++
 module Projects
   class RowComponent < ::RowComponent
+    include CalculatedValues::ErrorsHelper
+
     delegate :identifier, to: :project
     delegate :favorited_project_ids,
              :project_phase_by_definition,
@@ -110,7 +112,7 @@ module Projects
                                   "aria-label": I18n.t("calculated_values.error_dialog.title"),
                                   data: { test_selector: "calculated-value-error-btn-#{custom_field.id}" },
                                   scheme: :invisible)
-          dialog.with_body { error.error_message }
+          dialog.with_body { calculated_value_error_msg(error) }
         end
       else
         custom_value

@@ -32,6 +32,7 @@ require "spec_helper"
 
 RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_value_project_attribute: true } do
   using CustomFieldFormulaReferencing
+  include CalculatedValues::ErrorsHelper
 
   describe "#calculate_custom_fields" do
     let(:model_class) do
@@ -388,7 +389,7 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
       expect(error&.error_code).to eq(error_code)
 
       if message_part
-        expect(error&.error_message).to include(message_part)
+        expect(calculated_value_error_msg(error)).to include(message_part)
       end
     end
 
