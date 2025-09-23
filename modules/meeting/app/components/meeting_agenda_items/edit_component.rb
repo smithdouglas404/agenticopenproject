@@ -46,7 +46,7 @@ module MeetingAgendaItems
     end
 
     def call
-      component_wrapper do
+      component_wrapper(tag: :li, class: "Box-row") do
         render(
           MeetingAgendaItems::FormComponent.new(
             meeting: @meeting_agenda_item.meeting,

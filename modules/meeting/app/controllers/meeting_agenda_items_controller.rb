@@ -121,7 +121,7 @@ class MeetingAgendaItemsController < ApplicationController
   end
 
   def cancel_edit
-    update_item_via_turbo_stream
+    replace_edit_item_via_turbo_stream
     respond_with_turbo_streams
   end
 
@@ -136,7 +136,7 @@ class MeetingAgendaItemsController < ApplicationController
         update_header_component_via_turbo_stream
         update_sidebar_details_component_via_turbo_stream
       end
-      update_item_via_turbo_stream
+      replace_edit_item_via_turbo_stream
       update_section_header_via_turbo_stream(meeting_section: @meeting_agenda_item.meeting_section)
     else
       # show errors

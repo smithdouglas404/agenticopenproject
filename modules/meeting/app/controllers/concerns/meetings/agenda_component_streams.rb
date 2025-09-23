@@ -207,7 +207,7 @@ module Meetings
       def update_item_via_turbo_stream(meeting_agenda_item: @meeting_agenda_item)
         update_via_turbo_stream(
           component: MeetingAgendaItems::ItemComponent.new(
-            meeting_agenda_item:,
+            meeting_agenda_item:
           )
         )
         update_show_items_via_turbo_stream
@@ -223,8 +223,14 @@ module Meetings
         )
       end
 
-      def add_item_via_turbo_stream(meeting_agenda_item: @meeting_agenda_item, clear_slate: false)
-        # rubocop:disable Metrics/AbcSize
+      def replace_edit_item_via_turbo_stream(meeting_agenda_item: @meeting_agenda_item)
+        replace_via_turbo_stream(
+          component: MeetingAgendaItems::ItemComponent.new(meeting_agenda_item: @meeting_agenda_item),
+          target: MeetingAgendaItems::EditComponent.component_id(@meeting_agenda_item)
+        )
+      end
+
+      def add_item_via_turbo_stream(meeting_agenda_item: @meeting_agenda_item, clear_slate: false) # rubocop:disable Metrics/AbcSize
         if clear_slate
           update_list_via_turbo_stream(form_hidden: false, form_type: @agenda_item_type)
         elsif meeting_agenda_item.meeting.agenda_items.count == 1 && meeting_agenda_item.meeting.sections.present?
