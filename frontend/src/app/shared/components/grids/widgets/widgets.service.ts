@@ -17,7 +17,6 @@ import {
 import { WidgetDocumentsComponent } from 'core-app/shared/components/grids/widgets/documents/documents.component';
 import { WidgetMembersComponent } from 'core-app/shared/components/grids/widgets/members/members.component';
 import { WidgetNewsComponent } from 'core-app/shared/components/grids/widgets/news/news.component';
-import { WidgetNewsBetaComponent } from 'core-app/shared/components/grids/widgets/news-beta/news-beta.component';
 import {
   WidgetProjectDescriptionComponent,
 } from 'core-app/shared/components/grids/widgets/project-description/project-description.component';
@@ -202,14 +201,6 @@ export class GridWidgetsService {
         title: this.I18n.t('js.grid.widgets.news.title'),
         properties: {
           name: this.I18n.t('js.grid.widgets.news.title'),
-        },
-      },
-      {
-        identifier: 'news_beta',
-        component: WidgetNewsBetaComponent,
-        title: this.I18n.t('js.grid.widgets.news_beta.title'),
-        properties: {
-          name: this.I18n.t('js.grid.widgets.news_beta.title'),
         },
       },
       {
