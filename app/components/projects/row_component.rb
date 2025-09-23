@@ -103,7 +103,7 @@ module Projects
     end
 
     def render_calculated_value(custom_field, custom_value)
-      if (error = custom_field.first_calculation_error(project:))
+      if (error = custom_field.first_calculation_error(project))
         render(Primer::Alpha::Dialog.new(title: I18n.t("calculated_values.error_dialog.title"),
                                          data: {
                                            test_selector: "calculated-value-error-dialog-#{custom_field.id}"

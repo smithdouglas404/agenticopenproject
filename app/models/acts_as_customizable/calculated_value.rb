@@ -130,7 +130,7 @@ module ActsAsCustomizable::CalculatedValue
     end
 
     def create_calculated_value_error(custom_field_id, error_code, missing_custom_field_ids = [])
-      CalculatedValueError.create(project: self, custom_field_id:, error_code:, missing_custom_field_ids:)
+      CalculatedValueError.create(customized: self, custom_field_id:, error_code:, missing_custom_field_ids:)
     end
 
     def create_errors_for_missing_attributes(referenced_values, calculated_fields, result)
@@ -164,7 +164,7 @@ module ActsAsCustomizable::CalculatedValue
     def remove_calculated_value_errors(custom_field_ids = [])
       return if custom_field_ids.empty?
 
-      CalculatedValueError.where(project: self, custom_field_id: custom_field_ids).delete_all
+      CalculatedValueError.where(customized: self, custom_field_id: custom_field_ids).delete_all
     end
 
     # Creates an error if a value that is directly required for the calculation is missing.

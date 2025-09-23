@@ -599,7 +599,7 @@ RSpec.describe "Show project custom fields on project overview page", :js do
           calculated_from_int_and_float_project_custom_field.custom_values.where(customized: project).first.update!(value: "")
 
           calculated_from_int_and_float_project_custom_field
-            .calculated_value_errors.create!(project_id: project.id, error_code: "ERROR_MATHEMATICAL")
+            .calculated_value_errors.create!(customized: project, error_code: "ERROR_MATHEMATICAL")
         end
 
         it "shows the error message for the project custom field" do

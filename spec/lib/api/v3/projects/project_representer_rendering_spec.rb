@@ -220,13 +220,13 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
         let(:cf_path) { "customField#{calculated_value_custom_field.id}errors" }
 
         let!(:calculated_value_error) do
-          build_stubbed(:calculated_value_error, custom_field: calculated_value_custom_field, project: project)
+          build_stubbed(:calculated_value_error, custom_field: calculated_value_custom_field, customized: project)
         end
 
         before do
           value_errors_double = double
           allow(value_errors_double).to receive(:where)
-                                          .with(project_id: project.id)
+                                          .with(customized_id: project.id, customized_type: "Project")
                                           .and_return([calculated_value_error])
 
           allow(calculated_value_custom_field).to receive(:calculated_value_errors)

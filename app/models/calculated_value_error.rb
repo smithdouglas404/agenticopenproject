@@ -29,18 +29,18 @@
 #++
 
 class CalculatedValueError < ApplicationRecord
-  belongs_to :project
+  belongs_to :customized, polymorphic: true
   belongs_to :custom_field
 
   VALID_ERROR_CODES = %w[ERROR_MATHEMATICAL
                          ERROR_MISSING_VALUE
                          ERROR_DISABLED_VALUE].freeze
 
-  validates :project_id, presence: true
+  validates :customized, presence: true
   validates :custom_field_id, presence: true
 
   validates :error_code, inclusion: { in: VALID_ERROR_CODES }
 
   # It makes no sense to have the exact same error multiple times.
-  validates :project_id, uniqueness: { scope: %i[custom_field_id error_code] }
+  validates :customized_type, uniqueness: { scope: %i[customized_id custom_field_id error_code] }
 end

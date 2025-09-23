@@ -33,22 +33,35 @@ require "spec_helper"
 RSpec.describe CalculatedValueError do
   shared_let(:project) { create(:project) }
   shared_let(:custom_field) { create(:custom_field) }
-  shared_let(:other_custom_field) { create(:custom_field) }
 
   describe "validations" do
-    it "validates project_id is present" do
-      expect(subject).to validate_presence_of(:project_id)
+    it "validates customized_id and customized_type is present" do
+      expect(subject).to validate_presence_of(:customized)
     end
 
     it "validates custom_field_id is present" do
       expect(subject).to validate_presence_of(:custom_field_id)
     end
 
-    it "validates uniqueness of project_id scoped to custom_field_id and error_code" do
-      subject.project = project
-      subject.custom_field = custom_field
-      subject.error_code = "ERROR_MATHEMATICAL"
-      expect(subject).to validate_uniqueness_of(:project_id).scoped_to(%i[custom_field_id error_code])
+    it "validates uniqueness of customized scoped to custom_field_id and error_code" do
+      # Create an initial record
+      create(
+        :calculated_value_error,
+        customized: project,
+        custom_field: custom_field,
+        error_code: "ERROR_MATHEMATICAL"
+      )
+
+      # Try to create a duplicate record
+      duplicate = build(
+        :calculated_value_error,
+        customized: project,
+        custom_field: custom_field,
+        error_code: "ERROR_MATHEMATICAL"
+      )
+
+      expect(duplicate).not_to be_valid
+      expect(duplicate.errors[:customized_type]).to include("has already been taken.")
     end
 
     it "validates the error_code is one of the allowed values" do

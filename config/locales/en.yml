@@ -1062,6 +1062,9 @@ en:
         scim_clients: "SCIM clients"
       calculated_value_error:
         error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "Context"
       changeset:
