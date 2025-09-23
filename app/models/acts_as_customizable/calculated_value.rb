@@ -92,21 +92,23 @@ module ActsAsCustomizable::CalculatedValue
       return unless is_a?(Project)
 
       remove_calculated_value_errors(calculated_fields.map(&:id))
-      create_new_calculated_value_errors(given_cfs, enabled_ids, calculated_fields, result)
+
+      enabled_calculated_fields = calculated_fields.filter { it.id.in?(enabled_ids) }
+      create_new_calculated_value_errors(enabled_calculated_fields, given_cfs, enabled_ids, result)
     end
 
-    def create_new_calculated_value_errors(given_cfs, enabled_ids, calculated_fields, result)
+    def create_new_calculated_value_errors(enabled_calculated_fields, given_cfs, enabled_ids, result)
       unsuccessfully_calculated_cfs = result.filter_map do |cf_id, calculation|
         to_id(cf_id) if calculation.nil?
       end
 
       cvs_with_errors = []
-      calculated_fields_without_value = calculated_fields.filter { unsuccessfully_calculated_cfs.include?(it.id) }
+      calculated_fields_without_value = enabled_calculated_fields.filter { unsuccessfully_calculated_cfs.include?(it.id) }
 
       if unsuccessfully_calculated_cfs.any?
         # There are multiple reasons why a calculation could not complete:
         # 1. The value of a referenced custom field is missing (nil)
-        cvs_with_errors.concat(create_errors_for_missing_attributes(given_cfs, calculated_fields))
+        cvs_with_errors.concat(create_errors_for_missing_attributes(given_cfs, enabled_calculated_fields))
 
         # 2. A referenced custom field is disabled (not present in the enabled_ids list)
         disabled_errors = create_errors_for_disabled_attributes(calculated_fields_without_value, enabled_ids)

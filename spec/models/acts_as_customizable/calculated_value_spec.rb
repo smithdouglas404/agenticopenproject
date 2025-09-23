@@ -384,12 +384,11 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
 
   describe "#calculate_custom_fields error handling" do
     def expect_calculated_value_error(calc_val_cf, project, error_code, message_part = nil)
-      errors = calc_val_cf.calculated_value_errors.where(project:)
-      expect(errors.size).to be >= 1
-      expect(errors.first&.error_code).to eq(error_code)
+      error = calc_val_cf.first_calculation_error(project:)
+      expect(error&.error_code).to eq(error_code)
 
       if message_part
-        expect(errors.first&.error_message).to include(message_part)
+        expect(error&.error_message).to include(message_part)
       end
     end
 
@@ -458,13 +457,33 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
       it "creates a disabled value error" do
         project.calculate_custom_fields([cv1, cv2, cv3])
 
-        expect(cv3.calculated_value_errors.where(project:)).to be_empty
+        expect(cv3.first_calculation_error(project:)).to be_blank
 
         # The referenced int field is disabled, we thus expect a `disabled` error.
         expect_calculated_value_error(cv1, project, "ERROR_DISABLED_VALUE", cf_int.name)
 
         # Since cv1 cannot be calculated, it leads to a missing value error in cv2.
         expect_calculated_value_error(cv2, project, "ERROR_MISSING_VALUE", cv1.name)
+      end
+    end
+
+    context "with disabled calculated values" do
+      let(:cf_int) { create(:integer_project_custom_field) }
+      let(:formula) { "2 / #{cf_int}" }
+      let(:disabled_cv) do
+        create(:calculated_value_project_custom_field, :skip_validations, projects: [], formula:)
+      end
+      let(:enabled_cv) { create(:calculated_value_project_custom_field, :skip_validations, projects: [project], formula:) }
+
+      let(:enabled_custom_fields) do
+        { enabled_cv => nil, cf_int => 0 }
+      end
+
+      it "only creates errors for enabled calculated values" do
+        project.calculate_custom_fields([disabled_cv, enabled_cv])
+
+        expect_calculated_value_error(enabled_cv, project, "ERROR_MATHEMATICAL")
+        expect(disabled_cv.first_calculation_error(project:)).to be_blank
       end
     end
   end
