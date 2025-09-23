@@ -108,7 +108,7 @@ module ActsAsCustomizable::CalculatedValue
       if unsuccessfully_calculated_cfs.any?
         # There are multiple reasons why a calculation could not complete:
         # 1. The value of a referenced custom field is missing (nil)
-        cvs_with_errors.concat(create_errors_for_missing_attributes(given_cfs, enabled_calculated_fields))
+        cvs_with_errors.concat(create_errors_for_missing_attributes(given_cfs, enabled_calculated_fields, result))
 
         # 2. A referenced custom field is disabled (not present in the enabled_ids list)
         disabled_errors = create_errors_for_disabled_attributes(calculated_fields_without_value, enabled_ids)
@@ -133,14 +133,14 @@ module ActsAsCustomizable::CalculatedValue
       CalculatedValueError.create(project: self, custom_field_id:, error_code:, missing_custom_field_ids:)
     end
 
-    def create_errors_for_missing_attributes(referenced_values, calculated_fields)
+    def create_errors_for_missing_attributes(referenced_values, calculated_fields, result)
       errors_created = []
 
       cf_ids_with_missing_values = referenced_values.filter_map { |k, v| to_id(k) if v.nil? }
 
       calculated_fields.each do |cv|
         if handle_missing_value_error(cv, cf_ids_with_missing_values) ||
-           handle_indirectly_missing_value_error(cv, calculated_fields)
+           handle_indirectly_missing_value_error(cv, calculated_fields, result)
           errors_created << cv.id
         end
       end
@@ -180,8 +180,11 @@ module ActsAsCustomizable::CalculatedValue
     # Creates an error if a value that is indirectly required for the calculation is missing.
     # This is true for example for a formula like `2 + {{cf_12}}` where `cf_12` is a calculated value itself
     # that cannot be calculated because it references a custom field with no value set.
-    def handle_indirectly_missing_value_error(calculated_value, calculated_fields)
-      indirectly_missing = calculated_value.formula_referenced_custom_field_ids.filter do |ref_id|
+    def handle_indirectly_missing_value_error(calculated_value, calculated_fields, result)
+      cf_ids_with_results = result.filter_map { |cf_id, v| to_id(cf_id) unless v.nil? }
+      cf_ids_in_formula_without_result = calculated_value.formula_referenced_custom_field_ids - cf_ids_with_results
+
+      indirectly_missing = cf_ids_in_formula_without_result.filter do |ref_id|
         calculated_fields.any? { it.id == ref_id }
       end
 
