@@ -4,6 +4,7 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "node --import=tsx src/index.ts",
+    "debug": "node --inspect --import=tsx src/index.ts",
     "lint": "eslint . --ext .ts"
   },
   "repository": {

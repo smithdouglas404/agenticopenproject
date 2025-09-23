@@ -1,6 +1,16 @@
 import { Extension } from "@hocuspocus/server";
-import type { onLoadDocumentPayload, onStoreDocumentPayload } from "@hocuspocus/server";
-import type { Document, OpenProjectApiConfiguration, ApiResponseDocument } from "../types";
+import { createVerifier } from 'fast-jwt';
+import type { onLoadDocumentPayload, storePayload } from "@hocuspocus/server";
+import type { OpenProjectApiConfiguration } from "../types";
+import * as Y from "yjs";
+
+const secret = process.env.SECRET;
+if (!secret) {
+  console.log(`SECRET must be provided`);
+  process.exit();
+};
+
+const verifyToken = createVerifier({ key: async () => secret, algorithms: ['HS256'] });
 
 export class OpenProjectApi implements Extension {
   configuration: OpenProjectApiConfiguration = {
@@ -15,40 +25,49 @@ export class OpenProjectApi implements Extension {
     };
   }
 
-  async onLoadDocument(data: onLoadDocumentPayload): Promise<Document> {
+  async onAuthenticate(data: onAuthenticatePayload) {
+    const { token, documentName } = data;
+    if (!token) {
+      throw new Error('Unauthorized: Token missing.');
+    }
+    let tokenPayload;
     try {
-      // We need to pass on the context the actual documentId.
-      // This needs to happen in OpenProject.
-      const { document_id } = data.context;
+      tokenPayload = await verifyToken(token);
+    } catch (_err) {
+      throw new Error('Unauthorized: Invalid token.');
+    }
+    if(documentName != tokenPayload.document_name) {
+      throw new Error('Unauthorized: Invalid token. This document cannot be accessed with this token.');
+    }
+    data.context.documentId = tokenPayload.document_id;
+  }
 
-      console.log(`ZZZZ making request to ${this.configuration.apiUrl}/api/v3/documents/${document_id}`);
+  /**
+    * Retrieve data from the API. This should return the YDoc data
+    */
+  async onLoadDocument(data: onLoadDocumentPayload) {
+    const { documentId } = data.context;
 
-      // Did not check the URL. Might be wrong
-      const response = await fetch(`${this.configuration.apiUrl}/api/v3/documents/${document_id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Basic YXBpa2V5OjE4ZjY2NTQzYjU0ODAzZDkzYzc1ZGU1MjY0YzdjZWRlYjllNzU5MWEzOWE4NmZiYzhhOGFjZTJmOTVhMjA4N2E=`,
-        },
-      });
+    // my local dev env key, it's not a leak :)
+    const apiKey = "cf58c5077dc4e3b36c474e59711f069f2d52e940c2fd1999ad073fa36e6693ca";
+    const authBase64 = Buffer.from(`apikey:${apiKey}`, "utf-8").toString("base64");
 
-      if (!response.ok) {
-        throw new Error(`Error fetching document: ${response.statusText}`);
-      }
+    const targetUrl = `${this.configuration.apiUrl}/api/v3/documents/${documentId}/content_binary`;
+    console.log(`Fetching document from ${targetUrl}`);
+    const response = await fetch(targetUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/octet-stream",
+        "Authorization": `Basic ${authBase64}`,
+      },
+    });
 
-      // We're returning data here on the onLoadDocument, but I'm not sure
-      // how to use it, yet :)
-      const documentData = await response.json() as ApiResponseDocument;
-      return {
-        id: documentData.id,
-        title: documentData.title,
-        content: documentData.description.raw,
-      };
-    } catch (error) {
-      console.error("Failed to load document from OpenProject API:", error);
+    if (!response.ok) {
+      throw new Error(`Error fetching document: ${response.statusText}`);
     }
 
-    throw new Error("Could not load document");
+    const update = new Uint8Array(await response.arrayBuffer());
+    Y.applyUpdate(data.document, update);
   }
 
   /**
@@ -57,7 +76,7 @@ export class OpenProjectApi implements Extension {
     * an API call to the server, sending the binary data AND a text
     * data
     */
-  async onStoreDocument(_data: onStoreDocumentPayload): Promise<void> {
+  async store(_data: storePayload): Promise<void> {
     console.log("Storing document");
   }
 }
