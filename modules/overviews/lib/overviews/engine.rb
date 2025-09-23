@@ -103,6 +103,12 @@ module Overviews
                            require: :member
           end
         end
+
+        OpenProject::AccessControl.permission(:view_news)
+                                  .controller_actions
+                                  .push(
+                                    "overviews/widgets/news/show"
+                                  )
       end
     end
 

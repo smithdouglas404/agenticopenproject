@@ -28,5 +28,5 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Grids::Widgets::NewsController < Grids::WidgetController
+class Overviews::Widgets::NewsController < Overviews::WidgetController
 end

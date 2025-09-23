@@ -27,36 +27,4 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%=
-  render(OpPrimer::ListComponent::Item.new) do
-    render(Primer::Box.new(mt: 2, pb: 2)) do
-      component_collection do |body|
-        body.with_component(
-          flex_layout do |layout|
-            unless project
-              layout.with_column do
-                render(
-                  Primer::Beta::Link.new(
-                    font_weight: :bold,
-                    scheme: :secondary,
-                    href: project_path(item.project)
-                  )
-                ) { "#{item.project.name}:" }
-              end
-            end
-
-            layout.with_column do
-              render(Primer::Beta::Link.new(ml: 1, font_weight: :bold, href: news_path(item))) { item.title }
-            end
-          end
-        )
-        body.with_component(
-          render(Primer::Beta::Text.new(tag: :p, color: :subtle)) { helpers.authoring_at(format_time(item.created_at), item.author) }
-        )
-        body.with_component(
-          render(Primer::Beta::Text.new) { item.summary }
-        )
-      end
-    end
-  end
-%>
+<%= render Overviews::Widgets::NewsComponent.new(@project) %>

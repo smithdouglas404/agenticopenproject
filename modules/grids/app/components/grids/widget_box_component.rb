@@ -97,6 +97,7 @@ module Grids
 
     def before_render
       return unless header
+
       @list_arguments[:aria] = { labelledby: @header_id }
     end
   end

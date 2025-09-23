@@ -28,20 +28,11 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-Rails.application.routes.draw do
-  constraints(Constraints::ProjectIdentifier) do
-    scope "projects/:project_id", as: "project" do
-      scope module: "grids" do
-        namespace :widgets do
-          resource :news, only: %i[show]
-        end
-      end
-    end
-  end
+require "spec_helper"
+require "support/permission_specs"
 
-  scope module: "grids" do
-    namespace :widgets do
-      resource :news, only: %i[show]
-    end
-  end
+RSpec.describe Overviews::Widgets::NewsController, "permissions", type: :controller do # rubocop:disable RSpec/EmptyExampleGroup,RSpec/SpecFilePathFormat
+  include PermissionSpecs
+
+  check_permission_required_for("overviews/widgets/news#show", :view_news)
 end

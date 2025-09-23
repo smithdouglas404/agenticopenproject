@@ -28,24 +28,39 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Grids
+module Overviews
   module Widgets
-    class NewsComponent < ApplicationComponent
-      class ItemComponent < ApplicationComponent
-        include ApplicationHelper
-        include OpPrimer::ComponentHelpers
+    class NewsComponent < Grids::WidgetComponent
+      NEWS_LIMIT = 5
 
-        attr_reader :item, :project, :current_user
+      include ApplicationHelper
+      include OpPrimer::ComponentHelpers
+      include OpTurbo::Streamable
 
-        def initialize(item:, project:, current_user: User.current, **system_arguments)
-          super()
+      attr_reader :project, :current_user
 
-          @item = item
-          @project = project
-          @current_user = current_user
-          @system_arguments = system_arguments
-        end
+      def initialize(project)
+        super()
+
+        @project = project
+        @current_user = current_user
+        @news =
+          if project
+            project.news.visible(current_user).newest_first
+          else
+            News
+              .visible(current_user)
+              .newest_first
+              .includes(:project)
+          end
+
+        @newest = @news.limit(NEWS_LIMIT).to_a
       end
+
+      def title
+        Project.human_attribute_name(:news)
+      end
+
     end
   end
 end

@@ -28,19 +28,33 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  component_wrapper tag: :"turbo-frame" do
-    if @newest.empty?
-      render(Primer::Beta::Text.new(color: :subtle)) { t(:"js.grid.widgets.news.no_results") }
-    else
-      render(OpPrimer::ListComponent.new(m: 0)) do
-        render(
-          ItemComponent.with_collection(
-            @newest,
-            project:,
-            spacer_component: OpPrimer::ListComponent::Divider.new(border: :bottom)
-          )
-        )
-      end
+  render(Primer::Box.new) do
+    component_collection do |body|
+      body.with_component(
+        flex_layout do |layout|
+          unless project
+            layout.with_column do
+              render(
+                Primer::Beta::Link.new(
+                  font_weight: :bold,
+                  scheme: :secondary,
+                  href: project_path(item.project)
+                )
+              ) { "#{item.project.name}:" }
+            end
+          end
+
+          layout.with_column do
+            render(Primer::Beta::Link.new(ml: 1, font_weight: :bold, href: news_path(item))) { item.title }
+          end
+        end
+      )
+      body.with_component(
+        render(Primer::Beta::Text.new(tag: :p, color: :subtle)) { helpers.authoring_at(format_time(item.created_at), item.author) }
+      )
+      body.with_component(
+        render(Primer::Beta::Text.new) { item.summary }
+      )
     end
   end
 %>

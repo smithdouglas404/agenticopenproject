@@ -28,11 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
-require "support/permission_specs"
+module Overviews
+  module Widgets
+    class NewsComponent < Grids::WidgetComponent
+      class ItemComponent < ApplicationComponent
+        include ApplicationHelper
+        include OpPrimer::ComponentHelpers
 
-RSpec.describe Grids::Widgets::NewsController, "permissions", type: :controller do # rubocop:disable RSpec/EmptyExampleGroup,RSpec/SpecFilePathFormat
-  include PermissionSpecs
+        attr_reader :item, :project, :current_user
 
-  check_permission_required_for("grids/widgets/news#show", :view_news)
+        def initialize(item:, project:, current_user: User.current, **system_arguments)
+          super()
+
+          @item = item
+          @project = project
+          @current_user = current_user
+          @system_arguments = system_arguments
+        end
+      end
+    end
+  end
 end
