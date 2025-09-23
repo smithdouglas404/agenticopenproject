@@ -39,6 +39,14 @@ module My
     menu_item :sessions
 
     def destroy
+      # If there is a corresponding session for this token, remove it as well
+      session_fingerprint = [@token.user_id, @token.data["platform"], @token.data["browser"]]
+      session_to_delete = ::Sessions::UserSession
+                            .for_user(current_user)
+                            .find { |s| session_fingerprint == [s.user_id, s.data["platform"], s.data["browser"]] }
+
+      session_to_delete&.delete
+
       @token.destroy
 
       flash[:notice] = I18n.t(:notice_successful_delete)
