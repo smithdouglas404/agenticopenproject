@@ -32,8 +32,6 @@ See COPYRIGHT and LICENSE files for more details.
     grid.with_widget(Overviews::Widgets::DescriptionComponent, @project)
     grid.with_widget(Overviews::Widgets::ProjectStatusComponent, @project)
     grid.with_widget(Overviews::Widgets::SubitemsComponent, @project)
-    if OpenProject::FeatureDecisions.beta_widgets_active?
-      grid.with_widget(Overviews::Widgets::NewsComponent, @project)
-    end
+    grid.with_widget(Overviews::Widgets::NewsComponent, @project)
   end
 %>
