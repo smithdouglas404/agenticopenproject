@@ -68,7 +68,7 @@ module Grids::Configuration
     end
 
     widget_strategy "news" do
-      allowed ->(user, project) { view_beta_widgets.(user, project) && user.allowed_in_project?(:view_news, project) }
+      allowed ->(user, project) { user.allowed_in_project?(:view_news, project) }
     end
 
     widget_strategy "documents" do
