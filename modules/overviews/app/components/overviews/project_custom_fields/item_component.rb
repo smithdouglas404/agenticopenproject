@@ -50,11 +50,11 @@ module Overviews
       end
 
       def calculation_error?
-        @project_custom_field.calculation_error(project: @project).present?
+        @project_custom_field.first_calculation_error(project: @project).present?
       end
 
       def render_calculation_error
-        error = @project_custom_field.calculation_error(project: @project)
+        error = @project_custom_field.first_calculation_error(project: @project)
 
         render(Primer::OpenProject::FlexLayout.new(align_items: :flex_start,
                                                    data: {

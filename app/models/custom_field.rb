@@ -353,7 +353,7 @@ class CustomField < ApplicationRecord
   #
   # When there is at least one calculation error, will return the first one - or `nil` if there are none.
   # Use this method when you want to present a calculation error to the user.
-  def calculation_error(project:)
+  def first_calculation_error(project:)
     return nil unless calculated_value?
 
     calculated_value_errors.where(project:).first
