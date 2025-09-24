@@ -38,6 +38,15 @@ module CalculatedValues
         @error_code = error_code
         @missing_custom_field_ids = missing_custom_field_ids
       end
+
+      def create_calculated_value_error!(customized)
+        CalculatedValueError.create(
+          customized:,
+          custom_field_id:,
+          error_code:,
+          missing_custom_field_ids:
+        )
+      end
     end
 
     def self.handle_calculation_errors(customized, calculation_result, given_values, calculated_fields)
@@ -122,21 +131,8 @@ module CalculatedValues
 
     def create_error_records!(error_contexts)
       error_contexts.each do |context|
-        create_calculated_value_error!(
-          context.custom_field_id,
-          context.error_code,
-          context.missing_custom_field_ids
-        )
+        context.create_calculated_value_error!(customized)
       end
-    end
-
-    def create_calculated_value_error!(custom_field_id, error_code, missing_custom_field_ids = [])
-      CalculatedValueError.create(
-        customized:,
-        custom_field_id:,
-        error_code:,
-        missing_custom_field_ids:
-      )
     end
 
     def to_id(cf_id)
