@@ -136,7 +136,11 @@ module Users
     end
 
     def retained_session_values
-      controller.session.to_h.slice *(default_retained_keys + omniauth_provider_keys)
+      controller
+        .session
+        .to_h
+        .with_indifferent_access
+        .slice *(default_retained_keys + omniauth_provider_keys)
     end
 
     def omniauth_provider_keys
