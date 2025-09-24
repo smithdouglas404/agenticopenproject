@@ -217,7 +217,7 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
       end
 
       context "when there is a calculation error" do
-        let(:cf_path) { "customField#{calculated_value_custom_field.id}errors" }
+        let(:cf_path) { "customField#{calculated_value_custom_field.id}Errors" }
 
         let!(:calculated_value_error) do
           build_stubbed(:calculated_value_error, custom_field: calculated_value_custom_field, customized: project)
@@ -236,8 +236,8 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
         it "has a property for calculation errors" do
           expect(subject).to be_json_eql([
             {
-              error_code: "ERROR_MATHEMATICAL",
-              error_message: I18n.t("calculated_values.errors.mathematical")
+              code: "ERROR_MATHEMATICAL",
+              message: I18n.t("calculated_values.errors.mathematical")
             }
           ].to_json).at_path(cf_path)
         end

@@ -238,10 +238,10 @@ If there are no errors, this field is missing.
 
 ```json5
 {
-  "customFieldXerrors": [
+  "customFieldXErrors": [
     {
-      "error_code": "ERROR_MATHEMATICAL",
-      "error_message": "A mathematical error occurred during calculation. Please review the formula and try again."
+      "code": "ERROR_MATHEMATICAL",
+      "message": "A mathematical error occurred during calculation. Please review the formula and try again."
     }
   ]
 }

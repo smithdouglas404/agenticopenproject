@@ -276,7 +276,7 @@ module API
                           cache_if: config[:cache_if],
                           render_nil: true
 
-          @class.property :"#{custom_field.attribute_name}errors",
+          @class.property :"#{custom_field.attribute_name}_errors",
                           getter: calculated_value_error_getter(custom_field),
                           cache_if: config[:cache_if],
                           render_nil: false
@@ -314,8 +314,8 @@ module API
 
             errors = custom_field.calculated_value_errors.where(customized_id: id, customized_type: "Project")
             errors.map do |err|
-              { error_code: err.error_code,
-                error_message: CalculatedValues::ErrorsHelper.calculated_value_error_msg(err) }
+              { code: err.error_code,
+                message: CalculatedValues::ErrorsHelper.calculated_value_error_msg(err) }
             end
           }
         end
