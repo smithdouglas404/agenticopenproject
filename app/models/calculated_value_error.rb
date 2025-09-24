@@ -33,6 +33,7 @@ class CalculatedValueError < ApplicationRecord
   belongs_to :custom_field
 
   VALID_ERROR_CODES = %w[ERROR_MATHEMATICAL
+                         ERROR_UNKNOWN
                          ERROR_MISSING_VALUE
                          ERROR_DISABLED_VALUE].freeze
 

@@ -50,14 +50,16 @@ module ActsAsCustomizable::CalculatedValue
       enabled_ids = enabled_custom_field_ids
       given = calculated_value_fields_given(custom_fields:, enabled_ids:)
 
-      result = calculate_custom_fields_result(
+      remove_calculated_value_errors!(custom_fields.map(&:id))
+
+      result, errors = calculate_custom_fields_result(
         given:,
         to_compute: calculated_value_fields_to_compute(custom_fields:, enabled_ids:)
-      )
+      ).values_at(:result, :errors)
 
       self.custom_field_values = custom_fields.to_h { [it.id, result[it.column_name]] }
 
-      refresh_calculation_errors!(given, enabled_ids, custom_fields, result)
+      refresh_calculation_errors!(given, enabled_ids, custom_fields, result, errors)
     end
 
     private
@@ -66,7 +68,29 @@ module ActsAsCustomizable::CalculatedValue
       calculator = CustomField::CalculatedValue.calculator_instance
       calculator.store(given)
 
-      calculator.solve(to_compute).transform_values { |value| value == :undefined ? nil : value }
+      calculation = calculator.solve(to_compute, &:itself)
+
+      result = calculation.transform_values do |value|
+        value.is_a?(Numeric) ? value : nil
+      end
+
+      errors = calculation.transform_values do |value|
+        case value
+        when Dentaku::ZeroDivisionError
+          :zero_division
+        when Dentaku::ArgumentError
+          :missing_value
+        when Dentaku::UnboundVariableError
+          [:unbound_variable, value.unbound_variables]
+        when Numeric
+          # Calculation succeeded -> no error
+          nil
+        else
+          :unknown
+        end
+      end.compact
+
+      { result:, errors: }
     end
 
     def calculated_value_fields_given(custom_fields:, enabled_ids:)
@@ -88,44 +112,32 @@ module ActsAsCustomizable::CalculatedValue
       cf_id.sub("cf_", "").to_i
     end
 
-    def refresh_calculation_errors!(given_cfs, enabled_ids, calculated_fields, result)
+    def refresh_calculation_errors!(given_cfs, enabled_ids, calculated_fields, result, errors)
       return unless is_a?(Project)
 
-      remove_calculated_value_errors(calculated_fields.map(&:id))
-
       enabled_calculated_fields = calculated_fields.filter { it.id.in?(enabled_ids) }
-      create_new_calculated_value_errors(enabled_calculated_fields, given_cfs, enabled_ids, result)
+      create_new_calculated_value_errors!(enabled_calculated_fields, given_cfs, result, errors)
     end
 
-    def create_new_calculated_value_errors(enabled_calculated_fields, given_cfs, enabled_ids, result)
-      unsuccessfully_calculated_cfs = result.filter_map do |cf_id, calculation|
-        to_id(cf_id) if calculation.nil?
-      end
+    def create_new_calculated_value_errors!(enabled_calculated_fields, given_cfs, result, errors)
+      errors.each do |cf_id, error|
+        cf_id = to_id(cf_id)
 
-      cvs_with_errors = []
-      calculated_fields_without_value = enabled_calculated_fields.filter { unsuccessfully_calculated_cfs.include?(it.id) }
-
-      if unsuccessfully_calculated_cfs.any?
-        # There are multiple reasons why a calculation could not complete:
-        # 1. The value of a referenced custom field is missing (nil)
-        cvs_with_errors.concat(create_errors_for_missing_attributes(given_cfs, enabled_calculated_fields, result))
-
-        # 2. A referenced custom field is disabled (not present in the enabled_ids list)
-        disabled_errors = create_errors_for_disabled_attributes(calculated_fields_without_value, enabled_ids)
-        cvs_with_errors.concat(disabled_errors)
-      end
-
-      # When no value could be calculated, but all required variables in the formula are present,
-      # we must assume that a mathematical error occurred:
-      create_mathematical_errors(calculated_fields_without_value, cvs_with_errors)
-    end
-
-    def create_mathematical_errors(calculated_fields_without_value, cvs_with_errors = [])
-      calculated_fields_without_value.each do |cf|
-        # Skip if we already created an error for this calculated value
-        next if cvs_with_errors.include?(cf.id)
-
-        create_calculated_value_error(cf.id, "ERROR_MATHEMATICAL")
+        case error
+        when :zero_division
+          create_calculated_value_error(cf_id, "ERROR_MATHEMATICAL")
+        when :missing_value
+          create_errors_for_missing_attributes(given_cfs, enabled_calculated_fields, result, errors)
+        when Array
+          if error.first == :unbound_variable
+            disabled_fields = error.last.map { to_id(it) }
+            create_calculated_value_error(cf_id, "ERROR_DISABLED_VALUE", disabled_fields)
+          else
+            create_calculated_value_error(cf_id, "ERROR_UNKNOWN")
+          end
+        else
+          create_calculated_value_error(cf_id, "ERROR_UNKNOWN")
+        end
       end
     end
 
@@ -133,35 +145,21 @@ module ActsAsCustomizable::CalculatedValue
       CalculatedValueError.create(customized: self, custom_field_id:, error_code:, missing_custom_field_ids:)
     end
 
-    def create_errors_for_missing_attributes(referenced_values, calculated_fields, result)
-      errors_created = []
-
+    def create_errors_for_missing_attributes(referenced_values, calculated_fields, result, errors)
       cf_ids_with_missing_values = referenced_values.filter_map { |k, v| to_id(k) if v.nil? }
 
-      calculated_fields.each do |cv|
-        if handle_missing_value_error(cv, cf_ids_with_missing_values) ||
-           handle_indirectly_missing_value_error(cv, calculated_fields, result)
-          errors_created << cv.id
-        end
+      missing_values = errors.filter_map { |k, v| to_id(k) if v == :missing_value }
+      calculated_fields_with_missing_values = calculated_fields.filter do |cv|
+        missing_values.include?(cv.id)
       end
 
-      errors_created
-    end
-
-    def create_errors_for_disabled_attributes(calculated_fields, enabled_ids)
-      errors_created = []
-
-      calculated_fields.each do |cv|
-        disabled_ids = cv.formula_referenced_custom_field_ids - enabled_ids
-        if disabled_ids.any? && create_calculated_value_error(cv.id, "ERROR_DISABLED_VALUE", disabled_ids)
-          errors_created << cv.id
-        end
+      calculated_fields_with_missing_values.each do |cv|
+        handle_missing_value_error(cv, cf_ids_with_missing_values) ||
+          handle_indirectly_missing_value_error(cv, calculated_fields, result)
       end
-
-      errors_created
     end
 
-    def remove_calculated_value_errors(custom_field_ids = [])
+    def remove_calculated_value_errors!(custom_field_ids = [])
       return if custom_field_ids.empty?
 
       CalculatedValueError.where(customized: self, custom_field_id: custom_field_ids).delete_all
