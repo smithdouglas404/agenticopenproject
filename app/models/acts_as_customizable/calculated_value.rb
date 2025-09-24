@@ -113,7 +113,7 @@ module ActsAsCustomizable::CalculatedValue
       )
     end
 
-    def remove_calculated_value_errors!(custom_field_ids = [])
+    def remove_calculated_value_errors!(custom_field_ids)
       return if custom_field_ids.empty?
 
       CalculatedValueError.where(customized: self, custom_field_id: custom_field_ids).delete_all
