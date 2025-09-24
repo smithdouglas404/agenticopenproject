@@ -47,10 +47,10 @@ module ActsAsCustomizable::CalculatedValue
       enabled_ids = enabled_custom_field_ids
       given = calculated_value_fields_given(custom_fields:, enabled_ids:)
 
-      result, errors = calculate_custom_fields_result(
+      calculate_custom_fields_result(
         given:,
         to_compute: calculated_value_fields_to_compute(custom_fields:, enabled_ids:)
-      ).values_at(:result, :errors)
+      ) => { result:, errors: }
 
       self.custom_field_values = custom_fields.to_h { [it.id, result[it.column_name]] }
 
