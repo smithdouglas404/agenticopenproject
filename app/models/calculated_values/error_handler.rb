@@ -62,8 +62,6 @@ module CalculatedValues
     end
 
     def handle_errors
-      return unless should_create_errors?
-
       error_contexts = build_error_contexts
       create_error_records!(error_contexts)
     end
@@ -71,10 +69,6 @@ module CalculatedValues
     private
 
     attr_reader :customized, :calculation_errors, :calculation_values, :given_values, :calculated_fields
-
-    def should_create_errors?
-      customized.is_a?(Project)
-    end
 
     def build_error_contexts
       calculation_errors.filter_map do |cf_id, error|
