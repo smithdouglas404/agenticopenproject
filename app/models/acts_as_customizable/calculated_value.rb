@@ -47,8 +47,6 @@ module ActsAsCustomizable::CalculatedValue
       enabled_ids = enabled_custom_field_ids
       given = calculated_value_fields_given(custom_fields:, enabled_ids:)
 
-      remove_calculated_value_errors!(custom_fields.map(&:id))
-
       result, errors = calculate_custom_fields_result(
         given:,
         to_compute: calculated_value_fields_to_compute(custom_fields:, enabled_ids:)
@@ -112,6 +110,8 @@ module ActsAsCustomizable::CalculatedValue
     end
 
     def handle_calculation_errors!(given_cfs, enabled_ids, calculated_fields, result, errors)
+      remove_calculated_value_errors!(calculated_fields.map(&:id))
+
       return unless is_a?(Project) && errors.any?
 
       enabled_calculated_fields = calculated_fields.filter { it.id.in?(enabled_ids) }
