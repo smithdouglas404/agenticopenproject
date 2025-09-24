@@ -459,12 +459,16 @@ RSpec.describe "Projects lists columns", :js, with_settings: { login_required?: 
       end
 
       it "displays the error in the value cell" do
-        projects_page.set_columns("Name", division_by_zero_calculated_value.name)
+        projects_page.set_columns("Name", division_by_zero_calculated_value.name, static_int_calculated_value.name)
 
         projects_page.within_row(project) do
           expect(page)
             .to have_css(".name", text: project.name)
 
+          # No error for that field:
+          expect(page).to have_no_test_selector("calculated-value-error-btn-#{static_int_calculated_value.id}")
+
+          # But there is one here:
           error_button = page.find_test_selector("calculated-value-error-btn-#{division_by_zero_calculated_value.id}")
           expect(error_button).to be_present
           error_button.click
