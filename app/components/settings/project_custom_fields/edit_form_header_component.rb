@@ -69,6 +69,10 @@ module Settings
          { href: admin_settings_project_custom_fields_path, text: t("settings.project_attributes.heading") },
          @custom_field.attribute_in_database("name")]
       end
+
+      def hide_description?
+        @custom_field.field_format_calculated_value? && !EnterpriseToken.allows_to?(:calculated_values)
+      end
     end
   end
 end

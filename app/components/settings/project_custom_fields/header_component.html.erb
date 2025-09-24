@@ -45,7 +45,11 @@
                 href: new_admin_settings_project_custom_field_path(field_format: format.name),
                 content_arguments: { data: { turbo: "false",
                                              test_selector: "new-project-custom-field-button" } }
-              )
+              ) do |item|
+                if show_enterprise_icon?(format)
+                  item.with_trailing_visual_icon(icon: :"op-enterprise-addons", classes: "upsell-colored")
+                end
+              end
             end
           end
         end

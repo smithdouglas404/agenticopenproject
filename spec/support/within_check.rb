@@ -28,8 +28,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module CustomFields
-  class UpdateContract < BaseContract
-    include CustomFields::EnterpriseGuard
+module WithinCheck
+  def within(*, **, &block)
+    if block
+      if respond_to?(:within_element)
+        within_element(*, **, &block)
+      else
+        fail "In this test `within` is only an alias for `be_within` rspec matcher, not capybara html scope helper"
+      end
+    else
+      be_within(*)
+    end
   end
+end
+
+RSpec.configure do |config|
+  config.include WithinCheck
 end
