@@ -73,6 +73,25 @@ RSpec.describe Primer::OpenProject::Forms::RichTextArea, type: :forms do
       it_behaves_like "successful render", text_area_id: "comment_ultimate_answer"
     end
 
+    context "without prefixing model name" do
+      let(:params) { { scope_id_to_model: false, rich_text_options: {} } }
+
+      it "renders the label" do
+        pending "Primer Forms render incorrect label `for` value: primer/view_components#3695"
+
+        expect(rendered_form).to have_element :label, for: "ultimate_answer"
+      end
+
+      it "renders the hidden textarea" do
+        expect(rendered_form).to have_field "ultimate_answer", type: "textarea", visible: :hidden
+      end
+
+      it "renders the rich text area" do
+        expect(rendered_form).to have_element "opce-ckeditor-augmented-textarea",
+                                              "data-text-area-id": "ultimate_answer".to_json
+      end
+    end
+
     context "with explicit field id" do
       let(:params) { { id: "explicit_id", rich_text_options: {} } }
 
@@ -85,6 +104,25 @@ RSpec.describe Primer::OpenProject::Forms::RichTextArea, type: :forms do
 
     context "with default field id" do
       it_behaves_like "successful render", text_area_id: "super_form_comment_ultimate_answer"
+    end
+
+    context "without prefixing model name" do
+      let(:params) { { scope_id_to_model: false, rich_text_options: {} } }
+
+      it "renders the label" do
+        pending "Primer Forms render incorrect label `for` value: primer/view_components#3695"
+
+        expect(rendered_form).to have_element :label, for: "ultimate_answer"
+      end
+
+      it "renders the hidden textarea" do
+        expect(rendered_form).to have_field "super_form_ultimate_answer", type: "textarea", visible: :hidden
+      end
+
+      it "renders the rich text area" do
+        expect(rendered_form).to have_element "opce-ckeditor-augmented-textarea",
+                                              "data-text-area-id": "super_form_ultimate_answer".to_json
+      end
     end
 
     context "with explicit field id" do
