@@ -49,13 +49,14 @@ module CalculatedValues
       end
     end
 
-    def self.handle_calculation_errors(customized, calculation_result, given_values, calculated_fields)
-      new(customized, calculation_result, given_values, calculated_fields).handle_errors
+    def self.handle_calculation_errors(customized:, calculation_errors:, calculation_values:, given_values:, calculated_fields:)
+      new(customized, calculation_errors, calculation_values, given_values, calculated_fields).handle_errors
     end
 
-    def initialize(customized, calculation_result, given_values, calculated_fields)
+    def initialize(customized, calculation_errors, calculation_values, given_values, calculated_fields)
       @customized = customized
-      @calculation_result = calculation_result
+      @calculation_errors = calculation_errors
+      @calculation_values = calculation_values
       @given_values = given_values
       @calculated_fields = calculated_fields
     end
@@ -69,14 +70,14 @@ module CalculatedValues
 
     private
 
-    attr_reader :customized, :calculation_result, :given_values, :calculated_fields
+    attr_reader :customized, :calculation_errors, :calculation_values, :given_values, :calculated_fields
 
     def should_create_errors?
       customized.is_a?(Project)
     end
 
     def build_error_contexts
-      calculation_result[:errors].filter_map do |cf_id, error|
+      calculation_errors.filter_map do |cf_id, error|
         build_error_context(cf_id, error)
       end
     end
@@ -117,7 +118,7 @@ module CalculatedValues
     end
 
     def find_indirect_missing_values(calculated_field)
-      cf_ids_with_results = calculation_result[:values].filter_map { |cf_id, v| to_id(cf_id) unless v.nil? }
+      cf_ids_with_results = calculation_values.filter_map { |cf_id, v| to_id(cf_id) unless v.nil? }
       cf_ids_in_formula_without_result = calculated_field.formula_referenced_custom_field_ids - cf_ids_with_results
 
       cf_ids_in_formula_without_result.filter do |ref_id|

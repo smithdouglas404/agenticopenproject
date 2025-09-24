@@ -117,10 +117,11 @@ module ActsAsCustomizable::CalculatedValue
       enabled_calculated_fields = calculated_fields.filter { it.id.in?(enabled_ids) }
 
       CalculatedValues::ErrorHandler.handle_calculation_errors(
-        self,
-        { values: result, errors: errors },
-        given_cfs,
-        enabled_calculated_fields
+        customized: self,
+        calculation_errors: errors,
+        calculation_values: result,
+        given_values: given_cfs,
+        calculated_fields: enabled_calculated_fields
       )
     end
 
