@@ -28,20 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
+# Provides translated error messages for CalculatedValueError instances.
 module CalculatedValues::ErrorsHelper
+  DEFAULT_TRANSLATION = "calculated_values.errors.unknown"
+
   ERROR_TRANSLATIONS = {
+    "ERROR_UNKNOWN" => DEFAULT_TRANSLATION,
     "ERROR_MATHEMATICAL" => "calculated_values.errors.mathematical",
     "ERROR_MISSING_VALUE" => "calculated_values.errors.missing_value",
     "ERROR_DISABLED_VALUE" => "calculated_values.errors.disabled_value"
   }.freeze
 
-  def self.calculated_value_error_msg(calculated_value_error)
+  def calculated_value_error_msg(calculated_value_error)
     return unless calculated_value_error.is_a?(CalculatedValueError)
 
     error_code = calculated_value_error.error_code
     missing_custom_field_ids = calculated_value_error.missing_custom_field_ids
 
-    translation_key = ERROR_TRANSLATIONS.fetch(error_code, "calculated_values.errors.unknown")
+    translation_key = ERROR_TRANSLATIONS.fetch(error_code, DEFAULT_TRANSLATION)
     translation_options = {}
 
     if %w[ERROR_MISSING_VALUE ERROR_DISABLED_VALUE].include?(error_code)
@@ -51,12 +55,12 @@ module CalculatedValues::ErrorsHelper
       if cf
         translation_options[:custom_field_name] = cf.name
       else
-        translation_key = "calculated_values.errors.unknown"
+        translation_key = DEFAULT_TRANSLATION
       end
     end
 
     I18n.t(translation_key, **translation_options)
   end
 
-  delegate :calculated_value_error_msg, to: :"CalculatedValues::ErrorsHelper"
+  module_function :calculated_value_error_msg
 end

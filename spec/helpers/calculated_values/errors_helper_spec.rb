@@ -89,15 +89,4 @@ RSpec.describe CalculatedValues::ErrorsHelper do
       end
     end
   end
-
-  describe "#calculated_value_error_msg" do
-    let(:instance) do
-      Object.new.extend(described_class)
-    end
-
-    it "delegates to the class method" do
-      error.error_code = "ERROR_MATHEMATICAL"
-      expect(instance.calculated_value_error_msg(error)).to eq(I18n.t("calculated_values.errors.mathematical"))
-    end
-  end
 end
