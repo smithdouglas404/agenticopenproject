@@ -22,7 +22,7 @@ zh-CN:
           at: '位置：'
           no_results: '没有新消息报告。'
         news_beta:
-          title: 'News (BETA)'
+          title: '新闻 (BETA)'
         project_description:
           title: '项目描述'
           no_results: "尚未写入任何描述。可以在“项目设置”中提供一个描述。"

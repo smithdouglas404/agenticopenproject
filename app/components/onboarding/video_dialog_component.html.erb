@@ -2,6 +2,9 @@
   render(
     Primer::Alpha::Dialog.new(
       id: "onboarding-video-dialog",
+      data: {
+        controller: "media-dialog"
+      },
       title:,
       size: :xlarge
     )
@@ -16,11 +19,14 @@
           render(Primer::BaseComponent.new(tag: :div, classes: "onboarding--video")) do
             render(
               Primer::BaseComponent.new(
-                tag: :iframe,
+                my: 2,
+                tag: :video,
                 frameborder: "0",
                 height: "430",
                 width: "100%",
-                src: iframe_src,
+                autoplay: "autoplay",
+                controls: true,
+                src: video_src,
                 allowfullscreen: true
               )
             )

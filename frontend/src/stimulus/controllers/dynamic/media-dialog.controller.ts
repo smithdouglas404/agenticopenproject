@@ -30,11 +30,14 @@
 
 import { Controller } from '@hotwired/stimulus';
 
-export default class AutoShowDialogController extends Controller<HTMLDialogElement> {
+export default class MediaDialogController extends Controller<HTMLDialogElement> {
   connect() {
-    // Remove the iframe element on close to prevent background play
+    // Remove the video element on close to prevent background play
     this.element.addEventListener('close', () => {
-      this.element.querySelector('iframe')?.remove();
+      this
+        .element
+        .querySelectorAll('iframe,video,embed')
+        .forEach(el => el.remove());
     });
   }
 }

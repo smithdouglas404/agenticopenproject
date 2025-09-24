@@ -43,8 +43,8 @@ Rails.application.config.after_initialize do
       assets_src << asset_host if asset_host.present?
 
       # Valid for iframes
-      frame_src = %w['self' https://player.vimeo.com https://www.youtube.com] # rubocop:disable Lint/PercentStringArray
-      frame_src << OpenProject::Configuration[:security_badge_url]
+      frame_src = []
+      frame_src << OpenProject::Configuration[:security_badge_url] if OpenProject::Configuration[:security_badge_displayed]
 
       # Default src
       default_src = %w('self') # rubocop:disable Lint/PercentStringArray
@@ -65,6 +65,12 @@ Rails.application.config.after_initialize do
       # Rules for media (e.g. video sources)
       media_src = default_src
       media_src << asset_host if asset_host.present?
+      # Getting started video
+      onboarding = Addressable::URI.parse(OpenProject::Static::Links.url_for(:onboarding_video_url))
+      media_src << "#{onboarding.scheme}://#{onboarding.host}"
+      enterprise_video = Addressable::URI.parse(OpenProject::Static::Links.url_for(:enterprise_welcome_video))
+      media_src << "#{enterprise_video.scheme}://#{enterprise_video.host}"
+      media_src.uniq!
 
       if OpenProject::Configuration.appsignal_frontend_key
         connect_src += ["https://appsignal-endpoint.net"]
@@ -73,7 +79,7 @@ Rails.application.config.after_initialize do
       # Allow connections to S3 for BIM
       if OpenProject::Configuration.fog_directory.present?
         connect_src += [
-          "#{OpenProject::Configuration.fog_directory}.s3-#{OpenProject::Configuration.fog_credentials[:region]}.amazonaws.com"
+          OpenProject::Configuration.fog_s3_upload_host
         ]
       end
 

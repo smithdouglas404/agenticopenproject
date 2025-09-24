@@ -215,6 +215,33 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
         expect(subject).to be_json_eql(calculated_custom_value.value.to_json)
                              .at_path(cf_path)
       end
+
+      context "when there is a calculation error" do
+        let(:cf_path) { "customField#{calculated_value_custom_field.id}Errors" }
+
+        let!(:calculated_value_error) do
+          build_stubbed(:calculated_value_error, custom_field: calculated_value_custom_field, customized: project)
+        end
+
+        before do
+          value_errors_double = double
+          allow(value_errors_double).to receive(:where)
+                                          .with(customized_id: project.id, customized_type: "Project")
+                                          .and_return([calculated_value_error])
+
+          allow(calculated_value_custom_field).to receive(:calculated_value_errors)
+                                                    .and_return(value_errors_double)
+        end
+
+        it "has a property for calculation errors" do
+          expect(subject).to be_json_eql([
+            {
+              code: "ERROR_MATHEMATICAL",
+              message: I18n.t("calculated_values.errors.mathematical")
+            }
+          ].to_json).at_path(cf_path)
+        end
+      end
     end
   end
 

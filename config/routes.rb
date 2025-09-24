@@ -634,6 +634,16 @@ Rails.application.routes.draw do
           post :link
           delete :unlink
         end
+        resources :items, controller: "/admin/settings/project_custom_fields/hierarchy/items" do
+          member do
+            get :change_parent, action: :change_parent_dialog
+            post :change_parent, action: :change_parent
+            get :delete, action: :deletion_dialog
+            post :move
+            get :new_child, action: :new
+            post :new_child, action: :create
+          end
+        end
       end
       resources :project_custom_field_sections, controller: "/admin/settings/project_custom_field_sections",
                                                 only: %i[create update destroy] do

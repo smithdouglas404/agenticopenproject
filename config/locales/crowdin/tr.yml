@@ -59,7 +59,7 @@ tr:
       tab_interface: "Arayüz"
       tab_branding: "Markalama"
       tab_pdf_export_styles: "PDF dışa aktarma biçimi"
-      tab_pdf_export_font: "PDF export font"
+      tab_pdf_export_font: "PDF dışa aktarma yazı tipi"
       fonts:
         file_too_large: "çok büyük (maksimum boyut %{count} MB'dir)."
         file_is_invalid: "geçerli bir TTF yazı tipi dosyası değildir."
@@ -622,16 +622,17 @@ tr:
     autologins:
       prompt: "%{num_days} için oturumu açık tut"
     sessions:
-      remembered_devices: "Hatırlanan cihazlar"
-      remembered_devices_caption: "'Oturum açık kalsın' seçeneğini kullanarak bu hesapta oturum açan tüm cihazların bir listesi."
       session_name: "%{os_name} üzerinde %{browser_name} %{browser_version}"
       browser: "Tarayıcı"
+      expires: "Expires"
+      last_connection: "Last connection"
       device: "Cihaz / İşletim Sistemi"
       unknown_browser: "bilinmeyen tarayıcı"
       unknown_os: "bilinmeyen işletim sistemi"
-      current: "Şuanki oturum"
+      unknown: "(unknown)"
+      current: "Current (this device)"
       title: "Oturum yönetimi"
-      instructions: "Bu, hesabınıza giriş yapmış olan cihazların bir listesidir. Tanımadığınız veya artık erişiminizin olmadığı oturumları iptal edin."
+      instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Şuanki oturumunuzu silemezsiniz."
     groups:
       member_in_these_groups: "Bu kullanıcı şu anda aşağıdaki grupların bir üyesidir:"
@@ -3637,6 +3638,7 @@ tr:
   notice_password_confirmation_failed: "Parolanız doğru değil. Devam edilemez."
   notice_principals_found_multiple: "%{number} sonuç bulundu.\nİlk sonuç için TABa basın."
   notice_principals_found_single: "Bir sonuç bulundu. \n Ona gitmek için TABa basın."
+  notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "Proje silinemedi."
   notice_project_not_found: "Proje bulunamadı."
   notice_successful_connection: "Bağlantı başarılı."

@@ -29,6 +29,8 @@
 #++
 module Projects
   class RowComponent < ::RowComponent
+    include CalculatedValues::ErrorsHelper
+
     delegate :identifier, to: :project
     delegate :favorited_project_ids,
              :project_phase_by_definition,
@@ -78,7 +80,7 @@ module Projects
       end
     end
 
-    def custom_field_column(column)
+    def custom_field_column(column) # rubocop:disable Metrics/AbcSize
       return nil unless user_can_view_project?
 
       cf = column.custom_field
@@ -93,6 +95,25 @@ module Projects
         )
       elsif custom_value.is_a?(Array)
         safe_join(Array(custom_value).compact_blank, ", ")
+      elsif cf.calculated_value?
+        render_calculated_value(cf, custom_value)
+      else
+        custom_value
+      end
+    end
+
+    def render_calculated_value(custom_field, custom_value)
+      if (error = custom_field.first_calculation_error(project))
+        render(Primer::Alpha::Dialog.new(title: I18n.t("calculated_values.error_dialog.title"),
+                                         data: {
+                                           test_selector: "calculated-value-error-dialog-#{custom_field.id}"
+                                         })) do |dialog|
+          dialog.with_show_button(icon: "alert-fill",
+                                  "aria-label": I18n.t("calculated_values.error_dialog.title"),
+                                  data: { test_selector: "calculated-value-error-btn-#{custom_field.id}" },
+                                  scheme: :invisible)
+          dialog.with_body { calculated_value_error_msg(error) }
+        end
       else
         custom_value
       end

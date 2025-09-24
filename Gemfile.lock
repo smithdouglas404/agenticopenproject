@@ -695,7 +695,7 @@ GEM
     htmlentities (4.3.4)
     http-2 (1.1.1)
     http_parser.rb (0.8.0)
-    httpx (1.6.0)
+    httpx (1.6.1)
       http-2 (>= 1.0.0)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
@@ -746,7 +746,7 @@ GEM
     json_spec (1.1.5)
       multi_json (~> 1.0)
       rspec (>= 2.0, < 4.0)
-    jwt (2.10.2)
+    jwt (3.1.2)
       base64
     ladle (1.0.1)
       open4 (~> 1.0)
@@ -755,7 +755,7 @@ GEM
       addressable (~> 2.8)
       childprocess (~> 5.0)
       logger (~> 1.6)
-    lefthook (1.13.1)
+    lefthook (1.13.4)
     letter_opener (1.10.0)
       launchy (>= 2.2, < 4)
     letter_opener_web (3.0.0)
@@ -880,7 +880,7 @@ GEM
       actionview
       openproject-octicons (= 19.29.0)
       railties
-    openproject-primer_view_components (0.72.1)
+    openproject-primer_view_components (0.73.0)
       actionview (>= 7.2.0)
       activesupport (>= 7.2.0)
       openproject-octicons (>= 19.29.0)
@@ -1407,8 +1407,8 @@ GEM
     rubytree (2.1.1)
       json (~> 2.0, > 2.9)
     rubyzip (2.4.1)
-    safety_net_attestation (0.4.0)
-      jwt (~> 2.0)
+    safety_net_attestation (0.5.0)
+      jwt (>= 2.0, < 4.0)
     sanitize (7.0.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.16.8)
@@ -1516,13 +1516,13 @@ GEM
       rack (>= 2.0.9)
     warden-basic_auth (0.2.1)
       warden (~> 1.2)
-    webauthn (3.4.1)
+    webauthn (3.4.2)
       android_key_attestation (~> 0.3.0)
       bindata (~> 2.4)
       cbor (~> 0.5.9)
       cose (~> 1.1)
       openssl (>= 2.2)
-      safety_net_attestation (~> 0.4.0)
+      safety_net_attestation (~> 0.5.0)
       tpm-key_attestation (~> 0.14.0)
     webfinger (2.1.3)
       activesupport
@@ -1649,7 +1649,7 @@ DEPENDENCIES
   grids!
   html-pipeline (~> 2.14.0)
   htmldiff
-  httpx (~> 1.6.0)
+  httpx (~> 1.6.1)
   i18n-js (~> 4.2.3)
   i18n-tasks (~> 1.0.13)
   ice_cube (~> 0.17.0)
@@ -1696,7 +1696,7 @@ DEPENDENCIES
   openproject-octicons (~> 19.29.0)
   openproject-octicons_helper (~> 19.29.0)
   openproject-openid_connect!
-  openproject-primer_view_components (~> 0.72.1)
+  openproject-primer_view_components (~> 0.73.0)
   openproject-recaptcha!
   openproject-reporting!
   openproject-storages!
@@ -1984,7 +1984,7 @@ CHECKSUMS
   htmlentities (4.3.4) sha256=125a73c6c9f2d1b62100b7c3c401e3624441b663762afa7fe428476435a673da
   http-2 (1.1.1) sha256=1141a5a03c2f4e6b8d2fa62394de581e1ff6387711cd7ed577212e9d95562bba
   http_parser.rb (0.8.0) sha256=5a0932f1fa82ce08a8516a2685d5a86031c000560f89946913c555a0697544be
-  httpx (1.6.0) sha256=c1639bced962b8788eb2b11f9c6f845fb1b88b80c9e2adf4b1b96d49f5b803e9
+  httpx (1.6.1) sha256=5b507bb3ca85fa2334d4fde4af4fb9638f91d8ce0e8ea5782ee72ad2e3bd0976
   i18n (1.14.7) sha256=ceba573f8138ff2c0915427f1fc5bdf4aa3ab8ae88c8ce255eb3ecf0a11a5d0f
   i18n-js (4.2.3) sha256=ffb1a6d34afebd9ab2aff9bd86e8f2873191cbe8b9ac5c2c8efe4dfa1107ca3b
   i18n-tasks (1.0.15) sha256=74f3e9e0e2db5d757c58e659f4269ee698c7a7532ed29066a2aaffc9efbdfb56
@@ -2001,11 +2001,11 @@ CHECKSUMS
   json-schema (4.3.1) sha256=d5e68dc32b94408d0b06ad04f9382ccbb6fe5a44910e066f8547f56c471a7825
   json_schemer (2.4.0) sha256=56cb6117bb5748d925b33ad3f415b513d41d25d0bbf57fe63c0a78ff05597c24
   json_spec (1.1.5) sha256=7a77b97a92c787e2aa3fbc4a1239afc3342c781151dc98cfb81461b3b7cad10f
-  jwt (2.10.2) sha256=31e1ee46f7359883d5e622446969fe9c118c3da87a0b1dca765ce269c3a0c4f4
+  jwt (3.1.2) sha256=af6991f19a6bb4060d618d9add7a66f0eeb005ac0bc017cd01f63b42e122d535
   ladle (1.0.1) sha256=e8586964108c798d48bf57d2a65bd5602e8e5223a176b6602a0fb36c0bda90dc
   language_server-protocol (3.17.0.5) sha256=fd1e39a51a28bf3eec959379985a72e296e9f9acfce46f6a79d31ca8760803cc
   launchy (3.1.1) sha256=72b847b5cc961589dde2c395af0108c86ff0119f42d4648d25b5440ebb10059e
-  lefthook (1.13.1) sha256=54763aaccd038d6ce6dbcceaf988ceb3200b893c4778160c8ff259c740427dd1
+  lefthook (1.13.4) sha256=f647c0aec22222a12d81de0f7072c5e76dab37c0f374238c8d1bafc37b3d5f93
   letter_opener (1.10.0) sha256=2ff33f2e3b5c3c26d1959be54b395c086ca6d44826e8bf41a14ff96fdf1bdbb2
   letter_opener_web (3.0.0) sha256=3f391efe0e8b9b24becfab5537dfb17a5cf5eb532038f947daab58cb4b749860
   lint_roller (1.1.0) sha256=2c0c845b632a7d172cb849cc90c1bce937a28c5c8ccccb50dfd46a485003cc87
@@ -2076,7 +2076,7 @@ CHECKSUMS
   openproject-octicons (19.29.0) sha256=9d9106a276d140a2ba975052688b0c92e404af0df5db87d322265ac5c15e8815
   openproject-octicons_helper (19.29.0) sha256=d093d91163b27d1624841590a8e6b202186d165ad7d006ceadc8bdc3b09830e6
   openproject-openid_connect (1.0.0)
-  openproject-primer_view_components (0.72.1) sha256=a14cea78d053f60534983cbe386ecfccb12c588107a62cf7c75fb6cde3d41f0e
+  openproject-primer_view_components (0.73.0) sha256=cd0f25ce22107e5a72745f5e69b599a633263275c78cbc25fb6c40ff75f0c610
   openproject-recaptcha (1.0.0)
   openproject-reporting (1.0.0)
   openproject-storages (1.0.0)
@@ -2253,7 +2253,7 @@ CHECKSUMS
   ruby2_keywords (0.0.5) sha256=ffd13740c573b7301cf7a2e61fc857b2a8e3d3aff32545d6f8300d8bae10e3ef
   rubytree (2.1.1) sha256=4925016356a81730e982f1f8c3b5f8da461f18906c77d238bad4c4ba896abd41
   rubyzip (2.4.1) sha256=8577c88edc1fde8935eb91064c5cb1aef9ad5494b940cf19c775ee833e075615
-  safety_net_attestation (0.4.0) sha256=96be2d74e7ed26453a51894913449bea0e072f44490021545ac2d1c38b0718ce
+  safety_net_attestation (0.5.0) sha256=c8cd01dd550dbe8553862918af6355a04672db11d218ec96104ce3955293f2aa
   sanitize (7.0.0) sha256=269d1b9d7326e69307723af5643ec032ff86ad616e72a3b36d301ac75a273984
   scimitar (2.13.0) sha256=8437fe62075130c83680d33e953eaf5dd441d4dfef67090f1d3b9e1c3d462e38
   securerandom (0.4.1) sha256=cc5193d414a4341b6e225f0cb4446aceca8e50d5e1888743fac16987638ea0b1
@@ -2309,7 +2309,7 @@ CHECKSUMS
   virtus (2.0.0) sha256=8841dae4eb7fcc097320ba5ea516bf1839e5d056c61ee27138aa4bddd6e3d1c2
   warden (1.2.9) sha256=46684f885d35a69dbb883deabf85a222c8e427a957804719e143005df7a1efd0
   warden-basic_auth (0.2.1) sha256=bfc752e0109c0182c3e69e930284c5e1e81e7b4a354aeb2b5914ead1391f3c6e
-  webauthn (3.4.1) sha256=f7c6f69178dd35dcc90313bc0d9b6558002336451d0c19d641ef1280624ac3ea
+  webauthn (3.4.2) sha256=09b7a4c68f96886b87110ec6700d266b7fff67e8b9bc54858999d4f4194e8ff0
   webfinger (2.1.3) sha256=567a52bde77fb38ca6b67e55db755f988766ec4651c1d24916a65aa70540695c
   webmock (3.25.1) sha256=ab9d5d9353bcbe6322c83e1c60a7103988efc7b67cd72ffb9012629c3d396323
   webrick (1.9.1) sha256=b42d3c94f166f3fb73d87e9b359def9b5836c426fc8beacf38f2184a21b2a989

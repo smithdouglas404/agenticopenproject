@@ -28,24 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Users
-  module AutoLoginTokens
-    class TableComponent < ::TableComponent
-      columns :is_current, :browser, :device, :expires_on
-      sortable_columns :updated_at
-      options :current_token
-
-      def sortable?
-        false
-      end
-
-      def headers
-        [
-          [:is_current, { caption: I18n.t("users.sessions.current") }],
-          [:browser, { caption: I18n.t("users.sessions.browser") }],
-          [:device, { caption: I18n.t("users.sessions.device") }],
-          [:expires_on, { caption: I18n.t("attributes.expires_at") }]
-        ]
+module Storages
+  module Adapters
+    module Providers
+      module Sharepoint
+        module ProviderInput
+          class CreateListContract < Dry::Validation::Contract
+            params do
+              required(:name).filled(:string)
+              required(:description).maybe(:string)
+            end
+          end
+        end
       end
     end
   end

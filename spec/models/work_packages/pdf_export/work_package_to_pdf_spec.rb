@@ -33,6 +33,7 @@ require "spec_helper"
 RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
   include Redmine::I18n
   include PDFExportSpecUtils
+
   let(:type) do
     create(:type_bug,
            custom_fields: [cf_long_text, cf_empty_long_text, cf_disabled_in_project, cf_global_bool, cf_link])
@@ -148,6 +149,12 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
           <figcaption>Image Caption</figcaption>
          </figure>
       </p>
+      <figure class="op-uc-figure">
+         <div class="op-uc-figure--content">
+            <img class="op-uc-image" src="/attachments/#{image_attachment.id}/image.png" alt='"image redirect"'>
+         </div>
+         <figcaption>Image Redirect</figcaption>
+      </figure>
       <p><unknown-tag>Foo</unknown-tag></p>
       <img class="op-uc-image op-uc-image_inline" src="/api/v3/attachments/#{image_attachment_elsewhere.id}/content">
     DESCRIPTION
@@ -290,13 +297,14 @@ RSpec.describe WorkPackage::PDFExport::WorkPackageToPdf do
           "Lorem", " ", "ipsum", " ", "dolor", " ", "sit", " ",
           "amet", ", consetetur sadipscing elitr.", " ", "@OpenProject Admin",
           "Image Caption",
-          "Foo",
           "1", export_date_formatted, project.name,
+          "Image Redirect",
+          "Foo",
           "2", export_date_formatted, project.name
         ].flatten.join(" ")
         expect(result).to eq(expected_result)
         expect(result).not_to include("DisabledCustomField")
-        expect(pdf[:images].length).to eq(3)
+        expect(pdf[:images].length).to eq(4)
       end
     end
 

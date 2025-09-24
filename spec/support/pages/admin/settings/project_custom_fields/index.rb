@@ -46,10 +46,7 @@ module Pages
 
             expect(page).to have_test_selector("add-project-custom-field-attribute")
 
-            if close_dialog
-              element_in_dialog = find_test_selector("add-project-custom-field-section")
-              element_in_dialog.send_keys :escape
-            end
+            click_button "Add" if close_dialog
           end
 
           def expect_no_add_project_attribute_submenu(close_dialog: true)
@@ -59,10 +56,7 @@ module Pages
 
             expect(page).not_to have_test_selector("add-project-custom-field-attribute")
 
-            if close_dialog
-              element_in_dialog = find_test_selector("add-project-custom-field-section")
-              element_in_dialog.send_keys :escape
-            end
+            click_button "Add" if close_dialog
           end
 
           def click_to_create_new_custom_field(type)
@@ -75,7 +69,7 @@ module Pages
             click_on type
           end
 
-          def expect_having_create_item(type)
+          def expect_having_create_item(type, enterprise_icon:)
             wait_for_network_idle
 
             click_button "Add"
@@ -83,6 +77,12 @@ module Pages
             click_button "Project attribute"
 
             expect(page).to have_link(type)
+
+            if enterprise_icon
+              expect(page.find(:link, type)).to have_css(".octicon-op-enterprise-addons.upsell-colored")
+            else
+              expect(page.find(:link, type)).to have_no_css(".octicon-op-enterprise-addons.upsell-colored")
+            end
           end
 
           def expect_not_having_create_item(type)

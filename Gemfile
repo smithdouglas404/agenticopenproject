@@ -244,7 +244,7 @@ gem "turbo-rails", "~> 2.0.0"
 
 # There is a problem with version 1.4.0. Do not update until you're sure there is no infinite hang
 # happenning in failing tests when WebMock or VCR stub cannot be found.
-gem "httpx", "~> 1.6.0"
+gem "httpx", "~> 1.6.1"
 
 # Brings actual deep freezing to most ruby objects
 gem "ice_nine"
@@ -419,4 +419,4 @@ end
 
 gem "openproject-octicons", "~>19.29.0"
 gem "openproject-octicons_helper", "~>19.29.0"
-gem "openproject-primer_view_components", "~>0.72.1"
+gem "openproject-primer_view_components", "~>0.73.0"

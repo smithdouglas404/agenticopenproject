@@ -275,6 +275,11 @@ module API
                           setter: property_value_setter_for(custom_field),
                           cache_if: config[:cache_if],
                           render_nil: true
+
+          @class.property :"#{custom_field.attribute_name}_errors",
+                          getter: calculated_value_error_getter(custom_field),
+                          cache_if: config[:cache_if],
+                          render_nil: false
         end
 
         def property_value_getter_for(custom_field)
@@ -299,6 +304,19 @@ module API
                       fragment
                     end
             send(custom_field.attribute_setter, value)
+          }
+        end
+
+        def calculated_value_error_getter(custom_field)
+          ->(*) {
+            next unless custom_field.calculated_value?
+            next unless available_custom_fields.include?(custom_field)
+
+            errors = custom_field.calculated_value_errors.where(customized_id: id, customized_type: "Project")
+            errors.map do |err|
+              { code: err.error_code,
+                message: CalculatedValues::ErrorsHelper.calculated_value_error_msg(err) }
+            end
           }
         end
 

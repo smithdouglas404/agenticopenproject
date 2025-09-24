@@ -1,24 +1,57 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+#-- copyright
+# OpenProject is an open source project management software.
+# Copyright (C) the OpenProject GmbH
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version 3.
+#
+# OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+# Copyright (C) 2006-2013 Jean-Philippe Lang
+# Copyright (C) 2010-2013 the ChiliProject Team
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# See COPYRIGHT and LICENSE files for more details.
+#++
+
+require "spec_helper"
 
 RSpec.describe Meetings::IcalendarBuilder,
                with_settings: { mail_from: "openproject@example.org", app_title: "OpenProject Testing" } do
   let(:timezone) { ActiveSupport::TimeZone["Europe/Berlin"] }
 
-  it "sets the PRODID parameter to the correct value" do
-    builder = described_class.new(timezone:)
+  context "without any meetings" do
+    subject(:builder) { described_class.new(timezone:) }
 
-    calendar = Icalendar::Calendar.parse(builder.to_ical).first
-    expect(calendar.prodid).to eq("-//OpenProject GmbH//#{OpenProject::VERSION}//Meeting//EN")
-  end
+    let(:parsed_calendar) { Icalendar::Calendar.parse(builder.to_ical).first }
 
-  it "allows setting a custom calendar title" do
-    builder = described_class.new(timezone:)
-    builder.calendar_title = "Custom Title"
+    it "sets the calendar properties" do
+      expect(parsed_calendar.prodid).to eq("-//OpenProject GmbH//#{OpenProject::VERSION}//Meeting//EN")
+      expect(parsed_calendar.version).to eq("2.0")
+      expect(parsed_calendar.calscale).to eq("GREGORIAN")
+      expect(parsed_calendar.refresh_interval.value_ical).to eq("PT6H")
+    end
 
-    calendar = Icalendar::Calendar.parse(builder.to_ical).first
-    expect(calendar.x_wr_calname.first).to eq("Custom Title")
+    it "allows setting a custom calendar title" do
+      builder.calendar_title = "Custom Title"
+
+      calendar = Icalendar::Calendar.parse(builder.to_ical).first
+      expect(calendar.x_wr_calname.first).to eq("Custom Title")
+    end
   end
 
   context "with a single meeting" do
@@ -359,6 +392,55 @@ RSpec.describe Meetings::IcalendarBuilder,
     end
   end
 
+  context "with recurring meetings in multiple timezones" do
+    subject(:builder) { described_class.new(timezone:) }
+
+    let(:parsed_calendar) { Icalendar::Calendar.parse(builder.to_ical).first }
+
+    let(:recurring_meeting) do
+      create(:recurring_meeting,
+             start_time: Time.zone.parse("2025-08-25 09:00"),
+             iterations: 10,
+             end_after: :iterations,
+             time_zone: "Europe/Paris")
+    end
+
+    let(:other_recurring_meeting) do
+      create(:recurring_meeting,
+             start_time: Time.zone.parse("2025-08-25 09:00"),
+             iterations: 10,
+             end_after: :iterations,
+             time_zone: "America/New_York")
+    end
+
+    before do
+      builder.add_series_event(recurring_meeting: recurring_meeting)
+      builder.add_series_event(recurring_meeting: other_recurring_meeting)
+    end
+
+    it "adds timezone definitions for both timezones of recurring meetings, but not builder timezone" do
+      expect(parsed_calendar.timezones.size).to eq(2)
+      tzids = parsed_calendar.timezones.map(&:tzid)
+      expect(tzids).to contain_exactly("Europe/Paris", "America/New_York")
+      # Berlin is not included because there is no event in that timezone
+      # We only have recurring meetings, and those are not converted to the builder timezone
+    end
+
+    context "when adding another single meeting" do
+      let(:single_meeting) { create(:meeting, start_time: Time.zone.parse("2025-10-01 10:00")) }
+
+      before do
+        builder.add_single_meeting_event(meeting: single_meeting)
+      end
+
+      it "also adds the builder timezone because single meetings are converted" do
+        expect(parsed_calendar.timezones.size).to eq(3)
+        tzids = parsed_calendar.timezones.map(&:tzid)
+        expect(tzids).to contain_exactly("Europe/Paris", "America/New_York", timezone.tzinfo.canonical_identifier)
+      end
+    end
+  end
+
   context "for timezone transitions across multiple years" do
     subject(:builder) { described_class.new(timezone:) }
 
@@ -398,6 +480,61 @@ RSpec.describe Meetings::IcalendarBuilder,
       builder.to_ical
       builder.to_ical
       expect(parsed_calendar.timezones.size).to eq(1)
+    end
+  end
+
+  context "with mutlipple recurring meetings in different timezones" do
+    let(:project) { create(:project) }
+    let(:user) do
+      create(:user, firstname: "John", lastname: "Doe", member_with_permissions: { project => [:view_meetings] })
+    end
+
+    let(:recurring_new_york) do
+      create(:recurring_meeting,
+             uid: "ny-series-uid",
+             start_time: ActiveSupport::TimeZone["America/New_York"].parse("2025-08-25 09:00"),
+             iterations: 10,
+             project: project,
+             end_after: :iterations,
+             time_zone: "America/New_York").tap do |recurring_meeting|
+        create(:meeting_participant, :invitee, meeting: recurring_meeting.template, user: user)
+      end
+    end
+
+    let(:recurring_tokyo) do
+      create(:recurring_meeting,
+             uid: "tokyo-series-uid",
+             start_time: ActiveSupport::TimeZone["Asia/Tokyo"].parse("2025-08-25 09:00"),
+             iterations: 10,
+             project: project,
+             end_after: :iterations,
+             time_zone: "Asia/Tokyo").tap do |recurring_meeting|
+        create(:meeting_participant, :invitee, meeting: recurring_meeting.template, user: user)
+      end
+    end
+
+    subject(:builder) { described_class.new(timezone:) }
+
+    before do
+      builder.add_series_event(recurring_meeting: recurring_new_york)
+      builder.add_series_event(recurring_meeting: recurring_tokyo)
+    end
+
+    it "builds the meetings with their respective timezones" do
+      parsed_calendar = Icalendar::Calendar.parse(builder.to_ical).first
+      expect(parsed_calendar.events.size).to eq(2)
+
+      ny_event = parsed_calendar.events.find { |e| e.uid == "ny-series-uid" }
+      tokyo_event = parsed_calendar.events.find { |e| e.uid == "tokyo-series-uid" }
+
+      expect(ny_event).to be_present
+      expect(tokyo_event).to be_present
+
+      expect(ny_event.dtstart.ical_params["tzid"].first).to eq("America/New_York")
+      expect(ny_event.dtstart.value).to eq(ActiveSupport::TimeZone["America/New_York"].parse("2025-08-25 09:00"))
+
+      expect(tokyo_event.dtstart.ical_params["tzid"].first).to eq("Asia/Tokyo")
+      expect(tokyo_event.dtstart.value).to eq(ActiveSupport::TimeZone["Asia/Tokyo"].parse("2025-08-25 09:00"))
     end
   end
 end

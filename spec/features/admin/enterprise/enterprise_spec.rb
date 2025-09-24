@@ -84,7 +84,9 @@ RSpec.describe "Enterprise token", :js do
         fill_in "Type support token text", with: "foobar"
         click_button "Add"
 
-        expect_and_dismiss_flash(message: I18n.t(:notice_successful_update))
+        expect(page).to have_text("Quick feature overview")
+        expect(page).to have_css("#enterprise-trial-welcome-dialog video")
+        page.find('[data-close-dialog-id="enterprise-trial-welcome-dialog"]').click
 
         # Table headers
         [
@@ -130,7 +132,9 @@ RSpec.describe "Enterprise token", :js do
         fill_in "Type support token text", with: "foobar"
         click_button "Add"
 
-        expect_and_dismiss_flash(message: I18n.t(:notice_successful_update))
+        expect(page).to have_text("Quick feature overview")
+        expect(page).to have_css("#enterprise-trial-welcome-dialog video")
+        page.find('[data-close-dialog-id="enterprise-trial-welcome-dialog"]').click
 
         click_button "Add Enterprise token"
         fill_in "Type support token text", with: "foobar"
