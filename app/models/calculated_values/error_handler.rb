@@ -108,23 +108,14 @@ module CalculatedValues
       calculated_field = calculated_fields.find { it.id == custom_field_id }
       return [] unless calculated_field
 
-      direct_missing = calculated_field.formula_referenced_custom_field_ids & cf_ids_with_missing_values
-      indirect_missing = find_indirect_missing_values(calculated_field)
-
-      direct_missing + indirect_missing
+      calculated_field.formula_referenced_custom_field_ids & cf_ids_with_missing_values
     end
 
-    def find_indirect_missing_values(calculated_field)
-      cf_ids_with_results = calculation_values.filter_map { |cf_id, v| to_id(cf_id) unless v.nil? }
-      cf_ids_in_formula_without_result = calculated_field.formula_referenced_custom_field_ids - cf_ids_with_results
-
-      cf_ids_in_formula_without_result.filter do |ref_id|
-        calculated_fields.any? { it.id == ref_id }
-      end
-    end
-
+    # Returns a list of all custom field ids that could not compute a value.
     def cf_ids_with_missing_values
-      @cf_ids_with_missing_values ||= given_values.filter_map { |k, v| to_id(k) if v.nil? }
+      @cf_ids_with_missing_values ||= given_values.merge(calculation_values)
+                                                  .merge(calculation_errors)
+                                                  .filter_map { |k, v| to_id(k) unless v.is_a?(Numeric) }
     end
 
     def create_error_records!(error_contexts)

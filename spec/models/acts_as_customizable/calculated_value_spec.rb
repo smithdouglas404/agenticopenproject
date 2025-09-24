@@ -438,7 +438,10 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
 
         expect(cv3.calculated_value_errors.where(customized: project)).to be_empty
 
+        # Directly missing cf_int
         expect_calculated_value_error(cv1, project, "ERROR_MISSING_VALUE", cf_int.name)
+
+        # Missing a value for cv1, which itself is missing cf_int and thus has no value
         expect_calculated_value_error(cv2, project, "ERROR_MISSING_VALUE", cv1.name)
       end
     end
