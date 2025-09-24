@@ -86,17 +86,14 @@ module CalculatedValues
       custom_field_id = to_id(cf_id)
 
       case error
-      when :zero_division
+      in :zero_division
         ErrorContext.new(custom_field_id:, error_code: "ERROR_MATHEMATICAL")
-      when :missing_value
+      in :missing_value
         build_missing_value_error_context(custom_field_id)
-      when Array
-        if error.first == :unbound_variable
-          disabled_fields = error.last.map { to_id(it) }
-          ErrorContext.new(custom_field_id:, error_code: "ERROR_DISABLED_VALUE", missing_custom_field_ids: disabled_fields)
-        else
-          ErrorContext.new(custom_field_id:, error_code: "ERROR_UNKNOWN")
-        end
+      in [:unbound_variable, disabled_fields]
+        ErrorContext.new(custom_field_id:,
+                         error_code: "ERROR_DISABLED_VALUE",
+                         missing_custom_field_ids: disabled_fields.map { to_id(it) })
       else
         ErrorContext.new(custom_field_id:, error_code: "ERROR_UNKNOWN")
       end
