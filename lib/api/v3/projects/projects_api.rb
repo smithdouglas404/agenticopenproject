@@ -69,8 +69,6 @@ module API
             delete &::API::V3::Utilities::Endpoints::Delete.new(model: Project,
                                                                 process_service: ::Projects::ScheduleDeletionService)
                                                            .mount
-
-            mount ::API::V3::Projects::UpdateFormAPI
             mount API::V3::Projects::Copy::CopyAPI
 
             mount ::API::V3::Workspaces::NestedApis
