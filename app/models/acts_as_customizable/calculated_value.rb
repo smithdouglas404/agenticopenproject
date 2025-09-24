@@ -75,21 +75,9 @@ module ActsAsCustomizable::CalculatedValue
         value.is_a?(Numeric) ? value : nil
       end
 
-      errors = calculation.transform_values do |value|
-        case value
-        when Dentaku::ZeroDivisionError
-          :zero_division
-        when Dentaku::ArgumentError
-          :missing_value
-        when Dentaku::UnboundVariableError
-          [:unbound_variable, value.unbound_variables]
-        when Numeric
-          # Calculation succeeded -> no error
-          nil
-        else
-          :unknown
-        end
-      end.compact
+      errors = calculation.reject do |_, value|
+        value.is_a?(Numeric)
+      end
 
       { result:, errors: }
     end

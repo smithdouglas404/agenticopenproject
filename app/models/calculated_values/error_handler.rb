@@ -80,14 +80,14 @@ module CalculatedValues
       custom_field_id = to_id(cf_id)
 
       case error
-      in :zero_division
+      when Dentaku::ZeroDivisionError
         ErrorContext.new(custom_field_id:, error_code: "ERROR_MATHEMATICAL")
-      in :missing_value
+      when Dentaku::ArgumentError
         build_missing_value_error_context(custom_field_id)
-      in [:unbound_variable, disabled_fields]
+      when Dentaku::UnboundVariableError
         ErrorContext.new(custom_field_id:,
                          error_code: "ERROR_DISABLED_VALUE",
-                         missing_custom_field_ids: disabled_fields.map { to_id(it) })
+                         missing_custom_field_ids: error.unbound_variables.map { to_id(it) })
       else
         ErrorContext.new(custom_field_id:, error_code: "ERROR_UNKNOWN")
       end
