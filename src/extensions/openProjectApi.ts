@@ -1,6 +1,6 @@
 import { Extension } from "@hocuspocus/server";
 import { createVerifier } from 'fast-jwt';
-import type { onLoadDocumentPayload, storePayload } from "@hocuspocus/server";
+import type { onAuthenticatePayload, onLoadDocumentPayload, onStoreDocumentPayload } from "@hocuspocus/server";
 import type { OpenProjectApiConfiguration } from "../types";
 import * as Y from "yjs";
 
@@ -11,6 +11,10 @@ if (!secret) {
 };
 
 const verifyToken = createVerifier({ key: async () => secret, algorithms: ['HS256'] });
+
+// my local dev env key, it's not a leak :)
+const RAW_KEY = "cf58c5077dc4e3b36c474e59711f069f2d52e940c2fd1999ad073fa36e6693ca";
+const API_KEY = Buffer.from(`apikey:${RAW_KEY}`, "utf-8").toString("base64");
 
 export class OpenProjectApi implements Extension {
   configuration: OpenProjectApiConfiguration = {
@@ -48,22 +52,23 @@ export class OpenProjectApi implements Extension {
   async onLoadDocument(data: onLoadDocumentPayload) {
     const { documentId } = data.context;
 
-    // my local dev env key, it's not a leak :)
-    const apiKey = "cf58c5077dc4e3b36c474e59711f069f2d52e940c2fd1999ad073fa36e6693ca";
-    const authBase64 = Buffer.from(`apikey:${apiKey}`, "utf-8").toString("base64");
-
     const targetUrl = `${this.configuration.apiUrl}/api/v3/documents/${documentId}/content_binary`;
-    console.log(`Fetching document from ${targetUrl}`);
+    console.log(`GET ${targetUrl}`);
     const response = await fetch(targetUrl, {
       method: "GET",
       headers: {
         "Content-Type": "application/octet-stream",
-        "Authorization": `Basic ${authBase64}`,
+        "Authorization": `Basic ${API_KEY}`,
       },
     });
 
+    // When there is no data on the server, assume it is a new document, so we just return
+    if (response.status === 404) {
+      return;
+    }
+
     if (!response.ok) {
-      throw new Error(`Error fetching document: ${response.statusText}`);
+      console.warn(`Error fetching document: ${response.statusText}`);
     }
 
     const update = new Uint8Array(await response.arrayBuffer());
@@ -71,13 +76,25 @@ export class OpenProjectApi implements Extension {
   }
 
   /**
-    * This is just a simulation of storing the document. This
-    * method should be debounced properly. The idea would be to make
-    * an API call to the server, sending the binary data AND a text
-    * data
+    * Store data to the API. The data is a YDoc update
     */
-  async store(_data: storePayload): Promise<void> {
-    console.log("Storing document");
+  async onStoreDocument(data: onStoreDocumentPayload): Promise<void> {
+    const { documentId } = data.context;
+
+    const targetUrl = `${this.configuration.apiUrl}/api/v3/documents/${documentId}/content_binary`;
+    console.log(`PUT ${targetUrl}`);
+    const response = await fetch(targetUrl, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/octet-stream",
+        "Authorization": `Basic ${API_KEY}`,
+      },
+      body: Buffer.from(Y.encodeStateAsUpdate(data.document)),
+    });
+
+    if (!response.ok) {
+      console.warn(`Error storing document: ${response.statusText}`);
+    }
   }
 }
 
