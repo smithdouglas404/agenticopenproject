@@ -393,12 +393,16 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
       end
     end
 
+    def expect_no_calculated_value_errors(calc_val_cf, project)
+      expect(calc_val_cf.first_calculation_error(project)).to be_nil
+    end
+
     let(:project) { create(:project) }
-    let(:enabled_custom_fields) { {} }
+    let(:custom_field_values) { {} }
 
     before do
-      enabled_custom_fields.each do |cf, value|
-        create(:custom_value, customized: project, custom_field: cf, value:)
+      custom_field_values.each do |custom_field, value|
+        create(:custom_value, customized: project, custom_field:, value:)
       end
     end
 
@@ -406,18 +410,15 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
       let(:cf_div) { create(:calculated_value_project_custom_field, projects: [project], formula: "5 / 0") }
       let(:cf_add) { create(:calculated_value_project_custom_field, projects: [project], formula: "5 + 0") }
 
-      let(:enabled_custom_fields) do
+      let(:custom_field_values) do
         { cf_div => nil, cf_add => nil }
       end
 
       it "creates a mathematical error for division by zero" do
         project.calculate_custom_fields([cf_div, cf_add])
 
-        expect(cf_add.calculated_value_errors.where(customized: project)).to be_empty
-
-        errors = cf_div.calculated_value_errors.where(customized: project)
-        expect(errors.size).to eq(1)
-        expect(errors.first&.error_code).to eq("ERROR_MATHEMATICAL")
+        expect_no_calculated_value_errors(cf_add, project)
+        expect_calculated_value_error(cf_div, project, "ERROR_MATHEMATICAL")
       end
     end
 
@@ -429,14 +430,14 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
       let(:cv2) { create(:calculated_value_project_custom_field, :skip_validations, projects: [project], formula: "5 + #{cv1}") }
       let(:cv3) { create(:calculated_value_project_custom_field, :skip_validations, projects: [project], formula: "5 + 5") }
 
-      let(:enabled_custom_fields) do
+      let(:custom_field_values) do
         { cv1 => nil, cv2 => nil, cf_int => nil, cv3 => nil }
       end
 
       it "creates a missing value error" do
         project.calculate_custom_fields([cv1, cv2, cv3])
 
-        expect(cv3.calculated_value_errors.where(customized: project)).to be_empty
+        expect_no_calculated_value_errors(cv3, project)
 
         # Directly missing cf_int
         expect_calculated_value_error(cv1, project, "ERROR_MISSING_VALUE", cf_int.name)
@@ -447,21 +448,21 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
     end
 
     describe "disabled value" do
-      let(:cf_int) { create(:integer_project_custom_field) }
+      let(:cf_int) { create(:integer_project_custom_field, projects: []) }
       let(:cv1) do
         create(:calculated_value_project_custom_field, :skip_validations, projects: [project], formula: "5 + #{cf_int}")
       end
       let(:cv2) { create(:calculated_value_project_custom_field, :skip_validations, projects: [project], formula: "5 + #{cv1}") }
       let(:cv3) { create(:calculated_value_project_custom_field, :skip_validations, projects: [project], formula: "5 + 5") }
 
-      let(:enabled_custom_fields) do
+      let(:custom_field_values) do
         { cv1 => nil, cv2 => nil, cv3 => nil }
       end
 
       it "creates a disabled value error" do
         project.calculate_custom_fields([cv1, cv2, cv3])
 
-        expect(cv3.first_calculation_error(project)).to be_blank
+        expect_no_calculated_value_errors(cv3, project)
 
         # The referenced int field is disabled, we thus expect a `disabled` error.
         expect_calculated_value_error(cv1, project, "ERROR_DISABLED_VALUE", cf_int.name)
@@ -479,7 +480,7 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
       end
       let(:enabled_cv) { create(:calculated_value_project_custom_field, :skip_validations, projects: [project], formula:) }
 
-      let(:enabled_custom_fields) do
+      let(:custom_field_values) do
         { enabled_cv => nil, cf_int => 0 }
       end
 
@@ -507,7 +508,7 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
                formula: "#{a_plus_b} / #{a_minus_b}")
       end
 
-      let(:enabled_custom_fields) do
+      let(:custom_field_values) do
         { a => 1, b => 2, a_plus_b => nil, a_minus_b => nil, nested_calculation => nil }
       end
 
@@ -531,7 +532,7 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
           create(:calculated_value_project_custom_field, :skip_validations, projects: [], formula: "#{a} - #{b}")
         end
 
-        let(:enabled_custom_fields) do
+        let(:custom_field_values) do
           { a => 1, b => 2, a_plus_b => nil, nested_calculation => nil }
         end
 
@@ -548,7 +549,7 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
           create(:calculated_value_project_custom_field, :skip_validations, projects: [], formula: "#{a} + #{b}")
         end
 
-        let(:enabled_custom_fields) do
+        let(:custom_field_values) do
           { a => 1, b => 2, a_minus_b => nil, nested_calculation => nil }
         end
 
@@ -561,7 +562,7 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
       end
 
       describe "resulting in a division by zero error" do
-        let(:enabled_custom_fields) do
+        let(:custom_field_values) do
           { a => 1, b => 1, a_plus_b => nil, a_minus_b => nil, nested_calculation => nil }
         end
 
