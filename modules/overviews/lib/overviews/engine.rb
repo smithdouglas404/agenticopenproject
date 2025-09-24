@@ -49,7 +49,8 @@ module Overviews
           .push(
             "overviews/overviews/show",
             "overviews/overviews/dashboard",
-            "overviews/widgets/project_statuses/show"
+            "overviews/widgets/project_statuses/show",
+            "overviews/widgets/subitems/show"
           )
 
         OpenProject::AccessControl.permission(:edit_project)

@@ -28,38 +28,5 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Overviews
-  module Widgets
-    class NewsComponent < Grids::WidgetComponent
-      NEWS_LIMIT = 5
-
-      include ApplicationHelper
-      include OpPrimer::ComponentHelpers
-      include OpTurbo::Streamable
-
-      attr_reader :project, :current_user
-
-      def initialize(project)
-        super()
-
-        @project = project
-        @current_user = current_user
-        @news =
-          if project
-            project.news.visible(current_user).newest_first
-          else
-            News
-              .visible(current_user)
-              .newest_first
-              .includes(:project)
-          end
-
-        @newest = @news.limit(NEWS_LIMIT).to_a
-      end
-
-      def title
-        Project.human_attribute_name(:news)
-      end
-    end
-  end
+class Overviews::Widgets::SubitemsController < Overviews::WidgetController
 end

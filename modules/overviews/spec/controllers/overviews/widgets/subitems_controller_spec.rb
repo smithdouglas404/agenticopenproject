@@ -28,37 +28,22 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Overviews
-  module Widgets
-    class NewsComponent < Grids::WidgetComponent
-      NEWS_LIMIT = 5
+require "rails_helper"
 
-      include ApplicationHelper
-      include OpPrimer::ComponentHelpers
-      include OpTurbo::Streamable
+RSpec.describe Overviews::Widgets::SubitemsController do
+  shared_let(:project) { create(:project) }
+  shared_let(:user) { create(:user, member_with_permissions: { project => %i[view_project] }) }
+  current_user { user }
 
-      attr_reader :project, :current_user
-
-      def initialize(project)
-        super()
-
-        @project = project
-        @current_user = current_user
-        @news =
-          if project
-            project.news.visible(current_user).newest_first
-          else
-            News
-              .visible(current_user)
-              .newest_first
-              .includes(:project)
-          end
-
-        @newest = @news.limit(NEWS_LIMIT).to_a
+  describe "GET #show" do
+    context "with project" do
+      before do
+        get :show, params: { project_id: project }
       end
 
-      def title
-        Project.human_attribute_name(:news)
+      it "renders show template", :aggregate_failures do
+        expect(response).to be_successful
+        expect(response).to render_template "show"
       end
     end
   end

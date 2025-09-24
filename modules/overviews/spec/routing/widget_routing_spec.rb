@@ -120,4 +120,22 @@ RSpec.describe Overviews::WidgetController do
       end
     end
   end
+
+  describe "subitems routing" do
+    describe "GET #show" do
+      it do
+        expect(get("/projects/my-project/widgets/subitems"))
+          .to route_to(controller: "overviews/widgets/subitems", action: "show", project_id: "my-project")
+      end
+    end
+  end
+
+  describe "subitems named routing" do
+    describe "GET #show" do
+      it do
+        expect(get(project_widgets_subitems_path("my-project")))
+          .to route_to(controller: "overviews/widgets/subitems", action: "show", project_id: "my-project")
+      end
+    end
+  end
 end
