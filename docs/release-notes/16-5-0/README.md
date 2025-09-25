@@ -25,9 +25,16 @@ You can now place a work package directly into a specific agenda section when ad
 
 ### Choose color mode more conveniently with “Increase contrast” checkboxes
 
-Text
+To give our users a clearer and better selection of the recently released new color modes, we have simplified the settings under *Account settings* → *Interface*. Users can now only choose between:
+- Light
+- Dark
+- Automatic (match OS color mode)
 
-Screenshot
+Additionally, **checkboxes for high contrast** are now displayed, depending on the selection. So if you  selected “Light high contrast” in previous versions, starting with 16.5, you can now select ‘Light’ and check the box for “Increase contrast.”
+
+This new feature is particularly helpful for the automatic mode, where you can now cdifferentiate whether you want high contrast to be displayed only in dark mode or only in light mode, for example.
+
+![OpenProject account settings / Interface: Look and feel options reduced to "Dark", "Light" and "Automatic". Automatic is selected and below two checkboxes are displayed:" Force high contrast when in Light mode" and "Force high-contrast when in Dark mode".](openproject-16-5-increase-contrast-automatic.png)
 
 
 ### Filter projects by last update
