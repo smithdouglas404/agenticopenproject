@@ -3,22 +3,60 @@ title: OpenProject 16.5.0
 sidebar_navigation:
     title: 16.5.0
 release_version: 16.5.0
-release_date: 2025-09-25
+release_date: 2025-10-08
 ---
 
 # OpenProject 16.5.0
 
-Release date: 2025-09-25
+Release date: 2025-10-08
 
-We released OpenProject [OpenProject 16.5.0](https://community.openproject.org/versions/2215).
-The release contains several bug fixes and we recommend updating to the newest version.
-In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
+We released [OpenProject 16.5.0](https://community.openproject.org/versions/2215). The release contains several bug fixes and we recommend updating to the newest version. In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
 
 ## Important feature changes
 
-<!-- Inform about the major features in this section -->
+### Add work packages to a meeting section in the Meetings tab
 
-## Important updates and breaking changes
+Text
+
+Screenshot
+
+### Choose color mode more conveniently with “Increase contrast” checkboxes
+
+Text
+
+Screenshot
+
+
+### Filter projects by last update
+
+Text
+
+Screenshot
+
+
+### Jump to highlighted target elements from deep links
+
+Text
+
+Screenshot
+
+
+### Confirm critical actions with more accessible danger dialogs
+
+Text
+
+Screenshot
+
+### Consistent entering of hours in duration fields
+
+Text
+
+### Add/remove projects from favorite via the API
+
+Text
+
+
+## Important technical updates
 
 <!-- Remove this section if empty, add to it in pull requests linking to tickets and provide information -->
 
@@ -81,12 +119,13 @@ In these Release Notes, we will give an overview of important feature changes. A
 <!-- Warning: Anything above this line will be automatically removed by the release script -->
 
 ## Contributions
-A very special thank you goes to our sponsors for this release.
-Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes.
-Special thanks for reporting and finding bugs go to Andreas Pfohl, Alexander Aleschenko, Lars Tiedemann, Akihiko Fujikawa, Johannes Baumgarten.
 
-Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings!
-Would you like to help out with translations yourself?
-Then take a look at our translation guide and find out exactly how you can contribute.
-It is very much appreciated!
+A very special thank you goes to Helmholtz-Zentrum Berlin, City of Cologne, Deutsche Bahn and ZenDiS for sponsoring released or upcoming features. Your support, alongside the efforts of our amazing Community, helps drive these innovations. Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes. Special thanks for reporting and finding bugs go to Alexander Aleschenko, Lars Tiedemann, Akihiko Fujikawa, and Johannes Baumgarten.
+
+Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to particularly thank the following users:
+
+- [name](https://crowdin.com/profile/name), for a great number of translations into Language.
+- 
+
+Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
 
