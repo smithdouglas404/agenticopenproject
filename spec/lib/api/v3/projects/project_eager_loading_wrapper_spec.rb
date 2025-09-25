@@ -67,4 +67,28 @@ RSpec.describe API::V3::Projects::ProjectEagerLoadingWrapper do
       end
     end
   end
+
+  describe "delegations" do
+    shared_examples "delegates class method to Project" do |method_name|
+      it "delegates #{method_name} to Project" do
+        expect(described_class.public_send(method_name)).to eq(Project.public_send(method_name))
+      end
+    end
+
+    describe ".polymorphic_name" do
+      it_behaves_like "delegates class method to Project", :polymorphic_name
+    end
+
+    describe ".has_query_constraints?" do
+      it_behaves_like "delegates class method to Project", :has_query_constraints?
+    end
+
+    describe ".composite_primary_key?" do
+      it_behaves_like "delegates class method to Project", :composite_primary_key?
+    end
+
+    describe ".primary_key" do
+      it_behaves_like "delegates class method to Project", :primary_key
+    end
+  end
 end

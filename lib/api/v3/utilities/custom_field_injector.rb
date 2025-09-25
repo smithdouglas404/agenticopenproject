@@ -312,7 +312,7 @@ module API
             next unless custom_field.calculated_value?
             next unless available_custom_fields.include?(custom_field)
 
-            errors = custom_field.calculated_value_errors.where(customized_id: id, customized_type: "Project")
+            errors = custom_field.calculated_value_errors.where(customized: self)
             errors.map do |err|
               { code: err.error_code,
                 message: CalculatedValues::ErrorsHelper.calculated_value_error_msg(err) }

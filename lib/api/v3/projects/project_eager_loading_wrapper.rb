@@ -36,6 +36,14 @@ module API
         delegate :is_a?, to: :__getobj__
 
         class << self
+          # Class methods that are required by Rails when a Project is associated as a polymorphic object.
+          # E.g., when you call `CalculatedValueError.where(customized: this_wrapper)`
+          delegate :polymorphic_name,
+                   :has_query_constraints?,
+                   :composite_primary_key?,
+                   :primary_key,
+                   to: :Project
+
           def wrap(projects)
             if projects.present?
               custom_fields_by_project_id = custom_fields_from_projects

@@ -226,7 +226,7 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
         before do
           value_errors_double = double
           allow(value_errors_double).to receive(:where)
-                                          .with(customized_id: project.id, customized_type: "Project")
+                                          .with(customized: project)
                                           .and_return([calculated_value_error])
 
           allow(calculated_value_custom_field).to receive(:calculated_value_errors)
