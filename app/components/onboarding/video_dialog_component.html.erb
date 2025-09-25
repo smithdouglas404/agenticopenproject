@@ -21,15 +21,22 @@
               Primer::BaseComponent.new(
                 my: 2,
                 tag: :video,
-                frameborder: "0",
                 height: "430",
                 width: "100%",
-                autoplay: "autoplay",
                 controls: true,
-                src: video_src,
-                allowfullscreen: true
+                preload: "none",
+                allowfullscreen: true,
+                data: { "media-dialog-target": "video" }
               )
-            )
+            ) do
+              render(
+                Primer::BaseComponent.new(
+                  tag: :source,
+                  src: video_src,
+                  type: "video/mp4"
+                )
+              )
+            end
           end
         )
       end

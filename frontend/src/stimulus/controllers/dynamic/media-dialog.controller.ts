@@ -31,13 +31,27 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class MediaDialogController extends Controller<HTMLDialogElement> {
+  static targets = ['video'];
+
+  declare readonly videoTarget:HTMLVideoElement;
+
+  videoTargetConnected(target:HTMLVideoElement) {
+    // Wait for next frame to ensure dialog is fully rendered
+    requestAnimationFrame(() => {
+      // Add error handling for Firefox codec issues
+      target.addEventListener('error', (event) => {
+        console.error('Video failed to load in dialog context:', event);
+      });
+
+      // Force reload the video source to work around Firefox dialog issues
+      target.load();
+    });
+  }
+
   connect() {
     // Remove the video element on close to prevent background play
     this.element.addEventListener('close', () => {
-      this
-        .element
-        .querySelectorAll('iframe,video,embed')
-        .forEach(el => el.remove());
+      this.element.querySelectorAll('video').forEach(el => el.remove());
     });
   }
 }
