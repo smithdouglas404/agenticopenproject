@@ -69,11 +69,7 @@ This ensures that all users can confidently understand and complete critical act
 
 Entering and displaying durations has been made more consistent across the application. Time entries, work, and remaining work now accept input in the **hh:mm** format, and meetings also support this format. 
 
-For German, the correct decimal separator (,) is applied, and durations are displayed in hh:mm. Durations are formatted as **working days rather than calendar days**, making it clearer and easier to interpret time values across different modules.
-
-## Important technical updates
-
-<!-- Remove this section if empty, add to it in pull requests linking to tickets and provide information -->
+For German, the correct decimal separator (,) is applied, and durations are displayed in hh:mm. Durations are formatted as working days rather than calendar days, making it clearer and easier to interpret time values across different modules.
 
 <!--more-->
 
@@ -139,8 +135,8 @@ A very special thank you goes to Helmholtz-Zentrum Berlin, City of Cologne, Deut
 
 Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to particularly thank the following users:
 
-- [name](https://crowdin.com/profile/name), for a great number of translations into Language.
-- 
+- [Haura Nabila Rinaldi](https://crowdin.com/profile/hauranblr), for a great number of translations into Indonesian.
+- [Samo](https://crowdin.com/profile/SamoE), for a great number of translations into Turkish.
+- [Kuma Yamashita](https://crowdin.com/profile/dredgk), for a great number of translations into Japanese.
 
 Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
-
