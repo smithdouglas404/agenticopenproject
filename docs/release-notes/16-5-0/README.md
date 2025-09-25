@@ -16,9 +16,12 @@ We released [OpenProject 16.5.0](https://community.openproject.org/versions/2215
 
 ### Add work packages to a meeting section in the Meetings tab
 
-Text
+You can now place a work package directly into a specific agenda section when adding it to a meeting from the Meetings tab. Open a work package, go to the tab "Meetings" and select an upcoming meeting. If you selected one, you can now choose in which section the work package should be displayed. 
 
-Screenshot
+>[!NOTE]
+> If you choose a meeting with no sections, the work package will automatically be added to the (Agenda or Series) Backlog.
+
+![OpenProject work package, Meetings tab: Modal to "Select a meeting" with the Meeting selected being a Marketing daily and a "Add to section" dropdown with two sections to choose from.](openproject-16-5-meeting-tab-highlighted.png)
 
 ### Choose color mode more conveniently with “Increase contrast” checkboxes
 
