@@ -52,10 +52,13 @@ In the API, the updated_at filter has been added to the /api/v3/projects endpoin
 
 ### Jump to highlighted target elements from deep links
 
-Text
+Deep links now take you to the right spot and highlight the target so you immediately see what to look at.
 
-Screenshot
+Following a link with an anchor (e.g., a specific comment in Activity or a meeting agenda item) auto-scrolls the page so the target is displayed near the top and temporarily highlighted with a blue outline.
 
+![OpenProject work package Activity tab, comment highlighted with blue frame saying "This comment will be highlighted if I link to it!"](openproject-16-5-deep-link.png)
+
+After your next interaction (e.g., any click), the browser URL is cleaned to the canonical form and the highlight is removed.
 
 ### Confirm critical actions with more accessible danger dialogs
 
