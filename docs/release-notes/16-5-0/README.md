@@ -21,6 +21,8 @@ You can now place a work package directly into a specific agenda section when ad
 >[!NOTE]
 > If you choose a meeting with no sections, the work package will automatically be added to the (Agenda or Series) Backlog.
 
+In the "Notes" section, you can add text that will be displayed together with the meeting title in the “Meetings” tab of the work package.
+
 ![OpenProject work package, Meetings tab: Modal to "Select a meeting" with the Meeting selected being a Marketing daily and a "Add to section" dropdown with two sections to choose from.](openproject-16-5-meeting-tab-highlighted.png)
 
 ### Choose color mode more conveniently with “Increase contrast” checkboxes
@@ -39,10 +41,14 @@ This new feature is particularly helpful for the automatic mode, where you can n
 
 ### Filter projects by last update
 
-Text
+Projects can now be filtered and sorted by the last update time. To enable this, a new "Updated on" filter and sortable column is available in the project list. This allows you to quickly find projects that have recently changed.
 
-Screenshot
+In the API, the updated_at filter has been added to the /api/v3/projects endpoint. This makes it possible to request only projects that have changed since a given timestamp.
 
+>[!NOTE]
+> "Updated on" includes all direct changes to the project itself, e.g. a new custom field or a change of the project name. In contrast to this, the **"Latest activity at" includes a broader list of changes**, e.g. a new work package or wiki that has been added.
+
+![OpenProject project list, filtered for "Updated on" and selected "less than days ago" with a "3" added to the number of days.](openproject-16-5-updated-on.png)
 
 ### Jump to highlighted target elements from deep links
 
