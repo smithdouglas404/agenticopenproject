@@ -55,6 +55,10 @@ module Homescreen
         I18n.t("homescreen.blocks.new_features.#{feature_version}.new_features_list")
       end
 
+      def render?
+        I18n.exists?("homescreen.blocks.new_features.#{feature_version}")
+      end
+
       private
 
       def feature_version
