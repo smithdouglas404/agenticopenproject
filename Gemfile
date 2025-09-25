@@ -166,7 +166,7 @@ gem "paper_trail", "~> 16.0.0"
 gem "op-clamav-client", "~> 3.4", require: "clamav"
 
 # Global ID for polymorphic associations
-gem "globalid", "~> 1.2"
+gem "globalid", "~> 1.3"
 
 # Recurring meeting events definition
 gem "ice_cube", "~> 0.17.0"
