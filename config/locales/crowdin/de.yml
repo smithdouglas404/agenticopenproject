@@ -329,6 +329,14 @@ de:
     tab:
       no_results_title_text: Zur Zeit existieren keine benutzerdefinierten Felder.
       no_results_content_text: Neues benutzerdefiniertes Feld anlegen
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "oder"
   op_dry_validation:
@@ -627,6 +635,7 @@ de:
       unknown_browser: "unbekannter Browser"
       unknown_os: "unbekanntes Betriebssystem"
       unknown: "(unknown)"
+      browser_session: "(Browser session)"
       current: "Current (this device)"
       title: "Sitzungsverwaltung"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
@@ -965,6 +974,11 @@ de:
         help_text: "Hilfe-Text"
       auth_provider:
         scim_clients: "SCIM-Clients"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "Kontext"
       changeset:
@@ -1272,7 +1286,7 @@ de:
         confirmation: "stimmt nicht mit %{attribute} überein."
         could_not_be_copied: "%{dependency} konnte nicht (vollständig) kopiert werden."
         does_not_exist: "existiert nicht."
-        error_enterprise_only: "%{action} ist nur in OpenProject Enterprise on-premises verfügbar"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "kann nicht zugegriffen werden."
         error_readonly: "wurde versucht zu beschreiben, ist aber nicht beschreibbar."
         error_conflict: "Die Informationen wurde zwischenzeitlich durch andere Benutzer geändert."
@@ -2175,6 +2189,7 @@ de:
     features:
       baseline_comparison: Grundlinie (Planungsvergleich)
       board_view: Erweiterte agile Boards
+      calculated_values: Calculated Values
       conditional_highlighting: Bedingte Hervorhebung
       internal_comments: Interne Kommentare
       custom_actions: Benutzerdefinierte Aktionen
@@ -2247,6 +2262,8 @@ de:
         description: "Teilen Sie Arbeitspakete mit Benutzern, die nicht Mitglieder des Projekts sind."
       project_list_sharing:
         description: "Projektlisten mit einzelnen Benutzern und Gruppen teilen."
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Selbstdefiniertes Farbthema und Logo"
         more_info: "Hinweis: Das verwendete Logo wird öffentlich zugänglich sein."
@@ -2805,7 +2822,7 @@ de:
   label_select_main_menu_item: Neuen Hauptmenüpunkt auwählen
   label_required_disk_storage: "Erforderlicher Festplattenspeicher"
   label_send_invitation: Einladung senden
-  label_calculated_value: "Berechneter Wert"
+  label_calculated_value: "Calculated Value"
   label_change_parent: "Change parent"
   label_change_plural: "Änderungen"
   label_change_properties: "Eigenschaften ändern"
@@ -2982,7 +2999,7 @@ de:
   label_integer: "Zahl"
   label_interface: "Benutzeroberfläche"
   label_internal: "Intern"
-  label_introduction_video: "Einführungsvideo"
+  label_introduction_video: "Getting started video"
   label_invite_user: "Nutzer einladen"
   label_item: "Element"
   label_item_plural: "Elemente"

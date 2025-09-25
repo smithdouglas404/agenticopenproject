@@ -331,6 +331,14 @@ zh-TW:
     tab:
       no_results_title_text: 目前沒有自定義的欄位
       no_results_content_text: 建立一個新的自定義欄位
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "或者"
   op_dry_validation:
@@ -617,15 +625,16 @@ zh-TW:
     sessions:
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "瀏覽器"
-      expires: "Expires"
-      last_connection: "Last connection"
+      expires: "到期"
+      last_connection: "最後連線"
       device: "裝置/作業系統"
       unknown_browser: "未知的瀏覽器"
       unknown_os: "未知作業系統"
-      unknown: "(unknown)"
-      current: "Current (this device)"
+      unknown: "(未知)"
+      browser_session: "(Browser session)"
+      current: "目前（此裝置）"
       title: "連線管理"
-      instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
+      instructions: "您已透過以下裝置登入帳號。請撤銷您無法識別或不受您控制的裝置連線。"
       may_not_delete_current: "您不可以刪除自己的連線連線"
     groups:
       member_in_these_groups: "此用戶當前是以下群組的成員："
@@ -961,6 +970,11 @@ zh-TW:
         help_text: "說明文字"
       auth_provider:
         scim_clients: "SCIM 用戶端"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "內容"
       changeset:
@@ -1268,7 +1282,7 @@ zh-TW:
         confirmation: "不吻合 %{attribute}。"
         could_not_be_copied: "%{dependency} 無法完整複製."
         does_not_exist: "不存在"
-        error_enterprise_only: "%{action}僅在 OpenProject 企業版中可用"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "無法被存取。"
         error_readonly: "被嘗試寫入但是無法寫入。"
         error_conflict: "在此同時，資訊已經被至少一個使用者更新"
@@ -2135,6 +2149,7 @@ zh-TW:
     features:
       baseline_comparison: 比較差異
       board_view: 進階看板
+      calculated_values: Calculated Values
       conditional_highlighting: 條件強調
       internal_comments: 內部備註
       custom_actions: 自訂動作
@@ -2207,6 +2222,8 @@ zh-TW:
         description: "與不是專案成員的使用者共同參與工作套件。"
       project_list_sharing:
         description: "分享專案清單給個別使用者。"
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "自訂布景主題顏色與logo"
         more_info: "備註：Logo可被公開存取。"
@@ -2764,7 +2781,7 @@ zh-TW:
   label_select_main_menu_item: 選擇新的主選單項目
   label_required_disk_storage: "所使用的磁碟空間"
   label_send_invitation: 發送邀請
-  label_calculated_value: "計算值"
+  label_calculated_value: "Calculated Value"
   label_change_parent: "變更父項"
   label_change_plural: "更改"
   label_change_properties: "更改屬性"
@@ -2941,7 +2958,7 @@ zh-TW:
   label_integer: "整數"
   label_interface: "介面"
   label_internal: "內部"
-  label_introduction_video: "簡介影片"
+  label_introduction_video: "Getting started video"
   label_invite_user: "邀請使用者"
   label_item: "欄位"
   label_item_plural: "欄位"
@@ -3589,7 +3606,7 @@ zh-TW:
   notice_password_confirmation_failed: "您的密碼不正確。無法繼續。"
   notice_principals_found_multiple: "找到 %{number} 條結果。\n Tab鍵以轉到第一條結果。"
   notice_principals_found_single: "有一個結果。 \n Tab鍵轉到該結果。"
-  notice_parent_item_not_found: "Parent item not found."
+  notice_parent_item_not_found: "未找到父項目。"
   notice_project_not_deleted: "專案沒有被刪除"
   notice_project_not_found: "未找到專案。"
   notice_successful_connection: "連接成功"

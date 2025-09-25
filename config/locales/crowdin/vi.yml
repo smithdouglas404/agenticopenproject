@@ -332,6 +332,14 @@ vi:
     tab:
       no_results_title_text: Không có hiện tại không có trường tùy chỉnh.
       no_results_content_text: Tạo trường tùy chỉnh mới
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "hoặc"
   op_dry_validation:
@@ -624,6 +632,7 @@ vi:
       unknown_browser: "trình duyệt không xác định"
       unknown_os: "hệ điều hành không xác định"
       unknown: "(unknown)"
+      browser_session: "(Browser session)"
       current: "Current (this device)"
       title: "Quản lý phiên"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
@@ -965,6 +974,11 @@ vi:
         help_text: "Văn bản trợ giúp"
       auth_provider:
         scim_clients: "SCIM clients"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "Context"
       changeset:
@@ -1272,7 +1286,7 @@ vi:
         confirmation: "không khớp %{attribute}."
         could_not_be_copied: "%{dependency} không thể được sao chép (hoàn toàn)."
         does_not_exist: "không tồn tại"
-        error_enterprise_only: "%{action} chỉ có sẵn trong phiên bản OpenProject Enterprise"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "Có thể không được truy cập."
         error_readonly: "đã bị ghi lại nhưng không thể ghi."
         error_conflict: "Thông tin đã được cập nhật bởi ít nhất một người dùng khác trong thời gian này."
@@ -2139,6 +2153,7 @@ vi:
     features:
       baseline_comparison: Baseline Comparisons
       board_view: Advanced Boards
+      calculated_values: Calculated Values
       conditional_highlighting: Conditional Highlighting
       internal_comments: Internal Comments
       custom_actions: Custom Actions
@@ -2211,6 +2226,8 @@ vi:
         description: "Chia sẻ gói công việc với người dùng không phải là thành viên của dự án."
       project_list_sharing:
         description: "Share project lists with individual users."
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Custom color theme and logo"
         more_info: "Lưu ý: logo sử dụng sẽ được công khai truy cập."
@@ -2768,7 +2785,7 @@ vi:
   label_select_main_menu_item: Chọn mục trình đơn chính mới
   label_required_disk_storage: "Ổ đĩa lưu trữ bắt buộc"
   label_send_invitation: Gửi lời mời
-  label_calculated_value: "Calculated value"
+  label_calculated_value: "Calculated Value"
   label_change_parent: "Change parent"
   label_change_plural: "Thay đổi"
   label_change_properties: "Thay đổi những thuộc tính"
@@ -2945,7 +2962,7 @@ vi:
   label_integer: "Số nguyên"
   label_interface: "Interface"
   label_internal: "Nội bộ"
-  label_introduction_video: "Giới thiệu video"
+  label_introduction_video: "Getting started video"
   label_invite_user: "Mời người dùng"
   label_item: "Item"
   label_item_plural: "Items"

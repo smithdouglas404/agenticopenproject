@@ -79,12 +79,12 @@ tr:
     enterprise:
       delete_dialog:
         title: "Kurumsal belirteci sil"
-        heading: "Delete this enterprise token?"
+        heading: "Bu kurumsal anahtarı silelim mi?"
         confirmation: "Bu Enterprise sürümü destek belirtecini silmek istediğinizden emin misiniz?"
       create_dialog:
         title: "Kurumsal belirteç ekleme"
-        type_token_text: "Type support token text"
-        token_placeholder: "Paste your Enterprise edition support token here"
+        type_token_text: "Tür desteği anahtar metni"
+        token_placeholder: "Enterprise sürümü destek anahtarınızı buraya yapıştırın"
       add_token: "Bir Enterprise sürümü destek belirteci yükleyin"
       replace_token: "Geçerli destek anahtarını değiştirin"
       order: "Enterprise on-premises edition sipariş edin"
@@ -111,24 +111,24 @@ tr:
         link: "webhook"
     scim_clients:
       authentication_methods:
-        sso: "JWT from identity provider"
-        oauth2_client: "OAuth 2.0 client credentials"
-        oauth2_token: "Static access token"
+        sso: "Kimlik sağlayıcıdan JWT"
+        oauth2_client: "OAuth 2.0 istemci bilgileri"
+        oauth2_token: "Statik erişim anahtarı"
       created_client_credentials_dialog_component:
-        title: "Client credentials created"
-        heading: "Client credentials have been generated"
+        title: "Müşteri bilgileri oluşturuldu"
+        heading: "Müşteri bilgileri oluşturuldu"
         one_time_hint: "This is the only time you will see the client secret. Make sure to copy it now."
       created_token_dialog_component:
-        title: "Token created"
-        heading: "A token has been generated"
+        title: "Anahtar oluşturuldu"
+        heading: "Bir anahtar oluşturuldu"
         label_token: "Erişim Anahtarı"
         one_time_hint: "This is the only time you will see this token. Make sure to copy it now."
       delete_scim_client_dialog_component:
-        title: "Delete SCIM client"
+        title: "SCIM istemcisini sil"
         heading: "Are you sure you want to delete this SCIM client?"
         description: "Users managed by this SCIM client can no longer be updated by it."
       edit:
-        label_delete_scim_client: "Delete SCIM client"
+        label_delete_scim_client: "SCIM istemcisini sil"
       form:
         auth_provider_description: "This is the service that users added by the SCIM provider will use to authenticate in OpenProject."
         authentication_method_description_html: "This is how the SCIM client authenticates at OpenProject. Please ensure that OAuth tokens include the <code>scim_v2</code> scope."
@@ -142,26 +142,26 @@ tr:
         title: "Yeni SCIM istemcisi"
       revoke_static_token_dialog_component:
         confirm_button: "İptal et"
-        title: "Revoke static token"
+        title: "Statik anahtarı iptal et"
         heading: "Bu belirteci iptal etmek istediğinizden emin misiniz?"
         description: "The SCIM client that uses this token will no longer be able to access OpenProject's SCIM server API."
       table_component:
         blank_slate:
-          title: "No SCIM clients configured yet"
-          description: "Add clients to see them here"
+          title: "Henüz yapılandırılmış SCIM istemcisi yok"
+          description: "Onları burada görmek için istemci ekleyin"
         user_count: "Kullanıcılar"
       token_list_component:
-        description: "The tokens you generate here can be passed by a SCIM client to access the OpenProject SCIM API."
-        heading: "Tokens"
+        description: "Burada oluşturduğunuz belirteçler, OpenProject SCIM API'sine erişmek için bir SCIM istemcisi tarafından geçirilebilir."
+        heading: "Anahtarlar"
         label_add_token: "Erişim Anahtarı"
-        label_aria_add_token: "Add token"
+        label_aria_add_token: "Anahtar ekle"
       token_table_component:
         blank_slate:
-          title: "No tokens have been created yet"
-          description: "You can create one now"
-        expired: "Expired on %{date}"
-        revoked: "Revoked on %{date}"
-        title: "Access token table"
+          title: "Henüz hiçbir anahtar oluşturulmadı"
+          description: "Şimdi bir tane oluşturabilirsiniz"
+        expired: "Son kullanma tarihi %{date}"
+        revoked: "%{date} tarihinde iptal edildi"
+        title: "Erişim anahtarı tablosu"
   authentication:
     login_and_registration: "Giriş ve kayıt"
   announcements:
@@ -196,8 +196,8 @@ tr:
     sync_failed: "LDAP'den senkronizasyon başarısız oldu: %{message}."
     back_to_index: "Bağlantı listesine geri dönmek için buraya tıklayın."
     technical_warning: |
-      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      [Please visit our documentation for detailed instructions](docs_url).
+      Bu LDAP formu, LDAP / Active Directory kurulumunuz hakkında teknik bilgi gerektirir.
+      [Ayrıntılı talimatlar için lütfen belgelerimizi ziyaret edin](docs_url).
     attribute_texts:
       name: LDAP bağlantısının keyfi adı
       host: LDAP ana bilgisayar adı veya IP adresi
@@ -205,9 +205,10 @@ tr:
       generic_map: LDAP'de, OpenProject `%{attribute}` niteliğiyle eşlenen özellik anahtarı
       admin_map_html: "İsteğe bağlı: LDAP'daki, <strong> varsa </strong> OpenProject kullanıcısına bir yönetici işaretleyen özellik anahtarı. Şüphe duyduğunuzda boş bırakın."
       system_user_dn_html: |
-        Enter the DN of the system user used for read-only access.
+        Salt okunur erişim için kullanılan sistem kullanıcısının DN'sini girin.
         <br>
-        Example: uid=openproject,ou=system,dc=example,dc=com
+        Örnek:
+        uid=openproject,ou=system,dc=example,dc=com
       system_user_password: Sistem kullanıcısının cilt şifresini girin
       base_dn: |
         LDAP'da, OpenProject'in kullanıcıları ve grupları aramasını istediğiniz alt ağacın Temel DN'sini girin.
@@ -300,7 +301,7 @@ tr:
         placeholder:
           label: "Öğe etiketi"
           short: "Kısa adı"
-          score: "Score"
+          score: "Skor"
       notice:
         remember_items_and_projects: "Bu özel alan için ilgili sekmelerde öğeleri ve projeleri ayarlamayı unutmayın."
       hierarchy:
@@ -316,7 +317,7 @@ tr:
     confirm_destroy_option: "Bir seçeneğin silinmesi, kullanıldığı her yerden (örneğin iş paketleri) silinmesine neden olur. Silmek istediğinizden emin misiniz?"
     reorder_alphabetical: "Değerleri alfabetik olarak yeniden sıralayın"
     reorder_confirmation: "Uyarı: Mevcut değerlerin sırası kaybolacak. Devam et?"
-    placeholder_version_select: "Work package or project selection is required first"
+    placeholder_version_select: "Öncelikle iş paketi veya proje seçimi gereklidir"
     instructions:
       is_required: "Özel alanı gerekli olarak işaretleyin. Bu, yeni kaynaklar oluştururken veya mevcut kaynakları güncellerken alanın doldurulmasını zorunlu hale getirecektir."
       is_required_for_project: "Bu özelliği etkinleştirmek ve tüm projelerde gerekli kılmak için işaretleyin. Tek tek projeler için devre dışı bırakılamaz."
@@ -332,12 +333,20 @@ tr:
     tab:
       no_results_title_text: Şu anda özel bir alan bulunmamakta.
       no_results_content_text: Yeni bir özel alan oluştur
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "ya da"
   op_dry_validation:
-    or: "or"
+    or: "veya"
     errors:
-      array?: "must be an array."
+      array?: "bir dizi olmalıdır."
       decimal?: "must be a decimal."
       defined: "must not be defined."
       eql?: "must be equal to %{left}."
@@ -376,13 +385,13 @@ tr:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
-      blueprint: "Pattern blueprint"
+      parent: "Ebeveyn"
+      blueprint: "Kalıp planı"
   global_search:
     title:
-      all_projects: 'Search for "%{search_term}" in all projects'
-      current_project: 'Search for "%{search_term}" in %{project_name}'
-      project_and_subprojects: 'Search for "%{search_term}" in %{project_name} and all subprojects'
+      all_projects: 'Tüm projelerde "%{search_term}" için arama yapın'
+      current_project: '%{project_name} içinde "%{search_term}" için arama yapın'
+      project_and_subprojects: '%{project_name} ve tüm alt projelerde "%{search_term}" için arama yapın'
     placeholder: "%{app_title} içinde ara"
     overwritten_tabs:
       all: "Hepsi"
@@ -390,14 +399,14 @@ tr:
       wiki_pages: "Viki"
   groups:
     edit:
-      synchronized_groups: "Synchronized groups"
+      synchronized_groups: "Senkronize gruplar"
     index:
-      description: By grouping users together, you can add them as members to the same projects or assign the same global roles to them.
+      description: Kullanıcıları birlikte gruplandırarak, onları aynı projelere üye olarak ekleyebilir veya onlara aynı genel rolleri atayabilirsiniz.
     table_component:
       blank_slate:
-        description: You can define named groups of users with specific permissions.
-        title: No groups set up yet
-      user_count: User count
+        description: Belirli izinlere sahip adlandırılmış kullanıcı grupları tanımlayabilirsiniz.
+        title: Henüz grup kurulmadı
+      user_count: Kullanıcı sayısı
     users:
       no_results_title_text: Şu anda bu gruba kayıtlı kullanıcı bulunmamakta.
     memberships:
@@ -406,7 +415,7 @@ tr:
       blankslate:
         action: Kimlik doğrulama ayarları
         description: When this group is automatically synced with groups in external identity providers like OpenID, they will appear here. You can set this up in your Authentication settings.
-        title: No synchronized groups yet
+        title: Henüz senkronize grup yok
   incoming_mails:
     ignore_filenames: >
       Gelen postalar için ekleri işlerken yok sayılacak adların bir listesini belirtin (örneğin, imzalar veya simgeler). Her satıra bir dosya adı girin.
@@ -439,7 +448,7 @@ tr:
     lists:
       active: "Aktif projeler"
       my: "Projelerim"
-      favorited: "Favorite projects"
+      favorited: "Favori projeler"
       archived: "Arşivlenmiş projeler"
       shared: "Paylaşılan proje listeleri"
       my_lists: "Proje listem"
@@ -455,17 +464,17 @@ tr:
       header_relations: Proje ilişkileri
       button_update_details: Detayları güncelle
       button_update_status_description: Durum açıklamasını güncelle
-      button_update_parent_project: Update parent project
+      button_update_parent_project: Ana projeyi güncelleyin
       public_warning: >
-        This project is public. Anyone who has access to this instance will be able to view and interact with this project depending on their role and associated permissions. Sub-projects are not affected and have their own settings.
+        Bu proje herkese açıktır. Bu örneğe erişimi olan herkes, rollerine ve ilişkili izinlerine bağlı olarak bu projeyi görüntüleyebilir ve bu projeyle etkileşime girebilir. Alt projeler etkilenmez ve kendi ayarlarına sahiptir.
       public_confirmation:
-        checkbox: "I understand that this will make the previously private content public"
-        title: "Make this project public?"
+        checkbox: "Bunun daha önce özel olan içeriği herkese açık hale getireceğini anlıyorum"
+        title: "Bu projeyi halka açalım mı?"
         description: >
           Anyone who has access to this instance will be able to view and interact with this project depending on their role and authentication settings. Sub-projects are not affected and have their own settings.
       private_confirmation:
-        checkbox: "I understand that this will make the previously public content private."
-        title: "Make this project private?"
+        checkbox: "Bunun daha önce herkese açık olan içeriği gizli hale getireceğini anlıyorum."
+        title: "Bu projeyi özel yapalım mı?"
         description: >
           The project will only be visible to project members depending on their role and associated permissions. Sub-projects are not affected and have their own settings.
       change_identifier: Tanımlayıcıyı değiştir
@@ -489,7 +498,7 @@ tr:
         non_defined: "Şu anda herhangi bir faz tanımlanmamıştır."
         section_header: "Fazlar"
         step:
-          use_in_project: "Use %{step} in this project"
+          use_in_project: "Bu projede %{step} kullanın"
         filter:
           label: "Proje aşaması ara"
       project_custom_fields:
@@ -499,7 +508,7 @@ tr:
         filter:
           label: "Proje özniteliğini ara"
         actions:
-          label_enable_single: "Active in this project, click to disable"
+          label_enable_single: "Bu projede aktif, devre dışı bırakmak için tıklayın"
           label_disable_single: "Bu projede kapalı, açmak için tıklayın"
           remove_from_project: "Projeden kaldır"
         is_required_blank_slate:
@@ -517,7 +526,7 @@ tr:
       work_package_priorities:
         new_label: "Yeni öncelik"
     status:
-      button_edit: Edit project status
+      button_edit: Proje durumunu düzenle
   lists:
     create:
       success: "Değiştirilen liste yeni bir liste olarak kaydedildi"
@@ -530,7 +539,7 @@ tr:
       failure: "Liste herkese açık yapılamadı: %{errors}"
     unpublish:
       success: "Liste gizli hale getirildi"
-      failure: "The list cannot be made private: %{errors}"
+      failure: "Liste özel hale getirilemedi: %{errors}"
     can_be_saved: "Liste değiştirildi:"
     can_be_saved_as: "Değişiklikler sadece yeni bir listede kaydedilebilir:"
   members:
@@ -576,8 +585,8 @@ tr:
     delete_work_package_shares_dialog:
       title: "İş paketi paylaşımlarını iptal edin"
       shared_with_this_user_html:
-        one: "%{all_shared_work_packages_link} has been shared with this user."
-        other: "%{all_shared_work_packages_link} have been shared with this user."
+        one: "%{all_shared_work_packages_link} bu kullanıcı ile paylaşılmıştır."
+        other: "%{all_shared_work_packages_link} bu kullanıcı ile paylaşılmıştır."
       shared_with_this_group_html:
         one: "%{all_shared_work_packages_link} bu grupla paylaşılmıştır."
         other: "%{all_shared_work_packages_link} bu grupla paylaşılmıştır."
@@ -600,14 +609,14 @@ tr:
           attention_text: "Treat API tokens like passwords. Anyone with this token will have access to information from this instance, share it only with trusted users."
           dialog_body: "This token will allow third-party applications to communicate with your instance. To differentiate the new API token, please give it a name."
           create_button: "Oluştur"
-          name_label: "Token name"
+          name_label: "Anahtar adı"
       created_dialog:
         token/api:
-          title: "The API token has been generated"
-          warning: "This is the only time you will see this token. Make sure to copy it now."
+          title: "API anahtarı oluşturuldu"
+          warning: "Bu anahtarı sadece bir kez göreceksiniz. Şimdi kopyaladığınızdan emin olun."
       failed_to_reset_token: "Erişim anahtarı sıfırlaması başarısız oldu: %{error}"
       failed_to_create_token: "Erişim anahtarı oluşturması başarısız oldu: %{error}"
-      failed_to_revoke_token: "Failed to revoke access token: %{error}"
+      failed_to_revoke_token: "Erişim anahtarı iptal edilemedi: %{error}"
       notice_reset_token: "Yeni bir %{type} anahtar üretildi. Erişim anahtarınız:"
       token_value_warning: "Not: Bu anahtarı görebileceğiniz tek an bu, kopyaladığınıza emin olun."
       no_results_title_text: "Şu anda hiçbir erişim anahtarı mevcut değil."
@@ -624,13 +633,14 @@ tr:
     sessions:
       session_name: "%{os_name} üzerinde %{browser_name} %{browser_version}"
       browser: "Tarayıcı"
-      expires: "Expires"
-      last_connection: "Last connection"
+      expires: "Bitiş tarihi"
+      last_connection: "Son bağlantı"
       device: "Cihaz / İşletim Sistemi"
       unknown_browser: "bilinmeyen tarayıcı"
       unknown_os: "bilinmeyen işletim sistemi"
-      unknown: "(unknown)"
-      current: "Current (this device)"
+      unknown: "(bilinmeyen)"
+      browser_session: "(Browser session)"
+      current: "Mevcut (bu cihaz)"
       title: "Oturum yönetimi"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Şuanki oturumunuzu silemezsiniz."
@@ -972,6 +982,11 @@ tr:
         help_text: "Yardım metni"
       auth_provider:
         scim_clients: "SCIM clients"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "Context"
       changeset:
@@ -1056,7 +1071,7 @@ tr:
         active_value:
           true: "arşivden çıkartıldı"
           false: "arşivlendi"
-        attribute_groups: "Attribute Groups"
+        attribute_groups: "Özellik Grupları"
         description: "Açıklama"
         enabled_modules: "Aktif modüller"
         identifier: "Tanımlayıcı"
@@ -1083,7 +1098,7 @@ tr:
         types: "Türler"
         versions: "Sürümler"
         work_packages: "İş Paketleri"
-        workspace_type: "Workspace type"
+        workspace_type: "Çalışma Alanı türü"
       project_custom_field:
         is_required: "Tüm projelerde zorunludur"
         custom_field_section: Bölüm
@@ -1107,14 +1122,14 @@ tr:
         column_names: "Sütunlar"
         relations_to_type_column: "%{type} ile ilişkileri"
         relations_of_type_column: "%{type} ilişkiler"
-        child_work_packages: "Child work packages"
+        child_work_packages: "Çocuk iş paketleri"
         group_by: "Sonuçları grupla"
         sort_by: "Sonuçları şuna göre sırala"
         filters: "Filtreler"
         timeline_labels: "Zaman çizelgesi etiketleri"
         timeline_visible: "İş-Zaman çizelgesi göster"
         timeline_zoom_level: "Gantt grafiği yakınlaştırma düzeyi"
-        timestamps: "Baseline timestamps"
+        timestamps: "Temel zaman damgaları"
         sort_criteria: "Kriterleri sıralayın"
         highlighted_attributes: "Vurgulanan öznitelikler"
         highlighting_mode: "Vurgulama modu"
@@ -1133,7 +1148,7 @@ tr:
         relation_type: "İlişki türü"
       reminder:
         remindable: "Hatırlatılan nesne"
-        remind_at: "Remind at"
+        remind_at: "Hatırlat"
         remind_at_date: "Tarih"
         remind_at_time: "Zaman"
       reminder_notification:
@@ -1143,7 +1158,7 @@ tr:
       role:
         permissions: "İzinler"
       scim_client:
-        authentication_method: "Authentication method"
+        authentication_method: "Kimlik doğrulama yöntemi"
         jwt_sub: "Subject claim"
       status:
         is_closed: "İş paketi kapalı"
@@ -1151,7 +1166,7 @@ tr:
         excluded_from_totals: "Hiyerarşideki toplamların hesaplanmasından hariç tut"
         default_done_ratio: "Tamamlanma yüzdesi"
       token/named:
-        token_name: "Token name"
+        token_name: "Anahtar adı"
       token/ical:
         calendar: "Takvim"
         ical_token_query_assignment: "Sorgu ataması"
@@ -1170,8 +1185,8 @@ tr:
         color: "Renk"
         patterns: "Desenler"
       remote_identity:
-        auth_source: "Auth Source"
-        integration: "Integration"
+        auth_source: "Doğrulama Kaynağı"
+        integration: "Entegrasyon"
         user: "Kullanıcı"
       user:
         admin: "Yönetici"
@@ -1200,17 +1215,17 @@ tr:
         disable_keyboard_shortcuts: "Klavye kısayollarını devre dışı bırak"
         disable_keyboard_shortcuts_caption_html: |-
           Ekran okuyucu kullanıyorsanız veya bir eylemi yanlışlıkla bir kısayolla tetiklemekten kaçınmak istiyorsanız varsayılan <a href="%{href}">klavye kısayollarını</a> devre dışı bırakmayı seçebilirsiniz.
-        dismissed_enterprise_banners: "Hidden enterprise banners"
+        dismissed_enterprise_banners: "Gizli kurumsal afişler"
         impaired: "Erişilebilirlik modu"
         auto_hide_popups: "Başarı uyarılarını otomatik olarak gizle"
         auto_hide_popups_caption: "Etkinleştirildiğinde, yeşil başarı uyarıları 5 saniye sonra otomatik olarak kaybolacaktır."
         warn_on_leaving_unsaved: "İş paketlerinden ayrılırken kaydedilmemiş değişiklik olduğunda beni uyar"
-        increase_theme_contrast: "Increase theme contrast"
-        increase_contrast: "Increase contrast"
-        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
-        force_light_theme_contrast: "Force high-contrast when in Light mode"
-        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
-        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        increase_theme_contrast: "Tema kontrastını artırın"
+        increase_contrast: "Kontrastı artır"
+        increase_contrast_caption: "Seçilen renk modu için yüksek kontrast modunu etkinleştirir."
+        force_light_theme_contrast: "Aydınlık moddayken yüksek kontrastı zorla"
+        force_dark_theme_contrast: "Karanlık moddayken yüksek kontrastı zorla"
+        force_light_theme_contrast_caption: "Otomatik renk modu seçildiğinde Aydınlık modun yüksek kontrastlı versiyonunu kullanır."
         force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Color mode"
         time_zone: "Zaman dilimi"
@@ -1225,9 +1240,9 @@ tr:
       wiki_page:
         parent_title: "Üst sayfa"
         redirect_existing_links: "Varolan bağlantıları yönlendirme"
-        text: "Page content"
+        text: "Sayfa içeriği"
       work_package:
-        ancestor: "Descendants of" #used for filtering of work packages that are descendants of a given work package
+        ancestor: "Torunları" #used for filtering of work packages that are descendants of a given work package
         begin_insertion: "Eklemeye başlama"
         begin_deletion: "Silme işleminin başlangıcı"
         children: "Alt öğeler"
@@ -1279,7 +1294,7 @@ tr:
         confirmation: "%{attribute} eşleşmiyor."
         could_not_be_copied: "%{dependency} (tam olarak) kopyalanamadı."
         does_not_exist: "mevcut değil."
-        error_enterprise_only: "%{action} yalnızca OpenProject Enterprise sürümünde mevcuttur"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "erişilemez."
         error_readonly: "yazılmaya çalışıldı fakat yazılabilir değil."
         error_conflict: "Bu arada, bilgi en az bir başka kullanıcı tarafından güncellendi."
@@ -1289,7 +1304,7 @@ tr:
         enterprise_plan_required: "requires at least the %{plan_name}."
         even: "çift olmalı."
         exclusion: "ayrılmıştır."
-        feature_disabled: is not available.
+        feature_disabled: mevcut değil.
         file_too_large: "çok büyük (en büyük boyut %{count} bayt)."
         filter_does_not_exist: "Filtre mevcut değil"
         format: "Beklenen biçim '%{expected}' ile eşleşmiyor."
@@ -1301,8 +1316,8 @@ tr:
         inclusion: "izin verilen değerlerden birine ayarlanmamış."
         inclusion_nested: "'%{path}' yolunda izin verilen değerlerden birine ayarlanmamış."
         invalid: "geçersizdir."
-        invalid_characters: "contains invalid characters."
-        not_allowed_custom_fields_referenced: "contains custom fields that are not allowed: %{custom_fields}."
+        invalid_characters: "geçersiz karakterler içeriyor."
+        not_allowed_custom_fields_referenced: "izin verilmeyen özel alanlar içerir: %{custom_fields}."
         invalid_url: "geçerli bir adres değil."
         invalid_url_scheme: "bu protokol desteklenmiyor (izin: %{allowed_schemes})."
         less_than_or_equal_to: "%{count} 'ten küçük veya bu değere eşit olmalıdır."
@@ -1322,8 +1337,8 @@ tr:
         odd: "tek sayı olmalı."
         regex_match_failed: "%{expression} düzenli ifadesiyle eşleşmiyor."
         regex_invalid: "atanmış düzenli ifadeler ile doğrulanamadı."
-        regex_list_invalid: "Lines %{invalid_lines} could not be parsed as regular expression."
-        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
+        regex_list_invalid: "%{invalid_lines} satırları düzenli ifade olarak ayrıştırılamadı."
+        hexcode_invalid: "geçerli bir 6 basamaklı onaltılık renk kodu değildir."
         smaller_than_or_equal_to_max_length: "en fazla uzunluğa eşit veya daha küçük olmalıdır."
         taken: "zaten alınmıştır."
         too_long: "çok uzun (en fazla %{count} karakterdir)."
@@ -1384,15 +1399,15 @@ tr:
             scopes:
               not_match_configured: "mevcut kapsamlarla eşleşmiyor."
         enterprise_trial:
-          already_used: "was already used to create a trial."
-          failed_to_create: "Trial could not be created (%{status})"
-          general_consent: "Please accept the terms and conditions."
+          already_used: "zaten bir deneme oluşturmak için kullanılmıştı."
+          failed_to_create: "Deneme oluşturulamadı (%{status})"
+          general_consent: "Lütfen hüküm ve koşulları kabul edin."
         enterprise_token:
           only_one_trial: "Only one trial token can be active. Please delete the previous trial token before adding another."
           unreadable: "okunamıyor. Desteklenen bir destek anahtarı olduğuna emin misiniz?"
-          already_added: "This token has already been added."
+          already_added: "Bu anahtar zaten eklenmiştir."
         favorite:
-          already_favorited: "has already been favorited."
+          already_favorited: "zaten favorilere eklenmiş."
         grids/grid:
           overlaps: "üst üste gelmek."
           outside: "Grup dışında görünmektedir."
@@ -1447,8 +1462,8 @@ tr:
               must_be_before_finish_date: "bitiş tarihinden önce olmalıdır."
               non_continuous_dates: "önceki aşamanın bitiş tarihinden daha erken olamaz."
             finish_date:
-              must_be_after_start_date: "must be after the start date."
-          cannot_be_a_non_working_day: "can't be a non-working day."
+              must_be_after_start_date: "başlangıç tarihinden sonra olmalıdır."
+          cannot_be_a_non_working_day: "iş olmayan bir gün olamaz."
         query:
           attributes:
             public:
@@ -1463,11 +1478,11 @@ tr:
               invalid: "Sütuna göre sıralama yapamazsınız: %{value}"
               format: "%{message}"
             timestamps:
-              invalid: "Timestamps contain invalid values: %{values}"
-              forbidden: "Timestamps contain forbidden values: %{values}"
+              invalid: "Zaman damgaları geçersiz değerler içerir: %{values}"
+              forbidden: "Zaman damgaları yasaklanmış değerler içerir: %{values}"
               format: "%{message}"
             selects:
-              name_not_included: "The 'Name' column needs to be included"
+              name_not_included: "'Ad' sütununun dahil edilmesi gerekiyor"
               nonexistent: "'%{column}' sütunu mevcut değil."
               format: "%{message}"
           group_by_hierarchies_exclusive: "grubu tarafından '%{group_by}' ile birlikte kullanılamaz. Her ikisi de etkinleştiremezsiniz."
@@ -1494,12 +1509,12 @@ tr:
               error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
               format: "The selected work package %{message}"
-              error_not_found: "could not be found."
+              error_not_found: "bulunamamıştır."
               error_readonly: "mevcut ilişkiler için değiştirilemez."
               error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
               format: "The selected work package %{message}"
-              error_not_found: "could not be found."
+              error_not_found: "bulunamamıştır."
               error_readonly: "mevcut ilişkiler için değiştirilemez."
               error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
@@ -2182,6 +2197,7 @@ tr:
     features:
       baseline_comparison: Baseline Comparisons
       board_view: Advanced Boards
+      calculated_values: Calculated Values
       conditional_highlighting: Koşullu Vurgulama
       internal_comments: Internal Comments
       custom_actions: Özel Eylemler
@@ -2213,8 +2229,8 @@ tr:
       plan_text_html: "%{plan_name} ile başlayarak kullanılabilir."
       unlimited: "Sınırsız"
       already_have_token: >
-        Already have a token? Add it using the button below to upgrade to the booked Enterprise plan.
-      hide_banner: "Hide this banner"
+        Zaten bir anahtarınız mı var? Rezervasyonlu Enterprise plana yükseltmek için aşağıdaki düğmeyi kullanarak ekleyin.
+      hide_banner: "Bu afişi gizle"
       homescreen_description: >
         Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
       homescreen_subline: Yükseltme yaparak açık kaynaklı bir projeyi de desteklemiş olacaksınız.
@@ -2242,7 +2258,7 @@ tr:
         description: "Customize form configuration with these additional add-ons:"
         features:
           groups: "Yeni öznitelik grubu ekleyin"
-          rename: "Rename attribute groups"
+          rename: "Öznitelik gruplarını yeniden adlandırın"
           related: "Add a table of related work packages"
       readonly_work_packages:
         description: "Mark work packages as read-only for specific statuses."
@@ -2254,6 +2270,8 @@ tr:
         description: "İş paketlerini proje üyesi olmayan kullanıcılarla paylaşın."
       project_list_sharing:
         description: "Share project lists with individual users."
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Özel renk teması ve logo"
         more_info: "Not: Kullanılan logo herkese açık olacaktır."
@@ -2265,10 +2283,10 @@ tr:
         title: "Single Sign-On for Nextcloud Storage"
         description: "Enable seamless and secure authentication for your Nextcloud storage with Single Sign-On. Simplify access management and enhance user convenience."
       scim_api:
-        title: "SCIM clients"
+        title: "SCIM istemcileri"
         description: "Automate user management in OpenProject by seamlessly integrating external identity services like Microsoft Entra or Keycloak through our SCIM Server API. Available starting with the Enterprise corporate plan."
       sso_auth_providers:
-        title: "Single Sign-On (SSO)"
+        title: "Tek Oturum Açma (SSO)"
         description: "Enable users to log in via external SSO providers using SAML or OpenID Connect for seamless access and integration with existing identity systems."
       virus_scanning:
         description: "OpenProject'te yüklenen dosyaların diğer kullanıcılar tarafından erişilmeden önce virüslere karşı tarandığından emin olun."
@@ -2277,43 +2295,43 @@ tr:
         description: >
           Yer tutucu kullanıcılar, projenizin parçası olmayan kullanıcılara iş paketleri atamanın bir yoludur. Bir dizi senaryoda yararlı olabilirler; örneğin, henüz adlandırılmamış veya mevcut olmayan bir kaynak için görevleri izlemeniz gerekiyorsa veya o kişiye OpenProject'e erişim izni vermek istemiyorsanız ancak yine de kendilerine atanan görevleri izlemek istiyorsanız.
       internal_comments:
-        title: Internal comments
-        description: "Internal comments allow an internal team to communicate amongst themselves privately. These are only visible to certain project roles and will never be visible publicly."
+        title: Dahili yorumlar
+        description: "Dahili yorumlar, dahili bir ekibin kendi aralarında özel olarak iletişim kurmasına olanak tanır. Bunlar yalnızca belirli proje rolleri tarafından görülebilir ve asla herkese açık olarak görünmez."
       internal_comments_inline:
-        title: "Write internal comments only a small group can see"
+        title: "Sadece küçük bir grubun görebileceği iç yorumlar yazın"
         description: " "
     teaser:
       title:
-        one: "One day left of %{trial_plan} trial token"
-        other: "%{count} days left of %{trial_plan} trial token"
-      description: "You have access to all %{trial_plan} features."
+        one: "%{trial_plan} deneme anahtarının son bir günü kaldı"
+        other: "%{trial_plan} deneme anahtarının son %{count} günü kaldı"
+      description: "Tüm %{trial_plan} özelliklerine erişebilirsiniz."
     trial:
-      not_found: "You have requested a trial token, but that request is no longer available. Please try again."
-      wait_for_confirmation: "We sent you an email to confirm your address in order to retrieve a trial token."
+      not_found: "Bir deneme anahtarı talep ettiniz, ancak bu talep artık mevcut değil. Lütfen tekrar deneyin."
+      wait_for_confirmation: "Deneme anahtarını alabilmeniz için adresinizi onaylamanız amacıyla size bir e-posta gönderdik."
       already_retrieved: >
         Your trial enterprise token was already retrieved. Please check your emails for the token being attached. Please reach out to our support team if you need a new one.
-      successfully_saved: "Your trial enterprise token has been successfully retrieved."
-      token_sent: "Trial token requested"
-      request_again: "Request again"
-      resend_action: "Resend confirmation email"
-      welcome_title: "Quick feature overview"
+      successfully_saved: "Deneme amaçlı kurumsal anahtarınızı başarıyla alındı."
+      token_sent: "Deneme anahtarı talep edildi"
+      request_again: "Tekrar talep edin"
+      resend_action: "Onay e-postasını yeniden gönder"
+      welcome_title: "Özelliklere hızlı genel bakış"
       welcome_description: "OpenProject Kurumsal sürümü ile proje yönetimi ve ekip işbirliğine hızlı bir genel bakış elde edin."
       confirmation_info: >
-        We sent you an email on %{date} to %{email} with all the information to start the free trial of OpenProject Enterprise. Please check your inbox and click the confirmation link provided to start your 14-day free trial.
+        Size %{date} tarihinde %{email} adresine OpenProject Enterprise'ın ücretsiz deneme sürümünü başlatmanız için gerekli tüm bilgileri içeren bir e-posta gönderdik. Lütfen gelen kutunuzu kontrol edin ve 14 günlük ücretsiz denemenizi başlatmak için verilen onay bağlantısına tıklayın.
       confirmation_subline: >
-        Please, check your inbox and follow the steps to start your 14-day free trial.
-      domain_caption: The token will be valid for your currently configured host name.
+        Lütfen gelen kutunuzu kontrol edin ve 14 günlük ücretsiz denemenizi başlatmak için adımları izleyin.
+      domain_caption: Anahtar, şu anda yapılandırılmış ana bilgisayar adınız için geçerli olacaktır.
       receive_newsletter_html: >
-        I want to receive the OpenProject <a target="_blank" href="https://www.openproject.org/newsletter/">newsletter</a>.
+        OpenProject <a target="_blank" href="https://www.openproject.org/newsletter/">haber bültenini</a> almak istiyorum.
       consent_html: >
-        I agree with the <a target="_blank" href="https://www.openproject.org/terms-of-service/">terms of service</a> and the <a target="_blank" href="https://www.openproject.org/data-privacy-and-security/">privacy policy</a>.
+        <a target="_blank" href="https://www.openproject.org/terms-of-service/">Hizmet şartlarını</a> ve <a target="_blank" href="https://www.openproject.org/data-privacy-and-security/">gizlilik politikasını</a> kabul ediyorum.
   email_calendar_updates:
     state:
-      disabled: "Disabled."
-      enabled: "Enabled."
+      disabled: "Devre dışı."
+      enabled: "Etkinleştirildi."
     button:
-      disabled: "Enable"
-      enabled: "Disable"
+      disabled: "Etkinleştir"
+      enabled: "Devre dışı bırak"
   enumeration_activities: "Zaman izleme faaliyetleri"
   enumeration_work_package_priorities: "İş paketi öncelikleri"
   enumeration_reported_project_statuses: "Bildirilen proje durumları"
@@ -2321,7 +2339,7 @@ tr:
   enumeration_could_not_be_moved: "Numaralandırma taşınamadı."
   enterprise_trials:
     dialog_component:
-      title: Enterprise Trial
+      title: Enterprise Deneme
   error_auth_source_sso_failed: "Çoklu oturum açma (SSO) için kullanıcı '%{value}' başarısız oldu"
   error_can_not_archive_project: "Bu proje arşivlenemiyor: %{errors}"
   error_can_not_delete_entry: "Girdi silinemiyor"
@@ -2341,7 +2359,7 @@ tr:
   error_color_could_not_be_saved: "Renk kaydedilemedi"
   error_cookie_missing: "OpenProject çerezi yok. Lütfen uygulamanın düzgün çalışabilmesi için, tarayıcınızda çerezlere izin verildiğine emin olun."
   error_custom_option_not_found: "Seçenek yok."
-  error_enterprise_plan_needed: "You need the %{plan} enterprise plan to perform this action."
+  error_enterprise_plan_needed: "Bu eylemi gerçekleştirmek için %{plan} kurumsal planına ihtiyacınız vardır."
   error_enterprise_activation_user_limit: "Hesabınız etkinleştirilemedi (kullanıcı limitine ulaşıldı). Erişim sağlamak için lütfen yöneticinize başvurun."
   error_enterprise_token_invalid_domain: "Enterprise sürümü etkin değil. Enterprise belirtecinizin alanı (%{actual}), sistemin ana bilgisayar adıyla (%{expected}) eşleşmiyor."
   error_failed_to_delete_entry: "Girdi silinemedi."
@@ -2352,7 +2370,7 @@ tr:
   error_pdf_export_too_many_columns: "PDF Dışa Aktarma için çok fazla sütun seçili. Sütun sayısını azaltın."
   error_pdf_failed_to_export: "PDF çıktısı kaydedilemedi: %{error}"
   error_token_authenticity: "Siteler Arası İstek Sahteciliği belirteci doğrulanamadı. Birden fazla tarayıcı veya sekme hakkında veri göndermeyi denediniz mi? Lütfen tüm sekmeleri kapatın ve tekrar deneyin"
-  error_reminder_not_found: "The reminder was not found or was already notified about."
+  error_reminder_not_found: "Hatırlatma bulunamadı veya zaten bildirilmişti."
   error_work_package_not_found_in_project: "Iş paketi bulunamadı veya bu projeye ait değil"
   error_work_package_id_not_found: "İş paketi bulunamadı."
   error_must_be_project_member: "projesi üyesi olmalıdır"
@@ -2383,7 +2401,7 @@ tr:
     changeset: "Değişiklikler düzenlendi"
     message: Mesaj düzenlendi
     news: Haberler
-    project_details: "Project details edited"
+    project_details: "Proje detayları düzenlendi"
     project: "Proje düzenlendi"
     projects: "Proje düzenlendi"
     reply: Yanıtlandı
@@ -2448,7 +2466,7 @@ tr:
             very_wide: "Çok geniş"
         paper_size:
           label: "Kağıt boyutu"
-          caption: "Depending on the chart size more than one page might be exported."
+          caption: "Grafik boyutuna bağlı olarak birden fazla sayfa dışa aktarılabilir."
         long_text_fields:
           input_caption: "Varsayılan olarak tüm uzun metin alanları seçilidir."
           input_label: "Uzun metin alanları ekle"
@@ -2462,13 +2480,13 @@ tr:
           label: "Açıklamaları dahil et"
           caption: "Bu seçenek ham formatta bir açıklama sütunu ekleyecektir."
     your_work_packages_export: "İş paketleri dışa aktarılıyor"
-    your_projects_export: "Projects are being exported"
+    your_projects_export: "Projeler dışa aktarılıyor"
     succeeded: "Dışa aktarma tamamlandı"
     failed: "İş paketlerini dışa aktarmaya çalışırken bir hata oluştu: %{message}"
     demo:
       heading: "Demo PDF"
-      footer: "Generated by OpenProject"
-      button_text: Generate Demo PDF
+      footer: "OpenProject tarafından oluşturulmuştur"
+      button_text: Demo PDF Oluştur
     errors:
       embedded_table_with_too_many_columns: "This embedded work package table could not fit on the page, please reduce the number of columns."
     format:
@@ -2516,8 +2534,8 @@ tr:
       hyphenation_language:
         label: Dil ve heceleme
       page_orientation:
-        label: Page orientation
-        caption: Select the orientation of the pages in the PDF document.
+        label: Sayfa yönlendirme
+        caption: PDF belgesindeki sayfaların yönünü seçin.
         options:
           portrait: Portrait
           landscape: Landscape
@@ -2650,7 +2668,7 @@ tr:
       aggregation: "Birleştirme"
       api_and_webhooks: "API ve web kancaları"
     quick_add:
-      label: "Add…"
+      label: "Ekle…"
   my_account:
     access_tokens:
       no_results:
@@ -2666,7 +2684,7 @@ tr:
         title: "API"
         text_hint: "API belirteçleri, üçüncü taraf uygulamaların REST API'leri aracılığıyla bu OpenProject kurulumunuzla iletişim kurmasına olanak tanır."
         disabled_text: "API belirteçleri yönetici tarafından etkinleştirilmemiştir. Bu özelliği kullanmak için lütfen yöneticinize başvurun."
-        add_button: "API Token"
+        add_button: "API Anahtarı"
       api:
         static_token_name: "API anahtarı"
       ical:
@@ -2687,9 +2705,9 @@ tr:
         title: "Dosya depoları"
         text_hint: "File Storage tokens connect this OpenProject instance with an external File Storage."
         empty_text_hint: "Hesabınıza bağlı herhangi bir depolama erişimi yoktur."
-        revoke_token: "Do you really want to remove this token? You will need to login again on %{storage}"
+        revoke_token: "Bu anahtarı gerçekten kaldırmak istiyor musunuz? %{storage} adresinden tekrar giriş yapmanız gerekecektir"
         removed: "Dosya Depolama belirteci başarıyla kaldırıldı"
-        failed: "An error occurred and the token couldn't be removed. Please try again later."
+        failed: "Bir hata oluştu ve anahtar kaldırılamadı. Lütfen daha sonra tekrar deneyin."
         unknown_storage: "Bilinmeyen depolama"
   notifications:
     reasons:
@@ -2719,7 +2737,7 @@ tr:
         responsible: "%{work_package} için sorumlu hale geldiniz"
         watched: "%{work_package} izliyorsunuz"
     query:
-      invalid_filter: "Invalid notification filter"
+      invalid_filter: "Geçersiz bildirim filtresi"
   label_accessibility: "Erişilebilirlik"
   label_account: "Hesap"
   label_active: "Aktif"
@@ -2754,11 +2772,11 @@ tr:
   label_api_access_key: "API erişim anahtarı"
   label_api_access_key_created_on: "API erişim anahtarı %{value} önce oluşturuldu"
   label_api_access_key_type: "API"
-  label_auto_option: "(auto)"
+  label_auto_option: "(otomatik)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: '"%{project_name}" projesinde "%{calendar_name}" takvimi için "%{token_name}" ismi ile iCalendar belirteci'
   label_ical_access_key_not_present: "iCalendar token(s) not present."
-  label_ical_access_key_generation_hint: "Automatically generated when subscribing to a calendar."
+  label_ical_access_key_generation_hint: "Bir takvime abone olunduğunda otomatik olarak oluşturulur."
   label_ical_access_key_latest: "en son"
   label_ical_access_key_revoke: "İptal et"
   label_add_column: "Sütun ekle"
@@ -2773,9 +2791,9 @@ tr:
   label_ldap_auth_source_new: "Yeni LDAP bağlantısı"
   label_ldap_auth_source: "LDAP bağlantısı"
   label_ldap_auth_source_plural: "LDAP bağlantıları"
-  label_attribute_expand_text: "The complete text for '%{attribute}'"
+  label_attribute_expand_text: "'%{attribute}' için tam metin"
   label_authentication: "Kimlik doğrulaması"
-  label_available_custom_fields_projects: "Available custom fields projects"
+  label_available_custom_fields_projects: "Mevcut özel alan projeleri"
   label_available_global_roles: "Mevcut genel roller"
   label_available_project_attributes: "Mevcut proje öznitelikleri"
   label_available_project_forums: "Mevcut forumlar"
@@ -2812,8 +2830,8 @@ tr:
   label_select_main_menu_item: Yeni ana menü öğesi seç
   label_required_disk_storage: "Gerekli disk alanı"
   label_send_invitation: Davet gönder
-  label_calculated_value: "Calculated value"
-  label_change_parent: "Change parent"
+  label_calculated_value: "Calculated Value"
+  label_change_parent: "Ebeveyni değiştir"
   label_change_plural: "Değişiklikler"
   label_change_properties: "Özellikleri değiştir"
   label_change_status: "Durumu değiştir"
@@ -2879,8 +2897,8 @@ tr:
   label_deleted_custom_item: "(silinmiş öğe)"
   label_deleted_custom_option: "(silinen seçenek)"
   label_empty_element: "(boş)"
-  label_go_back: "Go back one menu level"
-  label_go_forward: "Open %{module} sub-menu"
+  label_go_back: "Bir menü seviyesi geri git"
+  label_go_forward: "%{module} alt menüsünü açın"
   label_missing_or_hidden_custom_option: "(eksik değer veya erişim izinleri eksik)"
   label_descending: "Azalan"
   label_details: "Detaylar"
@@ -2949,12 +2967,12 @@ tr:
   label_follows: "takip eder"
   label_force_user_language_to_default: "Varsayılan olmayan izin verildi bir dil olan kullanıcı dilini ayarlama"
   label_form_configuration: "Formu yapılandırma"
-  label_formula: "Formula"
+  label_formula: "Formül"
   label_gantt_chart: "Gantt görünümü"
   label_gantt_chart_plural: "Gantt grafikleri"
   label_general: "Genel"
   label_generate_key: "Anahtar oluştur"
-  label_global_modules: "Global modules"
+  label_global_modules: "Global modüller"
   label_global_roles: "Genel roller"
   label_git_path: ".git dizininin yolu"
   label_greater_or_equal: ">="
@@ -2989,11 +3007,11 @@ tr:
   label_integer: "Tamsayı"
   label_interface: "Arayüz"
   label_internal: "Dahili"
-  label_introduction_video: "Tanıtım videosu"
+  label_introduction_video: "Getting started video"
   label_invite_user: "Kullanıcı davet et"
   label_item: "Öğe"
   label_item_plural: "Öğe"
-  label_scored_list: "Scored list"
+  label_scored_list: "Puanlanmış liste"
   label_share: "Paylaş"
   label_share_project_list: "Proje listesini paylaş"
   label_share_work_package: "İş paketini paylaş"
@@ -3004,7 +3022,7 @@ tr:
   label_journal_diff: "Açıklama Karşılaştırması"
   label_language: "Dil"
   label_languages: "Diller"
-  label_locale: "Language and region"
+  label_locale: "Dil ve bölge"
   label_jump_to_a_project: "Projeye git..."
   label_keyword_plural: "Anahtar kelimeler"
   label_language_based: "Kullanıcının dili tabanlı"
@@ -3024,18 +3042,18 @@ tr:
   label_link_url: "Bağlantı"
   label_list: "Liste"
   label_loading: "Yükleniyor..."
-  label_locked: "locked"
+  label_locked: "kilitli"
   label_lock_user: "Kullanıcıyı kilitle"
   label_logged_as: "Giriş yapılan kullanıcı"
   label_login: "Oturum aç"
   label_custom_logo: "Özel logo"
   label_custom_export_logo: "Özel dışarı aktarma logosu"
   label_custom_export_cover: "Özel dışarı aktarma kapak arka planı"
-  label_custom_export_footer: "Custom export footer image"
-  label_custom_export_font_regular: "Regular"
-  label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
-  label_custom_export_font_bold_italic: "Bold Italic"
+  label_custom_export_footer: "Özel dışa aktarma altbilgi görüntüsü"
+  label_custom_export_font_regular: "Normal"
+  label_custom_export_font_bold: "Kalın"
+  label_custom_export_font_italic: "İtalik"
+  label_custom_export_font_bold_italic: "Kalın italik"
   label_custom_export_cover_overlay: "Özel dışarı aktarma kapak arka planı kaplaması"
   label_custom_export_cover_text_color: "Metin rengi"
   label_custom_pdf_export_settings: "Özel PDF dışa aktarma ayarları"
@@ -3047,7 +3065,7 @@ tr:
   label_manage: "Yönet"
   label_manage_groups: "Grupları yönet"
   label_managed_repositories_vendor: "Yönetilen% {satıcı} depoları %{vendor}"
-  label_mathematical_operators: "Mathematical operators"
+  label_mathematical_operators: "Matematiksel operatörler"
   label_max_size: "Maksimum boyut"
   label_me: "ben"
   label_member_new: "Yeni Üye"
@@ -3184,22 +3202,22 @@ tr:
   label_project_attributes_plural: "Proje öznitelikleri"
   label_project_custom_field_plural: "Proje öznitelikleri"
   label_project_settings: "Proje ayarları"
-  label_project_attributes_settings: "Project attributes settings"
+  label_project_attributes_settings: "Proje öznitelikleri ayarları"
   label_project_storage_plural: "Dosya depoları"
   label_project_storage_project_folder: "File storages: Project folders"
   label_projects_disk_usage_information: "%{count} proje %{used_disk_space} disk alanı kullanıyor"
   label_project_view_all: "Tüm projeleri görüntüle"
   label_project_show_details: "Proje detaylarını göster"
   label_project_hide_details: "Proje detaylarını gizle"
-  label_portfolio: "Portfolio"
-  label_portfolio_new: "New portfolio"
+  label_portfolio: "Portföy"
+  label_portfolio_new: "Yeni portföy"
   label_program: "Program"
-  label_program_new: "New program"
+  label_program_new: "Yeni program"
   label_public_projects: "Genel Projeler"
   label_query_new: "Yeni Sorgu"
   label_query_plural: "Özel Sorgular"
   label_read: "Oku..."
-  label_read_documentation: "Read documentation"
+  label_read_documentation: "Belgeleri oku"
   label_register: "Yeni hesap oluştur"
   label_register_with_developer: "Geliştirici olarak kayıt ol"
   label_registered_on: "Kayıt tarihi"
@@ -3240,7 +3258,7 @@ tr:
   label_roadmap_overdue: "%{value} geç"
   label_role_and_permissions: "Roller ve izinler"
   label_role_new: "Yeni rol"
-  label_role_grantable: "Grantable role"
+  label_role_grantable: "Verilebilir rol"
   label_role_plural: "Yetkiler"
   label_role_search: "Yeni üyelere rol atama"
   label_scm: "YKM"
@@ -3294,10 +3312,10 @@ tr:
   label_title: "Başlık"
   label_projects_menu: "Projeler"
   label_today: "bugün"
-  label_token_version: "Token Version"
-  label_today_as_start_date: "Select today as start date."
-  label_today_as_due_date: "Select today as finish date."
-  label_today_as_date: "Select today as date."
+  label_token_version: "Anahtar Sürümü"
+  label_today_as_start_date: "Başlangıç tarihi olarak bugünü seçin."
+  label_today_as_due_date: "Bitiş tarihi olarak bugünü seçin."
+  label_today_as_date: "Tarih olarak bugünü seçin."
   label_top_menu: "Üst Menü"
   label_topic_plural: "Konular"
   label_total: "Toplam"
@@ -3322,7 +3340,7 @@ tr:
   label_user_mail_option_only_my_events: "Sadece takip ettiğim ya da dahil olduklarım için"
   label_user_mail_option_only_owner: "Sadece sahibi olduğum şeyler için"
   label_user_mail_option_selected: "Yalnızca seçilen projelerdeki herhangi bir etkinlik için"
-  label_user_menu: "User menu"
+  label_user_menu: "Kullanıcı menüsü"
   label_user_new: "Yeni kullanıcı"
   label_user_plural: "Kullanıcılar"
   label_user_search: "Kullanıcı ara"
@@ -3343,8 +3361,8 @@ tr:
   label_watched_work_packages: "Takip edilen iş paketleri"
   label_what_is_this: "Bu nedir?"
   label_week: "Hafta"
-  label_widget: "Widget"
-  label_widget_new: "New widget"
+  label_widget: "Araçlar"
+  label_widget_new: "Yeni araç"
   label_wiki_content_added: "Viki sayfası eklendi"
   label_wiki_content_updated: "Wiki sayfası güncellendi"
   label_wiki_toc: "İçindekiler Tablosu"
@@ -3367,7 +3385,7 @@ tr:
   label_work_package_attachments: "İş paketi ekleri"
   label_work_package_category_new: "Yeni kategori"
   label_work_package_category_plural: "İş paketi kategorileri"
-  label_work_package_comments: "Work package comments"
+  label_work_package_comments: "İş paketi yorumları"
   label_work_package_hierarchy: "İş paketi hiyerarşisi"
   label_work_package_new: "Yeni iş paketi"
   label_work_package_edit: "%{name} iş paketini düzenle"
@@ -3481,7 +3499,7 @@ tr:
       work_packages:
         allowed_actions: "You may %{allowed_actions} this work package. This can change depending on your project role and permissions."
         create_account: "To access this work package, you will need to create and activate an account on %{instance}."
-        open_work_package: "Open work package"
+        open_work_package: "İş paketini aç"
         subject: "İş paketi #%{id} sizinle paylaşıldı"
         enterprise_text: "İş paketlerini proje üyesi olmayan kullanıcılarla paylaşın."
         summary:
@@ -4257,9 +4275,9 @@ tr:
       section_work_week: "Çalışma haftası"
       section_holidays_and_closures: "Tatiller ve kapanışlar"
     work_packages:
-      not_allowed_text: "You do not have the necessary permissions to view this page."
+      not_allowed_text: "Bu sayfayı görüntülemek için gerekli izinlere sahip değilsiniz."
       activities:
-        enable_internal_comments: "Enable internal comments"
+        enable_internal_comments: "Dahili yorumları etkinleştirin"
         helper_text: "Internal comments allow an internal team to communicate amongst themselves privately. These are only visible to selected roles that have the necessary permissions and will not be visible publicly. %{link}"
   text_formatting:
     markdown: "Markdown"
@@ -4270,7 +4288,7 @@ tr:
   status_invited: davet
   status_locked: kilitli
   status_registered: kayıtlı
-  status_deleted: deleted
+  status_deleted: silindi
   #Used in array.to_sentence.
   support:
     array:
@@ -4280,10 +4298,10 @@ tr:
   text_access_token_hint: "Erişim belirteçleri, OpenProject içindeki kaynaklara harici uygulamalar erişimi vermenizi sağlar."
   text_analyze: "Daha fazla analiz: %{subject}"
   text_are_you_sure: "Emin misiniz?"
-  open_link_in_a_new_tab: "Open link in a new tab"
+  open_link_in_a_new_tab: "Bağlantıyı yeni sekmede aç"
   text_are_you_sure_continue: "Devam etmek istediğinize emin misiniz?"
   text_are_you_sure_with_children: "Sil iş paketi ve tüm alt çalışma paketlerini?"
-  text_are_you_sure_with_project_custom_fields: "Deleting this attribute will also delete its values in all projects. Are you sure you want to do this?"
+  text_are_you_sure_with_project_custom_fields: "Bu niteliğin silinmesi, tüm projelerdeki değerlerini de silecektir. Bunu yapmak istediğinizden emin misiniz?"
   text_are_you_sure_with_project_life_cycle_step: "Deleting this phase will also delete its usages in all projects. Are you sure you want to do this?"
   text_assign_to_project: "Projeye ata"
   text_form_configuration: >
@@ -4313,13 +4331,13 @@ tr:
   label_custom_export_images_instructions: >
     Upload and manage custom image files used in your PDF exports.
   text_custom_export_font_regular_instructions: >
-    This is the font file for regular text. It needs to be in TTF format and is required.
+    Bu, normal metin için yazı tipi dosyasıdır. TTF biçiminde olması gerekir ve gereklidir.
   text_custom_export_font_bold_instructions: >
-    This is the font file for bold text. It needs to be in TTF format.
+    Bu, kalın metin için yazı tipi dosyasıdır. TTF biçiminde olması gerekir.
   text_custom_export_font_italic_instructions: >
-    This is the font file for italic text. It needs to be in TTF format.
+    Bu, italik metin için yazı tipi dosyasıdır. TTF biçiminde olması gerekir.
   text_custom_export_font_bold_italic_instructions: >
-    This is the font file for bold and italic text. It needs to be in TTF format.
+    Bu, kalın ve italik metin için yazı tipi dosyasıdır. TTF biçiminde olması gerekir.
   text_custom_favicon_instructions: >
     Bu, tarayıcı pencerenizde/sekmenizde sayfa başlığının yanında görünen küçük simgedir. Şeffaf bir arka plana sahip 32 x 32 piksel boyutunda kare şeklinde bir PNG görüntü dosyası olması gerekir.
   text_custom_touch_icon_instructions: >
@@ -4411,7 +4429,7 @@ tr:
       project: >
         %{plural} are always attached to a project. You can only select projects here where the %{plural} module is active. After creating a %{singular} you can add work packages from other projects to it.
       public: "Diğer kullanıcıların görünümünüze erişmesine izin vererek bu görünümü yayınlayın. 'Genel görünümleri yönet' iznine sahip kullanıcılar genel sorguyu değiştirebilir veya kaldırabilir. Bu, iş paketi sonuçlarının görünürlüğünü bu görünümde etkilemez ve izinlerine bağlı olarak, kullanıcılar farklı sonuçlar görebilir."
-      favoured: "Mark this view as favourite and add to the saved views sidebar on the left."
+      favoured: "Bu görünümü favori olarak işaretleyin ve soldaki kaydedilmiş görünümler kenar çubuğuna ekleyin."
   time:
     am: "öö"
     formats:

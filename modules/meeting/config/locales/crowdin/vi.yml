@@ -104,7 +104,7 @@ vi:
     meeting_agenda_opened: Chương trình nghị sự cuộc họp đã được mở
     meeting_minutes: Biên bản cuộc họp đã được chỉnh sửa
     meeting_minutes_created: Biên bản cuộc họp đã được tạo
-  error_notification: "Failed to send notification."
+  error_notification: "Lỗi gửi thông báo"
   error_notification_with_errors: "Không thể gửi thông báo. Những người không thể nhận được thông báo: %{recipients}"
   label_meeting: "Cuộc họp"
   label_meeting_plural: "Những cuộc họp"

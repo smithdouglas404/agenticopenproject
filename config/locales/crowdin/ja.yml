@@ -330,6 +330,14 @@ ja:
     tab:
       no_results_title_text: 現在、カスタム フィールドはありません。
       no_results_content_text: 新しいカスタム フィールドを作成
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "または"
   op_dry_validation:
@@ -622,6 +630,7 @@ ja:
       unknown_browser: "不明なブラウザ"
       unknown_os: "不明なオペレーティング システム"
       unknown: "(unknown)"
+      browser_session: "(Browser session)"
       current: "Current (this device)"
       title: "セッション管理"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
@@ -964,6 +973,11 @@ ja:
         help_text: "ヘルプ テキスト"
       auth_provider:
         scim_clients: "SCIMクライアント"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "コンテキスト"
       changeset:
@@ -1271,7 +1285,7 @@ ja:
         confirmation: "は%{attribute} と一致しません。"
         could_not_be_copied: "%{dependency} を（完全に）コピーできませんでした。"
         does_not_exist: "は存在しません。"
-        error_enterprise_only: "%{action} はOpenProject Enterpriseエディションでのみ利用可能です。"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "アクセスできません。"
         error_readonly: "書けませんでした。"
         error_conflict: "別のユーザーが同時にデータを更新しています。"
@@ -2138,6 +2152,7 @@ ja:
     features:
       baseline_comparison: ベースラインの比較
       board_view: 高度なボード
+      calculated_values: Calculated Values
       conditional_highlighting: 条件付きハイライト
       internal_comments: 内部コメント
       custom_actions: カスタムアクション
@@ -2210,6 +2225,8 @@ ja:
         description: "プロジェクトのメンバーではないユーザーとワークパッケージを共有します。"
       project_list_sharing:
         description: "プロジェクトリストを個々のユーザーと共有します。"
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "カスタムカラーテーマとロゴ"
         more_info: "注:使用されたロゴは一般公開されます。"
@@ -2767,7 +2784,7 @@ ja:
   label_select_main_menu_item: 新しいメインメニュー項目を選択する
   label_required_disk_storage: "必要なディスク ストレージ"
   label_send_invitation: 招待状を送信
-  label_calculated_value: "計算された値"
+  label_calculated_value: "Calculated Value"
   label_change_parent: "Change parent"
   label_change_plural: "変更"
   label_change_properties: "プロパティの変更"
@@ -2944,7 +2961,7 @@ ja:
   label_integer: "整数"
   label_interface: "インターフェイス"
   label_internal: "社内"
-  label_introduction_video: "紹介ビデオ"
+  label_introduction_video: "Getting started video"
   label_invite_user: "ユーザを招待"
   label_item: "項目"
   label_item_plural: "アイテム"

@@ -331,6 +331,14 @@ pt-BR:
     tab:
       no_results_title_text: Atualmente, não há campos personalizados.
       no_results_content_text: Criar um novo campo personalizado
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "ou"
   op_dry_validation:
@@ -629,6 +637,7 @@ pt-BR:
       unknown_browser: "Navegador desconhecido"
       unknown_os: "Sistema operacional desconhecido"
       unknown: "(unknown)"
+      browser_session: "(Browser session)"
       current: "Current (this device)"
       title: "Gerenciamento de sessão"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
@@ -970,6 +979,11 @@ pt-BR:
         help_text: "Texto de ajuda"
       auth_provider:
         scim_clients: "Clientes SCIM"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "Contexto"
       changeset:
@@ -1277,7 +1291,7 @@ pt-BR:
         confirmation: "não coincide com %{attribute}."
         could_not_be_copied: "%{dependency} não pôde ser copiado (completamente)."
         does_not_exist: "não existe."
-        error_enterprise_only: "%{action} só está disponível na edição OpenProject Enterprise"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "não pode ser acessado."
         error_readonly: "tentou escrever, mas não é gravável."
         error_conflict: "As informações foram atualizadas por pelo menos um outro usuário nesse meio tempo."
@@ -2180,6 +2194,7 @@ pt-BR:
     features:
       baseline_comparison: Comparações de linha base
       board_view: Quadros avançados
+      calculated_values: Calculated Values
       conditional_highlighting: Realce condicional
       internal_comments: Comentários internos
       custom_actions: Ações Personalizadas
@@ -2252,6 +2267,8 @@ pt-BR:
         description: "Compartilhe pacotes de trabalho com usuários que não são membros do projeto."
       project_list_sharing:
         description: "Compartilhar listas de projetos com usuários individuais."
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Tema de cor e logotipo personalizados"
         more_info: "Obs.: o logotipo usado pode ser acessado publicamente."
@@ -2810,7 +2827,7 @@ pt-BR:
   label_select_main_menu_item: Selecione novo item do menu principal
   label_required_disk_storage: "Armazenamento em disco necessário"
   label_send_invitation: Enviar Convite
-  label_calculated_value: "Valor calculado"
+  label_calculated_value: "Calculated Value"
   label_change_parent: "Change parent"
   label_change_plural: "Mudanças"
   label_change_properties: "Alterar propriedades"
@@ -2987,7 +3004,7 @@ pt-BR:
   label_integer: "Número inteiro"
   label_interface: "Interface"
   label_internal: "Interno"
-  label_introduction_video: "Vídeo de introdução"
+  label_introduction_video: "Getting started video"
   label_invite_user: "Convidar usuário"
   label_item: "Item"
   label_item_plural: "Itens"

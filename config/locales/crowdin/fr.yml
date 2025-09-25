@@ -332,6 +332,14 @@ fr:
     tab:
       no_results_title_text: Il n'y a actuellement aucun champ personnalisé.
       no_results_content_text: Créer un nouveau champ personnalisé
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "ou"
   op_dry_validation:
@@ -630,6 +638,7 @@ fr:
       unknown_browser: "navigateur inconnu"
       unknown_os: "système d'exploitation inconnu"
       unknown: "(unknown)"
+      browser_session: "(Browser session)"
       current: "Current (this device)"
       title: "Gestion de session"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
@@ -971,6 +980,11 @@ fr:
         help_text: "Texte d’aide"
       auth_provider:
         scim_clients: "Clients SCIM"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "Contexte"
       changeset:
@@ -1278,7 +1292,7 @@ fr:
         confirmation: "ne correspond pas à %{attribute}."
         could_not_be_copied: "%{dependency} n'a pas pu être copié (entièrement)."
         does_not_exist: "n'existe pas."
-        error_enterprise_only: "%{action} n'est disponible que dans la version Entreprise d'OpenProject."
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "est interdit d'accès."
         error_readonly: "a tenté d'être écrit mais n'est pas accessible en écriture."
         error_conflict: "Cette information a été mise a jour par au moin un autre utilisateur pendant la même session"
@@ -2181,6 +2195,7 @@ fr:
     features:
       baseline_comparison: Comparaisons de référence
       board_view: Tableaux avancés
+      calculated_values: Calculated Values
       conditional_highlighting: Mise en surbrillance conditionnelle
       internal_comments: Commentaires internes
       custom_actions: Actions personnalisées
@@ -2253,6 +2268,8 @@ fr:
         description: "Partagez les lots de travaux avec des utilisateurs qui ne sont pas membres du projet."
       project_list_sharing:
         description: "Partagez les listes de projets avec des utilisateurs individuels."
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Thème de couleur et logo personnalisés"
         more_info: "Remarque : le logo utilisé sera accessible publiquement."
@@ -2811,7 +2828,7 @@ fr:
   label_select_main_menu_item: Sélectionner nouvel élément de menu principal
   label_required_disk_storage: "Espace disque requis"
   label_send_invitation: Envoyer une invitation
-  label_calculated_value: "Valeur calculée"
+  label_calculated_value: "Calculated Value"
   label_change_parent: "Changer de parent"
   label_change_plural: "Changements"
   label_change_properties: "Modifier les propriétés"
@@ -2988,7 +3005,7 @@ fr:
   label_integer: "Nombre entier"
   label_interface: "Interface"
   label_internal: "Interne"
-  label_introduction_video: "Vidéo de présentation"
+  label_introduction_video: "Getting started video"
   label_invite_user: "Inviter utilisateur"
   label_item: "Élément"
   label_item_plural: "Éléments"

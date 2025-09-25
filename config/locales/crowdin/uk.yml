@@ -329,6 +329,14 @@ uk:
     tab:
       no_results_title_text: Наразі немає спеціальних полів.
       no_results_content_text: Створіть нове спеціальне поле
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "або"
   op_dry_validation:
@@ -639,6 +647,7 @@ uk:
       unknown_browser: "невідомий браузер"
       unknown_os: "невідома операційна система"
       unknown: "(unknown)"
+      browser_session: "(Browser session)"
       current: "Current (this device)"
       title: "Керування сеансами"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
@@ -983,6 +992,11 @@ uk:
         help_text: "Довідковий текст"
       auth_provider:
         scim_clients: "Клієнти SCIM"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "Контекст"
       changeset:
@@ -1290,7 +1304,7 @@ uk:
         confirmation: "не збігається %{attribute}"
         could_not_be_copied: "%{dependency} не вдалося скопіювати (повністю)."
         does_not_exist: "не існує."
-        error_enterprise_only: "%{action} можна лише у версії OpenProject Enterprise"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "– можливо, немає доступу."
         error_readonly: "– було здійснено спробу запису, але елемент недоступний для запису."
         error_conflict: "Інформація була оновлена принаймні один інший користувач в той же час."
@@ -2265,6 +2279,7 @@ uk:
     features:
       baseline_comparison: Порівняння з вихідним рівнем
       board_view: Покращені Дошки
+      calculated_values: Calculated Values
       conditional_highlighting: Умовне виділення
       internal_comments: Внутрішні коментарі
       custom_actions: Користувацькі дії
@@ -2337,6 +2352,8 @@ uk:
         description: "Діліться пакетами робіт із користувачами, які не належать до учасників проєкту."
       project_list_sharing:
         description: "Діліться списками проєктів з окремими користувачами."
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Користувацький колір теми й логотип"
         more_info: "Примітка: вибраний логотип буде загальнодоступний."
@@ -2897,7 +2914,7 @@ uk:
   label_select_main_menu_item: Виберіть новий пункт головного меню
   label_required_disk_storage: "Необхідне місце на диску"
   label_send_invitation: Надіслати запрошення
-  label_calculated_value: "Розраховане значення"
+  label_calculated_value: "Calculated Value"
   label_change_parent: "Change parent"
   label_change_plural: "Зміни"
   label_change_properties: "Змінити властивості"
@@ -3074,7 +3091,7 @@ uk:
   label_integer: "Ціле число"
   label_interface: "Інтерфейс"
   label_internal: "Власне"
-  label_introduction_video: "Введення відео"
+  label_introduction_video: "Getting started video"
   label_invite_user: "Запросити користувача"
   label_item: "Елемент"
   label_item_plural: "Елементи"

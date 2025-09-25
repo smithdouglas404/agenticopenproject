@@ -32,6 +32,7 @@ cs:
         drive: ID disku
         host: Hostitel
         name: Název
+        password: Application password
         provider_type: Typ poskytovatele
         tenant: ID adresáře (tenant)
     errors:
@@ -62,7 +63,7 @@ cs:
               op_application_not_installed: Zdá se, že aplikace "OpenProject integration" není nainstalována. Prosím nainstalujte ji a zkuste to znovu.
             password:
               invalid_password: není platné.
-              unknown_error: nelze potvrdit. Zkontrolujte připojení k úložišti a zkuste to znovu.
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: Soubor
       storages/storage: Úložiště

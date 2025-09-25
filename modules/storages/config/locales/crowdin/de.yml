@@ -32,6 +32,7 @@ de:
         drive: Laufwerk ID
         host: Host
         name: Name
+        password: Application password
         provider_type: Anbieter-Typ
         tenant: Verzeichnis (Tenant) ID
     errors:
@@ -62,7 +63,7 @@ de:
               op_application_not_installed: scheint die App "OpenProject Integration" nicht installiert zu haben. Bitte installieren Sie diese zuerst und versuchen es danach erneut.
             password:
               invalid_password: ist ungültig.
-              unknown_error: konnte nicht überprüft werden. Bitte überprüfen Sie Ihre Verbindung zum Dateispeicher und versuchen Sie es erneut.
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: Datei
       storages/storage: Speicher

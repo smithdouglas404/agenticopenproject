@@ -7,7 +7,7 @@ tr:
   activerecord:
     attributes:
       openid_connect/group_link:
-        oidc_group_name: OpenID group identifier
+        oidc_group_name: OpenID grup tanımlayıcısı
       openid_connect/provider:
         name: İsim
         slug: Benzersiz tanımlayıcı
@@ -15,10 +15,10 @@ tr:
         client_id: İstemci ID
         client_secret: İstemci gizliliği
         groups_claim: Groups claim
-        group_regexes: Patterns (regular expressions)
+        group_regexes: Kalıplar (düzenli ifadeler)
         secret: Gizli Anahtar
         scope: Kapsam
-        sync_groups: Synchronize groups
+        sync_groups: Grupları senkronize et
         grant_types_supported: Desteklenen izin türleri
         limit_self_registration: Kendi kendine kaydı sınırlayın
         authorization_endpoint: Yetkilendirme bitiş noktası
@@ -57,11 +57,11 @@ tr:
   openid_connect:
     menu_title: OpenID sağlayıcıları
     delete_title: "OpenID Connect sağlayıcısını sil"
-    group_links_heading: OpenID Connect group links
+    group_links_heading: OpenID Connect grup bağlantıları
     groups:
       match_preview_component:
-        title: Extracted group names
-        placeholder_none: No groups currently match the pattern.
+        title: Çıkarılan grup adları
+        placeholder_none: Şu anda kalıpla eşleşen grup yok.
       match_preview_dialog_component:
         description: This allows you to test your regular expression pattern against sample data to verify that the group names you want extracted are indeed extracted properly. You can modify your pattern here but the test string and matches themselves will not be saved with the configuration.
         group_names_label: Test group names

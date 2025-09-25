@@ -32,6 +32,7 @@ zh-TW:
         drive: Drive ID
         host: 主機
         name: 名稱
+        password: Application password
         provider_type: 提供商類型
         tenant: 目錄 (租戶) ID
     errors:
@@ -62,7 +63,7 @@ zh-TW:
               op_application_not_installed: 似乎沒有安裝應用「OpenProject 整合套件」。請先安裝，然後重試。
             password:
               invalid_password: 無效。
-              unknown_error: 無法驗證。請檢查您的存儲區連接，然後重試。
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: 檔案
       storages/storage: 儲存空間

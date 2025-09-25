@@ -64,10 +64,10 @@ ru:
         placeholder_none: No groups currently match the pattern.
       match_preview_dialog_component:
         description: This allows you to test your regular expression pattern against sample data to verify that the group names you want extracted are indeed extracted properly. You can modify your pattern here but the test string and matches themselves will not be saved with the configuration.
-        group_names_label: Test group names
+        group_names_label: Имена тестовых групп
         group_names_description: Enter one group name per line as it would appear in the OIDC claim, to see how your regular expression patterns affect them.
-        show_button: Test pattern
-        title: Test regular expressions
+        show_button: Тестовый шаблон
+        title: Тестовое регулярное выражение
     instructions:
       endpoint_url: URL-адрес конечной точки, указанный поставщиком OpenID Connect
       group_regexes: По одному регулярному выражению на строку. Пожалуйста, прочитайте [документацию](docs_url) для получения дополнительной информации о том, как это сделать.

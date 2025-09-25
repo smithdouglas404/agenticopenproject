@@ -82,7 +82,7 @@ ru:
       meeting_agenda: "Повестка дня"
       meeting_section: "Раздел"
       token/ical_meeting:
-        one: "iCal Meeting subscription"
+        one: "подписка на совещание iCal"
         few: "iCal Meeting subscription"
         many: "iCal Meeting subscription"
         other: "iCal Meeting subscription"
@@ -201,8 +201,8 @@ ru:
         show_all: "Показывать всё"
       text:
         template: "Эти участники будут автоматически приглашаться на все будущие совещания по мере их создания."
-        manage_participants: "Search for and add project members as participants to this meeting."
-        search_for_members: "Search for project members"
+        manage_participants: "Найдите и добавьте членов проекта в качестве участников совещания."
+        search_for_members: "Поиск участников проекта"
       blankslate:
         heading: "Нет участников"
         description: "Пока нет участников."
@@ -249,8 +249,8 @@ ru:
         body: "Совещание '%{title}' было обновлено пользователем %{actor}."
         old_date_time: "Старые дата/время"
         new_date_time: "Новые дата/время"
-        old_location: "Old location"
-        new_location: "New location"
+        old_location: "Старое расположение"
+        new_location: "Новое расположение"
     label_mail_all_participants: "Отправить письмо всем участникам"
     types:
       one_time: "Однократная"
@@ -469,11 +469,11 @@ ru:
   text_meeting_minutes_for_meeting: 'Протокол совещания «%{meeting}»'
   text_notificiation_invited: "Это сообщение содержит запись ics для совещания ниже:"
   text_meeting_ics_description: >-
-    Link to meeting: %{url}
+    Ссылка на совещание: %{url}
   text_meeting_ics_meeting_series_description: >-
-    Link to meeting series: %{url}
+    Ссылка на серию совещаний: %{url}
   text_meeting_occurrence_ics_description: >-
-    Link to meeting occurrence: %{url} Link to meeting series: %{series_url}
+    Ссылка на совещание: %{url} Ссылка на серию совещаний: %{series_url}
   text_meeting_empty_heading: "Совещание пусто"
   text_meeting_empty_description1: "Начните с добавления пунктов повестки ниже. Каждый пункт может быть простым, как заголовок, но вы также можете добавить дополнительные сведения, такие как продолжительность и примечания."
   text_meeting_empty_description2: 'Вы также можете добавить ссылки на существующие пакеты работ. Когда вы это сделаете, соответствующие заметки будут автоматически отображаться на вкладке «Совещания» пакета работ.'
@@ -558,7 +558,7 @@ ru:
   text_meeting_not_editable_anymore: "Это совещание больше нельзя редактировать."
   text_meeting_not_present_anymore: "Это совещание было удалено. Пожалуйста, выберите другое."
   label_add_work_package_to_meeting_dialog_title: "Выберите совещание"
-  label_add_work_package_to_meeting_section_label: "Add to section"
+  label_add_work_package_to_meeting_section_label: "Добавить в раздел"
   label_add_work_package_to_meeting_dialog_button: "Добавить в совещание"
   label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."
   label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."

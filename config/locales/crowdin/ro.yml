@@ -332,6 +332,14 @@ ro:
     tab:
       no_results_title_text: În acest moment nu există câmpuri personalizate.
       no_results_content_text: Creează câmp personalizat nou
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "sau"
   op_dry_validation:
@@ -636,6 +644,7 @@ ro:
       unknown_browser: "browser necunoscut"
       unknown_os: "unknown operating system"
       unknown: "(unknown)"
+      browser_session: "(Browser session)"
       current: "Current (this device)"
       title: "Gestionarea sesiunii"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
@@ -981,6 +990,11 @@ ro:
         help_text: "Text de ajutor"
       auth_provider:
         scim_clients: "Clienți SCIM"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "Context"
       changeset:
@@ -1288,7 +1302,7 @@ ro:
         confirmation: "nu se potrivește cu %{attribute}."
         could_not_be_copied: "%{dependency} nu a putut fi copiat (integral)."
         does_not_exist: "nu există."
-        error_enterprise_only: "%{action} este disponibil doar în ediția OpenProject Enterprise"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "nu pot fi accesate."
         error_readonly: "a fost încercat să fie scris, dar nu este inscriptibil."
         error_conflict: "Informaţia a fost actualizată de cel puţin un alt utilizator între timp."
@@ -2227,6 +2241,7 @@ ro:
     features:
       baseline_comparison: Baseline Comparisons
       board_view: Advanced Boards
+      calculated_values: Calculated Values
       conditional_highlighting: Evidențiere condiționată
       internal_comments: Comentarii interne
       custom_actions: Custom Actions
@@ -2299,6 +2314,8 @@ ro:
         description: "Share work packages with users who are not members of the project."
       project_list_sharing:
         description: "Share project lists with individual users."
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Custom color theme and logo"
         more_info: "Notă: logo-ul utilizat va fi accesibil publicului."
@@ -2858,7 +2875,7 @@ ro:
   label_select_main_menu_item: Selectare meniu wiki nou
   label_required_disk_storage: "Spațiu pe disc necesar"
   label_send_invitation: Trimite invitație
-  label_calculated_value: "Calculated value"
+  label_calculated_value: "Calculated Value"
   label_change_parent: "Change parent"
   label_change_plural: "Modificări"
   label_change_properties: "Modificare proprietăţi"
@@ -3035,7 +3052,7 @@ ro:
   label_integer: "Număr întreg"
   label_interface: "Interfață"
   label_internal: "Intern"
-  label_introduction_video: "Video de introducere"
+  label_introduction_video: "Getting started video"
   label_invite_user: "Invită utilizator"
   label_item: "Element"
   label_item_plural: "Items"

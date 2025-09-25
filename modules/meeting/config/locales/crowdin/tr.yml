@@ -81,7 +81,7 @@ tr:
       meeting_section: "Bölüm"
       token/ical_meeting:
         one: "iCal Toplantı aboneliği"
-        other: "iCal Meeting subscription"
+        other: "iCal Toplantı aboneliği"
   activity:
     filter:
       meeting: "Toplantılar"
@@ -106,7 +106,7 @@ tr:
     meeting_agenda_opened: Toplantı gündemi açıldı
     meeting_minutes: Toplantı dakikaları düzenlendi
     meeting_minutes_created: Toplantı tutanakları oluşturuldu
-  error_notification: "Failed to send notification."
+  error_notification: "Bildirim gönderilemedi."
   error_notification_with_errors: "Bildirim hatalı. Aşağıdaki alıcılar bilgilendirilemedi: %{recipients}"
   label_meeting: "Toplantı"
   label_meeting_plural: "Toplantılar"
@@ -191,11 +191,11 @@ tr:
         show_all: "Tümünü göster"
       text:
         template: "Oluşturuldukça bu katılımcılar, gelecekteki tüm toplantılara otomatik olarak davet edilecektir."
-        manage_participants: "Search for and add project members as participants to this meeting."
-        search_for_members: "Search for project members"
+        manage_participants: "Proje üyelerini arayın ve bu toplantıya katılımcı olarak ekleyin."
+        search_for_members: "Proje üyelerini arayın"
       blankslate:
         heading: "Katılımcı yok"
-        description: "There are no participants yet."
+        description: "Henüz katılımcı yok."
     attachments:
       template: "Bu ekli dosyalar serinin gelecekteki tüm toplantılarına dahil edilecektir."
       text: "Eklenen dosyalar tüm katılımcıların paylaşımına açıktır. Bu dosyaları gündeme sürükleyip bırakabilirsiniz."
@@ -219,8 +219,8 @@ tr:
         title: "[%{project_name}] Toplantı serisi '%{title}'"
         summary: "%{actor} yeni bir toplantı serisi başlattı '%{title}'"
       series_updated:
-        title: "[%{project_name}] Meeting series '%{title}' has been updated"
-        summary: "Meeting series '%{title}' has been updated by %{actor}"
+        title: "[%{project_name}] Toplantı serisi '%{title}' güncellendi"
+        summary: "'%{title}' toplantı serisi %{actor} tarafından güncellendi"
         old_schedule: "Eski plan"
         new_schedule: "Yeni plan"
       invited:
@@ -234,14 +234,14 @@ tr:
         summary: "'%{title}' %{actor} tarafından iptal edilmiştir."
         date_time: "Planlanan tarih/saat"
       updated:
-        header: "Meeting '%{title}' has been updated"
-        summary: "Meeting '%{title}' has been updated by %{actor}"
-        body: "The meeting '%{title}' has been updated by %{actor}."
+        header: "'%{title}' toplantısı güncellendi"
+        summary: "'%{title}' toplantısı %{actor} tarafından güncellendi"
+        body: "'%{title}' toplantısı %{actor} tarafından güncellendi."
         old_date_time: "Eski tarih/saat"
         new_date_time: "Yeni tarih/saat"
         old_location: "Eski konum"
         new_location: "Yeni konum"
-    label_mail_all_participants: "Send email invite to participants"
+    label_mail_all_participants: "Katılımcılara e-posta daveti gönder"
     types:
       one_time: "Tek seferlik"
       recurring: "Yinelenen"
@@ -268,7 +268,7 @@ tr:
     export:
       your_meeting_export: "Toplantı dışa aktarılıyor"
       minutes:
-        footer_page_numbers: "P. %{current_page} of %{total_pages}"
+        footer_page_numbers: "%{total_pages} sayfa arasından %{current_page}"
         author: "Sahibi"
         date: "Tarih"
         time: "Zaman"
@@ -280,13 +280,13 @@ tr:
       templates:
         default:
           label: Varsayılan
-          caption: The default template is suitable for most meetings and represent the current state.
+          caption: Varsayılan şablon çoğu toplantı için uygundur ve mevcut durumu temsil eder.
         minutes:
           label: Notlar
           caption: The minutes template is suitable for closed and archived meetings.
       first_page_header_left:
-        label: First page header left
-        caption: This text will appear on the first page at the left of the header.
+        label: İlk sayfa başlığı sol
+        caption: Bu metin ilk sayfada başlığın solunda görünecektir.
       author:
         label: Sahibi
         caption: The author of the minutes will be displayed in the subtitle.
@@ -353,7 +353,7 @@ tr:
     empty_text: "Maddeleri buraya sürükleyin ya da yeni bir tane oluşturun"
   recurring_meeting:
     time_zone_difference_banner:
-      title: "Time zone difference"
+      title: "Saat dilimi farkı"
       description: >
         The dates below are referencing the time zone of the meeting series (%{actual_zone}), not your local time zone (%{user_zone}).
     ended_blankslate:
@@ -433,7 +433,7 @@ tr:
       confirm_button: "Bu etklinliği iptal et"
     end_series_dialog:
       title: "Toplantı serisinin bitir"
-  notice_successful_notification: "Email calendar update sent to all participants"
+  notice_successful_notification: "Tüm katılımcılara gönderilen e-posta takvimi güncellemesi"
   notice_timezone_missing: Saat dilimi ayarlanmadı ve %{zone} kabul edildi. Saat dilimini seçmek için lütfen buraya tıklayın.
   notice_meeting_updated: "Bu sayfa başka biri tarafından güncellendi. Değişiklikleri görmek için yeniden yükleyin."
   permission_create_meetings: "Toplantı oluşturma"
@@ -575,12 +575,12 @@ tr:
         token/ical_meeting:
           dialog_title: "New iCal subscription token for meetings"
           dialog_body: "This token will generate an iCal subscription URL that lets you view all your meetings in an external calendar application."
-          create_button: "Create subscription"
-          name_label: "Token name"
-          name_caption: 'You can name it after where you will use it, such as "My phone" or "Work computer".'
+          create_button: "Abonelik oluştur"
+          name_label: "Anahtar adı"
+          name_caption: '"Telefonum" veya "İş bilgisayarım" gibi kullanacağınız yerin adını verebilirsiniz.'
       created_dialog:
         token/ical_meeting:
-          title: "An iCal meeting subscription token has been generated"
+          title: "Bir iCal toplantı abonelik anahtarı oluşturuldu"
           body: "Treat the following URL as you would a password. Anyone who has access to it can view all your meetings."
           warning: "This is the only time you will see this token. Make sure to copy it now."
       revocation:

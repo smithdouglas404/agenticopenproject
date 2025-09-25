@@ -32,6 +32,7 @@ lt:
         drive: Disko ID
         host: Serveris
         name: Vardas
+        password: Application password
         provider_type: Tiekėjo tipas
         tenant: Direktorijos (savininko) ID
     errors:
@@ -62,7 +63,7 @@ lt:
               op_application_not_installed: panašu neturi įdiegtos „OpenProject integracijos“ aplikacijos. Prašome ją įdiegti ir bandyti dar kartą.
             password:
               invalid_password: netinkamas.
-              unknown_error: nepavyko patikrinti. Prašome patikrinti jūsų saugyklos jungtį ir bandyti dar kartą.
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: Failas
       storages/storage: Saugykla

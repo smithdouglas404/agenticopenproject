@@ -332,6 +332,14 @@ sv:
     tab:
       no_results_title_text: Det finns för närvarande inga anpassade fält.
       no_results_content_text: Skapa ett nytt anpassat fält
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "eller"
   op_dry_validation:
@@ -630,6 +638,7 @@ sv:
       unknown_browser: "okänd webbläsare"
       unknown_os: "okänt operativsystem"
       unknown: "(unknown)"
+      browser_session: "(Browser session)"
       current: "Current (this device)"
       title: "Sessionskontrollering"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
@@ -973,6 +982,11 @@ sv:
         help_text: "Hjälptext"
       auth_provider:
         scim_clients: "SCIM-klienter"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "Kontext"
       changeset:
@@ -1280,7 +1294,7 @@ sv:
         confirmation: "matchar inte %{attribute}."
         could_not_be_copied: "%{dependency} could not be (fully) copied."
         does_not_exist: "finns inte."
-        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "åtkomst nekas."
         error_readonly: "försökte skrivas men är inte skrivbart."
         error_conflict: "Informationen har uppdaterats av minst en annan användare under tiden."
@@ -2183,6 +2197,7 @@ sv:
     features:
       baseline_comparison: Baseline Comparisons
       board_view: Advanced Boards
+      calculated_values: Calculated Values
       conditional_highlighting: Conditional Highlighting
       internal_comments: Interna kommentarer
       custom_actions: Anpassade åtgärder
@@ -2255,6 +2270,8 @@ sv:
         description: "Share work packages with users who are not members of the project."
       project_list_sharing:
         description: "Share project lists with individual users."
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Custom color theme and logo"
         more_info: "Obs: logotypen som används kommer att vara allmänt tillgänglig."
@@ -2813,7 +2830,7 @@ sv:
   label_select_main_menu_item: Välj ny huvudmenypost
   label_required_disk_storage: "Erfordrat lagringsutrymme"
   label_send_invitation: Skicka inbjudan
-  label_calculated_value: "Calculated value"
+  label_calculated_value: "Calculated Value"
   label_change_parent: "Change parent"
   label_change_plural: "Förändringar"
   label_change_properties: "Ändra egenskaper"
@@ -2990,7 +3007,7 @@ sv:
   label_integer: "Heltal"
   label_interface: "Gränssnitt"
   label_internal: "Intern"
-  label_introduction_video: "Introduktionsvideo"
+  label_introduction_video: "Getting started video"
   label_invite_user: "Bjud in användare"
   label_item: "Objekt"
   label_item_plural: "Objekt"

@@ -332,6 +332,14 @@ cs:
     tab:
       no_results_title_text: V současné době nejsou žádná vlastní pole.
       no_results_content_text: Vytvořit nové vlastní pole
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "nebo"
   op_dry_validation:
@@ -642,6 +650,7 @@ cs:
       unknown_browser: "neznámý prohlížeč"
       unknown_os: "neznámý operační systém"
       unknown: "(unknown)"
+      browser_session: "(Browser session)"
       current: "Current (this device)"
       title: "Správa relací"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
@@ -989,6 +998,11 @@ cs:
         help_text: "Text nápovědy"
       auth_provider:
         scim_clients: "SCIM clients"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "Kontext"
       changeset:
@@ -1296,7 +1310,7 @@ cs:
         confirmation: "neshoduje se s %{attribute}."
         could_not_be_copied: "%{dependency} nemůže být (zcela) zkopírován."
         does_not_exist: "neexistuje."
-        error_enterprise_only: "%{action} je k dispozici pouze ve vydání OpenProject Enterprise"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "není přístupný."
         error_readonly: "se pokusil být napsán, ale není zapisovatelný."
         error_conflict: "Informace mezitím aktualizoval alespoň jeden další uživatel."
@@ -2271,6 +2285,7 @@ cs:
     features:
       baseline_comparison: Baseline Comparisons
       board_view: Advanced Boards
+      calculated_values: Calculated Values
       conditional_highlighting: Conditional Highlighting
       internal_comments: Internal Comments
       custom_actions: Custom Actions
@@ -2343,6 +2358,8 @@ cs:
         description: "Sdílejte pracovní balíčky s uživateli, kteří nejsou členy projektu."
       project_list_sharing:
         description: "Share project lists with individual users."
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Custom color theme and logo"
         more_info: "Poznámka: použité logo bude veřejně přístupné."
@@ -2903,7 +2920,7 @@ cs:
   label_select_main_menu_item: Vyberte novou hlavní položku nabídky
   label_required_disk_storage: "Požadované úložiště disku"
   label_send_invitation: Odeslat pozvánku
-  label_calculated_value: "Calculated value"
+  label_calculated_value: "Calculated Value"
   label_change_parent: "Change parent"
   label_change_plural: "Změny"
   label_change_properties: "Změnit vlastnosti"
@@ -3080,7 +3097,7 @@ cs:
   label_integer: "Celé číslo"
   label_interface: "Rozhraní"
   label_internal: "Interní"
-  label_introduction_video: "Seznamovací video"
+  label_introduction_video: "Getting started video"
   label_invite_user: "Pozvat uživatele"
   label_item: "Položka"
   label_item_plural: "Položky"

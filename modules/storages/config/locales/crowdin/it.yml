@@ -32,6 +32,7 @@ it:
         drive: ID Drive
         host: Host
         name: Nome
+        password: Application password
         provider_type: Tipo di fonte
         tenant: ID della directory (tenant).
     errors:
@@ -62,7 +63,7 @@ it:
               op_application_not_installed: non è installata l'app "Integrazione OpenProject". Installala e riprova.
             password:
               invalid_password: non è valido.
-              unknown_error: non piò essere convalidato. Controlla la connessione dell'archiviazione e riprova.
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: File
       storages/storage: Archivio

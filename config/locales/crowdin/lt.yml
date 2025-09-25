@@ -329,6 +329,14 @@ lt:
     tab:
       no_results_title_text: Nėra jokių pasirinktinų laukų.
       no_results_content_text: Sukurti naują pasirinktinį lauką
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "arba"
   op_dry_validation:
@@ -639,6 +647,7 @@ lt:
       unknown_browser: "nežinoma naršyklė"
       unknown_os: "nežinoma operacinė sistema"
       unknown: "(unknown)"
+      browser_session: "(Browser session)"
       current: "Current (this device)"
       title: "Sesijos valdymas"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
@@ -986,6 +995,11 @@ lt:
         help_text: "Pagalbos tekstas"
       auth_provider:
         scim_clients: "SCIM clients"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "Context"
       changeset:
@@ -1293,7 +1307,7 @@ lt:
         confirmation: "nesutampa su %{attribute}."
         could_not_be_copied: "%{dependency} negali (pilnai) būti nukopijuota(s)."
         does_not_exist: "neegzistuoja."
-        error_enterprise_only: "%{action} galimas tik OpenProject Enterprise versijoje"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "negali būti pasiektas."
         error_readonly: "bandytas įrašyti, bet įrašyti nebuvo galima."
         error_conflict: "Tuo metu informaciją pakeitė bent vienas kitas naudotojas."
@@ -2268,6 +2282,7 @@ lt:
     features:
       baseline_comparison: Baseline Comparisons
       board_view: Advanced Boards
+      calculated_values: Calculated Values
       conditional_highlighting: Conditional Highlighting
       internal_comments: Internal Comments
       custom_actions: Custom Actions
@@ -2340,6 +2355,8 @@ lt:
         description: "Bendrinkite darbo paketus su naudotojais, kurie nėra projekto nariai."
       project_list_sharing:
         description: "Share project lists with individual users."
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Custom color theme and logo"
         more_info: "Pastaba: panaudotas logotipas bus viešai prieinamas."
@@ -2900,7 +2917,7 @@ lt:
   label_select_main_menu_item: Pasirinkti naują pagrindinio meniu punktą
   label_required_disk_storage: "Reikalinga vieta diske"
   label_send_invitation: Siųsti pakvietimą
-  label_calculated_value: "Calculated value"
+  label_calculated_value: "Calculated Value"
   label_change_parent: "Change parent"
   label_change_plural: "Pakeitimai"
   label_change_properties: "Pakeisti nustatymus"
@@ -3077,7 +3094,7 @@ lt:
   label_integer: "Sveikasis skaičius"
   label_interface: "Interface"
   label_internal: "Vidinis"
-  label_introduction_video: "Įvado video"
+  label_introduction_video: "Getting started video"
   label_invite_user: "Pakviesti vartotoją"
   label_item: "Item"
   label_item_plural: "Items"

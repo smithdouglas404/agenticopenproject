@@ -328,6 +328,14 @@ id:
     tab:
       no_results_title_text: Tidak ada bidang kustom saat ini.
       no_results_content_text: Buat bidang kustom baru
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "atau"
   op_dry_validation:
@@ -620,6 +628,7 @@ id:
       unknown_browser: "peramban tidak dikenal"
       unknown_os: "sistem operasi tidak dikenal"
       unknown: "(unknown)"
+      browser_session: "(Browser session)"
       current: "Current (this device)"
       title: "Manajemen sesi"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
@@ -961,6 +970,11 @@ id:
         help_text: "Teks bantuan"
       auth_provider:
         scim_clients: "SCIM clients"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "Context"
       changeset:
@@ -1268,7 +1282,7 @@ id:
         confirmation: "tidak sesuai dengan %{attribute}."
         could_not_be_copied: "%{dependency} tidak dapat (sepenuhnya) disalin."
         does_not_exist: "tidak ditemukan."
-        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "mungkin tidak dapat diakses."
         error_readonly: "Mencoba untuk ditulis tetapi tidak dapat ditulis."
         error_conflict: "Informasi telah diperbarui oleh setidaknya satu user lain."
@@ -2135,6 +2149,7 @@ id:
     features:
       baseline_comparison: Baseline Comparisons
       board_view: Advanced Boards
+      calculated_values: Calculated Values
       conditional_highlighting: Conditional Highlighting
       internal_comments: Internal Comments
       custom_actions: Custom Actions
@@ -2207,6 +2222,8 @@ id:
         description: "Share work packages with users who are not members of the project."
       project_list_sharing:
         description: "Share project lists with individual users."
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Custom color theme and logo"
         more_info: "Catatan: logo yang digunakan akan dapat diakses publik."
@@ -2764,7 +2781,7 @@ id:
   label_select_main_menu_item: Pilih item main menu baru
   label_required_disk_storage: "Storage yang dibutuhkan"
   label_send_invitation: Kirim undangan
-  label_calculated_value: "Calculated value"
+  label_calculated_value: "Calculated Value"
   label_change_parent: "Change parent"
   label_change_plural: "Perubahan"
   label_change_properties: "Ubah properti"
@@ -2941,7 +2958,7 @@ id:
   label_integer: "Integer"
   label_interface: "Interface"
   label_internal: "Internal"
-  label_introduction_video: "Video pengantar"
+  label_introduction_video: "Getting started video"
   label_invite_user: "Invite user"
   label_item: "Item"
   label_item_plural: "Items"

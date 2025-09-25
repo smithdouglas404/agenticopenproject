@@ -32,6 +32,7 @@ ms:
         drive: ID Pemacu
         host: Hos
         name: Nama
+        password: Application password
         provider_type: Jenis penyedia
         tenant: ID Direktori (penyewa) 
     errors:
@@ -62,7 +63,7 @@ ms:
               op_application_not_installed: kelihatan tidak mempunyai aplikasi "Integrasi OpenProject" yang terpasang. Sila pasangkannya terlebih dahulu dan cuba sekali lagi.
             password:
               invalid_password: tidak sah.
-              unknown_error: tidak dapat disahkan. Sila periksa sambungan storan anda dan cuba lagi.
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: Fail
       storages/storage: Penyimpanan

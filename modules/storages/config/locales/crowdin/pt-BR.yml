@@ -32,6 +32,7 @@ pt-BR:
         drive: Drive ID
         host: Servidor
         name: Nome
+        password: Application password
         provider_type: Tipo de provedor
         tenant: ID do diretório (cliente)
     errors:
@@ -62,7 +63,7 @@ pt-BR:
               op_application_not_installed: Parece não possui o aplicativo "OpenProject integration" instalado. Instale-o primeiro e depois tente novamente. 
             password:
               invalid_password: não é válido.
-              unknown_error: não foi possível validar. ,Verifique sua conexão com o armazenamento e tente novamente.
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: Arquivo
       storages/storage: Armazenamento

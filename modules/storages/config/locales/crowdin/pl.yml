@@ -32,6 +32,7 @@ pl:
         drive: Identyfikator dysku
         host: Host
         name: Nazwa
+        password: Application password
         provider_type: Typ dostawcy
         tenant: Identyfikator katalogu (dzierżawcy)
     errors:
@@ -62,7 +63,7 @@ pl:
               op_application_not_installed: wydaje się, że aplikacja "OpenProject integration" nie jest zainstalowana. Zainstaluj ją najpierw i spróbuj ponownie.
             password:
               invalid_password: jest nieprawidłowe
-              unknown_error: '— nie można sprawdzić poprawności. Sprawdź połączenie z magazynem i spróbuj ponownie.'
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: Plik
       storages/storage: Magazyn

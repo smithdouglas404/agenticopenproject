@@ -15,29 +15,30 @@ tr:
           oauth2_sso_with_two_way_oauth2_fallback: Single-Sign-On with Two-Way OAuth 2.0 as fallback
           two_way_oauth2: Two-way OAuth 2.0 authorization code flow
         storage_audience: Depolama Kitlesi
-        token_exchange_scope: Storage Scope
+        token_exchange_scope: Depolama Kapsamı
       storages/project_storage:
         project_folder: Proje klasörü
         project_folder_mode: Proje klasör modu
         storage: Depolama
         storage_url: Depolama adresi
       storages/sharepoint_storage:
-        host: Sharepoint Site URL
-        library: Library ID
+        host: Sharepoint Site URL'si
+        library: Kütüphane Kimliği
         name: İsim
-        site: Site ID
+        site: Site Kimliği
       storages/storage:
         authentication_method: Kimlik Doğrulama Metodu
         creator: Oluşturan
         drive: Sürücü Kimliği
         host: Sunucu
         name: İsim
+        password: Application password
         provider_type: Sağlayıcı türü
-        tenant: Directory (tenant) ID
+        tenant: Dizin (kiracı) Kimliği
     errors:
       messages:
         invalid_host_url: geçerli bir adres değil.
-        invalid_sharepoint_url: is not a valid SharePoint site, library, or document URL.
+        invalid_sharepoint_url: geçerli bir SharePoint sitesi, kitaplığı veya belge URL'si değildir.
         not_linked_to_project: projeye bağlı değildir.
       models:
         storages/file_link:
@@ -62,7 +63,7 @@ tr:
               op_application_not_installed: '"OpenProject entegrasyonu" uygulamasının yüklü olmadığı görülüyor. Lütfen önce kurun ve sonra tekrar deneyin.'
             password:
               invalid_password: geçersiz.
-              unknown_error: could not be validated. Please check your storage connection and try again.
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: Dosya
       storages/storage: Depolama

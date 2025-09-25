@@ -329,6 +329,14 @@ zh-CN:
     tab:
       no_results_title_text: 目前没有自定义字段。
       no_results_content_text: 创建新的自定义字段
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "或"
   op_dry_validation:
@@ -621,6 +629,7 @@ zh-CN:
       unknown_browser: "未知浏览器"
       unknown_os: "未知操作系统"
       unknown: "(unknown)"
+      browser_session: "(Browser session)"
       current: "Current (this device)"
       title: "登录设备管理"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
@@ -961,6 +970,11 @@ zh-CN:
         help_text: "帮助文本"
       auth_provider:
         scim_clients: "SCIM 客户端"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "背景"
       changeset:
@@ -1268,7 +1282,7 @@ zh-CN:
         confirmation: "不匹配 %{attribute}。"
         could_not_be_copied: "无法（完全）复制 %{dependency}。"
         does_not_exist: "不存在。"
-        error_enterprise_only: "%{action}仅在 OpenProject 企业版中可用"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "无法访问。"
         error_readonly: "曾尝试被写入，但不可写。"
         error_conflict: "在此期间，至少有一位其他用户更新了信息。"
@@ -2135,6 +2149,7 @@ zh-CN:
     features:
       baseline_comparison: 基线比较
       board_view: 高级面板
+      calculated_values: Calculated Values
       conditional_highlighting: 条件高亮
       internal_comments: 内部评论
       custom_actions: 自定义操作
@@ -2207,6 +2222,8 @@ zh-CN:
         description: "与非此项目成员的用户共享工作包。"
       project_list_sharing:
         description: "与个人用户共享项目列表。"
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "自定义颜色主题和 Logo"
         more_info: "注：使用的 Logo 将可公开访问。"
@@ -2764,7 +2781,7 @@ zh-CN:
   label_select_main_menu_item: 选择新的主菜单项
   label_required_disk_storage: "所需的磁盘空间"
   label_send_invitation: 发送邀请
-  label_calculated_value: "计算的值"
+  label_calculated_value: "Calculated Value"
   label_change_parent: "更改父级"
   label_change_plural: "更改"
   label_change_properties: "更改属性"
@@ -2941,7 +2958,7 @@ zh-CN:
   label_integer: "整数"
   label_interface: "界面"
   label_internal: "内部"
-  label_introduction_video: "自我介绍视频"
+  label_introduction_video: "Getting started video"
   label_invite_user: "邀请用户"
   label_item: "条目"
   label_item_plural: "条目"

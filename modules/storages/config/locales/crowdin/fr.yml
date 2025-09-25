@@ -32,6 +32,7 @@ fr:
         drive: ID du lecteur
         host: Hôte
         name: Nom
+        password: Application password
         provider_type: Type de fournisseur
         tenant: ID du répertoire (locataire)
     errors:
@@ -62,7 +63,7 @@ fr:
               op_application_not_installed: semble ne pas avoir installé l'application "Intégration OpenProject" . Veuillez d'abord l'installer puis réessayer.
             password:
               invalid_password: n'est pas valide.
-              unknown_error: n'a pas pu être validé. Veuillez vérifier votre connexion à l'espace de stockage et réessayez.
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: Fichier
       storages/storage: Stockage

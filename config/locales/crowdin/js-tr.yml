@@ -88,8 +88,8 @@ tr:
     button_list_view: "Liste görünümü"
     button_show_view: "Tam ekran görünümü"
     button_log_time: "Zaman kaydet"
-    button_start_timer: "Start timer"
-    button_stop_timer: "Stop timer"
+    button_start_timer: "Zamanlayıcıyı başlat"
+    button_stop_timer: "Zamanlayıcıyı durdur"
     button_more: "Daha"
     button_open_details: "Ayrıntılar görünümünü aç"
     button_close_details: "Ayrıntılar görünümünü kapat"
@@ -391,7 +391,7 @@ tr:
     label_menu_collapse: "çöküş"
     label_menu_expand: "genişlet"
     label_more_than_ago: "günler önce"
-    label_moderate_comment: "Moderate comment"
+    label_moderate_comment: "Yorumu denetle"
     label_next: "Sonraki"
     label_no_color: "Renk yok"
     label_no_data: "Görüntülenecek veri yok"
@@ -435,7 +435,7 @@ tr:
     label_sort_lower: "Aşağı taşı"
     label_sorting: "Sıralama"
     label_spent_time: "Harcanan zaman"
-    label_star_query: "Favorited"
+    label_star_query: "Favoriler"
     label_press_enter_to_save: "Kaydetmek için enter tuşuna basın."
     label_public_query: "Herkese Açık"
     label_sum: "Toplam"
@@ -634,12 +634,12 @@ tr:
       title: "Devam etmek için parolanızı doğrulayın"
     pagination:
       no_other_page: "Geçerli tek sayfadasınız."
-      pages_skipped: "Pages skipped."
+      pages_skipped: "Sayfalar atlandı."
       page_navigation: "Pagination navigation"
       per_page_navigation: 'Items per page selection'
       pages:
-        page_number: Page %{number}
-        show_per_page: Show %{number} per page
+        page_number: Sayfa %{number}
+        show_per_page: Sayfa başına %{number} göster
     placeholders:
       default: "-"
       subject: "Buraya konuyu girin"
@@ -687,7 +687,7 @@ tr:
           first_day: "İlk gün"
           last_day: "Son gün"
     text_are_you_sure: "Emin misiniz?"
-    text_are_you_sure_to_cancel: "You have unsaved changes on this page. Are you sure you want to discard them?"
+    text_are_you_sure_to_cancel: "Bu sayfada kaydedilmemiş değişiklikleriniz var. Bunları atmak istediğinizden emin misiniz?"
     breadcrumb: "Breadcrumb"
     text_data_lost: "Girilen tüm veriler silinecek."
     text_user_wrote: "%{value} demiş ki:"
@@ -867,7 +867,7 @@ tr:
         header_with_parent: "Yeni %{type} (%{parent_type} #%{id} altında)"
         button: "Oluştur"
       duplicate:
-        title: "Duplicate work package"
+        title: "Mükerrer iş paketi"
       hierarchy:
         show: "Hiyerarşiyi göster"
         hide: "Hiyerarşiyi gizle"
@@ -1072,7 +1072,7 @@ tr:
     notice_successful_update: "Güncelleme başarılı."
     notice_job_started: "görev başlatıldı."
     no_job_id: "No job ID returned from server."
-    invalid_job_response: "Invalid response from server."
+    invalid_job_response: "Sunucudan geçersiz yanıt."
     notice_bad_request: "Hatalı istek."
     relations:
       empty: İlişki bulunmuyor
@@ -1105,7 +1105,7 @@ tr:
       child_work_packages:
         one: "bir alt iş paketi"
         other: "%{count} alt iş paketi"
-      hour_string: "%{hours} h"
+      hour_string: "%{hours} saat"
       hour:
         one: "1 saat"
         other: "%{count} saat"
@@ -1207,7 +1207,7 @@ tr:
           The status '%{status_name}' has been configured to be excluded from hierarchy totals of Work, Remaining work, and % Complete. The totals do not take this value into account.
     favorite_projects:
       no_results: "Favori projeniz yok"
-      no_results_subtext: "Add one or multiple projects as favorite through their overview or in a project list."
+      no_results_subtext: "Bir veya birden fazla projeyi genel bakışları veya proje listesi aracılığıyla favori olarak ekleyin."
     include_projects:
       toggle_title: "Projeleri dahil et"
       title: "Projeler"
@@ -1216,15 +1216,15 @@ tr:
       selected_filter:
         all: "Tüm projeler"
         selected: "Sadece seçilen"
-      search_placeholder: "Search projects..."
-      search_placeholder_favorites: "Search favorites..."
+      search_placeholder: "Projeleri ara..."
+      search_placeholder_favorites: "Favorileri ara..."
       include_subprojects: "Tüm alt projeleri dahil et"
       tooltip:
         include_all_selected: "Tüm alt projeleri dahil et etkinleştirildiğinden, proje zaten dahil edilmiştir."
         current_project: "Bu, içinde bulunduğunuz mevcut projedir."
         does_not_match_search: "Proje arama kriterleriyle eşleşmiyor."
       no_results: "Arama kriterleriniz ile eşleşen proje yok"
-      no_favorite_results: "No favorite project matches your search criteria."
+      no_favorite_results: "Arama kriterleriniz ile eşleşen favori proje yok."
     baseline:
       toggle_title: "Referens Zamanı"
       clear: "Temizle"

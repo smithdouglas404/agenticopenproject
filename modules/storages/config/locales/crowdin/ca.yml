@@ -32,6 +32,7 @@ ca:
         drive: Drive ID
         host: Servidor
         name: Nom
+        password: Application password
         provider_type: Tipus de proveïdor
         tenant: Directory (tenant) ID
     errors:
@@ -62,7 +63,7 @@ ca:
               op_application_not_installed: sembla que l'aplicació "OpenProject integration" no està instal·lada. Si us plau, instal·la-la i torna-ho a provar.
             password:
               invalid_password: is not valid.
-              unknown_error: could not be validated. Please check your storage connection and try again.
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: Fitxer
       storages/storage: Emmagatzematge

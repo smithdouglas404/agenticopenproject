@@ -32,6 +32,7 @@ ja:
         drive: ドライブ ID
         host: ホスト
         name: 名称
+        password: Application password
         provider_type: プロバイダーの種類
         tenant: ディレクトリ (テナント) ID
     errors:
@@ -62,7 +63,7 @@ ja:
               op_application_not_installed: アプリ「OpenProject統合」がインストールされていません。最初にインストールしてからもう一度お試しください。
             password:
               invalid_password: は無効です。
-              unknown_error: 検証できませんでした。ストレージ接続を確認して、もう一度やり直してください。
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: ファイル
       storages/storage: ストレージ
