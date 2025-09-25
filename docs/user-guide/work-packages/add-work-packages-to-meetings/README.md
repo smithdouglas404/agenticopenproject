@@ -8,7 +8,7 @@ keywords: meetings, dynamic meetings, meeting agenda
 
 # Add work packages to meetings
 
-Meetings and work packages can be linked to one another in OpenProject. This can be done either from the detailed view of a work package or when editing [a one-time or recurring meetings](../../meetings/one-time-meetings/#add-a-work-package-to-the-agenda).
+Meetings and work packages can be linked to one another in OpenProject. This can be done either from the detailed view of a work package or when editing [a one-time or a recurring meeting](../../meetings/one-time-meetings/#add-a-work-package-to-the-agenda).
 
 To add a work package to a meeting, open the detailed view of that work package, select the **Meetings** tab and click the **+Add to meeting** button.
 
