@@ -106,8 +106,7 @@ If you select the **Include images** option, your PDF Report will include the im
 
 #### Gantt chart PDF
 
-> [!NOTE]
-> Gantt chart PDF export is an Enterprise add-on and can only be used with [Enterprise cloud](../../../enterprise-guide/enterprise-cloud-guide) or [Enterprise on-premises](../../../enterprise-guide/enterprise-on-premises-guide). An upgrade from the free Community edition is easy and helps support OpenProject.
+[feature: gantt_pdf_export ]
 
 You can export Gantt charts directly from the work packages module by selecting the respective option, or from the Gantt charts module by doing the same.
 
