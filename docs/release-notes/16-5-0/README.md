@@ -38,7 +38,6 @@ This new feature is particularly helpful for the automatic mode, where you can n
 
 ![OpenProject account settings / Interface: Look and feel options reduced to "Dark", "Light" and "Automatic". Automatic is selected and below two checkboxes are displayed:" Force high contrast when in Light mode" and "Force high-contrast when in Dark mode".](openproject-16-5-increase-contrast-automatic.png)
 
-
 ### Filter projects by last update
 
 Projects can now be filtered and sorted by the last update time. To enable this, a new "Updated on" filter and sortable column is available in the project list. This allows you to quickly find projects that have recently changed.
@@ -62,18 +61,15 @@ After your next interaction (e.g., any click), the browser URL is cleaned to the
 
 ### Confirm critical actions with more accessible danger dialogs
 
-Text
+Danger dialogs have been improved to better support users of assistive technologies. The confirmation step before potentially destructive actions is now clearly announced through ARIA semantics. Screen readers inform when the confirmation checkbox is checked or unchecked, and whether the action button is active or inactive.
 
-Screenshot
+This ensures that all users can confidently understand and complete critical actions.
 
 ### Consistent entering of hours in duration fields
 
-Text
+Entering and displaying durations has been made more consistent across the application. Time entries, work, and remaining work now accept input in the **hh:mm** format, and meetings also support this format. 
 
-### Add/remove projects from favorite via the API
-
-Text
-
+For German, the correct decimal separator (,) is applied, and durations are displayed in hh:mm. Durations are formatted as **working days rather than calendar days**, making it clearer and easier to interpret time values across different modules.
 
 ## Important technical updates
 
