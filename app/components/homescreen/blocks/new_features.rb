@@ -48,15 +48,20 @@ module Homescreen
       end
 
       def new_features_title
-        I18n.t("homescreen.blocks.new_features.#{feature_version}.new_features_title")
+        I18n.t("#{base_i18n_key}.new_features_title",
+               default: "Missing feature title")
       end
 
       def new_features
-        I18n.t("homescreen.blocks.new_features.#{feature_version}.new_features_list")
+        I18n.t("#{base_i18n_key}.new_features_list")
       end
 
-      def render?
-        I18n.exists?("homescreen.blocks.new_features.#{feature_version}")
+      def teaser_exists?
+        I18n.exists?(base_i18n_key)
+      end
+
+      def base_i18n_key
+        "homescreen.blocks.new_features.#{feature_version}"
       end
 
       private
