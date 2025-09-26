@@ -247,16 +247,6 @@ module MeetingAgendaItems
       @meeting.templated?
     end
 
-    def note_or_outcome_action_added?
-      (@meeting_agenda_item.editable? && @meeting_agenda_item.notes.blank?) || add_outcome_action?
-    end
-
-    def move_to_different_section_or_meeting_action_added?
-      return false unless editable?
-
-      !in_template? || in_backlog? || move_to_next_meeting_enabled?
-    end
-
     def editable?
       @editable ||= @meeting_agenda_item.editable? && can_manage_agendas?
     end

@@ -65,33 +65,25 @@
             test_selector: "op-meeting-agenda-actions"
           )
 
-          edit_action_item(menu)
-          if !in_backlog?
-            copy_action_item(menu)
+          with_item_group(menu) do
+            edit_action_item(menu)
+            copy_action_item(menu) unless in_backlog?
           end
 
-          menu.with_divider if note_or_outcome_action_added? && editable?
-
-          add_note_action_item(menu) if add_note_action?
-          add_outcome_action_item(menu) if add_outcome_action?
-
-          unless first? && last?
-            menu.with_divider if editable?
-            move_actions(menu)
+          with_item_group(menu) do
+            add_note_action_item(menu) if add_note_action?
+            add_outcome_action_item(menu) if add_outcome_action?
           end
 
-          menu.with_divider if move_to_different_section_or_meeting_action_added?
+          with_item_group(menu) { move_actions(menu) } unless first? && last?
 
-          if !in_template? || in_backlog?
+          with_item_group(menu) do
             move_to_current_meeting_action_item(menu) if in_backlog?
-            move_to_backlog_action_item(menu) if !in_backlog?
-          end
-          if move_to_next_meeting_enabled?
-            move_to_next_meeting_action_item(menu)
+            move_to_backlog_action_item(menu) if !in_template? && !in_backlog?
+            move_to_next_meeting_action_item(menu) if move_to_next_meeting_enabled?
           end
 
-          menu.with_divider if editable?
-          delete_action_item(menu)
+          with_item_group(menu) { delete_action_item(menu) }
         end
       end
 
