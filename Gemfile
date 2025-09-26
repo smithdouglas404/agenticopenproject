@@ -371,7 +371,7 @@ group :development, :test do
   gem "i18n-tasks", "~> 1.0.13", require: false
 
   # Active Record Doctor helps to keep the database in good shape.
-  gem "active_record_doctor", "~> 1.15.0"
+  gem "active_record_doctor", "~> 2.0.0"
 end
 
 gem "bootsnap", "~> 1.18.0", require: false
