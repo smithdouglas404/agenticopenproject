@@ -28,28 +28,31 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ReorderLinksHelper
-  def reorder_links(name, url, options = {})
-    method = options[:method] || :post
+require "spec_helper"
 
-    content_tag(:span,
-                reorder_link(name, url, "highest", "icon-sort-up", t(:label_sort_highest), method) +
-                  reorder_link(name, url, "higher", "icon-arrow-up2", t(:label_sort_higher), method) +
-                  reorder_link(name, url, "lower", "icon-arrow-down2", t(:label_sort_lower), method) +
-                  reorder_link(name, url, "lowest", "icon-sort-down", t(:label_sort_lowest), method),
-                class: "reorder-icons")
-  end
+RSpec.describe "News comments destroy redirect",
+               :skip_csrf,
+               type: :rails_request do
+  shared_let(:project) { create(:project, enabled_module_names: %i[news]) }
+  shared_let(:news) { create(:news, project:) }
+  shared_let(:comment) { create(:comment, commented: news) }
 
-  def reorder_link(name, url, direction, icon_class, label, method)
-    text = content_tag(:span,
-                       label,
-                       class: "sr-only")
-    icon = content_tag(:span,
-                       "",
-                       class: "icon-context #{icon_class} icon-small")
-    link_to(text + icon,
-            url.merge("#{name}[move_to]" => direction),
-            data: { turbo_method: method },
-            title: label)
+  context "when an admin deletes a news comment" do
+    current_user { create(:admin) }
+
+    let(:request) { delete "/comments/#{comment.id}" }
+
+    subject do
+      request
+      response
+    end
+
+    it "responds with 303 See Other and redirects to the news page" do
+      expect(subject).to have_http_status(:see_other)
+      expect(response).to redirect_to(news_path(news))
+
+      expect { Comment.find(comment.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { News.find(news.id) }.not_to raise_error
+    end
   end
 end
