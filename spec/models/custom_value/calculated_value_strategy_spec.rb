@@ -79,6 +79,14 @@ RSpec.describe CustomValue::CalculatedValueStrategy do
       end
     end
 
+    context "when value is a float string with many zeroed decimals" do
+      let(:value) { "3.0000000000000000000000000000009" }
+
+      it "is considered an integer" do
+        expect(subject).to eql "3"
+      end
+    end
+
     context "when value is an int string" do
       let(:value) { "42" }
 

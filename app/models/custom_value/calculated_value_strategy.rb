@@ -59,6 +59,9 @@ class CustomValue::CalculatedValueStrategy < CustomValue::FormatStrategy
   private
 
   def integer_value?
-    value && value =~ /\A\d+\z/
+    # Use Epsilon comparison to determine whether the number, even if it is a float, should be
+    # considered an integer. E.g., a value of 42.000000000000000002 will be treated like an
+    # integer for our formatting purposes.
+    value && (value.to_f - value.to_i).abs < 1e-9
   end
 end
