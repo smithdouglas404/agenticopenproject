@@ -57,7 +57,7 @@ RSpec.describe CustomValue::IntStrategy do
   end
 
   describe "#formatted_value" do
-    subject { instance.typed_value }
+    subject { instance.formatted_value }
 
     context "when value is an int string" do
       let(:value) { "10" }
