@@ -44,7 +44,7 @@ This new feature is particularly helpful for the automatic mode, where you can n
 
 ### Filter projects by last update
 
-Projects can now be filtered and sorted by the last update time. To enable this, a new "Updated on" filter and sortable column is available in the project list. This allows you to quickly find projects that have recently changed.
+Projects can now be filtered and sorted by the last update time. To enable this, a new "Updated on" filter and sortable column is available in the project lists. This allows you to quickly find projects that have recently changed.
 
 In the API, the updated_at filter has been added to the /api/v3/projects endpoint. This makes it possible to request only projects that have changed since a given timestamp.
 
