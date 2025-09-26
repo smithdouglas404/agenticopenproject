@@ -41,7 +41,7 @@ export class OpenProjectApi implements Extension {
       throw new Error('Unauthorized: Invalid token.');
     }
     if(documentName != tokenPayload.document_name) {
-      throw new Error('Unauthorized: Invalid token. This document cannot be accessed with this token.');
+      throw new Error('Unauthorized: This document cannot be accessed with this token.');
     }
     data.context.documentId = tokenPayload.document_id;
   }
