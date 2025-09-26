@@ -3,24 +3,83 @@ title: OpenProject 16.5.0
 sidebar_navigation:
     title: 16.5.0
 release_version: 16.5.0
-release_date: 2025-09-25
+release_date: 2025-10-08
 ---
 
 # OpenProject 16.5.0
 
-Release date: 2025-09-25
+Release date: 2025-10-08
 
-We released OpenProject [OpenProject 16.5.0](https://community.openproject.org/versions/2215).
-The release contains several bug fixes and we recommend updating to the newest version.
-In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
+We released [OpenProject 16.5.0](https://community.openproject.org/versions/2215). The release contains several bug fixes and we recommend updating to the newest version. In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
 
 ## Important feature changes
 
-<!-- Inform about the major features in this section -->
+### Add work packages to a meeting section in the Meetings tab
 
-## Important updates and breaking changes
+You can now place a work package directly into a specific agenda section when adding it to a meeting from the Meetings tab. Open a work package, go to the tab *Meetings* and select an upcoming meeting. If you selected one, you can now choose in which section the work package should be displayed. 
 
-<!-- Remove this section if empty, add to it in pull requests linking to tickets and provide information -->
+>[!NOTE]
+> If you choose a one-time meeting with no sections, the work package will automatically be added to the Agenda backlog.
+
+In the *Notes* section, you can add text that will be displayed together with the meeting title in the *Meetings* tab of the work package.
+
+[See our user guide to learn more about how to add work packages to meetings](../../user-guide/work-packages/add-work-packages-to-meetings).
+
+![OpenProject work package, Meetings tab: Modal to "Select a meeting" with the Meeting selected being a Marketing daily and a "Add to section" dropdown with two sections to choose from.](openproject-16-5-meeting-tab-highlighted.png)
+
+### Choose color mode more conveniently with "Increase contrast" checkboxes
+
+To give our users a clearer and better selection of the recently released new color modes, we have simplified the settings under *Account settings* → *Interface*. Users can now only choose between:
+- Light
+- Dark
+- Automatic (match OS color mode)
+
+Additionally, **checkboxes for high contrast** are now displayed, depending on the selection. So if you  selected *Light high contrast* in previous versions, starting with 16.5, you can now select *Light* and check the box for *Increase contrast*.
+
+This new feature is particularly helpful for the automatic mode, where you can now differentiate whether you want high contrast to be displayed only in dark mode or only in light mode, for example.
+
+[Learn more about the *Look and feel* options in OpenProject](../../user-guide/account-settings/#look-and-feel).
+
+![OpenProject account settings / Interface: Look and feel options reduced to "Dark", "Light" and "Automatic". Automatic is selected and below two checkboxes are displayed:" Force high contrast when in Light mode" and "Force high-contrast when in Dark mode".](openproject-16-5-increase-contrast-automatic.png)
+
+### Filter projects by last update
+
+Projects can now be filtered and sorted by the last update time. To enable this, a new "Updated on" filter and sortable column is available in the project lists. This allows you to quickly find projects that have recently changed.
+
+In the API, the updated_at filter has been added to the /api/v3/projects endpoint. This makes it possible to request only projects that have changed since a given timestamp.
+
+>[!NOTE]
+> **Updated on** includes all direct changes to the project itself, e.g. a new custom field or a change of the project name. In contrast to this, the filter **Latest activity at** includes a broader list of changes, e.g. a new work package or wiki that has been added.
+
+![OpenProject project list, filtered for "Updated on" and selected "less than days ago" with a "3" added to the number of days.](openproject-16-5-updated-on.png)
+
+### Jump to highlighted target elements from deep links
+
+Deep links now take you to the right spot and highlight the target so you immediately see what to look at.
+
+Following a link with an anchor (e.g., a specific comment in Activity or a meeting agenda item) auto-scrolls the page so the target is displayed near the top and temporarily highlighted with a blue outline.
+
+![OpenProject work package Activity tab, comment highlighted with blue frame saying "This comment will be highlighted if I link to it!"](openproject-16-5-deep-link.png)
+
+After your next interaction (e.g., any click), the browser URL is cleaned to the canonical form and the highlight is removed.
+
+### Confirm critical actions with more accessible danger dialogs
+
+Danger dialogs have been improved to better support users of assistive technologies. The confirmation step before potentially destructive actions is now clearly announced through ARIA semantics. Screen readers inform when the confirmation checkbox is checked or unchecked, and whether the action button is active or inactive.
+
+This ensures that all users can confidently understand and complete critical actions.
+
+### Consistent entering of hours in duration fields
+
+Entering and displaying durations has been made more consistent across the application. Time entries, work, and remaining work now accept input in the **hh:mm** format, and meetings also support this format. 
+
+For German, the correct decimal separator (,) is applied, and durations are displayed in hh:mm. Durations are formatted as working days rather than calendar days, making it clearer and easier to interpret time values across different modules.
+
+### Improved help menu and Community widget
+
+The help menu in the header navigation – indicated with the **?** icon – has been improved. We restructured some entries, updated the links, added localizations, and included a new Getting started video.
+
+This menu is useful not only for new users, but also for anyone looking for additional information about OpenProject. The same changes have also been applied to the Community widget shown on the home page when starting a new instance.
 
 <!--more-->
 
@@ -81,12 +140,13 @@ In these Release Notes, we will give an overview of important feature changes. A
 <!-- Warning: Anything above this line will be automatically removed by the release script -->
 
 ## Contributions
-A very special thank you goes to our sponsors for this release.
-Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes.
-Special thanks for reporting and finding bugs go to Andreas Pfohl, Alexander Aleschenko, Lars Tiedemann, Akihiko Fujikawa, Johannes Baumgarten.
 
-Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings!
-Would you like to help out with translations yourself?
-Then take a look at our translation guide and find out exactly how you can contribute.
-It is very much appreciated!
+A very special thank you goes to Helmholtz-Zentrum Berlin, City of Cologne, Deutsche Bahn and ZenDiS for sponsoring released or upcoming features. Your support, alongside the efforts of our amazing Community, helps drive these innovations. Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes. Special thanks for reporting and finding bugs go to Alexander Aleschenko, Lars Tiedemann, Akihiko Fujikawa, and Johannes Baumgarten.
 
+Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to particularly thank the following users:
+
+- [Haura Nabila Rinaldi](https://crowdin.com/profile/hauranblr), for a great number of translations into Indonesian.
+- [Samo](https://crowdin.com/profile/SamoE), for a great number of translations into Turkish.
+- [Kuma Yamashita](https://crowdin.com/profile/dredgk), for a great number of translations into Japanese.
+
+Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
