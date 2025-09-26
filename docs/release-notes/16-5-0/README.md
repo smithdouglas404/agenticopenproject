@@ -16,25 +16,25 @@ We released [OpenProject 16.5.0](https://community.openproject.org/versions/2215
 
 ### Add work packages to a meeting section in the Meetings tab
 
-You can now place a work package directly into a specific agenda section when adding it to a meeting from the Meetings tab. Open a work package, go to the tab "Meetings" and select an upcoming meeting. If you selected one, you can now choose in which section the work package should be displayed. 
+You can now place a work package directly into a specific agenda section when adding it to a meeting from the Meetings tab. Open a work package, go to the tab *Meetings* and select an upcoming meeting. If you selected one, you can now choose in which section the work package should be displayed. 
 
 >[!NOTE]
-> If you choose a meeting with no sections, the work package will automatically be added to the (Agenda or Series) Backlog.
+> If you choose a one-time meeting with no sections, the work package will automatically be added to the Agenda backlog.
 
-In the "Notes" section, you can add text that will be displayed together with the meeting title in the “Meetings” tab of the work package.
+In the *Notes* section, you can add text that will be displayed together with the meeting title in the *Meetings* tab of the work package.
 
 [See our user guide to learn more about how to add work packages to meetings](../../user-guide/work-packages/add-work-packages-to-meetings).
 
 ![OpenProject work package, Meetings tab: Modal to "Select a meeting" with the Meeting selected being a Marketing daily and a "Add to section" dropdown with two sections to choose from.](openproject-16-5-meeting-tab-highlighted.png)
 
-### Choose color mode more conveniently with “Increase contrast” checkboxes
+### Choose color mode more conveniently with "Increase contrast" checkboxes
 
 To give our users a clearer and better selection of the recently released new color modes, we have simplified the settings under *Account settings* → *Interface*. Users can now only choose between:
 - Light
 - Dark
 - Automatic (match OS color mode)
 
-Additionally, **checkboxes for high contrast** are now displayed, depending on the selection. So if you  selected “Light high contrast” in previous versions, starting with 16.5, you can now select ‘Light’ and check the box for “Increase contrast.”
+Additionally, **checkboxes for high contrast** are now displayed, depending on the selection. So if you  selected *Light high contrast* in previous versions, starting with 16.5, you can now select *Light* and check the box for *Increase contrast*.
 
 This new feature is particularly helpful for the automatic mode, where you can now differentiate whether you want high contrast to be displayed only in dark mode or only in light mode, for example.
 
@@ -74,6 +74,12 @@ This ensures that all users can confidently understand and complete critical act
 Entering and displaying durations has been made more consistent across the application. Time entries, work, and remaining work now accept input in the **hh:mm** format, and meetings also support this format. 
 
 For German, the correct decimal separator (,) is applied, and durations are displayed in hh:mm. Durations are formatted as working days rather than calendar days, making it clearer and easier to interpret time values across different modules.
+
+### Improved help menu and Community widget
+
+The help menu in the header navigation – indicated with the **?** icon – has been improved. We restructured some entries, updated the links, added localizations, and included a new Getting started video.
+
+This menu is useful not only for new users, but also for anyone looking for additional information about OpenProject. The same changes have also been applied to the Community widget shown on the home page when starting a new instance.
 
 <!--more-->
 
