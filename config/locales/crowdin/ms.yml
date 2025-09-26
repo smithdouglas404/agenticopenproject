@@ -2321,6 +2321,7 @@ ms:
   error_invalid_selected_value: "Nilai yang dipilih tidak sah."
   error_journal_attribute_not_present: "Jurnal tidak mengandungi atribut %{attribute}."
   error_pdf_export_too_many_columns: "Terlalu banyak kolum dipilih untuk eksport PDF. Sila kurangkan bilangan kolum."
+  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
   error_pdf_failed_to_export: "Eksport PDF tidak dapat disimpan: %{error}"
   error_token_authenticity: "Tidak dapat mengesahkan token Cross-Site Request Forgery. Adakah anda sedang mencuba untuk menghantar data di pelbagai pelayar atau tab? Sila tutup semua tab dan cuba lagi."
   error_reminder_not_found: "Peringatan itu tidak ditemui atau telah dimaklumkan tentangnya."

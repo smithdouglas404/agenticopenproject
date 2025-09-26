@@ -125,7 +125,7 @@ tr:
       label_optional_configuration: İsteğe bağlı yapılandırma
       label_advanced_configuration: Gelişmiş yapılandırma
       label_configuration_details: Metaveri
-      label_client_details: Client details
+      label_client_details: İstemci detayları
       label_attribute_mapping: Nitelik ilişkilendirme
       client_details_description: Configuration details of OpenProject as an OIDC client
       no_results_table: Henüz bir sağlayıcı tanımlanmadı.

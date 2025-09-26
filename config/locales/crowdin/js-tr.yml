@@ -635,8 +635,8 @@ tr:
     pagination:
       no_other_page: "Geçerli tek sayfadasınız."
       pages_skipped: "Sayfalar atlandı."
-      page_navigation: "Pagination navigation"
-      per_page_navigation: 'Items per page selection'
+      page_navigation: "Sayfalarda gezinme"
+      per_page_navigation: 'Sayfa başına öğe seçimi'
       pages:
         page_number: Sayfa %{number}
         show_per_page: Sayfa başına %{number} göster
@@ -763,7 +763,7 @@ tr:
       update_relation: "İlişki türünü değiştirmek için tıklayın"
       show_relations: "İlişkileri göster"
       add_predecessor: "Öncül ekle"
-      add_successor: "Add successor"
+      add_successor: "Yedek personel ekle"
       remove: "İlişkiyi kaldır"
       save: "İlişkiyi kaydet"
       abort: "İptal"
@@ -821,7 +821,7 @@ tr:
       bulk_actions:
         edit: "Toplu düzenle"
         delete: "Toplu silme"
-        duplicate: "Bulk duplicate"
+        duplicate: "Toplu kopya"
         move: "Projenin toplu değişimi"
       button_clear: "Temizle"
       comment_added: "Yorum başarıyla eklendi."

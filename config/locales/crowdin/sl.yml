@@ -2139,8 +2139,8 @@ sl:
       - "avgust"
       - "september"
       - "oktober"
-      - "November"
-      - "December"
+      - "november"
+      - "december"
     order:
       - :leto
       - :mesec
@@ -2457,6 +2457,7 @@ sl:
   error_invalid_selected_value: "Neveljavna izbrana vrednost."
   error_journal_attribute_not_present: "Dnevnik ne vsebuje atributa %{attribute}."
   error_pdf_export_too_many_columns: "Za izvoz PDF je izbranih preveč stolpcev. Zmanjšajte število stolpcev."
+  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
   error_pdf_failed_to_export: "Izvoza PDF ni bilo mogoče shraniti: %{error}"
   error_token_authenticity: "Ni mogoče preveriti žetona ponarejanja zahteve na več mestih. Ste poskušali predložiti podatke v več brskalnikih ali zavihkih? Zaprite vse zavihke in poskusite znova.\n"
   error_reminder_not_found: "The reminder was not found or was already notified about."

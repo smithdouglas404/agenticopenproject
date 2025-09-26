@@ -2366,6 +2366,7 @@ hi:
   error_invalid_selected_value: "अमांय चयनित मान ।"
   error_journal_attribute_not_present: "जर्नल विशेषता वर्ग नहीं है %{attribute}"
   error_pdf_export_too_many_columns: "Too many columns selected for the PDF export. Please reduce the number of columns."
+  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
   error_pdf_failed_to_export: "The PDF export could not be saved: %{error}"
   error_token_authenticity: "क्रॉस-साइट अनुरोध जालसाज़ी टोकन सत्यापित करने में असमर्थ । क्या आपने एकाधिक ब्राउज़र्स या टैब पर डेटा सबमिट करने का प्रयास किया है? कृपया सभी टैब बंद करें और पुन: प्रयास करे ।"
   error_reminder_not_found: "The reminder was not found or was already notified about."

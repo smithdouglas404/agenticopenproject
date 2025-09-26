@@ -32,7 +32,7 @@ zh-CN:
         drive: 驱动器 ID
         host: 主机
         name: 名称
-        password: Application password
+        password: 应用密码
         provider_type: 提供商类型
         tenant: 目录 (租户) ID
     errors:
@@ -63,7 +63,7 @@ zh-CN:
               op_application_not_installed: 似乎没有安装应用“OpenProject 集成”。请先安装，然后重试。
             password:
               invalid_password: 无效。
-              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
+              unknown_error: 无法通过文件存储提供商的验证。请确认连接是否正常。
     models:
       file_link: 文件
       storages/storage: 存储

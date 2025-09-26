@@ -347,40 +347,40 @@ tr:
     or: "veya"
     errors:
       array?: "bir dizi olmalıdır."
-      decimal?: "must be a decimal."
-      defined: "must not be defined."
-      eql?: "must be equal to %{left}."
-      filled?: "must be filled."
-      greater_or_equal_zero: "must be greater or equal to 0."
-      gteq?: "must be greater than or equal to %{num}."
-      hash?: "must be a hash."
+      decimal?: "ondalık sayı olmalıdır."
+      defined: "tanımlanmamış olmalıdır."
+      eql?: "%{left}'e eşit olmalıdır."
+      filled?: "doldurulmalı."
+      greater_or_equal_zero: "0'a eşit ya da büyük olmalı."
+      gteq?: "%{num} değerine eşit ya da daha büyük olması gerekir."
+      hash?: "bir hash olmalıdır."
       included_in?:
         arg:
-          default: "must be one of: %{list}."
-          range: "must be one of: %{list_left} - %{list_right}."
-      int?: "must be an integer."
-      key?: "is missing."
-      not_found: "not found."
+          default: "şunlardan biri olmalıdır: %{list}."
+          range: "biri olmalı: %{list_left} - %{list_right}."
+      int?: "bir tamsayı olmalıdır."
+      key?: "eksik."
+      not_found: "bulunamadı."
       rules:
         copy_workflow_from:
-          workflow_missing: "has no own workflow."
+          workflow_missing: "kendi iş akışına sahip değildir."
         custom_field:
-          format_not_supported: "format '%{field_format}' is unsupported."
+          format_not_supported: "'%{field_format}' biçimi desteklenmiyor."
         item:
-          root_item: "cannot be a root item."
-          not_persisted: "must be an already existing item."
+          root_item: "bir kök öğe olamaz."
+          not_persisted: "zaten var olan bir öğe olmalıdır."
         label:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "aynı hiyerarşi seviyesi içinde benzersiz olmalıdır."
         short:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "aynı hiyerarşi seviyesi içinde benzersiz olmalıdır."
         parent:
-          not_descendant: "must be a descendant of the hierarchy root."
-      str?: "must be a string."
-      type?: "must be %{type}."
+          not_descendant: "hiyerarşi kökünü takip etmeli."
+      str?: "bir dize olmalıdır."
+      type?: "%{type} olmalıdır."
     rules:
-      copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
-      depth: "Depth"
+      copy_workflow_from: "İş akışı kopyası için tür"
+      enabled: "Etkin"
+      depth: "Derinlik"
       item: "Item"
       label: "Label"
       score: "Score"
@@ -715,7 +715,7 @@ tr:
   themes:
     dark: "Koyu"
     light: "Açık"
-    sync_with_os: "Automatic (match OS color mode)"
+    sync_with_os: "Otomatik (işletim sistemi renk moduyla eşleşir)"
   types:
     index:
       no_results_title_text: Şu anda hiç tip yok.
@@ -726,8 +726,8 @@ tr:
       projects:
         tab: Projeler
         enable_all: Tüm projeler için etkinleştir
-        select_projects: Select projects
-        select_projects_description: Select the projects in which you would like to use this type.
+        select_projects: Projeleri seçin
+        select_projects_description: Bu türü kullanmak istediğiniz projeleri seçin.
       settings:
         tab: "Ayarlar"
         type_color_text: The selected color distinguishes different types in Gantt charts or work packages tables. It is therefore recommended to use a strong color.
@@ -748,7 +748,7 @@ tr:
         pattern:
           label: "Konu deseni"
           caption: Create patterns by adding text, or type "/" to search for [supported attributes](attributes_url).
-          insert_as_text: 'No attributes found. Add as text: "%{word}"'
+          insert_as_text: 'Hiçbir özellik bulunamadı. Metin olarak ekle: "%{word}"'
       export_configuration:
         tab: "PDF oluşturma"
         intro: "Select which templates from those that are available you would like to enable for this type. The template determines the design and attributes visible in the exported PDF of a work package using this type. The first template on the list is selected by default."
@@ -924,16 +924,16 @@ tr:
       label_required_singular: "tarafından gerekli"
       label_required_plural: "tarafından gerekli"
       required_description: "Marks this work package as being a requirement to the related one"
-      label_parent_singular: "parent"
-      label_parent_plural: "parent"
-      label_other_relations: "Other relations"
+      label_parent_singular: "üst öğe"
+      label_parent_plural: "üst öğe"
+      label_other_relations: "Diğer ilişkiler"
       ghost_relation_title: "İlgili iş paketi"
       ghost_relation_description: "Bu, izinler nedeniyle sizin tarafınızdan görülemez."
   label_invitation: Davet
   account:
     delete: "Hesabı sil"
     delete_confirmation: "Hesabını silmek istediğinden emin misin?"
-    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
+    deletion_pending: "Hesap silinmek üzere planlandı. Bu işlemin arka planda gerçekleştiğini unutmayın. Kullanıcının tamamen silinmesi birkaç dakika sürebilir."
     deletion_info:
       data_consequences:
         other: 'Kullanıcının oluşturduğu (ör. E-posta, tercihler, iş paketleri, wiki girdileri) mümkün olduğunca silinen verilerden. Bununla birlikte, iş paketleri ve wiki girdileri gibi veriler, diğer kullanıcıların çalışmalarını engellemeden silinemez. Bu tür veriler, "Silinmiş kullanıcı" adı verilen bir hesaba yeniden atanır. Her silinen hesabın verileri bu hesaba yeniden atandığından, kullanıcının oluşturduğu verileri başka bir silinen hesabın verilerinden ayırt etmek mümkün olmayacaktır.'
@@ -981,14 +981,14 @@ tr:
         attribute_name: "Özellik"
         help_text: "Yardım metni"
       auth_provider:
-        scim_clients: "SCIM clients"
+        scim_clients: "SCIM istemcileri"
       calculated_value_error:
-        error_code: "Error code"
-        customized: "Customized"
-        customized_id: "Customized ID"
-        customized_type: "Customized type"
+        error_code: "Hata kodu"
+        customized: "Özelleştirilmiş"
+        customized_id: "Özelleştirilmiş Kimlik"
+        customized_type: "Özelleştirilmiş tür"
       capability:
-        context: "Context"
+        context: "Bağlam"
       changeset:
         repository: "Depo"
       comment:
@@ -1000,7 +1000,7 @@ tr:
         default_value: "Varsayılan değer"
         editable: "Düzenlenebilir"
         field_format: "Biçim"
-        formula: "Formula"
+        formula: "Formül"
         is_filter: "Filtre olarak kullanılan"
         is_for_all: "Tüm projeler için"
         is_required: "Gerekli"
@@ -1015,7 +1015,7 @@ tr:
       custom_value:
         value: "Değer"
       design_color:
-        variable: "Variable"
+        variable: "Değişken"
       doorkeeper/application:
         uid: "Müşteri Kimliği"
         secret: "Müşteri gizliliği"
@@ -1027,18 +1027,18 @@ tr:
         scopes: "Kapsamlar"
         confidential: "Gizli"
       emoji_reaction:
-        reactable: "Reacted on"
+        reactable: "Tepki gösterilme tarihi"
       enterprise_token:
         starts_at: "Beri geçerli"
         subscriber: "Abone"
         subscription: "Abonelik"
         plan: "Plan"
         encoded_token: "Kurumsal Destek anahtarı"
-        active_user_count_restriction: "Active users"
+        active_user_count_restriction: "Aktif üyeler"
       enterprise_trial:
         company: "Şirket"
       favorite:
-        favorited: "Item"
+        favorited: "Öğe"
       grids/grid:
         page: "Sayfa"
         row_count: "Satır sayısı"
@@ -1053,7 +1053,7 @@ tr:
         attr_lastname: "Soyad özniteliği"
         attr_login: "Kullanıcı adı özelliği"
         attr_mail: "E-posta özniteliği"
-        filter_string: "Filter string"
+        filter_string: "Filtre dizesi"
         admin: "Yönetici"
         base_dn: "Temel DN"
         host: "Sunucu"
@@ -1159,7 +1159,7 @@ tr:
         permissions: "İzinler"
       scim_client:
         authentication_method: "Kimlik doğrulama yöntemi"
-        jwt_sub: "Subject claim"
+        jwt_sub: "Konuyu talep et"
       status:
         is_closed: "İş paketi kapalı"
         is_readonly: "İş paketi salt okunur"
@@ -1226,8 +1226,8 @@ tr:
         force_light_theme_contrast: "Aydınlık moddayken yüksek kontrastı zorla"
         force_dark_theme_contrast: "Karanlık moddayken yüksek kontrastı zorla"
         force_light_theme_contrast_caption: "Otomatik renk modu seçildiğinde Aydınlık modun yüksek kontrastlı versiyonunu kullanır."
-        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
-        theme: "Color mode"
+        force_dark_theme_contrast_caption: "Otomatik renk modu seçildiğinde Koyu modun yüksek kontrastlı versiyonunu kullanır."
+        theme: "Renk modu"
         time_zone: "Zaman dilimi"
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Günlük hatırlatmalar"
@@ -1301,7 +1301,7 @@ tr:
         error_not_found: "bulunamadı."
         email: "Geçerli bir e-posta adresi değil.\n"
         empty: "boş olamaz."
-        enterprise_plan_required: "requires at least the %{plan_name}."
+        enterprise_plan_required: "en azından %{plan_name} gerektirir."
         even: "çift olmalı."
         exclusion: "ayrılmıştır."
         feature_disabled: mevcut değil.
@@ -1508,12 +1508,12 @@ tr:
               error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
               error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
-              format: "The selected work package %{message}"
+              format: "Seçilen iş paketi %{message}"
               error_not_found: "bulunamamıştır."
               error_readonly: "mevcut ilişkiler için değiştirilemez."
               error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
-              format: "The selected work package %{message}"
+              format: "Seçilen iş paketi %{message}"
               error_not_found: "bulunamamıştır."
               error_readonly: "mevcut ilişkiler için değiştirilemez."
               error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
@@ -2037,8 +2037,8 @@ tr:
   create_project:
     template_label: "Şablon kullan"
     copy_options:
-      dependencies_label: "Copy from template"
-  create_wiki_page: "Create new wiki page"
+      dependencies_label: "Şablondan kopyala"
+  create_wiki_page: "Yeni wiki sayfası oluştur"
   create_wiki_page_button: "Wiki sayfası"
   date:
     abbr_day_names:
@@ -2195,19 +2195,19 @@ tr:
   direction: soldan sağa
   ee:
     features:
-      baseline_comparison: Baseline Comparisons
-      board_view: Advanced Boards
-      calculated_values: Calculated Values
+      baseline_comparison: Temel Karşılaştırmalar
+      board_view: Gelişmiş Panolar
+      calculated_values: Hesaplanan Değerler
       conditional_highlighting: Koşullu Vurgulama
-      internal_comments: Internal Comments
+      internal_comments: Dahili Yorumlar
       custom_actions: Özel Eylemler
-      custom_field_hierarchies: Custom fields of type hierarchy
+      custom_field_hierarchies: Hiyerarşi türündeki özel alanlar
       customize_life_cycle: Yaşam Döngüsünü Özelleştir
       date_alerts: Tarih Uyarıları
-      define_custom_style: Custom theme and logo
+      define_custom_style: Özel tema ve logo
       edit_attribute_groups: Özellik Grubunu Düzenleme
       gantt_pdf_export: Gantt PDF Dışa Aktarma
-      ldap_groups: LDAP users and group sync
+      ldap_groups: LDAP kullanıcıları ve grup senkronizasyonu
       nextcloud_sso: Single Sign-On for Nextcloud Storage
       one_drive_sharepoint_file_storage: OneDrive/SharePoint Dosya Depolama
       placeholder_users: Yer Tutucu Kullanıcılar
@@ -2216,16 +2216,16 @@ tr:
       scim_api: SCIM server API
       sso_auth_providers: Tek Oturum Açma
       team_planner_view: Takım Planlayıcı Görünümü
-      virus_scanning: Antivirus Scanning
+      virus_scanning: Antivirüs Taraması
       work_package_query_relation_columns: İş Paketi Sorgu İlişkisi Sütunları
-      work_package_sharing: Share work packages with external users
+      work_package_sharing: İş paketlerini harici kullanıcılarla paylaşma
       work_package_subject_generation: İş Paketi Konu Üretimi
     upsell:
       buy_now_button: "Şimdi satın al"
-      plans_title: "Enterprise plans"
+      plans_title: "Kurumsal planlar"
       title: "Kurumsal eklenti"
-      plan_title: "Enterprise %{plan} add-on"
-      plan_name: "%{plan} enterprise plan"
+      plan_title: "Kurumsal %{plan} eklentisi"
+      plan_name: "%{plan} kurumsal plan"
       plan_text_html: "%{plan_name} ile başlayarak kullanılabilir."
       unlimited: "Sınırsız"
       already_have_token: >
@@ -2368,6 +2368,7 @@ tr:
   error_invalid_selected_value: "Seçili değeri geçersiz."
   error_journal_attribute_not_present: "Günlük  %{attribute} özniteliği içermiyor."
   error_pdf_export_too_many_columns: "PDF Dışa Aktarma için çok fazla sütun seçili. Sütun sayısını azaltın."
+  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
   error_pdf_failed_to_export: "PDF çıktısı kaydedilemedi: %{error}"
   error_token_authenticity: "Siteler Arası İstek Sahteciliği belirteci doğrulanamadı. Birden fazla tarayıcı veya sekme hakkında veri göndermeyi denediniz mi? Lütfen tüm sekmeleri kapatın ve tekrar deneyin"
   error_reminder_not_found: "Hatırlatma bulunamadı veya zaten bildirilmişti."
@@ -2537,8 +2538,8 @@ tr:
         label: Sayfa yönlendirme
         caption: PDF belgesindeki sayfaların yönünü seçin.
         options:
-          portrait: Portrait
-          landscape: Landscape
+          portrait: Portre
+          landscape: Yatay
   extraction:
     available:
       pdftotext: "Pdftotext kullanılabilir (isteğe bağlı)"
@@ -2550,10 +2551,10 @@ tr:
   filterable_tree_view:
     filter_mode:
       all: "Hepsi"
-      label: "Filter mode"
-      selected: "Selected"
-    include_sub_items: "Include sub-items"
-    no_results_text: "No results"
+      label: "Filtre modu"
+      selected: "Seçilen"
+    include_sub_items: "Alt öğeleri dahil et"
+    no_results_text: "Sonuç yok"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
@@ -2577,8 +2578,8 @@ tr:
       upsell:
         title: "Enterprise sürümüne yükseltin"
       new_features:
-        header: "Read about new features and product updates."
-        learn_about: "Learn more about all new features"
+        header: "Yeni özellikler ve ürün güncellemeleri hakkında bilgi edinin."
+        learn_about: "Tüm yeni özellikler hakkında daha fazla bilgi edinin"
         #We need to include the version to invalidate outdated translations in other locales
         "16_4":
           new_features_title: >
@@ -2606,8 +2607,8 @@ tr:
       shortcuts: "Kısayollar"
       blog: "OpenProject blog"
       forums: "Topluluk forumu"
-      security_alerts: "Security alerts"
-      newsletter: "Newsletter"
+      security_alerts: "Güvenlik uyarıları"
+      newsletter: "Haber bülteni"
   image_conversion:
     imagemagick: "Resim büyüsü"
   journals:
@@ -3511,7 +3512,7 @@ tr:
           storage: "Depolama"
           healthy:
             summary: 'Good news! The status of your storage, %{storage_name}, is currently displaying as "Healthy".'
-            error-solved-on: "Solved On"
+            error-solved-on: "Çözüldü"
             recommendation: "We will continue monitoring the system to ensure it remains in good health. In case of any discrepancies, we will notify you."
             details: "For more details or to make any necessary amendments, you can visit your storage configuration"
           unhealthy:
@@ -3656,18 +3657,18 @@ tr:
   notice_password_confirmation_failed: "Parolanız doğru değil. Devam edilemez."
   notice_principals_found_multiple: "%{number} sonuç bulundu.\nİlk sonuç için TABa basın."
   notice_principals_found_single: "Bir sonuç bulundu. \n Ona gitmek için TABa basın."
-  notice_parent_item_not_found: "Parent item not found."
+  notice_parent_item_not_found: "Üst öğe bulunamadı."
   notice_project_not_deleted: "Proje silinemedi."
   notice_project_not_found: "Proje bulunamadı."
   notice_successful_connection: "Bağlantı başarılı."
   notice_successful_create: "Oluşturma başarılı."
   notice_successful_delete: "Silme başarılı."
-  notice_successful_cancel: "Successful cancellation."
+  notice_successful_cancel: "İptal işlemi başarılı."
   notice_successful_update: "Güncelleme başarılı."
-  notice_unsuccessful_create: "Creation failed."
-  notice_unsuccessful_create_with_reason: "Creation failed: %{reason}"
-  notice_unsuccessful_update: "Update failed."
-  notice_unsuccessful_update_with_reason: "Update failed: %{reason}"
+  notice_unsuccessful_create: "Oluşturulamadı."
+  notice_unsuccessful_create_with_reason: "Oluşturma başarısız oldu: %{reason}"
+  notice_unsuccessful_update: "Güncellenemedi."
+  notice_unsuccessful_update_with_reason: "Güncelleme başarısız oldu: %{reason}"
   notice_successful_update_custom_fields_added_to_project: |
     Başarılı güncelleme. Etkinleştirilen türlerin özel alanları, iş paketi formunda otomatik olarak etkinleştirilir. <a href="%{url}" target="_blank">Daha fazlasını görün</a>.
   notice_to_many_principals_to_display: "Çok fazla sonuç var. Yeni üyenin (veya grubun) adını yazarak aramayı daraltın."
@@ -3709,11 +3710,11 @@ tr:
   permission_add_work_packages: "İş paketi eklemek"
   permission_add_messages: "İleti göndermek"
   permission_add_project: "Proje oluşturma"
-  permission_add_portfolios: "Create portfolios"
-  permission_add_programs: "Create programs"
+  permission_add_portfolios: "Portföyler oluştur"
+  permission_add_programs: "Programlar oluştur"
   permission_add_work_package_attachments: "Dosya Ekle"
   permission_add_work_package_attachments_explanation: "Allows adding attachments without Edit work packages permission"
-  permission_add_internal_comments: "Write internal comments"
+  permission_add_internal_comments: "Dahili yorumlar yazın"
   permission_archive_project: "Projeyi arşivle"
   permission_create_user: "Kullanıcı oluşturma"
   permission_manage_user: "Kullanıcı düzenleme"
@@ -3742,12 +3743,12 @@ tr:
   permission_edit_work_package_comments_explanation: "Caution: Users with this permission are able to edit anyone's comment."
   permission_edit_work_packages: "İş paketlerini düzenlemek"
   permission_edit_messages: "İletileri düzenlemek"
-  permission_edit_own_internal_comments: "Edit own internal comments"
+  permission_edit_own_internal_comments: "Kendi dahili yorumlarınızı düzenleyin"
   permission_edit_own_work_package_comments: "Kendi notlarını düzenleme"
   permission_edit_own_messages: "Kendi iletilerini düzenlemek"
   permission_edit_own_time_entries: "Kendi zaman kayıtlarını düzenlemek"
-  permission_edit_others_internal_comments: "Moderate internal comments"
-  permission_edit_others_internal_comments_explanation: "Caution: Users with this permission are able to edit other users' internal comments."
+  permission_edit_others_internal_comments: "Dahili yorumları denetleyin"
+  permission_edit_others_internal_comments_explanation: "Dikkat: Bu izne sahip kullanıcılar diğer kullanıcıların dahili yorumlarını düzenleyebilir."
   permission_edit_project: "Proje düzenleme"
   permission_edit_project_attributes: "Proje özniteliklerini düzenleme"
   permission_edit_project_phases: "Proje aşamalarını düzenleme"
@@ -3779,7 +3780,7 @@ tr:
   permission_save_queries: "Görünüm kaydetmek"
   permission_search_project: "Projeyi ara"
   permission_select_custom_fields: "Özel alanları seçin"
-  permission_select_project_custom_fields: "Select project attributes"
+  permission_select_project_custom_fields: "Proje özniteliklerini seçme"
   permission_select_project_phases: "Proje aşamalarını seçin"
   permission_select_project_phases_explanation: "Activate/Deactivate the phases in a project. Enables the user to select the life cycle appropriate for the project as inactive phases will not be visible in the project overview page nor the project list."
   permission_select_project_modules: "Proje modülleri seçmek"
@@ -3788,7 +3789,7 @@ tr:
   permission_manage_own_reminders: "Kendi hatırlatıcısını oluşturma"
   permission_view_project: "Projeleri görüntüleme"
   permission_view_changesets: "OpenProject'de depo revizyonlarını görüntüle"
-  permission_view_internal_comments: "View internal comments"
+  permission_view_internal_comments: "Dahili yorumları görüntüle"
   permission_view_commit_author_statistics: "Yazar istatistiklerini inceleyin"
   permission_view_dashboards: "Gösterge panellerini gösterme"
   permission_view_work_package_watchers: "Takip eden listesini göster"
@@ -3807,7 +3808,7 @@ tr:
   permission_work_package_assigned_explanation: "İşpaketleri bağlı projedeki rollere göre kullanıcı ve gruplara atanabilir"
   permission_view_project_activity: "Proje faaliyetlerini görüntüleme"
   permission_view_project_attributes: "Proje özniteliklerini görüntüleme"
-  permission_view_project_phases: "View project phases"
+  permission_view_project_phases: "Proje aşamalarını görüntüleyin"
   permission_save_bcf_queries: "BCF sorgularını kaydetme"
   permission_manage_public_bcf_queries: "Genel BCF sorgularını yönetme"
   permission_edit_attribute_help_texts: "Öznitelik yardım metinlerini düzenleme"
@@ -3825,8 +3826,8 @@ tr:
       one: "1 proje"
       other: "%{count} proje"
     destroy:
-      title: "Delete project"
-      heading: "Permanently delete this project?"
+      title: "Projeyi sil"
+      heading: "Bu projeyi kalıcı olarak silmek istiyor musunuz?"
       confirmation_message_for_subprojects_html:
         zero: >
           You are about to permanently delete all data relating to project <strong>%{name}</strong>.
@@ -3958,7 +3959,7 @@ tr:
       oauth_application_details: "Bu pencereyi kapattıktan sonra istemci gizli anahtarı değerine tekrar erişilemez. Lütfen bu değerleri Nextcloud OpenProject Entegrasyon ayarlarına kopyalayın:"
       oauth_application_details_link_text: "Ayarlar sayfasına git"
       setup_documentation_details: "Yeni bir dosya deposunu yapılandırmak için yardıma ihtiyacınız varsa, lütfen belgelere bakın:"
-      setup_documentation_details_link_text: "File storages setup"
+      setup_documentation_details_link_text: "Dosya depoları kurulumu"
       show_warning_details: "Bu dosya deposunu kullanmak için, istenen her projenin proje ayarlarında modülü ve belirli depolamayı etkinleştirmeyi unutmayın."
     subversion:
       existing_title: "Mevcut Subversion deposu"
@@ -3988,7 +3989,7 @@ tr:
   setting_after_first_login_redirect_url: "İlk giriş yönlendirmesi"
   setting_after_first_login_redirect_url_text_html: >
     Set a path to redirect users after their first login. If empty, redirects to the home page for the onboarding tour. <br/> Example: <code>/my/page</code>
-  setting_after_login_default_redirect_url: "After login redirect"
+  setting_after_login_default_redirect_url: "Giriş yönlendirmesinden sonra"
   setting_after_login_default_redirect_url_text_html: >
     Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: <code>/my/page</code>
   setting_apiv3_cors_title: "Çapraz Kaynak Paylaşımı (CORS)"
@@ -4068,8 +4069,8 @@ tr:
   setting_feeds_limit: "Akış içeriği sınırı"
   setting_file_max_size_displayed: "Satır içi görüntülenen maksimum metin dosyası boyutu"
   setting_host_name: "Ana bilgisayar adı"
-  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
-  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus sunucu URL'si"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus sunucu sırrı"
   setting_hours_per_day: "Gün başına saat"
   setting_hours_per_day_explanation: >-
     Bu, süreyi gün ve saat olarak görüntülerken neyin "gün" olarak kabul edildiğini tanımlar (örneğin, bir gün 8 saat ise, 32 saat 4 gün olacaktır).
@@ -4091,8 +4092,8 @@ tr:
   setting_log_requesting_user: "Tüm istekler için kullanıcı oturum açma, ad ve posta adresini girme"
   setting_login_required: "Kimlik doğrulaması gerekli"
   setting_login_required_caption: "İşaretlendiğinde, uygulamaya gelen tüm isteklerin kimliği doğrulanmalıdır."
-  setting_lost_password: "Enable password reset"
-  setting_lost_password_caption: "When checked, allow users to reset their own passwords."
+  setting_lost_password: "Parola sıfırlamayı etkinleştir"
+  setting_lost_password_caption: "İşaretlendiğinde, kullanıcıların kendi parolalarını sıfırlamalarına izin verir."
   setting_mail_from: "Gönderici e-posta adresi"
   setting_mail_handler_api_key: "API anahtarı"
   setting_mail_handler_body_delimiters: "Bu satırlardan birinden sonra e-postaları kısaltın"
@@ -4174,7 +4175,7 @@ tr:
     authentication:
       login: "Oturum aç"
       registration: "Üye Olma"
-      sso: "Single Sign-On (SSO)"
+      sso: "Tek Oturum Açma (SSO)"
       omniauth_direct_login_hint_html: >
         Bu seçenek etkinse, oturum açma istekleri yapılandırılmış omniauth sağlayıcısına yönlendirilir. Oturum açma açılır menüsü ve oturum açma sayfası devre dışı bırakılacaktır. <br/> <strong>Not:</strong> Parola girişlerini de devre dışı bırakmadığınız sürece, bu seçenek etkinleştirildiğinde kullanıcılar <code>%{internal_path}</code> giriş sayfasından giriş yapabilirler.
       remapping_existing_users_hint: >
@@ -4835,7 +4836,7 @@ tr:
       label_request_token: "Belirteç iste"
       label_refresh_token: "Belirteci yenile"
     errors:
-      oauth_authorization_code_grant_had_errors: "OAuth2 Authorization grant unsuccessful"
+      oauth_authorization_code_grant_had_errors: "OAuth2 Yetkilendirme izni başarısız"
       oauth_reported: "OAuth2 sağlayıcısı bildirildi"
       oauth_returned_error: "OAuth2 bir hata döndürdü"
       oauth_returned_json_error: "OAuth2 bir JSON hatası döndürdü"

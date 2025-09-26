@@ -2368,6 +2368,7 @@ sv:
   error_invalid_selected_value: "Ogiltigt valt värde."
   error_journal_attribute_not_present: "Loggbok innehåller inte attribut %{attribute}."
   error_pdf_export_too_many_columns: "För många kolumner har markerats för PDF-export. Vänlogen minska antalet kolumner."
+  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
   error_pdf_failed_to_export: "PDF-exporten kunde inte sparas: %{error}"
   error_token_authenticity: "Det gick inte att verifiera Forgery token. Försökte du skicka data på flera webbläsare eller flikar? Stäng alla flikar och försök igen."
   error_reminder_not_found: "The reminder was not found or was already notified about."

@@ -87,7 +87,7 @@ zh-CN:
         token_placeholder: "在此处粘贴您的企业版支持令牌"
       add_token: "上传企业版支持令牌"
       replace_token: "替换您当前的支持令牌"
-      order: "订购本地部署的 Enterprise edition"
+      order: "订购本地部署版的 Enterprise edition"
       paste: "粘贴您企业版的支持令牌"
       required_for_feature: "此功能仅限具激活的企业版支持令牌的订阅者使用。"
       enterprise_link: "如需了解详细信息，请单击此处。"
@@ -331,12 +331,12 @@ zh-CN:
       no_results_content_text: 创建新的自定义字段
   calculated_values:
     error_dialog:
-      title: "Error with Calculated Value"
+      title: "计算值错误"
     errors:
-      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
-      mathematical: "A mathematical error occurred during calculation."
-      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
-      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
+      unknown: "发生未知错误。请检查此计算值的公式。"
+      mathematical: "计算过程中发生数学错误。"
+      missing_value: 该计算值需要属性 "%{custom_field_name}"，但该属性为空。
+      disabled_value: 该计算值需要属性 "%{custom_field_name}"，但它在项目中已禁用。
   concatenation:
     single: "或"
   op_dry_validation:
@@ -623,16 +623,16 @@ zh-CN:
     sessions:
       session_name: "%{os_name} 上的 %{browser_name} %{browser_version}"
       browser: "浏览器"
-      expires: "Expires"
-      last_connection: "Last connection"
+      expires: "过期"
+      last_connection: "最后连接"
       device: "设备 / 操作系统"
       unknown_browser: "未知浏览器"
       unknown_os: "未知操作系统"
-      unknown: "(unknown)"
-      browser_session: "(Browser session)"
-      current: "Current (this device)"
+      unknown: "(未知)"
+      browser_session: "(浏览器会话）"
+      current: "当前（本设备）"
       title: "登录设备管理"
-      instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
+      instructions: "您已经通过以下设备登录到您的帐户。请撤销您无法识别或无法控制的设备的会话。"
       may_not_delete_current: "您不能删除当前会话。"
     groups:
       member_in_these_groups: "此用户当前是以下组的成员："
@@ -971,10 +971,10 @@ zh-CN:
       auth_provider:
         scim_clients: "SCIM 客户端"
       calculated_value_error:
-        error_code: "Error code"
-        customized: "Customized"
-        customized_id: "Customized ID"
-        customized_type: "Customized type"
+        error_code: "错误代码"
+        customized: "自定义"
+        customized_id: "自定义ID"
+        customized_type: "自定义类型"
       capability:
         context: "背景"
       changeset:
@@ -1031,7 +1031,7 @@ zh-CN:
         page: "页"
         row_count: "行数"
         column_count: "列数"
-        widgets: "小部件"
+        widgets: "微件"
       journal:
         notes: "备注"
         cause_type: "Cause 类型"
@@ -1282,7 +1282,7 @@ zh-CN:
         confirmation: "不匹配 %{attribute}。"
         could_not_be_copied: "无法（完全）复制 %{dependency}。"
         does_not_exist: "不存在。"
-        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
+        error_enterprise_only: "%{action}仅在 OpenProject 企业版中可用。"
         error_unauthorized: "无法访问。"
         error_readonly: "曾尝试被写入，但不可写。"
         error_conflict: "在此期间，至少有一位其他用户更新了信息。"
@@ -2149,7 +2149,7 @@ zh-CN:
     features:
       baseline_comparison: 基线比较
       board_view: 高级面板
-      calculated_values: Calculated Values
+      calculated_values: 计算值
       conditional_highlighting: 条件高亮
       internal_comments: 内部评论
       custom_actions: 自定义操作
@@ -2223,7 +2223,7 @@ zh-CN:
       project_list_sharing:
         description: "与个人用户共享项目列表。"
       calculated_values:
-        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
+        description: "通过计算值，您可以使用基于数值、其他项目属性和自定义字段的属性创建数学公式。"
       define_custom_style:
         title: "自定义颜色主题和 Logo"
         more_info: "注：使用的 Logo 将可公开访问。"
@@ -2319,6 +2319,7 @@ zh-CN:
   error_invalid_selected_value: "选中的值无效。"
   error_journal_attribute_not_present: "日志不包含 %{attribute} 属性。"
   error_pdf_export_too_many_columns: "选择 PDF 导出的列太多。请减少列数。"
+  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
   error_pdf_failed_to_export: "无法保存被导出的 PDF 文件：%{error}"
   error_token_authenticity: "无法验证跨站请求伪造令牌。您是否曾尝试在多个浏览器或选项卡上提交数据？请关闭所有选项卡并重试。"
   error_reminder_not_found: "未找到提醒或已收到相关提醒的通知。"
@@ -2781,7 +2782,7 @@ zh-CN:
   label_select_main_menu_item: 选择新的主菜单项
   label_required_disk_storage: "所需的磁盘空间"
   label_send_invitation: 发送邀请
-  label_calculated_value: "Calculated Value"
+  label_calculated_value: "计算值"
   label_change_parent: "更改父级"
   label_change_plural: "更改"
   label_change_properties: "更改属性"
@@ -2958,7 +2959,7 @@ zh-CN:
   label_integer: "整数"
   label_interface: "界面"
   label_internal: "内部"
-  label_introduction_video: "Getting started video"
+  label_introduction_video: "入门指南视频"
   label_invite_user: "邀请用户"
   label_item: "条目"
   label_item_plural: "条目"
@@ -3203,7 +3204,7 @@ zh-CN:
   label_revision_id: "修订版本 %{value}"
   label_revision_plural: "修订"
   label_roadmap: "路线图"
-  label_roadmap_edit: "编辑路线图 %{name}"
+  label_roadmap_edit: "编辑路线图%{name}"
   label_roadmap_due_in: "%{value} 到期"
   label_roadmap_no_work_packages: "该版本没有工作包。"
   label_roadmap_overdue: "%{value} 超时"
@@ -3605,7 +3606,7 @@ zh-CN:
   notice_password_confirmation_failed: "您的密码不正确。无法继续。"
   notice_principals_found_multiple: "找到 %{number} 条结果。\n 点击以关注第一条结果。"
   notice_principals_found_single: "这有一个结果。\n点击来关注它。"
-  notice_parent_item_not_found: "Parent item not found."
+  notice_parent_item_not_found: "未找到父项"
   notice_project_not_deleted: "项目没有被删除"
   notice_project_not_found: "未找到项目。"
   notice_successful_connection: "成功连接。"
@@ -3900,7 +3901,7 @@ zh-CN:
       managed: "在 OpenProject 中创建新的存储库"
     storage:
       not_available: "磁盘存储开销不可用于此存储库。"
-      update_timeout: "在 N 分钟内保留存储库最后所需磁盘空间的信息。由于计算存储库所需的磁盘空间可能增加系统开销，增加该值可以减少性能影响。"
+      update_timeout: "在 N 分钟内保留存储库最后所需的磁盘空间信息。由于计算存储库所需的磁盘空间可能增加系统开销，增加该值可以减少性能影响。"
       oauth_application_details: "关闭此窗口后，将无法再次访问客户端密钥值。请将这些值复制到 Nextcloud OpenProject 集成设置中："
       oauth_application_details_link_text: "转到设置页面"
       setup_documentation_details: "如果您在配置新文件存储方面需要帮助，请查看文档："
@@ -4095,7 +4096,7 @@ zh-CN:
   setting_session_ttl_hint: "当设置的值低于5时，其作用类似于禁用。"
   setting_session_ttl_enabled: "会话过期"
   setting_start_of_week: "一周起始日"
-  setting_sys_api_enabled: "启用版本库管理 web 服务"
+  setting_sys_api_enabled: "启用存储库管理网页服务"
   setting_sys_api_description: "存储库管理网页服务提供了集成的，用户授权的存储库访问。"
   setting_time_format: "时间"
   setting_total_percent_complete_mode: "计算 完成% 层次结构总数"
@@ -4461,7 +4462,7 @@ zh-CN:
   warning_user_limit_reached_admin: >
     添加额外的用户将超出当前限制。请<a href="%{upgrade_url}">升级您的计划</a>，以确保外部用户能够访问此实例。
   warning_user_limit_reached_instructions: >
-    您达到了用户限制（%{current}/%{max}活跃用户）。 请联系sales@openproject.com以升级您的Enterprise edition计划并添加其他用户。
+    您已达到用户限制（%{current}/%{max} 活跃用户）。请联系 sales@openproject.com 升级您的企业版计划以添加额外用户。
   warning_protocol_mismatch_html: >
 
   warning_bar:

@@ -85,7 +85,7 @@ tr:
         is_default: "Varsayılan model"
         attachments: "IFC dosyası"
       bim/bcf/issue:
-        bcf_comment: "BCF comment"
+        bcf_comment: "BCF yorumu"
         bim_snippet: "BIM snippet"
         reference_links: "Referans bağlantıları"
         stage: "Aşama"
