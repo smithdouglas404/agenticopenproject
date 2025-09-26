@@ -62,13 +62,9 @@ export class OpenProjectApi implements Extension {
       },
     });
 
-    // When there is no data on the server, assume it is a new document, so we just return
-    if (response.status === 404) {
-      return;
-    }
-
     if (!response.ok) {
       console.warn(`Error fetching document: ${response.statusText}`);
+      return;
     }
 
     const update = new Uint8Array(await response.arrayBuffer());
