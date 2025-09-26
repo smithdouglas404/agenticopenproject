@@ -36,7 +36,7 @@ To give our users a clearer and better selection of the recently released new co
 
 Additionally, **checkboxes for high contrast** are now displayed, depending on the selection. So if you  selected “Light high contrast” in previous versions, starting with 16.5, you can now select ‘Light’ and check the box for “Increase contrast.”
 
-This new feature is particularly helpful for the automatic mode, where you can now cdifferentiate whether you want high contrast to be displayed only in dark mode or only in light mode, for example.
+This new feature is particularly helpful for the automatic mode, where you can now differentiate whether you want high contrast to be displayed only in dark mode or only in light mode, for example.
 
 [Learn more about the *Look and feel* options in OpenProject](../../user-guide/account-settings/#look-and-feel).
 
