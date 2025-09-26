@@ -28,24 +28,31 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class News::CommentsController < ApplicationController
-  default_search_scope :news
-  model_object Comment, scope: [News => :commented]
-  before_action :find_object_and_scope
-  before_action :authorize
+require "spec_helper"
 
-  def create
-    @comment = Comment.new(permitted_params.comment)
-    @comment.author = User.current
-    if @news.comments << @comment
-      flash[:notice] = I18n.t(:label_comment_added)
+RSpec.describe "News comments destroy redirect",
+               :skip_csrf,
+               type: :rails_request do
+  shared_let(:project) { create(:project, enabled_module_names: %i[news]) }
+  shared_let(:news) { create(:news, project:) }
+  shared_let(:comment) { create(:comment, commented: news) }
+
+  context "when an admin deletes a news comment" do
+    current_user { create(:admin) }
+
+    let(:request) { delete "/comments/#{comment.id}" }
+
+    subject do
+      request
+      response
     end
 
-    redirect_to news_path(@news), status: :see_other
-  end
+    it "responds with 303 See Other and redirects to the news page" do
+      expect(subject).to have_http_status(:see_other)
+      expect(response).to redirect_to(news_path(news))
 
-  def destroy
-    @comment.destroy
-    redirect_to news_path(@news), status: :see_other
+      expect { Comment.find(comment.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { News.find(news.id) }.not_to raise_error
+    end
   end
 end
