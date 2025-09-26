@@ -28,32 +28,11 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Overviews
-  module Widgets
-    class NewsComponent < Grids::WidgetComponent
-      NEWS_LIMIT = 5
+require "spec_helper"
+require "support/permission_specs"
 
-      param :project, optional: true
+RSpec.describe Overviews::Widgets::MembersController, "permissions", type: :controller do # rubocop:disable RSpec/EmptyExampleGroup,RSpec/SpecFilePathFormat
+  include PermissionSpecs
 
-      def initialize(*)
-        super
-
-        @news =
-          if project
-            project.news.visible(current_user).newest_first
-          else
-            News
-              .visible(current_user)
-              .newest_first
-              .includes(:project)
-          end
-
-        @newest = @news.limit(NEWS_LIMIT).to_a
-      end
-
-      def title
-        Project.human_attribute_name(:news)
-      end
-    end
-  end
+  check_permission_required_for("overviews/widgets/members#show", :view_members)
 end

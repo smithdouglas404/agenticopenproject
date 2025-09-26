@@ -44,6 +44,10 @@ module Overviews
       def children
         @children ||= project.children.visible
       end
+
+      def wrapper_arguments
+        { full_width: true }
+      end
     end
   end
 end

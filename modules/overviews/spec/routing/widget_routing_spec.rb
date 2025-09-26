@@ -138,4 +138,22 @@ RSpec.describe Overviews::WidgetController do
       end
     end
   end
+
+  describe "members routing" do
+    describe "GET #show" do
+      it do
+        expect(get("/projects/my-project/widgets/members"))
+          .to route_to(controller: "overviews/widgets/members", action: "show", project_id: "my-project")
+      end
+    end
+  end
+
+  describe "members named routing" do
+    describe "GET #show" do
+      it do
+        expect(get(project_widgets_members_path("my-project")))
+          .to route_to(controller: "overviews/widgets/members", action: "show", project_id: "my-project")
+      end
+    end
+  end
 end

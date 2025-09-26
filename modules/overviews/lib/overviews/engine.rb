@@ -110,6 +110,11 @@ module Overviews
                                   .push(
                                     "overviews/widgets/news/show"
                                   )
+        OpenProject::AccessControl.permission(:view_members)
+                                  .controller_actions
+                                  .push(
+                                    "overviews/widgets/members/show"
+                                  )
       end
     end
 

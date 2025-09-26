@@ -21,6 +21,7 @@ Rails.application.routes.draw do
           resource :project_status, only: %i[show update]
           resource :news, only: %i[show]
           resource :subitems, only: %i[show]
+          resource :members, only: %i[show]
         end
       end
     end

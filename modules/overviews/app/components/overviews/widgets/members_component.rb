@@ -30,29 +30,26 @@
 
 module Overviews
   module Widgets
-    class NewsComponent < Grids::WidgetComponent
-      NEWS_LIMIT = 5
+    class MembersComponent < Grids::WidgetComponent
+      MEMBERS_LIMIT = 5
 
-      param :project, optional: true
+      param :project
 
       def initialize(*)
         super
 
-        @news =
-          if project
-            project.news.visible(current_user).newest_first
-          else
-            News
-              .visible(current_user)
-              .newest_first
-              .includes(:project)
-          end
-
-        @newest = @news.limit(NEWS_LIMIT).to_a
+        if project
+          @members = project.members.visible(current_user).newest_first
+          @newest_members = @members.limit(MEMBERS_LIMIT).to_a
+        end
       end
 
       def title
-        Project.human_attribute_name(:news)
+        t(:"overviews.widgets.members.title")
+      end
+
+      def render?
+        current_user.allowed_in_project?(:view_members, project)
       end
     end
   end

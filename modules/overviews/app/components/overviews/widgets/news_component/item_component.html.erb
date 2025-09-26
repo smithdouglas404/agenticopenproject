@@ -45,7 +45,7 @@ See COPYRIGHT and LICENSE files for more details.
           end
 
           layout.with_column do
-            render(Primer::Beta::Link.new(ml: 1, font_weight: :bold, href: news_path(item))) { item.title }
+            render(Primer::Beta::Link.new(font_weight: :bold, href: news_path(item))) { item.title }
           end
         end
       )
