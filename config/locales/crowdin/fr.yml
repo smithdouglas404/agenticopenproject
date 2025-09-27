@@ -2579,22 +2579,15 @@ fr:
         header: "Découvrez les nouvelles fonctionnalités et les mises à jour des produits."
         learn_about: "En savoir plus sur les nouvelles fonctionnalités"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
-          new_features_title: >
-            Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que :
-          new_features_list:
-            line_0: Option de synchronisation automatique de la couleur du système et du mode de contraste.
-            line_1: Mode sombre à fort contraste permettant une meilleure accessibilité.
-            line_2: Exportation des listes de projets au format PDF.
-            line_3: Police personnalisée pour toutes les exportations PDF (add-on Enterprise).
-            line_4: Amélioration du dialogue entre les participants à la réunion.
-            line_5: Amélioration de la gestion du budget dans les requêtes de projet et la planification budgétaire.
-            line_6: Mise à jour de la page d'accueil et de la page d'aperçu du projet.
         "16_5":
           new_features_title: >
             Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que :
           new_features_list:
-            line_0: De nouvelles fonctionnalités et améliorations seront bientôt disponibles. N'hésitez pas à revenir nous voir !
+            line_0: Add work packages to a meeting section in the Meetings tab.
+            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
+            line_2: Filter projects by last update.
+            line_3: Jump to highlighted target elements from deep links.
+            line_4: Confirm critical actions with more accessible danger dialogs.
     links:
       upgrade_enterprise_edition: "Passer à la version Entreprise"
       postgres_migration: "Migration de votre installation vers PostgreSQL"

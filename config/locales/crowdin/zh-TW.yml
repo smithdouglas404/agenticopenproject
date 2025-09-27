@@ -333,12 +333,12 @@ zh-TW:
       no_results_content_text: 建立一個新的自定義欄位
   calculated_values:
     error_dialog:
-      title: "Error with Calculated Value"
+      title: "計算值錯誤"
     errors:
-      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
-      mathematical: "A mathematical error occurred during calculation."
-      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
-      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
+      unknown: "發生未知錯誤。請檢查此計算值的公式。"
+      mathematical: "計算過程中發生數學錯誤。"
+      missing_value: 此計算值需要屬性 "%{custom_field_name}"，但該屬性為空。
+      disabled_value: 此計算值需要屬性 "%{custom_field_name}"，但在專案中已停用。
   concatenation:
     single: "或者"
   op_dry_validation:
@@ -631,7 +631,7 @@ zh-TW:
       unknown_browser: "未知的瀏覽器"
       unknown_os: "未知作業系統"
       unknown: "(未知)"
-      browser_session: "(Browser session)"
+      browser_session: "（瀏覽器會話）"
       current: "目前（此裝置）"
       title: "連線管理"
       instructions: "您已透過以下裝置登入帳號。請撤銷您無法識別或不受您控制的裝置連線。"
@@ -971,10 +971,10 @@ zh-TW:
       auth_provider:
         scim_clients: "SCIM 用戶端"
       calculated_value_error:
-        error_code: "Error code"
-        customized: "Customized"
-        customized_id: "Customized ID"
-        customized_type: "Customized type"
+        error_code: "錯誤碼"
+        customized: "客製化"
+        customized_id: "自訂 ID"
+        customized_type: "客製化類型"
       capability:
         context: "內容"
       changeset:
@@ -1282,7 +1282,7 @@ zh-TW:
         confirmation: "不吻合 %{attribute}。"
         could_not_be_copied: "%{dependency} 無法完整複製."
         does_not_exist: "不存在"
-        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
+        error_enterprise_only: "%{action} 只適用於 OpenProject 企業版。"
         error_unauthorized: "無法被存取。"
         error_readonly: "被嘗試寫入但是無法寫入。"
         error_conflict: "在此同時，資訊已經被至少一個使用者更新"
@@ -2149,7 +2149,7 @@ zh-TW:
     features:
       baseline_comparison: 比較差異
       board_view: 進階看板
-      calculated_values: Calculated Values
+      calculated_values: 計算值
       conditional_highlighting: 條件強調
       internal_comments: 內部備註
       custom_actions: 自訂動作
@@ -2223,7 +2223,7 @@ zh-TW:
       project_list_sharing:
         description: "分享專案清單給個別使用者。"
       calculated_values:
-        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
+        description: "計算值可讓您建立一個以數值、其他專案屬性及自訂欄位為基礎的數學公式屬性。"
       define_custom_style:
         title: "自訂布景主題顏色與logo"
         more_info: "備註：Logo可被公開存取。"
@@ -2319,7 +2319,7 @@ zh-TW:
   error_invalid_selected_value: "不合法的項目數值。"
   error_journal_attribute_not_present: "Journal 不含有屬性 %{attribute}。"
   error_pdf_export_too_many_columns: "為 PDF 匯出選擇的列太多。請減少列數。"
-  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
+  error_pdf_date_range_too_long: "選取的工作套件日期範圍超出允許的 PDF 匯出限制。請將範圍濃縮至最多 %{years} 年。"
   error_pdf_failed_to_export: "無法另存 pdf 匯出: %{error}"
   error_token_authenticity: "無法驗證跨網域請求令牌(Token)。你是不是試圖在多個瀏覽器或者分頁上傳送資料？請關閉所有的分頁後再試一次。"
   error_reminder_not_found: "未找到提醒內容或已收到相關通知。"
@@ -2532,22 +2532,15 @@ zh-TW:
         header: "閱讀關於新功能和產品更新的資訊。"
         learn_about: "進一步瞭解所有新功能"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
-          new_features_title: >
-            該版本包含多種新功能和改進，例如：
-          new_features_list:
-            line_0: 可選擇自動同步系統色彩 + 對比模式。
-            line_1: 深色高對比度模式可提高可存取性。
-            line_2: PDF 匯出專案清單。
-            line_3: 所有 PDF 匯出的自訂字型（企業附加元件）。
-            line_4: 改善會議與會者的對話。
-            line_5: 改善專案查詢和預算規劃中的預算處理。
-            line_6: 更新首頁與專案總覽頁面。
         "16_5":
           new_features_title: >
             該版本包含多種新功能和改進，例如：
           new_features_list:
-            line_0: 新功能和改進即將推出。請隨時回來查看！
+            line_0: Add work packages to a meeting section in the Meetings tab.
+            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
+            line_2: Filter projects by last update.
+            line_3: Jump to highlighted target elements from deep links.
+            line_4: Confirm critical actions with more accessible danger dialogs.
     links:
       upgrade_enterprise_edition: "升級到企業版"
       postgres_migration: "將您的安裝遷移到 PostgreSQL"
@@ -2782,7 +2775,7 @@ zh-TW:
   label_select_main_menu_item: 選擇新的主選單項目
   label_required_disk_storage: "所使用的磁碟空間"
   label_send_invitation: 發送邀請
-  label_calculated_value: "Calculated Value"
+  label_calculated_value: "計算值"
   label_change_parent: "變更父項"
   label_change_plural: "更改"
   label_change_properties: "更改屬性"
@@ -2959,7 +2952,7 @@ zh-TW:
   label_integer: "整數"
   label_interface: "介面"
   label_internal: "內部"
-  label_introduction_video: "Getting started video"
+  label_introduction_video: "入門影片"
   label_invite_user: "邀請使用者"
   label_item: "欄位"
   label_item_plural: "欄位"
