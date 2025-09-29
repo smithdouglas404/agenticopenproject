@@ -120,9 +120,9 @@ module OpTurbo
       if inner_html_only?
         capture(&)
       elsif wrapper_only?
-        method ? send(method, wrapper_arguments) : content_tag(tag, wrapper_arguments)
+        method ? send(method, **wrapper_arguments) : content_tag(tag, **wrapper_arguments)
       else
-        method ? send(method, wrapper_arguments, &) : content_tag(tag, wrapper_arguments, &)
+        method ? send(method, **wrapper_arguments, &) : content_tag(tag, **wrapper_arguments, &)
       end
     end
 

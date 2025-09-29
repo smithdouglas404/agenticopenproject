@@ -50,7 +50,7 @@ module OpPrimer
       Primer::Beta::BorderBox.new(position: :relative, **system_args, &)
     end
 
-    def border_box_row(wrapper_arguments, &)
+    def border_box_row(**wrapper_arguments, &)
       if container
         container.with_row(**wrapper_arguments, &)
       else
