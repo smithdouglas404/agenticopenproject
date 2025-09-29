@@ -81,7 +81,7 @@ module OpenIDConnect
         format.turbo_stream do
           component = OpenIDConnect::Providers::ViewComponent.new(@provider,
                                                                   view_mode: :edit,
-                                                                  edit_mode: @edit_mode,
+                                                                  new_mode: @new_mode,
                                                                   edit_state: @edit_state)
           update_via_turbo_stream(component:)
           scroll_into_view_via_turbo_stream("openid-connect-providers-edit-form", behavior: :instant)
@@ -145,12 +145,17 @@ module OpenIDConnect
     end
 
     def successful_save_response
+      if @new_mode && !@next_edit_state
+        flash[:notice] = I18n.t("openid_connect.providers.notice_created")
+        return redirect_to openid_connect_provider_path(@provider)
+      end
+
       respond_to do |format|
         format.turbo_stream do
           update_via_turbo_stream(
             component: OpenIDConnect::Providers::ViewComponent.new(
               @provider,
-              edit_mode: @edit_mode,
+              new_mode: @new_mode,
               edit_state: @next_edit_state,
               view_mode: :show
             )
@@ -158,13 +163,13 @@ module OpenIDConnect
           render turbo_stream: turbo_streams
         end
         format.html do
-          flash[:notice] = I18n.t(:notice_successful_update) unless @edit_mode
-          if @edit_mode && @next_edit_state
+          if @next_edit_state
             redirect_to edit_openid_connect_provider_path(@provider,
                                                           anchor: "openid-connect-providers-edit-form",
-                                                          edit_mode: true,
+                                                          new_mode: @new_mode,
                                                           edit_state: @next_edit_state)
           else
+            flash[:notice] = I18n.t(:notice_successful_update) unless @new_mode
             redirect_to openid_connect_provider_path(@provider)
           end
         end
@@ -177,7 +182,7 @@ module OpenIDConnect
           update_via_turbo_stream(
             component: OpenIDConnect::Providers::ViewComponent.new(
               @provider,
-              edit_mode: @edit_mode,
+              new_mode: @new_mode,
               edit_state: @edit_state,
               view_mode: :show
             )
@@ -192,7 +197,7 @@ module OpenIDConnect
 
     def set_edit_state
       @edit_state = params[:edit_state].to_sym if params.key?(:edit_state)
-      @edit_mode = ActiveRecord::Type::Boolean.new.cast(params[:edit_mode])
+      @new_mode = ActiveRecord::Type::Boolean.new.cast(params[:new_mode])
       @next_edit_state = params[:next_edit_state].to_sym if params.key?(:next_edit_state)
     end
 
