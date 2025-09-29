@@ -55,8 +55,6 @@ PM² methodology and terminology map very well to OpenProject's project structur
 | Meeting                                                                           | Meeting (module within OpenProject)              |
 | PM² Artefacts                                                                     | Custom work packages                             |
 
-
-
 ## How to setup a PM² project in OpenProject?
 
 OpenProject is your go-to product, which enables a successful implementation of PM² methodology.
@@ -112,7 +110,8 @@ If you want to be up to date with all changes within certain artefacts, e.g. Pro
 
 OpenProject provides multiple views for managing PM² project work effectively.
 
-**Table View:**  
+**Table view:**  
+
 * Tabular display of all project artefacts and deliverables
 * Customizable sorting, grouping, and filtering by PM² phases or artefact types
 
@@ -131,10 +130,11 @@ The [Gantt chart](https://www.openproject.org/docs/user-guide/gantt-chart) modul
 
 ![Gantt view showing the work packages in the Planning Phase](openproject_use_case_PM2_gantt_view_planning_phase_pm2.png)
 
-**Board View:
+**Board View**:
+
 * Phases board presenting split of tasks into different phases.
 * Assignee board with automated columns based on assigned users. Ideal for dispatching work packages.
-* Basic kanban style board with columns for status such as To Do, In Progress, Done.
+* Basic Kanban style board with columns for status such as To Do, In Progress, Done.
 
 ![Board view showing all tasks per phase in OpenProject](openproject_use_case_PM2_phases_board.png)
 
@@ -165,4 +165,3 @@ PM² emphasizes **accountability, transparency, and stakeholder communication**,
 OpenProject is a powerful and highly-configurable tool that can be customized to fit the needs of your PM² implementation. Beyond the basics covered in this guide, OpenProject has many additional features and modules (such as [budgets](https://www.openproject.org/docs/user-guide/budgets), [time and cost tracking](https://www.openproject.org/docs/user-guide/time-and-costs), [wiki](https://www.openproject.org/docs/user-guide/wiki) and [file storage integrations](https://www.openproject.org/docs/development/file-storage-integration)) that further enable your PM² teams to work efficiently and deliver value.
 
 If you have questions about how to [use](https://www.openproject.org/docs/getting-started) and [configure](https://www.openproject.org/docs/system-admin-guide) OpenProject to work for you, please [get in touch](https://www.openproject.org/contact/) or [start a free trial](https://start.openproject.com/) to see for yourself.
-
