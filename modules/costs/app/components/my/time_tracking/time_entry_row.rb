@@ -45,16 +45,15 @@ module My
         render(Primer::Alpha::ActionMenu.new) do |menu|
           menu.with_show_button(icon: "kebab-horizontal", "aria-label": t("label_more"), scheme: :invisible)
 
-          if time_entry.ongoing?
-            stop_timer_action_button(menu)
-          else
-            edit_action_button(menu)
+          with_item_group(menu) do
+            if time_entry.ongoing?
+              stop_timer_action_button(menu)
+            else
+              edit_action_button(menu)
+            end
           end
 
-          if can_delete_time_entry?
-            menu.with_divider
-            delete_action_button(menu)
-          end
+          with_item_group(menu) { delete_action_button(menu) } if can_delete_time_entry?
         end
       end
 

@@ -22,10 +22,14 @@
               ml: 2,
               test_selector: "op-meeting-outcome-actions"
             )
-            edit_action_item(menu)
-            copy_action_item(menu)
-            menu.with_divider if edit_enabled?
-            delete_action_item(menu)
+            with_item_group(menu) do
+              edit_action_item(menu)
+              copy_action_item(menu)
+            end
+
+            with_item_group(menu) do
+              delete_action_item(menu)
+            end
           end
         end
       end
