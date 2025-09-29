@@ -48,14 +48,14 @@ const PRIMER_COLORS = [
   'green',  // (contrasts strongly with orange)
   'purple', // (cool, distinct)
   'red',    // (strong, but not first to avoid clash with orange)
-  'plum',   // (cooler purple, contrasts with teal)
+  'yellow', // (bright highlight, works better later)
   'blue',   // (strong primary)
   'pink',   // (vivid, contrasts with blue)
   'pine',   // (deep green, darker balance)
   'auburn', // (earthy tone)
   'brown',  // (neutral balance)
+  'cyan',   // (slight highlight between neutral colours)
   'gray',   // (neutral, mid-series filler)
-  'yellow', // (bright highlight, works better later)
   'lemon',  // (darker yellow, less eye-catching)
   'olive',  // (subdued green, background tone)
   'lime',   // (subdued green, good closing color)
@@ -66,10 +66,10 @@ function getCSSVariable(variable:string) {
 }
 
 const EMPHASIS_COLORS = PRIMER_COLORS
-  .map((color) => getCSSVariable(`--data-${color}-color-emphasis`));
+  .map((color) => getCSSVariable(`--display-${color}-scale-4`));
 
 const MUTED_COLORS = PRIMER_COLORS
-  .map((color) => getCSSVariable(`--data-${color}-color-muted`));
+  .map((color) => getCSSVariable(`--display-${color}-scale-1`));
 
 function getEmphasisColor(i:number) {
   return EMPHASIS_COLORS[i % EMPHASIS_COLORS.length];
