@@ -194,7 +194,7 @@ RSpec.describe "Admin Edit File storage",
           expect(application_password_input.value).to be_empty
 
           # Clicking submit with application password empty should show an error
-          click_on("Done, complete setup")
+          click_on("Finish setup")
           expect(page).to have_text("Application password can't be blank.")
 
           # Test the error path for an invalid storage password.
@@ -205,7 +205,7 @@ RSpec.describe "Admin Edit File storage",
           expect(automatically_managed_switch).to be_checked
           fill_in "Application password", with: "1234567890"
           # Clicking submit with application password empty should show an error
-          click_on("Done, complete setup")
+          click_on("Finish setup")
           expect(page).to have_text("Application password is not valid.")
 
           # Test the happy path for a valid storage password.
@@ -215,7 +215,7 @@ RSpec.describe "Admin Edit File storage",
           automatically_managed_switch = page.find('[name="storages_nextcloud_storage[automatic_management_enabled]"]')
           expect(automatically_managed_switch).to be_checked
           fill_in "Application password", with: "1234567890"
-          click_on("Done, complete setup")
+          click_on("Finish setup")
         end
 
         expect(page).to have_test_selector("label-managed-project-folders-status", text: "Active")
