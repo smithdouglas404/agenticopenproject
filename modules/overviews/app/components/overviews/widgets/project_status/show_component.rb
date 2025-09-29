@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,26 +26,29 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module ::Overviews
-  class OverviewsController < ::Grids::BaseInProjectController
-    load_and_authorize_with_permission_in_optional_project :view_project
-    before_action :jump_to_project_menu_item, only: [:show] # rubocop:disable Rails/LexicallyScopedActionFilter
+module Overviews
+  module Widgets
+    module ProjectStatus
+      class ShowComponent < Grids::WidgetComponent
+        include ApplicationHelper
+        include OpTurbo::Streamable
 
-    menu_item :overview
+        param :project
 
-    def project_custom_fields_sidebar
-      render :project_custom_fields_sidebar, layout: false
-    end
+        def wrapper_key
+          "overviews-widget-project-status"
+        end
 
-    def project_life_cycle_sidebar
-      render :project_life_cycle_sidebar, layout: false
-    end
+        def title
+          Project.human_attribute_name(:status_code)
+        end
 
-    def jump_to_project_menu_item
-      # try to redirect to the requested menu item
-      redirect_to_project_menu_item(@project, params[:jump]) if params[:jump]
+        def edit_enabled?
+          current_user.allowed_in_project?(:edit_project, project)
+        end
+      end
     end
   end
 end

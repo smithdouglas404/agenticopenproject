@@ -29,28 +29,37 @@
 #++
 
 module Grids
-  class WidgetBoxComponent < ApplicationComponent
-    class Header < ApplicationComponent
-      attr_reader :id, :title
+  class WidgetBoxComponent::Header < Primer::Component
+    attr_reader :id, :title
 
-      # @param system_arguments [Hash] <%= link_to_system_arguments_docs %>
-      def initialize(title:, **system_arguments)
-        super()
-        @title = title
-        @system_arguments = system_arguments
-        @system_arguments[:tag] = :header
-        @system_arguments[:id] ||= self.class.generate_id
-        @system_arguments[:test_selector] = "op-widget-box--header"
-        @system_arguments[:classes] = class_names(
-          @system_arguments[:classes],
-          "op-widget-box--header"
-        )
-        @id = @system_arguments[:id]
-      end
+    renders_one :action, types: {
+      icon_button: lambda { |icon:, label:, **system_arguments|
+        deny_tag_argument(**system_arguments)
 
-      def render?
-        title.present?
-      end
+        system_arguments[:icon] = icon
+        system_arguments[:"aria-label"] ||= label
+
+        Primer::Beta::IconButton.new(**system_arguments)
+      }
+    }
+
+    # @param system_arguments [Hash] <%= link_to_system_arguments_docs %>
+    def initialize(title:, **system_arguments)
+      super()
+      @title = title
+      @system_arguments = system_arguments
+      @system_arguments[:tag] = :header
+      @system_arguments[:id] ||= self.class.generate_id
+      @system_arguments[:test_selector] = "op-widget-box--header"
+      @system_arguments[:classes] = class_names(
+        @system_arguments[:classes],
+        "op-widget-box--header"
+      )
+      @id = @system_arguments[:id]
+    end
+
+    def render?
+      title.present?
     end
   end
 end

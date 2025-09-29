@@ -29,6 +29,16 @@
 #++
 
 class Overviews::Widgets::ProjectStatusesController < Overviews::WidgetController
+  load_and_authorize_with_permission_in_optional_project :view_project, only: %i[show]
+  load_and_authorize_with_permission_in_optional_project :edit_project, only: %i[edit update]
+
+  def edit
+    replace_via_turbo_stream(
+      component: Overviews::Widgets::ProjectStatus::EditComponent.new(@project, current_user:)
+    )
+    respond_with_turbo_streams
+  end
+
   def update
     call = Projects::UpdateService
       .new(model: @project, user: current_user)
@@ -36,7 +46,7 @@ class Overviews::Widgets::ProjectStatusesController < Overviews::WidgetControlle
 
     if call.success?
       @project = call.result
-      update_via_turbo_stream(component: Overviews::Widgets::ProjectStatusComponent.new(@project, current_user:))
+      replace_via_turbo_stream(component: Overviews::Widgets::ProjectStatus::ShowComponent.new(@project, current_user:))
       render_success_flash_message_via_turbo_stream(message: t(:notice_successful_update))
       respond_with_turbo_streams
     else

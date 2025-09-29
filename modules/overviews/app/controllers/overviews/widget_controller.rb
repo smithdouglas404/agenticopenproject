@@ -29,6 +29,7 @@
 #++
 
 class Overviews::WidgetController < Grids::BaseInProjectController
+  load_and_authorize_with_permission_in_optional_project :view_project
   include OpTurbo::ComponentStream
   include OpTurbo::FlashStreamHelper
 
