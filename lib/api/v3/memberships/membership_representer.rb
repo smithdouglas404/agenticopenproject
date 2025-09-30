@@ -31,6 +31,7 @@ module API
     module Memberships
       class MembershipRepresenter < ::API::Decorators::Single
         include API::Decorators::LinkedResource
+        include API::V3::Workspaces::LinkedResource
         include API::Decorators::DateProperty
 
         self_link title_getter: ->(*) { represented.principal&.name }
@@ -61,9 +62,7 @@ module API
 
         property :id
 
-        associated_resource :project,
-                            link: ::API::V3::Workspaces::WorkspaceRepresenterFactory
-                                    .create_link_lambda(:project)
+        associated_project
 
         associated_resource :principal,
                             getter: ::API::V3::Principals::PrincipalRepresenterFactory

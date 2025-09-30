@@ -34,13 +34,23 @@ module API
       module WorkspaceRepresenterFactory
         module_function
 
-        def create_link_lambda(name, getter: "#{name}_id")
+        def create_link_lambda(name, property_name: name)
           ->(*) {
-            instance_exec(&self.class.associated_resource_default_link(name,
-                                                                       v3_path: represented.project&.workspace_type,
-                                                                       skip_link: -> { false },
-                                                                       title_attribute: :name,
-                                                                       getter:))
+            project_link(represented.public_send(name),
+                         name: property_name,
+                         getter: :id)
+          }
+        end
+
+        def create_setter_lambda(name, property_name: name, namespaces: %i(projects programs portfolios))
+          ->(fragment:, **) {
+            ::API::Decorators::LinkObject
+              .new(represented,
+                   property_name:,
+                   namespace: namespaces,
+                   getter: :"#{name}_id",
+                   setter: :"#{name}_id=")
+              .from_hash(fragment)
           }
         end
       end

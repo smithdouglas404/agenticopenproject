@@ -56,7 +56,7 @@ RSpec.describe Projects::Settings::RelationsForm, type: :forms do
       it "renders field with model" do
         expect(page).to have_element "opce-project-autocompleter", "data-qa-field-name": "parent" do |element|
           expect(element["data-model"]).to be_json_eql(
-            %{{"name": "Undisclosed - The selected parent is invisible because of lacking permissions."}}
+            %{{"name": "Undisclosed - The parent is invisible because of lacking permissions."}}
           )
         end
       end

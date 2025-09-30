@@ -5240,7 +5240,8 @@ en:
       schema: "Schema"
 
     undisclosed:
-      parent: Undisclosed - The selected parent is invisible because of lacking permissions.
+      parent: Undisclosed - The parent is invisible because of lacking permissions.
+      project: Undisclosed - The project is invisible because of lacking permissions.
       ancestor: Undisclosed - The ancestor is invisible because of lacking permissions.
 
   doorkeeper:

@@ -70,6 +70,8 @@ RSpec.describe API::V3::Memberships::MembershipRepresenter, "rendering" do
     mock_permissions_for(current_user) do |mock|
       mock.allow_in_project *permissions, project: workspace || build_stubbed(:project)
     end
+
+    allow(workspace).to receive(:visible?).and_return(true) if workspace
   end
 
   describe "_links" do

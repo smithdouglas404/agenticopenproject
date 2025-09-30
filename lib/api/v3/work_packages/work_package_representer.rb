@@ -31,6 +31,7 @@ module API
     module WorkPackages
       class WorkPackageRepresenter < ::API::Decorators::Single
         include API::Decorators::LinkedResource
+        include API::V3::Workspaces::LinkedResource
         include API::Decorators::DateProperty
         include API::Decorators::FormattableProperty
         include API::Caching::CachedRepresenter
@@ -488,7 +489,7 @@ module API
 
         associated_resource :priority
 
-        associated_resource :project
+        associated_project
 
         resource :project_phase,
                  link_cache_if: -> { any_phase_active_in_project? && view_project_phase_allowed? },
