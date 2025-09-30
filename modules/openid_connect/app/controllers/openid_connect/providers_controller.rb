@@ -79,11 +79,7 @@ module OpenIDConnect
     def edit
       respond_to do |format|
         format.turbo_stream do
-          component = OpenIDConnect::Providers::ViewComponent.new(@provider,
-                                                                  view_mode: :edit,
-                                                                  new_mode: @new_mode,
-                                                                  edit_state: @edit_state)
-          update_via_turbo_stream(component:)
+          update_view_component(view_mode: :edit, new_mode: @new_mode, edit_state: @edit_state)
           scroll_into_view_via_turbo_stream("openid-connect-providers-edit-form", behavior: :instant)
           render turbo_stream: turbo_streams
         end
@@ -152,14 +148,7 @@ module OpenIDConnect
 
       respond_to do |format|
         format.turbo_stream do
-          update_via_turbo_stream(
-            component: OpenIDConnect::Providers::ViewComponent.new(
-              @provider,
-              new_mode: @new_mode,
-              edit_state: @next_edit_state,
-              view_mode: :show
-            )
-          )
+          update_view_component(new_mode: @new_mode, edit_state: @next_edit_state, view_mode: :show)
           render turbo_stream: turbo_streams
         end
         format.html do
@@ -179,20 +168,19 @@ module OpenIDConnect
     def failed_save_response(action_to_render)
       respond_to do |format|
         format.turbo_stream do
-          update_via_turbo_stream(
-            component: OpenIDConnect::Providers::ViewComponent.new(
-              @provider,
-              new_mode: @new_mode,
-              edit_state: @edit_state,
-              view_mode: :show
-            )
-          )
+          update_view_component(new_mode: @new_mode, edit_state: @edit_state, view_mode: :show)
           render turbo_stream: turbo_streams
         end
         format.html do
           render action: action_to_render, status: :unprocessable_entity
         end
       end
+    end
+
+    def update_view_component(new_mode:, edit_state:, view_mode:)
+      update_via_turbo_stream(
+        component: OpenIDConnect::Providers::ViewComponent.new(@provider, new_mode:, edit_state:, view_mode:)
+      )
     end
 
     def set_edit_state
