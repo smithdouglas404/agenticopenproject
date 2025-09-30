@@ -178,7 +178,7 @@ module MeetingAgendaItems
                      scheme: :danger,
                      href: meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item),
                      form_arguments: {
-                       method: :delete, data: { confirm: t("text_are_you_sure"), "turbo-stream": true }
+                       method: :delete, data: { turbo_confirm: t(:text_are_you_sure), "turbo-stream": true }
                      }) do |item|
         item.with_leading_visual_icon(icon: :trash)
       end
@@ -245,16 +245,6 @@ module MeetingAgendaItems
 
     def in_template?
       @meeting.templated?
-    end
-
-    def note_or_outcome_action_added?
-      (@meeting_agenda_item.editable? && @meeting_agenda_item.notes.blank?) || add_outcome_action?
-    end
-
-    def move_to_different_section_or_meeting_action_added?
-      return false unless editable?
-
-      !in_template? || in_backlog? || move_to_next_meeting_enabled?
     end
 
     def editable?

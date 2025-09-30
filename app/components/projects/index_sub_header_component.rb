@@ -86,17 +86,6 @@ module Projects
       I18n.t(:"label_#{type}")
     end
 
-    def new_workspace_icon(type)
-      case type
-      when Project.workspace_types[:project]
-        :project
-      when Project.workspace_types[:portfolio]
-        :briefcase
-      when Project.workspace_types[:program]
-        :"project-roadmap"
-      end
-    end
-
     def allowed_new_workspace_types
       allowed_types = []
       allowed_types << Project.workspace_types[:project] if @current_user.allowed_globally?(:add_project)

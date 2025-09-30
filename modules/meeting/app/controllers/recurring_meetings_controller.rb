@@ -309,10 +309,6 @@ class RecurringMeetingsController < ApplicationController
     render_400 unless @scheduled_meeting.meeting_id.nil?
   end
 
-  def find_optional_project
-    @project = Project.find(params[:project_id]) if params[:project_id].present?
-  end
-
   def find_meeting
     @recurring_meeting = RecurringMeeting.visible.find(params[:id])
   end

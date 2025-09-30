@@ -1,4 +1,15 @@
 ru:
   overviews:
-    label: 'Обзор'
+    label_home: "%{workspace_type} home"
+    label_dashboard: "Dashboard"
+    label_overview: 'Overview'
+    widgets:
+      subitems:
+        in_this_portfolio: "In this portfolio"
+        in_this_program: "In this program"
+        in_this_project: "В этом проекте"
+        no_visible_children: "Нет видимых потомков."
+      members:
+        title: "Latest members"
+        view_all_members: "View all members"
   permission_manage_overview: 'Управление страницей обзора'

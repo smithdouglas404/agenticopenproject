@@ -40,6 +40,13 @@ RSpec.describe Overviews::OverviewsController do
     end
 
     it do
+      expect(get("/projects/my-project/dashboard"))
+        .to route_to(
+          controller: "overviews/overviews", action: "dashboard", project_id: "my-project"
+        )
+    end
+
+    it do
       expect(get("/projects/my-project/project_custom_fields_sidebar"))
         .to route_to(
           controller: "overviews/overviews", action: "project_custom_fields_sidebar", project_id: "my-project"
@@ -61,6 +68,13 @@ RSpec.describe Overviews::OverviewsController do
       expect(get(project_overview_path("my-project")))
         .to route_to(
           controller: "overviews/overviews", action: "show", project_id: "my-project"
+        )
+    end
+
+    it do
+      expect(get(dashboard_project_overview_path("my-project")))
+        .to route_to(
+          controller: "overviews/overviews", action: "dashboard", project_id: "my-project"
         )
     end
 

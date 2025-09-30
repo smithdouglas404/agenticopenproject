@@ -39,7 +39,7 @@ gem "activemodel-serializers-xml", "~> 1.0.1"
 gem "activerecord-import", "~> 2.2.0"
 gem "activerecord-session_store", "~> 2.2.0"
 gem "ox"
-gem "rails", "~> 8.0.2", ">= 8.0.2.1"
+gem "rails", "~> 8.0.3"
 gem "responders", "~> 3.0"
 
 gem "ffi", "~> 1.15"
@@ -92,7 +92,7 @@ gem "deckar01-task_list", "~> 2.3.1"
 # Requires escape-utils for faster escaping
 gem "escape_utils", "~> 1.3"
 # Syntax highlighting used in html-pipeline with rouge
-gem "rouge", "~> 4.6.0"
+gem "rouge", "~> 4.6.1"
 # HTML sanitization used for html-pipeline
 gem "sanitize", "~> 7.0.0"
 # HTML autolinking for mails and urls (replaces autolink)
@@ -166,7 +166,7 @@ gem "paper_trail", "~> 16.0.0"
 gem "op-clamav-client", "~> 3.4", require: "clamav"
 
 # Global ID for polymorphic associations
-gem "globalid", "~> 1.2"
+gem "globalid", "~> 1.3"
 
 # Recurring meeting events definition
 gem "ice_cube", "~> 0.17.0"
@@ -194,9 +194,9 @@ gem "carrierwave", "~> 1.3.4"
 gem "carrierwave_direct", "~> 2.1.0"
 gem "fog-aws"
 
-gem "aws-sdk-core", "~> 3.107"
+gem "aws-sdk-core", "~> 3.233"
 # File upload via fog + screenshots on travis
-gem "aws-sdk-s3", "~> 1.91"
+gem "aws-sdk-s3", "~> 1.199"
 
 gem "openproject-token", "~> 7.4.0"
 
@@ -371,7 +371,7 @@ group :development, :test do
   gem "i18n-tasks", "~> 1.0.13", require: false
 
   # Active Record Doctor helps to keep the database in good shape.
-  gem "active_record_doctor", "~> 1.15.0"
+  gem "active_record_doctor", "~> 2.0.0"
 end
 
 gem "bootsnap", "~> 1.18.0", require: false
@@ -403,7 +403,7 @@ gem "activerecord-nulldb-adapter", "~> 1.1.1"
 
 # Have application level locks on the database to have a mutex shared between workers/hosts.
 # We e.g. employ this to safeguard the creation of journals.
-gem "with_advisory_lock", "~> 7.0.1"
+gem "with_advisory_lock", "~> 7.0.2"
 
 # Load Gemfile.modules explicitly to allow dependabot to work
 eval_gemfile "./Gemfile.modules"

@@ -1,4 +1,15 @@
 zh-TW:
   overviews:
-    label: '總覽'
+    label_home: "%{workspace_type} 家"
+    label_dashboard: "儀表板"
+    label_overview: '總覽'
+    widgets:
+      subitems:
+        in_this_portfolio: "在此組合中"
+        in_this_program: "在此程式中"
+        in_this_project: "在此專案中"
+        no_visible_children: "沒有可見的子項目。"
+      members:
+        title: "Latest members"
+        view_all_members: "View all members"
   permission_manage_overview: '管理總覽頁面'

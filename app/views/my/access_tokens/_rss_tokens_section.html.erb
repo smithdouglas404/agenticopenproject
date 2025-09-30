@@ -61,8 +61,11 @@ See COPYRIGHT and LICENSE files for more details.
                   <td class="buttons">
                     <%= link_to "",
                                 { action: "revoke_rss_key" },
-                                method: :delete,
-                                data: { confirm: t("my_account.access_tokens.simple_revoke_confirmation"), test_selector: "rss-token-revoke" },
+                                data: {
+                                  turbo_method: :delete,
+                                  turbo_confirm: t("my_account.access_tokens.simple_revoke_confirmation"),
+                                  test_selector: "rss-token-revoke"
+                                },
                                 class: "icon icon-delete" %>
                   </td>
                 </tr>
@@ -72,7 +75,7 @@ See COPYRIGHT and LICENSE files for more details.
         </div>
       <% else %>
         <%=
-          render Primer::Beta::Link.new(href: generate_rss_key_my_access_tokens_path, data: { method: :post }, test_selector: "rss-token-add") do |link|
+          render Primer::Beta::Link.new(href: generate_rss_key_my_access_tokens_path, data: { turbo_method: :post }, test_selector: "rss-token-add") do |link|
             link.with_leading_visual_icon(icon: :plus)
             t("my_account.access_tokens.rss.static_token_name")
           end
