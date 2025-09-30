@@ -341,7 +341,7 @@ PMflex is is a comprehensive and flexible project management system based on the
 
 ### Portfolio
 
-In OpenProject, you can do project portfolio management by creating, filtering and sorting [project lists](#project-lists). [Learn more about project portfolio management with OpenProject](https://www.openproject.org/collaboration-software-features/project-portfolio-management/).
+In OpenProject, you can manage your project portfolio by creating, filtering and sorting [project lists](#project-lists). [Learn more about project portfolio management with OpenProject](https://www.openproject.org/collaboration-software-features/project-portfolio-management/).
 
 ### Primer design system
 
