@@ -27,12 +27,4 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%=
-  render(Grids::WidgetGridComponent.new(align_boxes_start: true)) do |grid|
-    grid.with_widget(Overviews::Widgets::DescriptionComponent, @project)
-    grid.with_widget(Overviews::Widgets::ProjectStatus::WidgetComponent, @project)
-    grid.with_widget(Overviews::Widgets::SubitemsComponent, @project)
-    grid.with_widget(Overviews::Widgets::MembersComponent, @project)
-    grid.with_widget(Overviews::Widgets::NewsComponent, @project)
-  end
-%>
+<%= render Overviews::Widgets::ProjectStatus::FormComponent.new(@project, current_user:) %>

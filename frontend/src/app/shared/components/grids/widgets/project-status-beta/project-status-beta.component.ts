@@ -35,6 +35,6 @@ import { AbstractTurboWidgetComponent } from 'core-app/shared/components/grids/w
   standalone: false,
 })
 export class WidgetProjectStatusBetaComponent extends AbstractTurboWidgetComponent {
-  override frameId = 'overviews-widget-project-status';
+  override frameId = 'op-overviews-widgets-project-status';
   override name = 'project_status';
 }

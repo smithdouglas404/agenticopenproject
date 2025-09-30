@@ -31,22 +31,18 @@
 module Overviews
   module Widgets
     module ProjectStatus
-      class ShowComponent < Grids::WidgetComponent
-        include ApplicationHelper
+      class FormComponent < ApplicationComponent
+        include OpPrimer::ComponentHelpers
+        include OpPrimer::FormHelpers
         include OpTurbo::Streamable
 
+        extend Dry::Initializer
+
         param :project
+        option :current_user, default: -> { User.current }
 
         def wrapper_key
-          "overviews-widget-project-status"
-        end
-
-        def title
-          Project.human_attribute_name(:status_code)
-        end
-
-        def edit_enabled?
-          current_user.allowed_in_project?(:edit_project, project)
+          "op-overviews-widgets-project-status"
         end
       end
     end

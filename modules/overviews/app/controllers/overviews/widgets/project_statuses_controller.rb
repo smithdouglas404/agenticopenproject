@@ -32,9 +32,14 @@ class Overviews::Widgets::ProjectStatusesController < Overviews::WidgetControlle
   load_and_authorize_with_permission_in_optional_project :view_project, only: %i[show]
   load_and_authorize_with_permission_in_optional_project :edit_project, only: %i[edit update]
 
+  def show
+    render layout: false
+  end
+
   def edit
+    turbo_streams << turbo_stream.remove("op-overviews-widgets-project-status-edit")
     replace_via_turbo_stream(
-      component: Overviews::Widgets::ProjectStatus::EditComponent.new(@project, current_user:)
+      component: Overviews::Widgets::ProjectStatus::FormComponent.new(@project, current_user:),
     )
     respond_with_turbo_streams
   end
@@ -46,7 +51,9 @@ class Overviews::Widgets::ProjectStatusesController < Overviews::WidgetControlle
 
     if call.success?
       @project = call.result
-      replace_via_turbo_stream(component: Overviews::Widgets::ProjectStatus::ShowComponent.new(@project, current_user:))
+      replace_via_turbo_stream(
+        component: Overviews::Widgets::ProjectStatus::BodyComponent.new(@project, current_user:),
+      )
       render_success_flash_message_via_turbo_stream(message: t(:notice_successful_update))
       respond_with_turbo_streams
     else

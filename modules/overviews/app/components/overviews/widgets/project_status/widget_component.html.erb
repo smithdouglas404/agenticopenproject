@@ -28,11 +28,21 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  render(Grids::WidgetGridComponent.new(align_boxes_start: true)) do |grid|
-    grid.with_widget(Overviews::Widgets::DescriptionComponent, @project)
-    grid.with_widget(Overviews::Widgets::ProjectStatus::WidgetComponent, @project)
-    grid.with_widget(Overviews::Widgets::SubitemsComponent, @project)
-    grid.with_widget(Overviews::Widgets::MembersComponent, @project)
-    grid.with_widget(Overviews::Widgets::NewsComponent, @project)
+  component_wrapper(:widget_wrapper, turbo_enabled: false) do |widget|
+    widget.with_header(title:) do |header|
+      if edit_enabled?
+        header.with_action_icon_button(
+          id: "op-overviews-widgets-project-status-edit",
+          tag: :a,
+          scheme: :invisible,
+          href: edit_project_widgets_project_status_path(project),
+          data: { turbo_stream: true },
+          icon: :pencil,
+          label: t(:label_edit),
+        )
+      end
+    end
+
+    render ::Overviews::Widgets::ProjectStatus::BodyComponent.new(project, current_user:)
   end
 %>

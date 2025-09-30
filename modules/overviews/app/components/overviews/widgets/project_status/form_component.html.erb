@@ -28,18 +28,7 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  component_wrapper(:widget_wrapper) do |widget|
-    widget.with_header(title:) do |header|
-      header.with_action_icon_button(
-        tag: :a,
-        scheme: :invisible,
-        href: edit_project_widgets_project_status_path(project),
-        data: { turbo_stream: true },
-        icon: :x,
-        label: t(:button_cancel),
-      )
-    end
-
+  component_wrapper(tag: "turbo-frame") do
     flex_layout do |flex|
       flex.with_row(mb: 3) do
         render(Projects::StatusButtonComponent.new(project:, user: current_user, hide_help_text: true))
@@ -55,7 +44,9 @@ See COPYRIGHT and LICENSE files for more details.
           render(
             Primer::Forms::FormList.new(
               Projects::Settings::StatusForm.new(f, hide_label: true),
-              Projects::Settings::Submit.new(f, label: I18n.t("projects.settings.button_update_status_description"))
+              Projects::Settings::Submit.new(f,
+                                             with_cancel_href: project_widgets_project_status_path(project),
+                                             label: I18n.t("projects.settings.button_update_status_description"))
             )
           )
         end

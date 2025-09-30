@@ -28,23 +28,10 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  component_wrapper(:widget_wrapper) do |widget|
-    widget.with_header(title:) do |header|
-      if edit_enabled?
-        header.with_action_icon_button(
-          tag: :a,
-          scheme: :invisible,
-          href: edit_project_widgets_project_status_path(project),
-          data: { turbo_stream: true },
-          icon: :pencil,
-          label: t(:label_edit),
-        )
-      end
-    end
-
+  component_wrapper(tag: "turbo-frame") do
     flex_layout do |flex|
       flex.with_row(mb: 3) do
-        render(Projects::StatusButtonComponent.new(project:, user: current_user, hide_help_text: true))
+        render(Projects::StatusButtonComponent.new(project:, user: current_user, hide_help_text: true, editable: false))
       end
 
       flex.with_row do

@@ -31,9 +31,17 @@
 module Overviews
   module Widgets
     module ProjectStatus
-      class EditComponent < ShowComponent
+      class WidgetComponent < Grids::WidgetComponent
+        include ApplicationHelper
+        include OpTurbo::Streamable
 
-        def render?
+        param :project
+
+        def title
+          Project.human_attribute_name(:status_code)
+        end
+
+        def edit_enabled?
           current_user.allowed_in_project?(:edit_project, project)
         end
       end

@@ -61,7 +61,8 @@ module OpTurbo
     # @param [ActionView::Context] view_context the view context to render in.
     # @param [Symbol] action the Turbo Stream action.
     # @param [String, nil] method the Turbo Stream method (if action is :update or :replace).
-    def render_as_turbo_stream(view_context:, action: :update, method: nil, **attributes)
+    # @param [String, nil] target the target of the turbo stream tag (defaults to wrapper_key)
+    def render_as_turbo_stream(view_context:, action: :update, method: nil, target: nil, **attributes)
       case action
       when :update, *INLINE_ACTIONS
         @inner_html_only = true
@@ -88,7 +89,7 @@ module OpTurbo
       OpTurbo::StreamComponent.new(
         action:,
         method:,
-        target: wrapper_key,
+        target: target || wrapper_key,
         template:,
         **attributes
       ).render_in(view_context)

@@ -27,30 +27,31 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-module Projects
-  module Settings
-    class Submit < ApplicationForm
-      attr_reader :label, :cancel_href
 
-      form do |f|
-        f.group(layout: :horizontal) do |button_group|
-          if cancel_href
-            button_group.button(
-              name: :cancel,
-              tag: :a,
-              label: I18n.t(:button_cancel),
-              scheme: :default,
-              href: cancel_href
-            )
-          end
-          button_group.submit(name: :submit, scheme: :primary, label:)
+module Overviews
+  module Widgets
+    module ProjectStatus
+      class BodyComponent < ApplicationComponent
+        include ApplicationHelper
+        include OpPrimer::ComponentHelpers
+        include OpTurbo::Streamable
+
+        extend Dry::Initializer
+
+        param :project
+        option :current_user, default: -> { User.current }
+
+        def wrapper_key
+          "op-overviews-widgets-project-status"
         end
-      end
 
-      def initialize(label: I18n.t("button_save"), with_cancel_href: nil)
-        super()
-        @label = label
-        @cancel_href = with_cancel_href
+        def title
+          Project.human_attribute_name(:status_code)
+        end
+
+        def edit_enabled?
+          current_user.allowed_in_project?(:edit_project, project)
+        end
       end
     end
   end

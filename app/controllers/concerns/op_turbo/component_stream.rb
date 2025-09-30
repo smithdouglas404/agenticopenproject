@@ -50,24 +50,25 @@ module OpTurbo
       respond_to_with_turbo_streams(&format_block)
     end
 
-    def update_via_turbo_stream(component:, status: :ok, method: nil)
-      modify_via_turbo_stream(component:, action: :update, status:, method:)
+    def update_via_turbo_stream(component:, status: :ok, **)
+      modify_via_turbo_stream(component:, action: :update, status:, **)
     end
 
-    def replace_via_turbo_stream(component:, status: :ok, method: nil)
-      modify_via_turbo_stream(component:, action: :replace, status:, method:)
+    def replace_via_turbo_stream(component:, status: :ok, **)
+      modify_via_turbo_stream(component:, action: :replace, status:, **)
     end
 
     def remove_via_turbo_stream(component:, status: :ok)
       modify_via_turbo_stream(component:, action: :remove, status:)
     end
 
-    def modify_via_turbo_stream(component:, action:, status:, method: nil)
+    def modify_via_turbo_stream(component:, action:, status:, method: nil, target: nil)
       @turbo_status = status
       turbo_streams << component.render_as_turbo_stream(
         view_context:,
         action:,
-        method:
+        method:,
+        target:
       )
     end
 
