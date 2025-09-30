@@ -32,17 +32,7 @@ module Saml
       end
     end
 
-    def show
-      respond_to do |format|
-        format.turbo_stream do
-          component = Saml::Providers::ViewComponent.new(@provider,
-                                                         view_mode: :show)
-          update_via_turbo_stream(component:)
-          render turbo_stream: turbo_streams
-        end
-        format.html
-      end
-    end
+    def show; end
 
     def new
       @provider = ::Saml::Provider.new
@@ -117,6 +107,11 @@ module Saml
     private
 
     def successful_save_response
+      if @new_mode && !@next_edit_state
+        flash[:notice] = I18n.t("saml.providers.notice_created")
+        return redirect_to saml_provider_path(@provider)
+      end
+
       respond_to do |format|
         format.turbo_stream do
           update_via_turbo_stream(
@@ -130,7 +125,7 @@ module Saml
           render turbo_stream: turbo_streams
         end
         format.html do
-          if @new_mode && @next_edit_state
+          if @next_edit_state
             redirect_to edit_saml_provider_path(@provider,
                                                 anchor: "saml-providers-edit-form",
                                                 new_mode: @new_mode,
