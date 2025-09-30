@@ -51,7 +51,7 @@ module Primer
           super()
           @input = input
           @value = value
-          @users = User.active.map do |user|
+          @users = User.active.preload(:attachments).map do |user|
             {
               id: user.id,
               username: user.name,
