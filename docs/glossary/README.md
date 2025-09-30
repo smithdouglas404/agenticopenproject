@@ -47,7 +47,7 @@ Finally there is also a filter for [project lists](#project-lists) called **Late
 
 ### Admin
 
-In OpenProject, the person who has administrative rights in an instance is called **system admin**. All information concerning the configuration of an OpenProject instance are documented in the [System admin guide](../system-admin-guide/#system-admin-guide). Please note that an "admin" can also describe the role of a person inside a project. This person would be called **project admin** and usually has specific rights on a project level. A project admin does not necessarily have system admin rights.
+In OpenProject, the person who has administrative rights in an instance is called a **system admin**. All information concerning the configuration of an OpenProject instance is documented in the [System admin guide](../system-admin-guide/#system-admin-guide). Please note that an "admin" can also describe the role of a person inside a project. This person would be called a **project admin** and usually has specific rights on a project level. A project admin does not necessarily have system admin rights.
 
 ### Agile project management
 
