@@ -41,7 +41,7 @@ In OpenProject, there is a **[module](#module)** called "Activity", which shows 
 
 Activity in OpenProject can also mean **[work package](#work-package) Activity**, which refers to a tab in work packages where comments and system changes to that work package are displayed.
 
-Then there is **My activity**, a personal overview of all your altest actions and projects you are involved in. You can navigate there by clicking on your avatar in the upper right corner.
+Then there is **My activity**, a personal overview of all your latest actions and projects you are involved in. You can navigate there by clicking on your avatar in the upper right corner.
 
 Finally there is also a filter for [project lists](#project-lists) called **Latest activity at**. This filter includes changes to projects at a very low level, e.g. updates on work package attributes. If you want to filter only for high-level changes to a project, e.g. a new project name or custom field, you need the filter "Updated on".
 
