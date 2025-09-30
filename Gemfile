@@ -403,7 +403,7 @@ gem "activerecord-nulldb-adapter", "~> 1.1.1"
 
 # Have application level locks on the database to have a mutex shared between workers/hosts.
 # We e.g. employ this to safeguard the creation of journals.
-gem "with_advisory_lock", "~> 7.0.1"
+gem "with_advisory_lock", "~> 7.0.2"
 
 # Load Gemfile.modules explicitly to allow dependabot to work
 eval_gemfile "./Gemfile.modules"
