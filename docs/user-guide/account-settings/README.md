@@ -109,7 +109,7 @@ In the dropdown menu Color mode, you can now also select the **Automatic option,
 
 ![Automatic color mode in OpenProject account settings](openproject_account_settings_automatic_os_mode.png)
 
-If this option is selected, OpenProject will automatically match your operating system’s light or dark theme. If this option is selected, you will also see additional settings to force high-contrast when in Light or Dark mode is selected.
+If this option is selected, OpenProject will automatically match your operating system’s light or dark theme, including the system's contrast settings. You will also see additional settings to force high-contrast when Light or Dark mode is selected— this would ensure that OpenProject always increases contrast in automatic mode, regardless of the system contrast settings.
 
 If your operating system is set to high contrast mode, OpenProject will also automatically switch to the corresponding high contrast mode (light or dark).
 
