@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -438,7 +440,7 @@ RSpec.describe "API v3 memberships resource", content_type: :json do
       let(:role) { defined?(expected_role) ? expected_role : other_role }
 
       it "responds with 201" do
-        expect(last_response.status).to eq(201)
+        expect(last_response).to have_http_status(:created)
       end
 
       it "creates the member" do
@@ -675,7 +677,7 @@ RSpec.describe "API v3 memberships resource", content_type: :json do
 
       context "as a non admin" do
         it "responds with 422 and explains the error" do
-          expect(last_response.status).to eq(422)
+          expect(last_response).to have_http_status(:unprocessable_entity)
 
           expect(last_response.body)
             .to be_json_eql("Project can't be blank.".to_json)
@@ -705,7 +707,7 @@ RSpec.describe "API v3 memberships resource", content_type: :json do
       end
 
       it "responds with 422 and explains the error" do
-        expect(last_response.status).to eq(422)
+        expect(last_response).to have_http_status(:unprocessable_entity)
 
         expect(last_response.body)
           .to be_json_eql("User has already been taken.".to_json)
@@ -734,7 +736,7 @@ RSpec.describe "API v3 memberships resource", content_type: :json do
       end
 
       it "responds with 422 and explains the error" do
-        expect(last_response.status).to eq(422)
+        expect(last_response).to have_http_status(:unprocessable_entity)
 
         error_message = "For property 'user' a link like '/api/v3/groups/:id' or " +
                         "'/api/v3/users/:id' or '/api/v3/placeholder_users/:id' is expected, " +
@@ -762,7 +764,7 @@ RSpec.describe "API v3 memberships resource", content_type: :json do
       end
 
       it "responds with 422 and explains the error" do
-        expect(last_response.status).to eq(422)
+        expect(last_response).to have_http_status(:unprocessable_entity)
 
         expect(last_response.body)
           .to be_json_eql("Roles need to be assigned.".to_json)
@@ -862,7 +864,7 @@ RSpec.describe "API v3 memberships resource", content_type: :json do
 
     context "for a user" do
       it "responds with 200" do
-        expect(last_response.status).to eq(200)
+        expect(last_response).to have_http_status(:ok)
       end
 
       it "updates the member" do
@@ -955,7 +957,7 @@ RSpec.describe "API v3 memberships resource", content_type: :json do
       let(:last_user_member_updated_at) { Member.find_by(principal: users.last).updated_at }
 
       it "responds with 200" do
-        expect(last_response.status).to eq(200)
+        expect(last_response).to have_http_status(:ok)
       end
 
       it "updates the member and all inherited members but does not update memberships users have already had" do
@@ -1038,7 +1040,7 @@ RSpec.describe "API v3 memberships resource", content_type: :json do
         let(:another_role) { create(:global_role) }
 
         it "responds with 200" do
-          expect(last_response.status).to eq(200)
+          expect(last_response).to have_http_status(:ok)
         end
 
         it "updates the member and all inherited members but does not update memberships users have already had" do

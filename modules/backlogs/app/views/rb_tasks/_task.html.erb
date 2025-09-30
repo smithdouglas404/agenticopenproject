@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2024 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -30,9 +30,9 @@ See COPYRIGHT and LICENSE files for more details.
 <%
   project ||= task.project
   prevent_edit = if User.current.allowed_in_project?(:edit_work_packages, project)
-                   ''
+                   ""
                  else
-                   'prevent_edit'
+                   "prevent_edit"
                  end
 %>
 <div class="model work_package task <%= color_contrast_class(task) %> <%= prevent_edit %> <%= mark_if_closed(task) %>" id="work_package_<%= task.id %>" <%= build_inline_style(task) %>>
@@ -53,7 +53,7 @@ See COPYRIGHT and LICENSE files for more details.
     <div class="t"><%= assignee_name_or_empty(task) %></div>
     <div class="v"><%= assignee_id_or_empty(task) %></div>
   </div>
-  <div class="remaining_hours editable<%= ' empty' if remaining_hours(task).blank? %>"
+  <div class="remaining_hours editable<%= " empty" if remaining_hours(task).blank? %>"
        fieldname="remaining_hours"
        fieldlabel="<%= WorkPackage.human_attribute_name(:remaining_hours) %>"><%= remaining_hours(task) %></div>
   <div class="indicator"> </div>

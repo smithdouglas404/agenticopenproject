@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -61,24 +63,6 @@ RSpec.describe UserPreference do
     end
   end
 
-  describe "#respond_to?" do
-    context "for created_at (key not in the schema)" do
-      it "is does not respond" do
-        expect(preference)
-          .not_to respond_to(:created_at)
-      end
-    end
-  end
-
-  describe "an unsupported method" do
-    context "for created_at (key not in the schema)" do
-      it "raises an error" do
-        expect { preference.created_at }
-          .to raise_error NoMethodError
-      end
-    end
-  end
-
   describe "sort order" do
     it_behaves_like "accepts real and false booleans",
                     :comments_in_reverse_order=,
@@ -115,27 +99,6 @@ RSpec.describe UserPreference do
             with_settings: { default_auto_hide_popups: true } do
       it "disables auto hide popups" do
         expect(subject.auto_hide_popups).to be_truthy
-      end
-    end
-  end
-
-  describe "hide_mail" do
-    it_behaves_like "accepts real and false booleans",
-                    :hide_mail=,
-                    :hide_mail?
-
-    context "when a new pref instance" do
-      subject { described_class.new }
-
-      it "defaults to true" do
-        expect(subject.settings[:hide_mail]).to be_nil
-        expect(subject.hide_mail).to be true
-        expect(subject.hide_mail?).to be true
-
-        subject.hide_mail = false
-        expect(subject.settings[:hide_mail]).to be false
-        expect(subject.hide_mail).to be false
-        expect(subject.hide_mail?).to be false
       end
     end
   end
@@ -239,5 +202,152 @@ RSpec.describe UserPreference do
       expect(subject[:warn_on_leaving_unsaved]).to eql(value_warn_on_leaving_unsaved)
       expect(subject[:auto_hide_popups]).to eql(value_auto_hide_popups)
     end
+  end
+
+  describe "#time_zone" do
+    context "with a time zone set and a default configured", with_settings: { user_default_timezone: "America/Los_Angeles" } do
+      let(:settings) { { "time_zone" => "Africa/Algiers" } }
+
+      it "returns the time zone set" do
+        expect(preference.time_zone).to eql "Africa/Algiers"
+      end
+    end
+
+    context "with no time zone configured but a default", with_settings: { user_default_timezone: "America/Los_Angeles" } do
+      it "returns the default time zone" do
+        expect(preference.time_zone).to eql "America/Los_Angeles"
+      end
+    end
+
+    context "with neiter a time zone configured nor a default one", with_settings: { user_default_timezone: "" } do
+      it "returns UTC" do
+        expect(preference.time_zone).to eql "Etc/UTC"
+      end
+    end
+  end
+
+  describe "#time_zone?" do
+    context "with a time zone set and a default configured", with_settings: { user_default_timezone: "America/Los_Angeles" } do
+      let(:settings) { { "time_zone" => "Africa/Algiers" } }
+
+      it "is true" do
+        expect(preference).to be_time_zone
+      end
+    end
+
+    context "with no time zone configured but a default", with_settings: { user_default_timezone: "America/Los_Angeles" } do
+      it "is false" do
+        expect(preference).not_to be_time_zone
+      end
+    end
+
+    context "with neiter a time zone configured nor a default one", with_settings: { user_default_timezone: "" } do
+      it "is false" do
+        expect(preference).not_to be_time_zone
+      end
+    end
+  end
+
+  describe "#theme" do
+    context "when none is specified" do
+      it "defaults to light" do
+        expect(subject.theme).to eq("light")
+        expect(subject).to be_a_light_theme
+        expect(subject).to be_a_light_color_mode
+      end
+    end
+
+    context "with a dark theme specified" do
+      let(:settings) { { "theme" => "dark" } }
+
+      it "returns the dark theme" do
+        expect(subject.theme).to eq("dark")
+        expect(subject).to be_a_dark_theme
+        expect(subject).to be_a_dark_color_mode
+      end
+    end
+
+    context "with a light theme and contrast enabled" do
+      let(:settings) { { "theme" => "light", "increase_theme_contrast" => true } }
+
+      it "returns light theme with high contrast detection" do
+        expect(subject.theme).to eq("light")
+        expect(subject).to be_a_light_theme
+        expect(subject).to be_a_light_high_contrast_theme
+        expect(subject).to be_a_light_color_mode
+        expect(subject.increase_theme_contrast?).to be true
+      end
+    end
+
+    context "with a dark theme and contrast enabled" do
+      let(:settings) { { "theme" => "dark", "increase_theme_contrast" => true } }
+
+      it "returns dark theme with high contrast detection" do
+        expect(subject.theme).to eq("dark")
+        expect(subject).to be_a_dark_theme
+        expect(subject).to be_a_dark_high_contrast_theme
+        expect(subject).to be_a_dark_color_mode
+        expect(subject.increase_theme_contrast?).to be true
+      end
+    end
+
+    context "with light theme and contrast disabled" do
+      let(:settings) { { "theme" => "light", "increase_theme_contrast" => false } }
+
+      it "returns light theme without high contrast" do
+        expect(subject.theme).to eq("light")
+        expect(subject).to be_a_light_theme
+        expect(subject).not_to be_a_light_high_contrast_theme
+        expect(subject).to be_a_light_color_mode
+        expect(subject.increase_theme_contrast?).to be false
+      end
+    end
+
+    context "with dark theme and contrast disabled" do
+      let(:settings) { { "theme" => "dark", "increase_theme_contrast" => false } }
+
+      it "returns dark theme without high contrast" do
+        expect(subject.theme).to eq("dark")
+        expect(subject).to be_a_dark_theme
+        expect(subject).not_to be_a_dark_high_contrast_theme
+        expect(subject).to be_a_dark_color_mode
+        expect(subject.increase_theme_contrast?).to be false
+      end
+    end
+
+    context "with system theme specified" do
+      let(:settings) { { "theme" => "sync_with_os" } }
+
+      it "returns the system theme" do
+        expect(subject.theme).to eq("sync_with_os")
+        expect(subject).to be_a_sync_with_os_theme
+      end
+    end
+
+    context "with unset contrast settings" do
+      let(:settings) { { "theme" => "light" } }
+
+      it "defaults contrast settings to false" do
+        expect(subject).not_to be_increase_theme_contrast
+        expect(subject).not_to be_force_light_theme_contrast
+        expect(subject).not_to be_force_dark_theme_contrast
+        expect(subject).not_to be_a_light_high_contrast_theme
+        expect(subject).not_to be_a_dark_high_contrast_theme
+      end
+    end
+  end
+
+  describe "contrast settings" do
+    it_behaves_like "accepts real and false booleans",
+                    :increase_theme_contrast=,
+                    :increase_theme_contrast?
+
+    it_behaves_like "accepts real and false booleans",
+                    :force_light_theme_contrast=,
+                    :force_light_theme_contrast?
+
+    it_behaves_like "accepts real and false booleans",
+                    :force_dark_theme_contrast=,
+                    :force_dark_theme_contrast?
   end
 end

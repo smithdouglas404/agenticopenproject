@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -375,7 +377,7 @@ RSpec.describe OpenProject::SCM::Adapters::Git do
           end
 
           describe "encoding" do
-            let (:char1_hex) { "\xc3\x9c".force_encoding("UTF-8") }
+            let (:char1_hex) { (+"\xc3\x9c").force_encoding("UTF-8") }
 
             context "with default encoding" do
               it_behaves_like "retrieve entries"

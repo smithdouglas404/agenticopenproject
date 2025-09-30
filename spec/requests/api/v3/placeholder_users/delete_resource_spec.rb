@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,8 +30,7 @@
 require "spec_helper"
 require_relative "delete_resource_examples"
 
-RSpec.describe API::V3::PlaceholderUsers::PlaceholderUsersAPI,
-               "delete" do
+RSpec.describe API::V3::PlaceholderUsers::PlaceholderUsersAPI, "delete" do
   include API::V3::Utilities::PathHelper
 
   shared_let(:placeholder) { create(:placeholder_user, name: "foo") }

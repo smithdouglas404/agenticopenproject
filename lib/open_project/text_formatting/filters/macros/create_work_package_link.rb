@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,7 +34,7 @@ module OpenProject::TextFormatting::Filters::Macros
       include OpenProject::StaticRouting::UrlHelpers
     end
 
-    HTML_CLASS = "create_work_package_link".freeze
+    HTML_CLASS = "create_work_package_link"
 
     module_function
 
@@ -44,7 +46,7 @@ module OpenProject::TextFormatting::Filters::Macros
       macro.replace work_package_link(macro, context)
     end
 
-    def work_package_link(macro, context)
+    def work_package_link(macro, context) # rubocop:disable Metrics/AbcSize
       project = context[:project]
       raise I18n.t("macros.create_work_package_link.errors.no_project_context") if project.nil?
 

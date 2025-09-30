@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -56,27 +58,27 @@ RSpec.describe API::V3::WorkPackages::WorkPackageEagerLoadingWrapper, "cost eage
     create(:cost_entry,
            cost_type:,
            user:,
-           work_package:,
+           entity: work_package,
            project:)
   end
   let(:cost_entry2) do
     create(:cost_entry,
            cost_type:,
            user:,
-           work_package:,
+           entity: work_package,
            project:)
   end
   let(:time_entry1) do
     create(:time_entry,
            user:,
            project:,
-           work_package:)
+           entity: work_package)
   end
   let(:time_entry2) do
     create(:time_entry,
            user:,
            project:,
-           work_package:)
+           entity: work_package)
   end
   let(:user_rates) do
     create(:hourly_rate,

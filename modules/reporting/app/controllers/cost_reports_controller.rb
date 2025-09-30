@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -40,7 +42,7 @@ class CostReportsController < ApplicationController
 
   before_action :check_cache
   before_action :load_all
-  before_action :find_optional_project
+  before_action :load_and_authorize_in_optional_project
   before_action :find_optional_user
 
   include Layout
@@ -65,8 +67,6 @@ class CostReportsController < ApplicationController
 
   before_action :set_cost_types # has to be set AFTER the Report::Controller filters run
 
-  layout "angular/angular"
-
   # Checks if custom fields have been updated, added or removed since we
   # last saw them, to rebuild the filters and group bys.
   # Called once per request.
@@ -76,23 +76,38 @@ class CostReportsController < ApplicationController
 
   def index
     table
+    return if performed?
 
-    unless performed?
-      respond_to do |format|
-        format.html do
-          session[report_engine.name.underscore.to_sym].try(:delete, :name)
-          render locals: { menu_name: project_or_global_menu }
-        end
+    respond_to do |format|
+      format.html { render_html }
+      format.xls { export(:xls) }
+      format.pdf { export(:pdf) }
+    end
+  end
 
-        format.xls do
-          job_id = ::CostQuery::ScheduleExportService
-            .new(user: current_user)
-            .call(filter_params:, project: @project, cost_types: @cost_types)
-            .result
+  def render_html
+    session[session_name].try(:delete, :name)
+    # get rid of unsaved filters and grouping
+    store_query if @query && @query&.id != session[session_name].try(:id)
+    render locals: { menu_name: project_or_global_menu }
+  end
 
-          redirect_to job_status_path(job_id)
-        end
-      end
+  def export(format)
+    job_id = ::CostQuery::ScheduleExportService
+               .new(user: current_user)
+               .call(
+                 format:,
+                 query_id: @query.id,
+                 query_name: @query.name,
+                 filter_params: filter_params,
+                 project: @project,
+                 cost_types: @cost_types
+               ).result
+
+    if request.headers["Accept"]&.include?("application/json")
+      render json: { job_id: }
+    else
+      redirect_to job_status_path(job_id)
     end
   end
 
@@ -109,7 +124,7 @@ class CostReportsController < ApplicationController
   end
 
   def menu_item_to_highlight_on_index
-    @project ? :costs : :cost_reports_global_report_menu
+    @project ? :costs : :cost_reports_global
   end
 
   ##
@@ -135,7 +150,7 @@ class CostReportsController < ApplicationController
   # at :id does not exist
   def show
     if @query
-      store_query(@query)
+      store_query
       table
       render action: "index", locals: { menu_name: project_or_global_menu } unless performed?
     else
@@ -152,19 +167,23 @@ class CostReportsController < ApplicationController
     else
       raise ActiveRecord::RecordNotFound
     end
-    redirect_to action: "index", default: 1
+    redirect_to action: "index", default: 1, id: nil
   end
 
   ##
   # Update a record with new query parameters and save it. Redirects to the
   # specified record or renders the updated table on XHR
   def update
-    if params[:set_filter].to_i == 1 # save
+    if save_query? # save
       old_query = @query
       prepare_query
-      old_query.migrate(@query)
-      old_query.save!
-      @query = old_query
+      if old_query
+        old_query.migrate(@query)
+        old_query.save!
+        @query = old_query
+      end
+    elsif set_filter? # apply
+      prepare_query
     end
     if request.xhr?
       table
@@ -180,7 +199,7 @@ class CostReportsController < ApplicationController
     @query.name = params[:query_name]
     @query.public! if make_query_public?
     @query.save!
-    store_query(@query)
+    store_query
     if request.xhr?
       render plain: @query.name
     else
@@ -202,7 +221,7 @@ class CostReportsController < ApplicationController
     filter = f_cls.new.tap do |f|
       f.values = JSON.parse(params[:values].tr("'", '"')) if params[:values].present? && params[:values]
     end
-    render_widget Widget::Filters::Option, filter, to: canvas = ""
+    render_widget Widget::Filters::Option, filter, to: canvas = +""
 
     render plain: canvas, layout: !request.xhr?
   end
@@ -241,7 +260,7 @@ class CostReportsController < ApplicationController
   # Get the filter params with an optional project context
   def filter_params
     filters = http_filter_parameters if set_filter?
-    filters ||= session[report_engine.name.underscore.to_sym].try(:[], :filters)
+    filters ||= session[session_name].try(:[], :filters)
     filters ||= default_filter_parameters
 
     update_project_context!(filters)
@@ -253,7 +272,7 @@ class CostReportsController < ApplicationController
   # Return the active group bys
   def group_params
     groups = http_group_parameters if set_filter?
-    groups ||= session[report_engine.name.underscore.to_sym].try(:[], :groups)
+    groups ||= session[session_name].try(:[], :groups)
     groups || default_group_parameters
   end
 
@@ -358,7 +377,8 @@ class CostReportsController < ApplicationController
   # save_private_cost_reports permission as well
   #
   # @Override
-  def allowed_in_report?(action, report, user = User.current) # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
+  # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
+  def allowed_in_report?(action, report, user = User.current)
     # admins may do everything
     return true if user.admin?
 
@@ -390,6 +410,7 @@ class CostReportsController < ApplicationController
       Array(permissions).any? { |permission| user.allowed_in_any_project?(permission) }
     end
   end
+  # rubocop:enable Metrics/AbcSize, Metrics/PerceivedComplexity
 
   private
 
@@ -399,8 +420,8 @@ class CostReportsController < ApplicationController
 
   def get_filter_class(name)
     filter = report_engine::Filter
-      .all
-      .detect { |cls| cls.to_s.demodulize.underscore == name.to_s }
+               .all
+               .detect { |cls| cls.to_s.demodulize.underscore == name.to_s }
 
     raise ArgumentError.new("Filter with name #{name} does not exist.") unless filter
 
@@ -449,6 +470,12 @@ class CostReportsController < ApplicationController
   end
 
   ##
+  # Determines if the request contains a query to save
+  def save_query?
+    params[:save_query].to_i == 1
+  end
+
+  ##
   # Extract active filters from the http params
   def http_filter_parameters
     params[:fields] ||= []
@@ -479,8 +506,8 @@ class CostReportsController < ApplicationController
   # Prepare the query from the request
   def prepare_query
     determine_settings
-    @query = build_query(session[report_engine.name.underscore.to_sym][:filters],
-                         session[report_engine.name.underscore.to_sym][:groups])
+    @query = build_query(session[session_name][:filters],
+                         session[session_name][:groups])
 
     set_cost_type if @unit_id.present?
   end
@@ -489,16 +516,16 @@ class CostReportsController < ApplicationController
   # Determine the query settings the current request and save it to
   # the session.
   def determine_settings
-    if force_default?
-      filters = default_filter_parameters
-      groups  = default_group_parameters
-      session[report_engine.name.underscore.to_sym].try :delete, :name
-    else
-      filters = filter_params
-      groups  = group_params
-    end
-    cookie = session[report_engine.name.underscore.to_sym] || {}
-    session[report_engine.name.underscore.to_sym] = cookie.merge(filters:, groups:)
+    return reset_settings if force_default?
+
+    cookie = session[session_name] || {}
+    session[session_name] = cookie.merge(filters: filter_params, groups: group_params)
+  end
+
+  def reset_settings
+    session[session_name].try :delete, :name
+    cookie = session[session_name] || {}
+    session[session_name] = cookie.merge(filters: default_filter_parameters, groups: default_group_parameters)
   end
 
   ##
@@ -522,18 +549,27 @@ class CostReportsController < ApplicationController
 
   ##
   # Store query in the session
-  def store_query(_query)
+  def store_query
     cookie = {}
-    cookie[:groups] = @query.group_bys.inject({}) do |h, group|
-      ((h[:"#{group.type}s"] ||= []) << group.underscore_name.to_sym) && h
-    end
-    cookie[:filters] = @query.filters.inject(operators: {}, values: {}) do |h, filter|
+    cookie[:groups] = cookie_groups
+    cookie[:filters] = cookie_filters
+    cookie[:name] = @query.name if @query&.name
+    cookie[:id] = @query.id if @query&.id
+    session[session_name] = cookie
+  end
+
+  def cookie_filters
+    @query.filters.inject(operators: {}, values: {}) do |h, filter|
       h[:operators][filter.underscore_name.to_sym] = filter.operator.to_s
       h[:values][filter.underscore_name.to_sym] = filter.values
       h
     end
-    cookie[:name] = @query.name if @query.name
-    session[report_engine.name.underscore.to_sym] = cookie
+  end
+
+  def cookie_groups
+    @query.group_bys.inject({}) do |h, group|
+      ((h[:"#{group.type}s"] ||= []) << group.underscore_name.to_sym) && h
+    end
   end
 
   ##
@@ -565,5 +601,9 @@ class CostReportsController < ApplicationController
       @query.deserialize if @query
     end
   rescue ActiveRecord::RecordNotFound
+  end
+
+  def session_name
+    @session_name ||= report_engine.name.underscore.to_sym
   end
 end

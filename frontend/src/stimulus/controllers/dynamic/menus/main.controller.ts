@@ -33,6 +33,8 @@ export default class MainMenuController extends Controller {
 
     targetLi.querySelector<HTMLElement>('li > a, .tree-menu--title')?.focus();
 
+    const backArrow = targetLi.querySelector('.main-menu--arrow-left-to-project') as HTMLElement;
+    backArrow.focus();
     this.markActive(targetLi.dataset.name as string);
   }
 

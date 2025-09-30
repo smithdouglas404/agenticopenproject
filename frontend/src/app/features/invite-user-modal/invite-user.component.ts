@@ -34,6 +34,7 @@ export enum PrincipalType {
   styleUrls: ['./invite-user.component.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class InviteUserModalComponent extends OpModalComponent implements OnInit {
   public Steps = Steps;

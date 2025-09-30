@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2024 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -27,19 +27,19 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%= I18n.t('mail.salutation', user: @admin.firstname) %>,
+<%= I18n.t("mail.salutation", user: @admin.firstname) %>,
 
-<%= I18n.t('mail.storages.health.plaintext.healthy.summary', storage_name: @storage.name) %>
+<%= I18n.t("mail.storages.health.plaintext.healthy.summary", storage_name: @storage.name) %>
 
-<%= I18n.t('mail.storages.health.plaintext.storage') %>: <%= I18n.t("storages.provider_types.#{@storage.short_provider_type}.name") %> - <%= @storage.host %>
+<%= I18n.t("mail.storages.health.plaintext.storage") %>: <%= I18n.t("storages.provider_types.#{@storage}.name") %> - <%= @storage.host %>
 
-<%= I18n.t('mail.storages.health.plaintext.unhealthy.error-details') %>:
+<%= I18n.t("mail.storages.health.plaintext.unhealthy.error-details") %>:
 <%= "-" * 30 %>
-<%= I18n.t('mail.storages.health.plaintext.unhealthy.error-message') %>: <%= "#{Storages::Storage.extract_part_from_piped_string(@reason, 0)} - #{Storages::Storage.extract_part_from_piped_string(@reason, 1)}" %>
-<%= I18n.t('mail.storages.health.plaintext.healthy.error-solved-on') %>: <%= format_time(@storage.health_changed_at) %>
+<%= I18n.t("mail.storages.health.plaintext.unhealthy.error-message") %>: <%= "#{Storages::Storage.extract_part_from_piped_string(@reason, 0)} - #{Storages::Storage.extract_part_from_piped_string(@reason, 1)}" %>
+<%= I18n.t("mail.storages.health.plaintext.healthy.error-solved-on") %>: <%= format_time(@storage.health_changed_at) %>
 
-<%= I18n.t('mail.storages.health.plaintext.healthy.details') %>: <%= @url %>
+<%= I18n.t("mail.storages.health.plaintext.healthy.details") %>: <%= @url %>
 
-<%= I18n.t('mail.storages.health.plaintext.healthy.recommendation') %>
+<%= I18n.t("mail.storages.health.plaintext.healthy.recommendation") %>
 
-<%= I18n.t('mail.storages.health.plaintext.unhealthy.unsubscribe') %>: <%= @url %>
+<%= I18n.t("mail.storages.health.plaintext.unhealthy.unsubscribe") %>: <%= @url %>

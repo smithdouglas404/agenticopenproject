@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,8 +31,23 @@ module Boards
     protected
 
     def set_attributes_params(params)
-      super
-        .merge(project: state.project || model.project)
+      super.deep_symbolize_keys.tap do |hash|
+        hash[:project] = state.project || model.project
+
+        hash[:options] = mapped_options(hash[:options]) if hash.key?(:options)
+      end
+    end
+
+    def mapped_options(options)
+      options[:filters] = mapped_filters(options[:filters]) if options.key?(:filters)
+
+      options
+    end
+
+    def mapped_filters(filters)
+      ::Queries::Copy::FiltersMapper
+        .new(state)
+        .map_filters(filters)
     end
   end
 end

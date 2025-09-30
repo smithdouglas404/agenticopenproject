@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,9 +26,9 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper.rb")
+require_relative "../../spec_helper"
 
-RSpec.describe "updating a budget", :js do
+RSpec.describe "updating a budget", :js, :selenium do
   let(:project) do
     create(:project_with_types,
            enabled_module_names: %i[budgets costs work_package_tracking],
@@ -39,7 +39,7 @@ RSpec.describe "updating a budget", :js do
 
   current_user { user }
 
-  describe "with new cost items", :with_cuprite do
+  describe "with new cost items" do
     let(:cost_type) do
       create(:cost_type, name: "Post-war", unit: "cap", unit_plural: "caps")
     end
@@ -181,7 +181,7 @@ RSpec.describe "updating a budget", :js do
 
         # Update first element
         budget_page.edit_planned_costs! material_budget_item.id, type: :material, costs: 123
-        expect(budget_page).to have_content("Successful update")
+        expect_and_dismiss_flash(message: "Successful update")
         expect(page).to have_css("tbody td.currency", text: "123.00 EUR")
 
         click_on "Update"
@@ -205,20 +205,14 @@ RSpec.describe "updating a budget", :js do
         expect(material_budget_item_2.costs).to eq(543.0)
       end
 
-      context "with a reversed currency format" do
-        before do
-          allow(Setting)
-            .to receive(:plugin_costs)
-            .and_return({ costs_currency_format: "%u %n", costs_currency: "USD" }.with_indifferent_access)
-        end
-
+      context "with a reversed currency format", with_settings: { costs_currency_format: "%u %n", costs_currency: "USD" } do
         it "can still update budgets (Regression test #32664)" do
           budget_page.visit!
           click_on "Update"
 
           # Update first element
           budget_page.edit_planned_costs! material_budget_item.id, type: :material, costs: 123
-          expect(budget_page).to have_content("Successful update")
+          expect_and_dismiss_flash(message: "Successful update")
           expect(page).to have_css("tbody td.currency", text: "USD 123.00")
 
           click_on "Update"
@@ -258,7 +252,7 @@ RSpec.describe "updating a budget", :js do
 
         # Update first element
         budget_page.edit_planned_costs! labor_budget_item.id, type: :labor, costs: 456
-        expect(budget_page).to have_content("Successful update")
+        expect_and_dismiss_flash(message: "Successful update")
         expect(page).to have_css("tbody td.currency", text: "456.00 EUR")
 
         click_on "Update"
@@ -282,20 +276,14 @@ RSpec.describe "updating a budget", :js do
         expect(labor_budget_item_2.costs).to eq(987.0)
       end
 
-      context "with a reversed currency format" do
-        before do
-          allow(Setting)
-            .to receive(:plugin_costs)
-            .and_return({ costs_currency_format: "%u %n", costs_currency: "USD" }.with_indifferent_access)
-        end
-
+      context "with a reversed currency format", with_settings: { costs_currency_format: "%u %n", costs_currency: "USD" } do
         it "can still update budgets (Regression test #32664)" do
           budget_page.visit!
           click_on "Update"
 
           # Update first element
           budget_page.edit_planned_costs! labor_budget_item.id, type: :labor, costs: 456
-          expect(budget_page).to have_content("Successful update")
+          expect_and_dismiss_flash(message: "Successful update")
           expect(page).to have_css("tbody td.currency", text: "USD 456.00")
 
           click_on "Update"

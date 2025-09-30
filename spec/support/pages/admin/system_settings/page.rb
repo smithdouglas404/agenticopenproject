@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,10 +32,6 @@ require "support/pages/page"
 
 module Pages::Admin::SystemSettings
   class Page < ::Pages::Page
-    def toast_type
-      :rails
-    end
-
     def press_save_button
       scroll_to(:bottom)
       click_button("Save")

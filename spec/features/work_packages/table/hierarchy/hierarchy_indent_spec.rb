@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
-RSpec.describe "Work Package table hierarchy and sorting", :js, :with_cuprite do
+RSpec.describe "Work Package table hierarchy and sorting", :js do
   shared_let(:project) { create(:project) }
 
   let(:wp_table) { Pages::WorkPackagesTable.new(project) }

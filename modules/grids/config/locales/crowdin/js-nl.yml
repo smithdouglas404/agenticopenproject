@@ -4,11 +4,8 @@ nl:
       add_widget: 'Widget toevoegen'
       remove: 'Widget verwijderen'
       configure: 'Widget configureren'
-      upsale:
-        text: "Some widgets, like the work package graph widget, are only available in the Enterprise edition."
-        link: 'Enterprise edition.'
       widgets:
-        missing_permission: "You don't have the necessary permissions to view this widget."
+        missing_permission: "U hebt niet de vereiste rechten om deze widget te bekijken."
         custom_text:
           title: 'Aangepaste tekst'
         documents:
@@ -24,12 +21,11 @@ nl:
           title: 'Nieuws'
           at: 'bij'
           no_results: 'Niets nieuws om te rapporteren.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Projectbeschrijving'
           no_results: "Er is nog geen beschrijving geschreven. Er kan een vermelding worden verstrekt in de 'Projectinstellingen'."
-        project_details:
-          title: 'Projectdetails'
-          no_results: 'Er zijn geen aangepaste velden gedefinieerd voor projecten.'
         project_status:
           title: 'Projectstatus'
           not_started: 'Nog niet gestart'
@@ -39,12 +35,14 @@ nl:
           not_set: 'Niet ingesteld'
           finished: 'Afgewerkt'
           discontinued: 'Stopgezet'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Subprojecten'
           no_results: 'Geen subprojecten.'
         project_favorites:
-          title: 'Favorite projects'
-          no_results: 'You currently have no favorite projects. Click on the star icon in the project dashboard to add one to your favorites.'
+          title: 'Favoriete projecten'
+          no_results: 'U hebt momenteel geen favoriete projecten. Klik op het sterpictogram in het projectdashboard om er een aan uw favorieten toe te voegen.'
         time_entries_current_user:
           title: 'Mijn bestede tijd'
           displayed_days: 'Dagen weergegeven in de widget:'

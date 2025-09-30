@@ -23,6 +23,7 @@ import {
     useExisting: forwardRef(() => SpotTextFieldComponent),
     multi: true,
   }],
+  standalone: false,
 })
 export class SpotTextFieldComponent implements ControlValueAccessor {
   @HostBinding('class.spot-text-field') public className = true;

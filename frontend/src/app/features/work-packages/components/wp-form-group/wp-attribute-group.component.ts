@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,13 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import {
-  Component,
-  HostBinding,
-  Injector,
-  Input,
-  ViewEncapsulation,
-} from '@angular/core';
+import { Component, HostBinding, Injector, Input, ViewEncapsulation } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { EditFormComponent } from 'core-app/shared/components/fields/edit/edit-form/edit-form.component';
@@ -47,6 +41,7 @@ import {
   templateUrl: './wp-attribute-group.template.html',
   styleUrls: ['./wp-attribute-group.component.sass'],
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class WorkPackageFormAttributeGroupComponent extends UntilDestroyedMixin {
   @HostBinding('class.wp-attribute-group') className = true;
@@ -56,14 +51,12 @@ export class WorkPackageFormAttributeGroupComponent extends UntilDestroyedMixin 
 
   @Input() public group:GroupDescriptor;
 
-  constructor(readonly I18n:I18nService,
+  constructor(
+    readonly I18n:I18nService,
     public wpEditForm:EditFormComponent,
-    protected injector:Injector) {
+    protected injector:Injector,
+  ) {
     super();
-  }
-
-  public trackByName(_index:number, elem:{ name:string }) {
-    return elem.name;
   }
 
   /**
@@ -73,12 +66,5 @@ export class WorkPackageFormAttributeGroupComponent extends UntilDestroyedMixin 
   public shouldHideField(descriptor:FieldDescriptor) {
     const field = descriptor.field || descriptor.fields![0];
     return this.wpEditForm.editMode && !field.writable;
-  }
-
-  public fieldName(name:string) {
-    if (name === 'startDate') {
-      return 'combinedDate';
-    }
-    return name;
   }
 }

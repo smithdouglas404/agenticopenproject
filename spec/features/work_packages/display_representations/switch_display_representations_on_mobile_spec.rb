@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Switching work package view on mobile", :js do
+RSpec.describe "Switching work package view on mobile", :js, :selenium do
   let(:user) { create(:admin) }
   let(:project) { create(:project) }
   let(:wp_table) { Pages::WorkPackagesTable.new(project) }
@@ -46,7 +48,6 @@ RSpec.describe "Switching work package view on mobile", :js do
   before do
     wp_1
     wp_2
-    allow(EnterpriseToken).to receive(:show_banners?).and_return(false)
 
     login_as(user)
     wp_table.visit!
@@ -64,8 +65,7 @@ RSpec.describe "Switching work package view on mobile", :js do
       cards.select_work_package(wp_1)
       expect(page).to have_css(".work-packages--details--subject",
                                text: wp_1.subject)
-      page.find(".work-packages-back-button").click
-
+      page.go_back
       # The query is however unchanged
       expect(page).to have_no_css(".editable-toolbar-title--save")
       url = URI.parse(page.current_url).query

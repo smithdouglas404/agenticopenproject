@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -76,7 +78,7 @@ module OpenProject::TextFormatting
 
       def self.regexp
         %r{
-          ([[[:space:]](,\-\[>]|^) # Leading string
+          ([[[:space:]](,~\-\[>]|^) # Leading string
           (!)? # Escaped marker
           (([a-z0-9\-_]+):)? # Project identifier
           (#{allowed_prefixes.join('|')})? # prefix
@@ -96,6 +98,7 @@ module OpenProject::TextFormatting
             )
             |\.\z # Allow matching when string ends with .
             |, # or with ,
+            |~ # or with ~
             |\) # or with )
             |[[:space:]]
             |\]

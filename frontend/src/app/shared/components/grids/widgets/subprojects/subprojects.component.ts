@@ -15,6 +15,7 @@ import { MAGIC_PAGE_NUMBER } from 'core-app/core/apiv3/helpers/get-paginated-res
 @Component({
   templateUrl: './subprojects.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WidgetSubprojectsComponent extends AbstractWidgetComponent implements OnInit {
   public text = {

@@ -2,7 +2,7 @@
 
 # -- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2010-2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,23 +31,34 @@
 class Projects::IndexPageHeaderComponent < ApplicationComponent
   include OpPrimer::ComponentHelpers
   include Primer::FetchOrFallbackHelper
+  include OpTurbo::Streamable
 
   attr_accessor :current_user,
                 :query,
                 :state,
                 :params
 
-  STATE_OPTIONS = %i[show edit rename].freeze
+  STATE_DEFAULT = :show
+  STATE_EDIT = :edit
 
   delegate :projects_query_params, to: :helpers
 
-  def initialize(current_user:, query:, params:, state: :show)
+  def initialize(current_user:, query:, params:, state: STATE_DEFAULT)
     super
 
     self.current_user = current_user
     self.query = query
-    self.state = fetch_or_fallback(STATE_OPTIONS, state)
+    self.state = case state
+                 when :edit, :rename
+                   STATE_EDIT
+                 else
+                   STATE_DEFAULT
+                 end
     self.params = params
+  end
+
+  def self.wrapper_key
+    "projects-index-page-header"
   end
 
   def gantt_portfolio_query_link
@@ -59,9 +70,8 @@ class Projects::IndexPageHeaderComponent < ApplicationComponent
     @gantt_portfolio_project_ids ||= @query
                                      .results
                                      .where(active: true)
-                                     .select(:id)
-                                     .uniq
                                      .pluck(:id)
+                                     .uniq
   end
 
   def page_title
@@ -77,11 +87,7 @@ class Projects::IndexPageHeaderComponent < ApplicationComponent
     return false unless query.persisted?
     return false unless query.changed?
 
-    if query.public?
-      current_user.allowed_globally?(:manage_public_project_queries)
-    else
-      query.user == current_user
-    end
+    query.editable?
   end
 
   def can_rename?
@@ -89,26 +95,24 @@ class Projects::IndexPageHeaderComponent < ApplicationComponent
     return false unless query.persisted?
     return false if query.changed?
 
-    if query.public?
-      current_user.allowed_globally?(:manage_public_project_queries)
-    else
-      query.user == current_user
-    end
-  end
-
-  def can_publish?
-    OpenProject::FeatureDecisions.project_list_sharing_active? &&
-    current_user.allowed_globally?(:manage_public_project_queries) &&
-    query.persisted?
+    query.editable?
   end
 
   def show_state?
     state == :show
   end
 
+  def can_access_shares?
+    query.persisted?
+  end
+
+  def can_toggle_favorite? = query.persisted?
+
+  def currently_favorited? = query.favorited_by?(current_user)
+
   def breadcrumb_items
     [
-      { href: projects_path, text: t(:label_project_plural) },
+      { href: projects_path, text: t(:label_project_plural), skip_for_mobile: first_menu_item? },
       current_breadcrumb_element
     ]
   end
@@ -117,7 +121,7 @@ class Projects::IndexPageHeaderComponent < ApplicationComponent
     return page_title if query.name.blank?
 
     if current_section && current_section.header.present?
-      I18n.t("menus.breadcrumb.nested_element", section_header: current_section.header, title: query.name).html_safe
+      helpers.nested_breadcrumb_element(current_section.header, query.name)
     else
       page_title
     end
@@ -126,9 +130,14 @@ class Projects::IndexPageHeaderComponent < ApplicationComponent
   def current_section
     return @current_section if defined?(@current_section)
 
-    projects_menu = Menus::Projects.new(controller_path:, params:, current_user:)
+    @current_section = Projects::Menu
+      .new(controller_path:, params:, current_user:)
+      .selected_menu_group
+  end
 
-    @current_section = projects_menu.first_level_menu_items.find { |section| section.children.any?(&:selected) }
+  def first_menu_item?
+    current_item = current_section&.children&.select { |x| x.selected == true }&.first
+    current_item&.title == ::ProjectQueries::Static.query(ProjectQueries::Static::DEFAULT).name
   end
 
   def header_save_action(header:, message:, label:, href:, method: nil)
@@ -138,7 +147,8 @@ class Projects::IndexPageHeaderComponent < ApplicationComponent
       mobile_icon: nil, # Do not show on mobile as it is already part of the menu
       mobile_label: nil,
       href:,
-      data: { method: }
+      data: { "turbo-stream": true, method: },
+      target: ""
     ) do
       render(
         Primer::Beta::Octicon.new(
@@ -156,7 +166,7 @@ class Projects::IndexPageHeaderComponent < ApplicationComponent
       label:,
       href:,
       content_arguments: {
-        data: { method: }
+        data: { "turbo-stream": true, method: }
       }
     ) do |item|
       item.with_leading_visual_icon(icon: :"op-save")

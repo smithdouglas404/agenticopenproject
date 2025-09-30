@@ -8,6 +8,7 @@ cs:
         row_count: "Počet řádků"
         column_count: "Počet sloupců"
         widgets: "Widgety"
+        scope: "Rozsah"
     errors:
       models:
         grids/grid:

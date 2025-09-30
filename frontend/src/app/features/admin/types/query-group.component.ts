@@ -8,6 +8,7 @@ import { TypeGroup } from 'core-app/features/admin/types/type-form-configuration
   selector: 'op-type-form-query-group',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './query-group.component.html',
+  standalone: false,
 })
 export class TypeFormQueryGroupComponent {
   text = {

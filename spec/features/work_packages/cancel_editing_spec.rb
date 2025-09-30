@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 # -- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Cancel editing work package", :js do
+RSpec.describe "Cancel editing work package", :js, :selenium do
   let(:user) { create(:admin) }
   let(:project) { create(:project) }
   let(:work_package) { create(:work_package, project:) }
@@ -62,10 +64,15 @@ RSpec.describe "Cancel editing work package", :js do
   end
 
   def move_to_home_page(alert: true)
-    find(".op-logo--link").click
+    if alert
+      accept_alert do
+        find(".op-logo--link").click
+      end
+    else
+      find(".op-logo--link").click
+    end
 
-    page.driver.browser.switch_to.alert.accept if alert
-    expect(page).to have_css("#projects-menu", text: "Select a project")
+    expect(page).to have_css("#projects-menu", text: "All projects")
   end
 
   it "does not show an alert when moving to other pages" do
@@ -80,7 +87,7 @@ RSpec.describe "Cancel editing work package", :js do
     #  move_to_home_page(alert: false)
     paths.each do |path|
       expect_active_edit(path)
-      move_to_home_page(alert: false)
+      move_to_home_page(alert: true)
     end
   end
 
@@ -185,7 +192,7 @@ RSpec.describe "Cancel editing work package", :js do
       create(:user_preference, user:, others: { warn_on_leaving_unsaved: false })
     end
 
-    it "does not alert when moving anywhere" do
+    it "does alert when moving to a new page" do
       # Moving to angular states
       expect_active_edit(new_split_work_packages_path)
       wp_table.expect_work_package_listed(work_package2)
@@ -198,7 +205,7 @@ RSpec.describe "Cancel editing work package", :js do
 
       # Moving somewhere else
       expect_active_edit(new_split_work_packages_path)
-      move_to_home_page(alert: false)
+      move_to_home_page(alert: true)
     end
   end
 end

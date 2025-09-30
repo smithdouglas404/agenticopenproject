@@ -11,25 +11,18 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { KeyCodes } from 'core-app/shared/helpers/keyCodes.enum';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { findAllFocusableElementsWithin } from 'core-app/shared/helpers/focus-helpers';
 import { SpotDropModalTeleportationService } from './drop-modal-teleportation.service';
 import { filter, take } from 'rxjs/operators';
 import { debounce } from 'lodash';
-import {
-  autoUpdate,
-  computePosition,
-  flip,
-  limitShift,
-  Placement,
-  shift,
-} from '@floating-ui/dom';
+import { autoUpdate, computePosition, flip, limitShift, Placement, shift } from '@floating-ui/dom';
 
 @Component({
   selector: 'spot-drop-modal',
   templateUrl: './drop-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class SpotDropModalComponent implements OnDestroy {
   @HostBinding('class.spot-drop-modal') public className = true;
@@ -102,7 +95,7 @@ export class SpotDropModalComponent implements OnDestroy {
 
   @ViewChild('anchor') anchor:ElementRef;
 
-  @ViewChild('body') body:TemplateRef<any>;
+  @ViewChild('body') body:TemplateRef<unknown>;
 
   @ViewChild('focusGrabber') focusGrabber:ElementRef;
 
@@ -116,15 +109,6 @@ export class SpotDropModalComponent implements OnDestroy {
   open() {
     this._opened = true;
     this.updateAppHeight();
-    this.cdRef.detectChanges();
-
-    /*
-     * If we don't activate the body after one tick, angular will complain because
-     * it already rendered a `null` template, but then gets an update to that
-     * template in the same tick.
-     * To make it happy, we update afterwards
-     */
-    this.teleportationService.activate(this.body);
 
     this.teleportationService
       .hasRenderedFiltered$
@@ -133,6 +117,7 @@ export class SpotDropModalComponent implements OnDestroy {
         take(1),
       )
       .subscribe(() => {
+        this.cdRef.detectChanges();
         const referenceEl = this.elementRef.nativeElement as HTMLElement;
         const floatingEl = this.anchor.nativeElement as HTMLElement;
         this.cleanupFloatingUI = autoUpdate(
@@ -173,15 +158,23 @@ export class SpotDropModalComponent implements OnDestroy {
           window.addEventListener('resize', this.onResize);
           window.addEventListener('orientationchange', this.onResize);
 
-          const focusCatcherContainer = document.querySelectorAll("[data-modal-focus-catcher-container='true']")[0];
+          const focusCatcherContainer = document.querySelector<HTMLElement>("[data-modal-focus-catcher-container='true']");
           if (focusCatcherContainer) {
-            (findAllFocusableElementsWithin(focusCatcherContainer as HTMLElement)[0])?.focus();
+            (findAllFocusableElementsWithin(focusCatcherContainer)[0])?.focus();
           } else {
             // Index 1 because the element at index 0 is the trigger button to open the modal
             (findAllFocusableElementsWithin(document.querySelector('.spot-drop-modal-portal')!)[1])?.focus();
           }
         });
       });
+
+    /*
+     * If we don't activate the body after one tick, angular will complain because
+     * it already rendered a `null` template, but then gets an update to that
+     * template in the same tick.
+     * To make it happy, we update afterwards
+     */
+    this.teleportationService.activate(this.body);
   }
 
   close():void {
@@ -225,7 +218,7 @@ export class SpotDropModalComponent implements OnDestroy {
   }
 
   private escapeCallback = (evt:KeyboardEvent) => {
-    if (evt.keyCode === KeyCodes.ESCAPE) {
+    if (evt.key === 'Escape') {
       this.close();
     }
   };

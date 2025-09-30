@@ -4,9 +4,6 @@ cs:
       add_widget: 'Přidat widget'
       remove: 'Odstranit widget'
       configure: 'Konfigurovat widget'
-      upsale:
-        text: "Některé widgety, jako například widget s grafem pracovního balíčku, jsou dostupné pouze v Enterprise Edici."
-        link: 'Enterprise Edice'
       widgets:
         missing_permission: "Nemáte potřebná oprávnění k zobrazení tohoto widgetu."
         custom_text:
@@ -24,12 +21,11 @@ cs:
           title: 'Novinky'
           at: 'v'
           no_results: 'Žádné novinky.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Popis projektu'
           no_results: "Zatím nebyl napsán žádný popis. Můžete ho uvést v \"Nastavení projektu\"."
-        project_details:
-          title: 'Detaily projektu'
-          no_results: 'Pro projekty nebyla definována žádná vlastní pole.'
         project_status:
           title: 'Stav projektu'
           not_started: 'Nezahájeno'
@@ -39,12 +35,14 @@ cs:
           not_set: 'Nenastaveno'
           finished: 'Dokončeno'
           discontinued: 'Zrušeno'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Podprojekty'
           no_results: 'Žádné podprojekty.'
         project_favorites:
           title: 'Oblíbené projekty'
-          no_results: 'You currently have no favorite projects. Click on the star icon in the project dashboard to add one to your favorites.'
+          no_results: 'Momentálně nemáte žádné oblíbené projekty. Klikněte na ikonu hvězdičky v nástěnce projektu pro přidání jednoho do oblíbených.'
         time_entries_current_user:
           title: 'Můj strávený čas'
           displayed_days: 'Dny zobrazené ve widgetu:'

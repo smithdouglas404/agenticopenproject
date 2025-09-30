@@ -2,12 +2,11 @@
 ARG RUBY_VERSION
 FROM ruby:${RUBY_VERSION}-bookworm
 
-ENV NODE_VERSION="20.9.0"
-ENV BUNDLER_VERSION="2.5.11"
+ENV NODE_VERSION="22.15.0"
 ENV DEBIAN_FRONTEND=noninteractive
 ENV BUNDLE_WITHOUT="development:production:docker"
 
-ENV PGVERSION=13
+ENV PGVERSION=17
 RUN wget --quiet -O- https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
   echo "deb http://apt.postgresql.org/pub/repos/apt bookworm-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 
@@ -18,7 +17,7 @@ RUN --mount=type=cache,target=/var/cache/apt export f="/tmp/chrome.deb" && wget 
 
 RUN curl -L https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz -o - | tar xJf - -C /usr/local --strip=1 && node --version
 
-RUN rm -rf /usr/local/bundle && gem install bundler --version "$BUNDLER_VERSION" --no-document
+RUN rm -rf /usr/local/bundle && gem install bundler --no-document
 
 ENV APP_USER=dev
 ENV APP_PATH=/app

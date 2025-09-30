@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -76,8 +76,7 @@ module API
              represented.type_id &&
              represented.type_id != 0
             {
-              href: edit_type_path(represented.type_id,
-                                   tab: "form_configuration"),
+              href: edit_type_form_configuration_path(represented.type_id),
               type: "text/html",
               title: "Configure form"
             }

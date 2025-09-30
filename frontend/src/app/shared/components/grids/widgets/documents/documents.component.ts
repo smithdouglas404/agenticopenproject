@@ -20,6 +20,7 @@ import { DocumentResource } from '../../../../../../../../modules/documents/fron
 @Component({
   templateUrl: './documents.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WidgetDocumentsComponent extends AbstractWidgetComponent implements OnInit {
   public text = {

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,7 +32,7 @@ require_relative "../shared_expectations"
 
 RSpec.describe CustomActions::Actions::AssignedTo do
   let(:key) { :assigned_to }
-  let(:type) { :associated_property }
+  let(:type) { :user }
   let(:allowed_values) do
     users = [build_stubbed(:user),
              build_stubbed(:group)]

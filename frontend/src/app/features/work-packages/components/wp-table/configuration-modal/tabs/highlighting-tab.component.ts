@@ -19,6 +19,7 @@ import { repositionDropdownBugfix } from 'core-app/shared/components/autocomplet
 @Component({
   templateUrl: './highlighting-tab.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WpTableConfigurationHighlightingTabComponent implements TabComponent {
   // Display mode
@@ -28,7 +29,7 @@ export class WpTableConfigurationHighlightingTabComponent implements TabComponen
 
   public lastEntireRowAttribute:HighlightingMode = 'status';
 
-  public eeShowBanners = false;
+  public eeAvailable = false;
 
   public availableInlineHighlightedAttributes:HalResource[] = [];
 
@@ -52,8 +53,8 @@ export class WpTableConfigurationHighlightingTabComponent implements TabComponen
       priority: this.I18n.t('js.work_packages.table_configuration.highlighting_mode.priority'),
       entire_row_by: this.I18n.t('js.work_packages.table_configuration.highlighting_mode.entire_row_by'),
     },
-    upsaleAttributeHighlighting: this.I18n.t('js.work_packages.table_configuration.upsale.attribute_highlighting'),
-    upsaleCheckOutLink: this.I18n.t('js.work_packages.table_configuration.upsale.check_out_link'),
+    upsellAttributeHighlighting: this.I18n.t('js.work_packages.table_configuration.upsell.attribute_highlighting'),
+    upsellCheckOutLink: this.I18n.t('js.work_packages.table_configuration.upsell.check_out_link'),
     more_info_link: enterpriseDocsUrl.tableHighlighting,
   };
 
@@ -74,10 +75,10 @@ export class WpTableConfigurationHighlightingTabComponent implements TabComponen
 
     this.setSelectedValues();
 
-    this.eeShowBanners = this.Banners.eeShowBanners;
+    this.eeAvailable = this.Banners.allowsTo('conditional_highlighting');
     this.updateMode(this.wpTableHighlight.current.mode);
 
-    if (this.eeShowBanners) {
+    if (!this.eeAvailable) {
       this.updateMode('none');
     }
   }
@@ -106,8 +107,8 @@ export class WpTableConfigurationHighlightingTabComponent implements TabComponen
     this.selectedAttributes = model;
   }
 
-  public disabledValue(value:boolean):string | null {
-    return value ? 'disabled' : null;
+  public disabledValue(allowed:boolean):string | null {
+    return allowed ? null : 'disabled';
   }
 
   public get availableHighlightedAttributes():HalResource[] {

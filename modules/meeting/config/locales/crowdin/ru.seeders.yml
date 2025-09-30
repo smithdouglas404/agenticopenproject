@@ -7,7 +7,7 @@ ru:
     standard:
       projects:
         demo-project:
-          meetings:
+          meeting_series:
             item_0:
               title: Еженедельно
           meeting_agenda_items:
@@ -20,10 +20,10 @@ ru:
             item_3:
               title: Обновления от команды маркетинга
             item_5:
-              title: Обновления от отдела продаж
+              title: Обновления от команды продаж
             item_6:
               title: Обзор квартальных целей
             item_7:
-              title: Отзыв о базовых значениях
+              title: Обратная связь по основным значениям
             item_8:
               title: Основные темы

@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -128,7 +128,7 @@ module CostQuery::CustomFieldMixin
     ON #{db_field}.customized_type = 'WorkPackage'
 
     AND #{db_field}.custom_field_id = #{field.id}
-    AND #{db_field}.customized_id = entries.work_package_id
+    AND #{db_field}.customized_id = entries.entity_id
     -- END Custom Field Join: #{db_field}
     SQL
   end
@@ -147,7 +147,7 @@ module CostQuery::CustomFieldMixin
     AS %2$s
     ON %2$s.customized_type = 'WorkPackage'
     AND %2$s.custom_field_id = %3$d
-    AND %2$s.customized_id = entries.work_package_id
+    AND %2$s.customized_id = entries.entity_id
     -- END Custom Field Join: "%4$s"
     SQL
   end

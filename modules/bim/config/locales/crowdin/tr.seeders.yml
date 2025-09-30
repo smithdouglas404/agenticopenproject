@@ -40,9 +40,9 @@ tr:
         item_3:
           name: Sorun
         item_4:
-          name: Remark
+          name: Açıklama
         item_5:
-          name: Request
+          name: Talep
         item_6:
           name: Clash
       global_queries:
@@ -52,26 +52,26 @@ tr:
         item_0:
           form_configuration:
             item_0:
-              group_name: Çocuk
+              group_name: Alt
       groups:
         item_0:
-          name: Architects
+          name: Mimarlar
         item_1:
-          name: BIM Coordinators
+          name: BIM Koordinatörleri
         item_2:
-          name: BIM Managers
+          name: BIM Yöneticileri
         item_3:
-          name: BIM Modellers
+          name: BIM Modelleyicileri
         item_4:
-          name: Lead BIM Coordinators
+          name: Baş BIM Koordinatörleri
         item_5:
-          name: MEP Engineers
+          name: MEP Mühendisleri
         item_6:
           name: Planlayıcı
         item_7:
-          name: Structural Engineers
+          name: Yapı Mühendisleri
       welcome:
-        title: Welcome to OpenProject BIM edition!
+        title: OpenProject BIM sürümüne hoş geldiniz!
         text: |
           Checkout the demo projects to get started with some examples.
 
@@ -88,17 +88,17 @@ tr:
       projects:
         demo-construction-project:
           name: "(Demo) Construction project"
-          status_explanation: All tasks and the sub-projects are on schedule. The people involved know their tasks. The system is completely set up.
-          description: This is a short summary of the goals of this demo construction project.
+          status_explanation: Tüm görevler ve alt projeler programa uygundur. İlgili kişiler görevlerini biliyor. Sistem tamamen kurulmuştur.
+          description: Bu, bu demo inşaat projesinin hedeflerinin kısa bir özetidir.
           news:
             item_0:
-              title: Welcome to your demo project
+              title: Demo projenize hoş geldiniz
               summary: |
-                We are glad you joined.
-                In this module you can communicate project news to your team members.
-              description: The actual news
+                Katıldığınız için mutluyuz.
+                Bu modülde proje haberlerini ekip üyelerinize iletebilirsiniz.
+              description: Gerçek haberler
           categories:
-            item_0: Category 1 (to be changed in Project settings)
+            item_0: Kategori 1 (Proje ayarlarında değiştirilecektir)
           queries:
             item_0:
               name: Proje planı
@@ -110,12 +110,12 @@ tr:
               name: Takım planlayıcısı
           boards:
             bcf:
-              name: Simple drag'n drop workflow
+              name: Basit sürükle bırak iş akışı
           project-overview:
             widgets:
               item_0:
                 options:
-                  name: Hoş geldiniz
+                  name: Hoş geldiniz 
               item_1:
                 options:
                   name: Başlarken
@@ -150,17 +150,17 @@ tr:
                   name: Aşamalar
         demo-planning-constructing-project:
           name: "(Demo) Planning & constructing"
-          status_explanation: All tasks are on schedule. The people involved know their tasks. The system is completely set up.
-          description: This is a short summary of the goals of this demo planning and constructing project.
+          status_explanation: Tüm görevler programa uygundur. İlgili kişiler görevlerini biliyor. Sistem tamamen kurulmuştur.
+          description: Bu, bu demo planlama ve inşa projesinin hedeflerinin kısa bir özetidir.
           news:
             item_0:
-              title: Welcome to your demo project
+              title: Demo projenize hoş geldiniz
               summary: |
-                We are glad you joined.
-                In this module you can communicate project news to your team members.
-              description: The actual news
+                Katıldığınız için mutluyuz.
+                Bu modülde proje haberlerini ekip üyelerinize iletebilirsiniz.
+              description: Gerçek haberler
           categories:
-            item_0: Category 1 (to be changed in Project settings)
+            item_0: Kategori 1 (Proje ayarlarında değiştirilecektir)
           queries:
             item_0:
               name: Proje planı
@@ -174,7 +174,7 @@ tr:
             widgets:
               item_0:
                 options:
-                  name: Hoş geldiniz
+                  name: Hoş geldiniz 
               item_1:
                 options:
                   name: Başlarken
@@ -217,16 +217,16 @@ tr:
                 item_0:
                   subject: Gathering first project information
                   description: |-
-                    ## Goal
+                    ## Hedef
 
-                    *   Define tasks based on the customer needs
-                    *   Time frame and cost estimation shall be defined
+                    * Müşteri ihtiyaçlarına göre görevlerin tanımlanması
+                    * Zaman çerçevesi ve maliyet tahmini tanımlanmalıdır
 
-                    ## Description
+                    ## Açıklama
 
-                    *   Identify the customer needs by having a workshop with him/ her
-                    *   Each need shall represent a task with its corresponding work packages
-                    *   Derive the cost estimation and time frame
+                    * Müşteri ile bir atölye çalışması yaparak ihtiyaçlarının belirlenmesi
+                    * Her ihtiyaç, ilgili iş paketleriyle birlikte bir görevi temsil etmelidir
+                    * Maliyet tahmini ve zaman çerçevesi türetilmelidir
                 item_1:
                   subject: Summarize the results
                   description: |-
@@ -246,17 +246,17 @@ tr:
                   subject: End of basic evaluation
                   description: This type is hierarchically a parent of the types &quot;Clash&quot; and &quot;Request&quot;, thus represents a general note.
             item_2:
-              subject: Preliminary planning
+              subject: Ön planlama
               description: This type is hierarchically a parent of the types &quot;Clash&quot; and &quot;Request&quot;, thus represents a general note.
               children:
                 item_0:
-                  subject: Developing first draft
+                  subject: İlk taslağın geliştirilmesi
                   description: |-
                     ## Goal
 
                     *   Create a useful overview of the results
                     *   Check what has been done and summarize the results
-                    *   Communicate all the relevant results with the customer
+                    *   Communicate all the relevant results with the customer
                     *   Identify the fundamental boundary conditions of the project
 
                     ## Description
@@ -265,13 +265,13 @@ tr:
                     *   This overview informs all participants about the decisions made
                     *   ...
                 item_1:
-                  subject: Summarize results
+                  subject: Sonuçların özetlenmesi
                   description: |-
                     ## Goal
 
                     *   Create a useful overview of the results
                     *   Check what has been done and summarize the results
-                    *   Communicate all the relevant results with the customer
+                    *   Communicate all the relevant results with the customer
                     *   Identify the fundamental boundary conditions of the project
 
                     ## Description
@@ -283,43 +283,43 @@ tr:
               subject: Passing of preliminary planning
               description: This type is hierarchically a parent of the types &quot;Clash&quot; and &quot;Request&quot;, thus represents a general note.
             item_4:
-              subject: Design planning
+              subject: Tasarım planlaması
               description: This type is hierarchically a parent of the types &quot;Clash&quot; and &quot;Request&quot;, thus represents a general note.
               children:
                 item_0:
-                  subject: Finishing design
+                  subject: Bitirme tasarımı
                   description: |-
-                    ## Goal
+                    ## Hedef
 
-                    *   Design is done
-                    *   All parties are happy with the results of the design planning phase
+                    * Tasarım tamamlandı
+                    * Tüm taraflar tasarım planlama aşamasının sonuçlarından memnun
 
-                    ## Description
+                    ## Açıklama
 
-                    *   The design of the project will be finished
-                    *   All parties agree on the design
-                    *   The owner is happy with the results
-                    *   ...
+                    * Projenin tasarımı bitecek
+                    * Tüm taraflar tasarım üzerinde anlaştı
+                    * İş sahibi sonuçlardan memnun
+                    * ...
                 item_1:
-                  subject: Design freeze
+                  subject: Tasarım dondurma
                   description: This type is hierarchically a parent of the types &quot;Clash&quot; and &quot;Request&quot;, thus represents a general note.
             item_5:
-              subject: Construction phase
+              subject: İnşaat aşaması
               children:
                 item_0:
-                  subject: Start constructing
+                  subject: İnşaatın başlaması
                   description: |-
-                    ## Goal
+                    ## Hedef
 
-                    *   Ground breaking ceremony
-                    *   Setting up the construction site
-                    *   ...
+                    * Temel atma töreni
+                    * Şantiyenin kurulması
+                    * ...
 
-                    ## Description
+                    ## Açıklama
 
-                    *   Preparing the site for the project
-                    *   Get the team together
-                    *   ...
+                    * Proje için sahanın hazırlanması
+                    * Ekibin bir araya getirilmesi
+                    * ...
                 item_1:
                   subject: Foundation
                   description: |-
@@ -365,56 +365,56 @@ tr:
                 item_4:
                   subject: Installing the building service systems
                   description: |-
-                    ## Goal
+                    ## Hedef
 
-                    *   All building service systems are ready to be used
+                    * Tüm bina servis sistemleri kullanıma hazır
 
-                    ## Description
+                    ## Açıklama
 
-                    *   Installing the heating system
-                    *   Installing the climate system
-                    *   Electrical installation
-                    *   ...
+                    * Isıtma sisteminin kurulması
+                    * İklimlendirme sisteminin kurulması
+                    * Elektrik tesisatı
+                    * ...
                 item_5:
-                  subject: Final touches
+                  subject: Son rötuşlar
                   description: |-
-                    ## Goal
+                    ## Hedef
 
-                    *   Handover of the keys
-                    *   The customer is happy with his building
-                    *   ...
+                    * Anahtarların teslim edilmesi
+                    * Müşterinin binasından memnun olması
+                    * ...
 
-                    ## Description
+                    ## Açıklama
 
-                    *   Finishing the installation of the building service systems
-                    *   Finishing the interior construction
-                    *   Finishing the facade
-                    *   ...
+                    * Bina servis sistemlerinin kurulumunun tamamlanması
+                    * İç inşaatın tamamlanması
+                    * Dış cephenin tamamlanması
+                    * ...
                 item_6:
-                  subject: House warming party
+                  subject: Ev ısınma partisi
                   description: |-
-                    ## Goal
+                    ## Hedef
 
-                    *   Have a blast!
+                    * Eğlenin!
 
-                    ## Description
+                    ## Açıklama
 
-                    *   Invite the construction team
-                    *   Invite your friends
-                    *   Bring some drinks, snacks and your smile
+                    * İnşaat ekibini davet edin
+                    * Arkadaşlarınızı davet edin
+                    * Biraz içecek, atıştırmalık ve gülümsemenizi getirin
         demo-bim-project:
-          name: "(Demo) BIM project"
-          status_explanation: All tasks and sub-projects are on schedule. The people involved know their tasks. The system is completely set up.
-          description: This is a short summary of the goals of this demo BIM project.
+          name: "(Demo) BIM projesi"
+          status_explanation: Tüm görevler ve alt projeler programa uygundur. İlgili kişiler görevlerini biliyor. Sistem tamamen kurulmuştur.
+          description: Bu, bu demo BIM projesinin hedeflerinin kısa bir özetidir.
           news:
             item_0:
-              title: Welcome to your demo project
+              title: Demo projenize hoş geldiniz
               summary: |
-                We are glad you joined.
-                In this module you can communicate project news to your team members.
-              description: The actual news
+                Katıldığınız için mutluyuz.
+                Bu modülde proje haberlerini ekip üyelerinize iletebilirsiniz.
+              description: Gerçek haberler
           categories:
-            item_0: Category 1 (to be changed in Project settings)
+            item_0: Kategori 1 (Proje ayarlarında değiştirilecektir)
           queries:
             item_0:
               name: Proje planı
@@ -428,7 +428,7 @@ tr:
             widgets:
               item_0:
                 options:
-                  name: Hoş geldiniz
+                  name: Hoş geldiniz 
               item_1:
                 options:
                   name: Başlarken
@@ -468,25 +468,25 @@ tr:
 
                 The next step could be to check out the timetable and adjusting the appointments, by looking at the [Gantt chart]({{opSetting:base_url}}/projects/demo-bim-project/work_packages?query_props=%7B%22c%22%3A%5B%22id%22%2C%22subject%22%2C%22startDate%22%2C%22dueDate%22%5D%2C%22tv%22%3Atrue%2C%22tzl%22%3A%22weeks%22%2C%22hi%22%3Atrue%2C%22g%22%3A%22%22%2C%22t%22%3A%22startDate%3Aasc%22%2C%22f%22%3A%5B%7B%22n%22%3A%22status%22%2C%22o%22%3A%22o%22%2C%22v%22%3A%5B%5D%7D%5D%2C%22pa%22%3A1%2C%22pp%22%3A100%7D).
             item_1:
-              subject: Project preparation
+              subject: Proje hazırlığı
               description: This type is hierarchically a parent of the types &quot;Clash&quot; and &quot;Request&quot;, thus represents a general note.
               children:
                 item_0:
                   subject: Gathering the project specific data and information for the BIM model
                   description: |-
-                    ## Goal
+                    ## Hedef
 
-                    *   Identify the information strategy for the customer (e.g. by using plain language questions)
-                    *   If provided, analyze the customer information requirements for the BIM model
-                    *   Define an information delivery strategy according to the customers needs
+                    * Müşteri için bilgi stratejisini belirleyin (örneğin, sade dil soruları kullanarak)
+                    * Sağlanmışsa, BIM modeli için müşteri bilgi gereksinimlerini analiz edin
+                    * Müşterilerin ihtiyaçlarına göre bir bilgi dağıtım stratejisi tanımlayın
 
-                    ## Description
+                    ## Açıklama
 
-                    *   Analyzing the customers needs and goals for using the BIM methodology
-                    *   Results of this tasks should be:
-                    *   The requirements for the project
-                    *   A strategy for the delivery phase
-                    *   ...
+                    * BIM metodolojisini kullanmak için müşterilerin ihtiyaçlarını ve hedeflerini analiz etmek
+                    * Bu görevlerin sonuçları olmalıdır:
+                    * Proje için gereksinimler
+                    * Teslim aşaması için bir strateji
+                    * ...
                 item_1:
                   subject: Creating the BIM execution plan
                   description: |-
@@ -597,7 +597,7 @@ tr:
                     *   The identified model specific issues will be communicated via BCF files
                     *   ...
                 item_1:
-                  subject: Issue management, first cycle
+                  subject: Sorun yönetimi, ilk döngü
                 item_2:
                   subject: Finishing coordination, first cycle
                   description: This type is hierarchically a parent of the types &quot;Clash&quot; and &quot;Request&quot;, thus represents a general note.
@@ -622,17 +622,17 @@ tr:
                 item_0:
                   subject: Handover model for construction crew
                   description: |-
-                    ## Goal
+                    ## Hedef
 
-                    *   Everyone knows the model and their tasks
-                    *   Everybody gets all the relevant information, model based
-                    *   ...
+                    * Herkes modeli ve görevlerini bilir
+                    * Herkes ilgili tüm bilgileri alır, model tabanlı
+                    * ...
 
-                    ## Description
+                    ## Açıklama
 
-                    *   The Kickoff on the construction site includes an introduction to the model
-                    *   All the objects should have the information needed for the assigned tasks. If not, data enrichment of the model needs to be done
-                    *   ...
+                    * Şantiyedeki Başlangıç, modele bir giriş içerir
+                    * Tüm nesneler, atanan görevler için gereken bilgilere sahip olmalıdır. Eğer yoksa, modelin veri zenginleştirmesinin yapılması gerekir
+                    * ...
                 item_1:
                   subject: Construct the building
                   description: |-
@@ -665,30 +665,30 @@ tr:
                 *   The model can be used for the operating system of the building
                 *   ...
             item_14:
-              subject: Asset Management
-              description: Enjoy your building :)
+              subject: Varlık Yönetimi
+              description: Binanızın keyfini çıkarın :)
         demo-bcf-management-project:
-          name: "(Demo) BCF management"
-          status_explanation: All tasks are on schedule. The people involved know their tasks. The system is completely set up.
-          description: This is a short summary of the goals of this demo BCF management project.
+          name: "(Demo) BCF yönetimi"
+          status_explanation: Tüm görevler programa uygundur. İlgili kişiler görevlerini biliyor. Sistem tamamen kurulmuştur.
+          description: Bu, bu demo BCF yönetim projesinin hedeflerinin kısa bir özetidir.
           ifc_models:
             item_0:
-              name: Hospital - Architecture (cc-by-sa-3.0 Autodesk Inc.)
+              name: Hastane - Mimari (cc-by-sa-3.0 Autodesk Inc.)
             item_1:
-              name: Hospital - Structural (cc-by-sa-3.0 Autodesk Inc.)
+              name: Hastane - Yapısal (cc-by-sa-3.0 Autodesk Inc.)
             item_2:
-              name: Hospital - Mechanical (cc-by-sa-3.0 Autodesk Inc.)
+              name: Hastane - Mekanik (cc-by-sa-3.0 Autodesk Inc.)
           categories:
-            item_0: Category 1 (to be changed in Project settings)
+            item_0: Kategori 1 (Proje ayarlarında değiştirilecektir)
           queries:
             item_0:
               name: Sorunlar
             item_1:
-              name: Clashes
+              name: Çatışmalar
             item_2:
-              name: Requests
+              name: Talepler
             item_3:
-              name: Remarks
+              name: Açıklamalar
             item_4:
               name: Proje planı
             item_5:
@@ -699,12 +699,12 @@ tr:
               name: Takım planlayıcısı
           boards:
             bcf:
-              name: BCF issues
+              name: BCF sorunları
           project-overview:
             widgets:
               item_0:
                 options:
-                  name: Hoş geldiniz
+                  name: Hoş geldiniz 
               item_1:
                 options:
                   name: Başlarken

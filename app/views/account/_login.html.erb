@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2024 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -28,59 +28,60 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <div id="nav-login-content">
-  <%= styled_form_tag({controller: '/account', action: "login"},
-                      autocomplete: 'off', class: '-vertical') do %>
+  <%= styled_form_tag(
+        { controller: "/account", action: "login" },
+        autocomplete: "off", class: "-vertical"
+      ) do %>
     <%= back_url_to_current_page_hidden_field_tag %>
 
     <div class="grid-block">
       <div class="form--field -required">
-        <%= styled_label_tag 'username-pulldown', User.human_attribute_name(:login) %>
+        <%= styled_label_tag "username-pulldown", User.human_attribute_name(:login) %>
         <div class="form--field-container">
-          <%= styled_text_field_tag 'username', nil, id: 'username-pulldown', tabindex: 1, autocapitalize: 'none' %>
+          <%= styled_text_field_tag "username", nil, id: "username-pulldown", autocapitalize: "none" %>
         </div>
         <div class="form--field-extra-actions">
           <% if Setting::Autologin.enabled? %>
             <label class="form--label-with-check-box -no-ellipsis">
-              <%= styled_check_box_tag 'autologin', 1, false, id: 'autologin-pulldown' %>
-              <%= t('users.autologins.prompt', num_days: I18n.t('datetime.distance_in_words.x_days', count: Setting.autologin)) %>
+              <%= styled_check_box_tag "autologin", 1, false, id: "autologin-pulldown" %>
+              <%= t("users.autologins.prompt", num_days: I18n.t("datetime.distance_in_words.x_days", count: Setting.autologin)) %>
             </label>
           <% elsif Setting::SelfRegistration.enabled? %>
             <%# show here if autologin is disabled, otherwise below lost_password link %>
               <%= link_to t(:label_register),
-                account_register_path,
-                title: t(:label_register) %>
+                          account_register_path,
+                          title: t(:label_register) %>
           <% end %>
         </div>
       </div>
-
       <div class="form--field -required">
-        <%= styled_label_tag 'password-pulldown', User.human_attribute_name(:password) %>
+        <%= styled_label_tag "password-pulldown", User.human_attribute_name(:password) %>
         <div class="form--field-container">
-          <%= styled_password_field_tag 'password', nil, id: 'password-pulldown', tabindex: 1 %>
+          <%= styled_password_field_tag "password", nil, id: "password-pulldown" %>
         </div>
         <div class="form--field-extra-actions">
           <% if Setting.lost_password? %>
-            <%= link_to t(:label_password_lost), {controller: '/account', action: 'lost_password'} %>
+            <%= link_to t(:label_password_lost), { controller: "/account", action: "lost_password" } %>
           <% end %>
           <% if Setting::Autologin.enabled? && Setting::SelfRegistration.enabled? %>
             <%# show here if autologin is enabled, otherwise below login field %>
-            <%= '<br>'.html_safe if Setting.lost_password? %>
+            <%= "<br>".html_safe if Setting.lost_password? %>
             <%= link_to t(:label_register),
-                  account_register_path,
-                  title: t(:label_register) %>
+                        account_register_path,
+                        title: t(:label_register) %>
           <% end %>
         </div>
       </div>
-
+    </div>
+    <div class="grid-block">
       <div class="form--field">
         <label class="form--label" for="login-pulldown">
           &nbsp;
         </label>
         <input type="submit" name="login" id="login-pulldown"
-               value="<%=t(:button_login)%>" class="button -primary button_no-margin" tabindex="1" />
+               value="<%= t(:button_login) %>" class="button -primary button_no-margin" tabindex="1">
       </div>
     </div>
-
-    <%= render partial: 'account/auth_providers' %>
+    <%= render partial: "account/auth_providers" %>
   <% end %>
 </div>

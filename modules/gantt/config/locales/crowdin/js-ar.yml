@@ -1,6 +1,6 @@
 ar:
   js:
-    queries:
-      all_open: 'كل المفتوح'
-      timeline: 'الخط الزمني'
-      milestones: 'الأحداث الرئيسية'
+    work_packages:
+      label_gantt_chart_plural: "Gantt charts"
+      default_queries:
+        milestones: 'الأحداث الرئيسية'

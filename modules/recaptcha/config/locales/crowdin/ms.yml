@@ -9,7 +9,7 @@ ms:
     verify_account: "Sahkan akaun anda"
     error_captcha: "Akaun anda tidak dapat disahkan. Sila hubungi pentadbir."
     settings:
-      website_key: 'Kunci laman web'
+      website_key: 'Kunci tapak web (Boleh juga dipanggil "Kunci tapak")'
       response_limit: 'Had tindak balas untuk HCaptcha'
       response_limit_text: 'Bilangan maksimum aksara bagi menganggap tindak balas HCaptcha sebagai sah.'
       website_key_text: 'Masukkan kekunci laman web yang anda telah ciptakan di konsol pentadbir bagi domain ini.'
@@ -20,5 +20,6 @@ ms:
       type_v2: 'reCAPTCHA v2'
       type_v3: 'reCAPTCHA v3'
       type_hcaptcha: 'HCaptcha'
-      recaptcha_description_html: >
-        reCAPTCHA ialah perkhidmatan percuma oleh Google yang boleh didayakan untuk contoh OpenProject anda. Jika didayakan, borang captcha akan diberikan semasa log masuk semua pengguna yang masih belum mengesahkan captcha lagi. <br/> Sila lihat pautan berikut untuk butiran lebih tentang reCAPTCHA dan versi-versi mereka, dan bagaimana untuk ciptakan laman web serta kekunci rahsia: %{recaptcha_link} <br/> HCaptcha ialah alternatif percuma dari Google yang anda boleh gunakan jika anda tidak ingin menggunakan reCAPTCHA. Lihat pautan ini untuk maklumat lanjut: %{hcaptcha_link}
+      type_turnstile: 'Cloudflare Turnstile™'
+      captcha_description_html: >
+        reCAPTCHA ialah perkhidmatan percuma oleh Google yang boleh didayakan untuk contoh OpenProject anda. Jika didayakan, borang captcha akan dipaparkan semasa log masuk untuk semua pengguna yang belum mengesahkan captcha lagi. <br/> Sila lihat pautan berikut untuk mendapatkan butiran lanjut tentang reCAPTCHA dan versinya serta cara membuat tapak web dan kunci rahsia: %{recaptcha_link} <br/> HCaptcha ialah alternatif bebas Google yang boleh anda gunakan jika anda melakukannya tidak mahu menggunakan reCAPTCHA. Lihat pautan ini untuk mendapatkan maklumat lanjut: %{hcaptcha_link} <br/> Cloudflare Turnstile™ ialah alternatif lain yang lebih mudah untuk pengguna sambil masih menyediakan tahap keselamatan yang sama. Lihat pautan ini untuk mendapatkan maklumat lanjut: %{turnstile_link}

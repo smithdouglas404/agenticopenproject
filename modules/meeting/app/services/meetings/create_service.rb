@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,21 +32,10 @@ module Meetings
   class CreateService < ::BaseServices::Create
     protected
 
-    def instance(params)
-      # Setting the #type as attributes will not work
-      # as the STI instance is not changed without using e.g., +becomes!+
-      case params.delete(:type)
-      when "StructuredMeeting"
-        StructuredMeeting.new
-      else
-        Meeting.new
-      end
-    end
-
     def after_perform(call)
-      if call.success? && Journal::NotificationConfiguration.active?
-        meeting = call.result
+      meeting = call.result
 
+      if call.success? && Journal::NotificationConfiguration.active? && meeting.notify?
         meeting.participants.where(invited: true).each do |participant|
           MeetingMailer
             .invited(meeting, participant.user, User.current)
@@ -52,7 +43,24 @@ module Meetings
         end
       end
 
+      if call.success?
+        backlog = create_backlog(call.result)
+        call.merge!(backlog)
+      end
+
       call
+    end
+
+    def create_backlog(meeting)
+      MeetingSections::CreateService
+        .new(user: user)
+        .call(
+          {
+            meeting_id: meeting.id,
+            backlog: true,
+            title: I18n.t(:label_agenda_backlog)
+          }
+        )
     end
   end
 end

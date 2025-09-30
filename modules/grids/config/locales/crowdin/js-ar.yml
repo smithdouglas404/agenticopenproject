@@ -4,9 +4,6 @@ ar:
       add_widget: 'Add widget'
       remove: 'إزالة الأداة'
       configure: 'Configure widget'
-      upsale:
-        text: "بعض الأدوات، مثل أداة الرسم البياني لحزمة العمل، متوفرة فقط في النسخة المدفوعة."
-        link: 'طبعة المؤسسة.'
       widgets:
         missing_permission: "You don't have the necessary permissions to view this widget."
         custom_text:
@@ -24,12 +21,11 @@ ar:
           title: 'الأخبار'
           at: 'at'
           no_results: 'لا شيء جديد للتقرير.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'وصف المشروع'
           no_results: "No description has been written yet. One can be provided in the 'Project settings'."
-        project_details:
-          title: 'تفاصيل المشروع'
-          no_results: 'No custom fields have been defined for projects.'
         project_status:
           title: 'حالة المشروع'
           not_started: 'Not started'
@@ -39,6 +35,8 @@ ar:
           not_set: 'Not set'
           finished: 'مكتمل'
           discontinued: 'Discontinued'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'المشاريع الفرعية'
           no_results: 'No subprojects.'

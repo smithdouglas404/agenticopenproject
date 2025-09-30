@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -87,7 +89,7 @@ RSpec.describe Query::SortCriteria do
 
       it "adds the order handling (and the default order by id)" do
         expect(subject)
-          .to eq [["work_packages.start_date NULLS LAST"], ["work_packages.id DESC"]]
+          .to eq [["work_packages.start_date"], ["work_packages.id DESC"]]
       end
     end
 
@@ -96,7 +98,7 @@ RSpec.describe Query::SortCriteria do
 
       it "adds the order handling (and the default order by id)" do
         expect(subject)
-          .to eq [["work_packages.start_date NULLS LAST"], ["work_packages.id DESC"]]
+          .to eq [["work_packages.start_date"], ["work_packages.id DESC"]]
       end
     end
 
@@ -105,7 +107,7 @@ RSpec.describe Query::SortCriteria do
 
       it "adds the order handling (and the default order by id)" do
         expect(subject)
-          .to eq [["work_packages.start_date DESC NULLS LAST"], ["work_packages.id DESC"]]
+          .to eq [["work_packages.start_date DESC"], ["work_packages.id DESC"]]
       end
     end
 
@@ -113,13 +115,9 @@ RSpec.describe Query::SortCriteria do
       let(:sort_criteria) { [%w[version desc], %w[start_date asc]] }
 
       it "adds the order handling (and the default order by id)" do
-        sort_sql = <<~SQL
-          array_remove(regexp_split_to_array(regexp_replace(substring(versions.name from '^[^a-zA-Z]+'), '\\D+', ' ', 'g'), ' '), '')::int[]
-        SQL
-
         expect(subject)
-          .to eq [["#{sort_sql} DESC NULLS LAST", "name DESC NULLS LAST"],
-                  ["work_packages.start_date NULLS LAST"],
+          .to eq [["name DESC"],
+                  ["work_packages.start_date"],
                   ["work_packages.id DESC"]]
       end
     end

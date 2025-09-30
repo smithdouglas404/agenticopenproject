@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -44,12 +44,14 @@ export class CombinedDateDisplayField extends DateDisplayField {
     }
 
     if (this.startDate && (this.startDate === this.dueDate)) {
-      this.renderSingleDate('dueDate', element);
+      this.renderSingleDate('startDate', element);
       return;
     }
 
-    if (!this.startDate && !this.dueDate) {
+    if (!this.resource.scheduleManually && !this.startDate && !this.dueDate) {
       element.innerHTML = this.customPlaceholder(`${this.text.placeholder.startDate} - ${this.text.placeholder.dueDate}`);
+
+      element.prepend(this.schedulingIcon());
       return;
     }
 

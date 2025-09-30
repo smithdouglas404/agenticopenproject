@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -34,7 +34,7 @@ nl:
       quarantined_hint: "The file is quarantined, as a virus was found. It is not available for download."
     autocomplete_ng_select:
       add_tag: "Add item"
-      clear_all: "Clear all"
+      clear_all: "Alles wissen"
       loading: "Laden..."
       not_found: "Geen items gevonden"
       type_to_search: "Typ om te zoeken"
@@ -66,7 +66,7 @@ nl:
     button_back_to_list_view: "Terug naar het overzicht"
     button_cancel: "Annuleren"
     button_close: "Sluiten"
-    button_change_project: "Project wisselen"
+    button_change_project: "Move to another project"
     button_check_all: "Selecteer alles"
     button_configure-form: "Formulier configureren"
     button_confirm: "Accepteren"
@@ -74,7 +74,7 @@ nl:
     button_copy: "Kopieer"
     button_copy_to_clipboard: "Kopiëren naar het klembord"
     button_copy_link_to_clipboard: "Link naar klembord kopiëren"
-    button_copy_to_other_project: "Kopiëren naar een ander project"
+    button_copy_to_other_project: "Duplicate in another project"
     button_custom-fields: "Aangepaste velden"
     button_delete: "Verwijderen"
     button_delete_watcher: "Kijkers verwijderen"
@@ -88,6 +88,8 @@ nl:
     button_list_view: "Lijstweergave"
     button_show_view: "Fullscreen weergave"
     button_log_time: "Gelogde tijd"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "Meer"
     button_open_details: "Open detailweergave"
     button_close_details: "Sluit detailweergave"
@@ -103,8 +105,8 @@ nl:
     button_settings: "Instellingen"
     button_uncheck_all: "Deselecteer alles"
     button_update: "Bijwerken"
-    button_export-pdf: "Download PDF"
     button_export-atom: "Download Atom"
+    button_generate_pdf: "Generate PDF"
     button_create: "Maken"
     card:
       add_new: "Nieuwe kaart toevoegen"
@@ -112,7 +114,7 @@ nl:
         inline: "Markeer inline:"
         entire_card_by: "Gehele kaart door"
       remove_from_list: "Verwijder kaart uit lijst"
-    caption_rate_history: "Beoordeel geschiedenis"
+    caption_rate_history: "Tarief geschiedenis"
     clipboard:
       browser_error: "Uw browser ondersteunt kopiëren naar het klembord niet. Kopieer het handmatig: %{content}"
       copied_successful: "Succesvol gekopieerd naar klembord!"
@@ -138,6 +140,8 @@ nl:
     description_select_work_package: "Selecteer werk pakket #%{id}"
     description_subwork_package: "Kind van werkpakket #%{id}"
     editor:
+      revisions: "Show local modifications"
+      no_revisions: "No local modifications found"
       preview: "Voorbeeld modus wijzigen"
       source_code: "Wissel Markdown bronmodus"
       error_saving_failed: "Het opslaan van het document is mislukt met de volgende foutmelding:%{error}"
@@ -150,6 +154,7 @@ nl:
         attribute_reference:
           macro_help_tooltip: "Dit tekstsegment wordt dynamisch weergegeven door een macro."
           not_found: "Gevraagde bron kan niet worden gevonden"
+          nested_macro: "This macro is recursively referencing %{model} %{id}."
           invalid_attribute: "Het geselecteerde attribuut '%{name}' bestaat niet."
         child_pages:
           button: "Links naar onderliggende pagina 's"
@@ -199,67 +204,6 @@ nl:
         edit_query: "Zoekopdracht bewerken"
         new_group: "Nieuwe groep"
         reset_to_defaults: "Standaardinstellingen herstellen"
-      enterprise:
-        text_reprieve_days_left: "%{days} dagen tot het einde van de genadeperiode"
-        text_expired: "verlopen"
-        trial:
-          confirmation: "Bevestiging van het e-mailadres"
-          confirmation_info: >
-            We hebben je een e-mail gestuurd op %{date} naar %{email}. Controleer uw inbox en klik op de bevestigingslink om uw proefperiode van 14 dagen te starten.
-          form:
-            general_consent: >
-              Ik ga akkoord met de <a target="_blank" href="%{link_terms}">gebruiksvoorwaarden</a> en het <a target="_blank" href="%{link_privacy}">privacybeleid</a>.
-            invalid_email: "Ongeldig e-mailadres"
-            label_company: "Bedrijfsnaam"
-            label_first_name: "Voornaam"
-            label_last_name: "Achternaam"
-            label_domain: "Domein"
-            label_subscriber: "Abonnee"
-            label_maximum_users: "Maximum aantal actieve gebruikers"
-            label_starts_at: "Start op"
-            label_expires_at: "Verloopt op"
-            receive_newsletter: Ik wil de OpenProject <a target="_blank" href="%{link}">nieuwsbrief</a> ontvangen.
-            taken_domain: Er kan slechts één actieve proefperiode per domein zijn.
-            domain_mismatch: De huidige hostnaam van de aanvraag komt niet overeen met de geconfigureerde hostnaam. Controleer uw systeeminstellingen.
-            taken_email: Elke gebruiker kan slechts één proefperiode aanmaken.
-          email_not_received: "U heeft geen e-mail ontvangen? U kunt de e-mail opnieuw versturen met de link aan de rechterkant."
-          try_another_email: "Of probeer het met een ander e-mailadres."
-          next_steps: "Volgende stappen"
-          resend_link: "Opnieuw verzenden"
-          resend_success: "E-mail is opnieuw verstuurd. Controleer uw e-mails en klik op de link ter bevestiging."
-          resend_warning: "Kon e-mail niet opnieuw verzenden."
-          session_timeout: "Uw sessie is verlopen. Probeer de pagina te herladen of e-mail opnieuw te verzenden."
-          status_label: "Status:"
-          status_confirmed: "bevestigd"
-          status_waiting: "E-mail verzonden - wacht op bevestiging"
-          test_ee: "Test the Enterprise edition 14 days for free"
-          quick_overview: "Get a quick overview of project management and team collaboration with OpenProject Enterprise edition."
-        upsale:
-          become_hero: "Word een held!"
-          enterprise_info_html: "%{feature_title} is an Enterprise <span class='spot-icon spot-icon_inline spot-icon_enterprise-addons'></span> add-on."
-          upgrade_info: "Gelieve te upgraden naar een betaald abonnement om het te activeren en te beginnen met het gebruik ervan in uw team."
-          benefits:
-            description: "What are the benefits of the Enterprise on-premises edition?"
-            high_security: "Beveiliging functies"
-            high_security_text: "Single sign on (SAML, OpenID Connect, CAS), LDAP groups."
-            installation: "Installatie ondersteuning"
-            installation_text: "Ervaren softwareingenieurs begeleiden u door het volledige installatieproces in uw eigen infrastructuur."
-            premium_features: "Enterprise add-ons"
-            premium_features_text: "Agile borden, aangepast thema en logo, grafieken, intelligente workflows met aangepaste acties, volledige tekst zoeken voor werkpakket bijlagen en meervoudige aangepaste velden."
-            professional_support: "Professionele ondersteuning"
-            professional_support_text: "Krijg betrouwbare, krachtige ondersteuning van ervaren ondersteunende ingenieurs met deskundige kennis over het functioneren van OpenProject in zakelijke kritieke omgevingen."
-          button_start_trial: "Start gratis proefperiode"
-          button_upgrade: "Nu upgraden"
-          button_contact_us: "Neem contact met ons op voor een demo"
-          button_book_now: "Direct boeken"
-          confidence: >
-            We bieden het vertrouwen van een geteste en ondersteunde software voor projectbeheer van enterprise-class - met Open Source en een open geest.
-          link_quote: "Vraag een offerte aan"
-          more_info: "Meer informatie"
-          text: >
-            The OpenProject Enterprise edition builds on top of the Community edition. It includes Enterprise add-ons and professional support mainly aimed at organizations with more than 10 users that manage business critical projects with OpenProject.
-          unlimited: "Onbeperkt"
-          you_contribute: "Developers need to pay their bills, too. By upgrading to the Enterprise edition, you will be supporting this open source community effort and contributing to its development, maintenance and continuous improvement."
       working_days:
         calendar:
           empty_state_header: "Vrije dagen"
@@ -270,10 +214,15 @@ nl:
         change_button: "Opslaan en opnieuw plannen"
         change_title: "Wijzig werkdagen"
         removed_title: "Je verwijdert de volgende dagen uit de lijst van niet-werkdagen:"
-        change_description: "Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages in all projects in this instance."
+        change_description: "Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance."
         warning: >
-          The changes might take some time to take effect. You will be notified when all relevant work packages have been updated.
+          The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
           Are you sure you want to continue?
+      work_packages_settings:
+        warning_progress_calculation_mode_change_from_status_to_field_html: >-
+          Changing progress calculation mode from status-based to work-based will make the <i>% Complete</i> field freely editable. If you optionally enter values for <i>Work</i> or <i>Remaining work</i>, they will also be linked to <i>% Complete</i>. Changing <i>Remaining work</i> can then update <i>% Complete</i>.
+        warning_progress_calculation_mode_change_from_field_to_status_html: >-
+          Changing progress calculation mode from work-based to status-based will result in all existing <i>% Complete</i> values to be lost and replaced with values associated with each status. Existing values for <i>Remaining work</i> may also be recalculated to reflect this change. This action is not reversible.
     custom_actions:
       date:
         specific: "op"
@@ -306,10 +255,10 @@ nl:
       label: "Gantt-grafiek"
       quarter_label: "Q%{quarter_number}"
       labels:
-        title: "Labelconfiguratie"
+        title: "Label configuratie"
         bar: "Bar etiketten"
-        left: "Links"
-        right: "Rechts"
+        left: "Linkerkant"
+        right: "Rechterkant"
         farRight: "Uiterst rechts"
         description: >
           Selecteer de attributen die u te allen tijde wilt laten zien in de respectieve posities van het Gantt-diagram. Merk op dat wanneer de muis over een element beweegt, de datum labels worden getoond in plaats van deze eigenschappen.
@@ -322,7 +271,7 @@ nl:
       zoom:
         in: "Inzoomen"
         out: "Uitzoomen"
-        auto: "Automatisch inzoomen"
+        auto: "Auto-zoom"
         days: "Dagen"
         weeks: "Weken"
         months: "Maanden"
@@ -330,18 +279,6 @@ nl:
         years: "Jaren"
         description: >
           Selecteer het oorspronkelijke zoomniveau dat moet worden weergegeven wanneer autozoom niet beschikbaar is.
-      export:
-        title: "Gantt chart PDF options"
-        button_export: "Export"
-        column_widths:
-          narrow: "Narrow"
-          medium: "Medium"
-          wide: "Wide"
-          very_wide: "Very wide"
-        options:
-          date_zoom: "Date zoom"
-          paper_size: "Paper size"
-          column_widths: "Column widths"
     general_text_no: "Nee"
     general_text_yes: "Ja"
     general_text_No: "Nee"
@@ -353,27 +290,16 @@ nl:
         format:
           date: "%{attribute} is geen geldige datum - JJJJ-MM-DD verwacht."
         general: "Er is een fout opgetreden."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Lees over nieuwe functies en product-updates."
-          learn_about: "Meer informatie over de nieuwe functies"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "14_1":
-            standard:
-              new_features_html: >
-                The release contains various new features and improvements: <br> <ul class="%{list_styling_class}"> <li>PDF export of Gantt view, e.g. for printing (Enterprise add-on)</li> <li>Favorite projects</li> <li>Sections in Meetings</li> <li>Showing meetings on the My page and project overview pages</li> <li>Possibility to hide attachments in the Files tab</li> <li>Custom fields of the type Link (URL)</li> </ul>
     ical_sharing_modal:
-      title: "Subscribe to calendar"
-      inital_setup_error_message: "An error occured while fetching data."
+      title: "Abonneren op agenda"
+      inital_setup_error_message: "Er is een fout opgetreden tijdens het ophalen van gegevens."
       description: "You can use the URL (iCalendar) to subscribe to this calendar in an external client and view up-to-date work package information from there."
       warning: "Please don't share this URL with other users. Anyone with this link will be able to view work package details without an account or password."
       token_name_label: "Waar gaat u dit gebruiken?"
       token_name_placeholder: 'Typ een naam, bijv. "Telefoon"'
       token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="my/access_token", target="_blank">access tokens</a> list.'
       copy_url_label: "URL kopiëren"
-      ical_generation_error_text: "An error occured while generating the calendar URL."
+      ical_generation_error_text: "Er is een fout opgetreden tijdens het genereren van de agenda-URL."
       success_message: 'The URL "%{name}" was successfully copied to your clipboard. Paste it in your calendar client to complete the subscription.'
     label_activate: "Activeren"
     label_assignee: "Toegewezene"
@@ -386,9 +312,10 @@ nl:
     label_add_row_before: "Rij invoegen"
     label_add_selected_columns: "Geselecteerde kolommen toevoegen"
     label_added_by: "toegevoegd door"
-    label_added_time_by: 'Added by <a href="%{authorLink}">%{author}</a> at %{age}'
+    label_added_time_by: 'Toegevoegd door <a href="%{authorLink}">%{author}</a> op %{age}'
     label_ago: "dagen geleden"
     label_all: "alle"
+    label_all_projects: "Alle projecten"
     label_all_uppercase: "Alle"
     label_all_work_packages: "alle werkpakketten"
     label_and: "en"
@@ -404,6 +331,7 @@ nl:
     label_create: "Maken"
     label_create_work_package: "Nieuw werkpakket maken"
     label_created_by: "Gemaakt door"
+    label_current: "current"
     label_date: "Datum"
     label_date_with_format: "Geef de %{date_attribute} met gebruik van volgend formaat: %{format}"
     label_deactivate: "Deactiveren"
@@ -431,11 +359,10 @@ nl:
     label_expand_project_menu: "Menu project uitvouwen"
     label_export: "Exporteren"
     label_export_preparing: "De export wordt voorbereid en wordt binnenkort gedownload."
-    label_favorites: "Favorites"
+    label_favorites: "Favorieten"
     label_filename: "Bestand"
     label_filesize: "Grootte"
     label_general: "Algemeen"
-    label_global_roles: "Global roles"
     label_greater_or_equal: ">="
     label_group: "Groep"
     label_group_by: "Groeperen op"
@@ -460,10 +387,11 @@ nl:
     label_manage_columns: "Manage and reorder columns"
     label_me: "ik"
     label_meeting_agenda: "Agenda"
-    label_meeting_minutes: "Minuten"
+    label_meeting_minutes: "Notulen"
     label_menu_collapse: "samenvouwen"
     label_menu_expand: "uitbreiden"
     label_more_than_ago: "meer dan dagen geleden"
+    label_moderate_comment: "Moderate comment"
     label_next: "Volgende"
     label_no_color: "Geen kleur"
     label_no_data: "Geen gegevens om weer te geven"
@@ -483,7 +411,7 @@ nl:
     label_per_page: "Per pagina:"
     label_please_wait: "Een ogenblik geduld"
     label_project: "Project"
-    label_project_list: "Project lists"
+    label_project_list: "Projectlijsten"
     label_project_plural: "Projecten"
     label_visibility_settings: "Zichtbaarheidsinstellingen"
     label_quote_comment: "Citeer dit commentaar"
@@ -497,7 +425,6 @@ nl:
     label_repository_plural: "Repositories"
     label_save_as: "Opslaan als"
     label_search_columns: "Search a column"
-    label_select_project: "Kies een project"
     label_select_watcher: "Kies een toezichter..."
     label_selected_filter_list: "Geselecteerde filters"
     label_show_attributes: "Toon alle kenmerken"
@@ -508,7 +435,7 @@ nl:
     label_sort_lower: "Omlaag"
     label_sorting: "Sortering"
     label_spent_time: "Bestede tijd"
-    label_star_query: "Favoriet"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Druk op Enter om te bewaren."
     label_public_query: "Publiek"
     label_sum: "Som"
@@ -536,13 +463,13 @@ nl:
     label_watcher_added_successfully: "Toezichthouder succesvol toegevoegd!"
     label_watcher_deleted_successfully: "Toezichthouder succesvol verwijderd!"
     label_work_package_details_you_are_here: "You are on the %{tab} tab for %{type} %{subject}."
-    label_work_package_context_menu: "Work package context menu"
+    label_work_package_context_menu: "Contextmenu werkpakket"
     label_unwatch: "Niet meer volgen"
     label_unwatch_work_package: "Stop met het bekijken van werkpakket"
     label_uploaded_by: "Geüpload door"
     label_default_queries: "Standaard"
     label_starred_queries: "Favoriete"
-    label_global_queries: "Openbaar"
+    label_global_queries: "Publiek"
     label_custom_queries: "Privé"
     label_columns: "Kolommen"
     label_attachments: Bijlagen
@@ -567,7 +494,7 @@ nl:
     label_version_plural: "Versies"
     label_view_has_changed: "Deze weergave heeft niet-opgeslagen wijzigingen. Klik om ze op te slaan."
     help_texts:
-      show_modal: "Toon kenmerk help tekstinvoer"
+      show_modal: "Show help text"
     onboarding:
       buttons:
         skip: "Overslaan"
@@ -578,7 +505,7 @@ nl:
         members: "Nodig nieuwe <b>leden</b> uit om deel te nemen aan uw project."
         quick_add_button: "Klik op het plus (+) pictogram in de koptekst navigatie om <b>een nieuw project te maken</b> of <b>collega's uit te nodigen</b>."
         sidebar_arrow: "Gebruik de terug pijl in de linkerbovenhoek om terug te keren naar het project <b>hoofdmenu</b>."
-        welcome: "Neem drie minuten introductie rondleiding om de meeste <b>belangrijke kenmerken </b> te leren. <br> het is raadzaam de stappen uit te voeren tot het einde. U kunt de tour ieder moment opnieuw doen."
+        welcome: "Take a three-minute introduction tour to learn the most <b>important features</b>. <br> We recommend completing the steps until the end. You can restart the tour any time."
         wiki: "Binnen de <b>wiki</b> kunt u kennis delen en documenteren met uw team."
         backlogs:
           overview: "Beheer uw werk in de <b>backlogs</b> weergave."
@@ -610,33 +537,28 @@ nl:
       title: "Meldingen"
       no_unread: "Geen ongelezen meldingen"
       reasons:
-        mentioned: "vermeld"
-        watched: "watcher"
+        mentioned: "Genoemd"
+        watched: "Kijker"
         assigned: "Toegewezene"
-        responsible: "verantwoordelijk"
-        created: "aangemaakt"
-        scheduled: "gepland"
+        #The enum value is named 'responsible' in the database and that is what is transported through the API
+        #up to the frontend.
+        responsible: "Verantwoording afleggen"
+        created: "Gemaakt"
+        scheduled: "Gepland"
         commented: "Becommentarieerd"
-        processed: "verwerkt"
-        prioritized: "prioriteren"
+        processed: "Verwerkt"
+        prioritized: "Prioritized"
         dateAlert: "Date alert"
-        shared: "shared"
+        shared: "Gedeeld"
+        reminder: "Reminder"
       date_alerts:
         milestone_date: "Milestone date"
         overdue: "Te laat"
-        overdue_since: "sinds %{difference_in_days}"
-        property_today: "is vandaag"
-        property_is: "is in %{difference_in_days}"
-        property_was: "was %{difference_in_days} geleden"
-        property_is_deleted: "Is verwijderd"
-        upsale:
-          title: "Date alerts"
-          description: "Met datummeldingen wordt u op de hoogte gebracht van de start- of einddatum, zodat u nooit een belangrijke deadline mist of vergeet."
-      facets:
-        unread: "Ongelezen"
-        unread_title: "Toon ongelezen"
-        all: "Alle"
-        all_title: "Alles weergeven"
+        overdue_since: "since %{difference_in_days}."
+        property_today: "is today."
+        property_is: "is in %{difference_in_days}."
+        property_was: "was %{difference_in_days} ago."
+        property_is_deleted: "is deleted."
       center:
         label_actor_and: "en"
         and_more_users:
@@ -647,25 +569,20 @@ nl:
           with_current_filter: "Er zijn geen meldingen in deze weergave op dit moment"
         mark_all_read: "Alles als gelezen markeren"
         mark_as_read: "Als gelezen markeren"
-        text_update_date: "%{date} door"
+        mark_all_read_confirmation: "This will mark all notifications in this view as read. Are you sure you want to do this?"
+        text_update_date_by: "%{date} door"
         total_count_warning: "De %{newest_count} meest recente meldingen weergeven. %{more_count} meer worden niet weergegeven."
         empty_state:
           no_notification: "Het lijkt erop dat u helemaal bij bent."
           no_notification_with_current_project_filter: "Looks like you are all caught up with the selected project."
-          no_notification_with_current_filter: "Looks like you are all caught up for %{filter} filter."
+          no_notification_with_current_filter: "Het lijkt erop dat je allemaal bij bent met %{filter} filter."
+          no_notification_for_filter: "Looks like you are all caught up for this filter."
           no_selection: "Klik op een melding om alle activiteit details te bekijken."
         new_notifications:
           message: "Er zijn nieuwe meldingen."
-          link_text: "Click here to load them."
-      menu:
-        accountable: "Verantwoording afleggen"
-        by_project: "Ongelezen per project"
-        by_reason: "Reden"
-        inbox: "Inkomend"
-        mentioned: "Genoemd"
-        watched: "Kijker"
-        date_alert: "Date alert"
-        shared: "Shared"
+          link_text: "Klik hier om ze te laden."
+      reminders:
+        note: "Note: “%{note}”"
       settings:
         change_notification_settings: 'You can modify your <a target="_blank" href="%{url}">notification settings</a> to ensure you never miss an important update.'
         title: "Instellingen voor meldingen"
@@ -688,7 +605,7 @@ nl:
             description: "Ontvang een melding elke keer dat iemand mij ergens noemt"
           assignee: "Toegewezene"
           responsible: "Verantwoording afleggen"
-          shared: "Shared"
+          shared: "Gedeeld"
           watched: "Kijker"
           work_package_commented: "Alle nieuwe reacties"
           work_package_created: "Nieuwe werkpakketten"
@@ -701,12 +618,11 @@ nl:
             description: "Notifications for all activities in work packages you are involved in (assignee, accountable or watcher)."
           delayed:
             title: "Niet-deelnemend"
-            description: "Additional notifications for activities in all projects."
+            description: "Extra meldingen voor activiteiten in alle projecten."
           date_alerts:
             title: "Date alerts"
             description: "Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher)."
-            teaser_text: "Met datummeldingen wordt u op de hoogte gebracht van de start- of einddatum, zodat u nooit een belangrijke deadline mist of vergeet."
-          overdue: When overdue
+          overdue: Wanneer achterstallig
         project_specific:
           title: "Project-specifieke meldingsinstellingen"
           description: "These project-specific settings override default settings above."
@@ -718,9 +634,12 @@ nl:
       title: "Voer uw wachtwoord in om door te gaan"
     pagination:
       no_other_page: "U bent op de enige pagina."
+      pages_skipped: "Pages skipped."
+      page_navigation: "Pagination navigation"
+      per_page_navigation: 'Items per page selection'
       pages:
-        next: "Vooruit naar volgende pagina"
-        previous: "Terug naar de vorige pagina"
+        page_number: Page %{number}
+        show_per_page: Show %{number} per page
     placeholders:
       default: "-"
       subject: "Onderwerp hier invoeren"
@@ -728,18 +647,13 @@ nl:
       description: "Beschrijving: Klik om te bewerken..."
       relation_description: "Klik om een beschrijving voor deze relatie toe te voegen"
     project:
-      required_outside_context: >
-        Kies een project om het werkpakket in te creëren om alle attributen te zien. U kunt alleen projecten selecteren waarvan het type hierboven is geactiveerd.
-      details_activity: "Project details activity"
-      context: "Context van het project"
-      click_to_switch_to_project: "Project: %{projectname}"
-      confirm_template_load: "Switching the template will reload the page and you will lose all input to this form. Continue?"
-      use_template: "Sjabloon gebruiken"
-      no_template_selected: "(Geen)"
-      copy:
-        copy_options: "Copy options"
       autocompleter:
         label: "Project auto aanvullen"
+      click_to_switch_to_project: "Project: %{projectname}"
+      context: "Context van het project"
+      not_available: "Project N/A"
+      required_outside_context: >
+        Kies een project om het werkpakket in te creëren om alle attributen te zien. U kunt alleen projecten selecteren waarvan het type hierboven is geactiveerd.
     reminders:
       settings:
         daily:
@@ -754,6 +668,7 @@ nl:
         immediate:
           title: "Stuur me een e-mail herinnering"
           mentioned: "Onmiddellijk wanneer iemand @vermeldt"
+          personal_reminder: "Immediately when I receive a personal reminder"
         alerts:
           title: "E-mail meldingen voor andere items (die geen werkpakketten zijn)"
           explanation: >
@@ -772,6 +687,8 @@ nl:
           first_day: "Eerste dag"
           last_day: "Laatste dag"
     text_are_you_sure: "Weet u het zeker?"
+    text_are_you_sure_to_cancel: "You have unsaved changes on this page. Are you sure you want to discard them?"
+    breadcrumb: "Breadcrumb"
     text_data_lost: "Alle ingevoerde gegevens zullen verloren gaan."
     text_user_wrote: "%{value} schreef:"
     types:
@@ -785,10 +702,6 @@ nl:
         upgrade_to_ee_text: "Wow! If you need this add-on you are a super pro! Would you mind supporting us OpenSource developers by becoming an Enterprise edition client?"
         more_information: "Meer informatie"
         nevermind: "Geen aandacht"
-      edit:
-        form_configuration: "Formulier configuratie"
-        projects: "Projecten"
-        settings: "Instellingen"
     time_entry:
       work_package_required: "Vereist eerst een werkpakket te selecteren."
       title: "Gelogde tijd"
@@ -801,7 +714,7 @@ nl:
       tracking_time: "Tracking time"
       button_stop: "Stop current timer"
     two_factor_authentication:
-      label_two_factor_authentication: "Twee-factor-authenticatie"
+      label_two_factor_authentication: "Twee-staps authenticatie"
     watchers:
       label_loading: volgers worden geladen...
       label_error_loading: Er is een fout opgetreden tijdens het laden van de volgers
@@ -811,6 +724,7 @@ nl:
       typeahead_placeholder: Zoek naar mogelijke toezichthouders
     relation_labels:
       parent: "Bovenliggend werkpakket"
+      child: "Kind"
       children: "Subdocumenten"
       relates: "Verwant Met"
       duplicates: "Kopies"
@@ -840,16 +754,16 @@ nl:
       add_new_child: "Maak nieuw kind"
       create_new: "Nieuwe aanmaken"
       add_existing: "Bestaande toevoegen"
-      add_existing_child: "Voeg bestaand kind toe"
+      add_existing_child: "Voeg subdocument toe"
       remove_child: "Verwijder kind"
       add_new_relation: "Maak nieuwe relatie"
       add_existing_relation: "Bestaande relatie toevoegen"
       update_description: "Kies of wijzig beschrijving van deze relatie"
       toggle_description: "Wissel de relatie beschrijving"
       update_relation: "Klik op het type relatie wijzigen"
-      add_follower: "Volgeling toevoegen"
       show_relations: "Relaties tonen"
       add_predecessor: "Toevoegen van de voorganger"
+      add_successor: "Add successor"
       remove: "Relatie verwijderen"
       save: "Sla relatie op"
       abort: "Annuleren"
@@ -859,6 +773,7 @@ nl:
     autocompleter:
       placeholder: "Typ om te zoeken"
       notFoundText: "Geen items gevonden"
+      search: "Zoeken"
       project:
         placeholder: "Select project"
     repositories:
@@ -866,8 +781,6 @@ nl:
       select_branch: "Selecteer pad"
     field_value_enter_prompt: "Breng een waarde in voor veld '%{field}'"
     project_menu_details: "Details"
-    scheduling:
-      manual: "Handmatige planning"
     sort:
       sorted_asc: "Oplopende sorteervolgorde toegepast, "
       sorted_dsc: "Aflopende sorteervolgorde toegepast, "
@@ -881,7 +794,7 @@ nl:
     tl_toolbar:
       zooms: "Zoom niveau"
       outlines: "Niveau van de hiërarchie"
-    upsale:
+    upsell:
       ee_only: "Enterprise edition add-on"
     wiki_formatting:
       strong: "Vet"
@@ -899,26 +812,22 @@ nl:
       preformatted_text: "Voorgeformateerde Tekst"
       wiki_link: "Link naar een Wiki-pagina"
       image: "Afbeelding"
+    sharing:
+      share: "Deel"
+      selected_count: "%{count} geselecteerd"
+      selection:
+        mixed: "Gemengd"
     work_packages:
       bulk_actions:
-        move: "Bulk verandering van project"
         edit: "Aanpassen in bulk"
-        copy: "Selectie kopiëren"
         delete: "Selectie verwijderen"
+        duplicate: "Bulk duplicate"
+        move: "Bulk verandering van project"
       button_clear: "Wissen"
       comment_added: "De opmerking is succesvol toegevoegd."
       comment_send_failed: "Er is een fout opgetreden. De opmerking is niet ingediend."
       comment_updated: "De opmerking is succesvol bijgewerkt."
       confirm_edit_cancel: "Bent u zeker dat u het bewerken van het werkpakket wilt annuleren?"
-      datepicker_modal:
-        automatically_scheduled_parent: "Automatically scheduled. Dates are derived from relations."
-        manually_scheduled: "Manual scheduling enabled, all relations ignored."
-        start_date_limited_by_relations: "Available start and finish dates are limited by relations."
-        changing_dates_affects_follow_relations: "Changing these dates will affect dates of related work packages."
-        click_on_show_relations_to_open_gantt: 'Click on "%{button_name}" for GANTT overview.'
-        show_relations: "Relaties tonen"
-        ignore_non_working_days:
-          title: "Alleen werkdagen"
       description_filter: "Filter"
       description_enter_text: "Tekst invoeren"
       description_options_hide: "Verberg opties"
@@ -957,8 +866,8 @@ nl:
         header_no_type: "Nieuw werkpakket (Type nog niet ingesteld)"
         header_with_parent: "Nieuw %{type} (Kind van %{parent_type} #%{id})"
         button: "Maken"
-      copy:
-        title: "Werkpakketten kopiëren"
+      duplicate:
+        title: "Duplicate work package"
       hierarchy:
         show: "Toon hiërarchie modus"
         hide: "Hiërarchie modus verbergen"
@@ -984,7 +893,7 @@ nl:
         createdAt: "Gemaakt op"
         description: "Omschrijving"
         date: "Datum"
-        percentComplete: "% Complete"
+        percentComplete: "% Voltooid"
         percentCompleteAlternative: "Progress"
         dueDate: "Einddatum"
         duration: "Duur"
@@ -993,7 +902,7 @@ nl:
         percentageDone: "Procent klaar"
         priority: "Prioriteit"
         projectName: "Project"
-        remainingWork: "Remaining work"
+        remainingWork: "Resterend werk"
         remainingWorkAlternative: "Resterende uren"
         responsible: "Verantwoordelijk"
         startDate: "Startdatum"
@@ -1005,17 +914,19 @@ nl:
         updatedAt: "Bijgewerkt op"
         versionName: "Versie"
         version: "Versie"
-        work: "Work"
+        work: "Werk"
         workAlternative: "Geschatte tijd"
-        remainingTime: "Remaining work"
+        remainingTime: "Resterend werk"
       default_queries:
+        manually_sorted: "Nieuwe handmatig gesorteerde query"
         latest_activity: "Laatste Activiteit"
         created_by_me: "Gemaakt door mijzelf"
         assigned_to_me: "Toegewezen aan mij"
         recently_created: "Onlangs gecreëerd"
         all_open: "Alles open"
+        overdue: "Te laat"
         summary: "Samenvatting"
-        shared_with_users: "Shared with users"
+        shared_with_users: "Gedeeld met gebruikers"
         shared_with_me: "Shared with me"
       jump_marks:
         pagination: "Ga naar de tabelpaginering"
@@ -1050,18 +961,24 @@ nl:
           not_found: "Deze weergave bestaat niet"
           duplicate_query_title: "Naam van deze weergave bestaat al. Toch wijzigen?"
         text_no_results: "Geen overeenkomende weergaven werden gevonden."
+      reminders:
+        button_label: "Set reminder"
+        title:
+          new: "Set a reminder"
+          edit: "Edit reminder"
+        subtitle: "You will receive a notification for this work package at the chosen time."
+        presets:
+          tomorrow: "Tomorrow"
+          three_days: "In 3 days"
+          week: "In a week"
+          month: "In a month"
+          custom: "At a particular date/time"
       scheduling:
         is_parent: "The dates of this work package are automatically deduced from its children. Activate 'Manual scheduling' to set the dates."
         is_switched_from_manual_to_automatic: "The dates of this work package may need to be recalculated after switching from manual to automatic scheduling due to relationships with other work packages."
       sharing:
-        share: "Deel"
-        title: "Share work package"
+        title: "Werkpakket delen"
         show_all_users: "Show all users with whom the work package has been shared with"
-        selected_count: "%{count} selected"
-        selection:
-          mixed: "Mixed"
-        upsale:
-          description: "Share work packages with users who are not members of the project."
       table:
         configure_button: "Configureer werkpakkettabel"
         summary: "Tabel met rijen van werkpakket en kolommen werk pakket kenmerken."
@@ -1096,10 +1013,6 @@ nl:
           manually: "Handmatig"
           warning: "U verliest uw vorige sortering bij activeren van de automatische sorteringsmodus."
         columns_help_text: "Use the input field above to add columns to your table view. You can drag and drop the columns to reorder them."
-        upsale:
-          attribute_highlighting: "Moeten bepaalde werkpakketten te onderscheiden zijn van de massa?"
-          relation_columns: "Nodig om te zien van betrekkingen in de pakketlijst werk?"
-          check_out_link: "Check out the Enterprise edition."
         relation_filters:
           filter_work_packages_by_relation_type: "Filter werkpakketten op relatietype"
       tabs:
@@ -1126,7 +1039,7 @@ nl:
         save_as: "Opslaan als"
         export: "Exporteren"
         visibility_settings: "Zichtbaarheidsinstellingen"
-        share_calendar: "Subscribe to calendar"
+        share_calendar: "Abonneren op agenda"
         page_settings: "Hernoem weergave"
         delete: "Verwijderen"
       filter: "Filter"
@@ -1158,6 +1071,8 @@ nl:
     notice_successful_delete: "Verwijdering geslaagd."
     notice_successful_update: "Succesvolle wijziging."
     notice_job_started: "taak gestart."
+    no_job_id: "No job ID returned from server."
+    invalid_job_response: "Invalid response from server."
     notice_bad_request: "Foute ingave."
     relations:
       empty: Er bestaat geen relatie
@@ -1190,6 +1105,7 @@ nl:
       child_work_packages:
         one: "één onderliggend werkpakket"
         other: "%{count} werkpakket kinderen"
+      hour_string: "%{hours} h"
       hour:
         one: "1 u"
         other: "%{count} u"
@@ -1198,6 +1114,9 @@ nl:
         one: "1 dag"
         other: "%{count} dagen"
         zero: "0 dagen"
+      word:
+        one: "1 word"
+        other: "%{count} words"
     zen_mode:
       button_activate: "Zen-modus activeren"
       button_deactivate: "Deactiveren van zen modus"
@@ -1207,7 +1126,6 @@ nl:
       current_project_and_all_descendants: "In dit project + subprojecten"
       current_project: "In dit project"
       recently_viewed: "Recent bekeken"
-      search: "Zoeken"
       title:
         all_projects: "alle projecten"
         project_and_subprojects: "en alle subprojecten"
@@ -1288,7 +1206,7 @@ nl:
         content: >-
           The status '%{status_name}' has been configured to be excluded from hierarchy totals of Work, Remaining work, and % Complete. The totals do not take this value into account.
     favorite_projects:
-      no_results: "You have no favorite projects"
+      no_results: "U heeft geen favoriete projecten"
       no_results_subtext: "Add one or multiple projects as favorite through their overview or in a project list."
     include_projects:
       toggle_title: "Inclusief de projecten"
@@ -1298,21 +1216,21 @@ nl:
       selected_filter:
         all: "Alle projecten"
         selected: "Alleen geselecteerd"
-      search_placeholder: "Zoek project"
+      search_placeholder: "Search projects..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Inclusief alle sub-projecten"
       tooltip:
         include_all_selected: "Project al opgenomen omdat alle subprojecten zijn ingeschakeld."
         current_project: "Dit is het huidige project waarin u zich bevindt."
         does_not_match_search: "Het project komt niet overeen met de zoekcriteria."
       no_results: "Geen enkel project komt overeen met uw zoekcriteria."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Baseline"
       clear: "Wissen"
       apply: "Toepassen"
-      header_description: "Highlight changes made to this list since any point in the past."
-      enterprise_header_description: "Highlight changes made to this list since any point in the past with Enterprise edition."
+      header_description: "Markeer wijzigingen die sindsdien in deze lijst zijn aangebracht."
       show_changes_since: "Toon wijzigingen sinds"
-      baseline_comparison: "Baseline comparison"
       help_description: "Reference time zone for the baseline."
       time_description: "In uw lokale tijd: %{datetime}"
       time: "Tijd"
@@ -1339,8 +1257,8 @@ nl:
         changed: "Behoud met wijzigingen"
     forms:
       submit_success_message: "Het formulier is met succes verzonden"
-      load_error_message: "There was an error loading the form"
-      validation_error_message: "Please fix the errors present in the form"
+      load_error_message: "Er is een fout opgetreden bij het laden van het formulier"
+      validation_error_message: "Corrigeer de fouten in het formulier"
       advanced_settings: "Geavanceerde instellingen"
     spot:
       filter_chip:
@@ -1350,9 +1268,7 @@ nl:
         close: "Close modal"
     open_project_storage_modal:
       waiting_title:
-        timeout: "Timeout"
+        timeout: "Time-out"
       waiting_subtitle:
         network_off: "There is a network problem."
         network_on: "Network is back. We are trying."
-        timeout: >
-          OpenProject could not provide you access to the project folder within the expected period of time. Please, try once again.<br><br> If that problem persists please contact you OpenProject administrator to check the <a href="https://www.openproject.org/docs/system-admin-guide/files/external-file-storages/file-storage-troubleshooting/">health status of the file storage setup</a>.

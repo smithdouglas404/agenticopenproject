@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -90,13 +90,13 @@ module OpenProject
               name: "notifications",
               partial: "users/notifications",
               path: ->(params) { edit_user_path(params[:user], tab: :notifications) },
-              label: :"notifications.settings.title"
+              label: :"js.notifications.settings.title"
             },
             {
               name: "reminders",
               partial: "users/reminders",
               path: ->(params) { edit_user_path(params[:user], tab: :reminders) },
-              label: :"reminders.settings.title"
+              label: :"js.reminders.settings.title"
             }
           ]
         end

@@ -96,6 +96,18 @@ configure_local_postgres() {
 	# remove any dangling pid
 	rm -f $PGDATA/postmaster.pid
 
+	if [ ! -d /etc/postgresql/$PGVERSION ]; then
+		echo "No cluster configuration found for postgres $PGVERSION. Creating configuration."
+		pg_createcluster $PGVERSION main
+
+		# remove config we will set further down
+		sed -i '/^port =/d' /etc/postgresql/$PGVERSION/main/postgresql.conf
+		sed -i '/^data_directory =/d' /etc/postgresql/$PGVERSION/main/postgresql.conf
+
+		# remove unused data directory
+		rm -rf /var/lib/postgresql/$PGVERSION/main
+	fi
+
 	# Set up pg defaults
 	echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/$PGVERSION/main/pg_hba.conf
 	echo "listen_addresses='0.0.0.0'" >> "$PGCONF_FILE"

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -122,25 +124,18 @@ module OpenProject::Backlogs
     end
 
     def sql_for_task
-      <<-SQL
+      <<-SQL.squish
       (#{db_table}.type_id = #{Task.type} AND
-       #{db_table}.id IN (#{is_child_sql}))
+       #{db_table}.parent_id IS NOT NULL)
       SQL
     end
 
     def sql_for_impediment
-      <<-SQL
+      <<-SQL.squish
         (#{db_table}.type_id = #{Task.type} AND
          #{db_table}.id IN (#{blocks_backlogs_type_sql})
-         AND #{db_table}.id NOT IN (#{is_child_sql}))
+         AND #{db_table}.parent_id IS NULL)
       SQL
-    end
-
-    def is_child_sql
-      Relation
-        .hierarchy
-        .select(:to_id)
-        .to_sql
     end
 
     def blocks_backlogs_type_sql

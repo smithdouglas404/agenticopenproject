@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 # -- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2010-2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,7 +31,7 @@
 # The class represents a wiki page at a specific version.
 # It is implemented as somewhat of a mix between a decorator and a view model. It simplifies
 # both the controller as well as the view. The controller will only have to provide a single object
-# to the view and the view can serve all it's data needs from that one object.
+# to the view and the view can serve all its data needs from that one object.
 #
 # In case more objects like this are generated, a separate folder under e.g. app/view_models or app/decorators
 # should be introduced.

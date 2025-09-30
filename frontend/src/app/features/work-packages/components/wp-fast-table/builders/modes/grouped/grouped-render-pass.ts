@@ -83,7 +83,7 @@ export class GroupedRenderPass extends PlainRenderPass {
         return this.matchesMultiValue(property as HalResource[], group);
       }
 
-      /// / If its a linked resource, compare the href,
+      /// / If it's a linked resource, compare the href,
       /// / which is an array of links the resource offers
       if (property && property.href) {
         return !!_.find(group._links.valueLink, (l:any):any => property.href === l.href);

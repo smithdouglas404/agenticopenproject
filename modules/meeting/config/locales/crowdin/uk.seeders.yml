@@ -7,7 +7,7 @@ uk:
     standard:
       projects:
         demo-project:
-          meetings:
+          meeting_series:
             item_0:
               title: Щотижня
           meeting_agenda_items:
@@ -16,13 +16,13 @@ uk:
             item_1:
               title: Оновлення від розробників
             item_2:
-              title: Оновлення від команди розробників
+              title: Оновлення від відділу продукту
             item_3:
               title: Оновлення від маркетологів
             item_5:
               title: Новини від відділу продажів
             item_6:
-              title: Перегляд квартальних цілей
+              title: Перегляд квартальних цілей 
             item_7:
               title: Відгук щодо ключових цінностей
             item_8:

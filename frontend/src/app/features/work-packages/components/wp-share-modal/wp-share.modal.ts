@@ -20,6 +20,7 @@ import { shareModalUpdated } from 'core-app/features/work-packages/components/wp
   templateUrl: './wp-share.modal.html',
   styleUrls: ['./wp-share.modal.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WorkPackageShareModalComponent extends OpModalComponent implements OnInit {
   @ViewChild('frameElement') frameElement:ElementRef<HTMLIFrameElement>|undefined;

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -101,7 +103,7 @@ class Journable::HistoricActiveRecordRelation < ActiveRecord::Relation
   # Patch the arel object, which is used to construct the sql query, in order
   # to modify the query to search for historic data.
   #
-  def build_arel(aliases = nil)
+  def build_arel(connection, aliases = nil)
     relation = self
 
     relation = switch_to_journals_database_table(relation)
@@ -113,14 +115,14 @@ class Journable::HistoricActiveRecordRelation < ActiveRecord::Relation
     relation = select_columns_from_the_appropriate_tables(relation)
 
     # Based on the previous modifications, build the algebra object.
-    arel = relation.call_original_build_arel(aliases)
+    arel = relation.call_original_build_arel(connection, aliases)
     arel = modify_where_clauses(arel)
     arel = modify_order_clauses(arel)
     modify_joins(arel)
   end
 
-  def call_original_build_arel(aliases = nil)
-    original_build_arel(aliases)
+  def call_original_build_arel(connection, aliases = nil)
+    original_build_arel(connection, aliases)
   end
 
   def eager_loading?
@@ -232,7 +234,7 @@ class Journable::HistoricActiveRecordRelation < ActiveRecord::Relation
       # but it has to the journals table. We join it to the journals table instead.
       journal_id = "customizable_journals.journal_id = journals.id"
 
-      predicate.gsub! /#{customized_type}.*AND #{customized_id}/m, journal_id
+      predicate.gsub! /#{customized_type}\s*AND #{customized_id}/m, journal_id
     end
   end
 
@@ -352,12 +354,7 @@ class Journable::HistoricActiveRecordRelation < ActiveRecord::Relation
           gsub_table_names_in_sql_string!(node.left)
         elsif node.kind_of?(Arel::Nodes::Join) and node.right.kind_of?(Arel::Nodes::On)
           [node.right.expr.left, node.right.expr.right].each do |attribute|
-            if attribute.respond_to? :relation and
-                (attribute.relation == journal_class.arel_table) and
-                (attribute.name == "id")
-              attribute.relation = Journal.arel_table
-              attribute.name = "journable_id"
-            end
+            modify_conditions(attribute)
           end
         end
       end
@@ -439,6 +436,13 @@ class Journable::HistoricActiveRecordRelation < ActiveRecord::Relation
       # expr, which is a NodeExpression itself
       [node.expr.left, node.expr.right].each { |child| modify_conditions(child) }
     elsif node.kind_of?(Arel::Attributes::Attribute)
+      # With the replacement of the table ivar we might already have switched the base relation ... so if the ID is used
+      # in a join, we should also replace it with the journable
+      if node.relation == model.journal_class.arel_table && node.name == "id"
+        node.relation = Journal.arel_table
+        node.name = "journable_id"
+      end
+
       # We find an attribute, figure out if it is the model's table
       if node.relation == model.arel_table
         if node.name == "id"

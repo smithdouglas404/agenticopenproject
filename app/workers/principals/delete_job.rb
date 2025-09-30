@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -66,15 +68,24 @@ class Principals::DeleteJob < ApplicationJob
     delete_notifications(principal)
     delete_private_queries(principal)
     delete_tokens(principal)
+    delete_favorites(principal)
   end
 
   def delete_notifications(principal)
+    ::ReminderNotification.joins(:notification)
+                         .where(notifications: { recipient: principal })
+                         .delete_all
+
     ::Notification.where(recipient: principal).delete_all
   end
 
   def delete_private_queries(principal)
     ::Query.where(user_id: principal.id, public: false).destroy_all
     CostQuery.where(user_id: principal.id, is_public: false).delete_all
+  end
+
+  def delete_favorites(principal)
+    Favorite.where(user_id: principal.id).delete_all
   end
 
   def delete_tokens(principal)

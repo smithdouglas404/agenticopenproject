@@ -22,9 +22,9 @@ description: |-
 
   The `_dependencies` property contains the list of dependencies that exist between the value selected for one of the properties of the described resource and the resource's structure. Depending on the value, additional properties might exist or properties might have other values allowed to be assigned. See [SchemaDependency](https://www.openproject.org/docs/api/endpoints/schemas/#schema-dependencies) for more information.
 
-  # Field schema
+  ## Field schema
 
-  ## Linked Properties
+  ### Linked Properties
 
   | Property             | Description                                                    | Conditions                                           |
   | :--------------:     | -------------------------------------------------------------- | ---------------------------------------------        |
@@ -39,7 +39,7 @@ description: |-
 
   Only one of the links (`allowedValues`, `allowedValuesSchemas`) will exist for any given property.
 
-  ## Local Properties
+  ### Local Properties
 
   | Property          | Description                                                                        | Type         | Default |
   |:-----------------:| ---------------------------------------------------------------------------------- | ------------ | ------- |
@@ -51,6 +51,7 @@ description: |-
   | minLength         | The value of the property must at least contain the specified amount of characters | Integer      | 0       |
   | maxLength         | The value of the property must at most contain the specified amount of characters  | Integer      | ∞       |
   | regularExpression | The value of the property must match the given regular expression (if not null)    | String       | null    |
+  | formula           | If present, contains a formula that is used to calculate the value of the property | String       | null    |
   | location          | If present, contains a reference to the location of the property in the JSON       | String       | null    |
   | description       | If present, contains a formattable, human readable description                     | Formattable  | null    |
   | deprecated        | If present, the client should consider the existence of the property deprecated    | Boolean      | false   |
@@ -72,7 +73,7 @@ description: |-
   property set to `_links`. This means that the `user` property will be found under the path
   `_links.user` of the json payload of the work package resource.
 
-  # Schema Dependencies
+  ## Schema Dependencies
 
   A `SchemaDependency` describes the dependencies between a value chosen for a resource's property
   and the resource's structure. By that, additional properties or changes in a property are
@@ -89,11 +90,11 @@ description: |-
 
   SchemaDependencies are always embedded inside a Schema's `_dependencies` attribute. As such, they are not independently existing resources. Consequently, they do not have a `self` reference.
 
-  ## Linked Properties
+  ### Linked Properties
 
   A SchemaDependency does not have any links.
 
-  ## Local Properties
+  ### Local Properties
 
   | Property            | Description                                                                        | Type             |
   | :-----------------: | ---------------------------------------------------------------------------------- | ---------------- |

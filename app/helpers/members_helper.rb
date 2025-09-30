@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -36,11 +38,13 @@ module MembersHelper
     if member.roles.length == 1
       link_to("",
               principal_membership_path(member.principal, member),
-              { method: :delete, class: "icon icon-delete", title: t(:button_delete) })
+              { method: :delete, class: "icon icon-delete", title: t(:button_delete),
+                data: { "test-selector" => "delete-global-role" } })
     else
       link_to("",
               principal_membership_path(member.principal, member, "membership[role_ids]" => member.roles - [role]),
-              { method: :patch, class: "icon icon-delete", title: t(:button_delete) })
+              { method: :patch, class: "icon icon-delete", title: t(:button_delete),
+                data: { "test-selector" => "delete-global-role" } })
     end
   end
 

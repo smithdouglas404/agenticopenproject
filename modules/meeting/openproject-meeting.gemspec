@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
   s.name        = "openproject-meeting"
@@ -14,6 +15,6 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib,doc}/**/*", "README.md"]
 
-  s.add_dependency "icalendar", "~> 2.10.0"
+  s.add_dependency "icalendar", "~> 2.11.2"
   s.metadata["rubygems_mfa_required"] = "true"
 end

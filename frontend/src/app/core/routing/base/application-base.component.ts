@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -34,9 +34,10 @@ export const appBaseSelector = 'openproject-base';
   selector: appBaseSelector,
   template: `
     <div class="openproject-base--ui-view">
-      <ui-view></ui-view>
+      <ui-view />
     </div>
   `,
+  standalone: false,
 })
 export class ApplicationBaseComponent {
 }

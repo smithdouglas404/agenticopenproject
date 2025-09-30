@@ -10,7 +10,7 @@ keywords: work package, share, share work packages
 
 It is possible to share work packages with users that are not members of a project or are not yet registered on your instance. In the latter case a user will need to register in order to view the work package.
 
-> **Note**: Sharing work packages with non-member is an Enterprise add-on and can only be used with [Enterprise cloud](../../../enterprise-guide/enterprise-cloud-guide/) or  [Enterprise on-premises](../../../enterprise-guide/enterprise-on-premises-guide/). An upgrade from the free community edition is easy and helps support OpenProject.
+[feature: work_package_sharing ]
 
 ## Share a work package
 
@@ -20,7 +20,8 @@ To share a work package with a project non-member select the detailed view of a 
 
 A dialogue window will open, showing the list of all users, who this work package has already been shared with. If the work package has not yet been shared, the list will be empty.
 
-> **Note**: In order to be able to share a work package with non members you need to have been assigned a [global role *create users*](../../../system-admin-guide/users-permissions/users/#create-users). If you do not see the option to share a work package, please contact your administrator.
+> [!NOTE]
+> In order to be able to share a work package with non members you need to have been assigned a [global role *create users*](../../../system-admin-guide/users-permissions/users/#create-users). If you do not see the option to share a work package, please contact your administrator.
 
 ![List of users with access to a work package in OpenProject](openproject_user_guide_shared_with_list.png)
 
@@ -46,7 +47,8 @@ Following user roles are available as filters:
 
 ![Filter list of users by user role](openproject_user_guide_sharing_member_role_filter.png)
 
-> **Note:** Please keep in mind that users listed after you have applied a filter may have additional permissions. For example if you select the **View** filter, it is possible that a user is listed, which has inherited additional role as part of user group with permissions exceeding the viewing ones.
+> [!NOTE]
+> Please keep in mind that users listed after you have applied a filter may have additional permissions. For example if you select the **View** filter, it is possible that a user is listed, which has inherited additional role as part of user group with permissions exceeding the viewing ones.
 
 You can search for a user or a group via a user name, group name or an email address. You can either select an existing user from the dropdown menu or enter an email address for an entirely new user, who will receive an invitation to create an account on your instance.
 
@@ -62,7 +64,8 @@ You can always adjust the viewing rights of a user by selecting an option from t
 
 ![Shared work package roles](openproject_user_guide_shared_with_list_change_role.png)
 
-> **Note:** granting the **edit** rights to the user will allow you to set this user a work package **Assignee** or **Accountable**.
+> [!NOTE]
+> Granting the **edit** rights to the user will allow you to set this user a work package **Assignee** or **Accountable**.
 
 Once a work package has been shared, you will see the number of shared users in the **Share** button.
 

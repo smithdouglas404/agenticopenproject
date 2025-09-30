@@ -8,6 +8,7 @@ hu:
         url: 'Tartalom URL-címe'
         secret: 'titkos aláírás'
         events: 'Események'
+        enabled: 'Enabled'
         projects: 'Engedélyezett projektek'
       webhooks/log:
         event_name: 'Esemény neve'
@@ -30,6 +31,8 @@ hu:
       events:
         created: "Létrehoz"
         updated: "Frissítve"
+        comment: "Vélemény"
+        internal_comment: "Internal comment"
       explanation:
         text: >
           Olyan események előfordulása esetén, mint például munkacsomag létrehozása vagy projekt frissítése, az OpenProject egy POST kérést küld a bekonfigurált webes végpontoknak. Az esemény gyakran %{link} elteltével érkezik.

@@ -22,7 +22,7 @@ ms:
         item_2:
           name: Diselesaikan
         item_3:
-          name: Ditutup
+          name: Tertutup
       time_entry_activities:
         item_0:
           name: Pengurusan
@@ -47,12 +47,12 @@ ms:
           name: Konflik
       global_queries:
         item_0:
-          name: 'Jadual yang telah disematkan: Kanak-kanak'
+          name: 'Jadual tersemat: Anak-anak'
       type_configuration:
         item_0:
           form_configuration:
             item_0:
-              group_name: Kanak-kanak
+              group_name: Anak
       groups:
         item_0:
           name: Arkitek
@@ -105,7 +105,7 @@ ms:
             item_1:
               name: Pencapaian
             item_2:
-              name: Tugasan
+              name: Tugasan-tugasan
             item_3:
               name: Perancang pasukan
           boards:
@@ -150,14 +150,14 @@ ms:
                   name: Pencapaian
         demo-planning-constructing-project:
           name: "(Demo) Perancangan & pembinaan"
-          status_explanation: Semua tugasan mengikut jadual. Orang yang terlibat tahu akan tugasan mereka. Sistem ini telah disiapkan sepenuhnya.
+          status_explanation: Semua tugasan mengikut jadual. Orang yang terlibat tahu akan tugasan mereka. Sistem ini telah siap sepenuhnya.
           description: Ini adalah ringkasan pendek matlamat projek demo pembinaan dan pembangunan ini.
           news:
             item_0:
               title: Selamat datang ke projek demo anda
               summary: |
                 Kami gembira anda menyertai kami.
-                Dalam modul ini, anda boleh menyampaikan berita projek ke ahli-ahli pasukan.
+                Dalam modul ini, anda boleh menyampaikan berita projek ke ahli pasukan anda.
               description: Berita sebenar
           categories:
             item_0: Kategori 1 (untuk diubah dalam tetapan Projek)
@@ -167,7 +167,7 @@ ms:
             item_1:
               name: Pencapaian
             item_2:
-              name: Tugasan
+              name: Tugasan-tugasan
             item_3:
               name: Perancang pasukan
           project-overview:
@@ -205,7 +205,7 @@ ms:
                   name: Pencapaian
           work_packages:
             item_0:
-              subject: Permulaan projek dengan projek pembinaan
+              subject: Permulaan projek dengan projek pembinaan 
               description: |-
                 Permulaan projek menandakan permulaan projek di dalam syarikat anda. Setiap orang yang menjadi sebahagian daripada projek ini perlu dijemput untuk menyertai taklimat pertama projek.
 
@@ -232,7 +232,7 @@ ms:
                   description: |-
                     ## Matlamat
 
-                    *   Cipta rumusan hasil yang bermanfaat
+                    *   Cipta rumusan hasil yang bermanfaat  
                     *   Semak apa yang telah dilakukan dan ringkaskan hasil
                     *   Menyampaikan hasil berkaitan kepada pelanggan
                     *   Mengenal pasti asas kondisi garis sempadan projek ini
@@ -254,10 +254,10 @@ ms:
                   description: |-
                     ## Matlamat
 
-                    *   Cipta rumusan hasil yang bermanfaat
+                    *   Cipta rumusan hasil yang bermanfaat  
                     *   Semak apa yang telah dilakukan dan ringkaskan hasil
                     *   Menyampaikan hasil berkaitan kepada pelanggan
-                    *   Mengenal pasti asas kondisi batas projek ini
+                    *   Mengenal pasti asas kondisi garis sempadan projek ini
 
                     ## Deskripsi
 
@@ -269,10 +269,10 @@ ms:
                   description: |-
                     ## Matlamat
 
-                    *   Cipta rumusan hasil yang bermanfaat
+                    *   Cipta rumusan hasil yang bermanfaat  
                     *   Semak apa yang telah dilakukan dan ringkaskan hasil
                     *   Menyampaikan hasil berkaitan kepada pelanggan
-                    *   Mengenal pasti asas kondisi batas projek ini
+                    *   Mengenal pasti asas kondisi garis sempadan projek ini
 
                     ## Deskripsi
 
@@ -307,7 +307,7 @@ ms:
               subject: Fasa pembinaan
               children:
                 item_0:
-                  subject: Mulakan pembinaan
+                  subject: Mulakan pembinaan 
                   description: |-
                     ## Matlamat
 
@@ -411,7 +411,7 @@ ms:
               title: Selamat datang ke projek demo anda
               summary: |
                 Kami gembira anda menyertai kami.
-                Dalam modul ini, anda boleh menyampaikan berita projek ke ahli pasukan.
+                Dalam modul ini, anda boleh menyampaikan berita projek ke ahli pasukan anda.
               description: Berita sebenar
           categories:
             item_0: Kategori 1 (untuk diubah dalam tetapan Projek)
@@ -431,7 +431,7 @@ ms:
                   name: Selamat datang
               item_1:
                 options:
-                  name: Bermula
+                  name: Permulaan
                   text: |
                     Kami gembira anda menyertai kami! Kami cadangkan beberapa perkara sebagai permulaan di OpenProject.
 
@@ -456,7 +456,7 @@ ms:
                   name: Ahli-ahli
               item_5:
                 options:
-                  name: Pakej pekerjaan
+                  name: Pakej kerja
               item_6:
                 options:
                   name: Pencapaian
@@ -469,7 +469,7 @@ ms:
                 Langkah seterusnya adalah menyemak jadual waktu dan menyesuaikan temujanji dengan melihat [Carta Gantt]({{opSetting:base_url}}/projects/demo-bim-project/work_packages?query_props=%7B%22c%22%3A%5B%22id%22%2C%22subject%22%2C%22startDate%22%2C%22dueDate%22%5D%2C%22tv%22%3Atrue%2C%22tzl%22%3A%22weeks%22%2C%22hi%22%3Atrue%2C%22g%22%3A%22%22%2C%22t%22%3A%22startDate%3Aasc%22%2C%22f%22%3A%5B%7B%22n%22%3A%22status%22%2C%22o%22%3A%22o%22%2C%22v%22%3A%5B%5D%7D%5D%2C%22pa%22%3A1%2C%22pp%22%3A100%7D).
             item_1:
               subject: Penyediaan projek
-              description: Jenis ini adalah induk bagi jenis &quot;Clash&quot; dan &quot;Request&quot;, oleh itu mewakili catatan umum.
+              description: Jenis ini adalah induk secara hierarki bagi jenis &quot;Konflik&quot; dan &quot;Permintaan&quot;, oleh itu mewakili catatan umum.
               children:
                 item_0:
                   subject: Mengumpulkan data khusus projek dan maklumat untuk model BIM
@@ -577,7 +577,7 @@ ms:
                     *   Model berikut akan diperiksa, mengikut standard yang ditakrifkan (konvensyen, LOD, ...) dan disemak.
                     *   ...
                 item_3:
-                  subject: Menghantar model BIM
+                  subject: Menghantar model BIM 
                   description: Jenis ini adalah induk secara hierarki bagi jenis &quot;Konflik&quot; dan &quot;Permintaan&quot;, oleh itu mewakili catatan umum.
             item_5:
               subject: Koordinasi, kitaran pertama
@@ -694,7 +694,7 @@ ms:
             item_5:
               name: Pencapaian
             item_6:
-              name: Tugasan
+              name: Tugasan-tugasan
             item_7:
               name: Perancang pasukan
           boards:

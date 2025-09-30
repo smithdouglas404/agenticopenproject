@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -38,7 +38,6 @@ import { StateService } from '@uirouter/core';
 import { BoardService } from 'core-app/features/boards/board/board.service';
 import { BoardActionsRegistryService } from 'core-app/features/boards/board/board-actions/board-actions-registry.service';
 import { BoardActionService } from 'core-app/features/boards/board/board-actions/board-action.service';
-import { trackByHref } from 'core-app/shared/helpers/angular/tracking-functions';
 import { HalResourceNotificationService } from 'core-app/features/hal/services/hal-resource-notification.service';
 import { tap } from 'rxjs/operators';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
@@ -52,6 +51,7 @@ import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 
 @Component({
   templateUrl: './add-list-modal.html',
+  standalone: false,
 })
 export class AddListModalComponent extends OpModalComponent implements OnInit {
   @ViewChild(OpAutocompleterComponent, { static: true }) public ngSelectComponent:OpAutocompleterComponent;
@@ -86,8 +86,6 @@ export class AddListModalComponent extends OpModalComponent implements OnInit {
 
   /** avoid double click */
   public inFlight = false;
-
-  public trackByHref = trackByHref;
 
   public warningText:string|undefined;
 
@@ -195,6 +193,7 @@ export class AddListModalComponent extends OpModalComponent implements OnInit {
       })
       .catch(() => {});
     this.showWarning = this.ngSelectComponent.ngSelectInstance.searchTerm !== undefined && (values.length === 0);
+    this.ngSelectComponent.repositionDropdown();
     this.cdRef.detectChanges();
   }
 }

@@ -1,16 +1,18 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import { of } from 'rxjs';
+import { States } from 'core-app/core/states/states.service';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { of, map } from 'rxjs';
 import { NgSelectModule } from '@ng-select/ng-select';
 
-import { By } from '@angular/platform-browser';
-import { OpAutocompleterService } from './services/op-autocompleter.service';
 import { OpAutocompleterComponent } from './op-autocompleter.component';
+import { TOpAutocompleterResource } from './typings';
+import { By } from '@angular/platform-browser';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('autocompleter', () => {
   let fixture:ComponentFixture<OpAutocompleterComponent>;
-  let opAutocompleterServiceSpy:jasmine.SpyObj<OpAutocompleterService>;
+  let getOptionsFnSpy: jasmine.Spy;
   const workPackagesStub = [
     {
       id: 1,
@@ -51,26 +53,20 @@ describe('autocompleter', () => {
   ];
 
   beforeEach(() => {
-    opAutocompleterServiceSpy = jasmine.createSpyObj('OpAutocompleterService', ['loadData']);
-
     TestBed.configureTestingModule({
-      declarations: [
-        OpAutocompleterComponent],
-      providers: [
-        // { provide: OpAutocompleterService, useValue: opAutocompleterServiceSpyFactory }
-      ],
-      imports: [HttpClientTestingModule, NgSelectModule],
-      schemas: [NO_ERRORS_SCHEMA],
-    })
-      .overrideComponent(
-        OpAutocompleterComponent,
-        { set: { providers: [{ provide: OpAutocompleterService, useValue: opAutocompleterServiceSpy }] } },
-      )
-      .compileComponents();
+    declarations: [OpAutocompleterComponent],
+    schemas: [NO_ERRORS_SCHEMA],
+    imports: [NgSelectModule],
+    providers: [States, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
 
     fixture = TestBed.createComponent(OpAutocompleterComponent);
+    getOptionsFnSpy = jasmine.createSpy("getOptionsFn").and.callFake((searchTerm:string) => {
+      return of(workPackagesStub).pipe(
+        map((wps) => wps.filter((wp) => searchTerm !== "" && wp.subject.includes(searchTerm)))
+      )
+    });
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     fixture.componentInstance.resource = 'work_packages' as TOpAutocompleterResource;
     fixture.componentInstance.filters = [];
     fixture.componentInstance.searchKey = 'subjectOrId';
@@ -79,41 +75,93 @@ describe('autocompleter', () => {
     fixture.componentInstance.closeOnSelect = true;
     fixture.componentInstance.virtualScroll = true;
     fixture.componentInstance.classes = 'wp-relations-autocomplete';
-    fixture.componentInstance.defaultData = true;
-
-    // @ts-ignore
-    opAutocompleterServiceSpy.loadData.and.returnValue(of(workPackagesStub));
+    fixture.componentInstance.getOptionsFn = getOptionsFnSpy;
+    fixture.componentInstance.debounceTimeMs = 0;
   });
 
-  it('should load the ng-select correctly', () => {
+  it('should load the ng-select correctly', fakeAsync(() => {
     fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      const autocompleter = document.querySelector('.ng-select-container');
-      expect(document.contains(autocompleter)).toBeTruthy();
-    });
-  });
-
-  it('should load WorkPackages', fakeAsync(() => {
     tick();
-    fixture.detectChanges();
-    fixture.componentInstance.ngAfterViewInit();
-    tick(1000);
-    fixture.detectChanges();
-    const select = fixture.componentInstance.ngSelectInstance;
-    expect(fixture.componentInstance.ngSelectInstance.isOpen).toBeFalse();
-    fixture.componentInstance.ngSelectInstance.open();
-    fixture.componentInstance.ngSelectInstance.focus();
-    expect(fixture.componentInstance.ngSelectInstance.isOpen).toBeTrue();
-    select.filter('a');
 
-    fixture.detectChanges();
-    tick(1000);
-    fixture.detectChanges();
-    tick(1000);
-
-    expect(opAutocompleterServiceSpy.loadData).toHaveBeenCalledWith('a',
-      fixture.componentInstance.resource, fixture.componentInstance.filters, fixture.componentInstance.searchKey);
-
-    expect(fixture.componentInstance.ngSelectInstance.itemsList.items.length).toEqual(2);
+    const autocompleter = document.querySelector('.ng-select-container');
+    expect(document.contains(autocompleter)).toBeTruthy();
   }));
+
+  describe('without debounce', () => {
+    it('should load items', fakeAsync(() => {
+      tick();
+      fixture.detectChanges();
+      fixture.componentInstance.ngAfterViewInit();
+      tick(1000);
+      fixture.detectChanges();
+      const select = fixture.componentInstance.ngSelectInstance;
+      expect(select.isOpen).toBeFalse();
+      select.open();
+      select.focus();
+      expect(select.isOpen).toBeTrue();
+
+      expect(select.itemsList.items.length).toEqual(0);
+
+      const inputDebugElement = fixture.debugElement.query(By.css('input[role=combobox]'));
+      const inputElement = inputDebugElement.nativeElement as HTMLInputElement;
+
+      fixture.detectChanges();
+      tick();
+      expect(getOptionsFnSpy).toHaveBeenCalledWith("");
+
+      inputElement.value = "Wor";
+      inputElement.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      tick();
+      expect(getOptionsFnSpy).toHaveBeenCalledWith("Wor");
+
+      fixture.detectChanges();
+      expect(select.itemsList.items.length).toEqual(2);
+
+      inputElement.value = "package 2";
+      inputElement.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      tick();
+      expect(getOptionsFnSpy).toHaveBeenCalledWith("package 2");
+
+      fixture.detectChanges();
+      expect(select.itemsList.items.length).toEqual(1);
+    }));
+  });
+
+  describe('with debounce', () => {
+    beforeEach(() => {
+      fixture.componentInstance.debounceTimeMs = 50;
+    });
+
+    it('should load items with debounce', fakeAsync(() => {
+      tick();
+      fixture.detectChanges();
+      fixture.componentInstance.ngAfterViewInit();
+      tick(1000);
+      fixture.detectChanges();
+      const select = fixture.componentInstance.ngSelectInstance;
+      expect(select.isOpen).toBeFalse();
+      select.open();
+      select.focus();
+      expect(select.isOpen).toBeTrue();
+
+      expect(select.itemsList.items.length).toEqual(0);
+
+      const inputDebugElement = fixture.debugElement.query(By.css('input[role=combobox]'));
+      const inputElement = inputDebugElement.nativeElement as HTMLInputElement;
+
+      fixture.detectChanges();
+      expect(getOptionsFnSpy).toHaveBeenCalledWith("");
+      getOptionsFnSpy.calls.reset();
+
+      inputElement.value = "Wor";
+      inputElement.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      tick();
+      expect(getOptionsFnSpy).not.toHaveBeenCalled();
+      tick(50);
+      expect(getOptionsFnSpy).toHaveBeenCalledWith("Wor");
+    }));
+  });
 });

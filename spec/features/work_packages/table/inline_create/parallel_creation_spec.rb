@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 RSpec.describe "Parallel work package creation spec", :js do
@@ -60,7 +62,7 @@ RSpec.describe "Parallel work package creation spec", :js do
     expect(page).to have_no_css(".wp-inline-create-row")
 
     wp_table.expect_toast(
-      message: "Successful creation. Click here to open this work package in fullscreen view."
+      message: "Successful creation."
     )
     wp_table.dismiss_toaster!
 

@@ -9,6 +9,7 @@ ru:
     label_bcf: 'BCF'
     label_imported_failed: 'Неудачный импорт тем BCF'
     label_imported_successfully: 'Успешно импортированные темы BCF'
+    label_bcf_issue_associated: "Связанная проблема BCF"
     issues: "Замечания"
     recommended: 'рекомендуется'
     not_recommended: 'не рекомендуется'
@@ -83,6 +84,12 @@ ru:
         ifc_attachment: "Файл IFC"
         is_default: "Модель по умолчанию"
         attachments: "Файл IFC"
+      bim/bcf/issue:
+        bcf_comment: "Комментарий BCF"
+        bim_snippet: "Сниппет BIM"
+        reference_links: "Референсные ссылки"
+        stage: "Этап"
+        viewpoint: "Точка просмотра"
     errors:
       models:
         bim/ifc_models/ifc_model:
@@ -120,7 +127,7 @@ ru:
       label: 'Обработка?'
       pending: 'В ожидании'
       processing: 'В процессе'
-      completed: 'Выполнено'
+      completed: 'Завершено'
       error: 'Ошибка'
     processing_notice:
       processing_default: 'Следующие модели IFC по умолчанию еще обрабатываются и поэтому недоступны:'

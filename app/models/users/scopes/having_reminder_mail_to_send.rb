@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -183,8 +185,13 @@ module Users::Scopes
         # The last quarter is the one smaller than the latest time. But needs to be at least equal to the first quarter.
         last_quarter = [first_quarter, latest_time.change(min: latest_time.min / 15 * 15)].max
 
-        (first_quarter.to_i..last_quarter.to_i)
-          .step(15.minutes)
+        quarters = if first_quarter == last_quarter
+                     [first_quarter]
+                   else
+                     (first_quarter.to_i..last_quarter.to_i).step(15.minutes)
+                   end
+
+        quarters
           .map do |time|
           Time.zone.at(time)
         end

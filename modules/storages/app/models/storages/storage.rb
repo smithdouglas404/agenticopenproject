@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -40,97 +40,94 @@
 # db/migrate/20220113144323_create_storage.rb "migration".
 module Storages
   class Storage < ApplicationRecord
-    PROVIDER_TYPES = [
-      PROVIDER_TYPE_NEXTCLOUD = "Storages::NextcloudStorage",
-      PROVIDER_TYPE_ONE_DRIVE = "Storages::OneDriveStorage"
-    ].freeze
-
-    PROVIDER_TYPE_SHORT_NAMES = {
-      nextcloud: PROVIDER_TYPE_NEXTCLOUD,
-      one_drive: PROVIDER_TYPE_ONE_DRIVE
-    }.with_indifferent_access.freeze
-
     self.inheritance_column = :provider_type
 
     store_attribute :provider_fields, :automatically_managed, :boolean
     store_attribute :provider_fields, :health_notifications_enabled, :boolean, default: true
 
-    has_many :file_links, class_name: "Storages::FileLink"
     belongs_to :creator, class_name: "User"
+    has_many :file_links, class_name: "Storages::FileLink", dependent: :destroy
     has_many :project_storages, dependent: :destroy, class_name: "Storages::ProjectStorage"
     has_many :projects, through: :project_storages
     has_one :oauth_client, as: :integration, dependent: :destroy
+    # TODO: Are we using this? - 2025-07-14 @mereghost
     has_one :oauth_application, class_name: "::Doorkeeper::Application", as: :integration, dependent: :destroy
+    has_many :remote_identities, as: :integration, dependent: :destroy
 
-    validates_uniqueness_of :host, allow_nil: true
-    validates_uniqueness_of :name
+    validates :host, uniqueness: { allow_nil: true }
+    validates :name, uniqueness: true
 
     scope :visible, ->(user = User.current) do
-      if user.allowed_in_any_project?(:manage_storages_in_project)
+      if user.allowed_in_any_project?(:manage_files_in_project)
         all
       else
-        where(
-          project_storages: ::Storages::ProjectStorage.where(
-            project: Project.allowed_to(user, :view_file_links)
-          )
-        )
+        where(project_storages: ProjectStorage.where(project: Project.allowed_to(user, :view_file_links)))
       end
     end
 
-    scope :not_enabled_for_project, ->(project) do
-      where.not(id: project.project_storages.pluck(:storage_id))
-    end
+    scope :not_enabled_for_project, ->(project) { where.not(id: project.project_storages.pluck(:storage_id)) }
 
     scope :automatic_management_enabled, -> { where("provider_fields->>'automatically_managed' = 'true'") }
 
-    enum health_status: {
+    scope :in_project, ->(project_id) { joins(project_storages: :project).where(project_storages: { project_id: }) }
+
+    scope :with_audience, ->(audience) { where("provider_fields->>'storage_audience' = ?", audience) }
+
+    enum :health_status, {
       pending: "pending",
       healthy: "healthy",
       unhealthy: "unhealthy"
-    }.freeze, _prefix: :health
+    }, prefix: :health
 
-    def self.shorten_provider_type(provider_type)
-      case /Storages::(?'provider_name'.*)Storage/.match(provider_type)
-      in provider_name:
-        provider_name.underscore
-      else
-        raise ArgumentError,
-              "Unknown provider_type! Given: #{provider_type}. " \
-              "Expected the following signature: Storages::{Name of the provider}Storage"
+    class << self
+      def visible? = true
+
+      def provider_types
+        subclasses.sort_by(&:name) # Guarantees alphabetical ordering
+                  .filter_map { [it.short_provider_name, it] if it.visible? } # Remove non-exposed providers
+                  .to_h.with_indifferent_access
+      end
+
+      def short_provider_name = raise Errors::SubclassResponsibility
+
+      def allowed_by_enterprise_token? = true
+      def disallowed_by_enterprise_token? = !allowed_by_enterprise_token?
+
+      # TODO: Compatibility Method To be Removed once all references are removed - 2025-07-14 @mereghost
+      def shorten_provider_type(provider_type)
+        provider_type.constantize.short_provider_name.to_s
+      end
+
+      def extract_part_from_piped_string(text, index)
+        return if text.nil?
+
+        split_reason = text.split(/[|:]/)
+        split_reason[index].strip if split_reason.length > index
+      end
+
+      def non_confidential_provider_fields
+        %i[automatically_managed health_notifications_enabled]
       end
     end
 
-    def self.one_drive_without_ee_token?(provider_type)
-      provider_type == ::Storages::Storage::PROVIDER_TYPE_ONE_DRIVE &&
-        !EnterpriseToken.allows_to?(:one_drive_sharepoint_file_storage)
+    delegate :short_provider_name, :allowed_by_enterprise_token?, :disallowed_by_enterprise_token?, to: :class
+    delegate :to_s, to: :short_provider_name
+    alias :short_provider_type :to_s
+
+    def oauth_access_granted?(user)
+      (user.authentication_provider.is_a?(OpenIDConnect::Provider) && authenticate_via_idp?) ||
+        OAuthClientToken.exists?(user:, oauth_client:)
     end
 
-    def self.extract_part_from_piped_string(text, index)
-      return if text.nil?
-
-      split_reason = text.split("|")
-      if split_reason.length > index
-        split_reason[index].strip
-      end
+    # For the time being, all Storages support OAuth redirect.
+    # If a storage does not support OAuth redirect, it should override this method.
+    def supports_oauth_redirect?
+      true
     end
 
     def health_notifications_should_be_sent?
       # it is a fallback for already created storages without health_notifications_enabled configured.
-      if health_notifications_enabled.nil?
-        automatic_management_enabled?
-      else
-        health_notifications_enabled
-      end
-    end
-
-    def automatically_managed?
-      ActiveSupport::Deprecation.warn(
-        "`#automatically_managed?` is deprecated. Use `#automatic_management_enabled?` instead. " \
-        "NOTE: The new method name better reflects the actual behavior of the storage. " \
-        "It's not the storage that is automatically managed, rather the Project (Storage) Folder is. " \
-        "A storage only has this feature enabled or disabled."
-      )
-      super
+      (health_notifications_enabled.nil? && automatic_management_enabled?) || health_notifications_enabled?
     end
 
     def automatic_management_enabled?
@@ -147,18 +144,29 @@ module Storages
 
     alias automatic_management_enabled automatically_managed
 
-    def configured?
-      configuration_checks.values.all?
-    end
+    def available_project_folder_modes = raise Errors::SubclassResponsibility
 
-    def configuration_checks
-      raise Errors::SubclassResponsibility
-    end
+    # Returns a value of an audience, if configured for this storage.
+    # The presence of an audience signals that this storage prioritizes
+    # remote authentication via Single-Sign-On if possible.
+    def audience = raise Errors::SubclassResponsibility
+
+    def authenticate_via_idp? = raise Errors::SubclassResponsibility
+
+    def authenticate_via_storage? = raise Errors::SubclassResponsibility
+
+    def configured? = configuration_checks.values.all?
+
+    def configuration_checks = raise Errors::SubclassResponsibility
 
     def uri
       return unless host
 
-      @uri ||= URI(host).normalize
+      @uri ||= if host.end_with?("/")
+                 URI(host).normalize
+               else
+                 URI("#{host}/").normalize
+               end
     end
 
     def connect_src
@@ -166,28 +174,32 @@ module Storages
       ["#{uri.scheme}://#{uri.host}#{port_part}"]
     end
 
-    def oauth_configuration
-      raise Errors::SubclassResponsibility
-    end
+    def oauth_configuration = raise Errors::SubclassResponsibility
 
-    def automatic_management_new_record?
-      raise Errors::SubclassResponsibility
-    end
+    def automatic_management_new_record? = raise Errors::SubclassResponsibility
 
-    def provider_fields_defaults
-      raise Errors::SubclassResponsibility
-    end
+    def provider_fields_defaults = raise Errors::SubclassResponsibility
 
-    def short_provider_type
-      @short_provider_type ||= self.class.shorten_provider_type(provider_type)
+    def non_confidential_configuration
+      provider_fields.symbolize_keys
+                     .slice(*self.class.non_confidential_provider_fields)
+                     .merge(
+                       host:,
+                       oauth_client_id: oauth_client&.client_id,
+                       oauth_application_client_id: oauth_application&.uid
+                     )
     end
 
     def provider_type_nextcloud?
-      provider_type == ::Storages::Storage::PROVIDER_TYPE_NEXTCLOUD
+      is_a?(NextcloudStorage)
     end
 
     def provider_type_one_drive?
-      provider_type == ::Storages::Storage::PROVIDER_TYPE_ONE_DRIVE
+      is_a?(OneDriveStorage)
+    end
+
+    def provider_type_share_point?
+      is_a?(SharepointStorage)
     end
 
     def health_reason_identifier
@@ -196,6 +208,11 @@ module Storages
 
     def health_reason_description
       @health_reason_description ||= self.class.extract_part_from_piped_string(health_reason, 1)
+    end
+
+    def extract_origin_user_id(token)
+      auth_strategy = Adapters::Input::Strategy.build(key: :bearer_token, token: token.access_token)
+      Adapters::Registry.resolve("#{self}.queries.user").call(auth_strategy:, storage: self).fmap { it[:id] }
     end
   end
 end

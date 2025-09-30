@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,7 +37,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
   let(:overview_page) { Pages::Projects::Show.new(project) }
 
   before do
-    login_as member_with_project_edit_permissions
+    login_as member_with_project_attributes_edit_permissions
     overview_page.visit_page
   end
 
@@ -218,6 +220,44 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
         it_behaves_like "a rich text custom field input"
       end
+
+      describe "with calculated value CFs" do
+        shared_examples "a calculated value custom field input" do
+          it "shows the correct value if given" do
+            overview_page.open_edit_dialog_for_section(section)
+
+            dialog.within_async_content(close_after_yield: true) do
+              expect(page).to have_field(custom_field.name, disabled: true, with: expected_initial_value)
+            end
+          end
+
+          it "shows a blank input if no value is given" do
+            custom_field.custom_values.destroy_all
+
+            overview_page.open_edit_dialog_for_section(section)
+
+            dialog.within_async_content(close_after_yield: true) do
+              expect(page).to have_field(custom_field.name, disabled: true, with: expected_blank_value)
+            end
+          end
+        end
+
+        describe "using int" do
+          let(:custom_field) { calculated_from_int_project_custom_field }
+          let(:expected_blank_value) { "" }
+          let(:expected_initial_value) { 234 }
+
+          it_behaves_like "a calculated value custom field input"
+        end
+
+        describe "using int and float" do
+          let(:custom_field) { calculated_from_int_and_float_project_custom_field }
+          let(:expected_blank_value) { "" }
+          let(:expected_initial_value) { 15185.088 }
+
+          it_behaves_like "a calculated value custom field input"
+        end
+      end
     end
 
     describe "with single select fields" do
@@ -318,8 +358,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
               overview_page.open_edit_dialog_for_section(section)
 
               field.search("Version 1")
-
-              field.expect_option(first_version.name)
+              field.expect_option(first_version.name, grouping: project.name)
               field.expect_no_option(version_in_other_project.name)
             end
           end
@@ -549,7 +588,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
               field.search("Version 1")
 
-              field.expect_option(first_version.name)
+              field.expect_option(first_version.name, grouping: project.name)
               field.expect_no_option(version_in_other_project.name)
             end
           end

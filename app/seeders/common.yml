@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -69,6 +69,20 @@ colors:
   - reference: :default_color_black
     t_name: Black
     hexcode: "#000000"
+
+project_phase_colors:
+  - reference: :default_color_pm2_orange
+    t_name: PM2 Orange
+    hexcode: "#F7983A"
+  - reference: :default_color_pm2_red
+    t_name: PM2 Red
+    hexcode: "#F05823"
+  - reference: :default_color_pm2_magenta
+    t_name: PM2 Magenta
+    hexcode: "#EC038A"
+  - reference: :default_color_pm2_green_yellow
+    t_name: PM2 Green Yellow
+    hexcode: "#B1D13A"
 
 document_categories:
   - t_name: Documentation
@@ -239,6 +253,22 @@ open_color_palette:
       - "#e8590c"
       - "#d9480f"
 
+project_query_roles:
+  - reference: :default_role_project_query_view
+    t_name: Project query viewer
+    position: 10
+    builtin: :project_query_view
+    permissions:
+      - :view_project_query
+
+  - reference: :default_role_project_query_edit
+    t_name: Project query editor
+    position: 11
+    builtin: :project_query_edit
+    permissions:
+      - :view_project_query
+      - :edit_project_query
+
 work_package_roles:
   - reference: :default_role_work_package_editor
     t_name: Work package editor
@@ -248,8 +278,8 @@ work_package_roles:
       - :view_work_packages
       - :edit_work_packages
       - :work_package_assigned
-      - :add_work_package_notes
-      - :edit_own_work_package_notes
+      - :add_work_package_comments
+      - :edit_own_work_package_comments
       - :manage_work_package_relations
       - :copy_work_packages
       - :export_work_packages
@@ -260,8 +290,8 @@ work_package_roles:
     permissions:
       - :view_work_packages
       - :work_package_assigned
-      - :add_work_package_notes
-      - :edit_own_work_package_notes
+      - :add_work_package_comments
+      - :edit_own_work_package_comments
       - :export_work_packages
       - :add_work_package_attachments
   - reference: :default_role_work_package_viewer
@@ -281,6 +311,8 @@ project_roles:
       - :view_calendar
       - :comment_news
       - :view_wiki_pages
+      - :view_project_attributes
+      - :view_project_phases
   - reference: :default_role_anonymous
     t_name: Anonymous
     position: 1
@@ -288,6 +320,8 @@ project_roles:
     permissions:
       - :view_work_packages
       - :view_wiki_pages
+      - :view_project_attributes
+      - :view_project_phases
   - reference: :default_role_member
     t_name: Member
     position: 3
@@ -299,8 +333,8 @@ project_roles:
       - :edit_work_packages
       - :assign_versions
       - :work_package_assigned
-      - :add_work_package_notes
-      - :edit_own_work_package_notes
+      - :add_work_package_comments
+      - :edit_own_work_package_comments
       - :manage_work_package_relations
       - :manage_subtasks
       - :save_queries
@@ -342,13 +376,18 @@ project_roles:
       - :view_shared_work_packages
       - :copy_work_packages
       - :add_work_package_attachments
+      - :view_project_attributes
+      - :view_internal_comments
+      - :add_internal_comments
+      - :edit_own_internal_comments
+      - :view_project_phases
   - reference: :default_role_reader
     t_name: Reader
     position: 4
     permissions:
       - :view_work_packages
-      - :add_work_package_notes
-      - :edit_own_work_package_notes
+      - :add_work_package_comments
+      - :edit_own_work_package_comments
       - :save_queries
       - :view_calendar
       - :comment_news
@@ -365,6 +404,8 @@ project_roles:
       - :view_commit_author_statistics
       - :view_team_planner
       - :view_shared_work_packages
+      - :view_project_attributes
+      - :view_project_phases
   - reference: :default_role_project_admin
     t_name: Project admin
     position: 5
@@ -378,3 +419,8 @@ global_roles:
       - :create_user
       - :manage_user
       - :manage_placeholder_user
+  - reference: :default_role_standard_global
+    t_name: Standard global role
+    position: 7
+    builtin: :standard_global
+    permissions: []

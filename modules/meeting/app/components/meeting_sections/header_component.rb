@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -110,7 +111,7 @@ module MeetingSections
     end
 
     def edit_action_item(menu)
-      menu.with_item(label: t("label_edit"),
+      menu.with_item(label: t("label_section_rename"),
                      href: edit_meeting_section_path(@meeting_section.meeting, @meeting_section),
                      content_arguments: {
                        data: { "turbo-stream": true, "test-selector": "meeting-section-edit" }
@@ -121,7 +122,7 @@ module MeetingSections
 
     def add_agenda_item_action(menu)
       menu.with_item(
-        label: t("activerecord.models.meeting_agenda_item", count: 1),
+        label: t("label_agenda_item_add"),
         href: new_meeting_agenda_item_path(@meeting_section.meeting, type: "simple", meeting_section_id: @meeting_section&.id),
         content_arguments: {
           data: { "turbo-stream": true, "test-selector": "meeting-section-add-agenda-item-from-menu" }
@@ -133,7 +134,7 @@ module MeetingSections
 
     def add_work_package_action(menu)
       menu.with_item(
-        label: t("activerecord.models.work_package", count: 1),
+        label: t("label_agenda_item_work_package_add"),
         href: new_meeting_agenda_item_path(@meeting_section.meeting, type: "work_package",
                                                                      meeting_section_id: @meeting_section&.id),
         content_arguments: {

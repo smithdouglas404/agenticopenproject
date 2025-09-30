@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,39 +28,22 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 module BasicData
-  class WorkflowSeeder < Seeder
+  class WorkflowSeeder < ModelSeeder
     self.needs = [
       BasicData::ProjectRoleSeeder,
       BasicData::GlobalRoleSeeder,
       BasicData::StatusSeeder,
       BasicData::TypeSeeder
     ]
+    self.model_class = Workflow
+    self.seed_data_model_key = "workflows"
+    self.attribute_names_for_required_references = %w[statuses type]
 
     def seed_data!
-      if any_types_or_statuses_or_workflows_already_configured?
-        print_status "   *** Skipping types, statuses and workflows as there are already some configured"
-      else
-        seed_statuses
-        seed_types
-        seed_workflows
-      end
+      seed_workflows
     end
 
     private
-
-    def any_types_or_statuses_or_workflows_already_configured?
-      Type.where(is_standard: false).any? || Status.any? || Workflow.any?
-    end
-
-    def seed_statuses
-      print_status "   ↳ Statuses"
-      BasicData::StatusSeeder.new(seed_data).seed!
-    end
-
-    def seed_types
-      print_status "   ↳ Types"
-      BasicData::TypeSeeder.new(seed_data).seed!
-    end
 
     def seed_workflows
       member = seed_data.find_reference(:default_role_member)

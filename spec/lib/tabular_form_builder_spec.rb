@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -111,7 +113,7 @@ RSpec.describe TabularFormBuilder do
 
         it "includes the prefix hidden in the label" do
           expect(output).to be_html_eql(%{
-            <span class="hidden-for-sighted">
+            <span class="sr-only">
               <span style="color:red">Prefix</span>
             </span>
           }).within_path("label.form--label")
@@ -176,7 +178,7 @@ RSpec.describe TabularFormBuilder do
 
         it "includes the prefix hidden in the label" do
           expect(output).to be_html_eql(%{
-            <span class="hidden-for-sighted">
+            <span class="sr-only">
               <span style="color:yellow">PREFIX</span>
             </span>
           }).within_path("label.form--label")
@@ -210,7 +212,7 @@ JJ Abrams</textarea>
       context "an id is missing" do
         it "outputs the wysiwyg wrapper" do
           expect(output).to have_css "textarea"
-          expect(output).to have_css "ckeditor-augmented-textarea"
+          expect(output).to have_css "opce-ckeditor-augmented-textarea"
         end
       end
 
@@ -219,7 +221,7 @@ JJ Abrams</textarea>
 
         it "outputs the wysiwyg wrapper" do
           expect(output).to have_css "textarea"
-          expect(output).to have_css "ckeditor-augmented-textarea"
+          expect(output).to have_css "opce-ckeditor-augmented-textarea"
         end
       end
     end
@@ -268,6 +270,23 @@ JJ Abrams</textarea>
     end
   end
 
+  describe "#date_picker" do
+    let(:options) { { title: "Last logged in", name: "user[custom_field_values][12]" } }
+
+    subject(:output) do
+      builder.date_picker :last_login_on, options
+    end
+
+    it_behaves_like "labelled by default"
+    it_behaves_like "wrapped in field-container by default"
+
+    it "outputs element" do
+      expect(output).to have_css "opce-basic-single-date-picker"
+      # Regression test, allow for the name to be passed through
+      expect(output).to have_css "opce-basic-single-date-picker[data-name='\"#{options[:name]}\"']"
+    end
+  end
+
   describe "#date_select" do
     let(:options) { { title: "Last logged in on" } }
 
@@ -309,8 +328,8 @@ JJ Abrams</textarea>
     let(:options) { {} }
 
     subject(:output) do
-      builder.collection_check_box :enabled_module_names,
-                                   :repositories,
+      builder.collection_check_box :auth_source,
+                                   :active,
                                    true,
                                    "name",
                                    options
@@ -324,10 +343,10 @@ JJ Abrams</textarea>
       expect(output).to be_html_eql(%{
         <input checked="checked"
                class="form--check-box"
-               id="user_enabled_module_names_repositories"
-               name="user[enabled_module_names][]"
+               id="user_auth_source_active"
+               name="user[auth_source][]"
                type="checkbox"
-               value="repositories" />
+               value="active" />
       }).at_path("input:nth-of-type(2)")
     end
   end

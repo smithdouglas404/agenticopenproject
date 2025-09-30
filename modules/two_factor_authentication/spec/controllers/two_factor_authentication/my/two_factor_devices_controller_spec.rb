@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "../../../spec_helper"
 require_relative "../authentication_controller_shared_examples"
 
@@ -42,7 +44,7 @@ RSpec.describe TwoFactorAuthentication::My::TwoFactorDevicesController do
 
     context "when logged in, but not enabled" do
       it "does not give access" do
-        expect(response.status).to eq 404
+        expect(response).to have_http_status :not_found
       end
     end
 
@@ -92,7 +94,7 @@ RSpec.describe TwoFactorAuthentication::My::TwoFactorDevicesController do
         let(:params) { { identifier: "foo" } }
 
         it "renders action new" do
-          expect(response).to be_successful
+          expect(response).to have_http_status :unprocessable_entity
           expect(response).to render_template "new"
           expect(assigns[:device]).to be_invalid
         end
@@ -117,7 +119,7 @@ RSpec.describe TwoFactorAuthentication::My::TwoFactorDevicesController do
       describe "#get" do
         it "croaks on missing id" do
           get :confirm, params: { device_id: 1234 }
-          expect(response.status).to eq 404
+          expect(response).to have_http_status :not_found
         end
 
         describe "and registered totp device" do
@@ -156,7 +158,7 @@ RSpec.describe TwoFactorAuthentication::My::TwoFactorDevicesController do
       describe "#post" do
         it "croaks on missing id" do
           get :confirm, params: { device_id: 1234 }
-          expect(response.status).to eq 404
+          expect(response).to have_http_status :not_found
         end
 
         describe "and registered totp device" do
@@ -226,7 +228,7 @@ RSpec.describe TwoFactorAuthentication::My::TwoFactorDevicesController do
     describe "#destroy" do
       it "croaks on missing id" do
         delete :destroy, params: { device_id: "1234" }
-        expect(response.status).to eq 404
+        expect(response).to have_http_status :not_found
       end
 
       context "assuming password check is valid" do

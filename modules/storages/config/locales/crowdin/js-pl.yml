@@ -2,6 +2,7 @@
 pl:
   js:
     storages:
+      authentication_error: "Uwierzytelnianie przy użyciu %{storageType} nie powiodło się"
       link_files_in_storage: "Połącz pliki w %{storageType}"
       link_existing_files: "Połącz istniejące pliki"
       upload_files: "Wczytaj plik"
@@ -13,11 +14,14 @@ pl:
       open_storage: "Otwórz %{storageType}"
       select_location: "Zaznacz lokalizację"
       choose_location: "Wybierz lokalizację"
+      new_folder: "Nowy folder"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
-        default: "Magazyn"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
+        default: "Magazyn danych"
       information:
+        authentication_error: "Żądania do %{storageType} nie można uwierzytelnić, to jest błąd."
         connection_error: >
           Niektóre ustawienia %{storageType} nie działają. Skontaktuj się z administratorem %{storageType}.
         live_data_error: "Błąd podczas pobierania szczegółów pliku"
@@ -26,6 +30,8 @@ pl:
         no_file_links: "Aby połączyć pliki z tym pakietem roboczym, zrób to za pośrednictwem %{storageType}."
         not_logged_in: >
           Aby dodać link, zobacz lub wgraj pliki związane z tym pakietem roboczym, zaloguj się do %{storageType}.
+        suggest_logout: Możesz spróbować wylogować się, a następnie zalogować, aby naprawić ten problem.
+        suggest_relink: Możesz spróbować, czy ponowne powiązanie Twojego konta za pomocą poniższego przycisku logowania rozwiązuje ten problem.
       files:
         already_existing_header: "Ten plik już istnieje"
         already_existing_body: >
@@ -42,6 +48,7 @@ pl:
           Jeszcze nie znaleziono automatycznie zarządzanego folderu projektu. Zaczekaj chwilę, odśwież stronę, aby pobrać najnowsze dane i spróbuj ponownie.
         managed_project_folder_no_access: >
           Nie masz jeszcze dostępu do zarządzanego folderu projektu. Poczekaj chwilę i spróbuj ponownie.
+        cannot_create_folder: Nie udało się utworzyć folderu. Unikaj używania znaków specjalnych i symboli oraz upewnij się, że folder jeszcze nie istnieje.
         upload_keep_both: "Zachowaj oba"
         upload_replace: "Zastąp"
       file_links:

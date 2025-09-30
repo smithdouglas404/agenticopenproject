@@ -6,7 +6,7 @@ module ::Gantt
 
     accept_key_auth :index
 
-    before_action :find_optional_project, :protect_from_unauthorized_export, only: :index
+    before_action :load_and_authorize_in_optional_project, :protect_from_unauthorized_export, only: :index
 
     before_action :load_and_validate_query, only: :index, unless: -> { request.format.html? }
 
@@ -43,12 +43,6 @@ module ::Gantt
           atom_list
         end
       end
-    end
-
-    private
-
-    def default_breadcrumb
-      t(:label_gantt_chart_plural)
     end
   end
 end

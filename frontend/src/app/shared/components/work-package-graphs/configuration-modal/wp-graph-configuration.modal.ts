@@ -35,6 +35,7 @@ export const WpTableConfigurationModalPrependToken = new InjectionToken<Componen
 @Component({
   templateUrl: '../../../../features/work-packages/components/wp-table/configuration-modal/wp-table-configuration.modal.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WpGraphConfigurationModalComponent extends OpModalComponent implements OnInit, OnDestroy {
   public $element:HTMLElement;

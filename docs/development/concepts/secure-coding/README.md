@@ -64,14 +64,13 @@ OpenProject recommends these authentication mechanisms:
 - For any external connection (Database, LDAP, etc.), OpenProject uses openssl library for the host or container's openssl certificate store. Use your distribution's mechanisms to add verified certificate or certificate chains. For more information, see the [Ruby OpenSSL X509 Store documentation](https://ruby-doc.org/stdlib-2.4.0/libdoc/openssl/rdoc/OpenSSL/X509/Store.html).
 
 - For smaller to medium organizations with no centralized authentication mechanism, use the internal username / password authentication mechanism for secure storing of your user's credentials using BCrypt salted cryptographic hash function.
-- For organizations with a centralized and accessible LDAP server, [OpenProject provides LDAP userbind authentication](../../../system-admin-guide/authentication/ldap-authentication/) to forward the authentication request to your LDAP server. Use TLS or LDAPS encrypted connections to the LDAP server to ensure transport level security. Optionally, synchronize roles and permissions using the [LDAP Group sync functionality](../../../system-admin-guide/authentication/ldap-authentication/ldap-group-synchronization/).
+- For organizations with a centralized and accessible LDAP server, [OpenProject provides LDAP userbind authentication](../../../system-admin-guide/authentication/ldap-connections/) to forward the authentication request to your LDAP server. Use TLS or LDAPS encrypted connections to the LDAP server to ensure transport level security. Optionally, synchronize roles and permissions using the [LDAP Group sync functionality](../../../system-admin-guide/authentication/ldap-connections/ldap-group-synchronization/).
 - If your organization operates a central authentication services, it is very likely it supports one of the standard remote authentication mechanisms for single sign-on, such as [OpenID connect](../../../system-admin-guide/authentication/openid-providers/),  [SAML](../../../system-admin-guide/authentication/saml/), or [Kerberos](../../../system-admin-guide/authentication/kerberos/). Use these mechanisms to ensure a standardized and secure authentication of users without requiring the storage of any credentials at OpenProject while providing a high level of usability due to centralized logins.
 
 **References**
 
-https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
-
-https://guides.rubyonrails.org/security.html
+- https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
+- https://guides.rubyonrails.org/security.html
 
 ### Session Management
 
@@ -109,7 +108,7 @@ As OpenProject is a web application, the web session is the central mechanism of
 
 **References**
 
-https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html
+- https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html
 
 ## Authorization and Access Control
 
@@ -131,9 +130,8 @@ At its core, permissions in OpenProject are the central key to determine who can
 
 **References**
 
-https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html
-
-https://guides.rubyonrails.org/security.html
+- https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html
+- https://guides.rubyonrails.org/security.html
 
 ## User Input Validation
 
@@ -158,13 +156,10 @@ OpenProject is a form-driven application, meaning that users input a lot of data
 
 **References**
 
-https://guides.rubyonrails.org/security.html#injection
-
-https://owasp.org/www-community/Types_of_Cross-Site_Scripting#stored-xss-aka-persistent-or-type-i
-
-https://cheatsheetseries.owasp.org/cheatsheets/Injection_Prevention_Cheat_Sheet.html
-
-https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html
+- https://guides.rubyonrails.org/security.html#injection
+- https://owasp.org/www-community/Types_of_Cross-Site_Scripting#stored-xss-aka-persistent-or-type-i
+- https://cheatsheetseries.owasp.org/cheatsheets/Injection_Prevention_Cheat_Sheet.html
+- https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html
 
 ## Virus and Malware protection
 
@@ -214,9 +209,8 @@ Inconsiderate use of error handling, logging, and monitoring mechanisms of a web
 
 **References**
 
-https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html
-
-https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html
+- https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html
+- https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html
 
 ## External dependencies
 
@@ -243,7 +237,7 @@ OpenProject includes a number of external dependencies both in Ruby as well as i
 
 **References**
 
-https://cheatsheetseries.owasp.org/cheatsheets/Vulnerable_Dependency_Management_Cheat_Sheet.html
+- https://cheatsheetseries.owasp.org/cheatsheets/Vulnerable_Dependency_Management_Cheat_Sheet.html
 
 ## Packaging and containerization
 

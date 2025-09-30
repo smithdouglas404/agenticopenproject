@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,15 +39,17 @@ RSpec.describe API::V3::WorkPackages::WorkPackageSumsRepresenter do
     end
   end
   let(:sums) do
-    double("sums",
-           story_points: 5,
-           remaining_hours: 10,
-           estimated_hours: 5,
-           material_costs: 5,
-           labor_costs: 10,
-           overall_costs: 15,
-           custom_field_1: 5,
-           available_custom_fields: [custom_field])
+    API::ParserStruct.new(
+      story_points: 5,
+      remaining_hours: 10,
+      estimated_hours: 5,
+      done_ratio: 50,
+      material_costs: 5,
+      labor_costs: 10,
+      overall_costs: 15,
+      custom_field_1: 5,
+      available_custom_fields: [custom_field]
+    )
   end
   let(:current_user) { build_stubbed(:user) }
   let(:representer) do
@@ -54,48 +58,55 @@ RSpec.describe API::V3::WorkPackages::WorkPackageSumsRepresenter do
 
   subject { representer.to_json }
 
-  context "estimated_time" do
+  describe "estimated_time" do
     it "is represented" do
       expected = "PT5H"
       expect(subject).to be_json_eql(expected.to_json).at_path("estimatedTime")
     end
   end
 
-  context "remainingTime" do
+  describe "remainingTime" do
     it "is represented" do
       expected = "PT10H"
       expect(subject).to be_json_eql(expected.to_json).at_path("remainingTime")
     end
   end
 
-  context "storyPoints" do
+  describe "percentageDone" do
+    it "is represented" do
+      expected = 50
+      expect(subject).to be_json_eql(expected.to_json).at_path("percentageDone")
+    end
+  end
+
+  describe "storyPoints" do
     it "is represented" do
       expect(subject).to be_json_eql(sums.story_points.to_json).at_path("storyPoints")
     end
   end
 
-  context "materialCosts" do
+  describe "materialCosts" do
     it "is represented" do
       expected = "5.00 EUR"
       expect(subject).to be_json_eql(expected.to_json).at_path("materialCosts")
     end
   end
 
-  context "laborCosts" do
+  describe "laborCosts" do
     it "is represented" do
       expected = "10.00 EUR"
       expect(subject).to be_json_eql(expected.to_json).at_path("laborCosts")
     end
   end
 
-  context "overallCosts" do
+  describe "overallCosts" do
     it "is represented" do
       expected = "15.00 EUR"
       expect(subject).to be_json_eql(expected.to_json).at_path("overallCosts")
     end
   end
 
-  context "custom field x" do
+  describe "custom field x" do
     it "is represented" do
       expect(subject).to be_json_eql(sums.custom_field_1.to_json).at_path("customField1")
     end

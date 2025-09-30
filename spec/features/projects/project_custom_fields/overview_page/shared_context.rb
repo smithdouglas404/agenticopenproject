@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,12 +36,21 @@ RSpec.shared_context "with seeded projects, members and project custom fields" d
   let!(:second_version) { create(:version, name: "Version 2", project:) }
   let!(:third_version) { create(:version, name: "Version 3", project:) }
 
-  shared_let(:reader_role) do
+  shared_let(:standard) { create(:standard_global_role) }
+  shared_let(:reader_role_without_project_attributes) do
     create(:project_role, permissions: %i[view_work_packages])
   end
 
-  shared_let(:edit_role) do
-    create(:project_role, permissions: %i[view_work_packages edit_project])
+  shared_let(:reader_role) do
+    create(:project_role, permissions: %i[view_work_packages view_project_attributes])
+  end
+
+  shared_let(:edit_project_role) do
+    create(:project_role, permissions: %i[view_work_packages view_project_attributes edit_project])
+  end
+
+  shared_let(:edit_attributes_role) do
+    create(:project_role, permissions: %i[view_work_packages view_project_attributes edit_project_attributes])
   end
 
   let!(:admin) do
@@ -67,14 +78,28 @@ RSpec.shared_context "with seeded projects, members and project custom fields" d
            member_with_roles: { project => reader_role })
   end
 
-  let!(:member_with_project_edit_permissions) do
+  let(:member_without_view_project_attributes_permission) do
+    create(:user,
+           firstname: "Member 4",
+           lastname: "In Project",
+           member_with_roles: { project => reader_role_without_project_attributes })
+  end
+
+  let(:member_with_project_attributes_edit_permissions) do
+    create(:user,
+           firstname: "Member",
+           lastname: "With Project Attributes Edit Permissions",
+           member_with_roles: { project => edit_attributes_role })
+  end
+
+  let(:member_with_project_edit_permissions) do
     create(:user,
            firstname: "Member",
            lastname: "With Project Edit Permissions",
-           member_with_roles: { project => edit_role })
+           member_with_roles: { project => edit_project_role })
   end
 
-  let!(:member_without_project_edit_permissions) do
+  let!(:member_without_project_attributes_edit_permissions) do
     member_in_project
   end
 
@@ -148,6 +173,36 @@ RSpec.shared_context "with seeded projects, members and project custom fields" d
                                                project_custom_field_section: section_for_input_fields)
 
     create(:custom_value, customized: project, custom_field: field, value: "Lorem\n\nipsum")
+
+    field
+  end
+
+  let!(:calculated_from_int_project_custom_field) do
+    field = create(
+      :calculated_value_project_custom_field,
+      :skip_validations,
+      formula: "{{cf_#{integer_project_custom_field.id}}} * 2",
+      projects: [project],
+      name: "Calculated field using int",
+      project_custom_field_section: section_for_input_fields
+    )
+
+    create(:custom_value, customized: project, custom_field: field, value: 234)
+
+    field
+  end
+
+  let!(:calculated_from_int_and_float_project_custom_field) do
+    field = create(
+      :calculated_value_project_custom_field,
+      :skip_validations,
+      formula: "{{cf_#{float_project_custom_field.id}}} * {{cf_#{integer_project_custom_field.id}}}",
+      projects: [project],
+      name: "Calculated field using int and float",
+      project_custom_field_section: section_for_input_fields
+    )
+
+    create(:custom_value, customized: project, custom_field: field, value: 123 * 123.456)
 
     field
   end
@@ -248,7 +303,14 @@ RSpec.shared_context "with seeded projects, members and project custom fields" d
     ]
   end
 
-  let(:all_fields) { input_fields + select_fields + multi_select_fields }
+  let!(:calculated_value_fields) do
+    [
+      calculated_from_int_project_custom_field,
+      calculated_from_int_and_float_project_custom_field
+    ]
+  end
+
+  let(:all_fields) { input_fields + select_fields + multi_select_fields + calculated_value_fields }
 
   let!(:boolean_project_custom_field_activated_in_other_project) do
     create(:boolean_project_custom_field, projects: [other_project],

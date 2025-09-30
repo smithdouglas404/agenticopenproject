@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -38,8 +38,7 @@ import {
   ToastService,
 } from 'core-app/shared/components/toaster/toast.service';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
-import * as moment from 'moment';
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 import {
   filter,
   takeUntil,
@@ -87,13 +86,14 @@ import {
   zoomLevelOrder,
 } from '../wp-timeline';
 import { WeekdayService } from 'core-app/core/days/weekday.service';
-import * as Mousetrap from 'mousetrap';
+import Mousetrap from 'mousetrap';
 import { DayResourceService } from 'core-app/core/state/days/day.service';
 import { IDay } from 'core-app/core/state/days/day.model';
 
 @Component({
   selector: 'wp-timeline-container',
   templateUrl: './wp-timeline-container.html',
+  standalone: false,
 })
 export class WorkPackageTimelineTableController extends UntilDestroyedMixin implements AfterViewInit {
   private $element:JQuery;

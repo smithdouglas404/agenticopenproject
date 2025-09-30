@@ -5,8 +5,9 @@ homepage: "https://www.openproject.org"
 maintainer: "operations+packaging@openproject.com"
 license: "GPL"
 targets:
-  debian-10: &debian
+  debian-11: &debian
     build_dependencies:
+      - wget
       - libsqlite3-dev
     dependencies:
       - unzip
@@ -15,28 +16,22 @@ targets:
       - tesseract-ocr
       - catdoc
       - imagemagick
-  debian-11:
-    <<: *debian
   debian-12:
     <<: *debian
   ubuntu-20.04:
     <<: *debian
   ubuntu-22.04:
     <<: *debian
-  centos-8: &centos8
+  centos-9:
     env:
       - NODE_ENV=production
       - NPM_CONFIG_PRODUCTION=false
+      - SECRET_KEY_BASE=1
     dependencies:
       - epel-release
       - ImageMagick
       - unzip
       - poppler-utils
-  centos-9:
-    <<: *centos8
-    env:
-      - NODE_ENV=production
-      - NPM_CONFIG_PRODUCTION=false
   sles-15:
     build_dependencies:
       - sqlite3-devel
@@ -45,13 +40,13 @@ targets:
 before_precompile: "packaging/setup"
 after_precompile: "packaging/teardown"
 services:
-  - postgres
+  - postgres:17
 installer: https://github.com/pkgr/installer.git
 wizards:
   - https://github.com/pkgr/addon-legacy-installer.git
   - ./packaging/addons/openproject-edition
   - https://github.com/pkgr/addon-postgres
-  - https://github.com/pkgr/addon-apache2.git
+  - https://github.com/pkgr/addon-apache2.git#set-host-header
   - ./packaging/addons/repositories
   - https://github.com/pkgr/addon-memcached.git
   - ./packaging/addons/openproject
@@ -59,3 +54,4 @@ buildpack: https://github.com/opf/heroku-buildpack-multi.git#master
 env:
   - NODE_ENV=production
   - NPM_CONFIG_PRODUCTION=false
+  - SECRET_KEY_BASE=1

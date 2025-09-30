@@ -22,13 +22,14 @@ import {
   FormGroupDirective,
 } from '@angular/forms';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
-import * as moment from 'moment';
+import moment from 'moment';
 
 @Component({
   selector: 'op-reminder-settings-daily-time',
   templateUrl: './reminder-settings-daily-time.component.html',
   styleUrls: ['./reminder-settings-daily-time.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ReminderSettingsDailyTimeComponent implements OnInit {
   // All times that are available in a day with a 1 hour gap between each.

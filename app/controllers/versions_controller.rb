@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -136,8 +138,6 @@ class VersionsController < ApplicationController
 
   def find_project
     @project = Project.find(params[:project_id])
-  rescue ActiveRecord::RecordNotFound
-    render_404
   end
 
   def retrieve_selected_type_ids(selectable_types, default_types = nil)
@@ -159,7 +159,7 @@ class VersionsController < ApplicationController
       flash[:notice] = t(success_message)
       redirect_back_or_version_settings
     else
-      render action: failure_action
+      render action: failure_action, status: :unprocessable_entity
     end
   end
 
@@ -170,7 +170,7 @@ class VersionsController < ApplicationController
       versions = versions.or(@project.rolled_up_versions.includes(:custom_values))
     end
 
-    versions = versions.visible.order_by_semver_name.except(:distinct).uniq
+    versions = versions.visible.order(:name).except(:distinct).uniq
     versions.reject! { |version| version.closed? || version.completed? } unless completed
     versions
   end

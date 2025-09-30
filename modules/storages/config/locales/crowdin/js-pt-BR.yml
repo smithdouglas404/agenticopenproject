@@ -2,6 +2,7 @@
 pt-BR:
   js:
     storages:
+      authentication_error: "Falha na autenticação com %{storageType}"
       link_files_in_storage: "Vincular arquivos em %{storageType}"
       link_existing_files: "Vincular arquivos existentes"
       upload_files: "Anexar arquivos"
@@ -13,11 +14,14 @@ pt-BR:
       open_storage: "Abrir %{storageType}"
       select_location: "Selecionar localização"
       choose_location: "Escolher localização"
+      new_folder: "Nova pasta"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
         default: "Armazenamento"
       information:
+        authentication_error: "A solicitação para %{storageType} não pôde ser autenticada. Ocorreu um erro."
         connection_error: >
           Algumas configurações de %{storageType} não estão funcionando. Entre em contato com seu administrador de %{storageType}.
         live_data_error: "Erro ao obter dados do arquivo"
@@ -26,6 +30,8 @@ pt-BR:
         no_file_links: "Para vincular arquivos a este pacote de trabalho, faça isso através de %{storageType}."
         not_logged_in: >
           Para adicionar um link, visualizar ou enviar arquivos relacionados a este pacote de trabalho, inicie sessão em %{storageType}
+        suggest_logout: Você pode tentar realizar o login novamente para corrigir este problema.
+        suggest_relink: Você pode tentar se revincular sua conta através do botão de login abaixo para corrigir este problema.
       files:
         already_existing_header: "Este arquivo já existe"
         already_existing_body: >
@@ -37,11 +43,12 @@ pt-BR:
         empty_folder_location_hint: "Clique no botão abaixo para carregar o arquivo para esta localização."
         file_not_selectable_location: "Não é possível selecionar um arquivo no processo de escolha de uma localização."
         project_folder_no_access: >
-          Você não tem acesso à pasta do projeto. Por favor, entre em contato com o administrador para obter acesso ou envie o arquivo em outro local.
+          Você não possui acesso à pasta do projeto. Entre em contato com o administrador para obter acesso ou carregue o arquivo em outra pasta.
         managed_project_folder_not_available: >
           A pasta do projeto gerenciado automaticamente ainda não foi encontrada. Aguarde um pouco, recarregue a página para obter os dados mais recentes e tente novamente.
         managed_project_folder_no_access: >
           Você ainda não possui acesso à pasta do projeto gerenciado. Aguarde um pouco e tente novamente.
+        cannot_create_folder: Falha ao criar a pasta. Evite o uso de caracteres especiais e símbolos e certifique-se de que a pasta não exista mais.
         upload_keep_both: "Manter ambos"
         upload_replace: "Substituir"
       file_links:

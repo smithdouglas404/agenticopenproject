@@ -8,6 +8,7 @@ uk:
         row_count: "Кількість рядків"
         column_count: "Кількість стовпців"
         widgets: "Віджети"
+        scope: "Область"
     errors:
       models:
         grids/grid:

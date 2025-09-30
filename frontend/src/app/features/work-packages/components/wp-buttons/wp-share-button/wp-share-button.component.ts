@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -48,16 +48,17 @@ import { CollectionResource } from 'core-app/features/hal/resources/collection-r
   selector: 'wp-share-button',
   templateUrl: './wp-share-button.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WorkPackageShareButtonComponent extends UntilDestroyedMixin implements OnInit {
   @Input() public workPackage:WorkPackageResource;
 
-  showEnterpriseIcon = this.bannersService.eeShowBanners;
+  showEnterpriseIcon = !this.bannersService.allowsTo('work_package_sharing');
 
   shareCount$:Observable<number>;
 
   public text = {
-    share: this.I18n.t('js.work_packages.sharing.share'),
+    share: this.I18n.t('js.sharing.share'),
   };
 
   constructor(

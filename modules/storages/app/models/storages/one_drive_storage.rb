@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -39,9 +39,20 @@ module Storages
 
     using ::Storages::Peripherals::ServiceResultRefinements
 
+    def self.short_provider_name = :one_drive
+
+    def self.non_confidential_provider_fields
+      super + %i[tenant_id drive_id]
+    end
+
+    def self.allowed_by_enterprise_token?
+      EnterpriseToken.allows_to?(:one_drive_sharepoint_file_storage)
+    end
+
     def configuration_checks
       {
         storage_oauth_client_configured: oauth_client.present?,
+        storage_redirect_uri_configured: oauth_client&.persisted?,
         storage_tenant_drive_configured: tenant_id.present? && drive_id.present?,
         access_management_configured: !automatic_management_unspecified?,
         name_configured: name.present?
@@ -57,8 +68,28 @@ module Storages
       end
     end
 
+    def available_project_folder_modes
+      if automatic_management_enabled?
+        ["inactive", "automatic"]
+      else
+        ["inactive", "manual"]
+      end
+    end
+
+    def audience
+      nil
+    end
+
+    def authenticate_via_idp?
+      false
+    end
+
+    def authenticate_via_storage?
+      true
+    end
+
     def oauth_configuration
-      Peripherals::OAuthConfigurations::OneDriveConfiguration.new(self)
+      Adapters::Providers::OneDrive::OAuthConfiguration.new(self)
     end
 
     def uri

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -23,12 +25,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See docs/COPYRIGHT.rdoc for more details.
+# See COPYRIGHT and LICENSE files for more details.
 #++
 
 require "spec_helper"
 
-RSpec.describe Notifications::ScheduleReminderMailsJob, type: :job do
+RSpec.describe Notifications::ScheduleReminderMailsJob,
+               type: :job,
+               with_good_job_batches: [Mails::ReminderJob,
+                                       Notifications::ScheduleReminderMailsJob] do
   let(:scheduled_job) do
     described_class.perform_later.tap do |job|
       set_cron_time(job, job_cron_at)
@@ -47,9 +52,6 @@ RSpec.describe Notifications::ScheduleReminderMailsJob, type: :job do
   let(:ids) { [23, 42] }
 
   before do
-    # We need to access the job as stored in the database to get at the scheduled_at time persisted there
-    ActiveJob::Base.disable_test_adapter
-
     scope = instance_double(ActiveRecord::Relation)
     allow(User).to receive(:having_reminder_mail_to_send).and_return(scope)
     allow(scope).to receive(:pluck).with(:id).and_return(ids)

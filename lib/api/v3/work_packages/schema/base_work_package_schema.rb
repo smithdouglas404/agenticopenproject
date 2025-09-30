@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -51,8 +51,12 @@ module API
             []
           end
 
+          delegate :assignable_project_phases,
+                   to: :contract
+
           def writable?(property)
             property = property.to_s
+            return false if property == "subject" && type&.replacement_pattern_defined_for?(:subject)
 
             # Special case for milestones + date property
             property = "start_date" if property == "date" && milestone?

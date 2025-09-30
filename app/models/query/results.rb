@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class ::Query::Results
+class Query::Results
   include ::Query::Results::GroupBy
   include ::Query::Results::Sums
   include Redmine::I18n
@@ -82,6 +84,7 @@ class ::Query::Results
   def sorted_work_packages
     work_package_scope
       .joins(sort_criteria_joins)
+      .joins(query.group_by_join_statement)
       .order(order_option)
       .order(sort_criteria_array)
   end
@@ -195,10 +198,8 @@ class ::Query::Results
   ##
   # Return the case insensitive version for columns with a string type
   def case_insensitive_condition(column_key, condition, columns_hash)
-    if columns_hash[column_key]&.type == :string
+    if columns_hash[column_key]&.type == :string || custom_field_type(column_key) == "string"
       "LOWER(#{condition})"
-    elsif custom_field_type(column_key) == "string"
-      condition.map { |c| "LOWER(#{c})" }
     else
       condition
     end

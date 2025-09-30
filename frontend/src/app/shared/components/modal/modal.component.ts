@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -94,7 +94,8 @@ export abstract class OpModalComponent extends UntilDestroyedMixin implements On
     this.updateAppHeight();
     this.cdRef.detectChanges();
 
-    window.addEventListener('resize', this.onResize);
+    // It is important to check for visualViewport changes as that includes also keyboard opening (especially on iOS)
+    window.visualViewport?.addEventListener('resize', this.onResize);
     window.addEventListener('orientationchange', this.onResize);
   }
 

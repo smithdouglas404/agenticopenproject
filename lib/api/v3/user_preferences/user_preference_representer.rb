@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -53,9 +53,10 @@ module API
           }
         end
 
-        property :hide_mail
         property :time_zone,
                  render_nil: true
+
+        property :disable_keyboard_shortcuts
 
         property :warn_on_leaving_unsaved
         property :comments_in_reverse_order,
@@ -76,7 +77,13 @@ module API
                    daily_reminders["times"].map! { |time| time.gsub(/\A(\d{2}:\d{2})\z/, '\1:00+00:00') }
                  end
 
-        property :immediate_reminders
+        property :immediate_reminders,
+                 getter: ->(*) do
+                   immediate_reminders.transform_keys { |k| k.camelize(:lower) }
+                 end,
+                 setter: ->(fragment:, **) do
+                   self.immediate_reminders = fragment.transform_keys(&:underscore)
+                 end
 
         property :pause_reminders,
                  getter: ->(*) do

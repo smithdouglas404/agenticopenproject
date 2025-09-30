@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,16 +34,18 @@ RSpec.describe TimeEntries::UpdateContract do
     let(:time_entry) do
       build_stubbed(:time_entry,
                     project: time_entry_project,
-                    work_package: time_entry_work_package,
+                    entity: time_entry_entity,
                     user: time_entry_user,
                     activity: time_entry_activity,
                     spent_on: time_entry_spent_on,
                     hours: time_entry_hours,
-                    comments: time_entry_comments)
+                    comments: time_entry_comments) do |te|
+        te.ongoing = time_entry_ongoing
+      end
     end
     subject(:contract) { described_class.new(time_entry, current_user) }
 
-    let(:permissions) { %i(edit_time_entries) }
+    let(:permissions) { %i(edit_time_entries log_time) }
 
     context "if user is not allowed to edit time entries" do
       let(:permissions) { [] }
@@ -71,11 +73,11 @@ RSpec.describe TimeEntries::UpdateContract do
             end
           end
 
-          time_entry_work_package.project = new_project
+          time_entry_entity.project = new_project
 
           mock_permissions_for(current_user) do |mock|
-            mock.allow_in_project *new_project_permissions, project: new_project
-            mock.allow_in_project *permissions, project: time_entry_project
+            mock.allow_in_project(*new_project_permissions, project: new_project)
+            mock.allow_in_project(*permissions, project: time_entry_project)
           end
         end
       end
@@ -124,6 +126,19 @@ RSpec.describe TimeEntries::UpdateContract do
       it "is invalid" do
         time_entry.user = other_user
         expect_valid(false, base: %i(error_unauthorized))
+      end
+    end
+
+    context "if the user is changed to a user that the user has no access to" do
+      let(:new_user) do
+        create(:user).tap do |user|
+          allow(user).to receive(:visible?).and_return(false)
+        end
+      end
+
+      it "is invalid" do
+        time_entry.user = new_user
+        expect_valid(false, user_id: %i(invalid))
       end
     end
 

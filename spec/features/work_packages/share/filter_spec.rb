@@ -2,7 +2,7 @@
 
 # -- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2010-2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,8 +31,7 @@
 require "spec_helper"
 
 RSpec.describe "Work package sharing",
-               :js, :with_cuprite,
-               with_ee: %i[work_package_sharing] do
+               :js, with_ee: %i[work_package_sharing] do
   shared_let(:view_work_package_role) { create(:view_work_package_role) }
   shared_let(:comment_work_package_role) { create(:comment_work_package_role) }
   shared_let(:edit_work_package_role) { create(:edit_work_package_role) }
@@ -71,7 +70,7 @@ RSpec.describe "Work package sharing",
   end
 
   let(:work_package_page) { Pages::FullWorkPackage.new(work_package) }
-  let(:share_modal) { Components::WorkPackages::ShareModal.new(work_package) }
+  let(:share_modal) { Components::Sharing::WorkPackages::ShareModal.new(work_package) }
 
   current_user { create(:admin, firstname: "Signed in", lastname: "User") }
 
@@ -86,7 +85,7 @@ RSpec.describe "Work package sharing",
       share_modal.expect_shared_count_of(6)
 
       # Filter for: project members (users only)
-      share_modal.filter("type", I18n.t("work_package.sharing.filter.project_member"))
+      share_modal.filter("type", I18n.t("sharing.filter.project_member"))
       share_modal.expect_shared_count_of(3)
 
       share_modal.expect_shared_with(project_user, "View")
@@ -98,7 +97,7 @@ RSpec.describe "Work package sharing",
       share_modal.expect_not_shared_with(shared_non_project_group)
 
       # Filter for: non-project members (users only)
-      share_modal.filter("type", I18n.t("work_package.sharing.filter.not_project_member"))
+      share_modal.filter("type", I18n.t("sharing.filter.not_project_member"))
       share_modal.expect_shared_count_of(1)
 
       share_modal.expect_shared_with(non_project_user, "Edit")
@@ -109,7 +108,7 @@ RSpec.describe "Work package sharing",
       share_modal.expect_not_shared_with(shared_non_project_group)
 
       # Filter for: project members (groups only)
-      share_modal.filter("type", I18n.t("work_package.sharing.filter.project_group"))
+      share_modal.filter("type", I18n.t("sharing.filter.project_group"))
       share_modal.expect_shared_count_of(1)
 
       share_modal.expect_shared_with(shared_project_group, "Edit")
@@ -120,7 +119,7 @@ RSpec.describe "Work package sharing",
       share_modal.expect_not_shared_with(shared_non_project_group)
 
       # Filter for: non-project members (groups only)
-      share_modal.filter("type", I18n.t("work_package.sharing.filter.not_project_group"))
+      share_modal.filter("type", I18n.t("sharing.filter.not_project_group"))
       share_modal.expect_shared_count_of(1)
 
       share_modal.expect_shared_with(shared_non_project_group, "View")
@@ -131,7 +130,7 @@ RSpec.describe "Work package sharing",
       share_modal.expect_not_shared_with(shared_project_group)
 
       # Clicking again on the filter will reset it
-      share_modal.filter("type", I18n.t("work_package.sharing.filter.not_project_group"))
+      share_modal.filter("type", I18n.t("sharing.filter.not_project_group"))
       share_modal.expect_shared_count_of(6)
 
       share_modal.expect_shared_with(project_user, "View")
@@ -147,7 +146,7 @@ RSpec.describe "Work package sharing",
       share_modal.expect_shared_count_of(6)
 
       # Filter for: all principals with Edit permission
-      share_modal.filter("role", I18n.t("work_package.sharing.permissions.edit"))
+      share_modal.filter("role", I18n.t("work_package.permissions.edit"))
       share_modal.expect_shared_count_of(3)
 
       share_modal.expect_shared_with(inherited_project_user, "Edit")
@@ -158,7 +157,7 @@ RSpec.describe "Work package sharing",
       share_modal.expect_not_shared_with(shared_non_project_group)
 
       # Filter for: all principals with View permission
-      share_modal.filter("role", I18n.t("work_package.sharing.permissions.view"))
+      share_modal.filter("role", I18n.t("work_package.permissions.view"))
       share_modal.expect_shared_count_of(2)
 
       share_modal.expect_shared_with(project_user, "View")
@@ -169,7 +168,7 @@ RSpec.describe "Work package sharing",
       share_modal.expect_not_shared_with(shared_project_group)
 
       # Filter for: all principals with Comment permission
-      share_modal.filter("role", I18n.t("work_package.sharing.permissions.comment"))
+      share_modal.filter("role", I18n.t("work_package.permissions.comment"))
       share_modal.expect_shared_count_of(1)
 
       share_modal.expect_shared_with(project_user2, "Comment")
@@ -180,7 +179,7 @@ RSpec.describe "Work package sharing",
       share_modal.expect_not_shared_with(shared_non_project_group)
 
       # Clicking again on the filter will reset it
-      share_modal.filter("role", I18n.t("work_package.sharing.permissions.comment"))
+      share_modal.filter("role", I18n.t("work_package.permissions.comment"))
       share_modal.expect_shared_count_of(6)
 
       share_modal.expect_shared_with(project_user, "View")
@@ -198,7 +197,7 @@ RSpec.describe "Work package sharing",
       # Filter for: all principals with View permission
       # role: view
       # type: none
-      share_modal.filter("role", I18n.t("work_package.sharing.permissions.view"))
+      share_modal.filter("role", I18n.t("work_package.permissions.view"))
       share_modal.expect_shared_count_of(2)
 
       share_modal.expect_shared_with(project_user, "View")
@@ -211,7 +210,7 @@ RSpec.describe "Work package sharing",
       # Additional filter for: project members (users only)
       # role: view
       # type: project members (users only)
-      share_modal.filter("type", I18n.t("work_package.sharing.filter.project_member"))
+      share_modal.filter("type", I18n.t("sharing.filter.project_member"))
       share_modal.expect_shared_count_of(1)
 
       share_modal.expect_shared_with(project_user, "View")
@@ -224,7 +223,7 @@ RSpec.describe "Work package sharing",
       # Change type filter to: project members (groups only)
       # role: view
       # type: non-project members (groups only)
-      share_modal.filter("type", I18n.t("work_package.sharing.filter.not_project_group"))
+      share_modal.filter("type", I18n.t("sharing.filter.not_project_group"))
       share_modal.expect_shared_count_of(1)
 
       share_modal.expect_shared_with(shared_non_project_group, "View")
@@ -237,7 +236,7 @@ RSpec.describe "Work package sharing",
       # Reset role filter
       # role: none
       # type: non-project members (groups only)
-      share_modal.filter("role", I18n.t("work_package.sharing.permissions.view"))
+      share_modal.filter("role", I18n.t("work_package.permissions.view"))
       share_modal.expect_shared_count_of(1)
 
       share_modal.expect_shared_with(shared_non_project_group, "View")
@@ -250,7 +249,7 @@ RSpec.describe "Work package sharing",
       # Reset type filter
       # role: none
       # type: none
-      share_modal.filter("type", I18n.t("work_package.sharing.filter.not_project_group"))
+      share_modal.filter("type", I18n.t("sharing.filter.not_project_group"))
       share_modal.expect_shared_count_of(6)
 
       share_modal.expect_shared_with(project_user, "View")
@@ -264,8 +263,8 @@ RSpec.describe "Work package sharing",
     context "and there are no matching results for my filter" do
       it 'does not check the "toggle all" checkbox' do
         share_modal.expect_open
-        share_modal.filter("type", I18n.t("work_package.sharing.filter.not_project_member"))
-        share_modal.filter("role", I18n.t("work_package.sharing.permissions.view"))
+        share_modal.filter("type", I18n.t("sharing.filter.not_project_member"))
+        share_modal.filter("role", I18n.t("work_package.permissions.view"))
 
         share_modal.expect_empty_search_blankslate
         share_modal.expect_shared_count_of(0)
@@ -276,20 +275,36 @@ RSpec.describe "Work package sharing",
     it "only displays shares that match the current set of applied filters" do
       share_modal.expect_open
 
+      # Change all shared to have the "View" role.
+      retry_block do
+        share_modal.toggle_select_all
+        share_modal.bulk_update("View")
+      end
+
       share_modal.toggle_select_all
-      share_modal.bulk_update("View")
-      share_modal.toggle_select_all
+
+      # Filter for the View role
 
       share_modal.filter("role", "View")
 
-      share_modal.expect_shared_with(project_user)
-      share_modal.expect_shared_with(project_user2)
-      share_modal.expect_shared_with(inherited_project_user)
-      share_modal.expect_shared_with(non_project_user)
-      share_modal.expect_shared_with(shared_project_group)
-      share_modal.expect_shared_with(shared_non_project_group)
+      # Since all shares have the View role, all shares should be displayed.
+
+      share_modal.expect_shared_with(project_user, "View")
+      share_modal.expect_shared_with(project_user2, "View")
+      share_modal.expect_shared_with(inherited_project_user, "View")
+      share_modal.expect_shared_with(non_project_user, "View")
+      share_modal.expect_shared_with(shared_project_group, "View")
+      share_modal.expect_shared_with(shared_non_project_group, "View")
+
+      # Change one share to have the Comment role.
 
       share_modal.change_role(project_user, "Comment")
+
+      # That share is no longer displayed as it does not match the current filter after the role change.
+      share_modal.expect_not_shared_with(project_user)
+
+      # When filtering for the Comment role, only the changed share should be displayed.
+
       share_modal.filter("role", "Comment")
       share_modal.expect_shared_with(project_user, "Comment")
       share_modal.expect_not_shared_with(project_user2)
@@ -297,6 +312,8 @@ RSpec.describe "Work package sharing",
       share_modal.expect_not_shared_with(non_project_user)
       share_modal.expect_not_shared_with(shared_project_group)
       share_modal.expect_not_shared_with(shared_non_project_group)
+
+      # When filtering for the Edit role, no share matches and thus none should be displayed.
 
       share_modal.filter("role", "Edit")
       share_modal.expect_empty_search_blankslate

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,12 +28,12 @@
 # See COPYRIGHT and LICENSE files for more details.
 module DemoData
   class WikiSeeder < Seeder
-    attr_reader :project, :project_data
+    attr_reader :project
+    alias_method :project_data, :seed_data
 
     def initialize(project, project_data)
-      super()
+      super(project_data)
       @project = project
-      @project_data = project_data
     end
 
     def seed_data!

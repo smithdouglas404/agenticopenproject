@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -40,7 +42,8 @@ module Queries::Filters
     search: Queries::Filters::Strategies::Search,
     float: Queries::Filters::Strategies::Float,
     inexistent: Queries::Filters::Strategies::Inexistent,
-    empty_value: Queries::Filters::Strategies::EmptyValue
+    empty_value: Queries::Filters::Strategies::EmptyValue,
+    hierarchy: Queries::Filters::Strategies::Hierarchy
   }.freeze
 
   ##

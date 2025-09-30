@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,7 +33,7 @@ require_relative "../constants/open_project/project_latest_activity"
 Rails.application.reloader.to_prepare do
   OpenProject::Activity.map do |activity|
     activity.register :work_packages, class_name: "::Activities::WorkPackageActivityProvider"
-    activity.register :project_attributes, class_name: "Activities::ProjectActivityProvider",
+    activity.register :project_details, class_name: "Activities::ProjectActivityProvider",
                                            default: false
     activity.register :changesets, class_name: "Activities::ChangesetActivityProvider"
     activity.register :news, class_name: "Activities::NewsActivityProvider",

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -48,7 +48,7 @@ import { WorkPackageChangeset } from 'core-app/features/work-packages/components
 import { WorkPackageViewFocusService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-focus.service';
 import { EditFormComponent } from 'core-app/shared/components/fields/edit/edit-form/edit-form.component';
 import { WorkPackageNotificationService } from 'core-app/features/work-packages/services/notifications/work-package-notification.service';
-import * as URI from 'urijs';
+import URI from 'urijs';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { splitViewRoute } from 'core-app/features/work-packages/routing/split-view-routes.helper';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
@@ -57,6 +57,7 @@ import { OpTitleService } from 'core-app/core/html/op-title.service';
 import { WorkPackageCreateService } from './wp-create.service';
 import { HalError } from 'core-app/features/hal/services/hal-error';
 import idFromLink from 'core-app/features/hal/helpers/id-from-link';
+import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 
 @Directive()
 export class WorkPackageCreateComponent extends UntilDestroyedMixin implements OnInit {
@@ -97,7 +98,9 @@ export class WorkPackageCreateComponent extends UntilDestroyedMixin implements O
     protected readonly wpTableFilters:WorkPackageViewFiltersService,
     protected readonly pathHelper:PathHelperService,
     protected readonly apiV3Service:ApiV3Service,
-    protected readonly cdRef:ChangeDetectorRef) {
+    protected readonly currentProjectService:CurrentProjectService,
+    protected readonly cdRef:ChangeDetectorRef,
+  ) {
     super();
   }
 
@@ -105,6 +108,8 @@ export class WorkPackageCreateComponent extends UntilDestroyedMixin implements O
     this.closeEditFormWhenNewWorkPackageSaved();
 
     this.showForm();
+
+    window.OpenProject.pageState = 'edited';
   }
 
   public ngOnDestroy() {

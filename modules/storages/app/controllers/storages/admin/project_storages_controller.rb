@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,6 +29,8 @@
 #++
 
 class Storages::Admin::ProjectStoragesController < Projects::SettingsController
+  include Storages::OAuthAccessGrantable
+
   model_object Storages::ProjectStorage
 
   before_action :find_model_object, only: %i[oauth_access_grant edit update destroy destroy_info]
@@ -63,30 +67,26 @@ class Storages::Admin::ProjectStoragesController < Projects::SettingsController
 
     if service_result.success?
       flash[:notice] = I18n.t(:notice_successful_create)
-      redirect_to_project_storages_path_with_oauth_access_grant_confirmation
+      redirect_to_project_storages_path_with_oauth_access_grant_confirmation(@project_storage.storage)
     else
       @available_storages = available_storages
       render "/storages/project_settings/new"
     end
   end
 
-  def oauth_access_grant # rubocop:disable Metrics/AbcSize
+  def oauth_access_grant
     @project_storage = @object
     storage = @project_storage.storage
-    auth_state = ::Storages::Peripherals::StorageInteraction::Authentication
-                   .authorization_state(storage:, user: current_user)
+    auth_state = ::Storages::Adapters::Authentication.authorization_state(storage:, user: current_user)
 
     if auth_state == :connected
       redirect_to(external_file_storages_project_settings_project_storages_path)
     else
-      nonce = SecureRandom.uuid
-      cookies["oauth_state_#{nonce}"] = {
-        value: { href: external_file_storages_project_settings_project_storages_url(project_id: @project_storage.project_id),
-                 storageId: @project_storage.storage_id }.to_json,
-        expires: 1.hour
-      }
-      session[:oauth_callback_flash_modal] = oauth_access_grant_nudge_modal(authorized: true)
-      redirect_to(storage.oauth_configuration.authorization_uri(state: nonce))
+      open_redirect_to_storage_authorization_with(
+        callback_url: external_file_storages_project_settings_project_storages_url(project_id: @project_storage.project_id),
+        storage: @project_storage.storage,
+        callback_modal_for: :project_storage
+      )
     end
   end
 
@@ -110,7 +110,7 @@ class Storages::Admin::ProjectStoragesController < Projects::SettingsController
     if service_result.success?
       @project_storage = service_result.result
       flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to_project_storages_path_with_oauth_access_grant_confirmation
+      redirect_to_project_storages_path_with_oauth_access_grant_confirmation(@project_storage.storage)
     else
       @project_storage = @object
       render "/storages/project_settings/edit"
@@ -149,39 +149,21 @@ class Storages::Admin::ProjectStoragesController < Projects::SettingsController
   end
 
   def available_storages
-    Storages::Storage
-      .visible
-      .not_enabled_for_project(@project)
-      .select(&:configured?)
+    Storages::Storage.visible.not_enabled_for_project(@project).select(&:configured?)
   end
 
-  def redirect_to_project_storages_path_with_oauth_access_grant_confirmation
-    if storage_oauth_access_granted?
+  def redirect_to_project_storages_path_with_oauth_access_grant_confirmation(storage)
+    if storage.oauth_access_granted?(User.current)
       redirect_to external_file_storages_project_settings_project_storages_path
     else
       redirect_to_project_storages_path_with_nudge_modal
     end
   end
 
-  def storage_oauth_access_granted?
-    OAuthClientToken
-      .exists?(user: current_user, oauth_client: @project_storage.storage.oauth_client)
-  end
-
   def redirect_to_project_storages_path_with_nudge_modal
     redirect_to(
       external_file_storages_project_settings_project_storages_path,
-      flash: { modal: oauth_access_grant_nudge_modal }
+      op_modal: project_storage_oauth_access_grant_nudge_modal(project_storage: @project_storage)
     )
-  end
-
-  def oauth_access_grant_nudge_modal(authorized: false)
-    {
-      type: "Storages::Admin::OAuthAccessGrantNudgeModalComponent",
-      parameters: {
-        project_storage: @project_storage.id,
-        authorized:
-      }
-    }
   end
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -39,7 +41,14 @@ class WorkPackages::UpdateService < BaseServices::Update
 
   private
 
+  def set_templated_attributes
+    model.type.enabled_patterns.each do |key, pattern|
+      model.public_send(:"#{key}=", pattern.resolve(model))
+    end
+  end
+
   def after_perform(service_call)
+    set_templated_attributes
     update_related_work_packages(service_call)
     cleanup(service_call.result)
 
@@ -120,23 +129,22 @@ class WorkPackages::UpdateService < BaseServices::Update
   end
 
   def reschedule_related(work_package)
-    rescheduled = if work_package.saved_change_to_parent_id? && work_package.parent_id_before_last_save
-                    reschedule_former_siblings(work_package).dependent_results
-                  else
-                    []
-                  end
+    work_packages_to_reschedule = [work_package]
 
-    rescheduled + reschedule(work_package, [work_package]).dependent_results
-  end
+    # if parent changed, the former parent needs to be rescheduled too.
+    if parent_just_changed?(work_package)
+      former_parent = WorkPackage.find_by(id: work_package.parent_id_before_last_save)
+      work_packages_to_reschedule << former_parent if former_parent
+    end
 
-  def reschedule_former_siblings(work_package)
-    reschedule(work_package, WorkPackage.where(parent_id: work_package.parent_id_before_last_save))
-  end
-
-  def reschedule(work_package, work_packages)
     WorkPackages::SetScheduleService
-      .new(user:, work_package: work_packages, initiated_by: cause_of_rescheduling)
+      .new(user:, work_package: work_packages_to_reschedule, initiated_by: cause_of_rescheduling)
       .call(work_package.saved_changes.keys.map(&:to_sym))
+      .dependent_results
+  end
+
+  def parent_just_changed?(work_package)
+    work_package.saved_change_to_parent_id? && work_package.parent_id_before_last_save
   end
 
   # When multiple services change a work package, we still only want one update to the database due to:

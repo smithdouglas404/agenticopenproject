@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -44,13 +46,14 @@ module Pages
         end
 
         def add_action(name, value)
-          ignore_ferrum_javascript_error do
+          retry_block do
             select name, from: "Add action"
+            within "#custom-actions-form--active-actions" do
+              expect(page).to have_css(".form--label", text: name)
+            end
           end
+
           set_action_value(name, value)
-          within "#custom-actions-form--active-actions" do
-            expect(page).to have_css(".form--label", text: name)
-          end
         end
 
         def remove_action(name)
@@ -66,7 +69,7 @@ module Pages
         end
 
         def expect_action(name, value)
-          value = "null" if value.nil?
+          value = "" if value.nil?
 
           within "#custom-actions-form--actions" do
             if value.is_a?(Array)
@@ -118,7 +121,7 @@ module Pages
               if has_selector?(".form--selected-value--container", wait: 0)
                 find(".form--selected-value--container").click
                 autocomplete = true
-              elsif has_selector?(".autocomplete-select-decoration--wrapper", wait: 0)
+              elsif autocomplete?
                 autocomplete = true
               end
 
@@ -133,6 +136,10 @@ module Pages
               scroll_to_and_click(dropdown_el)
             end
           end
+        end
+
+        def autocomplete?
+          has_selector?(".ng-input")
         end
       end
     end

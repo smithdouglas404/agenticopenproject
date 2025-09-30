@@ -133,7 +133,7 @@ get:
   - Projects
   description: |-
     Lists projects which can become parent to another project. Only sound candidates are returned.
-    For instance a project cannot become parent of itself or it's children.
+    For instance a project cannot become parent of itself or its children.
 
     To specify the project for which a parent is queried for, the `of` parameter can be provided. If no `of`
     parameter is provided, a new project is assumed. Then, the check for the hierarchy is omitted as a new project cannot be

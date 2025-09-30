@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -91,7 +93,7 @@ module API::V3::FileLinks
     link :status, uncacheable: true do
       next if represented.origin_status.nil?
 
-      PERMISSION_LINKS[represented.origin_status]
+      PERMISSION_LINKS[represented.origin_status.to_sym]
     end
 
     link :staticOriginOpen do
@@ -120,9 +122,10 @@ module API::V3::FileLinks
                         setter: ->(fragment:, **) {
                           break if fragment["href"].blank?
 
-                          canonical_url = fragment["href"].gsub(/\/+$/, "")
-                          represented.storage = ::Storages::Storage.find_by(host: canonical_url)
-                          represented.storage ||= ::Storages::Storage::InexistentStorage.new(host: canonical_url)
+                          # remove all trailing slashes except the last one
+                          canonical_url = "#{fragment['href'].gsub(/\/+$/, '')}/"
+                          represented.storage = find_storage_by_url(canonical_url) ||
+                            ::Storages::Storage::InexistentStorage.new(host: canonical_url)
                         }
 
     associated_resource :container,
@@ -137,7 +140,11 @@ module API::V3::FileLinks
     private
 
     def user_allowed_to_manage?(model)
-      model.container.present? && current_user.allowed_in_project?(:manage_file_links, model.project)
+      if model.container.present?
+        current_user.allowed_in_project?(:manage_file_links, model.project)
+      else
+        current_user == model.creator
+      end
     end
 
     def make_origin_data(model)
@@ -150,6 +157,15 @@ module API::V3::FileLinks
         createdByName: model.origin_created_by_name,
         lastModifiedByName: model.origin_last_modified_by_name
       }
+    end
+
+    def find_storage_by_url(canonical_url)
+      found = ::Storages::Storage.find_by(host: canonical_url)
+      return found if found.present?
+
+      # Search for storages that are still using the legacy URL format
+      legacy_url_data = canonical_url.chomp("/")
+      ::Storages::Storage.find_by(host: legacy_url_data)
     end
 
     def parse_origin_data(origin_data)

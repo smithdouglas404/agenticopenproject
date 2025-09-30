@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -46,9 +48,7 @@ RSpec.describe "API v3 project storages resource", :webmock, content_type: :json
   shared_let(:project_storage23) { create(:project_storage, project: project2, storage: storage3) }
   shared_let(:project_storage21) { create(:project_storage, project: project2, storage: storage1) }
   shared_let(:project_storage31) { create(:project_storage, project: project3, storage: storage1) }
-  subject(:last_response) do
-    get path
-  end
+  subject(:last_response) { get path }
 
   before { login_as current_user }
 
@@ -138,10 +138,20 @@ RSpec.describe "API v3 project storages resource", :webmock, content_type: :json
         let(:path) { api_v3_paths.path_for(:project_storages, filters:) }
 
         describe "gets all project storages of the filtered project" do
-          let(:storage_url) { CGI.escape(storage3.host) }
+          context "if the exact storage url is provided" do
+            let(:storage_url) { CGI.escape(storage3.host) }
 
-          it_behaves_like "API V3 collection response", 2, 2, "ProjectStorage", "Collection" do
-            let(:elements) { [project_storage23, project_storage13] }
+            it_behaves_like "API V3 collection response", 2, 2, "ProjectStorage", "Collection" do
+              let(:elements) { [project_storage23, project_storage13] }
+            end
+          end
+
+          context "if the trailing slash of the storage url is not provided" do
+            let(:storage_url) { CGI.escape(storage3.host.chomp("/")) }
+
+            it_behaves_like "API V3 collection response", 2, 2, "ProjectStorage", "Collection" do
+              let(:elements) { [project_storage23, project_storage13] }
+            end
           end
         end
 
@@ -242,14 +252,8 @@ RSpec.describe "API v3 project storages resource", :webmock, content_type: :json
     end
 
     before do
-      Storages::Peripherals::Registry.stub(
-        "nextcloud.queries.open_storage",
-        ->(_) { ServiceResult.success(result: location) }
-      )
-      Storages::Peripherals::Registry.stub(
-        "nextcloud.queries.open_file_link",
-        ->(_) { ServiceResult.success(result: location_project_folder) }
-      )
+      Storages::Adapters::Registry.stub("nextcloud.queries.open_storage", ->(_) { Success(location) })
+      Storages::Adapters::Registry.stub("nextcloud.queries.open_file_link", ->(_) { Success(location_project_folder) })
     end
 
     context "as admin" do
@@ -262,19 +266,8 @@ RSpec.describe "API v3 project storages resource", :webmock, content_type: :json
       it_behaves_like "redirect response"
 
       context "if project storage has a configured project folder" do
-        before(:all) do
-          project_storage12.update(
-            project_folder_id: "1337",
-            project_folder_mode: "manual"
-          )
-        end
-
-        after(:all) do
-          project_storage12.update(
-            project_folder_id: nil,
-            project_folder_mode: "inactive"
-          )
-        end
+        before { project_storage12.update(project_folder_id: "1337", project_folder_mode: "manual") }
+        after { project_storage12.update(project_folder_id: nil, project_folder_mode: "inactive") }
 
         let(:path) { api_v3_paths.project_storage_open(project_storage12.id) }
 

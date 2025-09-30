@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,39 +34,12 @@ module SettingsHelper
   extend self
   include OpenProject::FormTagHelper
 
-  def system_settings_tabs
-    [
-      {
-        name: "general",
-        controller: "/admin/settings/general_settings",
-        label: :label_general
-      },
-      {
-        name: "languages",
-        controller: "/admin/settings/languages_settings",
-        label: :label_languages
-      },
-      {
-        name: "projects",
-        controller: "/admin/settings/projects_settings",
-        label: :label_project_plural
-      },
-      {
-        name: "repositories",
-        controller: "/admin/settings/repositories_settings",
-        label: :label_repository_plural
-      },
-      {
-        name: "experimental",
-        controller: "/admin/settings/experimental_settings",
-        label: :label_experimental
-      }
-    ]
-  end
-
   def setting_select(setting, choices, options = {})
-    if blank_text = options.delete(:blank)
-      choices = [[blank_text.is_a?(Symbol) ? I18n.t(blank_text) : blank_text, ""]] + choices
+    blank_text = options.delete(:blank)
+
+    if blank_text
+      translated_blank = blank_text.is_a?(Symbol) ? I18n.t(blank_text) : blank_text
+      choices.unshift([translated_blank, ""])
     end
 
     setting_label(setting, options) +
@@ -102,6 +77,14 @@ module SettingsHelper
       styled_text_field_tag("settings[#{setting}]",
                             Setting.send(setting),
                             disabled_setting_option(setting).merge(options))
+    end
+  end
+
+  def setting_url_field(setting, options = {})
+    setting_field_wrapper(setting, options) do
+      styled_url_field_tag("settings[#{setting}]",
+                           Setting.send(setting),
+                           disabled_setting_option(setting).merge(options))
     end
   end
 

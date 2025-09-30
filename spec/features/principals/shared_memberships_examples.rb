@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_context "principal membership management context" do
   shared_let(:project) do
     create(:project,
@@ -20,6 +22,8 @@ RSpec.shared_examples "principal membership management flows" do
     member = principal.memberships.where(project_id: project.id).first
     principal_page.edit_roles!(member, %w(Manager Developer))
 
+    principal_page.expect_and_dismiss_flash(message: "Successful update")
+
     # Modify roles
     principal_page.expect_project(project.name)
     principal_page.expect_roles(project.name, %w(Manager Developer))
@@ -30,7 +34,7 @@ RSpec.shared_examples "principal membership management flows" do
     principal_page.expect_project(project.name)
     principal_page.edit_roles!(member, %w())
 
-    expect(page).to have_css(".op-toast.-error", text: "Roles need to be assigned.")
+    principal_page.expect_flash(type: :error, message: "Roles need to be assigned.")
 
     # Remove the user from the project
     principal_page.remove_from_project!(project.name)

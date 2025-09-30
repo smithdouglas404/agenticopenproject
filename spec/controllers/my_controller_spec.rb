@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -69,7 +71,7 @@ RSpec.describe MyController do
       end
 
       it "shows an error message" do
-        assert_response :success
+        expect(response).to have_http_status :unprocessable_entity
         assert_template "password"
         expect(user.errors.attribute_names).to eq([:password_confirmation])
         expect(user.errors.map(&:message).flatten)
@@ -90,7 +92,7 @@ RSpec.describe MyController do
       end
 
       it "shows an error message" do
-        assert_response :success
+        expect(response).to have_http_status :unprocessable_entity
         assert_template "password"
         expect(flash[:error]).to eq("Wrong password")
       end
@@ -154,16 +156,33 @@ RSpec.describe MyController do
     end
   end
 
+  describe "locale" do
+    it "renders the locale template" do
+      as_logged_in_user user do
+        get :locale
+      end
+
+      expect(response).to be_successful
+      expect(response).to render_template "locale"
+    end
+  end
+
   describe "settings" do
     describe "PATCH" do
       let(:language) { "en" }
+      let(:params) do
+        {
+          user: { language: },
+          pref: { auto_hide_popups: 0 }
+        }
+      end
 
       before do
         as_logged_in_user user do
           user.pref.comments_sorting = "desc"
           user.pref.auto_hide_popups = true
 
-          patch :update_settings, params: { user: { language: }, pref: { auto_hide_popups: 0 } }
+          patch :update_settings, params:
         end
       end
 
@@ -200,17 +219,39 @@ RSpec.describe MyController do
     end
   end
 
-  describe "settings:auto_hide_popups" do
+  describe "changing changing mail" do
+    let!(:recovery_token) { create(:recovery_token, user:) }
+    let!(:plain_session) { create(:user_session, user:, session_id: "internal_foobar") }
+    let!(:user_session) { Sessions::UserSession.find_by(session_id: "internal_foobar") }
+
+    let(:params) do
+      { user: { mail: "foo@example.org" } }
+    end
+
+    it "clears other sessions and removes tokens" do
+      as_logged_in_user user do
+        patch :update_settings, params:
+      end
+
+      expect(flash[:info]).to include(I18n.t(:notice_account_updated))
+      expect(flash[:info]).to include(I18n.t(:notice_account_other_session_expired))
+
+      expect(Token::Recovery.where(user:)).to be_empty
+      expect { user_session.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+
+  describe "interface:auto_hide_popups" do
     context "with render_views" do
       before do
         as_logged_in_user user do
-          get :settings
+          get :interface
         end
       end
 
       render_views
       it "renders auto hide popups checkbox" do
-        expect(response.body).to have_css("#my_account_form #pref_auto_hide_popups")
+        expect(response.body).to have_css("form #pref_auto_hide_popups")
       end
     end
 
@@ -237,137 +278,6 @@ RSpec.describe MyController do
 
     it "does not render 'Change password' menu entry" do
       expect(response.body).to have_no_css("#menu-sidebar li a", text: "Change password")
-    end
-  end
-
-  describe "access_tokens" do
-    describe "rss" do
-      it "creates a key" do
-        expect(user.rss_token).to be_nil
-
-        post :generate_rss_key
-        expect(user.reload.rss_token).to be_present
-        expect(flash[:info]).to be_present
-        expect(flash[:error]).not_to be_present
-
-        expect(response).to redirect_to action: :access_token
-      end
-
-      context "with existing key" do
-        let!(:key) { Token::RSS.create user: }
-
-        it "replaces the key" do
-          expect(user.rss_token).to eq(key)
-
-          post :generate_rss_key
-          new_token = user.reload.rss_token
-          expect(new_token).not_to eq(key)
-          expect(new_token.value).not_to eq(key.value)
-          expect(new_token.value).to eq(user.rss_key)
-
-          expect(flash[:info]).to be_present
-          expect(flash[:error]).not_to be_present
-          expect(response).to redirect_to action: :access_token
-        end
-      end
-    end
-
-    describe "api" do
-      context "with no existing key" do
-        it "creates a key" do
-          expect(user.api_token).to be_nil
-
-          post :generate_api_key
-          new_token = user.reload.api_token
-          expect(new_token).to be_present
-
-          expect(flash[:info]).to be_present
-          expect(flash[:error]).not_to be_present
-
-          expect(response).to redirect_to action: :access_token
-        end
-      end
-
-      context "with existing key" do
-        let!(:key) { Token::API.create user: }
-
-        it "replaces the key" do
-          expect(user.reload.api_token).to eq(key)
-
-          post :generate_api_key
-
-          new_token = user.reload.api_token
-          expect(new_token).not_to eq(key)
-          expect(new_token.value).not_to eq(key.value)
-          expect(flash[:info]).to be_present
-          expect(flash[:error]).not_to be_present
-
-          expect(response).to redirect_to action: :access_token
-        end
-      end
-    end
-
-    describe "ical" do
-      # unlike with the other tokens, creating new ical tokens is not done in this context
-      # ical tokens are generated whenever the user requests a new ical url
-      # a user can have N ical tokens
-      #
-      # in this context a specific ical token of a user should be reverted
-      # this invalidates the previously generated ical url
-      context "with existing keys" do
-        let(:user) { create(:user) }
-        let(:project) { create(:project) }
-        let(:query) { create(:query, project:) }
-        let(:another_query) { create(:query, project:) }
-        let!(:ical_token_for_query) { create(:ical_token, user:, query:, name: "Some Token Name") }
-        let!(:another_ical_token_for_query) { create(:ical_token, user:, query:, name: "Some Other Token Name") }
-        let!(:ical_token_for_another_query) { create(:ical_token, user:, query: another_query, name: "Some Token Name") }
-
-        it "revoke specific ical tokens" do
-          expect(user.ical_tokens).to contain_exactly(
-            ical_token_for_query, another_ical_token_for_query, ical_token_for_another_query
-          )
-
-          delete :revoke_ical_token, params: { id: another_ical_token_for_query.id }
-
-          expect(user.ical_tokens.reload).to contain_exactly(
-            ical_token_for_query, ical_token_for_another_query
-          )
-
-          expect(user.ical_tokens.reload).not_to contain_exactly(
-            ical_token_for_another_query
-          )
-
-          expect(flash[:info]).to be_present
-          expect(flash[:error]).not_to be_present
-
-          expect(response).to redirect_to action: :access_token
-        end
-      end
-    end
-
-    describe "file storage" do
-      let(:client) { create(:oauth_client, integration: create(:nextcloud_storage)) }
-      let(:token) { create(:oauth_client_token, oauth_client: client, scope: nil, user:, expires_in: 3_600) }
-
-      render_views
-
-      before { token }
-
-      it "list the tokens" do
-        get :access_token
-        expect(response.body).to have_css("#storage-oauth-token-#{token.id}")
-      end
-
-      it "can remove the token" do
-        expect do
-          delete :delete_storage_token, params: { id: token.id }
-        end.to change(OAuthClientToken, :count).by(-1)
-
-        expect(flash[:info]).to be_present
-        expect(flash[:error]).not_to be_present
-        expect(response).to redirect_to(action: :access_token)
-      end
     end
   end
 end

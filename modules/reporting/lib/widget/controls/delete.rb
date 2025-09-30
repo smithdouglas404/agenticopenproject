@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -42,7 +42,7 @@ class Widget::Controls::Delete < Widget::Controls
       opt1 = link_to I18n.t(:button_delete),
                      url_for(url_opts),
                      method: :delete,
-                     class: "button -primary icon-context icon-delete"
+                     class: "button -danger icon-context icon-delete"
       opt2 = link_to I18n.t(:button_cancel),
                      "#",
                      id: "query-icon-delete-cancel",

@@ -8,6 +8,7 @@ import { FocusHelperService } from './focus-helper';
 
 @Directive({
   selector: '[opAutofocus]',
+  standalone: false,
 })
 export class AutofocusDirective implements AfterViewInit {
   @Input('opAutofocus') public condition:string|boolean = true;

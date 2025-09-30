@@ -1,8 +1,8 @@
 @import "helpers"
 
-// search bar has a min-width of 160px and should adapt to every screen size
-$search-input-width: calc(160px + 3vw)
-$search-input-width-expanded: calc(160px + 13vw)
+// search bar has a min-width of 300px and should adapt to every screen size
+$search-input-width: calc(300px + 3vw)
+$search-input-width-expanded: 500px
 $search-input-height: 30px
 
 .top-menu-search
@@ -13,7 +13,7 @@ $search-input-height: 30px
   line-height: var(--header-height)
   margin: 0 15px
 
-  @media screen and (max-width: $breakpoint-sm)
+  @media screen and (max-width: $breakpoint-md)
     margin: 0
 
   &--back-button
@@ -25,21 +25,20 @@ $search-input-height: 30px
     right: 2px
     font-size: var(--header-item-font-size)
     color: var(--header-item-font-color)
+    z-index: 1
 
+    &.-input-focused
+      color: var(--body-font-color) !important
     &:hover
       text-decoration: none
 
-    @media screen and (max-width: $breakpoint-sm)
+    @media screen and (max-width: $breakpoint-md)
       position: relative
       padding: 0 8px
 
       &:hover
-        background: var(--header-item-bg-hover-color)
         color: var(--header-item-font-hover-color)
         border-bottom: var(--header-border-bottom-width) solid var(--header-border-bottom-color)
-
-    &.-input-focused
-      color: var(--header-search-field-font-color)
 
   &--loading
     top: var(--header-height) - 11px  // display directly under ng-input field
@@ -51,12 +50,14 @@ $search-input-height: 30px
     font-size: 0.9rem
     -webkit-transition: width 0.2s ease-in-out
     transition: width 0.2s ease-in-out
+    .ng-input input.global-search--input
+      color: var(--header-item-font-color) !important
     &::-ms-clear
       margin-right: 5px
       width: 20px
 
     .ng-select-container
-      background: transparent
+      background: transparent !important
       border-color: var(--header-item-font-color) !important
 
       &:focus-within
@@ -78,11 +79,6 @@ $search-input-height: 30px
         // We should probably remove the default theme altogether at some point
         top: 0 !important
 
-      input
-        color: var(--header-item-font-color)
-        height: $search-input-height
-        cursor: text
-
     .ng-placeholder
       // The ng-select default theme is overly specific
       // We might want to replace it with our own BEM theme definition
@@ -92,18 +88,13 @@ $search-input-height: 30px
 
     &.-expanded
       width: $search-input-width-expanded
-      background: white
-      border-radius: 4px
-      color: var(--header-search-field-font-color)
-
-      .ng-placeholder,
-      .ng-clear-wrapper,
-      input
-        color: var(--header-search-field-font-color)
-
+      background: var(--overlay-bgColor)
+      border-radius: var(--borderRadius-medium)
+      .ng-input input.global-search--input, .ng-clear-wrapper
+        color: var(--body-font-color) !important
     .ng-dropdown-header
       border-bottom: none
-      color: $spot-color-basic-gray-2
+      color: var(--fgColor-muted)
       line-height: 1rem
       margin-top: 0.5rem
       padding: 0.5rem 0.75rem
@@ -117,8 +108,11 @@ $search-input-height: 30px
       max-height: 80vh
       height: auto
 
+    .ng-dropdown-panel
+      width: $search-input-width-expanded !important
+
     .ng-option
-      border-bottom: 1px solid var(--borderColor-muted)
+      border-bottom: 1px solid var(--borderColor-default)
       white-space: normal
       padding: 5px 10px
       // We do not want the default highlighting of ng-select to take place as
@@ -131,6 +125,8 @@ $search-input-height: 30px
         border-bottom: none
       &.ng-option-disabled
         display: none
+      &.ng-option-marked
+        background-color: var(--control-transparent-bgColor-hover) !important
 
     &.-markable
       .ng-option
@@ -143,4 +139,4 @@ $search-input-height: 30px
     // Fix position of the spinner
     .ng-spinner-loader
       position: relative
-      right: 14px
+      right: 24px

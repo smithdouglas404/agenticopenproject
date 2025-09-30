@@ -1,7 +1,7 @@
 import {
   ApplicationRef, ComponentFactoryResolver, Injectable, Injector,
 } from '@angular/core';
-import { ComponentPortal, DomPortalOutlet, PortalInjector } from '@angular/cdk/portal';
+import { ComponentPortal, DomPortalOutlet } from '@angular/cdk/portal';
 import { TransitionService } from '@uirouter/core';
 import { FocusHelperService } from 'core-app/shared/directives/focus/focus-helper';
 import {
@@ -20,7 +20,7 @@ export class ExternalQueryConfigurationService {
   // And a reference to the actual portal host interface on top of the element
   private _bodyPortalHost:DomPortalOutlet;
 
-  constructor(private componentFactoryResolver:ComponentFactoryResolver,
+  constructor(
     readonly FocusHelper:FocusHelperService,
     private appRef:ApplicationRef,
     private $transitions:TransitionService,
@@ -38,7 +38,6 @@ export class ExternalQueryConfigurationService {
 
       this._bodyPortalHost = new DomPortalOutlet(
         hostElement,
-        this.componentFactoryResolver,
         this.appRef,
         this.injector,
       );
@@ -81,14 +80,16 @@ export class ExternalQueryConfigurationService {
    *
    */
   private injectorFor(data:any) {
-    const injectorTokens = new WeakMap();
     // Pass the service because otherwise we're getting a cyclic dependency between the portal
     // host service and the bound portal
     data.service = this;
 
-    injectorTokens.set(OpQueryConfigurationLocalsToken, data);
-
-    return new PortalInjector(this.injector, injectorTokens);
+    return Injector.create({
+      providers: [
+        { provide: OpQueryConfigurationLocalsToken, useValue: data },
+      ],
+      parent: this.injector,
+    });
   }
 
   externalQueryConfigurationComponent():Class {

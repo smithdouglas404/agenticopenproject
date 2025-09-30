@@ -2,9 +2,10 @@ require "spec_helper"
 require "spreadsheet"
 
 RSpec.describe XlsExport::WorkPackage::Exporter::XLS do
-  let(:project) { create(:project) }
+  shared_let(:project) { create(:project) }
+  shared_let(:admin) { create(:admin) }
 
-  let(:current_user) { create(:admin) }
+  let(:current_user) { admin }
 
   let(:column_names) { %w[type id subject status assigned_to priority] }
   let(:query) do
@@ -37,7 +38,7 @@ RSpec.describe XlsExport::WorkPackage::Exporter::XLS do
   end
 
   context "with relations" do
-    let(:options) { { show_relations: true } }
+    let(:options) { { show_relations: "true" } }
 
     let(:parent) { create(:work_package, project:, subject: "Parent") }
     let(:child_1) do
@@ -160,7 +161,7 @@ RSpec.describe XlsExport::WorkPackage::Exporter::XLS do
     end
   end
 
-  describe "with cost and time entries" do
+  describe "with cost and time entries", with_settings: { costs_currency: "EUR", costs_currency_format: "%n %u" } do
     # Since this test has to work without the actual costs plugin we'll just add
     # a custom field called 'costs' to emulate it.
 
@@ -197,48 +198,36 @@ RSpec.describe XlsExport::WorkPackage::Exporter::XLS do
     end
     let(:column_names) { ["subject", "status", "estimated_hours", custom_field.column_name] }
 
-    before do
-      allow(Setting)
-        .to receive(:plugin_costs)
-        .and_return("costs_currency" => "EUR", "costs_currency_format" => "%n %u")
-    end
-
-    it "successfullies export the work packages with a cost column" do
+    it "exports successfully the work packages with a cost column" do
       expect(sheet.rows.size).to eq(4 + 1)
 
       cost_column = sheet.columns.last.to_a
-      %w[1 99.99 1000].each do |value|
+      %w[1 99.99 1,000].each do |value|
         expect(cost_column).to include(value)
       end
     end
 
-    context "with german locale" do
-      let(:current_user) { create(:admin, language: :de) }
-
-      it "successfullies export the work packages with a cost column localized" do
-        I18n.with_locale :de do
-          sheet
-        end
-
-        expect(sheet.rows.size).to eq(4 + 1)
-        cost_column = sheet.columns.last.to_a
-        %w[1 99,99 1000].each do |value|
-          expect(cost_column).to include(value)
-        end
-      end
-    end
-
-    it "includes estimated hours" do
+    it "includes work" do
       expect(sheet.rows.size).to eq(4 + 1)
 
       # Check row after header row
       hours = sheet.rows[1].values_at(2)
-      expect(hours).to include("27.5 h")
+      expect(hours).to include("27.5")
+    end
+
+    context "with duration format being set to 'days and hours'", with_settings: { duration_format: "days_and_hours" } do
+      it "includes work unformatted" do
+        expect(sheet.rows.size).to eq(4 + 1)
+
+        # Check row after header row
+        hours = sheet.rows[1].values_at(2)
+        expect(hours).to include("27.5")
+      end
     end
   end
 
   context "with descriptions" do
-    let(:options) { { show_descriptions: true } }
+    let(:options) { { show_descriptions: "true" } }
 
     let(:work_package) do
       create(:work_package,
@@ -311,7 +300,7 @@ RSpec.describe XlsExport::WorkPackage::Exporter::XLS do
     end
   end
 
-  describe "with derived estimated hours" do
+  describe "with total work only" do
     let(:work_package) do
       create(:work_package,
              project:,
@@ -320,31 +309,82 @@ RSpec.describe XlsExport::WorkPackage::Exporter::XLS do
     end
     let(:work_packages) { [work_package] }
 
-    let(:column_names) { %w[subject status updated_at estimated_hours] }
+    let(:column_names) { %w[estimated_hours remaining_hours done_ratio] }
 
-    it "adapts the datetime fields to the user time zone" do
-      work_package.reload
-      estimated_cell = sheet.rows.last.to_a.last
-      expect(estimated_cell).to eq "· Σ 15.0 h"
+    it "outputs its raw value in an additional 'Total work' column right after the 'Work' column" do
+      headers_row, values_row = sheet.rows
+      # why is there a nil at the end of the headers row?
+      headers_row.compact!
+      expect(headers_row.zip(values_row)).to eq [
+        ["Work", nil],
+        ["Total work", "15.0"],
+        ["Remaining work", nil],
+        ["Total remaining work", nil],
+        ["% Complete", nil],
+        ["Total % complete", nil]
+      ]
     end
   end
 
-  describe "with derived estimated hours and estimated_hours set to zero" do
+  describe "with work, total work, remaining work, total remaining work, % complete, and total % complete" do
     let(:work_package) do
       create(:work_package,
              project:,
+             estimated_hours: 10.0,
              derived_estimated_hours: 15.0,
-             estimated_hours: 0.0,
+             remaining_hours: 5.0,
+             derived_remaining_hours: 8.0,
+             done_ratio: 50,
+             derived_done_ratio: 75,
              type: project.types.first)
     end
     let(:work_packages) { [work_package] }
 
-    let(:column_names) { %w[subject status updated_at estimated_hours] }
+    let(:column_names) { %w[estimated_hours remaining_hours done_ratio] }
 
-    it "outputs both values" do
-      work_package.reload
-      estimated_cell = sheet.rows.last.to_a.last
-      expect(estimated_cell).to eq "0.0 h · Σ 15.0 h"
+    it "outputs all raw values in distinct columns for own and total values" do
+      headers_row, values_row = sheet.rows
+      # why is there a nil at the end of the headers row?
+      headers_row.compact!
+      expect(headers_row.zip(values_row)).to eq [
+        ["Work", "10.0"],
+        ["Total work", "15.0"],
+        ["Remaining work", "5.0"],
+        ["Total remaining work", "8.0"],
+        ["% Complete", "50%"],
+        ["Total % complete", "75%"]
+      ]
+    end
+  end
+
+  describe "with work, remaining work, and % complete set to zero and their total values set" do
+    let(:work_package) do
+      create(:work_package,
+             project:,
+             estimated_hours: 0.0,
+             derived_estimated_hours: 15.0,
+             remaining_hours: 0.0,
+             derived_remaining_hours: 8,
+             done_ratio: 0,
+             derived_done_ratio: 42,
+             type: project.types.first)
+    end
+    let(:work_packages) { [work_package] }
+
+    let(:column_names) { %w[estimated_hours remaining_hours done_ratio] }
+
+    it "outputs raw values in distinct columns for own and total values" do
+      headers_row, values_row = sheet.rows
+      # why is there a nil at the end of the headers row?
+      headers_row.compact!
+      expect(headers_row.zip(values_row)).to eq [
+        ["Work", "0.0"],
+        ["Total work", "15.0"],
+        ["Remaining work", "0.0"],
+        ["Total remaining work", "8.0"],
+        ["% Complete", "0%"],
+        ["Total % complete", "42%"]
+      ]
     end
   end
 end

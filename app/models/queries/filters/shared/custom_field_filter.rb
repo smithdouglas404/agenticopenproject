@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -21,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -70,27 +72,10 @@ module Queries::Filters::Shared::CustomFieldFilter
     ##
     # Create a filter instance for the given custom field
     def from_custom_field!(custom_field:, **)
-      constant_name = subfilter_module(custom_field)
-      clazz = "::Queries::Filters::Shared::CustomFields::#{constant_name}".constantize
-      clazz.create!(custom_field:, custom_field_context:, **)
+      subfilter_class(custom_field).create!(custom_field:, custom_field_context:, **)
     rescue NameError => e
       Rails.logger.error "Failed to constantize custom field filter for #{name}. #{e}"
       raise ::Queries::Filters::InvalidError
-    end
-
-    ##
-    # Get the subfilter class name for the given custom field
-    def subfilter_module(custom_field)
-      case custom_field.field_format
-      when "user"
-        :User
-      when "list", "version"
-        :ListOptional
-      when "bool"
-        :Bool
-      else
-        :Base
-      end
     end
 
     def all_custom_fields
@@ -100,6 +85,23 @@ module Queries::Filters::Shared::CustomFieldFilter
 
       RequestStore.fetch(key.join("/")) do
         custom_field_context.custom_field_class.all.to_a
+      end
+    end
+
+    private
+
+    def subfilter_class(custom_field)
+      case custom_field.field_format
+      when "user"
+        ::Queries::Filters::Shared::CustomFields::User
+      when "list", "version"
+        ::Queries::Filters::Shared::CustomFields::ListOptional
+      when "hierarchy", "scored_list"
+        ::Queries::Filters::Shared::CustomFields::Hierarchy
+      when "bool"
+        ::Queries::Filters::Shared::CustomFields::Bool
+      else
+        ::Queries::Filters::Shared::CustomFields::Base
       end
     end
   end

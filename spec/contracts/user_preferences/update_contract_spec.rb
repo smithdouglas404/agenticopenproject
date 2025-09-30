@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -41,7 +43,6 @@ RSpec.describe UserPreferences::UpdateContract do
   end
   let(:settings) do
     {
-      hide_mail: true,
       auto_hide_popups: true,
       comments_sorting: "desc",
       daily_reminders: {
@@ -50,6 +51,7 @@ RSpec.describe UserPreferences::UpdateContract do
       },
       time_zone: "America/Sao_Paulo",
       warn_on_leaving_unsaved: true,
+      disable_keyboard_shortcuts: true,
       workdays: [1, 2, 4, 6]
     }
   end
@@ -105,16 +107,6 @@ RSpec.describe UserPreferences::UpdateContract do
       end
 
       it_behaves_like "contract is valid"
-    end
-
-    context "with a string for hide_mail" do
-      let(:settings) do
-        {
-          hide_mail: "yes please"
-        }
-      end
-
-      it_behaves_like "contract is invalid", hide_mail: :type_mismatch
     end
 
     context "with a field within the daily_reminders having the wrong type" do
@@ -205,7 +197,6 @@ RSpec.describe UserPreferences::UpdateContract do
     context "without a time_zone" do
       let(:settings) do
         {
-          hide_mail: true,
           auto_hide_popups: true,
           comments_sorting: "desc",
           daily_reminders: {

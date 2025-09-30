@@ -32,7 +32,7 @@ export function wpOnboardingTourSteps():OnboardingStep[] {
       shape: 'circle',
       timeout: () => new Promise((resolve) => {
         // We are waiting here for the badge to appear,
-        // because its the last that appears and it shifts the WP create button to the left.
+        // because it's the last that appears and it shifts the WP create button to the left.
         // Thus it is important that the tour rendering starts after the badge is visible
         waitForElement('#work-packages-filter-toggle-button .badge', '#content', () => {
           resolve(undefined);
@@ -48,6 +48,12 @@ export function wpOnboardingTourSteps():OnboardingStep[] {
       nextButton: { text: I18n.t('js.onboarding.buttons.next') },
       onNext() {
         jQuery('#main-menu-gantt')[0].click();
+      },
+    },
+    {
+      containerClass: '-dark -hidden-arrow',
+      onBeforeStart() {
+        window.location.href = `${window.location.origin}/projects/demo-project/gantt`;
       },
     },
   ];

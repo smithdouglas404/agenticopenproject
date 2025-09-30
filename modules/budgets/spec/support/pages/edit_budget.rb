@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -40,14 +40,12 @@ module Pages
     end
 
     def click_copy
-      within ".toolbar-items" do
-        click_link "Copy"
-      end
+      page.find_test_selector("budget-copy-button").click
     end
 
     def click_delete
-      within ".toolbar-items" do
-        click_link "Delete"
+      accept_confirm do
+        page.find_test_selector("budget-delete-button").click
       end
     end
 

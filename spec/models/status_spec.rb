@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -86,13 +88,13 @@ RSpec.describe Status do
     end
   end
 
-  describe "#cache_key" do
+  describe "#cache_key_with_version" do
     it "updates when the updated_at field changes" do
-      old_cache_key = stubbed_status.cache_key
+      old_cache_key = stubbed_status.cache_key_with_version
 
       stubbed_status.updated_at = Time.zone.now
 
-      expect(stubbed_status.cache_key)
+      expect(stubbed_status.cache_key_with_version)
         .not_to eql old_cache_key
     end
   end

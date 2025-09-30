@@ -1,4 +1,4 @@
-import { Input } from '@angular/core';
+import { Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
@@ -41,6 +41,7 @@ describe('WpTabsComponent', () => {
         { provide: KeepTabService, useValue: {} },
         WorkPackageTabsService,
       ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
   });

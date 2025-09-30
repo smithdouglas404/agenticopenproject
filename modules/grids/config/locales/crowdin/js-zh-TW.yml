@@ -1,14 +1,11 @@
 zh-TW:
   js:
     grid:
-      add_widget: '新增部件'
-      remove: '移除部件'
-      configure: '設定部件'
-      upsale:
-        text: "Some widgets, like the work package graph widget, are only available in the Enterprise edition."
-        link: '企業版。'
+      add_widget: '新增小工具'
+      remove: '移除小工具'
+      configure: '設定小工具'
       widgets:
-        missing_permission: "您沒有必要的權限來檢視此部件。"
+        missing_permission: "您沒有必要的權限來檢視小工具。"
         custom_text:
           title: '自訂文字'
         documents:
@@ -24,12 +21,11 @@ zh-TW:
           title: '最新消息'
           at: '在'
           no_results: '沒有新消息可報告'
+        news_beta:
+          title: '公告 (BETA)'
         project_description:
           title: '專案描述'
           no_results: "尚未寫入任何描述。可以在「項目設置」中新增。"
-        project_details:
-          title: '專案詳細資訊'
-          no_results: '尚未為項目定義自訂欄位。'
         project_status:
           title: '專案狀態'
           not_started: '未開始'
@@ -39,12 +35,14 @@ zh-TW:
           not_set: '未設定'
           finished: '已完成'
           discontinued: '已中止'
+        project_status_beta:
+          title: '專案狀態 (BETA)'
         subprojects:
           title: '子專案'
           no_results: '無子專案'
         project_favorites:
-          title: 'Favorite projects'
-          no_results: 'You currently have no favorite projects. Click on the star icon in the project dashboard to add one to your favorites.'
+          title: '收藏的專案'
+          no_results: '您目前沒有收藏的專案。點擊項目儀表板中的星形圖示將其新增到您的收藏夾中。'
         time_entries_current_user:
           title: '我的耗時'
           displayed_days: '小工具顯示天數'
@@ -52,19 +50,19 @@ zh-TW:
           title: '耗時（最近7天）'
           no_results: '過去7天沒有時間記錄。'
         work_packages_accountable:
-          title: "我負責的工作項目"
+          title: "我負責的工作套件"
         work_packages_assigned:
-          title: '分配給我的工作項目'
+          title: '分配給我的工作套件'
         work_packages_created:
-          title: '我所建立的工作項目'
+          title: '我所建立的工作套件'
         work_packages_watched:
-          title: '我所關注的工作項目'
+          title: '我所關注的工作套件'
         work_packages_table:
-          title: '工作項目表單'
+          title: '工作套件表單'
         work_packages_graph:
-          title: '工作項目圖'
+          title: '工作套件關聯圖'
         work_packages_calendar:
           title: '行事曆'
         work_packages_overview:
-          title: '工作項目概覽'
+          title: '工作套件總覽'
           placeholder: '點擊編輯'

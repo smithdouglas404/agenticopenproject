@@ -1,30 +1,3 @@
-// -- copyright
-// OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License version 3.
-//
-// OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
-// Copyright (C) 2006-2013 Jean-Philippe Lang
-// Copyright (C) 2010-2013 the ChiliProject Team
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-//
-// See COPYRIGHT and LICENSE files for more details.
-//++
 
 import {
   AfterViewInit,
@@ -64,6 +37,7 @@ import {
 } from 'core-app/core/apiv3/endpoints/work_packages/api-v3-work-package-cached-subresource';
 import { RecentItemsService } from 'core-app/core/recent-items.service';
 import { populateInputsFromDataset } from 'core-app/shared/components/dataset-inputs';
+import { ApiV3FilterBuilder } from 'core-app/shared/helpers/api-v3/api-v3-filter-builder';
 
 interface SearchResultItem {
   id:string;
@@ -96,6 +70,7 @@ interface SearchResultItems {
   ],
   // Necessary because of ng-select
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
   @Input() public placeholder:string;
@@ -123,15 +98,15 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
     getOptionsFn: this.getAutocompleterData,
   };
 
-  /** Remember the current value */
-  public currentValue = '';
-
-  public isFocusedDirectly = (this.globalSearchService.searchTerm.length > 0);
-
   /** Remember the item that best matches the query.
    * That way, it will be highlighted (as we manually mark the selected item) and we can handle enter.
    * */
-  public selectedItem:WorkPackageResource|SearchOptionItem|undefined;
+  public selectedItem:WorkPackageResource|SearchOptionItem|undefined = undefined;
+
+  /** Remember the current value */
+  public currentValue = '';
+
+  public isFocusedDirectly = !!this.currentQuery && this.selectedItem instanceof HalResource;
 
   private unregisterGlobalListener:(() => unknown)|undefined;
 
@@ -141,6 +116,7 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
     current_project_and_all_descendants: this.I18n.t('js.global_search.current_project_and_all_descendants'),
     current_project: this.I18n.t('js.global_search.current_project'),
     recently_viewed: this.I18n.t('js.global_search.recently_viewed'),
+    search: this.I18n.t('js.autocompleter.search'),
   };
 
   constructor(
@@ -162,7 +138,7 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit():void {
     // check searchterm on init, expand / collapse search bar and set correct classes
-    this.searchTerm = this.globalSearchService.searchTerm;
+    this.searchTerm = this.currentQuery || '';
     this.currentValue = '';
     this.toggleTopMenuClass();
   }
@@ -194,7 +170,7 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
 
     // handle click on search button
     if (insideOrSelf(this.btn.nativeElement as HTMLElement, event.target as HTMLElement)) {
-      if (this.deviceService.isMobile) {
+      if (this.deviceService.isTablet) {
         this.toggleMobileSearch();
         // open ng-select menu on default
         jQuery('.ng-input input').focus();
@@ -204,7 +180,7 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
       } else if (this.searchTerm?.length === 0) {
         this.ngSelectComponent.ngSelectInstance.focus();
       } else {
-        this.submitNonEmptySearch();
+        this.submitNonEmptySearch('');
       }
     }
   }
@@ -288,8 +264,6 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
     if (item instanceof HalResource) {
       window.location.href = this.wpPath(item.id as string);
     } else if (item) {
-      // update embedded table and title when new search is submitted
-      this.globalSearchService.searchTerm = this.currentValue;
       this.searchInScope(item.projectScope);
     }
   }
@@ -312,18 +286,7 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
     }
 
     if (!query.length) {
-      return this.recentItemsService.recentItems$.pipe(
-        switchMap((wpIds) => {
-          // It is needed, because otherwise we get infinite spin running
-          // in the searchbar with no recent workpackages IDs inside localStorage
-          if (wpIds.length === 0) {
-            return of([]);
-          }
-
-          void this.apiV3Service.work_packages.requireAll(wpIds);
-          return this.apiV3Service.work_packages.cache.observeSome(wpIds);
-        }),
-      );
+      return this.loadRecentItems();
     }
 
     // Reset the currently selected item.
@@ -345,7 +308,43 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
       );
   }
 
-  // Remove ID marker # when searching for #<number>
+  private loadRecentItems() {
+    return this.recentItemsService.recentItems$.pipe(
+      switchMap((wpIds) => {
+        // It is needed, because otherwise we get infinite spin running
+        // in the searchbar with no recent workpackages IDs inside localStorage
+        if (wpIds.length === 0) {
+          return of([]);
+        }
+
+
+        // Ensure we only load the five recent items
+        // in case none of them are available in the cache
+        const filters = new ApiV3FilterBuilder().add('id', '=', wpIds);
+        const params = {
+          offset: '1',
+          pageSize: '5',
+          valid_subset: 'true',
+        };
+
+        return this
+          .apiV3Service
+          .work_packages
+          .filtered(filters, params)
+          .get()
+          .pipe(
+            map((collection) => {
+              // In case none of the wpIds exist anymore or are not accessible
+              // this API call would return five arbitrary work packages, as that's the way valid_subset works
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              return collection.elements.filter((wp) => wpIds.includes(wp.id!));
+            })
+          );
+      }),
+    );
+  }
+
+// Remove ID marker # when searching for #<number>
   private queryWithoutHash(query:string):string {
     if (/^#(\d+)/.exec(query)) {
       return query.substr(1);
@@ -357,7 +356,7 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
     return this
       .apiV3Service
       .work_packages
-      .filterByTypeaheadOrId(query, idOnly);
+      .filterByTypeaheadOrId(query, idOnly, { pageSize: '20' });
   }
 
   private searchResultsToOptions(results:WorkPackageResource[], query:string) {
@@ -380,7 +379,7 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
       searchOptions.push('current_project_and_all_descendants');
       searchOptions.push('current_project');
     }
-    if (this.globalSearchService.projectScope === 'current_project') {
+    if (this.currentScope === 'current_project') {
       searchOptions.reverse();
     }
     searchOptions.push('all_projects');
@@ -424,23 +423,15 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
   private searchInScope(scope:string):void {
     switch (scope) {
       case 'all_projects': {
-        let forcePageLoad = false;
-        if (this.globalSearchService.projectScope !== 'all') {
-          forcePageLoad = true;
-          this.globalSearchService.resultsHidden = true;
-        }
-        this.globalSearchService.projectScope = 'all';
-        this.submitNonEmptySearch(forcePageLoad);
+        this.submitNonEmptySearch('all');
         break;
       }
       case 'current_project': {
-        this.globalSearchService.projectScope = 'current_project';
-        this.submitNonEmptySearch();
+        this.submitNonEmptySearch('current_project');
         break;
       }
       case 'current_project_and_all_descendants': {
-        this.globalSearchService.projectScope = '';
-        this.submitNonEmptySearch();
+        this.submitNonEmptySearch('');
         break;
       }
       default: // Do nothing
@@ -448,30 +439,22 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  public submitNonEmptySearch(forcePageLoad = false):void {
-    this.globalSearchService.searchTerm = this.currentValue;
+  public submitNonEmptySearch(scope:string):void {
     if (this.currentValue.length > 0) {
       this.ngSelectComponent.ngSelectInstance.close();
-      // Work package results can update without page reload.
-      if (!forcePageLoad
-        && this.globalSearchService.isAfterSearch()
-        && this.globalSearchService.currentTab === 'work_packages') {
-        window.history
-          .replaceState(
-            {},
-            `${I18n.t('global_search.search')}: ${this.searchTerm}`,
-            this.globalSearchService.searchPath(),
-          );
-
-        return;
-      }
-      this.globalSearchService.submitSearch();
+      this.globalSearchService.submitSearch(this.currentValue, scope);
     }
   }
 
   private get currentScope():string {
-    const serviceScope = this.globalSearchService.projectScope;
+    const params = new URLSearchParams(window.location.search);
+    const serviceScope = params.get('scope') || '';
     return (serviceScope === '') ? 'current_project_and_all_descendants' : serviceScope;
+  }
+
+  private get currentQuery():string|null {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('q');
   }
 
   private unregister():void {

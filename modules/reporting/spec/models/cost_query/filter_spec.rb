@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,8 +26,8 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require File.expand_path("#{File.dirname(__FILE__)}/../../spec_helper")
-require File.join(File.dirname(__FILE__), "..", "..", "support", "custom_field_filter")
+require_relative "../../spec_helper"
+require_relative "../../support/custom_field_filter"
 
 RSpec.describe CostQuery, :reporting_query_helper do
   minimal_query
@@ -38,7 +38,7 @@ RSpec.describe CostQuery, :reporting_query_helper do
   def create_work_package_with_entry(entry_type, work_package_params = {}, entry_params = {})
     work_package_params = { project: }.merge!(work_package_params)
     work_package = create(:work_package, work_package_params)
-    entry_params = { work_package:,
+    entry_params = { entity: work_package,
                      project: work_package_params[:project],
                      user: }.merge!(entry_params)
     create(entry_type, entry_params)
@@ -60,6 +60,10 @@ RSpec.describe CostQuery, :reporting_query_helper do
       end
     end
 
+    it "does not fail when grouping by a non-existent column" do
+      expect { query.filter(:non_existent_column, value: "something").result }.not_to raise_error
+    end
+
     it "sets activity_id to -1 for cost entries" do
       query.result.each do |result|
         expect(result["activity_id"].to_i).to eq(-1) if result["type"] != "TimeEntry"
@@ -69,11 +73,11 @@ RSpec.describe CostQuery, :reporting_query_helper do
     # Test Work Package attributes that are included in of the result set
 
     [
-      [CostQuery::Filter::ProjectId,        "project",    "project_id",      2],
-      [CostQuery::Filter::UserId,           "user",       "user_id",         2],
-      [CostQuery::Filter::CostTypeId,       "cost_type",  "cost_type_id",    1],
+      [CostQuery::Filter::ProjectId,        "project",      "project_id",      2],
+      [CostQuery::Filter::UserId,           "user",         "user_id",         2],
+      [CostQuery::Filter::CostTypeId,       "cost_type",    "cost_type_id",    1],
       [CostQuery::Filter::WorkPackageId,    "work_package", "work_package_id", 2],
-      [CostQuery::Filter::ActivityId, "activity", "activity_id", 1]
+      [CostQuery::Filter::ActivityId,       "activity",     "activity_id",     1]
     ].each do |filter, object_name, field, expected_count|
       describe filter do
         let!(:non_matching_entry) { create(:cost_entry) }
@@ -87,7 +91,7 @@ RSpec.describe CostQuery, :reporting_query_helper do
         let!(:cost_type) { create(:cost_type) }
         let!(:cost_entry) do
           create(:cost_entry,
-                 work_package:,
+                 entity: work_package,
                  user:,
                  project:,
                  cost_type:)
@@ -95,16 +99,17 @@ RSpec.describe CostQuery, :reporting_query_helper do
         let!(:activity) { create(:time_entry_activity) }
         let!(:time_entry) do
           create(:time_entry,
-                 work_package:,
+                 entity: work_package,
                  user:,
                  project:,
                  activity:)
         end
 
-        it "onlies return entries from the given #{filter}" do
+        it "only return entries from the given #{filter}" do
           query.filter field, value: object.id
           query.result.each do |result|
-            expect(result[field].to_s).to eq(object.id.to_s)
+            result_field = field == "work_package_id" ? "entity_id" : field
+            expect(result[result_field].to_s).to eq(object.id.to_s)
           end
         end
 
@@ -112,7 +117,8 @@ RSpec.describe CostQuery, :reporting_query_helper do
           query.filter field, value: object.id
           query.filter field, value: object.id
           query.result.each do |result|
-            expect(result[field].to_s).to eq(object.id.to_s)
+            result_field = field == "work_package_id" ? "entity_id" : field
+            expect(result[result_field].to_s).to eq(object.id.to_s)
           end
         end
 
@@ -142,7 +148,7 @@ RSpec.describe CostQuery, :reporting_query_helper do
       let!(:cost_type) { create(:cost_type) }
       let!(:cost_entry) do
         create(:cost_entry,
-               work_package:,
+               entity: work_package,
                user:,
                project:,
                cost_type:)
@@ -150,16 +156,16 @@ RSpec.describe CostQuery, :reporting_query_helper do
       let!(:activity) { create(:time_entry_activity) }
       let!(:time_entry) do
         create(:time_entry,
-               work_package:,
+               entity: work_package,
                user:,
                project:,
                activity:)
       end
 
-      it "onlies return entries from the given CostQuery::Filter::AuthorId" do
+      it "only return entries from the given CostQuery::Filter::AuthorId" do
         query.filter "author_id", value: author.id
         query.result.each do |result|
-          work_package_id = result["work_package_id"]
+          work_package_id = result["entity_id"]
           expect(WorkPackage.find(work_package_id).author.id).to eq(author.id)
         end
       end
@@ -168,7 +174,7 @@ RSpec.describe CostQuery, :reporting_query_helper do
         query.filter "author_id", value: author.id
         query.filter "author_id", value: author.id
         query.result.each do |result|
-          work_package_id = result["work_package_id"]
+          work_package_id = result["entity_id"]
           expect(WorkPackage.find(work_package_id).author.id).to eq(author.id)
         end
       end
@@ -312,7 +318,7 @@ RSpec.describe CostQuery, :reporting_query_helper do
       CostQuery::Filter::PriorityId,
       CostQuery::Filter::TypeId
     ].each do |filter|
-      it "onlies allow default operators for #{filter}" do
+      it "only allow default operators for #{filter}" do
         expect(filter.new.available_operators.uniq.sort).to eq(CostQuery::Operator.default_operators.uniq.sort)
       end
     end
@@ -323,7 +329,7 @@ RSpec.describe CostQuery, :reporting_query_helper do
       CostQuery::Filter::CategoryId,
       CostQuery::Filter::VersionId
     ].each do |filter|
-      it "onlies allow default+null operators for #{filter}" do
+      it "only allow default+null operators for #{filter}" do
         expect(filter.new.available_operators.uniq.sort).to eq((CostQuery::Operator.default_operators + CostQuery::Operator.null_operators).sort)
       end
     end
@@ -332,8 +338,13 @@ RSpec.describe CostQuery, :reporting_query_helper do
     [
       CostQuery::Filter::WorkPackageId
     ].each do |filter|
-      it "onlies allow default operators for #{filter}" do
-        expect(filter.new.available_operators.uniq).to contain_exactly(CostQuery::Operator.default_operator)
+      it "allows custom filters#{filter}" do
+        expect(filter.new.available_operators.uniq).to contain_exactly(
+          Report::Operator.new("!"),
+          CostQuery::Operator.new("!_child_work_packages"),
+          Report::Operator.new("="),
+          CostQuery::Operator.new("=_child_work_packages")
+        )
       end
     end
 
@@ -345,7 +356,7 @@ RSpec.describe CostQuery, :reporting_query_helper do
       CostQuery::Filter::StartDate,
       CostQuery::Filter::DueDate
     ].each do |filter|
-      it "onlies allow time operators for #{filter}" do
+      it "only allow time operators for #{filter}" do
         expect(filter.new.available_operators.uniq.sort).to eq(CostQuery::Operator.time_operators.sort)
       end
     end
@@ -378,13 +389,6 @@ RSpec.describe CostQuery, :reporting_query_helper do
         clear_cache
       end
 
-      def update_work_package_custom_field(name, options)
-        fld = WorkPackageCustomField.find_by(name:)
-        options.each_pair { |k, v| fld.send(:"#{k}=", v) }
-        fld.save!
-        clear_cache
-      end
-
       include OpenProject::Reporting::SpecHelper::CustomFieldFilterHelper
 
       it "creates classes for custom fields that get added after starting the server" do
@@ -403,25 +407,9 @@ RSpec.describe CostQuery, :reporting_query_helper do
         custom_field2.save
 
         clear_cache
-        ao = filter_class_name_string(custom_field2).constantize.available_operators.map(&:name)
-        CostQuery::Operator.null_operators.each do |o|
-          expect(ao).to include o.name
-        end
-      end
 
-      it "updates the available values on change" do
-        custom_field2.save
-
-        update_work_package_custom_field("Database", field_format: "string")
-        ao = filter_class_name_string(custom_field2).constantize.available_operators.map(&:name)
-        CostQuery::Operator.string_operators.each do |o|
-          expect(ao).to include o.name
-        end
-        update_work_package_custom_field("Database", field_format: "int")
-        ao = filter_class_name_string(custom_field2).constantize.available_operators.map(&:name)
-        CostQuery::Operator.integer_operators.each do |o|
-          expect(ao).to include o.name
-        end
+        expect(filter_class_name_string(custom_field2).constantize.available_operators.map(&:name))
+          .to include(*CostQuery::Operator.null_operators.map(&:name))
       end
 
       it "includes custom fields classes in CustomFieldEntries.all" do

@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,18 +34,30 @@ module Meetings
 
       super
 
-      set_participants(participants) if participants
+      if participants.present?
+        set_participants(participants)
+      else
+        set_default_participant
+      end
     end
 
     def set_default_attributes(_params)
       model.change_by_system do
         model.author = user
+        model.duration ||= 1
       end
     end
 
     def set_participants(participants_attributes)
-      model.participants.clear
+      model.participants.clear if model.new_record?
       model.participants_attributes = participants_attributes
+    end
+
+    def set_default_participant
+      return if model.participants.present? || model.persisted?
+      return if user.builtin?
+
+      model.participants.build(user:, invited: true)
     end
   end
 end

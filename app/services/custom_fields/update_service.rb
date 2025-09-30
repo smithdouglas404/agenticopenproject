@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,5 +30,34 @@
 
 module CustomFields
   class UpdateService < ::BaseServices::Update
+    protected
+
+    def after_perform(service_call)
+      super.tap do
+        recalculate_values
+      end
+    end
+
+    private
+
+    def set_attributes_params(params)
+      super.except(:field_format)
+    end
+
+    def recalculate_values
+      return unless recalculate_values?
+
+      model.class.customized_class.find_each do |customized|
+        affected_cfs = customized.available_custom_fields.affected_calculated_fields([model.id])
+
+        customized.calculate_custom_fields(affected_cfs)
+
+        customized.save if customized.changed_for_autosave?
+      end
+    end
+
+    def recalculate_values?
+      model.field_format_calculated_value? && model.formula_previously_changed?
+    end
   end
 end

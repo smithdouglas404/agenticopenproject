@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,7 +37,7 @@ module Notifications
     def perform
       return unless EnterpriseToken.allows_to?(:date_alerts)
 
-      Service.new(every_quater_hour_between_predecessor_cron_at_and_own_cron_at).call
+      Service.new(every_quarter_hour_between_predecessor_cron_at_and_own_cron_at).call
     end
 
     # What cannot be controlled is the time at which a job is actually performed.
@@ -70,9 +72,14 @@ module Notifications
     # for 1:00 am local time are covered. The sole exception would be the case where previously finished jobs
     # have been removed from the database and the current job took longer to start executing. This is for now
     # an accepted shortcoming as the likelihood of this happening is considered to be very low.
-    def every_quater_hour_between_predecessor_cron_at_and_own_cron_at
-      (lower_boundary.to_i..upper_boundary.to_i)
-        .step(15.minutes)
+    def every_quarter_hour_between_predecessor_cron_at_and_own_cron_at
+      quarters = (lower_boundary.to_i..upper_boundary.to_i).step(15.minutes).to_a
+
+      if quarters.empty? && lower_boundary.present?
+        quarters = [lower_boundary]
+      end
+
+      quarters
         .map do |time|
         Time.zone.at(time)
       end

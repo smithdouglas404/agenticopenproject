@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +28,7 @@
 
 import { Injectable, Injector } from '@angular/core';
 import { ApiV3GettableResource, ApiV3ResourceCollection } from 'core-app/core/apiv3/paths/apiv3-resource';
-import { Constructor } from '@angular/cdk/table';
+import { Constructor } from 'core-app/core/util-types';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { ApiV3GridsPaths } from 'core-app/core/apiv3/endpoints/grids/apiv3-grids-paths';
 import { ApiV3TimeEntriesPaths } from 'core-app/core/apiv3/endpoints/time-entries/apiv3-time-entries-paths';

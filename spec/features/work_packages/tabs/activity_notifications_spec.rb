@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 require "features/work_packages/work_packages_page"
@@ -21,17 +23,19 @@ RSpec.describe "Activity tab notifications", :js, :selenium do
     shared_let(:notification) do
       create(:notification,
              recipient: admin,
-             project:,
              resource: work_package,
              journal: work_package.journals.last)
     end
+
+    let(:activity_tab) { Components::WorkPackages::Activities.new(work_package) }
+
     it "shows a notification bubble with the right number" do
       expect(page).to have_test_selector("tab-counter-Activity", text: "1")
     end
 
     it "shows a notification icon next to activities that have an unread notification" do
-      expect(page).to have_test_selector("user-activity-bubble", count: 1)
-      expect(page).to have_css("[data-qa-activity-number='4'] #{test_selector('user-activity-bubble')}")
+      # tested in more detail in the activity tab spec spec/features/activities/work_package/activities_spec.rb
+      activity_tab.expect_notification_bubble
     end
 
     it "shows a button to mark the notifications as read" do
@@ -43,17 +47,19 @@ RSpec.describe "Activity tab notifications", :js, :selenium do
       # ... and updates the view accordingly
       expect(page).not_to have_test_selector("mark-notification-read-button")
       expect(page).not_to have_test_selector("tab-counter-Activity")
-      expect(page).not_to have_test_selector("user-activity-bubble")
+      activity_tab.expect_no_notification_bubble
     end
   end
 
   shared_examples_for "when there are no notifications for the work package" do
+    let(:activity_tab) { Components::WorkPackages::Activities.new(work_package) }
+
     it "shows no notification bubble" do
       expect(page).not_to have_test_selector("tab-counter-Activity")
     end
 
     it "does not show any notification icons next to activities" do
-      expect(page).not_to have_test_selector("user-activity-bubble")
+      activity_tab.expect_no_notification_bubble
     end
 
     it "shows no button to mark the notifications as read" do
@@ -67,6 +73,7 @@ RSpec.describe "Activity tab notifications", :js, :selenium do
     before do
       login_as(admin)
       full_view.visit_tab! "activity"
+      full_view.wait_for_activity_tab
     end
 
     it_behaves_like "when there are notifications for the work package"
@@ -80,6 +87,7 @@ RSpec.describe "Activity tab notifications", :js, :selenium do
     before do
       login_as(admin)
       split_view.visit_tab! "activity"
+      split_view.wait_for_activity_tab
     end
 
     it_behaves_like "when there are notifications for the work package"
@@ -96,6 +104,7 @@ RSpec.describe "Activity tab notifications", :js, :selenium do
     it "does not show an error" do
       full_view.visit_tab! "activity"
       full_view.ensure_page_loaded
+      full_view.wait_for_activity_tab
 
       full_view.expect_no_toaster type: :error, message: "Http failure response for"
       full_view.expect_no_toaster

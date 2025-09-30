@@ -254,31 +254,31 @@ pt-BR:
                   description: |-
                     ## Objetivo
 
-                    * Criar uma visão geral útil dos resultados
-                    * Verificar o que foi feito e resuma os resultados
-                    * Comunicar todos os resultados relevantes ao cliente
-                    * Identificar as condições de contorno fundamentais do projeto
+                    *   Criar uma visão geral útil dos resultados
+                    *   Verificar o que foi realizado e resumir os resultados
+                    *   Comunicar todos os resultados relevantes ao cliente
+                    *   Identificar as condições fundamentais do projeto
 
                     ## Descrição
 
-                    * Cada tópico recebe sua própria visão geral, que será usada como um catálogo de resultados
-                    * Esta visão geral informa todos os participantes sobre as decisões tomadas
-                    * ...
+                    *   Cada tópico recebe sua própria visão geral, que será utilizada como um catálogo de resultados
+                    *   Essa visão geral informa todos os participantes sobre as decisões tomadas
+                    *   ...
                 item_1:
                   subject: Resumir resultados
                   description: |-
                     ## Objetivo
 
-                    * Criar uma visão geral útil dos resultados
-                    * Verificar o que foi feito e resuma os resultados
-                    * Comunicar todos os resultados relevantes ao cliente
-                    * Identificar as condições de contorno fundamentais do projeto
+                    *   Criar uma visão geral útil dos resultados
+                    *   Verificar o que foi realizado e resumir os resultados
+                    *   Comunicar todos os resultados relevantes ao cliente
+                    *   Identificar as condições fundamentais do projeto
 
                     ## Descrição
 
-                    * Cada tópico recebe sua própria visão geral, que será usada como um catálogo de resultados
-                    * Esta visão geral informa todos os participantes sobre as decisões tomadas
-                    * ...
+                    *   Cada tópico recebe sua própria visão geral, que será utilizada como um catálogo de resultados
+                    *   Essa visão geral informa todos os participantes sobre as decisões tomadas
+                    *   ...
             item_3:
               subject: Passagem de planejamento preliminar
               description: Este tipo é hierarquicamente um primário dos tipos &quot;Clash&quot; e &quot;Solicitação&quot;, portanto, representa uma nota geral.
@@ -459,7 +459,7 @@ pt-BR:
                   name: Pacotes de trabalho
               item_6:
                 options:
-                  name: Etapas
+                  name: Marcos
           work_packages:
             item_0:
               subject: Kick off do projeto criando modelo BIM

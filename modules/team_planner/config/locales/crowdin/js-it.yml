@@ -3,12 +3,13 @@ it:
   js:
     team_planner:
       add_existing: 'Aggiungi esistente'
+      label_team_planner_plural: 'Organizzatori di gruppo'
       add_existing_title: 'Aggiungi macro-attività esistenti'
       create_label: 'Pianificatore di team'
       create_title: 'Crea nuovo pianificatore di team'
-      unsaved_title: 'Team planner senza nome'
-      no_data: 'Aggiungi assegnatari per configurare il tuo team planner.'
-      add_assignee: 'Aggiungi assegnatario'
+      unsaved_title: 'Pianificatore di team senza nome'
+      no_data: 'Aggiungi assegnatari per configurare il tuo pianificatore di team.'
+      add_assignee: 'Assegnatario'
       remove_assignee: 'Rimuovi assegnatario'
       two_weeks: '2 settimane'
       one_week: '1 settimana'

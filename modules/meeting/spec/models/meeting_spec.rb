@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,17 +27,14 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require File.dirname(__FILE__) + "/../spec_helper"
+require_relative "../spec_helper"
 
 RSpec.describe Meeting do
   shared_let (:user1) { create(:user) }
   shared_let (:user2) { create(:user) }
+
   let(:project) { create(:project, members: project_members) }
-  let(:meeting) { create(:meeting, project:, author: user1) }
-  let(:agenda) do
-    meeting.create_agenda text: "Meeting Agenda text"
-    meeting.reload_agenda # avoiding stale object errors
-  end
+  let(:meeting) { create(:meeting, :author_participates, project:, author: user1) }
   let(:project_members) { {} }
 
   let(:role) { create(:project_role, permissions: [:view_meetings]) }
@@ -109,37 +107,6 @@ RSpec.describe Meeting do
     end
   end
 
-  describe "all_changeable_participants" do
-    describe "WITH a user having the view_meetings permission" do
-      let(:project_members) { { user1 => role } }
-
-      it "contains the user" do
-        expect(meeting.all_changeable_participants).to eq([user1])
-      end
-    end
-
-    describe "WITH a user not having the view_meetings permission" do
-      let(:role2) { create(:project_role, permissions: []) }
-      let(:project_members) { { user1 => role, user2 => role2 } }
-
-      it "does not contain the user" do
-        expect(meeting.all_changeable_participants).not_to include(user2)
-      end
-    end
-
-    describe "WITH a user being locked but invited" do
-      let(:locked_user) { create(:locked_user) }
-
-      before do
-        meeting.participants_attributes = [{ user_id: locked_user.id, invited: 1 }]
-      end
-
-      it "contains the user" do
-        expect(meeting.all_changeable_participants).to include(locked_user)
-      end
-    end
-  end
-
   describe "participants and author as watchers" do
     let(:project_members) { { user1 => role, user2 => role } }
 
@@ -149,22 +116,6 @@ RSpec.describe Meeting do
     end
 
     it { expect(meeting.watchers.collect(&:user)).to contain_exactly(user1, user2) }
-  end
-
-  describe "#close_agenda_and_copy_to_minutes" do
-    before do
-      agenda # creating it
-
-      meeting.close_agenda_and_copy_to_minutes!
-    end
-
-    it "creates a meeting with the agenda's text" do
-      expect(meeting.minutes.text).to eq(meeting.agenda.text)
-    end
-
-    it "closes the agenda" do
-      expect(meeting.agenda).to be_locked
-    end
   end
 
   describe "Timezones" do
@@ -180,15 +131,7 @@ RSpec.describe Meeting do
     end
 
     context "other timezone set" do
-      let!(:old_time_zone) { Time.zone }
-
-      before do
-        Time.zone = "EST"
-      end
-
-      after do
-        Time.zone = old_time_zone.name
-      end
+      current_user { build_stubbed(:user, preferences: { time_zone: "EST" }) }
 
       it_behaves_like "uses that zone", "EST"
     end
@@ -202,9 +145,48 @@ RSpec.describe Meeting do
     it "uses the :view_meetings permission" do
       expect(described_class.acts_as_watchable_permission).to eq(:view_meetings)
     end
+  end
 
-    it "uses the :view_meetings permission in STI classes" do
-      expect(StructuredMeeting.acts_as_watchable_permission).to eq(:view_meetings)
+  describe "duration" do
+    it "accepts a float" do
+      meeting.duration = 1.5
+      expect(meeting).to be_valid
+      expect(meeting.duration).to eq(1.5)
+      expect(meeting.formatted_duration).to eq("1.5h")
+    end
+
+    it "accepts a string to be parsed by chronic" do
+      meeting.duration = "30m"
+      expect(meeting).to be_valid
+      expect(meeting.duration).to eq(0.5)
+      expect(meeting.formatted_duration).to eq("0.5h")
+    end
+
+    it "doesn't raise on nil" do
+      meeting.duration = nil
+      expect(meeting).not_to be_valid
+      expect(meeting.errors[:duration]).to include("is not a number.")
+      expect(meeting.formatted_duration).to be_nil
+    end
+  end
+
+  describe "uid" do
+    it "assigns a uid on create" do
+      meeting = described_class.new(project:, author: user1)
+      expect(meeting.uid).to be_present
+      expect(meeting.uid).to include "@#{Setting.host_name}"
+    end
+  end
+
+  describe "#destroy" do
+    context "with an attachment" do
+      let!(:meeting) { create(:meeting, project: project) }
+      let!(:attachment) { create(:attachment, container: meeting) }
+
+      it "does not raise an exception (Regression #61632)" do
+        expect { meeting.destroy! }.not_to raise_error
+        expect { meeting.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
     end
   end
 end

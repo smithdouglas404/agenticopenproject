@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -39,6 +39,10 @@ module ::Bim::Queries::WorkPackages::Filter
         [I18n.t(:general_text_yes), OpenProject::Database::DB_VALUE_TRUE],
         [I18n.t(:general_text_no), OpenProject::Database::DB_VALUE_FALSE]
       ]
+    end
+
+    def human_name
+      I18n.t("bcf.label_bcf_issue_associated")
     end
 
     def where

@@ -2,6 +2,7 @@
 pt-PT:
   js:
     storages:
+      authentication_error: "Falha na autenticação com %{storageType}"
       link_files_in_storage: "Vincular ficheiros em %{storageType}"
       link_existing_files: "Vincular ficheiros existentes"
       upload_files: "Carregar ficheiros"
@@ -13,11 +14,14 @@ pt-PT:
       open_storage: "Abrir %{storageType}"
       select_location: "Selecionar localização"
       choose_location: "Escolher localização"
+      new_folder: "Nova pasta"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
         default: "Armazenamento"
       information:
+        authentication_error: "Não foi possível autenticar o pedido para %{storageType}, o que constitui um erro."
         connection_error: >
           Algumas definições do %{storageType} não estão a funcionar. Contacte a sua administração de %{storageType}.
         live_data_error: "Erro ao obter detalhes do ficheiro"
@@ -26,6 +30,8 @@ pt-PT:
         no_file_links: "Para vincular ficheiros a este pacote de trabalho, faça-o através de %{storageType}."
         not_logged_in: >
           Para adicionar um link e ver ou enviar ficheiro relacionados com este pacote de trabalho, inicie sessão em %{storageType}.
+        suggest_logout: Pode tentar terminar a sessão e voltar a iniciar a sessão para resolver o problema.
+        suggest_relink: Pode tentar voltar a ligar à sua conta através do botão de início de sessão abaixo para resolver este problema.
       files:
         already_existing_header: "Este ficheiro já existe"
         already_existing_body: >
@@ -42,6 +48,7 @@ pt-PT:
           A pasta do projeto gerido automaticamente ainda não foi encontrada. Aguarde um pouco, recarregue a página para obter os dados mais recentes e tente novamente.
         managed_project_folder_no_access: >
           Ainda não tem acesso à pasta do projeto gerido. Aguarde um pouco e tente novamente.
+        cannot_create_folder: Não foi possível criar a pasta. Evite utilizar caracteres especiais e símbolos, e certifique-se de que a pasta ainda não existe.
         upload_keep_both: "Manter ambos"
         upload_replace: "Substituir"
       file_links:

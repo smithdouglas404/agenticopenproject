@@ -22,7 +22,7 @@ mn:
         item_2:
           name: Resolved
         item_3:
-          name: Closed
+          name: Хаагдсан
       time_entry_activities:
         item_0:
           name: Management
@@ -32,7 +32,7 @@ mn:
           name: Other
       types:
         item_0:
-          name: Task
+          name: Даалгавар
         item_1:
           name: Milestone
         item_2:
@@ -103,11 +103,11 @@ mn:
             item_0:
               name: Project plan
             item_1:
-              name: Milestones
+              name: Чухал үеүүд
             item_2:
               name: Tasks
             item_3:
-              name: Team planner
+              name: Багийн төлөвлөгч
           boards:
             bcf:
               name: Simple drag'n drop workflow
@@ -147,7 +147,7 @@ mn:
                   name: Work packages
               item_6:
                 options:
-                  name: Milestones
+                  name: Чухал үеүүд
         demo-planning-constructing-project:
           name: "(Demo) Planning & constructing"
           status_explanation: All tasks are on schedule. The people involved know their tasks. The system is completely set up.
@@ -165,11 +165,11 @@ mn:
             item_0:
               name: Project plan
             item_1:
-              name: Milestones
+              name: Чухал үеүүд
             item_2:
               name: Tasks
             item_3:
-              name: Team planner
+              name: Багийн төлөвлөгч
           project-overview:
             widgets:
               item_0:
@@ -202,7 +202,7 @@ mn:
                   name: Work packages
               item_6:
                 options:
-                  name: Milestones
+                  name: Чухал үеүүд
           work_packages:
             item_0:
               subject: Project kick off construction project
@@ -256,7 +256,7 @@ mn:
 
                     *   Create a useful overview of the results
                     *   Check what has been done and summarize the results
-                    *   Communicate all the relevant results with the customer
+                    *   Communicate all the relevant results with the customer
                     *   Identify the fundamental boundary conditions of the project
 
                     ## Description
@@ -271,7 +271,7 @@ mn:
 
                     *   Create a useful overview of the results
                     *   Check what has been done and summarize the results
-                    *   Communicate all the relevant results with the customer
+                    *   Communicate all the relevant results with the customer
                     *   Identify the fundamental boundary conditions of the project
 
                     ## Description
@@ -419,11 +419,11 @@ mn:
             item_0:
               name: Project plan
             item_1:
-              name: Milestones
+              name: Чухал үеүүд
             item_2:
               name: Tasks
             item_3:
-              name: Team planner
+              name: Багийн төлөвлөгч
           project-overview:
             widgets:
               item_0:
@@ -459,7 +459,7 @@ mn:
                   name: Work packages
               item_6:
                 options:
-                  name: Milestones
+                  name: Чухал үеүүд
           work_packages:
             item_0:
               subject: Project kick off creating BIM model
@@ -692,11 +692,11 @@ mn:
             item_4:
               name: Project plan
             item_5:
-              name: Milestones
+              name: Чухал үеүүд
             item_6:
               name: Tasks
             item_7:
-              name: Team planner
+              name: Багийн төлөвлөгч
           boards:
             bcf:
               name: BCF issues

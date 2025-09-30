@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -149,14 +151,22 @@ RSpec.describe ModelContract do
 
     context "when the model extends both modules" do
       before do
-        allow(model).to receive(:changed_by_user).and_return([:custom_field1])
-        allow(model).to receive(:changed_with_custom_fields).and_return([:no_allowed])
+        allow(model).to receive_messages(changed_by_user: [:custom_field1], changed_with_custom_fields: [:no_allowed])
       end
 
       it "adds an error to the custom field attribute from the OpenProject::ChangedBySystem module" do
         model_contract.valid?
         expect(model_contract.errors.symbols_for(:custom_field1))
           .to include(:error_readonly)
+      end
+    end
+
+    context "when a context is provided" do
+      it "propagates the contex to the model as well" do
+        allow(model).to receive(:valid?)
+
+        model_contract.valid?(:custom_context)
+        expect(model).to have_received(:valid?).with(:custom_context)
       end
     end
   end

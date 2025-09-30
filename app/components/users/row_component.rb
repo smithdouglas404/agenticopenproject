@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -46,7 +46,10 @@ module Users
     def login
       icon = helpers.avatar user, size: :mini
 
-      link = link_to h(user.login), helpers.allowed_management_user_profile_path(user), class: "op-principal--name"
+      link = helpers.link_to_user(user,
+                                  class: "op-principal--name",
+                                  name: user.login,
+                                  href: helpers.allowed_management_user_profile_path(user))
 
       icon + link
     end

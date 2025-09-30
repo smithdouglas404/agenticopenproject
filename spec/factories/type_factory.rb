@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,6 +33,7 @@ FactoryBot.define do
     sequence(:position)
     name { |a| "Type No. #{a.position}" }
     description { nil }
+    patterns { nil }
     created_at { Time.zone.now }
     updated_at { Time.zone.now }
 
@@ -53,6 +56,14 @@ FactoryBot.define do
                                                             [:"query_#{query.id}"]]]
       end
     end
+  end
+
+  trait :with_subject_pattern do
+    patterns { { subject: { blueprint: "{{author}} - {{status}}/{{type}} - {{id}}", enabled: true } } }
+  end
+
+  trait :default do
+    is_default { true }
   end
 
   factory :type_standard, class: "::Type" do

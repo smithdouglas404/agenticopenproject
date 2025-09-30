@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -46,8 +48,9 @@ RSpec.describe WorkPackages::CopyService, "integration", type: :model do
     set_factory_default(:user, user)
   end
 
+  shared_let(:project_phase_definition) { create(:project_phase_definition) }
   shared_let(:work_package) do
-    create(:work_package, author: user, project:, type:)
+    create(:work_package, author: user, project:, type:, project_phase_definition:)
   end
 
   let(:instance) { described_class.new(work_package:, user:) }
@@ -103,6 +106,13 @@ RSpec.describe WorkPackages::CopyService, "integration", type: :model do
             .to contain_exactly(watcher_user)
         end
       end
+
+      describe "#project_phase_definition" do
+        it "is the one of the copied work package" do
+          expect(copy.project_phase_definition)
+            .to eql project_phase_definition
+        end
+      end
     end
 
     describe "to a different project" do
@@ -149,15 +159,8 @@ RSpec.describe WorkPackages::CopyService, "integration", type: :model do
       end
 
       context "required custom field in the target project" do
+        let(:custom_field) { create(:work_package_custom_field, field_format: "text", is_required: true, is_for_all: false) }
         let(:target_custom_fields) { [custom_field] }
-
-        before do
-          custom_field.update(
-            field_format: "text",
-            is_required: true,
-            is_for_all: false
-          )
-        end
 
         it "does not copy the work package" do
           expect(service_result).to be_failure
@@ -191,6 +194,13 @@ RSpec.describe WorkPackages::CopyService, "integration", type: :model do
 
         it "copies the % complete value over" do
           expect(copy.done_ratio).to eq(40)
+        end
+      end
+
+      describe "#project_phase_definition" do
+        it "is the one of the copied work package" do
+          expect(copy.project_phase_definition)
+            .to eql project_phase_definition
         end
       end
 

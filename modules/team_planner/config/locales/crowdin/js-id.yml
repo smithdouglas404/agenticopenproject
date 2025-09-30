@@ -3,12 +3,13 @@ id:
   js:
     team_planner:
       add_existing: 'Add existing'
+      label_team_planner_plural: 'Rencana tim'
       add_existing_title: 'Add existing work packages'
       create_label: 'Rencana tim'
       create_title: 'Buat rencana tim baru'
       unsaved_title: 'Unnamed team planner'
       no_data: 'Add assignees to set up your team planner.'
-      add_assignee: 'Add assignee'
+      add_assignee: 'Pelimpahan'
       remove_assignee: 'Remove assignee'
       two_weeks: '2-week'
       one_week: '1-week'

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -46,7 +48,7 @@ module Components
             expect(page).to have_css(".danger-zone--warning",
                                      text: "Are you sure you want to delete the following work packages?")
             wps.each do |wp|
-              expect(page).to have_css("li", text: "##{wp.id} #{wp.subject}")
+              expect(page).to have_css("li", text: "##{wp.id}#{wp.subject}")
             end
           end
         end

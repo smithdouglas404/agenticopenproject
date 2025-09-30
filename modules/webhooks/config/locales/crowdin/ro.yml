@@ -1,13 +1,14 @@
 ro:
   plugin_openproject_webhooks:
-    name: "OpenProject Webhooks"
-    description: "Provides a plug-in API to support OpenProject webhooks for better 3rd party integration."
+    name: "Webhook-uri OpenProject"
+    description: "Oferă un plug-in API pentru a sprijini OpenProject webhooks pentru o mai bună integrare a terților."
   activerecord:
     attributes:
       webhooks/webhook:
         url: 'URL de încărcare utilă'
         secret: 'Secretul semnăturii'
         events: 'Evenimente'
+        enabled: 'Activat'
         projects: 'Proiecte activate'
       webhooks/log:
         event_name: 'Numele evenimentului'
@@ -24,12 +25,14 @@ ro:
         name: "Înregistrarea timpului"
     outgoing:
       no_results_table: Nu au fost definite încă niciun fel de webhooks.
-      label_add_new: Adăugați un nou webhook
+      label_add_new: Adaugă un nou webhook
       label_edit: Editați webhook
       label_event_resources: Resurse pentru evenimente
       events:
         created: "Creat pe"
         updated: "Actualizat"
+        comment: "Comentariu"
+        internal_comment: "Comentariu intern"
       explanation:
         text: >
           La apariția unui eveniment, cum ar fi crearea unui pachet de lucru sau o actualizare a unui proiect, OpenProject va trimite o cerere POST către punctele finale web configurate. De multe ori, evenimentul este trimis după ce a trecut %{link}.
@@ -38,7 +41,7 @@ ro:
         enabled: 'Webhook este activat'
         disabled: 'Webhook este dezactivat'
         enabled_text: 'Webhook va emite sarcini utile pentru evenimentele definite mai jos.'
-        disabled_text: 'Faceți clic pe butonul de editare pentru a activa webhook-ul.'
+        disabled_text: 'Clic pe butonul de editare pentru a activa webhook-ul.'
       deliveries:
         no_results_table: Nu au fost efectuate livrări pentru acest webhook în ultimele zile.
         title: 'Livrări recente'

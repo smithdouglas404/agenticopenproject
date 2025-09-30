@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.configure do |config|
   config.before do
     # Clear any mail deliveries
@@ -11,6 +13,11 @@ RSpec.configure do |config|
     # by calling code in the app setting changing the locale.
     I18n.locale = :en unless I18n.locale == :en
 
+    RequestStore.clear!
+  end
+
+  config.append_after(:all) do
+    # Ensure models don't leak between test through RequestStore if it is used in after(:all)
     RequestStore.clear!
   end
 

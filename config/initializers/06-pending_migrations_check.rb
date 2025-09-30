@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,5 +33,5 @@ no_rake_task = !(Rake.respond_to?(:application) && Rake.application.top_level_ta
 no_override = ENV["OPENPROJECT_DISABLE__MIGRATIONS__CHECK"] != "true"
 
 if Rails.env.production? && !is_console && no_rake_task && no_override
-  ActiveRecord::Migration.check_pending! # will raise an exception and abort boot
+  ActiveRecord::Migration.check_all_pending! # will raise an exception and abort boot
 end

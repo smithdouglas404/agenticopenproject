@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,7 +31,7 @@
 require "spec_helper"
 require_relative "../../support/pages/backlogs"
 
-RSpec.describe "Backlogs context menu", :js, :with_cuprite do
+RSpec.describe "Backlogs context menu", :js do
   shared_let(:story_type) { create(:type_feature) }
   shared_let(:task_type) { create(:type_task) }
   shared_let(:project) { create(:project, types: [story_type, task_type]) }

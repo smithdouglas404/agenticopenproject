@@ -1,5 +1,4 @@
 import { Injector } from '@angular/core';
-import { KeyCodes } from 'core-app/shared/helpers/keyCodes.enum';
 import { TableEventComponent } from 'core-app/features/work-packages/components/wp-fast-table/handlers/table-handler-registry';
 import { ContextMenuHandler } from './context-menu-handler';
 
@@ -23,7 +22,7 @@ export class ContextMenuKeyboardHandler extends ContextMenuHandler {
 
     const target = jQuery(evt.target);
 
-    if (!(evt.keyCode === KeyCodes.F10 && evt.shiftKey && evt.altKey)) {
+    if (!(evt.key === 'F10' && evt.shiftKey && evt.altKey)) {
       return true;
     }
 

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -53,6 +53,7 @@ import { WorkPackageViewBaselineService } from 'core-app/features/work-packages/
   styleUrls: ['./query-filter.component.sass'],
   templateUrl: './query-filter.component.html',
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class QueryFilterComponent implements OnInit {
   @HostBinding('class.op-query-filter') className = true;
@@ -73,16 +74,14 @@ export class QueryFilterComponent implements OnInit {
 
   public baselineIncompatibleFilter = false;
 
-  public trackByHref = halHref;
-
   public compareByHref = compareByHref;
 
   public text = {
     open_filter: this.I18n.t('js.filter.description.text_open_filter'),
     close_filter: this.I18n.t('js.filter.description.text_close_filter'),
     label_filter_add: this.I18n.t('js.work_packages.label_filter_add'),
-    upsale_for_more: this.I18n.t('js.filter.upsale_for_more'),
-    upsale_link: this.I18n.t('js.filter.upsale_link'),
+    upsell_for_more: this.I18n.t('js.filter.upsell_for_more'),
+    upsell_link: this.I18n.t('js.filter.upsell_link'),
     button_delete: this.I18n.t('js.button_delete'),
     incompatible_filter: this.I18n.t('js.work_packages.filters.baseline_incompatible'),
   };
@@ -93,7 +92,6 @@ export class QueryFilterComponent implements OnInit {
     readonly schemaCache:SchemaCacheService,
     readonly I18n:I18nService,
     readonly currentProject:CurrentProjectService,
-    readonly bannerService:BannersService,
   ) {
   }
 
@@ -116,7 +114,6 @@ export class QueryFilterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.eeShowBanners = this.bannerService.eeShowBanners;
     this.availableOperators = this.schemaCache.of(this.filter).availableOperators;
     this.showValuesInput = this.showValues();
     this.baselineIncompatibleFilter = this.wpTableBaseline.isActive() && this.wpTableBaseline.isIncompatibleFilter(this.filter.id);

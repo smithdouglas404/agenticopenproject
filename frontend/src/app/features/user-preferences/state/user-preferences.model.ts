@@ -11,12 +11,13 @@ export interface PauseRemindersSettings {
 }
 export interface ImmediateRemindersSettings {
   mentioned:boolean;
+  personalReminder:boolean;
 }
 
 export interface IUserPreference {
   autoHidePopups:boolean;
   commentSortDescending:boolean;
-  hideMail:boolean;
+  disableKeyboardShortcuts:boolean;
   timeZone:string|null;
   warnOnLeavingUnsaved:boolean;
   workdays:number[];

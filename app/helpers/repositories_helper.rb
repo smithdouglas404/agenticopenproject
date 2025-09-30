@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -38,7 +40,7 @@ module RepositoriesHelper
   ##
   # Format revision commits with plain formatter
   def format_revision_text(commit_message)
-    format_text(commit_message, format: "plain")
+    format_text(commit_message, format: :plain)
   end
 
   def truncate_at_line_break(text, length = 255)
@@ -47,7 +49,7 @@ module RepositoriesHelper
 
   def render_properties(properties)
     unless properties.nil? || properties.empty?
-      content = ""
+      content = +""
       properties.keys.sort.each do |property|
         content << content_tag("li", raw("<b>#{h property}</b>: <span>#{h properties[property]}</span>"))
       end
@@ -114,12 +116,12 @@ module RepositoriesHelper
   def render_changes_tree(tree)
     return "" if tree.nil?
 
-    output = "<ul>"
+    output = +"<ul>"
     tree.keys.sort.each do |file|
-      style = "change"
+      style = +"change"
       text = File.basename(file)
       if s = tree[file][:s]
-        style << " folder"
+        style += " folder"
         path_param = without_leading_slash(to_path_param(@repository.relative_path(file)))
         text = link_to(h(text),
                        show_revisions_path_project_repository_path(project_id: @project,
@@ -127,10 +129,10 @@ module RepositoriesHelper
                                                                    rev: @changeset.identifier),
                        title: I18n.t(:label_folder))
 
-        output << "<li class='#{style} icon icon-folder-#{calculate_folder_action(s)}'>#{text}</li>"
-        output << render_changes_tree(s)
+        output += "<li class='#{style} icon icon-folder-#{calculate_folder_action(s)}'>#{text}</li>"
+        output += render_changes_tree(s)
       elsif c = tree[file][:c]
-        style << " change-#{c.action}"
+        style += " change-#{c.action}"
         path_param = without_leading_slash(to_path_param(@repository.relative_path(c.path)))
 
         unless c.action == "D"
@@ -154,10 +156,10 @@ module RepositoriesHelper
 
         text << raw(" " + content_tag("span", h(c.from_path), class: "copied-from")) if c.from_path.present?
 
-        output << changes_tree_li_element(c.action, text, style)
+        output += changes_tree_li_element(c.action, text, style)
       end
     end
-    output << "</ul>"
+    output += "</ul>"
     output.html_safe
   end
 

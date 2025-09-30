@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -152,6 +154,17 @@ RSpec.describe API::V3::Queries::Schemas::FilterDependencyRepresenterFactory do
 
         it "is the version dependency" do
           expect(subject).to be_a(API::V3::Queries::Schemas::VersionFilterDependencyRepresenter)
+        end
+
+        it_behaves_like "includes the cf json_cache_key mixin"
+      end
+
+      describe "type hierarchy" do
+        let(:hierarchy_root) { build_stubbed(:hierarchy_item) }
+        let(:custom_field) { build_stubbed(:custom_field, field_format: "hierarchy", hierarchy_root:) }
+
+        it "is the hierarchy dependency" do
+          expect(subject).to be_a(API::V3::Queries::Schemas::HierarchyFilterDependencyRepresenter)
         end
 
         it_behaves_like "includes the cf json_cache_key mixin"

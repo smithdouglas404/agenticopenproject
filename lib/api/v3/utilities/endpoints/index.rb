@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -117,7 +117,7 @@ module API
           end
 
           def calculate_groups(query)
-            return unless query.respond_to?(:group_by) && query.group_by
+            return if !query.respond_to?(:group_by) || !query.group_by
 
             query.group_values.map do |group, count|
               ::API::Decorators::AggregationGroup.new(group, count, query:, current_user: User.current)

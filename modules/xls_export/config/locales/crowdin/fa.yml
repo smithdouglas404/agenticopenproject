@@ -4,12 +4,12 @@ fa:
     description: "لیست های مشکلات را به عنوان صفحات گسترده اکسل (xls.) صادر کنید."
   export_to_excel: "Export XLS"
   print_with_description: "Print preview with description"
-  sentence_separator_or: "or"
-  different_formats: Different formats
+  sentence_separator_or: "یا"
+  different_formats: فرمت متفاوت
   export:
     format:
-      xls: "XLS"
-      xls_with_descriptions: "XLS with descriptions"
+      xls: ""
+      xls_with_descriptions: "XLS همراه توضيح"
       xls_with_relations: "XLS with relations"
   xls_export:
     child_of: child of

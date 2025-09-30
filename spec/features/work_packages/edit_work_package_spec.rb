@@ -1,7 +1,12 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 require "features/page_objects/notification"
 
 RSpec.describe "edit work package", :js do
+  include Components::Autocompleter::NgSelectAutocompleteHelpers
+
+  let!(:standard_global_role) { create(:empty_global_role) }
   let(:dev_role) do
     create(:project_role,
            permissions: %i[view_work_packages
@@ -57,6 +62,7 @@ RSpec.describe "edit work package", :js do
 
   let(:new_subject) { "Some other subject" }
   let(:wp_page) { Pages::FullWorkPackage.new(work_package) }
+  let(:activity_tab) { Components::WorkPackages::Activities.new(work_package) }
   let(:priority2) { create(:priority) }
   let(:status2) { create(:status) }
   let(:workflow) do
@@ -70,6 +76,7 @@ RSpec.describe "edit work package", :js do
   let(:category) { create(:category, project:) }
 
   let(:visit_before) { true }
+  let(:logged_in_user) { manager }
 
   def visit!
     wp_page.visit!
@@ -77,7 +84,7 @@ RSpec.describe "edit work package", :js do
   end
 
   before do
-    login_as(manager)
+    login_as(logged_in_user)
 
     manager
     dev
@@ -104,24 +111,9 @@ RSpec.describe "edit work package", :js do
       wp_page.update_attributes status: status2.name
       wp_page.expect_attributes status: status2.name
 
-      wp_page.expect_activity_message("Status changed from #{status.name} to #{status2.name}")
-    end
-  end
-
-  context "with progress" do
-    let(:visit_before) { false }
-
-    before do
-      work_package.update done_ratio: 42
-      visit!
-    end
-
-    it "does not hide empty % Complete while it is being edited",
-       skip: "TODO: revisit once the progress popover is implemented" do
-      field = wp_page.work_package_field(:percentageDone)
-      field.update("0", save: false, expect_failure: true)
-
-      expect(page).to have_text("% Complete")
+      activity_tab.expect_journal_changed_attribute(
+        text: "Status changed from #{status.name} to #{status2.name}"
+      )
     end
   end
 
@@ -143,7 +135,7 @@ RSpec.describe "edit work package", :js do
                               responsible: manager.name,
                               assignee: manager.name,
                               combinedDate: "03/04/2013 - 03/20/2013",
-                              estimatedTime: "1d 2h",
+                              estimatedTime: "10h",
                               remainingTime: "7h",
                               percentageDone: "30%",
                               subject: "a new subject",
@@ -153,13 +145,17 @@ RSpec.describe "edit work package", :js do
                               version: version.name,
                               category: category.name
 
-    wp_page.expect_activity_message("Status changed from #{status.name} to #{status2.name}")
+    activity_tab.expect_journal_changed_attribute(
+      text: "Status changed from #{status.name} to #{status2.name}"
+    )
   end
 
   it "correctly assigns and un-assigns users" do
     wp_page.update_attributes assignee: manager.name
     wp_page.expect_attributes assignee: manager.name
-    wp_page.expect_activity_message("Assignee set to #{manager.name}")
+    activity_tab.expect_journal_changed_attribute(
+      text: "Assignee set to #{manager.name}"
+    )
 
     field = wp_page.edit_field :assignee
     field.unset_value
@@ -167,12 +163,13 @@ RSpec.describe "edit work package", :js do
     wp_page.expect_attributes assignee: "-"
 
     wp_page.visit!
+    wp_page.switch_to_tab tab: :activity
+    wp_page.wait_for_activity_tab
 
     # Another (empty) journal should exist now
-    expect(page).to have_css(".op-user-activity--user-name",
-                             text: work_package.journals.last.user.name,
-                             wait: 10,
-                             count: 2)
+    activity_tab.within_journals_container do
+      expect(page).to have_content(work_package.journals.last.user.name, count: 2)
+    end
 
     wp_page.expect_attributes assignee: "-"
 
@@ -187,8 +184,12 @@ RSpec.describe "edit work package", :js do
     wp_page.expect_attributes assignee: placeholder_user.name,
                               responsible: placeholder_user.name
 
-    wp_page.expect_activity_message("Assignee set to #{placeholder_user.name}")
-    wp_page.expect_activity_message("Accountable set to #{placeholder_user.name}")
+    activity_tab.expect_journal_changed_attribute(
+      text: "Assignee set to #{placeholder_user.name}"
+    )
+    activity_tab.expect_journal_changed_attribute(
+      text: "Accountable set to #{placeholder_user.name}"
+    )
   end
 
   context "switching to custom field with required CF" do
@@ -216,18 +217,6 @@ RSpec.describe "edit work package", :js do
       cf_field.expect_active!
       cf_field.expect_value("")
     end
-  end
-
-  it "allows the user to add a comment to a work package" do
-    wp_page.ensure_page_loaded
-
-    wp_page.trigger_edit_comment
-    wp_page.update_comment "hallo welt"
-
-    wp_page.save_comment
-
-    wp_page.expect_toast(message: "The comment was successfully added.")
-    wp_page.expect_comment text: "hallo welt"
   end
 
   it "updates the presented custom fields based on the selected type" do
@@ -272,12 +261,74 @@ RSpec.describe "edit work package", :js do
       subject_field.expect_state_text "My new subject!"
     end
 
-    it "submits the edit mode when changing the focus" do
+    it "does not close the edit mode when changing the focus" do
       page.find("body").click
 
-      wp_page.expect_toast(message: "Successful update")
-      subject_field.expect_inactive!
-      subject_field.expect_state_text "My new subject!"
+      subject_field.expect_active!
+      wp_page.expect_no_toaster(type: :success, message: "Successful update", wait: 1)
+    end
+  end
+
+  context "when using the user auto completer" do
+    RSpec.shared_examples "without permission" do |field_name|
+      it "does not show you the email of other users" do
+        completer = wp_page.edit_field field_name
+        completer.activate!
+
+        expected_options = [
+          { name: manager.name, email: nil },  # Manager's email should not be visible
+          { name: dev.name, email: dev.mail }  # Developer's email should be visible
+        ]
+
+        expect_visible_user_auto_completer_options(expected_options)
+      end
+    end
+
+    RSpec.shared_examples "with permission" do |field_name|
+      it "does show you the email of other users" do
+        completer = wp_page.edit_field field_name
+        completer.activate!
+
+        expected_options = [
+          # With the right permissions, you can see other users email address
+          { name: manager.name,
+            email: manager.mail },
+          # The current user can always see their own email
+          { name: dev.name,
+            email: dev.mail }
+        ]
+
+        expect_visible_user_auto_completer_options(expected_options)
+      end
+    end
+
+    let(:dev_role) do
+      create(:project_role,
+             permissions: %i[view_work_packages
+                             edit_work_packages
+                             work_package_assigned])
+    end
+
+    let(:logged_in_user) { dev }
+
+    context "when assigning people to a work package" do
+      include_examples "without permission", "assignee"
+    end
+
+    context "when setting accountable person for a work package" do
+      include_examples "without permission", "responsible"
+    end
+
+    context "with permission to see emails" do
+      let!(:standard_global_role) { create(:standard_global_role) }
+
+      context "when assigning people to a work package" do
+        include_examples "with permission", "assignee"
+      end
+
+      context "when setting accountable person for a work package" do
+        include_examples "with permission", "responsible"
+      end
     end
   end
 end

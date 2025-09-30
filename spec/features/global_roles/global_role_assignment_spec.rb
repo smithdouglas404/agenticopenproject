@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,7 +31,7 @@
 require "spec_helper"
 require_relative "mock_global_permissions"
 
-RSpec.describe "Global role: Global role assignment", :js, :with_cuprite do
+RSpec.describe "Global role: Global role assignment", :js do
   before do
     login_as current_user
   end
@@ -40,7 +42,7 @@ RSpec.describe "Global role: Global role assignment", :js, :with_cuprite do
 
     let!(:global_role1) { create(:global_role, name: "global_role1", permissions: %i[global1]) }
     let!(:global_role2) { create(:global_role, name: "global_role2", permissions: %i[global2]) }
-
+    let!(:standard_global_role) { create(:standard_global_role) }
     let!(:user) { create(:user) }
     let!(:global_member) do
       create(:global_member,
@@ -57,9 +59,12 @@ RSpec.describe "Global role: Global role assignment", :js, :with_cuprite do
       page.within("#table_principal_roles") do
         expect(page).to have_text "global_role1"
       end
+
+      # And I should not see "Standard global role" within "#available_principal_roles"
       # And I should not see "global_role1" within "#available_principal_roles"
       # And I should see "global_role2" within "#available_principal_roles"
       page.within("#available_principal_roles") do
+        expect(page).to have_no_text "Standard global role"
         expect(page).to have_no_text "global_role1"
         expect(page).to have_text "global_role2"
       end
@@ -78,9 +83,11 @@ RSpec.describe "Global role: Global role assignment", :js, :with_cuprite do
         expect(page).to have_text "global_role2"
       end
 
+      # And I should not see "Standard global role" within "#available_principal_roles"
       # And I should not see "global_role1" within "#available_principal_roles"
       # And I should not see "global_role2" within "#available_principal_roles"
       page.within("#available_principal_roles") do
+        expect(page).to have_no_text "Standard global role"
         expect(page).to have_no_text "global_role1"
         expect(page).to have_no_text "global_role2"
       end
@@ -92,9 +99,11 @@ RSpec.describe "Global role: Global role assignment", :js, :with_cuprite do
 
       wait_for_network_idle
 
+      # And I should not see "Standard global role" within "#available_principal_roles"
       # Then I should see "global_role1" within "#available_principal_roles"
       # And I should not see "global_role2" within "#available_principal_roles"
       page.within("#available_principal_roles") do
+        expect(page).to have_no_text "Standard global role"
         expect(page).to have_text "global_role1"
         expect(page).to have_no_text "global_role2"
       end

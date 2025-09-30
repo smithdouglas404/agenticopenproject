@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -55,7 +57,7 @@ RSpec.describe API::V3::Utilities::ResourceLinkGenerator do
     end
 
     it "returns nil for unsupported records" do
-      record = create(:custom_field)
+      record = create(:oauth_client_token)
       expect(subject.make_link(record)).to be_nil
     end
 

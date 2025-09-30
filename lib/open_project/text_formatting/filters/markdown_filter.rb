@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -43,12 +45,13 @@ module OpenProject::TextFormatting
       def commonmarker_options
         {
           parse: { smart: false },
-          extension: commonmark_extensions.index_with(true),
+          extension: commonmark_extensions,
           render: {
             unsafe: true,
             escape: false,
             github_pre_lang: true,
-            hardbreaks: context[:gfm] != false
+            hardbreaks: context[:gfm] != false,
+            escaped_char_spans: false
           }
         }
       end
@@ -60,7 +63,11 @@ module OpenProject::TextFormatting
       ##
       # Extensions to the default CommonMarker operation
       def commonmark_extensions
-        context.fetch :commonmarker_extensions, %i[table strikethrough tagfilter]
+        # Disable all the extension enabled by default by commonmarker.
+        %i[strikethrough tagfilter table autolink tasklist shortcodes]
+          .index_with(false)
+          # But enable those that the context has enabled explicitly
+          .merge(context.fetch(:commonmarker_extensions, %i[table strikethrough tagfilter]).index_with(true))
       end
     end
   end

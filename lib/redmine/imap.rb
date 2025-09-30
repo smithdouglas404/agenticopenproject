@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -65,7 +65,7 @@ module Redmine
 
       def receive(message_id, imap, imap_options, options)
         msg = imap.fetch(message_id, "RFC822")[0].attr["RFC822"]
-        raise "Message was not successfully handled." unless MailHandler.receive(msg, options)
+        raise "Message was not successfully handled." unless IncomingEmails::MailHandler.receive(msg, options)
 
         message_received(message_id, imap, imap_options)
       rescue StandardError => e

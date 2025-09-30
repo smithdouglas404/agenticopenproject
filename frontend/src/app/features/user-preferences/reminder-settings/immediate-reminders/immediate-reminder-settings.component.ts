@@ -14,6 +14,7 @@ import {
   selector: 'op-immediate-reminder-settings',
   templateUrl: './immediate-reminder-settings.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ImmediateReminderSettingsComponent implements OnInit {
   form:UntypedFormGroup;
@@ -22,6 +23,7 @@ export class ImmediateReminderSettingsComponent implements OnInit {
     title: this.I18n.t('js.reminders.settings.immediate.title'),
     explanation: this.I18n.t('js.reminders.settings.immediate.explanation'),
     mentioned: this.I18n.t('js.reminders.settings.immediate.mentioned'),
+    personalReminder: this.I18n.t('js.reminders.settings.immediate.personal_reminder'),
   };
 
   constructor(

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -43,6 +43,7 @@ import { IanBellQuery } from 'core-app/features/in-app-notifications/bell/state/
 import { EffectCallback, EffectHandler } from 'core-app/core/state/effects/effect-handler.decorator';
 import {
   notificationCountIncreased,
+  notificationCountChanged,
   notificationsMarkedRead,
 } from 'core-app/core/state/in-app-notifications/in-app-notifications.actions';
 import { ActionsService } from 'core-app/core/state/actions/actions.service';
@@ -68,6 +69,9 @@ export class IanBellService {
     readonly actions$:ActionsService,
     readonly resourceService:InAppNotificationsResourceService,
   ) {
+    this.query.unreadCountChanged$.subscribe((count) => {
+      this.actions$.dispatch(notificationCountChanged({ origin: this.id, count }));
+    });
     this.query.unreadCountIncreased$.pipe(skip(1)).subscribe((count) => {
       this.actions$.dispatch(notificationCountIncreased({ origin: this.id, count }));
     });
@@ -82,15 +86,15 @@ export class IanBellService {
       )
       .pipe(
         map((result) => result.total),
-        tap(
-          (count) => {
+        tap({
+          next: (count) => {
             this.store.update({ totalUnread: count });
           },
-          (error) => {
+          error: (error) => {
             console.error('Failed to load notifications: %O', error);
             this.store.update({ totalUnread: -1 });
           },
-        ),
+        }),
         catchError(() => EMPTY),
       );
   }

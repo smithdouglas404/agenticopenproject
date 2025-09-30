@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,6 +33,7 @@ require_module_spec_helper
 
 RSpec.describe "Admin Edit File storage",
                :js,
+               :selenium,
                :storage_server_helpers do
   shared_let(:admin) { create(:admin, preferences: { time_zone: "Etc/UTC" }) }
 
@@ -45,7 +46,7 @@ RSpec.describe "Admin Edit File storage",
     page.find_test_selector("storage-delete-button").click
 
     expect(page).to have_text("DELETE FILE STORAGE")
-    expect(page).to have_current_path("#{confirm_destroy_admin_settings_storage_path(storage)}?utf8=%E2%9C%93")
+    expect(page).to have_current_path(confirm_destroy_admin_settings_storage_path(storage))
     storage_delete_button = page.find_button("Delete", disabled: true)
 
     fill_in("delete_confirmation", with: "Foo Nextcloud")
@@ -58,7 +59,7 @@ RSpec.describe "Admin Edit File storage",
     expect(page).to have_current_path(admin_settings_storages_path)
   end
 
-  context "with Nextcloud Storage" do
+  context "with Two-Way OAuth Nextcloud Storage" do
     let(:storage) { create(:nextcloud_storage, :as_automatically_managed, name: "Cloud Storage") }
     let(:oauth_application) { create(:oauth_application, integration: storage) }
     let(:oauth_client) { create(:oauth_client, integration: storage) }
@@ -93,7 +94,7 @@ RSpec.describe "Admin Edit File storage",
                                            text: "OAuth Client ID: #{oauth_application.uid}")
 
         # OAuth client
-        expect(page).to have_test_selector("storage-oauth-client-label", text: "Nextcloud OAuth")
+        expect(page).to have_test_selector("storage-oauth-client-label", text: "Storage OAuth")
         expect(page).to have_test_selector("label-storage_oauth_client_configured-status", text: "Completed")
         expect(page).to have_test_selector("storage-oauth-client-id-description",
                                            text: "OAuth Client ID: #{oauth_client.client_id}")
@@ -111,6 +112,9 @@ RSpec.describe "Admin Edit File storage",
         # Update a storage - happy path
         find_test_selector("storage-edit-host-button").click
         within_test_selector("storage-general-info-form") do
+          expect(page).to have_enterprise_banner(:corporate)
+          expect(page).to have_css("option:disabled[value=oauth2_sso]") # expect SSO option to be disabled
+
           fill_in "Name", with: "My Nextcloud"
           click_on "Save and continue"
         end
@@ -143,7 +147,7 @@ RSpec.describe "Admin Edit File storage",
                                                "this window. Please copy these values into the Nextcloud " \
                                                "OpenProject Integration settings.")
           expect(warning_section).to have_link("Nextcloud OpenProject Integration settings",
-                                               href: "#{storage.host}/settings/admin/openproject")
+                                               href: "#{storage.host}settings/admin/openproject")
 
           expect(page).to have_css("#openproject_oauth_application_uid",
                                    value: storage.reload.oauth_application.uid)
@@ -190,8 +194,8 @@ RSpec.describe "Admin Edit File storage",
           expect(application_password_input.value).to be_empty
 
           # Clicking submit with application password empty should show an error
-          click_on("Done, complete setup")
-          expect(page).to have_text("Password can't be blank.")
+          click_on("Finish setup")
+          expect(page).to have_text("Application password can't be blank.")
 
           # Test the error path for an invalid storage password.
           # Mock a valid response (=401) for example.com, so the password validation should fail
@@ -201,8 +205,8 @@ RSpec.describe "Admin Edit File storage",
           expect(automatically_managed_switch).to be_checked
           fill_in "Application password", with: "1234567890"
           # Clicking submit with application password empty should show an error
-          click_on("Done, complete setup")
-          expect(page).to have_text("Password is not valid.")
+          click_on("Finish setup")
+          expect(page).to have_text("Application password is not valid.")
 
           # Test the happy path for a valid storage password.
           # Mock a valid response (=200) for example.com, so the password validation should succeed
@@ -211,7 +215,7 @@ RSpec.describe "Admin Edit File storage",
           automatically_managed_switch = page.find('[name="storages_nextcloud_storage[automatic_management_enabled]"]')
           expect(automatically_managed_switch).to be_checked
           fill_in "Application password", with: "1234567890"
-          click_on("Done, complete setup")
+          click_on("Finish setup")
         end
 
         expect(page).to have_test_selector("label-managed-project-folders-status", text: "Active")
@@ -221,20 +225,159 @@ RSpec.describe "Admin Edit File storage",
     it "renders a sidebar component" do
       visit edit_admin_settings_storage_path(storage)
 
-      aggregate_failures "Health status" do
-        expect(page).to have_test_selector("storage-health-status", text: "Pending")
-      end
+      expect(page).to have_text("Health status report")
 
       aggregate_failures "Health notifications" do
-        expect(page).to have_test_selector("storage-health-notifications-button", text: "Unsubscribe")
-        expect(page).to have_test_selector("storage-health-notifications-description",
-                                           text: "All administrators receive health status email notifications for this storage.")
+        expect(page).to have_test_selector("storage-health-status", text: "Pending")
+        expect(page).to have_test_selector("email-updates-mode-selector-button", text: "Disable")
+        expect(page).to have_test_selector("email-updates-mode-selector",
+                                           text: "Admins will receive updates by email when there are important updates.")
 
-        click_on "Unsubscribe"
+        click_on "Disable"
 
-        expect(page).to have_test_selector("storage-health-notifications-button", text: "Subscribe")
-        expect(page).to have_test_selector("storage-health-notifications-description",
-                                           text: "Health status email notifications for this storage have been turned off for all administrators.")
+        expect(page).to have_test_selector("email-updates-mode-selector-button", text: "Enable")
+        expect(page).to have_test_selector("email-updates-mode-selector",
+                                           text: "Admins will not receive updates by email when there are important updates.")
+      end
+    end
+  end
+
+  context "with OAuth 2.0 SSO Nextcloud Storage" do
+    let(:storage) do
+      create(
+        :nextcloud_storage,
+        :as_automatically_managed,
+        authentication_method: "oauth2_sso",
+        storage_audience: "",
+        name: "Cloud Storage"
+      )
+    end
+    let(:secret) { "awesome_secret" }
+
+    before do
+      allow(Doorkeeper::OAuth::Helpers::UniqueToken).to receive(:generate).and_return(secret)
+    end
+
+    it "renders an edit view", :webmock do
+      visit edit_admin_settings_storage_path(storage)
+
+      expect(page).to be_axe_clean
+        .within("#content")
+        # NB: Heading order is pending app wide update. See https://community.openproject.org/projects/openproject/work_packages/48513
+        .skipping("heading-order")
+
+      expect(page).to have_test_selector("storage-new-page-header--title", text: "Cloud Storage (Nextcloud)")
+
+      aggregate_failures "Storage edit view" do
+        # General information
+        expect(page).to have_test_selector("storage-provider-label", text: "Storage provider")
+        expect(page).to have_test_selector("label-host_name_configured-status", text: "Completed")
+        expect(page).to have_test_selector("storage-description", text: "Nextcloud - #{storage.name} - #{storage.host}")
+
+        # Token Exchange
+        expect(page).to have_test_selector("storage-audience-label", text: "Token Exchange")
+        expect(page).to have_test_selector("label-storage_audience_configured-status", text: "Incomplete")
+        expect(page).to have_test_selector("storage-audience-description", text: "No audience has been configured")
+
+        # Automatically managed project folders
+        expect(page).to have_test_selector("storage-managed-project-folders-label",
+                                           text: "Automatically managed folders")
+
+        expect(page).to have_test_selector("label-managed-project-folders-status", text: "Active")
+        expect(page).to have_test_selector("storage-automatically-managed-project-folders-description",
+                                           text: "Let OpenProject create folders per project automatically.")
+      end
+
+      # Only testing interaction with components not tested
+      # in Two-Way OAuth 2.0 case
+
+      aggregate_failures "General information" do
+        find_test_selector("storage-edit-host-button").click
+        within_test_selector("storage-general-info-form") do
+          # We use a previously configured SSO storage, even though our current token does not support it
+          expect(page).to have_enterprise_banner(:corporate)
+        end
+      end
+
+      aggregate_failures "Token Exchange" do
+        find_test_selector("storage-edit-storage-audience-button").click
+        within_test_selector("storage-audience-form") do
+          expect(page).to have_checked_field("Manually specify audience for which to exchange access token")
+          expect(page).to have_field("Storage Audience")
+
+          click_on "Save and continue"
+          expect(page).to have_text("Storage Audience can't be blank")
+
+          fill_in "Storage Audience", with: "schmaudience"
+
+          choose("Use access token obtained during user log in")
+          expect(page).to have_no_field("Storage Audience")
+          choose("Manually specify audience for which to exchange access token")
+          expect(page).to have_field("Storage Audience", with: "schmaudience")
+
+          click_on "Save and continue"
+        end
+
+        expect(page).to have_test_selector("label-storage_audience_configured-status", text: "Completed")
+        expect(page).to have_test_selector(
+          "storage-audience-description",
+          text: "Exchanging tokens for audience \"schmaudience\""
+        )
+
+        find_test_selector("storage-edit-storage-audience-button").click
+        within_test_selector("storage-audience-form") do
+          expect(page).to have_checked_field("Manually specify audience for which to exchange access token")
+          expect(page).to have_field("Storage Audience", with: "schmaudience")
+
+          choose("Use access token obtained during user log in")
+          click_on "Save and continue"
+        end
+
+        expect(page).to have_test_selector("label-storage_audience_configured-status", text: "Completed")
+        expect(page).to have_test_selector(
+          "storage-audience-description",
+          text: "Using access token obtained by identity provider during login, regardless of audience."
+        )
+
+        find_test_selector("storage-edit-storage-audience-button").click
+        within_test_selector("storage-audience-form") do
+          expect(page).to have_checked_field("Use access token obtained during user log in")
+          expect(page).to have_no_field("Storage Audience")
+
+          choose("Manually specify audience for which to exchange access token")
+          expect(page).to have_field("Storage Audience", with: "")
+        end
+      end
+    end
+
+    it "renders a sidebar component" do
+      visit edit_admin_settings_storage_path(storage)
+
+      expect(page).to have_text("Health status report")
+
+      aggregate_failures "Health notifications" do
+        expect(page).to have_test_selector("storage-health-status", text: "Pending")
+
+        expect(page).to have_test_selector("email-updates-mode-selector-button", text: "Disable")
+        expect(page).to have_test_selector("email-updates-mode-selector",
+                                           text: "Admins will receive updates by email when there are important updates.")
+
+        click_on "Disable"
+
+        expect(page).to have_test_selector("email-updates-mode-selector-button", text: "Enable")
+        expect(page).to have_test_selector("email-updates-mode-selector",
+                                           text: "Admins will not receive updates by email when there are important updates.")
+      end
+    end
+
+    context "and when there is an appropriate enterprise token", with_ee: [:nextcloud_sso] do
+      it "shows no enterprise banner", :webmock do
+        visit edit_admin_settings_storage_path(storage)
+
+        find_test_selector("storage-edit-host-button").click
+        within_test_selector("storage-general-info-form") do
+          expect(page).not_to have_enterprise_banner
+        end
       end
     end
   end
@@ -242,15 +385,16 @@ RSpec.describe "Admin Edit File storage",
   context "with Nextcloud Storage and not automatically managed" do
     let(:storage) { create(:nextcloud_storage, :as_not_automatically_managed, name: "Cloud Storage") }
 
-    it "does not render health status information" do
+    it "renders health status information but without health notifications for automatically managed folders" do
       visit edit_admin_settings_storage_path(storage)
 
+      expect(page).to have_text("Health status report")
       expect(page).not_to have_test_selector("storage-health-status")
       expect(page).not_to have_test_selector("storage-health-notifications-button")
     end
   end
 
-  context "with OneDrive/SharePoint Storage" do
+  context "with OneDrive Storage" do
     let(:storage) { create(:one_drive_storage, :as_automatically_managed, name: "Test Drive") }
     let(:oauth_client) { create(:oauth_client, integration: storage) }
 
@@ -263,14 +407,14 @@ RSpec.describe "Admin Edit File storage",
         .within("#content")
         .skipping("heading-order")
 
-      expect(page).to have_test_selector("storage-new-page-header--title", text: "Test Drive (OneDrive/SharePoint)")
+      expect(page).to have_test_selector("storage-new-page-header--title", text: "Test Drive (OneDrive)")
 
       aggregate_failures "Storage edit view" do
         # General information
         expect(page).to have_test_selector("storage-provider-label", text: "Storage provider")
         expect(page).to have_test_selector("label-name_configured-storage_tenant_drive_configured-status",
                                            text: "Completed")
-        expect(page).to have_test_selector("storage-description", text: "OneDrive/SharePoint - Test Drive")
+        expect(page).to have_test_selector("storage-description", text: "OneDrive - Test Drive")
 
         # OAuth client
         expect(page).to have_test_selector("storage-oauth-client-label", text: "Azure OAuth")
@@ -287,8 +431,8 @@ RSpec.describe "Admin Edit File storage",
           click_on "Save and continue"
         end
 
-        expect(page).to have_test_selector("storage-new-page-header--title", text: "My OneDrive (OneDrive/SharePoint)")
-        expect(page).to have_test_selector("storage-description", text: "OneDrive/SharePoint - My OneDrive")
+        expect(page).to have_test_selector("storage-new-page-header--title", text: "My OneDrive (OneDrive)")
+        expect(page).to have_test_selector("storage-description", text: "OneDrive - My OneDrive")
 
         # Update a storage - unhappy path
         find_test_selector("storage-edit-host-button").click
@@ -343,30 +487,31 @@ RSpec.describe "Admin Edit File storage",
     it "renders a sidebar component" do
       visit edit_admin_settings_storage_path(storage)
 
-      aggregate_failures "Health status" do
-        expect(page).to have_test_selector("storage-health-status", text: "Pending")
-      end
+      expect(page).to have_text("Health status report")
 
       aggregate_failures "Health notifications" do
-        expect(page).to have_test_selector("storage-health-notifications-button", text: "Unsubscribe")
-        expect(page).to have_test_selector("storage-health-notifications-description",
-                                           text: "All administrators receive health status email notifications for this storage.")
+        expect(page).to have_test_selector("storage-health-status", text: "Pending")
 
-        click_on "Unsubscribe"
+        expect(page).to have_test_selector("email-updates-mode-selector-button", text: "Disable")
+        expect(page).to have_test_selector("email-updates-mode-selector",
+                                           text: "Admins will receive updates by email when there are important updates.")
 
-        expect(page).to have_test_selector("storage-health-notifications-button", text: "Subscribe")
-        expect(page).to have_test_selector("storage-health-notifications-description",
-                                           text: "Health status email notifications for this storage have been turned off for all administrators.")
+        click_on "Disable"
+
+        expect(page).to have_test_selector("email-updates-mode-selector-button", text: "Enable")
+        expect(page).to have_test_selector("email-updates-mode-selector",
+                                           text: "Admins will not receive updates by email when there are important updates.")
       end
     end
   end
 
-  context "with OneDrive/SharePoint Storage and not automatically managed" do
+  context "with OneDrive Storage and not automatically managed" do
     let(:storage) { create(:one_drive_storage, :as_not_automatically_managed, name: "Cloud Storage") }
 
-    it "does not render health status information" do
+    it "renders health status information but without health notifications for automatically managed folders" do
       visit edit_admin_settings_storage_path(storage)
 
+      expect(page).to have_text("Health status report")
       expect(page).not_to have_test_selector("storage-health-status")
       expect(page).not_to have_test_selector("storage-health-notifications-button")
     end

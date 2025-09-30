@@ -8,9 +8,10 @@ import { SchemaResource } from 'core-app/features/hal/resources/schema-resource'
 import { WidgetChangeset } from 'core-app/shared/components/grids/widgets/widget-changeset';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { ApiV3GridForm } from 'core-app/core/apiv3/endpoints/grids/apiv3-grid-form';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class GridAreaService {
@@ -42,7 +43,8 @@ export class GridAreaService {
     private apiV3Service:ApiV3Service,
     private toastService:ToastService,
     private i18n:I18nService,
-  ) { }
+  ) {
+  }
 
   public set gridResource(value:GridResource) {
     this.resource = value;
@@ -100,9 +102,10 @@ export class GridAreaService {
     }
   }
 
-  public rebuildAndPersist() {
-    this.persist();
+  public async rebuildAndPersist():Promise<GridResource> {
+    const resource = await this.persist();
     this.buildAreas(false);
+    return resource;
   }
 
   public persist() {
@@ -111,7 +114,7 @@ export class GridAreaService {
     this.resource.columnCount = this.numColumns;
 
     this.writeAreaChangesToWidgets();
-    this.saveGrid(this.resource, this.schema);
+    return this.saveGrid(this.resource, this.schema);
   }
 
   public saveWidgetChangeset(changeset:WidgetChangeset) {
@@ -154,16 +157,22 @@ export class GridAreaService {
     }
   }
 
-  private saveGrid(resource:GridWidgetResource|any, schema?:SchemaResource) {
-    this
+  private async saveGrid(resource:GridResource, schema?:SchemaResource):Promise<GridResource> {
+    const subscription = this
       .apiV3Service
       .grids
       .id(resource)
       .patch(resource, schema)
-      .subscribe((updatedGrid) => {
-        this.assignAreasWidget(updatedGrid);
-        this.toastService.addSuccess(this.i18n.t('js.notice_successful_update'));
-      });
+      .pipe(
+        map((updatedGrid) => {
+          this.assignAreasWidget(updatedGrid);
+          this.toastService.addSuccess(this.i18n.t('js.notice_successful_update'));
+
+          return updatedGrid;
+        }),
+      );
+
+    return firstValueFrom(subscription);
   }
 
   private assignAreasWidget(newGrid:GridResource) {
@@ -276,10 +285,10 @@ export class GridAreaService {
       const widget = this
         .rowWidgets(row)
         .sort((a, b) => a.startColumn - b.startColumn)
-        .find((widget) => !(widget.startRow < excludeRow && widget.endRow > excludeRow)
-                     && (widget.startColumn === column + 1
-                      || widget.endColumn === column + 1
-                      || widget.startColumn <= column && widget.endColumn > column));
+        .find((w) => !(w.startRow < excludeRow && w.endRow > excludeRow)
+          && (w.startColumn === column + 1
+            || w.endColumn === column + 1
+            || (w.startColumn <= column && w.endColumn > column)));
 
       if (widget) {
         movedWidgets.push(widget);
@@ -304,10 +313,10 @@ export class GridAreaService {
       const widget = this
         .columnWidgets(column)
         .sort((a, b) => a.startRow - b.startRow)
-        .find((widget) => !(widget.startColumn < excludeColumn && widget.endColumn > excludeColumn)
-                     && (widget.startRow === row + 1
-                       || widget.endRow === row + 1
-                       || widget.startRow <= row && widget.endRow > row));
+        .find((w) => !(w.startColumn < excludeColumn && w.endColumn > excludeColumn)
+          && (w.startRow === row + 1
+            || w.endRow === row + 1
+            || (w.startRow <= row && w.endRow > row)));
 
       if (widget) {
         movedWidgets.push(widget);

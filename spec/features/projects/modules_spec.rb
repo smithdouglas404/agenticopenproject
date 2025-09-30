@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,29 +35,32 @@ RSpec.describe "Projects module administration" do
     create(:project, enabled_module_names: [])
   end
 
-  let(:permissions) { %i(edit_project select_project_modules view_work_packages) }
-  let(:settings_page) { Pages::Projects::Settings.new(project) }
+  let(:permissions) { %i(edit_project select_project_modules view_work_packages manage_types manage_categories) }
+  let(:modules_settings_page) { Pages::Projects::Settings::Modules.new(project) }
+  let(:work_packages_settings_page) { Pages::Projects::Settings::WorkPackages.new(project) }
 
   current_user do
     create(:user, member_with_permissions: { project => permissions })
   end
 
   it "allows adding and removing modules" do
-    project_work_packages_menu_link_selector = '//ul[contains(@class, "menu_root")]//span[text()="Work packages"]'
+    project_work_packages_tab_selector = '//ul[contains(@class, "tabnav-tabs")]//span[text()="Categories"]'
 
-    settings_page.visit_tab!("modules")
+    modules_settings_page.visit!
 
     expect(page).to have_unchecked_field "Activity"
     expect(page).to have_unchecked_field "Calendar"
     expect(page).to have_unchecked_field "Time and costs"
     expect(page).to have_unchecked_field "Work packages"
 
-    expect(page).to have_no_xpath(project_work_packages_menu_link_selector)
+    work_packages_settings_page.visit!
+    expect(page).to have_no_xpath(project_work_packages_tab_selector)
+    modules_settings_page.visit!
 
     check "Activity"
     click_button "Save"
 
-    settings_page.expect_toast message: I18n.t(:notice_successful_update)
+    expect_flash type: :success, message: I18n.t(:notice_successful_update)
 
     expect(page).to have_checked_field "Activity"
     expect(page).to have_unchecked_field "Calendar"
@@ -65,30 +70,35 @@ RSpec.describe "Projects module administration" do
     check "Calendar"
     click_button "Save"
 
-    expect(page)
-      .to have_css ".op-toast.-error",
-                   text: I18n.t(:"activerecord.errors.models.project.attributes.enabled_modules.dependency_missing",
-                                dependency: "Work packages",
-                                module: "Calendars")
+    expect_flash(type: :error, message:
+      I18n.t(:"activerecord.errors.models.project.attributes.enabled_modules.dependency_missing",
+             dependency: "Work packages",
+             module: "Calendars"))
 
-    expect(page).to have_no_xpath(project_work_packages_menu_link_selector)
+    work_packages_settings_page.visit!
+    expect(page).to have_no_xpath(project_work_packages_tab_selector)
+    modules_settings_page.visit!
 
+    check "Calendar"
     check "Work packages"
     click_button "Save"
 
-    settings_page.expect_toast message: I18n.t(:notice_successful_update)
+    expect_flash type: :success, message: I18n.t(:notice_successful_update)
 
     expect(page).to have_checked_field "Activity"
     expect(page).to have_checked_field "Calendars"
     expect(page).to have_unchecked_field "Time and costs"
     expect(page).to have_checked_field "Work packages"
 
-    expect(page).to have_xpath(project_work_packages_menu_link_selector, visible: :all)
+    work_packages_settings_page.visit!
+    expect(page).to have_xpath(project_work_packages_tab_selector, visible: :all)
+    modules_settings_page.visit!
 
     uncheck "Work packages"
     click_button "Save"
 
-    expect(page).to have_no_xpath(project_work_packages_menu_link_selector)
+    work_packages_settings_page.visit!
+    expect(page).to have_xpath(project_work_packages_tab_selector)
   end
 
   context "with a user who does not have the correct permissions (#38097)" do
@@ -96,10 +106,11 @@ RSpec.describe "Projects module administration" do
       create(:user,
              member_with_permissions: { project => %i(edit_project) })
     end
+    let(:general_settings_page) { Pages::Projects::Settings::General.new(project) }
 
     before do
       login_as user_without_permission
-      settings_page.visit_tab!("general")
+      general_settings_page.visit!
     end
 
     it "I can't see the modules menu item" do

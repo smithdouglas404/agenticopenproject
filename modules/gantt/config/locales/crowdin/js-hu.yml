@@ -1,6 +1,6 @@
 hu:
   js:
-    queries:
-      all_open: 'Minden nyitott'
-      timeline: 'Idővonal'
-      milestones: 'Mérföldkövek'
+    work_packages:
+      label_gantt_chart_plural: "Gantt-diagram"
+      default_queries:
+        milestones: 'Mérföldkövek'

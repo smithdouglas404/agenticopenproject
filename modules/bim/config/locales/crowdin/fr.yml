@@ -9,6 +9,7 @@ fr:
     label_bcf: 'BCF'
     label_imported_failed: 'Impossible d''importer les sujets BCF'
     label_imported_successfully: 'Sujets BCF importés avec succès'
+    label_bcf_issue_associated: "Question BCF associée"
     issues: "Problèmes"
     recommended: 'recommandé'
     not_recommended: 'déconseillé'
@@ -58,7 +59,7 @@ fr:
         perform_description: "Voulez-vous importer ou mettre à jour les problèmes repris ci-dessus ?"
         replace_with_system_user: 'Les remplacer par l''utilisateur "Système"'
         import_as_system_user: 'Les importer comme utilisateur "Système".'
-        what_to_do: "Que voulez-vous faire?"
+        what_to_do: "Que voulez-vous faire ?"
         work_package_has_newer_changes: "Obsolète ! Ce sujet n'a pas été mis à jour, car les derniers changements sur le serveur étaient plus récents que la \"ModifiedDate\" du sujet importé. Toutefois, les commentaires sur le sujet ont été importés."
         bcf_file_not_found: "Impossible de localiser le fichier BCF. Veuillez recommencer le processus de téléversement."
   export:
@@ -83,6 +84,12 @@ fr:
         ifc_attachment: "Fichier IFC"
         is_default: "Modèle par défaut"
         attachments: "Fichier IFC"
+      bim/bcf/issue:
+        bcf_comment: "Commentaire BCF"
+        bim_snippet: "Extrait de code BIM"
+        reference_links: "Liens de référence"
+        stage: "Étape"
+        viewpoint: "Point de vue"
     errors:
       models:
         bim/ifc_models/ifc_model:

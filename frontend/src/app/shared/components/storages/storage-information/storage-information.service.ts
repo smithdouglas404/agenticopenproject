@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -40,6 +40,7 @@ import {
   fileLinkStatusError,
   storageAuthorizationError,
   storageConnected,
+  storageNotConnected,
   storageFailedAuthorization,
 } from 'core-app/shared/components/storages/storages-constants.const';
 
@@ -48,11 +49,15 @@ export class StorageInformationService {
   private text = {
     fileLinkErrorHeader: this.i18n.t('js.storages.information.live_data_error'),
     fileLinkErrorContent: (storageType:string):string => this.i18n.t('js.storages.information.live_data_error_description', { storageType }),
+    authenticationErrorHeader: (storageType:string):string => this.i18n.t('js.storages.authentication_error', { storageType }),
+    authenticationErrorContent: (storageType:string):string => this.i18n.t('js.storages.information.authentication_error', { storageType }),
     connectionErrorHeader: (storageType:string):string => this.i18n.t('js.storages.no_connection', { storageType }),
     connectionErrorContent: (storageType:string):string => this.i18n.t('js.storages.information.connection_error', { storageType }),
-    authorizationFailureHeader: (storageType:string):string => this.i18n.t('js.storages.login_to', { storageType }),
-    authorizationFailureContent: (storageType:string):string => this.i18n.t('js.storages.information.not_logged_in', { storageType }),
+    notConnectedHeader: (storageType:string):string => this.i18n.t('js.storages.login_to', { storageType }),
+    notConnectedContent: (storageType:string):string => this.i18n.t('js.storages.information.not_logged_in', { storageType }),
     loginButton: (storageType:string):string => this.i18n.t('js.storages.login', { storageType }),
+    suggestLogout: this.i18n.t('js.storages.information.suggest_logout'),
+    suggestRelink: this.i18n.t('js.storages.information.suggest_relink'),
   };
 
   constructor(
@@ -73,6 +78,8 @@ export class StorageInformationService {
           switch (storage._links.authorizationState.href) {
             case storageFailedAuthorization:
               return [this.failedAuthorizationInformation(storage, storageType)];
+            case storageNotConnected:
+              return [this.notConnectedInformation(storage, storageType)];
             case storageAuthorizationError:
               return [this.authorizationErrorInformation(storageType)];
             case storageConnected:
@@ -87,16 +94,31 @@ export class StorageInformationService {
       );
   }
 
-  private failedAuthorizationInformation(storage:IStorage, storageType:string):StorageInformationBox {
+  private notConnectedInformation(storage:IStorage, storageType:string):StorageInformationBox {
     if (!storage._links.authorize) {
-      throw new Error('Authorize link is missing!');
+      // user should authenticate through SSO, but is not yet linked, that's an error
+      return this.failedAuthorizationInformation(storage, storageType);
     }
 
     return new StorageInformationBox(
       'import',
-      this.text.authorizationFailureHeader(storageType),
-      this.text.authorizationFailureContent(storageType),
+      this.text.notConnectedHeader(storageType),
+      this.text.notConnectedContent(storageType),
       {
+        storageId: storage.id,
+        storageType: storage._links.type.href,
+        authorizationLink: storage._links.authorize,
+      },
+    );
+  }
+
+  private failedAuthorizationInformation(storage:IStorage, storageType:string):StorageInformationBox {
+    const suggestion = storage._links.authorize ? this.text.suggestRelink : this.text.suggestLogout;
+    return new StorageInformationBox(
+      'error',
+      this.text.authenticationErrorHeader(storageType),
+      `${this.text.authenticationErrorContent(storageType)} ${suggestion}`,
+      storage._links.authorize && {
         storageId: storage.id,
         storageType: storage._links.type.href,
         authorizationLink: storage._links.authorize,

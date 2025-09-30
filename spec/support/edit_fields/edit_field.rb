@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EditField
   include Capybara::DSL
   include Capybara::RSpecMatchers
@@ -26,7 +28,6 @@ class EditField
                  property_name,
                  selector: nil,
                  create_form: false)
-
     @property_name = property_name.to_s
     @context = context
     @field_type = derive_field_type
@@ -37,6 +38,10 @@ class EditField
 
   def create_form?
     @create_form
+  end
+
+  def visible_on_create_form?
+    true
   end
 
   def field_container
@@ -52,7 +57,7 @@ class EditField
   end
 
   def display_trigger_element
-    if display_element.has_selector?(".inline-edit--display-trigger")
+    if display_element.has_selector?(".inline-edit--display-trigger", wait: 0)
       display_element.find(".inline-edit--display-trigger")
     else
       display_element
@@ -69,7 +74,11 @@ class EditField
 
   def clear(with_backspace: false)
     if with_backspace
-      input_element.set(" ", fill_options: { clear: :backspace })
+      if using_cuprite?
+        clear_input_field_contents(input_element)
+      else
+        input_element.set(" ", fill_options: { clear: :backspace })
+      end
     else
       input_element.native.clear
     end
@@ -101,7 +110,7 @@ class EditField
     retry_block(args: { tries: 2 }) do
       unless active?
         SeleniumHubWaiter.wait unless using_cuprite?
-        scroll_to_and_click(display_trigger_element)
+        scroll_to_and_click(display_trigger_element, block: :nearest)
         SeleniumHubWaiter.wait unless using_cuprite?
       end
 
@@ -117,7 +126,7 @@ class EditField
 
   def openSelectField
     autocomplete_selector.click
-    wait_for_network_idle if using_cuprite?
+    wait_for_network_idle
   end
 
   def set_select_field_value(value)
@@ -128,7 +137,7 @@ class EditField
   end
 
   def expect_state!(open:)
-    if open || create_form?
+    if open || (create_form? && visible_on_create_form?)
       expect_active!
     else
       expect_inactive!
@@ -148,6 +157,7 @@ class EditField
 
     # Also ensure the element is not disabled
     expect_enabled!
+    wait_for_network_idle
   end
 
   def expect_inactive!
@@ -180,7 +190,7 @@ class EditField
   # Set or select the given value.
   # For fields of type select, will check for an option with that value.
   def set_value(content)
-    scroll_to_element(input_element)
+    scroll_to_element(input_element, block: :nearest)
     if autocompleter_field?
       autocomplete(content)
     elsif using_cuprite?
@@ -252,7 +262,7 @@ class EditField
     # an attribute, which may cause an input not to open properly.
     retry_block do
       activate_edition
-      wait_for_network_idle if using_cuprite?
+      wait_for_network_idle
       set_value value
 
       # select fields are saved on change
@@ -299,7 +309,7 @@ class EditField
       "version-autocompleter"
     when :assignee, :responsible, :user
       "op-user-autocompleter"
-    when :priority, :status, :type, :category, :workPackage, :parent
+    when :priority, :status, :type, :category, :workPackage, :parent, :projectPhase
       "create-autocompleter"
     when :project
       "op-project-autocompleter"

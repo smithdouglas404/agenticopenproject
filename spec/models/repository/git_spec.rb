@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -439,7 +441,7 @@ RSpec.describe Repository::Git do
 
         context "with latin-1 encoding" do
           let (:encoding) { "ISO-8859-1" }
-          let (:char1_hex) { "\xc3\x9c".force_encoding("UTF-8") }
+          let (:char1_hex) { (+"\xc3\x9c").force_encoding("UTF-8") }
 
           it "latests changesets latin 1 dir" do
             instance.fetch_changesets

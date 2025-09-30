@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -55,12 +55,11 @@ import { HalResourceService } from 'core-app/features/hal/services/hal-resource.
 @Component({
   selector: 'board-inline-add-autocompleter',
   templateUrl: './board-inline-add-autocompleter.html',
-
   // Allow styling the embedded ng-select
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./board-inline-add-autocompleter.sass'],
+  standalone: false,
 })
-
 export class BoardInlineAddAutocompleterComponent implements AfterViewInit {
   readonly text = {
     placeholder: this.I18n.t('js.relations_autocomplete.placeholder'),

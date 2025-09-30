@@ -2,7 +2,7 @@
 
 # -- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,11 +27,6 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 # ++
-
-# We use BigDecimal to handle floating point arithmetic and avoid
-# weird floating point results on decimal operations when converting
-# hours to seconds on duration outputting.
-require "bigdecimal"
 
 class DurationConverter
   UNIT_ABBREVIATION_MAP = {
@@ -81,6 +76,55 @@ class DurationConverter
 
   class << self
     def parse(duration_string)
+      return nil if duration_string.blank?
+
+      do_parse(duration_string)
+    end
+
+    def valid?(duration)
+      case duration
+      when String
+        duration.blank? || parseable?(duration)
+      when Numeric
+        duration >= 0
+      when nil
+        true
+      else
+        false
+      end
+    rescue ChronicDuration::DurationParseError
+      false
+    end
+
+    def output(duration_in_hours, format: default_format)
+      return duration_in_hours if duration_in_hours.nil?
+
+      seconds = (duration_in_hours * 3600).to_i
+
+      # :days_and_hours format return "0h" when parsing 0.
+      ChronicDuration.output(seconds,
+                             format:,
+                             **duration_length_options)
+    end
+
+    private
+
+    def parseable?(duration_string)
+      if number = Integer(duration_string, 10, exception: false) || Float(duration_string, exception: false)
+        # ruby 3.4 started being able to parse strings like "1." as 1.0.
+        # However, that does not work with ChronicDuration.
+        number >= 0 && !duration_string.ends_with?(".")
+      else
+        begin
+          do_parse(duration_string)
+          true
+        rescue ChronicDuration::DurationParseError
+          false
+        end
+      end
+    end
+
+    def do_parse(duration_string)
       # Assume the next logical unit to allow users to write
       # durations such as "2h 1" assuming "1" is "1 minute"
       last_unit_in_string = duration_string.scan(/[a-zA-Z]+/)
@@ -96,46 +140,17 @@ class DurationConverter
       ChronicDuration.parse(duration_string,
                             keep_zero: true,
                             default_unit:,
+                            raise_exceptions: true,
                             **duration_length_options) / 3600.to_f
     end
 
-    def output(duration_in_hours)
-      return duration_in_hours if duration_in_hours.nil?
-
-      # Prevents rounding errors when including seconds by chopping
-      # off the overflow seconds and keeping the nearest minute.
-      seconds = ((duration_in_hours * 3600) + 30).to_i
-      seconds_overflow = seconds % 60
-      seconds_to_the_nearest_minute = seconds - seconds_overflow
-
-      # return "0 h" if parsing 0.
-      # ChronicDuration returns nil when parsing 0.
-      # By default, its unit is seconds and if we were
-      # keeping zeroes, we'd format this as "0 secs".
-      #
-      # We want to override this behavior.
-      if ChronicDuration.output(seconds_to_the_nearest_minute,
-                                default_unit: "hours",
-                                **duration_length_options).nil?
-        "0h"
-      else
-        ChronicDuration.output(seconds_to_the_nearest_minute,
-                               default_unit: "hours",
-                               format: :short,
-                               **duration_length_options)
-      end
-    end
-
-    private
-
-    def convert_duration_to_seconds(duration_in_hours)
-      (BigDecimal(duration_in_hours.to_s) * 3600).to_f
+    def default_format
+      Setting.duration_format == "days_and_hours" ? :days_and_hours : :hours_only
     end
 
     def duration_length_options
       { hours_per_day: Setting.hours_per_day,
-        days_per_month: Setting.days_per_month,
-        weeks: true }
+        days_per_month: Setting.days_per_month }
     end
   end
 end

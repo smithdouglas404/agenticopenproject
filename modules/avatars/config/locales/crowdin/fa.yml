@@ -1,7 +1,7 @@
 #English strings go here
 fa:
   plugin_openproject_avatars:
-    name: "چهرک‌ها"
+    name: "آواتارها"
     description: >-
       This plugin allows OpenProject users to upload a picture to be used as an avatar or use registered images from Gravatar.
   label_avatar: "چهرک"
@@ -11,7 +11,6 @@ fa:
   message_avatar_uploaded: "آواتار مورد نظر با موفقيت تغيير كرد"
   error_image_upload: "خطا در ذخیره عکس"
   error_image_size: "عکس بیش از اندازه بزرگ است."
-  button_change_avatar: "تغییر آواتار"
   are_you_sure_delete_avatar: "آیا مطمئن هستید که می‌خواهید آواتار خود را حذف کنید؟ "
   avatar_deleted: "چهرک با کامیابی زدوده شد."
   unable_to_delete_avatar: "حذف آواتار امکان‌پذیر نیست."
@@ -33,7 +32,7 @@ fa:
     text_local_avatar_over_gravatar: |
       اگر یکی تنظیم کنید، این آواتار شخصی به اولویت نسبت به گراواتار بالا استفاده می‌شود.
     text_your_current_gravatar: |
-      OpenProject از گراواتار یا در صورت وجود تصویر یا آیکون پیش‌فرض شما یکی را استفاده می‌کند. گراواتار فعلی به شکل زیر است:
+       OpenProject از گراواتار یا در صورت وجود تصویر یا آیکون پیش‌فرض شما یکی را استفاده می‌کند. گراواتار فعلی به شکل زیر است:
     settings:
       enable_gravatars: 'چهرکنماد (شناسایی چهرک جهانی) کاربر را کارآ کنید'
       gravatar_default: "تصویر گراواتار پیش‌فرض"

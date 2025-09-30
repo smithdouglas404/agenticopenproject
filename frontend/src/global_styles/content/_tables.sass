@@ -1,6 +1,6 @@
 //-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -55,8 +55,6 @@ table
         font-style: normal
         font-weight: var(--base-text-weight-bold)
         background-color: #EEEEEE
-    .hours-dec
-      font-size: 0.9em
 
 #workflow_form
   .generic-table--results-container
@@ -144,8 +142,6 @@ tr
 td
   &.hours
     font-weight: var(--base-text-weight-bold)
-    .hours-dec
-      font-size: 0.9em
   .date
     .spot-drop-modal
       display: block
@@ -155,13 +151,13 @@ th.hidden
 
 tr.context-menu-selection,
 tr.-checked
-  background-color: var(--table-row-highlighting-color) !important
+  background-color: var(--bgColor-accent-muted) !important
   &[class*=__hl_background]
-    outline: var(--table-row-highlighting-outline-color) solid 2px
+    outline: var(--bgColor-accent-emphasis) solid 2px
 
   td
-    border-top: 1px solid var(--table-row-highlighting-color) !important
-    border-bottom: 1px solid var(--table-row-highlighting-color) !important
+    border-top: 1px solid var(--bgColor-accent-emphasis) !important
+    border-bottom: 1px solid var(--bgColor-accent-emphasis) !important
     color: var(--body-font-color) !important
     a
       color: var(--body-font-color) !important

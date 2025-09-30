@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Types", :js, :with_cuprite do
+RSpec.describe "Types", :js do
   shared_let(:admin) { create(:admin) }
 
   shared_let(:existing_role) { create(:project_role) }
@@ -50,22 +52,20 @@ RSpec.describe "Types", :js, :with_cuprite do
     fill_in "Name", with: existing_type.name
     select existing_type.name, from: "Copy workflow from"
 
-    click_button "Create"
+    click_on "Save"
 
-    expect(page)
-      .to have_css(".errorExplanation", text: "Name has already been taken.")
+    expect(page).to have_css(".FormControl-inlineValidation", text: "Name has already been taken.", wait: 12)
 
     # Values are retained
-    expect(page)
-      .to have_field("Name", with: existing_type.name)
+    expect(page).to have_field("Name", with: existing_type.name)
+    expect(page).to have_field("Copy workflow from", with: existing_type.id)
 
     # Successful creation
     fill_in "Name", with: "A new type"
 
-    click_button "Create"
+    click_on "Save"
 
-    expect(page)
-      .to have_content I18n.t(:notice_successful_create)
+    expect(page).to have_content I18n.t(:notice_successful_create)
 
     # Workflow should be copied over.
     # Workflow routes are not resource-oriented.
@@ -73,15 +73,14 @@ RSpec.describe "Types", :js, :with_cuprite do
 
     select existing_role.name, from: "Role"
     select "A new type", from: "Type"
-    click_button "Edit"
+    click_on "Edit"
 
     from_id = existing_workflow.old_status_id
     to_id = existing_workflow.new_status_id
 
     checkbox = page.find("input.old-status-#{from_id}.new-status-#{to_id}[value=always]")
 
-    expect(checkbox)
-      .to be_checked
+    expect(checkbox).to be_checked
 
     index_page.visit!
 
@@ -91,10 +90,9 @@ RSpec.describe "Types", :js, :with_cuprite do
 
     fill_in "Name", with: "Renamed type"
 
-    click_button "Save"
+    click_on "Save"
 
-    expect(page)
-      .to have_content I18n.t(:notice_successful_update)
+    expect_flash(type: :success, message: I18n.t(:notice_successful_update))
 
     index_page.visit!
 
@@ -123,9 +121,7 @@ RSpec.describe "Types", :js, :with_cuprite do
       end
 
       it "renders an error message with links to the archived project in the projects list" do
-        within ".op-toast.-error" do
-          expect(page).to have_link(project.name)
-        end
+        expect_flash type: :error, message: project.name
       end
     end
   end

@@ -254,7 +254,7 @@ post:
   tags:
   - Attachments
   description: |-
-    Adds an attachment with the meeting as it's container.
+    Adds an attachment with the meeting as its container.
 
   operationId: Add_attachment_to_meeting
   summary: Add attachment to meeting

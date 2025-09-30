@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "../../../spec_helper"
 require_relative "../authentication_controller_shared_examples"
 
@@ -48,7 +50,7 @@ RSpec.describe TwoFactorAuthentication::ForcedRegistration::TwoFactorDevicesCont
 
     context "when logged in, but not enabled" do
       it "does not give access" do
-        expect(response.status).to eq 404
+        expect(response).to have_http_status :not_found
       end
     end
 
@@ -98,7 +100,7 @@ RSpec.describe TwoFactorAuthentication::ForcedRegistration::TwoFactorDevicesCont
         let(:params) { { identifier: "foo" } }
 
         it "renders action new" do
-          expect(response).to be_successful
+          expect(response).to have_http_status :unprocessable_entity
           expect(response).to render_template "new"
           expect(assigns[:device]).to be_invalid
         end
@@ -123,7 +125,7 @@ RSpec.describe TwoFactorAuthentication::ForcedRegistration::TwoFactorDevicesCont
       describe "#get" do
         it "croaks on missing id" do
           get :confirm, params: { device_id: 1234 }
-          expect(response.status).to eq 404
+          expect(response).to have_http_status :not_found
         end
 
         describe "and registered totp device" do
@@ -162,7 +164,7 @@ RSpec.describe TwoFactorAuthentication::ForcedRegistration::TwoFactorDevicesCont
       describe "#post" do
         it "croaks on missing id" do
           get :confirm, params: { device_id: 1234 }
-          expect(response.status).to eq 404
+          expect(response).to have_http_status :not_found
         end
 
         describe "and registered totp device" do
@@ -187,7 +189,7 @@ RSpec.describe TwoFactorAuthentication::ForcedRegistration::TwoFactorDevicesCont
 
           it "activates the device when entered correctly and logs out the user" do
             allow(Sessions::DropAllSessionsService)
-              .to receive(:call)
+              .to receive(:call!)
 
             # rubocop:disable RSpec/AnyInstance
             allow_any_instance_of(TwoFactorAuthentication::TokenService)
@@ -204,7 +206,7 @@ RSpec.describe TwoFactorAuthentication::ForcedRegistration::TwoFactorDevicesCont
             expect(device.default).to be true
 
             expect(Sessions::DropAllSessionsService)
-              .to have_received(:call).with(user)
+              .to have_received(:call!).with(user)
           end
         end
       end

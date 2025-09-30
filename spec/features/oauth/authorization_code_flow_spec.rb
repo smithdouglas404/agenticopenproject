@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "OAuth authorization code flow", :js do
+RSpec.describe "OAuth authorization code flow", :js, :selenium do
   let!(:user) { create(:user) }
   let!(:redirect_uri) { "urn:ietf:wg:oauth:2.0:oob" }
   let!(:allowed_redirect_uri) { redirect_uri }
@@ -101,7 +103,7 @@ RSpec.describe "OAuth authorization code flow", :js do
     page.driver.browser.switch_to.alert.accept
 
     # Should be back on access_token path
-    expect(page).to have_css(".op-toast.-success")
+    expect_flash(message: "Revocation of application Cool API app! successful.")
     expect(page).to have_no_css("[id^=oauth-application-grant]")
 
     expect(page).to have_current_path /\/my\/access_token/
@@ -120,6 +122,23 @@ RSpec.describe "OAuth authorization code flow", :js do
     # But we got no further
     expect(page).to have_css(".op-toast.-error",
                              text: "Client authentication failed due to unknown client, no client authentication included, or unsupported authentication method.")
+
+    # And also have no grant for this application
+    user.oauth_grants.reload
+    expect(user.oauth_grants.count).to eq 0
+  end
+
+  it "does not authenticate disabled applications" do
+    app.toggle!(:enabled)
+
+    visit oauth_path app.uid, redirect_uri
+
+    # Expect we're guided to the login screen
+    login_with user.login, "adminADMIN!", visit_signin_path: false
+
+    # But we got no further
+    expect(page).to have_css(".op-toast.-error",
+                             text: "The client is not authorized to perform this request using this method.")
 
     # And also have no grant for this application
     user.oauth_grants.reload

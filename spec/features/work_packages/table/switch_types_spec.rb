@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 RSpec.describe "Switching types in work package table", :js do
@@ -80,7 +82,7 @@ RSpec.describe "Switching types in work package table", :js do
       text_field.save!
 
       wp_table.expect_and_dismiss_toaster(
-        message: "Successful update. Click here to open this work package in fullscreen view."
+        message: "Successful update."
       )
 
       # Switch type
@@ -98,7 +100,7 @@ RSpec.describe "Switching types in work package table", :js do
       req_text_field.save!
 
       wp_table.expect_and_dismiss_toaster(
-        message: "Successful update. Click here to open this work package in fullscreen view."
+        message: "Successful update."
       )
 
       expect { text_field.display_element }.to raise_error(Capybara::ElementNotFound)
@@ -107,7 +109,7 @@ RSpec.describe "Switching types in work package table", :js do
       type_field.set_value type_task.name
 
       wp_table.expect_and_dismiss_toaster(
-        message: "Successful update. Click here to open this work package in fullscreen view."
+        message: "Successful update."
       )
 
       expect(page).to have_no_css "#{req_text_field.selector} #{req_text_field.display_selector}"
@@ -115,6 +117,8 @@ RSpec.describe "Switching types in work package table", :js do
     end
 
     it "can switch back from an open required CF (Regression test #28099)" do
+      wait_for_network_idle
+
       # Switch type
       type_field.activate!
       type_field.set_value type_bug.name
@@ -133,7 +137,7 @@ RSpec.describe "Switching types in work package table", :js do
       type_field.set_value type_task.name
 
       wp_table.expect_and_dismiss_toaster(
-        message: "Successful update. Click here to open this work package in fullscreen view."
+        message: "Successful update."
       )
     end
 
@@ -167,7 +171,7 @@ RSpec.describe "Switching types in work package table", :js do
         req_text_field.update "foobar"
 
         wp_table.expect_and_dismiss_toaster(
-          message: "Successful update. Click here to open this work package in fullscreen view."
+          message: "Successful update."
         )
 
         req_text_field.expect_state_text "foobar"

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { DynamicFieldsService } from 'core-app/shared/components/dynamic-forms/services/dynamic-fields/dynamic-fields.service';
 import { isObservable } from 'rxjs';
 import { IOPFormlyFieldSettings } from 'core-app/shared/components/dynamic-forms/typings';
@@ -12,13 +12,13 @@ describe('DynamicFieldsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-      ],
-      providers: [
+    imports: [],
+    providers: [
         DynamicFieldsService,
-      ],
-    });
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+});
     httpClient = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
     service = TestBed.inject(DynamicFieldsService);
@@ -29,7 +29,7 @@ describe('DynamicFieldsService', () => {
   });
 
   it('should generate a proper dynamic form schema', () => {
-    const formPayload = {
+    const formPayload:IOPFormModel = {
       name: 'Project 1',
       _links: {
         parent: {
@@ -38,7 +38,7 @@ describe('DynamicFieldsService', () => {
         },
       },
     };
-    const formSchema = {
+    const formSchema:IOPFormSchema = {
       name: {
         type: 'String',
         name: 'Name',
@@ -82,7 +82,7 @@ describe('DynamicFieldsService', () => {
   });
 
   it('should format the form model (add the name property to resources (_links: single and multiple))', () => {
-    const formPayload = {
+    const formPayload:IOPFormModel = {
       title: 'Project 1',
       _links: {
         parent: {
@@ -101,44 +101,6 @@ describe('DynamicFieldsService', () => {
         ],
       },
     };
-    const formSchema = {
-      title: {
-        type: 'String',
-        name: 'Name',
-        required: true,
-        hasDefault: false,
-        writable: true,
-        minLength: 1,
-        maxLength: 255,
-        options: {},
-      },
-      parent: {
-        type: 'Project',
-        name: 'Subproject of',
-        required: false,
-        hasDefault: false,
-        writable: true,
-        location: '_links',
-        _links: {
-          allowedValues: {
-            href: '/api/v3/projects/available_parent_projects?of=25',
-          },
-        },
-      },
-      children: {
-        type: 'Project',
-        name: "Project's children",
-        required: false,
-        hasDefault: false,
-        writable: true,
-        _links: {
-          allowedValues: {
-            href: '/api/v3/projects/available_parent_projects?of=25',
-          },
-        },
-      },
-      _dependencies: [],
-    };
 
     // @ts-ignore
     const formModel = service.getModel(formPayload);
@@ -152,7 +114,7 @@ describe('DynamicFieldsService', () => {
   });
 
   it('should generate a proper dynamic form config', () => {
-    const formPayload = {
+    const formPayload:IOPFormModel = {
       name: 'Project 1',
       _links: {
         parent: {
@@ -161,7 +123,7 @@ describe('DynamicFieldsService', () => {
         },
       },
     };
-    const formSchema = {
+    const formSchema:IOPFormSchema = {
       parent: {
         type: 'Project',
         name: 'Subproject of',
@@ -197,7 +159,7 @@ describe('DynamicFieldsService', () => {
     };
     // @ts-ignore
     const formlyConfig = service.getConfig(formSchema, formPayload);
-    const formlyFields = formlyConfig.reduce((result, formlyField) => (formlyField.fieldGroup ? [...result, ...formlyField.fieldGroup] : [...result, formlyField]), [] as IOPFormlyFieldSettings[]);
+    const formlyFields = formlyConfig.reduce((result:IOPFormSettings[], formlyField) => (formlyField.fieldGroup ? [...result, ...formlyField.fieldGroup] : [...result, formlyField]), []);
     const formGroup = formlyConfig[1];
 
     expect(formlyFields[1].templateOptions!.label).toBe('Name', 'should set the correct label');

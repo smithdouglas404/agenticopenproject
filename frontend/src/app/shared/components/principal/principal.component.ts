@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -40,10 +40,7 @@ import { PathHelperService } from 'core-app/core/path-helper/path-helper.service
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 
 import { TimezoneService } from 'core-app/core/datetime/timezone.service';
-import {
-  AvatarSize,
-  PrincipalRendererService,
-} from './principal-renderer.service';
+import { AvatarOptions, AvatarSize, HoverCardOptions, PrincipalRendererService } from './principal-renderer.service';
 import { PrincipalLike } from './principal-types';
 import { populateInputsFromDataset } from 'core-app/shared/components/dataset-inputs';
 import { PrincipalType } from 'core-app/shared/components/principal/principal-helper';
@@ -62,6 +59,7 @@ export interface PrincipalInput {
   styleUrls: ['./principal.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class OpPrincipalComponent implements OnInit {
   @Input() principal:PrincipalLike;
@@ -75,6 +73,11 @@ export class OpPrincipalComponent implements OnInit {
   @Input() link = true;
 
   @Input() size:AvatarSize = 'default';
+
+  @Input() avatarClasses? = '';
+
+  @Input() hoverCard= true;
+  @Input() hoverCardUrl= '';
 
   @Input() title = '';
 
@@ -93,6 +96,16 @@ export class OpPrincipalComponent implements OnInit {
 
   ngOnInit() {
     if (this.principal.name) {
+      const avatarOptions:AvatarOptions = {
+        hide: this.hideAvatar,
+        size: this.size,
+      };
+
+      const hoverCardOptions:HoverCardOptions = {
+        isActivated: this.hoverCard,
+        url: this.hoverCardUrl,
+      };
+
       this.principalRenderer.render(
         this.elementRef.nativeElement as HTMLElement,
         this.principal,
@@ -101,10 +114,8 @@ export class OpPrincipalComponent implements OnInit {
           link: this.link,
           classes: this.nameClasses,
         },
-        {
-          hide: this.hideAvatar,
-          size: this.size,
-        },
+        avatarOptions,
+        hoverCardOptions,
         this.title === '' ? null : this.title,
       );
     }

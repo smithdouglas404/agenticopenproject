@@ -8,6 +8,7 @@ ka:
         url: 'ჩასატვირთი URL'
         secret: 'Signature secret'
         events: 'მოვლენები'
+        enabled: 'Enabled'
         projects: 'Enabled projects'
       webhooks/log:
         event_name: 'მოვლენის სახელი'
@@ -30,6 +31,8 @@ ka:
       events:
         created: "შეიქმნა"
         updated: "განახლებულია"
+        comment: "კომენტარი"
+        internal_comment: "Internal comment"
       explanation:
         text: >
           Upon the occurrence of an event like the creation of a work package or an update on a project, OpenProject will send a POST request to the configured web endpoints. Oftentimes, the event is sent after the %{link} has passed.

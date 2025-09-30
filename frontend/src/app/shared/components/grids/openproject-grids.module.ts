@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Injector, NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Injector, NgModule } from '@angular/core';
 import { DynamicModule } from 'ng-dynamic-component';
 import { HookService } from 'core-app/features/plugins/hook-service';
 import { OpSharedModule } from 'core-app/shared/shared.module';
@@ -44,6 +44,7 @@ import { GridComponent } from 'core-app/shared/components/grids/grid/grid.compon
 import { AddGridWidgetModalComponent } from 'core-app/shared/components/grids/widgets/add/add.modal';
 import { WidgetDocumentsComponent } from 'core-app/shared/components/grids/widgets/documents/documents.component';
 import { WidgetNewsComponent } from 'core-app/shared/components/grids/widgets/news/news.component';
+import { WidgetNewsBetaComponent } from 'core-app/shared/components/grids/widgets/news-beta/news-beta.component';
 import { WidgetWpTableComponent } from 'core-app/shared/components/grids/widgets/wp-table/wp-table.component';
 import { WidgetMenuComponent } from 'core-app/shared/components/grids/widgets/menu/widget-menu.component';
 import { WidgetWpTableMenuComponent } from 'core-app/shared/components/grids/widgets/wp-table/wp-table-menu.component';
@@ -65,12 +66,6 @@ import { WidgetWpOverviewComponent } from 'core-app/shared/components/grids/widg
 import { WidgetCustomTextComponent } from 'core-app/shared/components/grids/widgets/custom-text/custom-text.component';
 import { OpenprojectFieldsModule } from 'core-app/shared/components/fields/openproject-fields.module';
 import {
-  WidgetProjectDetailsComponent,
-} from 'core-app/shared/components/grids/widgets/project-details/project-details.component';
-import {
-  WidgetProjectDetailsMenuComponent,
-} from 'core-app/shared/components/grids/widgets/project-details/project-details-menu.component';
-import {
   WidgetTimeEntriesProjectComponent,
 } from 'core-app/shared/components/grids/widgets/time-entries/project/time-entries-project.component';
 import { WidgetSubprojectsComponent } from 'core-app/shared/components/grids/widgets/subprojects/subprojects.component';
@@ -79,6 +74,9 @@ import { WidgetMembersComponent } from 'core-app/shared/components/grids/widgets
 import {
   WidgetProjectStatusComponent,
 } from 'core-app/shared/components/grids/widgets/project-status/project-status.component';
+import {
+  WidgetProjectStatusBetaComponent,
+} from 'core-app/shared/components/grids/widgets/project-status-beta/project-status-beta.component';
 import { OpenprojectTimeEntriesModule } from 'core-app/shared/components/time_entries/openproject-time-entries.module';
 import {
   WidgetTimeEntriesCurrentUserMenuComponent,
@@ -89,8 +87,9 @@ import {
 } from './widgets/time-entries/current-user/configuration-modal/configuration.modal';
 import {
   WidgetProjectFavoritesComponent,
-} from "core-app/shared/components/grids/widgets/project-favorites/widget-project-favorites.component";
+} from 'core-app/shared/components/grids/widgets/project-favorites/widget-project-favorites.component';
 import { IconModule } from 'core-app/shared/components/icon/icon.module';
+import { OpenprojectEnterpriseModule } from 'core-app/features/enterprise/openproject-enterprise.module';
 
 @NgModule({
   imports: [
@@ -103,6 +102,7 @@ import { IconModule } from 'core-app/shared/components/icon/icon.module';
     OpenprojectWorkPackageGraphsModule,
     OpenprojectCalendarModule,
     OpenprojectTimeEntriesModule,
+    OpenprojectEnterpriseModule,
 
     OpenprojectAttachmentsModule,
 
@@ -124,21 +124,21 @@ import { IconModule } from 'core-app/shared/components/icon/icon.module';
     WidgetDocumentsComponent,
     WidgetMembersComponent,
     WidgetNewsComponent,
+    WidgetNewsBetaComponent,
     WidgetWpCalendarComponent,
     WidgetWpOverviewComponent,
     WidgetWpTableComponent,
     WidgetWpTableQuerySpaceComponent,
     WidgetWpGraphComponent,
     WidgetProjectDescriptionComponent,
-    WidgetProjectDetailsComponent,
     WidgetProjectStatusComponent,
+    WidgetProjectStatusBetaComponent,
     WidgetSubprojectsComponent,
     WidgetProjectFavoritesComponent,
     WidgetTimeEntriesCurrentUserComponent,
     WidgetTimeEntriesProjectComponent,
 
     // Widget menus
-    WidgetProjectDetailsMenuComponent,
     WidgetMenuComponent,
     WidgetWpTableMenuComponent,
     WidgetWpGraphMenuComponent,
@@ -152,6 +152,7 @@ import { IconModule } from 'core-app/shared/components/icon/icon.module';
   exports: [
     GridComponent,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class OpenprojectGridsModule {
   constructor(injector:Injector) {
@@ -313,6 +314,14 @@ export function registerWidgets(injector:Injector) {
         },
       },
       {
+        identifier: 'news_beta',
+        component: WidgetNewsBetaComponent,
+        title: i18n.t('js.grid.widgets.news_beta.title'),
+        properties: {
+          name: i18n.t('js.grid.widgets.news_beta.title'),
+        },
+      },
+      {
         identifier: 'project_description',
         component: WidgetProjectDescriptionComponent,
         title: i18n.t('js.grid.widgets.project_description.title'),
@@ -332,19 +341,19 @@ export function registerWidgets(injector:Injector) {
         },
       },
       {
-        identifier: 'project_details',
-        component: WidgetProjectDetailsComponent,
-        title: i18n.t('js.grid.widgets.project_details.title'),
-        properties: {
-          name: i18n.t('js.grid.widgets.project_details.title'),
-        },
-      },
-      {
         identifier: 'project_status',
         component: WidgetProjectStatusComponent,
         title: i18n.t('js.grid.widgets.project_status.title'),
         properties: {
           name: i18n.t('js.grid.widgets.project_status.title'),
+        },
+      },
+      {
+        identifier: 'project_status_beta',
+        component: WidgetProjectStatusBetaComponent,
+        title: i18n.t('js.grid.widgets.project_status_beta.title'),
+        properties: {
+          name: i18n.t('js.grid.widgets.project_status_beta.title'),
         },
       },
       {

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,6 +31,8 @@
 require "spec_helper"
 
 RSpec.describe "users/index" do
+  include EnterpriseTokenFactory
+
   shared_let(:admin) { create(:admin) }
   let!(:user) { create(:user, firstname: "Scarlet", lastname: "Scallywag") }
 
@@ -39,9 +43,9 @@ RSpec.describe "users/index" do
     assign(:status, "all")
     assign(:groups, Group.all)
 
-    allow(view).to receive(:current_user).and_return(admin)
-    allow(view).to receive(:controller_name).and_return("users")
-    allow(view).to receive(:action_name).and_return("index")
+    without_partial_double_verification do
+      allow(view).to receive_messages(current_user: admin, controller_name: "users", action_name: "index")
+    end
   end
 
   subject { rendered.squish }
@@ -55,7 +59,7 @@ RSpec.describe "users/index" do
 
   context "with an Enterprise token" do
     before do
-      allow(OpenProject::Enterprise).to receive(:token).and_return(Struct.new(:restrictions).new({ active_user_count: 5 }))
+      create_enterprise_token("token_5_users", restrictions: { active_user_count: 5 })
     end
 
     it "shows the current number of active and allowed users" do

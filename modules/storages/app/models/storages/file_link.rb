@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,11 +39,7 @@ class Storages::FileLink < ApplicationRecord
   validates :container_type, inclusion: { in: ["WorkPackage", nil] }
   validates :origin_id, presence: true
 
-  attr_writer :origin_status
-
-  def origin_status
-    @origin_status || nil
-  end
+  attribute :origin_status
 
   delegate :project, to: :container
 

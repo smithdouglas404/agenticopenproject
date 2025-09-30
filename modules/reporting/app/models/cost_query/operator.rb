@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -50,8 +50,13 @@ class CostQuery::Operator < Report::Operator
     def modify(query, field, *values)
       p_ids = []
       values.each do |value|
-        p_ids += ([value] << Project.find(value).descendants.map(&:id))
+        project = Project.visible.find(value)
+        next unless project
+
+        p_ids << project.id
+        p_ids += project.descendants.pluck(:id)
       end
+
       "=".to_operator.modify query, field, p_ids
     rescue ActiveRecord::RecordNotFound
       query
@@ -63,10 +68,51 @@ class CostQuery::Operator < Report::Operator
       p_ids = []
       values.each do |value|
         value.to_s.split(",").each do |id|
-          p_ids += ([id] << Project.find(id).descendants.map(&:id))
+          project = Project.visible.find(id)
+          next unless project
+
+          p_ids << project.id
+          p_ids += project.descendants.pluck(:id)
         end
       end
+
       "!".to_operator.modify query, field, p_ids
+    rescue ActiveRecord::RecordNotFound
+      query
+    end
+  end
+
+  new "=_child_work_packages", validate: :integers, label: :label_is_work_package_with_descendants do
+    def modify(query, field, *values)
+      wp_ids = []
+      values.each do |value|
+        work_package = WorkPackage.visible.find(value)
+        next unless work_package
+
+        wp_ids << work_package.id
+        wp_ids += work_package.descendants.pluck(:id)
+      end
+
+      "=".to_operator.modify query, field, wp_ids
+    rescue ActiveRecord::RecordNotFound
+      query
+    end
+  end
+
+  new "!_child_work_packages", validate: :integers, label: :label_is_not_work_package_with_descendants do
+    def modify(query, field, *values)
+      wp_ids = []
+      values.each do |value|
+        value.to_s.split(",").each do |id|
+          work_package = WorkPackage.visible.find(id)
+          next unless work_package
+
+          wp_ids << work_package.id
+          wp_ids += work_package.descendants.pluck(:id)
+        end
+      end
+
+      "!".to_operator.modify query, field, wp_ids
     rescue ActiveRecord::RecordNotFound
       query
     end

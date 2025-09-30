@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,7 +33,8 @@ require "features/page_objects/notification"
 require "features/work_packages/shared_contexts"
 require "features/work_packages/work_packages_page"
 
-RSpec.describe "Wiki menu items" do
+RSpec.describe "Wiki menu items",
+               :js do
   let(:user) do
     create(:user,
            member_with_permissions: { project => %i[view_wiki_pages
@@ -84,19 +87,19 @@ RSpec.describe "Wiki menu items" do
     end
   end
 
-  it "allows managing the menu item of a wiki page", :js, :with_cuprite do
+  it "allows managing the menu item of a wiki page", :js do
     other_wiki_page
     another_wiki_page
 
     visit project_wiki_path(project, wiki_page)
 
     # creating the menu item with the pages name for the menu item
-    click_link "More"
-    click_link "Configure menu item"
+    page.find_test_selector("wiki-more-dropdown-menu").click
+    page.find_test_selector("wiki-configure-menu-action-menu-item").click
 
     choose "Show as menu item in project navigation"
 
-    click_button "Save"
+    click_link_or_button "Save"
 
     expect(page)
       .to have_css(".main-menu--children-menu-header", text: wiki_page.title)
@@ -107,23 +110,23 @@ RSpec.describe "Wiki menu items" do
       .to have_css(".main-item-wrapper", text: wiki_page.title)
 
     # clicking the menu item leads to the page
-    click_link wiki_page.title
-
+    find(".wiki-menu--main-item", text: wiki_page.title).click
     expect(page)
       .to have_current_path(project_wiki_path(project, wiki_page))
 
     # modifying the menu item to a different name and to be a subpage
 
-    click_link "More"
-    click_link "Configure menu item"
+    page.find_test_selector("wiki-more-dropdown-menu").click
+    page.find_test_selector("wiki-configure-menu-action-menu-item").click
+    wait_for_network_idle
 
     fill_in "Name of menu item", with: "Custom page name"
-
     choose "Show as submenu item of"
 
     select other_wiki_page.slug, from: "parent_wiki_menu_item"
 
-    click_button "Save"
+    click_link_or_button "Save"
+    wait_for_network_idle
 
     # the other page is now the main heading
     expect(page)
@@ -132,7 +135,8 @@ RSpec.describe "Wiki menu items" do
     expect(page)
       .to have_css(".wiki-menu--sub-item", text: "Custom page name")
 
-    click_link "Custom page name"
+    find(".wiki-menu--sub-item", text: "Custom page name").click
+    wait_for_network_idle
 
     expect(page)
       .to have_current_path(project_wiki_path(project, wiki_page))
@@ -146,9 +150,9 @@ RSpec.describe "Wiki menu items" do
     # deleting the page will remove the menu item
     visit project_wiki_path(project, wiki_page)
 
-    click_link "More"
+    page.find_test_selector("wiki-more-dropdown-menu").click
     accept_alert do
-      click_link "Delete"
+      page.find_test_selector("wiki-delete-action-menu-item").click
     end
 
     within "#menu-sidebar" do
@@ -160,17 +164,17 @@ RSpec.describe "Wiki menu items" do
     MenuItems::WikiMenuItem.where(navigatable_id: project.wiki.id, name: "wiki").delete_all
     visit project_wiki_path(project, other_wiki_page)
 
-    click_link "More"
-    click_link "Configure menu item"
+    page.find_test_selector("wiki-more-dropdown-menu").click
+    page.find_test_selector("wiki-configure-menu-action-menu-item").click
 
     choose "Do not show this wikipage in project navigation"
 
-    click_button "Save"
+    click_link_or_button "Save"
 
     # Because it is the last wiki menu item, the user is prompted to select another menu item
     select another_wiki_page.title, from: "main-menu-item-select"
 
-    click_button "Save"
+    click_link_or_button "Save"
 
     expect(page)
       .to have_no_css(".main-menu--children-menu-header", text: other_wiki_page.title)

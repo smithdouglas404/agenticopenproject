@@ -1,6 +1,6 @@
 fr:
   js:
-    queries:
-      all_open: 'Tous les tickets ouverts'
-      timeline: 'Ligne du temps'
-      milestones: 'Jalons'
+    work_packages:
+      label_gantt_chart_plural: "Diagrammes de Gantt"
+      default_queries:
+        milestones: 'Étapes importantes'

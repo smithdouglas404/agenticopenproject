@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,18 +32,19 @@ class WorkPackages::CreateService < BaseServices::BaseCallable
   include ::WorkPackages::Shared::UpdateAncestors
   include ::Shared::ServiceContext
 
-  attr_accessor :user,
-                :contract_class
+  attr_reader :user, :contract_class
 
   def initialize(user:, contract_class: WorkPackages::CreateContract)
-    self.user = user
-    self.contract_class = contract_class
+    super()
+    @user = user
+    @contract_class = contract_class
   end
 
-  def perform(work_package: WorkPackage.new,
-              send_notifications: nil,
-              **attributes)
-    in_user_context(send_notifications:) do
+  def perform
+    attributes = params.except(:send_notifications, :work_package)
+    work_package = params[:work_package] || WorkPackage.new
+
+    in_user_context(send_notifications: params[:send_notifications]) do
       create(attributes, work_package)
     end
   end
@@ -55,37 +58,41 @@ class WorkPackages::CreateService < BaseServices::BaseCallable
       if result.success
         work_package.attachments = work_package.attachments_replacements if work_package.attachments_replacements
         work_package.save
-      else
-        false
+
+        set_templated_subject(work_package)
       end
 
     if result.success?
-      result.merge!(reschedule_related(work_package))
-
+      # update ancestors before rescheduling, as the parent might switch to automatic mode
       update_ancestors_all_attributes(result.all_results).each do |ancestor_result|
         result.merge!(ancestor_result)
       end
 
+      result.merge!(reschedule_related(work_package))
+
       set_user_as_watcher(work_package)
-    else
-      result.success = false
     end
 
     result
   end
 
-  def set_attributes(attributes, wp)
-    attributes_service_class
-      .new(user:,
-           model: wp,
-           contract_class:)
-      .call(attributes)
+  def set_templated_subject(work_package)
+    return true unless work_package.type&.replacement_pattern_defined_for?(:subject)
+
+    work_package.subject = work_package.type.enabled_patterns[:subject].resolve(work_package)
+    work_package.save
+  end
+
+  def set_attributes(attributes, work_package)
+    attributes_service_class.new(user:, model: work_package, contract_class:).call(attributes)
   end
 
   def reschedule_related(work_package)
-    result = WorkPackages::SetScheduleService
-               .new(user:, work_package:)
-               .call
+    # Force work package to keep its scheduling mode if it's automatic.
+    # This is necessary in bulk duplicate scenarios.
+    switching_to_automatic_mode = []
+    switching_to_automatic_mode << work_package if work_package.schedule_automatically?
+    result = WorkPackages::SetScheduleService.new(user:, work_package:, switching_to_automatic_mode:).call
 
     result.self_and_dependent.each do |r|
       unless r.result.save
@@ -100,9 +107,7 @@ class WorkPackages::CreateService < BaseServices::BaseCallable
   def set_user_as_watcher(work_package)
     # We don't care if it fails here. If it does
     # the user simply does not become watcher
-    Services::CreateWatcher
-      .new(work_package, user)
-      .run(send_notifications: false)
+    Services::CreateWatcher.new(work_package, user).run(send_notifications: false)
   end
 
   def attributes_service_class

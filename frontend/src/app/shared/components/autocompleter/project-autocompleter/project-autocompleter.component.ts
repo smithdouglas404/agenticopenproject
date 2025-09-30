@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -56,6 +56,7 @@ import {
   ProjectAutocompleterTemplateComponent,
 } from 'core-app/shared/components/autocompleter/project-autocompleter/project-autocompleter-template.component';
 import { addFiltersToPath } from 'core-app/core/apiv3/helpers/add-filters-to-path';
+import { TOpAutocompleterResource } from 'core-app/shared/components/autocompleter/op-autocompleter/typings';
 
 export const projectsAutocompleterSelector = 'op-project-autocompleter';
 
@@ -76,6 +77,7 @@ export interface IProjectAutocompleterData {
     useExisting: forwardRef(() => ProjectAutocompleterComponent),
     multi: true,
   }],
+  standalone: false,
 })
 export class ProjectAutocompleterComponent extends OpAutocompleterComponent<IProjectAutocompleterData> implements OnInit, ControlValueAccessor {
   @HostBinding('class.op-project-autocompleter') public className = true;
@@ -108,6 +110,8 @@ export class ProjectAutocompleterComponent extends OpAutocompleterComponent<IPro
   getOptionsFn = this.getAvailableProjects.bind(this);
 
   dataLoaded = false;
+
+  resource:TOpAutocompleterResource = 'projects';
 
   projects:IProjectAutocompleteItem[];
 

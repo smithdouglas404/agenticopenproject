@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -22,7 +22,7 @@
 uk:
   js:
     ajax:
-      hide: "Приховати"
+      hide: "Сховати"
       loading: "Завантаження…"
       updating: "Оновлення..."
     attachments:
@@ -66,7 +66,7 @@ uk:
     button_back_to_list_view: "Повернутися до списку"
     button_cancel: "Скасувати"
     button_close: "Закрити"
-    button_change_project: "Змінити проект"
+    button_change_project: "Перейти до іншого проєкту"
     button_check_all: "Перевірити все"
     button_configure-form: "Налаштуйте форму"
     button_confirm: "Підтвердити"
@@ -80,14 +80,16 @@ uk:
     button_delete_watcher: "Видалити спостерігача"
     button_details_view: "Докладне подання"
     button_duplicate: "Дублювати"
-    button_edit: "Редагувати"
+    button_edit: "Редагування"
     button_filter: "Фільтр"
     button_collapse_all: "Згорнути все"
     button_expand_all: "Розгорнути все"
     button_advanced_filter: "Розширений фільтр"
     button_list_view: "Подання списком"
     button_show_view: "Повноекранний режим"
-    button_log_time: "Час журналу"
+    button_log_time: "Записування часу"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "Більше"
     button_open_details: "Відкрити докладне подання"
     button_close_details: "Закрити подання деталей"
@@ -103,8 +105,8 @@ uk:
     button_settings: "Налаштування"
     button_uncheck_all: "Зняти усі відмітки"
     button_update: "Оновити"
-    button_export-pdf: "Завантажити PDF"
     button_export-atom: "Завантажити Atom"
+    button_generate_pdf: "Згенерувати PDF"
     button_create: "Створити"
     card:
       add_new: "Додати нову картку"
@@ -138,6 +140,8 @@ uk:
     description_select_work_package: "Виберіть пакет робіт #%{id}"
     description_subwork_package: "Нащадок пакету робіт #%{id}"
     editor:
+      revisions: "Показати локальні зміни"
+      no_revisions: "Локальних змін не знайдено"
       preview: "Перемкнути режим попереднього перегляду"
       source_code: "Увімкнути режим вимкнення Markdown"
       error_saving_failed: "Не вдалося зберегти документ із такою помилкою: %{error}"
@@ -150,6 +154,7 @@ uk:
         attribute_reference:
           macro_help_tooltip: "Цей текстовий фрагмент динамічно візуалізується макросом."
           not_found: "Не вдалося знайти потрібний ресурс"
+          nested_macro: "Цей макрос рекурсивно посилається на %{model} %{id}."
           invalid_attribute: "Вибраний атрибут «%{name}» не існує."
         child_pages:
           button: "Посилання на дочірні сторінки"
@@ -192,74 +197,13 @@ uk:
     admin:
       type_form:
         custom_field: "Користувацьке поле"
-        inactive: "Неактивний"
+        inactive: "Неактивні"
         drag_to_activate: "Перетягніть поля звідти, щоб активувати їх"
         add_group: "Додати групу атрибутів"
         add_table: "Додати таблицю пов'язаних пакетів робіт"
         edit_query: "Редагувати запит"
         new_group: "Нова група"
         reset_to_defaults: "Скинути на типові значення"
-      enterprise:
-        text_reprieve_days_left: "Залишок днів до кінця пільгового періоду: %{days}"
-        text_expired: "прострочено"
-        trial:
-          confirmation: "Підтвердження електронної адреси"
-          confirmation_info: >
-            Ми надіслали вам електронний лист %{date} на адресу %{email}. Перевірте поштову скриньку та перейдіть за відповідним посиланням у листі, щоб почати пробний 14-денний період.
-          form:
-            general_consent: >
-              Я приймаю <a target="_blank" href="%{link_terms}">умови обслуговування</a> та <a target="_blank" href="%{link_privacy}">політику конфіденційності</a>.
-            invalid_email: "Хибна адреса ел. пошти"
-            label_company: "Компанія"
-            label_first_name: "Ім'я"
-            label_last_name: "Прізвище"
-            label_domain: "Домен"
-            label_subscriber: "Абонент"
-            label_maximum_users: "Максимальна кількість активних користувачів"
-            label_starts_at: "Починається о"
-            label_expires_at: "Закінчується о"
-            receive_newsletter: Я хочу отримувати розсилку новин <a target="_blank" href="%{link}">OpenProject</a>.
-            taken_domain: Може бути лише одна активна пробна версія на домен.
-            domain_mismatch: Ім’я хосту поточного запиту не відповідає налаштованому імені хосту. Перевірте свої системні налаштування.
-            taken_email: Кожен користувач може створити лише одну пробну версію.
-          email_not_received: "Ви не отримали електронний лист? Можете повторно надіслати його за допомогою посилання праворуч."
-          try_another_email: "Спробуйте з іншою електронною адресою."
-          next_steps: "Настуні кроки"
-          resend_link: "Повторно надіслати"
-          resend_success: "Електронний лист надіслано знову. Перевірте свою поштову скриньку та перейдіть за посиланням для підтвердження в листі."
-          resend_warning: "Не вдалося повторно надіслати листа."
-          session_timeout: "Сеанс закінчено. Будь ласка спробуйте перезавантажити сторінку або надіслати листа ще раз."
-          status_label: "Статус:"
-          status_confirmed: "Підтверджено"
-          status_waiting: "Лист надіслано - очікуємо підтвердження"
-          test_ee: "Отримайте версію Enterprise на 14 днів безкоштовно"
-          quick_overview: "Отримайте стислий огляд управління проєктами й командної роботи у версії OpenProject Enterprise."
-        upsale:
-          become_hero: "Стань героєм!"
-          enterprise_info_html: "%{feature_title} – це доповнення версії Enterprise <span class='spot-icon spot-icon_inline spot-icon_enterprise-addons'></span>."
-          upgrade_info: "Перейдіть на платний план, щоб активувати його та почати використовувати його у своїй команді."
-          benefits:
-            description: "Які переваги локальної версії Enterprise?"
-            high_security: "Функції безпеки"
-            high_security_text: "Єдиний вхід (SAML, OpenID Connect, CAS), групи LDAP."
-            installation: "Підтримка встановлення"
-            installation_text: "Досвідчені інженери програмного забезпечення допоможуть вам виконати повне встановлення та налаштувати процес у вашій інфраструктурі."
-            premium_features: "Доповнення версії Enterprise"
-            premium_features_text: "Дошки Agile, власні тема й логотип, діаграми, розумні робочі процеси з користувацькими діями, повнотекстовий пошук у вкладеннях пакетів робіт і можливість вибору кількість власних полів."
-            professional_support: "Професійна підтримка"
-            professional_support_text: "Отримайте надійну, комплексну підтримку від досвідчених інженерів, які знають усе про запуск OpenProject у критично важливих для бізнесу середовищах."
-          button_start_trial: "Розпочати безкоштовну пробну версію"
-          button_upgrade: "Оновити"
-          button_contact_us: "Зв’яжіться з нами, щоб отримати демоверсію"
-          button_book_now: "Забронювати зараз"
-          confidence: >
-            Ми надаємо перевірене програмне забезпечення корпоративного класу з — з відкритим кодом і серцем — та забезпечуємо його підтримку.
-          link_quote: "Дізнатися ціну"
-          more_info: "Додаткові відомості"
-          text: >
-            Версію OpenProject Enterprise створено на основі версії Community. Вона включає доповнення версії Enterprise і професійну підтримку та призначена передусім для організацій із більш ніж 10 користувачами, які керують критично важливими для бізнесу проєктами в OpenProject.
-          unlimited: "Необмежено"
-          you_contribute: "Розробники теж повинні оплачувати свої рахунки. Перейшовши на версію Enterprise, ви суттєво допоможете спільноті Open Source і зробите свій внесок у її розвиток, підтримання та безперервне поліпшення."
       working_days:
         calendar:
           empty_state_header: "Неробочі дні"
@@ -270,10 +214,15 @@ uk:
         change_button: "Зберегти й перепланувати"
         change_title: "Змінення робочих днів"
         removed_title: "Ви вилучите ці дні зі списку неробочих:"
-        change_description: "Змінення днів тижня, які вважаються робочими або неробочими, може вплинути на дати початку й закінчення всіх пакетів робіт в усіх проєктах цього екземпляра."
+        change_description: "Якщо змінити дні тижня, які вважаються робочими чи неробочими, це може вплинути на дати початку й завершення всіх пакетів робіт і життєвих циклів проєктів в усіх проєктах цього екземпляра."
         warning: >
-          Застосування змін може тривати деякий час. Ви отримаєте сповіщення, коли всі відповідні пакети робіт буде оновлено.
+          Застосування змін може тривати деякий час. Ви отримаєте сповіщення, коли всі відповідні пакети робіт і життєві цикли проєктів буде оновлено.
           Продовжити?
+      work_packages_settings:
+        warning_progress_calculation_mode_change_from_status_to_field_html: >-
+          Якщо перейти з режиму обчислення прогресу на основі статусу на режим на основі роботи, атрибут <i>% завершення</i> стане доступним для редагування полем. Якщо визначено атрибути <i>Робота</i> й <i>Залишок роботи</i>, їх значення буде також пов’язано з атрибутом <i>% завершення</i>. Змінення значення атрибута <i>Залишок роботи</i> призводить до оновлення атрибута <i>% завершення</i>.
+        warning_progress_calculation_mode_change_from_field_to_status_html: >-
+          Якщо перейти з режиму обчислення прогресу на основі робіт на режим на основі статусу, усі наявні значення атрибута <i>% завершення</i> буде втрачено й замінено значеннями, пов’язаними з кожним статусом. Наявні значення атрибута <i>Залишок роботи</i> може бути також переобчислено з урахуванням цієї зміни. Цю дію не можна скасувати.
     custom_actions:
       date:
         specific: "на"
@@ -291,7 +240,7 @@ uk:
       description:
         text_open_filter: "Відкрийте цей фільтр за допомогою «ALT» і клавіш зі стрілками."
         text_close_filter: "Щоб вибрати запис - встановіть на ньому фокус, наприклад, натиснувши Enter. Щоб залишити без фільтру - виберіть перший (порожній) елемент."
-      noneElement: "(нічого)"
+      noneElement: "(немає)"
       time_zone_converted:
         two_values: "%{from} - %{to} у місцевий час."
         only_start: "From %{from} у місцевий час."
@@ -303,22 +252,22 @@ uk:
           two: "Другий критерій впорядкування"
           three: "Третій критерій впорядкування"
     gantt_chart:
-      label: "Діаграма Ганта"
+      label: "Діаграма Ґанта"
       quarter_label: "Q%{quarter_number}"
       labels:
         title: "Конфігурація мітки"
-        bar: "Панель міток"
+        bar: "смуга міток"
         left: "Зліва"
-        right: "Справа"
-        farRight: "У правому кінці"
+        right: "Зправа"
+        farRight: "Далі вправо"
         description: >
-          Виберіть атрибути, які потрібно постійно відображати у відповідних положеннях діаграми Ганта. Зверніть увагу, що під час наведення вказівника на елемент, замість цих атрибутів з’являтиметься його мітка.
+          Оберіть атрибути, які потрібно постійно відображати у відповідних положеннях діаграми Ганта. Зверніть увагу, що під час наведення на елемент, замість цих атрибутів буде відображено його мітки.
       button_activate: "Показати діаграму Ганта"
       button_deactivate: "Сховати діаграму Ганта"
       filter:
-        noneSelection: "(немає)"
+        noneSelection: "(нічого)"
       selection_mode:
-        notification: "Натисніть будь-який виділений пакет робіт, щоб створити зв’язок. Натисніть клавішу Escape, щоб скасувати."
+        notification: "Натисніть будь-який виділений робочий пакет, щоб створити відношення. Натисніть клавішу Escape, щоб скасувати."
       zoom:
         in: "Збільшити масштаб"
         out: "Зменшити масштаб"
@@ -330,18 +279,6 @@ uk:
         years: "Років"
         description: >
           Виберіть початкове значення масштабу, коли функція автомасштабування недоступна.
-      export:
-        title: "Параметри діаграми Ґанта (PDF)"
-        button_export: "Експорт"
-        column_widths:
-          narrow: "Вузькі"
-          medium: "Середні"
-          wide: "Широкі"
-          very_wide: "Дуже широкі"
-        options:
-          date_zoom: "Масштабування дати"
-          paper_size: "Розмір паперу"
-          column_widths: "Ширина стовпців"
     general_text_no: "ні"
     general_text_yes: "так"
     general_text_No: "Ні"
@@ -353,17 +290,6 @@ uk:
         format:
           date: "%{attribute} не є дійсною датою - очікується YYYY-MM-DD."
         general: "Сталася помилка."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Читайте про нові функції та оновлення продуктів."
-          learn_about: "Дізнатися більше про нові функції"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "14_1":
-            standard:
-              new_features_html: >
-                Цей випуск містить кілька нових і поліпшених функцій. <br> <ul class="%{list_styling_class}"> <li>Експорт діаграми Ґанта у форматі PDF, наприклад для друку (доповнення версії Enterprise)</li> <li>Обрані проєкти</li> <li>Розділи на сторінці «Наради»</li> <li>Показ нарад на Моїй сторінці й сторінках огляду проєкту</li> <li>Можливість приховувати вкладення на вкладці «Файли»</li> <li>Користувацькі поля типу «Посилання (URL)</li> </ul>
     ical_sharing_modal:
       title: "Підписатися на календар"
       inital_setup_error_message: "Під час отримання даних сталася помилка."
@@ -381,7 +307,7 @@ uk:
     label_add_column_before: "Додати стовпець перед"
     label_add_columns: "Додати стовпці"
     label_add_comment: "Додати коментар"
-    label_add_comment_title: "Коментар і введіть @, щоб повідомити інших людей"
+    label_add_comment_title: "Напишіть коментар і введіть @, щоб повідомити інших людей"
     label_add_row_after: "Додати рядок після"
     label_add_row_before: "Додати рядок перед"
     label_add_selected_columns: "Додати вибрані стовпці"
@@ -389,6 +315,7 @@ uk:
     label_added_time_by: 'Додано користувачем <a href="%{authorLink}">%{author}</a> о %{age}'
     label_ago: "днів тому"
     label_all: "всі"
+    label_all_projects: "Усі проєкти"
     label_all_uppercase: "Усі"
     label_all_work_packages: "всі пакети в роботі"
     label_and: "і"
@@ -397,22 +324,23 @@ uk:
     label_avatar: "Аватар"
     label_between: "між ними"
     label_board: "Дошка"
-    label_board_locked: "Заблоковано"
+    label_board_locked: "Заблоковані"
     label_board_plural: "Дошки"
     label_board_sticky: "Приліплена"
     label_change: "Змінити"
     label_create: "Створити"
     label_create_work_package: "Створити новий робочий пакет"
     label_created_by: "Створено"
+    label_current: "поточний"
     label_date: "Дата"
     label_date_with_format: "Введіть %{date_attribute}, використовуючи наступний формат: %{format}"
     label_deactivate: "Деактивувати"
     label_descending: "За спаданням"
     label_description: "Опис"
     label_details: "Детальніше"
-    label_display: "Дисплей"
-    label_cancel_comment: "Скасувати коментар"
-    label_closed_work_packages: "зачинено"
+    label_display: "Вигляд"
+    label_cancel_comment: "Скасувати додавання коментаря"
+    label_closed_work_packages: "закрито"
     label_collapse: "Згорнути"
     label_collapsed: "згорнуто"
     label_collapse_all: "Згорнути все"
@@ -423,7 +351,7 @@ uk:
     label_created_on: "створено"
     label_edit_comment: "Редагувати цей коментар"
     label_edit_status: "Відредагуйте стан робочого пакету"
-    label_email: "Електронна пошта"
+    label_email: "Ел. адреса"
     label_equals: "є"
     label_expand: "Розгорнути"
     label_expanded: "розгорнуто"
@@ -435,7 +363,6 @@ uk:
     label_filename: "Файл"
     label_filesize: "Розмір"
     label_general: "Загальні"
-    label_global_roles: "Глобальні ролі"
     label_greater_or_equal: ">="
     label_group: "Група"
     label_group_by: "Групувати за"
@@ -452,7 +379,7 @@ uk:
     label_import: "Імпортувати"
     label_latest_activity: "Останні дії"
     label_last_updated_on: "Останнє оновлення"
-    label_learn_more_link: "Дізнатися більше"
+    label_learn_more_link: "Докладніше"
     label_less_or_equal: "<="
     label_less_than_ago: "менше, ніж день тому"
     label_loading: "Завантаження..."
@@ -464,6 +391,7 @@ uk:
     label_menu_collapse: "згорнути"
     label_menu_expand: "розгорнути"
     label_more_than_ago: "більш ніж днів(я) назад"
+    label_moderate_comment: "Модерувати коментар"
     label_next: "Далі"
     label_no_color: "Без кольору"
     label_no_data: "Немає даних для відображення"
@@ -484,12 +412,12 @@ uk:
     label_please_wait: "Будь ласка, зачекайте"
     label_project: "Проєкт"
     label_project_list: "Списки проєктів"
-    label_project_plural: "Проекти"
+    label_project_plural: "Проєкти"
     label_visibility_settings: "Налаштування видимості ..."
     label_quote_comment: "Цитувати цей коментар"
     label_recent: "Останні"
     label_reset: "Скинути"
-    label_remove: "Видалити"
+    label_remove: "Вилучити"
     label_remove_column: "Видалити стовпець"
     label_remove_columns: "Видалити вибрані стовпці"
     label_remove_row: "Видалити рядок"
@@ -497,7 +425,6 @@ uk:
     label_repository_plural: "Репозиторії"
     label_save_as: "Зберегти як"
     label_search_columns: "Пошук стовпця"
-    label_select_project: "Виберіть проєкт"
     label_select_watcher: "Виберіть спостерігача..."
     label_selected_filter_list: "Вибрані фільтри"
     label_show_attributes: "Показати всі атрибути"
@@ -507,30 +434,30 @@ uk:
     label_sort_higher: "Рухатися вгору"
     label_sort_lower: "Пересунути нижче"
     label_sorting: "Сортування"
-    label_spent_time: "Трудовитрати"
-    label_star_query: "Улюблений"
+    label_spent_time: "Витрачений час"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Натисніть enter, щоб зберегти."
-    label_public_query: "Публічний"
+    label_public_query: "Публічні"
     label_sum: "Сума"
     label_sum_for: "Сума для"
     label_total_sum: "Загальна сума"
     label_subject: "Тема"
     label_this_week: "цього тижня"
     label_today: "Сьогодні"
-    label_time_entry_plural: "Трудовитрати"
+    label_time_entry_plural: "Витрачений час"
     label_up: "Вгору"
     label_user_plural: "Користувачі"
-    label_activity_show_only_comments: "Показувати заходи лише з коментарями"
-    label_activity_show_all: "Показати всю активність"
+    label_activity_show_only_comments: "Показувати лише дії з коментарями"
+    label_activity_show_all: "Показати всі дії"
     label_total_progress: "%{percent}% загального прогресу"
     label_total_amount: "Всього: %{amount}"
     label_updated_on: "оновлено"
     label_value_derived_from_children: "(значення, отримане від дітей)"
     label_children_derived_duration: "Тривалість похідних дочірніх елементів пакета робіт"
     label_warning: "Попередження"
-    label_work_package: "Пакет робіт"
+    label_work_package: "Робочий пакет"
     label_work_package_parent: "Батьківський пакет робіт"
-    label_work_package_plural: "Пакет робіт"
+    label_work_package_plural: "Пакети робіт"
     label_watch: "Спостерігати"
     label_watch_work_package: "Спостерігати за робочим пакетом"
     label_watcher_added_successfully: "Спостерігач успішно доданий!"
@@ -567,7 +494,7 @@ uk:
     label_version_plural: "Версії"
     label_view_has_changed: "Це подання містить незбережені зміни. Натисніть, щоб переглянути їх."
     help_texts:
-      show_modal: "Показати вміст атрибута тексту довідки"
+      show_modal: "Показати текст довідки"
     onboarding:
       buttons:
         skip: "Пропустити"
@@ -578,7 +505,7 @@ uk:
         members: "Запросіть нових <b>учасників</b> до свого проєкту."
         quick_add_button: "Натисніть на значок плюса (+) на панелі заголовків, щоб <b>створити новий проєкт</b> або <b>запросити колег</b>."
         sidebar_arrow: "Використовуйте стрілку повернення у верхньому лівому куті, щоб повернутися в <b>головне меню</b> проєкту."
-        welcome: "Здійсніть трихвилинний ознайомчий огляд для вивчення <b>найважливішого функціоналу</b>. <br> Ми рекомендуємо пройти всі кроки до завершення огляду. Ви можете повернутися до цього огляду повторно в будь-який час."
+        welcome: "Пройдіть трихвилинний вступний тур, щоб дізнатися про <b>найважливіші функції</b>. <br>Ми рекомендуємо завершити всі етапи до кінця. Ви можете перезапустити тур у будь-який час."
         wiki: "У межах <b>Wiki</b> ви можете документувати знання та обмінюватися ними зі своєю командою."
         backlogs:
           overview: "Керуйте своєю роботою в поданні <b>Backlogs</b>."
@@ -594,8 +521,8 @@ uk:
           drag: "Перевпорядкуйте картки в межах даного списку, перетягуючи їх, або перемістіть їх до іншого списку. Щоб переглянути докладні відомості, натисніть значок інформації (i) у верхньому правому куті або двічі натисніть картку."
         wp:
           toggler: "Тепер погляньмо на розділ <b>робочих пакетів</b>, де можна дізнатися більше про вашу роботу."
-          list: "Цей огляд пакета <b>робіт</b> містить список всіх робіт у вашому проєкті, наприклад завдання, віхи, етапи тощо. <br> Пакети робіт можна створювати й редагувати безпосередньо в цьому поданні. Щоб отримати доступ до інформації про певний пакет робіт, просто двічі натисніть його рядок."
-          full_view: "Подання <b>Деталі пакета робіт</b> містить усю відповідну інформацію, пов’язану з даним пакетом робіт, наприклад його опис, статус, пріоритет, діяльність, залежності й коментарі."
+          list: "Цей огляд пакета <b>робіт</b> містить список усіх робіт у вашому проєкті, таких як завдання, контрольні точки, етапи тощо. <br> Пакети робіт можна створювати й редагувати безпосередньо в цьому поданні. Щоб отримати доступ до інформації про певний пакет робіт, просто двічі натисніть його рядок."
+          full_view: "Подання <b>деталей пакета робіт</b> містить усю відповідну інформацію, пов’язану з відповідним пакетом робіт, наприклад його опис, статус, пріоритет, дії, залежності й коментарі."
           back_button: "Щоб вийти й повернутися в список пакета робіт, скористайтеся стрілкою повернення у верхньому лівому куті."
           create_button: "Кнопка <b>+ Створити</b> додасть новий пакет робіт до вашого проєкту."
           gantt_menu: "Легко створюйте розклади й часові шкали проєктів за допомогою модуля «Діаграма Ґанта»."
@@ -610,33 +537,28 @@ uk:
       title: "Сповіщення"
       no_unread: "Немає непрочитаних сповіщень"
       reasons:
-        mentioned: "згадано"
-        watched: "спостерігач"
-        assigned: "виконавець"
-        responsible: "відповідальний"
-        created: "створено"
-        scheduled: "заплановано"
-        commented: "прокоментовано"
-        processed: "оброблено"
-        prioritized: "надано пріоритет"
+        mentioned: "Згадано"
+        watched: "Спостерігач"
+        assigned: "Виконавець"
+        #The enum value is named 'responsible' in the database and that is what is transported through the API
+        #up to the frontend.
+        responsible: "Відповідальний"
+        created: "Створено"
+        scheduled: "Заплановано"
+        commented: "Прокоментовано"
+        processed: "Оброблено"
+        prioritized: "Надано пріоритет"
         dateAlert: "Оповіщення про дату"
-        shared: "спільні"
+        shared: "Поширено"
+        reminder: "Нагадування"
       date_alerts:
         milestone_date: "Дата віхи"
         overdue: "Прострочено"
-        overdue_since: "на %{difference_in_days}"
-        property_today: "сьогодні"
-        property_is: "через %{difference_in_days}"
-        property_was: "%{difference_in_days} тому"
-        property_is_deleted: "видалено"
-        upsale:
-          title: "Оповіщення про дати"
-          description: "Завдяки оповіщенням про дати ви завжди знатимете про заплановані дати початку або завершення, тож ніколи не пропускатимете важливі терміни та не забуватимете про них."
-      facets:
-        unread: "Непрочитані"
-        unread_title: "Показати непрочитані"
-        all: "Всі"
-        all_title: "Показати всі"
+        overdue_since: "%{difference_in_days}."
+        property_today: "сьогодні."
+        property_is: "через %{difference_in_days}."
+        property_was: "%{difference_in_days} тому."
+        property_is_deleted: "видалено."
       center:
         label_actor_and: "і"
         and_more_users:
@@ -649,25 +571,20 @@ uk:
           with_current_filter: "Зараз у цьому поданні немає сповіщень"
         mark_all_read: "Позначити все як прочитане"
         mark_as_read: "Позначити як прочитане"
-        text_update_date: "%{date} –"
+        mark_all_read_confirmation: "Усі сповіщення в цьому поданні буде позначено як прочитані. Продовжити?"
+        text_update_date_by: "%{date} за"
         total_count_warning: "Показано стільки останніх сповіщень: %{newest_count}. Ще %{more_count} не показано."
         empty_state:
           no_notification: "Схоже, ви все переглянули."
           no_notification_with_current_project_filter: "Схоже, ви переглянули всі сповіщення для вибраного проєкту."
           no_notification_with_current_filter: "Схоже, ви переглянули всі сповіщення за фільтром «%{filter}»."
+          no_notification_for_filter: "Схоже, ви переглянули всі сповіщення за цим фільтром."
           no_selection: "Натисніть сповіщення, щоб переглянути всі дані про дію."
         new_notifications:
           message: "Немає нових сповіщень."
           link_text: "Натисніть тут, щоб завантажити."
-      menu:
-        accountable: "Відповідальний"
-        by_project: "Непрочитані проєктом"
-        by_reason: "Причина"
-        inbox: "Вхідні"
-        mentioned: "Згадано"
-        watched: "Спостерігач"
-        date_alert: "Оповіщення про дату"
-        shared: "Спільні"
+      reminders:
+        note: "Примітка: \"%{note}\""
       settings:
         change_notification_settings: 'Ви можете змінити <a target="_blank" href="%{url}">налаштування сповіщень</a>, щоб ніколи не пропускати важливі оновлення.'
         title: "Налаштування сповіщень"
@@ -707,7 +624,6 @@ uk:
           date_alerts:
             title: "Оповіщення про дати"
             description: "Автоматичні сповіщення в разі наближення важливих дат для відкритих пакетів робіт, з якими ви пов’язані (виконавець, відповідальний або спостерігач)."
-            teaser_text: "Завдяки оповіщенням про дати ви завжди знатимете про заплановані дати початку або завершення, тож ніколи не пропускатимете важливі терміни та не забуватимете про них."
           overdue: Якщо прострочено
         project_specific:
           title: "Параметри сповіщень проєкту"
@@ -720,9 +636,12 @@ uk:
       title: "Підтвердіть ваш пароль щоб продовжити"
     pagination:
       no_other_page: "Ви знаходитесь на єдиній сторінці."
+      pages_skipped: "Сторінки пропущено."
+      page_navigation: "Навігація сторінками"
+      per_page_navigation: 'Кількість елементів на сторінку'
       pages:
-        next: "Перейти до наступної сторінки"
-        previous: "Повернутись до попередньої сторінки"
+        page_number: Сторінка %{number}
+        show_per_page: Показати %{number} на сторінці
     placeholders:
       default: "-"
       subject: "Введіть тему тут"
@@ -730,18 +649,13 @@ uk:
       description: "Опис. Натисніть, щоб змінити…"
       relation_description: "Нажмите, чтобы добавить описание для этой связи"
     project:
-      required_outside_context: >
-        Виберіть проект, щоб створити робочий пакет, щоб побачити всі атрибути. Ви можете вибирати лише проекти, які мають вказаний вище тип активації.
-      details_activity: "Докладно про дії в проєкті"
-      context: "Контекст проекту"
-      click_to_switch_to_project: "Проєкт: %{projectname}"
-      confirm_template_load: "Перемикання шаблону перезавантажить сторінку, і ви втратите всі дані, введені в цю форму. Продовжити?"
-      use_template: "Використовувати шаблон"
-      no_template_selected: "(Немає)"
-      copy:
-        copy_options: "Параметри копіювання"
       autocompleter:
         label: "Автозавершення проекту"
+      click_to_switch_to_project: "Проєкт: %{projectname}"
+      context: "Контекст проекту"
+      not_available: "Проєкт Н/Д"
+      required_outside_context: >
+        Виберіть проект, щоб створити робочий пакет, щоб побачити всі атрибути. Ви можете вибирати лише проекти, які мають вказаний вище тип активації.
     reminders:
       settings:
         daily:
@@ -756,6 +670,7 @@ uk:
         immediate:
           title: "Надсилати мені нагадування електронною поштою"
           mentioned: "Негайно, коли хтось згадує @мене"
+          personal_reminder: "Одразу після отримання особистого нагадування"
         alerts:
           title: "Сповіщення електронною поштою для інших елементів (які не є пакетами робіт)"
           explanation: >
@@ -774,6 +689,8 @@ uk:
           first_day: "Перший день"
           last_day: "Останній день"
     text_are_you_sure: "Ви впевненені?"
+    text_are_you_sure_to_cancel: "На цій сторінці є незбережені зміни. Ви дійсно хочете їх скасувати?"
+    breadcrumb: "Ланцюжок навігації"
     text_data_lost: "Усі введені дані буде втрачено."
     text_user_wrote: "%{value} написав(-ла):"
     types:
@@ -785,15 +702,11 @@ uk:
           Попередження: Справді скинути конфігурацію форми? Це призведе до скидання атрибутів до групи за замовчуванням і вимкнення всіх користувацьких полів.
         upgrade_to_ee: "Перейти на локальну версію Enterprise"
         upgrade_to_ee_text: "Оце так! Якщо вам потрібне це доповнення, ви справжній профі! Підтримайте розробників OpenSource, перейшовши на версію Enterprise!"
-        more_information: "Більше інформації"
+        more_information: "Додаткові відомості"
         nevermind: "Nevermind"
-      edit:
-        form_configuration: "З конфігурації"
-        projects: "Проекти"
-        settings: "Налаштування"
     time_entry:
       work_package_required: "Спочатку потрібно вибрати пакет робіт."
-      title: "Час журналу"
+      title: "Записування часу"
       tracking: "Відстеження часу"
       stop: "Зупинити"
     timer:
@@ -812,7 +725,8 @@ uk:
       label_discard: Скасувати вибір
       typeahead_placeholder: Пошук можливих спостерігачів
     relation_labels:
-      parent: "Джерело"
+      parent: "Батьківський"
+      child: "Дочірній"
       children: "Дочірні елементи"
       relates: "Пов'язано з"
       duplicates: "Дублікати"
@@ -827,7 +741,7 @@ uk:
       required: "Необхідний для"
       relation_type: "Тип зв'язку"
     relations_hierarchy:
-      parent_headline: "Джерело"
+      parent_headline: "Батьківський"
       hierarchy_headline: "Ієрархія"
       children_headline: "Дочірні елементи"
     relation_buttons:
@@ -842,16 +756,16 @@ uk:
       add_new_child: "Створити новий дочірній елемент"
       create_new: "Створити новий"
       add_existing: "Додати існуючий"
-      add_existing_child: "Додати існуючий дочірній елемент"
+      add_existing_child: "Додати дочірній елемент"
       remove_child: "Видалити дочірній елемент"
       add_new_relation: "Створити нове відношення"
       add_existing_relation: "Додати існуюче співвідношення"
       update_description: "Встановити або оновити опис цього відношення"
       toggle_description: "Переключити опис відносин"
       update_relation: "Натисніть, щоб змінити тип відносини"
-      add_follower: "Додати послідовника"
       show_relations: "Показати зв’язки"
       add_predecessor: "Додати попередника"
+      add_successor: "Додати наступника"
       remove: "Видалити зв'язок"
       save: "Зберегти відношення"
       abort: "Відмінити"
@@ -861,6 +775,7 @@ uk:
     autocompleter:
       placeholder: "Введіть для пошуку"
       notFoundText: "Елементів не знайдено"
+      search: "Пошук"
       project:
         placeholder: "Виберіть проєкт"
     repositories:
@@ -868,8 +783,6 @@ uk:
       select_branch: "Виберіть гілку"
     field_value_enter_prompt: "Введіть значення для «%{field}»"
     project_menu_details: "Детальніше"
-    scheduling:
-      manual: "Ручне планування"
     sort:
       sorted_asc: "Застосовується сортування за зростанням,"
       sorted_dsc: "Застосовується сортування за спаданням,"
@@ -883,7 +796,7 @@ uk:
     tl_toolbar:
       zooms: "Рівень масштабування"
       outlines: "Рівень ієрархії"
-    upsale:
+    upsell:
       ee_only: "Доповнення версії Enterprise"
     wiki_formatting:
       strong: "Жирний"
@@ -901,26 +814,22 @@ uk:
       preformatted_text: "Попередньо відформатований текст"
       wiki_link: "Посилання на вікі-сторінку"
       image: "Зображення"
+    sharing:
+      share: "Надати спільний доступ"
+      selected_count: "Вибрано: %{count}"
+      selection:
+        mixed: "Різні"
     work_packages:
       bulk_actions:
-        move: "Групова зміна проєкту"
         edit: "Масове редагування"
-        copy: "Масова копія"
         delete: "Масове видалення"
+        duplicate: "Групове дублювання"
+        move: "Групова зміна проєкту"
       button_clear: "Очистити"
-      comment_added: "Коментар був успішно доданий."
+      comment_added: "Коментар успішно додано."
       comment_send_failed: "Сталася помилка. Не вдалося додати коментар."
-      comment_updated: "Коментар був успішно оновлений."
+      comment_updated: "Коментар успішно оновлено."
       confirm_edit_cancel: "Ви дійсно бажаєте скасувати редагування пакету робіт?"
-      datepicker_modal:
-        automatically_scheduled_parent: "Автоматично заплановано. Дати отримано зі зв’язків."
-        manually_scheduled: "Увімкнено ручне планування; усі зв’язки ігноруються."
-        start_date_limited_by_relations: "Доступні дати початку й завершення обмежені зв’язками."
-        changing_dates_affects_follow_relations: "Змінення цих дат вплине на дати пов’язаних пакетів робіт."
-        click_on_show_relations_to_open_gantt: 'Натисніть кнопку «%{button_name}», щоб перейти в режим GANTT.'
-        show_relations: "Показати зв’язки"
-        ignore_non_working_days:
-          title: "Лише робочі дні"
       description_filter: "Фільтр"
       description_enter_text: "Введіть текст"
       description_options_hide: "Сховати опції"
@@ -939,7 +848,7 @@ uk:
       message_view_spent_time: "Показувати час, витрачений на цей робочий пакет"
       message_work_package_read_only: "Робочий пакет заблоковано в цьому статусі. Атрибут, відмінний від статусу, може бути змінений."
       message_work_package_status_blocked: "Пакет робіт недоступний для запису, оскільки призначено закритий статус або закриту версію."
-      placeholder_filter_by_text: "Тема, опис, коментарі, ..."
+      placeholder_filter_by_text: "Тема, опис, коментарі…"
       progress:
         title: "Оцінки й прогрес виконання роботи"
       baseline:
@@ -959,8 +868,8 @@ uk:
         header_no_type: "Новий робочий пакет (Тип ще не встановлено)"
         header_with_parent: "Новий %{type} (дочірній елемент %{parent_type} #%{id})"
         button: "Створити"
-      copy:
-        title: "Копіювати робочий пакет"
+      duplicate:
+        title: "Дублювати пакет робіт"
       hierarchy:
         show: "Показати режим ієрархії"
         hide: "Приховати режим ієрархії"
@@ -976,46 +885,48 @@ uk:
         description: Або нічого не було створено, або всі пакети робіт відфільтровані.
       limited_results: 'Показати в ручному режимі сортування можна лише стільки робочих пакетів: %{count}. Зменште кількість результатів за допомогою фільтрації або виберіть автоматичне сортування.'
       property_groups:
-        details: "Детальніше"
+        details: "Деталі"
         people: "Люди"
         estimatesAndTime: "Оцінки та час"
         other: "Інше"
       properties:
-        assignee: "Призначений"
+        assignee: "Виконавець"
         author: "Автор"
-        createdAt: "Створений"
+        createdAt: "Створено на"
         description: "Опис"
         date: "Дата"
         percentComplete: "% завершення"
         percentCompleteAlternative: "Прогрес"
         dueDate: "Дата закінчення"
         duration: "Тривалість"
-        spentTime: "Трудовитрати"
+        spentTime: "Витрачений час"
         category: "Категорія"
         percentageDone: "Процент виконання"
         priority: "Пріоритет"
-        projectName: "Проект"
+        projectName: "Проєкт"
         remainingWork: "Залишок роботи"
         remainingWorkAlternative: "Залишок годин"
-        responsible: "Надійний"
-        startDate: "Початок"
-        status: "Статус"
+        responsible: "Відповідальний"
+        startDate: "Дата початку"
+        status: "Стан"
         subject: "Тема"
-        subproject: "Підпроект"
-        title: "Назва"
+        subproject: "Підпроєкт"
+        title: "Назва "
         type: "Тип"
-        updatedAt: "Оновлене"
+        updatedAt: "Оновлено"
         versionName: "Версія"
         version: "Версія"
         work: "Робота"
         workAlternative: "Приблизний час"
         remainingTime: "Залишок роботи"
       default_queries:
-        latest_activity: "Останні дії"
+        manually_sorted: "Новий, відсортований уручну запит"
+        latest_activity: "Остання активність"
         created_by_me: "Створений мною"
         assigned_to_me: "Призначено мені"
         recently_created: "Нещодавно створений"
-        all_open: "Всі відкрити"
+        all_open: "Усі відкриті"
+        overdue: "Прострочені"
         summary: "Резюме"
         shared_with_users: "Надано доступ користувачам"
         shared_with_me: "Доступ надано мені"
@@ -1029,7 +940,7 @@ uk:
         date: "Виберіть дату"
       query:
         column_names: "Стовпці"
-        group_by: "Групувати результати по"
+        group_by: "Групування результатів:"
         group: "Групувати за"
         group_by_disabled_by_hierarchy: "У режимі ієрархії угруповання відключена."
         hierarchy_disabled_by_group_by: "Режим ієрархії вимкнено через групування результатів %{column}."
@@ -1052,18 +963,24 @@ uk:
           not_found: "Такого погляду немає"
           duplicate_query_title: "Ім'я цього перегляду вже існує. Змінити все одно?"
         text_no_results: "Не знайдено відповідних переглядів."
+      reminders:
+        button_label: "Установити нагадування"
+        title:
+          new: "Установити нагадування"
+          edit: "Редагувати нагадування"
+        subtitle: "Ви отримаєте сповіщення про цей пакет робіт у вибраний час."
+        presets:
+          tomorrow: "Завтра"
+          three_days: "Через 3 дні"
+          week: "Через тиждень"
+          month: "Через місяць"
+          custom: "У конкретний день / час"
       scheduling:
         is_parent: "Дати цього пакета робіт автоматично виводяться з його дочірніх елементів. Активуйте «Ручне планування», щоб установити ці дати."
         is_switched_from_manual_to_automatic: "Можливо, дати цього пакета робіт знадобиться перерахувати після переходу з ручного на автоматичне планування через зв’язок з іншими пакетами робіт."
       sharing:
-        share: "Поширити"
         title: "Надати доступ до пакета робіт"
         show_all_users: "Показувати всіх користувачів, яким надано доступ до пакета робіт"
-        selected_count: "Вибрано: %{count}"
-        selection:
-          mixed: "Змішані"
-        upsale:
-          description: "Діліться пакетами робіт із користувачами, які не належать до учасників проєкту."
       table:
         configure_button: "Налаштуйте таблицю робочих пакетів"
         summary: "Таблиця з рядками пакетів робіт і стовпцями атрибутів пакетів робіт."
@@ -1089,7 +1006,7 @@ uk:
           inline: "Виділений атрибут(и)"
           inline_all: "Всі атрибути"
           entire_row_by: "Весь рядок по"
-          status: "Статус"
+          status: "Стан"
           priority: "Пріоритет"
           type: "Тип"
         sorting_mode:
@@ -1098,10 +1015,6 @@ uk:
           manually: "Вручну"
           warning: "Ви втратите попереднє сортування при активації автоматичного сортування."
         columns_help_text: "Використовуйте поля введення вище, щоб додавати стовпці до свого подання таблиці. Ви можете перевпорядковувати стовпці перетягуванням."
-        upsale:
-          attribute_highlighting: "Потрібні певні робочі пакети, щоб виділитися зі скупчення?"
-          relation_columns: "Потрібно бачити відносини у списку робочих пакетів?"
-          check_out_link: "Ознайомтеся з версією Enterprise."
         relation_filters:
           filter_work_packages_by_relation_type: "Фільтрувати пакети робіт за типом зв’язку"
       tabs:
@@ -1111,7 +1024,7 @@ uk:
         watchers: Спостерігачі
         files: Файли
       time_relative:
-        days: "днів"
+        days: "дня"
         weeks: "тижнів"
         months: "місяців"
     toolbar:
@@ -1132,10 +1045,10 @@ uk:
         page_settings: "Перейменувати режим перегляду"
         delete: "Видалити"
       filter: "Фільтр"
-      unselected_title: "Пакет робіт"
+      unselected_title: "Робочий пакет"
       search_query_label: "Пошук збережених переглядів"
     modals:
-      label_name: "Ім’я"
+      label_name: "Назва"
       label_delete_page: "Видалити поточну сторінку"
       button_apply: "Застосувати"
       button_save: "Зберегти"
@@ -1160,6 +1073,8 @@ uk:
     notice_successful_delete: "Видалення успішно завершене."
     notice_successful_update: "Успішно оновлено."
     notice_job_started: "завдання почато."
+    no_job_id: "Сервер не повернув ідентифікатор завдання."
+    invalid_job_response: "Недійсна відповідь сервера."
     notice_bad_request: "Неправильний Запит."
     relations:
       empty: Немає жодних зв'язків
@@ -1171,7 +1086,7 @@ uk:
       button_save_all: "Зберегти"
       button_cancel_all: "Скасувати"
       link_formatting_help: "Довідка щодо форматування тексту"
-      btn_preview_enable: "Попередній перегляд"
+      btn_preview_enable: "Переглянути знову"
       btn_preview_disable: "Відключити попередній перегляд"
       null_value_label: "Значення відсутнє"
       clear_value_label: "-"
@@ -1196,6 +1111,7 @@ uk:
         few: "%{count} робочий пакет дітей"
         many: "%{count} робочий пакет дітей"
         other: "%{count} робочий пакет дітей"
+      hour_string: "%{hours} h"
       hour:
         one: "1 год"
         other: "%{count} год"
@@ -1204,6 +1120,11 @@ uk:
         one: "1 день"
         other: "%{count} д."
         zero: "0 днів"
+      word:
+        one: "1 слово"
+        few: "%{count} слова"
+        many: "%{count} слів"
+        other: "%{count} слова"
     zen_mode:
       button_activate: "Активуйте режим дзен"
       button_deactivate: "Деактивуйте режим дзен"
@@ -1213,7 +1134,6 @@ uk:
       current_project_and_all_descendants: "У цьому проекті + підпроекти"
       current_project: "У цьому проекті"
       recently_viewed: "Нещодавно переглянуті"
-      search: "Пошук"
       title:
         all_projects: "всі проекти"
         project_and_subprojects: "і всі підпроекти"
@@ -1221,7 +1141,7 @@ uk:
     views:
       card: "Картки"
       list: "Таблиця"
-      timeline: "Гантт"
+      timeline: "Таблиця"
     invite_user_modal:
       back: "Назад"
       invite: "Запросити"
@@ -1233,7 +1153,7 @@ uk:
         PlaceholderUser: "прототип користувача"
         invite_principal_to_project: "Запросити користувача «%{principal}» у проєкт «%{project}»"
       project:
-        label: "Проект"
+        label: "Проєкт"
         required: "Виберіть проєкт"
         lacking_permission: "Виберіть інший проєкт, оскільки вам бракує прав, щоб призначати користувачам цей проєкт."
         lacking_permission_info: "У вас немає дозволу призначати користувачів проєкту, який зараз відкрито. Виберіть інший."
@@ -1256,7 +1176,7 @@ uk:
       principal:
         label:
           name_or_email: "Ім‘я або електронна адреса"
-          name: "Ім’я"
+          name: "Назва"
         already_member_message: "Уже учасник проєкту «%{project}»"
         no_results_user: "Користувачів не знайдено"
         invite_user: "Запросити:"
@@ -1290,35 +1210,35 @@ uk:
         next_button: "Продовжити"
     exclusion_info:
       modal:
-        title: "Status excluded from hierarchy totals"
+        title: "Статус виключено з підсумків ієрархії"
         content: >-
-          The status '%{status_name}' has been configured to be excluded from hierarchy totals of Work, Remaining work, and % Complete. The totals do not take this value into account.
+          Статус «%{status_name}» виключено з підсумків ієрархії для атрибутів «Робота», «Залишок роботи» й «% завершення». Це значення не враховуватиметься під час обчислення підсумків.
     favorite_projects:
       no_results: "У вас немає обраних проєктів"
       no_results_subtext: "Додайте один або кілька проєктів в обране на відповідній сторінці огляду або в списку проєктів."
     include_projects:
       toggle_title: "Включити проєкти"
-      title: "Проекти"
+      title: "Проєкти"
       clear_selection: "Очистити вибране"
       apply: "Застосувати"
       selected_filter:
-        all: "Всі проекти"
+        all: "Усі проєкти"
         selected: "Тільки вибране"
-      search_placeholder: "Пошук у проєкті…"
+      search_placeholder: "Пошук проєктів…"
+      search_placeholder_favorites: "Пошук серед вибраного…"
       include_subprojects: "Включити всі підпроєкти"
       tooltip:
         include_all_selected: "Проєкт уже включено, оскільки ввімкнено параметр «Включати всі вкладені проєкти»."
         current_project: "Це поточний проєкт, який зараз відкрито."
         does_not_match_search: "Проєкт не відповідає критеріям пошуку."
       no_results: "Жоден проєкт не відповідає вашим критеріям пошуку."
+      no_favorite_results: "Немає вибраних проєктів, які відповідають критеріям пошуку."
     baseline:
       toggle_title: "Вихідний рівень"
       clear: "Очистити"
       apply: "Застосувати"
       header_description: "Виділяйте зміни, внесені в цей список із будь-якого моменту часу в минулому."
-      enterprise_header_description: "Виділяйте зміни, внесені в цей список із будь-якого моменту часу в минулому за допомогою версії Enterprise Edition."
       show_changes_since: "Показувати зміни з"
-      baseline_comparison: "Порівняння з вихідним рівнем"
       help_description: "Контрольний часовий пояс для вихідного рівня."
       time_description: "За вашим місцевим часом: %{datetime}"
       time: "Час"
@@ -1350,15 +1270,13 @@ uk:
       advanced_settings: "Розширені налаштування"
     spot:
       filter_chip:
-        remove: "Видалити"
+        remove: "Вилучити"
       drop_modal:
         focus_grab: "Це якір фокуса для модальних вікон. Натисніть клавіші Shift + Tab, щоб повернутися до тригера модального вікна."
-        close: "Close modal"
+        close: "Закрити модальне вікно"
     open_project_storage_modal:
       waiting_title:
-        timeout: "Timeout"
+        timeout: "Час очікування"
       waiting_subtitle:
         network_off: "Існує проблема з мережею."
         network_on: "З’єднання відновлено. Ми намагаємося."
-        timeout: >
-          OpenProject could not provide you access to the project folder within the expected period of time. Please, try once again.<br><br> If that problem persists please contact you OpenProject administrator to check the <a href="https://www.openproject.org/docs/system-admin-guide/files/external-file-storages/file-storage-troubleshooting/">health status of the file storage setup</a>.

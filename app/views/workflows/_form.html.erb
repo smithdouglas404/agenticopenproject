@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2024 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -32,14 +32,14 @@ See COPYRIGHT and LICENSE files for more details.
       <thead>
         <tr>
           <th></th>
-          <th colspan="<%= @statuses.length%>">
+          <th colspan="<%= @statuses.length %>">
             <div class="generic-table--sort-header-outer -no-border">
               <div class="generic-table--sort-header workflow-table--header">
                 <span>
-                  <%=t(:label_new_statuses_allowed)%>
+                  <%= t(:label_new_statuses_allowed) %>
                 </span>
                 <span class="workflow-table--check-all">
-                  (<%= check_all_links 'workflow_form_' + name %>)
+                  (<%= check_all_links "workflow_form_" + name %>)
                 </span>
               </div>
             </div>
@@ -49,12 +49,14 @@ See COPYRIGHT and LICENSE files for more details.
           <th class="-table-border-bottom  -table-border-right"></th>
           <% for new_status in @statuses %>
               <th class="workflow-table--current-status -table-border-top -table-border-bottom">
-                <%= link_to_function(icon_wrapper('icon-context icon-checkmark',"#{t(:label_check_uncheck_all_in_column)}"),
-                                     "OpenProject.helpers.toggleCheckboxesBySelector('table.transitions-#{name} input.new-status-#{new_status.id}')",
-                                     class: 'no-decoration-on-hover',
-                                     title: "#{t(:label_check_uncheck_all_in_column)}",
-                                     alt: "#{t(:label_check_uncheck_all_in_column)}") %>
-                <%=h new_status.name %>
+                <%= link_to_function(
+                      icon_wrapper("icon-context icon-checkmark", t(:label_check_uncheck_all_in_column).to_s),
+                      "OpenProject.helpers.toggleCheckboxesBySelector('table.transitions-#{name} input.new-status-#{new_status.id}')",
+                      class: "no-decoration-on-hover",
+                      title: t(:label_check_uncheck_all_in_column).to_s,
+                      alt: t(:label_check_uncheck_all_in_column).to_s
+                    ) %>
+                <%= h new_status.name %>
               </th>
           <% end %>
         </tr>
@@ -63,17 +65,19 @@ See COPYRIGHT and LICENSE files for more details.
         <% for old_status in @statuses %>
           <tr class="-table-border-left">
             <td class="workflow-table--current-status -table-border-right">
-              <%= link_to_function(icon_wrapper('icon-context icon-checkmark',"#{t(:label_check_uncheck_all_in_row)}"),
-                                   "OpenProject.helpers.toggleCheckboxesBySelector('table.transitions-#{name} input.old-status-#{old_status.id}')",
-                                   class: 'no-decoration-on-hover',
-                                   title: "#{t(:label_check_uncheck_all_in_row)}",
-                                   alt: "#{t(:label_check_uncheck_all_in_row)}") %>
-              <%=h old_status.name %>
+              <%= link_to_function(
+                    icon_wrapper("icon-context icon-checkmark", t(:label_check_uncheck_all_in_row).to_s),
+                    "OpenProject.helpers.toggleCheckboxesBySelector('table.transitions-#{name} input.old-status-#{old_status.id}')",
+                    class: "no-decoration-on-hover",
+                    title: t(:label_check_uncheck_all_in_row).to_s,
+                    alt: t(:label_check_uncheck_all_in_row).to_s
+                  ) %>
+              <%= h old_status.name %>
             </td>
             <% for new_status in @statuses -%>
               <td>
-                <%= check_box_tag "status[#{ old_status.id }][#{new_status.id}][]", name, workflows.detect {|w| w.old_status_id == old_status.id && w.new_status_id == new_status.id},
-                class: "old-status-#{old_status.id} new-status-#{new_status.id}" %>
+                <%= check_box_tag "status[#{old_status.id}][#{new_status.id}][]", name, workflows.detect { |w| w.old_status_id == old_status.id && w.new_status_id == new_status.id },
+                                  class: "old-status-#{old_status.id} new-status-#{new_status.id}" %>
               </td>
             <% end -%>
           </tr>
@@ -81,7 +85,7 @@ See COPYRIGHT and LICENSE files for more details.
         <tr class="-no-highlighting">
           <td colspan="<%= @statuses.length + 2 %>">
                         <span class="workflow-table--turned-header">
-              <%=t(:label_current_status)%>
+              <%= t(:label_current_status) %>
             </span>
           </td>
         </tr>

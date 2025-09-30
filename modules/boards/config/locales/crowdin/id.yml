@@ -6,10 +6,14 @@ id:
   permission_show_board_views: "Lihat papan"
   permission_manage_board_views: "Atur papan"
   project_module_board_view: "Papan"
+  ee:
+    upsell:
+      board_view:
+        description: 'Apakah Anda ingin mengotomatiskan alur kerja Anda dengan Papan? Papan tingkat lanjut adalah add-on Enterprise. Tingkatkan ke paket berbayar.'
   boards:
     label_board: "Papan"
     label_boards: "Papan"
-    label_create_new_board: "Create new board"
+    label_create_new_board: "Buat papan baru"
     label_board_type: "Tipe papan"
     board_types:
       free: Dasar
@@ -23,17 +27,14 @@ id:
       basic: Dasar
     board_type_descriptions:
       basic: >
-        Start from scratch with a blank board. Manually add cards and columns to this board.
+        Mulai dari awal dengan papan kosong. Tambahkan kartu dan kolom secara manual ke papan ini.
       status: >
-        Basic kanban style board with columns for status such as To Do, In Progress, Done.
+        Papan gaya kanban dasar dengan kolom untuk status seperti To Do, In Progress, Done.
       assignee: >
-        Board with automated columns based on assigned users. Ideal for dispatching work packages.
+        Papan dengan kolom otomatis berdasarkan pengguna yang ditugaskan. Ideal untuk mengirimkan paket kerja.
       version: >
-        Board with automated columns based on the version attribute. Ideal for planning product development.
+        Papan dengan kolom otomatis berdasarkan atribut versi. Ideal untuk merencanakan pengembangan produk.
       subproject: >
-        Board with automated columns for subprojects. Dragging work packages to other lists updates the (sub-)project accordingly.
+        Papan dengan kolom otomatis untuk subproyek. Menyeret paket pekerjaan ke daftar lain akan memperbarui (sub) proyek yang sesuai.
       subtasks: >
-        Board with automated columns for sub-elements. Dragging work packages to other lists updates the parent accordingly.
-    upsale:
-      teaser_text: 'Would you like to automate your workflows with Boards? Advanced boards are an Enterprise add-on. Please upgrade to a paid plan.'
-      upgrade: 'Tingkatkan sekarang'
+        Papan dengan kolom otomatis untuk sub-elemen. Menyeret paket pekerjaan ke daftar lain akan memperbarui induknya.

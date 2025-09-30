@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,11 +29,20 @@
 #++
 
 require "spec_helper"
-require File.expand_path("../support/permission_specs", __dir__)
+require "support/permission_specs"
 
-RSpec.describe WorkPackagesController, "view_work_packages permission", type: :controller do
+RSpec.describe WorkPackagesController, "view_work_packages permission", type: :controller do # rubocop:disable RSpec/EmptyExampleGroup,RSpec/MultipleDescribes
   include PermissionSpecs
 
   check_permission_required_for("work_packages#show", :view_work_packages)
   check_permission_required_for("work_packages#index", :view_work_packages)
+end
+
+RSpec.describe WorkPackages::ActivitiesTabController, "view_work_packages permission", type: :controller do # rubocop:disable RSpec/EmptyExampleGroup
+  include PermissionSpecs
+
+  check_permission_required_for("work_packages/activities_tab#index", :view_work_packages)
+  check_permission_required_for("work_packages/activities_tab#update_streams", :view_work_packages)
+  check_permission_required_for("work_packages/activities_tab#update_sorting", :view_work_packages)
+  check_permission_required_for("work_packages/activities_tab#update_filter", :view_work_packages)
 end

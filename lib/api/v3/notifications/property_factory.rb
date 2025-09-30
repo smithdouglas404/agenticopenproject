@@ -1,6 +1,6 @@
 # --copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2010-2022 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -88,12 +88,7 @@ module API::V3::Notifications
       end
 
       @concrete_factory_for ||= Hash.new do |h, property_key|
-        h[property_key] = if property_key == "shared"
-                            # for some reasons
-                            # API::V3::Notifications::PropertyFactory.const_defined?(property_key.camelcase)
-                            # returns true for shared only to fail on the constantize later on.
-                            API::V3::Notifications::PropertyFactory::Default
-                          elsif API::V3::Notifications::PropertyFactory.const_defined?(property_key.camelcase)
+        h[property_key] = if API::V3::Notifications::PropertyFactory.const_defined?(property_key.camelcase, false)
                             "API::V3::Notifications::PropertyFactory::#{property_key.camelcase}".constantize
                           else
                             API::V3::Notifications::PropertyFactory::Default

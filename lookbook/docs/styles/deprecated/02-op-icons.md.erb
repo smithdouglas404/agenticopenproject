@@ -41,8 +41,8 @@ For use outside primer pages, use these icon fonts
 </style>
 
 <div class="icons">
-<% Dir[Rails.root.join('frontend/src/app/spot/icon-font/icons/*').to_s].each do |path| %>
-<% name = File.basename(path, '.*') %>
+<% Dir[Rails.root.join("frontend/src/app/spot/icon-font/src/*").to_s].each do |path| %>
+<% name = File.basename(path, ".*") %>
 <div class="icons--icon">
   <div class="icons--preview">
     <i class="icon icon-<%= name %>"></i>

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,6 +36,14 @@ class Role < ApplicationRecord
   BUILTIN_WORK_PACKAGE_VIEWER = 3
   BUILTIN_WORK_PACKAGE_COMMENTER = 4
   BUILTIN_WORK_PACKAGE_EDITOR = 5
+  BUILTIN_PROJECT_QUERY_VIEW = 6
+  BUILTIN_PROJECT_QUERY_EDIT = 7
+  BUILTIN_STANDARD_GLOBAL = 8
+
+  HIDDEN_ROLE_TYPES = [
+    "WorkPackageRole",
+    "ProjectQueryRole"
+  ].freeze
 
   scope :builtin, ->(*args) {
     compare = "not" if args.first == true
@@ -41,7 +51,7 @@ class Role < ApplicationRecord
   }
 
   # Work Package Roles are intentionally visually hidden from users temporarily
-  scope :visible, -> { where.not(type: "WorkPackageRole") }
+  scope :visible, -> { where.not(type: HIDDEN_ROLE_TYPES) }
   scope :ordered_by_builtin_and_position, -> { order(Arel.sql("builtin, position")) }
 
   before_destroy(prepend: true) do
@@ -84,7 +94,10 @@ class Role < ApplicationRecord
           Role::BUILTIN_ANONYMOUS,
           Role::BUILTIN_WORK_PACKAGE_VIEWER,
           Role::BUILTIN_WORK_PACKAGE_COMMENTER,
-          Role::BUILTIN_WORK_PACKAGE_EDITOR
+          Role::BUILTIN_WORK_PACKAGE_EDITOR,
+          Role::BUILTIN_PROJECT_QUERY_VIEW,
+          Role::BUILTIN_PROJECT_QUERY_EDIT,
+          Role::BUILTIN_STANDARD_GLOBAL
         ]
       )
       .order(Arel.sql("position"))

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Notifications::NavigationHelper
   attr_reader :center,
               :notification,

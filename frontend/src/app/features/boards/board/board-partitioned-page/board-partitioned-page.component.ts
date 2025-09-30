@@ -9,9 +9,11 @@ import {
   ToolbarButtonComponentDefinition,
   ViewPartitionState,
 } from 'core-app/features/work-packages/routing/partitioned-query-space-page/partitioned-query-space-page.component';
-import { StateService, TransitionService } from '@uirouter/core';
+import {
+  StateService,
+  TransitionService,
+} from '@uirouter/core';
 import { BoardFilterComponent } from 'core-app/features/boards/board/board-filter/board-filter.component';
-import { Board } from 'core-app/features/boards/board/board';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
 import { HalResourceNotificationService } from 'core-app/features/hal/services/hal-resource-notification.service';
 import { BoardService } from 'core-app/features/boards/board/board.service';
@@ -19,13 +21,10 @@ import { DragAndDropService } from 'core-app/shared/helpers/drag-and-drop/drag-a
 import { WorkPackageFilterButtonComponent } from 'core-app/features/work-packages/components/wp-buttons/wp-filter-button/wp-filter-button.component';
 import { ZenModeButtonComponent } from 'core-app/features/work-packages/components/wp-buttons/zen-mode-toggle-button/zen-mode-toggle-button.component';
 import { BoardsMenuButtonComponent } from 'core-app/features/boards/board/toolbar-menu/boards-menu-button.component';
-import { RequestSwitchmap } from 'core-app/shared/helpers/rxjs/request-switchmap';
-import { componentDestroyed } from '@w11k/ngx-componentdestroyed';
 import {
   catchError,
   finalize,
   take,
-  tap,
 } from 'rxjs/operators';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
@@ -35,11 +34,10 @@ import { BoardFiltersService } from 'core-app/features/boards/board/board-filter
 import { CardViewHandlerRegistry } from 'core-app/features/work-packages/components/wp-card-view/event-handler/card-view-handler-registry';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { OpTitleService } from 'core-app/core/html/op-title.service';
-import {
-  EMPTY,
-  Observable,
-  of,
-} from 'rxjs';
+import { EMPTY } from 'rxjs';
+import { SubmenuService } from 'core-app/core/main-menu/submenu.service';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 
 export function boardCardViewHandlerFactory(injector:Injector) {
   return new CardViewHandlerRegistry(injector);
@@ -56,6 +54,7 @@ export function boardCardViewHandlerFactory(injector:Injector) {
     DragAndDropService,
     BoardFiltersService,
   ],
+  standalone: false,
 })
 export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
   text = {
@@ -67,8 +66,8 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
     unnamedBoard: this.I18n.t('js.boards.label_unnamed_board'),
     loadingError: 'No such board found',
     addList: this.I18n.t('js.boards.add_list'),
-    upsaleBoards: this.I18n.t('js.boards.upsale.teaser_text'),
-    upsaleCheckOutLink: this.I18n.t('js.work_packages.table_configuration.upsale.check_out_link'),
+    upsellBoards: this.I18n.t('js.boards.upsell.teaser_text'),
+    upsellCheckOutLink: this.I18n.t('js.work_packages.table_configuration.upsell.check_out_link'),
     unnamed_list: this.I18n.t('js.boards.label_unnamed_list'),
   };
 
@@ -152,6 +151,9 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
     readonly boardFilters:BoardFiltersService,
     readonly Boards:BoardService,
     readonly titleService:OpTitleService,
+    readonly submenuService:SubmenuService,
+    readonly pathHelperService:PathHelperService,
+    readonly currentProject:CurrentProjectService,
   ) {
     super();
   }
@@ -197,6 +199,17 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
     this.removeTransitionSubscription();
   }
 
+  breadcrumbItems() {
+    return [
+      { href: this.pathHelperService.homePath(), text: this.titleService.appTitle },
+      { href: this.pathHelperService.projectPath(this.currentProject.identifier as string), text: (this.currentProject.name) },
+      { href: this.pathHelperService.boardsPath(this.currentProject.identifier as string), text: this.I18n.t('js.label_board_plural') },
+      this.selectedTitle?? '',
+    ];
+  }
+
+  currentMenuSectionHeader() { return this.I18n.t('js.label_global_queries'); }
+
   changeChangesFromTitle(newName:string) {
     this.board$
       .pipe(take(1))
@@ -217,6 +230,7 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
             }),
             finalize(() => {
               this.toolbarDisabled = false;
+              this.reloadSidemenu();
               this.cdRef.detectChanges();
             }),
           ).subscribe(() => {
@@ -243,5 +257,9 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
    */
   protected setPartition(state:Ng2StateDeclaration) {
     this.currentPartition = (state.data && state.data.partition) ? state.data.partition : '-split';
+  }
+
+  private reloadSidemenu():void {
+    this.submenuService.reloadSubmenu(null);
   }
 }

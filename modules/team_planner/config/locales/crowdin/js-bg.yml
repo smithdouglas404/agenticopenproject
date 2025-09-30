@@ -3,12 +3,13 @@ bg:
   js:
     team_planner:
       add_existing: 'Add existing'
+      label_team_planner_plural: 'Екипни плановици'
       add_existing_title: 'Add existing work packages'
       create_label: 'Екипен плановик'
       create_title: 'Създайте нов екипен плановик'
       unsaved_title: 'Unnamed team planner'
       no_data: 'Add assignees to set up your team planner.'
-      add_assignee: 'Add assignee'
+      add_assignee: 'Изпълнител'
       remove_assignee: 'Remove assignee'
       two_weeks: '2-week'
       one_week: '1-week'

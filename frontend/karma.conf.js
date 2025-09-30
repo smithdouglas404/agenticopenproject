@@ -8,7 +8,6 @@ module.exports = function (config) {
       // I18n.js is provided by the Asset pipeline,
       // which is unavailable for unit tests.
       // For testing, shim its functionality
-      'src/test/i18n-shim.ts',
       'node_modules/jquery/dist/jquery.js',
       // 'node_modules/angular-mocks/angular-mocks.js'
     ],
@@ -16,20 +15,29 @@ module.exports = function (config) {
     plugins: [
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
+      require('karma-coverage'),
       require('@angular-devkit/build-angular/plugins/karma'),
       require('karma-spec-reporter'),
     ],
     client:{
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
-    coverageIstanbulReporter: {
-      dir: require('path').join(__dirname, 'coverage'), reports: [ 'html', 'lcovonly' ],
-      fixWebpackSourcePaths: true
+    coverageReporter: {
+      dir: require('path').join(__dirname, 'coverage'),
+      subdir: '.',
+      reporters: [
+        { type: 'html' },
+        { type: 'text-summary' },
+        { type: 'lcov', subdir: 'report-lcov' },
+      ]
+    },
+    preprocessors: {
+      'src/**/*.ts': 'coverage'
     },
     angularCli: {
       environment: 'dev'
     },
-    reporters: ['spec'],
+    reporters: ['spec', 'coverage'],
     specReporter: {
       maxLogLines: 5,         // limit number of lines logged per test
       suppressErrorSummary: false,  // do not print error summary
@@ -48,7 +56,7 @@ module.exports = function (config) {
     customLaunchers: {
       ChromeHeadlessNoSandbox: {
         base: 'ChromeHeadless',
-        flags: ['--no-sandbox']
+        flags: ['--no-sandbox', '--disable-gpu']
       },
       ChromeWithDebug: {
         base: 'Chrome',

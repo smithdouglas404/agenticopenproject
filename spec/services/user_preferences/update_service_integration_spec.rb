@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -126,7 +128,8 @@ RSpec.describe UserPreferences::UpdateService, "integration", type: :model do
           NotificationSetting::OVERDUE => nil,
           NotificationSetting::ASSIGNEE => true,
           NotificationSetting::RESPONSIBLE => true,
-          NotificationSetting::WATCHED => true
+          NotificationSetting::WATCHED => true,
+          NotificationSetting::SHARED => true
         }
 
         NotificationSetting.all_settings.each do |key|

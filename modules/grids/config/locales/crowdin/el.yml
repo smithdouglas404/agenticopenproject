@@ -8,6 +8,7 @@ el:
         row_count: "Πλήθος γραμμών"
         column_count: "Πλήθος στηλών"
         widgets: "Γραφικά στοιχεία"
+        scope: "Φυσικό Αντικείμενο"
     errors:
       models:
         grids/grid:

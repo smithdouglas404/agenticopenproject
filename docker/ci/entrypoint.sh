@@ -35,23 +35,32 @@ trap cleanup INT TERM EXIT
 declare -a pids=()
 
 run_background() {
-  # Run the command in the background
-  "$@" &
+	# Run the command in the background
+	"$@" &
 
-  # Store the PID of the background process
-  local pid=$!
-  pids+=("$pid")
+	# Store the PID of the background process
+	local pid=$!
+	pids+=("$pid")
+
+	echo "[background] Started background process $pid: $@"
 }
 
 wait_for_background() {
-	for pid in "${pids[@]}"; do
+	# Make a copy of the pids array
+	local waiting_pids=("${pids[@]}")
+	echo "[background] Waiting for background processes ${waiting_pids[@]} to finish..."
+	# Reset the global pids array to empty
+	pids=()
+
+	for pid in "${waiting_pids[@]}"; do
 		wait "$pid"
 		# Check the exit status of each background process
 		if [ $? -ne 0 ]; then
-			echo "Command with PID $pid failed"
+			echo "[background] Command with PID $pid failed"
 			exit 1
 		fi
 	done
+	echo "[background] All background processes ${waiting_pids[@]} finished"
 }
 
 execute() {
@@ -107,9 +116,9 @@ setup_tests() {
 	execute_quiet "cp docker/ci/database.yml config/"
 	create_db_cluster
 
-  execute "gem install bundler --version '${BUNDLER_VERSION}' --no-document"
+	execute "gem install bundler --no-document"
 
-  run_background execute "BUNDLE_JOBS=8 bundle install --quiet && bundle clean --force && echo BUNDLE DONE"
+	run_background execute "BUNDLE_JOBS=8 bundle install --quiet && bundle clean --force && echo BUNDLE DONE"
 	run_background execute "JOBS=8 time npm install --quiet && npm prune --quiet && echo NPM DONE"
 	wait_for_background
 
@@ -124,21 +133,19 @@ setup_tests() {
 run_units() {
 	shopt -s extglob
 	reset_dbs
-	execute "time bundle exec turbo_tests --verbose -n $JOBS --runtime-log spec/support/runtime-logs/turbo_runtime_units.log spec/!(features) modules/**/spec/!(features)"
+	execute "time bundle exec turbo_tests --verbose -n $JOBS --runtime-log spec/support/runtime-logs/turbo_runtime_units.log {,modules/*/}spec/!(features)"
 	cleanup
 }
 
 run_features() {
-	shopt -s extglob
 	reset_dbs
-	execute "time bundle exec turbo_tests --verbose -n $JOBS --runtime-log spec/support/runtime-logs/turbo_runtime_features.log spec/features modules/**/spec/features"
+	execute "time bundle exec turbo_tests --verbose -n $JOBS --runtime-log spec/support/runtime-logs/turbo_runtime_features.log {,modules/*/}spec/features"
 	cleanup
 }
 
 run_all() {
-	shopt -s globstar
 	reset_dbs
-	execute "time bundle exec turbo_tests --verbose -n $JOBS --runtime-log spec/support/runtime-logs/turbo_runtime_all.log spec modules/**/spec"
+	execute "time bundle exec turbo_tests --verbose -n $JOBS --runtime-log spec/support/runtime-logs/turbo_runtime_all.log {,modules/*/}spec"
 	cleanup
 }
 

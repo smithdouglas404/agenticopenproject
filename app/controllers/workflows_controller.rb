@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -45,7 +47,7 @@ class WorkflowsController < ApplicationController
   end
 
   def edit
-    @used_statuses_only = params[:used_statuses_only] != "0"
+    @used_statuses_only = params[:used_statuses_only] == "1"
 
     statuses_for_form
 
@@ -57,7 +59,7 @@ class WorkflowsController < ApplicationController
   def update
     call = Workflows::BulkUpdateService
            .new(role: @role, type: @type)
-           .call(params["status"])
+           .call(permitted_status_params)
 
     if call.success?
       flash[:notice] = I18n.t(:notice_successful_update)
@@ -91,18 +93,6 @@ class WorkflowsController < ApplicationController
         redirect_to action: "copy", source_type_id: @source_type, source_role_id: @source_role
       end
     end
-  end
-
-  def default_breadcrumb
-    if action_name == "edit"
-      t("label_workflow")
-    else
-      ActionController::Base.helpers.link_to(t("label_workflow"), url_for(controller: "/workflows", action: "edit"))
-    end
-  end
-
-  def show_local_breadcrumb
-    true
   end
 
   private
@@ -155,5 +145,13 @@ class WorkflowsController < ApplicationController
     else
       roles
     end
+  end
+
+  def permitted_status_params
+    return {} if params["status"].blank?
+
+    params["status"]
+      .to_unsafe_h
+      .select { |key, value| /\A\d+\z/.match?(key) && value.keys.all? { /\A\d+\z/.match?(it) } }
   end
 end

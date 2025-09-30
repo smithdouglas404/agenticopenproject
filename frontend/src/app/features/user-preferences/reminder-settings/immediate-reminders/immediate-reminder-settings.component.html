@@ -14,4 +14,16 @@
       data-qa-immediate-reminder="mentioned"
     />
   </spot-selector-field>
+
+  <spot-selector-field
+    [label]="text.personalReminder"
+    [control]="form.get('personalReminder')"
+  >
+    <input
+      slot="input"
+      type="checkbox"
+      formControlName="personalReminder"
+      data-qa-immediate-reminder="personalReminder"
+    />
+  </spot-selector-field>
 </ng-container>

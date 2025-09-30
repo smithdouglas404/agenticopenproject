@@ -6,24 +6,24 @@
   <div class="form--field -required">
     <%= f.text_field :name,
                      required: true,
-                     container_class: '-middle' %>
+                     container_class: "-middle" %>
   </div>
 
   <div class="form--field -required">
     <%= f.text_field :group_name_attribute,
                      required: true,
-                     placeholder: 'cn',
-                     container_class: '-middle' %>
+                     placeholder: "cn",
+                     container_class: "-middle" %>
     <div class="form--field-instructions">
-      <%= t('ldap_groups.synchronized_filters.form.group_name_attribute_text') %>
+      <%= t("ldap_groups.synchronized_filters.form.group_name_attribute_text") %>
     </div>
   </div>
 
   <div class="form--field -required">
     <%= f.check_box :sync_users,
-                     container_class: '-middle' %>
+                    container_class: "-middle" %>
     <div class="form--field-instructions">
-      <%= t('ldap_groups.synchronized_groups.form.sync_users_text') %>
+      <%= t("ldap_groups.synchronized_groups.form.sync_users_text") %>
     </div>
   </div>
 </fieldset>
@@ -36,18 +36,18 @@
                  LdapAuthSource.pluck(:name, :id),
                  required: true,
                  include_blank: "--- #{t(:actionview_instancetag_blank_option)} ---",
-                 container_class: '-middle' %>
+                 container_class: "-middle" %>
     <div class="form--field-instructions">
-      <%= t('ldap_groups.synchronized_groups.form.auth_source_text') %>
+      <%= t("ldap_groups.synchronized_groups.form.auth_source_text") %>
     </div>
   </div>
 
   <div class="form--field">
     <%= f.text_field :base_dn,
                      required: false,
-                     container_class: '-middle' %>
+                     container_class: "-middle" %>
     <div class="form--field-instructions">
-      <%= t('ldap_groups.synchronized_filters.form.base_dn_text') %>
+      <%= t("ldap_groups.synchronized_filters.form.base_dn_text") %>
     </div>
   </div>
 </fieldset>
@@ -58,9 +58,9 @@
                     required: true,
                     cols: 200,
                     rows: 10,
-                    container_class: '-large' %>
+                    container_class: "-large" %>
     <div class="form--field-instructions">
-      <%= t('ldap_groups.synchronized_filters.form.filter_string_text') %>
+      <%= t("ldap_groups.synchronized_filters.form.filter_string_text") %>
     </div>
   </div>
 </fieldset>

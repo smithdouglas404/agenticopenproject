@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,6 +31,7 @@ require "spec_helper"
 require_relative "../shared_expectations"
 
 RSpec.describe CustomActions::Actions::CustomField do
+  let(:scope) { instance_double(ActiveRecord::Relation) }
   let(:list_custom_field) do
     build_stubbed(:list_wp_custom_field,
                   custom_options: [build_stubbed(:custom_option, value: "A"),
@@ -61,6 +64,9 @@ RSpec.describe CustomActions::Actions::CustomField do
   let(:string_custom_field) do
     build_stubbed(:string_wp_custom_field)
   end
+  let(:link_custom_field) do
+    build_stubbed(:link_wp_custom_field)
+  end
   let(:date_custom_field) do
     build_stubbed(:date_wp_custom_field)
   end
@@ -77,6 +83,7 @@ RSpec.describe CustomActions::Actions::CustomField do
      float_custom_field,
      text_custom_field,
      string_custom_field,
+     link_custom_field,
      date_custom_field]
   end
   let(:klass) do
@@ -94,7 +101,7 @@ RSpec.describe CustomActions::Actions::CustomField do
   describe ".all" do
     before do
       allow(WorkPackageCustomField)
-        .to receive(:order)
+        .to receive(:usable_as_custom_action)
         .and_return(custom_fields)
     end
 
@@ -164,6 +171,12 @@ RSpec.describe CustomActions::Actions::CustomField do
       it_behaves_like "string values transformation"
     end
 
+    context "for a link custom field" do
+      let(:custom_field) { link_custom_field }
+
+      it_behaves_like "string values transformation"
+    end
+
     context "for a text custom field" do
       let(:custom_field) { text_custom_field }
 
@@ -219,6 +232,15 @@ RSpec.describe CustomActions::Actions::CustomField do
       end
     end
 
+    context "for a link custom field" do
+      let(:custom_field) { link_custom_field }
+
+      it "is :link_property" do
+        expect(instance.type)
+          .to be(:link_property)
+      end
+    end
+
     context "for a version custom field" do
       let(:custom_field) { version_custom_field }
 
@@ -242,7 +264,7 @@ RSpec.describe CustomActions::Actions::CustomField do
 
       it "is :associated_property" do
         expect(instance.type)
-          .to be(:associated_property)
+          .to be(:user)
       end
 
       describe "current_user special value" do
@@ -387,9 +409,14 @@ RSpec.describe CustomActions::Actions::CustomField do
       let(:versions) { [z_version, a_version, m_version] }
 
       before do
+        allow(scope)
+          .to receive(:references)
+                .with(:project)
+                .and_return(versions)
+
         allow(Version)
           .to receive(:systemwide)
-          .and_return(versions)
+          .and_return(scope)
       end
 
       context "for a non required field" do
@@ -426,8 +453,12 @@ RSpec.describe CustomActions::Actions::CustomField do
       before do
         allow(Principal)
           .to receive(:in_visible_project_or_me)
-          .with(User.current)
-          .and_return(users)
+                .with(User.current)
+                .and_return(scope)
+
+        allow(scope)
+          .to receive(:select)
+                .and_return(users)
       end
 
       context "for a non required field" do
@@ -500,8 +531,12 @@ RSpec.describe CustomActions::Actions::CustomField do
       before do
         allow(Principal)
           .to receive(:in_visible_project_or_me)
-          .with(User.current)
-          .and_return(users)
+                .with(User.current)
+                .and_return(scope)
+
+        allow(scope)
+          .to receive(:select)
+                .and_return(users)
       end
 
       it_behaves_like "associated custom action validations" do
@@ -522,9 +557,14 @@ RSpec.describe CustomActions::Actions::CustomField do
       end
 
       before do
+        allow(scope)
+          .to receive(:references)
+                .with(:project)
+                .and_return(versions)
+
         allow(Version)
           .to receive(:systemwide)
-          .and_return(versions)
+          .and_return(scope)
       end
 
       it_behaves_like "associated custom action validations" do
@@ -541,8 +581,8 @@ RSpec.describe CustomActions::Actions::CustomField do
       it_behaves_like "bool custom action validations" do
         let(:allowed_values) do
           [
-            { true: OpenProject::Database::DB_VALUE_TRUE },
-            { false: OpenProject::Database::DB_VALUE_FALSE }
+            { true => OpenProject::Database::DB_VALUE_TRUE },
+            { false => OpenProject::Database::DB_VALUE_FALSE }
           ]
         end
       end
@@ -564,6 +604,12 @@ RSpec.describe CustomActions::Actions::CustomField do
       let(:custom_field) { string_custom_field }
 
       it_behaves_like "string custom action validations"
+    end
+
+    context "for a link custom field" do
+      let(:custom_field) { link_custom_field }
+
+      it_behaves_like "link custom action validations"
     end
 
     context "for a date custom field" do
@@ -589,15 +635,19 @@ RSpec.describe CustomActions::Actions::CustomField do
       let(:custom_field) { send(:"#{type}_custom_field") }
 
       it "sets the value for #{type} custom fields" do
-        allow(work_package)
-          .to receive(custom_field.attribute_setter)
+        without_partial_double_verification do
+          allow(work_package)
+            .to receive(custom_field.attribute_setter)
+        end
 
         instance.values = 42
         instance.apply(work_package)
 
-        expect(work_package)
-          .to have_received(custom_field.attribute_setter)
-          .with([42])
+        without_partial_double_verification do
+          expect(work_package)
+            .to have_received(custom_field.attribute_setter)
+            .with([42])
+        end
       end
     end
 
@@ -605,15 +655,17 @@ RSpec.describe CustomActions::Actions::CustomField do
       let(:custom_field) { date_custom_field }
 
       it "sets the value to today for a dynamic value" do
-        allow(work_package)
-          .to receive(custom_field.attribute_setter)
+        without_partial_double_verification do
+          allow(work_package)
+            .to receive(custom_field.attribute_setter)
 
-        instance.values = "%CURRENT_DATE%"
-        instance.apply(work_package)
+          instance.values = "%CURRENT_DATE%"
+          instance.apply(work_package)
 
-        expect(work_package)
-          .to have_received(custom_field.attribute_setter)
-                .with(Date.current)
+          expect(work_package)
+            .to have_received(custom_field.attribute_setter)
+                  .with(Date.current)
+        end
       end
     end
   end

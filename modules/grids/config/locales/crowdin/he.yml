@@ -8,6 +8,7 @@ he:
         row_count: "מספר שורות"
         column_count: "מספר עמודות"
         widgets: "ווידג'טים"
+        scope: "Scope"
     errors:
       models:
         grids/grid:

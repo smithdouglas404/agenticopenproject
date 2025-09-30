@@ -7,10 +7,11 @@ et:
       webhooks/webhook:
         url: 'Payload URL'
         secret: 'Signature secret'
-        events: 'Events'
+        events: 'Sündmused'
+        enabled: 'Sees'
         projects: 'Lubatud projektid'
       webhooks/log:
-        event_name: 'Event name'
+        event_name: 'Sündmuse nimi'
         url: 'Payload URL'
         response_code: 'Response code'
         response_body: 'Response'
@@ -30,6 +31,8 @@ et:
       events:
         created: "Loodud"
         updated: "Updated"
+        comment: "Kommentaar"
+        internal_comment: "Internal comment"
       explanation:
         text: >
           Upon the occurrence of an event like the creation of a work package or an update on a project, OpenProject will send a POST request to the configured web endpoints. Oftentimes, the event is sent after the %{link} has passed.
@@ -57,8 +60,8 @@ et:
         project_ids:
           title: 'Lubatud projektid'
           description: 'Select for which projects this webhook should be executed for.'
-          all: 'All projects'
-          selected: 'Selected projects only'
+          all: 'Kõik projektid'
+          selected: 'Ainult valitud projektid'
         selected_project_ids:
           title: 'Selected projects'
         secret:

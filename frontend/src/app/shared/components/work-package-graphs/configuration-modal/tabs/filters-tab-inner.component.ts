@@ -11,6 +11,7 @@ import { WorkPackageFiltersService } from 'core-app/features/work-packages/compo
 @Component({
   selector: 'op-filters-tab-inner',
   templateUrl: './filters-tab-inner.component.html',
+  standalone: false,
 })
 export class WpGraphConfigurationFiltersTabInnerComponent extends QuerySpacedTabComponent implements TabComponent {
   public filters:QueryFilterInstanceResource[] = [];

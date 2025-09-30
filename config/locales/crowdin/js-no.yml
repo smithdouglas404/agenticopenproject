@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -66,7 +66,7 @@
     button_back_to_list_view: "Tilbake til listevisning"
     button_cancel: "Avbryt"
     button_close: "Lukk"
-    button_change_project: "Bytt prosjekt"
+    button_change_project: "Move to another project"
     button_check_all: "Velg alle"
     button_configure-form: "Konfigurer skjema"
     button_confirm: "Bekreft"
@@ -74,7 +74,7 @@
     button_copy: "Kopier"
     button_copy_to_clipboard: "Kopier til utklippstavlen"
     button_copy_link_to_clipboard: "Kopier lenke til utklippstavlen"
-    button_copy_to_other_project: "Kopier til et annet prosjekt"
+    button_copy_to_other_project: "Duplicate in another project"
     button_custom-fields: "Egendefinerte felter"
     button_delete: "Slett"
     button_delete_watcher: "Slett overvåker"
@@ -88,6 +88,8 @@
     button_list_view: "Listevisning"
     button_show_view: "Fullskjermvisning"
     button_log_time: "Logg tid"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "Mer"
     button_open_details: "Åpne detaljvisning"
     button_close_details: "Lukk detaljvisning"
@@ -102,9 +104,9 @@
     button_save: "Lagre"
     button_settings: "Innstillinger"
     button_uncheck_all: "Avmerk alle"
-    button_update: "Oppdatèr"
-    button_export-pdf: "Last ned PDF"
+    button_update: "Oppdater"
     button_export-atom: "Last ned Atom"
+    button_generate_pdf: "Generate PDF"
     button_create: "Opprett"
     card:
       add_new: "Legg til nytt kort"
@@ -138,6 +140,8 @@
     description_select_work_package: "Velg arbeidspakke #%{id}"
     description_subwork_package: "Barn av arbeidspakke #%{id}"
     editor:
+      revisions: "Show local modifications"
+      no_revisions: "No local modifications found"
       preview: "Veksle forhåndsvisningsmodus"
       source_code: "Veksle 'Markdown'-kildemodus"
       error_saving_failed: "Lagring av dokumentet mislyktes med følgende feil: %{error}"
@@ -150,6 +154,7 @@
         attribute_reference:
           macro_help_tooltip: "Dette tekstsegmentet er dynamisk gjengitt av en makro."
           not_found: "Finner ikke forespurt ressurs"
+          nested_macro: "This macro is recursively referencing %{model} %{id}."
           invalid_attribute: "Den valgte egenskapen '%{name}' eksisterer ikke."
         child_pages:
           button: "Lenker til undersider"
@@ -199,67 +204,6 @@
         edit_query: "Rediger spørring"
         new_group: "Ny gruppe"
         reset_to_defaults: "Tilbakestill til standard"
-      enterprise:
-        text_reprieve_days_left: "%{days} dager til slutten av utsettelsesperioden"
-        text_expired: "utløpt"
-        trial:
-          confirmation: "Bekreftelse av e-postadresse"
-          confirmation_info: >
-            Vi har sendt deg en e-post  %{date} til %{email}. Sjekk innboksen og klikk på bekreftelseslenken du ga for å starte prøveperioden på 14 dager.
-          form:
-            general_consent: >
-              Jeg godtar <a target="_blank" href="%{link_terms}">sine vilkår for personvern</a> og <a target="_blank" href="%{link_privacy}">personvernregler</a>.
-            invalid_email: "Ugyldig e-postadresse"
-            label_company: "Firma"
-            label_first_name: "Fornavn"
-            label_last_name: "Etternavn"
-            label_domain: "Domene"
-            label_subscriber: "Abonnent"
-            label_maximum_users: "Maksimalt antall aktive brukere"
-            label_starts_at: "Starter på"
-            label_expires_at: "Utløper på"
-            receive_newsletter: Jeg vil motta OpenProject <a target="_blank" href="%{link}">nyhetsbrev</a>.
-            taken_domain: Det kan kun være en aktiv prøveversjon per domene.
-            domain_mismatch: Gjeldende forespørselsnavnet samsvarer ikke med det konfigurerte vertsnavnet. Vennligst dobbeltsjekk systeminnstillingene.
-            taken_email: Hver bruker kan kun opprette en prøveversjon.
-          email_not_received: "Du har ikke mottatt en e-post? Du kan sende e-posten på nytt med lenken til høyre."
-          try_another_email: "Eller prøv det med en annen e-postadresse."
-          next_steps: "De neste trinnene"
-          resend_link: "Send igjen"
-          resend_success: "E-post er oppdatert. Sjekk e-posten din, og klikk på bekreftelseskoblingen din."
-          resend_warning: "Kunne ikke sende e-post på nytt."
-          session_timeout: "Økten ble tidsavbrutt. Vennligst prøv å laste siden på nytt eller send på nytt."
-          status_label: "Status:"
-          status_confirmed: "bekreftet"
-          status_waiting: "e-post sendt - venter på bekreftelse"
-          test_ee: "Test Enterprise-utgaven 14 dager gratis"
-          quick_overview: "Få en rask oversikt over prosjektledelse og teamsamarbeid med OpenProject Enterprise-utgaven."
-        upsale:
-          become_hero: "Bli en helt!"
-          enterprise_info_html: "%{feature_title} er en Enterprise <span class='spot-icon spot-icon_inline spot-icon_enterprise-addons'></span> utvidelse."
-          upgrade_info: "Vennligst oppgrader til et betalt abonnement for å kunne aktivere og begynne å bruke det i ditt team."
-          benefits:
-            description: "Hva er fordelene ved Enterprise on-premises-utgaven?"
-            high_security: "Sikkerhetsfunksjoner"
-            high_security_text: "Engangs pålogging (SAML, OpenID Connect, CAS), LDAP-grupper."
-            installation: "Installasjons støtte"
-            installation_text: "Erfarne programvareingeniører veileder deg gjennom hele installerings- og installasjonsprosessen på din egen infrastruktur."
-            premium_features: "Enterprise tillegg"
-            premium_features_text: "Dynamiske tavler, egendefinert tema og logo, grafer, intelligente arbeidsprosesser med egendefinerte handlinger, fulltekst søk etter vedlegg til arbeidspakke og tilpassede felter."
-            professional_support: "Profesjonell hjelp"
-            professional_support_text: "Få pålitelig, høykvalitets støtte fra seniorstøtteteknikere med ekspertkunnskap om å drive OpenProject i forretningskritiske omgivelser."
-          button_start_trial: "Start gratis prøveversjon"
-          button_upgrade: "Oppgrader nå"
-          button_contact_us: "Kontakt oss for en demo"
-          button_book_now: "Bestill nå"
-          confidence: >
-            Vi leverer sikkerheten til et testet og støttet program for styring av bedriftsklasse-prosjekter - med åpen kildekode og med et åpent sinn.
-          link_quote: "Få tilbud"
-          more_info: "Mer informasjon"
-          text: >
-            OpenProject Enterprise edition bygger på toppen av fellesskapets utgave. Det inkluderer Enterprise tillegg og profesjonell støtte som hovedsakelig retter seg mot organisasjoner med mer enn 10 brukere som håndterer forretningskritiske prosjekter med OpenProject.
-          unlimited: "Ubegrenset"
-          you_contribute: "Utviklere må også betale regningene sine. Ved å oppgradere til Enterprise Edition, støtter du fellesskapets innsats med åpen kildekode og bidrar til dens utvikling, vedlikehold og kontinuerlig forbedring."
       working_days:
         calendar:
           empty_state_header: "Arbeidsfrie dager"
@@ -268,12 +212,17 @@
         add_non_working_day: "Arbeidsfri dag"
         already_added_error: "En arbeidsfri dag for denne datoen finnes allerede. Det kan bare være en arbeidsfri dag som er opprettet for hver unike dato."
         change_button: "Lagre og endre"
-        change_title: "Endre virkedager"
+        change_title: "Endre arbeidsdager"
         removed_title: "Du fjerner de følgende dagene fra listen over arbeidsfrie dager:"
-        change_description: "Endring av hvilke ukedager som regnes som arbeidsdager eller arbeidsfrie dager kan påvirke start- og sluttdager for alle arbeidspakker i alle prosjekter i denne forekomsten."
+        change_description: "Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance."
         warning: >
-          Endringene kan ta noe tid på å bli effektivisert. Du vil bli varslet når alle relevante arbeidspakker har blitt oppdatert.
-          Er du sikker på at du vil fortsette?
+          The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+          Are you sure you want to continue?
+      work_packages_settings:
+        warning_progress_calculation_mode_change_from_status_to_field_html: >-
+          Changing progress calculation mode from status-based to work-based will make the <i>% Complete</i> field freely editable. If you optionally enter values for <i>Work</i> or <i>Remaining work</i>, they will also be linked to <i>% Complete</i>. Changing <i>Remaining work</i> can then update <i>% Complete</i>.
+        warning_progress_calculation_mode_change_from_field_to_status_html: >-
+          Changing progress calculation mode from work-based to status-based will result in all existing <i>% Complete</i> values to be lost and replaced with values associated with each status. Existing values for <i>Remaining work</i> may also be recalculated to reflect this change. This action is not reversible.
     custom_actions:
       date:
         specific: "på"
@@ -330,18 +279,6 @@
         years: "År"
         description: >
           Velg standard zoom-nivå som skal vises når autozoom ikke er tilgjengelig.
-      export:
-        title: "Gantt-diagram PDF alternativer"
-        button_export: "Eksportèr"
-        column_widths:
-          narrow: "Smal"
-          medium: "Medium"
-          wide: "Bred"
-          very_wide: "Veldig bred"
-        options:
-          date_zoom: "Dato zoom"
-          paper_size: "Papirstørrelse"
-          column_widths: "Kolonnebredder"
     general_text_no: "nei"
     general_text_yes: "ja"
     general_text_No: "Nei"
@@ -353,17 +290,6 @@
         format:
           date: "%{attribute} er ingen gyldig dato - ÅÅÅÅ-MM-DD forventet."
         general: "En feil har oppstått."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Les om nye funksjoner og produktoppdateringer."
-          learn_about: "Lær mer om de nye funksjonene"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "14_1":
-            standard:
-              new_features_html: >
-                Utgivelsen inneholder ulike nye funksjoner og forbedringer: <br> <ul class="%{list_styling_class}"> <li>PDF eksport av Gantt visning, f.eks for utskrift (Enterprise add-on)</li> <li>Favorittprosjekter</li> <li>Avsnitt i Møter</li> <li>Viser møter på Min side og i prosjektoversikten</li> <li>Mulighet for å skjule vedlegg i Filer-fanen</li> <li>Egendefinerte felter av typen lenke (URL)</li> </ul>
     ical_sharing_modal:
       title: "Abonner på kalender"
       inital_setup_error_message: "En feil oppstod under henting av data."
@@ -389,6 +315,7 @@
     label_added_time_by: 'Lagt til av <a href="%{authorLink}">%{author}</a> i %{age}'
     label_ago: "dager siden"
     label_all: "alle"
+    label_all_projects: "Alle prosjekter"
     label_all_uppercase: "Alle"
     label_all_work_packages: "alle arbeidspakker"
     label_and: "og"
@@ -404,6 +331,7 @@
     label_create: "Opprett"
     label_create_work_package: "Opprett ny arbeidspakke"
     label_created_by: "Opprettet av"
+    label_current: "current"
     label_date: "Dato"
     label_date_with_format: "Angi %{date_attribute} med følgende format: %{format}"
     label_deactivate: "Deaktiver"
@@ -435,7 +363,6 @@
     label_filename: "Fil"
     label_filesize: "Størrelse"
     label_general: "Generell"
-    label_global_roles: "Globale roller"
     label_greater_or_equal: ">="
     label_group: "Gruppe"
     label_group_by: "Grupper etter"
@@ -464,10 +391,11 @@
     label_menu_collapse: "skjul"
     label_menu_expand: "utvid"
     label_more_than_ago: "mer enn dager siden"
+    label_moderate_comment: "Moderate comment"
     label_next: "Neste"
     label_no_color: "Ingen farge"
     label_no_data: "Ingen data å vise"
-    label_no_due_date: "ingen ferdigmeldingsdato"
+    label_no_due_date: "ingen ferdigdato"
     label_no_start_date: "ingen startdato"
     label_no_date: "ingen dato"
     label_no_value: "Ingen verdi"
@@ -497,7 +425,6 @@
     label_repository_plural: "Pakkebrønner"
     label_save_as: "Lagre som"
     label_search_columns: "Søk i en kolonne"
-    label_select_project: "Velg et prosjekt"
     label_select_watcher: "Velg en overvåker..."
     label_selected_filter_list: "Valgte filtre"
     label_show_attributes: "Vis alle attributter"
@@ -508,7 +435,7 @@
     label_sort_lower: "Flytt ned"
     label_sorting: "Sortering"
     label_spent_time: "Tid brukt"
-    label_star_query: "Favorittisert"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Trykk enter for å lagre."
     label_public_query: "Offentlig"
     label_sum: "Sum"
@@ -567,7 +494,7 @@
     label_version_plural: "Versjoner"
     label_view_has_changed: "Denne visningen har ulagrede endringer. Klikk for å lagre dem."
     help_texts:
-      show_modal: "Vis oppføring for hjelpetekst"
+      show_modal: "Show help text"
     onboarding:
       buttons:
         skip: "Hopp over"
@@ -578,7 +505,7 @@
         members: "Inviter nye <b>medlemmer</b> til å bli med i prosjektet ditt."
         quick_add_button: "Klikk på plussikonet (+) i toppnavigasjonen til <b>opprette et nytt prosjekt</b> eller for å  <b>inviterer kolleger</b>."
         sidebar_arrow: "Bruk returpilen i øvre venstre hjørne for å gå tilbake til prosjektets <b>hovedmeny</b>."
-        welcome: "Ta en tre minutters introduksjon for å lære de <b>viktigste mulighetene</b>.<br>Vi anbefaler å fullføre alle trinnene.  Du kan når som helst starte på nytt."
+        welcome: "Take a three-minute introduction tour to learn the most <b>important features</b>. <br> We recommend completing the steps until the end. You can restart the tour any time."
         wiki: "I <b>wiki</b> kan du dokumentere og dele kunnskap sammen med teamet."
         backlogs:
           overview: "Administrer arbeidet ditt i <b>- backlogs</b> -visningen."
@@ -610,33 +537,28 @@
       title: "Varsler"
       no_unread: "Ingen uleste varsler"
       reasons:
-        mentioned: "nevnt"
-        watched: "overvåker"
-        assigned: "utførende"
-        responsible: "ansvarlig"
-        created: "opprettet"
-        scheduled: "planlagt"
-        commented: "kommentert"
-        processed: "behandlet"
-        prioritized: "prioritert"
+        mentioned: "Nevnt"
+        watched: "Overvåker"
+        assigned: "Deltaker"
+        #The enum value is named 'responsible' in the database and that is what is transported through the API
+        #up to the frontend.
+        responsible: "Ansvarlig"
+        created: "Opprettet"
+        scheduled: "Planlagt"
+        commented: "Kommentert"
+        processed: "Processed"
+        prioritized: "Prioritized"
         dateAlert: "Dato varsel"
-        shared: "delt"
+        shared: "Delt"
+        reminder: "Reminder"
       date_alerts:
         milestone_date: "Milepæl dato"
         overdue: "Forfalt"
-        overdue_since: "siden %{difference_in_days}"
-        property_today: "er i dag"
-        property_is: "er om  %{difference_in_days}"
-        property_was: "var %{difference_in_days} siden"
-        property_is_deleted: "er slettet"
-        upsale:
-          title: "Dato varsler"
-          description: "Med datovarsler, vil du bli varslet om kommende start- eller sluttdatoer slik at du aldri går glipp av eller glemmer en viktig frist."
-      facets:
-        unread: "Ulest"
-        unread_title: "Vis ulest"
-        all: "Alle"
-        all_title: "Vis alle"
+        overdue_since: "since %{difference_in_days}."
+        property_today: "is today."
+        property_is: "is in %{difference_in_days}."
+        property_was: "was %{difference_in_days} ago."
+        property_is_deleted: "is deleted."
       center:
         label_actor_and: "og"
         and_more_users:
@@ -647,25 +569,20 @@
           with_current_filter: "Det er ingen varsler i denne visningen for øyeblikket"
         mark_all_read: "Merk alle som lest"
         mark_as_read: "Merk som lest"
-        text_update_date: "%{date} av"
+        mark_all_read_confirmation: "This will mark all notifications in this view as read. Are you sure you want to do this?"
+        text_update_date_by: "%{date} av"
         total_count_warning: "Viser de %{newest_count} nyeste varsler. %{more_count} flere er ikke vist."
         empty_state:
           no_notification: "Ser ut som du er helt oppdatert."
           no_notification_with_current_project_filter: "Ser ut som du er helt oppdatert med det valgte prosjektet."
           no_notification_with_current_filter: "Ser ut som du er helt oppdatert med filteret %{filter}."
+          no_notification_for_filter: "Looks like you are all caught up for this filter."
           no_selection: "Klikk på en melding for å se alle aktivitetsdetaljer."
         new_notifications:
           message: "Det finnes nye varsler."
           link_text: "Klikk her for å laste dem"
-      menu:
-        accountable: "Ansvarlig"
-        by_project: "Ulest av prosjektet"
-        by_reason: "Grunn"
-        inbox: "Innboks"
-        mentioned: "Nevnt"
-        watched: "Overvåker"
-        date_alert: "Dato varsel"
-        shared: "Delt"
+      reminders:
+        note: "Note: “%{note}”"
       settings:
         change_notification_settings: 'Du kan endre <a target="_blank" href="%{url}">varslingsinnstillinger</a> for å sikre at du aldri går glipp av en viktig oppdatering.'
         title: "Varslingsinnstillinger"
@@ -705,7 +622,6 @@
           date_alerts:
             title: "Dato varsler"
             description: "Automatiske varsler når viktige datoer nærmer seg for åpne arbeidspakker du er med i (utførende, ansvarlig eller overvåker)."
-            teaser_text: "Med datovarsler, vil du bli varslet om kommende start- eller sluttdatoer slik at du aldri går glipp av eller glemmer en viktig frist."
           overdue: Når forfalt
         project_specific:
           title: "Prosjekt-spesifikke varslingsinnstillinger"
@@ -718,9 +634,12 @@
       title: "Bekreft ditt passord for å fortsette"
     pagination:
       no_other_page: "Du er på den eneste siden."
+      pages_skipped: "Pages skipped."
+      page_navigation: "Pagination navigation"
+      per_page_navigation: 'Items per page selection'
       pages:
-        next: "Gå til neste side"
-        previous: "Tilbake til forrige side"
+        page_number: Page %{number}
+        show_per_page: Show %{number} per page
     placeholders:
       default: "-"
       subject: "Angi emne her"
@@ -728,18 +647,13 @@
       description: "Beskrivelse: Klikk for å redigere..."
       relation_description: "Klikk for å legge til beskrivelse for denne relasjonen"
     project:
-      required_outside_context: >
-        Velg et prosjekt for å opprette arbeidspakken og se alle egenskaper. Du kan bare velge prosjekter som har typen ovenfor aktivert.
-      details_activity: "Aktivitet for prosjektdetaljer"
-      context: "Prosjekt kontekst"
-      click_to_switch_to_project: "Prosjekt: %{projectname}"
-      confirm_template_load: "Bytte av mal vil laste siden på nytt, og du vil miste alle data på dette skjemaet. Vil du fortsette?"
-      use_template: "Bruk mal"
-      no_template_selected: "(Ingen)"
-      copy:
-        copy_options: "Kopier alternativer"
       autocompleter:
         label: "Prosjektet autofullføring"
+      click_to_switch_to_project: "Prosjekt: %{projectname}"
+      context: "Prosjekt kontekst"
+      not_available: "Project N/A"
+      required_outside_context: >
+        Velg et prosjekt for å opprette arbeidspakken og se alle egenskaper. Du kan bare velge prosjekter som har typen ovenfor aktivert.
     reminders:
       settings:
         daily:
@@ -754,6 +668,7 @@
         immediate:
           title: "Send meg en påminnelse"
           mentioned: "Umiddelbart hvis noen @nevner meg"
+          personal_reminder: "Immediately when I receive a personal reminder"
         alerts:
           title: "Epost varsler for andre produkter (som ikke er arbeidspakker)"
           explanation: >
@@ -766,12 +681,14 @@
           wiki_page_updated: "Wiki-side oppdatert"
           membership_added: "Medlemskap lagt til"
           membership_updated: "Medlemskapet er oppdatert"
-        title: "E-post påminnelser"
+        title: "E-postpåminnelser"
         pause:
           label: "pause daglige e-postpåminnelser midlertidig"
           first_day: "Første dag "
           last_day: "Siste dag"
     text_are_you_sure: "Er du sikker?"
+    text_are_you_sure_to_cancel: "You have unsaved changes on this page. Are you sure you want to discard them?"
+    breadcrumb: "Brødsmule"
     text_data_lost: "Alle angitte data vil gå tapt."
     text_user_wrote: "%{value} skrev:"
     types:
@@ -785,10 +702,6 @@
         upgrade_to_ee_text: "Wow! Hvis du trenger dette tillegget er en superpro! Vil du støtte oss OpenSource-utviklere ved å bli en Enterpris-utgave-kunde?"
         more_information: "Mer informasjon"
         nevermind: "Glem det"
-      edit:
-        form_configuration: "Konfigurering av skjema"
-        projects: "Prosjekter"
-        settings: "Innstillinger"
     time_entry:
       work_package_required: "Valg av arbeidspakke er påkrevd"
       title: "Logg tid"
@@ -811,6 +724,7 @@
       typeahead_placeholder: Søk etter mulige overvåkere
     relation_labels:
       parent: "Overordnet"
+      child: "Child"
       children: "Underordnede"
       relates: "Relatert til"
       duplicates: "Duplikater"
@@ -840,16 +754,16 @@
       add_new_child: "Opprett ny underordnet"
       create_new: "Opprett ny"
       add_existing: "Legg til eksisterende"
-      add_existing_child: "Legg til eksisterende underordnet"
+      add_existing_child: "Legg til underordnet"
       remove_child: "Fjern underordnet"
       add_new_relation: "Lag ny relasjon"
       add_existing_relation: "Legg til eksisterende relasjon"
       update_description: "Velg eller oppdater beskrivelse for denne relasjonen"
       toggle_description: "Veksle relasjonsbeskrivelse"
       update_relation: "Klikk for å endre relasjonstype"
-      add_follower: "Legg til følger"
       show_relations: "Vis relasjoner"
       add_predecessor: "Legg til forgjenger"
+      add_successor: "Add successor"
       remove: "Fjern relasjonen"
       save: "Lagre relasjon"
       abort: "Avbryt"
@@ -859,6 +773,7 @@
     autocompleter:
       placeholder: "Skriv for å søke"
       notFoundText: "Ingen elementer funnet"
+      search: "Søk"
       project:
         placeholder: "Velg prosjekt"
     repositories:
@@ -866,8 +781,6 @@
       select_branch: "Velg gren"
     field_value_enter_prompt: "Angi en verdi for '%{field}'"
     project_menu_details: "Detaljer"
-    scheduling:
-      manual: "Manuell planlegging"
     sort:
       sorted_asc: "Stigende sortering er valgt,"
       sorted_dsc: "Synkende sortering er valgt,"
@@ -881,7 +794,7 @@
     tl_toolbar:
       zooms: "Zoom-nivå"
       outlines: "Nivå"
-    upsale:
+    upsell:
       ee_only: "Enterprise edition utvidelse"
     wiki_formatting:
       strong: "Halvfet"
@@ -899,26 +812,22 @@
       preformatted_text: "Preformattert tekst"
       wiki_link: "Lenke til en Wiki-side"
       image: "Bilde"
+    sharing:
+      share: "Del"
+      selected_count: "%{count} valgte"
+      selection:
+        mixed: "Blandet"
     work_packages:
       bulk_actions:
-        move: "Endre prosjekt i bulk"
         edit: "Bulk redigere"
-        copy: "Bulk kopiering"
         delete: "Bulk slette"
+        duplicate: "Bulk duplicate"
+        move: "Endre prosjekt i bulk"
       button_clear: "Nullstill"
       comment_added: "Kommentaren ble lagt til."
       comment_send_failed: "En feil har oppstått.  Kommentaren kunne ikke sendes inn."
       comment_updated: "Kommentaren ble lagt til."
       confirm_edit_cancel: "Er du sikker å at du vil avbryte redigeringen av arbeidspakken?"
-      datepicker_modal:
-        automatically_scheduled_parent: "Automatisk planlagt.  Datoer er hentet fra relasjoner."
-        manually_scheduled: "Manuell planlegging er aktivert, alle realsjoner vil bli ignorert."
-        start_date_limited_by_relations: "Tilgjengelige start- og sluttdatoer er begrenset av relasjoner."
-        changing_dates_affects_follow_relations: "Endring av disse datoene vil ha innvirkning på daoter i relaterte arbeidspakker."
-        click_on_show_relations_to_open_gantt: 'Klikk på "%{button_name}" for GANTT oversikt.'
-        show_relations: "Vis relasjoner"
-        ignore_non_working_days:
-          title: "Kun arbeidsdager"
       description_filter: "Filter"
       description_enter_text: "Skriv tekst"
       description_options_hide: "Skjul alternativer"
@@ -957,8 +866,8 @@
         header_no_type: "Ny arbeidspakke (type ikke satt ennå)"
         header_with_parent: "Ny %{type} (Undertype av %{parent_type} #%{id})"
         button: "Opprett"
-      copy:
-        title: "Kopier arbeidspakke"
+      duplicate:
+        title: "Duplicate work package"
       hierarchy:
         show: "Vis hierarki modus"
         hide: "Skjul hierarkimodus"
@@ -1006,14 +915,16 @@
         versionName: "Versjon"
         version: "Versjon"
         work: "Arbeid"
-        workAlternative: "Estimert tid"
+        workAlternative: "Tidsestimat"
         remainingTime: "Gjenstående arbeid"
       default_queries:
+        manually_sorted: "New manually sorted query"
         latest_activity: "Siste aktivitet"
         created_by_me: "Opprettet av meg"
         assigned_to_me: "Tildelt meg"
         recently_created: "Nylig opprettet"
         all_open: "Alle åpne"
+        overdue: "Forfalt"
         summary: "Sammendrag"
         shared_with_users: "Delt med brukere"
         shared_with_me: "Delt med meg"
@@ -1044,24 +955,30 @@
         rename_query_placeholder: "Navn for denne visningen"
         star_text: "Marker denne visningen som favoritt og legg til i visnings meny på venstre side."
         public_text: >
-          Publiser denne visningen, slik at andre brukere får tilgang til visningen din. Brukere med 'Administrere offentlige visninger' kan endre eller fjerne offentlig spørring. Dette påvirker ikke synligheten til resultatene i arbeidspakken  i denne oversikten og avhengig av tillatelser,  vil brukerne kunne se forskjellige resultater.
+          Publiser denne visningen, slik at andre brukere får tilgang til visningen din. Brukere med 'Administrere offentlige visninger' kan endre eller fjerne offentlig spørring. Dette påvirker ikke synligheten til arbeidspakken resultatene i denne oversikten og avhengig av tillatelser,  vil brukerne kunne se forskjellige resultater.
         errors:
           unretrievable_query: "Kan ikke hente visning fra URL"
           not_found: "Det finnes ingen slik visning."
           duplicate_query_title: "Navnet på denne visningen finnes allerede. Endre allikevel?"
         text_no_results: "Ingen samsvarende visninger ble funnet."
+      reminders:
+        button_label: "Set reminder"
+        title:
+          new: "Set a reminder"
+          edit: "Edit reminder"
+        subtitle: "You will receive a notification for this work package at the chosen time."
+        presets:
+          tomorrow: "Tomorrow"
+          three_days: "In 3 days"
+          week: "In a week"
+          month: "In a month"
+          custom: "At a particular date/time"
       scheduling:
         is_parent: "Datoene for denne arbeidspakken trekkes automatisk fra de underordnede. Aktiver 'Manuell planlegging' for å angi datoene."
         is_switched_from_manual_to_automatic: "Datoene for denne arbeidspakken må eventuelt beregnes på nytt etter å ha byttet fra manual til automatisk planlegging på grunn av relasjoner med andre arbeidspakker."
       sharing:
-        share: "Del"
         title: "Del arbeidspakke"
         show_all_users: "Vis alle brukere som arbeidspakken er delt med"
-        selected_count: "%{count} valgte"
-        selection:
-          mixed: "Blandet"
-        upsale:
-          description: "Del arbeidspakker med brukere som ikke er medlemmer i prosjektet."
       table:
         configure_button: "Konfigurer tabell for arbeidspakke"
         summary: "Tabell med rader for arbeidspakke og kolonner for arbeidspakkeegenskaper."
@@ -1096,10 +1013,6 @@
           manually: "Manuelt"
           warning: "Du vil miste din forrige sortering når du aktiverer automatiske sorteringsmodus."
         columns_help_text: "Bruk inndatafelt over for å legge til kolonner til din tabellvisning. Du kan dra og slippe kolonnene for å endre rekkefølgen for dem."
-        upsale:
-          attribute_highlighting: "Trenger du visse arbeidspakker som skiller seg ut fra massen?"
-          relation_columns: "Trenger du å se relasjoner i listen over arbeidspakke?"
-          check_out_link: "Sjekk ut Enterprise-utgaven."
         relation_filters:
           filter_work_packages_by_relation_type: "Filtrer arbeidspakker etter relasjonstype"
       tabs:
@@ -1158,6 +1071,8 @@
     notice_successful_delete: "Slettingen var vellykket."
     notice_successful_update: "Oppdateringen var vellykket."
     notice_job_started: "jobb startet."
+    no_job_id: "No job ID returned from server."
+    invalid_job_response: "Invalid response from server."
     notice_bad_request: "Ugyldig forespørsel."
     relations:
       empty: Det eksisterer ingen relasjoner
@@ -1190,6 +1105,7 @@
       child_work_packages:
         one: "en underordnet arbeidspakke"
         other: "%{count} underordnet arbeidspakke"
+      hour_string: "%{hours} h"
       hour:
         one: "1 t"
         other: "%{count} t"
@@ -1198,6 +1114,9 @@
         one: "1 dag"
         other: "%{count} dager"
         zero: "0 dager"
+      word:
+        one: "1 word"
+        other: "%{count} words"
     zen_mode:
       button_activate: "Aktiver zen modus"
       button_deactivate: "Deaktiver zen modus"
@@ -1207,7 +1126,6 @@
       current_project_and_all_descendants: "I dette prosjektet + underprosjekter"
       current_project: "I dette prosjektet"
       recently_viewed: "Nylig sett"
-      search: "Søk"
       title:
         all_projects: "alle prosjekter"
         project_and_subprojects: "og alle underprosjekter"
@@ -1284,9 +1202,9 @@
         next_button: "Fortsett"
     exclusion_info:
       modal:
-        title: "Status excluded from hierarchy totals"
+        title: "Status ekskludert fra hierarkiske summer"
         content: >-
-          The status '%{status_name}' has been configured to be excluded from hierarchy totals of Work, Remaining work, and % Complete. The totals do not take this value into account.
+          Statusen '%{status_name}' er konfigurert til å bli ekskludert fra hierarkiske summer av Arbeid, Gjenstående arbeid og % Ferdig. Summene tar ikke hensyn til denne verdien.
     favorite_projects:
       no_results: "Du har ingen favorittprosjekter"
       no_results_subtext: "Legg til ett eller flere prosjekter som favoritt via oversikten eller i en prosjektliste."
@@ -1298,21 +1216,21 @@
       selected_filter:
         all: "Alle prosjekter"
         selected: "Kun valgte"
-      search_placeholder: "Søk i prosjekt..."
+      search_placeholder: "Search projects..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Inkluder alle underprosjekter"
       tooltip:
         include_all_selected: "Prosjektet er allerede inkludert siden det alle underprosjekter er aktivert."
         current_project: "Dette er det nåværende prosjektet du er i."
         does_not_match_search: "Prosjektet samsvarer ikke med søkekriteriene."
       no_results: "Ingen treff på dine søkekriterier."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Grunnlinje"
       clear: "Nullstill"
       apply: "Bruk"
       header_description: "Marker endringer som er gjort på denne listen tidligere."
-      enterprise_header_description: "Marker endringer på denne listen tidligere med Enterprise Edition."
       show_changes_since: "Vis endringer siden"
-      baseline_comparison: "Sammenligning grunnlinje"
       help_description: "Referansetidssone for grunnlinjen."
       time_description: "I din lokale tid: %{datetime}"
       time: "Tidspunkt"
@@ -1347,12 +1265,10 @@
         remove: "Fjern"
       drop_modal:
         focus_grab: "Dette er et fokusanker for modaler. Trykk shift+tab for å gå tilbake til modal trigger elementet."
-        close: "Close modal"
+        close: "Lukk modal"
     open_project_storage_modal:
       waiting_title:
         timeout: "Tidsavbrudd"
       waiting_subtitle:
         network_off: "Det er et nettverksproblem."
         network_on: "Nettverket er tilbake. Vi prøver igjen."
-        timeout: >
-          OpenProject kunne ikke gi deg tilgang til prosjektmappen i løpet av den forventede tiden. Vennligst prøv igjen.<br><br> Hvis dette problemet vedvarer, kontakt din OpenProject-administrator for å sjekke <a href="https://www.openproject.org/docs/system-admin-guide/files/external-file-storages/file-storage-troubleshooting/">statusen på fillagringsoppsettet</a>.

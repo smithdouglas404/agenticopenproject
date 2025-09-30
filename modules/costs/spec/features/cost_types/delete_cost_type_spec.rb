@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -41,7 +41,7 @@ RSpec.describe "deleting a cost type", :js do
   end
 
   it "can delete the cost type" do
-    visit cost_types_path
+    visit admin_cost_types_path
 
     within("#delete_cost_type_#{cost_type.id}") do
       scroll_to_and_click(find("button.submit_cost_type"))
@@ -51,10 +51,11 @@ RSpec.describe "deleting a cost type", :js do
     expect_angular_frontend_initialized
     expect(page).to have_css ".generic-table--no-results-container", wait: 10
 
-    SeleniumHubWaiter.wait
     # Show locked
     find_by_id("include_deleted").set true
     click_on "Apply"
+
+    wait_for_network_idle
 
     # Expect no results if not locked
     expect(page).to have_text I18n.t(:label_locked_cost_types)

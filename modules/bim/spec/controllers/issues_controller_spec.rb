@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -112,7 +112,7 @@ RSpec.describe Bim::Bcf::IssuesController do
 
       it "is successful" do
         expect { action }.to change { Attachment.count }.by(1)
-        expect(response).to be_successful
+        expect(response).to have_http_status 422
       end
 
       it_behaves_like "check permissions"
@@ -123,7 +123,8 @@ RSpec.describe Bim::Bcf::IssuesController do
 
       it "redirects back to where we started from" do
         expect { action }.not_to change { Attachment.count }
-        expect(response).to redirect_to "/projects/bim_project/issues/upload"
+        expect(response).to have_http_status 422
+        expect(response.headers["Location"]).to end_with "/projects/bim_project/issues/upload"
       end
     end
   end
@@ -149,7 +150,7 @@ RSpec.describe Bim::Bcf::IssuesController do
 
       it "is successful" do
         expect { action }.not_to change { Attachment.count }
-        expect(response).to be_successful
+        expect(response).to have_http_status 422
       end
 
       it_behaves_like "check permissions"

@@ -2,7 +2,7 @@
 
 # -- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2010-2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,35 +31,15 @@
 class Members::IndexPageHeaderComponent < ApplicationComponent
   include OpPrimer::ComponentHelpers
   include ApplicationHelper
-  include Menus::MembersHelper
 
   def initialize(project: nil)
     super
     @project = project
   end
 
-  def add_button_data_attributes
-    attributes = {
-      "members-form-target": "addMemberButton",
-      action: "members-form#showAddMemberForm",
-      "test-selector": "member-add-button"
-    }
-
-    attributes["trigger-initially"] = "true" if params[:show_add_members]
-
-    attributes
-  end
-
-  def filter_button_data_attributes
-    {
-      "members-form-target": "filterMemberButton",
-      action: "members-form#toggleMemberFilter"
-    }
-  end
-
   def breadcrumb_items
     [{ href: project_overview_path(@project.id), text: @project.name },
-     { href: project_members_path(@project), text: t(:label_member_plural) },
+     { href: project_members_path(@project), text: I18n.t(:label_member_plural), skip_for_mobile: first_menu_item? },
      current_breadcrumb_element]
   end
 
@@ -83,7 +63,7 @@ class Members::IndexPageHeaderComponent < ApplicationComponent
 
     if @query && query_name
       if menu_header.present?
-        I18n.t("menus.breadcrumb.nested_element", section_header: menu_header, title: query_name).html_safe
+        helpers.nested_breadcrumb_element(menu_header, query_name)
       else
         query_name
       end
@@ -94,17 +74,27 @@ class Members::IndexPageHeaderComponent < ApplicationComponent
 
   def current_query
     query_name = nil
+    query_href = nil
     menu_header = nil
 
-    first_level_menu_items.find do |section|
+    Members::Menu.new(project: @project, params:).menu_items.find do |section|
       section.children.find do |menu_query|
         if !!menu_query.selected
           query_name = menu_query.title
+          query_href = menu_query.href
           menu_header = section.header
         end
       end
     end
 
-    { query_name:, menu_header: }
+    { query_name:, query_href:, menu_header: }
+  end
+
+  def first_menu_item?
+    if current_query.present?
+      return current_query[:query_href] == project_members_path(@project)
+    end
+
+    false
   end
 end

@@ -1,5 +1,7 @@
-require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
-require File.expand_path(File.dirname(__FILE__) + "/../../shared_examples")
+# frozen_string_literal: true
+
+require_relative "../../spec_helper"
+require_relative "../../shared_examples"
 
 RSpec.describe Avatars::MyAvatarController do
   include_context "there are users with and without avatars"
@@ -37,14 +39,14 @@ RSpec.describe Avatars::MyAvatarController do
 
       it "renders 404" do
         post :update
-        expect(response.status).to eq 404
+        expect(response).to have_http_status :not_found
       end
     end
 
     it "returns invalid method for post request" do
       post :update
       expect(response).not_to be_successful
-      expect(response.status).to eq 405
+      expect(response).to have_http_status :method_not_allowed
     end
 
     it "calls the service for put" do
@@ -54,7 +56,7 @@ RSpec.describe Avatars::MyAvatarController do
 
       put :update
       expect(response).to be_successful
-      expect(response.status).to eq 200
+      expect(response).to have_http_status :ok
     end
 
     it "calls the service for put" do
@@ -64,7 +66,7 @@ RSpec.describe Avatars::MyAvatarController do
 
       put :update
       expect(response).not_to be_successful
-      expect(response.status).to eq 400
+      expect(response).to have_http_status :bad_request
     end
   end
 
@@ -72,7 +74,7 @@ RSpec.describe Avatars::MyAvatarController do
     it "returns invalid method for post request" do
       post :destroy
       expect(response).not_to be_successful
-      expect(response.status).to eq 405
+      expect(response).to have_http_status :method_not_allowed
     end
 
     it "calls the service for delete" do

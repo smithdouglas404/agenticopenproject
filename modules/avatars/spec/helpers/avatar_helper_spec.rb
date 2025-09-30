@@ -24,22 +24,26 @@ RSpec.describe AvatarHelper, with_settings: { protocol: "http" } do
     allow(user).to receive(:local_avatar_attachment).and_return avatar_stub
   end
 
-  def expected_user_avatar_tag(user)
+  def expected_user_avatar_tag(user, hover_card: true, hover_card_url: "/users/#{user.id}/hover_card")
     principal = {
       href: "/api/v3/users/#{user.id}",
       name: user.name,
       id: user.id
     }
 
-    angular_component_tag "opce-principal",
-                          inputs: {
-                            principal:,
-                            hideName: true,
-                            nameClasses: "",
-                            link: nil,
-                            title: user.name,
-                            size: "default"
-                          }
+    inputs = {
+      principal:,
+      hideName: true,
+      nameClasses: "",
+      link: nil,
+      title: user.name,
+      size: "default",
+      hoverCard: hover_card
+    }
+
+    inputs[:hoverCardUrl] = hover_card_url if hover_card
+
+    angular_component_tag "opce-principal", inputs:
   end
 
   def local_expected_url(user)
@@ -208,6 +212,13 @@ RSpec.describe AvatarHelper, with_settings: { protocol: "http" } do
 
     it "renders the avatar as user type (Regression #37278)" do
       expect(helper.avatar(user)).to be_html_eql(expected_user_avatar_tag(user))
+    end
+  end
+
+  context "when using hover cards" do
+    it "can be disabled" do
+      avatar = helper.avatar(user, hover_card: { active: false })
+      expect(avatar).to be_html_eql(expected_user_avatar_tag(user, hover_card: false))
     end
   end
 end

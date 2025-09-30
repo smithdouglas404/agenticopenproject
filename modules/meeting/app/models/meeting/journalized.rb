@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,29 +36,23 @@ module Meeting::Journalized
     acts_as_event title: Proc.new { |o|
                            "#{I18n.t(:label_meeting)}: #{o.title} \
           #{format_date o.start_time} \
-          #{format_time o.start_time, false}-#{format_time o.end_time, false})"
+          #{format_time o.start_time, include_date: false}-#{format_time o.end_time, include_date: false})"
                          },
                   url: Proc.new { |o| { controller: "/meetings", action: "show", id: o } },
                   author: Proc.new(&:user),
                   description: ""
 
-    register_journal_formatted_fields(:plaintext, "title")
-    register_journal_formatted_fields(:fraction, "duration")
-    register_journal_formatted_fields(:datetime, "start_date")
-    register_journal_formatted_fields(:meeting_start_time, "start_time")
-    register_journal_formatted_fields(:plaintext, "location")
-    register_journal_formatted_fields(:meeting_state, "state")
+    register_journal_formatted_fields "title", "location", formatter_key: :plaintext
+    register_journal_formatted_fields "duration", formatter_key: :fraction
+    register_journal_formatted_fields "start_date", formatter_key: :datetime
+    register_journal_formatted_fields "start_time", formatter_key: :meeting_start_time
+    register_journal_formatted_fields "state", formatter_key: :meeting_state
 
-    register_journal_formatted_fields(:agenda_item_duration, "duration")
-    register_journal_formatted_fields(:agenda_item_diff, /agenda_items_\d+_notes/)
-    register_journal_formatted_fields(:agenda_item_title, /agenda_items_\d+_title/)
-    register_journal_formatted_fields(:agenda_item_duration, /agenda_items_\d+_duration_in_minutes/)
-    register_journal_formatted_fields(:agenda_item_position, "position")
-    register_journal_formatted_fields(:meeting_work_package_id, /agenda_items_\d+_work_package_id/)
-
-    def touch_and_save_journals
-      update_column(:updated_at, Time.current)
-      save_journals
-    end
+    register_journal_formatted_fields "duration", formatter_key: :agenda_item_duration
+    register_journal_formatted_fields /agenda_items_\d+_notes/, formatter_key: :agenda_item_diff
+    register_journal_formatted_fields /agenda_items_\d+_title/, formatter_key: :agenda_item_title
+    register_journal_formatted_fields /agenda_items_\d+_duration_in_minutes/, formatter_key: :agenda_item_duration
+    register_journal_formatted_fields "position", formatter_key: :agenda_item_position
+    register_journal_formatted_fields /agenda_items_\d+_work_package_id/, formatter_key: :meeting_work_package_id
   end
 end

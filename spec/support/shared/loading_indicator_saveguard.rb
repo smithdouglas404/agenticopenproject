@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,4 +37,12 @@
 
 def loading_indicator_saveguard
   expect(page).to have_no_css(".op-loading-indicator")
+end
+
+# ng-select uses a loading indicator with css class .ng-spinner-loader when
+# loading.
+def wait_for_autocompleter_options_to_be_loaded
+  if has_css?(".ng-spinner-loader", wait: 0.1)
+    expect(page).to have_no_css(".ng-spinner-loader")
+  end
 end

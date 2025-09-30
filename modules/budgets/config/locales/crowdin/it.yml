@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -21,13 +21,13 @@
 #++
 it:
   plugin_budgets_engine:
-    name: 'Budget'
+    name: "Budget"
   activerecord:
     attributes:
       budget:
         author: "Autore"
         available: "Disponibile"
-        budget: "Pianificato"
+        budget: "Pianificata"
         budget_ratio: "Speso (tasso)"
         description: "Descrizione"
         spent: "Speso"
@@ -36,6 +36,7 @@ it:
         type: "Tipo di costo"
         labor_budget: "Costo del lavoro pianificato"
         material_budget: "Costi pianificati per unità"
+        base_amount: "Importo base"
       work_package:
         budget_subject: "Titolo del bilancio"
     models:
@@ -54,25 +55,31 @@ it:
   caption_labor: "Lavoro"
   caption_labor_costs: "Costo del lavoro effettivo"
   caption_material_costs: "Costi effettivi unitari"
-  budgets_title: "Bilanci"
+  budgets_title: "Budget"
   events:
     budget: "Bilancio modificato"
   help_click_to_edit: "Clicca qui per modificare."
   help_currency_format: "Formato di visualizzazione dei valori in valuta. %n viene sostituito con il valore della valuta, %u viene sostituito con l'unità di valuta."
   help_override_rate: "Immettere qui un valore per ignorare la tariffa di default."
   label_budget: "Bilancio"
-  label_budget_new: "Nuovo budget"
-  label_budget_plural: "Bilanci"
+  label_budget_available: "Budget disponibile"
   label_budget_id: "Budget #%{id}"
+  label_budget_new: "Nuovo budget"
+  label_budget_planned: "Budget previsto"
+  label_budget_plural: "Budget"
+  label_budget_spent: "Budget speso"
+  label_budget_spent_ratio: "Rapporto budget speso"
   label_deliverable: "Bilancio"
-  label_example_placeholder: 'es. %{decimal}'
+  label_example_placeholder: "es. %{decimal}"
   label_view_all_budgets: "Mostra tutti i budget"
   label_yes: "Si"
+  label_budget_totals: "Totali"
+  label_budget_details: "Dettagli del budget"
   notice_budget_conflict: "Le macro-attività devono essere dello stesso progetto."
   notice_no_budgets_available: "Nessun budget disponibile."
   permission_edit_budgets: "Modifica budget"
   permission_view_budgets: "Visualizza budget"
-  project_module_budgets: "Bilanci"
+  project_module_budgets: "Budget"
   text_budget_reassign_to: "Riassegnali a questo valore:"
   text_budget_delete: "Elimina il budget da tutti i pacchetti di lavoro"
   text_budget_destroy_assigned_wp: "Ci sono %{count} pacchetti di lavoro assegnati a questo budget. Cosa vuoi fare?"

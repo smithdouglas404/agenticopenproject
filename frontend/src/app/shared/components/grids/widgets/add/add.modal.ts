@@ -18,18 +18,16 @@ import { filter, take } from 'rxjs/operators';
 @Component({
   templateUrl: './add.modal.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AddGridWidgetModalComponent extends OpModalComponent implements OnInit {
   text = {
     title: this.i18n.t('js.grid.add_widget'),
     close_popup: this.i18n.t('js.button_close'),
-    upsale_link: this.i18n.t('js.grid.upsale.link'),
-    upsale_text: this.i18n.t('js.grid.upsale.text'),
     cancel_button: this.i18n.t('js.button_cancel'),
-    more_info_link: enterpriseDocsUrl.graphWidgets,
   };
 
-  public chosenWidget:WidgetRegistration;
+  public chosenWidget?:WidgetRegistration;
 
   public eeShowBanners = false;
 
@@ -49,7 +47,6 @@ export class AddGridWidgetModalComponent extends OpModalComponent implements OnI
 
   ngOnInit() {
     super.ngOnInit();
-    this.eeShowBanners = this.bannerService.eeShowBanners;
     this.fetchSchema();
   }
 
@@ -62,7 +59,7 @@ export class AddGridWidgetModalComponent extends OpModalComponent implements OnI
     this.closeMe($event);
   }
 
-  public trackWidgetBy(widget:WidgetRegistration) {
+  public trackWidgetBy(_index:number, widget:WidgetRegistration) {
     return widget.identifier;
   }
 

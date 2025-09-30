@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,9 +30,10 @@
 
 require "spec_helper"
 
-RSpec.describe "Invite user modal", :js, :with_cuprite do
-  shared_let(:project) { create(:project) }
-  shared_let(:work_package) { create(:work_package, project:) }
+RSpec.describe "Invite user modal", :js do
+  let!(:standard) { create(:standard_global_role) }
+  let!(:project) { create(:project) }
+  let!(:work_package) { create(:work_package, project:) }
 
   let(:permissions) { %i[view_work_packages edit_work_packages manage_members work_package_assigned] }
   let(:global_permissions) { %i[] }
@@ -92,6 +95,51 @@ RSpec.describe "Invite user modal", :js, :with_cuprite do
 
         expect(ActionMailer::Base.deliveries[overall_index].body.encoded)
           .to include role.name
+      end
+    end
+  end
+
+  describe "searching for users in the auto completer" do
+    let!(:principal) do
+      create(:user,
+             firstname: "Nonproject firstname",
+             lastname: "nonproject lastname")
+    end
+
+    let(:wp_page) { Pages::FullWorkPackage.new(work_package, project) }
+
+    before do
+      wp_page.visit!
+
+      page.find_test_selector("quick-add-menu-button").click
+      page.find_test_selector("quick-add-menu-item", text: "Invite user", wait: 5).click
+    end
+
+    it "does show you all users email address" do
+      modal.expect_open
+      modal.project_step
+      select = modal.open_select_in_step "op-ium-principal-search", ""
+
+      # Mail address of other users is visible to us
+      expect(select).to have_text(principal.firstname)
+      expect(select).to have_text(principal.mail)
+    end
+
+    context "without permission" do
+      let!(:standard) { create(:empty_global_role) }
+
+      it "does not show you the email address of other users" do
+        modal.expect_open
+        modal.project_step
+        select = modal.open_select_in_step "op-ium-principal-search", ""
+
+        # Our own mail address is visible
+        expect(select).to have_text(current_user.firstname)
+        expect(select).to have_text(current_user.mail)
+
+        # But the mail address of another user is not visible to us
+        expect(select).to have_text(principal.firstname)
+        expect(select).to have_no_text(principal.mail)
       end
     end
   end
@@ -159,6 +207,27 @@ RSpec.describe "Invite user modal", :js, :with_cuprite do
             let(:mail_membership_recipients) { [principal] }
           end
         end
+
+        context "with a required list user CF (regression #58429)" do
+          let(:current_user) { create(:admin) }
+          let(:list_cf) do
+            create(:user_custom_field,
+                   :list,
+                   name: "List",
+                   is_required: true,
+                   editable: false,
+                   default_option: "A")
+          end
+
+          before do
+            list_cf
+          end
+
+          it_behaves_like "invites the principal to the project" do
+            let(:added_principal) { principal }
+            let(:mail_membership_recipients) { [principal] }
+          end
+        end
       end
 
       context "with a user to be invited" do
@@ -203,7 +272,7 @@ RSpec.describe "Invite user modal", :js, :with_cuprite do
                    roles: [role_no_permissions])
           end
 
-          it "disables projects for which you do not have rights", with_cuprite: false do
+          it "disables projects for which you do not have rights", :js, :selenium do
             ngselect = modal.open_select_in_step ".ng-select-container"
             expect(ngselect).to have_text "#{project_no_permissions.name}\nYou are not allowed to invite members to this project"
           end
@@ -214,7 +283,7 @@ RSpec.describe "Invite user modal", :js, :with_cuprite do
           # Use admin to ensure all projects are visible
           let(:current_user) { create(:admin) }
 
-          it "disables projects for which you do not have rights", with_cuprite: false do
+          it "disables projects for which you do not have rights", :js do
             ngselect = modal.open_select_in_step ".ng-select-container"
             expect(ngselect).to have_no_text archived_project
           end

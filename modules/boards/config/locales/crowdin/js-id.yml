@@ -1,14 +1,15 @@
 #English strings go here
 id:
+  ee:
+    upsell:
+      board_view:
+        description: 'Apakah Anda ingin mengotomatiskan alur kerja Anda dengan Papan? Papan tingkat lanjut adalah add-on Enterprise. Tingkatkan ke paket berbayar.'
   js:
     boards:
-      create_new: 'Create new board'
+      create_new: 'Buat papan baru'
       label_unnamed_board: 'Papan tanpa nama'
       label_unnamed_list: 'Daftar tanpa nama'
       label_board_type: 'Tipe papan'
-      upsale:
-        teaser_text: 'Would you like to automate your workflows with Boards? Advanced boards are an Enterprise add-on. Please upgrade to a paid plan.'
-        upgrade: 'Upgrade sekarang'
       lists:
         delete: 'Hapus daftar'
       version:
@@ -36,21 +37,21 @@ id:
         free: 'basic'
         select_board_type: 'Please choose the type of board you need.'
         free_text: >
-          Start from scratch with a blank board. Manually add cards and columns to this board.
+          Mulai dari awal dengan papan kosong. Tambahkan kartu dan kolom secara manual ke papan ini.
         action: 'Papan aksi'
         action_by_attribute: 'Papan aksi (%{attribute}'
         action_text: >
           A board with filtered lists on %{attribute} attribute. Moving work packages to other lists will update their attribute.
         action_text_subprojects: >
-          Board with automated columns for subprojects. Dragging work packages to other lists updates the (sub-)project accordingly.
+          Papan dengan kolom otomatis untuk subproyek. Menyeret paket pekerjaan ke daftar lain akan memperbarui (sub) proyek yang sesuai.
         action_text_subtasks: >
-          Board with automated columns for sub-elements. Dragging work packages to other lists updates the parent accordingly.
+          Papan dengan kolom otomatis untuk sub-elemen. Menyeret paket pekerjaan ke daftar lain akan memperbarui induknya.
         action_text_status: >
-          Basic kanban style board with columns for status such as To Do, In Progress, Done.
+          Papan gaya kanban dasar dengan kolom untuk status seperti To Do, In Progress, Done.
         action_text_assignee: >
-          Board with automated columns based on assigned users. Ideal for dispatching work packages.
+          Papan dengan kolom otomatis berdasarkan pengguna yang ditugaskan. Ideal untuk mengirimkan paket kerja.
         action_text_version: >
-          Board with automated columns based on the version attribute. Ideal for planning product development.
+          Papan dengan kolom otomatis berdasarkan atribut versi. Ideal untuk merencanakan pengembangan produk.
         action_type:
           assignee: assignee
           status: status

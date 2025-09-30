@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -23,7 +23,7 @@ pl:
   plugin_openproject_reporting:
     name: "Raportowanie OpenProject"
     description: "Ta wtyczka umożliwia tworzenie niestandardowych raportów kosztów z filtrowaniem i grupowaniem utworzonym przez wtyczkę OpenProject Czas i koszty."
-  button_save_as: "Zapisz raport jako..."
+  button_save_report_as: "Zapisz raport jako..."
   comments: "Komentarz"
   cost_reports_title: "Czas i koszty"
   label_cost_report: "Raport kosztów"
@@ -45,6 +45,8 @@ pl:
   label_greater: ">"
   label_is_not_project_with_subprojects: "nie jest (zawiera podprojekty)"
   label_is_project_with_subprojects: "jest (zawiera podprojekty)"
+  label_is_work_package_with_descendants: "jest (zawiera elementy potomne)"
+  label_is_not_work_package_with_descendants: "nie jest (zawiera elementy potomne)"
   label_work_package_attributes: "Atrybuty zadań"
   label_less: "<"
   label_logged_by_reporting: "W dzienniku zarejestrował:"
@@ -86,8 +88,18 @@ pl:
   validation_failure_date: "nie jest poprawną datą"
   validation_failure_integer: "nie jest prawidłową liczbą całkowitą"
   export:
+    timesheet:
+      title: "Eksport Twojej karty czasu pracy w formacie PDF"
+      button: "Wyeksportuj kartę czasu pracy w formacie PDF"
+      timesheet: "Karta czasu pracy"
+      time: "Czas"
+      sums_hours: Sumy
+      overview_per_user_total: "Przegląd: łączna liczba godzin na użytkownika"
+      overview_per_user_day: "Przegląd: liczba godzin na użytkownika dziennie"
     cost_reports:
       title: "Twój eksport raportów kosztów w formacie XLS"
+      start_time: "Czas rozpoczęcia"
+      end_time: "Czas zakończenia"
   reporting:
     group_by:
       selected_columns: "Wybrane kolumny"

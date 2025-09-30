@@ -1,8 +1,12 @@
+# frozen_string_literal: true
+
 require_relative "../spec_helper"
 
-RSpec.describe "My Account 2FA configuration", :js, with_settings: {
-  plugin_openproject_two_factor_authentication: { "active_strategies" => %i[developer totp] }
-} do
+RSpec.describe "My Account 2FA configuration",
+               :js,
+               with_settings: {
+                 plugin_openproject_two_factor_authentication: { "active_strategies" => %i[developer totp] }
+               } do
   let(:dialog) { Components::PasswordConfirmationDialog.new }
   let(:user_password) { "boB!4" * 4 }
   let(:user) do
@@ -11,6 +15,8 @@ RSpec.describe "My Account 2FA configuration", :js, with_settings: {
            password: user_password,
            password_confirmation: user_password)
   end
+
+  include Flash::Expectations
 
   before do
     login_as user
@@ -22,20 +28,20 @@ RSpec.describe "My Account 2FA configuration", :js, with_settings: {
     expect(page).to have_css(".generic-table--empty-row", text: I18n.t("two_factor_authentication.devices.not_existing"))
     expect(page).to have_css(".on-off-status.-disabled")
 
-    # Visit inline create
-    find(".wp-inline-create--add-link").click
-    expect(page).to have_css("h2", text: I18n.t("two_factor_authentication.devices.add_new"))
-    expect(page).to have_current_path new_my_2fa_device_path
-
     # Select SMS
-    find(".mobile-otp-new-device-sms .button").click
+    menu_button = find_test_selector("two_factor_authentication_devices_button")
+    menu_button.click
+    wait_for_network_idle if using_cuprite?
+    expect(page).to have_test_selector("two_factor_authentication_devices_sms")
+    sms_menu_item = find_test_selector("two_factor_authentication_devices_sms")
+    sms_menu_item.click
 
     # Try to save with invalid phone number
     fill_in "device_phone_number", with: "invalid!"
     click_button I18n.t(:button_continue)
 
     # Enter valid phone number
-    expect(page).to have_css("#errorExplanation", text: "Phone number must be of format +XX XXXXXXXXX")
+    expect_flash(type: :error, message: "Phone number must be of format +XX XXXXXXXXX")
     fill_in "device_phone_number", with: "+49 123456789"
     click_button I18n.t(:button_continue)
 
@@ -55,8 +61,8 @@ RSpec.describe "My Account 2FA configuration", :js, with_settings: {
 
     expect(page).to have_css("h2", text: I18n.t("two_factor_authentication.devices.confirm_device"))
     expect(page).to have_css("input#otp")
-    expect(page).to have_css(".op-toast.-error",
-                             text: I18n.t("two_factor_authentication.devices.registration_failed_token_invalid"))
+
+    expect_flash(type: :error, message: I18n.t("two_factor_authentication.devices.registration_failed_token_invalid"))
 
     # Fill in correct token
     fill_in "otp", with: sms_token
@@ -68,14 +74,17 @@ RSpec.describe "My Account 2FA configuration", :js, with_settings: {
     expect(page).to have_css(".on-off-status.-enabled")
 
     # Create another one as totp
-    # Visit create button
     visit my_2fa_devices_path
-    find(".toolbar-item .button", text: "2FA device").click
-    expect(page).to have_css("h2", text: I18n.t("two_factor_authentication.devices.add_new"))
-    expect(page).to have_current_path new_my_2fa_device_path, ignore_query: true
-
+    menu_button = find_test_selector("two_factor_authentication_devices_button")
+    menu_button.click
+    wait_for_network_idle if using_cuprite?
+    expect(page).to have_test_selector("two_factor_authentication_devices_totp")
     # Select totp
-    find(".mobile-otp-new-device-totp .button").click
+    totp_menu_item = find_test_selector("two_factor_authentication_devices_totp")
+    totp_menu_item.click
+    expect(page).to have_test_selector("two_factor_authentication_new_device_header_title",
+                                       text: I18n.t("two_factor_authentication.devices.add_new"))
+    expect(page).to have_current_path new_my_2fa_device_path, ignore_query: true
 
     # Change identifier
     fill_in "device_identifier", with: "custom identifier"
@@ -111,6 +120,8 @@ RSpec.describe "My Account 2FA configuration", :js, with_settings: {
     # Confirm again
     find(".two-factor--mark-default-button").click
     dialog.confirm_flow_with user_password, should_fail: false
+
+    expect_and_dismiss_flash(message: "Successful update")
 
     expect(page).to have_css(".mobile-otp--two-factor-device-row", count: 2)
     rows = page.all(".mobile-otp--two-factor-device-row")

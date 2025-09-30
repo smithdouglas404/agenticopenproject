@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -55,11 +55,13 @@ module ReportingHelper
     end
 
     name = name.camelcase
-    if CostQuery::Filter.const_defined? name
+    if CostQuery::Filter.const_defined?(name)
       CostQuery::Filter.const_get(name).label
-    elsif
-      CostQuery::GroupBy.const_defined? name
+    elsif CostQuery::GroupBy.const_defined?(name)
       CostQuery::GroupBy.const_get(name).label
+    elsif field.to_sym.in?(%i[entity entity_id entity_type entity_gid])
+      # TODO: Temporary override for now
+      TimeEntry.human_attribute_name(:entity)
     else
       # note that using WorkPackage.human_attribute_name relies on the attribute
       # being an work_package attribute or a general attribute for all models which might not
@@ -68,12 +70,8 @@ module ReportingHelper
     end
   end
 
-  def debug_fields(result, prefix = ", ")
-    prefix << result.fields.inspect << ", " << result.important_fields.inspect << ", " << result.key.inspect if params[:debug]
-  end
-
   def month_name(index)
-    Date::MONTHNAMES[index].to_s
+    I18n.t("date.month_names")[index].to_s
   end
 
   # ======================= SHARED CODE END
@@ -100,29 +98,85 @@ module ReportingHelper
     end
   end
 
-  def field_representation_map(key, value)
+  def field_representation_map(key, value) # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
     return I18n.t(:"placeholders.default") if value.blank?
 
     case key.to_sym
-    when :activity_id                           then mapped value, Enumeration, "<i>#{I18n.t(:caption_material_costs)}</i>"
-    when :project_id                            then link_to_project Project.find(value.to_i)
-    when :user_id, :assigned_to_id, :author_id, :logged_by_id then link_to_user(User.find_by(id: value.to_i) || DeletedUser.first)
-    when :tyear, :units                         then h(value.to_s)
-    when :tweek                                 then "#{I18n.t(:label_week)} ##{h value}"
-    when :tmonth                                then month_name(value.to_i)
-    when :category_id                           then h(Category.find(value.to_i).name)
-    when :cost_type_id                          then mapped value, CostType, I18n.t(:caption_labor)
-    when :budget_id                             then budget_link value
-    when :work_package_id                       then link_to_work_package(WorkPackage.find(value.to_i))
-    when :spent_on                              then format_date(value.to_date)
-    when :type_id                               then h(Type.find(value.to_i).name)
-    when :week                                  then "#{I18n.t(:label_week)} #%s" % value.to_i.modulo(100)
-    when :priority_id                           then h(IssuePriority.find(value.to_i).name)
-    when :version_id                            then h(Version.find(value.to_i).name)
-    when :singleton_value                       then ""
-    when :status_id                             then h(Status.find(value.to_i).name)
-    when /custom_field\d+/                      then h(custom_value(key, value))
-    else h(value.to_s)
+    when :activity_id
+      mapped value, Enumeration, "<i>#{I18n.t(:caption_material_costs)}</i>".html_safe
+    when :project_id
+      link_to_project Project.find(value.to_i)
+    when :user_id, :assigned_to_id, :author_id, :logged_by_id
+      link_to_user(User.find_by(id: value.to_i) || DeletedUser.first)
+    when :tweek
+      "#{I18n.t(:label_week)} ##{h value}"
+    when :tmonth
+      month_name(value.to_i)
+    when :category_id
+      Category.find(value.to_i).name
+    when :cost_type_id
+      mapped value, CostType, I18n.t(:caption_labor)
+    when :budget_id
+      budget_link value
+    when :work_package_id
+      link_to_work_package(WorkPackage.find(value.to_i))
+    when :entity_gid
+      allowed_types = (TimeEntry::ALLOWED_ENTITY_TYPES | CostEntry::ALLOWED_ENTITY_TYPES).map(&:safe_constantize)
+      entity = begin
+        GlobalID::Locator.locate(value, only: allowed_types)
+      rescue URI::InvalidComponentError
+        nil
+      end
+
+      if entity.is_a?(::WorkPackage)
+        link_to_work_package(entity)
+      elsif entity.is_a?(::Meeting)
+        # TODO: add a link
+        entity.title
+      end
+    when :entity_type
+      # TODO: Skip for now
+      nil
+    when :spent_on
+      format_date(value.to_date)
+    when :type_id
+      Type.find(value.to_i).name
+    when :week
+      "#{I18n.t(:label_week)} #%s" % value.to_i.modulo(100)
+    when :priority_id
+      IssuePriority.find(value.to_i).name
+    when :version_id
+      Version.find(value.to_i).name
+    when :singleton_value
+      ""
+    when :status_id
+      Status.find(value.to_i).name
+    when /custom_field\d+/
+      custom_value(key, value)
+    else
+      value.to_s
+    end
+  end
+
+  def spent_on_time_representation(start_timestamp, hours)
+    return "" if start_timestamp.nil?
+
+    result = format_time(start_timestamp, include_date: false)
+    return result if hours.nil? || hours.zero?
+
+    end_timestamp = start_timestamp + hours.hours
+    days_between_suffix = days_between_representation(start_timestamp, end_timestamp)
+    "#{result} - #{format_time(end_timestamp, include_date: false)}#{days_between_suffix}"
+  end
+
+  def days_between_representation(start_timestamp, end_timestamp)
+    return "" if start_timestamp.nil? || end_timestamp.nil?
+
+    days_between = (end_timestamp.to_date - start_timestamp.to_date).to_i
+    if days_between.positive?
+      " (+#{WorkPackage::Exports::Formatters::Days.new(nil)
+                                                  .format_value(days_between, nil)
+                                                  .delete(' ')})"
     end
   end
 
@@ -140,8 +194,9 @@ module ReportingHelper
     return "" if value.blank?
 
     case key.to_sym
-    when :work_package_id, :tweek, :tmonth, :week  then value.to_i
-    when :spent_on                                 then value.to_date.mjd
+    when :entity_id, :tweek, :tmonth, :week then value.to_i
+    when :entity_gid then GlobalID.new(value).model_id.to_i
+    when :spent_on then value.to_date.mjd
     else strip_tags(field_representation_map(key, value))
     end
   end
@@ -168,33 +223,12 @@ module ReportingHelper
     tabs.map { |cost_type_id| [cost_type_id, cost_type_label(cost_type_id)] }
   end
 
-  def cost_type_label(cost_type_id, cost_type_inst = nil, _plural = true)
+  def cost_type_label(cost_type_id, cost_type_inst = nil)
     case cost_type_id
     when -1 then I18n.t(:caption_labor)
     when 0  then I18n.t(:label_money)
     else (cost_type_inst || CostType.find(cost_type_id)).name
     end
-  end
-
-  def link_to_details(result)
-    return "" # unless result.respond_to? :fields # uncomment to display
-    session_filter = { operators: session[:report][:filters][:operators].dup, values: session[:report][:filters][:values].dup }
-    filters = result.fields.inject session_filter do |struct, (key, value)|
-      key = key.to_sym
-      case key
-      when :week
-        set_filter_options struct, :tweek, value.to_i.modulo(100)
-        set_filter_options struct, :tyear, value.to_i / 100
-      when :month, :year
-        set_filter_options struct, :"t#{key}", value
-      when :count, :units, :costs, :display_costs, :sum, :real_costs
-      else
-        set_filter_options struct, key, value
-      end
-      struct
-    end
-    options = { fields: filters[:operators].keys, set_filter: 1, action: :drill_down }
-    link_to "[+]", filters.merge(options), class: "drill_down", title: I18n.t(:description_drill_down)
   end
 
   ##
@@ -215,11 +249,10 @@ module ReportingHelper
   end
 
   ##
-  # For a given row, determine how to render it's contents according to usability and
+  # For a given row, determine how to render its contents according to usability and
   # localization rules
   def show_row(row)
-    row_text = link_to_details(row) << row.render { |k, v| show_field(k, v) }
-    row_text.html_safe
+    row.render { |k, v| show_field(k, v) }
   end
 
   def delimit(items, options = {})

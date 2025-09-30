@@ -1,6 +1,6 @@
 pt-PT:
   js:
-    queries:
-      all_open: 'Tudo aberto'
-      timeline: 'Cronograma'
-      milestones: 'Marcos'
+    work_packages:
+      label_gantt_chart_plural: "Gráficos de Gantt"
+      default_queries:
+        milestones: 'Marcos'

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -49,7 +51,7 @@ class CustomActions::Actions::CustomField < CustomActions::Actions::Base
 
   def self.all
     WorkPackageCustomField
-      .order(:name)
+      .usable_as_custom_action
       .map do |cf|
         create_subclass(cf)
       end
@@ -80,6 +82,8 @@ class CustomActions::Actions::CustomField < CustomActions::Actions::Base
       CustomActions::Actions::Strategies::String
     when "text"
       CustomActions::Actions::Strategies::Text
+    when "link"
+      CustomActions::Actions::Strategies::Link
     when "int"
       CustomActions::Actions::Strategies::Integer
     when "float"

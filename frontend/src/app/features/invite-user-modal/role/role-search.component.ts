@@ -25,6 +25,7 @@ import { ApiV3FilterBuilder } from 'core-app/shared/helpers/api-v3/api-v3-filter
 @Component({
   selector: 'op-ium-role-search',
   templateUrl: './role-search.component.html',
+  standalone: false,
 })
 export class RoleSearchComponent extends UntilDestroyedMixin implements OnInit {
   @Input() spotFormBinding:UntypedFormControl;

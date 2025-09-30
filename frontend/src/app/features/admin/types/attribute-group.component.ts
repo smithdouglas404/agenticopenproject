@@ -8,6 +8,7 @@ import { TypeFormAttribute, TypeGroup } from 'core-app/features/admin/types/type
   selector: 'op-type-form-attribute-group',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './attribute-group.component.html',
+  standalone: false,
 })
 export class TypeFormAttributeGroupComponent {
   @Input() public group:TypeGroup;

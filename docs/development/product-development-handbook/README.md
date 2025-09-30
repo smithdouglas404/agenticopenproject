@@ -284,10 +284,8 @@ Developed features are bundled into a version that is released to the public via
 3. QA identifies important bugs to be fixed in the release.
 4. Developer fixes bugs from regression testing as well as bugs from former versions.
 5. Tester retests bugs
-
-  * Tester adjusts status on errors (status: “test failed").
-  * Tester adjusts status when no errors are found (status: “closed").
-
+   - Tester adjusts status on errors (status: “test failed").
+   - Tester adjusts status when no errors are found (status: “closed").
 6. Developer fixes bugs that were not fixed successfully.
 7. DevOps deploys release candidate on community.openproject.org.
 8. DevOps monitors for failures.
@@ -343,7 +341,7 @@ The entire team documents possible improvements for the next release.
 
 ### 4.1 Version/Release
 
-A version is the name given to a collection of features and/or bugfixes. A release is the publicly available version of the OpenProject software. More information is provided on the [release page](../releases/).
+A version is the name given to a collection of features and/or bugfixes. A release is the publicly available version of the OpenProject software. More information is provided on the [Application architecture page](../application-architecture/#patch-and-change-management).
 
 ### 4.2 RICE Score
 

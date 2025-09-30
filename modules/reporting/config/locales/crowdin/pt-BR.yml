@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -23,7 +23,7 @@ pt-BR:
   plugin_openproject_reporting:
     name: "Relatórios do OpenProject"
     description: "Este plugin permite a criação de relatórios de custos personalizados com filtragem e agrupamento criados pelo plugin OpenProject Time e custos."
-  button_save_as: "Salvar relatório como..."
+  button_save_report_as: "Salvar relatório como..."
   comments: "Comentário"
   cost_reports_title: "Tempo e custos"
   label_cost_report: "Relatório de custos"
@@ -45,6 +45,8 @@ pt-BR:
   label_greater: ">"
   label_is_not_project_with_subprojects: "não é (inclui subprojetos)"
   label_is_project_with_subprojects: "é (inclui subprojetos)"
+  label_is_work_package_with_descendants: "é (inclui descendentes)"
+  label_is_not_work_package_with_descendants: "não é (inclui descendentes)"
   label_work_package_attributes: "Atributos do pacote de trabalho"
   label_less: "<"
   label_logged_by_reporting: "Registrado por"
@@ -86,8 +88,18 @@ pt-BR:
   validation_failure_date: "não é uma data válida"
   validation_failure_integer: "não é um valor inteiro válido"
   export:
+    timesheet:
+      title: "Sua exportação de planilha de horas em PDF"
+      button: "Exportar planilha de horas em PDF"
+      timesheet: "Planilha de horas"
+      time: "Hora"
+      sums_hours: Totais
+      overview_per_user_total: "Visão geral: Total de horas por usuário"
+      overview_per_user_day: "Visão geral: Horas por usuário por dia"
     cost_reports:
       title: "Exportação XLS dos seus relatórios de custos"
+      start_time: "Hora de início"
+      end_time: "Hora de término"
   reporting:
     group_by:
       selected_columns: "Colunas selecionadas"

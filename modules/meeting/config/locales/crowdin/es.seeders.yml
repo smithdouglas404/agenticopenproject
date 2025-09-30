@@ -7,9 +7,9 @@ es:
     standard:
       projects:
         demo-project:
-          meetings:
+          meeting_series:
             item_0:
-              title: Semanal
+              title: Semanalmente
           meeting_agenda_items:
             item_0:
               title: Buenas noticias

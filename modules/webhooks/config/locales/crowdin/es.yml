@@ -8,6 +8,7 @@ es:
         url: 'URL de carga'
         secret: 'Secreto de firma'
         events: 'Eventos'
+        enabled: 'Activado'
         projects: 'Proyectos habilitados'
       webhooks/log:
         event_name: 'Nombre del evento'
@@ -30,6 +31,8 @@ es:
       events:
         created: "Creado"
         updated: "Actualizado"
+        comment: "Comentario"
+        internal_comment: "Comentario interno"
       explanation:
         text: >
           Cuando se produzcan eventos como la creación de un paquete de trabajo o la actualización de un proyecto, OpenProject enviará una solicitud POST a los puntos de conexión web configurados. Con frecuencia, el evento se enviará después de que haya pasado el %{link}.

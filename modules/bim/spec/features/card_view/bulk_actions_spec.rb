@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 require_relative "../../support/pages/ifc_models/show_default"
 
-RSpec.describe "Copy work packages through Rails view", :js, :with_cuprite, with_config: { edition: "bim" } do
+RSpec.describe "Copy work packages through Rails view", :js, with_config: { edition: "bim" } do
   shared_let(:project) { create(:project, name: "Source", enabled_module_names: %i[bim work_package_tracking]) }
 
   shared_let(:dev) do
@@ -45,13 +47,13 @@ RSpec.describe "Copy work packages through Rails view", :js, :with_cuprite, with
     find("body").send_keys [:control, "a"]
   end
 
-  describe "accessing the bulk copy from the card view" do
+  describe "accessing the bulk duplicate from the card view" do
     context "with permissions" do
       let(:current_user) { mover }
 
       it "does allow to copy" do
         context_menu.open_for work_package, card_view: true
-        context_menu.expect_options "Bulk copy"
+        context_menu.expect_options "Bulk duplicate"
       end
     end
 
@@ -59,8 +61,8 @@ RSpec.describe "Copy work packages through Rails view", :js, :with_cuprite, with
       let(:current_user) { dev }
 
       it "does not allow to copy" do
-        context_menu.open_for work_package, card_view: true
-        context_menu.expect_no_options "Bulk copy"
+        context_menu.open_for work_package, card_view: true, check_if_open: false
+        context_menu.expect_closed
       end
     end
   end
@@ -79,8 +81,8 @@ RSpec.describe "Copy work packages through Rails view", :js, :with_cuprite, with
       let(:current_user) { dev }
 
       it "does not allow to move" do
-        context_menu.open_for work_package, card_view: true
-        context_menu.expect_no_options "Bulk change of project"
+        context_menu.open_for work_package, card_view: true, check_if_open: false
+        context_menu.expect_closed
       end
     end
   end
@@ -102,8 +104,10 @@ RSpec.describe "Copy work packages through Rails view", :js, :with_cuprite, with
           context_menu.choose "Bulk edit"
 
           select budget.subject, from: "work_package_budget_id"
+          wait_for_network_idle
+
           click_on "Submit"
-          wp_table.expect_and_dismiss_toaster message: "Successful update."
+          expect_and_dismiss_flash message: "Successful update."
 
           expect(work_package.reload.budget_id).to eq(budget.id)
           expect(work_package2.reload.budget_id).to eq(budget.id)
@@ -115,8 +119,8 @@ RSpec.describe "Copy work packages through Rails view", :js, :with_cuprite, with
       let(:current_user) { dev }
 
       it "does not allow to edit" do
-        context_menu.open_for work_package, card_view: true
-        context_menu.expect_no_options "Bulk edit"
+        context_menu.open_for work_package, card_view: true, check_if_open: false
+        context_menu.expect_closed
       end
     end
   end

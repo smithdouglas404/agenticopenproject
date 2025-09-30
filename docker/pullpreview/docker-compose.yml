@@ -13,8 +13,6 @@ volumes:
 x-defaults: &defaults
   build:
     context: .
-    args:
-      OPENPROJECT_ANGULAR_UGLIFY: "false"
   restart: unless-stopped
   env_file:
     - .env.pullpreview
@@ -45,7 +43,7 @@ services:
       - "caddy_data:/data"
 
   db:
-    image: postgres:13
+    image: postgres:17
     environment:
       POSTGRES_USER: app
       POSTGRES_PASSWORD: p4ssw0rd

@@ -5,7 +5,7 @@ ja:
       label_bcf: 'BCF'
       import: 'インポート'
       import_bcf_xml_file: 'BCF XML ファイルをインポート (BCF バージョン 2.1)'
-      export: '外部出力'
+      export: 'エクスポート'
       export_bcf_xml_file: 'BCF XML ファイルをエクスポート (BCF バージョン 2.1)'
       viewpoint: 'ビューポイント'
       add_viewpoint: 'ビューポイントを追加'

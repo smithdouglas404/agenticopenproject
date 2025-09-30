@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,7 +37,6 @@ module MeetingAgendaItems
     def initialize(meeting:, meeting_section:, meeting_agenda_item:, method:, submit_path:, cancel_path:, type: :simple,
                    display_notes_input: nil)
       super
-
       @meeting = meeting
       @meeting_section = meeting_section
       @meeting_agenda_item = meeting_agenda_item
@@ -44,10 +45,11 @@ module MeetingAgendaItems
       @cancel_path = cancel_path
       @type = type
       @display_notes_input = display_notes_input
+      @autofocus = display_notes_input.blank?
     end
 
     def wrapper_uniq_by
-      @meeting_agenda_item.id
+      @meeting_agenda_item.persisted? ? @meeting_agenda_item.id : "new"
     end
 
     def render?
@@ -58,9 +60,11 @@ module MeetingAgendaItems
 
     def wrapper_data_attributes
       {
-        controller: "meeting-agenda-item-form",
-        "application-target": "dynamic",
-        "meeting-agenda-item-form-cancel-url-value": @cancel_path
+        controller: "meeting-agenda-item-form ckeditor-focus scroll-into-view",
+        "meeting-agenda-item-form-cancel-url-value": @cancel_path,
+        "meeting-agenda-item-form-autofocus-value": @autofocus,
+        "ckeditor-focus-target": "editor",
+        "ckeditor-focus-autofocus-value": !@autofocus
       }
     end
 

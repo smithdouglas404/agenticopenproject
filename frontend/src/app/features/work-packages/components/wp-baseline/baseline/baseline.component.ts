@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -56,7 +56,7 @@ import {
   getPartsFromTimestamp,
   offsetToUtcString,
 } from 'core-app/features/work-packages/components/wp-baseline/baseline-helpers';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import { BannersService } from 'core-app/core/enterprise/banners.service';
 import { enterpriseDocsUrl } from 'core-app/core/setup/globals/constants.const';
 import { DayElement } from 'flatpickr/dist/types/instance';
@@ -68,6 +68,7 @@ const DEFAULT_SELECTED_TIME = '08:00';
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './baseline.component.html',
   styleUrls: ['./baseline.component.sass'],
+  standalone: false,
 })
 export class OpBaselineComponent extends UntilDestroyedMixin implements OnInit {
   @HostBinding('class.op-baseline') className = true;
@@ -98,7 +99,7 @@ export class OpBaselineComponent extends UntilDestroyedMixin implements OnInit {
 
   public tooltipPosition = SpotDropAlignmentOption.TopRight;
 
-  eeShowBanners = this.Banner.eeShowBanners;
+  available = this.Banner.allowsTo('baseline_comparison');
 
   public text = {
     toggle_title: this.I18n.t('js.baseline.toggle_title'),
@@ -113,10 +114,7 @@ export class OpBaselineComponent extends UntilDestroyedMixin implements OnInit {
     date: this.I18n.t('js.label_date'),
     time: this.I18n.t('js.baseline.time'),
     today: this.I18n.t('js.label_today'),
-    moreInfoLink: enterpriseDocsUrl.website,
-    more_info_text: this.I18n.t('js.admin.enterprise.upsale.more_info'),
     help_description: this.I18n.t('js.baseline.help_description'),
-    baseline_comparison: this.I18n.t('js.baseline.baseline_comparison'),
     time_description: (i:number) => {
       const date = this.selectedDates[i];
       const time = this.selectedTimes[i];

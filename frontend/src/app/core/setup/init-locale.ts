@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,8 +26,8 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import * as moment from 'moment';
-import * as i18njs from 'i18n-js';
+import moment from 'moment';
+import { I18n } from 'i18n-js';
 
 export function initializeLocale() {
   const meta = document.querySelector<HTMLMetaElement>('meta[name=openproject_initializer]');
@@ -37,9 +37,11 @@ export function initializeLocale() {
   const firstDayOfWeek = parseInt(meta?.dataset.firstdayofweek || '', 10); // properties of meta.dataset are exposed in lowercase
   const firstWeekOfYear = parseInt(meta?.dataset.firstweekofyear || '', 10); // properties of meta.dataset are exposed in lowercase
 
-  window.I18n = new i18njs.I18n();
-  I18n.locale = userLocale;
-  I18n.defaultLocale = defaultLocale;
+  const i18n = new I18n();
+  i18n.locale = userLocale;
+  i18n.defaultLocale = defaultLocale;
+
+  window.I18n = i18n;
 
   moment.locale(userLocale);
 
@@ -61,9 +63,9 @@ export function initializeLocale() {
   // Override the default pluralization function to allow
   // "other" to be used as a fallback for "one" in languages where one is not set
   // (japanese, for example)
-  I18n.pluralization.register(
+  i18n.pluralization.register(
     'default',
-    (_i18n:i18njs.I18n, count:number) => {
+    (_i18n:I18n, count:number) => {
       switch (count) {
         case 0:
           return ['zero', 'other'];
@@ -81,7 +83,7 @@ export function initializeLocale() {
     .map(
       (locale) => import(/* webpackChunkName: "locale" */ `../../../locales/${locale}.json`)
         .then((imported:{ default:object }) => {
-          I18n.store(imported.default);
+          i18n.store(imported.default);
         }),
       )
     .value();

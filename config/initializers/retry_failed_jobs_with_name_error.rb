@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,7 +30,7 @@
 
 Rails.application.configure do
   config.after_initialize do
-    # Retry jobs that failed with "NameError: uninitialized constant ...Job" as
+    # Retry jobs that failed with "NameError: uninitialized constant ..." as
     # the worker may have failed to load it because the job class did not exist
     # at the time of execution. This can happen on upgrades when the worker is
     # still running the previous version while a migration is enqueuing jobs defined
@@ -38,17 +38,24 @@ Rails.application.configure do
     #
     # Once the migration is over and the worker gets restarted, the job will be
     # retried thanks to this piece of code below.
+    next unless ActiveRecord::Base.connection.table_exists?(:good_jobs)
+
     GoodJob::Job
       .discarded
-      .where("error LIKE ?", "NameError: uninitialized constant %Job")
-      .find_each do |job|
+      .where("error LIKE ?", "NameError: uninitialized constant %")
+      .filter do |job|
+        # Only retry jobs with NameError related to the job class name.
+        # For instance, error is "NameError: uninitialized constant WorkPackages::AutomaticMode"
+        # and the job class name is "WorkPackages::AutomaticMode::MigrateValuesJob".
+        name = job.error.delete_prefix("NameError: uninitialized constant ")
+        job.job_class.include?(name)
+      end # rubocop:disable Style/MultilineBlockChain
+      .each do |job|
         job.retry_job
         Rails.logger.info("Successfully enqueued job for retry #{job.display_name} (job id: #{job.id})")
       rescue StandardError => e
         Rails.logger.error("Failed to enqueue job for retry #{job.display_name} (job id: #{job.id}): #{e.message}")
       end
-  rescue ActiveRecord::StatementInvalid
-    # will happen when we currently are migrating
   rescue LoadError
     # Ignore LoadError that happens when nulldb://db database adapter is used
   end

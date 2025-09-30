@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -51,7 +53,10 @@ RSpec.describe OpenProject::TextFormatting,
             <p class="op-uc-p">Some text before</p>
             <h#{level} class="op-uc-h#{level}" id="the-heading">
               the heading
-              <a class="op-uc-link_permalink icon-link op-uc-link" aria-hidden="true" href="#the-heading"></a>
+              <a class="op-uc-link_permalink icon-link op-uc-link"
+                 aria-hidden="true"
+                 href="#the-heading"
+                 rel="noopener noreferrer"></a>
             </h#{level}>
             <p class="op-uc-p">more text</p>
           EXPECTED
@@ -115,7 +120,10 @@ RSpec.describe OpenProject::TextFormatting,
           <<~EXPECTED
             <h1 class="op-uc-h1" id="20090209">
               2009\\02\\09
-              <a class="op-uc-link_permalink icon-link op-uc-link" href="#20090209" aria-hidden="true"></a>
+              <a class="op-uc-link_permalink icon-link op-uc-link"
+                 href="#20090209"
+                 aria-hidden="true"
+                 rel="noopener noreferrer"></a>
             </h1>
           EXPECTED
         end

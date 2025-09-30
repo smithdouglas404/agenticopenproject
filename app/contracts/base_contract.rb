@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -50,7 +52,7 @@ class BaseContract < Disposable::Twin
     end
 
     def writable_conditions
-      @writable_conditions ||= []
+      @writable_conditions ||= {}
     end
 
     def attribute_permissions
@@ -102,16 +104,13 @@ class BaseContract < Disposable::Twin
 
     def add_writable(attribute, writable)
       attribute_name = attribute.to_s.delete_suffix("_id")
+      writable_conditions[attribute_name] = writable
 
-      unless writable == false
-        writable_attributes << attribute_name
-        # allow the _id variant as well
-        writable_attributes << "#{attribute_name}_id"
-      end
+      return if writable == false
 
-      if writable.respond_to?(:call)
-        writable_conditions << [attribute_name, writable]
-      end
+      writable_attributes << attribute_name
+      # allow the _id variant as well
+      writable_attributes << "#{attribute_name}_id"
     end
   end
 
@@ -229,18 +228,7 @@ class BaseContract < Disposable::Twin
   end
 
   def collect_available_custom_field_attributes
-    if model.is_a?(Project)
-      # required because project custom fields are now activated on a per-project basis
-      #
-      # if we wouldn't query available_custom field on a global level here,
-      # implicitly enabling project custom fields through this contract would fail
-      # as the disabled custom fields would be treated as not-writable
-      #
-      # relevant especially for the project API
-      model.available_custom_fields(global: true).map(&:attribute_name)
-    else
-      model.available_custom_fields.map(&:attribute_name)
-    end
+    model.available_custom_fields.map(&:attribute_name)
   end
 
   def reduce_writable_attributes(attributes)
@@ -250,7 +238,8 @@ class BaseContract < Disposable::Twin
 
   def reduce_by_writable_conditions(attributes)
     collect_ancestor_attributes(:writable_conditions).each do |attribute, condition|
-      attributes -= [attribute, "#{attribute}_id"] unless instance_exec(&condition)
+      condition = !!instance_exec(&condition) if condition.respond_to?(:call)
+      attributes -= [attribute, "#{attribute}_id"] if condition == false
     end
 
     attributes
@@ -296,11 +285,29 @@ class BaseContract < Disposable::Twin
     end
   end
 
-  def with_merged_former_errors
+  def validate_and_merge_errors(contract)
+    # Duplicating errors beforehand, in case the other contract shares
+    # the errors with us (because by default contracts reuse the errors
+    # of the model they validate) to prevent that existing errors are cleaned
+    # during validation
     former_errors = errors.dup
 
-    yield
+    contract.validate
 
-    errors.merge!(former_errors)
+    # Another side effect of sharing errors is that they may have already been added to
+    # our list of errors, after the validation was executed, so we manually filter out
+    # duplicates.
+    # To avoid looping over all the errors we just added (forever), we copy the errors of the
+    # contract into an array first
+    contract_errors = contract.errors.each.to_a
+    merge_errors_deduplicated(former_errors.chain(contract_errors))
+  end
+
+  def merge_errors_deduplicated(other_errors)
+    other_errors.each do |e|
+      # This is why we can't have nice things: https://github.com/rails/rails/issues/54483
+      options = e.options.except(*ActiveModel::Error::CALLBACKS_OPTIONS + ActiveModel::Error::MESSAGE_OPTIONS)
+      errors.add(e.attribute, e.type, **e.options) unless errors.added?(e.attribute, e.type, options)
+    end
   end
 end

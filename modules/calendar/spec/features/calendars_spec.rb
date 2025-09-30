@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,33 +29,33 @@
 require "spec_helper"
 
 RSpec.describe "Work package calendars", :js do
-  let(:project) { create(:project) }
-  let(:user) do
+  shared_let(:project) { create(:project) }
+  shared_let(:user) do
     create(:user,
            member_with_permissions: { project => %i[view_work_packages view_calendar manage_calendars] })
   end
-  let!(:current_work_package) do
+  shared_let(:current_work_package) do
     create(:work_package,
            subject: "Current work package",
            project:,
            start_date: Time.zone.today.at_beginning_of_month + 15.days,
            due_date: Time.zone.today.at_beginning_of_month + 15.days)
   end
-  let!(:another_current_work_package) do
+  shared_let(:another_current_work_package) do
     create(:work_package,
            subject: "Another current work package",
            project:,
            start_date: Time.zone.today.at_beginning_of_month + 12.days,
            due_date: Time.zone.today.at_beginning_of_month + 18.days)
   end
-  let!(:future_work_package) do
+  shared_let(:future_work_package) do
     create(:work_package,
            subject: "Future work package",
            project:,
            start_date: Time.zone.today.at_beginning_of_month.next_month + 15.days,
            due_date: Time.zone.today.at_beginning_of_month.next_month + 15.days)
   end
-  let!(:another_future_work_package) do
+  shared_let(:another_future_work_package) do
     create(:work_package,
            subject: "Another future work package",
            project:,
@@ -80,7 +80,7 @@ RSpec.describe "Work package calendars", :js do
     expect(page).to have_text "There is currently nothing to display."
 
     # Open a new calendar from there
-    find(".toolbar-item a", text: "Calendar").click
+    find('[data-test-selector="add-calendar-button"]', text: "Calendar").click
 
     loading_indicator_saveguard
 
@@ -93,6 +93,10 @@ RSpec.describe "Work package calendars", :js do
       .to have_no_css ".fc-event-title", text: future_work_package.subject
     expect(page)
       .to have_no_css ".fc-event-title", text: another_future_work_package.subject
+
+    # The columns are set correctly according to month view.
+    expect(page).to have_css ".fc-day-mon .fc-col-header-cell-cushion", text: "Mon"
+    expect(page).to have_css ".fc-day-tue .fc-col-header-cell-cushion", text: "Tue"
 
     filters.expect_filter_count 1
 
@@ -153,6 +157,9 @@ RSpec.describe "Work package calendars", :js do
     # open the page via the url should show the next month again
     visit future_url
 
+    expect(page).to have_test_selector("op-breadcrumbs--item", text: "Calendars")
+    expect(page).to have_css(".op-breadcrumbs--current", text: "Unnamed calendar", aria: { current: "page" })
+
     expect(page)
       .to have_no_css ".fc-event-title", text: current_work_package.subject
     expect(page)
@@ -195,5 +202,48 @@ RSpec.describe "Work package calendars", :js do
     expect(page)
       .to have_css ".fc-event-title", text: current_work_package.subject, wait: 20
     current_wp_split_screen.expect_closed
+  end
+
+  context "when work packages have only one date set (start or due date)" do
+    shared_let(:wp_start_date_only) do
+      create(:work_package,
+             subject: "Start date only",
+             project:,
+             start_date: Time.zone.today.at_beginning_of_month + 8.days)
+    end
+    shared_let(:wp_due_date_only) do
+      create(:work_package,
+             subject: "Due date only",
+             project:,
+             due_date: Time.zone.today.at_beginning_of_month + 8.days)
+    end
+    shared_let(:wp_no_dates) do
+      create(:work_package,
+             subject: "No dates at all",
+             project:)
+    end
+
+    it "shows the event on the calendar" do
+      visit project_path(project)
+
+      within "#main-menu" do
+        click_link "Calendars"
+      end
+
+      # Expect empty index
+      expect(page).to have_text "There is currently nothing to display."
+
+      # Open a new calendar from there
+      find('[data-test-selector="add-calendar-button"]', text: "Calendar").click
+
+      loading_indicator_saveguard
+
+      expect(page)
+        .to have_css ".fc-event-title", text: wp_start_date_only.subject
+      expect(page)
+        .to have_css ".fc-event-title", text: wp_due_date_only.subject
+      expect(page)
+        .to have_no_css ".fc-event-title", text: wp_no_dates.subject
+    end
   end
 end

@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,9 +26,11 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require File.expand_path(File.dirname(__FILE__) + "/../spec_helper.rb")
+require_relative "../spec_helper"
 
-RSpec.describe "Work Package budget fields", :js do
+RSpec.describe "Work Package budget fields",
+               :js,
+               :selenium do
   let(:type_task) { create(:type_task) }
   let!(:status) { create(:status, is_default: true) }
   let!(:priority) { create(:priority, is_default: true) }

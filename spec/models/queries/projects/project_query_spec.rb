@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 # -- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2010-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,11 +30,15 @@
 
 require "spec_helper"
 
-RSpec.describe Queries::Projects::ProjectQuery do
+RSpec.describe ProjectQuery do
   let(:instance) { described_class.new }
 
   shared_let(:user) { create(:user) }
   shared_let(:admin) { create(:admin) }
+
+  it_behaves_like "acts_as_favoritable included" do
+    let(:instance) { create(:project_query) }
+  end
 
   context "when persisting" do
     let(:properties) do
@@ -109,8 +115,6 @@ RSpec.describe Queries::Projects::ProjectQuery do
   end
 
   describe ".available_selects" do
-    current_user { user }
-
     before do
       scope = instance_double(ActiveRecord::Relation)
 
@@ -123,52 +127,63 @@ RSpec.describe Queries::Projects::ProjectQuery do
               .and_return([23, 42])
     end
 
-    it "lists registered selects" do
-      expect(instance.available_selects.map(&:attribute))
-        .to contain_exactly(:name,
-                            :favored,
-                            :public,
-                            :description,
-                            :hierarchy,
-                            :project_status,
-                            :status_explanation)
+    # rubocop:disable Naming/VariableNumber
+    context "for non admin user" do
+      current_user { user }
+
+      it "lists registered selects" do
+        expect(instance.available_selects.map(&:attribute))
+          .to match_array(%i[
+                            id
+                            identifier
+                            name
+                            favorited
+                            public
+                            description
+                            hierarchy
+                            project_status
+                            status_explanation
+                            created_at
+                            cf_23
+                            cf_42
+                            budget_available
+                            budget_planned
+                            budget_spent
+                            budget_spent_ratio
+                            updated_at
+                          ])
+      end
     end
 
-    context "with the user being admin" do
+    context "for admin user" do
       current_user { admin }
 
       it "includes admin columns" do
         expect(instance.available_selects.map(&:attribute))
-          .to contain_exactly(:name,
-                              :public,
-                              :favored,
-                              :description,
-                              :hierarchy,
-                              :project_status,
-                              :status_explanation,
-                              :created_at,
-                              :latest_activity_at,
-                              :required_disk_space)
+          .to match_array(%i[
+                            id
+                            identifier
+                            name
+                            favorited
+                            public
+                            description
+                            hierarchy
+                            project_status
+                            status_explanation
+                            created_at
+                            latest_activity_at
+                            required_disk_space
+                            cf_23
+                            cf_42
+                            budget_available
+                            budget_planned
+                            budget_spent
+                            budget_spent_ratio
+                            updated_at
+                          ])
       end
     end
-
-    context "with an enterprise token",
-            with_ee: %i[custom_fields_in_projects_list] do
-      # rubocop:disable Naming/VariableNumber
-      it "includes custom field columns" do
-        expect(instance.available_selects.map(&:attribute))
-          .to contain_exactly(:name,
-                              :public,
-                              :favored,
-                              :description,
-                              :hierarchy,
-                              :project_status,
-                              :status_explanation,
-                              :cf_23,
-                              :cf_42)
-      end
-      # rubocop:enable Naming/VariableNumber
-    end
+    # rubocop:enable Naming/VariableNumber
   end
 
   describe "#valid_subset!" do
@@ -226,7 +241,7 @@ RSpec.describe Queries::Projects::ProjectQuery do
 
         before do
           instance.where("active", "=", OpenProject::Database::DB_VALUE_TRUE)
-          instance.where("created_at", ">t-", ["6"])
+          instance.where("latest_activity_at", ">t-", ["6"])
 
           instance.valid_subset!
         end
@@ -325,8 +340,8 @@ RSpec.describe Queries::Projects::ProjectQuery do
       end
 
       context "with them being invalid" do
-        # No admin, hence no created_at column. CF column does not exist.
-        let(:selects) { %i(bogus created_at cf_1) } # rubocop:disable Naming/VariableNumber
+        # No admin, hence no latest_activity_at column. CF column does not exist.
+        let(:selects) { %i(bogus latest_activity_at cf_1) } # rubocop:disable Naming/VariableNumber
 
         it "removes the values" do
           expect(instance.selects.map(&:attribute))
@@ -336,11 +351,11 @@ RSpec.describe Queries::Projects::ProjectQuery do
 
       context "with them being partially invalid" do
         let(:current_user) { admin }
-        let(:selects) { %i(bogus name created_at cf_1 description) } # rubocop:disable Naming/VariableNumber
+        let(:selects) { %i(bogus name latest_activity_at cf_1 description) } # rubocop:disable Naming/VariableNumber
 
         it "removes only the offending values" do
           expect(instance.selects.map(&:attribute))
-            .to eq %i(name created_at description)
+            .to eq %i(name latest_activity_at description)
         end
       end
     end
@@ -362,7 +377,7 @@ RSpec.describe Queries::Projects::ProjectQuery do
         let(:orders) { { name: :asc, project_status: :desc, "cf_#{custom_field.id}": :desc } }
 
         it "leaves the values untouched" do
-          expect(instance.orders.to_h { [_1.attribute, _1.direction] })
+          expect(instance.orders.to_h { [it.attribute, it.direction] })
             .to eq orders
         end
       end
@@ -371,7 +386,7 @@ RSpec.describe Queries::Projects::ProjectQuery do
         let(:orders) { { bogus: :desc, cf_1: :desc } } # rubocop:disable Naming/VariableNumber
 
         it "removes the values" do
-          expect(instance.orders.to_h { [_1.attribute, _1.direction] })
+          expect(instance.orders.to_h { [it.attribute, it.direction] })
             .to be_empty
         end
       end
@@ -381,7 +396,7 @@ RSpec.describe Queries::Projects::ProjectQuery do
         let(:orders) { { bogus: :desc, name: :desc, cf_0: :desc, "cf_#{custom_field.id}": :desc } } # rubocop:disable Naming/VariableNumber
 
         it "removes only the offending values" do
-          expect(instance.orders.to_h { [_1.attribute, _1.direction] })
+          expect(instance.orders.to_h { [it.attribute, it.direction] })
             .to eq(name: :desc, "cf_#{custom_field.id}": :desc)
         end
       end
@@ -441,6 +456,92 @@ RSpec.describe Queries::Projects::ProjectQuery do
         let(:public) { false }
 
         it { is_expected.not_to be_visible(user) }
+      end
+
+      context "and the query has been shared with the user" do
+        before do
+          mock_permissions_for(user) do |mock|
+            mock.allow_in_project_query(:view_project_query, project_query: subject)
+          end
+        end
+
+        it { is_expected.to be_visible(user) }
+      end
+    end
+  end
+
+  describe "#editable?" do
+    subject { build(:project_query, user: owner, public:) }
+
+    context "when the query is private" do
+      let(:public) { false }
+
+      context "and the user is the owner" do
+        let(:owner) { user }
+
+        it { is_expected.to be_editable(user) }
+      end
+
+      context "and the user is not the owner" do
+        let(:owner) { build(:user) }
+
+        it { is_expected.not_to be_editable(user) }
+
+        context "and the query has been shared with the user" do
+          before do
+            mock_permissions_for(user) do |mock|
+              mock.allow_in_project_query(:edit_project_query, project_query: subject)
+            end
+          end
+
+          it { is_expected.to be_editable(user) }
+        end
+      end
+    end
+
+    context "when the query is public" do
+      let(:public) { true }
+
+      context "and the user is the owner" do
+        let(:owner) { user }
+
+        it { is_expected.not_to be_editable(user) }
+
+        context "and the user has the global permission" do
+          before do
+            mock_permissions_for(user) do |mock|
+              mock.allow_globally(:manage_public_project_queries)
+            end
+          end
+
+          it { is_expected.to be_editable(user) }
+        end
+      end
+
+      context "and the user is not the owner" do
+        let(:owner) { build(:user) }
+
+        it { is_expected.not_to be_editable(user) }
+
+        context "and the user has the global permission" do
+          before do
+            mock_permissions_for(user) do |mock|
+              mock.allow_globally(:manage_public_project_queries)
+            end
+          end
+
+          it { is_expected.to be_editable(user) }
+        end
+
+        context "and the query has been shared with the user" do
+          before do
+            mock_permissions_for(user) do |mock|
+              mock.allow_in_project_query(:edit_project_query, project_query: subject)
+            end
+          end
+
+          it { is_expected.to be_editable(user) }
+        end
       end
     end
   end

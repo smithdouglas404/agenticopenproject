@@ -5,14 +5,9 @@
                               [inputPlaceholder]="text.inputPlaceholder"
                               [dragAreaLabel]="text.inputDragLabel"
                               [id]="'columns-select'"
-                              (onChange)="updateSelected($event)">
-  </op-draggable-autocompleter>
+                              (onChange)="updateSelected($event)" />
 </div>
 
-<op-enterprise-banner class="ee-relation-columns-upsale"
-                   *ngIf="eeShowBanners"
-                   [linkMessage]="text.upsaleCheckOutLink"
-                   [textMessage]="text.upsaleRelationColumns"
-                   [moreInfoLink]="text.moreInfoLink"
-                   opReferrer="wp-list-columns#relations">
-</op-enterprise-banner>
+<op-enterprise-banner-frame feature="work_package_query_relation_columns"
+  [dismissable]="true"
+ />

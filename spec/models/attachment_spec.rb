@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -204,7 +206,7 @@ RSpec.describe Attachment do
     end
   end
 
-  include_examples "creates an audit trail on destroy" do
+  it_behaves_like "creates an audit trail on destroy" do
     subject { create(:attachment) }
   end
 
@@ -292,6 +294,17 @@ RSpec.describe Attachment do
           attachment.content_type = content_type
           expect(attachment).to be_inlineable, "#{content_type} should be inlineable"
         end
+      end
+    end
+
+    describe "for an HTML file" do
+      let(:attachment) { described_class.new }
+
+      it "assumes it not to be inlineable" do
+        attachment.content_type = "text/html"
+        expect(attachment).to be_is_html
+        expect(attachment).not_to be_is_text
+        expect(attachment).not_to be_inlineable
       end
     end
 

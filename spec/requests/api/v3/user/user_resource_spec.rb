@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,13 +31,12 @@
 require "spec_helper"
 require "rack/test"
 
-RSpec.describe "API v3 User resource",
-               content_type: :json do
+RSpec.describe "API v3 User resource", content_type: :json do
   include Rack::Test::Methods
   include API::V3::Utilities::PathHelper
 
-  let(:current_user) { create(:user) }
-  let(:user) { create(:user) }
+  let(:current_user) { user }
+  let(:user) { create(:user, lastname: "Bobbit") }
   let(:admin) { create(:admin) }
   let(:locked_admin) { create(:admin, status: Principal.statuses[:locked]) }
   let(:user_with_global_manage_user) do
@@ -272,12 +273,9 @@ RSpec.describe "API v3 User resource",
         expect(subject.status).to eq 202
       end
 
-      it "locks the account and mark for deletion" do
-        expect(Principals::DeleteJob)
-          .to have_been_enqueued
-          .with(user)
-
-        expect(user).to be_locked
+      it "marks user as deleted and enqueues a deletion job" do
+        expect(Principals::DeleteJob).to have_been_enqueued.with(user)
+        expect(user).to be_deleted
       end
 
       context "with a non-existent user" do

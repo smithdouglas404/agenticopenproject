@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -76,7 +76,7 @@ RSpec.describe "POST /api/v3/grids/form", content_type: :json do
         }
       end
 
-      it "contains default data in the payload" do
+      it "contains default data in the payload" do # rubocop:disable RSpec/ExampleLength
         expected = {
           rowCount: 1,
           columnCount: 2,
@@ -84,7 +84,7 @@ RSpec.describe "POST /api/v3/grids/form", content_type: :json do
           widgets: [
             {
               _type: "GridWidget",
-              identifier: "work_packages_table",
+              identifier: "work_packages_assigned",
               options: {
                 name: "Work packages assigned to me",
                 queryProps: {
@@ -99,7 +99,7 @@ RSpec.describe "POST /api/v3/grids/form", content_type: :json do
             },
             {
               _type: "GridWidget",
-              identifier: "work_packages_table",
+              identifier: "work_packages_created",
               options: {
                 name: "Work packages created by me",
                 queryProps: {

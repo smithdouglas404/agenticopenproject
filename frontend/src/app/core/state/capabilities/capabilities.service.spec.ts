@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,13 +26,8 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-/* jshint expr: true */
-
 import { TestBed } from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { States } from 'core-app/core/states/states.service';
 import { HalResourceService } from 'core-app/features/hal/services/hal-resource.service';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
@@ -43,9 +38,10 @@ import {
 } from 'core-app/core/current-user/current-user.store';
 import { CurrentUserService } from 'core-app/core/current-user/current-user.service';
 import { ICapability } from 'core-app/core/state/capabilities/capability.model';
-import * as URI from 'urijs';
+import URI from 'urijs';
 import { ApiV3ListParameters } from 'core-app/core/apiv3/paths/apiv3-list-resource.interface';
 import { CurrentUserQuery } from 'core-app/core/current-user/current-user.query';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const globalCapability:ICapability = {
   id: 'placeholder_users/read/g-3',
@@ -136,10 +132,8 @@ describe('Capabilities service', () => {
     const ConfigurationServiceStub = {};
 
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-      ],
-      providers: [
+    imports: [],
+    providers: [
         HalResourceService,
         { provide: ConfigurationService, useValue: ConfigurationServiceStub },
         { provide: States, useValue: new States() },
@@ -147,8 +141,10 @@ describe('Capabilities service', () => {
         CurrentUserStore,
         CurrentUserQuery,
         CurrentUserService,
-      ],
-    });
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+});
 
     currentUser = TestBed.inject(CurrentUserService);
     currentUser.setUser(user);
@@ -200,7 +196,7 @@ describe('Capabilities service', () => {
   });
 
   describe('When not logged in', () => {
-    beforeEach(() => compile({ id: null, name: null, mail: null }));
+    beforeEach(() => compile({ id: null, name: null, loggedIn: false }));
 
     it('Should have no capabilities', () => {
       service.loadedCapabilities$('global').subscribe((caps) => {
@@ -212,7 +208,7 @@ describe('Capabilities service', () => {
   });
 
   describe('When logged in', () => {
-    beforeEach(() => compile({ id: '1', name: 'Admin', mail: 'admin@example.com' }));
+    beforeEach(() => compile({ id: '1', name: 'Admin', loggedIn: true }));
 
     it('Should have all capabilities', () => {
       const params:ApiV3ListParameters = {

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -38,4 +40,17 @@ RSpec.describe CustomFields::UpdateContract do
   end
 
   it_behaves_like "contract is valid for active admins and invalid for regular users"
+
+  context "for calculated value custom field" do
+    let(:cf) { build_stubbed(:calculated_value_project_custom_field) }
+    let(:current_user) { build_stubbed(:admin) }
+
+    context "without calculated_values enterprise feature" do
+      it_behaves_like "contract is invalid", base: :error_enterprise_only
+    end
+
+    context "with calculated_values enterprise feature", with_ee: %i[calculated_values] do
+      it_behaves_like "contract is valid"
+    end
+  end
 end

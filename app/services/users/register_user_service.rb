@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -126,7 +128,7 @@ module Users
     end
 
     def skip_omniauth_user?
-      user.identity_url.blank?
+      user.user_auth_provider_links.blank?
     end
 
     def limited_provider?(user)
@@ -137,7 +139,7 @@ module Users
     end
 
     def provider_name(user)
-      user.authentication_provider&.downcase
+      user.authentication_provider&.slug&.downcase
     end
 
     def register_by_email_activation

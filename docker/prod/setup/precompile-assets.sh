@@ -1,5 +1,7 @@
 #!/bin/bash
-set -exo pipefail
+set -euxo pipefail
+
+DOCKER=${DOCKER:-0}
 
 if [ -f config/frontend_assets.manifest.json ]; then
   echo "Assets have already been precompiled. Reusing."

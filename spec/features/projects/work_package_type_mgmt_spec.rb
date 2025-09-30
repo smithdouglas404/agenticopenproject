@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Projects", "work package type mgmt", :js, :with_cuprite do # rubocop:disable RSpec/SortMetadata
+RSpec.describe "Projects", "work package type mgmt", :js do
   current_user { create(:user, member_with_permissions: { project => %i[edit_project manage_types] }) }
 
   let(:phase_type)     { create(:type, name: "Phase", is_default: true) }
@@ -39,20 +41,16 @@ RSpec.describe "Projects", "work package type mgmt", :js, :with_cuprite do # rub
     visit projects_path
     click_on "Foo project"
     click_on "Project settings"
-    click_on "Work package types"
+    click_on "Work packages"
 
-    expect(find_field("Phase", visible: false)["checked"])
-      .to be_truthy
-
-    expect(find_field("Milestone", visible: false)["checked"])
-      .to be_truthy
+    expect(page).to have_checked_field("Phase", visible: :all)
+    expect(page).to have_checked_field("Milestone", visible: :all)
 
     # Disable a type
     find_field("Milestone", visible: false).click
 
     click_button "Save"
 
-    expect(find_field("Milestone", visible: false)["checked"])
-      .to be_falsey
+    expect(page).to have_unchecked_field("Milestone", visible: :all)
   end
 end

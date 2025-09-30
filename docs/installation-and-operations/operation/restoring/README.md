@@ -166,7 +166,7 @@ mkdir -p /var/lib/openproject/{pgdata,assets}
 Next we need to initialize the database.
 
 ```shell
-docker run --rm -v /var/lib/openproject/pgdata:/var/openproject/pgdata -it openproject/openproject:14
+docker run --rm -v /var/lib/openproject/pgdata:/var/openproject/pgdata -it openproject/openproject:16
 ```
 
 As soon as you see `Database setup finished.` in the container's output you can kill it by pressing Ctrl + C.
@@ -236,7 +236,7 @@ host which is mounted into the OpenProject container. For instance:
 
 ```shell
 # 1. extract files
-tar -C /var/lib/openproject/assets -xf attachments-20210211090802.tar.gz
+tar -C /var/lib/openproject/assets/files -xf attachments-20210211090802.tar.gz
 
 # 2. give right permission so `app` user in container can read them
 chown -R 1000:1000 /var/lib/openproject/assets
@@ -246,7 +246,7 @@ You may need to create the `files` directory if it doesn't exist yet.
 
 #### 4) Start OpenProject
 
-Start the container as described in the [installation section](../../installation/docker/#one-container-per-process-recommended)
+Start the container as described in the [installation section](../../installation/docker/)
 mounting `/var/lib/openproject/pgdata` (and `/var/lib/openproject/assets/` for attachments).
 
 ## Changing the database schema from cloud to on-premises

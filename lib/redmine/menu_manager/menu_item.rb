@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,9 +37,12 @@ class Redmine::MenuManager::MenuItem < Redmine::MenuManager::TreeNode
               :child_menus,
               :last,
               :partial,
+              :scheme,
               :engine,
               :enterprise_feature
 
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/PerceivedComplexity
   def initialize(name, url, options)
     raise ArgumentError, "Invalid option :if for menu item '#{name}'" if options[:if] && !options[:if].respond_to?(:call)
     raise ArgumentError, "Invalid option :html for menu item '#{name}'" if options[:html] && !options[:html].is_a?(Hash)
@@ -68,12 +71,17 @@ class Redmine::MenuManager::MenuItem < Redmine::MenuManager::TreeNode
     @child_menus = options[:children]
     @last = options[:last] || false
     @partial = options[:partial]
+    @scheme = options[:scheme]
     @badge = options[:badge]
     @engine = options[:engine]
     @allow_deeplink = options[:allow_deeplink]
     @skip_permissions_check = !!options[:skip_permissions_check]
+    @is_heading = options[:is_heading]
     super(@name.to_sym)
   end
+
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/PerceivedComplexity
 
   def caption(project = nil)
     if @caption.is_a?(Proc)
@@ -103,9 +111,9 @@ class Redmine::MenuManager::MenuItem < Redmine::MenuManager::TreeNode
     @icon = new_icon
   end
 
-  def badge(project = nil)
+  def badge(**)
     if @badge.is_a?(Proc)
-      @badge.call(project).to_s
+      @badge.call(**).to_s
     else
       @badge
     end
@@ -161,5 +169,9 @@ class Redmine::MenuManager::MenuItem < Redmine::MenuManager::TreeNode
                  else
                    ->(project) { new_condition.call(project) }
                  end
+  end
+
+  def heading?
+    @is_heading || false
   end
 end

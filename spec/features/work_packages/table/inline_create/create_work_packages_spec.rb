@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
-RSpec.describe "inline create work package", :js do
+RSpec.describe "inline create work package", :js, :selenium do
   let(:type) { create(:type) }
   let(:types) { [type] }
 
@@ -48,7 +50,7 @@ RSpec.describe "inline create work package", :js do
         callback.call
 
         wp_table.expect_toast(
-          message: "Successful creation. Click here to open this work package in fullscreen view."
+          message: "Successful creation."
         )
 
         # Expect new create row to exist
@@ -71,7 +73,7 @@ RSpec.describe "inline create work package", :js do
         # safeguards
         wp_table.dismiss_toaster!
         wp_table.expect_no_toaster(
-          message: "Successful update. Click here to open this work package in fullscreen view."
+          message: "Successful update."
         )
 
         # Expect no inline create open
@@ -127,7 +129,7 @@ RSpec.describe "inline create work package", :js do
         subject_field.save!
 
         wp_table.expect_toast(
-          message: "Successful creation. Click here to open this work package in fullscreen view."
+          message: "Successful creation."
         )
 
         created_wp = WorkPackage.last

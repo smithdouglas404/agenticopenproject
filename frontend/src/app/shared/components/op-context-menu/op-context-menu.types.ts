@@ -12,6 +12,7 @@ export interface OpContextMenuItem {
   linkText?:string;
   title?:string;
   divider?:boolean;
+  isHeader?:boolean;
   onClick?:($event:JQuery.TriggeredEvent|MouseEvent) => boolean;
 }
 

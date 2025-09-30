@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require File.expand_path(File.dirname(__FILE__) + "/../spec_helper.rb")
+require_relative "../spec_helper"
 
 RSpec.describe "hourly rates on a member", :js do
   let(:project) { build(:project) }
@@ -57,6 +57,7 @@ RSpec.describe "hourly rates on a member", :js do
     click_link_or_button "Add rate"
 
     datepicker = Components::BasicDatepicker.new
+    datepicker.expect_visible
     datepicker.set_date(date.strftime("%Y-%m-%d"))
 
     within "tr[id^='user_new_rate_attributes_']" do
@@ -68,6 +69,7 @@ RSpec.describe "hourly rates on a member", :js do
     input = find("table.rates .date input[data-value='#{from.strftime('%Y-%m-%d')}']")
     input.click
     datepicker = Components::BasicDatepicker.new
+    datepicker.expect_visible
     datepicker.set_date(to.strftime("%Y-%m-%d"))
   end
 

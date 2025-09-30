@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,7 +37,7 @@ RSpec.describe "Authentication Stages", :skip_2fa_stage do
 
     OpenProject::Authentication::Stage.register :dummy_step, "/login/stage_test"
 
-    allow_any_instance_of(AccountController)
+    allow_any_instance_of(ApplicationController) # rubocop:disable RSpec/AnyInstance
       .to receive(:stage_secret)
       .and_return("success") # usually 'success' would be a random hex string
   end
@@ -139,7 +141,7 @@ RSpec.describe "Authentication Stages", :skip_2fa_stage do
     # after the stage is finished it must redirect to the complete endpoint
     visit "/login/dummy_step/success"
 
-    expect(current_path).to eql "/my/page" # after which the user will actually be logged in
+    expect(page).to have_current_path(home_path) # after which the user will actually be logged in
 
     visit "/my/account"
 
@@ -241,7 +243,7 @@ RSpec.describe "Authentication Stages", :skip_2fa_stage do
       # after the stage is finished it must redirect to the complete endpoint
       visit "/login/two_step/success"
 
-      expect(current_path).to eql "/my/page" # after which the user will actually be logged in
+      expect(page).to have_current_path(home_path) # after which the user will actually be logged in
 
       visit "/my/account"
 

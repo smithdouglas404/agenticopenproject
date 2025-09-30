@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,11 +35,11 @@ require_relative "shared_event_gun_examples"
 
 RSpec.describe Storages::ProjectStorages::DeleteService, :webmock, type: :model do
   shared_examples_for "deleting project storages with project folders" do
-    let(:command_double) { double(:delete_folder_command, call: ServiceResult.success) }
+    let(:command_double) { class_double(command_class_reference, call: Success()) }
 
     before do
-      Storages::Peripherals::Registry
-        .stub("#{storage.short_provider_type}.commands.delete_folder", command_double)
+      Storages::Adapters::Registry
+        .stub("#{storage}.commands.delete_folder", command_double)
     end
 
     context "if project folder mode is set to automatic" do
@@ -53,7 +53,8 @@ RSpec.describe Storages::ProjectStorages::DeleteService, :webmock, type: :model 
       end
 
       context "if project folder deletion request fails" do
-        let(:command_double) { double(:delete_folder_command, call: ServiceResult.failure(result: 404)) }
+        let(:error) { Storages::Adapters::Results::Error.new(code: :conflict, source: command_class_reference) }
+        let(:command_double) { class_double(command_class_reference, call: Failure(error)) }
 
         it "tries to remove the project folder at the remote storage and still succeed with deletion" do
           expect(described_class.new(model: project_storage, user:).call).to be_success
@@ -76,7 +77,7 @@ RSpec.describe Storages::ProjectStorages::DeleteService, :webmock, type: :model 
 
   context "with records written to DB" do
     let(:user) { create(:user) }
-    let(:role) { create(:project_role, permissions: [:manage_storages_in_project]) }
+    let(:role) { create(:project_role, permissions: [:manage_files_in_project]) }
     let(:project) { create(:project, members: { user => role }) }
     let(:other_project) { create(:project) }
     let(:storage) { create(:nextcloud_storage) }
@@ -117,12 +118,6 @@ RSpec.describe Storages::ProjectStorages::DeleteService, :webmock, type: :model 
         "https://graph.microsoft.com/v1.0/drives/#{storage.drive_id}/items/#{project_storage.project_folder_location}"
       end
 
-      before do
-        allow(Storages::Peripherals::StorageInteraction::OneDrive::Util)
-          .to receive(:using_admin_token)
-                .and_yield(HTTPX.with(origin: storage.uri))
-      end
-
       it_behaves_like "deleting project storages with project folders"
     end
   end
@@ -137,12 +132,16 @@ RSpec.describe Storages::ProjectStorages::DeleteService, :webmock, type: :model 
     end
 
     before do
-      Storages::Peripherals::Registry.stub(
-        "#{model_instance.storage.short_provider_type}.commands.delete_folder",
-        ->(*) { ServiceResult.success }
-      )
+      Storages::Adapters::Registry.stub("#{model_instance.storage}.commands.delete_folder",
+                                        ->(*) { Success() })
     end
 
     it_behaves_like("an event gun", OpenProject::Events::PROJECT_STORAGE_DESTROYED)
+  end
+
+  private
+
+  def command_class_reference
+    Storages::Adapters::Registry["#{project_storage.storage}.commands.delete_folder"]
   end
 end

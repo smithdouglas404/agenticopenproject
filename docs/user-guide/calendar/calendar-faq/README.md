@@ -20,11 +20,11 @@ To use the calendar in a project, you need to [activate the “Calendar” modul
 
 You cannot synchronize a personal calendar in OpenProject. However, you can [subscribe to a calendar](../#subscribe-to-a-calendar) using an external client that supports the iCalendar format.
 
-You can also use the meeting module in OpenProject to organize meetings and invite project members.  You can [export meetings as iCalendar file](../../meetings/dynamic-meetings/#create-or-edit-the-meeting-agenda) and import them to your external calendar. If you would like Microsoft Outlook to automatically import calendar invites, please check your Outlook settings and make sure to give permission from that side.
+You can also use the meeting module in OpenProject to organize meetings and invite project members.  You can [export meetings as iCalendar file](../../meetings/one-time-meetings/#download-a-meeting-as-an-icalendar-event) and import them to your external calendar. If you would like Microsoft Outlook to automatically import calendar invites, please check your Outlook settings and make sure to give permission from that side.
 
 ## Are holidays considered in the calendar?
 
-Since the [12.3 release](../../../release-notes/12/12-3-0/) it is possible to specify  working and non-working days on an overall instance-level and consequently define a global work week. The default value for non-working days is set to Saturday and Sunday, but can be adjusted to your specific needs. Read more [here](../../../user-guide/work-packages/set-change-dates/#working-days).
+Since the [12.3 release](../../../release-notes/12/12-3-0/) it is possible to specify working and non-working days on an overall instance-level and consequently define a global work week. The default value for non-working days is set to Saturday and Sunday, but can be adjusted to your specific needs. Read more [here](../../../user-guide/work-packages/set-change-dates/#working-days).
 
 ## Is there a limit for the number of work packages displayed in the calendar?
 

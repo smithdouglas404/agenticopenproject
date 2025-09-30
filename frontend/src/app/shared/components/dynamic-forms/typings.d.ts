@@ -1,5 +1,6 @@
-import { FormlyFieldConfig, FormlyTemplateOptions } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyFieldProps } from '@ngx-formly/core';
 import { FormGroup } from '@angular/forms';
+import { ICKEditorType } from '../editor/components/ckeditor/ckeditor-setup.service';
 
 export interface IOPDynamicFormSettings {
   fields:IOPFormlyFieldSettings[];
@@ -15,9 +16,10 @@ export interface IOPFormlyFieldSettings extends FormlyFieldConfig {
   [key:string]:any;
 }
 
-export interface IOPFormlyTemplateOptions extends FormlyTemplateOptions {
+export interface IOPFormlyTemplateOptions extends FormlyFieldProps {
+  type?:'checkbox' | 'number' | 'password' | 'selectInput' | 'text';
+  name?:string;
   property?:string;
-  label?:string;
   hasDefault?:boolean;
   fieldGroup?:string;
   isFieldGroup?:boolean;
@@ -25,6 +27,23 @@ export interface IOPFormlyTemplateOptions extends FormlyTemplateOptions {
   collapsibleFieldGroupsCollapsed?:boolean;
   helpTextAttributeScope?:string;
   showValidationErrorOn?:'change' | 'blur' | 'submit' | 'never';
+  payloadValue?:{ href?:string|null };
+  rtl?:boolean;
+  locale?:string;
+  bindLabel?:string;
+  bindValue?:string;
+  searchable?:boolean;
+  editorType?:ICKEditorType;
+  noWrapLabel?:boolean;
+  virtualScroll?:boolean;
+  clearOnBackspace?:boolean;
+  clearSearchOnAdd?:boolean;
+  hideSelected?:boolean;
+  text?:Record<string, string>;
+  typeahead?:boolean;
+  inlineLabel?:boolean;
+  clearable?:boolean;
+  multiple?:boolean;
 }
 
 type OPInputType = 'formattableInput'|'selectInput'|'textInput'|'integerInput'|

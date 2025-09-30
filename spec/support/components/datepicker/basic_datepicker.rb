@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "datepicker"
 
 module Components
@@ -21,6 +23,11 @@ module Components
 
     def flatpickr_container
       container.find(".flatpickr-calendar")
+    end
+
+    def open(trigger)
+      input = page.find(trigger)
+      input.click
     end
   end
 end

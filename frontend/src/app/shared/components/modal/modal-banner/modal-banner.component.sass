@@ -3,22 +3,22 @@
 .op-modal-banner
   display: grid
   grid-template-columns: 20px auto max-content
-  grid-gap: $spot-spacing-1
+  grid-gap: 1rem
   align-items: center
-  padding: $spot-spacing-0-75
+  padding: 0.75rem 1rem
 
   @media only screen and (max-width: $breakpoint-sm)
     grid-template-columns: auto max-content
 
   &:first-child
-    border-top-left-radius: $spot-spacing-0-25
-    border-top-right-radius: $spot-spacing-0-25
+    border-top-left-radius: 0.25rem
+    border-top-right-radius: 0.25rem
 
   &_warning
-    background: $spot-color-feedback-warning-light
+    background: var(--bgColor-attention-muted)
 
   &_info
-    background: $spot-color-feedback-info-light
+    background: var(--bgColor-accent-muted)
 
   &--button
     margin: 0

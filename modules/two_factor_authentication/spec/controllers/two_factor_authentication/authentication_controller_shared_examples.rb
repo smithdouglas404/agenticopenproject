@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "../../spec_helper"
 
 RSpec.shared_examples "immediate success login" do

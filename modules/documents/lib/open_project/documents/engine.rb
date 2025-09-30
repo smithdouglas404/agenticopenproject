@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -40,7 +42,7 @@ module OpenProject::Documents
            { controller: "/documents", action: "index" },
            caption: :label_document_plural,
            before: :members,
-           icon: "notes"
+           icon: "note"
 
       project_module :documents do |_map|
         permission :view_documents,
@@ -51,6 +53,13 @@ module OpenProject::Documents
                    permissible_on: :project,
                    require: :loggedin
       end
+
+      menu :admin_menu,
+           :document_categories,
+           { controller: "/admin/settings/document_categories", action: :index },
+           if: ->(_) { User.current.admin? },
+           caption: :"documents.label_categories",
+           parent: :files
 
       Redmine::Search.register :documents
     end
@@ -77,5 +86,10 @@ module OpenProject::Documents
 
     # Add documents to allowed search params
     additional_permitted_attributes search: %i(documents)
+
+    config.to_prepare do
+      # Load Enumeration descendants due to STI
+      DocumentCategory
+    end
   end
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -45,6 +47,7 @@ FactoryBot.define do
 
       global_roles { [] }
       global_permissions { [] }
+      identity_url { nil }
     end
 
     callback(:after_build) do |_principal, evaluator|
@@ -71,21 +74,34 @@ FactoryBot.define do
     end
 
     callback(:after_create) do |principal, evaluator|
+      if evaluator.identity_url.present?
+        slug, external_id = evaluator.identity_url.split(":", 2)
+        raise "slug or external_id is blank" if slug.blank? || external_id.blank?
+
+        auth_provider = AuthProvider.find_by(slug:) || create(:oidc_provider, slug:)
+        principal.user_auth_provider_links.create!(auth_provider:, external_id:)
+      end
       evaluator.member_with_permissions.each do |object, permissions|
         if object.is_a?(Project)
           role = create(:project_role, permissions:)
           create(:member, principal:, project: object, roles: [role])
         elsif Member.can_be_member_of?(object)
-          role = create(:work_package_role, permissions:)
-          create(:member, principal:, entity: object, project: object.project, roles: [role])
+          project = object.respond_to?(:project) ? object.project : nil
+          role_factory = :"#{object.model_name.element}_role"
+
+          role = create(role_factory, permissions:)
+          create(:member, principal:, entity: object, project:, roles: [role])
         end
       end
 
       evaluator.member_with_roles.each do |object, role_or_roles|
-        if object.is_a? Project
+        case object
+        when Project
           create(:member, principal:, project: object, roles: Array(role_or_roles))
-        elsif object.is_a?(WorkPackage)
+        when WorkPackage
           create(:member, principal:, entity: object, project: object.project, roles: Array(role_or_roles))
+        when ProjectQuery
+          create(:member, principal:, entity: object, project: nil, roles: Array(role_or_roles))
         end
       end
 

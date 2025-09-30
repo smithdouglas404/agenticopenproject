@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -50,6 +50,8 @@ module LdapGroups
       end
 
       def inline_create_link
+        return unless EnterpriseToken.allows_to?(:ldap_groups)
+
         link_to({ controller: target_controller, action: :new },
                 class: "budget-add-row wp-inline-create--add-link",
                 title: I18n.t("ldap_groups.synchronized_groups.add_new")) do

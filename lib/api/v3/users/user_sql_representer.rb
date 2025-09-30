@@ -1,5 +1,5 @@
 #  OpenProject is an open source project management software.
-#  Copyright (C) 2010-2022 the OpenProject GmbH
+#  Copyright (C) the OpenProject GmbH
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of the GNU General Public License version 3.
@@ -39,7 +39,7 @@ module API
               "firstname"
             when :lastname_firstname
               "concat(lastname, ' ', firstname)"
-            when :lastname_coma_firstname
+            when :lastname_comma_firstname
               "concat(lastname, ', ', firstname)"
             when :lastname_n_firstname
               "concat_ws(lastname, '', firstname)"
@@ -52,6 +52,14 @@ module API
 
           def render_if_manage_user_or_self(*)
             if User.current.allowed_globally?(:manage_user)
+              "TRUE"
+            else
+              "id = #{User.current.id}"
+            end
+          end
+
+          def render_if_view_user_email_or_self(*)
+            if User.current.allowed_globally?(:view_user_email)
               "TRUE"
             else
               "id = #{User.current.id}"
@@ -71,6 +79,10 @@ module API
 
         property :name,
                  representation: method(:user_name_projection)
+
+        property :email,
+                 column: :mail,
+                 render_if: method(:render_if_view_user_email_or_self)
 
         property :firstname,
                  render_if: method(:render_if_manage_user_or_self)

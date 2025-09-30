@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -52,9 +54,7 @@ module Pages
       end
 
       def click_new
-        within ".toolbar-items" do
-          click_link "Type"
-        end
+        page.find_test_selector("op-admin-types--button-new", text: "Type").click
       end
 
       def click_edit(type)
@@ -83,10 +83,6 @@ module Pages
 
       def canonical_name(type)
         type.respond_to?(:name) ? type.name : type
-      end
-
-      def toast_type
-        :rails
       end
     end
   end

@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,14 +34,7 @@ module Costs
 
     include OpenProject::Plugins::ActsAsOpEngine
 
-    register "costs",
-             author_url: "https://www.openproject.org",
-             bundled: true,
-             settings: {
-               default: { "costs_currency" => "EUR", "costs_currency_format" => "%n %u" },
-               partial: "settings/costs",
-               menu_item: :costs_setting
-             } do
+    register "costs", author_url: "https://www.openproject.org", bundled: true, settings: { menu_item: :costs_settings } do
       project_module :costs do
         permission :view_time_entries,
                    {},
@@ -121,16 +114,66 @@ module Costs
 
       # Menu extensions
       menu :admin_menu,
+           :admin_costs,
+           { controller: "/admin/costs_settings", action: :show },
+           if: Proc.new { User.current.admin? },
+           caption: :project_module_costs,
+           after: :enterprise,
+           icon: "op-cost-reports"
+
+      menu :admin_menu,
+           :costs_settings,
+           { controller: "/admin/costs_settings", action: :show },
+           if: Proc.new { User.current.admin? },
+           caption: :label_defaults,
+           parent: :admin_costs
+
+      menu :admin_menu,
            :cost_types,
-           { controller: "/cost_types", action: "index" },
+           { controller: "/admin/cost_types", action: :index },
            if: ->(*) { User.current.admin? },
            parent: :admin_costs,
            caption: :label_cost_type_plural
+
+      menu :admin_menu,
+           :time_entry_activities,
+           { controller: "/admin/settings/time_entry_activities", action: :index },
+           if: ->(*) { User.current.admin? },
+           parent: :admin_costs,
+           caption: :enumeration_activities
+
+      menu :global_menu,
+           :my_time_tracking,
+           { controller: "/my/time_tracking", action: "index", date: "today" },
+           after: :my_page,
+           caption: :label_my_time_tracking,
+           if: ->(*) do
+             User.current.allowed_in_any_project?(:log_own_time) || User.current.allowed_in_any_project?(:log_time)
+           end,
+           icon: :stopwatch
+
+      menu :top_menu,
+           :my_time_tracking,
+           { controller: "/my/time_tracking", action: "index" },
+           after: :my_page,
+           context: :my,
+           caption: :label_my_time_tracking,
+           if: ->(*) do
+             User.current.allowed_in_any_project?(:log_own_time) || User.current.allowed_in_any_project?(:log_time)
+           end,
+           icon: :stopwatch
+    end
+
+    initializer "costs.settings" do
+      ::Settings::Definition.add "costs_currency", default: "EUR", format: :string
+      ::Settings::Definition.add "costs_currency_format", default: "%n %u", format: :string
+      ::Settings::Definition.add "allow_tracking_start_and_end_times", default: false, format: :boolean
+      ::Settings::Definition.add "enforce_tracking_start_and_end_times", default: false, format: :boolean
     end
 
     activity_provider :time_entries, class_name: "Activities::TimeEntryActivityProvider", default: false
 
-    patches %i[Project User PermittedParams]
+    patches %i[Project User PermittedParams WorkPackage]
     patch_with_namespace :BasicData, :SettingSeeder
     patch_with_namespace :ActiveSupport, :NumberHelper, :NumberToCurrencyConverter
 
@@ -282,8 +325,10 @@ module Costs
     end
 
     config.to_prepare do
-      OpenProject::ProjectLatestActivity.register on: "TimeEntry"
+      # Load Enumeration descendants due to STI
+      TimeEntryActivity
 
+      OpenProject::ProjectLatestActivity.register on: "TimeEntry"
       Costs::Patches::MembersPatch.mixin!
 
       ##

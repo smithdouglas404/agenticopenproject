@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Role creation", :js, :with_cuprite do
+RSpec.describe "Role creation", :js do
   let!(:admin) { create(:admin) }
   let!(:existing_role) { create(:project_role) }
   let!(:existing_workflow) { create(:workflow_with_default_status, role: existing_role, type:) }
@@ -44,8 +46,8 @@ RSpec.describe "Role creation", :js, :with_cuprite do
   it "allows creating roles and handles errors" do
     visit roles_path
 
-    within ".toolbar-item" do
-      click_link "Role"
+    within ".SubHeader" do
+      page.find_test_selector("roles--create-button").click
     end
 
     fill_in "Name", with: existing_role.name
@@ -55,8 +57,7 @@ RSpec.describe "Role creation", :js, :with_cuprite do
 
     click_button "Create"
 
-    expect(page)
-      .to have_css(".errorExplanation", text: "Name has already been taken")
+    expect_flash(type: :error, message: "Name has already been taken")
 
     fill_in "Name", with: "New role name"
 
@@ -65,17 +66,15 @@ RSpec.describe "Role creation", :js, :with_cuprite do
 
     click_button "Create"
 
-    expect(page)
-      .to have_css(".errorExplanation",
-                   text: "Permissions need to also include 'View members' as 'Manage members' is selected.")
+    expect_flash(type: :error,
+                 message: "Permissions need to also include 'View members' as 'Manage members' is selected.")
 
     check "View members"
     select existing_role.name, from: "Copy workflow from"
 
     click_button "Create"
 
-    expect(page)
-      .to have_css(".-success", text: "Successful creation.")
+    expect_and_dismiss_flash(message: "Successful creation.")
 
     expect(page)
       .to have_current_path(roles_path)

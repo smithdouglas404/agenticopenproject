@@ -8,6 +8,7 @@ pl:
         row_count: "Liczba wierszy"
         column_count: "Liczba kolumn"
         widgets: "Widżety"
+        scope: "Zakres"
     errors:
       models:
         grids/grid:

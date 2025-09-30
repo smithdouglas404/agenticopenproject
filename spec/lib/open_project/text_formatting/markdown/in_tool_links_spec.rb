@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -267,7 +269,11 @@ RSpec.describe OpenProject::TextFormatting,
       let(:work_package_link) do
         link_to("##{work_package.id}",
                 work_package_path(work_package),
-                class: "issue work_package preview-trigger op-uc-link",
+                data: {
+                  hover_card_trigger_target: "trigger",
+                  hover_card_url: hover_card_work_package_path(work_package.id)
+                },
+                class: "issue work_package op-uc-link",
                 target: "_top")
       end
 
@@ -337,7 +343,11 @@ RSpec.describe OpenProject::TextFormatting,
         let(:work_package_link) do
           link_to("##{work_package.id}",
                   work_package_path(work_package),
-                  class: "issue work_package preview-trigger op-uc-link",
+                  data: {
+                    hover_card_trigger_target: "trigger",
+                    hover_card_url: hover_card_work_package_path(work_package.id)
+                  },
+                  class: "issue work_package op-uc-link",
                   target: "_top")
         end
 
@@ -656,7 +666,7 @@ RSpec.describe OpenProject::TextFormatting,
       let(:expected) do
         <<~EXPECTED
           <p class='op-uc-p'><a class="wiki-page op-uc-link" target="_top" href="/projects/#{project.identifier}/wiki/cookbook-documentation">CookBook documentation</a></p>
-          <p class='op-uc-p'><a class="issue work_package preview-trigger op-uc-link" target="_top" href="/work_packages/#{work_package.id}">##{work_package.id}</a></p>
+          <p class='op-uc-p'><a class="issue work_package op-uc-link" data-hover-card-url="/work_packages/#{work_package.id}/hover_card" data-hover-card-trigger-target="trigger" target="_top" href="/work_packages/#{work_package.id}">##{work_package.id}</a></p>
           <pre class="op-uc-code-block">
           [[CookBook documentation]]
 

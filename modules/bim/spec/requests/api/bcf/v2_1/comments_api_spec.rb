@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -297,7 +297,7 @@ RSpec.describe "BCF 2.1 comments resource", content_type: :json do
         end
 
         it_behaves_like "bcf api unprocessable response" do
-          let(:message) { "Bcf comment does not exist." }
+          let(:message) { "BCF comment does not exist." }
         end
       end
     end
@@ -345,7 +345,7 @@ RSpec.describe "BCF 2.1 comments resource", content_type: :json do
         end
 
         it_behaves_like "bcf api unprocessable response" do
-          let(:message) { "Bcf comment does not exist." }
+          let(:message) { "BCF comment does not exist." }
         end
       end
 
@@ -373,7 +373,7 @@ RSpec.describe "BCF 2.1 comments resource", content_type: :json do
         end
 
         it_behaves_like "bcf api unprocessable response" do
-          let(:message) { "Multiple field constraints have been violated. Viewpoint does not exist. Bcf comment does not exist." }
+          let(:message) { "Multiple field constraints have been violated. Viewpoint does not exist. BCF comment does not exist." }
         end
       end
     end
@@ -560,7 +560,7 @@ RSpec.describe "BCF 2.1 comments resource", content_type: :json do
       end
 
       it_behaves_like "bcf api unprocessable response" do
-        let(:message) { "Bcf comment does not exist." }
+        let(:message) { "BCF comment does not exist." }
       end
     end
 

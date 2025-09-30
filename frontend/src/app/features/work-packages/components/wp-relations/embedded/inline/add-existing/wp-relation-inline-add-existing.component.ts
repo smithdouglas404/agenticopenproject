@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,25 +26,35 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import {
-  Component,
-  Inject,
-} from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
-import { WorkPackageInlineCreateService } from 'core-app/features/work-packages/components/wp-inline-create/wp-inline-create.service';
-import { WorkPackageInlineCreateComponent } from 'core-app/features/work-packages/components/wp-inline-create/wp-inline-create.component';
-import { WorkPackageRelationsService } from 'core-app/features/work-packages/components/wp-relations/wp-relations.service';
-import { WpRelationInlineCreateServiceInterface } from 'core-app/features/work-packages/components/wp-relations/embedded/wp-relation-inline-create.service.interface';
+import {
+  WorkPackageInlineCreateService,
+} from 'core-app/features/work-packages/components/wp-inline-create/wp-inline-create.service';
+import {
+  WorkPackageInlineCreateComponent,
+} from 'core-app/features/work-packages/components/wp-inline-create/wp-inline-create.component';
+import {
+  WorkPackageRelationsService,
+} from 'core-app/features/work-packages/components/wp-relations/wp-relations.service';
+import {
+  WpRelationInlineCreateServiceInterface,
+} from 'core-app/features/work-packages/components/wp-relations/embedded/wp-relation-inline-create.service.interface';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { UrlParamsHelperService } from 'core-app/features/work-packages/components/wp-query/url-params-helper';
 import { RelationResource } from 'core-app/features/hal/resources/relation-resource';
 import { HalEventsService } from 'core-app/features/hal/services/hal-events.service';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
-import { WorkPackageNotificationService } from 'core-app/features/work-packages/services/notifications/work-package-notification.service';
+import {
+  WorkPackageNotificationService,
+} from 'core-app/features/work-packages/services/notifications/work-package-notification.service';
 import { IsolatedQuerySpace } from 'core-app/features/work-packages/directives/query-space/isolated-query-space';
+import { IAPIFilter } from 'core-app/shared/components/autocompleter/op-autocompleter/typings';
+import { FilterOperator } from 'core-app/shared/helpers/api-v3/api-v3-filter-builder';
 
 @Component({
   templateUrl: './wp-relation-inline-add-existing.component.html',
+  standalone: false,
 })
 export class WpRelationInlineAddExistingComponent {
   public selectedWpId:string;
@@ -140,8 +150,8 @@ export class WpRelationInlineAddExistingComponent {
     filters.forEach((filter) => {
       iApiFilters.push({
         name: filter.id,
-        operator: filter.operator.id,
-        values: filter.values.map((f) => (typeof f === 'string' ? f : f.id)),
+        operator: filter.operator.id as FilterOperator,
+        values: filter.values.map((f) => (typeof f === 'string' ? f : f.id as string)),
       });
     });
 

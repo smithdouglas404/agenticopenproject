@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,27 +35,40 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
 
   subject(:generated) { representer.to_json }
 
+  let(:available_custom_fields) { [int_custom_field, version_custom_field] }
+  let(:all_available_custom_fields) { [int_custom_field, version_custom_field] }
   let(:project) do
     build_stubbed(:project,
                   :with_status,
                   parent: parent_project,
                   description: "some description").tap do |p|
-      allow(p).to receive_messages(available_custom_fields: [int_custom_field, version_custom_field],
+      allow(p).to receive_messages(available_custom_fields:,
+                                   all_available_custom_fields:,
                                    ancestors_from_root: ancestors)
 
-      allow(p)
-        .to receive(int_custom_field.attribute_getter)
-              .and_return(int_custom_value.value)
+      if available_custom_fields.include?(int_custom_field)
+        allow(p)
+          .to receive(int_custom_field.attribute_getter)
+                .and_return(int_custom_value.value)
+      end
 
-      allow(p)
-        .to receive(:custom_value_for)
-              .with(version_custom_field)
-              .and_return(version_custom_value)
+      if available_custom_fields.include?(version_custom_field)
+        allow(p)
+          .to receive(:custom_value_for)
+                .with(version_custom_field)
+                .and_return(version_custom_value)
+      end
+
+      if available_custom_fields.include?(calculated_value_custom_field)
+        allow(p)
+          .to receive(calculated_value_custom_field.attribute_getter)
+                .and_return(calculated_custom_value.value)
+      end
     end
   end
 
-  let(:int_custom_field) { build_stubbed(:integer_project_custom_field, visible: false) }
-  let(:version_custom_field) { build_stubbed(:version_project_custom_field, visible: true) }
+  let(:int_custom_field) { build_stubbed(:integer_project_custom_field, admin_only: true) }
+  let(:version_custom_field) { build_stubbed(:version_project_custom_field, admin_only: false) }
   let(:int_custom_value) do
     CustomValue.new(custom_field: int_custom_field,
                     value: "1234",
@@ -68,6 +83,12 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
         .to receive(:typed_value)
               .and_return(version)
     end
+  end
+  let(:calculated_value_custom_field) do
+    build_stubbed(:calculated_value_project_custom_field, :skip_validations, admin_only: false, formula: "21 + 3")
+  end
+  let(:calculated_custom_value) do
+    build(:custom_value, custom_field: calculated_value_custom_field, value: "24.0")
   end
   let(:permissions) { %i[view_project add_work_packages view_members] }
   let(:parent_project) do
@@ -163,7 +184,7 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
 
       context "if the user is no admin and the field is visible" do
         before do
-          int_custom_field.visible = true
+          int_custom_field.admin_only = false
         end
 
         it "has a property for the int custom field" do
@@ -176,11 +197,49 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
         let(:permissions) { [] }
 
         before do
-          int_custom_field.visible = true
+          int_custom_field.admin_only = false
         end
 
         it "has no property for the int custom field" do
           expect(subject).not_to have_json_path("customField#{int_custom_field.id}")
+        end
+      end
+    end
+
+    describe "calculated value custom field" do
+      let(:available_custom_fields) { [calculated_value_custom_field] }
+      let(:all_available_custom_fields) { [calculated_value_custom_field] }
+      let(:cf_path) { "customField#{calculated_value_custom_field.id}" }
+
+      it "has a property for the calculated value custom field" do
+        expect(subject).to be_json_eql(calculated_custom_value.value.to_json)
+                             .at_path(cf_path)
+      end
+
+      context "when there is a calculation error" do
+        let(:cf_path) { "customField#{calculated_value_custom_field.id}Errors" }
+
+        let!(:calculated_value_error) do
+          build_stubbed(:calculated_value_error, custom_field: calculated_value_custom_field, customized: project)
+        end
+
+        before do
+          value_errors_double = double
+          allow(value_errors_double).to receive(:where)
+                                          .with(customized_id: project.id, customized_type: "Project")
+                                          .and_return([calculated_value_error])
+
+          allow(calculated_value_custom_field).to receive(:calculated_value_errors)
+                                                    .and_return(value_errors_double)
+        end
+
+        it "has a property for calculation errors" do
+          expect(subject).to be_json_eql([
+            {
+              code: "ERROR_MATHEMATICAL",
+              message: I18n.t("calculated_values.errors.mathematical")
+            }
+          ].to_json).at_path(cf_path)
         end
       end
     end
@@ -511,7 +570,7 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
             .to receive(:admin?)
                   .and_return(true)
 
-          version_custom_field.visible = false
+          version_custom_field.admin_only = true
         end
 
         it "links custom fields" do
@@ -522,7 +581,7 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
 
       context "if the user is no admin and the field is invisible" do
         before do
-          version_custom_field.visible = false
+          version_custom_field.admin_only = true
         end
 
         it "does not link the custom field" do

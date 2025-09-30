@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,7 +31,9 @@
 require "spec_helper"
 
 RSpec.describe "filter work packages", :js do
-  shared_let(:user) { create(:admin, preferences: { time_zone: "Etc/UTC" }) }
+  include Components::Autocompleter::NgSelectAutocompleteHelpers
+
+  shared_let(:user) { create(:admin, preferences: { time_zone: "Europe/Kyiv" }) }
   shared_let(:watcher) { create(:user) }
   shared_let(:role) { create(:existing_project_role, permissions: [:view_work_packages]) }
   shared_let(:project) { create(:project, members: { watcher => role }) }
@@ -68,53 +72,110 @@ RSpec.describe "filter work packages", :js do
     end
   end
 
-  context "by version in project" do
-    let(:version) { create(:version, project:) }
-    let(:work_package_with_version) do
+  context "when filtering version" do
+    shared_let(:other_project) { create(:project) }
+    shared_let(:inaccessible_version) { create(:version, name: "Inaccessible Version", project: other_project) }
+    shared_let(:shared_version) { create(:version, name: "Shared Version", project: other_project, sharing: "system") }
+
+    let!(:version) { create(:version, project:) }
+    let!(:work_package_with_version) do
       create(:work_package, project:, subject: "With version", version:)
     end
-    let(:work_package_without_version) { create(:work_package, subject: "Without version", project:) }
+    let!(:work_package_without_version) { create(:work_package, subject: "Without version", project:) }
 
     before do
-      work_package_with_version
-      work_package_without_version
-
       wp_table.visit!
+
+      filters.open
+      # Expect filters to be grouped by project name
+      filters.add_filter("Version")
     end
 
-    it "allows filtering, saving, retrieving and altering the saved filter" do
-      filters.open
+    context "in a project" do
+      let(:wp_table) { Pages::WorkPackagesTable.new(project) }
 
-      filters.add_filter_by("Version", "is (OR)", version.name)
+      it "allows filtering, saving, retrieving and altering the saved filter" do
+        expect_ng_option(
+          page.find_by_id("values-version"),
+          version,
+          grouping: project.name,
+          results_selector: "body"
+        )
 
-      loading_indicator_saveguard
-      wp_table.expect_work_package_listed work_package_with_version
-      wp_table.ensure_work_package_not_listed! work_package_without_version
+        expect_ng_option(
+          page.find_by_id("values-version"),
+          shared_version,
+          grouping: other_project.name,
+          results_selector: "body"
+        )
 
-      wp_table.save_as("Some query name")
+        expect_no_ng_option(
+          page.find_by_id("values-version"),
+          inaccessible_version,
+          results_selector: "body"
+        )
 
-      filters.remove_filter "version"
+        filters.remove_filter "version"
 
-      loading_indicator_saveguard
-      wp_table.expect_work_package_listed work_package_with_version, work_package_without_version
+        filters.add_filter_by("Version", "is (OR)", version.name)
 
-      last_query = Query.last
+        loading_indicator_saveguard
+        wp_table.expect_work_package_listed work_package_with_version
+        wp_table.ensure_work_package_not_listed! work_package_without_version
 
-      wp_table.visit_query(last_query)
+        wp_table.save_as("Some query name")
 
-      loading_indicator_saveguard
-      wp_table.expect_work_package_listed work_package_with_version
-      wp_table.ensure_work_package_not_listed! work_package_without_version
+        filters.remove_filter "version"
 
-      filters.open
+        loading_indicator_saveguard
+        wp_table.expect_work_package_listed work_package_with_version, work_package_without_version
 
-      filters.expect_filter_by("Version", "is (OR)", version.name)
+        last_query = Query.last
 
-      filters.set_operator "Version", "is not"
+        wp_table.visit_query(last_query)
 
-      loading_indicator_saveguard
-      wp_table.expect_work_package_listed work_package_without_version
-      wp_table.ensure_work_package_not_listed! work_package_with_version
+        loading_indicator_saveguard
+        wp_table.expect_work_package_listed work_package_with_version
+        wp_table.ensure_work_package_not_listed! work_package_without_version
+
+        filters.open
+
+        filters.expect_filter_by("Version", "is (OR)", version.name)
+
+        filters.set_operator "Version", "is not"
+
+        loading_indicator_saveguard
+        wp_table.expect_work_package_listed work_package_without_version
+        wp_table.ensure_work_package_not_listed! work_package_with_version
+      end
+    end
+
+    context "in the global page" do
+      shared_let(:user) { create(:user, preferences: { time_zone: "Etc/UTC" }) }
+      shared_let(:project) { create(:project, members: { user => role }) }
+      let(:wp_table) { Pages::WorkPackagesTable.new }
+
+      it "allows filtering, saving, retrieving and altering the saved filter" do
+        expect_ng_option(
+          page.find_by_id("values-version"),
+          version,
+          grouping: project.name,
+          results_selector: "body"
+        )
+
+        expect_ng_option(
+          page.find_by_id("values-version"),
+          shared_version,
+          grouping: "Project N/A",
+          results_selector: "body"
+        )
+
+        expect_no_ng_option(
+          page.find_by_id("values-version"),
+          inaccessible_version,
+          results_selector: "body"
+        )
+      end
     end
   end
 
@@ -550,8 +611,9 @@ RSpec.describe "filter work packages", :js do
       wp_table.ensure_work_package_not_listed! wp_updated_3d_ago, wp_updated_5d_ago
     end
 
-    it "filters between date by updated_at", :with_cuprite do
+    it "filters between date by updated_at" do
       wp_table.visit!
+      wait_for_network_idle
       loading_indicator_saveguard
       wp_table.expect_work_package_listed wp_updated_today, wp_updated_3d_ago, wp_updated_5d_ago
 
@@ -562,7 +624,7 @@ RSpec.describe "filter work packages", :js do
                             [4.days.ago.to_date.iso8601, 2.days.ago.to_date.iso8601],
                             "updatedAt"
 
-      wait_for_reload
+      wait_for_network_idle
       loading_indicator_saveguard
 
       wp_table.expect_work_package_listed wp_updated_3d_ago
@@ -572,7 +634,7 @@ RSpec.describe "filter work packages", :js do
 
       filters.remove_filter "updatedAt"
 
-      wait_for_reload
+      wait_for_network_idle
       loading_indicator_saveguard
       wp_table.expect_work_package_listed wp_updated_today, wp_updated_3d_ago, wp_updated_5d_ago
 
@@ -581,13 +643,14 @@ RSpec.describe "filter work packages", :js do
 
       # The frontend sends the date as a datetime string in utc where both bounds have the local offset deduced
       # e.g. ["2023-05-31T22:00:00Z", "2023-06-03T21:59:59Z"]
-      Time.use_zone(ActiveSupport::TimeZone[Time.now.getlocal.zone]) do
+      Time.use_zone(user.time_zone) do
         expect(date_filter.values)
-          .to eq [(Time.now.getlocal - 4.days).beginning_of_day.utc.iso8601, (Time.now.getlocal - 2.days).end_of_day.utc.iso8601]
+          .to eq [4.days.ago.beginning_of_day.utc.iso8601, 2.days.ago.end_of_day.utc.iso8601]
       end
 
       wp_table.visit_query(last_query)
 
+      wait_for_network_idle
       loading_indicator_saveguard
       wp_table.expect_work_package_listed wp_updated_3d_ago
       wp_table.ensure_work_package_not_listed! wp_updated_today, wp_updated_5d_ago
@@ -634,8 +697,10 @@ RSpec.describe "filter work packages", :js do
 
       last_query = Query.where(name: "Some query name").first
       date_filter = last_query.filters.last
-      expect(date_filter.values)
-        .to eq [3.days.ago.utc.beginning_of_day.iso8601]
+      Time.use_zone(user.time_zone) do
+        expect(date_filter.values)
+          .to eq [3.days.ago.beginning_of_day.utc.iso8601]
+      end
 
       wp_table.visit_query(last_query)
 
@@ -685,8 +750,10 @@ RSpec.describe "filter work packages", :js do
 
       last_query = Query.where(name: "Some query name").first
       date_filter = last_query.filters.last
-      expect(date_filter.values)
-        .to eq ["", 4.days.ago.utc.end_of_day.iso8601]
+      Time.use_zone(user.time_zone) do
+        expect(date_filter.values)
+          .to eq ["", 4.days.ago.end_of_day.utc.iso8601]
+      end
 
       wp_table.visit_query(last_query)
 

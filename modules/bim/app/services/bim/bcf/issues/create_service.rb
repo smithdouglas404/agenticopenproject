@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,11 +31,12 @@ module Bim::Bcf
     class CreateService < ::BaseServices::Create
       private
 
-      def before_perform(params, service_result)
+      def before_perform(service_result)
         wp_call = get_work_package params
         return wp_call if wp_call.failure?
 
-        super(issue_params(work_package: wp_call.result, params:), service_result)
+        self.params = issue_params(work_package: wp_call.result, params:)
+        super
       end
 
       def issue_params(work_package:, params:)

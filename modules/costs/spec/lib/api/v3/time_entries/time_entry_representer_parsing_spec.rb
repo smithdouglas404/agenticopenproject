@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,7 +34,7 @@ RSpec.describe API::V3::TimeEntries::TimeEntryRepresenter, "parsing" do
   let(:time_entry) do
     build_stubbed(:time_entry,
                   comments: "blubs",
-                  spent_on: Date.today - 3.days,
+                  spent_on: Date.current - 3.days,
                   created_at: DateTime.now - 6.hours,
                   updated_at: DateTime.now - 3.hours,
                   activity:,
@@ -43,8 +43,9 @@ RSpec.describe API::V3::TimeEntries::TimeEntryRepresenter, "parsing" do
   end
   let(:project) { build_stubbed(:project) }
   let(:project2) { build_stubbed(:project) }
-  let(:work_package) { time_entry.work_package }
-  let(:work_package2) { build_stubbed(:work_package) }
+  let(:work_package) { time_entry.entity }
+  let(:work_package2) { build_stubbed(:work_package, project: project2) }
+  let(:meeting) { build_stubbed(:meeting, project: project2) }
   let(:activity) { build_stubbed(:time_entry_activity) }
   let(:activity2) { build_stubbed(:time_entry_activity) }
   let(:user) { build_stubbed(:user) }
@@ -59,6 +60,10 @@ RSpec.describe API::V3::TimeEntries::TimeEntryRepresenter, "parsing" do
     build_stubbed(:time_entry_custom_field)
   end
 
+  let(:entity_link) do
+    api_v3_paths.work_package(work_package2.id)
+  end
+
   let(:hash) do
     {
       "_links" => {
@@ -68,9 +73,8 @@ RSpec.describe API::V3::TimeEntries::TimeEntryRepresenter, "parsing" do
         "activity" => {
           "href" => api_v3_paths.time_entries_activity(activity2.id)
         },
-        "workPackage" => {
-          "href" => api_v3_paths.work_package(work_package2.id)
-
+        "entity" => {
+          "href" => entity_link
         },
         user_custom_field.attribute_name(:camel_case) => {
           "href" => api_v3_paths.user(user2.id)
@@ -81,6 +85,7 @@ RSpec.describe API::V3::TimeEntries::TimeEntryRepresenter, "parsing" do
         "raw" => "some comment"
       },
       "spentOn" => "2017-07-28",
+      "startTime" => "2017-07-28T12:30:00Z",
       text_custom_field.attribute_name(:camel_case) => {
         "raw" => "some text"
       }
@@ -110,11 +115,11 @@ RSpec.describe API::V3::TimeEntries::TimeEntryRepresenter, "parsing" do
       end
     end
 
-    context "workPackage" do
+    context "entity" do
       it "updates the work_package" do
         time_entry = representer.from_hash(hash)
-        expect(time_entry.work_package_id)
-          .to eql(work_package2.id)
+        expect(time_entry.entity_id).to eql(work_package2.id)
+        expect(time_entry.entity_type).to eql("WorkPackage")
       end
     end
 
@@ -126,10 +131,24 @@ RSpec.describe API::V3::TimeEntries::TimeEntryRepresenter, "parsing" do
           .to eql(user2.id.to_s)
       end
     end
+
+    context "assigning a meeting as entity" do
+      let(:entity_link) do
+        api_v3_paths.meeting(meeting.id)
+      end
+
+      context "entity" do
+        it "updates the meeting" do
+          time_entry = representer.from_hash(hash)
+          expect(time_entry.entity_id).to eql(meeting.id)
+          expect(time_entry.entity_type).to eql("Meeting")
+        end
+      end
+    end
   end
 
   describe "properties" do
-    context "spentOn" do
+    describe "spentOn" do
       it "updates spent_on" do
         time_entry = representer.from_hash(hash)
         expect(time_entry.spent_on)
@@ -137,7 +156,62 @@ RSpec.describe API::V3::TimeEntries::TimeEntryRepresenter, "parsing" do
       end
     end
 
-    context "hours" do
+    describe "startTime" do
+      context "when not tracking start and end time" do
+        before do
+          allow(TimeEntry).to receive_messages(
+            can_track_start_and_end_time?: false,
+            must_track_start_and_end_time?: false
+          )
+        end
+
+        it "does not set start_time" do
+          time_entry = representer.from_hash(hash)
+          expect(time_entry.start_time).to be_nil
+        end
+      end
+
+      context "when tracking start and end time" do
+        before do
+          allow(TimeEntry).to receive_messages(
+            can_track_start_and_end_time?: true,
+            must_track_start_and_end_time?: false
+          )
+        end
+
+        context "when spent_on != start_time date" do
+          before do
+            hash["startTime"] = "1980-12-22T12:00:00Z"
+          end
+
+          it "raises an error" do
+            expect do
+              representer.from_hash(hash)
+            end.to raise_error(API::Errors::Validation)
+          end
+        end
+
+        it "sets start_time" do
+          user.pref[:time_zone] = "Asia/Tokyo"
+
+          time_entry = representer.from_hash(hash)
+
+          # timezone on the TimeEntry would be set to the user's TimeZone via the SetAttribute service, so we need to
+          # manually set it here
+          time_entry.time_zone = "Asia/Tokyo"
+
+          # We are sending in 12:30:00 UTC as the start time, in Tokyo time (for 2017-07-28) that equals
+          # 21:30:00 in Japan Standard Time (JST), so the time should be set to 21:30
+
+          expect(time_entry.start_time).to eq((21 * 60) + 30) # 21:30
+
+          expect(time_entry.start_timestamp).to eq(DateTime.parse("2017-07-28T12:30:00Z"))
+          expect(time_entry.end_timestamp).to eq(DateTime.parse("2017-07-28T17:30:00Z"))
+        end
+      end
+    end
+
+    describe "hours" do
       it "updates hours" do
         time_entry = representer.from_hash(hash)
         expect(time_entry.hours)
@@ -159,7 +233,7 @@ RSpec.describe API::V3::TimeEntries::TimeEntryRepresenter, "parsing" do
       end
     end
 
-    context "comment" do
+    describe "comment" do
       it "updates comment" do
         time_entry = representer.from_hash(hash)
         expect(time_entry.comments)
@@ -167,7 +241,7 @@ RSpec.describe API::V3::TimeEntries::TimeEntryRepresenter, "parsing" do
       end
     end
 
-    context "property custom field" do
+    describe "property custom field" do
       it "updates the custom value" do
         time_entry = representer.from_hash(hash)
 

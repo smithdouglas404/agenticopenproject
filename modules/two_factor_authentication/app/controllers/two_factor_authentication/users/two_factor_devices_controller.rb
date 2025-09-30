@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ::TwoFactorAuthentication
   module Users
     class TwoFactorDevicesController < ::TwoFactorAuthentication::BaseController
@@ -22,7 +24,7 @@ module ::TwoFactorAuthentication
 
       ##
       # Register the device and let the user confirm
-      def register
+      def register # rubocop:disable Metrics/AbcSize
         @device_type = params[:key].to_sym
         @device = new_device_type! @device_type
 
@@ -34,7 +36,7 @@ module ::TwoFactorAuthentication
           redirect_to index_path
         else
           Rails.logger.info "Admin ##{current_user.id} failed to register a new device #{@device_type} for #{@user.id}."
-          render "two_factor_authentication/two_factor_devices/new"
+          render "two_factor_authentication/two_factor_devices/new", status: :unprocessable_entity
         end
       end
 
@@ -61,7 +63,7 @@ module ::TwoFactorAuthentication
       end
 
       ##
-      # Destroy the given device if its not the default
+      # Destroy the given device if it's not the default
       def destroy
         if @device.default && strategy_manager.enforced?
           render_400 message: t("two_factor_authentication.devices.is_default_cannot_delete")
@@ -105,8 +107,6 @@ module ::TwoFactorAuthentication
 
       def find_user
         @user = User.find(params[:id])
-      rescue ActiveRecord::RecordNotFound
-        render_404
       end
 
       def target_user

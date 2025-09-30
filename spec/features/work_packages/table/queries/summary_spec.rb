@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -44,8 +46,8 @@ RSpec.describe "Work package query summary item", :js do
   end
 
   it "allows users to visit the summary page" do
-    find(".op-sidemenu--item-action", text: "Summary", wait: 10).click
-    expect(page).to have_css("h2", text: "Summary")
+    find(".op-submenu--item-action", text: "Summary", wait: 10).click
+    expect(page).to have_test_selector("summary-page-header-title", text: "Summary")
     expect(page).to have_css("td", text: work_package.type.name)
   end
 end

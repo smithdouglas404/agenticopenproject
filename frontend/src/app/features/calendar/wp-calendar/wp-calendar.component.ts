@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -45,7 +45,7 @@ import {
 } from '@fullcalendar/core';
 import { FullCalendarComponent } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import * as moment from 'moment';
+import moment from 'moment';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
@@ -90,6 +90,7 @@ import { ApiV3FilterBuilder } from 'core-app/shared/helpers/api-v3/api-v3-filter
 import allLocales from '@fullcalendar/core/locales-all';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { MeetingResource } from 'core-app/features/hal/resources/meeting-resource';
+import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 
 @Component({
   templateUrl: './wp-calendar.template.html',
@@ -101,6 +102,7 @@ import { MeetingResource } from 'core-app/features/hal/resources/meeting-resourc
     OpWorkPackagesCalendarService,
     OpCalendarService,
   ],
+  standalone: false,
 })
 export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implements OnInit {
   @ViewChild(FullCalendarComponent) ucCalendar:FullCalendarComponent;
@@ -146,6 +148,7 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
     readonly dayService:DayResourceService,
     readonly apiV3Service:ApiV3Service,
     readonly pathHelper:PathHelperService,
+    readonly timezoneService:TimezoneService,
   ) {
     super();
   }
@@ -217,19 +220,19 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
       .filtered(filters, { pageSize: '-1' })
       .get()
       .subscribe((meetings) => {
-        const events = meetings.elements.map((meeting:MeetingResource) => {
+        const events:EventInput[] = meetings.elements.map((meeting:MeetingResource) => {
           const sameProject = this.currentProject.id === meeting.project.id;
           const title:string = sameProject ? meeting.title : `${meeting.project.name}: ${meeting.title}`;
           return {
             title,
-            start: Date.parse(meeting.startTime),
-            end: Date.parse(meeting.endTime),
+            start: this.timezoneService.parseDatetime(meeting.startTime as string).format(),
+            end: this.timezoneService.parseDatetime(meeting.endTime as string).format(),
             editable: false,
             durationEditable: false,
             allDay: false,
             className: 'fc-event-clickable op-wp-calendar--meeting-resource',
             meeting,
-          };
+          } as EventInput;
         });
 
         successCallback(events);
@@ -398,11 +401,15 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
       const startDate = this.workPackagesCalendar.eventDate(workPackage, 'start');
       const endDate = this.workPackagesCalendar.eventDate(workPackage, 'due');
 
-      const exclusiveEnd = moment(endDate).add(1, 'days').format('YYYY-MM-DD');
+      const exclusiveEnd = endDate && moment(endDate).add(1, 'days').format('YYYY-MM-DD');
+      // An event is visible on the calendar only if it has a start date.
+      // That's why the end date is used as event start date if the work package
+      // does not have a proper start date.
+      const visibleStart = startDate || endDate;
 
       return {
         title: workPackage.subject,
-        start: startDate,
+        start: visibleStart,
         editable: this.workPackagesCalendar.dateEditable(workPackage),
         durationEditable: this.workPackagesCalendar.eventDurationEditable(workPackage),
         end: exclusiveEnd,

@@ -26,6 +26,7 @@ export type IOpOptionListValue<T> = T|null;
     useExisting: forwardRef(() => OpOptionListComponent),
     multi: true,
   }],
+  standalone: false,
 })
 export class OpOptionListComponent<T> implements ControlValueAccessor {
   @HostBinding('class.op-option-list') className = true;

@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -23,7 +23,7 @@ ru:
   plugin_openproject_reporting:
     name: "Отчёт OpenProject"
     description: "Этот плагин позволяет создавать пользовательские отчеты о стоимости с фильтрацией и группировкой, созданной плагином OpenProject Time и затратами."
-  button_save_as: "Сохранить отчет как..."
+  button_save_report_as: "Сохранить отчет как..."
   comments: "Комментарий"
   cost_reports_title: "Время и затраты"
   label_cost_report: "Отчет по расходам"
@@ -45,9 +45,11 @@ ru:
   label_greater: ">"
   label_is_not_project_with_subprojects: "нет (включая подпроекты)"
   label_is_project_with_subprojects: "есть (включая подпроекты)"
+  label_is_work_package_with_descendants: "является (включая потомков)"
+  label_is_not_work_package_with_descendants: "не является (включая потомков)"
   label_work_package_attributes: "Атрибуты рабочего пакета"
   label_less: "<"
-  label_logged_by_reporting: "Вы вошли"
+  label_logged_by_reporting: "Учтено"
   label_money: "Денежная стоимость"
   label_month_reporting: "Месяц (Потрачено)"
   label_new_report: "Новый отчет о затратах"
@@ -86,8 +88,18 @@ ru:
   validation_failure_date: "не является допустимой датой"
   validation_failure_integer: "не является допустимым целым числом"
   export:
+    timesheet:
+      title: "Ваши табели учета рабочего времени, экспортированные в PDF"
+      button: "Экспорт табеля учета рабочего времени в PDF"
+      timesheet: "Табель учета рабочего времени"
+      time: "Время"
+      sums_hours: Сумма
+      overview_per_user_total: "Обзор: Общее количество часов на пользователя"
+      overview_per_user_day: "Обзор: Количество часов на пользователя в день"
     cost_reports:
       title: "Экспорт ваших отчетов о затратах в XLS"
+      start_time: "Время начала"
+      end_time: "Время окончания"
   reporting:
     group_by:
       selected_columns: "Выбранные столбцы"

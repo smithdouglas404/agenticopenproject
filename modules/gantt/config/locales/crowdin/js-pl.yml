@@ -1,6 +1,6 @@
 pl:
   js:
-    queries:
-      all_open: 'Wszystkie otwarte'
-      timeline: 'Oś czasu'
-      milestones: 'Kamienie milowe'
+    work_packages:
+      label_gantt_chart_plural: "Wykresy Gantta"
+      default_queries:
+        milestones: 'Kamienie milowe'

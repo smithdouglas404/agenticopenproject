@@ -10,14 +10,16 @@ keywords: integration, apps, OneDrive, SharePoint, user
 
 You can use **OneDrive/SharePoint** as an integrated file storage in OpenProject.
 
-> **Note**: OneDrive/SharePoint integration is an Enterprise add-on and can only be used with [Enterprise cloud](../../../enterprise-guide/enterprise-cloud-guide/) or [Enterprise on-premises](../../../enterprise-guide/enterprise-on-premises-guide/). An upgrade from the free Community edition is easy and helps support OpenProject.
+> [!NOTE]
+> OneDrive/SharePoint integration is an Enterprise add-on and can only be used with [Enterprise cloud](../../../enterprise-guide/enterprise-cloud-guide/) or [Enterprise on-premises](../../../enterprise-guide/enterprise-on-premises-guide/). An upgrade from the free Community edition is easy and helps support OpenProject.
 
 This integration makes it possible for you to:
 
 - Link files and folders stored in OneDrive/SharePoint with work packages in OpenProject
 - View, open and download files and folders linked to a work package via the **Files** tab
 
-> **Important note**: To be able to use OneDrive/SharePoint as a file storage in your project, the administrator of your instance should first have completed the [OneDrive/SharePoint integration setup](../../../system-admin-guide/integrations/one-drive). Then a project administrator can activate the integrated storage in the [File storages](../../projects/project-settings/files/) for a project.
+> [!IMPORTANT]
+> To be able to use OneDrive/SharePoint as a file storage in your project, the administrator of your instance should first have completed the [OneDrive/SharePoint integration setup](../../../system-admin-guide/integrations/one-drive). Then a project administrator can activate the integrated storage in the [File storages](../../projects/project-settings/files/) for a project.
 
 | Topic                                                        | Description                                                  |
 | ------------------------------------------------------------ | :----------------------------------------------------------- |
@@ -47,12 +49,13 @@ In addition to listing files directly attached to a work package, the **Files** 
 
 To link a SharePoint file to the current work package, you can either:
 
-- select a local file, which  will be uploaded to OneDrive/SharePoint storage and linked to this work package
+- select a local file, which will be uploaded to OneDrive/SharePoint storage and linked to this work package
 - select an existing file in OneDrive/SharePoint to link to
 
 ![Link existing files to OneDrive/SharePoint from an OpenProject work package](openproject_onedrive_link_existing_files_link.png)
 
-> **Info**: The default location that opens in the file picker is the file root of the configured OneDrive/SharePoint drive.
+> [!NOTE]
+> The default location that opens in the file picker is the file root of the configured OneDrive/SharePoint drive.
 
 ![Select a SharePoint file or folder to link to an OpenProject work package](openproject_onedrive_link_files.png)
 
@@ -70,7 +73,8 @@ Alternatively, you can also simply drag a file or folder from your computer to t
 
 Once you have selected or dropped the files you would like to upload, you will need to select the location on OneDrive/SharePoint to which they should be stored.
 
-> **Info**: The default location that opens in the file picker is the file root of the configured OneDrive/SharePoint drive.
+> [!NOTE]
+> The default location that opens in the file picker is the file root of the configured OneDrive/SharePoint drive.
 
 ![Selection a Sharepoint location to upload a file from OpenProject](openproject_onedrive_select_location.png)
 
@@ -78,7 +82,10 @@ You can click on folders you see to navigate to them. Helpful breadcrumbs show y
 
 To navigate one level up or to go back to the root, simply click on the relevant parent in the breadcrumbs.
 
-> **Info**: If you have navigated particularly deep (over 4 levels), intermediate levels might be collapsed to save space, but you’ll always be able to navigate back to the immediate parent or the root to go backwards.
+> [!TIP]
+> If you have navigated particularly deep (over 4 levels), intermediate levels might be collapsed to save space, but you’ll always be able to navigate back to the immediate parent or the root to go backwards.
+
+You can also directly create a new folder within your Sharepoint folder structure at this point by using the **New folder** button.
 
 To save the files you uploaded to the currently open folder, click on the **Choose location** button.
 

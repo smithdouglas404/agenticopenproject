@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -34,25 +34,24 @@ import {
   ElementRef,
   ViewChild,
 } from '@angular/core';
-import {
-  CdkPortalOutlet,
-  ComponentPortal,
-} from '@angular/cdk/portal';
+import { CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
 import { combineLatest } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged, filter } from 'rxjs/operators';
 
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { OpModalComponent } from 'core-app/shared/components/modal/modal.component';
 import { ModalData, OpModalService } from 'core-app/shared/components/modal/modal.service';
+import { PortalOutletTarget } from 'core-app/shared/components/modal/portal-outlet-target.enum';
+import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 
-export const opModalOverlaySelector = 'op-modal-overlay';
 
 @Component({
-  selector: opModalOverlaySelector,
+  selector: 'opce-modal-overlay',
   templateUrl: './modal-overlay.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
-export class OpModalOverlayComponent {
+export class OpModalOverlayComponent extends UntilDestroyedMixin {
   public notFullscreen = false;
 
   mobileTopPosition = false;
@@ -78,14 +77,17 @@ export class OpModalOverlayComponent {
     readonly modalService:OpModalService,
     readonly I18n:I18nService,
     readonly cdRef:ChangeDetectorRef,
-  ) {}
+  ) {
+    super();
+  }
 
   setupListener():void {
     combineLatest([
       this.activeModalInstance$,
       // multiple 'closing' events in a row are squashed
-      this.activeModalData$.pipe(distinctUntilChanged()),
+      this.activeModalData$.pipe(distinctUntilChanged(), filter(this.isDefaultTarget.bind(this))),
     ])
+      .pipe(this.untilDestroyed())
       .subscribe(([instance, data]) => {
         if (instance === null && data === null) {
           // do nothing
@@ -101,6 +103,12 @@ export class OpModalOverlayComponent {
           this.createAndAttachPortalInstance(data);
         }
       });
+  }
+
+  protected isDefaultTarget(modalData:ModalData|null):boolean {
+    if (modalData === null) return true;
+
+    return modalData.target === PortalOutletTarget.Default;
   }
 
   public close($event:MouseEvent, includeChildClicks = true):void {

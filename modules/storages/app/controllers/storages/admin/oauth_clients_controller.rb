@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,6 +29,8 @@
 #++
 
 class Storages::Admin::OAuthClientsController < ApplicationController
+  include OpTurbo::ComponentStream
+
   # See https://guides.rubyonrails.org/layouts_and_rendering.html for reference on layout
   layout "admin"
 
@@ -45,38 +47,31 @@ class Storages::Admin::OAuthClientsController < ApplicationController
 
   # Show the admin page to create a new OAuthClient object.
   def new
-    @oauth_client = ::OAuthClients::SetAttributesService
+    oauth_client = ::OAuthClients::SetAttributesService
                       .new(user: User.current,
                            model: OAuthClient.new,
                            contract_class: EmptyContract)
                       .call
                       .result
 
-    respond_to do |format|
-      format.turbo_stream
-    end
+    update_via_turbo_stream(component: Storages::Admin::Forms::OAuthClientFormComponent.new(@storage, oauth_client:))
+    respond_with_turbo_streams
   end
 
-  # Actually create a OAuthClient object.
-  # Use service pattern to create a new OAuthClient
-  # Called by: Global app/config/routes.rb to serve Web page
   def create
     call_oauth_clients_create_service
 
     service_result.on_failure do
-      respond_to do |format|
-        format.turbo_stream { render :new }
-      end
+      update_via_turbo_stream(component: Storages::Admin::Forms::OAuthClientFormComponent.new(
+        @storage,
+        oauth_client: @oauth_client,
+        in_wizard: in_wizard?
+      ))
+      respond_with_turbo_streams
     end
 
     service_result.on_success do
-      if @storage.provider_type_nextcloud?
-        prepare_storage_for_automatic_management_form
-      end
-
-      respond_to do |format|
-        format.turbo_stream
-      end
+      respond_for_success
     end
   end
 
@@ -84,29 +79,16 @@ class Storages::Admin::OAuthClientsController < ApplicationController
     call_oauth_clients_create_service
 
     service_result.on_failure do
-      respond_to do |format|
-        format.turbo_stream { render :new }
-      end
+      update_via_turbo_stream(component: Storages::Admin::Forms::OAuthClientFormComponent.new(
+        @storage,
+        oauth_client: @oauth_client
+      ))
+      respond_with_turbo_streams
     end
 
     service_result.on_success do
-      respond_to do |format|
-        format.turbo_stream
-      end
+      respond_for_success
     end
-  end
-
-  # Used by: admin layout
-  # Breadcrumbs is something like OpenProject > Admin > Storages.
-  # This returns the name of the last part (Storages admin page)
-  def default_breadcrumb
-    ActionController::Base.helpers.link_to(t(:project_module_storages), admin_settings_storages_path)
-  end
-
-  # See: default_breadcrumb above
-  # Defines whether to show breadcrumbs on the page or not.
-  def show_local_breadcrumb
-    true
   end
 
   def show_redirect_uri
@@ -116,9 +98,9 @@ class Storages::Admin::OAuthClientsController < ApplicationController
   end
 
   def finish_setup
-    flash[:primer_banner] = { message: I18n.t(:"storages.notice_successful_storage_connection"), scheme: :success }
+    flash[:op_primer_flash] = { message: I18n.t(:"storages.successful_storage_connection"), scheme: :success }
 
-    redirect_to admin_settings_storages_path
+    redirect_to edit_admin_settings_storage_path(@storage)
   end
 
   private
@@ -152,5 +134,18 @@ class Storages::Admin::OAuthClientsController < ApplicationController
 
   def find_storage
     @storage = ::Storages::Storage.find(params[:storage_id])
+  end
+
+  def respond_for_success
+    if in_wizard?
+      redirect_to(new_admin_settings_storage_path(continue_wizard: @storage.id), status: :see_other)
+    else
+      update_via_turbo_stream(component: Storages::Admin::OAuthClientInfoComponent.new(@storage))
+      respond_with_turbo_streams
+    end
+  end
+
+  def in_wizard?
+    params[:continue_wizard].present?
   end
 end

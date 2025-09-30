@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -57,7 +59,7 @@ module Principals::Scopes
           "concat_ws(' ', users.firstname, users.lastname)"
         when :firstname
           "users.firstname"
-        when :lastname_firstname, :lastname_coma_firstname, :lastname_n_firstname
+        when :lastname_firstname, :lastname_comma_firstname, :lastname_n_firstname
           "concat_ws(' ', users.lastname, users.firstname)"
         when :username
           "users.login"

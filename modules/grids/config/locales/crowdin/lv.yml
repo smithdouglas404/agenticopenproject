@@ -8,6 +8,7 @@ lv:
         row_count: "Rindu skaits"
         column_count: "Kolonnu skaits"
         widgets: "Logrīki"
+        scope: "Scope"
     errors:
       models:
         grids/grid:

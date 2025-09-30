@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,15 +32,9 @@ module Storages
   module Errors
     class BaseError < StandardError; end
 
-    class ResolverStandardError < BaseError; end
-
     class PollingRequired < BaseError; end
 
-    class MissingContract < ResolverStandardError; end
-
-    class OperationNotSupported < ResolverStandardError; end
-
-    class MissingModel < ResolverStandardError; end
+    class ConfigurationError < BaseError; end
 
     class SubclassResponsibility < BaseError
       def message
@@ -48,29 +42,6 @@ module Storages
       end
     end
 
-    class IntegrationJobError < BaseError
-      attr_reader :errors, :storage
-
-      def initialize(storage:, errors:)
-        super(errors.log_message)
-        @storage = storage
-        @errors = errors
-      end
-    end
-
-    def self.registry_error_for(key)
-      case key.split('.')
-      in [storage, 'contracts', model]
-        MissingContract.new("No #{model} contract defined for provider: #{storage.camelize}")
-      in [storage, 'commands' | 'queries' => type, operation]
-        OperationNotSupported.new(
-          "#{type.singularize.capitalize} #{operation} not supported by provider: #{storage.camelize}"
-        )
-      in [storage, 'models', object]
-        MissingModel.new("Model #{object} not registered for provider: #{storage.camelize}")
-      else
-        ResolverStandardError.new("Cannot resolve key #{key}.")
-      end
-    end
+    class IntegrationJobError < BaseError; end
   end
 end

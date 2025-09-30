@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -50,6 +50,8 @@ import isPersistedResource from 'core-app/features/hal/helpers/is-persisted-reso
 import { UIRouterGlobals } from '@uirouter/core';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
 import { firstValueFrom } from 'rxjs';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 
 export interface DynamicComponentDefinition {
   component:ComponentType<any>;
@@ -73,6 +75,7 @@ export type ViewPartitionState = '-split'|'-left-only'|'-right-only';
     { provide: HalResourceNotificationService, useClass: WorkPackageNotificationService },
     QueryParamListenerService,
   ],
+  standalone: false,
 })
 export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase implements OnInit, OnDestroy {
   @InjectField() I18n!:I18nService;
@@ -80,6 +83,10 @@ export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase imp
   @InjectField() titleService:OpTitleService;
 
   @InjectField() queryParamListener:QueryParamListenerService;
+
+  @InjectField() pathHelperService:PathHelperService;
+
+  @InjectField() currentProjectService:CurrentProjectService;
 
   @InjectField() opModalService:OpModalService;
 
@@ -173,6 +180,16 @@ export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase imp
         this.updateTitle(query);
         this.currentQuery = query;
       });
+  }
+
+  breadcrumbItems() {
+    throw new Error('Not implemented');
+  }
+
+  currentMenuSectionHeader() {
+    if (!this.currentQuery?.id) return this.I18n.t('js.label_default_queries');
+    if (this.currentQuery.starred) return this.I18n.t('js.label_starred_queries');
+    return this.currentQuery.public ? this.I18n.t('js.label_global_queries') : this.I18n.t('js.label_custom_queries');
   }
 
   /**

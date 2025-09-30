@@ -2,7 +2,7 @@
 
 # -- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,7 +31,8 @@
 
 require "spec_helper"
 
-RSpec.describe "Global menu item for boards", :js, :with_cuprite do
+RSpec.describe "Global menu item for boards", :js do
+  shared_let(:project) { create(:project) }
   let(:boards_label) { I18n.t("boards.label_boards") }
 
   before do

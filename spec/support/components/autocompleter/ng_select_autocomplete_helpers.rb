@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 module Components::Autocompleter
   module NgSelectAutocompleteHelpers
     def search_autocomplete(element, query:, results_selector: nil, wait_dropdown_open: true, wait_for_fetched_options: true)
       SeleniumHubWaiter.wait unless using_cuprite?
-      # Open the element
-      element.click
+      ng_click_autocompleter(element)
 
       # Wait for dropdown to open
       ng_find_dropdown(element, results_selector:) if wait_dropdown_open
@@ -14,7 +15,9 @@ module Components::Autocompleter
 
       # Insert the text to find
       within(element) do
-        ng_enter_query(element, query, wait_for_fetched_options:)
+        retry_block do
+          ng_enter_query(element, query, wait_for_fetched_options:)
+        end
       end
 
       # Wait for options to be refreshed after having entered some text.
@@ -29,14 +32,20 @@ module Components::Autocompleter
       dropdown_list
     end
 
+    def ng_click_autocompleter(target)
+      target.click
+    end
+
     def ng_find_dropdown(element, results_selector: nil)
       retry_block do
         if results_selector
           results_selector = "#{results_selector} .ng-dropdown-panel" if results_selector == "body"
-          page.find(results_selector)
+          within_window(current_window) do
+            page.find(results_selector, wait: 5)
+          end
         else
           within(element) do
-            page.find("ng-select .ng-dropdown-panel")
+            page.find("ng-select .ng-dropdown-panel", wait: 5)
           end
         end
       rescue StandardError => e
@@ -45,15 +54,40 @@ module Components::Autocompleter
       end
     end
 
-    def expect_ng_option(element, option, results_selector: nil, present: true)
+    def expect_ng_option(element, option, grouping: nil, results_selector: nil, present: true)
       within(ng_find_dropdown(element, results_selector:)) do
-        expect(page).to have_conditional_selector(present, ".ng-option", text: option)
+        if grouping && present
+          # Make sure the option is displayed under correct grouping title.
+          option_group = find(".ng-optgroup", text: grouping)
+          option = find(".ng-option.ng-option-child", text: option, visible: :visible)
+
+          expected_group = begin
+            option.find(:xpath,
+                        "preceding-sibling::*[contains(@class, 'ng-optgroup')][1]",
+                        wait: false)
+          rescue Capybara::ElementNotFound
+            raise "Unable to find the '.ng-optgroup' grouping for option '#{option.text}'"
+          end
+
+          expect(option_group).to eq(expected_group), <<~MSG
+            Expected the option '#{option.text}' to be under the group '#{option_group.text}',
+            but it was under '#{expected_group.text}' instead.
+          MSG
+        else
+          expect(page).to have_conditional_selector(present, ".ng-option", text: option)
+        end
       end
     end
 
     def expect_no_ng_option(element, option, results_selector: nil)
       within(ng_find_dropdown(element, results_selector:)) do
         expect(page).to have_no_css(".ng-option", text: option)
+      end
+    end
+
+    def expect_ng_value_label(field_id, labels)
+      Array(labels).each do |text|
+        expect(page).to have_css("##{field_id} .ng-value-label", text:)
       end
     end
 
@@ -94,8 +128,10 @@ module Components::Autocompleter
 
     ##
     # clear the ng select field
-    def ng_select_clear(from_element)
-      from_element.find(".ng-clear-wrapper", visible: :all).click
+    def ng_select_clear(from_element, raise_on_missing: true)
+      if raise_on_missing || from_element.has_css?(".ng-clear-wrapper", visible: :all, wait: 1)
+        from_element.find(".ng-clear-wrapper", visible: :all).click
+      end
     end
 
     def select_autocomplete(element,
@@ -116,7 +152,41 @@ module Components::Autocompleter
       text = select_text.presence || query
 
       # click the element to select it
-      target_dropdown.find(".ng-option", text:, match: :first, wait: 15).click
+      target_dropdown.first(".ng-option", text:, wait: 15).click
+    end
+
+    def expect_current_autocompleter_value(element, value)
+      expect(element).to have_css(".ng-value .ng-value-label", text: value, wait: 10)
+    end
+
+    # Checks for the currently visible, expanded user auto completer to contain the provided options.
+    # A user always has a name, but their email is only visible in certain circumstances, so that value
+    # might be nil.
+    #
+    # The expected options are to be provided as an Array of Hashes, like this example with two users:
+    #
+    #   [
+    #     { name: "Bob", email: nil },
+    #     { name: "Alice", email: "alice@example.com" }
+    #   ]
+    #
+    # The order the elements are provided in is also expected.
+    def expect_visible_user_auto_completer_options(expected)
+      within(".ng-dropdown-panel [role='listbox']") do
+        expected.each_with_index do |option, index|
+          expect(page)
+            .to have_css(".ng-option[role='option']:nth-child(#{index + 1}) .op-user-autocompleter--name",
+                         text: option[:name])
+          if option[:email]
+            expect(page)
+              .to have_css(".ng-option[role='option']:nth-child(#{index + 1}) .op-autocompleter__option-principal-email",
+                           text: option[:email])
+          else
+            expect(page)
+              .to have_no_css(".ng-option[role='option']:nth-child(#{index + 1}) .op-autocompleter__option-principal-email")
+          end
+        end
+      end
     end
   end
 end

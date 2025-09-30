@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -43,7 +45,7 @@ class AdminController < ApplicationController
       condition = node.condition
 
       name === :admin_overview ||
-        (condition && !condition.call) ||
+        (condition && !condition.call(nil)) ||
         hidden_admin_menu_items.include?(name.to_s)
     end
 
@@ -85,21 +87,9 @@ class AdminController < ApplicationController
     @checklist += plaintext_extraction_checks
     @checklist += admin_information_hook_checks
     @checklist += image_conversion_checks
+    @checklist += jemalloc_active_checks
 
     @storage_information = OpenProject::Storage.mount_information
-  end
-
-  def default_breadcrumb
-    case params[:action]
-    when "plugins"
-      t(:label_plugins)
-    when "info"
-      t(:label_information)
-    end
-  end
-
-  def show_local_breadcrumb
-    true
   end
 
   private
@@ -125,6 +115,16 @@ class AdminController < ApplicationController
 
   def image_conversion_checks
     [[:"image_conversion.imagemagick", image_conversion_libs_available?]]
+  end
+
+  def jemalloc_active_checks
+    [[:"admin.jemalloc_allocator", jemalloc_libs_active?]]
+  end
+
+  def jemalloc_libs_active?
+    Open3.capture2e({ "MALLOC_CONF" => "true" }, "ruby", "-e", "exit").first.include?("jemalloc")
+  rescue StandardError
+    false
   end
 
   def image_conversion_libs_available?

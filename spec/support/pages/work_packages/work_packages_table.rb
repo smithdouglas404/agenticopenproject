@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,6 +34,7 @@ require_relative "concerns/work_package_by_button_creator"
 module Pages
   class WorkPackagesTable < Page
     include ::Pages::WorkPackages::Concerns::WorkPackageByButtonCreator
+    include ::Components::Autocompleter::NgSelectAutocompleteHelpers
 
     attr_reader :project
 
@@ -83,6 +86,16 @@ module Pages
           expect(page).to have_css(
             ".wp-row-#{work_package.id} td.#{column}", text: value.to_s, wait: 20
           )
+        end
+      end
+    end
+
+    # Expects a collection of groups and the count of their grouped items in the table.
+    # @param group_hash [Hash] Group names mapped to the count of their items, e.g. "first group" => 3
+    def expect_groups(group_hash)
+      within(table_container) do
+        group_hash.each do |group_name, count|
+          expect(page).to have_test_selector("op-group--value", text: "#{group_name} (#{count})")
         end
       end
     end
@@ -189,8 +202,8 @@ module Pages
     def expect_query_in_select_dropdown(name)
       page.find(".title-container").click
 
-      page.within("#viewSelect") do
-        expect(page).to have_css(".op-sidemenu--item-action", text: name)
+      page.within('[data-test-selector="op-submenu--body"]') do
+        expect(page).to have_test_selector("op-submenu--item-action", text: name)
       end
     end
 
@@ -238,7 +251,7 @@ module Pages
       loading_indicator_saveguard
       # The 'id' column should have enough space to be clicked
       click_target = row(work_package).find(".inline-edit--display-field.id")
-      page.driver.browser.action.double_click(click_target.native).perform
+      click_target.double_click
 
       FullWorkPackage.new(work_package, project)
     end
@@ -353,6 +366,15 @@ module Pages
       else
         row(work_package)
       end
+    end
+
+    def progress_popover(work_package)
+      Components::WorkPackages::ProgressPopover.new(container: work_package_container(work_package))
+    end
+
+    def expect_no_column_add_option(column_name)
+      completer = find(".wp-table--configuration-modal .op-draggable-autocomplete--input")
+      expect_no_ng_option(completer, column_name, results_selector: "body")
     end
 
     protected

@@ -8,6 +8,7 @@ nl:
         row_count: "Aantal rijen"
         column_count: "Aantal kolommen"
         widgets: "Widgets"
+        scope: "Scope"
     errors:
       models:
         grids/grid:

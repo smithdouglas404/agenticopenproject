@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,44 +26,43 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import {
-  ChangeDetectorRef, Component, ElementRef, OnInit,
-} from '@angular/core';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit } from '@angular/core';
 import { ResizeDelta } from 'core-app/shared/components/resizer/resizer.component';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { MainMenuToggleService } from 'core-app/core/main-menu/main-menu-toggle.service';
-
-export const mainMenuResizerSelector = 'main-menu-resizer';
+import {
+  debounceTime,
+  distinctUntilChanged,
+} from 'rxjs/operators';
 
 @Component({
-  selector: mainMenuResizerSelector,
+  selector: 'opce-main-menu-resizer',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <resizer class="main-menu--resizer"
-             [customHandler]="true"
-             [cursorClass]="'col-resize'"
-             (end)="resizeEnd()"
-             (start)="resizeStart()"
-             (move)="resizeMove($event)">
-      <div class="resizer-toggle-container">
-        <button
-          class="spot-link main-menu--navigation-toggler"
-          [attr.title]="toggleTitle"
-          [class.open]="toggleService.showNavigation"
-          (click)="toggleService.toggleNavigation($event)">
-          <op-icon icon-classes="icon-resizer-vertical-lines"></op-icon>
-        </button>
-      </div>
-    </resizer>
+    <op-resizer class="main-menu--resizer"
+                [customHandler]="true"
+                [cursorClass]="'col-resize'"
+                (resizeFinished)="resizeEnd()"
+                (resizeStarted)="resizeStart()"
+                (move)="resizeMove($event)">
+      <button
+        class="spot-link main-menu--navigation-toggler"
+        [attr.title]="toggleTitle"
+        [class.open]="isOpen"
+        (click)="toggleService.toggleNavigation($event)"
+      >
+        <span class="resize-handle"><svg op-resizer-vertical-lines-icon size="small"></svg></span>
+        <span class="collapse-menu"><svg chevron-left-icon size="small"></svg></span>
+        <span class="expand-menu"><svg chevron-right-icon size="small"></svg></span>
+      </button>
+    </op-resizer>
   `,
+  standalone: false,
 })
-
 export class MainMenuResizerComponent extends UntilDestroyedMixin implements OnInit {
   public toggleTitle:string;
 
-  private resizeEvent:string;
-
-  private localStorageKey:string;
+  private resizeEvent:string = 'main-menu-resize';
 
   private elementWidth:number;
 
@@ -71,25 +70,30 @@ export class MainMenuResizerComponent extends UntilDestroyedMixin implements OnI
 
   public moving = false;
 
-  constructor(readonly toggleService:MainMenuToggleService,
+  public isOpen:boolean;
+
+  constructor(
+    readonly toggleService:MainMenuToggleService,
     readonly cdRef:ChangeDetectorRef,
-    readonly elementRef:ElementRef) {
+    readonly elementRef:ElementRef,
+  ) {
     super();
   }
 
   ngOnInit() {
-    this.toggleService.titleData$
+    this.isOpen = this.toggleService.showNavigation;
+
+    // Listen on sidebar changes and toggle resizer classes, if necessary
+    this.toggleService.changeData$
       .pipe(
         distinctUntilChanged(),
         this.untilDestroyed(),
+        debounceTime(50),
       )
-      .subscribe((setToggleTitle) => {
-        this.toggleTitle = setToggleTitle;
+      .subscribe(() => {
+        this.isOpen = this.toggleService.showNavigation;
         this.cdRef.detectChanges();
       });
-
-    this.resizeEvent = 'main-menu-resize';
-    this.localStorageKey = 'openProject-mainMenuWidth';
   }
 
   public resizeStart() {

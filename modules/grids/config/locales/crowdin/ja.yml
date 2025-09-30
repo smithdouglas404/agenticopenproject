@@ -8,6 +8,7 @@ ja:
         row_count: "行数"
         column_count: "列数"
         widgets: "ウィジェット"
+        scope: "スコープ"
     errors:
       models:
         grids/grid:

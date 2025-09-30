@@ -186,8 +186,8 @@ This colour indicates that the requested user action was successful. It should b
 <div class="colors">
 
 <%
-tokens = JSON.parse File.read(Rails.root.join('frontend/src/app/spot/styles/tokens/dist/tokens.json'))
-tokens.select { |k, v| k.start_with?('spot-color-') }.each do |name, value|
+tokens = JSON.parse Rails.root.join("frontend/src/app/spot/styles/tokens/dist/tokens.json").read
+tokens.select { |k, _v| k.start_with?("spot-color-") }.each do |name, value|
  %>
 
   <div class="colors--color">

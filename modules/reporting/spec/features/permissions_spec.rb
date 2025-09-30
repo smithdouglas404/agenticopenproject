@@ -21,14 +21,14 @@ RSpec.describe "Cost report calculations", :js do
   let!(:time_entry_user) do
     create(:time_entry,
            user: admin,
-           work_package:,
+           entity: work_package,
            project:,
            hours: 10)
   end
   let!(:time_entry_admin) do
     create(:time_entry,
            user:,
-           work_package:,
+           entity: work_package,
            project:,
            hours: 5)
   end
@@ -39,8 +39,8 @@ RSpec.describe "Cost report calculations", :js do
   end
   let!(:cost_entry_user) do
     create(:cost_entry,
-           work_package:,
-           project:,
+           entity: work_package,
+           project: project,
            units: 3.00,
            cost_type:,
            user:)

@@ -2,7 +2,7 @@
 
 # -- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,7 +33,8 @@ require "spec_helper"
 require_relative "shared_context"
 
 RSpec.describe "Team planner overview",
-               :with_cuprite,
+               :js,
+               :selenium,
                with_ee: %i[team_planner_view] do
   # The order the Projects are created in is important. By naming `project` alphanumerically
   # after `other_project`, we can ensure that subsequent specs that assert sorting is

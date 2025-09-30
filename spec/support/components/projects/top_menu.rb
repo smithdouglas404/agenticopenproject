@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,7 +39,7 @@ module Components
 
       def toggle
         page.find_by_id("projects-menu").click
-        wait_for_network_idle(timeout: 10) if using_cuprite?
+        wait_for_network_idle(timeout: 10)
       end
 
       # Ensures modal registers as #open? before proceeding
@@ -54,6 +56,11 @@ module Components
         within(".op-project-list-modal--header") do
           find('[data-test-selector="spot-toggle--option"]', text: mode).click
         end
+      end
+
+      def expect_current_mode(mode)
+        expect(page).to have_css('[data-test-selector="spot-toggle--option"][data-qa-active-toggle="true"]',
+                                 text: mode)
       end
 
       def expect_current_project(name)
@@ -118,6 +125,22 @@ module Components
           expect(page)
             .to have_css("#{hierarchy_selector} #{autocompleter_item_title_selector}", text: item_name)
         end
+      end
+
+      def expect_project_create_button
+        expect(page).to have_css(".spot-action-bar--action.-primary", text: "Project")
+      end
+
+      def expect_no_project_create_button
+        expect(page).to have_no_css(".spot-action-bar--action.-primary", text: "Project")
+      end
+
+      def expect_project_list_button
+        expect(page).to have_css(".spot-action-bar--action", text: "Project lists")
+      end
+
+      def expect_no_project_list_button
+        expect(page).to have_no_css(".spot-action-bar--action.-primary", text: "Project lists")
       end
 
       def autocompleter_item_selector

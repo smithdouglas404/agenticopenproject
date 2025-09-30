@@ -2,7 +2,7 @@
 
 # -- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,6 +33,7 @@ module WorkPackages
     # rubocop:disable OpenProject/AddPreviewForViewComponent
     class BaseModalComponent < ApplicationComponent
       # rubocop:enable OpenProject/AddPreviewForViewComponent
+      include OpTurbo::Streamable
 
       FIELD_MAP = {
         "estimatedTime" => :estimated_hours,
@@ -40,7 +41,10 @@ module WorkPackages
         "remainingTime" => :remaining_hours,
         "work_package[remaining_hours]" => :remaining_hours,
         "work_package[status_id]" => :status_id,
-        "statusId" => :status_id
+        "statusId" => :status_id,
+        "work_package[done_ratio]" => :done_ratio,
+        "percentageDone" => :done_ratio,
+        "" => :no_field
       }.freeze
 
       include ApplicationHelper
@@ -48,9 +52,14 @@ module WorkPackages
       include OpPrimer::ComponentHelpers
       include OpenProject::StaticRouting::UrlHelpers
 
-      attr_reader :work_package, :mode, :focused_field, :touched_field_map
+      attr_reader :work_package,
+                  :mode,
+                  :focused_field,
+                  :touched_field_map
 
-      def initialize(work_package, focused_field: nil, touched_field_map: {})
+      def initialize(work_package,
+                     focused_field: nil,
+                     touched_field_map: {})
         super()
 
         @work_package = work_package
@@ -70,7 +79,7 @@ module WorkPackages
       end
 
       def learn_more_href
-        OpenProject::Static::Links.links[:progress_tracking_docs][:href]
+        OpenProject::Static::Links.url_for(:progress_tracking_docs)
       end
 
       private
@@ -82,11 +91,7 @@ module WorkPackages
         # an element by default.
         return nil if field.nil?
 
-        field = FIELD_MAP[field.to_s]
-
-        return field if field.present?
-
-        raise ArgumentError, "The selected field is not one of #{FIELD_MAP.keys.join(', ')}."
+        FIELD_MAP[field.to_s].presence || :no_field
       end
     end
   end

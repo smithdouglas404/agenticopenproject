@@ -1,14 +1,12 @@
-import {
-  Component, forwardRef, Input, OnInit, ViewChild,
-} from '@angular/core';
+import { Component, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
-import { FormlyTemplateOptions } from '@ngx-formly/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { OpCkeditorComponent } from 'core-app/shared/components/editor/components/ckeditor/op-ckeditor.component';
 import {
   ICKEditorContext,
   ICKEditorInstance,
 } from 'core-app/shared/components/editor/components/ckeditor/ckeditor.types';
+import { IOPFormlyTemplateOptions } from 'core-app/shared/components/dynamic-forms/typings';
 
 @Component({
   selector: 'op-formattable-control',
@@ -21,9 +19,10 @@ import {
       multi: true,
     },
   ],
+  standalone: false,
 })
 export class FormattableControlComponent implements ControlValueAccessor, OnInit {
-  @Input() templateOptions:FormlyTemplateOptions;
+  @Input() templateOptions:IOPFormlyTemplateOptions;
 
   @ViewChild(OpCkeditorComponent, { static: true }) editor:OpCkeditorComponent;
 
@@ -44,12 +43,13 @@ export class FormattableControlComponent implements ControlValueAccessor, OnInit
 
   public get ckEditorContext():ICKEditorContext {
     return {
-      type: this.templateOptions.editorType,
+      type: this.templateOptions.editorType!,
+      field: this.templateOptions.name,
       // This is a very project resource specific hack to allow macros on description and statusExplanation but
       // disable it for custom fields. As the formly based approach is currently limited to projects, and that is to be removed,
       // such a "pragmatic" approach should be ok.
-      macros: (this.templateOptions.property as string).startsWith('customField') ? 'none' : 'resource',
-      options: { rtl: this.templateOptions?.rtl },
+      macros: this.templateOptions.property?.startsWith('customField') ? 'none' : 'resource',
+      options: { rtl: this.templateOptions.rtl },
     };
   }
 
@@ -61,8 +61,8 @@ export class FormattableControlComponent implements ControlValueAccessor, OnInit
   ngOnInit():void {
     this.text = {
       attachmentLabel: this.I18n.t('js.label_formattable_attachment_hint'),
-      save: this.I18n.t('js.inplace.button_save', { attribute: this.templateOptions?.name }),
-      cancel: this.I18n.t('js.inplace.button_cancel', { attribute: this.templateOptions?.name }),
+      save: this.I18n.t('js.inplace.button_save', { attribute: this.templateOptions.name }),
+      cancel: this.I18n.t('js.inplace.button_cancel', { attribute: this.templateOptions.name }),
     };
   }
 

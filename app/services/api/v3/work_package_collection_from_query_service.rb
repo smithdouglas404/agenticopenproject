@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -122,17 +124,19 @@ module API
       end
 
       def format_column_keys(hash_by_column)
-        hash_by_column.map do |column, value|
-          match = /cf_(\d+)/.match(column.name.to_s)
+        hash_by_column.transform_keys do |column|
+          column_name(column)
+        end
+      end
 
-          column_name = if match
-                          "custom_field_#{match[1]}"
-                        else
-                          column.name.to_s
-                        end
+      def column_name(column)
+        match = /cf_(\d+)/.match(column.name.to_s)
 
-          [column_name, value]
-        end.to_h
+        if match
+          "custom_field_#{match[1]}"
+        else
+          column.name.to_s
+        end
       end
 
       def collection_representer(work_packages, params:, project:, groups:, sums:)

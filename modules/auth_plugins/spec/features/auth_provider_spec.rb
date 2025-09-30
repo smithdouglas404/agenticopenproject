@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -45,7 +45,7 @@ RSpec.describe "rendering the login buttons", :js do
     it "renders correctly" do
       visit project_path(public_project)
 
-      page.find("a", text: "Sign in").click
+      click_link_or_button "Sign in"
       item = page.find("a.auth-provider", text: "mock_auth")
       expect(item[:href]).to end_with "/auth/mock_auth"
     end

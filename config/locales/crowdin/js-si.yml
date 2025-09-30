@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -66,7 +66,7 @@ si:
     button_back_to_list_view: "ලැයිස්තු දැක්ම වෙත ආපසු"
     button_cancel: "අවලංගු කරන්න"
     button_close: "වසන්න"
-    button_change_project: "ව්යාපෘතිය වෙනස් කරන්න"
+    button_change_project: "Move to another project"
     button_check_all: "සියල්ල පරීක්ෂා කරන්න"
     button_configure-form: "පෝරමය සකසන්න"
     button_confirm: "තහවුරු කරන්න"
@@ -74,7 +74,7 @@ si:
     button_copy: "පිටපත් කරන්න"
     button_copy_to_clipboard: "පසුරු පුවරුවට පිටපත් කරන්න"
     button_copy_link_to_clipboard: "Copy link to clipboard"
-    button_copy_to_other_project: "Copy to other project"
+    button_copy_to_other_project: "Duplicate in another project"
     button_custom-fields: "අභිරුචි ක්ෂේත්ර"
     button_delete: "මකන්න"
     button_delete_watcher: "මුරකරු මකන්න"
@@ -88,6 +88,8 @@ si:
     button_list_view: "ලැයිස්තුව දැක්ම"
     button_show_view: "පූර්ණ තිර දර්ශනය"
     button_log_time: "ලොග් වේලාව"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "තවත්"
     button_open_details: "විවෘත විස්තර දැක්ම"
     button_close_details: "වසන්න විස්තර දැක්ම"
@@ -103,8 +105,8 @@ si:
     button_settings: "සැකසුම්"
     button_uncheck_all: "සියල්ල ඉවත් කරන්න"
     button_update: "යාවත්කාලීන"
-    button_export-pdf: "PDF බාගන්න"
     button_export-atom: "බාගත කරන්න පරමාණුව"
+    button_generate_pdf: "Generate PDF"
     button_create: "සාදන්න"
     card:
       add_new: "නව කාඩ් එකතු කරන්න"
@@ -138,6 +140,8 @@ si:
     description_select_work_package: "වැඩ පැකේජය තෝරන්න #%{id}"
     description_subwork_package: "වැඩ පැකේජය දරුවා #%{id}"
     editor:
+      revisions: "Show local modifications"
+      no_revisions: "No local modifications found"
       preview: "පෙරදසුනෙහි මාදිලිය ටොගල් කරන්න"
       source_code: "සලකුණු කිරීමේ ප්රභව ප්රකාරය ටොගල් කරන්න"
       error_saving_failed: "පහත දැක්වෙන දෝෂය සමඟ ලේඛනය සුරැකීම අසාර්ථක විය: %{error}"
@@ -150,6 +154,7 @@ si:
         attribute_reference:
           macro_help_tooltip: "This text segment is being dynamically rendered by a macro."
           not_found: "Requested resource could not be found"
+          nested_macro: "This macro is recursively referencing %{model} %{id}."
           invalid_attribute: "The selected attribute '%{name}' does not exist."
         child_pages:
           button: "ළමා පිටු වලට සබැඳි"
@@ -199,67 +204,6 @@ si:
         edit_query: "විමසුම සංස්කරණය කරන්න"
         new_group: "නව කණ්ඩායම"
         reset_to_defaults: "පැහැර හැරීම් නැවත සකසන්න"
-      enterprise:
-        text_reprieve_days_left: "%{days} days until end of grace period"
-        text_expired: "expired"
-        trial:
-          confirmation: "Confirmation of email address"
-          confirmation_info: >
-            We sent you an email on %{date} to %{email}. Please check your inbox and click the confirmation link provided to start your 14 days trial.
-          form:
-            general_consent: >
-              I agree with the <a target="_blank" href="%{link_terms}">terms of service</a> and the <a target="_blank" href="%{link_privacy}">privacy policy</a>.
-            invalid_email: "Invalid email address"
-            label_company: "Company"
-            label_first_name: "මුල් නම"
-            label_last_name: "අවසාන නම"
-            label_domain: "Domain"
-            label_subscriber: "ග්රාහකයා"
-            label_maximum_users: "උපරිම ක්රියාකාරී පරිශීලකයින්"
-            label_starts_at: "Starts at"
-            label_expires_at: "කල් ඉකුත්"
-            receive_newsletter: I want to receive the OpenProject <a target="_blank" href="%{link}">newsletter</a>.
-            taken_domain: There can only be one active trial per domain.
-            domain_mismatch: The current request host name does not match the configured host name. Please double check your system settings.
-            taken_email: Each user can only create one trial.
-          email_not_received: "You did not receive an email? You can resend the email with the link on the right."
-          try_another_email: "Or try it with another email address."
-          next_steps: "Next steps"
-          resend_link: "Resend"
-          resend_success: "Email has been resent. Please check your emails and click the confirmation link provided."
-          resend_warning: "Could not resend email."
-          session_timeout: "Your session timed out. Please try to reload the page or resend email."
-          status_label: "Status:"
-          status_confirmed: "confirmed"
-          status_waiting: "email sent - waiting for confirmation"
-          test_ee: "Test the Enterprise edition 14 days for free"
-          quick_overview: "Get a quick overview of project management and team collaboration with OpenProject Enterprise edition."
-        upsale:
-          become_hero: "වීරයෙක් වෙන්න!"
-          enterprise_info_html: "%{feature_title} is an Enterprise <span class='spot-icon spot-icon_inline spot-icon_enterprise-addons'></span> add-on."
-          upgrade_info: "Please upgrade to a paid plan to activate and start using it in your team."
-          benefits:
-            description: "What are the benefits of the Enterprise on-premises edition?"
-            high_security: "Security features"
-            high_security_text: "Single sign on (SAML, OpenID Connect, CAS), LDAP groups."
-            installation: "Installation support"
-            installation_text: "Experienced software engineers guide you through the complete installation and setup process in your own infrastructure."
-            premium_features: "Enterprise add-ons"
-            premium_features_text: "Agile boards, custom theme and logo, graphs, intelligent workflows with custom actions, full text search for work package attachments and multi-select custom fields."
-            professional_support: "වෘත්තීය සහාය"
-            professional_support_text: "Get reliable, high-touch support from senior support engineers with expert knowledge about running OpenProject in business-critical environments."
-          button_start_trial: "Start free trial"
-          button_upgrade: "Upgrade now"
-          button_contact_us: "Contact us for a demo"
-          button_book_now: "Book now"
-          confidence: >
-            We deliver the confidence of a tested and supported enterprise-class project management software - with Open Source and an open mind.
-          link_quote: "Get a quote"
-          more_info: "වැඩි විස්තර"
-          text: >
-            The OpenProject Enterprise edition builds on top of the Community edition. It includes Enterprise add-ons and professional support mainly aimed at organizations with more than 10 users that manage business critical projects with OpenProject.
-          unlimited: "Unlimited"
-          you_contribute: "Developers need to pay their bills, too. By upgrading to the Enterprise edition, you will be supporting this open source community effort and contributing to its development, maintenance and continuous improvement."
       working_days:
         calendar:
           empty_state_header: "Non-working days"
@@ -270,10 +214,15 @@ si:
         change_button: "Save and reschedule"
         change_title: "Change working days"
         removed_title: "You will remove the following days from the non-working days list:"
-        change_description: "Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages in all projects in this instance."
+        change_description: "Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance."
         warning: >
-          The changes might take some time to take effect. You will be notified when all relevant work packages have been updated.
+          The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
           Are you sure you want to continue?
+      work_packages_settings:
+        warning_progress_calculation_mode_change_from_status_to_field_html: >-
+          Changing progress calculation mode from status-based to work-based will make the <i>% Complete</i> field freely editable. If you optionally enter values for <i>Work</i> or <i>Remaining work</i>, they will also be linked to <i>% Complete</i>. Changing <i>Remaining work</i> can then update <i>% Complete</i>.
+        warning_progress_calculation_mode_change_from_field_to_status_html: >-
+          Changing progress calculation mode from work-based to status-based will result in all existing <i>% Complete</i> values to be lost and replaced with values associated with each status. Existing values for <i>Remaining work</i> may also be recalculated to reflect this change. This action is not reversible.
     custom_actions:
       date:
         specific: "මත"
@@ -330,18 +279,6 @@ si:
         years: "අවුරුදු"
         description: >
           ස්වයංසූම් ලබා ගත නොහැකි විට පෙන්විය යුතු ආරම්භක විශාලන මට්ටම තෝරන්න.
-      export:
-        title: "Gantt chart PDF options"
-        button_export: "Export"
-        column_widths:
-          narrow: "Narrow"
-          medium: "Medium"
-          wide: "Wide"
-          very_wide: "Very wide"
-        options:
-          date_zoom: "Date zoom"
-          paper_size: "Paper size"
-          column_widths: "Column widths"
     general_text_no: "නැත"
     general_text_yes: "ඔව්"
     general_text_No: "නැත"
@@ -353,17 +290,6 @@ si:
         format:
           date: "%{attribute} වලංගු දිනයක් නොවේ - YYY-MM-DD අපේක්ෂා කෙරේ."
         general: "දෝෂයක් සිදුවී ඇත."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "නව විශේෂාංග සහ නිෂ්පාදන යාවත්කාලීන කිරීම් ගැන කියවන්න."
-          learn_about: "නව විශේෂාංග ගැන වැඩි විස්තර දැනගන්න"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "14_1":
-            standard:
-              new_features_html: >
-                The release contains various new features and improvements: <br> <ul class="%{list_styling_class}"> <li>PDF export of Gantt view, e.g. for printing (Enterprise add-on)</li> <li>Favorite projects</li> <li>Sections in Meetings</li> <li>Showing meetings on the My page and project overview pages</li> <li>Possibility to hide attachments in the Files tab</li> <li>Custom fields of the type Link (URL)</li> </ul>
     ical_sharing_modal:
       title: "Subscribe to calendar"
       inital_setup_error_message: "An error occured while fetching data."
@@ -389,6 +315,7 @@ si:
     label_added_time_by: 'Added by <a href="%{authorLink}">%{author}</a> at %{age}'
     label_ago: "දින කිහිපයකට පෙර"
     label_all: "සියලු"
+    label_all_projects: "All projects"
     label_all_uppercase: "සියලු"
     label_all_work_packages: "සියලුම වැඩ පැකේජ"
     label_and: "සහ"
@@ -404,6 +331,7 @@ si:
     label_create: "සාදන්න"
     label_create_work_package: "නව වැඩ පැකේජයක් සාදන්න"
     label_created_by: "විසින් නිර්මාණය"
+    label_current: "current"
     label_date: "දිනය"
     label_date_with_format: "පහත දැක්වෙන ආකෘතිය භාවිතා කරමින් %{date_attribute} ඇතුල් කරන්න: %{format}"
     label_deactivate: "අක්රිය කරන්න"
@@ -435,7 +363,6 @@ si:
     label_filename: "ගොනුව"
     label_filesize: "ප්‍රමාණය"
     label_general: "පොදු"
-    label_global_roles: "Global roles"
     label_greater_or_equal: ">="
     label_group: "කණ්ඩායම"
     label_group_by: "කණ්ඩායම විසින්"
@@ -464,6 +391,7 @@ si:
     label_menu_collapse: "බිඳවැටීම"
     label_menu_expand: "පුළුල්"
     label_more_than_ago: "දින කිහිපයකට පෙර"
+    label_moderate_comment: "Moderate comment"
     label_next: "ඊළඟ"
     label_no_color: "වර්ණ නැත"
     label_no_data: "ප්රදර්ශනය කිරීමට දත්ත නොමැත"
@@ -497,7 +425,6 @@ si:
     label_repository_plural: "ගබඩාවලදී"
     label_save_as: "ලෙස සුරකින්න"
     label_search_columns: "Search a column"
-    label_select_project: "ව්යාපෘතියක් තෝරන්න"
     label_select_watcher: "මුරකරුවෙකු තෝරන්න..."
     label_selected_filter_list: "තෝරාගත් පෙරහන්"
     label_show_attributes: "සියලු ගුණාංග පෙන්වන්න"
@@ -508,7 +435,7 @@ si:
     label_sort_lower: "පහළට ගෙනයන්න"
     label_sorting: "තෝරා බේරා ගැනීමේ"
     label_spent_time: "වැය කළ කාලය"
-    label_star_query: "අනුග්රහය"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "සුරැකීමට ඔබන්න ඇතුල් කරන්න."
     label_public_query: "පොදු"
     label_sum: "මුදල"
@@ -567,7 +494,7 @@ si:
     label_version_plural: "අනුවාද"
     label_view_has_changed: "මෙම මතය නොගැලවූ වෙනස්කම් ඇත. ඒවා සුරැකීමට ක්ලික් කරන්න."
     help_texts:
-      show_modal: "ගුණාංග උපකාරක පෙළ ප්රවේශය පෙන්වන්න"
+      show_modal: "Show help text"
     onboarding:
       buttons:
         skip: "මගහරින්න"
@@ -578,7 +505,7 @@ si:
         members: "Invite new <b>members</b> to join your project."
         quick_add_button: "Click on the plus (+) icon in the header navigation to <b>create a new project</b> or to <b>invite coworkers</b>."
         sidebar_arrow: "Use the return arrow in the top left corner to return to the project’s <b>main menu</b>."
-        welcome: "වඩාත්ම ඉගෙන ගැනීමට විනාඩි තුනක් හඳුන්වාදීමේ චාරිකාවක් ගන්න <b>වැදගත් ලක්ෂණ</b>. <br> අවසානය දක්වා පියවර සම්පූර්ණ කිරීම අපි නිර්දේශ කරමු. ඔබට ඕනෑම වේලාවක සංචාරය නැවත ආරම්භ කළ හැකිය."
+        welcome: "Take a three-minute introduction tour to learn the most <b>important features</b>. <br> We recommend completing the steps until the end. You can restart the tour any time."
         wiki: "Within the <b>wiki</b> you can document and share knowledge together with your team."
         backlogs:
           overview: "Manage your work in the <b>backlogs</b> view."
@@ -610,33 +537,28 @@ si:
       title: "Notifications"
       no_unread: "නොකියවූ දැනුම්දීම් නැත"
       reasons:
-        mentioned: "mentioned"
-        watched: "watcher"
-        assigned: "assignee"
-        responsible: "accountable"
-        created: "created"
-        scheduled: "scheduled"
-        commented: "commented"
-        processed: "processed"
-        prioritized: "prioritized"
+        mentioned: "Mentioned"
+        watched: "මුරකරු"
+        assigned: "අස්ගිනී"
+        #The enum value is named 'responsible' in the database and that is what is transported through the API
+        #up to the frontend.
+        responsible: "වගවීම"
+        created: "Created"
+        scheduled: "නියමිත"
+        commented: "අදහස් දැක්වීය"
+        processed: "Processed"
+        prioritized: "Prioritized"
         dateAlert: "Date alert"
-        shared: "shared"
+        shared: "Shared"
+        reminder: "Reminder"
       date_alerts:
         milestone_date: "Milestone date"
         overdue: "Overdue"
-        overdue_since: "since %{difference_in_days}"
-        property_today: "is today"
-        property_is: "is in %{difference_in_days}"
-        property_was: "was %{difference_in_days} ago"
-        property_is_deleted: "is deleted"
-        upsale:
-          title: "Date alerts"
-          description: "With date alerts, you will be notified of upcoming start or finish dates so that you never miss or forget an important deadline."
-      facets:
-        unread: "Unread"
-        unread_title: "Show unread"
-        all: "සියලු"
-        all_title: "සියල්ල පෙන්වන්න"
+        overdue_since: "since %{difference_in_days}."
+        property_today: "is today."
+        property_is: "is in %{difference_in_days}."
+        property_was: "was %{difference_in_days} ago."
+        property_is_deleted: "is deleted."
       center:
         label_actor_and: "සහ"
         and_more_users:
@@ -647,25 +569,20 @@ si:
           with_current_filter: "There are no notifications in this view at the moment"
         mark_all_read: "Mark all as read"
         mark_as_read: "Mark as read"
-        text_update_date: "%{date} by"
+        mark_all_read_confirmation: "This will mark all notifications in this view as read. Are you sure you want to do this?"
+        text_update_date_by: "%{date} by"
         total_count_warning: "Showing the %{newest_count} most recent notifications. %{more_count} more are not displayed."
         empty_state:
           no_notification: "Looks like you are all caught up."
           no_notification_with_current_project_filter: "Looks like you are all caught up with the selected project."
           no_notification_with_current_filter: "Looks like you are all caught up for %{filter} filter."
+          no_notification_for_filter: "Looks like you are all caught up for this filter."
           no_selection: "Click on a notification to view all activity details."
         new_notifications:
           message: "There are new notifications."
           link_text: "Click here to load them."
-      menu:
-        accountable: "වගවීම"
-        by_project: "Unread by project"
-        by_reason: "Reason"
-        inbox: "Inbox"
-        mentioned: "Mentioned"
-        watched: "මුරකරු"
-        date_alert: "Date alert"
-        shared: "Shared"
+      reminders:
+        note: "Note: “%{note}”"
       settings:
         change_notification_settings: 'You can modify your <a target="_blank" href="%{url}">notification settings</a> to ensure you never miss an important update.'
         title: "Notification settings"
@@ -705,7 +622,6 @@ si:
           date_alerts:
             title: "Date alerts"
             description: "Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher)."
-            teaser_text: "With date alerts, you will be notified of upcoming start or finish dates so that you never miss or forget an important deadline."
           overdue: When overdue
         project_specific:
           title: "Project-specific notification settings"
@@ -718,9 +634,12 @@ si:
       title: "දිගටම කරගෙන යාමට ඔබගේ මුරපදය තහවුරු කරන්න"
     pagination:
       no_other_page: "ඔබ සිටින්නේ එකම පිටුවේ ය."
+      pages_skipped: "Pages skipped."
+      page_navigation: "Pagination navigation"
+      per_page_navigation: 'Items per page selection'
       pages:
-        next: "ඊළඟ පිටුවට ඉදිරියට යන්න"
-        previous: "පෙර පිටුවට ආපසු යන්න"
+        page_number: Page %{number}
+        show_per_page: Show %{number} per page
     placeholders:
       default: "-"
       subject: "මෙහි විෂය ඇතුලත් කරන්න"
@@ -728,18 +647,13 @@ si:
       description: "Description: Click to edit..."
       relation_description: "මෙම සම්බන්ධයෙන් විස්තර එකතු කිරීමට ක්ලික් කරන්න"
     project:
-      required_outside_context: >
-        කරුණාකර සියලු ගුණාංග බැලීමට වැඩ පැකේජය නිර්මාණය කිරීම සඳහා ව්යාපෘතියක් තෝරන්න. ඔබට තෝරා ගත හැක්කේ ඉහත ආකාරයේ සක්රිය කර ඇති ව්යාපෘති පමණි.
-      details_activity: "Project details activity"
-      context: "ව්යාපෘති සන්දර්භය"
-      click_to_switch_to_project: "Project: %{projectname}"
-      confirm_template_load: "Switching the template will reload the page and you will lose all input to this form. Continue?"
-      use_template: "Use template"
-      no_template_selected: "(None)"
-      copy:
-        copy_options: "Copy options"
       autocompleter:
         label: "ව්යාපෘති ස්වයංක්රීයව නිම කිරීම"
+      click_to_switch_to_project: "Project: %{projectname}"
+      context: "ව්යාපෘති සන්දර්භය"
+      not_available: "Project N/A"
+      required_outside_context: >
+        කරුණාකර සියලු ගුණාංග බැලීමට වැඩ පැකේජය නිර්මාණය කිරීම සඳහා ව්යාපෘතියක් තෝරන්න. ඔබට තෝරා ගත හැක්කේ ඉහත ආකාරයේ සක්රිය කර ඇති ව්යාපෘති පමණි.
     reminders:
       settings:
         daily:
@@ -754,6 +668,7 @@ si:
         immediate:
           title: "Send me an email reminder"
           mentioned: "Immediately when someone @mentions me"
+          personal_reminder: "Immediately when I receive a personal reminder"
         alerts:
           title: "Email alerts for other items (that are not work packages)"
           explanation: >
@@ -772,6 +687,8 @@ si:
           first_day: "First day"
           last_day: "Last day"
     text_are_you_sure: "ඔබට විශ්වාසද?"
+    text_are_you_sure_to_cancel: "You have unsaved changes on this page. Are you sure you want to discard them?"
+    breadcrumb: "Breadcrumb"
     text_data_lost: "All entered data will be lost."
     text_user_wrote: "%{value} ලිවීය:"
     types:
@@ -785,10 +702,6 @@ si:
         upgrade_to_ee_text: "Wow! If you need this add-on you are a super pro! Would you mind supporting us OpenSource developers by becoming an Enterprise edition client?"
         more_information: "වැඩි විස්තර"
         nevermind: "කිසි විටෙකත් මනස"
-      edit:
-        form_configuration: "ආකෘති වින්යාසය"
-        projects: "ව්‍යාපෘති"
-        settings: "සැකසුම්"
     time_entry:
       work_package_required: "පළමුව වැඩ පැකේජයක් තෝරා ගැනීම අවශ්ය වේ."
       title: "ලොග් වේලාව"
@@ -811,6 +724,7 @@ si:
       typeahead_placeholder: හැකි මුරකරුවන් සොයන්න
     relation_labels:
       parent: "මාපිය"
+      child: "Child"
       children: "දරුවන්"
       relates: "සම්බන්ධ කිරීම"
       duplicates: "අනුපිටපත්"
@@ -840,16 +754,16 @@ si:
       add_new_child: "නව දරුවෙකු නිර්මාණය කරන්න"
       create_new: "නව නිර්මාණය"
       add_existing: "පවතින එකතු කරන්න"
-      add_existing_child: "දැනට පවතින දරුවා එකතු කරන්න"
+      add_existing_child: "Add child"
       remove_child: "දරුවා ඉවත් කරන්න"
       add_new_relation: "නව සම්බන්ධතාවයක් සාදන්න"
       add_existing_relation: "පවතින සම්බන්ධතාවය එකතු කරන්න"
       update_description: "මෙම සම්බන්ධතාවය පිළිබඳ විස්තරය සකසන්න හෝ යාවත්කාලීන කරන්න"
       toggle_description: "සම්බන්ධතා විස්තරය ටොගල් කරන්න"
       update_relation: "සම්බන්ධතා වර්ගය වෙනස් කිරීමට ක්ලික් කරන්න"
-      add_follower: "අනුගාමිකයෙක් එකතු කරන්න"
       show_relations: "Show relations"
       add_predecessor: "පූර්වගාමියා එකතු කරන්න"
+      add_successor: "Add successor"
       remove: "සම්බන්ධතාවය ඉවත් කරන්න"
       save: "සම්බන්ධතාවය සුරකින්න"
       abort: "අවෙර්ට්"
@@ -859,6 +773,7 @@ si:
     autocompleter:
       placeholder: "සෙවීමට ටයිප් කරන්න"
       notFoundText: "No items found"
+      search: "සොයන්න"
       project:
         placeholder: "Select project"
     repositories:
@@ -866,8 +781,6 @@ si:
       select_branch: "ශාඛාව තෝරන්න"
     field_value_enter_prompt: "'%{field}' සඳහා වටිනාකමක් ඇතුළත් කරන්න"
     project_menu_details: "විස්තර"
-    scheduling:
-      manual: "Manual scheduling"
     sort:
       sorted_asc: "නැගී එන ආකාරයේ අයදුම්, "
       sorted_dsc: "බැස වර්ග අයදුම්, "
@@ -881,7 +794,7 @@ si:
     tl_toolbar:
       zooms: "විශාලන මට්ටම"
       outlines: "ධූරාවලිය මට්ටම"
-    upsale:
+    upsell:
       ee_only: "Enterprise edition add-on"
     wiki_formatting:
       strong: "ශක්තිමත්"
@@ -899,26 +812,22 @@ si:
       preformatted_text: "පෙර ආකෘතිකරණය කරන ලද පෙළ"
       wiki_link: "විකි පිටුවකට සබැඳිය"
       image: "පින්තූරය"
+    sharing:
+      share: "Share"
+      selected_count: "%{count} selected"
+      selection:
+        mixed: "Mixed"
     work_packages:
       bulk_actions:
-        move: "ව්යාපෘතියේ තොග වෙනසක්"
         edit: "තොග සංස්කරණය"
-        copy: "තොග පිටපතක්"
         delete: "තොග මකන්න"
+        duplicate: "Bulk duplicate"
+        move: "ව්යාපෘතියේ තොග වෙනසක්"
       button_clear: "පැහැදිලි"
       comment_added: "අදහස් දැක්වීම සාර්ථකව එකතු කරන ලදී."
       comment_send_failed: "දෝෂයක් සිදුවී ඇත. අදහස ඉදිරිපත් කළ නොහැකි විය."
       comment_updated: "අදහස් දැක්වීම සාර්ථකව යාවත්කාලීන කරන ලදී."
       confirm_edit_cancel: "ඔබට වැඩ පැකේජය සංස්කරණය කිරීම අවලංගු කිරීමට අවශ්ය බව ඔබට විශ්වාසද?"
-      datepicker_modal:
-        automatically_scheduled_parent: "Automatically scheduled. Dates are derived from relations."
-        manually_scheduled: "Manual scheduling enabled, all relations ignored."
-        start_date_limited_by_relations: "Available start and finish dates are limited by relations."
-        changing_dates_affects_follow_relations: "Changing these dates will affect dates of related work packages."
-        click_on_show_relations_to_open_gantt: 'Click on "%{button_name}" for GANTT overview.'
-        show_relations: "Show relations"
-        ignore_non_working_days:
-          title: "Working days only"
       description_filter: "පෙරහන්"
       description_enter_text: "පෙළ ඇතුලත් කරන්න"
       description_options_hide: "විකල්ප සඟවන්න"
@@ -957,8 +866,8 @@ si:
         header_no_type: "නව වැඩ පැකේජය (ටයිප් තවමත් සකසා නැත)"
         header_with_parent: "නව %{type} ( %{parent_type} #%{id}දරුවා)"
         button: "සාදන්න"
-      copy:
-        title: "වැඩ පැකේජය පිටපත් කරන්න"
+      duplicate:
+        title: "Duplicate work package"
       hierarchy:
         show: "ධූරාවලිය මාදිලිය පෙන්වන්න"
         hide: "ධූරාවලිය මාදිලිය සඟවන්න"
@@ -1009,11 +918,13 @@ si:
         workAlternative: "ඇස්තමේන්තුගත කාලය"
         remainingTime: "Remaining work"
       default_queries:
+        manually_sorted: "New manually sorted query"
         latest_activity: "නවතම ක්රියාකාරකම්"
         created_by_me: "මා විසින් නිර්මාණය කරන ලදී"
         assigned_to_me: "මට පවරනු ලැබේ"
         recently_created: "මෑතකදී නිර්මාණය"
         all_open: "සියල්ල විවෘතයි"
+        overdue: "Overdue"
         summary: "සාරාංශය"
         shared_with_users: "Shared with users"
         shared_with_me: "Shared with me"
@@ -1050,18 +961,24 @@ si:
           not_found: "එවැනි මතයක් නොමැත"
           duplicate_query_title: "මෙම දර්ශනයේ නම දැනටමත් පවතී. කෙසේ හෝ වෙනස් කරන්න?"
         text_no_results: "ගැලපෙන අදහස් කිසිවක් සොයාගත නොහැකි විය."
+      reminders:
+        button_label: "Set reminder"
+        title:
+          new: "Set a reminder"
+          edit: "Edit reminder"
+        subtitle: "You will receive a notification for this work package at the chosen time."
+        presets:
+          tomorrow: "Tomorrow"
+          three_days: "In 3 days"
+          week: "In a week"
+          month: "In a month"
+          custom: "At a particular date/time"
       scheduling:
         is_parent: "The dates of this work package are automatically deduced from its children. Activate 'Manual scheduling' to set the dates."
         is_switched_from_manual_to_automatic: "The dates of this work package may need to be recalculated after switching from manual to automatic scheduling due to relationships with other work packages."
       sharing:
-        share: "Share"
         title: "Share work package"
         show_all_users: "Show all users with whom the work package has been shared with"
-        selected_count: "%{count} selected"
-        selection:
-          mixed: "Mixed"
-        upsale:
-          description: "Share work packages with users who are not members of the project."
       table:
         configure_button: "වැඩ පැකේජ වගුව සකසන්න"
         summary: "වැඩ පැකේජයේ පේළි සහ වැඩ පැකේජ ගුණාංගවල තීරු සහිත වගුව."
@@ -1096,10 +1013,6 @@ si:
           manually: "අතින්"
           warning: "ස්වයංක්රීය තෝරා බේරා ගැනීමේ මාදිලිය සක්රිය විට ඔබ ඔබේ පෙර තෝරා බේරා ගැනීමේ අහිමි වනු ඇත."
         columns_help_text: "Use the input field above to add columns to your table view. You can drag and drop the columns to reorder them."
-        upsale:
-          attribute_highlighting: "ස්කන්ධයෙන් කැපී පෙනෙන ඇතැම් වැඩ පැකේජ අවශ්යද?"
-          relation_columns: "වැඩ පැකේජ ලැයිස්තුවේ සබඳතා දැකීමට අවශ්යද?"
-          check_out_link: "Check out the Enterprise edition."
         relation_filters:
           filter_work_packages_by_relation_type: "සම්බන්ධතා වර්ගය අනුව වැඩ පැකේජ පෙරහන් කරන්න"
       tabs:
@@ -1158,6 +1071,8 @@ si:
     notice_successful_delete: "සාර්ථක මකාදැමීම."
     notice_successful_update: "සාර්ථක යාවත්කාලීන කිරීම."
     notice_job_started: "job started."
+    no_job_id: "No job ID returned from server."
+    invalid_job_response: "Invalid response from server."
     notice_bad_request: "නරක ඉල්ලීම."
     relations:
       empty: සම්බන්ධයක් නොමැත
@@ -1190,6 +1105,7 @@ si:
       child_work_packages:
         one: "එක් ළමා වැඩ පැකේජය"
         other: "%{count} වැඩ පැකේජය දරුවන්"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} ඌ"
@@ -1198,6 +1114,9 @@ si:
         one: "දින 1"
         other: "%{count} දින"
         zero: "0 days"
+      word:
+        one: "1 word"
+        other: "%{count} words"
     zen_mode:
       button_activate: "සක්රිය මාදිලිය"
       button_deactivate: "සෙන් මාදිලිය අක්රිය"
@@ -1207,7 +1126,6 @@ si:
       current_project_and_all_descendants: "මෙම ව්යාපෘතිය+උප ව්යාපෘති"
       current_project: "මෙම ව්යාපෘතියේ"
       recently_viewed: "Recently viewed"
-      search: "සොයන්න"
       title:
         all_projects: "සියලු ව්යාපෘති"
         project_and_subprojects: "සහ සියළු උප ව්යාපෘති"
@@ -1298,21 +1216,21 @@ si:
       selected_filter:
         all: "All projects"
         selected: "Only selected"
-      search_placeholder: "Search project..."
+      search_placeholder: "Search projects..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Include all sub-projects"
       tooltip:
         include_all_selected: "Project already included since Include all sub-projects is enabled."
         current_project: "This is the current project you are in."
         does_not_match_search: "Project does not match the search criteria."
       no_results: "No project matches your search criteria."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Baseline"
       clear: "පැහැදිලි"
       apply: "අයදුම් කරන්න"
       header_description: "Highlight changes made to this list since any point in the past."
-      enterprise_header_description: "Highlight changes made to this list since any point in the past with Enterprise edition."
       show_changes_since: "Show changes since"
-      baseline_comparison: "Baseline comparison"
       help_description: "Reference time zone for the baseline."
       time_description: "In your local time: %{datetime}"
       time: "Time"
@@ -1354,5 +1272,3 @@ si:
       waiting_subtitle:
         network_off: "There is a network problem."
         network_on: "Network is back. We are trying."
-        timeout: >
-          OpenProject could not provide you access to the project folder within the expected period of time. Please, try once again.<br><br> If that problem persists please contact you OpenProject administrator to check the <a href="https://www.openproject.org/docs/system-admin-guide/files/external-file-storages/file-storage-troubleshooting/">health status of the file storage setup</a>.

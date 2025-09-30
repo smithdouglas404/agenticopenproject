@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -36,7 +36,7 @@ RSpec.describe "Open the Gitlab tab", :js do
   let(:role) do
     create(:project_role,
            permissions: %i(view_work_packages
-                           add_work_package_notes
+                           add_work_package_comments
                            show_gitlab_content))
   end
 
@@ -58,6 +58,8 @@ RSpec.describe "Open the Gitlab tab", :js do
     create(:gitlab_pipeline, gitlab_merge_request: merge_request, name: "a pipeline name")
   end
 
+  let(:activity_tab) { Components::WorkPackages::Activities.new(work_package) }
+
   shared_examples_for "a gitlab tab" do
     before do
       issue
@@ -69,31 +71,57 @@ RSpec.describe "Open the Gitlab tab", :js do
     # comparing the pasted content against the provided text
     def expect_clipboard_content(text)
       work_package_page.switch_to_tab(tab: "activity")
+      work_package_page.wait_for_activity_tab
 
-      work_package_page.trigger_edit_comment
-      work_package_page.update_comment(" ") # ensure the comment editor is fully loaded
+      activity_tab.type_comment(" ") # This will both open the editor and type a space
+      activity_tab.clear_comment # Clear the comment to ensure clean state
       gitlab_tab.paste_clipboard_content
-      expect(work_package_page.add_comment_container).to have_content(text)
+      activity_tab.expect_unsaved_content(text)
 
       work_package_page.switch_to_tab(tab: "gitlab")
     end
 
-    it "shows the gitlab tab when the user is allowed to see it" do
-      work_package_page.visit!
-      work_package_page.switch_to_tab(tab: "gitlab")
+    context "when the user is allowed to see the gitlab tab" do
+      before do
+        work_package_page.visit!
+        work_package_page.switch_to_tab(tab: "gitlab")
+      end
 
-      tabs.expect_counter(gitlab_tab_element, 2)
+      it "shows the issues and merge requests associated with the work package" do
+        tabs.expect_counter(gitlab_tab_element, 2)
 
-      gitlab_tab.git_actions_menu_button.click
-      gitlab_tab.git_actions_copy_branch_name_button.click
-      expect(page).to have_text("Copied!")
-      expect_clipboard_content("#{work_package.type.name.downcase}/#{work_package.id}-a-test-work_package")
+        expect(page).to have_text("A Test Issue title")
+        expect(page).to have_text("Open")
 
-      expect(page).to have_text("A Test Issue title")
-      expect(page).to have_text("Open")
+        expect(page).to have_text("A Test MR title")
+        expect(page).to have_text("Pending")
+      end
 
-      expect(page).to have_text("A Test MR title")
-      expect(page).to have_text("Pending")
+      it "allows the user to copy the branch name to the clipboard" do
+        pending "In headless mode, the clipboard content is not copied to the clipboard, how to fix?"
+
+        gitlab_tab.git_actions_menu_button.click
+        gitlab_tab.git_actions_copy_branch_name_button.click
+
+        expect(page).to have_text("Copied!")
+        expect_clipboard_content("#{work_package.type.name.downcase}/#{work_package.id}-a-test-work_package")
+      end
+
+      it "shows a commit message with space between title and link" do
+        gitlab_tab.git_actions_menu_button.click
+
+        commit_message_input_text = page.find_field("Commit message").value
+        expect(commit_message_input_text).to include("A test work_package http://")
+      end
+
+      it "allows the user to copy a commit message with newlines between title and link to the clipboard" do
+        pending "In headless mode, the clipboard content is not copied to the clipboard, how to fix?"
+        gitlab_tab.git_actions_menu_button.click
+        gitlab_tab.git_actions_copy_commit_message_button.click
+
+        expect(page).to have_text("Copied!")
+        expect_clipboard_content("A test work_package\nhttp://")
+      end
     end
 
     context "when there are no merge requests or issues" do
@@ -120,7 +148,7 @@ RSpec.describe "Open the Gitlab tab", :js do
       let(:role) do
         create(:project_role,
                permissions: %i(view_work_packages
-                               add_work_package_notes))
+                               add_work_package_comments))
       end
 
       it "does not show the gitlab tab" do

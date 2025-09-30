@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -69,6 +71,10 @@ module OpenProject
       # Returns the names of rules activated in settings.
       def self.active_rules
         Setting.password_active_rules
+      end
+
+      def self.active_rule?(rule)
+        Setting.password_active_rules.include?(rule.to_s)
       end
 
       # Checks whether password adheres to complexity rules.
@@ -152,7 +158,7 @@ module OpenProject
                  "]", "^", "_", "`", "{", "|", "}", "~"]
 
         begin
-          password = ""
+          password = +""
           length = [RANDOM_PASSWORD_MIN_LENGTH, Evaluator.min_length].max
           length.times { |_i| password << chars[SecureRandom.random_number(chars.size - 1)] }
         end while not Evaluator.conforming? password

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -32,6 +32,7 @@ import { CreateAutocompleterComponent } from 'core-app/shared/components/autocom
 @Component({
   templateUrl: '../create-autocompleter/create-autocompleter.component.html',
   selector: 'wp-autocompleter',
+  standalone: false,
 })
 export class WorkPackageAutocompleterComponent extends CreateAutocompleterComponent implements AfterViewInit {
 }

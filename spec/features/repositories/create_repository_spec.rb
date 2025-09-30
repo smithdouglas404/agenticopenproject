@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -149,8 +151,7 @@ RSpec.describe "Create repository", :js, :selenium do
 
         click_button(I18n.t(:button_create))
 
-        expect(page).to have_css("div.op-toast.-success",
-                                 text: I18n.t("repositories.create_successful"))
+        expect_flash(message: I18n.t("repositories.create_successful"))
         expect(page).to have_css("a.icon-delete", text: I18n.t(:button_delete))
       end
     end
@@ -162,8 +163,7 @@ RSpec.describe "Create repository", :js, :selenium do
 
         click_button(I18n.t(:button_create))
 
-        expect(page).to have_css("div.op-toast.-success",
-                                 text: I18n.t("repositories.create_successful"))
+        expect_flash(message: I18n.t("repositories.create_successful"))
         expect(page).to have_css('button[type="submit"]', text: I18n.t(:button_save))
         expect(page).to have_css("a.icon-remove", text: I18n.t(:button_remove))
       end

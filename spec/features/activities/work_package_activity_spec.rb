@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Work package activity", :js, :with_cuprite do
+RSpec.describe "Work package activity", :js do
   shared_let(:admin) { create(:admin) }
   shared_let(:project) { create(:project) }
 
@@ -45,28 +47,37 @@ RSpec.describe "Work package activity", :js, :with_cuprite do
   TABLE
 
   let(:parent_page) { Pages::FullWorkPackage.new(parent) }
+  let(:popover) { Components::WorkPackages::ProgressPopover.new }
+  let(:activity_tab) { Components::WorkPackages::Activities.new(parent) }
 
   current_user { admin }
 
   context "when the progress values are changed" do
     before do
-      wp_page = Pages::FullWorkPackage.new(parent)
-      wp_page.visit!
-      wp_page.update_attributes estimatedTime: "10" # rubocop:disable Rails/ActiveRecordAliases
-      wp_page.expect_and_dismiss_toaster(message: "Successful update.")
-      wp_page.update_attributes remainingTime: "5" # rubocop:disable Rails/ActiveRecordAliases
-      wp_page.expect_and_dismiss_toaster(message: "Successful update.")
+      # set WORK_PACKAGES_ACTIVITIES_TAB_POLLING_INTERVAL_IN_MS from 10s to 1s
+      # to speed up the polling interval for test duration
+      # TODO: Redefine interval as a setting?
+      ENV["WORK_PACKAGES_ACTIVITIES_TAB_POLLING_INTERVAL_IN_MS"] = "1000"
+
+      parent_page.visit!
+      popover.open
+      popover.set_values(work: "100", remaining_time: "5")
+      popover.save
+      parent_page.expect_and_dismiss_toaster(message: "Successful update.")
+      parent_page.wait_for_activity_tab
     end
 
-    it "displays changed attributes in the activity tab", :aggregate_failures do
-      within("activity-entry", text: admin.name) do
-        expect(page).to have_list_item(text: "% Complete set to 50%")
-        expect(page).to have_list_item(text: "Work set to 1d 2h")
-        expect(page).to have_list_item(text: "Remaining work set to 5h")
-        expect(page).to have_list_item(text: "Total work set to 2d 4h")
-        expect(page).to have_list_item(text: "Total remaining work set to 1d")
-        expect(page).to have_list_item(text: "Total % complete set to 60%")
-      end
+    after do
+      ENV.delete("WORK_PACKAGES_ACTIVITIES_TAB_POLLING_INTERVAL_IN_MS")
+    end
+
+    it "displays changed attributes in the activity tab" do
+      activity_tab.expect_journal_changed_attribute(text: "% Complete set to 95%")
+      activity_tab.expect_journal_changed_attribute(text: "Work set to 100h")
+      activity_tab.expect_journal_changed_attribute(text: "Remaining work set to 5h")
+      activity_tab.expect_journal_changed_attribute(text: "Total work set to 110h")
+      activity_tab.expect_journal_changed_attribute(text: "Total remaining work set to 8h")
+      activity_tab.expect_journal_changed_attribute(text: "Total % complete set to 93%")
     end
   end
 end

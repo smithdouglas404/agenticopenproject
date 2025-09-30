@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,7 +37,8 @@ class Authorization::UserGlobalRolesQuery < Authorization::UserRolesQuery
                      Role::BUILTIN_ANONYMOUS
                    end
 
-    builtin_role_condition = roles_table[:builtin].eq(builtin_role)
+    builtin_roles = [builtin_role, Role::BUILTIN_STANDARD_GLOBAL]
+    builtin_role_condition = roles_table[:builtin].in(builtin_roles)
 
     statement.or(builtin_role_condition)
   end

@@ -34,6 +34,15 @@ ru:
           name: Темно-серый
         item_13:
           name: Чёрный
+      project_phase_colors:
+        item_0:
+          name: PM2 Оранжевый
+        item_1:
+          name: PM2 Красный
+        item_2:
+          name: PM2 Пурпурный
+        item_3:
+          name: PM2 Зелено-жёлтый
       document_categories:
         item_0:
           name: Документация
@@ -41,6 +50,11 @@ ru:
           name: Спецификация
         item_2:
           name: Другие
+      project_query_roles:
+        item_0:
+          name: Средство просмотра запроса проекта
+        item_1:
+          name: Редактор запроса проекта
       work_package_roles:
         item_0:
           name: Редактор пакета работ
@@ -50,9 +64,9 @@ ru:
           name: Просмотрщик пакета работ
       project_roles:
         item_0:
-          name: Неучастник
+          name: Не участник
         item_1:
-          name: Аноним
+          name: Анонимно
         item_2:
           name: Участник
         item_3:
@@ -61,92 +75,31 @@ ru:
           name: Администратор проекта
       global_roles:
         item_0:
-          name: Персонал и менеджер проектов
+          name: Менеджер по персоналу и проектам
+        item_1:
+          name: Стандартная глобальная роль
     standard:
+      project_phases:
+        item_0:
+          name: Запуск
+        item_1:
+          name: Планирование
+          start_gate: Готов к планированию
+        item_2:
+          name: Выполнение
+          start_gate: Готово к выполнению
+        item_3:
+          name: Закрытие
+          start_gate: Готов к закрытию
       priorities:
         item_0:
-          name: Низкое
+          name: Низкий
         item_1:
-          name: Обычное
+          name: Обычный
         item_2:
-          name: Высокое
+          name: Высокий
         item_3:
-          name: Срочно
-      statuses:
-        item_0:
-          name: Новое
-        item_1:
-          name: В спецификации
-        item_2:
-          name: Указанный
-        item_3:
-          name: Подтвержден
-        item_4:
-          name: Планируется
-        item_5:
-          name: Запланировано
-        item_6:
-          name: В процессе
-        item_7:
-          name: Разработан
-        item_8:
-          name: В тестировании
-        item_9:
-          name: Протестирован
-        item_10:
-          name: Тест не пройден
-        item_11:
-          name: закрыто
-        item_12:
-          name: В ожидании
-        item_13:
-          name: отклонено
-      time_entry_activities:
-        item_0:
-          name: Управление
-        item_1:
-          name: Спецификация
-        item_2:
-          name: Разработка
-        item_3:
-          name: Проверка
-        item_4:
-          name: Поддержка
-        item_5:
-          name: Другие
-      types:
-        item_0:
-          name: Задание
-        item_1:
-          name: Ключевой момент
-        item_2:
-          name: Фаза
-        item_3:
-          name: Функция
-        item_4:
-          name: Эпический
-        item_5:
-          name: Описание пользователя
-        item_6:
-          name: Ошибка
-      welcome:
-        title: Добро пожаловать в OpenProject!
-        text: |
-          OpenProject является ведущим программным обеспечением с открытым исходным кодом. Он поддерживает классические, agile и гибридные управления проектами и дает вам полный контроль над вашими данными.
-
-          Основные возможности и примеры использования:
-
-          * [Управление портфолио проекта](https://www.openproject.org/collaboration-software-features/project-portfolio-management/)
-          * [Планирование и планирование проектов](https://www.openproject.org/collaboration-software-features/project-planning-scheduling/)
-          * [Отслеживание задач и задач](https://www.openproject.org/collaboration-software-features/task-management/)
-          * [Платы Agile (Scrum and Kanban)](https://www.openproject.org/collaboration-software-features/agile-project-management/)
-          * [Управление требованиями и Планирование релизов](https://www.openproject.org/collaboration-software-features/product-development/)
-          * [Отслеживание времени и затрат, бюджеты](https://www.openproject.org/collaboration-software-features/time-tracking/)
-          * [Team Collaboration and Documentation](https://www.openproject.org/collaboration-software-features/team-collaboration/)
-
-          Добро пожаловать в будущее управления проектом.
-
-          Для администраторов: Вы можете изменить этот приветственный текст [here]({{opSetting:base_url}}/admin/settings/general).
+          name: Немедленно
       projects:
         demo-project:
           name: Демо-проект
@@ -157,7 +110,7 @@ ru:
               title: Добро пожаловать в демо-проект
               summary: |
                 Мы рады, что вы присоединились.
-                В этом модуле вы можете сообщать новости проекта членам вашей команды.
+                В этом модуле вы можете сообщать новости о проекте членам вашей команды.
               description: Текущие новости
           categories:
             item_0: Категория 1 (будет изменена в настройках проекта)
@@ -174,7 +127,7 @@ ru:
             kanban:
               name: Доска Канбана
             basic:
-              name: Основная доска
+              name: Базовая доска
               lists:
                 item_0:
                   name: Список пожеланий
@@ -209,10 +162,10 @@ ru:
                     6. *Завершите ваши задачи в проекте*: &rightarrow; Перейдите в [Пакеты работ &rightarrow; Задачи]({{opSetting:base_url}}/projects/demo-project/work_packages/details/##wp.id:set_date_and_location_of_conference/overview?query_id=##query.id:demo_project__query__tasks).
 
                     Здесь вы найдете наши [руководства пользователя](https://www.openproject.org/docs/user-guide/).
-                    Пожалуйста, сообщите нам, если у вас есть какие-либо вопросы или нужна поддержка. Свяжитесь с нами: [поддержка[at]openproject.com](mailto:support@openproject.com).
+                    Пожалуйста, сообщите нам, если у вас есть какие-либо вопросы или нужна поддержка. Свяжитесь с нами: [support[at]openproject.com](mailto:support@openproject.com).
               item_5:
                 options:
-                  name: Пакеты работ
+                  name: Пакет работ
               item_6:
                 options:
                   name: Вехи
@@ -275,7 +228,7 @@ ru:
               title: Добро пожаловать в Ваш демо проект Scrum
               summary: |
                 Мы рады, что вы присоединились.
-                В этом модуле вы можете сообщать новости о проекте членам вашей команды.
+                В этом модуле вы можете сообщать новости проекта членам вашей команды.
           versions:
             item_0:
               name: Невыполненные задачи по исправлению ошибок
@@ -286,7 +239,7 @@ ru:
               wiki:
                 title: Спринт 1
                 content: |
-                  ### Встреча по планированию спринта
+                  ### Совещание по планированию спринта
 
                   _Пожалуйста, документируйте здесь темы на встречу по планированию спринта_
 
@@ -330,7 +283,7 @@ ru:
 
                   * Время (3 ч).
                   * После просмотра спринта, будет модерироваться Scrum Master.
-                  * Команда обсуждает весну: что пошло хорошо, что должно быть улучшено, чтобы быть более продуктивным для следующего спринта или даже весело.
+                  * Команда обсуждает спринт: что пошло хорошо, что должно быть улучшено, чтобы быть более продуктивным для следующего спринта или даже весело.
             item_3:
               name: Спринт 2
           categories:
@@ -339,7 +292,7 @@ ru:
             item_0:
               name: План проекта
             item_1:
-              name: Невыполненные работы по продукту
+              name: бэклог продукта
             item_2:
               name: Спринт 1
             item_3:
@@ -367,21 +320,23 @@ ru:
                 options:
                   name: Приступая к работе
                   text: |
-                    Мы рады, что вы присоединились! Мы рекомендуем попробовать несколько вещей, чтобы начать работу в OpenProject.
+                    Мы рады, что Вы присоединились! Мы предлагаем попробовать несколько вещей, чтобы начать работу с OpenProject.
 
-                    _Попробуйте следующие шаги:_[Backlogs]. *Пригласите новых участников к вашему проекту*: &rightarrow; Перейдите к [Members]({{opSetting:base_url}}/projects/your-scrum-project/members) в навигации по проекту.
-                    2. *Просмотр бэклога продукта и бэклогов Sprint *: &rightarrow; Перейти к [Backlogs]({{opSetting:base_url}}/projects/your-scrum-project/backlogs) в навигации по проекту.
-                    *Просмотр вашей панели задач*: &rightarrow; Перейдите на [Backlogs] ({{opSetting:base_url}}/projects/your-scrum-project/backlogs) &rightarrow; Нажмите на правую стрелку на Sprint &rightarrow; Выберите [Целевую панель](##sprint:scrum_project__version__sprint_1).
-                    4. *Создать новый пакет работ*: &rightarrow; Перейдите к [Пакеты работ &rightarrow; Create]({{opSetting:base_url}}/projects/your-scrum-project/work_packages/new).
-                    5. *Создать и обновить план проекта*: &rightarrow; Перейдите к [плану проекта](##query:scrum_project__query__project_plan) в навигации по проекту.
-                    6. *Создайте вики спринта*: &rightarrow; Перейдите в [Backlogs]({{opSetting:base_url}}/projects/your-scrum-project/backlogs) и откройте вики спринта из правого выпадающего меню в спринте. Вы можете редактировать [шаблон вики]({{opSetting:base_url}}/projects/your-scrum-project/wiki/) на основе ваших потребностей.
-                    7. *Активировать дальнейшие модули*: &rightarrow; Перейдите к [настройкам проекта &rightarrow; Модулей]({{opSetting:base_url}}/projects/your-scrum-project/settings/modules).
+                    _Попробуйте выполнить следующие шаги:_
 
-                    Здесь вы найдете наши [руководства пользователя](https://www. penproject.org/docs/user-guide/).
-                    Пожалуйста, сообщите нам, если у вас есть какие-либо вопросы или нужна поддержка. Свяжитесь с нами: [support[at]openproject.com](mailto:support@openproject.com).
+                    1. *Пригласите новых участников в свой проект*: &rightarrow; Перейдите к [Участники]({{opSetting:base_url}}/projects/your-scrum-project/members) в меню проекта.
+                    2. *Просмотрите бэклог Вашего продукта и бэклог спринта*: &rightarrow; Перейдите к [Бэклог]({{opSetting:base_url}}/projects/your-scrum-project/backlogs) в меню проекта.
+                    3. *Просмотрите Вашу доску задач*: &rightarrow; Перейдите к [Бэклоги]({{opSetting:base_url}}/projects/your-scrum-project/backlogs) &rightarrow; Нажмите стрелку вправо на Этапы &rightarrow; Выберите [Панель задач](##sprint:scrum_project__version__sprint_1).
+                    4. *Создайте новый рабочий пакет*: &rightarrow; Перейдите в раздел [Рабочие пакеты &rightarrow; Создать]({{opSetting:base_url}}/projects/your-scrum-project/work_packages/new).
+                    5. *Создайте и обновите план проекта*: &rightarrow; Перейдите к разделу [План проекта](##query:scrum_project__query__project_plan) в меню проекта.
+                    6. *Создайте вики спринта*: &rightarrow; Перейдите в раздел [Бэклоги]({{opSetting:base_url}}/projects/your-scrum-project/backlogs) и откройте вики спринта из правого выпадающего меню в спринте. Вы можете отредактировать шаблон [wiki]({{opSetting:base_url}}/projects/your-scrum-project/wiki/) в соответствии со своими потребностями.
+                    7. *Активируйте дополнительные модули*: &rightarrow; Перейдите в раздел [Настройки проекта &rightarrow; Модули]({{opSetting:base_url}}/projects/your-scrum-project/settings/modules).
+
+                    Здесь Вы найдете наши [руководства пользователя](https://www.openproject.org/docs/user-guide/).
+                    Пожалуйста, сообщите нам, если у Вас возникнут вопросы или Вам понадобится поддержка. Свяжитесь с нами: [support[at]openproject.com](mailto:support@openproject.com).
               item_5:
                 options:
-                  name: Пакеты работ
+                  name: Пакет работ
               item_6:
                 options:
                   name: План проекта
@@ -482,3 +437,78 @@ ru:
             * Время (3 ч).
             * После просмотра спринта, будет модерироваться Scrum Master.
             * Команда обсуждает весну: что пошло хорошо, что должно быть улучшено, чтобы быть более продуктивным для следующего спринта или даже весело.
+      statuses:
+        item_0:
+          name: Новое
+        item_1:
+          name: В спецификации
+        item_2:
+          name: Указанный
+        item_3:
+          name: Подтвержден
+        item_4:
+          name: Планируется
+        item_5:
+          name: Запланировано
+        item_6:
+          name: В процессе
+        item_7:
+          name: Разработан
+        item_8:
+          name: В тестировании
+        item_9:
+          name: Протестирован
+        item_10:
+          name: Тест не пройден
+        item_11:
+          name: закрыто
+        item_12:
+          name: В ожидании
+        item_13:
+          name: отклонено
+      time_entry_activities:
+        item_0:
+          name: Управление
+        item_1:
+          name: Спецификация
+        item_2:
+          name: Разработка
+        item_3:
+          name: Проверка
+        item_4:
+          name: Поддержка
+        item_5:
+          name: Другие
+      types:
+        item_0:
+          name: Задача
+        item_1:
+          name: Веха
+        item_2:
+          name: Сводка задачи
+        item_3:
+          name: Функция
+        item_4:
+          name: Эпический
+        item_5:
+          name: Описание пользователя
+        item_6:
+          name: Ошибка
+      welcome:
+        title: Добро пожаловать в OpenProject!
+        text: |
+          OpenProject является ведущим программным обеспечением с открытым исходным кодом. Он поддерживает классические, agile и гибридные управления проектами и дает вам полный контроль над вашими данными.
+
+          Основные возможности и примеры использования:
+
+          * [Управление портфолио проекта](https://www.openproject.org/collaboration-software-features/project-portfolio-management/)
+          * [Планирование и планирование проектов](https://www.openproject.org/collaboration-software-features/project-planning-scheduling/)
+          * [Отслеживание задач и задач](https://www.openproject.org/collaboration-software-features/task-management/)
+          * [Платы Agile (Scrum and Kanban)](https://www.openproject.org/collaboration-software-features/agile-project-management/)
+          * [Управление требованиями и Планирование релизов](https://www.openproject.org/collaboration-software-features/product-development/)
+          * [Отслеживание времени и затрат, бюджеты](https://www.openproject.org/collaboration-software-features/time-tracking/)
+          * [Team Collaboration and Documentation](https://www.openproject.org/collaboration-software-features/team-collaboration/)
+
+          Добро пожаловать в будущее управления проектом.
+
+          Для администраторов: Вы можете изменить этот приветственный текст [here]({{opSetting:base_url}}/admin/settings/general).

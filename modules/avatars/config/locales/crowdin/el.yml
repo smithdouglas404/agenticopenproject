@@ -11,14 +11,13 @@ el:
   message_avatar_uploaded: "Το άβαταρ άλλαξε με επιτυχία."
   error_image_upload: "Σφάλμα κατά την αποθήκευση της εικόνας."
   error_image_size: "Η εικόνα είναι πολύ μεγάλη."
-  button_change_avatar: "Αλλαγή άβαταρ"
   are_you_sure_delete_avatar: "Είστε βέβαιοι ότι θέλετε να διαγράψετε το άβαταρ σας;"
   avatar_deleted: "Το άβαταρ διαγράφηκε με επιτυχία."
   unable_to_delete_avatar: "Δεν ήταν δυνατή η διαγραφή του άβαταρ."
   wrong_file_format: "Οι επιτρεπόμενες μορφές είναι jpg, png, gif"
   empty_file_error: "Παρακαλούμε ανεβάστε μια έγκυρη εικόνα (jpg, png, gif)"
   avatars:
-    label_avatar: "Άβαταρ"
+    label_avatar: "Εικόνα προφίλ"
     label_gravatar: 'Gravatar'
     label_current_avatar: 'Τρέχον άβαταρ'
     label_local_avatar: 'Προσαρμοσμένο άβαταρ'

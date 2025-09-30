@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,8 +35,11 @@ class MeetingAgendaItem::Notes < ApplicationForm
       name: :notes,
       label: MeetingAgendaItem.human_attribute_name(:notes),
       disabled: @disabled,
+      classes: "ck-editor-primer-adjusted",
       rich_text_options: {
+        macros: "resource",
         resource:,
+        storageKey: "meeting-#{object.meeting_id || 'new'}-agenda-item-#{object.id || 'new'}",
         showAttachments: false
       }
     )

@@ -8,6 +8,7 @@ lt:
         row_count: "Eilučių skaičius"
         column_count: "Stulpelių skaičius"
         widgets: "Valdikliai"
+        scope: "Apimtis"
     errors:
       models:
         grids/grid:

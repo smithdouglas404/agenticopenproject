@@ -9,6 +9,7 @@ fa:
     label_bcf: 'BCF'
     label_imported_failed: 'Failed imports of BCF topics'
     label_imported_successfully: 'موضوعات BCF با موفقیت درون‌ریزی شد'
+    label_bcf_issue_associated: "BCF issue associated"
     issues: "مشکلات"
     recommended: 'پیشنهادی'
     not_recommended: 'پیشنهاد نشده'
@@ -83,6 +84,12 @@ fa:
         ifc_attachment: "IFC file"
         is_default: "Default model"
         attachments: "IFC file"
+      bim/bcf/issue:
+        bcf_comment: "BCF comment"
+        bim_snippet: "BIM snippet"
+        reference_links: "Reference links"
+        stage: "Stage"
+        viewpoint: "Viewpoint"
     errors:
       models:
         bim/ifc_models/ifc_model:

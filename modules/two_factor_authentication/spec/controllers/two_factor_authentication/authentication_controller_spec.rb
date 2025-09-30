@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "../../spec_helper"
 require_relative "authentication_controller_shared_examples"
 
@@ -10,7 +12,10 @@ RSpec.describe TwoFactorAuthentication::AuthenticationController, with_settings:
   before do
     # Assume the user has any memberships
     session[:stage_secrets] = { two_factor_authentication: "asdf" }
-    allow_any_instance_of(User).to receive(:any_active_memberships?).and_return(true)
+
+    without_partial_double_verification do
+      allow_any_instance_of(User).to receive(:any_active_memberships?).and_return(true) # rubocop:disable RSpec/AnyInstance
+    end
   end
 
   describe "with no active strategy", with_settings: { "plugin_openproject_two_factor_authentication" => {} } do
@@ -33,7 +38,7 @@ RSpec.describe TwoFactorAuthentication::AuthenticationController, with_settings:
     end
 
     it "returns a 500" do
-      expect(response.status).to eq 500
+      expect(response).to have_http_status :internal_server_error
     end
   end
 
@@ -58,7 +63,7 @@ RSpec.describe TwoFactorAuthentication::AuthenticationController, with_settings:
         get :request_otp
       end
 
-      # User can login without 2FA, since its not enforced
+      # User can login without 2FA, since it's not enforced
       it_behaves_like "immediate success login"
     end
 
@@ -70,7 +75,7 @@ RSpec.describe TwoFactorAuthentication::AuthenticationController, with_settings:
         get :request_otp
       end
 
-      # User can login without 2FA, since its not enforced
+      # User can login without 2FA, since it's not enforced
       it_behaves_like "immediate success login"
     end
 

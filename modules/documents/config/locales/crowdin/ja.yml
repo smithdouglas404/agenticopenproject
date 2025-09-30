@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -21,8 +21,8 @@
 #++
 ja:
   plugin_openproject_documents:
-    name: "OpenProject Documents"
-    description: "An OpenProject plugin to allow creation of documents in projects."
+    name: "OpenProjectドキュメント"
+    description: "プロジェクト内のドキュメントの作成を可能にするOpenProjectプラグイン。"
   activerecord:
     models:
       document: "ドキュメント"
@@ -34,10 +34,15 @@ ja:
   enumeration_doc_categories: "ドキュメントのカテゴリ"
   documents:
     label_attachment_author: "添付ファイルの作成者"
+    label_categories: "カテゴリ"
+    new_category: "新規カテゴリ"
   label_document_added: "追加されたドキュメント"
   label_document_new: "新しいドキュメント"
   label_document_plural: "ドキュメント"
   label_documents: "ドキュメント"
+  label_document_title: "タイトル"
+  label_document_description: "説明"
+  label_document_category: "カテゴリ"
   permission_manage_documents: "ドキュメントを管理"
   permission_view_documents: "ドキュメントの表示"
   project_module_documents: "ドキュメント"

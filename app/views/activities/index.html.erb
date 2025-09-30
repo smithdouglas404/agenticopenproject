@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2024 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -29,11 +29,20 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%= call_hook :activity_index_head %>
 
-<%= toolbar title: (@author.nil? ? t(:label_activity) : t(:label_user_activity, value: link_to_user(@author))).html_safe,
-            subtitle: t(:label_date_from_to, start: format_date(@date_to - @days), end: format_date(@date_to-1))
+<%=
+  render Primer::OpenProject::PageHeader.new do |header|
+    header.with_title { (@author.nil? ? t(:label_activity) : t(:label_user_activity, value: link_to_user(@author))).html_safe }
+    header.with_description { t(:label_date_from_to, start: format_date(@date_to - @days), end: format_date(@date_to - 1)) }
+    header.with_breadcrumbs(
+      [
+        ({ href: project_overview_path(@project.id), text: @project.name } if @project),
+        t(:label_activity)
+      ].compact
+    )
+  end
 %>
 
-<%= render(Activities::DaysComponent.new(events: @events, current_project: @project, activity_page: @activity_page))  %>
+<%= render(Activities::DaysComponent.new(events: @events, current_project: @project, activity_page: @activity_page)) %>
 
 <% if @events.empty? %>
   <%= no_results_box %>
@@ -41,33 +50,41 @@ See COPYRIGHT and LICENSE files for more details.
 <% end %>
 
 <div style="float:left;">
-  <%= link_to_content_update(t(:label_previous),
-                             {
-                               from: (@date_to - @days - 1),
-                               with_subprojects: @with_subprojects ? '1' : '0',
-                               user_id: params[:user_id]
-                             }.compact,
-                             {title: t(:label_date_from_to, start: format_date(@date_to - 2*@days), end: format_date(@date_to - @days - 1)),
-                             class: 'navigate-left'}) %>
+  <%= link_to_content_update(
+        t(:label_previous),
+        {
+          from: (@date_to - @days - 1),
+          with_subprojects: @with_subprojects ? "1" : "0",
+          user_id: params[:user_id]
+        }.compact,
+        { title: t(:label_date_from_to, start: format_date(@date_to - (2 * @days)), end: format_date(@date_to - @days - 1)),
+          class: "navigate-left" }
+      ) %>
 </div>
 <div style="float:right;">
-  <%= link_to_content_update(t(:label_next),
-                             {
-                               from: (@date_to + @days - 1),
-                               with_subprojects: @with_subprojects ? '1' : '0',
-                               user_id: params[:user_id]
-                             }.compact,
-                             {title: t(:label_date_from_to, start: format_date(@date_to), end: format_date(@date_to + @days - 1)),
-                             class: 'navigate-right'}) unless @date_to >= Date.today %>
+  <%= unless @date_to >= Date.today
+        link_to_content_update(
+          t(:label_next),
+          {
+            from: (@date_to + @days - 1),
+            with_subprojects: @with_subprojects ? "1" : "0",
+            user_id: params[:user_id]
+          }.compact,
+          { title: t(:label_date_from_to, start: format_date(@date_to), end: format_date(@date_to + @days - 1)),
+            class: "navigate-right" }
+        )
+      end %>
 </div>
 &nbsp;
 <%= other_formats_links do |f| %>
-  <%= f.link_to 'Atom', url: { from: nil }, key: User.current.rss_key %>
+  <%= f.link_to "Atom", url: { from: nil }, key: User.current.rss_key %>
 <% end %>
 
 <% content_for :header_tags do %>
-  <%= auto_discovery_link_tag(:atom,
-                              { format: 'atom', from: nil, key: User.current.rss_key }) %>
+  <%= auto_discovery_link_tag(
+        :atom,
+        { format: "atom", from: nil, key: User.current.rss_key }
+      ) %>
 <% end %>
 
 <% html_title(t(:label_activity), @author) -%>

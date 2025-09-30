@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,7 +31,28 @@ require "spec_helper"
 require "services/base_services/behaves_like_create_service"
 
 RSpec.describe Meetings::CreateService, type: :model do
+  let(:section_double) { instance_double(MeetingSections::CreateService) }
+
+  before do
+    allow(MeetingSections::CreateService)
+      .to receive(:new)
+      .and_return(section_double)
+
+    allow(section_double)
+      .to receive(:call)
+      .and_return(ServiceResult.success)
+  end
+
   it_behaves_like "BaseServices create service" do
     let(:factory) { :meeting }
+
+    context "when system user creates the meeting" do
+      let(:user) { User.system }
+
+      it "does not get assigned as the creator" do
+        expect(subject).to be_success
+        expect(subject.result.participants).to be_empty
+      end
+    end
   end
 end

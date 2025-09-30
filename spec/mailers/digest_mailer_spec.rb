@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,42 +36,27 @@ RSpec.describe DigestMailer do
   include OpenProject::StaticRouting::UrlHelpers
   include Redmine::I18n
 
-  let(:recipient) do
-    build_stubbed(:user).tap do |u|
-      allow(User)
-        .to receive(:find)
-              .with(u.id)
-              .and_return(u)
-    end
-  end
-  let(:project1) { build_stubbed(:project) }
-
+  let!(:project1) { create(:project) }
+  let!(:recipient) { create(:user) }
   let(:work_package) do
-    build_stubbed(:work_package,
-                  type: build_stubbed(:type))
+    create(:work_package,
+           subject: "WP start past",
+           project: project1,
+           start_date: 1.day.ago,
+           type: Type.first,
+           author: recipient)
   end
   let(:journal) do
-    build_stubbed(:work_package_journal,
-                  notes: "Some notes").tap do |j|
-      allow(j)
-        .to receive(:details)
-              .and_return({ "subject" => ["old subject", "new subject"] })
+    work_package.journals.first.tap do |j|
+      j.update(user_id: recipient.id)
     end
   end
-  let(:notifications) do
-    [build_stubbed(:notification,
-                   resource: work_package,
-                   reason: :commented,
-                   journal:,
-                   project: project1)].tap do |notifications|
-      allow(Notification)
-        .to receive(:where)
-              .and_return(notifications)
-
-      allow(notifications)
-        .to receive(:includes)
-              .and_return(notifications)
-    end
+  let!(:notifications) do
+    [create(:notification,
+            resource: work_package,
+            recipient:,
+            reason: :commented,
+            journal:)]
   end
 
   describe "#work_packages" do
@@ -78,56 +65,50 @@ RSpec.describe DigestMailer do
     let(:mail_body) { mail.body.parts.detect { |part| part["Content-Type"].value == "text/html" }.body.to_s }
 
     it "notes the day and the number of notifications in the subject" do
-      expect(mail.subject)
-        .to eql "OpenProject - 1 unread notification"
+      expect(mail.subject).to eql "OpenProject - 1 unread notification"
     end
 
     it "sends to the recipient" do
-      expect(mail.to)
-        .to contain_exactly(recipient.mail)
+      expect(mail.to).to contain_exactly(recipient.mail)
     end
 
     it "sets the expected message_id header" do
-      allow(Time)
-        .to receive(:current)
-              .and_return(Time.current)
+      allow(Time).to receive(:current).and_return(Time.current)
 
-      expect(mail.message_id)
-        .to eql "op.digest.#{Time.current.strftime('%Y%m%d%H%M%S')}.#{recipient.id}@example.net"
+      expect(mail.message_id).to eql "op.digest.#{Time.current.strftime('%Y%m%d%H%M%S')}.#{recipient.id}@example.net"
     end
 
     it "sets the expected openproject headers" do
-      expect(mail["X-OpenProject-User"]&.value)
-        .to eql recipient.name
+      expect(mail["X-OpenProject-User"]&.value).to eql recipient.name
     end
 
     it "includes the notifications grouped by work package" do
-      time_stamp = journal.created_at.strftime("%m/%d/%Y, %I:%M %p")
-      expect(mail_body)
-        .to have_text("Hello #{recipient.firstname}")
+      time_stamp = format_time(journal.created_at)
+      expect(mail_body).to have_text("Hello #{recipient.firstname}")
 
       expected_notification_subject = "#{work_package.type.name.upcase} #{work_package.subject}"
-      expect(mail_body)
-        .to have_text(expected_notification_subject, normalize_ws: true)
+      expect(mail_body).to have_text(expected_notification_subject, normalize_ws: true)
 
       expected_notification_header = "#{work_package.status.name} ##{work_package.id} - #{work_package.project}"
-      expect(mail_body)
-        .to have_text(expected_notification_header, normalize_ws: true)
+      expect(mail_body).to have_text(expected_notification_header, normalize_ws: true)
 
       expected_text = "#{journal.initial? ? 'Created' : 'Updated'} at #{time_stamp} by #{recipient.name}"
-      expect(mail_body)
-        .to have_text(expected_text, normalize_ws: true)
+      expect(mail_body).to have_text(expected_text, normalize_ws: true)
+    end
+
+    it "includes a reference to the notification center if there are more than the maximum number of shown work packages" do
+      stub_const("DigestMailer::MAX_SHOWN_WORK_PACKAGES", 0)
+
+      expect(mail_body).to have_text I18n.t(:"mail.work_packages.more_to_see.one")
+      expect(mail_body).to have_link(I18n.t(:"mail.work_packages.see_all"), href: notifications_url)
     end
 
     context "with only a deleted work package for the digest" do
-      let(:work_package) { nil }
+      before { work_package.destroy }
 
       it "is a NullMail which isn't sent" do
-        expect(mail.body)
-          .to eql ""
-
-        expect(mail.header)
-          .to eql({})
+        expect(mail.body).to eql ""
+        expect(mail.header).to eql({})
       end
     end
 
@@ -144,12 +125,11 @@ RSpec.describe DigestMailer do
           create(:notification,
                  reason: :date_alert_start_date,
                  recipient:,
-                 resource: work_package,
-                 project: project1)
+                 resource: work_package)
         end
 
         it "matches generated text" do
-          expect(mail_body).to have_text("Start date was 1 day ago")
+          expect(mail_body).to have_text("Start date was 1 day ago.")
         end
       end
 
@@ -161,12 +141,11 @@ RSpec.describe DigestMailer do
           create(:notification,
                  reason: :date_alert_start_date,
                  recipient:,
-                 resource: work_package,
-                 project: project1)
+                 resource: work_package)
         end
 
         it "matches generated text" do
-          expect(mail_body).to have_text("Start date is in 2 days")
+          expect(mail_body).to have_text("Start date is in 2 days.")
         end
       end
 
@@ -178,12 +157,11 @@ RSpec.describe DigestMailer do
           create(:notification,
                  reason: :date_alert_due_date,
                  recipient:,
-                 resource: work_package,
-                 project: project1)
+                 resource: work_package)
         end
 
         it "matches generated text" do
-          expect(mail_body).to have_text("Overdue since 3 days")
+          expect(mail_body).to have_text("Overdue since 3 days.")
         end
       end
 
@@ -195,12 +173,11 @@ RSpec.describe DigestMailer do
           create(:notification,
                  reason: :date_alert_due_date,
                  recipient:,
-                 resource: work_package,
-                 project: project1)
+                 resource: work_package)
         end
 
         it "matches generated text" do
-          expect(mail_body).to have_text("Finish date is in 3 days")
+          expect(mail_body).to have_text("Finish date is in 3 days.")
         end
       end
 
@@ -213,12 +190,11 @@ RSpec.describe DigestMailer do
           create(:notification,
                  reason: :date_alert_due_date,
                  recipient:,
-                 resource: work_package,
-                 project: project1)
+                 resource: work_package)
         end
 
         it "matches generated text" do
-          expect(mail_body).to include('<span style="color: #C92A2A">Overdue since 2 days</span>')
+          expect(mail_body).to include('<span style="color: #C92A2A">Overdue since 2 days.</span>')
         end
       end
 
@@ -231,12 +207,11 @@ RSpec.describe DigestMailer do
           create(:notification,
                  reason: :date_alert_due_date,
                  recipient:,
-                 resource: work_package,
-                 project: project1)
+                 resource: work_package)
         end
 
         it "matches generated text" do
-          expect(mail_body).to have_text("Milestone date is in 1 day")
+          expect(mail_body).to have_text("Milestone date is in 1 day.")
         end
       end
 
@@ -246,12 +221,11 @@ RSpec.describe DigestMailer do
           create(:notification,
                  reason: :date_alert_due_date,
                  recipient:,
-                 resource: work_package,
-                 project: project1)
+                 resource: work_package)
         end
 
         it "matches generated text" do
-          expect(mail_body).to have_text("Finish date is deleted")
+          expect(mail_body).to have_text("Finish date is deleted.")
         end
       end
 
@@ -263,12 +237,11 @@ RSpec.describe DigestMailer do
           create(:notification,
                  reason: :date_alert_due_date,
                  recipient:,
-                 resource: work_package,
-                 project: project1)
+                 resource: work_package)
         end
 
         it "matches generated text" do
-          expect(mail_body).to have_text("Finish date is today")
+          expect(mail_body).to have_text("Finish date is today.")
         end
       end
 
@@ -280,12 +253,11 @@ RSpec.describe DigestMailer do
           create(:notification,
                  reason: :date_alert_due_date,
                  recipient:,
-                 resource: work_package,
-                 project: project1)
+                 resource: work_package)
         end
 
         it "matches generated text" do
-          expect(mail_body).to have_text("Finish date is in 1 day")
+          expect(mail_body).to have_text("Finish date is in 1 day.")
         end
       end
 
@@ -296,7 +268,6 @@ RSpec.describe DigestMailer do
                  reason: :mentioned,
                  recipient:,
                  resource: work_package,
-                 project: project1,
                  journal: nil)
         end
 

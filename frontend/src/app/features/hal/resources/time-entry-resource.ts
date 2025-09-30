@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -31,15 +31,16 @@ import { ProjectResource } from 'core-app/features/hal/resources/project-resourc
 import { InputState } from '@openproject/reactivestates';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import Formattable = api.v3.Formattable;
+import { MeetingResource } from 'core-app/features/hal/resources/meeting-resource';
 
 export class TimeEntryResource extends HalResource {
   project:ProjectResource;
 
-  activity:HalResource;
+  activity:HalResource|null;
 
   comment:Formattable;
 
-  workPackage:WorkPackageResource;
+  entity:WorkPackageResource|MeetingResource;
 
   spentOn:string;
 

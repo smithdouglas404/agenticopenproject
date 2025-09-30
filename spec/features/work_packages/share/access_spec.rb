@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 # -- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,9 +31,11 @@
 require "spec_helper"
 
 RSpec.describe "Shared Work Package Access",
-               :js, :with_cuprite,
-               with_ee: %i[work_package_sharing] do
+               :js, with_ee: %i[work_package_sharing] do
   shared_let(:project) { create(:project_with_types) }
+  # This custom field is not explicitly displayed, but it's purpose is to ensure there are no errors
+  # on the overview page while displaying project attributes.
+  shared_let(:int_project_custom_field) { create(:integer_project_custom_field, projects: [project]) }
   shared_let(:work_package) { create(:work_package, project:, journal_notes: "Hello!") }
   shared_let(:sharer) { create(:admin) }
   shared_let(:shared_with_user) { create(:user, firstname: "Mean", lastname: "Turkey") }
@@ -46,7 +50,8 @@ RSpec.describe "Shared Work Package Access",
   let(:global_work_packages_page) { Pages::WorkPackagesTable.new }
   let(:work_packages_page) { Pages::WorkPackagesTable.new(project) }
   let(:work_package_page) { Pages::FullWorkPackage.new(work_package) }
-  let(:share_modal) { Components::WorkPackages::ShareModal.new(work_package) }
+  let(:activity_tab) { Components::WorkPackages::Activities.new(work_package) }
+  let(:share_modal) { Components::Sharing::WorkPackages::ShareModal.new(work_package) }
   let(:add_comment_button_selector) { ".work-packages--activity--add-comment" }
   let(:attach_files_button_selector) { "op-attachments--upload-button" }
 
@@ -83,9 +88,12 @@ RSpec.describe "Shared Work Package Access",
       # 2. Via the Projects dropdown in the top menu
       projects_top_menu.toggle!
       projects_top_menu.expect_result(project.name)
-
       # 3. Visiting the Project's URL directly
       project_page.visit!
+
+      # The project overview page is loaded without errors
+      wait_for_network_idle
+      project_page.expect_no_toaster(type: "error")
 
       #
       # Work Package is now visible
@@ -161,6 +169,10 @@ RSpec.describe "Shared Work Package Access",
       # 3. Visiting the Project's URL directly
       project_page.visit!
 
+      # The project overview page is loaded without errors
+      wait_for_network_idle
+      project_page.expect_no_toaster(type: "error")
+
       #
       # Work Package is now visible
       project_page.within_sidebar do
@@ -184,11 +196,9 @@ RSpec.describe "Shared Work Package Access",
                         .time_log_icon_visible(true)
 
       work_package_page.ensure_page_loaded # waits for activity section to be ready
-      work_package_page.within_active_tab do
-        # Commenting is enabled
-        expect(page)
-          .to have_css(add_comment_button_selector)
-      end
+      work_package_page.switch_to_tab tab: :activity
+      work_package_page.wait_for_activity_tab
+      activity_tab.expect_input_field # commenting is enabled
 
       # Attachments are uploadable
       work_package_page.switch_to_tab(tab: "Files")
@@ -240,6 +250,10 @@ RSpec.describe "Shared Work Package Access",
       # 3. Visiting the Project's URL directly
       project_page.visit!
 
+      # The project overview page is loaded without errors
+      wait_for_network_idle
+      project_page.expect_no_toaster(type: "error")
+
       #
       # Work Package is now visible
       project_page.within_sidebar do
@@ -268,11 +282,9 @@ RSpec.describe "Shared Work Package Access",
                         .time_log_icon_visible(true)
 
       work_package_page.ensure_page_loaded # waits for activity section to be ready
-      work_package_page.within_active_tab do
-        # Commenting is enabled
-        expect(page)
-          .to have_css(add_comment_button_selector)
-      end
+      work_package_page.switch_to_tab tab: :activity
+      work_package_page.wait_for_activity_tab
+      activity_tab.expect_input_field # commenting is enabled
 
       # Attachments are uploadable
       work_package_page.switch_to_tab(tab: "Files")

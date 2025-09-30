@@ -1,16 +1,20 @@
 #English strings go here for Rails i18n
 tr:
   plugin_openproject_two_factor_authentication:
-    name: "OpenProject Two-factor authentication"
+    name: "OpenProject İki faktörlü kimlik doğrulama"
     description: >-
-      This OpenProject plugin authenticates your users using two-factor authentication by means of one-time password through the TOTP standard (Google Authenticator) or sent to the user's cell phone via SMS or voice call.
+      Bu OpenProject eklentisi, TOTP standardı (Google Authenticator) kullanılarak tek kullanımlık parola aracılığıyla veya SMS veya sesli arama yoluyla kullanıcının cep telefonuna gönderilen iki faktörlü kimlik doğrulama kullanarak kullanıcılarınızın kimliğini doğrular.
   activerecord:
     attributes:
       two_factor_authentication/device:
         identifier: "Tanıtıcı"
         default: "Varsayılan olarak kullan"
+        channel: "Kanal"
       two_factor_authentication/device/sms:
         phone_number: "Telefon numarası"
+      two_factor_authentication/device/webauthn:
+        webauthn_external: "WebAuthn Kimliği"
+        webauthn_public_key: "WebAuthn açık anahtarı"
     errors:
       models:
         two_factor_authentication/device:
@@ -26,6 +30,7 @@ tr:
       two_factor_authentication/device/webauthn: "WebAuthn"
   two_factor_authentication:
     error_2fa_disabled: "2FA teslimi devre dışı bırakıldı."
+    notice_not_writable: "2FA Ayarları ortam değişkenleri aracılığıyla sağlanmıştır ve üzerine yazılamaz."
     error_no_device: "Bu örnek için gerekli olmasına rağmen, bu kullanıcı için kayıtlı 2FA cihazı bulunamadı."
     error_no_matching_strategy: "Bu kullanıcı için eşleşen 2FA stratejisi yok. Lütfen yöneticinize başvurun."
     error_is_enforced_not_active: "Yapılandırma hatası: İki faktörlü kimlik doğrulama zorlandı, ancak etkin stratejiler mevcut değil."
@@ -33,17 +38,17 @@ tr:
     channel_unavailable: "%{channel} yayın kanalı kullanılamıyor."
     no_valid_phone_number: "Geçerli bir telefon numarası yok."
     label_pwd_confirmation: "Parola"
-    notice_pwd_confirmation: "Bu ayarlarda değişiklik yaptıktan sonra şifrenizi onaylamanız gerekir."
+    notice_pwd_confirmation: "Bu ayarlarda değişiklik yaptıktan sonra parolanızı onaylamanız gerekir."
     label_device_type: "Cihaz tipi"
     label_default_device: "Varsayılan 2FA cihazı"
     label_device: "2FA cihazı"
     label_devices: "2FA cihazları"
-    label_one_time_password: "Tek seferlik şifre"
+    label_one_time_password: "Tek kullanımlık parola"
     label_2fa_enabled: "İki faktörlü kimlik doğrulama etkin"
     label_2fa_disabled: "İki faktörlü kimlik doğrulama etkin değil"
-    text_otp_delivery_message_sms: "%{app_title} bir kerelik şifreniz %{token}"
+    text_otp_delivery_message_sms: "%{app_title} tek kullanımlık parolanız %{token}"
     text_otp_delivery_message_voice: "%{app_title} bir kerelik parolanız: %{pause} %{token}. %{pause} Tekrar ediyorum: %{pause}   %{token} "
-    text_enter_2fa: "Lütfen cihazınızdan bir kerelik şifre girin."
+    text_enter_2fa: "Lütfen cihazınızdan tek kullanımlık parola girin."
     text_2fa_enabled: "Her giriş yaptığınızda, varsayılan 2FA cihazınızdan bir OTP belirteci girmeniz istenir."
     text_2fa_disabled: "İki faktörlü kimlik doğrulamayı etkinleştirmek için, yeni bir 2FA cihazı kaydetmek için yukarıdaki düğmeyi kullanın. Zaten bir cihazınız varsa, varsayılan olarak ayarlamanız gerekir."
     login:
@@ -74,11 +79,11 @@ tr:
       delete_all_are_you_sure: "Bu kullanıcı için tüm 2FA cihazlarını silmek istediğinize emin misiniz?"
       button_delete_all_devices: "Kayıtlı 2FA cihazlarını sil"
       button_register_mobile_phone_for_user: "Cep telefonunu kaydet"
-      text_2fa_enabled: "Upon every login, this user will be requested to enter a OTP token from their default 2FA device."
-      text_2fa_disabled: "The user did not set up a 2FA device through their 'My account page'"
-      only_sms_allowed: "Only SMS delivery can be set up for other users."
-    upsale:
-      title: "İki faktörlü kimlik doğrulama"
+      text_2fa_enabled: "Her girişte bu kullanıcının varsayılan 2FA cihazından bir OTP belirtecini girmesi istenir."
+      text_2fa_disabled: "Kullanıcı 'Hesabım sayfası' üzerinden bir 2FA cihazı ayarlamadı"
+      only_sms_allowed: "Diğer kullanıcılar için yalnızca SMS gönderimi ayarlanabilir."
+    upsell:
+      title: "İki aşamalı kimlik doğrulama"
       description: "Tüm proje üyelerine iki faktörlü kimlik doğrulama sunarak (veya zorunlu kılarak) OpenProject bulut sunucunuzun güvenliğini güçlendirin."
     backup_codes:
       none_found: Bu hesap için yedek kod yok.
@@ -90,8 +95,8 @@ tr:
         Yeni bir yedekleme kodu kümesi oluşturmak için aşağıdaki düğmeyi kullanın.
       generate:
         title: Yedek kodları üret
-        keep_safe_as_password: "Önemli! Bu kodları şifre olarak kabul edin."
-        keep_safe_warning: "Onları şifre yöneticinize kaydedin veya bu sayfayı yazdırın ve güvenli bir yere koyun."
+        keep_safe_as_password: "Önemli! Bu kodları parola olarak kabul edin."
+        keep_safe_warning: "Bunları parola yöneticinize kaydedin ya da bu sayfayı yazdırıp güvenli bir yere koyun."
         regenerate_warning: "Uyarı: Daha önce yedekleme kodları oluşturduysanız, geçersiz sayılacaklar ve artık çalışmayacaklar."
     devices:
       add_new: "Yeni 2FA cihazı ekle"
@@ -108,24 +113,24 @@ tr:
       registration_failed_update: "2FA cihaz kaydı başarısız oldu; belirteç geçerliydi, ancak cihaz güncellenemedi."
       confirm_send_failed: "2FA cihazınızın onayı başarısız oldu."
       button_complete_registration: "2FA kaydını tamamla"
-      text_confirm_to_complete_html: "Lütfen varsayılan cihazınızdan bir kerelik bir şifre girerek cihazınızın <strong> %{identifier} </strong> kaydını tamamlayın."
-      text_confirm_to_change_default_html: "Lütfen geçerli varsayılan cihazınızdan bir kerelik bir şifre girerek varsayılan cihazınızı <strong>%{new_identifier} </strong> olarak değiştirmeyi onaylayın."
+      text_confirm_to_complete_html: "Lütfen varsayılan cihazınızdan tek kullanımlık parola girerek <strong>%{identifier}</strong> cihazınızın kaydını tamamlayın."
+      text_confirm_to_change_default_html: "Lütfen varsayılan cihazınızı <strong>%{new_identifier}</strong> olarak değiştirdiğinizi, mevcut varsayılan cihazınızdan tek seferlik bir şifre girerek onaylayın."
       text_identifier: "Bu alanı kullanarak cihaza özel bir tanımlayıcı verebilirsiniz."
       failed_to_delete: "2FA cihazı silinemedi."
       is_default_cannot_delete: "Cihaz varsayılan olarak işaretlenmiştir ve aktif bir güvenlik politikası nedeniyle silinemez. Silmeden önce başka bir cihazı varsayılan olarak işaretleyin."
       not_existing: "Hesabınız için 2FA cihazı kayıtlı değil."
-      2fa_from_input: Please enter the code from your <strong>%{device_name}</strong> to verify your identity.
-      2fa_from_webauthn: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
+      2fa_from_input: Kimliğinizi doğrulamak için lütfen <strong>%{device_name}</strong> cihazından kod girin.
+      2fa_from_webauthn: Lütfen WebAuthn cihazını <strong>%{device_name}</strong> sağlayın. USB tabanlı ise cihazınız taktığınızdan ve dokunduğunuzdan emin olun. Ardından oturum açma düğmesine tıklayın.
       webauthn:
         title: "WebAuthn"
-        description: Use Web Authentication to register a FIDO2 device (like a YubiKey) or the secure enclave of your mobile device as a second factor.
-        further_steps: After you have chosen a name, you can click the Continue button. Your browser will prompt you to present your WebAuthn device. When you have done so, you are done registering the device.
+        description: Register a FIDO2 device (like YubiKey) or the secure enclave of your mobile device.
+        further_steps: Bir isim seçtikten sonra Devam düğmesine tıklayabilirsiniz. Tarayıcınız sizden WebAuthn cihazınızı göstermenizi isteyecektir. Bunu yaptığınızda, cihazın kaydını tamamlamış olursunuz.
       totp:
-        title: "Uygulama tabanlı kimlik doğrulayıcınızı kullanın"
-        provisioning_uri: "URI sağlama"
+        title: "Uygulama tabanlı kimlik doğrulayıcı"
+        provisioning_uri: "Kurulum adresi"
         secret_key: "Gizli anahtar"
         time_based: "Zaman bazlı"
-        account: "Hesap adı / İhraççı"
+        account: "Hesap adı / Oluşturan"
         setup: |
           Google Authenticator ile iki faktörlü kimlik doğrulaması ayarlamak için uygulamayı Apple App Store'dan veya Google Play Store'dan indirin.
           Uygulamayı açtıktan sonra, cihazı kaydetmek için aşağıdaki QR kodunu tarayabilirsiniz.
@@ -134,14 +139,13 @@ tr:
         text_cannot_scan: |
           Kodu tarayamıyorsanız, aşağıdaki ayrıntıları kullanarak girişi el ile girebilirsiniz:
         description: |
-          OpenProject ile kullanmak için zaman tabanlı bir kerelik şifre kimlik doğrulama standardını kullanarak bir uygulama kimlik doğrulayıcı kaydedin.
-          Yaygın örnekler, Google Authenticator veya Authy.
+          Authy veya Google Authenticator gibi bir kimlik doğrulayıcı tarafından oluşturulan tek seferlik bir kod kullanın.
       sms:
-        title: "cep telefonunu kullan"
+        title: "Mobil cihaz"
         redacted_identifier: "Mobil cihaz (%{redacted_number})"
         request_2fa_identifier: "%{redacted_identifier}, size %{delivery_channel} üzerinden bir kimlik doğrulama kodu gönderdik "
         description: |
-          OpenProject bir kerelik şifrelerin teslimi için cep telefonu numaranızı kaydedin.
+          Her oturum açtığınızda telefonunuza kısa mesaj yoluyla 2FA kodu alın.
     sns:
       delivery_failed: "SNS teslimi başarısız oldu:"
     message_bird:
@@ -152,7 +156,7 @@ tr:
       sns: "Amazon SNS"
       resdt: "SMS Rest API"
       webauthn: "WebAuthn"
-    mobile_transmit_notification: "Tek kullanımlık şifre cep telefonunuza gönderildi."
+    mobile_transmit_notification: "Tek kullanımlık parola cep telefonunuza gönderildi."
     label_two_factor_authentication: "İki faktörlü kimlik doğrulama"
     forced_registration:
       required_to_add_device: "İki faktörlü kimlik doğrulayıcıyı etkinleştirmek için aktif bir güvenlik politikası gereklidir. Bir cihazı kaydetmek için lütfen aşağıdaki formu doldurun."
@@ -165,11 +169,11 @@ tr:
       cookie_removed: "Tüm hatırlanan 2FA oturumları kaldırıldı."
       dont_ask_again: "Bu kullanıcı da 2FA kimlik doğrulamasını %{days} gün boyunca hatırlamak için çerez oluştur."
   field_phone: "Cep telefonu"
-  field_otp: "Tek kullanımlık şifre"
-  notice_account_otp_invalid: "Geçersiz tek kullanımlık şifre."
-  notice_account_otp_expired: "Girdiğiniz tek kullanımlık şifrenin süresi dolmuş."
-  notice_developer_strategy_otp: "Geliştirici stratejisi aşağıdaki tek seferlik şifreyi oluşturdu: %{token} (Kanal: %{channel})"
-  notice_account_otp_send_failed: "Tek kullanımlık şifreniz gönderilemedi."
+  field_otp: "Tek kullanımlık parola"
+  notice_account_otp_invalid: "Geçersiz tek kullanımlık parola."
+  notice_account_otp_expired: "Girdiğiniz tek kullanımlık parolanın süresi doldu."
+  notice_developer_strategy_otp: "Geliştirici stratejisi aşağıdaki tek seferlik parola oluşturdu: %{token} (Kanal: %{channel})"
+  notice_account_otp_send_failed: "Tek kullanımlık parolanız gönderilemedi."
   notice_account_has_no_phone: "Hesabınızla ilişkili cep telefonu numarası yok."
   label_expiration_hint: "%{date} yada çıkışta"
   label_actions: "Eylemler"
@@ -179,7 +183,7 @@ tr:
   label_unverified_phone: "Cep telefonu henüz doğrulanmadı"
   notice_phone_number_format: "Lütfen numaranızı yandaki formatta giriniz: +XX XXXXXXXX."
   text_otp_not_receive: "Diğer doğrulama yöntemleri"
-  text_send_otp_again: "Tek kullanımlık şifreyi tekrar gönderin:"
+  text_send_otp_again: "Tek kullanımlık parolayı yeniden gönder:"
   button_resend_otp_form: "Tekrar gönder"
   button_otp_by_voice: "Sesli arama"
   button_otp_by_sms: "SMS"

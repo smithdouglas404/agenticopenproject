@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,6 +37,7 @@ class Enumeration < ApplicationRecord
   acts_as_tree order: "position ASC"
 
   before_save :unmark_old_default_value, if: :became_default_value?
+  before_save :ensure_activated, if: -> { self.class.can_have_default_value? && is_default? }
   before_destroy :check_integrity
 
   validates :name, presence: true
@@ -46,24 +49,15 @@ class Enumeration < ApplicationRecord
   scope :shared, -> { where(project_id: nil) }
   scope :active, -> { where(active: true) }
 
-  # let all child classes have Enumeration as it's model name
-  # used to not having to create another route for every subclass of Enumeration
-  def self.inherited(child)
-    child.instance_eval do
-      def model_name
-        Enumeration.model_name
-      end
-    end
-    super
-  end
-
   def self.colored?
     false
   end
 
+  delegate :colored?, to: :class
+
   def self.default
     # Creates a fake default scope so Enumeration.default will check
-    # it's type.  STI subclasses will automatically add their own
+    # its type.  STI subclasses will automatically add their own
     # types to the finder.
     if descends_from_active_record?
       where(is_default: true, type: "Enumeration").first
@@ -71,6 +65,11 @@ class Enumeration < ApplicationRecord
       # STI classes are
       where(is_default: true).first
     end
+  end
+
+  # boolean to define if the enumeration can set a default
+  def self.can_have_default_value?
+    true
   end
 
   # Destroys enumerations in a single transaction
@@ -175,9 +174,8 @@ class Enumeration < ApplicationRecord
   def check_integrity
     raise "Can't delete enumeration" if in_use?
   end
-end
 
-# Force load the subclasses in development mode
-%w(time_entry_activity issue_priority).each do |enum_subclass|
-  require enum_subclass
+  def ensure_activated
+    self.active = true
+  end
 end

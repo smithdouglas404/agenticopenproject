@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,7 +34,9 @@ require "rails/all"
 require "active_support"
 require "active_support/dependencies"
 require "core_extensions"
+require "sprockets/railtie"
 require "view_component"
+require "primer/view_components"
 require "primer/view_components/engine"
 
 # Require the gems listed in Gemfile, including any gems
@@ -54,10 +58,10 @@ module OpenProject
     # https://guides.rubyonrails.org/configuring.html#versioned-default-values
     # for the default values associated with a particular version.
     #
-    # Goal is to reach 7.0 defaults. Overridden defaults should be stored in
+    # Goal is to reach 8.0 defaults. Overridden defaults should be stored in
     # specific initializers files. See
     # https://community.openproject.org/wp/45463 for details.
-    config.load_defaults 5.0
+    config.load_defaults 6.1
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
@@ -74,6 +78,18 @@ module OpenProject
     # Rails 5.0+ default is true. Because of history, lots of tests fail when
     # set to true.
     config.active_record.belongs_to_required_by_default = false
+
+    ###
+    # Enable raising on assignment to attr_readonly attributes. The previous
+    # behavior would allow assignment but silently not persist changes to the
+    # database.
+    # This is a rails 7.1 behaviour.
+    # Ideally this should be defined in the `config/initializers/new_framework_defaults_7_1.rb`
+    # file, but since there is a bug, that file is not loaded correctly in the production environment.
+    # Once [the issue](https://community.openproject.org/wp/59474) is solved, this configuration can
+    # be moved to the `config/initializers/new_framework_defaults_7_1.rb`.
+    #++
+    config.active_record.raise_on_assign_to_attr_readonly = true
 
     # Sets up logging for STDOUT and configures the default logger formatter
     # so that all environments receive level and timestamp information
@@ -139,10 +155,6 @@ module OpenProject
     # :all can be used as a placeholder for all plugins not explicitly named.
     # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
 
-    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
-    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
-    # config.time_zone = 'Central Time (US & Canada)'
-
     # Add locales from crowdin translations to i18n
     config.i18n.load_path += Dir[Rails.root.join("config/locales/crowdin/*.{rb,yml}").to_s]
     config.i18n.default_locale = :en
@@ -166,40 +178,12 @@ module OpenProject
     # Enable cascade key lookup for i18n
     I18n.backend.class.send(:include, I18n::Backend::Cascade)
 
-    # Configure the default encoding used in templates for Ruby 1.9.
-    config.encoding = "utf-8"
+    ActiveModel::Translation.raise_on_missing_translations = Rails.env.local?
 
-    # Enable escaping HTML in JSON.
-    config.active_support.escape_html_entities_in_json = true
-
-    # Make Active Record use stable #cache_key alongside new #cache_version method.
-    # This is needed for recyclable cache keys.
-    # We will want check https://blog.heroku.com/cache-invalidation-rails-5-2-dalli-store
-    # and test if we can enable this in the long run
-    # Rails.application.config.active_record.cache_versioning = true
-
-    # Use AES-256-GCM authenticated encryption for encrypted cookies.
-    # Also, embed cookie expiry in signed or encrypted cookies for increased security.
-    #
-    # This option is not backwards compatible with earlier Rails versions.
-    # It's best enabled when your entire app is migrated and stable on 5.2.
-    #
-    # Existing cookies will be converted on read then written with the new scheme.
-    Rails.application.config.action_dispatch.use_authenticated_cookie_encryption = true
-
-    # Use AES-256-GCM authenticated encryption as default cipher for encrypting messages
-    # instead of AES-256-CBC, when use_authenticated_message_encryption is set to true.
-    Rails.application.config.active_support.use_authenticated_message_encryption = true
-
-    # Use SHA-1 instead of MD5 to generate non-sensitive digests, such as the ETag header.
-    Rails.application.config.active_support.hash_digest_class = ::Digest::SHA1
-
-    # This option is not backwards compatible with earlier Rails versions.
-    # It's best enabled when your entire app is migrated and stable on 6.0.
-    Rails.application.config.action_dispatch.use_cookies_with_metadata = true
-
-    # Make `form_with` generate id attributes for any generated HTML tags.
-    # Rails.application.config.action_view.form_with_generates_ids = true
+    # Use SHA-256 instead of MD5 to generate non-sensitive digests, such as the ETag header.
+    # This will be the default with Rails 7.1. So when config.load_configs is set to 7.1 or above,
+    # this configuration can be removed.
+    Rails.application.config.active_support.hash_digest_class = OpenSSL::Digest::SHA256
 
     # Use SQL instead of Active Record's schema dumper when creating the database.
     # This is necessary if your schema can't be completely dumped by the schema dumper,
@@ -228,12 +212,9 @@ module OpenProject
     config.good_job.max_cache = OpenProject::Configuration[:good_job_max_cache]
     config.good_job.enable_cron = OpenProject::Configuration[:good_job_enable_cron]
     config.good_job.shutdown_timeout = 30
-    config.good_job.smaller_number_is_higher_priority = false
+    config.good_job.smaller_number_is_higher_priority = true
 
     config.action_controller.asset_host = OpenProject::Configuration::AssetHost.value
-
-    # Return false instead of self when enqueuing is aborted from a callback.
-    # Rails.application.config.active_job.return_false_on_aborted_enqueue = true
 
     config.log_level = OpenProject::Configuration["log_level"].to_sym
 

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -402,14 +404,6 @@ RSpec.describe Users::ReplaceMentionsService, "integration" do
 
     context "for documents description" do
       it_behaves_like "rewritten mention", :document, :description
-    end
-
-    context "for meeting_contents text" do
-      it_behaves_like "rewritten mention", :meeting_agenda, :text
-    end
-
-    context "for meeting_content_journals text" do
-      it_behaves_like "rewritten mention", :journal_meeting_content_journal, :text
     end
 
     context "for messages content" do

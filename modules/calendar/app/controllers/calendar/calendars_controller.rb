@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +28,7 @@
 
 module ::Calendar
   class CalendarsController < ApplicationController
-    before_action :find_optional_project
+    before_action :load_and_authorize_in_optional_project
     before_action :build_calendar_view, only: %i[new]
     before_action :authorize, except: %i[index new create]
     before_action :authorize_global, only: %i[index new create]
@@ -61,7 +61,7 @@ module ::Calendar
         flash[:notice] = I18n.t(:notice_successful_create)
         redirect_to project_calendar_path(@project, @view.query)
       else
-        render action: :new
+        render action: :new, status: :unprocessable_entity
       end
     end
 
@@ -106,8 +106,6 @@ module ::Calendar
       @view = Query
                 .visible(current_user)
                 .find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      render_404
     end
   end
 end

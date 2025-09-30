@@ -2,6 +2,7 @@
 zh-CN:
   js:
     storages:
+      authentication_error: "%{storageType} 认证失败"
       link_files_in_storage: "链接 %{storageType} 中的文件"
       link_existing_files: "链接已有文件"
       upload_files: "上传文件"
@@ -13,11 +14,14 @@ zh-CN:
       open_storage: "打开 %{storageType}"
       select_location: "选择位置"
       choose_location: "选择地点"
+      new_folder: "新文件夹"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
         default: "存储"
       information:
+        authentication_error: "无法对 %{storageType} 的请求进行身份验证，这是一个错误。"
         connection_error: >
           某些 %{storageType} 设置不起作用。请联系您的 %{storageType} 管理员。
         live_data_error: "获取文件详情时出错"
@@ -26,6 +30,8 @@ zh-CN:
         no_file_links: "要将文件链接到此工作包，请通过 %{storageType} 执行此操作。"
         not_logged_in: >
           要添加链接、查看或上传与此工作包相关的文件，请登录 %{storageType}。
+        suggest_logout: 您可以尝试重新登录修复这个问题。
+        suggest_relink: 您可以尝试通过下面的登录按钮重新链接您的帐户来解决这个问题。
       files:
         already_existing_header: "此文件已存在"
         already_existing_body: >
@@ -42,6 +48,7 @@ zh-CN:
           尚未找到自动托管的项目文件夹。请稍等片刻，重新加载页面以获取最新数据，然后重试。
         managed_project_folder_no_access: >
           您目前还无法访问托管项目文件夹。请稍等片刻，然后重试。
+        cannot_create_folder: 创建文件夹失败。避免使用特殊字符和符号，并确保该文件夹尚不存在。
         upload_keep_both: "保留两者"
         upload_replace: "替换"
       file_links:

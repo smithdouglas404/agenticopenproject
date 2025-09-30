@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -93,7 +95,7 @@ RSpec.describe "API v3 Relation resource", content_type: :json do
     end
 
     it "returns 201 (created)" do
-      expect(last_response.status).to eq(201)
+      expect(last_response).to have_http_status(:created)
     end
 
     it "has created a new relation" do
@@ -121,7 +123,7 @@ RSpec.describe "API v3 Relation resource", content_type: :json do
       end
 
       it "responds with error" do
-        expect(last_response.status).to be 422
+        expect(last_response).to have_http_status :unprocessable_entity
       end
 
       it "states the reason for the error" do
@@ -242,7 +244,7 @@ RSpec.describe "API v3 Relation resource", content_type: :json do
     end
 
     it "returns 200 (ok)" do
-      expect(last_response.status).to eq 200
+      expect(last_response).to have_http_status :ok
     end
 
     it "updates the relation's description" do
@@ -267,7 +269,7 @@ RSpec.describe "API v3 Relation resource", content_type: :json do
       end
 
       it "returns 422" do
-        expect(last_response.status).to eq 422
+        expect(last_response).to have_http_status :unprocessable_entity
       end
 
       it "indicates an error with the type attribute" do
@@ -291,7 +293,7 @@ RSpec.describe "API v3 Relation resource", content_type: :json do
       end
 
       it "returns 422" do
-        expect(last_response.status).to eq 422
+        expect(last_response).to have_http_status :unprocessable_entity
       end
 
       it "indicates an error with the `from` attribute" do
@@ -303,7 +305,7 @@ RSpec.describe "API v3 Relation resource", content_type: :json do
       it "lets the user know the attribute is read-only" do
         msg = JSON.parse(last_response.body)["message"]
 
-        expect(msg).to include "Work package an existing relation's `from` link is immutable"
+        expect(msg).to include "The selected work package cannot be changed for existing relations."
       end
     end
   end
@@ -329,15 +331,15 @@ RSpec.describe "API v3 Relation resource", content_type: :json do
 
     context "with the required permissions" do
       it "works" do
-        expect(last_response.status).to eq 201
+        expect(last_response).to have_http_status :created
       end
     end
 
     context "without manage_work_package_relations" do
       let(:permissions) { [:view_work_packages] }
 
-      it "is forbidden" do
-        expect(last_response.status).to eq 403
+      it "returns 422" do
+        expect(last_response).to have_http_status :unprocessable_entity
       end
     end
 
@@ -345,11 +347,11 @@ RSpec.describe "API v3 Relation resource", content_type: :json do
     # This one is expected to fail (422) because the `to` work package
     # is in another project for which the user does not have permission to
     # view work packages.
-    context "without manage_work_package_relations" do
+    context "without manage_work_package_relations for 'to' work package" do
       let!(:to) { create(:work_package) }
 
       it "returns 422" do
-        expect(last_response.status).to eq 422
+        expect(last_response).to have_http_status :unprocessable_entity
       end
 
       it "indicates an error with the `to` attribute" do
@@ -392,15 +394,15 @@ RSpec.describe "API v3 Relation resource", content_type: :json do
     end
 
     it "returns 204 and destroy the relation" do
-      expect(last_response.status).to eq 204
+      expect(last_response).to have_http_status :no_content
       expect(Relation.exists?(relation.id)).to be_falsey
     end
 
     context "lacking the permission" do
       let(:permissions) { %i[view_work_packages] }
 
-      it "returns 403" do
-        expect(last_response.status).to eq 403
+      it "returns 422" do
+        expect(last_response).to have_http_status :unprocessable_entity
       end
 
       it "leaves the relation" do
@@ -458,7 +460,7 @@ RSpec.describe "API v3 Relation resource", content_type: :json do
     end
 
     it "returns 200" do
-      expect(last_response.status).to be 200
+      expect(last_response).to have_http_status :ok
     end
 
     it "returns the visible relation (and only the visible one) satisfying the filter" do
@@ -502,7 +504,7 @@ RSpec.describe "API v3 Relation resource", content_type: :json do
 
     context "for a relation with visible work packages" do
       it "returns 200" do
-        expect(last_response.status).to be 200
+        expect(last_response).to have_http_status :ok
       end
 
       it "returns the relation" do
@@ -534,7 +536,7 @@ RSpec.describe "API v3 Relation resource", content_type: :json do
       end
 
       it "returns 404 NOT FOUND" do
-        expect(last_response.status).to be 404
+        expect(last_response).to have_http_status :not_found
       end
     end
   end

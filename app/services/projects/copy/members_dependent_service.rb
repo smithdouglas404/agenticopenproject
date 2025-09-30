@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,8 +34,12 @@ module Projects::Copy
       I18n.t(:"projects.copy.members")
     end
 
+    def source_memberships
+      source.memberships.of_any_project
+    end
+
     def source_count
-      source.members.count
+      source_memberships.count
     end
 
     protected
@@ -41,7 +47,7 @@ module Projects::Copy
     def copy_dependency(*)
       # Copy users and placeholder users first,
       # then groups to handle members with inherited and given roles
-      source.memberships.sort_by { |m| m.principal.is_a?(Group) ? 1 : 0 }.each do |member|
+      source_memberships.sort_by { |m| m.principal.is_a?(Group) ? 1 : 0 }.each do |member|
         create_membership(member)
       end
     end

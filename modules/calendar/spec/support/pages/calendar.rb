@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -57,6 +57,14 @@ module Pages
       ::Pages::SplitWorkPackageCreate.new project:
     end
 
+    def resize_start_date(work_package, date)
+      resize_date(work_package, date, end_date: false)
+    end
+
+    def resize_end_date(work_package, date)
+      resize_date(work_package, date, end_date: true)
+    end
+
     def resize_date(work_package, date, end_date: true)
       retry_block do
         wp_strip = event(work_package)
@@ -81,6 +89,7 @@ module Pages
       end_container = date_container target
 
       drag_n_drop_element(from: start_container, to: end_container)
+      expect_and_dismiss_toaster(message: I18n.t("js.notice_successful_update"))
     end
 
     def date_container(date)
@@ -140,9 +149,7 @@ module Pages
     end
 
     def click_on_create_button
-      within ".toolbar-items" do
-        click_link "Calendar"
-      end
+      page.find_test_selector("add-calendar-button").click
     end
 
     def click_on_cancel_button
@@ -150,19 +157,19 @@ module Pages
     end
 
     def expect_create_button
-      expect(page).to have_css ".button", text: "Calendar"
+      expect(page).to have_test_selector "add-calendar-button"
     end
 
     def expect_no_create_button
-      expect(page).to have_no_css ".button", text: "Calendar"
+      expect(page).not_to have_test_selector "add-calendar-button"
     end
 
     def expect_delete_button(query)
-      expect(page).to have_css "[data-test-selector='calendar-remove-#{query.id}']"
+      expect(page).to have_test_selector "calendar-remove-#{query.id}"
     end
 
     def expect_no_delete_button(query)
-      expect(page).to have_no_css "[data-test-selector='calendar-remove-#{query.id}']"
+      expect(page).not_to have_test_selector "calendar-remove-#{query.id}"
     end
 
     def expect_no_views_visible

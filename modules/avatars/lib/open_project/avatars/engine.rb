@@ -1,6 +1,6 @@
 # OpenProject Avatars plugin
 #
-# Copyright (C) 2017 OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -30,6 +30,7 @@ module OpenProject::Avatars
                  enable_local_avatars: !Rails.env.test?
                },
                partial: "settings/openproject_avatars",
+               breadcrumb_elements: -> { [{ href: admin_settings_users_path, text: I18n.t(:label_user_and_permission) }] },
                menu_item: :user_avatars
              },
              bundled: true do
@@ -37,7 +38,7 @@ module OpenProject::Avatars
                     { controller: "/avatars/my_avatar", action: "show" },
                     caption: ->(*) { I18n.t("avatars.label_avatar") },
                     if: ->(*) { ::OpenProject::Avatars::AvatarManager::avatars_enabled? },
-                    icon: "image1"
+                    icon: "image"
     end
 
     add_api_endpoint "API::V3::Users::UsersAPI", :id do

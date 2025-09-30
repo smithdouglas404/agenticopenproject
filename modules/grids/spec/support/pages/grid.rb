@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -56,11 +56,8 @@ module Pages
 
     def expect_add_widget_enterprise_edition_notice(row_number, column_number, location)
       within_add_widget_modal(row_number, column_number, location) do
-        expect(page)
-          .to have_content(I18n.t("js.grid.add_widget"))
-
-        expect(page)
-          .to have_css(".op-toast.-ee-upsale", text: I18n.t("js.upsale.ee_only"))
+        expect(page).to have_content(I18n.t("js.grid.add_widget"))
+        expect(page).to have_text "Available starting with the Basic enterprise plan"
       end
     end
 

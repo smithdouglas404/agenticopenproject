@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,21 +29,21 @@
 #++
 #
 module Storages::Admin::Forms
-  class AutomaticallyManagedProjectFoldersFormComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
-    alias_method :storage, :model
+  class AutomaticallyManagedProjectFoldersFormComponent < StorageFormComponent
+    def self.wrapper_key = :automatically_managed_project_folders_section
 
     def form_method
       options[:form_method] || default_form_method
     end
 
     def form_url
-      options[:form_url] || default_form_url
+      query = { continue_wizard: storage.id } if in_wizard
+      admin_settings_storage_automatically_managed_project_folders_path(storage, query)
     end
 
     def submit_button_options
       {
-        label: submit_button_label,
+        label: I18n.t(:button_finish_setup),
         data: { "storages--automatically-managed-project-folders-form-target": "submitButton" }.tap do |data_hash|
           # For create action, break from Turbo Frame and follow full page redirect
           data_hash[:turbo] = false if new_record?
@@ -57,14 +57,6 @@ module Storages::Admin::Forms
 
     private
 
-    def submit_button_label
-      if storage.automatic_management_enabled?
-        I18n.t("storages.buttons.done_complete_setup")
-      else
-        I18n.t("storages.buttons.complete_without_setup")
-      end
-    end
-
     def application_password_display_options
       {}.tap do |options_hash|
         options_hash[:display] = :none unless storage.automatic_management_enabled?
@@ -77,24 +69,6 @@ module Storages::Admin::Forms
 
     def new_record?
       storage.automatic_management_new_record?
-    end
-
-    def default_form_url
-      admin_settings_storage_automatically_managed_project_folders_path(storage)
-    end
-
-    def storage_provider_credentials_copy_instructions
-      "#{I18n.t('storages.instructions.copy_from')}: #{provider_credentials_instructions_link}".html_safe
-    end
-
-    def provider_credentials_instructions_link
-      render(
-        Primer::Beta::Link.new(
-          href: Storages::Peripherals::StorageInteraction::Nextcloud::Util.join_uri_path(storage.host,
-                                                                                         "settings/admin/openproject"),
-          target: "_blank"
-        )
-      ) { I18n.t("storages.instructions.#{storage.short_provider_type}.integration") }
     end
   end
 end

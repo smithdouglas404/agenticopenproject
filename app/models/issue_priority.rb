@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,7 +39,7 @@ class IssuePriority < Enumeration
   end
 
   def color_label
-    I18n.t("prioritiies.edit.priority_color_text")
+    I18n.t("priorities.edit.priority_color_text")
   end
 
   def option_name

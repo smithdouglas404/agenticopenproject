@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,7 +30,7 @@ require "spec_helper"
 require_relative "../../../overviews/spec/support/pages/overview"
 require_relative "../support/pages/calendar"
 
-RSpec.describe "Calendar Widget", :js, :with_cuprite, with_settings: { start_of_week: 1 } do
+RSpec.describe "Calendar Widget", :js, with_settings: { start_of_week: 1 } do
   shared_let(:project) do
     create(:project, enabled_module_names: %w[work_package_tracking calendar_view meetings])
   end
@@ -41,7 +41,7 @@ RSpec.describe "Calendar Widget", :js, :with_cuprite, with_settings: { start_of_
            due_date: Time.zone.today.beginning_of_week.next_occurring(:thursday))
   end
   shared_let(:meeting) do
-    create(:structured_meeting, title: "Weekly", project:, start_time: Time.zone.tomorrow + 10.hours)
+    create(:meeting, title: "Weekly", project:, start_time: Time.zone.today.beginning_of_week.next_occurring(:tuesday) + 10.hours)
   end
 
   let(:overview_page) do
@@ -50,7 +50,7 @@ RSpec.describe "Calendar Widget", :js, :with_cuprite, with_settings: { start_of_
   let(:wp_full_view) { Pages::FullWorkPackage.new(work_package, project) }
   let(:calendar) { Pages::Calendar.new project }
 
-  current_user do
+  shared_let(:current_user) do
     create(:user,
            member_with_permissions: {
              project => %w[view_work_packages view_meetings edit_work_packages view_calendar manage_overview]
@@ -58,31 +58,47 @@ RSpec.describe "Calendar Widget", :js, :with_cuprite, with_settings: { start_of_
   end
 
   before do
+    login_as(current_user)
     overview_page.visit!
+
+    wait_for_network_idle if using_cuprite?
+
     # within top-left area, add an additional widget
     overview_page.add_widget(1, 1, :row, "Calendar")
 
     overview_page.expect_and_dismiss_toaster message: I18n.t("js.notice_successful_update")
   end
 
-  it 'shows the meeting' do
-    expect(page).to have_css('.fc-event', text: "Weekly", visible: :all)
-    page.find('.fc-event', text: "Weekly", visible: :all).click
+  it "shows the meeting" do
+    expect(page).to have_css(".fc-event", text: "Weekly", visible: :all)
+
+    page.find(".fc-event", text: "Weekly", visible: :all).click
 
     expect(page).to have_current_path /meetings\/#{meeting.id}/
   end
 
-  it "opens the work package full view when clicking a calendar entry" do
+  context "as a user in a different timezone" do
+    shared_let(:current_user) do
+      create(:user,
+             preferences: { time_zone: "Asia/Tokyo" },
+             member_with_permissions: {
+               project => %w[view_work_packages view_meetings edit_work_packages view_calendar manage_overview]
+             })
+    end
 
-    # Clicking the calendar entry goes to work package full screen
-    page.find(".fc-event-title", text: work_package.subject).click
-    wp_full_view.ensure_page_loaded
+    it "shows the meeting in the correct timezone" do
+      expect(page).to have_css(".fc-event", text: "Weekly", visible: :all)
 
-    wp_full_view.go_back
-    expect(page).to have_text("Overview")
+      start_time = Time.use_zone(current_user.time_zone) { meeting.start_time.strftime("%-l:%M%P") }
+      end_time = Time.use_zone(current_user.time_zone) { (meeting.start_time + 1.hour).strftime("%-l:%M%P") }
+      expect(page).to have_css(".fc-event-time", text: "#{start_time} - #{end_time}", visible: :all, exact_text: false)
+
+      page.find(".fc-event", text: "Weekly", visible: :all).click
+      expect(page).to have_current_path /meetings\/#{meeting.id}/
+    end
   end
 
-  it "can resize the same work package twice (Regression #48333)", with_cuprite: false do
+  it "can resize the same work package twice (Regression #48333)", :selenium do
     expect(page).to have_css(".fc-event-title", text: work_package.subject)
 
     calendar.resize_date(work_package, work_package.due_date - 1.day)
@@ -96,5 +112,22 @@ RSpec.describe "Calendar Widget", :js, :with_cuprite, with_settings: { start_of_
 
     work_package.reload
     expect(work_package.due_date).to eq Time.zone.today.beginning_of_week.next_occurring(:tuesday)
+  end
+
+  context "when looking at the date headers" do
+    let(:next_tuesday) { Time.zone.today.beginning_of_week.next_occurring(:tuesday) }
+    let(:tue_css_selector) { ".fc-day-tue .fc-col-header-cell-cushion" }
+
+    it "shows the default date format" do
+      expected = /Tue #{next_tuesday.month}\/#{next_tuesday.day}/
+      expect(page).to have_css(tue_css_selector, text: expected)
+    end
+
+    context "with a date format configured", with_settings: { date_format: "%d.%m.%Y" } do
+      it "shows the configured date format" do
+        expected = /Tue #{next_tuesday.day.to_s.rjust(2, '0')}\.#{next_tuesday.month.to_s.rjust(2, '0')}\./
+        expect(page).to have_css(tue_css_selector, text: expected)
+      end
+    end
   end
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,72 +33,72 @@ require "spec_helper"
 RSpec.describe WorkPackages::Scopes::ForScheduling, "allowed scope" do
   create_shared_association_defaults_for_work_package_factory
 
-  let(:project) { create(:project) }
-  let(:origin) { create(:work_package, project:) }
+  shared_let(:origin) { create(:work_package, subject: "origin") }
+
   let(:predecessor) do
-    create(:work_package, project:).tap do |pre|
+    create(:work_package, subject: "predecessor").tap do |pre|
       create(:follows_relation, from: origin, to: pre)
     end
   end
   let(:parent) do
-    create(:work_package, project:).tap do |par|
+    create(:work_package, subject: "parent", schedule_manually: false).tap do |par|
       origin.update(parent: par)
     end
   end
   let(:grandparent) do
-    create(:work_package, project:).tap do |grand|
+    create(:work_package, subject: "grandparent", schedule_manually: false).tap do |grand|
       parent.update(parent: grand)
     end
   end
   let(:successor) do
-    create(:work_package, project:).tap do |suc|
+    create(:work_package, subject: "successor", schedule_manually: false).tap do |suc|
       create(:follows_relation, from: suc, to: origin)
     end
   end
   let(:successor2) do
-    create(:work_package, project:).tap do |suc|
+    create(:work_package, subject: "successor2", schedule_manually: false).tap do |suc|
       create(:follows_relation, from: suc, to: origin)
     end
   end
   let(:successor_parent) do
-    create(:work_package, project:).tap do |par|
+    create(:work_package, subject: "successor_parent", schedule_manually: false).tap do |par|
       successor.update(parent: par)
     end
   end
   let(:successor_child) do
-    create(:work_package, project:, parent: successor)
+    create(:work_package, subject: "successor_child", parent: successor)
   end
   let(:successor_grandchild) do
-    create(:work_package, project:, parent: successor_child)
+    create(:work_package, subject: "successor_grandchild", parent: successor_child)
   end
   let(:successor_child2) do
-    create(:work_package, project:, parent: successor)
+    create(:work_package, subject: "successor_child2", parent: successor)
   end
   let(:successor_successor) do
-    create(:work_package, project:).tap do |suc|
+    create(:work_package, subject: "successor_successor", schedule_manually: false).tap do |suc|
       create(:follows_relation, from: suc, to: successor)
     end
   end
   let(:parent_successor) do
-    create(:work_package, project:).tap do |suc|
+    create(:work_package, subject: "parent_successor", schedule_manually: false).tap do |suc|
       create(:follows_relation, from: suc, to: parent)
     end
   end
   let(:parent_successor_parent) do
-    create(:work_package, project:).tap do |par|
+    create(:work_package, subject: "parent_successor_parent", schedule_manually: false).tap do |par|
       parent_successor.update(parent: par)
     end
   end
   let(:parent_successor_child) do
-    create(:work_package, project:, parent: parent_successor)
+    create(:work_package, subject: "parent_successor_child", parent: parent_successor)
   end
   let(:blocker) do
-    create(:work_package, project:).tap do |blo|
+    create(:work_package, subject: "blocker").tap do |blo|
       create(:relation, relation_type: "blocks", from: blo, to: origin)
     end
   end
   let(:includer) do
-    create(:work_package, project:).tap do |inc|
+    create(:work_package, subject: "includer").tap do |inc|
       create(:relation, relation_type: "includes", from: inc, to: origin)
     end
   end
@@ -115,55 +117,92 @@ RSpec.describe WorkPackages::Scopes::ForScheduling, "allowed scope" do
       end
     end
 
-    context "for a work package with a predecessor" do
-      let!(:existing_work_packages) { [predecessor] }
+    shared_examples "direct relations behaviors" do
+      context "with a predecessor" do
+        let!(:existing_work_packages) { [predecessor] }
 
-      it "is empty" do
-        expect(WorkPackage.for_scheduling([origin]))
-          .to be_empty
+        it "is empty" do
+          expect(WorkPackage.for_scheduling([origin]))
+            .to be_empty
+        end
+      end
+
+      context "with a parent scheduled automatically" do
+        let!(:existing_work_packages) { [parent] }
+
+        it "consists of the parent" do
+          expect(WorkPackage.for_scheduling([origin]))
+            .to contain_exactly(parent)
+        end
+      end
+
+      context "with a parent scheduled manually" do
+        let!(:existing_work_packages) { [parent] }
+
+        before do
+          parent.update_column(:schedule_manually, true)
+        end
+
+        it "is empty" do
+          expect(WorkPackage.for_scheduling([origin]))
+            .to be_empty
+        end
+      end
+
+      context "with a successor" do
+        let!(:existing_work_packages) { [successor] }
+
+        it "consists of the successor" do
+          expect(WorkPackage.for_scheduling([origin]))
+            .to contain_exactly(successor)
+        end
+      end
+
+      context "with a blocking work package" do
+        let!(:existing_work_packages) { [blocker] }
+
+        it "is empty" do
+          expect(WorkPackage.for_scheduling([origin]))
+            .to be_empty
+        end
+      end
+
+      context "with an including work package" do
+        let!(:existing_work_packages) { [includer] }
+
+        it "is empty" do
+          expect(WorkPackage.for_scheduling([origin]))
+            .to be_empty
+        end
       end
     end
 
-    context "for a work package with a parent" do
-      let!(:existing_work_packages) { [parent] }
-
-      it "consists of the parent" do
-        expect(WorkPackage.for_scheduling([origin]))
-          .to contain_exactly(parent)
+    context "for an automatically scheduled work package" do
+      before do
+        origin.update_column(:schedule_manually, false)
       end
+
+      include_examples "direct relations behaviors"
     end
 
-    context "for a work package with a successor" do
-      let!(:existing_work_packages) { [successor] }
-
-      it "consists of the successor" do
-        expect(WorkPackage.for_scheduling([origin]))
-          .to contain_exactly(successor)
+    context "for a manually scheduled work package" do
+      before do
+        origin.update_column(:schedule_manually, true)
       end
-    end
 
-    context "for a work package with a blocking work package" do
-      let!(:existing_work_packages) { [blocker] }
-
-      it "is empty" do
-        expect(WorkPackage.for_scheduling([origin]))
-          .to be_empty
-      end
-    end
-
-    context "for a work package with an including work package" do
-      let!(:existing_work_packages) { [includer] }
-
-      it "is empty" do
-        expect(WorkPackage.for_scheduling([origin]))
-          .to be_empty
-      end
+      include_examples "direct relations behaviors"
     end
 
     context "for a work package with a successor which has parent and child" do
       let!(:existing_work_packages) { [successor, successor_child, successor_parent] }
 
       context "with all scheduled automatically" do
+        before do
+          existing_work_packages.each do |wp|
+            wp.update_column(:schedule_manually, false)
+          end
+        end
+
         it "consists of the successor, its child and parent" do
           expect(WorkPackage.for_scheduling([origin]))
             .to contain_exactly(successor, successor_child, successor_parent)
@@ -181,9 +220,10 @@ RSpec.describe WorkPackages::Scopes::ForScheduling, "allowed scope" do
         end
       end
 
-      context "with the successor's parent scheduled manually" do
+      context "with the successor's parent scheduled manually and child scheduled automatically" do
         before do
           successor_parent.update_column(:schedule_manually, true)
+          successor_child.update_column(:schedule_manually, false)
         end
 
         it "consists of the successor and its child" do
@@ -212,15 +252,22 @@ RSpec.describe WorkPackages::Scopes::ForScheduling, "allowed scope" do
       end
 
       context "with all scheduled automatically" do
+        before do
+          existing_work_packages.each do |wp|
+            wp.update_column(:schedule_manually, false)
+          end
+        end
+
         it "consists of the successor, its child and parent and the successor successor" do
           expect(WorkPackage.for_scheduling([origin]))
             .to contain_exactly(successor, successor_child, successor_parent, successor_successor)
         end
       end
 
-      context "with successor parent scheduled manually" do
+      context "with successor parent scheduled manually and child scheduled automatically" do
         before do
           successor_parent.update_column(:schedule_manually, true)
+          successor_child.update_column(:schedule_manually, false)
         end
 
         it "consists of the successor, its child and successor successor" do
@@ -249,7 +296,13 @@ RSpec.describe WorkPackages::Scopes::ForScheduling, "allowed scope" do
       end
 
       context "with all scheduled automatically" do
-        it "consists of the successor, its child and parent" do
+        before do
+          existing_work_packages.each do |wp|
+            wp.update_column(:schedule_manually, false)
+          end
+        end
+
+        it "consists of the successor and its parent" do
           expect(WorkPackage.for_scheduling([origin]))
             .to contain_exactly(successor, successor_parent)
         end
@@ -290,28 +343,57 @@ RSpec.describe WorkPackages::Scopes::ForScheduling, "allowed scope" do
       end
     end
 
+    context "for a work package with a manually scheduled successor which has a parent" do
+      let!(:existing_work_packages) { [successor, successor_parent] }
+
+      before do
+        successor.update_column(:schedule_manually, true)
+      end
+
+      context "with the successor keeping its manual scheduling" do
+        it "is empty" do
+          expect(WorkPackage.for_scheduling([origin]))
+            .to be_empty
+        end
+      end
+
+      context "with the successor switching to automatic scheduling (like when the relation is created)" do
+        it "consists of the successor and its parent" do
+          expect(WorkPackage.for_scheduling([origin], switching_to_automatic_mode: [successor]))
+            .to contain_exactly(successor, successor_parent)
+        end
+      end
+    end
+
     context "for a work package with a successor with two children and the successor having a successor" do
       let!(:existing_work_packages) { [successor, successor_child, successor_child2, successor_successor] }
 
       context "with all scheduled automatically" do
-        it "consists of the successor, its child and the successor˚s successor" do
+        before do
+          existing_work_packages.each do |wp|
+            wp.update_column(:schedule_manually, false)
+          end
+        end
+
+        it "consists of the successor, its child and the successor's successor" do
           expect(WorkPackage.for_scheduling([origin]))
             .to contain_exactly(successor, successor_child, successor_child2, successor_successor)
         end
       end
 
-      context "with one of the successor`s children scheduled manually" do
+      context "with one of the successor's children scheduled manually and one automatically" do
         before do
           successor_child2.update_column(:schedule_manually, true)
+          successor_child.update_column(:schedule_manually, false)
         end
 
-        it "consists of the successor, its automatically scheduled child and the successor˚s successor" do
+        it "consists of the successor, its automatically scheduled child and the successor's successor" do
           expect(WorkPackage.for_scheduling([origin]))
             .to contain_exactly(successor_child, successor, successor_successor)
         end
       end
 
-      context "with both of the successor`s children scheduled manually" do
+      context "with both of the successor's children scheduled manually" do
         before do
           successor_child.update_column(:schedule_manually, true)
           successor_child2.update_column(:schedule_manually, true)
@@ -343,9 +425,15 @@ RSpec.describe WorkPackages::Scopes::ForScheduling, "allowed scope" do
     end
 
     context "for a work package with a parent which has a successor which has parent and child" do
-      let!(:existing_work_packages) { [parent, parent_successor, parent_successor_child, parent_successor_parent] }
+      let!(:existing_work_packages) { [parent, parent_successor, parent_successor_parent, parent_successor_child] }
 
       context "with all scheduled automatically" do
+        before do
+          existing_work_packages.each do |wp|
+            wp.update_column(:schedule_manually, false)
+          end
+        end
+
         it "consists of the parent, self and the whole parent successor hierarchy" do
           expect(WorkPackage.for_scheduling([origin]))
             .to contain_exactly(parent, parent_successor, parent_successor_parent, parent_successor_child)
@@ -390,6 +478,12 @@ RSpec.describe WorkPackages::Scopes::ForScheduling, "allowed scope" do
       let!(:existing_work_packages) { [successor, successor_successor] }
 
       context "with all scheduled automatically" do
+        before do
+          existing_work_packages.each do |wp|
+            wp.update_column(:schedule_manually, false)
+          end
+        end
+
         it "consists of both successors" do
           expect(WorkPackage.for_scheduling([origin]))
             .to contain_exactly(successor, successor_successor)
@@ -423,15 +517,22 @@ RSpec.describe WorkPackages::Scopes::ForScheduling, "allowed scope" do
       let!(:existing_work_packages) { [successor, successor_child, successor_grandchild] }
 
       context "with all scheduled automatically" do
-        it "consists of both successors" do
+        before do
+          existing_work_packages.each do |wp|
+            wp.update_column(:schedule_manually, false)
+          end
+        end
+
+        it "consists of the successor and its 2 descendants" do
           expect(WorkPackage.for_scheduling([origin]))
             .to contain_exactly(successor, successor_child, successor_grandchild)
         end
       end
 
-      context "with the successor's child scheduled manually" do
+      context "with the successor's child scheduled manually and grand child scheduled automatically" do
         before do
           successor_child.update_column(:schedule_manually, true)
+          successor_grandchild.update_column(:schedule_manually, false)
         end
 
         it "contains the successor" do
@@ -443,42 +544,60 @@ RSpec.describe WorkPackages::Scopes::ForScheduling, "allowed scope" do
 
     context "for a work package with a successor that has a child and two grandchildren" do
       let(:successor_grandchild2) do
-        create(:work_package, project:, parent: successor_child)
+        create(:work_package, subject: "successor_grandchild2", parent: successor_child)
       end
 
       let!(:existing_work_packages) { [successor, successor_child, successor_grandchild, successor_grandchild2] }
 
       context "with all scheduled automatically" do
-        it "consists of the successor with its descendants" do
+        before do
+          existing_work_packages.each do |wp|
+            wp.update_column(:schedule_manually, false)
+          end
+        end
+
+        it "consists of the successor with its 3 descendants" do
           expect(WorkPackage.for_scheduling([origin]))
             .to contain_exactly(successor, successor_child, successor_grandchild, successor_grandchild2)
         end
       end
 
-      context "with one of the successor's grandchildren scheduled manually" do
+      context "with the successor's child scheduled automatically, " \
+              "one of the successor's grandchildren scheduled manually " \
+              "and the other one scheduled automatically" do
         before do
+          successor_child.update_column(:schedule_manually, false)
           successor_grandchild.update_column(:schedule_manually, true)
+          successor_grandchild2.update_column(:schedule_manually, false)
         end
 
-        it "contains the successor and the non automatically scheduled descendants" do
+        it "contains the successor and the automatically scheduled descendants" do
           expect(WorkPackage.for_scheduling([origin]))
             .to contain_exactly(successor, successor_child, successor_grandchild2)
         end
       end
 
-      context "with both of the successor's grandchildren scheduled manually" do
+      context "with the successor's child scheduled automatically " \
+              "and both of the successor's grandchildren scheduled manually" do
         before do
+          successor_child.update_column(:schedule_manually, false)
           successor_grandchild.update_column(:schedule_manually, true)
           successor_grandchild2.update_column(:schedule_manually, true)
         end
 
-        it "includes successor" do
+        # It should return an empty array as the successor dates will always be
+        # its manually scheduled child's dates, but it does not cause any harm
+        # to return the successor. It will be processed for rescheduling but
+        # none of its dates will change.
+        #
+        # The SQL is quite complex and I am not sure it's worth fixing.
+        it "consists of the successor" do
           expect(WorkPackage.for_scheduling([origin]))
             .to contain_exactly(successor)
         end
       end
 
-      context "with both of the successor's grandchildren and child scheduled manually" do
+      context "with the successor's child and both of the successor's grandchildren scheduled manually" do
         before do
           successor_child.update_column(:schedule_manually, true)
           successor_grandchild.update_column(:schedule_manually, true)
@@ -491,11 +610,20 @@ RSpec.describe WorkPackages::Scopes::ForScheduling, "allowed scope" do
         end
       end
 
-      context "with the successor's child scheduled manually" do
+      context "with the successor's child scheduled manually " \
+              "and both of the successor's grandchildren scheduled automatically" do
         before do
           successor_child.update_column(:schedule_manually, true)
+          successor_grandchild.update_column(:schedule_manually, false)
+          successor_grandchild2.update_column(:schedule_manually, false)
         end
 
+        # It should return an empty array as the successor child should be
+        # considered manually scheduled, but it does not cause any harm to
+        # return the successor. It will be processed for rescheduling but none
+        # of its dates will change.
+        #
+        # The SQL is quite complex and I am not sure if it is worth fixing.
         it "contains the successor" do
           expect(WorkPackage.for_scheduling([origin]))
             .to contain_exactly(successor)
@@ -505,17 +633,25 @@ RSpec.describe WorkPackages::Scopes::ForScheduling, "allowed scope" do
 
     context "for a work package with a sibling and a successor that also has a sibling" do
       let(:sibling) do
-        create(:work_package, project:, parent:)
+        create(:work_package, subject: "sibling", parent:)
       end
       let(:successor_sibling) do
-        create(:work_package, project:, parent: successor_parent)
+        create(:work_package, subject: "successor_sibling", parent: successor_parent)
       end
 
       let!(:existing_work_packages) { [parent, sibling, successor, successor_parent, successor_sibling] }
 
-      it "contains the successor and the parents but not the siblings" do
-        expect(WorkPackage.for_scheduling([origin]))
-          .to contain_exactly(successor, parent, successor_parent)
+      context "with all scheduled automatically" do
+        before do
+          existing_work_packages.each do |wp|
+            wp.update_column(:schedule_manually, false)
+          end
+        end
+
+        it "contains the successor and the parents but not the siblings" do
+          expect(WorkPackage.for_scheduling([origin]))
+            .to contain_exactly(successor, parent, successor_parent)
+        end
       end
     end
   end

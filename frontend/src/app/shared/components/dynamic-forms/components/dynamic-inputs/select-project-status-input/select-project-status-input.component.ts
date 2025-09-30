@@ -5,6 +5,7 @@ import { projectStatusCodeCssClass } from 'core-app/shared/components/fields/hel
 @Component({
   selector: 'op-select-project-status-input',
   templateUrl: './select-project-status-input.component.html',
+  standalone: false,
 })
 export class SelectProjectStatusInputComponent extends FieldType {
   cssClass(item:any) {

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -70,7 +72,7 @@ RSpec.describe PlaceholderUsers::MembershipsController do
           }
         }
 
-        expect(response.status).to eq 403
+        expect(response).to have_http_status :forbidden
       end
     end
 
@@ -81,7 +83,7 @@ RSpec.describe PlaceholderUsers::MembershipsController do
           id: 1234
         }
 
-        expect(response.status).to eq 404
+        expect(response).to have_http_status :not_found
       end
     end
 
@@ -92,7 +94,7 @@ RSpec.describe PlaceholderUsers::MembershipsController do
           id: 1234
         }
 
-        expect(response.status).to eq 404
+        expect(response).to have_http_status :not_found
       end
     end
   end
@@ -126,7 +128,7 @@ RSpec.describe PlaceholderUsers::MembershipsController do
           }
         }
 
-        expect(response.status).to eq 302
+        expect(response).to have_http_status :found
         expect(placeholder_user.reload.memberships).to be_empty
       end
     end
@@ -142,7 +144,7 @@ RSpec.describe PlaceholderUsers::MembershipsController do
             id: membership.id
           }
 
-          expect(response.status).to eq 404
+          expect(response).to have_http_status :not_found
         end
       end
 
@@ -153,7 +155,7 @@ RSpec.describe PlaceholderUsers::MembershipsController do
             id: membership.id
           }
 
-          expect(response.status).to eq 404
+          expect(response).to have_http_status :not_found
         end
       end
     end

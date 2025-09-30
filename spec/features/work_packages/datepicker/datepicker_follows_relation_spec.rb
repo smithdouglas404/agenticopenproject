@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,8 +31,7 @@
 require "spec_helper"
 require "support/edit_fields/edit_field"
 
-RSpec.describe "Datepicker logic on follow relationships", :js, :with_cuprite,
-               with_settings: { date_format: "%Y-%m-%d" } do
+RSpec.describe "Datepicker logic on follow relationships", :js, with_settings: { date_format: "%Y-%m-%d" } do
   shared_let(:user) { create(:admin) }
 
   shared_let(:type) { create(:type_bug) }
@@ -38,60 +39,111 @@ RSpec.describe "Datepicker logic on follow relationships", :js, :with_cuprite,
   shared_let(:project) { create(:project, types: [milestone_type]) }
   shared_let(:predecessor) do
     create(:work_package,
-           type:, project:,
-           start_date: Date.parse("2024-02-01"),
-           due_date: Date.parse("2024-02-05"))
+           type:,
+           project:,
+           start_date: Date.parse("2024-02-02"),
+           due_date: Date.parse("2024-02-02"))
   end
+  # assume sat+sun are non-working days
+  shared_let(:week_days) { week_with_saturday_and_sunday_as_weekend }
 
   let(:work_packages_page) { Pages::FullWorkPackage.new(follower) }
   let(:datepicker) { date_field.datepicker }
 
-  shared_examples "keeps the minimum date from the predecessor when toggling NWD" do
-    it "keeps the minimum dates disabled" do
-      login_as(user)
+  before do
+    login_as(user)
+    relation
 
-      work_packages_page.visit!
-      work_packages_page.ensure_page_loaded
+    work_packages_page.visit!
+    work_packages_page.ensure_page_loaded
 
-      date_field.activate!
-      date_field.expect_active!
-      # Wait for the datepicker to be initialized
-      datepicker.expect_visible
+    date_field.activate!
+    date_field.expect_active!
+    # Wait for the datepicker to be initialized
+    datepicker.expect_visible
+  end
 
-      datepicker.expect_ignore_non_working_days false
-      datepicker.expect_scheduling_mode false
+  for_each_context "with default browser timezone",
+                   "with a negative browser timezone (New York)" do
+    context "if the follower is a task" do
+      let!(:follower) do
+        create(:work_package,
+               type:,
+               project:,
+               schedule_manually: false,
+               start_date: Date.parse("2024-02-05"),
+               due_date: Date.parse("2024-02-08"))
+      end
+      let!(:relation) { create(:follows_relation, from: follower, to: predecessor) }
+      let(:date_field) { work_packages_page.edit_field(:combinedDate) }
 
-      datepicker.show_date "2024-02-05"
-      datepicker.expect_disabled Date.parse("2024-02-05")
-      datepicker.expect_disabled Date.parse("2024-02-04")
-      datepicker.expect_disabled Date.parse("2024-02-03")
-      datepicker.expect_disabled Date.parse("2024-02-02")
-      datepicker.expect_disabled Date.parse("2024-02-01")
+      it "keeps the minimum dates disabled" do
+        datepicker.expect_working_days_only true
+        datepicker.expect_automatic_scheduling_mode
 
-      datepicker.toggle_ignore_non_working_days
-      datepicker.expect_ignore_non_working_days true
-      datepicker.show_date "2024-02-05"
-      datepicker.expect_disabled Date.parse("2024-02-05")
-      datepicker.expect_disabled Date.parse("2024-02-04")
-      datepicker.expect_disabled Date.parse("2024-02-03")
-      datepicker.expect_disabled Date.parse("2024-02-02")
-      datepicker.expect_disabled Date.parse("2024-02-01")
+        datepicker.show_date "2024-02-01"
+        datepicker.expect_disabled Date.parse("2024-02-01")
+        datepicker.expect_disabled Date.parse("2024-02-02") # predecessor's due date
+        datepicker.expect_disabled Date.parse("2024-02-03") # Saturday is non-working day
+        datepicker.expect_disabled Date.parse("2024-02-04") # Sunday is non-working day
+        datepicker.expect_not_disabled Date.parse("2024-02-05")
+        datepicker.expect_not_disabled Date.parse("2024-02-06")
+        datepicker.expect_not_disabled Date.parse("2024-02-07")
+
+        datepicker.toggle_working_days_only
+        datepicker.expect_working_days_only false
+
+        datepicker.expect_start_date "2024-02-03", disabled: true
+        datepicker.expect_due_date "2024-02-08" # did not change
+        datepicker.expect_disabled Date.parse("2024-02-01")
+        datepicker.expect_disabled Date.parse("2024-02-02") # predecessor's due date
+        datepicker.expect_not_disabled Date.parse("2024-02-03") # Saturday is non-working day but ignored
+        datepicker.expect_not_disabled Date.parse("2024-02-04") # Sunday is non-working day but ignored
+        datepicker.expect_not_disabled Date.parse("2024-02-05")
+        datepicker.expect_not_disabled Date.parse("2024-02-06")
+        datepicker.expect_not_disabled Date.parse("2024-02-07")
+
+        datepicker.toggle_working_days_only
+        datepicker.expect_working_days_only true
+
+        datepicker.expect_start_date "2024-02-05", disabled: true
+        datepicker.expect_due_date "2024-02-08"
+        datepicker.expect_disabled Date.parse("2024-02-02") # predecessor's due date
+        datepicker.expect_disabled Date.parse("2024-02-03") # Saturday is non-working day
+        datepicker.expect_disabled Date.parse("2024-02-04") # Sunday is non-working day
+        datepicker.expect_not_disabled Date.parse("2024-02-05")
+      end
     end
-  end
 
-  context "if the follower is a task" do
-    let!(:follower) { create(:work_package, type:, project:) }
-    let!(:relation) { create(:follows_relation, from: follower, to: predecessor) }
-    let(:date_field) { work_packages_page.edit_field(:combinedDate) }
+    context "if the follower is a milestone" do
+      let!(:follower) do
+        create(:work_package,
+               type: milestone_type,
+               project:,
+               schedule_manually: false,
+               start_date: Date.parse("2024-02-05"),
+               due_date: Date.parse("2024-02-05"))
+      end
+      let!(:relation) { create(:follows_relation, from: follower, to: predecessor) }
+      let(:date_field) { work_packages_page.edit_field(:date) }
 
-    it_behaves_like "keeps the minimum date from the predecessor when toggling NWD"
-  end
+      it "disables the whole date picker" do
+        datepicker.expect_working_days_only true
+        datepicker.expect_automatic_scheduling_mode
 
-  context "if the follower is a milestone" do
-    let!(:follower) { create(:work_package, type: milestone_type, project:) }
-    let!(:relation) { create(:follows_relation, from: follower, to: predecessor) }
-    let(:date_field) { work_packages_page.edit_field(:date) }
+        datepicker.show_date "2024-02-02"
+        1.upto(29) do |day|
+          datepicker.expect_disabled Date.parse("2024-02-%02d" % day)
+        end
 
-    it_behaves_like "keeps the minimum date from the predecessor when toggling NWD"
+        datepicker.toggle_working_days_only
+        datepicker.expect_working_days_only false
+
+        datepicker.expect_start_date "2024-02-03", disabled: true
+        1.upto(29) do |day|
+          datepicker.expect_disabled Date.parse("2024-02-%02d" % day)
+        end
+      end
+    end
   end
 end

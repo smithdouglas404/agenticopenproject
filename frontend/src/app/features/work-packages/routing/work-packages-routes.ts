@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -37,15 +37,19 @@ import { WorkPackageViewPageComponent } from 'core-app/features/work-packages/ro
 import { makeSplitViewRoutes } from 'core-app/features/work-packages/routing/split-view-routes.template';
 import { WorkPackageCopyFullViewComponent } from 'core-app/features/work-packages/components/wp-copy/wp-copy-full-view.component';
 import { KeepTabService } from 'core-app/features/work-packages/components/wp-single-view-tabs/keep-tab/keep-tab.service';
-import { ShareUpsaleComponent } from 'core-app/features/enterprise/share-upsale/share-upsale.component';
 
 export const menuItemClass = 'work-packages-menu-item';
+export const sidemenuId = 'work_packages_sidemenu';
+export const sideMenuOptions = {
+  sidemenuId,
+  hardReloadOnBaseRoute: true,
+};
 
 export const WORK_PACKAGES_ROUTES:Ng2StateDeclaration[] = [
   {
     name: 'work-packages',
     parent: 'optional_project',
-    url: '/work_packages?query_id&query_props&start_onboarding_tour',
+    url: '/work_packages?query_id&query_props&name&start_onboarding_tour',
     redirectTo: 'work-packages.partitioned.list',
     views: {
       '!$default': { component: WorkPackagesBaseComponent },
@@ -53,6 +57,7 @@ export const WORK_PACKAGES_ROUTES:Ng2StateDeclaration[] = [
     data: {
       bodyClasses: 'router--work-packages-base',
       menuItem: menuItemClass,
+      sideMenuOptions,
     },
     params: {
       query_id: { type: 'query', dynamic: true },
@@ -60,6 +65,7 @@ export const WORK_PACKAGES_ROUTES:Ng2StateDeclaration[] = [
       query_props: { type: 'opQueryString' },
       // Optional initial tour param
       start_onboarding_tour: { type: 'query', squash: true, value: undefined },
+      name: { type: 'string', dynamic: true },
     },
   },
   {
@@ -78,6 +84,7 @@ export const WORK_PACKAGES_ROUTES:Ng2StateDeclaration[] = [
       bodyClasses: 'router--work-packages-full-create',
       menuItem: menuItemClass,
       successState: 'work-packages.show',
+      sideMenuOptions,
     },
   },
   {
@@ -90,6 +97,7 @@ export const WORK_PACKAGES_ROUTES:Ng2StateDeclaration[] = [
       allowMovingInEditMode: true,
       bodyClasses: 'router--work-packages-full-create',
       menuItem: menuItemClass,
+      sideMenuOptions,
     },
   },
   {
@@ -111,6 +119,7 @@ export const WORK_PACKAGES_ROUTES:Ng2StateDeclaration[] = [
       bodyClasses: ['router--work-packages-full-view', 'router--work-packages-base'],
       newRoute: 'work-packages.new',
       menuItem: menuItemClass,
+      sideMenuOptions,
     },
   },
   {
@@ -120,6 +129,7 @@ export const WORK_PACKAGES_ROUTES:Ng2StateDeclaration[] = [
     data: {
       parent: 'work-packages.show',
       menuItem: menuItemClass,
+      sideMenuOptions,
     },
   },
   {
@@ -129,6 +139,7 @@ export const WORK_PACKAGES_ROUTES:Ng2StateDeclaration[] = [
     data: {
       // This has to be empty to avoid inheriting the parent bodyClasses
       bodyClasses: '',
+      sideMenuOptions,
     },
   },
   {
@@ -142,6 +153,7 @@ export const WORK_PACKAGES_ROUTES:Ng2StateDeclaration[] = [
       bodyClasses: ['router--work-packages-partitioned-split-view', 'router--work-packages-base'],
       menuItem: menuItemClass,
       partition: '-left-only',
+      sideMenuOptions,
     },
   },
   ...makeSplitViewRoutes(
@@ -149,11 +161,6 @@ export const WORK_PACKAGES_ROUTES:Ng2StateDeclaration[] = [
     menuItemClass,
     WorkPackageSplitViewComponent,
   ),
-  {
-    url: '/share_upsale',
-    name: 'work-packages.share_upsale',
-    component: ShareUpsaleComponent,
-  },
   // Avoid lazy-loading the routes for now
   // {
   //   name: 'work-packages.calendar.**',

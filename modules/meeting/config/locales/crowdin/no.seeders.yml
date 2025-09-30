@@ -7,7 +7,7 @@
     standard:
       projects:
         demo-project:
-          meetings:
+          meeting_series:
             item_0:
               title: Ukentlig
           meeting_agenda_items:

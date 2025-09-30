@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -135,7 +135,7 @@ RSpec.describe Principal do
     shared_let(:placeholder_user_id) { create(:placeholder_user, name: "Wannabejohn").id }
 
     shared_examples "name formatting" do
-      context "for lastname_coma_firstname formatter", with_settings: { user_format: :lastname_coma_firstname } do
+      context "for lastname_comma_firstname formatter", with_settings: { user_format: :lastname_comma_firstname } do
         it "returns formatted user name" do
           expect(user.name).to eq "Smith, John"
         end

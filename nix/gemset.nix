@@ -1633,7 +1633,7 @@
       sha256 = "0imzd0cb9vlkc3yggl4rph1v1wm4z9psgs4z6aqsqa5hgf8gr9hj";
       type = "gem";
     };
-    version = "3.4.1";
+    version = "3.4.2";
   };
   livingstyleguide = {
     dependencies = ["minisyntax" "redcarpet" "sassc" "thor" "tilt"];

@@ -66,7 +66,7 @@ description: |-
       * It *must not* include HTML or other kind of markup
       * Error messages form complete sentences including punctuation
 
-  ##### Example
+  #### Example
 
   ```json
   {
@@ -214,7 +214,7 @@ description: |-
 
   If the *Formattable* is marked as **read only**, the `raw` attribute also becomes **read only**.
 
-  ##### Example
+  ### Example
 
   ```json
   {
@@ -248,7 +248,7 @@ description: |-
   Colors are represented in RGB using hexadecimal notation as specified in [CSS Color Module Level 3](https://www.w3.org/TR/css3-color/).
   That is a `#` followed by either three or six hexadecimal digits.
 
-  ##### Example
+  ### Example
 
   ```
       red:   #ff0000 or #f00
@@ -270,7 +270,7 @@ description: |-
   | algorithm | The algorithm used to compute the digest           | String | md5                                |
   | hash      | The calculated digest in hexadecimal notation      | String | 64c26a8403cd796ea4cf913cda2ee4a9   |
 
-  ##### Example
+  ### Example
 
   ```json
   {

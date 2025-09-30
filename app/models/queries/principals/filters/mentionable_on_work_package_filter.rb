@@ -2,7 +2,7 @@
 
 # -- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,8 +31,11 @@
 class Queries::Principals::Filters::MentionableOnWorkPackageFilter <
   Queries::Principals::Filters::PrincipalFilter
   def allowed_values
-    # We don't care for the first value as we do not display the values visibly
-    @allowed_values ||= ::WorkPackage.visible.pluck(:id).map { |id| [id, id.to_s] }
+    raise NotImplementedError, "There would be too many candidates"
+  end
+
+  def allowed_values_subset
+    @allowed_values_subset ||= ::WorkPackage.visible
   end
 
   def type
@@ -41,6 +44,10 @@ class Queries::Principals::Filters::MentionableOnWorkPackageFilter <
 
   def key
     :mentionable_on_work_package
+  end
+
+  def human_name
+    "mentionable" # Only for Internal use, not visible in the UI
   end
 
   def apply_to(query_scope)
@@ -53,6 +60,10 @@ class Queries::Principals::Filters::MentionableOnWorkPackageFilter <
   end
 
   private
+
+  def type_strategy
+    @type_strategy ||= Queries::Filters::Strategies::HugeList.new(self)
+  end
 
   def principals_with_a_membership
     visible_scope.where(id: work_package_members.select(:user_id))

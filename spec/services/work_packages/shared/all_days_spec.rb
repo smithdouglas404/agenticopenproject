@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -42,7 +44,7 @@ RSpec.describe WorkPackages::Shared::AllDays do
       end
     end
 
-    context "with weekend days (Saturday and Sunday)", :weekend_saturday_sunday do
+    context "with Saturday and Sunday being non-working days", :weekend_saturday_sunday do
       it "considers all days as working days and returns the number of days between two dates, inclusive" do
         expect(subject.duration(sunday_2022_07_31, sunday_2022_07_31 + 6)).to eq(7)
         expect(subject.duration(sunday_2022_07_31, sunday_2022_07_31 + 50)).to eq(51)
@@ -67,6 +69,10 @@ RSpec.describe WorkPackages::Shared::AllDays do
     end
   end
 
+  include_examples "lag computation excluding non-working days"
+
+  include_examples "add lag to a date"
+
   describe "#start_date" do
     it "returns the start date for a due date and a duration" do
       expect(subject.start_date(sunday_2022_07_31, 1)).to eq(sunday_2022_07_31)
@@ -88,7 +94,7 @@ RSpec.describe WorkPackages::Shared::AllDays do
       expect(subject.start_date(sunday_2022_07_31, nil)).to be_nil
     end
 
-    context "with weekend days (Saturday and Sunday)", :weekend_saturday_sunday do
+    context "with Saturday and Sunday being non-working days", :weekend_saturday_sunday do
       include_examples "start_date", due_date: sunday_2022_07_31, duration: 1, expected: sunday_2022_07_31
       include_examples "start_date", due_date: sunday_2022_07_31, duration: 5, expected: sunday_2022_07_31 - 4.days
       include_examples "start_date", due_date: sunday_2022_07_31, duration: 10, expected: sunday_2022_07_31 - 9.days
@@ -121,7 +127,7 @@ RSpec.describe WorkPackages::Shared::AllDays do
       expect(subject.due_date(sunday_2022_07_31, nil)).to be_nil
     end
 
-    context "with weekend days (Saturday and Sunday)", :weekend_saturday_sunday do
+    context "with Saturday and Sunday being non-working days", :weekend_saturday_sunday do
       include_examples "due_date", start_date: sunday_2022_07_31, duration: 1, expected: sunday_2022_07_31
       include_examples "due_date", start_date: sunday_2022_07_31, duration: 5, expected: sunday_2022_07_31 + 4.days
       include_examples "due_date", start_date: sunday_2022_07_31, duration: 10, expected: sunday_2022_07_31 + 9.days
@@ -142,33 +148,15 @@ RSpec.describe WorkPackages::Shared::AllDays do
       expect(subject.soonest_working_day(nil)).to be_nil
     end
 
-    context "with lag" do
-      it "returns the soonest working day from the given day, after a configurable lag of working days" do
-        expect(subject.soonest_working_day(sunday_2022_07_31, lag: nil)).to eq(sunday_2022_07_31)
-        expect(subject.soonest_working_day(sunday_2022_07_31, lag: 0)).to eq(sunday_2022_07_31)
-        expect(subject.soonest_working_day(sunday_2022_07_31, lag: 1)).to eq(Date.new(2022, 8, 1))
-      end
-    end
-
-    context "with weekend days (Saturday and Sunday)", :weekend_saturday_sunday do
+    context "with Saturday and Sunday being non-working days", :weekend_saturday_sunday do
       it "returns the given day" do
         expect(subject.soonest_working_day(sunday_2022_07_31)).to eq(sunday_2022_07_31)
-      end
-
-      context "with lag" do
-        include_examples "soonest working day with lag", date: Date.new(2022, 1, 1), lag: 30, expected: Date.new(2022, 1, 31)
       end
     end
 
     context "with some non working days (Christmas 2022-12-25 and new year's day 2023-01-01)", :christmas_2022_new_year_2023 do
       it "returns the given day" do
         expect(subject.soonest_working_day(Date.new(2022, 12, 25))).to eq(Date.new(2022, 12, 25))
-      end
-
-      context "with lag" do
-        include_examples "soonest working day with lag", date: Date.new(2022, 12, 24),
-                                                         lag: 7,
-                                                         expected: Date.new(2022, 12, 31)
       end
     end
   end

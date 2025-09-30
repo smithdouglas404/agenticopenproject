@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -130,9 +132,10 @@ RSpec.describe "Attachments virus scanning",
   end
 
   describe "without ee" do
-    it "redirects to upsale" do
+    it "renders upsell" do
       get "/admin/settings/virus_scanning"
-      expect(response.body).to have_text "Virus scanning is an Enterprise add-on", normalize_ws: true
+      expect(response.body).to have_text "Virus scanning"
+      expect(response.body).to have_text "Available starting with the Corporate enterprise plan."
     end
   end
 end

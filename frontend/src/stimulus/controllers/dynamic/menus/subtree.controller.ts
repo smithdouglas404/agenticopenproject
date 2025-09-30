@@ -1,7 +1,7 @@
 /*
  * -- copyright
  * OpenProject is an open source project management software.
- * Copyright (C) 2023 the OpenProject GmbH
+ * Copyright (C) the OpenProject GmbH
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 3.
@@ -49,7 +49,7 @@ export default class MenusSubtreeController extends Controller {
 
   public toggle(event:MouseEvent|KeyboardEvent):void {
     // ignore the event if a key different from ENTER was pressed.
-    if (event.type === 'keydown' && event.which !== 13) {
+    if (event.type === 'keydown' && (event as KeyboardEvent).key !== 'Enter') {
       return;
     }
 

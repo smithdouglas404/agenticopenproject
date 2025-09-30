@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module OpenProject::Meeting
   module Patches
     module API

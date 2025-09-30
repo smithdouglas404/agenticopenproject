@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,7 +36,7 @@ RSpec.describe Meeting do
 
   let!(:meeting) do
     User.execute_as current_user do
-      create(:structured_meeting, author: user)
+      create(:meeting, author: user)
     end
   end
 
@@ -279,8 +281,10 @@ RSpec.describe Meeting do
   end
 
   describe "#destroy" do
+    let(:meeting_agenda_item) { create(:meeting_agenda_item, meeting:) }
+
     before do
-      meeting.agenda_items << create(:meeting_agenda_item)
+      meeting.agenda_items << meeting_agenda_item
       meeting.save
     end
 

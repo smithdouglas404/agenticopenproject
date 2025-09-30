@@ -34,6 +34,15 @@ pt-BR:
           name: Cinza (escuro)
         item_13:
           name: Preto
+      project_phase_colors:
+        item_0:
+          name: PM2 Laranja
+        item_1:
+          name: PM2 Vermelho
+        item_2:
+          name: PM2 Magenta
+        item_3:
+          name: PM2 Verde amarelo
       document_categories:
         item_0:
           name: Documentação
@@ -41,6 +50,11 @@ pt-BR:
           name: Especificação
         item_2:
           name: Outro
+      project_query_roles:
+        item_0:
+          name: Visualizador de consulta do projeto
+        item_1:
+          name: Editor de consulta de projeto
       work_package_roles:
         item_0:
           name: Editor de pacotes de trabalho
@@ -61,8 +75,22 @@ pt-BR:
           name: Administrador do projeto
       global_roles:
         item_0:
-          name: Equipe e gerente de projetos
+          name: Gerente de equipe e projetos
+        item_1:
+          name: Função global padrão
     standard:
+      project_phases:
+        item_0:
+          name: Iniciando
+        item_1:
+          name: Planejando
+          start_gate: Pronto para o planejamento
+        item_2:
+          name: Execução
+          start_gate: Pronto para a execução
+        item_3:
+          name: Fechando
+          start_gate: Pronto para o fechamento
       priorities:
         item_0:
           name: Baixa
@@ -72,100 +100,25 @@ pt-BR:
           name: Alta
         item_3:
           name: Imediata
-      statuses:
-        item_0:
-          name: Novo
-        item_1:
-          name: Em especificação
-        item_2:
-          name: Especificado
-        item_3:
-          name: Confirmado
-        item_4:
-          name: A ser planejado
-        item_5:
-          name: Planejado
-        item_6:
-          name: Em andamento
-        item_7:
-          name: Desenvolvido
-        item_8:
-          name: Em testes
-        item_9:
-          name: Testado
-        item_10:
-          name: Falha no teste
-        item_11:
-          name: Fechado
-        item_12:
-          name: Em espera
-        item_13:
-          name: Rejeitado
-      time_entry_activities:
-        item_0:
-          name: Gerenciamento
-        item_1:
-          name: Especificação
-        item_2:
-          name: Desenvolvimento
-        item_3:
-          name: Testando
-        item_4:
-          name: Suporte
-        item_5:
-          name: Outro
-      types:
-        item_0:
-          name: Tarefa
-        item_1:
-          name: Marco
-        item_2:
-          name: Fase
-        item_3:
-          name: Funcionalidade
-        item_4:
-          name: Épico
-        item_5:
-          name: História de usuário
-        item_6:
-          name: Bug
-      welcome:
-        title: Bem-vindo ao OpenProject!
-        text: |
-          O OpenProject é o principal software de gestão de projetos de código aberto. Ele dá suporte à gestão de projetos clássica, ágil e híbrida e dá a você o controlo total sobre os seus dados.
-
-          Características principais e casos de uso:
-
-          * [Gestão de portfólio de projetos](https://www.openproject.org/collaboration-software-features/project-portfolio-management/)
-          * [Planejamento e programação de projetos](https://www.openproject.org/collaboration-software-features/project-planning-scheduling/)
-          * [Gestão de tarefas e acompanhamento de problemas](https://www.openproject.org/collaboration-software-features/task-management/)
-          * [Quadros Agile (Scrum e Kanban)](https://www.openproject.org/collaboration-software-features/agile-project-management/)
-          * [Gestão de requisitos e planejamento de versões](https://www.openproject.org/collaboration-software-features/product-development/)
-          * [Controlo de tempo e de custos, orçamentos](https://www.openproject.org/collaboration-software-features/time-tracking/)
-          * [Colaboração em equipe e documentação](https://www.openproject.org/collaboration-software-features/team-collaboration/)
-
-          Boas-vindas ao futuro da gestão de projetos.
-
-          Para administradores: o texto de boas-vindas pode ser alterado [aqui]({{opSetting:base_url}}/admin/settings/general).
       projects:
         demo-project:
           name: Projeto de demonstração
-          status_explanation: Todas as tarefas estão dentro do cronograma. As pessoas envolvidas conhecem suas tarefas. O sistema está completamente configurado.
-          description: Este é um breve resumo dos objetivos deste projeto de demonstração.
+          status_explanation: Todas as tarefas estão no cronograma. As pessoas responsáveis conhecem suas tarefas. O sistema está completamente configurado.
+          description: Este é um resumo breve dos objetivos deste projeto de demonstração.
           news:
             item_0:
-              title: Bem-vindo ao seu projeto de demonstração
+              title: Boas-vindas ao seu projeto de demonstração
               summary: |
                 Estamos felizes por você ter se juntado a nós.
-                Neste módulo, você pode comunicar as novidades do projeto aos membros da sua equipe.
-              description: As notícias atuais
+                Neste módulo, você pode compartilhar as atualizações do projeto com os membros da sua equipe.
+              description: As notícias mais recentes
           categories:
-            item_0: Categoria 1 (a ser alterada nas configurações do projeto)
+            item_0: Categoria 1 (a ser alterada nas configurações do Projeto)
           queries:
             item_0:
-              name: 'Plano do Projeto:'
+              name: Plano do Projeto
             item_1:
-              name: Etapas
+              name: Marcos
             item_2:
               name: Tarefas
             item_3:
@@ -177,7 +130,7 @@ pt-BR:
               name: Painel básico
               lists:
                 item_0:
-                  name: Lista de Desejo
+                  name: Lista de desejos
                 item_1:
                   name: Lista curta
                 item_2:
@@ -190,26 +143,26 @@ pt-BR:
             widgets:
               item_0:
                 options:
-                  name: Bem-vindo
+                  name: Boas-vindas
               item_1:
                 options:
-                  name: Primeiros passos
+                  name: Guia de introdução
                   text: |
-                    Estamos felizes por você ter se juntado a nós! Sugerimos que você experimente algumas coisas para começar a usar o OpenProject.
+                    Estamos felizes que você tenha se juntado a nós! Aqui estão algumas sugestões para começar a usar o OpenProject.
 
-                    Descubra os recursos mais importantes com nosso [Guided Tour] ({{opSetting:base_url}}/projects/demo-project/work_packages/?start_onboarding_tour=true).
+                    Descubra os principais recursos com o nosso [Tour Guiado]({{opSetting:base_url}}/projects/demo-project/work_packages/?start_onboarding_tour=true).
 
-                    _Tente as seguintes etapas:_
+                    Tente as seguintes etapas:
 
-                    1. *Convide novos membros para seu projeto*: &rightarrow; Vá para [Members]({{opSetting:base_url}}/projects/demo-project/members) na navegação do projeto.
-                    2. *Ver o trabalho em seu projeto*: &rightarrow; Vá para [Work packages]({{opSetting:base_url}}/projects/demo-project/work_packages) na navegação do projeto.
-                    3. *Crie um novo pacote de trabalho*: &rightarrow; Vá para [Work packages &rightarrow; Create]({{opSetting:base_url}}/projects/demo-project/work_packages/new).
-                    4. *Crie e atualize um plano de projeto*: &rightarrow; Vá para [Plano de projeto]({{opSetting:base_url}}/projects/demo-project/work_packages?query_id=##query.id:demo_project__query__project_plan) na navegação do projeto.
-                    5. *Ativar outros módulos*: &rightarrow; Vá para [Project settings &rightarrow; Modules]({{opSetting:base_url}}}/projects/demo-project/settings/modules).
-                    6. *Conclua suas tarefas no projeto*: &rightarrow; Vá para [Work packages &rightarrow; Tasks]({{opSetting:base_url}}/projects/demo-project/work_packages/details/##wp.id:set_date_and_location_of_conference/overview?query_id=##query.id:demo_project__query__tasks).
+                    1. *Convide novos membros para o seu projeto*: &rightarrow; Vá para [Membros]({{opSetting:base_url}}/projects/demo-project/members) na navegação do projeto.
+                    2. *Veja as tarefas do seu projeto*: &rightarrow; Vá para [Pacotes de trabalho]({{opSetting:base_url}}/projects/demo-project/work_packages) na navegação do projeto.
+                    3. *Crie um novo pacote de trabalho*: &rightarrow; Vá para [Pacotes de trabalho &rightarrow; Criar]({{opSetting:base_url}}/projects/demo-project/work_packages/new).
+                    4. *Crie e atualize o plano do projeto*: &rightarrow; Vá para [Plano de projeto]({{opSetting:base_url}}/projects/demo-project/work_packages?query_id=##query.id:demo_project__query__project_plan) na navegação do projeto.
+                    5. *Ative módulos adicionais*: &rightarrow; Vá para [Configurações do projeto &rightarrow; Módulos]({{opSetting:base_url}}/projects/demo-project/settings/modules).
+                    6. *Conclua suas tarefas no projeto*: &rightarrow; Vá para [Pacotes de trabalho &rightarrow; Tarefas]({{opSetting:base_url}}/projects/demo-project/work_packages/details/##wp.id:set_date_and_location_of_conference/overview?query_id=##query.id:demo_project__query__tasks).
 
-                    Aqui você encontrará nossos [User Guides] (https://www.openproject.org/docs/user-guide/).
-                    Entre em contato conosco se tiver alguma dúvida ou precisar de suporte. Entre em contato conosco: [support[at]openproject.com](mailto:support@openproject.com).
+                    Aqui você encontra nossos Guias do usuário.
+                    Se tiver alguma dúvida ou precisar de ajuda, entre em contato conosco: [support[at]openproject.com](mailto:support@openproject.com).
               item_5:
                 options:
                   name: Pacotes de trabalho
@@ -238,7 +191,7 @@ pt-BR:
             item_2:
               subject: Conferência
             item_3:
-              subject: Acompanhamento das tarefas
+              subject: Tarefas de acompanhamento
               children:
                 item_0:
                   subject: Fazer upload de apresentações para o site
@@ -268,76 +221,74 @@ pt-BR:
             Mais informações: [https://www.openproject.org/docs/user-guide/wiki/](https://www.openproject.org/docs/user-guide/wiki/)
         scrum-project:
           name: Projeto Scrum
-          status_explanation: Todas as tarefas estão dentro do cronograma. As pessoas envolvidas conhecem suas tarefas. O sistema está completamente configurado.
-          description: Este é um breve resumo dos objetivos deste projeto de demonstração do Scrum.
+          status_explanation: Todas as tarefas estão dentro do cronograma, e os envolvidos conhecem suas atribuições. O sistema está completamente configurado.
+          description: Este é um resumo dos objetivos deste projeto Scrum de demonstração.
           news:
             item_0:
-              title: Bem-vindo ao seu projeto de demonstração do Scrum
+              title: Boas-vindas ao seu projeto de demonstração do Scrum
               summary: |
-                Estamos felizes por você ter se juntado a nós.
-                Neste módulo, você pode comunicar as novidades do projeto aos membros da sua equipe.
+                Estamos felizes que você tenha se juntado a nós.
+                Neste módulo, você pode compartilhar as atualizações do projeto com os membros da sua equipe.
           versions:
             item_0:
-              name: Registro de erros e pendências
+              name: Backlog de Bugs
             item_1:
-              name: Erros e Pendências do Produto
+              name: Backlog de produtos
             item_2:
               name: Sprint 1
               wiki:
                 title: Sprint 1
                 content: |
-                  ### A reunião de planejamento do Sprint
+                  Reunião de Planejamento da Sprint
 
-                  _Por favor, documente aqui tópicos para a reunião de planejamento do Sprint_
+                  _Documente aqui os tópicos para a reunião de planejamento da Sprint
 
-                  * Caixa de Tempo (8 h)
-                  * Entrada: Backlog do Produto
-                  * Saída: Rendimento da Sprint
+                  * Tempo limitado (8 h)
+                  * Entrada: Backlog do produto
+                  * Saída: Backlog da Sprint
 
-                  * Divida em duas caixas de tempo adicionais de 4 h:
+                  * Dividido em dois blocos de tempo adicionais de 4 h:
 
-                      * O proprietário do produto apresenta o [Backlog]({{opSetting:base_url}}/projects/your-scrum-project/backlogs) e as prioridades da equipe e explica a meta do Sprint, com o qual a equipa deve concordar. Juntos, eles priorizam os tópicos do Backlog do produto que a equipe cuidará no próximo sprint. A equipe se compromete com a entrega discutida.
-                      * A equipe planeja autonomamente (sem o Proprietário do Produto) em detalhes e divide as tarefas dos requisitos discutidos para consolidar um [Backlog do Sprint]({{opSetting:base_url}}/projects/your-scrum-project/backlogs).
+                      * O proprietário do produto apresenta o [Backlog do produto]({{opSetting:base_url}}/projects/your-scrum-project/backlogs) e as prioridades para a equipe, explicando o Objetivo da Sprint, ao qual a equipe deve concordar. Juntos, priorizam os tópicos do Backlog do produto que a equipe irá cuidar na próxima sprint. A equipe se compromete com a entrega discutida.
+                      * A equipe planeja de forma autônoma (sem o proprietário do produto) em detalhes e divide as tarefas dos requisitos discutidos para consolidar um [Backlog da sprint]({{opSetting:base_url}}/projects/your-scrum-project/backlogs).
 
+                  Reunião do Daily Scrum
 
-                  ### Reunião diária do Scrum
+                  _Documente aqui os tópicos para a reunião diária de Scrum
 
-                  _Por favor, documente aqui tópicos para a reunião do Scrum Diário_
+                  * Reunião curta de status diário da equipe.
+                  * Tempo limitado (máx. 15 min).
+                  * Reunião diária para discutir os seguintes tópicos do [Quadro de tarefas](##sprint:scrum_project__version__sprint_1).
+                      *O que planejo fazer até o próximo Daily Scrum?
+                      *O que bloqueou meu trabalho (Impedimentos)?
+                  * O Scrum Master modera e anota os [Impedimentos da Sprint](##sprint:scrum_project__version__sprint_1).
+                  * O proprietário do produto pode participar para se manter informado.
 
-                  * Reunião de status curta e diária da equipe.
-                  * Tempo em caixa de tempo (máx. 15 min).
-                  * Realização para discutir os seguintes tópicos do [Quadro de tarefas](##sprint:scrum_project__version__sprint_1).
-                      * O que pretendo fazer até o próximo Scrone Diário?
-                      * O que bloqueou o meu trabalho (pedimentos)?
-                  * Moderados e notas do Scrum Master [Impedimentos](##sprint:scrum_project__version__sprint_1).
-                  * O Proprietário do Produto pode participar a fim de se manter informado.
+                  Reunião de Revisão da Sprint
 
-                  ### Reunião de Revisão do Sprint
+                  _Documente aqui os tópicos para a reunião de revisão da Sprint
 
-                  _Por favor, dê aqui tópicos para a reunião de Revisão do Sprint_
+                  * Tempo limitado (4 h).
+                  * Máximo de uma hora de preparação por pessoa.
+                  * A equipe mostra ao proprietário do produto e a outras partes interessadas o que foi alcançado nesta sprint.
+                  * Importante: nada de protótipos e PowerPoint! Apenas a funcionalidade do produto finalizada (Incrementos) deve ser demonstrada.
+                  * Feedback do proprietário do produto, partes interessadas e outros é desejado e será incluído no trabalho futuro.
+                  * Com base nas funcionalidades demonstradas, o proprietário do produto decide se o incremento será colocado em produção ou se será desenvolvido mais. Esta possibilidade permite um ROI antecipado.
 
-                  * Tempo embalado (4 h).
-                  * O máximo de uma hora de preparação por pessoa.
-                  * A equipe mostra ao proprietário do produto e às pessoas interessadas o que foi alcançado nesta sprint.
-                  * Importante: sem dummies e nenhum PowerPoint! Funcionalidade de produto finalizado (Incrementos) deve ser demonstrada.
-                  * Feedback do Proprietário do Produto, partes interessadas e outros é desejado e será incluído no trabalho futuro.
-                  * Com base nas funcionalidades demonstradas, o proprietário do produto decide viver com esse incremento ou desenvolvê-lo ainda mais. Esta possibilidade permite uma ROI precoce.
+                  Retrospectiva da Sprint
 
+                  _Documente aqui os tópicos para a reunião de retrospectiva da Sprint
 
-                  ### Retrospectiva de Sprint
-
-                  _Por favor, coloque aqui tópicos para a reunião Retrospectiva do Sprint_
-
-                  * Caixa de Tempo (3 h).
-                  * Após o Sprint Review, será moderado pelo Scrum Master.
-                  * A equipe discute o sprint: o que correu bem, o que precisa de ser melhorado para ser mais produtivo para a próxima corrida, ou até mesmo mais divertido.
+                  * Tempo limitado (3 h).
+                  * Após a Revisão da Sprint, será moderada pelo Scrum Master.
+                  * A equipe discute a sprint: o que deu certo, o que precisa ser melhorado para ser mais produtivo na próxima sprint ou até mesmo para se divertir mais.
             item_3:
               name: Sprint 2
           categories:
             item_0: Categoria 1 (a ser alterada nas configurações do projeto)
           queries:
             item_0:
-              name: 'Plano do Projeto:'
+              name: Plano do projeto
             item_1:
               name: Backlog do produto
             item_2:
@@ -346,12 +297,12 @@ pt-BR:
               name: Tarefas
           boards:
             kanban:
-              name: Painel Kanban
+              name: Quadro Kanban
             basic:
               name: Quadro de tarefas
               lists:
                 item_0:
-                  name: Lista de Desejo
+                  name: Lista de desejos
                 item_1:
                   name: Lista curta
                 item_2:
@@ -362,7 +313,7 @@ pt-BR:
             widgets:
               item_0:
                 options:
-                  name: Bem-vindo
+                  name: Boas-vindas
               item_1:
                 options:
                   name: Guia de introdução
@@ -372,11 +323,11 @@ pt-BR:
                     _Tente as seguintes etapas:_
 
                     1. *Convide novos membros para o seu projeto*: &rightarrow; Vá para [Membros]({{opSetting:base_url}}/projects/your-scrum-project/members) na navegação do projeto.
-                    2. *Veja seu backlog de Produto e backlogs do Sprint*: &rightarrow; Vá para [Backlogs]({{opSetting:base_url}}/projects/your-scrum-project/backlogs) na navegação do projeto.
+                    2. *Veja seu backlog de Produto e backlogs da Sprint*: &rightarrow; Vá para [Backlogs]({{opSetting:base_url}}/projects/your-scrum-project/backlogs) na navegação do projeto.
                     3. *Veja seu quadro de tarefas*: &rightarrow; Vá para [Backlogs]({{opSetting:base_url}}/projects/your-scrum-project/backlogs) &rightarrow; Clique na seta para a direita em Sprint &rightarrow; Selecione [Quadro de tarefas](##sprint:scrum_project__version__sprint_1).
                     4. *Crie um novo pacote de trabalho*: &rightarrow; Vá para [Pacotes de trabalho &rightarrow; Criar]({{opSetting:base_url}}/projects/your-scrum-project/work_packages/new).
                     5. *Crie e atualize um plano de projeto*: &rightarrow; Vá para [Plano de projeto](##query:scrum_project__query__project_plan) na navegação do projeto.
-                    6. *Crie um wiki de Sprint*: &rightarrow; Vá para [Backlogs]({{opSetting:base_url}}/projects/your-scrum-project/backlogs) e abra o wiki de sprint no menu suspenso direito em um sprint. Você pode editar o [modelo wiki]({{opSetting:base_url}}/projects/your-scrum-project/wiki/) com base em suas necessidades.
+                    6. *Crie um wiki da Sprint*: &rightarrow; Vá para [Backlogs]({{opSetting:base_url}}/projects/your-scrum-project/backlogs) e abra o wiki da sprint no menu suspenso direito em uma sprint. Você pode editar o [modelo wiki]({{opSetting:base_url}}/projects/your-scrum-project/wiki/) com base em suas necessidades.
                     7. *Ative mais módulos*: &rightarrow; Vá para [Configurações do projeto &rightarrow; Módulos]({{opSetting:base_url}}/projects/your-scrum-project/settings/modules).
 
                     Aqui você encontrará nossos [Guias do Usuário] (https://www.openproject.org/docs/user-guide/).
@@ -387,7 +338,7 @@ pt-BR:
                   name: Pacotes de trabalho
               item_6:
                 options:
-                  name: 'Plano do Projeto:'
+                  name: Plano do projeto
           work_packages:
             item_0:
               subject: Nova tela de login
@@ -440,18 +391,18 @@ pt-BR:
             item_16:
               subject: Versão v2.0
           wiki: |
-            ### Reunião de planejamento do sprint
+            ### Reunião de planejamento da sprint
 
-            _Documente aqui os tópicos para a reunião de planejamento do Sprint_
+            _Documente aqui os tópicos para a reunião de planejamento da Sprint_
 
             * Intervalo de tempo fixo (8 h)
             * Entrada: Backlog de produto
-            * Saída: Backlog de sprint
+            * Saída: Backlog da sprint
 
             * Dividido em dois intervalos de tempo fixos adicionais de 4 h:
 
-                * O proprietário do produto apresenta o [Backlog do produto]({{opSetting:base_url}}/projects/your-scrum-project/backlogs) e as prioridades para a equipe e explica o Sprint objetivo, com o qual a equipe deve concordar. Juntos, eles priorizam os tópicos do Backlog de produto que a equipe cuidará no próximo sprint. A equipe se compromete com a entrega discutida.
-                * A equipe planeja de forma autônoma (sem o proprietário do produto) em detalhes e divide as tarefas dos requisitos discutidos para consolidar um [Backlog de sprint]({{opSetting:base_url}}/projects/your-scrum-project/backlogs).
+                * O proprietário do produto apresenta o [Backlog do produto]({{opSetting:base_url}}/projects/your-scrum-project/backlogs) e as prioridades para a equipe e explica a Sprint objetivo, com o qual a equipe deve concordar. Juntos, eles priorizam os tópicos do Backlog de produto que a equipe cuidará no próxima sprint. A equipe se compromete com a entrega discutida.
+                * A equipe planeja de forma autônoma (sem o proprietário do produto) em detalhes e divide as tarefas dos requisitos discutidos para consolidar um [Backlog da sprint]({{opSetting:base_url}}/projects/your-scrum-project/backlogs).
 
 
             ### Reunião diária do Scrum
@@ -460,28 +411,103 @@ pt-BR:
 
             * Reunião curta e diária de status da equipe.
             * Intervalo de tempo fixo (máx. 15 min).
-            * Reunião stand-up para discutir os seguintes tópicos do quadro de tarefas.
+            * Reunião diária para discutir os seguintes tópicos do quadro de tarefas.
                  * O que pretendo fazer até o próximo Scrum diário?
                  * O que tem bloqueado meu trabalho (impedimentos)?
-            * O Scrum Master modera e anota os Impedimentos do Sprint.
+            * O Scrum Master modera e anota os Impedimentos da Sprint.
             * O proprietário do produto pode participar para se manter informado.
 
-            ### Reunião de revisão do Sprint
+            ### Reunião de revisão da Sprint
 
-            _Documente aqui os tópicos para a reunião de Revisão do Sprint_
+            _Documente aqui os tópicos para a reunião de Revisão da Sprint_
 
             * Intervalo de tempo fixo (4h).
             * Máximo de uma hora de preparo por pessoa.
-            * A equipe mostra ao proprietário do produto e outras pessoas interessadas o que foi alcançado neste sprint.
+            * A equipe mostra ao proprietário do produto e outras pessoas interessadas o que foi alcançado nesta sprint.
             * Importante: sem manequins e sem PowerPoint! A funcionalidade do produto recém-acabado (incrementos) deve ser demonstrada.
             * Comentários do proprietário do produto, partes interessadas e outros são desejados e serão incluídos em trabalhos futuros.
             * Com base nas funcionalidades demonstradas, o proprietário do produto decide ativar esse incremento ou desenvolvê-lo ainda mais. Esta possibilidade permite um ROI antecipado.
 
 
-            ### Retrospectiva do Sprint
+            ### Retrospectiva da Sprint
 
-            _Documente aqui os tópicos para a reunião de Retrospectiva do Sprint_
+            _Documente aqui os tópicos para a reunião de Retrospectiva da Sprint_
 
             * Intervalo de tempo fixo (3h).
-            * Após a revisão do Sprint, será moderado pelo Scrum Master.
-            * A equipe discute o sprint: o que deu certo, o que precisa ser melhorado para ser mais produtivo para o próximo sprint ou até mesmo se divertir mais.
+            * Após a revisão da Sprint, será moderado pelo Scrum Master.
+            * A equipe discute a sprint: o que deu certo, o que precisa ser melhorado para ser mais produtivo para a próxima sprint ou até mesmo se divertir mais.
+      statuses:
+        item_0:
+          name: Novo
+        item_1:
+          name: Em especificação
+        item_2:
+          name: Especificado
+        item_3:
+          name: Confirmado
+        item_4:
+          name: A ser planejado
+        item_5:
+          name: Planejado
+        item_6:
+          name: Em andamento
+        item_7:
+          name: Desenvolvido
+        item_8:
+          name: Em testes
+        item_9:
+          name: Testado
+        item_10:
+          name: O teste falhou
+        item_11:
+          name: Fechado
+        item_12:
+          name: Em espera
+        item_13:
+          name: Rejeitado
+      time_entry_activities:
+        item_0:
+          name: Gerenciamento
+        item_1:
+          name: Especificação
+        item_2:
+          name: Desenvolvimento
+        item_3:
+          name: Testando
+        item_4:
+          name: Suporte
+        item_5:
+          name: Outro
+      types:
+        item_0:
+          name: Tarefa
+        item_1:
+          name: Marco
+        item_2:
+          name: Tarefa resumida
+        item_3:
+          name: Recurso
+        item_4:
+          name: Épico
+        item_5:
+          name: Histórico de usuário
+        item_6:
+          name: Bug
+      welcome:
+        title: Boas-vindas ao OpenProject!
+        text: |
+          O OpenProject é o principal software de gestão de projetos de código aberto. Ele dá suporte à gestão de projetos clássica, ágil e híbrida e dá a você o controlo total sobre os seus dados.
+
+          Características principais e casos de uso:
+
+          * [Gestão de portfólio de projetos](https://www.openproject.org/collaboration-software-features/project-portfolio-management/)
+          * [Planejamento e programação de projetos](https://www.openproject.org/collaboration-software-features/project-planning-scheduling/)
+          * [Gestão de tarefas e acompanhamento de problemas](https://www.openproject.org/collaboration-software-features/task-management/)
+          * [Quadros Agile (Scrum e Kanban)](https://www.openproject.org/collaboration-software-features/agile-project-management/)
+          * [Gestão de requisitos e planejamento de versões](https://www.openproject.org/collaboration-software-features/product-development/)
+          * [Controlo de tempo e de custos, orçamentos](https://www.openproject.org/collaboration-software-features/time-tracking/)
+          * [Colaboração em equipe e documentação](https://www.openproject.org/collaboration-software-features/team-collaboration/)
+
+          Boas-vindas ao futuro da gestão de projetos.
+
+          Para administradores: o texto de boas-vindas pode ser alterado [aqui]({{opSetting:base_url}}/admin/settings/general).

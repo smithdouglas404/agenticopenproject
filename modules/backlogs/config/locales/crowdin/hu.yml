@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -55,6 +55,7 @@ hu:
     hours: "Óra"
     impediment: "Akadály"
     label_versions_default_fold_state: "Összecsukott verziók mutatása"
+    caption_versions_default_fold_state: "A verziók alapértelmezés szerint nem lesznek kibontva a várólista (backlog) megtekintésekor. Mindegyiket manuálisan kell kibontani."
     work_package_is_closed: "A munkacsomag készen áll, ekkor"
     label_is_done_status: "Státusz %{status_name} kész állapotot jelöl"
     no_burndown_data: "Nincs megjeleníthető napi teendő adat. Szükség van a sprint kezdési és befejezési időpontjára."
@@ -73,6 +74,9 @@ hu:
     task: "Feladat"
     task_color: "Feladat színe"
     unassigned: "Nincs hozzárendelés"
+    user_preference:
+      header_backlogs: "Várólista modul"
+      button_update_backlogs: "Várólista modul frissítése"
     x_more: "további %{count}..."
   backlogs_active: "aktív"
   backlogs_any: "bármely"

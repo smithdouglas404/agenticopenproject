@@ -1,4 +1,4 @@
-import * as ObservableArray from 'observable-array';
+import ObservableArray from 'observable-array';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { HalLink } from 'core-app/features/hal/hal-link/hal-link';
 import { HalResourceService } from 'core-app/features/hal/services/hal-resource.service';

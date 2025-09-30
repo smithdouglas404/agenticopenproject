@@ -9,6 +9,7 @@ zh-CN:
     label_bcf: 'BCF'
     label_imported_failed: '导入 BCF 主题失败'
     label_imported_successfully: '已成功导入 BCF 主题'
+    label_bcf_issue_associated: "相关的 BCF 问题"
     issues: "问题"
     recommended: '推荐'
     not_recommended: '不推荐'
@@ -83,6 +84,12 @@ zh-CN:
         ifc_attachment: "IFC 文件"
         is_default: "默认模型"
         attachments: "IFC 文件"
+      bim/bcf/issue:
+        bcf_comment: "BCF 评论"
+        bim_snippet: "BIM 片段"
+        reference_links: "参考链接"
+        stage: "阶段"
+        viewpoint: "视点"
     errors:
       models:
         bim/ifc_models/ifc_model:

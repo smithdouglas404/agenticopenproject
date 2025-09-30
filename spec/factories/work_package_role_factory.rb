@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -50,8 +50,8 @@ FactoryBot.define do
       %i(view_work_packages
          work_package_assigned
          add_work_package_attachments
-         add_work_package_notes
-         edit_own_work_package_notes
+         add_work_package_comments
+         edit_own_work_package_comments
          export_work_packages
          view_own_time_entries
          log_own_time
@@ -68,8 +68,8 @@ FactoryBot.define do
       %i(view_work_packages
          edit_work_packages
          work_package_assigned
-         add_work_package_notes
-         edit_own_work_package_notes
+         add_work_package_comments
+         edit_own_work_package_comments
          manage_work_package_relations
          copy_work_packages
          export_work_packages

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,32 +31,15 @@
 module Settings
   module ProjectCustomFields
     module ProjectCustomFieldMapping
-      class RowComponent < Projects::RowComponent # rubocop:disable OpenProject/AddPreviewForViewComponent
-        include OpTurbo::Streamable
-
-        def wrapper_uniq_by
-          "project-#{project.id}"
-        end
-
-        def more_menu_items
-          @more_menu_items ||= [more_menu_detach_project].compact
-        end
-
+      class RowComponent < Admin::CustomFields::CustomFieldProjects::RowComponent
         private
 
-        def more_menu_detach_project
-          if User.current.admin
-            {
-              scheme: :default,
-              icon: nil,
-              label: I18n.t("projects.settings.project_custom_fields.actions.deactivate_for_project"),
-              href: unlink_admin_settings_project_custom_field_path(
-                id: @table.params[:custom_field].id,
-                project_custom_field_project_mapping: { project_id: model.first.id }
-              ),
-              data: { turbo_method: :delete }
-            }
-          end
+        def detach_from_project_url
+          url_helpers.unlink_admin_settings_project_custom_field_path(
+            id: @table.params[:custom_field].id,
+            project_custom_field_project_mapping: { project_id: project.id },
+            page: current_page
+          )
         end
       end
     end

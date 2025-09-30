@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -21,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -29,7 +31,7 @@
 FactoryBot.define do
   factory :custom_field do
     transient do
-      # These values are used internally to customize the  custom field name
+      # These values are used internally to customize the custom field name
       # when using traits. They are not meant to be set externally.
       _format_name do
         [
@@ -49,12 +51,20 @@ FactoryBot.define do
     max_length { false }
     editable { true }
     possible_values { "" }
-    visible { true }
+    admin_only { false }
     field_format { "bool" }
 
     after(:create) do
       # As the request store keeps track of the created custom fields
-      RequestStore.clear!
+      RequestStore.store.delete_if { |key, _| key.to_s.include?("_custom_fields") }
+    end
+
+    trait :admin_only do
+      admin_only { true }
+    end
+
+    trait :multi_value do
+      multi_value { true }
     end
 
     trait :boolean do
@@ -75,6 +85,11 @@ FactoryBot.define do
       field_format { "int" }
     end
 
+    trait :calculated_value do
+      field_format { "calculated_value" }
+      formula { "2 + 2" }
+    end
+
     trait :float do
       field_format { "float" }
     end
@@ -90,7 +105,7 @@ FactoryBot.define do
       end
       field_format { "list" }
       multi_value { false }
-      possible_values { ["A", "B", "C", "D", "E", "F", "G"] }
+      possible_values { %w[A B C D E F G] }
 
       # update custom options default value from the default_option transient
       # field for non-multiselect field
@@ -136,7 +151,7 @@ FactoryBot.define do
 
     trait :multi_list do
       list
-      multi_value { true }
+      multi_value
     end
 
     trait :version do
@@ -145,7 +160,7 @@ FactoryBot.define do
 
     trait :multi_version do
       field_format { "version" }
-      multi_value { true }
+      multi_value
     end
 
     trait :user do
@@ -154,11 +169,32 @@ FactoryBot.define do
 
     trait :multi_user do
       field_format { "user" }
-      multi_value { true }
+      multi_value
     end
 
     trait :link do
       field_format { "link" }
+    end
+
+    trait :hierarchy do
+      field_format { "hierarchy" }
+      hierarchy_root do
+        service = CustomFields::Hierarchy::HierarchicalItemService.new
+        service.generate_root(instance).value!
+      end
+    end
+
+    trait :multi_hierarchy do
+      hierarchy
+      multi_value
+    end
+
+    trait :scored_list do
+      field_format { "scored_list" }
+      hierarchy_root do
+        service = CustomFields::Hierarchy::HierarchicalItemService.new
+        service.generate_root(instance).value!
+      end
     end
 
     factory :project_custom_field, class: "ProjectCustomField" do
@@ -184,6 +220,7 @@ FactoryBot.define do
       factory :string_project_custom_field, traits: [:string]
       factory :text_project_custom_field, traits: [:text]
       factory :integer_project_custom_field, traits: [:integer]
+      factory :calculated_value_project_custom_field, traits: [:calculated_value]
       factory :float_project_custom_field, traits: [:float]
       factory :date_project_custom_field, traits: [:date]
       factory :list_project_custom_field, traits: [:list]
@@ -217,9 +254,14 @@ FactoryBot.define do
       factory :float_wp_custom_field, traits: [:float]
       factory :date_wp_custom_field, traits: [:date]
       factory :list_wp_custom_field, traits: [:list]
+      factory :multi_list_wp_custom_field, traits: [:multi_list]
       factory :version_wp_custom_field, traits: [:version]
+      factory :multi_version_wp_custom_field, traits: [:multi_version]
       factory :user_wp_custom_field, traits: [:user]
+      factory :multi_user_wp_custom_field, traits: [:multi_user]
       factory :link_wp_custom_field, traits: [:link]
+      factory :hierarchy_wp_custom_field, traits: [:hierarchy]
+      factory :scored_list_wp_custom_field, traits: [:scored_list]
     end
 
     factory :issue_custom_field, class: "WorkPackageCustomField" do

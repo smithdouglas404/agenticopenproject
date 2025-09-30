@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ::TwoFactorAuthentication
   class BaseController < ApplicationController
     include ::TwoFactorAuthentication::WebauthnRelyingParty
@@ -18,7 +20,6 @@ module ::TwoFactorAuthentication
       if params[:type]
         @device_type = params[:type].to_sym
         @device = new_device_type! @device_type
-
         render "two_factor_authentication/two_factor_devices/new"
       else
         @available_devices = available_devices
@@ -41,7 +42,7 @@ module ::TwoFactorAuthentication
     end
 
     ##
-    # Destroy the given device if its not the default
+    # Destroy the given device if it's not the default
     def destroy
       if @device.default && strategy_manager.enforced?
         render_400 message: t("two_factor_authentication.devices.is_default_cannot_delete")
@@ -200,10 +201,10 @@ module ::TwoFactorAuthentication
     def logout_other_sessions
       if current_user == target_user
         Rails.logger.info { "First 2FA device registered for #{target_user}, terminating other logged in sessions." }
-        ::Sessions::DropOtherSessionsService.call(target_user, session)
+        ::Sessions::DropOtherSessionsService.call!(target_user, session)
       else
         Rails.logger.info { "First 2FA device registered for #{target_user}, terminating logged in sessions." }
-        ::Sessions::DropAllSessionsService.call(target_user)
+        ::Sessions::DropAllSessionsService.call!(target_user)
       end
     end
 
@@ -230,8 +231,6 @@ module ::TwoFactorAuthentication
 
     def find_device
       @device = target_user.otp_devices.find(params[:device_id])
-    rescue ActiveRecord::RecordNotFound
-      render_404
     end
 
     def find_user
@@ -240,14 +239,6 @@ module ::TwoFactorAuthentication
 
     def target_user
       current_user
-    end
-
-    def show_local_breadcrumb
-      true
-    end
-
-    def default_breadcrumb
-      t("two_factor_authentication.label_devices")
     end
 
     def available_devices

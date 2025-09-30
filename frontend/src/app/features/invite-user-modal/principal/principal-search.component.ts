@@ -1,26 +1,7 @@
-import {
-  Component,
-  Input,
-  EventEmitter,
-  OnInit,
-  Output,
-  ElementRef,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
-import {
-  Observable,
-  BehaviorSubject,
-  combineLatest,
-  forkJoin,
-} from 'rxjs';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  share,
-  map,
-  shareReplay,
-  switchMap,
-} from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, forkJoin, Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, share, shareReplay, switchMap } from 'rxjs/operators';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
@@ -31,6 +12,7 @@ import { CurrentUserService } from 'core-app/core/current-user/current-user.serv
 import { ApiV3FilterBuilder } from 'core-app/shared/helpers/api-v3/api-v3-filter-builder';
 import { PrincipalType } from '../invite-user.component';
 import { CapabilitiesResourceService } from 'core-app/core/state/capabilities/capabilities.service';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 
 interface NgSelectPrincipalOption {
   principal:PrincipalLike,
@@ -39,7 +21,10 @@ interface NgSelectPrincipalOption {
 
 @Component({
   selector: 'op-ium-principal-search',
+  styleUrls: ['./principal-search.component.sass'],
   templateUrl: './principal-search.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class PrincipalSearchComponent extends UntilDestroyedMixin implements OnInit {
   @Input() spotFormBinding:UntypedFormControl;
@@ -117,6 +102,7 @@ export class PrincipalSearchComponent extends UntilDestroyedMixin implements OnI
     readonly apiV3Service:ApiV3Service,
     readonly currentUserService:CurrentUserService,
     readonly capabilitiesService:CapabilitiesResourceService,
+    readonly pathHelperService:PathHelperService,
   ) {
     super();
 
@@ -167,6 +153,7 @@ export class PrincipalSearchComponent extends UntilDestroyedMixin implements OnI
       nonMembers,
     })
       .pipe(
+        // eslint-disable-next-line @typescript-eslint/no-shadow
         map(({ members, nonMembers }) => [
           ...nonMembers.elements.map((nonMember:PrincipalLike) => ({
             principal: nonMember,
@@ -182,4 +169,14 @@ export class PrincipalSearchComponent extends UntilDestroyedMixin implements OnI
   }
 
   compareWith = (a:NgSelectPrincipalOption, b:PrincipalLike) => a.principal.id === b.id;
+
+  public getHoverCardUrl(principal:PrincipalLike) {
+    if (!principal.id) { return ''; }
+
+    if (this.type !== PrincipalType.User) {
+      return '';
+    }
+
+    return this.pathHelperService.userHoverCardPath(principal.id);
+  }
 }

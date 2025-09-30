@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,7 +31,7 @@
 require "spec_helper"
 require_relative "../principals/shared_memberships_examples"
 
-RSpec.describe "user memberships through user page", :js, :with_cuprite do
+RSpec.describe "user memberships through user page", :js, :selenium do
   include_context "principal membership management context"
 
   shared_let(:principal) { create(:user, firstname: "Foobar", lastname: "Blabla") }
@@ -39,6 +41,24 @@ RSpec.describe "user memberships through user page", :js, :with_cuprite do
     current_user { create(:admin) }
 
     it_behaves_like "principal membership management flows"
+
+    context "when setting global permissions" do
+      let(:global_role) { create(:global_role) }
+      let!(:global_user) { create(:global_member, principal:, roles: [global_role]) }
+
+      it "removes a global user (bug #57928)" do
+        # Check if user with global role is there
+        principal_page.visit!
+        principal_page.open_global_roles_tab!
+        principal_page.expect_global_roles([global_role.name])
+
+        # Remove the global role from the user
+        principal_page.remove_global_role!(global_role.id)
+
+        # Verify that it is gone
+        principal_page.expect_global_roles([])
+      end
+    end
   end
 
   it_behaves_like "global user principal membership management flows", :manage_user

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,12 +32,7 @@ require "spec_helper"
 require_module_spec_helper
 
 RSpec.describe "Appendix of default CSP for external file storage hosts" do
-  def parse_csp(csp_string)
-    csp_string
-      .split("; ")
-      .map(&:split)
-      .each_with_object({}) { |csp_part, csp_hash_map| csp_hash_map[csp_part[0]] = csp_part[1..] }
-  end
+  include CspHelper
 
   shared_let(:project) { create(:project) }
   shared_let(:storage) { create(:nextcloud_storage) }
@@ -49,7 +46,7 @@ RSpec.describe "Appendix of default CSP for external file storage hosts" do
         get "/"
 
         csp = parse_csp(last_response.headers["Content-Security-Policy"])
-        expect(csp["connect-src"]).to include(storage.host)
+        expect(csp["connect-src"]).to include(storage.host.chomp("/"))
       end
     end
 
@@ -58,7 +55,7 @@ RSpec.describe "Appendix of default CSP for external file storage hosts" do
         get "/"
 
         csp = parse_csp(last_response.headers["Content-Security-Policy"])
-        expect(csp["connect-src"]).not_to include(storage.host)
+        expect(csp["connect-src"]).not_to include(storage.host.chomp("/"))
       end
     end
   end

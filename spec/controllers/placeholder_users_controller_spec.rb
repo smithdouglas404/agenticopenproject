@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,7 +37,7 @@ RSpec.describe PlaceholderUsersController do
   shared_examples "do not allow non-admins" do
     it "responds with unauthorized status" do
       expect(response).not_to be_successful
-      expect(response.status).to eq 403
+      expect(response).to have_http_status :forbidden
     end
   end
 
@@ -103,7 +105,7 @@ RSpec.describe PlaceholderUsersController do
       context "without ee" do
         it "returns with an error" do
           expect { post :create, params: }.not_to change { PlaceholderUser.count }
-          expect(response).to be_successful
+          expect(response).to have_http_status(:unprocessable_entity)
 
           expect(assigns(:placeholder_user).errors.details[:base])
             .to eq([error: :error_enterprise_only, action: "Placeholder Users"])
@@ -348,7 +350,7 @@ RSpec.describe PlaceholderUsersController do
 
       it "responds with unauthorized status" do
         expect(response).not_to be_successful
-        expect(response.status).to eq 403
+        expect(response).to have_http_status :forbidden
       end
     end
 
@@ -359,7 +361,7 @@ RSpec.describe PlaceholderUsersController do
 
       it "responds with unauthorized status" do
         expect(response).not_to be_successful
-        expect(response.status).to eq 403
+        expect(response).to have_http_status :forbidden
       end
     end
   end

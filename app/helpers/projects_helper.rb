@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,16 +32,25 @@ module ProjectsHelper
   include WorkPackagesFilterHelper
 
   PROJECTS_QUERY_PARAM_NAMES = %i[query_id filters columns sortBy per_page page].freeze
+  PROJECTS_FILTER_FOR_COLUMN_MAPPING = {
+    "description" => nil,
+    "identifier" => nil,
+    "name" => "id",
+    "project_status" => "project_status_code",
+    "required_disk_space" => nil,
+    "status_explanation" => nil
+  }.freeze
 
   # Just like sort_header tag but removes sorting by
   # lft from the sort criteria as lft is mutually exclusive with
   # the other criteria.
-  def projects_sort_header_tag(column, **)
+  def projects_sort_header_tag(column, all_column_attributes, **)
     former_criteria = @sort_criteria.criteria.dup
 
     @sort_criteria.criteria.reject! { |a, _| a == "lft" }
 
-    sort_header_tag(column, **, allowed_params: projects_query_param_names_for_sort)
+    sort_header_with_action_menu(column, all_column_attributes, PROJECTS_FILTER_FOR_COLUMN_MAPPING, **,
+                                 allowed_params: projects_query_param_names_for_sort)
   ensure
     @sort_criteria.criteria = former_criteria
   end
@@ -53,7 +64,7 @@ module ProjectsHelper
   end
 
   def projects_columns_options
-    @projects_columns_options ||= ::Queries::Projects::ProjectQuery
+    @projects_columns_options ||= ::ProjectQuery
                                     .new
                                     .available_selects
                                     .reject { |c| c.attribute == :hierarchy }
@@ -64,8 +75,7 @@ module ProjectsHelper
   def selected_projects_columns_options
     Setting
       .enabled_projects_columns
-      .map { |c| projects_columns_options.find { |o| o[:id].to_s == c } }
-      .compact
+      .filter_map { |c| projects_columns_options.find { |o| o[:id].to_s == c } }
   end
 
   def protected_projects_columns_options
@@ -77,5 +87,15 @@ module ProjectsHelper
 
   def projects_query_params
     safe_query_params(PROJECTS_QUERY_PARAM_NAMES)
+  end
+
+  def new_workspace_title(workspace)
+    if workspace.project?
+      I18n.t(:label_project_new)
+    elsif workspace.portfolio?
+      I18n.t(:label_portfolio_new)
+    elsif workspace.program?
+      I18n.t(:label_program_new)
+    end
   end
 end

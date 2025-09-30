@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -231,7 +233,7 @@ RSpec.describe "Work package with relation query group", :js, :selenium do
       end
 
       # adding existing from relations tab
-      relations.add_relation type: Relation::TYPES[relation_type.to_s][:sym], to: independent_work_package
+      relations.add_relation type: Relation::TYPES[relation_type.to_s][:sym], relatable: independent_work_package
       within(embedded_table.table_container) do
         embedded_table.expect_work_package_listed(independent_work_package)
       end
@@ -254,7 +256,7 @@ RSpec.describe "Work package with relation query group", :js, :selenium do
       end
 
       # adding existing from relations tab will show work package also in the embedded table
-      relations.add_relation type: Relation::TYPES[relation_type.to_s][:sym], to: independent_work_package
+      relations.add_relation type: Relation::TYPES[relation_type.to_s][:sym], relatable: independent_work_package
       within(embedded_table.table_container) do
         embedded_table.expect_work_package_listed(independent_work_package)
       end

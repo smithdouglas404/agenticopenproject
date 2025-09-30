@@ -1,15 +1,5 @@
-import {
-  ApplicationRef,
-  ComponentFactoryResolver,
-  Injectable,
-  Injector,
-} from '@angular/core';
-import {
-  ComponentPortal,
-  ComponentType,
-  DomPortalOutlet,
-  PortalInjector,
-} from '@angular/cdk/portal';
+import { ApplicationRef, Injectable, Injector } from '@angular/core';
+import { ComponentPortal, ComponentType, DomPortalOutlet } from '@angular/cdk/portal';
 import { TransitionService } from '@uirouter/core';
 import { OpContextMenuHandler } from 'core-app/shared/components/op-context-menu/op-context-menu-handler';
 import {
@@ -17,7 +7,6 @@ import {
   OpContextMenuLocalsToken,
 } from 'core-app/shared/components/op-context-menu/op-context-menu.types';
 import { OPContextMenuComponent } from 'core-app/shared/components/op-context-menu/op-context-menu.component';
-import { KeyCodes } from 'core-app/shared/helpers/keyCodes.enum';
 import { FocusHelperService } from 'core-app/shared/directives/focus/focus-helper';
 
 @Injectable({ providedIn: 'root' })
@@ -34,29 +23,33 @@ export class OPContextMenuService {
   private isOpening = false;
 
   constructor(
-    private componentFactoryResolver:ComponentFactoryResolver,
     readonly FocusHelper:FocusHelperService,
     private appRef:ApplicationRef,
     private $transitions:TransitionService,
     private injector:Injector,
   ) {
+  }
+
+  public register() {
+    const existing = document.querySelector('.op-context-menu--overlay');
+    existing?.remove();
+
     const hostElement = this.portalHostElement = document.createElement('div');
     hostElement.classList.add('op-context-menu--overlay');
     document.body.appendChild(hostElement);
 
     this.bodyPortalHost = new DomPortalOutlet(
       hostElement,
-      this.componentFactoryResolver,
       this.appRef,
       this.injector,
     );
 
     // Close context menus on state change
-    $transitions.onStart({}, () => this.close());
+    this.$transitions.onStart({}, () => this.close());
 
     // Listen to keyups on window to close context menus
     jQuery(window).on('keydown', (evt:JQuery.TriggeredEvent) => {
-      if (this.active && evt.which === KeyCodes.ESCAPE) {
+      if (this.active && evt.key === 'Escape') {
         this.close(true);
       }
 
@@ -145,16 +138,18 @@ export class OPContextMenuService {
    * This allows callers to pass data into the newly created context menu component.
    *
    * @param {OpContextMenuLocalsMap} data
-   * @returns {PortalInjector}
+   * @returns {Injector}
    */
   private injectorFor(data:OpContextMenuLocalsMap) {
-    const injectorTokens = new WeakMap();
     // Pass the service because otherwise we're getting a cyclic dependency between the portal
     // host service and the bound portal
     data.service = this;
 
-    injectorTokens.set(OpContextMenuLocalsToken, data);
-
-    return new PortalInjector(this.injector, injectorTokens);
+    return Injector.create({
+      providers: [
+        { provide: OpContextMenuLocalsToken, useValue: data },
+      ],
+      parent: this.injector,
+    });
   }
 }

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -255,8 +257,7 @@ class RepositoriesController < ApplicationController
   end
 
   def stats
-    # allow object_src self to be able to load dynamic stats SVGs from ./graph
-    override_content_security_policy_directives object_src: %w('self')
+    append_content_security_policy_directives object_src: %w('self') # rubocop:disable Lint/PercentStringArray
 
     @show_commits_per_author = current_user.allowed_in_project?(:view_commit_author_statistics, @project)
   end
@@ -320,8 +321,6 @@ class RepositoriesController < ApplicationController
     end
   rescue OpenProject::SCM::Exceptions::SCMEmpty
     render "empty"
-  rescue ActiveRecord::RecordNotFound
-    render_404
   rescue InvalidRevisionParam
     show_error_not_found
   end

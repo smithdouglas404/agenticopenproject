@@ -131,6 +131,7 @@ import idFromLink from 'core-app/features/hal/helpers/id-from-link';
     DynamicFormService,
     DynamicFieldsService,
   ],
+  standalone: false,
 })
 export class DynamicFormComponent extends UntilDestroyedMixin implements OnChanges {
   /** Backend form URL (e.g. https://community.openproject.org/api/v3/projects/dev-large/form) */

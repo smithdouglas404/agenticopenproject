@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,10 +37,10 @@ RSpec.describe Storages::Admin::OAuthClientInfoComponent, type: :component do # 
       it "returns false, does not render view component" do
         storage = build_stubbed(:nextcloud_storage,
                                 oauth_client: build_stubbed(:oauth_client))
-        component = described_class.new(storage:, oauth_client: storage.oauth_client)
+        component = described_class.new(storage)
         expect(component.edit_icon_button_options)
           .to include(icon: :sync,
-                      data: { confirm:
+                      data: { turbo_confirm:
                                 "This action will reset the current OAuth credentials. After confirming you will " \
                                 "have to enter new credentials from the storage provider and all users will have " \
                                 "to authorize against Nextcloud again. Are you sure you want to proceed?",
@@ -49,7 +51,7 @@ RSpec.describe Storages::Admin::OAuthClientInfoComponent, type: :component do # 
     context "without oauth client" do
       it "returns true, renders view component" do
         storage = build_stubbed(:nextcloud_storage)
-        component = described_class.new(storage:, oauth_client: nil)
+        component = described_class.new(storage)
 
         edit_icon_button_data_options = component.edit_icon_button_options
         expect(edit_icon_button_data_options).to include(icon: :pencil, data: { turbo_stream: true })

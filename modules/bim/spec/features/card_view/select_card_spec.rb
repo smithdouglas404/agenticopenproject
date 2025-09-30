@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,7 +29,10 @@
 require "spec_helper"
 require_relative "../../support/pages/ifc_models/show_default"
 
-RSpec.describe "Selecting cards in the card view (regression #31962)", :js, with_config: { edition: "bim" } do
+RSpec.describe "Selecting cards in the card view (regression #31962)",
+               :js,
+               :selenium,
+               with_config: { edition: "bim" } do
   let(:user) { create(:admin) }
   let(:project) { create(:project, enabled_module_names: %i[bim work_package_tracking]) }
   let(:wp_table) { Pages::IfcModels::ShowDefault.new(project) }

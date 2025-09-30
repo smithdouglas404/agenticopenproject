@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -178,9 +178,9 @@ RSpec.describe CopyProjectJob, type: :model, with_good_job_batches: [CopyProject
     let(:params) { { name: "Copy", identifier: "copy" } }
 
     let_work_packages(<<~TABLE)
-      hierarchy   | work | remaining work | start date | end date
-      parent      |   1h |             0h | 2024-01-23 | 2024-01-26
-        child     |   3h |           1.5h | 2024-01-23 | 2024-01-26
+      hierarchy | work | remaining work | start date | end date   | scheduling mode
+      parent    |   1h |             0h | 2024-01-23 | 2024-01-26 | automatic
+        child   |   3h |           1.5h | 2024-01-23 | 2024-01-26 | manual
     TABLE
 
     before do
@@ -202,6 +202,13 @@ RSpec.describe CopyProjectJob, type: :model, with_good_job_batches: [CopyProject
       expect(copy_job.job_status.status).to eq "success"
       expect(batch.properties[:errors]).to be_empty
       expect(OpenProject.logger).not_to have_received(:error)
+
+      copied_project = batch.properties[:target_project]
+      expect_work_packages(copied_project.work_packages, <<~TABLE)
+        hierarchy | work | remaining work | start date | end date   | scheduling mode
+        parent    |   1h |             0h | 2024-01-23 | 2024-01-26 | automatic
+          child   |   3h |           1.5h | 2024-01-23 | 2024-01-26 | manual
+      TABLE
     end
   end
 
@@ -216,7 +223,9 @@ RSpec.describe CopyProjectJob, type: :model, with_good_job_batches: [CopyProject
           described_class.perform_later(target_project_params: params, associations_to_copy: [:members])
         end
 
-        GoodJob.perform_inline
+        perform_enqueued_jobs do # needed for the deliveries
+          GoodJob.perform_inline
+        end
       end
     end
 
@@ -248,8 +257,6 @@ RSpec.describe CopyProjectJob, type: :model, with_good_job_batches: [CopyProject
         end
 
         it "notifies the user of the success" do
-          perform_enqueued_jobs # needed for the deliveries
-
           mail = ActionMailer::Base.deliveries
                                    .find { |m| m.message_id.start_with? "op.project-#{copied_project.id}" }
 
@@ -271,8 +278,6 @@ RSpec.describe CopyProjectJob, type: :model, with_good_job_batches: [CopyProject
         end
 
         it "notifies the user of that parent not being allowed" do
-          perform_enqueued_jobs
-
           mail = ActionMailer::Base.deliveries.first
           expect(mail).to be_present
           expect(mail.subject).to eq I18n.t("copy_project.failed", source_project_name: subproject.name)
@@ -305,8 +310,6 @@ RSpec.describe CopyProjectJob, type: :model, with_good_job_batches: [CopyProject
         end
 
         it "notifies the user of the success" do
-          perform_enqueued_jobs
-
           mail = ActionMailer::Base.deliveries
                                    .find { |m| m.message_id.start_with? "op.project-#{subject.id}" }
 
@@ -315,6 +318,41 @@ RSpec.describe CopyProjectJob, type: :model, with_good_job_batches: [CopyProject
           expect(mail.to).to eq [user.mail]
         end
       end
+    end
+  end
+
+  context "when project has relations" do
+    shared_let(:source_project) { create(:project, name: "Source project") }
+
+    before_all do
+      set_factory_default(:project_with_types, source_project)
+    end
+
+    let(:admin) { create(:admin) }
+    let(:params) { { name: "Copy", identifier: "copy" } }
+
+    let_work_packages(<<~TABLE)
+      hierarchy        | start date | end date   | scheduling mode
+      automatic_parent | 2024-01-23 | 2024-01-26 | automatic
+        child_ap       | 2024-01-23 | 2024-01-26 | manual
+      manual_parent    | 2024-01-21 | 2024-01-28 | manual
+        child_mp       | 2024-01-23 | 2024-01-26 | manual
+    TABLE
+
+    it "preserves hierarchy, dates and scheduling modes upon copying" do
+      batch = GoodJob::Batch.enqueue(user: admin, source_project:) do
+        described_class.perform_later(target_project_params: params, associations_to_copy: [:work_packages])
+      end
+      GoodJob.perform_inline
+
+      copied_project = batch.reload.properties[:target_project]
+      expect_work_packages(copied_project.work_packages, <<~TABLE)
+        hierarchy        | start date | end date   | scheduling mode
+        automatic_parent | 2024-01-23 | 2024-01-26 | automatic
+          child_ap       | 2024-01-23 | 2024-01-26 | manual
+        manual_parent    | 2024-01-21 | 2024-01-28 | manual
+          child_mp       | 2024-01-23 | 2024-01-26 | manual
+      TABLE
     end
   end
 end

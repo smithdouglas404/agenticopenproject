@@ -1,28 +1,21 @@
 # Schema: FileLinkCollectionReadModel
 ---
 allOf:
-  - $ref: './collection_model.yml'
+  - $ref: './paginated_collection_model.yml'
   - type: object
-    required:
-      - _links
-      - _embedded
     properties:
       _links:
         type: object
-        required:
-          - self
         properties:
           self:
             allOf:
-              - $ref: "./link.yml"
+              - $ref: './link.yml'
               - description: |-
                   This file links collection
                   
                   **Resource**: FileLinkCollectionReadModel
       _embedded:
         type: object
-        required:
-          - elements
         properties:
           elements:
             type: array
@@ -33,9 +26,17 @@ example:
   _type: Collection
   total: 2
   count: 2
+  pageSize: 30
+  offset: 1
   _links:
     self:
       href: '/api/v3/work_packages/42/file_links'
+    jumpTo:
+      href: '/api/v3/work_packages/42/file_links?offset=%7Boffset%7D&pageSize=30'
+      templated: true
+    changeSize:
+      href: '/api/v3/work_packages/42/file_links?offset=1&pageSize=%7Bsize%7D'
+      templated: true
   _embedded:
     elements:
       - id: 1337

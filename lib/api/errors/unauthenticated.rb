@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,7 +35,7 @@ module API
       code 401
 
       def initialize(message = I18n.t("api_v3.errors.code_401"))
-        super
+        super(message || I18n.t("api_v3.errors.code_401"))
       end
     end
   end

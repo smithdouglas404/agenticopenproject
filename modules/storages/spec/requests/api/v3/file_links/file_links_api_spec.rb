@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -146,7 +146,7 @@ RSpec.describe "API v3 file links resource" do
         ) do
           expect(Storages::FileLink.count).to eq 2
           Storages::FileLink.find_each.with_index do |file_link, i|
-            unset_keys = %w[container_id container_type]
+            unset_keys = %w[container_id container_type origin_status]
             set_keys = (file_link.attributes.keys - unset_keys)
             set_keys.each do |key|
               expect(file_link.attributes[key]).not_to(
@@ -159,9 +159,8 @@ RSpec.describe "API v3 file links resource" do
             end
           end
 
-          expect(response.body).to be_json_eql(
-            "urn:openproject-org:api:v3:file_links:no_link_provided".to_json
-          ).at_path("_links/self/href")
+          self_href = "urn:openproject-org:api:v3:file_links:no_link_provided?offset=1&pageSize=30".to_json
+          expect(response.body).to be_json_eql(self_href).at_path("_links/self/href")
         end
       end
     end
@@ -247,7 +246,7 @@ RSpec.describe "API v3 file links resource" do
       let(:path) { "#{api_v3_paths.file_links(work_package.id)}?filters=#{CGI.escape(filters.to_json)}" }
 
       it "return a 400 HTTP error" do
-        expect(last_response.status).to be 400
+        expect(last_response).to have_http_status :bad_request
       end
     end
   end
@@ -313,14 +312,20 @@ RSpec.describe "API v3 file links resource" do
       ) do
         expect(Storages::FileLink.count).to eq 2
         Storages::FileLink.find_each.with_index do |file_link, i|
-          file_link.attributes.each do |(key, value)|
-            # check nil values to ensure the :file_link_element factory is accurate
-            expect(value).not_to be_nil,
-                                 "expected attribute #{key.inspect} of FileLink ##{i + 1} to be set.\ngot nil."
+          unset_keys = %w[origin_status]
+          set_keys = (file_link.attributes.keys - unset_keys)
+          set_keys.each do |key|
+            expect(file_link.attributes[key]).not_to(
+              be_nil,
+              "expected attribute #{key.inspect} of FileLink ##{i + 1} to be set.\ngot nil."
+            )
+          end
+          unset_keys.each do |key|
+            expect(file_link.attributes[key]).to be_nil
           end
         end
 
-        expect(response.body).to be_json_eql(path.to_json).at_path("_links/self/href")
+        expect(response.body).to be_json_eql("#{path}?offset=1&pageSize=30".to_json).at_path("_links/self/href")
       end
     end
 
@@ -391,23 +396,18 @@ RSpec.describe "API v3 file links resource" do
         ]
       end
 
-      it_behaves_like "API V3 collection response", 3, 3, "FileLink" do
-        let(:elements) { Storages::FileLink.order(id: :asc) }
+      it_behaves_like "API V3 collection response", 1, 1, "FileLink" do
+        let(:elements) { [Storages::FileLink.first] }
         let(:expected_status_code) { 201 }
       end
 
-      it(
-        "creates only one FileLink for all duplicates and " \
-        "uses metadata from the first item and " \
-        "replies with as many embedded elements as in the request, all identical"
-      ) do
+      it "creates only one FileLink for all duplicates and uses metadata from the first item" do
         expect(Storages::FileLink.count).to eq 1
 
         expect(Storages::FileLink.first.origin_name).to eq "first name"
 
         replied_elements = JSON.parse(last_response.body).dig("_embedded", "elements")
-        expect(replied_elements.count).to eq(embedded_elements.count)
-        expect(replied_elements[1..]).to all(eq(replied_elements.first))
+        expect(replied_elements.count).to eq(1)
       end
     end
 
@@ -518,7 +518,17 @@ RSpec.describe "API v3 file links resource" do
     context "if file link does not have a container." do
       let(:file_link) { create(:file_link) }
 
-      it_behaves_like "not found"
+      context "and the current user is the creator of the link" do
+        let(:current_user) { file_link.creator }
+
+        it "is successful" do
+          expect(subject.status).to be 200
+        end
+      end
+
+      context "and the current user is not the creator of the link" do
+        it_behaves_like "not found"
+      end
     end
   end
 
@@ -596,9 +606,9 @@ RSpec.describe "API v3 file links resource" do
 
     describe "with successful response" do
       before do
-        Storages::Peripherals::Registry.stub(
+        Storages::Adapters::Registry.stub(
           "nextcloud.queries.download_link",
-          ->(_) { ServiceResult.success(result: url) }
+          ->(_) { Success(url) }
         )
       end
 
@@ -612,9 +622,9 @@ RSpec.describe "API v3 file links resource" do
 
     describe "with query failed" do
       before do
-        Storages::Peripherals::Registry.stub(
+        Storages::Adapters::Registry.stub(
           "nextcloud.queries.download_link",
-          ->(_) { ServiceResult.failure(result: error, errors: Storages::StorageError.new(code: error)) }
+          ->(_) { Failure(Storages::Adapters::Results::Error.new(source: self, code: error)) }
         )
 
         get path
@@ -636,7 +646,7 @@ RSpec.describe "API v3 file links resource" do
         let(:error) { :not_found }
 
         it "fails with outbound request failure" do
-          expect(last_response.status).to be(500)
+          expect(last_response).to have_http_status(:internal_server_error)
 
           body = JSON.parse(last_response.body)
           expect(body["message"]).to eq(I18n.t("api_v3.errors.code_500_outbound_request_failure", status_code: 404))

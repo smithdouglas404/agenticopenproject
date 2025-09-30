@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -33,6 +33,7 @@ import { StatusResource } from 'core-app/features/hal/resources/status-resource'
   templateUrl: './status-board-header.html',
   styleUrls: ['./status-board-header.sass'],
   host: { class: 'title-container -small' },
+  standalone: false,
 })
 export class StatusBoardHeaderComponent {
   @Input('resource') public status:StatusResource;

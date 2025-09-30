@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -40,8 +40,7 @@ module API
 
         helpers do
           def allowed_scope
-            WorkPackage.where(id: WorkPackage.allowed_to(User.current, :log_own_time))
-                       .or(WorkPackage.where(project_id: Project.allowed_to(User.current, :log_time)))
+            WorkPackage.allowed_to_log_time(User.current)
           end
         end
 

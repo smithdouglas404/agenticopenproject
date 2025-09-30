@@ -39,7 +39,7 @@ import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
 import SpotDropAlignmentOption from 'core-app/spot/drop-alignment-options';
-import { getBaselineState } from 'core-app/features/work-packages/components/wp-baseline/baseline-helpers';
+import { BaselineMode, getBaselineState } from 'core-app/features/work-packages/components/wp-baseline/baseline-helpers';
 import {
   CombinedDateDisplayField,
 } from 'core-app/shared/components/fields/display/field-types/combined-date-display.field';
@@ -49,6 +49,7 @@ import {
   styleUrls: ['./wp-single-card.component.sass'],
   templateUrl: './wp-single-card.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implements OnInit {
   @Input() public workPackage:WorkPackageResource;
@@ -95,7 +96,7 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
 
   public selected = false;
 
-  public baselineMode = ''||'added'||'updated'||'removed';
+  public baselineMode:BaselineMode;
 
   public text = {
     removeCard: this.I18n.t('js.card.remove_from_list'),

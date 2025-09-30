@@ -2,6 +2,7 @@
 lt:
   js:
     storages:
+      authentication_error: "Authentication with %{storageType} failed"
       link_files_in_storage: "Susieti failus %{storageType}"
       link_existing_files: "Susieti esamus failus"
       upload_files: "Įkelti failus"
@@ -13,11 +14,14 @@ lt:
       open_storage: "Atverti %{storageType}"
       select_location: "Pažymėti vietą"
       choose_location: "Parinkite vietą"
+      new_folder: "New folder"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
         default: "Saugykla"
       information:
+        authentication_error: "The request to %{storageType} could not be authenticated, that's an error."
         connection_error: >
           Kai kurie %{storageType} nustatymai neveikia. Prašome susisiekti su jūsų %{storageType} administratoriumi.
         live_data_error: "Klaida ištraukiant failo detales"
@@ -26,6 +30,8 @@ lt:
         no_file_links: "Norėdami susieti failus su šiuo darbo paketu, prašome daryti tai per %{storageType}."
         not_logged_in: >
           Norėdami pridėti nuorodą, žiūrėti ar įkelkiti failus, susijusius su šiuo darbo paketu, prašome prisijungti prie %{storageType}.
+        suggest_logout: You can try whether logging out and back in fixes this problem.
+        suggest_relink: You can try whether re-linking your account via the login button below fixes this problem.
       files:
         already_existing_header: "Toks failas jau yra"
         already_existing_body: >
@@ -42,6 +48,7 @@ lt:
           Automatiškai tvarkomas projekto aplankas dar nerastas. Prašome truputį palaukti, iš naujo įkelti puslapį, kad atsisiųstumėte naujausius duomenis, ir pabandyti dar kartą.
         managed_project_folder_no_access: >
           Jūs dar neturite prieigos prie tvarkomo projekto aplanko. Prašome truputį palaukti ir bandyti dar kartą.
+        cannot_create_folder: Failed to create folder. Avoid using special characters and symbols and make sure the folder does not exist already.
         upload_keep_both: "Pasilikti abu"
         upload_replace: "Pakeisti"
       file_links:

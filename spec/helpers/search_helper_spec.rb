@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -94,7 +96,7 @@ RSpec.describe "search/index" do
   describe "#highlight_tokens_in_event" do
     let(:journal_notes) { "Journals notes" }
     let(:event_description) { "The description of the event" }
-    let(:attachment_fulltext) { "The fulltext of the attachment" }
+    let(:attachment_fulltext) { ["The fulltext of the attachment"] }
     let(:attachment_filename) { "attachment_filename.txt" }
     let(:journal) { build_stubbed(:work_package_journal, notes: journal_notes) }
     let(:event) do
@@ -114,7 +116,7 @@ RSpec.describe "search/index" do
         allow(scope)
           .to receive(:pluck)
                 .with(:fulltext)
-                .and_return [attachment_fulltext]
+                .and_return attachment_fulltext
       end
     end
 
@@ -130,9 +132,9 @@ RSpec.describe "search/index" do
     context "with the token in the description" do
       let(:tokens) { %w(description) }
 
-      it "shows the text in the description" do
+      it "shows the formatted text in the description" do
         expect(helper.highlight_tokens_in_event(event, tokens))
-          .to eql 'The <span class="search-highlight token-0">description</span> of the event'
+          .to eql '<p class="op-uc-p">The <span class="search-highlight token-0">description</span> of the event</p>'
       end
     end
 
@@ -140,13 +142,44 @@ RSpec.describe "search/index" do
       let(:tokens) { %w(description) }
       let(:journal_notes) { "" }
 
-      it "shows the text in the description" do
+      it "shows the formatted text in the description" do
         expect(helper.highlight_tokens_in_event(event, tokens))
-          .to eql 'The <span class="search-highlight token-0">description</span> of the event'
+          .to eql '<p class="op-uc-p">The <span class="search-highlight token-0">description</span> of the event</p>'
+      end
+
+      context "with elaborate markdown formatting in the description" do
+        let(:event_description) do
+          <<~MARKDOWN
+            This is a paragraph with **bold** and *italic* text #{'hello ' * 100}.
+          MARKDOWN
+        end
+        let(:tokens) { %w(bold) }
+
+        it "formats it to abbreviated HTML" do
+          expectation = <<~HTML.squish
+            <p class="op-uc-p">This is a paragraph with
+            <strong><span class="search-highlight token-0">bold</span></strong>
+            and <em>italic</em> text #{'hello ' * 15} hello...</p>
+          HTML
+
+          expect(helper.highlight_tokens_in_event(event, tokens)).to eql(expectation)
+        end
       end
     end
 
     context "with the token in the attachment text" do
+      let(:tokens) { %w(fulltext) }
+
+      it "shows the text in the fulltext" do
+        expect(helper.highlight_tokens_in_event(event, tokens))
+          .to eql 'The <span class="search-highlight token-0">fulltext</span> of the attachment'
+      end
+    end
+
+    context "with the token in the second attachment's text with the first one being nil" do
+      # Bug happening if [nil, "The fulltext of the attachment"].join leads to a US-ASCII encoding.
+      # https://community.openproject.org/wp/61110
+      let(:attachment_fulltext) { [nil, "The fulltext of the attachment"] }
       let(:tokens) { %w(fulltext) }
 
       it "shows the text in the fulltext" do
@@ -167,9 +200,9 @@ RSpec.describe "search/index" do
     context "with the token in neither" do
       let(:tokens) { %w(bogus) }
 
-      it "shows the description (without highlight)" do
+      it "shows the formatted description (without highlight)" do
         expect(helper.highlight_tokens_in_event(event, tokens))
-          .to eql "The description of the event"
+          .to eql '<p class="op-uc-p">The description of the event</p>'
       end
     end
   end

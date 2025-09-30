@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +30,9 @@
 
 require "spec_helper"
 
-RSpec.describe "group memberships through groups page", :js, :with_cuprite do
+RSpec.describe "group memberships through groups page", :js do
+  include Components::Autocompleter::NgSelectAutocompleteHelpers
+
   shared_let(:admin) { create(:admin) }
   let!(:project) do
     create(:project, name: "Project 1", identifier: "project1", members: project_members)
@@ -64,6 +68,25 @@ RSpec.describe "group memberships through groups page", :js, :with_cuprite do
     expect(members_page).to have_group "A-Team", roles: ["Manager"]
     expect(members_page).to have_user "Peter Pan", roles: ["Manager"]
     expect(members_page).to have_user "Hannibal Smith", roles: ["Manager"]
+  end
+
+  context "when using the user auto completer to add a user to the group" do
+    it "lets the admin see the email addresses of all users" do
+      group_page.visit!
+      group_page.open_users_tab!
+      SeleniumHubWaiter.wait
+
+      autocomplete = find(".new-group-members--autocomplete")
+      target_dropdown = search_autocomplete autocomplete,
+                                            query: "",
+                                            results_selector: "body"
+
+      expect(target_dropdown).to have_css(".ng-option", text: admin.firstname)
+      expect(target_dropdown).to have_css(".ng-option", text: admin.mail)
+
+      expect(target_dropdown).to have_css(".ng-option", text: hannibal.firstname)
+      expect(target_dropdown).to have_css(".ng-option", text: hannibal.mail)
+    end
   end
 
   context "when there are only invited users not in the group" do

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,7 +33,7 @@ require "net/pop"
 module Redmine
   module POP3
     class << self
-      def check(pop_options = {}, options = {})
+      def check(pop_options = {}, options = {}) # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
         host = pop_options[:host] || "127.0.0.1"
         port = pop_options[:port] || "110"
         apop = (pop_options[:apop].to_s == "1")
@@ -47,7 +49,7 @@ module Redmine
             pop_session.each_mail do |msg|
               message = msg.pop
               message_id = (message =~ /^Message-ID: (.*)/ ? $1 : "").strip
-              if MailHandler.receive(message, options)
+              if IncomingEmails::MailHandler.receive(message, options)
                 msg.delete
                 logger.debug "--> Message #{message_id} processed and deleted from the server" if logger && logger.debug?
               elsif delete_unprocessed

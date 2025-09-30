@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,14 +31,13 @@ class MeetingSectionsController < ApplicationController
   include AttachableServiceCall
   include OpTurbo::ComponentStream
   include Meetings::AgendaComponentStreams
-  include ApplicationComponentStreams
 
   before_action :set_meeting
   before_action :set_meeting_section,
-                except: %i[create]
+                except: %i[create clear_backlog clear_backlog_dialog]
   before_action :authorize
 
-  def create
+  def create # rubocop:disable Metrics/AbcSize
     call = ::MeetingSections::CreateService
       .new(user: current_user)
       .call(
@@ -49,11 +49,13 @@ class MeetingSectionsController < ApplicationController
     @meeting_section = call.result
 
     if call.success?
+      reset_meeting_from_agenda_section
       add_section_via_turbo_stream
       update_section_via_turbo_stream(force_wrapper: true, state: :edit)
       # update the section header of the previously last section in order to ensure the action menu move options are updated
       update_section_header_via_turbo_stream(meeting_section: @meeting.sections.last(2).first) if @meeting.sections.count > 1
       update_new_button_via_turbo_stream(disabled: true)
+      update_header_component_via_turbo_stream
     else
       render_base_error_in_flash_message_via_turbo_stream(call.errors)
     end
@@ -90,6 +92,7 @@ class MeetingSectionsController < ApplicationController
       .call(meeting_section_params)
 
     if call.success?
+      reset_meeting_from_agenda_section
       update_section_header_via_turbo_stream(state: :show)
       update_header_component_via_turbo_stream
       update_sidebar_details_component_via_turbo_stream
@@ -109,12 +112,14 @@ class MeetingSectionsController < ApplicationController
       .call
 
     if call.success?
+      reset_meeting_from_agenda_section
       remove_section_via_turbo_stream
       # in case the destroy action was called from the cancel_edit action
       # we need to update the new button state, which was disabled before
       update_new_button_via_turbo_stream(disabled: false)
       # update all section headers in order to ensure the action menu move options are updated
       update_section_headers_via_turbo_stream
+      update_header_component_via_turbo_stream
     else
       generic_call_failure_response(call)
     end
@@ -135,6 +140,7 @@ class MeetingSectionsController < ApplicationController
       update_section_headers_via_turbo_stream
       # update all time slots as a section position change affects potentially all time slots
       update_show_items_via_turbo_stream
+      update_header_component_via_turbo_stream
     else
       generic_call_failure_response(call)
     end
@@ -164,11 +170,38 @@ class MeetingSectionsController < ApplicationController
     respond_with_turbo_streams
   end
 
+  def clear_backlog
+    errors = []
+    meeting_section = @meeting.backlog
+    @meeting.backlog.agenda_items.each do |item|
+      call = ::MeetingAgendaItems::DeleteService
+        .new(user: current_user, model: item)
+        .call
+
+      errors << call.errors unless call.success?
+    end
+
+    update_section_via_turbo_stream(collapsed: true, meeting_section:)
+    render_error_flash_message_via_turbo_stream(message: t("text_backlog_clear_error")) if errors.any?
+
+    respond_with_turbo_streams
+  end
+
+  def clear_backlog_dialog
+    respond_with_dialog MeetingSections::Backlogs::ClearBacklogDialogComponent.new(@meeting)
+  end
+
   private
 
   def set_meeting
     @meeting = Meeting.find(params[:meeting_id])
     @project = @meeting.project # required for authorization via before_action
+  end
+
+  # In case we updated the meeting as part of the service flow
+  # it needs to be reassigned for the controller in order to get correct timestamps
+  def reset_meeting_from_agenda_section
+    @meeting = @meeting_section.meeting
   end
 
   def set_agenda_item_type
@@ -191,5 +224,9 @@ class MeetingSectionsController < ApplicationController
     update_all_via_turbo_stream
     # show additional base error message
     render_base_error_in_flash_message_via_turbo_stream(call.errors)
+  end
+
+  def toggle_params
+    @toggle_params ||= params.permit(:id, :collapsed)
   end
 end

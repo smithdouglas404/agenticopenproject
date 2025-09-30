@@ -2,6 +2,7 @@
 cs:
   js:
     storages:
+      authentication_error: "Authentication with %{storageType} failed"
       link_files_in_storage: "Prolinkovat soubory v %{storageType}"
       link_existing_files: "Odkaz na existující soubory"
       upload_files: "Nahrát soubory"
@@ -13,11 +14,14 @@ cs:
       open_storage: "Otevřít %{storageType}"
       select_location: "Vyberte lokalitu"
       choose_location: "Vyberte lokalitu"
+      new_folder: "Nová složka"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
         default: "Úložiště"
       information:
+        authentication_error: "The request to %{storageType} could not be authenticated, that's an error."
         connection_error: >
           Některá nastavení %{storageType} nefungují. Obraťte se na správce %{storageType}.
         live_data_error: "Chyba při načítání detailů souboru"
@@ -26,6 +30,8 @@ cs:
         no_file_links: "Chcete-li propojit soubory s tímto pracovním balíčkem, proveďte to prostřednictvím %{storageType}."
         not_logged_in: >
           Chcete-li přidat odkaz nebo zobrazit soubory související s tímto pracovním balíčkem, přihlaste se do %{storageType}.
+        suggest_logout: You can try whether logging out and back in fixes this problem.
+        suggest_relink: You can try whether re-linking your account via the login button below fixes this problem.
       files:
         already_existing_header: "Tento soubor už existuje"
         already_existing_body: >
@@ -42,6 +48,7 @@ cs:
           Automaticky spravovaná složka projektu nebyla nalezena. Počkejte, prosím, znovu načtěte stránku pro načtení nejnovějších dat a zkuste to znovu.
         managed_project_folder_no_access: >
           Zatím nemáte přístup ke složce spravovaného projektu. Počkejte prosím trochu a zkuste to znovu.
+        cannot_create_folder: Failed to create folder. Avoid using special characters and symbols and make sure the folder does not exist already.
         upload_keep_both: "Zachovat obojí"
         upload_replace: "Nahradit"
       file_links:

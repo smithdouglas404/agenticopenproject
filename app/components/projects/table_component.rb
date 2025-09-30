@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,12 +30,14 @@
 
 module Projects
   class TableComponent < ::TableComponent
+    include OpTurbo::Streamable
+
     options :params # We read collapsed state from params
     options :current_user # adds this option to those of the base class
     options :query
 
-    def initialize(**options)
-      super(rows: [], **options)
+    def initialize(**)
+      super(rows: [], **)
     end
 
     def before_render
@@ -47,18 +49,22 @@ module Projects
       %i[lft asc]
     end
 
+    def self.wrapper_key
+      "projects-table"
+    end
+
     def table_id
       "project-table"
     end
 
     def container_class
-      "generic-table--container_visible-overflow"
+      "generic-table--container_visible-overflow generic-table--container_height-100"
     end
 
     ##
     # The project sort by is handled differently
-    def build_sort_header(column, options)
-      helpers.projects_sort_header_tag(column, **options, param: :json)
+    def quick_action_table_header(column, options)
+      helpers.projects_sort_header_tag(column, query.selects.map(&:attribute), **options, param: :json)
     end
 
     # We don't return the project row
@@ -82,6 +88,21 @@ module Projects
       true
     end
 
+    def pagination_options
+      default_pagination_options.merge(optional_pagination_options)
+    end
+
+    def default_pagination_options
+      {
+        allowed_params: %i[query_id filters columns sortBy],
+        turbo: true
+      }
+    end
+
+    def optional_pagination_options
+      {}
+    end
+
     def deactivate_class_on_lft_sort
       if sorted_by_lft?
         "spot-link_inactive"
@@ -97,14 +118,25 @@ module Projects
       end
     end
 
-    def order_options(select)
-      {
-        caption: select.caption
+    def order_options(select, turbo: false)
+      options = {
+        caption: select.caption,
+        sortable: sortable_column?(select)
       }
+
+      if turbo
+        options[:data] = { "turbo-stream": true }
+      end
+
+      options
     end
 
     def sortable_column?(select)
-      query.known_order?(select.attribute)
+      sortable? && query.known_order?(select.attribute)
+    end
+
+    def use_quick_action_table_headers?
+      true
     end
 
     def columns
@@ -119,10 +151,20 @@ module Projects
     end
 
     def projects(query)
-      query
-        .results
-        .with_required_storage
-        .with_latest_activity
+      scope = query.results
+
+      # The two columns associated with the
+      # * disk storage
+      # * latest activity
+      # information are only available to admins.
+      # For non admins, the performance penalty of fetching the information therefore needs never be paid.
+      if User.current.admin?
+        scope = scope
+                  .with_required_storage
+                  .with_latest_activity
+      end
+
+      scope
         .includes(:custom_values, :enabled_modules)
         .paginate(page: helpers.page_param(params), per_page: helpers.per_page_param(params))
     end
@@ -149,8 +191,16 @@ module Projects
       end
     end
 
-    def favored_project_ids
-      @favored_project_ids ||= Favorite.where(user: current_user, favored_type: "Project").pluck(:favored_id)
+    def favorited_project_ids
+      @favorited_project_ids ||= Favorite.where(user: current_user, favorited_type: "Project").pluck(:favorited_id)
+    end
+
+    def project_phase_by_definition(definition, project)
+      @project_phases_by_definition ||= Project::Phase
+                                                    .visible
+                                                    .index_by { |s| [s.definition_id, s.project_id] }
+
+      @project_phases_by_definition[[definition.id, project.id]]
     end
 
     def sorted_by_lft?

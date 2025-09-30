@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Multi_json issue #208 https://github.com/intridea/multi_json/issues/208
 # produces a `NoMethodError` with some tests like
 # modules/bim/spec/requests/api/bcf/v2_1/viewpoints_api_spec.rb:277 where grape

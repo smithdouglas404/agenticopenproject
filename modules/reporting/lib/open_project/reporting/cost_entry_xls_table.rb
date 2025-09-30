@@ -41,7 +41,8 @@ class OpenProject::Reporting::CostEntryXlsTable < OpenProject::XlsExport::XlsVie
 
   def build_cost_rows
     sorted_results.each do |result|
-      spreadsheet.add_row(cost_row(result))
+      row = spreadsheet.add_row(cost_row(result))
+      row.set_format 0, date_format
     end
   end
 
@@ -52,22 +53,50 @@ class OpenProject::Reporting::CostEntryXlsTable < OpenProject::XlsExport::XlsVie
                                             number_format: currency_format)
   end
 
-  def cost_row(result)
-    current_cost_type_id = result.fields["cost_type_id"].to_i
-
+  def cost_fields_columns(result)
     cost_entry_attributes
       .map { |field| show_field field, result.fields[field.to_s] }
-      .concat(
-        [
-          show_result(result, current_cost_type_id), # units
-          cost_type_label(current_cost_type_id, @cost_type), # cost type
-          show_result(result, 0) # costs/currency
-        ]
+  end
+
+  def cost_main_times_columns(result)
+    [
+      format_time(result.start_timestamp, include_date: false),
+      cost_main_end_time_column(result.start_timestamp, result.end_timestamp)
+    ]
+  end
+
+  def cost_main_end_time_column(start_timestamp, end_timestamp)
+    return "" if start_timestamp.nil? || end_timestamp.nil?
+
+    days_between = (end_timestamp.to_date - start_timestamp.to_date).to_i
+    day_prefix = days_between >= 1 ? "#{end_timestamp.to_date.iso8601} " : ""
+    "#{day_prefix}#{format_time(end_timestamp, include_date: false)}"
+  end
+
+  def cost_main_columns(result)
+    main_cols = [result.fields["spent_on"].to_date]
+    main_cols.concat cost_main_times_columns(result) if with_times_column?
+    main_cols
+  end
+
+  def cost_row(result)
+    current_cost_type_id = result.fields["cost_type_id"].to_i
+    # TODO: What would be the correct way here?
+    result.fields["entity_gid"] = result.entity_gid
+
+    cost_main_columns(result)
+      .concat(cost_fields_columns(result))
+      .push(
+
+        show_result(result, current_cost_type_id), # units
+        cost_type_label(current_cost_type_id, @cost_type), # cost type
+        show_result(result, 0) # costs/currency
+
       )
   end
 
   def build_footer
-    footer = [""] * cost_entry_attributes.size
+    footer = [""] * (cost_entry_attributes.size + main_headers.size)
     footer += if show_result(query, 0) == show_result(query)
                 multiple_unit_types_footer
               else
@@ -84,14 +113,22 @@ class OpenProject::Reporting::CostEntryXlsTable < OpenProject::XlsExport::XlsVie
     ["", "", show_result(query)]
   end
 
+  def main_headers
+    main = [label_for(:spent_on)]
+    if with_times_column?
+      main.push I18n.t(:"export.cost_reports.start_time"), I18n.t(:"export.cost_reports.end_time")
+    end
+    main
+  end
+
   def headers
-    cost_entry_attributes
-      .map { |field| label_for(field) }
-      .concat([CostEntry.human_attribute_name(:units), CostType.model_name.human, CostEntry.human_attribute_name(:costs)])
+    main_headers
+      .concat(cost_entry_attributes.map { |field| label_for(field) })
+      .push(CostEntry.human_attribute_name(:units), CostType.model_name.human, CostEntry.human_attribute_name(:costs))
   end
 
   def cost_entry_attributes
-    %i[spent_on user_id activity_id work_package_id comments project_id]
+    %i[user_id activity_id entity_gid comments project_id]
   end
 
   # Returns the results of the query sorted by date the time was spent on and by id
@@ -99,8 +136,16 @@ class OpenProject::Reporting::CostEntryXlsTable < OpenProject::XlsExport::XlsVie
     query
       .each_direct_result
       .map(&:itself)
-      .group_by { |r| DateTime.parse(r.fields["spent_on"]) }
+      .group_by { |r| r.fields["spent_on"] }
       .sort
       .flat_map { |_, date_results| date_results.sort_by { |r| r.fields["id"] } }
+  end
+
+  def labour_query?
+    @unit_id == -1
+  end
+
+  def with_times_column?
+    Setting.allow_tracking_start_and_end_times && labour_query?
   end
 end

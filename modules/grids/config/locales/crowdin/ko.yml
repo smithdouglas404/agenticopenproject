@@ -8,6 +8,7 @@ ko:
         row_count: "행 수"
         column_count: "열 수"
         widgets: "위젯"
+        scope: "범위"
     errors:
       models:
         grids/grid:

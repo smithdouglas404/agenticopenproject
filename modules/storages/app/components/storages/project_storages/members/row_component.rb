@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -43,27 +45,33 @@ module Storages::ProjectStorages::Members
       "member #{principal_class_name}".strip
     end
 
-    def name
-      icon = helpers.avatar principal, size: :mini
+    def column_css_class(column)
+      case column
+      when :status
+        "status -no-ellipsis"
+      else
+        super
+      end
+    end
 
-      icon + principal_link
+    def name
+      helpers.avatar principal, hide_name: false, size: :mini
     end
 
     def status
       connection_result = storage_connection_status
-
-      if connection_result == :not_connected
-        ensure_connection_url = oauth_clients_ensure_connection_url(
-          oauth_client_id: storage.oauth_client.client_id,
-          storage_id: storage.id
-        )
-        helpers.op_icon("icon-warning -warning") +
+      case connection_result
+      when :not_connected_oauth2
+        warning_icon +
           content_tag(
             :span,
             I18n.t("storages.member_connection_status.not_connected",
-                   link: link_to(I18n.t("link"), ensure_connection_url),
-                   class: "pl-2").html_safe
+                   link: link_to(I18n.t("link"), ensure_connection_url)).html_safe
           )
+      when :not_connected_sso
+        content_tag(:span, I18n.t("storages.member_connection_status.not_connected_sso"))
+      when :not_connectable
+        warning_icon + content_tag(:span, I18n.t("storages.member_connection_status.not_connectable"))
       else
         I18n.t("storages.member_connection_status.#{connection_result}")
       end
@@ -72,10 +80,6 @@ module Storages::ProjectStorages::Members
     private
 
     delegate :storage, to: :table
-
-    def principal_link
-      link_to principal.name, principal_show_path
-    end
 
     def principal_class_name
       principal.model_name.singular
@@ -93,22 +97,34 @@ module Storages::ProjectStorages::Members
     end
 
     def storage_connection_status
-      return :not_connected unless oauth_client_connected?
-
-      if can_read_files?
-        :connected
-      else
-        :connected_no_permissions
+      if storage_connected?
+        return :connected if can_read_files?
+        return :connected_no_permissions
       end
+
+      return :not_connected_sso if storage.authenticate_via_idp? && member.principal.provided_by_oidc?
+      return :not_connected_oauth2 if storage.authenticate_via_storage?
+
+      :not_connectable
     end
 
-    def oauth_client_connected?
-      storage.oauth_client.present? &&
-        member.oauth_client_tokens.any? { |token| token.oauth_client_id == storage.oauth_client.id }
+    def storage_connected?
+      member.principal.remote_identities.exists?(integration: storage)
     end
 
     def can_read_files?
       member.principal.admin? || member.roles.any? { |role| role.has_permission?(:read_files) }
+    end
+
+    def ensure_connection_url
+      oauth_clients_ensure_connection_url(
+        oauth_client_id: storage.oauth_client.client_id,
+        storage_id: storage.id
+      )
+    end
+
+    def warning_icon
+      helpers.op_icon("icon-warning -warning")
     end
   end
 end

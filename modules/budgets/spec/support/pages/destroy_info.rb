@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -38,7 +38,7 @@ module Pages
 
     def expect_loaded
       expect(page)
-        .to have_content("#{I18n.t(:button_delete)} #{I18n.t(:label_budget_id, id: budget.id)}: #{budget.subject}")
+        .to have_content("#{I18n.t(:button_delete)} #{budget.subject}")
     end
 
     def expect_reassign_option

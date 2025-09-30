@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -50,6 +50,7 @@ class API::V3::Storages::StoragesAPI < API::OpenProjectAPI
       mount API::V3::StorageFiles::StorageFilesAPI
       mount API::V3::OAuthClient::OAuthClientCredentialsAPI
       mount API::V3::Storages::StorageOpenAPI
+      mount API::V3::StorageFiles::StorageFoldersAPI
     end
   end
 end

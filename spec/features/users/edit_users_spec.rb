@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "edit users", :js, :with_cuprite do
+RSpec.describe "edit users", :js do
   shared_let(:admin) { create(:admin) }
   let(:current_user) { admin }
   let(:user) { create(:user, mail: "foo@example.com") }
@@ -85,7 +87,7 @@ RSpec.describe "edit users", :js, :with_cuprite do
   end
 
   def have_visible_tab(label)
-    have_css(".op-tab-row--link", text: label.upcase)
+    have_css(".tabnav-tab", text: label)
   end
 
   context "as admin" do
@@ -93,7 +95,7 @@ RSpec.describe "edit users", :js, :with_cuprite do
       another_admin = create(:admin)
       visit edit_user_path(another_admin)
 
-      expect(page).to have_visible_tab("GENERAL")
+      expect(page).to have_visible_tab("General")
     end
   end
 
@@ -104,7 +106,7 @@ RSpec.describe "edit users", :js, :with_cuprite do
     it "can too edit the user" do
       visit edit_user_path(user)
 
-      expect(page).to have_visible_tab("GENERAL")
+      expect(page).to have_visible_tab("General")
 
       expect(page).to have_no_css(".admin-overview-menu-item", text: "Overview")
       expect(page).to have_no_css(".users-and-permissions-menu-item", text: "Users and permissions")
@@ -127,7 +129,7 @@ RSpec.describe "edit users", :js, :with_cuprite do
 
       click_button "Save"
 
-      expect(page).to have_css(".op-toast.-success", text: "Successful update.")
+      expect_flash(message: "Successful update.")
 
       user.reload
 
@@ -138,16 +140,16 @@ RSpec.describe "edit users", :js, :with_cuprite do
     it "can reinvite the user" do
       visit edit_user_path(user)
 
-      click_button "Send invitation"
+      click_on "Send invitation"
 
-      expect(page).to have_css(".op-toast.-success", text: "An invitation has been sent to foo@example.com")
+      expect_flash(message: "An invitation has been sent to foo@example.com")
     end
 
     it "can not edit attributes of an admin user" do
       visit edit_user_path(admin)
 
-      expect(page).to have_visible_tab("PROJECTS")
-      expect(page).not_to have_visible_tab("GENERAL")
+      expect(page).to have_visible_tab("Projects")
+      expect(page).not_to have_visible_tab("General")
     end
   end
 end

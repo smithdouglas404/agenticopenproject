@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,26 +30,56 @@
 
 require "spec_helper"
 
-RSpec.describe "Working Days", :js, :with_cuprite do
+RSpec.describe "Working Days", :js do
   create_shared_association_defaults_for_work_package_factory
 
   shared_let(:week_days) { week_with_saturday_and_sunday_as_weekend }
+
+  shared_let(:project) { create(:project) }
+  shared_let(:phase_definition1) { create(:project_phase_definition) }
+  shared_let(:phase_definition2) { create(:project_phase_definition) }
+  shared_let(:phase1_start_date) { Date.new(2026, 10, 5) } # A Monday
+  shared_let(:phase1_end_date) { Date.new(2026, 10, 8) }   # A Thursday
+  shared_let(:phase2_start_date) { Date.new(2026, 10, 9) } # A Friday
+  shared_let(:phase2_end_date) { Date.new(2026, 10, 13) }  # A Tuesday
+
+  # Create consecutive phases with fixed dates
+  shared_let(:phase1) do
+    create(:project_phase,
+           :calculate_duration,
+           project:,
+           definition: phase_definition1,
+           start_date: phase1_start_date,
+           finish_date: phase1_end_date)
+  end
+
+  shared_let(:phase2) do
+    create(:project_phase,
+           :calculate_duration,
+           project:,
+           definition: phase_definition2,
+           start_date: phase2_start_date,
+           finish_date: phase2_end_date)
+  end
   shared_let(:admin) { create(:admin) }
 
-  let_schedule(<<~CHART)
-    days                  | MTWTFSSmtwtfss |
-    earliest_work_package | XXXXX          |
-    second_work_package   |    XX..XX      |
-    follower              |          XXX   | follows earliest_work_package, follows second_work_package
-  CHART
+  let_work_packages(<<~TABLE)
+    subject               | MTWTFSSmtwtfss | scheduling mode | predecessors
+    earliest_work_package | XXXXX          | manual          |
+    second_work_package   |    XX..XX      | manual          |
+    follower              |          XXX   | automatic       | follows earliest_work_package, follows second_work_package
+  TABLE
 
   let(:dialog) { Components::ConfirmationDialog.new }
-  let(:datepicker) { Components::Datepicker.new }
+  let(:datepicker) { Components::DatepickerModal.new }
+  let(:project_activity_page) { Pages::Projects::Activity.new(project) }
 
   current_user { admin }
 
   before do
     visit admin_settings_working_days_and_hours_path
+    # wait for "holidays and closures" calendar to load
+    find(".fc-next-button")
   end
 
   describe "week days" do
@@ -81,12 +113,12 @@ RSpec.describe "Working Days", :js, :with_cuprite do
 
       expect(working_days_setting).to eq([1, 2, 3, 4, 5])
 
-      expect_schedule(WorkPackage.all, <<~CHART)
-        days                  | MTWTFSSmtwtfss |
+      expect_work_packages(WorkPackage.all, <<~TABLE)
+        subject               | MTWTFSSmtwtfss |
         earliest_work_package | XXXXX          |
         second_work_package   |    XX..XX      |
         follower              |          XXX   |
-      CHART
+      TABLE
     end
 
     it "updates the values and saves the settings" do
@@ -101,7 +133,7 @@ RSpec.describe "Working Days", :js, :with_cuprite do
         dialog.confirm
       end
 
-      expect(page).to have_css(".op-toast.-success", text: "Successful update.")
+      expect_flash(message: "Successful update.")
       expect(page).to have_unchecked_field "Monday"
       expect(page).to have_unchecked_field "Friday"
       expect(page).to have_unchecked_field "Saturday"
@@ -112,19 +144,20 @@ RSpec.describe "Working Days", :js, :with_cuprite do
 
       expect(working_days_setting).to eq([2, 3, 4])
 
-      expect_schedule(WorkPackage.all, <<~CHART)
-        days                  | MTWTFSSmtwtfssmtwt  |
+      expect_work_packages(WorkPackage.all, <<~TABLE)
+        subject               | MTWTFSSmtwtfssmtwt  |
         earliest_work_package |  XXX....XX          |
         second_work_package   |    X....XXX         |
         follower              |                XXX  |
-      CHART
+      TABLE
 
       # The updated work packages will have a journal entry informing about the change
       wp_page = Pages::FullWorkPackage.new(earliest_work_package)
+      activity_tab = Components::WorkPackages::Activities.new(earliest_work_package)
       wp_page.visit!
 
-      wp_page.expect_activity_message(
-        "Dates changed by changes to working days (Monday is now non-working, Friday is now non-working)"
+      activity_tab.expect_journal_changed_attribute(
+        text: "Dates changed by changes to working days (Monday is now non-working, Friday is now non-working)"
       )
     end
 
@@ -141,8 +174,7 @@ RSpec.describe "Working Days", :js, :with_cuprite do
         dialog.confirm
       end
 
-      expect(page).to have_css(".op-toast.-error",
-                               text: "At least one day of the week must be defined as a working day.")
+      expect_flash(type: :error, message: "At least one day of the week must be defined as a working day.")
       # Restore the checkboxes to their valid state
       expect(page).to have_checked_field "Monday"
       expect(page).to have_checked_field "Tuesday"
@@ -153,17 +185,17 @@ RSpec.describe "Working Days", :js, :with_cuprite do
       expect(page).to have_unchecked_field "Sunday"
       expect(working_days_setting).to eq([1, 2, 3, 4, 5])
 
-      expect_schedule(WorkPackage.all, <<~CHART)
-        days                  | MTWTFSSmtwtfss |
+      expect_work_packages(WorkPackage.all, <<~TABLE)
+        subject               | MTWTFSSmtwtfss |
         earliest_work_package | XXXXX          |
         second_work_package   |    XX..XX      |
         follower              |          XXX   |
-      CHART
+      TABLE
     end
 
-    it "shows an error when a previous change to the working days configuration isn't processed yet" do
+    it "shows an error when a previous change to the working days configuration isn't processed yet",
+       with_good_job_batches: [WorkPackages::ApplyWorkingDaysChangeJob] do
       # Have a job already scheduled
-      ActiveJob::Base.disable_test_adapter
       WorkPackages::ApplyWorkingDaysChangeJob.perform_later(user_id: 5)
 
       uncheck "Tuesday"
@@ -172,8 +204,55 @@ RSpec.describe "Working Days", :js, :with_cuprite do
       # Not executing the background jobs
       dialog.confirm
 
-      expect(page).to have_css(".op-toast.-error",
-                               text: "The previous changes to the working days configuration have not been applied yet.")
+      expect_flash(type: :error,
+                   message: "The previous changes to the working days configuration have not been applied yet.")
+    end
+
+    it "updates project phase date ranges when working days change" do
+      # Project phases layout before changes
+      #
+      #  | name             | MTWTFSSmtwtfssmt | duration |
+      #  | Planning         | XXXX             | 4 days   |
+      #  | Implementation   |     X..XX        | 3 days   |
+      expect(working_days_setting).to eq([1, 2, 3, 4, 5])
+
+      # Change working days configuration
+      uncheck "Monday"
+      uncheck "Friday"
+
+      click_on "Apply changes"
+
+      perform_enqueued_jobs do
+        dialog.confirm
+      end
+
+      expect_flash(message: "Successful update.")
+
+      # Expected phase layout after changes
+      #
+      #  | name             | MTWTFSSmtwtfssmt | duration |
+      #  | Planning         |  XXX....X        | 4 days   |
+      #  | Implementation   |          XX....X | 3 days   |
+      phase1.reload
+      phase2.reload
+
+      # Verify phases have been adjusted for the new working days
+      # Monday is now non-working so the start date should have moved to Tuesday
+      expect(phase1.start_date).to eq(Date.new(2026, 10, 6)) # Tuesday
+      # The end date should be adjusted to maintain the same duration in working days
+      expect(phase1.finish_date).to eq(Date.new(2026, 10, 13)) # Tuesday
+
+      # Second phase should also be adjusted and remain consecutive with phase1
+      expect(phase2.start_date).to eq(Date.new(2026, 10, 14)) # Wednesday
+      expect(phase2.finish_date).to eq(Date.new(2026, 10, 20)) # Tuesday
+
+      # Check the journal entries for the phases
+      project_activity_page.visit!
+
+      project_activity_page.show_details
+
+      project_activity_page
+        .expect_activity("Dates changed by changes to working days (Monday is now non-working, Friday is now non-working)")
     end
   end
 
@@ -187,24 +266,25 @@ RSpec.describe "Working Days", :js, :with_cuprite do
     end
 
     it "can add non-working days" do
-      click_on "Non-working day"
+      datepicker.open_modal!
 
       # Check if a date is correctly highlighted after selecting it in different time zones
       datepicker.select_day 5
-      datepicker.expect_day "5"
+      expect(datepicker).to have_day_selected("5")
 
       # It can cancel and reopen
       within_test_selector("op-datepicker-modal") do
         click_on "Cancel"
       end
-      click_on "Non-working day"
+
+      datepicker.open_modal!
 
       within_test_selector("op-datepicker-modal") do
         fill_in "name", with: "My holiday"
       end
 
       date1 = NonWorkingDay.maximum(:date).next_week(:monday).next_occurring(:monday)
-      datepicker.set_date date1
+      datepicker.set_date_input(date1)
 
       within_test_selector("op-datepicker-modal") do
         click_on "Add"
@@ -220,7 +300,7 @@ RSpec.describe "Working Days", :js, :with_cuprite do
       end
 
       date2 = NonWorkingDay.maximum(:date).next_week(:monday).next_occurring(:tuesday)
-      datepicker.set_date date2
+      datepicker.set_date_input(date2)
 
       within_test_selector("op-datepicker-modal") do
         click_on "Add"
@@ -229,7 +309,7 @@ RSpec.describe "Working Days", :js, :with_cuprite do
       click_on "Apply changes"
       click_on "Save and reschedule"
 
-      expect(page).to have_css(".op-toast.-success", text: "Successful update.")
+      expect_flash(message: "Successful update.")
 
       nwd1 = NonWorkingDay.find_by(name: "My holiday")
       expect(nwd1.date).to eq date1
@@ -238,12 +318,12 @@ RSpec.describe "Working Days", :js, :with_cuprite do
       expect(nwd2.date).to eq date2
 
       # Check if date and name are entered then close the datepicker
-      click_on "Non-working day"
-
+      datepicker.open_modal!
       within_test_selector("op-datepicker-modal") do
         click_on "Add"
       end
-      expect(page).to have_css(".flatpickr-calendar")
+
+      expect(page).to have_css(".flatpickr-calendar", wait: 5)
       datepicker.expect_visible
 
       within_test_selector("op-datepicker-modal") do
@@ -299,5 +379,16 @@ RSpec.describe "Working Days", :js, :with_cuprite do
       expect(page).to have_no_css("tr", text: non_working_days.second.date.strftime("%B %-d, %Y"))
       expect(page).to have_css("tr", text: non_working_days.last.date.strftime("%B %-d, %Y"))
     end
+  end
+
+  it "doesn't open a confirmation dialog if no working/non-working days have been modified" do
+    create(:non_working_day, date: Date.new(Date.current.year, 6, 10))
+    create(:non_working_day, date: Date.new(Date.current.year, 8, 20))
+    create(:non_working_day, date: Date.new(Date.current.year, 9, 25))
+
+    click_on "Apply changes"
+
+    # No dialog and saved successfully
+    expect_flash(message: "Successful update.")
   end
 end

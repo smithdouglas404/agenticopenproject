@@ -1,3 +1,33 @@
+# frozen_string_literal: true
+
+#-- copyright
+# OpenProject is an open source project management software.
+# Copyright (C) the OpenProject GmbH
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version 3.
+#
+# OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+# Copyright (C) 2006-2013 Jean-Philippe Lang
+# Copyright (C) 2010-2013 the ChiliProject Team
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# See COPYRIGHT and LICENSE files for more details.
+#++
+
 require "open_project/plugins"
 
 module OpenProject::OpenIDConnect
@@ -15,23 +45,32 @@ module OpenProject::OpenIDConnect
            :plugin_openid_connect,
            :openid_connect_providers_path,
            parent: :authentication,
+           after: :oauth_applications,
            caption: ->(*) { I18n.t("openid_connect.menu_title") },
-           enterprise_feature: "openid_providers"
+           enterprise_feature: "sso_auth_providers"
     end
 
     assets %w(
       openid_connect/auth_provider-azure.png
       openid_connect/auth_provider-google.png
-      openid_connect/auth_provider-heroku.png
+      openid_connect/auth_provider-custom.png
     )
+
+    patches %i[Sessions::UserSession Group User GroupUser]
 
     class_inflection_override("openid_connect" => "OpenIDConnect")
 
-    register_auth_providers do
+    register_auth_providers(persist: false) do
       OmniAuth::OpenIDConnect::Providers.configure custom_options: %i[
-        display_name? icon? sso? issuer?
-        check_session_iframe? end_session_endpoint?
-        limit_self_registration? use_graph_api?
+        display_name?
+        icon?
+        sso?
+        issuer?
+        check_session_iframe?
+        end_session_endpoint?
+        jwks_uri?
+        limit_self_registration?
+        use_graph_api?
       ]
 
       strategy :openid_connect do
@@ -39,11 +78,17 @@ module OpenProject::OpenIDConnect
           h[:single_sign_out_callback] = Proc.new do
             next unless h[:end_session_endpoint]
 
-            redirect_to "#{omniauth_start_path(h[:name])}/logout"
+            redirect_to "#{omni_auth_start_path(h[:name])}/logout"
           end
 
           # Remember oidc session values when logging in user
-          h[:retain_from_session] = %w[omniauth.oidc_sid]
+          h[:retain_from_session] = %w[
+            omniauth.oidc_sid
+            omniauth.oidc_access_token
+            omniauth.oidc_refresh_token
+            omniauth.oidc_expires_in
+            omniauth.oidc_groups
+          ]
 
           h[:backchannel_logout_callback] = ->(logout_token) do
             ::OpenProject::OpenIDConnect::SessionMapper.handle_logout(logout_token)
@@ -54,26 +99,26 @@ module OpenProject::OpenIDConnect
       end
     end
 
-    initializer "openid_connect.configure" do
-      ::Settings::Definition.add(
-        OpenProject::OpenIDConnect::CONFIG_KEY, default: {}, writable: false
-      )
-    end
-
-    initializer "openid_connect.form_post_method" do
-      # If response_mode 'form_post' is chosen,
-      # the IP sends a POST to the callback. Only if
-      # the sameSite flag is not set on the session cookie, is the cookie send along with the request.
-      if OpenProject::Configuration["openid_connect"]&.any? { |_, v| v["response_mode"]&.to_s == "form_post" }
-        SecureHeaders::Configuration.default.cookies[:samesite][:lax] = false
-        # Need to reload the secure_headers config to
-        # avoid having set defaults (e.g. https) when changing the cookie values
-        load Rails.root.join("config/initializers/secure_headers.rb")
-      end
+    initializer "openid_connect.configuration" do
+      ::Settings::Definition.add :seed_oidc_provider,
+                                 description: "Provide a OIDC provider and sync its settings through ENV",
+                                 env_alias: "OPENPROJECT_OPENID__CONNECT",
+                                 writable: false,
+                                 default: {},
+                                 format: :hash
     end
 
     config.to_prepare do
+      Group.add_synchronized_group_partial(
+        title: "openid_connect.group_links_heading",
+        partial: "openid_connect/group_links/table",
+        count_callback: ->(group) { group.oidc_group_links.count }
+      )
+
       ::OpenProject::OpenIDConnect::Hooks::Hook
+
+      # Load AuthProvider descendants due to STI
+      OpenIDConnect::Provider
     end
   end
 end

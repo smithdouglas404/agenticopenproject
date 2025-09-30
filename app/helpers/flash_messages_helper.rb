@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,62 +36,64 @@ module FlashMessagesHelper
     include FlashMessagesOutputSafetyHelper
   end
 
-  def render_primer_banner_message?
-    flash[:primer_banner].present?
-  end
-
-  def render_primer_banner_message
-    return unless render_primer_banner_message?
-
-    render(BannerMessageComponent.new(**flash[:primer_banner].to_hash))
-  end
-
-  # Primer's flash message component wrapped in a component which is empty initially but can be updated via turbo stream
-  def render_streameable_primer_banner_message
-    render(FlashMessageComponent.new)
-  end
-
-  # Renders flash messages
+  # Renders flash messages.
+  #
+  # @return [String] an HTML-safe string.
   def render_flash_messages
-    return if render_primer_banner_message?
-
-    messages = flash
-      .reject { |k, _| k.start_with? "_" }
-      .map do |k, v|
-      if k.to_sym == :modal
-        component = v[:type].constantize
-        component.new(**v.fetch(:parameters, {})).render_in(self)
-      else
-        render_flash_message(k, v)
-      end
-    end
-
-    safe_join messages, "\n"
+    safe_join build_flash_components.map { it.render_in(self) }, "\n"
   end
 
-  def render_flash_message(type, message, html_options = {}) # rubocop:disable Metrics/AbcSize
-    if type.to_s == "notice"
-      type = "success"
+  # Renders flash messages wrapped in `<turbo-stream>` tags, suitable for
+  # inclusion inline (e.g. as part of a turbo-frame response).
+  #
+  # @return [String] an HTML-safe string.
+  def render_flash_messages_as_turbo_streams
+    safe_join(build_flash_components.map { it.render_as_turbo_stream(view_context: self, action: :flash) })
+  end
+
+  def render_flash_modal
+    return if (content = flash[:op_modal]).blank?
+
+    component = content[:component]
+    component = component.constantize if component.is_a?(String)
+
+    component.new(**content.fetch(:parameters, {})).render_in(self)
+  end
+
+  private
+
+  def build_flash_components
+    flash
+      .reject { |k, _| k.start_with? "_" }
+      .reject { |k, _| k.to_s == "op_modal" }
+      .map { |k, v| build_flash_component(k.to_sym, v) }
+  end
+
+  def mapped_flash_type(type)
+    case type
+    when :error, :danger
+      :danger
+    when :warning
+      :warning
+    when :success, :notice
+      :success
+    else
+      :default
     end
+  end
 
-    toast_css_classes = ["op-toast -#{type}", html_options.delete(:class)]
+  def build_flash_component(type, *args)
+    options = args.extract_options!
+    content = args.first || options[:message]
 
-    # Add autohide class to notice flashes if configured
-    if type.to_s == "success" && User.current.pref.auto_hide_popups?
-      toast_css_classes << "autohide-toaster"
-    end
+    action_button_arguments = options.delete(:action_button_arguments)
+    action_button_content = options.delete(:action_button_content)
 
-    html_options = { class: toast_css_classes.join(" "), role: "alert" }.merge(html_options)
-    close_button = content_tag :a, "", class: "op-toast--close icon-context icon-close",
-                                       title: I18n.t("js.close_popup_title"),
-                                       tabindex: "0"
-    toast = content_tag(:div, join_flash_messages(message), class: "op-toast--content")
-    content_tag :div, "", class: "op-toast--wrapper" do
-      content_tag :div, "", class: "op-toast--casing" do
-        content_tag :div, html_options do
-          concat(close_button)
-          concat(toast)
-        end
+    OpPrimer::FlashComponent.new(scheme: mapped_flash_type(type), **options).tap do |component|
+      component.with_content(join_flash_messages(content))
+
+      if action_button_arguments.present?
+        component.with_action_button(**action_button_arguments) { action_button_content }
       end
     end
   end

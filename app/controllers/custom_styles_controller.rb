@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,23 +29,39 @@
 #++
 
 class CustomStylesController < ApplicationController
+  include EnterpriseHelper
+  include CustomStylesControllerHelper
+
   layout "admin"
   menu_item :custom_style
 
+  UNGUARDED_ACTIONS = %i[logo_download
+                         favicon_download
+                         touch_icon_download].freeze
+
   before_action :require_admin,
-                except: %i[logo_download export_logo_download export_cover_download favicon_download touch_icon_download]
-  before_action :require_ee_token,
-                except: %i[upsale logo_download export_logo_download export_cover_download favicon_download touch_icon_download]
+                except: UNGUARDED_ACTIONS
   skip_before_action :check_if_login_required,
-                     only: %i[logo_download export_logo_download export_cover_download favicon_download touch_icon_download]
+                     only: UNGUARDED_ACTIONS
+  no_authorization_required! *UNGUARDED_ACTIONS
+
+  guard_enterprise_feature(:define_custom_style, except: UNGUARDED_ACTIONS + %i[show])
+
+  def default_url_options
+    super.merge(tab: params[:tab])
+  end
 
   def show
     @custom_style = CustomStyle.current || CustomStyle.new
     @current_theme = @custom_style.theme
     @theme_options = options_for_theme_select
+
+    if params[:tab].blank?
+      redirect_to tab: "interface"
+    end
   end
 
-  def upsale; end
+  def upsell; end
 
   def create
     @custom_style = CustomStyle.create(custom_style_params)
@@ -51,17 +69,20 @@ class CustomStylesController < ApplicationController
       redirect_to custom_style_path
     else
       flash[:error] = @custom_style.errors.full_messages
-      render action: :show
+      render action: :show, status: :unprocessable_entity
     end
   end
 
   def update
+    flash.clear
     @custom_style = get_or_create_custom_style
-    if @custom_style.update(custom_style_params)
+    parameters = custom_style_params
+    error = validate_font_uploads(parameters)
+    if !error && @custom_style.update(parameters)
       redirect_to custom_style_path
     else
-      flash[:error] = @custom_style.errors.full_messages
-      render action: :show
+      flash[:error] = error || @custom_style.errors.full_messages
+      render action: :show, status: :unprocessable_entity
     end
   end
 
@@ -89,6 +110,10 @@ class CustomStylesController < ApplicationController
     file_download(:export_cover_path)
   end
 
+  def export_footer_download
+    file_download(:export_footer_path)
+  end
+
   def favicon_download
     file_download(:favicon_path)
   end
@@ -109,8 +134,28 @@ class CustomStylesController < ApplicationController
     file_delete(:remove_export_cover)
   end
 
+  def export_footer_delete
+    file_delete(:remove_export_footer)
+  end
+
   def favicon_delete
     file_delete(:remove_favicon)
+  end
+
+  def export_font_regular_delete
+    file_delete(:remove_export_font_regular)
+  end
+
+  def export_font_bold_delete
+    file_delete(:remove_export_font_bold)
+  end
+
+  def export_font_italic_delete
+    file_delete(:remove_export_font_italic)
+  end
+
+  def export_font_bold_italic_delete
+    file_delete(:remove_export_font_bold_italic)
   end
 
   def touch_icon_delete
@@ -128,11 +173,9 @@ class CustomStylesController < ApplicationController
   end
 
   def update_themes
-    theme = OpenProject::CustomStyles::ColorThemes.themes.find { |t| t[:theme] == params[:theme] }
-
     call = ::Design::UpdateDesignService
-      .new(theme)
-      .call
+       .new(theme_from_params)
+       .call
 
     call.on_success do
       flash[:notice] = I18n.t(:notice_successful_update)
@@ -142,14 +185,27 @@ class CustomStylesController < ApplicationController
       flash[:error] = call.message
     end
 
-    redirect_to action: :show
+    redirect_to custom_style_path
   end
 
-  def show_local_breadcrumb
-    true
+  def export_demo_pdf_download
+    result = ::Exports::PDF::DemoGenerator.new.export!
+    expires_in 0, public: false
+    send_data result.content,
+              filename: result.title,
+              type: "application/pdf",
+              disposition: "inline"
+  rescue StandardError => e
+    Rails.logger.error "Failed to generate demo PDF: #{e.message}"
+    flash[:error] = e.message
+    redirect_to custom_style_path
   end
 
   private
+
+  def theme_from_params
+    OpenProject::CustomStyles::ColorThemes.themes.find { |t| t[:theme] == params[:theme] }
+  end
 
   def options_for_theme_select
     options = OpenProject::CustomStyles::ColorThemes.themes.pluck(:theme)
@@ -165,19 +221,20 @@ class CustomStylesController < ApplicationController
     CustomStyle.current || CustomStyle.create!
   end
 
-  def require_ee_token
-    unless EnterpriseToken.allows_to?(:define_custom_style)
-      redirect_to custom_style_upsale_path
-    end
-  end
-
   def custom_style_params
-    params.require(:custom_style).permit(:logo, :remove_logo,
-                                         :export_logo, :remove_export_logo,
-                                         :export_cover, :remove_export_cover,
-                                         :export_cover_text_color,
-                                         :favicon, :remove_favicon,
-                                         :touch_icon, :remove_touch_icon)
+    params.expect(custom_style: %i[
+                    logo remove_logo
+                    export_logo remove_export_logo
+                    export_cover remove_export_cover
+                    export_footer remove_export_footer
+                    favicon remove_favicon
+                    touch_icon remove_touch_icon
+                    export_font_regular remove_export_font_regular
+                    export_font_bold remove_export_font_bold
+                    export_font_italic remove_export_font_italic
+                    export_font_bold_italic remove_export_font_bold_italic
+                    export_cover_text_color
+                  ])
   end
 
   def file_download(path_method)

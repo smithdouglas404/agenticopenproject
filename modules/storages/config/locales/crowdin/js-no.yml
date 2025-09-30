@@ -2,6 +2,7 @@
 "no":
   js:
     storages:
+      authentication_error: "Authentication with %{storageType} failed"
       link_files_in_storage: "Koble filer i %{storageType}"
       link_existing_files: "Koble eksisterende filer"
       upload_files: "Last opp filer"
@@ -13,11 +14,14 @@
       open_storage: "Åpne %{storageType}"
       select_location: "Velg plassering"
       choose_location: "Velg plassering"
+      new_folder: "New folder"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
-        default: "Lagringssted"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
+        default: "Lagring"
       information:
+        authentication_error: "The request to %{storageType} could not be authenticated, that's an error."
         connection_error: >
           Noen %{storageType} innstillinger fungerer ikke. Vennligst kontakt din %{storageType} administrator.
         live_data_error: "Feil ved henting av fildetaljer"
@@ -26,6 +30,8 @@
         no_file_links: "For å koble filer til denne arbeidspakken må du gjøre det via %{storageType}."
         not_logged_in: >
           For å legge til en link, se eller last opp filer knyttet til denne arbeidspakken, vennligst logg inn på %{storageType}.
+        suggest_logout: You can try whether logging out and back in fixes this problem.
+        suggest_relink: You can try whether re-linking your account via the login button below fixes this problem.
       files:
         already_existing_header: "Denne filen eksisterer allerede"
         already_existing_body: >
@@ -42,6 +48,7 @@
           Den automatisk administrerte prosjektmappen ble ikke funnet ennå. Vent litt, last siden på nytt for å hente nyeste data, og prøv på nytt.
         managed_project_folder_no_access: >
           Du har ikke tilgang til den administrerte prosjektmappen. Vennligst vent litt og prøv igjen.
+        cannot_create_folder: Failed to create folder. Avoid using special characters and symbols and make sure the folder does not exist already.
         upload_keep_both: "Behold begge"
         upload_replace: "Erstatt"
       file_links:

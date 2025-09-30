@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,7 +32,6 @@ require "spec_helper"
 
 RSpec.describe "baseline query saving",
                :js,
-               :with_cuprite,
                with_ee: %i[baseline_comparison],
                with_settings: { date_format: "%Y-%m-%d" } do
   shared_let(:project) { create(:project) }

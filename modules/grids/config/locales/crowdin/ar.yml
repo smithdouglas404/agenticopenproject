@@ -8,6 +8,7 @@ ar:
         row_count: "عدد الصفوف"
         column_count: "عدد الأعمدة"
         widgets: "الودجات"
+        scope: "النطاق"
     errors:
       models:
         grids/grid:

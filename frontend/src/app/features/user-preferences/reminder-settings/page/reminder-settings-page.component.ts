@@ -1,38 +1,24 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnInit } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { CurrentUserService } from 'core-app/core/current-user/current-user.service';
 import { take } from 'rxjs/internal/operators/take';
-import { UIRouterGlobals } from '@uirouter/core';
 import { UserPreferencesService } from 'core-app/features/user-preferences/state/user-preferences.service';
-import {
-  UntypedFormArray,
-  UntypedFormBuilder,
-} from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder } from '@angular/forms';
 import {
   DailyRemindersSettings,
   ImmediateRemindersSettings,
-  PauseRemindersSettings,
   IUserPreference,
+  PauseRemindersSettings,
 } from 'core-app/features/user-preferences/state/user-preferences.model';
 import {
   emailAlerts,
   EmailAlertType,
 } from 'core-app/features/user-preferences/reminder-settings/email-alerts/email-alerts-settings.component';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
-import {
-  filter,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { filter, withLatestFrom } from 'rxjs/operators';
 import { filterObservable } from 'core-app/shared/helpers/rxjs/filterWith';
 import { INotificationSetting } from 'core-app/features/user-preferences/state/notification-setting.model';
-
-export const myReminderPageComponentSelector = 'op-reminders-page';
+import { populateInputsFromDataset } from 'core-app/shared/components/dataset-inputs';
 
 interface IReminderSettingsFormValue {
   immediateReminders:ImmediateRemindersSettings,
@@ -43,10 +29,10 @@ interface IReminderSettingsFormValue {
 }
 
 @Component({
-  selector: myReminderPageComponentSelector,
   templateUrl: './reminder-settings-page.component.html',
   styleUrls: ['./reminder-settings-page.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ReminderSettingsPageComponent extends UntilDestroyedMixin implements OnInit {
   @Input() userId:string;
@@ -54,6 +40,7 @@ export class ReminderSettingsPageComponent extends UntilDestroyedMixin implement
   public form = this.fb.group({
     immediateReminders: this.fb.group({
       mentioned: this.fb.control(false),
+      personalReminder: this.fb.control(false),
     }),
     dailyReminders: this.fb.group({
       enabled: this.fb.control(false),
@@ -93,18 +80,18 @@ export class ReminderSettingsPageComponent extends UntilDestroyedMixin implement
   formInitialized = false;
 
   constructor(
-    private I18n:I18nService,
-    private storeService:UserPreferencesService,
-    private currentUserService:CurrentUserService,
-    private uiRouterGlobals:UIRouterGlobals,
-    private fb:UntypedFormBuilder,
-    private cdRef:ChangeDetectorRef,
+    readonly elementRef:ElementRef,
+    readonly I18n:I18nService,
+    readonly storeService:UserPreferencesService,
+    readonly currentUserService:CurrentUserService,
+    readonly fb:UntypedFormBuilder,
+    readonly cdRef:ChangeDetectorRef,
   ) {
     super();
+    populateInputsFromDataset(this);
   }
 
   ngOnInit():void {
-    this.userId = (this.userId || this.uiRouterGlobals.params.userId) as string;
     this
       .currentUserService
       .user$
@@ -127,6 +114,7 @@ export class ReminderSettingsPageComponent extends UntilDestroyedMixin implement
 
   private buildForm(settings:IUserPreference, globalSetting:INotificationSetting) {
     this.form.get('immediateReminders.mentioned')?.setValue(settings.immediateReminders.mentioned);
+    this.form.get('immediateReminders.personalReminder')?.setValue(settings.immediateReminders.personalReminder);
 
     this.form.get('dailyReminders.enabled')?.setValue(settings.dailyReminders.enabled);
 

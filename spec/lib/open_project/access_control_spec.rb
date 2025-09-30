@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -241,7 +243,7 @@ RSpec.describe OpenProject::AccessControl do
 
     subject(:dependencies) do
       described_class.modules
-                     .find { _1[:name] == :dependent_module }[:dependencies]
+                     .find { it[:name] == :dependent_module }[:dependencies]
     end
 
     it "can store specified dependencies" do
@@ -374,6 +376,20 @@ RSpec.describe OpenProject::AccessControl do
         end
       end
     end
+
+    describe "sorting by label" do
+      before do
+        allow(I18n).to receive(:t, &:to_s)
+      end
+
+      it "is not sorted by default" do
+        expect(described_class.available_project_modules).to eq(%i[project_module mixed_module dependent_module])
+      end
+
+      it "is sorted when requested" do
+        expect(described_class.available_project_modules(sorted: true)).to eq(%i[dependent_module mixed_module project_module])
+      end
+    end
   end
 
   describe ".contract_actions_map" do
@@ -455,22 +471,18 @@ RSpec.describe OpenProject::AccessControl do
     before do
       described_class.map do |map|
         map.project_module :some_module do |mod|
-          mod.permission :disabled_permission1,
+          # will be disabled a few lines later in the spec
+          mod.permission :disabled_permission,
                          { some: :action },
-                         permissible_on: :project,
-                         enabled: false
-
-          mod.permission :disabled_permission2,
-                         { some: :action,
-                           another: :action },
-                         permissible_on: :project,
-                         enabled: -> { false }
+                         permissible_on: :project
 
           mod.permission :enabled_permission,
                          { another: :action },
                          permissible_on: :project
         end
       end
+      permission_to_disable = described_class.permissions.find { it.name == :disabled_permission }
+      permission_to_disable.disable!
     end
 
     it "is false for enabled permissions" do
@@ -480,7 +492,7 @@ RSpec.describe OpenProject::AccessControl do
 
     it "is true for disabled permission" do
       expect(subject)
-        .to be_disabled_permission(:disabled_permission1)
+        .to be_disabled_permission(:disabled_permission)
     end
 
     it "is true for action hash where permissions granting are disabled" do

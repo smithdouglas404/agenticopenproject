@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2024 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -37,17 +37,17 @@ See COPYRIGHT and LICENSE files for more details.
 <%= back_url_hidden_field_tag %>
 
 <div class="form--field -required">
-  <%= f.text_field :name, required: true, container_class: '-wide' %>
+  <%= f.text_field :name, required: true, container_class: "-wide" %>
 </div>
 
 <div class="form--field">
-  <%= f.text_field :description, container_class: '-wide'%>
+  <%= f.text_field :description, container_class: "-wide" %>
 </div>
 
 <div class="form--field">
   <%= f.select :status,
                contract.assignable_statuses.map { |s| [t("version_status_#{s}"), s] },
-               container_class: '-slim' %>
+               container_class: "-slim" %>
 </div>
 
 <div class="form--field">
@@ -68,7 +68,7 @@ See COPYRIGHT and LICENSE files for more details.
 <div class="form--field">
   <%= f.select :sharing,
                contract.assignable_sharings.map { |v| [format_version_sharing(v), v] },
-               container_class: '-middle' %>
+               container_class: "-middle" %>
 </div>
 
 <% if project.enabled_modules.map(&:name).include?("backlogs") %>

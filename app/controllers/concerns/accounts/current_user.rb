@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,16 +39,6 @@ module Accounts::CurrentUser
 
   protected
 
-  # The current user is a per-session kind of thing and session stuff is controller responsibility.
-  # A globally accessible User.current is a big code smell. When used incorrectly it allows getting
-  # the current user outside of a session scope, i.e. in the model layer, from mailers or
-  # in the console which doesn't make any sense. For model code that needs to be aware of the
-  # current user, i.e. when returning all visible projects for <somebody>, the controller should
-  # pass the current user to the model, instead of letting it fetch it by itself through
-  # `User.current`. This method acts as a reminder and wants to encourage you to use it.
-  # Project.visible_by actually allows the controller to pass in a user but it falls back
-  # to `User.current` and there are other places in the session-unaware codebase,
-  # that rely on `User.current`.
   def current_user
     User.current
   end
@@ -90,14 +82,11 @@ module Accounts::CurrentUser
     return unless Setting::Autologin.enabled?
 
     autologin_cookie_name = OpenProject::Configuration["autologin_cookie_name"]
-    autologin_token = cookies[autologin_cookie_name]
-    return unless autologin_token
-
-    user = User.try_to_autologin(autologin_token)
-
-    if user
-      login_user(user)
-      user
+    token = Token::AutoLogin.find_valid_token cookies[autologin_cookie_name]
+    if token.present?
+      session[:autologin_token_id] = token.id
+      login_user(token.user)
+      token.user
     else
       cookies.delete(autologin_cookie_name)
       nil
@@ -105,7 +94,7 @@ module Accounts::CurrentUser
   end
 
   def current_rss_key_user
-    if params[:format] == "atom" && params[:key] && accept_key_auth_actions.include?(params[:action])
+    if params[:format] == "atom" && params[:key] && accept_key_auth_actions.include?(action_name)
       # RSS key authentication does not start a session
       User.find_by_rss_key(params[:key])
     end
@@ -116,7 +105,7 @@ module Accounts::CurrentUser
 
     key = api_key_from_request
 
-    if key && accept_key_auth_actions.include?(params[:action])
+    if key && accept_key_auth_actions.include?(action_name)
       # Use API key
       User.find_by_api_key(key)
     end
@@ -181,7 +170,7 @@ module Accounts::CurrentUser
 
         auth_header = OpenProject::Authentication::WWWAuthenticate.response_header(request_headers: request.headers)
 
-        format.any(:xml, :js, :json) do
+        format.any(:xml, :js, :json, :turbo_stream) do
           head :unauthorized,
                "X-Reason" => "login needed",
                "WWW-Authenticate" => auth_header

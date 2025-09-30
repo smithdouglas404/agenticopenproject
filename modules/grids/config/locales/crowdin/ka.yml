@@ -8,6 +8,7 @@ ka:
         row_count: "მწკრივების რაოდენობა"
         column_count: "Number of columns"
         widgets: "ვიჯეტები"
+        scope: "ფარგლები"
     errors:
       models:
         grids/grid:

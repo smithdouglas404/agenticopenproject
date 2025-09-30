@@ -1,15 +1,11 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { UntypedFormArray } from '@angular/forms';
-import { ApiV3ListFilter } from 'core-app/core/apiv3/paths/apiv3-list-resource.interface';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { HalSourceLink } from 'core-app/features/hal/resources/hal-resource';
-import { IProjectAutocompleteItem } from 'core-app/shared/components/autocompleter/project-autocompleter/project-autocomplete-item';
+import {
+  IProjectAutocompleteItem,
+} from 'core-app/shared/components/autocompleter/project-autocompleter/project-autocomplete-item';
+import { IAPIFilter } from 'core-app/shared/components/autocompleter/op-autocompleter/typings';
 
 export interface NotificationSettingProjectOption {
   name:string;
@@ -21,6 +17,7 @@ export interface NotificationSettingProjectOption {
   templateUrl: './notification-setting-inline-create.component.html',
   styleUrls: ['./notification-setting-inline-create.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class NotificationSettingInlineCreateComponent {
   @Input() userId:string;

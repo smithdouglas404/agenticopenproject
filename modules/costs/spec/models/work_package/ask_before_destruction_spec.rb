@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -57,12 +57,12 @@ RSpec.describe WorkPackage do
   let(:priority) { create(:priority) }
   let(:cost_type) { create(:cost_type) }
   let(:cost_entry) do
-    create(:cost_entry, work_package:,
+    create(:cost_entry, entity: work_package,
                         project: work_package.project,
                         cost_type:)
   end
   let(:cost_entry2) do
-    create(:cost_entry, work_package: work_package2,
+    create(:cost_entry, entity: work_package2,
                         project: work_package2.project,
                         cost_type:)
   end
@@ -155,7 +155,7 @@ RSpec.describe WorkPackage do
         action
 
         cost_entry.reload
-        expect(cost_entry.work_package_id).to eq(work_package.id)
+        expect(cost_entry.entity).to eq(work_package)
       end
     end
 
@@ -170,7 +170,7 @@ RSpec.describe WorkPackage do
         action
 
         cost_entry.reload
-        expect(cost_entry.work_package_id).to eq(work_package.id)
+        expect(cost_entry.entity).to eq(work_package)
       end
     end
 
@@ -181,11 +181,11 @@ RSpec.describe WorkPackage do
         expect(action).to be_falsey
       end
 
-      it "does not alter the work_package_id of all cost entries" do
+      it "does not alter the entity of all cost entries" do
         action
 
         cost_entry.reload
-        expect(cost_entry.work_package_id).to eq(work_package.id)
+        expect(cost_entry.entity).to eq(work_package)
       end
 
       it "sets an error on work packages" do
@@ -195,8 +195,8 @@ RSpec.describe WorkPackage do
       end
     end
 
-    describe 'w/ "reassign" as action
-              w/ reassigning to a valid work_package' do
+    describe 'with "reassign" as action ' \
+             "with reassigning to a valid work_package" do
       let(:action) do
         WorkPackage.cleanup_associated_before_destructing_if_required(work_package, user, action: "reassign",
                                                                                           reassign_to_id: work_package2.id)
@@ -213,11 +213,11 @@ RSpec.describe WorkPackage do
         expect(action).to be_truthy
       end
 
-      it "sets the work_package_id of all cost entries to the new work package" do
+      it "sets the entity of all cost entries to the new work package" do
         action
 
         cost_entry.reload
-        expect(cost_entry.work_package_id).to eq(work_package2.id)
+        expect(cost_entry.entity).to eq(work_package2)
       end
 
       it "sets the project_id of all cost entries to the new work package's project" do
@@ -228,8 +228,8 @@ RSpec.describe WorkPackage do
       end
     end
 
-    describe 'w/ "reassign" as action
-              w/ reassigning to a work_package the user is not allowed to see' do
+    describe 'with "reassign" as action ' \
+             "with reassigning to a work_package the user is not allowed to see" do
       let(:action) do
         WorkPackage.cleanup_associated_before_destructing_if_required(work_package, user, action: "reassign",
                                                                                           reassign_to_id: work_package2.id)
@@ -243,16 +243,16 @@ RSpec.describe WorkPackage do
         expect(action).to be_falsey
       end
 
-      it "does not alter the work_package_id of all cost entries" do
+      it "does not alter the entity of all cost entries" do
         action
 
         cost_entry.reload
-        expect(cost_entry.work_package_id).to eq(work_package.id)
+        expect(cost_entry.entity).to eq(work_package)
       end
     end
 
-    describe 'w/ "reassign" as action
-              w/ reassigning to a non existing work package' do
+    describe 'w/ "reassign" as action ' \
+             "w/ reassigning to a non existing work package" do
       let(:action) do
         WorkPackage.cleanup_associated_before_destructing_if_required(work_package, user, action: "reassign", reassign_to_id: 0)
       end
@@ -261,27 +261,27 @@ RSpec.describe WorkPackage do
         expect(action).to be_falsey
       end
 
-      it "does not alter the work_package_id of all cost entries" do
+      it "does not alter the entity of all cost entries" do
         action
 
         cost_entry.reload
-        expect(cost_entry.work_package_id).to eq(work_package.id)
+        expect(cost_entry.entity).to eq(work_package)
       end
     end
 
-    describe 'w/ "reassign" as action
-              w/o providing a reassignment id' do
+    describe 'w/ "reassign" as action ' \
+             "w/o providing a reassignment id" do
       let(:action) { WorkPackage.cleanup_associated_before_destructing_if_required(work_package, user, action: "reassign") }
 
       it "returns true" do
         expect(action).to be_falsey
       end
 
-      it "does not alter the work_package_id of all cost entries" do
+      it "does not alter the entity of all cost entries" do
         action
 
         cost_entry.reload
-        expect(cost_entry.work_package_id).to eq(work_package.id)
+        expect(cost_entry.entity).to eq(work_package)
       end
     end
 

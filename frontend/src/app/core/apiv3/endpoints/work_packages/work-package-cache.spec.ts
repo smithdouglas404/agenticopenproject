@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -43,7 +43,8 @@ import { WorkPackageCache } from 'core-app/core/apiv3/endpoints/work_packages/wo
 import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 import { HalResourceNotificationService } from 'core-app/features/hal/services/hal-resource-notification.service';
 import { OpenprojectHalModule } from 'core-app/features/hal/openproject-hal.module';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('WorkPackageCache', () => {
   let injector:Injector;
@@ -54,11 +55,8 @@ describe('WorkPackageCache', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        OpenprojectHalModule,
-        HttpClientTestingModule,
-      ],
-      providers: [
+    imports: [OpenprojectHalModule],
+    providers: [
         States,
         HalResourceService,
         TimezoneService,
@@ -66,13 +64,15 @@ describe('WorkPackageCache', () => {
         SchemaCacheService,
         PathHelperService,
         { provide: ConfigurationService, useValue: {} },
-        { provide: I18nService, useValue: { t: (...args:any[]) => 'translation' } },
+        { provide: I18nService, useValue: { t: (...args: any[]) => 'translation' } },
         { provide: WorkPackageResource, useValue: {} },
         { provide: ToastService, useValue: {} },
         { provide: HalResourceNotificationService, useValue: { handleRawError: () => false } },
         { provide: WorkPackageNotificationService, useValue: {} },
-      ],
-    });
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+});
 
     injector = TestBed.inject(Injector);
     states = TestBed.inject(States);

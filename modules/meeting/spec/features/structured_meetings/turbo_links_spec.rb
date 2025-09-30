@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,12 +30,10 @@
 
 require "spec_helper"
 
-require_relative "../../support/pages/meetings/new"
-require_relative "../../support/pages/structured_meeting/show"
+require_relative "../../support/pages/meetings/show"
 
-RSpec.describe "Structured meetings links caught by turbo",
-               :js,
-               :with_cuprite do
+RSpec.describe "Meetings links caught by turbo",
+               :js do
   include Rails.application.routes.url_helpers
 
   shared_let(:project) { create(:project, enabled_module_names: %w[meetings]) }
@@ -42,13 +42,13 @@ RSpec.describe "Structured meetings links caught by turbo",
            lastname: "First",
            member_with_permissions: { project => %i[view_meetings create_meetings edit_meetings delete_meetings manage_agendas
                                                     view_work_packages] }).tap do |u|
-      u.pref[:time_zone] = "utc"
+      u.pref[:time_zone] = "Etc/UTC"
 
       u.save!
     end
   end
-  shared_let(:meeting1) { create(:structured_meeting, title: "First meeting", project:) }
-  shared_let(:meeting2) { create(:structured_meeting, title: "Other meeting", project:) }
+  shared_let(:meeting1) { create(:meeting, title: "First meeting", project:) }
+  shared_let(:meeting2) { create(:meeting, title: "Other meeting", project:) }
 
   let(:notes) do
     <<~NOTES
@@ -56,7 +56,7 @@ RSpec.describe "Structured meetings links caught by turbo",
     NOTES
   end
   let!(:agenda_item) { create(:meeting_agenda_item, meeting: meeting1, notes:) }
-  let(:show_page) { Pages::StructuredMeeting::Show.new(meeting1) }
+  let(:show_page) { Pages::Meetings::Show.new(meeting1) }
 
   before do
     login_as user
@@ -65,7 +65,7 @@ RSpec.describe "Structured meetings links caught by turbo",
 
   it "can link to the other meeting" do
     click_link_or_button "Meeting link"
-    expect(page).to have_current_path meeting_path(meeting2)
+    expect(page).to have_current_path project_meeting_path(project, meeting2)
     expect(page).to have_css("#content", text: "Other meeting", visible: :visible)
   end
 end

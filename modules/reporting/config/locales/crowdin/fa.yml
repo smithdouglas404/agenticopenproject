@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -23,7 +23,7 @@ fa:
   plugin_openproject_reporting:
     name: "گزارش OpenProject"
     description: "این افزونه به شما امکان ایجاد گزارش‌های سفارشی هزینه با فیلتر کردن و گروه‌بندی ایجاد شده توسط افزونه زمان و هزینه اوپن‌پروژه را می‌دهد."
-  button_save_as: "ذخیره گزارش به عنوان..."
+  button_save_report_as: "ذخیره گزارش به عنوان..."
   comments: "نظر"
   cost_reports_title: "زمان و هزینه‌ها"
   label_cost_report: "گزارش هزینه"
@@ -45,22 +45,24 @@ fa:
   label_greater: ">"
   label_is_not_project_with_subprojects: "نیست (شامل پروژه‌های زیرمجموعه)"
   label_is_project_with_subprojects: "هست (شامل پروژه‌های زیرمجموعه)"
+  label_is_work_package_with_descendants: "is (includes descendants)"
+  label_is_not_work_package_with_descendants: "is not (includes descendants)"
   label_work_package_attributes: "خصوصیات پکیج‌کاری"
   label_less: "<"
   label_logged_by_reporting: "Logged by"
   label_money: "Cash value"
   label_month_reporting: "Month (Spent)"
   label_new_report: "New cost report"
-  label_open: "open"
-  label_operator: "Operator"
+  label_open: "باز"
+  label_operator: "اپراتور"
   label_private_report_plural: "Private cost reports"
   label_progress_bar_explanation: "Generating report..."
   label_public_report_plural: "Public cost reports"
-  label_really_delete_question: "Are you sure you want to delete this report?"
-  label_rows: "Rows"
-  label_saving: "Saving ..."
+  label_really_delete_question: "آیا مطمئن هستید که می خواهید این گزارش را حذف کنید؟"
+  label_rows: "ردیف ها"
+  label_saving: "درحال ذخیره..."
   label_spent_on_reporting: "Date (Spent)"
-  label_sum: "Sum"
+  label_sum: "جمع"
   label_units: "واحدها"
   label_week_reporting: "Week (Spent)"
   label_year_reporting: "Year (Spent)"
@@ -74,7 +76,7 @@ fa:
   label_no: "نه"
   label_none: "(no data)"
   label_no_reports: "تا کنون گزارش هزینه ای وجود ندارد."
-  label_report: "Report"
+  label_report: "گزارش"
   label_yes: "بله"
   load_query_question: "Report will have %{size} table cells and may take some time to render. Do you still want to try rendering it?"
   permission_save_cost_reports: "Save public cost reports"
@@ -83,12 +85,22 @@ fa:
   text_costs_are_rounded_note: "Displayed values are rounded. All calculations are based on the non-rounded values."
   toggle_multiselect: "activate/deactivate multiselect"
   units: "واحدها"
-  validation_failure_date: "is not a valid date"
-  validation_failure_integer: "is not a valid integer"
+  validation_failure_date: "تاریخ صحیح نیست"
+  validation_failure_integer: "عدد درست نیست"
   export:
+    timesheet:
+      title: "Your PDF timesheet export"
+      button: "Export PDF timesheet"
+      timesheet: "Timesheet"
+      time: "زمان"
+      sums_hours: Sums
+      overview_per_user_total: "Overview: Total hours per user"
+      overview_per_user_day: "Overview: Hours per user per day"
     cost_reports:
       title: "Your Cost Reports XLS export"
+      start_time: "زمان شروع"
+      end_time: "End time"
   reporting:
     group_by:
       selected_columns: "Selected columns"
-      selected_rows: "Selected rows"
+      selected_rows: "ردیف های انتخاب شده"

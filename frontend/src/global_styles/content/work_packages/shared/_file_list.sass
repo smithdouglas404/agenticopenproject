@@ -1,6 +1,6 @@
 //-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -35,7 +35,7 @@
         pointer-events: none
 
       &:not(&_disabled):hover
-        .op-file-list--item-title > :not(.spot-icon)
+        .op-file-list--item-title > *
           text-decoration: underline
 
     &-action_faulty-status &-title
@@ -66,7 +66,9 @@
       flex-shrink: 0
 
     &-floating-wrapper:not(&-floating-wrapper__disabled):hover &-text,
-    &-floating-wrapper:not(&-floating-wrapper__disabled):hover &-avatar
+    &-floating-wrapper:not(&-floating-wrapper__disabled):hover &-avatar,
+    &-floating-wrapper:not(&-floating-wrapper__disabled):focus-within &-text,
+    &-floating-wrapper:not(&-floating-wrapper__disabled):focus-within &-avatar
       visibility: hidden
 
     &-floating-text
@@ -89,7 +91,16 @@
         text-decoration: none
 
   & &--item &--item-floating-actions
+    display: flex
     padding-right: 0
+
+  //& &--item &--item-floating-actions
+  //  opacity: 0
+  //  padding: $spot-spacing-0_25 0 $spot-spacing-0_25 $spot-spacing-1
+  //
+  //& &--item &--item-floating-actions:hover,
+  //& &--item &--item-floating-actions:focus-within
+  //  opacity: 1
 
   & &--item &--item-floating-text
     padding-right: $spot-spacing-0_5

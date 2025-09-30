@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -71,8 +71,7 @@ RSpec.describe Storages::Storages::UpdateService, type: :model do
   it "cannot update storage creator" do
     storage_creator = create(:admin, login: "storage_creator")
     storage = create(:nextcloud_storage, creator: storage_creator)
-    service = described_class.new(user: create(:admin),
-                                  model: storage)
+    service = described_class.new(user: create(:admin), model: storage)
 
     service_result = service.call(creator: create(:user, login: "impostor"))
 

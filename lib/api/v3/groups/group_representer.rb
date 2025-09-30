@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -55,7 +57,11 @@ module API
         associated_resources :users,
                              as: :members,
                              skip_render: -> { !current_user.allowed_in_any_project?(:manage_members) },
-                             uncacheable_link: true
+                             uncacheable_link: true,
+                             setter: ->(fragment:, **) do
+                               ids = parse_link_ids_from_fragment(fragment, :user)
+                               represented[:replace_user_ids] = ids
+                             end
       end
     end
   end

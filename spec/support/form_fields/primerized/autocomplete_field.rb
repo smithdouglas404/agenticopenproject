@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "form_field"
 
 module FormFields
@@ -7,7 +9,10 @@ module FormFields
 
       def select_option(*values)
         values.each do |val|
+          wait_for_autocompleter_options_to_be_loaded
+
           field_container.find(".ng-select-container").click
+
           expect(page).to have_css(".ng-option", text: val, visible: :all)
           page.find(".ng-option", text: val, visible: :all).click
           sleep 0.25 # still required?
@@ -16,6 +21,8 @@ module FormFields
 
       def deselect_option(*values)
         values.each do |val|
+          wait_for_autocompleter_options_to_be_loaded
+
           field_container.find(".ng-select-container").click
           page.find(".ng-value", text: val, visible: :all).find(".ng-value-icon").click
           sleep 0.25 # still required?
@@ -35,6 +42,7 @@ module FormFields
       end
 
       def open_options
+        wait_for_autocompleter_options_to_be_loaded
         field_container.find(".ng-select-container").click
       end
 
@@ -65,9 +73,28 @@ module FormFields
           .to have_no_css(".ng-option", text: option, visible: :all, wait: 1)
       end
 
-      def expect_option(option)
-        expect(page)
-          .to have_css(".ng-option", text: option, visible: :visible)
+      def expect_option(option, grouping: nil)
+        if grouping
+          # Make sure the option is displayed under correct grouping title.
+          option_group = find(".ng-optgroup", text: grouping)
+          option = find(".ng-option.ng-option-child", text: option, visible: :visible)
+
+          expected_group = begin
+            option.find(:xpath,
+                        "preceding-sibling::*[contains(@class, 'ng-optgroup')][1]",
+                        wait: false)
+          rescue Capybara::ElementNotFound
+            raise "Unable to find the '.ng-optgroup' grouping for option '#{option.text}'"
+          end
+
+          expect(option_group).to eq(expected_group), <<~MSG
+            Expected the option '#{option.text}' to be under the group '#{option_group.text}',
+            but it was under '#{expected_group.text}' instead.
+          MSG
+        else
+          expect(page)
+            .to have_css(".ng-option", text: option, visible: :visible)
+        end
       end
 
       def expect_visible

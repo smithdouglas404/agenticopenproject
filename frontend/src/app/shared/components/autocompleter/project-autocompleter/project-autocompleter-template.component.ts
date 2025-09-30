@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -37,6 +37,7 @@ import { IAutocompleterTemplateComponent } from 'core-app/shared/components/auto
 @Component({
   templateUrl: './project-autocompleter-template.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ProjectAutocompleterTemplateComponent implements IAutocompleterTemplateComponent {
   @ViewChild('optionTemplate') optionTemplate:TemplateRef<Element>;

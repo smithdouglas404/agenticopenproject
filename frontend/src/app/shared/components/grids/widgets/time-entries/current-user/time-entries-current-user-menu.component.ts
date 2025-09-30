@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -30,23 +30,31 @@ import {
   Component, EventEmitter, Output,
 } from '@angular/core';
 import { OpModalService } from 'core-app/shared/components/modal/modal.service';
-import { WidgetAbstractMenuComponent } from 'core-app/shared/components/grids/widgets/menu/widget-abstract-menu.component';
-import { TimeEntriesCurrentUserConfigurationModalComponent } from 'core-app/shared/components/grids/widgets/time-entries/current-user/configuration-modal/configuration.modal';
+import {
+  WidgetAbstractMenuComponent,
+} from 'core-app/shared/components/grids/widgets/menu/widget-abstract-menu.component';
+import {
+  TimeEntriesCurrentUserConfigurationModalComponent,
+} from 'core-app/shared/components/grids/widgets/time-entries/current-user/configuration-modal/configuration.modal';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
+import { OpContextMenuItem } from 'core-app/shared/components/op-context-menu/op-context-menu.types';
 
 @Component({
   selector: 'widget-time-entries-current-user-menu',
   templateUrl: '../../menu/widget-menu.component.html',
+  standalone: false,
 })
 export class WidgetTimeEntriesCurrentUserMenuComponent extends WidgetAbstractMenuComponent {
   @InjectField() opModalService:OpModalService;
 
   @Output() onConfigured:EventEmitter<any> = new EventEmitter();
 
-  protected menuItemList = [
-    this.removeItem,
-    this.configureItem,
-  ];
+  protected async buildItems():Promise<OpContextMenuItem[]> {
+    return [
+      this.removeItem,
+      this.configureItem,
+    ];
+  }
 
   protected get configureItem() {
     return {

@@ -1,10 +1,21 @@
+# frozen_string_literal: true
+
 module ::TwoFactorAuthentication
   module My
     class TwoFactorDevicesController < ::TwoFactorAuthentication::BaseController
       # Ensure user is logged in
       before_action :require_login
-
       before_action :set_user_variables
+      # Authorization is not handled explicitly but as the user on which changes can be done is only the current user
+      # (and that user needs to be logged in), no action harmful to other users can be done.
+      no_authorization_required! :new,
+                                 :index,
+                                 :create,
+                                 :register,
+                                 :confirm,
+                                 :destroy,
+                                 :make_default,
+                                 :webauthn_challenge
 
       before_action :find_device, except: %i[new index register webauthn_challenge]
 
@@ -26,6 +37,7 @@ module ::TwoFactorAuthentication
         @two_factor_devices = @user.otp_devices.reload
         @has_remember_token_for_user = any_remember_token_present?(current_user)
         @remember_token = get_2fa_remember_token(current_user)
+        @available_devices = available_devices
       end
 
       ##
@@ -57,7 +69,7 @@ module ::TwoFactorAuthentication
           end
         else
           Rails.logger.warn { "User ##{current_user.id} failed to register a device #{@device_type}." }
-          render "two_factor_authentication/two_factor_devices/new"
+          render "two_factor_authentication/two_factor_devices/new", status: :unprocessable_entity
         end
       end
 
@@ -78,12 +90,7 @@ module ::TwoFactorAuthentication
       ##
       # Request (if needed) the token for entering
       def request_device_confirmation_token
-        request_token_for_device(
-          @device,
-          confirm_path: url_for(action: :confirm, device_id: @device.id),
-          title: I18n.t("two_factor_authentication.devices.confirm_device"),
-          message: I18n.t("two_factor_authentication.devices.text_confirm_to_complete_html", identifier: @device.identifier)
-        )
+        request_token_for_device(@device, confirm_path: url_for(action: :confirm, device_id: @device.id))
       end
 
       def request_token_for_device(device, locals)
@@ -105,10 +112,6 @@ module ::TwoFactorAuthentication
 
       def index_path
         url_for action: :index
-      end
-
-      def show_local_breadcrumb
-        false
       end
 
       def registration_success_path

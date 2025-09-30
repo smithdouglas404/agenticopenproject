@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 module ::TwoFactorAuthentication
   module My
     class BackupCodesController < ::ApplicationController
       # Ensure user is logged in
       before_action :require_login
+      no_authorization_required! :show, :create
 
       # Password confirmation helpers and actions
       include PasswordConfirmation
@@ -22,6 +25,8 @@ module ::TwoFactorAuthentication
       def show
         render
       end
+
+      private
 
       def check_regenerate_done
         @backup_codes = flash[:_backup_codes]

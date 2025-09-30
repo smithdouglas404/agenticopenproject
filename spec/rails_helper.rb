@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 
 ENV["RAILS_ENV"] ||= "test"
-require File.expand_path("../config/environment", __dir__)
+require_relative "../config/environment"
 require "factory_bot"
 require "factory_bot_rails"
 require "rspec/rails"
@@ -45,15 +47,6 @@ require "test_prof/recipes/rspec/sample"
 # Add PaperTrail integration so that it is disabled by default
 # https://github.com/paper-trail-gem/paper_trail#7b-rspec
 require "paper_trail/frameworks/rspec"
-
-# Add rubocop rspec helpers for our cop tests. It needs to be done before RSpec
-# requires all files so that the CopHelper module does not hide some let
-# definitions.
-#
-# Ideally we should move our cops to their own gem.
-require "rubocop"
-require "rubocop/rspec/shared_contexts"
-require "rubocop/rspec/support"
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -102,5 +95,5 @@ RSpec.configure do |config|
   config.include ActiveSupport::Testing::Assertions
   config.include ActiveJob::TestHelper
 
-  OpenProject::Configuration["attachments_storage_path"] = "tmp/files"
+  OpenProject::Configuration["attachments_storage_path"] = "tmp/files#{ENV.fetch('TEST_ENV_NUMBER', nil)}"
 end

@@ -6,12 +6,10 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
-import { INotification } from 'core-app/core/state/in-app-notifications/in-app-notification.model';
-import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { TimezoneService } from 'core-app/core/datetime/timezone.service';
-import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
-import * as moment from 'moment';
-import { Moment } from 'moment';
+import { I18nService } from 'core-app/core/i18n/i18n.service';
+import { IInAppNotificationDetailsAttribute, INotification } from 'core-app/core/state/in-app-notifications/in-app-notification.model';
+import moment, { Moment } from 'moment';
 
 @Component({
   selector: 'op-in-app-notification-date-alert',
@@ -19,11 +17,10 @@ import { Moment } from 'moment';
   styleUrls: ['./in-app-notification-date-alert.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class InAppNotificationDateAlertComponent implements OnInit {
   @Input() aggregatedNotifications:INotification[];
-
-  @Input() workPackage:WorkPackageResource;
 
   @HostBinding('class.op-ian-date-alert') className = true;
 
@@ -49,6 +46,7 @@ export class InAppNotificationDateAlertComponent implements OnInit {
     dueDate: this.I18n.t('js.work_packages.properties.dueDate'),
     date: this.I18n.t('js.notifications.date_alerts.milestone_date'),
     due_today: this.I18n.t('js.notifications.date_alerts.property_today'),
+    note: '', // date alerts do not have notes
   };
 
   constructor(
@@ -71,7 +69,7 @@ export class InAppNotificationDateAlertComponent implements OnInit {
     }
   }
 
-  private deriveDueDate(value:string, property:'startDate'|'dueDate'|'date') {
+  private deriveDueDate(value:string, property:IInAppNotificationDetailsAttribute) {
     const dateValue = this.timezoneService.parseISODate(value).startOf('day');
     const today = moment();
     this.dateIsPast = dateValue.isBefore(today, 'day');
@@ -106,7 +104,8 @@ export class InAppNotificationDateAlertComponent implements OnInit {
   private deriveMostRelevantAlert(aggregatedNotifications:INotification[]) {
     // Second case: We have one date alert + some others
     const dateAlerts = aggregatedNotifications.filter((notification) => notification.reason === 'dateAlert');
-    const first = aggregatedNotifications[0];
+    const first = dateAlerts[0];
+
     if (dateAlerts.length > 1) {
       const found = dateAlerts.find((notification) => notification._embedded.details[0].property === 'dueDate');
       return found || first;

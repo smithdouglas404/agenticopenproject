@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -43,16 +43,17 @@ RSpec.describe Storages::OneDriveStorage do
 
   describe "#configured?" do
     context "with a complete configuration" do
-      let(:storage) { build(:one_drive_storage, :as_not_automatically_managed, oauth_client: build(:oauth_client)) }
+      let(:storage) { create(:one_drive_storage, :as_not_automatically_managed, oauth_client: build(:oauth_client)) }
 
       it "returns true" do
-        expect(storage.configured?).to be(true)
+        expect(storage).to be_configured
 
         aggregate_failures "configuration_checks" do
           expect(storage.configuration_checks)
             .to eq(name_configured: true,
                    storage_oauth_client_configured: true,
                    access_management_configured: true,
+                   storage_redirect_uri_configured: true,
                    storage_tenant_drive_configured: true)
         end
       end
@@ -62,12 +63,31 @@ RSpec.describe Storages::OneDriveStorage do
       let(:storage) { build(:one_drive_storage) }
 
       it "returns false" do
-        expect(storage.configured?).to be(false)
+        expect(storage).not_to be_configured
 
         aggregate_failures "configuration_checks" do
-          expect(storage.configuration_checks[:storage_oauth_client_configured]).to be(false)
+          expect(storage.configuration_checks[:storage_oauth_client_configured]).to be_falsey
+          expect(storage.configuration_checks[:storage_redirect_uri_configured]).to be_falsey
         end
       end
+    end
+  end
+
+  describe "#non_confidential_configuration" do
+    subject { storage.non_confidential_configuration }
+
+    let(:storage) { create(:one_drive_storage_configured) }
+
+    it "returns the expected hash" do
+      expect(subject).to eq(
+        automatically_managed: false,
+        health_notifications_enabled: true,
+        host: storage.host,
+        drive_id: storage.drive_id,
+        tenant_id: storage.tenant_id,
+        oauth_application_client_id: storage.oauth_application.uid,
+        oauth_client_id: storage.oauth_client.client_id
+      )
     end
   end
 end

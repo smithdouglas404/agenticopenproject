@@ -23,6 +23,7 @@ const DISPLAYED_MEMBERS_LIMIT = 100;
   templateUrl: './members.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./members.component.sass'],
+  standalone: false,
 })
 export class WidgetMembersComponent extends AbstractWidgetComponent implements OnInit {
   public text = {

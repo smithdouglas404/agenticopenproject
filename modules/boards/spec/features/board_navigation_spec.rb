@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,7 +30,10 @@ require "spec_helper"
 require_relative "support/board_index_page"
 require_relative "support/board_page"
 
-RSpec.describe "Work Package boards spec", :js, with_ee: %i[board_view] do
+RSpec.describe "Work Package boards spec",
+               :js,
+               :selenium,
+               with_ee: %i[board_view] do
   let(:user) do
     create(:user,
            member_with_roles: { project => role })
@@ -66,8 +69,9 @@ RSpec.describe "Work Package boards spec", :js, with_ee: %i[board_view] do
     wp = WorkPackage.last
     expect(wp.subject).to eq "Task 1"
     # Double click leads to the full view
-    click_target = page.find_test_selector("op-wp-single-card--content-type")
-    page.driver.browser.action.double_click(click_target.native).perform
+    page
+      .find_test_selector("op-wp-single-card--content-type")
+      .double_click
 
     expect(page).to have_current_path project_work_package_path(project, wp.id, "activity")
 
@@ -82,6 +86,9 @@ RSpec.describe "Work Package boards spec", :js, with_ee: %i[board_view] do
 
     expect(page).to have_current_path /details\/#{wp.id}\/overview/
     card.expect_selected
+    split_view.close
+
+    expect(page).to have_current_path /boards\/#{board_view.id}$/
 
     # Add a second card, focus on that
     board_page.add_card "List 1", "Foobar"
@@ -91,8 +98,8 @@ RSpec.describe "Work Package boards spec", :js, with_ee: %i[board_view] do
     expect(wp.subject).to eq "Foobar"
     card = board_page.card_for(wp)
 
-    # Click on the card
-    card.card_element.click
+    # Click on the card again
+    card.open_details_view
     expect(page).to have_current_path /details\/#{wp.id}\/overview/
   end
 
@@ -106,9 +113,9 @@ RSpec.describe "Work Package boards spec", :js, with_ee: %i[board_view] do
 
     page.find_test_selector("main-menu-toggler--boards", wait: 10).click
 
-    subitem = page.find_test_selector("op-sidemenu--item-action--Myboard", wait: 10)
+    subitem = page.find_test_selector("op-submenu--item-action", text: "My board", wait: 10)
     # Ends with boards due to lazy route
-    expect(subitem[:href]).to end_with project_work_package_boards_path(project)
+    expect(subitem[:href]).to end_with project_work_package_board_path(project, board_view.id)
 
     subitem.click
 
@@ -122,6 +129,7 @@ RSpec.describe "Work Package boards spec", :js, with_ee: %i[board_view] do
 
     # Add a new WP on the board
     board_page = board_index.open_board board_view
+
     board_page.expect_query "List 1", editable: true
     board_page.add_card "List 1", "Task 1"
     board_page.expect_toast message: I18n.t(:notice_successful_create)
@@ -131,9 +139,9 @@ RSpec.describe "Work Package boards spec", :js, with_ee: %i[board_view] do
     # Open the details page with the info icon
     card = board_page.card_for(wp)
     split_view = card.open_details_view
-    split_view.ensure_page_loaded
     split_view.expect_subject
-    split_view.switch_to_tab tab: "Relations"
+    split_view.switch_to_tab tab: :relations
+    expect(page).to have_current_path /details\/#{wp.id}\/relations/
 
     # Go to full view of WP
     full_view = split_view.switch_to_fullscreen
@@ -152,6 +160,7 @@ RSpec.describe "Work Package boards spec", :js, with_ee: %i[board_view] do
 
     # Add a new WP on the board
     board_page = board_index.open_board board_view
+
     board_page.expect_query "List 1", editable: true
     board_page.add_card "List 1", "Task 1"
     board_page.expect_toast message: I18n.t(:notice_successful_create)
@@ -161,7 +170,6 @@ RSpec.describe "Work Package boards spec", :js, with_ee: %i[board_view] do
     # Open the details page with the info icon
     card = board_page.card_for(wp)
     split_view = card.open_details_view
-    split_view.ensure_page_loaded
     split_view.expect_subject
 
     page.driver.refresh
@@ -175,6 +183,9 @@ RSpec.describe "Work Package boards spec", :js, with_ee: %i[board_view] do
 
     # Add a new WP on the board
     board_page = board_index.open_board board_view
+
+    wait_for_network_idle
+
     board_page.expect_query "List 1", editable: true
     board_page.add_card "List 1", "Task 1"
     board_page.expect_toast message: I18n.t(:notice_successful_create)
@@ -195,7 +206,10 @@ RSpec.describe "Work Package boards spec", :js, with_ee: %i[board_view] do
     destroy_modal.expect_listed(wp)
     destroy_modal.confirm_deletion
 
-    board_page.expect_empty
+    wait_for_network_idle
+
+    board_page.expect_query "List 1", editable: true
+    board_page.expect_not_any_card
     board_page.expect_path
   end
 end

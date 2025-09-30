@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,14 +26,12 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Inject, Injectable } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable, DOCUMENT } from '@angular/core';
 import { OpModalService } from 'core-app/shared/components/modal/modal.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import { InviteUserModalComponent } from './invite-user.component';
-import ClickEvent = JQuery.ClickEvent;
 
-const attributeSelector = '[invite-user-modal-augment]';
+const attributeName = 'invite-user-modal-augment';
 
 /**
  * This service triggers user-invite modals to clicks on elements
@@ -51,10 +49,11 @@ export class OpInviteUserModalAugmentService {
    * Create initial listeners for Rails-rendered modals
    */
   public setupListener() {
-    const matches = this.documentElement.querySelectorAll(attributeSelector);
+    const matches = this.documentElement.querySelectorAll(`[${attributeName}]`);
     for (let i = 0; i < matches.length; ++i) {
       const el = matches[i] as HTMLElement;
       el.addEventListener('click', this.spawnModal.bind(this));
+      el.removeAttribute(attributeName);
     }
   }
 

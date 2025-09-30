@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { DynamicFormService } from 'core-app/shared/components/dynamic-forms/services/dynamic-form/dynamic-form.service';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { DynamicFieldsService } from 'core-app/shared/components/dynamic-forms/services/dynamic-fields/dynamic-fields.service';
 import { UntypedFormGroup } from '@angular/forms';
 import { of } from 'rxjs';
@@ -117,15 +117,15 @@ describe('DynamicFormService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-      ],
-      providers: [
+    imports: [],
+    providers: [
         DynamicFormService,
         DynamicFieldsService,
         FormsService,
-      ]
-    });
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+});
     httpClient = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
     dynamicFormService = TestBed.inject(DynamicFormService);

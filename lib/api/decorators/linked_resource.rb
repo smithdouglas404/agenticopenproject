@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -40,6 +42,8 @@ module API
       def from_hash(hash, *)
         return super unless hash && hash["_links"]
 
+        validate_links!(hash["_links"])
+
         copied_hash = hash.deep_dup
 
         representable_attrs.find_all do |dfn|
@@ -53,6 +57,27 @@ module API
         end
 
         super(copied_hash, *)
+      end
+
+      private
+
+      def parse_link_ids_from_fragment(fragment, path)
+        struct = Struct.new(:id).new
+        link = ::API::Decorators::LinkObject.new(struct, path: path, property_name: :id, setter: "id=")
+
+        fragment.map do |href|
+          link.from_hash(href)
+          struct.id
+        end
+      end
+
+      def validate_links!(links)
+        raise ::API::Errors::BadRequest.new(I18n.t("api_v3.errors.bad_request.links_not_an_object")) unless links.is_a?(Hash)
+
+        invalid, = links.find { |_, link| !(link.is_a?(Hash) || link.is_a?(Array)) }
+        return if invalid.nil?
+
+        raise ::API::Errors::BadRequest.new(I18n.t("api_v3.errors.bad_request.invalid_link", key: invalid))
       end
 
       module ClassMethods
@@ -238,18 +263,7 @@ module API
 
         def associated_resources_default_setter(name, v3_path)
           ->(fragment:, **) do
-            struct = Struct.new(:id).new
-
-            link = ::API::Decorators::LinkObject.new(struct,
-                                                     path: v3_path,
-                                                     property_name: :id,
-                                                     setter: "id=")
-
-            ids = fragment.map do |href|
-              link.from_hash(href)
-              struct.id
-            end
-
+            ids = parse_link_ids_from_fragment(fragment, v3_path)
             represented.send(:"#{name.to_s.singularize}_ids=", ids)
           end
         end

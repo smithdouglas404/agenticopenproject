@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -102,6 +104,11 @@ RSpec.describe API::V3::Queries::GroupBys::QueryGroupByRepresenter do
     end
 
     it "busts the cache on changes to the caption (cf rename)" do
+      allow(WorkPackage)
+        .to receive(:human_attribute_name)
+        .with("blubs")
+        .and_return("humanized_blubs")
+
       allow(column)
         .to receive(:caption)
         .and_return("blubs")
@@ -113,6 +120,11 @@ RSpec.describe API::V3::Queries::GroupBys::QueryGroupByRepresenter do
     end
 
     it "busts the cache on changes to the name" do
+      allow(WorkPackage)
+        .to receive(:human_attribute_name)
+        .with("blubs")
+        .and_return("humanized_blubs")
+
       allow(column)
         .to receive(:name)
         .and_return("blubs")

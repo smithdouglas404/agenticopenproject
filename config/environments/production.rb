@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -164,11 +166,6 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  # Silence the following warning
-  # "Rails couldn't infer whether you are using multiple databases from your database.yml"
-  # This is deprecated in 7.1. and the warning got removed.
-  config.active_record.suppress_multiple_database_warning = true
-
   if OpenProject::Configuration.enable_internal_assets_server?
     config.public_file_server.enabled = true
     config.public_file_server.headers = {
@@ -179,11 +176,18 @@ Rails.application.configure do
     }
   end
 
-  # Enable DNS rebinding protection and other `Host` header attacks.
-  # config.hosts = [
-  #   "example.com",     # Allow requests from example.com
-  #   /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
-  # ]
-  # Skip DNS rebinding protection for the default health check endpoint.
-  # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  if OpenProject::Configuration.host_name.present?
+    # Enable DNS rebinding protection and other `Host` header attacks.
+    config.hosts = [OpenProject::Configuration.host_name] + OpenProject::Configuration.additional_host_names
+    # Skip DNS rebinding protection for the default health check endpoint.
+    config.host_authorization = {
+      exclude: ->(request) do
+        base = OpenProject::Configuration["rails_relative_url_root"]
+        request.path.start_with?("#{base}/health_check", "#{base}/sys")
+      end,
+      response_app: ->(_env) do
+        [400, { "Content-Type" => "text/plain" }, ["Invalid host_name configuration"]]
+      end
+    }
+  end
 end

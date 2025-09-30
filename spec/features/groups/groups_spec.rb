@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "group memberships through groups page", :js, :with_cuprite do
+RSpec.describe "group memberships through groups page", :js do
   shared_let(:admin) { create(:admin) }
   let!(:group) { create(:group, lastname: "Bob's Team") }
 
@@ -39,19 +41,13 @@ RSpec.describe "group memberships through groups page", :js, :with_cuprite do
       allow(User).to receive(:current).and_return admin
     end
 
-    it "I can delete a group" do
+    it "I can see groups" do
       groups_page.visit!
       expect(groups_page).to have_group "Bob's Team"
 
-      groups_page.delete_group! "Bob's Team"
+      click_on "Bob's Team"
 
-      expect(page).to have_css(".op-toast.-info", text: I18n.t(:notice_deletion_scheduled))
-      expect(groups_page).to have_group "Bob's Team"
-
-      perform_enqueued_jobs
-
-      groups_page.visit!
-      expect(groups_page).not_to have_group "Bob's Team"
+      expect(page).to have_current_path(edit_group_path(group))
     end
   end
 end

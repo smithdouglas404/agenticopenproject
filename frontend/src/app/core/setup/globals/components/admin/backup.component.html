@@ -1,10 +1,10 @@
-<form class="form -bordered -compressed" method="get" [action]="getDownloadUrl()" [hidden]="!isDownloadReady()">
+<form class="form -bordered -compressed" method="get" [action]="getDownloadUrl()" [hidden]="!isDownloadReady()" data-turbo="false">
   <section class="form--section">
     <h3 class="form--section-title">
       {{ text.lastBackup }}
     </h3>
     <div class="form--field">
-      <label class="form--label">{{ text.lastBackupFrom }}:</label>
+      <span class="form--label">{{ text.lastBackupFrom }}:</span>
       <div class="form--field-container">
         <div class="form--text-field-container">
           <em>{{ lastBackupDate }}</em>

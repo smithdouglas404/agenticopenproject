@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -32,7 +32,9 @@ import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 
 @Injectable({ providedIn: 'root' })
 export class CurrentProjectService {
-  private current:{ id:string, identifier:string, name:string };
+  private currentId:string|null = null;
+  private currentName:string|null = null;
+  private currentIdentifier:string|null = null;
 
   constructor(
     private PathHelper:PathHelperService,
@@ -42,43 +44,35 @@ export class CurrentProjectService {
   }
 
   public get inProjectContext():boolean {
-    return this.current !== undefined;
+    return this.currentId !== null;
   }
 
   public get path():string|null {
-    if (this.current) {
-      return this.PathHelper.projectPath(this.current.identifier);
+    if (this.currentIdentifier) {
+      return this.PathHelper.projectPath(this.currentIdentifier);
     }
 
     return null;
   }
 
   public get apiv3Path():string|null {
-    if (this.current) {
-      return this.apiV3Service.projects.id(this.current.id).toString();
+    if (this.currentId) {
+      return this.apiV3Service.projects.id(this.currentId).toString();
     }
 
     return null;
   }
 
   public get id():string|null {
-    return this.getCurrent('id');
+    return this.currentId;
   }
 
   public get name():string|null {
-    return this.getCurrent('name');
+    return this.currentName;
   }
 
   public get identifier():string|null {
-    return this.getCurrent('identifier');
-  }
-
-  private getCurrent(key:'id'|'identifier'|'name') {
-    if (this.current && this.current[key]) {
-      return this.current[key].toString();
-    }
-
-    return null;
+    return this.currentIdentifier;
   }
 
   /**
@@ -87,11 +81,13 @@ export class CurrentProjectService {
   public detect() {
     const element:HTMLMetaElement|null = document.querySelector('meta[name=current_project]');
     if (element) {
-      this.current = {
-        id: element.dataset.projectId!,
-        name: element.dataset.projectName!,
-        identifier: element.dataset.projectIdentifier!,
-      };
+      this.currentId = element.dataset.projectId as string;
+      this.currentName = element.dataset.projectName as string;
+      this.currentIdentifier = element.dataset.projectIdentifier as string;
+    } else {
+      this.currentId = null;
+      this.currentName = null;
+      this.currentIdentifier = null;
     }
   }
 }

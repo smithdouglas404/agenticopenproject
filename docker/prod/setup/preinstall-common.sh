@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euxo pipefail
 
 get_architecture() {
 	if command -v uname > /dev/null; then
@@ -40,8 +41,6 @@ echo 'deb http://apt.postgresql.org/pub/repos/apt/ bookworm-pgdg main' > /etc/ap
 apt-get update -qq
 apt-get install -yq --no-install-recommends \
 	libpq-dev \
-	postgresql-client-$CURRENT_PGVERSION \
-	postgresql-client-$NEXT_PGVERSION \
 	libpq5 \
 	libffi8 \
 	unrtf \
@@ -50,15 +49,19 @@ apt-get install -yq --no-install-recommends \
 	catdoc \
 	imagemagick \
 	libclang-dev \
+	libjemalloc2 \
 	git
 
+for version in $PGVERSION_CHOICES ; do
+	apt-get install -yq --no-install-recommends postgresql-client-$version
+done
 
 # Specifics for BIM edition
 if [ ! "$BIM_SUPPORT" = "false" ]; then
 	apt-get install -y wget unzip
 
 	# https://learn.microsoft.com/en-gb/dotnet/core/install/linux-debian#debian-12
-	wget --quiet https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb -O /tmp/packages-microsoft-prod.deb
+	wget --no-verbose --tries 3 https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb -O /tmp/packages-microsoft-prod.deb
 	dpkg -i /tmp/packages-microsoft-prod.deb
 	rm /tmp/packages-microsoft-prod.deb
 
@@ -72,16 +75,16 @@ if [ ! "$BIM_SUPPORT" = "false" ]; then
 	npm install -g @xeokit/xeokit-gltf-to-xkt@1.3.1
 
 	# Install COLLADA2GLTF
-	wget --quiet https://github.com/KhronosGroup/COLLADA2GLTF/releases/download/v2.1.5/COLLADA2GLTF-v2.1.5-linux.zip
+	wget --no-verbose --tries 3 https://github.com/KhronosGroup/COLLADA2GLTF/releases/download/v2.1.5/COLLADA2GLTF-v2.1.5-linux.zip
 	unzip -q COLLADA2GLTF-v2.1.5-linux.zip
 	mv COLLADA2GLTF-bin "/usr/local/bin/COLLADA2GLTF"
 
 	# IFCconvert
-	wget --quiet https://s3.amazonaws.com/ifcopenshell-builds/IfcConvert-v0.6.0-517b819-linux64.zip
-	unzip -q IfcConvert-v0.6.0-517b819-linux64.zip
+	wget --no-verbose --tries 3 https://s3.amazonaws.com/ifcopenshell-builds/IfcConvert-v0.7.11-fea8e3a-linux64.zip
+	unzip -q IfcConvert-v0.7.11-fea8e3a-linux64.zip
 	mv IfcConvert "/usr/local/bin/IfcConvert"
 
-	wget --quiet https://github.com/bimspot/xeokit-metadata/releases/download/1.0.1/xeokit-metadata-linux-x64.tar.gz
+	wget --no-verbose --tries 3 https://github.com/bimspot/xeokit-metadata/releases/download/1.0.1/xeokit-metadata-linux-x64.tar.gz
 	tar -zxvf xeokit-metadata-linux-x64.tar.gz
 	chmod +x xeokit-metadata-linux-x64/xeokit-metadata
 	cp -r xeokit-metadata-linux-x64/ "/usr/lib/xeokit-metadata"
@@ -95,4 +98,3 @@ id $APP_USER || useradd -d /home/$APP_USER -m $APP_USER
 
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 truncate -s 0 /var/log/*log
-

@@ -1,4 +1,4 @@
-# Schema: Work_PackageModel
+# Schema: WorkPackageModel
 ---
 type: object
 required:
@@ -28,7 +28,10 @@ properties:
       - description: The work package description
   scheduleManually:
     type: boolean
-    description: If false (default) schedule automatically.
+    description: |-
+      Uses manual scheduling mode when true (default). Uses automatic scheduling
+      mode when false. Can be automatic only when predecessors or children are
+      present.
   readonly:
     type: boolean
     description: If true, the work package is in a readonly status so with the exception of the status, no other property can be altered.
@@ -61,7 +64,7 @@ properties:
   duration:
     type: string
     format: duration
-    description:  |-
+    description: |-
       **(NOT IMPLEMENTED)** The amount of time in hours the work package needs to be completed.
       Not available for milestone type of work packages.
     readOnly: true
@@ -76,7 +79,7 @@ properties:
     readOnly: true
   ignoreNonWorkingDays:
     type: boolean
-    description:  |-
+    description: |-
       **(NOT IMPLEMENTED)** When scheduling, whether or not to ignore the non working days being defined.
       A work package with the flag set to true will be allowed to be scheduled to a non working day.
     readOnly: true
@@ -125,16 +128,6 @@ properties:
       - status
       - type
     properties:
-      addAttachment:
-        allOf:
-          - $ref: "./link.yml"
-          - description: |-
-              Attach a file to the WP
-
-              # Conditions
-
-              **Permission**: edit work package
-            readOnly: true
       addComment:
         allOf:
           - $ref: "./link.yml"
@@ -170,12 +163,12 @@ properties:
         readOnly: true
         items:
           allOf:
-          - $ref: "./link.yml"
-          - description: |-
-              A predefined action that can be applied to the work package.
+            - $ref: "./link.yml"
+            - description: |-
+                A predefined action that can be applied to the work package.
 
-              **Resource**: CustomAction
-            readOnly: true
+                **Resource**: CustomAction
+              readOnly: true
       previewMarkup:
         allOf:
           - $ref: "./link.yml"
@@ -192,6 +185,46 @@ properties:
 
               **Permission**: delete watcher
             readOnly: true
+      delete:
+        allOf:
+          - $ref: "./link.yml"
+          - description: |-
+              Delete this work package
+
+              # Conditions
+
+              **Permission**: delete_work_packages
+            readOnly: true
+      logTime:
+        allOf:
+          - $ref: "./link.yml"
+          - description: |-
+              Create time entries on the work package
+
+              # Conditions
+
+              **Permission**: log_time or log_own_time
+            readOnly: true
+      move:
+        allOf:
+          - $ref: "./link.yml"
+          - description: |-
+              Link to page for moving this work package
+
+              # Conditions
+
+              **Permission**: move_work_packages
+            readOnly: true
+      copy:
+        allOf:
+          - $ref: "./link.yml"
+          - description: |-
+              Link to page for copying this work package
+
+              # Conditions
+
+              **Permission**: add_work_packages
+            readOnly: true
       unwatch:
         allOf:
           - $ref: "./link.yml"
@@ -206,7 +239,7 @@ properties:
         allOf:
           - $ref: "./link.yml"
           - description: |-
-              Form endpoint that aids in preparing and performing edits on a WP
+              Form endpoint that aids in preparing and performing edits on a work package
 
               # Conditions
 
@@ -270,6 +303,30 @@ properties:
               The files attached to this work package
 
               **Resource**: Collection
+
+              # Conditions
+
+              - **Setting**: deactivate_work_package_attachments set to false in related project
+      addAttachment:
+        allOf:
+          - $ref: "./link.yml"
+          - description: |-
+              Attach a file to the work package
+
+              # Conditions
+
+              - **Permission**: edit work package
+            readOnly: true
+      prepareAttachment:
+        allOf:
+          - $ref: "./link.yml"
+          - description: |-
+              Attach a file to the work package
+
+              # Conditions
+
+              - **Setting**: direct uploads enabled
+            readOnly: true
       author:
         allOf:
           - $ref: "./link.yml"
@@ -338,7 +395,7 @@ properties:
 
               # Conditions
 
-              **Permission**: manage file links
+              **Permission**: manage_file_links
       fileLinks:
         allOf:
           - $ref: './link.yml'
@@ -347,7 +404,7 @@ properties:
 
               # Conditions
 
-              **Permission**: view file links
+              **Permission**: view_file_links
       parent:
         allOf:
           - $ref: "./link.yml"
@@ -369,6 +426,20 @@ properties:
               The project to which the work package belongs
 
               **Resource**: Project
+      projectPhase:
+        allOf:
+          - $ref: "./link.yml"
+          - description: |-
+              The project phase to which the work package belongs
+
+              **Resource**: ProjectPhase
+      projectPhaseDefinition:
+        allOf:
+          - $ref: "./link.yml"
+          - description: |-
+              The definition of the project phase the work package belongs to
+
+              **Resource**: ProjectPhaseDefinition
       responsible:
         allOf:
           - $ref: "./link.yml"

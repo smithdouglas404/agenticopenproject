@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,11 +34,28 @@ module Settings
       include ApplicationHelper
       include OpPrimer::ComponentHelpers
       include OpTurbo::Streamable
+      include CustomFieldsHelper
+
+      def initialize(allow_custom_field_creation:)
+        super
+
+        @allow_custom_field_creation = allow_custom_field_creation
+      end
 
       def breadcrumbs_items
         [{ href: admin_index_path, text: t("label_administration") },
          { href: admin_settings_project_custom_fields_path, text: t("label_project_plural") },
          t("settings.project_attributes.heading")]
+      end
+
+      def allow_custom_field_creation?
+        @allow_custom_field_creation
+      end
+
+      def show_enterprise_icon?(custom_field_format)
+        if custom_field_format.name == "calculated_value"
+          !EnterpriseToken.allows_to?(:calculated_values)
+        end
       end
     end
   end

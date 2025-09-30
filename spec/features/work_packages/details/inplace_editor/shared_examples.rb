@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_examples "as an accessible inplace editor" do
   it "triggers edit mode on click" do
     scroll_to_element(field.display_element)

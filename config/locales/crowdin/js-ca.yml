@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -66,7 +66,7 @@ ca:
     button_back_to_list_view: "Tornar a la vista de llista"
     button_cancel: "Cancel·la"
     button_close: "Tanca"
-    button_change_project: "Canviar el projecte"
+    button_change_project: "Move to another project"
     button_check_all: "Marcar-ho tot"
     button_configure-form: "Configurar formulari"
     button_confirm: "Confirmar"
@@ -74,7 +74,7 @@ ca:
     button_copy: "Copiar"
     button_copy_to_clipboard: "Copiar al porta-retalls"
     button_copy_link_to_clipboard: "Copy link to clipboard"
-    button_copy_to_other_project: "Copia a un altre projecte"
+    button_copy_to_other_project: "Duplicate in another project"
     button_custom-fields: "Camps personalitzats"
     button_delete: "Esborrar"
     button_delete_watcher: "Eliminar l'observador"
@@ -88,6 +88,8 @@ ca:
     button_list_view: "Vista de llista"
     button_show_view: "Vista en pantalla completa"
     button_log_time: "Registrar temps"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "Més"
     button_open_details: "Obrir vista detallada"
     button_close_details: "Tancar vista detallada"
@@ -102,9 +104,9 @@ ca:
     button_save: "Desa"
     button_settings: "Configuració"
     button_uncheck_all: "Desmarca-ho tot"
-    button_update: "Actualitza"
-    button_export-pdf: "Descarregar PDF"
+    button_update: "Actualitzar"
     button_export-atom: "Descarregar Atom"
+    button_generate_pdf: "Generate PDF"
     button_create: "Crear"
     card:
       add_new: "Afegir nova targeta"
@@ -138,6 +140,8 @@ ca:
     description_select_work_package: "Selecciona el paquet de treball #%{id}"
     description_subwork_package: "Fill del paquet de treball #%{id}"
     editor:
+      revisions: "Show local modifications"
+      no_revisions: "No local modifications found"
       preview: "Canvia al mode de vista prèvia"
       source_code: "Canvia al mode de font Markdown"
       error_saving_failed: "No s'ha pogut guardar el document per culpa del següent error: %{error}"
@@ -150,6 +154,7 @@ ca:
         attribute_reference:
           macro_help_tooltip: "Aquest segment de text s'està presentant dinàmicament per una macro."
           not_found: "El recurs sol·licitat no s'ha trobat"
+          nested_macro: "This macro is recursively referencing %{model} %{id}."
           invalid_attribute: "L'atribut seleccionat \"%{name}\" no existeix."
         child_pages:
           button: "Enllaços a pàgines filles"
@@ -199,67 +204,6 @@ ca:
         edit_query: "Editar consulta"
         new_group: "Nou grup"
         reset_to_defaults: "Restableix als valors per defecte"
-      enterprise:
-        text_reprieve_days_left: "%{days} dies fins al final del període de gràcia"
-        text_expired: "caducat"
-        trial:
-          confirmation: "Confirmació del correu electrònic"
-          confirmation_info: >
-            Et vam enviar un correu electrònic el %{date} a %{email}. Si us plau, comprova la teva safata d'entrada i fes clic a l'enllaç de confirmació per començar la prova de 14 dies.
-          form:
-            general_consent: >
-              Accepto les <a target="_blank" href="%{link_terms}">condicions de servei</a> i la <a target="_blank" href="%{link_privacy}">política de privacitat</a>.
-            invalid_email: "Adreça de correu electrònic invàlida"
-            label_company: "Empresa"
-            label_first_name: "Nom"
-            label_last_name: "Cognom"
-            label_domain: "Domini"
-            label_subscriber: "Subscriptor"
-            label_maximum_users: "Nombre màxim d'usuaris actius"
-            label_starts_at: "Comença el"
-            label_expires_at: "Caduca el"
-            receive_newsletter: Vull rebre el <a target="_blank" href="%{link}">butlletí de notícies</a> d'OpenProject.
-            taken_domain: Només hi pot haver una prova gratuïta activa per domini.
-            domain_mismatch: El nom d'allotjament proveït no coincideix amb el nom d'allotjament configurat. Si us plau, valida la teva configuració de sistema.
-            taken_email: Cada usuari només pot crear una prova gratuïta.
-          email_not_received: "No has rebut un correu electrònic? Pots reenviar el correu electrònic utilitzant l'enllaç de la dreta."
-          try_another_email: "O prova amb un altre correu electrònic."
-          next_steps: "Passos següents"
-          resend_link: "Reenvia"
-          resend_success: "El correu electrònic s'ha reenviat. Si us plau, comprova el teu correu electrònic i fes clic a l'enllaç de confirmació proporcionat."
-          resend_warning: "No s'ha pogut reenviar el correu electrònic."
-          session_timeout: "La teva sessió ha expirat. Si us plau, prova de carregar la pàgina de nou o reenvia el correu electrònic."
-          status_label: "Estat:"
-          status_confirmed: "confirmat"
-          status_waiting: "correu electrònic enviat - esperant la confirmació"
-          test_ee: "Prova l'edició Enterprise de forma gratuïta per 14 dies"
-          quick_overview: "Obté una visió general ràpida de la gestió de projectes i col·laboració d'equips amb l'edició Enterprise d'OpenProject."
-        upsale:
-          become_hero: "Sigues un heroi!"
-          enterprise_info_html: "%{feature_title} és una extensió de l'edició Enterprise <span class='spot-icon spot-icon_inline spot-icon_enterprise-addons'>."
-          upgrade_info: "Si us plau, actualitza a una versió de pagament per tal d'activar i començar a utilitzar-la en el teu equip."
-          benefits:
-            description: "Quins són els beneficis de l'edició Enterprise on-premises?"
-            high_security: "Funcions de seguretat"
-            high_security_text: "Inici de sessió únic (SAML, OpenID Conenct, CAS), grups LDAP."
-            installation: "Suport d'instal·lació"
-            installation_text: "Enginyers de programari amb experiència et guien durant tot el procés d'instal·lació i configuració de la teva pròpia estructura."
-            premium_features: "Extensions Enterprise"
-            premium_features_text: "Taulells \"agile\", tema personalitzat i logotip, gràfiques, fluxos de treball amb accions personalitzades, cerca de text completa per a fitxers adjunt en paquets de treball i la selecció múltiple de camps personalitzats."
-            professional_support: "Suport professional"
-            professional_support_text: "Obté un suport de confiança i d'alt nivell dels nostres enginyers de suport sèniors amb experiència en manegar OpenProject en ambients empresarials crítics."
-          button_start_trial: "Inicia la prova gratuïta"
-          button_upgrade: "Actualitza ara"
-          button_contact_us: "Contacta amb nosaltres per una demostració"
-          button_book_now: "Reserva ara"
-          confidence: >
-            Tenim la certesa i confiança d'una eina de gestió de projectes testejat i suportat en ambients empresarials - amb Codi Obert i amb una mentalitat oberta.
-          link_quote: "Obtenir un pressupost"
-          more_info: "Més informació"
-          text: >
-            L'edició Enterprise d'OpenProject es construeix a sobre de l'edició Community. Inclou extensions Enterprise i suport professional pensat especialment per a organitzacions de més de 10 usuaris que manegin projectes empresarialment crítics amb OpenProject.
-          unlimited: "Il·limitat"
-          you_contribute: "Els desenvolupadors també han de pagar les seves factures. Actualitzant a l'edició Enterprise, donaràs suport aquesta comunitat de codi obert i contribuiràs al seu desenvolupament, manteniment i millora continua."
       working_days:
         calendar:
           empty_state_header: "Dies no laborables"
@@ -270,10 +214,15 @@ ca:
         change_button: "Guarda i reprograma"
         change_title: "Canvia els dies laborals"
         removed_title: "Eliminaràs els següents dies de la llista de dies no laborals:"
-        change_description: "Canviar quins dies de la setmana són laborals i quins no pot afectar les dates d'inici i final de tots els paquets de treball a tots els projectes en aquesta instància."
+        change_description: "Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance."
         warning: >
-          Els canvis poden tardar un temps a ser aplicats. Et notificarem un cop s'hagin actualitzat tots els paquets de treball rellevants.
-          Estàs segur que vols continuar?
+          The changes might take some time to take effect. You will be notified when all relevant work packages and project life cycles have been updated.
+          Are you sure you want to continue?
+      work_packages_settings:
+        warning_progress_calculation_mode_change_from_status_to_field_html: >-
+          Changing progress calculation mode from status-based to work-based will make the <i>% Complete</i> field freely editable. If you optionally enter values for <i>Work</i> or <i>Remaining work</i>, they will also be linked to <i>% Complete</i>. Changing <i>Remaining work</i> can then update <i>% Complete</i>.
+        warning_progress_calculation_mode_change_from_field_to_status_html: >-
+          Changing progress calculation mode from work-based to status-based will result in all existing <i>% Complete</i> values to be lost and replaced with values associated with each status. Existing values for <i>Remaining work</i> may also be recalculated to reflect this change. This action is not reversible.
     custom_actions:
       date:
         specific: "en"
@@ -330,18 +279,6 @@ ca:
         years: "Anys"
         description: >
           Seleccioni el nivell inicial de zoom que s'ha de mostrar quan el zoom automàtic no estigui disponible.
-      export:
-        title: "Gantt chart PDF options"
-        button_export: "Export"
-        column_widths:
-          narrow: "Narrow"
-          medium: "Medium"
-          wide: "Wide"
-          very_wide: "Very wide"
-        options:
-          date_zoom: "Date zoom"
-          paper_size: "Paper size"
-          column_widths: "Column widths"
     general_text_no: "no"
     general_text_yes: "sí"
     general_text_No: "No"
@@ -353,17 +290,6 @@ ca:
         format:
           date: "%{attribute} no és una data vàlida - s'espera en format AAAA-MM-DD."
         general: "S'ha produït un error."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Llegeix sobre les noves funcions i actualitzacions del producte. "
-          learn_about: "Més informació sobre les noves funcions"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "14_1":
-            standard:
-              new_features_html: >
-                The release contains various new features and improvements: <br> <ul class="%{list_styling_class}"> <li>PDF export of Gantt view, e.g. for printing (Enterprise add-on)</li> <li>Favorite projects</li> <li>Sections in Meetings</li> <li>Showing meetings on the My page and project overview pages</li> <li>Possibility to hide attachments in the Files tab</li> <li>Custom fields of the type Link (URL)</li> </ul>
     ical_sharing_modal:
       title: "Subscribe to calendar"
       inital_setup_error_message: "S'ha produït un error en carregar les dades."
@@ -389,6 +315,7 @@ ca:
     label_added_time_by: 'Afegit per <a href=%{authorLink}>%{author}</a> el %{age}'
     label_ago: "dies abans"
     label_all: "tot"
+    label_all_projects: "Tots els projectes"
     label_all_uppercase: "Totes"
     label_all_work_packages: "tots els paquets de treball"
     label_and: "i"
@@ -404,6 +331,7 @@ ca:
     label_create: "Crear"
     label_create_work_package: "Crear nou paquet de treball"
     label_created_by: "Creat per"
+    label_current: "current"
     label_date: "Data"
     label_date_with_format: "Introdueix el %{date_attribute} amb el format següent: %{format}"
     label_deactivate: "Desactivar"
@@ -435,7 +363,6 @@ ca:
     label_filename: "Fitxer"
     label_filesize: "Mida"
     label_general: "General"
-    label_global_roles: "Global roles"
     label_greater_or_equal: ">="
     label_group: "Grup"
     label_group_by: "Agrupa per"
@@ -464,6 +391,7 @@ ca:
     label_menu_collapse: "col·lapsar"
     label_menu_expand: "expandir"
     label_more_than_ago: "més que fa uns dies"
+    label_moderate_comment: "Moderate comment"
     label_next: "Següent"
     label_no_color: "Sense color"
     label_no_data: "No hi ha dades per mostrar"
@@ -483,7 +411,7 @@ ca:
     label_per_page: "Per pàgina:"
     label_please_wait: "Espereu, si us plau"
     label_project: "Projecte"
-    label_project_list: "Project lists"
+    label_project_list: "Llistes de projectes"
     label_project_plural: "Projectes"
     label_visibility_settings: "Configuració de visualització"
     label_quote_comment: "Citar aquest comentari"
@@ -497,7 +425,6 @@ ca:
     label_repository_plural: "Repositoris"
     label_save_as: "Desa com a"
     label_search_columns: "Search a column"
-    label_select_project: "Selecciona un projecte"
     label_select_watcher: "Seleccioneu un observador..."
     label_selected_filter_list: "Filtres seleccionats"
     label_show_attributes: "Mostrar tots els atributs"
@@ -508,7 +435,7 @@ ca:
     label_sort_lower: "Mou avall"
     label_sorting: "Ordenació"
     label_spent_time: "Temps utilitzat"
-    label_star_query: "Favorit"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Prem enter per guardar."
     label_public_query: "Públic"
     label_sum: "Suma"
@@ -567,7 +494,7 @@ ca:
     label_version_plural: "Versions"
     label_view_has_changed: "Aquesta vista té canvis sense guardar. Fes clic per guardar-los."
     help_texts:
-      show_modal: "Mostra el text d'ajuda d'atributs"
+      show_modal: "Show help text"
     onboarding:
       buttons:
         skip: "Omet"
@@ -578,7 +505,7 @@ ca:
         members: "Convida nous <b>membres</b> a afegir-se al teu projecte."
         quick_add_button: "Fes clic a la icona de més (+) en la navegació superior per <b>crear un nou projecte</b> o <b>convidar companys de feina</b>."
         sidebar_arrow: "Utilitza la fletxa de retorn a la cantonada esquerra per tornar al <b>menú principal</b> del projecte."
-        welcome: "Segueix la introducció de tres minuts per aprendre les <b> funcions més importants</b>. <br>Recomanem completar les passes fins al final. Podràs tornar a començar aquesta introducció en qualsevol moment."
+        welcome: "Take a three-minute introduction tour to learn the most <b>important features</b>. <br> We recommend completing the steps until the end. You can restart the tour any time."
         wiki: "Dintre de la <b>wiki</b> pots documentar i compartir el coneixement conjuntament amb el teu equip."
         backlogs:
           overview: "Administra la teva feina en vistes de <b>treballs pendents</b>."
@@ -610,33 +537,28 @@ ca:
       title: "Notificacions"
       no_unread: "No hi ha notificacions sense llegir"
       reasons:
-        mentioned: "mencionat"
-        watched: "observador"
-        assigned: "assignat a"
-        responsible: "responsable"
-        created: "creat"
-        scheduled: "programat"
-        commented: "comentat"
-        processed: "processat"
-        prioritized: "prioritzat"
+        mentioned: "Mencionat"
+        watched: "Observador"
+        assigned: "Assignat a"
+        #The enum value is named 'responsible' in the database and that is what is transported through the API
+        #up to the frontend.
+        responsible: "Responsable"
+        created: "Creat"
+        scheduled: "Programat"
+        commented: "Comentat"
+        processed: "Processed"
+        prioritized: "Prioritized"
         dateAlert: "Alerta per dates"
-        shared: "shared"
+        shared: "Compartida"
+        reminder: "Reminder"
       date_alerts:
         milestone_date: "Data de fita"
         overdue: "Vençut"
-        overdue_since: "des de %{difference_in_days}"
-        property_today: "és avui"
-        property_is: "és en %{difference_in_days}"
-        property_was: "va ser fa %{difference_in_days}"
-        property_is_deleted: "eliminat"
-        upsale:
-          title: "Alertes per dates"
-          description: "Amb les alertes per dates, se't notificarà quan una data d'inici o finalització s'apropi de tal manera que no se't puguin oblidar o passar dates rellevants."
-      facets:
-        unread: "Sense llegir"
-        unread_title: "Mostrar no llegits"
-        all: "Totes"
-        all_title: "Mostrar tots"
+        overdue_since: "since %{difference_in_days}."
+        property_today: "is today."
+        property_is: "is in %{difference_in_days}."
+        property_was: "was %{difference_in_days} ago."
+        property_is_deleted: "is deleted."
       center:
         label_actor_and: "i"
         and_more_users:
@@ -647,25 +569,20 @@ ca:
           with_current_filter: "En aquest moment no hi han notificacions en aquesta vista"
         mark_all_read: "Marca tot com a llegit"
         mark_as_read: "Marca com a llegit"
-        text_update_date: "%{date} per"
+        mark_all_read_confirmation: "This will mark all notifications in this view as read. Are you sure you want to do this?"
+        text_update_date_by: "%{date} per"
         total_count_warning: "Mostrant el %{newest_count} de notificacions recents. %{more_count} no s'estan mostrant."
         empty_state:
           no_notification: "Sembla que ja estàs al dia."
           no_notification_with_current_project_filter: "Sembla que ja estàs al dia per al projecte seleccionat."
           no_notification_with_current_filter: "Sembla que ja estàs al dia pel filtre %{filter}."
+          no_notification_for_filter: "Looks like you are all caught up for this filter."
           no_selection: "Fes clic en una notificació per veure els detalls de l'activitat."
         new_notifications:
           message: "No hi ha notificacions noves"
           link_text: "Click here to load them."
-      menu:
-        accountable: "Responsable"
-        by_project: "No llegit per projecte"
-        by_reason: "Motiu"
-        inbox: "Safata d'entrada"
-        mentioned: "Mencionat"
-        watched: "Observador"
-        date_alert: "Alerta per dates"
-        shared: "Shared"
+      reminders:
+        note: "Note: “%{note}”"
       settings:
         change_notification_settings: 'Pots modificar la teva <a target="_blank" href="%{url}">configuració de notificacions</a> per assegurar-te que mai et perds informació important.'
         title: "Configuració de notificacions"
@@ -688,7 +605,7 @@ ca:
             description: "Rep una notificació cada vegada que algú em menciona a qualsevol lloc"
           assignee: "Assignat a"
           responsible: "Responsable"
-          shared: "Shared"
+          shared: "Compartida"
           watched: "Observador"
           work_package_commented: "Tots els nous comentaris"
           work_package_created: "Paquets de treball nou"
@@ -705,7 +622,6 @@ ca:
           date_alerts:
             title: "Alertes per dates"
             description: "Notificacions automàtiques quan dates importants s'aproximen per a paquets de treball oberts en els quals estàs involucrat (assignat, responsable o observador)."
-            teaser_text: "Amb les alertes per dates, se't notificarà quan una data d'inici o finalització s'apropi de tal manera que no se't puguin oblidar o passar dates rellevants."
           overdue: Quan vençut
         project_specific:
           title: "Configuracions de notificacions específiques del projecte"
@@ -718,9 +634,12 @@ ca:
       title: "Confirma la teva contrasenya per continuar"
     pagination:
       no_other_page: "Estàs en la pàgina única."
+      pages_skipped: "Pages skipped."
+      page_navigation: "Pagination navigation"
+      per_page_navigation: 'Items per page selection'
       pages:
-        next: "Avançar a la pàgina següent"
-        previous: "Tornar a la pàgina anterior"
+        page_number: Page %{number}
+        show_per_page: Show %{number} per page
     placeholders:
       default: "-"
       subject: "Introdueixi l'assumpte aquí"
@@ -728,18 +647,13 @@ ca:
       description: "Descripció: Fes clic per editar..."
       relation_description: "Fes clic per afegir una descripció per aquesta relació"
     project:
-      required_outside_context: >
-        Si us plau, selecciona un projecte on crear el paquet de treball per a veure tots els atributs. Només pots seleccionar projectes que tinguin activat la classe indicada anteriorment.
-      details_activity: "Detalls de l'activitat del projecte"
-      context: "Context del projecte"
-      click_to_switch_to_project: "Projecte: %{projectname}"
-      confirm_template_load: "Canviar la plantilla tornarà a carregar la pàgina i perdràs totes les dades del formulari. Continuar?"
-      use_template: "Utilitzar plantilla"
-      no_template_selected: "(Cap)"
-      copy:
-        copy_options: "Opcions de còpia"
       autocompleter:
         label: "Autoemplenament del projecte"
+      click_to_switch_to_project: "Projecte: %{projectname}"
+      context: "Context del projecte"
+      not_available: "Project N/A"
+      required_outside_context: >
+        Si us plau, selecciona un projecte on crear el paquet de treball per a veure tots els atributs. Només pots seleccionar projectes que tinguin activat la classe indicada anteriorment.
     reminders:
       settings:
         daily:
@@ -754,6 +668,7 @@ ca:
         immediate:
           title: "Envia'm un correu electrònic recordatori"
           mentioned: "Immediatament quan algú em @menciona"
+          personal_reminder: "Immediately when I receive a personal reminder"
         alerts:
           title: "Alertes en correu electrònic per altres elements (que no són paquets de treball)"
           explanation: >
@@ -772,6 +687,8 @@ ca:
           first_day: "Primer dia"
           last_day: "Últim dia"
     text_are_you_sure: "N'esteu segur?"
+    text_are_you_sure_to_cancel: "You have unsaved changes on this page. Are you sure you want to discard them?"
+    breadcrumb: "Breadcrumb"
     text_data_lost: "Totes les dades entrades es perdran."
     text_user_wrote: "%{value} va escriure:"
     types:
@@ -785,10 +702,6 @@ ca:
         upgrade_to_ee_text: "Ostres! Si necessita aquesta funció ets un súper pro! T'importaria donar suport als nostres desenvolupadors de codi obert convertint-te en client de l'edició Enterprise?"
         more_information: "Més informació"
         nevermind: "Sense importància"
-      edit:
-        form_configuration: "Configuració del formulari"
-        projects: "Projectes"
-        settings: "Configuració"
     time_entry:
       work_package_required: "Requereix seleccionar un paquet de treball primer."
       title: "Registrar temps"
@@ -811,6 +724,7 @@ ca:
       typeahead_placeholder: Cercar possibles observadors
     relation_labels:
       parent: "Pare"
+      child: "Child"
       children: "Fills"
       relates: "Relacionats amb"
       duplicates: "Duplica"
@@ -840,16 +754,16 @@ ca:
       add_new_child: "Crear nou fill"
       create_new: "Crear nou"
       add_existing: "Afegir existent"
-      add_existing_child: "Afegir fill existent"
+      add_existing_child: "Afegir fill"
       remove_child: "Eliminar fill"
       add_new_relation: "Crea una nova relació"
       add_existing_relation: "Afegir relació existent"
       update_description: "Establir o actualitzar la descripció d'aquesta relació"
       toggle_description: "Activar descripció de la relació"
       update_relation: "Faci clic per a canviar la classe de relació"
-      add_follower: "Afegir seguidor"
       show_relations: "Mostra les relacions"
       add_predecessor: "Afegir predecessor"
+      add_successor: "Add successor"
       remove: "Eliminar la relació"
       save: "Guardar la relació"
       abort: "Anul·la"
@@ -859,6 +773,7 @@ ca:
     autocompleter:
       placeholder: "Escriviu per cercar"
       notFoundText: "Elements no trobats"
+      search: "Cercar"
       project:
         placeholder: "Select project"
     repositories:
@@ -866,8 +781,6 @@ ca:
       select_branch: "Seleccionar branca"
     field_value_enter_prompt: "Introduïu un valor per a '%{field}'"
     project_menu_details: "Detalls"
-    scheduling:
-      manual: "Planificació manual"
     sort:
       sorted_asc: "Ordre ascendent aplicat,"
       sorted_dsc: "Ordre descendent aplicat,"
@@ -881,7 +794,7 @@ ca:
     tl_toolbar:
       zooms: "Nivell de zoom"
       outlines: "Nivell de jerarquia"
-    upsale:
+    upsell:
       ee_only: "Extensió de l'edició Enterprise"
     wiki_formatting:
       strong: "Negreta"
@@ -899,26 +812,22 @@ ca:
       preformatted_text: "Text preformatat"
       wiki_link: "Enllaça a una pàgina Wiki"
       image: "Imatge"
+    sharing:
+      share: "Compartir"
+      selected_count: "%{count} selected"
+      selection:
+        mixed: "Mixed"
     work_packages:
       bulk_actions:
-        move: "Canvi massiu de projecte"
         edit: "Edició massiva"
-        copy: "Còpia massiva"
         delete: "Eliminació massiva"
+        duplicate: "Bulk duplicate"
+        move: "Canvi massiu de projecte"
       button_clear: "Neteja"
       comment_added: "El comentari s'ha afegit correctament."
       comment_send_failed: "S'ha produït un error. No s'ha pogut sotmetre el comentari."
       comment_updated: "El comentari s'ha actualitzat correctament."
       confirm_edit_cancel: "Estàs segur que vols cancel·lar l'edició del paquet de treball?"
-      datepicker_modal:
-        automatically_scheduled_parent: "Planificació automàtica. Les dates es derivaran de les relacions."
-        manually_scheduled: "Planificació manual habilitada, totes les relacions seran ignorades."
-        start_date_limited_by_relations: "Les dates d'inici i final disponibles estan limitades per les relacions."
-        changing_dates_affects_follow_relations: "Canviar aquestes dates afectarà les dates dels paquets de treball relacionats."
-        click_on_show_relations_to_open_gantt: 'Fes clic a "%{button_name}" per obtenir una visió general GANTT.'
-        show_relations: "Mostra les relacions"
-        ignore_non_working_days:
-          title: "Només dies laborables"
       description_filter: "Filtre"
       description_enter_text: "Introduïu text"
       description_options_hide: "Amagar opcions"
@@ -957,8 +866,8 @@ ca:
         header_no_type: "Nou paquet de treball (Classe no establerta encara)"
         header_with_parent: "Nou %{type} (Fill de %{parent_type} #%{id})"
         button: "Crear"
-      copy:
-        title: "Copiar paquet de treball"
+      duplicate:
+        title: "Duplicate work package"
       hierarchy:
         show: "Mostra el mode de jerarquia"
         hide: "Amaga el mode de jerarquia"
@@ -984,7 +893,7 @@ ca:
         createdAt: "Creat el"
         description: "Descripció"
         date: "Data"
-        percentComplete: "% Complete"
+        percentComplete: "% Complet"
         percentCompleteAlternative: "Progress"
         dueDate: "Data final"
         duration: "Durada"
@@ -993,7 +902,7 @@ ca:
         percentageDone: "Percentatge fet"
         priority: "Prioritat"
         projectName: "Projecte"
-        remainingWork: "Remaining work"
+        remainingWork: "Treball restant"
         remainingWorkAlternative: "Hores restants"
         responsible: "Responsable"
         startDate: "Data d'inici"
@@ -1005,15 +914,17 @@ ca:
         updatedAt: "Actualitzat el"
         versionName: "Versió"
         version: "Versió"
-        work: "Work"
+        work: "Treball"
         workAlternative: "Temps estimat"
-        remainingTime: "Remaining work"
+        remainingTime: "Treball restant"
       default_queries:
+        manually_sorted: "New manually sorted query"
         latest_activity: "Última activitat"
         created_by_me: "Creat per mi"
         assigned_to_me: "Assignat a mi"
         recently_created: "Creat recentment"
         all_open: "Tots els oberts"
+        overdue: "Vençut"
         summary: "Resum"
         shared_with_users: "Shared with users"
         shared_with_me: "Shared with me"
@@ -1050,18 +961,24 @@ ca:
           not_found: "No existeix aquesta vista"
           duplicate_query_title: "El nom de la vista ja existeix. Canvia de totes formes?"
         text_no_results: "No hi ha vistes que coincideixin"
+      reminders:
+        button_label: "Set reminder"
+        title:
+          new: "Set a reminder"
+          edit: "Edit reminder"
+        subtitle: "You will receive a notification for this work package at the chosen time."
+        presets:
+          tomorrow: "Tomorrow"
+          three_days: "In 3 days"
+          week: "In a week"
+          month: "In a month"
+          custom: "At a particular date/time"
       scheduling:
         is_parent: "Les dates d'aquest paquet de treball estan derivades automàticament dels seus fills. Activa la \"Planificació manual\" per canviar les dates."
         is_switched_from_manual_to_automatic: "Pot ser que les dates d'aquest paquet de treball no es tornin a calcular automàticament en canviar de planificació manual a automàtica a causa de les relacions amb altres paquets de treball."
       sharing:
-        share: "Compartir"
         title: "Share work package"
         show_all_users: "Show all users with whom the work package has been shared with"
-        selected_count: "%{count} selected"
-        selection:
-          mixed: "Mixed"
-        upsale:
-          description: "Share work packages with users who are not members of the project."
       table:
         configure_button: "Configura la taula de paquets de treball"
         summary: "Taula amb fileres de paquets de treball i columnes amb els atributs dels paquets de treball."
@@ -1096,10 +1013,6 @@ ca:
           manually: "Manual"
           warning: "Perdràs l'ordenació anterior en activar el mode d'ordenació automàtic."
         columns_help_text: "Utilitza aquest camp d'entrada per afegir columnes a la teva vista de taula. Pots arrossegar les columnes per reordenar-les."
-        upsale:
-          attribute_highlighting: "Necessites ressaltar alguns paquets de treball per sobre de la resta?"
-          relation_columns: "Necessites veure les relacions en una llista de paquets de treball?"
-          check_out_link: "Fes una ullada a l'edició Enterprise."
         relation_filters:
           filter_work_packages_by_relation_type: "Filtra paquets de treball per classe de relació"
       tabs:
@@ -1158,6 +1071,8 @@ ca:
     notice_successful_delete: "Eliminat correctament."
     notice_successful_update: "Actualitzat correctament."
     notice_job_started: "feina començada."
+    no_job_id: "No job ID returned from server."
+    invalid_job_response: "Invalid response from server."
     notice_bad_request: "Sol·licitud incorrecta."
     relations:
       empty: No existeix cap relació
@@ -1190,6 +1105,7 @@ ca:
       child_work_packages:
         one: "un paquet de treball fill"
         other: "%{count} paquets de treball fills"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"
@@ -1198,6 +1114,9 @@ ca:
         one: "1 dia"
         other: "%{count} dies"
         zero: "0 dies"
+      word:
+        one: "1 word"
+        other: "%{count} words"
     zen_mode:
       button_activate: "Activa el mode zen"
       button_deactivate: "Desactiva el mode zen"
@@ -1207,7 +1126,6 @@ ca:
       current_project_and_all_descendants: "En aquest projecte + subprojectes"
       current_project: "En aquest projecte"
       recently_viewed: "Vist recentment"
-      search: "Cercar"
       title:
         all_projects: "tots els projectes"
         project_and_subprojects: "i tots els subprojectes"
@@ -1298,21 +1216,21 @@ ca:
       selected_filter:
         all: "Tots els projectes"
         selected: "Només seleccionats"
-      search_placeholder: "Cerca projecte..."
+      search_placeholder: "Search projects..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Inclou tots els subprojectes"
       tooltip:
         include_all_selected: "Projecte ja inclòs, ja que \"Inclou tots els subprojectes\" està activat."
         current_project: "Aquest és el projecte actual."
         does_not_match_search: "El projecte no coincideix amb la cerca."
       no_results: "Cap projecte s'ajusta a la teva cerca."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Base de referència"
       clear: "Esborra"
       apply: "Aplica"
       header_description: "Destaca canvis efectuats en aquesta llista des de qualsevol punt del passat."
-      enterprise_header_description: "Destaca canvis efectuats en aquesta llista des de qualsevol punt del passat amb l'edició Enterprise."
       show_changes_since: "Mostra canvis des de"
-      baseline_comparison: "Comparació en base de referència"
       help_description: "Zona de temporal de referència per aquesta base de referència."
       time_description: "En el temps local: %{datetime}"
       time: "Hora"
@@ -1354,5 +1272,3 @@ ca:
       waiting_subtitle:
         network_off: "There is a network problem."
         network_on: "Network is back. We are trying."
-        timeout: >
-          OpenProject could not provide you access to the project folder within the expected period of time. Please, try once again.<br><br> If that problem persists please contact you OpenProject administrator to check the <a href="https://www.openproject.org/docs/system-admin-guide/files/external-file-storages/file-storage-troubleshooting/">health status of the file storage setup</a>.

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -56,6 +58,9 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
         .to receive(:assignable_values)
         .with(:version, current_user)
         .and_return([])
+      allow(schema)
+        .to receive(:assignable_project_phases)
+              .and_return(assignable_project_phases)
     end
   end
   let(:self_link) { "/a/self/link" }
@@ -70,6 +75,7 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
                            current_user:)
   end
   let(:available_custom_fields) { [] }
+  let(:assignable_project_phases) { [build_stubbed(:project_phase, project:)] }
   let(:wp_type) { project.types.first }
   let(:custom_field) { build_stubbed(:custom_field) }
   let(:work_package) do
@@ -235,7 +241,7 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
       it_behaves_like "has basic schema properties" do
         let(:path) { "lockVersion" }
         let(:type) { "Integer" }
-        let(:name) { I18n.t("api_v3.attributes.lock_version") }
+        let(:name) { I18n.t("attributes.lock_version") }
         let(:required) { true }
         let(:writable) { true }
       end
@@ -667,12 +673,26 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
     end
 
     describe "percentageDone" do
-      it_behaves_like "has basic schema properties" do
-        let(:path) { "percentageDone" }
-        let(:type) { "Integer" }
-        let(:name) { I18n.t("activerecord.attributes.work_package.done_ratio") }
-        let(:required) { false }
-        let(:writable) { false }
+      context "in work-based progress calculation mode",
+              with_settings: { work_package_done_ratio: "field" } do
+        it_behaves_like "has basic schema properties" do
+          let(:path) { "percentageDone" }
+          let(:type) { "Integer" }
+          let(:name) { I18n.t("activerecord.attributes.work_package.done_ratio") }
+          let(:required) { false }
+          let(:writable) { true }
+        end
+      end
+
+      context "in status-based progress calculation mode",
+              with_settings: { work_package_done_ratio: "status" } do
+        it_behaves_like "has basic schema properties" do
+          let(:path) { "percentageDone" }
+          let(:type) { "Integer" }
+          let(:name) { I18n.t("activerecord.attributes.work_package.done_ratio") }
+          let(:required) { false }
+          let(:writable) { false }
+        end
       end
     end
 
@@ -805,6 +825,42 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
 
         it_behaves_like "does not link to allowed values" do
           let(:path) { "project" }
+        end
+      end
+    end
+
+    describe "projectPhase" do
+      context "with the view_project_phases permission" do
+        let(:permissions) { %i[edit_work_packages view_project_phases] }
+
+        it_behaves_like "has basic schema properties" do
+          let(:path) { "projectPhase" }
+          let(:type) { "ProjectPhase" }
+          let(:name) { I18n.t("attributes.project_phase") }
+          let(:required) { false }
+          let(:writable) { true }
+          let(:location) { "_links" }
+        end
+
+        it_behaves_like "has a collection of allowed values" do
+          let(:json_path) { "projectPhase" }
+          let(:href_path) { "project_phases" }
+          let(:factory) { :project_phase }
+        end
+      end
+
+      context "without any phases active in the project" do
+        let(:permissions) { %i[edit_work_packages view_project_phases] }
+        let(:assignable_project_phases) { [] }
+
+        it "has no projectPhase attribute" do
+          expect(subject).not_to have_json_path("projectPhase")
+        end
+      end
+
+      context "without the view_project_phases permission" do
+        it "has no projectPhase attribute" do
+          expect(subject).not_to have_json_path("projectPhase")
         end
       end
     end
@@ -1231,7 +1287,7 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
         end
       end
 
-      context "if the type is switches" do
+      context "if the locale is switched" do
         it_behaves_like "changes" do
           let(:change) { allow(I18n).to receive(:locale).and_return(:de) }
         end

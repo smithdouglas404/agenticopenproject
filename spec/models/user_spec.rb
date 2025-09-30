@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -45,6 +47,13 @@ RSpec.describe User do
           author: user,
           project:,
           status:)
+  end
+
+  describe "Associations" do
+    it { is_expected.to have_many(:emoji_reactions).dependent(:destroy) }
+    it { is_expected.to have_many(:reminders).with_foreign_key(:creator_id).dependent(:destroy).inverse_of(:creator) }
+    it { is_expected.to have_many(:oauth_grants).with_foreign_key(:resource_owner_id).dependent(:delete_all) }
+    it { is_expected.to have_many(:oauth_applications).dependent(:destroy) }
   end
 
   describe "with long but allowed attributes" do
@@ -332,7 +341,7 @@ RSpec.describe User do
         it { is_expected.to eq "SmithJohn" }
       end
 
-      context "for lastname_coma_firstname", with_settings: { user_format: :lastname_coma_firstname } do
+      context "for lastname_comma_firstname", with_settings: { user_format: :lastname_comma_firstname } do
         it { is_expected.to eq "Smith, John" }
       end
 
@@ -350,8 +359,8 @@ RSpec.describe User do
 
       let(:user) { described_class.select_for_name(formatter).last }
 
-      context "for lastname_coma_firstname" do
-        let(:formatter) { :lastname_coma_firstname }
+      context "for lastname_comma_firstname" do
+        let(:formatter) { :lastname_comma_firstname }
 
         it { is_expected.to eq "Smith, John" }
       end
@@ -365,13 +374,38 @@ RSpec.describe User do
   end
 
   describe "#authentication_provider" do
-    before do
-      user.identity_url = "test_provider:veryuniqueid"
-      user.save!
+    let!(:authentication_provider) { create(:oidc_provider) }
+
+    context "when there is a link between user and auth provider" do
+      let(:user) { create(:user, authentication_provider:) }
+
+      it "returns the provider when there is a link" do
+        expect(user.authentication_provider).to eql(authentication_provider)
+      end
     end
 
-    it "creates a human readable name" do
-      expect(user.authentication_provider).to eql("Test Provider")
+    context "when there is no link" do
+      it "returns nil" do
+        expect(user.authentication_provider).to be_nil
+      end
+    end
+  end
+
+  describe "#human_authentication_provider" do
+    let!(:authentication_provider) { create(:oidc_provider) }
+
+    context "when there is a link between user and auth provider" do
+      let(:user) { create(:user, authentication_provider:) }
+
+      it "returns a human readable name" do
+        expect(user.human_authentication_provider).to eql(authentication_provider.display_name)
+      end
+    end
+
+    context "when no provider exists" do
+      it "returns nil" do
+        expect(user.human_authentication_provider).to be_nil
+      end
     end
   end
 
@@ -463,7 +497,7 @@ RSpec.describe User do
 
   describe "#uses_external_authentication?" do
     context "with identity_url" do
-      let(:user) { build(:user, identity_url: "test_provider:veryuniqueid") }
+      let(:user) { create(:user, identity_url: "test_provider:veryuniqueid") }
 
       it "returns true" do
         expect(user).to be_uses_external_authentication
@@ -823,6 +857,39 @@ RSpec.describe User do
     end
   end
 
+  describe "#time_zone" do
+    let(:user) { build(:user, preferences:) }
+
+    context "with an existing time zone in the prefs" do
+      let(:preferences) { { "time_zone" => "Europe/Athens" } }
+
+      it "returns the matching ActiveSupport::TimeZone" do
+        expect(user.time_zone)
+          .to eql ActiveSupport::TimeZone["Europe/Athens"]
+      end
+    end
+
+    context "with an invalid time zone" do
+      # Would need to be Etc/UTC or UTC to be valid
+      let(:preferences) { { "time_zone" => "utc" } }
+
+      it "returns the utc ActiveSupport::TimeZone" do
+        expect(user.time_zone)
+          .to eql ActiveSupport::TimeZone["Etc/UTC"]
+      end
+    end
+
+    context "without a time zone" do
+      # Would need to be Etc/UTC or UTC to be valid
+      let(:preferences) { {} }
+
+      it "returns the utc ActiveSupport::TimeZone" do
+        expect(user.time_zone)
+          .to eql ActiveSupport::TimeZone["Etc/UTC"]
+      end
+    end
+  end
+
   describe "#find_by_mail" do
     let!(:user1) { create(:user, mail: "foo+test@example.org") }
     let!(:user2) { create(:user, mail: "foo@example.org") }
@@ -1008,12 +1075,38 @@ RSpec.describe User do
     end
   end
 
-  include_examples "creates an audit trail on destroy" do
+  it_behaves_like "creates an audit trail on destroy" do
     subject { create(:attachment) }
   end
 
   it_behaves_like "acts_as_customizable included" do
     let(:model_instance) { user }
     let(:custom_field) { create(:user_custom_field, :string) }
+  end
+
+  describe ".available_custom_fields" do
+    let(:admin) { build_stubbed(:admin) }
+    let(:user) { build_stubbed(:user) }
+
+    shared_let(:user_cf) { create(:user_custom_field) }
+    shared_let(:admin_user_cf) { create(:user_custom_field, admin_only: true) }
+
+    context "for an admin" do
+      current_user { admin }
+
+      it "returns all fields including admin-only" do
+        expect(user.available_custom_fields)
+          .to contain_exactly(user_cf, admin_user_cf)
+      end
+    end
+
+    context "for a member" do
+      current_user { user }
+
+      it "does not return admin-only field" do
+        expect(user.available_custom_fields)
+          .to contain_exactly(user_cf)
+      end
+    end
   end
 end

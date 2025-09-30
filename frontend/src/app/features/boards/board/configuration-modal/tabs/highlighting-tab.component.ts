@@ -8,6 +8,7 @@ import { CardHighlightingMode } from 'core-app/features/work-packages/components
 
 @Component({
   templateUrl: './highlighting-tab.component.html',
+  standalone: false,
 })
 export class BoardHighlightingTabComponent implements TabComponent {
   // Highlighting mode

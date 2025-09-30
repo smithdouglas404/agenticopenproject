@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -56,7 +58,7 @@ RSpec.describe WorkPackage do
                        priority:,
                        subject: "test_create",
                        description: "WorkPackage#create",
-                       estimated_hours: "1:30" }
+                       estimated_hours: "1h30" }
     end
   end
 
@@ -70,6 +72,7 @@ RSpec.describe WorkPackage do
     it { is_expected.to belong_to(:assigned_to).class_name("Principal").optional }
     it { is_expected.to belong_to(:responsible).class_name("Principal").optional }
     it { is_expected.to belong_to(:version).optional }
+    it { is_expected.to belong_to(:project_phase_definition).class_name("Project::PhaseDefinition").optional }
     it { is_expected.to belong_to(:priority).class_name("IssuePriority") }
     it { is_expected.to belong_to(:category).optional }
     it { is_expected.to have_many(:time_entries).dependent(:delete_all) }
@@ -318,12 +321,12 @@ RSpec.describe WorkPackage do
     let!(:time_entry1) do
       create(:time_entry,
              project:,
-             work_package:)
+             entity: work_package)
     end
     let!(:time_entry2) do
       create(:time_entry,
              project:,
-             work_package:)
+             entity: work_package)
     end
 
     before do
@@ -343,7 +346,7 @@ RSpec.describe WorkPackage do
     end
   end
 
-  include_examples "creates an audit trail on destroy" do
+  it_behaves_like "creates an audit trail on destroy" do
     subject { create(:work_package) }
   end
 
@@ -371,6 +374,72 @@ RSpec.describe WorkPackage do
              project: work_package_new.project,
              status: status_assigned,
              done_ratio: 30)
+    end
+
+    it "allows empty value" do
+      work_package.done_ratio = ""
+      expect(work_package).to be_valid
+      expect(work_package.done_ratio).to be_nil
+    end
+
+    it "allows blank values" do
+      work_package.done_ratio = "  "
+      expect(work_package).to be_valid
+      expect(work_package.done_ratio).to be_nil
+    end
+
+    it "allows nil value" do
+      work_package.done_ratio = nil
+      expect(work_package).to be_valid
+      expect(work_package.done_ratio).to be_nil
+    end
+
+    it "allows values between 0 and 100" do
+      work_package.done_ratio = 0
+      expect(work_package).to be_valid
+      work_package.done_ratio = 34
+      expect(work_package).to be_valid
+      work_package.done_ratio = 99
+      expect(work_package).to be_valid
+
+      work_package.done_ratio = "1"
+      expect(work_package).to be_valid
+      work_package.done_ratio = "100"
+      expect(work_package).to be_valid
+    end
+
+    it "disallows values outside of the 0-100 range" do
+      work_package.done_ratio = -1
+      expect(work_package).not_to be_valid
+
+      work_package.done_ratio = "-1%"
+      expect(work_package.done_ratio).to eq(-1)
+      expect(work_package).not_to be_valid
+
+      work_package.done_ratio = 101.0
+      expect(work_package.done_ratio).to eq(101)
+      expect(work_package).not_to be_valid
+    end
+
+    it "allows floats and truncates them to integer" do
+      work_package.done_ratio = 1.7
+      expect(work_package).to be_valid
+      expect(work_package.done_ratio).to eq(1)
+
+      work_package.done_ratio = "1.7"
+      expect(work_package).to be_valid
+      expect(work_package.done_ratio).to eq(1)
+    end
+
+    it "allows percentage like '50%'" do
+      work_package.done_ratio = "50%"
+      expect(work_package).to be_valid
+      expect(work_package.done_ratio).to eq(50)
+    end
+
+    it "disallows string values, that are not valid percentage values" do
+      work_package.done_ratio = "abc"
+      expect(work_package).not_to be_valid
     end
 
     describe "#value" do
@@ -582,7 +651,7 @@ RSpec.describe WorkPackage do
     end
 
     it "has already the work_package assigned" do
-      expect(stub_work_package.add_time_entry.work_package).to eq(stub_work_package)
+      expect(stub_work_package.add_time_entry.entity).to eq(stub_work_package)
     end
 
     it "returns an unsaved entry" do
@@ -639,7 +708,7 @@ RSpec.describe WorkPackage do
   describe "#duration" do
     context "when not setting a value" do
       it "is nil" do
-        expect(work_package.duration).to be_nil
+        expect(work_package).to have_attributes(duration: nil)
       end
     end
 
@@ -649,7 +718,25 @@ RSpec.describe WorkPackage do
       end
 
       it "is the value" do
-        expect(work_package.duration).to eq(5)
+        expect(work_package).to have_attributes(duration: 5)
+      end
+    end
+  end
+
+  describe "#duration_in_hours" do
+    context "when not setting duration" do
+      it "is nil" do
+        expect(work_package).to have_attributes(duration_in_hours: nil)
+      end
+    end
+
+    context "when setting duration value" do
+      before do
+        work_package.duration = 5
+      end
+
+      it "is the value" do
+        expect(work_package).to have_attributes(duration_in_hours: 120)
       end
     end
   end
@@ -746,9 +833,22 @@ RSpec.describe WorkPackage do
   end
 
   describe "#remaining_hours" do
-    it "allows empty values" do
-      expect(work_package.remaining_hours).to be_nil
+    it "allows empty value" do
+      work_package.remaining_hours = ""
       expect(work_package).to be_valid
+      expect(work_package.remaining_hours).to be_nil
+    end
+
+    it "allows blank values" do
+      work_package.remaining_hours = "  "
+      expect(work_package).to be_valid
+      expect(work_package.remaining_hours).to be_nil
+    end
+
+    it "allows nil value" do
+      work_package.remaining_hours = nil
+      expect(work_package).to be_valid
+      expect(work_package.remaining_hours).to be_nil
     end
 
     it "allows values greater than or equal to 0" do
@@ -762,6 +862,10 @@ RSpec.describe WorkPackage do
     it "disallows negative values" do
       work_package.remaining_hours = "-1"
       expect(work_package).not_to be_valid
+
+      work_package.remaining_hours = "-1h"
+      expect(work_package.remaining_hours).to eq(-1)
+      expect(work_package).not_to be_valid
     end
 
     it "disallows string values, that are not numbers" do
@@ -772,6 +876,50 @@ RSpec.describe WorkPackage do
     it "allows non-integers" do
       work_package.remaining_hours = "1.3"
       expect(work_package).to be_valid
+    end
+
+    it "allows hours like '1h06'" do
+      work_package.remaining_hours = "1h06"
+      expect(work_package).to be_valid
+      expect(work_package.remaining_hours).to eq(1.1)
+    end
+
+    it "allows hours like '1h 24m'" do
+      work_package.remaining_hours = "1h 24m"
+      expect(work_package).to be_valid
+      expect(work_package.remaining_hours).to eq(1.4)
+    end
+
+    it "allows hours like '3d 1.5h 30m'" do
+      work_package.remaining_hours = "3d 1h 30m"
+      expect(work_package).to be_valid
+      expect(work_package.remaining_hours).to eq((3 * 8) + 1.5)
+    end
+  end
+
+  describe "#project_phase" do
+    let(:project_phase) { build_stubbed(:project_phase, definition: project_phase_definition) }
+    let(:project_phase_definition) { build_stubbed(:project_phase_definition) }
+    let(:project) { build_stubbed(:project, phases: [project_phase]) }
+    let(:work_package) do
+      build_stubbed(:work_package,
+                    project:,
+                    project_phase_definition: project_phase_definition)
+    end
+
+    describe "when the project phase exists in the project" do
+      it "returns the project phase definition" do
+        expect(work_package.project_phase).to eq(project_phase)
+      end
+    end
+
+    describe "when the project phase does not exist in the project (e.g. moved into the project)" do
+      # There is now only another project phase active in the project
+      let(:project_phase) { build_stubbed(:project_phase, definition: build_stubbed(:project_phase_definition)) }
+
+      it "returns nil" do
+        expect(work_package.project_phase).to be_nil
+      end
     end
   end
 end

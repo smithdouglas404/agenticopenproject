@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -38,6 +40,7 @@ RSpec.describe DemoData::WorkPackageSeeder do
   let(:closed_status) { seed_data.find_reference(:default_status_closed) }
   let(:work_packages_data) { [] }
   let(:seed_data) { basic_seed_data.merge(Source::SeedData.new("work_packages" => work_packages_data)) }
+  let(:work_package_seeder) { described_class.new(project, seed_data) }
 
   def work_package_data(**attributes)
     {
@@ -49,7 +52,6 @@ RSpec.describe DemoData::WorkPackageSeeder do
   end
 
   before do
-    work_package_seeder = described_class.new(project, seed_data)
     work_package_seeder.seed!
   end
 
@@ -194,6 +196,32 @@ RSpec.describe DemoData::WorkPackageSeeder do
     end
   end
 
+  context "with work package data with schedule_manually" do
+    let(:work_packages_data) do
+      [
+        work_package_data(schedule_manually: false),
+        work_package_data(schedule_manually: true)
+      ]
+    end
+
+    it "sets schedule_manually to the given value" do
+      expect(WorkPackage.first.schedule_manually).to be(false)
+      expect(WorkPackage.second.schedule_manually).to be(true)
+    end
+  end
+
+  context "with work package data without schedule_manually" do
+    let(:work_packages_data) do
+      [
+        work_package_data(schedule_manually: nil)
+      ]
+    end
+
+    it "sets schedule_manually to true, its default value" do
+      expect(WorkPackage.first.schedule_manually).to be(true)
+    end
+  end
+
   context "with a parent relation by reference" do
     let(:work_packages_data) do
       [
@@ -202,9 +230,15 @@ RSpec.describe DemoData::WorkPackageSeeder do
       ]
     end
 
+    it "correctly returns the required references" do
+      expect(work_package_seeder.all_required_references)
+        .to contain_exactly(:default_status_new, :default_type_task)
+    end
+
     it "creates a parent-child relation between work packages" do
       expect(WorkPackage.count).to eq(2)
-      expect(WorkPackage.second.parent).to eq(WorkPackage.first)
+      parent, child = WorkPackage.order(:id).to_a
+      expect(child.parent).to eq(parent)
     end
   end
 
@@ -217,6 +251,11 @@ RSpec.describe DemoData::WorkPackageSeeder do
                           ]),
         work_package_data(subject: "Child", parent: :this_one)
       ]
+    end
+
+    it "correctly returns the required references" do
+      expect(work_package_seeder.all_required_references)
+        .to contain_exactly(:default_status_new, :default_type_task)
     end
 
     it "creates parent-child relations between work packages" do
@@ -241,6 +280,26 @@ RSpec.describe DemoData::WorkPackageSeeder do
     it "creates parent-child relations between work packages" do
       expect(bcf_work_package.reload.parent).to eq(WorkPackage.find_by(subject: "Parent"))
       expect(WorkPackage.find_by(subject: "Parent").parent).to eq(WorkPackage.find_by(subject: "Grand-parent"))
+    end
+  end
+
+  context "with a relations array" do
+    let(:work_packages_data) do
+      [
+        work_package_data(subject: "predecessor", reference: :predecessor),
+        work_package_data(subject: "related", reference: :related),
+        work_package_data(subject: "successor", relations: [{ to: :predecessor, type: "follows" },
+                                                            { to: :related, type: "relates" }])
+      ]
+    end
+
+    it "creates relations between work packages" do
+      expect(WorkPackage.count).to eq(3)
+      predecessor, related, successor = WorkPackage.order(:id).to_a
+      expect(successor.relations.pluck(:relation_type, :to_id)).to contain_exactly(
+        ["follows", predecessor.id],
+        ["relates", related.id]
+      )
     end
   end
 

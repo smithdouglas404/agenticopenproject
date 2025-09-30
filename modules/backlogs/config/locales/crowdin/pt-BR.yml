@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -34,12 +34,12 @@ pt-BR:
         work_package:
           attributes:
             blocks_ids:
-              can_only_contain_work_packages_of_current_sprint: "pode conter somente os IDs dos pacotes de trabalho no sprint atual."
+              can_only_contain_work_packages_of_current_sprint: "pode conter apenas IDs de pacotes de trabalho na sprint atual."
               must_block_at_least_one_work_package: "deve conter o ID de pelo menos um tíquete."
             version_id:
               task_version_must_be_the_same_as_story_version: "deve ser igual à versão da história dos pais."
         sprint:
-          cannot_end_before_it_starts: "Sprint não pode terminar antes de começar."
+          cannot_end_before_it_starts: "A sprint não pode terminar antes de começar."
   backlogs:
     add_new_story: "Nova história"
     any: "qualquer"
@@ -55,9 +55,10 @@ pt-BR:
     hours: "Horas"
     impediment: "Impedimento"
     label_versions_default_fold_state: "Mostrar versões em modo fechado"
+    caption_versions_default_fold_state: "As versões não serão expandidas por padrão ao visualizar backlogs. Cada uma deve ser expandida manualmente."
     work_package_is_closed: "Pacote de trabalho está pronto, quando"
     label_is_done_status: "Situação %{status_name} significa pronto"
-    no_burndown_data: "Não há dados de burndown disponíveis. É necessário ter o conjunto de datas de início e fim de sprint."
+    no_burndown_data: "Nenhum dado de burndown disponível. É necessário definir as datas de início e fim da sprint."
     points: "Pontos"
     positions_could_not_be_rebuilt: "Posições não poderiam ser reconstruídas."
     positions_rebuilt_successfully: "Posições reconstruídas com sucesso."
@@ -73,6 +74,9 @@ pt-BR:
     task: "Tarefa"
     task_color: "Cor da tarefa"
     unassigned: "Não atribuída"
+    user_preference:
+      header_backlogs: "Módulo de backlogs"
+      button_update_backlogs: "Atualizar módulo de backlogs"
     x_more: "%{count} mais..."
   backlogs_active: "ativo"
   backlogs_any: "qualquer"
@@ -82,17 +86,17 @@ pt-BR:
   backlogs_product_backlog_is_empty: "Backlog do produto está vazio"
   backlogs_product_backlog_unsized: "O topo do backlog de produto tem histórias não dimensionadas"
   backlogs_sizing_inconsistent: "Tamanhos das histórias contrastam com suas estimativas"
-  backlogs_sprint_notes_missing: "Sprints fechados sem notas de revisão/retrospectiva"
-  backlogs_sprint_unestimated: "Sprints ativos ou fechados com histórias não estimadas"
-  backlogs_sprint_unsized: "Projeto tem histórias em sprints ativos ou recentemente fechados que não tem tamanho"
+  backlogs_sprint_notes_missing: "Sprints encerradas sem notas de retrospectiva/revisão"
+  backlogs_sprint_unestimated: "Sprints encerradas ou ativas com histórias não estimadas"
+  backlogs_sprint_unsized: "O projeto tem histórias em sprints ativas ou recentemente encerradas que não foram dimensionadas"
   backlogs_sprints: "Sprints"
   backlogs_story: "História"
   backlogs_story_type: "Tipos de história"
   backlogs_task: "Tarefa"
   backlogs_task_type: "Tipo de tarefa"
   backlogs_velocity_missing: "Nenhuma velocidade foi calculada para este projeto"
-  backlogs_velocity_varies: "Velocidade varia significativamente ao longo de sprints"
-  backlogs_wiki_template: "Modelo para a página de wiki da sprint"
+  backlogs_velocity_varies: "A velocidade varia significativamente entre as sprints"
+  backlogs_wiki_template: "Modelo para página wiki da sprint"
   backlogs_empty_title: "Não há versões definidas para serem usadas nos backlogs"
   backlogs_empty_action_text: "Para iniciar com backlogs, crie uma nova versão e atribua a uma coluna de backlogs."
   button_edit_wiki: "Editar página wiki"
@@ -120,9 +124,9 @@ pt-BR:
   label_points_burn_up: "Acima"
   label_product_backlog: "Backlog do produto"
   label_select_all: "Selecionar tudo"
-  label_sprint_backlog: "Backlog do sprint"
+  label_sprint_backlog: "backlog da sprint"
   label_sprint_cards: "Exportar cartões"
-  label_sprint_impediments: "Impedimentos do Sprint"
+  label_sprint_impediments: "Impedimentos da Sprint"
   label_sprint_name: "Sprint \"%{name}\""
   label_sprint_velocity: "Velocidade %{velocity}, baseado em %{sprints} sprints, com uma média de %{days} dias"
   label_stories: "Histórias"

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -77,7 +79,7 @@ RSpec.describe Token::ICal do
       # therefore a user needs to be allowed to have N ical tokens per query
       ical_token1 = described_class.create(
         user:,
-        ical_token_query_assignment_attributes: { query:, name: "#{name}_1" }
+        ical_token_query_assignment_attributes: { query:, name: "#{name}it" }
       )
       ical_token2 = described_class.create(
         user:,
@@ -107,11 +109,11 @@ RSpec.describe Token::ICal do
     it "a user cannot have N ical tokens per query with the same name" do
       ical_token1 = described_class.create(
         user:,
-        ical_token_query_assignment_attributes: { query:, name: "#{name}_1" }
+        ical_token_query_assignment_attributes: { query:, name: "#{name}it" }
       )
       ical_token2 = described_class.create(
         user:,
-        ical_token_query_assignment_attributes: { query:, name: "#{name}_1" }
+        ical_token_query_assignment_attributes: { query:, name: "#{name}it" }
       )
 
       expect(ical_token2.errors["ical_token_query_assignment.name"].first).to eq(
@@ -128,7 +130,7 @@ RSpec.describe Token::ICal do
 
       ical_token3 = described_class.create(
         user:,
-        ical_token_query_assignment_attributes: { query: query2, name: "#{name}_1" }
+        ical_token_query_assignment_attributes: { query: query2, name: "#{name}it" }
       )
 
       expect(described_class.where(user_id: user.id)).to contain_exactly(
@@ -245,8 +247,8 @@ RSpec.describe Token::ICal do
     end
 
     # TODO: following code is copy pasted from hashed_token_spec
-    # in order to make sure the token behaves in the same way in it's basics
-    # cheching for inheritance does not safely check if the basic behaviour is the same
+    # in order to make sure the token behaves in the same way in its basic
+    # checking for inheritance does not safely check if the basic behaviour is the same
     # is there a better way of reusing the specs from hashed_token_spec?
     describe "token value" do
       it "is generated on a new instance" do

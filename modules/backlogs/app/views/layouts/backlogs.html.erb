@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2024 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -29,16 +29,11 @@ See COPYRIGHT and LICENSE files for more details.
 
 <% content_for :header_tags do %>
   <%= nonced_javascript_tag do %>
-    <%= render(partial: 'shared/server_variables', formats: [:js]) %>
+    <%= render(partial: "shared/server_variables", formats: [:js]) %>
   <% end %>
+  <%= frontend_stylesheet_link_tag "backlogs.css" %>
 <% end %>
 
-<% content_for :content_body do %>
-  <openproject-base></openproject-base>
-  <%# Allow projection pages to show rails rendered content after initialization %>
-  <div data-controller="backlogs" data-application-target="dynamic" id="projected-content" hidden>
-    <%= yield %>
-  </div>
-<% end -%>
+<% content_controller "backlogs" %>
 
-<%= render template: 'layouts/base', locals: local_assigns.merge({ no_layout_yield: true }) %>
+<%= render template: "layouts/base", locals: local_assigns.merge(turbo_opt_out: true) %>

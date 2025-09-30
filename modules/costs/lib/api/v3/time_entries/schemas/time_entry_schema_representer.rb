@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -50,6 +50,15 @@ module API
           schema :spent_on,
                  type: "Date"
 
+          schema :start_time,
+                 type: "DateTime",
+                 required: -> { TimeEntry.must_track_start_and_end_time? },
+                 writable: -> { TimeEntry.can_track_start_and_end_time? }
+
+          schema :end_time,
+                 type: "DateTime",
+                 writable: false
+
           schema :hours,
                  type: "Duration"
 
@@ -68,9 +77,10 @@ module API
                                      allowed_user_href
                                    }
 
-          schema_with_allowed_link :work_package,
+          # TODO: also factory needed here?
+          schema_with_allowed_link :entity,
                                    has_default: false,
-                                   required: false,
+                                   required: true,
                                    href_callback: ->(*) {
                                      allowed_work_package_href
                                    }

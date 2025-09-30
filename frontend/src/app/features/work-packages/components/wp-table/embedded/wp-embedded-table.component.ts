@@ -30,6 +30,7 @@ import { QueryRequestParams } from 'core-app/features/work-packages/components/w
 @Component({
   selector: 'wp-embedded-table',
   templateUrl: './wp-embedded-table.html',
+  standalone: false,
 })
 export class WorkPackageEmbeddedTableComponent extends WorkPackageEmbeddedBaseComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input('queryId') public queryId?:string;

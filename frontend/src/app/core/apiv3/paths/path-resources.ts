@@ -1,4 +1,4 @@
-import { Constructor } from '@angular/cdk/table';
+import { Constructor } from 'core-app/core/util-types';
 
 /**
  * Simple resource collection to construct paths for RESTful resources.

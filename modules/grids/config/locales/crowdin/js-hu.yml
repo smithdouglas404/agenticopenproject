@@ -4,9 +4,6 @@ hu:
       add_widget: 'Widget hozzáadása'
       remove: 'Widget eltávolítása'
       configure: 'Widget konfigurálása'
-      upsale:
-        text: "Some widgets, like the work package graph widget, are only available in the Enterprise edition."
-        link: 'Enterprise edition.'
       widgets:
         missing_permission: "Nincs meg a szükséges jogosultsága a widget megtekintéséhez."
         custom_text:
@@ -24,12 +21,11 @@ hu:
           title: 'Hírek'
           at: '-kor'
           no_results: 'Semmi új jelenteni való.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Projekt leírása'
           no_results: "Még nem írt leírást. Az egyik megtalálható a 'Projekt beállításai' részben."
-        project_details:
-          title: 'Projekt részletei'
-          no_results: 'A projektekhez nem definiáltak egyedi mezőket.'
         project_status:
           title: 'Projekt állapot'
           not_started: 'El nem kezdett'
@@ -39,12 +35,14 @@ hu:
           not_set: 'Nincs beállítva'
           finished: 'Befejezett'
           discontinued: 'Megszakított'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Alprojektek'
           no_results: "Nincsenek alprojektek\n"
         project_favorites:
-          title: 'Favorite projects'
-          no_results: 'You currently have no favorite projects. Click on the star icon in the project dashboard to add one to your favorites.'
+          title: 'Kedvenc projektek'
+          no_results: 'Jelenleg nincsenek kedvenc projektjei. Kattintson a csillag ikonra a projekt műszerfalon, hogy felvegyen egyet a kedvencei közé.'
         time_entries_current_user:
           title: 'Eltöltött idő rögzítése'
           displayed_days: 'Napok megjelenítése a főoldalon.'

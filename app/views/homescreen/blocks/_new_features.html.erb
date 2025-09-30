@@ -1,3 +1,5 @@
-<%= render 'homescreen/blocks/header', title: t(:label_new_features) %>
+<%= render "homescreen/blocks/header", title: t(:label_new_features) %>
 
-<homescreen-new-features-block></homescreen-new-features-block>
+<div class="op-widget-box--body">
+  <%= render Homescreen::NewFeaturesComponent.new %>
+</div>

@@ -34,6 +34,15 @@ pl:
           name: Szary (ciemny)
         item_13:
           name: Czarny
+      project_phase_colors:
+        item_0:
+          name: PM2 pomarańczowy
+        item_1:
+          name: PM2 czerwony
+        item_2:
+          name: PM2 amarantowy
+        item_3:
+          name: PM2 żółtozielony
       document_categories:
         item_0:
           name: Dokumentacja
@@ -41,6 +50,11 @@ pl:
           name: Specyfikacja
         item_2:
           name: Inne
+      project_query_roles:
+        item_0:
+          name: Przeglądarka zapytań dotyczących projektu
+        item_1:
+          name: Edytor zapytań dotyczących projektu
       work_package_roles:
         item_0:
           name: Edytor pakietów roboczych
@@ -62,7 +76,21 @@ pl:
       global_roles:
         item_0:
           name: Kierownik personelu i projektów
+        item_1:
+          name: Standardowa rola globalna
     standard:
+      project_phases:
+        item_0:
+          name: Inicjowanie
+        item_1:
+          name: Planowanie
+          start_gate: Gotowy do planowania
+        item_2:
+          name: Wykonywanie
+          start_gate: Gotowy do wykonania
+        item_3:
+          name: Zamykanie
+          start_gate: Gotowy do zamknięcia
       priorities:
         item_0:
           name: Niski
@@ -72,81 +100,6 @@ pl:
           name: Wysokie
         item_3:
           name: Natychmiastowe
-      statuses:
-        item_0:
-          name: Nowy
-        item_1:
-          name: W określaniu
-        item_2:
-          name: Określone
-        item_3:
-          name: Potwierdzone
-        item_4:
-          name: Do zaplanowania
-        item_5:
-          name: Zaplanowany
-        item_6:
-          name: W Toku
-        item_7:
-          name: Opracowany
-        item_8:
-          name: Testowany
-        item_9:
-          name: Przestowane
-        item_10:
-          name: Próba nie powiodła się
-        item_11:
-          name: Zamknięte
-        item_12:
-          name: Zawieszony
-        item_13:
-          name: Odrzucone
-      time_entry_activities:
-        item_0:
-          name: Zarządzanie
-        item_1:
-          name: Specyfikacja
-        item_2:
-          name: Rozwój
-        item_3:
-          name: Testowanie
-        item_4:
-          name: Wsparcie
-        item_5:
-          name: Inne
-      types:
-        item_0:
-          name: Zadanie
-        item_1:
-          name: Kamień milowy
-        item_2:
-          name: Etap
-        item_3:
-          name: Cecha/Funkcja
-        item_4:
-          name: Wydarzenie
-        item_5:
-          name: Wpis użytkownika
-        item_6:
-          name: Błąd
-      welcome:
-        title: Witamy w OpenProject!
-        text: |
-          OpenProject jest czołowym oprogramowaniem open source do zarządzania projektami. Obsługuje klasyczne, zwinne oraz hybrydowe zarządzanie projektami i zapewnia pełną kontrolę nad danymi.
-
-          Podstawowe funkcje i przypadki stosowania:
-
-          * [Zarządzanie portfelem projektów](https://www.openproject.org/collaboration-software-features/project-portfolio-management/)
-          * [Planowanie projektów i tworzenie ich harmonogramów](https://www.openproject.org/collaboration-software-features/project-planning-scheduling/)
-          * [Zarządzanie zadaniami i śledzenie problemów](https://www.openproject.org/collaboration-software-features/task-management/)
-          * [Tablice zwinne (Scrum i Kanban)](https://www.openproject.org/collaboration-software-features/agile-project-management/)
-          * [Zarządzanie wymaganiami i planowanie wersji](https://www.openproject.org/collaboration-software-features/product-development/)
-          * [Śledzenie czasu i kosztów, budżety](https://www.openproject.org/collaboration-software-features/time tracking/)
-          * [Współpraca zespołowa i dokumentacja](https://www.openproject.org/collaboration-software-features/team-collaboration/)
-
-          Witamy w przyszłości zarządzania projektami.
-
-          Dla administratorów: tekst powitalny można zmienić [tutaj]{{opSetting:base_url}}/admin/settings/general).
       projects:
         demo-project:
           name: Projekt demo
@@ -339,7 +292,7 @@ pl:
             item_0:
               name: Plan projektu
             item_1:
-              name: Backlog produktu
+              name: Backlog produktów
             item_2:
               name: Sprint 1
             item_3:
@@ -484,3 +437,78 @@ pl:
             * Czas w przedziałach (3 h).
             * Po przeglądzie sprintu będzie moderowane przez mistrza Scrum.
             * Zespół omawia sprint: co poszło dobrze, co należy poprawić, aby być produktywniejszym w następnym sprincie, a nawet dobrze się bawić.
+      statuses:
+        item_0:
+          name: Nowy
+        item_1:
+          name: W określaniu
+        item_2:
+          name: Określone
+        item_3:
+          name: Potwierdzone
+        item_4:
+          name: Do zaplanowania
+        item_5:
+          name: Zaplanowany
+        item_6:
+          name: W Toku
+        item_7:
+          name: Opracowany
+        item_8:
+          name: Testowany
+        item_9:
+          name: Przestowane
+        item_10:
+          name: Próba nie powiodła się
+        item_11:
+          name: Zamknięte
+        item_12:
+          name: Zawieszony
+        item_13:
+          name: Odrzucone
+      time_entry_activities:
+        item_0:
+          name: Zarządzanie
+        item_1:
+          name: Specyfikacja
+        item_2:
+          name: Rozwój
+        item_3:
+          name: Testowanie
+        item_4:
+          name: Wsparcie
+        item_5:
+          name: Inne
+      types:
+        item_0:
+          name: Zadanie
+        item_1:
+          name: Kamień milowy
+        item_2:
+          name: Zadanie sumaryczne
+        item_3:
+          name: Cecha/Funkcja
+        item_4:
+          name: Wydarzenie
+        item_5:
+          name: Wpis użytkownika
+        item_6:
+          name: Błąd
+      welcome:
+        title: Witamy w OpenProject!
+        text: |
+          OpenProject jest czołowym oprogramowaniem open source do zarządzania projektami. Obsługuje klasyczne, zwinne oraz hybrydowe zarządzanie projektami i zapewnia pełną kontrolę nad danymi.
+
+          Podstawowe funkcje i przypadki stosowania:
+
+          * [Zarządzanie portfelem projektów](https://www.openproject.org/collaboration-software-features/project-portfolio-management/)
+          * [Planowanie projektów i tworzenie ich harmonogramów](https://www.openproject.org/collaboration-software-features/project-planning-scheduling/)
+          * [Zarządzanie zadaniami i śledzenie problemów](https://www.openproject.org/collaboration-software-features/task-management/)
+          * [Tablice zwinne (Scrum i Kanban)](https://www.openproject.org/collaboration-software-features/agile-project-management/)
+          * [Zarządzanie wymaganiami i planowanie wersji](https://www.openproject.org/collaboration-software-features/product-development/)
+          * [Śledzenie czasu i kosztów, budżety](https://www.openproject.org/collaboration-software-features/time tracking/)
+          * [Współpraca zespołowa i dokumentacja](https://www.openproject.org/collaboration-software-features/team-collaboration/)
+
+          Witamy w przyszłości zarządzania projektami.
+
+          Dla administratorów: tekst powitalny można zmienić [tutaj]{{opSetting:base_url}}/admin/settings/general).

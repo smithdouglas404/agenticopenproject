@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -36,6 +38,7 @@ RSpec.describe Principals::Scopes::NotBuiltin do
     let!(:group) { create(:group) }
     let!(:user) { create(:user) }
     let!(:placeholder_user) { create(:placeholder_user) }
+    let!(:service_account) { create(:service_account) }
 
     subject { Principal.not_builtin }
 

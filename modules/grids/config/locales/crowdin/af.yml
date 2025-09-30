@@ -8,6 +8,7 @@ af:
         row_count: "Aantal rye"
         column_count: "Aantal kolomme"
         widgets: "Widgets"
+        scope: "Scope"
     errors:
       models:
         grids/grid:

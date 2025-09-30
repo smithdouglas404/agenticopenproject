@@ -7,7 +7,7 @@ ka:
     standard:
       projects:
         demo-project:
-          meetings:
+          meeting_series:
             item_0:
               title: ყოველკვირეული
           meeting_agenda_items:

@@ -9,7 +9,8 @@
     label_bcf: 'BCF'
     label_imported_failed: 'Kunne ikke importere BCF-emner'
     label_imported_successfully: 'Vellykket importert av BCF-emner'
-    issues: "Problemer"
+    label_bcf_issue_associated: "BCF issue associated"
+    issues: "Utfordringer"
     recommended: 'anbefalt'
     not_recommended: 'ikke anbefalt'
     no_viewpoints: 'Ingen visningspunkter'
@@ -83,6 +84,12 @@
         ifc_attachment: "IFC fil"
         is_default: "Standard modell"
         attachments: "IFC fil"
+      bim/bcf/issue:
+        bcf_comment: "BCF comment"
+        bim_snippet: "BIM snippet"
+        reference_links: "Reference links"
+        stage: "Stage"
+        viewpoint: "Synspunkt"
     errors:
       models:
         bim/ifc_models/ifc_model:

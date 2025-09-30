@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,7 +31,7 @@
 require "spec_helper"
 require_relative "shared_context"
 
-RSpec.describe "Show project custom fields on project overview page", :js, :with_cuprite do
+RSpec.describe "Show project custom fields on project overview page", :js do
   include_context "with seeded projects, members and project custom fields"
 
   let(:overview_page) { Pages::Projects::Show.new(project) }
@@ -50,7 +52,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
     it "shows the project custom field sections in the correct order" do
       overview_page.visit_page
 
-      overview_page.within_async_loaded_sidebar do
+      overview_page.within_project_attributes_sidebar do
         sections = page.all(".op-project-custom-field-section-container")
 
         expect(sections.size).to eq(3)
@@ -64,7 +66,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
 
       overview_page.visit_page
 
-      overview_page.within_async_loaded_sidebar do
+      overview_page.within_project_attributes_sidebar do
         sections = page.all(".op-project-custom-field-section-container")
 
         expect(sections.size).to eq(3)
@@ -78,11 +80,11 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
     it "shows the project custom fields in the correct order within the sections" do
       overview_page.visit_page
 
-      overview_page.within_async_loaded_sidebar do
+      overview_page.within_project_attributes_sidebar do
         overview_page.within_custom_field_section_container(section_for_input_fields) do
           fields = page.all(".op-project-custom-field-container")
 
-          expect(fields.size).to eq(7)
+          expect(fields.size).to eq(9)
 
           expect(fields[0].text).to include("Boolean field")
           expect(fields[1].text).to include("String field")
@@ -91,6 +93,8 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
           expect(fields[4].text).to include("Date field")
           expect(fields[5].text).to include("Link field")
           expect(fields[6].text).to include("Text field")
+          expect(fields[7].text).to include("Calculated field using int")
+          expect(fields[8].text).to include("Calculated field using int and float")
         end
 
         overview_page.within_custom_field_section_container(section_for_select_fields) do
@@ -118,11 +122,11 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
 
       overview_page.visit_page
 
-      overview_page.within_async_loaded_sidebar do
+      overview_page.within_project_attributes_sidebar do
         overview_page.within_custom_field_section_container(section_for_input_fields) do
           fields = page.all(".op-project-custom-field-container")
 
-          expect(fields.size).to eq(7)
+          expect(fields.size).to eq(9)
 
           expect(fields[0].text).to include("Boolean field")
           expect(fields[1].text).to include("Integer field")
@@ -130,7 +134,9 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
           expect(fields[3].text).to include("Date field")
           expect(fields[4].text).to include("Link field")
           expect(fields[5].text).to include("Text field")
-          expect(fields[6].text).to include("String field")
+          expect(fields[6].text).to include("Calculated field using int")
+          expect(fields[7].text).to include("Calculated field using int and float")
+          expect(fields[8].text).to include("String field")
         end
       end
     end
@@ -140,7 +146,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
 
       overview_page.visit_page
 
-      overview_page.within_async_loaded_sidebar do
+      overview_page.within_project_attributes_sidebar do
         expect(page).to have_no_text "String field enabled for other project"
       end
     end
@@ -152,7 +158,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows the correct value for the project custom field if given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(boolean_project_custom_field) do
               expect(page).to have_text "Boolean field"
               expect(page).to have_text "Yes"
@@ -170,7 +176,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows the correct value for the project custom field if given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(boolean_project_custom_field) do
               expect(page).to have_text "Boolean field"
               expect(page).to have_text "No"
@@ -187,7 +193,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows an N/A text for the project custom field if no value given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(boolean_project_custom_field) do
               expect(page).to have_text "Boolean field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -200,7 +206,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
 
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(boolean_project_custom_field) do
               expect(page).to have_text "Boolean field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -211,7 +217,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
 
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(boolean_project_custom_field) do
               expect(page).to have_text "Boolean field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -226,7 +232,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows the correct value for the project custom field if given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(string_project_custom_field) do
               expect(page).to have_text "String field"
               expect(page).to have_text "Foo"
@@ -243,7 +249,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows the correct value for the project custom field if given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(string_project_custom_field) do
               expect(page).to have_text "String field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -260,7 +266,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows an N/A text for the project custom field if no value given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(string_project_custom_field) do
               expect(page).to have_text "String field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -273,7 +279,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
 
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(string_project_custom_field) do
               expect(page).to have_text "String field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -288,7 +294,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows the correct value for the project custom field if given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(integer_project_custom_field) do
               expect(page).to have_text "Integer field"
               expect(page).to have_text "123"
@@ -305,7 +311,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows the correct value for the project custom field if given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(integer_project_custom_field) do
               expect(page).to have_text "Integer field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -322,7 +328,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows an N/A text for the project custom field if no value given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(integer_project_custom_field) do
               expect(page).to have_text "Integer field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -335,7 +341,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
 
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(integer_project_custom_field) do
               expect(page).to have_text "Integer field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -350,7 +356,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows the correct value for the project custom field if given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(date_project_custom_field) do
               expect(page).to have_text "Date field"
               expect(page).to have_text "01/01/2024"
@@ -367,7 +373,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows the correct value for the project custom field if given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(date_project_custom_field) do
               expect(page).to have_text "Date field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -384,7 +390,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows an N/A text for the project custom field if no value given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(date_project_custom_field) do
               expect(page).to have_text "Date field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -397,7 +403,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
 
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(date_project_custom_field) do
               expect(page).to have_text "Date field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -412,7 +418,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows the correct value for the project custom field if given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(float_project_custom_field) do
               expect(page).to have_text "Float field"
               expect(page).to have_text "123.456"
@@ -429,7 +435,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows the correct value for the project custom field if given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(float_project_custom_field) do
               expect(page).to have_text "Float field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -446,7 +452,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows an N/A text for the project custom field if no value given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(float_project_custom_field) do
               expect(page).to have_text "Float field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -459,7 +465,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
 
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(float_project_custom_field) do
               expect(page).to have_text "Float field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -479,7 +485,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
           it "shows the correct value for the project custom field if given without truncation and dialog button" do
             overview_page.visit_page
 
-            overview_page.within_async_loaded_sidebar do
+            overview_page.within_project_attributes_sidebar do
               overview_page.within_custom_field_container(text_project_custom_field) do
                 expect(page).to have_text "Text field"
                 expect(page).to have_text "Lorem ipsum"
@@ -500,7 +506,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
           it "shows the correct value for the project custom field if given with truncation and dialog button" do
             overview_page.visit_page
 
-            overview_page.within_async_loaded_sidebar do
+            overview_page.within_project_attributes_sidebar do
               overview_page.within_custom_field_container(text_project_custom_field) do
                 expect(page).to have_text "Text field"
                 expect(page).to have_text (("lorem " * 5).to_s)
@@ -523,7 +529,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows the correct value for the project custom field if given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(text_project_custom_field) do
               expect(page).to have_text "Text field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -542,7 +548,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows an N/A text for the project custom field if no value given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(text_project_custom_field) do
               expect(page).to have_text "Text field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -557,7 +563,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
 
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(text_project_custom_field) do
               expect(page).to have_text "Text field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -569,12 +575,139 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
       end
     end
 
+    describe "with calculated value CFs" do
+      describe "with value set by user" do
+        it "shows the correct value for the project custom field if given" do
+          overview_page.visit_page
+
+          overview_page.within_project_attributes_sidebar do
+            overview_page.within_custom_field_container(calculated_from_int_project_custom_field) do
+              expect(page).to have_text "Calculated field using int"
+              expect(page).to have_text "234"
+            end
+
+            overview_page.within_custom_field_container(calculated_from_int_and_float_project_custom_field) do
+              expect(page).to have_text "Calculated field using int and float"
+              expect(page).to have_text "15,185.088"
+            end
+          end
+        end
+      end
+
+      describe "with an error present" do
+        before do
+          calculated_from_int_and_float_project_custom_field.custom_values.where(customized: project).first.update!(value: "")
+
+          calculated_from_int_and_float_project_custom_field
+            .calculated_value_errors.create!(customized: project, error_code: "ERROR_MATHEMATICAL")
+        end
+
+        it "shows the error message for the project custom field" do
+          overview_page.visit_page
+
+          overview_page.within_project_attributes_sidebar do
+            overview_page.within_custom_field_container(calculated_from_int_and_float_project_custom_field) do
+              expect(page).to have_text I18n.t("calculated_values.errors.mathematical")
+            end
+          end
+        end
+      end
+
+      describe "with value unset by user" do
+        before do
+          calculated_from_int_project_custom_field.custom_values.where(customized: project).first.update!(value: "")
+          calculated_from_int_and_float_project_custom_field.custom_values.where(customized: project).first.update!(value: "")
+        end
+
+        it "shows the correct value for the project custom field if given" do
+          overview_page.visit_page
+
+          overview_page.within_project_attributes_sidebar do
+            overview_page.within_custom_field_container(calculated_from_int_project_custom_field) do
+              expect(page).to have_text "Calculated field using int"
+              expect(page).to have_text I18n.t("placeholders.default")
+            end
+
+            overview_page.within_custom_field_container(calculated_from_int_and_float_project_custom_field) do
+              expect(page).to have_text "Calculated field using int and float"
+              expect(page).to have_text I18n.t("placeholders.default")
+            end
+          end
+        end
+      end
+
+      describe "with no value set by user" do
+        before do
+          calculated_from_int_project_custom_field.custom_values.where(customized: project).destroy_all
+          calculated_from_int_and_float_project_custom_field.custom_values.where(customized: project).destroy_all
+        end
+
+        it "shows an N/A text for the project custom field if no value given" do
+          overview_page.visit_page
+
+          overview_page.within_project_attributes_sidebar do
+            overview_page.within_custom_field_container(calculated_from_int_project_custom_field) do
+              expect(page).to have_text "Calculated field using int"
+              expect(page).to have_text I18n.t("placeholders.default")
+            end
+
+            overview_page.within_custom_field_container(calculated_from_int_and_float_project_custom_field) do
+              expect(page).to have_text "Calculated field using int and float"
+              expect(page).to have_text I18n.t("placeholders.default")
+            end
+          end
+        end
+      end
+
+      describe "with errors caused by user input" do
+        it "updates calculated values, creating and removing errors as needed" do
+          overview_page.visit_page
+
+          # Remove value that is used in a formula:
+          overview_page.open_edit_dialog_for_section(section_for_input_fields)
+          page.fill_in(float_project_custom_field.name, with: "")
+          page.click_on "Save"
+
+          overview_page.within_project_attributes_sidebar do
+            overview_page.within_custom_field_container(calculated_from_int_project_custom_field) do
+              expect(page).to have_text "Calculated field using int"
+              expect(page).to have_text "234"
+            end
+
+            overview_page.within_custom_field_container(calculated_from_int_and_float_project_custom_field) do
+              expect(page).to have_text "Calculated field using int and float"
+              expect(page).to have_text I18n.t("calculated_values.errors.missing_value",
+                                               custom_field_name: float_project_custom_field.name)
+            end
+          end
+
+          # Change the value so that the calculation succeeds.
+          overview_page.open_edit_dialog_for_section(section_for_input_fields)
+          page.fill_in(float_project_custom_field.name, with: "0.2")
+          page.click_on "Save"
+
+          overview_page.within_project_attributes_sidebar do
+            overview_page.within_custom_field_container(calculated_from_int_project_custom_field) do
+              expect(page).to have_text "Calculated field using int"
+              expect(page).to have_text "234"
+            end
+
+            # The error is gone:
+            overview_page.within_custom_field_container(calculated_from_int_and_float_project_custom_field) do
+              expect(page).to have_text "Calculated field using int and float"
+              expect(page).to have_text "24.6"
+            end
+          end
+        end
+      end
+    end
+
     describe "with list CF" do
       describe "with value set by user" do
         it "shows the correct value for the project custom field if given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(list_project_custom_field) do
               expect(page).to have_text "List field"
               expect(page).to have_text "Option 1"
@@ -591,7 +724,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows the correct value for the project custom field if given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(list_project_custom_field) do
               expect(page).to have_text "List field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -608,7 +741,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows an N/A text for the project custom field if no value given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(list_project_custom_field) do
               expect(page).to have_text "List field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -621,7 +754,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
 
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(list_project_custom_field) do
               expect(page).to have_text "List field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -636,7 +769,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows the correct value for the project custom field if given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(version_project_custom_field) do
               expect(page).to have_text "Version field"
               expect(page).to have_text "Version 1"
@@ -653,7 +786,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows the correct value for the project custom field if given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(version_project_custom_field) do
               expect(page).to have_text "Version field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -670,7 +803,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows an N/A text for the project custom field if no value given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(version_project_custom_field) do
               expect(page).to have_text "Version field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -685,7 +818,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows the correct value for the project custom field if given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(user_project_custom_field) do
               expect(page).to have_text "User field"
               expect(page).to have_css("opce-principal")
@@ -703,7 +836,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows the correct value for the project custom field if given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(user_project_custom_field) do
               expect(page).to have_text "User field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -720,7 +853,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows an N/A text for the project custom field if no value given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(user_project_custom_field) do
               expect(page).to have_text "User field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -735,7 +868,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows the correct values for the project custom field if given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(multi_list_project_custom_field) do
               expect(page).to have_text "Multi list field"
               expect(page).to have_text "Option 1, Option 2"
@@ -752,7 +885,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows an N/A text for the project custom field if no value given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(multi_list_project_custom_field) do
               expect(page).to have_text "Multi list field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -766,7 +899,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
 
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(multi_list_project_custom_field) do
               expect(page).to have_text "Multi list field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -781,7 +914,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows the correct values for the project custom field if given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(multi_version_project_custom_field) do
               expect(page).to have_text "Multi version field"
               expect(page).to have_text "Version 1, Version 2"
@@ -798,7 +931,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows an N/A text for the project custom field if no value given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(multi_version_project_custom_field) do
               expect(page).to have_text "Multi version field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -813,7 +946,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows the correct values for the project custom field if given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(multi_user_project_custom_field) do
               expect(page).to have_text "Multi user field"
               expect(page).to have_css "opce-principal", count: 2
@@ -832,7 +965,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
         it "shows an N/A text for the project custom field if no value given" do
           overview_page.visit_page
 
-          overview_page.within_async_loaded_sidebar do
+          overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(multi_user_project_custom_field) do
               expect(page).to have_text "Multi user field"
               expect(page).to have_text I18n.t("placeholders.default")
@@ -848,14 +981,23 @@ RSpec.describe "Show project custom fields on project overview page", :js, :with
       create :project_help_text,
              attribute_name: boolean_project_custom_field.attribute_name
     end
-    let(:modal) { Components::AttributeHelpTextModal.new(instance) }
 
     it "displays when active" do
       overview_page.visit_page
+
       # Open help text modal
-      modal.open!
-      expect(modal.modal_container).to have_text "Attribute help text"
-      modal.expect_edit(editable: true)
+      page.find("[data-qa-help-text-for='#{instance.attribute_name.camelize(:lower)}']").click
+
+      within_modal "Boolean field" do
+        expect(page).to have_text "Attribute help text"
+
+        expect(page).to have_button "Close"
+        expect(page).to have_link "Edit"
+
+        click_on "Close"
+      end
+
+      expect(page).to have_no_modal "Boolean field"
     end
   end
 end

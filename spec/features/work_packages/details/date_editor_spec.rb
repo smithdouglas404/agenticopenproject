@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -64,11 +66,14 @@ RSpec.describe "date inplace editor", :js, :selenium, with_settings: { date_form
 
     work_packages_page.visit!
     work_packages_page.ensure_page_loaded
+    wait_for_network_idle
   end
 
-  it "can directly set the due date when only a start date is set" do
+  it "can directly set the due date when activating it" do
     start_date.activate!
     start_date.expect_active!
+
+    start_date.enable_due_date
 
     start_date.datepicker.expect_year "2016"
     start_date.datepicker.expect_month "January"
@@ -112,7 +117,7 @@ RSpec.describe "date inplace editor", :js, :selenium, with_settings: { date_form
              due_date: Date.parse("2016-01-25"))
     end
 
-    it "selecting a date before the current start date will move the finish date" do
+    it "selecting a date before the current start date will keep the finish date" do
       start_date.activate!
       start_date.expect_active!
 
@@ -121,12 +126,12 @@ RSpec.describe "date inplace editor", :js, :selenium, with_settings: { date_form
       start_date.datepicker.select_day "1"
 
       start_date.datepicker.expect_start_date "2016-01-01"
-      start_date.datepicker.expect_due_date "2016-01-24"
-      start_date.datepicker.expect_duration 24
+      start_date.datepicker.expect_due_date "2016-01-25"
+      start_date.datepicker.expect_duration 25
 
       start_date.save!
       start_date.expect_inactive!
-      start_date.expect_state_text "2016-01-01 - 2016-01-24"
+      start_date.expect_state_text "2016-01-01 - 2016-01-25"
     end
 
     it "selecting a date in between changes the date that is currently in focus" do
@@ -138,6 +143,9 @@ RSpec.describe "date inplace editor", :js, :selenium, with_settings: { date_form
       start_date.datepicker.select_day "3"
 
       start_date.datepicker.expect_start_date "2016-01-03"
+
+      # The inputs have a debounce which we have to wait for before clicking the next field
+      sleep 0.25
 
       # Since the focus shifts automatically, we can directly click again to modify the end date
       start_date.datepicker.select_day "21"
@@ -190,6 +198,9 @@ RSpec.describe "date inplace editor", :js, :selenium, with_settings: { date_form
 
       # Wait for the datepicker to be loaded
       sleep 1
+
+      start_date.enable_start_date
+
       start_date.datepicker.set_today :start
       start_date.datepicker.expect_start_date Time.zone.today.iso8601
 
@@ -211,12 +222,12 @@ RSpec.describe "date inplace editor", :js, :selenium, with_settings: { date_form
     sleep 2
     start_date.datepicker.expect_visible
 
-    # Expect due date to be focused as it is empty
-    start_date.expect_due_highlighted
+    # Due date is hidden behind a button as it is empty
+    start_date.enable_due_date
     start_date.set_due_date Time.zone.today
 
     # Wait for duration to be derived
-    start_date.expect_duration /\d+ days/
+    start_date.expect_duration /\d+/
 
     # As the to be selected date is automatically toggled,
     # we can directly set the start date afterwards to the same day
@@ -229,15 +240,22 @@ RSpec.describe "date inplace editor", :js, :selenium, with_settings: { date_form
     start_date.expect_state_text Time.zone.today.strftime("%Y-%m-%d")
   end
 
-  it "can set a negative duration which gets transformed (Regression #44219)" do
+  it "can set a negative duration which shows an error message (Regression #44219)" do
     start_date.activate!
     start_date.expect_active!
 
+    start_date.datepicker.enable_due_date
+
     start_date.datepicker.expect_visible
     start_date.datepicker.set_duration -128
-    start_date.datepicker.focus_start_date
+    start_date.datepicker.expect_duration_error "Must be greater than 0."
+    start_date.datepicker.expect_start_date_error nil
+    start_date.datepicker.expect_due_date_error nil
 
-    start_date.datepicker.expect_duration 128
+    start_date.datepicker.set_duration "1.4"
+    start_date.datepicker.expect_duration_error "Is not a valid duration."
+    start_date.datepicker.expect_start_date_error nil
+    start_date.datepicker.expect_due_date_error nil
   end
 
   it "saves the date when clearing and then confirming" do
@@ -270,9 +288,10 @@ RSpec.describe "date inplace editor", :js, :selenium, with_settings: { date_form
     work_packages_page.accept_alert_dialog! if work_packages_page.has_alert_dialog?
 
     # Ensure no modal survives
-    expect(page).to have_no_css(".spot-modal")
+    expect(page).to have_no_css(".spot-drop-modal--body")
   end
 
+  # rubocop:disable Layout/LineLength
   context "with a date custom field" do
     let(:cf_field) { EditField.new page, date_cf.attribute_name(:camel_case) }
     let(:datepicker) { Components::BasicDatepicker.new }
@@ -352,17 +371,19 @@ RSpec.describe "date inplace editor", :js, :selenium, with_settings: { date_form
       let(:schedule_manually) { true }
 
       it "shows a banner that the relations are ignored" do
-        expect(page).to have_css("#{test_selector('op-modal-banner-warning')} span",
-                                 text: "Manual scheduling enabled, all relations ignored.",
+        expect(page).to have_css(test_selector("op-modal-banner-warning").to_s,
+                                 text: "Manually scheduled. Dates not affected by relations.\nClick on \"Show relations\" for Gantt overview.",
                                  wait: 5)
 
         # When toggling manually scheduled
         start_date.toggle_scheduling_mode
 
-        # Expect new banner info
-        expect(page)
-          .to have_css("#{test_selector('op-modal-banner-warning')} span",
-                       text: "Changing these dates will affect dates of related work packages.")
+        # Expect no banner as it is not automatically schedulable
+        expect(page).not_to have_test_selector("op-modal-banner-warning")
+        expect(page).not_to have_test_selector("op-modal-banner-info")
+
+        # Toggle back to see the banner again
+        start_date.toggle_scheduling_mode
 
         new_window = window_opened_by { click_on "Show relations" }
         switch_to_window new_window
@@ -378,17 +399,15 @@ RSpec.describe "date inplace editor", :js, :selenium, with_settings: { date_form
     context "when work package is not manually scheduled" do
       let(:schedule_manually) { false }
 
-      it "shows a banner that the start date is limited" do
-        expect(page)
-          .to have_css("#{test_selector('op-modal-banner-warning')} span",
-                       text: "Changing these dates will affect dates of related work packages.",
-                       wait: 5)
+      it "shows no banner as the WP is not automatically savable without children or predecessor" do
+        expect(page).not_to have_test_selector("op-modal-banner-warning")
+        expect(page).not_to have_test_selector("op-modal-banner-info")
 
         # When toggling manually scheduled
         start_date.toggle_scheduling_mode
 
-        expect(page).to have_css("#{test_selector('op-modal-banner-warning')} span",
-                                 text: "Manual scheduling enabled, all relations ignored.")
+        expect(page).to have_css(test_selector("op-modal-banner-warning").to_s,
+                                 text: "Manually scheduled. Dates not affected by relations.\nClick on \"Show relations\" for Gantt overview.")
       end
     end
   end
@@ -410,15 +429,15 @@ RSpec.describe "date inplace editor", :js, :selenium, with_settings: { date_form
       let(:schedule_manually) { true }
 
       it "shows a banner that the relations are ignored" do
-        expect(page).to have_css("#{test_selector('op-modal-banner-warning')} span",
-                                 text: "Manual scheduling enabled, all relations ignored.")
+        expect(page).to have_css(test_selector("op-modal-banner-warning").to_s,
+                                 text: "Manually scheduled. Dates not affected by relations.\nThis has child work packages but their start dates are ignored.")
 
         # When toggling manually scheduled
         start_date.toggle_scheduling_mode
 
         # Expect banner to switch
-        expect(page).to have_css("#{test_selector('op-modal-banner-info')} span",
-                                 text: "Automatically scheduled. Dates are derived from relations.")
+        expect(page).to have_css(test_selector("op-modal-banner-info").to_s,
+                                 text: "The dates are determined by child work packages.\nClick on \"Show relations\" for Gantt overview.")
 
         new_window = window_opened_by { click_on "Show relations" }
         switch_to_window new_window
@@ -432,15 +451,15 @@ RSpec.describe "date inplace editor", :js, :selenium, with_settings: { date_form
     context "when parent is not manually scheduled" do
       let(:schedule_manually) { false }
 
-      it "shows a banner that the dates are not editable" do
-        expect(page).to have_css("#{test_selector('op-modal-banner-info')} span",
-                                 text: "Automatically scheduled. Dates are derived from relations.")
+      it "shows a banner that the dates are are determined by the child" do
+        expect(page).to have_css(test_selector("op-modal-banner-info").to_s,
+                                 text: "The dates are determined by child work packages.\nClick on \"Show relations\" for Gantt overview.")
 
         # When toggling manually scheduled
         start_date.toggle_scheduling_mode
 
-        expect(page).to have_css("#{test_selector('op-modal-banner-warning')} span",
-                                 text: "Manual scheduling enabled, all relations ignored.")
+        expect(page).to have_css(test_selector("op-modal-banner-warning").to_s,
+                                 text: "Manually scheduled. Dates not affected by relations.\nThis has child work packages but their start dates are ignored.")
 
         new_window = window_opened_by { click_on "Show relations" }
         switch_to_window new_window
@@ -460,36 +479,36 @@ RSpec.describe "date inplace editor", :js, :selenium, with_settings: { date_form
         end
 
         it "allows switching to manual scheduling to set the ignore NWD (Regression #43933)" do
-          expect(page).to have_css("#{test_selector('op-modal-banner-info')} span",
-                                   text: "Automatically scheduled. Dates are derived from relations.")
+          expect(page).to have_css(test_selector("op-modal-banner-info").to_s,
+                                   text: "The dates are determined by child work packages.\nClick on \"Show relations\" for Gantt overview.")
 
           # Expect "Working days only" to be checked
-          datepicker.expect_ignore_non_working_days_disabled
-          datepicker.expect_ignore_non_working_days false, disabled: true
+          datepicker.expect_working_days_only_disabled
+          datepicker.expect_working_days_only true
 
           # When toggling manually scheduled
           start_date.toggle_scheduling_mode
-          datepicker.expect_ignore_non_working_days_enabled
-          datepicker.toggle_ignore_non_working_days
-          datepicker.expect_ignore_non_working_days true
+          datepicker.expect_working_days_only_enabled
+          datepicker.toggle_working_days_only
+          datepicker.expect_working_days_only false
 
-          expect(page).to have_css("#{test_selector('op-modal-banner-warning')} span",
-                                   text: "Manual scheduling enabled, all relations ignored.")
+          expect(page).to have_css(test_selector("op-modal-banner-warning").to_s,
+                                   text: "Manually scheduled. Dates not affected by relations.\nThis has child work packages but their start dates are ignored.")
 
           # Reset when disabled
           start_date.toggle_scheduling_mode
-          datepicker.expect_ignore_non_working_days_disabled
-          datepicker.expect_ignore_non_working_days false, disabled: true
+          datepicker.expect_working_days_only_disabled
+          datepicker.expect_working_days_only true
 
-          expect(page).to have_css("#{test_selector('op-modal-banner-info')} span",
-                                   text: "Automatically scheduled. Dates are derived from relations.")
+          expect(page).to have_css(test_selector("op-modal-banner-info").to_s,
+                                   text: "The dates are determined by child work packages.\nClick on \"Show relations\" for Gantt overview.")
         end
       end
     end
   end
 
   context "with the work package having a precedes relation" do
-    let!(:work_package) { create(:work_package, project:, schedule_manually:) }
+    let!(:work_package) { create(:work_package, project:, schedule_manually:, start_date: wp_start_date, due_date: wp_due_date) }
     let!(:preceding) { create(:work_package, project:, start_date: 10.days.ago, due_date: 5.days.ago) }
 
     let!(:relationship) do
@@ -506,17 +525,19 @@ RSpec.describe "date inplace editor", :js, :selenium, with_settings: { date_form
 
     context "when work package is manually scheduled" do
       let(:schedule_manually) { true }
+      let(:wp_start_date) { nil }
+      let(:wp_due_date) { nil }
 
       it "shows a banner that the relations are ignored" do
-        expect(page).to have_css("#{test_selector('op-modal-banner-warning')} span",
-                                 text: "Manual scheduling enabled, all relations ignored.")
+        expect(page).to have_css(test_selector("op-modal-banner-warning").to_s,
+                                 text: "Manually scheduled. Dates not affected by relations.\nClick on \"Show relations\" for Gantt overview.")
 
         # When toggling manually scheduled
         start_date.toggle_scheduling_mode
 
         # Expect new banner info
-        expect(page).to have_css("#{test_selector('op-modal-banner-info')} span",
-                                 text: "Available start and finish dates are limited by relations.")
+        expect(page).to have_css(test_selector("op-modal-banner-info").to_s,
+                                 text: "The start date is set by a predecessor.\nClick on \"Show relations\" for Gantt overview.")
 
         new_window = window_opened_by { click_on "Show relations" }
         switch_to_window new_window
@@ -529,16 +550,54 @@ RSpec.describe "date inplace editor", :js, :selenium, with_settings: { date_form
 
     context "when work package is not manually scheduled" do
       let(:schedule_manually) { false }
+      let(:wp_start_date) { nil }
+      let(:wp_due_date) { nil }
 
-      it "shows a banner that the start date is limited" do
-        expect(page).to have_css("#{test_selector('op-modal-banner-info')} span",
-                                 text: "Available start and finish dates are limited by relations.")
+      it "shows a banner that the start date it set by the predecessor" do
+        expect(page).to have_css(test_selector("op-modal-banner-info").to_s,
+                                 text: "The start date is set by a predecessor.\nClick on \"Show relations\" for Gantt overview.")
 
         # When toggling manually scheduled
         start_date.toggle_scheduling_mode
 
-        expect(page).to have_css("#{test_selector('op-modal-banner-warning')} span",
-                                 text: "Manual scheduling enabled, all relations ignored.")
+        expect(page).to have_css(test_selector("op-modal-banner-warning").to_s,
+                                 text: "Manually scheduled. Dates not affected by relations.\nClick on \"Show relations\" for Gantt overview.")
+      end
+    end
+
+    context "with the work package having a precedes relation which overlaps" do
+      let(:schedule_manually) { true }
+      let(:wp_start_date) { 6.days.ago }
+      let(:wp_due_date) { 1.day.ago }
+
+      it "shows a banner that there is an overlap" do
+        expect(page).to have_css(test_selector("op-modal-banner-warning").to_s,
+                                 text: "Manually scheduled. Dates not affected by relations.\nOverlaps with at least one predecessor.")
+
+        # When toggling manually scheduled
+        start_date.toggle_scheduling_mode
+
+        # Expect new banner info
+        expect(page).to have_css(test_selector("op-modal-banner-info").to_s,
+                                 text: "The start date is set by a predecessor.\nClick on \"Show relations\" for Gantt overview.")
+      end
+    end
+
+    context "with the work package having a precedes relation with a gap of over two days" do
+      let(:schedule_manually) { true }
+      let(:wp_start_date) { 1.day.ago }
+      let(:wp_due_date) { 1.day.ago }
+
+      it "shows a banner that there is a gap" do
+        expect(page).to have_css(test_selector("op-modal-banner-warning").to_s,
+                                 text: "Manually scheduled. Dates not affected by relations.\nThere is a gap between this and all predecessors.")
+
+        # When toggling manually scheduled
+        start_date.toggle_scheduling_mode
+
+        # Expect new banner info
+        expect(page).to have_css(test_selector("op-modal-banner-info").to_s,
+                                 text: "The start date is set by a predecessor.\nClick on \"Show relations\" for Gantt overview.")
       end
     end
   end
@@ -563,15 +622,18 @@ RSpec.describe "date inplace editor", :js, :selenium, with_settings: { date_form
       let(:schedule_manually) { true }
 
       it "shows a banner that the relations are ignored" do
-        expect(page).to have_css("#{test_selector('op-modal-banner-warning')} span",
-                                 text: "Manual scheduling enabled, all relations ignored.")
+        expect(page).to have_css(test_selector("op-modal-banner-warning").to_s,
+                                 text: "Manually scheduled. Dates not affected by relations.\nClick on \"Show relations\" for Gantt overview.")
 
         # When toggling manually scheduled
         start_date.toggle_scheduling_mode
 
-        expect(page)
-          .to have_css("#{test_selector('op-modal-banner-warning')} span",
-                       text: "Changing these dates will affect dates of related work packages.")
+        # There is no banner
+        expect(page).not_to have_test_selector("op-modal-banner-warning")
+        expect(page).not_to have_test_selector("op-modal-banner-info")
+
+        # Toggle back to see the banner again
+        start_date.toggle_scheduling_mode
 
         new_window = window_opened_by { click_on "Show relations" }
         switch_to_window new_window
@@ -585,34 +647,40 @@ RSpec.describe "date inplace editor", :js, :selenium, with_settings: { date_form
     context "when work package is not manually scheduled" do
       let(:schedule_manually) { false }
 
-      it "shows a banner that the start date is limited" do
-        expect(page)
-          .to have_css("#{test_selector('op-modal-banner-warning')} span",
-                       text: "Changing these dates will affect dates of related work packages.")
+      it "shows no banner as the WP is not automatically savable without children or predecessor" do
+        # There is no banner
+        expect(page).not_to have_test_selector("op-modal-banner-warning")
+        expect(page).not_to have_test_selector("op-modal-banner-info")
 
         # When toggling manually scheduled
         start_date.toggle_scheduling_mode
 
-        expect(page).to have_css("#{test_selector('op-modal-banner-warning')} span",
-                                 text: "Manual scheduling enabled, all relations ignored.")
+        expect(page).to have_css(test_selector("op-modal-banner-warning").to_s,
+                                 text: "Manually scheduled. Dates not affected by relations.\nClick on \"Show relations\" for Gantt overview.")
       end
     end
   end
+  # rubocop:enable Layout/LineLength
 
   context "with a negative time zone", driver: :chrome_new_york_time_zone do
     it "can normally select the dates via datepicker (regression #43562)" do
       start_date.activate!
       start_date.expect_active!
 
-      start_date.datepicker.expect_year "2016"
-      start_date.datepicker.expect_month "January"
-      start_date.datepicker.select_day "25"
+      datepicker.expect_start_date("2016-01-02")
+      datepicker.expect_duration("")
+      datepicker.expect_year "2016"
+      datepicker.expect_month "January"
 
-      sleep 2
+      datepicker.enable_due_date
+      datepicker.select_day "25"
 
-      start_date.datepicker.expect_year "2016"
-      start_date.datepicker.expect_month "January"
-      start_date.datepicker.expect_day "25"
+      datepicker.expect_start_date("2016-01-02")
+      datepicker.expect_due_date("2016-01-25")
+      datepicker.expect_duration("24")
+      datepicker.expect_year "2016"
+      datepicker.expect_month "January"
+      datepicker.expect_day "25"
 
       start_date.save!
       start_date.expect_inactive!

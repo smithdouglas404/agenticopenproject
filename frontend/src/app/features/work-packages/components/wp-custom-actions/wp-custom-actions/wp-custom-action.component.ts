@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -48,6 +48,7 @@ import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destr
   selector: 'wp-custom-action',
   templateUrl: './wp-custom-action.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WpCustomActionComponent extends UntilDestroyedMixin implements OnInit {
   @Input() workPackage:WorkPackageResource;
@@ -74,6 +75,7 @@ export class WpCustomActionComponent extends UntilDestroyedMixin implements OnIn
         this.untilDestroyed(),
       )
       .subscribe(() => this.cdRef.detectChanges());
+    this.fetchAction();
   }
 
   private fetchAction() {
@@ -84,6 +86,10 @@ export class WpCustomActionComponent extends UntilDestroyedMixin implements OnIn
       .subscribe((action) => {
         this.action = action;
       });
+  }
+
+  public get title():string {
+    return this.action.description || this.action.name;
   }
 
   public get change():ResourceChangeset<WorkPackageResource> {

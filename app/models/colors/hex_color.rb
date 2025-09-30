@@ -1,26 +1,59 @@
+# frozen_string_literal: true
+
+#-- copyright
+# OpenProject is an open source project management software.
+# Copyright (C) the OpenProject GmbH
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version 3.
+#
+# OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+# Copyright (C) 2006-2013 Jean-Philippe Lang
+# Copyright (C) 2010-2013 the ChiliProject Team
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# See COPYRIGHT and LICENSE files for more details.
+#++
+
 module Colors
   module HexColor
-    ##
-    # Returns the best contrasting color, either white or black
-    # depending on the overall brightness.
-    def contrasting_color(light_color: "#FFFFFF", dark_color: "#333333")
-      if bright?
-        dark_color
-      else
-        light_color
-      end
-    end
+    RGB_HEX_FORMAT = /\A#[0-9A-F]{6}\z/
+    private_constant :RGB_HEX_FORMAT
 
     ##
     # Get the fill style for this color.
     # If the color is light, use a dark font.
     # Otherwise, use a white font.
     def color_styles(light_color: "#FFFFFF", dark_color: "#333333")
-      if bright?
-        { color: dark_color, "background-color": hexcode }
-      else
-        { color: light_color, "background-color": hexcode }
-      end
+      { color: contrasting_font_color(light: light_color, dark: dark_color), "background-color": hexcode }
+    end
+
+    def color_styles_css
+      color_styles.map { |k, v| "#{k}: #{v};" }.join(" ")
+    end
+
+    def contrasting_font_color(light: "#FFFFFF", dark: "#333333")
+      bright? ? dark : light
+    end
+
+    ##
+    # Returns whether the color is dark according to
+    # YIQ lightness.
+    def dark?
+      brightness_yiq <= 100
     end
 
     ##
@@ -28,10 +61,6 @@ module Colors
     # YIQ lightness.
     def bright?
       brightness_yiq >= 150
-    end
-
-    def dark?
-      brightness_yiq < 150
     end
 
     ##
@@ -50,11 +79,13 @@ module Colors
     end
 
     ##
-    # Splits the hexcode into rbg color array
+    # Splits the hexcode into rgb color array
     def rgb_colors
       hexcode
-        .delete("#") # Remove trailing #
+        .delete_prefix("#") # Remove leading #
+        .ljust(6, "0") # Pad to at least 6 chars
         .scan(/../) # Pair hex chars
+        .first(3)
         .map(&:hex) # to int
     end
 
@@ -85,20 +116,22 @@ module Colors
       "#%<r>02x%<g>02x%<b>02x" % { r:, g:, b: }
     end
 
-    # rubocop:disable Metrics/AbcSize
-    def normalize_hexcode
-      return unless hexcode.present? && hexcode_changed?
-
-      self.hexcode = hexcode.strip.upcase
-
-      unless hexcode.starts_with? "#"
-        self.hexcode = "##{hexcode}"
+    class Normalizer
+      def self.call(...)
+        new.call(...)
       end
 
-      if hexcode.size == 4 # =~ /#.../
-        self.hexcode = hexcode.gsub(/([^#])/, '\1\1')
+      def call(hex)
+        hex = hex.strip.delete_prefix("#")
+        case hex
+        when /\A[0-9a-fA-F]{3}\z/ # short form: #abc
+          "##{hex.chars.map { |c| c * 2 }.join.upcase}"
+        when /\A[0-9a-fA-F]{6}\z/ # long form: #aabbcc
+          "##{hex.upcase}"
+        else # do nothing
+          hex
+        end
       end
     end
-    # rubocop:enable Metrics/AbcSize
   end
 end

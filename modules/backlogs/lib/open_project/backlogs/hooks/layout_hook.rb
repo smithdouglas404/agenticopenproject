@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,33 +29,6 @@
 module OpenProject::Backlogs::Hooks
   class LayoutHook < OpenProject::Hook::ViewListener
     include RbCommonHelper
-
-    def view_versions_show_bottom(context = {})
-      version = context[:version]
-      project = version.project
-
-      return "" unless project.module_enabled? "backlogs"
-
-      snippet = ""
-
-      if User.current.allowed_in_project?(:edit_wiki_pages, project)
-        snippet += '<span id="edit_wiki_page_action">'
-        snippet += link_to I18n.t(:button_edit_wiki),
-                           { controller: "/rb_wikis", action: "edit", project_id: project.id, sprint_id: version.id },
-                           class: "icon icon-edit"
-        snippet += "</span>"
-
-        # This wouldn't be necessary if the schedules plugin didn't disable the
-        # contextual hook
-        snippet += context[:hook_caller].nonced_javascript_tag(<<-JS)
-          (function ($) {
-            $(document).ready(function() {
-              $('#edit_wiki_page_action').detach().appendTo("div.contextual");
-            });
-          }(jQuery))
-        JS
-      end
-    end
 
     def view_my_settings(context = {})
       context[:controller].send(

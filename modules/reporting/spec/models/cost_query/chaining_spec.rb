@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require File.expand_path("#{File.dirname(__FILE__)}/../../spec_helper")
+require_relative "../../spec_helper"
 
 RSpec.describe CostQuery, :reporting_query_helper do
   let(:project) { create(:project) }
@@ -55,7 +55,7 @@ RSpec.describe CostQuery, :reporting_query_helper do
       expect(query.chain.top).not_to be_a(CostQuery::Filter::NoFilter)
     end
 
-    it "remembers it's correct parent" do
+    it "remembers its correct parent" do
       query.group_by :project_id
       query.filter :project_id
       expect(query.chain.top.child.child.parent).to eq(query.chain.top.child)
@@ -271,7 +271,7 @@ RSpec.describe CostQuery, :reporting_query_helper do
         Object.send(:remove_const, :TestFilter)
       end
 
-      it "gives display? == true when a filter doesn't specify it's visibility" do
+      it "gives display? == true when a filter doesn't specify its visibility" do
         class TestFilter < Report::Filter::Base
         end
         expect(TestFilter.display?).to be true
@@ -296,7 +296,7 @@ RSpec.describe CostQuery, :reporting_query_helper do
         Object.send(:remove_const, :TestFilter)
       end
 
-      it "gives selectable? == true when a filter doesn't specify it's selectability" do
+      it "gives selectable? == true when a filter doesn't specify its selectability" do
         class TestFilter < Report::Filter::Base
         end
         expect(TestFilter.selectable?).to be true

@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -25,9 +25,6 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-
-require "roar/decorator"
-require "roar/json/hal"
 
 module API
   module V3
@@ -84,7 +81,7 @@ module API
           def initialize(schema, self_link:, **context)
             @base_schema_link = context.delete(:base_schema_link) || nil
             @show_lock_version = !context.delete(:hide_lock_version)
-            super(schema, self_link:, **context)
+            super
           end
 
           link :baseSchema do
@@ -93,6 +90,7 @@ module API
 
           link :attachments do
             next if represented.work_package.hide_attachments?
+
             { href: nil }
           end
 
@@ -107,7 +105,6 @@ module API
 
           schema :lock_version,
                  type: "Integer",
-                 name_source: ->(*) { I18n.t("api_v3.attributes.lock_version") },
                  show_if: ->(*) { @show_lock_version }
 
           schema :id,
@@ -174,7 +171,7 @@ module API
                  name_source: :remaining_hours,
                  type: "Duration",
                  required: false,
-                 writable: ->(*) { !WorkPackage.use_status_for_done_ratio? }
+                 writable: ->(*) { WorkPackage.work_based_mode? }
 
           schema :derived_remaining_time,
                  name_source: :derived_remaining_hours,
@@ -228,6 +225,21 @@ module API
                                        api_v3_paths.available_projects_on_edit(represented.id)
                                      end
                                    }
+
+          schema_with_allowed_collection :project_phase,
+                                         value_representer: ProjectPhases::ProjectPhaseRepresenter,
+                                         link_factory: ->(phase) {
+                                           {
+                                             href: api_v3_paths.project_phase(phase.id),
+                                             title: phase.name
+                                           }
+                                         },
+                                         required: false,
+                                         show_if: ->(*) {
+                                           current_user.allowed_in_project?(:view_project_phases, represented.project) &&
+                                             represented.assignable_project_phases.any?
+                                         },
+                                         writable: -> { represented.writable?(:project_phase_definition_id) }
 
           schema_with_allowed_link :parent,
                                    type: "WorkPackage",

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -33,10 +33,14 @@ import {
 } from 'core-app/shared/components/storages/icons.mapping';
 import { IHalResourceLink } from 'core-app/core/state/hal-resource';
 import { IFileLinkOriginData } from 'core-app/core/state/file-links/file-link.model';
-import { nextcloud, oneDrive } from 'core-app/shared/components/storages/storages-constants.const';
+import { nextcloud, oneDrive, sharepoint } from 'core-app/shared/components/storages/storages-constants.const';
 
 export function isDirectory(originData:IFileLinkOriginData):boolean {
-  return originData.mimeType === 'application/x-op-directory';
+  return originData.mimeType === 'application/x-op-directory' || isDrive(originData);
+}
+
+function isDrive(originData:IFileLinkOriginData):boolean {
+  return originData.mimeType === 'application/x-op-drive';
 }
 
 export function getIconForMimeType(mimeType?:string):IFileIcon {
@@ -67,6 +71,7 @@ export function makeFilesCollectionLink(storageLink:IHalResourceLink, location:s
 const storageTypeMap:Record<string, string> = {
   [nextcloud]: 'js.storages.types.nextcloud',
   [oneDrive]: 'js.storages.types.one_drive',
+  [sharepoint]: 'js.storages.types.sharepoint',
   default: 'js.storages.types.default',
 };
 

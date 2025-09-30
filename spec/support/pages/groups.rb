@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -50,18 +52,8 @@ module Pages
       group(group_name).add_user! user_name
     end
 
-    def delete_group!(name)
-      accept_alert do
-        find_group(name).find("a[data-method=delete]").click
-      end
-    end
-
-    def find_group(name)
-      find("tr", text: name)
-    end
-
     def has_group?(name)
-      has_selector? "tr", text: name
+      has_selector? ".op-border-box-grid--row-item", text: name
     end
 
     def group(group_name)
@@ -69,7 +61,7 @@ module Pages
     end
   end
 
-  class Group < Pages::Page
+  class Group < Page
     include ::Components::Autocompleter::NgSelectAutocompleteHelpers
     attr_reader :id
 
@@ -82,13 +74,13 @@ module Pages
     end
 
     def open_users_tab!
-      within(".content--tabs") do
+      within(".PageHeader-tabNav") do
         click_on "Users"
       end
     end
 
     def open_projects_tab!
-      within(".content--tabs") do
+      within(".PageHeader-tabNav") do
         click_on "Projects"
       end
     end

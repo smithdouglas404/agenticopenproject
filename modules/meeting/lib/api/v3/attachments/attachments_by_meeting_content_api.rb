@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,23 +32,18 @@ module API
     module Attachments
       class AttachmentsByMeetingContentAPI < ::API::OpenProjectAPI
         resources :attachments do
-          helpers API::V3::Attachments::AttachmentsByContainerAPI::Helpers
-
-          helpers do
-            def container
-              meeting_content
-            end
-
-            def get_attachment_self_path
-              api_v3_paths.attachments_by_meeting_content container.id
-            end
+          get do
+            status :gone
           end
 
-          get &API::V3::Attachments::AttachmentsByContainerAPI.read
-          post &API::V3::Attachments::AttachmentsByContainerAPI.create
+          post do
+            status :gone
+          end
 
           namespace :prepare do
-            post &API::V3::Attachments::AttachmentsByContainerAPI.prepare
+            post do
+              status :gone
+            end
           end
         end
       end

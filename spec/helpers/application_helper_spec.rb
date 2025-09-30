@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -176,12 +178,69 @@ RSpec.describe ApplicationHelper do
       created = "2023-06-02"
       author = build(:user, firstname: "<b>Hello</b>", lastname: "world")
       author.save! validate: false
+
+      esc_name = "&lt;b&gt;Hello&lt;/b&gt; world"
+
+      exp_str = <<-HTML.squish
+        Added by
+        <a title="User #{esc_name}" data-hover-card-url="/users/#{author.id}/hover_card"
+           data-hover-card-trigger-target="trigger" href="/users/#{author.id}">#{esc_name}</a>
+        on 2023-06-02
+      HTML
+
       expect(authoring_at(created, author))
-        .to eq("Added by <a href=\"/users/#{author.id}\">&lt;b&gt;Hello&lt;/b&gt; world</a> at 2023-06-02")
+        .to eq(exp_str)
     end
   end
 
-  describe ".all_lang_options_for_select" do
+  describe "#lang_options_for_select" do
+    before do
+      allow(Redmine::I18n)
+        .to receive(:all_languages)
+        .and_return %w[en de es ja zh-CN]
+    end
+
+    context "with all available languages" do
+      it "returns options for all languages" do
+        expect(lang_options_for_select).to eq [
+          ["(auto)", ""],
+          ["Deutsch", "de", { lang: "de" }],
+          ["English", "en", { lang: "en" }],
+          ["Español", "es", { lang: "es" }],
+          ["日本語", "ja", { lang: "ja" }],
+          ["简体中文", "zh-CN", { lang: "zh-CN" }]
+        ]
+      end
+    end
+
+    context "with some available languages", with_settings: { available_languages: %w[en es ja] } do
+      it "returns options for available languages" do
+        expect(lang_options_for_select).to eq [
+          ["English", "en", { lang: "en" }],
+          ["Español", "es", { lang: "es" }],
+          ["日本語", "ja", { lang: "ja" }]
+        ]
+      end
+    end
+
+    context "when blank is true (default)" do
+      it "returns auto option if all languages available" do
+        expect(lang_options_for_select).to start_with ["(auto)", ""]
+      end
+
+      it "does not return auto option if some languages available", with_settings: { available_languages: %w[en] } do
+        expect(lang_options_for_select).not_to start_with ["(auto)", ""]
+      end
+    end
+
+    context "when blank is false" do
+      it "does not return auto option" do
+        expect(lang_options_for_select(false)).not_to start_with ["(auto)", ""]
+      end
+    end
+  end
+
+  describe "#all_lang_options_for_select" do
     it 'has all languages translated ("English" should appear only once)' do
       impostor_locales =
         all_lang_options_for_select
@@ -228,6 +287,32 @@ RSpec.describe ApplicationHelper do
           - commit the additional translation file generated in
             "config/locales/generated/*.yml".
       ERR
+    end
+  end
+
+  describe "#link_to_content_update" do
+    let(:options) { { controller: "work_packages", action: "show", id: 10 } }
+
+    subject { link_to_content_update("Пакет работ", options, html_options) }
+
+    context "without html_options" do
+      let(:html_options) { {} }
+
+      it "renders with 'target=\"_top\"'" do
+        expect(subject).to be_html_eql %{
+          <a target="_top" href="/work_packages/10">Пакет работ</a>
+        }
+      end
+    end
+
+    context "with html_options" do
+      let(:html_options) { { aria: { label: "Работайте усердно!", current: "page" } } }
+
+      it "renders with 'target=\"_top\"'" do
+        expect(subject).to be_html_eql %{
+          <a target="_top" aria-label="Работайте усердно!" aria-current="page" href="/work_packages/10">Пакет работ</a>
+        }
+      end
     end
   end
 end

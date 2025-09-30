@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -23,7 +23,7 @@ sl:
   plugin_openproject_reporting:
     name: "OpenProject Reporting"
     description: "This plugin allows creating custom cost reports with filtering and grouping created by the OpenProject Time and costs plugin."
-  button_save_as: "Shrani poročilo kot..."
+  button_save_report_as: "Shrani poročilo kot..."
   comments: "Komentar"
   cost_reports_title: "Čas in stroški"
   label_cost_report: "Poročilo o stroških"
@@ -34,7 +34,7 @@ sl:
   description_remove_filter: "Odstrani filter"
   information_restricted_depending_on_permission: "Glede na vaše dovoljenje, ta stran lahko vsebuje tajne informacije."
   label_click_to_edit: "Klikni za urejanje."
-  label_closed: "Zaprto"
+  label_closed: "zaprto"
   label_columns: "Stolpci"
   label_cost_entry_attributes: "Atributi za vnos stroškov"
   label_days_ago: "v času zadnjih dni"
@@ -45,6 +45,8 @@ sl:
   label_greater: ">"
   label_is_not_project_with_subprojects: "ni (s podprojekti) "
   label_is_project_with_subprojects: "je (s podprojekti) "
+  label_is_work_package_with_descendants: "is (includes descendants)"
+  label_is_not_work_package_with_descendants: "is not (includes descendants)"
   label_work_package_attributes: "Atributi delovnega paketa"
   label_less: "<"
   label_logged_by_reporting: "Logged by"
@@ -86,8 +88,18 @@ sl:
   validation_failure_date: "ni veljaven datum"
   validation_failure_integer: "ni veljavno število"
   export:
+    timesheet:
+      title: "Your PDF timesheet export"
+      button: "Export PDF timesheet"
+      timesheet: "Timesheet"
+      time: "Čas"
+      sums_hours: Sums
+      overview_per_user_total: "Overview: Total hours per user"
+      overview_per_user_day: "Overview: Hours per user per day"
     cost_reports:
       title: "Your Cost Reports XLS export"
+      start_time: "Start time"
+      end_time: "End time"
   reporting:
     group_by:
       selected_columns: "Izbrani stolpci"

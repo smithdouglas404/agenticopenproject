@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { Input } from '@angular/core';
 import { StateService } from '@uirouter/angular';
 import { TestBed } from '@angular/core/testing';
@@ -34,13 +34,12 @@ describe('WpTabsService', () => {
   beforeEach(() => {
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientModule,
-      ],
-      providers: [
+    imports: [],
+    providers: [
         { provide: StateService, useValue: { includes: () => false } },
-      ],
-    });
+        provideHttpClient(withInterceptorsFromDi()),
+    ]
+});
     service = TestBed.inject(WorkPackageTabsService);
     (service as any).registeredTabs = [];
     service.register({ ...displayableTab }, { ...notDisplayableTab });

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -106,7 +108,7 @@ module OpenProject
         end
 
         ##
-        # Checks if the repository is up-to-date. It is not it's updated.
+        # Checks if the repository is up-to-date. If it is not, it's updated.
         # Checks out the repository if necessary.
         def refresh_repository!
           if checkout?
@@ -362,7 +364,7 @@ module OpenProject
             elsif (parsing_descr == 1) && line.chomp.to_s == ""
               parsing_descr = 2
             elsif parsing_descr == 1
-              changeset[:description] << line[4..-1]
+              changeset[:description] += line[4..-1]
             end
           end
 
@@ -392,8 +394,8 @@ module OpenProject
           args << "--all" if options[:all]
           args << "-n" << options[:limit].to_i.to_s if options[:limit]
           from_to = ""
-          from_to << "#{identifier_from}.." if identifier_from
-          from_to << identifier_to.to_s if identifier_to
+          from_to += "#{identifier_from}.." if identifier_from
+          from_to += identifier_to.to_s if identifier_to
           args << from_to if from_to.present?
           args << "--since=#{options[:since].strftime('%Y-%m-%d %H:%M:%S')}" if options[:since]
           args << "--" << scm_encode(@path_encoding, "UTF-8", path) if path.present?

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -90,7 +92,7 @@ RSpec.describe "Wiki unicode title spec", :js do
     find(".ck-content").base.send_keys(wiki_body)
     click_button "Save"
 
-    expect(page).to have_css(".title-container h2", text: "Wiki")
+    expect(page).to have_test_selector("wiki-page-header-title", text: "Wiki")
     expect(page).to have_css("a.wiki-page", count: 5)
   end
 
@@ -105,7 +107,7 @@ RSpec.describe "Wiki unicode title spec", :js do
       expect(target_link[:href]).to match("/wiki/#{expected_slugs[i]}")
       target_link.click
 
-      expect(page).to have_css(".title-container h2", text: title)
+      expect(page).to have_test_selector("wiki-page-header-title", text: title)
     end
   end
 end

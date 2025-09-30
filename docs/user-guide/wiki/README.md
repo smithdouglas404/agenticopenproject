@@ -11,7 +11,9 @@ keywords: wiki, documentation
 In a project wiki you can collaboratively create and document information with your team, such as project documentation, specifications, guidelines, or any other important project information.
 
 <div class="glossary">
+
 **Wiki** is defined as a module that allows to use textile-based wiki pages. In order to use the wiki module, it has to be activated in the project settings.
+
 </div>
 
 | Topic                                                        | Content                                                      |
@@ -86,7 +88,7 @@ The attachment will be automatically uploaded and stored as an attachment.
 
 ## Macros
 
-OpenProject has supported macros on textile formatted pages and continues to do so with the WYSIWYG editor. Note that macros are not expanded while editing the page, instead a placeholder is shown.
+OpenProject has supported macros on textile formatted pages and continues to do so with the [WYSIWYG](../wysiwyg) editor. Note that macros are not expanded while editing the page, instead a placeholder is shown.
 
 ### Table of contents
 
@@ -109,6 +111,9 @@ Configure a button or link to target the work package creation screen in the cur
 ### Links to child pages
 
 Create a hierarchical list of all child pages of the current page.
+
+> [!TIP]
+> For more information on using macros take a look at this [blog article](https://www.openproject.org/blog/how-to-use-macros/).
 
 ## Full vs constrained editor
 

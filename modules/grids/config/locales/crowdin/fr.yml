@@ -8,6 +8,7 @@ fr:
         row_count: "Nombre de lignes"
         column_count: "Nombre de colonnes"
         widgets: "Widgets"
+        scope: "Périmètre"
     errors:
       models:
         grids/grid:

@@ -4,5 +4,6 @@ pt-PT:
     calendar:
       create_new: 'Criar novo calendário'
       title: 'Calendário'
-      too_many: 'Existem ao todo %{count} pacotes de trabalho, mas apenas %{max} podem ser exibidos.'
+      too_many: 'Existem %{count} pacotes de trabalho no total, mas apenas %{max} podem ser mostrados.'
       unsaved_title: 'Calendário sem nome'
+      label_calendar_plural: 'Calendários'

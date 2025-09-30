@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,8 +26,6 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-/* jshint expr: true */
-
 import { UrlParamsHelperService } from 'core-app/features/work-packages/components/wp-query/url-params-helper';
 
 describe('UrlParamsHelper', () => {
@@ -42,6 +40,7 @@ describe('UrlParamsHelper', () => {
     const params = {
       ids: [1, 2, 3],
       str: '@#$%',
+      importantOption: false
     };
     let queryString:string;
 
@@ -50,11 +49,15 @@ describe('UrlParamsHelper', () => {
     });
 
     it("concatenates propertys with '&'", () => {
-      expect(queryString.split('&').length).toEqual(4);
+      expect(queryString.split('&').length).toEqual(5);
     });
 
     it('escapes special characters', () => {
       expect(queryString.indexOf('@') === -1).toBeTruthy();
+    });
+
+    it('does not omit false', () => {
+      expect(queryString.includes('importantOption=false')).toBeTruthy();
     });
   });
 

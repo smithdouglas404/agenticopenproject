@@ -13,6 +13,7 @@ import { TimeEntriesCurrentUserConfigurationModalService } from 'core-app/shared
 @Component({
   templateUrl: './configuration.modal.html',
   providers: [TimeEntriesCurrentUserConfigurationModalService],
+  standalone: false,
 })
 export class TimeEntriesCurrentUserConfigurationModalComponent extends OpModalComponent implements OnInit {
   public text = {

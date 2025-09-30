@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # JavaScript: HTML5 File attachments handling
 # requires a (hidden) input file field
 module Components
@@ -7,7 +9,13 @@ module Components
 
     ##
     # Drag and Drop the file loaded from path on to the (native) target element
-    def drag_and_drop_file(target, path, position = :center, stopover = nil, cancel_drop: false, delay_dragleave: false)
+    def drag_and_drop_file(target,
+                           path,
+                           position = :center,
+                           stopover = nil,
+                           cancel_drop: false,
+                           delay_dragleave: false,
+                           scroll: true)
       # Remove any previous input, if any
       page.execute_script <<-JS
         jQuery('#temporary_attachment_files').remove()
@@ -22,7 +30,7 @@ module Components
           target
         else
           # Use the HTML5 file dropper to create a fake drop event
-          scroll_to_element(target)
+          scroll_to_element(target) if scroll
           target.native
         end
 

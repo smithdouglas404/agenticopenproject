@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper.rb")
+require_relative "../../spec_helper"
 
 RSpec.describe "adding a new budget", :js do
   let(:project) { create(:project_with_types, members: project_members) }
@@ -40,7 +40,7 @@ RSpec.describe "adding a new budget", :js do
   it "shows link to create a new budget" do
     visit projects_budgets_path(project)
 
-    click_on("Add budget")
+    page.find("[aria-label='Add budget']").click
 
     expect(page).to have_content "New budget"
     expect(page).to have_content "Description"
@@ -59,7 +59,7 @@ RSpec.describe "adding a new budget", :js do
     it "can switch between them" do
       visit projects_budgets_path(project)
 
-      click_on("Add budget")
+      page.find("[aria-label='Add budget']").click
       expect(page).to have_content "New budget"
 
       fill_in "Subject", with: "My subject"
@@ -122,7 +122,7 @@ RSpec.describe "adding a new budget", :js do
         new_budget_page.add_labor_costs! "0,5", user_name: user.name, comment: "attendance", expected_costs: "12,50 EUR"
 
         page.find('[data-test-selector="budgets-create-button"]').click
-        expect(page).to have_content(I18n.t(:notice_successful_create, locale: :de))
+        expect_and_dismiss_flash(message: I18n.t(:notice_successful_create, locale: :de))
 
         expect(new_budget_page.unit_costs_at(1)).to have_content "175,00 EUR"
         expect(new_budget_page.unit_costs_at(2)).to have_content "50.025,00 EUR"

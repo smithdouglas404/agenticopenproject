@@ -1,16 +1,20 @@
 #English strings go here
 ja:
   plugin_openproject_boards:
-    name: "OpenProject Boards"
-    description: "Provides board views."
+    name: "OpenProjectのカンバン"
+    description: "カンバンを提供します"
   permission_show_board_views: "ボードの表示"
   permission_manage_board_views: "ボードの管理"
   project_module_board_view: "ボード"
+  ee:
+    upsell:
+      board_view:
+        description: 'ボードでワークフローを自動化しませんか？アドバンスボードはエンタープライズアドオンです。有料プランにアップグレードしてください。'
   boards:
     label_board: "ボード"
     label_boards: "ボード"
-    label_create_new_board: "新しいボードを作成"
-    label_board_type: "ボードの種類"
+    label_create_new_board: "新しい掲示板を作成"
+    label_board_type: "ボードの形式"
     board_types:
       free: 基本
       action: "アクションボード (%{attribute})"
@@ -31,9 +35,6 @@ ja:
       version: >
         バージョン属性に基づき自動化される列のボード。製品開発の計画に最適です。
       subproject: >
-        サブプロジェクトの列が自動化されたボード。ワークパッケージを他のリストにドラッグすると、それに応じて(サブ)プロジェクトが更新されます。
+        子プロジェクトの列が自動化されたボード。ワークパッケージを他のリストにドラッグすると、それに応じて(サブ)プロジェクトが更新されます。
       subtasks: >
         子要素の列が自動化されたボード。ワークパッケージを他のリストにドラッグすると、それに応じて親要素が更新されます。
-    upsale:
-      teaser_text: 'ボードでワークフローを自動化しませんか？アドバンスボードはエンタープライズアドオンです。有料プランにアップグレードしてください。'
-      upgrade: '今すぐアップグレード'

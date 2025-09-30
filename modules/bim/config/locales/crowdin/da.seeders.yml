@@ -13,7 +13,7 @@ da:
         item_2:
           name: Høj
         item_3:
-          name: Critical
+          name: Kritisk
       statuses:
         item_0:
           name: Ny
@@ -38,16 +38,16 @@ da:
         item_2:
           name: Fase
         item_3:
-          name: Emne
+          name: Problematik
         item_4:
-          name: Remark
+          name: Bemærkning
         item_5:
-          name: Request
+          name: Anmodning
         item_6:
-          name: Clash
+          name: Konflikt
       global_queries:
         item_0:
-          name: 'Embedded table: Children'
+          name: 'Indlejret tabel: Underordnede'
       type_configuration:
         item_0:
           form_configuration:
@@ -55,90 +55,90 @@ da:
               group_name: Underordnede
       groups:
         item_0:
-          name: Architects
+          name: Arkitekter
         item_1:
-          name: BIM Coordinators
+          name: BIM-koordinatorer
         item_2:
-          name: BIM Managers
+          name: BIM-ledere
         item_3:
-          name: BIM Modellers
+          name: BIM-Modelbyggere
         item_4:
-          name: Lead BIM Coordinators
+          name: Ledende BIM-koordinatorer
         item_5:
-          name: MEP Engineers
+          name: MEP-teknikere
         item_6:
-          name: Planners
+          name: Planlæggere
         item_7:
-          name: Structural Engineers
+          name: Strukturelle teknikere
       welcome:
-        title: Welcome to OpenProject BIM edition!
+        title: Velkommen til OpenProject BIM-udgave!
         text: |
-          Checkout the demo projects to get started with some examples.
+          Tjek demoprojekterne ud for at komme i gang med nogle eksempler.
 
-          * [(Demo) Construction project]({{opSetting:base_url}}/projects/demo-construction-project): Planning, BIM process, BCF management, and constructing, all at a glance.
-              * [(Demo) Planning & constructing]({{opSetting:base_url}}/projects/demo-planning-constructing-project): Classical planning and construction management.
-              * [(Demo) Bim project]({{opSetting:base_url}}/projects/demo-bim-project): BIM process and coordination.
-                  * [(Demo) BCF management]({{opSetting:base_url}}/projects/demo-bcf-management-project): BCF management.
+          * [(Demo) Konstruktionsprojekt]({{opSetting:base_url}}/projects/demo-construc-project): Planlægning, BIM-proces, BCF-styring og konstruktion, alt sammen med ét overblik.
+              * [(Demo) Planlægning og konstruktion]({{opSetting:base_url}}/projects/demo-planing-konstruktions-projekt): Klassisk planlægning og konstruktionsstyring.
+              * [(Demo) Bim-projekt]({{opSetting:base_url}}/projects/demo-bim-project): BIM-proces og koordinering.
+                  * [(Demo) BCF-håndtering]({{opSetting:base_url}}/projects/demo-bcf-management-project): BCF-håndtering.
 
-          Also, you can create a blank [new project]({{opSetting:base_url}}/projects/new).
+          Man kan også oprette et tomt [nyt projekt]({{opSetting:base_url}}/projects/new).
 
-          Never stop collaborating. With open source and open mind.
+          Stop aldrig samarbejdet. Med open source og åbent sind.
 
-          You can change this welcome text [here]({{opSetting:base_url}}/admin/settings/general).
+          Denne velkomsttekst kan ændres [her]({{opSetting:base_url}}/admin/settings/general).
       projects:
         demo-construction-project:
-          name: "(Demo) Construction project"
-          status_explanation: All tasks and the sub-projects are on schedule. The people involved know their tasks. The system is completely set up.
-          description: This is a short summary of the goals of this demo construction project.
+          name: "(Demo) Konstruktionsprojekt"
+          status_explanation: Alle opgaver og delprojekter følger tidsplanen. De involverede kender deres opgaver. Systemet er fuldt opsat.
+          description: Dette er et kort resumé af målene for dette demobyggeprojekt.
           news:
             item_0:
-              title: Welcome to your demo project
+              title: Velkommen til demo-projektet
               summary: |
-                We are glad you joined.
-                In this module you can communicate project news to your team members.
-              description: The actual news
+                Vi er glade for deltagelsen.
+                I dette modul kan man kommunikere projektnyheder til sine teammedlemmer.
+              description: De faktiske nyheder
           categories:
-            item_0: Category 1 (to be changed in Project settings)
+            item_0: Kategori 1 (skal ændres i Projektindstillinger)
           queries:
             item_0:
-              name: Project plan
+              name: Projektplan
             item_1:
-              name: Milestones
+              name: Milepæle
             item_2:
-              name: Tasks
+              name: Opgaver
             item_3:
-              name: Team planner
+              name: Teamplanlægger
           boards:
             bcf:
-              name: Simple drag'n drop workflow
+              name: Simpel træk-slip arbejdsgang
           project-overview:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Velkommen
               item_1:
                 options:
-                  name: Getting started
+                  name: At komme gang
                   text: |
-                    We are glad you joined! We suggest to try a few things to get started in OpenProject.
+                    Vi er glade for deltagelsen! Vi foreslår at prøve et par ting for at komme i gang i OpenProject.
 
-                    But before you jump right into it, you should know that this exemplary project is split up into two different projects:
+                    Før man springer ud i det, skal man vide, at dette eksemplariske projekt er opdelt i to forskellige projekter:
 
-                    1.  [Construction project]({{opSetting:base_url}}/projects/demo-planning-constructing-project): Here you will find the classical roles, some workflows and work packages for your construction project.
-                    2.  [Creating BIM Model]({{opSetting:base_url}}/projects/demo-bim-project): This project also offers roles, workflows and work packages but especially in the BIM context.
+                    1.  [Byggeproject]({{opSetting:base_url}}/projects/demo-planning-constructing-project): Her finder man de klassiske roller, nogle arbejdsgange og arbejdspakker til sit byggeprojekt.
+                    2.  [Oprettelse af BIM-model]({{opSetting:base_url}}/projects/demo-bim-project): Dette projekt tilbyder også roller, arbejdsgange og arbejdspakker, men især i BIM-sammenhæng.
 
-                    _Try the following steps:_
+                    _Prøv de flg. trin:_
 
-                    1.  _Invite new members to your project_: → Go to [Members]({{opSetting:base_url}}/projects/demo-construction-project/members) in the project navigation.
-                    2.  _View the work in your projects_: → Go to [Work packages]({{opSetting:base_url}}/projects/demo-construction-project/work_packages?query_props=%7B%22c%22%3A%5B%22type%22%2C%22id%22%2C%22subject%22%2C%22status%22%2C%22assignee%22%2C%22priority%22%5D%2C%22hl%22%3A%22priority%22%2C%22hi%22%3Atrue%2C%22g%22%3A%22%22%2C%22t%22%3A%22startDate%3Aasc%22%2C%22f%22%3A%5B%7B%22n%22%3A%22bcfIssueAssociated%22%2C%22o%22%3A%22%3D%22%2C%22v%22%3A%5B%22f%22%5D%7D%5D%2C%22pa%22%3A1%2C%22pp%22%3A100%2C%22dr%22%3A%22list%22%7D) in the project navigation.
-                    3.  _Create a new work package_: → Go to [Work packages → Create]({{opSetting:base_url}}/projects/demo-construction-project/work_packages/new?query_props=%7B%22c%22%3A%5B%22type%22%2C%22id%22%2C%22subject%22%2C%22status%22%2C%22assignee%22%2C%22priority%22%5D%2C%22hl%22%3A%22priority%22%2C%22hi%22%3Atrue%2C%22g%22%3A%22%22%2C%22t%22%3A%22startDate%3Aasc%22%2C%22f%22%3A%5B%7B%22n%22%3A%22bcfIssueAssociated%22%2C%22o%22%3A%22%3D%22%2C%22v%22%3A%5B%22f%22%5D%7D%5D%2C%22pa%22%3A1%2C%22pp%22%3A100%2C%22dr%22%3A%22list%22%7D&type=11).
-                    4.  _Create and update a Gantt chart_: → Go to [Gantt chart]({{opSetting:base_url}}/projects/demo-construction-project/work_packages?query_props=%7B%22c%22%3A%5B%22type%22%2C%22id%22%2C%22subject%22%2C%22assignee%22%2C%22responsible%22%5D%2C%22tv%22%3Atrue%2C%22tzl%22%3A%22weeks%22%2C%22hl%22%3A%22priority%22%2C%22hi%22%3Atrue%2C%22g%22%3A%22%22%2C%22t%22%3A%22startDate%3Aasc%22%2C%22f%22%3A%5B%5D%2C%22pa%22%3A1%2C%22pp%22%3A100%2C%22dr%22%3A%22list%22%7D) in the project navigation.
-                    5.  _Activate further modules_: → Go to [Project settings → Modules]({{opSetting:base_url}}/projects/demo-construction-project/settings/modules).
-                    6.  _Check out the tile view to get an overview of your BCF issues:_ → Go to [Work packages]({{opSetting:base_url}}/projects/demo-construction-project/work_packages?query_props=%7B%22c%22%3A%5B%22type%22%2C%22id%22%2C%22subject%22%2C%22status%22%2C%22assignee%22%2C%22priority%22%5D%2C%22hl%22%3A%22priority%22%2C%22hi%22%3Atrue%2C%22g%22%3A%22%22%2C%22t%22%3A%22id%3Aasc%22%2C%22f%22%3A%5B%5D%2C%22pa%22%3A1%2C%22pp%22%3A100%2C%22dr%22%3A%22card%22%7D)
-                    7.  _Agile working? Check out our brand new boards:_ → Go to [Boards]({{opSetting:base_url}}/projects/demo-construction-project/boards)
+                    1.  _Invitér nye deltagere som medlemmer af projektet_: → Gå til [Medlemmer]({{opSetting:base_url}}/projects/demo-construction-project/members) i projektnavigationen.
+                    2.  _Se arbejdet i sine projekter_: → Gå til [Arbejdspakker]({{opSetting:base_url}}/projects/demo-construction-project/work_packages?query_props=%7B%22c%22%3A%5B%22type%22%2C%22id%22%2C%22subject%22%2C%22status%22%2C%22assignee%22%2C%22priority%22%5D%2C%22hl%22%3A%22priority%22%2C%22hi%22%3Atrue%2C%22g%22%3A%22%22%2C%22t%22%3A%22startDate%3Aasc%22%2C%22f%22%3A%5B%7B%22n%22%3A%22bcfIssueAssociated%22%2C%22o%22%3A%22%3D%22%2C%22v%22%3A%5B%22f%22%5D%7D%5D%2C%22pa%22%3A1%2C%22pp%22%3A100%2C%22dr%22%3A%22list%22%7D) i projektnavigationen.
+                    3.  _Oprette en nu arbejdspakke_: → Gå til [Arbejdspakker → Opret]({{opSetting:base_url}}/projects/demo-construction-project/work_packages/new?query_props=%7B%22c%22%3A%5B%22type%22%2C%22id%22%2C%22subject%22%2C%22status%22%2C%22assignee%22%2C%22priority%22%5D%2C%22hl%22%3A%22priority%22%2C%22hi%22%3Atrue%2C%22g%22%3A%22%22%2C%22t%22%3A%22startDate%3Aasc%22%2C%22f%22%3A%5B%7B%22n%22%3A%22bcfIssueAssociated%22%2C%22o%22%3A%22%3D%22%2C%22v%22%3A%5B%22f%22%5D%7D%5D%2C%22pa%22%3A1%2C%22pp%22%3A100%2C%22dr%22%3A%22list%22%7D&type=11).
+                    4.  _Oprette og opdatere et Gantt-diagram_: → Gå til [Gantt chart]({{opSetting:base_url}}/projects/demo-construction-project/work_packages?query_props=%7B%22c%22%3A%5B%22type%22%2C%22id%22%2C%22subject%22%2C%22assignee%22%2C%22responsible%22%5D%2C%22tv%22%3Atrue%2C%22tzl%22%3A%22weeks%22%2C%22hl%22%3A%22priority%22%2C%22hi%22%3Atrue%2C%22g%22%3A%22%22%2C%22t%22%3A%22startDate%3Aasc%22%2C%22f%22%3A%5B%5D%2C%22pa%22%3A1%2C%22pp%22%3A100%2C%22dr%22%3A%22list%22%7D) i projektnavigationen.
+                    5.  _Aktivere yderligere moduler_: → Gå til [Projektindstillinger → Moduler]({{opSetting:base_url}}/projects/demo-construction-project/settings/modules).
+                    6.  _Tjek flisevisningen for at få en oversigt over BCF-problemer:_ → Gå til [Arbejdspakker]({{opSetting:base_url}}/projects/demo-construction-project/work_packages?query_props=%7B%22c%22%3A%5B%22type%22%2C%22id%22%2C%22subject%22%2C%22status%22%2C%22assignee%22%2C%22priority%22%5D%2C%22hl%22%3A%22priority%22%2C%22hi%22%3Atrue%2C%22g%22%3A%22%22%2C%22t%22%3A%22id%3Aasc%22%2C%22f%22%3A%5B%5D%2C%22pa%22%3A1%2C%22pp%22%3A100%2C%22dr%22%3A%22card%22%7D)
+                    7.  _Agilt arbejde? Tjek de nye tavler:_ → Gå til [Tavler]({{opSetting:base_url}}/projects/demo-construction-project/boards)
 
-                    Here you will find our [User Guides](https://www.openproject.org/docs/user-guide/).
-                    Please let us know if you have any questions or need support. Contact us: [support\[at\]openproject.com](mailto:support@openproject.com).
+                    Her finder man vores [Brugervejledninger](https://www.openproject.org/docs/user-guide/).
+                    Lad os vide, hvis der er nogen spørgsmål eller behov for support. Kontakt os: [support\[at\]openproject.com](mailto:support@openproject.com).
               item_4:
                 options:
                   name: Medlemmer
@@ -147,37 +147,37 @@ da:
                   name: Arbejdspakker
               item_6:
                 options:
-                  name: Milestones
+                  name: Milepæle
         demo-planning-constructing-project:
-          name: "(Demo) Planning & constructing"
-          status_explanation: All tasks are on schedule. The people involved know their tasks. The system is completely set up.
-          description: This is a short summary of the goals of this demo planning and constructing project.
+          name: "(Demo) Planlægning og konstruktion"
+          status_explanation: Alle opgaver følger tidsplanen. De involverede kender deres opgaver. Systemet er fuldt opsat.
+          description: Dette er et kort resumé af målene for dette demo planlægnings- og byggeprojekt.
           news:
             item_0:
-              title: Welcome to your demo project
+              title: Velkommen til demo-projektet
               summary: |
-                We are glad you joined.
-                In this module you can communicate project news to your team members.
-              description: The actual news
+                Vi er glade for deltagelsen.
+                I dette modul kan man kommunikere projektnyheder til sine teammedlemmer.
+              description: De faktiske nyheder
           categories:
-            item_0: Category 1 (to be changed in Project settings)
+            item_0: Kategori 1 (skal ændres i Projektindstillinger)
           queries:
             item_0:
-              name: Project plan
+              name: Projektplan
             item_1:
-              name: Milestones
+              name: Milepæle
             item_2:
-              name: Tasks
+              name: Opgaver
             item_3:
-              name: Team planner
+              name: Teamplanlægger
           project-overview:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Velkommen
               item_1:
                 options:
-                  name: Getting started
+                  name: At komme gang
                   text: |
                     We are glad you joined! We suggest to try a few things to get started in OpenProject.
 
@@ -202,7 +202,7 @@ da:
                   name: Arbejdspakker
               item_6:
                 options:
-                  name: Milestones
+                  name: Milepæle
           work_packages:
             item_0:
               subject: Project kick off construction project
@@ -256,7 +256,7 @@ da:
 
                     *   Create a useful overview of the results
                     *   Check what has been done and summarize the results
-                    *   Communicate all the relevant results with the customer
+                    *   Communicate all the relevant results with the customer
                     *   Identify the fundamental boundary conditions of the project
 
                     ## Description
@@ -271,7 +271,7 @@ da:
 
                     *   Create a useful overview of the results
                     *   Check what has been done and summarize the results
-                    *   Communicate all the relevant results with the customer
+                    *   Communicate all the relevant results with the customer
                     *   Identify the fundamental boundary conditions of the project
 
                     ## Description
@@ -408,30 +408,30 @@ da:
           description: This is a short summary of the goals of this demo BIM project.
           news:
             item_0:
-              title: Welcome to your demo project
+              title: Velkommen til demo-projektet
               summary: |
-                We are glad you joined.
-                In this module you can communicate project news to your team members.
-              description: The actual news
+                Vi er glade for deltagelsen.
+                I dette modul kan man kommunikere projektnyheder til sine teammedlemmer.
+              description: De faktiske nyheder
           categories:
-            item_0: Category 1 (to be changed in Project settings)
+            item_0: Kategori 1 (skal ændres i Projektindstillinger)
           queries:
             item_0:
-              name: Project plan
+              name: Projektplan
             item_1:
-              name: Milestones
+              name: Milepæle
             item_2:
-              name: Tasks
+              name: Opgaver
             item_3:
-              name: Team planner
+              name: Teamplanlægger
           project-overview:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Velkommen
               item_1:
                 options:
-                  name: Getting started
+                  name: At komme gang
                   text: |
                     We are glad you joined! We suggest to try a few things to get started in OpenProject.
 
@@ -459,7 +459,7 @@ da:
                   name: Arbejdspakker
               item_6:
                 options:
-                  name: Milestones
+                  name: Milepæle
           work_packages:
             item_0:
               subject: Project kick off creating BIM model
@@ -669,7 +669,7 @@ da:
               description: Enjoy your building :)
         demo-bcf-management-project:
           name: "(Demo) BCF management"
-          status_explanation: All tasks are on schedule. The people involved know their tasks. The system is completely set up.
+          status_explanation: Alle opgaver følger tidsplanen. De involverede kender deres opgaver. Systemet er fuldt opsat.
           description: This is a short summary of the goals of this demo BCF management project.
           ifc_models:
             item_0:
@@ -679,7 +679,7 @@ da:
             item_2:
               name: Hospital - Mechanical (cc-by-sa-3.0 Autodesk Inc.)
           categories:
-            item_0: Category 1 (to be changed in Project settings)
+            item_0: Kategori 1 (skal ændres i Projektindstillinger)
           queries:
             item_0:
               name: Issues
@@ -690,13 +690,13 @@ da:
             item_3:
               name: Remarks
             item_4:
-              name: Project plan
+              name: Projektplan
             item_5:
-              name: Milestones
+              name: Milepæle
             item_6:
-              name: Tasks
+              name: Opgaver
             item_7:
-              name: Team planner
+              name: Teamplanlægger
           boards:
             bcf:
               name: BCF issues
@@ -704,10 +704,10 @@ da:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Velkommen
               item_1:
                 options:
-                  name: Getting started
+                  name: At komme gang
                   text: |
                     We are glad you joined! We suggest to try a few things to get started in OpenProject.
 

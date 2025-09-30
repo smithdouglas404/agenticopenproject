@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -141,6 +141,7 @@ class Activities::BaseActivityProvider
   def event_selection_query(user, from, to, options)
     query = journals_with_data_query
     query = extend_event_query(query)
+    query = filter_for_visibility(query, user)
     query = filter_for_event_datetime(query, from, to)
     query = restrict_user(query, options)
     restrict_projects(query, user, options)
@@ -159,6 +160,14 @@ class Activities::BaseActivityProvider
     else
       query
     end
+  end
+
+  def filter_for_visibility(query, user)
+    query.where(
+      projects_table[:id]
+        .in(Project.allowed_to(user, :view_internal_comments).select(:id).arel)
+        .or(journals_table[:internal].eq(false))
+    )
   end
 
   def filter_for_event_datetime(query, from, to)
@@ -185,8 +194,6 @@ class Activities::BaseActivityProvider
     end
 
     params
-  rescue StandardError => e
-    Rails.logger.error "Failed to deduce event params for #{event_data.inspect}: #{e}"
   end
 
   def event_projection
@@ -219,7 +226,7 @@ class Activities::BaseActivityProvider
 
   def restrict_projects_by_selection(options, query)
     if (project = options[:project])
-      query = query.where(project.project_condition(options[:with_subprojects]))
+      query = query.where(project.with_subprojects(options[:with_subprojects]))
     end
 
     query

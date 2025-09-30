@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,7 +34,7 @@ module SearchHelper
 
     return nil unless split_text.length > 1 || text_on_not_found
 
-    result = ""
+    result = +""
     split_text.each_with_index do |words, i|
       if result.length > 1200
         # maximum length of the preview reached
@@ -55,7 +57,41 @@ module SearchHelper
     highlight_tokens(last_journal(event).try(:notes), tokens) or
       highlight_tokens(attachment_fulltexts(event), tokens) or
       highlight_tokens(attachment_filenames(event), tokens) or
-      highlight_tokens(event.event_description, tokens, text_on_not_found: true)
+      highlight_and_abbreviate_html(event.event_description, tokens)
+  end
+
+  # This is an enhanced version of `highlight_tokens`.
+  # Takes a markdown string, formats it to HTML and highlights the tokens.
+  # Lastly, abbreviates the output and returns the final result as HTML.
+  def highlight_and_abbreviate_html(event_description, tokens)
+    html = OpenProject::TextFormatting::Renderer.format_text(event_description)
+    highlighted_html = highlight_tokens_in_html(html, tokens)
+    # rubocop:disable Rails/OutputSafety
+    abbreviated_html(highlighted_html).html_safe
+    # rubocop:enable Rails/OutputSafety
+  end
+
+  def highlight_tokens_in_html(html, tokens)
+    doc = Nokogiri::HTML::DocumentFragment.parse(html)
+
+    tokens.each do |token|
+      escaped_token = Regexp.escape(token)
+
+      doc.traverse do |node|
+        next unless node.text?
+
+        escaped_text = CGI.escapeHTML(node.content)
+
+        t = (tokens.index(node.content.downcase) || 0) % 4
+        highlighted_text = escaped_text.gsub(/(#{escaped_token})/i) do
+          %{<span class="search-highlight token-#{t}">#{$1}</span>}
+        end
+
+        node.replace(Nokogiri::HTML::DocumentFragment.parse(highlighted_text))
+      end
+    end
+
+    doc.to_html
   end
 
   def text_split_by_token(text, tokens)
@@ -124,13 +160,19 @@ module SearchHelper
 
   def attachment_fulltexts(event)
     only_if_tsv_supported(event) do
-      Attachment.where(id: event.attachment_ids).pluck(:fulltext).join(" ")
+      # The compact is important here as the fulltext can be nil.
+      # A nil value in combination with another journal would lead to
+      # [nil, "The fulltext of the attachment"].join to be in US-ASCII encoding
+      # instead of the expected UTF-8.
+      # When this is then passed into Commonmarker, that will raise an error.
+      # https://community.openproject.org/wp/61110
+      Attachment.where(id: event.attachment_ids).pluck(:fulltext).compact.join
     end
   end
 
   def attachment_filenames(event)
     only_if_tsv_supported(event) do
-      event.attachments&.map(&:filename)&.join(" ")
+      event.attachments.map(&:filename).join
     end
   end
 
@@ -163,5 +205,44 @@ module SearchHelper
     end
 
     abbreviated_words
+  end
+
+  # Similar to `abbreviated_text`, but considers HTML tags and keeps them intact
+  def abbreviated_html(html, max_length: 1200)
+    doc = Nokogiri::HTML::DocumentFragment.parse(html)
+    text_length = 0
+
+    doc.traverse do |node|
+      next unless node.text?
+
+      original_text = node.content
+      abbreviated_text = process_text_node(original_text, text_length, max_length)
+      abbreviated_text = preserve_spaces(original_text, abbreviated_text) || ""
+
+      text_length += abbreviated_text.length
+      node.replace(Nokogiri::XML::Text.new(abbreviated_text, doc))
+
+      break if text_length >= max_length
+    end
+
+    doc.to_html
+  end
+
+  def process_text_node(content, current_length, max_length)
+    return content if current_length >= max_length
+
+    truncated_text = truncate_formatted_text(content, length: 100)
+
+    if current_length + content.length > max_length
+      truncated_text.truncate(max_length - current_length - 1)
+    else
+      truncated_text
+    end
+  end
+
+  def preserve_spaces(original_text, modified_text)
+    modified_text = " #{modified_text}" if original_text.start_with?(" ") && !modified_text.start_with?(" ")
+    modified_text = "#{modified_text} " if original_text.end_with?(" ") && !modified_text.end_with?(" ")
+    modified_text
   end
 end

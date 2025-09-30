@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,8 +30,10 @@
 
 require "spec_helper"
 
-RSpec.describe "user deletion:", :js, :with_cuprite do
+RSpec.describe "user deletion:", :js do
   let(:dialog) { Components::PasswordConfirmationDialog.new }
+
+  include Flash::Expectations
 
   before do
     page.set_rack_session(user_id: current_user.id, updated_at: Time.now)
@@ -52,7 +56,9 @@ RSpec.describe "user deletion:", :js, :with_cuprite do
 
       dialog.confirm_flow_with user_password
 
-      expect(page).to have_content "Account has been locked and was scheduled for deletion"
+      expect(page).to have_content("Account has been scheduled for deletion. " \
+                                   "Note that this process takes place in the background. " \
+                                   "It might take a few moments until the user is fully deleted.")
       expect(page).to have_current_path "/login"
     end
 
@@ -111,7 +117,9 @@ RSpec.describe "user deletion:", :js, :with_cuprite do
 
       dialog.confirm_flow_with user_password, should_fail: false
 
-      expect(page).to have_content "Account has been locked and was scheduled for deletion"
+      expect(page).to have_content("Account has been scheduled for deletion. " \
+                                   "Note that this process takes place in the background. " \
+                                   "It might take a few moments until the user is fully deleted.")
       expect(page).to have_current_path "/users"
     end
 
@@ -129,7 +137,9 @@ RSpec.describe "user deletion:", :js, :with_cuprite do
 
       dialog.confirm_flow_with user_password, with_keyboard: true, should_fail: false
 
-      expect(page).to have_content "Account has been locked and was scheduled for deletion"
+      expect(page).to have_content("Account has been scheduled for deletion. " \
+                                   "Note that this process takes place in the background. " \
+                                   "It might take a few moments until the user is fully deleted.")
       expect(page).to have_current_path "/users"
     end
 
@@ -150,6 +160,8 @@ RSpec.describe "user deletion:", :js, :with_cuprite do
       find_by_id("settings_users_deletable_by_self").set(true)
 
       click_on "Save"
+
+      expect_flash message: "Successful update."
 
       expect(Setting.users_deletable_by_admins?).to be true
       expect(Setting.users_deletable_by_self?).to be true

@@ -2,6 +2,7 @@
 de:
   js:
     storages:
+      authentication_error: "Authentifizierung mit %{storageType} fehlgeschlagen"
       link_files_in_storage: "Verknüpfen Sie Dateien in %{storageType}"
       link_existing_files: "Vorhandene Dateien verknüpfen"
       upload_files: "Dateien hochladen"
@@ -13,11 +14,14 @@ de:
       open_storage: "Öffne %{storageType}"
       select_location: "Speicherort auswählen"
       choose_location: "Speicherort wählen"
+      new_folder: "Neuer Ordner"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
         default: "Speicher"
       information:
+        authentication_error: "Die Anfrage an %{storageType} konnte nicht authentifiziert werden, das ist ein Fehler."
         connection_error: >
           Einige %{storageType} Einstellungen funktionieren nicht. Bitte kontaktieren Sie Ihren %{storageType} Administrator.
         live_data_error: "Fehler beim Abrufen der Dateidetails"
@@ -26,6 +30,8 @@ de:
         no_file_links: "Verknüpfen Sie Dateien mit diesem Arbeitspaket bitte über %{storageType}."
         not_logged_in: >
           Um einen Link hinzuzufügen, mit diesem Arbeitspaket verknüpfte Dateien zu sehen oder hochzuladen, melden Sie sich bitte bei %{storageType} an.
+        suggest_logout: Sie können ausprobieren, ob Aus- und Einloggen dieses Problem behebt.
+        suggest_relink: Sie können überprüfen, ob die erneute Verknüpfung Ihres Kontos über die unten stehende Login-Taste das Problem behebt.
       files:
         already_existing_header: "Diese Datei existiert bereits"
         already_existing_body: >
@@ -42,6 +48,7 @@ de:
           Der automatisch verwaltete Projektordner wurde noch nicht gefunden. Bitte warten Sie, laden Sie die Seite neu, um die neuesten Daten abzurufen und versuchen Sie es erneut.
         managed_project_folder_no_access: >
           Sie haben noch keinen Zugriff auf den verwalteten Projektordner. Bitte warten Sie ein wenig und versuchen Sie es erneut.
+        cannot_create_folder: Ordner konnte nicht erstellt werden. Vermeiden Sie die Verwendung von Sonderzeichen und Symbolen und stellen Sie sicher, dass der Ordner nicht bereits existiert.
         upload_keep_both: "Beide behalten"
         upload_replace: "Ersetzen"
       file_links:

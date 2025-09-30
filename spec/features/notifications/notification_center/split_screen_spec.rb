@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
-RSpec.describe "Split screen in the notification center", :js, :with_cuprite do
+RSpec.describe "Split screen in the notification center", :js do
   let(:global_html_title) { Components::HtmlTitle.new }
   let(:center) { Pages::Notifications::Center.new }
-  let(:split_screen) { Pages::Notifications::SplitScreen.new work_package }
+  let(:split_screen) { Pages::PrimerizedSplitWorkPackage.new work_package }
 
   shared_let(:project) { create(:project) }
   shared_let(:work_package) { create(:work_package, project:) }
@@ -16,7 +18,6 @@ RSpec.describe "Split screen in the notification center", :js, :with_cuprite do
   shared_let(:notification) do
     create(:notification,
            recipient:,
-           project:,
            resource: work_package,
            journal: work_package.journals.last)
   end
@@ -24,7 +25,6 @@ RSpec.describe "Split screen in the notification center", :js, :with_cuprite do
   shared_let(:second_notification) do
     create(:notification,
            recipient:,
-           project:,
            resource: second_work_package,
            journal: second_work_package.journals.last)
   end
@@ -61,7 +61,7 @@ RSpec.describe "Split screen in the notification center", :js, :with_cuprite do
       split_screen.expect_open
 
       # Activity is selected as default
-      split_screen.expect_tab :activity
+      split_screen.expect_tab "Activity"
       activity_tab = Components::WorkPackages::Activities.new(work_package)
       activity_tab.expect_wp_has_been_created_activity work_package
 
@@ -69,13 +69,13 @@ RSpec.describe "Split screen in the notification center", :js, :with_cuprite do
       split_screen.switch_to_tab tab: "relations"
       split_screen.expect_tab :relations
       relations_tab = Components::WorkPackages::Relations.new(work_package)
-      relations_tab.expect_no_relation work_package
+      relations_tab.expect_no_relations
 
       # Navigate to full view and back
       wp_full = split_screen.switch_to_fullscreen
       wp_full.expect_tab :relations
 
-      wp_full.go_back
+      page.execute_script("window.history.back()")
       split_screen.expect_tab :relations
 
       # The split screen can be closed
@@ -92,6 +92,7 @@ RSpec.describe "Split screen in the notification center", :js, :with_cuprite do
 
       # The split view should be closed and html title should change to the previous title
       split_screen.close
+
       global_html_title.expect_first_segment "Notifications"
 
       # Html title should be updated with next WP data after making the current one as read
@@ -99,7 +100,7 @@ RSpec.describe "Split screen in the notification center", :js, :with_cuprite do
       center.click_item notification
       sleep 0.25 # Wait after the item has been clicked to not be interpreted as a double click
       center.mark_notification_as_read notification
-      global_html_title.expect_first_segment second_title
+      global_html_title.expect_first_segment "#{second_title} | Notifications"
 
       # After making all notifications as read, html title should show the base route
       center.mark_notification_as_read second_notification

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,14 +30,14 @@
 module WorkPackage::Exports
   module Formatters
     class DoneRatio < ::Exports::Formatters::Default
-      def self.apply?(name, _export_format)
-        name.to_sym == :done_ratio
+      def self.apply?(name, export_format)
+        name.to_sym.in?(%i[done_ratio derived_done_ratio]) && export_format != :pdf
       end
 
-      def format(work_package, **)
-        derived_done_ratio = work_package.derived_done_ratio
-        derived = derived_done_ratio&.positive? ? " · Σ #{derived_done_ratio}%" : ""
-        "#{work_package.done_ratio}%#{derived}"
+      def format_value(value, _options = {})
+        return "" if value.nil?
+
+        "#{value}%"
       end
     end
   end

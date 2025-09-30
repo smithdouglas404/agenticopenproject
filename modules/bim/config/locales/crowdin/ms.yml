@@ -9,6 +9,7 @@ ms:
     label_bcf: 'BCF'
     label_imported_failed: 'Import topik BCF yang gagal'
     label_imported_successfully: 'Import topik BCF yang berjaya'
+    label_bcf_issue_associated: "Isu BCF berkaitan"
     issues: "Isu-isu"
     recommended: 'disarankan'
     not_recommended: 'tidak disarankan'
@@ -24,7 +25,7 @@ ms:
       xml_file: 'Fail BCF XML'
       import_title: 'Import'
       export: 'Eksport'
-      import_update_comment: '(Dikemas kini di dalam import BCF)'
+      import_update_comment: '(Dikemas kini dalam import BCF)'
       import_failed: 'Tidak boleh import fail BCF: %{error}'
       import_failed_unsupported_bcf_version: 'Fail BCF gagal untuk dibaca: Versi BCF ini tidak disokong. Sila pastikan versi ini adalah sekurang-kurangnya %{minimal_version} atau lebih tinggi.'
       import_successful: 'Import %{count} isu BCF'
@@ -83,6 +84,12 @@ ms:
         ifc_attachment: "Fail IFC"
         is_default: "Model default"
         attachments: "Fail IFC"
+      bim/bcf/issue:
+        bcf_comment: "BCF comment"
+        bim_snippet: "BIM snippet"
+        reference_links: "Reference links"
+        stage: "Peringkat"
+        viewpoint: "Sudut pandangan"
     errors:
       models:
         bim/ifc_models/ifc_model:
@@ -128,7 +135,7 @@ ms:
       upload_successful: 'Muat naik berjaya. Akan diproses dan sedia untuk digunakan dalam masa beberapa minit.'
     conversion:
       missing_commands: "Arahan converter IFC berikut tidak dijumpai dari sistem ini: %{names}"
-  project_module_ifc_models: "Model IFC"
+  project_module_ifc_models: "Model-model IFC"
   permission_view_ifc_models: "Paparkan model IFC"
   permission_manage_ifc_models: "Import dan urus model IFC"
   extraction:

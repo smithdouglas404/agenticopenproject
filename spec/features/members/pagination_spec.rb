@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -59,11 +61,9 @@ RSpec.describe "members pagination", :js do
       members_page.set_items_per_page! 2
 
       members_page.visit!
-      SeleniumHubWaiter.wait
       expect(members_page).to have_user "Alice Alison" # members are sorted by last name desc
       members_page.add_user! "Peter Pan", as: "Manager"
 
-      SeleniumHubWaiter.wait
       members_page.go_to_page! 2
       expect(members_page).to have_user "Peter Pan"
     end
@@ -82,11 +82,10 @@ RSpec.describe "members pagination", :js do
       members_page.set_items_per_page! 1
 
       members_page.visit!
-      SeleniumHubWaiter.wait
       members_page.remove_user! "Alice Alison"
+      expect_and_dismiss_flash message: "Removed Alice Alison from project"
       expect(members_page).to have_user "Bob Bobbit"
 
-      SeleniumHubWaiter.wait
       members_page.go_to_page! 2
       expect(members_page).to have_user "Peter Pan"
     end
@@ -97,13 +96,11 @@ RSpec.describe "members pagination", :js do
       members_page.set_items_per_page! 1
 
       members_page.visit!
-      SeleniumHubWaiter.wait
       members_page.go_to_page! 2
       members_page.edit_user! "Bob Bobbit", add_roles: ["Developer"]
       expect(page).to have_text "Successful update"
       expect(members_page).to have_user "Bob Bobbit", roles: ["Developer", "Manager"]
 
-      SeleniumHubWaiter.wait
       members_page.go_to_page! 1
       expect(members_page).to have_user "Alice Alison"
     end

@@ -1,10 +1,10 @@
-ARG RUBY_VERSION="3.3.2"
-FROM ruby:${RUBY_VERSION}-bookworm as base
+ARG RUBY_VERSION="3.4.5"
+FROM ruby:${RUBY_VERSION}-bookworm AS base
 LABEL maintainer="operations@openproject.com"
 
-ARG BUNDLER_VERSION="2.5.11"
-ARG NODE_VERSION="20.9.0"
+ARG NODE_VERSION="22.15.0"
 ARG BIM_SUPPORT=true
+ENV USE_JEMALLOC=false
 ENV DEBIAN_FRONTEND=noninteractive
 ENV BUNDLE_JOBS=8
 ENV BUNDLE_RETRY=3
@@ -15,10 +15,10 @@ ENV DOCKER=1
 ENV APP_USER=app
 ENV APP_PATH=/app
 ENV APP_DATA_PATH=/var/openproject/assets
-ENV PGVERSION="13"
-ENV CURRENT_PGVERSION="13"
-ENV NEXT_PGVERSION="15"
+ENV PGVERSION="17"
+ENV PGVERSION_CHOICES="13 15 17"
 ENV PGBIN="/usr/lib/postgresql/$PGVERSION/bin"
+ENV PATH="$PGBIN:$PATH"
 ENV BUNDLE_WITHOUT="development:test"
 
 # RAILS
@@ -36,14 +36,14 @@ ENV OPENPROJECT_ATTACHMENTS__STORAGE__PATH=$APP_DATA_PATH/files
 ENV OPENPROJECT_RAILS__CACHE__STORE=file_store
 ENV OPENPROJECT_ANGULAR_UGLIFY=true
 
-RUN useradd -d /home/$APP_USER -m $APP_USER
-RUN mkdir -p $APP_PATH && chown $APP_USER:$APP_USER $APP_PATH
-RUN mkdir -p $APP_DATA_PATH && chown $APP_USER:$APP_USER $APP_DATA_PATH && chmod g+rwx $APP_DATA_PATH
+RUN useradd -d /home/$APP_USER -m $APP_USER && \
+  mkdir -p $APP_PATH && chown $APP_USER:$APP_USER $APP_PATH && \
+  mkdir -p $APP_DATA_PATH && chown $APP_USER:$APP_USER $APP_DATA_PATH && chmod g+rwx $APP_DATA_PATH
 
 WORKDIR $APP_PATH
 
 # upgrade bundler
-RUN gem install bundler --version "$BUNDLER_VERSION" --no-document
+RUN gem install bundler --no-document
 
 # system dependencies, nodejs
 COPY ./docker/prod/setup/preinstall-common.sh ./docker/prod/setup/preinstall-common.sh
@@ -57,50 +57,43 @@ COPY vendor ./vendor
 # Add lib in case a plugin tries to load VERSION file under lib
 COPY lib ./lib
 
-RUN \
-  bundle config set --local path 'vendor/bundle' && \
-  bundle config set --local without 'test development' && \
-  bundle install --quiet --no-cache --jobs=8 --retry=3 && \
-  bundle config set deployment 'true' && \
-  cp Gemfile.lock Gemfile.lock.bak && \
-  rm -rf vendor/bundle/ruby/*/cache && \
-  rm -rf vendor/bundle/ruby/*/gems/*/spec && \
-  rm -rf vendor/bundle/ruby/*/gems/*/test
+COPY ./docker/prod/setup/bundle-install.sh ./vendor/bundle* ./vendor/
+RUN bash vendor/bundle-install.sh && rm vendor/bundle-install.sh
 
 COPY . .
 
 # Copy lock file again as the updated version was overriden by COPY just now
-RUN cp Gemfile.lock.bak Gemfile.lock && rm Gemfile.lock.bak
-
-RUN ./docker/prod/setup/precompile-assets.sh
-RUN ./docker/prod/setup/postinstall-common.sh
-
-RUN cp ./config/database.production.yml config/database.yml
-RUN ln -s $APP_PATH/docker/prod/setup/.irbrc /home/$APP_USER/
+RUN cp Gemfile.lock.bak Gemfile.lock && rm Gemfile.lock.bak && \
+  ./docker/prod/setup/precompile-assets.sh && \
+  ./docker/prod/setup/postinstall-common.sh && \
+  cp ./config/database.production.yml config/database.yml && \
+  ln -s $APP_PATH/docker/prod/setup/.irbrc /home/$APP_USER/
 
 # -------------------------------------
 # slim (public)
 # -------------------------------------
-FROM base as slim
+FROM base AS slim
 
 USER $APP_USER
 EXPOSE 8080
 CMD ["./docker/prod/web"]
+ENTRYPOINT ["./docker/prod/entrypoint-slim.sh"]
 VOLUME ["$APP_DATA_PATH"]
 
 # -------------------------------------
 # all-in-one (public)
 # -------------------------------------
-FROM base as all-in-one
+FROM base AS all-in-one
 
 ENV OPENPROJECT_RAILS__CACHE__STORE=memcache
 ENV DATABASE_URL=postgres://openproject:openproject@127.0.0.1/openproject
 ENV PGDATA=/var/openproject/pgdata
-ENV GOSU_VERSION="1.17"
 
-RUN ./docker/prod/setup/postinstall-onprem.sh
+COPY --from=openproject/gosu /go/bin/gosu /usr/local/bin/gosu
+RUN chmod +x /usr/local/bin/gosu && gosu nobody true
 
-RUN ln -s /app/docker/prod/setup/.irbrc /root/
+RUN ./docker/prod/setup/postinstall-onprem.sh && \
+  ln -s /app/docker/prod/setup/.irbrc /root/
 
 # Expose ports for apache and postgres
 EXPOSE 80

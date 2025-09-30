@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -38,6 +40,7 @@ RSpec.describe Queries::Users::Filters::AnyNameAttributeFilter do
     let(:class_key) { :any_name_attribute }
     let(:type) { :string }
     let(:model) { User.user }
+    let(:human_name) { "Name attributes" }
 
     describe "#allowed_values" do
       it "is nil" do

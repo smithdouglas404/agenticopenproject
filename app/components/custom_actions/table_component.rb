@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,9 +30,7 @@
 
 module CustomActions
   class TableComponent < ::TableComponent
-    columns :name,
-            :description,
-            :sort
+    columns :name, :description, :sort
 
     def headers
       [
@@ -40,6 +38,10 @@ module CustomActions
         ["description", { caption: CustomAction.human_attribute_name(:description) }],
         ["sort", { caption: I18n.t(:label_sort) }]
       ]
+    end
+
+    def sortable?
+      false
     end
 
     def inline_create_link

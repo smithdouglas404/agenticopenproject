@@ -8,6 +8,7 @@ ca:
         row_count: "Nombre de files"
         column_count: "Nombre de columnes"
         widgets: "Widgets"
+        scope: "Abast"
     errors:
       models:
         grids/grid:

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Administrating memberships via the project settings", :js, :with_cuprite do
+RSpec.describe "Administrating memberships via the project settings", :js do
   shared_let(:admin) { create(:admin) }
   shared_let(:project) { create(:project) }
 
@@ -37,16 +39,14 @@ RSpec.describe "Administrating memberships via the project settings", :js, :with
            status: User.statuses[:active],
            firstname: "Peter",
            lastname: "Pan",
-           mail: "foo@example.org",
-           preferences: { hide_mail: false })
+           mail: "foo@example.org")
   end
   shared_let(:hannibal) do
     create(:user,
            status: User.statuses[:invited],
            firstname: "Hannibal",
            lastname: "Smith",
-           mail: "boo@bar.org",
-           preferences: { hide_mail: true })
+           mail: "boo@bar.org")
   end
   shared_let(:developer_placeholder) { create(:placeholder_user, name: "Developer 1") }
   shared_let(:group) do
@@ -63,10 +63,12 @@ RSpec.describe "Administrating memberships via the project settings", :js, :with
   let!(:existing_members) { [] }
 
   let(:members_page) { Pages::Members.new project.identifier }
+  let(:standard_global_role) { nil }
 
   current_user { admin }
 
   before do
+    standard_global_role
     members_page.visit!
 
     SeleniumHubWaiter.wait
@@ -87,7 +89,7 @@ RSpec.describe "Administrating memberships via the project settings", :js, :with
       SeleniumHubWaiter.wait
       members_page.sort_by "email"
       members_page.expect_sorted_by "email"
-      expect(members_page.contents("email")).to eq [peter.mail]
+      expect(members_page.contents("email")).to eq [hannibal.mail, peter.mail]
 
       SeleniumHubWaiter.wait
       members_page.sort_by "status"
@@ -136,6 +138,48 @@ RSpec.describe "Administrating memberships via the project settings", :js, :with
       expect(members_page).to have_user "Hannibal Smith"
       expect(members_page).not_to have_user "Peter Pan"
       expect(members_page).not_to have_group group.name
+    end
+
+    context "when showing hover cards" do
+      it "shows more information when hovering over an avatar" do
+        members_page.in_user_row(peter) do |row|
+          # Hover over the username of peter to open the hover card
+          row.find(".op-principal--name").hover
+        end
+
+        members_page.in_user_hover_card(peter) do
+          find_test_selector("user-hover-card-name", text: peter.name)
+          find_test_selector("user-hover-card-email", text: peter.mail)
+          find_test_selector("user-hover-card-groups", text: "Member of #{peter.groups.first.name}")
+
+          button = find_test_selector("user-hover-card-profile-btn", text: "Open profile")
+          expect(button["href"]).to eq(edit_user_url(peter))
+        end
+      end
+
+      it "does not display a hover card on the top menu user avatar" do
+        page.find(".op-top-menu-user-avatar").hover
+
+        expect { page.find_test_selector("user-hover-card-#{User.current.id}") }.to raise_error(Capybara::ElementNotFound)
+      end
+    end
+
+    context "as a member" do
+      current_user { peter }
+
+      context "without view_user_email permission" do
+        it "does not display other user email addresses" do
+          expect(members_page.contents("email")).to eq([peter.mail])
+        end
+      end
+
+      context "with view_user_email permission" do
+        let(:standard_global_role) { create :standard_global_role }
+
+        it "displays other user email addresses" do
+          expect(members_page.contents("email")).to eq([hannibal.mail, peter.mail])
+        end
+      end
     end
   end
 

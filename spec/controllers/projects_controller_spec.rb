@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,33 +32,292 @@ require "spec_helper"
 
 RSpec.describe ProjectsController do
   shared_let(:admin) { create(:admin) }
-  let(:non_member) { create(:non_member) }
+
+  let(:user) { admin }
 
   before do
     allow(controller).to receive(:set_localization)
 
-    login_as admin
+    login_as user
   end
 
   describe "#new" do
-    it "renders 'new'" do
-      get "new"
-      expect(response).to be_successful
-      expect(response).to render_template "new"
-    end
+    shared_examples_for "successful requests" do
+      context "without a parent" do
+        let(:parent) { nil }
 
-    context "by non-admin user with add_project permission" do
-      let(:non_member_user) { create(:user) }
+        context "without a template" do
+          let(:template) { nil }
 
-      before do
-        non_member.add_permission! :add_project
-        login_as non_member_user
+          it_behaves_like "successful request"
+        end
+
+        context "with a template" do
+          let(:template) { create(:template_project) }
+
+          it_behaves_like "successful request"
+        end
       end
 
-      it "accepts get" do
-        get :new
+      context "with a parent" do
+        let(:parent) { create(:project) }
+
+        context "without a template" do
+          let(:template) { nil }
+
+          it_behaves_like "successful request"
+        end
+
+        context "with a template" do
+          let(:template) { create(:template_project) }
+
+          it_behaves_like "successful request"
+        end
+      end
+    end
+
+    shared_examples_for "successful request" do
+      it "renders 'new'", :aggregate_failures do
         expect(response).to be_successful
+        expect(assigns(:new_project)).to be_a_new(Project)
+        expect(assigns(:parent)).to eq parent
+        expect(assigns(:template)).to eq template
         expect(response).to render_template "new"
+      end
+    end
+
+    before do
+      get :new, params: { parent_id: parent&.id, template_id: template&.id }
+    end
+
+    context "as an admin" do
+      it_behaves_like "successful requests"
+    end
+
+    context "as a non-admin with global add_project permission" do
+      let(:user) { create(:user, global_permissions: [:add_project]) }
+      let(:template) { nil }
+
+      context "without a parent" do
+        let(:parent) { nil }
+
+        it_behaves_like "successful request"
+      end
+
+      context "with a parent with public permissions" do
+        let(:user) { create(:user, global_permissions: [:add_project], member_with_permissions: { parent => [] }) }
+        let(:parent) { create(:project) }
+
+        it_behaves_like "successful request"
+      end
+    end
+
+    context "as a non-admin without global add_project permission" do
+      let(:user) { create(:user, global_permissions: []) }
+      let(:template) { nil }
+
+      context "without a parent" do
+        let(:parent) { nil }
+
+        it "returns 403 Not Authorized" do
+          expect(response).not_to be_successful
+          expect(response).to have_http_status :forbidden
+        end
+      end
+
+      context "with a parent with add_subprojects permissions" do
+        let(:user) { create(:user, member_with_permissions: { parent => [:add_subprojects] }) }
+        let(:parent) { create(:project) }
+        let(:template) { nil }
+
+        it_behaves_like "successful request"
+      end
+    end
+
+    context "as a non-admin with global add_portfolios permission", with_flag: { portfolio_models: true } do
+      let(:parent) { nil }
+      let(:user) { create(:user, global_permissions: [:add_portfolios]) }
+      let(:template) { nil }
+
+      it_behaves_like "successful request"
+    end
+
+    context "as a non-admin with global add_programs permission", with_flag: { portfolio_models: true } do
+      let(:parent) { nil }
+      let(:user) { create(:user, global_permissions: [:add_programs]) }
+      let(:template) { nil }
+
+      it_behaves_like "successful request"
+    end
+  end
+
+  describe "#create" do
+    describe "permission checks" do
+      let(:project) { build_stubbed(:project) }
+      let(:service_result) { ServiceResult.success(result: project) }
+      let(:parent) { nil }
+
+      before do
+        creation_service = instance_double(Projects::CreateService, call: service_result)
+
+        allow(Projects::CreateService)
+          .to receive(:new)
+                .with(user:)
+                .and_return(creation_service)
+
+        post :create, params: { project: { name: "New Project" }, parent_id: parent&.id }
+      end
+
+      shared_examples_for "successful create request" do
+        it "redirects to project show", :aggregate_failures do
+          expect(response).to redirect_to project_path(project)
+          expect(flash[:notice]).to eq I18n.t(:notice_successful_create)
+        end
+      end
+
+      shared_examples_for "forbidden create request" do
+        it "returns 403 Not Authorized" do
+          expect(response).not_to be_successful
+          expect(response).to have_http_status :forbidden
+        end
+      end
+
+      context "as an admin" do
+        it_behaves_like "successful create request"
+
+        context "with a parent" do
+          let(:parent) { create(:project) }
+
+          it_behaves_like "successful create request"
+        end
+      end
+
+      context "as a non-admin with global add_project permission" do
+        let(:user) { create(:user, global_permissions: [:add_project]) }
+
+        it_behaves_like "successful create request"
+
+        context "with a parent with public permissions" do
+          let(:user) { create(:user, global_permissions: [:add_project], member_with_permissions: { parent => [] }) }
+          let(:parent) { create(:project) }
+
+          it_behaves_like "successful create request"
+        end
+      end
+
+      context "as a non-admin without global add_project permission" do
+        let(:user) { create(:user, global_permissions: []) }
+
+        it_behaves_like "forbidden create request"
+
+        context "with a parent with add_subprojects permissions" do
+          let(:user) { create(:user, member_with_permissions: { parent => [:add_subprojects] }) }
+          let(:parent) { create(:project) }
+
+          it_behaves_like "successful create request"
+        end
+      end
+
+      context "as a non-admin with global add_portfolios permission", with_flag: { portfolio_models: true } do
+        let(:user) { create(:user, global_permissions: [:add_portfolios]) }
+
+        it_behaves_like "successful create request"
+      end
+
+      context "as a non-admin with global add_programs permission", with_flag: { portfolio_models: true } do
+        let(:user) { create(:user, global_permissions: [:add_programs]) }
+
+        it_behaves_like "successful create request"
+      end
+    end
+
+    context "without a template" do
+      before do
+        creation_service = instance_double(Projects::CreateService, call: service_result)
+
+        allow(Projects::CreateService)
+          .to receive(:new)
+                .with(user: admin)
+                .and_return(creation_service)
+      end
+
+      context "when service call succeeds" do
+        let(:project) { build_stubbed(:project) }
+        let(:service_result) { ServiceResult.success(result: project) }
+
+        it "redirects to project show", :aggregate_failures do
+          post :create, params: { project: { name: "New Project" } }
+
+          expect(response).to redirect_to project_path(project)
+          expect(flash[:notice]).to eq I18n.t(:notice_successful_create)
+        end
+      end
+
+      context "when service call fails" do
+        let(:project) { Project.new }
+        let(:service_result) { ServiceResult.failure(result: project, message: "") }
+
+        it "renders new template with errors", :aggregate_failures do
+          post :create, params: { project: { name: "" } }
+
+          expect(response).not_to be_successful
+          expect(response).to have_http_status :unprocessable_entity
+          expect(assigns(:new_project)).to be_a_new(Project)
+          expect(assigns(:new_project)).not_to be_valid
+          expect(flash[:error]).to start_with I18n.t(:notice_unsuccessful_create_with_reason, reason: "")
+          expect(response).to render_template "new"
+        end
+      end
+    end
+
+    context "with a template" do
+      let(:template) { create(:template_project) }
+
+      before do
+        copy_service = instance_double(Projects::EnqueueCopyService)
+
+        allow(Projects::EnqueueCopyService)
+         .to receive(:new)
+               .with(user: admin, model: template)
+               .and_return(copy_service)
+
+        allow(copy_service)
+          .to receive(:call)
+              .with(target_project_params: { "name" => name }, only: [], send_notifications: false)
+              .and_return(service_result)
+
+        post :create, params: {
+          template_id: template.id,
+          project: { name: },
+          copy_options: { dependencies: [""], send_notifications: false } # emulating empty dependencies array
+        }
+      end
+
+      context "when service call succeeds" do
+        let(:name) { "Copied project" }
+        let(:job) { CopyProjectJob.new }
+        let(:service_result) { ServiceResult.success(result: job) }
+
+        it "redirects to job status", :aggregate_failures do
+          expect(response).to redirect_to job_status_path(job.job_id)
+        end
+      end
+
+      context "when service call fails" do
+        let(:name) { "" }
+        let(:project) { Project.new }
+        let(:service_result) { ServiceResult.failure(result: project, message: "") }
+
+        it "renders new template with errors", :aggregate_failures do
+          expect(response).not_to be_successful
+          expect(response).to have_http_status :unprocessable_entity
+          expect(assigns(:new_project)).to be_a_new(Project)
+          expect(assigns(:new_project)).not_to be_valid
+          expect(assigns(:template)).not_to be_nil
+          expect(assigns(:copy_options)).not_to be_nil
+          expect(flash[:error]).to start_with I18n.t(:notice_unsuccessful_create_with_reason, reason: "")
+          expect(response).to render_template "new"
+        end
       end
     end
   end
@@ -130,33 +391,97 @@ RSpec.describe ProjectsController do
     let(:project) { create(:project, identifier: "blog") }
 
     it "gets destroy info" do
-      get :destroy_info, params: { id: project.id }
+      get :destroy_info, params: { id: project.id }, format: :turbo_stream
       expect(response).to be_successful
-      expect(response).to render_template "destroy_info"
+      expect(response).to have_turbo_stream action: "dialog", target: "projects-delete-dialog-component"
 
       expect { project.reload }.not_to raise_error
+    end
+  end
+
+  describe "#copy_form" do
+    let(:project) { create(:project, identifier: "blog") }
+
+    shared_examples_for "successful request" do
+      it "renders 'copy_form'", :aggregate_failures do
+        expect(response).to be_successful
+        expect(assigns(:target_project)).to be_a_new(Project)
+        expect(assigns(:project)).to eq project
+        expect(response).to render_template "copy_form"
+      end
+    end
+
+    before do
+      get "copy_form", params: { id: project.identifier }
+    end
+
+    context "as an admin" do
+      it_behaves_like "successful request"
+    end
+
+    context "as a non-admin with copy_projects permissions" do
+      let(:user) { create(:user, member_with_permissions: { project => [:copy_projects] }) }
+
+      it_behaves_like "successful request"
+    end
+
+    context "as a non-admin without copy_projects permissions" do
+      let(:user) { build_stubbed(:user) }
+
+      it "returns 403 Not Authorized" do
+        expect(response).not_to be_successful
+        expect(response).to have_http_status :forbidden
+      end
     end
   end
 
   describe "#copy" do
     let(:project) { create(:project, identifier: "blog") }
 
-    it "renders 'copy'" do
-      get "copy", params: { id: project.id }
-      expect(response).to be_successful
-      expect(response).to render_template "copy"
+    before do
+      copy_service = instance_double(Projects::EnqueueCopyService)
+
+      allow(Projects::EnqueueCopyService)
+       .to receive(:new)
+             .with(user: admin, model: project)
+             .and_return(copy_service)
+
+      allow(copy_service)
+        .to receive(:call)
+            .with(target_project_params: { "name" => name }, only: [], send_notifications: false)
+            .and_return(service_result)
+
+      post :copy, params: {
+        id: project.identifier,
+        project: { name: },
+        copy_options: { dependencies: [""], send_notifications: false } # emulating empty dependencies array
+      }
     end
 
-    context "as non authorized user" do
-      let(:user) { build_stubbed(:user) }
+    context "when service call succeeds" do
+      let(:name) { "Copied project" }
+      let(:job) { CopyProjectJob.new }
+      let(:service_result) { ServiceResult.success(result: job) }
 
-      before do
-        login_as user
+      it "redirects to job status" do
+        expect(response).to redirect_to job_status_path(job.job_id)
       end
+    end
 
-      it "shows an error" do
-        get "copy", params: { id: project.id }
-        expect(response.status).to eq 403
+    context "when service call fails" do
+      let(:name) { "" }
+      let(:target_project) { Project.new }
+      let(:service_result) { ServiceResult.failure(result: target_project, message: "") }
+
+      it "renders copy_form template with errors", :aggregate_failures do
+        expect(response).not_to be_successful
+        expect(response).to have_http_status :unprocessable_entity
+        expect(assigns(:target_project)).to be_a_new(Project)
+        expect(assigns(:target_project)).not_to be_valid
+        expect(assigns(:project)).to eq project
+        expect(assigns(:copy_options)).not_to be_nil
+        expect(flash[:error]).to start_with I18n.t(:notice_unsuccessful_create_with_reason, reason: "")
+        expect(response).to render_template "copy_form"
       end
     end
   end

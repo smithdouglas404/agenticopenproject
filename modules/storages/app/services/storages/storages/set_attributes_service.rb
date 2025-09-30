@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,7 +31,7 @@
 # See also: create_service.rb for comments
 module Storages::Storages
   class SetAttributesService < ::BaseServices::SetAttributes
-    after_call :remove_host_trailing_slashes
+    after_call :sanitize_host
 
     def set_default_attributes(_params)
       storage.creator ||= user
@@ -38,22 +40,23 @@ module Storages::Storages
     private
 
     def set_attributes(params)
-      super(replace_empty_host_with_nil(params))
+      audience_config = params.delete(:audience_configuration)
+
+      super
+
       unset_nextcloud_application_credentials if nextcloud_storage?
+      set_idp_audience if audience_config == "idp"
     end
 
-    def remove_host_trailing_slashes
-      storage.host = storage.host&.gsub(/\/+$/, "")
-    end
-
-    def replace_empty_host_with_nil(params)
-      cloned_param = params.clone
-
-      if cloned_param[:host] == ""
-        cloned_param[:host] = nil
-      end
-
-      cloned_param
+    def sanitize_host
+      host_input = storage.host
+      storage.host = if host_input.present? && !host_input.ends_with?("/")
+                       "#{host_input}/"
+                     elsif host_input == ""
+                       nil
+                     else
+                       host_input
+                     end
     end
 
     def unset_nextcloud_application_credentials
@@ -72,6 +75,10 @@ module Storages::Storages
 
     def nextcloud_storage?
       storage.is_a?(Storages::NextcloudStorage)
+    end
+
+    def set_idp_audience
+      storage.storage_audience = OpenIDConnect::UserToken::IDP_AUDIENCE
     end
   end
 end

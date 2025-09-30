@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -24,7 +24,7 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 // See COPYRIGHT and LICENSE files for more details.
-// ++    Ng1FieldControlsWrapper,
+//++    Ng1FieldControlsWrapper,
 
 import { Injectable } from '@angular/core';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
@@ -99,7 +99,7 @@ export class AttributeModelLoaderService {
       .values$()
       .pipe(
         take(1),
-        tap((val) => console.log(`VAL ${val}`), (err) => console.error(`ERR ${err}`)),
+        tap({ next: (val) => console.log(`VAL ${val}`), error: (err) => console.error(`ERR ${err}`) }),
       );
   }
 

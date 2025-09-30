@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -77,6 +77,10 @@ class OpenProject::JournalFormatter::Cause < JournalFormatter::Base
       status_changed_message
     when "progress_mode_changed_to_status_based"
       progress_mode_changed_to_status_based_message
+    when "total_percent_complete_mode_changed_to_work_weighted_average"
+      total_percent_complete_mode_changed_to_work_weighted_average_message
+    when "total_percent_complete_mode_changed_to_simple_average"
+      total_percent_complete_mode_changed_to_simple_average_message
     else
       related_work_package_changed_message
     end
@@ -90,9 +94,9 @@ class OpenProject::JournalFormatter::Cause < JournalFormatter::Base
       case feature
       when "progress_calculation_adjusted_from_disabled_mode",
            "progress_calculation_adjusted"
-        { href: OpenProject::Static::Links.links[:blog_article_progress_changes][:href] }
+        { href: OpenProject::Static::Links.url_for(:blog_article_progress_changes) }
       when "totals_removed_from_childless_work_packages"
-        { href: OpenProject::Static::Links.links[:release_notes_14_0_1][:href] }
+        { href: OpenProject::Static::Links.url_for(:release_notes_14_0_1) }
       else
         {}
       end
@@ -141,6 +145,14 @@ class OpenProject::JournalFormatter::Cause < JournalFormatter::Base
 
   def progress_mode_changed_to_status_based_message
     I18n.t("journals.cause_descriptions.progress_mode_changed_to_status_based")
+  end
+
+  def total_percent_complete_mode_changed_to_work_weighted_average_message
+    I18n.t("journals.cause_descriptions.total_percent_complete_mode_changed_to_work_weighted_average")
+  end
+
+  def total_percent_complete_mode_changed_to_simple_average_message
+    I18n.t("journals.cause_descriptions.total_percent_complete_mode_changed_to_simple_average")
   end
 
   def related_work_package_changed_message

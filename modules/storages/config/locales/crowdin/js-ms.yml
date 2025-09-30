@@ -2,6 +2,7 @@
 ms:
   js:
     storages:
+      authentication_error: "Authentication with %{storageType} failed"
       link_files_in_storage: "Pautkan fail dalam %{storageType}"
       link_existing_files: "Pautkan fail sedia ada"
       upload_files: "Muat naik fail"
@@ -13,11 +14,14 @@ ms:
       open_storage: "Buka %{storageType}"
       select_location: "Pilih lokasi"
       choose_location: "Pilih lokasi"
+      new_folder: "Folder baru"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
         default: "Storan"
       information:
+        authentication_error: "The request to %{storageType} could not be authenticated, that's an error."
         connection_error: >
           Beberapa tetapan %{storageType} tidak berfungsi. Sila hubungi pentadbir %{storageType} anda.
         live_data_error: "Ralat memperoleh butiran fail"
@@ -26,6 +30,8 @@ ms:
         no_file_links: "Untuk mengaitkan fail-fail kepada pakej kerja ini, sila lakukan melalui %{storageType}."
         not_logged_in: >
           Untuk tambah pautan, lihat atau muat naik fail yang berkaitan dengan pakej kerja ini, sila log masuk ke %{storageType}.
+        suggest_logout: You can try whether logging out and back in fixes this problem.
+        suggest_relink: You can try whether re-linking your account via the login button below fixes this problem.
       files:
         already_existing_header: "Fail ini telah wujud"
         already_existing_body: >
@@ -42,6 +48,7 @@ ms:
           Folder yang dikendalikan secara automatik masih belum ditemui. Sila tunggu sebentar, muat semula halaman untuk dapatkan data terkini, dan cuba lagi.
         managed_project_folder_no_access: >
           Anda masih belum mempunyai akses ke folder projek yang dikendalikan. Sila tunggu sebentar dan cuba lagi.
+        cannot_create_folder: Failed to create folder. Avoid using special characters and symbols and make sure the folder does not exist already.
         upload_keep_both: "Simpan kedua-duanya"
         upload_replace: "Gantikan"
       file_links:

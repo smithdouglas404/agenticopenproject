@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -242,7 +244,7 @@ RSpec.describe RepositoriesController do
       shared_examples "renders the repository title" do |active_breadcrumb|
         it do
           expect(response).to be_successful
-          expect(response.body).to have_css(".repository-breadcrumbs", text: active_breadcrumb)
+          expect(response.body).to have_css(".PageHeader-breadcrumbs", text: active_breadcrumb)
         end
       end
 

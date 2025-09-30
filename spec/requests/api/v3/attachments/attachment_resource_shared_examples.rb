@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -155,7 +157,7 @@ RSpec.shared_examples "it supports direct uploads" do
         end
       end
 
-      context "with an attachment whitelist", with_settings: { attachment_whitelist: ["text/csv"] } do
+      context "with an attachment allowlist", with_settings: { attachment_whitelist: ["text/csv"] } do
         context "with an allowed content type" do
           let(:metadata) { { fileName: "cats.csv", fileSize: file.size, contentType: "text/csv" } }
 
@@ -169,14 +171,14 @@ RSpec.shared_examples "it supports direct uploads" do
 
           it "fails" do
             expect(subject.status).to eq 422
-            expect(subject.body).to include "not whitelisted"
+            expect(subject.body).to include "'text/plain' is not allowed for upload."
           end
         end
 
-        context "with a non-specific content type not on the whitelist" do
+        context "with a non-specific content type not on the allowlist" do
           let(:metadata) { { fileName: "cats.bin", fileSize: file.size, contentType: "application/binary" } }
 
-          # the actual whitelist check will be performed in the FinishDirectUpload job in this case
+          # the actual allowlist check will be performed in the FinishDirectUpload job in this case
           it "still succeeds" do
             expect(subject.status).to eq 201
           end
@@ -471,6 +473,13 @@ RSpec.shared_examples "an APIv3 attachment resource", content_type: :json, type:
           expect(subject.body)
             .to match(mock_file.read)
         end
+
+        it "responds with not found if file has been deleted" do
+          File.delete attachment.file.path
+
+          get path
+          expect(subject.status).to eq 404
+        end
       end
 
       context "for a local text file" do
@@ -540,8 +549,8 @@ RSpec.shared_examples "an APIv3 attachment resource", content_type: :json, type:
 
   context "by container", if: include_by_container do
     it_behaves_like "it supports direct uploads" do
-      let(:request_path) { "/api/v3/#{attachment_type}s/#{container.id}/attachments/prepare" }
-      let(:container_href) { "/api/v3/#{attachment_type}s/#{container.id}" }
+      let(:request_path) { "/api/v3/#{attachment_type.to_s.pluralize}/#{container.id}/attachments/prepare" }
+      let(:container_href) { "/api/v3/#{attachment_type.to_s.pluralize}/#{container.id}" }
     end
 
     subject(:response) { last_response }

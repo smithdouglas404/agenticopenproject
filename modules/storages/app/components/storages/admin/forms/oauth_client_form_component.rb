@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,15 +29,12 @@
 #++
 #
 module Storages::Admin::Forms
-  class OAuthClientFormComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
+  class OAuthClientFormComponent < StorageFormComponent
+    def self.wrapper_key = :storage_oauth_client_section
 
-    attr_reader :storage
-    alias_method :oauth_client, :model
-
-    def initialize(oauth_client:, storage:, **)
-      super(oauth_client, **)
-      @storage = storage
+    def form_url
+      query = { continue_wizard: storage.id } if in_wizard
+      admin_settings_storage_oauth_client_path(storage, query)
     end
 
     def form_method
@@ -49,21 +46,29 @@ module Storages::Admin::Forms
     end
 
     def storage_provider_credentials_instructions
-      I18n.t("storages.instructions.#{storage.short_provider_type}.oauth_configuration",
-             application_link_text: send(:"#{storage.short_provider_type}_integration_link")).html_safe
+      I18n.t("storages.instructions.#{storage}.oauth_configuration",
+             application_link_text: send(:"#{storage}_integration_link")).html_safe
     end
 
     private
 
+    def oauth_client
+      options[:oauth_client] || storage.oauth_client
+    end
+
     def one_drive_integration_link(target: "_blank")
-      href = ::OpenProject::Static::Links[:storage_docs][:one_drive_oauth_application][:href]
-      render(Primer::Beta::Link.new(href:, target:)) { I18n.t("storages.instructions.one_drive.application_link_text") }
+      href = ::OpenProject::Static::Links.url_for(:storage_docs, :one_drive_oauth_application)
+      render(Primer::Beta::Link.new(href:, underline: true, target:)) { I18n.t("storages.instructions.one_drive.application_link_text") }
+    end
+
+    def sharepoint_integration_link(target: "_blank")
+      href = ::OpenProject::Static::Links.url_for(:storage_docs, :sharepoint_oauth_application)
+      render(Primer::Beta::Link.new(href:, underline: true, target:)) { I18n.t("storages.instructions.sharepoint.application_link_text") }
     end
 
     def nextcloud_integration_link(target: "_blank")
-      href = Storages::Peripherals::StorageInteraction::Nextcloud::Util
-               .join_uri_path(storage.host, "settings/admin/openproject")
-      render(Primer::Beta::Link.new(href:, target:)) { I18n.t("storages.instructions.nextcloud.integration") }
+      href = Storages::UrlBuilder.url(storage.uri, "settings/admin/openproject")
+      render(Primer::Beta::Link.new(href:, underline: true, target:)) { I18n.t("storages.instructions.nextcloud.integration") }
     end
 
     def first_time_configuration?
@@ -72,6 +77,10 @@ module Storages::Admin::Forms
 
     def default_form_method
       first_time_configuration? ? :post : :patch
+    end
+
+    def data_attributes
+      { turbo_frame: "page-content" }
     end
   end
 end

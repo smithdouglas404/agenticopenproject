@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,6 +37,8 @@ RSpec.describe CustomField do
 
   let(:field)  { build(:custom_field) }
   let(:field2) { build(:custom_field) }
+
+  it { is_expected.to have_readonly_attribute(:field_format) }
 
   describe "#name" do
     it { is_expected.to validate_presence_of(:name) }
@@ -73,8 +77,7 @@ RSpec.describe CustomField do
   end
 
   describe "#valid?" do
-    describe "WITH a text field
-              WITH minimum length blank" do
+    describe "WITH a text field WITH minimum length blank" do
       before do
         field.field_format = "text"
         field.min_length = nil
@@ -83,8 +86,7 @@ RSpec.describe CustomField do
       it { expect(field).not_to be_valid }
     end
 
-    describe "WITH a text field
-              WITH maximum length blank" do
+    describe "WITH a text field WITH maximum length blank" do
       before do
         field.field_format = "text"
         field.max_length = nil
@@ -93,8 +95,7 @@ RSpec.describe CustomField do
       it { expect(field).not_to be_valid }
     end
 
-    describe "WITH a text field
-              WITH minimum length not an integer" do
+    describe "WITH a text field WITH minimum length not an integer" do
       before do
         field.field_format = "text"
         field.min_length = "a"
@@ -103,8 +104,7 @@ RSpec.describe CustomField do
       it { expect(field).not_to be_valid }
     end
 
-    describe "WITH a text field
-              WITH maximum length not an integer" do
+    describe "WITH a text field WITH maximum length not an integer" do
       before do
         field.field_format = "text"
         field.max_length = "a"
@@ -113,8 +113,7 @@ RSpec.describe CustomField do
       it { expect(field).not_to be_valid }
     end
 
-    describe "WITH a text field
-              WITH minimum length greater than maximum length" do
+    describe "WITH a text field WITH minimum length greater than maximum length" do
       before do
         field.field_format = "text"
         field.min_length = 2
@@ -124,8 +123,7 @@ RSpec.describe CustomField do
       it { expect(field).not_to be_valid }
     end
 
-    describe "WITH a text field
-              WITH negative minimum length" do
+    describe "WITH a text field WITH negative minimum length" do
       before do
         field.field_format = "text"
         field.min_length = -2
@@ -134,8 +132,7 @@ RSpec.describe CustomField do
       it { expect(field).not_to be_valid }
     end
 
-    describe "WITH a text field
-              WITH negative maximum length" do
+    describe "WITH a text field WITH negative maximum length" do
       before do
         field.field_format = "text"
         field.max_length = -2
@@ -144,8 +141,7 @@ RSpec.describe CustomField do
       it { expect(field).not_to be_valid }
     end
 
-    describe "WITH a text field
-              WITH an invalid regexp" do
+    describe "WITH a text field WITH an invalid regexp" do
       before do
         field.field_format = "text"
         field.regexp = "[0-9}"
@@ -157,20 +153,18 @@ RSpec.describe CustomField do
       end
     end
 
-    describe "WITH a list field
-              WITHOUT a custom option" do
+    describe "WITH a list field WITHOUT a custom option" do
       before do
         field.field_format = "list"
       end
 
       it "is not valid" do
         expect(field)
-          .to be_invalid
+          .not_to be_valid
       end
     end
 
-    describe "WITH a list field
-              WITH a custom option" do
+    describe "WITH a list field WITH a custom option" do
       before do
         field.field_format = "list"
         field.custom_options.build(value: "some value")
@@ -225,17 +219,27 @@ RSpec.describe CustomField do
     let(:project) { build_stubbed(:project) }
     let(:user1) { build_stubbed(:user) }
     let(:user2) { build_stubbed(:user) }
+    let(:in_visible_scope) { instance_double(ActiveRecord::Relation) }
+    let(:principals_scope) { instance_double(ActiveRecord::Relation) }
 
     context "for a user custom field" do
       before do
         field.field_format = "user"
         allow(project)
           .to receive(:principals)
-          .and_return([user1, user2])
+                .and_return(principals_scope)
+
+        allow(principals_scope)
+          .to receive(:select)
+                .and_return([user1, user2])
 
         allow(Principal)
           .to receive(:in_visible_project_or_me)
-          .and_return([user2])
+                .and_return(in_visible_scope)
+
+        allow(in_visible_scope)
+          .to receive(:select)
+                .and_return([user2])
       end
 
       context "for a project" do
@@ -260,6 +264,16 @@ RSpec.describe CustomField do
             .to contain_exactly([user2.name, user2.id.to_s])
         end
       end
+
+      context "with user format setting excluding lastname", with_settings: { user_format: :username } do
+        it "always includes lastname for Group#name{:lastname} aliasing" do
+          expect(field.possible_values_options)
+            .to contain_exactly([user2.name, user2.id.to_s])
+
+          expect(in_visible_scope).to have_received(:select)
+           .with("login", "lastname", "id", "type")
+        end
+      end
     end
 
     context "for a list custom field" do
@@ -279,20 +293,25 @@ RSpec.describe CustomField do
     end
 
     context "for a version custom field" do
-      let(:versions) { [build_stubbed(:version), build_stubbed(:version)] }
+      let(:versions) { [build_stubbed(:version, project:), build_stubbed(:version, project:)] }
+      let(:shared_versions_scope) { instance_double(ActiveRecord::Relation) }
 
       before do
         field.field_format = "version"
+        allow(shared_versions_scope)
+          .to receive(:references)
+          .with(:project)
+          .and_return(versions)
       end
 
       context "with a project provided" do
         it "returns the project's shared_versions" do
           allow(project)
             .to receive(:shared_versions)
-            .and_return(versions)
+            .and_return(shared_versions_scope)
 
           expect(field.possible_values_options(project))
-            .to eql(versions.sort.map { |u| [u.name, u.id.to_s] })
+            .to eql(versions.sort.map { |u| [u.name, u.id.to_s, project.name] })
         end
       end
 
@@ -302,21 +321,35 @@ RSpec.describe CustomField do
         it "returns the project's shared_versions" do
           allow(project)
             .to receive(:shared_versions)
-            .and_return(versions)
+            .and_return(shared_versions_scope)
 
           expect(field.possible_values_options(project))
-            .to eql(versions.sort.map { |u| [u.name, u.id.to_s] })
+            .to eql(versions.sort.map { |u| [u.name, u.id.to_s, project.name] })
         end
       end
 
       context "with nothing provided" do
-        it "returns the systemwide versions" do
-          allow(Version)
-            .to receive(:systemwide)
-            .and_return(versions)
+        context "and no scope provided" do
+          it "returns the systemwide versions" do
+            allow(Version)
+              .to receive(:systemwide)
+              .and_return(shared_versions_scope)
 
-          expect(field.possible_values_options)
-            .to eql(versions.sort.map { |u| [u.name, u.id.to_s] })
+            expect(field.possible_values_options)
+              .to eql(versions.sort.map { |u| [u.name, u.id.to_s, project.name] })
+          end
+        end
+
+        context "and scope: :visible is provided" do
+          it "returns the visible and systemwide versions" do
+            allow(Version).to receive(:visible).and_return(shared_versions_scope)
+            allow(shared_versions_scope).to receive(:or)
+                                        .with(Version.systemwide)
+                                        .and_return(shared_versions_scope)
+
+            expect(field.possible_values_options(options: { scope: :visible }))
+              .to eql(versions.sort.map { |u| [u.name, u.id.to_s, project.name] })
+          end
         end
       end
     end
@@ -447,6 +480,15 @@ RSpec.describe CustomField do
 
     context "with a project int cf" do
       let(:field) { build_stubbed(:integer_project_custom_field) }
+
+      it "is false" do
+        expect(field)
+          .not_to be_multi_value_possible
+      end
+    end
+
+    context "with a project calculated value cf" do
+      let(:field) { build_stubbed(:calculated_value_project_custom_field) }
 
       it "is false" do
         expect(field)

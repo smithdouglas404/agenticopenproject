@@ -4,14 +4,14 @@ import {
 } from '@angular/core';
 import { ThirdPartyDraggable } from '@fullcalendar/interaction';
 import { DragMetaInput } from '@fullcalendar/common';
-import { Drake } from 'dragula';
+import dragula, { Drake } from 'dragula';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { BehaviorSubject } from 'rxjs';
 import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
 import { AuthorisationService } from 'core-app/core/model-auth/model-auth.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { OpWorkPackagesCalendarService } from 'core-app/features/calendar/op-work-packages-calendar.service';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 
 @Injectable()
 export class CalendarDragDropService {

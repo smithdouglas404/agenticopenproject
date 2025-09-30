@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -53,7 +55,7 @@ RSpec.describe Queries::Users::Filters::StatusFilter do
       let(:operator) { "=" }
 
       it "is the same as handwriting the query" do
-        expected = model.where("users.status IN (1,4)")
+        expected = model.where("users.status IN (1, 4)")
 
         expect(instance.apply_to(model).to_sql).to eql expected.to_sql
       end

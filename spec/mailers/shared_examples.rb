@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_examples_for "mail is sent" do
   let(:letters_sent_count) { 1 }
   let(:mail) { deliveries.first }

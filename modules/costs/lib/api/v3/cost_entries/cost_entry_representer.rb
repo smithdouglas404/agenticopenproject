@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -39,9 +39,13 @@ module API
         associated_resource :cost_type
 
         # for now not embedded, because work packages are quite large
+        associated_resource :entity,
+                            getter: ::API::V3::CostEntries::EntityRepresenterFactory.create_getter_lambda(:entity),
+                            link: ::API::V3::CostEntries::EntityRepresenterFactory.create_link_lambda(:entity)
+
+        # TODO: DEPRECATED!
         associated_resource :work_package,
-                            getter: ->(*) {},
-                            link_title_attribute: :subject
+                            skip_render: ->(*) { represented.entity_type != "WorkPackage" }
 
         property :id, render_nil: true
         property :units, as: :spentUnits

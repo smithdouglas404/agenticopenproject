@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -36,16 +38,16 @@ RSpec.describe Queries::WorkPackages::Filter::VersionFilter do
     let(:class_key) { :version_id }
     let(:values) { [version.id.to_s] }
     let(:name) { WorkPackage.human_attribute_name("version") }
-
+    let(:scope) { instance_double(ActiveRecord::Relation) }
     before do
       if project
         allow(project)
           .to receive_message_chain(:shared_versions, :pluck)
           .and_return [version.id]
       else
-        allow(Version)
-          .to receive_message_chain(:visible, :systemwide, :pluck)
-          .and_return [version.id]
+        allow(Version).to receive(:visible).and_return(scope)
+        allow(scope).to receive(:or).with(Version.systemwide).and_return(scope)
+        allow(scope).to receive(:pluck).with(:id).and_return([version.id])
       end
     end
 
@@ -72,9 +74,7 @@ RSpec.describe Queries::WorkPackages::Filter::VersionFilter do
         end
 
         it "is false if the value does not exist as a version" do
-          allow(Version)
-            .to receive_message_chain(:visible, :systemwide, :pluck)
-            .and_return []
+          allow(scope).to receive(:pluck).with(:id).and_return([])
 
           expect(instance).not_to be_valid
         end
@@ -121,6 +121,64 @@ RSpec.describe Queries::WorkPackages::Filter::VersionFilter do
       it "returns an array of versions" do
         expect(instance.value_objects)
           .to contain_exactly(version1)
+      end
+    end
+
+    describe "#available_operators" do
+      it "includes the version status operators" do
+        expect(instance.available_operators).to include(
+          Queries::Operators::Versions::OpenStatus,
+          Queries::Operators::Versions::ClosedStatus,
+          Queries::Operators::Versions::LockedStatus
+        )
+      end
+    end
+
+    describe "#operator_strategy" do
+      context "for open status operator" do
+        let(:operator) { "o" }
+
+        it "returns OpenStatus operator" do
+          expect(instance.operator_strategy).to eq(Queries::Operators::Versions::OpenStatus)
+        end
+      end
+
+      context "for closed status operator" do
+        let(:operator) { "c" }
+
+        it "returns ClosedStatus operator" do
+          expect(instance.operator_strategy).to eq(Queries::Operators::Versions::ClosedStatus)
+        end
+      end
+
+      context "for locked status operator" do
+        let(:operator) { "l" }
+
+        it "returns LockedStatus operator" do
+          expect(instance.operator_strategy).to eq(Queries::Operators::Versions::LockedStatus)
+        end
+      end
+    end
+
+    describe "#joins" do
+      context "for status operators" do
+        %w[o c l].each do |op|
+          context "with operator '#{op}'" do
+            let(:operator) { op }
+
+            it "returns :version" do
+              expect(instance.joins).to eq(:version)
+            end
+          end
+        end
+      end
+
+      context "for other operators" do
+        let(:operator) { "=" }
+
+        it "returns nil" do
+          expect(instance.joins).to be_nil
+        end
       end
     end
   end

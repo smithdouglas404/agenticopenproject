@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,6 +34,8 @@ class MessagesController < ApplicationController
   model_object Message, scope: Forum
   before_action :find_object_and_scope
   before_action :authorize, except: %i[edit update destroy]
+  # Checked inside the method.
+  no_authorization_required! :edit, :update, :destroy
 
   include AttachmentsHelper
   include PaginationHelper
@@ -87,7 +91,7 @@ class MessagesController < ApplicationController
 
       redirect_to topic_path(@message)
     else
-      render action: "new"
+      render action: :new, status: :unprocessable_entity
     end
   end
 
@@ -116,7 +120,7 @@ class MessagesController < ApplicationController
       @message.reload
       redirect_to topic_path(@message.root, r: @message.parent_id && @message.id)
     else
-      render action: "edit"
+      render action: :edit, status: :unprocessable_entity
     end
   end
 

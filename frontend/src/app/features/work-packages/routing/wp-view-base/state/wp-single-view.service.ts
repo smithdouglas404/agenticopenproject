@@ -104,7 +104,7 @@ export class WpSingleViewService {
       });
   }
 
-  private reload() {
+  reload() {
     this
       .currentUser$
       .isLoggedIn$

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -113,7 +115,7 @@ module Components
 
       def expect_loaded
         SeleniumHubWaiter.wait
-        expect(filter_button).to have_css(".badge", wait: 2, visible: :all)
+        expect(filter_button).to have_css(".badge", wait: 10, visible: :all)
       end
 
       def add_filter(name)

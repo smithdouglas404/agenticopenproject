@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -62,7 +64,7 @@ class WikiMenuItemsController < ApplicationController
     get_data_from_params(params)
   end
 
-  def update
+  def update # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
     wiki_menu_setting = wiki_menu_item_params[:setting]
     parent_wiki_menu_item = params[:parent_wiki_menu_item]
 
@@ -101,11 +103,11 @@ class WikiMenuItemsController < ApplicationController
         flash[:notice] = t(:notice_successful_update)
       end
 
-      redirect_back_or_default(action: "edit", id: @page)
+      redirect_back_or_default({ action: "edit", id: @page })
     else
       respond_to do |format|
         format.html do
-          render action: "edit", id: @page
+          render action: :edit, id: @page, status: :unprocessable_entity
         end
       end
     end

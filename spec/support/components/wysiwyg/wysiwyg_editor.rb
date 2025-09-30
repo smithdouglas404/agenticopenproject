@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Components
   class WysiwygEditor
     include Capybara::DSL
@@ -6,7 +8,7 @@ module Components
 
     attr_reader :context_selector, :attachments, :attachments_list
 
-    def initialize(context = "#content", attachment_list_selector = "ckeditor-augmented-textarea")
+    def initialize(context = "#content", attachment_list_selector = "opce-ckeditor-augmented-textarea")
       @context_selector = context
       @attachments = ::Components::Attachments.new
       @attachments_list = ::Components::AttachmentsList.new("#{context} #{attachment_list_selector}")
@@ -47,6 +49,14 @@ module Components
       )
     end
 
+    def trigger_autosave
+      textarea = container.find(".op-ckeditor-source-element", visible: :all)
+      page.execute_script(
+        'jQuery(arguments[0]).trigger("op:ckeditor:autosave")',
+        textarea.native
+      )
+    end
+
     def expect_button(label)
       expect(container).to have_css(".ck-button", visible: :all, text: label)
     end
@@ -57,6 +67,10 @@ module Components
 
     def expect_value(value)
       expect(editor_element.text).to eq(value)
+    end
+
+    def expect_include_value(value)
+      expect(editor_element.text).to include(value)
     end
 
     def expect_supports_macros
@@ -75,7 +89,7 @@ module Components
 
     ##
     # Create an image fixture with the optional caption from inside the ckeditor
-    def drag_attachment(image_fixture, caption = "Some caption")
+    def drag_attachment(image_fixture, caption = "Some caption", scroll: true)
       in_editor do |_container, editable|
         # Click the latest figure, if any
         # Do not wait more than 1 second to check if there is an image
@@ -90,7 +104,7 @@ module Components
 
         editable.base.send_keys(:enter, "some text", :enter, :enter)
 
-        attachments.drag_and_drop_file(editable, image_fixture, :bottom)
+        attachments.drag_and_drop_file(editable, image_fixture, :bottom, scroll:)
 
         expect(page)
             .to have_css('img[src^="/api/v3/attachments/"]', count: images.length + 1, wait: 10)

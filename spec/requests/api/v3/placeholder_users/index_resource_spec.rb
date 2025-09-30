@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -70,6 +72,7 @@ RSpec.describe API::V3::PlaceholderUsers::PlaceholderUsersAPI,
               _type: "PlaceholderUser",
               id: placeholder2.id,
               name: placeholder2.name,
+              email: "",
               _links: {
                 self: {
                   href: api_v3_paths.placeholder_user(placeholder2.id),
@@ -81,6 +84,7 @@ RSpec.describe API::V3::PlaceholderUsers::PlaceholderUsersAPI,
               _type: "PlaceholderUser",
               id: placeholder1.id,
               name: placeholder1.name,
+              email: "",
               _links: {
                 self: {
                   href: api_v3_paths.placeholder_user(placeholder1.id),

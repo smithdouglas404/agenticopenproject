@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -38,7 +40,11 @@ module API
                                                                        })
                                                                   .mount
 
-          post &::API::V3::Utilities::Endpoints::Create.new(model: Project)
+          post &::API::V3::Utilities::Endpoints::Create.new(model: Project,
+                                                            params_modifier: ->(attributes) {
+                                                              attributes[:workspace_type] = Project.workspace_types[:project]
+                                                              attributes
+                                                            })
                                                        .mount
 
           mount ::API::V3::Projects::Schemas::ProjectSchemaAPI
@@ -73,6 +79,7 @@ module API
             mount API::V3::Versions::VersionsByProjectAPI
             mount API::V3::Types::TypesByProjectAPI
             mount API::V3::Queries::QueriesByProjectAPI
+            mount API::V3::Favorites::FavoriteActionsAPI, with: { favorite_object_getter: ->(*) { @project } }
           end
         end
       end

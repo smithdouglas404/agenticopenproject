@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 #  OpenProject is an open source project management software.
-#  Copyright (C) 2010-2022 the OpenProject GmbH
+#  Copyright (C) the OpenProject GmbH
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of the GNU General Public License version 3.
@@ -58,6 +60,12 @@ RSpec.describe API::V3::Projects::ProjectSqlCollectionRepresenter, "rendering" d
     create(:user, member_with_roles: { project => role })
   end
 
+  shared_examples_for "successful rendering" do
+    it "renders as expected" do
+      expect(json).to be_json_eql(expected)
+    end
+  end
+
   context "when rendering everything" do
     let(:expected) do
       {
@@ -101,10 +109,7 @@ RSpec.describe API::V3::Projects::ProjectSqlCollectionRepresenter, "rendering" d
       }.to_json
     end
 
-    it "renders as expected" do
-      expect(json)
-        .to be_json_eql(expected)
-    end
+    it_behaves_like "successful rendering"
   end
 
   context "when rendering only collection attributes" do
@@ -135,16 +140,32 @@ RSpec.describe API::V3::Projects::ProjectSqlCollectionRepresenter, "rendering" d
       }.to_json
     end
 
-    it "renders as expected" do
-      expect(json)
-        .to be_json_eql(expected)
+    it_behaves_like "successful rendering"
+  end
+
+  context "if rendering only total" do
+    let(:select) { { "total" => {} } }
+    let(:expected) { { total: 1 }.to_json }
+
+    it_behaves_like "successful rendering"
+
+    context "if total is zero" do
+      let(:scope) { Project.none }
+      let(:expected) { { total: 0 }.to_json }
+
+      it_behaves_like "successful rendering"
+
+      context "if total is selected together with another property" do
+        let(:select) { { "total" => {}, "count" => {} } }
+        let(:expected) { { total: 0, count: 0 }.to_json }
+
+        it_behaves_like "successful rendering"
+      end
     end
   end
 
   context "when not having a project to render" do
-    let(:scope) do
-      Project.none
-    end
+    let(:scope) { Project.none }
 
     let(:select) do
       { "*" => {} }
@@ -173,9 +194,6 @@ RSpec.describe API::V3::Projects::ProjectSqlCollectionRepresenter, "rendering" d
       }.to_json
     end
 
-    it "renders as expected" do
-      expect(json)
-        .to be_json_eql(expected)
-    end
+    it_behaves_like "successful rendering"
   end
 end

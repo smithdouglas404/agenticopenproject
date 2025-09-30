@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,6 +32,7 @@ require_relative "../support/components/add_existing_pane"
 
 RSpec.describe "Team planner remove event",
                :js,
+               :selenium,
                with_ee: %i[team_planner_view],
                with_settings: { start_of_week: 1 } do
   include_context "with team planner full access"
@@ -60,6 +61,7 @@ RSpec.describe "Team planner remove event",
            project:,
            subject: "Parent work package",
            assigned_to: other_user,
+           schedule_manually: false, # because parent of child_wp
            start_date: Time.zone.today.beginning_of_week.next_occurring(:wednesday),
            due_date: Time.zone.today.beginning_of_week.next_occurring(:thursday),
            derived_start_date: Time.zone.today.beginning_of_week.next_occurring(:wednesday),

@@ -148,10 +148,10 @@ export class SingleHierarchyRowBuilder extends SingleRowBuilder {
       hierarchyIndicator.innerHTML = `
             <a href tabindex="0" role="button" class="wp-table--hierarchy-indicator ${className}">
               <span class="wp-table--hierarchy-indicator-icon" aria-hidden="true"></span>
-              <span class="wp-table--hierarchy-indicator-expanded hidden-for-sighted">${this.text.expanded(
+              <span class="wp-table--hierarchy-indicator-expanded sr-only">${this.text.expanded(
     level,
   )}</span>
-              <span class="wp-table--hierarchy-indicator-collapsed hidden-for-sighted">${this.text.collapsed(
+              <span class="wp-table--hierarchy-indicator-collapsed sr-only">${this.text.collapsed(
     level,
   )}</span>
             </a>
@@ -159,7 +159,7 @@ export class SingleHierarchyRowBuilder extends SingleRowBuilder {
     } else {
       hierarchyIndicator.innerHTML = `
             <span tabindex="0" class="wp-table--leaf-indicator">
-              <span class="hidden-for-sighted">${this.text.leaf(level)}</span>
+              <span class="sr-only">${this.text.leaf(level)}</span>
             </span>
         `;
     }

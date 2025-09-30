@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -61,6 +63,12 @@ RSpec.describe BackupJob, type: :model do
 
     let(:user) { create(:admin) }
 
+    let(:openproject_sql) do
+      Tempfile.new(["openproject", ".sql"]).tap do |f|
+        f.write("SOME SQL")
+      end
+    end
+
     before do
       previous_backup
       backup
@@ -72,13 +80,12 @@ RSpec.describe BackupJob, type: :model do
       allow(Open3).to receive(:capture3).and_return [nil, "Dump failed", db_dump_process_status]
 
       allow_any_instance_of(BackupJob)
-        .to receive(:tmp_file_name).with("openproject", ".sql").and_return("/tmp/openproject.sql")
+        .to receive(:tmp_file_name).with("openproject", ".sql").and_return(openproject_sql.path)
 
       allow_any_instance_of(BackupJob)
         .to receive(:tmp_file_name).with("openproject-backup", ".zip").and_return("/tmp/openproject.zip")
 
       allow(File).to receive(:read).and_call_original
-      allow(File).to receive(:read).with("/tmp/openproject.sql").and_return "SOME SQL"
     end
 
     def perform
@@ -214,20 +221,18 @@ RSpec.describe BackupJob, type: :model do
       }
     }
   ) do
-    let(:dummy_path) { "#{LocalFileUploader.cache_dir}/1639754082-3468-0002-0911/file.ext" }
+    let(:dummy_file) { Pathname("#{LocalFileUploader.cache_dir}/1639754082-3468-0002-0911/file.ext") }
 
     before do
-      FileUtils.mkdir_p Pathname(dummy_path).parent.to_s
-      File.open(dummy_path, "w") { |f| f.puts "dummy" }
+      dummy_file.parent.mkpath
+      dummy_file.write("dummy")
 
       allow_any_instance_of(LocalFileUploader).to receive(:cached?).and_return(true)
-      allow_any_instance_of(LocalFileUploader)
-        .to receive(:local_file)
-              .and_return(File.new(dummy_path))
+      allow_any_instance_of(LocalFileUploader).to receive(:local_file).and_return(File.new(dummy_file))
     end
 
     after do
-      FileUtils.rm_rf dummy_path
+      dummy_file.unlink
     end
 
     it_behaves_like "it creates a backup", remote_storage: true

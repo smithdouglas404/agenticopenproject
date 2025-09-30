@@ -1,14 +1,11 @@
 ro:
   js:
     grid:
-      add_widget: 'Adăugați widget'
+      add_widget: 'Adaugă widget'
       remove: 'Eliminați widget-ul'
       configure: 'Configurați widget-ul'
-      upsale:
-        text: "Unele widgeturi, cum ar fi widgetul grafic al pachetului de lucru, sunt disponibile numai în ediția Enterprise."
-        link: 'Ediția Enterprise.'
       widgets:
-        missing_permission: "You don't have the necessary permissions to view this widget."
+        missing_permission: "Nu ai drepturile necesare pentru a vizualiza acest widget."
         custom_text:
           title: 'Text customizat'
         documents:
@@ -17,39 +14,40 @@ ro:
         members:
           title: 'Membri'
           no_results: 'Nu există membri vizibili.'
-          view_all_members: 'Vizualizare toți participanții'
+          view_all_members: 'Vezi toți membrii'
           add: 'Membru'
           too_many: 'Afișarea a %{count} din %{total} membri.'
         news:
           title: 'Noutăţi'
           at: 'la'
           no_results: 'Nimic nou de raportat.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
-          title: 'Descrierea proiectului'
-          no_results: "Nu a fost scrisă încă nicio descriere. Aceasta poate fi furnizată în \"Setări proiect\"."
-        project_details:
-          title: 'Arată detaliile proietului'
-          no_results: 'Nu au fost definite câmpuri personalizate pentru proiecte.'
+          title: 'Descriere proiect'
+          no_results: "Nu a fost scrisă încă nicio descriere. Aceasta poate fi adăugată în \"Setări proiect\"."
         project_status:
           title: 'Stare proiect'
-          not_started: 'Neîncepută'
-          on_track: 'Urmărește'
-          off_track: 'În afara pistei'
+          not_started: 'Neînceput'
+          on_track: 'În lucru'
+          off_track: 'Întârziat'
           at_risk: 'În pericol'
           not_set: 'Nesetat'
           finished: 'Finalizat'
-          discontinued: 'Întrerupere'
+          discontinued: 'Anulat'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Subproiecte'
           no_results: 'Cu subproiecte'
         project_favorites:
-          title: 'Favorite projects'
-          no_results: 'You currently have no favorite projects. Click on the star icon in the project dashboard to add one to your favorites.'
+          title: 'Proiecte favorite'
+          no_results: 'Nu ai niciun proiect favorit. Clic pe pictograma cu steluță din tabloul de bord al proiectului pentru a adăuga unul la favorite.'
         time_entries_current_user:
-          title: 'Timpul meu petrecut'
+          title: 'Timpul meu consumat'
           displayed_days: 'Zile afișate în lista de activități a proiectului'
         time_entries_list:
-          title: 'Timp petrecut (ultimele 7 zile)'
+          title: 'Timp consumat (ultimele 7 zile)'
           no_results: 'Nu există înregistrări de timp pentru ultimele 7 zile.'
         work_packages_accountable:
           title: "Pachete de lucru pentru care sunt responsabil"
@@ -66,5 +64,5 @@ ro:
         work_packages_calendar:
           title: 'Calendar'
         work_packages_overview:
-          title: 'Prezentare generală a pachetelor de lucru'
+          title: 'Prezentare generală pachete de lucru'
           placeholder: 'Dă clic pentru a edita acest meniu.'

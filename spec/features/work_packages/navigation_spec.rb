@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -62,7 +64,7 @@ RSpec.describe "Work package navigation", :js, :selenium do
     global_work_packages.visit!
 
     global_work_packages.expect_work_package_listed(work_package)
-    global_html_title.expect_first_segment "All open"
+    global_html_title.expect_first_segment "All open | Work Packages"
 
     # open details pane for work package
 
@@ -70,14 +72,14 @@ RSpec.describe "Work package navigation", :js, :selenium do
 
     split_work_package.expect_subject
     split_work_package.expect_current_path
-    global_html_title.expect_first_segment wp_title_segment
+    global_html_title.expect_first_segment "#{wp_title_segment} | Work Packages"
 
     # Go to full screen by double click
     full_work_package = global_work_packages.open_full_screen_by_doubleclick(work_package)
 
     full_work_package.expect_subject
     full_work_package.expect_current_path
-    global_html_title.expect_first_segment wp_title_segment
+    global_html_title.expect_first_segment "#{wp_title_segment} | Work Packages"
 
     # deep link work package details pane
 
@@ -97,17 +99,17 @@ RSpec.describe "Work package navigation", :js, :selenium do
     project_work_packages.visit!
 
     project_work_packages.expect_work_package_listed(work_package)
-    project_html_title.expect_first_segment "All open"
+    project_html_title.expect_first_segment "All open | Work Packages"
 
     # Visit query with project wp
     project_work_packages.visit_query query
     project_work_packages.expect_work_package_listed(work_package)
-    project_html_title.expect_first_segment "My fancy query"
+    project_html_title.expect_first_segment "My fancy query | Work Packages"
 
     # Go back to work packages without query
     page.execute_script("window.history.back()")
     project_work_packages.expect_work_package_listed(work_package)
-    project_html_title.expect_first_segment "All open"
+    project_html_title.expect_first_segment "All open | Work Packages"
 
     # open project work package details pane
 
@@ -115,19 +117,19 @@ RSpec.describe "Work package navigation", :js, :selenium do
 
     split_project_work_package.expect_subject
     split_project_work_package.expect_current_path
-    project_html_title.expect_first_segment wp_title_segment
+    project_html_title.expect_first_segment "#{wp_title_segment} | Work Packages"
 
     # open work package full screen by button
     full_work_package = split_project_work_package.switch_to_fullscreen
 
     full_work_package.expect_subject
     expect(page).to have_current_path project_work_package_path(project, work_package, "activity")
-    project_html_title.expect_first_segment wp_title_segment
+    project_html_title.expect_first_segment "#{wp_title_segment} | Work Packages"
 
     # Switch tabs
     full_work_package.switch_to_tab tab: :relations
     expect(page).to have_current_path project_work_package_path(project, work_package, "relations")
-    project_html_title.expect_first_segment wp_title_segment
+    project_html_title.expect_first_segment "#{wp_title_segment} | Work Packages"
 
     # Back to split screen using the button
     full_work_package.go_back
@@ -148,11 +150,11 @@ RSpec.describe "Work package navigation", :js, :selenium do
   it "loading an unknown work package ID" do
     visit "/work_packages/999999999"
 
-    page404 = Pages::Page.new
-    page404.expect_toast type: :error, message: I18n.t(:notice_file_not_found)
+    expect_flash type: :error, message: I18n.t(:notice_file_not_found)
 
     visit "/projects/#{project.identifier}/work_packages/999999999"
-    page404.expect_and_dismiss_toaster type: :error, message: I18n.t("api_v3.errors.not_found.work_package")
+    global_work_packages = Pages::WorkPackagesTable.new
+    global_work_packages.expect_toast type: :error, message: I18n.t("api_v3.errors.not_found.work_package")
   end
 
   # Regression #29994
@@ -160,8 +162,8 @@ RSpec.describe "Work package navigation", :js, :selenium do
     visit project_path(project)
 
     page.find_test_selector("main-menu-toggler--work_packages").click
-    expect(page).to have_css(".op-view-select--search-results")
-    find(".op-sidemenu--item-action", text: query.name).click
+    expect(page).to have_test_selector("op-submenu--body")
+    find(".op-submenu--item-action", text: query.name).click
 
     expect(page).to have_no_css(".title-container", text: "Overview")
     expect(page).to have_field("editable-toolbar-title", with: query.name)
@@ -170,7 +172,7 @@ RSpec.describe "Work package navigation", :js, :selenium do
   it "double clicking search result row (Regression #30247)" do
     work_package.subject = "Foobar"
     work_package.save!
-    visit search_path(q: "Foo", work_packages: 1, scope: :all)
+    visit search_path(q: "Foo", filter: :work_packages, scope: :all)
 
     table = Pages::EmbeddedWorkPackagesTable.new page.find_by_id("content")
     table.expect_work_package_listed work_package
@@ -259,7 +261,20 @@ RSpec.describe "Work package navigation", :js, :selenium do
       visit "/projects/#{project.identifier}/work_packages?#{url_query}"
 
       wp_table.expect_toast message: "Your view is erroneous and could not be processed.", type: :error
-      expect(page).to have_css "li", text: "Bad request: id is invalid"
+      expect(page).to have_css "li", text: "The requested resource could not be found"
     end
+  end
+
+  # Introduced by regression #60629
+  it "can navigate correctly to non-angular pages (regression #61790)" do
+    global_work_packages = Pages::WorkPackagesTable.new
+    global_work_packages.visit!
+
+    # Navigate to the administration
+    page.find(".op-top-menu-user-avatar").click
+    page.find_test_selector("op-menu--item-action", text: "Administration").click
+
+    # Expect classes to be gone
+    expect(page).to have_no_css("body.router--work-packages-base")
   end
 end

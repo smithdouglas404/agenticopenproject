@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,21 +29,8 @@
 #++
 
 class RemoveGoodJobActiveIdIndex < ActiveRecord::Migration[7.1]
-  disable_ddl_transaction!
-
   def change
-    reversible do |dir|
-      dir.up do
-        if connection.index_name_exists?(:good_jobs, :index_good_jobs_on_active_job_id)
-          remove_index :good_jobs, name: :index_good_jobs_on_active_job_id
-        end
-      end
-
-      dir.down do
-        unless connection.index_name_exists?(:good_jobs, :index_good_jobs_on_active_job_id)
-          add_index :good_jobs, :active_job_id, name: :index_good_jobs_on_active_job_id
-        end
-      end
-    end
+    # Moved to db/migrate/tables/good_jobs.rb
+    # This file is not squashed since good_job would otherwise recreate it when an update is done.
   end
 end

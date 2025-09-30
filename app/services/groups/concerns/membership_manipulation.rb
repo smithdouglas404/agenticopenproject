@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,9 +32,7 @@ module Groups::Concerns
   module MembershipManipulation
     extend ActiveSupport::Concern
 
-    def after_validate(params, _call)
-      params ||= {}
-
+    def after_validate(_call)
       with_error_handled do
         ::Group.transaction do
           send_notifications = params.fetch(:send_notifications, Journal::NotificationConfiguration.active?)

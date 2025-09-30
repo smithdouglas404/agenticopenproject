@@ -2,7 +2,7 @@
 
 # -- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2010-2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,14 +33,11 @@ module Projects::Settings::ProjectCustomFieldSections
   class IndexPageHeaderComponent < ApplicationComponent
     include ApplicationHelper
 
-    def initialize(project: nil)
-      super
-      @project = project
-    end
+    options :project
 
     def breadcrumb_items
-      [{ href: project_overview_path(@project.id), text: @project.name },
-       { href: project_settings_general_path(@project.id), text: I18n.t("label_project_settings") },
+      [{ href: project_overview_path(project), text: project.name },
+       { href: project_settings_general_path(project), text: I18n.t("label_project_settings") },
        t("settings.project_attributes.heading")]
     end
   end

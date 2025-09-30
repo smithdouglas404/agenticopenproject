@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,9 +31,8 @@
 require "spec_helper"
 require_module_spec_helper
 
-RSpec.describe "API v3 storages resource", :webmock, content_type: :json do
+RSpec.describe "API v3 storages resource", :storage_server_helpers, :webmock, content_type: :json do
   include API::V3::Utilities::PathHelper
-  include StorageServerHelpers
   include UserPermissionsHelper
 
   shared_let(:permissions) { %i(view_work_packages view_file_links) }
@@ -46,19 +47,17 @@ RSpec.describe "API v3 storages resource", :webmock, content_type: :json do
   shared_let(:project_storage) { create(:project_storage, project:, storage:) }
 
   let(:current_user) { user_with_permissions }
-  let(:auth_check_result) { ServiceResult.success }
+  let(:user_query_result) { Success(id: "greedo") }
 
-  subject(:last_response) do
-    get path
-  end
+  subject(:last_response) { get path }
 
   before do
-    Storages::Peripherals::Registry.stub("nextcloud.queries.auth_check", ->(_) { auth_check_result })
+    Storages::Adapters::Registry.stub("nextcloud.queries.user", ->(_) { user_query_result })
     login_as current_user
   end
 
   shared_examples_for "successful storage response" do |as_admin: false|
-    include_examples "successful response"
+    it_behaves_like "successful response"
 
     describe "response body" do
       subject { last_response.body }
@@ -105,7 +104,7 @@ RSpec.describe "API v3 storages resource", :webmock, content_type: :json do
 
   describe "POST /api/v3/storages" do
     let(:path) { api_v3_paths.storages }
-    let(:host) { "https://example.nextcloud.local" }
+    let(:host) { "https://example.nextcloud.local/" }
     let(:name) { "APIStorage" }
     let(:type) { "urn:openproject-org:api:v3:storages:Nextcloud" }
     let(:params) do
@@ -135,6 +134,13 @@ RSpec.describe "API v3 storages resource", :webmock, content_type: :json do
         subject { last_response.body }
 
         it_behaves_like "successful response", 201
+
+        it "creates a storage", :aggregate_failures do
+          expect { last_response }.to change(Storages::NextcloudStorage, :count).by(1)
+
+          expect(Storages::NextcloudStorage.last.name).to eq(name)
+          expect(Storages::NextcloudStorage.last.host).to eq(host)
+        end
 
         it { is_expected.to have_json_path("_embedded/oauthApplication/clientSecret") }
       end
@@ -178,7 +184,35 @@ RSpec.describe "API v3 storages resource", :webmock, content_type: :json do
         end
 
         it_behaves_like "constraint violation" do
-          let(:message) { "Host is not a valid URL" }
+          let(:message) { "Host is not a valid URL." }
+        end
+      end
+
+      context "when creating a storage for SSO authentication", with_ee: [:nextcloud_sso] do
+        let(:params) do
+          super().tap do |p|
+            p[:storageAudience] = "the-audience"
+            p[:_links][:authenticationMethod] = { href: "urn:openproject-org:api:v3:storages:authenticationMethod:OAuth2SSO" }
+          end
+        end
+
+        it_behaves_like "successful response", 201
+
+        it "creates a storage with SSO authentication", :aggregate_failures do
+          expect { last_response }.to change(Storages::NextcloudStorage, :count).by(1)
+
+          expect(Storages::NextcloudStorage.last.authentication_method).to eq("oauth2_sso")
+          expect(Storages::NextcloudStorage.last.storage_audience).to eq("the-audience")
+        end
+
+        context "and when the instance lacks a valid enterprise token", with_ee: [] do
+          it "indicates an HTTP error" do
+            expect(last_response).to have_http_status(422)
+          end
+
+          it "creates no storage" do
+            expect { last_response }.not_to change(Storages::NextcloudStorage, :count)
+          end
         end
       end
     end
@@ -197,8 +231,8 @@ RSpec.describe "API v3 storages resource", :webmock, content_type: :json do
       it_behaves_like "successful storage response"
 
       context "if user is missing permission view_file_links" do
-        before(:all) { remove_permissions(user_with_permissions, :view_file_links) }
-        after(:all) { add_permissions(user_with_permissions, :view_file_links) }
+        before { remove_permissions(user_with_permissions, :view_file_links) }
+        after { add_permissions(user_with_permissions, :view_file_links) }
 
         it_behaves_like "not found"
       end
@@ -210,8 +244,8 @@ RSpec.describe "API v3 storages resource", :webmock, content_type: :json do
       end
     end
 
-    context "if user has :manage_storages_in_project permission in any project" do
-      let(:permissions) { %i(manage_storages_in_project) }
+    context "if user has :manage_files_in_project permission in any project" do
+      let(:permissions) { %i(manage_files_in_project) }
 
       it_behaves_like "successful storage response"
     end
@@ -243,28 +277,30 @@ RSpec.describe "API v3 storages resource", :webmock, content_type: :json do
         end
       end
 
-      context "when authorization succeeds and storage is connected" do
-        let(:auth_check_result) { ServiceResult.success }
+      context "when user has a remote identity for the storage" do
+        before { create(:remote_identity, user: current_user, integration: storage) }
 
-        include_examples "a storage authorization result",
-                         expected: API::V3::Storages::URN_CONNECTION_CONNECTED,
-                         has_authorize_link: false
-      end
+        context "when authorization succeeds and storage is connected" do
+          it_behaves_like "a storage authorization result",
+                          expected: API::V3::Storages::URN_CONNECTION_CONNECTED,
+                          has_authorize_link: false
+        end
 
-      context "when authorization fails" do
-        let(:auth_check_result) { ServiceResult.failure(errors: Storages::StorageError.new(code: :unauthorized)) }
+        context "when authorization fails" do
+          let(:user_query_result) { Failure(Storages::Adapters::Results::Error.new(code: :unauthorized, source: self)) }
 
-        include_examples "a storage authorization result",
-                         expected: API::V3::Storages::URN_CONNECTION_AUTH_FAILED,
-                         has_authorize_link: true
-      end
+          it_behaves_like "a storage authorization result",
+                          expected: API::V3::Storages::URN_CONNECTION_AUTH_FAILED,
+                          has_authorize_link: true
+        end
 
-      context "when authorization fails with an error" do
-        let(:auth_check_result) { ServiceResult.failure(errors: Storages::StorageError.new(code: :error)) }
+        context "when authorization fails with an error" do
+          let(:user_query_result) { Failure(Storages::Adapters::Results::Error.new(code: :error, source: self)) }
 
-        include_examples "a storage authorization result",
-                         expected: API::V3::Storages::URN_CONNECTION_ERROR,
-                         has_authorize_link: false
+          it_behaves_like "a storage authorization result",
+                          expected: API::V3::Storages::URN_CONNECTION_ERROR,
+                          has_authorize_link: false
+        end
       end
     end
   end
@@ -274,9 +310,7 @@ RSpec.describe "API v3 storages resource", :webmock, content_type: :json do
     let(:name) { "A new storage name" }
     let(:params) { { name: } }
 
-    subject(:last_response) do
-      patch path, params.to_json
-    end
+    subject(:last_response) { patch path, params.to_json }
 
     context "as non-admin" do
       context "if user belongs to a project using the given storage" do
@@ -346,7 +380,7 @@ RSpec.describe "API v3 storages resource", :webmock, content_type: :json do
 
         subject { last_response.body }
 
-        it { is_expected.to be_json_eql("Password is not valid.".to_json).at_path("message") }
+        it { is_expected.to be_json_eql("Application password is not valid.".to_json).at_path("message") }
       end
     end
   end
@@ -397,13 +431,10 @@ RSpec.describe "API v3 storages resource", :webmock, content_type: :json do
 
   describe "GET /api/v3/storages/:storage_id/open" do
     let(:path) { api_v3_paths.storage_open(storage.id) }
-    let(:location) { "https://deathstar.storage.org/files" }
+    let(:location) { URI("https://deathstar.storage.org/files") }
 
     before do
-      Storages::Peripherals::Registry.stub(
-        "nextcloud.queries.open_storage",
-        ->(_) { ServiceResult.success(result: location) }
-      )
+      Storages::Adapters::Registry.stub("nextcloud.queries.open_storage", ->(_) { Success(location) })
     end
 
     context "as admin" do
@@ -416,8 +447,8 @@ RSpec.describe "API v3 storages resource", :webmock, content_type: :json do
       it_behaves_like "redirect response"
 
       context "if user is missing permission view_file_links" do
-        before(:all) { remove_permissions(user_with_permissions, :view_file_links) }
-        after(:all) { add_permissions(user_with_permissions, :view_file_links) }
+        before { remove_permissions(user_with_permissions, :view_file_links) }
+        after { add_permissions(user_with_permissions, :view_file_links) }
 
         it_behaves_like "not found"
       end

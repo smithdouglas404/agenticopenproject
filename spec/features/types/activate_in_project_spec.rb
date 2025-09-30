@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,9 +29,9 @@
 #++
 
 require "spec_helper"
-require "support/pages/custom_fields"
+require "support/pages/custom_fields/index_page"
 
-RSpec.describe "types", :js, :with_cuprite do
+RSpec.describe "types", :js do
   let(:user) do
     create(:user,
            member_with_permissions: { project => %i(edit_project manage_types add_work_packages view_work_packages) })
@@ -37,7 +39,7 @@ RSpec.describe "types", :js, :with_cuprite do
   let!(:active_type) { create(:type) }
   let!(:type) { create(:type) }
   let!(:project) { create(:project, types: [active_type]) }
-  let(:project_settings_page) { Pages::Projects::Settings.new(project) }
+  let(:project_type_settings_page) { Pages::Projects::Settings::Type.new(project) }
   let(:work_packages_page) { Pages::WorkPackagesTable.new(project) }
 
   before do
@@ -51,7 +53,7 @@ RSpec.describe "types", :js, :with_cuprite do
     work_packages_page.expect_type_available_for_create(active_type)
     work_packages_page.expect_type_not_available_for_create(type)
 
-    project_settings_page.visit_tab!("types")
+    project_type_settings_page.visit!
 
     expect(page)
       .to have_unchecked_field(type.name)
@@ -62,7 +64,9 @@ RSpec.describe "types", :js, :with_cuprite do
     check(type.name)
     uncheck(active_type.name)
 
-    project_settings_page.save!
+    project_type_settings_page.save!
+
+    project_type_settings_page.expect_and_dismiss_flash(message: "Successful update.")
 
     expect(page)
       .to have_checked_field(type.name)

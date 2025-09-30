@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -27,7 +27,7 @@ ru:
     attributes:
       work_package:
         position: "Позиция"
-        story_points: "Баллы Истории"
+        story_points: "Стори поинты"
         backlogs_work_package_type: "Тип невыполненной работы"
     errors:
       models:
@@ -55,6 +55,7 @@ ru:
     hours: "Часы"
     impediment: "Препятствие"
     label_versions_default_fold_state: "Показать свернутые версии"
+    caption_versions_default_fold_state: "Версии не будут разворачиваться по умолчанию при просмотре бэклогов. Каждая версия должна быть развернута вручную."
     work_package_is_closed: "Пакет работ завершен, когда"
     label_is_done_status: "Статус %{status_name} означает завершение,"
     no_burndown_data: "Нет данных по выгоранию. Необходимо установить даты начала и конца спринта."
@@ -69,10 +70,13 @@ ru:
     show_burndown_chart: "Диаграмма выгорания задач"
     story: "История"
     story_points: "Исторические точки"
-    story_points_ideal: "Точки истории (идеал)"
+    story_points_ideal: "Исторические точки (идеал)"
     task: "Задача"
     task_color: "Цвет задачи"
     unassigned: "Нераспределенные"
+    user_preference:
+      header_backlogs: "Модуль бэклогов"
+      button_update_backlogs: "Обновить модуль бэклогов"
     x_more: "Еще %{count}..."
   backlogs_active: "активно"
   backlogs_any: "любой"

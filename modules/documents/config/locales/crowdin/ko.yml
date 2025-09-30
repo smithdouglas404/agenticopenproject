@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -34,10 +34,15 @@ ko:
   enumeration_doc_categories: "문서 범주"
   documents:
     label_attachment_author: "첨부 파일 작성자"
+    label_categories: "카테고리"
+    new_category: "새 카테고리"
   label_document_added: "문서 추가됨"
   label_document_new: "새 문서"
   label_document_plural: "문서"
   label_documents: "문서"
+  label_document_title: "제목"
+  label_document_description: "설명"
+  label_document_category: "카테고리"
   permission_manage_documents: "문서 관리"
   permission_view_documents: "문서 보기"
   project_module_documents: "문서"

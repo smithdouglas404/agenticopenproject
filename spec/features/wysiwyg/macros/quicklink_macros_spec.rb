@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -50,10 +52,12 @@ RSpec.describe "Wysiwyg work package quicklink macros", :js do
     editor.set_markdown "##{work_package.id}"
     click_on "Save"
 
+    expect_and_dismiss_flash(message: "Successful creation.")
+
     # Expect output widget
     within("#content") do
       expect(page).to have_link("##{work_package.id}")
-      expect(page).to have_no_css(".work-package--quickinfo.preview-trigger")
+      expect(page).to have_no_css("opce-macro-wp-quickinfo")
     end
 
     # Edit page again
@@ -68,12 +72,14 @@ RSpec.describe "Wysiwyg work package quicklink macros", :js do
     editor.set_markdown "###{work_package.id}"
     click_on "Save"
 
+    expect_and_dismiss_flash(message: "Successful creation.")
+
     # Expect output widget
     within("#content") do
       expected_macro_text = "#{work_package.type.name.upcase} ##{work_package.id}: My subject"
       expect(page).to have_css("opce-macro-wp-quickinfo", text: expected_macro_text)
       expect(page).to have_css("span", text: work_package.type.name.upcase)
-      expect(page).to have_css(".work-package--quickinfo.preview-trigger", text: "##{work_package.id}")
+      expect(page).to have_css("opce-macro-wp-quickinfo > a", text: "##{work_package.id}")
       expect(page).to have_css("span", text: "My subject")
     end
 
@@ -89,6 +95,8 @@ RSpec.describe "Wysiwyg work package quicklink macros", :js do
     editor.set_markdown "####{work_package.id}"
     click_on "Save"
 
+    expect_and_dismiss_flash(message: "Successful creation.")
+
     # Expect output widget
     within("#content") do
       expected_macro_text = "#{work_package.status.name}#{work_package.type.name.upcase} " \
@@ -96,7 +104,7 @@ RSpec.describe "Wysiwyg work package quicklink macros", :js do
       expect(page).to have_css("opce-macro-wp-quickinfo", text: expected_macro_text)
       expect(page).to have_css("span", text: work_package.status.name)
       expect(page).to have_css("span", text: work_package.type.name.upcase)
-      expect(page).to have_css(".work-package--quickinfo.preview-trigger", text: "##{work_package.id}")
+      expect(page).to have_css("opce-macro-wp-quickinfo > a", text: "##{work_package.id}")
       expect(page).to have_css("span", text: "My subject")
       # Dates are being rendered in two nested spans
       expect(page).to have_css("span", text: "01/01/2020", count: 2)

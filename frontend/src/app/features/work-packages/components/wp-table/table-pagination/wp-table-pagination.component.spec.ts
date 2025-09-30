@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { IsolatedQuerySpace } from 'core-app/features/work-packages/directives/query-space/isolated-query-space';
 import { inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { States } from 'core-app/core/states/states.service';
@@ -76,14 +76,12 @@ describe('wpTablePagination Directive', () => {
 
     // noinspection JSIgnoredPromiseFromCall
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientModule,
-      ],
-      declarations: [
+    declarations: [
         WorkPackageTablePaginationComponent,
         OpIconComponent,
-      ],
-      providers: [
+    ],
+    imports: [],
+    providers: [
         States,
         PaginationService,
         WorkPackageViewSortByService,
@@ -94,8 +92,9 @@ describe('wpTablePagination Directive', () => {
         ConfigurationService,
         IsolatedQuerySpace,
         I18nService,
-      ],
-    }).compileComponents();
+        provideHttpClient(withInterceptorsFromDi()),
+    ]
+}).compileComponents();
   }));
 
   describe('page ranges and links', () => {
@@ -114,7 +113,7 @@ describe('wpTablePagination Directive', () => {
         app.pagination = new PaginationInstance(1, 11, 10);
         app.update();
         fixture.detectChanges();
-        expect(pageString(element)).toEqual('(1 - 10/11)');
+        expect(pageString(element)).toEqual('(1 - 10/11)');
       }));
 
     describe('"next" link', () => {
@@ -143,7 +142,7 @@ describe('wpTablePagination Directive', () => {
         const element = jQuery(fixture.elementRef.nativeElement);
 
         function numberOfPageNumberLinks() {
-          return element.find('button[rel="next"]').length;
+          return element.find('button[data-rel="next"]').length;
         }
 
         app.pagination = new PaginationInstance(1, 1, 10);

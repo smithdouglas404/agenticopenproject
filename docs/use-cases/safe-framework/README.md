@@ -1,7 +1,7 @@
 ---
 sidebar_navigation:
   title: Scaled Agile Framework (SAFe)
-  priority: 930
+  priority: 600
 description: Learn how to set up and configure OpenProject to support the Scaled Agile Framework (SAFe) to successfully deliver value to customers using agile practices at scale.
 keywords: safe, scaled agile, release train, program increment, ART backlog, roadmap, portfolio backlog, solution train, kanban, enabler, capability, scrum, roadmap
 
@@ -77,11 +77,13 @@ You can also use [project templates](../../user-guide/projects/project-templates
 
 Project portfolios allow you to view, organize, sort and filter through all projects and their hierarchies. Since individual projects represent Agile Release trains, project portfolios can be used to access information at a **Solution train**-level.
 
-![All Features and User Stories across all teams](all_features_across_all_teams.png)
+OpenProject offers a new **Project list** view that lets you create and save custom lists of Projects using your own set of filter criteria. These lists can also display custom project attributes. Individual projects can also be favorited for easier access. Project lists allow you to be build very precise and useful dashboards at a solution-train level.
 
-> In a near future release, OpenProject will have dedicated project portfolio features. [View mockups.](https://www.figma.com/file/YCCMdJWkrtP9YSmf49Od0i/Project-lists?type=design&node-id=470%3A13037&mode=design&t=g1EZesuy0Jj0VZFD-1)
->
-> For the moment, [global modules](../../user-guide/home/global-modules/) give you an overview of content from all projects, including the ability to view and filter though a **project list**, and view, sort and filter **work packages at a global level**.
+![You can create custom project lists](project_list_-_solution_train.png)
+
+Alternatively, one can also create a meta-project that contains multiple sub-projects (representing ARTs and teams) and create a consolidated custom view. This **work package table** view can be filtered and customized to show particular attributes and custom fields as columns, grouped and sorted. They can also be configured to display epics, features and user stories not just from sub-projects, but from entirely different projects.
+
+![All Features and User Stories across all teams](all_features_across_all_teams.png)
 
 > **Demo:** [Solution train (project list)](https://safe.openproject.com/projects)
 >

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -47,18 +49,19 @@ module CustomFields
         end
       end
 
-      def create
+      def create # rubocop:disable Metrics/AbcSize
         call = ::CustomFields::CreateService
           .new(user: current_user)
           .call(get_custom_field_params.merge(type: permitted_params.custom_field_type))
 
         if call.success?
+          custom_field = call.result
           flash[:notice] = t(:notice_successful_create)
-          call_hook(:controller_custom_fields_new_after_save, custom_field: call.result)
-          redirect_to index_path(call.result, tab: call.result.class.name)
+          call_hook(:controller_custom_fields_new_after_save, custom_field:)
+          redirect_to edit_path(custom_field, id: custom_field.id)
         else
           @custom_field = call.result || new_custom_field
-          render action: "new"
+          render action: :new, status: :unprocessable_entity
         end
       end
 
@@ -76,7 +79,7 @@ module CustomFields
           call_hook(:controller_custom_fields_edit_after_save, custom_field: @custom_field)
           redirect_back_or_default(edit_path(@custom_field, id: @custom_field.id))
         else
-          render action: "edit"
+          render action: :edit, status: :unprocessable_entity
         end
       end
 
@@ -116,7 +119,9 @@ module CustomFields
       end
 
       def new_custom_field
-        ::CustomFields::CreateService.careful_new_custom_field(permitted_params.custom_field_type)
+        field = ::CustomFields::CreateService.careful_new_custom_field(permitted_params.custom_field_type)
+        field.field_format = params[:field_format]
+        field
       end
 
       def get_custom_field_params
@@ -125,8 +130,6 @@ module CustomFields
 
       def find_custom_option
         @custom_option = CustomOption.find params[:option_id]
-      rescue ActiveRecord::RecordNotFound
-        render_404
       end
 
       def delete_custom_values!(custom_option)
@@ -140,7 +143,7 @@ module CustomFields
 
         index = 0
 
-        params[:custom_field][:custom_options_attributes].each do |_id, attributes|
+        params[:custom_field][:custom_options_attributes].each_value do |attributes|
           attributes[:position] = (index = index + 1)
         end
       end

@@ -1,14 +1,15 @@
 #English strings go here
 tr:
+  ee:
+    upsell:
+      board_view:
+        description: 'Panolar ile iş akışlarınızı otomatikleştirmek ister misiniz? Gelişmiş kartlar bir Enterprise eklentidir. Lütfen ücretli bir plana yükseltin.'
   js:
     boards:
       create_new: 'Yeni pano oluştur'
       label_unnamed_board: 'Adsız tahta'
       label_unnamed_list: 'Adsız liste'
       label_board_type: 'Yazı tahtası tipi'
-      upsale:
-        teaser_text: 'Boards ile iş akışlarınızı otomatikleştirmek ister misiniz? Gelişmiş kartlar bir Enterprise eklentidir. Lütfen ücretli bir plana yükseltin.'
-        upgrade: 'Şimdi Yükselt'
       lists:
         delete: 'Listeyi silin'
       version:
@@ -16,11 +17,11 @@ tr:
         is_closed: 'Sürüm kapalı. Bu sürüme hiçbir ürün eklenemez.'
         close_version: 'Sürümü kapat'
         open_version: 'Sürümü aç'
-        lock_version: 'Kilitli versiyon'
+        lock_version: 'Sürümü kilitle'
         unlock_version: 'Sürümün kilidini aç'
         edit_version: 'Sürümü düzenle'
-        show_version: 'Versiyonu göster'
-        locked: 'Kilitlendi'
+        show_version: 'Sürümü göster'
+        locked: 'Kilitli'
         closed: 'Kapalı'
       new_board: 'Yeni yazı tahtası'
       add_list: 'Listeyi panele ekle'
@@ -32,7 +33,7 @@ tr:
       text_hidden_list_warning: "Gerekli izniniz olmadığından tüm listeler gösterilemiyor. Daha çok bilgi için yöneticinizle görüşün."
       click_to_remove_list: "Bu listeyi kaldırmak için tıklayın"
       board_type:
-        text: 'Yazı tahtası tipi'
+        text: 'Pano türü'
         free: 'temel'
         select_board_type: 'Lütfen ihtiyacınız olan kart tipini seçin.'
         free_text: >
@@ -62,7 +63,7 @@ tr:
           status: Durum
           version: Sürüm
           subproject: Alt proje
-          subtasks: Ana-Yavru
+          subtasks: Üst-Alt
           basic: Temel
         select_attribute: "Eylem özelliği"
       add_list_modal:

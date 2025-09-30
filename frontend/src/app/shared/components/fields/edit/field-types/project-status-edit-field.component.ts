@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -47,6 +47,7 @@ interface ProjectStatusOption {
 @Component({
   templateUrl: './project-status-edit-field.component.html',
   styleUrls: ['./project-status-edit-field.component.sass'],
+  standalone: false,
 })
 export class ProjectStatusEditFieldComponent extends EditFieldComponent implements OnInit {
   @ViewChild(NgSelectComponent, { static: true }) public ngSelectComponent:NgSelectComponent;

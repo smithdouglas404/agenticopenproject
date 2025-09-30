@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,7 +35,7 @@ RSpec.describe Meetings::CopyService, "integration", type: :model do
   shared_let(:user) do
     create(:user, member_with_permissions: { project => %i(view_meetings create_meetings) })
   end
-  shared_let(:meeting) { create(:structured_meeting, project:, start_time: Time.parse("2013-03-27T15:35:00Z")) }
+  shared_let(:meeting) { create(:meeting, project:, start_time: Time.parse("2013-03-27T15:35:00Z")) }
 
   let(:instance) { described_class.new(model: meeting, user:) }
   let(:attributes) { {} }
@@ -45,10 +47,10 @@ RSpec.describe Meetings::CopyService, "integration", type: :model do
   it "copies the meeting as is" do
     expect(service_result).to be_success
     expect(copy.author).to eq(user)
-    expect(copy.start_time).to eq(meeting.start_time + 1.week)
+    expect(copy.start_time).to eq(meeting.start_time + 1.day)
   end
 
-  context 'when the meeting is closed' do
+  context "when the meeting is closed" do
     it "reopens the meeting" do
       meeting.update! state: "closed"
       expect(service_result).to be_success
@@ -81,13 +83,51 @@ RSpec.describe Meetings::CopyService, "integration", type: :model do
     end
   end
 
+  describe "without participants" do
+    it "sets the author as invited" do
+      meeting.participants.destroy_all
+
+      expect(service_result).to be_success
+      expect(copy.participants.count).to eq(1)
+      invited = copy.participants.find_by(user:)
+      expect(invited).to be_invited
+    end
+  end
+
+  describe "copying a system's user meeting" do
+    it "sets the copier as participant when empty" do
+      meeting.participants.destroy_all
+      meeting.author = User.system
+      meeting.save!
+
+      expect(service_result).to be_success
+      expect(copy.participants.count).to eq(1)
+      expect(copy.author).to eq(user)
+      invited = copy.participants.find_by(user:)
+      expect(invited).to be_invited
+    end
+  end
+
+  describe "copying as the system user" do
+    let(:instance) { described_class.new(model: meeting, user: User.system) }
+
+    it "does not add it as a participant" do
+      meeting.participants.destroy_all
+      meeting.save!
+
+      expect(service_result).to be_success
+      expect(copy.participants.count).to eq(0)
+      expect(copy.author).to eq(User.system)
+    end
+  end
+
   describe "when not saving" do
     let(:params) { { save: false } }
 
     it "builds the meeting" do
       expect(service_result).to be_success
       expect(copy.author).to eq(user)
-      expect(copy.start_time).to eq(meeting.start_time + 1.week)
+      expect(copy.start_time).to eq(meeting.start_time + 1.day)
       expect(copy).to be_new_record
     end
   end

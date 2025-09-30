@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -43,10 +43,6 @@ export class WorkPackageViewColumnsService extends WorkPackageQueryStateService<
     super(querySpace);
   }
 
-  public initialize(query:any, results:any, schema?:any) {
-    super.initialize(query, results, schema);
-  }
-
   public valueFromQuery(query:QueryResource):QueryColumn[] {
     return [...query.columns];
   }
@@ -82,8 +78,18 @@ export class WorkPackageViewColumnsService extends WorkPackageQueryStateService<
    * Returns whether the current set of columns include relations
    */
   public hasRelationColumns() {
-    const relationColumns = [queryColumnTypes.RELATION_OF_TYPE, queryColumnTypes.RELATION_TO_TYPE];
+    const relationColumns = [
+      queryColumnTypes.RELATION_OF_TYPE,
+      queryColumnTypes.RELATION_TO_TYPE,
+    ];
     return !!_.find(this.getColumns(), (c) => relationColumns.indexOf(c._type) >= 0);
+  }
+
+  /**
+   * Returns whether the current set of columns include child relations
+   */
+  public hasChildRelationsColumn() {
+    return !!_.find(this.getColumns(), (c) => c._type === queryColumnTypes.RELATION_CHILD);
   }
 
   /**

@@ -5,7 +5,7 @@ ru:
     description: "Предоставляет просмотры календаря."
   label_calendar: "Календарь"
   label_calendar_plural: "Календари"
-  label_new_calendar: "Новый календарь"
+  label_new_calendar: "Создать новый календарь"
   permission_view_calendar: "Просмотр календарей"
   permission_manage_calendars: "Управление календарями"
   permission_share_calendars: "Подписаться на iCalendars"

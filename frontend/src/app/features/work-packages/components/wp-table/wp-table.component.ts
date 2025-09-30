@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -49,7 +49,6 @@ import { IsolatedQuerySpace } from 'core-app/features/work-packages/directives/q
 import { combineLatest } from 'rxjs';
 import { QueryColumn } from 'core-app/features/work-packages/components/wp-query/query-column';
 import { WorkPackageViewSortByService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-sort-by.service';
-import { trackByHref } from 'core-app/shared/helpers/angular/tracking-functions';
 import { WorkPackageCollectionResource } from 'core-app/features/hal/resources/wp-collection-resource';
 import { WorkPackageViewGroupByService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-group-by.service';
 import { WorkPackageViewColumnsService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-columns.service';
@@ -81,6 +80,7 @@ export interface WorkPackageFocusContext {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'wp-table',
+  standalone: false,
 })
 export class WorkPackagesTableComponent extends UntilDestroyedMixin implements OnInit, TableEventComponent {
   @Input() projectIdentifier:string;
@@ -92,8 +92,6 @@ export class WorkPackagesTableComponent extends UntilDestroyedMixin implements O
   @Output() itemClicked = new EventEmitter<{ workPackageId:string, double:boolean }>();
 
   @Output() stateLinkClicked = new EventEmitter<{ workPackageId:string, requestedState:string }>();
-
-  public trackByHref = trackByHref;
 
   public configuration:WorkPackageTableConfiguration;
 

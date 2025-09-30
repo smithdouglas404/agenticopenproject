@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -55,19 +55,15 @@ export class RevitAddInSettingsButtonService {
   }
 
   public addUserMenuItem():void {
-    const userMenu = document.getElementById('user-menu');
+    const userMenu = document.getElementById('op-app-header--user-menu-list');
 
     if (userMenu) {
-      const menuItem:HTMLElement = document.createElement('li');
-      menuItem.dataset.name = this.labelText;
-      menuItem.innerHTML = `
-        <a class="op-menu--item-action revit-addin-settings-menu-item ellipsis" title="${this.labelText}" href="#">
-          <span class="menu-item--title ellipsis ">${this.labelText}</span>
-        </a>
-      `;
+      const menuItem:HTMLElement|null = document.getElementById('user-menu--revit-add-in-entry');
 
-      menuItem.addEventListener('click', () => this.goToSettings());
-      userMenu.appendChild(menuItem);
+      if (menuItem) {
+        menuItem.addEventListener('click', () => this.goToSettings());
+        menuItem.closest('li.d-none')?.classList.remove('d-none');
+      }
     }
   }
 

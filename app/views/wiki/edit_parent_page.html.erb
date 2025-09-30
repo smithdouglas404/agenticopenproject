@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2024 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -27,17 +27,22 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%= toolbar title: "#{t(:button_change_parent_page)}: #{@page.title}" %>
+<% html_title t("activerecord.models.wiki"), t(:button_change_parent_page) %>
+<%=
+  render Primer::OpenProject::PageHeader.new do |header|
+    header.with_title_content(@page.title)
+    header.with_breadcrumbs(
+      breadcrumb_for_page(@project, @page)
+    )
+  end
+%>
+<%= error_messages_for "page" %>
 
-<% html_title t('activerecord.models.wiki'), t(:button_change_parent_page) %>
-<% breadcrumb_paths(*(@page.ancestors.reverse.collect { |parent| link_to h(parent.breadcrumb_title), {id: parent, project_id: parent.project}} + [h(@page.breadcrumb_title)] )) %>
-<%= error_messages_for 'page' %>
-
-<%= labelled_tabular_form_for @page, url: { id: @page, action: 'update_parent_page' } do |f| %>
+<%= labelled_tabular_form_for @page, url: { id: @page, action: "update_parent_page" } do |f| %>
   <div class='form--field'>
     <%= f.select :parent_id,
                  wiki_page_options_for_select(@parent_pages),
-                 { label: WikiPage.human_attribute_name(:parent_title), include_blank: false, container_class: '-wide' } %>
+                 { label: WikiPage.human_attribute_name(:parent_title), include_blank: false, container_class: "-wide" } %>
   </div>
 
   <%= nonced_javascript_tag  do -%>
@@ -47,5 +52,5 @@ See COPYRIGHT and LICENSE files for more details.
       }
     ));
   <% end -%>
-  <%= submit_tag t(:button_save), class: 'button -primary' %>
+  <%= submit_tag t(:button_save), class: "button -primary" %>
 <% end %>

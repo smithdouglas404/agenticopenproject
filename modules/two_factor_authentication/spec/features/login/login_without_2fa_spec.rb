@@ -1,7 +1,12 @@
-require_relative "../../spec_helper"
-require_relative "../shared_2fa_examples"
+# frozen_string_literal: true
 
-RSpec.describe "Login with no required OTP", :js, with_config: { "2fa": { active_strategies: [:developer] } } do
+require_relative "../../spec_helper"
+require_relative "../shared_two_factor_examples"
+
+RSpec.describe "Login with no required OTP",
+               :js,
+               with_config: { "2fa": { active_strategies: [:developer] } } do
+  include SharedTwoFactorExamples
   let(:user_password) { "bob!" * 4 }
   let(:user) do
     create(:user,

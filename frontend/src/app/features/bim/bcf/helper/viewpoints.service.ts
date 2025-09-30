@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -42,7 +42,7 @@ import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 
 @Injectable()
 export class ViewpointsService {
-  topicUUID:string|number;
+  topicUUID:string|number|null = null;
 
   @InjectField() bcfApi:BcfApiService;
 
@@ -55,7 +55,7 @@ export class ViewpointsService {
   public getViewPointResource(workPackage:WorkPackageResource, index:number):BcfViewpointPaths {
     const viewpointHref = (workPackage.bcfViewpoints as HalResource[])[index].href as string;
 
-    return this.bcfApi.parse<BcfViewpointPaths>(viewpointHref);
+    return this.bcfApi.parse<BcfViewpointPaths>(viewpointHref)!;
   }
 
   public getViewPoint$(workPackage:WorkPackageResource, index:number):Observable<BcfViewpointData> {
@@ -114,13 +114,17 @@ export class ViewpointsService {
       );
   }
 
+  public resetBcfTopic():void {
+    this.topicUUID = null;
+  }
+
   public setBcfTopic$(workPackage:WorkPackageResource):Observable<string|number> {
-    if (this.topicUUID) {
+    if (this.topicUUID !== null) {
       return of(this.topicUUID);
     }
     const topicHref = (workPackage.bcfTopic as HalResource)?.href;
     const topicUUID$ = topicHref
-      ? of(this.bcfApi.parse<BcfViewpointPaths>(topicHref).id)
+      ? of(this.bcfApi.parse<BcfViewpointPaths>(topicHref)!.id)
       : this.createBcfTopic$(workPackage);
 
     return topicUUID$.pipe(

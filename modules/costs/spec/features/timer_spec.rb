@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +30,7 @@
 
 require_relative "../spec_helper"
 
-RSpec.describe "Work Package timer", :js do
+RSpec.describe "Work Package timer", :js, :selenium do
   shared_let(:project) { create(:project_with_types) }
 
   shared_let(:work_package_a) { create(:work_package, subject: "WP A", project:) }
@@ -38,6 +40,7 @@ RSpec.describe "Work Package timer", :js do
   let(:wp_view_b) { Pages::FullWorkPackage.new(work_package_b) }
   let(:time_logging_modal) { Components::TimeLoggingModal.new }
   let(:timer_button) { Components::WorkPackages::TimerButton.new }
+  let(:user_menu) { Components::UserMenu.new }
 
   let(:user) { create(:user, member_with_permissions: { project => permissions }) }
 
@@ -55,32 +58,32 @@ RSpec.describe "Work Package timer", :js do
       active_time_entries = TimeEntry.where(ongoing: true, user:)
       expect(active_time_entries.count).to eq 1
       timer_entry = active_time_entries.first
-      expect(timer_entry.work_package).to eq work_package_a
+      expect(timer_entry.entity).to eq work_package_a
       expect(timer_entry.hours).to be_nil
 
-      page.find(".op-top-menu-user").click
+      user_menu.open
       expect(page).to have_css(".op-timer-account-menu", wait: 10)
       expect(page).to have_css(".op-timer-account-menu--wp-details", text: "##{work_package_a.id}: WP A")
       page.find_test_selector("op-timer-account-menu-stop").click
 
       time_logging_modal.is_visible true
 
-      time_logging_modal.has_field_with_value "spentOn", Date.current.strftime
+      time_logging_modal.has_field_with_value "spent_on", Date.current.strftime
       time_logging_modal.has_field_with_value "hours", /(\d\.)?\d+/
-      time_logging_modal.work_package_is_missing false
+      time_logging_modal.activity_input_disabled_because_work_package_missing? false
       # wait for available_work_packages query to finish before saving
-      time_logging_modal.expect_work_package(work_package_a.subject)
+      time_logging_modal.expect_work_package(work_package_a)
 
-      time_logging_modal.perform_action "Save"
+      time_logging_modal.submit
       time_logging_modal.is_visible false
 
-      wp_view_a.expect_and_dismiss_toaster message: I18n.t(:notice_successful_update)
       timer_button.expect_inactive
 
       timer_entry.reload
       expect(timer_entry.ongoing).to be false
       expect(timer_entry.hours).not_to be_nil
 
+      user_menu.close
       timer_button.start
       timer_button.expect_active
 
@@ -98,21 +101,20 @@ RSpec.describe "Work Package timer", :js do
       active_time_entries = TimeEntry.where(ongoing: true, user:)
       expect(active_time_entries.count).to eq 1
       timer_entry = active_time_entries.first
-      expect(timer_entry.work_package).to eq work_package_a
+      expect(timer_entry.entity).to eq work_package_a
       expect(timer_entry.hours).to be_nil
 
-      page.within(".spot-modal") { click_button "Stop current timer" }
+      page.within(".spot-modal") { click_on "Stop current timer" }
       time_logging_modal.is_visible true
-      time_logging_modal.has_field_with_value "spentOn", Date.current.strftime
+      time_logging_modal.has_field_with_value "spent_on", Date.current.strftime
       time_logging_modal.has_field_with_value "hours", /(\d\.)?\d+/
-      time_logging_modal.work_package_is_missing false
+      time_logging_modal.activity_input_disabled_because_work_package_missing? false
       # wait for available_work_packages query to finish before saving
-      time_logging_modal.expect_work_package(work_package_a.subject)
+      time_logging_modal.expect_work_package(work_package_a)
 
-      time_logging_modal.perform_action "Save"
+      time_logging_modal.submit
 
       # Closing the modal starts the next timer
-      wp_view_b.expect_and_dismiss_toaster message: I18n.t(:notice_successful_update)
       time_logging_modal.is_visible false
       timer_button.expect_active
 
@@ -124,20 +126,20 @@ RSpec.describe "Work Package timer", :js do
       active_time_entries = TimeEntry.where(ongoing: true, user:)
       expect(active_time_entries.count).to eq 1
       timer_entry = active_time_entries.first
-      expect(timer_entry.work_package).to eq work_package_b
+      expect(timer_entry.entity).to eq work_package_b
       expect(timer_entry.hours).to be_nil
     end
   end
 
   context "when user has permission to log time" do
-    let(:permissions) { %i[log_own_time edit_own_time_entries view_own_time_entries view_work_packages] }
+    let(:permissions) { %i[log_own_time edit_own_time_entries view_own_time_entries view_work_packages view_project] }
 
     it_behaves_like "allows time tracking"
 
     context "when an old timer exists" do
       let!(:active_timer) do
         Timecop.travel(2.days.ago) do
-          create(:time_entry, project:, work_package: work_package_a, user:, ongoing: true)
+          create(:time_entry, project:, entity: work_package_a, user:, ongoing: true)
         end
       end
 
@@ -155,6 +157,7 @@ RSpec.describe "Work Package timer", :js do
       second_window = open_new_window
       within_window(second_window) do
         wp_view_a.visit!
+        wait_for_network_idle
         timer_button.expect_visible
         timer_button.start
         timer_button.expect_active
@@ -166,42 +169,40 @@ RSpec.describe "Work Package timer", :js do
       expect(page).to have_css(".op-timer-stop-modal")
       expect(page).to have_text("Tracking time:")
 
-      page.within(".spot-modal") { click_button "Stop current timer" }
-      time_logging_modal.is_visible true
-      time_logging_modal.has_field_with_value "spentOn", Date.current.strftime
-      time_logging_modal.has_field_with_value "hours", /(\d\.)?\d+/
-      time_logging_modal.work_package_is_missing false
-      # wait for available_work_packages query to finish before saving
-      time_logging_modal.expect_work_package(work_package_a.subject)
+      page.within(".spot-modal") { click_on "Stop current timer" }
 
-      time_logging_modal.perform_action "Save"
-      wp_view_b.expect_and_dismiss_toaster message: I18n.t(:notice_successful_update)
+      time_logging_modal.is_visible true
+      time_logging_modal.has_field_with_value "spent_on", Date.current.strftime
+      time_logging_modal.has_field_with_value "hours", /(\d\.)?\d+/
+      time_logging_modal.activity_input_disabled_because_work_package_missing? false
+      # wait for available_work_packages query to finish before saving
+      time_logging_modal.expect_work_package(work_package_a)
+
+      time_logging_modal.submit
       time_logging_modal.is_visible false
       timer_button.expect_active
 
       timer_button.stop
       time_logging_modal.is_visible true
-      time_logging_modal.has_field_with_value "spentOn", Date.current.strftime
+      time_logging_modal.has_field_with_value "spent_on", Date.current.strftime
       time_logging_modal.has_field_with_value "hours", /(\d\.)?\d+/
-      time_logging_modal.work_package_is_missing false
+      time_logging_modal.activity_input_disabled_because_work_package_missing? false
       # wait for available_work_packages query to finish before saving
-      time_logging_modal.expect_work_package(work_package_a.subject)
+      time_logging_modal.expect_work_package(work_package_a)
 
-      time_logging_modal.perform_action "Save"
-      wp_view_b.expect_and_dismiss_toaster message: I18n.t(:notice_successful_update)
+      time_logging_modal.submit
       time_logging_modal.is_visible false
       timer_button.expect_inactive
 
       within_window(second_window) do
         timer_button.expect_active
         timer_button.stop
-        wp_view_b.expect_and_dismiss_toaster message: I18n.t("js.timer.timer_already_stopped"), type: :warning
       end
     end
   end
 
   context "when user has no permission to log time" do
-    let(:permissions) { %i[view_work_packages] }
+    let(:permissions) { %i[view_work_packages view_project] }
 
     it "does not show the timer" do
       wp_view_a.visit!
@@ -213,13 +214,13 @@ RSpec.describe "Work Package timer", :js do
   end
 
   context "when user has permission to add, but not edit or view" do
-    let(:permissions) { %i[view_work_packages log_own_time] }
+    let(:permissions) { %i[view_work_packages log_own_time view_project] }
 
     it_behaves_like "allows time tracking"
   end
 
   context "when user has permission to add and view but not edit" do
-    let(:permissions) { %i[view_work_packages log_own_time view_own_logged_time] }
+    let(:permissions) { %i[view_work_packages log_own_time view_own_logged_time view_project] }
 
     it_behaves_like "allows time tracking"
   end

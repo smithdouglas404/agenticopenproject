@@ -42,6 +42,7 @@ import { OpCalendarService } from 'core-app/features/calendar/op-calendar.servic
     OpCalendarService,
     CalendarDragDropService,
   ],
+  standalone: false,
 })
 export class TeamPlannerPageComponent extends PartitionedQuerySpacePageComponent implements OnInit {
   @InjectField() actions$:ActionsService;
@@ -121,6 +122,15 @@ export class TeamPlannerPageComponent extends PartitionedQuerySpacePageComponent
    */
   setPartition(state:{ data:{ partition?:ViewPartitionState } }):void {
     this.currentPartition = state.data?.partition || '-split';
+  }
+
+  breadcrumbItems() {
+    return [
+      { href: this.pathHelperService.homePath(), text: this.titleService.appTitle },
+      { href: this.pathHelperService.projectPath(this.currentProject.identifier as string), text: (this.currentProject.name) },
+      { href: this.pathHelperService.projectTeamplannerPath(this.currentProject.identifier as string), text: this.I18n.t('js.team_planner.label_team_planner_plural') },
+      this.selectedTitle?? '',
+    ];
   }
 
   protected staticQueryName(_query:QueryResource):string {

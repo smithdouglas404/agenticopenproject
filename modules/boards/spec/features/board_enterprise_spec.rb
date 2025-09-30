@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,7 +32,7 @@ require "spec_helper"
 require_relative "support/board_index_page"
 require_relative "support/board_page"
 
-RSpec.describe "Boards enterprise spec", :js, :with_cuprite do
+RSpec.describe "Boards enterprise spec", :js do
   shared_let(:admin) { create(:admin) }
 
   shared_let(:project) { create(:project, enabled_module_names: %i[work_package_tracking board_view]) }
@@ -54,7 +56,7 @@ RSpec.describe "Boards enterprise spec", :js, :with_cuprite do
     end
 
     it "disabled all action boards" do
-      page.find(".toolbar-item a", text: "Board").click
+      page.find('[data-test-selector="add-board-button"]', text: "Board").click
 
       expect(page).to have_css("#{test_selector('op-tile-block')}:not(.-disabled)", text: "Basic")
       expect(page).to have_css("#{test_selector('op-tile-block')}.-disabled", count: 5)
@@ -67,12 +69,13 @@ RSpec.describe "Boards enterprise spec", :js, :with_cuprite do
 
       board_page = board_index.open_board(manual_board)
       board_page.expect_query "My board"
-      expect(page).not_to have_test_selector "op-enterprise-banner"
+      wait_for_network_idle # wait for the banner to be loaded
+      expect(page).not_to have_enterprise_banner
 
       board_index.visit!
       board_page = board_index.open_board(action_board)
       board_page.expect_query "Subproject board"
-      expect(page).to have_test_selector "op-enterprise-banner"
+      expect(page).to have_enterprise_banner
     end
   end
 
@@ -83,7 +86,7 @@ RSpec.describe "Boards enterprise spec", :js, :with_cuprite do
     end
 
     it "enables all options" do
-      page.find(".toolbar-item a", text: "Board").click
+      page.find('[data-test-selector="add-board-button"]', text: "Board").click
 
       expect(page).to have_css("#{test_selector('op-tile-block')}:not(.-disabled)", count: 6)
     end
@@ -95,12 +98,12 @@ RSpec.describe "Boards enterprise spec", :js, :with_cuprite do
 
       board_page = board_index.open_board(manual_board)
       board_page.expect_query "My board"
-      expect(page).not_to have_test_selector "op-enterprise-banner"
+      expect(page).not_to have_enterprise_banner
 
       board_index.visit!
       board_page = board_index.open_board(action_board)
       board_page.expect_query "Subproject board"
-      expect(page).not_to have_test_selector "op-enterprise-banner"
+      expect(page).not_to have_enterprise_banner
     end
   end
 end

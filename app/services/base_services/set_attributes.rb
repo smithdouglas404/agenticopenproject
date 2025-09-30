@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -40,8 +42,8 @@ module BaseServices
       self.contract_options = contract_options
     end
 
-    def perform(params = {})
-      set_attributes(params || {})
+    def perform
+      set_attributes(params)
 
       validate_and_result
     end
@@ -56,9 +58,14 @@ module BaseServices
       model.attributes = params
 
       set_default_attributes(params) if model.new_record?
+      ensure_default_attributes(params)
     end
 
     def set_default_attributes(_params)
+      # nothing to do for now but a subclass may
+    end
+
+    def ensure_default_attributes(_params)
       # nothing to do for now but a subclass may
     end
 

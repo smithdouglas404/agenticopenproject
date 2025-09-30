@@ -2,6 +2,7 @@
 ca:
   js:
     storages:
+      authentication_error: "Authentication with %{storageType} failed"
       link_files_in_storage: "Fitxers enllaçats a %{storageType}"
       link_existing_files: "Enllaça fitxers existents"
       upload_files: "Carregar fitxers"
@@ -13,11 +14,14 @@ ca:
       open_storage: "Obre %{storageType}"
       select_location: "Selecciona ubicació"
       choose_location: "Tria ubicació"
+      new_folder: "New folder"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
         default: "Emmagatzematge"
       information:
+        authentication_error: "The request to %{storageType} could not be authenticated, that's an error."
         connection_error: >
           Alguna configuració de %{storageType} no està funcionant. Si us plau, contacta el teu administrador de %{storageType}.
         live_data_error: "Error recuperant els detalls del fitxer"
@@ -26,6 +30,8 @@ ca:
         no_file_links: "Per tal d'enllaçar arxius a aquest paquet de treball si us plau fes-ho a través de %{storageType}."
         not_logged_in: >
           Per afegir un enllaç, veure o pujar fitxers relacionats amb aquest paquet de treball si us plau inicia sessió a %{storageType}.
+        suggest_logout: You can try whether logging out and back in fixes this problem.
+        suggest_relink: You can try whether re-linking your account via the login button below fixes this problem.
       files:
         already_existing_header: "Aquest fitxer ja existeix"
         already_existing_body: >
@@ -42,6 +48,7 @@ ca:
           Les carpetes gestionades automàticament no s'ha trobat encara. Si us plau, espera una mica i recarrega la pàgina per obtenir les dades més recents i prova-ho de nou.
         managed_project_folder_no_access: >
           Encara no tens access a la carpeta de projecte gestionada. Si us plau, espera un moment i prova-ho de nou.
+        cannot_create_folder: Failed to create folder. Avoid using special characters and symbols and make sure the folder does not exist already.
         upload_keep_both: "Conserva els dos"
         upload_replace: "Substitueix"
       file_links:

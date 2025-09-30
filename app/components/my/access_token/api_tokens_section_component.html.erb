@@ -1,0 +1,70 @@
+<%#-- copyright
+OpenProject is an open source project management software.
+Copyright (C) the OpenProject GmbH
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License version 3.
+
+OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+Copyright (C) 2006-2013 Jean-Philippe Lang
+Copyright (C) 2010-2013 the ChiliProject Team
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+See COPYRIGHT and LICENSE files for more details.
+
+++#%>
+
+<%= component_wrapper do %>
+  <div class="attributes-group">
+    <div class="attributes-group--header">
+      <div class="attributes-group--header-container">
+        <h3 class="attributes-group--header-text"><%= t(:title, scope: i18n_scope) %></h3>
+      </div>
+    </div>
+    <div>
+      <p> <%= t(:text_hint, scope: i18n_scope) %> </p>
+      <% if token_available? %>
+        <% if @tokens.any? %>
+          <%= render My::AccessToken::API::TableComponent.new(rows: @tokens) %>
+        <% end %>
+        <%= render(
+              Primer::Beta::Button.new(
+                tag: :a,
+                mt: 3,
+                scheme: :secondary,
+                test_selector: "#{token_type.model_name.element}-token-add",
+                href: dialog_my_access_tokens_path(token_type: token_type.model_name.element),
+                data: { turbo_stream: true },
+                aria: { label: t(:add_button, scope: i18n_scope) },
+                role: "button",
+                title: t(:add_button, scope: i18n_scope)
+              )
+            ) do |button|
+              button.with_leading_visual_icon(icon: add_button_icon)
+              t(:add_button, scope: i18n_scope)
+            end %>
+      <% else %>
+        <div tabindex="0" class="-info op-toast">
+          <div role="alert" aria-atomic="true" class="op-toast--content">
+            <p>
+              <span><%= t(:disabled_text, scope: i18n_scope) %></span>
+            </p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

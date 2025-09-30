@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -21,9 +21,9 @@
 #++
 tr:
   plugin_openproject_reporting:
-    name: "OpenProject Reporting"
-    description: "This plugin allows creating custom cost reports with filtering and grouping created by the OpenProject Time and costs plugin."
-  button_save_as: "Raporu... şeklinde kaydet"
+    name: "OpenProject Raporlama"
+    description: "Bu eklenti, OpenProject Zaman ve maliyetler eklentisi tarafından oluşturulan filtreleme ve gruplama ile özel maliyet raporları oluşturmaya izin verir."
+  button_save_report_as: "Raporu farklı kaydet..."
   comments: "Yorum"
   cost_reports_title: "Zaman ve maliyetler"
   label_cost_report: "Maliyet raporu"
@@ -45,9 +45,11 @@ tr:
   label_greater: ">"
   label_is_not_project_with_subprojects: "değil (alt projeler dahil)"
   label_is_project_with_subprojects: "(alt projeler dahil)"
+  label_is_work_package_with_descendants: "(torunları içerir)"
+  label_is_not_work_package_with_descendants: "değildir (torunları içerir)"
   label_work_package_attributes: "Çalışma paketi nitelikleri"
   label_less: "<"
-  label_logged_by_reporting: "Giriş yapan:"
+  label_logged_by_reporting: "Tarafından giriş yapıldı"
   label_money: "Nakit değer"
   label_month_reporting: "Ay (harcanan)"
   label_new_report: "Yeni maliyet raporu"
@@ -65,7 +67,7 @@ tr:
   label_week_reporting: "Hafta (Harcanan)"
   label_year_reporting: "Yıl (Harcanan)"
   label_count: "saymak"
-  label_filter: "filtre"
+  label_filter: "Filtre"
   label_filter_add: "Filtre ekle"
   label_filter_plural: "Filtreler"
   label_group_by: "Grupla"
@@ -86,8 +88,18 @@ tr:
   validation_failure_date: "geçerli bir tarih değil"
   validation_failure_integer: "geçerli bir tamsayı değil"
   export:
+    timesheet:
+      title: "PDF zaman çizelgenizin dışa aktarımı"
+      button: "PDF zaman çizelgesini dışa aktar"
+      timesheet: "Zaman Çizelgesi"
+      time: "Zaman"
+      sums_hours: Toplam
+      overview_per_user_total: "Genel bakış: Kullanıcı başına toplam saat"
+      overview_per_user_day: "Genel bakış: Kullanıcı başına günlük saat"
     cost_reports:
       title: "Maliyet Raporlarınızın XLS çıktısı"
+      start_time: "Başlangıç tarihi"
+      end_time: "Bitiş zamanı"
   reporting:
     group_by:
       selected_columns: "Seçilen sütunlar"

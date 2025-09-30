@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,7 +37,7 @@ module WorkPackagesControllerHelper
   end
 
   def check_allowed_export
-    return unless params[:format] == "pdf" && params[:gantt] == "true"
+    return unless params[:format] == "pdf" && params[:pdf_export_type] == "gantt"
 
     render_403 unless EnterpriseToken.allows_to?(:gantt_pdf_export)
   end
@@ -53,16 +55,26 @@ module WorkPackagesControllerHelper
   end
 
   def load_and_validate_query
+    # rubocop:disable Rails/HelperInstanceVariable
     @query ||= retrieve_query(@project)
     @query.name = params[:title] if params[:title].present?
+    respond_query_error(@query.errors.full_messages.join(". ")) unless @query.valid?
+    # rubocop:enable Rails/HelperInstanceVariable
+  end
 
-    unless @query.valid?
-      # Ensure outputting an html response
-      request.format = "html"
-      render_400(message: @query.errors.full_messages.join(". "))
+  def respond_query_error(message)
+    respond_to do |format|
+      format.turbo_stream do
+        render_error_flash_message_via_turbo_stream(message:)
+        response.status = :unprocessable_entity
+        respond_with_turbo_streams
+      end
+
+      format.any do
+        request.format = "html"
+        render_400(message:)
+      end
     end
-  rescue ActiveRecord::RecordNotFound
-    render_404
   end
 
   def atom_list

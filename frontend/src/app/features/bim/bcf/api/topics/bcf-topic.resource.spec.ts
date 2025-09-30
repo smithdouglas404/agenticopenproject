@@ -1,6 +1,6 @@
 import { TypedJSON } from 'typedjson';
 import { BcfTopicResource } from 'core-app/features/bim/bcf/api/topics/bcf-topic.resource';
-import * as moment from 'moment';
+import moment from 'moment';
 
 export const topic_object = {
   guid: '00efc0da-b4d5-4933-bcb6-e01513ee2bcc',

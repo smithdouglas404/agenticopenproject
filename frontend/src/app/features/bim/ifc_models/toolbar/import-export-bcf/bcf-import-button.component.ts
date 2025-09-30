@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -36,11 +36,12 @@ import { BcfPathHelperService } from 'core-app/features/bim/bcf/helper/bcf-path-
     <a [title]="text.import_hover"
       (click)="handleClick()"
       class="button import-bcf-button">
-      <op-icon icon-classes="button--icon icon-import"></op-icon>
+      <op-icon icon-classes="button--icon icon-import" />
       <span class="button--text"> {{text.import}} </span>
     </a>
   `,
   selector: 'bcf-import-button',
+  standalone: false,
 })
 export class BcfImportButtonComponent {
   public text = {

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -49,7 +49,6 @@ import {
   setResourceLoading,
 } from 'core-app/core/state/resource-store';
 import { omit } from 'lodash';
-import isDefinedEntity from 'core-app/core/state/is-defined-entity';
 import {
   ApiV3ListParameters,
   listParamsString,
@@ -149,7 +148,7 @@ export abstract class ResourceStoreService<T extends { id:ID }> {
     return this
       .collectionState(href)
       .pipe(
-        filter(isDefinedEntity),
+        filter(entity => entity !== undefined),
         switchMap((collection:CollectionResponse) => this.query.selectMany(collection.ids)),
       );
   }
@@ -177,7 +176,7 @@ export abstract class ResourceStoreService<T extends { id:ID }> {
     return this
       .query
       .selectEntity(id)
-      .pipe(filter(isDefinedEntity));
+      .pipe(filter(entity => entity !== undefined));
   }
 
   /**

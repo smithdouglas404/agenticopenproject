@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,7 +32,6 @@ require "spec_helper"
 
 RSpec.describe "baseline rendering",
                :js,
-               :with_cuprite,
                with_settings: { date_format: "%Y-%m-%d" } do
   shared_let(:list_wp_custom_field) { create(:list_wp_custom_field) }
   shared_let(:multi_list_wp_custom_field) { create(:list_wp_custom_field, multi_value: true) }
@@ -253,7 +254,7 @@ RSpec.describe "baseline rendering",
       .result
   end
 
-  shared_let(:query) do
+  let(:query) do
     query = create(:query,
                    name: "Timestamps Query",
                    project:,
@@ -263,8 +264,7 @@ RSpec.describe "baseline rendering",
     query.add_filter("type_id", "=", [type_task.id, type_milestone.id])
     query.column_names =
       %w[id subject status type start_date due_date version priority assigned_to responsible] +
-      CustomField.all.pluck(:id).map { |id| "cf_#{id}" }
-    query.save!(validate: false)
+        CustomField.pluck(:id).map { |id| "cf_#{id}" }
 
     query
   end
@@ -275,6 +275,10 @@ RSpec.describe "baseline rendering",
   let(:baseline_modal) { Components::WorkPackages::BaselineModal.new }
 
   current_user { user }
+
+  before do
+    query.save!(validate: false)
+  end
 
   describe "with EE", with_ee: %i[baseline_comparison] do
     it "does show changes" do
@@ -422,7 +426,7 @@ RSpec.describe "baseline rendering",
       baseline_modal.expect_closed
       baseline_modal.toggle_drop_modal
       baseline_modal.expect_open
-      expect(page).to have_css(".op-baseline--enterprise-title")
+      expect(page).to have_enterprise_banner
       # only yesterday is selectable
       page.select("a specific date", from: "op-baseline-filter")
       expect(page).to have_no_select("op-baseline-filter", selected: "a specific date")

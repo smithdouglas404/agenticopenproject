@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -76,7 +76,7 @@ RSpec.describe Boards::StatusBoardCreateService do
         subject
 
         query_filter = queries.flat_map(&:filters).map(&:to_hash).first
-        widget_filter = widgets.flat_map { _1.options["filters"] }.first
+        widget_filter = widgets.flat_map { it.options["filters"] }.first
 
         expect(query_filter).to match_array(widget_filter)
       end

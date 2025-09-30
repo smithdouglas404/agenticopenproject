@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,16 +35,14 @@ RSpec.describe Admin::Settings::WorkingDaysAndHoursSettingsController do
 
   current_user { user }
 
-  require_admin_and_render_template("working_days_and_hours_settings")
+  include_examples "GET #show requires admin permission and renders template", path: "working_days_and_hours_settings"
 
   describe "update" do
     let(:working_days) { [*"1".."7"] }
     let(:non_working_days_attributes) { {} }
     let(:hours_per_day) { 4 }
-    let(:days_per_week) { 5 }
-    let(:days_per_month) { 20 }
     let(:params) do
-      { settings: { working_days:, non_working_days_attributes:, hours_per_day:, days_per_week:, days_per_month: } }
+      { settings: { working_days:, non_working_days_attributes:, hours_per_day: } }
     end
 
     subject { patch "update", params: }

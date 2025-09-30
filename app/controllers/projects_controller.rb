@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,28 +29,41 @@
 #++
 
 class ProjectsController < ApplicationController
+  include OpTurbo::ComponentStream
+
   menu_item :overview
   menu_item :roadmap, only: :roadmap
 
-  before_action :find_project, except: %i[index new]
-  before_action :load_query_or_deny_access, only: %i[index]
-  before_action :authorize, only: %i[copy deactivate_work_package_attachments]
-  before_action :authorize_global, only: %i[new]
+  before_action :find_project, except: %i[index new create export_list_modal]
+  before_action :load_query_or_deny_access, only: %i[index export_list_modal]
+  before_action :authorize, only: %i[copy_form copy deactivate_work_package_attachments]
+  before_action :authorize_global, only: %i[new create]
   before_action :require_admin, only: %i[destroy destroy_info]
+  before_action :not_authorized_on_feature_flag_inactive,
+                only: %i[new create],
+                if: -> {
+                  params[:workspace_type].in?(Project.workspace_types.values_at(:program, :portfolio))
+                }
+  before_action :find_optional_template, only: %i[new create]
+  before_action :find_optional_parent, only: :new
+
+  no_authorization_required! :index, :export_list_modal
 
   include SortHelper
   include PaginationHelper
   include QueriesHelper
   include ProjectsHelper
-  include Projects::QueryLoading
-
-  helper_method :has_managed_project_folders?
+  include Queries::Loading
 
   current_menu_item :index do
     :projects
   end
 
-  def index
+  current_menu_item :copy_form do
+    :settings_general
+  end
+
+  def index # rubocop:disable Metrics/AbcSize
     respond_to do |format|
       format.html do
         flash.now[:error] = @query.errors.full_messages if @query.errors.any?
@@ -59,22 +74,82 @@ class ProjectsController < ApplicationController
       format.any(*supported_export_formats) do
         export_list(@query, request.format.symbol)
       end
+
+      format.turbo_stream do
+        replace_via_turbo_stream(
+          component: Projects::IndexPageHeaderComponent.new(query: @query, current_user:, state: :show, params:)
+        )
+        update_via_turbo_stream(
+          component: Filter::FilterButtonComponent.new(query: @query, disable_buttons: false)
+        )
+        replace_via_turbo_stream(component: Projects::TableComponent.new(query: @query, current_user:, params:))
+
+        current_url = url_for(params.permit(:controller, :action, :query_id, :filters, :columns, :sortBy, :page, :per_page))
+        turbo_streams << turbo_stream.push_state(current_url)
+        turbo_streams << turbo_stream.turbo_frame_set_src(
+          "projects_sidemenu",
+          projects_menu_url(query_id: @query.id, controller_path: "projects")
+        )
+
+        turbo_streams << turbo_stream.replace("flash-messages", helpers.render_flash_messages)
+
+        render turbo_stream: turbo_streams
+      end
     end
   end
 
   def new
-    render layout: "no_menu"
+    if from_template?
+      new_from_template
+    else
+      new_blank
+    end
   end
 
-  def copy
+  def create
+    if from_template?
+      create_from_template
+    else
+      create_blank
+    end
+  end
+
+  def copy_form
+    @copy_options = Projects::CopyOptions.new
+    @target_project = Projects::CopyService
+      .new(user: current_user, source: @project, contract_options: { validate_model: false })
+      .call(target_project_params: {}, attributes_only: true)
+      .result
+
     render
+  end
+
+  def copy # rubocop:disable Metrics/AbcSize
+    @copy_options = Projects::CopyOptions.new(permitted_params.copy_project_options)
+
+    service_call = Projects::EnqueueCopyService
+      .new(user: current_user, model: @project)
+      .call(
+        target_project_params: permitted_params.new_project.to_h,
+        only: @copy_options.dependencies,
+        send_notifications: @copy_options.send_notifications
+      )
+
+    if service_call.success?
+      job = service_call.result
+      redirect_to job_status_path(job.job_id)
+    else
+      @target_project = service_call.result
+      flash.now[:error] = I18n.t(:notice_unsuccessful_create_with_reason, reason: service_call.message)
+      render action: :copy_form, status: :unprocessable_entity
+    end
   end
 
   # Delete @project
   def destroy
     service_call = ::Projects::ScheduleDeletionService
-                     .new(user: current_user, model: @project)
-                     .call
+                    .new(user: current_user, model: @project)
+                    .call
 
     if service_call.success?
       flash[:notice] = I18n.t("projects.delete.scheduled")
@@ -82,37 +157,91 @@ class ProjectsController < ApplicationController
       flash[:error] = I18n.t("projects.delete.schedule_failed", errors: service_call.errors.full_messages.join("\n"))
     end
 
-    redirect_to projects_path
+    redirect_to projects_path, status: :see_other
   end
 
   def destroy_info
-    @project_to_destroy = @project
-
-    hide_project_in_layout
+    respond_with_dialog Projects::DeleteDialogComponent.new(project: @project)
   end
 
   def deactivate_work_package_attachments
-    @project.deactivate_work_package_attachments = params[:value] != "1"
-    @project.save
+    call = Projects::UpdateService
+             .new(user: current_user, model: @project, contract_class: Projects::SettingsContract)
+             .call(deactivate_work_package_attachments: params[:value] != "1")
+
+    if call.failure?
+      render json: call.errors.full_messages.join(" "), status: :unprocessable_entity
+    else
+      head :no_content
+    end
+  end
+
+  def export_list_modal
+    respond_with_dialog Projects::ExportListModalComponent.new(query: @query)
   end
 
   private
 
-  def has_managed_project_folders?(project)
-    project.project_storages.any?(&:project_folder_automatic?)
+  def from_template? = @template.present?
+
+  def new_blank
+    @new_project = @parent&.children&.build(params.permit(:workspace_type)) || Project.new(params.permit(:workspace_type))
+
+    render layout: "no_menu"
   end
 
-  def find_optional_project
-    return true unless params[:id]
+  def new_from_template
+    @copy_options = Projects::CopyOptions.new
+    @new_project = Projects::CopyService
+      .new(user: current_user, source: @template, contract_options: { validate_model: false })
+      .call(target_project_params: params.permit(:parent_id).to_h, attributes_only: true)
+      .result
 
-    @project = Project.find(params[:id])
-    authorize
-  rescue ActiveRecord::RecordNotFound
-    render_404
+    render layout: "no_menu"
   end
 
-  def hide_project_in_layout
-    @project = nil
+  def create_blank
+    service_call = Projects::CreateService
+      .new(user: current_user)
+      .call(permitted_params.new_project)
+
+    @new_project = service_call.result
+
+    if service_call.success?
+      redirect_to project_path(@new_project), notice: I18n.t(:notice_successful_create)
+    else
+      flash.now[:error] = I18n.t(:notice_unsuccessful_create_with_reason, reason: service_call.message)
+      render action: :new, status: :unprocessable_entity
+    end
+  end
+
+  def create_from_template # rubocop:disable Metrics/AbcSize
+    @copy_options = Projects::CopyOptions.new(permitted_params.copy_project_options)
+
+    service_call = Projects::EnqueueCopyService
+      .new(user: current_user, model: @template)
+      .call(
+        target_project_params: permitted_params.new_project.to_h,
+        only: @copy_options.dependencies,
+        send_notifications: @copy_options.send_notifications
+      )
+
+    if service_call.success?
+      job = service_call.result
+      redirect_to job_status_path(job.job_id)
+    else
+      @new_project = service_call.result
+      flash.now[:error] = I18n.t(:notice_unsuccessful_create_with_reason, reason: service_call.message)
+      render action: :new, status: :unprocessable_entity
+    end
+  end
+
+  def find_optional_template
+    @template = Project.templated.visible(current_user).find(params[:template_id]) if params[:template_id].present?
+  end
+
+  def find_optional_parent
+    @parent = Project.visible(current_user).find(params[:parent_id]) if params[:parent_id].present?
   end
 
   def export_list(query, mime_type)
@@ -132,6 +261,10 @@ class ProjectsController < ApplicationController
 
   def supported_export_formats
     ::Exports::Register.list_formats(Project).map(&:to_s)
+  end
+
+  def not_authorized_on_feature_flag_inactive
+    render_403 unless OpenProject::FeatureDecisions.portfolio_models_active?
   end
 
   helper_method :supported_export_formats

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,6 +35,7 @@ module ApplicationHelper
   include OpenProject::TextFormatting
   include OpenProject::ObjectLinking
   include OpenProject::SafeParams
+  include OpPrimer::FormHelpers
   include I18n
   include ERB::Util
   include Redmine::I18n
@@ -63,7 +66,7 @@ module ApplicationHelper
     html_options = args.shift
     parameters_for_method_reference = args
 
-    return unless authorize_for(options[:controller] || params[:controller], options[:action])
+    return unless authorize_for(options[:controller] || controller_path, options[:action])
 
     if block_given?
       link_to(options, html_options, *parameters_for_method_reference, &)
@@ -123,7 +126,7 @@ module ApplicationHelper
   end
 
   def project_nested_ul(projects, &)
-    s = ""
+    s = +""
     if projects.any?
       ancestors = []
       Project.project_tree(projects) do |project, _level|
@@ -171,10 +174,16 @@ module ApplicationHelper
     end.join.html_safe
   end
 
-  def html_hours(text)
-    text.gsub(%r{(\d+)\.(\d+)},
-              '<span class="hours hours-int">\1</span><span class="hours hours-dec">.\2</span>')
-      .html_safe
+  def html_safe_gsub(string, *gsub_args, &)
+    html_safe = string.html_safe?
+    result = string.gsub(*gsub_args, &)
+
+    # We only mark the string as safe if the previous string was already safe
+    if html_safe
+      result.html_safe # rubocop:disable Rails/OutputSafety
+    else
+      result
+    end
   end
 
   def authoring(created, author, options = {})
@@ -182,13 +191,10 @@ module ApplicationHelper
     I18n.t(label, author: link_to_user(author), age: time_tag(created)).html_safe
   end
 
-  def authoring_at(created, author)
+  def authoring_at(creation_date, author)
     return if author.nil?
 
-    I18n.t(:"js.label_added_time_by",
-           author: html_escape(author.name),
-           age: created,
-           authorLink: user_path(author)).html_safe
+    I18n.t(:label_added_by_on, author: link_to_user(author), date: creation_date).html_safe
   end
 
   def time_tag(time)
@@ -213,6 +219,12 @@ module ApplicationHelper
     end
   end
 
+  # Backward compatibility helper for secure_headers gem migration
+  # Rails built-in CSP equivalent of nonced_javascript_tag
+  def nonced_javascript_tag(**, &)
+    javascript_tag(nonce: true, **, &)
+  end
+
   def to_path_param(path)
     path.to_s
   end
@@ -229,14 +241,16 @@ module ApplicationHelper
   # Returns the theme, controller name, and action as css classes for the
   # HTML body.
   def body_css_classes
-    css = ["theme-" + OpenProject::CustomStyles::Design.identifier.to_s]
+    css = ["theme-#{OpenProject::CustomStyles::Design.identifier}"]
 
-    if params[:controller] && params[:action]
-      css << ("controller-" + params[:controller])
-      css << ("action-" + params[:action])
+    if controller_path && action_name
+      css << "controller-#{controller_path}"
+      css << "action-#{action_name}"
     end
 
-    css << "ee-banners-#{EnterpriseToken.show_banners? ? 'visible' : 'hidden'}"
+    if EnterpriseToken.hide_banners?
+      css << "ee-banners-hidden"
+    end
 
     css << "env-#{Rails.env}"
 
@@ -252,41 +266,72 @@ module ApplicationHelper
 
   # Same as Rails' simple_format helper without using paragraphs
   def simple_format_without_paragraph(text)
-    text.to_s
-      .gsub(/\r\n?/, "\n")                    # \r\n and \r -> \n
-      .gsub(/\n\n+/, "<br /><br />")          # 2+ newline  -> 2 br
-      .gsub(/([^\n]\n)(?=[^\n])/, '\1<br />') # 1 newline   -> br
-      .html_safe
+    html_safe_gsub(text.to_s, /\r\n?/, "\n")
+      .then { |res| html_safe_gsub(res, /\n\n+/, "<br /><br />") }
+      .then { |res| html_safe_gsub(res, /([^\n]\n)(?=[^\n])/, '\1<br />') }
   end
 
   def lang_options_for_select(blank = true)
-    auto = if blank && (valid_languages - all_languages) == (all_languages - valid_languages)
-             [["(auto)", ""]]
-           else
-             []
-           end
+    options = valid_languages.map { |lang| [*translate_language(lang), { lang: }] }
+    options.sort_by!(&:first)
 
-    mapped_languages = valid_languages.map { |lang| translate_language(lang) }
+    if blank && valid_languages.to_set == all_languages.to_set
+      options.unshift([I18n.t(:label_auto_option), ""])
+    end
 
-    auto + mapped_languages.sort_by(&:last)
+    options
   end
 
   def all_lang_options_for_select
     all_languages
       .map { |lang| translate_language(lang) }
-      .sort_by(&:last)
+      .sort_by(&:first)
   end
 
   def theme_options_for_select
     [
-      [t("themes.light"), "light"],
-      [t("themes.light_high_contrast"), "light_high_contrast"]
+      [I18n.t("themes.light"), "light"],
+      [I18n.t("themes.dark"), "dark"],
+      [I18n.t("themes.sync_with_os"), "sync_with_os"]
     ]
   end
 
+  def comment_sort_order_options
+    [[I18n.t("activities.work_packages.activity_tab.label_sort_asc"), "asc"],
+     [I18n.t("activities.work_packages.activity_tab.label_sort_desc"), "desc"]]
+  end
+
+  def body_data_attributes(local_assigns)
+    {
+      controller: "application auto-theme-switcher hover-card-trigger beforeunload external-links",
+      relative_url_root: root_path,
+      overflowing_identifier: ".__overflowing_body",
+      rendered_at: Time.zone.now.iso8601,
+      turbo: local_assigns[:turbo_opt_out] ? "false" : nil
+    }.merge(user_theme_data_attributes)
+     .compact
+  end
+
   def user_theme_data_attributes
-    mode, _theme_suffix = User.current.pref.theme.split("_", 2)
-    "data-color-mode=#{mode} data-#{mode}-theme=#{User.current.pref.theme}"
+    pref = User.current.pref
+    theme = pref.theme
+
+    theme_options = {
+      auto_theme_switcher_theme_value: theme,
+      auto_theme_switcher_desktop_light_high_contrast_logo_class: "op-logo--link_high_contrast",
+      auto_theme_switcher_mobile_white_logo_class: "op-logo--icon_white"
+    }
+
+    if pref.sync_with_os_theme?
+      theme_options[:auto_theme_switcher_force_light_contrast_value] = pref.force_light_theme_contrast?
+      theme_options[:auto_theme_switcher_force_dark_contrast_value] = pref.force_dark_theme_contrast?
+    else
+      theme_options[:color_mode] = theme
+      theme_options[:"#{theme}_theme"] = theme
+      theme_options[:auto_theme_switcher_increase_contrast_value] = pref.increase_theme_contrast?
+    end
+
+    theme_options
   end
 
   def highlight_default_language(lang_options)
@@ -303,6 +348,12 @@ module ApplicationHelper
     options.reverse_merge!(builder: TabularFormBuilder, html: {})
     options[:html][:class] = "form" unless options[:html].has_key?(:class)
     form_for(record, options, &)
+  end
+
+  def labelled_tabular_form_with(model: false, scope: nil, url: nil, format: nil, **options, &)
+    options.reverse_merge!(builder: TabularFormBuilder, html: {})
+    options[:html][:class] = "form" unless options[:html].has_key?(:class)
+    form_with(model:, scope:, url:, format:, **options, &)
   end
 
   def back_url_hidden_field_tag(use_referer: true)
@@ -343,10 +394,10 @@ module ApplicationHelper
   #   A hash containing the following keys:
   #   * width: (default '100px') the css-width for the progress bar
   #   * legend: (default: '') the text displayed alond with the progress bar
-  def progress_bar(pcts, options = {})
+  def progress_bar(pcts, options = {}) # rubocop:disable Metrics/AbcSize
     pcts = Array(pcts).map(&:round)
     closed = pcts[0]
-    done   = pcts[1] || 0
+    done = pcts[1] || 0
     width = options[:width] || "100px;"
     legend = options[:legend] || ""
     total_progress = options[:hide_total_progress] ? "" : t(:total_progress)
@@ -355,7 +406,7 @@ module ApplicationHelper
     content_tag :span do
       progress = content_tag :span, class: "progress-bar", style: "width: #{width}" do
         concat content_tag(:span, "", class: "inner-progress closed", style: "width: #{closed}%")
-        concat content_tag(:span, "", class: "inner-progress done",   style: "width: #{done}%")
+        concat content_tag(:span, "", class: "inner-progress done", style: "width: #{done}%")
       end
       progress + content_tag(:span, "#{legend}#{percent_sign} #{total_progress}", class: "progress-bar-legend")
     end
@@ -368,8 +419,10 @@ module ApplicationHelper
   end
 
   def calendar_for(*_args)
-    ActiveSupport::Deprecation.warn "calendar_for has been removed. Please use the op-basic-single-date-picker angular component instead",
-                                    caller
+    ActiveSupport::Deprecation.new.warn(
+      "calendar_for has been removed. Please use the opce-basic-single-date-picker angular component instead",
+      caller_locations
+    )
   end
 
   def locale_first_day_of_week
@@ -408,8 +461,8 @@ module ApplicationHelper
 
   def initial_menu_classes(side_displayed, show_decoration)
     classes = "can-hide-navigation"
-    classes << " nosidebar" unless side_displayed
-    classes << " nomenus" unless show_decoration
+    classes += " nosidebar" unless side_displayed
+    classes += " nomenus" unless show_decoration
 
     classes
   end
@@ -434,21 +487,19 @@ module ApplicationHelper
   def translate_language(lang_code)
     # rename in-context translation language name for the language select box
     if lang_code.to_sym == Redmine::I18n::IN_CONTEXT_TRANSLATION_CODE &&
-       ::I18n.locale != Redmine::I18n::IN_CONTEXT_TRANSLATION_CODE
+      ::I18n.locale != Redmine::I18n::IN_CONTEXT_TRANSLATION_CODE
       [Redmine::I18n::IN_CONTEXT_TRANSLATION_NAME, lang_code.to_s]
     else
       [I18n.t("cldr.language_name", locale: lang_code), lang_code.to_s]
     end
   end
 
-  def link_to_content_update(text, url_params = {}, html_options = {})
-    link_to(text, url_params, html_options)
+  def link_to_content_update(name, options = {}, html_options = {}, &)
+    link_to(name, options, html_options.reverse_merge(target: "_top"), &)
   end
 
   def password_complexity_requirements
     rules = OpenProject::Passwords::Evaluator.rules_description
-    # use 0..0, so this doesn't fail if rules is an empty string
-    rules[0] = rules[0..0].upcase
 
     s = raw "<em>" + OpenProject::Passwords::Evaluator.min_length_description + "</em>"
     s += raw "<br /><em>" + rules + "</em>" unless rules.empty?

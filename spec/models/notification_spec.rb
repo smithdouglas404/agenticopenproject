@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,6 +30,40 @@
 require "spec_helper"
 
 RSpec.describe Notification do
+  describe "Associations" do
+    it { is_expected.to belong_to(:journal) }
+    it { is_expected.to belong_to(:resource) }
+    it { is_expected.to belong_to(:actor).class_name("User") }
+    it { is_expected.to belong_to(:recipient).class_name("User") }
+
+    it { is_expected.to have_one(:reminder_notification).dependent(:destroy) }
+    it { is_expected.to have_one(:reminder).through(:reminder_notification) }
+  end
+
+  describe "Enums" do
+    it do
+      expect(subject).to define_enum_for(:reason)
+        .with_values(
+          mentioned: 0,
+          assigned: 1,
+          watched: 2,
+          subscribed: 3,
+          commented: 4,
+          created: 5,
+          processed: 6,
+          prioritized: 7,
+          scheduled: 8,
+          responsible: 9,
+          date_alert_start_date: 10,
+          date_alert_due_date: 11,
+          shared: 12,
+          reminder: 13
+        )
+        .with_prefix
+        .backed_by_column_of_type(:integer)
+    end
+  end
+
   describe ".save" do
     context "for a non existing journal (e.g. because it has been deleted)" do
       let(:notification) { build(:notification) }

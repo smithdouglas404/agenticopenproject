@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2024 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -26,19 +26,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
-<%= breadcrumb_toolbar t(:label_permissions_report) %>
-<% local_assigns[:additional_breadcrumb] = t(:label_permissions_report) %>
+
+<%=
+  render Primer::OpenProject::PageHeader.new do |header|
+    header.with_title { I18n.t(:label_permissions_report) }
+    header.with_breadcrumbs(
+      [{ href: admin_index_path, text: t("label_administration") },
+       { href: admin_settings_users_path, text: t(:label_user_and_permission) },
+       t(:label_permissions_report)]
+    )
+  end
+%>
+
 <% html_title t(:label_administration), t(:label_permissions_report) %>
 
 <% (@calls || []).select(&:failure?).each do |call| %>
   <%= error_messages_for(call.result) %>
 <% end %>
 
-<%= form_tag(roles_path, method: :put, id: 'permissions_form') do %>
-  <%= hidden_field_tag 'permissions[0]', '', id: nil %>
+<%= form_tag(roles_path, method: :put, id: "permissions_form") do %>
+  <%= hidden_field_tag "permissions[0]", "", id: nil %>
 
   <% group_permissions_by_module(@permissions).each do |mod, mod_permissions| %>
-    <% module_name = mod.blank? ? "form--" + I18n.t('attributes.project') : "form--" + l_or_humanize(mod, prefix: 'project_module_').gsub(' ','_') %>
+    <% module_name = mod.blank? ? "form--" + I18n.t("attributes.project") : "form--" + l_or_humanize(mod, prefix: "project_module_").tr(" ", "_") %>
     <% escaped_name = module_name.parameterize %>
     <fieldset class="form--fieldset -collapsible" id="<%= escaped_name %>">
       <legend class="form--fieldset-legend">
@@ -52,14 +62,14 @@ See COPYRIGHT and LICENSE files for more details.
 
       <div class="generic-table--container">
         <div class="generic-table--results-container">
-          <table class="generic-table">
+          <table class="generic-table" data-controller="table-highlighting">
             <colgroup>
-              <col opHighlightCol>
-              <col opHighlightCol>
-              <col opHighlightCol>
-              <col opHighlightCol>
-              <col opHighlightCol>
-              <col opHighlightCol>
+              <col>
+              <col>
+              <col>
+              <col>
+              <col>
+              <col>
             </colgroup>
             <thead>
               <tr>
@@ -67,7 +77,7 @@ See COPYRIGHT and LICENSE files for more details.
                   <div class="generic-table--sort-header-outer">
                     <div class="generic-table--sort-header">
                       <span>
-                        <%=t(:label_permissions)%>
+                        <%= t(:label_permissions) %>
                       </span>
                     </div>
                   </div>
@@ -77,12 +87,13 @@ See COPYRIGHT and LICENSE files for more details.
                     <div class="generic-table--sort-header-outer">
                       <div class="generic-table--sort-header">
                         <span>
-                          <%= content_tag(role.builtin? ? 'em' : 'span', h(role.name)) %>
+                          <%= content_tag(role.builtin? ? "em" : "span", h(role.name)) %>
                           <%= link_to_function(
-                                icon_wrapper('icon-context icon-checkmark',"#{t(:button_check_all)}/#{t(:button_uncheck_all)}"),
+                                icon_wrapper("icon-context icon-checkmark", "#{t(:button_check_all)}/#{t(:button_uncheck_all)}"),
                                 "OpenProject.helpers.toggleCheckboxesBySelector('input.role-#{role.id}')",
-                                class: 'no-decoration-on-hover',
-                                title: "#{t(:button_check_all)}/#{t(:button_uncheck_all)}") %>
+                                class: "no-decoration-on-hover",
+                                title: "#{t(:button_check_all)}/#{t(:button_uncheck_all)}"
+                              ) %>
                         </span>
                       </div>
                     </div>
@@ -95,11 +106,12 @@ See COPYRIGHT and LICENSE files for more details.
                 <tr class="permission-<%= permission.name %>">
                   <td>
                     <%= link_to_function(
-                          icon_wrapper('icon-context icon-checkmark',"#{t(:button_check_all)}/#{t(:button_uncheck_all)}"),
+                          icon_wrapper("icon-context icon-checkmark", "#{t(:button_check_all)}/#{t(:button_uncheck_all)}"),
                           "OpenProject.helpers.toggleCheckboxesBySelector('.permission-#{permission.name} input')",
-                          class: 'no-decoration-on-hover',
-                          title: "#{t(:button_check_all)}/#{t(:button_uncheck_all)}") %>
-                    <%= l_or_humanize(permission.name, prefix: 'permission_') %>
+                          class: "no-decoration-on-hover",
+                          title: "#{t(:button_check_all)}/#{t(:button_uncheck_all)}"
+                        ) %>
+                    <%= l_or_humanize(permission.name, prefix: "permission_") %>
                   </td>
                   <% @roles.each do |role| %>
                     <td>
@@ -118,5 +130,5 @@ See COPYRIGHT and LICENSE files for more details.
     </fieldset>
   <% end %>
 
-  <p><%= styled_button_tag t(:button_save), class: '-primary -with-icon icon-checkmark' %></p>
+  <p><%= styled_button_tag t(:button_save), class: "-primary -with-icon icon-checkmark" %></p>
 <% end %>

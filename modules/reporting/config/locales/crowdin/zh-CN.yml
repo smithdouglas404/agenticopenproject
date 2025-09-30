@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -23,7 +23,7 @@ zh-CN:
   plugin_openproject_reporting:
     name: "OpenProject 报告"
     description: "该插件允许使用 OpenProject 工时和成本插件创建自定义成本报告，并具有过滤和分组功能。"
-  button_save_as: "报告另存为..."
+  button_save_report_as: "报表另存为..."
   comments: "注释"
   cost_reports_title: "工时和成本"
   label_cost_report: "成本报告"
@@ -45,6 +45,8 @@ zh-CN:
   label_greater: ">"
   label_is_not_project_with_subprojects: "不是（包含子项目）"
   label_is_project_with_subprojects: "是（包含子项目）"
+  label_is_work_package_with_descendants: "是（包括后代）"
+  label_is_not_work_package_with_descendants: "不（包括后代）"
   label_work_package_attributes: "工作包属性"
   label_less: "<"
   label_logged_by_reporting: "记录者为"
@@ -86,8 +88,18 @@ zh-CN:
   validation_failure_date: "不是有效的日期"
   validation_failure_integer: "不是有效的整数"
   export:
+    timesheet:
+      title: "您的 PDF 时间表导出"
+      button: "导出 PDF 时间表"
+      timesheet: "时间表"
+      time: "时间"
+      sums_hours: 总计
+      overview_per_user_total: "概览：每个用户的总工时数"
+      overview_per_user_day: "概览：每个用户每日工时数"
     cost_reports:
       title: "您的成本报告 XLS 导出"
+      start_time: "开始时间"
+      end_time: "结束时间"
   reporting:
     group_by:
       selected_columns: "选定的列"

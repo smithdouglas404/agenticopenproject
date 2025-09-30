@@ -47,12 +47,12 @@ de:
           name: Konflikt
       global_queries:
         item_0:
-          name: 'Eingebettete Tabelle: Untergeordnete Arbeitspakete'
+          name: 'Eingebettete Tabelle: Unteraufgaben'
       type_configuration:
         item_0:
           form_configuration:
             item_0:
-              group_name: Untergeordnete Arbeitspakete
+              group_name: Unteraufgaben
       groups:
         item_0:
           name: Architekten
@@ -500,7 +500,7 @@ de:
                     # Beschreibung
 
                     * Abhängig von den Anwendungsfällen werden die einzelnen Informationslieferanleitungen definiert
-                    * Um die technologischen Schnittstellen zu verwalten, Eine Software-Struktur wird definiert und analysiert und verifiziert
+                     * Um die technologischen Schnittstellen zu verwalten, Eine Software-Struktur wird definiert und analysiert und verifiziert
                     * ...
                 item_2:
                   subject: Fertigstellung des BIM-Ausführungsplans

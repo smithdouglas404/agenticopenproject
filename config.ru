@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,6 +27,11 @@
 #++
 
 # This file is used by Rack-based servers to start the application.
+
+if ENV["OPENPROJECT_PROMETHEUS_EXPORT"] == "true"
+  require "yabeda/prometheus/mmap"
+  use Yabeda::Prometheus::Exporter
+end
 
 require File.expand_path("config/environment", __dir__)
 

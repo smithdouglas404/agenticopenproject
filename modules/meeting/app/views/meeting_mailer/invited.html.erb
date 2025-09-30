@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2024 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -27,32 +27,32 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%= render layout: 'mailer/spacer_table' do %>
-  <%= render partial: 'mailer/mailer_header',
+<%= render layout: "mailer/spacer_table" do %>
+  <%= render partial: "mailer/mailer_header",
              locals: {
                user: @user,
-               summary: I18n.t('meeting.email.invited.summary', title: @meeting.title, actor: @actor),
+               summary: I18n.t("meeting.email.invited.summary", title: @meeting.title, actor: @actor),
                bottom_spacing: false
              } %>
 
-  <%= render layout: 'mailer/border_table' do %>
+  <%= render layout: "mailer/border_table" do %>
     <tr>
-      <%= placeholder_cell('24px', vertical: true) %>
+      <%= placeholder_cell("24px", vertical: true) %>
       <td>
         <table>
           <tr>
-            <td style="<%= placeholder_text_styles(width: '30%') %>">
+            <td style="<%= placeholder_text_styles(width: "30%") %>">
               <%= I18n.t(:label_meeting_date_time) %>
             </td>
             <td style="<%= placeholder_text_styles %>">
-              <%= format_time_as_date @meeting.start_time %> <%= format_time @meeting.start_time, false %>
+              <%= format_date @meeting.start_time %> <%= format_time @meeting.start_time, include_date: false %>
               -
-              <%= format_time @meeting.end_time, false %> <%= Time.zone %>
+              <%= format_time @meeting.end_time, include_date: false %> (<%= formatted_time_zone_offset %>)
             </td>
           </tr>
           <% if @meeting.location.present? %>
             <tr>
-              <td style="<%= placeholder_text_styles(width: '30%') %>">
+              <td style="<%= placeholder_text_styles(width: "30%") %>">
                 <%= Meeting.human_attribute_name(:location) %>
               </td>
               <td style="<%= placeholder_text_styles %>">
@@ -61,7 +61,7 @@ See COPYRIGHT and LICENSE files for more details.
             </tr>
           <% end %>
           <tr>
-            <td style="<%= placeholder_text_styles(width: '30%') %>">
+            <td style="<%= placeholder_text_styles(width: "30%") %>">
               <%= Meeting.human_attribute_name(:project) %>
             </td>
             <td style="<%= placeholder_text_styles %>">
@@ -69,7 +69,7 @@ See COPYRIGHT and LICENSE files for more details.
             </td>
           </tr>
           <tr>
-            <td style="<%= placeholder_text_styles(width: '30%') %>">
+            <td style="<%= placeholder_text_styles(width: "30%") %>">
               <%= Meeting.human_attribute_name(:author) %>
             </td>
             <td style="<%= placeholder_text_styles %>">
@@ -78,7 +78,7 @@ See COPYRIGHT and LICENSE files for more details.
           </tr>
           <% if @meeting.participants.exists? %>
             <tr>
-              <td style="<%= placeholder_text_styles(width: '30%') %>">
+              <td style="<%= placeholder_text_styles(width: "30%") %>">
                 <%= Meeting.human_attribute_name(:participants_invited) %>
               </td>
               <td style="<%= placeholder_text_styles %>">
@@ -86,7 +86,7 @@ See COPYRIGHT and LICENSE files for more details.
               </td>
             </tr>
             <tr>
-              <td style="<%= placeholder_text_styles(width: '30%') %>">
+              <td style="<%= placeholder_text_styles(width: "30%") %>">
                 <%= Meeting.human_attribute_name(:participants_attended) %>
               </td>
               <td style="<%= placeholder_text_styles %>">
@@ -101,14 +101,14 @@ See COPYRIGHT and LICENSE files for more details.
 
   <table>
     <tr>
-      <%= placeholder_cell('20px', vertical: false) %>
+      <%= placeholder_cell("20px", vertical: false) %>
     </tr>
   </table>
 
   <%= action_button do %>
-    <%= link_to I18n.t(:'meeting.email.open_meeting_link'),
+    <%= link_to I18n.t(:"meeting.email.open_meeting_link"),
                 meeting_url(@meeting),
-                target: '_blank',
+                target: "_blank",
                 style: "color: #333333; text-decoration: none; font-size: 14px;white-space: nowrap;" %>
   <% end %>
 <% end %>

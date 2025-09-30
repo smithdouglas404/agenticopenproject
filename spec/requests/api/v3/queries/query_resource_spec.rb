@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -65,7 +67,7 @@ RSpec.describe "API v3 Query resource",
 
     context "user has view_work_packages in a project" do
       it "succeeds" do
-        expect(last_response.status).to eq(200)
+        expect(last_response).to have_http_status(:ok)
       end
     end
 
@@ -73,7 +75,7 @@ RSpec.describe "API v3 Query resource",
       let(:permissions) { [:manage_public_queries] }
 
       it "succeeds" do
-        expect(last_response.status).to eq(200)
+        expect(last_response).to have_http_status(:ok)
       end
     end
 
@@ -89,7 +91,7 @@ RSpec.describe "API v3 Query resource",
       include_context "with non-member permissions from non_member_permissions"
 
       it "succeeds" do
-        expect(last_response.status).to eq(200)
+        expect(last_response).to have_http_status(:ok)
       end
 
       context "that is not allowed to see queries anywhere" do
@@ -247,7 +249,7 @@ RSpec.describe "API v3 Query resource",
     end
 
     it "responds with HTTP No Content" do
-      expect(last_response.status).to eq 204
+      expect(last_response).to have_http_status :no_content
     end
 
     it "deletes the Query" do
@@ -279,7 +281,7 @@ RSpec.describe "API v3 Query resource",
     end
 
     it "succeeds" do
-      expect(last_response.status).to eq(200)
+      expect(last_response).to have_http_status(:ok)
     end
 
     it "returns a Collection of projects for which the user has view work packages permission" do
@@ -317,7 +319,7 @@ RSpec.describe "API v3 Query resource",
 
         context "when starring an unstarred query" do
           it "responds with 200" do
-            expect(last_response.status).to eq(200)
+            expect(last_response).to have_http_status(:ok)
           end
 
           it 'returns the query with "starred" property set to true' do
@@ -327,7 +329,7 @@ RSpec.describe "API v3 Query resource",
 
         context "when starring already starred query" do
           it "responds with 200" do
-            expect(last_response.status).to eq(200)
+            expect(last_response).to have_http_status(:ok)
           end
 
           it 'returns the query with "starred" property set to true' do
@@ -356,7 +358,7 @@ RSpec.describe "API v3 Query resource",
 
         context "starring his own query" do
           it "responds with 200" do
-            expect(last_response.status).to eq(200)
+            expect(last_response).to have_http_status(:ok)
           end
 
           it 'returns the query with "starred" property set to true' do
@@ -398,7 +400,7 @@ RSpec.describe "API v3 Query resource",
           end
 
           it "responds with 200" do
-            expect(last_response.status).to eq(200)
+            expect(last_response).to have_http_status(:ok)
           end
 
           it 'returns the query with "starred" property set to false' do
@@ -412,7 +414,7 @@ RSpec.describe "API v3 Query resource",
           end
 
           it "responds with 200" do
-            expect(last_response.status).to eq(200)
+            expect(last_response).to have_http_status(:ok)
           end
 
           it 'returns the query with "starred" property set to false' do
@@ -453,7 +455,7 @@ RSpec.describe "API v3 Query resource",
 
         context "unstarring his own query" do
           it "responds with 200" do
-            expect(last_response.status).to eq(200)
+            expect(last_response).to have_http_status(:ok)
           end
 
           it 'returns the query with "starred" property set to true' do
@@ -490,7 +492,7 @@ RSpec.describe "API v3 Query resource",
     end
 
     it "succeeds" do
-      expect(last_response.status).to eq(200)
+      expect(last_response).to have_http_status(:ok)
     end
 
     it "returns the form" do

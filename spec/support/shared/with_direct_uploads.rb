@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -62,21 +64,7 @@ class WithDirectUploads
 
   def around(example)
     example.metadata[:javascript_driver] = example.metadata[:driver] = :chrome_billy
-
-    csp_config = SecureHeaders::Configuration.instance_variable_get(:@default_config).csp
-
-    connect_src = csp_config.connect_src.dup
-    form_action = csp_config.form_action.dup
-
-    begin
-      csp_config.connect_src << "test-bucket.s3.amazonaws.com"
-      csp_config.form_action << "test-bucket.s3.amazonaws.com"
-
-      example.run
-    ensure
-      csp_config.connect_src = connect_src
-      csp_config.form_action = form_action
-    end
+    example.run
   end
 
   def mock_attachment
@@ -106,7 +94,8 @@ class WithDirectUploads
 
     if redirect
       stub_with_redirect
-    else # use status response instead of redirect by default
+    else
+      # use status response instead of redirect by default
       stub_with_status
     end
   end
@@ -147,15 +136,19 @@ class WithDirectUploads
   def stub_uploader
     creds = config[:fog][:credentials]
 
-    allow_any_instance_of(FogFileUploader).to receive(:fog_credentials).and_return creds
+    without_partial_double_verification do
+      # rubocop:disable RSpec/AnyInstance
+      allow_any_instance_of(FogFileUploader).to receive(:fog_credentials).and_return creds
 
-    allow_any_instance_of(FogFileUploader).to receive(:aws_access_key_id).and_return creds[:aws_access_key_id]
-    allow_any_instance_of(FogFileUploader).to receive(:aws_secret_access_key).and_return creds[:aws_secret_access_key]
-    allow_any_instance_of(FogFileUploader).to receive(:provider).and_return creds[:provider]
-    allow_any_instance_of(FogFileUploader).to receive(:region).and_return creds[:region]
-    allow_any_instance_of(FogFileUploader).to receive(:directory).and_return config[:fog][:directory]
+      allow_any_instance_of(FogFileUploader).to receive(:aws_access_key_id).and_return creds[:aws_access_key_id]
+      allow_any_instance_of(FogFileUploader).to receive(:aws_secret_access_key).and_return creds[:aws_secret_access_key]
+      allow_any_instance_of(FogFileUploader).to receive(:provider).and_return creds[:provider]
+      allow_any_instance_of(FogFileUploader).to receive(:region).and_return creds[:region]
+      allow_any_instance_of(FogFileUploader).to receive(:directory).and_return config[:fog][:directory]
 
-    allow(OpenProject::Configuration).to receive(:direct_uploads?).and_return(true)
+      allow(OpenProject::Configuration).to receive(:direct_uploads?).and_return(true)
+      # rubocop:enable RSpec/AnyInstance
+    end
   end
 
   def stub_config(example)

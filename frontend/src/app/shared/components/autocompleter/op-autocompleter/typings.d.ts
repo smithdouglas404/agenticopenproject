@@ -1,12 +1,14 @@
-interface IAPIFilter {
+import { ApiV3FilterValueType, FilterOperator } from 'core-app/shared/helpers/api-v3/api-v3-filter-builder';
+
+export interface IAPIFilter {
   name:string;
   operator:FilterOperator;
   values:ApiV3FilterValueType[];
 }
 
-interface IOPAutocompleterOption {
+export interface IOPAutocompleterOption {
   id:number;
   name:string;
 }
 
-type TOpAutocompleterResource = 'work_packages' | 'users' | 'principals';
+export type TOpAutocompleterResource = 'work_packages' | 'users' | 'principals' | 'projects';

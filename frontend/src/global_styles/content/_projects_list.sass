@@ -1,6 +1,6 @@
 //-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -104,19 +104,3 @@ $content-padding: 10px
     padding-left: 1em
   li
     list-style-type: none
-
-// Firefox does not support the popover attribute yet. Thus, the Primer action menus create an ugly scroll inside the table
-// Follow https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/popover#browser_compatibility to see when this can be removed
-body:not(.-browser-firefox)
-  .project-list-page
-    display: flex
-    flex-direction: column
-    max-height: calc(100vh - #{var(--header-height)} - #{$content-padding} - #{$content-padding})
-
-    &--table
-      display: flex
-      flex-grow: 1
-      overflow: auto
-
-    .generic-table--results-container
-      overflow-x: hidden

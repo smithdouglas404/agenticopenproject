@@ -10,6 +10,7 @@ import SpotDropAlignmentOption from '../../drop-alignment-options';
   selector: 'spot-tooltip',
   templateUrl: './tooltip.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class SpotTooltipComponent {
   @HostBinding('class.spot-tooltip') public className = true;

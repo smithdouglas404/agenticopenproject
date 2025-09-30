@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2024 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -30,12 +30,12 @@ See COPYRIGHT and LICENSE files for more details.
 <div class="op-toast -info">
   <div class="op-toast--content">
     <p>
-      <strong><%= t(:'storages.instructions.all_available_storages_already_added') %></strong>
+      <strong><%= t(:"storages.instructions.all_available_storages_already_added") %></strong>
     </p>
     <p>
       <% if User.current.admin? %>
         <%= t(:"storages.instructions.setting_up_additional_storages") %>
-        <%= link_to "#{t(:label_administration)} / #{t(:project_module_storages)}", controller: '/storages/admin/storages', action: :index %>.
+        <%= link_to "#{t(:label_administration)} / #{t(:project_module_storages)}", controller: "/storages/admin/storages", action: :index %>.
       <% else %>
         <%= t(:"storages.instructions.setting_up_additional_storages_non_admin") %>
       <% end %>

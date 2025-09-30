@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,6 +36,28 @@ RSpec.describe Relation do
   let(:to) { create(:work_package) }
   let(:type) { "relates" }
   let(:relation) { build(:relation, from:, to:, relation_type: type) }
+
+  it "validates lag numericality" do
+    expect(relation).to validate_numericality_of(:lag)
+      .is_greater_than_or_equal_to(Relation::MIN_LAG)
+      .is_less_than_or_equal_to(Relation::MAX_LAG)
+      .allow_nil
+  end
+
+  it "validates relation uniqueness on both from_id and to_id" do
+    create(:relation, from:, to:)
+
+    relation = build(:relation, from:, to:)
+    expect(relation).not_to be_valid
+    expect(relation.errors.as_json).to include(to: ["has already been taken."])
+
+    other = create(:work_package)
+    relation = build(:relation, from:, to: other)
+    expect(relation).to be_valid
+
+    relation = build(:relation, from: other, to:)
+    expect(relation).to be_valid
+  end
 
   describe "all relation types" do
     Relation::TYPES.each do |key, type_hash|
@@ -132,37 +156,37 @@ RSpec.describe Relation do
 
   describe "#successor_soonest_start" do
     context "with a follows relation" do
-      let_schedule(<<~CHART)
-        days     | MTWTFSS |
+      let_work_packages(<<~TABLE)
+        subject  | MTWTFSS | predecessors
         main     | ]       |
         follower |         | follows main
-      CHART
+      TABLE
 
       it "returns predecessor due_date + 1" do
-        relation = schedule.follows_relation(from: "follower", to: "main")
-        expect(relation.successor_soonest_start).to eq(schedule.tuesday)
+        relation = _table.relation(successor: "follower")
+        expect(relation.successor_soonest_start).to eq(_table.tuesday)
       end
     end
 
     context "with a follows relation with predecessor having only start date" do
-      let_schedule(<<~CHART)
-        days     | MTWTFSS |
+      let_work_packages(<<~TABLE)
+        subject  | MTWTFSS | predecessors
         main     | [       |
         follower |         | follows main
-      CHART
+      TABLE
 
       it "returns predecessor start_date + 1" do
-        relation = schedule.follows_relation(from: "follower", to: "main")
-        expect(relation.successor_soonest_start).to eq(schedule.tuesday)
+        relation = _table.relation(successor: "follower")
+        expect(relation.successor_soonest_start).to eq(_table.tuesday)
       end
     end
 
     context "with a non-follows relation" do
-      let_schedule(<<~CHART)
-        days    | MTWTFSS |
+      let_work_packages(<<~TABLE)
+        subject | MTWTFSS |
         main    | X       |
         related |         |
-      CHART
+      TABLE
       let(:relation) { create(:relation, from: main, to: related) }
 
       it "returns nil" do
@@ -171,77 +195,88 @@ RSpec.describe Relation do
     end
 
     context "with a follows relation with a lag" do
-      let_schedule(<<~CHART)
-        days       | MTWTFSS |
+      let_work_packages(<<~TABLE)
+        subject    | MTWTFSS | predecessors
         main       | X       |
         follower_a |         | follows main with lag 0
         follower_b |         | follows main with lag 1
         follower_c |         | follows main with lag 3
-      CHART
+      TABLE
 
       it "returns predecessor due_date + lag + 1" do
-        relation_a = schedule.follows_relation(from: "follower_a", to: "main")
-        expect(relation_a.successor_soonest_start).to eq(schedule.tuesday)
+        relation_a = _table.relation(successor: "follower_a")
+        expect(relation_a.successor_soonest_start).to eq(_table.tuesday)
 
-        relation_b = schedule.follows_relation(from: "follower_b", to: "main")
-        expect(relation_b.successor_soonest_start).to eq(schedule.wednesday)
+        relation_b = _table.relation(successor: "follower_b")
+        expect(relation_b.successor_soonest_start).to eq(_table.wednesday)
 
-        relation_c = schedule.follows_relation(from: "follower_c", to: "main")
-        expect(relation_c.successor_soonest_start).to eq(schedule.friday)
+        relation_c = _table.relation(successor: "follower_c")
+        expect(relation_c.successor_soonest_start).to eq(_table.friday)
       end
     end
 
     context "with a follows relation with a lag and with non-working days in the lag period" do
-      let_schedule(<<~CHART)
-        days            | MTWTFSSmtw |
-        main            | X░ ░ ░░ ░  |
+      let_work_packages(<<~TABLE)
+        subject       | MTWTFSSmtw | predecessors
+        main          | X░ ░ ░░ ░  |
         follower_lag0 |  ░ ░ ░░ ░  | follows main with lag 0
         follower_lag1 |  ░ ░ ░░ ░  | follows main with lag 1
         follower_lag2 |  ░ ░ ░░ ░  | follows main with lag 2
         follower_lag3 |  ░ ░ ░░ ░  | follows main with lag 3
-      CHART
+        follower_lag4 |  ░ ░ ░░ ░  | follows main with lag 4
+      TABLE
 
-      it "returns a date such as the number of working days between both work package is equal to the lag" do
+      it "returns the soonest date for which the number of working days between " \
+         "both work packages is equal to the lag" do
         set_work_week("monday", "wednesday", "friday")
 
-        relation_lag0 = schedule.follows_relation(from: "follower_lag0", to: "main")
-        expect(relation_lag0.successor_soonest_start).to eq(schedule.wednesday)
+        relation_lag0 = _table.relation(successor: "follower_lag0")
+        expect(relation_lag0.successor_soonest_start).to eq(_table.tuesday)
 
-        relation_lag1 = schedule.follows_relation(from: "follower_lag1", to: "main")
-        expect(relation_lag1.successor_soonest_start).to eq(schedule.friday)
+        relation_lag1 = _table.relation(successor: "follower_lag1")
+        expect(relation_lag1.successor_soonest_start).to eq(_table.thursday) # working day in between is Wednesday
 
-        relation_lag2 = schedule.follows_relation(from: "follower_lag2", to: "main")
-        expect(relation_lag2.successor_soonest_start).to eq(schedule.monday + 7.days)
+        relation_lag2 = _table.relation(successor: "follower_lag2")
+        expect(relation_lag2.successor_soonest_start).to eq(_table.saturday) # working days in between are Wednesday and Friday
 
-        relation_lag3 = schedule.follows_relation(from: "follower_lag3", to: "main")
-        expect(relation_lag3.successor_soonest_start).to eq(schedule.wednesday + 7.days)
+        relation_lag3 = _table.relation(successor: "follower_lag3")
+        expect(relation_lag3.successor_soonest_start).to eq(_table.next_tuesday) # Wednesday, Friday, next Monday
+
+        relation_lag4 = _table.relation(successor: "follower_lag4")
+        expect(relation_lag4.successor_soonest_start).to eq(_table.next_thursday) # Wednesday, Friday, next Monday, next Wednesday
       end
     end
 
-    context "with a follows relation with a lag, non-working days, and follower ignoring non-working days" do
-      let_schedule(<<~CHART)
-        days            | MTWTFSSmtw |
-        main            | X░ ░ ░░ ░  |
-        follower_lag0 |  ░ ░ ░░ ░  | follows main with lag 0, working days include weekends
-        follower_lag1 |  ░ ░ ░░ ░  | follows main with lag 1, working days include weekends
-        follower_lag2 |  ░ ░ ░░ ░  | follows main with lag 2, working days include weekends
-        follower_lag3 |  ░ ░ ░░ ░  | follows main with lag 3, working days include weekends
-      CHART
+    context "with a follows relation with a lag, non-working days, and followers ignoring non-working days" do
+      let_work_packages(<<~TABLE)
+        subject       | MTWTFSSmtw | days counting     | predecessors
+        main          | X░ ░ ░░ ░  | working days only |
+        follower_lag0 |  ░ ░ ░░ ░  | all days          | follows main with lag 0
+        follower_lag1 |  ░ ░ ░░ ░  | all days          | follows main with lag 1
+        follower_lag2 |  ░ ░ ░░ ░  | all days          | follows main with lag 2
+        follower_lag3 |  ░ ░ ░░ ░  | all days          | follows main with lag 3
+        follower_lag4 |  ░ ░ ░░ ░  | all days          | follows main with lag 4
+      TABLE
 
-      it "returns predecessor due_date + lag + 1 (like without non-working days)" do
+      it "returns the soonest date for which the number of working days between " \
+         "both work packages is equal to the lag (saying it another way: it is the same " \
+         "regardless of followers ignoring non-working days or not)" do
         set_work_week("monday", "wednesday", "friday")
 
-        relation_lag0 = schedule.follows_relation(from: "follower_lag0", to: "main")
-        expect(relation_lag0.successor_soonest_start).to eq(schedule.tuesday)
+        relation_lag0 = _table.relation(successor: "follower_lag0")
+        expect(relation_lag0.successor_soonest_start).to eq(_table.tuesday)
 
-        relation_lag1 = schedule.follows_relation(from: "follower_lag1", to: "main")
-        expect(relation_lag1.successor_soonest_start).to eq(schedule.wednesday)
+        relation_lag1 = _table.relation(successor: "follower_lag1")
+        expect(relation_lag1.successor_soonest_start).to eq(_table.thursday) # working day in between is Wednesday
 
-        relation_lag2 = schedule.follows_relation(from: "follower_lag2", to: "main")
-        expect(relation_lag2.successor_soonest_start).to eq(schedule.thursday)
+        relation_lag2 = _table.relation(successor: "follower_lag2")
+        expect(relation_lag2.successor_soonest_start).to eq(_table.saturday) # working days in between are Wednesday and Friday
 
-        relation_lag3 = schedule.follows_relation(from: "follower_lag3", to: "main")
-        expect(relation_lag3.successor_soonest_start).to eq(schedule.friday)
+        relation_lag3 = _table.relation(successor: "follower_lag3")
+        expect(relation_lag3.successor_soonest_start).to eq(_table.next_tuesday) # Wednesday, Friday, next Monday
+
+        relation_lag4 = _table.relation(successor: "follower_lag4")
+        expect(relation_lag4.successor_soonest_start).to eq(_table.next_thursday) # Wednesday, Friday, next Monday, next Wednesday
       end
     end
   end

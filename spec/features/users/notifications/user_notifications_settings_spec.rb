@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 require_relative "shared_examples"
 
 RSpec.describe "user notifications settings",
-               :js,
-               :with_cuprite do
+               :js do
   shared_let(:user) { create(:user) }
 
   let(:settings_page) { Pages::Notifications::Settings.new(user) }

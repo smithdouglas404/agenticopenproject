@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -79,7 +79,7 @@ RSpec.describe BasicData::GlobalRoleSeeder do
 
     it "gives all assignable permissions to the role" do
       expect(GlobalRole.find_by(name: "Project admin").permissions)
-        .to match_array(Roles::CreateContract.new(GlobalRole.new, nil).assignable_permissions.map { _1.name.to_sym })
+        .to match_array(Roles::CreateContract.new(GlobalRole.new, nil).assignable_permissions.map { it.name.to_sym })
     end
   end
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,6 +30,7 @@
 
 class ColorsController < ApplicationController
   before_action :require_admin_unless_readonly_api_request
+  authorization_checked! :index, :show, :new, :edit, :create, :update, :confirm_destroy, :destroy
 
   layout "admin"
 
@@ -68,7 +71,7 @@ class ColorsController < ApplicationController
       redirect_to colors_path
     else
       flash.now[:error] = I18n.t(:error_color_could_not_be_saved)
-      render action: "new"
+      render action: :new, status: :unprocessable_entity
     end
   end
 
@@ -80,7 +83,7 @@ class ColorsController < ApplicationController
       redirect_to colors_path
     else
       flash.now[:error] = I18n.t(:error_color_could_not_be_saved)
-      render action: "edit"
+      render action: :edit, status: :unprocessable_entity
     end
   end
 
@@ -101,20 +104,8 @@ class ColorsController < ApplicationController
 
   protected
 
-  def default_breadcrumb
-    if action_name == "index"
-      t(:label_color_plural)
-    else
-      ActionController::Base.helpers.link_to(t(:label_color_plural), colors_path)
-    end
-  end
-
-  def show_local_breadcrumb
-    true
-  end
-
   def require_admin_unless_readonly_api_request
-    require_admin unless %w[index show].include? params[:action] and
+    require_admin unless %w[index show].include? action_name and
                          api_request?
   end
 end

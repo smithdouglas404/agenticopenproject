@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -40,7 +40,6 @@ import { IStorageFiles } from 'core-app/core/state/storage-files/storage-files.m
 import { HttpClient } from '@angular/common/http';
 import { ID, QueryEntity } from '@datorama/akita';
 import { IStorageFile } from 'core-app/core/state/storage-files/storage-file.model';
-import isDefinedEntity from 'core-app/core/state/is-defined-entity';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 
 @Injectable()
@@ -79,15 +78,23 @@ export class StorageFilesResourceService {
     return this.httpClient.request<IUploadLink>(link.method, link.href, { body: link.payload });
   }
 
+  createFolder(href:string, body:{ name:string, parent_id:ID }):Observable<IStorageFile> {
+    return this.httpClient.post<IStorageFile>(href, body);
+  }
+
   reset():void {
     this.store.reset();
+  }
+
+  removeCollection(link:IHalResourceLink):void {
+    delete this.store.getValue().files[link.href];
   }
 
   private lookup(id:ID):Observable<IStorageFile> {
     return this
       .query
       .selectEntity(id)
-      .pipe(filter(isDefinedEntity));
+      .pipe(filter(entity => entity !== undefined));
   }
 
   private lookupMany(ids:ID[]):Observable<IStorageFile[]> {

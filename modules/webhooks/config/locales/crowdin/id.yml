@@ -1,13 +1,14 @@
 id:
   plugin_openproject_webhooks:
     name: "OpenProject Webhooks"
-    description: "Provides a plug-in API to support OpenProject webhooks for better 3rd party integration."
+    description: "Menyediakan API plug-in untuk mendukung webhook OpenProject untuk integrasi pihak ketiga yang lebih baik."
   activerecord:
     attributes:
       webhooks/webhook:
         url: 'URL muatan'
         secret: 'Rahasia tanda tangan'
         events: 'Acara'
+        enabled: 'Enabled'
         projects: 'Proyek-proyek yang diaktifkan'
       webhooks/log:
         event_name: 'Nama acara'
@@ -30,6 +31,8 @@ id:
       events:
         created: "Dibuat"
         updated: "Diperbarui"
+        comment: "Komentar"
+        internal_comment: "Internal comment"
       explanation:
         text: >
           Setelah kejadian seperti pembuatan paket kerja atau pembaruan proyek, OpenProject akan mengirimkan permintaan POST ke titik akhir web yang dikonfigurasi.  Sering kali, acara dikirim setelah %{link} lewat.

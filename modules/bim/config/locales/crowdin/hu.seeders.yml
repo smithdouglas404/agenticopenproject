@@ -95,7 +95,7 @@ hu:
               title: Üdvözöljük a demó projektben
               summary: |
                 Örülünk, hogy csatlakoztál.
-                Ebben a modulban a projekt híreit közölheti a csapattagokkal.
+                Ebben a modulban projekthíreket közölhet csapattagjaival.
               description: Aktuális hírek
           categories:
             item_0: 1. kategória (a Projekt beállításai között módosítható)
@@ -157,7 +157,7 @@ hu:
               title: Üdvözöljük a demó projektben
               summary: |
                 Örülünk, hogy csatlakoztál.
-                Ebben a modulban projekthíreket közölhet csapattagjaival.
+                Ebben a modulban a projekt híreit közölheti a csapattagokkal.
               description: Aktuális hírek
           categories:
             item_0: 1. kategória (a Projekt beállításai között módosítható)
@@ -254,7 +254,7 @@ hu:
 
                     *   Create a useful overview of the results
                     *   Check what has been done and summarize the results
-                    *   Communicate all the relevant results with the customer
+                    *   Communicate all the relevant results with the customer
                     *   Identify the fundamental boundary conditions of the project
 
                     ## Description
@@ -269,7 +269,7 @@ hu:
 
                     *   Create a useful overview of the results
                     *   Check what has been done and summarize the results
-                    *   Communicate all the relevant results with the customer
+                    *   Communicate all the relevant results with the customer
                     *   Identify the fundamental boundary conditions of the project
 
                     ## Description
@@ -680,7 +680,7 @@ hu:
             item_0: 1. kategória (a Projekt beállításai között módosítható)
           queries:
             item_0:
-              name: Feladat
+              name: Kérdések
             item_1:
               name: Clashes
             item_2:

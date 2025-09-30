@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "rspec/retry"
 require "retriable"
 
@@ -21,7 +23,7 @@ RSpec.configure do |config|
   # Retry JS feature specs, but not during single runs
   if ENV["CI"]
     config.around :each, :js do |ex|
-      ex.run_with_retry retry: 2
+      ex.run_with_retry retry: ENV["RSPEC_RETRY_RETRY_COUNT"].to_i
     end
   end
 end
@@ -62,7 +64,7 @@ def retry_block(args: {}, screenshot: false, &)
       #{exception.class}: '#{exception.message}'
       occurred on #{exception_source_lines.first}
       backtrace:
-      #{exception_source_lines.map { "  #{_1}" }.join("\n")}
+      #{exception_source_lines.map { "  #{it}" }.join("\n")}
       ran #{try} #{'try'.pluralize(try)} in #{elapsed_time} seconds, #{next_try_message}.
       --
     MSG
@@ -75,6 +77,11 @@ def retry_block(args: {}, screenshot: false, &)
       end
     end
   end
+
+  # By default retry_block works with StandardError, but the ExpectationNotMetError is
+  # not inherited from StandardError. Adding the RSpec::Expectations::ExpectationNotMetError
+  # will makes sure we retry if an expectation fails inside the retry_block.
+  args[:on] ||= [StandardError, RSpec::Expectations::ExpectationNotMetError]
 
   Retriable.retriable(on_retry: log_errors, **args, &)
 end

@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -141,7 +141,9 @@ module API
         end
 
         def v3_container_name
-          ::API::Utilities::PropertyNameConverter.from_ar_name(represented.container.class.name.underscore).underscore
+          ar_name = represented.container.class.name.underscore
+
+          ::API::Utilities::PropertyNameConverter.from_ar_name_with_aliases(ar_name, "journal" => "activity").underscore
         end
 
         def container_title_attribute

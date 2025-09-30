@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,7 +37,13 @@ RSpec.shared_context "filter tests" do
     described_class.create!(name: instance_key, context:, operator:, values:)
   end
   let(:name) { model.human_attribute_name((instance_key || expected_class_key).to_s.gsub("_id", "")) }
-  let(:model) { WorkPackage }
+  let(:model) do
+    if /^Queries::(?<model_plural>(?:[A-Z][a-z]+)+)::Filters?::(?:[A-Z][a-z]+)+Filter$/ =~ described_class.name
+      model_plural.singularize.constantize
+    else
+      raise "needs to be defined"
+    end
+  end
 end
 
 RSpec.shared_examples_for "basic query filter" do
@@ -45,7 +53,6 @@ RSpec.shared_examples_for "basic query filter" do
   let(:project) { build_stubbed(:project) }
   let(:expected_class_key) { defined?(:class_key) ? class_key : raise("needs to be defined") }
   let(:type) { raise "needs to be defined" }
-  let(:human_name) { nil }
 
   describe ".key" do
     it "is the defined key" do
@@ -67,7 +74,8 @@ RSpec.shared_examples_for "basic query filter" do
 
   describe "#human_name" do
     it "is the l10 name for the filter" do
-      expect(instance.human_name).to eql(human_name.presence || name)
+      expected = defined?(human_name) ? (human_name.presence || name) : name
+      expect(instance.human_name).to eql(expected)
     end
   end
 end
@@ -75,6 +83,7 @@ end
 RSpec.shared_examples_for "list query filter" do |scope: true|
   include_context "filter tests"
   let(:attribute) { raise "needs to be defined" }
+  let(:valid_values) { raise "needs to be defined" }
   let(:type) { :list }
 
   if scope
@@ -134,6 +143,7 @@ end
 RSpec.shared_examples_for "list_optional query filter" do
   include_context "filter tests"
   let(:attribute) { raise "needs to be defined" }
+  let(:valid_values) { raise "needs to be defined" }
   let(:type) { :list_optional }
   let(:joins) { nil }
   let(:expected_base_scope) do
@@ -155,8 +165,10 @@ RSpec.shared_examples_for "list_optional query filter" do
       let(:operator) { "=" }
 
       it "is the same as handwriting the query" do
+        quoted_values = db_values.map { |val| "'#{ActiveRecord::Base.connection.quote_string(val)}'" }.join(",")
+
         expected = expected_base_scope
-                   .where(["#{expected_table_name}.#{attribute} IN (?)", db_values])
+                   .where("#{expected_table_name}.#{attribute} IN (#{quoted_values})")
 
         expect(instance.apply_to(model).to_sql).to eql expected.to_sql
       end
@@ -166,9 +178,11 @@ RSpec.shared_examples_for "list_optional query filter" do
       let(:operator) { "!" }
 
       it "is the same as handwriting the query" do
+        quoted_values = db_values.map { |val| "'#{ActiveRecord::Base.connection.quote_string(val)}'" }.join(",")
+
         sql = "(#{expected_table_name}.#{attribute} IS NULL
-               OR #{expected_table_name}.#{attribute} NOT IN (?))".squish
-        expected = expected_base_scope.where([sql, db_values])
+               OR #{expected_table_name}.#{attribute} NOT IN (#{quoted_values}))".squish
+        expected = expected_base_scope.where(sql)
 
         expect(instance.apply_to(model).to_sql).to eql expected.to_sql
       end
@@ -224,6 +238,8 @@ end
 
 RSpec.shared_examples_for "list_optional group query filter" do
   include_context "filter tests"
+  let(:valid_values) { raise "needs to be defined" }
+
   describe "#apply_to" do
     let(:values) { valid_values }
 
@@ -293,6 +309,7 @@ end
 RSpec.shared_examples_for "list_all query filter" do
   include_context "filter tests"
   let(:attribute) { raise "needs to be defined" }
+  let(:valid_values) { raise "needs to be defined" }
   let(:type) { :list_all }
   let(:joins) { nil }
   let(:expected_base_scope) do

@@ -4,9 +4,6 @@ sk:
       add_widget: 'Add widget'
       remove: 'Odstrániť widget'
       configure: 'Configurovať widget'
-      upsale:
-        text: "Some widgets, like the work package graph widget, are only available in the Enterprise edition."
-        link: 'Enterprise edition.'
       widgets:
         missing_permission: "You don't have the necessary permissions to view this widget."
         custom_text:
@@ -24,12 +21,11 @@ sk:
           title: 'Novinky'
           at: 'o'
           no_results: 'Nič nové pre nahlásenie.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Popis projektu'
           no_results: "No description has been written yet. One can be provided in the 'Project settings'."
-        project_details:
-          title: 'Detailne informácie o projekte'
-          no_results: 'No custom fields have been defined for projects.'
         project_status:
           title: 'Stav projektu'
           not_started: 'Not started'
@@ -39,6 +35,8 @@ sk:
           not_set: 'Not set'
           finished: 'Dokončené'
           discontinued: 'Discontinued'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Podprojekty'
           no_results: 'No subprojects.'
@@ -52,7 +50,7 @@ sk:
           title: 'Strávený čas (posledných 7 dní)'
           no_results: 'Žiadne časové záznamy za posledných 7 dní.'
         work_packages_accountable:
-          title: "Pracovné balíčky, za ktoré som zodpovedný(a)"
+          title: "Pracovné balíčky, za ktoré som zodpovedný(á)"
         work_packages_assigned:
           title: 'Mne priradené pracovné balíčky'
         work_packages_created:

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require_relative "../spec_helper"
 
-RSpec.describe "Admin 2FA management", :js, with_settings: {
+RSpec.describe "Admin 2FA management", :js, :selenium, with_settings: {
   plugin_openproject_two_factor_authentication: { "active_strategies" => %i[developer totp] }
 } do
   let(:dialog) { Components::PasswordConfirmationDialog.new }
@@ -44,7 +46,7 @@ RSpec.describe "Admin 2FA management", :js, with_settings: {
     click_button I18n.t(:button_continue)
 
     # Enter valid phone number
-    expect(page).to have_css("#errorExplanation", text: "Phone number must be of format +XX XXXXXXXXX")
+    expect_flash(type: :error, message: "Phone number must be of format +XX XXXXXXXXX")
 
     SeleniumHubWaiter.wait
     fill_in "device_phone_number", with: "+49 123456789"

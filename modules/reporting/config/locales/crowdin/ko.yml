@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -23,7 +23,7 @@ ko:
   plugin_openproject_reporting:
     name: "OpenProject 보고"
     description: "이 플러그인을 사용하면 OpenProject 시간 및 비용 플러그인에서 생성된 필터링 및 그룹화를 사용하여 사용자 지정 비용 보고서를 생성할 수 있습니다."
-  button_save_as: "다른 이름으로 보고서로 저장..."
+  button_save_report_as: "다른 이름으로 보고서로 저장..."
   comments: "코멘트"
   cost_reports_title: "시간 및 비용"
   label_cost_report: "비용 보고서"
@@ -45,6 +45,8 @@ ko:
   label_greater: ">"
   label_is_not_project_with_subprojects: "일치하지 않음(하위 프로젝트 포함)"
   label_is_project_with_subprojects: "일치함(하위 프로젝트 포함)"
+  label_is_work_package_with_descendants: "(하위 항목 포함)임"
+  label_is_not_work_package_with_descendants: "(하위 항목 포함) 아님"
   label_work_package_attributes: "작업 패키지 특성"
   label_less: "<"
   label_logged_by_reporting: "기록자"
@@ -86,8 +88,18 @@ ko:
   validation_failure_date: "은(는) 유효한 날짜가 아닙니다."
   validation_failure_integer: "은(는) 유효한 정수가 아닙니다."
   export:
+    timesheet:
+      title: "내 PDF 타임시트 내보내기"
+      button: "PDF 타임시트 내보내기"
+      timesheet: "타임시트"
+      time: "시간"
+      sums_hours: 합계
+      overview_per_user_total: "개요: 사용자당 총 시간"
+      overview_per_user_day: "개요: 일별 사용자당 시간"
     cost_reports:
       title: "비용 리포트 XML로 내보내기"
+      start_time: "시작 시간"
+      end_time: "종료 시간"
   reporting:
     group_by:
       selected_columns: "선택된 열"

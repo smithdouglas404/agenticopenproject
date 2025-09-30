@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,10 +36,9 @@ module Queries::Operators
     extend DateRangeClauses
 
     def self.sql_for_field(values, db_table, db_field)
-      date_range_clause(db_table,
-                        db_field,
-                        Date.parse(values.first),
-                        Date.parse(values.first))
+      date = Date.parse(values.first)
+
+      date_range_clause(db_table, db_field, date, date)
     end
   end
 end

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -27,15 +27,14 @@
 //++
 
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 import { EditFieldComponent } from 'core-app/shared/components/fields/edit/edit-field.component';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 
 @Component({
   template: `
-    <op-basic-single-date-picker
-      [(ngModel)]="value"
+    <op-basic-single-date-picker [(ngModel)]="value"
       (keydown.escape)="onCancel()"
       (keydown.enter)="handler.handleUserSubmit()"
       (picked)="handler.handleUserSubmit()"
@@ -44,9 +43,10 @@ import { TimezoneService } from 'core-app/core/datetime/timezone.service';
       [required]="required"
       [disabled]="inFlight"
       [opAutofocus]="autofocus"
-    ></op-basic-single-date-picker>
+     />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class DateEditFieldComponent extends EditFieldComponent implements OnInit {
   @InjectField() readonly timezoneService:TimezoneService;

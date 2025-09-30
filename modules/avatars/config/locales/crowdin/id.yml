@@ -11,14 +11,13 @@ id:
   message_avatar_uploaded: "Avatar berhasil diubah"
   error_image_upload: "Kesalahan menyimpan gambar"
   error_image_size: "Gambar terlalu besar"
-  button_change_avatar: "Ubah avatar"
   are_you_sure_delete_avatar: "Apakah anda yakin ingin menghapus avatar anda?"
   avatar_deleted: "Avatar berhasil dihapus"
   unable_to_delete_avatar: "Avatar tidak bisa dihapus"
   wrong_file_format: "Format yang diperbolehkan adalah jpg, png, gif"
   empty_file_error: "Unggah gambar yang valid (jpg, png, gif)"
   avatars:
-    label_avatar: "Avatar"
+    label_avatar: "Foto Profil"
     label_gravatar: 'Gravatar'
     label_current_avatar: 'Avatar saat ini'
     label_local_avatar: 'Avatar khusus'

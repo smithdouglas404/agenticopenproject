@@ -2,7 +2,7 @@
 
 # -- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,8 +34,7 @@ require_relative "shared_context"
 
 RSpec.describe "Calendar",
                "Creating a view from a Global Context",
-               :js,
-               :with_cuprite do
+               :js do
   include_context "with calendar full access"
 
   let(:calendars_page) { Pages::Calendar.new nil }

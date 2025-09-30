@@ -8,6 +8,7 @@ es:
         row_count: "Número de filas"
         column_count: "Número de columnas"
         widgets: "Widgets"
+        scope: "Ámbito"
     errors:
       models:
         grids/grid:

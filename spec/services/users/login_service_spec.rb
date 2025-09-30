@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,7 +33,8 @@ require "spec_helper"
 RSpec.describe Users::LoginService, type: :model do
   shared_let(:input_user) { create(:user) }
   let(:request) { {} }
-  let(:session) { {} }
+  let(:session) { ActionController::TestSession.new }
+  let!(:user_session) { create(:user_session, session_id: session.id.private_id) }
   let(:browser) do
     instance_double(Browser::Safari,
                     name: "Safari",
@@ -47,6 +50,10 @@ RSpec.describe Users::LoginService, type: :model do
   subject { instance.call! }
 
   before do
+    allow(Sessions::DropOtherSessionsService)
+      .to receive(:call!)
+      .with(input_user, session)
+
     allow(controller)
       .to(receive(:reset_session)) do
       session.clear
@@ -169,11 +176,12 @@ RSpec.describe Users::LoginService, type: :model do
         tokens = Token::AutoLogin.where(user: input_user)
         expect(tokens.count).to eq 1
         expect(tokens.first.user_id).to eq input_user.id
+        expect(tokens.first.expires_on).to be_within(1.minute).of(1.day.from_now)
 
         autologin_cookie = cookies[OpenProject::Configuration["autologin_cookie_name"]]
         expect(autologin_cookie).to be_present
         expect(autologin_cookie[:value]).to be_present
-        expect(autologin_cookie[:expires]).to eq (Time.zone.today + 1.day).beginning_of_day
+        expect(autologin_cookie[:expires]).to be_within(1.minute).of(1.day.from_now)
         expect(autologin_cookie[:path]).to eq "/"
         expect(autologin_cookie[:httponly]).to be true
         expect(autologin_cookie[:secure]).to eq Setting.https?
@@ -192,6 +200,18 @@ RSpec.describe Users::LoginService, type: :model do
         autologin_cookie = cookies[OpenProject::Configuration["autologin_cookie_name"]]
         expect(autologin_cookie[:secure]).to be true
       end
+    end
+  end
+
+  describe "removal of tokens" do
+    let!(:invitation_token) { create(:invitation_token, user: input_user) }
+    let!(:recovery_token) { create(:recovery_token, user: input_user) }
+
+    it "removes only the recovery token on successful login" do
+      subject
+
+      expect(Token::Invitation.exists?(invitation_token.id)).to be true
+      expect(Token::Recovery.exists?(recovery_token.id)).to be false
     end
   end
 end

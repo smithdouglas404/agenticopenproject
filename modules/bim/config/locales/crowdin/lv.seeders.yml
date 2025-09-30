@@ -7,47 +7,47 @@ lv:
     bim:
       priorities:
         item_0:
-          name: Low
+          name: Zema
         item_1:
-          name: Normal
+          name: Parasta
         item_2:
-          name: High
+          name: Augsta
         item_3:
-          name: Critical
+          name: Kritiska
       statuses:
         item_0:
-          name: New
+          name: Jauns
         item_1:
-          name: In progress
+          name: Izpildē
         item_2:
-          name: Resolved
+          name: Atrisināts
         item_3:
-          name: Closed
+          name: Aizvērts
       time_entry_activities:
         item_0:
-          name: Management
+          name: Vadība
         item_1:
-          name: Specification
+          name: Prasību definēšana
         item_2:
-          name: Other
+          name: Cits
       types:
         item_0:
           name: Uzdevums
         item_1:
           name: Atskaites punkts
         item_2:
-          name: Phase
+          name: Fāze
         item_3:
           name: Kļūda
         item_4:
-          name: Remark
+          name: Piezīme
         item_5:
-          name: Request
+          name: Pieprasījums
         item_6:
-          name: Clash
+          name: Konflikts
       global_queries:
         item_0:
-          name: 'Embedded table: Children'
+          name: 'Iestrādātā tabula: Bērni'
       type_configuration:
         item_0:
           form_configuration:
@@ -55,23 +55,23 @@ lv:
               group_name: Bērni
       groups:
         item_0:
-          name: Architects
+          name: Arhitekti
         item_1:
-          name: BIM Coordinators
+          name: BIM koordinatori
         item_2:
-          name: BIM Managers
+          name: BIM pārvaldītāji
         item_3:
-          name: BIM Modellers
+          name: BIM modelētāji
         item_4:
-          name: Lead BIM Coordinators
+          name: Vadošie BIM koordinatori
         item_5:
-          name: MEP Engineers
+          name: MEP inženieri
         item_6:
-          name: Planners
+          name: Plānotāji
         item_7:
-          name: Structural Engineers
+          name: Būvinženieri
       welcome:
-        title: Welcome to OpenProject BIM edition!
+        title: Laipni lūgti OpenProject BIM versijā!
         text: |
           Checkout the demo projects to get started with some examples.
 
@@ -103,9 +103,9 @@ lv:
             item_0:
               name: Project plan
             item_1:
-              name: Milestones
+              name: Atskaites punkti
             item_2:
-              name: Tasks
+              name: Uzdevumi
             item_3:
               name: Komandas plānotājs
           boards:
@@ -115,10 +115,10 @@ lv:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Sveicināti
               item_1:
                 options:
-                  name: Getting started
+                  name: Uzsākot darbu
                   text: |
                     We are glad you joined! We suggest to try a few things to get started in OpenProject.
 
@@ -147,7 +147,7 @@ lv:
                   name: Pieteikumi
               item_6:
                 options:
-                  name: Milestones
+                  name: Atskaites punkti
         demo-planning-constructing-project:
           name: "(Demo) Planning & constructing"
           status_explanation: All tasks are on schedule. The people involved know their tasks. The system is completely set up.
@@ -165,19 +165,19 @@ lv:
             item_0:
               name: Project plan
             item_1:
-              name: Milestones
+              name: Atskaites punkts
             item_2:
-              name: Tasks
+              name: Uzdevumi
             item_3:
               name: Komandas plānotājs
           project-overview:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Sveicināti
               item_1:
                 options:
-                  name: Getting started
+                  name: Uzsākot darbu
                   text: |
                     We are glad you joined! We suggest to try a few things to get started in OpenProject.
 
@@ -202,7 +202,7 @@ lv:
                   name: Pieteikumi
               item_6:
                 options:
-                  name: Milestones
+                  name: Atskaites punkti
           work_packages:
             item_0:
               subject: Project kick off construction project
@@ -256,7 +256,7 @@ lv:
 
                     *   Create a useful overview of the results
                     *   Check what has been done and summarize the results
-                    *   Communicate all the relevant results with the customer
+                    *   Communicate all the relevant results with the customer
                     *   Identify the fundamental boundary conditions of the project
 
                     ## Description
@@ -271,7 +271,7 @@ lv:
 
                     *   Create a useful overview of the results
                     *   Check what has been done and summarize the results
-                    *   Communicate all the relevant results with the customer
+                    *   Communicate all the relevant results with the customer
                     *   Identify the fundamental boundary conditions of the project
 
                     ## Description
@@ -307,7 +307,7 @@ lv:
               subject: Construction phase
               children:
                 item_0:
-                  subject: Start constructing
+                  subject: Sākt būvēt
                   description: |-
                     ## Goal
 
@@ -321,7 +321,7 @@ lv:
                     *   Get the team together
                     *   ...
                 item_1:
-                  subject: Foundation
+                  subject: Pamati
                   description: |-
                     ## Goal
 
@@ -419,19 +419,19 @@ lv:
             item_0:
               name: Project plan
             item_1:
-              name: Milestones
+              name: Atskaites punkti
             item_2:
-              name: Tasks
+              name: Pieteikumi
             item_3:
               name: Komandas plānotājs
           project-overview:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Sveicināti
               item_1:
                 options:
-                  name: Getting started
+                  name: Uzsākot darbu
                   text: |
                     We are glad you joined! We suggest to try a few things to get started in OpenProject.
 
@@ -459,7 +459,7 @@ lv:
                   name: Pieteikumi
               item_6:
                 options:
-                  name: Milestones
+                  name: Atskaites punkti
           work_packages:
             item_0:
               subject: Project kick off creating BIM model
@@ -692,9 +692,9 @@ lv:
             item_4:
               name: Project plan
             item_5:
-              name: Milestones
+              name: Atskaites punkti
             item_6:
-              name: Tasks
+              name: Uzdevumi
             item_7:
               name: Komandas plānotājs
           boards:
@@ -704,10 +704,10 @@ lv:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Sveicināti
               item_1:
                 options:
-                  name: Getting started
+                  name: Uzsākot darbu
                   text: |
                     We are glad you joined! We suggest to try a few things to get started in OpenProject.
 

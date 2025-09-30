@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 require_relative "../../spec_helper"
-require_relative "../shared_2fa_examples"
+require_relative "../shared_two_factor_examples"
 
 RSpec.describe "Generate 2FA backup codes", :js, with_config: { "2fa": { active_strategies: [:developer] } } do
   let(:user_password) { "bob!" * 4 }

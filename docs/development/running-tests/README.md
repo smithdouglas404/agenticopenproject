@@ -119,7 +119,7 @@ Smoke tests are automated and manual tests to ensure the main application featur
 **Best practices**
 
 - Automate smoke testing on top of manual testing when possible
-- Run after deployments to the appropriate [environments](../environments), e.g., the edge environment for features of the next release and staging environment for bug fixes to a stable release
+- Run after deployments to the appropriate [environments](../application-architecture/#environments), e.g., the edge environment for features of the next release and staging environment for bug fixes to a stable release
 - Keep smoke tests updated so that they can evolve together with the application
 
 **References**
@@ -144,7 +144,7 @@ Sanity and regression tests are manually performed tests by QA for relevant comp
 
 **Usage at OpenProject**
 
-For writing and executing manual sanity and regression testing, especially focusing on functional requirements, one of the tools in use at OpenProject is TestLink (https://testlink.org/) to achieve the following goals:
+For writing and executing manual sanity and regression testing, especially focusing on functional requirements, one of the tools in use at OpenProject is [TestLink](https://testlink.org/) to achieve the following goals:
 
 - Test cases have clear preconditions so that the tester prepares for executing each case with enough knowledge about requirements.
 - Test cases are as specific as possible. They should check the proper working of one single point/case and should therefore have no more than 8-10 steps.
@@ -251,7 +251,7 @@ Upgrade tests are manually performed for major code changes and data migrations 
 
 #### Usability testing
 
-When new features or changes to the application are available on our [Edge or Community environments](../environments), product team members, customers, and community users can provide usability feedback on how the change is perceived.
+When new features or changes to the application are available on our [Edge or Community environments](../application-architecture/#environments), product team members, customers, and community users can provide usability feedback on how the change is perceived.
 
 **Key objectives and effects**
 
@@ -683,8 +683,8 @@ CSP `localhost` restrictions.
 One way is to disable the Angular CLI that serves some of the assets when developing. To do that, run
 
 ```shell
-# Precompile the application
-./bin/rails assets:precompile
+# Precompile the application assets
+./bin/rails openproject:plugins:register_frontend assets:precompile
 
 # Start the application server while disabling the CLI asset host
 OPENPROJECT_CLI_PROXY='' ./bin/rails s -b 0.0.0.0 -p 3000
@@ -700,16 +700,31 @@ Assuming your openproject is served at `<your local ip>:3000` and your ng serve 
 you can access both from inside a VM with nat/bridged networking as follows:
 
 ```shell
-# Start ng serve middleware binding to all interfaces
-PROXY_HOSTNAME=<your local IP address> npm run serve
+# Start ng serve middleware binding to the interface given by FE_HOST or on localhost if not defined
+FE_HOST=<your local IP address> PROXY_HOSTNAME=<your local IP address> npm run serve
+```
+On npm run serve, you want to ensure it logs the correct hostname:
 
+```log
+** Angular Live Development Server is listening on <you local IP address>:4200, open your browser on http://<you local IP address>:4200/assets/frontend **
+```
+
+```shell
 # Start your openproject server with the CLI proxy configuration set
-OPENPROJECT_CLI_PROXY='http://<your local ip>:4200' ./bin/rails s -b 0.0.0.0 -p 3000
+OPENPROJECT_DEV_EXTRA_HOSTS=<your local IP address> OPENPROJECT_HOST_NAME=<your local IP address> OPENPROJECT_CLI_PROXY='http://<your local ip>:4200' ./bin/rails s -b 0.0.0.0 -p 3000
 
 # Now access your server from http://<your local ip>:3000 with code reloading
 ```
 
-You might have to also update your host name setting `bundle exec rake setting:set[host_name=yourip]`.
+You can also add the environment variables directly to the `.env` file and just run `./bin/rails s -b 0.0.0.0 -p 3000`. Ensure `OPENPROJECT_HTTPS` is set to `false`.
+
+```env
+LOCAL_IP_ADDR='192.168.x.y'
+OPENPROJECT_DEV_EXTRA_HOSTS=$LOCAL_IP_ADDR
+OPENPROJECT_HTTPS=false
+OPENPROJECT_HOST_NAME=$LOCAL_IP_ADDR
+OPENPROJECT_CLI_PROXY="http://$LOCAL_IP_ADDR:4200"
+```
 
 ### Legacy LDAP tests
 
@@ -725,7 +740,7 @@ good as a test server.
 ### Running tests locally in Docker
 
 Most of the above applies to running tests locally, with some docker specific setup changes that are discussed [in the
-docker development documentation](../development-environment-docker).
+docker development documentation](../development-environment/docker).
 
 ### Generators
 

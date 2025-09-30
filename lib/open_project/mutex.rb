@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -80,7 +80,7 @@ module OpenProject
         #{action}:
           * lockname: #{lock_name}
           * thread:  #{Thread.current.object_id}
-          * held locks: #{WithAdvisoryLock::Base.lock_stack.map(&:name).join(', ')}
+          * held locks: #{ActiveRecord::Base.current_advisory_locks.join(', ')}
       MESSAGE
 
       Rails.logger.debug { message }

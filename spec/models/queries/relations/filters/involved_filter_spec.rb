@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,6 +39,7 @@ RSpec.describe Queries::Relations::Filters::InvolvedFilter do
   it_behaves_like "basic query filter" do
     let(:class_key) { :involved }
     let(:type) { :integer }
+    let(:human_name) { "Involved" }
 
     describe "#allowed_values" do
       it "is nil" do

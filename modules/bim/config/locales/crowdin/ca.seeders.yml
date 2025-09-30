@@ -160,7 +160,7 @@ ca:
                 En aquest mòdul pots comunicar notícies del projecte a nous membres de l'equip.
               description: Les notícies actuals
           categories:
-            item_0: Categoria 1 (per ser canviat en la configuració del projecte)
+            item_0: Categoria 1 (per ser canviada en la configuració del projecte)
           queries:
             item_0:
               name: Pla de projecte
@@ -256,7 +256,7 @@ ca:
 
                     *   Create a useful overview of the results
                     *   Check what has been done and summarize the results
-                    *   Communicate all the relevant results with the customer
+                    *   Communicate all the relevant results with the customer
                     *   Identify the fundamental boundary conditions of the project
 
                     ## Description
@@ -271,7 +271,7 @@ ca:
 
                     *   Create a useful overview of the results
                     *   Check what has been done and summarize the results
-                    *   Communicate all the relevant results with the customer
+                    *   Communicate all the relevant results with the customer
                     *   Identify the fundamental boundary conditions of the project
 
                     ## Description
@@ -679,7 +679,7 @@ ca:
             item_2:
               name: Hospital - Mechanical (cc-by-sa-3.0 Autodesk Inc.)
           categories:
-            item_0: Categoria 1 (per ser canviat en la configuració del projecte)
+            item_0: Categoria 1 (per ser canviada en la configuració del projecte)
           queries:
             item_0:
               name: Problemes

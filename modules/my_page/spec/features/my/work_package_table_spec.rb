@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,7 +30,9 @@ require "spec_helper"
 
 require_relative "../../support/pages/my/page"
 
-RSpec.describe "Arbitrary WorkPackage query table widget on my page", :js do
+RSpec.describe "Arbitrary WorkPackage query table widget on my page",
+               :js,
+               :with_cuprite do
   let!(:type) { create(:type) }
   let!(:other_type) { create(:type) }
   let!(:priority) { create(:default_priority) }
@@ -162,7 +164,7 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page", :js do
     let(:permissions) { %i[view_work_packages add_work_packages] }
 
     it "cannot add the widget" do
-      my_page.expect_unable_to_add_widget(1, 1, :within, "Work packages table")
+      my_page.expect_unable_to_add_widget(1, 2, :column, "Work packages table")
     end
   end
 end

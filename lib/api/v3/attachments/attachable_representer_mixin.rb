@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -82,7 +82,7 @@ module API
           end
 
           def attachments_by_resource
-            path = "attachments_by_#{_type.singularize.underscore}"
+            path = "attachments_by_#{_type.gsub('::', '_').singularize.underscore}"
 
             api_v3_paths.send(path, represented.id)
           end

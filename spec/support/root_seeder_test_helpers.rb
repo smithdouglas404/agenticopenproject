@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,6 +33,17 @@ module RootSeederTestHelpers
     RSpec::Mocks.with_temporary_scope do
       with_config(edition:)
       yield
+    end
+  end
+
+  # The example needs to have the :settings_reset metadata to have
+  # `reset(:default_language)` working.
+  def with_locale_env(locale, env_var_name: "OPENPROJECT_SEED_LOCALE", &)
+    with_env(env_var_name => locale) do
+      reset(:default_language) # Settings are a pain to reset
+      yield
+    ensure
+      reset(:default_language)
     end
   end
 end

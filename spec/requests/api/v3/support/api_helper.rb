@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,7 +29,7 @@
 #++
 
 RSpec.shared_examples_for "safeguarded API" do
-  it { expect(last_response.status).to eq(404) }
+  it { expect(last_response).to have_http_status(:not_found) }
 end
 
 RSpec.shared_examples_for "valid activity request" do
@@ -38,7 +40,7 @@ RSpec.shared_examples_for "valid activity request" do
     allow(User).to receive(:current).and_return(admin)
   end
 
-  it { expect(last_response.status).to eq(status_code) }
+  it { expect(last_response).to have_http_status(status_code) }
 
   describe "response body" do
     subject { last_response.body }
@@ -56,5 +58,5 @@ RSpec.shared_examples_for "invalid activity request" do
     allow(User).to receive(:current).and_return(admin)
   end
 
-  it { expect(last_response.status).to eq(422) }
+  it { expect(last_response).to have_http_status(:unprocessable_entity) }
 end

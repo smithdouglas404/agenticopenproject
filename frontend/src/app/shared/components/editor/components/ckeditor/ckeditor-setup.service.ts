@@ -6,6 +6,7 @@ import {
   ICKEditorWatchdog,
 } from 'core-app/shared/components/editor/components/ckeditor/ckeditor.types';
 import { Constructor } from '@angular/cdk/schematics';
+import { ConfigurationService } from 'core-app/core/config/configuration.service';
 
 export type ICKEditorType = 'full'|'constrained';
 export type ICKEditorMacroType = 'none'|'resource'|'full'|boolean|string[];
@@ -26,7 +27,10 @@ export class CKEditorSetupService {
   /** Prefetch ckeditor when browser is idle */
   private prefetch:Promise<unknown>;
 
-  constructor(private PathHelper:PathHelperService) {
+  constructor(
+    readonly PathHelper:PathHelperService,
+    readonly configurationService:ConfigurationService,
+    ) {
   }
 
   public initialize() {
@@ -59,33 +63,54 @@ export class CKEditorSetupService {
 
     const toolbarWrapper = wrapper.querySelector('.document-editor__toolbar') as HTMLElement;
     const contentWrapper = wrapper.querySelector('.document-editor__editable') as HTMLElement;
-    const uiLocale = this.loadedLocale;
-    const contentLanguage = context.options && context.options.rtl ? 'ar' : 'en';
-
-    const config = {
-      openProject: this.createConfig(context),
-      removePlugins: context.removePlugins,
-      initialData,
-      language: {
-        ui: uiLocale,
-        content: contentLanguage,
-      },
-    };
+    const config = this.createConfig(context, initialData);
 
     return this
       .createWatchdog(editorClass, contentWrapper, config)
       .then((watchdog:ICKEditorWatchdog) => {
         const { editor } = watchdog;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         toolbarWrapper.appendChild(editor.ui.view.toolbar.element);
 
         // Allow custom events on wrapper to set/get data for debugging
         jQuery(wrapper)
-          .on('op:ckeditor:setData', (event:unknown, data:string) => editor.setData(data))
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-return
+          .on('op:ckeditor:autosave', () => editor.config.get('autosave').save(editor))
+          .on('op:ckeditor:setData', (_, data:string) => editor.setData(data))
           .on('op:ckeditor:clear', () => editor.setData(' '))
-          .on('op:ckeditor:getData', (event:unknown, cb:(data:string) => void) => cb(editor.getData({ trim: false })));
+          .on('op:ckeditor:getData', (_, cb:(data:string) => void) => cb(editor.getData({ trim: false })));
 
         return watchdog;
       });
+  }
+
+  private createConfig(context:ICKEditorContext, initialData:string|null) {
+    const uiLocale = this.loadedLocale;
+    const contentLanguage = context.options && context.options.rtl ? 'ar' : 'en';
+
+    const config = {
+      openProject: this.createContext(context),
+      removePlugins: context.removePlugins,
+      initialData,
+      ui: {
+        poweredBy: {
+          side: 'left',
+        },
+      },
+      language: {
+        ui: uiLocale,
+        content: contentLanguage,
+      },
+      link: {},
+      storageKey: context.storageKey,
+    };
+
+    const allowedLinkProtocols = this.configurationService.allowedLinkProtocols;
+    if (allowedLinkProtocols) {
+      config.link = { allowedProtocols: allowedLinkProtocols.map((el:string) => _.escapeRegExp(el)) };
+    }
+
+    return config;
   }
 
   /**
@@ -118,19 +143,25 @@ export class CKEditorSetupService {
     // untyped module cannot be dynamically imported
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    await import(/* webpackPrefetch: true; webpackChunkName: "ckeditor" */ 'core-vendor/ckeditor/ckeditor');
+    await import(/* webpackChunkName: "ckeditor" */ 'core-vendor/ckeditor/ckeditor');
 
+    if (I18n.locale !== 'en') {
+      await this.loadLocale();
+    }
+  }
+
+  private async loadLocale():Promise<void> {
     try {
       await import(
         /* webpackPrefetch: true; webpackChunkName: "ckeditor-translation" */ `../../../../../../vendor/ckeditor/translations/${I18n.locale}.js`
-      ) as unknown;
+      );
       this.loadedLocale = I18n.locale;
     } catch (e:unknown) {
       console.warn(`Failed to load translation for CKEditor: ${e as string}`);
     }
   }
 
-  private createConfig(context:ICKEditorContext):unknown {
+  private createContext(context:ICKEditorContext):unknown {
     if (context.macros === 'none') {
       context.macros = false;
     } else if (context.macros === 'resource') {

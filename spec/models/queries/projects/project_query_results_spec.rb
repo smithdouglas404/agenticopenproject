@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,9 +30,8 @@
 
 require "spec_helper"
 
-RSpec.describe Queries::Projects::ProjectQuery, "results" do
+RSpec.describe ProjectQuery, "results" do
   let(:instance) { described_class.new }
-  let(:base_scope) { Project.order(id: :desc) }
 
   shared_let(:view_role) { create(:project_role, permissions: %i[view_project]) }
   shared_let(:non_member_role) { create(:non_member, permissions: %i[view_project]) }

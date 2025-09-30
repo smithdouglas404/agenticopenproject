@@ -8,6 +8,7 @@ pt-BR:
         row_count: "Número de linhas"
         column_count: "Número de colunas"
         widgets: "Widgets"
+        scope: "Escopo"
     errors:
       models:
         grids/grid:

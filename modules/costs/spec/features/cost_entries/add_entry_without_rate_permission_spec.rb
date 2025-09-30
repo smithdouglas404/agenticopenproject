@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -77,7 +77,7 @@ RSpec.describe "Create cost entry without rate permissions", :js do
     click_on "Save"
 
     # Expect correct costs
-    expect(page).to have_css(".op-toast.-success", text: I18n.t(:notice_cost_logged_successfully))
+    expect_flash(message: I18n.t(:notice_cost_logged_successfully))
     entry = CostEntry.last
     expect(entry.cost_type_id).to eq(cost_type.id)
     expect(entry.units).to eq(1.0)

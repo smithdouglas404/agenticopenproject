@@ -6,3 +6,4 @@ pt-BR:
       title: 'Calendário'
       too_many: 'Existem %{count} pacotes de trabalho, mas apenas %{max} podem ser mostrados.'
       unsaved_title: 'Calendário sem nome'
+      label_calendar_plural: 'Calendários'

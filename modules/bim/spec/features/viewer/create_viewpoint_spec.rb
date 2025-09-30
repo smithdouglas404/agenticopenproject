@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +28,10 @@
 
 require_relative "../../spec_helper"
 
-RSpec.describe "Create viewpoint from BCF details page", :js, with_config: { edition: "bim" } do
+RSpec.describe "Create viewpoint from BCF details page",
+               :js,
+               :selenium,
+               with_config: { edition: "bim" } do
   let(:project) { create(:project, enabled_module_names: %i[bim work_package_tracking]) }
   let(:user) { create(:admin) }
 

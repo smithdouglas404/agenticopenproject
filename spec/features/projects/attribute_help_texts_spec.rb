@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,16 +30,31 @@
 
 require "spec_helper"
 
-RSpec.describe "Project attribute help texts", :js, :with_cuprite do
-  let(:project) { create(:project) }
+RSpec.describe "Project attribute help texts", :js do
+  let!(:project) { create(:project) }
 
-  let(:instance) do
-    create(:project_help_text,
-           attribute_name: :status,
-           help_text: "Some **help text** for status.")
-    create(:project_help_text,
-           attribute_name: :description,
-           help_text: "Some **help text** for description.")
+  let!(:name_help_text) do
+    create(
+      :project_help_text,
+      attribute_name: :name,
+      help_text: "Some **help text** for name."
+    )
+  end
+
+  let!(:description_help_text) do
+    create(
+      :project_help_text,
+      attribute_name: :description,
+      help_text: "Some **help text** for description."
+    )
+  end
+
+  let!(:status_help_text) do
+    create(
+      :project_help_text,
+      attribute_name: :status,
+      help_text: "Some **help text** for status."
+    )
   end
 
   let(:grid) do
@@ -51,52 +68,77 @@ RSpec.describe "Project attribute help texts", :js, :with_cuprite do
                            end_column: 1)
   end
 
-  let(:modal) { Components::AttributeHelpTextModal.new(instance) }
-  let(:wp_page) { Pages::FullWorkPackage.new work_package }
-
   before do
     login_as user
-    project
-    instance
   end
 
-  shared_examples "allows to view help texts" do
-    it "shows an indicator for whatever help text exists" do
+  shared_examples "allows to view help texts" do |show_edit:|
+    it "shows help text links" do
       visit project_path(project)
 
       within "#menu-sidebar" do
-        click_link "Overview"
+        click_link_or_button "Overview"
       end
 
+      wait_for_network_idle
+      expect(page).to have_css("#{test_selector('op-widget-box--header')} .help-text--entry", wait: 10, count: 2)
+    end
+
+    it "shows help text modal on clicking help text link" do
+      visit project_path(project)
+
+      within "#menu-sidebar" do
+        click_link_or_button "Overview"
+      end
+
+      wait_for_network_idle
       expect(page).to have_css("#{test_selector('op-widget-box--header')} .help-text--entry", wait: 10)
 
       # Open help text modal
-      modal.open!
-      expect(modal.modal_container).to have_css("strong", text: "help text")
-      modal.expect_edit(editable: user.allowed_globally?(:edit_attribute_help_texts))
+      page.find("[data-qa-help-text-for='description").click
 
-      modal.close!
+      expect(page).to have_modal "Description"
+      within_modal "Description" do
+        expect(page).to have_css("strong", text: "help text")
+
+        expect(page).to have_button "Close"
+        if show_edit
+          expect(page).to have_link "Edit"
+        end
+
+        click_on "Close"
+      end
+
+      expect(page).to have_no_modal "Description"
     end
   end
 
   describe "as admin" do
     let(:user) { create(:admin) }
 
-    it_behaves_like "allows to view help texts"
+    it_behaves_like "allows to view help texts", show_edit: true
 
-    it "shows the help text on the project create form" do
+    it "shows the help text on the project create form", :selenium do
       visit new_project_path
 
-      page.find(".op-fieldset--legend", text: "ADVANCED SETTINGS").click
+      expect(page).to have_field "Name"
 
-      expect(page).to have_css(".spot-form-field--label attribute-help-text", wait: 10)
+      within(:element, "label", text: "Name") do
+        click_on accessible_name: "Show help text"
+      end
 
-      # Open help text modal
-      modal.open!
-      expect(modal.modal_container).to have_css("strong", text: "help text")
-      modal.expect_edit(editable: user.allowed_globally?(:edit_attribute_help_texts))
+      expect(page).to have_modal "Name"
 
-      modal.close!
+      within_modal "Name" do
+        expect(page).to have_css "strong", text: "help text"
+
+        expect(page).to have_button "Close"
+        expect(page).to have_link "Edit"
+
+        click_on "Close"
+      end
+
+      expect(page).not_to have_modal "Name"
     end
   end
 
@@ -105,6 +147,6 @@ RSpec.describe "Project attribute help texts", :js, :with_cuprite do
       create(:user, member_with_permissions: { project => [:view_project] })
     end
 
-    it_behaves_like "allows to view help texts"
+    it_behaves_like "allows to view help texts", show_edit: false
   end
 end

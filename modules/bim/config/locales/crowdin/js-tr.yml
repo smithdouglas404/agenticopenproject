@@ -3,7 +3,7 @@ tr:
   js:
     bcf:
       label_bcf: 'BCF'
-      import: 'İçeri Aktar'
+      import: 'İçeri aktar'
       import_bcf_xml_file: 'BCF XML dosyasını içe aktarın (BCF sürüm 2.1)'
       export: 'Dışarı aktar'
       export_bcf_xml_file: 'BCF XML dosyasını dışa aktar (BCF sürüm 2.1)'

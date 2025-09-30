@@ -1,6 +1,6 @@
 et:
   js:
-    queries:
-      all_open: 'All open'
-      timeline: 'Timeline'
-      milestones: 'Milestones'
+    work_packages:
+      label_gantt_chart_plural: "Gantt diagrammiid"
+      default_queries:
+        milestones: 'Eesmärgid'

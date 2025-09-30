@@ -1,17 +1,6 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core';
-import {
-  UntypedFormGroup,
-  UntypedFormArray,
-  UntypedFormControl,
-} from '@angular/forms';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnInit } from '@angular/core';
+import { UntypedFormArray, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { take } from 'rxjs/internal/operators/take';
-import { UIRouterGlobals } from '@uirouter/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { CurrentUserService } from 'core-app/core/current-user/current-user.service';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
@@ -19,8 +8,9 @@ import { UserPreferencesService } from 'core-app/features/user-preferences/state
 import { INotificationSetting } from 'core-app/features/user-preferences/state/notification-setting.model';
 import { BannersService } from 'core-app/core/enterprise/banners.service';
 import { enterpriseDocsUrl } from 'core-app/core/setup/globals/constants.const';
-import { OVERDUE_REMINDER_AVAILABLE_TIMEFRAMES, REMINDER_AVAILABLE_TIMEFRAMES } from '../overdue-reminder-available-times';
+import { overDueReminderTimes, reminderAvailableTimeframes } from '../overdue-reminder-available-times';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
+import { populateInputsFromDataset } from 'core-app/shared/components/dataset-inputs';
 
 export const myNotificationsPageComponentSelector = 'op-notifications-page';
 
@@ -53,19 +43,19 @@ interface IFullNotificationSettingsValue extends IToastSettingsValue {
 }
 
 @Component({
-  selector: myNotificationsPageComponentSelector,
   templateUrl: './notifications-settings-page.component.html',
   styleUrls: ['./notifications-settings-page.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class NotificationsSettingsPageComponent extends UntilDestroyedMixin implements OnInit {
   @Input() userId:string;
 
-  public availableTimes = REMINDER_AVAILABLE_TIMEFRAMES;
+  public availableTimes = reminderAvailableTimeframes();
 
-  public availableTimesOverdue = OVERDUE_REMINDER_AVAILABLE_TIMEFRAMES;
+  public availableTimesOverdue = overDueReminderTimes();
 
-  public eeShowBanners = false;
+  public eeAvailable = false;
 
   public form = new UntypedFormGroup({
     assignee: new UntypedFormControl(false),
@@ -125,9 +115,6 @@ export class NotificationsSettingsPageComponent extends UntilDestroyedMixin impl
     startDate: this.I18n.t('js.work_packages.properties.startDate'),
     dueDate: this.I18n.t('js.work_packages.properties.dueDate'),
     overdue: this.I18n.t('js.notifications.settings.global.overdue'),
-    teaser_text: this.I18n.t('js.notifications.settings.global.date_alerts.teaser_text'),
-    upgrade_to_ee_text: this.I18n.t('js.boards.upsale.upgrade'),
-    more_info_link: enterpriseDocsUrl.website,
   };
 
   dateAlertsStatuses = {
@@ -137,21 +124,21 @@ export class NotificationsSettingsPageComponent extends UntilDestroyedMixin impl
   };
 
   constructor(
-    private changeDetectorRef:ChangeDetectorRef,
-    private I18n:I18nService,
-    private storeService:UserPreferencesService,
-    private currentUserService:CurrentUserService,
-    private uiRouterGlobals:UIRouterGlobals,
+    readonly elementRef:ElementRef,
+    readonly changeDetectorRef:ChangeDetectorRef,
+    readonly I18n:I18nService,
+    readonly storeService:UserPreferencesService,
+    readonly currentUserService:CurrentUserService,
     readonly bannersService:BannersService,
     readonly configurationService:ConfigurationService,
   ) {
     super();
+    populateInputsFromDataset(this);
   }
 
   ngOnInit():void {
     this.form.disable();
-    this.userId = (this.userId || this.uiRouterGlobals.params.userId) as string;
-    this.eeShowBanners = this.bannersService.eeShowBanners;
+    this.eeAvailable = this.bannersService.allowsTo('date_alerts');
 
     this
       .currentUserService

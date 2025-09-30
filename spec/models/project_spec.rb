@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,16 +29,25 @@
 #++
 
 require "spec_helper"
-require File.expand_path("../support/shared/become_member", __dir__)
 
 RSpec.describe Project do
   include BecomeMember
+
   shared_let(:admin) { create(:admin) }
 
   let(:active) { true }
   let(:project) { create(:project, active:) }
   let(:build_project) { build_stubbed(:project, active:) }
   let(:user) { create(:user) }
+
+  describe ".templated" do
+    let!(:projects) { create_list(:project, 2) }
+    let!(:templated_projects) { create_list(:template_project, 1) }
+
+    it "returns templated projects only" do
+      expect(described_class.templated).to match_array(templated_projects)
+    end
+  end
 
   describe "#active?" do
     context "if active" do
@@ -157,10 +168,9 @@ RSpec.describe Project do
     let(:name) { "     Hello    World   " }
     let(:project) { described_class.new attributes_for(:project, name:) }
 
-    context "with white spaces in the name" do
-      it "trims the name" do
-        project.save
-        expect(project.name).to eql("Hello World")
+    context "with whitespace in the name" do
+      it "normalizes excess whitespace" do
+        expect(subject).to normalize(:name).from(name).to("Hello World")
       end
     end
 
@@ -173,6 +183,18 @@ RSpec.describe Project do
 
         expect(project.name).to eql("A new name")
       end
+    end
+  end
+
+  describe "workspace_type" do
+    it "is set to nil by default, to force having errors when it has not been set" do
+      # Would it make sense to have "project" as default value?
+      project = described_class.new
+      expect(project.workspace_type).to be_nil
+    end
+
+    it "must be one of the allowed values: #{described_class.workspace_types.keys}" do
+      expect(project).to validate_inclusion_of(:workspace_type).in_array(%w[project program portfolio])
     end
   end
 
@@ -219,7 +241,7 @@ RSpec.describe Project do
     end
   end
 
-  include_examples "creates an audit trail on destroy" do
+  it_behaves_like "creates an audit trail on destroy" do
     subject { create(:attachment) }
   end
 
@@ -235,10 +257,6 @@ RSpec.describe Project do
       expect(project.users)
         .to eq [active_user]
     end
-  end
-
-  include_examples "creates an audit trail on destroy" do
-    subject { create(:attachment) }
   end
 
   describe "#close_completed_versions" do
@@ -385,6 +403,53 @@ RSpec.describe Project do
     end
   end
 
+  describe "#project_phases" do
+    it { is_expected.to have_many(:phases).class_name("Project::Phase").dependent(:destroy) }
+
+    it "has many available_phases" do
+      expect(subject).to have_many(:available_phases)
+                    .class_name("Project::Phase")
+                    .inverse_of(:project)
+                    .dependent(nil)
+                    .order("project_phase_definitions.position ASC")
+    end
+
+    it "checks for active flag" do
+      expect(subject.available_phases.to_sql)
+        .to include("\"project_phases\".\"active\" = TRUE")
+    end
+
+    it "checks for :view_project_phases permission" do
+      project_condition = described_class.allowed_to(User.current, :view_project_phases).select(:id)
+
+      expect(subject.available_phases.to_sql).to include(project_condition.to_sql)
+    end
+
+    it "eager loads :definition" do
+      expect(subject.available_phases.to_sql)
+        .to include("LEFT OUTER JOIN \"project_phase_definitions\" ON")
+    end
+
+    describe ".validates_associated" do
+      let(:user) do
+        create(:user, member_with_permissions: { project => %i(view_project view_project_phases) })
+      end
+      let!(:project_phase) do
+        create :project_phase, :skip_validate, project:, start_date: Date.new(3000, 1, 1), finish_date: Date.new(2000, 1, 1)
+      end
+
+      current_user { user }
+
+      it "is valid without a validation context" do
+        expect(project).to be_valid
+      end
+
+      it "is invalid with the :saving_phases validation context" do
+        expect(project).not_to be_valid(:saving_phases)
+      end
+    end
+  end
+
   describe "#enabled_module_names=", with_settings: { default_projects_modules: %w(work_package_tracking repository) } do
     context "when assigning a new value" do
       let(:new_value) { %w(work_package_tracking news) }
@@ -407,9 +472,45 @@ RSpec.describe Project do
     end
   end
 
+  it_behaves_like "acts_as_favoritable included" do
+    let(:instance) { project }
+  end
+
   it_behaves_like "acts_as_customizable included" do
     let(:model_instance) { project }
     let(:custom_field) { create(:string_project_custom_field) }
+
+    describe "valid?" do
+      let(:custom_field) { create(:string_project_custom_field, is_required: true) }
+
+      before do
+        model_instance.custom_field_values = { custom_field.id => "test" }
+        model_instance.save
+        model_instance.custom_field_values = { custom_field.id => nil }
+      end
+
+      context "without a validation context" do
+        it "does not validates the custom fields" do
+          expect(model_instance).to be_valid
+        end
+
+        it "does not includes the default validation context in the validation_context" do
+          model_instance.send(:validation_context=, :custom_context)
+          expect(model_instance.validation_context).to eq(:custom_context)
+        end
+      end
+
+      context "with the :saving_custom_fields validation context" do
+        it "validates the custom fields" do
+          expect(model_instance).not_to be_valid(:saving_custom_fields)
+        end
+
+        it "includes the default validation context too in the validation_context" do
+          model_instance.send(:validation_context=, :saving_custom_fields)
+          expect(model_instance.validation_context).to eq(%i(saving_custom_fields update))
+        end
+      end
+    end
   end
 
   describe "url identifier" do
@@ -437,6 +538,31 @@ RSpec.describe Project do
         project.validate
 
         expect(project.identifier).not_to eq(word)
+      end
+    end
+
+    # The acts_as_url plugin defines validation callbacks on :create and it is not automatically
+    # called when calling a custom context. However we need the acts_as_url callback to set the
+    # identifier when the validations are called with the :saving_custom_fields context.
+    context "when validating with :saving_custom_fields context" do
+      it "is set from name" do
+        project = described_class.new(name: "foo")
+
+        project.validate(:saving_custom_fields)
+
+        expect(project.identifier).to eq("foo")
+      end
+
+      it "is not allowed to clash with projects routing" do
+        expect(reserved).not_to be_empty
+
+        reserved.each do |word|
+          project = described_class.new(name: word)
+
+          project.validate(:saving_custom_fields)
+
+          expect(project.identifier).not_to eq(word)
+        end
       end
     end
   end

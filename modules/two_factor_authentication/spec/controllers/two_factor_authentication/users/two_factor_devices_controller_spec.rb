@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "../../../spec_helper"
 require_relative "../authentication_controller_shared_examples"
 
@@ -35,7 +37,7 @@ RSpec.describe TwoFactorAuthentication::Users::TwoFactorDevicesController do
       let(:logged_in_user) { other_user }
 
       it "does not give access" do
-        expect(response.status).to eq 403
+        expect(response).to have_http_status :forbidden
       end
     end
 
@@ -43,7 +45,7 @@ RSpec.describe TwoFactorAuthentication::Users::TwoFactorDevicesController do
       let(:logged_in_user) { user }
 
       it "does not give access" do
-        expect(response.status).to eq 403
+        expect(response).to have_http_status :forbidden
       end
     end
 
@@ -59,7 +61,7 @@ RSpec.describe TwoFactorAuthentication::Users::TwoFactorDevicesController do
         let(:active_strategies) { [] }
 
         it "renders a 404 because no strategies enabled" do
-          expect(response.status).to eq 404
+          expect(response).to have_http_status :not_found
         end
       end
     end
@@ -108,7 +110,7 @@ RSpec.describe TwoFactorAuthentication::Users::TwoFactorDevicesController do
         it "renders action new" do
           post :register, params: { id: user.id, key: :sms, device: params }
 
-          expect(response).to be_successful
+          expect(response).to have_http_status :unprocessable_entity
           expect(response).to render_template "new"
           expect(assigns[:device]).to be_invalid
         end
@@ -182,7 +184,7 @@ RSpec.describe TwoFactorAuthentication::Users::TwoFactorDevicesController do
     describe "#destroy" do
       it "croaks on missing id" do
         delete :destroy, params: { id: user.id, device_id: "1234" }
-        expect(response.status).to eq 404
+        expect(response).to have_http_status :not_found
       end
 
       context "with existing non-default device" do

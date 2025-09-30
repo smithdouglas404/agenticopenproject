@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,8 +30,9 @@
 
 require "spec_helper"
 
-RSpec.describe "index users", :js, :with_cuprite do
-  shared_let(:current_user) { create(:admin, firstname: "admin", lastname: "admin", created_at: 1.hour.ago) }
+RSpec.describe "index users", :js do
+  shared_let(:admin) { create(:admin, firstname: "admin", lastname: "admin", created_at: 1.hour.ago) }
+  let(:current_user) { admin }
   let(:index_page) { Pages::Admin::Users::Index.new }
 
   before do
@@ -152,7 +155,7 @@ RSpec.describe "index users", :js, :with_cuprite do
 
       it "can too visit the page" do
         index_page.visit!
-        index_page.expect_listed(current_user, active_user, registered_user, invited_user)
+        index_page.expect_listed(admin, current_user, active_user, registered_user, invited_user)
       end
     end
   end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,7 +39,7 @@ module OpenProject::TextFormatting
         macros.each { |macro| registered << macro }
       end
 
-      def call
+      def call # rubocop:disable Metrics/AbcSize
         doc.search("macro").each do |macro|
           registered.each do |macro_class|
             next unless macro_applies?(macro_class, macro)
@@ -81,7 +83,7 @@ module OpenProject::TextFormatting
       end
 
       def macro_applies?(macro_class, element)
-        ((element["class"] || "").split & Array(macro_class.identifier)).any?
+        (element["class"] || "").split.intersect?(Array(macro_class.identifier))
       end
     end
   end
@@ -92,5 +94,6 @@ OpenProject::TextFormatting::Filters::MacroFilter.register(
   OpenProject::TextFormatting::Filters::Macros::CreateWorkPackageLink,
   OpenProject::TextFormatting::Filters::Macros::IncludeWikiPage,
   OpenProject::TextFormatting::Filters::Macros::EmbeddedTable,
-  OpenProject::TextFormatting::Filters::Macros::ChildPages
+  OpenProject::TextFormatting::Filters::Macros::ChildPages,
+  OpenProject::TextFormatting::Filters::Macros::GithubPullRequest
 )

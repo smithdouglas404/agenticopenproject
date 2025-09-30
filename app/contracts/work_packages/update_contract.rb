@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -48,15 +50,19 @@ module WorkPackages
     default_attribute_permission :edit_work_packages
     attribute_permission :project_id, :move_work_packages
 
+    def can_set_parent?
+      allowed_in_project?(:manage_subtasks)
+    end
+
     private
 
     def user_allowed_to_edit
       with_unchanged_project_id do
-        next if @can.allowed?(model, :edit) ||
-                @can.allowed?(model, :assign_version) ||
-                @can.allowed?(model, :change_status) ||
-                @can.allowed?(model, :manage_subtasks) ||
-                @can.allowed?(model, :move)
+        next if allowed_in_work_package?(:edit_work_packages) ||
+                allowed_in_project?(:assign_versions) ||
+                allowed_in_project?(:change_work_package_status) ||
+                allowed_in_project?(:manage_subtasks) ||
+                allowed_in_project?(:move_work_packages)
         next if allowed_journal_addition?
 
         errors.add :base, :error_unauthorized
@@ -70,7 +76,7 @@ module WorkPackages
     end
 
     def allowed_journal_addition?
-      model.changes.empty? && model.journal_notes && can.allowed?(model, :comment)
+      model.changes.empty? && model.journal_notes && allowed_in_work_package?(:add_work_package_comments)
     end
 
     def can_move_to_milestone
@@ -88,6 +94,14 @@ module WorkPackages
       unless model.parent.visible?
         errors.add :parent_id, :error_unauthorized
       end
+    end
+
+    def allowed_in_project?(permission)
+      user.allowed_in_project?(permission, model.project)
+    end
+
+    def allowed_in_work_package?(permission)
+      user.allowed_in_work_package?(permission, model)
     end
   end
 end

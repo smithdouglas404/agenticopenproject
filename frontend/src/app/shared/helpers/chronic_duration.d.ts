@@ -1,7 +1,7 @@
 /*
  * -- copyright
  * OpenProject is an open source project management software.
- * Copyright (C) 2024 the OpenProject GmbH
+ * Copyright (C) the OpenProject GmbH
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 3.
@@ -28,4 +28,7 @@
  * ++
  */
 
-export function outputChronicDuration(duration:number, opts = {}):string|null;
+export declare function outputChronicDuration(duration:number, opts = {}):string|null;
+export declare function parseChronicDuration(string:string|null, opts = {}):number;
+export declare class DurationParseError extends Error {
+}

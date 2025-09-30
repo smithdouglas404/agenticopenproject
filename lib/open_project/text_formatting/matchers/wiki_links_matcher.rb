@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -114,7 +116,7 @@ module OpenProject::TextFormatting
         link_from_match
       end
 
-      def link_from_match
+      def link_from_match # rubocop:disable Metrics/AbcSize
         # extract anchor
         anchor = nil
         if page =~ /\A(.+?)\#(.+)\z/
@@ -148,7 +150,7 @@ module OpenProject::TextFormatting
 
         link_to h(wiki_title),
                 url,
-                class: ("wiki-page" + (wiki_page ? "" : " new"))
+                class: "wiki-page#{wiki_page ? '' : ' new'}"
       end
     end
   end

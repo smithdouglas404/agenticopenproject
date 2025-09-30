@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,14 +28,39 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
+# Workaround to support role filters in component specs. This should be fixed upstream.
+Capybara::Node::Simple.class_eval do
+  def role
+    self[:role]
+  end
+end
+
 Capybara.add_selector(:list) do
-  xpath { ".//ul | .//ol" }
+  xpath do |*|
+    XPath.descendant[[
+      XPath.self(:ul),
+      XPath.self(:ol)
+    ].reduce(:|)]
+  end
+
+  locator_filter skip_if: nil do |node, locator, exact:, **|
+    method = exact ? :eql? : :include?
+    if node[:"aria-labelledby"]
+      CapybaraAccessibleSelectors::Helpers.element_labelledby(node).public_send(method, locator)
+    elsif node[:"aria-label"]
+      node[:"aria-label"].public_send(method, locator.to_s)
+    end
+  end
+
+  filter_set(:capybara_accessible_selectors, %i[aria role described_by])
 end
 
 Capybara.add_selector(:list_item) do
   label "list item"
 
-  xpath { ".//li" }
+  xpath do |*|
+    XPath.descendant[XPath.self(:li)]
+  end
 
   expression_filter(:position) do |xpath, position|
     position ? "#{xpath}[#{position}]" : xpath
@@ -44,6 +69,8 @@ Capybara.add_selector(:list_item) do
   describe_expression_filters do |position: nil, **|
     position ? " at position #{position}" : ""
   end
+
+  filter_set(:capybara_accessible_selectors, %i[aria role described_by])
 end
 
 module Capybara

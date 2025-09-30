@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,18 +29,43 @@
 #++
 
 module CustomActions::Actions::Strategies::UserCustomField
-  include CustomActions::Actions::Strategies::CustomField
+  include ::CustomActions::Actions::Strategies::CustomField
   include ::CustomActions::Actions::Strategies::MeAssociated
+
+  def type
+    :user
+  end
 
   def apply(work_package)
     if work_package.respond_to?(custom_field.attribute_setter)
-      work_package.send(custom_field.attribute_setter, transformed_value(values.first))
+      work_package.send(custom_field.attribute_setter, transformed_values(work_package))
     end
   end
 
+  def transformed_values(work_package)
+    if single_value?
+      transformed_value values.first
+    else
+      me_handled = values.map { transformed_value(it) }
+      me_handled & available_principal_ids_for(work_package)
+    end
+  end
+
+  def transformed_value(value)
+    if value == current_user_value_key
+      User.current.id if User.current.logged?
+    else
+      value
+    end
+  end
+
+  def single_value? = !multi_value?
+
+  def available_principal_ids_for(work_package)
+    custom_field.possible_values_options(work_package).map { |_, value| value.empty? ? nil : value.to_i }
+  end
+
   def available_principles
-    custom_field
-      .possible_values_options
-      .map { |label, value| [value.empty? ? nil : value.to_i, label] }
+    custom_field.possible_values_options.map { |label, value| [value.empty? ? nil : value.to_i, label] }
   end
 end

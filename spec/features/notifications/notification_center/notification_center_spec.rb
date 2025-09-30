@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
-RSpec.describe "Notification center", :js, :with_cuprite,
+RSpec.describe "Notification center",
+               :js,
                with_ee: %i[date_alerts],
                # We decrease the notification polling interval because some portions of the JS code rely on something triggering
                # the Angular change detection. This is usually done by the notification polling, but we don't want to wait
@@ -34,7 +37,7 @@ RSpec.describe "Notification center", :js, :with_cuprite,
   end
 
   let(:center) { Pages::Notifications::Center.new }
-  let(:side_menu) { Components::Notifications::Sidemenu.new }
+  let(:side_menu) { Components::Submenu.new }
   let(:activity_tab) { Components::WorkPackages::Activities.new(work_package) }
   let(:split_screen) { Pages::SplitWorkPackage.new work_package }
   let(:split_screen2) { Pages::SplitWorkPackage.new work_package2 }
@@ -99,21 +102,26 @@ RSpec.describe "Notification center", :js, :with_cuprite,
       center.expect_bell_count 0
     end
 
-    context "with more the 100 notifications" do
+    context "with more than 100 notifications" do
       let(:notifications) do
-        attributes = { recipient:, project: project1, resource: work_package }
+        attributes = { recipient:, resource: work_package }
+        attributes_project2 = { recipient:, resource: work_package2 }
+
+        # rubocop:disable FactoryBot/ExcessiveCreateList
         create_list(:notification, 100, attributes.merge(reason: :mentioned)) +
-        create_list(:notification, 105, attributes.merge(reason: :watched))
+          create_list(:notification, 105, attributes.merge(reason: :watched)) +
+          create_list(:notification, 50, attributes_project2.merge(reason: :assigned))
+        # rubocop:enable FactoryBot/ExcessiveCreateList
       end
 
       it "can dismiss all notifications of the currently selected filter" do
         visit home_path
         wait_for_reload
-        center.expect_bell_count "99+"
+        center.expect_bell_count ""
         center.open
 
-        # side menu items show full count of notifications (inbox has one more due to the "Created" notification)
-        side_menu.expect_item_with_count "Inbox", 206
+        # side menu items show full count of notifications (inbox has two more due to the "Created" notification)
+        side_menu.expect_item_with_count "Inbox", 257
         side_menu.expect_item_with_count "Mentioned", 100
         side_menu.expect_item_with_count "Watcher", 105
 
@@ -123,10 +131,21 @@ RSpec.describe "Notification center", :js, :with_cuprite,
         center.mark_all_read
         wait_for_network_idle
 
-        center.expect_bell_count "99+"
-        side_menu.expect_item_with_count "Inbox", 101
+        center.expect_bell_count ""
+        side_menu.expect_item_with_count "Inbox", 152
         side_menu.expect_item_with_count "Mentioned", 100
         side_menu.expect_item_with_no_count "Watcher"
+
+        # select a project and mark all as read
+        side_menu.click_item project2.name
+        side_menu.finished_loading
+        center.mark_all_read
+        wait_for_network_idle
+
+        center.expect_bell_count ""
+        side_menu.expect_item_with_count "Inbox", 101
+        side_menu.expect_item_with_count "Mentioned", 100
+        side_menu.expect_no_item project2.name
 
         # select inbox and mark all as read
         side_menu.click_item "Inbox"
@@ -135,6 +154,7 @@ RSpec.describe "Notification center", :js, :with_cuprite,
         wait_for_network_idle
 
         center.expect_bell_count 0
+        center.expect_mark_all_as_read_button_disabled
         side_menu.expect_item_with_no_count "Inbox"
         side_menu.expect_item_with_no_count "Mentioned"
         side_menu.expect_item_with_no_count "Watcher"
@@ -149,9 +169,14 @@ RSpec.describe "Notification center", :js, :with_cuprite,
 
       center.click_item notification
       split_screen.expect_open
+      center.expect_item_selected notification
 
       center.expect_item_not_read notification
       center.expect_work_package_item notification2
+
+      center.click_item notification2
+      split_screen2.expect_open
+      center.expect_item_selected notification2
 
       center.mark_notification_as_read notification
       wait_for_network_idle
@@ -192,13 +217,12 @@ RSpec.describe "Notification center", :js, :with_cuprite,
                reason: :commented,
                recipient:,
                resource: work_package3,
-               project: project1,
                actor: other_user,
                journal: work_package3.journals.reload.last,
                read_ian: true)
       end
 
-      it "opens a toaster if the notification is part of the current filters" do
+      it "auto updates the center when a new notification is created" do
         visit home_path
         center.open
         center.expect_bell_count 2
@@ -206,25 +230,10 @@ RSpec.describe "Notification center", :js, :with_cuprite,
         center.expect_work_package_item notification2
         center.expect_no_toaster
         notification3.update(read_ian: false)
-        center.expect_toast
-        center.update_via_toaster
         center.expect_no_toaster
         center.expect_work_package_item notification
         center.expect_work_package_item notification2
         center.expect_work_package_item notification3
-      end
-
-      it "does not open a toaster if the notification is not part of the current filters" do
-        visit home_path
-        center.open
-        center.expect_bell_count 2
-        side_menu.click_item "Mentioned"
-        side_menu.finished_loading
-        center.expect_no_toaster
-        notification3.update(read_ian: false)
-        # We need to wait for the bell to poll for updates
-        sleep 15
-        center.expect_no_toaster
       end
     end
 
@@ -259,7 +268,6 @@ RSpec.describe "Notification center", :js, :with_cuprite,
                reason: :date_alert_start_date,
                recipient:,
                resource: starting_soon_work_package,
-               project: project1,
                read_ian: false)
       end
       let(:due_date_notification) do
@@ -267,7 +275,6 @@ RSpec.describe "Notification center", :js, :with_cuprite,
                reason: :date_alert_due_date,
                recipient:,
                resource: ending_soon_work_package,
-               project: project1,
                read_ian: false)
       end
       let(:overdue_date_notification) do
@@ -275,7 +282,6 @@ RSpec.describe "Notification center", :js, :with_cuprite,
                reason: :date_alert_due_date,
                recipient:,
                resource: overdue_milestone_work_package,
-               project: project1,
                read_ian: false)
       end
 
@@ -312,8 +318,7 @@ RSpec.describe "Notification center", :js, :with_cuprite,
         create(:notification,
                reason: :mentioned,
                recipient:,
-               resource: overdue_milestone_work_package,
-               project: project1)
+               resource: overdue_milestone_work_package)
 
         # We need to wait for the bell to poll for updates
         sleep 15
@@ -420,17 +425,31 @@ RSpec.describe "Notification center", :js, :with_cuprite,
         expect(notification3.reload.read_ian).to be_truthy
       end
     end
+
+    context "with invalid filter parameters" do
+      it "shows error message and redirects for invalid reason" do
+        visit notifications_path(filter: "reason", name: "invalid_reason")
+        expect(page).to have_current_path(notifications_path)
+        expect(page).to have_text("Invalid notification filter")
+      end
+
+      it "shows error message and redirects for invalid filter type" do
+        visit notifications_path(filter: "invalid_filter", name: "something")
+        expect(page).to have_current_path(notifications_path)
+        expect(page).to have_text("Invalid notification filter")
+      end
+    end
   end
 
   describe "logging into deep link", with_settings: { login_required: true } do
     it "redirects to the notification deep link" do
-      visit notifications_center_path(state: "details/#{work_package.id}/activity")
+      visit details_notifications_path(work_package.id, tab: :activity)
 
       expect(page).to have_current_path /login/
 
       login_with recipient.login, "adminADMIN!", visit_signin_path: false
 
-      expect(page).to have_current_path /notifications\/details\/#{work_package.id}\/activity/
+      expect(page).to have_current_path /notifications\/details\/#{work_package.id}/
     end
   end
 end

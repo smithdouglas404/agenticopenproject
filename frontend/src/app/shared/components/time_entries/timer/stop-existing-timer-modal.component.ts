@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -56,6 +56,7 @@ import { StateService } from '@uirouter/core';
   templateUrl: './stop-existing-timer-modal.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class StopExistingTimerModalComponent extends OpModalComponent implements OnInit {
   @HostBinding('class.op-timer-stop-modal') className = true;

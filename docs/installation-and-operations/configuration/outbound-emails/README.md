@@ -47,6 +47,7 @@ These are the options that are available. Please see the [Configuration guide](.
 | SMTP password              | smtp_password             | `OPENPROJECT_SMTP__PASSWORD`               | Password for authentication against the SMTP server (when authentication is required) |
 | Automatically use STARTTLS | smtp_enable_starttls_auto | `OPENPROJECT_SMTP__ENABLE__STARTTLS__AUTO` | You can enable or disable STARTTLS here in case it doesn't work. Make sure you don't login to a SMTP server over a public network when using this. Recommended to leave this on if your server supports it. Possible values: true / false |
 | OpenSSL verify mode        | smtp_openssl_verify_mode  | `OPENPROJECT_SMTP__OPENSSL__VERIFY__MODE`  | Define how the SMTP server certificate is validated. Make sure you don't just disable verification here unless both, OpenProject and SMTP servers are on a private network. Possible values: `none`, `peer`, `client_once` or `fail_if_no_peer_cert`.<br>Note: This setting can only be set through ENV/settings |
+| SMTP Timeout               | smtp_timeout              | `OPENPROJECT_SMTP__TIMEOUT`                | This optional setting allows you to specify the number of seconds to wait for SMTP connections to be opened and read.<br>If the value is set too low, a `Net::OpenTimeout` or `Net::ReadTimeout` might be raised. |
 
 ## Package-based installation (DEB/RPM)
 
@@ -59,7 +60,7 @@ openproject config:set OPENPROJECT_SMTP__PORT=587
 openproject config:set OPENPROJECT_SMTP__DOMAIN=my.domain.com
 openproject config:set OPENPROJECT_SMTP__AUTHENTICATION=login
 openproject config:set OPENPROJECT_SMTP__ENABLE__STARTTLS__AUTO=true
-openproject config:set OPENPROJECT_SMTP__USER_NAME="apikey"
+openproject config:set OPENPROJECT_SMTP__USER__NAME="apikey"
 openproject config:set OPENPROJECT_SMTP__PASSWORD="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"
 ```
 
@@ -76,7 +77,7 @@ docker run -d \
   -e OPENPROJECT_SMTP__DOMAIN=my.domain.com \
   -e OPENPROJECT_SMTP__AUTHENTICATION=login \
   -e OPENPROJECT_SMTP__ENABLE__STARTTLS__AUTO=true \
-  -e OPENPROJECT_SMTP__USER_NAME="apikey" \
+  -e OPENPROJECT_SMTP__USER__NAME="apikey" \
   -e OPENPROJECT_SMTP__PASSWORD="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" \
   ...
 ```

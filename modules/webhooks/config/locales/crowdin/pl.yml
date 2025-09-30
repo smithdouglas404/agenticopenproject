@@ -8,6 +8,7 @@ pl:
         url: 'URL do wywołania'
         secret: 'Tajny klucz podpisu'
         events: 'Zdarzenia'
+        enabled: 'Włączone'
         projects: 'Aktywne projekty'
       webhooks/log:
         event_name: 'Nazwa zdarzenia'
@@ -30,6 +31,8 @@ pl:
       events:
         created: "Utworzono"
         updated: "Zaktualizowano"
+        comment: "Komentarz"
+        internal_comment: "Komentarz wewnętrzny"
       explanation:
         text: >
           Po wystąpieniu zdarzenia takiego jak utworzenie pakietu roboczego lub aktualizacja projektu OpenProject wyśle żądanie POST do skonfigurowanych punktów końcowych sieci. Zdarzenie jest często wysyłane po upływie %{link}.

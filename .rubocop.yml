@@ -1,20 +1,18 @@
 require:
-  - rubocop-rails
-  - rubocop-rspec
-  - rubocop-rspec_rails
-  - ./lib_static/rubocop/cop/open_project/add_preview_for_view_component.rb
-  - ./lib_static/rubocop/cop/open_project/no_do_end_block_with_rspec_capybara_matcher_in_expect.rb
-  - ./lib_static/rubocop/cop/open_project/use_service_result_factory_methods.rb
+  - rubocop-openproject
+  - ./config/initializers/inflections.rb
+
+plugins:
   - rubocop-capybara
   - rubocop-factory_bot
   - rubocop-performance
-  - rubocop-inflector
-  - ./config/initializers/inflections.rb
+  - rubocop-rails
+  - rubocop-rspec
+  - rubocop-rspec_rails
 
-<% if File.exist?('.rubocop-local.yml') %>
+# A rubocop-local.yml file can be added to customized the styles
 inherit_from:
-  - .rubocop-local.yml
-<% end %>
+  - .rubocop-local*.yml
 
 inherit_mode:
   merge:
@@ -22,11 +20,17 @@ inherit_mode:
     - Exclude
 
 AllCops:
-  TargetRubyVersion: 3.3
+  TargetRubyVersion: 3.4
   # Enable any new cops in new versions by default
   NewCops: enable
   Exclude:
-    - '**/node_modules/**/*'
+    - "**/node_modules/**/*"
+
+# Disable it as it is deprecated
+# From https://docs.rubocop.org/rubocop-capybara/cops_capybara.html#capybaraclicklinkorbuttonstyle
+# "This cop is deprecated. We plan to remove this in the next major version update to 3.0."
+Capybara/ClickLinkOrButtonStyle:
+  Enabled: false
 
 FactoryBot/ConsistentParenthesesStyle:
   Enabled: false
@@ -38,12 +42,11 @@ Gemspec/RequiredRubyVersion:
   Exclude:
     - modules/**/*.gemspec
 
-
 Layout/ConditionPosition:
   Enabled: false
 
 Layout/DotPosition:
-    EnforcedStyle: leading
+  EnforcedStyle: leading
 
 Layout/LineLength:
   Max: 130
@@ -122,8 +125,8 @@ Metrics/ParameterLists:
 Metrics/AbcSize:
   Enabled: true
   Exclude:
-    - 'spec/**/*.rb'
-    - 'modules/*/spec/**/*.rb'
+    - "spec/**/*.rb"
+    - "modules/*/spec/**/*.rb"
 
 Naming/AccessorMethodName:
   Enabled: false
@@ -138,7 +141,7 @@ Naming/ClassAndModuleCamelCase:
 Naming/FileName:
   Enabled: false
 
-Naming/PredicateName:
+Naming/PredicatePrefix:
   ForbiddenPrefixes:
     - is_
 
@@ -146,7 +149,7 @@ Naming/VariableNumber:
   AllowedPatterns:
     - '\w_20\d\d' # allow dates like christmas_2022 or date_2034_04_12
     - '\w\d++(_\d++)+' # allow hierarchical data like child1_2_5 (second + in regex is possessive qualifier)
-
+    - 'custom_field_\d+' # allow custom field method names to be called with send :custom_field_1001
 # There are valid cases in which to use methods like:
 # * update_all
 # * touch_all
@@ -163,7 +166,7 @@ Rails/ContentTag:
 Rails/I18nLocaleAssignment:
   Enabled: true
   Exclude:
-    - 'spec/**/*.rb'
+    - "spec/**/*.rb"
 
 # Do not bother if `let` statements use an index in their name
 RSpec/IndexedLet:
@@ -171,8 +174,7 @@ RSpec/IndexedLet:
 
 # The http verbs in Rack::Test do not accept named parameters (params: params)
 Rails/HttpPositionalArguments:
-  Exclude:
-    - 'spec/requests/api/v3/**/*.rb'
+  Enabled: false
 
 # require_dependency is an obsolete method for Rails applications running in Zeitwerk mode.
 Rails/RequireDependency:
@@ -186,8 +188,8 @@ RSpec/ExampleLength:
   Max: 25
   Enabled: true
   Exclude:
-    - 'spec/features/**/*.rb'
-    - 'modules/*/spec/features/**/*.rb'
+    - "spec/features/**/*.rb"
+    - "modules/*/spec/features/**/*.rb"
 
 # We have specs that have no expect(..) syntax,
 # but only helper classes that expect themselves
@@ -197,16 +199,35 @@ RSpec/NoExpectationExample:
 RSpec/DescribeClass:
   Enabled: true
   Exclude:
-    - 'spec/features/**/*.rb'
-    - 'modules/*/spec/features/**/*.rb'
+    - "spec/features/**/*.rb"
+    - "modules/*/spec/features/**/*.rb"
+
+# Nothing wrong with `include_examples` when used properly.
+RSpec/IncludeExamples:
+  Enabled: false
+
+# Allow number HTTP status codes in specs
+RSpecRails/HttpStatus:
+  Enabled: false
 
 # dynamic finders cop clashes with capybara ID cop
 Rails/DynamicFindBy:
   Enabled: true
   Exclude:
-    - 'spec/features/**/*.rb'
-    - 'spec/support/**/*.rb'
-    - 'modules/*/spec/features/**/*.rb'
+    - "spec/features/**/*.rb"
+    - "spec/support/**/*.rb"
+    - "modules/*/spec/features/**/*.rb"
+  Whitelist:
+    - find_by_login
+
+# Allow reorder to prevent find each cop triggering
+Rails/FindEach:
+  AllowedMethods:
+    - order
+    - reorder
+    - limit
+    - select
+    - lock
 
 # We have config.active_record.belongs_to_required_by_default = false ,
 # which means, we do have to declare presence validators on belongs_to relations.
@@ -218,8 +239,8 @@ RSpec/MultipleExpectations:
   Max: 15
   Enabled: true
   Exclude:
-    - 'spec/features/**/*.rb'
-    - 'modules/*/spec/features/**/*.rb'
+    - "spec/features/**/*.rb"
+    - "modules/*/spec/features/**/*.rb"
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: false
@@ -235,6 +256,11 @@ RSpec/DescribeMethod:
 # Don't force the second argument of describe
 # to match the exact file name
 RSpec/SpecFilePathFormat:
+  CustomTransform:
+    OpenIDConnect: openid_connect
+    OAuthClients: oauth_clients
+    OAuth: oauth
+    ICal: ical
   IgnoreMethods: true
 
 # Prevent  "fit" or similar to be committed
@@ -262,7 +288,7 @@ RSpec/ContextWording:
     - having
     - if
     - in
-    - 'on'
+    - "on"
     - to
     - unless
     - via
@@ -311,9 +337,6 @@ Style/ColonMethodCall:
 Style/CommentAnnotation:
   Enabled: false
 
-Style/PreferredHashMethods:
-  Enabled: false
-
 Style/Documentation:
   Enabled: false
 
@@ -325,6 +348,9 @@ Style/EachWithObject:
 
 Style/EmptyLiteral:
   Enabled: false
+
+Style/EndlessMethod:
+  Enabled: true
 
 Style/EvenOdd:
   Enabled: false
@@ -386,6 +412,9 @@ Style/PercentLiteralDelimiters:
 Style/PerlBackrefs:
   Enabled: false
 
+Style/PreferredHashMethods:
+  Enabled: false
+
 Style/Proc:
   Enabled: false
 
@@ -438,7 +467,8 @@ Style/WordArray:
   Enabled: false
 
 Style/FrozenStringLiteralComment:
-  Enabled: false
+  Enabled: true
+  EnforcedStyle: always_true
 
 Style/NumericLiterals:
   Enabled: false
@@ -458,3 +488,10 @@ Style/HashTransformValues:
 
 Performance/Casecmp:
   Enabled: false
+
+OpenProject/AddPreviewForViewComponent:
+  Include:
+    - app/components/op_turbo/**.rb
+    - app/components/op_primer/**.rb
+    - app/components/open_project/**.rb
+    - app/components/concerns/**.rb

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +28,8 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require 'active_support/core_ext/integer/time'
+require "active_support/core_ext/integer/time"
+require "appsignal" # we will need it to test it in `spec/lib/open_project/appsignal_spec.rb`
 
 # The test environment is used exclusively to run your application's
 # test suite. You never need to work with it otherwise. Remember that
@@ -52,7 +55,7 @@ Rails.application.configure do
 
   # Configure public file server for tests with Cache-Control for performance.
   config.public_file_server.enabled = true
-  config.public_file_server.headers = { 'Cache-Control' => 'public, max-age=3600' }
+  config.public_file_server.headers = { "Cache-Control" => "public, max-age=3600" }
 
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
@@ -75,11 +78,11 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :test
 
   # Silence deprecations early on for testing on CI
-  deprecators.silenced = ENV['CI'].present?
+  deprecators.silenced = ENV["CI"].present?
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation =
-    if ENV['CI']
+    if ENV["CI"]
       :silence
     else
       :stderr
@@ -114,11 +117,14 @@ Rails.application.configure do
   # Use in-memory store for testing
   Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
 
-  if ENV['TEST_ENV_NUMBER']
+  if ENV["TEST_ENV_NUMBER"]
     assets_cache_path = Rails.root.join("tmp/cache/assets/paralleltests#{ENV['TEST_ENV_NUMBER']}")
     config.assets.cache = Sprockets::Cache::FileStore.new(assets_cache_path)
   end
 
   # Speed up tests by lowering BCrypt's cost function
   BCrypt::Engine.cost = BCrypt::Engine::MIN_COST
+
+  # use ActiveJob test adapter
+  config.active_job.queue_adapter = :test
 end

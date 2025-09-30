@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,59 +28,56 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Handles /api/v3/work_packages/:work_package_id/file_links as defined
-# in modules/storages/lib/api/v3/file_links/work_packages_file_links_api.rb
-#
-# Multiple classes are involved during its lifecycle:
-#   - Storages::Peripherals::ParseCreateParamsService
-#   - API::V3::FileLinks::FileLinkCollectionRepresenter
-#   - Storages::FileLinks::CreateService
-#
-# These classes are either deduced from the model class, or given as parameter
-# on class instantiation.
-class API::V3::FileLinks::CreateEndpoint < API::Utilities::Endpoints::Create
-  include ::API::V3::Utilities::Endpoints::V3Deductions
-  include ::API::V3::Utilities::Endpoints::V3PresentSingle
+module API
+  module V3
+    module FileLinks
+      class CreateEndpoint < API::Utilities::Endpoints::Create
+        include Utilities::Endpoints::V3Deductions
+        include Utilities::Endpoints::V3PresentSingle
 
-  # As this endpoint receives a list of file links to create, it calls the
-  # create service multiple times, one time for each file link to create. The
-  # call is done by calling the `super` method. Results are aggregated in
-  # global_result using the `add_dependent!` method.
-  def process(request, params_elements)
-    global_result = ServiceResult.success
+        # As this endpoint receives a list of file links to create, it calls the
+        # create service multiple times, one time for each file link to create. The
+        # call is done by calling the `super` method. Results are aggregated in
+        # global_result using the `add_dependent!` method.
+        def process(request, params_elements)
+          global_result = ServiceResult.success
 
-    Storages::FileLink.transaction do
-      params_elements.each do |params|
-        # call the default API::Utilities::Endpoints::Create#process
-        # implementation for each of the params_element array
-        one_result = super(request, params)
-        # merge service result in one
-        global_result.add_dependent!(one_result)
+          ::Storages::FileLink.transaction do
+            params_elements.each do |params|
+              # call the default API::Utilities::Endpoints::Create#process
+              # implementation for each of the params_element array
+              one_result = super(request, params)
+              # merge service result in one
+              global_result.add_dependent!(one_result)
+            end
+
+            # rollback records created if an error occurred (validation failed)
+            raise ActiveRecord::Rollback if global_result.failure?
+          end
+
+          global_result
+        end
+
+        def present_success(request, service_call)
+          id_status_map = {}
+
+          service_call.all_results.each do |file_link|
+            id_status_map[file_link.id] = "view_allowed"
+          end
+
+          render_representer.create(
+            JoinOriginStatusToFileLinksRelation.create(id_status_map),
+            self_link: self_link(request),
+            current_user: request.current_user
+          )
+        end
+
+        private
+
+        def self_link(_request)
+          "#{URN_PREFIX}file_links:no_link_provided"
+        end
       end
-
-      # rollback records created if an error occurred (validation failed)
-      raise ActiveRecord::Rollback if global_result.failure?
     end
-
-    global_result
-  end
-
-  def present_success(request, service_call)
-    file_links = service_call.all_results.map do |file_link|
-      file_link.origin_status = :view_allowed
-      file_link
-    end
-
-    render_representer.create(
-      file_links,
-      self_link: self_link(request),
-      current_user: request.current_user
-    )
-  end
-
-  private
-
-  def self_link(_request)
-    "#{::API::V3::URN_PREFIX}file_links:no_link_provided"
   end
 end

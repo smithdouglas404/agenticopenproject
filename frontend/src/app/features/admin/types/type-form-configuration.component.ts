@@ -1,12 +1,10 @@
-import {
-  AfterViewInit, Component, ElementRef, OnInit,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
-import { ToastService } from 'core-app/shared/components/toaster/toast.service';
-import { ExternalRelationQueryConfigurationService } from 'core-app/features/work-packages/components/wp-table/external-configuration/external-relation-query-configuration.service';
+import {
+  ExternalRelationQueryConfigurationService,
+} from 'core-app/features/work-packages/components/wp-table/external-configuration/external-relation-query-configuration.service';
 import { DomAutoscrollService } from 'core-app/shared/helpers/drag-and-drop/dom-autoscroll.service';
 import { DragulaService, DrakeWithModels } from 'ng2-dragula';
-import { GonService } from 'core-app/core/gon/gon.service';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { installMenuLogic } from 'core-app/core/setup/globals/global-listeners/action-menu';
 import { ConfirmDialogService } from 'core-app/shared/components/modals/confirm-dialog/confirm-dialog.service';
@@ -30,17 +28,17 @@ export interface TypeGroup {
   type:TypeGroupType;
 }
 
-export const adminTypeFormConfigurationSelector = 'admin-type-form-configuration';
 export const emptyTypeGroup = '__empty';
 
 @Component({
-  selector: adminTypeFormConfigurationSelector,
+  selector: 'opce-admin-type-form-configuration',
   templateUrl: './type-form-configuration.html',
   providers: [
     TypeBannerService,
   ],
+  standalone: false,
 })
-export class TypeFormConfigurationComponent extends UntilDestroyedMixin implements OnInit, AfterViewInit {
+export class TypeFormConfigurationComponent extends UntilDestroyedMixin implements OnInit, AfterViewInit, OnDestroy {
   public text = {
     drag_to_activate: this.I18n.t('js.admin.type_form.drag_to_activate'),
     reset: this.I18n.t('js.admin.type_form.reset_to_defaults'),
@@ -73,10 +71,8 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
   constructor(
     private elementRef:ElementRef,
     private I18n:I18nService,
-    private Gon:GonService,
     private dragula:DragulaService,
     private confirmDialog:ConfirmDialogService,
-    private toastService:ToastService,
     private externalRelationQuery:ExternalRelationQueryConfigurationService,
     readonly typeBanner:TypeBannerService,
   ) {
@@ -84,6 +80,13 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
   }
 
   ngOnInit():void {
+    // For unclear reasons, this component is initialized twice if used in conjunction with
+    // turbo drive. This then leads to the groups defined in this component being duplicated.
+    // It does not harm to remove them if they exist but it would of course be better if that hack
+    // would not be necessary. The functionality should all be handled in ngOnDestroy.
+    this.dragula.destroy('groups');
+    this.dragula.destroy('attributes');
+
     // Hook on form submit
     this.element = this.elementRef.nativeElement;
     this.no_filter_query = this.element.dataset.noFilterQuery!;
@@ -141,7 +144,7 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
     const that = this;
     this.autoscroll = new DomAutoscrollService(
       [
-        document.getElementById('content-wrapper')!,
+        document.getElementById('content-body')!,
       ],
       {
         margin: 25,
@@ -162,6 +165,13 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
     installMenuLogic(menu);
   }
 
+  ngOnDestroy():void {
+    this.dragula.destroy('groups');
+    this.dragula.destroy('attributes');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
+    this.autoscroll.destroy();
+  }
+
   deactivateAttribute(attribute:TypeFormAttribute):void {
     this.updateInactives(this.inactives.concat(attribute));
   }
@@ -172,7 +182,8 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
   }
 
   editQuery(group:TypeGroup):void {
-    this.typeBanner.conditional(
+    void this.typeBanner.conditional(
+      'edit_attribute_groups',
       () => this.typeBanner.showEEOnlyHint(),
       () => {
         // Disable display mode and timeline for now since we don't want users to enable it
@@ -191,7 +202,8 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
   }
 
   deleteGroup(group:TypeGroup):void {
-    this.typeBanner.conditional(
+    void this.typeBanner.conditional(
+      'edit_attribute_groups',
       () => this.typeBanner.showEEOnlyHint(),
       () => {
         if (group.type === 'attribute') {
@@ -234,7 +246,8 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
         this.form.off('submit.typeformupdater');
         this.form.trigger('submit');
       })
-      .catch(() => {});
+      .catch(() => {
+      });
 
     $event.preventDefault();
     return false;

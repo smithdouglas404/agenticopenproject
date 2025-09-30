@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,9 +37,5 @@ class RbTaskboardsController < RbApplicationController
     @last_updated = Task.children_of(@story_ids)
                         .order(Arel.sql("updated_at DESC"))
                         .first
-  end
-
-  def default_breadcrumb
-    I18n.t(:label_backlogs)
   end
 end

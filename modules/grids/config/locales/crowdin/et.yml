@@ -8,6 +8,7 @@ et:
         row_count: "Ridade arv"
         column_count: "Veergude arv"
         widgets: "Vidinad"
+        scope: "Scope"
     errors:
       models:
         grids/grid:

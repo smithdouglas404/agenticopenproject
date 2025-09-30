@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -114,7 +116,7 @@ RSpec.describe Members::SetAttributesService, type: :model do
 
         it "adds the new role and marks the other for destruction" do
           expect(subject.result.member_roles.map(&:role_id)).to contain_exactly(first_role.id, second_role.id, third_role.id)
-          expect(subject.result.member_roles.detect { _1.role_id == first_role.id }).to be_marked_for_destruction
+          expect(subject.result.member_roles.detect { it.role_id == first_role.id }).to be_marked_for_destruction
         end
       end
 

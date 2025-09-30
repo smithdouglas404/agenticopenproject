@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "socket"
 require "capybara/rspec"
 require "capybara-screenshot"
@@ -21,9 +23,24 @@ RSpec.shared_context "with default_url_options and host name set to Capybara tes
   end
 end
 
+RSpec.shared_context "with host name set to test.host" do
+  around do |example|
+    original_host_setting = Setting.host_name
+    Setting.host_name = "test.host"
+    example.run
+  ensure
+    Setting.host_name = original_host_setting
+  end
+end
+
 RSpec.configure do |config|
+  # The maximum number of seconds to wait for asynchronous processes to finish
+  # Would default to 2 seconds otherwise
   Capybara.default_max_wait_time = 4
-  Capybara.javascript_driver = :chrome_en
+
+  # Selectors will check for relevant aria role (currently only `button`)
+  # Would default to `false` otherwise
+  Capybara.enable_aria_role = true
 
   port = ENV.fetch("CAPYBARA_SERVER_PORT", ParallelHelper.port_for_app).to_i
   if port > 0
@@ -31,17 +48,37 @@ RSpec.configure do |config|
   end
   Capybara.always_include_port = true
 
-  if ENV["CAPYBARA_DYNAMIC_BIND_IP"]
-    ip_address = Socket.ip_address_list.find { |ai| ai.ipv4? && !ai.ipv4_loopback? }.ip_address
-    hostname = ENV.fetch("CAPYBARA_APP_HOSTNAME", ip_address)
-    Capybara.server_host = ip_address
-    Capybara.app_host = "http://#{hostname}"
-  else
-    Capybara.server_host = ENV.fetch("CAPYBARA_APP_HOSTNAME", "localhost")
-  end
+  hostname =
+    if ENV["CAPYBARA_DYNAMIC_BIND_IP"]
+      ip_address = Socket.ip_address_list.find { |ai| ai.ipv4? && !ai.ipv4_loopback? }.ip_address
+      Capybara.server_host = ip_address
+
+      ENV.fetch("CAPYBARA_APP_HOSTNAME", ip_address)
+    else
+      ENV.fetch("CAPYBARA_APP_HOSTNAME", "localhost")
+    end
+
+  Capybara.server_host = hostname
+  Capybara.app_host = "http://#{hostname}:#{Capybara.server_port}"
+  Capybara.default_host = Capybara.app_host
 
   # Set the default options
   config.include_context "with default_url_options and host name set to Capybara test server", type: :feature
+  config.include_context "with host name set to test.host", type: :controller
+
+  # Fix the host name for rails_request specs
+  %i[request rails_request].each do |type|
+    config.include_context("with host name set to test.host", type:)
+    config.before(:each, type:) do
+      host! "test.host"
+
+      # Rack::Test uses a respond_to?(:default_host) to check for overwritten host
+      # and there appears to be no other option
+      def default_host
+        "test.host"
+      end
+    end
+  end
 
   # Make it possible to match on value attribute.
   #
@@ -55,7 +92,11 @@ RSpec.configure do |config|
 end
 
 # silence puma if we're using it
-Capybara.server = :puma, { Silent: true }
+puma_options = { Silent: true }
+# use `CAPYBARA_PUMA_THREADS=1:1` to use only 1 puma thread, which is useful
+# when using irb/pry in server code.
+puma_options[:Threads] = ENV["CAPYBARA_PUMA_THREADS"] if ENV.key?("CAPYBARA_PUMA_THREADS")
+Capybara.server = :puma, puma_options
 
 Rails.application.config do
   config.middleware.use RackSessionAccess::Middleware

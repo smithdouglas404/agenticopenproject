@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,7 +33,7 @@ module WorkPackages::Costs
 
   included do
     belongs_to :budget, inverse_of: :work_packages, optional: true
-    has_many :cost_entries, dependent: :delete_all
+    has_many :cost_entries, dependent: :delete_all, inverse_of: :entity, as: :entity
 
     # disabled for now, implements part of ticket blocking
     validate :validate_budget
@@ -82,7 +84,7 @@ module WorkPackages::Costs
       return unless saved_change_to_project_id?
 
       CostEntry
-        .where(work_package_id: id)
+        .where(entity: self)
         .update_all(project_id:)
     end
   end
@@ -125,13 +127,13 @@ module WorkPackages::Costs
 
         false
       else
-        condition = "work_package_id = #{reassign_to.id}, project_id = #{reassign_to.project_id}"
-        ::WorkPackage.update_cost_entries(work_packages.map(&:id), condition)
+        condition = "entity_type='WorkPackage', entity_id = #{reassign_to.id}, project_id = #{reassign_to.project_id}"
+        ::WorkPackage.update_cost_entries(work_packages, condition)
       end
     end
 
     def update_cost_entries(work_packages, action)
-      CostEntry.where(work_package_id: work_packages).update_all(action)
+      CostEntry.where(entity: work_packages).update_all(action)
     end
   end
 end

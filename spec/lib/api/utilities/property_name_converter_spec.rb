@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,6 +31,26 @@
 require "spec_helper"
 
 RSpec.describe API::Utilities::PropertyNameConverter do
+  describe "#from_ar_name_with_aliases" do
+    let(:attribute_name) { :an_attribute }
+
+    context "without any attribute aliases" do
+      it "returns the ar name" do
+        result = described_class.from_ar_name_with_aliases(attribute_name)
+        expect(result).to eql("anAttribute")
+      end
+    end
+
+    context "with attribute aliases" do
+      let(:attribute_aliases) { { "an_attribute" => "anAttributeAlias" } }
+
+      it "returns the alias" do
+        result = described_class.from_ar_name_with_aliases(attribute_name, attribute_aliases)
+        expect(result).to eql("anAttributeAlias")
+      end
+    end
+  end
+
   describe "#from_ar_name" do
     let(:attribute_name) { :an_attribute }
 

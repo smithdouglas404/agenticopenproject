@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,9 +31,10 @@
 module OAuth
   class GrantsController < ::ApplicationController
     before_action :require_login
+    authorization_checked! :index, :revoke_application
 
     layout "my"
-    menu_item :access_token
+    menu_item :access_tokens
 
     def index
       @applications = ::Doorkeeper::Application.authorized_for(current_user)
@@ -50,13 +53,14 @@ module OAuth
       )
 
       flash[:notice] = I18n.t("oauth.grants.successful_application_revocation", application_name: application.name)
-      redirect_to controller: "/my", action: :access_token
+      redirect_to my_access_tokens_path
     end
 
     private
 
     def find_application
       ::Doorkeeper::Application
+        .authorized_for(current_user)
         .where(id: params[:application_id])
         .select(:name, :id)
         .take

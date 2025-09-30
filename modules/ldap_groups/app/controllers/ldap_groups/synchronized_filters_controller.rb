@@ -1,7 +1,11 @@
 module LdapGroups
   class SynchronizedFiltersController < ::ApplicationController
     before_action :require_admin
-    before_action :check_ee
+
+    guard_enterprise_feature(:ldap_groups, except: %i[show destroy]) do
+      redirect_to ldap_groups_synchronized_groups_path, status: :see_other
+    end
+
     before_action :find_filter, except: %i[new create]
 
     layout "admin"
@@ -24,7 +28,7 @@ module LdapGroups
         flash[:notice] = I18n.t(:notice_successful_create)
         redirect_to ldap_groups_synchronized_groups_path
       else
-        render action: :new
+        render action: :new, status: :unprocessable_entity
       end
     rescue ActionController::ParameterMissing
       render_400
@@ -35,7 +39,7 @@ module LdapGroups
         flash[:notice] = I18n.t(:notice_successful_update)
         redirect_to action: :show
       else
-        render action: :edit
+        render action: :edit, status: :unprocessable_entity
       end
     rescue ActionController::ParameterMissing
       render_400
@@ -73,29 +77,12 @@ module LdapGroups
 
     def find_filter
       @filter = SynchronizedFilter.find(params[:ldap_filter_id])
-    rescue ActiveRecord::RecordNotFound
-      render_404
-    end
-
-    def check_ee
-      unless EnterpriseToken.allows_to?(:ldap_groups)
-        render template: "ldap_groups/synchronized_groups/upsale"
-        false
-      end
     end
 
     def permitted_params
       params
         .require(:synchronized_filter)
         .permit(:filter_string, :name, :ldap_auth_source_id, :group_name_attribute, :sync_users, :base_dn)
-    end
-
-    def default_breadcrumb
-      ActionController::Base.helpers.link_to(t("ldap_groups.synchronized_groups.plural"), ldap_groups_synchronized_groups_path)
-    end
-
-    def show_local_breadcrumb
-      true
     end
   end
 end

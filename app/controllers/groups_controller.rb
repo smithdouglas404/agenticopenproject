@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,6 +33,8 @@ class GroupsController < ApplicationController
   layout "admin"
 
   before_action :require_admin, except: %i[show]
+  no_authorization_required! :show
+
   before_action :find_group, only: %i[destroy update show create_memberships destroy_membership
                                       edit_membership add_users]
 
@@ -62,7 +66,7 @@ class GroupsController < ApplicationController
       flash[:notice] = I18n.t(:notice_successful_create)
       redirect_to(groups_path)
     else
-      render action: :new
+      render action: :new, status: :unprocessable_entity
     end
   end
 
@@ -75,7 +79,7 @@ class GroupsController < ApplicationController
       flash[:notice] = I18n.t(:notice_successful_update)
       redirect_to(groups_path)
     else
-      render action: "edit"
+      render action: :edit, status: :unprocessable_entity
     end
   end
 
@@ -91,7 +95,7 @@ class GroupsController < ApplicationController
   def add_users
     service_call = Groups::UpdateService
                    .new(user: current_user, model: @group)
-                   .call(user_ids: @group.user_ids + Array(params[:user_ids]).map(&:to_i))
+                   .call(add_user_ids: Array(params[:user_ids]))
 
     respond_users_altered(service_call)
   end
@@ -101,7 +105,7 @@ class GroupsController < ApplicationController
 
     service_call = Groups::UpdateService
                    .new(user: current_user, model: @group)
-                   .call(user_ids: @group.user_ids - Array(params[:user_id]).map(&:to_i))
+                   .call(remove_user_ids: Array(params[:user_id]))
 
     respond_users_altered(service_call)
   end
@@ -153,20 +157,9 @@ class GroupsController < ApplicationController
   end
 
   def visible_group_members?
-    current_user.allowed_in_any_project?(:manage_members) ||
+    current_user.admin? ||
+      current_user.allowed_in_any_project?(:manage_members) ||
       Group.in_project(Project.allowed_to(current_user, :view_members)).exists?
-  end
-
-  def default_breadcrumb
-    if action_name == "index" || !current_user.admin?
-      t("label_group_plural")
-    else
-      ActionController::Base.helpers.link_to(t("label_group_plural"), groups_path)
-    end
-  end
-
-  def show_local_breadcrumb
-    true
   end
 
   def respond_membership_altered(service_call)

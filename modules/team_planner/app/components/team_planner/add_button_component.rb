@@ -2,7 +2,7 @@
 
 # -- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,6 +32,8 @@
 module TeamPlanner
   class AddButtonComponent < ::AddButtonComponent
     def render?
+      return false unless EnterpriseToken.allows_to?(:team_planner_view)
+
       if current_project
         User.current.allowed_in_project?(:manage_team_planner, current_project)
       else
@@ -44,6 +46,10 @@ module TeamPlanner
     end
 
     def id
+      "add-team-planner-button"
+    end
+
+    def test_selector
       "add-team-planner-button"
     end
 

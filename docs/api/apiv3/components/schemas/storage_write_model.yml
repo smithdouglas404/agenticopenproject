@@ -5,6 +5,21 @@ properties:
   name:
     type: string
     description: Storage name, if not provided, falls back to a default.
+  storageAudience:
+    type: string
+    description: |-
+      The audience that the storage expects in tokens for requests to it,
+      usually the storage's client ID at the identity provider.
+
+      This is only required for authentication through single-sign-on and so far
+      only supported for provider type Nextcloud.
+  tokenExchangeScope:
+    type: string
+    description: |-
+      The scope that will be requested when requesting a token for the storage through token exchange. Has no effect if no
+      token exchange is performed.
+
+      This is only required for authentication through single-sign-on and so far only supported for provider type Nextcloud.
   applicationPassword:
     type:
       - string
@@ -31,9 +46,20 @@ properties:
         allOf:
           - $ref: './link.yml'
           - description: |-
-              The urn of the storage type. Currently only nextcloud storages are supported.
+              The urn of the storage type. Currently Nextcloud and OneDrive storages are supported.
 
               - urn:openproject-org:api:v3:storages:Nextcloud
+              - urn:openproject-org:api:v3:storages:OneDrive
+
+              **Resource**: N/A
+      authenticationMethod:
+        allOf:
+          - $ref: './link.yml'
+          - description: |-
+              The urn of the authentication method. Currently only Nextcloud storages support this setting.
+
+              - urn:openproject-org:api:v3:storages:authenticationMethod:TwoWayOAuth2 (default)
+              - urn:openproject-org:api:v3:storages:authenticationMethod:OAuth2SSO
 
               **Resource**: N/A
 

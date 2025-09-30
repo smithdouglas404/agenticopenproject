@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,31 +31,47 @@
 module Settings
   module ProjectCustomFields
     class EditFormHeaderComponent < ApplicationComponent
-      TAB_NAVS = %i[
-        project_custom_field_edit
-        project_custom_field_project_mappings
-      ].freeze
-
       def initialize(custom_field:, selected:)
-        selected = selected.to_sym
-        raise "selected must be one of the following: #{TAB_NAVS.join(', ')}" unless TAB_NAVS.include?(selected)
-
         super
         @custom_field = custom_field
-        @selected = selected
       end
 
-      TAB_NAVS.each do |tab_nav|
-        define_method(:"#{tab_nav}_selected?") do
-          @selected == tab_nav
+      def tabs
+        tabs = [
+          {
+            name: "project_custom_field_edit",
+            path: edit_admin_settings_project_custom_field_path(@custom_field),
+            label: t(:label_details)
+          },
+        ]
+
+        if @custom_field.hierarchical_list?
+          tabs << {
+            name: "items",
+            path: admin_settings_project_custom_field_items_path(@custom_field),
+            label: t(:label_item_plural)
+          }
         end
+
+        tabs <<
+          {
+            name: "project_custom_field_project_mappings",
+            path: project_mappings_admin_settings_project_custom_field_path(@custom_field),
+            label: t(:label_project_mappings)
+          }
+
+        tabs
       end
 
       def breadcrumbs_items
         [{ href: admin_index_path, text: t("label_administration") },
          { href: admin_settings_project_custom_fields_path, text: t("label_project_plural") },
          { href: admin_settings_project_custom_fields_path, text: t("settings.project_attributes.heading") },
-         @custom_field.name]
+         @custom_field.attribute_in_database("name")]
+      end
+
+      def hide_description?
+        @custom_field.field_format_calculated_value? && !EnterpriseToken.allows_to?(:calculated_values)
       end
     end
   end

@@ -2,7 +2,7 @@
 
 # -- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2010-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -40,8 +40,8 @@ class Queries::SortByComponent < ApplicationComponent
     3
   end
 
-  def queried_model_name
-    query.class.model.model_name
+  def queried_plural_model_human_name
+    query.class.model.model_name.human(count: :other).downcase
   end
 
   def available_orders

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -67,8 +69,9 @@ RSpec.describe DocumentsController do
       get :new, params: { project_id: project.id }
     end
 
-    it "show the new document form" do
-      expect(response).to render_template(partial: "documents/_form")
+    it "returns render the new page successfully" do
+      expect(response).to be_successful
+      expect(response).to render_template("new")
     end
   end
 

@@ -1,6 +1,6 @@
 ko:
   js:
-    queries:
-      all_open: '모두 열림'
-      timeline: '타임라인'
-      milestones: '마일스톤'
+    work_packages:
+      label_gantt_chart_plural: "Gantt 차트"
+      default_queries:
+        milestones: '마일스톤'

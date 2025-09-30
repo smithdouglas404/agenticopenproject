@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2024 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -27,10 +27,10 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<% html_title(t('label_gantt_chart_plural')) -%>
+<% html_title(t("label_gantt_chart_plural")) -%>
 <%= call_hook(:view_work_packages_index_bottom, { project: project, query: query }) %>
 
 <% content_for :header_tags do %>
-  <%= auto_discovery_link_tag(:atom, { query_id: query, format: 'atom', page: nil, key: User.current.rss_key }, title: t(:label_gantt_chart_plural)) %>
-  <%= auto_discovery_link_tag(:atom, {controller: '/journals', action: 'index', query_id: query, format: 'atom', page: nil, key: User.current.rss_key}, title: t(:label_changes_details)) %>
+  <%= auto_discovery_link_tag(:atom, { query_id: query, format: "atom", page: nil, key: User.current.rss_key }, title: t(:label_gantt_chart_plural)) %>
+  <%= auto_discovery_link_tag(:atom, { controller: "/journals", action: "index", query_id: query, format: "atom", page: nil, key: User.current.rss_key }, title: t(:label_changes_details)) %>
 <% end %>

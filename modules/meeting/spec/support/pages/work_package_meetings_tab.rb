@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -98,13 +99,19 @@ module Pages
       page.find_test_selector("op-add-work-package-to-meeting-dialog-trigger").click
     end
 
-    def fill_and_submit_meeting_dialog(meeting, notes)
-      fill_in("meeting_agenda_item_meeting_id", with: meeting.title)
-      expect(page).to have_css(".ng-option-marked", text: meeting.title) # wait for selection
-      page.find(".ng-option-marked").click
-      page.find(".ck-editor__editable").set(notes)
+    def fill_and_submit_meeting_dialog(meeting, notes, counter)
+      retry_block do
+        fill_in("meeting_agenda_item_meeting_id", with: meeting.title)
+        page.find(".ng-option-marked", text: meeting.title) # wait for selection
+        page.find(".ng-option-marked").click
+        page.find(".ck-editor__editable").set(notes)
 
-      click_on("Save")
+        click_on("Save")
+
+        page.within_test_selector("op-upcoming-meetings-counter") do
+          raise "Expected counter to eq #{counter}" unless page.has_content?(counter)
+        end
+      end
     end
 
     private

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 RSpec.describe CustomStyle do
@@ -73,6 +75,12 @@ RSpec.describe CustomStyle do
     describe "#remove_export_cover" do
       it_behaves_like "removing an image from a custom style" do
         let(:image) { "export_cover" }
+      end
+    end
+
+    describe "#remove_export_footer" do
+      it_behaves_like "removing an image from a custom style" do
+        let(:image) { "export_footer" }
       end
     end
   end

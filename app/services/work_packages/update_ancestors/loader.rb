@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 #  OpenProject is an open source project management software.
-#  Copyright (C) 2022 the OpenProject GmbH
+#  Copyright (C) the OpenProject GmbH
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of the GNU General Public License version 3.
@@ -30,6 +32,8 @@ class WorkPackages::UpdateAncestors::Loader
     parent_id: "parent_id",
     estimated_hours: "estimated_hours",
     remaining_hours: "remaining_hours",
+    done_ratio: "done_ratio",
+    derived_done_ratio: "derived_done_ratio",
     status_excluded_from_totals: "statuses.excluded_from_totals",
     schedule_manually: "schedule_manually",
     ignore_non_working_days: "ignore_non_working_days"

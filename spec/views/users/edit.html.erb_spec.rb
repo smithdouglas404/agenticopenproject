@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,26 +37,25 @@ RSpec.describe "users/edit" do
     # The url_for is missing the users id that is usually taken
     # from request parameters
     controller.request.path_parameters[:id] = user.id
-    view.extend(Gon::ControllerHelpers)
   end
 
   context "authentication provider" do
-    let(:user) do
-      build(:user, id: 1, # id is required to create route to edit
-                   identity_url: "test_provider:veryuniqueid")
-    end
+    let(:user) { create(:user, identity_url: "#{provider.slug}:veryuniqueid") }
+    let(:provider) { create(:oidc_provider, slug: "test_provider", display_name: "The Test Provider") }
 
     before do
       assign(:user, user)
       assign(:auth_sources, [])
 
-      allow(view).to receive(:current_user).and_return(admin)
+      without_partial_double_verification do
+        allow(view).to receive(:current_user).and_return(admin)
+      end
     end
 
     it "shows the authentication provider" do
       render
 
-      expect(rendered).to include("Test Provider")
+      expect(rendered).to include("The Test Provider")
     end
 
     it "does not show a no-login warning when password login is disabled" do
@@ -75,7 +76,9 @@ RSpec.describe "users/edit" do
 
     context "for an admin" do
       before do
-        allow(view).to receive(:current_user).and_return(admin)
+        without_partial_double_verification do
+          allow(view).to receive(:current_user).and_return(admin)
+        end
         render
       end
 
@@ -88,7 +91,9 @@ RSpec.describe "users/edit" do
       let(:non_admin) { create(:user, global_permissions: [:manage_user]) }
 
       before do
-        allow(view).to receive(:current_user).and_return(non_admin)
+        without_partial_double_verification do
+          allow(view).to receive(:current_user).and_return(non_admin)
+        end
         render
       end
 
@@ -105,7 +110,9 @@ RSpec.describe "users/edit" do
       assign(:user, user)
       assign(:auth_sources, [])
 
-      allow(view).to receive(:current_user).and_return(admin)
+      without_partial_double_verification do
+        allow(view).to receive(:current_user).and_return(admin)
+      end
       render
     end
 
@@ -121,7 +128,9 @@ RSpec.describe "users/edit" do
       assign :user, user
       assign :auth_sources, []
 
-      allow(view).to receive(:current_user).and_return(admin)
+      without_partial_double_verification do
+        allow(view).to receive(:current_user).and_return(admin)
+      end
     end
 
     context "with password login disabled" do
@@ -185,10 +194,8 @@ RSpec.describe "users/edit" do
         it "shows the password and password confirmation fields" do
           render
 
-          within "#password_fields" do
-            expect(rendered).to have_text("Password")
-            expect(rendered).to have_text("Confirmation")
-          end
+          expect(rendered).to have_css("label", text: "Password")
+          expect(rendered).to have_css("label", text: "Confirmation")
         end
       end
 
@@ -200,10 +207,8 @@ RSpec.describe "users/edit" do
         it "doesn't show the password and password confirmation fields" do
           render
 
-          within "#password_fields" do
-            expect(rendered).to have_no_text("Password")
-            expect(rendered).to have_no_text("Password confirmation")
-          end
+          expect(rendered).to have_no_css("label", text: "Password")
+          expect(rendered).to have_no_css("label", text: "Confirmation")
         end
       end
     end

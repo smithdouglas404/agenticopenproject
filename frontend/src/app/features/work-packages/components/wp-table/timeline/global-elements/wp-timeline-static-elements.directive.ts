@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -41,7 +41,8 @@ import { TodayLineElement } from './wp-timeline.today-line';
 
 @Component({
   selector: 'wp-timeline-static-elements',
-  template: '<div class="wp-table-timeline--static-elements"></div>'
+  template: '<div class="wp-table-timeline--static-elements"></div>',
+  standalone: false,
 })
 export class WorkPackageTableTimelineStaticElements implements OnInit {
   public $element:HTMLElement;

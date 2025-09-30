@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,8 +31,8 @@
 ##
 # Abstract view component. Subclass this for a concrete table.
 class TableComponent < ApplicationComponent
-  def initialize(rows: [], **options)
-    super(rows, **options)
+  def initialize(rows: [], **)
+    super(rows, **)
   end
 
   class << self
@@ -80,7 +80,7 @@ class TableComponent < ApplicationComponent
     rescue NameError
       raise(
         NameError,
-        "#{mod}::RowComponent required by #{mod}::TableComponent not defined. " +
+        "#{mod}::RowComponent required by #{name} not defined. " +
         "Expected to be defined in `app/components/#{mod.underscore}/row_component.rb`."
       )
     end
@@ -107,7 +107,7 @@ class TableComponent < ApplicationComponent
   end
 
   def sortable_columns_correlation
-    sortable_columns.to_h { [_1.to_s, _1.to_s] }
+    sortable_columns.to_h { [it.to_s, it.to_s] }
                     .with_indifferent_access
   end
 
@@ -146,27 +146,29 @@ class TableComponent < ApplicationComponent
   end
 
   def test_selector
-    self.class.name.dasherize
+    options.fetch(:test_selector) { self.class.name.dasherize }
   end
 
   def rows
     model
   end
 
-  def row_class
-    self.class.row_class
-  end
+  delegate :row_class, to: :class
 
   def container_class
     nil
   end
 
+  def container_id
+    nil
+  end
+
   def columns
-    self.class.columns
+    self.class.columns.reject { skip_column?(it) }
   end
 
   def sortable_columns
-    self.class.sortable_columns
+    self.class.sortable_columns.reject { skip_column?(it) }
   end
 
   def render_collection(rows)
@@ -191,6 +193,10 @@ class TableComponent < ApplicationComponent
 
   def sortable?
     true
+  end
+
+  def skip_column?(_column)
+    false
   end
 
   def sortable_column?(column)

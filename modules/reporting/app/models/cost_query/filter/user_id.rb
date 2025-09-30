@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -50,16 +50,6 @@ class CostQuery::Filter::UserId < Report::Filter::Base
   end
 
   def self.available_values(*)
-    # All users which are members in projects the user can see.
-    # Excludes the anonymous user
-    users = User.joins(members: :project)
-                .merge(Project.visible)
-                .human
-                .select(User::USER_FORMATS_STRUCTURE[Setting.user_format].map(&:to_s) << :id)
-                .distinct
-
-    values = users.map { |u| [u.name, u.id] }
-    values.unshift [::I18n.t(:label_me), me_value] if User.current.logged?
-    values
+    []
   end
 end

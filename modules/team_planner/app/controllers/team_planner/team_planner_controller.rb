@@ -1,13 +1,14 @@
 module ::TeamPlanner
   class TeamPlannerController < BaseController
-    include EnterpriseTrialHelper
+    include EnterpriseHelper
     include Layout
-    before_action :find_optional_project
+    before_action :load_and_authorize_in_optional_project
     before_action :build_plan_view, only: %i[new]
-    before_action :authorize, except: %i[overview new create upsale]
-    before_action :authorize_global, only: %i[overview new create]
-    before_action :require_ee_token, except: %i[upsale]
     before_action :find_plan_view, only: %i[destroy]
+
+    guard_enterprise_feature(:team_planner_view, except: %i[index overview]) do
+      redirect_to action: :index
+    end
 
     menu_item :team_planner_view
 
@@ -32,7 +33,7 @@ module ::TeamPlanner
         flash[:notice] = I18n.t(:notice_successful_create)
         redirect_to project_team_planner_path(@project, @view.query)
       else
-        render action: :new
+        render action: :new, status: :unprocessable_entity
       end
     end
 
@@ -40,7 +41,7 @@ module ::TeamPlanner
       render layout: "angular/angular"
     end
 
-    def upsale; end
+    def upsell; end
 
     def destroy
       if @view.destroy
@@ -50,12 +51,6 @@ module ::TeamPlanner
       end
 
       redirect_to action: :index
-    end
-
-    def require_ee_token
-      unless EnterpriseToken.allows_to?(:team_planner_view)
-        redirect_to action: :upsale
-      end
     end
 
     current_menu_item :index do
@@ -84,8 +79,6 @@ module ::TeamPlanner
       @view = Query
         .visible(current_user)
         .find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      render_404
     end
 
     def visible_plans(project = nil)

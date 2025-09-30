@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,9 +37,10 @@ RSpec.shared_context "with a project with an arrangement of custom fields" do
   shared_let(:text_cf) { create(:text_project_custom_field, position: 6) }
   shared_let(:string_cf) { create(:string_project_custom_field, position: 7) }
   shared_let(:date_cf) { create(:date_project_custom_field, position: 8) }
-  shared_let(:hidden_cf) { create(:string_project_custom_field, position: 9, visible: false) }
+  shared_let(:hidden_cf) { create(:string_project_custom_field, position: 9, admin_only: true) }
+  shared_let(:link_cf) { create(:link_project_custom_field, position: 10) }
 
-  let!(:not_used_string_cf) { create(:string_project_custom_field, position: 10) }
+  let!(:not_used_string_cf) { create(:string_project_custom_field, position: 11) }
 
   shared_let(:system_version) { create(:version, sharing: "system") }
 
@@ -68,7 +71,8 @@ RSpec.shared_context "with a project with an arrangement of custom fields" do
                       string_cf.id => "Some small text",
                       date_cf.id => Time.zone.today,
                       user_cf.id => other_user.id,
-                      hidden_cf.id => "hidden"
+                      hidden_cf.id => "hidden",
+                      link_cf.id => "https://www.example.com"
                     })
     project.save!(validate: false)
 
@@ -81,9 +85,11 @@ RSpec.shared_context "with an instance of the described exporter" do
     login_as current_user
   end
 
+  let(:permissions) { %i(view_projects view_project_attributes) }
+
   let(:current_user) do
     create(:user,
-           member_with_permissions: { project => %i(view_projects) })
+           member_with_permissions: { project => permissions })
   end
   let(:query_columns) { %w[name description project_status public] }
   let(:query) do

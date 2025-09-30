@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,7 +38,7 @@ module MeetingAgendaItems
       @meeting = meeting_agenda_item.meeting
     end
 
-    def perform(params)
+    def perform
       service_call = validate_permission
       service_call = validate_meeting_existence if service_call.success?
       service_call = validate_meeting_agenda_item_editable if service_call.success?

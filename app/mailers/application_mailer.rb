@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -126,7 +128,7 @@ class ApplicationMailer < ActionMailer::Base
     if to
       raise ArgumentError, "Recipient needs to be instance of User" unless to.is_a?(User)
 
-      if to.locked?
+      if to.locked? || to.deleted?
         Rails.logger.info "Not sending #{action_name} mail to locked user #{to.id} (#{to.login})"
         return
       end

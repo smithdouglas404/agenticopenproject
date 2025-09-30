@@ -8,6 +8,7 @@ si:
         row_count: "පේළි ගණන"
         column_count: "තීරු ගණන"
         widgets: "විජට්"
+        scope: "Scope"
     errors:
       models:
         grids/grid:

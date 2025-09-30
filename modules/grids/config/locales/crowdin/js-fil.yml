@@ -4,9 +4,6 @@ fil:
       add_widget: 'Add widget'
       remove: 'Alisin ang widget'
       configure: 'Configure widget'
-      upsale:
-        text: "Some widgets, like the work package graph widget, are only available in the Enterprise edition."
-        link: 'Enterprise edition.'
       widgets:
         missing_permission: "You don't have the necessary permissions to view this widget."
         custom_text:
@@ -24,12 +21,11 @@ fil:
           title: 'Mga balita'
           at: 'at'
           no_results: 'Walang bago para ireport.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Project description'
           no_results: "No description has been written yet. One can be provided in the 'Project settings'."
-        project_details:
-          title: 'Project details'
-          no_results: 'No custom fields have been defined for projects.'
         project_status:
           title: 'Estado ng proyekto'
           not_started: 'Not started'
@@ -39,6 +35,8 @@ fil:
           not_set: 'Not set'
           finished: 'Finished'
           discontinued: 'Discontinued'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Ang mga subproject'
           no_results: 'No subprojects.'

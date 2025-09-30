@@ -1,64 +1,63 @@
 <spot-drop-modal
   [opened]="opened"
   (closed)="opened = false"
-  data-test-selector="op-modal-single-date-picker"
->
-  <ng-content
-    slot="trigger"
+  data-test-selector="opce-modal-single-date-picker"
+  >
+  <ng-content slot="trigger"
     select="[slot=trigger]"
-  ></ng-content>
-  <ng-template [ngIf]="useDefaultTrigger" slot="trigger">
-    <input
-      type="text"
-      class="spot-input"
-      [attr.data-value]="value"
-      [id]="id"
-      [(ngModel)]="value"
-      (ngModelChange)="changeValueFromInputDebounced($event)"
-      (click)="onInputClick($event)"
-      (focus)="opened = true"
-    />
-  </ng-template>
+   />
+  @if (useDefaultTrigger) {
+    <ng-template slot="trigger">
+      <input
+        type="text"
+        class="spot-input"
+        [attr.data-value]="value"
+        [id]="id"
+        [ngModel]="value"
+        (ngModelChange)="changeValueFromInputDebounced($event)"
+        (click)="onInputClick($event)"
+        (focus)="opened = true"
+        />
+    </ng-template>
+  }
 
   <ng-container slot="body">
     <form
-      class="spot-container op-datepicker-modal"
+      class="spot-container op-modal-single-date-picker"
       data-test-selector="op-datepicker-modal"
       tabindex="0"
       cdkFocusInitial
       cdkTrapFocus
       [cdkTrapFocusAutoCapture]="true"
       (submit)="save($event)"
-    >
-      <spot-selector-field
-        *ngIf="showIgnoreNonWorkingDays"
-        [reverseLabel]="true"
-        [label]="text.ignoreNonWorkingDays.title"
       >
-        <spot-switch
-          slot="input"
-          name="ignoreNonWorkingDays"
-          [(ngModel)]="ignoreNonWorkingDays"
-          (ngModelChange)="changeNonWorkingDays()"
-          data-test-selector="op-datepicker-modal--include-non-working-days"
-        ></spot-switch>
-      </spot-selector-field>
+      @if (showIgnoreNonWorkingDays) {
+        <spot-selector-field
+          [reverseLabel]="true"
+          [label]="text.ignoreNonWorkingDays.title"
+          >
+          <spot-switch slot="input"
+            name="ignoreNonWorkingDays"
+            [(ngModel)]="ignoreNonWorkingDays"
+            (ngModelChange)="changeNonWorkingDays()"
+            data-test-selector="op-datepicker-modal--include-non-working-days"
+           />
+        </spot-selector-field>
+      }
 
-      <ng-content select="[slot=extra-fields]"></ng-content>
+      <ng-content select="[slot=extra-fields]" />
 
-    <spot-form-field
-      [label]="text.date"
-      [required]="required"
-    >
-      <spot-text-field
-        slot="input"
-        name="date"
-        class="op-datepicker-modal--date-field"
-        [ngModel]="workingValue"
+      <spot-form-field
+        [label]="text.date"
         [required]="required"
+        >
+        <spot-text-field slot="input"
+          name="date"
+          [ngModel]="workingValue"
+          [required]="required"
           (ngModelChange)="writeWorkingValue($event)"
           [showClearButton]="true"
-        ></spot-text-field>
+         />
         <button
           slot="action"
           type="button"
@@ -97,4 +96,4 @@
   [ngClass]="{ 'remote-field--input': !!remoteFieldKey }"
   [attr.data-remote-field-key]="remoteFieldKey"
   hidden
->
+  >

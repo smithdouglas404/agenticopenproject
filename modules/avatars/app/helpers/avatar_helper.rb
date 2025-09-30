@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -45,8 +45,8 @@ module AvatarHelper
 
   # Returns the avatar image tag for the given +user+ if avatars are enabled
   # +user+ can be a User or a string that will be scanned for an email address (eg. 'joe <joe@foo.bar>')
-  def avatar(principal, size: "default", hide_name: true, name_classes: "", **)
-    build_principal_avatar_tag(principal, size:, hide_name:, name_classes:, **)
+  def avatar(principal, size: "default", hide_name: true, hover_card: { active: true }, name_classes: "", **)
+    build_principal_avatar_tag(principal, size:, hide_name:, hover_card:, name_classes:, **)
   rescue StandardError => e
     Rails.logger.error "Failed to create avatar for #{principal}: #{e}"
     "".html_safe
@@ -99,22 +99,27 @@ module AvatarHelper
       id: user.id
     }
 
+    inputs = {
+      principal:,
+      link: tag_options[:link],
+      size: tag_options[:size],
+      hideName: tag_options[:hide_name],
+      nameClasses: tag_options[:name_classes],
+      title: tag_options.fetch(:title, "")
+    }
+
+    inputs = hover_card_options(user, inputs, tag_options)
+
     angular_component_tag "opce-principal",
                           class: tag_options[:class],
-                          inputs: {
-                            principal:,
-                            link: tag_options[:link],
-                            size: tag_options[:size],
-                            hideName: tag_options[:hide_name],
-                            nameClasses: tag_options[:name_classes],
-                            title: tag_options.fetch(:title, "")
-                          }
+                          inputs:
   end
 
   def merge_default_avatar_options(user, options)
     default_options = {
       size: "default",
-      hide_name: true
+      hide_name: true,
+      hover_card: {}
     }
 
     default_options[:title] = h(user.name) if user.respond_to?(:name)
@@ -135,5 +140,22 @@ module AvatarHelper
     if object.respond_to?(:mail)
       object.mail
     end
+  end
+
+  private
+
+  def hover_card_options(user, inputs = {}, tag_options = {})
+    # The hover card will be triggered by hovering over the avatar (if enabled)
+    hover_card = tag_options[:hover_card]
+    if hover_card.fetch(:active, true)
+      inputs[:hoverCard] = true
+
+      inputs[:hoverCardUrl] = hover_card_user_path(user.id)
+    else
+      # We must explicitly set this to false since the angular renderer defines their own default to `true`
+      inputs[:hoverCard] = false
+    end
+
+    inputs
   end
 end

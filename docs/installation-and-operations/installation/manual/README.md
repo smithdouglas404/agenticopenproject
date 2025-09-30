@@ -96,9 +96,9 @@ Lastly, revert to the previous system user:
 
 ## Installation of Ruby
 
-The are several possibilities to install Ruby on your machine. We will
-use [rbenv](https://github.com/rbenv/rbenv). Please be aware that the actual installation of a specific Ruby version takes some
-time to finish.
+There are several possibilities to install Ruby on your machine.
+We will use [rbenv](https://github.com/rbenv/rbenv).
+Please be aware that the actual installation of a specific Ruby version takes some time to finish.
 
 ```shell
 [root@host] su openproject --login
@@ -107,17 +107,22 @@ time to finish.
 [openproject@host] echo 'eval "$(rbenv init -)"' >> ~/.profile
 [openproject@host] source ~/.profile
 [openproject@host] git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+```
 
-[openproject@host] rbenv install 3.3.2
+We suggest you install the version we require in [.ruby-version](https://github.com/opf/openproject/blob/dev/.ruby-version).
+Read the first line e.g. `3.4.5` and install that version.
+
+```shell
+[openproject@host] rbenv install 3.4.5
 [openproject@host] rbenv rehash
-[openproject@host] rbenv global 3.3.2
+[openproject@host] rbenv global 3.4.5
 ```
 
 To check our Ruby installation we run `ruby --version`. It should output
 something very similar to:
 
 ```text
-ruby 3.3.2 (2024-05-30 revision e5a195edf6) [arm64-darwin23]
+ruby 3.4.5 (2025-07-16 revision 20cda200d3) +PRISM [arm64-darwin24]
 ```
 
 ## Installation of Node
@@ -144,7 +149,7 @@ time to finish.
 To check our Node installation we run `node --version`. It should output something very similar to:
 
 ```text
-v20.9.0
+v22.15.0
 ```
 
 ## Installation of OpenProject
@@ -154,7 +159,7 @@ with OpenProject. For more information, see [github.com/opf/openproject](https:/
 
 ```shell
 [openproject@host] cd ~
-[openproject@host] git clone https://github.com/opf/openproject.git --branch stable/9 --depth 1
+[openproject@host] git clone https://github.com/opf/openproject.git --branch stable/16 --depth 1
 [openproject@host] cd openproject
 # Ensure rubygems is up-to-date for bundler 2
 [openproject@host] gem update --system
@@ -451,8 +456,3 @@ If you need to restart the server (for example after a configuration change), do
 
   With each new OpenProject core version, the plug-ins might need to be updated. Please make sure that the plug-in versions of all you plug-ins works with the OpenProject version you use.
   Many plug-ins follow the OpenProject version with their version number (So, if you have installed OpenProject version 4.1.0, the plug-in should also have the version 4.1.0).
-
-## Questions, comments, and feedback
-
-If you have any further questions, comments, feedback, or an idea to enhance this guide, please tell us at the appropriate community [forum](https://community.openproject.org/projects/openproject/boards/9).
-[Follow OpenProject on twitter](https://twitter.com/openproject), and follow the news on [openproject.org](https://www.openproject.org) to stay up to date.

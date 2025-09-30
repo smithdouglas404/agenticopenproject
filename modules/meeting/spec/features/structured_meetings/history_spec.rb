@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,18 +30,16 @@
 
 require "spec_helper"
 
-require_relative "../../support/pages/meetings/new"
-require_relative "../../support/pages/structured_meeting/show"
-require_relative "../../support/pages/structured_meeting/history"
+require_relative "../../support/pages/meetings/show"
+require_relative "../../support/pages/meetings/history"
 
 RSpec.describe "history",
-               :js,
-               :with_cuprite do
+               :js do
   include Components::Autocompleter::NgSelectAutocompleteHelpers
   include Redmine::I18n
 
-  shared_let(:project) { create(:project, enabled_module_names: %w[meetings work_package_tracking]) }
-  shared_let(:other_project) { create(:project, enabled_module_names: %w[work_package_tracking]) }
+  shared_let(:project) { create(:project, enabled_module_names: %w[meetings work_package_tracking activities]) }
+  shared_let(:other_project) { create(:project, enabled_module_names: %w[work_package_tracking activites]) }
   shared_let(:user) do
     create(:user,
            lastname: "First",
@@ -72,7 +72,7 @@ RSpec.describe "history",
   end
   shared_let(:meeting) do
     User.execute_as(user) do
-      create(:structured_meeting,
+      create(:meeting,
              project:,
              start_time: DateTime.parse("2024-03-28T13:30:00Z"),
              title: "Some title",
@@ -82,8 +82,8 @@ RSpec.describe "history",
     end
   end
 
-  let(:show_page) { Pages::StructuredMeeting::Show.new(meeting) }
-  let(:history_page) { Pages::StructuredMeeting::History.new(meeting) }
+  let(:show_page) { Pages::Meetings::Show.new(meeting) }
+  let(:history_page) { Pages::Meeting::History.new(meeting) }
   let(:editor) { Components::WysiwygEditor.new "#content", "opce-ckeditor-augmented-textarea" }
 
   it "allows browsing the history", with_settings: { journal_aggregation_time_minutes: 0 } do
@@ -132,7 +132,7 @@ RSpec.describe "history",
 
     show_page.add_agenda_item do
       fill_in "Title", with: "My agenda item"
-      fill_in "min", with: "25"
+      fill_in "Duration", with: "25"
     end
 
     show_page.expect_agenda_item(title: "My agenda item")
@@ -144,7 +144,7 @@ RSpec.describe "history",
     history_page.expect_event('Agenda item "My agenda item"',
                               timestamp: format_time(item.created_at.utc),
                               actor: user.name,
-                              action: "created by")
+                              action: "added by")
 
     within("li.op-activity-list--item", match: :first) do
       expect(page).to have_css(".op-activity-list--item-title", text: 'Agenda item "My agenda item"')
@@ -157,8 +157,7 @@ RSpec.describe "history",
     item = MeetingAgendaItem.find_by(title: "My agenda item")
     show_page.edit_agenda_item(item) do
       fill_in "Title", with: "Updated title"
-      fill_in "min", with: "5"
-      click_on "Save"
+      fill_in "Duration", with: "5"
     end
 
     # dynamically wait for the item to be updated successfully
@@ -209,7 +208,7 @@ RSpec.describe "history",
 
     item = history_page.first_item
     expect(item).to have_css(".op-activity-list--item-title", text: 'Agenda item "Second"')
-    expect(item).to have_css(".op-activity-list--item-subtitle", text: "deleted by")
+    expect(item).to have_css(".op-activity-list--item-subtitle", text: "removed by")
     expect(item).to have_css(".op-activity-list--item-subtitle", text: user.name)
 
     # Add linked work package
@@ -239,7 +238,6 @@ RSpec.describe "history",
       select_autocomplete(find_test_selector("op-agenda-items-wp-autocomplete"),
                           query: "Changed task",
                           results_selector: "body")
-      click_link_or_button "Save"
     end
 
     show_page.expect_agenda_item title: "Changed task"
@@ -331,7 +329,6 @@ RSpec.describe "history",
 
     show_page.expect_agenda_item(title: "My agenda item")
     item = MeetingAgendaItem.find_by(title: "My agenda item")
-    show_page.cancel_add_form(item)
 
     show_page.select_action(item, "Add notes")
     editor.set_markdown "# Hello there"
@@ -341,21 +338,25 @@ RSpec.describe "history",
     end
 
     history_page.open_history_modal
-    within("li.op-activity-list--item", match: :first) do
-      expect(page).to have_css("li", text: "Notes set")
-      click_link_or_button "Details"
-    end
 
-    expect(page).to have_current_path /\/journals\/\d+\/diff\/agenda_items_\d+_notes/
-    expect(page).to have_css("ins.diffmod", text: "# Hello there")
+    retry_block do
+      within("li.op-activity-list--item", match: :first) do
+        expect(page).to have_css("li", text: "Notes set")
+        click_link_or_button "Details"
+      end
+
+      wait_for_network_idle
+      expect(page).to have_current_path /\/journals\/\d+\/diff\/agenda_items_\d+_notes/
+      expect(page).to have_css("ins.diffmod", text: "# Hello there")
+    end
   end
 
   it "for a user with no permissions, renders an error", with_settings: { journal_aggregation_time_minutes: 0 } do
     login_as no_member_user
 
-    visit history_meeting_path(meeting)
+    visit history_project_meeting_path(project, meeting)
 
     expected = "[Error 403] You are not authorized to access this page."
-    expect(page).to have_css(".op-toast.-error", text: expected)
+    expect_flash(type: :error, message: expected)
   end
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,11 +29,17 @@
 #++
 require "spec_helper"
 
+require_relative "enumerations/shared_enumeration_examples"
+
 RSpec.describe IssuePriority do
   shared_let(:priority) { create(:priority) }
   shared_let(:default_priority) { create(:default_priority) }
 
   let(:stubbed_priority) { build_stubbed(:priority) }
+
+  it_behaves_like "enumeration#active handling", true do
+    let(:enumeration) { described_class.new(attributes_for(:priority)) }
+  end
 
   describe ".ancestors" do
     it "is an enumeration" do
@@ -64,13 +72,13 @@ RSpec.describe IssuePriority do
     end
   end
 
-  describe "#cache_key" do
+  describe "#cache_key_with_version" do
     it "updates when the updated_at field changes" do
-      old_cache_key = stubbed_priority.cache_key
+      old_cache_key = stubbed_priority.cache_key_with_version
 
-      stubbed_priority.updated_at = Time.now
+      stubbed_priority.updated_at = Time.zone.now
 
-      expect(stubbed_priority.cache_key)
+      expect(stubbed_priority.cache_key_with_version)
         .not_to eql old_cache_key
     end
   end

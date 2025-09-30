@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,32 +37,36 @@ RSpec.shared_examples_for "base storage" do
     }
   end
 
-  describe ".shorten_provider_type" do
+  describe ".shorten_provider_type", skip: "Method being removed" do
     context "when provider_type matches the signature" do
       it "responds with shortened provider type" do
         expect(
-          described_class.shorten_provider_type(described_class::PROVIDER_TYPE_NEXTCLOUD)
-        ).to eq("nextcloud")
+          described_class.short_provider_name
+        ).to eq(:nextcloud)
         expect(
-          described_class.shorten_provider_type(described_class::PROVIDER_TYPE_ONE_DRIVE)
-        ).to eq("one_drive")
+          described_class.short_provider_name
+        ).to eq(:one_drive)
       end
     end
 
-    context "when provider_type does not match the signature" do
+    context "when provider_type is unknown" do
       it "raises an error", :aggregate_failures do
         expect do
           described_class.shorten_provider_type("Storages::Nextcloud")
         end.to raise_error("Unknown provider_type! Given: Storages::Nextcloud. " \
-                           "Expected the following signature: Storages::{Name of the provider}Storage")
+                           "Known provider types are defined in Storages::Storage::PROVIDER_TYPE_SHORT_NAMES.")
         expect do
           described_class.shorten_provider_type("Storages:NextcloudStorage")
         end.to raise_error("Unknown provider_type! Given: Storages:NextcloudStorage. " \
-                           "Expected the following signature: Storages::{Name of the provider}Storage")
+                           "Known provider types are defined in Storages::Storage::PROVIDER_TYPE_SHORT_NAMES.")
         expect do
           described_class.shorten_provider_type("Storages::NextcloudStorag")
         end.to raise_error("Unknown provider_type! Given: Storages::NextcloudStorag. " \
-                           "Expected the following signature: Storages::{Name of the provider}Storage")
+                           "Known provider types are defined in Storages::Storage::PROVIDER_TYPE_SHORT_NAMES.")
+        expect do
+          described_class.shorten_provider_type("Storages::UnknownStorage")
+        end.to raise_error("Unknown provider_type! Given: Storages::UnknownStorage. " \
+                           "Known provider types are defined in Storages::Storage::PROVIDER_TYPE_SHORT_NAMES.")
       end
     end
   end

@@ -138,7 +138,7 @@ A form:
 * contains a *schema* describing the properties of the work package as well as listing the available values for those referencing other resources. E.g. the projects in which work packages can be created (read in which the user has the permission to create work packages) are listed.
 * notes the current *errors* in the payload. E.g. a work package cannot be created outside of a project so a project reference needs to be provided.
 
-The API documentation offers detailed information [on forms in general](../forms) and on the [work package create form](../endpoints/work-packages/#work-package-create-form-for-project) in particular.
+The API documentation offers detailed information [on forms in general](../forms) and on the [work package create form](../endpoints/work-packages/#form-for-creating-work-packages-in-a-project) in particular.
 
 We will first fetch the empty form:
 
@@ -226,6 +226,24 @@ The schema can instruct the client where to set them properly. All properties wi
       "href": "some/url"
     }
   }
+}
+```
+
+#### Custom field errors
+
+Custom fields with a field format of `calculated_value` may produce errors during calculation. In such a case, their scalar value is set to `null` and an additional property is returned.
+Note that multiple errors may be present in the array. Each error consists of a machine-readable error code and a localized error string intended for humans.
+
+If there are no errors, this field is missing.
+
+```json5
+{
+  "customFieldXErrors": [
+    {
+      "code": "ERROR_MATHEMATICAL",
+      "message": "A mathematical error occurred during calculation. Please review the formula and try again."
+    }
+  ]
 }
 ```
 

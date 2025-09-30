@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,14 +34,9 @@ modules_permissions:
     - :edit_meetings
     - :delete_meetings
     - :view_meetings
-    - :create_meeting_agendas
     - :manage_agendas
-    - :close_meeting_agendas
-    - :send_meeting_agendas_notification
-    - :send_meeting_agendas_icalendar
-    - :create_meeting_minutes
-    - :send_meeting_minutes_notification
-    - :meetings_send_invite
+    - :manage_outcomes
+    - :send_meeting_invites_and_outcomes
   - role: :default_role_reader
     add:
     - :view_meetings

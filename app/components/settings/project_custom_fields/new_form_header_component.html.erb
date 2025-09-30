@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2023 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -29,8 +29,8 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%=
   render(Primer::OpenProject::PageHeader.new) do |header|
-    header.with_title { t('settings.project_attributes.new.heading') }
-    header.with_description { t('settings.project_attributes.new.description') }
-    header.with_breadcrumbs(breadcrumb_items)
+    header.with_title { t("settings.project_attributes.new.heading") }
+    header.with_description { t("settings.project_attributes.new.description") } unless hide_description?
+    header.with_breadcrumbs(breadcrumb_items, selected_item_font_weight: :normal)
   end
 %>

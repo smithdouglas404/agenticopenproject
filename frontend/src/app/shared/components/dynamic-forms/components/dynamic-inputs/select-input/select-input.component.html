@@ -13,6 +13,7 @@
   [clearOnBackspace]="to.clearOnBackspace"
   [clearSearchOnAdd]="to.clearSearchOnAdd"
   [hideSelected]="to.hideSelected"
+  [groupBy]="groupByFn"
 >
   <ng-template ng-tag-tmp let-search="searchTerm">
     <b [textContent]="to.text.add_new_action"></b>: {{search}}

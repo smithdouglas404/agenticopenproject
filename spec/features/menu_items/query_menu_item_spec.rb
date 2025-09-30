@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,7 +33,7 @@ require "features/page_objects/notification"
 require "features/work_packages/shared_contexts"
 require "features/work_packages/work_packages_page"
 
-RSpec.describe "Query menu items", :js, :with_cuprite do
+RSpec.describe "Query menu items", :js do
   let(:user) { create(:admin) }
   let(:project) { create(:project) }
   let(:work_packages_page) { WorkPackagesPage.new(project) }
@@ -87,13 +89,15 @@ RSpec.describe "Query menu items", :js, :with_cuprite do
     it "can be added" do
       visit_index_page(query)
 
-      click_on "More actions"
-      click_on I18n.t("js.toolbar.settings.visibility_settings")
-      check "Favored"
+      wp_table.expect_no_work_package_listed
+      wp_table.click_setting_item I18n.t("js.toolbar.settings.visibility_settings")
+
+      check "Favorited"
       click_on "Save"
 
       notification.expect_success("Successful update")
-      expect(page).to have_css(".op-sidemenu--item", text: query.name)
+      wait_for_network_idle
+      expect(page).to have_css(".op-submenu--item", text: query.name)
     end
   end
 
@@ -135,7 +139,7 @@ RSpec.describe "Query menu items", :js, :with_cuprite do
     it "is renaming and reordering the list" do
       # Renaming the query should also reorder the queries.  As it is renamed
       # from zzzz to aaaa, it should now be the first query menu item.
-      expect(page).to have_css(".op-sidemenu--items li:first-child", text: new_name)
+      expect(page).to have_css(".op-submenu--items li:first-child", text: new_name)
     end
   end
 end

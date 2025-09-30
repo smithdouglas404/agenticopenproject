@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,7 +35,6 @@ module EnsureConnectionPathHelper
       oauth_client_id: project_storage.storage.oauth_client.client_id,
       storage_id: project_storage.storage.id,
       destination_url: url_helpers.open_project_storage_url(
-        protocol: "https",
         project_id: project_storage.project.identifier,
         id: project_storage.id
       )

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -52,6 +52,7 @@ import { WorkPackagesListService } from 'core-app/features/work-packages/compone
   templateUrl: './filter-container.directive.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'op-filter-container',
+  standalone: false,
 })
 export class WorkPackageFilterContainerComponent extends UntilDestroyedMixin implements OnInit, OnDestroy {
   @Input('showFilterButton') showFilterButton = false;

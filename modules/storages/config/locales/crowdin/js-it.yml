@@ -2,6 +2,7 @@
 it:
   js:
     storages:
+      authentication_error: "Autenticazione con %{storageType} fallita"
       link_files_in_storage: "Collega file in %{storageType}"
       link_existing_files: "Collega file esistenti"
       upload_files: "Caricare i files"
@@ -13,11 +14,14 @@ it:
       open_storage: "Apri %{storageType}"
       select_location: "Seleziona Posizione"
       choose_location: "Scegli posizione"
+      new_folder: "Nuova cartella"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "Microsoft SharePoint Online"
         default: "Archivio"
       information:
+        authentication_error: "La richiesta di %{storageType} non può essere autenticata, è un errore."
         connection_error: >
           Alcune impostazioni %{storageType} non funzionano. Contatta l'amministratore %{storageType}.
         live_data_error: "Errore nel recupero dei dettagli del file"
@@ -26,6 +30,8 @@ it:
         no_file_links: "Per collegare i file a questa macro-attività, farlo tramite %{storageType}."
         not_logged_in: >
           Per aggiungere un link, vedere o caricare i file relativi a questo pacchetto di lavoro, accedi a %{storageType}.
+        suggest_logout: Puoi provare a risolvere il problema disconnettendoti e riconnettendoti.
+        suggest_relink: Puoi provare a risolvere il problema ricollegando il tuo account tramite il pulsante di accesso qui sotto.
       files:
         already_existing_header: "Questo file esiste già"
         already_existing_body: >
@@ -42,6 +48,7 @@ it:
           La cartella del progetto gestita automaticamente non è stata ancora trovata. Attendi un po', ricarica la pagina per recuperare i dati più recenti e riprova.
         managed_project_folder_no_access: >
           Non hai ancora accesso alla cartella del progetto gestito. Aspetta un po' e riprova.
+        cannot_create_folder: Impossibile creare la cartella. Evita di usare caratteri e simboli speciali e assicurati che la cartella non esista già.
         upload_keep_both: "Mantieni entrambi"
         upload_replace: "Sostituisci"
       file_links:
@@ -57,7 +64,7 @@ it:
         select: "Seleziona file"
         select_all: "Seleziona tutto"
         selection:
-          zero: "Seleziona i files da collegare"
+          zero: "Seleziona i file da collegare"
           one: "Collega 1 file"
           other: "Collega %{count} file"
         success_create:

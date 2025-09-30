@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -65,6 +65,7 @@ RSpec.describe Storages::NextcloudStorage do
         aggregate_failures "configuration_checks" do
           expect(storage.configuration_checks)
             .to eq(host_name_configured: true,
+                   storage_audience_configured: true,
                    storage_oauth_client_configured: true,
                    openproject_oauth_application_configured: true)
         end
@@ -84,6 +85,43 @@ RSpec.describe Storages::NextcloudStorage do
       end
     end
 
+    context "without storage audience" do
+      let(:storage) do
+        build(:nextcloud_storage,
+              storage_audience: "",
+              oauth_application: build(:oauth_application),
+              oauth_client: build(:oauth_client))
+      end
+
+      it "returns true" do
+        aggregate_failures do
+          expect(storage.configured?).to be(true)
+          aggregate_failures "configuration_checks" do
+            expect(storage.configuration_checks[:storage_audience_configured]).to be(true)
+          end
+        end
+      end
+
+      context "when storage authenticates through IDP" do
+        let(:storage) do
+          build(:nextcloud_storage,
+                authentication_method: "oauth2_sso",
+                storage_audience: "",
+                oauth_application: build(:oauth_application),
+                oauth_client: build(:oauth_client))
+        end
+
+        it "returns false" do
+          aggregate_failures do
+            expect(storage.configured?).to be(false)
+            aggregate_failures "configuration_checks" do
+              expect(storage.configuration_checks[:storage_audience_configured]).to be(false)
+            end
+          end
+        end
+      end
+    end
+
     context "without openproject and storage integrations" do
       let(:storage) { build(:nextcloud_storage) }
 
@@ -93,6 +131,23 @@ RSpec.describe Storages::NextcloudStorage do
         aggregate_failures "configuration_checks" do
           expect(storage.configuration_checks[:openproject_oauth_application_configured]).to be(false)
           expect(storage.configuration_checks[:storage_oauth_client_configured]).to be(false)
+        end
+      end
+
+      context "when storage authenticates through IDP" do
+        let(:storage) do
+          build(:nextcloud_storage,
+                authentication_method: "oauth2_sso",
+                storage_audience: "some")
+        end
+
+        it "returns true" do
+          expect(storage.configured?).to be(true)
+
+          aggregate_failures "configuration_checks" do
+            expect(storage.configuration_checks[:openproject_oauth_application_configured]).to be(true)
+            expect(storage.configuration_checks[:storage_oauth_client_configured]).to be(true)
+          end
         end
       end
     end
@@ -178,6 +233,37 @@ RSpec.describe Storages::NextcloudStorage do
 
     it "returns the default values for nextcloud" do
       expect(storage.provider_fields_defaults).to eq({ automatic_management_enabled: true, username: "OpenProject" })
+    end
+  end
+
+  describe "#non_confidential_configuration" do
+    subject { storage.non_confidential_configuration }
+
+    let(:storage) { create(:nextcloud_storage, :with_oauth_configured) }
+
+    it "returns the expected hash" do
+      expect(subject).to eq(
+        authentication_method: "two_way_oauth2",
+        health_notifications_enabled: true,
+        host: storage.host,
+        oauth_application_client_id: storage.oauth_application.uid,
+        oauth_client_id: storage.oauth_client.client_id
+      )
+    end
+
+    context "when the storage is set-up for SSO" do
+      let(:storage) { create(:nextcloud_storage, :oidc_sso_enabled) }
+
+      it "returns the expected hash" do
+        expect(subject).to eq(
+          authentication_method: "oauth2_sso",
+          health_notifications_enabled: true,
+          host: storage.host,
+          storage_audience: "nextcloud",
+          oauth_application_client_id: nil,
+          oauth_client_id: nil
+        )
+      end
     end
   end
 end

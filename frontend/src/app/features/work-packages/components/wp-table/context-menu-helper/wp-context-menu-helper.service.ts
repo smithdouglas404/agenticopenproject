@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -42,6 +42,7 @@ export type WorkPackageAction = {
   indexBy?:(actions:WorkPackageAction[]) => number,
   link?:string;
   href?:string;
+  hidden?:boolean;
 };
 
 @Injectable()
@@ -60,10 +61,10 @@ export class WorkPackageContextMenuHelperService {
       href: this.PathHelper.workPackagesBulkMovePath(),
     },
     {
-      text: I18n.t('js.work_packages.bulk_actions.copy'),
+      text: I18n.t('js.work_packages.bulk_actions.duplicate'),
       key: 'copy',
       link: 'copy',
-      href: this.PathHelper.workPackagesBulkCopyPath(),
+      href: this.PathHelper.workPackagesBulkDuplicatePath(),
     },
     {
       text: I18n.t('js.work_packages.bulk_actions.delete'),
@@ -91,7 +92,7 @@ export class WorkPackageContextMenuHelperService {
     // remove some actions on Gantt
     if (this.wpViewTimeline.isVisible) {
       allowedActions = allowedActions.filter((el) => {
-        const ganttNotAllowedActions = ['log_time', 'copy', 'copy_to_other_project', 'export-pdf', 'export-atom', 'log_costs'];
+        const ganttNotAllowedActions = ['log_time', 'copy', 'copy_to_other_project', 'export-pdf', 'generate_pdf', 'export-atom', 'log_costs'];
         return !(ganttNotAllowedActions.includes(el.key));
       });
     }
@@ -217,7 +218,7 @@ export class WorkPackageContextMenuHelperService {
       });
       allowedActions.push({
         key: 'relation-follows',
-        text: I18n.t('js.relation_buttons.add_follower'),
+        text: I18n.t('js.relation_buttons.add_successor'),
         link: 'addRelation',
       });
     }

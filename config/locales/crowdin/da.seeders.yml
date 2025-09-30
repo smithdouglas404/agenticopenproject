@@ -34,6 +34,15 @@ da:
           name: Grå (mørk)
         item_13:
           name: Sort
+      project_phase_colors:
+        item_0:
+          name: PM2 Orange
+        item_1:
+          name: PM2 Red
+        item_2:
+          name: PM2 Magenta
+        item_3:
+          name: PM2 Green Yellow
       document_categories:
         item_0:
           name: Documentation
@@ -41,6 +50,11 @@ da:
           name: Specifikation
         item_2:
           name: Andet
+      project_query_roles:
+        item_0:
+          name: Project query viewer
+        item_1:
+          name: Project query editor
       work_package_roles:
         item_0:
           name: Work package editor
@@ -62,7 +76,21 @@ da:
       global_roles:
         item_0:
           name: Staff and projects manager
+        item_1:
+          name: Standard global role
     standard:
+      project_phases:
+        item_0:
+          name: Initiating
+        item_1:
+          name: Planlæg
+          start_gate: Ready for Planning
+        item_2:
+          name: Executing
+          start_gate: Ready for Executing
+        item_3:
+          name: Closing
+          start_gate: Ready for Closing
       priorities:
         item_0:
           name: Lav
@@ -72,104 +100,29 @@ da:
           name: Høj
         item_3:
           name: Straks
-      statuses:
-        item_0:
-          name: Ny
-        item_1:
-          name: I specifikation
-        item_2:
-          name: Specificeret
-        item_3:
-          name: Bekræftet
-        item_4:
-          name: Skal skemalægges
-        item_5:
-          name: Planlagt
-        item_6:
-          name: Igangværende
-        item_7:
-          name: Udviklet
-        item_8:
-          name: I testfase
-        item_9:
-          name: Testet
-        item_10:
-          name: Test mislykkedes
-        item_11:
-          name: Lukket
-        item_12:
-          name: På pause
-        item_13:
-          name: Afvist
-      time_entry_activities:
-        item_0:
-          name: Håndtering
-        item_1:
-          name: Specifikation
-        item_2:
-          name: Udvikling
-        item_3:
-          name: Afprøver
-        item_4:
-          name: Support
-        item_5:
-          name: Andet
-      types:
-        item_0:
-          name: Opgave
-        item_1:
-          name: Milepæl
-        item_2:
-          name: Fase
-        item_3:
-          name: Funktion
-        item_4:
-          name: Episk
-        item_5:
-          name: Brugerhistorik
-        item_6:
-          name: Fejl
-      welcome:
-        title: Welcome to OpenProject!
-        text: |
-          OpenProject is the leading open source project management software. It supports classic, agile as well as hybrid project management and gives you full control over your data.
-
-          Core features and use cases:
-
-          * [Project Portfolio Management](https://www.openproject.org/collaboration-software-features/project-portfolio-management/)
-          * [Project Planning and Scheduling](https://www.openproject.org/collaboration-software-features/project-planning-scheduling/)
-          * [Task Management and Issue Tracking](https://www.openproject.org/collaboration-software-features/task-management/)
-          * [Agile Boards (Scrum and Kanban)](https://www.openproject.org/collaboration-software-features/agile-project-management/)
-          * [Requirements Management and Release Planning](https://www.openproject.org/collaboration-software-features/product-development/)
-          * [Time and Cost Tracking, Budgets](https://www.openproject.org/collaboration-software-features/time-tracking/)
-          * [Team Collaboration and Documentation](https://www.openproject.org/collaboration-software-features/team-collaboration/)
-
-          Welcome to the future of project management.
-
-          For Admins: You can change this welcome text [here]({{opSetting:base_url}}/admin/settings/general).
       projects:
         demo-project:
           name: Demo project
-          status_explanation: All tasks are on schedule. The people involved know their tasks. The system is completely set up.
+          status_explanation: Alle opgaver følger tidsplanen. De involverede kender deres opgaver. Systemet er fuldt opsat.
           description: This is a short summary of the goals of this demo project.
           news:
             item_0:
-              title: Welcome to your demo project
+              title: Velkommen til demo-projektet
               summary: |
-                We are glad you joined.
-                In this module you can communicate project news to your team members.
-              description: The actual news
+                Vi er glade for deltagelsen.
+                I dette modul kan man kommunikere projektnyheder til sine teammedlemmer.
+              description: De faktiske nyheder
           categories:
-            item_0: Category 1 (to be changed in Project settings)
+            item_0: Kategori 1 (skal ændres i Projektindstillinger)
           queries:
             item_0:
-              name: Project plan
+              name: Projektplan
             item_1:
-              name: Milestones
+              name: Milepæle
             item_2:
-              name: Tasks
+              name: Opgaver
             item_3:
-              name: Team planner
+              name: Teamplanlægger
           boards:
             kanban:
               name: Kanban board
@@ -190,10 +143,10 @@ da:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Velkommen
               item_1:
                 options:
-                  name: Getting started
+                  name: At komme gang
                   text: |
                     We are glad you joined! We suggest to try a few things to get started in OpenProject.
 
@@ -215,7 +168,7 @@ da:
                   name: Arbejdspakker
               item_6:
                 options:
-                  name: Milestones
+                  name: Milepæle
           work_packages:
             item_0:
               subject: Start of project
@@ -268,14 +221,14 @@ da:
             More information: [https://www.openproject.org/docs/user-guide/wiki/](https://www.openproject.org/docs/user-guide/wiki/)
         scrum-project:
           name: Scrum project
-          status_explanation: All tasks are on schedule. The people involved know their tasks. The system is completely set up.
+          status_explanation: Alle opgaver følger tidsplanen. De involverede kender deres opgaver. Systemet er fuldt opsat.
           description: This is a short summary of the goals of this demo Scrum project.
           news:
             item_0:
               title: Welcome to your Scrum demo project
               summary: |
-                We are glad you joined.
-                In this module you can communicate project news to your team members.
+                Vi er glade for deltagelsen.
+                I dette modul kan man kommunikere projektnyheder til sine teammedlemmer.
           versions:
             item_0:
               name: Bug Backlog
@@ -334,21 +287,21 @@ da:
             item_3:
               name: Sprint 2
           categories:
-            item_0: Category 1 (to be changed in Project settings)
+            item_0: Kategori 1 (skal ændres i Projektindstillinger)
           queries:
             item_0:
-              name: Project plan
+              name: Projektplan
             item_1:
-              name: Product backlog
+              name: Produkt-backlog
             item_2:
               name: Sprint 1
             item_3:
-              name: Tasks
+              name: Opgaver
           boards:
             kanban:
               name: Kanban board
             basic:
-              name: Task board
+              name: Opgaveoversigt
               lists:
                 item_0:
                   name: Wish list
@@ -362,10 +315,10 @@ da:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Velkommen
               item_1:
                 options:
-                  name: Getting started
+                  name: At komme gang
                   text: |
                     We are glad you joined! We suggest to try a few things to get started in OpenProject.
 
@@ -386,7 +339,7 @@ da:
                   name: Arbejdspakker
               item_6:
                 options:
-                  name: Project plan
+                  name: Projektplan
           work_packages:
             item_0:
               subject: New login screen
@@ -484,3 +437,78 @@ da:
             * Time boxed (3 h).
             * After Sprint Review, will be moderated by Scrum Master.
             * The team discusses the sprint: what went well, what needs to be improved to be more productive for the next sprint or even have more fun.
+      statuses:
+        item_0:
+          name: Ny
+        item_1:
+          name: I specifikation
+        item_2:
+          name: Specificeret
+        item_3:
+          name: Bekræftet
+        item_4:
+          name: Skal skemalægges
+        item_5:
+          name: Planlagt
+        item_6:
+          name: Igangværende
+        item_7:
+          name: Udviklet
+        item_8:
+          name: I testfase
+        item_9:
+          name: Testet
+        item_10:
+          name: Test mislykkedes
+        item_11:
+          name: Lukket
+        item_12:
+          name: På pause
+        item_13:
+          name: Afvist
+      time_entry_activities:
+        item_0:
+          name: Håndtering
+        item_1:
+          name: Specifikation
+        item_2:
+          name: Udvikling
+        item_3:
+          name: Afprøver
+        item_4:
+          name: Support
+        item_5:
+          name: Andet
+      types:
+        item_0:
+          name: Opgave
+        item_1:
+          name: Milepæl
+        item_2:
+          name: Summary task
+        item_3:
+          name: Funktion
+        item_4:
+          name: Episk
+        item_5:
+          name: Brugerhistorik
+        item_6:
+          name: Fejl
+      welcome:
+        title: Welcome to OpenProject!
+        text: |
+          OpenProject is the leading open source project management software. It supports classic, agile as well as hybrid project management and gives you full control over your data.
+
+          Core features and use cases:
+
+          * [Project Portfolio Management](https://www.openproject.org/collaboration-software-features/project-portfolio-management/)
+          * [Project Planning and Scheduling](https://www.openproject.org/collaboration-software-features/project-planning-scheduling/)
+          * [Task Management and Issue Tracking](https://www.openproject.org/collaboration-software-features/task-management/)
+          * [Agile Boards (Scrum and Kanban)](https://www.openproject.org/collaboration-software-features/agile-project-management/)
+          * [Requirements Management and Release Planning](https://www.openproject.org/collaboration-software-features/product-development/)
+          * [Time and Cost Tracking, Budgets](https://www.openproject.org/collaboration-software-features/time-tracking/)
+          * [Team Collaboration and Documentation](https://www.openproject.org/collaboration-software-features/team-collaboration/)
+
+          Welcome to the future of project management.
+
+          For Admins: You can change this welcome text [here]({{opSetting:base_url}}/admin/settings/general).

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -71,7 +73,7 @@ module Queries::Filters::Shared::UserNameFilter
         "LOWER(CONCAT(users.firstname, ' ', users.lastname))"
       when :firstname
         "LOWER(users.firstname)"
-      when :lastname_firstname, :lastname_coma_firstname
+      when :lastname_firstname, :lastname_comma_firstname
         "LOWER(CONCAT(users.lastname, CONCAT(' ', users.firstname)))"
       when :lastname_n_firstname
         "LOWER(CONCAT(users.lastname, users.firstname))"

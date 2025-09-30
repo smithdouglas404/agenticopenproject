@@ -9,6 +9,7 @@ de:
     label_bcf: 'BCF'
     label_imported_failed: 'Fehler beim Import von BCF-Themen'
     label_imported_successfully: 'Erfolgreich importierte Einträge'
+    label_bcf_issue_associated: "Zugeordneter BCF-Fall"
     issues: "Probleme"
     recommended: 'empfohlen'
     not_recommended: 'nicht empfohlen'
@@ -83,6 +84,12 @@ de:
         ifc_attachment: "IFC-Datei"
         is_default: "Standardmodell"
         attachments: "IFC-Datei"
+      bim/bcf/issue:
+        bcf_comment: "BCF-Kommentar"
+        bim_snippet: "BIM Snippet"
+        reference_links: "Referenzlink"
+        stage: "Stufe"
+        viewpoint: "Viewpoint"
     errors:
       models:
         bim/ifc_models/ifc_model:

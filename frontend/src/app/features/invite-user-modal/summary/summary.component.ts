@@ -21,6 +21,7 @@ import { PrincipalType } from '../invite-user.component';
   templateUrl: './summary.component.html',
   styleUrls: ['./summary.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class SummaryComponent {
   @Input() type:PrincipalType;

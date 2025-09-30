@@ -9,6 +9,7 @@ ro:
     label_bcf: 'BCF'
     label_imported_failed: 'Importuri eșuate de subiecte BCF'
     label_imported_successfully: 'Ați importat cu succes subiectele BCF'
+    label_bcf_issue_associated: "BCF issue associated"
     issues: "Sunt câteva probleme cu produsele din coșul tău. Te rog mergi înapoi la pagina coșului și remediază aceste probleme înainte de finalizarea comenzii."
     recommended: 'recomandat'
     not_recommended: 'Recomandat'
@@ -23,7 +24,7 @@ ro:
     bcf_xml:
       xml_file: 'Fișier BCF XML'
       import_title: 'Importă'
-      export: 'Exportare'
+      export: 'Exportă'
       import_update_comment: '(Actualizat în BCF import)'
       import_failed: 'Nu se poate importa fișierul BCF: %{error}'
       import_failed_unsupported_bcf_version: 'Nu a reușit să citească fișierul BCF: Versiunea BCF nu este acceptată. Vă rugăm să vă asigurați că versiunea este cel puțin %{minimal_version} sau mai mare.'
@@ -47,11 +48,11 @@ ro:
         unknown_emails_found: 'Adrese de e-mail necunoscute găsite'
         unknown_property: 'Proprietate necunoscută'
         non_members_found: 'Membrii non-proiect găsiți'
-        import_types_as: 'Setați toate aceste tipuri la'
-        import_statuses_as: 'Setați toate aceste statusuri la'
-        import_priorities_as: 'Setați toate aceste priorități pentru'
+        import_types_as: 'Setează toate aceste tipuri la'
+        import_statuses_as: 'Setează toate aceste statusuri la'
+        import_priorities_as: 'Setează toate aceste priorități pentru'
         invite_as_members_with_role: 'Invitați-i ca membri în proiectul "%{project}" cu rolul'
-        add_as_members_with_role: 'Adăugați-i ca membri în proiectul "%{project}" cu rolul'
+        add_as_members_with_role: 'Adăugă-i ca membri în proiectul "%{project}" cu rolul'
         no_type_provided: 'Nici un tip furnizat'
         no_status_provided: 'Nu este furnizat niciun statut'
         no_priority_provided: 'Nu se acordă prioritate'
@@ -81,8 +82,14 @@ ro:
     attributes:
       bim/ifc_models/ifc_model:
         ifc_attachment: "Fișier IFC"
-        is_default: "Modelul implicit"
+        is_default: "Model implicit"
         attachments: "Fișier IFC"
+      bim/bcf/issue:
+        bcf_comment: "BCF comment"
+        bim_snippet: "BIM snippet"
+        reference_links: "Reference links"
+        stage: "Stage"
+        viewpoint: "Punct de vedere"
     errors:
       models:
         bim/ifc_models/ifc_model:
@@ -100,7 +107,7 @@ ro:
           invalid_perspective_camera: "perspective_camera este invalidă."
           mismatching_guid: "Ghidul din punctul de vedere json_viewpoint nu se potrivește cu ghidul modelului."
           no_json: "Nu este un json bine structurat."
-          snapshot_type_unsupported: "snapshot_type trebuie să fie fie \"png\" sau \"jpg\"."
+          snapshot_type_unsupported: "snapshot_type trebuie să fie \"png\" sau \"jpg\"."
           snapshot_data_blank: "este necesar să se furnizeze snapshot_data."
           unsupported_key: "Este inclusă o proprietate json neacceptată."
         bim/bcf/issue:

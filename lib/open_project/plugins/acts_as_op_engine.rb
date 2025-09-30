@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -311,6 +311,23 @@ module OpenProject::Plugins
       def class_inflection_override(overrides)
         self.class.initializer "#{engine_name}.class_inflection_override" do
           OpenProject::Inflector.inflection(overrides)
+        end
+      end
+
+      # Adds a replacement rule for a principal reference. When the module allows adding a
+      # principal (e.g. a user) reference to a model, a replacement rule should be added so
+      # that the user can be deleted, by making sure references to that user are replaced
+      # on that model as well.
+      def replace_principal_reference(class_name, attribute)
+        config.to_prepare do
+          Principals::ReplaceReferencesService.add_replacement(class_name, attribute)
+        end
+      end
+
+      # Like #replace_principal_reference, but allows to add multiple classes and attributes at once.
+      def replace_principal_references(attributes_by_class_name)
+        config.to_prepare do
+          Principals::ReplaceReferencesService.add_replacements(attributes_by_class_name)
         end
       end
     end

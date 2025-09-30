@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -66,7 +66,7 @@ ko:
     button_back_to_list_view: "목록으로 돌아가기"
     button_cancel: "취소"
     button_close: "닫기"
-    button_change_project: "프로젝트 변경"
+    button_change_project: "다른 프로젝트로 이동"
     button_check_all: "모두 선택"
     button_configure-form: "구성 양식"
     button_confirm: "확인"
@@ -74,7 +74,7 @@ ko:
     button_copy: "복사"
     button_copy_to_clipboard: "클립보드 복사"
     button_copy_link_to_clipboard: "클립보드에 링크 복사"
-    button_copy_to_other_project: "다른 프로젝트에 복사"
+    button_copy_to_other_project: "다른 프로젝트에 복제"
     button_custom-fields: "사용자 정의 필드"
     button_delete: "삭제"
     button_delete_watcher: "주시자 삭제"
@@ -88,6 +88,8 @@ ko:
     button_list_view: "목록 보기"
     button_show_view: "전체화면 보기"
     button_log_time: "작업시간 기록"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "기타"
     button_open_details: "자세히 보기"
     button_close_details: "디테일 닫기"
@@ -103,8 +105,8 @@ ko:
     button_settings: "설정"
     button_uncheck_all: "모두 선택 취소"
     button_update: "업데이트"
-    button_export-pdf: "PDF 다운로드"
     button_export-atom: "Atom 다운로드"
+    button_generate_pdf: "PDF 생성"
     button_create: "만들기"
     card:
       add_new: "새로운 카드를 추가하다"
@@ -138,6 +140,8 @@ ko:
     description_select_work_package: "작업 패키지 #%{id} 선택"
     description_subwork_package: "작업 패키지 #%{id}의 자식"
     editor:
+      revisions: "로컬 수정 사항 표시"
+      no_revisions: "로컬 수정 사항 찾지 못함"
       preview: "미리 보기 모드 토글"
       source_code: "Markdown 소스 모드 토글"
       error_saving_failed: "다음 오류로 인해 문서를 저장하지 못했습니다: %{error}"
@@ -150,6 +154,7 @@ ko:
         attribute_reference:
           macro_help_tooltip: "이 텍스트 세그먼트는 매크로에 의해 동적으로 렌더링되고 있습니다."
           not_found: "요청한 리소스를 찾을 수 없습니다."
+          nested_macro: "이 매크로는 %{model} %{id}을(를) 재귀적으로 참조하고 있습니다."
           invalid_attribute: "선택한 특성 '%{name}'이(가) 없습니다."
         child_pages:
           button: "자식 페이지의 링크"
@@ -199,67 +204,6 @@ ko:
         edit_query: "쿼리 편집"
         new_group: "새 그룹"
         reset_to_defaults: "기본값으로 초기화"
-      enterprise:
-        text_reprieve_days_left: "유예 기간 종료까지 %{days}일"
-        text_expired: "만료됨"
-        trial:
-          confirmation: "이메일 주소 확인"
-          confirmation_info: >
-            We sent you an email on %{date} to %{email}. Please check your inbox and click the confirmation link provided to start your 14 days trial.
-          form:
-            general_consent: >
-              <a target="_blank" href="%{link_terms}">서비스 약관</a> 및 <a target="_blank" href="%{link_privacy}">개인정보 취급방침</a>에 동의합니다.
-            invalid_email: "잘못된 이메일 주소"
-            label_company: "회사"
-            label_first_name: "이름"
-            label_last_name: "성"
-            label_domain: "도메인"
-            label_subscriber: "구독자"
-            label_maximum_users: "최대 활성 사용자"
-            label_starts_at: "시작:"
-            label_expires_at: "에서 만료됨"
-            receive_newsletter: OpenProject <a target="_blank" href="%{link}">뉴스레터</a>를 받아 보겠습니다.
-            taken_domain: 도메인당 하나의 활성 평가판만 있어야 합니다.
-            domain_mismatch: 현재 요청 호스트 이름이 구성된 호스트 이름과 일치하지 않습니다. 시스템 설정을 다시 확인하세요.
-            taken_email: 각 사용자는 하나의 평가판만 생성할 수 있습니다.
-          email_not_received: "이메일을 받지 못하셨나요? 오른쪽의 링크로 이메일을 재전송할 수 있습니다. "
-          try_another_email: "또는 다른 이메일 주소로 시도해보세요."
-          next_steps: "다음 단계"
-          resend_link: "다시 보내기"
-          resend_success: "이메일이 재전송되었습니다. 이메일을 확인하고 제공된 인증 링크를 클릭하세요."
-          resend_warning: "이메일을 재전송할 수 없습니다."
-          session_timeout: "해당 세션이 시간 초과되었습니다. 페이지를 다시 로드하거나 이메일을 재전송하세요."
-          status_label: "상태:"
-          status_confirmed: "확인됨"
-          status_waiting: "이메일 전송됨 - 인증을 기다리는 중"
-          test_ee: "무료로 Enterprise Edition 14일 테스트"
-          quick_overview: "OpenProject Enterprise Edition으로 프로젝트 관리 및 팀 공동 작업에 대한 간략한 개요를 가져올 수 있습니다."
-        upsale:
-          become_hero: "영웅이 되세요!"
-          enterprise_info_html: "%{feature_title}은(는) Enterprise <span class='spot-icon spot-icon_inline spot-icon_enterprise-addons'></span> 추가 기능입니다."
-          upgrade_info: "활성화하고 팀에서 사용하려면 유료 플랜으로 업그레이드하세요."
-          benefits:
-            description: "Enterprise on-premises Edition의 장점은 무엇입니까?"
-            high_security: "보안 기능"
-            high_security_text: "SSO(SAML, OpenID Connect, CAS), LDAP 그룹."
-            installation: "설치 지원"
-            installation_text: "숙련된 소프트웨어 엔지니어들이 사용자 고유 인프라에서 완전한 설치 및 설정 프로세스를 안내해줍니다."
-            premium_features: "Enterprise 추가 기능"
-            premium_features_text: "민첩한 보드, 사용자 지정 테마 및 로고, 그래프, 인텔리전트 워크플로와 사용자 지정 작업, 작업 패키지 첨부 파일 및 다중 선택 사용자 지정 필드에 대한 전체 텍스트 검색."
-            professional_support: "전문적 지원"
-            professional_support_text: "비즈니스 크리티컬 환경에서의 OpenProject 실행에 대한 전문 지식을 갖춘 선임 지원 엔지니어가 신뢰할 수 있는 뛰어난 지원을 제공합니다."
-          button_start_trial: "무료 평가판 시작"
-          button_upgrade: "지금 업그레이드"
-          button_contact_us: "당사에 데모 요청하기"
-          button_book_now: "지금 예약"
-          confidence: >
-            오픈 소스와 오픈 마인드로, 테스트를 거치고 지원이 제공되는 엔터프라이즈급 프로젝트 관리 소프트웨어에 대한 신뢰를 전해드립니다.
-          link_quote: "견적 받기"
-          more_info: "자세한 정보"
-          text: >
-            OpenProject Enterprise Edition은 Community Edition 위에서 빌드됩니다. OpenProject로 비즈니스 크리티컬 프로젝트를 관리하는 사용자가 10명이 넘는 조직을 주로 타겟으로 하는 Enterprise 추가 기능과 전문 지원이 제공됩니다.
-          unlimited: "무제한"
-          you_contribute: "개발자도 요금을 지불해야 합니다. Enterprise Edition으로 업그레이드하면 오픈 소스 커뮤니티의 이러한 노력을 지원하고 개발, 유지 관리 및 지속적인 개선에 기여할 수 있습니다."
       working_days:
         calendar:
           empty_state_header: "휴무일"
@@ -270,10 +214,15 @@ ko:
         change_button: "저장하고 다시 예약"
         change_title: "근무일 변경"
         removed_title: "휴무일 목록에서 다음 날짜를 제거합니다."
-        change_description: "근무일 또는 휴무일로 간주되는 요일을 변경하면 이 인스턴스의 모든 프로젝트에 있는 모든 작업 패키지의 시작 날짜 및 완료 날짜에 영향을 미칠 수 있습니다."
+        change_description: "근무일 또는 휴무일로 간주되는 요일을 변경하면 이 인스턴스의 모든 프로젝트에 있는 모든 작업 패키지와 수명 주기의 시작 날짜 및 완료 날짜에 영향을 미칠 수 있습니다."
         warning: >
-          변경 사항이 적용되는 데 시간이 걸릴 수 있습니다. 모든 관련 작업 패키지가 업데이트되면 알림이 전송됩니다.
+          변경 사항이 적용되는 데 시간이 걸릴 수 있습니다. 모든 관련 작업 패키지와 프로젝트 수명 주기가 업데이트되면 알림이 전송됩니다.
           계속하시겠습니까?
+      work_packages_settings:
+        warning_progress_calculation_mode_change_from_status_to_field_html: >-
+          진행률 계산 모드를 상태 기반에서 작업 기반으로 변경하면 <i>완료 %</i> 필드를 자유롭게 편집할 수 있습니다. 선택적으로 <i>작업</i> 또는 <i>남은 작업</i>에 대한 값을 입력하면 해당 값도 <i>완료 %</i>에 링크됩니다. <i>남은 작업</i>을 변경하면 <i>완료 %</i>가 업데이트될 수 있습니다.
+        warning_progress_calculation_mode_change_from_field_to_status_html: >-
+          진행률 계산 모드를 작업 기반에서 상태 기반으로 변경하면 기존의 모든 <i>완료 %</i> 값이 손실되고 각 상태와 관련된 값으로 대체됩니다. <i>남은 작업</i>의 기존 값도 이 변경 사항을 반영하기 위해 다시 계산될 수 있습니다. 이 작업은 되돌릴 수 없습니다.
     custom_actions:
       date:
         specific: "에"
@@ -330,18 +279,6 @@ ko:
         years: "년"
         description: >
           자동 확대/축소를 사용할 수 없는 경우 표시되어야 하는 초기 확대/축소 수준을 선택하세요.
-      export:
-        title: "Gantt 차트 PDF 옵션"
-        button_export: "내보내기"
-        column_widths:
-          narrow: "좁음"
-          medium: "보통"
-          wide: "넓음"
-          very_wide: "매우 넓음"
-        options:
-          date_zoom: "날짜 확대/축소"
-          paper_size: "용지 크기"
-          column_widths: "열 너비"
     general_text_no: "아니요"
     general_text_yes: "예"
     general_text_No: "아니요"
@@ -353,17 +290,6 @@ ko:
         format:
           date: "%{attribute}은(는) 유효한 날짜가 아닙니다. YYYY-MM-DD여야 합니다."
         general: "오류가 발생했습니다."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "새로운 기능 및 제품 업데이트에 대해 읽어보십시오."
-          learn_about: "새로운 기능에 대해 자세히 알아보기"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "14_1":
-            standard:
-              new_features_html: >
-                이 릴리스에는 다양한 새로운 기능과 개선 사항이 포함되어 있습니다. <br> <ul class="%{list_styling_class}"> <li>Gantt 보기의 PDF 내보내기(예: 인쇄용)(Enterprise 추가 기능)</li> <li>즐겨 찾는 프로젝트</li> <li>미팅의 섹션</li> <li>내 페이지 및 프로젝트 개요 페이지에 미팅 표시</li> <li>파일 탭에서 첨부 파일을 숨기는 기능</li> <li>링크(URL) 유형의 사용자 지정 필드</li> </ul>
     ical_sharing_modal:
       title: "캘린더 구독"
       inital_setup_error_message: "데이터를 가져오는 중에 오류가 발생했습니다."
@@ -389,6 +315,7 @@ ko:
     label_added_time_by: '%{age}, <a href="%{authorLink}">%{author}</a> 님이 추가함'
     label_ago: "일 전"
     label_all: "모두"
+    label_all_projects: "모든 프로젝트"
     label_all_uppercase: "모두"
     label_all_work_packages: "모든 작업 패키지"
     label_and: "그리고"
@@ -404,6 +331,7 @@ ko:
     label_create: "만들기"
     label_create_work_package: "새 작업 패키지 만들기"
     label_created_by: "작성자"
+    label_current: "현재"
     label_date: "날짜"
     label_date_with_format: "%{date_attribute} 는 %{format} 과 같이 입력되어야 합니다."
     label_deactivate: "비활성화"
@@ -435,7 +363,6 @@ ko:
     label_filename: "파일"
     label_filesize: "크기"
     label_general: "일반"
-    label_global_roles: "글로벌 역할"
     label_greater_or_equal: ">="
     label_group: "그룹"
     label_group_by: "그룹화 기준"
@@ -464,6 +391,7 @@ ko:
     label_menu_collapse: "축소"
     label_menu_expand: "확장"
     label_more_than_ago: "일 이상 전"
+    label_moderate_comment: "코멘트 조정"
     label_next: "다음"
     label_no_color: "색상 없음"
     label_no_data: "표시할 데이터가 없습니다."
@@ -497,7 +425,6 @@ ko:
     label_repository_plural: "리포지토리"
     label_save_as: "다른 이름으로 저장"
     label_search_columns: "열 검색"
-    label_select_project: "프로젝트 선택"
     label_select_watcher: "주시하는 사람을 선택"
     label_selected_filter_list: "선택된 필터"
     label_show_attributes: "모든 특성 표시"
@@ -508,7 +435,7 @@ ko:
     label_sort_lower: "아래로 이동"
     label_sorting: "정렬"
     label_spent_time: "소비한 시간"
-    label_star_query: "호감"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "저장하려면 Enter를 누르세요."
     label_public_query: "공용"
     label_sum: "합계"
@@ -567,7 +494,7 @@ ko:
     label_version_plural: "버전"
     label_view_has_changed: "이 보기에는 저장되지 않은 변경 사항이 있습니다. 클릭하여 저장하십시오."
     help_texts:
-      show_modal: "특성 도움말 텍스트 항목 표시"
+      show_modal: "도움말 텍스트 표시"
     onboarding:
       buttons:
         skip: "건너뛰기"
@@ -610,9 +537,11 @@ ko:
       title: "알림"
       no_unread: "읽지 않는 알림 없음"
       reasons:
-        mentioned: "멘션 된"
+        mentioned: "멘션됨"
         watched: "주시자"
         assigned: "담당자"
+        #The enum value is named 'responsible' in the database and that is what is transported through the API
+        #up to the frontend.
         responsible: "담당"
         created: "생성됨"
         scheduled: "예약됨"
@@ -621,22 +550,15 @@ ko:
         prioritized: "우선 순위 지정됨"
         dateAlert: "날짜 경보"
         shared: "공유됨"
+        reminder: "미리 알림"
       date_alerts:
         milestone_date: "마일스톤 날짜"
         overdue: "기한 지남"
-        overdue_since: "%{difference_in_days} 이후"
-        property_today: "- 오늘입니다"
-        property_is: "- %{difference_in_days} 이내입니다"
-        property_was: "- %{difference_in_days} 전이었습니다"
-        property_is_deleted: "- 삭제되었습니다"
-        upsale:
-          title: "날짜 경보"
-          description: "날짜 경보를 사용하면, 중요 마감일을 놓치거나 잊지 않도록 향후 시작 날짜 또는 종료 날짜에 대한 알림을 받게 됩니다."
-      facets:
-        unread: "읽지 않음"
-        unread_title: "읽지 않은 항목 표시"
-        all: "모두"
-        all_title: "모두 표시"
+        overdue_since: "- %{difference_in_days} 이후."
+        property_today: "- 오늘입니다."
+        property_is: "- %{difference_in_days} 이내입니다."
+        property_was: "- %{difference_in_days} 전이었습니다."
+        property_is_deleted: "- 삭제되었습니다."
       center:
         label_actor_and: "및"
         and_more_users:
@@ -646,25 +568,20 @@ ko:
           with_current_filter: "현재 이 보기에는 알림이 없습니다."
         mark_all_read: "모두 읽은 상태로 표시"
         mark_as_read: "읽음으로 표시"
-        text_update_date: "%{date} -"
+        mark_all_read_confirmation: "이 옵션은 해당 보기의 모든 알림을 읽음으로 표시합니다. 계속하시겠습니까?"
+        text_update_date_by: "%{date} -"
         total_count_warning: "%{newest_count} 개의 가장 최근 알림을 표시합니다. %{more_count} 개의 알림은 표시되지 않습니다."
         empty_state:
           no_notification: "모두 확인하신 것 같습니다."
           no_notification_with_current_project_filter: "선택한 프로젝트에 대한 모든 알림을 본 것 같습니다."
           no_notification_with_current_filter: "%{filter} 필터에 대한 모든 알림을 본 것 같습니다."
+          no_notification_for_filter: "이 필터에 대한 모든 알림을 본 것 같습니다."
           no_selection: "모든 활동 세부 정보를 보려면 알림을 클릭하세요."
         new_notifications:
           message: "새 알림이 있습니다."
           link_text: "로드하려면 여기를 클릭하세요."
-      menu:
-        accountable: "담당"
-        by_project: "프로젝트 기준 읽지 않음"
-        by_reason: "이유"
-        inbox: "받은 편지함"
-        mentioned: "멘션됨"
-        watched: "주시자"
-        date_alert: "날짜 경보"
-        shared: "공유됨"
+      reminders:
+        note: "참고: \"%{note}\""
       settings:
         change_notification_settings: '중요 업데이트를 놓치지 않도록 <a target="_blank" href="%{url}">알림 설정</a>을 수정할 수 있습니다.'
         title: "알림 설정"
@@ -704,7 +621,6 @@ ko:
           date_alerts:
             title: "날짜 경보"
             description: "귀하가 참여하고 있는 오픈 작업 패키지에 대한 중요 날짜가 다가올 때 자동 알림(담당자, 책임자 또는 주시자)."
-            teaser_text: "날짜 경보를 사용하면, 중요 마감일을 놓치거나 잊지 않도록 향후 시작 날짜 또는 종료 날짜에 대한 알림을 받게 됩니다."
           overdue: 기한이 지난 경우
         project_specific:
           title: "프로젝트별 알림 설정"
@@ -717,9 +633,12 @@ ko:
       title: "계속하려면 암호 확인"
     pagination:
       no_other_page: "유일한 페이지에 있습니다."
+      pages_skipped: "페이지를 건너뛰었습니다."
+      page_navigation: "페이지 매김 탐색"
+      per_page_navigation: '페이지별 항목 선택'
       pages:
-        next: "다음 페이지로"
-        previous: "전 페이지로"
+        page_number: '%{number}페이지'
+        show_per_page: 페이지당 %{number}개 표시
     placeholders:
       default: "-"
       subject: "여기에 제목 입력"
@@ -727,18 +646,13 @@ ko:
       description: "설명: 클릭하여 편집..."
       relation_description: "이 관계에 대한 설명을 추가하려면 클릭"
     project:
-      required_outside_context: >
-        모든 특성을 보려면 작업 패키지를 만들 프로젝트를 선택하십시오. 위 유형이 활성화된 프로젝트만 선택할 수 있습니다.
-      details_activity: "프로젝트 세부 정보 활동"
-      context: "프로젝트 컨텍스트"
-      click_to_switch_to_project: "프로젝트: %{projectname}"
-      confirm_template_load: "템플릿을 전환하면 페이지가 다시 로드되고 이 양식에 대한 모든 입력이 손실됩니다. 계속하시겠습니까?"
-      use_template: "템플릿 사용"
-      no_template_selected: "(없음)"
-      copy:
-        copy_options: "복사 설정"
       autocompleter:
         label: "프로젝트 자동완성"
+      click_to_switch_to_project: "프로젝트: %{projectname}"
+      context: "프로젝트 컨텍스트"
+      not_available: "프로젝트 N/A"
+      required_outside_context: >
+        모든 특성을 보려면 작업 패키지를 만들 프로젝트를 선택하십시오. 위 유형이 활성화된 프로젝트만 선택할 수 있습니다.
     reminders:
       settings:
         daily:
@@ -753,6 +667,7 @@ ko:
         immediate:
           title: "내게 이메일 미리 알림 보내기"
           mentioned: "누군가 나를 @멘션할 때 즉시"
+          personal_reminder: "개인 미리 알림을 받는 즉시"
         alerts:
           title: "기타 항목에 대한 이메일 알림(작업 패키지 외)"
           explanation: >
@@ -771,6 +686,8 @@ ko:
           first_day: "첫날"
           last_day: "마지막 날"
     text_are_you_sure: "계속하시겠습니까?"
+    text_are_you_sure_to_cancel: "이 페이지에 저장되지 않은 변경 사항이 있습니다. 변경 사항을 취소하시겠습니까?"
+    breadcrumb: "이동 경로"
     text_data_lost: "입력한 모든 데이터가 손실됩니다."
     text_user_wrote: "%{value}이(가) 작성함:"
     types:
@@ -784,10 +701,6 @@ ko:
         upgrade_to_ee_text: "와우! 만약 이 추가 기능이 필요하다면 여러분은 진짜 프로입니다! Enterprise Edition 고객이 되어서 OpenSource 개발자들을 지원할 생각이 있으신가요?"
         more_information: "더보기"
         nevermind: "신경쓰지 마세요"
-      edit:
-        form_configuration: "양식 구성"
-        projects: "프로젝트"
-        settings: "설정"
     time_entry:
       work_package_required: "먼저 작업 패키지를 선택해야 합니다."
       title: "작업시간 기록"
@@ -810,6 +723,7 @@ ko:
       typeahead_placeholder: 가능한 전문가를 검색합니다
     relation_labels:
       parent: "부모"
+      child: "자식"
       children: "하위"
       relates: "관련 항목"
       duplicates: "중복"
@@ -839,16 +753,16 @@ ko:
       add_new_child: "새 자식 만들기"
       create_new: "새로 만들기"
       add_existing: "기존 추가"
-      add_existing_child: "기존 자식 추가"
+      add_existing_child: "자식 추가"
       remove_child: "자식 제거"
       add_new_relation: "새 관계 만들기"
       add_existing_relation: "기존 관계 추가"
       update_description: "이 관계의 설명 설정 또는 업데이트"
       toggle_description: "토글 관계 설명"
       update_relation: "관계 타입을 변경하려면 클릭하세요"
-      add_follower: "팔로워 추가"
       show_relations: "관계 표시"
       add_predecessor: "선행 단계 추가"
+      add_successor: "후행자 추가"
       remove: "관계 제거"
       save: "관계 저장"
       abort: "중단"
@@ -858,6 +772,7 @@ ko:
     autocompleter:
       placeholder: "검색할 유형"
       notFoundText: "항목 없음"
+      search: "검색"
       project:
         placeholder: "프로젝트 선택"
     repositories:
@@ -865,8 +780,6 @@ ko:
       select_branch: "브랜치 선택"
     field_value_enter_prompt: "'%{field}'에 대 한 값을 입력하세요."
     project_menu_details: "세부 정보"
-    scheduling:
-      manual: "수동 스케줄링"
     sort:
       sorted_asc: "오름차순 정렬이 적용됨, "
       sorted_dsc: "내림차순 정렬이 적용됨, "
@@ -880,7 +793,7 @@ ko:
     tl_toolbar:
       zooms: "확대 수준"
       outlines: "계층 수준"
-    upsale:
+    upsell:
       ee_only: "Enterprise Edition 추가 기능"
     wiki_formatting:
       strong: "굵게"
@@ -898,26 +811,22 @@ ko:
       preformatted_text: "서식 설정되어 있는 텍스트"
       wiki_link: "위키 페이지에 연결"
       image: "이미지"
+    sharing:
+      share: "공유"
+      selected_count: "%{count}개 선택됨"
+      selection:
+        mixed: "혼합"
     work_packages:
       bulk_actions:
-        move: "프로젝트의 일괄 변경"
         edit: "대량 편집"
-        copy: "대량 복사"
         delete: "대량 삭제"
+        duplicate: "대량 복제"
+        move: "프로젝트의 일괄 변경"
       button_clear: "선택 취소"
       comment_added: "코멘트가 성공적으로 추가 되었습니다."
       comment_send_failed: "오류가 발생했습니다. 코멘트를 제출할 수 없습니다."
       comment_updated: "코멘트가 성곡적으로 갱신되었습니다."
       confirm_edit_cancel: "편집 중인 작업 패키지를 취소하시겠습니까?"
-      datepicker_modal:
-        automatically_scheduled_parent: "자동으로 예약됩니다. 날짜는 관계에서 파생됩니다."
-        manually_scheduled: "수동 스케줄링이 활성화되고, 모든 관계가 무시됩니다."
-        start_date_limited_by_relations: "사용 가능한 시작 및 종료 날짜는 관계에 따라 제한됩니다."
-        changing_dates_affects_follow_relations: "이 날짜를 변경하면 관련 작업 패키지의 날짜에 영향을 줍니다."
-        click_on_show_relations_to_open_gantt: 'GANTT 개요를 보려면 "%{button_name}" 클릭을 하세요.'
-        show_relations: "관계 표시"
-        ignore_non_working_days:
-          title: "근무일만"
       description_filter: "필터"
       description_enter_text: "텍스트 입력"
       description_options_hide: "옵션 숨기기"
@@ -956,8 +865,8 @@ ko:
         header_no_type: "새 작업 패키지(유형이 아직 설정 안 됨)"
         header_with_parent: "새 %{type}(%{parent_type} #%{id}의 자식)"
         button: "만들기"
-      copy:
-        title: "작업 패키지 복사"
+      duplicate:
+        title: "작업 패키지 복제"
       hierarchy:
         show: "계층 모드 보이기"
         hide: "계층 모드 숨기기"
@@ -1008,11 +917,13 @@ ko:
         workAlternative: "예상 시간"
         remainingTime: "남은 작업"
       default_queries:
+        manually_sorted: "새로운 수동 정렬 쿼리"
         latest_activity: "최근 활동"
         created_by_me: "내가 만듦"
         assigned_to_me: "내게 할당됨"
         recently_created: "최근에 만듦"
         all_open: "모두 열림"
+        overdue: "기한 지남"
         summary: "요약"
         shared_with_users: "사용자와 공유됨"
         shared_with_me: "나와 공유됨"
@@ -1049,18 +960,24 @@ ko:
           not_found: "해당 보기가 없습니다."
           duplicate_query_title: "이 보기의 이름이 이미 존재합니다. 그래도 변경하시겠습니까?"
         text_no_results: "일치하는 보기가 없습니다."
+      reminders:
+        button_label: "미리 알림 설정"
+        title:
+          new: "미리 알림 설정"
+          edit: "미리 알림 편집"
+        subtitle: "선택한 시간에 이 작업 패키지에 대한 알림을 받게 됩니다."
+        presets:
+          tomorrow: "내일"
+          three_days: "3일 내"
+          week: "일주일 내"
+          month: "1개월 내"
+          custom: "특정 날짜/시간에"
       scheduling:
         is_parent: "이 작업 패키지의 날짜는 자식으로부터 자동으로 추정됩니다. '수동 스케줄링'을 활성화하여 날짜를 설정할 수 있습니다."
         is_switched_from_manual_to_automatic: "다른 작업 패키지와의 관계로 인해 수동 스케줄링에서 자동 스케줄링으로 전환한 후 이 작업 패키지의 날짜를 다시 계산해야 할 수 있습니다."
       sharing:
-        share: "공유하기"
         title: "작업 패키지 공유"
         show_all_users: "작업 패키지가 공유된 모든 사용자 표시"
-        selected_count: "%{count}개 선택됨"
-        selection:
-          mixed: "혼합"
-        upsale:
-          description: "프로젝트 멤버가 아닌 사용자와 작업 패키지를 공유합니다."
       table:
         configure_button: "작업 패키지 테이블 구성"
         summary: "작업 패키지의 행 및 작업 패키지 특성의 열이 있는 테이블."
@@ -1095,10 +1012,6 @@ ko:
           manually: "수동"
           warning: "자동 정렬 모드를 활성화하면 이전 정렬이 손실됩니다."
         columns_help_text: "위 입력 필드를 사용하여 테이블 보기에 열을 추가하세요. 열을 끌어다 놓아 순서를 바꿀 수 있습니다."
-        upsale:
-          attribute_highlighting: "나머지 작업 중에 확연히 두드러지는 특정 작업 패키지가 필요합니까?"
-          relation_columns: "작업 패키지 목록에서 관계를 표시해야 합니까?"
-          check_out_link: "Enterprise Edition을 체크아웃하세요."
         relation_filters:
           filter_work_packages_by_relation_type: "관계 유형별 작업 패키지 필터링"
       tabs:
@@ -1157,6 +1070,8 @@ ko:
     notice_successful_delete: "삭제에 성공했습니다."
     notice_successful_update: "업데이트에 성공했습니다."
     notice_job_started: "작업이 시작되었습니다."
+    no_job_id: "서버에서 반환된 작업 ID가 없습니다."
+    invalid_job_response: "서버의 잘못된 응답입니다."
     notice_bad_request: "잘못된 요청입니다."
     relations:
       empty: 관계가 없습니다.
@@ -1187,6 +1102,7 @@ ko:
         other: "작업 패키지"
       child_work_packages:
         other: "%{count}개의 작업 패키지 자식"
+      hour_string: "%{hours} h"
       hour:
         one: "1시간"
         other: "%{count}시간"
@@ -1195,6 +1111,8 @@ ko:
         one: "1일"
         other: "%{count}일"
         zero: "0일"
+      word:
+        other: "단어 %{count}개"
     zen_mode:
       button_activate: "Zen 모드 활성화"
       button_deactivate: "Zen 모드 비활성화"
@@ -1204,7 +1122,6 @@ ko:
       current_project_and_all_descendants: "이 프로젝트 + 하위 프로젝트에서"
       current_project: "이 프로젝트에서"
       recently_viewed: "최근에 조회됨"
-      search: "검색"
       title:
         all_projects: "모든 프로젝트"
         project_and_subprojects: "그리고 모든 하위 프로젝트"
@@ -1281,9 +1198,9 @@ ko:
         next_button: "계속"
     exclusion_info:
       modal:
-        title: "Status excluded from hierarchy totals"
+        title: "계층 합계에서 상태 제외됨"
         content: >-
-          The status '%{status_name}' has been configured to be excluded from hierarchy totals of Work, Remaining work, and % Complete. The totals do not take this value into account.
+          '%{status_name}' 상태는 작업, 남은 작업 및 완료 %의 계층 합계에서 제외되도록 구성되었습니다. 합계에서 이 값이 고려되지 않습니다.
     favorite_projects:
       no_results: "즐겨 찾는 프로젝트가 없습니다"
       no_results_subtext: "개요 또는 프로젝트 목록에서 하나 이상의 프로젝트를 즐겨찾기로 추가하세요."
@@ -1296,20 +1213,20 @@ ko:
         all: "모든 프로젝트"
         selected: "선택한 항목만"
       search_placeholder: "프로젝트 검색..."
+      search_placeholder_favorites: "즐겨찾기 검색..."
       include_subprojects: "모든 하위 프로젝트 포함"
       tooltip:
         include_all_selected: "'모든 하위 프로젝트 포함'이 활성화되어 있으므로 프로젝트가 이미 포함되어 있습니다."
         current_project: "작업 중인 현재 프로젝트입니다."
         does_not_match_search: "프로젝트가 검색 기준과 일치하지 않습니다."
       no_results: "검색 기준과 일치하는 프로젝트가 없습니다."
+      no_favorite_results: "검색 기준과 일치하는 프로젝트 즐겨찾기가 없습니다."
     baseline:
       toggle_title: "기준선"
       clear: "선택 취소"
       apply: "적용"
       header_description: "과거 어느 시점 이후에 이 목록에서 변경된 사항을 강조 표시합니다."
-      enterprise_header_description: "Enterprise Edition에서 과거 어느 시점 이후에 이 목록에서 변경된 사항을 강조 표시합니다."
       show_changes_since: "다음 이후 변경 사항 표시"
-      baseline_comparison: "기준선 비교"
       help_description: "기준선의 참조 시간대입니다."
       time_description: "내 현지 시간: %{datetime}"
       time: "시간"
@@ -1344,12 +1261,10 @@ ko:
         remove: "제거"
       drop_modal:
         focus_grab: "모달용 포커스 앵커입니다. 모달 트리거 요소로 돌아가려면 shift+tab을 누르세요."
-        close: "Close modal"
+        close: "모달 닫기"
     open_project_storage_modal:
       waiting_title:
-        timeout: "Timeout"
+        timeout: "시간 제한"
       waiting_subtitle:
         network_off: "네트워크 문제가 있습니다."
         network_on: "네트워크가 복원되었습니다. 작업 중입니다."
-        timeout: >
-          OpenProject could not provide you access to the project folder within the expected period of time. Please, try once again.<br><br> If that problem persists please contact you OpenProject administrator to check the <a href="https://www.openproject.org/docs/system-admin-guide/files/external-file-storages/file-storage-troubleshooting/">health status of the file storage setup</a>.

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,6 +29,8 @@
 #++
 
 module CustomFields::Inputs::Base::Utils
+  delegate :attribute_name, to: :@custom_field
+
   def base_input_attributes
     {
       name:,
@@ -34,7 +38,8 @@ module CustomFields::Inputs::Base::Utils
       value:,
       required: required?,
       invalid: invalid?,
-      validation_message:
+      validation_message:,
+      help_text_options: { attribute_name: }
     }
   end
 
@@ -47,7 +52,7 @@ module CustomFields::Inputs::Base::Utils
   end
 
   def value
-    @custom_value
+    custom_value
   end
 
   def required?
@@ -55,7 +60,7 @@ module CustomFields::Inputs::Base::Utils
   end
 
   def qa_field_name
-    @custom_field.attribute_name(:kebab_case)
+    attribute_name(:kebab_case)
   end
 
   # used within autocompleter inputs

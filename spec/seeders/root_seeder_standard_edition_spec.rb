@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -36,6 +36,12 @@ RSpec.describe RootSeeder,
                with_config: { edition: "standard" } do
   include RootSeederTestHelpers
 
+  before_all do
+    week_with_saturday_and_sunday_as_weekend
+    clear_enqueued_jobs
+    clear_performed_jobs
+  end
+
   shared_examples "creates standard demo data" do
     it "creates the system user" do
       expect(SystemUser.where(admin: true).count).to eq 1
@@ -45,7 +51,7 @@ RSpec.describe RootSeeder,
       expect(User.not_builtin.where(admin: true).count).to eq 1
     end
 
-    it "creates the demo data" do
+    it "creates the demo data" do # rubocop:disable RSpec/MultipleExpectations
       expect(Project.count).to eq 2
       expect(EnabledModule.count).to eq 13
       expect(WorkPackage.count).to eq 36
@@ -57,12 +63,13 @@ RSpec.describe RootSeeder,
       expect(Query.count).to eq 26
       expect(ProjectRole.count).to eq 5
       expect(WorkPackageRole.count).to eq 3
-      expect(GlobalRole.count).to eq 1
+      expect(GlobalRole.count).to eq 2
       expect(Grids::Overview.count).to eq 2
       expect(Version.count).to eq 4
       expect(VersionSetting.count).to eq 4
       expect(Boards::Grid.count).to eq 5
       expect(Boards::Grid.count { |grid| grid.options.has_key?(:filters) }).to eq 1
+      expect(Project::PhaseDefinition.count).to eq 4
     end
 
     it "links work packages to their version" do
@@ -83,11 +90,22 @@ RSpec.describe RootSeeder,
       expect(default_modules).to include("reporting_module")
     end
 
-    it "creates a structured meeting of 1h duration" do
-      expect(StructuredMeeting.count).to eq 1
-      expect(StructuredMeeting.last.duration).to eq 1.0
-      expect(MeetingAgendaItem.count).to eq 9
-      expect(MeetingAgendaItem.sum(:duration_in_minutes)).to eq 60
+    it "creates a weekly recurring meeting with one instance" do
+      expect(RecurringMeeting.count).to eq 1
+
+      # The template is created.
+      expect(Meeting.templated.count).to eq 1
+      template = Meeting.templated.first
+      expect(template.duration).to eq 1.0
+      expect(template.agenda_items.count).to eq 9
+      expect(template.agenda_items.sum(:duration_in_minutes)).to eq 60
+
+      # The first instance from that template is also created with the same data.
+      expect(Meeting.where(template: false).count).to eq 1
+      instance = Meeting.not_templated.first
+      expect(instance.duration).to eq 1.0
+      expect(instance.agenda_items.count).to eq 9
+      expect(instance.agenda_items.sum(:duration_in_minutes)).to eq 60
     end
 
     it "creates different types of queries" do
@@ -124,16 +142,18 @@ RSpec.describe RootSeeder,
       )
     end
 
-    include_examples "it creates records", model: Color, expected_count: 144
+    include_examples "it creates records", model: Color, expected_count: 148
     include_examples "it creates records", model: DocumentCategory, expected_count: 3
-    include_examples "it creates records", model: GlobalRole, expected_count: 1
+    include_examples "it creates records", model: GlobalRole, expected_count: 2
     include_examples "it creates records", model: WorkPackageRole, expected_count: 3
-    include_examples "it creates records", model: Role, expected_count: 9
+    include_examples "it creates records", model: ProjectRole, expected_count: 5
+    include_examples "it creates records", model: ProjectQueryRole, expected_count: 2
     include_examples "it creates records", model: IssuePriority, expected_count: 4
     include_examples "it creates records", model: Status, expected_count: 14
     include_examples "it creates records", model: TimeEntryActivity, expected_count: 6
     include_examples "it creates records", model: Workflow, expected_count: 1758
-    include_examples "it creates records", model: Meeting, expected_count: 1
+    include_examples "it creates records", model: RecurringMeeting, expected_count: 1
+    include_examples "it is compatible with the automatic scheduling mode"
   end
 
   describe "demo data" do
@@ -141,7 +161,11 @@ RSpec.describe RootSeeder,
 
     before_all do
       with_edition("standard") do
-        root_seeder.seed_data!
+        root_seeder.seed!
+
+        # Run background jobs as those are also triggered by seeding.
+        # But since those background jobs retrigger themselves, don't wrap the seeding inside a block.
+        perform_enqueued_jobs
       end
     end
 
@@ -149,12 +173,14 @@ RSpec.describe RootSeeder,
 
     include_examples "no email deliveries"
 
-    context "when run a second time" do
+    context "when run a second time in a different language", :settings_reset do
       before_all do
-        described_class.new.seed_data!
+        with_locale_env("de") do
+          described_class.new.seed!
+        end
       end
 
-      it "does not create additional data" do
+      it "does not create additional data and does not raise any errors" do # rubocop:disable RSpec/MultipleExpectations
         expect(Project.count).to eq 2
         expect(WorkPackage.count).to eq 36
         expect(Wiki.count).to eq 2
@@ -165,31 +191,51 @@ RSpec.describe RootSeeder,
         expect(Query.count).to eq 26
         expect(ProjectRole.count).to eq 5
         expect(WorkPackageRole.count).to eq 3
-        expect(GlobalRole.count).to eq 1
+        expect(GlobalRole.count).to eq 2
         expect(Grids::Overview.count).to eq 2
         expect(Version.count).to eq 4
         expect(VersionSetting.count).to eq 4
         expect(Boards::Grid.count).to eq 5
-      end
-    end
-  end
-
-  describe "demo data with work package role migration having been run" do
-    shared_let(:root_seeder) { described_class.new }
-
-    before_all do
-      # call the migration which will add data for work package roles. This
-      # needs to be done manually as running tests automatically calls the
-      # `db:test:purge` rake task.
-      require(Rails.root.join("db/migrate/20231128080650_add_work_package_roles"))
-      AddWorkPackageRoles.new.up
-
-      with_edition("standard") do
-        root_seeder.seed_data!
+        expect(Project::PhaseDefinition.count).to eq 4
       end
     end
 
-    include_examples "creates standard demo data"
+    context "when run a second time in a different language with some color data deleted", :settings_reset do
+      before_all do
+        with_locale_env("de") do
+          # Simulate a user having deleted the seeded colors.
+          # Could also be the user changing the hexcode of the colors, making lookup by hexcode fail.
+          Color.where(name: ["Grey", "Blue", "Black"]).delete_all
+          described_class.new.seed!
+        end
+      end
+
+      it "does not create additional data and does not raise any errors" do
+        expect(Project.count).to eq 2
+        expect(WorkPackage.count).to eq 36
+        expect(Wiki.count).to eq 2
+      end
+    end
+
+    context "when run a second time after all demo projects and original statuses " \
+            "and workflows are deleted (Bug #65138)", :settings_reset do
+      before_all do
+        # Simulate a user having created new statuses, and deleted all default
+        # statuses and workflows (making looking up statuses by name impossible)
+        new_status = create(:status, :default, name: "My own default status")
+        Project.destroy_all
+        # destroying all statuses will destroy all workflows by cascade
+        Status.where.not(id: new_status.id).destroy_all
+        described_class.new.seed!
+      end
+
+      it "does not create additional data and does not raise any errors" do
+        # seeding recreates 2 demo projects
+        expect(Project.count).to eq 2
+        # but they're mostly empty because of the missing default statuses
+        expect(WorkPackage.count).to eq 0
+      end
+    end
   end
 
   describe "demo data mock-translated in another language" do
@@ -202,7 +248,11 @@ RSpec.describe RootSeeder,
           original_translation = m.call(*args, **kw)
           "tr: #{original_translation}"
         end
-        root_seeder.seed_data!
+        root_seeder.seed!
+
+        # Run background jobs as those are also triggered by seeding.
+        # But since those background jobs retrigger themselves, don't wrap the seeding inside a block.
+        perform_enqueued_jobs
       end
     end
 
@@ -222,12 +272,13 @@ RSpec.describe RootSeeder,
       shared_let(:root_seeder) { described_class.new }
 
       before_all do
-        with_env(env_var_name => "de") do
+        with_locale_env("de", env_var_name:) do
           with_edition("standard") do
-            reset(:default_language) # Settings are a pain to reset
-            root_seeder.seed_data!
-          ensure
-            reset(:default_language)
+            root_seeder.seed!
+
+            # Run background jobs as those are also triggered by seeding.
+            # But since those background jobs retrigger themselves, don't wrap the seeding inside a block.
+            perform_enqueued_jobs
           end
         end
       end
@@ -257,7 +308,7 @@ RSpec.describe RootSeeder,
         allow(Settings::Definition["default_projects_modules"])
           .to receive(:writable?).and_return(false)
 
-        root_seeder.seed_data!
+        root_seeder.seed!
       end
     end
 
@@ -280,5 +331,28 @@ RSpec.describe RootSeeder,
     end
 
     include_examples "no email deliveries"
+  end
+
+  context "when admin user creation is locked with OPENPROJECT_SEED_ADMIN_USER_LOCKED=true",
+          :settings_reset do
+    shared_let(:root_seeder) { described_class.new }
+
+    before_all do
+      with_env("OPENPROJECT_SEED_ADMIN_USER_LOCKED" => "true") do
+        with_edition("standard") do
+          reset(:seed_admin_user_locked)
+          root_seeder.seed!
+        end
+      end
+    ensure
+      reset(:seed_admin_user_locked)
+      RequestStore.clear! # resets `User.current` cached result
+    end
+
+    it "seeds without any errors, but locks the admin user", :aggregate_failures do
+      expect(Project.count).to eq 2
+      expect(WorkPackage.count).to eq 36
+      expect(root_seeder.admin_user).to be_locked
+    end
   end
 end

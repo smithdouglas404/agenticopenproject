@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe "Cost Report", "calculations", :js, :with_cuprite do
+RSpec.describe "Cost Report", "calculations", :js do
   let(:project) { create(:project) }
   let(:user) { create(:admin) }
   let(:work_package) { create(:work_package, project:) }
@@ -16,7 +16,7 @@ RSpec.describe "Cost Report", "calculations", :js, :with_cuprite do
       create(:time_entry,
              spent_on:,
              user:,
-             work_package:,
+             entity: work_package,
              project:,
              hours: 10)
     end

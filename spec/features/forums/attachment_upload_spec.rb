@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,7 +31,7 @@
 require "spec_helper"
 require "features/page_objects/notification"
 
-RSpec.describe "Upload attachment to forum message", :js do
+RSpec.describe "Upload attachment to forum message", :js, :selenium do
   let(:forum) { create(:forum) }
   let(:user) do
     create(:user,
@@ -49,30 +51,31 @@ RSpec.describe "Upload attachment to forum message", :js do
 
   it "can upload an image to new and existing messages via drag & drop" do
     index_page.visit!
-    click_link forum.name
+    click_link_or_button forum.name
 
     create_page = index_page.click_create_message
     create_page.set_subject "A new message"
 
     # adding an image
-    sleep 20
+    sleep 1
     editor.drag_attachment image_fixture.path, "Image uploaded on creation"
 
     editor.attachments_list.expect_attached("image.png")
     editor.wait_until_upload_progress_toaster_cleared
 
-    click_button "Create"
+    click_link_or_button "Create"
+    wait_for_network_idle
 
     expect(page).to have_css("#content .wiki img", count: 1)
     expect(page).to have_content("Image uploaded on creation")
     attachments_list.expect_attached("image.png")
 
-    within ".toolbar-items" do
-      click_on "Edit"
-    end
+    page.find_test_selector("message-edit-button").click
 
-    find(".op-uc-figure").click
-    find(".ck-widget__type-around__button_after").click
+    retry_block do
+      find(".op-uc-figure").click
+      find(".ck-widget__type-around__button_after").click
+    end
 
     editor.type_slowly("A spacer text")
 
@@ -81,7 +84,8 @@ RSpec.describe "Upload attachment to forum message", :js do
     editor.attachments_list.expect_attached("image.png", count: 2)
     editor.wait_until_upload_progress_toaster_cleared
 
-    click_button "Save"
+    click_link_or_button "Save"
+    wait_for_network_idle
 
     expect(page).to have_css("#content .wiki img", count: 2)
     expect(page).to have_content("Image uploaded on creation")
@@ -92,7 +96,7 @@ RSpec.describe "Upload attachment to forum message", :js do
 
   it "can upload an image to new and existing messages via drag & drop on attachments" do
     index_page.visit!
-    click_link forum.name
+    click_link_or_button forum.name
 
     create_page = index_page.click_create_message
     create_page.set_subject "A new message"
@@ -107,20 +111,22 @@ RSpec.describe "Upload attachment to forum message", :js do
     editor.attachments_list.expect_attached("image.png")
     editor.wait_until_upload_progress_toaster_cleared
 
-    click_button "Create"
+    click_link_or_button "Create"
+    wait_for_network_idle
 
     attachments_list.expect_attached("image.png")
-    within ".toolbar-items" do
-      click_on "Edit"
+    page.find_test_selector("message-edit-button").click
+    wait_for_network_idle
+
+    retry_block do
+      editor.attachments_list.drag_enter
+      editor.attachments_list.drop(image_fixture)
+      editor.wait_until_upload_progress_toaster_cleared
+      editor.attachments_list.expect_attached!("image.png", count: 2)
     end
 
-    editor.attachments_list.drag_enter
-    editor.attachments_list.drop(image_fixture)
-
-    editor.attachments_list.expect_attached("image.png", count: 2)
-    editor.wait_until_upload_progress_toaster_cleared
-
-    click_button "Save"
+    click_link_or_button "Save"
+    wait_for_network_idle
 
     attachments_list.expect_attached("image.png", count: 2)
   end

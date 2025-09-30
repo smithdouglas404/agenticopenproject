@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,8 +29,9 @@
 require "spec_helper"
 require_relative "shared_context"
 
-RSpec.describe "Team planner drag&dop and resizing",
+RSpec.describe "Team planner drag&drop and resizing",
                :js,
+               :selenium,
                with_ee: %i[team_planner_view],
                with_settings: { start_of_week: 1 } do
   include_context "with team planner full access"
@@ -45,6 +46,7 @@ RSpec.describe "Team planner drag&dop and resizing",
     create(:work_package,
            project:,
            assigned_to: other_user,
+           schedule_manually: false, # because parent of second_wp
            start_date: Time.zone.today.beginning_of_week.next_occurring(:tuesday),
            due_date: Time.zone.today.beginning_of_week.next_occurring(:thursday))
   end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,6 +37,9 @@ class UserPreference < ApplicationRecord
             presence: true
 
   WORKDAYS_FROM_MONDAY_TO_FRIDAY = [1, 2, 3, 4, 5].freeze
+
+  COLOR_MODES = %i[light dark].freeze
+  THEMES = (COLOR_MODES + %i[sync_with_os]).freeze
 
   ##
   # Retrieve keys from settings, and allow accessing
@@ -86,16 +91,16 @@ class UserPreference < ApplicationRecord
     comments_sorting == "desc"
   end
 
+  def disable_keyboard_shortcuts?
+    settings.fetch(:disable_keyboard_shortcuts) { Setting.disable_keyboard_shortcuts? }
+  end
+
+  def disable_keyboard_shortcuts=(value)
+    settings[:disable_keyboard_shortcuts] = to_boolean(value)
+  end
+
   def diff_type
     settings.fetch(:diff_type, "inline")
-  end
-
-  def hide_mail
-    settings.fetch(:hide_mail, true)
-  end
-
-  def can_expose_mail?
-    !hide_mail
   end
 
   def auto_hide_popups=(value)
@@ -118,6 +123,7 @@ class UserPreference < ApplicationRecord
   alias :comments_in_reverse_order :comments_in_reverse_order?
   alias :warn_on_leaving_unsaved :warn_on_leaving_unsaved?
   alias :auto_hide_popups :auto_hide_popups?
+  alias :disable_keyboard_shortcuts :disable_keyboard_shortcuts?
 
   def comments_in_reverse_order=(value)
     settings[:comments_sorting] = to_boolean(value) ? "desc" : "asc"
@@ -127,12 +133,40 @@ class UserPreference < ApplicationRecord
     super.presence || Setting.user_default_theme
   end
 
-  def high_contrast_theme?
-    theme.end_with?("high_contrast")
+  def increase_theme_contrast=(value)
+    settings[:increase_theme_contrast] = to_boolean(value)
+  end
+
+  def force_light_theme_contrast=(value)
+    settings[:force_light_theme_contrast] = to_boolean(value)
+  end
+
+  def force_dark_theme_contrast=(value)
+    settings[:force_dark_theme_contrast] = to_boolean(value)
+  end
+
+  COLOR_MODES.each do |color_mode|
+    define_method("#{color_mode}_color_mode?") { theme.split("_", 2)[0] == color_mode.to_s }
+  end
+
+  THEMES.each do |theme_name|
+    define_method("#{theme_name}_theme?") { theme == theme_name.to_s }
+  end
+
+  def light_high_contrast_theme?
+    light_theme? && increase_theme_contrast?
+  end
+
+  def dark_high_contrast_theme?
+    dark_theme? && increase_theme_contrast?
   end
 
   def time_zone
-    super.presence || Setting.user_default_timezone.presence
+    super.presence || Setting.user_default_timezone.presence || "Etc/UTC"
+  end
+
+  def time_zone?
+    settings["time_zone"].present?
   end
 
   def daily_reminders
@@ -144,11 +178,19 @@ class UserPreference < ApplicationRecord
   end
 
   def immediate_reminders
-    super.presence || { mentioned: true }.with_indifferent_access
+    super.presence || { mentioned: true, personal_reminder: true }.with_indifferent_access
   end
 
   def pause_reminders
     super.presence || { enabled: false }.with_indifferent_access
+  end
+
+  def dismissed_banner?(feature)
+    dismissed_enterprise_banners.key?(feature.to_s)
+  end
+
+  def dismiss_banner(feature)
+    dismissed_enterprise_banners[feature.to_s] = Time.zone.now.utc
   end
 
   def supported_settings_method?(method_name)

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -40,14 +42,9 @@ module OpenProject::TextFormatting
         @ids = Set.new
       end
 
-      def add_header_link(node, id)
-        link = content_tag(:a,
-                           "",
-                           class: "op-uc-link_permalink icon-link",
-                           "aria-hidden": true,
-                           href: "##{id}")
+      def add_header_link_class_and_id(node, id)
+        node.css("a").first["class"] = "op-uc-link_permalink icon-link"
         node["id"] = id
-        node.add_child(link)
       end
 
       ##
@@ -66,16 +63,15 @@ module OpenProject::TextFormatting
       end
 
       ##
-      # Appends the header link and returns
-      # a toc item.
+      # Adds the bem classes to the header link and returns a toc item.
       # The item is prefixed by a number. If there is already a number prefix provided in the text,
       # that prefix is used if it matches the calculated number.
       def process_item(node, number)
         text = node.text
-        return "".html_safe unless text.present?
+        return "".html_safe if text.blank?
 
         id = get_unique_id(text)
-        add_header_link(node, id)
+        add_header_link_class_and_id(node, id)
 
         content_tag(:li, class: "op-uc-toc--list-item") do
           anchor_tag(text, number, id)
@@ -86,13 +82,13 @@ module OpenProject::TextFormatting
         parent_number == "" ? num_in_level.to_s : "#{parent_number}.#{num_in_level}"
       end
 
-      def render_nested(level = 0, parent_number = "")
+      def render_nested(level = 0, parent_number = "") # rubocop:disable Metrics/AbcSize
         result = "".html_safe
         num_in_level = 0
 
-        while headings.length > 0
+        while !headings.empty?
           node = headings.first
-          node_level = node.name[1,].to_i
+          node_level = node.name[1].to_i
 
           if level == node_level
             # We will render this node

@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -46,29 +46,25 @@ module Bim
 
       def upload; end
 
-      def index
-        redirect_to action: :upload
-      end
-
       def prepare_import
         render_next
       rescue StandardError => e
         flash[:error] = I18n.t("bcf.bcf_xml.import_failed", error: e.message)
-        redirect_to action: :upload
+        upload_error_redirect
       end
 
       def configure_import
         render_next
       rescue StandardError => e
         flash[:error] = I18n.t("bcf.bcf_xml.import_failed", error: e.message)
-        redirect_to action: :upload
+        upload_error_redirect
       end
 
       def perform_import
         import_file
       rescue StandardError => e
         flash[:error] = I18n.t("bcf.bcf_xml.import_failed", error: e.message)
-        redirect_to action: :upload
+        upload_error_redirect
       ensure
         @bcf_attachment&.destroy
       end
@@ -78,6 +74,10 @@ module Bim
       end
 
       private
+
+      def upload_error_redirect
+        redirect_to action: :upload, status: :unprocessable_entity
+      end
 
       def import_file
         set_import_options
@@ -121,6 +121,8 @@ module Bim
       end
 
       def render_next
+        response.status = :unprocessable_entity
+
         if render_config_unknown_types?
           render_config_unknown_types
         elsif render_config_unknown_statuses?
@@ -198,7 +200,7 @@ module Bim
         @bcf_xml_file = File.new @bcf_attachment.local_path
       rescue ActiveRecord::RecordNotFound
         flash[:error] = I18n.t("bcf.bcf_xml.import.bcf_file_not_found")
-        redirect_to action: :upload
+        upload_error_redirect
       end
 
       def persist_file
@@ -207,13 +209,13 @@ module Bim
         session[:bcf_file_id] = @bcf_attachment.id
       rescue StandardError => e
         flash[:error] = "Failed to persist BCF file: #{e.message}"
-        redirect_to action: :upload
+        upload_error_redirect
       end
 
       def create_attachment
         filename = params[:bcf_file].original_filename
         call = Attachments::CreateService
-          .bypass_whitelist(user: current_user, whitelist: %w[application/zip])
+          .bypass_allowlist(user: current_user, allowlist: %w[application/zip])
           .call(file: params[:bcf_file],
                 filename:,
                 description: filename)
@@ -227,7 +229,7 @@ module Bim
         path = params[:bcf_file]&.path
         unless path && File.readable?(path)
           flash[:error] = I18n.t("bcf.bcf_xml.import_failed", error: "File missing or not readable")
-          redirect_to action: :upload
+          upload_error_redirect
         end
       end
 
@@ -236,7 +238,7 @@ module Bim
           flash[:error] =
             I18n.t("bcf.bcf_xml.import_failed_unsupported_bcf_version",
                    minimal_version: OpenProject::Bim::BcfXml::Importer::MINIMUM_BCF_VERSION)
-          redirect_to action: :upload
+          upload_error_redirect
         end
       end
     end

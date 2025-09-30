@@ -1,7 +1,11 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 require_relative "../users/notifications/shared_examples"
 
-RSpec.describe "Reminder email sending", js: false do
+RSpec.describe "Reminder email sending",
+               js: false,
+               with_good_job_batches: [Notifications::ScheduleReminderMailsJob] do
   let!(:project) { create(:project, members: { receiving_user => role }) }
   let!(:mute_project) { create(:project, members: { receiving_user => role }) }
   let(:role) { create(:project_role, permissions: %i[view_work_packages]) }
@@ -59,10 +63,6 @@ RSpec.describe "Reminder email sending", js: false do
     Timecop.travel(work_package_update_time) do
       example.run
     end
-  end
-
-  before do
-    ActiveJob::Base.disable_test_adapter
   end
 
   it "sends a digest mail based on the configuration", with_settings: { journal_aggregation_time_minutes: 0 } do

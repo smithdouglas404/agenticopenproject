@@ -4,9 +4,6 @@ et:
       add_widget: 'Add widget'
       remove: 'Eemalda vidin'
       configure: 'Configure widget'
-      upsale:
-        text: "Some widgets, like the work package graph widget, are only available in the Enterprise edition."
-        link: 'Enterprise edition.'
       widgets:
         missing_permission: "You don't have the necessary permissions to view this widget."
         custom_text:
@@ -24,26 +21,27 @@ et:
           title: 'Uudised'
           at: 'at'
           no_results: 'Nothing new to report.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Projekti kirjeldus'
           no_results: "No description has been written yet. One can be provided in the 'Project settings'."
-        project_details:
-          title: 'Projekti info'
-          no_results: 'No custom fields have been defined for projects.'
         project_status:
           title: 'Projekti olek'
-          not_started: 'Not started'
-          on_track: 'On track'
-          off_track: 'Off track'
-          at_risk: 'At risk'
+          not_started: 'Pole alustatud'
+          on_track: 'Graafikus'
+          off_track: 'Pole graafikus'
+          at_risk: 'On ohus'
           not_set: 'Not set'
           finished: 'Lõpetatud'
-          discontinued: 'Discontinued'
+          discontinued: 'Lopetatud'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Alamprojektid'
           no_results: 'No subprojects.'
         project_favorites:
-          title: 'Favorite projects'
+          title: 'Lemmikprojektid'
           no_results: 'You currently have no favorite projects. Click on the star icon in the project dashboard to add one to your favorites.'
         time_entries_current_user:
           title: 'My spent time'
@@ -54,7 +52,7 @@ et:
         work_packages_accountable:
           title: "Work packages I am accountable for"
         work_packages_assigned:
-          title: 'Minu teemad'
+          title: 'Minu tööpaketid'
         work_packages_created:
           title: 'Work packages created by me'
         work_packages_watched:

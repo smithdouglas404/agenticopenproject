@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -62,6 +62,7 @@ import {
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'op-bcf-list',
+  standalone: false,
 })
 export class BcfListComponent extends WorkPackageListViewComponent implements UntilDestroyedMixin, OnInit {
   @Input() showResizer = false;
@@ -96,15 +97,6 @@ export class BcfListComponent extends WorkPackageListViewComponent implements Un
     const viewerState = this.bcfView.valueFromQuery(query);
     this.showTableView = !this.deviceService.isMobile
       && (viewerState === 'table' || viewerState === 'splitTable');
-  }
-
-  public showResizerInCardView():boolean {
-    if (this.noResults && this.ifcModelsService.models.length === 0) {
-      return false;
-    }
-
-    return this.bcfView.currentViewerState() === 'splitCards'
-      || this.bcfView.currentViewerState() === 'splitTable';
   }
 
   handleWorkPackageClicked(event:{ workPackageId:string; double:boolean }):void {

@@ -64,7 +64,7 @@ Before requesting a review, double check your own changes:
 - Are they complete? Did you add that spec Did you take a look at the diff yourself?
 - Did you forget to remove any temporary code, debugging steps, or similar?
 
-Once your pull request is ready to be reviewed, convert it from a draft and add the label `needs review`. You can bookmark this query to always show all pull requests recently marked as reviewable: https://github.com/opf/openproject/pulls?q=is%3Aopen+is%3Apr+label%3A%22needs+review%22
+Once your pull request is ready to be reviewed, convert it from a draft and add the label `needs review`. You can bookmark this query to always show all pull requests recently [marked as reviewable](https://github.com/opf/openproject/pulls?q=is%3Aopen+is%3Apr+label%3A%22needs+review%22)
 
 Do not explicitly request people or groups as reviewers unless you have collaborated with them already, or have a good reason to request specific feedback.
 
@@ -117,7 +117,7 @@ If there are breaking changes (e.g., to permissions, code relevant for developer
 
 ## Other
 
-- For external contributions: Check whether the author has signed a [Contributor License Agreement](../#openproject-contributor-license-agreement-cla) and kindly ask for it if not.
+- For external contributions: Check whether the author has signed a [Contributor License Agreement](../#openproject-contributor-license-agreement-cla) and kindly ask for it if not. There is a GitHub workflow ensuring the contributor signed the current CLA. If the action is green, consider this point done.
 
 - Copyright notice: When new files are added, make sure they contain the OpenProject copyright notice (copy from any file in OpenProject).
 

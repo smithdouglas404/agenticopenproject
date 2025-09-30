@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -53,6 +53,7 @@ import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
     IsolatedQuerySpace,
     HalResourceEditingService,
   ],
+  standalone: false,
 })
 export class WidgetProjectStatusComponent extends AbstractWidgetComponent implements OnInit {
   @ViewChild('contentContainer', { static: true }) readonly contentContainer:ElementRef;

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -30,7 +30,7 @@ import {
   Injectable,
   Injector,
 } from '@angular/core';
-import * as moment from 'moment';
+import moment, { Moment } from 'moment';
 import {
   take,
   tap,
@@ -42,7 +42,6 @@ import {
   Observable,
   of,
 } from 'rxjs';
-import { Moment } from 'moment';
 
 @Injectable({ providedIn: 'root' })
 export class WeekdayService {

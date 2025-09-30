@@ -9,6 +9,7 @@ import { QueryGroupByResource } from 'core-app/features/hal/resources/query-grou
 @Component({
   selector: 'op-wp-table-configuration-settings-tab',
   templateUrl: './display-settings-tab.component.html',
+  standalone: false,
 })
 export class WpTableConfigurationDisplaySettingsTabComponent implements TabComponent {
   // Display mode

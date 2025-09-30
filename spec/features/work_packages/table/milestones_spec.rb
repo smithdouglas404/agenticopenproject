@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 RSpec.describe "Inline editing milestones", :js do
@@ -38,8 +40,11 @@ RSpec.describe "Inline editing milestones", :js do
     start_date.activate!
     start_date.expect_active!
 
-    # Open second date, closes first
-    scroll_to_and_click(due_date.display_element)
+    # Open second date, close first
+    start_date.cancel_by_escape
+    start_date.expect_inactive!
+
+    due_date.activate!
     due_date.expect_active!
 
     # Close with escape

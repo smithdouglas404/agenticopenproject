@@ -65,7 +65,7 @@ export class HierarchyDragActionService extends TableDragActionService {
         // If the sibling is a hierarchy root, return that sibling as new parent.
         parent = previousWpId;
       } else {
-        // If the sibling is no hierarchy root, return it's parent.
+        // If the sibling is no hierarchy root, return its parent.
         // Thus, the dropped element will get the same hierarchy level as the sibling
         parent = this.loadParentOfWP(previousWpId);
       }

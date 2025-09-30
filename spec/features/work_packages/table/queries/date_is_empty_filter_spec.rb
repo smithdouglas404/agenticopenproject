@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe 'Filter by date with "is empty"', :js, :with_cuprite do
+RSpec.describe 'Filter by date with "is empty"', :js, :selenium do
   let(:user) { create(:admin) }
   let(:project) { create(:project) }
 

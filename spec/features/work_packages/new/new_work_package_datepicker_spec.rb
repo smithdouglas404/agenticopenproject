@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,12 +36,13 @@ require "support/edit_fields/edit_field"
 require "features/work_packages/work_packages_page"
 
 RSpec.describe "New work package datepicker",
-               :js, :with_cuprite, with_settings: { date_format: "%Y-%m-%d" } do
+               :js, with_settings: { date_format: "%Y-%m-%d" } do
   let(:project) { create(:project_with_types, public: true) }
   let(:user) { create(:admin) }
 
   let(:wp_page_create) { Pages::FullWorkPackageCreate.new(project:) }
   let(:date_field) { wp_page_create.edit_field(:combinedDate) }
+  let(:datepicker) { date_field.datepicker }
 
   before do
     login_as(user)
@@ -50,17 +53,28 @@ RSpec.describe "New work package datepicker",
 
   it "can open and select the datepicker" do
     date_field.input_element.click
-    date_field.toggle_ignore_non_working_days
+    date_field.toggle_working_days_only
 
     start = (Time.zone.today - 1.day).iso8601
-    date_field.focus_start_date
+    wait_for_network_idle
+    date_field.enable_start_date
     date_field.set_active_date start
+
+    wait_for_network_idle
 
     due = (Time.zone.today + 1.day).iso8601
     date_field.focus_due_date
     date_field.set_active_date due
 
     date_field.expect_duration 3
+
+    # Bug #62300 - Manual scheduling mode button can be clicked without producing a 500 error
+    datepicker.click_manual_scheduling_mode
+
+    # Bug #61960 - Automatic scheduling mode button can be clicked
+    datepicker.click_automatic_scheduling_mode
+    datepicker.expect_save_button_disabled
+    datepicker.click_manual_scheduling_mode
 
     date_field.save!
     date_field.expect_inactive!

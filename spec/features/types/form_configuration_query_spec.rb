@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "form query configuration", :js, :with_cuprite do
+RSpec.describe "form query configuration", :js do
   shared_let(:admin) { create(:admin) }
   let(:type_bug) { create(:type_bug) }
   let(:type_task) { create(:type_task) }
@@ -87,13 +89,13 @@ RSpec.describe "form query configuration", :js, :with_cuprite do
   describe "with EE token", with_ee: %i[edit_attribute_groups] do
     before do
       login_as(admin)
-      visit edit_type_tab_path(id: type_bug.id, tab: "form_configuration")
+      visit edit_type_form_configuration_path(type_bug)
     end
 
     it "can save an empty query group" do
       form.add_query_group("Empty test", :children)
       form.save_changes
-      expect(page).to have_css(".op-toast.-success", text: "Successful update.", wait: 10)
+      expect_and_dismiss_flash(message: "Successful update.")
       type_bug.reload
 
       query_group = type_bug.attribute_groups.detect { |x| x.is_a?(Type::QueryGroup) }
@@ -105,7 +107,7 @@ RSpec.describe "form query configuration", :js, :with_cuprite do
       form.add_query_group("Subtasks", :children)
       # Save changed query
       form.save_changes
-      expect(page).to have_css(".op-toast.-success", text: "Successful update.", wait: 10)
+      expect_and_dismiss_flash(message: "Successful update.")
 
       # Visit wp_table
       wp_table.visit!
@@ -131,7 +133,7 @@ RSpec.describe "form query configuration", :js, :with_cuprite do
         form.add_query_group("Subtasks", :children)
         # Save changed query
         form.save_changes
-        expect(page).to have_css(".op-toast.-success", text: "Successful update.", wait: 10)
+        expect_and_dismiss_flash(message: "Successful update.")
 
         # Visit new wp page
         visit new_project_work_packages_path(project)
@@ -145,22 +147,20 @@ RSpec.describe "form query configuration", :js, :with_cuprite do
       let!(:archived) { create(:project, name: "To be archived") }
 
       it "uses the valid subset of the query (Regression #40324)" do
-        form.add_query_group("Archived project", :children)
-        form.edit_query_group("Archived project")
-
-        # Select the soon archived project
-        modal.switch_to "Filters"
-        filters.expect_filter_count 1
-        filters.add_filter_by("Project", "is (OR)", archived.name)
-        filters.expect_filter_count 2
-        filters.save
+        form.add_query_group("Archived project", :children) do |modal|
+          # Select the soon archived project
+          modal.switch_to "Filters"
+          filters.expect_filter_count 1
+          filters.add_filter_by("Project", "is (OR)", archived.name)
+          filters.expect_filter_count 2
+        end
 
         form.save_changes
-        expect(page).to have_css(".op-toast.-success", text: "Successful update.", wait: 10)
+        expect_and_dismiss_flash(message: "Successful update.")
 
         archived.update_attribute(:active, false)
 
-        visit edit_type_tab_path(id: type_bug.id, tab: "form_configuration")
+        visit edit_type_form_configuration_path(type_bug)
         form.edit_query_group("Archived project")
 
         # Expect we now get the valid subset without the invalid project
@@ -170,21 +170,19 @@ RSpec.describe "form query configuration", :js, :with_cuprite do
     end
 
     it "can modify and keep changed columns (Regression #27604)" do
-      form.add_query_group("Columns Test", :children)
-      form.edit_query_group("Columns Test")
+      form.add_query_group("Columns Test", :children) do |modal|
+        # Restrict filters to type_task
+        modal.switch_to "Columns"
 
-      # Restrict filters to type_task
-      modal.switch_to "Columns"
-
-      columns.assume_opened
-      columns.uncheck_all save_changes: false
-      columns.add "ID", save_changes: false
-      columns.add "Subject", save_changes: false
-      columns.apply
+        columns.assume_opened
+        columns.uncheck_all save_changes: false
+        columns.add "ID", save_changes: false
+        columns.add "Subject", save_changes: false
+      end
 
       # Save changed query
       form.save_changes
-      expect(page).to have_css(".op-toast.-success", text: "Successful update.", wait: 10)
+      expect_and_dismiss_flash(message: "Successful update.")
 
       type_bug.reload
       query = type_bug.attribute_groups.detect { |x| x.key == "Columns Test" }
@@ -193,20 +191,18 @@ RSpec.describe "form query configuration", :js, :with_cuprite do
       column_names = query.attributes.columns.map(&:name).sort
       expect(column_names).to eq %i[id subject]
 
-      form.add_query_group("Second query", :children)
-      form.edit_query_group("Second query")
+      form.add_query_group("Second query", :children) do |modal|
+        # Restrict filters to type_task
+        modal.switch_to "Columns"
 
-      # Restrict filters to type_task
-      modal.switch_to "Columns"
-
-      columns.assume_opened
-      columns.uncheck_all save_changes: false
-      columns.add "ID", save_changes: false
-      columns.apply
+        columns.assume_opened
+        columns.uncheck_all save_changes: false
+        columns.add "ID", save_changes: false
+      end
 
       # Save changed query
       form.save_changes
-      expect(page).to have_css(".op-toast.-success", text: "Successful update.", wait: 10)
+      expect_and_dismiss_flash(message: "Successful update.")
 
       type_bug.reload
       query = type_bug.attribute_groups.detect { |x| x.key == "Columns Test" }
@@ -224,6 +220,7 @@ RSpec.describe "form query configuration", :js, :with_cuprite do
       expect(column_names).to eq %i[id]
 
       form.edit_query_group("Second query")
+
       modal.switch_to "Columns"
       columns.expect_checked "ID"
       columns.apply
@@ -237,23 +234,21 @@ RSpec.describe "form query configuration", :js, :with_cuprite do
 
     shared_examples_for "query group" do
       it do
-        form.add_query_group("Subtasks", frontend_relation_type)
-        form.edit_query_group("Subtasks")
+        form.add_query_group("Subtasks", frontend_relation_type) do |modal|
+          # Expect disabled tabs for timelines and display mode
+          modal.expect_disabled_tab "Gantt chart"
+          modal.expect_disabled_tab "Display settings"
 
-        # Expect disabled tabs for timelines and display mode
-        modal.expect_disabled_tab "Gantt chart"
-        modal.expect_disabled_tab "Display settings"
-
-        # Restrict filters to type_task
-        modal.expect_open
-        modal.switch_to "Filters"
-        # the templated filter should be hidden in the Filters tab
-        filters.expect_filter_count 1
-        filters.add_filter_by("Type", "is (OR)", type_task.name)
-        filters.save
+          # Restrict filters to type_task
+          modal.expect_open
+          modal.switch_to "Filters"
+          # the templated filter should be hidden in the Filters tab
+          filters.expect_filter_count 1
+          filters.add_filter_by("Type", "is (OR)", type_task.name)
+        end
 
         form.save_changes
-        expect(page).to have_css(".op-toast.-success", text: "Successful update.", wait: 10)
+        expect_and_dismiss_flash(message: "Successful update.")
 
         # Visit work package with that type
         wp_page.visit!
@@ -283,7 +278,7 @@ RSpec.describe "form query configuration", :js, :with_cuprite do
         embedded_table.reference_work_package unrelated_task
 
         # Go back to type configuration
-        visit edit_type_tab_path(id: type_bug.id, tab: "form_configuration")
+        visit edit_type_form_configuration_path(type_bug)
 
         # Edit query to remove filters
         form.edit_query_group("Subtasks")

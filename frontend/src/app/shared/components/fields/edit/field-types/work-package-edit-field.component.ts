@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -39,6 +39,7 @@ import { CollectionResource } from 'core-app/features/hal/resources/collection-r
 
 @Component({
   templateUrl: './work-package-edit-field.component.html',
+  standalone: false,
 })
 export class WorkPackageEditFieldComponent extends SelectEditFieldComponent {
   /** Keep a switchmap for search term and loading state */

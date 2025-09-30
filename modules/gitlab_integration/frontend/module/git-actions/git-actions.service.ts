@@ -8,7 +8,7 @@
 // OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
 // Copyright (C) 2006-2013 Jean-Philippe Lang
 // Copyright (C) 2010-2013 the ChiliProject Team
-// Copyright (C) 2012-2021 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -39,14 +39,10 @@ export class GitActionsService {
     // See https://stackoverflow.com/a/3651867 for how these rules came in.
     // This sanitization tries to be harsher than those rules
     return str
-      .replace(/&/g, 'and ') // & becomes and
-      .replace(/ +/g, '-') // Spaces become dashes
-      .replace(/[\000-\039]/g, '') // ASCII control characters are out
-      .replace(/\177/g, '') // DEL is out
-      .replace(/[#\\\/\?\*\~\^\:\{\}@\.\[\]'"]/g, '') // Some other characters with special rules are out
-      .replace(/^[-]+/g, '') // Dashes at the start are removed
-      .replace(/[-]+$/g, '') // Dashes at the end are removed
-      .replace(/-+/g, '-') // Multiple dashes in a row are deduped
+      .replace(/&/g, "and ") // & becomes and
+      .replace(/\W+/g, "-") // Replace any consecutive non ascii characters by a single dash as they might make trouble in some tools.
+      .replace(/^-/g, "") // Dash at the start is removed
+      .replace(/-$/g, "") // Dash at the end is removed
       .trim();
   }
 
@@ -79,6 +75,10 @@ ${description}
 
 ${url}
 `.replace(/\n\n+/g, '\n\n');
+  }
+
+  public commitMessageDisplayText(workPackage:WorkPackageResource):string {
+    return this.commitMessage(workPackage).replace(/\n\n/g, ' ');
   }
 
   public gitCommand(workPackage:WorkPackageResource):string {

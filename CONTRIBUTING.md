@@ -4,7 +4,7 @@ We are pleased that you are thinking about contributing to OpenProject! This gui
 
 ## Get in touch
 
-Please get in touch with us using our [develompment forum](https://community.openproject.org/projects/openproject/boards/7) or send us an email to info@openproject.com.
+Please get in touch with us using our [development forum](https://community.openproject.org/projects/openproject/boards/7) or send us an email to [info@openproject.com](mailto:info@openproject.com).
 
 ## Issue tracking and coordination
 
@@ -31,37 +31,37 @@ For contributing source code, please follow the git workflow below:
 - **Fork** OpenProject on GitHub
 - Clone your fork to your development machine:
 
-```
+```bash
 git clone git@github.com/<username>/openproject
 ```
 
 - Optional: Add the original OpenProject repository as a remote, so you can fetch changes:
 
-```
+```bash
 git remote add upstream git@github.com:opf/openproject
 ```
 
 - Make sure you're on the right branch. The main development branch is `dev`:
 
-```
+```bash
 git checkout dev
 ```
 
 - Create a feature branch:
 
-```
+```bash
 git checkout -b feature/<short description of your feature>
 ```
 
 - Make your changes, then push the branch into your ***own*** repository:
 
-```
+```bash
 git push origin <your feature branch>
 ```
 
 - Create a pull request against a branch of of the <opf/openproject> repository, containing a ***clear description*** of what the pull request attempts to change and/or fix.
 
-If your pull request **does not contain a description** for what it does and what it's intentions are,
+If your pull request **does not contain a description** for what it does and what its intentions are,
 we will reject it.
 If you are working on a specific work package from the [list](https://community.openproject.org/projects/openproject/work_packages),
 you may include a link to that work package in the description, so we can track your work.
@@ -83,11 +83,9 @@ More on this topic can be found in our [blog post](https://www.openproject.org/h
 
 Please add tests to your code to verify functionality, especially if it is a new feature.
 
-Pull requests will be verified by TravisCI as well,
+Pull requests will be verified by GitHub Actions,
 but please run them locally as well and make sure they are green before creating your pull request.
 We have a lot of pull requests coming in and it takes some time to run the complete suite for each one.
-
-If you push to your branch in quick succession, please consider stopping the associated Travis builds, as Travis will run for each commit. This is especially true if you force push to the branch.
 
 Please also use `[ci skip]` in your commit message to suppress builds which are not necessary
 (e.g. after fixing a typo in the `README`).
@@ -100,11 +98,11 @@ A fix for the current version (called "Hotfix" and the branch ideally being name
 should target `release/*` and a fix for the former version
 (called "Backport" and the branch ideally being named `backport/XYZ`)
 should target `backport/*`. We will try to merge hotfixes into dev branch
-but if that is no trivial task, we might ask you to create another PR for that.
+but if that is a non-trivial task, we might ask you to create another PR for that.
 
 ## Inactive pull requests
 
-We want to keep the Pull request list as cleaned up as possible - we will aim close pull requests
+We want to keep the Pull request list as tidy as possible - we will aim close pull requests
 after an **inactivity period of 30 days** (no comments, no further pushes)
 which are not labelled as `work in progress` by us.
 
@@ -136,9 +134,9 @@ Instances of abusive, harassing, or otherwise unacceptable behavior may be repor
 by opening an issue or contacting one or more of the project maintainers.
 
 This code of conduct is adapted from the
-[Contributor Covenant](http:contributor-covenant.org),
+[Contributor Covenant](https://www.contributor-covenant.org),
 version 1.0.0, available at
-[http://contributor-covenant.org/version/1/0/0/](http://contributor-covenant.org/version/1/0/0/)
+[http://contributor-covenant.org/version/1/0/0/](https://www.contributor-covenant.org/version/1/0/0/code-of-conduct/)
 
 ## Contributors license agreement
 

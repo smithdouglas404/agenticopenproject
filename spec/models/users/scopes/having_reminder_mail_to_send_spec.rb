@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -23,7 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See docs/COPYRIGHT.rdoc for more details.
+# See COPYRIGHT and LICENSE files for more details.
 #++
 
 require "spec_helper"
@@ -380,7 +382,7 @@ RSpec.describe User, ".having_reminder_mail_to_send" do
       )
     end
     let(:scope_upper_boundary_time) { ActiveSupport::TimeZone["Europe/Paris"].parse("2021-09-30T08:09").utc }
-    let(:scope_lower_boundary_time) { ActiveSupport::TimeZone["Europe/Paris"].parse("2021-09-30T08:00") }
+    let(:scope_lower_boundary_time) { ActiveSupport::TimeZone["Europe/Paris"].parse("2021-09-30T08:00").utc }
 
     it "contains the user" do
       expect(scope)
@@ -399,7 +401,7 @@ RSpec.describe User, ".having_reminder_mail_to_send" do
       )
     end
     let(:scope_upper_boundary_time) { ActiveSupport::TimeZone["Europe/Paris"].parse("2021-09-30T10:00").utc }
-    let(:scope_lower_boundary_time) { ActiveSupport::TimeZone["Europe/Paris"].parse("2021-09-30T10:00") }
+    let(:scope_lower_boundary_time) { ActiveSupport::TimeZone["Europe/Paris"].parse("2021-09-30T10:00").utc }
 
     it "is empty" do
       expect(scope)

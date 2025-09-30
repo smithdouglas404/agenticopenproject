@@ -83,10 +83,12 @@ allOf:
           - 'null'
         description: |-
           User's identity_url for OmniAuth authentication.
+          **Deprecated:** It will be removed in the near future.
     
           # Conditions
     
           - User is self, or `create_user` or `manage_user` permission globally
+        deprecated: true
       createdAt:
         type: string
         format: date-time

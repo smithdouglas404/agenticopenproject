@@ -91,9 +91,9 @@ If the project member you are removing has shared work packages, you will also b
 
 ![Confirm removing a user with shared work packages from a project in OpenProject](openproject_user_guide_confirm_user_removal_with_shares.png)
 
-> Note: please keep in mind that removing  project members can only be done if you have correct permissions.
-
-> Note: a project member can be a part of the project either individually, as a member of a group, or both. The role removal will only affect the member's individual roles. All those roles obtained via a group will not be removed. To remove those group roles you can either remove the member from the group or remove the entire group from the project.
+> [!NOTE]
+> Please keep in mind that removing project members can only be done if you have correct permissions.  
+> A project member can be a part of the project either individually, as a member of a group, or both. The role removal will only affect the member's individual roles. All those roles obtained via a group will not be removed. To remove those group roles you can either remove the member from the group or remove the entire group from the project.
 
 ## Revoke sharing privileges
 
@@ -108,7 +108,9 @@ If a work package has been [shared](../work-packages/share-work-packages), you m
 Members will have different roles with different permissions in a project. To find out how to configure roles and permissions click [here](../../system-admin-guide/users-permissions/roles-permissions).
 
 <div class="glossary">
+
 A **role** is defined as a set of permissions defined by a unique name. Project members are assigned to a project by specifying a user's, group's or placeholder user's name and the role(s) they should assume in the project.
+
 </div>
 
 To assign work packages to a project member, the respective user's or placeholder user's role needs to be able to be assigned work packages. This is the default setting for default roles. You can check this setting in the [Roles and Permissions section](../../system-admin-guide/users-permissions/roles-permissions/) of the system administration.

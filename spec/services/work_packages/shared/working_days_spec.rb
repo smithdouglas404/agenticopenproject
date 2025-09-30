@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -50,7 +52,7 @@ RSpec.describe WorkPackages::Shared::WorkingDays do
       end
     end
 
-    context "with weekend days (Saturday and Sunday)", :weekend_saturday_sunday do
+    context "with Saturday and Sunday being non-working days", :weekend_saturday_sunday do
       include_examples "it returns duration", 0, sunday_2022_07_31, sunday_2022_07_31
       include_examples "it returns duration", 5, sunday_2022_07_31, Date.new(2022, 8, 5)
       include_examples "it returns duration", 5, sunday_2022_07_31, Date.new(2022, 8, 6)
@@ -91,6 +93,10 @@ RSpec.describe WorkPackages::Shared::WorkingDays do
     end
   end
 
+  include_examples "lag computation excluding non-working days"
+
+  include_examples "add lag to a date"
+
   describe "#start_date" do
     it "returns the start date for a due date and a duration" do
       expect(subject.start_date(monday_2022_08_01, 1)).to eq(monday_2022_08_01)
@@ -118,7 +124,7 @@ RSpec.describe WorkPackages::Shared::WorkingDays do
       end
     end
 
-    context "with weekend days (Saturday and Sunday)", :weekend_saturday_sunday do
+    context "with Saturday and Sunday being non-working days", :weekend_saturday_sunday do
       include_examples "start_date", due_date: monday_2022_08_01, duration: 1, expected: monday_2022_08_01
       include_examples "start_date", due_date: monday_2022_08_01, duration: 5, expected: monday_2022_08_01 - 6.days
       include_examples "start_date", due_date: wednesday_2022_08_03, duration: 10, expected: wednesday_2022_08_03 - 13.days
@@ -162,7 +168,7 @@ RSpec.describe WorkPackages::Shared::WorkingDays do
       end
     end
 
-    context "with weekend days (Saturday and Sunday)", :weekend_saturday_sunday do
+    context "with Saturday and Sunday being non-working days", :weekend_saturday_sunday do
       include_examples "due_date", start_date: monday_2022_08_01, duration: 1, expected: monday_2022_08_01
       include_examples "due_date", start_date: monday_2022_08_01, duration: 5, expected: monday_2022_08_01 + 4.days
       include_examples "due_date", start_date: wednesday_2022_08_03, duration: 10, expected: wednesday_2022_08_03 + 13.days
@@ -188,49 +194,17 @@ RSpec.describe WorkPackages::Shared::WorkingDays do
       expect(subject.soonest_working_day(nil)).to be_nil
     end
 
-    context "with lag" do
-      it "returns the soonest working day from the given day, after a configurable lag of working days" do
-        expect(subject.soonest_working_day(sunday_2022_07_31, lag: nil)).to eq(sunday_2022_07_31)
-        expect(subject.soonest_working_day(sunday_2022_07_31, lag: 0)).to eq(sunday_2022_07_31)
-        expect(subject.soonest_working_day(sunday_2022_07_31, lag: 1)).to eq(monday_2022_08_01)
-      end
-
-      it "works with big lag value like 100_000" do
-        # First implementation was recursive and failed with SystemStackError: stack level too deep
-        expect { subject.soonest_working_day(sunday_2022_07_31, lag: 100_000) }
-          .not_to raise_error
-      end
-    end
-
-    context "with weekend days (Saturday and Sunday)", :weekend_saturday_sunday do
+    context "with Saturday and Sunday being non-working days", :weekend_saturday_sunday do
       include_examples "soonest working day", date: friday_2022_07_29, expected: friday_2022_07_29
       include_examples "soonest working day", date: saturday_2022_07_30, expected: monday_2022_08_01
       include_examples "soonest working day", date: sunday_2022_07_31, expected: monday_2022_08_01
       include_examples "soonest working day", date: monday_2022_08_01, expected: monday_2022_08_01
-
-      context "with lag" do
-        include_examples "soonest working day with lag", date: friday_2022_07_29, lag: 0, expected: friday_2022_07_29
-        include_examples "soonest working day with lag", date: saturday_2022_07_30, lag: 0, expected: monday_2022_08_01
-        include_examples "soonest working day with lag", date: sunday_2022_07_31, lag: 0, expected: monday_2022_08_01
-        include_examples "soonest working day with lag", date: monday_2022_08_01, lag: 0, expected: monday_2022_08_01
-
-        include_examples "soonest working day with lag", date: friday_2022_07_29, lag: 1, expected: monday_2022_08_01
-        include_examples "soonest working day with lag", date: saturday_2022_07_30, lag: 1, expected: Date.new(2022, 8, 2)
-        include_examples "soonest working day with lag", date: sunday_2022_07_31, lag: 1, expected: Date.new(2022, 8, 2)
-        include_examples "soonest working day with lag", date: monday_2022_08_01, lag: 1, expected: Date.new(2022, 8, 2)
-
-        include_examples "soonest working day with lag", date: friday_2022_07_29, lag: 8, expected: Date.new(2022, 8, 10)
-      end
     end
 
     context "with some non working days (Christmas 2022-12-25 and new year's day 2023-01-01)", :christmas_2022_new_year_2023 do
       include_examples "soonest working day", date: Date.new(2022, 12, 25), expected: Date.new(2022, 12, 26)
       include_examples "soonest working day", date: Date.new(2022, 12, 31), expected: Date.new(2022, 12, 31)
       include_examples "soonest working day", date: Date.new(2023, 1, 1), expected: Date.new(2023, 1, 2)
-
-      context "with lag" do
-        include_examples "soonest working day with lag", date: Date.new(2022, 12, 24), lag: 7, expected: Date.new(2023, 1, 2)
-      end
     end
 
     context "with no working days", :no_working_days do

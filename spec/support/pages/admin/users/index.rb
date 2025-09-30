@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,12 +39,12 @@ module Pages
         end
 
         def expect_listed(*users)
-          rows = page.all "td.username a"
+          rows = page.all "td.username a", count: users.count
           expect(rows.map(&:text)).to include(*users.map(&:login))
         end
 
         def expect_order(*users)
-          rows = page.all "td.username a"
+          rows = page.all "td.username a", count: users.count
           expect(rows.map(&:text)).to eq(users.map(&:login))
         end
 
@@ -62,21 +64,29 @@ module Pages
         def filter_by_status(value)
           select value, from: "Status:"
           click_button "Apply"
+
+          wait_for_network_idle
         end
 
         def filter_by_name(value)
           fill_in "Name", with: value
           click_button "Apply"
+
+          wait_for_network_idle
         end
 
         def clear_filters
           click_link "Clear"
+
+          wait_for_network_idle
         end
 
         def order_by(key)
           within "thead" do
             click_link key
           end
+
+          wait_for_network_idle
         end
 
         def lock_user(user)
@@ -103,6 +113,8 @@ module Pages
           within_user_row(user) do
             click_link text
           end
+
+          wait_for_network_idle
         end
 
         private

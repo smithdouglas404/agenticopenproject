@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -38,8 +40,11 @@ class HourlyRatesController < ApplicationController
   before_action :find_optional_project, only: %i[show edit update]
   before_action :find_project, only: [:set_rate]
 
-  # #show, #edit have their own authorization
+  # #show, #edit and #update have their own authorization
   before_action :authorize, except: %i[show edit update]
+  no_authorization_required! :show,
+                             :edit,
+                             :update
 
   # TODO: this should be an index
   def show
@@ -54,7 +59,7 @@ class HourlyRatesController < ApplicationController
     end
   end
 
-  def edit
+  def edit # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
     # TODO: split into edit and update
     # remove code where appropriate
     if @project
@@ -69,20 +74,20 @@ class HourlyRatesController < ApplicationController
       @rates = DefaultHourlyRate.where(user_id: @user)
                .order("#{DefaultHourlyRate.table_name}.valid_from desc")
                .to_a
-      @rates << @user.default_rates.build(valid_from: Date.today) if @rates.empty?
+      @rates << @user.default_rates.build(valid_from: Time.zone.today) if @rates.empty?
     else
       @rates = @user.rates.select { |r| r.project_id == @project.id }.sort { |a, b| b.valid_from <=> a.valid_from }.to_a
-      @rates << @user.rates.build(valid_from: Date.today, project: @project) if @rates.empty?
+      @rates << @user.rates.build(valid_from: Time.zone.today, project: @project) if @rates.empty?
     end
 
-    render action: "edit", layout: !request.xhr?
+    render action: :edit, layout: !request.xhr?
   end
 
   current_menu_item :edit do
     :budgets
   end
 
-  def update
+  def update # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
     # TODO: copied over from edit
     # remove code where appropriate
     if @project
@@ -105,27 +110,27 @@ class HourlyRatesController < ApplicationController
     if @user.save
       flash[:notice] = t(:notice_successful_update)
       if @project.nil?
-        redirect_back_or_default(controller: "users", action: "edit", id: @user)
+        redirect_back_or_default({ controller: "users", action: "edit", id: @user })
       else
-        redirect_back_or_default(action: "show", id: @user, project_id: @project)
+        redirect_back_or_default({ action: "show", id: @user, project_id: @project })
       end
     else
       if @project.nil?
         @rates = @user.default_rates
-        @rates << @user.default_rates.build(valid_from: Date.today) if @rates.empty?
+        @rates << @user.default_rates.build(valid_from: Time.zone.today) if @rates.empty?
       else
         @rates = @user
                  .rates
                  .select { |r| r.project_id == @project.id }
-                 .sort { |a, b| b.valid_from || Date.today <=> a.valid_from || Date.today }
-        @rates << @user.rates.build(valid_from: Date.today, project: @project) if @rates.empty?
+                 .sort { |a, b| b.valid_from || Time.zone.today <=> a.valid_from || Time.zone.today }
+        @rates << @user.rates.build(valid_from: Time.zone.today, project: @project) if @rates.empty?
       end
-      render action: "edit", layout: !request.xhr?
+      render action: :edit, layout: !request.xhr?
     end
   end
 
   def set_rate
-    today = Date.today
+    today = Time.zone.today
 
     rate = @user.rate_at(today, @project)
     rate = HourlyRate.new if rate.nil? || rate.valid_from != today
@@ -167,19 +172,13 @@ class HourlyRatesController < ApplicationController
 
   def find_project
     @project = Project.find(params[:project_id])
-  rescue ActiveRecord::RecordNotFound
-    render_404
   end
 
   def find_optional_project
     @project = params[:project_id].blank? ? nil : Project.find(params[:project_id])
-  rescue ActiveRecord::RecordNotFound
-    render_404
   end
 
   def find_user
     @user = params[:id] ? User.find(params[:id]) : User.current
-  rescue ActiveRecord::RecordNotFound
-    render_404
   end
 end

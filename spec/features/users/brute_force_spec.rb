@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -89,7 +91,7 @@ RSpec.describe "Loggin (with brute force protection)" do
     new_login_attempt(login, password)
 
     expect(page)
-      .to have_current_path my_page_path
+      .to have_current_path home_path
 
     # resets the failed login count
     expect(User.where(id: user.id).pluck(:failed_login_count).first)
@@ -111,6 +113,6 @@ RSpec.describe "Loggin (with brute force protection)" do
     new_login_attempt(login, password)
 
     expect(page)
-      .to have_current_path my_page_path
+      .to have_current_path home_path
   end
 end

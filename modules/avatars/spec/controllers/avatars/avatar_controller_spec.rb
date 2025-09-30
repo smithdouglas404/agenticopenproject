@@ -1,5 +1,7 @@
-require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
-require File.expand_path(File.dirname(__FILE__) + "/../../shared_examples")
+# frozen_string_literal: true
+
+require_relative "../../spec_helper"
+require_relative "../../shared_examples"
 
 RSpec.describe Avatars::AvatarController do
   include_context "there are users with and without avatars"
@@ -33,7 +35,7 @@ RSpec.describe Avatars::AvatarController do
           let(:target_user) { user_with_avatar }
 
           it "renders the send file" do
-            expect(response.status).to eq 200
+            expect(response).to have_http_status :ok
           end
         end
 
@@ -41,7 +43,7 @@ RSpec.describe Avatars::AvatarController do
           let(:target_user) { user_without_avatar }
 
           it "renders 404" do
-            expect(response.status).to eq 404
+            expect(response).to have_http_status :not_found
           end
         end
       end
@@ -51,7 +53,7 @@ RSpec.describe Avatars::AvatarController do
         let(:target_user) { user_with_avatar }
 
         it "renders a 404" do
-          expect(response.status).to eq 404
+          expect(response).to have_http_status :not_found
         end
       end
     end

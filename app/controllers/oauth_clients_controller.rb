@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -38,6 +38,8 @@ class OAuthClientsController < ApplicationController
   before_action :set_code, only: [:callback]
   before_action :set_connection_manager, only: [:callback]
 
+  no_authorization_required! :callback, :ensure_connection
+
   after_action :clear_oauth_state_cookie, only: [:callback]
 
   # Provide the OAuth2 "callback" endpoint.
@@ -54,10 +56,9 @@ class OAuthClientsController < ApplicationController
     service_result = @connection_manager.code_to_token(@code)
 
     if service_result.success?
-      flash[:modal] = session.delete(:oauth_callback_flash_modal) if session[:oauth_callback_flash_modal].present?
       # Redirect the user to the page that initially wanted to access the OAuth2 resource.
       # "state" is a nonce that identifies a cookie which holds that page's URL.
-      redirect_to @redirect_uri
+      redirect_to @redirect_uri, op_modal: retrieve_callback_op_modal_flash
     else
       # We got a list of errors from ::OAuthClients::ConnectionManager
       set_oauth_errors(service_result)
@@ -80,26 +81,35 @@ class OAuthClientsController < ApplicationController
 
     storage = oauth_client.integration
     # check if the origin is the same
-    destination_url = if params.fetch(:destination_url, "").start_with?(root_url)
-                        params[:destination_url]
-                      else
-                        root_url
-                      end
-    auth_state = ::Storages::Peripherals::StorageInteraction::Authentication
-                   .authorization_state(storage:, user: User.current)
+    destination_url = destination_url(params.fetch(:destination_url, ""))
+    auth_state = ::Storages::Adapters::Authentication.authorization_state(storage:, user: User.current)
 
     if auth_state == :connected
       redirect_to(destination_url)
     else
       nonce = SecureRandom.uuid
       cookies["oauth_state_#{nonce}"] = { value: { href: destination_url, storageId: storage_id }.to_json, expires: 1.hour }
-      redirect_to(storage.oauth_configuration.authorization_uri(state: nonce))
+      redirect_to(storage.oauth_configuration.authorization_uri(state: nonce), allow_other_host: true)
     end
   end
 
   # rubocop:enable Metrics/AbcSize
 
   private
+
+  def relative_url?(url)
+    url.starts_with?("/")
+  end
+
+  def destination_url(url)
+    if ::API::V3::Utilities::PathHelper::ApiV3Path.same_origin?(url)
+      url
+    elsif relative_url?(url)
+      root_url.chomp("/") + url
+    else
+      root_url
+    end
+  end
 
   def handle_absent_oauth_client
     flash[:error] = [I18n.t("oauth_client.errors.oauth_client_not_found"),
@@ -209,9 +219,13 @@ class OAuthClientsController < ApplicationController
 
   # rubocop:enable Metrics/AbcSize
 
+  def oauth_integration
+    @oauth_client&.integration
+  end
+
   def redirect_user_or_admin(redirect_uri = nil)
     # This needs to be modified as soon as we support more integration types.
-    if User.current.admin && redirect_uri && (nextcloud? || one_drive?)
+    if User.current.admin && redirect_uri && oauth_integration.try(:supports_oauth_redirect?)
       yield
     elsif redirect_uri
       flash[:error] = [t(:"oauth_client.errors.oauth_issue_contact_admin")]
@@ -219,14 +233,6 @@ class OAuthClientsController < ApplicationController
     else
       redirect_to root_url
     end
-  end
-
-  def nextcloud?
-    @oauth_client&.integration&.provider_type == ::Storages::Storage::PROVIDER_TYPE_NEXTCLOUD
-  end
-
-  def one_drive?
-    @oauth_client&.integration&.provider_type == ::Storages::Storage::PROVIDER_TYPE_ONE_DRIVE
   end
 
   def get_redirect_uri

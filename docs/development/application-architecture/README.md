@@ -142,9 +142,9 @@ This list is not conclusive but rather serves to highlight the difference to the
 
 OpenProject embeds some release information into the packages and containers to ensure they are traceable. For all containers, the following files exist under `/app`. For packages, these files reside under `/opt/openproject/` and `/opt/openproject/config`, depending on the used version.
 
-- **CORE_VERSION**: Reference to the commit of the https://github.com/opf/openproject core repository of OpenProject that is the foundation of the build
+- **CORE_VERSION**: Reference to the commit of the [core repository of OpenProject](https://github.com/opf/openproject) that is the foundation of the build
 - **CORE_URL** URL to the commit at GitHub for easier reference
-- **PRODUCT_VERSION** Commit of the flavour/product version. In case of the [openDesk container](https://hub.docker.com/r/openproject/open_desk), contains a reference to the openDesk repository https://github.com/opf/openproject-open_desk
+- **PRODUCT_VERSION** Commit of the flavour/product version. In case of the [openDesk container](https://hub.docker.com/r/openproject/open_desk), contains a reference to the [openDesk repository](https://github.com/opf/openproject-open_desk)
 - **BUILDER_VERSION** Internal reference of the building CI repository that we use to create and publish the images.
 
 ### Support of releases
@@ -217,7 +217,7 @@ A response that is fully controlled by Rails but extended by some Angular compon
 
 3. The rendered response is returned to the Browser and Angular is initialized globally once in [`frontend/src/main.ts`](https://github.com/opf/openproject/blob/dev/frontend/src/main.ts#L48-L49).
 
-4. A global service, the [`DynamicBootstrapper`](https://github.com/opf/openproject/blob/dev/frontend/src/app/core/setup/globals/dynamic-bootstrapper.ts), looks for eligible components to bootstrap in the rendered template and forces the global angular application to bootstrap this component. This may result in many dom-separated components in the page to be bootstrapped by Angular for dynamic content.
+4. Dynamic components in Angular are registered as [custom elements](https://angular.dev/guide/elements) so they can be used throughout the page as web components.
 
 5. This triggers the [`FormConfigurationComponent`](https://github.com/opf/openproject/blob/dev/frontend/src/app/features/admin/types/type-form-configuration.component.ts) to be initialized and allows the application to include a highly dynamic component (drag & drop organization of attributes) to be used on an admin form that otherwise has no connection to Angular.
 

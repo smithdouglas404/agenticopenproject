@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,14 +26,18 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Component } from '@angular/core';
+import {
+  Component,
+  OnInit,
+} from '@angular/core';
 import { DatePickerEditFieldComponent } from 'core-app/shared/components/fields/edit/field-types/date-picker-edit-field.component';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 
 @Component({
   templateUrl: './combined-date-edit-field.component.html',
+  standalone: false,
 })
-export class CombinedDateEditFieldComponent extends DatePickerEditFieldComponent {
+export class CombinedDateEditFieldComponent extends DatePickerEditFieldComponent implements OnInit {
   dates = '';
 
   opened = false;
@@ -46,20 +50,16 @@ export class CombinedDateEditFieldComponent extends DatePickerEditFieldComponent
     },
   };
 
-  get isMultiDate():boolean {
-    return !this.change.schema.isMilestone;
+  ngOnInit() {
+    super.ngOnInit();
   }
 
   public onInputClick(event:MouseEvent) {
     event.stopPropagation();
   }
 
-  public showDatePickerModal():void {
-    this.opened = true;
-  }
-
   public onModalClosed():void {
-    this.opened = false;
+    super.onModalClosed();
 
     if (!this.handler.inEditMode) {
       this.handler.deactivate(false);
@@ -68,12 +68,13 @@ export class CombinedDateEditFieldComponent extends DatePickerEditFieldComponent
   }
 
   public save():void {
-    this.handler.handleUserSubmit();
-    this.onModalClosed();
+    void this.handler.handleUserSubmit();
   }
 
   public cancel():void {
-    this.handler.reset();
+    if (!this.handler.inEditMode) {
+      this.handler.reset();
+    }
     this.onModalClosed();
   }
 
@@ -107,7 +108,9 @@ export class CombinedDateEditFieldComponent extends DatePickerEditFieldComponent
   }
 
   protected current(dateAttribute:'startDate' | 'dueDate' | 'date'):string {
-    const value = (this.resource && (this.resource as WorkPackageResource)[dateAttribute]) as string|null;
+    // Since the rework of the datepicker, the milestone date field has the name 'start_date' to match the database
+    const valueReference = dateAttribute === 'date' ? 'startDate' : dateAttribute;
+    const value = (this.resource && (this.resource as WorkPackageResource)[valueReference]) as string|null;
     return (value || this.text.placeholder[dateAttribute]);
   }
 }

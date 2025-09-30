@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -29,8 +29,7 @@
 import { Injectable } from '@angular/core';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
-import * as moment from 'moment-timezone';
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment-timezone';
 import { outputChronicDuration } from '../../shared/helpers/chronic_duration';
 
 @Injectable({ providedIn: 'root' })
@@ -132,6 +131,18 @@ export class TimezoneService {
     return moment.duration(input, unit).toISOString();
   }
 
+  public utcDateToLocalDate(date:Date):Date {
+    return new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+  }
+
+  public utcDateToISODateString(date:Date):string {
+    return moment.utc(date).format('YYYY-MM-DD');
+  }
+
+  public utcDatesToISODateStrings(dates:Date[]):string[] {
+    return dates.map((date) => this.utcDateToISODateString(date));
+  }
+
   public formattedDuration(durationString:string, unit:'hour'|'days' = 'hour'):string {
     switch (unit) {
       case 'hour':
@@ -149,20 +160,14 @@ export class TimezoneService {
   }
 
   public formattedChronicDuration(durationString:string, opts = {
-    format: 'short',
+    format: this.configurationService.durationFormat(),
     hoursPerDay: this.configurationService.hoursPerDay(),
-    // daysPerWeek is solely a convenience unit for the user's comprehension.
-    // It's not an accepted unit by chronicDuration. daysPerMonth is the value
-    // we provide it.
     daysPerMonth: this.configurationService.daysPerMonth(),
-    weeks: true,
   }):string {
     // Keep in sync with app/services/duration_converter#output
-    const seconds = this.toSeconds(durationString) + 30;
-    const secondsOverflow = seconds % 60;
-    const secondsToTheNearestMinute = seconds - secondsOverflow;
+    const seconds = this.toSeconds(durationString);
 
-    return outputChronicDuration(secondsToTheNearestMinute, opts) || '0h';
+    return outputChronicDuration(seconds, opts) || '0h';
   }
 
   public formattedISODate(date:any):string {

@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment, { Moment } from 'moment';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { DisplayFieldRenderer } from 'core-app/shared/components/fields/display/display-field-renderer';
 import { Injector } from '@angular/core';
@@ -20,14 +20,13 @@ import {
   timelineElementCssClass,
   timelineMarkerSelectionStartClass,
 } from '../wp-timeline';
-import Moment = moment.Moment;
 
 export interface CellDateMovement {
   // Target values to move work package to
-  startDate?:moment.Moment;
-  dueDate?:moment.Moment;
+  startDate?:Moment;
+  dueDate?:Moment;
   // Target value to move milestone to
-  date?:moment.Moment;
+  date?:Moment;
 }
 
 export type LabelPosition = 'left'|'right'|'farRight';
@@ -117,8 +116,8 @@ export class TimelineCellRenderer {
     labels:WorkPackageCellLabels,
     dates:CellDateMovement,
   ):void {
-    this.assignDate(change, 'startDate', dates.startDate as moment.Moment);
-    this.assignDate(change, 'dueDate', dates.dueDate as moment.Moment);
+    this.assignDate(change, 'startDate', dates.startDate as Moment);
+    this.assignDate(change, 'dueDate', dates.dueDate as Moment);
 
     this.updateLabels(true, labels, change);
   }
@@ -253,13 +252,13 @@ export class TimelineCellRenderer {
     if (_.isNaN(due.valueOf()) && !_.isNaN(start.valueOf())) {
       // Set due date to today
       due = moment();
-      bar.style.backgroundImage = 'linear-gradient(90deg, rgba(255,255,255,0) 0%, #F1F1F1 100%)';
+      bar.setAttribute('style', 'background-image: linear-gradient(90deg, rgba(255,255,255,0) 0%, #F1F1F1 100%) !important');
     }
 
     // only finish date, fade out bar to the left
     if (_.isNaN(start.valueOf()) && !_.isNaN(due.valueOf())) {
       start = due.clone();
-      bar.style.backgroundImage = 'linear-gradient(90deg, #F1F1F1 0%, rgba(255,255,255,0) 80%)';
+      bar.setAttribute('style', 'background-image: linear-gradient(90deg, #F1F1F1 0%, rgba(255,255,255,0) 80%) !important');
     }
 
     this.setElementPositionAndSize(element, renderInfo, start, due);
@@ -441,13 +440,13 @@ export class TimelineCellRenderer {
     }
   }
 
-  protected assignDate(change:WorkPackageChangeset, attributeName:string, value:moment.Moment) {
+  protected assignDate(change:WorkPackageChangeset, attributeName:string, value:Moment) {
     if (value) {
       change.projectedResource[attributeName] = value.format('YYYY-MM-DD');
     }
   }
 
-  setElementPositionAndSize(element:HTMLElement, renderInfo:RenderInfo, start:moment.Moment, due:moment.Moment) {
+  setElementPositionAndSize(element:HTMLElement, renderInfo:RenderInfo, start:Moment, due:Moment) {
     const { viewParams } = renderInfo;
     // offset left
     const offsetStart = start.diff(viewParams.dateDisplayStart, 'days');

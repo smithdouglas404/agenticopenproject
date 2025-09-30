@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -41,9 +43,9 @@ module OpenProject::TextFormatting::Matchers
       # Examples:
       #
       # r11, r13
-      def call
+      def call # rubocop:disable Metrics/AbcSize
         # don't handle link unless repository exists
-        return nil unless project && project.repository
+        return nil unless project&.repository
 
         changeset = project.repository.find_changeset_by_name(matcher.identifier)
 

@@ -1,6 +1,6 @@
 ---
 sidebar_navigation:
-  title: GitLab integration
+  title: GitLab integration - Documentation
   priority: 800
 description: Integrate the GitLab merge request and issues into OpenProject.
 keywords: GitLab, GitLab integration, merge request
@@ -47,10 +47,11 @@ This user will then have to be **added to each project** with a role that allows
 Once the user is created you need to generate an OpenProject API token for this user (you will need it on the GitLab side). For this you have to:
 
 1. Login as the newly created user
-2. Go to [My Account](../../../getting-started/my-account/) (click on the Avatar in the top right corner and select *My account*)
-3. Go to [*Access Tokens*](../../../getting-started/my-account/#access-tokens)
+2. Go to [Account settings](../../../user-guide/account-settings/) (click on the Avatar in the top right corner and select *Account settings*)
+3. Go to [*Access Tokens*](../../../user-guide/account-settings/#access-tokens)
 4. Click on **+ API token**
 
+> [!IMPORTANT]
 > Make sure you copy the generated key and securely save it, as you will not be able to retrieve it later.
 
 You can then configure the necessary webhook in [GitLab](#gitlab).
@@ -75,20 +76,19 @@ You will need the API key you copied earlier in OpenProject. Append it to the *U
 
 `https://myopenproject.com/webhooks/gitlab?key=4221687468163843`
 
-> **Note**: For the events that should be triggered by the webhook, please select the following
->
-> - Push events (all branches)
-> - Comments
-> - Issues events
-> - Merge request events
-> - Pipeline events 
+For the events that should be triggered by the webhook, please select the following
 
+- Push events (all branches)
+- Comments
+- Issues events
+- Merge request events
+- Pipeline events 
 
-> **Note**: Please note that the *Pipeline events* part of the integration is still in the early stages. If you have any feedback on the *Pipeline events*, please let us know [here](https://community.openproject.org/wp/54574).
+> [!NOTE] 
+> Please note that the *Pipeline events* part of the integration is still in the early stages. If you have any feedback on the *Pipeline events*, please let us know [here](https://community.openproject.org/wp/54574).
 
-
-> **Note**: If you are in a local network you might need to allow requests to the local network in your GitLab instance.  
-> You can find this settings in the **Outbound requests** section when you navigate to **Admin area -> Settings -> Network**.
+> [!TIP] 
+> If you are in a local network you might need to allow requests to the local network in your GitLab instance. You can find this settings in the **Outbound requests** section when you navigate to **Admin area -> Settings -> Network**.
 
 We recommend that you enable the **SSL verification** before you **Add webhook**.
 
@@ -96,7 +96,7 @@ Now the integration is set up on both sides and you can use it.
 
 ### Updating from the user-generated GitLab Plugin
 
-With [OpenProject 13.4](../../../release-notes/13-4-0/), the user-generated plugin was replaced by this GitLab integration. If you were already using the user-generated GitLab plugin, we recommend removing the plugin module folder and bundler references before upgrading to OpenProject. Your historical dataset will remain unaffected within OpenProject as there were no changes to the data model.
+With [OpenProject 13.4](../../../release-notes/13/13-4-0/), the user-generated plugin was replaced by this GitLab integration. If you were already using the user-generated GitLab plugin, we recommend removing the plugin module folder and bundler references before upgrading to OpenProject. Your historical dataset will remain unaffected within OpenProject as there were no changes to the data model.
 
 Before upgrading, please do the following:
 
@@ -105,13 +105,15 @@ Before upgrading, please do the following:
 
 ## Using GitLab integration
 
-### Create merge requests
+### Using a Git Desktop Client
+
+#### Create merge requests
 
 As merge requests are based on branches, a new branch needs to be created first. For that, open the GitLab tab in your OpenProject work package detailed view. Click on **Git snippets** to extend the menu. First, copy the branch name by clicking the corresponding button.
 
 ![Copy the branch name for GitLab in OpenProject](openproject-system-guide-gitlab-integration-branch-name.png)
 
-Then, open your git client, e.g. Git desktop client or a console. There, you can create your branch by entering the branch name you copied from your OpenProject work package. That way, all the branches will follow a common pattern and as the OpenProject ID is included in the branch name, it will be easy to see the connection between a MR and a work package when taking a look at a list of MRs on GitLab.
+Then, open your Git desktop client. There, you can create your branch by entering the branch name you copied from your OpenProject work package. That way, all the branches will follow a common pattern and as the OpenProject ID is included in the branch name, it will be easy to see the connection between a MR and a work package when taking a look at a list of MRs on GitLab.
 
 ![Create a new branch in a Git desktop client](openproject-system-guide-gitlab-integration-create-branch.png)
 
@@ -127,7 +129,7 @@ Once you are satisfied with the changes you can create a commit. Within the 'Git
 
 ![Copy a Git commit message in OpenProject](openproject-system-guide-gitlab-integration-git-snippets-commit-message.png)
 
-A URL pointing to a work package in the merge request description or a comment will link the two. The link needs to be in the MR and not in a commit, but GitLab will use the first commit message as the proposed branch description (as long as there is only one commit). Alternatively you can also use 'OP#' as a work package reference in an issue or a MR title, in this case "OP#388", where 388 is the ID of the work package.
+A URL pointing to a work package in the merge request description or a comment will link the two. The link needs to be in the MR and not in a commit, but GitLab will use the first commit message as the proposed branch description (as long as there is only one commit). Alternatively you can also use 'OP#' as a work package reference in an issue or a MR title, in this case "OP#388", where 388 is the ID of the work package. Please note that "OP#" is case sensitive.
 
 ![Commit message in a Git client](openproject-system-guide-gitlab-integration-commit-message-in-client.png)
 
@@ -156,6 +158,29 @@ In the GitLab tab of that work package, the status of the merge request as well 
 If the status of a merge request changes, it will be reflected in the OpenProject work package accordingly. Please see the example below.
 
 ![GitLab merge request status change](openproject-system-guide-gitlab-integration-mr-status.png)
+
+### Using the Command Line Interface
+
+If you prefer to work with Git via the Command Line Interface (CLI), you can follow a similar process to create and manage merge requests, by following same steps as you would if using a Git Desktop Client. 
+
+You can copy the branch name from the OpenProject work package as described in the Git snippets section above. Then, create and switch to a new branch in your local repository. Modify the necessary files in your repository. Once you are satisfied with the changes, stage and commit them, using the suggested commit message from OpenProject.
+
+![Git snippet to create a new branch in GitLab entered into command line interface](openproject-system-guide-gitlab-integration-branch-git-snippet-cli.png)
+
+When using a CLI you can also use the **Create branch with empty commit** Git snippet. 
+![Git snippet to create a branch with empty commit under GitLab tab in a work package in OpenProject](openproject-system-guide-gitlab-integration-git_snippet_empty_commit.png)
+
+The advantage of using this snippet is that there is no need to first create a branch and then copy a separate Git snippet for the commit. A new branch will be created from your current branch along with an empty commit, which when pushed to GitLab will link back to the work package.
+
+![Git snippet to create a new branch with empty commit in GitLab entered into command line interface](openproject-system-guide-gitlab-integration-branch-and-commit-git-snippet-cli.png)
+
+Continue your work as you normally would, push the branch to GitLab and create a merge request.
+
+![New GitLab merge request created by git snippet entered into CLI](openproject-system-guide-gitlab-new_merge_request_in_gitlab.png)
+
+Changes to the merge request will be tracked under GitLab tab of OpenProject work package, from which git snippets were copied. 
+
+![Work package in OpenProject showing GitLab tab and related merge request updates](openproject-system-guide-gitlab-cli-snippet-work-package.png)
 
 ### Link issues
 

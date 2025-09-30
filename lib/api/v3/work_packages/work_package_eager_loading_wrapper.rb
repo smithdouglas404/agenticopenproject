@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -75,12 +75,13 @@ module API
               ::API::V3::WorkPackages::EagerLoading::Hierarchy,
               ::API::V3::WorkPackages::EagerLoading::Ancestor,
               ::API::V3::WorkPackages::EagerLoading::Project,
+              ::API::V3::WorkPackages::EagerLoading::Principals,
               ::API::V3::WorkPackages::EagerLoading::Checksum,
               ::API::V3::WorkPackages::EagerLoading::CustomValue,
               ::API::V3::WorkPackages::EagerLoading::CustomAction,
               # Have the historic attributes last as they require the custom values
               # to be loaded first in order to create the diffs between the current
-              # and the historic values without loading the custom fields (JournableDiffer).
+              # and the historic values without loading the custom fields (Acts::Journalized::Differ).
               ::API::V3::WorkPackages::EagerLoading::HistoricAttributes
             ]
           end

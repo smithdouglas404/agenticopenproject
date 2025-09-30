@@ -8,7 +8,7 @@ Timeout::timeout(timeout) do
     sleep 4
 
     begin
-      ActiveRecord::Migration.check_pending!
+      ActiveRecord::Migration.check_all_pending!
 
       puts "[#{DateTime.now}] db ready"
       exit 0

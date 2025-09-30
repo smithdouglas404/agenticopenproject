@@ -4,12 +4,12 @@ lv:
     label_preview: 'Priekšskatīt'
     button_update: 'Atjaunot'
     avatars:
-      label_choose_avatar: "Choose Avatar from file"
-      uploading_avatar: "Uploading your avatar."
+      label_choose_avatar: "Izvēlieties Avatar no faila"
+      uploading_avatar: "Avatāra augšupielāde."
       text_upload_instructions: |
-        Upload your own custom avatar of 128 by 128 pixels. Larger files will be resized and cropped to match.
-        A preview of your avatar will be shown before uploading, once you selected an image.
-      error_image_too_large: "Image is too large."
-      wrong_file_format: "Allowed formats are jpg, png, gif"
-      empty_file_error: "Please upload a valid image (jpg, png, gif)"
+        Augšupielādējiet savu pielāgotu avatāru 128 x 128 pikseļi. Lielākiem failiem tiks mainīts izmērs un tie tiks apgriezti.
+        Kad būsiet izvēlējeis avatur, pirms tā augšupielādes tiks parādīts tā priekšskatījums.
+      error_image_too_large: "Attēls ir pārāk liels."
+      wrong_file_format: "Atļautie formāti ir jpg, png, gif"
+      empty_file_error: "Lūdzu, augšupielādējiet atbilstoša formāta attēlu (jpg, png, gif)"
 

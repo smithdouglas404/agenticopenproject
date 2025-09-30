@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -49,6 +51,9 @@ RSpec.describe "Work package pagination", :js do
 
     it do
       expect(page).to have_content("All open")
+
+      expect(page).to have_test_selector("op-breadcrumbs--item", text: "Work packages")
+      expect(page).to have_css(".op-breadcrumbs--current", text: "All open", aria: { current: "page" })
 
       within(".work-packages-partitioned-query-space--container") do
         expect(page).to have_content(work_package_1.subject)

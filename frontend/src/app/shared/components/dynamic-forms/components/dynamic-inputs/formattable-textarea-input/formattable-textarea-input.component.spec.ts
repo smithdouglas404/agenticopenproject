@@ -1,14 +1,13 @@
 import { discardPeriodicTasks, fakeAsync, flush, tick } from '@angular/core/testing';
 import { createDynamicInputFixture } from 'core-app/shared/components/dynamic-forms/spec/helpers';
 import { By } from '@angular/platform-browser';
-// @ts-ignore
-import(/* webpackChunkName: "ckeditor-augmented-textarea" */ 'core-vendor/ckeditor/ckeditor.js');
+import { IOPFormlyFieldSettings } from 'core-app/shared/components/dynamic-forms/typings';
 
 describe('FormattableTextareaInputComponent', () => {
   it('should load the field', fakeAsync(() => {
-    const fieldsConfig = [
+    const fieldsConfig:IOPFormlyFieldSettings[] = [
       {
-        type: 'formattableInput' as const,
+        type: 'formattableInput',
         key: 'testControl',
         templateOptions: {
           required: true,
@@ -19,10 +18,11 @@ describe('FormattableTextareaInputComponent', () => {
           bindLabel: 'name',
           bindValue: 'value',
           noWrapLabel: true,
+          editorType: 'full' 
         },
       },
     ];
-    const formModel = {
+    const formModel:IOPFormModel = {
       testControl: {
         html: '<p>tesValue</p>',
         raw: 'tesValue',

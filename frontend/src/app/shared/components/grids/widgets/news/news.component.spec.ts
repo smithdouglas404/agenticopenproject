@@ -3,7 +3,7 @@ import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
 import { States } from 'core-app/core/states/states.service';
 import { HalResourceService } from 'core-app/features/hal/services/hal-resource.service';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { of } from 'rxjs';
@@ -45,18 +45,20 @@ describe('shows news', () => {
   };
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        WidgetNewsComponent],
-      providers: [
+    declarations: [
+        WidgetNewsComponent
+    ],
+    schemas: [NO_ERRORS_SCHEMA],
+    imports: [],
+    providers: [
         TimezoneService,
         { provide: ConfigurationService, useValue: configurationServiceStub },
         States,
         { provide: ApiV3Service, useValue: apiv3ServiceStub },
         HalResourceService,
-      ],
-      imports: [HttpClientModule],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+        provideHttpClient(withInterceptorsFromDi()),
+    ]
+}).compileComponents();
 
     fixture = TestBed.createComponent(WidgetNewsComponent);
     app = fixture.debugElement.componentInstance;

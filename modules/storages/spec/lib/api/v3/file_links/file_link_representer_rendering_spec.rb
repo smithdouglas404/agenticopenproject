@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -81,10 +81,24 @@ RSpec.describe API::V3::FileLinks::FileLinkRepresenter, "rendering" do
     describe "delete" do
       let(:permission) { :manage_file_links }
 
-      it_behaves_like "has an untitled action link" do
-        let(:link) { "delete" }
-        let(:href) { "/api/v3/file_links/#{file_link.id}" }
-        let(:method) { :delete }
+      let(:link) { "delete" }
+      let(:href) { "/api/v3/file_links/#{file_link.id}" }
+      let(:method) { :delete }
+
+      it_behaves_like "has an untitled action link"
+
+      context "when there is no associated container" do
+        before do
+          file_link.container = nil
+        end
+
+        it_behaves_like "has no link"
+
+        context "and the current user is creator of the file link" do
+          let(:user) { file_link.creator }
+
+          it { is_expected.to have_json_path("_links/#{link}") }
+        end
       end
     end
 

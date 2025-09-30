@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,25 +32,31 @@ class BudgetsController < ApplicationController
   before_action :find_budget, only: %i[show edit update copy destroy_info]
   before_action :find_budgets, only: :destroy
   before_action :check_and_update_belonging_work_packages, only: :destroy
-  before_action :find_project, only: %i[new create update_material_budget_item update_labor_budget_item]
+  before_action :find_project_by_project_id, only: %i[new create update_material_budget_item update_labor_budget_item]
   before_action :find_optional_project, only: :index
 
   before_action :authorize_global, only: :index
   before_action :authorize, except: [
-    # unrestricted actions
     :index,
+    # unrestricted actions
     :update_material_budget_item,
     :update_labor_budget_item
   ]
+  no_authorization_required! :update_material_budget_item,
+                             :update_labor_budget_item
 
   helper :sort
   include SortHelper
+
   helper :projects
   include ProjectsHelper
+
   helper :attachments
   include AttachmentsHelper
+
   helper :costlog
   include CostlogHelper
+
   helper :budgets
   include BudgetsHelper
   include PaginationHelper
@@ -72,6 +78,7 @@ class BudgetsController < ApplicationController
 
   def show
     @edit_allowed = User.current.allowed_in_project?(:edit_budgets, @project)
+
     respond_to do |format|
       format.html { render action: "show", layout: !request.xhr? }
     end
@@ -100,6 +107,10 @@ class BudgetsController < ApplicationController
     render action: :new, layout: !request.xhr?
   end
 
+  def edit
+    @budget.attributes = permitted_params.budget if params[:budget]
+  end
+
   def create
     call = attachable_create_call ::Budgets::CreateService,
                                   args: permitted_params.budget.merge(project: @project)
@@ -109,12 +120,8 @@ class BudgetsController < ApplicationController
       flash[:notice] = t(:notice_successful_create)
       redirect_to(params[:continue] ? { action: "new" } : { action: "show", id: @budget })
     else
-      render action: "new", layout: !request.xhr?
+      render action: "new", status: :unprocessable_entity, layout: !request.xhr?
     end
-  end
-
-  def edit
-    @budget.attributes = permitted_params.budget if params[:budget]
   end
 
   def update
@@ -127,7 +134,7 @@ class BudgetsController < ApplicationController
       redirect_to(@budget)
     else
       @budget = call.result
-      render action: "edit"
+      render action: :edit, status: :unprocessable_entity
     end
   rescue ActiveRecord::StaleObjectError
     # Optimistic locking exception
@@ -195,10 +202,8 @@ class BudgetsController < ApplicationController
 
   def find_budget
     # This function comes directly from issues_controller.rb (Redmine 0.8.4)
-    @budget = Budget.includes(:project, :author).find_by(id: params[:id])
+    @budget = Budget.includes(:project, :author).find(params[:id])
     @project = @budget.project if @budget
-  rescue ActiveRecord::RecordNotFound
-    render_404
   end
 
   def find_budgets
@@ -214,26 +219,16 @@ class BudgetsController < ApplicationController
       # TODO: let users bulk edit/move/destroy budgets from different projects
       render_error "Can not bulk edit/move/destroy cost objects from different projects" and return false
     end
-  rescue ActiveRecord::RecordNotFound
-    render_404
-  end
-
-  def find_project
-    @project = Project.find(params[:project_id])
-  rescue ActiveRecord::RecordNotFound
-    render_404
   end
 
   def find_optional_project
     @project = Project.find(params[:project_id]) if params[:project_id].present?
-  rescue ActiveRecord::RecordNotFound
-    render_404
   end
 
   def render_item_as_json(element_id, costs, unit, project, permission)
     response = {
       "#{element_id}_unit_name" => ActionController::Base.helpers.sanitize(unit),
-      "#{element_id}_currency" => Setting.plugin_costs["costs_currency"]
+      "#{element_id}_currency" => Setting.costs_currency
     }
 
     if current_user.allowed_in_project?(permission, project)

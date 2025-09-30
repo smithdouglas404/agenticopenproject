@@ -102,6 +102,15 @@ service openproject restart
 
 For Docker-based installations, add the ENV variable to your env file and restart the containers.
 
+## Prometheus metrics
+
+OpenProject can give metrics suitable to use with Prometheus.
+
+To enable this option the [environment variable](../../configuration/environment/#environment-variables) `OPENPROJECT_PROMETHEUS_EXPORT` has to be set to `true`.
+[Yabeda Prometheus gem](https://github.com/yabeda-rb/yabeda-prometheus-mmap) is used with [ActiveRecord](https://github.com/yabeda-rb/yabeda-activerecord/), [Rails](https://github.com/yabeda-rb/yabeda-rails/) and [Puma](https://github.com/yabeda-rb/yabeda-puma-plugin/) plugins.
+
+Listening address is configured via `PROMETHEUS_EXPORTER_BIND` env variable with default 0.0.0.0. Port is configured by `PROMETHEUS_EXPORTER_PORT` variable with default 9394. Both provided by Prometheus gem.
+
 ## Health checks
 
 OpenProject uses the [okcomputer gem](https://github.com/sportngin/okcomputer) to provide built-in health checks on database, web, and background workers.

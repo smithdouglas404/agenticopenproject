@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -21,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -31,17 +33,19 @@ class CustomFields::Inputs::MultiSelectList < CustomFields::Inputs::Base::Autoco
     # autocompleter does not set key with blank value if nothing is selected or input is cleared
     # in order to let acts_as_customizable handle the clearing of the value, we need to set the value to blank via a hidden field
     # which sends blank if autocompleter is cleared
-    custom_value_form.hidden(**input_attributes.merge(
+    custom_value_form.hidden(
+      **input_attributes,
       scope_name_to_model: false,
-      name: "#{@object.class.name.downcase}[custom_field_values][#{input_attributes[:name]}][]",
-      value:
-    ))
+      name: "#{@object.model_name.element}[custom_field_values][#{input_attributes[:name]}][]",
+      value: nil
+    )
 
     custom_value_form.autocompleter(**input_attributes) do |list|
-      @custom_field.custom_options.each do |custom_option|
+      list_items.each do |item|
         list.option(
-          label: custom_option.value, value: custom_option.id,
-          selected: selected?(custom_option)
+          label: item.fetch(:label),
+          value: item.fetch(:value),
+          selected: item.fetch(:selected)
         )
       end
     end
@@ -53,9 +57,36 @@ class CustomFields::Inputs::MultiSelectList < CustomFields::Inputs::Base::Autoco
     true
   end
 
+  def list_items
+    case @custom_field.field_format
+    when "hierarchy", "scored_list"
+      hierarchical_list_items.map do |item|
+        {
+          label: item.ancestry_path,
+          value: item.id,
+          selected: custom_values.pluck(:value).map(&:to_i).include?(item.id)
+        }
+      end
+    else
+      @custom_field.custom_options.map do |custom_option|
+        {
+          label: custom_option.value,
+          value: custom_option.id,
+          selected: selected?(custom_option)
+        }
+      end
+    end
+  end
+
+  def hierarchical_list_items
+    CustomFields::Hierarchy::HierarchicalItemService.new
+      .get_descendants(item: @custom_field.hierarchy_root, include_self: false)
+      .value_or([])
+  end
+
   def selected?(custom_option)
-    if @custom_values.any?
-      @custom_values.pluck(:value).map { |value| value&.to_i }.include?(custom_option.id)
+    if custom_values.any?
+      custom_values.pluck(:value).map { |value| value&.to_i }.include?(custom_option.id)
     else
       custom_option.default_value?
     end

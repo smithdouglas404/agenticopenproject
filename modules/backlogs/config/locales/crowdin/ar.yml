@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -55,6 +55,7 @@ ar:
     hours: "الساعات"
     impediment: "عائق"
     label_versions_default_fold_state: "إظهار الإصدارات مطوية"
+    caption_versions_default_fold_state: ""
     work_package_is_closed: "مجموعة العمل قد تمت، عندما"
     label_is_done_status: "الحالة %{status_name} تعني أنها منجزة"
     no_burndown_data: "لا يوجد معلومات متوفرة عن الاستهلاك. من الضروري تحديد تواريخ البدء- والانتهاء في السباق."
@@ -65,7 +66,7 @@ ar:
     rebuild: "إعِدْ بناء"
     rebuild_positions: "أعِد بناء المواقع"
     remaining_hours: ""
-    remaining_hours_ideal: "Remaining work (ideal)"
+    remaining_hours_ideal: "الساعات المتبقية (المثالية)"
     show_burndown_chart: "الرسم البياني للعمل المتبقي"
     story: "القصة"
     story_points: "نقاط القصة"
@@ -73,6 +74,9 @@ ar:
     task: "المهمة"
     task_color: "لون المهمّة"
     unassigned: "غير المعيّنة"
+    user_preference:
+      header_backlogs: ""
+      button_update_backlogs: "Update backlogs module"
     x_more: "%{count} أكثر..."
   backlogs_active: "نشِط"
   backlogs_any: "أي"
@@ -147,7 +151,7 @@ ar:
   rb_label_copy_tasks_none: "لا شيء"
   rb_label_copy_tasks_open: "مفتوح"
   rb_label_link_to_original: "ضمّن الرابط للقصة الأصلية"
-  remaining_hours: "remaining work"
+  remaining_hours: "الساعات المتبقية"
   required_burn_rate_hours: "معدّل الاستهلاك المطلوب (الساعات)"
   required_burn_rate_points: "معدّل الاستهلاك المطلوب (النقاط)"
   todo_work_package_description: "%{summary}: %{url}\n%{description}"

@@ -4,9 +4,6 @@ fa:
       add_widget: 'افزودن ویجت'
       remove: 'حذف ویجت'
       configure: 'Configure widget'
-      upsale:
-        text: "Some widgets, like the work package graph widget, are only available in the Enterprise edition."
-        link: 'Enterprise edition.'
       widgets:
         missing_permission: "You don't have the necessary permissions to view this widget."
         custom_text:
@@ -24,12 +21,11 @@ fa:
           title: 'News'
           at: 'در'
           no_results: 'Nothing new to report.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Project description'
           no_results: "No description has been written yet. One can be provided in the 'Project settings'."
-        project_details:
-          title: 'جزئیات پروژه'
-          no_results: 'No custom fields have been defined for projects.'
         project_status:
           title: 'وضعیت پروژه'
           not_started: 'Not started'
@@ -39,6 +35,8 @@ fa:
           not_set: 'تنظیم نشده'
           finished: 'پایان یافته'
           discontinued: 'Discontinued'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Subprojects'
           no_results: 'No subprojects.'
@@ -64,7 +62,7 @@ fa:
         work_packages_graph:
           title: 'Work packages graph'
         work_packages_calendar:
-          title: 'تقویم'
+          title: 'تقویم‌ها'
         work_packages_overview:
           title: 'Work packages overview'
           placeholder: 'برای ویرایش کلیک کنید...'

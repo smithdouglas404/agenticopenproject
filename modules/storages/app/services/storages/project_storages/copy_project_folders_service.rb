@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,25 +30,63 @@
 
 module Storages
   module ProjectStorages
-    class CopyProjectFoldersService
+    class CopyProjectFoldersService < BaseService
+      using Peripherals::ServiceResultRefinements
+
       def self.call(source:, target:)
         new.call(source, target)
       end
 
       def initialize
-        @data = Peripherals::StorageInteraction::ResultData::CopyTemplateFolder
-          .new(id: nil, polling_url: nil, requires_polling: false)
+        super
+        @data = Adapters::Results::CopyTemplateFolder.new(id: nil, polling_url: nil, requires_polling: false)
       end
 
+      # rubocop:disable Metrics/PerceivedComplexity, Metrics/AbcSize
       def call(source, target)
-        return ServiceResult.success(result: @data) if source.project_folder_inactive?
-        return ServiceResult.success(result: @data.with(id: source.project_folder_id)) if source.project_folder_manual?
+        with_tagged_logger([self.class, source&.id, target&.id]) do
+          return @result.map { @data } if non_managed_project_folder?(source)
+          return @result.map { @data.with(id: source.project_folder_id) } if manually_managed_source?(source)
 
-        Peripherals::Registry
-          .resolve("#{source.storage.short_provider_type}.commands.copy_template_folder")
-          .call(storage: source.storage,
-                source_path: source.project_folder_location,
-                destination_path: target.managed_project_folder_path)
+          info "Initiating copy of project folder #{source.managed_project_folder_path} to #{target.managed_project_folder_path}"
+          copy_result = copy_project_folder(source.storage, source.project_folder_location, target.managed_project_folder_path)
+          copy_result.either(
+            ->(success) { @result.map { success } },
+            ->(failed) { @result.map { failed } }
+          )
+        end
+      end
+      # rubocop:enable Metrics/PerceivedComplexity, Metrics/AbcSize
+
+      private
+
+      def non_managed_project_folder?(source)
+        if source.project_folder_inactive?
+          info "#{source.storage.name} on #{source.project.name} is inactive. Skipping copy."
+          true
+        end
+      end
+
+      def manually_managed_source?(source)
+        if source.project_folder_manual?
+          info "#{source.storage.name} on #{source.project.name} is set to manual. Skipping copy."
+          true
+        end
+      end
+
+      def copy_project_folder(storage, source_path, destination_path)
+        Adapters::Input::CopyTemplateFolder.build(source: source_path, destination: destination_path).bind do |input_data|
+          Adapters::Registry
+            .resolve("#{storage}.commands.copy_template_folder")
+            .call(auth_strategy: auth_strategy(storage), storage:, input_data:).alt_map do |failed|
+            log_adapter_error(failed)
+            add_error(:base, failed, options: { destination_path:, source_path: })
+          end
+        end
+      end
+
+      def auth_strategy(storage)
+        Adapters::Registry.resolve("#{storage}.authentication.userless").call
       end
     end
   end

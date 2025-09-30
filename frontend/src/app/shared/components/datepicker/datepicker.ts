@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -25,7 +25,7 @@
 //
 // See COPYRIGHT and LICENSE files for more details.
 //++
-import * as moment from 'moment';
+import moment from 'moment';
 import flatpickr from 'flatpickr';
 import { Instance } from 'flatpickr/dist/types/instance';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
@@ -59,13 +59,13 @@ export class DatePicker {
     readonly injector:Injector,
     private datepickerElemIdentifier:string,
     private date:Date|Date[]|string[]|string,
-    private options:flatpickr.Options.Options,
+    private options:FlatpickrOptions,
     private datepickerTarget:HTMLElement|null,
   ) {
     void this.initialize(options);
   }
 
-  private initialize(options:flatpickr.Options.Options) {
+  private initialize(options:FlatpickrOptions) {
     this.weekdaysPromise = this
       .weekdaysService
       .loadWeekdays()

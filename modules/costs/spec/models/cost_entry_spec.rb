@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
+require_relative "../spec_helper"
 
 RSpec.describe CostEntry do
   include Cost::PluginSpecHelper
@@ -50,7 +50,7 @@ RSpec.describe CostEntry do
     member
     build(:cost_entry, cost_type:,
                        project:,
-                       work_package:,
+                       entity: work_package,
                        spent_on: date,
                        units:,
                        user:,
@@ -60,7 +60,7 @@ RSpec.describe CostEntry do
   let(:cost_entry2) do
     build(:cost_entry, cost_type:,
                        project:,
-                       work_package:,
+                       entity: work_package,
                        spent_on: date,
                        units:,
                        user:,
@@ -97,11 +97,19 @@ RSpec.describe CostEntry do
   let(:units) { 5.0 }
   let(:date) { Date.today }
 
+  describe "validations" do
+    it "allows the correct entity types" do
+      expect(described_class::ALLOWED_ENTITY_TYPES).to contain_exactly("WorkPackage")
+    end
+
+    it { is_expected.to validate_inclusion_of(:entity_type).in_array(described_class::ALLOWED_ENTITY_TYPES).allow_blank }
+  end
+
   describe "class" do
     describe "#visible" do
-      describe "WHEN having the view_cost_entries permission
-                WHEN querying for a project
-                WHEN a cost entry from another user is defined" do
+      describe "WHEN having the view_cost_entries permission " \
+               "WHEN querying for a project " \
+               "WHEN a cost entry from another user is defined" do
         before do
           is_member(project, user2, [:view_cost_entries])
 
@@ -111,9 +119,9 @@ RSpec.describe CostEntry do
         it { expect(CostEntry.visible(user2, project)).to contain_exactly(cost_entry) }
       end
 
-      describe "WHEN not having the view_cost_entries permission
-                WHEN querying for a project
-                WHEN a cost entry from another user is defined" do
+      describe "WHEN not having the view_cost_entries permission " \
+               "WHEN querying for a project " \
+               "WHEN a cost entry from another user is defined" do
         before do
           is_member(project, user2, [])
 
@@ -123,9 +131,9 @@ RSpec.describe CostEntry do
         it { expect(CostEntry.visible(user2, project)).to be_empty }
       end
 
-      describe "WHEN having the view_own_cost_entries permission
-                WHEN querying for a project
-                WHEN a cost entry from another user is defined" do
+      describe "WHEN having the view_own_cost_entries permission " \
+               "WHEN querying for a project " \
+               "WHEN a cost entry from another user is defined" do
         before do
           is_member(project, user2, [:view_own_cost_entries])
 
@@ -135,9 +143,9 @@ RSpec.describe CostEntry do
         it { expect(CostEntry.visible(user2, project)).to be_empty }
       end
 
-      describe "WHEN having the view_own_cost_entries permission
-                WHEN querying for a project
-                WHEN a cost entry from the user is defined" do
+      describe "WHEN having the view_own_cost_entries permission " \
+               "WHEN querying for a project " \
+               "WHEN a cost entry from the user is defined" do
         before do
           is_member(project, cost_entry2.user, [:view_own_cost_entries])
 
@@ -150,6 +158,14 @@ RSpec.describe CostEntry do
   end
 
   describe "instance" do
+    describe "#entity=" do
+      it "allows setting an entity via GlobalID" do
+        wp = create(:work_package)
+        cost_entry.entity = wp.to_gid.to_s
+        expect(cost_entry.entity).to eq(wp)
+      end
+    end
+
     describe "#costs" do
       let(:fourth_rate) do
         build(:cost_rate, valid_from: date - 1.day,
@@ -286,20 +302,20 @@ RSpec.describe CostEntry do
           cost_entry.project = nil
           # unfortunately the project get's set to the work_package's project if no project is provided
           # TODO: check if that is necessary
-          cost_entry.work_package = nil
+          cost_entry.entity = nil
         end
 
         it { expect(cost_entry).not_to be_valid }
       end
 
-      describe "WHEN no work_package is provided" do
-        before { cost_entry.work_package = nil }
+      describe "WHEN no entity is provided" do
+        before { cost_entry.entity = nil }
 
         it { expect(cost_entry).not_to be_valid }
       end
 
-      describe "WHEN the work_package is not in the project" do
-        before { cost_entry.work_package = work_package2 }
+      describe "WHEN the entity is not in the project" do
+        before { cost_entry.entity = work_package2 }
 
         it { expect(cost_entry).not_to be_valid }
       end
@@ -322,15 +338,15 @@ RSpec.describe CostEntry do
         it { expect(cost_entry).not_to be_valid }
       end
 
-      describe "WHEN the provided user is no member of the project
-                WHEN the user is unchanged" do
+      describe "WHEN the provided user is no member of the project " \
+               "WHEN the user is unchanged" do
         before { member.destroy }
 
         it { expect(cost_entry).to be_valid }
       end
 
-      describe "WHEN the provided user is no member of the project
-                WHEN the user changes" do
+      describe "WHEN the provided user is no member of the project " \
+               "WHEN the user changes" do
         before do
           cost_entry.user = user2
           member.destroy
@@ -375,8 +391,8 @@ RSpec.describe CostEntry do
     end
 
     describe "#editable_by?" do
-      describe "WHEN the user has the edit_cost_entries permission
-                WHEN the cost entry is not created by the user" do
+      describe "WHEN the user has the edit_cost_entries permission " \
+               "WHEN the cost entry is not created by the user" do
         before do
           is_member(project, user2, [:edit_cost_entries])
 
@@ -386,8 +402,8 @@ RSpec.describe CostEntry do
         it { expect(cost_entry.editable_by?(user2)).to be_truthy }
       end
 
-      describe "WHEN the user has the edit_cost_entries permission
-                WHEN the cost entry is created by the user" do
+      describe "WHEN the user has the edit_cost_entries permission " \
+               "WHEN the cost entry is created by the user" do
         before do
           is_member(project, cost_entry2.user, [:edit_cost_entries])
         end
@@ -395,8 +411,8 @@ RSpec.describe CostEntry do
         it { expect(cost_entry2.editable_by?(cost_entry2.user)).to be_truthy }
       end
 
-      describe "WHEN the user has the edit_own_cost_entries permission
-                WHEN the cost entry is created by the user" do
+      describe "WHEN the user has the edit_own_cost_entries permission " \
+               "WHEN the cost entry is created by the user" do
         before do
           is_member(project, cost_entry2.user, [:edit_own_cost_entries])
 
@@ -406,8 +422,8 @@ RSpec.describe CostEntry do
         it { expect(cost_entry2.editable_by?(cost_entry2.user)).to be_truthy }
       end
 
-      describe "WHEN the user has the edit_own_cost_entries permission
-                WHEN the cost entry is created by another user" do
+      describe "WHEN the user has the edit_own_cost_entries permission " \
+               "WHEN the cost entry is created by another user" do
         before do
           is_member(project, user2, [:edit_own_cost_entries])
 
@@ -417,8 +433,8 @@ RSpec.describe CostEntry do
         it { expect(cost_entry.editable_by?(user2)).to be_falsey }
       end
 
-      describe "WHEN the user has no cost permission
-                WHEN the cost entry is created by the user" do
+      describe "WHEN the user has no cost permission " \
+               "WHEN the cost entry is created by the user" do
         before do
           is_member(project, cost_entry2.user, [])
 
@@ -430,8 +446,8 @@ RSpec.describe CostEntry do
     end
 
     describe "#creatable_by?" do
-      describe "WHEN the user has the log costs permission
-                WHEN the cost entry is not associated to the user" do
+      describe "WHEN the user has the log costs permission " \
+               "WHEN the cost entry is not associated to the user" do
         before do
           is_member(project, user2, [:log_costs])
         end
@@ -439,8 +455,8 @@ RSpec.describe CostEntry do
         it { expect(cost_entry.creatable_by?(user2)).to be_truthy }
       end
 
-      describe "WHEN the user has the log_costs permission
-                WHEN the cost entry is associated to user" do
+      describe "WHEN the user has the log_costs permission " \
+               "WHEN the cost entry is associated to user" do
         before do
           is_member(project, cost_entry2.user, [:log_costs])
         end
@@ -448,8 +464,8 @@ RSpec.describe CostEntry do
         it { expect(cost_entry2.creatable_by?(cost_entry2.user)).to be_truthy }
       end
 
-      describe "WHEN the user has the log own costs permission
-                WHEN the cost entry is associated to the user" do
+      describe "WHEN the user has the log own costs permission " \
+               "WHEN the cost entry is associated to the user" do
         before do
           is_member(project, cost_entry2.user, [:log_own_costs])
         end
@@ -457,8 +473,8 @@ RSpec.describe CostEntry do
         it { expect(cost_entry2.creatable_by?(cost_entry2.user)).to be_truthy }
       end
 
-      describe "WHEN the user has the log_own_costs permission
-                WHEN the cost entry is created by another user" do
+      describe "WHEN the user has the log_own_costs permission " \
+               "WHEN the cost entry is created by another user" do
         before do
           is_member(project, user2, [:log_own_costs])
         end
@@ -466,8 +482,8 @@ RSpec.describe CostEntry do
         it { expect(cost_entry.creatable_by?(user2)).to be_falsey }
       end
 
-      describe "WHEN the user has no cost permission
-                WHEN the cost entry is associated to the user" do
+      describe "WHEN the user has no cost permission " \
+               "WHEN the cost entry is associated to the user" do
         before do
           is_member(project, cost_entry2.user, [])
         end
@@ -477,8 +493,8 @@ RSpec.describe CostEntry do
     end
 
     describe "#costs_visible_by?" do
-      describe "WHEN the user has the view_cost_rates permission
-                WHEN the cost entry is not associated to the user" do
+      describe "WHEN the user has the view_cost_rates permission " \
+               "WHEN the cost entry is not associated to the user" do
         before do
           is_member(project, user2, [:view_cost_rates])
         end
@@ -486,8 +502,8 @@ RSpec.describe CostEntry do
         it { expect(cost_entry.costs_visible_by?(user2)).to be_truthy }
       end
 
-      describe "WHEN the user has the view_cost_rates permission in another project
-                WHEN the cost entry is not associated to the user" do
+      describe "WHEN the user has the view_cost_rates permission in another project " \
+               "WHEN the cost entry is not associated to the user" do
         before do
           is_member(project2, user2, [:view_cost_rates])
         end
@@ -495,9 +511,9 @@ RSpec.describe CostEntry do
         it { expect(cost_entry.costs_visible_by?(user2)).to be_falsey }
       end
 
-      describe "WHEN the user lacks the view_cost_rates permission
-                WHEN the cost entry is associated to the user
-                WHEN the costs are overridden" do
+      describe "WHEN the user lacks the view_cost_rates permission " \
+               "WHEN the cost entry is associated to the user " \
+               "WHEN the costs are overridden" do
         before do
           is_member(project, cost_entry2.user, [])
           cost_entry2.update_attribute(:overridden_costs, 1.0)
@@ -506,15 +522,66 @@ RSpec.describe CostEntry do
         it { expect(cost_entry2.costs_visible_by?(cost_entry2.user)).to be_truthy }
       end
 
-      describe "WHEN the user lacks the view_cost_rates permission
-                WHEN the cost entry is associated to the user
-                WHEN the costs are not overridden" do
+      describe "WHEN the user lacks the view_cost_rates permission " \
+               "WHEN the cost entry is associated to the user " \
+               "WHEN the costs are not overridden" do
         before do
           is_member(project, cost_entry2.user, [])
         end
 
         it { expect(cost_entry2.costs_visible_by?(cost_entry2.user)).to be_falsey }
       end
+    end
+  end
+
+  describe "deprecated work package association" do
+    it "ignores the deprecated work package association" do
+      expect(described_class.ignored_columns).to include("work_package_id")
+    end
+
+    it "allows access to the work package" do
+      allow(OpenProject::Deprecation).to receive(:replaced)
+
+      cost_entry.entity = work_package
+      expect(cost_entry.work_package).to eq(work_package)
+
+      cost_entry.entity = create(:meeting)
+      expect(cost_entry.work_package).to be_nil
+
+      expect(OpenProject::Deprecation).to have_received(:replaced).twice.with(:work_package, :entity, any_args)
+    end
+
+    it "allows access to the work package ID" do
+      allow(OpenProject::Deprecation).to receive(:replaced)
+
+      cost_entry.entity = work_package
+      expect(cost_entry.work_package_id).to eq(work_package.id)
+
+      cost_entry.entity = create(:meeting)
+      expect(cost_entry.work_package_id).to be_nil
+
+      expect(OpenProject::Deprecation).to have_received(:replaced).twice.with(:work_package_id, :entity_id, any_args)
+    end
+
+    it "allows setting the work package" do
+      allow(OpenProject::Deprecation).to receive(:replaced)
+
+      cost_entry.work_package = work_package
+      expect(cost_entry.entity).to eq(work_package)
+
+      expect(OpenProject::Deprecation).to have_received(:replaced).with(:work_package=, :entity=, any_args)
+    end
+
+    it "allows setting the work package ID" do
+      allow(OpenProject::Deprecation).to receive(:replaced)
+
+      cost_entry.entity_type = nil # to make sure that we properly set it
+      cost_entry.work_package_id = work_package.id
+      expect(cost_entry.entity).to eq(work_package)
+      expect(cost_entry.entity_type).to eq("WorkPackage")
+      expect(cost_entry.entity_id).to eq(work_package.id)
+
+      expect(OpenProject::Deprecation).to have_received(:replaced).with(:work_package_id=, :entity_id=, any_args)
     end
   end
 end

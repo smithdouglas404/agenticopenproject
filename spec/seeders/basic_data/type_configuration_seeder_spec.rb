@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -36,7 +36,7 @@ RSpec.describe BasicData::TypeConfigurationSeeder do
   subject(:seeder) { described_class.new(seed_data) }
 
   let(:seed_data) { basic_seed_data.merge(Source::SeedData.new(data_hash)) }
-  let(:phase_type) { seed_data.find_reference(:default_type_phase).reload }
+  let(:phase_type) { seed_data.find_reference(:default_type_summary_task).reload }
   let(:data_hash) { {} }
 
   context "without any form_configuration for the given type" do
@@ -52,7 +52,7 @@ RSpec.describe BasicData::TypeConfigurationSeeder do
     let(:data_hash) do
       YAML.load <<~SEEDING_DATA_YAML
         type_configuration:
-        - type: :default_type_phase
+        - type: :default_type_summary_task
           form_configuration:
             - group_name: "Children"
               query: :query__children

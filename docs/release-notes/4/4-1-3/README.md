@@ -15,14 +15,14 @@ which is an important part of the software stack used by OpenProject
 
 In addition, a number of bug fixes are included in the new release:
 
-  - Dates on the details pane were not visible for anonymous users
-    ([#20266](https://community.openproject.org/work_packages/20266)).
-  - The title was displayed twice in email notifications when creating
-    new work packages
-    ([#20232](https://community.openproject.org/work_packages/20232)).
-  - An unnecessary warning message was displayed when reloading the work
-    package page after adding a comment via the details pane
-    ([#19515](https://community.openproject.org/work_packages/19515)).
+- Dates on the details pane were not visible for anonymous users
+  ([#20266](https://community.openproject.org/work_packages/20266)).
+- The title was displayed twice in email notifications when creating
+  new work packages
+  ([#20232](https://community.openproject.org/work_packages/20232)).
+- An unnecessary warning message was displayed when reloading the work
+  package page after adding a comment via the details pane
+  ([#19515](https://community.openproject.org/work_packages/19515)).
 
 Additionally, the styling of the activities section on the details pane
 has been updated

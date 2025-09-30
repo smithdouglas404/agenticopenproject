@@ -1,13 +1,14 @@
 ar:
   plugin_openproject_webhooks:
     name: "OpenProject Webhooks"
-    description: "Provides a plug-in API to support OpenProject webhooks for better 3rd party integration."
+    description: "يوفر واجهة برمجة تطبيقات إضافية لدعم OpenProject webhooks من أجل تكامل أفضل مع الطرف الثالث."
   activerecord:
     attributes:
       webhooks/webhook:
         url: 'Payload URL'
         secret: 'Signature secret'
         events: 'الأحداث'
+        enabled: 'Enabled'
         projects: 'المشاريع الممكنة'
       webhooks/log:
         event_name: 'اسم الحدث'
@@ -30,6 +31,8 @@ ar:
       events:
         created: "تم إنشاؤه"
         updated: "محدث"
+        comment: "تعليق"
+        internal_comment: "Internal comment"
       explanation:
         text: >
           Upon the occurrence of an event like the creation of a work package or an update on a project, OpenProject will send a POST request to the configured web endpoints. Oftentimes, the event is sent after the %{link} has passed.

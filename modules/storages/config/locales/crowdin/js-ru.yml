@@ -2,6 +2,7 @@
 ru:
   js:
     storages:
+      authentication_error: "Ошибка аутентификации с %{storageType}"
       link_files_in_storage: "Файлы ссылок в %{storageType}"
       link_existing_files: "Связать существующие файлы"
       upload_files: "Загрузить файлы"
@@ -13,11 +14,14 @@ ru:
       open_storage: "Открыть %{storageType}"
       select_location: "Выберите местоположение"
       choose_location: "Выберите местоположение"
+      new_folder: "Новая папка"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
         default: "Хранилище"
       information:
+        authentication_error: "Запрос %{storageType} не может быть аутентифицирован, это ошибка."
         connection_error: >
           Некоторые настройки %{storageType} не работают. Обратитесь к администратору %{storageType}.
         live_data_error: "Ошибка при получении сведений о файле"
@@ -26,6 +30,8 @@ ru:
         no_file_links: "Чтобы связать файлы с этим рабочим пакетом, пожалуйста, сделайте это через %{storageType}."
         not_logged_in: >
           Для добавления ссылки, просмотра или загрузки файлов, относящиеся к этому пакету работ, войдите в %{storageType}.
+        suggest_logout: Для устранения этой проблемы Вы можете попробовать выйти из системы и зайти обратно.
+        suggest_relink: Вы можете попытаться повторно привязать ваш аккаунт с помощью кнопки логин ниже для исправления этой проблемы.
       files:
         already_existing_header: "Этот файл уже существует"
         already_existing_body: >
@@ -42,6 +48,7 @@ ru:
           Автоматически управляемая папка проекта еще не найдена.  Подождите немного, перезагрузите страницу, чтобы получить последние данные, и повторите попытку.
         managed_project_folder_no_access: >
           У вас пока нет доступа к управляемой папке проекта. Пожалуйста, подождите немного и повторите попытку.
+        cannot_create_folder: Не удалось создать папку. Избегайте использования специальных знаков и символов и убедитесь, что папка еще не существует.
         upload_keep_both: "Оставить оба"
         upload_replace: "Заменить"
       file_links:
@@ -57,7 +64,7 @@ ru:
         select: "Выберите файлы"
         select_all: "Выбрать все"
         selection:
-          zero: "Выберите файлы для ссылки"
+          zero: "Выберите файлы для связывания"
           one: "Ссылка на файл"
           few: "Ссылка на %{count} файлов"
           many: "Ссылка на %{count} файлов"

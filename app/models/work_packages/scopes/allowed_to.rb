@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 # -- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2010-2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,28 +36,114 @@ module WorkPackages::Scopes
       # Returns an ActiveRecord::Relation to find all work packages for which
       # +user+ has the given +permission+ either directly on the work package
       # or by the linked project
-      def allowed_to(user, permission) # rubocop:disable Metrics/AbcSize
+      def allowed_to(user, permission) # rubocop:disable Metrics/PerceivedComplexity
         permissions = Authorization.contextual_permissions(permission, :work_package, raise_on_unknown: true)
 
-        return none if user.locked?
+        return none if user.locked? || user.deleted?
         return none if permissions.empty?
 
         if user.admin? && permissions.all?(&:grant_to_admin?)
-          where(id: allowed_to_admin_relation(permissions))
+          admin_allowed_to(permissions)
         elsif user.anonymous?
-          where(project_id: Project.allowed_to(user, permissions))
+          anonymous_allowed_to(user, permissions)
+        elsif Setting.large_instance_wp_allowed_to_sql?
+          logged_in_non_admin_allowed_to_large_instances(user, permissions)
         else
-          allowed_via_wp_membership = allowed_to_member_relation(user, permissions).select(arel_table[:id]).arel
-          allowed_via_project_membership = Project.unscoped.allowed_to(user, permissions).select(:id)
-
-          with(
-            allowed_work_packages: allowed_via_wp_membership,
-            allowed_projects: allowed_via_project_membership
-          ).where("work_packages.project_id IN (SELECT id FROM allowed_projects) OR work_packages.id IN (SELECT id FROM allowed_work_packages)")
+          logged_in_non_admin_allowed_to_small_instances(user, permissions)
         end
       end
 
       private
+
+      def admin_allowed_to(permissions)
+        where(id: allowed_to_admin_relation(permissions))
+      end
+
+      def anonymous_allowed_to(user, permissions)
+        where(project_id: Project.allowed_to(user, permissions))
+      end
+
+      def logged_in_non_admin_allowed_to_small_instances(user, permissions)
+        allowed_via_wp_membership = allowed_to_member_relation(user, permissions)
+        allowed_via_project_membership = Project.unscoped.allowed_to(user, permissions)
+
+        where(project_id: allowed_via_project_membership.select(:id))
+          .or(where(id: allowed_via_wp_membership.select(arel_table[:id])))
+      end
+
+      def logged_in_non_admin_allowed_to_large_instances(user, permissions)
+        # Get all projects a user has the permissions in.
+        # Permissions can come from project memberships as well as entity/work_package memberships, in addition
+        # to (UNION) potentially the non-member permissions.
+        # This comes back with the columns
+        # * id (of the project) - this column will always be set regardless of whether the membership is entity-specific or not.
+        # * entity_id (of the work package) - this column can be null in case it is a project-wide membership.
+        allowed_via_project_or_work_package_membership = Project
+                                                           .unscoped
+                                                           .allowed_to_member_union(user,
+                                                                                    permissions,
+                                                                                    entity_types: [WorkPackage.name])
+
+        # Split the member projects into two distinct sets
+        # for easier reference.
+        entity_member_projects = Arel.sql(<<~SQL.squish)
+          SELECT *
+          FROM member_projects
+          WHERE entity_id IS NOT NULL
+        SQL
+
+        project_member_projects = Arel.sql(<<~SQL.squish)
+          SELECT *
+          FROM member_projects
+          WHERE entity_id IS NULL
+        SQL
+
+        # Remove those entries from before that are
+        # * entity (WorkPackage) specific AND
+        # * have the same project as a non-entity specific entry.
+        # That is the case if a work package is shared with a user
+        # while the user is already a member in the project.
+        # Since the allowed_to filtering is already specific to the permissions, that removal is safe.
+        entity_member_projects_without_duplicates = Arel.sql(<<~SQL.squish)
+          SELECT * FROM entity_member_projects
+          WHERE NOT EXISTS (
+            SELECT 1 FROM project_member_projects
+            WHERE project_member_projects.id = entity_member_projects.id
+          )
+        SQL
+
+        # Take all work packages allowed by either project-wide or entity-specific membership.
+        # But now remove all those that are in a project for which an entity-specific membership exists that is not
+        # for that entity (work package).
+        # An alternative way of formulating this would be by comparing
+        # * That the project_id matches AND
+        # * the entity_id matches OR the entity_id is null
+        #  ```
+        #   SELECT * from work_packages
+        # 	WHERE EXISTS (
+        # 	  SELECT 1 FROM allowed_projects projects
+        #     WHERE projects.id = work_packages.project_id
+        #     AND (projects.entity_id = work_packages.id OR projects.entity_id IS NULL)
+        # 	)
+        # ```
+        # Postgresql however sometimes turns to a sequential scan with the query above.
+        allowed_by_projects_and_work_packages = Arel.sql(<<~SQL.squish)
+          SELECT * from work_packages
+          WHERE project_id in (SELECT id FROM member_projects)
+          AND NOT EXISTS (
+            SELECT 1 FROM entity_member_projects_without_duplicates
+            WHERE entity_member_projects_without_duplicates.id = work_packages.project_id
+            AND entity_member_projects_without_duplicates.entity_id != work_packages.id
+          )
+        SQL
+
+        with(member_projects: Arel.sql(allowed_via_project_or_work_package_membership.to_sql),
+             entity_member_projects:,
+             project_member_projects:,
+             entity_member_projects_without_duplicates:,
+             allowed_by_projects_and_work_packages:)
+          .from("allowed_by_projects_and_work_packages work_packages")
+      end
 
       def allowed_to_admin_relation(permissions)
         unscoped
@@ -72,7 +160,6 @@ module WorkPackages::Scopes
           .joins(member_roles: :role)
           .joins(allowed_to_role_permission_join(permissions))
           .where(member_conditions(user))
-          .select(arel_table[:id])
       end
 
       def allowed_to_enabled_module_join(permissions) # rubocop:disable Metrics/AbcSize

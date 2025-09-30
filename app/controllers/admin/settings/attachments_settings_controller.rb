@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,12 +31,6 @@
 module Admin::Settings
   class AttachmentsSettingsController < ::Admin::SettingsController
     menu_item :attachments
-
-    def default_breadcrumb; end
-
-    def show_local_breadcrumb
-      false
-    end
 
     def settings_params
       super.tap do |settings|

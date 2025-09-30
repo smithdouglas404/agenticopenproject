@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -45,6 +45,7 @@ module CostlogHelper
   end
 
   def extended_progress_bar(pcts, options = {})
+    options.reverse_merge!(hide_total_progress: true)
     return progress_bar(pcts, options) unless pcts.is_a?(Numeric) && pcts > 100
 
     closed = ((100.0 / pcts) * 100).round

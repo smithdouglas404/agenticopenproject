@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -57,6 +59,21 @@ RSpec.describe OpenProject::TextFormatting do
                                     ))
   end
 
+  describe "HTML safety" do
+    context "with blank strings" do
+      it "always returns HTML-safe strings" do
+        expect(format_text("")).to be_html_safe
+        expect(format_text(" ")).to be_html_safe
+      end
+    end
+
+    context "with non-blank strings" do
+      it "always returns HTML-safe strings" do
+        expect(format_text("abc")).to be_html_safe
+      end
+    end
+  end
+
   describe "options" do
     describe "#format" do
       it "uses format of Settings, if nothing is specified" do
@@ -64,7 +81,7 @@ RSpec.describe OpenProject::TextFormatting do
       end
 
       it "allows plain format of options, if specified" do
-        expect(format_text("*Stars!*", format: "plain")).to be_html_eql("<p>*Stars!*</p>")
+        expect(format_text("*Stars!*", format: :plain)).to be_html_eql("<p>*Stars!*</p>")
       end
     end
   end

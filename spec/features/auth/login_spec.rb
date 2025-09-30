@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,6 +31,8 @@
 require "spec_helper"
 
 RSpec.describe "Login" do
+  let(:user_menu) { Components::UserMenu.new }
+
   before do
     @capybara_ignore_elements = Capybara.ignore_hidden_elements
     Capybara.ignore_hidden_elements = true
@@ -39,8 +43,7 @@ RSpec.describe "Login" do
   end
 
   def expect_being_logged_in(user)
-    expect(page)
-      .to have_css("a[title='#{user.name}']")
+    user_menu.expect_user_shown user.name
   end
 
   def expect_not_being_logged_in
@@ -70,9 +73,9 @@ RSpec.describe "Login" do
         # first login
         login_with(" #{user.login} ", user_password)
 
-        # on the my page
+        # on the home path
         expect(page)
-          .to have_current_path my_page_path
+          .to have_current_path home_path
       end
     end
 
@@ -80,8 +83,7 @@ RSpec.describe "Login" do
       let(:force_password_change) { true }
       let(:first_login) { true }
 
-      it 'redirects to homescreen after forced password change
-         (with validation error) and first login' do
+      it "redirects to homescreen after forced password change (with validation error) and first login" do
         # first login
         login_with(user.login, user_password)
         expect(current_path).to eql signin_path
@@ -109,7 +111,7 @@ RSpec.describe "Login" do
     end
 
     it "prevents login for a blocked user" do
-      user.lock!
+      user.locked!
 
       login_with(user.login, user.password)
 
@@ -127,7 +129,7 @@ RSpec.describe "Login" do
       login_with(user.login, user_password)
 
       expect(page)
-        .to have_current_path my_page_path
+        .to have_current_path home_path
     end
 
     context "autologin",

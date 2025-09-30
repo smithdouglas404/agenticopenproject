@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,7 +37,7 @@ module MeetingSections
     with_collection_parameter :meeting_section
 
     def initialize(meeting_section:, first_and_last: [], form_hidden: true, form_type: :simple, insert_target_modified: true,
-                   force_wrapper: false, state: :show)
+                   force_wrapper: false, state: :show, collapsed: nil, current_meeting: nil)
       super
 
       @meeting = meeting_section.meeting
@@ -47,6 +49,8 @@ module MeetingSections
       @insert_target_modified = insert_target_modified
       @force_wrapper = force_wrapper
       @state = state
+      @collapsed = collapsed
+      @current_meeting = current_meeting
     end
 
     private
@@ -68,6 +72,8 @@ module MeetingSections
     end
 
     def render_section_wrapper?
+      return false if render_backlog?
+
       @force_wrapper || !@meeting_section.untitled? || @meeting.sections.count > 1
     end
 
@@ -90,6 +96,10 @@ module MeetingSections
         "target-id": @meeting_section.id, # the id of the target
         "target-allowed-drag-type": "agenda-item" # the type of dragged items which are allowed to be dropped in this target
       }
+    end
+
+    def render_backlog?
+      @meeting_section == @meeting.backlog
     end
   end
 end

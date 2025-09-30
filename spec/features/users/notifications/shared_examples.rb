@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_examples "notification settings workflow" do
   describe "with another project the user can see",
            with_ee: %i[date_alerts] do

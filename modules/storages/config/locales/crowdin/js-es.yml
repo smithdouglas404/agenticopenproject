@@ -2,6 +2,7 @@
 es:
   js:
     storages:
+      authentication_error: "La autenticación con %{storageType} ha fallado"
       link_files_in_storage: "Enlace archivos en %{storageType}"
       link_existing_files: "Enlazar archivos existentes"
       upload_files: "Subir archivos"
@@ -13,11 +14,14 @@ es:
       open_storage: "Abrir %{storageType}"
       select_location: "Seleccionar ubicación"
       choose_location: "Seleccionar ubicación"
+      new_folder: "Nueva carpeta"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/Sharepoint"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
         default: "Almacén"
       information:
+        authentication_error: "La solicitud a %{storageType} no ha podido autenticarse, es un error."
         connection_error: >
           Algunos ajustes dé %{storageType} no funcionan. Póngase en contacto con el administrador de %{storageType}.
         live_data_error: "Error obteniendo detalles del archivo"
@@ -26,6 +30,8 @@ es:
         no_file_links: "Para poder enlazar archivos en este paquete de trabajo, por favor, utiliza %{storageType}."
         not_logged_in: >
           Para añadir un enlace, ver o subir archivos relacionados con este paquete de trabajo, por favor inicie sesión en %{storageType}.
+        suggest_logout: Puede probar si cerrando la sesión y volviendo a entrar se soluciona este problema.
+        suggest_relink: Puede probar si volver a vincular su cuenta a través del botón de inicio de sesión que aparece a continuación soluciona este problema.
       files:
         already_existing_header: "Este archivo ya existe"
         already_existing_body: >
@@ -42,6 +48,7 @@ es:
           Todavía no se ha encontrado la carpeta de proyecto administrada automáticamente. Espere un poco, vuelva a cargar la página para obtener los datos más recientes e inténtelo de nuevo.
         managed_project_folder_no_access: >
           Aún no tiene acceso a la carpeta del proyecto administrada. Espere un poco e inténtalo de nuevo.
+        cannot_create_folder: Error al crear carpeta. Evite utilizar caracteres especiales y símbolos y asegúrese de que la carpeta no existe ya.
         upload_keep_both: "Mantener ambos"
         upload_replace: "Sustituir"
       file_links:

@@ -14,6 +14,7 @@ export interface QuerySharingChange {
 @Component({
   selector: 'query-sharing-form',
   templateUrl: './query-sharing-form.html',
+  standalone: false,
 })
 export class QuerySharingFormComponent {
   @Input() public isSave:boolean;

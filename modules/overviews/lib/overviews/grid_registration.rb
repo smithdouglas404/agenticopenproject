@@ -15,7 +15,7 @@ module Overviews
           {
             identifier: "project_description",
             start_row: 1,
-            end_row: 2,
+            end_row: 3,
             start_column: 1,
             end_column: 2,
             options: {
@@ -30,16 +30,6 @@ module Overviews
             end_column: 3,
             options: {
               name: I18n.t("js.grid.widgets.project_status.title")
-            }
-          },
-          {
-            identifier: "project_details",
-            start_row: 2,
-            end_row: 3,
-            start_column: 1,
-            end_column: 2,
-            options: {
-              name: I18n.t("js.grid.widgets.project_details.title")
             }
           },
           {

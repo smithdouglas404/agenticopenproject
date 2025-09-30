@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,8 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Subproject creation", :js, :with_cuprite do
-  let(:name_field) { FormFields::InputFormField.new :name }
+RSpec.describe "Subproject creation", :js do
   let(:parent_field) { FormFields::SelectFormField.new :parent }
   let(:add_subproject_role) { create(:project_role, permissions: %i[edit_project add_subprojects]) }
   let(:view_project_role) { create(:project_role, permissions: %i[edit_project]) }
@@ -53,16 +54,22 @@ RSpec.describe "Subproject creation", :js, :with_cuprite do
   end
 
   it "can create a subproject" do
-    click_link "Subproject"
+    click_on "New subproject"
 
-    name_field.set_value "Foo child"
-    parent_field.expect_required
+    expect(page).to have_heading "New project"
+
+    fill_in "Name", with: "Foo child"
+
+    expect(page).to have_combo_box "Subproject of"
+
     # The other project is not a valid parent since the user is lacking
     # the add_subproject permission therein.
     parent_field.expect_no_option(other_project.name)
     parent_field.expect_selected parent_project.name
 
-    click_button "Save"
+    click_on "Create"
+
+    expect_and_dismiss_flash type: :success, message: "Successful creation."
 
     expect(page).to have_current_path /\/projects\/foo-child\/?/
 

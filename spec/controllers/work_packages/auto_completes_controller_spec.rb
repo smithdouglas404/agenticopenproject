@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -41,19 +43,19 @@ RSpec.describe WorkPackages::AutoCompletesController do
            principal: user,
            roles: [role])
   end
-  let(:work_package_1) do
+  let(:work_package1) do
     create(:work_package,
            subject: "Can't print recipes",
            project:)
   end
 
-  let(:work_package_2) do
+  let(:work_package2) do
     create(:work_package,
            subject: "Error when updating a recipe",
            project:)
   end
 
-  let(:work_package_3) do
+  let(:work_package3) do
     create(:work_package,
            subject: "Lorem ipsum",
            project:)
@@ -64,9 +66,9 @@ RSpec.describe WorkPackages::AutoCompletesController do
 
     allow(User).to receive(:current).and_return user
 
-    work_package_1
-    work_package_2
-    work_package_3
+    work_package1
+    work_package2
+    work_package3
   end
 
   shared_examples_for "successful response" do
@@ -83,7 +85,7 @@ RSpec.describe WorkPackages::AutoCompletesController do
 
   describe "#work_packages" do
     describe "search is case insensitive" do
-      let(:expected_values) { [work_package_1, work_package_2] }
+      let(:expected_values) { [work_package1, work_package2] }
 
       before do
         get :index,
@@ -100,13 +102,13 @@ RSpec.describe WorkPackages::AutoCompletesController do
     end
 
     describe "returns work package for given id" do
-      let(:expected_values) { work_package_1 }
+      let(:expected_values) { work_package1 }
 
       before do
         get :index,
             params: {
               project_id: project.id,
-              q: work_package_1.id
+              q: work_package1.id
             },
             format: :json
       end
@@ -116,16 +118,16 @@ RSpec.describe WorkPackages::AutoCompletesController do
       it_behaves_like "contains expected values"
     end
 
-    describe "returns work package for given id" do
+    describe "returns work package for given ids" do
       # this relies on all expected work packages to have ids that contain the given string
-      # we do not want to have work_package_3 so we take it's id + 1 to create a string
-      # we are sure to not be part of work_package_3's id.
+      # we do not want to have work_package3 so we take its id + 1 to create a string
+      # we are sure to not be part of work_package3's id.
       let(:ids) do
         taken_ids = WorkPackage.pluck(:id).map(&:to_s)
 
-        id = work_package_3.id + 1
+        id = work_package3.id + 1
 
-        while taken_ids.include?(id.to_s) || work_package_3.id.to_s.include?(id.to_s)
+        while taken_ids.include?(id.to_s) || work_package3.id.to_s.include?(id.to_s)
           id = id + 1
         end
 
@@ -133,7 +135,7 @@ RSpec.describe WorkPackages::AutoCompletesController do
       end
 
       let!(:expected_values) do
-        expected = [work_package_1, work_package_2]
+        expected = [work_package1, work_package2]
 
         WorkPackage.pluck(:id)
 
@@ -160,7 +162,7 @@ RSpec.describe WorkPackages::AutoCompletesController do
 
       it_behaves_like "contains expected values"
 
-      context "uniq" do
+      context "when unique" do
         let(:assigned) { assigns(:work_packages) }
 
         subject { assigned.size }
@@ -169,20 +171,20 @@ RSpec.describe WorkPackages::AutoCompletesController do
       end
     end
 
-    describe "returns work package for given id" do
+    describe "returns work package for given id, escaping html" do
       render_views
-      let(:work_package_4) do
+      let(:work_package3) do
         create(:work_package,
                subject: "<script>alert('danger!');</script>",
                project:)
       end
-      let(:expected_values) { work_package_4 }
+      let(:expected_values) { work_package3 }
 
       before do
         get :index,
             params: {
               project_id: project.id,
-              q: work_package_4.id
+              q: work_package3.id
             },
             format: :json
       end
@@ -196,32 +198,32 @@ RSpec.describe WorkPackages::AutoCompletesController do
     end
 
     describe "in different projects" do
-      let(:project_2) do
+      let(:project2) do
         create(:project,
                parent: project)
       end
-      let(:expected_values) { work_package_4 }
-      let(:member_2) do
+      let(:expected_values) { work_package3 }
+      let(:member2) do
         create(:member,
-               project: project_2,
+               project: project2,
                principal: user,
                roles: [role])
       end
-      let(:work_package_4) do
+      let(:work_package3) do
         create(:work_package,
                subject: "Foo Bar Baz",
-               project: project_2)
+               project: project2)
       end
 
       before do
-        member_2
+        member2
 
-        work_package_4
+        work_package3
 
         get :index,
             params: {
               project_id: project.id,
-              q: work_package_4.id
+              q: work_package3.id
             },
             format: :json
       end

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -186,16 +186,6 @@ export class WorkPackageSingleViewBase extends UntilDestroyedMixin {
     // Fetch attachments of current work package
     if (this.workPackage.$links.attachments) {
       this.attachmentsResourceService.fetchCollection(this.workPackage.$links.attachments.href as string).subscribe();
-    }
-
-    if (this.workPackage.$links.fileLinks) {
-      this.fileLinkResourceService
-        .updateCollectionsForWorkPackage(this.workPackage.$links.fileLinks.href as string)
-        .pipe(take(1))
-        .subscribe(
-          () => { /* Do nothing */ },
-          (error:HttpErrorResponse) => { this.toastService.addError(error); },
-        );
     }
 
     // Listen to tab changes to update the tab label

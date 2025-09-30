@@ -73,7 +73,9 @@ You can prioritize different work packages within the product backlog using drag
 In a sprint, you can directly document necessary effort as story points. The overall effort for a sprint is automatically calculated, whereby the sum of story points is displayed in the top row.
 
 <div class="glossary">
+
 **Story points** are defined as numbers assigned to a work package used to estimate (relatively) the size of the work.
+
 </div>
 
 ![User-guide-backlogs-estimate-story-points](User-guide-backlogs-estimate-story-points.png)

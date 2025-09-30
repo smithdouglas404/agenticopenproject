@@ -1,30 +1,31 @@
 #English strings go here
 mn:
+  ee:
+    upsell:
+      board_view:
+        description: 'Та самбарын тусламжтайгаар ажлын урсгалаа автоматжуулахыг хүсч байна уу? Нарийвчилсан самбарууд нь Enterprise нэмэлт юм. Төлбөртэй багц болгон шинэчилнэ үү.'
   js:
     boards:
-      create_new: 'Create new board'
-      label_unnamed_board: 'Unnamed board'
-      label_unnamed_list: 'Unnamed list'
-      label_board_type: 'Board type'
-      upsale:
-        teaser_text: 'Would you like to automate your workflows with Boards? Advanced boards are an Enterprise add-on. Please upgrade to a paid plan.'
-        upgrade: 'Upgrade now'
+      create_new: 'Шинэ самбар үүсгэх'
+      label_unnamed_board: 'Нэрлэгдээгүй самбар'
+      label_unnamed_list: 'Нэрлэгдээгүй жагсаалт'
+      label_board_type: 'Самбарын төрөл'
       lists:
-        delete: 'Delete list'
+        delete: 'Устгасан жагсаалт'
       version:
         is_locked: 'Version is locked. No items can be added to this version.'
         is_closed: 'Version is closed. No items can be added to this version.'
-        close_version: 'Close version'
-        open_version: 'Open version'
-        lock_version: 'Lock version'
-        unlock_version: 'Unlock version'
-        edit_version: 'Edit version'
-        show_version: 'Show version'
-        locked: 'Locked'
-        closed: 'Closed'
-      new_board: 'New board'
+        close_version: 'Хувилбар хаах'
+        open_version: 'Хувилбар нээх'
+        lock_version: 'Хувилбар цоожлох'
+        unlock_version: 'Хувилбарын цоожыг тайлах'
+        edit_version: 'Хувилбар засах'
+        show_version: 'Хувилбар харах'
+        locked: 'Цоожлогдсон'
+        closed: 'Хаагдсан'
+      new_board: 'Шинэ самбар'
       add_list: 'Add list to board'
-      add_card: 'Add card'
+      add_card: 'Картлуу нэмэх'
       error_attribute_not_writable: "Cannot move the work package, %{attribute} is not writable."
       error_loading_the_list: "Error loading the list: %{error_message}"
       error_permission_missing: "The permission to create public queries is missing"
@@ -32,13 +33,13 @@ mn:
       text_hidden_list_warning: "Not all lists are displayed because you lack the permission. Contact your admin for more information."
       click_to_remove_list: "Click to remove this list"
       board_type:
-        text: 'Board type'
-        free: 'basic'
+        text: 'Самбарын төрөл'
+        free: 'ердийн'
         select_board_type: 'Please choose the type of board you need.'
         free_text: >
           Start from scratch with a blank board. Manually add cards and columns to this board.
-        action: 'Action board'
-        action_by_attribute: 'Action board (%{attribute})'
+        action: 'Үйлдлийн самбар'
+        action_by_attribute: 'Үйлдлийн самбар (%{attribute})'
         action_text: >
           A board with filtered lists on %{attribute} attribute. Moving work packages to other lists will update their attribute.
         action_text_subprojects: >
@@ -52,18 +53,18 @@ mn:
         action_text_version: >
           Board with automated columns based on the version attribute. Ideal for planning product development.
         action_type:
-          assignee: assignee
-          status: status
+          assignee: даалгагч
+          status: төлөв
           version: version
-          subproject: subproject
+          subproject: дэд төсөл
           subtasks: parent-child
         board_type_title:
-          assignee: Assignee
-          status: Status
-          version: Version
-          subproject: Subproject
+          assignee: Даалгагч
+          status: Төлөв
+          version: Хувилбар
+          subproject: Дэд төсөл
           subtasks: Parent-child
-          basic: Basic
+          basic: Ердийн
         select_attribute: "Action attribute"
       add_list_modal:
         labels:

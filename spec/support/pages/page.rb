@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,14 +29,20 @@
 #++
 
 require_relative "../toasts/expectations"
+require_relative "../flash/expectations"
+require_relative "../capybara/wait_helpers"
 
 module Pages
   class Page
     include Capybara::DSL
     include Capybara::RSpecMatchers
+    include TestSelectorFinders
     include RSpec::Matchers
     include OpenProject::StaticRouting::UrlHelpers
     include Toasts::Expectations
+    include Flash::Expectations
+    include RSpec::Wait
+    include WaitHelpers
 
     def current_page?
       URI.parse(current_url).path == path
@@ -43,9 +51,9 @@ module Pages
     def visit!
       raise "No path defined" unless path
 
-      visit path
+      visit(path)
 
-      self
+      wait_for_reload
     end
 
     def reload!
@@ -101,10 +109,27 @@ module Pages
     end
 
     def drag_and_drop_list(from:, to:, elements:, handler:)
+      if using_cuprite?
+        drag_and_drop_list_cuprite(from:, to:, elements:, handler:)
+      else
+        drag_and_drop_list_selenium(from:, to:, elements:, handler:)
+      end
+    end
+
+    def drag_and_drop_list_cuprite(from:, to:, elements:, handler:)
+      list = page.all(elements, minimum: [from, to].max + 1)
+      source_handler = list[from].find(handler)
+      target_handler = list[to].find(handler)
+
+      # doesn't scroll
+      source_handler.native.drag_to(target_handler.native, delay: 0.1)
+    end
+
+    def drag_and_drop_list_selenium(from:, to:, elements:, handler:)
       # Wait a bit because drag & drop in selenium is easily offended
       sleep 1
 
-      list = page.all(elements)
+      list = page.all(elements, minimum: [from, to].max + 1)
       source = list[from]
       target = list[to]
 
@@ -156,8 +181,12 @@ module Pages
     def navigate_to_modules_menu_item(link_title)
       visit root_path
 
-      within "#more-menu", visible: false do
-        click_on link_title, visible: false
+      within ".op-app-header" do
+        page.find_test_selector("op-app-header--modules-menu-button").click
+      end
+
+      within "#op-app-header--modules-menu-list", visible: :all do
+        click_on link_title, visible: :all
       end
     end
   end

@@ -1,6 +1,7 @@
 name: "Test suite"
 # https://securitylab.github.com/research/github-actions-preventing-pwn-requests
 on:
+  workflow_dispatch:
   push:
     branches:
       - dev
@@ -24,13 +25,17 @@ jobs:
   all:
     name: Units + Features
     if: github.repository == 'opf/openproject'
-    runs-on: runs-on,runner=32cpu-linux-x64,run-id=${{ github.run_id }}
+    runs-on:
+      labels: "runs-on=${{ github.run_id }}/image=ubuntu24-full-x64/family=m7+c7+r7+i7+r8/ram=128+256/cpu=32"
     timeout-minutes: 40
     env:
       DOCKER_BUILDKIT: 1
       CI_RETRY_COUNT: 3
     steps:
-    - uses: actions/checkout@v4
+    - uses: runs-on/action@v2
+      with:
+        metrics: cpu,memory,disk,io,network
+    - uses: actions/checkout@v5
     - name: Cache DOCKER
       id: cache_docker
       uses: runs-on/cache@v4

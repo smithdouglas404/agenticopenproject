@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -90,7 +92,9 @@ RSpec.describe "API v3 Render resource" do
               <<~HTML
                 <p class="op-uc-p">
                   Hello World! Have a look at
-                  <a class="issue work_package preview-trigger op-uc-link"
+                  <a class="issue work_package op-uc-link"
+                     data-hover-card-trigger-target="trigger"
+                     data-hover-card-url="/work_packages/#{id}/hover_card"
                      target="_top"
                      href="#{href}">##{id}</a>
                 </p>
@@ -180,7 +184,15 @@ RSpec.describe "API v3 Render resource" do
 
           it_behaves_like "valid response" do
             let(:text) do
-              "<p>Hello *World*! Have a look at <a class=\"issue work_package preview-trigger\" href=\"/work_packages/1\">#1</a></p>\n\n<p>with two lines.</p>"
+              <<~HTML
+                <p>
+                  Hello *World*! Have a look at
+                  <a class="issue work_package"
+                     data-hover-card-trigger-target="trigger"
+                     data-hover-card-url="/work_packages/1/hover_card"
+                     href="/work_packages/1">#1</a>
+                </p>\n\n<p>with two lines.</p>
+              HTML
             end
           end
         end

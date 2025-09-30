@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,6 +37,10 @@ module DemoData
       BasicData::PrioritySeeder,
       AdminUserSeeder
     ]
+    # :parent is not strictly a required reference: they are most often created
+    # while seeding work packages so it would not make sense to not seed if they
+    # are not referenced yet.
+    self.attribute_names_for_required_references = %w[status type]
 
     attr_reader :project, :statuses, :repository, :types
     alias_method :project_data, :seed_data
@@ -56,9 +62,13 @@ module DemoData
       end
     end
 
-    private
+    def all_required_references
+      collect_required_references(project_data.lookup("work_packages"))
+    end
 
     RelationData = Data.define(:from, :to_reference, :type)
+
+    private
 
     attr_reader :relations_to_create
 
@@ -151,6 +161,15 @@ module DemoData
       seed_data.find_reference(attributes["type"].to_sym)
     end
 
+    def collect_required_references(work_packages_data)
+      Array.wrap(work_packages_data).each_with_object(Set.new) do |work_package_data, acc|
+        acc.merge(get_required_references(work_package_data))
+        if work_package_data["children"]
+          acc.merge(collect_required_references(work_package_data["children"]))
+        end
+      end
+    end
+
     def set_version!(wp_attr, attributes)
       version = seed_data.find_reference(attributes["version"])
       if version
@@ -199,6 +218,7 @@ module DemoData
           due_date:,
           duration:,
           ignore_non_working_days:,
+          schedule_manually:,
           estimated_hours:
         }
       end
@@ -213,7 +233,7 @@ module DemoData
 
       def start_date
         days_ahead = attributes["start"] || 0
-        Time.zone.today.monday + days_ahead.days
+        Date.current.monday + days_ahead.days
       end
 
       def due_date
@@ -228,6 +248,14 @@ module DemoData
         [start_date, due_date]
           .compact
           .any? { |date| working_days.non_working?(date) }
+      end
+
+      def schedule_manually
+        if attributes["schedule_manually"].nil?
+          WorkPackage.column_defaults["schedule_manually"]
+        else
+          ActiveModel::Type::Boolean.new.cast(attributes["schedule_manually"])
+        end
       end
 
       def estimated_hours

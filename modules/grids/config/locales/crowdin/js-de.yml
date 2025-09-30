@@ -4,9 +4,6 @@ de:
       add_widget: 'Widget hinzufügen'
       remove: 'Widget entfernen'
       configure: 'Widget konfigurieren'
-      upsale:
-        text: "Einige Widgets wie das Arbeitspaket-Graphen Widget sind nur in der Enterprise Edition verfügbar."
-        link: 'Enterprise Edition'
       widgets:
         missing_permission: "Sie verfügen nicht über die erforderlichen Berechtigungen, um dieses Steuerelement anzuzeigen."
         custom_text:
@@ -24,12 +21,11 @@ de:
           title: 'Neuigkeiten'
           at: 'um'
           no_results: 'Nichts Neues zu berichten.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Projektbeschreibung'
           no_results: "Noch keine Beschreibung festgelegt. Sie kann in den 'Projekteinstellungen' erstellt werden."
-        project_details:
-          title: 'Projektdetails'
-          no_results: 'Für Projekte wurden keine benutzerdefinierten Felder definiert.'
         project_status:
           title: 'Projektstatus'
           not_started: 'Nicht gestartet'
@@ -39,6 +35,8 @@ de:
           not_set: 'Nicht gesetzt'
           finished: 'Abgeschlossen'
           discontinued: 'Eingestellt'
+        project_status_beta:
+          title: 'Projektstatus (BETA)'
         subprojects:
           title: 'Unterprojekte'
           no_results: 'Keine Unterprojekte.'

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -63,27 +65,24 @@ RSpec.describe Principals::DeleteJob, type: :model do
 
       before do
         work_package
+        principal.update_column(:status, User.statuses[:deleted])
         job
       end
 
       it "resets assigned to to the deleted user" do
-        expect(work_package.reload.assigned_to)
-          .to eql(deleted_user)
+        expect(work_package.reload.assigned_to).to eql(deleted_user)
       end
 
       it "resets assigned to in all journals to the deleted user" do
-        expect(Journal::WorkPackageJournal.pluck(:assigned_to_id))
-          .to eql([deleted_user.id])
+        expect(Journal::WorkPackageJournal.pluck(:assigned_to_id)).to eql([deleted_user.id])
       end
 
       it "resets responsible to to the deleted user" do
-        expect(work_package.reload.responsible)
-          .to eql(deleted_user)
+        expect(work_package.reload.responsible).to eql(deleted_user)
       end
 
       it "resets responsible to in all journals to the deleted user" do
-        expect(Journal::WorkPackageJournal.pluck(:responsible_id))
-          .to eql([deleted_user.id])
+        expect(Journal::WorkPackageJournal.pluck(:responsible_id)).to eql([deleted_user.id])
       end
     end
 
@@ -108,7 +107,7 @@ RSpec.describe Principals::DeleteJob, type: :model do
                project: work_package.project,
                units: 100.0,
                spent_on: Time.zone.today,
-               work_package:,
+               entity: work_package,
                comments: "")
       end
 
@@ -317,7 +316,7 @@ RSpec.describe Principals::DeleteJob, type: :model do
       it "removes the query" do
         job
 
-        expect(Queries::Projects::ProjectQuery.find_by(id: query.id)).to be_nil
+        expect(ProjectQuery.find_by(id: query.id)).to be_nil
       end
     end
 
@@ -346,7 +345,7 @@ RSpec.describe Principals::DeleteJob, type: :model do
       shared_examples_for "public query rewriting" do
         let(:filter_symbol) { filter.to_s.demodulize.underscore.to_sym }
 
-        describe "with the filter has the deleted user as it's value" do
+        describe "with the filter has the deleted user as its value" do
           before do
             query.filter(filter_symbol, values: [principal.id.to_s], operator: "=")
             query.save!
@@ -360,7 +359,7 @@ RSpec.describe Principals::DeleteJob, type: :model do
           end
         end
 
-        describe "with the filter has another user as it's value" do
+        describe "with the filter has another user as its value" do
           before do
             query.filter(filter_symbol, values: [other_user.id.to_s], operator: "=")
             query.save!
@@ -380,7 +379,7 @@ RSpec.describe Principals::DeleteJob, type: :model do
           end
         end
 
-        describe "with the filter has the deleted user and another user as it's value" do
+        describe "with the filter has the deleted user and another user as its value" do
           before do
             query.filter(filter_symbol, values: [principal.id.to_s, other_user.id.to_s], operator: "=")
             query.save!
@@ -475,6 +474,17 @@ RSpec.describe Principals::DeleteJob, type: :model do
       it_behaves_like "cost_query handling"
       it_behaves_like "project query handling"
       it_behaves_like "mention rewriting"
+
+      describe "favorites" do
+        before do
+          project.add_favoriting_user(principal)
+          job
+        end
+
+        it "removes the assigned_to association to the principal" do
+          expect(project.favoriting_users.reload).to be_empty
+        end
+      end
     end
 
     context "with a group" do
@@ -501,6 +511,25 @@ RSpec.describe Principals::DeleteJob, type: :model do
           job
 
           expect(watched.watchers.reload).to be_empty
+        end
+      end
+    end
+
+    context "with a service account" do
+      describe "service account association" do
+        let(:principal) { create(:service_account, service:) }
+        let(:service) { create(:oauth_application) }
+
+        before do
+          principal.save!
+        end
+
+        it "deletes the service account association" do
+          expect { job }.to change(ServiceAccountAssociation, :count).from(1).to(0)
+        end
+
+        it "does not delete the service associated to the service account" do
+          expect { job }.not_to change(Doorkeeper::Application, :count)
         end
       end
     end

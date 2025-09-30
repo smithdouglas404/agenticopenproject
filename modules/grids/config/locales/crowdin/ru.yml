@@ -8,6 +8,7 @@ ru:
         row_count: "Количество строк"
         column_count: "Количество столбцов"
         widgets: "Виджеты"
+        scope: "Область применения"
     errors:
       models:
         grids/grid:

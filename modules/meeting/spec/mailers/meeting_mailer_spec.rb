@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -44,9 +46,8 @@ RSpec.describe MeetingMailer do
            author:,
            project:)
   end
-  let(:meeting_agenda) do
-    create(:meeting_agenda, meeting:)
-  end
+  let(:tokyo_offset) { "UTC#{ActiveSupport::TimeZone['Asia/Tokyo'].now.formatted_offset}" }
+  let(:berlin_offset) { "UTC#{ActiveSupport::TimeZone['Europe/Berlin'].now.formatted_offset}" }
 
   before do
     User.current = author
@@ -62,6 +63,7 @@ RSpec.describe MeetingMailer do
     let(:i18n) do
       Class.new do
         include Redmine::I18n
+
         public :format_date, :format_time
       end
     end
@@ -88,11 +90,9 @@ RSpec.describe MeetingMailer do
     context "with a recipient with another time zone" do
       let!(:preference) { watcher1.pref.update(time_zone: "Asia/Tokyo") }
 
-      it "renders the mail with the correcet locale" do
-        expect(mail.text_part.body).to include("Tokyo")
-        expect(mail.text_part.body).to include("GMT+09:00")
-        expect(mail.html_part.body).to include("Tokyo")
-        expect(mail.html_part.body).to include("GMT+09:00")
+      it "renders the mail with the correct locale" do
+        expect(mail.text_part.body).to include(tokyo_offset)
+        expect(mail.html_part.body).to include(tokyo_offset)
 
         expect(mail.to).to contain_exactly(watcher1.mail)
       end
@@ -111,8 +111,8 @@ RSpec.describe MeetingMailer do
 
         it "renders the mail with the correct locale" do
           expect(mail.html_part.body).to include("11/09/2021 11:00 PM")
-          expect(mail.html_part.body).to include("12:00 AM (GMT+01:00) Europe/Berlin")
-          expect(mail.text_part.body).to include("11/09/2021 11:00 PM-12:00 AM (GMT+01:00) Europe/Berlin")
+          expect(mail.html_part.body).to include("12:00 AM (#{berlin_offset})")
+          expect(mail.text_part.body).to include("11/09/2021 11:00 PM-12:00 AM (#{berlin_offset})")
 
           expect(mail.to).to contain_exactly(author.mail)
         end
@@ -124,12 +124,76 @@ RSpec.describe MeetingMailer do
 
         it "renders the mail with the correct locale" do
           expect(mail.html_part.body).to include("11/10/2021 07:00 AM")
-          expect(mail.html_part.body).to include("08:00 AM (GMT+09:00) Asia/Tokyo")
+          expect(mail.html_part.body).to include("08:00 AM (#{tokyo_offset})")
 
-          expect(mail.text_part.body).to include("11/10/2021 07:00 AM-08:00 AM (GMT+09:00) Asia/Tokyo")
+          expect(mail.text_part.body).to include("11/10/2021 07:00 AM-08:00 AM (#{tokyo_offset})")
 
           expect(mail.to).to contain_exactly(watcher1.mail)
         end
+      end
+    end
+  end
+
+  describe "updated" do
+    let(:meeting) do
+      create(:meeting,
+             author:,
+             project:,
+             start_time: "2021-11-09T23:00:00 +0100".to_datetime.utc)
+    end
+    let(:new_start) { "2021-11-12T23:00:00 +0100".to_datetime.utc }
+    let(:changes) do
+      { old_start: meeting.start_time,
+        new_start:,
+        old_duration: 1,
+        new_duration: 1,
+        old_location: nil,
+        new_location: "Some new location" }
+    end
+    let(:mail) { described_class.updated(meeting, watcher1, author, changes:) }
+    # this is needed to call module functions from Redmine::I18n
+    let(:i18n) do
+      Class.new do
+        include Redmine::I18n
+
+        public :format_date, :format_time
+      end
+    end
+
+    it "renders the headers" do
+      expect(mail.subject).to include(meeting.project.name)
+      expect(mail.subject).to include(meeting.title)
+      expect(mail.to).to contain_exactly(watcher1.mail)
+      expect(mail.from).to eq([Setting.mail_from])
+    end
+
+    describe "text body" do
+      subject(:body) { mail.text_part.body }
+
+      it "renders the text body" do
+        expect(body).to include("has been updated")
+        expect(body).to include(meeting.title)
+        expect(body).to include(i18n.format_date(meeting.start_time))
+        expect(body).to include(i18n.format_time(meeting.start_time, include_date: false))
+        expect(body).to include(i18n.format_date(new_start))
+        expect(body).to include(i18n.format_time(new_start, include_date: false))
+        expect(body).to include("-")
+        expect(body).to include("Some new location")
+      end
+    end
+
+    describe "renders the html body" do
+      subject(:body) { mail.html_part.body }
+
+      it "renders the text body" do
+        expect(body).to include("has been updated")
+        expect(body).to include(meeting.title)
+        expect(body).to include(i18n.format_date(meeting.start_time))
+        expect(body).to include(i18n.format_time(meeting.start_time, include_date: false))
+        expect(body).to include(i18n.format_date(new_start))
+        expect(body).to include(i18n.format_time(new_start, include_date: false))
+        expect(body).to include("-")
+        expect(body).to include("Some new location")
       end
     end
   end
@@ -160,7 +224,7 @@ RSpec.describe MeetingMailer do
         expect(body).to include(meeting.project.name)
         expect(body).to include(meeting.title)
         expect(body).to include(meeting.location)
-        expect(body).to include("01/19/2021 11:00 AM-12:00 PM (GMT+01:00) Europe/Berlin")
+        expect(body).to include("01/19/2021 11:00 AM-12:00 PM (#{berlin_offset})")
         expect(body).to include(meeting.participants[0].name)
         expect(body).to include(meeting.participants[1].name)
       end
@@ -174,7 +238,7 @@ RSpec.describe MeetingMailer do
         expect(body).to include(meeting.title)
         expect(body).to include(meeting.location)
         expect(body).to include("01/19/2021 11:00 AM")
-        expect(body).to include("12:00 PM (GMT+01:00) Europe/Berlin")
+        expect(body).to include("12:00 PM (#{berlin_offset})")
         expect(body).to include(meeting.participants[0].name)
         expect(body).to include(meeting.participants[1].name)
       end
@@ -191,8 +255,8 @@ RSpec.describe MeetingMailer do
 
         expect(entry.dtstart.utc).to eq meeting.start_time
         expect(entry.dtend.utc).to eq meeting.start_time + 1.hour
-        expect(entry.summary).to eq "[My project] Important meeting"
-        expect(entry.description).to eq "[My project] Meeting: Important meeting"
+        expect(entry.summary).to eq "Important meeting"
+        expect(entry.description).to eq "Link to meeting: http://#{Setting.host_name}/meetings/#{meeting.id}"
         expect(entry.location).to eq(meeting.location.presence)
       end
 
@@ -207,9 +271,9 @@ RSpec.describe MeetingMailer do
       let(:mail) { described_class.icalendar_notification(meeting, watcher1, author) }
 
       it "renders the mail with the correct locale" do
-        expect(mail.text_part.body).to include("01/19/2021 07:00 PM-08:00 PM (GMT+09:00) Asia/Tokyo")
+        expect(mail.text_part.body).to include("01/19/2021 07:00 PM-08:00 PM (#{tokyo_offset})")
         expect(mail.html_part.body).to include("01/19/2021 07:00 PM")
-        expect(mail.html_part.body).to include("08:00 PM (GMT+09:00) Asia/Tokyo")
+        expect(mail.html_part.body).to include("08:00 PM (#{tokyo_offset})")
 
         expect(mail.to).to contain_exactly(watcher1.mail)
       end
@@ -227,9 +291,9 @@ RSpec.describe MeetingMailer do
         let(:mail) { described_class.icalendar_notification(meeting, author, author) }
 
         it "renders the mail with the correct locale" do
-          expect(mail.text_part.body).to include("11/09/2021 11:00 PM-12:00 AM (GMT+01:00) Europe/Berlin")
+          expect(mail.text_part.body).to include("11/09/2021 11:00 PM-12:00 AM (#{berlin_offset})")
           expect(mail.html_part.body).to include("11/09/2021 11:00 PM")
-          expect(mail.html_part.body).to include("12:00 AM (GMT+01:00) Europe/Berlin")
+          expect(mail.html_part.body).to include("12:00 AM (#{berlin_offset})")
 
           expect(mail.to).to contain_exactly(author.mail)
         end
@@ -240,8 +304,8 @@ RSpec.describe MeetingMailer do
         let!(:preference) { watcher1.pref.update(time_zone: "Asia/Tokyo") }
 
         it "renders the mail with the correct locale" do
-          expect(mail.text_part.body).to include("11/10/2021 07:00 AM-08:00 AM (GMT+09:00) Asia/Tokyo")
-          expect(mail.html_part.body).to include("11/10/2021 07:00 AM-08:00 AM (GMT+09:00) Asia/Tokyo")
+          expect(mail.text_part.body).to include("11/10/2021 07:00 AM-08:00 AM (#{tokyo_offset})")
+          expect(mail.html_part.body).to include("11/10/2021 07:00 AM-08:00 AM (#{tokyo_offset})")
 
           expect(mail.to).to contain_exactly(watcher1.mail)
         end
@@ -253,8 +317,9 @@ RSpec.describe MeetingMailer do
     expect(body).to include(meeting.project.name)
     expect(body).to include(meeting.title)
     expect(body).to include(i18n.format_date(meeting.start_date))
-    expect(body).to include(i18n.format_time(meeting.start_time, false))
-    expect(body).to include(i18n.format_time(meeting.end_time, false))
+    expect(body).to include(i18n.format_time(meeting.start_time, include_date: false))
+    expect(body).to include(i18n.format_time(meeting.end_time, include_date: false))
+    expect(body).to include(i18n.formatted_time_zone_offset)
     expect(body).to include(meeting.participants[0].name)
     expect(body).to include(meeting.participants[1].name)
   end

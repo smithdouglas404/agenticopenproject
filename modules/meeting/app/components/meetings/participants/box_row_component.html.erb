@@ -1,0 +1,37 @@
+<%=
+  flex_layout(align_items: :center, justify_content: :space_between) do |row|
+    row.with_column(flex: 1, classes: "ellipsis") do
+      render(
+        Users::AvatarComponent.new(
+          user: @participant.user,
+          classes: "op-principal_flex",
+          hover_card: { active: true, target: :custom }
+        )
+      )
+    end
+    row.with_column do
+      flex_layout(align_items: :center, justify_content: :space_between) do |actions|
+        if @meeting.in_progress?
+          actions.with_column(ml: 2) do
+            render(Meetings::Participants::AttendedToggleButtonComponent.new(meeting: @meeting, participant: @participant))
+          end
+        end
+        actions.with_column(ml: 2) do
+          render(
+            Primer::Beta::IconButton.new(
+              scheme: :invisible,
+              tag: :a,
+              href: meeting_participant_path(@meeting, @participant),
+              icon: :x,
+              aria: { label: I18n.t("meeting.participants.label.remove_participant") },
+              data: {
+                turbo_method: :delete,
+                test_selector: "remove_button_#{@participant.user_id}"
+              }
+            )
+          )
+        end
+      end
+    end
+  end
+%>

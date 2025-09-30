@@ -5,6 +5,7 @@ import { FieldType } from '@ngx-formly/core';
   selector: 'op-boolean-input',
   templateUrl: './boolean-input.component.html',
   styleUrls: ['./boolean-input.component.scss'],
+  standalone: false,
 })
 export class BooleanInputComponent extends FieldType {
 }

@@ -18,6 +18,8 @@ export default class UsersController extends Controller {
 
   declare readonly authSourceFieldsTarget:HTMLElement;
 
+  declare readonly hasAuthSourceFieldsTarget:boolean;
+
   toggleAuthenticationFields(evt:{ target:HTMLSelectElement }):void {
     this.passwordAuthSelectedValue = evt.target.value === '';
   }
@@ -26,7 +28,9 @@ export default class UsersController extends Controller {
     if (this.hasPasswordFieldsTarget) {
       this.toggleHiddenAndDisabled(this.passwordFieldsTarget, !this.passwordAuthSelectedValue);
     }
-    this.toggleHiddenAndDisabled(this.authSourceFieldsTarget, this.passwordAuthSelectedValue);
+    if (this.hasAuthSourceFieldsTarget) {
+      this.toggleHiddenAndDisabled(this.authSourceFieldsTarget, this.passwordAuthSelectedValue);
+    }
   }
 
   private toggleHiddenAndDisabled(target:HTMLElement, hiddenAndDisabled:boolean) {

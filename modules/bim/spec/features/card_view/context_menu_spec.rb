@@ -2,7 +2,7 @@ require "spec_helper"
 require_relative "../../../../../spec/features/work_packages/table/context_menu/context_menu_shared_examples"
 require_relative "../../support/pages/ifc_models/show_default"
 
-RSpec.describe "Work Package table hierarchy and sorting", :js, :with_cuprite, with_config: { edition: "bim" } do
+RSpec.describe "Work Package table hierarchy and sorting", :js, with_config: { edition: "bim" } do
   shared_let(:project) { create(:project, enabled_module_names: %i[bim work_package_tracking costs]) }
 
   let(:wp_table) { Pages::IfcModels::ShowDefault.new(project) }

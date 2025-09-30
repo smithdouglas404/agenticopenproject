@@ -1,4 +1,9 @@
 pt-PT:
+  ee:
+    upsell:
+      ldap_groups:
+        title: 'Sincronização de grupo LDAP'
+        description: 'Sincronize grupos LDAP com grupos OpenProject para gerir utilizadores, alterar as suas permissões e facilitar a gestão de utilizadores entre grupos.'
   plugin_openproject_ldap_groups:
     name: "Grupos LDAP do OpenProject"
     description: "Sincronização de associações de grupos LDAP."
@@ -6,10 +11,12 @@ pt-PT:
     attributes:
       ldap_groups/synchronized_group:
         dn: 'DN'
+        auth_source: 'Fonte de autenticação'
         ldap_auth_source: 'Ligação LDAP'
         sync_users: 'Sincronizar utilizadores'
       ldap_groups/synchronized_filter:
         filter_string: 'Filtro LDAP'
+        auth_source: 'Fonte de autenticação'
         ldap_auth_source: 'Ligação LDAP'
         group_name_attribute: "Atributo nome do grupo"
         sync_users: 'Sincronizar utilizadores'
@@ -69,5 +76,5 @@ pt-PT:
           Se ativar esta opção, os utilizadores encontrados também serão criados automaticamente no OpenProject. Sem isso, só as contas existentes no OpenProject serão adicionadas aos grupos.
         dn_text: 'Inserir todo o ND do grupo no LDAP'
         group_text: 'Selecione um grupo OpenProject existente com que os membros do grupo LDAP serão sincronizados'
-      upsale:
+      upsell:
         description: 'Aproveite os grupos LDAP sincronizados para gerir utilizadores, alterar as suas permissões e facilitar a gestão de utilizadores entre grupos.'

@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -78,7 +78,7 @@ module Bim
 
       def build_ifc_attachment(ifc_attachment)
         ::Attachments::BuildService
-          .bypass_whitelist(user:)
+          .bypass_allowlist(user:)
           .call(file: ifc_attachment, container: model, filename: ifc_attachment.original_filename, description: "ifc")
           .on_failure do |build_attachment_result|
             build_attachment_result.errors.each do |error|

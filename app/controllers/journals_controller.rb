@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,9 +29,13 @@
 #++
 
 class JournalsController < ApplicationController
-  before_action :find_optional_project, only: [:index]
-  before_action :find_journal, only: [:diff]
-  before_action :ensure_permitted, only: [:diff]
+  before_action :load_and_authorize_in_optional_project, only: [:index]
+  before_action :find_journal,
+                :ensure_permitted,
+                :ensure_valid_for_diffing,
+                only: [:diff]
+  authorization_checked! :diff
+
   accept_key_auth :index
   menu_item :issues
 
@@ -56,13 +60,9 @@ class JournalsController < ApplicationController
                          journals: @journals }
       end
     end
-  rescue ActiveRecord::RecordNotFound
-    render_404
   end
 
   def diff
-    return render_404 unless valid_field_for_diffing?
-
     unless @journal.details[field_param] in [from, to]
       return render_400 message: I18n.t(:error_journal_attribute_not_present, attribute: field_param)
     end
@@ -84,8 +84,6 @@ class JournalsController < ApplicationController
     @journal = Journal.find(params[:id])
     @journable = @journal.journable
     @project = @journable.project
-  rescue ActiveRecord::RecordNotFound
-    render_404
   end
 
   def ensure_permitted
@@ -104,12 +102,23 @@ class JournalsController < ApplicationController
     @field_param ||= params[:field].parameterize.underscore
   end
 
-  def valid_field_for_diffing?
-    %w[description status_explanation].include?(field_param) || agenda_item_notes?
-  end
+  def ensure_valid_for_diffing
+    case field_param
+    when "description",
+         "status_explanation",
+         /\Aagenda_items_\d+_notes\z/
+      # no additional checks
+    when /\Acustom_fields_(?<id>\d+)\z/
+      cf = CustomField.select(:field_format, :admin_only).find_by(id: Regexp.last_match[:id])
 
-  def agenda_item_notes?
-    field_param.match?(/\Aagenda_items_\d+_notes\z/)
+      if cf.admin_only && !User.current.admin?
+        render_403
+      elsif cf.field_format != "text"
+        render_404
+      end
+    else
+      render_404
+    end
   end
 
   def journals_index_title

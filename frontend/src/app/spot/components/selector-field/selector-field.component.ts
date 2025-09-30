@@ -14,6 +14,7 @@ import {
 @Component({
   selector: 'spot-selector-field',
   templateUrl: './selector-field.component.html',
+  standalone: false,
 })
 export class SpotSelectorFieldComponent {
   @HostBinding('class.spot-form-field') className = true;
@@ -60,7 +61,7 @@ export class SpotSelectorFieldComponent {
 
   /**
    * Hides the input. This is a utility input for usage of `spot-form-field` in dynamic forms.
-   * Outside of dynamic forms, you should be hiding inputs via `*ngIf` or other methods.
+   * Outside of dynamic forms, you should be hiding inputs via `@if` or other methods.
    */
   @Input() hidden = false;
 

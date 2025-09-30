@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -71,7 +73,7 @@ module Journable::Timestamps
   end
 
   prepended do
-    if ActiveRecord::Base.connected? and not ActiveRecord::Base.connection.migration_context.needs_migration?
+    if ActiveRecord::Base.connected? and not ActiveRecord::Base.connection.pool.migration_context.needs_migration?
       column_names_missing_in_journal.each do |missing_column_name|
         define_method missing_column_name do
           if historic?

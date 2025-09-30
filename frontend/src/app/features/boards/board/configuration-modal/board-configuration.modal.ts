@@ -26,6 +26,7 @@ import { Board } from 'core-app/features/boards/board/board';
 
 @Component({
   templateUrl: './board-configuration.modal.html',
+  standalone: false,
 })
 export class BoardConfigurationModalComponent extends OpModalComponent implements OnInit, OnDestroy {
   public text = {

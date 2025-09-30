@@ -7,6 +7,7 @@ import { DynamicFormComponent } from 'core-app/shared/components/dynamic-forms/c
   templateUrl: './dynamic-field-wrapper.component.html',
   styleUrls: ['./dynamic-field-wrapper.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class DynamicFieldWrapperComponent extends FieldWrapper {
   constructor(

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -46,9 +48,8 @@ RSpec.describe "Wiki page", :js do
   it "allows renaming" do
     visit project_wiki_path(project, wiki_page)
 
-    SeleniumHubWaiter.wait
-    click_link "More"
-    click_link "Rename"
+    page.find_test_selector("wiki-more-dropdown-menu").click
+    page.find_test_selector("wiki-rename-action-menu-item").click
 
     SeleniumHubWaiter.wait
     fill_in "Title", with: rename_name
@@ -67,7 +68,9 @@ RSpec.describe "Wiki page", :js do
     end
 
     # But the application uses the new name preferably
-    click_link rename_name
+    within(".menu-wiki-pages-tree") do
+      click_link rename_name
+    end
 
     expect(page)
       .to have_current_path(project_wiki_path(project, "rename-name"))

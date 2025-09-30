@@ -254,7 +254,7 @@ post:
   tags:
   - Attachments
   description: |-
-    Adds an attachment with the wiki page as it's container.
+    Adds an attachment with the wiki page as its container.
 
   operationId: Add_attachment_to_wiki_page
   summary: Add attachment to wiki page

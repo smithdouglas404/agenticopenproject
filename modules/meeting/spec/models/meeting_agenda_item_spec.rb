@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,9 +30,11 @@
 
 require_relative "../spec_helper"
 
+RSpec::Matchers.define_negated_matcher :not_change, :change
+
 RSpec.describe MeetingAgendaItem do
   let(:meeting_attributes) { {} }
-  let(:meeting) { build_stubbed(:structured_meeting, **meeting_attributes) }
+  let(:meeting) { build_stubbed(:meeting, **meeting_attributes) }
   let(:attributes) { {} }
   let(:meeting_agenda_item) { described_class.new(meeting:, **attributes) }
 

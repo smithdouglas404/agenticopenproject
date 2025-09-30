@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,8 +29,8 @@
 require "optparse"
 
 begin
-  Bundler.gem("parallel_tests")
-rescue Gem::LoadError
+  require "parallel_tests"
+rescue LoadError
   # In case parallel_tests is not provided, the whole of the parallel task group will not work.
   return
 end
@@ -67,7 +67,7 @@ namespace :parallel do
   end
 
   def group_option_string(parsed_options)
-    group_options  = parsed_options ? "-n #{parsed_options[:num_cpus]}" : ""
+    group_options  = parsed_options[:num_cpus] ? "-n #{parsed_options[:num_cpus]}" : ""
     group_options += " --only-group #{parsed_options[:group]}" if parsed_options[:group]
 
     group_options

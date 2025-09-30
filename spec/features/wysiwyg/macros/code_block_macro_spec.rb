@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Wysiwyg code block macro", :js do
+RSpec.describe "Wysiwyg code block macro", :js, :selenium do
   shared_let(:admin) { create(:admin) }
   let(:user) { admin }
   let(:project) { create(:project, enabled_module_names: %w[wiki]) }
@@ -74,7 +76,7 @@ RSpec.describe "Wysiwyg code block macro", :js do
         end
 
         click_on "Save"
-        expect(page).to have_css(".op-toast.-success")
+        expect_and_dismiss_flash(message: "Successful creation.")
 
         # Expect output widget
         within("#content") do
@@ -106,7 +108,7 @@ RSpec.describe "Wysiwyg code block macro", :js do
           expect(container).to have_css(".op-uc-code-block", text: "asdf")
 
           click_on "Save"
-          expect(page).to have_css(".op-toast.-success")
+          expect_and_dismiss_flash(message: "Successful creation.")
 
           wp = WikiPage.last
           expect(wp.text.gsub("\r\n", "\n")).to eq("```text\nasdf\n```")
@@ -119,7 +121,7 @@ RSpec.describe "Wysiwyg code block macro", :js do
           end
 
           click_on "Save"
-          expect(page).to have_css(".op-toast.-success")
+          expect_and_dismiss_flash(message: "Successful update.")
 
           wp.reload
           # Regression added two newlines before fence here
@@ -153,7 +155,7 @@ RSpec.describe "Wysiwyg code block macro", :js do
         # Save wiki page
         click_on "Save"
 
-        expect(page).to have_css(".op-toast.-success")
+        expect_and_dismiss_flash(message: "Successful creation.")
 
         wiki_page = project.wiki.find_page("wiki")
         text = wiki_page.text.gsub(/\r\n?/, "\n")

@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -153,13 +153,15 @@ class CopyProjectJob < ApplicationJob
     result
   end
 
-  def enqueue_copy_project_folder_jobs(copied_storages, work_packages_map, only)
+  def enqueue_copy_project_folder_jobs(copied_project_storages, work_packages_map, only)
     return unless only.intersect?(%w[file_links storage_project_folders])
 
-    Array(copied_storages).each do |storage_pair|
+    Array(copied_project_storages).each do |project_storage_pair|
       batch.enqueue do
         Storages::CopyProjectFoldersJob
-          .perform_later(source: storage_pair[:source], target: storage_pair[:target], work_packages_map:)
+          .perform_later(source: project_storage_pair[:source],
+                         target: project_storage_pair[:target],
+                         work_packages_map: work_packages_map.stringify_keys)
       end
     end
   end

@@ -4,9 +4,6 @@ sv:
       add_widget: 'Lägg till widget'
       remove: 'Ta bort widget'
       configure: 'Konfigurera widget'
-      upsale:
-        text: "Some widgets, like the work package graph widget, are only available in the Enterprise edition."
-        link: 'Enterprise edition.'
       widgets:
         missing_permission: "You don't have the necessary permissions to view this widget."
         custom_text:
@@ -24,12 +21,11 @@ sv:
           title: 'Nyheter'
           at: 'vid'
           no_results: 'Inget nytt att rapportera.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Projektbeskrivning'
           no_results: "Ingen beskrivning har skrivits ännu. Den kan anges i 'Projektinställningar'."
-        project_details:
-          title: 'Projektinformation'
-          no_results: 'Inga anpassade fält har definierats för projekt.'
         project_status:
           title: 'Projektstatus'
           not_started: 'Inte påbörjad'
@@ -37,13 +33,15 @@ sv:
           off_track: 'Urspårat'
           at_risk: 'I riskzonen'
           not_set: 'Ej inställd'
-          finished: 'Slutförd'
+          finished: 'Avslutad'
           discontinued: 'Discontinued'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Delprojekt'
           no_results: 'Inga delprojekt.'
         project_favorites:
-          title: 'Favorite projects'
+          title: 'Favoritprojekt'
           no_results: 'You currently have no favorite projects. Click on the star icon in the project dashboard to add one to your favorites.'
         time_entries_current_user:
           title: 'My spent time'

@@ -9,6 +9,7 @@ hu:
     label_bcf: 'BCF'
     label_imported_failed: 'Hiba a BCF topocs importálásakor'
     label_imported_successfully: 'Sikeres BCF import'
+    label_bcf_issue_associated: "BCF issue associated"
     issues: "Feladat"
     recommended: 'Ajánlott'
     not_recommended: 'nem ajánlott'
@@ -83,6 +84,12 @@ hu:
         ifc_attachment: "IFC fájl"
         is_default: "Alapértelmezett IFC modell"
         attachments: "IFC fájl"
+      bim/bcf/issue:
+        bcf_comment: "BCF comment"
+        bim_snippet: "BIM snippet"
+        reference_links: "Reference links"
+        stage: "Stage"
+        viewpoint: "Nézőpont"
     errors:
       models:
         bim/ifc_models/ifc_model:

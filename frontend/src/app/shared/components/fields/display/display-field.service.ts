@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -27,18 +27,27 @@
 //++
 
 import { Injectable, Injector } from '@angular/core';
-import { HalResource } from 'core-app/features/hal/resources/hal-resource';
-import { AbstractFieldService, IFieldType } from 'core-app/shared/components/fields/field.service';
-import { DisplayField } from 'core-app/shared/components/fields/display/display-field.module';
-import { IFieldSchema } from 'core-app/shared/components/fields/field.base';
-import { MultipleLinesCustomOptionsDisplayField } from 'core-app/shared/components/fields/display/field-types/multiple-lines-custom-options-display-field.module';
-import { MultipleLinesUserFieldModule } from 'core-app/shared/components/fields/display/field-types/multiple-lines-user-display-field.module';
-import { ProgressTextDisplayField } from 'core-app/shared/components/fields/display/field-types/progress-text-display-field.module';
-import { DateDisplayField } from 'core-app/shared/components/fields/display/field-types/date-display-field.module';
 
-export interface IDisplayFieldType extends IFieldType<DisplayField> {
-  new(resource:HalResource, attributeType:string, schema:IFieldSchema, context:DisplayFieldContext):DisplayField;
-}
+import { HalResource } from 'core-app/features/hal/resources/hal-resource';
+import { IFieldSchema } from 'core-app/shared/components/fields/field.base';
+import { DisplayField } from 'core-app/shared/components/fields/display/display-field.module';
+import { AbstractFieldService, IFieldType } from 'core-app/shared/components/fields/field.service';
+import {
+  MultipleLinesCustomOptionsDisplayField,
+} from 'core-app/shared/components/fields/display/field-types/multiple-lines-custom-options-display-field.module';
+import {
+  MultipleLinesUserFieldModule,
+} from 'core-app/shared/components/fields/display/field-types/multiple-lines-user-display-field.module';
+import {
+  ProgressTextDisplayField,
+} from 'core-app/shared/components/fields/display/field-types/progress-text-display-field.module';
+import { DateDisplayField } from 'core-app/shared/components/fields/display/field-types/date-display-field.module';
+import {
+  HierarchyItemDisplayField,
+} from 'core-app/shared/components/fields/display/field-types/hierarchy-item-display-field.module';
+import {
+  MultipleLinesHierarchyItemDisplayField,
+} from 'core-app/shared/components/fields/display/field-types/multiple-lines-hierarchy-item-display-field.module';
 
 export interface DisplayFieldContext {
   /** The injector to use for the context of this field. Relevant for embedded service injection */
@@ -49,6 +58,10 @@ export interface DisplayFieldContext {
 
   /** Options passed to the display field */
   options:{ [key:string]:any };
+}
+
+export interface IDisplayFieldType extends IFieldType<DisplayField> {
+  new(resource:HalResource, attributeType:string, schema:IFieldSchema, context:DisplayFieldContext):DisplayField;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -80,6 +93,17 @@ export class DisplayFieldService extends AbstractFieldService<DisplayField, IDis
     if (context.container === 'single-view' && isCustomMultiLinesField) {
       return new MultipleLinesCustomOptionsDisplayField(fieldName, context) as DisplayField;
     }
+
+    const isHierarchyItemsField = ['CustomField::Hierarchy::Item'].indexOf(schema.type) >= 0;
+    if (context.container === 'single-view' && isHierarchyItemsField) {
+      return new HierarchyItemDisplayField(fieldName, context) as DisplayField;
+    }
+
+    const isMultilineHierarchyItemsField = ['[]CustomField::Hierarchy::Item'].indexOf(schema.type) >= 0;
+    if (context.container === 'single-view' && isMultilineHierarchyItemsField) {
+      return new MultipleLinesHierarchyItemDisplayField(fieldName, context) as DisplayField;
+    }
+
     // Separate class seems not needed (merge with []CustomOption above?)
     const isVersionMultiLinesField = ['[]Version'].indexOf(schema.type) >= 0;
     if (context.container === 'single-view' && isVersionMultiLinesField) {
@@ -104,6 +128,6 @@ export class DisplayFieldService extends AbstractFieldService<DisplayField, IDis
     const cls = this.getSpecificClassFor(resource._type, fieldName, schema.type);
 
     // eslint-disable-next-line new-cap
-    return new cls(fieldName, context) as DisplayField;
+    return new cls(fieldName, context);
   }
 }

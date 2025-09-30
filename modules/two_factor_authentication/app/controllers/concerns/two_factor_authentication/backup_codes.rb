@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ::TwoFactorAuthentication
   module BackupCodes
     extend ActiveSupport::Concern

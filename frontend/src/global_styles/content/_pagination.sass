@@ -1,6 +1,6 @@
 //-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -47,6 +47,7 @@ $pagination--font-size: 0.8125rem
   &--items
     list-style-type: none
     display: flex
+    align-items: center
     margin: 0
     padding: 0
     font-size: $pagination--font-size
@@ -62,24 +63,22 @@ $pagination--font-size: 0.8125rem
     margin: 0 5px 0 0
     white-space: nowrap
 
-    &_prev,
-    &_next
-      min-width: 25px
-
     &_current
-      background: #ffffff
-      border: 1px solid #ffffff
+      background: var(--body-background)
+      border: 1px solid var(--body-background)
+      color: var(--body-font-color)
       padding: 3px 3px
       font-style: italic
       text-align: center
 
     &-link
       margin: 0
-      display: block
+      display: inline-flex
+      align-items: baseline
       min-width: 25px
-      text-align: center
-      padding: 3px 3px
-      background: #f8f8f8
+      justify-content: center
+      padding: 3px var(--base-size-4)
+      background: var(--button--background-color)
       border-radius: 2px
       border: 1px solid var(--button-default-borderColor-rest)
       color: var(--body-font-color)
@@ -89,11 +88,28 @@ $pagination--font-size: 0.8125rem
       &:hover
         color: var(--body-font-color)
         text-decoration: none
-        background: #eaeaea
+        background: var(--button--background-hover-color)
+
+      &_prev
+        padding-left: var(--base-size-6)
+        padding-right: var(--base-size-8)
+
+      &_next
+        padding-left: var(--base-size-8)
+        padding-right: var(--base-size-6)
+
+    &-link-icon
+      align-self: center
+
+      &_prev
+        margin-right: var(--base-size-4)
+
+      &_next
+        margin-left: var(--base-size-4)
 
   &--space
-    background: #ffffff
-    border: 1px solid #ffffff
+    background: var(--body-background)
+    border: 1px solid var(--body-background)
     font-style: italic
     padding: 3px 0
     margin: 0 5px 0 0

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -39,25 +41,33 @@ module OpTurbo
         yield(format) if format_block
       end
     end
+
     alias_method :respond_with_turbo_streams, :respond_to_with_turbo_streams
 
-    def update_via_turbo_stream(component:, status: :ok)
-      modify_via_turbo_stream(component:, action: :update, status:)
+    def respond_with_dialog(dialog_component, status: :ok, &format_block)
+      modify_via_turbo_stream(component: dialog_component, action: :dialog, status:)
+
+      respond_to_with_turbo_streams(&format_block)
     end
 
-    def replace_via_turbo_stream(component:, status: :ok)
-      modify_via_turbo_stream(component:, action: :replace, status:)
+    def update_via_turbo_stream(component:, status: :ok, method: nil)
+      modify_via_turbo_stream(component:, action: :update, status:, method:)
+    end
+
+    def replace_via_turbo_stream(component:, status: :ok, method: nil)
+      modify_via_turbo_stream(component:, action: :replace, status:, method:)
     end
 
     def remove_via_turbo_stream(component:, status: :ok)
       modify_via_turbo_stream(component:, action: :remove, status:)
     end
 
-    def modify_via_turbo_stream(component:, action:, status:)
+    def modify_via_turbo_stream(component:, action:, status:, method: nil)
       @turbo_status = status
       turbo_streams << component.render_as_turbo_stream(
         view_context:,
-        action:
+        action:,
+        method:
       )
     end
 
@@ -71,6 +81,49 @@ module OpTurbo
 
     def add_before_via_turbo_stream(component:, target_component:)
       turbo_streams << target_component.insert_as_turbo_stream(component:, view_context:, action: :before)
+    end
+
+    def render_success_flash_message_via_turbo_stream(**)
+      render_flash_message_via_turbo_stream(**, scheme: :success)
+    end
+
+    def render_error_flash_message_via_turbo_stream(**)
+      render_flash_message_via_turbo_stream(**, scheme: :danger, icon: :stop)
+    end
+
+    def render_live_region_update_message(message:, politeness: "polite", delay: nil)
+      turbo_streams << OpTurbo::StreamComponent
+        .new(action: :liveRegion, message:, politeness:, delay:, target: nil)
+        .render_in(view_context)
+    end
+
+    def render_flash_message_via_turbo_stream(message:, component: OpPrimer::FlashComponent, **)
+      return if message.blank?
+
+      instance = component.new(**).with_content(message)
+      turbo_streams << instance.render_as_turbo_stream(view_context:, action: :flash)
+    end
+
+    def scroll_into_view_via_turbo_stream(target, behavior: :auto, block: :start)
+      turbo_streams << OpTurbo::StreamComponent
+        .new(action: :scroll_into_view, target:, behavior:, block:)
+        .render_in(view_context)
+    end
+
+    def add_caption_to_input_element_via_turbo_stream(target, caption:, clean_other_captions: true)
+      turbo_streams << OpTurbo::StreamComponent
+        .new(action: :addInputCaption, target:, caption:, clean_other_captions:)
+        .render_in(view_context)
+    end
+
+    def close_dialog_via_turbo_stream(target, additional: {})
+      turbo_streams << OpTurbo::StreamComponent
+        .new(action: :closeDialog, target:, additional: additional.to_json)
+        .render_in(view_context)
+    end
+
+    def reload_page_via_turbo_stream
+      turbo_streams << OpTurbo::StreamComponent.new(action: :reloadPage, target: nil).render_in(view_context)
     end
 
     def turbo_streams

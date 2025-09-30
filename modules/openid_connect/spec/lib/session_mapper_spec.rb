@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,23 +30,28 @@
 require "spec_helper"
 
 RSpec.describe OpenProject::OpenIDConnect::SessionMapper do
-  let(:mock_session) do
-    Class.new(Rack::Session::Abstract::SessionHash) do
-      def initialize(id)
-        super(nil, nil)
-        @id = Rack::Session::SessionId.new(id)
-        @data = {}
-        @loaded = true
-      end
-    end
+  let(:session) do
+    instance_double(ActionDispatch::Request::Session,
+                    id: instance_double(Rack::Session::SessionId, private_id: 42))
+  end
+
+  let(:session_data) do
+    {
+      "omniauth.oidc_sid" => oidc_session_id
+    }
+  end
+
+  let(:oidc_session_id) { "oidc_sid_foo" }
+
+  before do
+    allow(session).to receive(:[]) { |k| session_data[k] }
   end
 
   describe "handle_login" do
-    let(:session) { mock_session.new("foo") }
     let!(:plain_session) { create(:user_session, session_id: session.id.private_id) }
     let!(:user_session) { Sessions::UserSession.find_by(session_id: plain_session.session_id) }
 
-    subject { described_class.handle_login "oidc_sid_foo", session }
+    subject { described_class.handle_login session }
 
     it "creates a user link object" do
       expect { subject }.to change(OpenIDConnect::UserSessionLink, :count).by(1)
@@ -52,7 +59,7 @@ RSpec.describe OpenProject::OpenIDConnect::SessionMapper do
 
       expect(link).to be_present
       expect(link.session).to eq user_session
-      expect(link.oidc_session).to eq "oidc_sid_foo"
+      expect(link.oidc_session).to eq oidc_session_id
     end
   end
 

@@ -2,6 +2,7 @@ import { Directive } from '@angular/core';
 
 @Directive({
   selector: '[op-autocompleter-label-tmp]',
+  standalone: false,
 })
 // A Directive to be used on the label template of
 //  ng-select (what will be shown in the input box after selecting an item)

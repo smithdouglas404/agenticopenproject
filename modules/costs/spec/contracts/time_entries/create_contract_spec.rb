@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,7 +37,7 @@ RSpec.describe TimeEntries::CreateContract do
 
     let(:time_entry) do
       TimeEntry.new(project: time_entry_project,
-                    work_package: time_entry_work_package,
+                    entity: time_entry_entity,
                     user: time_entry_user,
                     activity: time_entry_activity,
                     spent_on: time_entry_spent_on,
@@ -48,7 +48,6 @@ RSpec.describe TimeEntries::CreateContract do
         t.changed_by_system(changed_by_system) if changed_by_system
       end
     end
-    let(:time_entry_ongoing) { false }
     let(:permissions) { %i(log_time) }
     let(:other_user) { build_stubbed(:user) }
     let(:changed_by_system) do
@@ -63,7 +62,9 @@ RSpec.describe TimeEntries::CreateContract do
       let(:permissions) { [] }
 
       it "is invalid" do
-        expect_valid(false, base: %i(error_unauthorized))
+        expect_valid(false,
+                     entity: %i(cannot_log_for_this_work_package),
+                     base: %i(error_unauthorized))
       end
     end
 
@@ -88,7 +89,9 @@ RSpec.describe TimeEntries::CreateContract do
         let(:changed_by_system) { {} }
 
         it "is invalid" do
-          expect_valid(false, base: %i(error_unauthorized))
+          expect_valid(false,
+                       entity: %i(cannot_log_for_this_work_package),
+                       base: %i(error_unauthorized))
         end
       end
     end
@@ -105,7 +108,17 @@ RSpec.describe TimeEntries::CreateContract do
       end
 
       it "is invalid" do
-        expect_valid(false, base: %i(error_unauthorized))
+        expect_valid(false,
+                     entity: %i(cannot_log_for_this_work_package),
+                     base: %i(error_unauthorized))
+      end
+    end
+
+    context "if the user is set to a user that the user has no access to" do
+      let(:user_visible) { false }
+
+      it "is invalid" do
+        expect_valid(false, user_id: %i(invalid))
       end
     end
 
@@ -122,7 +135,9 @@ RSpec.describe TimeEntries::CreateContract do
       end
 
       it "is invalid" do
-        expect_valid(false, base: %i(error_unauthorized))
+        expect_valid(false,
+                     entity: %i(cannot_log_for_this_work_package),
+                     base: %i(error_unauthorized))
       end
     end
 

@@ -8,9 +8,11 @@ sidebar_navigation:
 
 OpenProject can be configured via environment variables. These are often helpful for automatically deploying production systems.
 
-> **NOTE:** This documentation is for OpenProject on-premises Installations only, if you would like to setup similar in your OpenProject cloud instance, please contact us at support@openproject.com
+> [!NOTE]
+> This documentation is for OpenProject on-premises Installations only, if you would like to setup similar in your OpenProject cloud instance, please contact us at [support@openproject.com](mailto:support@openproject.com)
 
-> **NOTE:** Using the configuration file `config/configuration.yml` is deprecated and is **NOT** recommended anymore
+> [!IMPORTANT]
+> Using the configuration file `config/configuration.yml` is deprecated and is **NOT** recommended anymore
 
 ## Packaged installation
 
@@ -34,8 +36,9 @@ Configuring OpenProject through environment variables is described in detail [in
 
 ## Docker
 
-### one container per process installation
+### One container per process installation
 
+Create a file `docker-compose.override.yml` next to `docker-compose.yml` file. Docker Compose will automatically merge those files, for more information, [see](https://docs.docker.com/compose/multiple-compose-files/merge/).
 Add your custom configuration to `docker-compose.override.yml`.
 
 In the compose folder you will also find the file `docker-compose.yml` which shall **NOT** be edited.
@@ -58,7 +61,7 @@ volumes:
 x-op-restart-policy: &restart_policy
   restart: unless-stopped
 x-op-image: &image
-  image: openproject/openproject:${TAG:-14}
+  image: openproject/openproject:${TAG:-15}
 x-op-app: &app
   <<: [*image, *restart_policy]
   environment:
@@ -76,7 +79,7 @@ x-op-app: &app
     - "${OPDATA:-opdata}:/var/openproject/assets"
 
 # configuration cut off at this point.
-# Please use the file at https://github.com/opf/openproject-deploy/blob/stable/14/compose/docker-compose.yml
+# Please use the file at https://github.com/opf/openproject-docker-compose/blob/stable/16/docker-compose.yml
 ```
 
 Alternatively, you can also use an env file for docker-compose like so:
@@ -103,7 +106,7 @@ volumes:
 x-op-restart-policy: &restart_policy
   restart: unless-stopped
 x-op-image: &image
-  image: openproject/openproject:${TAG:-14}
+  image: openproject/openproject:${TAG:-15}
 x-op-app: &app
   <<: [*image, *restart_policy]
   environment:
@@ -111,7 +114,7 @@ x-op-app: &app
     # ... more environment variables
 
 # configuration cut off at this point.
-# Please use the file at https://github.com/opf/openproject-deploy/blob/stable/14/compose/docker-compose.yml
+# Please use the file at https://github.com/opf/openproject-docker-compose/blob/stable/16/docker-compose.yml
 ```
 
 Let's say you have a `.env.prod`  file with some production-specific configuration. Then, start the services with that special env file specified.
@@ -159,7 +162,8 @@ OpenProject allows some resources to be seeded/created initially through configu
 
 ### Initial admin user creation
 
-**Note:** These variables are only applicable during the first initial setup of your OpenProject setup. Changing or setting them later will have no effect, as the admin user will already have been created.
+> [!NOTE]
+> These variables are only applicable during the first initial setup of your OpenProject setup. Changing or setting them later will have no effect, as the admin user will already have been created.
 
 By default, an admin user will be created with the login and password set to `admin`. You will be required to change this password on first login.
 
@@ -172,11 +176,22 @@ OPENPROJECT_SEED_ADMIN_USER_NAME="OpenProject Admin" # Name to assign to that us
 OPENPROJECT_SEED_ADMIN_USER_MAIL="admin@example.net" # Email attribute to assign to that user. Note that in packaged installations, a wizard step will assign this variable as well.
 ```
 
+Optionally, you can also lock the admin user that gets created right away. This is useful when you have an LDAP or SSO integration set up and you want to prevent the admin user from logging in.
+
+> [!WARNING]
+> With the admin user seeding disabled, you need to have an LDAP or SSO integration set up through environment variables.
+> Otherwise, you will not be able to retain access to the system.
+
+```shell
+OPENPROJECT_SEED_ADMIN_USER_LOCKED="true"
+```
+
 ### Seeding LDAP connections
 
 OpenProject allows you to create and maintain an LDAP connection with optional synchronized group filters. This is relevant for e.g., automated deployments, where you want to trigger the synchronization right at the start.
 
-**Note:** These variables are applied whenever `db:seed` rake task is being executed. This happens on every packaged `configure` call or when the seeder container job is being run, so be aware that these changes might happen repeatedly.
+> [!NOTE]
+> These variables are applied whenever `db:seed` rake task is being executed. This happens on every packaged `configure` call or when the seeder container job is being run, so be aware that these changes might happen repeatedly.
 
 The connection can be set with the following options. Please note that "EXAMPLE" stands for an arbitrary name (expressible in ENV keys)  which will become the name of the connection. In this case, "example" and "examplefilter" for the synchronized filter.
 
@@ -238,6 +253,39 @@ OPENPROJECT_SEED_LDAP_EXAMPLE_GROUPFILTER_EXAMPLEFILTER_GROUP__ATTRIBUTE="cn"
 
 When a filter is defined, synchronization happens directly during seeding for enterprise editions. Be aware of that when you create the connection that e.g., the LDAP connection needs to be reachable.
 
+### Seeding custom theme and design (Enterprise add-on)
+
+In an automated deployment setup, such as installing OpenProject using our Helm chart, you might want to provide the custom design through environment variables.
+
+> [!NOTE]
+> Setting these variables will not have an effect on the Community Edition.
+
+**Setting design colors**
+
+```shell
+OPENPROJECT_SEED_DESIGN_PRIMARY__BUTTON__COLOR="#1F883D"
+OPENPROJECT_SEED_DESIGN_ACCENT__COLOR="#1F883D"
+OPENPROJECT_SEED_DESIGN_HEADER__BG__COLOR="#1A67A3"
+OPENPROJECT_SEED_DESIGN_MAIN__MENU__BG__COLOR="#FFFFFF"
+OPENPROJECT_SEED_DESIGN_MAIN__MENU__BG__SELECTED__BACKGROUND="#1F883D"
+OPENPROJECT_SEED_DESIGN_EXPORT__COVER__TEXT__COLOR="#333333"
+```
+
+**Setting logos and icons through environment variables**
+
+You can also provide the logo used in the main app header, as well as favicons or touchicons through these variables. OpenProject supports downloading images during seed from a reachable URL, or as base64-encoded data URLs.
+
+```shell
+# Main logo of the application
+OPENPROJECT_SEED_DESIGN_LOGO="https://my.example.com/logo.png"
+# Favicon and touch icons for ios
+OPENPROJECT_SEED_DESIGN_FAVICON="data:image/png;base64,iVBO....."
+OPENPROJECT_SEED_DESIGN_TOUCH__ICON="data:image/png;base64,foo..."
+OPENPROJECT_SEED_DESIGN_EXPORT__LOGO="..."
+OPENPROJECT_SEED_DESIGN_EXPORT__COVER="..."
+```
+
+
 ## Examples for common use cases
 
 * `attachments_storage_path`
@@ -270,7 +318,7 @@ When a filter is defined, synchronization happens directly during seeding for en
 
 ### Allowing public access
 
-By default, any request to the OpenProject application needs to be authenticated. If you want to enable public unauthenticated access like we do for https://community.openproject.org, you can set the `login_required` to `false`. If not provided through environment variables, this setting is also accessible in the administrative UI. Please see the [authentication settings guide](../../system-admin-guide/authentication/authentication-settings/#general-authentication-settings) for more details.
+By default, any request to the OpenProject application needs to be authenticated. If you want to enable public unauthenticated access like we do for community.openproject.org, you can set the `login_required` to `false`. If not provided through environment variables, this setting is also accessible in the administrative UI. Please see the [authentication settings guide](../../system-admin-guide/authentication/login-registration-settings/) for more details.
 
 *default: true*
 
@@ -308,7 +356,7 @@ You can modify the folder where attachments are stored locally. Use the `attachm
 
 To update the path, use `openproject config:set OPENPROJECT_ATTACHMENTS__STORAGE__PATH="/path/to/new/folder"`. Ensure that this is writable by the `openproject` user. Afterwards issue a restart by `sudo openproject configure`
 
-#### attachment storage type
+#### Attachment storage type
 
 Attachments can be stored using e.g. Amazon S3, In order to set these values through ENV variables, add to the file :
 
@@ -394,7 +442,7 @@ OPENPROJECT_OVERRIDE__BCRYPT__COST__FACTOR="16"
 
 Please see [this separate guide](./database/) on how to set a custom database connection string and optionally, require SSL/TTLS verification.
 
-### disable password login
+### Disable password login
 
 If you enable this option you have to configure at least one omniauth authentication
 provider to take care of authentication instead of the password login.
@@ -408,16 +456,17 @@ presented to the users.
 OPENPROJECT_DISABLE__PASSWORD__LOGIN="true"
 ```
 
-### omniauth direct login provider
+### Omniauth direct login provider
 
-Per default the user may choose the usual password login as well as <u>several</u> omniauth providers on the login page and in the login drop down menu. With this configuration option you can set a specific omniauth provider to be used for direct login. Meaning that the login provider selection is skipped and the configured provider is used directly (non-interactive) instead.
+Per default the user may choose the usual password login as well as **several** omniauth providers on the login page and in the login drop down menu. With this configuration option you can set a specific omniauth provider to be used for direct login. Meaning that the login provider selection is skipped and the configured provider is used directly (non-interactive) instead.
 
 If this option is active, a login will lead directly to the configured omniauth provider and so will a click on 'Sign in' (the drop down menu will not open).
 
 To still reach the internal login route for e.g., an internal administrative user, you can manually navigate to `/login/internal`.
 This route is only available when the direct login provider is set.
 
-> **NOTE:** This does not stop a user from manually navigating to any other omniauth provider if additional ones are configured.
+> [!NOTE]
+> This does not stop a user from manually navigating to any other omniauth provider if additional ones are configured.
 
 *default: nil*
 
@@ -425,7 +474,7 @@ This route is only available when the direct login provider is set.
 OPENPROJECT_OMNIAUTH__DIRECT__LOGIN__PROVIDER="google"
 ```
 
-### prevent omniauth remapping of existing users
+### Prevent omniauth remapping of existing users
 
 Per default external authentication providers through OmniAuth (such as SAML or OpenID connect providers) are allowed to take over existing
 accounts if the mapped login is already taken. This is usually desirable, if you have e.g., accounts created through LDAP and want these
@@ -467,11 +516,13 @@ It works the other way around too:
 rake attachments:copy_to[file]
 ```
 
-> **NOTE:** that you have to configure the respective storage (i.e. fog) beforehand as described in the previous section. In the case of fog you only have to configure everything under `fog`, however. Don't change `attachments_storage` to `fog` just yet. Instead leave it as `file`. This is because the current attachments storage is used as the source for the migration.
+> [!NOTE]
+> Please note that you have to configure the respective storage (i.e. fog) beforehand as described in the previous section. In the case of fog you only have to configure everything under `fog`, however. Don't change `attachments_storage` to `fog` just yet. Instead leave it as `file`. This is because the current attachments storage is used as the source for the migration.
 
-### direct uploads
+### Direct uploads
 
-> **NOTE**: This only works for AWS S3 or S3-compatible storages<sup>\*</sup>. When using fog with another provider this configuration will be `false`. The same goes for when no fog storage is configured, or when the `use_iam_profile` option is used in the fog credentials when using S3.
+> [!NOTE]
+> This only works for AWS S3 or S3-compatible storages<sup>\*</sup>. When using fog with another provider this configuration will be `false`. The same goes for when no fog storage is configured, or when the `use_iam_profile` option is used in the fog credentials when using S3.
 
 When using fog attachments uploaded in the frontend will be posted directly to the cloud rather than going through the OpenProject servers. This allows large attachments to be uploaded without the need to increase the `client_max_body_size` for the proxy in front of OpenProject. Also it prevents web processes from being blocked through long uploads.
 
@@ -492,7 +543,7 @@ OPENPROJECT_REMOTE__STORAGE__UPLOAD__HOST=mybucket.s3.amazonaws.com
 OPENPROJECT_REMOTE__STORAGE__DOWNLOAD__HOST=mybucket.s3.eu-west.amazonaws.com"
 ```
 
-#### fog download url expires in
+#### Fog download url expires in
 
 When using remote storage for attachments via fog - usually S3 (see [`attachments_storage`](#attachments-storage) option) - each attachment download will generate a temporary URL. This option determines how long these links will be valid.
 
@@ -567,7 +618,7 @@ The following example forbid all routes for the second example at the 'hidden me
 OPENPROJECT_BLACKLISTED__ROUTES="admin/info admin/plugins project_types colors settings admin/enumerations workflows/* statuses types admin/roles"
 ```
 
-### disabled modules
+### Disabled modules
 
 Modules may be disabled through the configuration.
 Just give a list of the module names either as an array or as a string with values separated by spaces.
@@ -578,7 +629,7 @@ Just give a list of the module names either as an array or as a string with valu
 OPENPROJECT_DISABLED__MODULES="backlogs meetings"
 ```
 
-### local checkout path
+### Local checkout path
 
 *default: "repositories"*
 
@@ -598,7 +649,7 @@ You can control basic auth access to the APIv3 with the following configuration 
 OPENPROJECT_APIV3__ENABLE__BASIC__AUTH="false"
 ```
 
-### global basic auth
+### Global basic auth
 
 *default: none*
 
@@ -618,7 +669,7 @@ default:
       password: adminpw
 ```
 
-### Security Upgrade Badge
+### Security upgrade badge
 
 OpenProject provides a release indicator (security badge) that will inform administrators of an OpenProject installation on whether new releases or security updates are available for your platform. If enabled, this option will display a badge with your installation status at Administration &gt; Information right next to the release version, and on the home screen. It is only displayed to administrators.
 
@@ -634,6 +685,12 @@ OPENPROJECT_SECURITY__BADGE__DISPLAYED="false"
 
 ### Cache configuration options
 
+
+> [!NOTE]
+> If you are using Redis as cache, you need to set the policy to one of the variants of allkeys.
+> If you don't do this, the cached data doesn't expire, and you will run out of memory.
+> You can get more information on how to set the Redis policy in the Rails [documentation](https://guides.rubyonrails.org/caching_with_rails.html#activesupport-cache-rediscachestore).
+
 * `rails_cache_store`: `memcache` for [memcached](https://www.memcached.org/), `redis` for [Redis cache](https://redis.io/), or `memory_store` (default: `file_store`)
 * When using `memcached`, the following configuration option is relevant:
   * `cache_memcache_server`: The memcache server host and IP (default: `nil`)
@@ -644,17 +701,28 @@ OPENPROJECT_SECURITY__BADGE__DISPLAYED="false"
 * `cache_expires_in`: Expiration time for memcache entries (default: `nil`, no expiry)
 * `cache_namespace`: Namespace for cache keys, useful when multiple applications use a single memcache server (default: `nil`)
 
-### rails asset host
+### Rails asset host
 
 `rails_asset_host`: A custom host to use to serve static assets such as javascript, CSS, images, etc. (default: `nil`)
 
-### onboarding video url
+### Redirect after login
 
-`onboarding_video_url`: An URL for the video displayed on the onboarding modal. This is only shown when the user logs in for the first time.
+`after_login_default_redirect_url`: Starting in OpenProject 15.4., users are redirected to the home page after logging in. To customize this behavior (e.g., redirecting them to the My page as before), you can override this with a path.
 
-*default="[https://player.vimeo.com/video/163426858?autoplay=1](https://player.vimeo.com/video/163426858?autoplay=1)"*
+Example:
 
-### enterprise fail fast
+```shell
+OPENPROJECT_AFTER__LOGIN__DEFAULT__REDIRECT__URL="/my/page"
+```
+
+
+
+### Onboarding video url
+
+`onboarding_video_url`: A URL for the video displayed on the onboarding modal.
+This video URL is whitelisted in the content security policy.
+
+### Enterprise fail fast
 
 If using an Enterprise token there are certain limits that apply. You can configure how these limits are enforced.
 
@@ -703,7 +771,8 @@ OPENPROJECT_WEB_MIN__THREADS="4"
 OPENPROJECT_WEB_MAX__THREADS="16"
 ```
 
-> **NOTE:** Timeouts only are supported when using at least 2 workers.
+> [!NOTE]
+> Timeouts only are supported when using at least 2 workers.
 
 ### Two-factor authentication
 
@@ -747,7 +816,7 @@ OPENPROJECT_2FA_DISABLED="true"
 OPENPROJECT_2FA_ACTIVE__STRATEGIES="[]"
 ```
 
-#### statsd
+#### StatsD
 
 *default: { host: nil, port: 8125 }*
 

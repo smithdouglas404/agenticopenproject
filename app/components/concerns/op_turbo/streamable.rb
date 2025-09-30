@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,6 +34,12 @@ module OpTurbo
     class MissingComponentWrapper < StandardError; end
     # rubocop:enable OpenProject/AddPreviewForViewComponent
 
+    INLINE_ACTIONS = %i[dialog flash].freeze
+    private_constant :INLINE_ACTIONS
+    # Turbo allows the response method for these actions only:
+    ACTIONS_WITH_METHOD = %i[update replace].freeze
+    private_constant :ACTIONS_WITH_METHOD
+
     extend ActiveSupport::Concern
 
     class_methods do
@@ -40,110 +48,127 @@ module OpTurbo
       end
     end
 
-    included do
-      def render_as_turbo_stream(view_context:, action: :update)
-        case action
-        when :update, :dialog
-          @inner_html_only = true
-          template = render_in(view_context)
-        when :replace
-          template = render_in(view_context)
-        when :remove
-          @wrapper_only = true
-          render_in(view_context)
-          template = nil
-        else
-          raise ArgumentError, "Unsupported action #{action}"
-        end
-
-        if action != :dialog && !wrapped?
-          raise MissingComponentWrapper,
-                "Wrap your component in a `component_wrapper` block in order to use turbo-stream methods"
-        end
-
-        OpTurbo::StreamComponent.new(
-          action:,
-          target: wrapper_key,
-          template:
-        ).render_in(view_context)
+    ##
+    # Renders the component as a Turbo Stream.
+    #
+    # The rendered component is wrapped in a `<turbo-stream>` tag.
+    #
+    # @example
+    #   <turbo-stream action="update" method="morph" target="wrapper_key">
+    #     <template><component /></template>
+    #   </turbo-stream>
+    #
+    # @param [ActionView::Context] view_context the view context to render in.
+    # @param [Symbol] action the Turbo Stream action.
+    # @param [String, nil] method the Turbo Stream method (if action is :update or :replace).
+    def render_as_turbo_stream(view_context:, action: :update, method: nil, **attributes)
+      case action
+      when :update, *INLINE_ACTIONS
+        @inner_html_only = true
+        template = render_in(view_context)
+      when :replace
+        template = render_in(view_context)
+      when :remove
+        @wrapper_only = true
+        render_in(view_context)
+        template = nil
+      else
+        raise ArgumentError, "Unsupported action #{action}"
       end
 
-      def insert_as_turbo_stream(component:, view_context:, action: :append)
-        template = component.render_in(view_context)
-
-        # The component being inserted into the target component
-        # needs wrapping, not the target since it isn't the one
-        # that needs to be rendered to perform this turbo stream action.
-        unless component.wrapped?
-          raise MissingComponentWrapper,
-                "Wrap your component in a `component_wrapper` block in order to use turbo-stream methods"
-        end
-
-        OpTurbo::StreamComponent.new(
-          action:,
-          target: insert_target_modified? ? insert_target_modifier_id : wrapper_key,
-          template:
-        ).render_in(view_context)
+      if INLINE_ACTIONS.exclude?(action) && !wrapped?
+        raise MissingComponentWrapper,
+              "Wrap your component in a `component_wrapper` block in order to use turbo-stream methods"
       end
 
-      def component_wrapper(method = nil, tag: "div", **kwargs, &block)
-        @wrapped = true
-
-        wrapper_arguments = { id: wrapper_key }.merge(kwargs)
-
-        if inner_html_only?
-          capture(&block)
-        elsif wrapper_only?
-          method ? send(method, wrapper_arguments) : content_tag(tag, wrapper_arguments)
-        else
-          method ? send(method, wrapper_arguments, &block) : content_tag(tag, wrapper_arguments, &block)
-        end
+      if method && !action.in?(ACTIONS_WITH_METHOD)
+        raise ArgumentError, "The #{action} action does not support a method"
       end
 
-      def wrapped?
-        !!@wrapped
+      OpTurbo::StreamComponent.new(
+        action:,
+        method:,
+        target: wrapper_key,
+        template:,
+        **attributes
+      ).render_in(view_context)
+    end
+
+    def insert_as_turbo_stream(component:, view_context:, action: :append)
+      template = component.render_in(view_context)
+
+      # The component being inserted into the target component
+      # needs wrapping, not the target since it isn't the one
+      # that needs to be rendered to perform this turbo stream action.
+      unless component.wrapped?
+        raise MissingComponentWrapper,
+              "Wrap your component in a `component_wrapper` block in order to use turbo-stream methods"
       end
 
-      def inner_html_only?
-        !!@inner_html_only
+      OpTurbo::StreamComponent.new(
+        action:,
+        target: insert_target_modified? ? insert_target_modifier_id : wrapper_key,
+        template:
+      ).render_in(view_context)
+    end
+
+    def component_wrapper(method = nil, tag: "div", **kwargs, &)
+      @wrapped = true
+
+      wrapper_arguments = { id: wrapper_key }.merge(kwargs)
+
+      if inner_html_only?
+        capture(&)
+      elsif wrapper_only?
+        method ? send(method, wrapper_arguments) : content_tag(tag, wrapper_arguments)
+      else
+        method ? send(method, wrapper_arguments, &) : content_tag(tag, wrapper_arguments, &)
+      end
+    end
+
+    def wrapped?
+      !!@wrapped
+    end
+
+    def inner_html_only?
+      !!@inner_html_only
+    end
+
+    def wrapper_only?
+      !!@wrapper_only
+    end
+
+    def wrapper_key
+      if wrapper_uniq_by.nil?
+        self.class.wrapper_key
+      else
+        "#{self.class.wrapper_key}-#{wrapper_uniq_by}"
+      end
+    end
+
+    def wrapper_uniq_by
+      # optionally implemented in subclass in order to make the wrapper key unique
+    end
+
+    def insert_target_modified?
+      # optionally overriden (returning true) in subclass in order to indicate thate the insert target
+      # is modified and should not be the root inner html element
+      # insert_target_container needs to be present on component's erb template then
+      false
+    end
+
+    def insert_target_container(tag: "div", class: nil, data: nil, style: nil, &)
+      unless insert_target_modified?
+        raise NotImplementedError,
+              "#insert_target_modified? needs to be implemented and return true if #insert_target_container is " \
+              "used in this component"
       end
 
-      def wrapper_only?
-        !!@wrapper_only
-      end
+      content_tag(tag, id: insert_target_modifier_id, class:, data:, style:, &)
+    end
 
-      def wrapper_key
-        if wrapper_uniq_by.nil?
-          self.class.wrapper_key
-        else
-          "#{self.class.wrapper_key}-#{wrapper_uniq_by}"
-        end
-      end
-
-      def wrapper_uniq_by
-        # optionally implemented in subclass in order to make the wrapper key unique
-      end
-
-      def insert_target_modified?
-        # optionally overriden (returning true) in subclass in order to indicate thate the insert target
-        # is modified and should not be the root inner html element
-        # insert_target_container needs to be present on component's erb template then
-        false
-      end
-
-      def insert_target_container(tag: "div", class: nil, data: nil, style: nil, &block)
-        unless insert_target_modified?
-          raise NotImplementedError,
-                "#insert_target_modified? needs to be implemented and return true if #insert_target_container is " \
-                "used in this component"
-        end
-
-        content_tag(tag, id: insert_target_modifier_id, class:, data:, style:, &block)
-      end
-
-      def insert_target_modifier_id
-        "#{wrapper_key}-insert-target-modifier"
-      end
+    def insert_target_modifier_id
+      "#{wrapper_key}-insert-target-modifier"
     end
   end
 end

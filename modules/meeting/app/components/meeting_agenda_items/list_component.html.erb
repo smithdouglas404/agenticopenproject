@@ -1,36 +1,40 @@
 <%=
-  component_wrapper(data: wrapper_data_attributes) do
+  component_wrapper do
     flex_layout(mb: 3) do |flex|
-      flex.with_row(classes: 'dragula-container', id: insert_target_modifier_id, data: { 'allowed-drop-type': 'section' }.merge(drop_target_config) ) do
+      if @meeting.template?
+        flex.with_row(mb: 3) do
+          render Primer::Alpha::Banner.new(
+            scheme: :default,
+            icon: :info,
+            dismiss_scheme: :none
+          ) do
+            t(
+              "recurring_meeting.template.banner_html",
+              link: link_to(
+                @meeting.recurring_meeting.title,
+                project_recurring_meeting_path(@meeting.project, @meeting.recurring_meeting)
+              )
+            )
+          end
+        end
+      end
+      flex.with_row(id: insert_target_modifier_id, data: { "allowed-drop-type": "section" }.merge(drop_target_config)) do
         first_and_last = [@meeting.sections.first, @meeting.sections.last]
         render(
           MeetingSections::ShowComponent.with_collection(
-            @meeting.sections,
+            sections_except_backlog,
             first_and_last:
           )
         )
       end
-      if @meeting.agenda_items.empty? && @meeting.sections.empty?
+      if empty?
         flex.with_row do
           render(border_box_container) do |border_box|
             if @form_hidden
               border_box.with_body(
                 scheme: :default
               ) do
-                render(Primer::Beta::Blankslate.new) do |component|
-                  component.with_visual_icon(icon: :book)
-                  component.with_heading(tag: :h2).with_content(t("text_meeting_empty_heading"))
-                  component.with_description do
-                    flex_layout do |flex|
-                      flex.with_row(mb: 2) do
-                        render(Primer::Beta::Text.new(color: :subtle)) { t("text_meeting_empty_description_1") }
-                      end
-                      flex.with_row do
-                        render(Primer::Beta::Text.new(color: :subtle)) { t("text_meeting_empty_description_2") }
-                      end
-                    end
-                  end
-                end
+                render(MeetingAgendaItems::BlankSlateComponent.new(meeting: @meeting))
               end
             end
             border_box.with_row(p: 0, border_top: 0) do

@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,15 +35,11 @@ module Pages
     end
 
     def expect_create_button
-      within ".toolbar-items" do
-        expect(page).to have_link "Board"
-      end
+      expect(page).to have_test_selector "add-board-button"
     end
 
     def expect_no_create_button
-      within ".toolbar-items" do
-        expect(page).to have_no_link "Board"
-      end
+      expect(page).not_to have_test_selector "add-board-button"
     end
 
     def expect_delete_buttons(*boards)

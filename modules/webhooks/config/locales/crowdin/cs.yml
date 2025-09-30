@@ -8,6 +8,7 @@ cs:
         url: "Payload URL\n"
         secret: 'Tajný podpis'
         events: 'Události'
+        enabled: 'Zapnuto'
         projects: 'Povolené projekty'
       webhooks/log:
         event_name: 'Název události'
@@ -30,6 +31,8 @@ cs:
       events:
         created: "Vytvořeno"
         updated: "Aktualizováno"
+        comment: "Komentář"
+        internal_comment: "Interní komentář"
       explanation:
         text: >
           Při výskytu události, jako je vytvoření pracovního balíčku nebo aktualizace projektu, OpenProject odešle POST požadavek na nakonfigurované webové koncové body. Často je událost odeslána poté, co %{link} prošel.

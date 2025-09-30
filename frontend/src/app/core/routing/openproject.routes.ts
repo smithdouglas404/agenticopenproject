@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,31 +26,14 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import {
-  StateDeclaration,
-  StateService,
-  Transition,
-  TransitionService,
-  UIRouter,
-} from '@uirouter/core';
-import {
-  IToast,
-  ToastService,
-} from 'core-app/shared/components/toaster/toast.service';
+import { StateDeclaration, StateService, Transition, TransitionService, UIRouter } from '@uirouter/core';
+import { IToast, ToastService } from 'core-app/shared/components/toaster/toast.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import { Injector } from '@angular/core';
 import { FirstRouteService } from 'core-app/core/routing/first-route-service';
-import {
-  Ng2StateDeclaration,
-  StatesModule,
-} from '@uirouter/angular';
-import {
-  appBaseSelector,
-  ApplicationBaseComponent,
-} from 'core-app/core/routing/base/application-base.component';
+import { Ng2StateDeclaration, StatesModule } from '@uirouter/angular';
+import { appBaseSelector, ApplicationBaseComponent } from 'core-app/core/routing/base/application-base.component';
 import { BackRoutingService } from 'core-app/features/work-packages/components/back-routing/back-routing.service';
-import { MY_ACCOUNT_LAZY_ROUTES } from 'core-app/features/user-preferences/user-preferences.lazy-routes';
-import { IAN_LAZY_ROUTES } from 'core-app/features/in-app-notifications/in-app-notifications.lazy-routes';
 import { StateObject } from '@uirouter/core/lib/state/stateObject';
 import {
   mobileGuardActivated,
@@ -60,11 +43,6 @@ import { TEAM_PLANNER_LAZY_ROUTES } from 'core-app/features/team-planner/team-pl
 import { CALENDAR_LAZY_ROUTES } from 'core-app/features/calendar/calendar.lazy-routes';
 
 export const OPENPROJECT_ROUTES:Ng2StateDeclaration[] = [
-  {
-    name: 'new_project.**',
-    url: '/projects/new',
-    loadChildren: () => import('../../features/projects/openproject-projects.module').then((m) => m.OpenprojectProjectsModule),
-  },
   {
     name: 'root',
     abstract: true,
@@ -102,44 +80,6 @@ export const OPENPROJECT_ROUTES:Ng2StateDeclaration[] = [
     url: '/bcf',
     loadChildren: () => import('../../features/bim/ifc_models/openproject-ifc-models.module').then((m) => m.OpenprojectIFCModelsModule),
   },
-  {
-    name: 'backlogs.**',
-    parent: 'optional_project',
-    url: '/backlogs',
-    loadChildren: () => import('../../features/backlogs/openproject-backlogs.module').then((m) => m.OpenprojectBacklogsModule),
-  },
-  {
-    name: 'backlogs_sprint.**',
-    parent: 'optional_project',
-    url: '/sprints',
-    loadChildren: () => import('../../features/backlogs/openproject-backlogs.module').then((m) => m.OpenprojectBacklogsModule),
-  },
-  {
-    name: 'reporting.**',
-    parent: 'optional_project',
-    url: '/cost_reports',
-    loadChildren: () => import('../../features/reporting/openproject-reporting.module').then((m) => m.OpenprojectReportingModule),
-  },
-  {
-    name: 'job-statuses.**',
-    parent: 'optional_project',
-    url: '/job_statuses',
-    loadChildren: () => import('../../features/job-status/openproject-job-status.module').then((m) => m.OpenProjectJobStatusModule),
-  },
-  {
-    name: 'project_settings.**',
-    parent: 'optional_project',
-    url: '/settings/general',
-    loadChildren: () => import('../../features/projects/openproject-projects.module').then((m) => m.OpenprojectProjectsModule),
-  },
-  {
-    name: 'project_copy.**',
-    parent: 'optional_project',
-    url: '/copy',
-    loadChildren: () => import('../../features/projects/openproject-projects.module').then((m) => m.OpenprojectProjectsModule),
-  },
-  ...MY_ACCOUNT_LAZY_ROUTES,
-  ...IAN_LAZY_ROUTES,
   ...TEAM_PLANNER_LAZY_ROUTES,
   ...CALENDAR_LAZY_ROUTES,
 ];
@@ -224,13 +164,25 @@ export function initializeUiRouterListeners(injector:Injector) {
   const currentProject:CurrentProjectService = injector.get(CurrentProjectService);
   const firstRoute:FirstRouteService = injector.get(FirstRouteService);
   const backRoutingService:BackRoutingService = injector.get(BackRoutingService);
+  const uiRouter = injector.get(UIRouter);
 
   // Check whether we are running within our complete app, or only within some other bootstrapped
   // component
-  const wpBase = document.querySelector(appBaseSelector);
+  let openprojectBaseApp = document.querySelector(appBaseSelector);
+
+  // Connect ui router to turbo drive
+  document.addEventListener('turbo:load', () => {
+    // Re-find the current app-base
+    openprojectBaseApp = document.querySelector(appBaseSelector);
+    uiRouter.urlService.sync();
+
+    // Re-apply the body classes if the turbo load event is on the same page (e.g. when creating a child from the relations tab)
+    if (stateService.href(uiRouter.globals.current) === window.location.pathname + window.location.search) {
+      bodyClass(_.get(uiRouter.globals.current, 'data.bodyClasses'), 'add');
+    }
+  });
 
   // Uncomment to trace route changes
-  // const uiRouter = injector.get(UIRouter);
   // uiRouter.trace.enable();
 
   // For some pages it makes no sense to display them on mobile (e.g. the split screen).
@@ -240,29 +192,6 @@ export function initializeUiRouterListeners(injector:Injector) {
   $transitions.onBefore(
     { to: (state) => (state ? mobileGuardActivated(state) : false) },
     (transition) => redirectToMobileAlternative(transition),
-  );
-
-  // Fire an event when navigating to a different module. This event then can be detected in
-  // the non-angular parts of the application. A usecase for this can be found in the
-  // overview-header.controllers.ts
-  // See https://community.openproject.org/wp/55024 for details.
-  $transitions.onBefore(
-    {},
-    (transition:Transition) => {
-      const fromState = transition.from();
-      const toState = transition.to();
-      if (
-        !!fromState.name
-        && !!toState.name
-        && fromState.name?.split('.')[0] !== toState.name?.split('.')[0]
-      ) {
-        window.dispatchEvent(new CustomEvent('angular:router:module-changed', {
-          detail: toState.name?.split('.')[0],
-        }));
-      }
-
-      return true;
-    },
   );
 
   // Apply classes from bodyClasses in each state definition
@@ -322,7 +251,7 @@ export function initializeUiRouterListeners(injector:Injector) {
     // The FirstRoute service remembers the first angular route we went to
     // but for pages without any angular routes, this will stay empty.
     // So we also allow routes to happen after some delay
-    if (wpBase === null) {
+    if (openprojectBaseApp === null) {
       // Get the current path and compare
       const path = window.location.pathname;
       const pathWithSearch = path + window.location.search;
@@ -352,6 +281,9 @@ export function initializeUiRouterListeners(injector:Injector) {
     if (toParams.flash_message) {
       toastService.add(toParams.flash_message as IToast);
     }
+
+    // Reset the page state on navigation
+    window.OpenProject.pageState = 'pristine';
 
     return true;
   });

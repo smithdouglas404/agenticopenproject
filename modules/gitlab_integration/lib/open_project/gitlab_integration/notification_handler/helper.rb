@@ -8,7 +8,7 @@
 # OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
 # Copyright (C) 2006-2013 Jean-Philippe Lang
 # Copyright (C) 2010-2013 the ChiliProject Team
-# Copyright (C) 2012-2021 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -74,7 +74,7 @@ module OpenProject::GitlabIntegration
         WorkPackage
           .includes(:project)
           .where(id: ids)
-          .select { |wp| user.allowed_in_work_package?(:add_work_package_notes, wp) }
+          .select { |wp| user.allowed_in_work_package?(:add_work_package_comments, wp) }
       end
 
       # Returns a list of `WorkPackage`s that were referenced in the `text` and are visible to the given `user`.

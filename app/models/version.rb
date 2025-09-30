@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -46,18 +48,27 @@ class Version < ApplicationRecord
   validates :status, inclusion: { in: VERSION_STATUSES }
   validate :validate_start_date_before_effective_date
 
-  scopes :order_by_semver_name,
-         :rolled_up,
+  scopes :rolled_up,
          :shared_with
 
+  # Returns versions that are either:
+  # - from projects the user can see (via :view_work_packages)
+  # - systemwide versions
+  # - or referenced by a work package visible to the user (e.g., via sharing)
   scope :visible, ->(*args) {
+    user = args.first || User.current
     joins(:project)
-      .merge(Project.allowed_to(args.first || User.current, :view_work_packages))
+      .merge(Project.allowed_to(user, :view_work_packages))
+      .or(Version.systemwide)
+      .or(Version.shared_via_work_packages(user))
   }
 
   scope :systemwide, -> { where(sharing: "system") }
 
-  scope :order_by_name, -> { order(Arel.sql("LOWER(#{Version.table_name}.name) ASC")) }
+  scope :shared_via_work_packages, ->(*args) {
+    user = args.first || User.current
+    where(id: WorkPackage.visible(user).where.not(version_id: nil).distinct.select(:version_id))
+  }
 
   def self.with_status_open
     where(status: "open")
@@ -65,7 +76,9 @@ class Version < ApplicationRecord
 
   # Returns true if +user+ or current user is allowed to view the version
   def visible?(user = User.current)
-    user.allowed_in_project?(:view_work_packages, project)
+    systemwide? ||
+      user.allowed_in_project?(:view_work_packages, project) ||
+      work_packages.visible(user).exists?
   end
 
   def due_date
@@ -82,8 +95,8 @@ class Version < ApplicationRecord
   def spent_hours
     @spent_hours ||= TimeEntry
       .not_ongoing
-      .includes(:work_package)
-      .where(work_packages: { version_id: id })
+      .joins("INNER JOIN work_packages ON entity_type = 'WorkPackage' AND work_packages.id = entity_id")
+      .where(work_packages: { version_id: id }, entity_type: "WorkPackage")
       .sum(:hours)
       .to_f
   end

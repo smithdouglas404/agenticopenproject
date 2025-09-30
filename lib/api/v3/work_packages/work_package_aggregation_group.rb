@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -46,7 +46,7 @@ module API
                  render_nil: false
 
         link :groupBy do
-          converted_name = convert_attribute(query.group_by_column.name)
+          converted_name = convert_attribute(query.group_by_column.group_by_column_name || query.group_by_column.name)
 
           {
             href: api_v3_paths.query_group_by(converted_name),

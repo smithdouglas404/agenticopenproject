@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -51,7 +53,7 @@ module Storages
       time = Time.now.utc
 
       if @storage.health_status == "unhealthy"
-        if reason_is_same(reason)
+        if reason_is_same?(reason)
           @storage.update(health_checked_at: time)
         else
           @storage.update(health_changed_at: time,
@@ -99,7 +101,7 @@ module Storages
       ::Storages::HealthStatusMailerJob.schedule(storage:)
     end
 
-    def reason_is_same(new_health_reason)
+    def reason_is_same?(new_health_reason)
       @storage.health_reason_identifier == ::Storages::Storage.extract_part_from_piped_string(new_health_reason, 0)
     end
   end

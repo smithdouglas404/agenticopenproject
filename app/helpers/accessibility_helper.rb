@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,9 +31,9 @@
 module AccessibilityHelper
   def you_are_here_info(condition = true, disabled = nil)
     if condition && !disabled
-      "<span style = 'display: block' class = 'position-label hidden-for-sighted'>#{I18n.t(:description_current_position)}</span>".html_safe
+      "<span style = 'display: block' class = 'position-label sr-only'>#{I18n.t(:description_current_position)}</span>".html_safe
     elsif condition && disabled
-      "<span style = 'display: none' class = 'position-label hidden-for-sighted'>#{I18n.t(:description_current_position)}</span>".html_safe
+      "<span style = 'display: none' class = 'position-label sr-only'>#{I18n.t(:description_current_position)}</span>".html_safe
     else
       ""
     end

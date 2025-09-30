@@ -3,12 +3,13 @@ import {
   createDynamicInputFixture,
   testDynamicInputControValueAccessor,
 } from 'core-app/shared/components/dynamic-forms/spec/helpers';
+import { IOPFormlyFieldSettings } from 'core-app/shared/components/dynamic-forms/typings';
 
 describe('BooleanInputComponent', () => {
   it('should load the field', fakeAsync(() => {
-    const fieldsConfig = [
+    const fieldsConfig:IOPFormlyFieldSettings[] = [
       {
-        type: 'booleanInput' as const,
+        type: 'booleanInput',
         key: 'testControl',
         templateOptions: {
           required: true,
@@ -16,7 +17,7 @@ describe('BooleanInputComponent', () => {
         },
       },
     ];
-    const formModel = {
+    const formModel:IOPFormModel = {
       testControl: true,
     };
     const testModel = {

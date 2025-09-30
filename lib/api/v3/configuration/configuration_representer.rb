@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -63,6 +65,9 @@ module API
                  exec_context: :decorator,
                  render_nil: true
 
+        property :duration_format,
+                 render_nil: true
+
         property :time_format,
                  exec_context: :decorator,
                  render_nil: true
@@ -77,9 +82,6 @@ module API
                  render_nil: true
 
         property :hours_per_day,
-                 render_nil: true
-
-        property :days_per_week,
                  render_nil: true
 
         property :days_per_month,
@@ -97,6 +99,19 @@ module API
                      .active
                      .map { |flag| flag.camelize(:lower) }
                  }
+
+        property :available_features,
+                 getter: ->(*) {
+                   EnterpriseToken.available_features
+                 }
+
+        property :trialling_features,
+                 getter: ->(*) {
+                   EnterpriseToken.trialling_features
+                 }
+
+        property :allowed_link_protocols,
+                 getter: ->(*) { Setting::AllowedLinkProtocols.all }
 
         property :user_preferences,
                  embedded: true,

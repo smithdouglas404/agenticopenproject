@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,6 +33,16 @@ require "support/pages/work_packages/abstract_work_package_create"
 
 module Pages
   class FullWorkPackageCreate < AbstractWorkPackageCreate
+    def set_status(status)
+      # Scroll back to the top to avoid the activation of the status field
+      # displaying the dropdown overlapping it as it would prevent additional
+      # clicks on it.
+      # When scrolled on top, the dropdown is always under it.
+      scroll_to_top
+      status_field = edit_field(:status)
+      status_field.update(status)
+    end
+
     private
 
     def container

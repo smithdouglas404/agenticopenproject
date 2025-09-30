@@ -1,13 +1,14 @@
 tr:
   plugin_openproject_webhooks:
-    name: "OpenProject Webhooks"
-    description: "Provides a plug-in API to support OpenProject webhooks for better 3rd party integration."
+    name: "OpenProject Webhookları"
+    description: "Daha iyi üçüncü parti entegrasyonu için OpenProject webhooklarını destekleyen bir eklenti API'si sağlar."
   activerecord:
     attributes:
       webhooks/webhook:
         url: 'Taşıma kapasitesi URL'
         secret: 'İmza sırrı'
         events: 'Etkinlikler'
+        enabled: 'Etkin'
         projects: 'Etkin projeler'
       webhooks/log:
         event_name: 'Etkinlik ismi'
@@ -30,6 +31,8 @@ tr:
       events:
         created: "Oluşturuldu"
         updated: "Güncellenmiş"
+        comment: "Yorum"
+        internal_comment: "İç yorum"
       explanation:
         text: >
           Bir iş paketinin oluşturulması veya bir projede güncelleme gibi bir olayın meydana gelmesi üzerine, OpenProject yapılandırılmış web uç noktalarına bir POST isteği gönderir. Çoğu zaman olay, %{link} geçtikten sonra gönderilir.

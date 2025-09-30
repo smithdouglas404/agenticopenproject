@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,92 +28,83 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Storages::FileLinkSyncService
-  using Storages::Peripherals::ServiceResultRefinements
+module Storages
+  class FileLinkSyncService < BaseService
+    def initialize(user:)
+      super()
+      @user = user
+    end
 
-  def initialize(user:)
-    @user = user
-  end
+    def call(file_links)
+      with_tagged_logger do
+        info "Starting File Link remote synchronization"
 
-  def call(file_links)
-    resulting_file_links = file_links
-      .group_by(&:storage_id)
-      .map { |storage_id, storage_file_links| sync_storage_data(storage_id, storage_file_links) }
-      .reduce([]) do |state, sync_result|
-        sync_result.match(
-          on_success: ->(sr) { state + sr },
-          on_failure: ->(_) { state }
-        )
-      end
-
-    ServiceResult.success(result: resulting_file_links)
-  end
-
-  private
-
-  def sync_storage_data(storage_id, file_links)
-    storage = ::Storages::Storage.find(storage_id)
-    ::Storages::Peripherals::Registry
-      .resolve("#{storage.short_provider_type}.queries.files_info")
-      .call(storage:, auth_strategy:, file_ids: file_links.map(&:origin_id))
-      .map { |file_infos| to_hash(file_infos) }
-      .match(
-        on_success: set_file_link_status(file_links),
-        on_failure: ->(_) {
-          ServiceResult.success(result: file_links.map do |file_link|
-            file_link.origin_status = :error
-            file_link
-          end)
-        }
-      )
-  end
-
-  def auth_strategy
-    Storages::Peripherals::StorageInteraction::AuthenticationStrategies::OAuthUserToken
-      .strategy
-      .with_user(@user)
-  end
-
-  def to_hash(file_infos)
-    file_infos.index_by { |file_info| file_info.id.to_s }.to_h
-  end
-
-  def set_file_link_status(file_links)
-    ->(file_infos) do
-      resulting_file_links = []
-
-      file_links.each do |file_link|
-        file_info = file_infos[file_link.origin_id]
-
-        case file_info.status_code
-        when 200
-          update_file_link(file_link, file_info)
-
-          file_link.origin_status = :view_allowed
-        when 403
-          file_link.origin_status = :view_not_allowed
-        when 404
-          file_link.origin_status = :not_found
-        else
-          file_link.origin_status = :error
+        resulting_file_links = file_links.group_by(&:storage).flat_map do |storage, records|
+          sync_storage_data(storage, records)
         end
 
-        resulting_file_links << file_link
-        file_link.save
+        @result.result = resulting_file_links
+        info "File Link Synchronization successful"
+        @result
       end
-
-      ServiceResult.success(result: resulting_file_links)
     end
-  end
 
-  def update_file_link(file_link, file_info)
-    file_link.origin_mime_type = file_info.mime_type
-    file_link.origin_created_by_name = file_info.owner_name
-    file_link.origin_last_modified_by_name = file_info.last_modified_by_name
-    file_link.origin_name = file_info.name
-    file_link.origin_created_at = file_info.created_at
-    file_link.origin_updated_at = file_info.last_modified_at
+    private
 
-    file_link
+    def sync_storage_data(storage, file_links)
+      info "Retrieving file link information from #{storage.name}"
+
+      input_data = Adapters::Input::FilesInfo.build(file_ids: file_links.map(&:origin_id))
+                                             .value_or { return add_validation_error(it) }
+
+      infos = Adapters::Registry.resolve("#{storage}.queries.files_info")
+                                .call(storage:, auth_strategy: auth_strategy(storage), input_data:)
+
+      infos.either(->(success) { set_file_link_status(file_links, success) }, ->(*) { set_error_status(file_links) })
+    end
+
+    def set_error_status(file_links)
+      file_links.map do |file_link|
+        file_link.origin_status = :error
+        file_link
+      end
+    end
+
+    def auth_strategy(storage)
+      Adapters::Registry.resolve("#{storage}.authentication.user_bound").call(@user, storage)
+    end
+
+    def set_file_link_status(file_links, file_infos)
+      info "Updating file link status..."
+      indexed = file_infos.index_by(&:id)
+
+      file_links.map do |file_link|
+        file_info = indexed[file_link.origin_id]
+        file_link.origin_status = case file_info.status_code
+                                  when 200
+                                    update_file_link(file_link, file_info)
+                                    :view_allowed
+                                  when 403
+                                    :view_not_allowed
+                                  when 404
+                                    :not_found
+                                  else
+                                    :error
+                                  end
+
+        file_link
+      end
+    end
+
+    def update_file_link(file_link, file_info)
+      file_link.update!(
+        origin_mime_type: file_info.mime_type,
+        origin_created_by_name: file_info.owner_name,
+        origin_last_modified_by_name: file_info.last_modified_by_name,
+        origin_name: file_info.name,
+        origin_created_at: file_info.created_at,
+        origin_updated_at: file_info.last_modified_at
+      )
+    end
   end
 end

@@ -7,6 +7,7 @@ import {
 
 @Directive({
   selector: '[opSearchHighlight]',
+  standalone: false,
 })
 export class OpSearchHighlightDirective implements AfterViewChecked {
   @Input('opSearchHighlight') public query = '';

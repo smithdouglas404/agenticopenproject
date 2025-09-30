@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -47,7 +47,7 @@ module API
         self_link
 
         link :showUser do
-          next if represented.new_record? || represented.locked?
+          next if represented.new_record? || represented.locked? || represented.deleted?
 
           {
             href: api_v3_paths.show_user(represented.id),
@@ -143,7 +143,7 @@ module API
                  getter: ->(*) { represented.mail },
                  setter: ->(fragment:, represented:, **) { represented.mail = fragment },
                  exec_context: :decorator,
-                 cache_if: -> { represented.pref.can_expose_mail? || represented.new_record? || current_user_can_manage? }
+                 cache_if: -> { current_user_can_view_user_email? || represented.new_record? || current_user_can_manage? }
 
         property :avatar,
                  exec_context: :decorator,
@@ -233,6 +233,10 @@ module API
             current_user.allowed_globally?(:create_user) ||
             current_user_is_self?
           )
+        end
+
+        def current_user_can_view_user_email?
+          current_user&.allowed_globally?(:view_user_email)
         end
 
         private

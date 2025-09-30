@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -55,7 +55,7 @@ RSpec.describe API::V3::Activities::ActivityRepresenter do
     end
   end
   let(:changes) { { subject: ["first subject", "second subject"] } }
-  let(:permissions) { %i(edit_work_package_notes view_linked_issues) }
+  let(:permissions) { %i(edit_work_package_comments view_linked_issues) }
   let(:representer) { described_class.new(journal, current_user: user) }
 
   let(:user) { build_stubbed(:user) }

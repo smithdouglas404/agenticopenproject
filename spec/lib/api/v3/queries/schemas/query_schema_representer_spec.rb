@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -353,9 +355,9 @@ RSpec.describe API::V3::Queries::Schemas::QuerySchemaRepresenter do
           let(:form_embedded) { true }
           let(:type) { build_stubbed(:type) }
           let(:available_values) do
-            [Queries::WorkPackages::Selects::PropertySelect.new(:bogus1),
-             Queries::WorkPackages::Selects::PropertySelect.new(:bogus2),
-             Queries::WorkPackages::Selects::PropertySelect.new(:bogus3),
+            [Queries::WorkPackages::Selects::PropertySelect.new(:project),
+             Queries::WorkPackages::Selects::PropertySelect.new(:type),
+             Queries::WorkPackages::Selects::PropertySelect.new(:status),
              Queries::WorkPackages::Selects::RelationToTypeSelect.new(type),
              Queries::WorkPackages::Selects::RelationOfTypeSelect.new(
                name: :label_relates_to,
@@ -404,8 +406,8 @@ RSpec.describe API::V3::Queries::Schemas::QuerySchemaRepresenter do
           let(:form_embedded) { true }
           let(:type) { build_stubbed(:type) }
           let(:available_values) do
-            [Queries::WorkPackages::Selects::PropertySelect.new(:bogus1, highlightable: true),
-             Queries::WorkPackages::Selects::PropertySelect.new(:bogus2, highlightable: true)]
+            [Queries::WorkPackages::Selects::PropertySelect.new(:project, highlightable: true),
+             Queries::WorkPackages::Selects::PropertySelect.new(:type, highlightable: true)]
           end
           let(:available_values_method) { :displayable_columns }
 
@@ -472,9 +474,9 @@ RSpec.describe API::V3::Queries::Schemas::QuerySchemaRepresenter do
 
           it_behaves_like "has a collection of allowed values" do
             let(:available_values) do
-              [Queries::WorkPackages::Selects::PropertySelect.new(:bogus1),
-               Queries::WorkPackages::Selects::PropertySelect.new(:bogus2),
-               Queries::WorkPackages::Selects::PropertySelect.new(:bogus3)]
+              [Queries::WorkPackages::Selects::PropertySelect.new(:type),
+               Queries::WorkPackages::Selects::PropertySelect.new(:project),
+               Queries::WorkPackages::Selects::PropertySelect.new(:status)]
             end
             let(:available_values_method) { :groupable_columns }
             let(:expected_hrefs) do
@@ -511,9 +513,9 @@ RSpec.describe API::V3::Queries::Schemas::QuerySchemaRepresenter do
             end
 
             let(:available_values) do
-              [Queries::WorkPackages::Selects::PropertySelect.new(:bogus1),
-               Queries::WorkPackages::Selects::PropertySelect.new(:bogus2),
-               Queries::WorkPackages::Selects::PropertySelect.new(:bogus3)]
+              [Queries::WorkPackages::Selects::PropertySelect.new(:type),
+               Queries::WorkPackages::Selects::PropertySelect.new(:project),
+               Queries::WorkPackages::Selects::PropertySelect.new(:status)]
             end
             let(:available_values_method) { :sortable_columns }
 

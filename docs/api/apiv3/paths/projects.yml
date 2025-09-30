@@ -21,21 +21,29 @@ get:
         Currently supported filters are:
 
         + active: based on the active property of the project
-        + ancestor: filters projects by their ancestor. A project is not considered to be it's own ancestor.
+        + ancestor: filters projects by their ancestor. A project is not considered to be its own ancestor.
         + available_project_attributes: filters projects based on the activated project project attributes.
         + created_at: based on the time the project was created
+        + id: based on projects' id.
         + latest_activity_at: based on the time the last activity was registered on a project.
+        + project_phase_any: based on the project phases active in a project.
         + name_and_identifier: based on both the name and the identifier.
         + parent_id: filters projects by their parent.
         + principal: based on members of the project.
+        + project_status_code: based on status code of the project
         + storage_id: filters projects by linked storages
         + storage_url: filters projects by linked storages identified by the host url
         + type_id: based on the types active in a project.
         + user_action: based on the actions the current user has in the project.
-        + id: based on projects' id.
         + visible: based on the visibility for the user (id) provided as the filter value. This filter is useful for admins to identify the projects visible to a user.
 
         There might also be additional filters based on the custom fields that have been configured.
+
+        Each defined lifecycle step will also define a filter in this list endpoint. Given that the elements are not
+        static but rather dynamically created on each OpenProject instance, a list cannot be provided. Those filters follow the schema:
+        + project_start_gate_[id]: a filter on a project phase's start gate active in a project. The id is the id of the phase the gate belongs to.
+        + project_finish_gate_[id]: a filter on a project phase's finish gate active in a project. The id is the id of the phase the gate belongs to.
+        + project_phase_[id]: a filter on a project phase active in a project. The id is the id of the phase queried for.
       example: '[{ "ancestor": { "operator": "=", "values": ["1"] }" }]'
     - name: sortBy
       schema:

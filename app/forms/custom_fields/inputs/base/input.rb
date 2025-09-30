@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,22 +34,27 @@ class CustomFields::Inputs::Base::Input < ApplicationForm
   attr_reader :options
 
   def initialize(custom_field:, object:, **options)
+    super()
+
     @custom_field = custom_field
     @object = object
     @options = options
   end
 
+  def model
+    @object
+  end
+
   def input_attributes
     base_input_attributes.merge(
       {
-        data: { "qa-field-name": qa_field_name },
-        value:
+        data: { "qa-field-name": qa_field_name }
       }
     )
   end
 
   def custom_value
-    @custom_value ||= @object.custom_value_for(@custom_field.id)
+    @custom_value ||= model.custom_value_for(@custom_field.id)
   end
 
   def invalid?

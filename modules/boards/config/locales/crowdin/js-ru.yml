@@ -1,14 +1,15 @@
 #English strings go here
 ru:
+  ee:
+    upsell:
+      board_view:
+        description: 'Хотите автоматизировать свои рабочие процессы с досками? Продвинутые доски являются корпоративной функцией. Пожалуйста, обновитесь до платного плана.'
   js:
     boards:
       create_new: 'Создать новую доску'
       label_unnamed_board: 'Безымянная доска'
       label_unnamed_list: 'Список досок без имени'
       label_board_type: 'Тип доски'
-      upsale:
-        teaser_text: 'Вы хотите автоматизировать свои рабочие процессы с досками? Расширенные доски являются дополнением предприятия. Пожалуйста, обновите платный план.'
-        upgrade: 'Обновить сейчас'
       lists:
         delete: 'Удалить список'
       version:
@@ -23,7 +24,7 @@ ru:
         locked: 'Заблокировано'
         closed: 'Закрыто'
       new_board: 'Новая доска'
-      add_list: 'Добавить список в форум'
+      add_list: 'Добавить список на доску'
       add_card: 'Добавить карточку'
       error_attribute_not_writable: "Невозможно переместить пакет работ, %{attribute} не доступен для записи."
       error_loading_the_list: "Ошибка загрузки списка: %{error_message}"
@@ -62,7 +63,7 @@ ru:
           status: Статус
           version: Версия
           subproject: Подпроект
-          subtasks: Родитель-ребенок
+          subtasks: Родитель-Потомок
           basic: Базовый
         select_attribute: "Атрибут действия"
       add_list_modal:

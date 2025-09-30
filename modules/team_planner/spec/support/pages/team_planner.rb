@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -172,15 +172,11 @@ module Pages
     end
 
     def expect_create_button
-      within ".toolbar-items" do
-        expect(page).to have_link text: "Team planner"
-      end
+      expect(page).to have_test_selector "add-team-planner-button"
     end
 
     def expect_no_create_button
-      within ".toolbar-items" do
-        expect(page).to have_no_link text: "Team planner"
-      end
+      expect(page).not_to have_test_selector "add-team-planner-button"
     end
 
     def expect_views_listed_in_order(*queries)
@@ -192,9 +188,7 @@ module Pages
     end
 
     def click_on_create_button
-      within ".toolbar-items" do
-        click_link "Team planner"
-      end
+      page.find_test_selector("add-team-planner-button").click
     end
 
     def click_on_cancel_button
@@ -209,6 +203,7 @@ module Pages
       select_autocomplete(find('[data-test-selector="project_id"]'),
                           query: project,
                           results_selector: "body",
+                          wait_dropdown_open: true,
                           wait_for_fetched_options: false)
     end
 
@@ -255,6 +250,7 @@ module Pages
     def select_user_to_add(name)
       select_autocomplete page.find('[data-test-selector="tp-add-assignee"]'),
                           query: name,
+                          wait_dropdown_open: false,
                           results_selector: "body"
     end
 
@@ -348,7 +344,7 @@ module Pages
     end
 
     def expect_no_menu_item(name)
-      expect(page).to have_no_css(".op-sidemenu--item-title", text: name)
+      expect(page).to have_no_css(".op-submenu--item-title", text: name)
     end
 
     def y_distance(from:, to:)

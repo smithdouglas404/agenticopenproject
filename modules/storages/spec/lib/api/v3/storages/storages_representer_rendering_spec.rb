@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,17 +33,14 @@ require_module_spec_helper
 
 RSpec.describe API::V3::Storages::StorageRepresenter, "rendering" do
   let(:oauth_client_credentials) { build_stubbed(:oauth_client) }
-  let(:user) { build_stubbed(:user) }
-  let(:auth_check_result) { ServiceResult.success }
+  let(:user) { create(:user) }
+  let(:auth_check_result) { Success() }
   let(:representer) { described_class.new(storage, current_user: user, embed_links: true) }
 
   subject(:generated) { representer.to_json }
 
   before do
-    Storages::Peripherals::Registry.stub(
-      "#{storage.short_provider_type}.queries.auth_check",
-      ->(_) { auth_check_result }
-    )
+    Storages::Adapters::Registry.stub("#{storage}.queries.user", ->(_) { auth_check_result })
   end
 
   shared_examples_for "common file storage properties" do
@@ -73,11 +70,25 @@ RSpec.describe API::V3::Storages::StorageRepresenter, "rendering" do
   end
 
   shared_examples_for "common file storage links" do
+    let(:remote_identity) { create :remote_identity, user:, integration: storage }
+
+    before do
+      remote_identity
+    end
+
     describe "self" do
       it_behaves_like "has a titled link" do
         let(:link) { "self" }
         let(:href) { "/api/v3/storages/#{storage.id}" }
         let(:title) { storage.name }
+      end
+    end
+
+    describe "type" do
+      it_behaves_like "has a titled link" do
+        let(:link) { "type" }
+        let(:href) { "urn:openproject-org:api:v3:storages:#{storage.provider_type_nextcloud? ? 'Nextcloud' : 'OneDrive'}" }
+        let(:title) { storage.provider_type_nextcloud? ? "Nextcloud" : "OneDrive" }
       end
     end
 
@@ -89,7 +100,7 @@ RSpec.describe API::V3::Storages::StorageRepresenter, "rendering" do
       end
 
       context "if authentication check returns unauthorized" do
-        let(:auth_check_result) { ServiceResult.failure(errors: Storages::StorageError.new(code: :unauthorized)) }
+        let(:auth_check_result) { Failure(Storages::Adapters::Results::Error.new(code: :unauthorized, source: nil)) }
 
         it_behaves_like "has a titled link" do
           let(:link) { "authorizationState" }
@@ -99,7 +110,7 @@ RSpec.describe API::V3::Storages::StorageRepresenter, "rendering" do
       end
 
       context "if authentication check returns error" do
-        let(:auth_check_result) { ServiceResult.failure(errors: Storages::StorageError.new(code: :error)) }
+        let(:auth_check_result) { Failure(Storages::Adapters::Results::Error.new(code: :error, source: nil)) }
 
         it_behaves_like "has a titled link" do
           let(:link) { "authorizationState" }
@@ -159,7 +170,7 @@ RSpec.describe API::V3::Storages::StorageRepresenter, "rendering" do
 
           expect(generated).to have_json_size(2).at_path("_links/prepareUpload")
 
-          project_ids = JSON.parse(generated).dig("_links", "prepareUpload").map { _1.dig("payload", "projectId") }
+          project_ids = JSON.parse(generated).dig("_links", "prepareUpload").map { it.dig("payload", "projectId") }
           expect(project_ids)
             .to contain_exactly(project_linked_with_upload_permission.id, another_project_linked_with_upload_permission.id)
         end
@@ -173,7 +184,7 @@ RSpec.describe API::V3::Storages::StorageRepresenter, "rendering" do
       end
 
       context "as admin" do
-        let(:user) { build_stubbed(:admin) }
+        let(:user) { create(:admin) }
 
         it_behaves_like "has an untitled link" do
           let(:link) { "oauthClientCredentials" }
@@ -182,7 +193,7 @@ RSpec.describe API::V3::Storages::StorageRepresenter, "rendering" do
       end
 
       context "as admin without oauth client credentials set" do
-        let(:user) { build_stubbed(:admin) }
+        let(:user) { create(:admin) }
         let(:oauth_client_credentials) { nil }
 
         it_behaves_like "has an untitled link" do
@@ -198,13 +209,13 @@ RSpec.describe API::V3::Storages::StorageRepresenter, "rendering" do
       it { is_expected.not_to have_json_path("_embedded/oauthClientCredentials") }
 
       context "as admin" do
-        let(:user) { build_stubbed(:admin) }
+        let(:user) { create(:admin) }
 
         it { is_expected.to be_json_eql(oauth_client_credentials.id).at_path("_embedded/oauthClientCredentials/id") }
       end
 
       context "as admin without oauth client credentials set" do
-        let(:user) { build_stubbed(:admin) }
+        let(:user) { create(:admin) }
         let(:oauth_client_credentials) { nil }
 
         it { is_expected.not_to have_json_path("_embedded/oauthClientCredentials") }
@@ -242,6 +253,38 @@ RSpec.describe API::V3::Storages::StorageRepresenter, "rendering" do
           end
         end
       end
+
+      describe "storageAudience" do
+        it_behaves_like "no property", :storageAudience
+
+        context "when the storage is configured for SSO authentication" do
+          let(:storage) { create(:nextcloud_storage, :oidc_sso_enabled) }
+
+          it_behaves_like "property", :storageAudience do
+            let(:value) { "nextcloud" }
+          end
+        end
+      end
+
+      describe "tokenExchangeScope" do
+        it_behaves_like "no property", :tokenExchangeScope
+
+        context "when the storage is configured for SSO authentication" do
+          let(:storage) { create(:nextcloud_storage, :oidc_sso_enabled, token_exchange_scope: "a-scope") }
+
+          it_behaves_like "property", :tokenExchangeScope do
+            let(:value) { "a-scope" }
+          end
+        end
+
+        context "when the storage is configured for SSO authentication, but has an empty scope" do
+          let(:storage) { create(:nextcloud_storage, :oidc_sso_enabled, token_exchange_scope: "") }
+
+          it_behaves_like "property", :tokenExchangeScope do
+            let(:value) { "" }
+          end
+        end
+      end
     end
 
     it_behaves_like "common file storage links"
@@ -254,13 +297,29 @@ RSpec.describe API::V3::Storages::StorageRepresenter, "rendering" do
         end
       end
 
+      describe "authenticationMethod" do
+        it_behaves_like "has an untitled link" do
+          let(:link) { "authenticationMethod" }
+          let(:href) { "urn:openproject-org:api:v3:storages:authenticationMethod:TwoWayOAuth2" }
+        end
+
+        context "when storage authenticates through SSO" do
+          let(:storage) { create(:nextcloud_storage, :oidc_sso_enabled) }
+
+          it_behaves_like "has an untitled link" do
+            let(:link) { "authenticationMethod" }
+            let(:href) { "urn:openproject-org:api:v3:storages:authenticationMethod:OAuth2SSO" }
+          end
+        end
+      end
+
       describe "oauthApplication" do
         it_behaves_like "has no link" do
           let(:link) { "oauthApplication" }
         end
 
         context "as admin" do
-          let(:user) { build_stubbed(:admin) }
+          let(:user) { create(:admin) }
 
           it_behaves_like "has a titled link" do
             let(:link) { "oauthApplication" }
@@ -287,7 +346,7 @@ RSpec.describe API::V3::Storages::StorageRepresenter, "rendering" do
         it { is_expected.not_to have_json_path("_embedded/oauthApplication") }
 
         context "as admin" do
-          let(:user) { build_stubbed(:admin) }
+          let(:user) { create(:admin) }
 
           it { is_expected.to be_json_eql(oauth_application.id).at_path("_embedded/oauthApplication/id") }
         end
@@ -295,7 +354,7 @@ RSpec.describe API::V3::Storages::StorageRepresenter, "rendering" do
     end
   end
 
-  context "if file storage has provider type OneDrive/SharePoint" do
+  context "if file storage has provider type OneDrive" do
     let(:storage) { build_stubbed(:one_drive_storage, oauth_client: oauth_client_credentials) }
 
     it_behaves_like "common file storage properties"
@@ -308,7 +367,7 @@ RSpec.describe API::V3::Storages::StorageRepresenter, "rendering" do
       end
     end
 
-    describe "properties (OneDrive/SharePoint only)" do
+    describe "properties (OneDrive only)" do
       it_behaves_like "property", :tenantId do
         let(:value) { storage.tenant_id }
       end

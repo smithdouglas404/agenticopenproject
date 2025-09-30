@@ -6,11 +6,11 @@
         label: WorkPackage.model_name.human,
         visually_hide_label: true,
         autocomplete_options: {
-          resource: 'work_packages',
-          searchKey: 'subjectOrId',
+          resource: "work_packages",
+          searchKey: "subjectOrId",
           openDirectly: false,
           focusDirectly: false,
-          dropdownPosition: 'bottom'
+          dropdownPosition: "bottom"
         }
       )
     end
@@ -19,11 +19,10 @@
   model = WorkPackage.new
 %>
 
-
 <%= primer_form_with(
       model:,
-      url: '/abc',
-      id: 'asdf') do |f|
-  render(the_form.new(f))
-end
-%>
+      url: "/abc",
+      id: "asdf"
+    ) do |f|
+      render(the_form.new(f))
+    end %>

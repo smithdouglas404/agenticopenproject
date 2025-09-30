@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -55,7 +57,7 @@ RSpec.describe API::V3::Users::CreateFormAPI, content_type: :json do
       it "returns a payload with validation errors",
          :aggregate_failures,
          with_settings: { default_language: :es } do
-        expect(response.status).to eq(200)
+        expect(response).to have_http_status(:ok)
         expect(response.body).to be_json_eql("Form".to_json).at_path("_type")
 
         expect(body)
@@ -101,7 +103,7 @@ RSpec.describe API::V3::Users::CreateFormAPI, content_type: :json do
       end
 
       it "returns a valid payload", :aggregate_failures do
-        expect(response.status).to eq(200)
+        expect(response).to have_http_status(:ok)
         expect(response.body).to be_json_eql("Form".to_json).at_path("_type")
 
         expect(body)
@@ -149,7 +151,7 @@ RSpec.describe API::V3::Users::CreateFormAPI, content_type: :json do
       end
 
       it "returns a valid form response" do
-        expect(response.status).to eq(200)
+        expect(response).to have_http_status(:ok)
         expect(response.body).to be_json_eql("Form".to_json).at_path("_type")
 
         expect(body)

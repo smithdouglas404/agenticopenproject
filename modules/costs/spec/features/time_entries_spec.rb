@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +28,7 @@
 
 require_relative "../spec_helper"
 
-RSpec.describe "Work Package table cost entries", :js do
+RSpec.describe "Work Package table time entries", :js do
   shared_let(:project) { create(:project_with_types) }
   shared_let(:user) { create(:admin) }
 
@@ -39,7 +39,7 @@ RSpec.describe "Work Package table cost entries", :js do
   let!(:time_entry1) do
     create(:time_entry,
            user:,
-           work_package: parent,
+           entity: parent,
            project:,
            hours: 10)
   end
@@ -47,7 +47,7 @@ RSpec.describe "Work Package table cost entries", :js do
   let!(:time_entry2) do
     create(:time_entry,
            user:,
-           work_package:,
+           entity: work_package,
            project:,
            hours: 2.50)
   end
@@ -73,8 +73,8 @@ RSpec.describe "Work Package table cost entries", :js do
     parent_row = wp_table.row(parent)
     wp_row = wp_table.row(work_package)
 
-    expect(parent_row).to have_css(".inline-edit--container.spentTime", text: "1d 4h 30m")
-    expect(wp_row).to have_css(".inline-edit--container.spentTime", text: "2h 30m")
+    expect(parent_row).to have_css(".inline-edit--container.spentTime", text: "12.5h")
+    expect(wp_row).to have_css(".inline-edit--container.spentTime", text: "2.5h")
   end
 
   it "creates an activity" do

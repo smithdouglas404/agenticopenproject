@@ -11,7 +11,9 @@ keywords: invite members, add users
 In order to see a project and work in it, you have to be a member of a project. Therefore, you have to **add team members to a project**.
 
 <div class="glossary">
+
 **Member** is defined as a project member in a project. Project members are added in the Members module in the project menu.
+
 </div>
 
 > **Note**: If you are not a member of a project, you do not see the project in the Project selection nor in the project list.
@@ -24,7 +26,7 @@ In order to see a project and work in it, you have to be a member of a project. 
 | [Groups as project members](#behavior-of-groups-as-project-members) | Understand the effects of adding groups as project members.  |
 | [Placeholder users as project members](#behavior-of-placeholder-users-as-project-members) | Understand how to differentiate between regular users and placeholder users. |
 
-<video src="https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject-Invite-and-Manage-Members.mp4" type="video/mp4" controls="" style="width:100%"></video>
+<video src="https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject-Invite-and-Manage-Members.mp4"></video>
 
 ## View members
 
@@ -34,7 +36,7 @@ You can use both filters in the left hand menu, as well as the filter options ne
 
 Please also refer to [Members module guide](../../user-guide/members).
 
-![invite members](project-members-module.png)
+![Members module in an OpenProject project, showing all project members](openproject_getting_started_project_members_module.png)
 
 ## Add existing users
 
@@ -42,17 +44,17 @@ To add existing users, [placeholder users](../../system-admin-guide/users-permis
 
 In the [members list](#view-members) you will get an overview of the current members of this project.
 
-Click the green **+ Member** button in the top right corner.
+Click the **+ Member** button in the top right corner.
 
 Type the name of the user, placeholder user or group which you want to add. You can also choose several members at once. **Assign a role** to the new member(s) and click the blue **Add** button.
 
-Please note that you will have to click on the new member's name or press the Enter key before clicking the Add button.
+Please note that you will have to click the new member's name or press the Enter key before clicking the Add button.
 
-![search bar for member selection invite members](invite-new-member.png)
+![Search bar for user selection to invite project members in OpenProject](openproject_getting_started_add_existing_user_as_member.png)
 
 ## Invite new members
 
-You can also invite users who do not have an OpenProject account, yet. There are different ways to do it.
+You can also invite users who do not yet have an OpenProject account. There are different ways to do it.
 
 **Invite in members module**
 
@@ -62,27 +64,28 @@ Type in the email address of the new member. If OpenProject does not find an exi
 
 An email invitation will be sent out to the user with a link to [create an account](../sign-in-registration/#create-a-new-account) for OpenProject.
 
-![invite new member via email in the members module](invite-new-member-email.png)
+![invite new member via email in the members module](openproject_getting_started_invite_new_user.png)
 
 **Invite from header**
 
-In the header menu that is always present, you find a green button that allows you to create projects, work packages and invite users from wherever in the application you are.
+In the header menu that is always present, you find a **plus** icon that allows you to create projects, work packages and invite users from wherever in the application you are.
 
-![green button for project creation](create-project-button.png)
+![Button to invite new users in the header navigation of OpenProject](openproject_getting_started_invite_new_user_header_navigation.png)
 
-Once you clicked the **Invite user**, a dialogue will open. Here you can select the project, to which you want to invite new members and which roles they get.
+Once you click the **Invite user**, a dialogue will open. Here you can select the project, to which you want to invite new members and which roles they get.
 
-![invite user pop up](invite-user-pop-up.png)
+![Pop up form to invite new user in OpenProject](openproject_getting_started_invite_new_user_popover_form.png)
 
 **Invite within a work package**
 
-When you are working in the work package table, you can also invite users from there. For example when you want to set an assignee for a work package that has not got access to OpenProject yet, you can select the Invite option from the drop down menu. The same applies to the column Accountable or custom fields for your project.
+When you are working in the work package table, you can also invite users from there. For example when you want to set an assignee for a work package that does not yet have access to OpenProject, you can select the Invite option from the drop down menu. The same applies to the column Accountable or the custom fields for your project.
 
-![invite user over assignment](invite-user-over-assignment.png)
+![Invite a user from a work package assignee field in OpenProject](openproject_getting_started_invite_new_user_from_work_package.png)
 
 You can now collaborate with your team in OpenProject. Newly invited users will be shown with a letter symbol next to their name.
 
-> Please note that removing a member who has not accepted the invite from a project yet will lead to the deletion of this user, which can't be reversed.
+> [!IMPORTANT]
+> Removing a member who has not accepted the invite from a project yet will lead to the deletion of this user, which can't be reversed.
 
 ## Behavior of groups as project members
 
@@ -98,7 +101,7 @@ Find out more about the management of groups [here](../../system-admin-guide/use
 
 ## Behavior of placeholder users as project members
 
-Placeholder will look slightly different from regular users in a project member list:
+Placeholder users will look slightly different from regular users in a project member list:
 
 - will be shown without email address
 - can't be part of a group, i.e. they will be shown without group affiliation

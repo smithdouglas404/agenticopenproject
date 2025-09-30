@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "datepicker"
 
 module Components
@@ -5,9 +7,12 @@ module Components
     include MonthRangeSelection
 
     def clear!
-      super
-
       set_field(duration_field, "", wait_for_changes_to_be_applied: false)
+      super
+    end
+
+    def expect_banner_text(text, **)
+      expect(container).to have_css(".wp-datepicker--banner", text:, **)
     end
 
     ##
@@ -19,29 +24,24 @@ module Components
 
     ##
     # Expect duration
-    def expect_duration(value)
-      value =
-        if value.is_a?(Regexp)
-          value
-        elsif value.nil? || value == ""
-          ""
-        else
-          I18n.t("js.units.day", count: value)
-        end
+    def expect_duration(value, **)
+      if value.blank?
+        value = ""
+      end
 
-      expect(container).to have_field("duration", with: value, wait: 10)
+      expect(container).to have_field("work_package[duration]", with: value, **)
     end
 
     def milestone_date_field
-      container.find_field "date"
+      container.find_field "work_package[start_date]"
     end
 
     def start_date_field
-      container.find_field "startDate"
+      container.find_field "work_package[start_date]"
     end
 
     def due_date_field
-      container.find_field "endDate"
+      container.find_field "work_package[due_date]"
     end
 
     def focus_milestone_date
@@ -58,20 +58,20 @@ module Components
 
     ##
     # Expect date (milestone type)
-    def expect_milestone_date(value)
-      expect(container).to have_field("date", with: value, wait: 20)
+    def expect_milestone_date(value, **)
+      expect(container).to have_field("work_package[start_date]", with: value, **)
     end
 
     ##
     # Expect start date
-    def expect_start_date(value)
-      expect(container).to have_field("startDate", with: value, wait: 20)
+    def expect_start_date(value, **)
+      expect(container).to have_field("work_package[start_date]", with: value, **)
     end
 
     ##
     # Expect due date
-    def expect_due_date(value)
-      expect(container).to have_field("endDate", with: value, wait: 20)
+    def expect_due_date(value, **)
+      expect(container).to have_field("work_package[due_date]", with: value, **)
     end
 
     def set_milestone_date(value)
@@ -86,16 +86,56 @@ module Components
       set_field(due_date_field, value)
     end
 
+    def enable_start_date
+      retry_block do
+        page.find_test_selector("wp-datepicker--show-start-date").click
+        wait_for_network_idle
+        expect_start_highlighted
+      end
+    end
+
+    def enable_start_date_if_visible
+      if container.has_link?("Start date", visible: true)
+        enable_start_date
+      end
+    end
+
+    def expect_add_start_date_button_visible
+      expect(container).to have_link("Start date")
+    end
+
+    def expect_add_finish_date_button_visible
+      expect(container).to have_link("Finish date")
+    end
+
+    def enable_due_date
+      retry_block do
+        page.find_test_selector("wp-datepicker--show-due-date").click
+        wait_for_network_idle
+        expect_due_highlighted
+      end
+    end
+
+    def enable_due_date_if_visible
+      if container.has_link?("Due date", visible: true)
+        enable_due_date
+      end
+    end
+
     def expect_start_highlighted
       expect(container).to have_css('[data-test-selector="op-datepicker-modal--start-date-field"][data-qa-highlighted]')
     end
 
     def expect_due_highlighted
-      expect(container).to have_css('[data-test-selector="op-datepicker-modal--end-date-field"][data-qa-highlighted]')
+      expect(container).to have_css('[data-test-selector="op-datepicker-modal--due-date-field"][data-qa-highlighted]')
+    end
+
+    def expect_duration_highlighted
+      expect(container).to have_css('[data-test-selector="op-datepicker-modal--duration-field"][data-qa-highlighted]')
     end
 
     def duration_field
-      container.find_field "duration"
+      container.find_field "work_package[duration]"
     end
 
     def focus_duration
@@ -103,84 +143,115 @@ module Components
     end
 
     def set_today(date)
-      key =
-        case date.to_s
-        when "due"
-          "end"
-        else
-          date
-        end
-
-      page.within("[data-test-selector='datepicker-#{key}-date']") do
-        find("button", text: "Today").click
-      end
-    end
-
-    def save!(text: I18n.t(:button_save))
-      super
+      page.find_test_selector("op-datepicker-modal--#{date}-date-field--today").click
     end
 
     def set_duration(value)
       set_field(duration_field, value)
-
-      # Focus a different field
-      start_date_field.click
     end
 
-    def expect_duration_highlighted
-      expect(container).to have_css('[data-test-selector="op-datepicker-modal--duration-field"][data-qa-highlighted]')
+    def expect_start_date_error(expected_error)
+      expect_field_error(start_date_field, expected_error)
     end
 
-    def expect_scheduling_mode(manually)
-      if manually
-        expect(container).to have_checked_field("scheduling", visible: :all)
-      else
-        expect(container).to have_unchecked_field("scheduling", visible: :all)
-      end
+    def expect_due_date_error(expected_error)
+      expect_field_error(due_date_field, expected_error)
+    end
+
+    def expect_duration_error(expected_error)
+      expect_field_error(duration_field, expected_error)
+    end
+
+    def expect_manual_scheduling_mode
+      expect(container)
+        .to have_css('[data-test-selector="op-datepicker-modal--scheduling_manual"][data-qa-selected="true"]')
+    end
+
+    def expect_automatic_scheduling_mode
+      expect(container)
+        .to have_css('[data-test-selector="op-datepicker-modal--scheduling_automatic"][data-qa-selected="true"]')
     end
 
     def toggle_scheduling_mode
-      find("label", text: "Manual scheduling").click
-    end
-
-    def scheduling_mode_input
-      container.find_field "scheduling", visible: :all
-    end
-
-    def ignore_non_working_days_input
-      container.find_field "weekdays_only", visible: :all
-    end
-
-    def expect_ignore_non_working_days_disabled
-      expect(container).to have_field("weekdays_only", disabled: true)
-    end
-
-    def expect_ignore_non_working_days_enabled
-      expect(container).to have_field("weekdays_only", disabled: false)
-    end
-
-    def expect_ignore_non_working_days(val, disabled: false)
-      if val
-        expect(container).to have_unchecked_field("weekdays_only", disabled:)
-      else
-        expect(container).to have_checked_field("weekdays_only", disabled:)
+      page.within_test_selector "op-datepicker-modal--scheduling" do
+        page.find('[data-qa-selected="false"]').click
       end
     end
 
-    def toggle_ignore_non_working_days
+    def toggle_scheduling_mode_via_keyboard
+      page.within_test_selector "op-datepicker-modal--scheduling" do
+        el = page.find('[data-qa-selected="false"]')
+        el.native.send_keys(:enter)
+      end
+    end
+
+    def click_manual_scheduling_mode
+      container.click_link I18n.t("work_packages.datepicker_modal.mode.manual")
+    end
+
+    def click_automatic_scheduling_mode
+      container.click_link I18n.t("work_packages.datepicker_modal.mode.automatic")
+    end
+
+    def expect_working_days_only_checkbox_visible
+      expect(container)
+        .to have_field(I18n.t("work_packages.datepicker_modal.ignore_non_working_days.title"), disabled: :all)
+    end
+
+    def expect_no_working_days_only_checkbox_visible
+      expect(container)
+        .to have_no_field(I18n.t("work_packages.datepicker_modal.ignore_non_working_days.title"))
+    end
+
+    def expect_working_days_only_disabled
+      expect(container)
+        .to have_field("work_package[ignore_non_working_days]", disabled: true)
+    end
+
+    def expect_working_days_only_enabled
+      expect(container)
+        .to have_field("work_package[ignore_non_working_days]", disabled: false)
+    end
+
+    def expect_working_days_only(checked)
+      expect(container)
+        .to have_field("work_package[ignore_non_working_days]", checked:, disabled: :all)
+    end
+
+    def toggle_working_days_only
       find("label", text: "Working days only").click
+    end
+
+    def uncheck_working_days_only
+      page.find(:checkbox, "Working days only").uncheck
     end
 
     def clear_duration
       set_duration("")
     end
 
-    def clear_duration_with_icon
-      duration_field.click
+    private
 
-      page
-        .find('[data-test-selector="op-datepicker-modal--duration-field"] .spot-text-field--clear-button')
-        .click
+    def save_button_label
+      I18n.t(:button_save)
+    end
+
+    def expect_field_error(field, expected_error)
+      input_validation_element = input_aria_related_element(field, describedby: "validation")
+      if expected_error.nil?
+        expect(input_validation_element&.visible?)
+          .to be_falsey, "Expected no error message for #{field['name']} field, " \
+                         "got \"#{input_validation_element&.text}\""
+      else
+        expect(input_validation_element).to have_text(expected_error)
+      end
+    end
+
+    def input_aria_related_element(input_element, describedby:)
+      input_element["aria-describedby"]
+        .split
+        .find { it.start_with?("#{describedby}-") }
+        &.then { |id| find(id:, visible: :all) }
     end
   end
 end

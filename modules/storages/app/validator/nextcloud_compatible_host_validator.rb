@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,7 +29,7 @@
 #++
 class NextcloudCompatibleHostValidator < ActiveModel::EachValidator
   MINIMAL_NEXTCLOUD_VERSION = 22
-  AUTHORIZATION_HEADER = "Bearer TESTBEARERTOKEN".freeze
+  AUTHORIZATION_HEADER = "Bearer TESTBEARERTOKEN"
 
   HTTPX_TIMEOUT_SETTINGS = { timeout: { connect_timeout: 5, read_timeout: 3 } }.freeze
 

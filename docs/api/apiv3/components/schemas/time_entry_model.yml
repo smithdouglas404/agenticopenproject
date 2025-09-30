@@ -7,9 +7,8 @@ properties:
     description: The id of the time entry
     minimum: 1
   comment:
-    allOf:
-      - $ref: './formattable.yml'
-      - description: A comment to the time entry
+    type: string
+    description: A comment to the time entry
   spentOn:
     type: string
     format: date
@@ -25,6 +24,28 @@ properties:
     type: string
     format: date-time
     description: The time the time entry was created
+  startTime:
+    type:
+      - string
+      - "null"
+    format: date-time
+    description: |-
+      The time the time entry was started, or null if the time entry does not have a start time.
+
+      The time is returned as UTC time, if presented to the user it should be converted to the user's timezone.
+
+      This field is only available if the global `allow_tracking_start_and_end_times` setting is enabled.
+  endTime:
+    type:
+      - string
+      - "null"
+    format: date-time
+    description: |-
+      The time the time entry was ended, or null if the time entry does not have a start time.
+
+      The time is returned as UTC time, if presented to the user it should be converted to the user's timezone.
+
+      This field is only available if the global `allow_tracking_start_and_end_times` setting is enabled.
   updatedAt:
     type: string
     format: date-time
@@ -36,17 +57,18 @@ properties:
       - project
       - user
       - activity
+      - entity
     properties:
       self:
         allOf:
-          - "$ref": './link.yml'
+          - "$ref": "./link.yml"
           - description: |-
               This time entry
 
               **Resource**: TimeEntry
       updateImmediately:
         allOf:
-          - "$ref": './link.yml'
+          - "$ref": "./link.yml"
           - description: |-
               Directly perform edits on this time entry
 
@@ -55,7 +77,7 @@ properties:
               **Permission**: 'edit time entries' or 'edit own time entries' if the time entry belongs to the user
       update:
         allOf:
-          - "$ref": './link.yml'
+          - "$ref": "./link.yml"
           - description: |-
               Form endpoint that aids in preparing and performing edits on a TimeEntry
 
@@ -64,7 +86,7 @@ properties:
               **Permission**: 'edit time entries' or 'edit own time entries' if the time entry belongs to the user
       delete:
         allOf:
-          - "$ref": './link.yml'
+          - "$ref": "./link.yml"
           - description: |-
               Delete this time entry
 
@@ -73,35 +95,35 @@ properties:
               **Permission**: 'edit time entries' or 'edit own time entries' if the time entry belongs to the user
       schema:
         allOf:
-          - "$ref": './link.yml'
+          - "$ref": "./link.yml"
           - description: |-
               The time entry schema
 
               **Resource**: Schema
       project:
         allOf:
-          - "$ref": './link.yml'
+          - "$ref": "./link.yml"
           - description: |-
               The project the time entry is bundled in. The project might be different from the work package's project once the workPackage is moved.
 
               **Resource**: Project
-      workPackage:
+      entity:
         allOf:
-          - "$ref": './link.yml'
+          - "$ref": "./link.yml"
           - description: |-
-              The work package the time entry is created on
+              The entity the time entry is created on
 
-              **Resource**: WorkPackage
+              **Resource**: WorkPackage, Meeting
       user:
         allOf:
-          - "$ref": './link.yml'
+          - "$ref": "./link.yml"
           - description: |-
               The user the time entry tracks expenditures for
 
               **Resource**: User
       activity:
         allOf:
-          - "$ref": './link.yml'
+          - "$ref": "./link.yml"
           - description: |-
               The time entry activity the time entry is categorized as
 
@@ -114,33 +136,35 @@ examples:
       format: plain
       raw: "The force shall set me free."
       html: "<p>The force shall set me free.</p>"
-    spentOn: '2023-01-11'
-    hours: 'PT4H'
-    createdAt: '2023-01-11T13:58:24.927Z'
-    updatedAt: '2023-01-11T13:58:24.927Z'
+    spentOn: "2023-01-11"
+    hours: "PT4H"
+    startTime: "2023-01-11T09:58:00.000Z"
+    endTime: "2023-01-11T13:58:00.000Z"
+    createdAt: "2023-01-11T13:58:24.927Z"
+    updatedAt: "2023-01-11T13:58:24.927Z"
     _links:
       self:
-        href: '/api/v3/time_entries/42'
+        href: "/api/v3/time_entries/42"
       updateImmediately:
-        href: '/api/v3/time_entries/42'
+        href: "/api/v3/time_entries/42"
         method: patch
       update:
-        href: '/api/v3/time_entries/42/form'
+        href: "/api/v3/time_entries/42/form"
         method: post
       delete:
-        href: '/api/v3/time_entries/42'
+        href: "/api/v3/time_entries/42"
         method: delete
       schema:
-        href: '/api/v3/time_entries/schema'
+        href: "/api/v3/time_entries/schema"
       project:
-        href: '/api/v3/projects/11'
+        href: "/api/v3/projects/11"
         title: DeathStarV2
-      workPackage:
-        href: '/api/v3/work_packages/77'
+      entity:
+        href: "/api/v3/work_packages/77"
         title: Build new hangar
       user:
-        href: '/api/v3/users/3'
+        href: "/api/v3/users/3"
         title: Darth Vader
       activity:
-        href: '/api/v3/time_entries/activities/1'
+        href: "/api/v3/time_entries/activities/1"
         title: Management

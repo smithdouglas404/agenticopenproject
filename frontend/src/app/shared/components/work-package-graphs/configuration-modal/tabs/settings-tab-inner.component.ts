@@ -16,6 +16,7 @@ interface OpChartType {
 @Component({
   selector: 'op-settings-tab-inner',
   templateUrl: './settings-tab-inner.component.html',
+  standalone: false,
 })
 export class WpGraphConfigurationSettingsTabInnerComponent extends QuerySpacedTabComponent implements TabComponent {
   // Grouping

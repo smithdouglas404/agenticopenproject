@@ -21,7 +21,11 @@ export interface CKEditorDomEventData {
 }
 
 export interface ICKEditorInstance {
-  getData(options:{ trim:boolean }):string;
+  id:string;
+
+  state:string;
+
+  getData(options?:{ trim:boolean }):string;
 
   setData(content:string):void;
 
@@ -88,6 +92,8 @@ export interface ICKEditorContext {
   type:ICKEditorType;
   // Hal Resource to pass into ckeditor
   resource?:HalResource;
+  // If available, field name of the edit
+  field?:string;
   // Specific removing of plugins
   removePlugins?:string[];
   // Set of enabled macro plugins or false to disable all
@@ -100,4 +106,12 @@ export interface ICKEditorContext {
   previewContext?:string;
   // disabled specific mentions
   disabledMentions?:['user'|'work_package'];
+  // overrides the default storage key for revisions
+  storageKey?:string;
+}
+
+declare global {
+  interface HTMLElement {
+    ckeditorInstance?:ICKEditorInstance;
+  }
 }

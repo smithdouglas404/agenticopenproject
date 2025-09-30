@@ -1,7 +1,7 @@
 /*
  * -- copyright
  * OpenProject is an open source project management software.
- * Copyright (C) 2023 the OpenProject GmbH
+ * Copyright (C) the OpenProject GmbH
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 3.
@@ -30,60 +30,46 @@
 
 import { ApplicationController } from 'stimulus-use';
 import { renderStreamMessage } from '@hotwired/turbo';
+import { TurboHelpers } from 'core-turbo/helpers';
 
 export default class AsyncDialogController extends ApplicationController {
-  private loadingDialog:HTMLDialogElement|null;
-
   connect() {
-    this.element.addEventListener('click', (e) => {
-      e.preventDefault();
+    this.element.addEventListener('click', (event:MouseEvent) => {
+      event.preventDefault();
       this.triggerTurboStream();
+    });
+
+    this.element.addEventListener('keydown', (event:KeyboardEvent) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        this.triggerTurboStream();
+      }
     });
   }
 
-  triggerTurboStream():void {
-    let loaded = false;
+  private triggerTurboStream():void {
+    TurboHelpers.showProgressBar();
 
-    setTimeout(() => {
-      if (!loaded) {
-        this.addLoading();
-      }
-    }, 100);
-
-    fetch(this.href, {
+    void fetch(this.href, {
       method: this.method,
       headers: {
         Accept: 'text/vnd.turbo-stream.html',
+        'X-Authentication-Scheme': 'Session',
       },
-    }).then((r) => r.text())
-      .then((html) => {
-        loaded = true;
-        renderStreamMessage(html);
-      })
-      .finally(() => this.removeLoading());
-  }
+    }).then((response) => {
+      const contentType = response.headers.get('Content-Type') || '';
+      const isTurboStream = contentType.includes('text/vnd.turbo-stream.html');
 
-  removeLoading() {
-    this.loadingDialog?.remove();
-  }
+      if (!isTurboStream) {
+        return Promise.reject();
+      }
 
-  addLoading() {
-    this.removeLoading();
-    const dialog = document.createElement('dialog');
-    dialog.classList.add('Overlay', 'Overlay--size-medium', 'Overlay--motion-scaleFade');
-    dialog.style.height = '150px';
-    dialog.style.display = 'grid';
-    dialog.style.placeContent = 'center';
-    dialog.id = 'loading';
-    dialog.innerHTML = `
-    <svg style="box-sizing: content-box; color: var(--color-icon-primary);" width="32" height="32" viewBox="0 0 16 16" fill="none" data-view-component="true" class="anim-rotate">
-      <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke" fill="none" />
-      <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke" />
-    </svg>
-    `;
-    document.body.appendChild(dialog);
-    dialog.showModal();
-    this.loadingDialog = dialog;
+      return response.text();
+    }).then((html) => {
+      renderStreamMessage(html);
+    }).finally(() => {
+      TurboHelpers.hideProgressBar();
+    });
   }
 
   get href() {

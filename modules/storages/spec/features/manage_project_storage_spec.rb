@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -39,15 +39,18 @@ require_module_spec_helper
 # the Angular change detection. This is usually done by the notification polling, but we don't want to wait
 RSpec.describe("Activation of storages in projects",
                :js,
-               :with_cuprite,
+               :oauth_connection_helpers,
+               :storage_server_helpers,
                :webmock,
                with_settings: { notifications_polling_interval: 1_000 }) do
+  include Flash::Expectations
+
   let(:user) { create(:user) }
   # The first page is the Project -> Settings -> General page, so we need
   # to provide the user with the edit_project permission in the role.
   let(:role) do
     create(:project_role,
-           permissions: %i[manage_storages_in_project
+           permissions: %i[manage_files_in_project
                            select_project_modules
                            edit_project])
   end
@@ -62,80 +65,64 @@ RSpec.describe("Activation of storages in projects",
 
   let(:oauth_client) { create(:oauth_client, integration: storage) }
   let(:oauth_client_token) { create(:oauth_client_token, oauth_client:, user:) }
+  let(:remote_identity) do
+    create(:remote_identity, user:, auth_source: oauth_client, integration: storage, origin_user_id: "admin")
+  end
 
   let(:location_picker) { Components::FilePickerDialog.new }
 
-  let(:root_xml_response) { create(:webdav_data) }
-  let(:folder1_xml_response) { create(:webdav_data_folder) }
-  let(:folder1_fileinfo_response) do
-    {
-      ocs: {
-        data: {
-          status: "OK",
-          statuscode: 200,
-          id: 11,
-          name: "Folder1",
-          path: "files/Folder1",
-          mtime: 1682509719,
-          ctime: 0
-        }
-      }
-    }
-  end
-
   before do
     oauth_client_token
-
-    stub_request(:propfind, "#{storage.host}/remote.php/dav/files/#{oauth_client_token.origin_user_id}/")
-      .to_return(status: 207, body: root_xml_response, headers: {})
-    stub_request(:propfind, "#{storage.host}/remote.php/dav/files/#{oauth_client_token.origin_user_id}/Folder1")
-      .to_return(status: 207, body: folder1_xml_response, headers: {})
-    stub_request(:get, "#{storage.host}/ocs/v1.php/apps/integration_openproject/fileinfo/11")
-      .to_return(status: 200, body: folder1_fileinfo_response.to_json, headers: {})
-    stub_request(:get, "#{storage.host}/ocs/v1.php/cloud/user").to_return(status: 200, body: "{}")
-    stub_request(
-      :delete,
-      "#{storage.host}/remote.php/dav/files/OpenProject/OpenProject/Project%20name%20without%20sequence%20(#{project.id})/"
-    ).to_return(status: 200, body: "", headers: {})
-
     storage
     project
-    login_as user
+    oauth_client_token
+
+    stub_outbound_storage_files_request_for(storage:, remote_identity:)
+
+    login_as(user)
   end
 
   it "adds, edits and removes storages to projects" do
     # Go to Projects -> Settings -> File Storages
     visit project_settings_general_path(project)
-    page.click_link("Files")
+    page.click_on("Files")
 
     # Check for an empty table in Project -> Settings -> File storages
     expect(page).to have_title("Files")
     expect(page).to have_current_path external_file_storages_project_settings_project_storages_path(project)
     expect(page).to have_text(I18n.t("storages.no_results"))
-    page.first(:link, 'New storage').click
+    page.first(:link, "New storage").click
 
     # Can cancel the creation of a new file storage
     expect(page).to have_current_path new_project_settings_project_storage_path(project_id: project)
     expect(page).to have_text("Add a file storage")
-    page.click_link("Cancel")
+    page.click_on("Cancel")
     expect(page).to have_current_path external_file_storages_project_settings_project_storages_path(project)
 
+    wait_for_network_idle
+
     # Enable one file storage together with a project folder mode
-    page.first(:link, 'New storage').click
+    page.first(:link, "New storage").click
     expect(page).to have_current_path new_project_settings_project_storage_path(project_id: project)
     expect(page).to have_text("Add a file storage")
     expect(page).to have_select("storages_project_storage_storage_id",
-                                options: ["#{storage.name} (#{storage.short_provider_type})"])
-    page.click_button("Continue")
+                                options: ["#{storage.name} (#{storage})"])
+    page.click_on("Continue")
 
-    # by default automatic have to be choosen if storage has automatic management enabled
+    # by default automatic have to be chosen if storage has automatic management enabled
     expect(page).to have_checked_field("New folder with automatically managed permissions")
 
+    # The js needs to be initialized before the stimulus controller will work.
+    # Otherwise, the folder selector will not show up.
+    # For unknown reasons, this takes longer than expected.
+    sleep(1)
     page.find_by_id("storages_project_storage_project_folder_mode_manual").click
 
+    expect(page).to have_test_selector("selected-folder-name", text: "No selected folder")
+
     # Select project folder
-    expect(page).to have_text("No selected folder")
-    page.click_button("Select folder")
+    expect(page).to have_test_selector("selected-folder-name", text: "No selected folder")
+    page.click_on("Select folder")
     location_picker.expect_open
     using_wait_time(20) do
       location_picker.wait_for_folder_loaded
@@ -145,18 +132,21 @@ RSpec.describe("Activation of storages in projects",
     location_picker.confirm
 
     # Add storage
-    expect(page).to have_text("Folder1")
-    page.click_button("Add")
+    expect(page).to have_test_selector("selected-folder-name", text: "Folder1")
+    page.click_on("Add")
+
+    expect_and_dismiss_flash(message: "Successful creation.")
 
     # The list of enabled file storages should now contain Storage 1
-    expect(page).to have_selector('h1', text: 'Files')
+    expect(page).to have_heading "Files"
     expect(page).to have_text(storage.name)
 
     # Press Edit icon to change the project folder mode to inactive
     page.find(".icon.icon-edit").click
-    expect(page).to have_current_path edit_project_settings_project_storage_path(project_id: project,
-                                                                                 id: Storages::ProjectStorage.last,
-                                                                                 storages_project_storage: {project_folder_mode: "manual"})
+    path = edit_project_settings_project_storage_path(project_id: project,
+                                                      id: Storages::ProjectStorage.last,
+                                                      storages_project_storage: { project_folder_mode: "manual" })
+    expect(page).to have_current_path(path)
     expect(page).to have_text("Edit the file storage to this project")
     expect(page).to have_no_select("storages_project_storage_storage_id")
     expect(page).to have_text(storage.name)
@@ -165,20 +155,23 @@ RSpec.describe("Activation of storages in projects",
 
     # Change the project folder mode to inactive, project folder is hidden but retained
     page.find_by_id("storages_project_storage_project_folder_mode_inactive").click
-    expect(page).to have_no_text("Folder1")
-    page.click_button("Save")
+    expect(page).not_to have_test_selector("selected-folder-name", text: "Folder1")
+    page.click_on("Save")
+
+    expect_and_dismiss_flash(message: "Successful update.")
 
     # The list of enabled file storages should still contain Storage 1
-    expect(page).to have_selector('h1', text: 'Files')
+    expect(page).to have_heading "Files"
     expect(page).to have_text(storage.name)
 
     # Click Edit icon again but cancel the edit
     page.find(".icon.icon-edit").click
-    expect(page).to have_current_path edit_project_settings_project_storage_path(project_id: project,
-                                                                                 id: Storages::ProjectStorage.last,
-                                                                                 storages_project_storage: {project_folder_mode: "inactive"})
+    path = edit_project_settings_project_storage_path(project_id: project,
+                                                      id: Storages::ProjectStorage.last,
+                                                      storages_project_storage: { project_folder_mode: "inactive" })
+    expect(page).to have_current_path(path)
     expect(page).to have_text("Edit the file storage to this project")
-    page.click_link("Cancel")
+    page.click_on("Cancel")
     expect(page).to have_current_path external_file_storages_project_settings_project_storages_path(project)
 
     # Press Delete icon to remove the storage from the project
@@ -190,14 +183,14 @@ RSpec.describe("Activation of storages in projects",
     expect(page).to have_button("Delete", disabled: true)
 
     # Cancel Confirmation
-    page.click_link("Cancel")
+    page.click_on("Cancel")
     expect(page).to have_current_path external_file_storages_project_settings_project_storages_path(project)
 
     page.find(".icon.icon-delete").click
 
     # Approve Confirmation
     page.fill_in "delete_confirmation", with: storage.name
-    page.click_button("Delete")
+    page.click_on("Delete")
 
     # List of ProjectStorages empty again
     expect(page).to have_current_path external_file_storages_project_settings_project_storages_path(project)
@@ -230,6 +223,38 @@ RSpec.describe("Activation of storages in projects",
     end
   end
 
+  describe "manual project folder mode" do
+    context "when the storage is automatically managed" do
+      context "when the storage is a nextcloud storage" do
+        let(:oauth_application) { create(:oauth_application) }
+        let(:storage) { create(:nextcloud_storage, :as_automatically_managed, oauth_application:) }
+        let(:project_storage) { create(:project_storage, storage:, project:) }
+
+        it "shows the option for manually managed permissions" do
+          visit edit_project_settings_project_storage_path(project_id: project, id: project_storage)
+
+          expect(page).to have_content("Existing folder with manually managed permissions")
+        end
+      end
+
+      context "when the storage is a one drive storage" do
+        let(:oauth_application) { create(:oauth_application) }
+        let(:storage) { create(:one_drive_storage, :as_automatically_managed, oauth_application:) }
+        let(:project_storage) { create(:project_storage, storage:, project:) }
+
+        before do
+          mock_one_drive_authorization_validation
+        end
+
+        it "shows no option for manually managed permissions" do
+          visit edit_project_settings_project_storage_path(project_id: project, id: project_storage)
+
+          expect(page).to have_no_content("Existing folder with manually managed permissions")
+        end
+      end
+    end
+  end
+
   describe "configuration checks" do
     let(:configured_storage) { storage }
     let!(:unconfigured_storage) { create(:nextcloud_storage) }
@@ -237,7 +262,7 @@ RSpec.describe("Activation of storages in projects",
     it "excludes storages that are not configured correctly" do
       visit external_file_storages_project_settings_project_storages_path(project)
 
-      page.first(:link, 'New storage').click
+      page.first(:link, "New storage").click
 
       aggregate_failures "select field options" do
         expect(page).to have_select("storages_project_storage_storage_id",

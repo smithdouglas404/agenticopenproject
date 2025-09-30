@@ -34,6 +34,15 @@ sk:
           name: Šedá (tmavá)
         item_13:
           name: Čierna
+      project_phase_colors:
+        item_0:
+          name: PM2 Orange
+        item_1:
+          name: PM2 Red
+        item_2:
+          name: PM2 Magenta
+        item_3:
+          name: PM2 Green Yellow
       document_categories:
         item_0:
           name: Dokumentácia
@@ -41,6 +50,11 @@ sk:
           name: Špecifikácia
         item_2:
           name: Ostatné
+      project_query_roles:
+        item_0:
+          name: Project query viewer
+        item_1:
+          name: Project query editor
       work_package_roles:
         item_0:
           name: Work package editor
@@ -62,7 +76,21 @@ sk:
       global_roles:
         item_0:
           name: Staff and projects manager
+        item_1:
+          name: Standard global role
     standard:
+      project_phases:
+        item_0:
+          name: Initiating
+        item_1:
+          name: Plánovanie
+          start_gate: Ready for Planning
+        item_2:
+          name: Executing
+          start_gate: Ready for Executing
+        item_3:
+          name: Closing
+          start_gate: Ready for Closing
       priorities:
         item_0:
           name: Nízka
@@ -72,81 +100,6 @@ sk:
           name: Vysoká
         item_3:
           name: Okamžité
-      statuses:
-        item_0:
-          name: Nový
-        item_1:
-          name: V špecifikácii
-        item_2:
-          name: Špecifikované
-        item_3:
-          name: Potvrdený
-        item_4:
-          name: Na plánovanie
-        item_5:
-          name: Naplánované
-        item_6:
-          name: Prebieha
-        item_7:
-          name: Vyvinuté
-        item_8:
-          name: V testovaní
-        item_9:
-          name: Testované
-        item_10:
-          name: Test zlyhal
-        item_11:
-          name: Zatvorený
-        item_12:
-          name: Zadržané
-        item_13:
-          name: Odmietnuté
-      time_entry_activities:
-        item_0:
-          name: Riadenie
-        item_1:
-          name: Špecifikácia
-        item_2:
-          name: Vývoj
-        item_3:
-          name: Testovanie
-        item_4:
-          name: Podpora
-        item_5:
-          name: Ostatné
-      types:
-        item_0:
-          name: Úloha
-        item_1:
-          name: Míľnik
-        item_2:
-          name: Fáza
-        item_3:
-          name: Nová funkcia
-        item_4:
-          name: Epos
-        item_5:
-          name: Užívateľský príbeh
-        item_6:
-          name: Chyba
-      welcome:
-        title: Welcome to OpenProject!
-        text: |
-          OpenProject is the leading open source project management software. It supports classic, agile as well as hybrid project management and gives you full control over your data.
-
-          Core features and use cases:
-
-          * [Project Portfolio Management](https://www.openproject.org/collaboration-software-features/project-portfolio-management/)
-          * [Project Planning and Scheduling](https://www.openproject.org/collaboration-software-features/project-planning-scheduling/)
-          * [Task Management and Issue Tracking](https://www.openproject.org/collaboration-software-features/task-management/)
-          * [Agile Boards (Scrum and Kanban)](https://www.openproject.org/collaboration-software-features/agile-project-management/)
-          * [Requirements Management and Release Planning](https://www.openproject.org/collaboration-software-features/product-development/)
-          * [Time and Cost Tracking, Budgets](https://www.openproject.org/collaboration-software-features/time-tracking/)
-          * [Team Collaboration and Documentation](https://www.openproject.org/collaboration-software-features/team-collaboration/)
-
-          Welcome to the future of project management.
-
-          For Admins: You can change this welcome text [here]({{opSetting:base_url}}/admin/settings/general).
       projects:
         demo-project:
           name: Demo project
@@ -154,22 +107,22 @@ sk:
           description: This is a short summary of the goals of this demo project.
           news:
             item_0:
-              title: Welcome to your demo project
+              title: Vitajte vo svojom demo projekte
               summary: |
-                We are glad you joined.
-                In this module you can communicate project news to your team members.
-              description: The actual news
+                Sme radi, že ste sa pridali.
+                V tomto module môžete členom svojho tímu oznamovať novinky o projekte.
+              description: Aktuálne správy
           categories:
-            item_0: Category 1 (to be changed in Project settings)
+            item_0: Kategória 1 (treba zmeniť v nastaveniach projektu)
           queries:
             item_0:
-              name: Project plan
+              name: Plán projektu
             item_1:
-              name: Milestones
+              name: Míľniky
             item_2:
-              name: Tasks
+              name: Úlohy
             item_3:
-              name: Team planner
+              name: Plánovač tímu
           boards:
             kanban:
               name: Kanban board
@@ -190,7 +143,7 @@ sk:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Vitajte
               item_1:
                 options:
                   name: Začíname
@@ -215,7 +168,7 @@ sk:
                   name: Pracovné balíčky
               item_6:
                 options:
-                  name: Milestones
+                  name: Míľniky
           work_packages:
             item_0:
               subject: Start of project
@@ -274,8 +227,8 @@ sk:
             item_0:
               title: Welcome to your Scrum demo project
               summary: |
-                We are glad you joined.
-                In this module you can communicate project news to your team members.
+                Sme radi, že ste sa pridali.
+                V tomto module môžete členom svojho tímu oznamovať novinky o projekte.
           versions:
             item_0:
               name: Bug Backlog
@@ -334,16 +287,16 @@ sk:
             item_3:
               name: Sprint 2
           categories:
-            item_0: Category 1 (to be changed in Project settings)
+            item_0: Kategória 1 (treba zmeniť v nastaveniach projektu)
           queries:
             item_0:
-              name: Project plan
+              name: Plán projektu
             item_1:
               name: Nevyriešený produkt
             item_2:
               name: Sprint 1
             item_3:
-              name: Tasks
+              name: Úlohy
           boards:
             kanban:
               name: Kanban board
@@ -362,7 +315,7 @@ sk:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Vitajte
               item_1:
                 options:
                   name: Začíname
@@ -386,7 +339,7 @@ sk:
                   name: Pracovné balíčky
               item_6:
                 options:
-                  name: Project plan
+                  name: Plán projektu
           work_packages:
             item_0:
               subject: New login screen
@@ -484,3 +437,78 @@ sk:
             * Time boxed (3 h).
             * After Sprint Review, will be moderated by Scrum Master.
             * The team discusses the sprint: what went well, what needs to be improved to be more productive for the next sprint or even have more fun.
+      statuses:
+        item_0:
+          name: Nový
+        item_1:
+          name: V špecifikácii
+        item_2:
+          name: Špecifikované
+        item_3:
+          name: Potvrdený
+        item_4:
+          name: Na plánovanie
+        item_5:
+          name: Naplánované
+        item_6:
+          name: Prebieha
+        item_7:
+          name: Vyvinuté
+        item_8:
+          name: V testovaní
+        item_9:
+          name: Testované
+        item_10:
+          name: Test zlyhal
+        item_11:
+          name: Zatvorený
+        item_12:
+          name: Zadržané
+        item_13:
+          name: Odmietnuté
+      time_entry_activities:
+        item_0:
+          name: Riadenie
+        item_1:
+          name: Špecifikácia
+        item_2:
+          name: Vývoj
+        item_3:
+          name: Testovanie
+        item_4:
+          name: Podpora
+        item_5:
+          name: Ostatné
+      types:
+        item_0:
+          name: Úloha
+        item_1:
+          name: Míľnik
+        item_2:
+          name: Summary task
+        item_3:
+          name: Nová funkcia
+        item_4:
+          name: Epos
+        item_5:
+          name: Užívateľský príbeh
+        item_6:
+          name: Chyba
+      welcome:
+        title: Welcome to OpenProject!
+        text: |
+          OpenProject is the leading open source project management software. It supports classic, agile as well as hybrid project management and gives you full control over your data.
+
+          Core features and use cases:
+
+          * [Project Portfolio Management](https://www.openproject.org/collaboration-software-features/project-portfolio-management/)
+          * [Project Planning and Scheduling](https://www.openproject.org/collaboration-software-features/project-planning-scheduling/)
+          * [Task Management and Issue Tracking](https://www.openproject.org/collaboration-software-features/task-management/)
+          * [Agile Boards (Scrum and Kanban)](https://www.openproject.org/collaboration-software-features/agile-project-management/)
+          * [Requirements Management and Release Planning](https://www.openproject.org/collaboration-software-features/product-development/)
+          * [Time and Cost Tracking, Budgets](https://www.openproject.org/collaboration-software-features/time-tracking/)
+          * [Team Collaboration and Documentation](https://www.openproject.org/collaboration-software-features/team-collaboration/)
+
+          Welcome to the future of project management.
+
+          For Admins: You can change this welcome text [here]({{opSetting:base_url}}/admin/settings/general).

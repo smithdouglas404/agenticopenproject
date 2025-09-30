@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -36,14 +38,35 @@ RSpec.describe API::V3::WorkPackages::Schema::SpecificWorkPackageSchema do
                   project:,
                   type:)
   end
-  let(:current_user) { build_stubbed(:user) }
+  let(:contract_class) { WorkPackages::UpdateContract }
+  let(:contract) { instance_double(contract_class) }
 
   before do
     mock_permissions_for(current_user, &:allow_everything)
-    login_as(current_user)
   end
 
+  current_user { build_stubbed(:user) }
+
   subject { described_class.new(work_package:) }
+
+  shared_examples_for "assignable values" do
+    before do
+      allow(contract_class)
+        .to receive(:new)
+              .with(work_package, current_user)
+              .and_return(contract)
+    end
+
+    it "delegates to the contract" do
+      allow(contract)
+        .to receive(assignable_method)
+
+      subject.send(assignable_method)
+
+      expect(contract)
+        .to have_received(assignable_method)
+    end
+  end
 
   it "has the project set" do
     expect(subject.project).to eql(project)
@@ -105,71 +128,70 @@ RSpec.describe API::V3::WorkPackages::Schema::SpecificWorkPackageSchema do
   end
 
   describe "#assignable_types" do
-    let(:result) do
-      result = double
-      allow(result).to receive(:includes).and_return(result)
-      result
-    end
-
-    it "calls through to the project" do
-      expect(project).to receive(:types).and_return(result)
-      expect(subject.assignable_values(:type, current_user)).to eql(result)
+    it_behaves_like "assignable values" do
+      let(:assignable_method) { :assignable_types }
     end
   end
 
   describe "#assignable_versions" do
-    let(:result) { double }
-
-    it "calls through to the work package" do
-      expect(work_package).to receive(:assignable_versions).and_return(result)
-      expect(subject.assignable_values(:version, current_user)).to eql(result)
+    it_behaves_like "assignable values" do
+      let(:assignable_method) { :assignable_versions }
     end
   end
 
   describe "#assignable_priorities" do
-    let(:active_priority) { build(:priority, active: true) }
-    let(:inactive_priority) { build(:priority, active: false) }
-
-    before do
-      active_priority.save!
-      inactive_priority.save!
-    end
-
-    it "returns only active priorities" do
-      expect(subject.assignable_values(:priority, current_user).size).to be >= 1
-      subject.assignable_values(:priority, current_user).each do |priority|
-        expect(priority.active).to be_truthy
-      end
+    it_behaves_like "assignable values" do
+      let(:assignable_method) { :assignable_priorities }
     end
   end
 
   describe "#assignable_categories" do
-    let(:category) { instance_double(Category) }
+    it_behaves_like "assignable values" do
+      let(:assignable_method) { :assignable_categories }
+    end
+  end
 
-    before do
-      allow(project).to receive(:categories).and_return([category])
+  describe "#assignable_custom_field_values" do
+    let(:list_cf) { create(:list_wp_custom_field) }
+    let(:version_cf) { build_stubbed(:version_wp_custom_field) }
+
+    it "is a list custom fields' possible values" do
+      expect(subject.assignable_custom_field_values(list_cf))
+        .to match_array list_cf.possible_values
     end
 
-    it "returns all categories of the project" do
-      expect(subject.assignable_values(:category, current_user)).to contain_exactly(category)
+    it "is a version custom fields' project values" do
+      result = [instance_double(Version)]
+
+      allow(work_package)
+        .to receive(:assignable_versions)
+              .and_return(result)
+
+      expect(subject.assignable_custom_field_values(version_cf)).to eql result
+    end
+  end
+
+  describe "#assignable_project_phases" do
+    it_behaves_like "assignable values" do
+      let(:assignable_method) { :assignable_project_phases }
     end
   end
 
   describe "#assignable_budgets" do
-    subject { described_class.new(work_package:) }
-
-    before do
-      allow(project).to receive(:budgets).and_return([instance_double(Budget)])
-    end
-
-    it "returns project.budgets" do
-      expect(subject.assignable_values(:budget, nil)).to eql(project.budgets)
+    it_behaves_like "assignable values" do
+      let(:assignable_method) { :assignable_budgets }
     end
   end
 
   describe "#writable?" do
     describe "% Complete" do
-      it "is not writable" do
+      it "is writable in work-based progress calculation mode",
+         with_settings: { work_package_done_ratio: "field" } do
+        expect(subject).to be_writable(:done_ratio)
+      end
+
+      it "is not writable in status-based progress calculation mode",
+         with_settings: { work_package_done_ratio: "status" } do
         expect(subject).not_to be_writable(:done_ratio)
       end
     end
@@ -207,6 +229,10 @@ RSpec.describe API::V3::WorkPackages::Schema::SpecificWorkPackageSchema do
         end
 
         context "when scheduled automatically" do
+          before do
+            work_package.schedule_manually = false
+          end
+
           it "is not writable" do
             expect(subject).not_to be_writable(:start_date)
           end
@@ -240,6 +266,10 @@ RSpec.describe API::V3::WorkPackages::Schema::SpecificWorkPackageSchema do
         end
 
         context "when scheduled automatically" do
+          before do
+            work_package.schedule_manually = false
+          end
+
           it "is not writable" do
             expect(subject).not_to be_writable(:due_date)
           end
@@ -271,9 +301,16 @@ RSpec.describe API::V3::WorkPackages::Schema::SpecificWorkPackageSchema do
         allow(work_package.type).to receive(:is_milestone?).and_return(true)
       end
 
-      it "is not writable when the work package is a parent" do
+      it "is not writable when the work package is a parent scheduled automatically" do
         allow(work_package).to receive(:leaf?).and_return(false)
+        work_package.schedule_manually = false
         expect(subject).not_to be_writable(:date)
+      end
+
+      it "is writable when the work package is a parent scheduled manually" do
+        allow(work_package).to receive(:leaf?).and_return(false)
+        work_package.schedule_manually = true
+        expect(subject).to be_writable(:date)
       end
 
       it "is writable when the work package is a leaf" do
@@ -293,25 +330,15 @@ RSpec.describe API::V3::WorkPackages::Schema::SpecificWorkPackageSchema do
         expect(subject).to be_writable(:priority)
       end
     end
-  end
 
-  describe "#assignable_custom_field_values" do
-    let(:list_cf) { create(:list_wp_custom_field) }
-    let(:version_cf) { build_stubbed(:version_wp_custom_field) }
+    describe "subject" do
+      it { is_expected.to be_writable(:subject) }
 
-    it "is a list custom fields' possible values" do
-      expect(subject.assignable_custom_field_values(list_cf))
-        .to match_array list_cf.possible_values
-    end
+      context "when the type has automatic subject generation enabled" do
+        let(:type) { build_stubbed(:type, patterns: { subject: { blueprint: "Hello world", enabled: true } }) }
 
-    it "is a version custom fields' project values" do
-      result = [instance_double(Version)]
-
-      allow(work_package)
-        .to receive(:assignable_versions)
-        .and_return(result)
-
-      expect(subject.assignable_custom_field_values(version_cf)).to eql result
+        it { is_expected.not_to be_writable(:subject) }
+      end
     end
   end
 end

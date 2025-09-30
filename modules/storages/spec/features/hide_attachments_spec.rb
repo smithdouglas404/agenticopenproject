@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,10 +31,10 @@
 require "spec_helper"
 require_module_spec_helper
 
-RSpec.describe "Hide attachments", :js, :with_cuprite do
+RSpec.describe "Hide attachments", :js do
   let(:permissions) do
     %i(add_work_packages
-       manage_storages_in_project
+       manage_files_in_project
        edit_project
        view_work_packages
        edit_work_packages
@@ -62,19 +62,19 @@ RSpec.describe "Hide attachments", :js, :with_cuprite do
 
       click_on(class: "ToggleSwitch-track")
       expect(page).to have_css("toggle-switch", text: "On")
-      wait_for(page).to have_css('svg[data-target="toggle-switch.loadingSpinner"][hidden="hidden"]', visible: :hidden)
+      wait_for { page }.to have_css('[data-target="toggle-switch.loadingSpinner"][hidden="hidden"] svg', visible: :hidden)
       expect(project.reload).not_to be_deactivate_work_package_attachments
 
       click_on(class: "ToggleSwitch-track")
       expect(page).to have_css("toggle-switch", text: "Off")
-      wait_for(page).to have_css('svg[data-target="toggle-switch.loadingSpinner"][hidden="hidden"]', visible: :hidden)
+      wait_for { page }.to have_css('[data-target="toggle-switch.loadingSpinner"][hidden="hidden"] svg', visible: :hidden)
       expect(project.reload).to be_deactivate_work_package_attachments
     end
 
     context "if Setting.show_work_package_attachments is false", with_settings: { show_work_package_attachments: false } do
       let(:project) { create(:project) }
 
-      it 'renders the toggle as off for project with not set deactivate_work_package_attachments' do
+      it "renders the toggle as off for project with not set deactivate_work_package_attachments" do
         expect(project.deactivate_work_package_attachments).to be_nil
 
         login_as current_user
@@ -89,7 +89,7 @@ RSpec.describe "Hide attachments", :js, :with_cuprite do
     context "if Setting.show_work_package_attachments is true", with_settings: { show_work_package_attachments: true } do
       let(:project) { create(:project) }
 
-      it 'renders the toggle as on for project with not set deactivate_work_package_attachments' do
+      it "renders the toggle as on for project with not set deactivate_work_package_attachments" do
         expect(project.deactivate_work_package_attachments).to be_nil
 
         login_as current_user
@@ -135,7 +135,7 @@ RSpec.describe "Hide attachments", :js, :with_cuprite do
       page.visit_tab!(:files)
 
       # wait for storage title to appear. it means Files tab has been loaded.
-      wait_for(page).to have_xpath(storage_title_xpath, wait: 35)
+      wait_for { page }.to have_xpath(storage_title_xpath, wait: 35)
 
       expect(page).to have_no_css("op-attachments")
       expect(page).to have_no_text("ATTACHMENTS")
@@ -151,7 +151,7 @@ RSpec.describe "Hide attachments", :js, :with_cuprite do
       page.visit!
 
       # wait for storage title to appear(op-attachments is in the same section usually)
-      wait_for(page).to have_xpath(storage_title_xpath, wait: 35)
+      wait_for { page }.to have_xpath(storage_title_xpath, wait: 35)
 
       expect(page).to have_no_css("op-attachments")
       expect(page).to have_no_text("ATTACHMENTS")

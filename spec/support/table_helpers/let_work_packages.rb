@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -63,9 +65,9 @@ module TableHelpers
     #   end
     def let_work_packages(table_representation)
       let!(:_table) { create_table(table_representation) }
+      let(:table_work_packages) { _table.work_packages }
 
       table_data = TableData.for(table_representation)
-      let(:table_work_packages) { _table.work_packages }
       table_data.work_package_identifiers.each do |identifier|
         let(identifier) { _table.work_package(identifier) }
       end

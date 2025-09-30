@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,6 +32,10 @@ class Queries::Roles::Filters::AllowsBecomingAssigneeFilter <
   Queries::Roles::Filters::RoleFilter
   def type
     :list
+  end
+
+  def human_name
+    "Allows becoming assignee" # internal filter
   end
 
   def where

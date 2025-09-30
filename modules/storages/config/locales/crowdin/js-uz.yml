@@ -2,6 +2,7 @@
 uz:
   js:
     storages:
+      authentication_error: "Authentication with %{storageType} failed"
       link_files_in_storage: "Link files in %{storageType}"
       link_existing_files: "Link existing files"
       upload_files: "Upload files"
@@ -13,11 +14,14 @@ uz:
       open_storage: "Open %{storageType}"
       select_location: "Select location"
       choose_location: "Choose location"
+      new_folder: "New folder"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
         default: "Storage"
       information:
+        authentication_error: "The request to %{storageType} could not be authenticated, that's an error."
         connection_error: >
           Some %{storageType} settings are not working. Please contact your %{storageType} administrator.
         live_data_error: "Error fetching file details"
@@ -26,6 +30,8 @@ uz:
         no_file_links: "In order to link files to this work package please do it via %{storageType}."
         not_logged_in: >
           To add a link, see or upload files related to this work package, please login to %{storageType}.
+        suggest_logout: You can try whether logging out and back in fixes this problem.
+        suggest_relink: You can try whether re-linking your account via the login button below fixes this problem.
       files:
         already_existing_header: "This file already exists"
         already_existing_body: >
@@ -42,6 +48,7 @@ uz:
           The automatically managed project folder was not yet found. Please wait a bit, reload the page to fetch the newest data, and try again.
         managed_project_folder_no_access: >
           You have no access yet to the managed project folder. Please wait a bit and try again.
+        cannot_create_folder: Failed to create folder. Avoid using special characters and symbols and make sure the folder does not exist already.
         upload_keep_both: "Keep both"
         upload_replace: "Replace"
       file_links:

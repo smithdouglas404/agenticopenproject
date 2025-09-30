@@ -1,14 +1,15 @@
 #English strings go here
 it:
+  ee:
+    upsell:
+      board_view:
+        description: 'Vorresti automatizzare i tuoi flussi di lavoro con le bacheche? Le schede avanzate sono un''aggiunta di Enterprise. Passa a un piano a pagamento.'
   js:
     boards:
-      create_new: 'Crea una nuova scheda'
+      create_new: 'Creare nuova bacheca'
       label_unnamed_board: 'Scheda senza nome'
       label_unnamed_list: 'Lista senza nome'
       label_board_type: 'Tipo scheda'
-      upsale:
-        teaser_text: 'Vorresti automatizzare i tuoi flussi di lavoro con Boards? Le schede avanzate sono un addon di Imprese. Sei pregato di passare a un piano a pagamento.'
-        upgrade: 'Aggiorna ora'
       lists:
         delete: 'Elimina elenco'
       version:
@@ -32,7 +33,7 @@ it:
       text_hidden_list_warning: "Non tutte le liste sono visualizzate perchè non hai il permesso. Contatta il tuo amministratore per ulteriori informazioni."
       click_to_remove_list: "Clicca per rimuovere questa lista"
       board_type:
-        text: 'Tipo scheda'
+        text: 'Tipo bacheca'
         free: 'base'
         select_board_type: 'Scegli il tipo di board di cui hai bisogno.'
         free_text: >

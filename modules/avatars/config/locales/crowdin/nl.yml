@@ -3,7 +3,7 @@ nl:
   plugin_openproject_avatars:
     name: "Avatars"
     description: >-
-      This plugin allows OpenProject users to upload a picture to be used as an avatar or use registered images from Gravatar.
+      Deze plug-in staat OpenProject gebruikers toe een afbeelding te uploaden om als avatar te gebruiken of geregistreerde afbeeldingen van Gravatar te gebruiken.
   label_avatar: "Avatar"
   label_avatar_plural: "Avatars"
   label_current_avatar: "Huidige Avatar"
@@ -11,7 +11,6 @@ nl:
   message_avatar_uploaded: "Avatar succesvol gewijzigd."
   error_image_upload: "Fout bij het opslaan van de afbeelding"
   error_image_size: "De afbeelding is te groot."
-  button_change_avatar: "Avatar wijzigen"
   are_you_sure_delete_avatar: "Weet je zeker dat je je avatar wilt verwijderen?"
   avatar_deleted: "Avatar succesvol verwijderd."
   unable_to_delete_avatar: "Avatar kon niet gewist worden"

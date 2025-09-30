@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -151,6 +153,48 @@ RSpec.describe ServiceResult, type: :model do
         expect(instance.errors).not_to eq result.errors
       end
     end
+
+    context "when using default errors" do
+      it "uses the default human_attribute_name from ServiceResult (Regression #61483)" do
+        instance = described_class.new
+        instance.errors.add(:base, "some error")
+        instance.errors.add(:foo, "an error for foo")
+
+        expect { instance.errors.full_messages }.not_to raise_error
+      end
+    end
+
+    context "when providing active record result" do
+      let(:result) { build(:work_package) }
+
+      it "creates a new errors instance" do
+        instance = described_class.new(result:)
+        base = instance.errors.instance_eval { @base } # rubocop:disable RSpec/InstanceVariable
+        expect(base).to eq(result)
+      end
+    end
+
+    context "when providing some other result" do
+      let(:result) { "wat?" }
+
+      it "creates a new errors instance" do
+        instance = described_class.new(result:)
+        base = instance.errors.instance_eval { @base } # rubocop:disable RSpec/InstanceVariable
+        expect(base).to eq(instance)
+      end
+    end
+
+    context "when using default errors from result" do
+      let(:result) { build(:work_package) }
+
+      it "uses the result's human_attribute_name" do
+        instance = described_class.new(result:)
+        instance.errors.add(:base, "some error")
+        instance.errors.add(:foo, "an error for foo")
+
+        expect { instance.errors.full_messages }.not_to raise_error
+      end
+    end
   end
 
   describe "result" do
@@ -179,7 +223,7 @@ RSpec.describe ServiceResult, type: :model do
     let(:message) { "some message" }
 
     subject(:flash) do
-      {}.tap { service_result.apply_flash_message!(_1) }
+      {}.tap { service_result.apply_flash_message!(it) }
     end
 
     context "when successful" do

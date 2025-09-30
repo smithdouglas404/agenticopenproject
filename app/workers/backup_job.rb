@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -134,7 +136,7 @@ class BackupJob < ApplicationJob
   def store_backup(file_name, backup:, user:)
     File.open(file_name) do |file|
       call = Attachments::CreateService
-        .bypass_whitelist(user:)
+        .bypass_allowlist(user:)
         .call(container: backup, filename: file_name, file:, description: "OpenProject backup")
 
       call.on_success do
@@ -143,7 +145,7 @@ class BackupJob < ApplicationJob
         upsert_status(
           status: :success,
           message: I18n.t("export.succeeded"),
-          payload: download_payload(download_url)
+          payload: download_payload(download_url, "application/zip")
         )
       end
 
@@ -167,8 +169,7 @@ class BackupJob < ApplicationJob
 
         paths_to_clean << get_cache_folder_path(attachment) if clean_up && attachment.file.cached?
       end
-
-      zipfile.get_output_stream("openproject.sql") { |f| f.write File.read(db_dump_file_name) }
+      zipfile.add "openproject.sql", db_dump_file_name
     end
 
     remove_paths! paths_to_clean # delete locally cached files that were downloaded just for the backup

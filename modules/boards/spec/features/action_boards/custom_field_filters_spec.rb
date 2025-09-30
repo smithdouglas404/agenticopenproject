@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,7 +32,10 @@ require "spec_helper"
 require_relative "../support//board_index_page"
 require_relative "../support/board_page"
 
-RSpec.describe "Custom field filter in boards", :js, with_ee: %i[board_view] do
+RSpec.describe "Custom field filter in boards",
+               :js,
+               :selenium,
+               with_ee: %i[board_view] do
   let(:user) do
     create(:user,
            member_with_roles: { project => role })
@@ -63,6 +68,21 @@ RSpec.describe "Custom field filter in boards", :js, with_ee: %i[board_view] do
 
     wp.save
     wp
+  end
+
+  let!(:workflow_open_to_closed) do
+    create(:workflow,
+           type:,
+           role:,
+           old_status_id: open_status.id,
+           new_status_id: closed_status.id)
+  end
+  let!(:workflow_closed_to_open) do
+    create(:workflow,
+           type:,
+           role:,
+           old_status_id: closed_status.id,
+           new_status_id: open_status.id)
   end
 
   let(:filters) { Components::WorkPackages::Filters.new }

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -65,8 +67,10 @@ module OnboardingHelper
       expect(page).to have_text sanitize_string(I18n.t("js.onboarding.steps.quick_add_button")), normalize_ws: true
     end
 
-    next_button.click
-    expect(page).to have_text sanitize_string(I18n.t("js.onboarding.steps.help_menu")), normalize_ws: true
+    retry_block do
+      next_button.click
+      expect(page).to have_text sanitize_string(I18n.t("js.onboarding.steps.help_menu")), normalize_ws: true
+    end
 
     next_button.click
     expect(page).to have_no_css ".enjoy_hint_label"

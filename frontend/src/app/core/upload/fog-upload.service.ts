@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { getType } from 'mime';
+import mime from 'mime';
 import { Observable, of } from 'rxjs';
 import { map, share, switchMap } from 'rxjs/operators';
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
@@ -69,7 +69,7 @@ export class FogUploadService extends OpUploadService {
 
   private prepareUpload(href:string, uploadFile:AttachmentUploadFile):Observable<PrepareUploadData> {
     const fileName = uploadFile.file.name;
-    const contentType = (uploadFile.file.type || (fileName && getType(fileName)) || '' as string);
+    const contentType = uploadFile.file.type ?? (fileName && mime.getType(fileName)) ?? '';
     const metadata = {
       fileName,
       contentType,

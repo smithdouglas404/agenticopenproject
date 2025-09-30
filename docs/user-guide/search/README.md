@@ -41,6 +41,6 @@ Aside from full-text search, you can [search work packages based on their attach
 
 ## Recently viewed work packages
 
-Since [version 13.0](../../release-notes/13-0-0/), clicking on the search bar will immediately show your most recently viewed work packages, before you even start typing.
+Since [version 13.0](../../release-notes/13/13-0-0/), clicking on the search bar will immediately show your most recently viewed work packages, before you even start typing.
 
 ![OpenProject recent work packages](openproject_search_recently_viewed.png)

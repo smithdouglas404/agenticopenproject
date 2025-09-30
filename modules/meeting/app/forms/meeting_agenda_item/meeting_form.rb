@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,34 +35,43 @@ class MeetingAgendaItem::MeetingForm < ApplicationForm
       name: :meeting_id,
       required: true,
       include_blank: false,
-      label: Meeting.model_name.human,
+      label: I18n.t("label_meeting"),
       caption: I18n.t("label_meeting_selection_caption"),
       autocomplete_options: {
+        component: "opce-meeting-autocompleter",
+        hiddenFieldAction: "change->refresh-on-form-changes#triggerTurboStream",
+        items: meeting_options,
+        group_by: "group_label",
+        focus_directly: true,
+        defaultData: false,
+        bindLabel: "name",
+        bindValue: "id",
         multiple: false,
-        decorated: true,
-        append_to: append_to_container
+        append_to: append_to_container,
+        model: meeting_options.detect { |option| option[:id] == model.meeting_id },
+        inputValue: model.meeting_id,
+        virtualScroll: false
       }
-    ) do |select|
-      MeetingAgendaItems::CreateContract
-        .assignable_meetings(User.current)
-        .where("meetings.start_time + (interval '1 hour' * meetings.duration) >= ?", Time.zone.now)
-        .includes(:project)
-        .find_each do |meeting|
-          select.option(
-            label: "#{meeting.project.name}: " \
-                   "#{meeting.title} " \
-                   "#{format_date(meeting.start_time)} " \
-                   "#{format_time(meeting.start_time, false)}",
-            value: meeting.id
-          )
-        end
-    end
+    )
   end
 
   def initialize(disabled: false, wrapper_id: nil)
     super()
+
     @disabled = disabled
     @wrapper_id = wrapper_id
+  end
+
+  private
+
+  def meeting_options
+    meetings = MeetingAgendaItems::CreateContract
+      .assignable_meetings(User.current)
+      .where("meetings.start_time + (interval '1 hour' * meetings.duration) >= ?", Time.zone.now)
+      .order("meetings.start_time")
+      .includes(:project)
+
+    GroupMeetingsService.new(meetings, as_options: true).call.result
   end
 
   def append_to_container

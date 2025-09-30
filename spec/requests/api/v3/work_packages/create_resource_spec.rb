@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -109,11 +111,11 @@ RSpec.describe "API v3 Work package resource",
     end
 
     it "returns Created(201)" do
-      expect(last_response.status).to eq(201)
+      expect(last_response).to have_http_status(:created)
     end
 
     it "creates a work package" do
-      expect(WorkPackage.all.count).to eq(1)
+      expect(WorkPackage.count).to eq(1)
     end
 
     it "uses the given parameters" do
@@ -132,7 +134,7 @@ RSpec.describe "API v3 Work package resource",
       let(:current_user) { create(:user) }
 
       it "hides the endpoint" do
-        expect(last_response.status).to eq(403)
+        expect(last_response).to have_http_status(:forbidden)
       end
     end
 
@@ -142,7 +144,7 @@ RSpec.describe "API v3 Work package resource",
       let(:permissions) { [:view_project] }
 
       it "points out the missing permission" do
-        expect(last_response.status).to eq(403)
+        expect(last_response).to have_http_status(:forbidden)
       end
     end
 
@@ -152,7 +154,7 @@ RSpec.describe "API v3 Work package resource",
       it_behaves_like "multiple errors", 422
 
       it "does not create a work package" do
-        expect(WorkPackage.all.count).to eq(0)
+        expect(WorkPackage.count).to eq(0)
       end
     end
 
@@ -176,33 +178,94 @@ RSpec.describe "API v3 Work package resource",
       end
 
       it "does not create a work package" do
-        expect(WorkPackage.all.count).to eq(0)
+        expect(WorkPackage.count).to eq(0)
       end
     end
 
-    context "when scheduled manually" do
-      let(:work_package) { WorkPackage.first }
+    describe "scheduleManually parameter" do
+      let(:created_work_package) { WorkPackage.find_by(subject: "new work packages") }
 
-      context "with true" do
+      context "when true" do
         # mind the () for the super call, those are required in rspec's super
         let(:parameters) { super().merge(scheduleManually: true) }
 
-        it "sets the scheduling mode to true" do
-          expect(work_package.schedule_manually).to be true
+        it "sets the scheduling mode to manual (schedule_manually: true)" do
+          expect(created_work_package.schedule_manually).to be true
+        end
+
+        context "when also being the first child of a manually scheduled parent" do
+          let(:extra_permissions) { %i[manage_subtasks] }
+          let(:parent) do
+            create(:work_package, project:,
+                                  subject: "parent",
+                                  schedule_manually: true,
+                                  start_date: Date.new(2025, 1, 1),
+                                  due_date: Date.new(2025, 1, 31))
+          end
+          let(:parameters) do
+            super().deep_merge(
+              startDate: nil,
+              dueDate: nil,
+              _links: {
+                parent: {
+                  href: api_v3_paths.work_package(parent.id)
+                }
+              }
+            )
+          end
+
+          it "changes the scheduling mode of the parent work package to automatic " \
+             "and sets its dates to match the child's dates" do
+            expect(created_work_package.parent).to eq(parent.reload)
+            expect(created_work_package.parent.schedule_manually).to be false
+            expect(created_work_package.parent.start_date).to be_nil
+            expect(created_work_package.parent.due_date).to be_nil
+          end
         end
       end
 
-      context "with false" do
-        let(:parameters) { super().merge(scheduleManually: false) }
+      context "when false" do
+        let(:parameters) do
+          super().merge(scheduleManually: false)
+        end
 
-        it "sets the scheduling mode to false" do
-          expect(work_package.schedule_manually).to be false
+        context "when the created work package has an indirect predecessor" do
+          let(:extra_permissions) { %i[manage_subtasks] }
+          let(:predecessor) { create(:work_package, project:, subject: "predecessor") }
+          let(:parent) do
+            create(:work_package, project:,
+                                  subject: "parent",
+                                  schedule_manually: false).tap do |parent|
+              create(:follows_relation, predecessor:, successor: parent)
+            end
+          end
+          let(:parameters) do
+            super().deep_merge(
+              _links: {
+                parent: {
+                  href: api_v3_paths.work_package(parent.id)
+                }
+              }
+            )
+          end
+
+          it "sets the scheduling mode to automatic as requested (schedule_manually: false)" do
+            expect(created_work_package.schedule_manually).to be false
+          end
+        end
+
+        context "when the work package has no direct or indirect predecessors and no children" do
+          it_behaves_like "error response",
+                          422,
+                          "PropertyConstraintViolation",
+                          I18n.t("activerecord.errors.models.work_package.attributes." \
+                                 "schedule_manually.cannot_be_automatically_scheduled")
         end
       end
 
-      context "with scheduleManually absent" do
-        it "sets the scheduling mode to false (default)" do
-          expect(work_package.schedule_manually).to be false
+      context "when absent" do
+        it "sets the scheduling mode to manual (schedule_manually: true, the default)" do
+          expect(created_work_package.schedule_manually).to be true
         end
       end
     end
@@ -227,7 +290,7 @@ RSpec.describe "API v3 Work package resource",
       end
 
       it "does not create a work package" do
-        expect(WorkPackage.all.count).to eq(0)
+        expect(WorkPackage.count).to eq(0)
       end
     end
 
@@ -310,7 +373,7 @@ RSpec.describe "API v3 Work package resource",
           expect(last_response.body).to be_json_eql(
             api_v3_paths.file_links(work_package.id).to_json
           ).at_path("_links/fileLinks/href")
-          expect(last_response.body).to be_json_eql("1").at_path("_embedded/fileLinks/total")
+          expect(last_response.body).to have_json_path("_links/addFileLink")
         end
       end
     end

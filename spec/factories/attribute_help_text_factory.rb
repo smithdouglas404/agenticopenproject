@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :work_package_help_text, class: "AttributeHelpText::WorkPackage" do
     type { "AttributeHelpText::WorkPackage" }

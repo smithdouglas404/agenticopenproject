@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -57,14 +59,14 @@ RSpec.describe WorkPackagesHelper do
       it "prepends an invisible closed information if the work package is closed" do
         stub_work_package.status = closed_status
 
-        expect(helper.link_to_work_package(stub_work_package)).to have_css("a span.hidden-for-sighted", text: "closed")
+        expect(helper.link_to_work_package(stub_work_package)).to have_css("a span.sr-only", text: "closed")
       end
 
       it "omits the invisible closed information if told so even though the work package is closed" do
         stub_work_package.status = closed_status
 
         expect(helper.link_to_work_package(stub_work_package, no_hidden: true))
-          .to have_no_css("a span.hidden-for-sighted", text: "closed")
+          .to have_no_css("a span.sr-only", text: "closed")
       end
     end
 
@@ -158,122 +160,6 @@ RSpec.describe WorkPackagesHelper do
     end
   end
 
-  describe "#work_package_css_classes" do
-    let(:statuses) { (1..5).map { |_i| build_stubbed(:status) } }
-    let(:priority) { build_stubbed(:priority, is_default: true) }
-    let(:status) { statuses[0] }
-    let(:stub_work_package) do
-      build_stubbed(:work_package,
-                    status:,
-                    priority:)
-    end
-
-    it "always has the work_package class" do
-      expect(helper.work_package_css_classes(stub_work_package)).to include("work_package")
-    end
-
-    it "returns the position of the work_package's status" do
-      stub_work_package.status = open_status
-      allow(open_status).to receive(:position).and_return(5)
-
-      expect(helper.work_package_css_classes(stub_work_package)).to include("status-5")
-    end
-
-    it "returns the position of the work_package's priority" do
-      allow(priority).to receive(:position).and_return(5)
-
-      expect(helper.work_package_css_classes(stub_work_package)).to include("priority-5")
-    end
-
-    it "has a closed class if the work_package is closed" do
-      allow(stub_work_package).to receive(:closed?).and_return(true)
-
-      expect(helper.work_package_css_classes(stub_work_package)).to include("closed")
-    end
-
-    it "has no closed class if the work_package is not closed" do
-      allow(stub_work_package).to receive(:closed?).and_return(false)
-
-      expect(helper.work_package_css_classes(stub_work_package)).not_to include("closed")
-    end
-
-    it "has an overdue class if the work_package is overdue" do
-      allow(stub_work_package).to receive(:overdue?).and_return(true)
-
-      expect(helper.work_package_css_classes(stub_work_package)).to include("overdue")
-    end
-
-    it "has an overdue class if the work_package is not overdue" do
-      allow(stub_work_package).to receive(:overdue?).and_return(false)
-
-      expect(helper.work_package_css_classes(stub_work_package)).not_to include("overdue")
-    end
-
-    it "has a child class if the work_package is a child" do
-      allow(stub_work_package).to receive(:child?).and_return(true)
-
-      expect(helper.work_package_css_classes(stub_work_package)).to include("child")
-    end
-
-    it "has no child class if the work_package is not a child" do
-      allow(stub_work_package).to receive(:child?).and_return(false)
-
-      expect(helper.work_package_css_classes(stub_work_package)).not_to include("child")
-    end
-
-    it "has a parent class if the work_package is a parent" do
-      allow(stub_work_package).to receive(:leaf?).and_return(false)
-
-      expect(helper.work_package_css_classes(stub_work_package)).to include("parent")
-    end
-
-    it "has no parent class if the work_package is not a parent" do
-      allow(stub_work_package).to receive(:leaf?).and_return(true)
-
-      expect(helper.work_package_css_classes(stub_work_package)).not_to include("parent")
-    end
-
-    it "has a created-by-me class if the work_package is a created by the current user" do
-      stub_user = double("user", logged?: true, id: 5)
-      allow(User).to receive(:current).and_return(stub_user)
-      allow(stub_work_package).to receive(:author_id).and_return(5)
-
-      expect(helper.work_package_css_classes(stub_work_package)).to include("created-by-me")
-    end
-
-    it "has no created-by-me class if the work_package is not created by the current user" do
-      stub_user = double("user", logged?: true, id: 5)
-      allow(User).to receive(:current).and_return(stub_user)
-      allow(stub_work_package).to receive(:author_id).and_return(4)
-
-      expect(helper.work_package_css_classes(stub_work_package)).not_to include("created-by-me")
-    end
-
-    it "has a created-by-me class if the work_package is the current user is not logged in" do
-      expect(helper.work_package_css_classes(stub_work_package)).not_to include("created-by-me")
-    end
-
-    it "has a assigned-to-me class if the work_package is a created by the current user" do
-      stub_user = double("user", logged?: true, id: 5)
-      allow(User).to receive(:current).and_return(stub_user)
-      allow(stub_work_package).to receive(:assigned_to_id).and_return(5)
-
-      expect(helper.work_package_css_classes(stub_work_package)).to include("assigned-to-me")
-    end
-
-    it "has no assigned-to-me class if the work_package is not created by the current user" do
-      stub_user = double("user", logged?: true, id: 5)
-      allow(User).to receive(:current).and_return(stub_user)
-      allow(stub_work_package).to receive(:assigned_to_id).and_return(4)
-
-      expect(helper.work_package_css_classes(stub_work_package)).not_to include("assigned-to-me")
-    end
-
-    it "has no assigned-to-me class if the work_package is the current user is not logged in" do
-      expect(helper.work_package_css_classes(stub_work_package)).not_to include("assigned-to-me")
-    end
-  end
-
   describe "#work_packages_columns_options" do
     it "returns the columns options" do
       expect(helper.work_packages_columns_options)
@@ -305,6 +191,58 @@ RSpec.describe WorkPackagesHelper do
                   { name: "ID", id: "id" },
                   { name: "Subject", id: "subject" }
                 ])
+    end
+  end
+
+  describe "#last_work_package_note" do
+    let(:user) do
+      create(:user,
+             member_with_permissions: { project => permissions })
+    end
+
+    let(:project) { create(:project, enabled_internal_comments: true) }
+
+    before do
+      allow(User).to receive(:current).and_return(user)
+    end
+
+    context "with a work package that has notes" do
+      let(:work_package) { create(:work_package, project:) }
+
+      before do
+        add_work_package_note(internal: false)
+        add_work_package_note(internal: true)
+      end
+
+      context "and the user has no permission to see internal notes" do
+        let(:permissions) { %i[view_work_packages] }
+
+        it "returns the last unrestricted note" do
+          expect(helper.last_work_package_note(work_package)).to eq("This is the last PUBLIC note")
+        end
+      end
+
+      context "and the user has permissions to see internal notes" do
+        let(:permissions) { %i[view_work_packages view_internal_comments] }
+
+        it "returns the last unrestricted note" do
+          expect(helper.last_work_package_note(work_package)).to eq("This is the last INTERNAL note")
+        end
+      end
+
+      def add_work_package_note(internal: false)
+        work_package.add_journal(user:, notes: "This is the last #{internal ? 'INTERNAL' : 'PUBLIC'} note", internal:)
+        work_package.save(validate: false)
+      end
+    end
+
+    context "with a work package that has no notes" do
+      let(:work_package) { create(:work_package, project:) }
+      let(:permissions) { %i[view_work_packages] }
+
+      it "returns the no notes text" do
+        expect(helper.last_work_package_note(work_package)).to eq(I18n.t(:text_no_notes))
+      end
     end
   end
 end

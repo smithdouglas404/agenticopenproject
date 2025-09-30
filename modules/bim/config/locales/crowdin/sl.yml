@@ -9,6 +9,7 @@ sl:
     label_bcf: 'BCF'
     label_imported_failed: 'Uvoz tematike BCF ni uspel'
     label_imported_successfully: 'Uspešno vnesena tematika BCF'
+    label_bcf_issue_associated: "BCF issue associated"
     issues: "Zahtevki"
     recommended: 'Priporočeno'
     not_recommended: 'ni priporočeno'
@@ -83,6 +84,12 @@ sl:
         ifc_attachment: "Datoteka IFC"
         is_default: "Privzet model"
         attachments: "Datoteka IFC"
+      bim/bcf/issue:
+        bcf_comment: "BCF comment"
+        bim_snippet: "BIM snippet"
+        reference_links: "Reference links"
+        stage: "Stage"
+        viewpoint: "Pogled/vidik"
     errors:
       models:
         bim/ifc_models/ifc_model:

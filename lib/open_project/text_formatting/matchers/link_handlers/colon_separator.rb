@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -87,7 +89,7 @@ module OpenProject::TextFormatting::Matchers
         end
       end
 
-      def render_commit
+      def render_commit # rubocop:disable Metrics/AbcSize
         if project&.repository &&
            (changeset = Changeset.where(["repository_id = ? AND scmid LIKE ?", project.repository.id, "#{oid}%"]).first)
           link_to h("#{matcher.project_prefix}#{matcher.identifier}"),
@@ -98,7 +100,7 @@ module OpenProject::TextFormatting::Matchers
         end
       end
 
-      def render_source
+      def render_source # rubocop:disable Metrics/AbcSize
         if project&.repository
           matcher.identifier =~ %r{\A[/\\]*(.*?)(@([0-9a-f]+))?(#(L\d+))?\z}
           path = $1
@@ -164,7 +166,7 @@ module OpenProject::TextFormatting::Matchers
           .where(["LOWER(title) = :s", { s: oid.downcase }])
           .first
 
-        if meeting && meeting.visible?(User.current)
+        if meeting&.visible?(User.current)
           link_to meeting.title,
                   { only_path: context[:only_path], controller: "/meetings", action: "show", id: meeting.id },
                   class: "meeting"

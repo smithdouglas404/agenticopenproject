@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -23,7 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# See docs/COPYRIGHT.rdoc for more details.
+# See COPYRIGHT and LICENSE files for more details.
 #++
 
 module MailNotificationHelper
@@ -33,10 +35,6 @@ module MailNotificationHelper
     notifications
       .map(&:reason)
       .uniq
-  end
-
-  def notifications_path(id)
-    notifications_center_url(["details", id, "activity"])
   end
 
   def type_color(type, default_fallback)
@@ -51,6 +49,6 @@ module MailNotificationHelper
 
   def status_colors(status)
     color_id = selected_color(status)
-    Color.find(color_id).color_styles.map { |k, v| "#{k}:#{v};" }.join(" ") if color_id
+    Color.find(color_id).color_styles_css if color_id
   end
 end

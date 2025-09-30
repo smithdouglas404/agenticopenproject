@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "menu permissions", :js, :with_cuprite do
+RSpec.describe "menu permissions", :js do
   let(:user) do
     create(:user,
            member_with_permissions: { project => %i[manage_versions view_work_packages] })
@@ -57,7 +59,7 @@ RSpec.describe "menu permissions", :js, :with_cuprite do
 
       # Clicking the menu parent item leads to the version page
       find(".main-menu--parent-node", text: "Project settings").click
-      expect(page).to have_current_path "/projects/#{project.identifier}/settings/general/"
+      expect(page).to have_current_path "/projects/#{project.identifier}/settings/general"
     end
   end
 

@@ -14,6 +14,7 @@ import { StateService } from '@uirouter/angular';
 
 @Component({
   templateUrl: './timelines-tab.component.html',
+  standalone: false,
 })
 export class WpTableConfigurationTimelinesTabComponent implements TabComponent, OnInit {
   public timelineVisible = false;

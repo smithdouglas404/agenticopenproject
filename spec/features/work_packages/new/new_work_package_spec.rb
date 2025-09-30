@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 require "support/edit_fields/edit_field"
 require "features/work_packages/work_packages_page"
 require "features/page_objects/notification"
 
-RSpec.describe "new work package", :js, :with_cuprite do
+RSpec.describe "new work package", :js do
   shared_let(:status) { create(:status, is_default: true) }
   shared_let(:priority) { create(:priority, is_default: true) }
   shared_let(:type_task) { create(:type_task) }
@@ -95,7 +97,7 @@ RSpec.describe "new work package", :js, :with_cuprite do
       # safeguards
       wp_page.dismiss_toaster!
       wp_page.expect_no_toaster(
-        message: "Successful creation. Click here to open this work package in fullscreen view."
+        message: "Successful creation."
       )
 
       subject_field.expect_state_text(subject)
@@ -115,7 +117,7 @@ RSpec.describe "new work package", :js, :with_cuprite do
       # safeguards
       wp_page.dismiss_toaster!
       wp_page.expect_no_toaster(
-        message: "Successful creation. Click here to open this work package in fullscreen view."
+        message: "Successful creation."
       )
 
       wp_page.edit_field(:subject).expect_text(subject)
@@ -190,7 +192,7 @@ RSpec.describe "new work package", :js, :with_cuprite do
         end
 
         it do
-          ids = custom_fields.map(&:id)
+          custom_fields.map(&:id)
           cf1 = find(".#{custom_fields.first.attribute_name(:camel_case)} input")
           expect(cf1).not_to be_nil
 
@@ -231,12 +233,7 @@ RSpec.describe "new work package", :js, :with_cuprite do
       create_work_package(type_task)
       save_work_package!
 
-      wp_page.expect_toast message: "Successful creation. Click here to open this work package in fullscreen view."
-      page.find(".op-toast--target-link", text: "Click here to open this work package in fullscreen view.").click
-
-      full_page = Pages::FullWorkPackage.new(WorkPackage.last)
-      full_page.ensure_page_loaded
-      full_page.expect_subject
+      wp_page.expect_toast message: "Successful creation."
     end
 
     it "reloads the table and selects the new work package" do
@@ -262,7 +259,7 @@ RSpec.describe "new work package", :js, :with_cuprite do
       table_subject.expect_state_text new_subject
 
       wp_page.expect_toast(
-        message: "Successful update. Click here to open this work package in fullscreen view."
+        message: "Successful update."
       )
 
       new_wp.reload
@@ -362,6 +359,8 @@ RSpec.describe "new work package", :js, :with_cuprite do
       # Open datepicker
       date_field = wp_page.edit_field(:combinedDate)
       date_field.click_to_open_datepicker
+
+      date_field.enable_start_date
 
       # Select date
       start = (Time.zone.today - 1.day).iso8601
@@ -513,25 +512,6 @@ RSpec.describe "new work package", :js, :with_cuprite do
       expect(split_create_page).not_to have_alert_dialog
       subject_field = wp_page_create.edit_field(:subject)
       subject_field.expect_value "My subtask"
-    end
-
-    it "from the relations tab" do
-      wp_page.visit_tab!("relations")
-
-      click_button("Create new child")
-
-      subject = EditField.new wp_page, :subject
-      subject.set_value "Child"
-      subject.submit_by_enter
-
-      wp_page.expect_and_dismiss_toaster(message: I18n.t("js.notice_successful_create"))
-
-      # Move to the newly created child
-      wp_page.find("wp-children-query tbody.results-tbody tr").double_click
-
-      wp_page.expect_attributes(combinedDate: "#{parent.start_date.strftime('%m/%d/%Y')} - #{parent.due_date.strftime('%m/%d/%Y')}")
-
-      expect(wp_page).to have_test_selector("op-wp-breadcrumb", text: "Parent:\n#{parent.subject}")
     end
   end
 end

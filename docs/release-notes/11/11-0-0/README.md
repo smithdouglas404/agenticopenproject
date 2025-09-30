@@ -94,7 +94,7 @@ We have now also expanded the attribute help texts for projects. You can define 
 
 Boards and project dashboards can now also be copied when copying a project. This enables you to set up a default project and copy it to set up a new project.
 
-## As always,…… there’s much more!
+## As always, there’s much more
 
 There are lots and lots of new things we packed into 11.0 to tell you about.
 

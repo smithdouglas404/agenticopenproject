@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -58,7 +60,7 @@ RSpec.describe API::V3::Repositories::RevisionRepresenter do
       it_behaves_like "API V3 formattable", "message" do
         let(:format) { "plain" }
         let(:raw) { revision.comments }
-        let(:html) { "<p>" + revision.comments + "</p>" }
+        let(:html) { "<p>#{revision.comments}</p>" }
       end
 
       describe "identifier" do
@@ -94,10 +96,12 @@ RSpec.describe API::V3::Repositories::RevisionRepresenter do
       let(:html_reference) do
         id = work_package.id
 
-        str = "Totally references <a"
-        str << " class=\"issue work_package preview-trigger\""
-        str << " href=\"/work_packages/#{id}\">"
-        str << "##{id}</a>"
+        "Totally references <a " \
+          "class=\"issue work_package\" " \
+          "data-hover-card-trigger-target=\"trigger\" " \
+          "data-hover-card-url=\"/work_packages/#{id}/hover_card\" " \
+          "href=\"/work_packages/#{id}\">" \
+          "##{id}</a>"
       end
 
       before do
@@ -110,7 +114,7 @@ RSpec.describe API::V3::Repositories::RevisionRepresenter do
       it_behaves_like "API V3 formattable", "message" do
         let(:format) { "plain" }
         let(:raw) { revision.comments }
-        let(:html) { "<p>" + html_reference + "</p>" }
+        let(:html) { "<p>#{html_reference}</p>" }
       end
     end
 

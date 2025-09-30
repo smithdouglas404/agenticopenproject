@@ -1,4 +1,4 @@
-FROM ruby:3.3.2-bullseye as develop
+FROM ruby:3.4.5-bookworm AS develop
 MAINTAINER operations@openproject.com
 
 ARG DEV_UID=1000
@@ -7,8 +7,6 @@ ARG DEV_GID=1001
 ENV USER=dev
 ENV RAILS_ENV=development
 ENV NODE_MAJOR=20
-
-ENV BUNDLER_VERSION "2.5.11"
 
 # `--no-log-init` is required as a workaround to avoid disk exhaustion.
 #
@@ -23,8 +21,13 @@ RUN groupmod -g $DEV_GID $USER || true
 WORKDIR /home/$USER
 
 RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    postgresql-client libffi7 libffi-dev curl
+  apt-get install -y wget gnupg lsb-release curl && \
+  echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
+  wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
+  apt-get update && \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y \
+  postgresql-client-17 libffi8 libffi-dev curl && \
+  rm -rf /var/lib/apt/lists/*
 
 # Setup node source and install nodejs. Needed for running certain scripts in backend container,
 # as the `./scripts/api/validate_spec`.
@@ -34,18 +37,11 @@ RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesourc
 RUN apt-get update
 RUN apt-get install -y nodejs
 
-# Install watchexec for continuous test execution.
-# Usage:
-# - Add the following line to your ~/.bashrc ("dcrw" stands for "Docker Compose Rspec Watch"):
-# dcrw() { docker compose exec backend-test watchexec --exts rb,erb -- bin/rspec --order defined --format documentation --fail-fast $1; }
-# - and then use it like this:
-# dcrw <path-to-your-spec-file>
-RUN curl -fsSL https://apt.cli.rs/pubkey.asc | tee -a /usr/share/keyrings/rust-tools.asc
-RUN curl -fsSL https://apt.cli.rs/rust-tools.list | tee /etc/apt/sources.list.d/rust-tools.list
-RUN apt update
-RUN apt install watchexec-cli
+# Setup java. Needed for https://github.com/NUARIG/ladle which is used in specs to test LDAP related behavior.
+RUN apt-get install -y openjdk-17-jdk
 
 COPY ./docker/dev/backend/scripts/setup /usr/sbin/setup
+COPY ./docker/dev/backend/scripts/setup-bim /usr/sbin/setup-bim
 COPY ./docker/dev/backend/scripts/run-app /usr/sbin/run-app
 
 # The following lines are needed to make sure the file permissions are setup correctly after the volumes are mounted
@@ -62,17 +58,17 @@ WORKDIR /home/$USER/openproject
 
 USER $USER
 
-RUN gem install bundler --version "${BUNDLER_VERSION}" --no-document
+RUN gem install bundler --no-document
 
 ####### Testing image below #########
 
-FROM develop as test
+FROM develop AS test
 
 USER root
 
 RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    jq
+  DEBIAN_FRONTEND=noninteractive apt-get install -y \
+  jq
 
 COPY ./docker/dev/backend/scripts/run-test /usr/bin/run-test
 COPY ./docker/dev/backend/scripts/setup-tests /usr/bin/setup-tests

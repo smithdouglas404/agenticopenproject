@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -63,7 +63,7 @@ module OpenProject::GithubIntegration
         WorkPackage
           .includes(:project)
           .where(id: ids)
-          .select { |wp| user.allowed_in_work_package?(:add_work_package_notes, wp) }
+          .select { |wp| user.allowed_in_work_package?(:add_work_package_comments, wp) }
       end
 
       # Returns a list of `WorkPackage`s that were referenced in the `text` and are visible to the given `user`.

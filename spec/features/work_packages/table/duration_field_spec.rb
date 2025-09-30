@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 RSpec.describe "Duration field in the work package table", :js do
@@ -35,9 +37,9 @@ RSpec.describe "Duration field in the work package table", :js do
   it "shows the duration as days and opens the datepicker on click" do
     duration.expect_state_text "4 days"
     duration.activate!
+    wait_for_network_idle
 
     date_field.expect_duration_highlighted
-    expect(page).to have_focus_on("#{test_selector('op-datepicker-modal--duration-field')} input[name='duration']")
-    expect(page).to have_field("duration", with: "4", wait: 10)
+    expect(page).to have_field("work_package[duration]", with: "4", wait: 10)
   end
 end

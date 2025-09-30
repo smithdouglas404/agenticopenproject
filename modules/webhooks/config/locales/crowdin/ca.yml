@@ -8,6 +8,7 @@ ca:
         url: 'URL de càrrega'
         secret: 'Signatura secreta'
         events: 'Esdeveniments'
+        enabled: 'Enabled'
         projects: 'Projectes habilitats'
       webhooks/log:
         event_name: 'Nom de l''esdeveniment'
@@ -30,6 +31,8 @@ ca:
       events:
         created: "Creat"
         updated: "Actualitzat"
+        comment: "Comentari"
+        internal_comment: "Internal comment"
       explanation:
         text: >
           En el cas que un esdeveniment com la creació d'un paquet de treball o l'actualització d'un projecte, OpenProject enviarà una sol·licitud POST als punts finals de web configurats. A vegades, l'esdeveniment s'envia després que %{link} ha passat.

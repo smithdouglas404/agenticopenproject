@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,7 +37,7 @@ module WorkPackage::Ancestors
     ##
     # Retrieve stored eager loaded ancestors
     # or use awesome_nested_set#ancestors reduced by visibility
-    def visible_ancestors(user)
+    def visible_ancestors(user = User.current)
       if work_package_ancestors.nil?
         self.class.aggregate_ancestors(id, user)[id]
       else

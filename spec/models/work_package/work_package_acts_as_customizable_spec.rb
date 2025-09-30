@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
 #
 # OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
-# Copyright (C) 2006-2017 Jean-Philippe Lang
+# Copyright (C) 2006-2013 Jean-Philippe Lang
 # Copyright (C) 2010-2013 the ChiliProject Team
 #
 # This program is free software; you can redistribute it and/or
@@ -165,7 +167,7 @@ RSpec.describe WorkPackage, "acts_as_customizable" do
 
       # set that custom field with a value, should be fine
       work_package.custom_field_values = { cf1.id => "test" }
-      work_package.save!
+      work_package.save!(context: :saving_custom_fields)
       work_package.reload
 
       # now give the work_package another required custom field, but don't assign a value
@@ -173,7 +175,7 @@ RSpec.describe WorkPackage, "acts_as_customizable" do
       work_package.custom_field_values # #custom_field_values needs to be touched
 
       # that should not be valid
-      expect(work_package).not_to be_valid
+      expect(work_package).not_to be_valid(:saving_custom_fields)
 
       # assert that there is only one error
       expect(work_package.errors.size).to eq 1
@@ -189,10 +191,7 @@ RSpec.describe WorkPackage, "acts_as_customizable" do
     end
 
     context "with a default value" do
-      before do
-        custom_field.update! default_value: "foobar"
-        model_instance.custom_values.destroy_all
-      end
+      let(:custom_field) { create(:string_wp_custom_field, default_value: "foobar") }
 
       it "returns no changes" do
         expect(model_instance.custom_field_changes).to be_empty
@@ -200,10 +199,7 @@ RSpec.describe WorkPackage, "acts_as_customizable" do
     end
 
     context "with a bool custom_field having a default value" do
-      before do
-        custom_field.update! field_format: "bool", default_value: "0"
-        model_instance.custom_values.destroy_all
-      end
+      let(:custom_field) { create(:boolean_wp_custom_field, default_value: "0") }
 
       it "returns no changes" do
         expect(model_instance.custom_field_changes).to be_empty

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +30,8 @@
 
 require "spec_helper"
 
-RSpec.describe "Wysiwyg embedded work package tables", :js do
+RSpec.describe "Wysiwyg embedded work package tables",
+               :js do
   shared_let(:admin) { create(:admin) }
   shared_let(:type_task) { create(:type_task) }
   shared_let(:type_bug) { create(:type_bug) }
@@ -105,7 +108,7 @@ RSpec.describe "Wysiwyg embedded work package tables", :js do
         # Save wiki page
         click_on "Save"
 
-        expect(page).to have_css(".op-toast.-success")
+        expect_flash(message: "Successful creation.")
 
         embedded_table = Pages::EmbeddedWorkPackagesTable.new find(".wiki-content")
         embedded_table.expect_work_package_listed wp_task
@@ -141,7 +144,7 @@ RSpec.describe "Wysiwyg embedded work package tables", :js do
           # Save wiki page
           click_on "Save"
 
-          expect(page).to have_css(".op-toast.-success")
+          expect_and_dismiss_flash(message: "Successful creation.")
 
           # Embedded queries
           wikipage = project.wiki.pages.last

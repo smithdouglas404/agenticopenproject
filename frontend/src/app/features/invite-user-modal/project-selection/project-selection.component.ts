@@ -8,12 +8,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import {
-  AbstractControl,
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { AbstractControl, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { BannersService } from 'core-app/core/enterprise/banners.service';
 import { CurrentUserService } from 'core-app/core/current-user/current-user.service';
@@ -23,16 +18,20 @@ import { ProjectResource } from 'core-app/features/hal/resources/project-resourc
 import { PrincipalType } from '../invite-user.component';
 import { ProjectAllowedValidator } from './project-allowed.validator';
 import { map } from 'rxjs/operators';
-import { IProjectAutocompleteItem } from 'core-app/shared/components/autocompleter/project-autocompleter/project-autocomplete-item';
+import {
+  IProjectAutocompleteItem,
+} from 'core-app/shared/components/autocompleter/project-autocompleter/project-autocomplete-item';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import idFromLink from 'core-app/features/hal/helpers/id-from-link';
 import { ICapability } from 'core-app/core/state/capabilities/capability.model';
 import { firstValueFrom } from 'rxjs';
+import { IAPIFilter } from 'core-app/shared/components/autocompleter/op-autocompleter/typings';
 
 @Component({
   selector: 'op-ium-project-selection',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './project-selection.component.html',
+  standalone: false,
 })
 export class ProjectSelectionComponent implements OnInit {
   @Input() type:PrincipalType;
@@ -121,7 +120,14 @@ export class ProjectSelectionComponent implements OnInit {
   }
 
   private setPlaceholderOption():void {
-    if (this.bannersService.eeShowBanners) {
+    if (this.bannersService.allowsTo('placeholder_users')) {
+      this.typeOptions.push({
+        value: PrincipalType.Placeholder,
+        title: this.I18n.t('js.invite_user_modal.type.placeholder.title'),
+        description: this.I18n.t('js.invite_user_modal.type.placeholder.description'),
+        disabled: false,
+      });
+    } else {
       this.typeOptions.push({
         value: PrincipalType.Placeholder,
         title: this.I18n.t('js.invite_user_modal.type.placeholder.title_no_ee'),
@@ -132,13 +138,6 @@ export class ProjectSelectionComponent implements OnInit {
           }),
         }),
         disabled: true,
-      });
-    } else {
-      this.typeOptions.push({
-        value: PrincipalType.Placeholder,
-        title: this.I18n.t('js.invite_user_modal.type.placeholder.title'),
-        description: this.I18n.t('js.invite_user_modal.type.placeholder.description'),
-        disabled: false,
       });
     }
   }

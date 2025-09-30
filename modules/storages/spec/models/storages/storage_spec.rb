@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,6 +32,52 @@ require "spec_helper"
 require_module_spec_helper
 
 RSpec.describe Storages::Storage do
+  describe "provider_types" do
+    it "maps the short_name to the provider class" do
+      expect(described_class.provider_types["nextcloud"]).to eq(Storages::NextcloudStorage)
+      expect(described_class.provider_types[:nextcloud]).to eq(Storages::NextcloudStorage)
+    end
+
+    it "excludes non exposed storage types" do
+      expect(described_class.provider_types[:inexistent]).to be_nil
+    end
+  end
+
+  describe "#oauth_access_granted?" do
+    let(:storage) { build(:storage, oauth_client:) }
+    let(:oauth_client) { create(:oauth_client) }
+    let(:user) { create(:user) }
+
+    context "when user is authenticated through storage oauth" do
+      it "responds with true if oauth_client_token exists" do
+        create(:oauth_client_token, user: user, oauth_client:)
+        expect(storage.oauth_access_granted?(user)).to be true
+      end
+
+      it "responds with false if oauth_client_token does not exist" do
+        expect(storage.oauth_access_granted?(user)).to be false
+      end
+    end
+
+    context "when user is authenticated through sso" do
+      let(:provider) { create(:oidc_provider) }
+      let(:user) { create(:user, authentication_provider: provider) }
+      let(:storage) { build(:nextcloud_storage, :oidc_sso_enabled) }
+
+      it "responds with true" do
+        expect(storage.oauth_access_granted?(user)).to be true
+      end
+    end
+  end
+
+  describe "#supports_oauth_redirect?" do
+    let(:storage) { described_class.new }
+
+    it "returns true by default (to be overridden by subclasses)" do
+      expect(storage).to be_supports_oauth_redirect
+    end
+  end
+
   describe "#health_notifications_should_be_sent?" do
     let(:storage) { build(:storage, provider_fields: {}) }
 
@@ -113,6 +159,29 @@ RSpec.describe Storages::Storage do
 
         it { expect(storage.automatic_management_enabled?).to be(false) }
       end
+    end
+  end
+
+  describe "uri" do
+    it "returns nil if host is nil" do
+      storage = build(:storage, host: nil)
+      expect(storage.uri).to be_nil
+    end
+
+    it "returns host with trailing slash" do
+      storage = build(:storage, host: "https://example.com")
+      expect(storage.uri.to_s).to eq("https://example.com/")
+      storage = build(:storage, host: "https://endor")
+      expect(storage.uri.to_s).to eq("https://endor/")
+      storage = build(:storage, host: "https://deathstar.org/html")
+      expect(storage.uri.to_s).to eq("https://deathstar.org/html/")
+
+      storage = build(:storage, host: "https://example.com/")
+      expect(storage.uri.to_s).to eq("https://example.com/")
+      storage = build(:storage, host: "https://endor/")
+      expect(storage.uri.to_s).to eq("https://endor/")
+      storage = build(:storage, host: "https://deathstar.org/html/")
+      expect(storage.uri.to_s).to eq("https://deathstar.org/html/")
     end
   end
 end

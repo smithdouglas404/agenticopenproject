@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,45 +39,82 @@ RSpec.describe Queries::WorkPackages::Selects::CustomFieldSelect do
   it_behaves_like "query column", sortable_by_default: true
 
   describe "instances" do
-    let(:text_custom_field) do
-      create(:text_wp_custom_field)
-    end
+    let(:user) { create(:user) }
+    let(:text_custom_field) { create(:text_wp_custom_field) }
+    let(:list_custom_field) { create(:list_wp_custom_field) }
+    let(:wp_relation) { double }
 
-    let(:list_custom_field) do
-      create(:list_wp_custom_field)
-    end
+    current_user { user }
 
     context "within project" do
       before do
         allow(project)
           .to receive(:all_work_package_custom_fields)
-          .and_return([text_custom_field,
-                       list_custom_field])
+          .and_return(wp_relation)
       end
 
-      it "contains only non text cf columns" do
-        expect(described_class.instances(project).length)
-          .to eq 1
+      context "with a user that can see the custom field" do
+        before do
+          allow(wp_relation).to receive(:visible_by_user)
+                                  .with(user)
+                                  .and_return([text_custom_field, list_custom_field])
+        end
 
-        expect(described_class.instances(project)[0].custom_field)
-          .to eq list_custom_field
+        it "contains only non text cf columns" do
+          expect(described_class.instances(project).length)
+            .to eq 1
+
+          expect(described_class.instances(project)[0].custom_field)
+            .to eq list_custom_field
+        end
+      end
+
+      context "with a user that cannot see custom fields" do
+        before do
+          allow(wp_relation).to receive(:visible_by_user)
+                                  .with(user)
+                                  .and_return([])
+        end
+
+        it "is empty" do
+          expect(described_class.instances).to be_empty
+        end
       end
     end
 
-    context "global" do
+    context "when global" do
       before do
         allow(WorkPackageCustomField)
           .to receive(:all)
-          .and_return([text_custom_field,
-                       list_custom_field])
+          .and_return(wp_relation)
       end
 
-      it "contains only non text cf columns" do
-        expect(described_class.instances.length)
-          .to eq 1
+      context "with a user that can see the custom field" do
+        before do
+          allow(wp_relation).to receive(:visible_by_user)
+                                  .with(user)
+                                  .and_return([text_custom_field, list_custom_field])
+        end
 
-        expect(described_class.instances[0].custom_field)
-          .to eq list_custom_field
+        it "contains only non text cf columns" do
+          expect(described_class.instances.length)
+            .to eq 1
+
+          expect(described_class.instances[0].custom_field)
+            .to eq list_custom_field
+        end
+      end
+
+      context "with a user that cannot see custom fields" do
+        before do
+          allow(wp_relation).to receive(:visible_by_user)
+                                  .with(user)
+                                  .and_return([])
+        end
+
+        it "is empty" do
+          expect(described_class.instances).to be_empty
+        end
       end
     end
   end

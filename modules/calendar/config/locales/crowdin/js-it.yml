@@ -4,5 +4,6 @@ it:
     calendar:
       create_new: 'Crea nuovo calendario'
       title: 'Calendario'
-      too_many: 'Ci sono %{count} macro-attività in totale, ma solo %{max} possono essere mostrate.'
+      too_many: 'Ci sono %{count} macro-attività in totale, ma solo %{max} può essere mostrata.'
       unsaved_title: 'Calendario senza nome'
+      label_calendar_plural: 'Calendari'

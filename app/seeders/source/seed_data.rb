@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -36,7 +36,7 @@ class Source::SeedData
 
   def store_reference(reference, record)
     return if reference.nil?
-    if registry.key?(reference)
+    if reference_exists?(reference)
       raise ArgumentError, "an object with reference #{reference.inspect} is already registered"
     end
 
@@ -53,7 +53,7 @@ class Source::SeedData
   def find_reference(reference, *fallbacks, default: :__unset__)
     return if reference.nil?
 
-    existing_ref = [reference, *fallbacks].find { |ref| registry.key?(ref) }
+    existing_ref = [reference, *fallbacks].find { |ref| reference_exists?(ref) }
     if existing_ref
       registry[existing_ref]
     elsif default != :__unset__
@@ -61,12 +61,23 @@ class Source::SeedData
     else
       references = [reference, *fallbacks].map(&:inspect)
       message = "Nothing registered with #{'reference'.pluralize(references.count)} #{references.to_sentence(locale: false)}"
+      if Rails.env.local?
+        message += "\nPerhaps you forgot to add the `attribute_names_for_lookups` for your seeder?"
+      end
       raise ArgumentError, message
     end
   end
 
   def find_references(references, default: :__unset__)
     Array(references).map { |reference| find_reference(reference, default:) }
+  end
+
+  def reference_exists?(reference)
+    registry.key?(reference)
+  end
+
+  def all_references_exist?(references)
+    references.all? { |reference| reference_exists?(reference) }
   end
 
   # Get a `SeedData` instance with only the given top level keys.
@@ -107,7 +118,7 @@ class Source::SeedData
 
   def each_data(path)
     sub_data = fetch(path)
-    return if sub_data.nil?
+    return to_enum(:each_data, path) unless block_given? || sub_data.nil?
 
     sub_data.each_value do |item_data|
       yield self.class.new(item_data, registry)

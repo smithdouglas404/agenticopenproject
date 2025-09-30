@@ -11,7 +11,6 @@ import { IHALCollection } from 'core-app/core/apiv3/types/hal-collection.type';
 import { finalize, take } from 'rxjs/operators';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { HttpClient } from '@angular/common/http';
-import { KeyCodes } from 'core-app/shared/helpers/keyCodes.enum';
 import { ID } from '@datorama/akita';
 import { IProjectData } from './project-data';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
@@ -85,16 +84,16 @@ export class SearchableProjectListService {
     this.selectedItemID$
       .pipe(take(1))
       .subscribe((activeID) => {
-        switch (event.keyCode) {
-          case KeyCodes.UP_ARROW:
+        switch (event.key) {
+          case 'ArrowUp':
             event.preventDefault();
             this.selectPreviousResult(activeID, projects);
             break;
-          case KeyCodes.DOWN_ARROW:
+          case 'ArrowDown':
             event.preventDefault();
             this.selectNextResult(activeID, projects);
             break;
-          case KeyCodes.ENTER:
+          case 'Enter':
             event.stopPropagation();
             event.preventDefault();
             this.activateSelectedResult(event);

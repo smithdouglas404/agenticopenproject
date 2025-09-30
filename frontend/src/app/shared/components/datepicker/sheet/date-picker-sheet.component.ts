@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -54,11 +54,11 @@ import { DeviceService } from 'core-app/core/browser/device.service';
   selector: 'op-datepicker-sheet',
   templateUrl: './date-picker-sheet.component.html',
   styleUrls: [
-    '../styles/datepicker.modal.sass',
     './date-picker-sheet.component.sass',
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class OpDatePickerSheetComponent implements AfterViewInit, OnChanges {
   @HostBinding('class.op-datepicker-sheet') className = true;

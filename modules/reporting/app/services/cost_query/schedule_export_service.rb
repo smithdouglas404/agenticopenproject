@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,21 +33,24 @@ class CostQuery::ScheduleExportService
     self.user = user
   end
 
-  def call(filter_params:, project:, cost_types:)
+  def call(format:, query_id:, query_name:, filter_params:, project:, cost_types:)
     export_storage = ::CostQuery::Export.create
-    job = schedule_export(export_storage, filter_params, project, cost_types)
+    job = schedule_export(format, export_storage, query_id, query_name, filter_params, project, cost_types)
 
     ServiceResult.success result: job.job_id
   end
 
   private
 
-  def schedule_export(export_storage, filter_params, project, cost_types)
-    ::CostQuery::ExportJob.perform_later(export: export_storage,
-                                         user:,
-                                         mime_type: :xls,
-                                         query: filter_params,
-                                         project:,
-                                         cost_types:)
+  def schedule_export(format, export_storage, query_id, query_name, filter_params, project, cost_types)
+    job = format == :pdf ? ::CostQuery::PDF::ExportTimesheetJob : ::CostQuery::XLS::ExportJob
+    job.perform_later(export: export_storage,
+                      user:,
+                      mime_type: format,
+                      query_id:,
+                      query_name:,
+                      query: filter_params,
+                      project:,
+                      cost_types:)
   end
 end

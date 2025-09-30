@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,14 +28,24 @@
 
 module OpenProject::Plugins
   module AuthPlugin
-    def register_auth_providers(&)
+    def register_auth_providers(persist: true, &) # rubocop:disable Metrics/AbcSize
+      builder = ProviderBuilder.new
       initializer "#{engine_name}.middleware" do |app|
-        builder = ProviderBuilder.new
         builder.instance_eval(&)
 
         app.config.middleware.use OmniAuth::FlexibleBuilder do
           builder.new_strategies.each do |strategy|
             provider strategy
+          end
+        end
+      end
+
+      config.to_prepare do
+        if persist
+          builder.provider_callbacks.each do |callback|
+            callback.call.each do |config|
+              PluginAuthProvider.register_for_plugin(config)
+            end
           end
         end
       end
@@ -81,7 +91,7 @@ module OpenProject::Plugins
 
     def self.filtered_strategy?(_strategy_key, provider)
       name = provider[:name]&.to_s
-      !EnterpriseToken.show_banners? || name == "developer"
+      EnterpriseToken.allows_to?(:sso_auth_providers) || name == "developer"
     end
 
     def self.strategy_key(strategy)
@@ -125,10 +135,16 @@ module OpenProject::Plugins
         AuthPlugin.strategies[key] = [providers]
         new_strategies << strategy
       end
+
+      provider_callbacks.push(providers)
     end
 
     def new_strategies
       @new_strategies ||= []
+    end
+
+    def provider_callbacks
+      @provider_callbacks ||= []
     end
   end
 end

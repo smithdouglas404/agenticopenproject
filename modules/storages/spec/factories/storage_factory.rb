@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -89,13 +89,32 @@ FactoryBot.define do
   factory :nextcloud_storage,
           parent: :storage,
           class: "::Storages::NextcloudStorage" do
-    provider_type { Storages::Storage::PROVIDER_TYPE_NEXTCLOUD }
-    sequence(:host) { |n| "https://host#{n}.example.com" }
+    provider_type { Storages::NextcloudStorage.name }
+    sequence(:host) { |n| "https://host#{n}.example.com/" }
+    authentication_method { "two_way_oauth2" }
+    storage_audience { nil }
+
+    trait :with_oauth_configured do
+      after(:create) do |storage, _evaluator|
+        create(:oauth_client, integration: storage)
+        create(:oauth_application, integration: storage)
+      end
+    end
+
+    trait :oidc_sso_enabled do
+      storage_audience { "nextcloud" }
+      authentication_method { "oauth2_sso" }
+    end
+
+    trait :oidc_sso_with_fallback do
+      storage_audience { "nextcloud" }
+      authentication_method { "oauth2_sso_with_two_way_oauth2_fallback" }
+    end
 
     trait :as_automatically_managed do
-      automatically_managed { true }
+      automatic_management_enabled { true }
       username { "OpenProject" }
-      password { "Password123" }
+      password { ENV.fetch("NEXTCLOUD_LOCAL_GROUP_USER_PASSWORD", "Password123") }
     end
   end
 
@@ -111,10 +130,11 @@ FactoryBot.define do
           traits: [:as_not_automatically_managed] do
     transient do
       oauth_client_token_user { association :user }
+      origin_user_id { "admin" }
     end
 
     name { "Nextcloud Local" }
-    host { "https://nextcloud.local" }
+    host { "https://nextcloud.local/" }
 
     initialize_with do
       Storages::NextcloudStorage.create_or_find_by(attributes.except(:oauth_client, :oauth_application))
@@ -141,8 +161,13 @@ FactoryBot.define do
                                      "MISSING_NEXTCLOUD_LOCAL_OAUTH_CLIENT_ACCESS_TOKEN"),
              refresh_token: ENV.fetch("NEXTCLOUD_LOCAL_OAUTH_CLIENT_REFRESH_TOKEN",
                                       "MISSING_NEXTCLOUD_LOCAL_OAUTH_CLIENT_REFRESH_TOKEN"),
-             token_type: "bearer",
-             origin_user_id: "admin")
+             token_type: "bearer")
+
+      create(:remote_identity,
+             auth_source: storage.oauth_client,
+             integration: storage,
+             user: evaluator.oauth_client_token_user,
+             origin_user_id: evaluator.origin_user_id)
     end
   end
 
@@ -170,21 +195,28 @@ FactoryBot.define do
     end
   end
 
-  factory :sharepoint_dev_drive_storage,
-          parent: :one_drive_storage do
+  factory :one_drive_storage_configured, parent: :one_drive_storage do
+    after(:create) do |storage, _|
+      create(:oauth_client, integration: storage)
+      create(:oauth_application, integration: storage)
+    end
+  end
+
+  factory :one_drive_sandbox_storage, parent: :one_drive_storage do
     automatically_managed { false }
 
     transient do
       oauth_client_token_user { association :user }
     end
 
-    name { "Sharepoint VCR drive" }
+    name { "OneDrive VCR drive" }
     tenant_id { ENV.fetch("ONE_DRIVE_TEST_TENANT_ID", "4d44bf36-9b56-45c0-8807-bbf386dd047f") }
     drive_id { ENV.fetch("ONE_DRIVE_TEST_DRIVE_ID", "b!dmVLG22QlE2PSW0AqVB7UOhZ8n7tjkVGkgqLNnuw2OBb-brzKzZAR4DYT1k9KPXs") }
 
     after(:create) do |storage, evaluator|
       create(:oauth_client,
-             client_id: ENV.fetch("ONE_DRIVE_TEST_OAUTH_CLIENT_ID", "MISSING_ONE_DRIVE_TEST_OAUTH_CLIENT_ID"),
+             client_id: ENV.fetch("ONE_DRIVE_TEST_OAUTH_CLIENT_ID",
+                                  "MISSING_ONE_DRIVE_TEST_OAUTH_CLIENT_ID"),
              client_secret: ENV.fetch("ONE_DRIVE_TEST_OAUTH_CLIENT_SECRET",
                                       "MISSING_ONE_DRIVE_TEST_OAUTH_CLIENT_SECRET"),
              integration: storage)
@@ -196,8 +228,49 @@ FactoryBot.define do
                                      "MISSING_ONE_DRIVE_TEST_OAUTH_CLIENT_ACCESS_TOKEN"),
              refresh_token: ENV.fetch("ONE_DRIVE_TEST_OAUTH_CLIENT_REFRESH_TOKEN",
                                       "MISSING_ONE_DRIVE_TEST_OAUTH_CLIENT_REFRESH_TOKEN"),
-             token_type: "bearer",
-             origin_user_id: "33db2c84-275d-46af-afb0-c26eb786b194")
+             token_type: "bearer")
+    end
+  end
+
+  factory :sharepoint_storage,
+          parent: :storage,
+          class: "::Storages::SharepointStorage" do
+    host { "https://openproject.sharepoint.com/sites/ProjectX" }
+    automatically_managed { false }
+
+    trait :with_tenant_id do
+      tenant_id { SecureRandom.uuid }
+    end
+
+    trait :as_automatically_managed do
+      automatically_managed { true }
+    end
+
+    trait :sandbox do
+      tenant_id { ENV.fetch("SHAREPOINT_TEST_TENANT_ID", "e36f1dbc-fdae-427e-b61b-0d96ddfb81a4") }
+      host { ENV.fetch("SHAREPOINT_TEST_HOST", "https://ymt6d.sharepoint.com/sites/OPTest") }
+
+      transient do
+        oauth_client_token_user { association :user }
+      end
+
+      after(:create) do |storage, evaluator|
+        create(:oauth_client,
+               client_id: ENV.fetch("SHAREPOINT_TEST_OAUTH_CLIENT_ID",
+                                    "MISSING_SHARE_POINT_TEST_OAUTH_CLIENT_ID"),
+               client_secret: ENV.fetch("SHAREPOINT_TEST_OAUTH_CLIENT_SECRET",
+                                        "MISSING_SHARE_POINT_TEST_OAUTH_CLIENT_SECRET"),
+               integration: storage)
+
+        create(:oauth_client_token,
+               oauth_client: storage.oauth_client,
+               user: evaluator.oauth_client_token_user,
+               access_token: ENV.fetch("SHAREPOINT_TEST_OAUTH_CLIENT_ACCESS_TOKEN",
+                                       "MISSING_SHARE_POINT_TEST_OAUTH_CLIENT_ACCESS_TOKEN"),
+               refresh_token: ENV.fetch("SHAREPOINT_TEST_OAUTH_CLIENT_REFRESH_TOKEN",
+                                        "MISSING_SHARE_POINT_TEST_OAUTH_CLIENT_REFRESH_TOKEN"),
+               token_type: "bearer")
+      end
     end
   end
 end

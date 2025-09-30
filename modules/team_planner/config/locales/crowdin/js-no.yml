@@ -3,12 +3,13 @@
   js:
     team_planner:
       add_existing: 'Legg til eksisterende'
+      label_team_planner_plural: 'Teamplanleggere'
       add_existing_title: 'Legg til eksisterende oppgaver'
       create_label: 'Teamplanlegger'
       create_title: 'Opprett ny teamplanlegger'
       unsaved_title: 'Navnløs teamplanlegger'
       no_data: 'Legg til utførende for å sette opp din teamplanlegger.'
-      add_assignee: 'Legg til utførende'
+      add_assignee: 'Deltaker'
       remove_assignee: 'Fjern utførende'
       two_weeks: 'Andre uke'
       one_week: 'Første uke'

@@ -7,23 +7,23 @@ tr:
     standard:
       projects:
         demo-project:
-          meetings:
+          meeting_series:
             item_0:
               title: Haftalık
           meeting_agenda_items:
             item_0:
               title: Güzel haberlerimiz var!
             item_1:
-              title: Geliştirme ekibinden ilerlemeler
+              title: Geliştirme ekibinden gelişmeler
             item_2:
-              title: Üretim ekibinden ilerlemeler
+              title: Üretim ekibinden gelişmeler
             item_3:
-              title: Pazarlama ekibinden ilerlemeler
+              title: Pazarlama ekibinden gelişmeler
             item_5:
-              title: Updates from sales team
+              title: Satış ekibinden gelişmeler
             item_6:
-              title: Review of quarterly goals
+              title: Çeyrek bazlı hedefleri gözden geçirilmesi
             item_7:
-              title: Core values feedback
+              title: Temel değerler geri bildirimi
             item_8:
-              title: General topics
+              title: Genel başlıklar

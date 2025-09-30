@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,21 +30,20 @@
 #
 module Storages::Admin
   class OAuthApplicationInfoCopyComponent < ApplicationComponent
+    include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
 
-    attr_reader :storage
-    alias_method :oauth_application, :model
+    alias_method :storage, :model
+    delegate :oauth_application, to: :storage
 
-    def initialize(oauth_application:, storage:, **)
-      super(oauth_application, **)
-      @storage = storage
-    end
+    options in_wizard: false
+
+    def self.wrapper_key = :storage_openproject_oauth_section
 
     def oauth_application_details_link
       render(
         Primer::Beta::Link.new(
-          href: Storages::Peripherals::StorageInteraction::Nextcloud::Util.join_uri_path(storage.host,
-                                                                                         "settings/admin/openproject"),
+          href: ::Storages::UrlBuilder.url(storage.uri, "settings/admin/openproject"),
           target: "_blank"
         )
       ) { I18n.t("storages.instructions.oauth_application_details_link_text") }
@@ -54,14 +53,16 @@ module Storages::Admin
       {
         scheme: :primary,
         tag: :a,
-        href: submit_button_path
-      }.merge(options.fetch(:submit_button_options, {}))
+        href: submit_button_path,
+        data: { turbo_stream: true, turbo_frame: "page-content" }
+      }
     end
 
     private
 
     def submit_button_path
-      options[:submit_button_path] || show_oauth_application_admin_settings_storage_path(storage)
+      query = { continue_wizard: storage.id } if in_wizard
+      show_oauth_application_admin_settings_storage_path(storage, query)
     end
   end
 end

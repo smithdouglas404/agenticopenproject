@@ -7,7 +7,7 @@ fil:
     standard:
       projects:
         demo-project:
-          meetings:
+          meeting_series:
             item_0:
               title: Weekly
           meeting_agenda_items:

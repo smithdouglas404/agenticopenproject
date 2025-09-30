@@ -1,6 +1,6 @@
 /*
  *  OpenProject is an open source project management software.
- *  Copyright (C) 2010-2022 the OpenProject GmbH
+ *  Copyright (C) the OpenProject GmbH
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License version 3.
@@ -27,19 +27,17 @@
  */
 
 import {
-  ChangeDetectionStrategy,
   Component,
+  OnInit,
 } from '@angular/core';
 import { DatePickerEditFieldComponent } from 'core-app/shared/components/fields/edit/field-types/date-picker-edit-field.component';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 
 @Component({
   templateUrl: './days-duration-edit-field.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
-export class DaysDurationEditFieldComponent extends DatePickerEditFieldComponent {
-  opened = false;
-
+export class DaysDurationEditFieldComponent extends DatePickerEditFieldComponent implements OnInit {
   public get formattedValue():number {
     return Number(moment.duration(this.value).asDays().toFixed(0));
   }
@@ -52,13 +50,9 @@ export class DaysDurationEditFieldComponent extends DatePickerEditFieldComponent
     event.stopPropagation();
   }
 
-  showDatePickerModal() {
-    this.opened = true;
-  }
-
-  save() {
-    this.handler.handleUserSubmit();
-    this.opened = false;
+  onModalClosed() {
+    super.onModalClosed();
+    void this.handler.handleUserSubmit();
   }
 
   cancel():void {

@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -23,7 +23,7 @@ id:
   plugin_openproject_reporting:
     name: "OpenProject Reporting"
     description: "This plugin allows creating custom cost reports with filtering and grouping created by the OpenProject Time and costs plugin."
-  button_save_as: "Simpan sebagai..."
+  button_save_report_as: "Simpan sebagai..."
   comments: "Komentar"
   cost_reports_title: "Waktu dan biaya"
   label_cost_report: "Laporan biaya"
@@ -45,9 +45,11 @@ id:
   label_greater: ">"
   label_is_not_project_with_subprojects: "yang bukan (termasuk dalam subproyek)"
   label_is_project_with_subprojects: "adalah (termasuk dalam subproyek)"
+  label_is_work_package_with_descendants: "is (includes descendants)"
+  label_is_not_work_package_with_descendants: "is not (includes descendants)"
   label_work_package_attributes: "Attribut work package"
   label_less: "<"
-  label_logged_by_reporting: "Logged by"
+  label_logged_by_reporting: "Dicatat oleh"
   label_money: "Nilai uang"
   label_month_reporting: "#Bulan (Spent)"
   label_new_report: "Buat laporan biaya"
@@ -86,8 +88,18 @@ id:
   validation_failure_date: "validasi tanggal gagal"
   validation_failure_integer: "validasi bilangan bulat gagal"
   export:
+    timesheet:
+      title: "Your PDF timesheet export"
+      button: "Ekspor absensi PDF"
+      timesheet: "Absensi"
+      time: "Waktu"
+      sums_hours: Sums
+      overview_per_user_total: "Overview: Total hours per user"
+      overview_per_user_day: "Gambaran umum: Jam per pengguna per hari"
     cost_reports:
-      title: "Your Cost Reports XLS export"
+      title: "Ekspor XLS Laporan Biaya Anda"
+      start_time: "Waktu mulai"
+      end_time: "End time"
   reporting:
     group_by:
       selected_columns: "Kolom terpilih"

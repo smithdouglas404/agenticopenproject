@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,8 +33,10 @@ require_relative "base"
 module Queries::Filters::Shared
   module CustomFields
     class ListOptional < Base
+      delegate :field_format, to: :custom_field, allow_nil: true
+
       def value_objects
-        case custom_field.field_format
+        case field_format
         when "version"
           ::Version.where(id: values)
         when "list"
@@ -40,6 +44,11 @@ module Queries::Filters::Shared
         else
           super
         end
+      end
+
+      def allowed_values
+        options = field_format == "version" ? { scope: :visible } : {}
+        custom_field.possible_values_options(project, options:)
       end
 
       def ar_object_filter?

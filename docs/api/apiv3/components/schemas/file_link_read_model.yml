@@ -1,11 +1,6 @@
 # Schema: FileLinkReadModel
 ---
 type: object
-required:
-  - id
-  - _type
-  - originData
-  - _links
 properties:
   id:
     type: integer
@@ -36,17 +31,6 @@ properties:
         $ref: './work_package_model.yml'
   _links:
     type: object
-    required:
-      - self
-      - storage
-      - container
-      - creator
-      - permission
-      - originOpen
-      - staticOriginOpen
-      - originOpenLocation
-      - staticOriginOpenLocation
-      - staticOriginDownload
     properties:
       self:
         allOf:
@@ -166,24 +150,8 @@ example:
     container:
       _hint: Work package resource shortened for brevity
       _type: WorkPackage
-      _links:
-        self:
-          href: "/api/v3/work_packages/1528"
-          title: Develop API
-        schema:
-          href: "/api/v3/work_packages/schemas/11-2"
       id: 1528
       subject: Develop API
-      description:
-        format: markdown
-        raw: Develop super cool OpenProject API.
-        html: "<p>Develop super cool OpenProject API.</p>"
-      scheduleManually: false
-      readonly: false
-      startDate:
-      dueDate:
-      createdAt: '2014-08-29T12:40:53.860Z'
-      updatedAt: '2014-08-29T12:44:41.036Z'
   _links:
     self:
       href: /api/v3/work_package/17/file_links/1337
@@ -199,8 +167,8 @@ example:
     delete:
       href: /api/v3/work_package/17/file_links/1337
     status:
-      href: urn:openproject-org:api:v3:file-links:permission:View
-      title: View
+      href: urn:openproject-org:api:v3:file-links:permission:ViewAllowed
+      title: View allowed
     originOpen:
       href: https://nextcloud.deathstar.rocks/index.php/f/5503?openfile=1
     staticOriginOpen:

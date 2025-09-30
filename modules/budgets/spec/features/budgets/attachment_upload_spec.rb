@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -46,9 +46,7 @@ RSpec.describe "Upload attachment to budget", :js do
   it "can upload an image to new and existing budgets via drag & drop" do
     visit projects_budgets_path(project)
 
-    within ".toolbar-items" do
-      click_on "Budget"
-    end
+    page.find_test_selector("budget-create-button").click
 
     fill_in "Subject", with: "New budget"
 
@@ -59,13 +57,13 @@ RSpec.describe "Upload attachment to budget", :js do
 
     click_on "Create"
 
+    expect_and_dismiss_flash(message: "Successful creation.")
+
     expect(page).to have_css("#content img", count: 1)
     expect(page).to have_content("Image uploaded on creation")
     attachments_list.expect_attached("image.png")
 
-    within ".toolbar-items" do
-      click_on "Update"
-    end
+    page.find_test_selector("budget-edit-button").click
 
     editor.drag_attachment image_fixture.path, "Image uploaded the second time"
 
@@ -79,12 +77,10 @@ RSpec.describe "Upload attachment to budget", :js do
     attachments_list.expect_attached("image.png", count: 2)
   end
 
-  it "can upload an image to new and existing budgets via drag & drop on attachment list" do
+  it "can upload an image to new and existing budgets via drag & drop on attachment list", :selenium do
     visit projects_budgets_path(project)
 
-    within ".toolbar-items" do
-      click_on "Budget"
-    end
+    page.find_test_selector("budget-create-button").click
 
     fill_in "Subject", with: "New budget"
     editor.set_markdown "Some content because it's required"
@@ -96,11 +92,11 @@ RSpec.describe "Upload attachment to budget", :js do
 
     click_on "Create"
 
+    expect_and_dismiss_flash(message: "Successful creation.")
+
     attachments_list.expect_attached("image.png")
 
-    within ".toolbar-items" do
-      click_on "Update"
-    end
+    page.find_test_selector("budget-edit-button").click
 
     # adding an image
     editor.attachments_list.drag_enter

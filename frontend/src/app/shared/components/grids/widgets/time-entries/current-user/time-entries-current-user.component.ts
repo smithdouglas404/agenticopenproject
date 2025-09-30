@@ -12,6 +12,7 @@ import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 @Component({
   templateUrl: './time-entries-current-user.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class WidgetTimeEntriesCurrentUserComponent extends AbstractWidgetComponent {
   public entries:TimeEntryResource[] = [];
@@ -37,10 +38,12 @@ export class WidgetTimeEntriesCurrentUserComponent extends AbstractWidgetCompone
   }
 
   public get total() {
-    const duration = this.entries.reduce((current, entry) => current + this.timezone.toHours(entry.hours), 0);
+    const duration = this
+      .entries
+      .reduce((current, entry) => current + this.timezone.toHours(entry.hours), 0);
 
     if (duration > 0) {
-      return this.i18n.t('js.units.hour', { count: duration });
+      return this.i18n.t('js.units.hour_string', { hours: duration.toFixed(2)});
     }
     return this.i18n.t('js.placeholders.default');
   }

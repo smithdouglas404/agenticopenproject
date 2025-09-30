@@ -1,5 +1,5 @@
 <div class="gitlab-mr-header op-tab-content--header">
-  <svg class="s16x32"><use xlink:href="#merge-request_open" /></svg>
+  <svg op-gitlab-merge-request-open-icon size="small"></svg>
   <h3 class="title">
     {{text.title}}
   </h3>
@@ -10,11 +10,11 @@
           [attr.aria-label]="text.gitMenuDescription"
           gitActionsCopyDropdown
           [gitActionsCopyDropdown-workPackage]="workPackage">
-        <op-icon icon-classes="button--icon icon-console-light"></op-icon>
+        <op-icon icon-classes="button--icon icon-console-light" />
         <span class="button--text"
               [textContent]="text.gitMenuLabel"
               aria-hidden="true"></span>
-        <op-icon icon-classes="button--icon icon-small icon-pulldown hidden-for-mobile"></op-icon>
+        <op-icon icon-classes="button--icon icon-small icon-pulldown hidden-for-mobile" />
       </button>
     </li>
   </ul>

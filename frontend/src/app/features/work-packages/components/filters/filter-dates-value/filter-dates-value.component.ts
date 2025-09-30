@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -34,7 +34,7 @@ import {
 } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { DebouncedEventEmitter } from 'core-app/shared/helpers/rxjs/debounced-event-emitter';
-import * as moment from 'moment';
+import moment from 'moment';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { componentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { TimezoneService } from 'core-app/core/datetime/timezone.service';
@@ -43,6 +43,7 @@ import { QueryFilterInstanceResource } from 'core-app/features/hal/resources/que
 @Component({
   selector: 'op-filter-dates-value',
   templateUrl: './filter-dates-value.component.html',
+  standalone: false,
 })
 export class FilterDatesValueComponent extends UntilDestroyedMixin {
   @HostBinding('id') get id() {

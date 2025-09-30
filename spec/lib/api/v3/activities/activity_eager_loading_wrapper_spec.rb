@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,6 +35,7 @@ RSpec.describe API::V3::Activities::ActivityEagerLoadingWrapper, with_settings: 
   shared_let(:project) { create(:project) }
   shared_let(:work_package) { create(:work_package, project:, author: user) }
   shared_let(:meeting) { create(:meeting, project:, author: user) }
+  shared_let(:notifications) { create_list(:notification, 3, recipient: user, resource: work_package) }
 
   describe ".wrap" do
     it "returns wrapped journals with relations eager loaded" do
@@ -42,9 +45,10 @@ RSpec.describe API::V3::Activities::ActivityEagerLoadingWrapper, with_settings: 
       wrapped_journals = described_class.wrap(journals)
 
       expect(wrapped_journals.size).to eq(journals.size)
+      expected_associations_cached = %i[journable data]
       wrapped_journals.each do |loaded_journal|
-        expect(loaded_journal.__getobj__.instance_variables).to include(:@predecessor)
-        %i[journable data].each do |association|
+        expect(loaded_journal.__getobj__.instance_variables).to include(:@predecessor, :@unread_notifications)
+        expected_associations_cached.each do |association|
           expect(loaded_journal.association_cached?(association)).to be true
         end
       end
@@ -60,22 +64,12 @@ RSpec.describe API::V3::Activities::ActivityEagerLoadingWrapper, with_settings: 
     end
 
     it "can wrap TimeEntry journals" do
-      time_entry = create(:time_entry, project:, work_package:, user:)
+      time_entry = create(:time_entry, project:, entity: work_package, user:)
       expect(time_entry.journals).to be_wrappable
     end
 
     it "can wrap Meeting journals" do
       expect(meeting.journals).to be_wrappable
-    end
-
-    it "can wrap MeetingAgenda journals" do
-      meeting_agenda = create(:meeting_agenda, meeting:)
-      expect(meeting_agenda.journals).to be_wrappable
-    end
-
-    it "can wrap MeetingMinutes journals" do
-      meeting_minutes = create(:meeting_minutes, meeting:)
-      expect(meeting_minutes.journals).to be_wrappable
     end
 
     it "can wrap Budget journals" do

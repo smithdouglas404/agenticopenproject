@@ -3,7 +3,6 @@ import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { QueryFilterResource } from 'core-app/features/hal/resources/query-filter-resource';
 
 @Injectable({ providedIn: 'root' })
-
 export class AlternativeSearchService {
   constructor(
     readonly I18n:I18nService,

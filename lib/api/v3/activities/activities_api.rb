@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,7 +35,7 @@ module API
             after_validation do
               @activity = Journal.find(declared_params[:id])
 
-              authorize_by_with_raise @activity.journable.visible?(current_user) do
+              authorize_by_with_raise @activity.visible?(current_user) do
                 raise API::Errors::NotFound
               end
             end
@@ -56,6 +56,9 @@ module API
                                                                  { notes: declared_params[:comment] }
                                                                })
                                                           .mount
+
+            mount ::API::V3::Attachments::AttachmentsByActivityCommentAPI
+            mount ::API::V3::EmojiReactions::EmojiReactionsByActivityCommentAPI
           end
         end
       end

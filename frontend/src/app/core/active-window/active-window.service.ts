@@ -1,5 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable, DOCUMENT } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
 

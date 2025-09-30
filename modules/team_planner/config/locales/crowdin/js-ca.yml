@@ -3,12 +3,13 @@ ca:
   js:
     team_planner:
       add_existing: 'Afegir existent'
+      label_team_planner_plural: 'Planificadors d''equips'
       add_existing_title: 'Afegir paquets de treball existents'
       create_label: 'Planificador d''equips'
       create_title: 'Crea un nou planificador d''equips'
       unsaved_title: 'Planificador d''equips sense nom'
       no_data: 'Afegeix usuaris assignats per tal de configurar el teu planificador d''equip.'
-      add_assignee: 'Afegir assignats'
+      add_assignee: 'Assignat a'
       remove_assignee: 'Elimina assignats'
       two_weeks: '2 setmanes'
       one_week: '1 setmana'

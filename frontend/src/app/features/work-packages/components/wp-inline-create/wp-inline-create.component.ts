@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -72,6 +72,7 @@ import {
 @Component({
   selector: '[wpInlineCreate]',
   templateUrl: './wp-inline-create.component.html',
+  standalone: false,
 })
 export class WorkPackageInlineCreateComponent extends UntilDestroyedMixin implements OnInit, AfterViewInit {
   @Input() colspan:number;
@@ -139,7 +140,6 @@ export class WorkPackageInlineCreateComponent extends UntilDestroyedMixin implem
         this.cdRef.detectChanges();
         this.showing.emit(this.canAdd || this.canReference);
       });
-
 
     // Register callback on newly created work packages
     this.registerCreationCallback();
@@ -240,9 +240,8 @@ export class WorkPackageInlineCreateComponent extends UntilDestroyedMixin implem
         change
           .state
           ?.values$()
-          .pipe(
-            filter(() => !!this.currentWorkPackage),
-          ).subscribe((form) => {
+          .pipe(filter(() => !!this.currentWorkPackage))
+          .subscribe((form) => {
             if (!this.isActive) {
               this.insertRow(wp);
             } else {
@@ -255,11 +254,16 @@ export class WorkPackageInlineCreateComponent extends UntilDestroyedMixin implem
 
   private insertRow(wp:WorkPackageResource) {
     // Actually render the row
-    const form = this.workPackageEditForm = this.renderInlineCreateRow(wp);
+    this.workPackageEditForm = this.renderInlineCreateRow(wp);
+    const form = this.workPackageEditForm;
 
     setTimeout(() => {
       // Activate any required fields
-      form.activateMissingFields();
+      void form.activateMissingFields().then((activeFields) => {
+        if (activeFields.length === 0) {
+          void form.submit();
+        }
+      });
 
       // Hide the button row
       this.hideRow();

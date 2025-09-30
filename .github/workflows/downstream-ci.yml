@@ -1,0 +1,85 @@
+name: downstream-ci
+on:
+  push:
+    branches:
+      - dev
+      - 'release/**'
+    paths-ignore:
+      - 'docs/**'
+      - 'help/**'
+  # We run this in the less privileged mode to allow external PRs to use this workflow.
+  # This means the workflow will be executed on the base branch, making sure only our own workflow logic is used.
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+    branches:
+      - dev
+      - 'release/**'
+    paths-ignore:
+      - 'docs/**'
+      - 'help/**'
+      - 'packaging/**'
+      - '.pkgr.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  trigger_saas_tests:
+    permissions:
+      contents: none
+    if: github.repository == 'opf/openproject'
+    name: SaaS tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger SaaS Tests
+        env:
+          TOKEN: ${{ secrets.OPENPROJECT_CI_TOKEN }}
+          REPOSITORY: opf/saas-openproject
+          WORKFLOW_ID: test-saas.yml
+        # ref:
+        #   * on push this will be `dev` or a specific release branch (e.g. release/16.1) - there is always a matching branch for that downstream
+        #   * on pull_request we use the PR branch's base (e.g. dev or a release branch) to match the above
+        # core_ref:
+        #   * the name of the core branch that has to be checked out downstream to run the tests
+        #   * that is either dev, release/16.1 (for instance), or the pull request's branch name
+        run: |
+          echo Triggering downstream workflow
+          REF=''
+          CORE_REF=''
+
+          if [ "${{ github.event_name }}" = "pull_request_target" ]; then
+            echo The workflow was triggered by a pull request targetting the dev or a release branch
+            REF="${{ github.base_ref }}"
+            CORE_REF="${{ github.event.pull_request.head.ref }}"
+          else
+            echo The workflow was triggered by a push to the dev or a release branch
+            REF="${{ github.ref_name }}"
+            CORE_REF="$REF"
+          fi
+
+          if [[ ! "$REF" =~ dev|release/.+ ]]; then
+            echo "Base branch is not dev or release branch. Cannot check downstream tests."
+            exit 0
+          fi
+
+          PAYLOAD=$(printf '{"ref": "%s", "inputs": {"core_ref": "%s"}}' "$REF" "$CORE_REF")
+          OUTPUT_FILE=/tmp/request-output
+
+          echo "Triggering $WORKFLOW_ID workflow on $REPOSITORY branch '$REF', which will check out core branch '$CORE_REF'"
+
+          status=$(
+            curl -i --fail-with-body -s -o $OUTPUT_FILE -w "%{http_code}" \
+              -H"authorization: Bearer $TOKEN" -H"Accept: application/vnd.github.v3+json" \
+              -XPOST \
+              -d "$PAYLOAD" \
+              https://api.github.com/repos/$REPOSITORY/actions/workflows/$WORKFLOW_ID/dispatches
+          )
+
+          if [ "$status" = "204" ]; then
+            echo Downstream workflow triggered successfully
+          else
+            echo Failed to trigger downstream workflow:
+            echo
+            cat $OUTPUT_FILE
+            exit 1
+          fi

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -71,7 +73,7 @@ class PermittedParams
   end
 
   def forum?
-    params[:forum] ? forum : nil
+    params[:forum] ? forum : false
   end
 
   def forum_move
@@ -172,7 +174,7 @@ class PermittedParams
   end
 
   def role?
-    params[:role] ? role : nil
+    params[:role] ? role : false
   end
 
   def status
@@ -211,7 +213,6 @@ class PermittedParams
   def user_create_as_admin(external_authentication,
                            change_password_allowed,
                            additional_params = [])
-
     additional_params << :ldap_auth_source_id unless external_authentication
 
     if current_user.admin?
@@ -263,8 +264,14 @@ class PermittedParams
   end
 
   def pref
-    params.fetch(:pref, {}).permit(:hide_mail, :time_zone, :theme,
-                                   :comments_sorting, :warn_on_leaving_unsaved,
+    params.fetch(:pref, {}).permit(:time_zone,
+                                   :theme,
+                                   :increase_theme_contrast,
+                                   :force_light_theme_contrast,
+                                   :force_dark_theme_contrast,
+                                   :comments_sorting,
+                                   :disable_keyboard_shortcuts,
+                                   :warn_on_leaving_unsaved,
                                    :auto_hide_popups)
   end
 
@@ -277,22 +284,43 @@ class PermittedParams
                                                 :project_type_id,
                                                 :parent_id,
                                                 :templated,
-                                                status: %i(code explanation),
-                                                custom_fields: [],
+                                                :status_code,
+                                                :status_explanation,
                                                 work_package_custom_field_ids: [],
                                                 type_ids: [],
                                                 enabled_module_names: [])
 
-    if whitelist[:status] && whitelist[:status][:code] && whitelist[:status][:code].blank?
-      whitelist[:status][:code] = nil
-    end
+    whitelist
+      .tap { nilify_params!(it, :status_code) }
+      .merge(custom_field_values(:project))
+  end
 
-    whitelist.merge(custom_field_values(:project))
+  def new_project
+    params
+      .expect(project: %i[name parent_id workspace_type])
+      .merge(custom_field_values(:project))
+  end
+
+  def copy_project_options
+    copy_options_params = params.expect(copy_options: [[dependencies: []], :send_notifications])
+    copy_options_params[:dependencies].compact_blank!
+    copy_options_params
+  end
+
+  def project_status
+    params
+      .expect(project: %i[status_code status_explanation])
+      .tap { nilify_params!(it, :status_code) }
+  end
+
+  def project_phase
+    params.require(:project_phase).permit(%i[start_date finish_date])
   end
 
   def project_custom_field_project_mapping
     params.require(:project_custom_field_project_mapping)
       .permit(*self.class.permitted_attributes[:project_custom_field_project_mapping])
+      .merge(params.permit(:value))
   end
 
   def news
@@ -340,7 +368,7 @@ class PermittedParams
     params.permit(attachments: %i[file description id])["attachments"]
   end
 
-  def enumerations
+  def enumerations # rubocop:disable Metrics/AbcSize
     acceptable_params = %i[active is_default move_to name reassign_to_i
                            parent_id custom_field_values reassign_to_id]
 
@@ -349,7 +377,7 @@ class PermittedParams
     # Sometimes we receive one enumeration, sometimes many in params, hence
     # the following branching.
     if params[:enumerations].present?
-      params[:enumerations].each do |enum, _value|
+      params[:enumerations].each_key do |enum|
         enum.tap do
           whitelist[enum] = {}
           acceptable_params.each do |param|
@@ -362,7 +390,7 @@ class PermittedParams
         end
       end
     else
-      params[:enumeration].each do |key, _value|
+      params[:enumeration].each_key do |key|
         whitelist[key] = params[:enumeration][key]
       end
     end
@@ -402,7 +430,7 @@ class PermittedParams
     # 'id as string' => 'value as string'
     values.select! { |k, v| k.to_i > 0 && (v.is_a?(String) || v.is_a?(Array)) }
     # Reject blank values from include_hidden select fields
-    values.each { |_, v| v.compact_blank! if v.is_a?(Array) }
+    values.each_value { |v| v.compact_blank! if v.is_a?(Array) }
 
     values.empty? ? {} : { "custom_field_values" => values.permit! }
   end
@@ -420,7 +448,7 @@ class PermittedParams
   end
 
   def self.permitted_attributes
-    @whitelisted_params ||= begin
+    @permitted_attributes ||= begin
       params = {
         attribute_help_text: %i(
           type
@@ -462,6 +490,7 @@ class PermittedParams
         custom_field: [
           :editable,
           :field_format,
+          :formula,
           :is_filter,
           :is_for_all,
           :is_required,
@@ -472,9 +501,8 @@ class PermittedParams
           :possible_values,
           :regexp,
           :searchable,
-          :visible,
+          :admin_only,
           :default_value,
-          :possible_values,
           :multi_value,
           :content_right_to_left,
           :custom_field_section_id,
@@ -549,6 +577,7 @@ class PermittedParams
           :name,
           :redirect_uri,
           :confidential,
+          :enabled,
           :client_credentials_user_id,
           { scopes: [] }
         ],
@@ -563,6 +592,7 @@ class PermittedParams
           project_id
           custom_field_id
           custom_field_section_id
+          include_sub_projects
         ),
         query: %i(
           name
@@ -581,12 +611,7 @@ class PermittedParams
           offset
           previous
           scope
-          work_packages
-          news
-          changesets
-          wiki_pages
-          messages
-          projects
+          filter
           submit
         ),
         status: %i(
@@ -661,5 +686,10 @@ class PermittedParams
     object = required ? params.require(key_to_fetch) : params.fetch(key_to_fetch, {})
     values = key ? object[:custom_field_values] : object
     values || ActionController::Parameters.new
+  end
+
+  def nilify_params!(hash, *keys)
+    keys.each { |k| hash[k] = hash[k].presence if hash.key?(k) }
+    hash
   end
 end

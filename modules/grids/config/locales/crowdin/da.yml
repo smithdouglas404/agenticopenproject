@@ -8,6 +8,7 @@ da:
         row_count: "Number of rows"
         column_count: "Number of columns"
         widgets: "Widgets"
+        scope: "Omfang"
     errors:
       models:
         grids/grid:

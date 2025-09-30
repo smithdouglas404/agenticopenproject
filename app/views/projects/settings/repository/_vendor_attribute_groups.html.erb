@@ -1,9 +1,9 @@
 <%= content_tag :fieldset,
-                class: 'form--fieldset description attributes-group',
+                class: "form--fieldset description attributes-group",
                 id: "#{vendor}-#{type}",
                 hidden: !existing,
                 data: {
-                  'repository-settings-target': 'scmTypeOptions'
+                  "repository-settings-target": "scmTypeOptions"
                 } do %>
   <div class="attributes-group--header">
     <div class="attributes-group--header-container">
@@ -13,15 +13,15 @@
     </div>
     <% unless repository.new_record? %>
       <div class="attributes-group--header-control">
-        <%= render partial: 'projects/settings/repository/repository_committers_link', locals: { repository: repository } %>
+        <%= render partial: "projects/settings/repository/repository_committers_link", locals: { repository: repository } %>
         <% if type === 'managed' %>
           <%= link_to t(:button_delete), destroy_info_project_repository_path(repository.project),
                       method: :get,
-                      class: 'icon icon-delete' %>
+                      class: "icon icon-delete" %>
         <% else %>
           <%= link_to t(:button_remove), destroy_info_project_repository_path(repository.project),
                       method: :get,
-                      class: 'icon icon-remove' %>
+                      class: "icon icon-remove" %>
         <% end %>
       </div>
     <% end %>

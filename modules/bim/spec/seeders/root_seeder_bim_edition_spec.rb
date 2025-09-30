@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -36,6 +38,12 @@ RSpec.describe RootSeeder,
                with_config: { edition: "bim" } do
   include RootSeederTestHelpers
 
+  before_all do
+    week_with_saturday_and_sunday_as_weekend
+    clear_enqueued_jobs
+    clear_performed_jobs
+  end
+
   shared_examples "creates BIM demo data" do
     def group_name(reference)
       root_seeder.seed_data.find_reference(reference)["name"]
@@ -47,7 +55,7 @@ RSpec.describe RootSeeder,
 
     it "creates the BIM demo data" do
       expect(Project.count).to eq 4
-      expect(EnabledModule.count).to eq 23
+      expect(EnabledModule.count).to eq 27
       expect(WorkPackage.count).to eq 76
       expect(Wiki.count).to eq 3
       expect(Query.count).to eq 29
@@ -98,12 +106,13 @@ RSpec.describe RootSeeder,
       )
     end
 
-    include_examples "it creates records", model: Color, expected_count: 144
+    include_examples "it creates records", model: Color, expected_count: 148
     include_examples "it creates records", model: DocumentCategory, expected_count: 3
     include_examples "it creates records", model: IssuePriority, expected_count: 4
     include_examples "it creates records", model: Status, expected_count: 4
     include_examples "it creates records", model: TimeEntryActivity, expected_count: 3
     include_examples "it creates records", model: Workflow, expected_count: 273
+    include_examples "it is compatible with the automatic scheduling mode"
   end
 
   describe "demo data" do
@@ -111,7 +120,7 @@ RSpec.describe RootSeeder,
 
     before_all do
       with_edition("bim") do
-        root_seeder.seed_data!
+        root_seeder.seed!
       end
     end
 
@@ -119,14 +128,16 @@ RSpec.describe RootSeeder,
 
     include_examples "no email deliveries"
 
-    context "when run a second time" do
+    context "when run a second time in a different language", :settings_reset do
       before_all do
-        with_edition("bim") do
-          described_class.new.seed_data!
+        with_locale_env("de") do
+          with_edition("bim") do
+            described_class.new.seed!
+          end
         end
       end
 
-      it "does not create additional data" do
+      it "does not create additional data and does not raise any errors" do
         expect(Project.count).to eq 4
         expect(WorkPackage.count).to eq 76
         expect(Wiki.count).to eq 3
@@ -138,6 +149,25 @@ RSpec.describe RootSeeder,
         expect(Bim::IfcModels::IfcModel.count).to eq 3
         expect(Grids::Overview.count).to eq 4
         expect(Boards::Grid.count).to eq 2
+      end
+    end
+
+    context "when run a second time after all demo projects and original statuses " \
+            "and workflows are deleted (Bug #65138)", :settings_reset do
+      before_all do
+        # Simulate a user having created new statuses, and deleted all default
+        # statuses and workflows (making looking up statuses by name impossible)
+        new_status = create(:status, :default, name: "My own default status")
+        Project.destroy_all
+        # destroying all statuses will destroy all workflows by cascade
+        Status.where.not(id: new_status.id).destroy_all
+        described_class.new.seed!
+      end
+
+      it "does not create additional data and does not raise any errors" do
+        # seeding does not recreate demo projects
+        expect(Project.count).to eq 0
+        expect(WorkPackage.count).to eq 0
       end
     end
   end
@@ -153,7 +183,7 @@ RSpec.describe RootSeeder,
           "tr: #{original_translation}"
         end
 
-        root_seeder.seed_data!
+        root_seeder.seed!
       end
     end
 
@@ -191,13 +221,10 @@ RSpec.describe RootSeeder,
     shared_let(:root_seeder) { described_class.new }
 
     before_all do
-      with_env("OPENPROJECT_DEFAULT__LANGUAGE" => "de") do
-        reset(:default_language) # Settings are a pain to reset
+      with_locale_env("de", env_var_name: "OPENPROJECT_DEFAULT__LANGUAGE") do
         with_edition("bim") do
-          root_seeder.seed_data!
+          root_seeder.seed!
         end
-      ensure
-        reset(:default_language)
       end
     end
 
@@ -220,7 +247,7 @@ RSpec.describe RootSeeder,
           allow(Settings::Definition["default_projects_modules"])
               .to receive(:writable?).and_return(false)
 
-          root_seeder.seed_data!
+          root_seeder.seed!
         end
       end
     end
@@ -248,5 +275,28 @@ RSpec.describe RootSeeder,
     end
 
     include_examples "no email deliveries"
+  end
+
+  context "when admin user creation is locked with OPENPROJECT_SEED_ADMIN_USER_LOCKED=true",
+          :settings_reset do
+    shared_let(:root_seeder) { described_class.new }
+
+    before_all do
+      with_env("OPENPROJECT_SEED_ADMIN_USER_LOCKED" => "true") do
+        with_edition("bim") do
+          reset(:seed_admin_user_locked)
+          root_seeder.seed!
+        end
+      end
+    ensure
+      reset(:seed_admin_user_locked)
+      RequestStore.clear! # resets `User.current` cached result
+    end
+
+    it "seeds without any errors, but locks the admin user", :aggregate_failures do
+      expect(Project.count).to eq 4
+      expect(WorkPackage.count).to eq 76
+      expect(root_seeder.admin_user).to be_locked
+    end
   end
 end

@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -82,13 +82,15 @@ RSpec.describe TableHelpers::TableParser do
       .to raise_error(ArgumentError, "Too many cells in row 1, have you forgotten some headers?")
   end
 
-  it "is ok to have more headers than cells (value of missing cells will be nil)" do
+  it "is ok to have more headers than cells (raw values of missing cells will be empty strings)" do
     table = <<~TABLE
       subject | work | remaining work
       wp      |   4h
     TABLE
     parsed_data = described_class.new.parse(table)
+    expect(parsed_data.dig(0, :row, " work ")).to eq("   4h")
     expect(parsed_data.dig(0, :attributes, :estimated_hours)).to eq(4.0)
+    expect(parsed_data.dig(0, :row, " remaining work")).to eq("")
     expect(parsed_data.dig(0, :attributes, :remaining_hours)).to be_nil
   end
 
@@ -126,12 +128,12 @@ RSpec.describe TableHelpers::TableParser do
     end
 
     it "sets the parent attribute by its identifier" do
-      attributes = parsed_data.flat_map { _1[:attributes] }
+      attributes = parsed_data.flat_map { it[:attributes] }
       expect(attributes.pluck(:parent)).to eq([nil, :parent, :child, :parent, :parent, :child3, nil])
     end
 
     it "sets the subject attribute" do
-      attributes = parsed_data.flat_map { _1[:attributes] }
+      attributes = parsed_data.flat_map { it[:attributes] }
       expect(attributes.pluck(:subject))
         .to eq(["Parent", "Child", "Grand-Child", "Child 2", "Child 3", "Another child", "Root sibling"])
     end

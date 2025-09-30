@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -66,6 +68,12 @@ RSpec.describe "API v3 Work package resource",
     shared_context "patch request" do
       before do
         patch patch_path, params.to_json
+      end
+    end
+
+    shared_context "with application/hal+json content type" do
+      before do
+        header("Content-Type", "application/hal+json")
       end
     end
 
@@ -157,9 +165,10 @@ RSpec.describe "API v3 Work package resource",
       context "subject" do
         let(:params) { valid_params.merge(subject: "Updated subject") }
 
+        include_context "with application/hal+json content type"
         include_context "patch request"
 
-        it { expect(response.status).to eq(200) }
+        it { expect(response).to have_http_status(:ok) }
 
         it "responds with updated work package subject" do
           expect(subject.body).to be_json_eql("Updated subject".to_json).at_path("subject")
@@ -172,7 +181,7 @@ RSpec.describe "API v3 Work package resource",
 
           include_context "patch request"
 
-          it { expect(response.status).to eq(422) }
+          it { expect(response).to have_http_status(:unprocessable_entity) }
 
           it "has a readonly error" do
             expect(response.body)
@@ -200,7 +209,7 @@ RSpec.describe "API v3 Work package resource",
 
           include_context "patch request"
 
-          it { expect(response.status).to eq(200) }
+          it { expect(response).to have_http_status(:ok) }
 
           it_behaves_like "description updated"
         end
@@ -214,7 +223,7 @@ RSpec.describe "API v3 Work package resource",
 
           include_context "patch request"
 
-          it { expect(response.status).to eq(200) }
+          it { expect(response).to have_http_status(:ok) }
 
           it_behaves_like "description updated"
         end
@@ -226,7 +235,7 @@ RSpec.describe "API v3 Work package resource",
 
         include_context "patch request"
 
-        it { expect(response.status).to eq(200) }
+        it { expect(response).to have_http_status(:ok) }
 
         it "updates the scheduling mode" do
           expect(subject.body).to be_json_eql(schedule_manually.to_json).at_path("scheduleManually")
@@ -239,7 +248,7 @@ RSpec.describe "API v3 Work package resource",
 
         include_context "patch request"
 
-        it { expect(response.status).to eq(200) }
+        it { expect(response).to have_http_status(:ok) }
 
         it "responds with updated start date" do
           expect(subject.body).to be_json_eql(date_string.to_json).at_path("startDate")
@@ -254,7 +263,7 @@ RSpec.describe "API v3 Work package resource",
 
         include_context "patch request"
 
-        it { expect(response.status).to eq(200) }
+        it { expect(response).to have_http_status(:ok) }
 
         it "responds with updated finish date" do
           expect(subject.body).to be_json_eql(date_string.to_json).at_path("dueDate")
@@ -269,7 +278,7 @@ RSpec.describe "API v3 Work package resource",
 
         include_context "patch request"
 
-        it { expect(response.status).to eq(200) } # rubocop:disable RSpecRails/HaveHttpStatus
+        it { expect(response).to have_http_status(:ok) }
 
         it "responds with updated finish date" do
           expect(subject.body).to be_json_eql(duration.to_json).at_path("remainingTime")
@@ -297,7 +306,7 @@ RSpec.describe "API v3 Work package resource",
 
           include_context "patch request"
 
-          it { expect(response.status).to eq(200) }
+          it { expect(response).to have_http_status(:ok) }
 
           it "responds with updated work package status" do
             expect(subject.body).to be_json_eql(target_status.name.to_json)
@@ -349,7 +358,7 @@ RSpec.describe "API v3 Work package resource",
 
           include_context "patch request"
 
-          it { expect(response.status).to eq(200) }
+          it { expect(response).to have_http_status(:ok) }
 
           it "responds with updated work package type" do
             expect(subject.body).to be_json_eql(target_type.name.to_json)
@@ -425,7 +434,7 @@ RSpec.describe "API v3 Work package resource",
           include_context "patch request"
 
           it "is successful" do
-            expect(response.status).to eq(200)
+            expect(response).to have_http_status(:ok)
           end
 
           it_behaves_like "lock version updated"
@@ -496,7 +505,7 @@ RSpec.describe "API v3 Work package resource",
 
             include_context "patch request"
 
-            it { expect(response.status).to eq(200) }
+            it { expect(response).to have_http_status(:ok) }
 
             it { expect(response.body).to be_json_eql(nil.to_json).at_path(href_path) }
 
@@ -507,7 +516,7 @@ RSpec.describe "API v3 Work package resource",
             shared_examples_for "valid user assignment" do
               let(:title) { assigned_user.name.to_s.to_json }
 
-              it { expect(response.status).to eq(200) }
+              it { expect(response).to have_http_status(:ok) }
 
               it {
                 expect(response.body)
@@ -614,7 +623,7 @@ RSpec.describe "API v3 Work package resource",
         context "valid" do
           include_context "patch request"
 
-          it { expect(response.status).to eq(200) }
+          it { expect(response).to have_http_status(:ok) }
 
           it "responds with the work package assigned to the version" do
             expect(subject.body)
@@ -630,7 +639,7 @@ RSpec.describe "API v3 Work package resource",
 
           include_context "patch request"
 
-          it { expect(response.status).to eq(422) }
+          it { expect(response).to have_http_status(:unprocessable_entity) }
 
           it "has a readonly error" do
             expect(response.body)
@@ -651,7 +660,7 @@ RSpec.describe "API v3 Work package resource",
         context "valid" do
           include_context "patch request"
 
-          it { expect(response.status).to eq(200) }
+          it { expect(response).to have_http_status(:ok) }
 
           it "responds with the work package assigned to the category" do
             expect(subject.body)
@@ -674,7 +683,7 @@ RSpec.describe "API v3 Work package resource",
         context "valid" do
           include_context "patch request"
 
-          it { expect(response.status).to eq(200) }
+          it { expect(response).to have_http_status(:ok) }
 
           it "responds with the work package assigned to the priority" do
             expect(subject.body)
@@ -698,7 +707,7 @@ RSpec.describe "API v3 Work package resource",
         context "valid" do
           include_context "patch request"
 
-          it { expect(response.status).to eq(200) }
+          it { expect(response).to have_http_status(:ok) }
 
           it "responds with the work package and its new budget" do
             expect(subject.body).to be_json_eql(target_budget.subject.to_json)
@@ -742,7 +751,7 @@ RSpec.describe "API v3 Work package resource",
         context "valid" do
           include_context "patch request"
 
-          it { expect(response.status).to eq(200) }
+          it { expect(response).to have_http_status(:ok) }
 
           it "responds with the work package assigned to the new value" do
             expect(subject.body)

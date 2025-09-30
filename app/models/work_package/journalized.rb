@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,14 +32,23 @@ module WorkPackage::Journalized
   extend ActiveSupport::Concern
 
   included do
-    acts_as_journalized
+    acts_as_journalized journals_association_extension: proc {
+      def internal_visible
+        if proxy_association.owner.project.enabled_internal_comments &&
+            User.current.allowed_in_project?(:view_internal_comments, proxy_association.owner.project)
+          all
+        else
+          where(internal: false)
+        end
+      end
+    }
 
     # This one is here only to ease reading
     module JournalizedProcs
       def self.event_title
         Proc.new do |o|
           title = o.to_s
-          title << " (#{o.status.name})" if o.status.present?
+          title += " (#{o.status.name})" if o.status.present?
 
           title
         end
@@ -54,7 +65,7 @@ module WorkPackage::Journalized
           journal = o.last_journal
           t = "work_package"
 
-          t << if journal && journal.details.empty? && !journal.initial?
+          t += if journal && journal.details.empty? && !journal.initial?
                  "-note"
                else
                  status = Status.find_by(id: o.status_id)
@@ -77,28 +88,30 @@ module WorkPackage::Journalized
                   name: JournalizedProcs.event_name,
                   url: JournalizedProcs.event_url
 
-    register_journal_formatted_fields(:id, "parent_id")
-    register_journal_formatted_fields(:chronic_duration,
-                                      "estimated_hours", "derived_estimated_hours",
-                                      "remaining_hours", "derived_remaining_hours")
-    register_journal_formatted_fields(:percentage, "done_ratio", "derived_done_ratio")
-    register_journal_formatted_fields(:diff, "description")
-    register_journal_formatted_fields(:schedule_manually, "schedule_manually")
-    register_journal_formatted_fields(:attachment, /attachments_?\d+/)
-    register_journal_formatted_fields(:custom_field, /custom_fields_\d+/)
-    register_journal_formatted_fields(:ignore_non_working_days, "ignore_non_working_days")
-    register_journal_formatted_fields(:cause, "cause")
-    register_journal_formatted_fields(:file_link, /file_links_?\d+/)
+    register_journal_formatted_fields "parent_id", formatter_key: :id
+    register_journal_formatted_fields "estimated_hours", "derived_estimated_hours",
+                                      "remaining_hours", "derived_remaining_hours",
+                                      formatter_key: :chronic_duration
+    register_journal_formatted_fields "done_ratio", "derived_done_ratio", formatter_key: :percentage
+    register_journal_formatted_fields "description", formatter_key: :diff
+    register_journal_formatted_fields "schedule_manually", formatter_key: :schedule_manually
+    register_journal_formatted_fields /attachments_?\d+/, formatter_key: :attachment
+    register_journal_formatted_fields /custom_fields_\d+/, formatter_key: :custom_field
+    register_journal_formatted_fields "ignore_non_working_days", formatter_key: :ignore_non_working_days
+    register_journal_formatted_fields "cause", formatter_key: :cause
+    register_journal_formatted_fields /file_links_?\d+/, formatter_key: :file_link
+    register_journal_formatted_fields "project_phase_definition_id", formatter_key: :project_phase_definition
 
     # Joined
-    register_journal_formatted_fields :named_association, :parent_id, :project_id,
+    register_journal_formatted_fields :parent_id, :project_id,
                                       :budget_id,
                                       :status_id, :type_id,
                                       :assigned_to_id, :priority_id,
                                       :category_id, :version_id,
-                                      :author_id, :responsible_id
-    register_journal_formatted_fields :datetime, :start_date, :due_date
-    register_journal_formatted_fields :plaintext, :subject
-    register_journal_formatted_fields :day_count, :duration
+                                      :author_id, :responsible_id,
+                                      formatter_key: :named_association
+    register_journal_formatted_fields :start_date, :due_date, formatter_key: :datetime
+    register_journal_formatted_fields :subject, formatter_key: :plaintext
+    register_journal_formatted_fields :duration, formatter_key: :day_count
   end
 end

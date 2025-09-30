@@ -6,6 +6,7 @@ import { FieldType } from '@ngx-formly/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './date-input.component.html',
   styleUrls: ['./date-input.component.scss'],
+  standalone: false,
 })
 export class DateInputComponent extends FieldType {
   @HostBinding('class') get class() {

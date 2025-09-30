@@ -1,7 +1,7 @@
 /*
  * -- copyright
  * OpenProject is an open source project management software.
- * Copyright (C) 2023 the OpenProject GmbH
+ * Copyright (C) the OpenProject GmbH
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 3.
@@ -29,7 +29,7 @@
  */
 
 import { Controller } from '@hotwired/stimulus';
-import { ICKEditorInstance } from 'core-app/shared/components/editor/components/ckeditor/ckeditor.types';
+import { retrieveCkEditorInstance } from 'core-app/shared/helpers/ckeditor-helpers';
 
 interface QuoteResult {
   subject:string;
@@ -49,21 +49,19 @@ export default class ForumMessagesController extends Controller {
   public quote(event:MouseEvent) {
     event.preventDefault();
 
-    const link = (event.target as HTMLElement).closest('a') as HTMLAnchorElement;
-    const href = link.href;
-
-    void jQuery.getJSON(href)
-      .done((result:QuoteResult) => this.insertQuoteInReply(result));
+    const { href } = (event.target as HTMLElement).closest('a')!;
+    void fetch(href, {
+      headers: {
+        Accept: 'application/json',
+        'X-Authentication-Scheme': 'Session',
+      },
+    })
+      .then((response) => response.json())
+      .then((result:QuoteResult) => this.insertQuoteInReply(result));
   }
 
-  private insertQuoteInReply(result:QuoteResult):void {
-    this.subjectTarget.value = result.subject;
-
-    const ckeditorField = this.replyTarget.querySelector('op-ckeditor') as HTMLElement;
-
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-    void jQuery(ckeditorField)
-      .data('editor')
-      .then((editor:ICKEditorInstance) => editor.setData(result.content));
+  private insertQuoteInReply({ subject, content }:QuoteResult):void {
+    this.subjectTarget.value = subject;
+    retrieveCkEditorInstance(this.replyTarget)?.setData(content);
   }
 }

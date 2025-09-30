@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -44,18 +46,6 @@ module API
               href: api_v3_paths.file_links(represented.id),
               method: :post
             }
-          end
-
-          property :file_links,
-                   embedded: true,
-                   exec_context: :decorator,
-                   if: ->(*) { embed_links && current_user.allowed_in_project?(:view_file_links, represented.project) },
-                   uncacheable: true
-
-          def file_links
-            ::API::V3::FileLinks::FileLinkCollectionRepresenter.new(represented.file_links,
-                                                                    self_link: api_v3_paths.file_links(represented.id),
-                                                                    current_user:)
           end
         end
       end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -40,7 +42,7 @@ RSpec.describe API::V3::Activities::ActivitiesAPI, content_type: :json do
   let(:work_package) do
     create(:work_package, author: current_user, project:)
   end
-  let(:permissions) { %i[view_work_packages edit_work_package_notes] }
+  let(:permissions) { %i[view_work_packages edit_work_package_comments] }
   let(:activity) { work_package.journals.first }
   let(:comment) { "This is a new test comment!" }
 
@@ -109,14 +111,14 @@ RSpec.describe API::V3::Activities::ActivitiesAPI, content_type: :json do
       end
 
       context "when having only the edit own permission" do
-        let(:permissions) { %i[view_work_packages edit_own_work_package_notes] }
+        let(:permissions) { %i[view_work_packages edit_own_work_package_comments] }
 
         it_behaves_like "unauthorized access"
       end
     end
 
     context "when having only the edit own permission" do
-      let(:permissions) { %i[view_work_packages edit_own_work_package_notes] }
+      let(:permissions) { %i[view_work_packages edit_own_work_package_comments] }
 
       it_behaves_like "valid activity request", "Activity::Comment"
 
@@ -133,6 +135,79 @@ RSpec.describe API::V3::Activities::ActivitiesAPI, content_type: :json do
       let(:permissions) { [] }
 
       it_behaves_like "not found"
+    end
+
+    context "for a internal journal" do
+      let(:activity) do
+        work_package.add_journal(user: current_user, notes: "need to know basis", internal: true)
+        work_package.save(validate: false)
+        work_package.journals.last
+      end
+
+      context "when editing OWN journals" do
+        context "and the user has permission to edit own internal journals" do
+          let(:permissions) do
+            %i[view_work_packages view_internal_comments edit_own_internal_comments]
+          end
+
+          it_behaves_like "valid activity request", "Activity::Comment"
+
+          it_behaves_like "valid activity patch request"
+        end
+
+        context "and the user does not have permission to edit own internal journals" do
+          let(:permissions) { %i[view_work_packages view_internal_comments] }
+
+          it_behaves_like "unauthorized access"
+        end
+      end
+
+      context "when editing OTHERs internal journals" do
+        let(:other_user) { create(:user, member_with_permissions: { project => permissions }) }
+
+        context "and the user has permission to edit others internal journals" do
+          let(:permissions) do
+            %i[view_work_packages view_internal_comments edit_others_internal_comments]
+          end
+
+          before do
+            login_as(other_user)
+          end
+
+          it_behaves_like "valid activity request", "Activity::Comment"
+
+          it_behaves_like "valid activity patch request"
+        end
+
+        context "and the user does not have permission to edit others internal journals" do
+          let(:permissions) { %i[view_work_packages view_internal_comments] }
+
+          before do
+            login_as(other_user)
+          end
+
+          it_behaves_like "unauthorized access"
+        end
+      end
+    end
+
+    context "with attachments" do
+      let(:attachment1) { create(:attachment, container: nil, author: current_user) }
+      let(:attachment2) { create(:attachment, container: nil, author: current_user) }
+
+      let(:comment) do
+        <<~HTML
+          <img class="op-uc-image op-uc-image_inline" src="/api/v3/attachments/#{attachment1.id}/content">
+          Lorem ipsum dolor sit amet
+          <img class="op-uc-image op-uc-image_inline" src="/api/v3/attachments/#{attachment2.id}/content">
+          consectetur adipiscing elit
+        HTML
+      end
+
+      it "creates attachment claims" do
+        expect(last_response.body).to be_json_eql(comment.to_json).at_path("comment/raw")
+        expect(activity.reload.attachments).to contain_exactly(attachment1, attachment2)
+      end
     end
   end
 
@@ -160,6 +235,44 @@ RSpec.describe API::V3::Activities::ActivitiesAPI, content_type: :json do
         end
 
         it_behaves_like "valid activity request", "Activity::Comment"
+
+        context "and an emoji reaction" do
+          let!(:emoji_reaction) do
+            create(:emoji_reaction, reactable: activity, user: current_user)
+          end
+
+          it "returns the emoji reactions" do
+            get get_path
+
+            expect(last_response.body)
+              .to be_json_eql("#{activity.id}-#{emoji_reaction.reaction}".to_json)
+              .at_path("_embedded/emojiReactions/_embedded/elements/0/id")
+
+            expect(last_response.body)
+              .to be_json_eql(emoji_reaction.emoji.to_json)
+              .at_path("_embedded/emojiReactions/_embedded/elements/0/emoji")
+          end
+        end
+      end
+
+      context "for a internal journal" do
+        let(:activity) do
+          work_package.add_journal(user: current_user, notes: "need to know basis", internal: true)
+          work_package.save(validate: false)
+          work_package.journals.last
+        end
+
+        context "and the user has permission to view internal journals" do
+          let(:permissions) { %i[view_work_packages view_internal_comments] }
+
+          it_behaves_like "valid activity request", "Activity::Comment"
+        end
+
+        context "and the user does not have permission to view internal journals" do
+          let(:permissions) { [:view_work_packages] }
+
+          it_behaves_like "not found"
+        end
       end
 
       context "requesting nonexistent activity" do

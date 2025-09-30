@@ -2,20 +2,21 @@
 sidebar_navigation:
   title: Drive Guide
   priority: 600
-description: Drive guide for OneDrive/SharePoint integration setup in OpenProject
-keywords: OneDrive/SharePoint file storage integration, OneDrive, SharePoint, DriveID, Azure, Drive ID
+description: Drive guide for OneDrive integration setup in OpenProject
+keywords: OneDrive file storage integration, OneDrive, SharePoint, DriveID, Azure, Drive ID
 ---
 
 # Drive Guide
 
 ## Configure drive for automatic management
 
-If you need a OneDrive/SharePoint drive configured for using the "Automatically managed project folders" file storage option, there are some
-preliminary steps to take. Otherwise, if the drive will to be used in a file storage with the permission
-management still based within OneDrive/SharePoint, you should skip these steps and continue
+If you need a OneDrive drive inside a SharePoint site configured for using the "Automatically managed project folders"
+file storage option, there are some preliminary steps to take. Otherwise, if the drive will to be used in a file storage
+with the permission management still based within OneDrive, you should skip these steps and continue
 with [obtaining the drive id](./#how-to-obtain-a-drive-id).
 
-> Disclaimer: Some of the following descriptions are very tightly connected to the current (2024-02-13) state of
+> [!IMPORTANT]
+> **Disclaimer**: Some of the following descriptions are very tightly connected to the current (2024-02-13) state of
 > SharePoint configuration. This may easily change in future, as we do not control nor foresee changes to the
 > configuration UI developed by Microsoft.
 
@@ -25,26 +26,32 @@ The first step to take is to interrupt the inheritance chain of SharePoint for t
 OpenProject instance will be able to manage the permissions on the drive for the project folders, otherwise SharePoint
 will consistently override those permissions.
 
-To achieve that, you need to enter the *Library Settings* of the target drive. Those usually can get accessed by selecting
-the *Settings gear icon* to the top right, selecting *Library Settings* and finally selecting *More Library Settings*. In
-the category of *Permissions and Management*, there should be the option to select *Permissions for this document
-library*. Within the new page, in the top menu, you need to select the option *Stop Inheriting Permissions*.
+To achieve that, you need to enter the *Library Settings* of the target drive. Those usually can get accessed by
+selecting the *Settings gear icon* to the top right, selecting *Library Settings* and finally selecting *More Library
+Settings*. In the category of *Permissions and Management*, there should be the option to select *Permissions for this
+document library*. Within the new page, in the top menu, you need to select the option *Stop Inheriting Permissions*.
+
+> [!TIP]
+> If you are using OneDrive for Business instead of SharePoint, there will be no site overriding the
+> permissions. Therefore, you can skip this step. You might still want to remove the previously set permissions, as
+> described in the next section.
 
 ### Remove previously set permissions
 
-Once the inheritance chain is interrupted, the last remaining step is to prepare the drive for remote permissions management.
+Once the inheritance chain is interrupted, the last remaining step is to prepare the drive for remote permissions
+management.
 
 In the last screen of the drive configuration (the one after clicking on *Permissions for this document library*
-in the *Library Settings*), you should be able to see a list of all currently set permissions. In a standard drive, where
-no custom permissions were set, this is usually restricted to the *Members*, *Visitors* and *Owners* (SharePoint groups
-that are linked to the parent site). Now, you need to remove all permissions except the ones for the group *Owners*. Keeping these
-is important for still being able to reconfigure the drive at a later point in time.
+in the *Library Settings*), you should be able to see a list of all currently set permissions. In a standard drive,
+where no custom permissions were set, this is usually restricted to the *Members*, *Visitors* and *Owners* (SharePoint
+groups that are linked to the parent site). Now, you need to remove all permissions except the ones for the group
+*Owners*. Keeping these is important for still being able to reconfigure the drive at a later point in time.
 
 Once this is done, there should be no permissions left assigned to the document library, except the *Owners* group.
 
 ## How to obtain a drive ID
 
-To configure a OneDrive/SharePoint storage you will need the drive ID of the drive you want to connect to OpenProject.
+To configure a OneDrive file storage you will need the drive ID of the drive you want to connect to OpenProject.
 Usually this will be a drive within a SharePoint site or a group.
 
 The easiest way to get this ID is by using the Microsoft GRAPH API.
@@ -74,13 +81,15 @@ GET https://graph.microsoft.com/v1.0/sites/<SITE_ID>/drives
 ```
 
 This will result in a list of drives. You can select the correct drive by its `name` and take the value of the `ID`.
-With this value you can fully configure the OneDrive/SharePoint integration in OpenProject.
+With this value you can fully configure the OneDrive integration in OpenProject.
 
 ## Step-by-step guide with examples
 
 In this section we provide a few examples, in which we demonstrate how to go through the steps mentioned above with a
 specific toolset.
-> Note: following examples are explicitly written for this toolset and other mentioned preconditions, hence deviating
+
+> [!NOTE]
+> Following examples are explicitly written for this toolset and other mentioned preconditions, hence deviating
 > from the preconditions will cause the example to deviate.
 
 ### Example 1: Microsoft GRAPH explorer
@@ -202,7 +211,7 @@ There is a way to get all necessary information by executing the web requests fr
 > **IMPORTANT, please read**: Setting the API permission `Sites.Read.All` to the `Application` level imposes an
 > undeniable security risk.
 
-If the client credentials would get leaked, any client can read sites and their content by just using those credentials.
+If the client credentials get leaked, any client can read sites and their content by just using those credentials.
 It is highly recommended to remove that API permission after using this method to get the drive ID.
 
 #### How to
@@ -220,7 +229,7 @@ curl -H "Content-Type: application/x-www-form-urlencoded" \
   'https://login.microsoftonline.com/<TENANT_ID>/oauth2/v2.0/token' | jq .access_token
 ```
 
-- The result is a valid access that is needed in the following requests.
+- The result is a valid access token that is needed in the following requests.
 - Fetch the hostname of the tenant (e.g. `example.sharepoint.com`).
 - Go to the SharePoint website, where the drive you want to connect can be found.
   - Fetch the relative path from the browser's URL field (e.g. `/sites/mysharepointsite`).

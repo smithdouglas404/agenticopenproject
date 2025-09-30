@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,7 +35,7 @@ RSpec.describe MeetingSections::DeleteContract do
   include_context "ModelContract shared context"
 
   shared_let(:project) { create(:project) }
-  shared_let(:meeting) { create(:structured_meeting, project:) }
+  shared_let(:meeting) { create(:meeting, project:) }
   let(:section) { create(:meeting_section, meeting:) }
   let(:contract) { described_class.new(section, user) }
 

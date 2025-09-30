@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -31,7 +31,7 @@ import { TimezoneService } from 'core-app/core/datetime/timezone.service';
 import { IFileIcon } from 'core-app/shared/components/storages/icons.mapping';
 import { getIconForMimeType, isDirectory } from 'core-app/shared/components/storages/functions/storages.functions';
 
-interface StorageFileListItemCheckbox {
+export interface StorageFileListItemCheckbox {
   selected:boolean;
   changeSelection?:() => void;
 }

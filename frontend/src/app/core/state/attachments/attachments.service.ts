@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -59,7 +59,6 @@ import {
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import isNewResource, { HAL_NEW_RESOURCE_ID } from 'core-app/features/hal/helpers/is-new-resource';
 import waitForUploadsFinished from 'core-app/core/upload/wait-for-uploads-finished';
-import isNotNull from 'core-app/core/state/is-not-null';
 
 @Injectable()
 export class AttachmentsResourceService extends ResourceStoreService<IAttachment> {
@@ -144,6 +143,15 @@ export class AttachmentsResourceService extends ResourceStoreService<IAttachment
       );
   }
 
+  public static getAttachmentsSelfLink(resource:HalResource):string | null {
+    if (isNewResource(resource)) {
+      return null;
+    }
+
+    const attachments = resource.attachments as { href?:string };
+    return attachments?.href || null;
+  }
+
   private uploadAttachments(href:string, files:IUploadFile[]):Observable<IAttachment[]> {
     const observables = this.uploadService.upload<IAttachment>(href, files);
     const uploads = files.map((f, i):[File, Observable<HttpEvent<unknown>>] => [f.file, observables[i]]);
@@ -155,7 +163,7 @@ export class AttachmentsResourceService extends ResourceStoreService<IAttachment
         map((responses) =>
           responses
             .map((response) => response.body)
-            .filter(isNotNull)),
+            .filter((body) => body !== null)),
       );
   }
 
@@ -175,12 +183,12 @@ export class AttachmentsResourceService extends ResourceStoreService<IAttachment
    */
   private getUploadTarget(resource:HalResource):string {
     return this.getDirectUploadLink(resource)
-      || AttachmentsResourceService.getAttachmentsSelfLink(resource)
+      || AttachmentsResourceService.getAddAttachmentsLink(resource)
       || this.apiV3Service.attachments.path;
   }
 
   private getDirectUploadLink(resource:HalResource):string|null {
-    const links = resource.$links as unknown&{ prepareAttachment:HalLink };
+    const links = resource.$links as { prepareAttachment:HalLink };
 
     if (links.prepareAttachment) {
       return links.prepareAttachment.href as string;
@@ -193,9 +201,13 @@ export class AttachmentsResourceService extends ResourceStoreService<IAttachment
     return null;
   }
 
-  private static getAttachmentsSelfLink(resource:HalResource):string|null {
-    const attachments = resource.attachments as unknown&{ href?:string };
-    return attachments?.href || null;
+  private static getAddAttachmentsLink(resource:HalResource):string|null {
+    if (isNewResource(resource)) {
+      return null;
+    }
+
+    const link = resource.addAttachment as { href?:string };
+    return link?.href || null;
   }
 
   protected createStore():ResourceStore<IAttachment> {

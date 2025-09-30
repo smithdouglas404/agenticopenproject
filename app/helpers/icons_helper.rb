@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -36,23 +38,11 @@ module IconsHelper
     %(<i class="#{classnames}" #{title} aria-hidden="true"></i>).html_safe
   end
 
-  def spot_icon(icon_name, title: nil, size: nil, inline: false, classnames: nil)
-    classes = [
-      "spot-icon",
-      size ? "spot-icon_#{size}" : nil,
-      inline ? "spot-icon_inline" : nil,
-      "spot-icon_#{icon_name}",
-      classnames
-    ].compact.join(" ")
-
-    content_tag(:span, title, class: classes)
-  end
-
   ##
   # Icon wrapper with an invisible label
   def icon_wrapper(icon_class, label)
     content = op_icon(icon_class)
-    content << content_tag(:span, label, class: "hidden-for-sighted")
+    content << content_tag(:span, label, class: "sr-only")
     content
   end
 end

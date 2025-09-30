@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -40,10 +42,13 @@ class WorkPackage < ApplicationRecord
   include WorkPackages::Costs
   include WorkPackages::Relations
   include ::Scopes::Scoped
+  include HasMembers
+  include Remindable
 
   include OpenProject::Journal::AttachmentHelper
 
   DONE_RATIO_OPTIONS = %w[field status].freeze
+  TOTAL_PERCENT_COMPLETE_MODE_OPTIONS = %w[work_weighted_average simple_average].freeze
 
   belongs_to :project
   belongs_to :type
@@ -52,13 +57,12 @@ class WorkPackage < ApplicationRecord
   belongs_to :assigned_to, class_name: "Principal", optional: true
   belongs_to :responsible, class_name: "Principal", optional: true
   belongs_to :version, optional: true
+  belongs_to :project_phase_definition, class_name: "Project::PhaseDefinition", optional: true
   belongs_to :priority, class_name: "IssuePriority"
   belongs_to :category, class_name: "Category", optional: true
 
-  has_many :time_entries, dependent: :delete_all
-
+  has_many :time_entries, dependent: :delete_all, inverse_of: :entity, as: :entity
   has_many :file_links, dependent: :delete_all, class_name: "Storages::FileLink", as: :container
-
   has_many :storages, through: :project
 
   has_and_belongs_to_many :changesets, -> { # rubocop:disable Rails/HasAndBelongsToMany
@@ -66,9 +70,6 @@ class WorkPackage < ApplicationRecord
   }
 
   has_and_belongs_to_many :github_pull_requests # rubocop:disable Rails/HasAndBelongsToMany
-
-  has_many :members, as: :entity, dependent: :destroy
-  has_many :member_principals, through: :members, class_name: "Principal", source: :principal
 
   has_many :meeting_agenda_items, dependent: :nullify
   # The MeetingAgendaItem has a default order, but the ordered field is not part of the select
@@ -126,7 +127,7 @@ class WorkPackage < ApplicationRecord
     where(author_id: author.id)
   }
 
-  scopes :covering_dates_and_days_of_week,
+  scopes :covering_dates_or_days_of_week,
          :allowed_to,
          :for_scheduling,
          :include_derived_dates,
@@ -146,7 +147,7 @@ class WorkPackage < ApplicationRecord
   # thus the associated agenda items will be available at the time the callback method is performed.
   around_destroy :save_agenda_item_journals, prepend: true, if: -> { meeting_agenda_items.any? }
 
-  acts_as_customizable
+  acts_as_customizable validate_on: :saving_custom_fields
 
   acts_as_searchable columns: ["subject",
                                "#{table_name}.description",
@@ -206,12 +207,24 @@ class WorkPackage < ApplicationRecord
   include WorkPackage::Journalized
   prepend Journable::Timestamps
 
-  def self.use_status_for_done_ratio?
+  def self.status_based_mode?
     Setting.work_package_done_ratio == "status"
   end
 
-  def self.use_field_for_done_ratio?
+  def self.work_based_mode?
     Setting.work_package_done_ratio == "field"
+  end
+
+  def self.work_weighted_average_mode?
+    Setting.total_percent_complete_mode == "work_weighted_average"
+  end
+
+  def self.simple_average_mode?
+    Setting.total_percent_complete_mode == "simple_average"
+  end
+
+  def self.complete_on_status_closed?
+    Setting.percent_complete_on_status_closed == "set_100p"
   end
 
   # Returns true if usr or current user is allowed to view the work_package
@@ -237,16 +250,8 @@ class WorkPackage < ApplicationRecord
       .exists?
   end
 
-  def visible_relations(user)
-    relations
-      .visible(user)
-  end
-
   def add_time_entry(attributes = {})
-    attributes.reverse_merge!(
-      project:,
-      work_package: self
-    )
+    attributes.reverse_merge!(project:, entity: self)
     time_entries.build(attributes)
   end
 
@@ -269,7 +274,7 @@ class WorkPackage < ApplicationRecord
   end
 
   def to_s
-    "#{type.is_standard ? '' : type.name} ##{id}: #{subject}"
+    "#{type.name unless type.is_standard} ##{id}: #{subject}"
   end
 
   # Return true if the work_package is closed, otherwise false
@@ -299,7 +304,7 @@ class WorkPackage < ApplicationRecord
   end
 
   def done_ratio
-    if WorkPackage.use_status_for_done_ratio? && status && status.default_done_ratio
+    if WorkPackage.status_based_mode? && status&.default_done_ratio
       status.default_done_ratio
     else
       read_attribute(:done_ratio)
@@ -315,17 +320,36 @@ class WorkPackage < ApplicationRecord
   end
 
   def estimated_hours=(hours)
-    converted_hours = (hours.is_a?(String) ? hours.to_hours : hours)
-    write_attribute :estimated_hours, !!converted_hours ? converted_hours : hours
+    write_attribute :estimated_hours, convert_duration_to_hours(hours)
   end
 
   def remaining_hours=(hours)
-    converted_hours = (hours.is_a?(String) ? hours.to_hours : hours)
-    write_attribute :remaining_hours, !!converted_hours ? converted_hours : hours
+    write_attribute :remaining_hours, convert_duration_to_hours(hours)
+  end
+
+  def done_ratio=(value)
+    write_attribute :done_ratio, convert_value_to_percentage(value)
+  end
+
+  def set_derived_progress_hint(field_name, hint, **params)
+    derived_progress_hints[field_name] = ProgressHint.new("#{field_name}.#{hint}", params)
+  end
+
+  def derived_progress_hint(field_name)
+    derived_progress_hints[field_name]
   end
 
   def duration_in_hours
-    duration ? duration * 24 : nil
+    duration * 24 if duration
+  end
+
+  def project_phase
+    # This might look less efficient than using
+    # ProjectPhase.find_by(definition_id: project_phase_definition_id, project_id: project_id)
+    # as more phases are loaded.
+    # However, the expected number of phases per project is rather small and this way, a project
+    # loaded for multiple work packages can be reused.
+    project&.phases&.detect { |phase| phase.definition_id == project_phase_definition_id }
   end
 
   # aliasing subject to name
@@ -364,7 +388,7 @@ class WorkPackage < ApplicationRecord
   # Set the done_ratio using the status if that setting is set.  This will keep the done_ratios
   # even if the user turns off the setting later
   def update_done_ratio_from_status
-    if WorkPackage.use_status_for_done_ratio? && status && status.default_done_ratio
+    if WorkPackage.status_based_mode? && status&.default_done_ratio
       self.done_ratio = status.default_done_ratio
     end
   end
@@ -372,8 +396,13 @@ class WorkPackage < ApplicationRecord
   # check if user is allowed to edit WorkPackage Journals.
   # see Acts::Journalized::Permissions#journal_editable_by
   def journal_editable_by?(journal, user)
-    user.allowed_in_project?(:edit_work_package_notes, project) ||
-      (user.allowed_in_work_package?(:edit_own_work_package_notes, self) && journal.user_id == user.id)
+    if journal.internal?
+      user.allowed_in_project?(:edit_others_internal_comments, project) ||
+        (user.allowed_in_project?(:edit_own_internal_comments, project) && journal.user_id == user.id)
+    else
+      user.allowed_in_project?(:edit_work_package_comments, project) ||
+        (user.allowed_in_work_package?(:edit_own_work_package_comments, self) && journal.user_id == user.id)
+    end
   end
 
   # Returns a scope for the projects
@@ -520,7 +549,7 @@ class WorkPackage < ApplicationRecord
   private_class_method :available_custom_fields_from_db
 
   def self.available_custom_field_key(work_package)
-    :"#work_package_custom_fields_#{work_package.project_id}_#{work_package.type_id}"
+    :"work_package_custom_fields_#{work_package.project_id}_#{work_package.type_id}"
   end
 
   private_class_method :available_custom_field_key
@@ -537,6 +566,10 @@ class WorkPackage < ApplicationRecord
 
   private
 
+  def derived_progress_hints
+    @derived_progress_hints ||= {}
+  end
+
   def add_time_entry_for(user, attributes)
     return if time_entry_blank?(attributes)
 
@@ -544,6 +577,24 @@ class WorkPackage < ApplicationRecord
                               spent_on: Time.zone.today)
 
     time_entries.build(attributes)
+  end
+
+  def convert_duration_to_hours(value)
+    if value.is_a?(String)
+      begin
+        value = DurationConverter.parse(value)
+      rescue ChronicDuration::DurationParseError
+        # keep invalid value, error shall be caught by numericality validator
+      end
+    end
+    value
+  end
+
+  def convert_value_to_percentage(value)
+    if value.is_a?(String) && PercentageConverter.valid?(value)
+      value = PercentageConverter.parse(value)
+    end
+    value
   end
 
   ##
@@ -596,7 +647,7 @@ class WorkPackage < ApplicationRecord
 
   # Default assignment based on category
   def default_assign
-    if assigned_to.nil? && category && category.assigned_to
+    if assigned_to.nil? && category&.assigned_to
       self.assigned_to = category.assigned_to
     end
   end
@@ -611,20 +662,16 @@ class WorkPackage < ApplicationRecord
       # Don't re-close it if it's already closed
       next if duplicate.closed?
 
-      # Implicitly creates a new journal
-      duplicate.update_attribute :status, status
-
-      override_last_journal_notes_and_user_of!(duplicate)
+      # Close the duplicate
+      close_duplicate(duplicate)
     end
   end
 
-  def override_last_journal_notes_and_user_of!(other_work_package)
-    journal = other_work_package.journals.last
-    # Same user and notes
-    journal.user = last_journal.user
-    journal.notes = last_journal.notes
-
-    journal.save
+  def close_duplicate(duplicate)
+    WorkPackages::UpdateService
+      .new(user: User.system, model: duplicate, contract_class: EmptyContract)
+      .call(status:, journal_cause: Journal::CausedByDuplicateWorkPackageClose.new(work_package: self))
+      .on_failure { |res| Rails.logger.error "Failed to close duplicate ##{duplicate.id} of ##{id}: #{res.message}" }
   end
 
   # Query generator for selecting groups of issue counts for a project

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -21,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -41,21 +43,28 @@ module API
           "bool" => "Boolean",
           "user" => "User",
           "version" => "Version",
-          "list" => "CustomOption"
+          "list" => "CustomOption",
+          "hierarchy" => "CustomField::Hierarchy::Item",
+          "scored_list" => "CustomField::Hierarchy::Item",
+          "calculated_value" => "CalculatedValue"
         }.freeze
 
-        LINK_FORMATS = %w(list user version).freeze
+        LINK_FORMATS = %w(list user version hierarchy scored_list).freeze
 
         NAMESPACE_MAP = {
-          "user" => ["users", "groups", "placeholder_users"],
+          "user" => %w[users groups placeholder_users],
           "version" => "versions",
-          "list" => "custom_options"
+          "list" => "custom_options",
+          "hierarchy" => "custom_field_items",
+          "scored_list" => "custom_field_items"
         }.freeze
 
         REPRESENTER_MAP = {
           "user" => "::API::V3::Principals::PrincipalRepresenterFactory",
           "version" => "::API::V3::Versions::VersionRepresenter",
-          "list" => "::API::V3::CustomOptions::CustomOptionRepresenter"
+          "list" => "::API::V3::CustomOptions::CustomOptionRepresenter",
+          "hierarchy" => "::API::V3::CustomFields::Hierarchy::HierarchyItemRepresenter",
+          "scored_list" => "::API::V3::CustomFields::Hierarchy::HierarchyItemRepresenter"
         }.freeze
 
         class << self
@@ -112,6 +121,8 @@ module API
             inject_user_schema(custom_field)
           when "list"
             inject_list_schema(custom_field)
+          when "hierarchy", "scored_list"
+            inject_hierarchy_schema(custom_field)
           else
             inject_basic_schema(custom_field)
           end
@@ -170,6 +181,16 @@ module API
           )
         end
 
+        def inject_hierarchy_schema(custom_field)
+          @class.schema_with_allowed_link(
+            property_name(custom_field),
+            type: resource_type(custom_field),
+            name_source: ->(*) { custom_field.name },
+            required: custom_field.is_required,
+            href_callback: ->(*) { api_v3_paths.custom_field_items(custom_field.id) }
+          )
+        end
+
         def inject_basic_schema(custom_field)
           @class.schema property_name(custom_field),
                         type: resource_type(custom_field),
@@ -179,7 +200,8 @@ module API
                         min_length: cf_min_length(custom_field),
                         max_length: cf_max_length(custom_field),
                         regular_expression: cf_regexp(custom_field),
-                        options: cf_options(custom_field)
+                        options: cf_options(custom_field),
+                        formula: cf_formula(custom_field)
         end
 
         def inject_link_value(custom_field, config)
@@ -230,10 +252,11 @@ module API
           representer_class = derive_representer_class(custom_field)
 
           proc do
-            # Do not embed list or multi values as their links contain all the
+            # Do not embed list, hierarchies or multi values as their links contain all the
             # information needed (title and href) already.
             next if represented.available_custom_fields.exclude?(custom_field) ||
                     custom_field.list? ||
+                    custom_field.hierarchical_list? ||
                     custom_field.multi_value?
 
             value = represented.send custom_field.attribute_getter
@@ -252,6 +275,11 @@ module API
                           setter: property_value_setter_for(custom_field),
                           cache_if: config[:cache_if],
                           render_nil: true
+
+          @class.property :"#{custom_field.attribute_name}_errors",
+                          getter: calculated_value_error_getter(custom_field),
+                          cache_if: config[:cache_if],
+                          render_nil: false
         end
 
         def property_value_getter_for(custom_field)
@@ -279,6 +307,19 @@ module API
           }
         end
 
+        def calculated_value_error_getter(custom_field)
+          ->(*) {
+            next unless custom_field.calculated_value?
+            next unless available_custom_fields.include?(custom_field)
+
+            errors = custom_field.calculated_value_errors.where(customized_id: id, customized_type: "Project")
+            errors.map do |err|
+              { code: err.error_code,
+                message: CalculatedValues::ErrorsHelper.calculated_value_error_msg(err) }
+            end
+          }
+        end
+
         def allowed_users_href_callback
           static_filters = allowed_users_static_filters
           instance_filters = method(:allowed_users_instance_filter)
@@ -303,6 +344,12 @@ module API
 
         def cf_regexp(custom_field)
           custom_field.regexp.presence
+        end
+
+        def cf_formula(custom_field)
+          if custom_field.field_format_calculated_value?
+            custom_field.formula_string
+          end
         end
 
         def cf_options(custom_field)
@@ -385,7 +432,7 @@ module API
             custom_fields = if current_user.admin?
                               represented.available_custom_fields
                             else
-                              represented.available_custom_fields.select(&:visible?)
+                              represented.available_custom_fields.reject(&:admin_only?)
                             end
 
             custom_field_class(custom_fields)
@@ -399,13 +446,14 @@ module API
           def custom_field_class(custom_fields)
             custom_field_sha = OpenProject::Cache::CacheKey.expand(custom_fields.sort_by(&:id))
 
-            cached_custom_field_classes[custom_field_sha] ||= begin
-              injector_class = custom_field_injector_config[:injector_class]
+            cached_custom_field_classes[custom_field_sha] ||=
+              begin
+                injector_class = custom_field_injector_config[:injector_class]
 
-              method_name = :"create_#{custom_field_injector_config[:type]}"
+                method_name = :"create_#{custom_field_injector_config[:type]}"
 
-              injector_class.send(method_name, custom_fields, self)
-            end
+                injector_class.send(method_name, custom_fields, self)
+              end
           end
 
           def cached_custom_field_classes

@@ -3,9 +3,11 @@
     flex_layout do |flex|
       @agenda_items_grouped_by_meeting.each do |meeting, meeting_agenda_items|
         flex.with_row(mt: 3) do
-          render(WorkPackageMeetingsTab::MeetingComponent.new(
-            meeting:, meeting_agenda_items:
-          ))
+          render(
+            WorkPackageMeetingsTab::MeetingComponent.new(
+              meeting:, meeting_agenda_items:
+            )
+          )
         end
       end
     end

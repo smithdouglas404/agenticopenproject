@@ -8,6 +8,7 @@ nl:
         url: 'Payload URL'
         secret: 'Handtekening geheim'
         events: 'Evenementen'
+        enabled: 'Ingeschakeld'
         projects: 'Ingeschakelde projecten'
       webhooks/log:
         event_name: 'Naam van gebeurtenis'
@@ -30,6 +31,8 @@ nl:
       events:
         created: "Gemaakt"
         updated: "Bijgewerkt"
+        comment: "Commentaar"
+        internal_comment: "Internal comment"
       explanation:
         text: >
           Bij het voorkomen van een gebeurtenis zoals het maken van een werkpakket of een update van een project OpenProject stuurt een POST-aanvraag naar de geconfigureerde webeindpunten. Vaak wordt de afspraak verzonden nadat de %{link} voorbij is.

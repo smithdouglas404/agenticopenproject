@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,21 +29,14 @@
 #++
 #
 module Storages::Admin
-  class OAuthClientInfoComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
-    include StorageViewInformation
+  class OAuthClientInfoComponent < StorageInfoComponent
+    def self.wrapper_key = :storage_oauth_client_section
 
-    attr_reader :storage
-    alias_method :oauth_client, :model
-
-    def initialize(oauth_client:, storage:, **)
-      super(oauth_client, **)
-      @storage = storage
-    end
+    delegate :oauth_client, to: :storage
 
     def edit_icon_button_options
       label = I18n.t("storages.buttons.replace_oauth_client",
-                     provider_type: I18n.t("storages.provider_types.#{storage.short_provider_type}.name"))
+                     provider_type: I18n.t("storages.provider_types.#{storage}.name"))
 
       {
         icon: oauth_client_configured? ? :sync : :pencil,
@@ -61,8 +54,8 @@ module Storages::Admin
     def edit_icon_button_data_options
       {}.tap do |data_h|
         if oauth_client_configured?
-          provider_type = I18n.t("storages.provider_types.#{storage.short_provider_type}.name")
-          data_h[:confirm] = I18n.t("storages.confirm_replace_oauth_client", provider_type:)
+          provider_type = I18n.t("storages.provider_types.#{storage}.name")
+          data_h[:turbo_confirm] = I18n.t("storages.confirm_replace_oauth_client", provider_type:)
         end
         data_h[:turbo_stream] = true
       end

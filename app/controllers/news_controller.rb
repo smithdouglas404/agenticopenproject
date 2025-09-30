@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -36,7 +38,7 @@ class NewsController < ApplicationController
   before_action :find_project_from_association, except: %i[new create index]
   before_action :find_project, only: %i[new create]
   before_action :authorize, except: [:index]
-  before_action :find_optional_project, only: [:index]
+  before_action :load_and_authorize_in_optional_project, only: [:index]
   accept_key_auth :index
 
   def index
@@ -73,29 +75,44 @@ class NewsController < ApplicationController
   def edit; end
 
   def create
-    @news = News.new(project: @project, author: User.current)
-    @news.attributes = permitted_params.news
-    if @news.save
+    call = News::CreateService
+      .new(user: current_user)
+      .call(permitted_params.news.merge(project: @project))
+
+    if call.success?
       flash[:notice] = I18n.t(:notice_successful_create)
       redirect_to controller: "/news", action: "index", project_id: @project
     else
-      render action: "new"
+      @news = call.result
+      render action: :new, status: :unprocessable_entity
     end
   end
 
   def update
-    @news.attributes = permitted_params.news
-    if @news.save
+    call = News::UpdateService
+      .new(model: @news, user: current_user)
+      .call(permitted_params.news.merge(project: @project))
+
+    if call.success?
       flash[:notice] = I18n.t(:notice_successful_update)
       redirect_to action: "show", id: @news
     else
-      render action: "edit"
+      @news = call.result
+      render action: :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
-    @news.destroy
-    flash[:notice] = I18n.t(:notice_successful_delete)
+    call = News::DeleteService
+      .new(model: @news, user: current_user)
+      .call
+
+    if call.success?
+      flash[:notice] = I18n.t(:notice_successful_delete)
+    else
+      call.apply_flash_message!(flash)
+    end
+
     redirect_to action: "index", project_id: @project
   end
 
@@ -103,22 +120,9 @@ class NewsController < ApplicationController
 
   def find_news_object
     @news = @object = News.find(params[:id].to_i)
-  rescue ActiveRecord::RecordNotFound
-    render_404
   end
 
   def find_project
     @project = Project.find(params[:project_id])
-  rescue ActiveRecord::RecordNotFound
-    render_404
-  end
-
-  def find_optional_project
-    return true unless params[:project_id]
-
-    @project = Project.find(params[:project_id])
-    authorize
-  rescue ActiveRecord::RecordNotFound
-    render_404
   end
 end

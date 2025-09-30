@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -23,7 +23,7 @@ cs:
   plugin_openproject_reporting:
     name: "Reportování OpenProject"
     description: "Tento modul umožňuje vytvářet vlastní přehledy nákladů s filtrováním a seskupením vytvořených OpenProject plugin čas & náklady ."
-  button_save_as: "Uložit report jako..."
+  button_save_report_as: "Uložit report jako..."
   comments: "Komentář"
   cost_reports_title: "Čas a náklady"
   label_cost_report: "Výkaz nákladů"
@@ -45,6 +45,8 @@ cs:
   label_greater: ">"
   label_is_not_project_with_subprojects: "není (včetně podprojektů)"
   label_is_project_with_subprojects: "je (včetně podprojektů)"
+  label_is_work_package_with_descendants: "je (včetně potomků)"
+  label_is_not_work_package_with_descendants: "není (včetně potomků)"
   label_work_package_attributes: "Atributy pracovního balíčku"
   label_less: "<"
   label_logged_by_reporting: "Zadáno"
@@ -86,8 +88,18 @@ cs:
   validation_failure_date: "není platné datum"
   validation_failure_integer: "není platné číslo"
   export:
+    timesheet:
+      title: "Export vašeho výkazu do formátu PDF"
+      button: "Exportovat výkaz PDF"
+      timesheet: "Pracovní výkaz"
+      time: "Čas"
+      sums_hours: Sums
+      overview_per_user_total: "Overview: Total hours per user"
+      overview_per_user_day: "Overview: Hours per user per day"
     cost_reports:
       title: "Váš export XLS zprávy o nákladech"
+      start_time: "Čas zahájení"
+      end_time: "Čas ukončení"
   reporting:
     group_by:
       selected_columns: "Vybrané sloupce"

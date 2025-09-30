@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -62,11 +62,11 @@ RSpec.describe Source::SeedData do
 
     it "raises an error if the reference is not found" do
       expect { seed_data.find_reference(:ref) }
-        .to raise_error(ArgumentError, "Nothing registered with reference :ref")
+        .to raise_error(ArgumentError, /Nothing registered with reference :ref/)
       expect { seed_data.find_reference(:ref, :other_ref) }
-        .to raise_error(ArgumentError, "Nothing registered with references :ref and :other_ref")
+        .to raise_error(ArgumentError, /Nothing registered with references :ref and :other_ref/)
       expect { seed_data.find_reference(:ref, :other_ref, :yet_another_ref) }
-        .to raise_error(ArgumentError, "Nothing registered with references :ref, :other_ref, and :yet_another_ref")
+        .to raise_error(ArgumentError, /Nothing registered with references :ref, :other_ref, and :yet_another_ref/)
     end
 
     it "returns the given default value if the reference is not found" do

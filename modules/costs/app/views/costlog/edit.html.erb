@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2024 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -30,40 +30,42 @@ See COPYRIGHT and LICENSE files for more details.
 <% html_title t(:label_log_costs) %>
 <h2><%= t(:label_log_costs) %></h2>
 
-<% url = @cost_entry.new_record? ?
-  { action: 'create', project_id: @project.id } :
-  { action: 'update', id: @cost_entry } %>
+<% url = if @cost_entry.new_record?
+           { action: "create", project_id: @project.id }
+         else
+           { action: "update", id: @cost_entry }
+         end %>
 
-<% method = @cost_entry.new_record? ?
-  :post :
-  :put %>
+<% method = if @cost_entry.new_record?
+              :post
+            else
+              :put
+            end %>
 
-<remote-field-updater data-url="<%= url_for(controller: :budgets, action: :update_material_budget_item, project_id: @cost_entry.project) %>"
-                      data-mode="json">
-</remote-field-updater>
 <%= labelled_tabular_form_for @cost_entry, url: url, html: { method: method } do |f| %>
-  <%= error_messages_for 'cost_entry' %>
+  <%= error_messages_for "cost_entry" %>
   <%= back_url_hidden_field_tag %>
-  <%= f.hidden_field :element_id, value: 'cost_entry', class: 'remote-field--input', data: { :'remote-field-key' => 'element_id' } %>
+  <%= f.hidden_field :element_id, value: "cost_entry", class: "remote-field--input", data: { "remote-field-key": "element_id" } %>
 
   <div class="form--field -required">
-    <%= f.text_field :work_package_id,
+    <%= f.hidden_field :entity_type, value: "WorkPackage" %>
+    <%= f.text_field :entity_id,
                      size: 6,
                      required: true,
                      autofocus: true,
-                     container_class: '-xslim' %>
+                     container_class: "-xslim" %>
 
-    <% if @cost_entry.work_package %>
+    <% if @cost_entry.entity %>
       <div class="form--field-instructions">
-        <%= h("#{@cost_entry.work_package.to_s}") %>
+        <%= h(@cost_entry.entity.to_s) %>
       </div>
     <% end %>
   </div>
   <div class="form--field -required">
     <%= f.date_picker :spent_on,
                       required: true,
-                      data: { :'remote-field-key' => 'fixed_date' } %>
-    <label for="cost_entry_spent_on" class="hidden-for-sighted"><%= t(:label_date) %> <%= t(:text_hint_date_format) %></label>
+                      data: { "remote-field-key": "fixed_date" } %>
+    <label for="cost_entry_spent_on" class="sr-only"><%= t(:label_date) %> <%= t(:text_hint_date_format) %></label>
   </div>
   <% if User.current.allowed_in_project? :log_costs, @project %>
     <div class="form--field">
@@ -72,7 +74,7 @@ See COPYRIGHT and LICENSE files for more details.
                    user_collection_for_select_options,
                    required: true,
                    prompt: true,
-                   container_class: '-middle' %>
+                   container_class: "-middle" %>
     </div>
   <% else %>
     <%= f.hidden_field :user_id, value: User.current.id %>
@@ -82,11 +84,11 @@ See COPYRIGHT and LICENSE files for more details.
     <%= f.select :cost_type_id,
                  cost_types_collection_for_select_options,
                  { prompt: true,
-                   container_class: '-middle' },
+                   container_class: "-middle" },
                  {
                    required: true,
-                   class: 'remote-field--input',
-                   data: { :'remote-field-key' => 'cost_type_id' }
+                   class: "remote-field--input",
+                   data: { "remote-field-key": "cost_type_id" }
                  } %></p>
   </div>
   <div class="form--field -required">
@@ -95,7 +97,7 @@ See COPYRIGHT and LICENSE files for more details.
                        value: unitless_currency_number(@cost_entry.units),
                        size: 6,
                        required: true,
-                       container_class: '-slim' %>
+                       container_class: "-slim" %>
     <% else %>
       <% suffix = @cost_entry.units == 1 ? @cost_entry.cost_type.unit : @cost_entry.cost_type.unit_plural %>
       <%= f.text_field :units,
@@ -103,10 +105,10 @@ See COPYRIGHT and LICENSE files for more details.
                        value: unitless_currency_number(@cost_entry.units),
                        required: true,
                        suffix: h(suffix),
-                       suffix_id: 'cost_entry_unit_name',
-                       class: 'remote-field--input',
-                       data: { :'remote-field-key' => 'units' },
-                       container_class: '-slim' %>
+                       suffix_id: "cost_entry_unit_name",
+                       class: "remote-field--input",
+                       data: { "remote-field-key": "units" },
+                       container_class: "-slim" %>
     <% end %>
   </div>
 
@@ -121,23 +123,22 @@ See COPYRIGHT and LICENSE files for more details.
          title="<%= t(:help_click_to_edit) %>">
             <%= number_to_currency(@cost_entry.real_costs) %>
         </a>
-      <%= render partial: '/budgets/items/budget_override_cost_form',
+      <%= render partial: "/budgets/items/budget_override_cost_form",
                  locals: {
                    field_name: "cost_entry[overridden_costs]",
-                   cost_value: unitless_currency_number(@cost_entry.real_costs),
-                 }
-      %>
+                   cost_value: unitless_currency_number(@cost_entry.real_costs)
+                 } %>
 
       </span>
     <% else %>
     <span class="form--field-container">
           <%= f.text_field :overridden_costs,
-                           value: @cost_entry.overridden_costs ? unitless_currency_number(@cost_entry.overridden_costs).strip : '',
+                           value: @cost_entry.overridden_costs ? unitless_currency_number(@cost_entry.overridden_costs).strip : "",
                            placeholder: t(:label_example_placeholder, decimal: unitless_currency_number(1000.50)),
                            no_label: true,
-                           suffix: Setting.plugin_costs['costs_currency'],
-                           id: 'cost_entry_cost_value',
-                           container_class: '-middle',
+                           suffix: Setting.costs_currency,
+                           id: "cost_entry_cost_value",
+                           container_class: "-middle",
                            size: 7 %>
         </span>
       <div class="form--field-instructions">
@@ -147,8 +148,11 @@ See COPYRIGHT and LICENSE files for more details.
   </div>
 
   <div class="form--field">
-    <%= f.text_field :comments, size: 100, container_class: '-wide' %>
+    <%= f.text_field :comments, size: 100, container_class: "-wide" %>
   </div>
 
-  <%= styled_button_tag t(:button_save), class: '-with-icon icon-checkmark' %>
+  <%= styled_button_tag t(:button_save), class: "-with-icon icon-checkmark" %>
+
+  <opce-remote-field-updater data-url="<%= url_for(controller: :budgets, action: :update_material_budget_item, project_id: @cost_entry.project) %>">
+  </opce-remote-field-updater>
 <% end %>

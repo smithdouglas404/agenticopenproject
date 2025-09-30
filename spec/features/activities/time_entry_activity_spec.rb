@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,8 +32,9 @@ require "spec_helper"
 
 RSpec.describe "TimeEntry activity",
                :js,
-               :with_cuprite,
                with_settings: { journal_aggregation_time_minutes: 0 } do
+  include Components::Autocompleter::NgSelectAutocompleteHelpers
+
   let(:user) do
     create(:user,
            member_with_permissions: { project => %i[log_time
@@ -51,7 +54,7 @@ RSpec.describe "TimeEntry activity",
   let!(:time_entry) do
     create(:time_entry,
            project:,
-           work_package:,
+           entity: work_package,
            spent_on: Time.zone.today,
            hours: 5,
            user:,
@@ -79,13 +82,14 @@ RSpec.describe "TimeEntry activity",
 
     wait_for_reload
 
-    expect(find_field("work_package_id_arg_1_val").value).to eq(work_package.id.to_s)
+    wp_autocompleter = find("opce-autocompleter#work_package_id_select_1")
+    expect_current_autocompleter_value(wp_autocompleter, "##{work_package.id} #{work_package.subject}")
 
     old_comments = time_entry.comments
     old_spent_on = time_entry.spent_on
 
     new_attributes = {
-      work_package: work_package2,
+      entity: work_package2,
       spent_on: Time.zone.yesterday,
       hours: 1.0,
       user: user2,
@@ -104,7 +108,8 @@ RSpec.describe "TimeEntry activity",
     within("li.op-activity-list--item", match: :first) do
       expect(page).to have_link("#{project.types.first} ##{work_package2.id}: #{work_package2.subject}")
       expect(page).to have_css("li", text: "Logged for #{user2.name}")
-      expect(page).to have_css("li", text: "Work package changed from #{work_package.name} to #{work_package2.name}")
+      expect(page).to have_css("li",
+                               text: "Logged for changed from #{work_package.name} to #{work_package2.name}")
       expect(page).to have_css("li", text: "Spent time changed from 5 hours to 1 hour")
       expect(page).to have_css("li", text: "Comment changed from #{old_comments} to #{time_entry.comments}")
       expect(page).to have_css("li",
@@ -115,6 +120,7 @@ RSpec.describe "TimeEntry activity",
 
     wait_for_reload
 
-    expect(find_field("work_package_id_arg_1_val").value).to eq(work_package2.id.to_s)
+    wp_autocompleter = find("opce-autocompleter#work_package_id_select_1")
+    expect_current_autocompleter_value(wp_autocompleter, "##{work_package2.id} #{work_package2.subject}")
   end
 end

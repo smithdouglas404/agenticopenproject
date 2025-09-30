@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.configure do |c|
   ##
   # Session-based API authentication requires the X-requested-with header to be present.

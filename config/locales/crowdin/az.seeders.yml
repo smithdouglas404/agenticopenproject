@@ -34,6 +34,15 @@ az:
           name: Grey (dark)
         item_13:
           name: Black
+      project_phase_colors:
+        item_0:
+          name: PM2 Orange
+        item_1:
+          name: PM2 Red
+        item_2:
+          name: PM2 Magenta
+        item_3:
+          name: PM2 Green Yellow
       document_categories:
         item_0:
           name: Documentation
@@ -41,6 +50,11 @@ az:
           name: Specification
         item_2:
           name: Other
+      project_query_roles:
+        item_0:
+          name: Project query viewer
+        item_1:
+          name: Project query editor
       work_package_roles:
         item_0:
           name: Work package editor
@@ -62,7 +76,21 @@ az:
       global_roles:
         item_0:
           name: Staff and projects manager
+        item_1:
+          name: Standard global role
     standard:
+      project_phases:
+        item_0:
+          name: Initiating
+        item_1:
+          name: Planning
+          start_gate: Ready for Planning
+        item_2:
+          name: Executing
+          start_gate: Ready for Executing
+        item_3:
+          name: Closing
+          start_gate: Ready for Closing
       priorities:
         item_0:
           name: Low
@@ -72,81 +100,6 @@ az:
           name: High
         item_3:
           name: Immediate
-      statuses:
-        item_0:
-          name: New
-        item_1:
-          name: In specification
-        item_2:
-          name: Specified
-        item_3:
-          name: Confirmed
-        item_4:
-          name: To be scheduled
-        item_5:
-          name: Scheduled
-        item_6:
-          name: In progress
-        item_7:
-          name: Developed
-        item_8:
-          name: In testing
-        item_9:
-          name: Tested
-        item_10:
-          name: Test failed
-        item_11:
-          name: Closed
-        item_12:
-          name: On hold
-        item_13:
-          name: Rejected
-      time_entry_activities:
-        item_0:
-          name: Management
-        item_1:
-          name: Specification
-        item_2:
-          name: Development
-        item_3:
-          name: Testing
-        item_4:
-          name: Support
-        item_5:
-          name: Other
-      types:
-        item_0:
-          name: Task
-        item_1:
-          name: Milestone
-        item_2:
-          name: Phase
-        item_3:
-          name: Feature
-        item_4:
-          name: Epic
-        item_5:
-          name: User story
-        item_6:
-          name: Bug
-      welcome:
-        title: Welcome to OpenProject!
-        text: |
-          OpenProject is the leading open source project management software. It supports classic, agile as well as hybrid project management and gives you full control over your data.
-
-          Core features and use cases:
-
-          * [Project Portfolio Management](https://www.openproject.org/collaboration-software-features/project-portfolio-management/)
-          * [Project Planning and Scheduling](https://www.openproject.org/collaboration-software-features/project-planning-scheduling/)
-          * [Task Management and Issue Tracking](https://www.openproject.org/collaboration-software-features/task-management/)
-          * [Agile Boards (Scrum and Kanban)](https://www.openproject.org/collaboration-software-features/agile-project-management/)
-          * [Requirements Management and Release Planning](https://www.openproject.org/collaboration-software-features/product-development/)
-          * [Time and Cost Tracking, Budgets](https://www.openproject.org/collaboration-software-features/time-tracking/)
-          * [Team Collaboration and Documentation](https://www.openproject.org/collaboration-software-features/team-collaboration/)
-
-          Welcome to the future of project management.
-
-          For Admins: You can change this welcome text [here]({{opSetting:base_url}}/admin/settings/general).
       projects:
         demo-project:
           name: Demo project
@@ -484,3 +437,78 @@ az:
             * Time boxed (3 h).
             * After Sprint Review, will be moderated by Scrum Master.
             * The team discusses the sprint: what went well, what needs to be improved to be more productive for the next sprint or even have more fun.
+      statuses:
+        item_0:
+          name: New
+        item_1:
+          name: In specification
+        item_2:
+          name: Specified
+        item_3:
+          name: Confirmed
+        item_4:
+          name: To be scheduled
+        item_5:
+          name: Scheduled
+        item_6:
+          name: In progress
+        item_7:
+          name: Developed
+        item_8:
+          name: In testing
+        item_9:
+          name: Tested
+        item_10:
+          name: Test failed
+        item_11:
+          name: Closed
+        item_12:
+          name: On hold
+        item_13:
+          name: Rejected
+      time_entry_activities:
+        item_0:
+          name: Management
+        item_1:
+          name: Specification
+        item_2:
+          name: Development
+        item_3:
+          name: Testing
+        item_4:
+          name: Support
+        item_5:
+          name: Other
+      types:
+        item_0:
+          name: Task
+        item_1:
+          name: Milestone
+        item_2:
+          name: Summary task
+        item_3:
+          name: Feature
+        item_4:
+          name: Epic
+        item_5:
+          name: User story
+        item_6:
+          name: Bug
+      welcome:
+        title: Welcome to OpenProject!
+        text: |
+          OpenProject is the leading open source project management software. It supports classic, agile as well as hybrid project management and gives you full control over your data.
+
+          Core features and use cases:
+
+          * [Project Portfolio Management](https://www.openproject.org/collaboration-software-features/project-portfolio-management/)
+          * [Project Planning and Scheduling](https://www.openproject.org/collaboration-software-features/project-planning-scheduling/)
+          * [Task Management and Issue Tracking](https://www.openproject.org/collaboration-software-features/task-management/)
+          * [Agile Boards (Scrum and Kanban)](https://www.openproject.org/collaboration-software-features/agile-project-management/)
+          * [Requirements Management and Release Planning](https://www.openproject.org/collaboration-software-features/product-development/)
+          * [Time and Cost Tracking, Budgets](https://www.openproject.org/collaboration-software-features/time-tracking/)
+          * [Team Collaboration and Documentation](https://www.openproject.org/collaboration-software-features/team-collaboration/)
+
+          Welcome to the future of project management.
+
+          For Admins: You can change this welcome text [here]({{opSetting:base_url}}/admin/settings/general).

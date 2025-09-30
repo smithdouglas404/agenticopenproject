@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -42,6 +42,7 @@ RSpec.describe "BIM Revit Add-in navigation spec", :js,
     create(:user,
            member_with_roles: { project => role })
   end
+  let(:user_menu) { Components::UserMenu.new }
 
   context "when logged in on model page" do
     before do
@@ -69,7 +70,7 @@ RSpec.describe "BIM Revit Add-in navigation spec", :js,
 
     it "the user menu has an option to go to the add-in settings" do
       within ".op-app-header" do
-        page.find("a[title='#{user.name}']").click
+        user_menu.open
 
         expect(page).to have_css("li", text: I18n.t("js.revit.revit_add_in_settings"))
       end
@@ -132,7 +133,7 @@ RSpec.describe "BIM Revit Add-in navigation spec", :js,
     it "the user menu has an option to go to the add-in settings" do
       visit home_path
 
-      click_link I18n.t(:label_login)
+      user_menu.open
 
       expect(page).to have_text(I18n.t("js.revit.revit_add_in_settings"))
     end

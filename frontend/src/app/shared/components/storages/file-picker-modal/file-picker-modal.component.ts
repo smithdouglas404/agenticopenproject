@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -46,7 +46,7 @@ import { FileLinksResourceService } from 'core-app/core/state/file-links/file-li
 import { isDirectory, storageLocaleString } from 'core-app/shared/components/storages/functions/storages.functions';
 import { StorageFilesResourceService } from 'core-app/core/state/storage-files/storage-files.service';
 import {
-  StorageFileListItem,
+  StorageFileListItem, StorageFileListItemCheckbox,
 } from 'core-app/shared/components/storages/storage-file-list-item/storage-file-list-item';
 import {
   FilePickerBaseModalComponent,
@@ -55,6 +55,7 @@ import {
 @Component({
   templateUrl: 'file-picker-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class FilePickerModalComponent extends FilePickerBaseModalComponent {
   public readonly text = {
@@ -191,11 +192,17 @@ export class FilePickerModalComponent extends FilePickerBaseModalComponent {
       this.enterDirectoryCallback(file),
       false,
       this.tooltip(file),
-      {
-        selected: this.selection.has(file.id as string),
-        changeSelection: () => { this.changeSelection(file); },
-      },
+      this.hasCheckbox(file),
     );
+  }
+
+  private hasCheckbox(file:IStorageFile):StorageFileListItemCheckbox|undefined {
+    if (file.mimeType !== 'application/x-op-drive') {
+      return {
+        selected: this.selection.has(file.id as string),
+        changeSelection: () => { this.changeSelection(file); }
+      };
+    } else { return; }
   }
 
   private isAlreadyLinked(file:IStorageFile):boolean {

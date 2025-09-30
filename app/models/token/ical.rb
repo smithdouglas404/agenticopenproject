@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,6 +37,10 @@ module Token
 
     has_one :query, through: :ical_token_query_assignment
     has_one :project, through: :query
+
+    def token_name
+      ical_token_query_assignment.name
+    end
 
     class << self
       def create_and_return_value(user, query, token_name)

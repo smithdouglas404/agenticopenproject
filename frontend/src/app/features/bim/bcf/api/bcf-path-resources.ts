@@ -1,5 +1,5 @@
 import { Injector } from '@angular/core';
-import { Constructor } from '@angular/cdk/table';
+import { Constructor } from 'core-app/core/util-types';
 import { SimpleResource, SimpleResourceCollection } from 'core-app/core/apiv3/paths/path-resources';
 
 export class BcfResourcePath extends SimpleResource {

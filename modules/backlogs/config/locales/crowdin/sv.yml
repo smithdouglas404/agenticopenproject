@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -55,6 +55,7 @@ sv:
     hours: "Timmar"
     impediment: "Hinder"
     label_versions_default_fold_state: "Visa ihopfällda versioner"
+    caption_versions_default_fold_state: "Versions will not be expanded by default when viewing backlogs. Each one has to be manually expanded."
     work_package_is_closed: "Arbetspaket är klart, när"
     label_is_done_status: "Status %{status_name} innebär klart"
     no_burndown_data: "Ingen Burndown data tillgänglig. Start- och slutdatum för sprint måste definieras."
@@ -64,8 +65,8 @@ sv:
     properties: "Egenskaper"
     rebuild: "Rekonstruera"
     rebuild_positions: "Rekonstruera positioner"
-    remaining_hours: "Remaining work"
-    remaining_hours_ideal: "Remaining work (ideal)"
+    remaining_hours: "Återstående arbete"
+    remaining_hours_ideal: "Planerat återstående arbete"
     show_burndown_chart: "Burndown-diagram"
     story: "Berättelse"
     story_points: "Berättelsepoäng"
@@ -73,6 +74,9 @@ sv:
     task: "Aktivitet"
     task_color: "Aktivitetsfärg"
     unassigned: "Ej tilldelad"
+    user_preference:
+      header_backlogs: "Backlogmodul"
+      button_update_backlogs: "Uppdatera backlogmodul"
     x_more: "%{count} mer..."
   backlogs_active: "aktiv"
   backlogs_any: "någon"
@@ -147,7 +151,7 @@ sv:
   rb_label_copy_tasks_none: "Inga"
   rb_label_copy_tasks_open: "Öppna"
   rb_label_link_to_original: "Inkludera länk till originalberättelsen"
-  remaining_hours: "remaining work"
+  remaining_hours: "återstående arbete"
   required_burn_rate_hours: "tempo som krävs (timmar)"
   required_burn_rate_points: "tempo som krävs (poäng)"
   todo_work_package_description: "%{summary}: %{url}\n%{description}"

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
-RSpec.describe "Immediate reminder settings", :js, :with_cuprite do
+RSpec.describe "Immediate reminder settings", :js do
   shared_examples "immediate reminder settings" do
     it "allows to configure the reminder settings" do
       # Save prefs so we can reload them later
@@ -10,10 +12,15 @@ RSpec.describe "Immediate reminder settings", :js, :with_cuprite do
       reminders_settings_page.visit!
 
       # By default the immediate reminder is checked
-      expect(pref.immediate_reminders[:mentioned]).to be true
+      expect(pref.immediate_reminders[:mentioned]).to be(true)
       reminders_settings_page.expect_immediate_reminder :mentioned, true
 
+      # By default the personal reminder is checked
+      expect(pref.immediate_reminders[:personal_reminder]).to be(true)
+      reminders_settings_page.expect_immediate_reminder :personalReminder, true
+
       reminders_settings_page.set_immediate_reminder :mentioned, false
+      reminders_settings_page.set_immediate_reminder :personalReminder, false
 
       reminders_settings_page.save
 
@@ -22,8 +29,10 @@ RSpec.describe "Immediate reminder settings", :js, :with_cuprite do
       reminders_settings_page.reload!
 
       reminders_settings_page.expect_immediate_reminder :mentioned, false
+      reminders_settings_page.expect_immediate_reminder :personalReminder, false
 
-      expect(pref.reload.immediate_reminders[:mentioned]).to be false
+      expect(pref.reload.immediate_reminders[:mentioned]).to be(false)
+      expect(pref.reload.immediate_reminders[:personal_reminder]).to be(false)
     end
   end
 
@@ -51,7 +60,7 @@ RSpec.describe "Immediate reminder settings", :js, :with_cuprite do
     it_behaves_like "immediate reminder settings"
   end
 
-  describe "email sending", js: false, with_cuprite: false do
+  describe "email sending" do
     let(:project) { create(:project) }
     let(:work_package) { create(:work_package, project:) }
     let(:receiver) do

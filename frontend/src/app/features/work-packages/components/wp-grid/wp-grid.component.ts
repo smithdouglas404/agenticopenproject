@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -45,31 +45,33 @@ import { WorkPackageViewOutputs } from 'core-app/features/work-packages/routing/
   selector: 'wp-grid',
   template: `
     <wp-card-view [dragOutOfHandler]="canDragOutOf"
-                  [dragInto]="dragInto"
-                  [cardsRemovable]="false"
-                  [highlightingMode]="highlightingMode"
-                  [showStatusButton]="true"
-                  [orientation]="gridOrientation"
-                  (onMoved)="switchToManualSorting()"
-                  (selectionChanged)="selectionChanged.emit($event)"
-                  (itemClicked)="itemClicked.emit($event)"
-                  (stateLinkClicked)="stateLinkClicked.emit($event)"
-                  [showEmptyResultsBox]="true"
-                  [showInfoButton]="true"
-                  [shrinkOnMobile]="true">
-    </wp-card-view>
-
-    <div *ngIf="showResizer"
-         class="hidden-for-mobile hide-when-print">
-      <wp-resizer [elementClass]="resizerClass"
-                  [localStorageKey]="resizerStorageKey"></wp-resizer>
-    </div>
-  `,
+      [dragInto]="dragInto"
+      [cardsRemovable]="false"
+      [highlightingMode]="highlightingMode"
+      [showStatusButton]="true"
+      [orientation]="gridOrientation"
+      (onMoved)="switchToManualSorting()"
+      (selectionChanged)="selectionChanged.emit($event)"
+      (itemClicked)="itemClicked.emit($event)"
+      (stateLinkClicked)="stateLinkClicked.emit($event)"
+      [showEmptyResultsBox]="true"
+      [showInfoButton]="true"
+      [shrinkOnMobile]="true" />
+    
+    @if (showResizer) {
+      <div
+        class="hidden-for-mobile hide-when-print">
+        <wp-resizer [elementClass]="resizerClass"
+        [localStorageKey]="resizerStorageKey" />
+      </div>
+    }
+    `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     DragAndDropService,
     WorkPackageCardDragAndDropService,
   ],
+  standalone: false,
 })
 export class WorkPackagesGridComponent implements WorkPackageViewOutputs {
   @Input() public configuration:WorkPackageTableConfiguration;

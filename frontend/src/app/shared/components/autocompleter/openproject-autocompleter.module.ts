@@ -1,4 +1,4 @@
-import { Injector, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DynamicModule } from 'ng-dynamic-component';
@@ -16,17 +16,14 @@ import {
   WorkPackageAutocompleterComponent,
 } from 'core-app/shared/components/autocompleter/work-package-autocompleter/wp-autocompleter.component';
 import {
-  TimeEntryWorkPackageAutocompleterComponent,
-} from 'core-app/shared/components/autocompleter/te-work-package-autocompleter/te-work-package-autocompleter.component';
-import {
-  AutocompleteSelectDecorationComponent,
-} from 'core-app/shared/components/autocompleter/autocomplete-select-decoration/autocomplete-select-decoration.component';
-import {
   VersionAutocompleterComponent,
 } from 'core-app/shared/components/autocompleter/version-autocompleter/version-autocompleter.component';
 import {
   UserAutocompleterComponent,
 } from 'core-app/shared/components/autocompleter/user-autocompleter/user-autocompleter.component';
+import {
+  MeetingAutocompleterComponent,
+} from 'core-app/shared/components/autocompleter/meeting-autocompleter/meeting-autocompleter.component';
 import {
   ProjectAutocompleterComponent,
 } from 'core-app/shared/components/autocompleter/project-autocompleter/project-autocompleter.component';
@@ -53,21 +50,32 @@ import {
   UserAutocompleterTemplateComponent,
 } from 'core-app/shared/components/autocompleter/user-autocompleter/user-autocompleter-template.component';
 import {
+  MeetingAutocompleterTemplateComponent,
+} from 'core-app/shared/components/autocompleter/meeting-autocompleter/meeting-autocompleter-template.component';
+import {
   ProjectAutocompleterTemplateComponent,
 } from 'core-app/shared/components/autocompleter/project-autocompleter/project-autocompleter-template.component';
+import {
+  TimeEntriesWorkPackageAutocompleterComponent,
+} from 'core-app/shared/components/autocompleter/time-entries-work-package-autocompleter/time-entries-work-package-autocompleter.component';
+import {
+  ProjectPhaseAutocompleterComponent,
+} from './project-phase-autocompleter/project-phase-autocompleter.component';
 
 export const OPENPROJECT_AUTOCOMPLETE_COMPONENTS = [
   CreateAutocompleterComponent,
   VersionAutocompleterComponent,
   WorkPackageAutocompleterComponent,
-  TimeEntryWorkPackageAutocompleterComponent,
+  TimeEntriesWorkPackageAutocompleterComponent,
   DraggableAutocompleteComponent,
   UserAutocompleterComponent,
   UserAutocompleterTemplateComponent,
+  MeetingAutocompleterTemplateComponent,
+  MeetingAutocompleterComponent,
   ProjectAutocompleterComponent,
   ProjectAutocompleterTemplateComponent,
+  ProjectPhaseAutocompleterComponent,
   ColorsAutocompleterComponent,
-  AutocompleteSelectDecorationComponent,
   OpAutocompleterComponent,
   OpAutocompleterOptionTemplateDirective,
   OpAutocompleterLabelTemplateDirective,
@@ -91,7 +99,4 @@ export const OPENPROJECT_AUTOCOMPLETE_COMPONENTS = [
   exports: OPENPROJECT_AUTOCOMPLETE_COMPONENTS,
   declarations: OPENPROJECT_AUTOCOMPLETE_COMPONENTS,
 })
-export class OpenprojectAutocompleterModule {
-  constructor(injector:Injector) {
-  }
-}
+export class OpenprojectAutocompleterModule {}

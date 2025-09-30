@@ -5,7 +5,6 @@ Rails.application.routes.draw do
     collection do
       get "/", to: "team_planner/team_planner#overview"
       get "/new", to: "team_planner/team_planner#new"
-      get "/upsale", to: "team_planner/team_planner#upsale", as: :upsale
     end
   end
 
@@ -15,7 +14,7 @@ Rails.application.routes.draw do
               only: %i[index destroy],
               as: :team_planners do
       collection do
-        get "/upsale", to: "team_planner/team_planner#upsale", as: :upsale
+        get "menu" => "team_planner/menus#show"
         get "/new", to: "team_planner/team_planner#show", as: :new
       end
 

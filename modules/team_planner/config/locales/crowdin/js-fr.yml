@@ -3,13 +3,14 @@ fr:
   js:
     team_planner:
       add_existing: 'Ajouter existant'
+      label_team_planner_plural: 'Planificateurs d''équipe'
       add_existing_title: 'Ajouter des lots de travaux existants'
       create_label: 'Planificateur d''équipe'
       create_title: 'Créer un nouveau planificateur d''équipe'
       unsaved_title: 'Planificateur d''équipe sans nom'
-      no_data: 'Ajouter des personnes pour configurer votre planificateur d''équipe.'
-      add_assignee: 'Assigner à quelqu''un'
-      remove_assignee: 'Supprimer l''assignation'
+      no_data: 'Ajoutez des personnes pour configurer votre planificateur d''équipe.'
+      add_assignee: 'Attributaire'
+      remove_assignee: 'Retirer l''assigné'
       two_weeks: '2 semaines'
       one_week: '1 semaine'
       four_weeks: '4 semaines'

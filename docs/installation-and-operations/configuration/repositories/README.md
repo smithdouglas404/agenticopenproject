@@ -162,10 +162,6 @@ The total required disk space for a project's its repository and attachments are
 
 This information is refreshed in the same manner that changesets are retrieved: By default, the repository is refreshed when a user visits the repository page. This information is cached for the time configured under the global `administration settings → repositories`.
 
-It could also externally be refreshed by using a cron job using the Sys API. Executing a GET against `/sys/projects/:identifier/repository/update_storage` will cause a refresh when the maximum cache time is expired. If you pass the query `?force=1` to the request above, it will ignore the cache.
-
-For a future release, we are hoping to provide a webhook to update changesets and storage immediately after a change has been committed to the repository.
-
 ## Accessing repositories through Apache
 
 With managed repositories, OpenProject takes care of the lifetime of repositories and their association with projects, however we still need to serve the repositories to the client.
@@ -294,6 +290,20 @@ Depending on your installation, it may reside in `/usr/libexec/git-core/git-http
 
 We create bare Git repositories in OpenProject with the [`--shared`](https://www.kernel.org/pub/software/scm/git/docs/git-init.html) option of `git-init` set to group-writable.
 Thus, if you use a separate user for Apache and OpenProject, they need to reside in a common group that is used for repository management. That group must be set in the `configuration.yml` (see above).
+
+In newer versions of Git, you might see this error:
+
+```shell
+fatal: detected dubious ownership in repository at <path>
+```
+
+This happens because the owner of the repository (openproject) is not the one accessing it (www-data / web user), which is expected in this case. You will need to disable this check:
+
+```shell
+git config --system --add safe.directory '*'
+```
+
+Please inform yourself about the ramifications of this change. For more information, please see [stackoverflow](https://stackoverflow.com/a/73100228/420614) or [git-scm.com](https://git-scm.com/docs/git-config/2.35.2#Documentation/git-config.txt-safedirectory).
 
 #### Exemplary Apache Configuration
 

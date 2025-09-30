@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -41,14 +43,13 @@ RSpec.describe "layouts/base" do
   let(:anonymous) { build_stubbed(:anonymous) }
 
   before do
-    allow(view).to receive(:current_menu_item).and_return("overview")
-    allow(view).to receive(:default_breadcrumb)
-    allow(controller).to receive(:default_search_scope)
-    allow(view)
-      .to receive(:render_to_string)
+    without_partial_double_verification do
+      allow(controller).to receive(:default_search_scope)
+      allow(view).to receive(:render_to_string)
+      allow(view).to receive_messages(current_menu_item: "overview", current_user:)
+    end
 
     allow(User).to receive(:current).and_return current_user
-    allow(view).to receive(:current_user).and_return current_user
   end
 
   describe "Sign in button" do
@@ -210,11 +211,8 @@ RSpec.describe "layouts/base" do
       end
     end
 
-    context "EE is active and styles are not present" do
+    context "when an Enterprise token is active and styles are not present", with_ee: %i[define_custom_style] do
       before do
-        allow(EnterpriseToken).to receive(:current).and_return(a_token)
-        allow(a_token).to receive(:expired?).and_return(false)
-        allow(a_token).to receive(:allows_to?).with(:define_custom_style).and_return(true)
         allow(CustomStyle).to receive(:current).and_return(nil)
 
         render
@@ -225,12 +223,8 @@ RSpec.describe "layouts/base" do
       end
     end
 
-    context "EE does not allow custom styles" do
+    context "when an Enterprise token is active but does not allow custom styles", with_ee: %i[] do
       before do
-        allow(EnterpriseToken).to receive(:current).and_return(a_token)
-        allow(a_token).to receive(:expired?).and_return(false)
-        allow(a_token).to receive(:allows_to?).with(:define_custom_style).and_return(false)
-
         render
       end
 
@@ -239,10 +233,8 @@ RSpec.describe "layouts/base" do
       end
     end
 
-    context "no EE present" do
+    context "when there are no Enterprise tokens" do
       before do
-        allow(EnterpriseToken).to receive(:current).and_return(nil)
-
         render
       end
 

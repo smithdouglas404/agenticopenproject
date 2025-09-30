@@ -6,10 +6,10 @@ title: Spacings
 
 <div class="spacings">
 <%
-tokens = JSON.parse File.read(Rails.root.join('frontend/src/app/spot/styles/tokens/dist/tokens.json'))
+tokens = JSON.parse Rails.root.join("frontend/src/app/spot/styles/tokens/dist/tokens.json").read
 tokens
-  .select { |k, v| k.start_with?('spot-spacing-') }
-  .sort_by { |k, | k.split('-')[2].gsub('_', '.').to_f }
+  .select { |k, _v| k.start_with?("spot-spacing-") }
+  .sort_by { |k,| k.split("-")[2].tr("_", ".").to_f }
   .each do |name, value|
  %>
 <div class="spacings--spacing">

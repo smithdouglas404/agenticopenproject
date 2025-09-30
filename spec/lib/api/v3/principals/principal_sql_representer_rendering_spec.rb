@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 #  OpenProject is an open source project management software.
-#  Copyright (C) 2010-2022 the OpenProject GmbH
+#  Copyright (C) the OpenProject GmbH
 #
 #  This program is free software; you can redistribute it and/or
 #  modify it under the terms of the GNU General Public License version 3.
@@ -60,6 +62,7 @@ RSpec.describe API::V3::Principals::PrincipalSqlRepresenter, "rendering" do
         _type: "Group",
         id: group.id,
         name: group.name,
+        email: "",
         _links: {
           self: {
             href: api_v3_paths.group(group.id),
@@ -83,6 +86,7 @@ RSpec.describe API::V3::Principals::PrincipalSqlRepresenter, "rendering" do
         _type: "PlaceholderUser",
         id: placeholder_user.id,
         name: placeholder_user.name,
+        email: "",
         _links: {
           self: {
             href: api_v3_paths.placeholder_user(placeholder_user.id),
@@ -108,6 +112,7 @@ RSpec.describe API::V3::Principals::PrincipalSqlRepresenter, "rendering" do
         name: current_user.name,
         firstname: current_user.firstname,
         lastname: current_user.lastname,
+        email: current_user.mail,
         _links: {
           self: {
             href: api_v3_paths.user(current_user.id),

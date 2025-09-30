@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -98,7 +98,7 @@ RSpec.describe OAuthClients::ConnectionManager, :webmock, type: :model do
 
     subject { instance.code_to_token(code) }
 
-    context "with happy path" do
+    context "with happy path", :storage_server_helpers do
       before do
         # Simulate a successful authorization returning the tokens
         response_body = {
@@ -110,19 +110,21 @@ RSpec.describe OAuthClients::ConnectionManager, :webmock, type: :model do
         }.to_json
         stub_request(:any, File.join(host, "/index.php/apps/oauth2/api/v1/token"))
           .to_return(status: 200, body: response_body, headers: { "content-type" => "application/json; charset=utf-8" })
+
+        stub_nextcloud_user_query(host)
       end
 
       it "returns a valid ClientToken object and issues an appropriate event" do
-        expect(OpenProject::Notifications)
-          .to(receive(:send))
-          .with(OpenProject::Events::OAUTH_CLIENT_TOKEN_CREATED, integration_type: "Storages::Storage")
+        allow(OpenProject::Notifications)
+          .to receive(:send).with(OpenProject::Events::REMOTE_IDENTITY_CREATED, integration: storage).once
+
         expect(subject.success).to be_truthy
         expect(subject.result).to be_a OAuthClientToken
       end
 
       it "fills in the origin_user_id" do
-        expect { subject }.to change(OAuthClientToken, :count).by(1)
-        last_token = OAuthClientToken.where(access_token: "yjTDZ...RYvRH").last
+        expect { subject }.to change(OAuthClientToken, :count).by(1).and(change(RemoteIdentity, :count).by(1))
+        last_token = RemoteIdentity.find_by!(user:, auth_source: oauth_client)
 
         expect(last_token.origin_user_id).to eq("admin")
       end
@@ -510,20 +512,25 @@ RSpec.describe OAuthClients::ConnectionManager, :webmock, type: :model do
 
       before do
         allow(instance).to receive(:refresh_token).and_return refresh_service_result
-        allow(yield_double_object)
-          .to receive(:yield_twice_method)
-                .and_return(
-                  yield_service_result1,
-                  yield_service_result2
-                )
+
+        without_partial_double_verification do
+          allow(yield_double_object)
+            .to receive(:yield_twice_method)
+                  .and_return(
+                    yield_service_result1,
+                    yield_service_result2
+                  )
+        end
       end
 
       it "returns a ServiceResult with success, without refresh" do
-        expect(subject.success).to be_truthy
-        expect(subject).to be yield_service_result2
-        expect(instance).to have_received(:refresh_token)
-        expect(oauth_client_token).to have_received(:reload)
-        expect(yield_double_object).to have_received(:yield_twice_method).twice
+        without_partial_double_verification do
+          expect(subject.success).to be_truthy
+          expect(subject).to be yield_service_result2
+          expect(instance).to have_received(:refresh_token)
+          expect(oauth_client_token).to have_received(:reload)
+          expect(yield_double_object).to have_received(:yield_twice_method).twice
+        end
       end
     end
   end

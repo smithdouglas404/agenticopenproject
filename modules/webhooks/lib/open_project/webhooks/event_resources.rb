@@ -31,7 +31,7 @@ module OpenProject::Webhooks
       end
 
       def resources
-        %i(project work_package time_entry attachment)
+        %i(project work_package work_package_comment time_entry attachment)
       end
     end
   end

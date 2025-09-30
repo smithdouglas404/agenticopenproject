@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -38,8 +40,8 @@ module WorkPackage::Exports
 
       def number_format_string
         # [$CUR] makes sure we have an actually working currency format with arbitrary currencies
-        curr = "[$CUR]".gsub "CUR", ERB::Util.h(Setting.plugin_costs["costs_currency"])
-        format = ERB::Util.h Setting.plugin_costs["costs_currency_format"]
+        curr = "[$CUR]".gsub "CUR", ERB::Util.h(Setting.costs_currency)
+        format = ERB::Util.h Setting.costs_currency_format
         number = "#,##0.00"
 
         format.gsub("%n", number).gsub("%u", curr)

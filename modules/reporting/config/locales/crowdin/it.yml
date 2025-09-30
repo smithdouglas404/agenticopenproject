@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -23,7 +23,7 @@ it:
   plugin_openproject_reporting:
     name: "Reportistica OpenProject"
     description: "Questo plugin consente di creare report di costo personalizzati con filtraggio e raggruppamento creato dal plugin OpenProject Time and costs."
-  button_save_as: "Salvare il report come..."
+  button_save_report_as: "Salva il report come..."
   comments: "Commento"
   cost_reports_title: "Tempi e costi"
   label_cost_report: "Relazione sui costi"
@@ -45,6 +45,8 @@ it:
   label_greater: ">"
   label_is_not_project_with_subprojects: "non è (include sottoprogetti)"
   label_is_project_with_subprojects: "è (include sottoprogetti)"
+  label_is_work_package_with_descendants: "è (include i discendenti)"
+  label_is_not_work_package_with_descendants: "non è (include i discendenti)"
   label_work_package_attributes: "Attributi del pacchetto lavoro"
   label_less: "<"
   label_logged_by_reporting: "Registrato da"
@@ -86,8 +88,18 @@ it:
   validation_failure_date: "non è una data valida"
   validation_failure_integer: "non è un numero intero valido"
   export:
+    timesheet:
+      title: "Esportazione del tuo foglio presenze in formato PDF"
+      button: "Esportazione del foglio presenze in PDF"
+      timesheet: "Foglio presenze"
+      time: "Ora"
+      sums_hours: Somme
+      overview_per_user_total: "Panoramica: totale ore per utente"
+      overview_per_user_day: "Panoramica: ore per utente al giorno"
     cost_reports:
       title: "Esportazione XLS dei report sui costi"
+      start_time: "Ora di inizio"
+      end_time: "Ora di fine"
   reporting:
     group_by:
       selected_columns: "Colonne selezionate"

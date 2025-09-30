@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "create users", :with_cuprite do
+RSpec.describe "create users" do
   shared_let(:admin) { create(:admin) }
   let(:current_user) { admin }
   let!(:auth_source) { create(:ldap_auth_source) }
@@ -38,6 +40,7 @@ RSpec.describe "create users", :with_cuprite do
   end
   let(:mail_body) { mail.body.parts.first.body.to_s }
   let(:token) { mail_body.scan(/token=(.*)$/).first.first.strip }
+  let(:user_menu) { Components::UserMenu.new }
 
   before do
     allow(User).to receive(:current).and_return current_user
@@ -45,7 +48,7 @@ RSpec.describe "create users", :with_cuprite do
 
   shared_examples_for "successful user creation" do |redirect_to_edit_page: true|
     it "creates the user" do
-      expect(page).to have_css(".op-toast", text: "Successful creation.")
+      expect_flash(message: "Successful creation.")
 
       new_user = User.order(Arel.sql("id DESC")).first
 
@@ -91,7 +94,7 @@ RSpec.describe "create users", :with_cuprite do
 
           # landed on the 'my page'
           expect(page).to have_text "Welcome, your account has been activated. You are logged in now."
-          expect(page).to have_link "bobfirst boblast"
+          user_menu.expect_user_shown "bobfirst boblast"
         end
       end
     end
@@ -109,6 +112,7 @@ RSpec.describe "create users", :with_cuprite do
 
       perform_enqueued_jobs do
         new_user_page.submit!
+        wait_for_network_idle
       end
     end
 
@@ -120,6 +124,9 @@ RSpec.describe "create users", :with_cuprite do
     it_behaves_like "successful user creation" do
       describe "activation", :js do
         before do
+          # Ensure we clear any flashes
+          visit "/logout"
+
           allow(User).to receive(:current).and_call_original
 
           visit "/account/activate?token=#{token}"
@@ -144,12 +151,13 @@ RSpec.describe "create users", :with_cuprite do
             .and_return({ dn: "cn=bob,ou=users,dc=example,dc=com" })
 
           fill_in "password", with: "dummy" # accepted by DummyAuthSource
+          click_button "Sign in", type: "submit"
+          wait_for_network_idle
 
-          click_button "Sign in"
-
-          expect(page).to have_text "OpenProject"
+          # landed on the 'my page'
+          expect(page).to have_text "Welcome to OpenProject, bobfirst boblast"
           expect(page).to have_current_path "/", ignore_query: true
-          expect(page).to have_link "bobfirst boblast"
+          user_menu.expect_user_shown "bobfirst boblast"
         end
       end
     end
@@ -192,7 +200,7 @@ RSpec.describe "create users", :with_cuprite do
 
             # landed on the 'my page'
             expect(page).to have_text "Welcome, your account has been activated. You are logged in now."
-            expect(page).to have_link "bobfirst boblast"
+            user_menu.expect_user_shown "bobfirst boblast"
           end
         end
       end

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { APP_INITIALIZER, Injector, NgModule } from '@angular/core';
+import { Injector, NgModule, inject, provideAppInitializer } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { OpenprojectAttachmentsModule } from 'core-app/shared/components/attachments/openproject-attachments.module';
@@ -67,9 +67,10 @@ export function initializeServices(injector:Injector) {
     EditorMacrosService,
     CKEditorSetupService,
     CKEditorPreviewService,
-    {
-      provide: APP_INITIALIZER, useFactory: initializeServices, deps: [Injector], multi: true,
-    },
+    provideAppInitializer(() => {
+      const initializerFn = (initializeServices)(inject(Injector));
+      return initializerFn();
+    }),
   ],
   exports: [
     CkeditorAugmentedTextareaComponent,

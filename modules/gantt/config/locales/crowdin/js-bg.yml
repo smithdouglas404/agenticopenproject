@@ -1,6 +1,6 @@
 bg:
   js:
-    queries:
-      all_open: 'Всичко отворено'
-      timeline: 'Timeline'
-      milestones: 'Milestones'
+    work_packages:
+      label_gantt_chart_plural: "Диаграми на Гант"
+      default_queries:
+        milestones: 'Етапи'

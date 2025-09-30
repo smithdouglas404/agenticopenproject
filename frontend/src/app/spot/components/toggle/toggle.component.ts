@@ -24,6 +24,7 @@ export interface SpotToggleOption<T> {
     multi: true,
   }],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class SpotToggleComponent<T> implements ControlValueAccessor {
   // TODO: These old styles will need to be replaced

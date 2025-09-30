@@ -6,7 +6,7 @@
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
 #Copyright (C) 2006-2013 Jean-Philippe Lang
 #Copyright (C) 2010-2013 the ChiliProject Team
-#Copyright (C) 2012-2021 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License
 #as published by the Free Software Foundation; either version 2
@@ -28,23 +28,26 @@ tr:
       tab_header_issue:
         title: "Sorunlar"
       tab_header_mr:
-        title: "Merge requests"
+        title: "Birleştirme istekleri"
         create_mr:
-          label: Create MR
-          description: Create a Merge Request
+          label: Birleştirme isteği oluştur
+          description: Birleştirme İsteği Oluştur
         copy_menu:
-          label: Git snippetları
-          description: Git snippet'lerini panoya kopyala
+          label: Git kod parçacığı
+          description: Git kod parçacığını panoya kopyala
         git_actions:
           branch_name: Dal adı
-          commit_message: Mesaj işle
+          commit_message: İşlem mesajı
           cmd: Boş işlemle dal oluştur
-          title: Git için hızlı snippet'ler
+          title: Git için hızlı kod parçaları
           copy_success: '✅ Kopyalandı!'
           copy_error: '❌ Kopyalanamadı!'
       tab_issue:
-        empty: 'There are no issues linked yet. Link an existing issue by using the code <code>OP#%{wp_id}</code> (or <code>PP#%{wp_id}</code> for private links) in the issue title/description or create a new issue.'
+        empty: 'Henüz bağlantılı sorun yok. Sorun başlığında/açıklamasında <code>OP#%{wp_id}</code> (veya özel bağlantılar için <code>PP#%{wp_id}</code>) kodunu kullanarak mevcut bir sorunu bağlayın veya yeni bir sorun oluşturun.'
       tab_mrs:
-        empty: 'There are no merge requests linked yet. Link an existing MR by using the code <code>OP#%{wp_id}</code> (or <code>PP#%{wp_id}</code> for private links) in the MR title/description or create a new MR.'
-      gitlab_pipelines: Pipelines
+        empty: 'Henüz bağlanmış bir birleştirme isteği yok. MR başlığında/açıklamasında <code>OP#%{wp_id}</code> (veya özel bağlantılar için <code>PP#%{wp_id}</code>) kodunu kullanarak mevcut bir MR''ı bağlayın veya yeni bir MR oluşturun.'
+      gitlab_pipelines: İş Akışları
       updated_on: Güncelleme tarihi
+    work_packages:
+      tabs:
+        gitlab: "GitLab"

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -51,6 +51,7 @@ import { WorkPackageViewFiltersService } from 'core-app/features/work-packages/r
   templateUrl: './add-assignee.component.html',
   selector: 'op-tp-add-assignee',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AddAssigneeComponent {
   @Output() public selectAssignee = new EventEmitter<HalResource>();

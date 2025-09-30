@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -36,6 +36,7 @@ module API
               set_journable(journals)
               set_predecessor(journals)
               set_data(journals)
+              set_notifications(journals)
             end
 
             super
@@ -69,6 +70,20 @@ module API
             journals.each do |journal|
               journal.data = data[journal.data_type][journal.data_id]
               journal.previous.data = data[journal.data_type][journal.previous.data_id] if journal.previous.present?
+            end
+          end
+
+          def set_notifications(journals)
+            notifications = Notification
+              .where(journal_id: journals.map(&:id))
+              .where(read_ian: false)
+              .group_by(&:journal_id)
+
+            journals.each do |journal|
+              journal.instance_variable_set(
+                :@unread_notifications,
+                notifications[journal.id]
+              )
             end
           end
 

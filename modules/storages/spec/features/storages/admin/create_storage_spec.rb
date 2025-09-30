@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,6 +33,7 @@ require_module_spec_helper
 
 RSpec.describe "Admin Create a new file storage",
                :js,
+               :selenium,
                :storage_server_helpers do
   shared_let(:admin) { create(:admin, preferences: { time_zone: "Etc/UTC" }) }
 
@@ -45,19 +46,19 @@ RSpec.describe "Admin Create a new file storage",
       allow(Doorkeeper::OAuth::Helpers::UniqueToken).to receive(:generate).and_return(secret)
     end
 
-    it "renders a Nextcloud specific multi-step form", :webmock do
+    it "renders a Nextcloud specific multi-step form for Two-Way OAuth 2.0 by default", :webmock do
       visit admin_settings_storages_path
 
       expect(page).to be_axe_clean.within "#content"
 
-      within(".PageHeader-titleBar") do
-        click_on("Storage")
+      within(".SubHeader") do
+        page.find_test_selector("storages-create-new-provider-button").click
         within_test_selector("storages-select-provider-action-menu") { click_on("Nextcloud") }
       end
 
-      expect(page).to have_current_path(select_provider_admin_settings_storages_path(provider: "nextcloud"))
+      wait_for { page }.to have_current_path(new_admin_settings_storage_path(provider: "nextcloud"))
 
-      aggregate_failures "Select provider view" do
+      aggregate_failures "New provider view" do
         # Page Header
         expect(page).to have_test_selector("storage-new-page-header--title", text: "New Nextcloud storage")
         expect(page).to have_test_selector("storage-new-page-header--description",
@@ -75,7 +76,7 @@ RSpec.describe "Admin Create a new file storage",
         expect(page).not_to have_test_selector("label-openproject_oauth_application_configured-status")
 
         # OAuth client
-        wait_for(page).to have_test_selector("storage-oauth-client-label", text: "Nextcloud OAuth")
+        wait_for { page }.to have_test_selector("storage-oauth-client-label", text: "Storage OAuth")
         expect(page).not_to have_test_selector("label-storage_oauth_client_configured-status")
         expect(page).to have_test_selector("storage-oauth-client-id-description",
                                            text: "Allow OpenProject to access Nextcloud data using OAuth.")
@@ -90,6 +91,9 @@ RSpec.describe "Admin Create a new file storage",
 
       aggregate_failures "General information" do
         within_test_selector("storage-general-info-form") do
+          expect(page).to have_enterprise_banner(:corporate)
+          expect(page).to have_css("option:disabled[value=oauth2_sso]") # expect SSO option to be disabled
+
           fill_in "Name", with: "My Nextcloud", fill_options: { clear: :backspace }
           click_on "Save and continue"
 
@@ -114,7 +118,7 @@ RSpec.describe "Admin Create a new file storage",
           expect(warning_section).to have_link("Nextcloud OpenProject Integration settings",
                                                href: "https://example.com/settings/admin/openproject")
 
-          storage = Storages::NextcloudStorage.find_by(host: "https://example.com")
+          storage = Storages::NextcloudStorage.find_by(host: "https://example.com/")
           expect(page).to have_css("#openproject_oauth_application_uid",
                                    value: storage.reload.oauth_application.uid)
           expect(page).to have_css("#openproject_oauth_application_secret",
@@ -155,8 +159,8 @@ RSpec.describe "Admin Create a new file storage",
           expect(application_password_input.value).to be_empty
 
           # Clicking submit with application password empty should show an error
-          click_on("Done, complete setup")
-          expect(page).to have_text("Password can't be blank.")
+          click_on("Finish setup")
+          expect(page).to have_text("Application password can't be blank.")
 
           # Test the error path for an invalid storage password.
           # Mock a valid response (=401) for example.com, so the password validation should fail
@@ -166,8 +170,8 @@ RSpec.describe "Admin Create a new file storage",
           expect(automatically_managed_switch).to be_checked
           fill_in "Application password", with: "1234567890"
           # Clicking submit with application password empty should show an error
-          click_on("Done, complete setup")
-          expect(page).to have_text("Password is not valid.")
+          click_on("Finish setup")
+          expect(page).to have_text("Application password is not valid.")
 
           # Test the happy path for a valid storage password.
           # Mock a valid response (=200) for example.com, so the password validation should succeed
@@ -176,34 +180,112 @@ RSpec.describe "Admin Create a new file storage",
           automatically_managed_switch = page.find('[name="storages_nextcloud_storage[automatic_management_enabled]"]')
           expect(automatically_managed_switch).to be_checked
           fill_in "Application password", with: "1234567890"
-          click_on("Done, complete setup")
+          click_on("Finish setup")
         end
 
-        expect(page).to have_current_path(admin_settings_storages_path)
+        expect(page).to have_current_path(edit_admin_settings_storage_path(Storages::Storage.last))
         expect(page).to have_test_selector(
-          "primer-banner-message-component",
-          text: "Storage connected successfully! Remember to activate the module and the specific " \
-                "storage in the project settings of each desired project to use it."
+          "op-primer-flash-message",
+          text: "Storage connected successfully! " \
+                "Remember to activate the storage in the Projects tab for each desired project to use it."
+        )
+      end
+    end
+
+    it "renders a Nextcloud specific multi-step form when using OAuth 2.0 SSO", :webmock, with_ee: [:nextcloud_sso] do
+      # Same setup as in default case, but without expectations
+      visit admin_settings_storages_path
+
+      within(".SubHeader") do
+        page.find_test_selector("storages-create-new-provider-button").click
+        within_test_selector("storages-select-provider-action-menu") { click_on("Nextcloud") }
+      end
+
+      wait_for { page }.to have_current_path(new_admin_settings_storage_path(provider: "nextcloud"))
+
+      within_test_selector("storage-general-info-form") do
+        expect(page).not_to have_enterprise_banner
+
+        fill_in "Name", with: "My Nextcloud", fill_options: { clear: :backspace }
+
+        mock_server_capabilities_response("https://example.com")
+        mock_server_config_check_response("https://example.com")
+        fill_in "Host", with: "https://example.com"
+
+        select "Single-Sign-On through OpenID Connect Identity Provider", from: "Authentication Method"
+
+        click_on "Save and continue"
+      end
+
+      aggregate_failures "Storage Audience" do
+        within_test_selector("storage-audience-form") do
+          click_on "Save and continue"
+          expect(page).to have_text("Storage Audience can't be blank.")
+
+          fill_in "Storage Audience", with: "nextcloud"
+          click_on "Save and continue"
+        end
+
+        expect(page).to have_test_selector("label-storage_audience_configured-status", text: "Completed")
+        expect(page).to have_test_selector("storage-audience-description", text: "Exchanging tokens for audience \"nextcloud\"")
+      end
+
+      aggregate_failures "Automatically managed project folders" do
+        within_test_selector("storage-automatically-managed-project-folders-form") do
+          automatically_managed_switch = page.find('[name="storages_nextcloud_storage[automatic_management_enabled]"]')
+          application_password_input = page.find_by_id("storages_nextcloud_storage_password")
+          expect(automatically_managed_switch).to be_checked
+          expect(application_password_input.value).to be_empty
+
+          # Clicking submit with application password empty should show an error
+          click_on("Finish setup")
+          expect(page).to have_text("Application password can't be blank.")
+
+          # Test the error path for an invalid storage password.
+          # Mock a valid response (=401) for example.com, so the password validation should fail
+          mock_nextcloud_application_credentials_validation("https://example.com", password: "1234567890",
+                                                                                   response_code: 401)
+          automatically_managed_switch = page.find('[name="storages_nextcloud_storage[automatic_management_enabled]"]')
+          expect(automatically_managed_switch).to be_checked
+          fill_in "Application password", with: "1234567890"
+          # Clicking submit with application password empty should show an error
+          click_on("Finish setup")
+          expect(page).to have_text("Application password is not valid.")
+
+          # Test the happy path for a valid storage password.
+          # Mock a valid response (=200) for example.com, so the password validation should succeed
+          # Fill in application password and submit
+          mock_nextcloud_application_credentials_validation("https://example.com", password: "1234567890")
+          automatically_managed_switch = page.find('[name="storages_nextcloud_storage[automatic_management_enabled]"]')
+          expect(automatically_managed_switch).to be_checked
+          fill_in "Application password", with: "1234567890"
+          click_on("Finish setup")
+        end
+
+        expect(page).to have_current_path(edit_admin_settings_storage_path(Storages::Storage.last))
+        expect(page).to have_test_selector(
+          "op-primer-flash-message",
+          text: "Storage connected successfully! " \
+                "Remember to activate the storage in the Projects tab for each desired project to use it."
         )
       end
     end
   end
 
   context "with OneDrive Storage and enterprise token missing", with_ee: false do
-    it "renders enterprise icon and redirects to upsale", :webmock do
+    it "renders enterprise icon and redirects to upsell", :webmock do
       visit admin_settings_storages_path
 
-      within(".PageHeader-titleBar") do
-        click_on("Storage")
-
+      within(".SubHeader") do
+        page.find_test_selector("storages-create-new-provider-button").click
         within_test_selector("storages-select-provider-action-menu") do
           expect(page).to have_css(".octicon-op-enterprise-addons")
-          click_on("OneDrive/SharePoint")
+          click_on("OneDrive")
         end
       end
 
-      expect(page).to have_current_path(upsale_admin_settings_storages_path)
-      wait_for(page).to have_text("OneDrive/SharePoint integration")
+      wait_for { page }.to have_current_path(upsell_admin_settings_storages_path)
+      expect(page).to have_text("OneDrive integration")
     end
   end
 
@@ -213,19 +295,18 @@ RSpec.describe "Admin Create a new file storage",
 
       expect(page).to be_axe_clean.within "#content"
 
-      within(".PageHeader-titleBar") do
-        click_on("Storage")
-
-        within_test_selector("storages-select-provider-action-menu") { click_on("OneDrive/SharePoint") }
+      within(".SubHeader") do
+        page.find_test_selector("storages-create-new-provider-button").click
+        within_test_selector("storages-select-provider-action-menu") { click_on("OneDrive") }
       end
 
-      expect(page).to have_current_path(select_provider_admin_settings_storages_path(provider: "one_drive"))
+      expect(page).to have_current_path(new_admin_settings_storage_path(provider: "one_drive"))
 
-      aggregate_failures "Select provider view" do
+      aggregate_failures "New provider view" do
         # Page Header
-        expect(page).to have_test_selector("storage-new-page-header--title", text: "New OneDrive/SharePoint storage")
+        expect(page).to have_test_selector("storage-new-page-header--title", text: "New OneDrive storage")
         expect(page).to have_test_selector("storage-new-page-header--description",
-                                           text: "Read our documentation on setting up a OneDrive/SharePoint " \
+                                           text: "Read our documentation on setting up a OneDrive " \
                                                  "file storage integration for more information.")
 
         # General information
@@ -236,18 +317,18 @@ RSpec.describe "Admin Create a new file storage",
                                                  "Azure application or use an existing one for authentication.")
 
         # Access Management
-        wait_for(page).to have_test_selector("access-management-label", text: "Access management")
+        wait_for { page }.to have_test_selector("access-management-label", text: "Access management")
         expect(page).not_to have_test_selector("label-access_management_configured-status")
         expect(page).to have_text("Select the type of management of user access and folder creation.")
         expect(page).to have_test_selector("access-management-description",
                                            text: "Select the type of management of user access and folder creation.")
 
         # OAuth client
-        wait_for(page).to have_test_selector("storage-oauth-client-label", text: "Azure OAuth")
+        wait_for { page }.to have_test_selector("storage-oauth-client-label", text: "Azure OAuth")
         expect(page).not_to have_test_selector("label-storage_oauth_client_configured-status")
         expect(page).to have_test_selector("storage-oauth-client-id-description",
                                            text: "Allow OpenProject to access Azure data using OAuth " \
-                                                 "to connect OneDrive/Sharepoint.")
+                                                 "to connect OneDrive.")
         expect(page).to have_test_selector("storage-redirect-uri-description",
                                            text: "Complete the setup with the correct URI redirection.")
       end
@@ -262,11 +343,16 @@ RSpec.describe "Admin Create a new file storage",
 
           fill_in "Drive ID", with: "1234567890"
           click_on "Save and continue"
+
+          expect(page).to have_text("Drive ID is too short (minimum is 17 characters).")
+
+          fill_in "Drive ID", with: "b!FeOZEMfQx0eGQKqVBLcP__BG8mq-4-9FuRqOyk3MXY87vnZ6fgfvQanZHX-XCAyw"
+          click_on "Save and continue"
         end
 
-        wait_for(page).to have_test_selector("label-name_configured-storage_tenant_drive_configured-status",
-                                             text: "Completed")
-        expect(page).to have_test_selector("storage-description", text: "OneDrive/SharePoint - My OneDrive")
+        wait_for { page }.to have_test_selector("label-name_configured-storage_tenant_drive_configured-status",
+                                                text: "Completed")
+        expect(page).to have_test_selector("storage-description", text: "OneDrive - My OneDrive")
       end
 
       aggregate_failures "Access Management" do
@@ -283,7 +369,7 @@ RSpec.describe "Admin Create a new file storage",
           click_on "Save and continue"
         end
 
-        wait_for(page).to have_test_selector("label-access_management_configured-status", text: "Completed")
+        wait_for { page }.to have_test_selector("label-access_management_configured-status", text: "Completed")
         expect(page).to have_test_selector("access-management-description", text: "Manually managed access and folders")
       end
 
@@ -312,32 +398,32 @@ RSpec.describe "Admin Create a new file storage",
           click_on "Done, complete setup"
         end
 
-        expect(page).to have_current_path(admin_settings_storages_path)
-        wait_for(page).to have_test_selector(
-          "primer-banner-message-component",
-          text: "Storage connected successfully! Remember to activate the module and the specific " \
-                "storage in the project settings of each desired project to use it."
+        expect(page).to have_current_path(edit_admin_settings_storage_path(Storages::Storage.last))
+        wait_for { page }.to have_test_selector(
+          "op-primer-flash-message",
+          text: "Storage connected successfully! " \
+                "Remember to activate the storage in the Projects tab for each desired project to use it."
         )
       end
     end
   end
 
-  describe "Select provider page" do
+  describe "new page" do
     context "when navigating directly to the page" do
       it "redirects you back to the index page" do
-        visit select_provider_admin_settings_storages_path
+        visit new_admin_settings_storage_path
 
         expect(page).to have_current_path(admin_settings_storages_path)
-        wait_for(page).to have_text("Please select a valid storage provider.")
+        wait_for { page }.to have_text("Please select a valid storage provider.")
       end
     end
 
     context "when navigating to the page with an invalid provider" do
       it "redirects you back to the index page" do
-        visit select_provider_admin_settings_storages_path(provider: "foobar")
+        visit new_admin_settings_storage_path(provider: "foobar")
 
         expect(page).to have_current_path(admin_settings_storages_path)
-        wait_for(page).to have_text("Please select a valid storage provider.")
+        wait_for { page }.to have_text("Please select a valid storage provider.")
       end
     end
   end

@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,7 +29,7 @@
 require "spec_helper"
 require_relative "../../support/pages/ifc_models/show_default"
 
-RSpec.describe "Update status from WP card", :js, :with_cuprite, with_config: { edition: "bim" } do
+RSpec.describe "Update status from WP card", :js, with_config: { edition: "bim" } do
   let(:manager_role) do
     create(:project_role, permissions: %i[view_work_packages edit_work_packages view_ifc_models view_linked_issues])
   end

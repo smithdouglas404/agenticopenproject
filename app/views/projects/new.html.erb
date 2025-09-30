@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2024 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
-<% html_title t("label_project_new") %>
-<%= toolbar title: t(:label_project_new) %>
+<% html_title new_workspace_title(@new_project) %>
+<%=
+  render(Primer::OpenProject::PageHeader.new) do |header|
+    header.with_title { new_workspace_title(@new_project) }
+    header.with_breadcrumbs([new_workspace_title(@new_project)])
+  end
+%>
 
-<openproject-base></openproject-base>
+<%=
+  render Projects::TemplateSelectComponent.new(
+    template: @template,
+    parent: @parent
+  )
+%>
+
+<%=
+  render Projects::NewComponent.new(
+    project: @new_project,
+    template: @template,
+    copy_options: @copy_options
+  )
+%>

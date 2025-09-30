@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2024 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -30,13 +30,13 @@ See COPYRIGHT and LICENSE files for more details.
 <%-
   templated ||= false
   index ||= "INDEX"
-  new_or_existing = labor_budget_item.new_record? ? 'new' : 'existing'
+  new_or_existing = labor_budget_item.new_record? ? "new" : "existing"
   id_or_index = labor_budget_item.new_record? ? index : labor_budget_item.id
   prefix = "budget[#{new_or_existing}_labor_budget_item_attributes][]"
   id_prefix = "budget_#{new_or_existing}_labor_budget_item_attributes_#{id_or_index}"
   name_prefix = "budget[#{new_or_existing}_labor_budget_item_attributes][#{id_or_index}]"
 
-  error_messages = error_messages_for 'labor_budget_item'
+  error_messages = error_messages_for "labor_budget_item"
 -%>
 
 <% unless error_messages.blank? %>
@@ -50,7 +50,7 @@ See COPYRIGHT and LICENSE files for more details.
     <td class="units">
       <div class="form--field-container">
         <div class="form--text-field-container -xslim">
-          <label class="hidden-for-sighted" for="<%= id_prefix %>_units"><%= LaborBudgetItem.human_attribute_name(:hours) %></label>
+          <label class="sr-only" for="<%= id_prefix %>_units"><%= LaborBudgetItem.human_attribute_name(:hours) %></label>
           <%= cost_form.text_field :hours,
                                    index: id_or_index,
                                    value: unitless_currency_number(labor_budget_item.hours),
@@ -58,32 +58,31 @@ See COPYRIGHT and LICENSE files for more details.
                                    # but show the appearance of a decimal field on mobile
                                    inputmode: :decimal,
                                    placeholder: t(:label_example_placeholder, decimal: unitless_currency_number(1000.50)),
-                                   class: 'budget-item-value form--text-field',
+                                   class: "budget-item-value form--text-field",
                                    data: {
-                                     :'request-key' => 'hours',
-                                     :'action' => 'keyup->costs--budget-subform#valueChanged'
-                                   }
-          %>
+                                     "request-key": "hours",
+                                     action: "keyup->costs--budget-subform#valueChanged"
+                                   } %>
         </div>
       </div>
     </td>
     <td class="user">
-      <label class="hidden-for-sighted" for="<%= id_prefix %>_user_id"><%= t(:label_user) %></label>
+      <label class="sr-only" for="<%= id_prefix %>_user_id"><%= t(:label_user) %></label>
       <%= cost_form.select :user_id,
-                           Principal.possible_assignee(@project).sort.map {|u| [u.name, u.id]},
-                           {prompt: true},
+                           Principal.possible_assignee(@project).sort.map { |u| [u.name, u.id] },
+                           { prompt: true },
                            {
                              index: id_or_index,
-                             class: 'form--select budget-item-value',
+                             class: "form--select budget-item-value",
                              data: {
-                               :'request-key' => 'user_id',
-                               :'action' => 'change->costs--budget-subform#valueChanged'
+                               "request-key": "user_id",
+                               action: "change->costs--budget-subform#valueChanged"
                              }
                            } %>
 
     </td>
     <td class="comment">
-      <label class="hidden-for-sighted" for="<%= id_prefix %>_comments"><%= LaborBudgetItem.human_attribute_name(:comments) %></label>
+      <label class="sr-only" for="<%= id_prefix %>_comments"><%= LaborBudgetItem.human_attribute_name(:comments) %></label>
       <%= cost_form.text_field :comments, index: id_or_index, size: 40 %>
     </td>
     <% if User.current.allowed_in_project?(:view_cost_rates, @project) %>
@@ -99,12 +98,11 @@ See COPYRIGHT and LICENSE files for more details.
             <%= number_to_currency(cost_value) %>
           <% end %>
         </a>
-        <%= render partial: '/budgets/items/budget_override_cost_form',
+        <%= render partial: "/budgets/items/budget_override_cost_form",
                    locals: {
                      field_name: "#{name_prefix}[amount]",
-                     cost_value: cost_value,
-                   }
-        %>
+                     cost_value: cost_value
+                   } %>
       </td>
     <% end %>
     <td class="delete form--td budget-table--fields buttons">
@@ -112,8 +110,8 @@ See COPYRIGHT and LICENSE files for more details.
          title="<%= t(:button_delete) %>"
          href="#"
          data-action="costs--budget-subform#deleteRow">
-        <%= op_icon('icon-context icon-delete') %>
-        <span class="hidden-for-sighted"><%= t(:button_delete) %></span>
+        <%= op_icon("icon-context icon-delete") %>
+        <span class="sr-only"><%= t(:button_delete) %></span>
       </a>
     </td>
   </tr>

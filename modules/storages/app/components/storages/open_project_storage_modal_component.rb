@@ -1,4 +1,8 @@
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# frozen_string_literal: true
+
+#-- copyright
+# OpenProject is an open source project management software.
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -25,15 +29,13 @@
 #++
 
 class Storages::OpenProjectStorageModalComponent < ViewComponent::Base
+  attr_reader :controller, :project_storage_open_url, :redirect_url, :state
+
   def initialize(project_storage_open_url:, redirect_url:, state:, **options)
-    super
-    controller = "storages--open-project-storage-modal"
-    @data = {
-      controller:,
-      "application-target": "dynamic",
-      "#{controller}-project-storage-open-url-value": project_storage_open_url,
-      "#{controller}-redirect-url-value": redirect_url
-    }
+    super()
+    @controller = "storages--open-project-storage-modal"
+    @project_storage_open_url = project_storage_open_url
+    @redirect_url = redirect_url
     @state = state
   end
 
@@ -43,5 +45,24 @@ class Storages::OpenProjectStorageModalComponent < ViewComponent::Base
 
   def self.dialog_body_id
     "open-project-storage-modal-body-component"
+  end
+
+  def data
+    @data ||= {
+      controller:,
+      "#{controller}-project-storage-open-url-value": project_storage_open_url,
+      "#{controller}-redirect-url-value": redirect_url,
+      "#{controller}-subtitle-timeout-text-value": subtitle_timeout_text
+    }
+  end
+
+  def subtitle_timeout_text
+    href = OpenProject::Static::Links.url_for(:storage_docs, :health_status)
+    I18n.t(
+      "storages.open_project_storage_modal.timeout.subtitle",
+      storages_health_link: render(Primer::Beta::Link.new(href:, target: "_blank", underline: true)) do
+        I18n.t("storages.open_project_storage_modal.timeout.link_text")
+      end
+    )
   end
 end

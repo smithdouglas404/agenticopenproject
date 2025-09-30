@@ -3,11 +3,9 @@
   [attr.title]="text.mark_as_read"
   class="button">
 
-  <op-icon icon-classes="button--icon icon-mark-read"></op-icon>
-  <span
-    *ngIf="showWithText"
-    class="button--text"
-    [textContent]="text.mark_as_read"
-  >
-  </span>
+  <svg
+    read-icon
+    class="button--icon"
+    size="small"
+  ></svg>
 </button>

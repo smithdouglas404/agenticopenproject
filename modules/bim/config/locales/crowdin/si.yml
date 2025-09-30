@@ -9,6 +9,7 @@ si:
     label_bcf: 'BCF'
     label_imported_failed: 'BCF මාතෘකා ආනයනය අසමත්'
     label_imported_successfully: 'සාර්ථකව ආනයනය BCF මාතෘකා'
+    label_bcf_issue_associated: "BCF issue associated"
     issues: "ගැටළු"
     recommended: 'නිර්දේශ'
     not_recommended: 'නිර්දේශ කර නැත'
@@ -83,6 +84,12 @@ si:
         ifc_attachment: "IFC file"
         is_default: "Default model"
         attachments: "IFC file"
+      bim/bcf/issue:
+        bcf_comment: "BCF comment"
+        bim_snippet: "BIM snippet"
+        reference_links: "Reference links"
+        stage: "Stage"
+        viewpoint: "Viewpoint"
     errors:
       models:
         bim/ifc_models/ifc_model:

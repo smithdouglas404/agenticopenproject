@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,15 +35,10 @@ RSpec.describe NewsController do
 
   include BecomeMember
 
-  let(:user) do
-    create(:admin)
-  end
-  let(:project) { create(:project) }
   let(:news) { create(:news) }
 
-  before do
-    allow(User).to receive(:current).and_return user
-  end
+  shared_let(:project) { create(:project) }
+  shared_current_user { create(:admin) }
 
   describe "#index" do
     it "renders index" do
@@ -70,7 +67,7 @@ RSpec.describe NewsController do
       expect(response).to be_successful
       expect(response).to render_template "show"
 
-      expect(response.body).to have_css("h2", text: news.title)
+      expect(assigns(:news)).to eq news
     end
 
     it "renders show with slug" do
@@ -79,7 +76,7 @@ RSpec.describe NewsController do
       expect(response).to be_successful
       expect(response).to render_template "show"
 
-      expect(response.body).to have_css("h2", text: news.title)
+      expect(assigns(:news)).to eq news
     end
 
     it "renders error if news item is not found" do
@@ -101,7 +98,7 @@ RSpec.describe NewsController do
   describe "#create" do
     context "with news_added notifications" do
       it "persists a news item" do
-        become_member(project, user)
+        become_member(project, current_user)
 
         post :create,
              params: {
@@ -117,7 +114,7 @@ RSpec.describe NewsController do
         news = News.find_by!(title: "NewsControllerTest")
         expect(news).not_to be_nil
         expect(news.description).to eq "This is the description"
-        expect(news.author).to eq user
+        expect(news.author).to eq current_user
         expect(news.project).to eq project
       end
     end
@@ -133,12 +130,12 @@ RSpec.describe NewsController do
              }
            }
 
-      expect(response).to be_successful
+      expect(response).to have_http_status(:unprocessable_entity)
       expect(response).to render_template "new"
       expect(assigns(:news)).not_to be_nil
       expect(assigns(:news)).to be_new_record
 
-      expect(response.body).to have_css("div.op-toast.-error", text: /1 error/)
+      expect(response.body).to have_text /1 error/
     end
   end
 

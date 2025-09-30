@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -220,7 +222,7 @@ RSpec.describe Journable::HistoricActiveRecordRelation do
         end
       end
 
-      describe "when searching for custom fields" do
+      describe "when searching for a single custom field" do
         let(:custom_field) do
           create(:text_wp_custom_field,
                  name: "Text CF",
@@ -281,6 +283,109 @@ RSpec.describe Journable::HistoricActiveRecordRelation do
 
           it "does not return the requested work package" do
             expect(subject).not_to include work_package
+          end
+        end
+      end
+
+      describe "when searching for two custom fields (concatenated into string as Query#results does)" do
+        let(:text_custom_field) do
+          create(:text_wp_custom_field,
+                 name: "Text CF",
+                 types: project.types,
+                 projects: [project])
+        end
+        let!(:monday_text_cf_journal) do
+          create(:journal_customizable_journal,
+                 journal: monday_journal,
+                 custom_field: text_custom_field,
+                 value: "Monday_CV")
+        end
+        let!(:wednesday_text_cf_journal) do
+          create(:journal_customizable_journal,
+                 journal: wednesday_journal,
+                 custom_field: text_custom_field,
+                 value: "Wednesday_CV")
+        end
+        let!(:friday_text_cf_journal) do
+          create(:journal_customizable_journal,
+                 journal: friday_journal,
+                 custom_field: text_custom_field,
+                 value: "Friday_CV")
+        end
+        let(:int_custom_field) do
+          create(:integer_wp_custom_field,
+                 name: "Int CF",
+                 types: project.types,
+                 projects: [project])
+        end
+        let!(:monday_int_cf_journal) do
+          create(:journal_customizable_journal,
+                 journal: monday_journal,
+                 custom_field: int_custom_field,
+                 value: "1")
+        end
+        let!(:wednesday_int_cf_journal) do
+          create(:journal_customizable_journal,
+                 journal: wednesday_journal,
+                 custom_field: int_custom_field,
+                 value: "2")
+        end
+        let!(:friday_int_cf_journal) do
+          create(:journal_customizable_journal,
+                 journal: friday_journal,
+                 custom_field: int_custom_field,
+                 value: "3")
+        end
+        let(:work_package_attributes) do
+          { custom_values: { text_custom_field.id => "Friday_CV", int_custom_field.id => "3" } }
+        end
+        let(:text_filter) do
+          Queries::WorkPackages::Filter::CustomFieldFilter.create!(
+            name: text_custom_field.column_name,
+            context: build_stubbed(:query, project:),
+            operator: "~",
+            values: text_values
+          )
+        end
+        let(:int_filter) do
+          Queries::WorkPackages::Filter::CustomFieldFilter.create!(
+            name: int_custom_field.column_name,
+            context: build_stubbed(:query, project:),
+            operator: "=",
+            values: int_values
+          )
+        end
+        # Done just like Query#results does it by fetching Query#statement
+        let(:relation) { WorkPackage.where("(#{text_filter.where}) AND (#{int_filter.where})") }
+
+        context "with the current value at the current time" do
+          let(:text_values) { %w(Friday_CV) }
+          let(:int_values) { "3" }
+          let(:historic_relation) { relation.at_timestamp(Timestamp.new("PT0S")) }
+
+          it "returns the requested work package" do
+            expect(subject).to include work_package
+          end
+        end
+
+        context "with matching historic values" do
+          let(:text_values) { %w(Wednesday) }
+          let(:int_values) { "2" }
+          let(:historic_relation) { relation.at_timestamp(wednesday) }
+
+          it "returns the requested work package" do
+            expect(subject).to include work_package
+          end
+        end
+
+        # Guards against regression #58600
+        context "with only one filter matching historic values" do
+          let(:text_values) { %w(Friday) }
+          let(:int_values) { "2" }
+          let(:historic_relation) { relation.at_timestamp(wednesday) }
+
+          it "returns no work package" do
+            expect(subject).to be_empty
           end
         end
       end
@@ -455,8 +560,11 @@ RSpec.describe Journable::HistoricActiveRecordRelation do
       before { work_package.time_entries << create(:time_entry) }
 
       it "transforms the table name" do
-        expect(subject.to_sql).to include \
-          "JOIN \"time_entries\" ON \"time_entries\".\"work_package_id\" = \"journals\".\"journable_id\""
+        expect(subject.to_sql).to include <<~SQL.squish
+          INNER JOIN "time_entries"
+            ON "time_entries"."entity_type" = 'WorkPackage'
+            AND "time_entries"."entity_id" = "journals"."journable_id"
+        SQL
       end
 
       it "returns the requested work package" do
@@ -467,7 +575,7 @@ RSpec.describe Journable::HistoricActiveRecordRelation do
     describe "using a manual sql expression" do
       # This is used in the manual-sorting feature.
       let(:relation) do
-        WorkPackage \
+        WorkPackage
           .joins("LEFT OUTER JOIN ordered_work_packages ON ordered_work_packages.work_package_id = work_packages.id")
       end
 

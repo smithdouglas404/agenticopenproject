@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +28,8 @@
 
 module Calendar
   class ResolveICalTokenService < ::BaseServices::BaseCallable
-    def perform(ical_token_string:)
+    def perform
+      ical_token_string = params.fetch(:ical_token_string)
       if ical_token_string.blank?
         raise ActiveRecord::RecordNotFound
       end

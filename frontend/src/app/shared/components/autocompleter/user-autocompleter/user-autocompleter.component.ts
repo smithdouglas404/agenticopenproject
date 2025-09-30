@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,23 +26,34 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  forwardRef,
+  Input,
+  OnInit,
+  Output,
+  ViewEncapsulation,
+} from '@angular/core';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  filter,
+  map,
+} from 'rxjs/operators';
+import {
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+} from '@angular/forms';
 import { ID } from '@datorama/akita';
 import { OpInviteUserModalService } from 'core-app/features/invite-user-modal/invite-user-modal.service';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { IHALCollection } from 'core-app/core/apiv3/types/hal-collection.type';
-import {
-  OpAutocompleterComponent,
-} from 'core-app/shared/components/autocompleter/op-autocompleter/op-autocompleter.component';
+import { OpAutocompleterComponent } from 'core-app/shared/components/autocompleter/op-autocompleter/op-autocompleter.component';
 import { ApiV3FilterBuilder } from 'core-app/shared/helpers/api-v3/api-v3-filter-builder';
 import { addFiltersToPath } from 'core-app/core/apiv3/helpers/add-filters-to-path';
-import {
-  UserAutocompleterTemplateComponent,
-} from 'core-app/shared/components/autocompleter/user-autocompleter/user-autocompleter-template.component';
+import { UserAutocompleterTemplateComponent } from 'core-app/shared/components/autocompleter/user-autocompleter/user-autocompleter-template.component';
 import { IUser } from 'core-app/core/state/principals/user.model';
 import { compareByAttribute } from 'core-app/shared/helpers/angular/tracking-functions';
 
@@ -51,6 +62,7 @@ export const usersAutocompleterSelector = 'op-user-autocompleter';
 export interface IUserAutocompleteItem {
   id:ID;
   name:string;
+  email?:string|null;
   href:string|null;
   avatar?:string|null;
 }
@@ -58,6 +70,7 @@ export interface IUserAutocompleteItem {
 @Component({
   templateUrl: '../op-autocompleter/op-autocompleter.component.html',
   selector: usersAutocompleterSelector,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -68,11 +81,19 @@ export interface IUserAutocompleteItem {
     // as otherwise the close event will be shared across all instances
     OpInviteUserModalService,
   ],
+  styleUrls: ['./user-autocompleter.component.sass'],
+  encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class UserAutocompleterComponent extends OpAutocompleterComponent<IUserAutocompleteItem> implements OnInit, ControlValueAccessor {
   @Input() public inviteUserToProject:string|undefined;
 
+  @Input() public isOpenedInModal:boolean = false;
+  @Input() public hoverCards:boolean = true;
+
   @Input() public url:string = this.apiV3Service.users.path;
+
+  @Input() public additionalOptions:IUserAutocompleteItem[]|null = null;
 
   @Output() public userInvited = new EventEmitter<HalResource>();
 
@@ -83,7 +104,11 @@ export class UserAutocompleterComponent extends OpAutocompleterComponent<IUserAu
   ngOnInit():void {
     super.ngOnInit();
 
-    this.applyTemplates(UserAutocompleterTemplateComponent, { inviteUserToProject: this.inviteUserToProject });
+    this.applyTemplates(UserAutocompleterTemplateComponent, {
+      inviteUserToProject: this.inviteUserToProject,
+      isOpenedInModal: this.isOpenedInModal,
+      hoverCards: this.hoverCards,
+    });
 
     this
       .opInviteUserModalService
@@ -101,7 +126,7 @@ export class UserAutocompleterComponent extends OpAutocompleterComponent<IUserAu
     const filteredURL = this.buildFilteredURL(searchTerm);
 
     filteredURL.searchParams.set('pageSize', '-1');
-    filteredURL.searchParams.set('select', 'elements/id,elements/name,elements/self,total,count,pageSize');
+    filteredURL.searchParams.set('select', 'elements/id,elements/name,elements/email,elements/self,total,count,pageSize');
 
     return this
       .http
@@ -109,9 +134,15 @@ export class UserAutocompleterComponent extends OpAutocompleterComponent<IUserAu
       .pipe(
         map((res) => _.uniqBy(res._embedded.elements, (el) => el._links.self?.href || el.id)),
         map((users) => {
-          return users.map((user) => {
-              return { id: user.id, name: user.name, href: user._links.self?.href };
-            });
+          const mapped:IUserAutocompleteItem[] = users.map((user) => {
+              return { id: user.id, name: user.name, href: user._links.self?.href, email: user.email };
+          });
+
+          if (this.additionalOptions) {
+            return this.additionalOptions.concat(mapped);
+          }
+
+          return mapped;
           }),
       );
   }
@@ -136,7 +167,7 @@ export class UserAutocompleterComponent extends OpAutocompleterComponent<IUserAu
     };
   }
 
-  protected defaultTrackByFunction():(item:{ href:unknown, name:unknown }) => unknown|null {
+  protected defaultTrackByFunction():(item:{ href:unknown, name:unknown }) => unknown {
     return (item) => item.href || item.name;
   }
 

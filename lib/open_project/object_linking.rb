@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -40,22 +42,21 @@ module OpenProject
     end
 
     # Displays a link to user's account page if active or registered
-    def link_to_user(user, options = {})
-      if user.is_a?(User) && user.locked?
-        user.name
-      elsif user.is_a?(User)
-        name = user.name
-        href = user_url(user,
-                        only_path: options.delete(:only_path) { true })
-        options[:title] ||= I18n.t(:label_user_named, name:)
+    # Will attach a user hover card to the link.
+    def link_to_user(user, options = {}) # rubocop:disable Metrics/AbcSize
+      return h(user.to_s) unless user.is_a?(User)
+      return h(user.name) if (user.locked? || user.deleted?) && !User.current.admin?
 
-        link_to(name, href, options)
-      else
-        h(user.to_s)
-      end
+      only_path = options.delete(:only_path) { true }
+      name = options.delete(:name) { user.name }
+      options[:title] ||= I18n.t(:label_user_named, name:)
+
+      add_hover_card_options(user, options, only_path:)
+
+      link_to(name, user_url(user, only_path:), options)
     end
 
-    # Displays a link to groups's account page
+    # Displays a link to group's account page
     def link_to_group(group, options = {})
       return h(group.to_s) unless group.is_a?(Group)
 
@@ -127,7 +128,35 @@ module OpenProject
       end.html_safe
     end
 
+    # Like #link_to_user, but will render a Primer link instead of a regular link.
+    def primer_link_to_user(user, options = {})
+      options[:href] ||= user_path(user)
+      options[:target] ||= "_blank"
+      options[:underline] ||= false
+
+      options = add_hover_card_options(user, options)
+
+      render Primer::Beta::Link.new(**options) do
+        user.name
+      end
+    end
+
     private
+
+    # Accepts a user and an options hash. Will apply a hover card config for the user to the options hash.
+    # Will not do anything if `hover_card` is set to false within the options.
+    # You can use this method if you want to render a link and apply a user hover card to it.
+    def add_hover_card_options(user, options, only_path: true)
+      if options.delete(:hover_card) { true } && user.is_a?(User)
+        options[:data] ||= {}
+
+        hover_card_url = hover_card_user_url(user, only_path:)
+        options[:data][:hover_card_url] = hover_card_url
+        options[:data][:hover_card_trigger_target] = "trigger"
+      end
+
+      options
+    end
 
     def project_link_name(project, show_icon)
       if show_icon && User.current.member_of?(project)

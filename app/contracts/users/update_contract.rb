@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -51,7 +53,7 @@ module Users
     def at_least_one_admin_is_active
       return unless
         (model.admin_changed? && !model.admin?) ||
-        (model.admin? && model.status_changed? && model.locked?)
+        (model.admin? && model.status_changed? && (model.locked? || model.deleted?))
 
       if User.active.admin.where.not(id: model).none?
         errors.add :base, :one_must_be_active

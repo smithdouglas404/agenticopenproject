@@ -1,5 +1,5 @@
 import { NgSelectModule } from '@ng-select/ng-select';
-import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
+import { NgOptionHighlightDirective } from '@ng-select/ng-option-highlight';
 import {
   Component,
   forwardRef,
@@ -38,14 +38,17 @@ import { DateInputComponent } from 'core-app/shared/components/dynamic-forms/com
 import { FormattableTextareaInputComponent } from 'core-app/shared/components/dynamic-forms/components/dynamic-inputs/formattable-textarea-input/formattable-textarea-input.component';
 import { DynamicFieldGroupWrapperComponent } from 'core-app/shared/components/dynamic-forms/components/dynamic-field-group-wrapper/dynamic-field-group-wrapper.component';
 import { SpotFormFieldComponent } from 'core-app/spot/components/form-field/form-field.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DynamicFieldWrapperComponent } from 'core-app/shared/components/dynamic-forms/components/dynamic-field-wrapper/dynamic-field-wrapper.component';
 import { ConfirmDialogService } from "core-app/shared/components/modals/confirm-dialog/confirm-dialog.service";
+import { IOPDynamicFormSettings } from 'core-app/shared/components/dynamic-forms/typings';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
   template: `
-    <op-dynamic-form [formControl]="control"></op-dynamic-form>`,
+    <op-dynamic-form [formControl]="control" />`,
   providers: [],
+  standalone: false,
 })
 class DynamicFormsTestingComponent {
   control = new UntypedFormControl('');
@@ -112,7 +115,7 @@ describe('DynamicFormComponent', () => {
       },
     },
   };
-  const dynamicFormSettings:any = {
+  const dynamicFormSettings:IOPDynamicFormSettings = {
     fields: [
       {
         type: 'textInput',
@@ -295,54 +298,53 @@ describe('DynamicFormComponent', () => {
 
     await TestBed
       .configureTestingModule({
-        imports: [
-          CommonModule,
-          HttpClientTestingModule,
-          ReactiveFormsModule,
-          FormlyModule.forRoot({
+    declarations: [
+        DynamicFormComponent,
+        SpotFormFieldComponent,
+        TextInputComponent,
+        IntegerInputComponent,
+        SelectInputComponent,
+        BooleanInputComponent,
+        DynamicFormsTestingComponent,
+        DynamicFieldGroupWrapperComponent,
+        DynamicFieldWrapperComponent,
+        // Skip adding DateInputComponent and FormattableTextareaInputComponent
+        // to keep it simple (inheritance test issues).
+    ],
+    imports: [CommonModule,
+        ReactiveFormsModule,
+        FormlyModule.forRoot({
             types: [
-              { name: 'textInput', component: TextInputComponent },
-              { name: 'integerInput', component: IntegerInputComponent },
-              { name: 'selectInput', component: SelectInputComponent },
-              { name: 'booleanInput', component: BooleanInputComponent },
-              { name: 'dateInput', component: DateInputComponent },
-              { name: 'formattableInput', component: FormattableTextareaInputComponent },
+                { name: 'textInput', component: TextInputComponent },
+                { name: 'integerInput', component: IntegerInputComponent },
+                { name: 'selectInput', component: SelectInputComponent },
+                { name: 'booleanInput', component: BooleanInputComponent },
+                { name: 'dateInput', component: DateInputComponent },
+                { name: 'formattableInput', component: FormattableTextareaInputComponent },
             ],
             wrappers: [
-              {
-                name: 'op-dynamic-field-group-wrapper',
-                component: DynamicFieldGroupWrapperComponent,
-              },
-              {
-                name: 'op-dynamic-field-wrapper',
-                component: DynamicFieldWrapperComponent,
-              },
+                {
+                    name: 'op-dynamic-field-group-wrapper',
+                    component: DynamicFieldGroupWrapperComponent,
+                },
+                {
+                    name: 'op-dynamic-field-wrapper',
+                    component: DynamicFieldWrapperComponent,
+                },
             ],
-          }),
-          NgSelectModule,
-          NgOptionHighlightModule,
-        ],
-        declarations: [
-          DynamicFormComponent,
-          SpotFormFieldComponent,
-          TextInputComponent,
-          IntegerInputComponent,
-          SelectInputComponent,
-          BooleanInputComponent,
-          DynamicFormsTestingComponent,
-          DynamicFieldGroupWrapperComponent,
-          DynamicFieldWrapperComponent,
-          // Skip adding DateInputComponent and FormattableTextareaInputComponent
-          // to keep it simple (inheritance test issues).
-        ],
-        providers: [
-          DynamicFieldsService,
-          { provide: I18nService, useValue: I18nServiceStub },
-          { provide: PathHelperService, useValue: IPathHelperServiceStub },
-          { provide: ToastService, useValue: toastServiceSpy },
-          { provide: ConfirmDialogService, useValue: confirmDialogServiceSpy },
-        ],
-      })
+        }),
+        NgSelectModule,
+        NgOptionHighlightDirective],
+    providers: [
+        DynamicFieldsService,
+        { provide: I18nService, useValue: I18nServiceStub },
+        { provide: PathHelperService, useValue: IPathHelperServiceStub },
+        { provide: ToastService, useValue: toastServiceSpy },
+        { provide: ConfirmDialogService, useValue: confirmDialogServiceSpy },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+})
       // Set component providers
       .overrideComponent(
         DynamicFormComponent,
@@ -388,7 +390,7 @@ describe('DynamicFormComponent', () => {
 
     expect(fixture.debugElement.query(By.css('[data-qa="op-form--container"]'))).toBeTruthy();
     expect(fixture.debugElement.queryAll(By.css('formly-form')).length).toEqual(1);
-    expect(fixture.debugElement.queryAll(By.css('formly-field')).length).toEqual(10);
+    expect(fixture.debugElement.queryAll(By.css('formly-field * > formly-field')).length).toEqual(10);
     expect(fixture.debugElement.queryAll(By.css('op-text-input')).length).toEqual(2);
     expect(fixture.debugElement.queryAll(By.css('op-formattable-textarea-input')).length).toEqual(2);
     expect(fixture.debugElement.queryAll(By.css('op-select-input')).length).toEqual(2);
@@ -416,7 +418,7 @@ describe('DynamicFormComponent', () => {
 
     expect(fixture.debugElement.query(By.css('[data-qa="op-form--container"]'))).toBeTruthy();
     expect(fixture.debugElement.queryAll(By.css('formly-form')).length).toEqual(1);
-    expect(fixture.debugElement.queryAll(By.css('formly-field')).length).toEqual(10);
+    expect(fixture.debugElement.queryAll(By.css('formly-field * > formly-field')).length).toEqual(10);
     expect(fixture.debugElement.queryAll(By.css('op-text-input')).length).toEqual(2);
     expect(fixture.debugElement.queryAll(By.css('op-formattable-textarea-input')).length).toEqual(2);
     expect(fixture.debugElement.queryAll(By.css('op-select-input')).length).toEqual(2);

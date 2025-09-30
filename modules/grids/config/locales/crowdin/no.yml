@@ -8,6 +8,7 @@
         row_count: "Antall rader"
         column_count: "Antall kolonner"
         widgets: "Widgeter"
+        scope: "Omfang"
     errors:
       models:
         grids/grid:

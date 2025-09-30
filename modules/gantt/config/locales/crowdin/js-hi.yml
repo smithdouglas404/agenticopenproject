@@ -1,6 +1,6 @@
 hi:
   js:
-    queries:
-      all_open: 'सभी खुले'
-      timeline: 'Timeline'
-      milestones: 'Milestones'
+    work_packages:
+      label_gantt_chart_plural: "Gantt charts"
+      default_queries:
+        milestones: 'Milestones'

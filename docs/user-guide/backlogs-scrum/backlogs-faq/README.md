@@ -30,4 +30,4 @@ Please try these approaches:
 
 ## How can I change the user's colors in the task board?
 
-The colors can be changed in each user's personal settings: Please click on your avatar, then navigate to *My account ->Settings ->Backlogs*. There you can change the task color.
+The colors can be changed in each user's personal settings: Please click on your avatar, then navigate to *Account settings ->Settings ->Backlogs*. There you can change the task color.

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,6 +33,8 @@ module Admin
     class QuarantinedAttachmentsController < ApplicationController
       layout "admin"
       before_action :require_admin
+
+      before_action :check_available
       before_action :find_quarantined_attachments
 
       before_action :find_attachment, only: %i[destroy]
@@ -51,13 +55,13 @@ module Admin
         redirect_to action: :index
       end
 
-      def default_breadcrumb; end
-
-      def show_local_breadcrumb
-        false
-      end
-
       private
+
+      def check_available
+        return if Setting.antivirus_scan_available?
+
+        render_404
+      end
 
       def create_journal(container, user, notes)
         ::Journals::CreateService
@@ -73,8 +77,6 @@ module Admin
 
       def find_attachment
         @attachment = @attachments.find(params[:id])
-      rescue ActiveRecord::RecordNotFound
-        render_404
       end
     end
   end

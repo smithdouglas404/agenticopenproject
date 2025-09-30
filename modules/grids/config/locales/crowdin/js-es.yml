@@ -4,9 +4,6 @@ es:
       add_widget: 'Agregar widget'
       remove: 'Quitar widget'
       configure: 'Configurar widget'
-      upsale:
-        text: "Algunos widgets, como el widget de gráfico de paquetes de trabajo, solo están disponibles con Enterprise."
-        link: 'Enterprise.'
       widgets:
         missing_permission: "No tiene los permisos necesarios para ver este widget."
         custom_text:
@@ -24,12 +21,11 @@ es:
           title: 'Noticias'
           at: 'en'
           no_results: 'Nada nuevo sobre lo que informar.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Descripción del proyecto'
           no_results: "Aún no se ha escrito ninguna descripción. Puede proporcionar una descripción en la configuración del proyecto."
-        project_details:
-          title: 'Detalles del proyecto'
-          no_results: 'No se han definido campos personalizados para los proyectos.'
         project_status:
           title: 'Estado del proyecto'
           not_started: 'No empezado'
@@ -39,6 +35,8 @@ es:
           not_set: 'No establecido'
           finished: 'Terminado'
           discontinued: 'Discontinuado'
+        project_status_beta:
+          title: 'Estado del proyecto (BETA)'
         subprojects:
           title: 'Subproyectos'
           no_results: 'No hay subproyectos.'

@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -107,10 +107,10 @@ module OpenProject
       #                                  including user info and credentials.
       # @yieldparam context The context from which the callback is called, e.g. a Controller.
       def self.after_login(&)
-        ActiveSupport::Deprecation.warn(
+        ActiveSupport::Deprecation.new.warn(
           "after_login does not return the actually logged in user and has been deprecated. " \
           "Please use OpenProject::Hook omniauth_user_authorized or user_logged_in hooks instead",
-          caller
+          caller_locations
         )
         add_after_login_callback AfterLoginBlockCallback.new(&)
       end

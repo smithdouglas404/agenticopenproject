@@ -1,6 +1,6 @@
 ca:
   js:
-    queries:
-      all_open: 'Tots els oberts'
-      timeline: 'Timeline'
-      milestones: 'Fites'
+    work_packages:
+      label_gantt_chart_plural: "Gantt charts"
+      default_queries:
+        milestones: 'Fites'

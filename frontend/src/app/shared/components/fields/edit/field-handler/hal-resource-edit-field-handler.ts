@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,6 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { KeyCodes } from 'core-app/shared/helpers/keyCodes.enum';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
 import { Injector } from '@angular/core';
@@ -107,14 +106,6 @@ export class HalResourceEditFieldHandler extends EditFieldHandler {
     }
   }
 
-  public async onFocusOut() {
-    // In case of inline create or erroneous forms: do not save on focus loss
-    // const specialField = this.resource.shouldCloseOnFocusOut(this.fieldName);
-    if (this.resource.subject && this.withErrors && this.withErrors.length === 0) {
-      await this.handleUserSubmit();
-    }
-  }
-
   public setErrors(newErrors:string[]) {
     this.errors = newErrors;
     this.element.classList.toggle('-error', this.isErrorenous);
@@ -147,7 +138,7 @@ export class HalResourceEditFieldHandler extends EditFieldHandler {
   public async handleUserKeydown(event:JQuery.TriggeredEvent, onlyCancel = false) {
     // Only handle submission in edit mode
     if (this.inEditMode && !onlyCancel) {
-      if (event.which === KeyCodes.ENTER) {
+      if (event.key === 'Enter') {
         await this.form.submit();
         return false;
       }
@@ -155,7 +146,7 @@ export class HalResourceEditFieldHandler extends EditFieldHandler {
     }
 
     // Escape editing when not in edit mode
-    if (event.which === KeyCodes.ESCAPE) {
+    if (event.key === 'Escape') {
       this.handleUserCancel();
       return false;
     }

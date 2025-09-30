@@ -7,7 +7,8 @@
   flex-direction: column
   overflow: hidden
   align-items: stretch
-  background: white
+  background: var(--overlay-bgColor)
+  box-shadow: var(--shadow-floating-small)
   pointer-events: all
 
   border-radius: $spot-spacing-0-75
@@ -29,6 +30,11 @@
     width: 60rem
     min-height: 40vh
 
+  &_auto-size
+    @media #{$spot-mq-desktop}
+      width: auto
+      min-height: auto
+
   &--header
     @include spot-subheader-big
 
@@ -39,9 +45,6 @@
 
     + .spot-divider
       margin-top: $spot-spacing-1
-
-    > .spot-icon
-      margin-right: $spot-spacing-0-5
 
     &-title
       flex-grow: 1

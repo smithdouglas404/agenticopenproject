@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,6 +31,8 @@
 require "spec_helper"
 
 RSpec.describe "Work package filtering by assignee", :js do
+  include Components::Autocompleter::NgSelectAutocompleteHelpers
+
   let(:project) { create(:project) }
   let(:invisible_project) { create(:project) }
   let(:wp_table) { Pages::WorkPackagesTable.new(project) }
@@ -93,5 +97,59 @@ RSpec.describe "Work package filtering by assignee", :js do
 
     wp_table.ensure_work_package_not_listed!(work_package_user_assignee)
     wp_table.expect_work_package_listed(work_package_placeholder_user_assignee)
+  end
+
+  context "when using the auto completer" do
+    context "with no permission to view emails" do
+      let!(:global_role) { create(:empty_global_role) }
+
+      it "only shows the email address of the current user" do
+        wp_table.visit!
+        wp_table.expect_work_package_listed(work_package_user_assignee, work_package_placeholder_user_assignee)
+
+        # toggle open
+        filters.open
+        filters.add_filter_by("Assignee", "is (OR)", [""])
+
+        autocomplete = find(".advanced-filters--ng-select ng-select")
+        target_dropdown = search_autocomplete autocomplete,
+                                              query: "",
+                                              results_selector: "body"
+
+        # Their own email address is visible to users
+        expect(target_dropdown).to have_css(".ng-option", text: current_user.firstname)
+        expect(target_dropdown).to have_css(".ng-option", text: current_user.mail)
+
+        # Other users email address is invisible
+        expect(target_dropdown).to have_css(".ng-option", text: other_user.firstname)
+        expect(target_dropdown).to have_no_css(".ng-option", text: other_user.mail)
+      end
+    end
+
+    context "with permission to view emails" do
+      let!(:global_role) { create(:standard_global_role) }
+
+      it "shows the email address of all users" do
+        wp_table.visit!
+        wp_table.expect_work_package_listed(work_package_user_assignee, work_package_placeholder_user_assignee)
+
+        # toggle open
+        filters.open
+        filters.add_filter_by("Assignee", "is (OR)", [""])
+
+        autocomplete = find(".advanced-filters--ng-select ng-select")
+        target_dropdown = search_autocomplete autocomplete,
+                                              query: "",
+                                              results_selector: "body"
+
+        # Their own email address is visible to users
+        expect(target_dropdown).to have_css(".ng-option", text: current_user.firstname)
+        expect(target_dropdown).to have_css(".ng-option", text: current_user.mail)
+
+        # Other users email address is invisible
+        expect(target_dropdown).to have_css(".ng-option", text: other_user.firstname)
+        expect(target_dropdown).to have_css(".ng-option", text: other_user.mail)
+      end
+    end
   end
 end

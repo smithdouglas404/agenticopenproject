@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,21 +34,37 @@
 # Reference: Roar-Rails integration: https://github.com/apotonick/roar-rails
 module API::V3::Storages
   URN_CONNECTION_CONNECTED = "#{::API::V3::URN_PREFIX}storages:authorization:Connected".freeze
+  URN_CONNECTION_NOT_CONNECTED = "#{::API::V3::URN_PREFIX}storages:authorization:NotConnected".freeze
   URN_CONNECTION_AUTH_FAILED = "#{::API::V3::URN_PREFIX}storages:authorization:FailedAuthorization".freeze
   URN_CONNECTION_ERROR = "#{::API::V3::URN_PREFIX}storages:authorization:Error".freeze
 
   URN_STORAGE_TYPE_NEXTCLOUD = "#{::API::V3::URN_PREFIX}storages:Nextcloud".freeze
   URN_STORAGE_TYPE_ONE_DRIVE = "#{::API::V3::URN_PREFIX}storages:OneDrive".freeze
+  URN_STORAGE_TYPE_SHARE_POINT = "#{::API::V3::URN_PREFIX}storages:Sharepoint".freeze
 
   STORAGE_TYPE_MAP = {
-    URN_STORAGE_TYPE_NEXTCLOUD => Storages::Storage::PROVIDER_TYPE_NEXTCLOUD,
-    URN_STORAGE_TYPE_ONE_DRIVE => Storages::Storage::PROVIDER_TYPE_ONE_DRIVE
+    URN_STORAGE_TYPE_NEXTCLOUD => Storages::NextcloudStorage.name,
+    URN_STORAGE_TYPE_ONE_DRIVE => Storages::OneDriveStorage.name,
+    URN_STORAGE_TYPE_SHARE_POINT => Storages::SharepointStorage.name
   }.freeze
 
-  STORAGE_TYPE_URN_MAP = {
-    Storages::Storage::PROVIDER_TYPE_NEXTCLOUD => URN_STORAGE_TYPE_NEXTCLOUD,
-    Storages::Storage::PROVIDER_TYPE_ONE_DRIVE => URN_STORAGE_TYPE_ONE_DRIVE
+  STORAGE_TYPE_URN_MAP = STORAGE_TYPE_MAP.invert.freeze
+
+  URN_AUTHENTICATION_METHOD_OAUTH2_SSO = "#{::API::V3::URN_PREFIX}storages:authenticationMethod:OAuth2SSO".freeze
+  URN_AUTHENTICATION_METHOD_TWO_WAY_OAUTH2 = "#{::API::V3::URN_PREFIX}storages:authenticationMethod:TwoWayOAuth2".freeze
+  URN_AUTHENTICATION_METHOD_OAUTH2_SSO_WITH_FALLBACK =
+    "#{::API::V3::URN_PREFIX}storages:authenticationMethod:OAuth2SSOFallbackToTwoWayOAuth2".freeze
+
+  AUTHENTICATION_METHOD_MAP = {
+    URN_AUTHENTICATION_METHOD_OAUTH2_SSO => Storages::NextcloudStorage::AUTHENTICATION_METHOD_OAUTH2_SSO,
+    URN_AUTHENTICATION_METHOD_TWO_WAY_OAUTH2 => Storages::NextcloudStorage::AUTHENTICATION_METHOD_TWO_WAY_OAUTH2
+    # oauth2_sso_with_two_way_oauth2_fallback has been temporarily removed because the openproject_integration
+    # on the nextcloud side does not support this yet (we can't configure audience AND oauth_client at the same time)
+    # URN_AUTHENTICATION_METHOD_OAUTH2_SSO_WITH_FALLBACK =>
+    #   Storages::NextcloudStorage::AUTHENTICATION_METHOD_OAUTH2_SSO_WITH_TWO_WAY_OAUTH2_FALLBACK
   }.freeze
+
+  AUTHENTICATION_METHOD_URN_MAP = AUTHENTICATION_METHOD_MAP.invert.freeze
 
   class StorageRepresenter < ::API::Decorators::Single
     # LinkedResource module defines helper methods to describe attributes
@@ -77,6 +93,16 @@ module API::V3::Storages
     property :id
 
     property :name
+
+    property :storageAudience,
+             skip_render: ->(represented:, **) { !represented.provider_type_nextcloud? },
+             getter: ->(represented:, **) { represented.provider_type_nextcloud? && represented.storage_audience },
+             setter: ->(fragment:, represented:, **) { represented.storage_audience = fragment }
+
+    property :tokenExchangeScope,
+             skip_render: ->(represented:, **) { !represented.provider_type_nextcloud? },
+             getter: ->(represented:, **) { represented.provider_type_nextcloud? && represented.token_exchange_scope },
+             setter: ->(fragment:, represented:, **) { represented.token_exchange_scope = fragment }
 
     property :applicationPassword,
              skip_render: ->(*) { true },
@@ -124,7 +150,7 @@ module API::V3::Storages
                           getter: ->(*) {
                             type = STORAGE_TYPE_URN_MAP[represented.provider_type] || represented.provider_type
 
-                            { href: type, title: "Nextcloud" }
+                            { href: type, title: type.split(":").last }
                           },
                           setter: ->(fragment:, **) {
                             href = fragment["href"]
@@ -139,6 +165,20 @@ module API::V3::Storages
                             break if fragment["href"].blank?
 
                             represented.host = fragment["href"].gsub(/\/+$/, "")
+                          }
+
+    link_without_resource :authenticationMethod,
+                          getter: ->(*) {
+                            break nil unless represented.provider_type_nextcloud?
+
+                            method = AUTHENTICATION_METHOD_URN_MAP[represented.authentication_method]
+                            { href: method }
+                          },
+                          setter: ->(fragment:, **) {
+                            href = fragment["href"]
+                            break if href.blank? || !AUTHENTICATION_METHOD_MAP.key?(href)
+
+                            represented.authentication_method = AUTHENTICATION_METHOD_MAP.fetch(href)
                           }
 
     links :prepareUpload do
@@ -166,6 +206,8 @@ module API::V3::Storages
       urn = case auth_state
             when :connected
               URN_CONNECTION_CONNECTED
+            when :not_connected
+              URN_CONNECTION_NOT_CONNECTED
             when :failed_authorization
               URN_CONNECTION_AUTH_FAILED
             else
@@ -177,7 +219,7 @@ module API::V3::Storages
     end
 
     link :authorize do
-      next if hide_authorize_link?
+      next unless show_authorize_link?
 
       { href: represented.oauth_configuration.authorization_uri, title: "Authorize" }
     end
@@ -227,8 +269,10 @@ module API::V3::Storages
       current_user.admin? && represented.provider_type_nextcloud?
     end
 
-    def hide_authorize_link?
-      represented.oauth_client.blank? || authorization_state != :failed_authorization
+    def show_authorize_link?
+      represented.authenticate_via_storage? &&
+        represented.oauth_client.present? &&
+        authorization_state.in?(%i[not_connected failed_authorization])
     end
 
     def storage_projects(storage)
@@ -240,8 +284,7 @@ module API::V3::Storages
     end
 
     def authorization_state
-      ::Storages::Peripherals::StorageInteraction::Authentication.authorization_state(storage: represented,
-                                                                                      user: current_user)
+      ::Storages::Adapters::Authentication.authorization_state(storage: represented, user: current_user)
     end
   end
 end

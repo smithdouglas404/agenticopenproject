@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -42,7 +44,7 @@ class CustomValue < ApplicationRecord
            to: :strategy
 
   delegate :editable?,
-           :visible?,
+           :admin_only?,
            :required?,
            :max_length,
            :min_length,
@@ -59,7 +61,7 @@ class CustomValue < ApplicationRecord
   def strategy
     @strategy ||= begin
       format = custom_field&.field_format || "empty"
-      OpenProject::CustomFieldFormat.find_by_name(format).formatter.new(self) # rubocop:disable Rails/DynamicFindBy
+      OpenProject::CustomFieldFormat.find_by(name: format).formatter.new(self)
     end
   end
 

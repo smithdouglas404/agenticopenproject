@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,7 +31,7 @@
 require "spec_helper"
 require_relative "mock_global_permissions"
 
-RSpec.describe "Global role: Global role CRUD", :js, :with_cuprite do
+RSpec.describe "Global role: Global role CRUD", :js do
   # Scenario: Global Role creation
   # Given there is the global permission "glob_test" of the module "global_group"
   include_context "with mocked global permissions", [["glob_test", { project_module: "global_group" }]]
@@ -61,5 +63,19 @@ RSpec.describe "Global role: Global role CRUD", :js, :with_cuprite do
     click_on "Create"
     # Then I should see "Successful creation."
     expect(page).to have_text "Successful creation."
+  end
+
+  context "with a non-member using dependent project permissions" do
+    let!(:non_member) { create(:non_member, permissions: %i[view_project_attributes]) }
+
+    it "can still create it (Regression #57906)" do
+      # When I go to the new page of "Role"
+      visit new_role_path
+      check "Global role"
+      fill_in "Name", with: "Manager"
+      click_on "Create"
+      # Then I should see "Successful creation."
+      expect(page).to have_text "Successful creation."
+    end
   end
 end

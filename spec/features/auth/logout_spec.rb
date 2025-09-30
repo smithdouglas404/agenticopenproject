@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,23 +30,26 @@
 
 require "spec_helper"
 
-RSpec.describe "Logout", :js do
+RSpec.describe "Logout",
+               :js do
   let(:user_password) { "b0B" * 4 }
   let(:user) do
     create(:user,
            password: user_password,
            password_confirmation: user_password)
   end
+  let(:user_menu) { Components::UserMenu.new }
 
   before do
     login_with(user.login, user_password)
+    wait_for_network_idle
   end
 
   it "prevents the user from making any more changes" do
     visit my_page_path
 
     within ".op-app-header" do
-      page.find("a[title='#{user.name}']").click
+      user_menu.open
 
       click_link I18n.t(:label_logout)
     end

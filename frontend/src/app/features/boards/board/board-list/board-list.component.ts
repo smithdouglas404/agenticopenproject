@@ -95,6 +95,7 @@ export interface DisabledButtonPlaceholder {
     BoardListMenuComponent,
     WorkPackageCardDragAndDropService,
   ],
+  standalone: false,
 })
 export class BoardListComponent extends AbstractWidgetComponent implements OnInit, OnDestroy {
   /** Output fired upon query removal */

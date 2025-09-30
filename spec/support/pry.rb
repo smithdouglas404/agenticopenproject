@@ -2,7 +2,7 @@
 
 # -- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -45,7 +45,7 @@ RSpec.configure do |config|
   config.after(pry: true) do |example|
     if example.exception
       exception_message = example.exception.message
-      backtrace_locations = example.exception.backtrace_locations.filter { _1.to_s.include? "/spec/" }
+      backtrace_locations = example.exception.backtrace_locations.filter { it.to_s.include? "/spec/" }
 
       puts
       puts exception_message

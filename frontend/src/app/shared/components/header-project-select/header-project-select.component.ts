@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -28,9 +28,9 @@
 
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
-import { ChangeDetectionStrategy, Component, HostBinding, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, OnInit, ViewEncapsulation } from '@angular/core';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { debounceTime, defaultIfEmpty, filter, map, mergeMap, shareReplay, take } from 'rxjs/operators';
 import { IProject } from 'core-app/core/state/projects/project.model';
 import { insertInList } from 'core-app/shared/components/project-include/insert-in-list';
@@ -46,10 +46,8 @@ import { ApiV3Filter } from 'core-app/shared/helpers/api-v3/api-v3-filter-builde
 import { IHALCollection } from 'core-app/core/apiv3/types/hal-collection.type';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
 
-export const headerProjectSelectSelector = 'op-header-project-select';
-
 @Component({
-  selector: headerProjectSelectSelector,
+  selector: 'opce-header-project-select',
   templateUrl: './header-project-select.component.html',
   styleUrls: ['./header-project-select.component.sass'],
   encapsulation: ViewEncapsulation.None,
@@ -57,13 +55,16 @@ export const headerProjectSelectSelector = 'op-header-project-select';
   providers: [
     SearchableProjectListService,
   ],
+  standalone: false,
 })
-export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin {
-  @HostBinding('class.op-header-project-select') className = true;
+export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implements OnInit {
+  @HostBinding('class.op-project-select') className = true;
 
   public dropModalOpen = false;
 
   public textFieldFocused = false;
+
+  public portfolioModelsEnabled = this.configuration.activeFeatureFlags.includes('portfolioModels');
 
   public canCreateNewProjects$ = this.currentUserService.hasCapabilities$('projects/create', 'global');
 
@@ -109,7 +110,7 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin {
     .apiV3Service
     .projects
     .signalled(
-      ApiV3Filter('favored', '=', true),
+      ApiV3Filter('favorited', '=', true),
       [
         'elements/id',
       ],
@@ -124,24 +125,26 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin {
 
   public text = {
     all: this.I18n.t('js.label_all_uppercase'),
-    favored: this.I18n.t('js.label_favorites'),
+    favorited: this.I18n.t('js.label_favorites'),
     no_favorites: this.I18n.t('js.favorite_projects.no_results'),
     no_favorites_subtext: this.I18n.t('js.favorite_projects.no_results_subtext'),
     project: {
       singular: this.I18n.t('js.label_project'),
       plural: this.I18n.t('js.label_project_plural'),
       list: this.I18n.t('js.label_project_list'),
-      select: this.I18n.t('js.label_select_project'),
+      select: this.I18n.t('js.label_all_projects'),
     },
     search_placeholder: this.I18n.t('js.include_projects.search_placeholder'),
+    search_favorites_placeholder: this.I18n.t('js.include_projects.search_placeholder_favorites'),
     no_results: this.I18n.t('js.include_projects.no_results'),
+    no_favorite_results: this.I18n.t('js.include_projects.no_favorite_results'),
   };
 
-  public displayMode:'all'|'favored' = 'all';
+  public displayMode:'all'|'favorited';
 
   public displayModeOptions = [
     { value: 'all', title: this.text.all },
-    { value: 'favored', title: this.text.favored },
+    { value: 'favorited', title: this.text.favorited },
   ];
 
   /* This seems like a way too convoluted loading check, but there's a good reason we need it.
@@ -164,6 +167,10 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin {
 
   private scrollToCurrent = false;
 
+  private subscriptionComplete$ = new ReplaySubject<void>(1);
+
+  private displayModeLocalStorageKey = 'openProject-project-select-display-mode';
+
   constructor(
     readonly pathHelper:PathHelperService,
     readonly configuration:ConfigurationService,
@@ -185,14 +192,31 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin {
         }
 
         this.scrollToCurrent = false;
+        this.subscriptionComplete$.next(); // Signal that subscription logic is complete
       });
   }
 
+  ngOnInit():void {
+    const stored = window.OpenProject.guardedLocalStorage(this.displayModeLocalStorageKey) as 'all'|'favorited'|undefined;
+    this.displayMode = stored || 'all';
+  }
+
   toggleDropModal():void {
-    this.dropModalOpen = !this.dropModalOpen;
-    if (this.dropModalOpen) {
-      this.scrollToCurrent = true;
-      this.searchableProjectListService.loadAllProjects();
+    this.subscriptionComplete$.pipe(take(1)).subscribe(() => {
+      this.dropModalOpen = !this.dropModalOpen;
+      if (this.dropModalOpen) {
+        this.scrollToCurrent = true;
+        this.searchableProjectListService.loadAllProjects();
+      }
+    });
+  }
+
+  displayModeChange(mode:'all'|'favorited'):void {
+    this.displayMode = mode;
+    window.OpenProject.guardedLocalStorage(this.displayModeLocalStorageKey, mode);
+
+    if (this.currentProject?.id) {
+      this.searchableProjectListService.selectedItemID$.next(parseInt(this.currentProject.id, 10));
     }
   }
 

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,12 +32,9 @@ module Admin::Settings
   class VirusScanningSettingsController < ::Admin::SettingsController
     menu_item :attachments
 
-    before_action :require_ee
+    before_action :check_available
+    before_action :require_ee, except: :show # rubocop:disable Rails/LexicallyScopedActionFilter
     before_action :check_clamav, only: %i[update], if: -> { scan_enabled? }
-
-    def show_local_breadcrumb
-      false
-    end
 
     def av_form
       selected = params.dig(:settings, :antivirus_scan_mode)&.to_sym || :disabled
@@ -52,14 +51,22 @@ module Admin::Settings
     private
 
     def require_ee
-      render("upsale") unless EnterpriseToken.allows_to?(:virus_scanning)
+      return if EnterpriseToken.allows_to?(:virus_scanning)
+
+      redirect_to action: :show
+    end
+
+    def check_available
+      return if Setting.antivirus_scan_available?
+
+      render_404
     end
 
     def mark_unscanned_attachments
       @unscanned_attachments = Attachment.status_uploaded
     end
 
-    def check_clamav
+    def check_clamav # rubocop:disable Metrics/AbcSize
       return if params.dig(:settings, :antivirus_scan_mode) == "disabled"
 
       service = ::Attachments::ClamAVService.new(params[:settings][:antivirus_scan_mode].to_sym,

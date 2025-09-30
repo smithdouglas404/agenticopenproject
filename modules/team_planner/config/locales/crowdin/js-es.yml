@@ -3,12 +3,13 @@ es:
   js:
     team_planner:
       add_existing: 'Añadir existente'
+      label_team_planner_plural: 'Planificadores de equipos'
       add_existing_title: 'Añadir paquetes de trabajo existentes'
       create_label: 'Planificador de equipos'
       create_title: 'Crear nuevo planificador de equipos'
       unsaved_title: 'Planificador de equipo sin nombre'
       no_data: 'Añadir asignados para configurar su planificador de equipo.'
-      add_assignee: 'Añadir asignado'
+      add_assignee: 'Asignado a'
       remove_assignee: 'Eliminar asignado'
       two_weeks: '2 semanas'
       one_week: '1 semana'

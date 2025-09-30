@@ -4,7 +4,6 @@ import {
   OpEditingPortalHandlerToken,
   OpEditingPortalSchemaToken,
 } from 'core-app/shared/components/fields/edit/edit-field.component';
-import { PortalInjector } from '@angular/cdk/portal';
 import { EditFieldHandler } from 'core-app/shared/components/fields/edit/editing-portal/edit-field-handler';
 import { IFieldSchema } from 'core-app/shared/components/fields/field.base';
 import { ResourceChangeset } from 'core-app/shared/components/fields/changeset/resource-changeset';
@@ -12,7 +11,7 @@ import { ResourceChangeset } from 'core-app/shared/components/fields/changeset/r
 /**
  * Creates an injector for the edit field portal to pass data into.
  *
- * @returns {PortalInjector}
+ * @returns {Injector}
  */
 export function createLocalInjector(
   injector:Injector,
@@ -20,11 +19,12 @@ export function createLocalInjector(
   fieldHandler:EditFieldHandler,
   schema:IFieldSchema,
 ):Injector {
-  const injectorTokens = new WeakMap();
-
-  injectorTokens.set(OpEditingPortalChangesetToken, change);
-  injectorTokens.set(OpEditingPortalHandlerToken, fieldHandler);
-  injectorTokens.set(OpEditingPortalSchemaToken, schema);
-
-  return new PortalInjector(injector, injectorTokens);
+  return Injector.create({
+    providers: [
+      { provide: OpEditingPortalChangesetToken, useValue: change },
+      { provide: OpEditingPortalHandlerToken, useValue: fieldHandler },
+      { provide: OpEditingPortalSchemaToken, useValue: schema },
+    ],
+    parent: injector,
+  });
 }

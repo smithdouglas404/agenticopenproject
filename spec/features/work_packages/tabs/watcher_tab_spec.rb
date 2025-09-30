@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 RSpec.describe "Watcher tab", :js, :selenium do
   include Components::Autocompleter::NgSelectAutocompleteHelpers
 
+  let!(:standard_global_role) { create(:empty_global_role) }
   let(:project) { create(:project) }
   let(:work_package) { create(:work_package, project:) }
   let(:tabs) { Components::WorkPackages::Tabs.new(work_package) }
   let(:role) { create(:project_role, permissions:) }
-  let(:user) { create(:user, member_with_roles: { project => role }) }
   let(:permissions) do
     %i(view_work_packages
        view_work_package_watchers
@@ -15,19 +17,24 @@ RSpec.describe "Watcher tab", :js, :selenium do
        add_work_package_watchers)
   end
 
+  # Ensure users are eagerly created (and at top level). #58737 was caused by `other_user` not being there
+  # in time for some cases => flaky user auto completer specs
+  let!(:user) { create(:user, member_with_roles: { project => role }) }
+  let!(:other_user) { create(:user, firstname: "Other", member_with_roles: { project => role }) }
+
   let(:watch_button) { find_by_id "watch-button" }
   let(:watchers_tab) { find(".op-tab-row--link_selected", text: "WATCHERS") }
 
   def expect_button_is_watching
     title = I18n.t("js.label_unwatch_work_package")
     expect(page).to have_css("#unwatch-button[title='#{title}']", wait: 10)
-    expect(page).to have_css("#unwatch-button .button--icon.icon-watched", wait: 10)
+    expect(page).to have_css("#unwatch-button .button--icon[eye-icon]", wait: 10)
   end
 
   def expect_button_is_not_watching
     title = I18n.t("js.label_watch_work_package")
     expect(page).to have_css("#watch-button[title='#{title}']")
-    expect(page).to have_css("#watch-button .button--icon.icon-unwatched")
+    expect(page).to have_css("#watch-button .button--icon[eye-closed-icon]")
   end
 
   shared_examples "watch and unwatch with button" do
@@ -53,7 +60,7 @@ RSpec.describe "Watcher tab", :js, :selenium do
       login_as(user)
       wp_page.visit_tab! :watchers
       expect_angular_frontend_initialized
-      expect(page).to have_css(".op-tab-row--link_selected", text: "WATCHERS")
+      wp_page.expect_tab "Watchers"
     end
 
     it "modifying the watcher list modifies the watch button" do
@@ -111,15 +118,59 @@ RSpec.describe "Watcher tab", :js, :selenium do
 
       it_behaves_like "watch and unwatch with button"
     end
+
+    context "when auto completing users" do
+      it "shows only the email address of the current user by default" do
+        autocomplete = find(".wp-watcher--autocomplete ng-select")
+        target_dropdown = search_autocomplete autocomplete,
+                                              query: "",
+                                              results_selector: "body"
+
+        # Your own mail address is visible
+        expect(target_dropdown).to have_css(".ng-option", text: user.name)
+        expect(target_dropdown).to have_css(".ng-option", text: user.mail)
+
+        # Other users addresses are invisible
+        expect(target_dropdown).to have_css(".ng-option", text: other_user.name)
+        expect(target_dropdown).to have_no_css(".ng-option", text: other_user.mail)
+      end
+
+      context "with view_user_email permissions" do
+        let!(:standard_global_role) { create(:standard_global_role) }
+
+        it "shows the email address of all users" do
+          autocomplete = find(".wp-watcher--autocomplete ng-select")
+          target_dropdown = search_autocomplete autocomplete,
+                                                query: "",
+                                                results_selector: "body"
+
+          # Your own mail address is visible
+          expect(target_dropdown).to have_css(".ng-option", text: user.name)
+          expect(target_dropdown).to have_css(".ng-option", text: user.mail)
+
+          # Other users addresses are visible as well
+          expect(target_dropdown).to have_css(".ng-option", text: other_user.name)
+          expect(target_dropdown).to have_css(".ng-option", text: other_user.mail)
+        end
+      end
+    end
   end
 
-  context "split screen" do
+  context "within a split screen" do
     let(:wp_page) { Pages::SplitWorkPackage.new(work_package) }
 
     it_behaves_like "watchers tab"
   end
 
-  context "full screen" do
+  context "within a primerized split screen" do
+    let(:wp_page) { Pages::PrimerizedSplitWorkPackage.new(work_package) }
+    let(:tabs) { Components::WorkPackages::PrimerizedTabs.new }
+    let(:watchers_tab) { "watchers" }
+
+    it_behaves_like "watchers tab"
+  end
+
+  context "within a full screen" do
     let(:wp_page) { Pages::FullWorkPackage.new(work_package) }
 
     it_behaves_like "watchers tab"

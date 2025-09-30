@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -85,7 +87,7 @@ module WorkPackagesHelper
     if package.closed? && !options[:no_hidden]
       parts[:hidden_link] << content_tag(:span,
                                          I18n.t(:label_closed_work_packages),
-                                         class: "hidden-for-sighted")
+                                         class: "sr-only")
     end
 
     # Suffix part
@@ -157,6 +159,23 @@ module WorkPackagesHelper
     end
   end
 
+  def work_package_dates_icon(work_package)
+    work_package.schedule_manually ? :pin : "op-auto-date"
+  end
+
+  def work_package_formatted_dates(work_package)
+    start_date = work_package.start_date ? format_date(work_package.start_date) : nil
+    due_date = work_package.due_date ? format_date(work_package.due_date) : nil
+
+    # If both dates are missing, return just one dash
+    return "-" if start_date.nil? && due_date.nil?
+
+    return start_date if start_date == due_date
+
+    # Return the formatted date range (start_date - due_date)
+    "#{start_date} - #{due_date}"
+  end
+
   def send_notification_option(checked = false)
     content_tag(:label, for: "send_notification", class: "form--label-with-check-box") do
       (content_tag "span", class: "form--check-box-container" do
@@ -169,20 +188,6 @@ module WorkPackagesHelper
         boxes
       end) + I18n.t("notifications.send_notifications")
     end
-  end
-
-  # Returns a string of css classes that apply to the issue
-  def work_package_css_classes(work_package)
-    s = "work_package preview-trigger".html_safe
-    s << " status-#{work_package.status.position}" if work_package.status
-    s << " priority-#{work_package.priority.position}" if work_package.priority
-    s << " closed" if work_package.closed?
-    s << " overdue" if work_package.overdue?
-    s << " child" if work_package.child?
-    s << " parent" unless work_package.leaf?
-    s << " created-by-me" if User.current.logged? && work_package.author_id == User.current.id
-    s << " assigned-to-me" if User.current.logged? && work_package.assigned_to_id == User.current.id
-    s
   end
 
   def work_package_associations_to_address(associated)
@@ -207,7 +212,7 @@ module WorkPackagesHelper
   end
 
   def last_work_package_note(work_package)
-    note_journals = work_package.journals.select(&:notes?)
+    note_journals = work_package.journals.internal_visible.select(&:notes?)
     return t(:text_no_notes) if note_journals.empty?
 
     note_journals.last.notes
@@ -223,7 +228,7 @@ module WorkPackagesHelper
 
   def selected_work_packages_columns_options
     Setting[:work_package_list_default_columns]
-      .map { |column| work_packages_columns_options.find { |c| c[:id] == column } }
+      .filter_map { |column| work_packages_columns_options.find { |c| c[:id] == column } }
   end
 
   def protected_work_packages_columns_options

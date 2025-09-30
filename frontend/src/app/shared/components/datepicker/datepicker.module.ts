@@ -8,15 +8,12 @@ import { CommonModule } from '@angular/common';
 
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { OpModalSingleDatePickerComponent } from './modal-single-date-picker/modal-single-date-picker.component';
-import { OpWpMultiDateFormComponent } from './wp-multi-date-form/wp-multi-date-form.component';
-import { OpWpSingleDateFormComponent } from './wp-single-date-form/wp-single-date-form.component';
-import { OpDatePickerBannerComponent } from './banner/datepicker-banner.component';
-import { OpDatePickerSchedulingToggleComponent } from './scheduling-mode/datepicker-scheduling-toggle.component';
-import { OpDatePickerWorkingDaysToggleComponent } from './toggle/datepicker-working-days-toggle.component';
 import { OpBasicDatePickerModule } from './basic-datepicker.module';
 import { OpSpotModule } from 'core-app/spot/spot.module';
 import { OpenprojectModalModule } from '../modal/modal.module';
 import { OpDatePickerSheetComponent } from 'core-app/shared/components/datepicker/sheet/date-picker-sheet.component';
+import { OpenprojectContentLoaderModule } from 'core-app/shared/components/op-content-loader/openproject-content-loader.module';
+import { OpWpDatePickerInstanceComponent } from 'core-app/shared/components/datepicker/wp-date-picker-modal/wp-date-picker-instance.component';
 
 @NgModule({
   imports: [
@@ -27,6 +24,7 @@ import { OpDatePickerSheetComponent } from 'core-app/shared/components/datepicke
     OpSpotModule,
     OpBasicDatePickerModule,
     OpenprojectModalModule,
+    OpenprojectContentLoaderModule,
   ],
 
   providers: [
@@ -34,22 +32,16 @@ import { OpDatePickerSheetComponent } from 'core-app/shared/components/datepicke
   ],
 
   declarations: [
-    OpDatePickerBannerComponent,
-    OpDatePickerSchedulingToggleComponent,
-    OpDatePickerWorkingDaysToggleComponent,
-
     OpModalSingleDatePickerComponent,
-    OpWpMultiDateFormComponent,
-    OpWpSingleDateFormComponent,
     OpDatePickerSheetComponent,
+    OpWpDatePickerInstanceComponent,
   ],
 
   exports: [
     OpModalSingleDatePickerComponent,
-    OpWpMultiDateFormComponent,
-    OpWpSingleDateFormComponent,
     OpBasicDatePickerModule,
     OpDatePickerSheetComponent,
+    OpWpDatePickerInstanceComponent,
   ],
 })
 export class OpDatePickerModule { }

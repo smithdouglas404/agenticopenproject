@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -43,7 +45,7 @@ RSpec.describe API::V3::Activities::ActivityRepresenter, "rendering" do
     end
   end
   let(:changes) { { subject: ["first subject", "second subject"] } }
-  let(:permissions) { %i(edit_work_package_notes) }
+  let(:permissions) { %i(edit_work_package_comments) }
   let(:representer) { described_class.new(journal, current_user:) }
 
   before do
@@ -110,6 +112,24 @@ RSpec.describe API::V3::Activities::ActivityRepresenter, "rendering" do
       end
     end
 
+    describe "internal" do
+      context "when internal" do
+        let(:journal) { build_stubbed(:work_package_journal, internal: true) }
+
+        it_behaves_like "property", :internal do
+          let(:value) { true }
+        end
+      end
+
+      context "when not internal" do
+        let(:journal) { build_stubbed(:work_package_journal, internal: false) }
+
+        it_behaves_like "property", :internal do
+          let(:value) { false }
+        end
+      end
+    end
+
     describe "comment" do
       it_behaves_like "API V3 formattable", "comment" do
         let(:format) { "markdown" }
@@ -173,12 +193,12 @@ RSpec.describe API::V3::Activities::ActivityRepresenter, "rendering" do
 
       it_behaves_like "has an untitled link"
 
-      context "with a non own journal having edit_work_package_notes permission" do
+      context "with a non own journal having edit_work_package_comments permission" do
         it_behaves_like "has an untitled link"
       end
 
       context "with a non own journal having only edit_own work_package_notes permission" do
-        let(:permissions) { %i(edit_own_work_package_notes) }
+        let(:permissions) { %i(edit_own_work_package_comments) }
 
         it_behaves_like "has no link"
       end

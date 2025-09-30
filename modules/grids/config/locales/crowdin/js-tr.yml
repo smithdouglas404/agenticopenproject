@@ -1,14 +1,11 @@
 tr:
   js:
     grid:
-      add_widget: 'Widget ekleyin'
-      remove: 'Widget''ı kaldır'
-      configure: 'Widget''ı yapılandır'
-      upsale:
-        text: "İş paketi grafiği pencere öğesi gibi bazı pencere öğeleri yalnızca Enterprise sürümünde mevcuttur."
-        link: 'Enterprise sürümü.'
+      add_widget: 'Bileşen ekle'
+      remove: 'Bileşeni kaldır'
+      configure: 'Bileşeni yapılandır'
       widgets:
-        missing_permission: "You don't have the necessary permissions to view this widget."
+        missing_permission: "Bu bileşeni görüntülemek için gerekli izinlere sahip değilsiniz."
         custom_text:
           title: 'Özel metin'
         documents:
@@ -24,33 +21,34 @@ tr:
           title: 'Haberler'
           at: 'en'
           no_results: 'Rapor için yeni birşey bulunamadı.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Proje tanımı'
           no_results: "Henüz bir açıklama yazılmadı. Biri 'Proje ayarları' içinde sağlanabilir."
-        project_details:
-          title: 'Proje detayları'
-          no_results: 'Projeler için özel alan tanımlanmadı.'
         project_status:
-          title: 'Proje Durumu'
+          title: 'Proje durumu'
           not_started: 'Başlatılmadı'
           on_track: 'Takipte'
-          off_track: 'Kapalı parça'
+          off_track: 'Hedeften uzaklaşmış'
           at_risk: 'Riskli'
           not_set: 'Ayarlanmadı'
-          finished: 'Bitti'
+          finished: 'Tamamlandı'
           discontinued: 'Durduruldu'
+        project_status_beta:
+          title: 'Proje durumu (BETA)'
         subprojects:
           title: 'Alt Projeler'
           no_results: 'Alt proje yok.'
         project_favorites:
-          title: 'Favorite projects'
-          no_results: 'You currently have no favorite projects. Click on the star icon in the project dashboard to add one to your favorites.'
+          title: 'Favori projeler'
+          no_results: 'Şu anda favori projeniz yok. Favorilerinize bir proje eklemek için proje gösterge panelindeki yıldız simgesine tıklayın.'
         time_entries_current_user:
           title: 'Geçirdiğim zaman'
           displayed_days: 'Widget''te görüntülenen günler:'
         time_entries_list:
           title: 'Harcanan zaman (son 7 gün)'
-          no_results: 'Son 7 günde zaman girişi yok.'
+          no_results: 'Son 7 gündür zaman girişi yapılmadı.'
         work_packages_accountable:
           title: "Sorumlusu olduğum iş paketleri"
         work_packages_assigned:
@@ -58,7 +56,7 @@ tr:
         work_packages_created:
           title: 'Oluşturduğum iş paketleri'
         work_packages_watched:
-          title: 'İzlediğim iş paketleri'
+          title: 'Takip ettiğim iş paketleri'
         work_packages_table:
           title: 'İş paketleri tablosu'
         work_packages_graph:

@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Update ancestors", :js, :with_cuprite do
+RSpec.describe "Update ancestors", :js do
   shared_let(:user) { create(:admin) }
   shared_let(:priority) { create(:default_priority) }
   shared_let(:new_status) { create(:default_status, name: "New") }
@@ -86,7 +86,8 @@ RSpec.describe "Update ancestors", :js, :with_cuprite do
   shared_let(:query) do
     create(:query,
            show_hierarchies: true,
-           column_names: %i[id status estimated_hours remaining_hours done_ratio subject])
+           column_names: %i[id status estimated_hours remaining_hours done_ratio subject],
+           sort_criteria: [["id", "asc"]])
   end
 
   let(:wp_table) { Pages::WorkPackagesTable.new project }
@@ -174,12 +175,14 @@ RSpec.describe "Update ancestors", :js, :with_cuprite do
       context_menu = wp_table.open_context_menu_for(second_child)
       context_menu.choose(I18n.t("js.relation_buttons.hierarchy_outdent"))
       wp_table.expect_and_dismiss_toaster message: "Successful update"
+      wait_for_network_idle
 
       expect_totals(parent, [child])
 
       context_menu = wp_table.open_context_menu_for(second_child)
       context_menu.choose(I18n.t("js.relation_buttons.hierarchy_indent"))
       wp_table.expect_and_dismiss_toaster message: "Successful update"
+      wait_for_network_idle
 
       expect_totals(parent, [child, second_child])
     end

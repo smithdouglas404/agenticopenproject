@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -45,10 +45,10 @@ import {
   WorkPackageNotificationService,
 } from 'core-app/features/work-packages/services/notifications/work-package-notification.service';
 import { WorkPackageService } from 'core-app/features/work-packages/services/work-package.service';
-import isNotNull from 'core-app/core/state/is-not-null';
 
 @Component({
   templateUrl: './wp-destroy.modal.html',
+  standalone: false,
 })
 export class WpDestroyModalComponent extends OpModalComponent implements OnInit {
   // When deleting multiple
@@ -148,7 +148,7 @@ export class WpDestroyModalComponent extends OpModalComponent implements OnInit 
     this.busy = true;
     const ids = this.workPackages
       .map((el) => el.id)
-      .filter(isNotNull);
+      .filter((id) => id !== null);
     this.workPackageService.performBulkDelete(ids, true)
       .then(() => {
         this.busy = false;

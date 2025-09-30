@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -36,6 +36,7 @@ import {
   OnInit,
   Optional,
   Output,
+  ApplicationRef,
 } from '@angular/core';
 import { StateService, Transition, TransitionService } from '@uirouter/core';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
@@ -59,7 +60,8 @@ import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'edit-form,[edit-form]',
-  template: '<ng-content></ng-content>',
+  template: '<ng-content />',
+  standalone: false,
 })
 export class EditFormComponent extends EditForm<HalResource> implements OnInit, OnDestroy {
   @Input('resource') resource:HalResource;
@@ -78,6 +80,7 @@ export class EditFormComponent extends EditForm<HalResource> implements OnInit, 
 
   constructor(public readonly injector:Injector,
     protected readonly elementRef:ElementRef,
+    private appRef:ApplicationRef,
     protected readonly $transitions:TransitionService,
     protected readonly ConfigurationService:ConfigurationService,
     protected readonly editingPortalService:EditingPortalService,
@@ -86,7 +89,6 @@ export class EditFormComponent extends EditForm<HalResource> implements OnInit, 
     @Optional() protected readonly editFormRouting:EditFormRoutingService,
     private globalEditFormChangesTrackerService:GlobalEditFormChangesTrackerService) {
     super(injector);
-
     const confirmText = I18n.t('js.work_packages.confirm_edit_cancel');
     const requiresConfirmation = ConfigurationService.warnOnLeavingUnsaved();
 

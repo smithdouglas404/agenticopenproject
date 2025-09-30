@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -86,6 +86,16 @@ module Storages
         end
 
         alias_method :error_or, :result_and
+
+        def fail!
+          self.success = false
+          self
+        end
+
+        def to_monad
+          match(on_success: ->(result) { Dry::Monads::Success(result) },
+                on_failure: ->(error) { Dry::Monads::Failure(error) })
+        end
       end
     end
   end

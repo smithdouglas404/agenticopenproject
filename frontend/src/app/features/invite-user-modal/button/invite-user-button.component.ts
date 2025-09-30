@@ -13,6 +13,7 @@ import { OpAutocompleterComponent } from 'core-app/shared/components/autocomplet
   selector: 'op-invite-user-button',
   templateUrl: './invite-user-button.component.html',
   styleUrls: ['./invite-user-button.component.sass'],
+  standalone: false,
 })
 export class InviteUserButtonComponent {
   @Input() projectId:string|null;

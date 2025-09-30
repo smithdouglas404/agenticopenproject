@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -52,7 +54,7 @@ module Redmine
           add_at = nil
           add_to = nil
           del_at = nil
-          deleted = ""
+          deleted = +""
           diff.each do |change|
             pos = change[1]
             if change[0] == "+"
@@ -67,16 +69,16 @@ module Redmine
           end
           if add_at
             words[add_at] =
-              ('<label class="hidden-for-sighted">' + WorkPackage.human_attribute_name(:begin_insertion) + '</label><ins class="diffmod">').html_safe + words[add_at]
+              ('<label class="sr-only">' + WorkPackage.human_attribute_name(:begin_insertion) + '</label><ins class="diffmod">').html_safe + words[add_at]
             words[add_to] =
-              words[add_to] + ('</ins><label class="hidden-for-sighted">' + WorkPackage.human_attribute_name(:end_insertion) + "</label>").html_safe
+              words[add_to] + ('</ins><label class="sr-only">' + WorkPackage.human_attribute_name(:end_insertion) + "</label>").html_safe
 
           end
           if del_at
-            words.insert del_at - del_off + dels + words_add, ('<label class="hidden-for-sighted">' +
+            words.insert del_at - del_off + dels + words_add, ('<label class="sr-only">' +
                                                                 WorkPackage.human_attribute_name(:begin_deletion) +
                                                                 '</label><del class="diffmod">').html_safe + deleted +
-                                                              ('</del><label class="hidden-for-sighted">' +
+                                                              ('</del><label class="sr-only">' +
                                                               WorkPackage.human_attribute_name(:end_deletion) + "</label>").html_safe
             dels += 1
             del_off += words_del

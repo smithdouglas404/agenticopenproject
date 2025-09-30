@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,11 +37,11 @@ RSpec.describe "delete placeholder user", :js do
     it "can delete name" do
       visit placeholder_user_path(placeholder_user)
 
-      expect(page).to have_css ".button", text: "Delete"
+      expect(page).to have_test_selector "placeholder-user--delete-button", text: "Delete"
 
       visit edit_placeholder_user_path(placeholder_user)
 
-      expect(page).to have_css ".button", text: "Delete"
+      expect(page).to have_test_selector "placeholder-user--delete-button", text: "Delete"
       click_on "Delete"
 
       # Expect to be on delete confirmation
@@ -49,7 +51,7 @@ RSpec.describe "delete placeholder user", :js do
       expect(page).to have_css(".danger-zone--verification button:not([disabled])")
       click_on "Delete"
 
-      expect(page).to have_css(".op-toast.-info", text: I18n.t(:notice_deletion_scheduled))
+      expect_flash(type: :info, message: I18n.t(:notice_deletion_scheduled))
 
       # The user is still there
       placeholder_user.reload
@@ -89,11 +91,11 @@ RSpec.describe "delete placeholder user", :js do
 
       visit placeholder_user_path(placeholder_user)
 
-      expect(page).to have_css ".button.-disabled", text: "Delete"
+      expect(page).to have_css("[data-test-selector='placeholder-user--delete-button'][disabled='disabled']", text: "Delete")
 
       visit edit_placeholder_user_path(placeholder_user)
 
-      expect(page).to have_css ".button.-disabled", text: "Delete"
+      expect(page).to have_css("[data-test-selector='placeholder-user--delete-button'][disabled='disabled']", text: "Delete")
     end
   end
 

@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,7 +29,10 @@
 require "spec_helper"
 require_relative "shared_context"
 
-RSpec.describe "Team planner", :js, with_ee: %i[team_planner_view] do
+RSpec.describe "Team planner",
+               :js,
+               :selenium,
+               with_ee: %i[team_planner_view] do
   include_context "with team planner full access"
 
   it "allows switching of view modes", with_settings: { working_days: [1, 2, 3, 4, 5] } do

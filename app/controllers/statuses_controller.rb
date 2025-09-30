@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -54,7 +56,7 @@ class StatusesController < ApplicationController
       flash[:notice] = I18n.t(:notice_successful_create)
       redirect_to action: "index"
     else
-      render action: "new"
+      render action: :new, status: :unprocessable_entity
     end
   end
 
@@ -65,7 +67,7 @@ class StatusesController < ApplicationController
       flash[:notice] = I18n.t(:notice_successful_update)
       redirect_to action: "index"
     else
-      render action: "edit"
+      render action: :edit, status: :unprocessable_entity
     end
   end
 
@@ -85,21 +87,9 @@ class StatusesController < ApplicationController
 
   protected
 
-  def default_breadcrumb
-    if action_name == "index"
-      t(:label_work_package_status_plural)
-    else
-      ActionController::Base.helpers.link_to(t(:label_work_package_status_plural), statuses_path)
-    end
-  end
-
-  def show_local_breadcrumb
-    true
-  end
-
   def recompute_progress_values
     attributes_triggering_recomputing = ["excluded_from_totals"]
-    attributes_triggering_recomputing << "default_done_ratio" if WorkPackage.use_status_for_done_ratio?
+    attributes_triggering_recomputing << "default_done_ratio" if WorkPackage.status_based_mode?
     changes = @status.previous_changes.slice(*attributes_triggering_recomputing)
     return if changes.empty?
 

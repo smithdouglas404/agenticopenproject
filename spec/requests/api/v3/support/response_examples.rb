@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,9 +30,9 @@
 
 require "spec_helper"
 
-RSpec.shared_examples_for "successful response" do |code = 200|
+RSpec.shared_examples_for "successful response" do |code = 200, type = nil|
   it "has the status code #{code}" do
-    expect(last_response.status).to eq(code)
+    expect(last_response).to have_http_status(code)
   end
 
   it "has a HAL+JSON Content-Type" do
@@ -38,11 +40,17 @@ RSpec.shared_examples_for "successful response" do |code = 200|
     expect(last_response.headers).to include "Content-Type"
     expect(last_response.headers["Content-Type"].downcase).to eql expected_content_type
   end
+
+  if type
+    it "returns a resource of _type #{type}" do
+      expect(last_response.body).to be_json_eql(type.to_json).at_path("_type")
+    end
+  end
 end
 
 RSpec.shared_examples_for "successful no content response" do |code = 204|
   it "has the status code #{code}" do
-    expect(last_response.status).to eq(code)
+    expect(last_response).to have_http_status(code)
   end
 end
 
@@ -50,7 +58,7 @@ RSpec.shared_examples_for "redirect response" do |code = 303|
   let(:location) { "" }
 
   it "has the status code #{code}" do
-    expect(last_response.status).to eq(code)
+    expect(last_response).to have_http_status(code)
   end
 
   it "redirects to expected location" do
@@ -64,7 +72,7 @@ RSpec.shared_examples_for "error response" do |code, id, provided_message = nil|
   end
 
   it "has the status code #{code}" do
-    expect(last_response.status).to eq(code)
+    expect(last_response).to have_http_status(code)
   end
 
   it "has a HAL+JSON Content-Type" do
@@ -182,7 +190,7 @@ RSpec.shared_examples_for "param validation error" do
   subject { JSON.parse(last_response.body) }
 
   it "results in a validation error" do
-    expect(last_response.status).to eq(400)
+    expect(last_response).to have_http_status(:bad_request)
     expect(subject["errorIdentifier"]).to eq("urn:openproject-org:api:v3:errors:BadRequest")
     expect(subject["message"]).to match /Bad request: .+? is invalid/
   end

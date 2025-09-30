@@ -3,12 +3,13 @@ ka:
   js:
     team_planner:
       add_existing: 'არსებულის დამატება'
+      label_team_planner_plural: 'გუნდის მგეგმავები'
       add_existing_title: 'Add existing work packages'
       create_label: 'გუნდის მგეგმავი'
       create_title: 'ახალი გუნდის მგეგმავის შექმნა'
       unsaved_title: 'Unnamed team planner'
       no_data: 'Add assignees to set up your team planner.'
-      add_assignee: 'პასუხისმგებლის დამატება'
+      add_assignee: 'დამსაქმებელი'
       remove_assignee: 'Remove assignee'
       two_weeks: '2 კვირა'
       one_week: '1 კვირა'

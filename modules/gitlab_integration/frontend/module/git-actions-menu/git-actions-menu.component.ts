@@ -8,7 +8,7 @@
 // OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
 // Copyright (C) 2006-2013 Jean-Philippe Lang
 // Copyright (C) 2010-2013 the ChiliProject Team
-// Copyright (C) 2012-2021 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -45,7 +45,8 @@ import { I18nService } from "core-app/core/i18n/i18n.service";
   templateUrl: './git-actions-menu.template.html',
   styleUrls: [
     './styles/git-actions-menu.sass'
-  ]
+  ],
+  standalone: false,
 })
 export class GitActionsMenuComponent extends OPContextMenuComponent {
   @Input() public workPackage:WorkPackageResource;
@@ -67,16 +68,19 @@ export class GitActionsMenuComponent extends OPContextMenuComponent {
     {
       id: 'branch',
       name: this.I18n.t('js.gitlab_integration.tab_header_mr.git_actions.branch_name'),
+      textToDisplay: () => this.gitActions.branchName(this.workPackage),
       textToCopy: () => this.gitActions.branchName(this.workPackage)
     },
     {
       id: 'message',
       name: this.I18n.t('js.gitlab_integration.tab_header_mr.git_actions.commit_message'),
+      textToDisplay: () => this.gitActions.commitMessageDisplayText(this.workPackage),
       textToCopy: () => this.gitActions.commitMessage(this.workPackage)
     },
     {
       id: 'command',
       name: this.I18n.t('js.gitlab_integration.tab_header_mr.git_actions.cmd'),
+      textToDisplay: () => this.gitActions.gitCommand(this.workPackage),
       textToCopy: () => this.gitActions.gitCommand(this.workPackage)
     },
   ];

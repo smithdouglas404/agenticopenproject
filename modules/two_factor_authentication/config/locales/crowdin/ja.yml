@@ -1,16 +1,20 @@
 #English strings go here for Rails i18n
 ja:
   plugin_openproject_two_factor_authentication:
-    name: "OpenProject Two-factor authentication"
+    name: "OpenProject の2要素認証"
     description: >-
-      This OpenProject plugin authenticates your users using two-factor authentication by means of one-time password through the TOTP standard (Google Authenticator) or sent to the user's cell phone via SMS or voice call.
+      このOpenProjectプラグインは、TOTP標準(Google Authenticator)を介したワンタイムパスワード、またはSMSや音声通話を介したユーザーの携帯電話への送信により、二要素認証を使用してユーザーを認証します。
   activerecord:
     attributes:
       two_factor_authentication/device:
         identifier: "識別子"
         default: "デフォルトとして使用"
+        channel: "チャンネル"
       two_factor_authentication/device/sms:
         phone_number: "電話番号"
+      two_factor_authentication/device/webauthn:
+        webauthn_external: "WebAuthn ID"
+        webauthn_public_key: "WebAuthn public key"
     errors:
       models:
         two_factor_authentication/device:
@@ -26,7 +30,8 @@ ja:
       two_factor_authentication/device/webauthn: "WebAuthn"
   two_factor_authentication:
     error_2fa_disabled: "2FAの配信が無効になっています。"
-    error_no_device: "このインスタンスに必要であるにもかかわらず、このユーザーに登録された2FAデバイスが見つかりませんでした。"
+    notice_not_writable: "2FA 設定は環境変数を通じて提供され、上書きすることはできない。"
+    error_no_device: "このサイトに必要であるにもかかわらず、このユーザーに登録された2FAデバイスが見つかりませんでした。"
     error_no_matching_strategy: "このユーザーに対応する2FA方法はありません。管理者に連絡してください。"
     error_is_enforced_not_active: "構成エラー：2ファクター認証が実施されていますが、有効な方法はありません。"
     error_invalid_backup_code: "2FAバックアップコードが無効です"
@@ -76,10 +81,10 @@ ja:
       button_register_mobile_phone_for_user: "携帯電話番号で登録する"
       text_2fa_enabled: "ログインごとに、このユーザはデフォルトの2FAデバイスからOTPトークンを入力するよう要求されます。"
       text_2fa_disabled: "ユーザーは2FAデバイスを「マイアカウントページ」から設定していません"
-      only_sms_allowed: "Only SMS delivery can be set up for other users."
-    upsale:
+      only_sms_allowed: "他のユーザーにはSMS配信のみ設定可能です。"
+    upsell:
       title: "2要素認証"
-      description: "すべてのプロジェクトメンバーに2要素認証を提供(または強制)することで、OpenProjectインスタンスのセキュリティを強化します。"
+      description: "すべてのプロジェクトメンバーに2要素認証を提供(または強制)することで、OpenProjectサイトのセキュリティを強化します。"
     backup_codes:
       none_found: このアカウントのバックアップコードはありません。
       singular: バックアップコード
@@ -114,14 +119,14 @@ ja:
       failed_to_delete: "2FAデバイスの削除に失敗しました。"
       is_default_cannot_delete: "デバイスは規定になっているため、アクティブなセキュリティポリシーのため削除できません。削除する前に別のデバイスを規定にしてください。"
       not_existing: "アカウントに2FAデバイスが登録されていません。"
-      2fa_from_input: Please enter the code from your <strong>%{device_name}</strong> to verify your identity.
-      2fa_from_webauthn: Please provide the WebAuthn device <strong>%{device_name}</strong>. If it is USB based make sure to plug it in and touch it. Then click the sign in button.
+      2fa_from_input: 確認するには、 <strong>%{device_name}</strong> のコードを入力してください。
+      2fa_from_webauthn: WebAuthn デバイス <strong>%{device_name}</strong>を挿入してください。 それがUSBベースの場合は、それを接続し、それをタッチしてください。
       webauthn:
         title: "WebAuthn"
-        description: Use Web Authentication to register a FIDO2 device (like a YubiKey) or the secure enclave of your mobile device as a second factor.
-        further_steps: After you have chosen a name, you can click the Continue button. Your browser will prompt you to present your WebAuthn device. When you have done so, you are done registering the device.
+        description: FIDO2デバイス（YubiKeyなど）またはモバイルデバイスのセキュアエンクレーブを登録します。
+        further_steps: 名前を選択したら、[続行] ボタンをクリックします。ブラウザが WebAuthn デバイスの提示を促します。そうしたら、デバイスの登録は完了です。
       totp:
-        title: "アプリベースの認証ツールを使用する"
+        title: "アプリベースの認証機能"
         provisioning_uri: "プロビジョニングURI"
         secret_key: "秘密鍵"
         time_based: "時間ベース"
@@ -134,14 +139,13 @@ ja:
         text_cannot_scan: |
           コードをスキャンできない場合は、次の詳細を使用して手動で入力することができます:
         description: |
-          OpenProjectで使用する認証プログラムに時間ベースのワンタイムパスワード認証方式を使用して登録します。
-          一般的な例は Google Authenticator または Authy です。
+          Authy や Google Authenticator などの認証機能で生成されたワンタイムコードを使用します。
       sms:
-        title: "あなたの携帯電話を使用してください"
+        title: "モバイル機器"
         redacted_identifier: "モバイルデバイス (%{redacted_number})"
         request_2fa_identifier: "%{redacted_identifier}、%{delivery_channel} 経由で認証コードを送信しました。"
         description: |
-          OpenProjectワンタイムパスワードの配信用に携帯電話番号を登録してください。
+          ログインするたびに、携帯電話のテキストメッセージを介して2FAコードを受信します。
     sns:
       delivery_failed: "SNSの配信に失敗しました:"
     message_bird:

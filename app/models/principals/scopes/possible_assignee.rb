@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -59,9 +61,9 @@ module Principals::Scopes
       private
 
       def resource_class(work_package_or_project)
-        if work_package_or_project.all? { _1.class <= WorkPackage }
+        if work_package_or_project.all? { it.class <= WorkPackage }
           WorkPackage
-        elsif work_package_or_project.all? { _1.instance_of?(Project) }
+        elsif work_package_or_project.all? { it.instance_of?(Project) }
           Project
         end
       end

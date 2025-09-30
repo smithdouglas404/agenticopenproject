@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -51,6 +53,13 @@ module OpenProject
       end
     end
 
+    def styled_url_field_tag(name, value = nil, options = {})
+      apply_css_class_to_options(options, "form--text-field")
+      wrap_field "text-field", options do
+        url_field_tag(name, value, options)
+      end
+    end
+
     def styled_label_tag(name = nil, content_or_options = nil, options = {}, &)
       apply_css_class_to_options(
         block_given? && content_or_options.is_a?(Hash) ? content_or_options : (options ||= {}),
@@ -85,7 +94,7 @@ module OpenProject
     ##
     # Create a wrapper for the text formatting toolbar for this field
     def text_formatting_wrapper(target_id, options = {})
-      return "".html_safe unless target_id.present?
+      return "".html_safe if target_id.blank?
 
       ::OpenProject::TextFormatting::Formats
         .rich_helper
@@ -165,9 +174,7 @@ module OpenProject
                   "form--#{selector.tr('_', '-')}-container"
                 end
 
-      classes << (" " + options.fetch(:container_class, ""))
-
-      classes.strip
+      "#{classes} #{options[:container_class]}".strip
     end
   end
 end

@@ -9,8 +9,8 @@ RSpec.describe "LDAP group sync administration spec", :js do
   end
 
   context "without EE" do
-    it "shows upsale" do
-      expect(page).to have_css(".upsale-notification")
+    it "shows upsell" do
+      expect(page).to have_enterprise_banner(:premium)
     end
   end
 
@@ -19,10 +19,13 @@ RSpec.describe "LDAP group sync administration spec", :js do
     let!(:auth_source) { create(:ldap_auth_source, name: "ldap") }
 
     it "allows synced group administration flow" do
-      expect(page).to have_no_css(".upsale-notification")
-
+      expect(page).not_to have_enterprise_banner
+      # Open create menu
+      page.find_test_selector("op-admin-synchronized-groups--button-new", text: I18n.t(:button_add)).click
       # Create group
-      find(".button", text: I18n.t("ldap_groups.synchronized_groups.singular")).click
+      page.find_test_selector("op-admin-synchronized-groups--new-groups",
+                              text: I18n.t("ldap_groups.synchronized_groups.singular")).click
+
       SeleniumHubWaiter.wait
 
       select "ldap", from: "synchronized_group_ldap_auth_source_id"
@@ -31,7 +34,7 @@ RSpec.describe "LDAP group sync administration spec", :js do
       check "synchronized_group_sync_users"
 
       click_on "Create"
-      expect(page).to have_css(".op-toast.-success", text: I18n.t(:notice_successful_create))
+      expect_flash(message: I18n.t(:notice_successful_create))
       expect(page).to have_css("td.dn", text: "cn=foo,ou=groups,dc=example,dc=com")
       expect(page).to have_css("td.ldap_auth_source", text: "ldap")
       expect(page).to have_css("td.group", text: "foo")
@@ -42,11 +45,21 @@ RSpec.describe "LDAP group sync administration spec", :js do
       find("td.dn a").click
       expect(page).to have_css ".generic-table--empty-row"
 
+      # Edit entry
+      click_on "Edit"
+      fill_in "DN", with: "cn=bar,ou=groups,dc=example,dc=com"
+      click_on "Save"
+
+      expect_flash(message: I18n.t(:notice_successful_update))
+
+      visit ldap_groups_synchronized_groups_path
+      expect(page).to have_css("td.dn", text: "cn=bar,ou=groups,dc=example,dc=com")
+
       # Check created group
       sync = LdapGroups::SynchronizedGroup.last
       expect(sync.group_id).to eq(group.id)
       expect(sync.ldap_auth_source_id).to eq(auth_source.id)
-      expect(sync.dn).to eq "cn=foo,ou=groups,dc=example,dc=com"
+      expect(sync.dn).to eq "cn=bar,ou=groups,dc=example,dc=com"
 
       # Assume we have a membership
       sync.users.create user_id: admin.id
@@ -60,12 +73,12 @@ RSpec.describe "LDAP group sync administration spec", :js do
       find(".buttons a", text: "Delete").click
 
       SeleniumHubWaiter.wait
-      find(".danger-zone--verification input").set "cn=foo,ou=groups,dc=example,dc=com"
+      find(".danger-zone--verification input").set "cn=bar,ou=groups,dc=example,dc=com"
 
       SeleniumHubWaiter.wait
       click_on "Delete"
 
-      expect(page).to have_css(".op-toast.-success", text: I18n.t(:notice_successful_delete))
+      expect_flash(message: I18n.t(:notice_successful_delete))
       expect(page).to have_css ".generic-table--empty-row"
 
       expect(LdapGroups::Membership.where(id: memberships)).to be_empty

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,11 +28,14 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
+require "support/flash/expectations"
+
 module Components
   class PasswordConfirmationDialog
     include Capybara::DSL
     include Capybara::RSpecMatchers
     include RSpec::Matchers
+    include Flash::Expectations
 
     def confirm_flow_with(password, with_keyboard: false, should_fail: false)
       expect_open
@@ -68,8 +73,7 @@ module Components
       end
 
       if should_fail
-        expect(page).to have_css(".op-toast.-error",
-                                 text: I18n.t(:notice_password_confirmation_failed))
+        expect_flash(type: :error, message: I18n.t(:notice_password_confirmation_failed))
       else
         expect(page).to have_no_css(".op-toast.-error")
       end

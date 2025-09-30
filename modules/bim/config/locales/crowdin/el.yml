@@ -9,6 +9,7 @@ el:
     label_bcf: 'BCF'
     label_imported_failed: 'Αποτυχημένες εισαγωγές των θεμάτων BCF'
     label_imported_successfully: 'Επιτυχής εισαγωγή θέματων BCF'
+    label_bcf_issue_associated: "BCF issue associated"
     issues: "Ζητήματα"
     recommended: 'προτεινόμενο'
     not_recommended: 'δεν συνιστάται'
@@ -83,6 +84,12 @@ el:
         ifc_attachment: "Αρχείο IFC"
         is_default: "Προεπιλεγμένο μοντέλο"
         attachments: "Αρχείο IFC"
+      bim/bcf/issue:
+        bcf_comment: "BCF comment"
+        bim_snippet: "BIM snippet"
+        reference_links: "Reference links"
+        stage: "Stage"
+        viewpoint: "Viewpoint"
     errors:
       models:
         bim/ifc_models/ifc_model:

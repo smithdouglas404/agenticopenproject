@@ -28,7 +28,7 @@ module Webhooks
           redirect_to action: :index
         else
           @webhook = action.result
-          render action: :new
+          render action: :new, status: :unprocessable_entity
         end
       end
 
@@ -40,7 +40,7 @@ module Webhooks
           redirect_to action: :index
         else
           @webhook = action.result
-          render action: :edit
+          render action: :edit, status: :unprocessable_entity
         end
       end
 
@@ -58,8 +58,6 @@ module Webhooks
 
       def find_webhook
         @webhook = webhook_class.find(params[:webhook_id])
-      rescue ActiveRecord::RecordNotFound
-        render_404
       end
 
       def webhook_class
@@ -71,14 +69,6 @@ module Webhooks
           .require(:webhook)
           .permit(:name, :description, :url, :secret, :enabled,
                   :project_ids, selected_project_ids: [], events: [])
-      end
-
-      def show_local_breadcrumb
-        true
-      end
-
-      def default_breadcrumb
-        []
       end
     end
   end

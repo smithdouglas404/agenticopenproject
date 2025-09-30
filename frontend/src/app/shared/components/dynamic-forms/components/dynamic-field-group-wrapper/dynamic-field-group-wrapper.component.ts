@@ -5,6 +5,7 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'op-dynamic-field-group-wrapper',
   templateUrl: './dynamic-field-group-wrapper.component.html',
   styleUrls: ['./dynamic-field-group-wrapper.component.scss'],
+  standalone: false,
 })
 export class DynamicFieldGroupWrapperComponent extends FieldWrapper {
 }

@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,8 +27,8 @@
 #++
 
 require "spec_helper"
-require File.join(File.dirname(__FILE__), "..", "support", "custom_field_filter")
-require File.join(File.dirname(__FILE__), "..", "support", "configuration_helper")
+require_relative "../support/custom_field_filter"
+require_relative "../support/configuration_helper"
 
 RSpec.describe "Custom field filter and group by caching" do
   include OpenProject::Reporting::SpecHelper::CustomFieldFilterHelper
@@ -109,8 +109,8 @@ RSpec.describe "Custom field filter and group by caching" do
     expect_filter_all_to_not_exist(custom_field)
   end
 
-  it 'allows for changing the db entries directly via SQL between requests \
-      if no caching is done (this could also mean switching dbs)' do
+  it "allows for changing the db entries directly via SQL between requests " \
+     "if no caching is done (this could also mean switching dbs)" do
     new_label = "our new label"
     mock_cache_classes_setting_with(false)
 

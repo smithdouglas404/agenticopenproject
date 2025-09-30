@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -55,15 +57,14 @@ RSpec.describe "Repository Settings", :js do
   shared_examples "manages the repository" do |type|
     it "displays the repository" do
       expect(page).to have_css('select[name="scm_vendor"]')
-      expect(find("#attributes-group--content-#{type}", visible: true))
-        .not_to be_nil
+      expect(page).to have_css("#attributes-group--content-#{type}", visible: :visible)
     end
 
     it "deletes the repository" do
       expect(Repository.exists?(repository.id)).to be true
 
+      SeleniumHubWaiter.wait
       if type == "managed"
-        SeleniumHubWaiter.wait
         find("a.icon-delete", text: I18n.t(:button_delete)).click
 
         dangerzone = DangerZone.new(page)
@@ -82,11 +83,10 @@ RSpec.describe "Repository Settings", :js do
         SeleniumHubWaiter.wait
         dangerzone.danger_button.click
       else
-        SeleniumHubWaiter.wait
         find("a.icon-remove", text: I18n.t(:button_remove)).click
         expect(page).to have_css(".op-toast.-warning")
         SeleniumHubWaiter.wait
-        find("a", text: I18n.t(:button_remove)).click
+        page.find_test_selector("remove-repository-button").click
       end
 
       vendor = find('select[name="scm_vendor"]')
@@ -193,8 +193,7 @@ RSpec.describe "Repository Settings", :js do
 
       click_button(I18n.t(:button_save))
       expect(page).to have_css('[name="repository[login]"][value="foobar"]')
-      expect(page).to have_css(".op-toast",
-                               text: I18n.t("repositories.update_settings_successful"))
+      expect_flash(message: I18n.t("repositories.update_settings_successful"))
     end
   end
 end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -42,7 +44,7 @@ RSpec.describe Type do
     end
 
     it "returns the types enabled in the provided project" do
-      expect(Type.enabled_in(project)).to contain_exactly(type)
+      expect(described_class.enabled_in(project)).to contain_exactly(type)
     end
   end
 
@@ -122,6 +124,59 @@ RSpec.describe Type do
     context "for the ignore_non_working_days field" do
       it "does not return the field" do
         expect(subject).not_to have_key("ignore_non_working_days")
+      end
+    end
+  end
+
+  describe "#patterns" do
+    it "returns an empty collection when no patterns are defined" do
+      type = create(:type)
+
+      expect(type.patterns).to eq(WorkPackageTypes::Patterns::Collection.empty)
+    end
+
+    it "returns a PatternCollection" do
+      type = create(:type, patterns: {
+                      subject: { blueprint: "{{work_package:custom_field_123}} - {{project:custom_field_321}}", enabled: true }
+                    })
+
+      expect(type.patterns).to be_a(WorkPackageTypes::Patterns::Collection)
+      expect(type.patterns.subject)
+        .to eq(WorkPackageTypes::Pattern.new("{{work_package:custom_field_123}} - {{project:custom_field_321}}", true))
+    end
+  end
+
+  describe "#patterns=" do
+    subject(:type) { build(:type) }
+
+    it "assigns a patterns collection as-is" do
+      collection = WorkPackageTypes::Patterns::Collection.build(patterns: {
+                                                       subject: { blueprint: "some_string", enabled: false }
+                                                     }).value!
+
+      type.patterns = collection
+
+      expect(type.patterns).to eq(collection)
+      expect { type.save! }.not_to raise_error
+    end
+
+    context "when an invalid value is passed" do
+      it "defaults to an empty collection" do
+        type.patterns = 4
+
+        expect(type.patterns).to eq(WorkPackageTypes::Patterns::Collection.empty)
+        expect { type.save! }.not_to raise_error
+      end
+    end
+
+    context "when a hash is passed" do
+      it "converts the incoming hash into a PatternCollection" do
+        type.patterns = { subject: { blueprint: "some_string", enabled: false } }
+
+        expect(type.patterns).to be_a(WorkPackageTypes::Patterns::Collection)
+        expect(type.patterns.subject).to be_a(WorkPackageTypes::Pattern)
+
+        expect { type.save! }.not_to raise_error
       end
     end
   end

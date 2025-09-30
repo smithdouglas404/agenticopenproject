@@ -1,6 +1,6 @@
 ro:
   js:
-    queries:
-      all_open: 'Toate deschise'
-      timeline: 'Timeline'
-      milestones: 'Milestones'
+    work_packages:
+      label_gantt_chart_plural: "Diagrame Gantt"
+      default_queries:
+        milestones: 'Etape'

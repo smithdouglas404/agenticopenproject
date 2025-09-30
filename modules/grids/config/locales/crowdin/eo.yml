@@ -8,6 +8,7 @@ eo:
         row_count: "Kvanto da vicoj"
         column_count: "Numero de kolumnoj"
         widgets: "Kromprogrametoj"
+        scope: "Scope"
     errors:
       models:
         grids/grid:

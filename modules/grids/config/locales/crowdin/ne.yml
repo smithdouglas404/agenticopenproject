@@ -8,6 +8,7 @@ ne:
         row_count: "पङ्क्तिहरूको संख्या"
         column_count: "स्तम्भहरूको संख्या"
         widgets: "विजेटहरू"
+        scope: "Scope"
     errors:
       models:
         grids/grid:

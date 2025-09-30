@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 
-import { Constructor } from '@angular/cdk/table';
+import { Constructor } from 'core-app/core/util-types';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 

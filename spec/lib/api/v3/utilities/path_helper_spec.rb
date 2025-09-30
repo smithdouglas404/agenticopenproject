@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -294,6 +296,15 @@ RSpec.describe API::V3::Utilities::PathHelper do
 
       it_behaves_like "api v3 path", "/projects/available_parent_projects"
     end
+  end
+
+  describe "project phase paths" do
+    it_behaves_like "show", :project_phase
+  end
+
+  describe "project phase definition paths" do
+    it_behaves_like "index", :project_phase_definition
+    it_behaves_like "show", :project_phase_definition
   end
 
   describe "project status paths" do

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,9 +29,8 @@
 #++
 
 require "spec_helper"
-require "features/work_packages/work_packages_page"
 
-RSpec.describe "project export", :js, :with_cuprite do
+RSpec.describe "project export", :js do
   shared_let(:important_project) { create(:project, name: "Important schedule plan", description: "Important description") }
   shared_let(:party_project) { create(:project, name: "Christmas party", description: "Christmas description") }
   shared_let(:user) do
@@ -62,7 +63,7 @@ RSpec.describe "project export", :js, :with_cuprite do
     click_on export_type
 
     # Expect to get a response regarding queuing
-    expect(page).to have_content I18n.t("js.job_status.generic_messages.in_queue"),
+    expect(page).to have_content I18n.t("job_status_dialog.generic_messages.in_queue"),
                                  wait: 10
 
     begin
@@ -72,7 +73,7 @@ RSpec.describe "project export", :js, :with_cuprite do
     end
 
     if expect_success
-      expect(page).to have_text("The export has completed successfully")
+      expect(page).to have_text(I18n.t("export.succeeded"))
     end
   end
 
@@ -97,8 +98,7 @@ RSpec.describe "project export", :js, :with_cuprite do
                               "Name or identifier",
                               "contains",
                               ["Important"])
-
-        index_page.apply_filters
+        wait_for_reload
 
         index_page.set_columns("Name", "Description")
 
@@ -142,6 +142,20 @@ RSpec.describe "project export", :js, :with_cuprite do
         expect(subject).to have_text(important_project.description)
         expect(subject).to have_no_text(party_project.name)
         expect(subject).to have_no_text(party_project.description)
+      end
+    end
+  end
+
+  describe "PDF export" do
+    let(:export_type) { "PDF" }
+
+    it "exports the PDF and opens it in a new tab" do
+      new_window = window_opened_by do
+        export!
+      end
+
+      within_window new_window do
+        expect(page.source).to have_css("[type='application/pdf']")
       end
     end
   end

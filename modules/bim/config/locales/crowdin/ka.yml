@@ -9,6 +9,7 @@ ka:
     label_bcf: 'BCF'
     label_imported_failed: 'Failed imports of BCF topics'
     label_imported_successfully: 'Successfully imported BCF topics'
+    label_bcf_issue_associated: "BCF issue associated"
     issues: "შენიშვნები"
     recommended: 'რეკომენდებულია'
     not_recommended: 'not recommended'
@@ -83,6 +84,12 @@ ka:
         ifc_attachment: "IFC ფაილი"
         is_default: "ნაგულისხმევი მოდელი"
         attachments: "IFC ფაილი"
+      bim/bcf/issue:
+        bcf_comment: "BCF comment"
+        bim_snippet: "BIM snippet"
+        reference_links: "Reference links"
+        stage: "Stage"
+        viewpoint: "ხედის წერტილი"
     errors:
       models:
         bim/ifc_models/ifc_model:

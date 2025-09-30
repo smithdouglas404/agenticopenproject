@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -34,7 +34,7 @@ RSpec.describe "Work package timeline navigation",
   let(:user) { create(:admin) }
   let(:enabled_module_names) { %i[work_package_tracking gantt] }
   let(:project) { create(:project, enabled_module_names:) }
-  let(:query_menu) { Components::WorkPackages::QueryMenu.new }
+  let(:query_menu) { Components::Submenu.new }
   let(:wp_timeline) { Pages::WorkPackagesTimeline.new(project) }
   let(:wp_table) { Pages::WorkPackagesTable.new(project) }
   let(:settings_menu) { Components::WorkPackages::SettingsMenu.new }
@@ -112,6 +112,9 @@ RSpec.describe "Work package timeline navigation",
       # Visit timeline query
       wp_timeline.visit_query query_tl
 
+      expect(wp_timeline).to have_test_selector("op-breadcrumbs--item", text: "Gantt charts")
+      expect(wp_timeline).to have_css(".op-breadcrumbs--current", text: "Query with Timeline", aria: { current: "page" })
+
       wp_timeline.expect_timeline!(open: true)
       wp_timeline.expect_work_package_listed work_package2
       wp_timeline.ensure_work_package_not_listed! work_package
@@ -121,7 +124,9 @@ RSpec.describe "Work package timeline navigation",
       page.find_test_selector("main-menu-toggler--work_packages").click
 
       # Select other query
-      query_menu.select query
+      query_menu.search_for_item query.name
+      query_menu.expect_item query.name
+      query_menu.click_item query.name
       wp_timeline.expect_timeline!(open: false)
       wp_table.expect_work_package_listed work_package
       wp_table.ensure_work_package_not_listed! work_package2
@@ -149,7 +154,7 @@ RSpec.describe "Work package timeline navigation",
       retry_block do
         find(".wp-row-#{work_package2.id}-timeline").right_click
         find(".menu-item", text: "Add predecessor")
-        find(".menu-item", text: "Add follower")
+        find(".menu-item", text: "Add successor")
       end
     end
   end
@@ -361,7 +366,7 @@ RSpec.describe "Work package timeline navigation",
       split_view = wp_table.open_split_view(wp_cat1)
       split_view.switch_to_tab tab: :relations
 
-      relations.remove_relation(wp_cat2)
+      relations.remove_relation(relation)
 
       # Relation should be removed in TL
       within(".work-packages-split-view--tabletimeline-side") do

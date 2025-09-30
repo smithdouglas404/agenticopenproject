@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -61,7 +63,9 @@ xml.feed "xmlns" => "http://www.w3.org/2005/Atom" do
       if author
         xml.author do
           xml.name(author)
-          xml.email(author.mail) if author.is_a?(User) && author.mail.present? && author.pref.can_expose_mail?
+          if author.is_a?(User) && author.mail.present? && User.current.allowed_globally?(:view_user_email)
+            xml.email(author.mail)
+          end
         end
       end
       xml.content "type" => "html" do

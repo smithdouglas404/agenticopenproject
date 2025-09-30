@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +28,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Time entry activity" do
+RSpec.describe "Time entry activity", :js do
   shared_let(:admin) { create(:admin) }
   let(:project) { create(:project) }
 
@@ -36,35 +36,42 @@ RSpec.describe "Time entry activity" do
     login_as(admin)
   end
 
-  it "supports CRUD" do
-    visit enumerations_path
+  it "allows creating new activities and activating them on projects" do
+    visit admin_settings_time_entry_activities_path
 
-    page.find_test_selector("create-enumeration-time-entry-activity").click
+    page.find_test_selector("add-enumeration-button").click
 
     fill_in "Name", with: "A new activity"
-    click_on("Create")
+    click_on("Save")
 
-    expect(page.current_path)
-      .to eql enumerations_path
+    # we are redirected back to the index page
+    expect(page).to have_current_path(admin_settings_time_entry_activities_path)
+    expect(page).to have_content("A new activity")
 
-    expect(page)
-      .to have_content("A new activity")
+    # It allows editing (Regression #62459)
+    click_link "A new activity"
+
+    fill_in "Name", with: "Development"
+    click_on("Save")
+
+    expect(page).to have_current_path(admin_settings_time_entry_activities_path)
+    expect(page).to have_content("Development")
+
+    expect(TimeEntryActivity).to exist(name: "Development")
+    expect(TimeEntryActivity).not_to exist(name: "A new activity")
 
     visit project_settings_general_path(project)
 
     click_on "Time tracking activities"
 
-    expect(page)
-      .to have_field("A new activity", checked: true)
+    expect(page).to have_field("Development", checked: true)
 
-    uncheck "A new activity"
+    uncheck "Development"
 
     click_on "Save"
 
-    expect(page)
-      .to have_content "Successful update."
+    expect(page).to have_content "Successful update."
 
-    expect(page)
-      .to have_field("A new activity", checked: false)
+    expect(page).to have_field("Development", checked: false)
   end
 end

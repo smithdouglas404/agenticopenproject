@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -52,7 +54,43 @@ RSpec.describe ProjectsController do
   describe "new" do
     it do
       expect(get("/projects/new")).to route_to(
-        controller: "projects", action: "new"
+        controller: "projects", action: "new", workspace_type: "project"
+      )
+    end
+
+    it do
+      expect(get("/portfolios/new")).to route_to(
+        controller: "projects", action: "new", workspace_type: "portfolio"
+      )
+    end
+
+    it do
+      expect(get("/programs/new")).to route_to(
+        controller: "projects", action: "new", workspace_type: "program"
+      )
+    end
+  end
+
+  describe "create" do
+    it do
+      expect(post("/projects")).to route_to(
+        controller: "projects", action: "create"
+      )
+    end
+  end
+
+  describe "copy_form" do
+    it do
+      expect(get("projects/123/copy")).to route_to(
+        controller: "projects", action: "copy_form", id: "123"
+      )
+    end
+  end
+
+  describe "copy" do
+    it do
+      expect(post("projects/123/copy")).to route_to(
+        controller: "projects", action: "copy", id: "123"
       )
     end
   end
@@ -79,6 +117,14 @@ RSpec.describe ProjectsController do
     end
   end
 
+  describe "export_list_modal" do
+    it do
+      expect(get("/projects/export_list_modal")).to route_to(
+        controller: "projects", action: "export_list_modal"
+      )
+    end
+  end
+
   describe "templated" do
     it do
       expect(delete("/projects/123/templated"))
@@ -101,12 +147,6 @@ RSpec.describe ProjectsController do
     it do
       expect(delete("projects/123/archive")).to route_to(
         controller: "projects/archive", action: "destroy", project_id: "123"
-      )
-    end
-
-    it do
-      expect(get("projects/123/copy")).to route_to(
-        controller: "projects", action: "copy", id: "123"
       )
     end
   end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -43,6 +45,13 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
     end
 
     set_custom_attributes(attributes)
+    mark_templated_subject
+  end
+
+  def mark_templated_subject
+    if work_package.type&.replacement_pattern_defined_for?(:subject)
+      work_package.subject = I18n.t("work_packages.templated_subject_hint", type: work_package.type.name)
+    end
   end
 
   def set_static_attributes(attributes)
@@ -61,8 +70,8 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
       update_dates
     end
     shift_dates_to_soonest_working_days
-    update_duration
-    update_derivable
+    update_duration_to_one_day_for_milestones
+    update_derivable_date_attribute
     update_progress_attributes
     update_project_dependent_attributes
     reassign_invalid_status_if_type_changed
@@ -70,8 +79,8 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
     set_cause_for_readonly_attributes
   end
 
-  def derivable_attribute
-    derivable_attribute_by_others_presence || derivable_attribute_by_others_absence
+  def derivable_date_attribute
+    derivable_date_attribute_by_others_presence || derivable_date_attribute_by_others_absence
   end
 
   # Returns a field derivable by the presence of the two others, or +nil+ if
@@ -82,13 +91,8 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
   #
   # If +ignore_non_working_days+ has been changed, try deriving +due_date+ and
   # +start_date+ before +duration+.
-  def derivable_attribute_by_others_presence
-    fields =
-      if work_package.ignore_non_working_days_changed?
-        %i[due_date start_date duration]
-      else
-        %i[duration due_date start_date]
-      end
+  def derivable_date_attribute_by_others_presence
+    fields = %i[duration due_date start_date]
     fields.find { |field| derivable_by_others_presence?(field) }
   end
 
@@ -107,7 +111,7 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
   #
   # Matching is done in the order :duration, :due_date, :start_date. The first
   # one to match is returned.
-  def derivable_attribute_by_others_absence
+  def derivable_date_attribute_by_others_absence
     %i[duration due_date start_date].find { |field| derivable_by_others_absence?(field) }
   end
 
@@ -136,8 +140,8 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
   end
 
   # rubocop:disable Metrics/AbcSize
-  def update_derivable
-    case derivable_attribute
+  def update_derivable_date_attribute
+    case derivable_date_attribute
     when :duration
       work_package.duration =
         if work_package.milestone?
@@ -146,13 +150,23 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
           days.duration(work_package.start_date, work_package.due_date)
         end
     when :due_date
+      return if invalid_duration?
+
       work_package.due_date = days.due_date(work_package.start_date, work_package.duration)
     when :start_date
+      return if invalid_duration?
+
       work_package.start_date = days.start_date(work_package.due_date, work_package.duration)
     end
   end
-
   # rubocop:enable Metrics/AbcSize
+
+  def invalid_duration?
+    return false if work_package.duration.nil?
+    return true unless work_package.duration.is_a?(Integer)
+
+    work_package.duration <= 0
+  end
 
   def set_default_attributes(attributes)
     set_default_priority
@@ -251,13 +265,35 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
       reassign_category
       set_parent_to_nil
 
-      reassign_type unless work_package.type_id_changed?
+      assign_default_type unless work_package.type
     end
   end
 
   def update_dates
     unify_milestone_dates
+    if work_package.children.any?
+      update_dates_from_rescheduled_children
+    else
+      update_dates_from_self
+    end
+  end
 
+  def update_dates_from_rescheduled_children
+    return if work_package.schedule_manually?
+
+    # A milestone can't have children. An error will be reported for it.
+    # Updating dates from children's dates would add more errors like "due date
+    # is different from start date" and confuse the user.
+    # Better return and keep dates unified to have only one meaningful error.
+    return if work_package_now_milestone?
+
+    # do a reschedule call to get the work package dates from the rescheduled children
+    service = WorkPackages::SetScheduleService.new(user: User.current, work_package:, switching_to_automatic_mode: [work_package])
+    service.call(work_package.changes.keys.map(&:to_sym)).result
+  end
+
+  def update_dates_from_self
+    # this method is only called by #update_dates when there are no children
     min_start = new_start_date
 
     return unless min_start
@@ -280,163 +316,32 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
     work_package.due_date = days.soonest_working_day(work_package.due_date)
   end
 
-  def update_duration
+  def update_duration_to_one_day_for_milestones
     work_package.duration = 1 if work_package.milestone?
   end
 
   def update_progress_attributes
-    if WorkPackage.use_status_for_done_ratio?
-      update_done_ratio
-      update_remaining_hours
-    elsif only_percent_complete_initially_set?
-      update_remaining_hours_from_percent_complete
+    derive_progress_values_class.new(work_package).call
+  end
+
+  def derive_progress_values_class
+    if WorkPackage.status_based_mode?
+      DeriveProgressValuesStatusBased
     else
-      update_estimated_hours
-      update_remaining_hours
-      update_done_ratio
+      DeriveProgressValuesWorkBased
     end
-    round_progress_values
-  end
-
-  def only_percent_complete_initially_set?
-    return false if work_package.done_ratio.nil?
-    return false if work_package.remaining_hours.present?
-
-    work_package.estimated_hours_changed? && work_package.estimated_hours.present?
-  end
-
-  def work_was_unset_and_remaining_work_is_set?
-    work_package.estimated_hours_was.nil? && work_package.remaining_hours.present?
-  end
-
-  # Compute and update +done_ratio+ if its dependent attributes are being modified.
-  # The dependent attributes for +done_ratio+ are
-  # - +remaining_hours+
-  # - +estimated_hours+
-  #
-  # Unless both +remaining_hours+ and +estimated_hours+ are set, +done_ratio+ will be
-  # considered nil.
-  def update_done_ratio
-    if WorkPackage.use_status_for_done_ratio?
-      return unless work_package.status_id_changed?
-
-      work_package.done_ratio = work_package.status.default_done_ratio
-    else
-      return unless work_package.remaining_hours_changed? || work_package.estimated_hours_changed?
-
-      work_package.done_ratio = if done_ratio_dependent_attribute_unset?
-                                  nil
-                                else
-                                  compute_done_ratio
-                                end
-    end
-  end
-
-  def round_progress_values
-    rounded = work_package.estimated_hours&.round(2)
-    if rounded != work_package.estimated_hours
-      work_package.estimated_hours = rounded
-    end
-    rounded = work_package.remaining_hours&.round(2)
-    if rounded != work_package.remaining_hours
-      work_package.remaining_hours = rounded
-    end
-  end
-
-  def update_remaining_hours_from_percent_complete
-    return if work_package.remaining_hours_came_from_user?
-    return if work_package.estimated_hours&.negative?
-
-    work_package.remaining_hours = remaining_hours_from_done_ratio_and_estimated_hours
-  end
-
-  def done_ratio_dependent_attribute_unset?
-    work_package.remaining_hours.nil? || work_package.estimated_hours.nil?
-  end
-
-  def compute_done_ratio
-    # do not change done ratio if the values are invalid
-    if invalid_progress_values?
-      return work_package.done_ratio
-    end
-
-    completed_work = work_package.estimated_hours - work_package.remaining_hours
-    completion_ratio = completed_work.to_f / work_package.estimated_hours
-
-    (completion_ratio * 100).round(2)
-  end
-
-  def invalid_progress_values?
-    work = work_package.estimated_hours
-    remaining_work = work_package.remaining_hours
-
-    return true if work.negative?
-    return true if remaining_work.negative?
-
-    work && remaining_work && remaining_work > work
-  end
-
-  def update_estimated_hours
-    return unless WorkPackage.use_field_for_done_ratio?
-    return if work_package.estimated_hours_came_from_user?
-    return unless work_package.remaining_hours_changed?
-
-    work = work_package.estimated_hours
-    remaining_work = work_package.remaining_hours
-    return if work.present?
-    return if remaining_work.nil? || remaining_work.negative?
-
-    work_package.estimated_hours = estimated_hours_from_done_ratio_and_remaining_hours
-  end
-
-  # When in "Status-based" mode for % Complete, remaining hours are based
-  # on the computation of it derived from the status's default done ratio
-  # and the estimated hours. If the estimated hours are unset, then also
-  # unset the remaining hours.
-  # rubocop:disable Metrics/AbcSize,Metrics/PerceivedComplexity
-  def update_remaining_hours
-    if WorkPackage.use_status_for_done_ratio?
-      update_remaining_hours_from_percent_complete
-    elsif WorkPackage.use_field_for_done_ratio? &&
-      work_package.estimated_hours_changed?
-      return if work_package.remaining_hours_came_from_user?
-      return if work_package.estimated_hours&.negative?
-      return if work_was_unset_and_remaining_work_is_set? # remaining work is kept and % complete will be set
-
-      if work_package.estimated_hours.nil? || work_package.remaining_hours.nil?
-        work_package.remaining_hours = work_package.estimated_hours
-      else
-        delta = work_package.estimated_hours - work_package.estimated_hours_was
-        work_package.remaining_hours = (work_package.remaining_hours + delta).clamp(0.0, work_package.estimated_hours)
-      end
-    end
-  end
-  # rubocop:enable Metrics/AbcSize,Metrics/PerceivedComplexity
-
-  def estimated_hours_from_done_ratio_and_remaining_hours
-    remaining_ratio = 1.0 - ((work_package.done_ratio || 0) / 100.0)
-    work_package.remaining_hours / remaining_ratio
-  end
-
-  def remaining_hours_from_done_ratio_and_estimated_hours
-    return nil if work_package.done_ratio.nil? || work_package.estimated_hours.nil?
-
-    completed_work = work_package.estimated_hours * work_package.done_ratio / 100.0
-    remaining_hours = (work_package.estimated_hours - completed_work).round(2)
-    remaining_hours.clamp(0.0, work_package.estimated_hours)
   end
 
   def set_version_to_nil
     if work_package.version &&
-      work_package.project &&
-      work_package.project.shared_versions.exclude?(work_package.version)
+       work_package.project&.shared_versions&.exclude?(work_package.version)
       work_package.version = nil
     end
   end
 
   def set_parent_to_nil
     if !Setting.cross_project_work_package_relations? &&
-      !work_package.parent_changed?
+       !work_package.parent_changed?
 
       work_package.parent = nil
     end
@@ -452,13 +357,11 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
     end
   end
 
-  def reassign_type
+  def assign_default_type
     available_types = work_package.project.types.order(:position)
 
-    return if available_types.include?(work_package.type) && work_package.type
-
     work_package.type = available_types.first
-    update_duration
+    update_duration_to_one_day_for_milestones
     unify_milestone_dates
 
     reassign_status assignable_statuses
@@ -486,34 +389,51 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
   end
 
   def new_start_date
-    current_start_date = work_package.start_date || work_package.due_date
+    # this method is only called by #update_dates_from_self when there are no children
+    if work_package.schedule_manually?
+      # Weird rule from SetScheduleService: if the work package does not have a
+      # start date, it inherits it from the parent soonest start, regardless of
+      # scheduling mode.
+      return if work_package.start_date
 
-    return unless current_start_date && work_package.schedule_automatically?
-
-    min_start = new_start_date_from_parent || new_start_date_from_self
-    min_start = days.soonest_working_day(min_start)
-
-    if min_start && (min_start > current_start_date || work_package.schedule_manually_changed?)
-      min_start
+      days.soonest_working_day(new_start_date_from_parent)
+    else
+      min_start = [new_start_date_from_parent, work_package.soonest_start].compact.max
+      days.soonest_working_day(min_start)
     end
   end
 
+  # Returns the soonest start date from the parent if the parent has changed.
+  # If the parent has changed, #soonest_start would be inaccurate.
   def new_start_date_from_parent
     return unless work_package.parent_id_changed? &&
-      work_package.parent
+                  work_package.parent
 
-    work_package.parent.soonest_start
-  end
-
-  def new_start_date_from_self
-    return unless work_package.schedule_manually_changed?
-
-    [min_child_date, work_package.soonest_start].compact.max
+    work_package.parent.soonest_start(working_days_from: work_package)
   end
 
   def new_due_date(min_start)
-    duration = children_duration || work_package.duration
-    days.due_date(min_start, duration)
+    # this method is only called by #update_dates_from_self when there are no children
+    if work_package.due_date_came_from_user?
+      work_package.due_date
+    elsif reuse_current_due_date?
+      # if due date is before start date, then start is used as due date.
+      [min_start, work_package.due_date].max
+    elsif duration_assignable?
+      days.due_date(min_start, work_package.duration)
+    end
+  end
+
+  def reuse_current_due_date?
+    return false if work_package.due_date.nil?
+    return true if work_package.ignore_non_working_days_came_from_user?
+
+    # use due date only if duration cannot be used
+    work_package.duration.nil? || !duration_assignable?
+  end
+
+  def duration_assignable?
+    work_package&.duration.is_a?(Integer) && work_package.duration > 0
   end
 
   def work_package
@@ -552,14 +472,14 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
     start = work_package.parent&.start_date
     due = work_package.due_date || work_package.parent&.due_date
 
-    (start && !due) || ((due && start) && (start < due))
+    (start && !due) || (due && start && (start < due))
   end
 
   def parent_due_later_than_start?
     due = work_package.parent&.due_date
     start = work_package.start_date || work_package.parent&.start_date
 
-    (due && !start) || ((due && start) && (due > start))
+    (due && !start) || (due && start && (due > start))
   end
 
   def set_cause_for_readonly_attributes

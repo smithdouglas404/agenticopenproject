@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,7 +34,6 @@ RSpec.shared_examples "BaseServices update service" do
   let(:service_class) { described_class }
   let(:namespace) { service_class.to_s.deconstantize }
   let(:model_class) { namespace.singularize.constantize }
-  let(:contract_class) { "#{namespace}::UpdateContract".constantize }
   let(:factory) { namespace.singularize.underscore }
 
   let(:set_attributes_class) { "#{namespace}::SetAttributesService".constantize }

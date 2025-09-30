@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -81,7 +81,7 @@ RSpec.shared_examples_for "onedrive storage contract" do
 
   let(:current_user) { create(:admin) }
   let(:storage_name) { "Storage 1" }
-  let(:storage_provider_type) { Storages::Storage::PROVIDER_TYPE_ONE_DRIVE }
+  let(:storage_provider_type) { Storages::OneDriveStorage.name }
   let(:storage_creator) { current_user }
 
   it_behaves_like "contract is valid for active admins and invalid for regular users"
@@ -95,7 +95,7 @@ RSpec.shared_examples_for "nextcloud storage contract", :storage_server_helpers,
   # Only admins have the right to create/delete storages.
   let(:current_user) { create(:admin) }
   let(:storage_name) { "Storage 1" }
-  let(:storage_provider_type) { Storages::Storage::PROVIDER_TYPE_NEXTCLOUD }
+  let(:storage_provider_type) { Storages::NextcloudStorage.name }
   let(:storage_host) { "https://host1.example.com" }
   let(:storage_creator) { current_user }
 
@@ -116,13 +116,13 @@ RSpec.shared_examples_for "nextcloud storage contract", :storage_server_helpers,
       context "as host is not a URL" do
         let(:storage_host) { "---invalid-url---" }
 
-        include_examples "contract is invalid", host: I18n.t("activerecord.errors.messages.invalid_url")
+        include_examples "contract is invalid", host: :invalid_host_url
       end
 
       context "as host is an empty string" do
         let(:storage_host) { "" }
 
-        include_examples "contract is invalid", host: I18n.t("activerecord.errors.messages.invalid_url")
+        include_examples "contract is invalid", host: :invalid_host_url
       end
 
       context "as host is longer than 255" do
@@ -294,8 +294,7 @@ RSpec.shared_examples_for "nextcloud storage contract", :storage_server_helpers,
 
     context "when not automatically managed, no username or password" do
       before do
-        storage.provider_fields = {}
-        storage.assign_attributes(automatic_management_enabled: false)
+        storage.assign_attributes(automatic_management_enabled: false, username: nil, password: nil)
       end
 
       it_behaves_like "contract is valid"
@@ -342,6 +341,12 @@ RSpec.shared_examples_for "nextcloud storage contract", :storage_server_helpers,
           expect(contract).not_to have_received(:provider_type_strategy)
         end
       end
+    end
+  end
+
+  describe ".with_provider_contract" do
+    it "looks like it descends from Storages::Storages::BaseContract" do
+      expect(described_class.with_provider_contract(instance_double(Class))).to be <= Storages::Storages::BaseContract
     end
   end
 end

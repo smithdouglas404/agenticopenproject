@@ -34,6 +34,15 @@ ms:
           name: Kelabu (tua)
         item_13:
           name: Hitam
+      project_phase_colors:
+        item_0:
+          name: PM2 Jingga
+        item_1:
+          name: PM2 Merah
+        item_2:
+          name: PM2 Magenta
+        item_3:
+          name: PM2 Hijau Kuning
       document_categories:
         item_0:
           name: Dokumentasi
@@ -41,6 +50,11 @@ ms:
           name: Spesifikasi
         item_2:
           name: Lain-lain
+      project_query_roles:
+        item_0:
+          name: Pemerhati pertanyaan projek
+        item_1:
+          name: Pengedit pertanyaan projek
       work_package_roles:
         item_0:
           name: Pengedit pakej kerja
@@ -62,7 +76,21 @@ ms:
       global_roles:
         item_0:
           name: Kakitangan dan pengurus projek
+        item_1:
+          name: Peranan global standard
     standard:
+      project_phases:
+        item_0:
+          name: Memulakan
+        item_1:
+          name: Perancangan
+          start_gate: Bersedia untuk Perancangan
+        item_2:
+          name: Melaksanakan
+          start_gate: Sedia untuk Melaksanakan
+        item_3:
+          name: Penutup
+          start_gate: Sedia untuk Penutupan
       priorities:
         item_0:
           name: Rendah
@@ -72,81 +100,6 @@ ms:
           name: Tinggi
         item_3:
           name: Segera
-      statuses:
-        item_0:
-          name: Baharu
-        item_1:
-          name: Dalam spesifikasi
-        item_2:
-          name: Tertentu
-        item_3:
-          name: Disahkan
-        item_4:
-          name: Untuk dijadualkan
-        item_5:
-          name: Dijadualkan
-        item_6:
-          name: Dalam proses
-        item_7:
-          name: Dibangunkan
-        item_8:
-          name: Dalam pengujian
-        item_9:
-          name: Telah diuji
-        item_10:
-          name: Ujian gagal
-        item_11:
-          name: Ditutup
-        item_12:
-          name: Ditangguhkan
-        item_13:
-          name: Ditolak
-      time_entry_activities:
-        item_0:
-          name: Pengurusan
-        item_1:
-          name: Spesifikasi
-        item_2:
-          name: Pembangunan
-        item_3:
-          name: Menguji
-        item_4:
-          name: Sokongan
-        item_5:
-          name: Lain-lain
-      types:
-        item_0:
-          name: Tugasan
-        item_1:
-          name: Pencapaian
-        item_2:
-          name: Fasa
-        item_3:
-          name: Fitur
-        item_4:
-          name: Epik
-        item_5:
-          name: Cerita pengguna
-        item_6:
-          name: Bug
-      welcome:
-        title: Selamat datang ke OpenProject!
-        text: |
-          OpenProject adalah perisian pengurusan projek sumber terbuka terkemuka. Ia menyokong pengurusan projek klasik, agile serta hibrid dan memberi anda kawalan sepenuhnya terhadap data anda.
-
-          Fitur-fitur teras dan kes penggunaan:
-
-          * [Pengurusan Portfolio Projek](https://www.openproject.org/collaboration-software-features/project-portfolio-management/)
-          * [Perancangan dan Penjadualan Projek](https://www.openproject.org/collaboration-software-features/project-planning-scheduling/)
-          * [Pengurusan Tugasan dan Penjejakan Isu](https://www.openproject.org/collaboration-software-features/task-management/)
-          * [Board Agile (Scrum dan Kanban)](https://www.openproject.org/collaboration-software-features/agile-project-management/)
-          * [Pengurusan Keperluan dan Perancangan Pelepasan](https://www.openproject.org/collaboration-software-features/product-development/)
-          * [Penjejakan Masa dan Kos, Anggaran](https://www.openproject.org/collaboration-software-features/time-tracking/)
-          * [Kolaborasi Pasukan dan Dokumentasi](https://www.openproject.org/collaboration-software-features/team-collaboration/)
-
-          Selamat datang ke masa hadapan pengurusan projek.
-
-          Untuk Pentadbir: Anda boleh mengubah teks selamat datang ini [di sini]({{opSetting:base_url}}/admin/settings/general).
       projects:
         demo-project:
           name: Projek demo
@@ -167,7 +120,7 @@ ms:
             item_1:
               name: Pencapaian
             item_2:
-              name: Tugasan
+              name: Tugasan-tugasan
             item_3:
               name: Perancang pasukan
           boards:
@@ -193,11 +146,11 @@ ms:
                   name: Selamat datang
               item_1:
                 options:
-                  name: Sedang bermula
+                  name: Permulaan
                   text: |
                     Kami gembira anda menyertai kami! Kami cadangkan beberapa perkara sebagai permulaan di OpenProject.
 
-                    Temui fitur paling penting dengan [Lawatan Berpandu ({{opSetting:base_url}}/projects/demo-project/work_packages/?start_onboarding_tour=true) kami.
+                    Temui fitur paling penting dengan [Lawatan Berpandu ({{opSetting:base_url}}/projects/demo-project/work_packages/?start_onboarding_tour=true) kami. 
 
                     _Cuba ikuti langkah-langkah berikut:_
 
@@ -220,7 +173,7 @@ ms:
             item_0:
               subject: Permulaan projek
             item_1:
-              subject: Anjurkan persidangan sumber terbuka
+              subject: Anjurkan persidangan sumber terbuka 
               children:
                 item_0:
                   subject: Tetapkan tarikh dan lokasi persidangan
@@ -266,6 +219,7 @@ ms:
             *Lihat sebagai Markdown
 
             Maklumat lanjut: [https://www.openproject.org/docs/user-guide/wiki/](https://www.openproject.org/docs/user-guide/wiki/)
+
         scrum-project:
           name: Projek Scrum
           status_explanation: Semua tugasan mengikut jadual. Orang yang terlibat tahu akan tugasan mereka. Sistem ini telah siap sepenuhnya.
@@ -308,7 +262,7 @@ ms:
                   * Kotak masa (maks. 15 minit).
                   * Mesyuarat stand-up untuk membincangkan topik-topik berikut dari [Board tugasan](##sprint:scrum_project__version__sprint_1).
                       * Apa yang saya rancang untuk lakukan sehingga mesyuarat harian Scrum?
-                      * Apa yang telah menghalang kerja saya (Halangan)?
+                      * Apa yang telah menghalang kerja saya (Halangan)? 
                   * Ketua Scrum menyelia dan mencatat [Halangan Pecutan](##sprint:scrum_project__version__sprint_1).
                   * Pemilik produk boleh mengambil bahagian untuk kekal maklum.
 
@@ -343,7 +297,7 @@ ms:
             item_2:
               name: Pecutan 1
             item_3:
-              name: Tugasan
+              name: Tugasan-tugasan
           boards:
             kanban:
               name: Papan Kanban
@@ -365,7 +319,7 @@ ms:
                   name: Selamat datang
               item_1:
                 options:
-                  name: Sedang bermula
+                  name: Permulaan
                   text: |
                     Kami gembira anda menyertai kami! Kami cadangkan beberapa perkara sebagai permula andi OpenProject.
 
@@ -484,3 +438,78 @@ ms:
             * Kotak masa (3 j).
             * Setelah Semakan Pecutan, akan dikendalikan oleh Ketua Scrum.
             * Pasukan membincangkan pecutan: apa yang berjalan lancar, apa yang perlu diperbaiki untuk menjadi lebih produktif untuk pecutan seterusnya atau lebih menyeronokkan.
+      statuses:
+        item_0:
+          name: Baharu
+        item_1:
+          name: Dalam spesifikasi
+        item_2:
+          name: Tertentu
+        item_3:
+          name: Disahkan
+        item_4:
+          name: Untuk dijadualkan
+        item_5:
+          name: Dijadualkan
+        item_6:
+          name: Dalam proses
+        item_7:
+          name: Dibangunkan
+        item_8:
+          name: Dalam pengujian
+        item_9:
+          name: Telah diuji
+        item_10:
+          name: Ujian gagal
+        item_11:
+          name: Ditutup
+        item_12:
+          name: Ditangguhkan
+        item_13:
+          name: Ditolak
+      time_entry_activities:
+        item_0:
+          name: Pengurusan
+        item_1:
+          name: Spesifikasi
+        item_2:
+          name: Pembangunan
+        item_3:
+          name: Menguji
+        item_4:
+          name: Sokongan
+        item_5:
+          name: Lain-lain
+      types:
+        item_0:
+          name: Tugasan
+        item_1:
+          name: Pencapaian
+        item_2:
+          name: Summary task
+        item_3:
+          name: Fitur
+        item_4:
+          name: Epik
+        item_5:
+          name: Cerita pengguna
+        item_6:
+          name: Bug
+      welcome:
+        title: Selamat datang ke OpenProject!
+        text: |
+          OpenProject adalah perisian pengurusan projek sumber terbuka terkemuka. Ia menyokong pengurusan projek klasik, agile serta hibrid dan memberi anda kawalan sepenuhnya terhadap data anda.
+
+          Fitur-fitur teras dan kes penggunaan:
+
+          * [Pengurusan Portfolio Projek](https://www.openproject.org/collaboration-software-features/project-portfolio-management/)
+          * [Perancangan dan Penjadualan Projek](https://www.openproject.org/collaboration-software-features/project-planning-scheduling/)
+          * [Pengurusan Tugasan dan Penjejakan Isu](https://www.openproject.org/collaboration-software-features/task-management/)
+          * [Board Agile (Scrum dan Kanban)](https://www.openproject.org/collaboration-software-features/agile-project-management/)
+          * [Pengurusan Keperluan dan Perancangan Pelepasan](https://www.openproject.org/collaboration-software-features/product-development/)
+          * [Penjejakan Masa dan Kos, Anggaran](https://www.openproject.org/collaboration-software-features/time-tracking/)
+          * [Kolaborasi Pasukan dan Dokumentasi](https://www.openproject.org/collaboration-software-features/team-collaboration/)
+
+          Selamat datang ke masa hadapan pengurusan projek.
+
+          Untuk Pentadbir: Anda boleh mengubah teks selamat datang ini [di sini]({{opSetting:base_url}}/admin/settings/general).

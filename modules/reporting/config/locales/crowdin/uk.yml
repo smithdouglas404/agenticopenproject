@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -23,7 +23,7 @@ uk:
   plugin_openproject_reporting:
     name: "Звіти OpenProject"
     description: "Цей плагін дає змогу створювати звіти про витрати з можливостями фільтрування й групування, створеними плагіном «Час і витрати» в OpenProject."
-  button_save_as: "Зберегти звіт до:"
+  button_save_report_as: "Зберегти звіт як…"
   comments: "Коментар"
   cost_reports_title: "Час і витрати"
   label_cost_report: "Звіт про витрати"
@@ -45,9 +45,11 @@ uk:
   label_greater: ">"
   label_is_not_project_with_subprojects: "не є (включає підпроекти)"
   label_is_project_with_subprojects: "є (включає підпроекти)"
+  label_is_work_package_with_descendants: "є (включно з нащадками)"
+  label_is_not_work_package_with_descendants: "не є (включно з нащадками)"
   label_work_package_attributes: "Атрибути робочого пакету"
   label_less: "<"
-  label_logged_by_reporting: "Ви ввійшли як"
+  label_logged_by_reporting: "Внесено користувачем"
   label_money: "Грошова вартість"
   label_month_reporting: "Місяць (витрачений)"
   label_new_report: "Новий звіт про витрати"
@@ -64,7 +66,7 @@ uk:
   label_units: "Одиниці"
   label_week_reporting: "Тиждень (витрачений)"
   label_year_reporting: "Рік (витрачений)"
-  label_count: "Підрахунок"
+  label_count: "Кількість"
   label_filter: "Фільтр"
   label_filter_add: "Додати фільтр"
   label_filter_plural: "Фільтри"
@@ -86,8 +88,18 @@ uk:
   validation_failure_date: "є недійсною датою"
   validation_failure_integer: "не є дійсним цілим числом"
   export:
+    timesheet:
+      title: "Ваші табелі обліку часу, експортовані в PDF"
+      button: "Експортувати табель обліку часу в PDF"
+      timesheet: "Табель обліку часу"
+      time: "Час"
+      sums_hours: Суми
+      overview_per_user_total: "Огляд: «Усього годин на користувача»"
+      overview_per_user_day: "Огляд: «Годин на користувача в день»"
     cost_reports:
       title: "Експорт звітів про витрати у форматі XLS"
+      start_time: "Час початку"
+      end_time: "Час завершення"
   reporting:
     group_by:
       selected_columns: "Вибрані стовпці"

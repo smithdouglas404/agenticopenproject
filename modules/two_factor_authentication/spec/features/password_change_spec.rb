@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "../spec_helper"
 
 RSpec.describe "Password change with OTP", :js, with_settings: {
@@ -13,7 +15,7 @@ RSpec.describe "Password change with OTP", :js, with_settings: {
            password: user_password,
            password_confirmation: user_password)
   end
-  let(:expected_path_after_login) { my_page_path }
+  let(:expected_path_after_login) { home_path }
 
   def handle_password_change(requires_otp: true)
     visit signin_path
@@ -31,7 +33,7 @@ RSpec.describe "Password change with OTP", :js, with_settings: {
     end
     # rubocop:enable RSpec/AnyInstance
 
-    expect(page).to have_css("h2", text: I18n.t(:button_change_password))
+    expect(page).to have_test_selector("change_password_header_title", text: I18n.t(:button_change_password))
     within("#content") do
       SeleniumHubWaiter.wait
       fill_in("password", with: user_password)
@@ -44,7 +46,7 @@ RSpec.describe "Password change with OTP", :js, with_settings: {
       expect(page).to have_css("input#otp")
       SeleniumHubWaiter.wait
       fill_in "otp", with: sms_token
-      click_button I18n.t(:button_login)
+      click_button I18n.t(:button_login), type: "submit"
     end
 
     expect(page).to have_current_path(expected_path_after_login, ignore_query: true)

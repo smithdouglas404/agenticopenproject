@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require File.expand_path("../../../../spec_helper", __dir__)
+require_relative "../../../../spec_helper"
 
 RSpec.describe OpenProject::GithubIntegration::NotificationHandler::PullRequest do
   subject(:process) { handler_instance.process(payload) }
@@ -51,6 +51,7 @@ RSpec.describe OpenProject::GithubIntegration::NotificationHandler::PullRequest 
         "merged" => pr_merged,
         "merged_by" => nil,
         "merged_at" => nil,
+        "merge_commit_sha" => nil,
         "comments" => 1,
         "review_comments" => 2,
         "additions" => 3,

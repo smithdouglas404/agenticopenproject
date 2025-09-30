@@ -2,7 +2,7 @@
 
 # -- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2010-2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,30 +28,47 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-class Projects::ProjectsFiltersComponent < FiltersComponent
+# rubocop:disable OpenProject/AddPreviewForViewComponent
+class Projects::ProjectsFiltersComponent < Filter::FilterComponent
+  # rubocop:enable OpenProject/AddPreviewForViewComponent
   def allowed_filters
     super
       .select { |f| allowed_filter?(f) }
       .sort_by(&:human_name)
   end
 
+  def turbo_requests?
+    true
+  end
+
   private
 
   def allowed_filter?(filter)
     allowlist = [
+      Queries::Filters::Shared::CustomFields::Base,
       Queries::Projects::Filters::ActiveFilter,
-      Queries::Projects::Filters::TemplatedFilter,
-      Queries::Projects::Filters::PublicFilter,
-      Queries::Projects::Filters::ProjectStatusFilter,
-      Queries::Projects::Filters::MemberOfFilter,
       Queries::Projects::Filters::CreatedAtFilter,
+      Queries::Projects::Filters::FavoritedFilter,
+      Queries::Projects::Filters::IdFilter,
       Queries::Projects::Filters::LatestActivityAtFilter,
+      Queries::Projects::Filters::ProjectPhaseAnyFilter,
+      Queries::Projects::Filters::ProjectPhaseGateFilter,
+      Queries::Projects::Filters::ProjectPhaseFilter,
+      Queries::Projects::Filters::MemberOfFilter,
       Queries::Projects::Filters::NameAndIdentifierFilter,
+      Queries::Projects::Filters::ProjectStatusFilter,
+      Queries::Projects::Filters::PublicFilter,
+      Queries::Projects::Filters::TemplatedFilter,
       Queries::Projects::Filters::TypeFilter,
-      Queries::Projects::Filters::FavoredFilter
+      Queries::Projects::Filters::UpdatedAtFilter
     ]
-    allowlist << Queries::Filters::Shared::CustomFields::Base if EnterpriseToken.allows_to?(:custom_fields_in_projects_list)
 
-    allowlist.detect { |clazz| filter.is_a? clazz }
+    # FavoritedFilter used to be called favored. The filter should not break for stored queries. Therefore,
+    # the filter is instantiated twice, once for "favorited", once for "favored".
+    # At the same time, the "Favorite" filter should not be displayed twice in the filter list.
+    # Removing it here has the drawback of a stored "favored" filter not showing up in the component.
+    # This is accepted.
+
+    allowlist.any? { |clazz| filter.is_a? clazz } && filter.name != :favored
   end
 end

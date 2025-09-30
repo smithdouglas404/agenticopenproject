@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -21,7 +21,7 @@
 #++
 id:
   plugin_budgets_engine:
-    name: 'Budget'
+    name: "Anggaran"
   activerecord:
     attributes:
       budget:
@@ -36,6 +36,7 @@ id:
         type: "Jenis biaya"
         labor_budget: "Rencana biaya tenaga"
         material_budget: "Rencana biaya unit"
+        base_amount: "Base amount"
       work_package:
         budget_subject: "Judul anggaran"
     models:
@@ -61,18 +62,24 @@ id:
   help_currency_format: "Format of displayed currency values. %n is replaced with the currency value, %u ist replaced with the currency unit."
   help_override_rate: "Masukkan nilai untuk mengubah rate default."
   label_budget: "Anggaran"
-  label_budget_new: "Tambah budget"
-  label_budget_plural: "Budget"
+  label_budget_available: "Budget available"
   label_budget_id: "Budget #%{id}"
-  label_deliverable: "Bugdet"
-  label_example_placeholder: 'mis., %{decimal}'
+  label_budget_new: "Tambah budget"
+  label_budget_planned: "Budget planned"
+  label_budget_plural: "Anggaran"
+  label_budget_spent: "Budget spent"
+  label_budget_spent_ratio: "Budget spent ratio"
+  label_deliverable: "Anggaran"
+  label_example_placeholder: "mis., %{decimal}"
   label_view_all_budgets: "Lihat semua budget"
   label_yes: "Yes"
+  label_budget_totals: "Totals"
+  label_budget_details: "Budget details"
   notice_budget_conflict: "Work packages must be of the same project."
   notice_no_budgets_available: "Pilihan budget tidak tersedia."
   permission_edit_budgets: "Edit budget"
   permission_view_budgets: "Tampilkan seluruh budget"
-  project_module_budgets: "Budget"
+  project_module_budgets: "Anggaran"
   text_budget_reassign_to: "Tetapkan kembali mereka ke anggaran ini:"
   text_budget_delete: "Hapus anggaran dari semua paket pekerjaan"
   text_budget_destroy_assigned_wp: "Ada %{count} paket pekerjaan yang ditugaskan ke anggaran ini.  Apa yang ingin kamu lakukan?"

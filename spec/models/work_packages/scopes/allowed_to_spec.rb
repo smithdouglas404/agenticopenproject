@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,15 +31,14 @@
 require "spec_helper"
 
 RSpec.describe WorkPackage, ".allowed_to" do
-  let(:user) { create(:user) }
+  shared_let(:user) { create(:user) }
+  shared_let(:project_status) { true }
+  shared_let(:private_project) { create(:project, public: false, active: project_status) }
+  shared_let(:public_project) { create(:project, public: true, active: project_status) }
 
-  let!(:private_project) { create(:project, public: false, active: project_status) }
-  let!(:public_project) { create(:project, public: true, active: project_status) }
-  let(:project_status) { true }
-
-  let!(:work_package_in_public_project) { create(:work_package, project: public_project) }
-  let!(:work_package_in_private_project) { create(:work_package, project: private_project) }
-  let!(:other_work_package_in_private_project) { create(:work_package, project: private_project) }
+  shared_let(:work_package_in_public_project) { create(:work_package, project: public_project) }
+  shared_let(:work_package_in_private_project) { create(:work_package, project: private_project) }
+  shared_let(:other_work_package_in_private_project) { create(:work_package, project: private_project) }
 
   let(:project_permissions) { [] }
   let(:project_role) { create(:project_role, permissions: project_permissions) }
@@ -106,105 +107,176 @@ RSpec.describe WorkPackage, ".allowed_to" do
         expect(subject).to be_empty
       end
     end
-  end
 
-  context "when the user has the permission directly on the work package" do
-    let(:work_package_permissions) { [action] }
-
-    before do
-      create(:member, project: private_project, entity: work_package_in_private_project,
-                      user:, roles: [work_package_role])
-    end
-
-    subject { described_class.allowed_to(user, action) }
-
-    it "returns the authorized work package" do
-      expect(subject).to contain_exactly(work_package_in_private_project)
-    end
-
-    context "when the project is archived" do
+    context "when the module the permission belongs to is disabled" do
       before do
-        public_project.update!(active: false)
-        private_project.update!(active: false)
+        private_project.enabled_module_names = private_project.enabled_module_names - ["work_package_tracking"]
       end
 
-      it "returns no work packages" do
-        expect(subject).to be_empty
-      end
-    end
-
-    context "when the user is locked" do
-      before do
-        user.locked!
-      end
-
-      it "returns no work packages" do
-        expect(subject).to be_empty
+      it "excludes work packages where the module is disabled in" do
+        expect(subject).to contain_exactly(work_package_in_public_project)
       end
     end
   end
 
-  context "when the user has the permission on the project the work package belongs to" do
-    let(:project_permissions) { [action] }
+  context "when the user is a non admin, logged in user" do
+    shared_context "for a non admin, logged in user" do
+      context "when the user has the permission directly on the work package" do
+        let(:work_package_permissions) { [action] }
 
-    before do
-      create(:member, project: private_project, user:, roles: [project_role])
-    end
+        before do
+          create(:member, project: private_project, entity: work_package_in_private_project,
+                          user:, roles: [work_package_role])
+        end
 
-    subject { described_class.allowed_to(user, action) }
+        subject { described_class.allowed_to(user, action) }
 
-    it "returns the authorized work packages" do
-      expect(subject).to contain_exactly(
-        work_package_in_private_project,
-        other_work_package_in_private_project
-      )
-    end
+        it "returns the authorized work package" do
+          expect(subject).to contain_exactly(work_package_in_private_project)
+        end
 
-    context "when the project is archived" do
-      before do
-        public_project.update!(active: false)
-        private_project.update!(active: false)
+        context "when the project is archived" do
+          before do
+            public_project.update!(active: false)
+            private_project.update!(active: false)
+          end
+
+          it "returns no work packages" do
+            expect(subject).to be_empty
+          end
+        end
+
+        context "when the module is inactive in the project" do
+          before do
+            public_project.enabled_modules = []
+            private_project.enabled_modules = []
+          end
+
+          it "returns no work packages" do
+            expect(subject).to be_empty
+          end
+        end
+
+        context "when the user is locked" do
+          before do
+            user.locked!
+          end
+
+          it "returns no work packages" do
+            expect(subject).to be_empty
+          end
+        end
       end
 
-      it "returns no work packages" do
-        expect(subject).to be_empty
+      context "when the user has the permission on the project the work package belongs to" do
+        let(:project_permissions) { [action] }
+
+        before do
+          create(:member, project: private_project, user:, roles: [project_role])
+        end
+
+        subject { described_class.allowed_to(user, action) }
+
+        it "returns the authorized work packages" do
+          expect(subject).to contain_exactly(
+            work_package_in_private_project,
+            other_work_package_in_private_project
+          )
+        end
+
+        context "when the project is archived" do
+          before do
+            public_project.update!(active: false)
+            private_project.update!(active: false)
+          end
+
+          it "returns no work packages" do
+            expect(subject).to be_empty
+          end
+        end
+
+        context "when the module is inactive in the project" do
+          before do
+            public_project.enabled_modules = []
+            private_project.enabled_modules = []
+          end
+
+          it "returns no work packages" do
+            expect(subject).to be_empty
+          end
+        end
+
+        context "when the user is locked" do
+          before do
+            user.locked!
+          end
+
+          it "returns no work packages" do
+            expect(subject).to be_empty
+          end
+        end
+      end
+
+      context "when the user has a different permission on the project, but the requested one on a specific work package" do
+        let(:project_permissions) { [:view_work_packages] }
+        let(:work_package_permissions) { %i[view_work_packages edit_work_packages] }
+
+        before do
+          create(:member, project: private_project, entity: work_package_in_private_project, user:, roles: [work_package_role])
+          create(:member, project: private_project, user:, roles: [project_role])
+        end
+
+        context "and requesting a permission that is only granted on the single work package" do
+          subject { described_class.allowed_to(user, :edit_work_packages) }
+
+          it "returns the authorized work packages" do
+            expect(subject).to contain_exactly(work_package_in_private_project)
+          end
+        end
+
+        context "and requesting a permission that is granted on the project and the work package" do
+          subject { described_class.allowed_to(user, :view_work_packages) }
+
+          it "returns the authorized work packages" do
+            expect(subject).to contain_exactly(work_package_in_private_project, other_work_package_in_private_project)
+          end
+        end
+      end
+
+      context "when the user isn`t member in the project" do
+        let(:user) { create(:user) }
+        let(:action) { :view_work_packages }
+
+        before do
+          non_member_role.save!
+        end
+
+        subject { described_class.allowed_to(user, action) }
+
+        context "with the non member role having the permission" do
+          let(:non_member_permissions) { [action] }
+
+          it "returns work packages in the public project" do
+            expect(subject).to contain_exactly(work_package_in_public_project)
+          end
+        end
+
+        context "with the non member role lacking the permission" do
+          let(:non_member_permissions) { [] }
+
+          it "is empty" do
+            expect(subject).to be_empty
+          end
+        end
       end
     end
 
-    context "when the user is locked" do
-      before do
-        user.locked!
-      end
-
-      it "returns no work packages" do
-        expect(subject).to be_empty
-      end
-    end
-  end
-
-  context "when the user has a different permission on the project, but the requested one on a specific work package" do
-    let(:project_permissions) { [:view_work_packages] }
-    let(:work_package_permissions) { %i[view_work_packages edit_work_packages] }
-
-    before do
-      create(:member, project: private_project, entity: work_package_in_private_project, user:, roles: [work_package_role])
-      create(:member, project: private_project, user:, roles: [project_role])
+    context "in non large instances", with_settings: { large_instance_wp_allowed_to_sql: false } do
+      include_context "for a non admin, logged in user"
     end
 
-    context "and requesting a permission that is only granted on the single work package" do
-      subject { described_class.allowed_to(user, :edit_work_packages) }
-
-      it "returns the authorized work packages" do
-        expect(subject).to contain_exactly(work_package_in_private_project)
-      end
-    end
-
-    context "and requesting a permission that is granted on the project and the work package" do
-      subject { described_class.allowed_to(user, :view_work_packages) }
-
-      it "returns the authorized work packages" do
-        expect(subject).to contain_exactly(work_package_in_private_project, other_work_package_in_private_project)
-      end
+    context "in large instances", with_settings: { large_instance_wp_allowed_to_sql: true } do
+      include_context "for a non admin, logged in user"
     end
   end
 
@@ -228,33 +300,6 @@ RSpec.describe WorkPackage, ".allowed_to" do
 
     context "with the anonymous role lacking the permission" do
       let(:anonymous_permissions) { [] }
-
-      it "is empty" do
-        expect(subject).to be_empty
-      end
-    end
-  end
-
-  context "when the user isn`t member in the project" do
-    let(:user) { create(:user) }
-    let(:action) { :view_work_packages }
-
-    before do
-      non_member_role.save!
-    end
-
-    subject { described_class.allowed_to(user, action) }
-
-    context "with the non member role having the permission" do
-      let(:non_member_permissions) { [action] }
-
-      it "returns work packages in the public project" do
-        expect(subject).to contain_exactly(work_package_in_public_project)
-      end
-    end
-
-    context "with the non member role lacking the permission" do
-      let(:non_member_permissions) { [] }
 
       it "is empty" do
         expect(subject).to be_empty

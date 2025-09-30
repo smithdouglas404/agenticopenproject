@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,11 +30,10 @@
 
 require "spec_helper"
 
-RSpec.describe "Attribute help texts", :js, :with_cuprite do
+RSpec.describe "Attribute help texts", :js do
   shared_let(:user_with_permission) { create(:user, global_permissions: [:edit_attribute_help_texts]) }
 
   let(:instance) { AttributeHelpText.last }
-  let(:modal) { Components::AttributeHelpTextModal.new(instance) }
   let(:editor) { Components::WysiwygEditor.new }
   let(:image_fixture) { UploadedFile.load_from("spec/fixtures/files/image.png") }
   let(:enterprise_token) { true }
@@ -44,13 +45,15 @@ RSpec.describe "Attribute help texts", :js, :with_cuprite do
     end
 
     # TODO: Migrate to cuprite when the `better_cuprite_billy` driver is added
-    context "with direct uploads (Regression #34285)", :with_direct_uploads, with_cuprite: false do
+    context "with direct uploads (Regression #34285)",
+            :selenium,
+            :with_direct_uploads do
       before do
         allow_any_instance_of(Attachment).to receive(:diskfile).and_return image_fixture
       end
 
       it "can upload an image" do
-        find(".attribute-help-texts--create-button").click
+        page.find_test_selector("attribute-help-texts--create-button").click
         select "Status", from: "attribute_help_text_attribute_name"
 
         editor.set_markdown("My attribute help text")
@@ -72,7 +75,7 @@ RSpec.describe "Attribute help texts", :js, :with_cuprite do
 
         # Create help text
         # -> new
-        find(".attribute-help-texts--create-button").click
+        page.find_test_selector("attribute-help-texts--create-button").click
 
         # Set attributes
         # -> create
@@ -93,16 +96,21 @@ RSpec.describe "Attribute help texts", :js, :with_cuprite do
         expect(instance.help_text).to match /\/api\/v3\/attachments\/\d+\/content/
 
         # Open help text modal
-        modal.open!
-        expect(modal.modal_container).to have_text "My attribute help text"
-        expect(modal.modal_container).to have_css("img")
-        modal.expect_edit(editable: true)
+        click_on "Preview text"
 
-        # Expect files section to be present
-        expect(modal.modal_container).to have_css(".form--fieldset-legend", text: "ATTACHMENTS")
-        expect(modal.modal_container).to have_test_selector("op-files-tab--file-list-item-title")
+        expect(page).to have_modal "Status"
+        within_modal "Status" do
+          expect(page).to have_text "My attribute help text"
+          expect(page).to have_css "img"
 
-        modal.close!
+          expect(page).to have_link "Edit"
+
+          # Expect files section to be present
+          expect(page).to have_heading "Attachments"
+          expect(page).to have_test_selector("op-files-tab--file-list-item-title")
+
+          click_on "Close"
+        end
 
         # -> edit
         SeleniumHubWaiter.wait
@@ -113,7 +121,7 @@ RSpec.describe "Attribute help texts", :js, :with_cuprite do
         click_button "Save"
 
         # Handle errors
-        expect(page).to have_css("#errorExplanation", text: "Help text can't be blank.")
+        expect_flash(type: :error, message: "Help text can't be blank.")
         SeleniumHubWaiter.wait
         editor.set_markdown("New**help**text")
         click_button "Save"
@@ -124,21 +132,30 @@ RSpec.describe "Attribute help texts", :js, :with_cuprite do
         expect(instance.help_text).to eq "New**help**text"
 
         # Open help text modal
-        modal.open!
-        expect(modal.modal_container).to have_css("strong", text: "help")
-        modal.expect_edit(editable: true)
+        click_on "Preview text"
 
-        modal.close!
+        within_modal "Status" do
+          expect(page).to have_css "strong", text: "help"
+
+          expect(page).to have_link "Edit"
+
+          click_on "Close"
+        end
+
         expect(page).to have_css(".attribute-help-text--entry td", text: "Status")
 
         # Open again and edit this time
-        modal.open!
-        modal.edit_button.click
+        click_on "Preview text"
+
+        within_modal "Status" do
+          click_on "Edit"
+        end
+
         expect(page).to have_css("#attribute_help_text_attribute_name[disabled]")
         visit attribute_help_texts_path
 
         # Create new, status is now blocked
-        find(".attribute-help-texts--create-button").click
+        page.find_test_selector("attribute-help-texts--create-button").click
         expect(page).to have_css("#attribute_help_text_attribute_name option", text: "Assignee")
         expect(page).to have_no_css("#attribute_help_text_attribute_name option", text: "Status")
         visit attribute_help_texts_path

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Components
   module Grids
     class GridArea
@@ -80,10 +82,10 @@ module Components
          ["grid-column-start", startColumn * 2],
          ["grid-row-end", (endRow * 2) - 1],
          ["grid-column-end", (endColumn * 2) - 1]].each do |style, expected|
-          actual = area.native.style(style)
+          actual = area.style(style)
 
-          expect(actual)
-            .to eql(expected.to_s), "expected #{style} to be #{expected} but it is #{actual}"
+          expect(actual).to eql({ style => expected.to_s }),
+                            "expected #{style} to be #{expected} but it is #{actual}"
         end
       end
 

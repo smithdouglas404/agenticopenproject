@@ -11,7 +11,7 @@ Welcome to the OpenProject **System Administration guide**.
 
 In order to make changes to settings affecting your entire OpenProject environment, you need to navigate to the OpenProject administration.
 
-If you are an administrator on your OpenProject environment, you can access the administration by clicking on your user Avatar in the upper right corner and selecting -> **Administration** from the dropdown menu.
+If you are an administrator on your OpenProject environment, you can access the administration by clicking on your user Avatar in the upper right corner and selecting **Administration** from the dropdown menu.
 
 Click on one of the categories in order to proceed with the configuration.
 
@@ -25,7 +25,6 @@ Click on one of the categories in order to proceed with the configuration.
 | [Work packages](./manage-work-packages)                      | How to configure work packages, types, status and workflows. |
 | [Custom fields](./custom-fields)                             | Set custom fields for work packages, Spent time, projects, versions, users, groups and more. |
 | [Attribute help texts](./attribute-help-texts)               | Add help texts to explain attributes (including custom fields) in projects and work packages. |
-| [Enumerations](./enumerations/)                              | Set enumerations, e.g. work package priorities, time tracking activities, document categories, and more. |
 | [Calendars and dates](./calendars-and-dates/)                | Configure working days, dates formats and calendar subscriptions. |
 | [System settings](./system-settings/)                        | Configure your system settings, e.g. a welcome text block on the landing page, languages, repositories, and more. |
 | [Emails and notifications](./emails-and-notifications/)      | Manage notifications and emails.                             |

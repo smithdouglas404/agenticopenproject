@@ -350,10 +350,7 @@ ij_json_spaces_within_brackets = false
 ij_json_wrap_long_lines = false
 
 [{rcov,spec,rake,rails,spork,capfile,gemfile,rakefile,guardfile,isolate,vagrantfile,Puppetfile,*.jbuilder,*.rbw,*.gemspec,*.thor,*.ru,*.rb,*.rake}]
-indent_size = 2
-tab_width = 2
 trim_trailing_whitespace=true
-ij_continuation_indent_size = 2
 ij_ruby_align_group_field_declarations = false
 ij_ruby_align_multiline_parameters = true
 ij_ruby_blank_lines_around_method = 1
@@ -364,7 +361,6 @@ ij_ruby_indent_protected_methods = false
 ij_ruby_indent_public_methods = false
 ij_ruby_indent_when_cases = false
 ij_ruby_keep_blank_lines_in_declarations = 2
-ij_ruby_keep_indents_on_empty_lines = false
 ij_ruby_keep_line_breaks = true
 ij_ruby_parentheses_around_method_arguments = true
 ij_ruby_spaces_around_hashrocket = true

@@ -1,6 +1,6 @@
 # -- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2010-2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -131,7 +131,7 @@ module API
         end
 
         def property_supported?(property)
-          ALL_SUPPORTED_PROPERTIES.any? { _1.is_a?(Regexp) ? property =~ _1 : property == _1 }
+          ALL_SUPPORTED_PROPERTIES.any? { it.is_a?(Regexp) ? property =~ it : property == it }
         end
       end
     end

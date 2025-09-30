@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 # -- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2010-2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -97,6 +99,7 @@ RSpec.shared_examples_for "relation contract" do
   before do
     mock_permissions_for(current_user) do |mock|
       mock.allow_in_project *permissions, project: canonical_relation_from.project
+      mock.allow_in_project *permissions, project: canonical_relation_to.project
     end
   end
 
@@ -106,19 +109,29 @@ RSpec.shared_examples_for "relation contract" do
     context "when lacking the necessary permission" do
       let(:permissions) { [] }
 
-      it_behaves_like "contract is invalid", base: :error_unauthorized
+      it_behaves_like "contract is invalid", from_id: :error_not_manageable
+    end
+
+    context "when lacking the necessary permission for the to work package" do
+      before do
+        mock_permissions_for(current_user) do |mock|
+          mock.allow_in_project *permissions, project: canonical_relation_from.project
+        end
+      end
+
+      it_behaves_like "contract is invalid", to_id: :error_not_manageable
     end
 
     context "when the work package for from is not visible" do
       let(:relation_from_visible) { false }
 
-      it_behaves_like "contract is invalid", from: :error_not_found
+      it_behaves_like "contract is invalid", from_id: :error_not_found
     end
 
     context "when the work package for to is not visible" do
       let(:relation_to_visible) { false }
 
-      it_behaves_like "contract is invalid", to: :error_not_found
+      it_behaves_like "contract is invalid", to_id: :error_not_found
     end
 
     Relation::TYPES.each_key do |available_type|

@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,7 +26,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require File.expand_path("#{File.dirname(__FILE__)}/../spec_helper")
+require_relative "../spec_helper"
 
 RSpec.describe CostReportsController do
   include OpenProject::Reporting::PluginSpecHelper
@@ -70,7 +70,7 @@ RSpec.describe CostReportsController do
       end
 
       it "redirected" do
-        expect(response).to have_http_status(:redirect)
+        expect(response).to redirect_to(cost_reports_url(default: 1))
       end
     end
 

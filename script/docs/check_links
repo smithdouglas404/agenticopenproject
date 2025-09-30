@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require "pathname"
 require "yaml"
@@ -12,7 +13,7 @@ def parse_markdown(content)
   anchors = []
   links = []
   document.walk do |node|
-    if node.type == :link || node.type == :image
+    if %i[link image].include?(node.type)
       links.push({ url: node.url, pos: node.source_position, type: node.type })
     elsif node.type == :header
       text = node.to_plaintext.delete("\n").tr(" ", " ")
@@ -54,7 +55,7 @@ class APIChecker
 
   # adds infos for api pages which are generated out of the OpenAPI spec
   def api_pages
-    filename = Pathname(@root_path).join("api/apiv3/openapi-spec.yml")
+    filename = Pathname(@root_path).join("docs/api/apiv3/openapi-spec.yml")
     spec = YAML.load_file(filename)
     @operations = collect_operations_from_spec(spec)
     spec["tags"]
@@ -71,18 +72,18 @@ class APIChecker
 
   def introduction_page(spec, filename)
     anchors, links = parse_markdown(spec["info"]["description"])
-    { path: "#{@root_path}/api/introduction", anchors:, links:, filename: }
+    { path: "#{@root_path}/docs/api/introduction", anchors:, links:, filename: }
   end
 
   def markdown_page(path, destination)
-    filename = Pathname(@root_path).join(path).to_s
+    filename = Pathname(@root_path).join("docs/#{path}").to_s
     anchors, links = parse_markdown(File.read(filename))
-    { path: "#{@root_path}/#{destination}", anchors:, links:, filename: }
+    { path: "#{@root_path}/docs/#{destination}", anchors:, links:, filename: }
   end
 
   def collect_operations_from_spec(spec)
     spec["paths"].map do |p|
-      path_obj_path = Pathname(@root_path).join("api/apiv3/", p[1]["$ref"])
+      path_obj_path = Pathname(@root_path).join("docs/api/apiv3/", p[1]["$ref"])
       path_obj = YAML.load_file(path_obj_path)
       path_obj.keys.map { |key| path_obj[key] }
     end.flatten
@@ -95,13 +96,13 @@ class APIChecker
   end
 
   def api_page_by_tag(ref)
-    tag_source = Pathname(@root_path).join("api/apiv3", ref)
+    tag_source = Pathname(@root_path).join("docs/api/apiv3", ref)
     tag = YAML.load_file(tag_source)
     anchors, links, id_gen = parse_markdown(tag["description"])
     anchors.concat(operation_ids_by_tag(tag, id_gen))
     tag_path = ActiveSupport::Inflector.parameterize(tag["name"])
     tag_path = "endpoints/#{tag_path}" unless PULLED_UP_TAG_PAGES.include?(tag_path)
-    { path: "#{@root_path}/api/#{tag_path}", anchors:, links:, filename: tag_source }
+    { path: "#{@root_path}/docs/api/#{tag_path}", anchors:, links:, filename: tag_source }
   end
 end
 
@@ -127,7 +128,7 @@ class DocsChecker
   end
 
   def scan
-    @docs = Dir.glob("#{@root_path}/**/README.md")
+    @docs = Dir.glob("#{@root_path}/docs/**/README.md")
                .reject { |filename| filename.include?("/api/") }
                .map { |filename| build_doc(filename) }
   end
@@ -139,10 +140,12 @@ class DocsChecker
   def add_virtual_pages
     # these pages are added by the website from other sources
     @docs.push(
-      { path: "#{@root_path}/api/v3/spec.json", anchors: [], links: [] },
-      { path: "#{@root_path}/api/v3/spec.yml", anchors: [], links: [] },
-      { path: "#{@root_path}/installation-and-operations/installation/helm-chart", anchors: [], links: [] },
-      { path: "#{@root_path}/development/translate-openproject/fair-language", anchors: [], links: [] }
+      { path: "#{@root_path}/docs/api/v3/spec.json", anchors: [], links: [] },
+      { path: "#{@root_path}/docs/api/v3/spec.yml", anchors: [], links: [] },
+      { path: "#{@root_path}/docs/installation-and-operations/installation/docker-compose", anchors: [], links: [] },
+      { path: "#{@root_path}/docs/installation-and-operations/installation/helm-chart", anchors: [], links: [] },
+      { path: "#{@root_path}/docs/development/security", anchors: [], links: [] },
+      { path: "#{@root_path}/docs/development/translate-openproject/fair-language", anchors: [], links: [] }
     )
   end
 
@@ -165,10 +168,11 @@ class DocsChecker
 
   def strip_external_link_to_doc(url, path)
     uri = URI(url)
-    full_path = File.expand_path(uri.path.sub("/docs", "."), @root_path)
+    full_path = File.expand_path(uri.path.sub("/docs", "./docs"), @root_path)
 
     relative_url = Pathname.new(full_path).relative_path_from("#{path}/").to_s
-    "#{relative_url}/##{uri.fragment}" unless uri.fragment.nil?
+    return "#{relative_url}/##{uri.fragment}" unless uri.fragment.nil?
+
     relative_url
   end
 
@@ -193,6 +197,7 @@ class DocsChecker
   def check
     @errors = []
     @docs.each { |doc| check_doc(doc) }
+    static_links.each { |link| check_static_link(link) }
   end
 
   def report
@@ -206,6 +211,40 @@ class DocsChecker
       )
     end
     puts "Done. No broken references found." if @errors.empty?
+  end
+
+  def static_links
+    yaml = File.read("#{@root_path}/config/static_links.yml")
+    link_map = YAML.safe_load(yaml, permitted_classes: [Symbol], symbolize_names: true)
+    extract_urls(link_map).map do |url|
+      {
+        url:,
+        pos: {
+          start_line: (yaml.lines.find_index { |l| l.match?(/#{url}(?:\s|\z|["'])/) } || 0) + 1,
+          start_column: 1
+        },
+        doc: { filename: "config/static_links.yml" }
+      }
+    end
+  end
+
+  def extract_urls(nested_links)
+    nested_links.values.map do |h|
+      next h[:href] if h.key?(:href)
+
+      extract_urls(h)
+    end.flatten
+  end
+
+  def check_static_link(link)
+    uri = URI(link[:url])
+    expected_path = File.expand_path(File.join(@root_path, uri.path))
+    return if uri.host != "www.openproject.org"
+    return unless uri.path.start_with?("/docs/") # for now we can only test doc links
+
+    target_doc = @docs.find { |d| d[:path] == expected_path }
+
+    @errors.push({ error: "Page", link:, doc: link[:doc] }) if target_doc.nil?
   end
 
   def github_escape(str)
@@ -241,5 +280,5 @@ class DocsChecker
 end
 
 exit 1 unless DocsChecker.new(
-  File.expand_path("../../docs/", __dir__)
+  File.expand_path("../../", __dir__)
 ).run

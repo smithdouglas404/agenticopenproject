@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -39,14 +41,14 @@ RSpec.describe "Lost password" do
     fill_in "mail", with: "invalid mail"
     click_on "Submit"
 
-    expect(page).to have_css(".op-toast.-success", text: I18n.t(:notice_account_lost_email_sent))
+    expect_flash(message: I18n.t(:notice_account_lost_email_sent))
 
     perform_enqueued_jobs
     expect(ActionMailer::Base.deliveries.size).to be 0
 
     fill_in "mail", with: user.mail
     click_on "Submit"
-    expect(page).to have_css(".op-toast.-success", text: I18n.t(:notice_account_lost_email_sent))
+    expect_flash(message: I18n.t(:notice_account_lost_email_sent))
 
     perform_enqueued_jobs
     expect(ActionMailer::Base.deliveries.size).to be 1
@@ -60,12 +62,12 @@ RSpec.describe "Lost password" do
 
     click_button "Save"
 
-    expect(page).to have_css(".op-toast.-info", text: I18n.t(:notice_account_password_updated))
+    expect_flash(type: :info, message: I18n.t(:notice_account_password_updated))
 
     login_with user.login, new_password
 
     expect(page)
-      .to have_current_path(my_page_path)
+      .to have_current_path(home_path)
   end
 
   context "when user has an auth source" do
@@ -79,7 +81,7 @@ RSpec.describe "Lost password" do
       fill_in "mail", with: user.mail
       click_on "Submit"
 
-      expect(page).to have_css(".op-toast.-success", text: I18n.t(:notice_account_lost_email_sent))
+      expect_flash(message: I18n.t(:notice_account_lost_email_sent))
 
       perform_enqueued_jobs
       expect(ActionMailer::Base.deliveries.size).to be 1
@@ -90,7 +92,8 @@ RSpec.describe "Lost password" do
   end
 
   context "when user has identity_url" do
-    let!(:user) { create(:user, identity_url: "saml:foobar") }
+    let!(:provider) { create(:saml_provider, slug: "saml", display_name: "The SAML provider") }
+    let!(:user) { create(:user, authentication_provider: provider) }
 
     it "sends an email with external auth info" do
       visit account_lost_password_path
@@ -99,13 +102,13 @@ RSpec.describe "Lost password" do
       fill_in "mail", with: user.mail
       click_on "Submit"
 
-      expect(page).to have_css(".op-toast.-success", text: I18n.t(:notice_account_lost_email_sent))
+      expect_flash(message: I18n.t(:notice_account_lost_email_sent))
 
       perform_enqueued_jobs
       expect(ActionMailer::Base.deliveries.size).to be 1
       mail = ActionMailer::Base.deliveries.first
       expect(mail.subject).to eq I18n.t("mail_password_change_not_possible.title")
-      expect(mail.body.parts.first.body.to_s).to include "Saml"
+      expect(mail.body.parts.first.body.to_s).to include "(The SAML provider)"
     end
   end
 end

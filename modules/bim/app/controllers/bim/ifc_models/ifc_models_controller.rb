@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -39,12 +39,18 @@ module Bim
       before_action :authorize, except: %i[direct_upload_finished set_direct_upload_file_name]
       before_action :require_login, only: [:set_direct_upload_file_name]
       skip_before_action :verify_authenticity_token, only: [:set_direct_upload_file_name] # AJAX request in page, so skip authenticity token
+      no_authorization_required! :set_direct_upload_file_name,
+                                 :direct_upload_finished
 
       menu_item :ifc_models
 
       def index
         @ifc_models = @ifc_models
                           .includes(:project, :uploader)
+      end
+
+      def show
+        frontend_redirect params[:id].to_i
       end
 
       def new
@@ -54,10 +60,6 @@ module Bim
 
       def edit
         prepare_form(@ifc_model)
-      end
-
-      def show
-        frontend_redirect params[:id].to_i
       end
 
       def defaults
@@ -114,7 +116,7 @@ module Bim
 
         if service_result.success?
           ::Attachments::FinishDirectUploadJob.perform_later attachment.id,
-                                                             whitelist: false
+                                                             allowlist: false
 
           flash[:notice] = if new_model
                              t("ifc_models.flash_messages.upload_successful")
@@ -147,7 +149,7 @@ module Bim
           flash[:notice] = t("ifc_models.flash_messages.upload_successful")
           redirect_to action: :index
         else
-          render action: :new
+          render action: :new, status: :unprocessable_entity
         end
       end
 
@@ -166,7 +168,7 @@ module Bim
           flash[:notice] = t(:notice_successful_update)
           redirect_to action: :index
         else
-          render action: :edit
+          render action: :edit, status: :unprocessable_entity
         end
       end
 
@@ -181,7 +183,7 @@ module Bim
         return unless OpenProject::Configuration.direct_uploads?
 
         call = ::Attachments::PrepareUploadService
-                 .bypass_whitelist(user: current_user)
+                 .bypass_allowlist(user: current_user)
                  .call(filename: "model.ifc", filesize: 0)
 
         call.on_failure { flash[:error] = call.message }
@@ -195,9 +197,10 @@ module Bim
       end
 
       def frontend_redirect(model_ids)
-        props = '{"c":["id","subject","bcfThumbnail","type","status","assignee","updatedAt"],"t":"id:desc"}'
+        props = Bim::Menus::DefaultQueryGeneratorService.new.call
         redirect_to bcf_project_frontend_path(models: JSON.dump(Array(model_ids)),
-                                              query_props: props)
+                                              query_props: props[:query_props],
+                                              name: props[:name])
       end
 
       def find_all_ifc_models

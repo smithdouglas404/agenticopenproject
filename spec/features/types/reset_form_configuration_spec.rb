@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +30,9 @@
 
 require "spec_helper"
 
-RSpec.describe "Reset form configuration", :js do
+RSpec.describe "Reset form configuration",
+               :js,
+               :selenium do
   shared_let(:admin) { create(:admin) }
   let(:type) { create(:type) }
 
@@ -47,7 +51,7 @@ RSpec.describe "Reset form configuration", :js do
       custom_field
 
       login_as(admin)
-      visit edit_type_tab_path(id: type.id, tab: "form_configuration")
+      visit edit_type_form_configuration_path(type)
     end
 
     it "resets the form properly after changes with CFs (Regression test #27487)" do
@@ -60,7 +64,7 @@ RSpec.describe "Reset form configuration", :js do
       form.expect_attribute(key: cf_identifier)
 
       form.save_changes
-      expect(page).to have_css(".op-toast.-success", text: "Successful update.", wait: 10)
+      expect_flash(message: "Successful update.")
 
       SeleniumHubWaiter.wait
       form.reset_button.click

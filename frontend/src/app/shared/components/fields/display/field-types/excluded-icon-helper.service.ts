@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -32,7 +32,6 @@ import { WorkPackageResource } from 'core-app/features/hal/resources/work-packag
 import { StatusResource } from 'core-app/features/hal/resources/status-resource';
 
 @Injectable({ providedIn: 'root' })
-
 export class ExcludedIconHelperService {
   constructor(
     private apiV3Service:ApiV3Service,

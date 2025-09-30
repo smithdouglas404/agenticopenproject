@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -41,7 +41,7 @@ RSpec.describe "creating a cost type", :js do
   end
 
   it "can create a cost type" do
-    visit "/cost_types/new"
+    visit "/admin/cost_types/new"
 
     fill_in "cost_type_name", with: "Test day rate"
     fill_in "cost_type_unit", with: "dayUnit"
@@ -72,7 +72,7 @@ RSpec.describe "creating a cost type", :js do
     let(:user) { create(:admin, language: :de) }
 
     it "creates the entry with german number separators" do
-      visit "/cost_types/new"
+      visit "/admin/cost_types/new"
 
       fill_in "cost_type_name", with: "Test day rate"
       fill_in "cost_type_unit", with: "dayUnit"

@@ -1,6 +1,6 @@
 lt:
   js:
-    queries:
-      all_open: 'Visi atviri'
-      timeline: 'Laiko juosta'
-      milestones: 'Gairės'
+    work_packages:
+      label_gantt_chart_plural: "Ganto diagramos"
+      default_queries:
+        milestones: 'Gairės'

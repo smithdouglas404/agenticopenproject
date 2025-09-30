@@ -8,6 +8,7 @@ hu:
         row_count: "Sorok száma"
         column_count: "Oszlopok száma"
         widgets: "Kisalkalmazások"
+        scope: "Terjedelem"
     errors:
       models:
         grids/grid:

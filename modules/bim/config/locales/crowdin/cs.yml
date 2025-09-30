@@ -9,6 +9,7 @@ cs:
     label_bcf: 'BCF'
     label_imported_failed: 'Selhalo importování témat BCF'
     label_imported_successfully: 'Importovaná témata BCF úspěšně'
+    label_bcf_issue_associated: "BCF úkol je přidružen"
     issues: "Problémy"
     recommended: 'doporučeno'
     not_recommended: 'nedoporučeno'
@@ -83,6 +84,12 @@ cs:
         ifc_attachment: "IFC soubor"
         is_default: "Výchozí model"
         attachments: "IFC soubor"
+      bim/bcf/issue:
+        bcf_comment: "BCF comment"
+        bim_snippet: "BIM snippet"
+        reference_links: "Reference links"
+        stage: "Etapa"
+        viewpoint: "Bod pohledu"
     errors:
       models:
         bim/ifc_models/ifc_model:

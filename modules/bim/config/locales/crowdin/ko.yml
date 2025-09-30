@@ -9,6 +9,7 @@ ko:
     label_bcf: 'BCF'
     label_imported_failed: 'BCF 항목 가져오기 실패'
     label_imported_successfully: 'BCF 항목 가져오기 성공'
+    label_bcf_issue_associated: "BCF 이슈 관련"
     issues: "이슈"
     recommended: '추천'
     not_recommended: '추천하지 않음'
@@ -83,6 +84,12 @@ ko:
         ifc_attachment: "IFC 파일"
         is_default: "기본 모델"
         attachments: "IFC 파일"
+      bim/bcf/issue:
+        bcf_comment: "BCF 코멘트"
+        bim_snippet: "BIM 코드 조각"
+        reference_links: "참조 링크"
+        stage: "단계"
+        viewpoint: "뷰포인트"
     errors:
       models:
         bim/ifc_models/ifc_model:

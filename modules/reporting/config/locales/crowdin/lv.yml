@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -23,7 +23,7 @@ lv:
   plugin_openproject_reporting:
     name: "OpenProject Reporting"
     description: "This plugin allows creating custom cost reports with filtering and grouping created by the OpenProject Time and costs plugin."
-  button_save_as: "Save report as..."
+  button_save_report_as: "Save report as..."
   comments: "Komentârs"
   cost_reports_title: "Laiks un izmaksas"
   label_cost_report: "Izmaksu pārskats"
@@ -45,6 +45,8 @@ lv:
   label_greater: "lielāks >"
   label_is_not_project_with_subprojects: "nav (ietver apakšprojektus)"
   label_is_project_with_subprojects: "ir (ieskaitot apakšprojektus)"
+  label_is_work_package_with_descendants: "is (includes descendants)"
+  label_is_not_work_package_with_descendants: "is not (includes descendants)"
   label_work_package_attributes: "Darba pieteikumu atribūti"
   label_less: "mazāk <"
   label_logged_by_reporting: "Ielogoja"
@@ -83,12 +85,22 @@ lv:
   text_costs_are_rounded_note: "Displayed values are rounded. All calculations are based on the non-rounded values."
   toggle_multiselect: "activate/deactivate multiselect"
   units: "Vienības"
-  validation_failure_date: "is not a valid date"
-  validation_failure_integer: "is not a valid integer"
+  validation_failure_date: "nav derīgs datums"
+  validation_failure_integer: "nav derīgs vesels skaitlis"
   export:
+    timesheet:
+      title: "Your PDF timesheet export"
+      button: "Export PDF timesheet"
+      timesheet: "Timesheet"
+      time: "Laiks"
+      sums_hours: Sums
+      overview_per_user_total: "Overview: Total hours per user"
+      overview_per_user_day: "Overview: Hours per user per day"
     cost_reports:
       title: "Your Cost Reports XLS export"
+      start_time: "Start time"
+      end_time: "End time"
   reporting:
     group_by:
-      selected_columns: "Selected columns"
+      selected_columns: "Izvēlētās kolonnas"
       selected_rows: "Selected rows"

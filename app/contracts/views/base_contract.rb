@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -42,9 +44,7 @@ module Views
       if (strategy_class = Constants::Views.contract_strategy(model.type))
         strategy = strategy_class.new(model, user)
 
-        with_merged_former_errors do
-          strategy.valid?
-        end
+        validate_and_merge_errors(strategy)
       end
 
       errors.empty?

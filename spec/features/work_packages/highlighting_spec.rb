@@ -1,6 +1,10 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
-RSpec.describe "Work Package highlighting fields", :js,
+RSpec.describe "Work Package highlighting fields",
+               :js,
+               :selenium,
                with_ee: %i[conditional_highlighting] do
   let(:user) { create(:admin) }
 
@@ -51,7 +55,6 @@ RSpec.describe "Work Package highlighting fields", :js,
     # Ensure Rails and Capybara caches are cleared
     Rails.cache.clear
     Capybara.reset!
-    allow(EnterpriseToken).to receive(:show_banners?).and_return(false)
     login_as(user)
     wp_table.visit_query query
     wp_table.expect_work_package_listed wp_1, wp_2
@@ -194,7 +197,7 @@ RSpec.describe "Work Package highlighting fields", :js,
     expect(page).to have_css(".__hl_inline_priority_#{priority1.id}")
   end
 
-  it "correctly parses custom selected inline attributes", :with_cuprite do
+  it "correctly parses custom selected inline attributes" do
     # Highlight only one attribute
     highlighting.switch_inline_attribute_highlight "Priority"
 

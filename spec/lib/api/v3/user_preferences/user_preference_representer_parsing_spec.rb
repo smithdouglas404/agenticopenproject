@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,6 +39,21 @@ RSpec.describe API::V3::UserPreferences::UserPreferenceRepresenter,
   let(:preference) { OpenStruct.new }
   let(:user) { build_stubbed(:user) }
   let(:representer) { described_class.new(preference, current_user: user) }
+
+  describe "immediate_reminders" do
+    let(:request_body) do
+      {
+        "immediateReminders" => {
+          "mentioned" => true,
+          "personalReminder" => false
+        }
+      }
+    end
+
+    it "parses the enabled flag" do
+      expect(parsed.immediate_reminders).to eql({ "mentioned" => true, "personal_reminder" => false })
+    end
+  end
 
   describe "notification_settings" do
     let(:request_body) do

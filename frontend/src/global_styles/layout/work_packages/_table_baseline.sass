@@ -1,6 +1,6 @@
 //-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -30,14 +30,20 @@
   &--column-cell
     padding-right: 0
 
+    i
+      display: flex
+
   &--icon-added
     color: #5F42E0
+    fill: #5F42E0
 
   &--icon-removed
     color: #555555
+    fill: #555555
 
   &--icon-changed
     color: #54AFE0
+    fill: #54AFE0
 
   &--old-field
     @include spot-caption
@@ -46,7 +52,7 @@
     padding: 2px 2px 0 2px
 
   &--cell
-    background-color: #f3f3f3
+    background-color: var(--bgColor-neutral-muted)
     padding: 0 2px 2px 2px
 
   &--container
@@ -62,8 +68,3 @@
   &--column-header
     display: flex
     align-items: center
-
-  .op-table-baseline--column-cell .spot-icon
-    display: flex
-    align-items: center
-    justify-items: center

@@ -3,12 +3,13 @@ import {
   createDynamicInputFixture,
   testDynamicInputControValueAccessor,
 } from 'core-app/shared/components/dynamic-forms/spec/helpers';
+import { IOPFormlyFieldSettings } from 'core-app/shared/components/dynamic-forms/typings';
 
 describe('IntegerInputComponent', () => {
   it('should load the field', fakeAsync(() => {
-    const fieldsConfig = [
+    const fieldsConfig:IOPFormlyFieldSettings[] = [
       {
-        type: 'integerInput' as const,
+        type: 'integerInput',
         key: 'testControl',
         templateOptions: {
           required: true,
@@ -16,7 +17,7 @@ describe('IntegerInputComponent', () => {
         },
       },
     ];
-    const formModel = {
+    const formModel:IOPFormModel = {
       testControl: 'testValue',
     };
     const testModel = {

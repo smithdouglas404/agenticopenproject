@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Logging time within the work package view", :js do
+RSpec.describe "Logging time within the work package view", :js, :with_cuprite do
   shared_let(:project) { create(:project) }
   shared_let(:admin) { create(:admin) }
   shared_let(:work_package) { create(:work_package, project:) }
@@ -42,31 +44,29 @@ RSpec.describe "Logging time within the work package view", :js do
 
   let(:time_logging_modal) { Components::TimeLoggingModal.new }
 
-  def log_time_via_modal(user_field_visible: true, log_for_user: nil, date: Time.zone.today)
+  def log_time_via_modal(user_field_visible: true, log_for_user: nil, date: Time.zone.today, hours: 1)
     time_logging_modal.is_visible true
 
     # the fields are visible
     time_logging_modal.has_field_with_value "spent_on", Time.zone.today.strftime("%Y-%m-%d")
-    time_logging_modal.shows_field "work_package", false
-    time_logging_modal.shows_field "user", user_field_visible
+    time_logging_modal.shows_field "entity_id", false
+    time_logging_modal.shows_field "user_id", user_field_visible
 
     # Update the fields
-    time_logging_modal.update_field "activity", activity.name
-
-    Components::BasicDatepicker.update_field(
-      "##{time_logging_modal.field_identifier('spent_on')}",
-      date.strftime("%Y-%m-%d")
-    )
+    time_logging_modal.update_field "activity_id", activity.name
+    time_logging_modal.update_field "spent_on", date.strftime("%Y-%m-%d")
+    time_logging_modal.update_field "hours", hours.to_s
 
     if log_for_user
-      time_logging_modal.update_field "user", log_for_user.name
+      time_logging_modal.update_field "user_id", log_for_user.name
     elsif user_field_visible
       expect(page).to have_css(".ng-value-label", text: user.name)
     end
 
-    # a click on save creates a time entry
-    time_logging_modal.perform_action I18n.t(:button_save)
-    wp_page.expect_and_dismiss_toaster message: I18n.t("js.notice_successful_create")
+    # a click on log creates a time entry
+    time_logging_modal.submit
+    wait_for_network_idle
+    # wp_page.expect_and_dismiss_toaster message: I18n.t("js.notice_successful_create")
   end
 
   context "as an admin" do
@@ -88,7 +88,7 @@ RSpec.describe "Logging time within the work package view", :js do
       spent_time_field.expect_display_value "1h"
 
       TimeEntry.last.tap do |te|
-        expect(te.work_package).to eq(work_package)
+        expect(te.entity).to eq(work_package)
         expect(te.project).to eq(project)
         expect(te.activity).to eq(activity)
         expect(te.user).to eq(user)

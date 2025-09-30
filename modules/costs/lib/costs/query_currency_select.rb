@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -57,7 +57,8 @@ module Costs
           Queries::WorkPackages::Selects::WorkPackageSelect
             .scoped_column_sum(scope,
                                "COALESCE(ROUND(SUM(cost_entries_sum), 2)::FLOAT, 0.0) material_costs",
-                               grouped && query.group_by_statement)
+                               grouped:,
+                               query:)
         }
       },
       labor_costs: {
@@ -70,7 +71,8 @@ module Costs
           Queries::WorkPackages::Selects::WorkPackageSelect
             .scoped_column_sum(scope,
                                "COALESCE(ROUND(SUM(time_entries_sum), 2)::FLOAT, 0.0) labor_costs",
-                               grouped && query.group_by_statement)
+                               grouped:,
+                               query:)
         }
       },
       overall_costs: {

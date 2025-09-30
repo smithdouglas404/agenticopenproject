@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -30,7 +30,9 @@ require "spec_helper"
 require_relative "../../support/pages/ifc_models/show_default"
 
 RSpec.describe "Switching work package view",
-               :js, with_config: { edition: "bim" }, with_ee: %i[conditional_highlighting] do
+               :js,
+               :selenium,
+               with_config: { edition: "bim" }, with_ee: %i[conditional_highlighting] do
   let(:user) { create(:admin) }
   let(:project) { create(:project, enabled_module_names: %i[bim work_package_tracking]) }
   let(:wp_page) { Pages::IfcModels::ShowDefault.new(project) }
@@ -57,7 +59,6 @@ RSpec.describe "Switching work package view",
   before do
     wp_1
     wp_2
-    allow(EnterpriseToken).to receive(:show_banners?).and_return(false)
 
     login_as(user)
     wp_page.visit!

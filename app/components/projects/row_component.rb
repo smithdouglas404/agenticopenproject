@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,7 +29,12 @@
 #++
 module Projects
   class RowComponent < ::RowComponent
-    delegate :favored_project_ids, to: :table
+    include CalculatedValues::ErrorsHelper
+
+    delegate :identifier, to: :project
+    delegate :favorited_project_ids,
+             :project_phase_by_definition,
+             to: :table
 
     def project
       model.first
@@ -44,36 +49,38 @@ module Projects
       ""
     end
 
-    def favored
+    def favorited
       render(Primer::Beta::IconButton.new(
-               icon: currently_favored? ? "star-fill" : "star",
+               icon: currently_favorited? ? "star-fill" : "star",
                scheme: :invisible,
-               mobile_icon: currently_favored? ? "star-fill" : "star",
+               mobile_icon: currently_favorited? ? "star-fill" : "star",
                size: :medium,
                tag: :a,
                tooltip_direction: :e,
                href: helpers.build_favorite_path(project, format: :html),
-               data: { method: currently_favored? ? :delete : :post },
-               classes: currently_favored? ? "op-primer--star-icon " : "op-project-row-component--favorite",
-               label: currently_favored? ? I18n.t(:button_unfavorite) : I18n.t(:button_favorite),
-               aria: { label: currently_favored? ? I18n.t(:button_unfavorite) : I18n.t(:button_favorite) },
+               data: { "turbo-method": currently_favorited? ? :delete : :post },
+               classes: currently_favorited? ? "op-primer--star-icon " : "op-project-row-component--favorite",
+               label: currently_favorited? ? I18n.t(:button_unfavorite) : I18n.t(:button_favorite),
+               aria: { label: currently_favorited? ? I18n.t(:button_unfavorite) : I18n.t(:button_favorite) },
                test_selector: "project-list-favorite-button"
              ))
     end
 
-    def currently_favored?
-      @currently_favored ||= favored_project_ids.include?(project.id)
+    def currently_favorited?
+      @currently_favorited ||= favorited_project_ids.include?(project.id)
     end
 
     def column_value(column)
       if custom_field_column?(column)
         custom_field_column(column)
+      elsif project_phase_column?(column)
+        project_phase_column(column)
       else
         send(column.attribute)
       end
     end
 
-    def custom_field_column(column)
+    def custom_field_column(column) # rubocop:disable Metrics/AbcSize
       return nil unless user_can_view_project?
 
       cf = column.custom_field
@@ -88,9 +95,38 @@ module Projects
         )
       elsif custom_value.is_a?(Array)
         safe_join(Array(custom_value).compact_blank, ", ")
+      elsif cf.calculated_value?
+        render_calculated_value(cf, custom_value)
       else
         custom_value
       end
+    end
+
+    def render_calculated_value(custom_field, custom_value)
+      if (error = custom_field.first_calculation_error(project))
+        render(Primer::Alpha::Dialog.new(title: I18n.t("calculated_values.error_dialog.title"),
+                                         data: {
+                                           test_selector: "calculated-value-error-dialog-#{custom_field.id}"
+                                         })) do |dialog|
+          dialog.with_show_button(icon: "alert-fill",
+                                  "aria-label": I18n.t("calculated_values.error_dialog.title"),
+                                  data: { test_selector: "calculated-value-error-btn-#{custom_field.id}" },
+                                  scheme: :invisible)
+          dialog.with_body { calculated_value_error_msg(error) }
+        end
+      else
+        custom_value
+      end
+    end
+
+    def project_phase_column(column)
+      return nil unless user_can_view_project_phases?
+
+      phase = project_phase_by_definition(column.project_phase_definition, project)
+
+      return nil if phase.blank?
+
+      render Projects::PhaseComponent.new(phase:)
     end
 
     def created_at
@@ -101,10 +137,18 @@ module Projects
       helpers.format_date(project.latest_activity_at)
     end
 
+    def updated_at
+      helpers.format_date(project.updated_at)
+    end
+
     def required_disk_space
       return "" unless project.required_disk_space.to_i > 0
 
       number_to_human_size(project.required_disk_space, precision: 2)
+    end
+
+    def id
+      project.id.to_s
     end
 
     def name
@@ -116,7 +160,7 @@ module Projects
       end
 
       content << " "
-      content << helpers.link_to_project(project, {}, {}, false)
+      content << helpers.link_to_project(project, {}, { data: { turbo: false } }, false)
       content
     end
 
@@ -196,10 +240,10 @@ module Projects
 
     def additional_css_class(column)
       if column.attribute == :name
-        "project--hierarchy #{project.archived? ? 'archived' : ''}"
+        "project--hierarchy #{'archived' if project.archived?}"
       elsif %i[status_explanation description].include?(column.attribute)
         "project-long-text-container"
-      elsif column.attribute == :favored
+      elsif column.attribute == :favorited
         "-w-abs-45"
       elsif custom_field_column?(column)
         cf = column.custom_field
@@ -248,27 +292,27 @@ module Projects
     end
 
     def more_menu_favorite_item
-      return if currently_favored?
+      return if currently_favorited?
 
       {
         scheme: :default,
         icon: "star",
         href: helpers.build_favorite_path(project, format: :html),
-        data: { method: :post },
+        data: { "turbo-method": :post },
         label: I18n.t(:button_favorite),
         aria: { label: I18n.t(:button_favorite) }
       }
     end
 
     def more_menu_unfavorite_item
-      return unless currently_favored?
+      return unless currently_favorited?
 
       {
         scheme: :default,
         icon: "star-fill",
         size: :medium,
         href: helpers.build_favorite_path(project, format: :html),
-        data: { method: :delete },
+        data: { "turbo-method": :delete },
         classes: "op-primer--star-icon",
         label: I18n.t(:button_unfavorite),
         aria: { label: I18n.t(:button_unfavorite) }
@@ -293,7 +337,8 @@ module Projects
           scheme: :default,
           icon: :gear,
           label: I18n.t(:label_project_settings),
-          href: project_settings_general_path(project)
+          href: project_settings_general_path(project),
+          data: { turbo: false }
         }
       end
     end
@@ -304,7 +349,7 @@ module Projects
           scheme: :default,
           icon: :check,
           label: I18n.t(:label_project_activity),
-          href: project_activity_index_path(project, event_types: ["project_attributes"])
+          href: project_activity_index_path(project, event_types: ["project_details"])
         }
       end
     end
@@ -342,7 +387,8 @@ module Projects
           scheme: :default,
           icon: :copy,
           label: I18n.t(:button_copy),
-          href: copy_project_path(project)
+          href: copy_project_path(project),
+          data: { turbo: false }
         }
       end
     end
@@ -353,17 +399,30 @@ module Projects
           scheme: :danger,
           icon: :trash,
           label: I18n.t(:button_delete),
-          href: confirm_destroy_project_path(project)
+          href: confirm_destroy_project_path(project),
+          data: { turbo_stream: true }
         }
       end
     end
 
     def user_can_view_project?
-      User.current.allowed_in_project?(:view_project, project)
+      User.current.allowed_in_project?(:view_project_attributes, project)
+    end
+
+    def user_can_view_project_phases?
+      User.current.allowed_in_project?(:view_project_phases, project)
     end
 
     def custom_field_column?(column)
       column.is_a?(::Queries::Projects::Selects::CustomField)
+    end
+
+    def project_phase_column?(column)
+      column.is_a?(::Queries::Projects::Selects::ProjectPhase)
+    end
+
+    def current_page
+      table.model.current_page.to_s
     end
   end
 end

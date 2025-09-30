@@ -33,7 +33,7 @@ The default language is displayed for users when they first sign into OpenProjec
 
 You can also choose if success notifications (e.g. on the work package page) should be hidden automatically.
 
-These settings can be changed by users in their **My Account** page later on.
+These settings can be changed by users in their **Account settings** page later on.
 
 ## Display format
 
@@ -49,7 +49,7 @@ In the **User deletion** section you can determine who should be able to delete 
 
 By default, only admins are able to delete accounts. If this option is activated, admins can navigate to the user list, select a user account and click on the **Delete** option on the upper right side to delete an account.
 
-Additionally, you can select the option **Users allowed to delete their accounts**. If this option is activated, users can delete their own user accounts from the **My account** page.
+Additionally, you can select the option **Users allowed to delete their accounts**. If this option is activated, users can delete their own user accounts from the **Account settings** page.
 
 If you want to prevent users from deleting their own accounts, it is recommended to deactivate this option.
 

@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -97,14 +97,14 @@ module API
 
               desc "Set lock on user account"
               post do
-                user_transition(@user.active? || @user.locked?) do
+                user_transition(@user.active? || @user.locked? || @user.deleted?) do
                   @user.lock! unless @user.locked?
                 end
               end
 
               desc "Remove lock on user account"
               delete do
-                user_transition(@user.locked? || @user.active?) do
+                user_transition(@user.locked? || @user.active? || @user.deleted?) do
                   @user.activate! unless @user.active?
                 end
               end

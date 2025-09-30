@@ -8,6 +8,7 @@ id:
         row_count: "Jumlah baris"
         column_count: "Jumlah kolom"
         widgets: "Widget"
+        scope: "Cakupan"
     errors:
       models:
         grids/grid:

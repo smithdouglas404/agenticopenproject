@@ -1,7 +1,7 @@
 #!/usr/bin/env rake
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -32,7 +32,7 @@
 
 require File.expand_path("config/application", __dir__)
 
-Rails.application.load_rake_tasks
+Rails.application.load_tasks
 
 Rake::Task[:default].clear
 task default: "test:suite:run"

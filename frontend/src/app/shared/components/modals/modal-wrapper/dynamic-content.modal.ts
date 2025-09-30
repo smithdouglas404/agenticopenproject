@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -43,6 +43,7 @@ import { I18nService } from 'core-app/core/i18n/i18n.service';
 @Component({
   templateUrl: './dynamic-content.modal.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class DynamicContentModalComponent extends OpModalComponent implements OnInit, OnDestroy {
   constructor(

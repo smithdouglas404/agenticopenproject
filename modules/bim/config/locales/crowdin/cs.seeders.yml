@@ -205,7 +205,7 @@ cs:
                   name: Milníky
           work_packages:
             item_0:
-              subject: Projekt kickoff stavební
+              subject: Projekt kickoff stavební 
               description: |-
                 Kickoff projektu inicializuje zahájení projektu ve vaší společnosti. Všichni, kdo jsou součástí tohoto projektu, by měli být pozváni na zahájení na první briefing.
 
@@ -256,7 +256,7 @@ cs:
 
                     *   Create a useful overview of the results
                     *   Check what has been done and summarize the results
-                    *   Communicate all the relevant results with the customer
+                    *   Communicate all the relevant results with the customer
                     *   Identify the fundamental boundary conditions of the project
 
                     ## Description
@@ -271,7 +271,7 @@ cs:
 
                     *   Create a useful overview of the results
                     *   Check what has been done and summarize the results
-                    *   Communicate all the relevant results with the customer
+                    *   Communicate all the relevant results with the customer
                     *   Identify the fundamental boundary conditions of the project
 
                     ## Description
@@ -365,16 +365,7 @@ cs:
                 item_4:
                   subject: Instalace servisních systémů budovy
                   description: |-
-                    ## Goal
 
-                    *   All building service systems are ready to be used
-
-                    ## Description
-
-                    *   Installing the heating system
-                    *   Installing the climate system
-                    *   Electrical installation
-                    *   ...
                 item_5:
                   subject: Závěrečné úpravy
                   description: |-
@@ -404,7 +395,7 @@ cs:
                     *   Bring some drinks, snacks and your smile
         demo-bim-project:
           name: "(Demo) BIM projekt"
-          status_explanation: All tasks and sub-projects are on schedule. The people involved know their tasks. The system is completely set up.
+          status_explanation: Všechny úkoly a dílčí projekty probíhají podle harmonogramu. Zúčastněné osoby znají své úkoly. Systém je kompletně nastaven.
           description: Toto je krátké shrnutí cílů tohoto demo BIM projektu.
           news:
             item_0:
@@ -433,24 +424,24 @@ cs:
                 options:
                   name: Začínáme
                   text: |
-                    We are glad you joined! We suggest to try a few things to get started in OpenProject.
+                    Jsme rádi, že jste se k nám připojili! Doporučujeme vyzkoušet několik věcí, které vám pomohou začít s OpenProjectem.
 
-                    This demo project offers roles, workflows and work packages that are specialized for BIM.
+                    Tento ukázkový projekt nabízí role, pracovní postupy a pracovní balíčky, které jsou specializované na BIM.
 
-                    _Try the following steps:_
+                    Vyzkoušejte si následující kroky:_
 
-                    1.  _Invite new members to your project:_ → Go to [Members]({{opSetting:base_url}}/projects/demo-bim-project/members) in the project navigation.
-                    2.  _Upload and view 3D-models in IFC format:_ → Go to [BCF]({{opSetting:base_url}}/projects/demo-bim-project/bcf) in the project navigation.
-                    3.  _Create and manage BCF issues linked directly in the IFC model:_ → Go to [BCF]({{opSetting:base_url}}/projects/demo-bim-project/bcf) → Create.
-                    4.  _View the work in your projects:_ → Go to [Work packages]({{opSetting:base_url}}/projects/demo-bim-project/work_packages?query_props=%7B%22c%22%3A%5B%22type%22%2C%22id%22%2C%22subject%22%2C%22status%22%2C%22assignee%22%2C%22priority%22%5D%2C%22hl%22%3A%22priority%22%2C%22hi%22%3Atrue%2C%22g%22%3A%22%22%2C%22t%22%3A%22startDate%3Aasc%22%2C%22f%22%3A%5B%7B%22n%22%3A%22bcfIssueAssociated%22%2C%22o%22%3A%22%3D%22%2C%22v%22%3A%5B%22f%22%5D%7D%5D%2C%22pa%22%3A1%2C%22pp%22%3A100%2C%22dr%22%3A%22list%22%7D) in the project navigation.
-                    5.  _Create a new work package:_ → Go to [Work packages → Create]({{opSetting:base_url}}/projects/demo-bim-project/work_packages/new?query_props=%7B%22c%22%3A%5B%22type%22%2C%22id%22%2C%22subject%22%2C%22status%22%2C%22assignee%22%2C%22priority%22%5D%2C%22hl%22%3A%22priority%22%2C%22hi%22%3Atrue%2C%22g%22%3A%22%22%2C%22t%22%3A%22startDate%3Aasc%22%2C%22f%22%3A%5B%7B%22n%22%3A%22bcfIssueAssociated%22%2C%22o%22%3A%22%3D%22%2C%22v%22%3A%5B%22f%22%5D%7D%5D%2C%22pa%22%3A1%2C%22pp%22%3A100%2C%22dr%22%3A%22list%22%7D&type=11).
-                    6.  _Create and update a Gantt chart:_ → Go to [Gantt chart]({{opSetting:base_url}}/projects/demo-bim-project/work_packages?query_props=%7B%22c%22%3A%5B%22type%22%2C%22id%22%2C%22subject%22%2C%22assignee%22%2C%22responsible%22%5D%2C%22tv%22%3Atrue%2C%22tzl%22%3A%22weeks%22%2C%22hl%22%3A%22priority%22%2C%22hi%22%3Atrue%2C%22g%22%3A%22%22%2C%22t%22%3A%22startDate%3Aasc%22%2C%22f%22%3A%5B%5D%2C%22pa%22%3A1%2C%22pp%22%3A100%2C%22dr%22%3A%22list%22%7D) in the project navigation.
-                    7.  _Activate further modules:_ → Go to [Project settings → Modules]({{opSetting:base_url}}/projects/demo-bim-project/settings/modules).
-                    8.  _Check out the tile view to get an overview of your BCF issues:_ → Go to [Work packages]({{opSetting:base_url}}/projects/demo-bim-project/work_packages?query_props=%7B%22c%22%3A%5B%22type%22%2C%22id%22%2C%22subject%22%2C%22status%22%2C%22assignee%22%2C%22priority%22%5D%2C%22hl%22%3A%22priority%22%2C%22hi%22%3Atrue%2C%22g%22%3A%22%22%2C%22t%22%3A%22id%3Aasc%22%2C%22f%22%3A%5B%5D%2C%22pa%22%3A1%2C%22pp%22%3A100%2C%22dr%22%3A%22card%22%7D)
-                    9.  _Working agile? Create a new board:_ → Go to [Boards]({{opSetting:base_url}}/projects/demo-bim-project/boards)
+                    1. Vyzkoušejte si, jak se pracuje s projektem.  _Pozvěte nové členy do svého projektu:_ → Přejděte do sekce [Členové]({{opSetting:base_url}}/projects/demo-bim-project/members) v navigaci projektu.
+                    2.  _Nahrajte a zobrazte 3D-modely ve formátu IFC:_ → Přejděte na [BCF]({{opSetting:base_url}}/projects/demo-bim-project/bcf) v navigaci projektu.
+                    3.  _Create and manage BCF issues linked directly in IFC model:_ → Přejděte do [BCF]({{opSetting:base_url}}/projects/demo-bim-project/bcf) → Create.
+                    4.  _Pohled na práce ve vašich projektech:_ → Přejděte do [Work packages]({{opSetting:base_url}}/projects/demo-bim-project/work_packages?query_props=%7B%22c%22%3A%5B%22type%22%2C%22id%22%2C%22subject%22%2C%22status%22%2C%22assignee%22%2C%22priority%22%5D%2C%22hl%22%3A%22priority%22%2C%22hi%22%3Atrue%2C%22g%22%3A%22%22%2C%22t%22%3A%22startDate%3Aasc%22%2C%22f%22%3A%5B%7B%22n%22%3A%22bcfIssueAssociated%22%2C%22o%22%3A%22%3D%22%2C%22v%22%3A%5B%22f%22%5D%7D%5D%2C%22pa%22%3A1%2C%22pp%22%3A100%2C%22dr%22%3A%22list%22%7D) v navigaci projektu.
+                    5.  _Create a new work package:_ → Přejděte na [Work packages → Create]({{opSetting:base_url}}/projects/demo-bim-project/work_packages/new?query_props=%7B%22c%22%3A%5B%22type%22%2C%22id%22%2C%22subject%22%2C%22status%22%2C%22assignee%22%2C%22priority%22%5D%2C%22hl%22%3A%22priority%22%2C%22hi%22%3Atrue%2C%22g%22%3A%22%22%2C%22t%22%3A%22startDate%3Aasc%22%2C%22f%22%3A%5B%7B%22n%22%3A%22bcfIssueAssociated%22%2C%22o%22%3A%22%3D%22%2C%22v%22%3A%5B%22f%22%5D%7D%5D%2C%22pa%22%3A1%2C%22pp%22%3A100%2C%22dr%22%3A%22list%22%7D&type=11).
+                    6.  _Create and update a Gantt chart:_ → Přejděte na [Gantt chart]({{opSetting:base_url}}/projects/demo-bim-project/work_packages?query_props=%7B%22c%22%3A%5B%22type%22%2C%22id%22%2C%22subject%22%2C%22assignee%22%2C%22responsible%22%5D%2C%22tv%22%3Atrue%2C%22tzl%22%3A%22weeks%22%2C%22hl%22%3A%22priority%22%2C%22hi%22%3Atrue%2C%22g%22%3A%22%22%2C%22t%22%3A%22startDate%3Aasc%22%2C%22f%22%3A%5B%5D%2C%22pa%22%3A1%2C%22pp%22%3A100%2C%22dr%22%3A%22list%22%7D) v navigaci projektu.
+                    7.  _Aktivujte další moduly:_ → Přejděte do [Nastavení projektu → Moduly]({{opSetting:base_url}}/projects/demo-bim-project/settings/modules).
+                    8.  _Check out the tile view to get an overview of your BCF issues:_ → Přejděte do [Work packages]({{opSetting:base_url}}/projects/demo-bim-project/work_packages?query_props=%7B%22c%22%3A%5B%22type%22%2C%22id%22%2C%22subject%22%2C%22status%22%2C%22assignee%22%2C%22priority%22%5D%2C%22hl%22%3A%22priority%22%2C%22hi%22%3Atrue%2C%22g%22%3A%22%22%2C%22t%22%3A%22id%3Aasc%22%2C%22f%22%3A%5B%5D%2C%22pa%22%3A1%2C%22pp%22%3A100%2C%22dr%22%3A%22card%22%7D)
+                    9.  _Pracujete agilně? Vytvořte si novou nástěnku:_ → Přejděte na [Nástěnky]({{opSetting:base_url}}/projects/demo-bim-project/boards)
 
-                    Here you will find our [User Guides](https://www.openproject.org/docs/user-guide/).
-                    Please let us know if you have any questions or need support. Contact us: [support\[at\]openproject.com](mailto:support@openproject.com).
+                    Zde najdete naše [Uživatelské příručky](https://www.openproject.org/docs/user-guide/).
+                    Dejte nám prosím vědět, pokud máte nějaké dotazy nebo potřebujete podporu. Kontaktujte nás: [support\[at\]openproject.com](mailto:support@openproject.com).
               item_4:
                 options:
                   name: Členové
@@ -464,9 +455,9 @@ cs:
             item_0:
               subject: Projekt odstartuje vytváření modelu BIM
               description: |-
-                The project Kickoff initializes the start of the project in your company. The whole project team should be invited to the Kickoff for a first briefing.
+                Kickoff projektu inicializuje zahájení projektu ve vaší společnosti. Všichni, kdo jsou součástí tohoto projektu, by měli být pozváni na zahájení na první briefing.
 
-                The next step could be to check out the timetable and adjusting the appointments, by looking at the [Gantt chart]({{opSetting:base_url}}/projects/demo-bim-project/work_packages?query_props=%7B%22c%22%3A%5B%22id%22%2C%22subject%22%2C%22startDate%22%2C%22dueDate%22%5D%2C%22tv%22%3Atrue%2C%22tzl%22%3A%22weeks%22%2C%22hi%22%3Atrue%2C%22g%22%3A%22%22%2C%22t%22%3A%22startDate%3Aasc%22%2C%22f%22%3A%5B%7B%22n%22%3A%22status%22%2C%22o%22%3A%22o%22%2C%22v%22%3A%5B%5D%7D%5D%2C%22pa%22%3A1%2C%22pp%22%3A100%7D).
+                Dalším krokem by mohla být kontrola rozvrhu a úprava schůzek pomocí [Ganttova diagramu]({{opSetting:base_url}}/projects/demo-construction-project/work_packages?query_props=%7B%22c%22%3A%5B%22id%22%2C%22subject%22%2C%22startDate%22%2C%22dueDate%22%5D%2C%22tv%22%3Atrue%2C%22tzl%22%3A%22weeks%22%2C%22hi%22%3Atrue%2C%22g%22%3A%22%22%2C%22t%22%3A%22startDate%3Aasc%22%2C%22f%22%3A%5B%7B%22n%22%3A%22status%22%2C%22o%22%3A%22o%22%2C%22v%22%3A%5B%5D%7D%5D%2C%22pa%22%3A1%2C%22pp%22%3A100%7D).
             item_1:
               subject: Příprava projektu
               description: Tento typ je hierarchicky nadřazený typům &quot;Clash&quot; a &quot;Request&quot;, představuje tedy obecnou poznámku.

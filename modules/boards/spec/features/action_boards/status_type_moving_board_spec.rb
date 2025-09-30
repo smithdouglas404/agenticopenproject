@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -27,10 +29,13 @@
 #++
 
 require "spec_helper"
-require_relative "../support//board_index_page"
+require_relative "../support/board_index_page"
 require_relative "../support/board_page"
 
-RSpec.describe "Status action board", :js, with_ee: %i[board_view] do
+RSpec.describe "Status action board",
+               :js,
+               :selenium,
+               with_ee: %i[board_view] do
   let(:user) do
     create(:user,
            member_with_roles: { project => role })
@@ -125,7 +130,7 @@ RSpec.describe "Status action board", :js, with_ee: %i[board_view] do
     filters.expect_filter_by("Type", "is (OR)", [type_task.name, type_bug.name])
 
     # Wait a bit before saving the page to ensure both values are processed
-    sleep 2
+    board_page.wait_for_lists_reload
 
     board_page.expect_changed
     board_page.save
@@ -139,12 +144,8 @@ RSpec.describe "Status action board", :js, with_ee: %i[board_view] do
     board_page.card_for(task_wp).expect_type "Task"
     board_page.card_for(bug_wp).expect_type "Bug"
 
-    # Wait a bit before moving the items too fast
-    sleep 2
-
     # Move bug to open
     board_page.move_card_by_name("Closed bug item", from: "Closed", to: "Open")
-    board_page.wait_for_lists_reload
 
     board_page.expect_card("Closed", "Closed bug item", present: false)
     board_page.expect_card("Open", "Closed bug item", present: true)
@@ -152,8 +153,6 @@ RSpec.describe "Status action board", :js, with_ee: %i[board_view] do
     # Expect type unchanged
     board_page.card_for(task_wp).expect_type "Task"
     board_page.card_for(bug_wp).expect_type "Bug"
-
-    sleep 2
 
     task_wp.reload
     bug_wp.reload

@@ -3,7 +3,7 @@ ja:
   plugin_openproject_avatars:
     name: "アバター"
     description: >-
-      This plugin allows OpenProject users to upload a picture to be used as an avatar or use registered images from Gravatar.
+      このプラグインにより、OpenProjectユーザーはアバターとして使用する画像をアップロードしたり、Gravatarから登録した画像を使用することができます。
   label_avatar: "Avatar"
   label_avatar_plural: "アバター"
   label_current_avatar: "現在のアバター"
@@ -11,7 +11,6 @@ ja:
   message_avatar_uploaded: "アバターの変更が完了しました。"
   error_image_upload: "画像の保存時にエラーが発生しました。"
   error_image_size: "画像が大きすぎます。"
-  button_change_avatar: "アバターを変更"
   are_you_sure_delete_avatar: "アバターを削除してもよろしいですか?"
   avatar_deleted: "アバターの削除が完了しました。"
   unable_to_delete_avatar: "アバターを削除できませんでした。"

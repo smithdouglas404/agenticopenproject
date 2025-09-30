@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -113,8 +115,8 @@ class Notifications::CreateDateAlertsNotificationsJob::AlertableWorkPackages
 
   def alertable_work_packages
     work_packages = WorkPackage
-      .with_status_open
-      .involving_user(user)
+                      .involving_user(user)
+                      .with_status_open
 
     # `work_packages.to_sql` was producing SQL with weird select clauses that could
     # not be used in a CTE, while doing `work_packages.pluck(:something)` was producing

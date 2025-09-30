@@ -1,6 +1,6 @@
 #-- copyright
 #OpenProject is an open source project management software.
-#Copyright (C) 2012-2024 the OpenProject GmbH
+#Copyright (C) the OpenProject GmbH
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License version 3.
 #OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
@@ -21,9 +21,9 @@
 #++
 nl:
   plugin_openproject_reporting:
-    name: "OpenProject Reporting"
+    name: "OpenProject Rapportage"
     description: "This plugin allows creating custom cost reports with filtering and grouping created by the OpenProject Time and costs plugin."
-  button_save_as: "Rapport opslaan als..."
+  button_save_report_as: "Rapport opslaan als..."
   comments: "Commentaar"
   cost_reports_title: "Tijd en kosten"
   label_cost_report: "Kostenrapport"
@@ -45,6 +45,8 @@ nl:
   label_greater: ">"
   label_is_not_project_with_subprojects: "is niet (inclusief subprojecten)"
   label_is_project_with_subprojects: "is (inclusief subprojecten)"
+  label_is_work_package_with_descendants: "is (inclusief nakomelingen)"
+  label_is_not_work_package_with_descendants: "is niet (inclusief afstammelingen)"
   label_work_package_attributes: "Attributen van het werkpakket"
   label_less: "<"
   label_logged_by_reporting: "Gelogd door"
@@ -86,8 +88,18 @@ nl:
   validation_failure_date: "is geen geldige datum"
   validation_failure_integer: "is geen geldig geheel getal"
   export:
+    timesheet:
+      title: "Uw PDF-tijdregistratie export"
+      button: "Exporteer PDF-tijdregistratie"
+      timesheet: "Tijdregistratie"
+      time: "Tijd"
+      sums_hours: Sums
+      overview_per_user_total: "Overview: Total hours per user"
+      overview_per_user_day: "Overview: Hours per user per day"
     cost_reports:
       title: "Jouw kostenrapporten XLS export"
+      start_time: "Starttijd"
+      end_time: "Eindtijd"
   reporting:
     group_by:
       selected_columns: "Geselecteerde kolommen"

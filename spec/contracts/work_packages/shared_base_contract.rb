@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -26,10 +28,38 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-RSpec.shared_examples_for "work package contract" do
-  let(:user) { build_stubbed(:user) }
+require "contracts/shared/model_contract_shared_context"
+
+RSpec.shared_examples "work package contract" do
+  create_shared_association_defaults_for_work_package_factory
+
+  include_context "ModelContract shared context"
+  shared_let(:persisted_type) { create(:type) }
+  shared_let(:persisted_project) { create(:project, types: [persisted_type]) }
+  shared_let(:persisted_other_project) { create(:project, types: [persisted_type]) }
+  shared_let(:persisted_project_version) { create(:version, project: persisted_project) }
+  shared_let(:persisted_other_project_version) { create(:version) }
+  shared_let(:persisted_status) { create(:status) }
+  shared_let(:persisted_priority) { create(:priority) }
+  shared_let(:persisted_possible_assignee) do
+    create(:user, member_with_permissions: { persisted_project => %i[view_work_packages work_package_assigned] })
+  end
+  shared_let(:persisted_non_member) { create(:user) }
+  shared_let(:persisted_user_role) do
+    create(:project_role, permissions: %i[view_work_packages])
+  end
+  shared_let(:persisted_project_phase_definition) { create(:project_phase_definition) }
+  shared_let(:persisted_active_project_phase) do
+    create(:project_phase, :active, project: persisted_project, definition: persisted_project_phase_definition)
+  end
+  shared_let(:persisted_inactive_project_phase) { create(:project_phase, :inactive, project: persisted_project) }
+
+  shared_let(:persisted_user) do
+    create(:user, member_with_roles: { persisted_project => persisted_user_role,
+                                       persisted_other_project => persisted_user_role })
+  end
+
   let(:other_user) { build_stubbed(:user) }
-  let(:policy) { double(WorkPackagePolicy, allowed?: true) }
 
   subject(:contract) { described_class.new(work_package, user) }
 
@@ -40,104 +70,190 @@ RSpec.shared_examples_for "work package contract" do
   end
 
   before do
-    allow(WorkPackagePolicy)
-      .to receive(:new)
-      .and_return(policy)
-  end
-
-  let(:possible_assignees) { [] }
-  let!(:assignable_assignees_scope) do
-    scope = double "assignable assignees scope"
-
-    if work_package.persisted?
-      allow(Principal)
-        .to receive(:possible_assignee)
-              .with(work_package)
-              .and_return scope
-    else
-      allow(Principal)
-        .to receive(:possible_assignee)
-              .with(work_package.project)
-              .and_return scope
-    end
-
-    allow(scope)
-      .to receive(:exists?) do |hash|
-      possible_assignees.map(&:id).include?(hash[:id])
-    end
-
-    scope
-  end
-
-  shared_examples_for "has no error on" do |property|
-    it property do
-      expect(validated_contract.errors[property]).to be_empty
+    if user.members.any?
+      persisted_user_role.permissions = permissions
+      persisted_user_role.save
     end
   end
 
-  describe "assigned_to_id" do
-    before do
-      work_package.assigned_to_id = other_user.id
+  describe "validations" do
+    context "when all attributes are valid" do
+      it_behaves_like "contract is valid"
     end
 
-    context "if the assigned user is a possible assignee" do
-      let(:possible_assignees) { [other_user] }
+    describe "assigned_to_id" do
+      context "if the assigned user is a possible assignee" do
+        before do
+          work_package.assigned_to = persisted_possible_assignee
+        end
 
-      it_behaves_like "has no error on", :assigned_to
-    end
+        it_behaves_like "contract is valid"
+      end
 
-    context "if the assigned user is not a possible assignee" do
-      it "is not a valid assignee" do
-        error = I18n.t("api_v3.errors.validation.invalid_user_assigned_to_work_package",
-                       property: I18n.t("attributes.assignee"))
-        expect(validated_contract.errors[:assigned_to]).to contain_exactly(error)
+      context "if the assigned user is not a possible assignee" do
+        before do
+          work_package.assigned_to = persisted_non_member
+        end
+
+        it_behaves_like "contract is invalid",
+                        assigned_to: I18n.t("api_v3.errors.validation.invalid_user_assigned_to_work_package",
+                                            property: I18n.t("attributes.assignee"))
+      end
+
+      context "if the project is not set" do
+        before do
+          work_package.assigned_to = persisted_possible_assignee
+          work_package.project = nil
+        end
+
+        it_behaves_like "contract is invalid",
+                        # But not on assignee
+                        project: :blank
       end
     end
 
-    context "if the project is not set" do
-      let(:work_package_project) { nil }
+    describe "responsible_id" do
+      context "if the responsible user is a possible responsible" do
+        before do
+          work_package.responsible = persisted_possible_assignee
+        end
 
-      it_behaves_like "has no error on", :assigned_to
-    end
-  end
+        it_behaves_like "contract is valid"
+      end
 
-  describe "responsible_id" do
-    before do
-      work_package.responsible_id = other_user.id
-    end
+      context "if the assigned user is not a possible responsible" do
+        before do
+          work_package.responsible = persisted_non_member
+        end
 
-    context "if the responsible user is a possible responsible" do
-      let(:possible_assignees) { [other_user] }
+        it_behaves_like "contract is invalid",
+                        responsible: I18n.t("api_v3.errors.validation.invalid_user_assigned_to_work_package",
+                                            property: I18n.t("attributes.responsible"))
+      end
 
-      it_behaves_like "has no error on", :responsible
-    end
+      context "if the project is not set" do
+        before do
+          work_package.responsible = persisted_possible_assignee
+          work_package.project = nil
+        end
 
-    context "if the assigned user is not a possible responsible" do
-      it "is not a valid responsible" do
-        error = I18n.t("api_v3.errors.validation.invalid_user_assigned_to_work_package",
-                       property: I18n.t("attributes.responsible"))
-        expect(validated_contract.errors[:responsible]).to contain_exactly(error)
+        it_behaves_like "contract is invalid",
+                        # But not on responsible
+                        project: :blank
       end
     end
 
-    context "if the project is not set" do
-      let(:work_package_project) { nil }
+    describe "remaining_hours" do
+      context "when is not a parent" do
+        context "when has not changed" do
+          it_behaves_like "contract is valid"
+        end
 
-      it_behaves_like "has no error on", :responsible
+        context "when has changed" do
+          before do
+            work_package.remaining_hours = 10
+          end
+
+          it_behaves_like "contract is valid"
+        end
+      end
+    end
+
+    describe "version" do
+      context "having full access" do
+        context "with an assignable_version" do
+          before do
+            work_package.version = persisted_project_version
+          end
+
+          it_behaves_like "contract is valid"
+        end
+
+        context "with an unassignable_version" do
+          before do
+            work_package.version = persisted_other_project_version
+          end
+
+          it_behaves_like "contract is invalid", version_id: :inclusion
+        end
+      end
+
+      context "without the necessary permission to change versions" do
+        let(:permissions) { super() - %i[assign_versions] }
+
+        before do
+          work_package.version = persisted_project_version
+        end
+
+        it_behaves_like "contract is invalid", version_id: :error_readonly
+      end
+    end
+
+    describe "ignore_non_working_days" do
+      context "when not having children and scheduling manually" do
+        before do
+          work_package.ignore_non_working_days = !work_package.ignore_non_working_days
+          work_package.schedule_manually = true
+        end
+
+        it_behaves_like "contract is valid"
+      end
+    end
+
+    describe "project_phase_definition" do
+      let(:permissions) { super() + %i[view_project_phases] }
+
+      before do
+        work_package.project_phase_definition = persisted_project_phase_definition
+      end
+
+      it_behaves_like "contract is valid"
+
+      context "without the necessary permission" do
+        let(:permissions) { super() - %i[view_project_phases] }
+
+        it_behaves_like "contract is invalid", project_phase_id: :error_readonly
+      end
+
+      context "without a project being set" do
+        before do
+          work_package.project = nil
+        end
+
+        it_behaves_like "contract is invalid",
+                        # But not on project_phase_id
+                        project: :blank
+      end
+
+      context "when assigning a definition not active in the project" do
+        before do
+          work_package.project_phase_definition = persisted_inactive_project_phase.definition
+        end
+
+        it_behaves_like "contract is invalid", project_phase_id: :inclusion
+      end
     end
   end
 
-  describe "#assignable_assignees" do
-    it "returns the Principal`s possible_assignee scope" do
-      expect(subject.assignable_assignees)
-        .to eql assignable_assignees_scope
-    end
-  end
+  describe "#assignable_project_phases" do
+    context "when project is not set" do
+      before do
+        work_package.project = nil
+      end
 
-  describe "#assignable_responsibles" do
-    it "returns the Principal`s possible_assignee scope" do
-      expect(subject.assignable_responsibles)
-        .to eql assignable_assignees_scope
+      it "returns an empty array" do
+        expect(contract.assignable_project_phases).to be_empty
+      end
+    end
+
+    context "when project is set" do
+      before do
+        work_package.project = persisted_project
+      end
+
+      it "returns the phases active in the project" do
+        expect(contract.assignable_project_phases).to contain_exactly(persisted_active_project_phase)
+      end
     end
   end
 end

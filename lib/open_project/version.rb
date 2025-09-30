@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,8 +31,8 @@ require "open3"
 
 module OpenProject
   module VERSION # :nodoc:
-    MAJOR = 14
-    MINOR = 2
+    MAJOR = 16
+    MINOR = 5
     PATCH = 0
 
     class << self
@@ -97,8 +97,14 @@ module OpenProject
 
       def to_s; STRING end
 
-      def to_semver
-        [MAJOR, MINOR, PATCH].join(".") + special
+      def to_semver(separator: ".", include_special: true)
+        base = [MAJOR, MINOR, PATCH].join(separator)
+
+        if include_special
+          base + special
+        else
+          base
+        end
       end
 
       private
@@ -138,7 +144,7 @@ module OpenProject
       def read_optional(file)
         path = Rails.root.join(file)
         if File.exist? path
-          File.read(path)
+          String(File.read(path)).strip
         end
       end
 

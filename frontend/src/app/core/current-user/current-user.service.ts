@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -28,13 +28,13 @@
 
 import { Injectable } from '@angular/core';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
-import { CurrentUser, CurrentUserStore } from './current-user.store';
-import { CurrentUserQuery } from './current-user.query';
-import { CapabilitiesResourceService } from 'core-app/core/state/capabilities/capabilities.service';
-import { Observable } from 'rxjs';
-import { distinctUntilChanged, map, switchMap, take } from 'rxjs/operators';
 import { ApiV3ListFilter } from 'core-app/core/apiv3/paths/apiv3-list-resource.interface';
+import { CapabilitiesResourceService } from 'core-app/core/state/capabilities/capabilities.service';
 import { ICapability } from 'core-app/core/state/capabilities/capability.model';
+import { Observable, combineLatest } from 'rxjs';
+import { distinctUntilChanged, map, switchMap, take } from 'rxjs/operators';
+import { CurrentUserQuery } from './current-user.query';
+import { CurrentUser, CurrentUserStore } from './current-user.store';
 
 @Injectable({ providedIn: 'root' })
 export class CurrentUserService {
@@ -61,6 +61,15 @@ export class CurrentUserService {
       ...state,
       ...user,
     }));
+  }
+
+  public isLoggedInAndHasCapabalities$(action:string|string[], projectContext:string|null):Observable<boolean> {
+    return combineLatest([
+      this.isLoggedIn$,
+      this.hasCapabilities$(action, projectContext),
+    ]).pipe(
+      map(([isLoggedIn, hasCapabilities]) => isLoggedIn && hasCapabilities),
+    );
   }
 
   /**

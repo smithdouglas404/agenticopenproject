@@ -1,6 +1,6 @@
 //-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +28,9 @@
 
 .router--work-packages-full-view:not(.router--work-packages-full-create)
   @include extended-content--bottom
-  @include extended-content--right
+
+  @media screen and (min-width: $breakpoint-sm)
+    @include extended-content--right
 
 .work-packages--show-view
   display: flex
@@ -39,16 +41,16 @@
   &--split-container
     display: flex
     flex-shrink: 8
-    border-top: 1px solid var(--borderColor-muted)
+    border-top: 1px solid var(--borderColor-default)
     overflow: visible
     height: 100%
     // Important for Firefox to let 'flex-shrink' work correctly.
     min-height: 0
 
   &--split-left
-    border-right: 1px solid var(--borderColor-muted)
+    border-right: 1px solid var(--borderColor-default)
     overflow-y: auto
-    overflow-x: hidden
+    overflow-x: clip
     flex: 2
     position: relative
     @include styled-scroll-bar
@@ -69,7 +71,8 @@
             line-height: calc(30px)
 
   &--split-right
-    min-width: 530px
+    flex-basis: var(--full-view-split-right-width)
+    min-width: 550px
     overflow-y: hidden
     overflow-x: auto
     position: relative
@@ -130,6 +133,11 @@
     #toolbar-items
       margin-left: 0
 
+@media only screen and (max-width: $breakpoint-md)
+  .work-packages--subject-type-row
+    flex-wrap: wrap
+    overflow: hidden
+
 #work-packages-index
   .op-uc-link_permalink
     display: none
@@ -147,6 +155,8 @@
   line-height: 24px
 
 .work-packages--type-selector:not(.wp-new-top-row--element)
+  max-width: 100%
+  @include text-shortener()
   .inline-edit--display-field
     padding-right: 5px !important
     // Remove left padding from type

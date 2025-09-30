@@ -1,6 +1,6 @@
 <%#-- copyright
 OpenProject is an open source project management software.
-Copyright (C) 2012-2024 the OpenProject GmbH
+Copyright (C) the OpenProject GmbH
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 3.
@@ -33,7 +33,7 @@ See COPYRIGHT and LICENSE files for more details.
   other_fields_editable = User.current.allowed_in_project?(permission, project)
   status_field_editable = other_fields_editable || User.current.allowed_in_project?(:change_work_package_status, project)
 %>
-<li class="model story <%= mark_if_closed(story) %> <%= cycle('odd', 'even', name: "stories") %>" id="<%= story_html_id_or_empty(story) %>">
+<li class="model story <%= mark_if_closed(story) %> <%= cycle("odd", "even", name: "stories") %>" id="<%= story_html_id_or_empty(story) %>">
   <div class="id">
     <div class="t"><%= work_package_link_or_empty(story) %></div>
     <div class="v"><%= id_or_empty(story) %></div>
@@ -72,7 +72,7 @@ See COPYRIGHT and LICENSE files for more details.
        title="<%= story.subject %>"
        field_id="<%= story.id %>"><%= story.subject %></div>
   <div class="version_id"><%= story.version_id %></div>
-  <div class="higher_item_id"><%= !defined?(higher_item) || higher_item.nil? ? '' : higher_item.id %></div>
+  <div class="higher_item_id"><%= !defined?(higher_item) || higher_item.nil? ? "" : higher_item.id %></div>
   <div class="meta">
     <%= render(partial: "shared/model_errors", object: errors) if defined?(errors) && !errors.empty? %>
   </div>

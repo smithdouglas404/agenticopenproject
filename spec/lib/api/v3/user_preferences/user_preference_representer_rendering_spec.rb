@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -52,9 +54,9 @@ RSpec.describe API::V3::UserPreferences::UserPreferenceRepresenter,
 
   subject(:generated) { representer.to_json }
 
-  it { expect(subject).to have_json_path("hideMail") }
   it { expect(subject).to have_json_path("timeZone") }
   it { expect(subject).to have_json_path("commentSortDescending") }
+  it { expect(subject).to have_json_path("disableKeyboardShortcuts") }
   it { expect(subject).to have_json_path("warnOnLeavingUnsaved") }
   it { expect(subject).to have_json_path("autoHidePopups") }
 
@@ -62,8 +64,8 @@ RSpec.describe API::V3::UserPreferences::UserPreferenceRepresenter,
     context "without a timezone set" do
       let(:preference) { build(:user_preference, time_zone: "") }
 
-      it "shows the timeZone as nil" do
-        expect(subject).to be_json_eql(nil.to_json).at_path("timeZone")
+      it "shows the timeZone as utc" do
+        expect(subject).to be_json_eql("Etc/UTC".to_json).at_path("timeZone")
       end
     end
 

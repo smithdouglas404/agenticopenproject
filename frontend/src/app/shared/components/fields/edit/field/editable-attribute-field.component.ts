@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -63,6 +63,7 @@ import { SchemaResource } from 'core-app/features/hal/resources/schema-resource'
   selector: 'op-editable-attribute-field',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './editable-attribute-field.component.html',
+  standalone: false,
 })
 export class EditableAttributeFieldComponent extends UntilDestroyedMixin implements OnInit, OnDestroy {
   @Input() public fieldName:string;
@@ -126,7 +127,11 @@ export class EditableAttributeFieldComponent extends UntilDestroyedMixin impleme
       )
       .subscribe((resource) => {
         this.resource = resource;
-        this.render();
+        if (this.isEditable) {
+          this.render();
+        } else {
+          this.reset();
+        }
       });
   }
 
@@ -184,6 +189,10 @@ export class EditableAttributeFieldComponent extends UntilDestroyedMixin impleme
   }
 
   public activateOnForm(noWarnings = false):Promise<void|EditFieldHandler> {
+    if (!this.isEditable) {
+      return Promise.reject();
+    }
+
     // Activate the field
     this.setActive(true);
 

@@ -1,6 +1,6 @@
-// -- copyright
+//-- copyright
 // OpenProject is an open source project management software.
-// Copyright (C) 2012-2024 the OpenProject GmbH
+// Copyright (C) the OpenProject GmbH
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License version 3.
@@ -46,6 +46,7 @@ import { ConfirmDialogService } from 'core-app/shared/components/modals/confirm-
 
 @Directive({
   selector: '[opColumnsContextMenu]',
+  standalone: false,
 })
 export class OpColumnsContextMenu extends OpContextMenuTrigger {
   @Input('opColumnsContextMenu-column') public column:QueryColumn;

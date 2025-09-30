@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -28,7 +30,8 @@
 
 require "spec_helper"
 
-RSpec.describe WorkPackages::UpdateAncestorsService, type: :model do
+RSpec.describe WorkPackages::UpdateAncestorsService,
+               type: :model do
   shared_association_default(:author, factory_name: :user) { create(:user) }
   shared_association_default(:project_with_types) { create(:project_with_types) }
   shared_association_default(:priority) { create(:priority) }
@@ -77,7 +80,7 @@ RSpec.describe WorkPackages::UpdateAncestorsService, type: :model do
                 set_attributes_on(child, field => value)
                 call_update_ancestors_service(child)
 
-                expect_work_packages([parent, child], <<~TABLE)
+                expect_work_packages_after_reload([parent, child], <<~TABLE)
                   | subject | status | work | ∑ work | remaining work | ∑ remaining work | % complete | ∑ % complete |
                   | parent  | Open   |  10h |    15h |            10h |              10h |         0% |          33% |
                   |   child | Closed |   5h |        |             0h |                  |       100% |              |
@@ -94,7 +97,7 @@ RSpec.describe WorkPackages::UpdateAncestorsService, type: :model do
           end
 
           it "still recomputes child remaining work and updates ancestors total % complete excluding it" do
-            expect_work_packages([parent, child], <<~TABLE)
+            expect_work_packages_after_reload([parent, child], <<~TABLE)
               | subject | status   | work | ∑ work | remaining work | ∑ remaining work | % complete | ∑ % complete |
               | parent  | Open     |  10h |    10h |            10h |              10h |         0% |           0% |
               |   child | Rejected |   5h |        |             4h |                  |        20% |              |
@@ -118,7 +121,7 @@ RSpec.describe WorkPackages::UpdateAncestorsService, type: :model do
           end
 
           it "sets parent total % complete to 100% and its total remaining work to 0h" do
-            expect_work_packages(table_work_packages, <<~TABLE)
+            expect_work_packages_after_reload(table_work_packages, <<~TABLE)
               hierarchy | status | work | ∑ work | remaining work | ∑ remaining work | % complete | ∑ % complete
               parent    | Open   |      |    15h |                |               0h |         0% |         100%
                 child1  | Closed |  10h |        |             0h |                  |       100% |
@@ -385,7 +388,7 @@ RSpec.describe WorkPackages::UpdateAncestorsService, type: :model do
 
       it "updates the totals of the ancestors" do
         subject
-        expect_work_packages([grandparent, parent, sibling, work_package], <<~TABLE)
+        expect_work_packages_after_reload([grandparent, parent, sibling, work_package], <<~TABLE)
           hierarchy        | work | remaining work | % complete | ∑ work | ∑ remaining work | ∑ % complete
           grandparent      |   3h |           1.5h |        50% |    13h |               5h |          62%
             parent         |   3h |             0h |       100% |    10h |             3.5h |          65%
@@ -446,7 +449,7 @@ RSpec.describe WorkPackages::UpdateAncestorsService, type: :model do
 
         it "updates the totals of the ancestors" do
           subject
-          expect_work_packages([grandparent, parent, work_package], <<~TABLE)
+          expect_work_packages_after_reload([grandparent, parent, work_package], <<~TABLE)
             hierarchy        | work | remaining work | % complete | ∑ work | ∑ remaining work | ∑ % complete
             grandparent      |      |                |            |    10h |               5h |          50%
               parent         |   3h |           1.5h |        50% |    10h |               5h |          50%
@@ -493,7 +496,7 @@ RSpec.describe WorkPackages::UpdateAncestorsService, type: :model do
 
       it "updates the totals of the new parent and the former parent" do
         subject
-        expect_work_packages([grandparent, old_parent, new_parent, work_package], <<~TABLE)
+        expect_work_packages_after_reload([grandparent, old_parent, new_parent, work_package], <<~TABLE)
           hierarchy        | work | remaining work | % complete | ∑ work | ∑ remaining work | ∑ % complete
           grandparent      |      |                |            |    10h |               2h |          80%
             old parent     |      |                |            |        |                  |
@@ -596,7 +599,7 @@ RSpec.describe WorkPackages::UpdateAncestorsService, type: :model do
         it "does not update the parent total work" do
           expect(call_result).to be_success
           expect(call_result.dependent_results).to be_empty
-          expect_work_packages([parent.reload], <<~TABLE)
+          expect_work_packages_after_reload([parent], <<~TABLE)
             subject | total work |
             parent  |            |
           TABLE
@@ -692,7 +695,7 @@ RSpec.describe WorkPackages::UpdateAncestorsService, type: :model do
         it "does not update the parent total remaining work" do
           expect(call_result).to be_success
           expect(call_result.dependent_results).to be_empty
-          expect_work_packages([parent.reload], <<~TABLE)
+          expect_work_packages_after_reload([parent], <<~TABLE)
             subject | total remaining work
             parent  |
           TABLE
@@ -795,28 +798,429 @@ RSpec.describe WorkPackages::UpdateAncestorsService, type: :model do
     end
   end
 
+  describe "simple average mode for total % complete calculation",
+           with_settings: { total_percent_complete_mode: "simple_average" } do
+    subject(:call_result) do
+      described_class.new(user:, work_package: initiator_work_package)
+                      .call(%i(remaining_hours))
+    end
+
+    context "with parent and all children all values set" do
+      let_work_packages(<<~TABLE)
+        hierarchy | work | ∑ work | remaining work | ∑ remaining work | % complete | ∑ % complete
+        parent    | 10h  |   40h  |          7.5h  |           22.5h  |      25%   |
+          child1  | 15h  |        |           10h  |                  |      33%   |
+          child2  |  5h  |        |          2.5h  |                  |      50%   |
+          child3  | 10h  |        |          2.5h  |                  |      75%   |
+      TABLE
+      let(:initiator_work_package) { child3 }
+
+      it "sets the total % complete solely based on % complete values of children and parent" do
+        expect(call_result).to be_success
+        updated_work_packages = call_result.all_results
+        expect_work_packages(updated_work_packages, <<~TABLE)
+          subject | total % complete
+          parent  |              46%
+          child3  |
+        TABLE
+      end
+    end
+
+    context "with parent having no values and children having all values set" do
+      let_work_packages(<<~TABLE)
+        hierarchy | work | ∑ work | remaining work | ∑ remaining work | % complete | ∑ % complete
+        parent    |      |    30h |                |            15h   |            |
+          child1  | 15h  |        |            10h |                  |      33%   |
+          child2  |  5h  |        |           2.5h |                  |      50%   |
+          child3  | 10h  |        |           2.5h |                  |      75%   |
+      TABLE
+      let(:initiator_work_package) { child3 }
+
+      it "sets the total % complete solely based on % complete values of children" do
+        expect(call_result).to be_success
+        updated_work_packages = call_result.all_results
+        expect_work_packages(updated_work_packages, <<~TABLE)
+          subject | total % complete
+          parent  |              53%
+          child3  |
+        TABLE
+      end
+    end
+
+    context "with parent having no values set " \
+            "and some children having work and remaining work set " \
+            "and all children having % complete set" do
+      let_work_packages(<<~TABLE)
+        hierarchy | work | ∑ work | remaining work | ∑ remaining work | % complete | ∑ % complete
+        parent    |      |    25h |                |           12.5h  |            |
+          child1  | 15h  |        |            10h |                  |      33%   |
+          child2  |      |        |                |                  |      75%   |
+          child3  | 10h  |        |           2.5h |                  |      75%   |
+      TABLE
+      let(:initiator_work_package) { child2 }
+
+      it "sets the total % complete solely based on % complete values of children" do
+        expect(call_result).to be_success
+        updated_work_packages = call_result.all_results
+        expect_work_packages(updated_work_packages, <<~TABLE)
+          subject | total % complete
+          parent  |              61%
+          child2  |
+        TABLE
+      end
+    end
+
+    context "with parent having no values set " \
+            "and no children having work and remaining work set " \
+            "and all children having % complete set" do
+      let_work_packages(<<~TABLE)
+        hierarchy | work | ∑ work | remaining work | ∑ remaining work | % complete | ∑ % complete
+        parent    |      |        |                |                  |            |
+          child1  |      |        |                |                  |       100% |
+          child2  |      |        |                |                  |       100% |
+          child3  |      |        |                |                  |        75% |
+      TABLE
+      let(:initiator_work_package) { child1 }
+
+      it "sets the total % complete solely based on % complete values of children" do
+        expect(call_result).to be_success
+        updated_work_packages = call_result.all_results
+        expect_work_packages(updated_work_packages, <<~TABLE)
+          subject | total % complete
+          parent  |              92%
+          child1  |
+        TABLE
+      end
+    end
+
+    context "with parent having no values set " \
+            "and no children having work and remaining work set " \
+            "and some children having % complete set" do
+      let_work_packages(<<~TABLE)
+        hierarchy | work | ∑ work | remaining work | ∑ remaining work | % complete | ∑ % complete
+        parent    |      |        |                |                  |            |
+          child1  |      |        |                |                  |       100% |
+          child2  |      |        |                |                  |            |
+          child3  |      |        |                |                  |        75% |
+      TABLE
+      let(:initiator_work_package) { child1 }
+
+      it "sets the total % complete solely based on % complete values of children " \
+         "and accounts unset values in children as 0" do
+        expect(call_result).to be_success
+        updated_work_packages = call_result.all_results
+        expect_work_packages(updated_work_packages, <<~TABLE)
+          subject | total % complete
+          parent  |              58%
+          child1  |
+        TABLE
+      end
+    end
+
+    context "with parent having % complete set " \
+            "and no children having work and remaining work set " \
+            "and some children having % complete set" do
+      let_work_packages(<<~TABLE)
+        hierarchy | work | ∑ work | remaining work | ∑ remaining work | % complete | ∑ % complete
+        parent    |      |        |                |                  |        10% |
+          child1  |      |        |                |                  |       100% |
+          child2  |      |        |                |                  |            |
+          child3  |      |        |                |                  |        75% |
+      TABLE
+      let(:initiator_work_package) { child1 }
+
+      it "sets the total % complete based on % complete values of children and parent " \
+         "and accounts unset values in children as 0" do
+        expect(call_result).to be_success
+        updated_work_packages = call_result.all_results
+        expect_work_packages(updated_work_packages, <<~TABLE)
+          subject | total % complete
+          parent  |              46%
+          child1  |
+        TABLE
+      end
+    end
+
+    context "with parent having no values set " \
+            "and a multi-level children hierarchy with all values set" do
+      let_work_packages(<<~TABLE)
+        hierarchy       | work | ∑ work | remaining work | ∑ remaining work | % complete | ∑ % complete
+        parent          |      |    44h |                |             21h  |            |         52%
+          child1        | 15h  |    23h |           10h  |             14h  |      33%   |         43%
+            grandchild1 |  5h  |        |            3h  |                  |      40%   |
+            grandchild2 |  3h  |        |            1h  |                  |      67%   |
+          child2        |  5h  |     7h |          2.5h  |            3.5h  |      50%   |         50%
+            grandchild3 |  2h  |        |            1h  |                  |      50%   |
+          child3        | 10h  |    14h |          2.5h  |            3.5h  |      75%   |         11%
+            grandchild4 |  4h  |        |            1h  |                  |      75%   |
+      TABLE
+      let(:initiator_work_package) { grandchild4 }
+
+      it "sets the total % complete solely based on % complete values of direct children" do
+        expect(call_result).to be_success
+        updated_work_packages = call_result.all_results
+        expect_work_packages(updated_work_packages, <<~TABLE)
+          subject     | total % complete
+          parent      |               56%
+          child3      |               75%
+          grandchild4 |
+        TABLE
+      end
+    end
+
+    context "with parent having % complete set " \
+            "and a multi-level children hierarchy with some % complete set" do
+      let_work_packages(<<~TABLE)
+        hierarchy       | work | ∑ work | remaining work | ∑ remaining work | % complete | ∑ % complete
+        parent          |      |    44h |                |             21h  |        10% |
+          child1        | 15h  |    23h |           10h  |             14h  |        33% |         43%
+            grandchild1 |  5h  |        |            3h  |                  |        40% |
+            grandchild2 |  3h  |        |            1h  |                  |        67% |
+          child2        |  5h  |     7h |          2.5h  |            3.5h  |        50% |         75%
+            grandchild3 |  2h  |        |            1h  |                  |       100% |
+          child3        | 10h  |    14h |          2.5h  |            3.5h  |        75% |          0%
+            grandchild4 |  4h  |        |            1h  |                  |        75% |
+          child4        |      |        |                |                  |        60% |
+      TABLE
+      let(:initiator_work_package) { grandchild4 }
+
+      it "sets the total % complete solely based on % complete values of direct children" do
+        expect(call_result).to be_success
+        updated_work_packages = call_result.all_results
+        expect_work_packages(updated_work_packages, <<~TABLE)
+          subject     | total % complete
+          parent      |              53%
+          child3      |               75%
+          grandchild4 |
+        TABLE
+      end
+    end
+
+    context "with parent having % complete set " \
+            "and a multi-level children hierarchy with some % complete set " \
+            "and some children having status excluded from totals" do
+      let_work_packages(<<~TABLE)
+        hierarchy       | status   | work | ∑ work | remaining work | ∑ remaining work | % complete | ∑ % complete
+        parent          | Open     |      |    44h |                |             21h  |        10% |
+          child1        | Open     | 15h  |    23h |           10h  |             14h  |        33% |         43%
+            grandchild1 | Open     |  5h  |        |            3h  |                  |        40% |
+            grandchild2 | Open     |  3h  |        |            1h  |                  |        67% |
+          child2        | Rejected |  5h  |     7h |          2.5h  |            3.5h  |        50% |         75%
+            grandchild3 | Open     |  2h  |        |            1h  |                  |       100% |
+          child3        | Open     | 10h  |    14h |          2.5h  |            3.5h  |        75% |
+            grandchild4 | Rejected |  4h  |        |            1h  |                  |       100% |
+          child4        | Open     |      |        |                |                  |        60% |
+      TABLE
+      let(:initiator_work_package) { grandchild4 }
+
+      it "sets the total % complete solely based on % complete values of direct children" do
+        expect(call_result).to be_success
+        updated_work_packages = call_result.all_results
+        expect_work_packages(updated_work_packages, <<~TABLE)
+          subject     | total % complete
+          parent      |              47%
+          child3      |              75%
+          grandchild4 |
+        TABLE
+      end
+    end
+
+    context "with all hierarchy being excluded from totals (parent excluded and child updated to be excluded)" do
+      let_work_packages(<<~TABLE)
+        hierarchy | status   | % complete | ∑ % complete
+        parent    | Rejected |        10% |         10%
+          child   | Open     |        33% |         43%
+      TABLE
+      let(:initiator_work_package) { child }
+
+      before do
+        set_attributes_on(child, status: rejected_status)
+      end
+
+      it "clears the total % complete of the parent" do
+        expect(call_result).to be_success
+        updated_work_packages = call_result.all_results
+        expect_work_packages(updated_work_packages, <<~TABLE)
+          subject | total % complete
+          parent  |
+          child   |
+        TABLE
+      end
+    end
+  end
+
+  describe "automatic scheduling mode switching" do
+    let(:state) { {} }
+
+    subject(:call_result) do
+      described_class.new(user:, work_package: initiator_work_package)
+                      .with_state(state)
+                      .call(%i(parent))
+    end
+
+    context "when a manually scheduled work package becomes parent for the first time" do
+      let_work_packages(<<~TABLE)
+        subject       | scheduling mode
+        future parent | manual
+        future child  | manual
+      TABLE
+      let(:initiator_work_package) { future_child }
+
+      before do
+        future_child.update!(parent: future_parent)
+      end
+
+      it "switches the new parent to automatic scheduling mode" do
+        expect(call_result).to be_success
+        expect(future_parent.reload.schedule_manually).to be(false)
+
+        # The child is still manually scheduled
+        expect(future_child.reload.schedule_manually).to be(true)
+      end
+    end
+
+    context "when a manually scheduled work package becomes parent for the second time" do
+      let_work_packages(<<~TABLE)
+        hierarchy        | scheduling mode
+        parent           | manual
+          existing child | manual
+        future child     | manual
+      TABLE
+      let(:initiator_work_package) { future_child }
+
+      before do
+        future_child.update!(parent:)
+      end
+
+      it "keeps the parent in manual scheduling mode" do
+        expect(call_result).to be_success
+        expect(parent.reload.schedule_manually).to be(true)
+
+        # The child is still manually scheduled
+        expect(future_child.reload.schedule_manually).to be(true)
+      end
+    end
+
+    context "when a manually scheduled work package with a direct predecessor " \
+            "becomes parent for the first time" do
+      let_work_packages(<<~TABLE)
+        subject       | scheduling mode | predecessors
+        predecessor   | manual          |
+        future parent | manual          | predecessor
+        future child  | manual          |
+      TABLE
+      let(:initiator_work_package) { future_child }
+
+      before do
+        future_child.update!(parent: future_parent)
+      end
+
+      it "keeps the parent in manual scheduling mode" do
+        expect(call_result).to be_success
+        expect(future_parent.reload.schedule_manually).to be(true)
+
+        # The child is still manually scheduled
+        expect(future_child.reload.schedule_manually).to be(true)
+      end
+    end
+
+    context "when a manually scheduled work package with an indirect predecessor " \
+            "becomes parent for the first time" do
+      let_work_packages(<<~TABLE)
+        hierarchy               | scheduling mode | predecessors
+        grandparent predecessor | manual          |
+        grandparent             | automatic       | grandparent predecessor
+          future parent         | manual          |
+        future child            | manual          |
+      TABLE
+      let(:initiator_work_package) { future_child }
+
+      before do
+        future_child.update!(parent: future_parent)
+      end
+
+      it "keeps the parent in manual scheduling mode" do
+        expect(call_result).to be_success
+        expect(future_parent.reload.schedule_manually).to be(true)
+
+        # The child is still manually scheduled
+        expect(future_child.reload.schedule_manually).to be(true)
+      end
+    end
+
+    context "when a manually scheduled work package with a manually scheduled parent with a predecessor " \
+            "becomes parent for the first time" do
+      let_work_packages(<<~TABLE)
+        hierarchy               | scheduling mode | predecessors
+        grandparent predecessor | manual          |
+        grandparent             | manual          | grandparent predecessor
+          future parent         | manual          |
+        future child            | manual          |
+      TABLE
+      let(:initiator_work_package) { future_child }
+
+      before do
+        future_child.update!(parent: future_parent)
+      end
+
+      it "switches the new parent to automatic scheduling mode (because no predecessors)" do
+        expect(call_result).to be_success
+        expect(future_parent.reload.schedule_manually).to be(false)
+
+        # The child is still manually scheduled
+        expect(future_child.reload.schedule_manually).to be(true)
+      end
+    end
+
+    context "when a manually scheduled work package becomes parent for the first time, " \
+            "but it's part of a bulk duplicate in progress" do
+      let_work_packages(<<~TABLE)
+        subject       | scheduling mode
+        future parent | manual
+        future child  | manual
+      TABLE
+      let(:initiator_work_package) { future_child }
+      let(:state) { { bulk_duplicate_in_progress: true } }
+
+      before do
+        future_child.update!(parent: future_parent)
+      end
+
+      it "keeps the scheduling mode (or it would not be an exact duplicate anymore)" do
+        expect(call_result).to be_success
+        expect(future_parent.reload.schedule_manually).to be(true)
+      end
+    end
+  end
+
   describe "ignore_non_working_days propagation" do
     shared_let(:grandgrandparent) do
       create(:work_package,
-             subject: "grandgrandparent")
+             subject: "grandgrandparent",
+             schedule_manually: false)
     end
     shared_let(:grandparent) do
       create(:work_package,
              subject: "grandparent",
-             parent: grandgrandparent)
+             parent: grandgrandparent,
+             schedule_manually: false)
     end
     shared_let(:parent) do
       create(:work_package,
              subject: "parent",
-             parent: grandparent)
+             parent: grandparent,
+             schedule_manually: false)
     end
     shared_let(:sibling) do
       create(:work_package,
              subject: "sibling",
+             schedule_manually: true,
              parent:)
     end
     shared_let(:work_package) do
-      create(:work_package)
+      create(:work_package,
+             subject: "main",
+             schedule_manually: true)
     end
 
     subject do
@@ -828,8 +1232,6 @@ RSpec.describe WorkPackages::UpdateAncestorsService, type: :model do
              work_package:)
         .call(%i(parent))
     end
-
-    let(:new_parent) { parent }
 
     context "for the previous ancestors (parent removed)" do
       let(:new_parent) { nil }
@@ -857,8 +1259,8 @@ RSpec.describe WorkPackages::UpdateAncestorsService, type: :model do
           .to contain_exactly(parent, grandparent, grandgrandparent)
       end
 
-      it 'sets the ignore_non_working_days property of the former ancestor chain to the value of the
-          only remaining child (former sibling)' do
+      it "sets the ignore_non_working_days property of the former ancestor chain to the value of the " \
+         "only remaining child (former sibling)" do
         subject
 
         expect(parent.reload.ignore_non_working_days)
@@ -875,13 +1277,16 @@ RSpec.describe WorkPackages::UpdateAncestorsService, type: :model do
       end
     end
 
-    context "for the new ancestors where the grandparent is on manual scheduling" do
+    context "for the new ancestors where the initiator is ignoring non-working days " \
+            "and the grandparent is on manual scheduling" do
+      let(:new_parent) { parent }
+
       before do
-        [grandgrandparent, work_package].each do |wp|
+        [work_package].each do |wp|
           wp.update_column(:ignore_non_working_days, true)
         end
 
-        [grandparent, parent, sibling].each do |wp|
+        [grandgrandparent, grandparent, parent, sibling].each do |wp|
           wp.update_column(:ignore_non_working_days, false)
         end
 
@@ -895,12 +1300,13 @@ RSpec.describe WorkPackages::UpdateAncestorsService, type: :model do
           .to be_success
       end
 
-      it "returns the former ancestors in the dependent results" do
+      it "returns the updated new ancestors in the dependent results where only the parent is updated" do
         expect(subject.dependent_results.map(&:result))
           .to contain_exactly(parent)
       end
 
-      it "sets the ignore_non_working_days property of the new ancestors" do
+      it "updates the parent's ignore_non_working_days attribute to true " \
+         "and does not propagate to the grandparent because it is manually scheduled" do
         subject
 
         expect(parent.reload.ignore_non_working_days)
@@ -910,7 +1316,7 @@ RSpec.describe WorkPackages::UpdateAncestorsService, type: :model do
           .to be_falsey
 
         expect(grandgrandparent.reload.ignore_non_working_days)
-          .to be_truthy
+          .to be_falsey
 
         expect(sibling.reload.ignore_non_working_days)
           .to be_falsey
@@ -918,6 +1324,8 @@ RSpec.describe WorkPackages::UpdateAncestorsService, type: :model do
     end
 
     context "for the new ancestors where the parent is on manual scheduling" do
+      let(:new_parent) { parent }
+
       before do
         [grandgrandparent, grandparent, work_package].each do |wp|
           wp.update_column(:ignore_non_working_days, true)
@@ -937,22 +1345,23 @@ RSpec.describe WorkPackages::UpdateAncestorsService, type: :model do
           .to be_success
       end
 
-      it "returns the former ancestors in the dependent results" do
+      it "returns the updated new ancestors in the dependent results" do
         expect(subject.dependent_results.map(&:result))
-          .to be_empty
+          .to contain_exactly(grandparent, grandgrandparent)
       end
 
-      it "sets the ignore_non_working_days property of the new ancestors" do
+      it "sets the ignore_non_working_days property of the grand parent and grand grand parent to " \
+         "match the parent's value because it's manually scheduled and that's where inheritance chain starts" do
         subject
 
         expect(parent.reload.ignore_non_working_days)
           .to be_falsey
 
         expect(grandparent.reload.ignore_non_working_days)
-          .to be_truthy
+          .to be_falsey
 
         expect(grandgrandparent.reload.ignore_non_working_days)
-          .to be_truthy
+          .to be_falsey
 
         expect(sibling.reload.ignore_non_working_days)
           .to be_falsey
