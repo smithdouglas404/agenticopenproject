@@ -129,7 +129,7 @@
     "chart.js": "4.5.0",
     "chartjs-plugin-datalabels": "^2.2.0",
     "codemirror": "^5.62.0",
-    "copy-text-to-clipboard": "^3.2.1",
+    "copy-text-to-clipboard": "^3.2.2",
     "core-js": "^3.2.1",
     "crossvent": "^1.5.4",
     "dom-autoscroller": "^2.2.8",
