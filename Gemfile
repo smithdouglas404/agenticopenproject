@@ -240,7 +240,7 @@ gem "factory_bot", "~> 6.5.0", require: false
 gem "factory_bot_rails", "~> 6.5.0", require: false
 
 gem "turbo_power", "~> 0.7.0"
-gem "turbo-rails", "~> 2.0.0"
+gem "turbo-rails", "~> 2.0.17"
 
 # There is a problem with version 1.4.0. Do not update until you're sure there is no infinite hang
 # happenning in failing tests when WebMock or VCR stub cannot be found.
