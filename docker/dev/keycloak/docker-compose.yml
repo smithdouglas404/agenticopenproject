@@ -41,6 +41,7 @@ services:
       - /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
       - keycloak-data:/opt/keycloak/data/
       - ./themes/:/opt/keycloak/themes/
+      - ./providers/:/opt/keycloak/providers/
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.keycloak-sub-secure.rule=Host(`keycloak.local`)"
