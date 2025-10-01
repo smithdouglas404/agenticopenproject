@@ -54,6 +54,10 @@ module Overviews
       def title
         Project.human_attribute_name(:news)
       end
+
+      def render?
+        project.nil? || project.module_enabled?("news")
+      end
     end
   end
 end
