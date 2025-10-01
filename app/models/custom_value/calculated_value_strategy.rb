@@ -43,9 +43,18 @@ class CustomValue::CalculatedValueStrategy < CustomValue::FormatStrategy
     if integer_value?
       number_with_delimiter(value.to_i)
     else
-      number_with_delimiter(
-        number_with_precision(value.to_f, precision: 3, strip_insignificant_zeros: true)
-      )
+      formatted = number_with_precision(value.to_f,
+                                        precision: 3,
+                                        strip_insignificant_zeros: true,
+                                        delimiter: I18n.t("number.format.delimiter"),
+                                        separator: I18n.t("number.format.separator"))
+
+      # Ensure at least one decimal place for floats
+      if formatted.exclude?(I18n.t("number.format.separator"))
+        "#{formatted}#{I18n.t('number.format.separator')}0"
+      else
+        formatted
+      end
     end
   end
 
@@ -59,9 +68,6 @@ class CustomValue::CalculatedValueStrategy < CustomValue::FormatStrategy
   private
 
   def integer_value?
-    # Use Epsilon comparison to determine whether the number, even if it is a float, should be
-    # considered an integer. E.g., a value of 42.000000000000000002 will be treated like an
-    # integer for our formatting purposes.
-    value && (value.to_f - value.to_i).abs < 1e-9
+    value =~ /\A[-+]?\d+\z/
   end
 end
