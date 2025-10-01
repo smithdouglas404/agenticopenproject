@@ -43,15 +43,17 @@ class CustomValue::CalculatedValueStrategy < CustomValue::FormatStrategy
     if integer_value?
       number_with_delimiter(value.to_i)
     else
+      delimiter = I18n.t("number.format.delimiter")
+      separator = I18n.t("number.format.separator")
       formatted = number_with_precision(value.to_f,
                                         precision: 3,
                                         strip_insignificant_zeros: true,
-                                        delimiter: I18n.t("number.format.delimiter"),
-                                        separator: I18n.t("number.format.separator"))
+                                        delimiter:,
+                                        separator:)
 
       # Ensure at least one decimal place for floats
-      if formatted.exclude?(I18n.t("number.format.separator"))
-        "#{formatted}#{I18n.t('number.format.separator')}0"
+      if formatted.exclude?(separator)
+        "#{formatted}#{separator}0"
       else
         formatted
       end
