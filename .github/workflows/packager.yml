@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  if: github.repository == 'opf/openproject'
+  if: ${{ github.repository == 'opf/openproject' }}
   build:
     name: ${{ matrix.target }}
     runs-on: ubuntu-latest
