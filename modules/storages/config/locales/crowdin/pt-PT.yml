@@ -184,8 +184,6 @@ pt-PT:
           not_found: Não foi possível encontrar a pasta de destino %{folder} em %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Concluir sem isso
-      done_complete_setup: Concluído, terminar configuração
       done_continue: Concluído, continuar
       open_storage: Abrir armazenamentos de ficheiros
       replace_oauth_application: Substituir OpenProject OAuth

@@ -49,21 +49,16 @@ RSpec.describe "work package custom fields of type hierarchy", :js do
     fill_in "Name", with: hierarchy_name
     click_on "Save"
 
-    new_custom_field_page.expect_and_dismiss_flash(message: "Successful creation.")
-
-    custom_field_index_page.expect_current_path("tab=WorkPackageCustomField")
-    expect(page).to have_list_item(hierarchy_name)
-
-    # endregion
-
-    # region Edit the details of the custom field
+    expect(page).to have_text("Successful creation.")
 
     CustomField.find_by(name: hierarchy_name).tap do |custom_field|
       hierarchy_page.add_custom_field_state(custom_field)
     end
-
-    click_on hierarchy_name
     hierarchy_page.expect_current_path
+
+    # endregion
+
+    # region Edit the details of the custom field
 
     expect(page).to have_test_selector("op-custom-fields--new-hierarchy-banner")
     expect(page).to have_css(".PageHeader-title", text: hierarchy_name)

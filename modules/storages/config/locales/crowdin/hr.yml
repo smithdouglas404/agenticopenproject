@@ -184,8 +184,6 @@ hr:
           not_found: The destination folder %{folder} could not be found on %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Complete without it
-      done_complete_setup: Done, complete setup
       done_continue: Done, continue
       open_storage: Open file storage
       replace_oauth_application: Replace OpenProject OAuth

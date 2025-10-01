@@ -184,8 +184,6 @@ fr:
           not_found: Le dossier de destination %{folder} n'a pas été trouvé sur %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Compléter sans
-      done_complete_setup: Configuration terminée.
       done_continue: Terminé, continuer
       open_storage: Ouvrir le stockage de fichiers
       replace_oauth_application: Remplacer OAuth OpenProject

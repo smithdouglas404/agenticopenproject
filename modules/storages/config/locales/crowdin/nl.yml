@@ -184,8 +184,6 @@ nl:
           not_found: The destination folder %{folder} could not be found on %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Complete without it
-      done_complete_setup: Voltooid, installatie voltooien
       done_continue: Gereed, doorgaan
       open_storage: Open file storage
       replace_oauth_application: Vervang OpenProject OAuth

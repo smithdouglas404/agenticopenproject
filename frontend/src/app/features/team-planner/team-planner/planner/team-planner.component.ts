@@ -333,7 +333,8 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
   private personIcon = toDOMString(
     personIconData, // SVG data for the icon.
     'small',
-    { 'aria-hidden': 'true',},
+    { 'aria-hidden': 'true',
+      class: ' op-team-planner--add-existing-icon',},
   );
 
   private viewOptionDefaults = {

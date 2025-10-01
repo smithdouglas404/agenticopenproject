@@ -184,8 +184,6 @@ vi:
           not_found: The destination folder %{folder} could not be found on %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Hoàn tất mà không cần cấu hình
-      done_complete_setup: Hoàn tất, hoàn tất cấu hình
       done_continue: Hoàn tất, tiếp tục
       open_storage: Mở lưu trữ tập tin
       replace_oauth_application: Thay thế OAuth OpenProject

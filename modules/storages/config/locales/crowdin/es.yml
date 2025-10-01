@@ -184,8 +184,6 @@ es:
           not_found: No se ha podido encontrar la carpeta de destino %{folder} en %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Completar sin usar
-      done_complete_setup: Hecho, configuración completada
       done_continue: Hecho, continuar
       open_storage: Abrir almacenamiento de archivos
       replace_oauth_application: Reemplazar OpenProject OAuth

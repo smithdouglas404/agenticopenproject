@@ -641,6 +641,7 @@ pt-PT:
       title: "Gestão da sessão"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Não pode eliminar a sessão atual."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "Atualmente, este utilizador é membro dos seguintes grupos:"
       no_results_title_text: Este utilizador atualmente não é um membro de nenhum grupo.
@@ -2578,22 +2579,15 @@ pt-PT:
         header: "Leia sobre novas funcionalidades e atualizações de produtos."
         learn_about: "Mais informações sobre todas as novas funcionalidades"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
-          new_features_title: >
-            A versão contém várias novas funcionalidades e melhorias, tais como:
-          new_features_list:
-            line_0: Opção de sincronização automática da cor do sistema + modo de contraste.
-            line_1: Modo escuro de alto contraste para melhor acessibilidade.
-            line_2: Exportação em PDF das listas de projetos.
-            line_3: Tipo de letra personalizado para todas as exportações de PDF (complemento Enterprise).
-            line_4: Melhoria do diálogo entre os participantes na reunião.
-            line_5: Melhoria do tratamento orçamental nas consultas de projetos e no planeamento orçamental.
-            line_6: Página inicial e de síntese do projeto atualizadas.
         "16_5":
           new_features_title: >
             A versão contém várias novas funcionalidades e melhorias, tais como:
           new_features_list:
-            line_0: Novas funcionalidades e melhorias em breve. Continue a visitar-nos!
+            line_0: Add work packages to a meeting section in the Meetings tab.
+            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
+            line_2: Filter projects by last update.
+            line_3: Jump to highlighted target elements from deep links.
+            line_4: Confirm critical actions with more accessible danger dialogs.
     links:
       upgrade_enterprise_edition: "Aprimorar para a edição Enterprise"
       postgres_migration: "A migrar a sua instalação para PostgreSQL"

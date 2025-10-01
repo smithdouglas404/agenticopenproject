@@ -634,6 +634,7 @@ zh-CN:
       title: "登录设备管理"
       instructions: "您已经通过以下设备登录到您的帐户。请撤销您无法识别或无法控制的设备的会话。"
       may_not_delete_current: "您不能删除当前会话。"
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "此用户当前是以下组的成员："
       no_results_title_text: 此用户当前不是任何组的成员。
@@ -2532,22 +2533,15 @@ zh-CN:
         header: "了解新功能和产品更新。"
         learn_about: "详细了解所有新功能"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
-          new_features_title: >
-            此版本包含各种新功能和改进，例如：
-          new_features_list:
-            line_0: 自动同步系统颜色 + 对比度模式的选项。
-            line_1: 深色高对比度模式可以提升无障碍性。
-            line_2: 项目列表的 PDF 导出。
-            line_3: 所有 PDF 导出文件的自定义列表（企业版附加组件）。
-            line_4: 改进了会议参与者对话框。
-            line_5: 改进了项目查询和预算规划中的预算处理。
-            line_6: 更新了首页和项目概览页面。
         "16_5":
           new_features_title: >
             此版本包含各种新功能和改进，例如：
           new_features_list:
-            line_0: 新功能和改进即将上线。请持续关注！
+            line_0: Add work packages to a meeting section in the Meetings tab.
+            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
+            line_2: Filter projects by last update.
+            line_3: Jump to highlighted target elements from deep links.
+            line_4: Confirm critical actions with more accessible danger dialogs.
     links:
       upgrade_enterprise_edition: "升级到企业版"
       postgres_migration: "将您的安装迁移到 PostgreSQL"

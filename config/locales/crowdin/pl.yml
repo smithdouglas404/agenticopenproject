@@ -652,6 +652,7 @@ pl:
       title: "Zarządzanie sesją"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Nie możesz usunąć bieżącej sesji."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "Ten użytkownik jest obecnie członkiem następujących grup:"
       no_results_title_text: Ten użytkownik nie jest obecnie członkiem żadnej grupy.
@@ -2667,22 +2668,15 @@ pl:
         header: "Przeczytaj o nowych funkcjach i aktualizacjach produktów."
         learn_about: "Dowiedz się więcej o wszystkich nowych funkcjach"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
-          new_features_title: >
-            Wydanie zawiera różne nowe funkcje i ulepszenia, takie jak:
-          new_features_list:
-            line_0: Opcja automatycznej synchronizacji kolorów systemu + tryb kontrastu.
-            line_1: Ciemny tryb wysokiego kontrastu, zapewniający poprawę dostępności.
-            line_2: Eksport list projektów w formacie PDF.
-            line_3: Niestandardowa czcionka do wszystkich eksportowanych plików PDF (dodatek wersji Enterprise).
-            line_4: Ulepszone okno dialogowe uczestników spotkania.
-            line_5: Ulepszona obsługa budżetu w zapytaniach dotyczących projektów i planowanie budżetu.
-            line_6: Zaktualizowano stronę główną i stronę Przegląd projektu.
         "16_5":
           new_features_title: >
             Wydanie zawiera różne nowe funkcje i ulepszenia, takie jak:
           new_features_list:
-            line_0: Nowe funkcje i ulepszenia już wkrótce. Zaglądaj tu!
+            line_0: Add work packages to a meeting section in the Meetings tab.
+            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
+            line_2: Filter projects by last update.
+            line_3: Jump to highlighted target elements from deep links.
+            line_4: Confirm critical actions with more accessible danger dialogs.
     links:
       upgrade_enterprise_edition: "Aktualizuj do wersji Enterprise"
       postgres_migration: "Migrowanie instalacji do PostgreSQL"

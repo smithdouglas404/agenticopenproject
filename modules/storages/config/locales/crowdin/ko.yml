@@ -184,8 +184,6 @@ ko:
           not_found: '%{storage_name}에서 대상 폴더 %{folder}을(를) 찾을 수 없습니다.'
   storages:
     buttons:
-      complete_without_setup: 이것 없이 완료
-      done_complete_setup: 완료, 설정 완료
       done_continue: 완료, 계속
       open_storage: 파일 저장소 열기
       replace_oauth_application: OpenProject OAuth 바꾸기

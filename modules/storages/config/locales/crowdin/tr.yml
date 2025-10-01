@@ -184,8 +184,6 @@ tr:
           not_found: The destination folder %{folder} could not be found on %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Bunsuz tamamla
-      done_complete_setup: Bitti, kurulumu tamamlayın
       done_continue: Bitti, devam et
       open_storage: Dosya depolamayı aç
       replace_oauth_application: OpenProject OAuth'u değiştirin

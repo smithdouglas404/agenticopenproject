@@ -636,6 +636,7 @@ zh-TW:
       title: "連線管理"
       instructions: "您已透過以下裝置登入帳號。請撤銷您無法識別或不受您控制的裝置連線。"
       may_not_delete_current: "您不可以刪除自己的連線連線"
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "此用戶當前是以下群組的成員："
       no_results_title_text: 這個使用者目前不是任何群組的成員
@@ -2532,22 +2533,15 @@ zh-TW:
         header: "閱讀關於新功能和產品更新的資訊。"
         learn_about: "進一步瞭解所有新功能"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
-          new_features_title: >
-            該版本包含多種新功能和改進，例如：
-          new_features_list:
-            line_0: 可選擇自動同步系統色彩 + 對比模式。
-            line_1: 深色高對比度模式可提高可存取性。
-            line_2: PDF 匯出專案清單。
-            line_3: 所有 PDF 匯出的自訂字型（企業附加元件）。
-            line_4: 改善會議與會者的對話。
-            line_5: 改善專案查詢和預算規劃中的預算處理。
-            line_6: 更新首頁與專案總覽頁面。
         "16_5":
           new_features_title: >
             該版本包含多種新功能和改進，例如：
           new_features_list:
-            line_0: 新功能和改進即將推出。請隨時回來查看！
+            line_0: Add work packages to a meeting section in the Meetings tab.
+            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
+            line_2: Filter projects by last update.
+            line_3: Jump to highlighted target elements from deep links.
+            line_4: Confirm critical actions with more accessible danger dialogs.
     links:
       upgrade_enterprise_edition: "升級到企業版"
       postgres_migration: "將您的安裝遷移到 PostgreSQL"

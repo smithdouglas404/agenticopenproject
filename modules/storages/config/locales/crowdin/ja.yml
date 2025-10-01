@@ -184,8 +184,6 @@ ja:
           not_found: 宛先フォルダ %{folder} が %{storage_name}に見つかりませんでした。
   storages:
     buttons:
-      complete_without_setup: 無しで完了
-      done_complete_setup: 完了、セットアップ完了
       done_continue: 完了しました。続ける
       open_storage: ファイルストレージを開く
       replace_oauth_application: OpenProject OAuthを置き換え
