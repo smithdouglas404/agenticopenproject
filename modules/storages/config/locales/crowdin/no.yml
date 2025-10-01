@@ -184,8 +184,6 @@
           not_found: Målmappen %{folder} ble ikke funnet på %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Fullfør uten
-      done_complete_setup: Ferdig, fullfør oppsett
       done_continue: Ferdig, fortsett
       open_storage: Open file storage
       replace_oauth_application: Erstatt OpenProject OAuth

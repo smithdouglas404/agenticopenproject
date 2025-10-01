@@ -652,6 +652,7 @@ uk:
       title: "Керування сеансами"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Ви не можете видалити поточний сеанс."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "Зараз цей користувач — учасник таких груп:"
       no_results_title_text: Цей користувач зараз не належить до жодної групи.
@@ -2665,22 +2666,15 @@ uk:
         header: "Читайте про нові функції і оновлення продуктів."
         learn_about: "Дізнайтеся більше про всі нові функції"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
-          new_features_title: >
-            Випуск включає різноманітні нові функції і покращення, такі як:
-          new_features_list:
-            line_0: опція для автоматичної синхронізації з колірним режимом і контрастністю системи;
-            line_1: темний висококонтрастний режим для покращення доступності;
-            line_2: можливість експортувати списки проєктів у форматі PDF;
-            line_3: власний шрифт для всіх експортованих файлів PDF (доповнення Enterprise);
-            line_4: покращене діалогове вікно учасників наради;
-            line_5: покращена робота з бюджетом у запитах, пов’язаних із проєктами, і при плануванні бюджету;
-            line_6: оновлена головна сторінка, а також сторінка «Огляд проєкту».
         "16_5":
           new_features_title: >
             Випуск включає різноманітні нові функції і покращення, такі як:
           new_features_list:
-            line_0: Незабаром ми додамо нові функції і покращення. Слідкуйте за новинами!
+            line_0: Add work packages to a meeting section in the Meetings tab.
+            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
+            line_2: Filter projects by last update.
+            line_3: Jump to highlighted target elements from deep links.
+            line_4: Confirm critical actions with more accessible danger dialogs.
     links:
       upgrade_enterprise_edition: "Оновлення до версії Enterprise"
       postgres_migration: "Міграція інсталяції в PostgreSQL"

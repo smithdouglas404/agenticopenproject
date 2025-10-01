@@ -184,8 +184,6 @@ uk:
           not_found: Теку призначення %{folder} не вдалося знайти на %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Завершити без налаштування
-      done_complete_setup: Готово – завершити налаштування
       done_continue: Виконано, продовжити 
       open_storage: Відкрити файлове сховище
       replace_oauth_application: Замінити OpenProject OAuth

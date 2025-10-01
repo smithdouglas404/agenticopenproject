@@ -39,8 +39,6 @@ export default class AutomaticallyManagedProjectFoldersFormController extends Co
   static values = {
     providerType: String,
     isAutomaticallyManaged: Boolean,
-    doneCompleteLabel: String,
-    doneCompleteWithoutLabel: String,
   };
 
   declare readonly applicationPasswordInputTarget:HTMLElement;
@@ -48,8 +46,6 @@ export default class AutomaticallyManagedProjectFoldersFormController extends Co
   declare readonly submitButtonTarget:HTMLElement;
 
   declare isAutomaticallyManagedValue:boolean;
-  declare doneCompleteLabelValue:string;
-  declare doneCompleteWithoutLabelValue:string;
 
   connect():void {
     this.toggleApplicationPasswordDisplay(this.isAutomaticallyManagedValue);
@@ -66,10 +62,8 @@ export default class AutomaticallyManagedProjectFoldersFormController extends Co
 
     if (automaticManagementEnabled) {
       this.applicationPasswordInputTarget.classList.remove('d-none');
-      this.submitButtonTarget.textContent = this.doneCompleteLabelValue;
     } else {
       this.applicationPasswordInputTarget.classList.add('d-none');
-      this.submitButtonTarget.textContent = this.doneCompleteWithoutLabelValue;
     }
   }
 }

@@ -35,9 +35,19 @@ Project management is a complex process. At the same time, when it comes to soft
 
 ## A
 
+### Activity
+
+In OpenProject, there is a **[module](#module)** called "Activity", which shows you the latest updates in that project or, if you view the [global](#global-modules) Activity, in all projects visible for you. You can apply filters for different modules to choose what you want to see, e.g. only updates on Work packages and Meetings.
+
+Activity in OpenProject can also mean **[work package](#work-package) Activity**, which refers to a tab in work packages where comments and system changes to that work package are displayed.
+
+Then there is **My activity**, a personal overview of all your latest actions and projects you are involved in. You can navigate there by clicking on your avatar in the upper right corner.
+
+Finally there is also a filter for [project lists](#project-lists) called **Latest activity at**. This filter includes changes to projects at a very detailed level, e.g. updates on work package attributes. If you want to filter only for high-level changes to a project, e.g. a new project name or custom field, you need the filter "Updated on".
+
 ### Admin
 
-In OpenProject, the person who has administrative rights in an instance is called **system admin**. All information concerning the configuration of an OpenProject instance are documented in the [System admin guide](../system-admin-guide/#system-admin-guide). Please note that an 'admin' can also describe the role of a person inside a project. This person would be called **project admin** and usually has specific rights on a project level. A project admin does not necessarily have system admin rights.
+In OpenProject, the person who has administrative rights in an instance is called a **system admin**. All information concerning the configuration of an OpenProject instance is documented in the [System admin guide](../system-admin-guide/#system-admin-guide). Please note that an "admin" can also describe the role of a person inside a project. This person would be called a **project admin** and usually has specific rights on a project level. A project admin does not necessarily have system admin rights.
 
 ### Agile project management
 
@@ -328,6 +338,10 @@ PM² is a project management framework developed by the European Commission to s
 ### PMflex
 
 PMflex is is a comprehensive and flexible project management system based on the European [PM²](#pm--pm2) standard and further developed for public administration in Germany. [Read more about how to use PMflex with OpenProject](https://www.openproject.org/pmflex).
+
+### Portfolio
+
+In OpenProject, you can manage your project portfolio by creating, filtering and sorting [project lists](#project-lists). [Learn more about project portfolio management with OpenProject](https://www.openproject.org/collaboration-software-features/project-portfolio-management/).
 
 ### Primer design system
 

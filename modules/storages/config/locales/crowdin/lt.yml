@@ -184,8 +184,6 @@ lt:
           not_found: The destination folder %{folder} could not be found on %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Baigti be jo
-      done_complete_setup: Atlikta, baigti nustatymą
       done_continue: Baigta, tęsti
       open_storage: Open file storage
       replace_oauth_application: Keisti OpenProject OAuth

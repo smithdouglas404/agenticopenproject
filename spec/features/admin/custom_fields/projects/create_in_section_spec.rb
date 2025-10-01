@@ -75,13 +75,12 @@ RSpec.describe "Create project custom fields in sections", :js do
 
         click_on("Save")
 
-        # redirects to the overview page
-        # the tab parameter is set as the redirect originates from the former custom field controller but does not have an effect
-        expect(page).to have_current_path(admin_settings_project_custom_fields_path(tab: "ProjectCustomField"))
-
-        expect(page).to have_text("New custom field")
+        expect(page).to have_text("Successful creation")
 
         latest_custom_field = ProjectCustomField.reorder(created_at: :asc).last
+
+        expect(page).to have_current_path(admin_settings_project_custom_field_path(latest_custom_field))
+        expect(page).to have_text("New custom field")
 
         expect(latest_custom_field.name).to eq("New custom field")
         expect(latest_custom_field.admin_only).to be(true)
@@ -96,11 +95,11 @@ RSpec.describe "Create project custom fields in sections", :js do
 
         click_on("Save")
 
-        # redirects to the overview page
-        # the tab parameter is set as the redirect originates from the former custom field controller but does not have an effect
-        expect(page).to have_current_path(admin_settings_project_custom_fields_path(tab: "ProjectCustomField"))
+        expect(page).to have_text("Successful creation")
 
         latest_custom_field = ProjectCustomField.reorder(created_at: :asc).last
+
+        expect(page).to have_current_path(admin_settings_project_custom_field_path(latest_custom_field))
 
         expect(latest_custom_field.name).to eq("New custom field")
         expect(latest_custom_field.project_custom_field_section).to eq(section_for_multi_select_fields)
@@ -157,11 +156,10 @@ RSpec.describe "Create project custom fields in sections", :js do
 
             click_on("Save")
 
-            # redirects to the overview page
-            # the tab parameter is set as the redirect originates from the
-            # former custom field controller but does not have an effect
-            expect(page).to have_current_path(admin_settings_project_custom_fields_path(tab: "ProjectCustomField"))
+            expect(page).to have_text("Successful creation")
 
+            created = ProjectCustomField.find_by_name("New calculated value custom field")
+            expect(page).to have_current_path(admin_settings_project_custom_field_path(created))
             expect(page).to have_text("New calculated value custom field")
           end
         end

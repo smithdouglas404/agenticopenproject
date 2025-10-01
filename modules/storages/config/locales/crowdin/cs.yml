@@ -184,8 +184,6 @@ cs:
           not_found: The destination folder %{folder} could not be found on %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Dokončit bez něj
-      done_complete_setup: Hotovo, kompletní nastavení
       done_continue: Hotovo, pokračovat
       open_storage: Otevřít soubor v úložišti
       replace_oauth_application: Nahradit OpenProject OAuth

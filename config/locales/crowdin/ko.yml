@@ -637,6 +637,7 @@ ko:
       title: "세션 관리"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "현재 세션을 삭제할 수 없습니다."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "이 사용자는 현재 다음 그룹의 멤버입니다:"
       no_results_title_text: 이 사용자는 현재 어떤 그룹의 멤버도 아닙니다.
@@ -2536,22 +2537,15 @@ ko:
         header: "새로운 기능 및 제품 업데이트에 대해 알아보세요."
         learn_about: "새로운 모든 기능에 대해 자세히 알아보기"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
-          new_features_title: >
-            이 릴리스에는 다음과 같은 다양한 새로운 기능과 개선 사항이 포함되어 있습니다.
-          new_features_list:
-            line_0: 시스템 색상 + 대비 모드를 자동 동기화하는 옵션.
-            line_1: 접근성 향상을 위한 다크 고대비 모드.
-            line_2: 프로젝트 목록의 PDF 내보내기.
-            line_3: 모든 PDF 내보내기를 위한 사용자 지정 글꼴(Enterprise 추가 기능).
-            line_4: 개선된 미팅 참가자 대화 상자.
-            line_5: 프로젝트 쿼리 및 예산 계획의 개선된 예산 처리.
-            line_6: 업데이트된 홈 및 프로젝트 개요 페이지.
         "16_5":
           new_features_title: >
             이 릴리스에는 다음과 같은 다양한 새로운 기능과 개선 사항이 포함되어 있습니다.
           new_features_list:
-            line_0: 새로운 기능과 개선 사항이 곧 추가될 예정입니다. 계속 확인해 주세요!
+            line_0: Add work packages to a meeting section in the Meetings tab.
+            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
+            line_2: Filter projects by last update.
+            line_3: Jump to highlighted target elements from deep links.
+            line_4: Confirm critical actions with more accessible danger dialogs.
     links:
       upgrade_enterprise_edition: "Enterprise Edition으로 업그레이드"
       postgres_migration: "설치를 PostgreSQL로 마이그레이션"

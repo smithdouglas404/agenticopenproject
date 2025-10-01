@@ -640,6 +640,7 @@ de:
       title: "Sitzungsverwaltung"
       instructions: "Sie sind über die folgenden Geräte bei Ihrem Konto angemeldet. Widerrufen Sie Sitzungen, die Sie nicht kennen oder von Geräten, die Sie nicht kontrollieren."
       may_not_delete_current: "Sie können Ihre aktuelle Sitzung nicht löschen."
+      deletion_warning: "Sind Sie sicher, dass Sie diese Sitzung widerrufen möchten? Sie werden auf diesem Gerät abgemeldet."
     groups:
       member_in_these_groups: "Dieser Benutzer ist Mitglied der folgenden Gruppen:"
       no_results_title_text: Dieser Benutzer ist derzeit kein Mitglied in einer Gruppe.
@@ -2573,22 +2574,15 @@ de:
         header: "Lesen Sie über neue Funktionen und Updates."
         learn_about: "Erfahren Sie mehr über die neuen Funktionen"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
-          new_features_title: >
-            Dieses Release enthält verschiedene neue Funktionen und Verbesserungen, wie z. B:
-          new_features_list:
-            line_0: Option zur automatischen Synchronisierung von Systemfarbschema und Kontrastmodus.
-            line_1: Hochkontrastmodus im Dark Mode für bessere Zugänglichkeit.
-            line_2: PDF-Export von Projektlisten.
-            line_3: Benutzerdefinierte Schriftart für alle PDF-Exporte (Enterprise Add-on).
-            line_4: Verbesserter Dialog zum Verwalten von Teilnehmern an Besprechungen.
-            line_5: Verbesserte Budgetplanung und -verwaltung bei Projektabfragen.
-            line_6: Aktualisierte Startseite und Projektübersicht.
         "16_5":
           new_features_title: >
             Dieses Release enthält verschiedene neue Funktionen und Verbesserungen, wie z. B:
           new_features_list:
-            line_0: Weitere Funktionen und Verbesserungen folgen in Kürze. Schauen Sie immer wieder vorbei!
+            line_0: Fügen Sie Arbeitspakete zu einem Besprechungsabschnitt auf der Registerkarte Besprechungen hinzu.
+            line_1: Wählen Sie den Farbmodus bequemer mit den Kontrollkästchen "Kontrast erhöhen".
+            line_2: Filtern Sie Projekte nach letzter Aktualisierung.
+            line_3: Springen Sie von Deep Links zu markierten Zielelementen.
+            line_4: Bestätigen Sie kritische Aktionen mit besser zugänglichen Gefahrendialogen.
     links:
       upgrade_enterprise_edition: "Auf Enterprise Edition upgraden"
       postgres_migration: "Migration Ihrer Installation zu PostgreSQL"

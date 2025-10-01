@@ -184,8 +184,6 @@ it:
           not_found: Impossibile trovare la cartella di destinazione %{folder} su %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Completa senza
-      done_complete_setup: Fatto, configurazione completa
       done_continue: Fatto, continua
       open_storage: Apri archivio file
       replace_oauth_application: Sostituisci OpenProject OAuth

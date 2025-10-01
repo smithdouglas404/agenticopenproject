@@ -184,8 +184,6 @@ pl:
           not_found: Folder docelowy %{folder} nie został znaleziony w magazynie %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Ukończ bez tego
-      done_complete_setup: Gotowe, konfiguracja ukończona
       done_continue: Gotowe, kontynuuj
       open_storage: Otwórz magazyn plików
       replace_oauth_application: Zastąp OpenProject OAuth

@@ -184,8 +184,6 @@ ru:
           not_found: Папка %{folder} не найдена в хранилище %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Обходитесь без этого
-      done_complete_setup: Готово, завершить установку
       done_continue: Готово, продолжить
       open_storage: Открыть хранилище файлов
       replace_oauth_application: Заменить OAuth OpenProject

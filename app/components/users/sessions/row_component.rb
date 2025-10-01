@@ -106,7 +106,7 @@ module Users
             "aria-label": I18n.t(:button_revoke),
             data: {
               turbo_method: :delete,
-              turbo_confirm: I18n.t(:text_are_you_sure),
+              turbo_confirm: I18n.t("users.sessions.deletion_warning"),
               turbo_submits_with: I18n.t(:label_loading)
             }
           )

@@ -184,8 +184,6 @@ zh-CN:
           not_found: '%{storage_name} 上找不到目标文件夹 %{folder} 。'
   storages:
     buttons:
-      complete_without_setup: 没有它就完成
-      done_complete_setup: 完成，完成设置
       done_continue: 完成, 继续
       open_storage: 打开文件存储
       replace_oauth_application: 替换 OpenProject OAuth
