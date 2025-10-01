@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -36,7 +37,19 @@ class MeetingSectionsController < ApplicationController
   before_action :set_meeting_section,
                 except: %i[create clear_backlog clear_backlog_dialog]
   before_action :set_collapsed_state, only: %i[create cancel_edit destroy]
+  before_action :set_current_occurrence, only: %i[clear_backlog clear_backlog_dialog]
   before_action :authorize
+
+  def edit
+    if @meeting_section.editable?
+      update_section_header_via_turbo_stream(state: :edit)
+    else
+      update_all_via_turbo_stream
+      render_error_flash_message_via_turbo_stream(message: t("text_meeting_not_editable_anymore"))
+    end
+
+    respond_with_turbo_streams
+  end
 
   def create # rubocop:disable Metrics/AbcSize
     call = ::MeetingSections::CreateService
@@ -61,17 +74,6 @@ class MeetingSectionsController < ApplicationController
       update_header_component_via_turbo_stream
     else
       render_base_error_in_flash_message_via_turbo_stream(call.errors)
-    end
-
-    respond_with_turbo_streams
-  end
-
-  def edit
-    if @meeting_section.editable?
-      update_section_header_via_turbo_stream(state: :edit)
-    else
-      update_all_via_turbo_stream
-      render_error_flash_message_via_turbo_stream(message: t("text_meeting_not_editable_anymore"))
     end
 
     respond_with_turbo_streams
@@ -179,7 +181,6 @@ class MeetingSectionsController < ApplicationController
   end
 
   def clear_backlog
-    current_occurrence = Meeting.find_by(id: params[:current_occurrence])
     errors = []
     meeting_section = @meeting.backlog
     @meeting.backlog.agenda_items.each do |item|
@@ -190,15 +191,15 @@ class MeetingSectionsController < ApplicationController
       errors << call.errors unless call.success?
     end
 
-    update_section_via_turbo_stream(collapsed: true, meeting_section:, current_occurrence: current_occurrence)
+    update_section_via_turbo_stream(collapsed: true, meeting_section:, current_occurrence: @current_occurrence)
     render_error_flash_message_via_turbo_stream(message: t("text_backlog_clear_error")) if errors.any?
 
     respond_with_turbo_streams
   end
 
   def clear_backlog_dialog
-    current_occurrence = Meeting.find_by(id: params[:current_occurrence])
-    respond_with_dialog MeetingSections::Backlogs::ClearBacklogDialogComponent.new(@meeting, current_occurrence:)
+    respond_with_dialog MeetingSections::Backlogs::ClearBacklogDialogComponent.new(@meeting,
+                                                                                   current_occurrence: @current_occurrence)
   end
 
   private
@@ -220,6 +221,10 @@ class MeetingSectionsController < ApplicationController
 
   def set_meeting_section
     @meeting_section = MeetingSection.find(params[:id])
+  end
+
+  def set_current_occurrence
+    @current_occurrence = Meeting.find_by(id: params[:current_occurrence])
   end
 
   def set_collapsed_state

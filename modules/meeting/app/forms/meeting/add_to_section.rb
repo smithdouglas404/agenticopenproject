@@ -34,7 +34,7 @@ class Meeting::AddToSection < ApplicationForm
       name: :meeting_section_id,
       label: I18n.t("label_add_work_package_to_meeting_section_label"),
       caption:,
-      input_width: :large,
+      input_width:,
       autocomplete_options: {
         decorated: true,
         defaultData: false,
@@ -70,9 +70,9 @@ class Meeting::AddToSection < ApplicationForm
     @wrapper_id.nil? ? "body" : "##{@wrapper_id}"
   end
 
-  def items
+  def items # rubocop:disable Metrics/AbcSize
     items = []
-    items.concat(meeting.sections) unless meeting.blank? || meeting.templated?
+    items.concat(meeting.sections) if meeting.present? && !meeting.templated?
     items.concat(@occurrence.sections) if @occurrence.present? && @occurrence != meeting
     items.push(meeting.backlog) if meeting.present?
 
@@ -108,5 +108,9 @@ class Meeting::AddToSection < ApplicationForm
 
   def caption
     I18n.t("label_section_selection_caption") if @occurrence.nil?
+  end
+
+  def input_width
+    @occurrence.present? ? nil : :large
   end
 end
