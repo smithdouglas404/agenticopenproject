@@ -196,7 +196,7 @@ RSpec.describe "Meetings CRUD",
     expect(page).to have_css("#meeting-agenda-items-new-button-component")
     expect(page).to have_test_selector("op-meeting-agenda-actions", count: 3)
 
-    # other_use can view and copy links, but not edit
+    # other_use can view and copy links, but not edit or move
     login_as other_user
     show_page.visit!
 

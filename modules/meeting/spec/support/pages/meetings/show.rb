@@ -213,6 +213,12 @@ module Pages::Meetings
       expect(page).not_to have_test_selector("op-meeting-agenda-title", text: title)
     end
 
+    def expect_no_agenda_item_in_section(title:, section:)
+      within("#meeting-sections-show-component-#{section.id}") do
+        expect_no_agenda_item(title:)
+      end
+    end
+
     def expect_agenda_action_menu(item)
       expect(page)
         .to have_css("#meeting-agenda-items-item-component-#{item.id} #{test_selector('op-meeting-agenda-actions')}")
