@@ -395,7 +395,7 @@ RSpec.describe "Admin Create a new file storage",
 
           expect(page).to have_test_selector("storage-oauth-client-redirect-uri")
 
-          click_on "Done, complete setup"
+          click_on "Finish setup"
         end
 
         expect(page).to have_current_path(edit_admin_settings_storage_path(Storages::Storage.last))
