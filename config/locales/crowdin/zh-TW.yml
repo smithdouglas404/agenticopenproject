@@ -3940,9 +3940,9 @@ zh-TW:
   setting_apiv3_cors_origins: "CROSS-ORIGIN RESOURCE SHARING (CORS)"
   setting_apiv3_cors_origins_text_html: >
     如果啓用了 CORS ，這些是允許訪問 OpenProject API 的源。<br/>請查看<a href="%{origin_link}" target="_blank">有關“源”標題的文檔</a>，瞭解如何指定預期值。
-  setting_apiv3_write_readonly_attributes: "對只讀屬性的寫訪問權限"
+  setting_apiv3_write_readonly_attributes: "對唯讀屬性的寫入存取權限"
   setting_apiv3_write_readonly_attributes_instructions_html: >
-    如果啓用，API 將允許管理員在創建時寫入靜態只讀屬性，如 createdAt 和 author。 <br/> <strong>警告：</strong>此設置的用例包括導入數據，但允許管理員冒充其他用戶創建項目。不過，所有創建請求都將以真實作者的身份記錄。 </br> 有關屬性和支持資源的更多信息，請參閱 %{api_documentation_link}。
+    若啟用，API 將允許管理員在建立時寫入靜態唯讀屬性，例如 createdAt 與 author。<br/> <strong>警告：</strong> 此設定適用於例如匯入資料的情境，但同時也允許管理員在建立項目時冒充其他使用者。不過，所有建立請求都會記錄實際作者。</br>如需屬性與支援資源的更多資訊，請參閱 %{api_documentation_link}。
   setting_apiv3_max_page_size: "API 每頁最大值"
   setting_apiv3_max_page_instructions_html: >
     設定 API 回應的最大值。 無法執行單一頁面上傳回更多值的 API 請求。 <br/> <strong>警告：</strong>如果您很確定，才變更該值。 設定為高值將導致效能不彰，數值過低也將造成檢視錯誤。
