@@ -42,7 +42,7 @@ module Homescreen
     end
 
     def render?
-      link.present?
+      link.present? && url.present?
     end
 
     private
