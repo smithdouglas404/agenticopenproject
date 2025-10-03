@@ -84,11 +84,10 @@ RSpec.describe "Meetings CRUD",
     end
 
     meetings_page.click_create
+    expect_and_dismiss_flash(type: :success, message: I18n.t(:notice_successful_create))
   end
 
   it "can create a meeting and add agenda items" do
-    expect_and_dismiss_flash(type: :success, message: "Successful creation")
-
     # Can add and edit a single item
     show_page.add_agenda_item do
       fill_in "Title", with: "My agenda item"
@@ -262,8 +261,6 @@ RSpec.describe "Meetings CRUD",
   end
 
   it "shows an error toast trying to update an outdated item" do
-    expect_flash(type: :success, message: "Successful creation")
-
     # Can add and edit a single item
     show_page.add_agenda_item do
       fill_in "Title", with: "My agenda item"
@@ -285,8 +282,6 @@ RSpec.describe "Meetings CRUD",
   end
 
   it "can copy the meeting via the dialog form" do
-    expect_flash(type: :success, message: "Successful creation")
-
     show_page.add_agenda_item do
       fill_in "Title", with: "My agenda item"
       fill_in "Duration", with: "25"
@@ -312,7 +307,7 @@ RSpec.describe "Meetings CRUD",
       click_on("op-meetings-header-action-trigger")
       click_on "Copy"
       # dynamically wait for the modal to be loaded
-      expect(page).to have_text("Copy meeting")
+      show_page.expect_modal("Copy meeting")
     end
 
     fill_in "Title", with: ""
@@ -322,6 +317,7 @@ RSpec.describe "Meetings CRUD",
     expect(page).to have_content "Title can't be blank."
     fill_in "Title", with: "Some title"
     click_on "Create meeting"
+    expect_and_dismiss_flash(type: :success, message: I18n.t(:notice_successful_create))
 
     new_meeting = Meeting.last
     copied_meeting_page = Pages::Meetings::Show.new(new_meeting)
@@ -372,8 +368,6 @@ RSpec.describe "Meetings CRUD",
 
     context "when starting with empty sections" do
       it "can add, edit and delete sections" do
-        expect_flash(type: :success, message: "Successful creation")
-
         # create the first section
         show_page.add_section do
           fill_in "Title", with: "First section"

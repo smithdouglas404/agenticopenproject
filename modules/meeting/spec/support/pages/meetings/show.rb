@@ -127,6 +127,8 @@ module Pages::Meetings
 
     def expect_modal(...)
       expect(page).to have_modal(...)
+      modal = find(:modal, ...)
+      wait_for_size_animation_completion(modal)
     end
 
     def expect_no_add_form
@@ -568,6 +570,7 @@ module Pages::Meetings
     def start_meeting
       page.within("#meetings-side-panel-state-component") do
         click_on("Start meeting")
+        expect(page).to have_link("Close meeting")
       end
     end
 
