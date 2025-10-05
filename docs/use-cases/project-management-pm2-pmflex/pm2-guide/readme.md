@@ -409,9 +409,12 @@ The following activities are part of the Planning Phase:
 - Developing the Project Work Plan (Work Breakdown, Effort and Costs, Schedule).
 - Updating the Project Stakeholder Matrix, which identifies all project stakeholders.
 - Creating other important plans such as the Communications Management Plan, the Transition Plan and the Business Implementation Plan.
-![chunk-0-img-9.jpeg](chunk-0-img-9.jpeg)
 
-Fig 3.4 Overview of the Planning Phase
+
+
+![Fig 3.4 Overview of the Planning Phase](03.04.png)
+
+
 The Project Manager (PM) uses the outputs of the Planning Phase to request approval to move on to the Executing Phase. This decision to move on is taken by the Project Steering Committee (PSC).
 
 #### 3.2.3 Executing Phase
@@ -640,7 +643,7 @@ The Managing Layer focuses on day-to-day project management. It organises, monit
 
 The Performing Layer carries out the project work. It produces the deliverables and implements them in the business organisation. Members of the Performing Layer report to the Managing Layer. The Performing Layer comprises the roles of the Business Implementation Group (BIG) and the Project Core Team (PCT).
 
-4.3 Appropriate Governance Body (AGB)
+### 4.3 Appropriate Governance Body (AGB)
 
 The Appropriate Governance Body (AGB) is the entity responsible for the strategic planning and portfolio management. In terms of projects, this is the body with the authority to approve a project, agree its stated objective and release the funding required to implement it. As a key decision-making body, this role comprises members from the requestor and provider side of the project.
 
@@ -830,11 +833,11 @@ The Responsibility Assignment Matrix (RAM) is a way of representing and clarifyi
 
 | RASCI | Description |  |
 | :-- | :-- | :-- |
-| $\mathbf{R}$ | Responsible | Does the work. Others can be asked to assist in a supporting role. There is just <br> one responsible person for any given task. |
-| $\mathbf{A}$ | Accountable | Ultimately answerable for the correct and thorough completion of the work. <br> There is just one accountable person for any given task. |
-| $\mathbf{S}$ | Supports | As part of a team, roles with a support function work with the person <br> responsible. The support role helps complete the task. |
-| $\mathbf{C}$ | Consulted | Those whose opinions are requested and with whom there is two-way <br> communication. The consulted role does not help complete the task. |
-| $\mathbf{I}$ | Informed | Those who are kept informed of progress. |
+| **R** | Responsible | Does the work. Others can be asked to assist in a supporting role. There is just <br> one responsible person for any given task. |
+| **A** | Accountable | Ultimately answerable for the correct and thorough completion of the work. <br> There is just one accountable person for any given task. |
+| **S** | Supports | As part of a team, roles with a support function work with the person <br> responsible. The support role helps complete the task. |
+| **C** | Consulted | Those whose opinions are requested and with whom there is two-way <br> communication. The consulted role does not help complete the task. |
+| **I** | Informed | Those who are kept informed of progress. |
 
 Stakeholders should be reminded of their roles and responsibilities during the project. This Open PM² guide includes a RAM (RASCI) table for each artefact in the Initiating, Planning and Closing Phases and for each of the activities in the Executing Phase and in Monitor \& Control (see Appendix E).
 
@@ -969,7 +972,7 @@ The Business Case provides decision-makers with the information they need to det
 
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :-- | :--: | :--: | :--: | :--: | :--: |
-| Benefits <br> Management | Business <br> Case | Business <br> Implementation Plan | Project <br> Reports | Business <br> Implementation <br> Checklist | Project-End <br> Report |
+| Benefits Management | Business Case | Business Implementation Plan | Project Reports | Business Implementation Checklist | Project-End Report |
 
 **Outputs** 
 
@@ -1031,14 +1034,13 @@ The charter is a key element of the project approval process (along with the Bus
 This is the first phase gate. A review and approval are recommended before the project can formally move to the next phase. The Project Manager (PM) assesses whether the project is ready to commence the Planning Phase and seeks approval of the Business Case and Project Charter from the Project Steering Committee (PSC). If the Business Case or Project Charter is not approved, the project proceeds directly to the Closing Phase for Lessons Learned and archiving.
 PM² provides a template Phase Exit Review Checklist for each phase that can be used by the Project Manager (PM) to guide the assessment, alongside a review of the phase's specific goals.
 
-
-
 ## 6 Planning Phase 
 
 The second phase of a PM² project is the Planning Phase. It begins with the Planning Kick-off Meeting and ends once all project plans have been developed and baselined, and an appropriate management and implementation approach has been established. Most of a project's artefacts are created during the Planning Phase.
-![chunk-0-img-25.jpeg](chunk-0-img-25.jpeg)
 
-Fig 6.1 Planning Phase activities and main outputs
+![Fig 6.1 Planning Phase activities and main outputs](06.01.png)
+
+
 
 | Artefact Type | Description |
 | :--: | :--: |
@@ -1046,9 +1048,7 @@ Fig 6.1 Planning Phase activities and main outputs
 | Project Plans (specific) | These plans are specific to the project (e.g. the Project Work Plan) and are built according to the project needs and the team's analysis and experience. PM² provides templates and guidelines for these plans. |
 | Other <br> (domain specific) | These artefacts are specific to the project domain (e.g. system models for IT projects). PM² does not provide templates for these artefacts. |
 
-![chunk-0-img-26.jpeg](chunk-0-img-26.jpeg)
-
-Fig 6.2 Planning Phase artefacts
+![Fig 6.2 Planning Phase artefacts](06.02.png)
 
 ### 6.1 Planning Kick-off Meeting 
 
@@ -1110,9 +1110,7 @@ After the Planning Kick-off Meeting:
 | :-- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Planning Kick-off Meeting | I | A | C | S | C | C | R | C |
 
-![chunk-0-img-27.jpeg](chunk-0-img-27.jpeg)
-
-Fig 6.3 Planning Kick-off Meeting inputs/outputs and main roles
+![Fig 6.3 Planning Kick-off Meeting inputs/outputs and main roles](06.03.png)
 
 **Outputs** 
 
@@ -1164,9 +1162,9 @@ The Project Handbook is an important reference document for all project members 
 | :-- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Project Handbook | I | I | A | S | C | I | R | C |
 
-![chunk-0-img-28.jpeg](chunk-0-img-28.jpeg)
+![Fig 6.4 Project Handbook inputs and main roles](06.04.png)
 
-Fig 6.4 Project Handbook inputs and main roles
+
 
 **Outputs** 
 
@@ -1249,9 +1247,9 @@ Note: Be careful to respect all applicable regulations on privacy and personal d
 | :-- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Matrix | I | I | A | S | C | I | R | C |
 
-![chunk-0-img-29.jpeg](chunk-0-img-29.jpeg)
+![Fig 6.5 Project Stakeholder Matrix inputs and main roles](06.05.png)
 
-Fig 6.5 Project Stakeholder Matrix inputs and main roles
+
 
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :--: | :--: | :--: | :--: | :--: | :--: |
@@ -1287,9 +1285,9 @@ The Project Work Plan is composed of three parts:
 | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Project Work Plan | I | A | C | S/C | C | C | R | S/C |
 
-![chunk-0-img-30.jpeg](chunk-0-img-30.jpeg)
+![Fig 6.6 Project Work Plan inputs and main roles](06.06.png)
 
-Fig 6.6 Project Work Plan inputs and main roles
+
 
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :--: | :--: | :--: | :--: | :--: | :--: |
@@ -1299,7 +1297,7 @@ Fig 6.6 Project Work Plan inputs and main roles
 
 - Project Work Plan
 
-6.4.1 Work Breakdown 
+#### 6.4.1 Work Breakdown 
 
 The objective of this section of the Project Work Plan is to break the project down into smaller and more manageable components such as deliverables, work packages, activities and tasks. The breakdown has multiple levels, each with progressively more detailed deliverables and work. Taken together, these define the project output(s) and the work involved in producing them (see Appendix C).
 
@@ -1313,7 +1311,7 @@ The objective of this section of the Project Work Plan is to break the project d
 - Work Breakdown (part of the Project Work Plan)
 
 
-### 6.4.2 Effort \& Cost Estimates
+#### 6.4.2 Effort \& Cost Estimates
 
 The objective of this section of the Project Work Plan is to estimate the effort needed for each project task identified in the Work Breakdown based on resource availability and capabilities. After a task is assigned to a resource (or to a resource profile) it also becomes possible to calculate its cost. The estimates will be an input for the creation of the schedule (see Appendix C).
 
@@ -1369,9 +1367,9 @@ The Outsourcing Plan defines the what and how for any outsourced products or ser
 | :-- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Outsourcing Plan | A | C | C | C | I | S | R | I |
 
-![chunk-0-img-31.jpeg](chunk-0-img-31.jpeg)
+![Fig 6.7 Outsourcing Plan inputs and main roles](06.07.png)
 
-Fig 6.7 Outsourcing Plan inputs and main roles
+
 
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :--: | :--: | :--: | :--: | :--: | :--: |
@@ -1431,9 +1429,9 @@ The Deliverables Acceptance Plan documents the agreed criteria and approach for 
 | :-- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Deliverables Acceptance Plan | I | A | C | S | I | C | R | C |
 
-![chunk-0-img-32.jpeg](chunk-0-img-32.jpeg)
+![Fig 6.8: Deliverables Acceptance Plan inputs and main roles](06.08.png)
 
-Fig 6.8: Deliverables Acceptance Plan inputs and main roles
+
 
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :--: | :--: | :--: | :--: | :--: | :--: |
@@ -1481,20 +1479,18 @@ A successful transition is an important prerequisite for achieving the planned p
 | :-- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Transition Plan | I | A | C | C | C | C | R | C |
 
-![chunk-0-img-33.jpeg](chunk-0-img-33.jpeg)
+![Fig 6.9 Transition Plan inputs and main roles](06.09.png)
 
-Fig 6.9 Transition Plan inputs and main roles
+
 
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :--: | :--: | :--: | :--: | :--: | :--: |
 | Implementation <br> Management | Project <br> Charter | Business Implementation Plan <br> Transition Plan Project Work Plan | Project <br> Reports | Transition Checklist <br> Business Implementation Checklist | Project-End Report |
 
-Outputs
+**Outputs**
 
 - Transition Plan
 - Transition Checklist (setup)
-
-
 
 
 ### 6.8 Business Implementation Plan 
@@ -1531,9 +1527,9 @@ Depending on the organisation, the business implementation activities can be per
 | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Business Implementation Plan | I | I | A | R | C | I | S | I |
 
-![chunk-0-img-34.jpeg](chunk-0-img-34.jpeg)
+![Fig 6.10 Business Implementation Plan inputs and main roles](06.10.png)
 
-Fig 6.10 Business Implementation Plan inputs and main roles
+
 
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :--: | :--: | :--: | :--: | :--: | :--: |
@@ -1552,17 +1548,13 @@ If major deviations from the approved Business Case and/or Project Charter are i
 
 PM² provides a template Phase Exit Review Checklist for each phase that can be used by the Project Manager (PM) to guide the assessment, alongside a review of the phase's specific goals.
 
-
-
 ## 7 Executing Phase 
 
 The third phase of a PM² project is the Executing Phase. During this phase, the project deliverables are produced and the requestor organisation prepares for their introduction. The Executing Phase begins with a Kick-off Meeting and ends with the acceptance (final or provisional-as per the Deliverables Acceptance Plan) by the requestor side.
-![chunk-0-img-35.jpeg](chunk-0-img-35.jpeg)
+![Fig 7.1 Executing Phase activities and main outputs](07.01.png)
 
-Fig 7.1 Executing Phase activities and main outputs
-![chunk-0-img-36.jpeg](chunk-0-img-36.jpeg)
 
-Fig 7.2 Executing Phase artefacts
+![Fig 7.2 Executing Phase artefacts](07.02.png)
 
 ### 7.1 Executing Kick-off Meeting 
 
@@ -1612,16 +1604,12 @@ After the Executing Kick-off Meeting:
 | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Executing Kick-off Meeting | I | A | C | S/C | C | C | R | C |
 
-![chunk-0-img-37.jpeg](chunk-0-img-37.jpeg)
 
-Fig 7.3 Executing Kick-off Meeting inputs/outputs and main roles
-Outputs
+
+ ![Fig 7.3 Executing Kick-off Meeting inputs/outputs and main roles](07.03.png)
+**Outputs**
 
 - Minutes of Meeting (MoM)
-
-
-
-
 
 
 ### 7.2 Project Coordination 
@@ -1657,9 +1645,7 @@ Note: Project coordination begins officially with the initiation of the project 
 | :-- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Project Coordination | I | I | A | S | I | I | R | I |
 
-![chunk-0-img-38.jpeg](chunk-0-img-38.jpeg)
-
-Fig 7.4 Project Coordination inputs/outputs and main roles
+![Fig 7.4 Project Coordination inputs/outputs and main roles](07.04.png)
 
 **Outputs**
 
@@ -1694,13 +1680,13 @@ Quality Assurance activities are documented in the Quality Management Plan. Thes
 | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Quality Assurance | I | I | I | S | C | I | A | R |
 
-![chunk-0-img-39.jpeg](chunk-0-img-39.jpeg)
+![Fig 7.5 Quality Assurance inputs/outputs and main roles](07.05.png)
 
-Fig 7.5 Quality Assurance inputs/outputs and main roles
+
 
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :--: | :--: | :--: | :--: | :--: | :--: |
-| Quality <br> Management | Project <br> Charter | Quality <br> Management <br> Plan | Quality Review <br> Reports <br> Audit Reports | Quality Review Checklist <br> Project Logs <br> Phase-Exit Review Checklist | Project-End <br> Report <br> Project <br> Acceptance Note |
+| Quality Management | Project Charter | Quality Management Plan | Quality Review Reports<br />Audit Reports | Quality Review Checklist <br> Project Logs <br> Phase-Exit Review Checklist | Project-End Report <br> Project Acceptance Note |
 
 **Outputs**
 
@@ -1744,9 +1730,11 @@ Project Reports may also contain agreed project indicators and metrics for evalu
 | :-- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Project Reporting | I | I | A | S/C | I/C | I/C | R | C |
 
-![chunk-0-img-40.jpeg](chunk-0-img-40.jpeg)
 
-Fig 7.6 Project Reporting inputs and main roles.
+
+![Fig 7.6 Project Reporting inputs and main roles](07.06.png)
+
+
 The following are examples of PM² reports:
 
 - Project Status Report
@@ -1824,9 +1812,11 @@ Information distribution refers to the methods used to keep project stakeholders
 | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Information Distribution | I | I | A | C | I | I | R | C |
 
-![chunk-0-img-41.jpeg](chunk-0-img-41.jpeg)
 
-Fig 7.7 Information Distribution inputs and main roles
+
+![Fig 7.7 Information Distribution inputs and main roles](07.07.png)
+
+
 
 ### 7.6 Phase Gate: RfC (Ready for Closing) 
 
@@ -1838,12 +1828,10 @@ PM² provides a template Phase Exit Review Checklist for each phase that can be 
 ## 8 Closing Phase 
 
 The final phase of a PM² project is the Closing Phase. The Closing Phase starts with the Project-End Review Meeting and ends with the Project Owner's (PO) final approval, which marks the project's administrative closure. During the Closing Phase, the project's activities are completed, the project's final state is documented, and the finished deliverables are officially transferred to the Project Owner (PO).
-![chunk-0-img-42.jpeg](chunk-0-img-42.jpeg)
+![Fig 8.1 Closing Phase activities and main outputs](08.01.png)
 
-Fig 8.1 Closing Phase activities and main outputs
-![chunk-0-img-43.jpeg](chunk-0-img-43.jpeg)
 
-Fig 9.2 Closing Phase artefacts
+![Fig 9.2 Closing Phase artefacts](09.02.png)
 
 **Project-End Review Meeting**
 
@@ -1908,10 +1896,11 @@ After the Project-End Review Meeting:
 | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Project-End Review Meeting | I | A | C | S | C | C | R | C |
 
-![chunk-0-img-44.jpeg](chunk-0-img-44.jpeg)
 
-Fig 8.3 Project-End Review Meeting inputs/outputs and main roles
-Outputs
+
+![Fig 8.3 Project-End Review Meeting inputs/outputs and main roles](08.03.png)
+
+**Outputs**
 
 - Project-End Review Meeting Minutes
 
@@ -1946,7 +1935,7 @@ Because all projects are different, the Lessons Learned process cannot be generi
 | :-- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Lessons Learned and <br> Post-project Recommendations | I | A | C | S | C | C | R | C |
 
-Outputs
+**Outputs**
 
 - Project-End Report
 
@@ -1990,9 +1979,9 @@ Following the Project-End Review Meeting, the overall experience of the project 
 | :-- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Project-End Report | I | A | C | S | C | C | R | C |
 
-![chunk-0-img-45.jpeg](chunk-0-img-45.jpeg)
+![Fig 8.4 Project-End Report inputs and main roles](08.04.png)
 
-Fig 8.4 Project-End Report inputs and main roles
+
 
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :--: | :--: | :--: | :--: | :--: | :--: |
@@ -2034,9 +2023,9 @@ The project is officially closed once all Closing Phase activities are completed
 | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Administrative Closure | I | C | A | C | I | C | R | I |
 
-![chunk-0-img-46.jpeg](chunk-0-img-46.jpeg)
 
-Fig 8.5 Administrative Closure inputs/outputs and main roles
+
+![Fig 8.5 Administrative Closure inputs/outputs and main roles](08.05.png)
 
 **Outputs**
 
@@ -2061,9 +2050,10 @@ The Monitor \& Control activities are carried out based on the processes describ
 **Control**
 
 - Devise, plan, propose and implement corrective actions to address existing or potential performance risks or issues, while updating the relevant project plans and logs.
-![chunk-0-img-47.jpeg](chunk-0-img-47.jpeg)
 
-Fig 9.1 Monitor \& Control activities and main artefacts
+![Fig 9.1 Monitor & Control activities and main artefacts](09.01.png)
+
+
 Monitor \& Control artefacts comprise the Project Work Plan as well as a range of Project Logs and Checklists.
 
 The Project Logs are regularly updated as new information becomes available (e.g. new issues can arise and new information can be added to the Issue Log).
@@ -2115,9 +2105,9 @@ This information is then distributed to relevant stakeholders as per the Communi
 | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Monitor Project Performance | I | I | A | C | C | I | R | C |
 
-![chunk-0-img-48.jpeg](chunk-0-img-48.jpeg)
 
-Fig 9.2 Monitor Project Performance inputs/outputs and main roles
+
+![Fig 9.2 Monitor Project Performance inputs/outputs and main roles](09.02.png)
 
 **Outputs**
 
@@ -2155,13 +2145,15 @@ Approved project changes (e.g. addition of new tasks or changes to the required 
 | :-- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Control Schedule | I | I | A | C | C | I | R | C |
 
-![chunk-0-img-49.jpeg](chunk-0-img-49.jpeg)
 
-Fig 9.3 Control Schedule inputs/outputs and main roles
+
+![Fig 9.3 Control Schedule inputs/outputs and main roles](09.03.png)
+
+
 
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :--: | :--: | :--: | :--: | :--: | :--: |
-| Schedule Management | Project <br> Charter | Project Handbook Project Work Plan | Project <br> Reports | Project Work Plan | Project-End Report |
+| Schedule Management | Project Charter | Project Handbook Project Work Plan | Project Reports | Project Work Plan | Project-End Report |
 
 **Outputs**
 
@@ -2201,9 +2193,9 @@ Note: The project budget must have been approved by the Project Owner (PO) at th
 | :-- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Control Cost | I | I | A | C | C | I | R | C |
 
-![chunk-0-img-50.jpeg](chunk-0-img-50.jpeg)
 
-Fig 9.4 Control Cost inputs/outputs and main roles
+
+![Fig 9.4 Control Cost inputs/outputs and main roles](09.04.png)
 
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :--: | :--: | :--: | :--: | :--: | :--: |
@@ -2245,9 +2237,11 @@ Responsibility for this activity belongs to the Project Manager (PM). However, a
 | :-- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Manage Stakeholders | I | I | A | S/C | I | C | R | I |
 
-![chunk-0-img-51.jpeg](chunk-0-img-51.jpeg)
 
-Fig 9.5 Manage Stakeholders inputs/outputs and main roles
+
+![Fig 9.5 Manage Stakeholders inputs/outputs and main roles](09.05.png)
+
+
 
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :--: | :--: | :--: | :--: | :--: | :--: |
@@ -2305,15 +2299,17 @@ of the Project Core Team, PCT) | Responsible for many of the requirements manage
 | :-- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Manage Requirements | I | I | A | C | C | I | R | S |
 
-![chunk-0-img-52.jpeg](chunk-0-img-52.jpeg)
 
-Fig 9.6 Manage Requirements inputs/outputs and main roles
+
+![Fig 9.6 Manage Requirements inputs/outputs and main roles](09.06.png)
+
+
 
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :--: | :--: | :--: | :--: | :--: | :--: |
 | Requirements <br> Management | Project Initiation <br> Request <br> Project Charter | Requirements <br> Management Plan <br> Deliverables Acceptance <br> Plan <br> Project Stakeholder <br> Matrix | Change <br> Requests | Requirements <br> Document <br> Project Work Plan <br> Project Logs | Project-End <br> Report |
 
-Outputs
+**Outputs**
 
 - Requirements Document
 - Change Log (updated)
@@ -2357,13 +2353,15 @@ All stakeholders affected by the project changes should be informed and the Chan
 | :-- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Manage Project Change | I | C | A | S | I | I | R | C |
 
-![chunk-0-img-53.jpeg](chunk-0-img-53.jpeg)
 
-Fig 9.7 Manage Project Change inputs/outputs and main roles
+
+![Fig 9.7 Manage Project Change inputs/outputs and main roles](09.07.png)
+
+
 
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :-- | :--: | :--: | :--: | :--: | :--: |
-| Project Change <br> Management | Project <br> Charter | Project Change <br> Management Plan | Change Request <br> Project Reports | Change Log <br> Project Work Plan | Project-End <br> Report |
+| Project Change Management | Project Charter | Project Change Management Plan | Change Request Project Reports | Change Log <br> Project Work Plan | Project-End  Report |
 
 **Outputs** 
 
@@ -2405,9 +2403,11 @@ The Risk Management Process can be tailored and customised to a project's needs 
 | :-- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Manage Risks | I | C | A | S/C | C | I | R | C |
 
-![chunk-0-img-54.jpeg](chunk-0-img-54.jpeg)
 
-Fig 9.8: Manage Risk inputs/outputs and main roles
+
+![Fig 9.8: Manage Risk inputs/outputs and main roles](09.08.png)
+
+
 
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :--: | :--: | :--: | :--: | :--: | :--: |
@@ -2453,15 +2453,17 @@ The Project Manager (PM) manages project issues and decisions. Issues are identi
 | :-- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Manage Issues and Decisions | I | I | A | S | C | I | R | C |
 
-![chunk-0-img-55.jpeg](chunk-0-img-55.jpeg)
 
-Fig 9.9 Manage Issues and Decisions inputs/outputs and main roles
+
+![Fig 9.9 Manage Issues and Decisions inputs/outputs and main roles](09.09.png)
+
+
 
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :--: | :--: | :--: | :--: | :--: | :--: |
-| Issue <br> Management |  | Issue Management Plan | Project <br> Reports | Project Logs <br> Project Work Plan | Project-End Report |
+| Issue Management |  | Issue Management Plan | Project Reports | Project Logs <br> Project Work Plan | Project-End Report |
 
-Outputs
+**Outputs**
 
 - Issue Log (updated)
 - Decision Log (updated)
@@ -2499,8 +2501,9 @@ The Project Manager (PM) must ensure that the objectives, approach, requirements
 | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Manage Quality | I | I | I | S/C | C | A | R | C |
 
-![chunk-0-img-56.jpeg](chunk-0-img-56.jpeg)
-9.10 Manage Quality inputs/outputs and main roles
+![Fig. 9.10 Manage Quality inputs/outputs and main roles](09.10.png)
+
+### 
 
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :--: | :--: | :--: | :--: | :--: | :--: |
@@ -2555,13 +2558,15 @@ For example:
 | :-- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Manage Deliverables Acceptance | I | I | A | S | C | C | R | C |
 
-![chunk-0-img-57.jpeg](chunk-0-img-57.jpeg)
 
-Fig 9.11 Manage Deliverables Acceptance inputs/outputs and main roles
+
+![Fig 9.11 Manage Deliverables Acceptance inputs/outputs and main roles](09.11.png)
+
+
 
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :--: | :--: | :--: | :--: | :--: | :--: |
-| Acceptance <br> Management | Project <br> Charter | Deliverables <br> Acceptance Plan | Deliverables <br> Acceptance <br> Note | Deliverables Acceptance Checklist Decision Log | Project-End Report |
+| Acceptance  Management | Project  Charter | Deliverables Acceptance Plan | Deliverables Acceptance Note | Deliverables Acceptance Checklist Decision Log | Project-End Report |
 
 **Outputs** 
 
@@ -2609,9 +2614,11 @@ Transition management ensures a controlled and smooth transition from the old st
 | :-- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Manage Transition | I | A | C | C | C | C | R | C |
 
-![chunk-0-img-58.jpeg](chunk-0-img-58.jpeg)
 
-Fig 9.12 Manage Transition inputs/outputs and main roles
+
+![Fig 9.12 Manage Transition inputs/outputs and main roles](09.12.png)
+
+
 
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :--: | :--: | :--: | :--: | :--: | :--: |
@@ -2660,9 +2667,11 @@ Note that business implementation activities will almost always be required long
 | :-- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Manage Business Implementation | I | I | A | R | C | I | S | I |
 
-![chunk-0-img-59.jpeg](chunk-0-img-59.jpeg)
 
-Fig 9.13 Manage Business Implementation inputs/outputs and main roles
+
+![Fig 9.13 Manage Business Implementation inputs/outputs and main roles](09.13.png)
+
+
 
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :--: | :--: | :--: | :--: | :--: | :--: |
@@ -2704,9 +2713,11 @@ The Project Manager (PM) manages the delivery of all products and/or services th
 | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Manage Outsourcing | A | C | C | C | I | S | R | I |
 
-![chunk-0-img-60.jpeg](chunk-0-img-60.jpeg)
 
-Fig 9.14 Manage Outsourcing inputs/outputs and main roles
+
+![Fig 9.14 Manage Outsourcing inputs/outputs and main roles](09.14.png)
+
+
 
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :--: | :--: | :--: | :--: | :--: | :--: |
@@ -3107,8 +3118,6 @@ The Communications Management Plan defines and documents communication activitie
 | Date of Application | The date on which the decision is applicable. |
 | Decision communicated <br> to: | The group, teams, and other audiences to whom the decision should be <br> communicated. |
 
-
-
 ## Appendix C: Project Management Tools \& Techniques 
 
 This section introduces a number of commonly used Project Management Tools \& Techniques useful for dealing with various project management challenges. Each Tool \& Technique is summarised in a few paragraphs providing a simple and high-level overview of that tool or technique.
@@ -3247,9 +3256,9 @@ To avoid making the same mistakes twice, Lessons Learned should be shared with o
 PM² recognises the complex and uncertain nature of many types of projects and the positive contribution of the Agile way of thinking to their effective management.
 
 Agile approaches face various challenges, which grow with the size of the organisations in which they are applied. In the case of many organisations, these challenges include coordination between Agile and nonAgile teams, compliance with various organisational governance and audit requirements, and organisational architecture and interoperability constraints.
-![chunk-0-img-61.jpeg](chunk-0-img-61.jpeg)
+![Fig D. 1 From project phases to daily cycles](d.01.png)
 
-Fig D. 1 From project phases to daily cycles
+
 The Agile extension to PM² incorporates Agile into the overall PM² framework and creates the foundations for moving towards increased project management and organisational agility. It helps project teams achieve the desired level of agility while accommodating tight procurement and audit requirements, coordination with the programme and portfolio levels, and collaboration with other projects, contractors, other organisational units and even external organisations.
 
 **The Agile extension to PM² provides (for IT projects):**
@@ -3257,16 +3266,15 @@ The Agile extension to PM² incorporates Agile into the overall PM² framework a
 - Agile roles \& responsibilities (as an extension to the PM² governance).
 - integration with the overall PM² project lifecycle.
 - a set of suggested Agile PM² Artefacts (as an extension to the PM² Artefacts).
-![chunk-0-img-62.jpeg](chunk-0-img-62.jpeg)
 
-Fig D. 2 The positioning of Agile PM² within an organisation
+![Fig D. 2 The positioning of Agile PM² within an organisation](d.02.png)
 
 Documenting the work planned and performed by the Agile teams is critical to increasing transparency and coordination between the different layers of the PM² project organisation (i.e. between the Directing, Managing and Performing layers).
 
 A set of artefacts supports the use of Agile PM². These artefacts capture and document information related to the management approach, to specific (implementation) activities, milestones, issues and progress reporting. These artefacts are grouped in three categories: Agile-Specific Artefacts, Coordination \& Reporting Artefacts, and Project Governance Artefacts.
-![chunk-0-img-63.jpeg](chunk-0-img-63.jpeg)
+![Fig D. 3 Agile PM² Artefacts Landscape](d.03.png)
 
-Fig D. 3 Agile PM² Artefacts Landscape
+
 
 #### D.1.2 PM² Programme Management (PgM²) 
 
@@ -3275,9 +3283,9 @@ A programme is a collection of projects aimed towards a common goal which are ma
 Programmes may also include work outside the scope of the discrete projects in the programme. Programme management is the process of applying knowledge, skills, and actions to a programme to achieve its objectives and benefits.
 
 The programme management layer interacts with the project management layer in that it initiates and coordinates the projects within the programme. The programme itself is initiated from the portfolio management layer within the organisation.
-![chunk-0-img-64.jpeg](chunk-0-img-64.jpeg)
+![Fig D. 4 Relationships between strategy, project, programme, portfolio and operations](d.04.png)
 
-Fig D. 4 Relationships between strategy, project, programme, portfolio and operations
+
 
 **Programme Lifecycle** 
 
@@ -3286,15 +3294,15 @@ A programme has a defined start and end during which all programme activities ar
 The Executing Phase can also contain several Stages, each one being linked to a major achievement in terms of programme outcomes, which enables the realisation of the benefits.
 
 The typical programme management activities performed during each phase go hand-in-hand with a number of programme artefacts.
-![chunk-0-img-65.jpeg](chunk-0-img-65.jpeg)
+![Fig D. 5 The PM² Programme Lifecycle and Artefacts Landscape](d.05.png)
 
-Fig D. 5 The PM² Programme Lifecycle and Artefacts Landscape
+
 
 **Programme Organisation**
 
-![chunk-0-img-66.jpeg](chunk-0-img-66.jpeg)
+![Fig D. 6 The PM²-Programme organisation](d.06.png)
 
-Fig D. 6 The PM²-Programme organisation
+
 The Programme Owner (PgO) is accountable for the programme's success, whereas the day-to-day management of the programme is delegated to the Programme Manager (PgM), whose focus is to achieve the programme outcomes.
 
 The Programme Business Manager (PgBM) represents the Programme Owner (PgO) on a daily basis within the programme and collaborates closely with the Programme Manager (PgM). The focus of this role is to realise the programme benefits, enabled by the programme outcomes.
@@ -3326,19 +3334,16 @@ Is the continuous process in which the authorised programmes and projects are ma
 ##### 4. Stakeholder Management \& Communication
 
 Is the continuous process of analysing and interacting with the different stakeholders to ensure their effective involvement in the composition and realisation of the portfolio's objectives.
-![chunk-0-img-67.jpeg](chunk-0-img-67.jpeg)
+![Fig D. 7 PM² Portfolio Management Process Model](d.07.png)
 
-Fig D. 7 PM² Portfolio Management Process Model
+
 The Portfolio Composition process feeds the continuous processes of Portfolio Realisation with new portfolio components (i.e. programmes or projects), the progress and results of which are communicated by executing the Portfolio Communication \& Stakeholder Management process. The characteristics and governance of the portfolio, as well as the activities of the portfolio management processes and the artefacts produced are defined by the Portfolio Framework.
 
 An overarching view of the organisational management of portfolios, programmes and projects is illustrated in the following diagram.
-![chunk-0-img-68.jpeg](chunk-0-img-68.jpeg)
+![Fig D. 8 High-level representation of the Management Layers, Activities and Artefacts](d.08.png)
 
-Fig D. 8 High-level representation of the Management Layers, Activities and Artefacts
 The Governance Structure of the PM² Portfolio Management is shown below.
-![chunk-0-img-69.jpeg](chunk-0-img-69.jpeg)
-
-Fig D. 9 PM² Project Portfolio Governance
+![Fig D. 9 PM² Project Portfolio Governance](d.09.png)
 
 ### D. 2 Considerations in PM²: Sustainability, Data Protection, IT Security, UX 
 
@@ -3442,13 +3447,13 @@ RAM (RASCI)—Responsible, Accountable, Supports, Consulted, Informed
 
 ## Appendix E: Additional Resources
 
-### The PM³ Artefacts Landscape
+**The PM³ Artefacts Landscape**
 
-![chunk-0-img-70.jpeg](chunk-0-img-70.jpeg)
+![The PM³ Artefacts Landscape](e.01.01.png)
 
-### Overview of PM² Activities & Artefacts
+**Overview of PM² Activities & Artefacts**
 
-![image-20251005174724906](image-20251005174724906.png)
+![Overview of PM² Activities & Artefacts](e.01.02.png)
 
 ### E. 2 Getting Started with PM² - Quick Start Tips 
 
@@ -3494,7 +3499,7 @@ The purpose of this quick start guide is to help you get started with applying P
 - Establish the detailed budgetary and resource requirements.
 - Create a work schedule (identify dependencies, assign resources and dates).
 
-## E. 3 Useful Online Resources 
+### E. 3 Useful Online Resources 
 
 The Centre of Excellence in $\mathrm{PM}^{2}\left(\mathrm{CoEPM}^{2}\right)$ provides a central location for downloading all PM² information, publications, translations, etc. To study PM² in more detail you can download and review the free PM² Methodology Guide and artefact templates, and explore the online resources:
 
@@ -3511,13 +3516,7 @@ Join the Open PM² Community on Join-up:
 https://joinup.ec.europa.eu/collection/open-pm2-project-management-methodology
 Sign-up to our newsletter: https://ec.europa.eu/newsroom/login?univers=informatics
 
-Appendix E: Additional Resources
-
-
-
-A - 117
-
-The PM² Methodology Guide v3.1
+## Appendix E: Additional Resources
 
 ## Appendix F: Ethics and Conduct 
 
@@ -3600,370 +3599,3 @@ All virtues are required for the application of professional competences, howeve
 |  Conflict and crisis management | Calmness, Fairness, Friendliness, Generosity  |
 |  Personal integrity and reliability | Calmness, Courage, Fairness, Friendliness, Honour, Temperance  |
 |  Culture and values management | All virtues  |
-
-
-
-### Appendix G: Glossary 
-
-|  | A |
-| :--: | :--: |
-| Accept (risk-response strategy) | Accept is a risk-response strategy that is applicable both for negative (threats) and positive (opportunities) risks. In the case of threats, there are two possible reactions, i.e. passive acceptance (no special action is planned, just continue to monitor the risk) or active acceptance, which implies the development of a contingency plan. In the case of opportunities, no specific action is taken towards realising them. We simply benefit from them in the case where they occur. |
-| Acceptance | Acceptance is the act of approving (signing-off) deliverables if they meet the defined acceptance criteria. It is the Project Owner (PO) who accepts the deliverables, during or at the end of the Executing Phase (deliverables acceptance) and during the Closing Phase (final project acceptance). |
-| Acceptance Criteria | Acceptance criteria comprise the prioritised list of requirements that the final deliverables must meet before the Project Owner (PO) can accept them. Acceptance criteria are documented in the Deliverables Acceptance Management Plan. |
-| Accountable Role (RASCI table) | The accountable role on the RASCI table refers to the person/group/entity that is ultimately answerable for the correct and full completion of the deliverable or task. They delegate the work and approve key milestones and deliverables. There is only one accountable person/group/entity per activity/task. |
-| Achievements | Achievements are the successful accomplishment of project outputs as a result of carrying out project activities. |
-| Activity | An activity is a set of tasks/work belonging to a process/work package in a project, with measurable outputs and limited duration. |
-| Actual Cost (AC) | Actual Cost (AC) is the amount of cost (monetary units) actually incurred until a given point in time (e.g. within a predefined reposting period). Also known as Actual Cost of Work Performed (ACWP). |
-| Administrative Closure | Administrative Closure takes place during the Closing Phase of a project. It is the process by which the Project Manager (PM) ensures that the project has been fully and formally accepted by the Project Owner (PO), that all documentation and records are reviewed, organised and securely archived, and that all resources are formally released. |
-| Agile project management | Agile is a project management approach with a specific set of working principles and practices. It promotes iterative delivery, cooperation of self-organised teams and process adaptability. |
-| Appropriate <br> Governance Body <br> (AGB) | The Appropriate Governance Body (AGB) is the entity responsible for the strategic planning and portfolio management at the institution level. It can be set for a specific domain and appear in different stages of the governance process. |
-| Approval | Approval is the formal acceptance of (i.e. positive decision on) something, such as a deliverable, an artefact, a project change or a risk-response strategy. |
-| Architecture Office (AO) | The Architecture Office (AO) advises project teams on architectural aspects (e.g. Application Architecture and IT Systems Architecture) and develops architecture standards for projects. |
-| Artefacts | Artefacts are tangible outputs of project management activities, such as Project Management Plans, the Project Work Plan, Meeting Minutes, Logs, Checklists, Reports, the Business Case and Project Charter. |
-| Project Manager Assistant (PMA) | The Project Manager Assistant (PMA) is an optional PM² role that assists the Project Manager (PM) in project management/administration activities. |
-| Assumption | An assumption is a hypothesis or piece of unconfirmed information that is considered to be true, and is used in order to proceed with an activity (e.g. project planning). Developing different scenarios that match the various outcomes of an assumption is considered as vital in risk management. |
-
-| Audit | An audit is an independent evaluation undertaken to provide an appropriate level <br> of assurance as to compliance with given standards. |
-| :-- | :-- |
-| Authority | Authority is the right to give orders, make and enforce decisions, apply project <br> resources and sign approvals. |
-| Avoid <br> (risk response <br> strategy) | Avoid is a risk-response strategy that consists of changing project conditions, plans, <br> activities or even scope to render the risk irrelevant to the project (i.e. Impact=0 <br> and/or Likelihood=0\%). |
-
-# B 
-
-| Backup | Backup is the process of copying data to a separate storage device in order to protect <br> the original against unavailability or corruption. |
-| :-- | :-- |
-| Baseline | A baseline is a desired value of a project dimension (scope, budget, schedule, etc.) or <br> plan that is agreed on and will serve as a reference during the project's execution. <br> During the course of the project, new baselines can be defined following the <br> appropriate change management process. |
-| Benefit | A benefit is a positive effect resulting from a project (i.e. seen as positive by one or <br> more stakeholders). Benefits should be measurable. The term Impact is also used to <br> describe Benefits in EU funded projects. |
-| Best Practice | Best practice describes a method or technique established through experience and <br> research consistently shows results superior to those achieved with other means. |
-| Bottom-up <br> (technique) | Bottom-up describes an approach for identifying project work elements and <br> estimating their effort/cost based on detailed work activities. These estimates are <br> then consolidated (rolled-up) to derive the total project cost/effort. |
-| Budget | The budget is the approved annual allocation of the organisation's financial resources <br> to a specific project/objective. |
-| Budget Lines | Budget lines refer to the financial resources specific to an organisation or unit. They <br> can be associated with a programme, an action/decision, a directive, a project or a <br> task. The term is often used as a synonym for funding sources. |
-| Budget <br> Performance | Budget performance or the Cost Performance Index (CPI) is an indicator of the cost <br> efficiency of project work accomplished to date. It is the ratio (percentage) of the <br> earned value (progress) and the actual effort (Ratio=(Progress/Actual effort)*100). If <br> this indicator is less than 100\% it means that the project is over budget; if it is higher <br> than 100\% it means that the project is under budget. |
-| Business Case | A Business Case is a document that provides contextual information to the decision- <br> makers on the project's costs and benefits, strategic alignment and/or business <br> problems the project intends to solve. It captures the reasoning for the project, <br> presents several alternative solutions, provides the justification for the investment in <br> time and effort, and establishes the budgetary needs. |
-| Business <br> Continuity <br> Planning (BCP) | Business Continuity Planning (BCP) is a process that identifies all critical functions, <br> services and activities that must be accomplished to enable an organisation or a <br> functional area to continue its business functions during a time of disaster or serious <br> disruption (e.g. power outages, natural disasters, accidents, acts of sabotage or other <br> incidents). The overall scope of Business Continuity Management covers the Disaster <br> Recovery Plans that are dedicated to the recovery of ICT systems and activities in <br> cases of major disruptions. |
-| Business <br> Governing Layer | The Business Governing Layer is composed of the organisation's decision-making <br> bodies from several business domains responsible for governing the project. (See also <br> Appropriate Governance Body, AGB.) |
-| Business <br> Implementation <br> Group (BIG) | The Business Implementation Group consists of representatives from the business <br> (customer) and user groups. It is responsible for representing the receiving <br> organisation during various phases of the project, specifically during business <br> implementation of the solution and user acceptance activities. |
-
-| Business <br> Implementation <br> Management | Business Implementation Management consists of planning, executing and controlling activities that support the organisational changes needed for (project) deliverables to be effectively integrated into everyday work and benefits achieved. |
-| :--: | :--: |
-| Business <br> Implementation <br> Plan | The Business Implementation Plan outlines the project's impact and deliverables for the requestor organisation, along with the change management activities that need to take place. The organisation must ensure that the project does not disrupt normal operations, and that project outputs are effectively integrated into the organisation. A change management plan is devised to ensure this and to increase the chances of achieving the desired project outcomes and benefits. |
-| Business <br> Manager (BM) | The Business Manager (BM) is a delegate of the Project Owner (PO) and acts on his/her behalf on a daily basis. The Business Manager (BM) also assists the Project Owner (PO) on the specification of the project and the main business objectives and works very closely with the Project Manager (PM). |
-| Business <br> Objectives | Business objectives can refer to a business process or the business as a whole-they translate organisational goals into desired business outcomes and connect organisational goals with project objectives. |
-| Business Process | A business process is a set of defined ad hoc or sequenced activities performed in a repeatable pattern by an organisation in order to fulfil a business need; processes can be triggered by events and may have multiple possible outcomes; a successful outcome of a process will deliver value to one or more customers of the process. |
-
-
-|  | C |
-| :--: | :--: |
-| Capability | Capability describes an existing or needed ability of people (singly or combined), information systems or devices that can support an activity, process or function. |
-| Capability <br> Maturity Model Integration (CMMI) | Capability Maturity Model Integration (CMMI) refers to a method of measuring the maturity of the capability of certain business processes to help organisations see their current level of maturity in relation to the desired level of maturity. |
-| Cause and Effect Diagram | The cause and effect diagram (also known as a fishbone diagram or Ishikawa diagram) shows the causes of a specific event and is very useful when investigating issues and risks. It helps to describe the problem/issue/risk, and to identify potential causes and categorise them. |
-| Change | Change refers to the act, process or result of the transition from an existing state to a new one. |
-| Change Control | Change control is an activity in the PM² Change Management Process that aims to evaluate, accept or reject project changes using a Change Log. |
-| Change Control <br> Board (CCB) | The Change Control Board (CCB) or Change Advisory Board (CAB) is a designated group of stakeholders that is responsible for reviewing, evaluating, approving or rejecting change requests for the project. In an organisation, this role may be performed by the Project Steering Committee (PSC). |
-| Change Log | The Change Log is a register of project changes used for recording, assessing, monitoring, controlling and tracking change requests and respective decisions. It also serves as a way of communicating changes to the Project Owner (PO) and/or Project Steering Committee (PSC). |
-| Change Request | A change request logs an appeal to amend an aspect of the agreed baseline of a project (i.e. scope, requirements, deliverables, resources, costs, timeframe or quality characteristics). A change request can be formally submitted via a Change Request Form, or can be identified and raised during meetings as a result of decisions, issues or risks, and should be documented in the Change Log. |
-| Change Status | The status of a change request is logged in the Change Log. It may have the following values: Submitted, Investigating, Waiting for approval, Approved, Rejected, Postponed, Merged or Implemented. |
-| Client | See Requestor Side. |
-
-| Closing Phase | The Closing Phase is the final phase of the project. During this phase, project activities are completed, Lessons Learned are discussed and documented, the finished deliverables are transferred to the care, custody and control of the Project Owner (PO), and the project is administratively closed. |
-| :--: | :--: |
-| Communication <br> Management <br> Plan | The Communication Management Plan describes the communication needs and expectations for the project. It defines and documents the content, format, frequency, audience and expected results of communication activities. It outlines how the assignment of activities and the project status are communicated. The plan identifies a communication strategy for each stakeholder, based on their interests in, expectations of and influence on the project. |
-| Community of Practice (CoP) | A Community of Practice (CoP) can be described as a group of people who share a common interest and/or a profession and who come together as a group to exchange information and experiences. A CoP can be internal to an organisation or involve professionals from different organisations. |
-| Competency | Competency describes the skill and capacity required to complete (project) activities. If project team members do not possess the required competencies, then the performance of the activity/project can be jeopardised. When such a mismatch is identified, efforts to address it must be considered. These might include training, coaching, hiring consultants, adaptation of the project schedule or even a change in scope. |
-| Compliance | To be in compliance means to conform to applicable standards, methodologies and project requirements (e.g. quality requirements), laws, business rules, etc. |
-| Configuration <br> Item | A configuration item is any project asset (deliverable, artefact, requirement, service, hardware, data, tool, etc.) that needs to be managed in order to deliver a project output. |
-| Configuration <br> Management | Configuration management is a discipline that provides control of the assets used by the project (e.g. artefacts, deliverables, hardware, etc.). |
-| Context | Context is the overall set of organisational (internal) and external factors that influence or determine the need for the project and its urgency. |
-| Contingency Plan | A contingency plan outlines the actions to follow in order to minimise the impact of a risk after it has occurred (i.e. proactive acceptance of the consequences). |
-| Contractor's <br> Project Manager (CPM) | The Contractor's Project Manager (CPM) is a role performed by a resource from the contractor side. The role is responsible for managing the daily progress of the outsourced activities in order to deliver an acceptable quality of services and/or deliverables as defined in the contract. The Contractor's Project Manager (CPM) works with the Project Manager (PM) and regularly reports on status and progress. |
-| Constraint | A constraint is an internal or external limitation (fact) to a project that has a direct effect on its performance |
-| Consulted Role (RASCI) | The consulted role on the RASCI table refers to the person/group/entity that provides input for an activity as a contributor, an expert, a reviewer, or other. |
-| Corrective <br> Actions | Corrective actions are planned (and implemented) as part of project controlling for the purpose of bringing the project back on track when significant deviations from the project's baselines have been identified. |
-| Critical Path | The critical path is the longest path (sequence of activities) needed to deliver project outputs. |
-| Customisation | Customisation of the PM² Methodology refers to defining specific project management parameters in order to address the particularities and needs of the project. It usually involves defining thresholds, scales and other parameters in the PM² defined processes (e.g. defining a risk as major when its impact is deemed as medium or higher), as well as any minor changes to the artefacts (e.g. renaming a section, etc.). Note that changes to the methodology are not considered customisations but tailoring. (See also Tailoring.) |
-
-| D |  |
-| :--: | :--: |
-| Dashboard | The Dashboard provides an overview of key performance indicators (KPIs) relevant to a particular objective. A project dashboard provides a one-screen overview of the project, shows the status of project variables such as budget, schedule, quality, scope, risk, etc., and directs users to more information as needed. |
-| Data Protection Coordinator (DPC) | Nominated by senior management or corporate level, the Data Projection Coordinator (DPC) ensures the coherent implementation of and compliance with specific data protection regulations. The Data Protection Coordinator (DPC) provides advice and assistance to everyone responsible for data protection, and specifically assists Data Controllers in the organisation in their notifications to the Data Protection Officer (DPO). Data Protection Coordinators (DPCs) set up the inventory of applications for the processing of personal data in the organisation, and liaise and cooperate with the Data Protection Officer (DPO). They also represent the organisation in the network of coordinators. |
-| Data Protection Officer (DPO) | Organisations may have one or more Data Protection Officers (DPOs) to ensure the application of the principles of personal data protection in the institution. Each keeps a register of all personal data processing operations in their institution. They provide advice and make recommendations on rights and obligations. They notify risky processing of personal data to a supervisor and respond to requests. In critical situations, they may investigate matters and incidents (own initiative). |
-| Decision Log | The Decision Log contains a summary of project decisions taken. It brings visibility to decisions and tracks responsibility for how and by whom they are taken, when decisions are implemented, as well as to whom they should be communicated. |
-| Deliverables | Deliverables are agreed, verifiable project outputs which will result in an outcome for the receiving party. |
-| Deliverables Acceptance Management | Deliverables Acceptance Management consists of planning, executing and controlling the activities that lead to deliverables acceptance, including defining acceptance criteria, planning and performing acceptance activities (e.g. acceptance testing), and formally approving project deliverables. |
-| Deliverables <br> Acceptance <br> Management <br> Plan | The Deliverables Acceptance Management Plan is a quality management artefact. It defines and documents the deliverables acceptance approach, activities, responsibilities and acceptance criteria along with acceptance tolerance levels. |
-| Deliverablebased Breakdown | A deliverable-based breakdown technique is used to represent and organise project work based on deliverables. The work needed to produce them is then also defined and organised by deliverable. |
-| Dependencies | Dependencies refer to the relationships between events (decisions, problems, activities, processes, projects, etc.) that influence project performance and outcomes and should be taken into account when planning project activities. |
-| Development <br> Team (DT) | The Development Team (DT) is a role applicable to projects with an IT component. It comprises members with the required development skills (programmers, analysts, testers, etc.) and application knowledge for the project. It is part of the Project Core Team (PCT). A Development Team (DT) can be either an internal IT Team or belong to an external contractor. |
-| Directing Layer | The Directing Layer champions the project and owns its Business Case. It mobilises the necessary resources and monitors the project's performance in order to realise the project's objectives. The Directing Layer comprises the roles of Project Owner (PO) and Solution Provider (SP). |
-| Document Management Officer (DMO) | The Document Management Officer (DMO) is a role that ensures the coherent implementation of Document Management in the organisation. |
-| Domain | A domain is a subject area with common requirements, terminology, and metadata. In an organisation, it is the highest-level grouping of organisation's activities. |
-
-| Domain-specific <br> Artefacts | The domain-specific artefacts are specific to the project's domain and integral to planning and the overall documentation. No templates are provided by PM² however, they should also be listed in the Project Handbook as part of the planning (phase) outputs. Examples include System Designs (IT projects), Architectural Layouts (renovation/moving projects), Laws/Policies (policy projects), etc. |
-| :--: | :--: |
-| E |  |
-| Earned Value (EV) | Earned Value (EV) is a way of representing project progress. It is the value of the work performed, but expressed in budgetary terms (percentage of the approved budget that has been earned by actual work completed). It is also known as Budgeted Cost of Work Performed (BCWP). |
-| Enhance (risk response strategy) | Enhance is a risk response strategy that aims to increase the likelihood and/or impact of a positive risk (opportunity). It is substantially different from the Exploit risk response strategy given that it does not ensure the realisation of the opportunity. |
-| Escalation | Escalation refers to an activity that requires additional resources to meet a result/output. There are two types of escalation, functional (if more competencies/a higher level of expertise are needed) or hierarchic (when senior decision layers need to be involved). |
-| Executing Phase | The Executing Phase is the third phase in a PM² project, after Initiating and Planning. It is where the project activities are carried out as defined in the project plans and the project deliverables are produced. |
-| Exploit (risk response strategy) | Exploit is a risk-response strategy that consists of changing project conditions, plans, activities or even scope to ensure that the positive risk (opportunity) will occur (likelihood=100\%). |
-| F |  |
-| Feature | A feature is an externally observable characteristic or set of characteristics provided by the solution that fulfils partially or entirely a stakeholder need and is used to perform a set of user tasks/function(s). |
-| Final <br> Acceptance | The final acceptance of project deliverables is performed during the Closing Phase by the Project Owner (PO), after consulting the Project Steering Committee (PSC), through a formal project final acceptance sign-off. |
-| Findings | Findings comprise the results of an evaluation of a process or criteria, based on relevant evidence, which compares the current state against the defined criteria (objectives of the evaluation) along with professional judgment. |
-| Full-TimeEquivalent (FTE) | One full-time equivalent (FTE) equals the work of one full-time person on the project (in staff-weeks, staff-months or staff-years). A half FTE is the equivalent work of a halftime person, and so on. |
-| Functionality | Functionality is the set of capabilities associated with a product or service. In an IT context, it is the ability of a programme or application system to provide a function to execute a set of user tasks. Functionality is the particular use or set of uses for which something is designed. |
-| G |  |
-| Gantt Chart | A Gantt chart is a type of bar chart that represents a project schedule. It may show information such as activities, start and end dates, duration, effort, and the relation between activities. |
-| Goal | A goal is the result or achievement toward which effort is directed. Goals are broad statements of achievable outcomes, consistent with the mission statement of a programme or organisation. |
-
-| Governance | Governance refers to the act of governing and is therefore concerned with how decisions are made. Governance is a process of developing a more strategic approach to projects/programmes in order to use resources and investments more efficiently and to ensure that business needs are supported by efficient tools. This process is performed by the organisation's governance bodies (See Appropriate Governance Body, AGB). PM² describes project-level governance and includes a project governance model, project lifecycle, and related processes and artefacts. |
-| :--: | :--: |
-| I |  |
-| Impact (risk, issue or change) | An impact is the measure of the effect of a risk, issue or change on the objectives and activities of a project. |
-| Impact (of a project) | The impact measures the (permanent or temporary) effect of a project on the organisation's processes, policies, technology, culture and people, or on the external environment. |
-| Information Distribution | Information distribution describes an activity performed during the Executing Phase that aims to regularly communicate project information to project stakeholders, based on the Communications Management Plan. |
-| Information Resource Manager (IRM) | The Information Resource Manager (IRM) is a horizontal function in an organisation, not directly applicable to the project management lifecycle. The Solution Provider (SP) may perform this role in a project with an IT component and as such would manage the Project Manager (PM). |
-| Information System (IS) | An information system (IS), whether automated or manual, includes people, machines, and/or methods organised to collect, process, transmit and disseminate data that represent user information. |
-| Informed Role (RASCI table) | The informed role in the RASCI table is the person/group/entity that is regularly informed (kept up-to-date) of the status or outputs of activities. This role involves only one-way communication. |
-| Infrastructure Costs | Infrastructure costs are those related to, for example, the equipment, materials, facilities and hardware required to deliver, support, operate and maintain the delivered solution. |
-| Initiating Phase | The Initiating Phase is the first phase in a PM² project. Its purpose is (1) to define what the project will do (formulate the objective of the project), (2) perform some initial planning to get the project off to a good start and (3) to provide and present the necessary information to get approval for the project. |
-| IPMA-ICB | The International Project Management Association-International Competence Baseline (IPMA-ICB) is a framework that documents an approach to project management broken down into 46 competence elements, covering technical, behavioural and contextual competences. |
-| Issue | An issue is any unplanned event related to the project that has already happened and requires the intervention of the Project Manager (PM) or higher management. All issues that need to be handled formally should be recorded in the Issue Log, examined and resolved. Anyone can raise an issue. It is best to solve the root cause to ensure that the issue does not re-occur. |
-| Issue Log | The Issue Log is a register (log file) used to capture and maintain information on all issues that are being formally managed. The Project Manager (PM) monitors the Issue Log on a regular basis. The structure of the Issue Log is defined in the Issue Management Plan. |
-| Issue Management | Issue management consists of all activities related to identifying, documenting, assessing, prioritising, assigning, resolving and controlling issues. |
-| Issue Management Plan | The Issue Management Plan defines and documents the activities, roles and responsibilities involved in identifying, assessing, assigning, resolving and controlling project issues. |
-
-| Issue Status | Issue status refers to an issue's stage within the management process. It can assume the following values: Open (i.e. unresolved); Postponed (i.e. resolution has been put off until later) or Resolved (i.e. required actions have been taken). |
-| :--: | :--: |
-| K |  |
-| Kick-off Meeting | In a PM² project, there are two Kick-off Meetings: 1) at the start of the Planning Phase, which is usually the first meeting with the project team and the requestor of the project, and 2) at the start of the Executing Phase. |
-| Key Performance Indicator (KPI) | A key performance indicator (KPI) is a quantifiable value used to assess performance in achieving the objective of a project, service, deliverable, process or activity. |
-| L |  |
-| Lessons Learned | Lessons Learned represent a repository of insights gained during a project that can be usefully applied in future projects. It helps to avoid possible mistakes and to repeat positive actions in future projects. Lessons Learned are discussed at least in the Project-End Review Meeting (and optionally at the end of project phases or major milestones) and are reported in the Project-End Report. |
-| Local <br> Information <br> Security Officer <br> (LISO) | The Local Information Security Officer (LISO) consults, gives advice on and assists with security aspects related to the project. This role can be a participant in the Project Steering Committee (PSC) and may work with the Data Protection Coordinator (DPC). |
-| Log | A log is a register of project events and actions related to project risks, changes, issues and decisions. Logs are used by the Project Manager (PM) during the project (i.e. Issue Log, Risk Log, Change Log and Decision Log). |
-| M |  |
-| Macro-Process | Macro-process refers to a set of processes related to a sub-domain. It corresponds to a grouping of activities based on common business logic. Sometimes the consolidation process corresponds to the sequential execution of many processes. |
-| Major Risk | A major risk is one that can jeopardise the realisation of project objectives or major milestones and whose risk level (combination of its impact and likelihood) is usually unacceptable and therefore requires risk mitigation, transfer or avoidance. |
-| Managing Layer | The Managing Layer focuses on day-to-day project realisation by planning, organising, monitoring and controlling project work to produce the intended deliverables and implement them in the business organisation. Members of the Managing Layer report to the Directing Layer. The Managing Layer is composed of the roles of Business Manager (BM) and Project Manager (PM). |
-| Methodology | Methodology refers to a written guideline that can be used to produce something. It includes specific components, such as phases, tasks, methods, techniques and tools. PM² is a methodology for Project Management. |
-| Metric | A metric is a quantifiable value that makes it possible to measure the achievement of a project/service/deliverable/process/activity objective. Metrics should be specific, measurable, actionable, relevant and captured at the right time. They provide important information for project management (e.g. risk, budget, schedule, issues, motivation and quality). |
-| Milestones | A milestone refers to a significant point or event in a project that receives special attention. In PM² there are management milestone artefacts that are of particular interest to the Project Steering Committee (PSC). Milestones can also be used to mark key deliverables, control points, the acceptance of final outputs and closing the project. |
-
-| Minutes of <br> Meeting (MoM) | Minutes of Meeting (MoM) provide a summary of what was discussed in a meeting, <br> including project issues, decisions taken, and risks identified. This document can be <br> used as an input into subsequent meetings. |
-| :-- | :-- |
-| Mitigation | Mitigation refers to an action carried out to: (1) lower the likelihood of a risk <br> occurring, and (2) reduce the effect of the risk on the project by minimising its impact <br> if it occurs. (See also Reduce, risk response strategy.) |
-| Monitor \& <br> Control | Monitor \& Control is a group of continuous activities that spans the life of a project. <br> These activities are focused on measuring the correct execution of the project against <br> the agreed baselines using key metrics like costs, time and quality indicators, and <br> taking corrective actions if the execution goes too far off plan. |
-
-
-|  | N |
-| :--: | :--: |
-| Non-compliance | Non-compliance refers to the failure to comply with project requirements or regulatory requirements imposed by public authorities or regulatory bodies. |
-| Non- <br> conformities | Non-conformities refer to the non-fulfilment of project requirements (i.e. the requirements that are not met). |
-
-
-|  | 0 |
-| :--: | :--: |
-| Objective | An objective is a target or metric that a person or organisation seeks to meet. It can be the desired output of a change/project and is usually defined in terms of scope, time, cost and quality. As far as possible, objectives should be Specific, Measurable, Attainable/Achievable, Relevant/Realistic and Time-bound (SMART). |
-| Operations | Operations refers to the day-to-day activities performed by the permanent organisation to deliver services or products. |
-| Opportunity | Opportunity is a favourable condition that can be exploited to result in a positive change or improvement in the project environment. |
-| Organisationalbased Breakdown | Organisational-based breakdown is a technique used to represent and organise project work by organisational entities (e.g. business units). Deliverables and project work are defined by and grouped in lower levels. |
-| Organisational Procurement Procedures | Organisational procurement procedures define how organisation can attain goods or services. They are provided at the organisational level and are also available to projects. They complement or supersede the Outsourcing Plan. |
-| Outcomes | Outcomes comprise the direct results of the usage (implementation) of project outputs by the customer. Outcomes allow the organisation to achieve the intended benefits of a project. |
-| Outputs | See Deliverables. |
-| Outsourcing Plan | The Outsourcing Plan describes the contracting strategies that will be used to outsource services or products outside the organisation to fulfil the project needs. It outlines the scope of products and/or services to be contracted and identifies responsibilities for the full contract lifecycle. It also includes the criteria for evaluating the contractors' service and deliverables. |
-| Outsourcing Management | Outsourcing management consists of defining the services/products to be outsourced, their requirements and the procurement strategy, selecting the contractor, monitoring service quality, and evaluating/accepting interim and final deliverables and/or milestones based on agreed criteria. |
-| Owner | The Owner is the person/entity that is ultimately responsible for something such as a project, deliverable, process, action, risk, issue, or decision. |
-
-| Pareto Chart Pareto Diagram Pareto Analysis | P |
-| :--: | :--: |
-|  | The purpose of the Pareto Chart is to categorise (highlight) the cumulative percentage of the contribution of causes (issues, cost, etc.) according to the frequency with which they occur. The Pareto Principle states that generally $80 \%$ of effects come from $20 \%$ of causes. Using the Pareto Chart enables a focus on the causes that have a high frequency and attempt to find a resolution for them first. This technique is known as Pareto Analysis. |
-| Peer Review | A peer review is an impartial review/evaluation of a project deliverable or artefact carried out by an expert or a group of experts working in the domain. |
-| Performing Layer | The Performing Layer is an operational layer and is where most of the project activities are carried out. It is composed of the Business Implementation Group (BIG) and the Project Core Team (PCT). |
-| Phase-Exit Review Checklists | Phase-Exit Review Checklists are spreadsheet-based documents used by the Project Manager (PM) to ensure that all the necessary items are in place before the project proceeds to the next phase or is closed. They are concerned with checking key information in each phase and gathering Lessons Learned. |
-| Phase Gates | Phase Gates are approval gates during the project lifecycle (Ready for Planning, Ready for Executing, Ready for Closing). They ensure good governance, making sure that project teams seek approval before moving on to the next phase. |
-| Phase Input | A phase input is any particular artefact, item, product, decision or even information that will be used in the activities of the receiving phase. Phase inputs are usually outputs of a previous phase. |
-| Phase Output | A phase output is any particular artefact, item, product, decision or even information that is produced during a phase. |
-| Plan | A plan is a written projection of project activities and resources needed to execute a process, e.g. for risk management, change management or transition. A plan should answer the four basic questions: what, when, how and by whom. |
-| Planned Value (PV) | Planned Value (PV) refers to the amount of cost (monetary units) planned to be consumed until a point in time (e.g. within a reporting period). It is in other words, an approved cost estimate of the resources scheduled, in a time-phased cumulative baseline. Also known as Budgeted Cost of Work Scheduled (BCWS). |
-| Planning Phase | The Planning Phase is the second phase of a PM² project in which the subject of the project is verified and developed into a workable plan for implementation. The various standard and specific plans for the project are created in this phase. |
-| PM² Mindsets | The PM² Mindsets present attitudes and behaviours which help project teams focus on what is really important in achieving project goals. |
-| PM² Certification Programme | A knowledge and experience-based project management certification programme for European Institution staff involved in project-related work. It offers two certification Levels: PM² Certified (knowledge-based) and PM² Practitioner (experience-based). |
-| PM² Training <br> Programme | The European Commission's training services offer a complete Project Management training programme. EU staff can choose between project management courses organised in four groups and two levels. |
-| PMBOK (Project <br> Management Body <br> of Knowledge) | The Project Management Body of Knowledge (The PMBOK ${ }^{\circledR}$ Guide) is a guide that describes a set of standard terminology, practices and guidelines for project management. It is published by the Project Management Institute (PMI). |
-| Portfolio (of projects) | A portfolio is a collection of projects, programmes and other activities grouped in order to ensure better financial and resource control, and to facilitate their effective management in terms of meeting strategic objectives. |
-
-| Post-project | Post-project defines the period after the project has been closed. It includes a set of activities to maintain, improve, extend and support project deliverables after they have been delivered to the stakeholders/user community. Post-project activities are the responsibility of the permanent organisation and are implemented as part of ongoing operations or future projects. These activities are usually defined in the Business Implementation Plan or recommended in the Project-End Report. |
-| :--: | :--: |
-| Post-project <br> Recommendations | Post-project recommendations comprise suggested courses of action to improve project deliverables after the project has been closed. <br> They are related to the operation of the product/service, and include extensions, updates, maintenance, ideas for follow-up projects, etc. They should be part of the Project-End Report. |
-| Pre-project | Pre-project describes the period before the project officially starts (i.e. before the Business Case is approved). It includes activities and information gathering related to the idea/need for the project. |
-| PRINCE2 | PRINCE2 is a process-driven project management method that supports selected aspects of project management. The acronym stands for "projects in a controlled environment". PRINCE2 covers the planning, organisation, management and control of projects. |
-| Priority | Priority refers to the numerical value given to a project item (requirement, risk, task, etc.) to classify its relative importance in comparison with other items. |
-| Problem | A problem is an existing state that can potentially affect the organisation's goals. |
-| Procedure | A procedure is a set of established steps and instructions that specify how to perform a specific activity, as part of a process. |
-| Process | Processes represent an organised sequence of activities or steps that together achieve a specified outcome. A process can be broken down into sub-processes, and can show operation of a function, system or service. It may also be used to link or make up organisations, functions, services and other processes. |
-| Process Categories | The organisation's processes can be classified into different process categories/domains. Examples include asset management, audit, internal communication, external communication, document management, financial management, grant management, human resources, IT, legislation lifecycle, statistics management, case management, crisis management (alert systems), procurement, programme management and strategic planning. |
-| Product | A product is the tangible output of a project using the PM² Methodology. For a business, a product might be a good manufactured for sale to customers. |
-| Programme | A programme is a collection of projects aimed towards a common goal-i.e. a group of related projects managed in a coordinated way to obtain benefits that could not be achieved from their individual management. Programmes may also include elements of related work outside the scope of its projects. |
-| Programme <br> Management | Programme management is the process of managing several inter-dependent projects to better achieve the programme's strategic objectives and benefits. |
-| Project | A project is a temporary organisational structure which is set up to create a unique product or service (output) within certain constraints. Temporary means that every project has a definite beginning and a definite ending. Unique means that the product or service is different in some distinguishing way from existing products and services. <br> Projects are run by people, constrained by limited resources, and planned, executed and controlled. Projects are often critical components of the performing organisations' business strategy. |
-| Project Change | A project change is a modification to the project environment (scope, schedule, resources, costs, risks, quality, artefacts, etc.). Possible causes for a change are e.g. a new requirement, an identified issue, a preventive action to reduce the risk level, a decision taken that has an impact on the project's baseline etc. |
-
-| Project Change <br> Management Plan | The Project Change Management Plan defines and documents the change process for a project. It defines the activities, roles and responsibilities involved in identifying, documenting, assessing, approving, prioritising, implementing, controlling and communicating project changes. |
-| :--: | :--: |
-| Project Charter | The Project Charter is a document that captures the essence of the envisaged solution in the form of high-level needs and features that gives the reader an overview of the final project deliverable(s). It includes information regarding the project scope, cost, time, and risks, as well as information such as milestones, deliverables, and project organisation and approach. It is a document initiated by the business sponsor that formally authorises the existence of the project and the project team and provides the Project Manager (PM) with the authority to use organisational resources to staff project activities. The final responsibility for the quality of the Project Charter lies with the Project Manager (PM). |
-| Project <br> Coordination | Project coordination describes the process of managing and directing project activities and stakeholders. It includes the allocation of project resources to activities, continuous quality checks of the interim results of work, ongoing communication with all project members, and the motivation of all involved throughout the project through leadership, negotiations, conflict resolution and application of appropriate people management techniques. |
-| Project Core Team (PCT) | The Project Core Team (PCT) is a group on the provider side of the project that performs the day-to-day project activities under the coordination of the Project Manager (PM). It plays a key role in the successful completion of the project. |
-| Project Drivers | Project drivers comprise the roles that lead the key activities in each phase of a PM² project. The project drivers differ from phase to phase. |
-| Project-End Report | The Project-End Report summarises the project experience, performance, Lessons Learned, successful project practices and pitfalls. It is created in the Closing Phase of a PM² project by the Project Manager (PM). |
-| Project-End <br> Review Meeting | The Project-end Review Meeting takes place during the project's Closing Phase. Its aim is to ensure that project members discuss their experience so that lessons learned and best practices are captured. In addition, ideas and recommendations for post-project work should also be discussed. The result of the meeting is documented in the Minutes of Meeting (MoM) and the Project-End Report. |
-| Project Handbook | The Project Handbook establishes the high-level approach for implementing the project objectives. It is one of the first artefacts created in the Planning Phase and it identifies the project standards, roles \& responsibilities, approach and the artefacts to be used. |
-| Project Initiation <br> Request | The Project Initiation Request is the starting point for documenting a project proposal. It gives a high-level overview of the current situation (needs, problems and opportunities), desired outcomes and the estimated effort, impact, risks, constraints and assumptions associated with the implementation of a solution. |
-| Project Lifecycle | The Project Lifecycle is the time between the start and the close of the project and includes the Initiating, Planning, Executing and Closing phases. The project lifecycle starts with the Project Initiation Request and ends once the Closing Phase activities are completed and the Project Owner (PO) performs the final acceptance. The formal project closure terminates the project mode and allows the operations mode (if any) to start. |
-| Project <br> Management | Project management refers to the application of knowledge, skills and techniques to successfully manage work and resources to achieve project objectives and organisational goals. |
-
-| PM² Project <br> Management <br> Methodology | PM² is the European Commission's official project management methodology, developed initially for European Institutions, which aims to enable Project Managers (PMs) to deliver solutions and benefits to organisations through the effective management of project work. It is a methodology created by the European Commission. |
-| :--: | :--: |
-| Project <br> Management <br> Information <br> System (PMIS) | A project management information system (PMIS) is an application system used to support the PM² Methodology and the management of projects in an organisation. It aims to support projects through all PM² phases (supplying templates and instructions) and makes it possible to consolidate information for reporting and monitoring purposes. |
-| Project <br> Management Plans | Project management plans are used to define project management processes to be applied to the project, such as the Project Change Management Plan, Risk Management Plan, Quality Management Plan, Issues Management Plan, Communications Management Plan and Requirements Management Plan. These plans are part of, or referenced from, the Project Handbook. |
-| Project Manager (PM) | The Project Manager (PM) is a role in the project that is appointed by the Project Steering Committee (PSC) to manage the daily progress of the project so as to deliver the outputs within the agreed constraints. The Project Manager (PM) also provides day-to-day management of the Project Core Team (PCT). |
-| Project Mode | Project mode refers to the work of the project organisation while the project is running. Once the project is completed (closed), it moves to operations mode. |
-| Project Owner (PO) | The Project Owner (PO) is the project sponsor and typically holds a management position within the requestor organisation. $5 /$ he sets the business goals and provides leadership and strategic direction. The Project Owner (PO) approves the deliverables and ensures that the project meets its goals. |
-| Project <br> Performance | Project performance is the state of project variables (i.e. cost, schedule, scope, and quality) throughout the project, compared with the baselined Project Work Plan. The evolution of these variables is tracked by agreed metrics. |
-| Project Phase | PM² has four phases: Initiating, Planning, Executing and Closing. The Monitor \& Control activities span all four project phases. |
-| Project Progress Report | The Project Progress Report is an artefact created by the Project Manager (PM) to inform the Project Steering Committee (PSC) on how the project is progressing compared to the baselines and the Project Charter. It covers the status of the deliverables, effort, risks, major issues, actions, achievements and scope changes. The difference between the Project Progress Report and the Project Status Report is that the Project Status Report is sent much more frequently (e.g. every one or two months) and contains just a one-page summary of the Project Status. (See also Project Status Report.) |
-| Project Quality <br> Assurance (PQA) | Project Quality Assurance (PQA) is the role that is responsible for quality assurance and auditing aspects. The role is an optional member of the Project Steering Committee (PSC) and helps the Project Manager (PM) in creating the Quality Management Plan. |
-| Project Reporting | Project reporting is an activity carried out by the Project Manager (PM) to document and summarise the status of various dimensions of project progress and to communicate this to relevant stakeholders. Project reports typically provide information on scope, schedule, cost, and quality, as well as relevant information on risks, issues, project changes and contract management issues. |
-| Project-Specific Plans | Project-specific plans are used to document and detail the project's activities and resources based on project needs (e.g. the Project Work Plan, Business Implementation Plan, Transition Plan and Outsourcing Plan). |
-| Project <br> Stakeholder Matrix | The Project Stakeholder Matrix lists all the people, groups or organisations involved in the project, and clarifies their roles. |
-
-| Project Status <br> Report | A Project Status Report is a frequent report (e.g. every 1-2 months) that is sent to the Project Steering Committee (PSC) and contains just a one-page summary of the project status. The frequency and format of this report is defined in the Communications Management Plan. (See also Project Progress Report.) |
-| :--: | :--: |
-| Project Steering Committee (PSC) | The Project Steering Committee (PSC) is responsible for monitoring the correct execution of the project. This group defines the main orientations of the project and coordinates its main tasks. It validates the human and financial resources allocated to the project as well as the main project deliverables. All stakeholder groups should be represented in the Project Steering Committee (PSC). |
-| Project Success Factors (PSF) | Project success factors (PSF) comprise the elements within the structure and context of the project that are necessary to achieve its success. Their presence will not guarantee success, but their absence will significantly increase the probability of failure. |
-| Project Support Office (PSO) | The Project Support Office (PSO) is an organisational body (or entity) providing project management services that may be linked to a specific project or be provided as a horizontal service by the organisation. The responsibilities of a Project Support Office (PSO) can range from providing simple project management support functions to facilitating the link of projects to strategic goals/corporate benefits by sharing resources, methodologies, tools, and techniques. Not every organisation has access to such a body. |
-| Project Support Team (PST) | The Project Support Team (PST) is composed of the Project Support Office (PSO), the Project Quality Assurance (PQA) and the Architecture Office (AO). The roles of the Project Support Team (PST) may be specific to a project or be provided as horizontal services by the organisation. This team offers administrative support to the project organisation and defines requirements to projects (e.g. related to reporting, methodology, quality, architecture, etc.). |
-| Project Variables | Project variables are the four essential baselined metrics monitored in the Monitor \& Control processes: cost, schedule, scope and quality. |
-| Project Work Plan | The Project Work Plan identifies and organises the project into deliverables, work packages, activities and tasks, needed to achieve the project objectives. It establishes a base from which to estimate the duration of the project, determine the required resources and schedule the work. |
-| Provider Side | The Provider Side includes the resources of the project that develop and implement the solution, i.e. the Solution Provider (SP), the Project Manager (PM) and the Project Core Team (PCT). In PM² the provider is internal to the organisation and different from any external contractors. |
-
-
-|  | $Q$ |
-| :--: | :--: |
-| Quality | The totality of features and characteristics of a product or service that bear on its ability to satisfy stated or implied needs. |
-| Quality <br> Assurance (QA) | Quality Assurance (QA) is the activity of providing the evidence needed to establish the quality of work and therefore provide enough confidence that the project will satisfy the desired scope and quality requirements within its constraints. |
-| Quality Characteristics | Quality characteristics comprise requirements for the project that are based on its objectives, approach, deliverables, expected benefits and resources available. Quality characteristics are translated into criteria that will be used to evaluate the alignment of deliverables and artefacts with expected outputs. |
-| Quality Control | Quality control is the activity of monitoring and consolidating results of Quality Assurance (QA) in order to assess compliance and performance, recommend necessary changes, and plan new or refine existing quality assurance activities. |
-| Quality <br> Management | Quality management consists of carrying out quality planning, quality assurance, quality control and quality improvement up until final project acceptance (Closing Phase). Quality management aims to ensure that the project will meet the expected results in the most efficient way, is compliant with all relevant governmental and industry standards and that deliverables will be accepted by the stakeholders. |
-
-| Quality <br> Management <br> Plan | The Quality Management Plan defines and documents the project's quality requirements, including the quality management approach, process, and responsibilities, and outlines the quality assurance and control activities to be carried out throughout the project. Also includes the Configuration Management process. |
-| :--: | :--: |
-| Quality Record | The quality record is an output of a quality management activity and serves as the evidence that this activity has been performed. |
-| Quality Review Checklist | A Quality Review Checklist is a tool used throughout the project (when performing quality control) to check if quality management activities have been performed as defined in the Quality Management Plan. |
-
-
-|  | R |
-| :--: | :--: |
-| RASCI | The acronym RASCI (pronounced rasky) stands for: Responsible, Accountable, Supports, Consulted and Informed. It is also known as the Responsibility Assignment Matrix (RAM). (See also Responsibility Assignment Matrix.) |
-| Ready for Closing (RfC) | Ready for Closing (RfC) is the third and final phase/approval gate at the end of the Executing Phase, where the Project Steering Committee (PSC) verifies that all planned activities have been carried out, all requirements have been met, and that the project's output(s) have been fully delivered and accepted by the Business Manager (BM) and the User Representatives (URs). |
-| Ready for Executing (RfE) | Ready for Executing (RfE) is the second phase/approval gate at the end of the Planning Phase, where the Planning Artefacts are approved by the Project Owner (PO) and the decision is taken to move the project to the Executing Phase. |
-| Ready for Planning (RfP) | Ready for Planning (RfP) is the first phase/approval gate at the end of the Initiating Phase. It includes the approval of the Business Case and the Project Charter by the Project Steering Committee (PSC). |
-| Recommendation | A recommendation is the suggested course of action to improve a process/control/output. It is associated with the result of a review/audit. |
-| Reduce (risk response strategy) | Reduce is a risk response strategy to mitigate the impact and/or likelihood of a risk through the proactive implementation of risk-reduction activities (e.g. controls) to a level where the residual risk can be accepted. |
-| Requestor Side | Also referred to as the Client Side. The Requestor Side includes the resources belonging to the organisation that requested the project and where the solution will be delivered. These resources include the Project Owner (PO), the Business Manager (BM) and the Business Implementation Group (BIG). |
-| Requirement | A requirement is a capability that the product or service the project is designed to deliver needs to have to satisfy the stakeholders' needs. It constitutes an agreement between the customer(s) and the project team on what to produce. It is a test that the end-product of the project has to pass in order to fulfil the customer's demands. |
-| Residual Risk | The residual risk is the accepted risk that remains after the risk-response is implemented or after existing controls are considered. |
-| Resource | A resource is an asset or object needed to achieve project objectives (e.g. people, budget, software, hardware, facilities, equipment and materials). |
-| Responsibility Assignment Matrix (RAM) | The Responsibility Assignment Matrix (RAM) is a way of clarifying roles and responsibilities for an activity and of ensuring that each component of work is assigned to a person or a team. (See also RASCI.) |
-| Responsible Role (RASCI table) | The responsible role on the RASCI table is the person/group/entity that has to perform the tasks or ensure that they are done. <br> Others can support this role (or do part of the work) or be consulted (review or approve the work), but there is only one responsible person/group/entity. |
-| Reviewer | A reviewer is the person who formally assesses and validates an artefact or deliverable. |
-
-| Risk | A risk is an uncertain event or set of events (positive or negative) that, should it occur, will have an effect on the achievement of project objectives. <br> A risk is generally measured by a combination of the likelihood (probability of the risk happening) and the size of the impact on the project. |
-| :--: | :--: |
-| Risk Appetite | Risk appetite describes the level of risk that an organisation is prepared to accept in the pursuit of its objectives. |
-| Risk Assessment | A Risk Assessment is an evaluation performed by analysing the likelihood of an identified event occurring and the impact on project objectives if this event happens, alongside the risk appetite and existing vulnerabilities of the project/organisation. <br> Risk levels are calculated for each event and risks are then prioritised. |
-| Risk Assessment (Likelihood/Impact) Matrix | A Risk Assessment Matrix shows the different combinations of likelihood and impact of project risks and defines bands of risk level that suggest risk-response strategies. |
-| Risk Impact | The risk impact describes the potential consequence that the risk will have on the project's objectives, should it materialise. <br> The impact can be both quantitative and qualitative in nature. It is usually expressed on a scale from 1 to 5 . |
-| Risk Likelihood | The risk likelihood expresses the probability that the risk might occur. It is usually expressed on a scale from 1 to 5 (it can also be expressed in terms of actual probabilities, e.g. $10 \%-30 \%-50 \%-70 \%-90 \%$ ). |
-| Risk Level (RL) | The risk level (RL) is the result of the combination of the likelihood (L) that a risk occurs, and its impact (I) should it occur. (RL=L*I). |
-| Risk Log | A Risk Log is the central repository for all risks identified by the project or organisation. It includes information for each risk such as its likelihood, impact, level, risk-response strategies and risk owner. A Risk Log can also be referred to as a Risk Register or Risk List. |
-| Risk Management | Risk management describes a continuous, proactive and systematic process for identifying, assessing and managing risks in line with the accepted risk levels, carried out throughout the project to provide reasonable assurance as regards the achievement of project objectives. |
-| Risk Management Plan | The Risk Management Plan defines and documents the risk management process for a project. It describes how risks will be identified and assessed, what tools and techniques will be used, the risk level bands (in the risk assessment matrix), the relevant roles and responsibilities, and how often risks need to be revisited, etc. It also defines the risk monitoring and escalation process as well as the structure of the Risk Log used to document and communicate the risks and the risk-response. |
-| Risk Owner | The risk owner is the person accountable for the management and monitoring of a specific risk. |
-| Risk Reserve | The risk reserve refers to the amount of budget or time estimated and allocated to implement project risk-response strategies. |
-| Risk-Response Strategy | The risk-response strategy describes the way in which a risk will be managed. The risk response strategies are created in order to be able to counter both positive (opportunities) and negative (threats) risks, and are grouped as follows: <br> Threats: Avoid, Reduce, Accept, Transfer/Share <br> Opportunities: Exploit, Enhance, Accept, Share |
-| Risk Status | The status of a risk is logged in the Risk Log. It can assume the following values: proposed, investigating, waiting for approval, approved, rejected, closed. |
-| Risk Threshold | Risk threshold is the level of impact beyond which an organisation will no longer tolerate the risk. Risk threshold is a negotiated quantified limit. |
-| Risk Tolerance | The sensitivity of an organisation or project stakeholders to risks, their willingness to accept or avoid risk. Risk tolerance can be variable and fluid from person to person. |
-| Root Cause | The root cause describes the original/primary cause of an issue or a risk. |
-
-|  | S |
-| :--: | :--: |
-| Secondary risk | A secondary risk is a risk that is created after a risk-response is implemented. The new risk is then assessed and if necessary, a new response strategy may be defined. |
-| Schedule | The schedule is part of the PM² Project Work Plan. It consists of a time-based plan of project milestones, activities, tasks and deliverables, with start and end dates, linked by dependencies. A schedule is often presented in a Gantt chart. (See also Gantt chart.) |
-| Scope <br> Statement | A scope statement is a short description of what needs to be accomplished in a project. It presents the major objectives, deliverables, and justification in one or two phrases. <br> The project scope is first defined in the Business Case and then elaborated in the Project Charter. It reaches its final form in the Project Work Plan |
-| Services | Services refer to intangible project outputs that enable the requestor to achieve the desirable outcomes. |
-| Service Mode | Service mode is the temporary organisation/governance structure created to maintain, improve, extend and support information systems after they have been delivered to the stakeholders/user community and until the end of the information system's lifecycle. <br> The service mode is also known as operational and corrective maintenance mode. |
-| Share (risk response strategy) | Share is a risk response strategy that can be used both for negative (threats) and positive (opportunities) risks. <br> It is usually based on a "pain/gain" formula where both parties share either the loss, in the case of a threat, or the gains, in the case of an opportunity (e.g. by partnering). |
-| Service-Level Agreement (SLA) | A service-level agreement (SLA) is part of a contract agreed by two parties where key performance indicators (KPIs) are defined and the level of service agreed. |
-| Situation | A situation refers to a set of problems, needs and opportunities that affect the existing state. |
-| Solution | A solution refers to a set of products and/or services that allows the requestor side to solve a business problem, to meet a business need or to grab an opportunity. |
-| Solution Development Costs | Solution development costs comprise the costs of the resources required to develop project deliverables. |
-| Solution Maintenance Costs | Solution maintenance costs comprise the costs of resources required to maintain project deliverables (including making changes to project deliverables). |
-| Solution <br> Provider (SP) | The Solution Provider (SP) assumes overall accountability for the deliverables and services requested by the Project Owner (PO). <br> The Solution Provider (SP) typically holds a management position within the provider organisation. The Project Manager (PM) reports to the Solution Provider (SP). |
-| Specification | A specification is a complete, testable and documented set of requirements to be satisfied by a specific solution. Specifications can be described in use cases, business rules, story boards, etc. |
-| Stage | A stage is a point, period or step within a phase, (primarily the Executing Phase) and is linked to a major achievement in terms of project outcomes. <br> It is principally used in Agile Project Management. |
-| Stage-based Breakdown | Stage-based breakdown describes a technique used to represent and organise project work in sequential phases or stages/iterations. |
-| Stakeholder | A stakeholder is any individual, group or organisation that can affect, be (positively or negatively) affected by, or perceive itself to be affected by the project. <br> A stakeholder can also exert influence over the project and its deliverables. |
-
-| Stakeholders <br> Checklist | The Stakeholders Checklist is a document created to help deal with stakeholders during the lifecycle of the project. |
-| :--: | :--: |
-| Stakeholder <br> Need | Stakeholder needs describe a desirable or mandatory capability requested by an individual or a group of people that will be used as primary input to define the highlevel features of a solution. |
-| Steering Layer | The Steering Level provides general project direction and guidance to keep the project focused on its objectives. It reports to the Appropriate Governance Body (AGB), which operates on a more strategic level. The Steering Layer is composed of the Project Steering Committee (PSC) roles. |
-| Success Criteria | Success criteria comprise the standards by which the project is judged. Success criteria are measurements established to determine whether the project has satisfied its objectives and met its requirements. Success criteria can be qualitative or quantitative, and are ideally SMART (Specific, Measurable, Achievable, Relevant and Realistic, and Time-bound). <br> Do not confuse success criteria with benefits: While success criteria can be measured at project closure, benefits are often achieved long after project closure. |
-| Support Costs | Support costs are those required to support the use of the project deliverables after the project has ended. |
-| Support Layer | The Support Layer consists of the roles responsible for providing support to the project. The composition and structure of this layer depends on the size of the project and is defined by the Project Manager (PM). <br> The support roles may be assumed by specific teams or team members or may be provided as horizontal services by the organisation. |
-| Supports Role (RASCI table) | The supports role on the RASCI table refers to the person/group/entity that works with the responsible person and carries out part of the activity. Unlike the consulted role, the supports role helps to complete the activity. |
-| SWOT Analysis | A SWOT analysis is a method used to evaluate the Strengths, Weaknesses, Opportunities and Threats involved in a project. It generally begins by specifying the objective of the project and then identifies the internal (strengths and weaknesses) and external (opportunities and threats) factors that are favourable or unfavourable to achieving the objective. |
-
-# T 
-
-Tailoring Tailoring of the PM² Methodology refers to adapting the methodology to the environment and needs of an organisation. It usually involves tailoring one or more of the four pillars of the methodology (e.g. changing the project governance, adding or removing steps in the PM² defined processes, adding or removing sections in the PM² Artefacts, adding stages to a phase, etc.).
-The results of the tailoring of the methodology should be reflected and documented in the PM² Management Plans and in the Project Handbook. Note that significant deviations from the PM² Methodology should be avoided.
-Template A template is a pre-developed document or file with a pre-set format, used as a starting point for structuring and presenting information so that the format does not have to be recreated each time it is needed.
-Threshold A threshold is a value or interval of values at which a specific action is triggered.
-Test Manager The Test Manager is the person responsible for collecting and reporting on tests, as well as leading a testing team. The role is assumed by the Project Manager Assistant (PMA) if a Test Manager has not been appointed.
-
-| Tolerance | Tolerance describes the allowable deviation above or below a target for time, cost or other project variables such as quality, scope and risk. If the deviation goes above or below the agreed threshold the current management level escalates the issue to a higher level. Without tolerance, every issue would be escalated immediately, and the Project Steering Committee (PSC) would end up running the project. |
-| :--: | :--: |
-| Top-down (technique) | Top-down refers to an approach to estimating project work that begins at the goal level and partitions work down to the finest levels of definition until the participants are satisfied that the project has been defined in adequate detail. |
-| Total Cost of Ownership (TCO) | Total cost of ownership (TCO) defines the estimated cost (both direct and indirect) for the development and operation of the products or/and services created by the project. As a best practice, it is usually calculated for a 5-10-year period. |
-| Traceability | Traceability is the ability to verify the history, location, or application of an item by means of documented recorded identification. |
-| Training Costs | Training costs comprise the human resource costs required to provide training to the requestor side (end-users, etc.) or to teams that will support and maintain the solution. |
-| Transfer (riskresponse strategy) | Transfer is a risk-response strategy that consists of transferring the risk to a third party (e.g. through insurance or outsourcing activities). This strategy does not relieve the organisation of a risk, but it may reduce the likelihood (e.g. by outsourcing an activity to a specialist party) and/or the impact if the risk occurs. There is always a level of secondary and/or residual risk since the ultimate responsibility for the project risks remains with the organisation. |
-| Transition <br> Management | Transition Management describes the process of managing and controlling the activities that lead the change from the old state to the new state when the deliverables are complete (i.e. delivering the solution to the requestor). |
-| Transition Plan | The Transition Plan defines the pre-requisites of rolling out the new solution. This is useful to ensure a smooth transition from project mode to operations mode. |
-
-
-|  | U |
-| :--: | :--: |
-| Urgency | Urgency is a measure of the time that it will take until an issue affects project objectives or activities. |
-| User Acceptance Test (UAT) | A user acceptance test (UAT) ensures that a deliverable meets user expectations. These tests are usually already described in a test plan. |
-| User Representatives (URs) | User Representatives (URs) is a role that represents the interests of the users to the project and ensures that the project specifications and deliverables meet the needs of all users. They can perform user acceptance tests (UATs) and are considered as optional participants of the Project Steering Committee (PSC). |
-
-# W 
-
-Work-based Work-based breakdown is a technique used to represent and organise project work by grouping work (e.g. work packages) that is further broken down into smaller portions of work (i.e. tasks).
-Work
-Breakdown
-
-Work Package
-The work breakdown is part of the Project Work Plan. It consists of a hierarchical description of all work that must be done by the project team to meet the needs of the requestor. The work breakdown is a hierarchical breakdown of the project into smaller and more manageable components such as, deliverables, work packages, activities and tasks. Each lower level offers a finer level of detail of the deliverables and work that together define the project output(s) and the work involved to produce them.
-A work package is a component of the project work breakdown. It represents a group of project work described in activities and tasks.
-
-
-
-
-
-
-
