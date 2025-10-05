@@ -23,30 +23,31 @@ Project teams who choose to implement the **PM²** or **PMflex** methodology can
 
 PM² methodology and terminology map very well to OpenProject's project structure, with each PM² project represented as an individual OpenProject project. The methodology's **four sequential phases** (Initiating, Planning, Executing, Closing) align with OpenProject's project life cycle management capabilities.
 
-| **PM² PMflex terminology**                                   | **OpenProject terminology**                      |
-| ------------------------------------------------------------ | ------------------------------------------------ |
-| PM² Project Lifecycle                                        | Project life cycle                               |
-| Project phases:  Initiating Phase, Planning Phase, Executing Phase, Closing Phase | Project phases                                   |
-| PM² Project                                                  | Project                                          |
-| Project Roles                                                | Project members with roles                       |
-| Phase Gate                                                   | Phase gate within project life cycle             |
-| Approval                                                     | Approval (work package type)                     |
-| Project Initiation Request                                   | Project Initiation Request (work package type)   |
-| Business Case                                                | Business Case (work package type)                |
-| Project Charter                                              | Project Charter (work package type)              |
-| Project Handbook                                             | Project Handbook (work package type)             |
-| Project Work Plan                                            | Project Work Plan (work package type)            |
-| Project Stakeholder Matrix                                   | Project Stakeholder Matrix (work package type)   |
-| Transition Plan                                              | Transition Plan (work package type)              |
-| Business Implementation Plan                                 | Business Implementation Plan (work package type) |
-| Outsourcing Plan                                             | Outsourcing Plan (work package type)             |
-| Deliverables Acceptance Plan                                 | Deliverables Acceptance Plan (work package type) |
-| Change Request                                               | Change Request (work package type)               |
-| Project Status Report                                        | Project Status Report (work package type)        |
-| Quality Review Report                                        | Quality Review Report (work package type)        |
-| Project-End Report                                           | Project-End Report (work package type)           |
-| Meeting                                                      | Meeting (module within OpenProject)              |
-| PM² Artefacts                                                | Custom work packages                             |
+| **PM² PMflex terminology**                                   | **OpenProject terminology**                      | Example/demo                                                 | Potential next iteration                                     |
+| ------------------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| PM² Project Lifecycle                                        | Project life cycle                               | Sidebar of [Project overview](https://pm2.openproject.com/projects/pm2-test) |                                                              |
+| Project phases:  Initiating Phase, Planning Phase, Executing Phase, Closing Phase | Project phases                                   | Sidebar of [Project overview](https://pm2.openproject.com/projects/pm2-test) | Phase gate widget for project overview                       |
+| PM² Project                                                  | Project                                          | [Demo project](https://pm2.openproject.com/projects/pm2-test) | Dedicated project type with PM² naming conventions and default settings |
+| Project Roles                                                | Project members with roles                       | [Members](https://pm2.openproject.com/projects/pm2-test/members) | Integrate PM² project roles                                  |
+| Phase Gate                                                   | Phase gate within project life cycle             | https://pm2.openproject.com/projects/pm2-test)               | Link work packages to Phase gates                            |
+| Approval                                                     | Approval (work package type)                     | [List of approvals](https://pm2.openproject.com/projects/pm2-test/work_packages?query_id=67) | Dedicated approval feature                                   |
+| Project Initiation Request                                   | Project Initiation Request (work package type)   | [Project Initiation Request](https://pm2.openproject.com/projects/pm2-test/work_packages/449) | Automatically created artefact in new documents module       |
+| Business Case                                                | Business Case (work package type)                | [Business Case](https://pm2.openproject.com/projects/pm2-test/work_packages/450) | Automatically created artefact in new documents module       |
+| Project Charter                                              | Project Charter (work package type)              | [Project Charter](https://pm2.openproject.com/projects/pm2-test/work_packages/451) | Automatically created artefact in new documents module       |
+| Project Handbook                                             | Project Handbook (work package type)             | [Project Handbook](https://pm2.openproject.com/wp/454)       | Automatically created artefact in new documents module       |
+| Project Work Plan                                            | Project Work Plan (work package type)            | [Project Work Plan](https://pm2.openproject.com/wp/455)      | Automatically created artefact in new documents module       |
+| Project Stakeholder Matrix                                   | Project Stakeholder Matrix (work package type)   | [Project Stakeholder Matrix](https://pm2.openproject.com/wp/456) | Dedicated module                                             |
+| Transition Plan                                              | Transition Plan (work package type)              | [Transition Plan](https://pm2.openproject.com/wp/458)        | Dynamic list with pdf export                                 |
+| Business Implementation Plan                                 | Business Implementation Plan (work package type) | [Business Implementation Plan](https://pm2.openproject.com/wp/459) | Dynamic list with pdf export                                 |
+| Outsourcing Plan                                             | Outsourcing Plan (work package type)             | [Outsourcing Plan](https://pm2.openproject.com/wp/465)       | Dynamic list with pdf export                                 |
+| Deliverables Acceptance Plan                                 | Deliverables Acceptance Plan (work package type) | [Deliverables Acceptance Plan](https://pm2.openproject.com/wp/466) | Dynamic list with pdf export                                 |
+| Change Request                                               | Change Request (work package type)               | [Change Request](https://pm2.openproject.com/wp/481)         | Built-in type                                                |
+| Project Status Report                                        | Project Status Report (work package type)        | [Project Status Report](https://pm2.openproject.com/wp/483)  | Dedicated status reporting module (based on meetings module) |
+| Quality Review Report                                        | Quality Review Report (work package type)        | [Quality Review Report](https://pm2.openproject.com/wp/487)  | Dynamic list with pdf export                                 |
+| Project-End Report                                           | Project-End Report (work package type)           | [Project-End Report](https://pm2.openproject.com/wp/502)     | Automatically created artefact in new documents module       |
+| Meeting                                                      | Meeting (module within OpenProject)              | [Ready for planning meeting](https://pm2.openproject.com/projects/pm2-test/meetings/2) | (1) Automatically create meeting for Phase Gates with pre-defined agendas<br />(2) Link work packages with Phase Gates |
+| PM² Artefacts                                                | Custom work packages                             | [List of all PM² artefacts](https://pm2.openproject.com/projects/pm2-test/work_packages?query_id=68) | Automatically created artefact in new documents module       |
+| Risk                                                         |                                                  |                                                              |                                                              |
 
 ## How to setup a PM² project in OpenProject?
 
