@@ -78,7 +78,7 @@ The three PM² phase gates are:
 
 To conduct the approval process we suggest to use work packages in combination with the meeting module. Create a work package and a corresponding meeting, Use the phase-exit checklist to evaluate the readiness for the next project phase.
 
-![Initiating phase-exit checklist in the meeting module in OpenProject](/home/rosanna/dev/openproject/docs/use-cases/project-management-pm2-pmflex/openproject_use_case_PM2_meeting-phase-review.png)
+![Initiating phase-exit checklist in the meeting module in OpenProject](openproject_use_case_PM2_meeting-phase-review.png)
 
 
 
