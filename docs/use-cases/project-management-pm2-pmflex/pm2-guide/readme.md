@@ -2,7 +2,7 @@
 
 The PM² Guide v3.1, December 2023
 
-![chunk-0-img-0.jpeg](chunk-0-img-0.jpeg)
+![](pm²-opmm.png)
 
 
 
@@ -70,9 +70,9 @@ Open PM² is a European Commission initiative, which brings the PM² Methodology
 The Open PM² Initiative provides European Union institutions, contractors and public administrations, as well as broader stakeholders, with open access to the PM² publications and associated resources. Its goal is to enable increased effectiveness in the management of projects, programmes, and portfolios and thus to serve the objectives of the European Union and the needs of member states and citizens.
 
 One common PM Methodology open to all EU Institutions, Member States, Contractors, and EU Citizens.
-![chunk-0-img-1.jpeg](chunk-0-img-1.jpeg)
+![Fig 1.1 Open PM² Synergies](01.01.png)
 
-Fig 1.1 Open PM² Synergies
+
 The Initiative also seeks to rectify mistakes of the past, when efforts were duplicated and divergent project management approaches were sponsored rather than promoting convergent approaches based on similarities and the common interest of the broader European community.
 
 By opening PM², the Initiative aims to enhance project management competency within Europe, leading to increased project efficiency and success.
@@ -107,8 +107,6 @@ The Project Support Network:
 - enables the Local Project Support Offices (LPSOs) to support each other as a community
 - depends on the contributions of PM² champions (individuals and organisations).
 
-This page is intentionally left blank
-
 ## 2 Project Management 
 
 This section introduces basic project management concepts and provides the context for a better understanding of the PM² Methodology.
@@ -140,9 +138,7 @@ Projects are different from normal day-to-day work (operations) and are best man
 - assign and coordinate project work to teams
 - monitor and control the project daily (progress, changes, risks, issues, quality, etc.)
 - hand over the deliverables and administratively close the project.
-![chunk-0-img-2.jpeg](chunk-0-img-2.jpeg)
-
-Fig 2.2 A project as a transformational process which turns ideas into reality
+![Fig 2.2 A project as a transformational process which turns ideas into reality](02.02.png)
 
 #### 2.1.2 Why we do projects 
 
@@ -177,10 +173,9 @@ Therefore, it is important for everyone involved in managing and executing a pro
 - The change results in an outcome.
 - The benefits are the measurable improvements resulting from this outcome.
 
-| Project | Outputs | Outcomes | Benefits |
-| :-- | :-- | :-- | :-- |
+![Fig 2.3 Project outputs, outcomes and benefits](02.03.png)
 
-Fig 2.3 Project outputs, outcomes and benefits
+
 Note that project outcomes and benefits are often realised only after the project has closed.
 The table below illustrates this with a simple example:
 
@@ -240,9 +235,7 @@ A project portfolio is a collection of projects, programmes and other activities
 in terms of meeting strategic objectives. The projects or programmes in a portfolio are not necessarily inter-dependent on inter-related. From a strategic point of view, portfolios are higher-level components than programmes and projects. It is at the portfolio level that investment decisions are made, resources allocated, and priorities identified.
 
 It is very important for people involved in project definition and management to understand the differences between-and specific management requirements of-projects, programmes and portfolios. They should also be able to define or position their work at the right level (i.e. know if their work would be better managed as a programme or a network of projects), while always being aware of the management and organisational context of their work (see Appendix D).
-![chunk-0-img-3.jpeg](chunk-0-img-3.jpeg)
-
-Fig 2.4 Relationships between strategy, project, programme, portfolio and operations
+![Fig 2.4 Relationships between strategy, project, programme, portfolio and operations](02.04.png)
 
 #### 2.2.6 Projects vs Operations 
 
@@ -297,9 +290,9 @@ To develop the competences required to manage projects effectively. Project Mana
 
 It is up to the Project Manager (PM) to acquire these skills and invest in their project management skills set. Project management knowledge comes from study and practice, from discussing, sharing experiences and reflecting on what went well and what can be improved.
 
-![chunk-0-img-4.jpeg](chunk-0-img-4.jpeg)
+![Fig 2.5 What Project Managers (PMs) need to understand](02.05.png)
 
-Fig 2.5 What Project Managers (PMs) need to understand.
+
 
 #### 2.3.3 Project Management Competences 
 
@@ -345,8 +338,6 @@ Such decisions and tensions become easier to manage when Project Managers (PMs) 
 
 Although all virtues (logical and moral) affect all competences, the virtues of judgment, prudence and insightfulness are (comparatively) more related to demonstrating the perspective competencies, while the moral virtues of honesty, fairness, friendliness, generosity, temperance, courage, humour, and magnanimity and magnificence, are (comparatively) more related to demonstrating people competences (see Appendix F).
 
-This page is intentionally left blank
-
 ## 3 Overview of the PM² Methodology 
 
 ### 3.1 The House of PM²
@@ -357,9 +348,11 @@ The PM² Methodology is built on Project Management best practices and is suppor
 2. a project lifecycle (i.e. Project Phases)
 3. a set of processes (i.e. project management activities)
 4. a set of project Artefacts (i.e. documentation templates and guidelines).
-![chunk-0-img-5.jpeg](chunk-0-img-5.jpeg)
 
-Fig 3.1 The House of PM²
+
+![Fig 3.1 The House of PM²](03.01.png)
+
+
 The spirit of the PM² Methodology is further defined by the PM² Mindsets, which provide the glue that holds together the PM² practices and provide a common set of beliefs and values for PM² project teams.
 
 ### 3.2 The PM² Lifecycle
@@ -367,9 +360,7 @@ The spirit of the PM² Methodology is further defined by the PM² Mindsets, whic
 The PM² project lifecycle has four sequential and non-overlapping phases with a different type of activity predominant in each phase (i.e. initiating activities are predominant in the Initiating Phase, etc.). However, while phase-related activities peak in terms of effort during a specific phase, activities of this type can also be executed during neighbouring phase(s) (e.g. planning activities are also repeated in the Executing Phase).
 
 A project moves on to the next phase when the goals of its current phase have been deemed achieved as the results of a formal (or less formal) phase-exit review.
-![chunk-0-img-6.jpeg](chunk-0-img-6.jpeg)
-
-Fig 3.2 The PM² project lifecycle: indicative overlap of phase activities and cumulative effort
+![Fig 3.2 The PM² project lifecycle: indicative overlap of phase activities and cumulative effort](03.02.png)
 
 The focus of a project shifts from initiating and planning activities in the beginning to executing, monitoring and controlling activities in the middle and acceptance, transitioning and closing activities at the end.
 
@@ -388,8 +379,7 @@ Oversee all project work and management activities over the duration of the proj
 
 #### 3.2.1 Initiating Phase
 
-| Initiating | Planning | Executing | Closing |
-| :--: | :--: | :--: | :--: |
+![Initiating Phase](03.02.01.png)
 
 The first phase of a PM² project is the Initiating Phase. During this phase, the people involved formulate the project's objective(s), ensure the project's alignment to the organisation's strategic objectives, undertake some initial planning to get the project off to a good start, and put together the information required to gain approval to continue to the Planning Phase. The main input of this phase is a (client) request to address a need, problem or opportunity.
 
@@ -398,7 +388,8 @@ The following activities are part of the Initiating Phase:
 - Creation of the Project Initiation Request which contains information about the requestor, business needs and the desired project outcomes.
 - Creation of the Business Case, which provides a business justification, defines the project's budgetary requirements, and outlines the business context, problem and project descriptions, alternative solutions, and a high-level roadmap.
 - Creation of the Project Charter, which provides more details on the project definition in terms of scope, cost, time and risk. It also defines milestones, deliverables, project organisation, etc.
-![chunk-0-img-7.jpeg](chunk-0-img-7.jpeg)
+
+![Fig 3.3 Overview of the Initiating Phase](03.03.png)
 
 Fig 3.3 Overview of the Initiating Phase
 The Business Case and Project Charter define the project's scope and direction. The Project Manager (PM) and the Project Core Team (PCT) reference and use both throughout the project.
@@ -407,7 +398,7 @@ At the end of the Initiating Phase, the Project Steering Committee (PSC) or othe
 
 #### 3.2.2 Planning Phase 
 
-![chunk-0-img-8.jpeg](chunk-0-img-8.jpeg)
+![Planning Phase](03.02.02.png)
 
 The second phase of a PM² project is the Planning Phase. During the Planning Phase, the project's objective is developed into a specific and workable plan ready to be executed. The Project Work Plan specifies the project scope and appropriate approach, decides on a schedule for the tasks involved, estimates the necessary resources and develops the detail of the project plans. Several times during the Planning Phase, the Project Work Plan can be updated. Once agreed and finalised it is baselined and signed off.
 
@@ -425,7 +416,7 @@ The Project Manager (PM) uses the outputs of the Planning Phase to request appro
 
 #### 3.2.3 Executing Phase
 
-![chunk-0-img-10.jpeg](chunk-0-img-10.jpeg)
+![Executing Phase](03.02.03.png)
 
 The third phase of a PM² project is the Executing Phase. During the Executing Phase the project team produces the project deliverables (outputs) as outlined in the Project Work Plan. This is typically the stage of the project lifecycle that involves the most resources and requires the most monitoring.
 
@@ -438,14 +429,14 @@ The following activities are part of the Executing Phase:
 - Producing the project deliverables in accordance with the project plans.
 - Handing over the deliverables as described in the Deliverables Acceptance Plan.
 
-![chunk-0-img-11.jpeg](chunk-0-img-11.jpeg)
+![Fig 3.5 Overview of the Executing Phase](03.05.png)
 
-Fig 3.5 Overview of the Executing Phase
+
 Once the project deliverables have been accepted by the Project Owner (PO), the Project Manager (PM) can request approval to move on to the Closing Phase. This decision to move on is taken by the Project Steering Committee (PSC).
 
 #### 3.2.4 Closing Phase 
 
-![chunk-0-img-12.jpeg](chunk-0-img-12.jpeg)
+![Closing Phase](03.02.04.png)
 
 The final phase of a PM² project is the Closing Phase.
 During a project's Closing Phase, the finished deliverables are officially transferred into the care, custody and control of the Project Owner (PO) and the project is administratively closed. Information on overall project performance and Lessons Learned is captured in the Project-End Report. The Project Manager (PM) ensures that the deliverables produced are accepted, all project documents are correctly filed and archived, and that all resources used by the project are formally released.
@@ -456,19 +447,20 @@ The following activities are part of the Closing Phase:
 - Discussing the overall project experience and Lessons Learned with the project team.
 - Documenting Lessons Learned and best practices for future projects.
 - Closing the project administratively and archiving all project documents.
-![chunk-0-img-13.jpeg](chunk-0-img-13.jpeg)
 
-Fig 3.6 Overview of the Closing Phase
+![Fig 3.6 Overview of the Closing Phase](03.06.png)
+
+
 
 #### 3.2.5 Monitor \& Control
 
-![chunk-0-img-14.jpeg](chunk-0-img-14.jpeg)
+![Monitor & Control](03.02.05.png)
 
 Monitor \& Control activities run throughout the project's lifecycle. During Monitor \& Control, all work is observed from the point of view of the Project Manager (PM). Monitoring is about measuring ongoing activities and assessing project performance against project plans. Controlling is about identifying and taking corrective action to address deviations from plans and to address issues and risks.
 
-![chunk-0-img-15.jpeg](chunk-0-img-15.jpeg)
+![Fig 3.7 Monitor & Control activities](03.07.png)
 
-Fig 3.7 Monitor \& Control activities
+
 
 #### 3.2.6 Phase Gates and Approvals 
 
@@ -492,9 +484,7 @@ The carrying out of the Project Work Plan and creation of the project deliverabl
 
 Finally, the Closing Phase is driven by the stakeholders who evaluate the project's overall performance.
 
-![chunk-0-img-16.jpeg](chunk-0-img-16.jpeg)
-
-Fig 3.8 PM² Swimlane Diagram
+![Fig 3.8 PM² Swimlane Diagram](03.08.png)
 
 | Key Phase Input/Output | Description |
 | :-- | :-- |
@@ -614,8 +604,6 @@ Agile's key characteristics are:
 
 PM² provides a structure that helps Agile teams achieve the desired agility while still accommodating tight procurement and audit requirements, good coordination with programme and portfolio levels, and collaboration with other projects, contractors, other organisational units and external organisations (see Appendix D).
 
-This page is intentionally left blank
-
 ## 4 Project Organisation and Roles 
 
 ### 4.1 Project Stakeholders
@@ -627,9 +615,9 @@ The number of stakeholders depends on the complexity and scope of a project. How
 ### 4.2 Project Organisation: Layers and Roles
 
 The diagram below provides an overview of the layers and main roles in project organisation from a project management point of view.
-![chunk-0-img-17.jpeg](chunk-0-img-17.jpeg)
+![Fig 4.1 Project organisation](04.01.png)
 
-Fig 4.1 Project organisation
+
 Note that there is only one project team, which is composed of the people assuming the roles defined in the Performing, Managing and Directing layers. For the project to succeed, these people need to work together as a team.
 
 **Business Governing Layer**
@@ -667,9 +655,9 @@ The Appropriate Governance Body (AGB) is the entity responsible for the strategi
 ### 4.4 Project Steering Committee (PSC)
 
 The Project Steering Committee (PSC) comprises at least the four roles in the Managing and Directing Layers, providing a balanced mix of requestor- and provider-side representatives. Other roles can also participate as per the project's needs.
-![chunk-0-img-18.jpeg](chunk-0-img-18.jpeg)
+![Fig 4.2 The Project Steering Committee (PSC): Permanent and indicative optional roles](04.02.png)
 
-Fig 4.2 The Project Steering Committee (PSC): Permanent and indicative optional roles
+
 The Project Steering Committee (PSC) is chaired by the Project Owner (PO) and is the key decision-making and issue-resolution body for the project. Any significant decisions that may affect the project or the team's ability to deliver on the objectives will be escalated to the Project Steering Committee (PSC). Approval of key documents, resolution of important project issues or significant change requests will be discussed and decided upon here.
 
 **Responsibilities:** 
@@ -864,18 +852,14 @@ Example: The RAM for the Standard PM² roles involved in creating the Business C
 - Consulted: The Project Steering Committee (PSC) and User Representatives (URs) are consulted.
 - Informed: The Appropriate Governance Body (AGB) will be informed about the outputs or status of the task (it will be provided with information).
 
-This page is intentionally left blank
-
 ## 5 Initiating Phase 
 
 The first phase of a PM² project is the Initiating Phase. It begins with the identification of a need, problem or opportunity, and ends with the establishment of the plans and processes needed to take the project forward. Proper project initiation is critical for successful project planning and execution. It involves defining project objectives and constraints, and receiving formal organisational sponsorship for the project.
-![chunk-0-img-19.jpeg](chunk-0-img-19.jpeg)
+![Fig 5.1 Initiating Phase activities and main outputs](05.01.png)
 
-Fig 5.1 Initiating Phase activities and main outputs
+
 Three key project artefacts are created during the Initiating Phase: the Project Initiation Request, the Business Case and the Project Charter. Some of the Project Logs are also set up (i.e. Risk Log, Issue Log, Decision Log) while the Change Log is typically set up during the Planning Phase.
-![chunk-0-img-20.jpeg](chunk-0-img-20.jpeg)
-
-Fig 5.2 Initiating Phase artefacts
+![Fig 5.2 Initiating Phase artefacts](05.02.png)
 
 ### 5.1 Initiating Meeting
 
@@ -900,7 +884,7 @@ Solution Provider (SP).  |
 Appropriate Governance Body (AGB) can accept the Project Initiation
 Request and authorise work on a more elaborate Business Case.  |
 
-Input
+**Input**
 
 - A problem, a need or an opportunity expressed by the initiator.
 
@@ -919,17 +903,17 @@ Input
 
 The lifecycle of the Project Initiating Request ends with the creation of the Business Case and Project Charter. All the information included in the Project Initiation Request is copied over, updated and further elaborated in these two documents, which remain "live" until the end of the project.
 
-![chunk-0-img-21.jpeg](chunk-0-img-21.jpeg)
+![Fig 5.3 Relationship between the artefacts created during the Initiating Phase](05.03.png)
 
-Fig 5.3 Relationship between the artefacts created during the Initiating Phase
+
 
 | RAM (RASCI) | AGB | PSC | PO | BM | BIG | SP | PM | PCT |
 | :-- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Project Initiation Request | I | n.a. | A/S | R | S/C | I | n.a. | n.a. |
 
-![chunk-0-img-22.jpeg](chunk-0-img-22.jpeg)
+![Fig 5.4 Project Initiation Request inputs and main roles](05.04.png)
 
-Fig 5.4 Project Initiation Request inputs and main roles
+
 
 **Outputs** 
 
@@ -979,9 +963,9 @@ The Business Case provides decision-makers with the information they need to det
 | :-- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Business Case | I | C | A | R | C | S | S | n.a. |
 
-![chunk-0-img-23.jpeg](chunk-0-img-23.jpeg)
+![Fig 5.5 Business Case inputs and main roles](05.05.png)
 
-Fig 5.5 Business Case inputs and main roles
+
 
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :-- | :--: | :--: | :--: | :--: | :--: |
@@ -1029,13 +1013,13 @@ The charter is a key element of the project approval process (along with the Bus
 | :-- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Project Charter | I | A | C | S | C | S | R | C |
 
-![chunk-0-img-24.jpeg](chunk-0-img-24.jpeg)
+![Fig 5.6 Project Charter inputs and main roles](05.06.png)
 
-Fig 5.6 Project Charter inputs and main roles
+
 
 | Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
 | :-- | :--: | :--: | :--: | :--: | :--: |
-| Scope <br> Management | Business <br> Case | Project <br> Work Plan | Change Requests <br> Project Reports | Project Logs | Project-End <br> Report |
+| Scope Management | Business Case | Project Work Plan | Change Requests Project Reports | Project Logs | Project-End Report |
 
 **Outputs**
 
@@ -1047,7 +1031,7 @@ Fig 5.6 Project Charter inputs and main roles
 This is the first phase gate. A review and approval are recommended before the project can formally move to the next phase. The Project Manager (PM) assesses whether the project is ready to commence the Planning Phase and seeks approval of the Business Case and Project Charter from the Project Steering Committee (PSC). If the Business Case or Project Charter is not approved, the project proceeds directly to the Closing Phase for Lessons Learned and archiving.
 PM² provides a template Phase Exit Review Checklist for each phase that can be used by the Project Manager (PM) to guide the assessment, alongside a review of the phase's specific goals.
 
-This page is intentionally left blank
+
 
 ## 6 Planning Phase 
 
@@ -1568,7 +1552,7 @@ If major deviations from the approved Business Case and/or Project Charter are i
 
 PM² provides a template Phase Exit Review Checklist for each phase that can be used by the Project Manager (PM) to guide the assessment, alongside a review of the phase's specific goals.
 
-This page is intentionally left blank
+
 
 ## 7 Executing Phase 
 
@@ -3123,7 +3107,7 @@ The Communications Management Plan defines and documents communication activitie
 | Date of Application | The date on which the decision is applicable. |
 | Decision communicated <br> to: | The group, teams, and other audiences to whom the decision should be <br> communicated. |
 
-This page is intentionally left blank
+
 
 ## Appendix C: Project Management Tools \& Techniques 
 
@@ -3529,7 +3513,7 @@ Sign-up to our newsletter: https://ec.europa.eu/newsroom/login?univers=informati
 
 Appendix E: Additional Resources
 
-This page is intentionally left blank
+
 
 A - 117
 
@@ -3617,7 +3601,7 @@ All virtues are required for the application of professional competences, howeve
 |  Personal integrity and reliability | Calmness, Courage, Fairness, Friendliness, Honour, Temperance  |
 |  Culture and values management | All virtues  |
 
-This page is intentionally left blank
+
 
 ### Appendix G: Glossary 
 
