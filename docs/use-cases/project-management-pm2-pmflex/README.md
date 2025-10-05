@@ -9,7 +9,7 @@ keywords: pmflex, PM², PM2,
 
 > [!NOTE]
 >
-> OpenProject is continuously enhanced to better support PM² and PMflex with each release. Therefore, this use case description is an early version and is regularly updated with each release, incorporating feedback from the Community.
+> OpenProject is continuously enhanced with every monthly release to better support project management. Teams using PM² and PMflex also benefit from this continuous stream of automation and UX improvements. This use case description is updated with each release, incorporating feedback from the PM² Community.
 
 # Implementing PM² and PMflex project management in OpenProject
 
@@ -23,7 +23,7 @@ Project teams who choose to implement the **PM²** or **PMflex** methodology can
 
 PM² methodology and terminology map very well to OpenProject's project structure, with each PM² project represented as an individual OpenProject project. The methodology's **four sequential phases** (Initiating, Planning, Executing, Closing) align with OpenProject's project life cycle management capabilities.
 
-| **PM² PMflex terminology**                                   | **OpenProject terminology**                      | Example/demo                                                 | Potential next iteration                                     |
+| **PM² and PMflex terminology**                               | **OpenProject terminology**                      | Examples with demo data                                      | Potential product iteration                                  |
 | ------------------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | PM² Project Lifecycle                                        | Project life cycle                               | Sidebar of [Project overview](https://pm2.openproject.com/projects/pm2-test) |                                                              |
 | Project phases:  Initiating Phase, Planning Phase, Executing Phase, Closing Phase | Project phases                                   | Sidebar of [Project overview](https://pm2.openproject.com/projects/pm2-test) | Phase gate widget for project overview                       |
@@ -49,7 +49,9 @@ PM² methodology and terminology map very well to OpenProject's project structur
 | PM² Artefacts                                                | Custom work packages                             | [List of all PM² artefacts](https://pm2.openproject.com/projects/pm2-test/work_packages?query_id=68) | Automatically created artefact in new documents module       |
 | Risk                                                         |                                                  |                                                              |                                                              |
 
-## How to setup a PM² project in OpenProject?
+## FAQ
+
+### How to setup a PM² project in OpenProject?
 
 OpenProject is your go-to product, which enables a successful implementation of PM² methodology.
 
@@ -61,17 +63,17 @@ Each PM² project is established as an individual OpenProject project, incorpora
 + **Gantt charts** for giving you a visual timeline of your PM² project
 + **Meetings module** to help you prepare meetings (incl. agenda, reference to work packages) and collect all meeting-relevant information in one place
 
-## How to use project templates to quickly setup new PM² projects?
+### How to use project templates to quickly setup new PM² projects?
 
 You can also use **[project templates](https://www.openproject.org/docs/user-guide/projects/project-templates)** to make it easier to create new PM² projects with the same structure, set of enabled modules or **custom work package templates**. We highly recommend using **project templates** for standardizing PM² project setup across the organization. This will also help you guide users who are new to PM² methodology. Once a new PM² project is created using a template, it can then be modified in any way in order to allow the tailoring of the methodology.
 
-## How to setup and manage PM² phases?
+### How to setup and manage PM² phases?
 
 OpenProject's **project life cycle** effectively represents PM² phases and their associated **phase gates** (Ready for Planning, Ready for Executing, Ready for Closing). You can setup the four sequential, non-overlapping phases and their associated **phase gates** in the project settings.
 
 ![Overview of all project life cycle phases in OpenProject](openproject_use_case_pm2_project_life_cycle.png)
 
-## How to successfully pass the phase gates?
+### How to successfully pass the phase gates?
 
 At the end of each phase, the project undergoes a review and approval process. This ensures that the project is reviewed by the relevant individuals, such as the Project Manager (PM), Project Owner (PO) or Project Steering Committee (PSC), before moving on to the next phase. These checkpoints improve the quality of project management and enable the project to proceed in a more controlled way.
 
@@ -86,7 +88,7 @@ To conduct the approval process we suggest to use work packages in combination w
 
 
 
-## How to create and share PM² artefacts with OpenProject?
+### How to create and share PM² artefacts with OpenProject?
 
 PM² methodology includes specific **deliverables** that can be managed through OpenProject's custom work packages. To do so, create custom work packages for PM² artefacts like Project Charter, Business Case, Project Work Plan etc. 
 
@@ -100,7 +102,7 @@ If you want to be up to date with all changes within certain artefacts, e.g. Pro
 
 ![Adding watchers within OpenProject](openproject_use_case_PM2_watchers.png)
 
-## How to get an overview over tasks within each phase?
+### How to get an overview over tasks within each phase?
 
 OpenProject provides multiple views for managing PM² project work effectively.
 
@@ -132,7 +134,7 @@ The [Gantt chart](https://www.openproject.org/docs/user-guide/gantt-chart) modul
 
 ![Board view showing all tasks per phase in OpenProject](openproject_use_case_PM2_phases_board.png)
 
-## How to use OpenProject in order to effectively plan PM²-based meetings?
+### How to use OpenProject in order to effectively plan PM²-based meetings?
 
 PM² methodology suggests to run certain meetings in order to achieve clarity and alignment (e.g. Initiating Meeting, Planning Kick-off Meeting, Executing Kick-off Meeting).
 
@@ -140,7 +142,7 @@ The **meetings module** in OpenProject allows you to manage and document your PM
 
 ![Meetings module in OpenProject](openproject_use_case_PM2_meetings.png)
 
-## How does OpenProject support project governance and reporting?
+### How does OpenProject support project governance and reporting?
 
 PM² emphasizes **accountability, transparency, and stakeholder communication**, which OpenProject supports through:  
 
