@@ -12,48 +12,38 @@ keywords: pmflex, PM², PM2,
 
 **OpenProject** is a powerful project management tool that provides excellent support for the PM² methodology. The **PM² methodology** is the official project management methodology of the European Commission. It is designed as a light and easy-to-implement framework, which project teams can tailor to their specific needs.
 
-Project teams who choose to implement the **PM²** methodology can leverage the wide range of features and customizability that OpenProject offers in order to effectively support PM² implementation during the whole project life cycle.
+[PMflex](https://www.bva.bund.de/DE/Services/Behoerden/Beratung/BZB/Themenwelten/Strategie/Projektmanagement/PMflex/pmflex_node.html) is an extension of the PM² Project Management Methodology developed and maintained by the [Federal Office of Administration (BVA)](https://www.bva.bund.de/EN/Home/home_node.html). It complements PM² by providing additional guidance, templates, and best practices to adapt the methodology and targets German federal authorities and other public-sector bodies.
 
-
-This guide contains the following sections:
-
-| Section                                                 | Description |
-| ------------------------------------------------------- | ----------- |
-| [Structure and terminology](#structure-and-terminology) |             |
-|                                                         |             |
-|                                                         |             |
-|                                                         |             |
-|                                                         |             |
-|                                                         |             |
+Project teams who choose to implement the **PM²** or **PMflex** methodology can leverage the wide range of features and customizability that OpenProject offers in order to effectively support PM² implementation during the whole project life cycle.
 
 ## Structure and terminology
 
 PM² methodology and terminology map very well to OpenProject's project structure, with each PM² project represented as an individual OpenProject project. The methodology's **four sequential phases** (Initiating, Planning, Executing, Closing) align with OpenProject's project life cycle management capabilities.
 
-| **PM² terminology**                                                               | **OpenProject terminology**                      |
-| --------------------------------------------------------------------------------- | ------------------------------------------------ |
-| PM² Project Lifecycle                                                             | Project life cycle                               |
+| **PM² PMflex terminology**                                   | **OpenProject terminology**                      |
+| ------------------------------------------------------------ | ------------------------------------------------ |
+| PM² Project Lifecycle                                        | Project life cycle                               |
 | Project phases:  Initiating Phase, Planning Phase, Executing Phase, Closing Phase | Project phases                                   |
-| PM² Project                                                                       | Project                                          |
-| Project Roles                                                                     | Project members with roles                       |
-| Phase Gate                                                                        | Phase gate within project life cycle             |
-| Approval                                                                          | Approval (work package type)                     |
-| Project Initiation Request                                                        | Project Initiation Request (work package type)   |
-| Business Case                                                                     | Business Case (work package type)                |
-| Project Charter                                                                   | Project Charter (work package type)              |
-| Project Handbook                                                                  | Project Handbook (work package type)             |
-| Project Work Plan                                                                 | Project Work Plan (work package type)            |
-| Project Stakeholder Matrix                                                        | Project Stakeholder Matrix (work package type)   |
-| Transition Plan                                                                   | Transition Plan (work package type)              |
-| Business Implementation Plan                                                      | Business Implementation Plan (work package type) |
-| Outsourcing Plan                                                                  | Outsourcing Plan (work package type)             |
-| Deliverables Acceptance Plan                                                      | Deliverables Acceptance Plan (work package type) |
-| Change Request                                                                    | Change Request (work package type)               |
-| Project Status Report                                                             | Project Status Report (work package type)        |
-| Quality Review Report                                                             | Quality Review Report (work package type)        |
-| Project-End Report                                                                | Project-End Report (work package type)           |
-| Meeting                                                                           | Meeting (module within OpenProject)              |
-| PM² Artefacts                                                                     | Custom work packages                             |
+| PM² Project                                                  | Project                                          |
+| Project Roles                                                | Project members with roles                       |
+| Phase Gate                                                   | Phase gate within project life cycle             |
+| Approval                                                     | Approval (work package type)                     |
+| Project Initiation Request                                   | Project Initiation Request (work package type)   |
+| Business Case                                                | Business Case (work package type)                |
+| Project Charter                                              | Project Charter (work package type)              |
+| Project Handbook                                             | Project Handbook (work package type)             |
+| Project Work Plan                                            | Project Work Plan (work package type)            |
+| Project Stakeholder Matrix                                   | Project Stakeholder Matrix (work package type)   |
+| Transition Plan                                              | Transition Plan (work package type)              |
+| Business Implementation Plan                                 | Business Implementation Plan (work package type) |
+| Outsourcing Plan                                             | Outsourcing Plan (work package type)             |
+| Deliverables Acceptance Plan                                 | Deliverables Acceptance Plan (work package type) |
+| Change Request                                               | Change Request (work package type)               |
+| Project Status Report                                        | Project Status Report (work package type)        |
+| Quality Review Report                                        | Quality Review Report (work package type)        |
+| Project-End Report                                           | Project-End Report (work package type)           |
+| Meeting                                                      | Meeting (module within OpenProject)              |
+| PM² Artefacts                                                | Custom work packages                             |
 
 ## How to setup a PM² project in OpenProject?
 
