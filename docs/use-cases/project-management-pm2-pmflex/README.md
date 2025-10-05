@@ -7,8 +7,11 @@ keywords: pmflex, PM², PM2,
 
 ---
 
-# DRAFT
-## Implementing PM² and PMflex project management in OpenProject
+> [!NOTE]
+>
+> OpenProject is continuously enhanced to better support PM² and PMflex with each release. Therefore, this use case description is an early version and is regularly updated with each release, incorporating feedback from the Community.
+
+# Implementing PM² and PMflex project management in OpenProject
 
 **OpenProject** is a powerful project management tool that provides excellent support for the PM² methodology. The **PM² methodology** is the official project management methodology of the European Commission. It is designed as a light and easy-to-implement framework, which project teams can tailor to their specific needs.
 
