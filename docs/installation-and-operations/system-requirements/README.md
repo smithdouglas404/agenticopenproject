@@ -150,7 +150,7 @@ For high-availability setups, distribute traffic across multiple servers and ava
 
 > [!IMPORTANT]
 >
-> Some features we plan for the future will only be shipped with Docker-based installations. We also don't plan to provide packaged-based installations for more recent Linux versions, e.g. Ubuntu 24.04.  
+> Some features we plan for the future will only be shipped with Docker-based installations. We also don't plan to provide packaged-based installations for more recent Linux versions, e.g. Ubuntu 24.04.
 
 ### Docker-based installation (recommendation)
 
@@ -219,7 +219,7 @@ OpenProject supports the latest versions of the major browsers.
 
 ##### OpenProject integration
 
-* [OpenProject Integration 2.9.2](https://github.com/nextcloud/integration_openproject/releases/tag/v2.9.2)
+* [OpenProject Integration 2.10.0](https://github.com/nextcloud/integration_openproject/releases/tag/v2.10.0)
 
 ##### Team folders
 
