@@ -21,7 +21,7 @@ This guide sets out to provide an introduction to the PM² Project Management Me
 - a common vocabulary (glossary) which makes it easier for project teams to communicate and apply project management concepts
 - best practices-it is up to the Project Managers (PMs) and project teams to choose the PM² practices that will bring most value to their projects
 - links to PM² resources (online resources, Artefact templates and examples)
-- an introduction to other PM² models, such as PM²-Agile, $\mathrm{PM}^{2}-\mathrm{PgM}$ (for Programme Management) and PM²-PfM (for Portfolio Management).
+- an introduction to other PM² models, such as PM2-Agile, PM²-PgM (for Programme Management) and PM²-PfM (for Portfolio Management).
 
 This guide can be read from beginning to end, to learn about the methodology, or it can be used as a reference, to help you as you practise PM².
 
@@ -79,16 +79,16 @@ Opening PM² does this by:
 
 #### 1.5.1 PM² Publications 
 
-The Centre of Excellence in $\mathrm{PM}^{2}\left(\mathrm{CoEPM}^{2}\right)$ provides a central online location for all PM² information, and resources.
+The Centre of Excellence in PM² (CoEPM²) provides a central online location for all PM² information, and resources.
 
 - PM² website https://pm2.europa.eu
-- Contact https://pm2.europa.eu/contact-us en
+- Contact [https://pm2.europa.eu/contact-us_en](https://pm2.europa.eu/contact-us_en)
 
 You can also download directly all PM² Guides from the Publications Office of the European Union.
 
 #### 1.5.2 Project Support Network
 
-The PM² Project Support Network is an EU Institutions wide network of Local Project Support Offices (LPSOs) which are coordinated and supported by the Centre of Excellence in $\mathrm{PM}^{2}\left(\mathrm{CoEPM}^{2}\right)$. The PM² Project Support Network (PSN) aims to become a decentralised project management support network which provides guidance and support to PM² users on both the PM² Methodology and the effective use of project management tools \& techniques more broadly.
+The PM² Project Support Network is an EU Institutions wide network of Local Project Support Offices (LPSOs) which are coordinated and supported by the Centre of Excellence in PM² (CoEPM²). The PM² Project Support Network (PSN) aims to become a decentralised project management support network which provides guidance and support to PM² users on both the PM² Methodology and the effective use of project management tools \& techniques more broadly.
 
 The Project Support Network:
 
@@ -171,7 +171,7 @@ The table below illustrates this with a simple example:
 
 | Example of outputs, outcomes and benefits. |  |
 | :-- | :-- |
-| Project Output | Adoption of the PM ${ }^{2}$ Methodology within an organisation. |
+| Project Output | Adoption of the PM² Methodology within an organisation. |
 | Project Outcomes | - Increased project quality. <br> - Improved visibility of project objectives, status and forecasts. <br> - Capability to have better control over contractor work and deliverables. |
 | Project Benefits | - Project cost overruns decreased by 30\% <br> - Productivity increased by 30\%. |
 
@@ -3471,7 +3471,7 @@ As project teams grapple with the intricacies of data protection and privacy reg
 
 #### D.2.3 IT Security Considerations in Project Management
 
-The European Commission's IT Security Policy, coupled with its IT Security Risk Management Methodology (ITSRM ${ }^{3}$ ), forms a robust framework that can help organisations safeguard digital assets and preserve their integrity.
+The European Commission's IT Security Policy, coupled with its IT Security Risk Management Methodology (ITSRM²), forms a robust framework that can help organisations safeguard digital assets and preserve their integrity.
 
 IT security management comprises a set of practices and measures centered around assuring three fundamental dimensions: confidentiality, which involves keeping data accessible only to authorized users; integrity, ensuring that data is not altered without authorization; and availability, guaranteeing that data remains accessible and functional when needed. It addresses a range of potential threats, such as accidents, errors, deliberate attacks, and natural events, all of which are considered as risks. The primary objective is to reduce the likelihood and impact of these risk, maintaining them at an acceptable level while ensuring that the cost of their management do not outweigh benefits.
 
@@ -3601,7 +3601,7 @@ The purpose of this quick start guide is to help you get started with applying P
 
 ### E. 3 Useful Online Resources 
 
-The Centre of Excellence in $\mathrm{PM}^{2}\left(\mathrm{CoEPM}^{2}\right)$ provides a central location for downloading all PM² information, publications, translations, etc. To study PM² in more detail you can download and review the free PM² Methodology Guide and artefact templates, and explore the online resources:
+The Centre of Excellence in PM² (CoEPM²) provides a central location for downloading all PM² information, publications, translations, etc. To study PM² in more detail you can download and review the free PM² Methodology Guide and artefact templates, and explore the online resources:
 
 - PM² Website: https://pm2.europa.eu/downloads en
 - EU Bookshop: https://op.europa.eu/en
