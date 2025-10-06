@@ -362,10 +362,7 @@ Inexperienced project teams sometimes underestimate the importance of the work d
 |  2. Planning | Assign the Project Core Team (PCT). Elaborate the project scope. Plan the work.  |
 |  3. Executing | Coordinate the execution of project plans. Produce deliverables.  |
 |  4. Closing | Coordinate formal acceptance of the project. Report on project performance. Capture Lessons Learned and post-project recommendations. Close the project administratively.  |
-
-Monitor $\&$ Control
-
-Oversee all project work and management activities over the duration of the project: monitor project performance, measure progress, manage changes, address risks and issues, identify corrective actions etc.
+| Monitor & Control | Oversee all project work and management activities over the duration of the project: monitor project performance, measure progress, manage changes, address risks and issues, identify corrective actions etc. |
 
 #### 3.2.1 Initiating Phase
 
@@ -381,7 +378,6 @@ The following activities are part of the Initiating Phase:
 
 ![Fig 3.3 Overview of the Initiating Phase](03.03.png)
 
-Fig 3.3 Overview of the Initiating Phase
 The Business Case and Project Charter define the project's scope and direction. The Project Manager (PM) and the Project Core Team (PCT) reference and use both throughout the project.
 
 At the end of the Initiating Phase, the Project Steering Committee (PSC) or other Appropriate Governance Body (AGB) reviews the above documents and decides whether to allow the project to move forward.
