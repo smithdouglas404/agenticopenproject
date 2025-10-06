@@ -2,8 +2,8 @@
 sidebar_navigation:
   title: 4 Project Organisation and Roles 
   priority: 800
-description: Describes the PM² governance model in detail, including the main project roles and responsibilities: e.g., the Project Steering Committee, Project Owner, Business Manager, Project Manager, and Project Core Team. It explains reporting lines, decision-making, and escalation mechanisms.
-keywords: project stakeholders, project organisations, appropriate governance body, project steering committee (PSC), project owner, business manager, project manager, business implementation group, project core team, project support team, ram
+description: Describes the PM² governance model in detail, including the main project roles and responsibilities for example the Project Steering Committee, Project Owner, Business Manager, Project Manager, and Project Core Team. It explains reporting lines, decision-making, and escalation mechanisms.
+keywords: project stakeholders, project organisations, appropriate governance body, project steering committee, PSC, project owner, business manager, project manager, business implementation group, project core team, project support team, ram
 ---
 
 # 4 Project Organisation and Roles 
