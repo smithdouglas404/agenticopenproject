@@ -29,13 +29,9 @@
 // Based on https://github.com/chartjs/Chart.js/blob/master/src/plugins/plugin.colors.ts
 
 import {
-  BarController,
-  Chart,
   ChartDataset,
   ChartType,
-  DoughnutController,
   Plugin,
-  PolarAreaController
 } from 'chart.js';
 
 export interface PrimerColorsPluginOptions {
@@ -66,10 +62,10 @@ function getCSSVariable(variable:string) {
 }
 
 const EMPHASIS_COLORS = PRIMER_COLORS
-  .map((color) => getCSSVariable(`--display-${color}-scale-4`));
+  .map((color) => getCSSVariable(`--display-${color}-scale-6`));
 
 const MUTED_COLORS = PRIMER_COLORS
-  .map((color) => getCSSVariable(`--display-${color}-scale-1`));
+  .map((color) => getCSSVariable(`--display-${color}-scale-2`));
 
 function getEmphasisColor(i:number) {
   return EMPHASIS_COLORS[i % EMPHASIS_COLORS.length];
@@ -80,45 +76,31 @@ function getMutedColor(i:number) {
 }
 
 function colorizeDefaultDataset(dataset:ChartDataset, i:number) {
-  dataset.borderColor = getEmphasisColor(i);
-  dataset.backgroundColor = getMutedColor(i);
-
-  return ++i;
+  return assignColorsForDataset(dataset, i);
 }
 
-function colorizeBarDataset(dataset:ChartDataset, i:number) {
-  dataset.backgroundColor = dataset.data.map(() => getEmphasisColor(i++));
+function assignColorsForDataset(dataset:ChartDataset, i:number):number {
+  const backgroundColors:string[] = [];
+  const borderColors:string[] = [];
+
+  for (const _ of dataset.data) {
+    backgroundColors.push(getMutedColor(i));
+    borderColors.push(getEmphasisColor(i));
+    i+=1;
+  }
+
+  dataset.backgroundColor = backgroundColors;
+  dataset.borderColor = borderColors;
+  dataset.borderWidth = 1;
 
   return i;
 }
 
-function colorizeDoughnutDataset(dataset:ChartDataset, i:number) {
-  dataset.backgroundColor = dataset.data.map(() => getEmphasisColor(i++));
-
-  return i;
-}
-
-function colorizePolarAreaDataset(dataset:ChartDataset, i:number) {
-  dataset.backgroundColor = dataset.data.map(() => getMutedColor(i++));
-
-  return i;
-}
-
-function getColorizer(chart:Chart) {
+function getColorizer() {
   let i = 0;
 
-  return (dataset:ChartDataset, datasetIndex:number) => {
-    const controller = chart.getDatasetMeta(datasetIndex).controller;
-
-    if (controller instanceof DoughnutController) {
-      i = colorizeDoughnutDataset(dataset, i);
-    } else if (controller instanceof PolarAreaController) {
-      i = colorizePolarAreaDataset(dataset, i);
-    } else if (controller instanceof BarController) {
-      i = colorizeBarDataset(dataset, i);
-    } else {
-      i = colorizeDefaultDataset(dataset, i);
-    }
+  return (dataset:ChartDataset) => {
+    i = colorizeDefaultDataset(dataset, i);
   };
 }
 
@@ -132,7 +114,7 @@ const plugin:Plugin<ChartType, PrimerColorsPluginOptions> = {
     }
 
     const { data: { datasets } } = chart.config;
-    const colorizer = getColorizer(chart);
+    const colorizer = getColorizer();
 
     datasets.forEach(colorizer);
   },
