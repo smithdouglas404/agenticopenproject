@@ -89,6 +89,28 @@ RSpec.describe "Move agenda items to section", :js do
         show_page.expect_agenda_item_in_section(title: "Item to move", section: section2)
       end
 
+      it "doesn't show the current section in the options list" do
+        show_page.visit!
+        show_page.expect_agenda_item_in_section(title: "Item to move", section: section1)
+
+        show_page.select_action(agenda_item, I18n.t(:label_agenda_item_move_to_section))
+
+        expect(page).to have_css("#move-to-section-dialog")
+
+        within("#move-to-section-dialog") do
+          autocompleter = page.find("opce-autocompleter")
+          search_autocomplete autocompleter,
+                              query: "",
+                              results_selector: "#move-to-section-dialog"
+
+          expect(page).to have_css(".ng-option", text: "Section 2")
+          expect(page).to have_css(".ng-option", text: "Section 3")
+          expect(page).to have_css(".ng-option", text: "Agenda backlog")
+
+          expect(page).to have_no_css(".ng-option", text: "Section 1")
+        end
+      end
+
       it "preserves backlog collapsed state when moving items between sections" do
         show_page.visit!
 
