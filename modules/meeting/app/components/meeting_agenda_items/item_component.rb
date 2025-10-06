@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -40,7 +41,8 @@ module MeetingAgendaItems
       state: :show,
       container: nil,
       display_notes_input: nil,
-      first_and_last: []
+      first_and_last: [],
+      current_occurrence: nil
     )
       super
 
@@ -49,6 +51,7 @@ module MeetingAgendaItems
       @display_notes_input = display_notes_input
       @container = container
       @first_and_last = first_and_last
+      @current_occurrence = current_occurrence
     end
 
     def wrapper_uniq_by
@@ -73,7 +76,8 @@ module MeetingAgendaItems
     def child_component_params
       {
         meeting_agenda_item: @meeting_agenda_item,
-        display_notes_input: (@display_notes_input if @state == :edit)
+        display_notes_input: (@display_notes_input if @state == :edit),
+        current_occurrence: @current_occurrence
       }.compact
     end
 
@@ -89,7 +93,8 @@ module MeetingAgendaItems
           id: @meeting_agenda_item.id,
           "draggable-id": @meeting_agenda_item.id,
           "draggable-type": "agenda-item",
-          "drop-url": drop_meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item)
+          "drop-url": drop_meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item,
+                                                    current_occurrence: @current_occurrence)
         }
       }
     end

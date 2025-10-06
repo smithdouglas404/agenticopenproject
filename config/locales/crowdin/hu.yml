@@ -331,6 +331,14 @@ hu:
     tab:
       no_results_title_text: Jelenleg nincsenek egyéni mezők.
       no_results_content_text: Új egyéni mező létrehozása
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "vagy"
   op_dry_validation:
@@ -621,17 +629,20 @@ hu:
     autologins:
       prompt: "Maradjon bejelentkezve %{num_days} napig."
     sessions:
-      remembered_devices: "Megjegyzett eszközök"
-      remembered_devices_caption: "Az összes olyan eszköz listája, amely a \"Bejelentkezve marad\" opcióval bejelentkezett erre a fiókra."
       session_name: "%{browser_name} %{browser_version} %{os_name} operációs rendszeren"
       browser: "Böngésző"
+      expires: "Expires"
+      last_connection: "Last connection"
       device: "Eszköz / Operációs rendszer"
       unknown_browser: "ismeretlen böngésző"
       unknown_os: "ismeretlen operációs rendszer"
-      current: "Jelenlegi munkamenet"
+      unknown: "(unknown)"
+      browser_session: "(Browser session)"
+      current: "Current (this device)"
       title: "Munkamenet-kezelés"
-      instructions: "Ez azoknak az eszközöknek a listája, amelyek bejelentkeztek a fiókjába. Vonja vissza azokat a munkameneteket, amelyeket nem ismer fel, vagy amelyekhez már nincs hozzáférése."
+      instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Az aktuális munkamenetet nem törölheti."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "A felhasználó a következő csoportoknak a tagja:"
       no_results_title_text: A falhasználó egyik csoportnak se a tagja
@@ -971,6 +982,11 @@ hu:
         help_text: "Súgószöveg"
       auth_provider:
         scim_clients: "SCIM clients"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "Context"
       changeset:
@@ -1278,7 +1294,7 @@ hu:
         confirmation: "%{attribute} nem egyezik."
         could_not_be_copied: "A (z) %{dependency} nem másolható (teljesen)."
         does_not_exist: "nem létezik."
-        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "lehet, hogy nem érhető el."
         error_readonly: "írása megkísérelve, de nem írható."
         error_conflict: "Az adatokat frissítette egy másik felhasználó időközben."
@@ -1683,6 +1699,7 @@ hu:
       issue_priority:
         one: "Fontosság"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "Tag"
       news: "Hírek"
       notification:
@@ -2181,6 +2198,7 @@ hu:
     features:
       baseline_comparison: Baseline Comparisons
       board_view: Advanced Boards
+      calculated_values: Calculated Values
       conditional_highlighting: Conditional Highlighting
       internal_comments: Internal Comments
       custom_actions: Custom Actions
@@ -2253,6 +2271,8 @@ hu:
         description: "Share work packages with users who are not members of the project."
       project_list_sharing:
         description: "Share project lists with individual users."
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Custom color theme and logo"
         more_info: "Megjegyzés: a használt logó nyilvánosan elérhető lesz."
@@ -2349,6 +2369,7 @@ hu:
   error_invalid_selected_value: "Kijelölt érték érvénytelen."
   error_journal_attribute_not_present: "A lap nem tartalmaz attribútumot %{attribute}."
   error_pdf_export_too_many_columns: "Túl sok oszlop lett kiválasztva a PDF exportáláshoz. Kérlek csökkentsd a sorok számát."
+  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
   error_pdf_failed_to_export: "A PDF-Exportálás mentése nem sikerült: %{error}"
   error_token_authenticity: "Nem sikerült ellenőrizni a Cross-Site Request Forgery token-t. Megpróbált adatokat küldeni több böngészőn vagy lapon keresztül? Kérjük, zárja be az összes lapot, és próbálkozzon újra."
   error_reminder_not_found: "The reminder was not found or was already notified about."
@@ -2561,22 +2582,15 @@ hu:
         header: "Read about new features and product updates."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
-          new_features_title: >
-            The release contains various new features and improvements, such as:
-          new_features_list:
-            line_0: Option to auto-sync system color + contrast mode.
-            line_1: Dark high contrast mode for improved accessibility.
-            line_2: PDF export of project lists.
-            line_3: Custom font for all PDF exports (Enterprise add-on).
-            line_4: Improved meeting participants dialog.
-            line_5: Improved budget handling in project queries and budget planning.
-            line_6: Updated Home and Project overview page.
         "16_5":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: New features and improvements coming soon. Keep checking back!
+            line_0: Add work packages to a meeting section in the Meetings tab.
+            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
+            line_2: Filter projects by last update.
+            line_3: Jump to highlighted target elements from deep links.
+            line_4: Confirm critical actions with more accessible danger dialogs.
     links:
       upgrade_enterprise_edition: "Váltás Vállalati Verzióra"
       postgres_migration: "A rendszer költöztetése PostreSQL-re"
@@ -2811,7 +2825,7 @@ hu:
   label_select_main_menu_item: Válasszon ki új fő menüpontot
   label_required_disk_storage: "Szükséges lemezterület"
   label_send_invitation: Meghívó küldése
-  label_calculated_value: "Calculated value"
+  label_calculated_value: "Calculated Value"
   label_change_parent: "Change parent"
   label_change_plural: "Változtat"
   label_change_properties: "A tulajdonságok megváltoztatása"
@@ -2988,7 +3002,7 @@ hu:
   label_integer: "Egész szám"
   label_interface: "Interface"
   label_internal: "Belső"
-  label_introduction_video: "Bemutató videó"
+  label_introduction_video: "Getting started video"
   label_invite_user: "Felhasználó meghívása"
   label_item: "Item"
   label_item_plural: "Items"
@@ -3637,6 +3651,7 @@ hu:
   notice_password_confirmation_failed: "A jelszó nem megfelelő. Nem lehet folytatni."
   notice_principals_found_multiple: "%{number} találat. \n Tab-al tudsz az első találatra fókuszálni."
   notice_principals_found_single: "Egyetlen találat van.\nA Tab billentyű megnyomásával ugrik rá a fókusz."
+  notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "A projekt nem lett törölve."
   notice_project_not_found: "Project not found."
   notice_successful_connection: "Sikeresen létrejött a kapcsolat."
@@ -4279,6 +4294,7 @@ hu:
   text_access_token_hint: "Hozzáférés tokennel lehetővé teszi, hogy külső alkalmazások hozzáférhessenek az OpenProject forrásaihoz."
   text_analyze: "További elemzése: %{subject}"
   text_are_you_sure: "Biztos vagy benne?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Are you sure you want to continue?"
   text_are_you_sure_with_children: "Törli a feladatcsoportot és minden hozzá tartozó gyermek feladatcsoportot?"
   text_are_you_sure_with_project_custom_fields: "Deleting this attribute will also delete its values in all projects. Are you sure you want to do this?"

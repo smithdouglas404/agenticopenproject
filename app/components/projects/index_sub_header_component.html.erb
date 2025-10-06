@@ -49,7 +49,7 @@
                 disabled: @disable_buttons,
                 size: :medium
               ) do |item|
-                item.with_leading_visual_icon(icon: new_workspace_icon(new_type))
+                item.with_leading_visual_icon(icon: helpers.workspace_icon(new_type))
               end
             end
           end

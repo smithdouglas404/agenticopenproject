@@ -8,16 +8,6 @@ module Grids
       "#{root}/grids/#{id}/attachments"
     end
 
-    initializer "grids.permissions" do
-      Rails.application.reloader.to_prepare do
-        OpenProject::AccessControl.permission(:view_news)
-          .controller_actions
-          .push(
-            "grids/widgets/news/show"
-          )
-      end
-    end
-
     config.to_prepare do
       Queries::Register.register(Grids::Query) do
         filter Grids::Filters::ScopeFilter

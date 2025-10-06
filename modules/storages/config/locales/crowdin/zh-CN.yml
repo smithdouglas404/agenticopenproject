@@ -32,6 +32,7 @@ zh-CN:
         drive: 驱动器 ID
         host: 主机
         name: 名称
+        password: 应用密码
         provider_type: 提供商类型
         tenant: 目录 (租户) ID
     errors:
@@ -62,7 +63,7 @@ zh-CN:
               op_application_not_installed: 似乎没有安装应用“OpenProject 集成”。请先安装，然后重试。
             password:
               invalid_password: 无效。
-              unknown_error: 无法验证。请检查您的存储区连接，然后重试。
+              unknown_error: 无法通过文件存储提供商的验证。请确认连接是否正常。
     models:
       file_link: 文件
       storages/storage: 存储
@@ -183,8 +184,6 @@ zh-CN:
           not_found: '%{storage_name} 上找不到目标文件夹 %{folder} 。'
   storages:
     buttons:
-      complete_without_setup: 没有它就完成
-      done_complete_setup: 完成，完成设置
       done_continue: 完成, 继续
       open_storage: 打开文件存储
       replace_oauth_application: 替换 OpenProject OAuth
@@ -202,12 +201,9 @@ zh-CN:
     confirm_replace_oauth_application: 此操作将重置当前的 OAuth 凭据。确认后，您必须在存储提供商处重新输入凭据，并且所有远程用户都必须再次针对 OpenProject 进行授权。您确定要继续吗？
     confirm_replace_oauth_client: 此操作将重置当前的 OAuth 凭据。确认后，您必须输入存储提供商的新凭据，并且所有用户都必须再次针对 %{provider_type} 进行授权。您确定要继续吗？
     delete_warning:
-      input_delete_confirmation: 输入文件存储区名称 %{file_storage} 以确认删除。
-      irreversible_notice: 删除文件存储区是不可逆转的操作。
-      project_storage: '确定要从此项目中删除 %{file_storage} 吗？要确认此操作，请在下面的字段中输入存储区名称，这将：'
       project_storage_delete_result_1: 从此项目的工作包中移除该存储区的文件和文件夹的所有链接。
       project_storage_delete_result_2: 如果这个存储库具有自动托管的项目文件夹，那么该文件夹及其文件将被永久删除。
-      storage: '您确定要删除 %{file_storage} 吗？请在下面的字段中输入存储名称以确认此操作。进行此操作将会：'
+      storage: 'Are you sure you want to delete %{file_storage}? This will:'
       storage_delete_result_1: 删除所有使用此存储的项目的所有存储设置。
       storage_delete_result_2: 从所有项目的工作包中删除所有链接到该存储的文件和文件夹。
       storage_delete_result_3: 如果此存储具有自动托管的项目文件夹，这些文件夹及其包含的文件将被永久删除。
@@ -480,7 +476,6 @@ zh-CN:
         subtitle_short: 允许 OpenProject 自动创建每个项目的文件夹。
         title: 自动托管的项目文件夹
       project_settings:
-        delete: 删除文件存储区
         edit: 编辑文件存储到此项目
         members_connection_status: 成员连接状态
         new: 将文件存储添加到此项目

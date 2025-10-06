@@ -49,6 +49,10 @@ class CustomField < ApplicationRecord
           dependent: :destroy,
           inverse_of: "custom_field"
 
+  attr_readonly :field_format
+
+  has_many :calculated_value_errors, dependent: :delete_all, inverse_of: "custom_field"
+
   scope :hierarchy_root_and_children, -> { includes(hierarchy_root: { children: :children }) }
   scope :required, -> { where(is_required: true) }
 
@@ -321,6 +325,8 @@ class CustomField < ApplicationRecord
     field_format == "calculated_value"
   end
 
+  def calculated_value? = field_format_calculated_value?
+
   def hierarchical_list?
     field_format_hierarchy? || field_format_scored_list?
   end
@@ -340,6 +346,17 @@ class CustomField < ApplicationRecord
     tag = multi_value? ? "mv" : "sv"
 
     "#{super}/#{tag}"
+  end
+
+  # If this custom field is a calculated value, return an existing calculation error.
+  # For non-calculated value custom fields, always returns `nil`.
+  #
+  # When there is at least one calculation error, will return the first one - or `nil` if there are none.
+  # Use this method when you want to present a calculation error to the user.
+  def first_calculation_error(customized)
+    return nil unless calculated_value?
+
+    calculated_value_errors.where(customized:).first
   end
 
   private

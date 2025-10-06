@@ -32,6 +32,7 @@ ru:
         drive: ID диска
         host: Хост
         name: Имя
+        password: Application password
         provider_type: Тип поставщика
         tenant: ID каталога (арендатора)
     errors:
@@ -62,7 +63,7 @@ ru:
               op_application_not_installed: похоже, что приложение "Интеграция с OpenProject" не установлено. Сначала установите его и повторите попытку.
             password:
               invalid_password: недействителен.
-              unknown_error: не удалось пройти проверку. Пожалуйста, проверьте подключение к вашему хранилищу и повторите попытку.
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: Файл
       storages/storage: Хранилище
@@ -183,8 +184,6 @@ ru:
           not_found: Папка %{folder} не найдена в хранилище %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Обходитесь без этого
-      done_complete_setup: Готово, завершить установку
       done_continue: Готово, продолжить
       open_storage: Открыть хранилище файлов
       replace_oauth_application: Заменить OAuth OpenProject
@@ -202,12 +201,9 @@ ru:
     confirm_replace_oauth_application: Это действие приведет к сбросу текущих учетных данных OAuth. После подтверждения вам придется повторно ввести учетные данные у поставщика хранилища, и всем удаленным пользователям придется снова авторизоваться в OpenProject. Вы уверены, что хотите продолжить?
     confirm_replace_oauth_client: Это действие приведет к сбросу текущих учетных данных OAuth. После подтверждения вам нужно будет ввести новые учетные данные от поставщика хранилища, и всем пользователям придется снова авторизоваться в %{provider_type}. Вы уверены, что хотите продолжить?
     delete_warning:
-      input_delete_confirmation: Введите имя хранилища файлов %{file_storage} для подтверждения удаления.
-      irreversible_notice: Удаление хранилища файлов является необратимым действием.
-      project_storage: 'Вы уверены, что хотите удалить %{file_storage} из этого проекта? Для подтверждения этого действия, пожалуйста, введите имя хранилища в поле ниже, это позволит:'
       project_storage_delete_result_1: Удалить все ссылки из пакетов работ этого проекта в файлы и папки этого хранилища.
       project_storage_delete_result_2: В случае, если хранилище имеет автоматически управляемую папку проекта, она и ее файлы будут удалены навсегда.
-      storage: 'Вы уверены, что хотите удалить %{file_storage}?  Чтобы подтвердить это действие, введите имя хранилища в поле ниже. Это:'
+      storage: 'Are you sure you want to delete %{file_storage}? This will:'
       storage_delete_result_1: Удалить все настройки хранилища для всех проектов, использующих это хранилище.
       storage_delete_result_2: Удалить все ссылки из пакетов работ всех проектов в файлы и папки этого хранилища.
       storage_delete_result_3: В случае, если хранилище имеет автоматически управляемые папки проектов, они и содержащиеся в них файлы будут удалены навсегда.
@@ -403,7 +399,7 @@ ru:
       setting_up_storages_non_admin: Администраторы могут настроить файловые хранилища в Администрирование / Файловые хранилища.
       sharepoint:
         application_link_text: SharePoint site
-        integration: SharePoint Administration / OpenProject
+        integration: Администрирование SharePoint / OpenProject
         oauth_configuration: Скопируйте эти значения из желаемого приложения в %{application_link_text}.
         provider_configuration: Перед установкой убедитесь, что у вас есть права администрирования в %{application_link_text} или обратитесь к администратору Microsoft. На портале вам также нужно зарегистрировать приложение Azure или использовать существующее для аутентификации.
       type: 'Перед установкой убедитесь, что у вас есть права администрирования в вашем экземпляре Nextcloud и что перед установкой установлено следующее приложение:'
@@ -486,7 +482,6 @@ ru:
         subtitle_short: Позволить OpenProject создавать папки для каждого проекта автоматически.
         title: Автоматически управляемые папки проекта
       project_settings:
-        delete: Удалить хранилище файлов
         edit: Редактировать хранилище файлов для этого проекта
         members_connection_status: Статус подключения участников
         new: Добавить хранилище файлов в этот проект

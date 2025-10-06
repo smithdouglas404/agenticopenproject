@@ -32,14 +32,13 @@ require "icalendar/tzinfo"
 
 module Meetings
   class IcalendarBuilder
-    attr_reader :timezone, :calendar, :all_times, :tzid, :calendar_generated_for_user
+    attr_reader :builder_internal_timezone, :calendar, :all_times, :calendar_generated_for_user
 
     def initialize(timezone:, user: User.current)
       @calendar_generated_for_user = user
-      @timezone = timezone
-      @tzid = timezone.tzinfo.canonical_identifier
+      @builder_internal_timezone = timezone
       @calendar = build_icalendar
-      @all_times = []
+      @all_times = Hash.new { |hash, key| hash[key] = Array.new }
       @excluded_dates_cache = {}
       @instantiated_occurrences_cache = {}
       @series_cache_loaded = false
@@ -97,8 +96,8 @@ module Meetings
         e.sequence = recurring_meeting.template.lock_version
 
         e.rrule = recurring_meeting.schedule.rrules.first.to_ical # We currently only have one recurrence rule
-        e.dtstart = ical_datetime(recurring_meeting.template.start_time)
-        e.dtend = ical_datetime(recurring_meeting.template.end_time)
+        e.dtstart = ical_datetime(recurring_meeting.template.start_time, timezone: recurring_meeting.time_zone)
+        e.dtend = ical_datetime(recurring_meeting.template.end_time, timezone: recurring_meeting.time_zone)
         e.location = recurring_meeting.template.location.presence
         e.status = if cancelled
                      "CANCELLED"
@@ -107,6 +106,15 @@ module Meetings
                    end
 
         add_attendees(event: e, meeting: recurring_meeting.template)
+
+        # Add all occurence dates to the dates set, so that we bake in all timezone rules correcly
+        if recurring_meeting.end_after_never?
+          all_times[recurring_meeting.time_zone].push(5.years.from_now.in_time_zone(recurring_meeting.time_zone))
+        else
+          all_times[recurring_meeting.time_zone].push(
+            recurring_meeting.schedule.all_occurrences.max.in_time_zone(recurring_meeting.time_zone)
+          )
+        end
 
         # Add exceptions for all cancelled recurrences
         set_excluded_recurrence_dates(event: e, recurring_meeting: recurring_meeting)
@@ -135,9 +143,9 @@ module Meetings
         e.last_modified = meeting.updated_at.utc
         e.sequence = meeting.lock_version
 
-        e.recurrence_id = ical_datetime(scheduled_meeting.start_time)
-        e.dtstart = ical_datetime(meeting.start_time)
-        e.dtend = ical_datetime(meeting.end_time)
+        e.recurrence_id = ical_datetime(scheduled_meeting.start_time, timezone: recurring_meeting.time_zone)
+        e.dtstart = ical_datetime(meeting.start_time, timezone: recurring_meeting.time_zone)
+        e.dtend = ical_datetime(meeting.end_time, timezone: recurring_meeting.time_zone)
         e.location = meeting.location.presence
 
         add_attendees(event: e, meeting: meeting)
@@ -159,7 +167,7 @@ module Meetings
 
     def to_ical
       calendar.timezones.clear
-      calendar.add_timezone(build_single_vtimezone)
+      build_timezones
       calendar.to_ical
     end
 
@@ -190,6 +198,7 @@ module Meetings
     def build_icalendar
       ::Icalendar::Calendar.new.tap do |calendar|
         calendar.prodid = "-//OpenProject GmbH//#{OpenProject::VERSION}//Meeting//EN"
+        calendar.refresh_interval = 6.hours.iso8601
       end
     end
 
@@ -226,9 +235,12 @@ module Meetings
       calendar_generated_for_user == user && @action_needed_from_user_as_attendee
     end
 
-    def ical_datetime(time)
+    def ical_datetime(time, timezone: builder_internal_timezone)
+      tzid = timezone.tzinfo.canonical_identifier
+
       time_in_time_zone = time.in_time_zone(timezone)
-      all_times << time_in_time_zone
+      all_times[timezone] << time_in_time_zone
+
       Icalendar::Values::DateTime.new time_in_time_zone, "tzid" => tzid
     end
 
@@ -238,27 +250,28 @@ module Meetings
       sprintf("%<hours>+03d%<minutes>02d", hours:, minutes:)
     end
 
-    # Helper to build a VTZIMEZONE with all relevant transitions
-    def build_single_vtimezone # rubocop:disable Metrics/AbcSize
-      tz = Icalendar::Timezone.new
-      tz.tzid = tzid
+    def build_timezones # rubocop:disable Metrics/AbcSize
+      all_times.each do |timezone, times|
+        calendar.timezone do |tz|
+          tz.tzid = timezone.tzinfo.canonical_identifier
+          transitions = timezone.tzinfo.transitions_up_to(times.max + 6.months, times.min - 6.months)
 
-      # We are investigating how to properly build this ... for now let's
-      # just include everything from min - 6 months to max + 6 months
-      if all_times.present?
-        transitions = timezone.tzinfo.transitions_up_to(all_times.max + 6.months, all_times.min - 6.months)
-
-        transitions.each do |tr|
-          comp = tr.offset.dst? ? Icalendar::Timezone::Daylight.new : Icalendar::Timezone::Standard.new
-          comp.dtstart = tr.at.utc.strftime("%Y%m%dT%H%M%SZ")
-          comp.tzoffsetfrom = format_ical_offset(tr.previous_offset.utc_total_offset)
-          comp.tzoffsetto = format_ical_offset(tr.offset.utc_total_offset)
-          comp.tzname = tr.offset.abbreviation.to_s
-          tz.add_component(comp)
+          transitions.each do |tr|
+            if tr.offset.dst?
+              tz.daylight { |d| transition_to_component(d, tr) }
+            else
+              tz.standard { |s| transition_to_component(s, tr) }
+            end
+          end
         end
       end
+    end
 
-      tz
+    def transition_to_component(component, transition)
+      component.dtstart = transition.at.utc.strftime("%Y%m%dT%H%M%SZ")
+      component.tzoffsetfrom = format_ical_offset(transition.previous_offset.utc_total_offset)
+      component.tzoffsetto = format_ical_offset(transition.offset.utc_total_offset)
+      component.tzname = transition.offset.abbreviation.to_s
     end
 
     def ical_organizer
@@ -284,7 +297,7 @@ module Meetings
                          .scheduled_meetings
                          .cancelled
                          .pluck(:start_time)
-                         .map { ical_datetime(it) }
+                         .map { ical_datetime(it, timezone: recurring_meeting.time_zone) }
                      end
     end
 

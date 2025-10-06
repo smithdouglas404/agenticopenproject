@@ -55,7 +55,11 @@ Rails.application.routes.draw do
 
   # Respond with 410 gone for APIV2 calls
   match "/api/v2(/*unmatched_route)", to: proc { [410, {}, [""]] }, via: :all
+
+  # Respond with 404 for source maps that are not found
+  # This prevents routing errors in test when developer mode is activated
   match "/assets/compiler.js.map", to: proc { [404, {}, [""]] }, via: :all
+  match "*.css.map", to: proc { [404, {}, [""]] }, via: :all
 
   # Redirect wp short url for work packages to full URL
   get "/wp(/)" => redirect("#{rails_relative_url_root}/work_packages")
@@ -634,6 +638,16 @@ Rails.application.routes.draw do
           get :new_link
           post :link
           delete :unlink
+        end
+        resources :items, controller: "/admin/settings/project_custom_fields/hierarchy/items" do
+          member do
+            get :change_parent, action: :change_parent_dialog
+            post :change_parent, action: :change_parent
+            get :delete, action: :deletion_dialog
+            post :move
+            get :new_child, action: :new
+            post :new_child, action: :create
+          end
         end
       end
       resources :project_custom_field_sections, controller: "/admin/settings/project_custom_field_sections",

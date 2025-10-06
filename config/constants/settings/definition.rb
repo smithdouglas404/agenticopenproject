@@ -758,10 +758,6 @@ module Settings
         default: nil,
         writable: false # this changes a global variable and must therefore not be writable at runtime
       },
-      onboarding_video_url: {
-        description: "Onboarding guide instructional video URL",
-        default: "https://player.vimeo.com/video/163426858?autoplay=1"
-      },
       onboarding_enabled: {
         description: "Enable or disable onboarding guided tour for new users",
         default: true
@@ -1146,6 +1142,17 @@ module Settings
         default: {
           "host" => nil,
           "port" => 8125
+        },
+        writable: false
+      },
+      metrics: {
+        description: "
+          Publish a reduced set of puma metrics on a separate port for Prometheus consumption,
+          providing autoscaling hints
+        ".squish,
+        default: {
+          "enabled" => false,
+          "port" => 9394
         },
         writable: false
       },

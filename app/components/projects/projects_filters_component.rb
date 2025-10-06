@@ -59,7 +59,8 @@ class Projects::ProjectsFiltersComponent < Filter::FilterComponent
       Queries::Projects::Filters::ProjectStatusFilter,
       Queries::Projects::Filters::PublicFilter,
       Queries::Projects::Filters::TemplatedFilter,
-      Queries::Projects::Filters::TypeFilter
+      Queries::Projects::Filters::TypeFilter,
+      Queries::Projects::Filters::UpdatedAtFilter
     ]
 
     # FavoritedFilter used to be called favored. The filter should not break for stored queries. Therefore,

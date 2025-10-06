@@ -35,6 +35,9 @@ Rails.application.configure do
     require "opentelemetry/sdk"
     require "opentelemetry-exporter-otlp"
     require "opentelemetry-instrumentation-all"
+    require "opentelemetry/semconv/incubating/deployment"
+    require "opentelemetry/semconv/incubating/host"
+    require "opentelemetry/semconv/incubating/service"
 
     # add log tags for log correlation
     if config.log_tags
@@ -53,9 +56,12 @@ Rails.application.configure do
 
       c.resource = OpenTelemetry::SDK::Resources::Resource.create(
         {
-          "deployment.environment" => Rails.env,
-          "service.namespace" => "openproject",
-          "service.instance.id" => Socket.gethostname
+          OpenTelemetry::SemConv::Incubating::DEPLOYMENT::DEPLOYMENT_ENVIRONMENT => Rails.env,
+          OpenTelemetry::SemConv::Incubating::HOST::HOST_NAME => Socket.gethostname,
+          OpenTelemetry::SemConv::Incubating::SERVICE::SERVICE_INSTANCE_ID => SecureRandom.uuid,
+          OpenTelemetry::SemConv::Incubating::SERVICE::SERVICE_NAME => OpenProject::OpenTelemetry.process_type,
+          OpenTelemetry::SemConv::Incubating::SERVICE::SERVICE_NAMESPACE => "openproject",
+          OpenTelemetry::SemConv::Incubating::SERVICE::SERVICE_VERSION => OpenProject::VERSION.to_s
         }.transform_values(&:to_s)
       )
 

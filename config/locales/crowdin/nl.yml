@@ -329,6 +329,14 @@ nl:
     tab:
       no_results_title_text: Momenteel zijn er geen aangepaste velden.
       no_results_content_text: Maak een nieuw aangepast veld
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "of"
   op_dry_validation:
@@ -619,17 +627,20 @@ nl:
     autologins:
       prompt: "Blijf aangemeld voor %{num_days}"
     sessions:
-      remembered_devices: "Onthouden apparaten"
-      remembered_devices_caption: "Een lijst van alle apparaten die ingelogd zijn op dit account met de optie 'Aangemeld blijven'."
       session_name: "%{browser_name} %{browser_version} op %{os_name}"
       browser: "Browser"
+      expires: "Expires"
+      last_connection: "Last connection"
       device: "Apparaat / OS"
       unknown_browser: "Onbekende browser"
       unknown_os: "Onbekend besturingssysteem"
-      current: "Huidige sessie"
+      unknown: "(unknown)"
+      browser_session: "(Browser session)"
+      current: "Current (this device)"
       title: "Sessiebeheer"
-      instructions: "Dit is een lijst van apparaten die zich bij uw account hebben aangemeld. Trek sessies in die u niet herkent of waartoe u geen toegang meer tot hebt."
+      instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Je kan je huidige sessie niet verwijderen."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "Deze gebruiker is momenteel lid van de volgende groepen:"
       no_results_title_text: Deze gebruiker is momenteel geen lid in een groep.
@@ -968,6 +979,11 @@ nl:
         help_text: "Helptekst"
       auth_provider:
         scim_clients: "SCIM clients"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "Context"
       changeset:
@@ -1275,7 +1291,7 @@ nl:
         confirmation: "komt niet overeen met %{attribute}."
         could_not_be_copied: "%{dependency} kon niet (volledig) worden gekopieerd."
         does_not_exist: "bestaat niet."
-        error_enterprise_only: "%{action} is alleen beschikbaar in de OpenProject Enterprise editie"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "geen toegang."
         error_readonly: "werd geprobeerd te schrijven maar is niet schrijfbaar."
         error_conflict: "Informatie is in de tussentijd door ten minste één andere gebruiker bijgewerkt."
@@ -1680,6 +1696,7 @@ nl:
       issue_priority:
         one: "Prioriteit"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "Deelnemer"
       news: "Nieuws"
       notification:
@@ -2178,6 +2195,7 @@ nl:
     features:
       baseline_comparison: Baseline Comparisons
       board_view: Advanced Boards
+      calculated_values: Calculated Values
       conditional_highlighting: Conditional Highlighting
       internal_comments: Internal Comments
       custom_actions: Custom Actions
@@ -2250,6 +2268,8 @@ nl:
         description: "Werkpakketten delen met gebruikers die geen lid zijn van het project."
       project_list_sharing:
         description: "Share project lists with individual users."
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Custom color theme and logo"
         more_info: "Opmerking: het gebruikte logo is openbaar toegankelijk."
@@ -2346,6 +2366,7 @@ nl:
   error_invalid_selected_value: "De geselecteerde waarde is ongeldig."
   error_journal_attribute_not_present: "Dagboek bevat geen kenmerk %{attribute}."
   error_pdf_export_too_many_columns: "Te veel kolommen geselecteerd voor het exporteren naar PDF. Beperk het aantal kolommen."
+  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
   error_pdf_failed_to_export: "De pdf export kan niet worden opgeslagen:%{error}"
   error_token_authenticity: "Niet in staat om de Cross-Site Request Forgery token te valideren. Heeft u geprobeert gegevens op meerdere browsers of tabbladen wilt indienen? Sluit alle tabbladen en probeer het opnieuw."
   error_reminder_not_found: "The reminder was not found or was already notified about."
@@ -2558,22 +2579,15 @@ nl:
         header: "Read about new features and product updates."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
-          new_features_title: >
-            The release contains various new features and improvements, such as:
-          new_features_list:
-            line_0: Option to auto-sync system color + contrast mode.
-            line_1: Dark high contrast mode for improved accessibility.
-            line_2: PDF export of project lists.
-            line_3: Custom font for all PDF exports (Enterprise add-on).
-            line_4: Improved meeting participants dialog.
-            line_5: Improved budget handling in project queries and budget planning.
-            line_6: Updated Home and Project overview page.
         "16_5":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: New features and improvements coming soon. Keep checking back!
+            line_0: Add work packages to a meeting section in the Meetings tab.
+            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
+            line_2: Filter projects by last update.
+            line_3: Jump to highlighted target elements from deep links.
+            line_4: Confirm critical actions with more accessible danger dialogs.
     links:
       upgrade_enterprise_edition: "Upgrade naar Enterprise-editie"
       postgres_migration: "Uw installatie overzetten naar PostgreSQL"
@@ -2808,7 +2822,7 @@ nl:
   label_select_main_menu_item: Selecteer nieuwe hoofdmenu-item
   label_required_disk_storage: "Vereiste schijfruimte"
   label_send_invitation: Verstuur uitnodiging
-  label_calculated_value: "Calculated value"
+  label_calculated_value: "Calculated Value"
   label_change_parent: "Change parent"
   label_change_plural: "Wijzigingen"
   label_change_properties: "Eigenschappen wijzigen"
@@ -2985,7 +2999,7 @@ nl:
   label_integer: "Integer"
   label_interface: "Interface"
   label_internal: "Intern"
-  label_introduction_video: "Introductie video"
+  label_introduction_video: "Getting started video"
   label_invite_user: "Gebruiker uitnodigen"
   label_item: "Item"
   label_item_plural: "Items"
@@ -3634,6 +3648,7 @@ nl:
   notice_password_confirmation_failed: "Uw wachtwoord is niet correct. Kan niet doorgaan."
   notice_principals_found_multiple: "Er zijn %{number} resultaten gevonden.   Tab om het eerste resultaat te tonen."
   notice_principals_found_single: "Er is één resultaat. Tab om te tonen."
+  notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "Het project is niet verwijderd."
   notice_project_not_found: "Project niet gevonden."
   notice_successful_connection: "Geslaagde verbinding."
@@ -4276,6 +4291,7 @@ nl:
   text_access_token_hint: "Toegangstokens kunnen u externe toepassingen toegang verlenen tot bronnen in OpenProject."
   text_analyze: "Verdere analyse: %{subject}"
   text_are_you_sure: "Weet u het zeker?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Weet u zeker dat u wilt doorgaan?"
   text_are_you_sure_with_children: "Verwijder werk pakket en alle kinderen daarvan?"
   text_are_you_sure_with_project_custom_fields: "Deleting this attribute will also delete its values in all projects. Are you sure you want to do this?"

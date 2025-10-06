@@ -84,4 +84,76 @@ RSpec.describe Overviews::WidgetController do
       end
     end
   end
+
+  describe "news routing" do
+    describe "GET #show" do
+      context "for root" do
+        it do
+          expect(get("/widgets/news"))
+            .to route_to(controller: "overviews/widgets/news", action: "show")
+        end
+      end
+
+      context "with project" do
+        it do
+          expect(get("/projects/my-project/widgets/news"))
+            .to route_to(controller: "overviews/widgets/news", action: "show", project_id: "my-project")
+        end
+      end
+    end
+  end
+
+  describe "news named routing" do
+    describe "GET #show" do
+      context "for root" do
+        it do
+          expect(get(widgets_news_path))
+            .to route_to(controller: "overviews/widgets/news", action: "show")
+        end
+      end
+
+      context "with project" do
+        it do
+          expect(get(project_widgets_news_path("my-project")))
+            .to route_to(controller: "overviews/widgets/news", action: "show", project_id: "my-project")
+        end
+      end
+    end
+  end
+
+  describe "subitems routing" do
+    describe "GET #show" do
+      it do
+        expect(get("/projects/my-project/widgets/subitems"))
+          .to route_to(controller: "overviews/widgets/subitems", action: "show", project_id: "my-project")
+      end
+    end
+  end
+
+  describe "subitems named routing" do
+    describe "GET #show" do
+      it do
+        expect(get(project_widgets_subitems_path("my-project")))
+          .to route_to(controller: "overviews/widgets/subitems", action: "show", project_id: "my-project")
+      end
+    end
+  end
+
+  describe "members routing" do
+    describe "GET #show" do
+      it do
+        expect(get("/projects/my-project/widgets/members"))
+          .to route_to(controller: "overviews/widgets/members", action: "show", project_id: "my-project")
+      end
+    end
+  end
+
+  describe "members named routing" do
+    describe "GET #show" do
+      it do
+        expect(get(project_widgets_members_path("my-project")))
+          .to route_to(controller: "overviews/widgets/members", action: "show", project_id: "my-project")
+      end
+    end
+  end
 end

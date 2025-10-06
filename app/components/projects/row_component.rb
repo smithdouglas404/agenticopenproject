@@ -29,6 +29,8 @@
 #++
 module Projects
   class RowComponent < ::RowComponent
+    include CalculatedValues::ErrorsHelper
+
     delegate :identifier, to: :project
     delegate :favorited_project_ids,
              :project_phase_by_definition,
@@ -56,7 +58,7 @@ module Projects
                tag: :a,
                tooltip_direction: :e,
                href: helpers.build_favorite_path(project, format: :html),
-               data: { "turbo-method": currently_favorited? ? :delete : :post },
+               data: { turbo_method: currently_favorited? ? :delete : :post },
                classes: currently_favorited? ? "op-primer--star-icon " : "op-project-row-component--favorite",
                label: currently_favorited? ? I18n.t(:button_unfavorite) : I18n.t(:button_favorite),
                aria: { label: currently_favorited? ? I18n.t(:button_unfavorite) : I18n.t(:button_favorite) },
@@ -78,7 +80,7 @@ module Projects
       end
     end
 
-    def custom_field_column(column)
+    def custom_field_column(column) # rubocop:disable Metrics/AbcSize
       return nil unless user_can_view_project?
 
       cf = column.custom_field
@@ -93,6 +95,25 @@ module Projects
         )
       elsif custom_value.is_a?(Array)
         safe_join(Array(custom_value).compact_blank, ", ")
+      elsif cf.calculated_value?
+        render_calculated_value(cf, custom_value)
+      else
+        custom_value
+      end
+    end
+
+    def render_calculated_value(custom_field, custom_value)
+      if (error = custom_field.first_calculation_error(project))
+        render(Primer::Alpha::Dialog.new(title: I18n.t("calculated_values.error_dialog.title"),
+                                         data: {
+                                           test_selector: "calculated-value-error-dialog-#{custom_field.id}"
+                                         })) do |dialog|
+          dialog.with_show_button(icon: "alert-fill",
+                                  "aria-label": I18n.t("calculated_values.error_dialog.title"),
+                                  data: { test_selector: "calculated-value-error-btn-#{custom_field.id}" },
+                                  scheme: :invisible)
+          dialog.with_body { calculated_value_error_msg(error) }
+        end
       else
         custom_value
       end
@@ -114,6 +135,10 @@ module Projects
 
     def latest_activity_at
       helpers.format_date(project.latest_activity_at)
+    end
+
+    def updated_at
+      helpers.format_date(project.updated_at)
     end
 
     def required_disk_space
@@ -337,8 +362,8 @@ module Projects
           label: I18n.t(:button_archive),
           href: project_archive_path(project, status: params[:status]),
           data: {
-            confirm: t("project.archive.are_you_sure", name: project.name),
-            method: :post
+            turbo_method: :post,
+            turbo_confirm: t("project.archive.are_you_sure", name: project.name)
           }
         }
       end
@@ -351,7 +376,7 @@ module Projects
           icon: :unlock,
           label: I18n.t(:button_unarchive),
           href: project_archive_path(project, status: params[:status]),
-          data: { method: :delete }
+          data: { turbo_method: :delete }
         }
       end
     end

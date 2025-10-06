@@ -99,11 +99,9 @@ module CustomFields
       # @param include_self [Boolean] flag
       # @return [Success(Array<CustomField::Hierarchy::Item>)]
       def get_descendants(item:, include_self: true)
-        if include_self
-          Success(item.self_and_descendants)
-        else
-          Success(item.descendants)
-        end
+        result = item.self_and_descendants_preordered
+        result = result.offset(1) unless include_self
+        Success(result)
       end
 
       # Move an item/node to a new parent item/node

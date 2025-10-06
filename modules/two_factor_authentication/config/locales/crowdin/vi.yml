@@ -9,7 +9,7 @@ vi:
       two_factor_authentication/device:
         identifier: "Nhận diện"
         default: "Giữ nguyên mặc định"
-        channel: "Channel"
+        channel: "Kênh"
       two_factor_authentication/device/sms:
         phone_number: "Số điện thoại"
       two_factor_authentication/device/webauthn:

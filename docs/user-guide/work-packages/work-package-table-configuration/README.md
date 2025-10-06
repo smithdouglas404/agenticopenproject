@@ -235,8 +235,7 @@ If you group the work package table, sums will be shown for each group.
 
 ## Attribute highlighting (Enterprise add-on)
 
-> [!NOTE]
-> Attribute highlighting is an Enterprise add-on and can only be used with [Enterprise cloud](../../../enterprise-guide/enterprise-cloud-guide) or [Enterprise on-premises](../../../enterprise-guide/enterprise-on-premises-guide). An upgrade from the free community edition is easy and helps support OpenProject.
+[feature: conditional_highlighting ]
 
 You can highlight attributes in the work package table to emphasize the importance of certain attributes and have important topics at a glance. To activate attribute highlighting open the work package configuration table and select the **Highlighting** tab.
 

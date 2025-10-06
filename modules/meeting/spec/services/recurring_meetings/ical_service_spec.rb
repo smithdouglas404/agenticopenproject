@@ -45,6 +45,7 @@ RSpec.describe RecurringMeetings::ICalService, type: :model do # rubocop:disable
            project:,
            title: "Weekly",
            frequency: "weekly",
+           time_zone: "America/New_York",
            start_time: DateTime.parse("2024-12-01T10:00:00Z"),
            end_date: "2025-12-01")
   end
@@ -90,6 +91,7 @@ RSpec.describe RecurringMeetings::ICalService, type: :model do # rubocop:disable
              project:,
              title: "Weekly",
              frequency: "weekly",
+             time_zone: "America/New_York",
              start_time: DateTime.parse("2024-12-01T10:00:00Z"),
              end_after: "never")
     end

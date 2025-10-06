@@ -157,12 +157,13 @@ RSpec.describe DocumentsController do
       document
     end
 
-    it "deletes the document and redirect back to documents-page of the project" do
+    it "deletes the document and redirects with 303 See Other" do
       expect do
         delete :destroy, params: { id: document.id }
       end.to change(Document, :count).by -1
 
-      expect(response).to redirect_to "/projects/#{project.identifier}/documents"
+      expect(response).to have_http_status(:see_other)
+      expect(response).to redirect_to project_documents_path(project)
       expect { Document.find(document.id) }.to raise_error ActiveRecord::RecordNotFound
     end
   end

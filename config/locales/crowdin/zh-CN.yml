@@ -196,8 +196,8 @@ zh-CN:
     sync_failed: "无法从 LDAP 同步：%{message}。"
     back_to_index: "点击此处返回到连接列表。"
     technical_warning: |
-      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      [Please visit our documentation for detailed instructions](docs_url).
+      此 LDAP 表单需要 LDAP / Active Directory 设置方面的技术知识。
+      [详细说明请访问我们的文档](docs_url)。
     attribute_texts:
       name: LDAP 连接的任意名称
       host: LDAP 主机名或 IP 地址
@@ -329,6 +329,14 @@ zh-CN:
     tab:
       no_results_title_text: 目前没有自定义字段。
       no_results_content_text: 创建新的自定义字段
+  calculated_values:
+    error_dialog:
+      title: "计算值错误"
+    errors:
+      unknown: "发生未知错误。请检查此计算值的公式。"
+      mathematical: "计算过程中发生数学错误。"
+      missing_value: 该计算值需要属性 "%{custom_field_name}"，但该属性为空。
+      disabled_value: 该计算值需要属性 "%{custom_field_name}"，但它在项目中已禁用。
   concatenation:
     single: "或"
   op_dry_validation:
@@ -351,30 +359,30 @@ zh-CN:
       not_found: "未找到。"
       rules:
         copy_workflow_from:
-          workflow_missing: "has no own workflow."
+          workflow_missing: "没有自己的工作流。"
         custom_field:
-          format_not_supported: "format '%{field_format}' is unsupported."
+          format_not_supported: "不支持 '%{field_format}' 格式。"
         item:
-          root_item: "cannot be a root item."
-          not_persisted: "must be an already existing item."
+          root_item: "不能为根项。"
+          not_persisted: "必须是已存在的项。"
         label:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "在同一层级内必须是唯一的。"
         short:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "在同一层级内必须是唯一的。"
         parent:
-          not_descendant: "must be a descendant of the hierarchy root."
-      str?: "must be a string."
-      type?: "must be %{type}."
+          not_descendant: "必须是层次结构根的后代"
+      str?: "必须是一个字符串。"
+      type?: "必须是 %{type}。"
     rules:
-      copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
-      depth: "Depth"
-      item: "Item"
-      label: "Label"
-      score: "Score"
-      short: "Short name"
-      parent: "Parent"
-      blueprint: "Pattern blueprint"
+      copy_workflow_from: "工作流副本的类型"
+      enabled: "已启用"
+      depth: "深度"
+      item: "条目"
+      label: "标签"
+      score: "分数"
+      short: "简称"
+      parent: "父级"
+      blueprint: "模式蓝图"
   global_search:
     title:
       all_projects: '在所有项目中搜索“%{search_term}”'
@@ -436,7 +444,7 @@ zh-CN:
     lists:
       active: "有效项目"
       my: "我的项目"
-      favorited: "Favorite projects"
+      favorited: "收藏的项目"
       archived: "归档项目"
       shared: "共享项目列表"
       my_lists: "我的项目列表"
@@ -613,17 +621,20 @@ zh-CN:
     autologins:
       prompt: "保持登录状态 %{num_days}"
     sessions:
-      remembered_devices: "已记住设备"
-      remembered_devices_caption: "使用“保持登录状态”选项登录到此账户的所有设备列表。"
       session_name: "%{os_name} 上的 %{browser_name} %{browser_version}"
       browser: "浏览器"
+      expires: "过期"
+      last_connection: "最后连接"
       device: "设备 / 操作系统"
       unknown_browser: "未知浏览器"
       unknown_os: "未知操作系统"
-      current: "当前会话"
+      unknown: "(未知)"
+      browser_session: "(浏览器会话）"
+      current: "当前（本设备）"
       title: "登录设备管理"
-      instructions: "这是已登录到您帐户的设备列表。您可以删除任何您无法识别或者无法使用的会话。"
+      instructions: "您已经通过以下设备登录到您的帐户。请撤销您无法识别或无法控制的设备的会话。"
       may_not_delete_current: "您不能删除当前会话。"
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "此用户当前是以下组的成员："
       no_results_title_text: 此用户当前不是任何组的成员。
@@ -960,6 +971,11 @@ zh-CN:
         help_text: "帮助文本"
       auth_provider:
         scim_clients: "SCIM 客户端"
+      calculated_value_error:
+        error_code: "错误代码"
+        customized: "自定义"
+        customized_id: "自定义ID"
+        customized_type: "自定义类型"
       capability:
         context: "背景"
       changeset:
@@ -1011,7 +1027,7 @@ zh-CN:
       enterprise_trial:
         company: "公司"
       favorite:
-        favorited: "Item"
+        favorited: "条目"
       grids/grid:
         page: "页"
         row_count: "行数"
@@ -1193,13 +1209,13 @@ zh-CN:
         auto_hide_popups: "自动隐藏成功横幅"
         auto_hide_popups_caption: "启用后，绿色成功横幅将在 5 秒后自动消失。"
         warn_on_leaving_unsaved: "离开未保存更改的工作包时提示我"
-        increase_theme_contrast: "Increase theme contrast"
-        increase_contrast: "Increase contrast"
-        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
-        force_light_theme_contrast: "Force high-contrast when in Light mode"
-        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
-        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
-        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
+        increase_theme_contrast: "增加主题对比度"
+        increase_contrast: "增加对比度"
+        increase_contrast_caption: "为选定的颜色模式启用高对比度模式。"
+        force_light_theme_contrast: "在浅色模式下强制使用高对比度"
+        force_dark_theme_contrast: "在深色模式下强制使用高对比度"
+        force_light_theme_contrast_caption: "选择自动色彩模式时，将使用高对比度版本的浅色模式。"
+        force_dark_theme_contrast_caption: "选择自动色彩模式时，将使用高对比度版本的深色模式。"
         theme: "颜色模式"
         time_zone: "时区"
         mode_guideline: "某些模式将覆盖自定义主题颜色，以提升无障碍性和可读性。请选择“浅色”模式，以实现对自定义主题的全面支持。"
@@ -1267,7 +1283,7 @@ zh-CN:
         confirmation: "不匹配 %{attribute}。"
         could_not_be_copied: "无法（完全）复制 %{dependency}。"
         does_not_exist: "不存在。"
-        error_enterprise_only: "%{action}仅在 OpenProject 企业版中可用"
+        error_enterprise_only: "%{action}仅在 OpenProject 企业版中可用。"
         error_unauthorized: "无法访问。"
         error_readonly: "曾尝试被写入，但不可写。"
         error_conflict: "在此期间，至少有一位其他用户更新了信息。"
@@ -1379,7 +1395,7 @@ zh-CN:
           unreadable: "无法读取。是否确定为支持令牌？"
           already_added: "此令牌已添加。"
         favorite:
-          already_favorited: "has already been favorited."
+          already_favorited: "已经被收藏。"
         grids/grid:
           overlaps: "重叠."
           outside: "不在网格内。"
@@ -1477,18 +1493,18 @@ zh-CN:
             circular_dependency: "关系会创建关系的循环。"
           attributes:
             base:
-              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
-              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
+              error_not_deletable: "由于您没有所选工作包的编辑权限，因此无法删除此关系。"
+              error_not_editable: "由于您没有所选工作包的编辑权限，因此无法编辑此关系。"
             to_id:
-              format: "The selected work package %{message}"
-              error_not_found: "could not be found."
+              format: "选定的工作包 %{message}"
+              error_not_found: "无法被找到。"
               error_readonly: "无法针对现有关系更改。"
-              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
+              error_not_manageable: "无法被添加，因为您没有权限编辑选定的工作包。"
             from_id:
-              format: "The selected work package %{message}"
-              error_not_found: "could not be found."
+              format: "选定的工作包 %{message}"
+              error_not_found: "无法被找到。"
               error_readonly: "无法针对现有关系更改。"
-              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
+              error_not_manageable: "无法被添加，因为您没有权限编辑选定的工作包。"
         repository:
           not_available: "SCM提供商不可用"
           not_whitelisted: "配置所不允许的。"
@@ -1666,6 +1682,7 @@ zh-CN:
       group: "组"
       issue_priority:
         other: "优先事项"
+      meeting_participant: "Meeting participant"
       member: "成员"
       news: "新闻"
       notification:
@@ -1748,7 +1765,7 @@ zh-CN:
     attachments: "附件"
     actor: "执行者"
     action: "操作"
-    api_key: "API key"
+    api_key: "API 密钥"
     author: "作者"
     avatar: "头像"
     base: "一般错误："
@@ -1930,7 +1947,7 @@ zh-CN:
   button_save: "保存"
   button_save_as: "另存为"
   button_save_back: "保存并返回"
-  button_select: "Select"
+  button_select: "选择"
   button_set_reminder: "设置提醒"
   button_show: "显示"
   button_sort: "排序"
@@ -2134,6 +2151,7 @@ zh-CN:
     features:
       baseline_comparison: 基线比较
       board_view: 高级面板
+      calculated_values: 计算值
       conditional_highlighting: 条件高亮
       internal_comments: 内部评论
       custom_actions: 自定义操作
@@ -2168,7 +2186,7 @@ zh-CN:
         已经有令牌？使用下方按钮添加以升级到预订的 Enterprise 方案。
       hide_banner: "隐藏此广告"
       homescreen_description: >
-        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
+        企业计划通过额外的[企业附加组件](enterprise_url) 和专业支持扩展了OpenProject社区版，是在关键任务环境中运行OpenProject的组织的理想选择。
       homescreen_subline: 通过升级，您也将支持一个开源项目。
       baseline_comparison:
         description: 高亮显示自从过去任意时间点以来对此列表所做的更改。
@@ -2206,6 +2224,8 @@ zh-CN:
         description: "与非此项目成员的用户共享工作包。"
       project_list_sharing:
         description: "与个人用户共享项目列表。"
+      calculated_values:
+        description: "通过计算值，您可以使用基于数值、其他项目属性和自定义字段的属性创建数学公式。"
       define_custom_style:
         title: "自定义颜色主题和 Logo"
         more_info: "注：使用的 Logo 将可公开访问。"
@@ -2301,6 +2321,7 @@ zh-CN:
   error_invalid_selected_value: "选中的值无效。"
   error_journal_attribute_not_present: "日志不包含 %{attribute} 属性。"
   error_pdf_export_too_many_columns: "选择 PDF 导出的列太多。请减少列数。"
+  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
   error_pdf_failed_to_export: "无法保存被导出的 PDF 文件：%{error}"
   error_token_authenticity: "无法验证跨站请求伪造令牌。您是否曾尝试在多个浏览器或选项卡上提交数据？请关闭所有选项卡并重试。"
   error_reminder_not_found: "未找到提醒或已收到相关提醒的通知。"
@@ -2513,22 +2534,15 @@ zh-CN:
         header: "了解新功能和产品更新。"
         learn_about: "详细了解所有新功能"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
-          new_features_title: >
-            此版本包含各种新功能和改进，例如：
-          new_features_list:
-            line_0: 自动同步系统颜色 + 对比度模式的选项。
-            line_1: 深色高对比度模式可以提升无障碍性。
-            line_2: 项目列表的 PDF 导出。
-            line_3: 所有 PDF 导出文件的自定义列表（企业版附加组件）。
-            line_4: 改进了会议参与者对话框。
-            line_5: 改进了项目查询和预算规划中的预算处理。
-            line_6: 更新了首页和项目概览页面。
         "16_5":
           new_features_title: >
             此版本包含各种新功能和改进，例如：
           new_features_list:
-            line_0: 新功能和改进即将上线。请持续关注！
+            line_0: Add work packages to a meeting section in the Meetings tab.
+            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
+            line_2: Filter projects by last update.
+            line_3: Jump to highlighted target elements from deep links.
+            line_4: Confirm critical actions with more accessible danger dialogs.
     links:
       upgrade_enterprise_edition: "升级到企业版"
       postgres_migration: "将您的安装迁移到 PostgreSQL"
@@ -2622,7 +2636,7 @@ zh-CN:
         static_token_name: "API 令牌"
       ical:
         title: "iCalendar"
-        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
+        text_hint_link: 'iCalendar 令牌允许用户[订阅OpenProject日历](docs_url)，并查看来自外部客户端的最新工作包信息。'
         disabled_text: "管理员未启用 iCalendar 订阅。请联系管理员以使用此功能。"
         empty_text_hint: "要添加 iCalendar 令牌，请从项目的日历模块中订阅新的或现有日历。您必须拥有必要的权限。"
       oauth:
@@ -2763,8 +2777,8 @@ zh-CN:
   label_select_main_menu_item: 选择新的主菜单项
   label_required_disk_storage: "所需的磁盘空间"
   label_send_invitation: 发送邀请
-  label_calculated_value: "计算的值"
-  label_change_parent: "Change parent"
+  label_calculated_value: "计算值"
+  label_change_parent: "更改父级"
   label_change_plural: "更改"
   label_change_properties: "更改属性"
   label_change_status: "更改状态"
@@ -2940,7 +2954,7 @@ zh-CN:
   label_integer: "整数"
   label_interface: "界面"
   label_internal: "内部"
-  label_introduction_video: "自我介绍视频"
+  label_introduction_video: "入门指南视频"
   label_invite_user: "邀请用户"
   label_item: "条目"
   label_item_plural: "条目"
@@ -3587,6 +3601,7 @@ zh-CN:
   notice_password_confirmation_failed: "您的密码不正确。无法继续。"
   notice_principals_found_multiple: "找到 %{number} 条结果。\n 点击以关注第一条结果。"
   notice_principals_found_single: "这有一个结果。\n点击来关注它。"
+  notice_parent_item_not_found: "未找到父项"
   notice_project_not_deleted: "项目没有被删除"
   notice_project_not_found: "未找到项目。"
   notice_successful_connection: "成功连接。"
@@ -4225,6 +4240,7 @@ zh-CN:
   text_access_token_hint: "访问令牌允许你授予外部应用程序对 OpenProject 资源的访问权限。"
   text_analyze: "进一步分析： %{subject}"
   text_are_you_sure: "是否确定？"
+  open_link_in_a_new_tab: "在新标签页打开链接"
   text_are_you_sure_continue: "确定要继续吗？"
   text_are_you_sure_with_children: "删除工作包和所有子工作包吗？"
   text_are_you_sure_with_project_custom_fields: "删除该属性也会删除其在所有项目中的值。您确定要这样做吗？"

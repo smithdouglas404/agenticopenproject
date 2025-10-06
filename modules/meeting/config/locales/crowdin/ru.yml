@@ -82,7 +82,7 @@ ru:
       meeting_agenda: "Повестка дня"
       meeting_section: "Раздел"
       token/ical_meeting:
-        one: "iCal Meeting subscription"
+        one: "подписка на совещание iCal"
         few: "iCal Meeting subscription"
         many: "iCal Meeting subscription"
         other: "iCal Meeting subscription"
@@ -201,8 +201,8 @@ ru:
         show_all: "Показывать всё"
       text:
         template: "Эти участники будут автоматически приглашаться на все будущие совещания по мере их создания."
-        manage_participants: "Search for and add project members as participants to this meeting."
-        search_for_members: "Search for project members"
+        manage_participants: "Найдите и добавьте членов проекта в качестве участников совещания."
+        search_for_members: "Поиск участников проекта"
       blankslate:
         heading: "Нет участников"
         description: "Пока нет участников."
@@ -249,8 +249,8 @@ ru:
         body: "Совещание '%{title}' было обновлено пользователем %{actor}."
         old_date_time: "Старые дата/время"
         new_date_time: "Новые дата/время"
-        old_location: "Old location"
-        new_location: "New location"
+        old_location: "Старое расположение"
+        new_location: "Новое расположение"
     label_mail_all_participants: "Отправить письмо всем участникам"
     types:
       one_time: "Однократная"
@@ -469,11 +469,11 @@ ru:
   text_meeting_minutes_for_meeting: 'Протокол совещания «%{meeting}»'
   text_notificiation_invited: "Это сообщение содержит запись ics для совещания ниже:"
   text_meeting_ics_description: >-
-    Link to meeting: %{url}
+    Ссылка на совещание: %{url}
   text_meeting_ics_meeting_series_description: >-
-    Link to meeting series: %{url}
+    Ссылка на серию совещаний: %{url}
   text_meeting_occurrence_ics_description: >-
-    Link to meeting occurrence: %{url} Link to meeting series: %{series_url}
+    Ссылка на совещание: %{url} Ссылка на серию совещаний: %{series_url}
   text_meeting_empty_heading: "Совещание пусто"
   text_meeting_empty_description1: "Начните с добавления пунктов повестки ниже. Каждый пункт может быть простым, как заголовок, но вы также можете добавить дополнительные сведения, такие как продолжительность и примечания."
   text_meeting_empty_description2: 'Вы также можете добавить ссылки на существующие пакеты работ. Когда вы это сделаете, соответствующие заметки будут автоматически отображаться на вкладке «Совещания» пакета работ.'
@@ -506,14 +506,14 @@ ru:
   label_agenda_item_move_up: "Вверх"
   label_agenda_item_move_down: "Вниз"
   label_agenda_item_add_notes: "Добавить заметки"
-  label_agenda_item_add_outcome: "Добавить расход"
+  label_agenda_item_add_outcome: "Добавить итог"
   label_agenda_item_work_package_add: "Добавить пакет работ"
   label_agenda_item_work_package: "Пакет работ по пунктам повестки"
   label_section_rename: "Переименовать раздел"
-  label_agenda_outcome: "Расход"
-  label_agenda_outcome_actions: "Действия по расходам"
-  label_agenda_outcome_edit: "Редактировать результат"
-  label_agenda_outcome_delete: "Удалить результат"
+  label_agenda_outcome: "Итог"
+  label_agenda_outcome_actions: "Действия по итогам"
+  label_agenda_outcome_edit: "Редактировать итог"
+  label_agenda_outcome_delete: "Удалить итог"
   text_outcome_not_editable_anymore: "Этот результат больше не редактируется."
   text_outcome_cannot_be_added: "Результат больше нельзя добавить."
   label_backlog_clear: "Очистить бэклог"
@@ -549,16 +549,16 @@ ru:
   label_meeting_reopen_action: "Открыть совещание заново"
   label_meeting_close_action: "Закрыть совещание"
   label_meeting_in_progress_action: "Начать совещание"
-  text_meeting_open_description: "You can add/remove agenda items and participants. Once the agenda is ready, mark it as in progress to document outcomes."
+  text_meeting_open_description: "Можно добавлять и удалять пункты повестки и участников. Когда повестка готова, переведите её в статус «В процессе», чтобы фиксировать результаты."
   text_meeting_closed_description: "Это совещание является закрытым. Вы не можете добавлять/удалять пункты повестки."
-  text_meeting_in_progress_description: "You can modify the agenda, document outcomes for each item and track attendance for participants. Once the meeting is complete, you can mark it as closed to lock it."
+  text_meeting_in_progress_description: "Можно редактировать повестку, фиксировать результаты по каждому пункту и отмечать присутствие участников. По завершении встречи пометьте её как «Закрыта», чтобы заблокировать изменения."
   text_meeting_open_dropdown_description: "Любые существующие результаты останутся, но пользователи не смогут добавлять новые результаты."
   text_meeting_in_progress_dropdown_description: "Итоги совещания, такие как информация или решения, принятые в ходе совещания."
   text_meeting_closed_dropdown_description: "Совещание закрыто. Вы больше не можете изменять пункты повестки дня или его результаты."
   text_meeting_not_editable_anymore: "Это совещание больше нельзя редактировать."
   text_meeting_not_present_anymore: "Это совещание было удалено. Пожалуйста, выберите другое."
   label_add_work_package_to_meeting_dialog_title: "Выберите совещание"
-  label_add_work_package_to_meeting_section_label: "Add to section"
+  label_add_work_package_to_meeting_section_label: "Добавить в раздел"
   label_add_work_package_to_meeting_dialog_button: "Добавить в совещание"
   label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."
   label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."

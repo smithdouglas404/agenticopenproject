@@ -331,6 +331,14 @@ ms:
     tab:
       no_results_title_text: Tiada ruangan tersuai pada masa ini.
       no_results_content_text: Cipta ruangan tersuai baharu
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "atau"
   op_dry_validation:
@@ -615,17 +623,20 @@ ms:
     autologins:
       prompt: "Kekal log masuk selama %{num_days}"
     sessions:
-      remembered_devices: "Peranti yang disimpan"
-      remembered_devices_caption: "Senarai semua peranti yang log masuk ke dalam akaun ini dengan menggunakan pilihan \"Kekal log masuk\"."
       session_name: "%{browser_name}%{browser_version} pada %{os_name}"
       browser: "Pelayar"
+      expires: "Expires"
+      last_connection: "Last connection"
       device: "Peranti / OS"
       unknown_browser: "pelayar yang tidak diketahui"
       unknown_os: "sistem operasi yang tidak diketahui"
-      current: "Sesi kini"
+      unknown: "(unknown)"
+      browser_session: "(Browser session)"
+      current: "Current (this device)"
       title: "Pengurusan sesi"
-      instructions: "Ini adalah senarai semua peranti yang log masuk ke dalam akaun anda. Batalkan sesi yang anda tidak kenali atau tidak lagi mempunyai akses kepadanya."
+      instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Anda tidak boleh memadamkan sesi semasa anda."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "Pengguna ini ialah ahli dalam kumpulan berikut buat masa ini:"
       no_results_title_text: Pengguna ini bukan ahli untuk mana-mana kumpulan buat masa ini.
@@ -962,6 +973,11 @@ ms:
         help_text: "Teks bantuan"
       auth_provider:
         scim_clients: "SCIM clients"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "Context"
       changeset:
@@ -1269,7 +1285,7 @@ ms:
         confirmation: "tidak sepadan dengan %{attribute}."
         could_not_be_copied: "%{dependency} tidak dapat disalin (sepenuhnya)."
         does_not_exist: "tidak wujud."
-        error_enterprise_only: "%{action} hanya tersedia di OpenProject edisi Enterprise"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "tidak boleh diakses."
         error_readonly: "telah cuba untuk menulis tetapi tidak dapat ditulis."
         error_conflict: "Sementara itu, maklumat telah dikemas kini oleh sekurang-kurangnya salah satu pengguna lain."
@@ -1668,6 +1684,7 @@ ms:
       group: "Kumpulan"
       issue_priority:
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "Ahli"
       news: "Berita"
       notification:
@@ -2136,6 +2153,7 @@ ms:
     features:
       baseline_comparison: Baseline Comparisons
       board_view: Advanced Boards
+      calculated_values: Calculated Values
       conditional_highlighting: Conditional Highlighting
       internal_comments: Internal Comments
       custom_actions: Custom Actions
@@ -2208,6 +2226,8 @@ ms:
         description: "Kongsi pakej kerja dengan pengguna yang bukan ahli projek."
       project_list_sharing:
         description: "Share project lists with individual users."
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Custom color theme and logo"
         more_info: "Perhatian: logo yang digunakan akan boleh diakses secara umum."
@@ -2303,6 +2323,7 @@ ms:
   error_invalid_selected_value: "Nilai yang dipilih tidak sah."
   error_journal_attribute_not_present: "Jurnal tidak mengandungi atribut %{attribute}."
   error_pdf_export_too_many_columns: "Terlalu banyak kolum dipilih untuk eksport PDF. Sila kurangkan bilangan kolum."
+  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
   error_pdf_failed_to_export: "Eksport PDF tidak dapat disimpan: %{error}"
   error_token_authenticity: "Tidak dapat mengesahkan token Cross-Site Request Forgery. Adakah anda sedang mencuba untuk menghantar data di pelbagai pelayar atau tab? Sila tutup semua tab dan cuba lagi."
   error_reminder_not_found: "Peringatan itu tidak ditemui atau telah dimaklumkan tentangnya."
@@ -2515,22 +2536,15 @@ ms:
         header: "Read about new features and product updates."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
-          new_features_title: >
-            The release contains various new features and improvements, such as:
-          new_features_list:
-            line_0: Option to auto-sync system color + contrast mode.
-            line_1: Dark high contrast mode for improved accessibility.
-            line_2: PDF export of project lists.
-            line_3: Custom font for all PDF exports (Enterprise add-on).
-            line_4: Improved meeting participants dialog.
-            line_5: Improved budget handling in project queries and budget planning.
-            line_6: Updated Home and Project overview page.
         "16_5":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: New features and improvements coming soon. Keep checking back!
+            line_0: Add work packages to a meeting section in the Meetings tab.
+            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
+            line_2: Filter projects by last update.
+            line_3: Jump to highlighted target elements from deep links.
+            line_4: Confirm critical actions with more accessible danger dialogs.
     links:
       upgrade_enterprise_edition: "Naik taraf ke edisi Enterprise"
       postgres_migration: "Mengalihkan pemasangan anda ke PostgreSQL"
@@ -2765,7 +2779,7 @@ ms:
   label_select_main_menu_item: Pilih item menu utama baharu
   label_required_disk_storage: "Storan cakera yang diperlukan"
   label_send_invitation: Hantar jemputan
-  label_calculated_value: "Calculated value"
+  label_calculated_value: "Calculated Value"
   label_change_parent: "Change parent"
   label_change_plural: "Perubahan"
   label_change_properties: "Tukar ciri-ciri"
@@ -2942,7 +2956,7 @@ ms:
   label_integer: "Integer"
   label_interface: "Antara muka"
   label_internal: "Dalaman"
-  label_introduction_video: "Video pengenalan"
+  label_introduction_video: "Getting started video"
   label_invite_user: "Jemput pengguna"
   label_item: "Item"
   label_item_plural: "Item"
@@ -3591,6 +3605,7 @@ ms:
   notice_password_confirmation_failed: "Kata laluan tidak betul. Tidak boleh teruskan."
   notice_principals_found_multiple: "Terdapat %{number} hasil ditemui. \n Tab untuk memfokuskan hasil pertama."
   notice_principals_found_single: "Terdapat satu hasil. \n Tab untuk fokuskan."
+  notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "Projek tersebut tidak dipadam."
   notice_project_not_found: "Projek tidak ditemui."
   notice_successful_connection: "Sambungan berjaya."
@@ -4231,6 +4246,7 @@ ms:
   text_access_token_hint: "Token akses membenarkan anda untuk memberikan aplikasi luaran akses kepada sumber data OpenProject."
   text_analyze: "Analisis selanjutnya: %{subject}"
   text_are_you_sure: "Adakah anda pasti?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Adakah anda pasti anda ingin teruskan?"
   text_are_you_sure_with_children: "Padam pakej kerja dan semua pakej kerja anak?"
   text_are_you_sure_with_project_custom_fields: "Memadam atribut ini akan memadam nilainya dalam semua projek. Adakah anda pasti anda ingin lakukan ini?"

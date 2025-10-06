@@ -32,6 +32,7 @@ hi:
         drive: Drive ID
         host: होस्ट
         name: नाम
+        password: Application password
         provider_type: Provider type
         tenant: Directory (tenant) ID
     errors:
@@ -62,7 +63,7 @@ hi:
               op_application_not_installed: appears to not have the app "OpenProject integration" installed. Please install it first and then try again.
             password:
               invalid_password: is not valid.
-              unknown_error: could not be validated. Please check your storage connection and try again.
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: फ़ाइल
       storages/storage: Storage
@@ -183,8 +184,6 @@ hi:
           not_found: The destination folder %{folder} could not be found on %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Complete without it
-      done_complete_setup: Done, complete setup
       done_continue: Done, continue
       open_storage: Open file storage
       replace_oauth_application: Replace OpenProject OAuth
@@ -202,12 +201,9 @@ hi:
     confirm_replace_oauth_application: This action will reset the current OAuth credentials. After confirming you will have to reenter the credentials at the storage provider and all remote users will have to authorize against OpenProject again. Are you sure you want to proceed?
     confirm_replace_oauth_client: This action will reset the current OAuth credentials. After confirming you will have to enter new credentials from the storage provider and all users will have to authorize against %{provider_type} again. Are you sure you want to proceed?
     delete_warning:
-      input_delete_confirmation: Enter the file storage name %{file_storage} to confirm deletion.
-      irreversible_notice: Deleting a file storage is an irreversible action.
-      project_storage: 'Are you sure you want to delete %{file_storage} from this project? To confirm this action please introduce the storage name in the field below, this will:'
       project_storage_delete_result_1: Remove all links from work packages of this project to files and folders of that storage.
       project_storage_delete_result_2: In case this storage has an automatically managed project folder, this and its files will be deleted forever.
-      storage: 'Are you sure you want to delete %{file_storage}? To confirm this action please introduce the storage name in the field below, this will:'
+      storage: 'Are you sure you want to delete %{file_storage}? This will:'
       storage_delete_result_1: Remove all storage setups for all projects using this storage.
       storage_delete_result_2: Remove all links from work packages of all projects to files and folders of that storage.
       storage_delete_result_3: In case this storage has automatically managed project folders, those and their contained files will be deleted forever.
@@ -483,7 +479,6 @@ hi:
         subtitle_short: Let OpenProject create folders per project automatically.
         title: Automatically managed project folders
       project_settings:
-        delete: Delete file storage
         edit: Edit the file storage to this project
         members_connection_status: Members connection status
         new: Add a file storage to this project

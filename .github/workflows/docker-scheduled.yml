@@ -12,17 +12,16 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Generate matrix
         id: set-matrix
-        run: |
-          matrix=$(ruby script/gh/docker-tags.rb --matrix)
-          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+        run: ruby script/gh/docker-tags.rb --matrix
 
   build:
     needs: generate-matrix
     strategy:
       matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+      fail-fast: false
     uses: ./.github/workflows/docker.yml
     with:
       branch: ${{ matrix.branch }}

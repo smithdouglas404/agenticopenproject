@@ -42,13 +42,16 @@ $widget-box--enumeration-width: 20px
       display: flex
       flex-direction: column
 
+      &_full-width
+        flex-basis: 100%
+
     .widget-box--enumeration,
     .widget-box--arrow-links,
     .widget-box--feature-list
       flex-grow: 2
 
-  &.-vertical
-    flex-flow: column wrap
+    &.-align-boxes-start
+      align-items: start
 
   .icon-context:before
     padding-right: 5px
@@ -64,7 +67,6 @@ $widget-box--enumeration-width: 20px
   .widget-box
     position: relative
     @include widget-box--style
-    min-height: 250px
     word-wrap: break-word
     overflow: hidden
 
@@ -118,6 +120,11 @@ $widget-box--enumeration-width: 20px
     overflow-x: hidden
     overflow-y: hidden
     display: block
+
+  &.-no-padding
+    padding-right: 0
+    padding-bottom: 0
+    padding-left: 0
 
   &.-allow-inner-overflow
     .wiki
@@ -183,6 +190,21 @@ $widget-box--enumeration-width: 20px
 
   .toolbar--editable-toolbar
     height: 20px
+
+.op-widget-box--rows
+  margin: 0
+
+.op-widget-box--row
+  padding: var(--stack-padding-normal)
+  list-style-type: none /* To account for applying Box component to a list */
+  border-top: var(--borderWidth-thin) solid var(--borderColor-muted)
+
+  &:first-of-type
+    border-top: none
+
+  &:last-of-type
+    border-bottom-right-radius: var(--borderRadius-medium)
+    border-bottom-left-radius: var(--borderRadius-medium)
 
 .widget-box--arrow-links
   list-style: none

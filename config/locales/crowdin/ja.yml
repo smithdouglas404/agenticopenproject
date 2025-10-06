@@ -330,6 +330,14 @@ ja:
     tab:
       no_results_title_text: 現在、カスタム フィールドはありません。
       no_results_content_text: 新しいカスタム フィールドを作成
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "または"
   op_dry_validation:
@@ -614,17 +622,20 @@ ja:
     autologins:
       prompt: "%{num_days} のログインを維持"
     sessions:
-      remembered_devices: "記憶されたデバイス"
-      remembered_devices_caption: "「ログイン状態を維持」オプションを使用して、このアカウントにログインしたすべてのデバイスのリスト。"
       session_name: "%{browser_name} %{browser_version} の %{os_name}"
       browser: "ブラウザ"
+      expires: "Expires"
+      last_connection: "Last connection"
       device: "デバイス / OS"
       unknown_browser: "不明なブラウザ"
       unknown_os: "不明なオペレーティング システム"
-      current: "現在のセッション"
+      unknown: "(unknown)"
+      browser_session: "(Browser session)"
+      current: "Current (this device)"
       title: "セッション管理"
-      instructions: "これはあなたのアカウントにログインしたデバイスのリストです。 認識できない、またはアクセスできなくなったセッションをすべて取り消します。"
+      instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "現在のセッションは削除できません。"
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "このユーザーは現在以下のグループのメンバーです："
       no_results_title_text: このユーザーは現在どのグループのメンバーでもありません。
@@ -963,6 +974,11 @@ ja:
         help_text: "ヘルプ テキスト"
       auth_provider:
         scim_clients: "SCIMクライアント"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "コンテキスト"
       changeset:
@@ -1270,7 +1286,7 @@ ja:
         confirmation: "は%{attribute} と一致しません。"
         could_not_be_copied: "%{dependency} を（完全に）コピーできませんでした。"
         does_not_exist: "は存在しません。"
-        error_enterprise_only: "%{action} はOpenProject Enterpriseエディションでのみ利用可能です。"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "アクセスできません。"
         error_readonly: "書けませんでした。"
         error_conflict: "別のユーザーが同時にデータを更新しています。"
@@ -1669,6 +1685,7 @@ ja:
       group: "グループ"
       issue_priority:
         other: "優先度"
+      meeting_participant: "Meeting participant"
       member: "メンバー"
       news: "ニュース"
       notification:
@@ -2137,6 +2154,7 @@ ja:
     features:
       baseline_comparison: ベースラインの比較
       board_view: 高度なボード
+      calculated_values: Calculated Values
       conditional_highlighting: 条件付きハイライト
       internal_comments: 内部コメント
       custom_actions: カスタムアクション
@@ -2209,6 +2227,8 @@ ja:
         description: "プロジェクトのメンバーではないユーザーとワークパッケージを共有します。"
       project_list_sharing:
         description: "プロジェクトリストを個々のユーザーと共有します。"
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "カスタムカラーテーマとロゴ"
         more_info: "注:使用されたロゴは一般公開されます。"
@@ -2304,6 +2324,7 @@ ja:
   error_invalid_selected_value: "選択された値が無効です。"
   error_journal_attribute_not_present: "ジャーナルには属性%{attribute}は含まれていません。"
   error_pdf_export_too_many_columns: "PDF エクスポート用に選択された列が多すぎます。 列の数を減らしてください。"
+  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
   error_pdf_failed_to_export: "PDFエクスポートを保存できませんでした： %{error}"
   error_token_authenticity: "クロスサイトリクエスト偽造トークンを確認できません。 複数のブラウザやタブでデータを送信しようとしましたか？ すべてのタブを閉じてもう一度やり直してください。"
   error_reminder_not_found: "リマインダーが見つからないか、すでに通知されています。"
@@ -2516,22 +2537,15 @@ ja:
         header: "新機能と製品のアップデートについて読む。"
         learn_about: "すべての新機能の詳細"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
-          new_features_title: >
-            このリリースには、以下のようなさまざまな新機能と改善が含まれています：
-          new_features_list:
-            line_0: システムカラーとコントラストモードを自動同期するオプション。
-            line_1: アクセシビリティを向上させるためのダークハイコントラストモード。
-            line_2: プロジェクト一覧をPDFでエクスポート
-            line_3: PDFエクスポートのカスタムフォント (Enterpriseアドオン)。
-            line_4: 改善されたミーティング参加者のダイアログ。
-            line_5: プロジェクトクエリと予算計画の予算処理を改善しました。
-            line_6: ホームページとプロジェクトの概要ページを更新しました。
         "16_5":
           new_features_title: >
             このリリースには、以下のようなさまざまな新機能と改善が含まれています：
           new_features_list:
-            line_0: 新機能と機能改善は継続して追加されます。引き続きご確認ください！
+            line_0: Add work packages to a meeting section in the Meetings tab.
+            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
+            line_2: Filter projects by last update.
+            line_3: Jump to highlighted target elements from deep links.
+            line_4: Confirm critical actions with more accessible danger dialogs.
     links:
       upgrade_enterprise_edition: "エンタープライズ版にアップグレード"
       postgres_migration: "PostgreSQL にインストールを移行しています"
@@ -2766,7 +2780,7 @@ ja:
   label_select_main_menu_item: 新しいメインメニュー項目を選択する
   label_required_disk_storage: "必要なディスク ストレージ"
   label_send_invitation: 招待状を送信
-  label_calculated_value: "計算された値"
+  label_calculated_value: "Calculated Value"
   label_change_parent: "Change parent"
   label_change_plural: "変更"
   label_change_properties: "プロパティの変更"
@@ -2943,7 +2957,7 @@ ja:
   label_integer: "整数"
   label_interface: "インターフェイス"
   label_internal: "社内"
-  label_introduction_video: "紹介ビデオ"
+  label_introduction_video: "Getting started video"
   label_invite_user: "ユーザを招待"
   label_item: "項目"
   label_item_plural: "アイテム"
@@ -3395,7 +3409,7 @@ ja:
       including_mention_plural: "%{number_mentioned} のメンションを含む"
       unread_notification_singular: "1通の未読通知"
       unread_notification_plural: "%{number_unread} 未読の通知"
-      you_have: "持っている"
+      you_have: "あなたへの"
     logo_alt_text: "ロゴ"
     mention:
       subject: "%{user_name} さんが #%{id} - %{subject} であなたをメンションしました"
@@ -3403,7 +3417,7 @@ ja:
       center: "通知センターへ"
       see_in_center: "通知センターにコメントを表示"
       settings: "メール設定の変更"
-    salutation: "こんにちは %{user}"
+    salutation: "%{user}さん，こんにちは"
     salutation_full_name: "フルネーム"
     work_packages:
       created_at: "%{timestamp} で %{user} によって作成されました "
@@ -3592,6 +3606,7 @@ ja:
   notice_password_confirmation_failed: "パスワードが正しくありません。続行できません。"
   notice_principals_found_multiple: "%{number} の検索結果があります。 \n タブで最初の結果へフォーカスします。"
   notice_principals_found_single: "1 つの結果があります。 \n タブでフォーカスします。"
+  notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "プロジェクトを削除していません。"
   notice_project_not_found: "プロジェクトが見つかりません。"
   notice_successful_connection: "正常に接続しました。"
@@ -4233,6 +4248,7 @@ ja:
   text_access_token_hint: "アクセストークンで、外部アプリケーションが OpenProject のリソースへのアクセスを許可することができます。"
   text_analyze: "さらに分析: %{subject}"
   text_are_you_sure: "よろしいですか？"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "続行してもよろしいですか？"
   text_are_you_sure_with_children: "仕事項目と子項目を削除してもよろしいですか？"
   text_are_you_sure_with_project_custom_fields: "この属性を削除すると、すべてのプロジェクトの値も削除されます。よろしいですか？"

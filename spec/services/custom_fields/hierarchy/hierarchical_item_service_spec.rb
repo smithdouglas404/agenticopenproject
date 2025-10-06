@@ -194,7 +194,6 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:cust
         expect(result).to be_success
 
         descendants = result.value!
-        expect(descendants.size).to eq(3)
         expect(descendants).to contain_exactly(mara, subitem, subitem2)
       end
     end
@@ -213,7 +212,6 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:cust
         expect(result).to be_success
 
         descendants = result.value!
-        expect(descendants.size).to eq(2)
         expect(descendants).to contain_exactly(subitem, subitem2)
       end
     end

@@ -31,12 +31,6 @@ class EnterpriseToken < ApplicationRecord
   EXPIRING_SOON_DAYS = 30
 
   class << self
-    def get_feature_plan(feature)
-      OpenProject::Token::FEATURES_PER_PLAN.find do |_plan, features|
-        features.include?(feature.to_sym)
-      end&.first
-    end
-
     def all_tokens
       all.sort_by(&:sort_key)
     end
@@ -72,11 +66,11 @@ class EnterpriseToken < ApplicationRecord
     end
 
     def available_features
-      active_tokens.map(&:available_features).flatten.uniq
+      active_tokens.map(&:available_features).inject(Set.new, :|)
     end
 
     def non_trialling_features
-      active_non_trial_tokens.map(&:available_features).flatten.uniq
+      active_non_trial_tokens.map(&:available_features).inject(Set.new, :|)
     end
 
     def trialling_features

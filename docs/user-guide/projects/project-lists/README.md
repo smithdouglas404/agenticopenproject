@@ -238,8 +238,7 @@ You can reverse the action by unselecting the *Share with everyone* toggle. The 
 
 ### Share project lists with individual users and groups (Enterprise add-on)
 
-> [!NOTE] 
-> Sharing project lists with users and groups is an Enterprise add-on and will only be displayed here for Enterprise on-premises and Enterprise cloud.
+[feature: project_list_sharing ]
 
 You can share non-static project lists with specific users or groups in OpenProject. To do that navigate to a project list and click the **Share** icon. Then specify a user or a group using the search field, define whether they can only view or edit a project list and finally click the **Share** button. That user or group will see that shared project list under **Shared project lists**.  
 

@@ -393,7 +393,7 @@ export class StorageComponent extends UntilDestroyedMixin implements OnInit, OnD
           const link = this.uploadResourceLink(storage, data.file.name, data.location);
           return this.storageFilesResourceService.uploadLink(link);
         }),
-        switchMap((link) => this.uploadAndNotify(link, data.file, data.overwrite)),
+        switchMap((link) => this.uploadAndNotify(link, data.file, data.location, data.overwrite)),
         catchError((error) => {
           isUploadError = true;
           return throwError(error);
@@ -471,9 +471,9 @@ export class StorageComponent extends UntilDestroyedMixin implements OnInit, OnD
     }
   }
 
-  private uploadAndNotify(link:IUploadLink, file:File, overwrite:boolean|null):Observable<IStorageFileUploadResponse> {
+  private uploadAndNotify(link:IUploadLink, file:File, location:string|null, overwrite:boolean|null):Observable<IStorageFileUploadResponse> {
     const { href } = link._links.destination;
-    const uploadFiles:IUploadFile[] = [{ file, overwrite: overwrite ?? undefined }];
+    const uploadFiles:IUploadFile[] = [{ file, location: location ?? undefined, overwrite: overwrite ?? undefined }];
     const observable = this.uploadService.upload<IStorageFileUploadResponse>(href, uploadFiles)[0];
     this.toastService.addUpload(this.text.toast.uploadingLabel, [[file, observable]]);
 

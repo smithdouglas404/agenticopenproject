@@ -32,6 +32,7 @@ module Overviews
   module ProjectCustomFields
     class ItemComponent < ApplicationComponent
       include ApplicationHelper
+      include CalculatedValues::ErrorsHelper
       include CustomFieldsHelper
       include OpPrimer::ComponentHelpers
 
@@ -47,6 +48,28 @@ module Overviews
 
       def not_set?
         @project_custom_field_values.empty? || @project_custom_field_values.all? { |cf_value| cf_value.value.blank? }
+      end
+
+      def calculation_error?
+        @project_custom_field.first_calculation_error(@project).present?
+      end
+
+      def render_calculation_error
+        error = @project_custom_field.first_calculation_error(@project)
+
+        render(Primer::OpenProject::FlexLayout.new(align_items: :flex_start,
+                                                   data: {
+                                                     test_selector: "error-cf-#{@project_custom_field.id}"
+                                                   })) do |container|
+          container.with_column do
+            render Primer::Beta::Octicon.new(icon: :"alert-fill", color: :danger)
+          end
+          container.with_column(ml: 2) do
+            render Primer::Beta::Text.new(color: :danger) do
+              calculated_value_error_msg(error)
+            end
+          end
+        end
       end
 
       def render_value

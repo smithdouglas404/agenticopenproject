@@ -32,6 +32,7 @@ zh-TW:
         drive: Drive ID
         host: 主機
         name: 名稱
+        password: 應用程式密碼
         provider_type: 提供商類型
         tenant: 目錄 (租戶) ID
     errors:
@@ -62,7 +63,7 @@ zh-TW:
               op_application_not_installed: 似乎沒有安裝應用「OpenProject 整合套件」。請先安裝，然後重試。
             password:
               invalid_password: 無效。
-              unknown_error: 無法驗證。請檢查您的存儲區連接，然後重試。
+              unknown_error: 無法與檔案儲存提供者驗證。請確認連線運作正常。
     models:
       file_link: 檔案
       storages/storage: 儲存空間
@@ -183,8 +184,6 @@ zh-TW:
           not_found: 在 %{storage_name} 上找不到目標資料夾 %{folder}。
   storages:
     buttons:
-      complete_without_setup: 排除它完成
-      done_complete_setup: 完成。完成設置
       done_continue: 完成，繼續
       open_storage: 開啟檔案儲存
       replace_oauth_application: 替換 OpenProject OAuth
@@ -202,12 +201,9 @@ zh-TW:
     confirm_replace_oauth_application: 此操作將重設目前的 OAuth 憑證。 確認後，您必須在儲存空間提供商重新輸入憑證，並且所有遠端使用者都必須再次針對 OpenProject 進行授權。 您確定要繼續嗎？
     confirm_replace_oauth_client: 此操作將重設目前的 OAuth 憑證。 確認後，您必須輸入儲存提供者的新憑證，並且所有使用者都必須再次針對 %{provider_type} 進行授權。 您確定要繼續嗎？
     delete_warning:
-      input_delete_confirmation: 輸入檔案儲存名稱 %{file_storage} 以確認刪除。
-      irreversible_notice: 刪除這個儲存空間是不可逆轉的動作
-      project_storage: '您確定要從此項目中刪除 %{file_storage} 嗎？ 若要確認此操作，請在下面的欄位中輸入儲存名稱，這將：'
       project_storage_delete_result_1: 移除此專案中所有工作套件與該儲存空間檔案及資料夾的連結。
       project_storage_delete_result_2: 如果此儲存空間具有自動管理的專案資料夾，則該資料夾及其檔案將永久刪除。
-      storage: '您確定要從此項目中刪除 %{file_storage} 嗎？ 若要確認此操作，請在下面的欄位中輸入儲存名稱，這將：'
+      storage: 'Are you sure you want to delete %{file_storage}? This will:'
       storage_delete_result_1: 刪除使用此儲存的所有項目的所有儲存設定。
       storage_delete_result_2: 移除所有專案中工作套件與該儲存空間檔案及資料夾的所有連結。
       storage_delete_result_3: 如果此儲存空間具有自動管理的專案資料夾，則該資料夾及其檔案將永久刪除。
@@ -481,7 +477,6 @@ zh-TW:
         subtitle_short: 讓 OpenProject 自動為每個專案建立資料夾。
         title: 自動管理的專案文件夾
       project_settings:
-        delete: 刪除儲存區
         edit: 編輯此專案中的儲存區
         members_connection_status: 成員連接狀態
         new: 增加一個儲存區至此專案

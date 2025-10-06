@@ -68,6 +68,7 @@ class Project < ApplicationRecord
            class_name: "Member"
   has_many :users, through: :members, source: :principal
   has_many :principals, through: :member_principals, source: :principal
+  has_many :calculated_value_errors, dependent: :delete_all, as: :customized
 
   has_many :enabled_modules, dependent: :delete_all
   has_and_belongs_to_many :types, -> {
@@ -257,6 +258,17 @@ class Project < ApplicationRecord
 
   def to_s
     name
+  end
+
+  def workspace_label
+    case workspace_type
+    when "program"
+      I18n.t("label_program")
+    when "portfolio"
+      I18n.t("label_portfolio")
+    else
+      I18n.t("label_project")
+    end
   end
 
   # Return true if this project is allowed to do the specified action.

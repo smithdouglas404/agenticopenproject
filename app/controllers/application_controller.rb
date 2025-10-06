@@ -264,6 +264,7 @@ class ApplicationController < ActionController::Base
     @project = Project.find(params[:project_id])
   end
 
+  # Find project by project_id if given
   def find_optional_project
     @project = Project.find(params[:project_id]) if params[:project_id].present?
   rescue ActiveRecord::RecordNotFound

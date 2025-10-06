@@ -8,9 +8,9 @@ The `FilterableTreeView` is an extended `TreeView` implementation for scenarios 
 
 The `FilterableTreeView` consists of the following UI elements:
 
-1. **Segmented Control**: Allows toggling between viewing all items and only selected ones. Labels and filter logic are configurable
+1. **Segmented Control (optional)**: Allows toggling between viewing all items and only selected ones. Labels and filter logic are configurable
 2. **Search Field**: A text field with a leading search icon used to filter the tree content via text
-3. **Checkbox "Include sub-nodes"**: When enabled, checking a parent node will also include its descendants
+3. **Checkbox "Include sub-nodes" (optional)**: When enabled, checking a parent node will also include its descendants
 4. **TreeView**: An embedded `TreeView` component with multi-select enabled and static loading strategy
 
 ## Features
@@ -63,6 +63,8 @@ A segmented control toggles the visible tree scope:
 
 The labels as well as the logic for the segmented control are configurable. For details, please check the technical notes section at the bottom.
 
+The segmented control can be disabled and hidden by passing `:none` as `filter_mode_control_arguments`. Please have a look at [this preview](../../../inspect/primer/open_project/filterable_tree_view/hide_segmented_control) for details.
+
 ---
 
 ### "Include sub-nodes" checkbox
@@ -76,6 +78,8 @@ This checkbox controls whether checking a parent node selects all of its childre
   - Unchecking a parent unchecks all children as well.
 - When **unchecked again**:
   - The component does **remember** how a selection was made (manual vs. auto). Previously auto-selected descendants get unselected while manually selected items remain selected.
+
+The checkbox can be visually hidden by passing `hidden: true` to the `include_sub_items_check_box_arguments`. The logic remains however. Please have a look at [this preview](../../../inspect/primer/open_project/filterable_tree_view/hide_checkbox) for details.
 
 ---
 

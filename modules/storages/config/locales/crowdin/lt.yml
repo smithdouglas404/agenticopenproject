@@ -32,6 +32,7 @@ lt:
         drive: Disko ID
         host: Serveris
         name: Vardas
+        password: Application password
         provider_type: Tiekėjo tipas
         tenant: Direktorijos (savininko) ID
     errors:
@@ -62,7 +63,7 @@ lt:
               op_application_not_installed: panašu neturi įdiegtos „OpenProject integracijos“ aplikacijos. Prašome ją įdiegti ir bandyti dar kartą.
             password:
               invalid_password: netinkamas.
-              unknown_error: nepavyko patikrinti. Prašome patikrinti jūsų saugyklos jungtį ir bandyti dar kartą.
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: Failas
       storages/storage: Saugykla
@@ -183,8 +184,6 @@ lt:
           not_found: The destination folder %{folder} could not be found on %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Baigti be jo
-      done_complete_setup: Atlikta, baigti nustatymą
       done_continue: Baigta, tęsti
       open_storage: Open file storage
       replace_oauth_application: Keisti OpenProject OAuth
@@ -202,12 +201,9 @@ lt:
     confirm_replace_oauth_application: Atlikus šį veiksmą bus iš naujo nustatyti dabartiniai OAuth įgaliojimai. Patvirtinę turėsite iš naujo įvesti įgaliojimus saugyklos teikėjo klientui, o visi nuotoliniai naudotojai turės iš naujo autorizuotis OpenProject. Ar tikrai norite tęsti?
     confirm_replace_oauth_client: Atlikus šį veiksmą bus iš naujo nustatyti dabartiniai OAuth įgaliojimai. Patvirtinę turėsite įvesti naujus saugojimo paslaugų teikėjo įgaliojimus, o visi naudotojai turės iš naujo atlikti autorizaciją %{provider_type} . Ar tikrai norite tęsti?
     delete_warning:
-      input_delete_confirmation: Įveskite failų saugyklos pavadinimą %{file_storage}, kad patvirtintumėte trynimą.
-      irreversible_notice: Failų saugyklos trynimas yra neatstatomas veiksmas.
-      project_storage: 'Ar tikrai norite ištrinti %{file_storage} iš šio projekto? Šio veiksmo patvirtinimui prašome įvesti saugyklos pavadinimą lauke žemiau, tai:'
       project_storage_delete_result_1: Išims iš šio projekto darbo paketų visas nuorodas į tos saugyklos failus ir aplankus.
       project_storage_delete_result_2: Jei saugykla turi automatiškai tvarkomą projekto aplanką, tai ir jo failai bus visam laikui ištrinti.
-      storage: 'Ar tikrai norite ištrinti %{file_storage}? Šio veiksmo patvirtinimui prašome įvesti saugyklos pavadinimą lake žemiau:'
+      storage: 'Are you sure you want to delete %{file_storage}? This will:'
       storage_delete_result_1: Išimti visus nustatymus visuose projektuose, naudojančiuose šią saugyklą.
       storage_delete_result_2: Išimti iš visų projektų darbo paketų visas nuorodas į failus ir aplankus šioje saugykloje.
       storage_delete_result_3: Jei saugykla turi automatiškai valdomus projekto aplankus, jie ir juose esantys failai bus ištrinti visam laikui.
@@ -486,7 +482,6 @@ lt:
         subtitle_short: Leisti OpenProject kurti aplankus projektams automatiškai
         title: Automatiškai valdomi projekto aplankai
       project_settings:
-        delete: Trinti failų saugyklą
         edit: Keisti šio projekto failų saugyklą
         members_connection_status: Narių jungties būsena
         new: Pridėti failų saugyklą šiam projektui

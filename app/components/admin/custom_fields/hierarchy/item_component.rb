@@ -72,31 +72,30 @@ module Admin
         end
 
         def menu_items(menu) # rubocop:disable Metrics/AbcSize
-          edit_action_item(menu)
-          menu.with_divider
-          add_above_action_item(menu)
-          add_below_action_item(menu)
-          add_sub_item_action_item(menu)
+          with_item_group(menu) { edit_action_item(menu) }
+
+          with_item_group(menu) do
+            add_above_action_item(menu)
+            add_below_action_item(menu)
+            add_sub_item_action_item(menu)
+          end
 
           if OpenProject::FeatureDecisions.change_hierarchy_item_parent_active?
-            menu.with_divider
-            change_parent_item(menu)
+            with_item_group(menu) { change_parent_item(menu) }
           end
 
-          unless first_item? && last_item?
-            menu.with_divider
-          end
-          unless first_item?
-            move_to_top_action_item(menu)
-            move_up_action_item(menu)
-          end
-          unless last_item?
-            move_down_action_item(menu)
-            move_to_bottom_action_item(menu)
+          with_item_group(menu) do
+            unless first_item?
+              move_to_top_action_item(menu)
+              move_up_action_item(menu)
+            end
+            unless last_item?
+              move_down_action_item(menu)
+              move_to_bottom_action_item(menu)
+            end
           end
 
-          menu.with_divider
-          deletion_action_item(menu)
+          with_item_group(menu) { deletion_action_item(menu) }
         end
 
         private

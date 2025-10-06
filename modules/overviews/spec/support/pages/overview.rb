@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -28,14 +30,14 @@
 
 require "support/pages/page"
 
-require_relative "../../../../grids/spec/support/pages/grid"
-
 module Pages
-  class Overview < ::Pages::Grid
+  class Overview < ::Pages::Page
     attr_accessor :project
 
     def initialize(project)
-      self.project = project
+      super()
+
+      @project = project
     end
 
     def path

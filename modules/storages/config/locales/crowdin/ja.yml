@@ -32,6 +32,7 @@ ja:
         drive: ドライブ ID
         host: ホスト
         name: 名称
+        password: Application password
         provider_type: プロバイダーの種類
         tenant: ディレクトリ (テナント) ID
     errors:
@@ -62,7 +63,7 @@ ja:
               op_application_not_installed: アプリ「OpenProject統合」がインストールされていません。最初にインストールしてからもう一度お試しください。
             password:
               invalid_password: は無効です。
-              unknown_error: 検証できませんでした。ストレージ接続を確認して、もう一度やり直してください。
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: ファイル
       storages/storage: ストレージ
@@ -183,8 +184,6 @@ ja:
           not_found: 宛先フォルダ %{folder} が %{storage_name}に見つかりませんでした。
   storages:
     buttons:
-      complete_without_setup: 無しで完了
-      done_complete_setup: 完了、セットアップ完了
       done_continue: 完了しました。続ける
       open_storage: ファイルストレージを開く
       replace_oauth_application: OpenProject OAuthを置き換え
@@ -202,12 +201,9 @@ ja:
     confirm_replace_oauth_application: この操作で、現在の OAuth 認証情報がリセットされます。確認後、ストレージプロバイダで認証情報を再入力する必要があり、すべてのリモートユーザは OpenProject に対して再度認証する必要があります。本当に進めますか？
     confirm_replace_oauth_client: この操作により、現在のOAuth認証情報がリセットされます。確認後、ストレージプロバイダから新しい認証情報を入力する必要があり、すべてのユーザーは %{provider_type} に対して再度認証する必要があります。本当に進めますか？
     delete_warning:
-      input_delete_confirmation: ファイルストレージ名 %{file_storage} を入力し、削除を確定する。
-      irreversible_notice: ファイルストレージの削除は不可逆的な操作です。
-      project_storage: 'このプロジェクトから %{file_storage} を削除してもよろしいですか？このアクションを確認するには、下のフィールドにストレージ名を入力してください：'
       project_storage_delete_result_1: このプロジェクトのワークパッケージから、そのストレージのファイルやフォルダへのリンクをすべて削除する。
       project_storage_delete_result_2: このストレージに自動的に管理されるプロジェクトフォルダーがある場合、このフォルダーとそのファイルは永久に削除されます。
-      storage: '本当に %{file_storage}を削除しますか？このアクションを確認するには、下のフィールドにストレージ名を入力してください：'
+      storage: 'Are you sure you want to delete %{file_storage}? This will:'
       storage_delete_result_1: このストレージを使用しているすべてのプロジェクトのすべてのストレージ設定を削除します。
       storage_delete_result_2: すべてのプロジェクトのワークパッケージから、そのストレージのファイルやフォルダへのリンクをすべて削除する。
       storage_delete_result_3: このストレージに自動的に管理されるプロジェクトフォルダーがある場合、それらと含まれるファイルは永久に削除されます。
@@ -481,7 +477,6 @@ ja:
         subtitle_short: OpenProjectにプロジェクトごとにフォルダを自動的に作成させます。
         title: 自動的に管理されるプロジェクトフォルダ
       project_settings:
-        delete: ファイルストレージを削除
         edit: このプロジェクトのファイルストレージを編集
         members_connection_status: 会員の接続状況
         new: このプロジェクトにファイルストレージを追加する

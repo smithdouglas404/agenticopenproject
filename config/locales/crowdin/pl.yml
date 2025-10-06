@@ -329,6 +329,14 @@ pl:
     tab:
       no_results_title_text: Nie ma jeszcze żadnych pól użytkownika.
       no_results_content_text: Utwórz pole użytkownika
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "lub"
   op_dry_validation:
@@ -631,17 +639,20 @@ pl:
     autologins:
       prompt: "Nie wylogowuj się przez %{num_days}"
     sessions:
-      remembered_devices: "Zapamiętane urządzenia"
-      remembered_devices_caption: "Lista wszystkich urządzeń, które zalogowały się na to konto przy użyciu opcji „Pozostań zalogowany”."
       session_name: "%{browser_name} %{browser_version} w systemie %{os_name}"
       browser: "Przeglądarka"
+      expires: "Expires"
+      last_connection: "Last connection"
       device: "Urządzenie / system operacyjny"
       unknown_browser: "nieznana przeglądarka"
       unknown_os: "nieznany system operacyjny"
-      current: "Bieżąca sesja"
+      unknown: "(unknown)"
+      browser_session: "(Browser session)"
+      current: "Current (this device)"
       title: "Zarządzanie sesją"
-      instructions: "Jest to lista urządzeń, z których logowano się na Twoje konto. Unieważnij wszystkie sesje, których nie rozpoznajesz lub do których nie masz już dostępu."
+      instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Nie możesz usunąć bieżącej sesji."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "Ten użytkownik jest obecnie członkiem następujących grup:"
       no_results_title_text: Ten użytkownik nie jest obecnie członkiem żadnej grupy.
@@ -984,6 +995,11 @@ pl:
         help_text: "Tekst pomocy"
       auth_provider:
         scim_clients: "Klienci SCIM"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "Kontekst"
       changeset:
@@ -1291,7 +1307,7 @@ pl:
         confirmation: "nie pasuje do %{attribute}."
         could_not_be_copied: "Nie można było (w pełni) skopiować %{dependency}."
         does_not_exist: "nie istnieje."
-        error_enterprise_only: "%{action} jest dostępna tylko w OpenProject Enterprise edition"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "— nie można uzyskac dostępu."
         error_readonly: "— podjęto próbę zapisu, ale nie jest zapisywalny."
         error_conflict: "Information has been updated by at least one other user in the meantime."
@@ -1708,6 +1724,7 @@ pl:
         few: "Priorytety"
         many: "Priorytety"
         other: "Priorytety"
+      meeting_participant: "Meeting participant"
       member: "Członek"
       news: "Aktualności"
       notification:
@@ -2266,6 +2283,7 @@ pl:
     features:
       baseline_comparison: Porównania linii odniesienia
       board_view: Tablice zaawansowane
+      calculated_values: Calculated Values
       conditional_highlighting: Wyróżnianie warunkowe
       internal_comments: Komentarze wewnętrzne
       custom_actions: Działania niestandardowe
@@ -2338,6 +2356,8 @@ pl:
         description: "Udostępnij pakiety robocze użytkownikom, którzy nie są członkami projektu."
       project_list_sharing:
         description: "Udostępniaj listy projektów poszczególnym użytkownikom."
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Niestandardowy motyw kolorystyczny i logotyp"
         more_info: "Uwaga: użyte logo będzie ogólnodostępne."
@@ -2436,6 +2456,7 @@ pl:
   error_invalid_selected_value: "Nieprawidłowa wybrana wartość."
   error_journal_attribute_not_present: "Dziennik nie zawiera atrybutu %{attribute}."
   error_pdf_export_too_many_columns: "Wybrano zbyt dużo kolumn do eksportu PDF. Zmniejsz liczbę kolumn."
+  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
   error_pdf_failed_to_export: "Nie można było zapisać eksportu PDF: %{error}"
   error_token_authenticity: "Nie można zweryfikować tokenu Cross-Site Request Forgery. Czy podjęto próbę przesłania danych w wielu przeglądarkach lub z wielu kart? Zamknij wszystkie karty i spróbuj ponownie."
   error_reminder_not_found: "Nie znaleziono przypomnienia lub już o nim powiadomiono."
@@ -2648,22 +2669,15 @@ pl:
         header: "Przeczytaj o nowych funkcjach i aktualizacjach produktów."
         learn_about: "Dowiedz się więcej o wszystkich nowych funkcjach"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
-          new_features_title: >
-            Wydanie zawiera różne nowe funkcje i ulepszenia, takie jak:
-          new_features_list:
-            line_0: Opcja automatycznej synchronizacji kolorów systemu + tryb kontrastu.
-            line_1: Ciemny tryb wysokiego kontrastu, zapewniający poprawę dostępności.
-            line_2: Eksport list projektów w formacie PDF.
-            line_3: Niestandardowa czcionka do wszystkich eksportowanych plików PDF (dodatek wersji Enterprise).
-            line_4: Ulepszone okno dialogowe uczestników spotkania.
-            line_5: Ulepszona obsługa budżetu w zapytaniach dotyczących projektów i planowanie budżetu.
-            line_6: Zaktualizowano stronę główną i stronę Przegląd projektu.
         "16_5":
           new_features_title: >
             Wydanie zawiera różne nowe funkcje i ulepszenia, takie jak:
           new_features_list:
-            line_0: Nowe funkcje i ulepszenia już wkrótce. Zaglądaj tu!
+            line_0: Add work packages to a meeting section in the Meetings tab.
+            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
+            line_2: Filter projects by last update.
+            line_3: Jump to highlighted target elements from deep links.
+            line_4: Confirm critical actions with more accessible danger dialogs.
     links:
       upgrade_enterprise_edition: "Aktualizuj do wersji Enterprise"
       postgres_migration: "Migrowanie instalacji do PostgreSQL"
@@ -2898,7 +2912,7 @@ pl:
   label_select_main_menu_item: Wybierz nową pozycję menu głównego
   label_required_disk_storage: "Wymagane miejsce na dysku"
   label_send_invitation: Wyślij zaproszenie
-  label_calculated_value: "Obliczona wartość"
+  label_calculated_value: "Calculated Value"
   label_change_parent: "Change parent"
   label_change_plural: "Zmiany"
   label_change_properties: "Zmiana właściwości"
@@ -3075,7 +3089,7 @@ pl:
   label_integer: "Liczba całkowita"
   label_interface: "Interfejs"
   label_internal: "Wewnętrzne"
-  label_introduction_video: "Film wprowadzający"
+  label_introduction_video: "Getting started video"
   label_invite_user: "Zaproś użytkownika"
   label_item: "Element"
   label_item_plural: "Elementy"
@@ -3726,6 +3740,7 @@ pl:
   notice_password_confirmation_failed: "Nieprawidłowe hasło. Nie można kontynuować."
   notice_principals_found_multiple: "Znaleziono %{number} wyników.\nNaciśnij Tab, aby wybrać pierwszy rezultat."
   notice_principals_found_single: "Znaleziono 1 wynik.\nNaciśnij Tab, aby go wybrać."
+  notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "Projekt nie został usunięty."
   notice_project_not_found: "Nie znaleziono projektu."
   notice_successful_connection: "Połączenie zakończone sukcesem."
@@ -4368,6 +4383,7 @@ pl:
   text_access_token_hint: "Tokeny dostępu umożliwiają zewnętrznym aplikacjom dostęp do zasobów w OpenProject."
   text_analyze: "Further analyze: %{subject}"
   text_are_you_sure: "Jesteś pewien?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Czy na pewno chcesz kontynuować?"
   text_are_you_sure_with_children: "Usunąć pakiet roboczy i wszystkie podrzędne pakiety?"
   text_are_you_sure_with_project_custom_fields: "Usunięcie tego atrybutu spowoduje również usunięcie jego wartości we wszystkich projektach. Czy na pewno chcesz to zrobić?"

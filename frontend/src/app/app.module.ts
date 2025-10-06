@@ -52,7 +52,6 @@ import { OpenprojectGlobalSearchModule } from 'core-app/core/global_search/openp
 import {
   OpenprojectWorkPackageGraphsModule,
 } from 'core-app/shared/components/work-package-graphs/openproject-work-package-graphs.module';
-import { OpenprojectOverviewModule } from 'core-app/features/overview/openproject-overview.module';
 import { OpenprojectMyPageModule } from 'core-app/features/my-page/openproject-my-page.module';
 import { KeyboardShortcutService } from 'core-app/shared/directives/a11y/keyboard-shortcut.service';
 import { CopyToClipboardService } from 'core-app/shared/components/copy-to-clipboard/copy-to-clipboard.service';
@@ -211,7 +210,7 @@ import { WorkPackageFullCopyEntryComponent } from 'core-app/features/work-packag
 import { WorkPackageFullCreateEntryComponent } from 'core-app/features/work-packages/routing/wp-full-create/wp-full-create-entry.component';
 import { WorkPackageFullViewEntryComponent } from 'core-app/features/work-packages/routing/wp-full-view/wp-full-view-entry.component';
 import { MyPageComponent } from './features/my-page/my-page.component';
-import { OverviewComponent } from './features/overview/overview.component';
+import { DashboardComponent } from './features/overview/dashboard.component';
 
 export function initializeServices(injector:Injector) {
   return () => {
@@ -305,9 +304,6 @@ export function runBootstrap(appRef:ApplicationRef) {
     OpenprojectWorkPackageGraphsModule,
     // Calendar module
     OpenprojectCalendarModule,
-
-    // Overview
-    OpenprojectOverviewModule,
 
     // MyPage
     OpenprojectMyPageModule,
@@ -433,6 +429,6 @@ export class OpenProjectModule implements DoBootstrap {
     registerCustomElement('opce-colors-autocompleter', ColorsAutocompleterComponent, { injector });
 
     registerCustomElement('opce-my-page', MyPageComponent, { injector });
-    registerCustomElement('opce-overview', OverviewComponent, { injector });
+    registerCustomElement('opce-dashboard', DashboardComponent, { injector });
   }
 }

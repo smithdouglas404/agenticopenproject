@@ -332,6 +332,14 @@ sv:
     tab:
       no_results_title_text: Det finns för närvarande inga anpassade fält.
       no_results_content_text: Skapa ett nytt anpassat fält
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "eller"
   op_dry_validation:
@@ -622,17 +630,20 @@ sv:
     autologins:
       prompt: "Stay logged in for %{num_days}"
     sessions:
-      remembered_devices: "Remembered devices"
-      remembered_devices_caption: "A list of all devices that logged into this account using the 'Stay logged in' option."
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "Webbläsare"
+      expires: "Expires"
+      last_connection: "Last connection"
       device: "Enhet / OS"
       unknown_browser: "okänd webbläsare"
       unknown_os: "okänt operativsystem"
-      current: "Nuvarande session"
+      unknown: "(unknown)"
+      browser_session: "(Browser session)"
+      current: "Current (this device)"
       title: "Sessionskontrollering"
-      instructions: "Det här är en list av enheter som är inloggade på ditt konto. Ta bort alla sessioner som du inte känner igen eller som du inte längre har tillgång till."
+      instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Du kan inte ta bort din nuvarande session."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "This user is currently a member of the following groups:"
       no_results_title_text: This user is currently not a member in any group.
@@ -972,6 +983,11 @@ sv:
         help_text: "Hjälptext"
       auth_provider:
         scim_clients: "SCIM-klienter"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "Kontext"
       changeset:
@@ -1279,7 +1295,7 @@ sv:
         confirmation: "matchar inte %{attribute}."
         could_not_be_copied: "%{dependency} could not be (fully) copied."
         does_not_exist: "finns inte."
-        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "åtkomst nekas."
         error_readonly: "försökte skrivas men är inte skrivbart."
         error_conflict: "Informationen har uppdaterats av minst en annan användare under tiden."
@@ -1684,6 +1700,7 @@ sv:
       issue_priority:
         one: "Prioritet"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "Medlem"
       news: "Nyheter"
       notification:
@@ -2182,6 +2199,7 @@ sv:
     features:
       baseline_comparison: Baseline Comparisons
       board_view: Advanced Boards
+      calculated_values: Calculated Values
       conditional_highlighting: Conditional Highlighting
       internal_comments: Interna kommentarer
       custom_actions: Anpassade åtgärder
@@ -2254,6 +2272,8 @@ sv:
         description: "Share work packages with users who are not members of the project."
       project_list_sharing:
         description: "Share project lists with individual users."
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Custom color theme and logo"
         more_info: "Obs: logotypen som används kommer att vara allmänt tillgänglig."
@@ -2350,6 +2370,7 @@ sv:
   error_invalid_selected_value: "Ogiltigt valt värde."
   error_journal_attribute_not_present: "Loggbok innehåller inte attribut %{attribute}."
   error_pdf_export_too_many_columns: "För många kolumner har markerats för PDF-export. Vänlogen minska antalet kolumner."
+  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
   error_pdf_failed_to_export: "PDF-exporten kunde inte sparas: %{error}"
   error_token_authenticity: "Det gick inte att verifiera Forgery token. Försökte du skicka data på flera webbläsare eller flikar? Stäng alla flikar och försök igen."
   error_reminder_not_found: "The reminder was not found or was already notified about."
@@ -2562,22 +2583,15 @@ sv:
         header: "Read about new features and product updates."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
-          new_features_title: >
-            The release contains various new features and improvements, such as:
-          new_features_list:
-            line_0: Option to auto-sync system color + contrast mode.
-            line_1: Dark high contrast mode for improved accessibility.
-            line_2: PDF export of project lists.
-            line_3: Custom font for all PDF exports (Enterprise add-on).
-            line_4: Improved meeting participants dialog.
-            line_5: Improved budget handling in project queries and budget planning.
-            line_6: Updated Home and Project overview page.
         "16_5":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: New features and improvements coming soon. Keep checking back!
+            line_0: Add work packages to a meeting section in the Meetings tab.
+            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
+            line_2: Filter projects by last update.
+            line_3: Jump to highlighted target elements from deep links.
+            line_4: Confirm critical actions with more accessible danger dialogs.
     links:
       upgrade_enterprise_edition: "Upgrade to Enterprise edition"
       postgres_migration: "Migrera din installation till PostgreSQL"
@@ -2812,7 +2826,7 @@ sv:
   label_select_main_menu_item: Välj ny huvudmenypost
   label_required_disk_storage: "Erfordrat lagringsutrymme"
   label_send_invitation: Skicka inbjudan
-  label_calculated_value: "Calculated value"
+  label_calculated_value: "Calculated Value"
   label_change_parent: "Change parent"
   label_change_plural: "Förändringar"
   label_change_properties: "Ändra egenskaper"
@@ -2989,7 +3003,7 @@ sv:
   label_integer: "Heltal"
   label_interface: "Gränssnitt"
   label_internal: "Intern"
-  label_introduction_video: "Introduktionsvideo"
+  label_introduction_video: "Getting started video"
   label_invite_user: "Bjud in användare"
   label_item: "Objekt"
   label_item_plural: "Objekt"
@@ -3639,6 +3653,7 @@ sv:
   notice_password_confirmation_failed: "Ditt lösenord är inte korrekt. Kan inte fortsätta."
   notice_principals_found_multiple: "%{number} resultat hittades. Använd TAB för att fokusera på det första."
   notice_principals_found_single: "Ett resultat. Använd TAB för att fokusera på det."
+  notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "Projektet raderades ej."
   notice_project_not_found: "Projektet hittas inte."
   notice_successful_connection: "Lyckad anslutning."
@@ -4279,6 +4294,7 @@ sv:
   text_access_token_hint: "Åtkomstnycklar gör det möjligt för externa applikationer att komma åt OpenProject-resurser."
   text_analyze: "Vidare analys: %{subject}"
   text_are_you_sure: "Är du säker?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Are you sure you want to continue?"
   text_are_you_sure_with_children: "Ta bort arbetspaket och alla underarbetspaket?"
   text_are_you_sure_with_project_custom_fields: "Deleting this attribute will also delete its values in all projects. Are you sure you want to do this?"

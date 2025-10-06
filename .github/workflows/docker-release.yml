@@ -38,8 +38,8 @@ jobs:
             BRANCH_REF="dev"
           fi
 
-          echo "branch=$BRANCH_REF" >> "$GITHUB_OUTPUT"
-          echo "tag=$TAG_REF" >> "$GITHUB_OUTPUT"
+          echo "branch=$BRANCH_REF" | tee -a "$GITHUB_OUTPUT"
+          echo "tag=$TAG_REF" | tee -a "$GITHUB_OUTPUT"
 
   build:
     needs: compute-inputs

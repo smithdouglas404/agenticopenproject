@@ -30,6 +30,7 @@
 
 module Redmine::MenuManager::TopMenu::QuickAddMenu
   include OpenProject::StaticRouting::UrlHelpers
+  include OpPrimer::ComponentHelpers
 
   def render_quick_add_menu
     return unless show_quick_add_menu?
@@ -52,11 +53,8 @@ module Redmine::MenuManager::TopMenu::QuickAddMenu
         render(Primer::Beta::Octicon.new(icon: "triangle-down", aria: { label: I18n.t("menus.quick_add.label") }))
       end
 
-      add_first_level_items(menu)
-      if first_level_menu_items_for(:quick_add_menu, @project).present? && work_package_quick_add_items.present?
-        menu.with_divider
-      end
-      add_second_level_items(menu)
+      with_item_group(menu) { add_first_level_items(menu) }
+      with_item_group(menu) { add_second_level_items(menu) }
     end
   end
 

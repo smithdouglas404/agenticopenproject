@@ -329,6 +329,14 @@ uk:
     tab:
       no_results_title_text: Наразі немає спеціальних полів.
       no_results_content_text: Створіть нове спеціальне поле
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "або"
   op_dry_validation:
@@ -631,17 +639,20 @@ uk:
     autologins:
       prompt: "Не виходити %{num_days}"
     sessions:
-      remembered_devices: "Запам’ятовані пристрої"
-      remembered_devices_caption: "Список усіх пристроїв, з яких виконано вхід у цей обліковий запис із параметром «Не виходити»."
       session_name: "%{browser_name} %{browser_version} у %{os_name}"
       browser: "Браузер"
+      expires: "Expires"
+      last_connection: "Last connection"
       device: "Пристрій / ОС"
       unknown_browser: "невідомий браузер"
       unknown_os: "невідома операційна система"
-      current: "Поточний сеанс"
+      unknown: "(unknown)"
+      browser_session: "(Browser session)"
+      current: "Current (this device)"
       title: "Керування сеансами"
-      instructions: "Це список пристроїв, з яких було отримано доступ до вашого облікового запису. Завершіть будь-які підозрілі сеанси або ті, до яких ви не маєте доступу."
+      instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Ви не можете видалити поточний сеанс."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "Зараз цей користувач — учасник таких груп:"
       no_results_title_text: Цей користувач зараз не належить до жодної групи.
@@ -982,6 +993,11 @@ uk:
         help_text: "Довідковий текст"
       auth_provider:
         scim_clients: "Клієнти SCIM"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "Контекст"
       changeset:
@@ -1289,7 +1305,7 @@ uk:
         confirmation: "не збігається %{attribute}"
         could_not_be_copied: "%{dependency} не вдалося скопіювати (повністю)."
         does_not_exist: "не існує."
-        error_enterprise_only: "%{action} можна лише у версії OpenProject Enterprise"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "– можливо, немає доступу."
         error_readonly: "– було здійснено спробу запису, але елемент недоступний для запису."
         error_conflict: "Інформація була оновлена принаймні один інший користувач в той же час."
@@ -1706,6 +1722,7 @@ uk:
         few: "Пріоритети"
         many: "Пріоритети"
         other: "Пріоритети"
+      meeting_participant: "Meeting participant"
       member: "Учасник"
       news: "Новини"
       notification:
@@ -2264,6 +2281,7 @@ uk:
     features:
       baseline_comparison: Порівняння з вихідним рівнем
       board_view: Покращені Дошки
+      calculated_values: Calculated Values
       conditional_highlighting: Умовне виділення
       internal_comments: Внутрішні коментарі
       custom_actions: Користувацькі дії
@@ -2336,6 +2354,8 @@ uk:
         description: "Діліться пакетами робіт із користувачами, які не належать до учасників проєкту."
       project_list_sharing:
         description: "Діліться списками проєктів з окремими користувачами."
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Користувацький колір теми й логотип"
         more_info: "Примітка: вибраний логотип буде загальнодоступний."
@@ -2434,6 +2454,7 @@ uk:
   error_invalid_selected_value: "Недійсне вибране значення."
   error_journal_attribute_not_present: "Журнал не містить атрибута %{attribute}."
   error_pdf_export_too_many_columns: "Для експорту PDF-файлу вибрано занадто багато стовпців. Скоротіть кількість стовпців."
+  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
   error_pdf_failed_to_export: "Експорт PDF не вдалося зберегти: %{error}"
   error_token_authenticity: "Неможливо підтвердити маркер підробки для запиту між сайтами. Чи спробували ви надіслати дані для кількох веб-переглядачів або вкладок? Закрийте всі вкладки та повторіть спробу."
   error_reminder_not_found: "Нагадування не знайдено, або сповіщення вже надіслано."
@@ -2646,22 +2667,15 @@ uk:
         header: "Читайте про нові функції і оновлення продуктів."
         learn_about: "Дізнайтеся більше про всі нові функції"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
-          new_features_title: >
-            Випуск включає різноманітні нові функції і покращення, такі як:
-          new_features_list:
-            line_0: опція для автоматичної синхронізації з колірним режимом і контрастністю системи;
-            line_1: темний висококонтрастний режим для покращення доступності;
-            line_2: можливість експортувати списки проєктів у форматі PDF;
-            line_3: власний шрифт для всіх експортованих файлів PDF (доповнення Enterprise);
-            line_4: покращене діалогове вікно учасників наради;
-            line_5: покращена робота з бюджетом у запитах, пов’язаних із проєктами, і при плануванні бюджету;
-            line_6: оновлена головна сторінка, а також сторінка «Огляд проєкту».
         "16_5":
           new_features_title: >
             Випуск включає різноманітні нові функції і покращення, такі як:
           new_features_list:
-            line_0: Незабаром ми додамо нові функції і покращення. Слідкуйте за новинами!
+            line_0: Add work packages to a meeting section in the Meetings tab.
+            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
+            line_2: Filter projects by last update.
+            line_3: Jump to highlighted target elements from deep links.
+            line_4: Confirm critical actions with more accessible danger dialogs.
     links:
       upgrade_enterprise_edition: "Оновлення до версії Enterprise"
       postgres_migration: "Міграція інсталяції в PostgreSQL"
@@ -2896,7 +2910,7 @@ uk:
   label_select_main_menu_item: Виберіть новий пункт головного меню
   label_required_disk_storage: "Необхідне місце на диску"
   label_send_invitation: Надіслати запрошення
-  label_calculated_value: "Розраховане значення"
+  label_calculated_value: "Calculated Value"
   label_change_parent: "Change parent"
   label_change_plural: "Зміни"
   label_change_properties: "Змінити властивості"
@@ -3073,7 +3087,7 @@ uk:
   label_integer: "Ціле число"
   label_interface: "Інтерфейс"
   label_internal: "Власне"
-  label_introduction_video: "Введення відео"
+  label_introduction_video: "Getting started video"
   label_invite_user: "Запросити користувача"
   label_item: "Елемент"
   label_item_plural: "Елементи"
@@ -3724,6 +3738,7 @@ uk:
   notice_password_confirmation_failed: "Ваш пароль неправильний. Неможливо продовжити."
   notice_principals_found_multiple: "There are %{number} знайдені результати. \nВкладка для фокусування першого результату."
   notice_principals_found_single: "Знайдений один результат. Натисніть <TAB> для переходу до нього."
+  notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "Проект не був видалений."
   notice_project_not_found: "Проєкт не знайдено."
   notice_successful_connection: "Підключення успішно встановлене."
@@ -4367,6 +4382,7 @@ uk:
   text_access_token_hint: "Маркери доступу дозволяють надавати зовнішнім програмам доступ до ресурсів у OpenProject."
   text_analyze: "Подальший аналіз: %{subject}"
   text_are_you_sure: "Ви впевненені?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Хочете продовжити?"
   text_are_you_sure_with_children: "Видалити робочий пакет і всі дочірні робочі пакети?"
   text_are_you_sure_with_project_custom_fields: "Видалення цього атрибута також призведе до видалення його значень у всіх проєктах. Ви впевнені?"
