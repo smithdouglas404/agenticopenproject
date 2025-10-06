@@ -59,8 +59,6 @@ import { Observable, of } from 'rxjs';
   standalone: false,
 })
 export class WorkPackagesFullViewComponent extends WorkPackageSingleViewBase implements OnInit {
-  @Input() routedFromAngular:boolean = true;
-
   // Watcher properties
   public isWatched:boolean;
 

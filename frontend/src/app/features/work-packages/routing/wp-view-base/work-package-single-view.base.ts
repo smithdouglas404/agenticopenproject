@@ -67,15 +67,19 @@ import { ProjectsResourceService } from 'core-app/core/state/projects/projects.s
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { StateService } from '@uirouter/angular';
 
 @Directive()
 export abstract class WorkPackageSingleViewBase extends UntilDestroyedMixin {
-  // TODO: Get variable from angular routes
+  @Input() routedFromAngular:boolean = true;
+
   @Input() workPackageId:string;
 
   @Input() activeTab:string = 'activity';
 
   @InjectField() states:States;
+
+  @InjectField() $state:StateService;
 
   @InjectField() i18n:I18nService;
 
@@ -128,6 +132,10 @@ export abstract class WorkPackageSingleViewBase extends UntilDestroyedMixin {
     public injector:Injector,
   ) {
     super();
+
+    if (this.routedFromAngular && this.workPackageId === undefined) {
+      this.workPackageId = this.$state.params.workPackageId as string;
+    }
   }
 
   /**

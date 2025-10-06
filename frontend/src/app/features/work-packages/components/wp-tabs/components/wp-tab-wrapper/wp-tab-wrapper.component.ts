@@ -64,6 +64,10 @@ export class WpTabWrapperComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    if (this.workPackageId === undefined) {
+      this.workPackageId = this.uiRouterGlobals.params.workPackageId;
+    }
+
     this.ndcDynamicInputs$ = this
       .apiV3Service
       .work_packages
@@ -78,6 +82,10 @@ export class WpTabWrapperComponent implements OnInit {
   }
 
   findTab(workPackage:WorkPackageResource):WpTabDefinition | undefined {
+    if (this.tabIdentifier === undefined) {
+      this.tabIdentifier = this.uiRouterGlobals.params.tabIdentifier;
+    }
+
     return this.wpTabsService.getTab(this.tabIdentifier, workPackage);
   }
 }

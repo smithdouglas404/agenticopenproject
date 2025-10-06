@@ -396,13 +396,12 @@ Rails.application.routes.draw do
 
       get "/copy" => "work_packages#copy", on: :member, as: "copy"
 
-      # states managed by client-side routing on work_package#index
-      #get "(/*state)" => "work_packages#index", on: :collection, as: "", constraints: { state: /(?!(dialog)).+/ }
-
       get "/create_new" => "work_packages#index", on: :collection, as: "new_split"
-      #get "/new" => "work_packages#index", on: :collection, as: "new"
 
       get "(/:tab)" => "work_packages#show", on: :member, as: "", constraints: { id: /\d+/, state: /(?!(shares|new|copy|dialog)).+/ }
+
+      # states managed by client-side routing on work_package#index
+      get "(/*state)" => "work_packages#index", on: :collection, as: "", constraints: { state: /(?!(dialog)).+/ }
     end
 
     namespace :work_packages do
@@ -799,9 +798,8 @@ Rails.application.routes.draw do
     get "(/:tab)" => "work_packages#show", on: :member, as: "", constraints: { id: /\d+/, state: /(?!(shares|new|copy)).+/ }
 
     # states managed by client-side (angular) routing on work_package#show
-    #get "/" => "work_packages#index", on: :collection, as: "index"
+    get "/" => "work_packages#index", on: :collection, as: "index"
     get "/create_new" => "work_packages#index", on: :collection, as: "new_split"
-    # We do not want to match the work package export routes
 
     get "/share_upsell" => "work_packages#share_upsell", on: :collection, as: "share_upsell"
     get "/edit" => "work_packages#show", on: :member, as: "edit"
