@@ -1,18 +1,8 @@
 # PM² Project Management Methodology 
 
-The PM² Guide v3.1, December 2023
+Version 3.1, December 2023.
 
-![](pm²-opmm.png)
-
-
-
-Reproduction and reuse is authorised provided the source is acknowledged.
-Document licensed under CC BY 4.0 license (https://creativecommons.org/licenses/by/4.0/).
-The Commission's reuse policy is implemented by Commission Decision 2011/833/EU of 12 December 2011 on the reuse of Commission documents (OJ L 330, 14.12.2011, p. 39 - https://eur-lex.europa.eu/eli/dec/2011/833/oj).
-
-The PM² logo is the property of the European Union and may not be registered as a trademark or otherwise, nor used separately from these documents.
-
-Neither the publication nor the logo can be used in a way which suggests endorsement of an external organisation by the European Union.
+![PM² Open Project Management Methodology](pm²-opmm.png)
 
 ## 1 An Introduction to the PM² Guide 
 
@@ -2730,6 +2720,116 @@ The Project Manager (PM) manages the delivery of all products and/or services th
 - Signed purchase order(s)
 - Signed timesheet(s)
 
+## Appendix A: Contributions and Acknowledgements
+
+The European Commission is grateful to all those who have contributed in the development of the PM² Project Management Methodology and wishes to acknowledge their contribution and support.
+In alphabetical order:
+
+The following people provided leadership and sponsorship for the PM² and Open PM² initiatives:
+
+1. BERLAIRE Philippe
+2. BOVALIS Konstantinos
+3. CABRERO MORENO Daniel
+4. DEASY Declan
+5. GARCIA-MORAN Francisco
+6. GEORGIANNAKIS Giorgos
+7. INGESTAD Gertrud
+8. IGLESIAS Jeremias
+9. KOUROUNAKIS Nicos
+10. MARASLIS Athanasios
+11. MEULEMAN Stijn
+12. QUEST Stephen
+13. SCHILDERS Dirk
+14. SILVA MENDES Pedro
+15. VASSILIADIS Theodoros
+16. VEKEMANS Tom
+17. VLEMINCKX Philippe
+
+Authors of the PM² Guide and Methodology:
+
+1. KOUROUNAKIS Nicos
+2. MARASLIS Athanasios
+
+In addition, the following people served as project team members and contributed to the evolution of the PM² Methodology, provided text, concepts and expert knowledge, carried out reviews and assisted in developing the PM² Methodology and the PM² Guide:
+
+1. ATIENZA FERNANDEZ Roberto
+2. BORRELLY Christopher
+3. BERGHMANS Marc CALAMITA Valter CRESPO GAMBADE Pablo DAMAS Pierre
+4. André DEL CASTILLO SANCHEZ Manuel D’ELIA Sandro DZHUMALIEVA Stefka
+5. GKOLFI Argyro
+6. GIOVANNELLI Rosaria
+7. OH Gavin
+8. OLEKSY Henri
+9. KATSAGOUNOS Ilias
+10. KIPS Bert
+11. KOENS Maarten
+12. KUMMER Laurent LECOMTE Marie-Véronique
+13. LECLERCQ Pierre MARTA Ana MARTINEZ RODRIGUEZ Eva
+14. MARTINI Marco
+15. MERGUERIAN George
+16. MOIRA Anastasia
+17. PADRAO Ana
+18. PAPIER David
+19. PECA Viorel
+20. RUSTANOWICZ Michal
+21. SEQUEIRA Luis
+22. SUTHERLAND-SHERRIFF Sarah
+23. TURLEY Frank
+24. VAROTTO Anita
+25. VOICU Denisa
+26. WILLIAMS Kory
+27. ZAININGER Renate
+
+OPEN PM² WORK GROUP MEMBERS:
+
+1. BACELLI Novella
+2. CHLAPANI Angeliki
+3. DAQUINO Giuseppe Giovanni
+4. DYBA Wojciech
+5. GALLOIS Laurent
+6. GIMENO Francisco
+7. HELBIN Tomek
+8. LORANT Benoit
+9. LICU Oana
+10. MARTIN FERNANDEZ Jesus
+11. MATTU Francesco
+12. PARONI Panagiota
+13. PARZANESE Pierpaolo
+14. MARTO DE OLIVEIRA Teresa
+15. MET DEN ANCXT Roland
+16. MICHELIOUDAKIS Elias
+17. SCHEINER Robert
+18. SYMEONIDIS George
+19. TORRECILLA SALINAS Carlos
+20. TOURE Amadou
+21. VIDALIS Antonios
+
+This version of the PM² Guide has been produced by:
+
+**European Commission**
+
+DIGIT.A2.001, Procurement and Programme Management Solutions. Portfolio Methodologies and Tools
+
+1. CHLAPANI Angeliki *Head of Unit*
+2. KAMINSKI Thomasz *Deputy Head of Unit*
+3. MUSAT Bogdan *Head of Sector*
+
+Centre of Excellence in PM² (CoEPM²):
+
+1. SEMERDZHIEVA Svetla *Team Lead*
+2. WHYE Gregory Senior *Consultant*
+3. SUFARU Maria-Cristina *Senior Consultant*
+4. BOCHAROVA Ksenia *Senior Consultant*
+5. LEFTER Diana-Mihaela *Senior Consultant*
+6. COOPER GUMIEL Veronica *Communications Consultant*
+
+Former CoEPM² members who recently moved on to other assignments:
+
+1. BERGHMANS Marc
+2. MICHELIOUDAKIS
+3. Elias MICHOTTE Alexandra
+4. VAN GAEVER Alain
+
 ## Appendix B: Project Management Plans and Logs 
 
 ### B. 1 Requirements Management Plan
@@ -3599,3 +3699,13 @@ All virtues are required for the application of professional competences, howeve
 |  Conflict and crisis management | Calmness, Fairness, Friendliness, Generosity  |
 |  Personal integrity and reliability | Calmness, Courage, Fairness, Friendliness, Honour, Temperance  |
 |  Culture and values management | All virtues  |
+
+## Disclaimer
+
+Reproduction and reuse is authorised provided the source is acknowledged.
+Document licensed under CC BY 4.0 license (https://creativecommons.org/licenses/by/4.0/).
+The Commission's reuse policy is implemented by Commission Decision 2011/833/EU of 12 December 2011 on the reuse of Commission documents (OJ L 330, 14.12.2011, p. 39 - https://eur-lex.europa.eu/eli/dec/2011/833/oj).
+
+The PM² logo is the property of the European Union and may not be registered as a trademark or otherwise, nor used separately from these documents.
+
+Neither the publication nor the logo can be used in a way which suggests endorsement of an external organisation by the European Union.
