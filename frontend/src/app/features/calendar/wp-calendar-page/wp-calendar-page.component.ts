@@ -70,9 +70,6 @@ export class WorkPackagesCalendarPageComponent extends PartitionedQuerySpacePage
     unsaved_title: this.I18n.t('js.calendar.unsaved_title'),
   };
 
-  /** Go back using back-button */
-  backButtonCallback:() => void;
-
   breadcrumbItems() {
     return [
       { href: this.pathHelperService.homePath(), text: this.titleService.appTitle },

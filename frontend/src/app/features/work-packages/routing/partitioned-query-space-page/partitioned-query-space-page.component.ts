@@ -129,9 +129,6 @@ export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase imp
   /** We need to pass the correct partition state to the view to manage the grid */
   currentPartition:ViewPartitionState = '-split';
 
-  /** What route (if any) should we go back to using the back button left of the title? */
-  backButtonCallback:() => void|undefined;
-
   /** Which filter container component to mount */
   filterContainerDefinition:DynamicComponentDefinition = {
     component: WorkPackageFilterContainerComponent,
