@@ -28,32 +28,36 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Projects::Exports::Formatters
-  class BudgetCurrencyAttribute < ::Exports::Formatters::Default
-    def self.apply?(attribute, _export_format)
-      budget_mapping.key? attribute.to_sym
+require "spec_helper"
+
+RSpec.describe WorkPackage::Exports::Formatters::WorkHours do
+  let(:formatter_instance) { described_class.new(:estimated_hours) }
+
+  describe ".apply?" do
+    it "returns true for estimated_hours and csv format" do
+      expect(described_class.apply?(:estimated_hours, :csv)).to be true
     end
 
-    def self.budget_mapping
-      {
-        budget_available: :total_available,
-        budget_spent: :total_spent,
-        budget_planned: :total_planned
-      }
+    it "returns true for remaining_hours and csv format" do
+      expect(described_class.apply?(:remaining_hours, :csv)).to be true
     end
 
-    def format(project, **)
-      return unless project.module_enabled?("budgets") && User.current.allowed_in_project?(:view_budgets, project)
-
-      project_budgets = ::Budgets::Patches::Projects::RowComponentPatch::ProjectBudgets.new(project)
-      budgets_attribute = BudgetCurrencyAttribute.budget_mapping.fetch(attribute.to_sym)
-      return unless project_budgets && budgets_attribute
-
-      project_budgets.public_send(budgets_attribute)
+    it "returns false for spent_hours and csv format" do
+      expect(described_class.apply?(:spent_hours, :csv)).to be false
     end
 
-    def format_options
-      { number_format: currency_format }
+    it "returns false for estimated_hours and pdf format" do
+      expect(described_class.apply?(:estimated_hours, :pdf)).to be false
+    end
+
+    it "returns false for other attributes" do
+      expect(described_class.apply?(:other_attribute, :csv)).to be false
+    end
+  end
+
+  describe "#format_options" do
+    it "returns number format for hours" do
+      expect(formatter_instance.format_options).to eq({ number_format: "0.00" })
     end
   end
 end

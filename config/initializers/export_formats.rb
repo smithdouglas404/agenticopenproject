@@ -48,6 +48,7 @@ Rails.application.configure do |application|
       formatter WorkPackage, WorkPackage::Exports::Formatters::Hours
       formatter WorkPackage, WorkPackage::Exports::Formatters::ProjectPhase
       formatter WorkPackage, WorkPackage::Exports::Formatters::SpentUnits
+      formatter WorkPackage, WorkPackage::Exports::Formatters::WorkHours
 
       list Project, Projects::Exports::CSV
       list Project, Projects::Exports::PDF

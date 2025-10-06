@@ -89,25 +89,43 @@ RSpec.describe Projects::Exports::Formatters::BudgetCurrencyAttribute do
         User.current = user_with_permission
       end
 
-      it "formats the budget available" do
+      it "returns the raw budget available value" do
         allow(project_budgets_double).to receive(:total_available).and_return(42.7)
         instance = described_class.new(:budget_available)
 
-        expect(instance.format(project)).to eq("43 EUR")
+        expect(instance.format(project)).to eq(42.7)
       end
 
-      it "formats the budget spent" do
+      it "returns the raw budget spent value" do
         allow(project_budgets_double).to receive(:total_spent).and_return(42.7)
         instance = described_class.new(:budget_spent)
 
-        expect(instance.format(project)).to eq("43 EUR")
+        expect(instance.format(project)).to eq(42.7)
       end
 
-      it "formats the budget planned" do
+      it "returns the raw budget planned value" do
         allow(project_budgets_double).to receive(:total_planned).and_return(42.7)
         instance = described_class.new(:budget_planned)
 
-        expect(instance.format(project)).to eq("43 EUR")
+        expect(instance.format(project)).to eq(42.7)
+      end
+    end
+  end
+
+  describe "#format_options" do
+    let(:instance) { described_class.new(:budget_available) }
+
+    it "returns currency format options" do
+      with_settings(costs_currency: "USD", costs_currency_format: "%n %u") do
+        expected_format = "#,##0.00 [$USD]"
+        expect(instance.format_options).to eq({ number_format: expected_format })
+      end
+    end
+
+    it "handles different currency settings" do
+      with_settings(costs_currency: "EUR", costs_currency_format: "%u %n") do
+        expected_format = "[$EUR] #,##0.00"
+        expect(instance.format_options).to eq({ number_format: expected_format })
       end
     end
   end

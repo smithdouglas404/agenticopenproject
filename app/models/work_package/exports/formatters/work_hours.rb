@@ -28,32 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Projects::Exports::Formatters
-  class BudgetCurrencyAttribute < ::Exports::Formatters::Default
-    def self.apply?(attribute, _export_format)
-      budget_mapping.key? attribute.to_sym
-    end
+module WorkPackage::Exports
+  module Formatters
+    class WorkHours < ::Exports::Formatters::Default
+      def self.apply?(name, export_format)
+        %i[estimated_hours remaining_hours].include?(name.to_sym) && export_format == :csv
+      end
 
-    def self.budget_mapping
-      {
-        budget_available: :total_available,
-        budget_spent: :total_spent,
-        budget_planned: :total_planned
-      }
-    end
-
-    def format(project, **)
-      return unless project.module_enabled?("budgets") && User.current.allowed_in_project?(:view_budgets, project)
-
-      project_budgets = ::Budgets::Patches::Projects::RowComponentPatch::ProjectBudgets.new(project)
-      budgets_attribute = BudgetCurrencyAttribute.budget_mapping.fetch(attribute.to_sym)
-      return unless project_budgets && budgets_attribute
-
-      project_budgets.public_send(budgets_attribute)
-    end
-
-    def format_options
-      { number_format: currency_format }
+      def format_options
+        { number_format: }
+      end
     end
   end
 end
