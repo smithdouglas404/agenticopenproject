@@ -197,7 +197,7 @@ OpenProject supports the latest versions of the major browsers.
 
 ### openDesk
 
-* [openDesk 1.4](https://gitlab.opencode.de/bmi/opendesk/deployment/opendesk/-/blob/main/CHANGELOG.md)
+* [openDesk 1.9](https://gitlab.opencode.de/bmi/opendesk/deployment/opendesk/-/blob/main/CHANGELOG.md)
 
 ### Nextcloud Hub
 
@@ -219,19 +219,19 @@ OpenProject supports the latest versions of the major browsers.
 
 ##### OpenProject integration
 
-* [OpenProject Integration 2.9.0](https://github.com/nextcloud/integration_openproject/releases/tag/v2.9.0)
+* [OpenProject Integration 2.9.2](https://github.com/nextcloud/integration_openproject/releases/tag/v2.9.2)
 
 ##### Team folders
 
 If you want to use the feature of [automatically managed project folders](../../system-admin-guide/integrations/nextcloud/#4-automatically-managed-project-folders) you need to install the [Team folders](https://apps.nextcloud.com/apps/groupfolders) app in Nextcloud (formerly Group folders).
 
-* [Team folders 19.0.4](https://github.com/nextcloud/groupfolders/releases/tag/v19.0.4)
+* [Team folders 20.0.0](https://github.com/nextcloud/groupfolders/releases/tag/v20.0.0)
 
 ### Keycloak token exchange
 
 OpenProject will be tested against the following versions:
 
-* [Keycloak 26.2.4](https://github.com/keycloak/keycloak/releases/tag/26.2.4)
+* [Keycloak 26.3.3](https://github.com/keycloak/keycloak/releases/tag/26.3.3)
 
 ## Frequently asked questions (FAQ)
 
