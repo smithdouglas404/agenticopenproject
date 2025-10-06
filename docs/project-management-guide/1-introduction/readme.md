@@ -1,3 +1,11 @@
+---
+sidebar_navigation:
+  title: 1 An Introduction to the PM² Guide - OpenProject
+  priority: 999
+description: OpenProject user guide for Community edition, Enterprise cloud and Enterprise on-premises.
+keywords: user guide
+---
+
 # PM² Project Management Methodology 
 
 Version 3.1, December 2023.
@@ -849,6 +857,10 @@ The first phase of a PM² project is the Initiating Phase. It begins with the id
 
 Three key project artefacts are created during the Initiating Phase: the Project Initiation Request, the Business Case and the Project Charter. Some of the Project Logs are also set up (i.e. Risk Log, Issue Log, Decision Log) while the Change Log is typically set up during the Planning Phase.
 ![Fig 5.2 Initiating Phase artefacts](05.02.png)
+
+> [!TIP]
+>
+> 
 
 ### 5.1 Initiating Meeting
 
