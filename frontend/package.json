@@ -102,7 +102,7 @@
     "@hocuspocus/provider": "^3.2.4",
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo": "^8.0.18",
-    "@hotwired/turbo-rails": "^8.0.10",
+    "@hotwired/turbo-rails": "^8.0.18",
     "@kolkov/ngx-gallery": "^2.0.1",
     "@ng-select/ng-option-highlight": "^20.1.0",
     "@ng-select/ng-select": "^20.1.0",
