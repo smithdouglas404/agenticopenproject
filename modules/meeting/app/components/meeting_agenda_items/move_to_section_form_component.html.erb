@@ -28,25 +28,27 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  render(
-    Primer::OpenProject::DangerDialog.new(
-      id: "agenda-item-move-to-next-meeting-dialog",
-      confirm_button_text: I18n.t(:label_agenda_item_move),
-      title:,
-      form_arguments: {
-        action: move_to_next_meeting_agenda_item_path(
-          @agenda_item.meeting,
-          @agenda_item,
-          datetime: @datetime,
-          current_occurrence: @current_occurrence
-        ),
-        method: :post
-      }
-    )
-  ) do |dialog|
-    dialog.with_confirmation_message do |message|
-      message.with_heading(tag: :h2) { title }
-      message.with_description_content(confirmation_message)
+  component_wrapper do
+    primer_form_with(
+      id: "move-to-section-form",
+      model: @agenda_item,
+      method: :post,
+      url: move_to_section_meeting_agenda_item_path(
+        @agenda_item.meeting,
+        @agenda_item,
+        collapsed: @collapsed
+      )
+    ) do |f|
+      flex_layout(mb: 3) do |flex|
+        flex.with_row do
+          if @base_errors&.any?
+            render(Primer::Alpha::Banner.new(mb: 3, icon: :stop, scheme: :danger)) { @base_errors.join("\n") }
+          end
+        end
+        flex.with_row(mb: 3) do
+          render(Meeting::AddToSection.new(f, wrapper_id: "move-to-section-dialog", occurrence: @meeting))
+        end
+      end
     end
   end
 %>

@@ -215,6 +215,12 @@ module Pages::Meetings
       expect(page).not_to have_test_selector("op-meeting-agenda-title", text: title)
     end
 
+    def expect_no_agenda_item_in_section(title:, section:)
+      within("#meeting-sections-show-component-#{section.id}") do
+        expect_no_agenda_item(title:)
+      end
+    end
+
     def expect_agenda_action_menu(item)
       expect(page)
         .to have_css("#meeting-agenda-items-item-component-#{item.id} #{test_selector('op-meeting-agenda-actions')}")
@@ -227,6 +233,9 @@ module Pages::Meetings
 
     def select_action(item, action)
       open_menu(item) do
+        if action.downcase.include?("move")
+          click_on "Move"
+        end
         click_on action
       end
     end
@@ -368,8 +377,10 @@ module Pages::Meetings
 
     def expect_empty_backlog
       within_backlog do
-        expect(page).to have_text("Drag items here or create a new one")
-        expect(page).to have_button("Add")
+        retry_block do
+          expect(page).to have_text("Drag items here or create a new one")
+          expect(page).to have_button("Add")
+        end
       end
     end
 
@@ -647,6 +658,8 @@ module Pages::Meetings
 
     def expect_backlog_actions(item, series: false)
       open_menu(item) do
+        click_on "Move"
+
         expect(page).to have_css(".ActionListItem-label", text: "Edit")
         expect(page).to have_css(".ActionListItem-label", text: "Add notes")
         expect(page).to have_css(".ActionListItem-label", text: "Move to current meeting")
@@ -654,6 +667,7 @@ module Pages::Meetings
 
         expect(page).to have_no_css(".ActionListItem-label", text: "Move to backlog")
         expect(page).to have_no_css(".ActionListItem-label", text: "Add outcome")
+
         if series
           expect(page).to have_no_css(".ActionListItem-label", text: "Move to next meeting")
         end
@@ -666,8 +680,11 @@ module Pages::Meetings
 
     def expect_non_backlog_actions(item, series: false)
       open_menu(item) do
+        click_on "Move"
+
         expect(page).to have_css(".ActionListItem-label", text: "Move to backlog")
         expect(page).to have_no_css(".ActionListItem-label", text: "Move to current meeting")
+
         if series
           expect(page).to have_css(".ActionListItem-label", text: "Move to next meeting")
         end

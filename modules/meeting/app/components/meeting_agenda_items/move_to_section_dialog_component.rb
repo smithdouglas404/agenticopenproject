@@ -28,24 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module MeetingSections
-  class Backlogs::ContainerComponent < ApplicationComponent
+module MeetingAgendaItems
+  class MoveToSectionDialogComponent < ApplicationComponent
     include ApplicationHelper
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
 
-    def initialize(collapsed:, meeting:)
+    def initialize(meeting:, agenda_item:, collapsed:)
       super
 
-      @collapsed = collapsed
       @meeting = meeting
-      @backlog = meeting.backlog
-    end
-
-    private
-
-    def show?
-      !@meeting.closed? && !@meeting.template? && @backlog
+      @agenda_item = agenda_item
+      @collapsed = collapsed
     end
   end
 end

@@ -75,12 +75,26 @@
             add_outcome_action_item(menu) if add_outcome_action?
           end
 
-          with_item_group(menu) { move_actions(menu) } unless first? && last?
+          if editable?
+            with_item_group(menu) do
+              menu.with_sub_menu_item(label: I18n.t("label_agenda_item_move")) do |submenu|
+                submenu.with_leading_visual_icon(icon: :"op-arrow-in")
+                with_item_group(submenu) { move_actions(submenu) } unless first? && last?
 
-          with_item_group(menu) do
-            move_to_current_meeting_action_item(menu) if in_backlog?
-            move_to_backlog_action_item(menu) if !in_template? && !in_backlog?
-            move_to_next_meeting_action_item(menu) if move_to_next_meeting_enabled?
+                with_item_group(submenu) do
+                  if !in_template? || in_backlog?
+                    if in_backlog?
+                      move_to_current_meeting_action_item(submenu)
+                    else
+                      move_to_backlog_action_item(submenu)
+                    end
+                    move_to_section_action_item(submenu)
+                  end
+                end
+
+                with_item_group(submenu) { move_to_next_meeting_action_item(submenu) }
+              end
+            end
           end
 
           with_item_group(menu) { delete_action_item(menu) }

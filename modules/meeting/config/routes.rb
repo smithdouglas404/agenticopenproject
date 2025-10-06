@@ -113,6 +113,8 @@ Rails.application.routes.draw do
         put :move
         get :move_to_next_dialog, action: :move_to_next_meeting_dialog
         post :move_to_next, action: :move_to_next_meeting
+        put :move_to_section_dialog
+        post :move_to_section
       end
     end
     resources :sections, controller: "meeting_sections" do
@@ -121,7 +123,7 @@ Rails.application.routes.draw do
         get :clear_backlog_dialog
       end
       member do
-        get :cancel_edit
+        post :cancel_edit
         put :drop
         put :move
       end
