@@ -32,18 +32,16 @@ class CustomValue::HierarchyStrategy < CustomValue::ARObjectStrategy
   def formatted_value
     item = cached_typed_value
 
-    if item.nil?
-      "#{value} #{I18n.t(:label_not_found)}"
-    elsif item.short?
-      "#{item.label} (#{item.short})"
+    if item
+      item.to_s
     else
-      item.label
+      "#{value} #{I18n.t(:label_not_found)}"
     end
   end
 
   def validate_type_of_value
-    item = CustomField::Hierarchy::Item.find_by(id: value)
-    return :invalid if item.nil?
+    item = ar_object(value)
+    return :invalid unless item
 
     parent = custom_field.hierarchy_root
 
