@@ -28,16 +28,17 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  render(Primer::Box.new) do
+  render(Primer::Box.new(classes: "news-widget-item")) do
     component_collection do |body|
       body.with_component(
-        flex_layout do |layout|
+        flex_layout(flex_wrap: :wrap) do |layout|
           unless project
             layout.with_column do
               render(
                 Primer::Beta::Link.new(
                   font_weight: :bold,
-                  scheme: :secondary,
+                  mr: 1,
+                  classes: "news-widget-item--project",
                   href: project_path(item.project)
                 )
               ) { "#{item.project.name}:" }

@@ -31,21 +31,8 @@
 module Homescreen
   module Blocks
     class News < Grids::WidgetComponent
-      include AvatarHelper
-      include ApplicationHelper
-
-      def initialize(*)
-        super
-
-        @news = ::News.latest(count: 3)
-      end
-
-      def title
-        I18n.t(:label_news_latest)
-      end
-
-      def render?
-        @news.any?
+      def call
+        render(Overviews::Widgets::NewsComponent.new(news_limit: 3))
       end
     end
   end
