@@ -320,7 +320,7 @@ module Pages
     end
 
     def go_back
-      find(".work-packages-back-button").click
+      page.go_back
     end
 
     def mark_notifications_as_read

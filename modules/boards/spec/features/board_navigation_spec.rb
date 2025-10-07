@@ -76,7 +76,7 @@ RSpec.describe "Work Package boards spec",
     expect(page).to have_current_path project_work_package_path(project, wp.id, "activity")
 
     # Click back goes back to the board
-    find(".work-packages-back-button").click
+    page.go_back
     expect(page).to have_current_path project_work_package_board_path(project, board_view)
 
     # Open the details page with the info icon
