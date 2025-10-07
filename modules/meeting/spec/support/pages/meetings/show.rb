@@ -164,6 +164,8 @@ module Pages::Meetings
     end
 
     def assert_agenda_order!(*titles)
+      wait_for_network_idle
+
       retry_block do
         found = page.all(:test_id, "op-meeting-agenda-title").map(&:text)
         raise "Expected order of agenda items #{titles.inspect}, but found #{found.inspect}" if titles != found

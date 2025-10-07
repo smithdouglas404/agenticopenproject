@@ -194,15 +194,16 @@ module MeetingAgendaItems
 
     def move_action_item(menu, move_to, label_text, icon)
       menu.with_item(label: label_text,
-                     href: move_meeting_agenda_item_path(
-                       @meeting_agenda_item.meeting,
-                       @meeting_agenda_item,
-                       move_to:,
-                       current_occurrence: @current_occurrence
-                     ),
-                     form_arguments: {
-                       method: :put, data: { "turbo-stream": true }
-                     }) do |item|
+                     tag: :button,
+                     content_arguments: { data: {
+                       action: "click->meetings--add-params#intercept",
+                       href: move_meeting_agenda_item_path(
+                         @meeting_agenda_item.meeting,
+                         @meeting_agenda_item,
+                         move_to:,
+                         current_occurrence: @current_occurrence
+                       )
+                     } }) do |item|
         item.with_leading_visual_icon(icon:)
       end
     end
