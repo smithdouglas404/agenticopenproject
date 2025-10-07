@@ -6,13 +6,13 @@ description: Describes how to formally close the project. Activities include per
 keywords: project-end review meeting, lessons learned and post-project recommendations, project-end report, administration closure
 ---
 
-# 8 Closing Phase 
+# 8 Closing Phase
 
 The final phase of a PM² project is the Closing Phase. The Closing Phase starts with the Project-End Review Meeting and ends with the Project Owner's (PO) final approval, which marks the project's administrative closure. During the Closing Phase, the project's activities are completed, the project's final state is documented, and the finished deliverables are officially transferred to the Project Owner (PO).
 ![Fig 8.1 Closing Phase activities and main outputs](08.01.png)
 
 
-![Fig 9.2 Closing Phase artefacts](09.02.png)
+![Fig 8.2 Closing Phase artefacts](08.02.png)
 
 **Project-End Review Meeting**
 
@@ -29,7 +29,7 @@ The final phase of a PM² project is the Closing Phase. The Closing Phase starts
 - The Project Manager (PM) ensures that the project is approved and accepted by the relevant stakeholders. The finished deliverables are transferred into the care, custody and control of the Project Owner (PO) and the requestor/client organisation.
 - All documentation and records are reviewed, organised and securely archived with the help of the Project Support Office (PSO). Resources are released and the project is closed.
 
-## 8.1 Project-End Review Meeting 
+## 8.1 Project-End Review Meeting
 
 The Project-End Review Meeting launches the Closing Phase of the project after the Executing Phase is deemed complete. The goal of this meeting is to ensure that project members discuss their experience of the project so that Lessons Learned and best practices can be captured. Also in this meeting team and contractor performance are evaluated, and ideas and recommendations for post-project work are discussed.
 
@@ -85,7 +85,7 @@ After the Project-End Review Meeting:
 
 - Project-End Review Meeting Minutes
 
-## 8.2 Lessons Learned and Post-Project Recommendations 
+## 8.2 Lessons Learned and Post-Project Recommendations
 
 The purpose of formal Lessons Learned and Post-Project Recommendations is to make it possible for project teams and the permanent organisation at large to benefit from the experience acquired during the project. It is also important to capture ideas and recommendations for post-project work relating to the operation of the product/service delivered, such as extensions, maintenance and ideas for follow-up projects.
 
@@ -120,7 +120,7 @@ Because all projects are different, the Lessons Learned process cannot be generi
 
 - Project-End Report
 
-## 8.3 Project-End Report 
+## 8.3 Project-End Report
 
 Following the Project-End Review Meeting, the overall experience of the project is summarised in a report that documents best practices, Lessons Learned, pitfalls and solutions to problems. The report should be used as a knowledge base for future projects.
 
@@ -172,7 +172,7 @@ Following the Project-End Review Meeting, the overall experience of the project 
 
 - Project-End Report
 
-## 8.4 Administrative Closure 
+## 8.4 Administrative Closure
 
 The Project Manager (PM) ensures that all project deliverables have been accepted by the relevant stakeholders and, with the help of the Project Support Office (PSO), that all project documentation and records are up-to-date, reviewed, organised and securely archived. The Project Team is now officially dissolved and all resources are released.
 
