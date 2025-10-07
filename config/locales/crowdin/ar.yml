@@ -1756,6 +1756,7 @@ ar:
         few: "Priorities"
         many: "Priorities"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "عضو"
       news: "الأخبار"
       notification:

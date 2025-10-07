@@ -1714,6 +1714,7 @@ sr:
         one: "Priority"
         few: "Priorities"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "Member"
       news: "News"
       notification:

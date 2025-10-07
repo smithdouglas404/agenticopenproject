@@ -1714,6 +1714,7 @@ lv:
         zero: "Priorities"
         one: "Prioritāte"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "Member"
       news: "Jaunumi"
       notification:

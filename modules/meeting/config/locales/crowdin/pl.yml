@@ -501,6 +501,7 @@ pl:
   label_agenda_item_move_to_next: "Przenieś na następne spotkanie"
   label_agenda_item_move_to_backlog: "Przenieś do backlogu"
   label_agenda_item_move_to_current_meeting: "Przenieś do bieżącego spotkania"
+  label_agenda_item_move_to_section: "Move to section"
   label_agenda_item_move_to_top: "Przenieś na samą górę"
   label_agenda_item_move_to_bottom: "Przenieś na sam dół"
   label_agenda_item_move_up: "Przenieś wyżej"

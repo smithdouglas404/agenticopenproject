@@ -74,50 +74,23 @@ RSpec.describe Overviews::ShowComponent, type: :component do
     end
   end
 
-  it "renders widgets" do
-    expect(rendered_component).to have_element "opce-overview"
-  end
+  context "with the feature flag enabled", with_flag: { new_project_overview: true } do
+    it "renders overview grid" do
+      expect(rendered_component).to have_css ".widget-boxes"
+    end
 
-  context "when user is not allowed to manage" do
-    it "does not render '+ Widget' button" do
-      expect(rendered_component).to have_no_button "Widget"
+    it "does not render widgets" do
+      expect(rendered_component).to have_no_element "opce-dashboard"
     end
   end
 
-  context "when user is allowed to manage" do
-    before do
-      mock_permissions_for(user) do |mock|
-        mock.allow_in_project(:manage_overview, project:)
-      end
+  context "with the feature flag disabled", with_flag: { new_project_overview: false } do
+    it "does not render overview grid" do
+      expect(rendered_component).to have_no_css ".widget-boxes"
     end
 
-    it "renders '+ Widget' button" do
-      expect(rendered_component).to have_button "Widget" do |button|
-        expect(button).to have_octicon :plus
-        expect(button["data-action"]).to include "click->overview--add-widgets#addWidget"
-      end
-    end
-
-    context "when project has no attributes or life cycle" do
-      it "renders subheader with no margin" do
-        expect(rendered_component).to have_css ".SubHeader", class: "!grid-mx"
-      end
-    end
-
-    context "when project has life cycle and user has permissions to view" do
-      let(:project) { build(:project) }
-      let!(:project_phase) { create(:project_phase, project:) }
-
-      before do
-        mock_permissions_for(user) do |mock|
-          mock.allow_in_project(:manage_overview, project:)
-          mock.allow_in_project(:view_project_phases, project:)
-        end
-      end
-
-      it "renders subheader with horizontal margin matching widget gap" do
-        expect(rendered_component).to have_css ".SubHeader", class: "grid-mx"
-      end
+    it "renders widgets" do
+      expect(rendered_component).to have_element "opce-dashboard"
     end
   end
 

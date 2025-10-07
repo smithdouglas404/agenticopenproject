@@ -62,18 +62,15 @@ module Pages
       end
 
       def within_project_attributes_sidebar(&)
-        within "#project-custom-fields-sidebar" do
-          expect(page).to have_css("[data-test-selector='project-custom-fields-sidebar-async-content']")
-          yield
-        end
+        within_test_selector("project-custom-fields-sidebar", &)
       end
 
       def within_custom_field_section_container(section, &)
-        within("[data-test-selector='project-custom-field-section-#{section.id}']", &)
+        within_test_selector("project-custom-field-section-#{section.id}", &)
       end
 
       def within_custom_field_container(custom_field, &)
-        within("[data-test-selector='project-custom-field-#{custom_field.id}']", &)
+        within_test_selector("project-custom-field-#{custom_field.id}", &)
       end
 
       def expect_no_custom_field(custom_field)
@@ -104,10 +101,7 @@ module Pages
       end
 
       def within_life_cycle_sidebar(&)
-        within "#project-life-cycle-sidebar" do
-          expect(page).to have_css("[data-test-selector='project-life-cycle-sidebar-async-content']")
-          yield
-        end
+        within_test_selector("project-life-cycle-sidebar-async-content", &)
       end
 
       def within_life_cycle_container(life_cycle, &)

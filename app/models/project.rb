@@ -260,6 +260,17 @@ class Project < ApplicationRecord
     name
   end
 
+  def workspace_label
+    case workspace_type
+    when "program"
+      I18n.t("label_program")
+    when "portfolio"
+      I18n.t("label_portfolio")
+    else
+      I18n.t("label_project")
+    end
+  end
+
   # Return true if this project is allowed to do the specified action.
   # action can be:
   # * a parameter-like Hash (eg. controller: '/projects', action: 'edit')

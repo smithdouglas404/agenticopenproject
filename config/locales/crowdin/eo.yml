@@ -1700,6 +1700,7 @@ eo:
       issue_priority:
         one: "Prioritato"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "Membro"
       news: "Novaĵoj"
       notification:

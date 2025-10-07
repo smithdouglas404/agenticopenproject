@@ -1714,6 +1714,7 @@ hr:
         one: "Prioritet"
         few: "Priorities"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "Član"
       news: "Vijesti"
       notification:

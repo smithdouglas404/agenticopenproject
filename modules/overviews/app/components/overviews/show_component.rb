@@ -47,10 +47,6 @@ module Overviews
 
     private
 
-    def allowed_to_manage?
-      current_user.allowed_in_project?(:manage_overview, project)
-    end
-
     def sidebar_enabled?
       life_cycle_sidebar_enabled? || custom_fields_sidebar_enabled?
     end

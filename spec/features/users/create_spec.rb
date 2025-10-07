@@ -129,14 +129,6 @@ RSpec.describe "create users" do
 
           allow(User).to receive(:current).and_call_original
 
-          visit "/account/activate?token=#{token}"
-        end
-
-        it "shows the login form prompting the user to login" do
-          expect(page).to have_text "Please login as bob to activate your account."
-        end
-
-        it "registers the user upon submission" do
           user = User.find_by login: "bob"
 
           allow(User)
@@ -149,10 +141,18 @@ RSpec.describe "create users" do
           allow(auth_source)
             .to(receive(:authenticate).with("bob", "dummy"))
             .and_return({ dn: "cn=bob,ou=users,dc=example,dc=com" })
+        end
+
+        it "registers the user upon submission" do
+          visit "/account/activate?token=#{token}"
+          wait_for_reload
+
+          expect(page).to have_text "Please login as bob to activate your account."
 
           fill_in "password", with: "dummy" # accepted by DummyAuthSource
           click_button "Sign in", type: "submit"
-          wait_for_network_idle
+
+          wait_for_reload
 
           # landed on the 'my page'
           expect(page).to have_text "Welcome to OpenProject, bobfirst boblast"

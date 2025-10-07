@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe "My account session management", :js, :selenium do
+RSpec.describe "My account session management", :js do
   include Redmine::I18n
 
   let(:user) { create(:user) }
@@ -74,51 +74,45 @@ RSpec.describe "My account session management", :js, :selenium do
 
   it "can list and terminate sessions and remembered devices" do
     page.within_test_selector("Users::Sessions::TableComponent") do
-      # Current session + old session + remembered device (linked session is aggregated with token)
-      expect(page).to have_css(".session-row", count: 3)
+      expect(page).to have_css(".session-row", count: 2)
 
       trs = page.all(".session-row")
 
-      # Current session
-      expect(trs[0]).to have_text(I18n.t("users.sessions.current"))
-      expect(trs[0]).to have_text("unknown browser")
-      expect(trs[0]).to have_text("unknown operating system")
-      expect(trs[0]).to have_no_test_selector("session-revoke-button")
-
       # Old session (unmapped session)
-      expect(trs[1]).to have_text("Mozilla Firefox (Version 12.3)")
-      expect(trs[1]).to have_text("Linux")
-      expect(trs[1]).to have_text format_time(old_session_time)
-      expect(trs[1]).to have_test_selector("session-revoke-button")
+      expect(trs[0]).to have_text("Mozilla Firefox (Version 12.3)")
+      expect(trs[0]).to have_text("Linux")
+      expect(trs[0]).to have_text format_time(old_session_time)
+      expect(trs[0]).to have_test_selector("session-revoke-button")
 
       # Remembered device (token with aggregated linked session)
-      expect(trs[2]).to have_text("Firefox (Version 142)")
-      expect(trs[2]).to have_text("macOS")
-      expect(trs[2]).to have_text(format_time(autologin_token.created_at))
-      expect(trs[2]).to have_test_selector("session-revoke-button")
+      expect(trs[1]).to have_text("Firefox (Version 142)")
+      expect(trs[1]).to have_text("macOS")
+      expect(trs[1]).to have_text(format_time(autologin_token.created_at))
+      expect(trs[1]).to have_test_selector("session-revoke-button")
 
       # Revoke the old session
-      within trs[1] do
-        find_test_selector("session-revoke-button").click
+      accept_confirm do
+        within trs[0] do
+          find_test_selector("session-revoke-button").click
+        end
       end
     end
 
-    page.driver.browser.switch_to.alert.accept
-
+    wait_for_network_idle
+    expect(page).to have_current_path "/my/sessions"
     page.within_test_selector("Users::Sessions::TableComponent") do
       trs = page.all(".session-row")
       # Revoke the remembered device (this will also delete the linked session)
-      within trs[1] do
-        find_test_selector("session-revoke-button").click
+      accept_confirm do
+        within trs[0] do
+          find_test_selector("session-revoke-button").click
+        end
       end
     end
 
-    page.driver.browser.switch_to.alert.accept
+    expect(page).to have_current_path "/my/sessions"
 
-    page.within_test_selector("Users::Sessions::TableComponent") do
-      # Only current session remains
-      expect(page).to have_css(".session-row", count: 1)
-    end
+    expect(page).to have_css(".session-row", count: 0)
 
     # Both old session, token, and linked session are gone
     expect { user_session.reload }.to raise_error(ActiveRecord::RecordNotFound)

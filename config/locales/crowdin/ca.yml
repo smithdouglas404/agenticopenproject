@@ -1697,6 +1697,7 @@ ca:
       issue_priority:
         one: "Prioritat"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "Membre"
       news: "Notícies"
       notification:

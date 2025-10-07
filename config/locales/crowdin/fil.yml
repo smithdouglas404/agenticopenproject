@@ -1700,6 +1700,7 @@ fil:
       issue_priority:
         one: "Ang prayoridad"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "Miyembro"
       news: "Mga balita"
       notification:

@@ -1145,6 +1145,17 @@ module Settings
         },
         writable: false
       },
+      metrics: {
+        description: "
+          Publish a reduced set of puma metrics on a separate port for Prometheus consumption,
+          providing autoscaling hints
+        ".squish,
+        default: {
+          "enabled" => false,
+          "port" => 9394
+        },
+        writable: false
+      },
       sys_api_enabled: {
         description: "Enable internal system API for setting up managed repositories",
         default: false

@@ -199,6 +199,10 @@ RSpec.describe "Meeting Backlogs", :js do
         show_page.select_action(agenda_item, I18n.t(:label_agenda_item_move_to_backlog))
         show_page.clear_backlog
         show_page.expect_backlog collapsed: true
+
+        # expect all agenda items to be removed (Bug #67844)
+        show_page.click_on_backlog
+        show_page.expect_empty_backlog
       end
     end
   end
@@ -344,6 +348,10 @@ RSpec.describe "Meeting Backlogs", :js do
         first_occurrence_page.select_action(agenda_item, I18n.t(:label_agenda_item_move_to_backlog))
         first_occurrence_page.clear_backlog
         first_occurrence_page.expect_series_backlog collapsed: true
+
+        # expect all agenda items to be removed (Bug #67844)
+        first_occurrence_page.click_on_backlog
+        first_occurrence_page.expect_empty_backlog
       end
 
       it "allow items to be moved from multiple occurrences to the series backlog and vice versa" do

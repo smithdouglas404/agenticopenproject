@@ -10,6 +10,4 @@
     [resource]="resource" />
 </widget-header>
 
-<div class="op-widget-box--body -allow-inner-overflow">
-  <turbo-frame [id]="frameId" [src]="src" />
-</div>
+<turbo-frame [id]="frameId" [src]="src" loading="lazy" />

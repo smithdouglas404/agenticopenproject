@@ -45,14 +45,14 @@ RSpec.describe "Admin Edit File storage",
 
     page.find_test_selector("storage-delete-button").click
 
-    expect(page).to have_text("DELETE FILE STORAGE")
-    expect(page).to have_current_path(confirm_destroy_admin_settings_storage_path(storage))
-    storage_delete_button = page.find_button("Delete", disabled: true)
+    within_test_selector("op-storages--destroy-confirm-dialog") do
+      expect(page).to have_text("Delete file storage")
+      expect(page).to have_unchecked_field("I understand that this deletion cannot be reversed")
+      expect(page).to have_button("Delete permanently", disabled: true)
 
-    fill_in("delete_confirmation", with: "Foo Nextcloud")
-    expect(storage_delete_button).not_to be_disabled
-
-    storage_delete_button.click
+      page.check("I understand that this deletion cannot be reversed")
+      page.click_button("Delete permanently")
+    end
 
     expect(page).to have_no_text("Foo Nextcloud")
     expect(page).to have_text("Successful deletion.")

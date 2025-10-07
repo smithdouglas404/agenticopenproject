@@ -43,7 +43,7 @@ RSpec.describe Overviews::Widgets::ProjectStatusComponent, type: :component do
   current_user { user }
 
   subject(:rendered_component) do
-    render_component(project:, current_user:)
+    render_component(project, current_user:)
   end
 
   it "renders turbo-frame component wrapper" do
@@ -55,6 +55,10 @@ RSpec.describe Overviews::Widgets::ProjectStatusComponent, type: :component do
   end
 
   context "when user is not allowed to edit" do
+    it "renders renders a disabled status button" do
+      expect(rendered_component).to have_button "Not set", disabled: true
+    end
+
     it "renders status description as formatted text" do
       expect(rendered_component).to have_css "p"
       expect(rendered_component).to have_css "strong", text: "This project is in jeopardy!"
@@ -68,18 +72,13 @@ RSpec.describe Overviews::Widgets::ProjectStatusComponent, type: :component do
       end
     end
 
-    it "renders form" do
-      expect(rendered_component).to have_element :form, method: :post,
-                                                        action: project_widgets_project_status_path(project)
+    it "renders renders an editable status button" do
+      expect(rendered_component).to have_button "Not set", disabled: false
     end
 
-    it "renders hidden method field" do
-      expect(rendered_component).to have_field "_method", type: :hidden, with: "patch"
-    end
-
-    it "renders text area field" do
-      expect(rendered_component).to have_element "opce-ckeditor-augmented-textarea",
-                                                 "data-test-selector": "augmented-text-area-status_explanation"
+    it "renders status description as formatted text" do
+      expect(rendered_component).to have_css "p"
+      expect(rendered_component).to have_css "strong", text: "This project is in jeopardy!"
     end
   end
 end

@@ -1699,6 +1699,7 @@ hu:
       issue_priority:
         one: "Fontosság"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "Tag"
       news: "Hírek"
       notification:

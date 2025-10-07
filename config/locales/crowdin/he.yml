@@ -1728,6 +1728,7 @@ he:
         two: "Priorities"
         many: "Priorities"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "חבר"
       news: "חדשות"
       notification:

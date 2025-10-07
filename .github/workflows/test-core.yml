@@ -16,6 +16,7 @@ on:
       - 'help/**'
       - 'packaging/**'
       - '.pkgr.yml'
+      - '.github/workflows/packager.yml'
 
 permissions:
   contents: read

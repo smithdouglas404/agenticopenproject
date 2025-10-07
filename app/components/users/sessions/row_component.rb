@@ -102,12 +102,12 @@ module Users
             scheme: :invisible,
             test_selector: "session-revoke-button",
             tag: :a,
-            href: url_for(revoke_path),
+            href: revoke_path,
             "aria-label": I18n.t(:button_revoke),
             data: {
-              method: :delete,
-              confirm: I18n.t("users.sessions.deletion_warning"),
-              disable_with: I18n.t(:label_loading)
+              turbo_method: :delete,
+              turbo_confirm: I18n.t("users.sessions.deletion_warning"),
+              turbo_submits_with: I18n.t(:label_loading)
             }
           )
         )
@@ -115,7 +115,7 @@ module Users
 
       def revoke_path
         if token?
-          { controller: "/my/auto_login_tokens", action: "destroy", id: record }
+          url_for(controller: "/my/auto_login_tokens", action: "destroy", id: record)
         else
           url_for(controller: "/my/sessions", action: "destroy", id: record)
         end

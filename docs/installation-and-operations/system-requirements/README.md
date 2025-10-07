@@ -229,9 +229,9 @@ If you want to use the feature of [automatically managed project folders](../../
 
 ### Keycloak token exchange
 
-OpenProject will be tested against the following versions:
+OpenProject is tested against the following version:
 
-* [Keycloak 26.2.4](https://github.com/keycloak/keycloak/releases/tag/26.2.4)
+* [Keycloak 26.4.0](https://github.com/keycloak/keycloak/releases/tag/26.4.0)
 
 ## Frequently asked questions (FAQ)
 

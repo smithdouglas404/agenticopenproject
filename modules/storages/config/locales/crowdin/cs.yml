@@ -201,12 +201,9 @@ cs:
     confirm_replace_oauth_application: Tato akce obnoví aktuální OAuth přihlašovací údaje. Po potvrzení budete muset znovu zadat přihlašovací údaje u poskytovatele úložiště a všichni vzdálení uživatelé budou muset znovu autorizovat proti OpenProject Jste si jisti, že chcete pokračovat?
     confirm_replace_oauth_client: This action will reset the current OAuth credentials. After confirming you will have to enter new credentials from the storage provider and all users will have to authorize against %{provider_type} again. Are you sure you want to proceed?
     delete_warning:
-      input_delete_confirmation: Zadejte název úložiště souboru %{file_storage} pro potvrzení odstranění.
-      irreversible_notice: Smazání úložiště souborů je nevratná akce.
-      project_storage: 'Opravdu chcete odstranit %{file_storage} z tohoto projektu? Chcete-li potvrdit tuto akci, vložte prosím název úložiště do níže uvedeného pole, toto bude:'
       project_storage_delete_result_1: Odstraňte všechny odkazy z pracovních balíčků tohoto projektu do souborů a složek tohoto úložiště.
       project_storage_delete_result_2: V případě, že toto úložiště automaticky spravuje složky projektů, budou tyto a jejich obsažené soubory navždy smazány.
-      storage: 'Jste si jisti, že chcete odstranit %{file_storage}? Pro potvrzení této akce prosím vložte název úložiště do níže uvedeného pole:'
+      storage: 'Are you sure you want to delete %{file_storage}? This will:'
       storage_delete_result_1: Odstranit všechna nastavení úložiště pro všechny projekty používající toto úložiště.
       storage_delete_result_2: Odstraňte všechny odkazy z pracovních balíčků všech projektů do souborů a složek tohoto úložiště.
       storage_delete_result_3: V případě, že toto úložiště automaticky spravuje složky projektů, budou tyto a jejich obsažené soubory navždy smazány.
@@ -485,7 +482,6 @@ cs:
         subtitle_short: Nechat OpenProject vytvářet složky pro každý projekt automaticky.
         title: Automaticky spravované projektové složky
       project_settings:
-        delete: Odstranit úložiště souborů
         edit: Upravit úložiště souborů pro tento projekt
         members_connection_status: Stav připojení členů
         new: Přidat úložiště souborů k tomuto projektu

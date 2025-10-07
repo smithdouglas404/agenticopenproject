@@ -201,12 +201,9 @@ pt-BR:
     confirm_replace_oauth_application: Esta ação irá redefinir suas credenciais atuais do OAuth. Depois de confirmar, você precisará inserir suas credenciais novamente no provedor de armazenamento, e todos os usuários remotos terão que autorizar o OpenProject novamente. Tem certeza de que deseja continuar?
     confirm_replace_oauth_client: Esta ação irá redefinir as suas credenciais atuais do OAuth. Após a confirmação, você precisará inserir novas credenciais do provedor de armazenamento e todos os usuários terão que autorizar novamente o acesso em %{provider_type}. Tem certeza de que deseja continuar?
     delete_warning:
-      input_delete_confirmation: Insira o nome do armazenamento de arquivos %{file_storage} para confirmar a exclusão.
-      irreversible_notice: Excluir um armazenamento de arquivos é uma ação irreversível.
-      project_storage: 'Tem certeza de que deseja excluir %{file_storage} deste projeto? Para confirmar esta ação, introduza o nome do armazenamento no campo abaixo, isto irá:'
       project_storage_delete_result_1: Remover todos os links dos pacotes de trabalho deste projeto para arquivos e pastas desse armazenamento.
       project_storage_delete_result_2: Caso este armazenamento tenha uma pasta de projeto gerenciado automaticamente, este e seus arquivos serão excluídos para sempre.
-      storage: 'Tem certeza de que deseja excluir %{file_storage}? Para confirmar esta ação, introduza o nome do armazenamento no campo abaixo, isto irá:'
+      storage: 'Are you sure you want to delete %{file_storage}? This will:'
       storage_delete_result_1: Remover todas as configurações de armazenamento para todos os projetos que utilizam este armazenamento.
       storage_delete_result_2: Remover todos os links do pacotes de trabalho de todos os projetos para arquivos e pastas desse armazenamento.
       storage_delete_result_3: Caso este armazenamento tenha pastas de projeto gerenciadas automaticamente, estas, e os seus arquivos, serão excluídos para sempre.
@@ -481,7 +478,6 @@ pt-BR:
         subtitle_short: Deixe o OpenProject criar pastas por projeto automaticamente.
         title: Pastas do projeto gerenciadas automaticamente
       project_settings:
-        delete: Excluir armazenamento de arquivos
         edit: Editar o armazenamento de arquivos para este projeto
         members_connection_status: Status da conexão dos membros
         new: Adicionar um armazenamento de arquivos a este projeto

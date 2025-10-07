@@ -201,12 +201,9 @@ vi:
     confirm_replace_oauth_application: Hành động này sẽ đặt lại các thông tin xác thực OAuth hiện tại. Sau khi xác nhận, bạn sẽ phải nhập lại thông tin xác thực tại nhà cung cấp lưu trữ và tất cả người dùng từ xa sẽ phải xác thực lại với OpenProject. Bạn có chắc chắn muốn tiếp tục không?
     confirm_replace_oauth_client: Hành động này sẽ đặt lại các thông tin xác thực OAuth hiện tại. Sau khi xác nhận, bạn sẽ phải nhập thông tin mới từ nhà cung cấp lưu trữ và tất cả người dùng sẽ phải xác thực lại với %{provider_type}. Bạn có chắc chắn muốn tiếp tục không?
     delete_warning:
-      input_delete_confirmation: Nhập tên lưu trữ tệp %{file_storage} để xác nhận xóa.
-      irreversible_notice: Xóa một lưu trữ tệp là hành động không thể khôi phục.
-      project_storage: 'Bạn có chắc chắn muốn xóa %{file_storage} khỏi dự án này không? Để xác nhận hành động này, vui lòng nhập tên lưu trữ vào trường dưới đây, hành động này sẽ:'
       project_storage_delete_result_1: Xóa tất cả liên kết từ các gói công việc của dự án này đến các tệp và thư mục của lưu trữ đó.
       project_storage_delete_result_2: Trong trường hợp lưu trữ này có thư mục dự án được quản lý tự động, thư mục này và các tệp của nó sẽ bị xóa vĩnh viễn.
-      storage: 'Bạn có chắc chắn muốn xóa %{file_storage} không? Để xác nhận hành động này, vui lòng nhập tên lưu trữ vào trường dưới đây, hành động này sẽ:'
+      storage: 'Are you sure you want to delete %{file_storage}? This will:'
       storage_delete_result_1: Xóa tất cả cấu hình lưu trữ cho tất cả các dự án sử dụng lưu trữ này.
       storage_delete_result_2: Xóa tất cả liên kết từ các gói công việc của tất cả các dự án đến các tệp và thư mục của lưu trữ đó.
       storage_delete_result_3: Trong trường hợp lưu trữ này có các thư mục dự án được quản lý tự động, các thư mục này và các tệp chứa bên trong sẽ bị xóa vĩnh viễn.
@@ -479,7 +476,6 @@ vi:
         subtitle_short: Để OpenProject tạo các thư mục theo dự án tự động.
         title: Thư mục dự án được quản lý tự động
       project_settings:
-        delete: Xóa lưu trữ tệp
         edit: Chỉnh sửa lưu trữ tệp cho dự án này
         members_connection_status: Trạng thái kết nối của các thành viên
         new: Thêm một lưu trữ tệp vào dự án này

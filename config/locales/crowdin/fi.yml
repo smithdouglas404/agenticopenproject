@@ -1700,6 +1700,7 @@ fi:
       issue_priority:
         one: "Prioriteetti"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "Jäsen"
       news: "Uutiset"
       notification:

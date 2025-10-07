@@ -1696,6 +1696,7 @@ el:
       issue_priority:
         one: "Προτεραιότητα"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "Μέλος"
       news: "Νέα"
       notification:

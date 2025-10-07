@@ -1700,6 +1700,7 @@ sv:
       issue_priority:
         one: "Prioritet"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "Medlem"
       news: "Nyheter"
       notification:

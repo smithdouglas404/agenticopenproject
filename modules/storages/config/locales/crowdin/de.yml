@@ -201,12 +201,9 @@ de:
     confirm_replace_oauth_application: Diese Aktion setzt die aktuellen OAuth-Anmeldedaten zurück. Nach der Bestätigung müssen Sie die Anmeldedaten beim Speicheranbieter erneut eingeben und alle Remote-Benutzer müssen sich erneut gegenüber OpenProject autorisieren. Sind Sie sicher, dass Sie fortfahren möchten?
     confirm_replace_oauth_client: Diese Aktion setzt die aktuellen OAuth-Anmeldedaten zurück. Nach der Bestätigung müssen Sie neue Anmeldedaten vom Speicheranbieter eingeben und alle Benutzer müssen sich erneut für %{provider_type} autorisieren. Sind Sie sicher, dass Sie fortfahren möchten?
     delete_warning:
-      input_delete_confirmation: Geben Sie den Namen %{file_storage} ein, um mit der Löschung fortzufahren.
-      irreversible_notice: Die Löschung des Projekts kann nicht rückgängig gemacht werden.
-      project_storage: 'Sind Sie sicher, dass Sie %{file_storage} aus diesem Projekt löschen möchten? Um diese Aktion zu bestätigen, geben Sie bitte den Namen in das untenstehende Feld ein:'
       project_storage_delete_result_1: Entfernen Sie alle Links von Arbeitspaketen dieses Projekts zu Dateien und Ordnern dieses Speichers.
       project_storage_delete_result_2: Falls dieser Speicher einen automatisch verwalteten Projektordner hat, werden dieser und seine Dateien unwiderbringlich gelöscht.
-      storage: 'Sind Sie sicher, dass Sie %{file_storage} löschen möchten? Um diese Aktion zu bestätigen, geben Sie bitte den Namen in das untenstehende Feld ein. Daraus folgt:'
+      storage: 'Are you sure you want to delete %{file_storage}? This will:'
       storage_delete_result_1: Alle eingerichteten Projektdateispeicher, die diesen Dateispeicher verwenden, werden gelöscht.
       storage_delete_result_2: Alle Dateiverknüpfungen aus Arbeitspaketen sämtlicher Projekte zu Dateien und Ordnern auf diesem Dateispeicher werden gelöscht.
       storage_delete_result_3: Hat dieser Dateispeicher automatisch verwaltete Projektordner, so werden diese und die enthaltenen Dateien permanent gelöscht.
@@ -481,7 +478,6 @@ de:
         subtitle_short: Lassen Sie OpenProject Ordner im Dateispeicher automatisch für jedes Projekt anlegen.
         title: Automatisch verwaltete Projektordner
       project_settings:
-        delete: Dateispeicher löschen
         edit: Dateispeicher in diesem Projekt bearbeiten
         members_connection_status: Verbindungsstatus der Mitglieder
         new: Einen Dateispeicher zum Projekt hinzufügen

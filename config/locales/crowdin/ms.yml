@@ -1684,6 +1684,7 @@ ms:
       group: "Kumpulan"
       issue_priority:
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "Ahli"
       news: "Berita"
       notification:

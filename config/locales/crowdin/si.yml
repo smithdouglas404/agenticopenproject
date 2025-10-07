@@ -1700,6 +1700,7 @@ si:
       issue_priority:
         one: "ප්රමුඛතාව"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "සාමාජික"
       news: "පුවත්"
       notification:
