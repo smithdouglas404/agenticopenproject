@@ -386,7 +386,7 @@ Rails.application.routes.draw do
     # work as a catchall for everything under /wiki
     get "wiki" => "wiki#show"
 
-    resources :work_packages, only: %i[index new show] do
+    resources :work_packages, only: %i[index show] do
       collection do
         get "/report/:detail" => "work_packages/reports#report_details"
         get "/report" => "work_packages/reports#report"
@@ -395,13 +395,15 @@ Rails.application.routes.draw do
       end
 
       get "/copy" => "work_packages#copy", on: :member, as: "copy"
+      get "/new" => "work_packages#new", on: :collection, as: "new"
 
-      get "/create_new" => "work_packages#index", on: :collection, as: "new_split"
-
-      get "(/:tab)" => "work_packages#show", on: :member, as: "", constraints: { id: /\d+/, state: /(?!(shares|new|copy|dialog)).+/ }
+      get "(/:tab)" => "work_packages#show", on: :member, as: "",
+          constraints: { id: /\d+/, state: /(?!(shares|copy|dialog)).+/ }
 
       # states managed by client-side routing on work_package#index
       get "(/*state)" => "work_packages#index", on: :collection, as: "", constraints: { state: /(?!(dialog)).+/ }
+
+      get "/create_new" => "work_packages#index", on: :collection, as: "new_split"
     end
 
     namespace :work_packages do
@@ -715,7 +717,7 @@ Rails.application.routes.draw do
     get "/bulk" => "bulk#destroy"
   end
 
-  resources :work_packages, only: [:index, :show, :new] do
+  resources :work_packages, only: %i[index show new] do
     concerns :shareable
 
     get "hover_card" => "work_packages/hover_card#show", on: :member

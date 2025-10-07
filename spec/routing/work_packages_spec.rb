@@ -73,21 +73,17 @@ RSpec.describe WorkPackagesController do
   it "connects GET /work_packages/details/:state to work_packages#index" do
     expect(get("/work_packages/details/5/overview"))
       .to route_to(controller: "work_packages",
-                   action: "split_view",
-                   work_package_id: "5",
-                   view_type: "work_package_split_view",
-                   tab: "overview")
+                   action: "index",
+                   state: "5/overview")
   end
 
   it "connects GET /projects/:project_id/work_packages/details/:id/:state " \
      "to work_packages#index" do
     expect(get("/projects/1/work_packages/details/2/overview"))
       .to route_to(controller: "work_packages",
-                   action: "split_view",
+                   action: "index",
                    project_id: "1",
-                   work_package_id: "2",
-                   view_type: "work_package_split_view",
-                   tab: "overview")
+                   state: "details/2/overview")
   end
 
   it "connects GET /work_packages/:id to work_packages#show" do

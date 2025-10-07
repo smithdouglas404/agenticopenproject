@@ -125,7 +125,7 @@ module Redmine::MenuManager::TopMenu::QuickAddMenu
   def work_package_create_link(type_id, type_name)
     if in_project_context?
       { caption: type_name,
-        href: new_project_work_package_path(project_id: @project.identifier, type: type_id),
+        href: new_project_work_packages_path(project_id: @project.identifier, type: type_id),
         classes: "__hl_inline_type_#{type_id}" }
     else
       { caption: type_name,
