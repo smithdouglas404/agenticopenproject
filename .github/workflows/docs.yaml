@@ -28,3 +28,12 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - run: script/docs/check_readme_case
+  docs-readme-yaml-header-syntax-check:
+    name: Check README.md YAML header syntax in documentation
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - run: script/docs/check_readme_yaml_header_syntax
