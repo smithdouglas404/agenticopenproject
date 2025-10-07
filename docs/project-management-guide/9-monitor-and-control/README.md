@@ -1,6 +1,6 @@
 ---
 sidebar_navigation:
-  title: 9 monitor & control
+  title: 9 Monitor & control
   priority: 550
 description: A transversal section that applies across all phases. It details how to monitor project performance, schedule, cost, stakeholder engagement, requirements, change requests, risks and issues, quality, acceptance, transition, and outsourced activities. It ensures the project stays aligned with plans and objectives.
 keywords: control schedule, monitor project performance, control cost, manage stakeholders, manage requirements, manage project change, manage risk, manage issues and decisions, manage quality, manage deliverables acceptance, manage transition, manage business implementation, manage outsourcing

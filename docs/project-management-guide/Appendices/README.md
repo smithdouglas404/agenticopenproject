@@ -6,7 +6,7 @@ description: Appendices to the PM² project management guide
 keywords: Contributions and acknowledgements, project management plans and logs, 
 ---
 
-# Appendix A: Contributions and Acknowledgements
+# Appendix A: contributions and acknowledgements
 
 The European Commission is grateful to all those who have contributed in the development of the PM² Project Management Methodology and wishes to acknowledge their contribution and support.
 In alphabetical order:
@@ -116,9 +116,9 @@ Former CoEPM² members who recently moved on to other assignments:
 3. Elias MICHOTTE Alexandra
 4. VAN GAEVER Alain
 
-# Appendix B: Project Management Plans and Logs 
+# Appendix B: project management plans and logs 
 
-## B. 1 Requirements Management Plan
+## B. 1 Requirements management plan
 
 The Requirements Management Plan defines and documents the requirements management approach, process steps and responsibilities, as well as tools, techniques and artefacts that will be used. Note that requirements themselves are documented and managed in separate artefact(s) (e.g. requirements matrix).
 
@@ -128,7 +128,7 @@ Requirements are traditionally defined in detail early in the project lifecycle.
 
 The Requirements Management Plan can be tailored and customised to the project's needs. In the absence of a more specialised role, the Project Manager (PM) is responsible for executing the process from project initiation until all requirements have been implemented and validated.
 
-| Key Participants | Description |
+| Key participants | Description |
 | :-- | :-- |
 | Project Manager (PM) | Prepares this artefact. |
 | Business Manager (BM) | Consulted for the tailoring and elaboration of this artefact. |
@@ -165,13 +165,13 @@ The Requirements Management Plan can be tailored and customised to the project's
 
 - Requirements Management Plan
 
-## B. 2 Project Change Management Plan
+## B. 2 Project change management plan
 
 The Project Change Management Plan defines and documents the change process for a project. It defines the activities, roles and responsibilities related to identifying, documenting, assessing, approving, prioritising, implementing, controlling, and communicating requested project changes.
 
 Project change management brings transparency, accountability and traceability to all project changes implemented after the project scope and project plans have been baselined. The escalation procedure ensures that changes with a significant impact on project performance are properly assessed and approved by the appropriate level of authority. The Project Change Log is used to document requested changes and trace all related decisions and planned actions.
 
-| Key Participants | Description |
+| Key participants | Description |
 | :-- | :-- |
 | Project Manager (PM) | Prepares the Project Change Management Plan. |
 | Project Owner (PO) | Approves the Project Change Management Plan. |
@@ -200,7 +200,7 @@ Project change management brings transparency, accountability and traceability t
 | Project Change Management Plan |  | I | I | A | C | I | I | R | I |
 
 
-| Related Artefacts | Initiating | Planning | Executing | Monitor \& Control | Closing |
+| Related artefacts | Initiating | Planning | Executing | Monitor \& control | Closing |
 | :--: | :--: | :--: | :--: | :--: | :--: |
 | Project Change Management | Project <br> Charter | Project Handbook Project Change Management Plan | Project Reports Change Requests | Change Log <br> Project Logs <br> Project Work Plan | Project-End Report |
 
@@ -209,7 +209,7 @@ Project change management brings transparency, accountability and traceability t
 - Project Change Management Plan
 - Change Log (setup)
 
-## B. 3 Risk Management Plan 
+## B. 3 Risk management plan 
 
 The Risk Management Plan defines and documents the Risk Management Process for a project. It describes how risks will be identified and assessed, what tools and techniques can be used, what the evaluation scales and tolerances are, the relevant roles and responsibilities, how often risks need to be revisited, etc. The Risk Management Plan also defines the risk monitoring and escalation process as well as the structure of the Risk Log, which is used to document and communicate the risks and their response actions.
 
@@ -255,7 +255,7 @@ Risk management brings visibility to risks and accountability as to how they are
 - Risk Management Plan
 - Risk Log
 
-## B. 4 Issue Management Plan 
+## B. 4 Issue management plan 
 
 The Issue Management Plan defines and documents the activities, roles and responsibilities related to identifying, assessing, assigning, resolving and controlling project issues. Issues are defined as unplanned project-related events that require a project management action.
 
@@ -263,7 +263,7 @@ The issue management process helps the Project Manager (PM) to assess and act up
 
 An Issue Log is used to document the identification, evaluation and assignment of issues and to trace all key decisions and planned actions. It also helps keep track of who is responsible for solving specific issues by a certain deadline. It brings visibility and accountability as to how issues are acted upon, and ensures that they are properly managed and resolved.
 
-| Key Participants | Description |
+| Key participants | Description |
 | :-- | :-- |
 | Project Manager (PM) | Prepares the Issue Management Plan. |
 | Business Manager (BM) | Consulted for the elaboration of this artefact. |
@@ -305,7 +305,7 @@ An Issue Log is used to document the identification, evaluation and assignment o
 - Decision Log
 
 
-## B. 5 Quality Management Plan 
+## B. 5 Quality management plan 
 
 The Quality Management Plan defines and documents the project's quality requirements, the quality management approach, process and responsibilities. It also outlines the quality assurance and control activities undertaken throughout the project.
 
@@ -372,7 +372,7 @@ A configuration management procedure is also documented in the Quality Managemen
 - Phase-exit Review Checklist
 
 
-## B. 6 Communications Management Plan 
+## B. 6 Communications management plan 
 
 The Communications Management Plan helps to ensure that all project stakeholders have the information they need to perform their roles throughout the project. Planning and executing project communication activities is essential for project success.
 
@@ -408,7 +408,7 @@ The Communications Management Plan defines and documents communication activitie
 | Communications Management Plan |  | I | I | A | S | C | I | R | C |
 
 
-| Related Artefacts | Initiating | Planning |  | Executing |  | Monitor \& Control |  | Closing |
+| Related artefacts | Initiating | Planning |  | Executing |  | Monitor \& control |  | Closing |
 | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | Communications <br> Management | Project <br> Charter | Project Stakeholder <br> Matrix <br> Communications <br> Management Plan |  | Project <br> Reports |  | Project Logs |  | Project-End <br> Report |
 
@@ -416,7 +416,7 @@ The Communications Management Plan defines and documents communication activitie
 
 - Communications Management Plan
 
-## B. 7 Change Log 
+## B. 7 Change log 
 
 | Change Identification and Description |  |
 | :--: | :--: |
@@ -441,7 +441,7 @@ The Communications Management Plan defines and documents communication activitie
 | Actual Delivery Date | The date on which the change was actually delivered. |
 | Traceability and Comments | The ID(s) of the tasks (in the Project Work Plan) that implement the change, and/or the IDs of related issues, risks or decisions. Also include any additional information/comments related to the change. |
 
-## B. 8 Risk Log 
+## B. 8 Risk log 
 
 | Risk Identification and Description |  |
 | :--: | :--: |
@@ -464,7 +464,7 @@ The Communications Management Plan defines and documents communication activitie
 | Target date | The date on which the action is expected to be implemented. |
 | Traceability/Comments | The ID(s) of the tasks (in the Project Work Plan) that implement the risk response actions, and/or the IDs of related changes, issues, or decisions (log entries). Also include any additional information/comments related to the risk. |
 
-## B. 9 Issue Log 
+## B. 9 Issue log 
 
 | Issue Identification and Description |  |
 | :--: | :--: |
@@ -485,7 +485,7 @@ The Communications Management Plan defines and documents communication activitie
 | Escalation | Whether or not the issue is to be escalated to the Directing or Steering Layers (Yes or No). |
 | Traceability/Comments | The ID(s) of the tasks (in the Project Work Plan) that implement the issue actions, and/or the IDs of related changes, risks or decisions (Log entries). Also include any additional information/comments related to the issue. |
 
-## B. 10 Decision Log 
+## B. 10 Decision log 
 
 | Decision Identification and Description |  |
 | :-- | :-- |
@@ -504,7 +504,7 @@ The Communications Management Plan defines and documents communication activitie
 | Date of Application | The date on which the decision is applicable. |
 | Decision communicated <br> to: | The group, teams, and other audiences to whom the decision should be <br> communicated. |
 
-# Appendix C: Project Management Tools \& Techniques 
+# Appendix C: Project management tools \& techniques 
 
 This section introduces a number of commonly used Project Management Tools \& Techniques useful for dealing with various project management challenges. Each Tool \& Technique is summarised in a few paragraphs providing a simple and high-level overview of that tool or technique.
 

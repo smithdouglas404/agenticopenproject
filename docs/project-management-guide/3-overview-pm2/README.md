@@ -1,13 +1,13 @@
 ---
 sidebar_navigation:
-  title: 3 Overview of the PM² Methodology
+  title: 3 PM² methodology overview
   priority: 850
 description: "Presents the House of PM² framework and explains its four pillars: Governance, Lifecycle, Processes, and Artefacts, all supported by PM² Mindsets. It introduces the four project lifecycle phases (Initiating, Planning, Executing, Closing) and explains tailoring to different project contexts."
 ---
 
-# 3 Overview of the PM² Methodology
+# 3 Overview of the PM² methodology
 
-## 3.1 The House of PM²
+## 3.1 The house of PM²
 
 The PM² Methodology is built on Project Management best practices and is supported by four pillars:
 
@@ -22,7 +22,7 @@ The PM² Methodology is built on Project Management best practices and is suppor
 
 The spirit of the PM² Methodology is further defined by the PM² Mindsets, which provide the glue that holds together the PM² practices and provide a common set of beliefs and values for PM² project teams.
 
-## 3.2 The PM² Lifecycle
+## 3.2 The PM² lifecycle
 
 The PM² project lifecycle has four sequential and non-overlapping phases with a different type of activity predominant in each phase (i.e. initiating activities are predominant in the Initiating Phase, etc.). However, while phase-related activities peak in terms of effort during a specific phase, activities of this type can also be executed during neighbouring phase(s) (e.g. planning activities are also repeated in the Executing Phase).
 

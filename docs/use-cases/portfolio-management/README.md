@@ -1,6 +1,6 @@
 ---
 sidebar_navigation:
-  title: Portfolio Management and Custom Reporting
+  title: Portfolio management and custom reporting
   priority: 800
 description: Step-by-step instructions about portfolio management and custom reporting
 keywords: use-case, portfolio management

@@ -1,6 +1,6 @@
 ---
 sidebar_navigation:
-  title: 5 Initiating Phase
+  title: 5 Initiating phase
   priority: 750
 description: Defines the activities needed to start a project. This includes preparing the Project Initiation Request (PIR), developing the Business Case, drafting the Project Charter, and obtaining formal approval through the Request for Planning (RfP) phase gate.
 keywords: initiating meeting, project initiation request, business case, project charter, ready for planning

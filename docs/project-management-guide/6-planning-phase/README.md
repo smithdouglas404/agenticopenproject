@@ -1,6 +1,6 @@
 ---
 sidebar_navigation:
-  title: 6 Planning Phase
+  title: 6 Planning phase
   priority: 700
 description: Focuses on defining how the project will be executed and controlled. It covers developing the Project Handbook and detailed management plans (scope, schedule, cost, risk, stakeholder, etc.), creating the Work Breakdown Structure (WBS), scheduling, resource planning, and getting approval through the Request for Execution (RfE) gate.
 keywords: project handbook, project stakeholder matrix, project work plan, outsourcing plan, deliverables acceptance plan, transition plan, business implementation plan, ready for executing

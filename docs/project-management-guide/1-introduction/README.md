@@ -1,18 +1,18 @@
 ---
 sidebar_navigation:
-  title: 1 An Introduction to the PM² Guide - OpenProject
+  title: 1 Introduction
   priority: 999
 description: Explains the purpose and audience of the PM² methodology. It introduces PM² as a light, practical, and adaptable approach suitable for various project types, developed by the European Commission. It outlines the structure of the guide and how to use it.
 keywords: user guide
 ---
 
-# 1 An Introduction to the PM² Guide 
+# 1 An introduction to the PM² guide 
 
 ## 1.1 Objectives
 
 This guide sets out to provide an introduction to the PM² Project Management Methodology. It has been kept as lean as possible, while still providing enough information to allow for an effective understanding of the PM² Methodology as practitioners start to use it.
 
-## 1.2 Intended Audience
+## 1.2 Intended audience
 
 - Entry-level Project Managers (PMs) and project teams wishing to learn more about project management and the PM² Methodology.
 - Experienced Project Managers (PMs) and team members who wish to learn more about the PM² Methodology.
@@ -23,11 +23,11 @@ This guide sets out to provide an introduction to the PM² Project Management Me
 - a common vocabulary (glossary) which makes it easier for project teams to communicate and apply project management concepts
 - best practices-it is up to the Project Managers (PMs) and project teams to choose the PM² practices that will bring most value to their projects
 - links to PM² resources (online resources, Artefact templates and examples)
-- an introduction to other PM² models, such as PM2-Agile, PM²-PgM (for Programme Management) and PM²-PfM (for Portfolio Management).
+- an introduction to other PM² models, such as PM²-Agile, PM²-PgM (for Programme Management) and PM²-PfM (for Portfolio Management).
 
 This guide can be read from beginning to end, to learn about the methodology, or it can be used as a reference, to help you as you practise PM².
 
-## 1.3 About the PM² Methodology
+## 1.3 About the PM² methodology
 
 PM² is a Project Management Methodology developed by the European Commission. Its purpose is to enable Project Managers (PMs) to deliver solutions and benefits to their organisations by effectively managing the entire lifecycle of their project. PM² has been created with the needs of European Union Institutions and projects in mind, however, the best practices described in PM² are applicable to projects in any organisation.
 PM² is a light and easy-to-implement methodology which project teams can tailor to their specific needs. PM² is fully supported by a comprehensive training programme (including workshops and coaching sessions), online documentation and an active Community of Practice (currently only available within the European Commission and to a number of affiliate European Institutions).
@@ -51,11 +51,11 @@ PM² incorporates elements from a wide range of globally accepted project manage
 - proposing management activities and outputs (plans, meetings, decisions)
 - providing a link to agile practices.
 
-## 1.4 The Centre of Excellence in PM² (CoEPM²) 
+## 1.4 The Centre of excellence in PM² (CoEPM²) 
 
 The purpose of the Centre of Excellence in  PM² (CoEPM² is to provide the European Commission and European Union Institutions with high-quality project management infrastructure, support and consulting services. The CoEPM² supports the PM² Methodology internally, coordinates an inter-institutional Project Support Network, and promotes the wider adoption and use of PM² beyond the European Union Institutions through the Open PM² initiative and the Digital Europe Programme.
 
-## 1.5 The Open PM² Initiative
+## 1.5 The Open PM² initiative
 
 Open PM² is a European Commission initiative, which brings the PM² Methodology and its benefits closer to its broader stakeholders and user community.
 
@@ -79,7 +79,7 @@ Opening PM² does this by:
 - enabling the improved monitor and control of European Union-funded projects and grants
 - applying the European Commission decision of 12 December 2011 (2011/833/EU) on the reuse of Commission documents to promote accessibility and reuse.
 
-### 1.5.1 PM² Publications 
+### 1.5.1 PM² publications 
 
 The Centre of Excellence in PM² (CoEPM²) provides a central online location for all PM² information, and resources.
 

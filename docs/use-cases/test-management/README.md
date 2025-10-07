@@ -1,6 +1,6 @@
 ---
 sidebar_navigation:
-  title: Test Management with OpenProject
+  title: Test management
   priority: 950
 description: OpenProject can be configured to support lightweight test management using custom work package types, work packages and project templates. This guide describes how to manage test cases and test runs in a reusable, scalable way.
 keywords: test plan, test case, test case, test management

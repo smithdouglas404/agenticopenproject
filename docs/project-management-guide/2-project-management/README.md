@@ -1,6 +1,6 @@
 ---
 sidebar_navigation:
-  title: 1 Project management
+  title: 2 Project management
   priority: 950
 description: Provides the general project management concepts on which PM² is built. It covers the definition of projects, their environment, key success factors, and essential project management competencies (knowledge, skills, and mindsets).
 keywords: user guide
@@ -84,15 +84,15 @@ The table below illustrates this with a simple example:
 | Project Outcomes | - Increased project quality. <br> - Improved visibility of project objectives, status and forecasts. <br> - Capability to have better control over contractor work and deliverables. |
 | Project Benefits | - Project cost overruns decreased by 30\% <br> - Productivity increased by 30\%. |
 
-## 2.2 About Project Management 
+## 2.2 About project management 
 
-### 2.2.1 What is Project Management?
+### 2.2.1 What is project management?
 
-Project Management can be described as the activities of planning, organising, securing, monitoring and managing the resources and work necessary to deliver specific project goals and objectives in an effective and efficient way.
+Project management can be described as the activities of planning, organising, securing, monitoring and managing the resources and work necessary to deliver specific project goals and objectives in an effective and efficient way.
 
 The project management approach used should always be tailored to the needs of the project. When using PM², a Project Manager (PM) should use (and if needed after tailoring) only those parts that contribute to the effective management of their project.
 
-### 2.2.2 Project Documentation
+### 2.2.2 Project documentation
 
 Project documentation is a key activity in project management. It carries through from the start of a project to its completion. Project documentation:
 
@@ -121,13 +121,13 @@ A Project Support Office (PSO) is an organisational body (or entity) that provid
 - tailor the project management methodology to new best practices and help project teams implement the updated methodology effectively.
 
 
-### 2.2.4 Programme Management
+### 2.2.4 Programme management
 
 A programme is a set of related projects and activities managed in a coordinated way to achieve strategic objectives and benefits that could not be obtained if they were managed individually. The projects within a programme all contribute to the common programme goals and are interdependent. In addition to projects, a programme often includes elements of related work (programme-level activities) outside the scope of its projects.
 
 Programme management is different from multi-project management (managing many projects in parallel). Thus, while a Programme Manager ( PgM ) coordinates efforts between projects, s/he does not directly manage the individual projects.
 
-### 2.2.5 Project Portfolio Management
+### 2.2.5 Project portfolio management
 
 A project portfolio is a collection of projects, programmes and other activities, which are grouped together to allow better control over their financial and other resources and to facilitate their effective management
 
@@ -136,7 +136,7 @@ in terms of meeting strategic objectives. The projects or programmes in a portfo
 It is very important for people involved in project definition and management to understand the differences between-and specific management requirements of-projects, programmes and portfolios. They should also be able to define or position their work at the right level (i.e. know if their work would be better managed as a programme or a network of projects), while always being aware of the management and organisational context of their work (see Appendix D).
 ![Fig 2.4 Relationships between strategy, project, programme, portfolio and operations](02.04.png)
 
-### 2.2.6 Projects vs Operations 
+### 2.2.6 Projects vs operations 
 
 Projects are temporary and should therefore have a definite start and end. A project should be considered complete when it is determined that its goals and objectives have been accomplished. Once this happens, the project team should be disbanded.
 
@@ -154,27 +154,27 @@ How do you recognise that a project has slipped into operations mode?
 - Maintenance activities are undertaken.
 - Minor updates (improvements) are planned and implemented over time.
 
-## 2.3 Project Environment 
+## 2.3 Project environment 
 
-### 2.3.1 Project Organisation
+### 2.3.1 Project organisation
 
 It would be convenient to assume that all PM² Project Managers (PMs) operate within their organisations in a homogenous environment and with consistent levels of authority and responsibility. This is generally not the case, however.
 
 There are typically several ways of organising projects within an organisation, which utilise one of the following structures or a combination of them.
 
-**The Functional Structure**
+**The functional structure**
 
 In a functional organisational structure, project work is integrated into the work performed by the permanent organisation. Project members and other resources are borrowed from multiple sections of the functional organisation. The Project Manager (PM) tends to have limited authority and needs to involve senior management in the management of important project issues. Project work is often viewed as having lower priority than everyday work.
 
-**The Projectized Structure**
+**The projectized structure**
 
 On the other end of the spectrum, in a projectized organisation, there is only a basic permanent (functional) hierarchy, and all work is organised and performed within temporary project organisations. Project resources are brought together specifically for the purpose of a project and work more or less exclusively for the project. At the end of the project, resources are either reassigned to another project or returned to a resource pool.
 
-**The Matrix Structure**
+**The matrix structure**
 
 A matrix organisation is a blended organisational structure. Additional temporary project organisations are created alongside the functional hierarchy to achieve specific project goals and work. The role of the Project Manager (PM) is recognised as central and key to the project's success, and the Project Steering Committee (PSC) typically delegates enough authority and responsibility to the Project Manager (PM) and the Business Manager (BM) for them to manage the project and its resources. Matrix organisations can be further categorised as weak, balanced and strong matrix organisations, the difference being the level of authority and autonomy given to the project organisation.
 
-### 2.3.2 Developing Project Management Competences
+### 2.3.2 Developing project management competences
 
 Project management involves much more than creating schedules and budgets, and Project Managers (PMs) must have a wide range of technical and behavioural skills at their disposal.
 
@@ -193,7 +193,7 @@ It is up to the Project Manager (PM) to acquire these skills and invest in their
 
 
 
-### 2.3.3 Project Management Competences 
+### 2.3.3 Project management competences 
 
 Project Managers (PMs) need to:
 
