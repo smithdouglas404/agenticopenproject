@@ -43,13 +43,23 @@ module API
              join: { table: :projects,
                      condition: "projects.id = work_packages.project_id",
                      select: ["projects.name project_name"] }
+        # Add parent link
+        link :parent,
+             path: { api: :work_package, params: %w(id) },
+             column: -> { :parent_id },
+             title: -> { "parent_subject" },
+             render_if: ->(*) { "parent_id IS NOT NULL" },
+             join: { table: :work_packages,
+                     alias: :parent_work_packages,
+                     condition: "parent_work_packages.id = work_packages.parent_id",
+                     select: ["parent_work_packages.subject parent_subject"] }
 
-        associated_user_link :author
+        associated_user_link :author, source_table: :work_packages
 
         associated_user_link :assignee,
-                             column_name: :assigned_to_id
+                             column_name: :assigned_to_id, source_table: :work_packages
 
-        associated_user_link :responsible
+        associated_user_link :responsible, source_table: :work_packages
 
         property :_type,
                  representation: ->(*) { "'WorkPackage'" }

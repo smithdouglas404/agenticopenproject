@@ -50,13 +50,15 @@ RSpec.describe API::V3::WorkPackages::WorkPackageSqlRepresenter, "rendering" do
            project:,
            assigned_to: assignee,
            author:,
-           responsible:)
+           responsible:,
+           parent: parent_work_package)
   end
   let(:project) { create(:project, types: [create(:type, is_milestone:)]) }
   let(:is_milestone) { false }
   let(:assignee) { nil }
   let(:author) { create(:user) }
   let(:responsible) { nil }
+  let(:parent_work_package) { nil }
 
   let(:select) { { "*" => {} } }
 
@@ -65,7 +67,7 @@ RSpec.describe API::V3::WorkPackages::WorkPackageSqlRepresenter, "rendering" do
   end
 
   context "when rendering all supported properties" do
-    context "for a work_package" do
+    context "for a work_package without parent" do
       let(:expected) do
         {
           _type: "WorkPackage",
@@ -81,6 +83,53 @@ RSpec.describe API::V3::WorkPackages::WorkPackageSqlRepresenter, "rendering" do
             project: {
               href: api_v3_paths.project(project.id),
               title: project.name
+            },
+            assignee: {
+              href: nil
+            },
+            responsible: {
+              href: nil
+            },
+            author: {
+              href: api_v3_paths.user(author.id),
+              title: author.name
+            }
+          }
+        }
+      end
+
+      it "renders as expected" do
+        expect(json)
+          .to be_json_eql(expected.to_json)
+      end
+    end
+
+    context "for a work_package with parent" do
+      let(:parent_work_package) do
+        create(:work_package,
+              project: project,
+              subject: "Parent Task")
+      end
+
+      let(:expected) do
+        {
+          _type: "WorkPackage",
+          id: rendered_work_package.id,
+          subject: rendered_work_package.subject,
+          dueDate: rendered_work_package.due_date,
+          startDate: rendered_work_package.start_date,
+          _links: {
+            self: {
+              href: api_v3_paths.work_package(rendered_work_package.id),
+              title: rendered_work_package.subject
+            },
+            project: {
+              href: api_v3_paths.project(project.id),
+              title: project.name
+            },
+            parent: {                                     
+              href: api_v3_paths.work_package(parent_work_package.id),
+              title: parent_work_package.subject
             },
             assignee: {
               href: nil
@@ -136,6 +185,53 @@ RSpec.describe API::V3::WorkPackages::WorkPackageSqlRepresenter, "rendering" do
       it "renders as expected" do
         expect(json).to be_json_eql(expected.to_json)
       end
+    end
+  end
+
+
+  context "for a milestone work_package with parent" do
+    let(:is_milestone) { true }
+    let(:parent_work_package) do
+      create(:work_package,
+            project: project,
+            subject: "Parent Milestone")
+    end
+
+    let(:expected) do
+      {
+        _type: "WorkPackage",
+        id: rendered_work_package.id,
+        subject: rendered_work_package.subject,
+        date: rendered_work_package.start_date,    
+        _links: {
+          self: {
+            href: api_v3_paths.work_package(rendered_work_package.id),
+            title: rendered_work_package.subject
+          },
+          project: {
+            href: api_v3_paths.project(project.id),
+            title: project.name
+          },
+          parent: {                                  
+            href: api_v3_paths.work_package(parent_work_package.id),
+            title: parent_work_package.subject
+          },
+          assignee: {
+            href: nil
+          },
+          responsible: {
+            href: nil
+          },
+          author: {
+            href: api_v3_paths.user(author.id),
+            title: author.name
+          }
+        }
+      }
+    end
+
+    it "renders as expected" do
+      expect(json).to be_json_eql(expected.to_json)
     end
   end
 
@@ -220,6 +316,72 @@ RSpec.describe API::V3::WorkPackages::WorkPackageSqlRepresenter, "rendering" do
   describe "author link" do
     it_behaves_like "principal link", "author", only_user: true do
       let(:author) { principal_object }
+    end
+  end
+  describe "parent link" do
+    context "when work package has a parent" do
+      let(:parent_work_package) do
+        create(:work_package,
+               project: project,
+               subject: "Parent Task")
+      end
+
+      let(:select) { { "parent" => {} } }
+
+      let(:expected) do
+        {
+          _links: {
+            parent: {
+              href: api_v3_paths.work_package(parent_work_package.id),
+              title: parent_work_package.subject
+            }
+          }
+        }
+      end
+
+      it "renders parent link correctly" do
+        expect(json).to be_json_eql(expected.to_json)
+      end
+    end
+
+    context "when work package has no parent" do
+      let(:parent_work_package) { nil }
+      let(:select) { { "parent" => {} } }
+
+      let(:expected) do
+        {
+          _links: {} 
+        }
+      end
+      it "does not render parent link" do
+        expect(json).to be_json_eql(expected.to_json)
+      end
+    end
+
+    context "when selecting parent along with other properties" do
+      let(:parent_work_package) do
+        create(:work_package,
+               project: project,
+               subject: "Parent Task")
+      end
+
+      let(:select) { { "subject" => {}, "parent" => {} } }
+
+      let(:expected) do
+        {
+          subject: rendered_work_package.subject,
+          _links: {
+            parent: {
+              href: api_v3_paths.work_package(parent_work_package.id),
+              title: parent_work_package.subject
+            }
+          }
+        }
+      end
+
+      it "renders both subject and parent link" do
+        expect(json).to be_json_eql(expected.to_json)
+      end
     end
   end
 end

@@ -32,13 +32,14 @@ module API
 
         class_methods do
           def associated_user_link(name,
-                                   column_name: "#{name}_id")
+                                   column_name: "#{name}_id",
+                                   source_table: nil)
             plural_name = name.to_s.pluralize
 
             link name,
                  href: associated_user_link_href(plural_name, column_name),
                  title: associated_user_link_title(plural_name),
-                 join: associated_user_link_join(plural_name, column_name)
+                 join: associated_user_link_join(plural_name, column_name, source_table: source_table)
           end
 
           private
@@ -79,9 +80,16 @@ module API
             }
           end
 
-          def associated_user_link_join(table_name, column_name)
+          def associated_user_link_join(table_name, column_name, source_table: nil)
+            condition = if source_table
+                          # Use the explicit source table (fixes your WorkPackage issue)
+                          "#{table_name}.id = #{source_table}.#{column_name}"
+                        else
+                          # Keep the old behavior for backward compatibility (CapabilitySqlRepresenter)
+                          "#{table_name}.id = #{column_name}"
+                        end
             { table: :users,
-              condition: "#{table_name}.id = #{column_name}",
+              condition: condition,
               select: ["#{table_name}.firstname #{table_name}_firstname",
                        "#{table_name}.lastname #{table_name}_lastname",
                        "#{table_name}.login #{table_name}_login",
