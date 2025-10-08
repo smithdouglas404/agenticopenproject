@@ -33,6 +33,7 @@ See COPYRIGHT and LICENSE files for more details.
   <%= call_hook :view_work_package_overview_attributes %>
   <%# Disable caching for now %>
   <meta name="turbo-cache-control" content="no-cache">
+  <meta name="turbo-visit-control" content="reload">
 <% end -%>
 
 <%= content_for :content_body do %>
