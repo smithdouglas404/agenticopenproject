@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+# avoid frozen string literal as the plaintext gem mutates strings
 
 #-- copyright
 # OpenProject is an open source project management software.
