@@ -195,10 +195,9 @@ cs:
     ldap_auth_failed: "Nelze autentizovat u serveru LDAP."
     sync_failed: "Nepodařilo se synchronizovat z LDAP: %{message}."
     back_to_index: "Kliknutím sem se vrátíte do seznamu připojení."
-    technical_warning_html: |
+    technical_warning: |
       This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Please visit our documentation for detailed instructions</a>.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: Rozhodčí název spojení LDAP
       host: LDAP název hostitele nebo IP adresa
@@ -333,41 +332,60 @@ cs:
     tab:
       no_results_title_text: V současné době nejsou žádná vlastní pole.
       no_results_content_text: Vytvořit nové vlastní pole
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "nebo"
-  dry_validation:
+  op_dry_validation:
+    or: "or"
     errors:
-      defined: "must not be defined."
-      int?: "musí být celé číslo"
+      array?: "must be an array."
       decimal?: "must be a decimal."
-      filled?: "musí být vyplněno"
+      defined: "must not be defined."
+      eql?: "must be equal to %{left}."
+      filled?: "must be filled."
+      greater_or_equal_zero: "must be greater or equal to 0."
+      gteq?: "must be greater than or equal to %{num}."
+      hash?: "must be a hash."
+      included_in?:
+        arg:
+          default: "must be one of: %{list}."
+          range: "must be one of: %{list_left} - %{list_right}."
+      int?: "must be an integer."
       key?: "is missing."
-      greater_or_equal_zero: "musí být větší nebo rovno 0."
-      not_found: "nenalezeno"
+      not_found: "not found."
       rules:
         copy_workflow_from:
           workflow_missing: "has no own workflow."
         custom_field:
           format_not_supported: "format '%{field_format}' is unsupported."
         item:
-          root_item: "nemůže být kořenová položka."
-          not_persisted: "musí být již existující položka."
+          root_item: "cannot be a root item."
+          not_persisted: "must be an already existing item."
         label:
-          not_unique: "musí být v rámci stejné hierarchie jedinečné."
+          not_unique: "must be unique within the same hierarchy level."
         short:
-          not_unique: ""
+          not_unique: "must be unique within the same hierarchy level."
         parent:
-          not_descendant: "musí být potomkem kořenu hierarchie."
+          not_descendant: "must be a descendant of the hierarchy root."
+      str?: "must be a string."
+      type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Povoleno"
-      depth: "Hloubka"
-      item: "Položka"
-      label: "Popisek"
+      enabled: "Enabled"
+      depth: "Depth"
+      item: "Item"
+      label: "Label"
       score: "Score"
-      short: "Krátký název"
-      parent: "Nadřazený"
-      blueprint: "Vzhled plánu"
+      short: "Short name"
+      parent: "Parent"
+      blueprint: "Pattern blueprint"
   global_search:
     title:
       all_projects: 'Search for "%{search_term}" in all projects'
@@ -429,7 +447,7 @@ cs:
     lists:
       active: "Aktivní projekty"
       my: "Moje projekty"
-      favored: "Oblíbené projekty"
+      favorited: "Favorite projects"
       archived: "Archivované projekty"
       shared: "Sdílené seznamy projektů"
       my_lists: "Moje seznamy projektů"
@@ -607,9 +625,6 @@ cs:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Zadejte prosím název tokenu API"
-        token_name_in_use: "Tento název tokenu API je již používán, vyberte prosím jiný"
       failed_to_reset_token: "Nepodařilo se obnovit přístupový token: %{error}"
       failed_to_create_token: "Nepodařilo se vytvořit přístupový token: %{error}"
       failed_to_revoke_token: "Nepodařilo se odvolat přístupový token: %{error}"
@@ -627,17 +642,20 @@ cs:
     autologins:
       prompt: "Zůstaňte přihlášeni po %{num_days}"
     sessions:
-      remembered_devices: "Zapamatovaná zařízení"
-      remembered_devices_caption: "Seznam všech zařízení, která se k tomuto účtu přihlásila, pomocí možnosti 'Zůstaňte přihlášeni'."
       session_name: "%{browser_name} %{browser_version} na %{os_name}"
       browser: "Prohlížeč"
+      expires: "Expires"
+      last_connection: "Last connection"
       device: "Zařízení / OS"
       unknown_browser: "neznámý prohlížeč"
       unknown_os: "neznámý operační systém"
-      current: "Aktuální relace"
+      unknown: "(unknown)"
+      browser_session: "(Browser session)"
+      current: "Current (this device)"
       title: "Správa relací"
-      instructions: "Toto je seznam zařízení, která se přihlásila k vašemu účtu. Zrušit všechny relace, ke kterým nepoznáváte nebo k nimž již nemáte přístup."
+      instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Aktuální relaci nelze odstranit."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "Tento uživatel je v současné době členem následujících skupin:"
       no_results_title_text: Tento uživatel není v současné době členem žádné skupiny.
@@ -711,9 +729,7 @@ cs:
         excluded_from_totals: "Vyloučeno z celkových hodnot"
   themes:
     dark: "Tmavé"
-    dark_high_contrast: "Tmavý vysoký kontrast"
     light: "Světlý"
-    light_high_contrast: "Světlý kontrast"
     sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
@@ -983,6 +999,11 @@ cs:
         help_text: "Text nápovědy"
       auth_provider:
         scim_clients: "SCIM clients"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "Kontext"
       changeset:
@@ -1033,6 +1054,8 @@ cs:
         active_user_count_restriction: "Aktivní uživatelé"
       enterprise_trial:
         company: "Společnost"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Stránka"
         row_count: "Počet řádků"
@@ -1159,6 +1182,8 @@ cs:
         is_readonly: "Pracovní balíček jen pro čtení"
         excluded_from_totals: "Vyloučit z výpočtu úhrnů v hierarchii"
         default_done_ratio: "% Dokončeno"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Kalendář"
         ical_token_query_assignment: "Query assignment"
@@ -1212,6 +1237,13 @@ cs:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "Upozornit mě při opuštění pracovního balíčku s neuloženými změnami"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Color mode"
         time_zone: "Časové pásmo"
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
@@ -1279,7 +1311,7 @@ cs:
         confirmation: "neshoduje se s %{attribute}."
         could_not_be_copied: "%{dependency} nemůže být (zcela) zkopírován."
         does_not_exist: "neexistuje."
-        error_enterprise_only: "%{action} je k dispozici pouze ve vydání OpenProject Enterprise"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "není přístupný."
         error_readonly: "se pokusil být napsán, ale není zapisovatelný."
         error_conflict: "Informace mezitím aktualizoval alespoň jeden další uživatel."
@@ -1393,6 +1425,8 @@ cs:
           only_one_trial: "Only one trial token can be active. Please delete the previous trial token before adding another."
           unreadable: "nelze číst. Jste si jisti, že se jedná o token podpory?"
           already_added: "This token has already been added."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "se překrývá."
           outside: "je mimo mřížku."
@@ -1489,10 +1523,19 @@ cs:
           typed_dag:
             circular_dependency: "Vztah vytvoří cyklický vztah."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "Prodejce SCM není k dispozici"
           not_whitelisted: "není povoleno konfigurací."
@@ -1645,9 +1688,11 @@ cs:
         version:
           undeletable_archived_projects: "Verze nemůže být odstraněna, protože jsou k ní připojeny pracovní balíčky."
           undeletable_work_packages_attached: "Verze nemůže být odstraněna, protože jsou k ní připojeny pracovní balíčky."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Zkontrolujte, prosím, následující pole:"
@@ -1795,6 +1840,7 @@ cs:
     attachments: "Přílohy"
     actor: "Actor"
     action: "Akce"
+    api_key: "API key"
     author: "Autor"
     avatar: "Avatar"
     base: "Obecná chyba:"
@@ -1925,6 +1971,7 @@ cs:
   button_add_watcher: "Přidat sledující"
   button_annotate: "Komentovat"
   button_apply: "Použít"
+  button_apply_changes: "Použít změny"
   button_archive: "Archivovat"
   button_back: "Zpět"
   button_cancel: "Zrušit"
@@ -1974,8 +2021,8 @@ cs:
   button_rollback: "Obnovit tuto verzi"
   button_save: "Uložit"
   button_save_as: "Uložit jako"
-  button_apply_changes: "Použít změny"
   button_save_back: "Uložit a odejít"
+  button_select: "Select"
   button_set_reminder: "Nastavit připomenutí"
   button_show: "Zobrazit"
   button_sort: "Řadit"
@@ -2239,6 +2286,7 @@ cs:
     features:
       baseline_comparison: Baseline Comparisons
       board_view: Advanced Boards
+      calculated_values: Calculated Values
       conditional_highlighting: Conditional Highlighting
       internal_comments: Internal Comments
       custom_actions: Custom Actions
@@ -2273,7 +2321,7 @@ cs:
         Already have a token? Add it using the button below to upgrade to the booked Enterprise plan.
       hide_banner: "Hide this banner"
       homescreen_description: >
-        Enterprise plans extend the Community edition of OpenProject you are currently using. They include add-ons, additional features and professional support that enables organisations of all sizes to achieve great things together.
+        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
       homescreen_subline: By upgrading, you will also be supporting an open source project.
       baseline_comparison:
         description: Zvýraznit změny provedené v tomto seznamu od té doby v minulosti.
@@ -2311,6 +2359,8 @@ cs:
         description: "Sdílejte pracovní balíčky s uživateli, kteří nejsou členy projektu."
       project_list_sharing:
         description: "Share project lists with individual users."
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Custom color theme and logo"
         more_info: "Poznámka: použité logo bude veřejně přístupné."
@@ -2378,6 +2428,9 @@ cs:
   enumeration_reported_project_statuses: "Nahlášený stav projektu"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "Jednotné přihlášení (SSO) pro uživatele '%{value}' selhalo"
   error_can_not_archive_project: "Tento projekt nelze archivovat: %{errors}"
   error_can_not_delete_entry: "Nelze odstranit položku"
@@ -2406,6 +2459,7 @@ cs:
   error_invalid_selected_value: "Neplatná vybraná hodnota."
   error_journal_attribute_not_present: "Deník neobsahuje atribut %{attribute}."
   error_pdf_export_too_many_columns: "Příliš mnoho sloupců vybraných pro PDF export. Snižte počet sloupců."
+  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
   error_pdf_failed_to_export: "PDF export nelze uložit: %{error}"
   error_token_authenticity: "Nelze ověřit token Cross-Site Request Forgy. Pokusili jste se odeslat data na více prohlížečích nebo kartách? Prosím zavřete všechny panely a zkuste to znovu."
   error_reminder_not_found: "Připomínka nebyla nalezena nebo již byla oznámena."
@@ -2618,17 +2672,15 @@ cs:
         header: "Read about new features and product updates."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
+        "16_5":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Option to auto-sync system color + contrast mode.
-            line_1: Dark high contrast mode for improved accessibility.
-            line_2: PDF export of project lists.
-            line_3: Custom font for all PDF exports (Enterprise add-on).
-            line_4: Improved meeting participants dialog.
-            line_5: Improved budget handling in project queries and budget planning.
-            line_6: Updated Home and Project overview page.
+            line_0: Add work packages to a meeting section in the Meetings tab.
+            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
+            line_2: Filter projects by last update.
+            line_3: Jump to highlighted target elements from deep links.
+            line_4: Confirm critical actions with more accessible danger dialogs.
     links:
       upgrade_enterprise_edition: "Upgradovat na Enterprise Edici"
       postgres_migration: "Migrujte vaši instalaci na PostgreSQL"
@@ -2639,7 +2691,8 @@ cs:
       shortcuts: "Klávesové zkratky"
       blog: "OpenProject blog"
       forums: "Komunitní fórum"
-      newsletter: "Bezpečnostní upozornění / newsletter"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2721,7 +2774,7 @@ cs:
         static_token_name: "API Token"
       ical:
         title: "iCalendar"
-        text_hint: 'Tokeny iCalendar umožňují uživatelům <a href="%{path}" target="_blank">přihlásit se k odběru kalendářů OpenProject</a> a zobrazovat aktuální informace o pracovních balíčcích od externích klientů.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "iCalendar odběr není administrátorem povolen. Pro použití této funkce kontaktujte svého správce."
         empty_text_hint: "Chcete-li přidat token iCalendar, přihlaste se do nového nebo existujícího kalendáře v rámci modulu kalendáře projektu. Musíte mít potřebná oprávnění."
       oauth:
@@ -2862,7 +2915,8 @@ cs:
   label_select_main_menu_item: Vyberte novou hlavní položku nabídky
   label_required_disk_storage: "Požadované úložiště disku"
   label_send_invitation: Odeslat pozvánku
-  label_calculated_value: "Calculated value"
+  label_calculated_value: "Calculated Value"
+  label_change_parent: "Change parent"
   label_change_plural: "Změny"
   label_change_properties: "Změnit vlastnosti"
   label_change_status: "Změnit stav"
@@ -3038,7 +3092,7 @@ cs:
   label_integer: "Celé číslo"
   label_interface: "Rozhraní"
   label_internal: "Interní"
-  label_introduction_video: "Seznamovací video"
+  label_introduction_video: "Getting started video"
   label_invite_user: "Pozvat uživatele"
   label_item: "Položka"
   label_item_plural: "Položky"
@@ -3689,6 +3743,7 @@ cs:
   notice_password_confirmation_failed: "Heslo není správné. Nelze pokračovat."
   notice_principals_found_multiple: "Nalezeno %{number} výsledků. \nStiskněte Tab pro přechod na první výsledek."
   notice_principals_found_single: "Existuje jeden výsledek. \n Záložka pro zaměření."
+  notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "Projekt nebyl odstraněn."
   notice_project_not_found: "Projekt nebyl nalezen."
   notice_successful_connection: "Úspěšné připojení."
@@ -4103,6 +4158,8 @@ cs:
   setting_feeds_limit: "Limit obsahu kanálů"
   setting_file_max_size_displayed: "Maximální velikost textových souborů zobrazených přímo na stránce"
   setting_host_name: "Název serveru"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Hodiny za den"
   setting_hours_per_day_explanation: >-
     This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).
@@ -4331,6 +4388,7 @@ cs:
   text_access_token_hint: "Přístupové tokeny vám umožňují udělit externím aplikacím přístup ke zdrojům v OpenProject."
   text_analyze: "Další analýza: %{subject}"
   text_are_you_sure: "Jste si jisti?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Jste si jisti, že chcete pokračovat?"
   text_are_you_sure_with_children: "Smazat pracovní balíček a všechny podřízené pracovní balíčky?"
   text_are_you_sure_with_project_custom_fields: "Smazání tohoto atributu také smaže jeho hodnoty ve všech projektech. Jste si jisti, že to chcete udělat?"

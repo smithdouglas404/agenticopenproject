@@ -21,6 +21,8 @@ sk:
           title: 'Novinky'
           at: 'o'
           no_results: 'Nič nové pre nahlásenie.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Popis projektu'
           no_results: "No description has been written yet. One can be provided in the 'Project settings'."

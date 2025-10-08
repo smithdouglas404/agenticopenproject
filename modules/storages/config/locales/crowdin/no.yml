@@ -32,6 +32,7 @@
         drive: Stasjon ID
         host: Vert
         name: Navn
+        password: Application password
         provider_type: Tjenestetype
         tenant: Katalog (leietaker) ID
     errors:
@@ -62,7 +63,7 @@
               op_application_not_installed: ser ut til å ikke ha appen "OpenProject integrasjon" installert. Installer den først og prøv igjen.
             password:
               invalid_password: er ikke gyldig.
-              unknown_error: kunne ikke valideres. Vennligst sjekk din lagringskobling og prøv igjen.
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: Fil
       storages/storage: Lagringssted
@@ -183,8 +184,6 @@
           not_found: Målmappen %{folder} ble ikke funnet på %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Fullfør uten
-      done_complete_setup: Ferdig, fullfør oppsett
       done_continue: Ferdig, fortsett
       open_storage: Open file storage
       replace_oauth_application: Erstatt OpenProject OAuth

@@ -32,6 +32,7 @@ be:
         drive: Drive ID
         host: Host
         name: Імя
+        password: Application password
         provider_type: Provider type
         tenant: Directory (tenant) ID
     errors:
@@ -62,7 +63,7 @@ be:
               op_application_not_installed: здаецца што прылада "OpenProject integration" не ўсталявана. Калі ласка ўстанавіце яе і паспрабуйце зноў.
             password:
               invalid_password: is not valid.
-              unknown_error: could not be validated. Please check your storage connection and try again.
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: File
       storages/storage: Сховішча
@@ -183,8 +184,6 @@ be:
           not_found: The destination folder %{folder} could not be found on %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Complete without it
-      done_complete_setup: Done, complete setup
       done_continue: Done, continue
       open_storage: Open file storage
       replace_oauth_application: Замяніць OpenProject OAuth

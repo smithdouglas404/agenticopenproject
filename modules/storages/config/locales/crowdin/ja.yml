@@ -32,6 +32,7 @@ ja:
         drive: ドライブID
         host: ホスト
         name: 名称
+        password: Application password
         provider_type: プロバイダー・タイプ
         tenant: ディレクトリ（テナント）ID
     errors:
@@ -62,7 +63,7 @@ ja:
               op_application_not_installed: は、アプリ「OpenProject integration」がインストールされていないようです。インストールしてからもう一度お試しください。
             password:
               invalid_password: は無効である。
-              unknown_error: を検証できませんでした。ストレージの接続を確認し、再度お試しください。
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: ファイル
       storages/storage: ストレージ
@@ -183,8 +184,6 @@ ja:
           not_found: 宛先フォルダ %{folder} が %{storage_name}に見つかりませんでした。
   storages:
     buttons:
-      complete_without_setup: 無しで完了
-      done_complete_setup: 完了、セットアップ完了
       done_continue: 完了しました。続ける
       open_storage: ファイルストレージを開く
       replace_oauth_application: OpenProject OAuthを置き換え

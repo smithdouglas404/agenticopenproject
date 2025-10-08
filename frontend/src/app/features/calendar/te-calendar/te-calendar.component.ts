@@ -391,8 +391,7 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
       classNames: DAY_SUM_CLASS_NAME,
       rendering: 'background' as const,
       startEditable: false,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      sum: this.i18n.t('js.units.hour', { count: duration }),
+      sum: this.i18n.t('js.units.hour_string', { hours: duration.toFixed(2) }),
     };
   }
 

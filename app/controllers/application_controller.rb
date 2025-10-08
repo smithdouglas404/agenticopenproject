@@ -161,6 +161,7 @@ class ApplicationController < ActionController::Base
 
   include Redmine::Search::Controller
   include Redmine::MenuManager::MenuController
+
   helper Redmine::MenuManager::MenuHelper
 
   # set http headers so that the browser does not store any
@@ -179,7 +180,9 @@ class ApplicationController < ActionController::Base
   end
 
   def tag_request
-    ::OpenProject::Appsignal.tag_request(controller: self, request:)
+    context = { controller: self, request: }
+    ::OpenProject::Appsignal.tag_request(context)
+    ::OpenProject::OpenTelemetry.tag_request(context)
   end
 
   def reload_mailer_settings!

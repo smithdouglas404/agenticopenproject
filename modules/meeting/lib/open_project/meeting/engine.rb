@@ -67,7 +67,7 @@ module OpenProject::Meeting
                                   details_dialog update_details toggle_notifications],
                      recurring_meetings: %i[edit cancel_edit update update_title details_dialog update_details
                                             notify end_series end_series_dialog],
-                     work_package_meetings_tab: %i[add_work_package_to_meeting_dialog add_work_package_to_meeting],
+                     work_package_meetings_tab: %i[add_work_package_to_meeting_dialog add_work_package_to_meeting refresh_form],
                      meeting_participants: %i[create destroy mark_all_attended toggle_attendance manage_participants_dialog]
                    },
                    permissible_on: :project,

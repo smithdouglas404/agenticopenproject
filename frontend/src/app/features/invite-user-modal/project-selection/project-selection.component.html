@@ -2,7 +2,7 @@
   class="spot-modal"
   [formGroup]="projectAndTypeForm"
   (ngSubmit)="onSubmit($event)"
->
+  >
   <div id="spotModalTitle" class="spot-modal--header">{{text.title}}</div>
 
   <div class="spot-divider"></div>
@@ -11,55 +11,57 @@
     <spot-form-field
       [label]="text.project.label"
       required
-    >
-      <op-project-autocompleter
-        slot="input"
+      >
+      <op-project-autocompleter slot="input"
         formControlName="project"
         [filters]="APIFiltersForProjects"
         [mapResultsFn]="projectFilterFn.bind(this)"
         appendTo=".spot-modal-overlay"
-      ></op-project-autocompleter>
+       />
 
-      <div
-        slot="action"
-        *ngIf="projectControl.errors?.lackingPermission"
-      >
-        {{ text.project.lackingPermissionInfo }}
-      </div>
+      @if (projectControl.errors?.lackingPermission) {
+        <div
+          slot="action"
+          >
+          {{ text.project.lackingPermissionInfo }}
+        </div>
+      }
 
-      <div
-        slot="errors"
-        class="spot-form-field--error"
-        *ngIf="projectControl.errors?.required"
-      >
-        {{ text.project.required }}
-      </div>
+      @if (projectControl.errors?.required) {
+        <div
+          slot="errors"
+          class="spot-form-field--error"
+          >
+          {{ text.project.required }}
+        </div>
+      }
 
-      <div
-        slot="errors"
-        class="spot-form-field--error"
-        *ngIf="projectControl.errors?.lackingPermission"
-      >
-        {{ text.project.lackingPermission }}
-      </div>
+      @if (projectControl.errors?.lackingPermission) {
+        <div
+          slot="errors"
+          class="spot-form-field--error"
+          >
+          {{ text.project.lackingPermission }}
+        </div>
+      }
     </spot-form-field>
 
     <spot-form-field>
-      <op-option-list
-        [options]="typeOptions"
+      <op-option-list [options]="typeOptions"
         formControlName="type"
         slot="input"
-      ></op-option-list>
+       />
 
-      <div
-        *ngIf="projectAndTypeForm?.dirty && typeControl?.invalid"
-        class="spot-form-field--errors"
-        slot="errors"
-      >
-        <div class="spot-form-field--error">
-          {{ text.type.required }}
+      @if (projectAndTypeForm?.dirty && typeControl?.invalid) {
+        <div
+          class="spot-form-field--errors"
+          slot="errors"
+          >
+          <div class="spot-form-field--error">
+            {{ text.type.required }}
+          </div>
         </div>
-      </div>
+      }
     </spot-form-field>
   </div>
 

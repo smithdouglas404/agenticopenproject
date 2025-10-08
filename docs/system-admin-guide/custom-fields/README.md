@@ -58,8 +58,7 @@ There are multiple format options for custom fields in OpenProject. You can sele
 
 ### Hierarchy custom field (Enterprise add-on)
 
-> [!NOTE]
-> Custom fields with type Hierarchy are an Enterprise add-on. Click here for more information on the [OpenProject Enterprise edition](https://www.openproject.org/enterprise-edition/).
+[feature: custom_field_hierarchies ]
 
 Hierarchy custom fields allow organizing hierarchical structures in work packages by making use of multi-level select lists. To create a custom field of type Hierarchy follow the same steps as you would when [creating a standard custom field](#add-a-new-custom-field) and select **Hierarchy** format. You can then name the custom field, allow multi-select, specify if it should be a required field or used as a filter, and activate it for all projects. Click the **Save** button to proceed.
 

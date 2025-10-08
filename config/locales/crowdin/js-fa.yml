@@ -88,6 +88,8 @@ fa:
     button_list_view: "نمای فهرستی"
     button_show_view: "نمایش تمام صفحه"
     button_log_time: "پیگیری زمان"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "بیشتر"
     button_open_details: "بازکردن نمای جزییات"
     button_close_details: "بستن نمایش جزئیات"
@@ -433,7 +435,7 @@ fa:
     label_sort_lower: "Move down"
     label_sorting: "مرتب سازی"
     label_spent_time: "زمان صرف شده"
-    label_star_query: "Favored"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "برای ثبت اینتر را بزنید."
     label_public_query: "عمومی"
     label_sum: "جمع"
@@ -1103,6 +1105,7 @@ fa:
       child_work_packages:
         one: "یک زیر بسته"
         other: "%{count} زیر بسته"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"

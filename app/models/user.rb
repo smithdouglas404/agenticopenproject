@@ -275,15 +275,6 @@ class User < Principal
     user
   end
 
-  # Returns the user who matches the given autologin +key+ or nil
-  def self.try_to_autologin(key)
-    token = Token::AutoLogin.find_by_plaintext_value(key) # rubocop:disable Rails/DynamicFindBy
-    # Make sure there's only 1 token that matches the key
-    if token && (token.created_at > Setting.autologin.to_i.day.ago) && token.user&.active?
-      token.user
-    end
-  end
-
   # Columns required for formatting the user's name.
   def self.columns_for_name(formatter = nil)
     case formatter || Setting.user_format

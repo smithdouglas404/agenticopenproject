@@ -98,7 +98,7 @@ sv:
     fixed_date: "Referensdatum"
   button_add_rate: "Lägg till timpris"
   button_log_costs: "Logga enhetskostnader"
-  button_log_time: "Logg"
+  button_log_time: "Logga"
   button_add_activity: "Aktivitet"
   button_add_time_entry: "Logga tid"
   button_stop_timer: "Stoppa timer"

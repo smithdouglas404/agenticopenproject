@@ -53,7 +53,7 @@ RSpec.describe CustomFields::Hierarchy::InsertListItemContract do
       it "is invalid" do
         result = subject.call(params)
         expect(result).to be_failure
-        expect(result.errors.to_h).to include(parent: ["must be CustomField::Hierarchy::Item"])
+        expect(result.errors.to_h).to include(parent: ["must be CustomField::Hierarchy::Item."])
       end
     end
 
@@ -67,7 +67,7 @@ RSpec.describe CustomFields::Hierarchy::InsertListItemContract do
       it "is invalid" do
         result = subject.call(params)
         expect(result).to be_failure
-        expect(result.errors.to_h).to include(label: [I18n.t("dry_validation.errors.rules.label.not_unique")])
+        expect(result.errors.to_h).to include(label: ["must be unique within the same hierarchy level."])
       end
 
       context "if another locale is set" do
@@ -77,7 +77,7 @@ RSpec.describe CustomFields::Hierarchy::InsertListItemContract do
           I18n.config.enforce_available_locales = false
           I18n.backend.store_translations(
             :mo,
-            { dry_validation: {
+            { op_dry_validation: {
               errors: { rules: { label: { not_unique: mordor } } }
             } }
           )
@@ -105,7 +105,7 @@ RSpec.describe CustomFields::Hierarchy::InsertListItemContract do
       it "is invalid with localized validation errors" do
         result = subject.call(params)
         expect(result).to be_failure
-        expect(result.errors.to_h).to include(short: [I18n.t("dry_validation.errors.rules.short.not_unique")])
+        expect(result.errors.to_h).to include(short: ["must be unique within the same hierarchy level."])
       end
     end
 
@@ -124,7 +124,7 @@ RSpec.describe CustomFields::Hierarchy::InsertListItemContract do
       it "is invalid" do
         result = subject.call(params)
         expect(result).to be_failure
-        expect(result.errors.to_h).to include(short: [I18n.t("dry_validation.errors.str?")])
+        expect(result.errors.to_h).to include(short: ["must be a string."])
       end
     end
 

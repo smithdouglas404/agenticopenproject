@@ -127,6 +127,7 @@ fa:
       label_configuration_details: فراداده
       label_client_details: Client details
       label_attribute_mapping: نگاشت ویژگی ها
+      notice_created: A new OpenID provider was successfully created.
       client_details_description: Configuration details of OpenProject as an OIDC client
       no_results_table: No providers have been defined yet.
       plural: OpenID providers

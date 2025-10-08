@@ -28,16 +28,17 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-RSpec::Matchers.define :have_enterprise_banner do |**args|
+RSpec::Matchers.define :have_enterprise_banner do |plan, **args|
   include TestSelectorFinders
 
   match do |page|
-    if args[:plan]
-      expected_text = I18n.t("ee.upsell.plan_text_html", plan: args[:plan].capitalize)
-      page.find(test_selector("op-enterprise-banner"), **args, text: expected_text)
-    else
-      page.find(test_selector("op-enterprise-banner"), **args)
+    if plan
+      plan_name = I18n.t("ee.upsell.plan_name", plan: plan.capitalize)
+      expected_text = I18n.t("ee.upsell.plan_text_html", plan_name:)
+      args[:text] = expected_text
     end
+
+    page.find(test_selector("op-enterprise-banner"), **args)
   end
 
   match_when_negated do |page|

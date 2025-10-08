@@ -49,7 +49,6 @@ import { IsolatedQuerySpace } from 'core-app/features/work-packages/directives/q
 import { combineLatest } from 'rxjs';
 import { QueryColumn } from 'core-app/features/work-packages/components/wp-query/query-column';
 import { WorkPackageViewSortByService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-sort-by.service';
-import { trackByHref } from 'core-app/shared/helpers/angular/tracking-functions';
 import { WorkPackageCollectionResource } from 'core-app/features/hal/resources/wp-collection-resource';
 import { WorkPackageViewGroupByService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-group-by.service';
 import { WorkPackageViewColumnsService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-columns.service';
@@ -93,8 +92,6 @@ export class WorkPackagesTableComponent extends UntilDestroyedMixin implements O
   @Output() itemClicked = new EventEmitter<{ workPackageId:string, double:boolean }>();
 
   @Output() stateLinkClicked = new EventEmitter<{ workPackageId:string, requestedState:string }>();
-
-  public trackByHref = trackByHref;
 
   public configuration:WorkPackageTableConfiguration;
 

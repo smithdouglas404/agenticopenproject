@@ -195,10 +195,9 @@ hu:
     ldap_auth_failed: "A hitelesítés meghiúsult az LDAP-kiszolgálón."
     sync_failed: "Sikertelen szinkronizálás az LDAP-ból: %{message}."
     back_to_index: "Kattintson ide, ha vissza szeretne térni a kapcsolati listához."
-    technical_warning_html: |
+    technical_warning: |
       This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Please visit our documentation for detailed instructions</a>.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: Az LDAP kapcsolat tetszőleges neve
       host: LDAP Kiszolgáló neve vagy IP címe
@@ -332,16 +331,33 @@ hu:
     tab:
       no_results_title_text: Jelenleg nincsenek egyéni mezők.
       no_results_content_text: Új egyéni mező létrehozása
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "vagy"
-  dry_validation:
+  op_dry_validation:
+    or: "or"
     errors:
-      defined: "must not be defined."
-      int?: "must be an integer."
+      array?: "must be an array."
       decimal?: "must be a decimal."
+      defined: "must not be defined."
+      eql?: "must be equal to %{left}."
       filled?: "must be filled."
-      key?: "is missing."
       greater_or_equal_zero: "must be greater or equal to 0."
+      gteq?: "must be greater than or equal to %{num}."
+      hash?: "must be a hash."
+      included_in?:
+        arg:
+          default: "must be one of: %{list}."
+          range: "must be one of: %{list_left} - %{list_right}."
+      int?: "must be an integer."
+      key?: "is missing."
       not_found: "not found."
       rules:
         copy_workflow_from:
@@ -357,6 +373,8 @@ hu:
           not_unique: "must be unique within the same hierarchy level."
         parent:
           not_descendant: "must be a descendant of the hierarchy root."
+      str?: "must be a string."
+      type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
       enabled: "Enabled"
@@ -365,7 +383,7 @@ hu:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Szülő"
+      parent: "Parent"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -428,7 +446,7 @@ hu:
     lists:
       active: "Aktív projektek"
       my: "Az én projektjeim"
-      favored: "Kedvenc projektek"
+      favorited: "Favorite projects"
       archived: "Archivált projektek"
       shared: "Shared project lists"
       my_lists: "Projekt listáim"
@@ -594,9 +612,6 @@ hu:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Please provide an API token name"
-        token_name_in_use: "This API token name is already in use, please select a different one"
       failed_to_reset_token: "Hozzáférési token helyreállítása sikertelen: %{error}"
       failed_to_create_token: "Failed to create access token: %{error}"
       failed_to_revoke_token: "Failed to revoke access token: %{error}"
@@ -614,17 +629,20 @@ hu:
     autologins:
       prompt: "Maradjon bejelentkezve %{num_days} napig."
     sessions:
-      remembered_devices: "Megjegyzett eszközök"
-      remembered_devices_caption: "Az összes olyan eszköz listája, amely a \"Bejelentkezve marad\" opcióval bejelentkezett erre a fiókra."
       session_name: "%{browser_name} %{browser_version} %{os_name} operációs rendszeren"
       browser: "Böngésző"
+      expires: "Expires"
+      last_connection: "Last connection"
       device: "Eszköz / Operációs rendszer"
       unknown_browser: "ismeretlen böngésző"
       unknown_os: "ismeretlen operációs rendszer"
-      current: "Jelenlegi munkamenet"
+      unknown: "(unknown)"
+      browser_session: "(Browser session)"
+      current: "Current (this device)"
       title: "Munkamenet-kezelés"
-      instructions: "Ez azoknak az eszközöknek a listája, amelyek bejelentkeztek a fiókjába. Vonja vissza azokat a munkameneteket, amelyeket nem ismer fel, vagy amelyekhez már nincs hozzáférése."
+      instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Az aktuális munkamenetet nem törölheti."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "A felhasználó a következő csoportoknak a tagja:"
       no_results_title_text: A falhasználó egyik csoportnak se a tagja
@@ -696,9 +714,7 @@ hu:
         excluded_from_totals: "Excluded from totals"
   themes:
     dark: "Dark"
-    dark_high_contrast: "Dark high contrast"
     light: "Világos"
-    light_high_contrast: "Világos, nagy kontraszt"
     sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
@@ -966,6 +982,11 @@ hu:
         help_text: "Súgószöveg"
       auth_provider:
         scim_clients: "SCIM clients"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "Context"
       changeset:
@@ -1016,6 +1037,8 @@ hu:
         active_user_count_restriction: "Active users"
       enterprise_trial:
         company: "Cég"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Oldal"
         row_count: "Sorok száma"
@@ -1142,6 +1165,8 @@ hu:
         is_readonly: "Munkacsomag csak olvasható"
         excluded_from_totals: "Exclude from calculation of totals in hierarchy"
         default_done_ratio: "% Complete"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Naptár"
         ical_token_query_assignment: "Query assignment"
@@ -1195,6 +1220,13 @@ hu:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "Figyelmeztess, ha úgy hagyom el a munkacsomagot, hogy nem mentett változások vannak rajta"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Color mode"
         time_zone: "Idő zóna"
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
@@ -1262,7 +1294,7 @@ hu:
         confirmation: "%{attribute} nem egyezik."
         could_not_be_copied: "A (z) %{dependency} nem másolható (teljesen)."
         does_not_exist: "nem létezik."
-        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "lehet, hogy nem érhető el."
         error_readonly: "írása megkísérelve, de nem írható."
         error_conflict: "Az adatokat frissítette egy másik felhasználó időközben."
@@ -1374,6 +1406,8 @@ hu:
           only_one_trial: "Only one trial token can be active. Please delete the previous trial token before adding another."
           unreadable: "nem olvasható. Biztos vagy benne, hogy ez támogatási token?"
           already_added: "This token has already been added."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "átfedés"
           outside: "hatókörön kívül van."
@@ -1470,10 +1504,19 @@ hu:
           typed_dag:
             circular_dependency: "A kapcsolat körkörös függőséget hoz létre."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "SCM szolgáltató nem elérhető"
           not_whitelisted: "a konfiguráció nem engedélyezi."
@@ -1624,10 +1667,12 @@ hu:
         version:
           undeletable_archived_projects: "Nem lehet a verziót törölni amíg hozzá van rendelve munkacsomagokhoz."
           undeletable_work_packages_attached: "Nem lehet a verziót törölni amíg hozzá van rendelve munkacsomagokhoz."
-        token/api:
+        token/named:
           attributes:
             token_name:
-              format: "%{message}\n"
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
+              format: "%{message}"
       template:
         body: "Kérjük, ellenőrizze az alábbi mezőket:"
         header:
@@ -1746,6 +1791,7 @@ hu:
     attachments: "Csatolmány"
     actor: "Actor"
     action: "Művelet"
+    api_key: "API key"
     author: "Szerző"
     avatar: "Profilkép"
     base: "Általános hiba:"
@@ -1876,6 +1922,7 @@ hu:
   button_add_watcher: "Megfigyelő hozzáadása"
   button_annotate: "Jegyzetekkel ellát"
   button_apply: "Alkalmaz"
+  button_apply_changes: "Változások alkalmazása"
   button_archive: "Eltárolt"
   button_back: "Vissza"
   button_cancel: "Mégsem"
@@ -1925,8 +1972,8 @@ hu:
   button_rollback: "Visszaállitás erre a verzióra"
   button_save: "Mentés"
   button_save_as: "Mentés másként"
-  button_apply_changes: "Változások alkalmazása"
   button_save_back: "Mentés és vissza"
+  button_select: "Select"
   button_set_reminder: "Set reminder"
   button_show: "Mutat"
   button_sort: "Rendez"
@@ -2150,6 +2197,7 @@ hu:
     features:
       baseline_comparison: Baseline Comparisons
       board_view: Advanced Boards
+      calculated_values: Calculated Values
       conditional_highlighting: Conditional Highlighting
       internal_comments: Internal Comments
       custom_actions: Custom Actions
@@ -2184,7 +2232,7 @@ hu:
         Already have a token? Add it using the button below to upgrade to the booked Enterprise plan.
       hide_banner: "Hide this banner"
       homescreen_description: >
-        Enterprise plans extend the Community edition of OpenProject you are currently using. They include add-ons, additional features and professional support that enables organisations of all sizes to achieve great things together.
+        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
       homescreen_subline: By upgrading, you will also be supporting an open source project.
       baseline_comparison:
         description: Highlight changes made to this list since any point in the past.
@@ -2222,6 +2270,8 @@ hu:
         description: "Share work packages with users who are not members of the project."
       project_list_sharing:
         description: "Share project lists with individual users."
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Custom color theme and logo"
         more_info: "Megjegyzés: a használt logó nyilvánosan elérhető lesz."
@@ -2287,6 +2337,9 @@ hu:
   enumeration_reported_project_statuses: "Projekt állapot beszámoló"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "Single Sign-On (SSO) a '%{value}' felhasználóval sikertelen"
   error_can_not_archive_project: "Ezt a projektet nem lehet archiválni: %{errors}"
   error_can_not_delete_entry: "Bejegyzését nem lehet törölni"
@@ -2315,6 +2368,7 @@ hu:
   error_invalid_selected_value: "Kijelölt érték érvénytelen."
   error_journal_attribute_not_present: "A lap nem tartalmaz attribútumot %{attribute}."
   error_pdf_export_too_many_columns: "Túl sok oszlop lett kiválasztva a PDF exportáláshoz. Kérlek csökkentsd a sorok számát."
+  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
   error_pdf_failed_to_export: "A PDF-Exportálás mentése nem sikerült: %{error}"
   error_token_authenticity: "Nem sikerült ellenőrizni a Cross-Site Request Forgery token-t. Megpróbált adatokat küldeni több böngészőn vagy lapon keresztül? Kérjük, zárja be az összes lapot, és próbálkozzon újra."
   error_reminder_not_found: "The reminder was not found or was already notified about."
@@ -2527,17 +2581,15 @@ hu:
         header: "Read about new features and product updates."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
+        "16_5":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Option to auto-sync system color + contrast mode.
-            line_1: Dark high contrast mode for improved accessibility.
-            line_2: PDF export of project lists.
-            line_3: Custom font for all PDF exports (Enterprise add-on).
-            line_4: Improved meeting participants dialog.
-            line_5: Improved budget handling in project queries and budget planning.
-            line_6: Updated Home and Project overview page.
+            line_0: Add work packages to a meeting section in the Meetings tab.
+            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
+            line_2: Filter projects by last update.
+            line_3: Jump to highlighted target elements from deep links.
+            line_4: Confirm critical actions with more accessible danger dialogs.
     links:
       upgrade_enterprise_edition: "Váltás Vállalati Verzióra"
       postgres_migration: "A rendszer költöztetése PostreSQL-re"
@@ -2548,7 +2600,8 @@ hu:
       shortcuts: "Parancsikonok"
       blog: "OpenProject blog"
       forums: "Közösségi fórum"
-      newsletter: "Biztonsági figyelmeztetések / hírlevél"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Képmásoló"
   journals:
@@ -2630,7 +2683,7 @@ hu:
         static_token_name: "API token"
       ical:
         title: "iCalendar"
-        text_hint: 'iCalendar tokens allow users to <a href="%{path}" target="_blank">subscribe to OpenProject calendars</a> and view up-to-date work package information from external clients.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "iCalendar subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
         empty_text_hint: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
       oauth:
@@ -2771,7 +2824,8 @@ hu:
   label_select_main_menu_item: Válasszon ki új fő menüpontot
   label_required_disk_storage: "Szükséges lemezterület"
   label_send_invitation: Meghívó küldése
-  label_calculated_value: "Calculated value"
+  label_calculated_value: "Calculated Value"
+  label_change_parent: "Change parent"
   label_change_plural: "Változtat"
   label_change_properties: "A tulajdonságok megváltoztatása"
   label_change_status: "Az állapot megváltoztatása"
@@ -2947,7 +3001,7 @@ hu:
   label_integer: "Egész szám"
   label_interface: "Interface"
   label_internal: "Belső"
-  label_introduction_video: "Bemutató videó"
+  label_introduction_video: "Getting started video"
   label_invite_user: "Felhasználó meghívása"
   label_item: "Item"
   label_item_plural: "Items"
@@ -3596,6 +3650,7 @@ hu:
   notice_password_confirmation_failed: "A jelszó nem megfelelő. Nem lehet folytatni."
   notice_principals_found_multiple: "%{number} találat. \n Tab-al tudsz az első találatra fókuszálni."
   notice_principals_found_single: "Egyetlen találat van.\nA Tab billentyű megnyomásával ugrik rá a fókusz."
+  notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "A projekt nem lett törölve."
   notice_project_not_found: "Project not found."
   notice_successful_connection: "Sikeresen létrejött a kapcsolat."
@@ -4008,6 +4063,8 @@ hu:
   setting_feeds_limit: "Tartalom szintjének a korlátja"
   setting_file_max_size_displayed: "A szöveg fájl sorainak maximum mérete megjelenítéskor"
   setting_host_name: "Gazdagép neve"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Hours per day"
   setting_hours_per_day_explanation: >-
     This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).
@@ -4236,6 +4293,7 @@ hu:
   text_access_token_hint: "Hozzáférés tokennel lehetővé teszi, hogy külső alkalmazások hozzáférhessenek az OpenProject forrásaihoz."
   text_analyze: "További elemzése: %{subject}"
   text_are_you_sure: "Biztos vagy benne?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Are you sure you want to continue?"
   text_are_you_sure_with_children: "Törli a feladatcsoportot és minden hozzá tartozó gyermek feladatcsoportot?"
   text_are_you_sure_with_project_custom_fields: "Deleting this attribute will also delete its values in all projects. Are you sure you want to do this?"

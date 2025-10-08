@@ -88,6 +88,8 @@ ka:
     button_list_view: "სიის ხედი"
     button_show_view: "Fullscreen view"
     button_log_time: "ჟურნალში დროის ჩაწერა"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "კიდევ"
     button_open_details: "Open details view"
     button_close_details: "Close details view"
@@ -433,7 +435,7 @@ ka:
     label_sort_lower: "ჩატანა"
     label_sorting: "დალაგება"
     label_spent_time: "დახარჯული დრო"
-    label_star_query: "რჩეულია"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Press enter to save."
     label_public_query: "საჯარო"
     label_sum: "ჯამი"
@@ -1103,6 +1105,7 @@ ka:
       child_work_packages:
         one: "one child work package"
         other: "%{count} work package children"
+      hour_string: "%{hours} h"
       hour:
         one: "1 სთ"
         other: "%{count} სთ"

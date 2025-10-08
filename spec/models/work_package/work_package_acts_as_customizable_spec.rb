@@ -191,10 +191,7 @@ RSpec.describe WorkPackage, "acts_as_customizable" do
     end
 
     context "with a default value" do
-      before do
-        custom_field.update! default_value: "foobar"
-        model_instance.custom_values.destroy_all
-      end
+      let(:custom_field) { create(:string_wp_custom_field, default_value: "foobar") }
 
       it "returns no changes" do
         expect(model_instance.custom_field_changes).to be_empty
@@ -202,10 +199,7 @@ RSpec.describe WorkPackage, "acts_as_customizable" do
     end
 
     context "with a bool custom_field having a default value" do
-      before do
-        custom_field.update! field_format: "bool", default_value: "0"
-        model_instance.custom_values.destroy_all
-      end
+      let(:custom_field) { create(:boolean_wp_custom_field, default_value: "0") }
 
       it "returns no changes" do
         expect(model_instance.custom_field_changes).to be_empty

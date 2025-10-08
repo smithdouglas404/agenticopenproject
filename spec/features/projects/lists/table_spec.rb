@@ -219,10 +219,6 @@ RSpec.describe "Projects lists table display and actions", :js, with_settings: {
           expect(page)
             .to have_css("th", text: "REQUIRED DISK STORAGE")
           expect(page)
-            .to have_css("th", text: "CREATED ON")
-          expect(page)
-            .to have_css("td", text: project.created_at.strftime("%m/%d/%Y"))
-          expect(page)
             .to have_css("th", text: "LATEST ACTIVITY AT")
           expect(page)
             .to have_css("td", text: news.created_at.strftime("%m/%d/%Y"))
@@ -239,7 +235,7 @@ RSpec.describe "Projects lists table display and actions", :js, with_settings: {
         end
 
         visit project_path(project)
-        expect(project).to be_favored_by(admin)
+        expect(project).to be_favorited_by(admin)
 
         visit projects_path
         projects_page.activate_menu_of(project) do |menu|
@@ -248,7 +244,7 @@ RSpec.describe "Projects lists table display and actions", :js, with_settings: {
         end
 
         visit project_path(project)
-        expect(project).not_to be_favored_by(admin)
+        expect(project).not_to be_favorited_by(admin)
 
         visit projects_path
         projects_page.within_row(project) do
@@ -260,7 +256,7 @@ RSpec.describe "Projects lists table display and actions", :js, with_settings: {
         projects_page.activate_menu_of(project) do |menu|
           expect(menu).to have_text("Remove from favorites")
         end
-        expect(project).to be_favored_by(admin)
+        expect(project).to be_favorited_by(admin)
 
         projects_page.within_row(project) do
           page.find_test_selector("project-list-favorite-button").click
@@ -269,7 +265,7 @@ RSpec.describe "Projects lists table display and actions", :js, with_settings: {
         projects_page.activate_menu_of(project) do |menu|
           expect(menu).to have_text("Add to favorites")
         end
-        expect(project).not_to be_favored_by(admin)
+        expect(project).not_to be_favorited_by(admin)
       end
 
       specify "project can be deleted" do
@@ -581,13 +577,7 @@ RSpec.describe "Projects lists table display and actions", :js, with_settings: {
         expect(page)
           .to have_no_css("th", text: "REQUIRED DISK STORAGE")
         expect(page)
-          .to have_no_css("th", text: "CREATED ON")
-        expect(page)
-          .to have_no_css("td", text: project.created_at.strftime("%m/%d/%Y"))
-        expect(page)
           .to have_no_css("th", text: "LATEST ACTIVITY AT")
-        expect(page)
-          .to have_no_css("td", text: news.created_at.strftime("%m/%d/%Y"))
       end
     end
   end

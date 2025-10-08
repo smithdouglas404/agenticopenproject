@@ -88,15 +88,15 @@ Click **Update look and feel** to save your changes.
 
 #### Select the high contrast color mode
 
-In the dropdown menu **Color mode** you can pick the color mode. The default setting is the **Light mode**. You can also select the **Light high contrast mode**, which will significantly increase the contrast and override the color theme of the OpenProject instance for you.
+In the dropdown menu **Color mode** you can pick the color mode. The default setting is the **Light mode**. You can increase the contrast by activating the **Increase contrast** setting, which will significantly increase the contrast and override the color theme of the OpenProject instance for you.
 
 This mode is recommended for users with visuals impairment.
 
-![High contrast mode in OpenProject account settings](openproject_account_settings_settings_light_high_contrast_mode.png)
+![Light mode with increased contrast selected in OpenProject account settings](openproject_account_settings_settings_light_high_contrast_mode.png)
 
 #### Select the dark mode
 
-In the dropdown menu **Color mode** you can pick the color mode. The default setting is **Light mode**. You can also alternatively select **Dark** or **Dark high contrast** modes.
+In the dropdown menu **Color mode** you can pick the color mode. The default setting is **Light mode**. You can also alternatively select **Dark** mode and activate the **Increase contrast** setting for the **Dark high contrast** mode.
 
 > [!NOTE]
 > Custom colors and themes are only supported in Light mode and changing color modes may override most or all custom configuration. Only some colors (accent and primary button color) are kept but adapted for appropriate contrast in certain modes like dark mode.
@@ -105,11 +105,11 @@ In the dropdown menu **Color mode** you can pick the color mode. The default set
 
 #### Select automatic color mode
 
-In the dropdown menu Color mode, you can now also select the **Automatic option, which will match the color mode of your operating system**.
+In the dropdown menu Color mode, you can now also select the **Automatic option, which will match the color mode of your operating system**. 
 
 ![Automatic color mode in OpenProject account settings](openproject_account_settings_automatic_os_mode.png)
 
-If this option is selected, OpenProject will automatically match your operating system’s light or dark theme.
+If this option is selected, OpenProject will automatically match your operating system’s light or dark theme, including the system's contrast settings. You will also see additional settings to force high-contrast when Light or Dark mode is selected — this would ensure that OpenProject always increases contrast in automatic mode, regardless of the system contrast settings.
 
 If your operating system is set to high contrast mode, OpenProject will also automatically switch to the corresponding high contrast mode (light or dark).
 
@@ -270,8 +270,11 @@ To view and manage your OpenProject sessions navigate to **Account settings** an
 
 ![Sessions management in OpenProject account settings](openproject_account_settings_sessions_management.png)
 
-- **Current sessions**: here you can see all of your sessions. If for example you are logged into OpenProject from different browsers or devices, all will be shown in the list. Current session is the one you are currently using. You can terminate the sessions that are no longer in use. Inactive sessions will be removed from the list after 7 days (depending on the authentication settings they may become invalid earlier).
-- **Remembered devices**: here you can see a list of all devices that you are logged into using the "Stay logged in" option. You will have selected that option when [logging in](../../getting-started/sign-in-registration/). Whether or not that option is available and the duration of time for which you can stay logged in depends on the authentication settings of your instance.
+Here you can view and manage all of your active and remembered sessions in one place. Each row shows the browser, device, expiry date and last connection timestamp. For your current session the “Last connection” column displays **“Current (this device)”**.
+
+You can revoke a session at any time by clicking the **×** icon at the end of the row. Hover over the icon to see the **“Revoke”** tooltip. When you click, a confirmation message appears.
+
+Sessions expire automatically according to your instance’s authentication settings. Remembered sessions show their expiry in relative time (for example “in 5 days”).
 
 > [!NOTE]
 > Closing a browser does not necessarily terminate the session. It might still be displayed in the list and will be reactivated if you open the browser. This depends on both your browser's and the OpenProject instance's settings.

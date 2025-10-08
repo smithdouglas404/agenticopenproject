@@ -195,10 +195,9 @@ zh-TW:
     ldap_auth_failed: "無法在 LDAP 伺服器上驗證"
     sync_failed: "LDAP同步失敗：%{message} 。"
     back_to_index: "按一下此處返回連線清單。"
-    technical_warning_html: |
-      此 LDAP 設定表需要您提供 LDAP / Active Directory 設定參數。
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">請連到我們的參考文件以取得詳細說明</a>。
+    technical_warning: |
+      此 LDAP 表單需要具備您 LDAP / Active Directory 設定的技術知識。
+      [請參閱我們的文件以取得詳細操作說明](docs_url)。
     attribute_texts:
       name: LDAP 連線名稱
       host: LDAP 主機名稱或 IP 位址
@@ -332,33 +331,52 @@ zh-TW:
     tab:
       no_results_title_text: 目前沒有自定義的欄位
       no_results_content_text: 建立一個新的自定義欄位
+  calculated_values:
+    error_dialog:
+      title: "計算值錯誤"
+    errors:
+      unknown: "發生未知錯誤。請檢查此計算值的公式。"
+      mathematical: "計算過程中發生數學錯誤。"
+      missing_value: 此計算值需要屬性 "%{custom_field_name}"，但該屬性為空。
+      disabled_value: 此計算值需要屬性 "%{custom_field_name}"，但在專案中已停用。
   concatenation:
     single: "或者"
-  dry_validation:
+  op_dry_validation:
+    or: "或"
     errors:
-      defined: "必須未被定義。"
-      int?: "必須是整數"
-      decimal?: "必須是十進位。"
-      filled?: "必填"
+      array?: "必須是陣列。"
+      decimal?: "必須是有效的小數數值。"
+      defined: "不可被定義。"
+      eql?: "必須等於 %{left}。"
+      filled?: "必填。"
+      greater_or_equal_zero: "必須大於或等於 0。"
+      gteq?: "必須大於或等於 %{num}。"
+      hash?: "必須是一個 hash 值。"
+      included_in?:
+        arg:
+          default: "必須是以下其中之一：%{list}。"
+          range: "必須是以下其中之一：%{list_left} - %{list_right}。"
+      int?: "必須是整數。"
       key?: "遺失。"
-      greater_or_equal_zero: "必須大於或等於 0"
-      not_found: "未找到"
+      not_found: "未找到。"
       rules:
         copy_workflow_from:
           workflow_missing: "沒有自己的工作流程。"
         custom_field:
           format_not_supported: "格式 '%{field_format}' 不支援。"
         item:
-          root_item: "不能為根項目"
-          not_persisted: "必須是已存在的項目"
+          root_item: "不能為根項目。"
+          not_persisted: "必須是已存在的項目。"
         label:
-          not_unique: "在同一階層內必須唯一"
+          not_unique: "在相同的階層層級內必須是唯一的。"
         short:
-          not_unique: "在同一階層內必須唯一"
+          not_unique: "在相同階層層級內必須唯一。"
         parent:
-          not_descendant: "必須是層級展開的"
+          not_descendant: "必須是階層根節點的子層。"
+      str?: "必須為字串。"
+      type?: "必須是 %{type}。"
     rules:
-      copy_workflow_from: "工作流程複本的類型"
+      copy_workflow_from: "工作流程複製的類型"
       enabled: "啟用"
       depth: "深度"
       item: "項目"
@@ -428,7 +446,7 @@ zh-TW:
     lists:
       active: "啟用中的專案"
       my: "我的專案"
-      favored: "收藏的專案"
+      favorited: "收藏的專案"
       archived: "封存專案"
       shared: "共享專案清單"
       my_lists: "我的專案列表"
@@ -588,9 +606,6 @@ zh-TW:
         token/api:
           title: "API 令牌(Token)已生成。"
           warning: "這是您唯一一次看到此令牌(Token)的機會，請務必立即複製。"
-      errors:
-        token_name_blank: "請提供API token名稱"
-        token_name_in_use: "此 API token名稱已被使用，請選擇其他名稱"
       failed_to_reset_token: "無法重置訪問令牌(Token): %{error}"
       failed_to_create_token: "無法建立訪問令牌(Token): %{error}"
       failed_to_revoke_token: "無法撤銷訪問令牌(Token): %{error}"
@@ -608,17 +623,20 @@ zh-TW:
     autologins:
       prompt: "保持登入%{num_days}"
     sessions:
-      remembered_devices: "已記錄的設備"
-      remembered_devices_caption: "使用「保持登入狀態」選項登入此帳戶的所有裝置清單。"
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "瀏覽器"
+      expires: "到期"
+      last_connection: "最後連線"
       device: "裝置/作業系統"
       unknown_browser: "未知的瀏覽器"
       unknown_os: "未知作業系統"
-      current: "目前的連線"
+      unknown: "(未知)"
+      browser_session: "（瀏覽器會話）"
+      current: "目前（此裝置）"
       title: "連線管理"
-      instructions: "這是已登入您帳戶的裝置清單。可撤銷這些已連線的裝置。"
+      instructions: "您已透過以下裝置登入帳號。請撤銷您無法識別或不受您控制的裝置連線。"
       may_not_delete_current: "您不可以刪除自己的連線連線"
+      deletion_warning: "您確定要撤銷此會話？您將會登出此裝置。"
     groups:
       member_in_these_groups: "此用戶當前是以下群組的成員："
       no_results_title_text: 這個使用者目前不是任何群組的成員
@@ -687,9 +705,7 @@ zh-TW:
         excluded_from_totals: "不包括在總計中"
   themes:
     dark: "深色主題"
-    dark_high_contrast: "深色高對比模式"
     light: "白色主題"
-    light_high_contrast: "高對比白色主題"
     sync_with_os: "自動（配合作業系統顏色模式）"
   types:
     index:
@@ -955,6 +971,11 @@ zh-TW:
         help_text: "說明文字"
       auth_provider:
         scim_clients: "SCIM 用戶端"
+      calculated_value_error:
+        error_code: "錯誤碼"
+        customized: "客製化"
+        customized_id: "自訂 ID"
+        customized_type: "客製化類型"
       capability:
         context: "內容"
       changeset:
@@ -1005,6 +1026,8 @@ zh-TW:
         active_user_count_restriction: "活躍使用者"
       enterprise_trial:
         company: "公司"
+      favorite:
+        favorited: "項目"
       grids/grid:
         page: "頁面"
         row_count: "列數"
@@ -1131,6 +1154,8 @@ zh-TW:
         is_readonly: "設定「工作套件」唯讀"
         excluded_from_totals: "從層次結構的總計中排除"
         default_done_ratio: "% 完成"
+      token/named:
+        token_name: "令牌名稱"
       token/ical:
         calendar: "行事曆"
         ical_token_query_assignment: "指派查詢"
@@ -1184,6 +1209,13 @@ zh-TW:
         auto_hide_popups: "自動關閉成功通知"
         auto_hide_popups_caption: "啟用時，綠色的成功通知會在 5 秒內自動關閉。"
         warn_on_leaving_unsaved: "離開尚未儲存的工作套件時提示我"
+        increase_theme_contrast: "增加主題對比"
+        increase_contrast: "增加對比度"
+        increase_contrast_caption: "啟用所選色彩模式的高對比模式。"
+        force_light_theme_contrast: "在「明亮」模式下強制使用高對比度"
+        force_dark_theme_contrast: "在黑暗模式中強制高對比度"
+        force_light_theme_contrast_caption: "選取自動色彩模式時，使用高對比度版本的「明亮」模式。"
+        force_dark_theme_contrast_caption: "選擇自動色彩模式時，使用高對比度版本的暗色模式。"
         theme: "色彩模式"
         time_zone: "時區"
         mode_guideline: "某些模式會覆蓋自訂主題的顏色，以提高可訪問性和可存取性。請選擇「Light」模式，以獲得完整的自訂主題支援。"
@@ -1251,7 +1283,7 @@ zh-TW:
         confirmation: "不吻合 %{attribute}。"
         could_not_be_copied: "%{dependency} 無法完整複製."
         does_not_exist: "不存在"
-        error_enterprise_only: "%{action}僅在 OpenProject 企業版中可用"
+        error_enterprise_only: "%{action} 只適用於 OpenProject 企業版。"
         error_unauthorized: "無法被存取。"
         error_readonly: "被嘗試寫入但是無法寫入。"
         error_conflict: "在此同時，資訊已經被至少一個使用者更新"
@@ -1362,6 +1394,8 @@ zh-TW:
           only_one_trial: "只能啟用一個試用令牌。請先刪除前一個試用令牌後，再新增另一個。"
           unreadable: "無法讀取，確定是一個 support token?"
           already_added: "此令牌已經新增過。"
+        favorite:
+          already_favorited: "已收藏。"
         grids/grid:
           overlaps: "重疊"
           outside: "不在網格(grid)內。"
@@ -1458,10 +1492,19 @@ zh-TW:
           typed_dag:
             circular_dependency: "無限迴圈的關聯。"
           attributes:
+            base:
+              error_not_deletable: "由於您沒有所選工作套件的編輯權限，因此無法刪除此關係。"
+              error_not_editable: "由於您沒有所選工作套件的編輯權限，因此無法編輯此關係。"
             to_id:
+              format: "選取的工作套件 %{message}"
+              error_not_found: "無法找到。"
               error_readonly: "無法變更現有的關係。"
+              error_not_manageable: "無法新增，因為您沒有所選工作套件的編輯權限。"
             from_id:
+              format: "選取的工作套件 %{message}"
+              error_not_found: "無法找到。"
               error_readonly: "無法變更現有的關係。"
+              error_not_manageable: "無法新增，因為您沒有所選工作套件的編輯權限。"
         repository:
           not_available: "版本控制無法使用"
           not_whitelisted: "不被設定所允許"
@@ -1611,9 +1654,11 @@ zh-TW:
         version:
           undeletable_archived_projects: "該版本無法刪除，因為包含工作套件。"
           undeletable_work_packages_attached: "該版本無法刪除，因為它附帶了工作套件。"
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "請提供令牌名稱"
+              in_use: "此令牌名稱已被使用，請選擇其他名稱"
               format: "%{message}"
       template:
         body: "請檢查下列欄位："
@@ -1719,6 +1764,7 @@ zh-TW:
     attachments: "附加檔"
     actor: "行動者"
     action: "動作"
+    api_key: "API 金鑰"
     author: "工作套件發起者"
     avatar: "大頭貼"
     base: "一般錯誤:"
@@ -1849,6 +1895,7 @@ zh-TW:
   button_add_watcher: "新增監看者"
   button_annotate: "注釋"
   button_apply: "套用"
+  button_apply_changes: "套用設定"
   button_archive: "封存"
   button_back: "返回"
   button_cancel: "取消"
@@ -1898,8 +1945,8 @@ zh-TW:
   button_rollback: "回復到此版本"
   button_save: "儲存"
   button_save_as: "另存為"
-  button_apply_changes: "套用設定"
   button_save_back: "儲存並返回"
+  button_select: "選擇"
   button_set_reminder: "設定提醒"
   button_show: "顯示"
   button_sort: "排序"
@@ -2103,6 +2150,7 @@ zh-TW:
     features:
       baseline_comparison: 比較差異
       board_view: 進階看板
+      calculated_values: 計算值
       conditional_highlighting: 條件強調
       internal_comments: 內部備註
       custom_actions: 自訂動作
@@ -2137,7 +2185,7 @@ zh-TW:
         已經有令牌了嗎？請使用下方按鈕新增，以升級至預約的 Enterprise 方案。
       hide_banner: "隱藏此廣告"
       homescreen_description: >
-        企業方案擴展您目前使用的 OpenProject 社群版，包含附加元件、額外功能和專業支援，讓各規模組織都能共同達成卓越目標。
+        企業方案在 OpenProject 社群版的基礎上，提供額外的 [企業附加元件](enterprise_url)與專業支援，特別適合在關鍵任務環境中使用 OpenProject 的組織。
       homescreen_subline: 升級即是對開源專案的一種支持。
       baseline_comparison:
         description: 突顯自過去任一時間點以來對此清單所做的變更。
@@ -2175,6 +2223,8 @@ zh-TW:
         description: "與不是專案成員的使用者共同參與工作套件。"
       project_list_sharing:
         description: "分享專案清單給個別使用者。"
+      calculated_values:
+        description: "計算值可讓您建立一個以數值、其他專案屬性及自訂欄位為基礎的數學公式屬性。"
       define_custom_style:
         title: "自訂布景主題顏色與logo"
         more_info: "備註：Logo可被公開存取。"
@@ -2239,6 +2289,9 @@ zh-TW:
   enumeration_reported_project_statuses: "報告的專案狀態"
   enumeration_caption_order_changed: "成功更改排序。"
   enumeration_could_not_be_moved: "無法移動枚舉。"
+  enterprise_trials:
+    dialog_component:
+      title: 試用企業版
   error_auth_source_sso_failed: "單一登入 (SSO) 使用者 '%{value}' 失敗"
   error_can_not_archive_project: "這個專案無法封存：%{errors}"
   error_can_not_delete_entry: "無法刪除項目"
@@ -2267,6 +2320,7 @@ zh-TW:
   error_invalid_selected_value: "不合法的項目數值。"
   error_journal_attribute_not_present: "Journal 不含有屬性 %{attribute}。"
   error_pdf_export_too_many_columns: "為 PDF 匯出選擇的列太多。請減少列數。"
+  error_pdf_date_range_too_long: "選取的工作套件日期範圍超出允許的 PDF 匯出限制。請將範圍濃縮至最多 %{years} 年。"
   error_pdf_failed_to_export: "無法另存 pdf 匯出: %{error}"
   error_token_authenticity: "無法驗證跨網域請求令牌(Token)。你是不是試圖在多個瀏覽器或者分頁上傳送資料？請關閉所有的分頁後再試一次。"
   error_reminder_not_found: "未找到提醒內容或已收到相關通知。"
@@ -2479,17 +2533,15 @@ zh-TW:
         header: "閱讀關於新功能和產品更新的資訊。"
         learn_about: "進一步瞭解所有新功能"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
+        "16_5":
           new_features_title: >
             該版本包含多種新功能和改進，例如：
           new_features_list:
-            line_0: 可選擇自動同步系統色彩 + 對比模式。
-            line_1: 深色高對比度模式可提高可存取性。
-            line_2: PDF 匯出專案清單。
-            line_3: 所有 PDF 匯出的自訂字型（企業附加元件）。
-            line_4: 改善會議與會者的對話。
-            line_5: 改善專案查詢和預算規劃中的預算處理。
-            line_6: 更新首頁與專案總覽頁面。
+            line_0: 在「會議」標籤的會議區段中加入工作套件。
+            line_1: 使用「增加對比」核取方塊更方便地選擇色彩模式。
+            line_2: 依最後更新篩選專案。
+            line_3: 從深層連結跳至已突顯的目標元素。
+            line_4: 以更易於存取的危險對話框確認關鍵操作。
     links:
       upgrade_enterprise_edition: "升級到企業版"
       postgres_migration: "將您的安裝遷移到 PostgreSQL"
@@ -2500,7 +2552,8 @@ zh-TW:
       shortcuts: "快捷鍵"
       blog: "Openproject 部落格"
       forums: "社群討論區"
-      newsletter: "資通安全通知 / 電子報"
+      security_alerts: "安全警示"
+      newsletter: "電子報"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2582,7 +2635,7 @@ zh-TW:
         static_token_name: "API 令牌(Token)"
       ical:
         title: "iCalendar "
-        text_hint: 'iCalendar 令牌(Token)允許使用者<a href="%{path}" target="_blank">訂閱專案管理系統日曆</a>，並查看來自外部客戶端的最新工作資訊。'
+        text_hint_link: 'iCalendar 權杖可讓使用者[訂閱 OpenProject 行事曆](docs_url)，並在外部用戶端中檢視最新的工作套件資訊。'
         disabled_text: "管理員未啟用 iCalendar 訂閱。 請聯絡您的管理員以使用此功能。"
         empty_text_hint: "新增 iCalendar 令牌(Token)，可訂閱各專案裡面的日曆( 需擁有相關權限)。"
       oauth:
@@ -2724,6 +2777,7 @@ zh-TW:
   label_required_disk_storage: "所使用的磁碟空間"
   label_send_invitation: 發送邀請
   label_calculated_value: "計算值"
+  label_change_parent: "變更父項"
   label_change_plural: "更改"
   label_change_properties: "更改屬性"
   label_change_status: "更改狀態"
@@ -2899,7 +2953,7 @@ zh-TW:
   label_integer: "整數"
   label_interface: "介面"
   label_internal: "內部"
-  label_introduction_video: "簡介影片"
+  label_introduction_video: "入門影片"
   label_invite_user: "邀請使用者"
   label_item: "欄位"
   label_item_plural: "欄位"
@@ -3547,6 +3601,7 @@ zh-TW:
   notice_password_confirmation_failed: "您的密碼不正確。無法繼續。"
   notice_principals_found_multiple: "找到 %{number} 條結果。\n Tab鍵以轉到第一條結果。"
   notice_principals_found_single: "有一個結果。 \n Tab鍵轉到該結果。"
+  notice_parent_item_not_found: "未找到父項目。"
   notice_project_not_deleted: "專案沒有被刪除"
   notice_project_not_found: "未找到專案。"
   notice_successful_connection: "連接成功"
@@ -3885,9 +3940,9 @@ zh-TW:
   setting_apiv3_cors_origins: "CROSS-ORIGIN RESOURCE SHARING (CORS)"
   setting_apiv3_cors_origins_text_html: >
     如果啓用了 CORS ，這些是允許訪問 OpenProject API 的源。<br/>請查看<a href="%{origin_link}" target="_blank">有關“源”標題的文檔</a>，瞭解如何指定預期值。
-  setting_apiv3_write_readonly_attributes: "對只讀屬性的寫訪問權限"
+  setting_apiv3_write_readonly_attributes: "對唯讀屬性的寫入存取權限"
   setting_apiv3_write_readonly_attributes_instructions_html: >
-    如果啓用，API 將允許管理員在創建時寫入靜態只讀屬性，如 createdAt 和 author。 <br/> <strong>警告：</strong>此設置的用例包括導入數據，但允許管理員冒充其他用戶創建項目。不過，所有創建請求都將以真實作者的身份記錄。 </br> 有關屬性和支持資源的更多信息，請參閱 %{api_documentation_link}。
+    若啟用，API 將允許管理員在建立時寫入靜態唯讀屬性，例如 createdAt 與 author。<br/> <strong>警告：</strong> 此設定適用於例如匯入資料的情境，但同時也允許管理員在建立項目時冒充其他使用者。不過，所有建立請求都會記錄實際作者。</br>如需屬性與支援資源的更多資訊，請參閱 %{api_documentation_link}。
   setting_apiv3_max_page_size: "API 每頁最大值"
   setting_apiv3_max_page_instructions_html: >
     設定 API 回應的最大值。 無法執行單一頁面上傳回更多值的 API 請求。 <br/> <strong>警告：</strong>如果您很確定，才變更該值。 設定為高值將導致效能不彰，數值過低也將造成檢視錯誤。
@@ -3957,6 +4012,8 @@ zh-TW:
   setting_feeds_limit: "Feed 內容限制"
   setting_file_max_size_displayed: "直接显示文字文件內容的最大檔案容量"
   setting_host_name: "主機名稱"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus 伺服器 URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus 伺服器秘鑰"
   setting_hours_per_day: "每天小時數"
   setting_hours_per_day_explanation: >-
     這定義了在以天和小時為單位顯示持續時間時，什麼是一"天"(例如，如果一天是 8 小時，32 小時就是 4 天)。
@@ -4185,6 +4242,7 @@ zh-TW:
   text_access_token_hint: "存取令牌(Token)讓你能夠允許外部程式存取專案內的資源。"
   text_analyze: "進一步分析: %{subject}"
   text_are_you_sure: "是否確定？"
+  open_link_in_a_new_tab: "在新分頁中開啟連結"
   text_are_you_sure_continue: "你要繼續嗎?"
   text_are_you_sure_with_children: "刪除工作套件以及所有子工作套件？"
   text_are_you_sure_with_project_custom_fields: "刪除該屬性也會刪除其在所有項目中的值。您確定要這樣做嗎？"

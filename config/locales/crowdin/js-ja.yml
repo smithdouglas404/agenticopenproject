@@ -89,6 +89,8 @@ ja:
     button_list_view: "一覧表示"
     button_show_view: "全画面表示"
     button_log_time: "時間を記録"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "続き"
     button_open_details: "詳細表示を開く"
     button_close_details: "詳細表示を閉じる"
@@ -434,7 +436,7 @@ ja:
     label_sort_lower: "下へ移動"
     label_sorting: "ソート中"
     label_spent_time: "作業時間の記録"
-    label_star_query: "支持された"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Enterを押して保存します。"
     label_public_query: "公開"
     label_sum: "合計"
@@ -1101,6 +1103,7 @@ ja:
         other: "ワークパッケージ"
       child_work_packages:
         other: "%{count} の子ワークパッケージ"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"

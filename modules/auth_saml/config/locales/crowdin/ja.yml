@@ -56,6 +56,7 @@ ja:
       label_mapping: マッピング
       label_requested_attribute_for: "要求された属性 %{attribute}"
       no_results_table: SAML ID プロバイダはまだ定義されていない。
+      notice_created: A new SAML identity provider was successfully created.
       plural: SAML ID プロバイダー
       singular: SAML ID プロバイダ
       requested_attributes: 要求された属性

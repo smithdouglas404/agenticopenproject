@@ -88,6 +88,8 @@ hi:
     button_list_view: "सूचीबद्ध दृश्य"
     button_show_view: "Fullscreen view"
     button_log_time: "लॉग समय"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "More"
     button_open_details: "विवरण दृश्य खोलें"
     button_close_details: "Close details view"
@@ -433,7 +435,7 @@ hi:
     label_sort_lower: "Move down"
     label_sorting: "छँटाई"
     label_spent_time: "समय बिताया"
-    label_star_query: "Favored"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Press enter to save."
     label_public_query: "सार्वजनिक"
     label_sum: "Sum"
@@ -1103,6 +1105,7 @@ hi:
       child_work_packages:
         one: "one child work package"
         other: "%{count} work package children"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"

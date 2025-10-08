@@ -39,9 +39,12 @@ export abstract class AbstractTurboWidgetComponent extends AbstractWidgetCompone
   abstract readonly frameId:string;
   abstract readonly name:string;
 
-  protected get src():string|null {
-    if (!this.currentProject.identifier) return null;
-    return this.pathHelper.projectWidgetPath(this.currentProject.identifier, this.name);
+  protected get src():string {
+    if (this.currentProject.identifier) {
+      return this.pathHelper.projectWidgetPath(this.currentProject.identifier, this.name);
+    } else {
+      return this.pathHelper.widgetPath(this.name);
+    }
   }
 
   public override get isEditable():boolean {

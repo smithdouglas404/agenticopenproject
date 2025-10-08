@@ -594,6 +594,25 @@ RSpec.describe "Show project custom fields on project overview page", :js do
         end
       end
 
+      describe "with an error present" do
+        before do
+          calculated_from_int_and_float_project_custom_field.custom_values.where(customized: project).first.update!(value: "")
+
+          calculated_from_int_and_float_project_custom_field
+            .calculated_value_errors.create!(customized: project, error_code: "ERROR_MATHEMATICAL")
+        end
+
+        it "shows the error message for the project custom field" do
+          overview_page.visit_page
+
+          overview_page.within_project_attributes_sidebar do
+            overview_page.within_custom_field_container(calculated_from_int_and_float_project_custom_field) do
+              expect(page).to have_text I18n.t("calculated_values.errors.mathematical")
+            end
+          end
+        end
+      end
+
       describe "with value unset by user" do
         before do
           calculated_from_int_project_custom_field.custom_values.where(customized: project).first.update!(value: "")
@@ -635,6 +654,48 @@ RSpec.describe "Show project custom fields on project overview page", :js do
             overview_page.within_custom_field_container(calculated_from_int_and_float_project_custom_field) do
               expect(page).to have_text "Calculated field using int and float"
               expect(page).to have_text I18n.t("placeholders.default")
+            end
+          end
+        end
+      end
+
+      describe "with errors caused by user input" do
+        it "updates calculated values, creating and removing errors as needed" do
+          overview_page.visit_page
+
+          # Remove value that is used in a formula:
+          overview_page.open_edit_dialog_for_section(section_for_input_fields)
+          page.fill_in(float_project_custom_field.name, with: "")
+          page.click_on "Save"
+
+          overview_page.within_project_attributes_sidebar do
+            overview_page.within_custom_field_container(calculated_from_int_project_custom_field) do
+              expect(page).to have_text "Calculated field using int"
+              expect(page).to have_text "234"
+            end
+
+            overview_page.within_custom_field_container(calculated_from_int_and_float_project_custom_field) do
+              expect(page).to have_text "Calculated field using int and float"
+              expect(page).to have_text I18n.t("calculated_values.errors.missing_value",
+                                               custom_field_name: float_project_custom_field.name)
+            end
+          end
+
+          # Change the value so that the calculation succeeds.
+          overview_page.open_edit_dialog_for_section(section_for_input_fields)
+          page.fill_in(float_project_custom_field.name, with: "0.2")
+          page.click_on "Save"
+
+          overview_page.within_project_attributes_sidebar do
+            overview_page.within_custom_field_container(calculated_from_int_project_custom_field) do
+              expect(page).to have_text "Calculated field using int"
+              expect(page).to have_text "234"
+            end
+
+            # The error is gone:
+            overview_page.within_custom_field_container(calculated_from_int_and_float_project_custom_field) do
+              expect(page).to have_text "Calculated field using int and float"
+              expect(page).to have_text "24.6"
             end
           end
         end

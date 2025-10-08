@@ -195,10 +195,9 @@ de:
     ldap_auth_failed: "Die Authentifizierung gegenüber des LDAP-Servers ist fehlgeschlagen."
     sync_failed: "Fehler beim Synchronisieren von LDAP: %{message}."
     back_to_index: "Klicken Sie hier, um zur Liste der Verbindungen zurückzukehren."
-    technical_warning_html: |
+    technical_warning: |
       Dieses LDAP-Formular erfordert technische Kenntnisse über Ihre LDAP/Active Directory-Einrichtung.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Bitte besuchen Sie unsere Dokumentation für detaillierte Anweisungen</a>.
+      [Bitte besuchen Sie unsere Dokumentation für detaillierte Anweisungen](docs_url).
     attribute_texts:
       name: Beliebiger Name der LDAP-Verbindung
       host: LDAP-Hostname oder IP-Adresse
@@ -330,16 +329,33 @@ de:
     tab:
       no_results_title_text: Zur Zeit existieren keine benutzerdefinierten Felder.
       no_results_content_text: Neues benutzerdefiniertes Feld anlegen
+  calculated_values:
+    error_dialog:
+      title: "Fehler in berechnetem Wert"
+    errors:
+      unknown: "Ein unbekannter Fehler ist aufgetreten. Bitte überprüfen Sie die Formel für diesen berechneten Wert."
+      mathematical: "Bei der Berechnung ist ein mathematischer Fehler aufgetreten."
+      missing_value: Das Attribut "%{custom_field_name}" wird für diesen berechneten Wert benötigt, ist aber leer.
+      disabled_value: Das Attribut "%{custom_field_name}" wird für diesen berechneten Wert benötigt, ist aber leer.
   concatenation:
     single: "oder"
-  dry_validation:
+  op_dry_validation:
+    or: "oder"
     errors:
-      defined: "darf nicht definiert werden."
-      int?: "muss eine ganze Zahl sein."
+      array?: "muss ein Array sein."
       decimal?: "muss eine Dezimalzahl sein."
+      defined: "darf nicht definiert werden."
+      eql?: "muss gleich %{left} sein."
       filled?: "muss ausgefüllt werden."
-      key?: "fehlt."
       greater_or_equal_zero: "muss größer oder gleich 0 sein."
+      gteq?: "muss größer oder gleich %{num} sein."
+      hash?: "muss ein Hash sein."
+      included_in?:
+        arg:
+          default: "muss einer von: %{list} sein."
+          range: "muss einer von: %{list_left} - %{list_right} sein."
+      int?: "muss eine ganze Zahl sein."
+      key?: "fehlt."
       not_found: "nicht gefunden."
       rules:
         copy_workflow_from:
@@ -347,7 +363,7 @@ de:
         custom_field:
           format_not_supported: "format '%{field_format}' wird nicht unterstützt."
         item:
-          root_item: "kann keine Hierarchiewurzel sein."
+          root_item: "kann kein Wurzelelement sein."
           not_persisted: "muss ein bereits vorhandenes Element sein."
         label:
           not_unique: "muss innerhalb der gleichen Hierarchieebene eindeutig sein."
@@ -355,16 +371,18 @@ de:
           not_unique: "muss innerhalb der gleichen Hierarchieebene eindeutig sein."
         parent:
           not_descendant: "muss ein Unterelement der Hierarchiewurzel sein."
+      str?: "muss eine Zeichenkette sein."
+      type?: "muss %{type} sein."
     rules:
       copy_workflow_from: "Typ für Workflow-Kopie"
       enabled: "Aktiviert"
       depth: "Tiefe"
       item: "Element"
-      label: "Bezeichnung"
+      label: "Beschreibung"
       score: "Wert"
       short: "Kurzname"
-      parent: "Übergeordnetes Arbeitspaket"
-      blueprint: "Blaupause für Muster"
+      parent: "Elternelement"
+      blueprint: "Muster-Blaupause"
   global_search:
     title:
       all_projects: 'Suche nach "%{search_term}" in allen Projekten'
@@ -426,7 +444,7 @@ de:
     lists:
       active: "Aktive Projekte"
       my: "Meine Projekte"
-      favored: "Favorisierte Projekte"
+      favorited: "Favorisierte Projekte"
       archived: "Archivierte Projekte"
       shared: "Geteilte Projektlisten"
       my_lists: "Meine Projektlisten"
@@ -592,9 +610,6 @@ de:
         token/api:
           title: "Der API-Token wurde generiert"
           warning: "Dies ist das einzige Mal, dass dieses Token angezeigt wird. Stellen Sie sicher, dass Sie es jetzt kopieren."
-      errors:
-        token_name_blank: "Bitte geben Sie einen Namen für den API-Token an"
-        token_name_in_use: "Dieser API-Token-Name ist bereits in Verwendung, bitte wählen Sie einen anderen"
       failed_to_reset_token: "Zusatztoken konnte nicht zurückgesetzt werden: %{error}"
       failed_to_create_token: "Zugriffstoken konnte nicht erstellt werden: %{error}"
       failed_to_revoke_token: "Zugriffstoken kann nicht widerrufen werden: %{error}"
@@ -612,17 +627,20 @@ de:
     autologins:
       prompt: "%{num_days} lang angemeldet bleiben"
     sessions:
-      remembered_devices: "Gespeicherte Geräte"
-      remembered_devices_caption: "Eine Liste aller Geräte, bei denen Sie sich mit der Option 'angemeldet bleiben' angemeldet haben."
       session_name: "%{browser_name} %{browser_version} unter %{os_name}"
       browser: "Browser"
+      expires: "Läuft ab"
+      last_connection: "Letzte Anmeldung"
       device: "Gerät / Betriebssystem"
       unknown_browser: "unbekannter Browser"
       unknown_os: "unbekanntes Betriebssystem"
-      current: "Aktuelle Sitzung"
+      unknown: "(unbekannt)"
+      browser_session: "(Browser-Sitzung)"
+      current: "Aktuell (dieses Gerät)"
       title: "Sitzungsverwaltung"
-      instructions: "Dies ist eine Liste der Geräte, die sich bei Ihrem Konto angemeldet haben. Widerrufen Sie alle Sitzungen, die Sie nicht kennen oder auf die Sie keinen Zugriff mehr haben."
+      instructions: "Sie sind über die folgenden Geräte bei Ihrem Konto angemeldet. Widerrufen Sie Sitzungen, die Sie nicht kennen oder von Geräten, die Sie nicht kontrollieren."
       may_not_delete_current: "Sie können Ihre aktuelle Sitzung nicht löschen."
+      deletion_warning: "Sind Sie sicher, dass Sie diese Sitzung widerrufen möchten? Sie werden auf diesem Gerät abgemeldet."
     groups:
       member_in_these_groups: "Dieser Benutzer ist Mitglied der folgenden Gruppen:"
       no_results_title_text: Dieser Benutzer ist derzeit kein Mitglied in einer Gruppe.
@@ -690,9 +708,7 @@ de:
         excluded_from_totals: "Von Gesamtsumme auschließen"
   themes:
     dark: "Dunkel"
-    dark_high_contrast: "Dunkel (hoher Kontrast)"
     light: "Hell"
-    light_high_contrast: "Hell (hoher Kontrast)"
     sync_with_os: "Automatisch (entsprechend dem OS-Farbschema)"
   types:
     index:
@@ -959,6 +975,11 @@ de:
         help_text: "Hilfe-Text"
       auth_provider:
         scim_clients: "SCIM-Clients"
+      calculated_value_error:
+        error_code: "Fehlercode"
+        customized: "Benutzerdefiniert"
+        customized_id: "Benutzerdefinierte ID"
+        customized_type: "Benutzerdefinierter typ"
       capability:
         context: "Kontext"
       changeset:
@@ -1009,6 +1030,8 @@ de:
         active_user_count_restriction: "Aktive Nutzer"
       enterprise_trial:
         company: "Unternehmen"
+      favorite:
+        favorited: "Favorisiert"
       grids/grid:
         page: "Seite"
         row_count: "Anzahl der Zeilen"
@@ -1135,6 +1158,8 @@ de:
         is_readonly: "Arbeitspakete schreibgeschützt"
         excluded_from_totals: "Von der Berechnung der Gesamtsumme in der Hierarchie ausschließen"
         default_done_ratio: "% abgeschlossen"
+      token/named:
+        token_name: "Token-Name"
       token/ical:
         calendar: "Kalender"
         ical_token_query_assignment: "Zuordnung der Abfrage"
@@ -1185,9 +1210,16 @@ de:
           Sie können die standardmäßigen <a href="%{href}">Tastenkombinationen</a> deaktivieren, wenn Sie einen Screenreader verwenden oder unbeabsichtigtes Auslösen einer Aktion durch eine Tastenkombination vermeiden möchten.
         dismissed_enterprise_banners: "Ausgeblendete Unternehmensbanner"
         impaired: "Für die barrierefreie Nutzung optimierte Oberfläche"
-        auto_hide_popups: "Automatisches Ausblenden von Erfolgsbannern"
+        auto_hide_popups: "Erfolgsbannern automatisch ausblenden"
         auto_hide_popups_caption: "Wenn diese Funktion aktiviert ist, verschwinden die grünen Erfolgsbanner automatisch nach 5 Sekunden."
         warn_on_leaving_unsaved: "Beim Verlassen einer Arbeitspaket-Seite mit ungespeichertem Text warnen"
+        increase_theme_contrast: "Kontrast erhöhen"
+        increase_contrast: "Kontrast erhöhen"
+        increase_contrast_caption: "Aktiviere hohen Kontrast für den gewählten Farbmodus."
+        force_light_theme_contrast: "Hohen Kontrast im Hell-Modus erzwingen"
+        force_dark_theme_contrast: "Hohen Kontrast im Dunkel-Modus erzwingen"
+        force_light_theme_contrast_caption: "Verwendet die kontrastreiche Version des Hell-Modus, wenn der automatische Farbmodus ausgewählt ist."
+        force_dark_theme_contrast_caption: "Verwendet die kontrastreiche Version des Dunkel-Modus, wenn der automatische Farbmodus ausgewählt ist."
         theme: "Farbmodus"
         time_zone: "Zeitzone"
         mode_guideline: "Einige Modi überschreiben benutzerdefinierte Theme-Farben zur Verbesserung von Barrierefreiheit und Lesbarkeit. Bitte wählen Sie den Hellmodus für die vollständige Unterstützung Ihres benutzerdefinierten Themes."
@@ -1255,7 +1287,7 @@ de:
         confirmation: "stimmt nicht mit %{attribute} überein."
         could_not_be_copied: "%{dependency} konnte nicht (vollständig) kopiert werden."
         does_not_exist: "existiert nicht."
-        error_enterprise_only: "%{action} ist nur in OpenProject Enterprise on-premises verfügbar"
+        error_enterprise_only: "%{action} ist nur in der OpenProject Enterprise Edition verfügbar."
         error_unauthorized: "kann nicht zugegriffen werden."
         error_readonly: "wurde versucht zu beschreiben, ist aber nicht beschreibbar."
         error_conflict: "Die Informationen wurde zwischenzeitlich durch andere Benutzer geändert."
@@ -1367,6 +1399,8 @@ de:
           only_one_trial: "Es kann nur ein Test-Token aktiv sein. Bitte löschen Sie den vorherigen Test-Token, bevor Sie einen weiteren hinzufügen."
           unreadable: "kann nicht gelesen werden. Ist dies ein Enterprise edition Support Token?"
           already_added: "Dieser Token wurde bereits hinzugefügt."
+        favorite:
+          already_favorited: "wurde bereits favorisiert."
         grids/grid:
           overlaps: "überlappen."
           outside: "ist außerhalb des Rasters."
@@ -1463,10 +1497,19 @@ de:
           typed_dag:
             circular_dependency: "Die Beziehung erzeugt eine zirkuläre Abhängigkeit."
           attributes:
+            base:
+              error_not_deletable: "Diese Beziehung kann nicht gelöscht werden, da Sie keine Bearbeitungsberechtigung für das ausgewählte Arbeitspaket haben."
+              error_not_editable: "Diese Beziehung kann nicht bearbeitet werden, da Sie keine Bearbeitungsrechte für das ausgewählte Arbeitspaket haben."
             to_id:
+              format: "Das ausgewählte Arbeitspaket %{message}"
+              error_not_found: "konnte nicht gefunden werden."
               error_readonly: "kann für bestehende Beziehungen nicht geändert werden."
+              error_not_manageable: "kann nicht hinzugefügt werden, da Sie keine Bearbeitungsberechtigung für das ausgewählte Arbeitspaket haben."
             from_id:
+              format: "Das ausgewählte Arbeitspaket %{message}"
+              error_not_found: "konnte nicht gefunden werden."
               error_readonly: "kann für bestehende Beziehungen nicht geändert werden."
+              error_not_manageable: "kann nicht hinzugefügt werden, da Sie keine Bearbeitungsberechtigung für das ausgewählte Arbeitspaket haben."
         repository:
           not_available: "SCM-Anbieter ist nicht verfügbar"
           not_whitelisted: "wird durch die Konfiguration nicht erlaubt."
@@ -1617,9 +1660,11 @@ de:
         version:
           undeletable_archived_projects: "Die Version kann nicht gelöscht werden, da sie Arbeitspakete enthält, die an sie angeschlossen sind."
           undeletable_work_packages_attached: "Die Version kann nicht gelöscht werden, da sie Arbeitspakete enthält, die an sie angeschlossen sind."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Bitte geben Sie einen Namen für den Token an"
+              in_use: "Dieser Token-Name ist bereits in Verwendung, bitte wählen Sie einen anderen"
               format: "%{message}"
       template:
         body: "Bitte überprüfen Sie die folgenden Felder:"
@@ -1739,6 +1784,7 @@ de:
     attachments: "Anhänge"
     actor: "Ausführender Benutzer"
     action: "Aktion"
+    api_key: "API-Key"
     author: "Autor"
     avatar: "Profilfoto"
     base: "Allgemeiner Fehler:"
@@ -1869,6 +1915,7 @@ de:
   button_add_watcher: "Beobachter hinzufügen"
   button_annotate: "Kommentieren"
   button_apply: "Anwenden"
+  button_apply_changes: "Änderungen anwenden"
   button_archive: "Archivieren"
   button_back: "Zurück"
   button_cancel: "Abbrechen"
@@ -1918,8 +1965,8 @@ de:
   button_rollback: "Auf diese Version zurücksetzen"
   button_save: "Speichern"
   button_save_as: "Speichern unter"
-  button_apply_changes: "Änderungen anwenden"
   button_save_back: "Speichern und zurück"
+  button_select: "Auswählen"
   button_set_reminder: "Erinnerung einrichten"
   button_show: "Anzeigen"
   button_sort: "Sortierung"
@@ -2143,6 +2190,7 @@ de:
     features:
       baseline_comparison: Grundlinie (Planungsvergleich)
       board_view: Erweiterte agile Boards
+      calculated_values: Berechnete Werte
       conditional_highlighting: Bedingte Hervorhebung
       internal_comments: Interne Kommentare
       custom_actions: Benutzerdefinierte Aktionen
@@ -2177,7 +2225,7 @@ de:
         Haben Sie bereits ein Token? Fügen Sie es über den Button unten hinzu, um zum gebuchten Enterprise-Plan zu wechseln.
       hide_banner: "Dieses Banner ausblenden"
       homescreen_description: >
-        Enterprise-Pläne erweitern die Community Edition von OpenProject, welche Sie derzeit verwenden. Sie beinhalten Add-ons, zusätzliche Funktionen und professionelle Unterstützung, die es Organisationen aller Größenordnungen ermöglicht, gemeinsam Großartiges zu erreichen.
+        Enterprise-Pläne erweitern die Community-Edition von OpenProject um zusätzliche [Enterprise Add-Ons](enterprise_url) und professionellen Support, ideal für Unternehmen, die OpenProject in einer geschäftskritischen Umgebung einsetzen.
       homescreen_subline: Durch ein Upgrade unterstützen Sie zudem ein Open-Source-Projekt.
       baseline_comparison:
         description: An dieser Liste vorgenommene Änderungen seit einem beliebigen Zeitpunkt in der Vergangenheit hervorheben.
@@ -2215,6 +2263,8 @@ de:
         description: "Teilen Sie Arbeitspakete mit Benutzern, die nicht Mitglieder des Projekts sind."
       project_list_sharing:
         description: "Projektlisten mit einzelnen Benutzern und Gruppen teilen."
+      calculated_values:
+        description: "Mit berechneten Werten können Sie ein auf einer mathematischen Formel basierendes Attribut erstellen, in das numerische Werte und anderen Projektattributen und benutzerdefinierten Feldern einfließen."
       define_custom_style:
         title: "Selbstdefiniertes Farbthema und Logo"
         more_info: "Hinweis: Das verwendete Logo wird öffentlich zugänglich sein."
@@ -2280,6 +2330,9 @@ de:
   enumeration_reported_project_statuses: "Gemeldeter Projektstatus"
   enumeration_caption_order_changed: "Reihenfolge erfolgreich geändert."
   enumeration_could_not_be_moved: "Aufzählung konnte nicht verschoben werden."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Testversion
   error_auth_source_sso_failed: "Single Sign-On (SSO) für Nutzer '%{value}' fehlgeschlagen"
   error_can_not_archive_project: "Dieses Projekt kann nicht archiviert werden: %{errors}"
   error_can_not_delete_entry: "Eintrag kann nicht gelöscht werden"
@@ -2308,6 +2361,7 @@ de:
   error_invalid_selected_value: "Ausgewählter Wert ist ungültig."
   error_journal_attribute_not_present: "Journal enthält Attribut %{attribute} nicht."
   error_pdf_export_too_many_columns: "Zu viele Spalten für PDF-Export ausgewählt. Bitte reduzieren Sie die Anzahl der ausgewählten Spalten."
+  error_pdf_date_range_too_long: "Der ausgewählte Datumsbereich des Arbeitspakets überschreitet die zulässige Grenze für den PDF-Export. Bitte beschränken Sie den Bereich auf maximal %{years} Jahre."
   error_pdf_failed_to_export: "Der PDF-Export konnte nicht gespeichert werden: %{error}"
   error_token_authenticity: "Das Cross-Site Request Forgery Token konnte nicht verfiziert werden. Wenn Sie versucht haben, Daten auf mehreren Tabs oder Browsern abzuspeichern, schließen sie diese und laden diese Seite erneut um den Vorgang zu wiederholen."
   error_reminder_not_found: "Die Erinnerung wurde nicht gefunden oder wurde bereits benachrichtigt."
@@ -2520,28 +2574,27 @@ de:
         header: "Lesen Sie über neue Funktionen und Updates."
         learn_about: "Erfahren Sie mehr über die neuen Funktionen"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
+        "16_5":
           new_features_title: >
             Dieses Release enthält verschiedene neue Funktionen und Verbesserungen, wie z. B:
           new_features_list:
-            line_0: Option zur automatischen Synchronisierung von Systemfarbschema und Kontrastmodus.
-            line_1: Hochkontrastmodus im Dark Mode für bessere Zugänglichkeit.
-            line_2: PDF-Export von Projektlisten.
-            line_3: Benutzerdefinierte Schriftart für alle PDF-Exporte (Enterprise Add-on).
-            line_4: Verbesserter Dialog zum Verwalten von Teilnehmern an Besprechungen.
-            line_5: Verbesserte Budgetplanung und -verwaltung bei Projektabfragen.
-            line_6: Aktualisierte Startseite und Projektübersicht.
+            line_0: Fügen Sie Arbeitspakete zu einem Besprechungsabschnitt auf der Registerkarte Besprechungen hinzu.
+            line_1: Wählen Sie den Farbmodus bequemer mit den Kontrollkästchen "Kontrast erhöhen".
+            line_2: Filtern Sie Projekte nach letzter Aktualisierung.
+            line_3: Springen Sie von Deep Links zu markierten Zielelementen.
+            line_4: Bestätigen Sie kritische Aktionen mit besser zugänglichen Gefahrendialogen.
     links:
       upgrade_enterprise_edition: "Auf Enterprise Edition upgraden"
       postgres_migration: "Migration Ihrer Installation zu PostgreSQL"
-      user_guides: "Benutzerhandbuch"
+      user_guides: "Nutzungshandbuch"
       faq: "Häufig gestellte Fragen"
       impressum: "Impressum"
       glossary: "Glossar"
-      shortcuts: "Tastenkürzel"
+      shortcuts: "Tastaturkürzel"
       blog: "OpenProject Blog"
       forums: "Community Forum"
-      newsletter: "Sicherheitswarnungen / Newsletter"
+      security_alerts: "Sicherheitswarnungen"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "ImageMagick"
   journals:
@@ -2623,7 +2676,7 @@ de:
         static_token_name: "API-Token"
       ical:
         title: "iCalendar"
-        text_hint: 'iCalendar Token erlauben es Benutzern <a href="%{path}" target="_blank">OpenProject Kalender</a> zu abonnieren und aktuelle Arbeitspaket-Informationen auf externen Clients anzuzeigen.'
+        text_hint_link: 'iCalendar-Token ermöglichen es Benutzern, [OpenProject-Kalender zu abonnieren](docs_url) und aktuelle Arbeitspaketinformationen in externen Anwendungen anzuzeigen.'
         disabled_text: "iCalendar Abonnements sind vom Administrator nicht aktiviert. Bitte kontaktieren Sie Ihren Administrator, um diese Funktion zu nutzen."
         empty_text_hint: "Um einen iCalendar Token hinzuzufügen, abonnieren Sie einen neuen oder bestehenden Kalender innerhalb des Kalender-Moduls eines Projekts. Sie müssen über die erforderlichen Berechtigungen verfügen."
       oauth:
@@ -2765,6 +2818,7 @@ de:
   label_required_disk_storage: "Erforderlicher Festplattenspeicher"
   label_send_invitation: Einladung senden
   label_calculated_value: "Berechneter Wert"
+  label_change_parent: "Übergeordnetes Arbeitspaket ändern"
   label_change_plural: "Änderungen"
   label_change_properties: "Eigenschaften ändern"
   label_change_status: "Statuswechsel"
@@ -3590,6 +3644,7 @@ de:
   notice_password_confirmation_failed: "Ihr Passwort ist nicht korrekt. Kann nicht fortgesetzt werden."
   notice_principals_found_multiple: "Es wurden %{number} Ergebnisse gefunden.\nDrücke Tab um das erste Ergebnis zu fokussieren."
   notice_principals_found_single: "Es wurde ein Ergebnis gefunden.\nDrücke Tab um es zu fokussieren."
+  notice_parent_item_not_found: "Übergeordnetes Element nicht gefunden."
   notice_project_not_deleted: "Das Projekt wurde nicht gelöscht."
   notice_project_not_found: "Projekt nicht gefunden."
   notice_successful_connection: "Verbindung erfolgreich."
@@ -4002,6 +4057,8 @@ de:
   setting_feeds_limit: "Max. Anzahl Einträge pro Atom-Feed"
   setting_file_max_size_displayed: "Maximale Größe inline angezeigter Textdateien"
   setting_host_name: "Hostname"
+  setting_collaborative_editing_hocuspocus_url: "Hokuspokus-Server-URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hokuspokus-Server-Schlüssel"
   setting_hours_per_day: "Stunden pro Tag"
   setting_hours_per_day_explanation: >-
     Dies legt fest, was als "Tag" angesehen wird, wenn eine zeitliche Dauer angezeigt werden (zum Beispiel: Wenn die Länge eines Tages 8 Stunden beträgt, wird eine Eingabe von 32 Stunden als 4 Tage angezeigt).
@@ -4230,6 +4287,7 @@ de:
   text_access_token_hint: "Zugangs-Tokens erlauben es externen Applikationen Zugriff auf OpenProject zu erhalten."
   text_analyze: "Weiter analysieren: %{subject}"
   text_are_you_sure: "Sind Sie sicher?"
+  open_link_in_a_new_tab: "Link in neuem Tab öffnen"
   text_are_you_sure_continue: "Sind Sie sicher, dass Sie fortfahren möchten?"
   text_are_you_sure_with_children: "Lösche Aufgabe und alle Unteraufgaben?"
   text_are_you_sure_with_project_custom_fields: "Wenn Sie dieses Attribut löschen, werden auch dessen Werte in allen Projekten gelöscht. Sind Sie sicher, dass Sie dies tun möchten?"

@@ -30,8 +30,7 @@
 
 module CustomFields
   module Hierarchy
-    class UpdateScoredItemContract < Dry::Validation::Contract
-      config.messages.backend = :i18n
+    class UpdateScoredItemContract < DryApplicationContract
 
       params do
         required(:item).filled(type?: CustomField::Hierarchy::Item)

@@ -32,6 +32,7 @@ de:
         drive: Laufwerk ID
         host: Host
         name: Name
+        password: Anwendungspasswort
         provider_type: Anbieter-Typ
         tenant: Verzeichnis (Tenant) ID
     errors:
@@ -62,7 +63,7 @@ de:
               op_application_not_installed: scheint die App "OpenProject Integration" nicht installiert zu haben. Bitte installieren Sie diese zuerst und versuchen es danach erneut.
             password:
               invalid_password: ist ungültig.
-              unknown_error: konnte nicht überprüft werden. Bitte überprüfen Sie Ihre Verbindung zum Dateispeicher und versuchen Sie es erneut.
+              unknown_error: konnte nicht mit dem Dateispeicheranbieter validiert werden. Bitte überprüfen Sie, ob die Verbindung ordnungsgemäß funktioniert.
     models:
       file_link: Datei
       storages/storage: Speicher
@@ -183,8 +184,6 @@ de:
           not_found: Der Zielordner %{folder} konnte nicht auf %{storage_name} gefunden werden.
   storages:
     buttons:
-      complete_without_setup: Ohne fortfahren
-      done_complete_setup: Fertig, Einrichtung abschließen
       done_continue: Fertig, Fortfahren
       open_storage: Dateispeicher öffnen
       replace_oauth_application: OpenProject OAuth ersetzen

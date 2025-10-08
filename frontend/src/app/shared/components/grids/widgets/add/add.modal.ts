@@ -59,7 +59,7 @@ export class AddGridWidgetModalComponent extends OpModalComponent implements OnI
     this.closeMe($event);
   }
 
-  public trackWidgetBy(widget:WidgetRegistration) {
+  public trackWidgetBy(_index:number, widget:WidgetRegistration) {
     return widget.identifier;
   }
 

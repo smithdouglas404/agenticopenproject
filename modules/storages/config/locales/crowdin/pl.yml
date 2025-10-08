@@ -32,6 +32,7 @@ pl:
         drive: Identyfikator dysku
         host: Host
         name: Nazwa
+        password: Hasło aplikacji
         provider_type: Typ dostawcy
         tenant: Identyfikator katalogu (dzierżawcy)
     errors:
@@ -55,14 +56,14 @@ pl:
         storages/storage:
           attributes:
             host:
-              authorization_header_missing: nie jest w pełni skonfigurowany. Instancja Nextcloud nie otrzymuje nagłówka "Autoryzacja", który jest niezbędny do autoryzacji żądań API na podstawie tokena Bearer. Sprawdź konfigurację serwera HTTP.
+              authorization_header_missing: nie jest w pełni skonfigurowany. Instancja Nextcloud nie otrzymuje nagłówka "Authorization", który jest wymagany do uwierzytelniania zapytań API za pomocą tokenu Bearer. Sprawdź ponownie konfigurację serwera HTTP.
               cannot_be_connected_to: nie można osiągnąć. Upewnij się, że host jest osiągalny i zainstalowana jest aplikacja integracji OpenProject.
               minimal_nextcloud_version_unmet: nie spełnia wymagań wersji minimalnej (konieczna Nextcloud 23 lub wyższa)
               not_nextcloud_server: nie jest serwerem Nextcloud
-              op_application_not_installed: wydaje się, że aplikacja "OpenProject integration" nie jest zainstalowana. Zainstaluj ją najpierw i spróbuj ponownie.
+              op_application_not_installed: wydaje się, że aplikacja „OpenProject integration” nie jest zainstalowana. Zainstaluj ją najpierw i spróbuj ponownie.
             password:
               invalid_password: jest nieprawidłowe
-              unknown_error: '— nie można sprawdzić poprawności. Sprawdź połączenie z magazynem i spróbuj ponownie.'
+              unknown_error: nie udało się zweryfikować z dostawcą usługi przechowywania plików. Sprawdź, czy połączenie działa prawidłowo.
     models:
       file_link: Plik
       storages/storage: Magazyn
@@ -183,8 +184,6 @@ pl:
           not_found: Folder docelowy %{folder} nie został znaleziony w magazynie %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Ukończ bez tego
-      done_complete_setup: Gotowe, konfiguracja ukończona
       done_continue: Gotowe, kontynuuj
       open_storage: Otwórz magazyn plików
       replace_oauth_application: Zastąp OpenProject OAuth

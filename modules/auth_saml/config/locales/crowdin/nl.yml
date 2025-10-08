@@ -56,6 +56,7 @@ nl:
       label_mapping: Koppeling
       label_requested_attribute_for: "Attribuut aangevraagd voor: %{attribute}"
       no_results_table: Er zijn nog geen SAML identity providers gedefinieerd.
+      notice_created: A new SAML identity provider was successfully created.
       plural: SAML-identiteitsproviders
       singular: SAML-identiteitsprovider
       requested_attributes: Gevraagde kenmerken

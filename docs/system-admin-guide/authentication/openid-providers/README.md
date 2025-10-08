@@ -1,5 +1,5 @@
 ---
-sidebar_navigation:
+Sidebar_navigation:
   title: OpenID providers
   priority: 800
 description: OpenID providers for OpenProject.
@@ -8,7 +8,8 @@ keywords: OpenID providers
 # OpenID providers (Enterprise add-on)
 
 > [!IMPORTANT]
-> OpenID Connect providers is an Enterprise add-on. If you do not see the button you will have to activate the Enterprise edition first.
+>
+> OpenID Connect providers is an Enterprise add-on.  If you do not see the button you will have to activate the Enterprise  edition first.
 
 | Topic                                                              | Content                                                                         |
 |--------------------------------------------------------------------|---------------------------------------------------------------------------------|

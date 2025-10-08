@@ -58,7 +58,9 @@ module CustomFields
 
       if cf.is_a?(ProjectCustomField)
         add_cf_to_visible_columns(cf)
-      elsif cf.hierarchical_list?
+      end
+
+      if cf.hierarchical_list?
         CustomFields::Hierarchy::HierarchicalItemService.new.generate_root(cf)
       end
 

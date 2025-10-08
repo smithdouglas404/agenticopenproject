@@ -21,6 +21,8 @@ zh-TW:
           title: '最新消息'
           at: '在'
           no_results: '沒有新消息可報告'
+        news_beta:
+          title: '公告 (BETA)'
         project_description:
           title: '專案描述'
           no_results: "尚未寫入任何描述。可以在「項目設置」中新增。"

@@ -95,7 +95,7 @@ sv:
       time: "Tid"
       sums_hours: Sums
       overview_per_user_total: "Overview: Total hours per user"
-      overview_per_user_day: "Overview: Hours per user per day"
+      overview_per_user_day: "Översikt: Timmar per användare och dag"
     cost_reports:
       title: "Your Cost Reports XLS export"
       start_time: "Starttid"

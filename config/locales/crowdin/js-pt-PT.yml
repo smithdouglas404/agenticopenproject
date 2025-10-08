@@ -88,6 +88,8 @@ pt-PT:
     button_list_view: "Ver lista"
     button_show_view: "Ver em ecrã completo"
     button_log_time: "Tempo de registro"
+    button_start_timer: "Iniciar temporizador"
+    button_stop_timer: "Parar temporizador"
     button_more: "Mais"
     button_open_details: "Abrir visão detalhada"
     button_close_details: "Fechar visão detalhada"
@@ -1103,6 +1105,7 @@ pt-PT:
       child_work_packages:
         one: "pacote de trabalho infantil"
         other: "%{count} pacotes de trabalho filhos"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"

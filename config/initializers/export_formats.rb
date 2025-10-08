@@ -48,6 +48,7 @@ Rails.application.configure do |application|
       formatter WorkPackage, WorkPackage::Exports::Formatters::Hours
       formatter WorkPackage, WorkPackage::Exports::Formatters::ProjectPhase
       formatter WorkPackage, WorkPackage::Exports::Formatters::SpentUnits
+      formatter WorkPackage, WorkPackage::Exports::Formatters::WorkHours
 
       list Project, Projects::Exports::CSV
       list Project, Projects::Exports::PDF
@@ -57,7 +58,7 @@ Rails.application.configure do |application|
       formatter Project, Projects::Exports::Formatters::Description
       formatter Project, Projects::Exports::Formatters::Public
       formatter Project, Projects::Exports::Formatters::Active
-      formatter Project, Projects::Exports::Formatters::Favored
+      formatter Project, Projects::Exports::Formatters::Favorited
       formatter Project, Projects::Exports::Formatters::RequiredDiskSpace
     end
   end

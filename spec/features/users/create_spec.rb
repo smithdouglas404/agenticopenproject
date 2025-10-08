@@ -151,10 +151,11 @@ RSpec.describe "create users" do
             .and_return({ dn: "cn=bob,ou=users,dc=example,dc=com" })
 
           fill_in "password", with: "dummy" # accepted by DummyAuthSource
-
           click_button "Sign in", type: "submit"
+          wait_for_network_idle
 
-          expect(page).to have_text "OpenProject"
+          # landed on the 'my page'
+          expect(page).to have_text "Welcome to OpenProject, bobfirst boblast"
           expect(page).to have_current_path "/", ignore_query: true
           user_menu.expect_user_shown "bobfirst boblast"
         end

@@ -21,6 +21,8 @@ cs:
           title: 'Novinky'
           at: 'v'
           no_results: 'Žádné novinky.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Popis projektu'
           no_results: "Zatím nebyl napsán žádný popis. Můžete ho uvést v \"Nastavení projektu\"."

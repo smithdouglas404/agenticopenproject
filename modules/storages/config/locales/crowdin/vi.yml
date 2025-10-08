@@ -32,6 +32,7 @@ vi:
         drive: ID Ổ đĩa
         host: Máy chủ
         name: Tên
+        password: Application password
         provider_type: Loại nhà cung cấp
         tenant: ID Thư mục (người thuê)
     errors:
@@ -62,7 +63,7 @@ vi:
               op_application_not_installed: có vẻ như chưa cài đặt ứng dụng "Tích hợp OpenProject". Vui lòng cài đặt ứng dụng này trước và sau đó thử lại.
             password:
               invalid_password: không hợp lệ.
-              unknown_error: không thể xác thực. Vui lòng kiểm tra kết nối lưu trữ của bạn và thử lại.
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: Tệp
       storages/storage: Lưu trữ
@@ -144,7 +145,7 @@ vi:
               permission_not_set: không thể thiết lập quyền trên %{path}.
             remote_folders:
               not_allowed: The %{username} doesn't have access to the %{group_folder} folder. Please check the folder permissions on Nextcloud.
-              not_found: "%{group_folder} folder wasn't found. Please check your Nextcloud setup."
+              not_found: "Không tìm thấy %{group_folder} thư mục. Hãy kiểm tra cấu hình Nextcloud."
             remove_user_from_group:
               conflict: 'Không thể xóa người dùng %{user} khỏi nhóm %{group} vì lý do sau: %{reason}'
               failed_to_remove: 'Không thể xóa người dùng %{user} khỏi nhóm %{group} vì lý do sau: %{reason}'
@@ -158,7 +159,7 @@ vi:
           group_does_not_exist: "%{group} không tồn tại. Kiểm tra cấu hình phiên bản Nextcloud của bạn."
           insufficient_privileges: OpenProject không có đủ quyền để thêm %{user} vào %{group}. Kiểm tra cài đặt nhóm của bạn trong Nextcloud.
           not_allowed: Nextcloud chặn yêu cầu.
-          unauthorized: OpenProject could not sync with Nextcloud. Please check your storage and Nextcloud configuration.
+          unauthorized: OpenProject không thể đồng bộ với Nextcloud. Hãy kiểm tra cấu hình lưu trữ và Nextcloud.
           user_does_not_exist: "%{user} không tồn tại trong Nextcloud."
         one_drive_sync_service:
           attributes:
@@ -177,14 +178,12 @@ vi:
               permission_not_set: không thể thiết lập quyền trên %{path}.
           error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information
           not_allowed: OpenProject không được phép truy cập ổ đĩa OneDrive của bạn. Vui lòng kiểm tra các quyền được thiết lập trên Ứng dụng Azure.
-          unauthorized: OpenProject could not sync with OneDrive. Please check your storage and Azure Application configuration.
+          unauthorized: OpenProject không thể đồng bộ với OneDrive. Hãy kiểm tra cấu hình lưu trữ và ứng dụng Azure..
           user_does_not_exist: "%{user} không tồn tại trong Nextcloud."
         upload_link_service:
           not_found: The destination folder %{folder} could not be found on %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Hoàn tất mà không cần cấu hình
-      done_complete_setup: Hoàn tất, hoàn tất cấu hình
       done_continue: Hoàn tất, tiếp tục
       open_storage: Mở lưu trữ tập tin
       replace_oauth_application: Thay thế OAuth OpenProject
@@ -285,7 +284,7 @@ vi:
           tenant_id: Tenant ID
         failures:
           other: "%{count} checks failed"
-        success: All checks passed
+        success: Đã hoàn thành tất cả các bước kiểm tra
         warnings:
           other: "%{count} checks returned a warning"
       connection_validation:
@@ -309,14 +308,14 @@ vi:
         od_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
         od_oauth_token_missing: OpenProject cannot test the user level communication with OneDrive as the user did not yet link their Microsoft account.
         od_tenant_id_wrong: ID thư mục (người thuê) cấu hình không hợp lệ. Vui lòng kiểm tra cấu hình.
-        od_test_folder_exists: The folder %{folder_name} needed for testing already exists. Please delete it and try again.
+        od_test_folder_exists: Thư mục %{folder_name} cần cho chức năng test đã tồn tại. Hãy xóa nó và thử lại.
         od_unexpected_content: Nội dung không mong đợi được tìm thấy trong ổ đĩa.
         offline_access_scope_missing: It is recommended to configure the OpenID Connect provider to request the offline_access scope. The integration may still work anyways, but make sure that refresh tokens do not expire.
         oidc_cant_refresh_token: There was an error while trying to check your access to the storage. Please check the server logs for further information.
         oidc_non_oidc_user: The current user, while provisioned, wasn't provisioned by an OpenID Connect (OIDC) Identity Provider. Please re-run the check with an OIDC provisioned user.
         oidc_non_provisioned_user: The current user isn't provided by an OpenID Connect Identity Provider. Please re-run the check with a provided user.
         oidc_provider_cant_exchange: The OpenID Connect provider does not seem to support token exchange, but token exchange was configured for the storage.
-        oidc_token_acquisition_failed: Your OpenID Connect setup doesn't provide the necessary audience, nor does it provide token exchange capabilities. Please check out our documentation for more information.
+        oidc_token_acquisition_failed:
         oidc_token_exchange_failed: There seems to be a problem with the Token Exchange setup on your OpenID Connect Provider. Please check its configuration and try again.
         oidc_token_refresh_failed: There was an error while trying to check your access to the storage. Please check the server logs for further information.
         sp_client_cant_delete_folder: The client is having trouble deleting folders in SharePoint. Please check the setup documentation for your storage.

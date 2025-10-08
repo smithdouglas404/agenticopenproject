@@ -32,6 +32,7 @@ fr:
         drive: ID du lecteur
         host: Hôte
         name: Nom
+        password: Mot de passe de l'application
         provider_type: Type de fournisseur
         tenant: ID du répertoire (locataire)
     errors:
@@ -62,7 +63,7 @@ fr:
               op_application_not_installed: semble ne pas avoir installé l'application "Intégration OpenProject" . Veuillez d'abord l'installer puis réessayer.
             password:
               invalid_password: n'est pas valide.
-              unknown_error: n'a pas pu être validé. Veuillez vérifier votre connexion à l'espace de stockage et réessayez.
+              unknown_error: n'a pas pu être validée avec le fournisseur de stockage de fichiers. Veuillez vérifier que la connexion fonctionne correctement.
     models:
       file_link: Fichier
       storages/storage: Stockage
@@ -183,8 +184,6 @@ fr:
           not_found: Le dossier de destination %{folder} n'a pas été trouvé sur %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Compléter sans
-      done_complete_setup: Configuration terminée.
       done_continue: Terminé, continuer
       open_storage: Ouvrir le stockage de fichiers
       replace_oauth_application: Remplacer OAuth OpenProject

@@ -195,10 +195,9 @@ pt-PT:
     ldap_auth_failed: "Não foi possível autenticar com o servidor LDAP."
     sync_failed: "Não foi possível sincronizar a partir do LDAP: %{message}."
     back_to_index: "Clique aqui para voltar para a lista de ligação."
-    technical_warning_html: |
-      Este formulário LDAP requer conhecimento técnico da configuração do seu LDAP/Active Directory.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Consulte a nossa documentação para obter instruções detalhadas</a>.
+    technical_warning: |
+      Este formulário LDAP requer conhecimento técnico sobre a sua configuração LDAP/Active Directory.
+      [Consulte a nossa documentação para instruções detalhadas](docs_url).
     attribute_texts:
       name: Nome arbitrário da ligação LDAP
       host: Nome ou endereço IP do anfitrião LDAP
@@ -331,16 +330,33 @@ pt-PT:
     tab:
       no_results_title_text: Atualmente, não existem campos personalizados.
       no_results_content_text: Criar um novo campo personalizado
+  calculated_values:
+    error_dialog:
+      title: "Erro no valor calculado"
+    errors:
+      unknown: "Ocorreu um erro desconhecido. Analise a fórmula deste valor calculado."
+      mathematical: "Ocorreu um erro matemático no cálculo."
+      missing_value: O atributo "%{custom_field_name}" é exigido por este valor calculado, mas está vazio.
+      disabled_value: O atributo "%{custom_field_name}" é exigido por este valor calculado, mas está desativado para o projeto.
   concatenation:
     single: "ou"
-  dry_validation:
+  op_dry_validation:
+    or: "ou"
     errors:
+      array?: "tem de ser uma matriz."
+      decimal?: "tem de ser um decimal."
       defined: "não deve ser definido."
-      int?: "tem de ser um número inteiro."
-      decimal?: "deve ser um decimal."
+      eql?: "tem de ser igual a %{left}."
       filled?: "tem de estar preenchido."
-      key?: "em falta."
       greater_or_equal_zero: "tem de ser maior ou igual a 0."
+      gteq?: "tem de ser maior ou igual a %{num}."
+      hash?: "tem de ser um hash."
+      included_in?:
+        arg:
+          default: "tem de ser um dos seguintes: %{list}."
+          range: "tem de ser um dos seguintes: %{list_left} - %{list_right}."
+      int?: "tem de ser um número inteiro."
+      key?: "em falta."
       not_found: "não encontrado."
       rules:
         copy_workflow_from:
@@ -348,24 +364,26 @@ pt-PT:
         custom_field:
           format_not_supported: "o formato '%{field_format}' não é suportado."
         item:
-          root_item: "não pode ser um item de raiz."
-          not_persisted: "tem de ser um item já existente."
+          root_item: "não pode ser um elemento de raiz."
+          not_persisted: "tem de ser um elemento já existente."
         label:
           not_unique: "tem de ser único dentro do mesmo nível hierárquico."
         short:
           not_unique: "tem de ser único dentro do mesmo nível hierárquico."
         parent:
           not_descendant: "tem de ser um descendente da raiz da hierarquia."
+      str?: "tem de ser uma string."
+      type?: "tem de ser %{type}."
     rules:
       copy_workflow_from: "Tipo de cópia do fluxo de trabalho"
       enabled: "Ativado"
       depth: "Profundidade"
-      item: "Item"
+      item: "Elemento"
       label: "Etiqueta"
       score: "Pontuação"
       short: "Nome abreviado"
       parent: "Principal"
-      blueprint: "Modelo do plano"
+      blueprint: "Plano do padrão"
   global_search:
     title:
       all_projects: 'Pesquisar por "%{search_term}" em todos os projetos'
@@ -427,7 +445,7 @@ pt-PT:
     lists:
       active: "Projetos ativos"
       my: "Os meus projetos"
-      favored: "Projetos favoritos"
+      favorited: "Projetos favoritos"
       archived: "Projetos arquivados"
       shared: "Listas de projetos partilhados"
       my_lists: "As minhas listas de projetos"
@@ -593,9 +611,6 @@ pt-PT:
         token/api:
           title: "O token da API foi gerado"
           warning: "Esta é a única vez que verá este token. Não se esqueça de o copiar agora."
-      errors:
-        token_name_blank: "Forneça um nome de token da API"
-        token_name_in_use: "Este nome de token de API já está a ser utilizado, selecione um diferente"
       failed_to_reset_token: "Não foi possível reiniciar o token de acesso: %{error}"
       failed_to_create_token: "Não foi possível criar o token de acesso: %{error}"
       failed_to_revoke_token: "Não foi possível revogar o token de acesso: %{error}"
@@ -613,17 +628,20 @@ pt-PT:
     autologins:
       prompt: "Manter a sessão iniciada durante %{num_days}"
     sessions:
-      remembered_devices: "Dispositivos memorizados"
-      remembered_devices_caption: "Uma lista de todos os dispositivos que iniciaram sessão nesta conta utilizando a opção \"Manter sessão iniciada\"."
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "Navegador"
+      expires: "Validade"
+      last_connection: "Último acesso"
       device: "Dispositivo/SO"
       unknown_browser: "navegador desconhecido"
       unknown_os: "sistema operativo desconhecido"
-      current: "Sessão atual"
+      unknown: "(desconhecido)"
+      browser_session: "(Sessão do navegador)"
+      current: "Atual (este dispositivo)"
       title: "Gestão da sessão"
-      instructions: "Esta é a lista de dispositivos que se conectaram à sua conta. Desative quaisquer sessões que não reconheça ou já não tenha acesso."
+      instructions: "Tem sessão iniciada na sua conta através dos seguintes dispositivos. Revogue as sessões que não reconhece ou de dispositivos que não controla."
       may_not_delete_current: "Não pode eliminar a sessão atual."
+      deletion_warning: "Tem a certeza de que quer revogar esta sessão? A sua sessão será terminada neste dispositivo."
     groups:
       member_in_these_groups: "Atualmente, este utilizador é membro dos seguintes grupos:"
       no_results_title_text: Este utilizador atualmente não é um membro de nenhum grupo.
@@ -694,9 +712,7 @@ pt-PT:
         excluded_from_totals: "Excluído dos totais"
   themes:
     dark: "Escuro"
-    dark_high_contrast: "Contraste alto escuro"
     light: "Claro"
-    light_high_contrast: "Contraste alto claro"
     sync_with_os: "Automático (corresponder ao modo de cor do sistema operativo)"
   types:
     index:
@@ -964,6 +980,11 @@ pt-PT:
         help_text: "Texto de ajuda"
       auth_provider:
         scim_clients: "Clientes SCIM"
+      calculated_value_error:
+        error_code: "Código de erro"
+        customized: "Personalizado"
+        customized_id: "ID personalizado"
+        customized_type: "Tipo personalizado"
       capability:
         context: "Contexto"
       changeset:
@@ -1014,6 +1035,8 @@ pt-PT:
         active_user_count_restriction: "Utilizadores ativos"
       enterprise_trial:
         company: "Empresa"
+      favorite:
+        favorited: "Elemento"
       grids/grid:
         page: "Página"
         row_count: "Número de linhas"
@@ -1140,6 +1163,8 @@ pt-PT:
         is_readonly: "Pacote de trabalho só de leitura"
         excluded_from_totals: "Excluir do cálculo dos totais na hierarquia"
         default_done_ratio: "% de conclusão"
+      token/named:
+        token_name: "Nome do token"
       token/ical:
         calendar: "Calendário"
         ical_token_query_assignment: "Atribuição de consultas"
@@ -1193,6 +1218,13 @@ pt-PT:
         auto_hide_popups: "Ocultar automaticamente os banners de sucesso"
         auto_hide_popups_caption: "Quando ativado, os banners verdes de sucesso desaparecerão automaticamente após 5 segundos."
         warn_on_leaving_unsaved: "Alertar-me quando sair de um pacote de trabalho sem guardar as alterações"
+        increase_theme_contrast: "Aumentar contraste do tema"
+        increase_contrast: "Aumentar contraste"
+        increase_contrast_caption: "Ativa o modo de alto contraste para o modo de cor escolhido."
+        force_light_theme_contrast: "Forçar alto contraste quando no modo Claro"
+        force_dark_theme_contrast: "Forçar alto contraste quando no modo Escuro"
+        force_light_theme_contrast_caption: "Utiliza a versão de alto contraste do modo Claro quando o modo de cor automático está selecionado."
+        force_dark_theme_contrast_caption: "Utiliza a versão de alto contraste do modo Escuro quando o modo de cor automático está selecionado."
         theme: "Modo de cor"
         time_zone: "Fuso horário"
         mode_guideline: "Alguns modos substituirão as cores personalizadas do tema para acessibilidade e legibilidade. Selecione o modo Ligeiro para ter suporte total para temas personalizados."
@@ -1260,7 +1292,7 @@ pt-PT:
         confirmation: "não coincide %{attribute}."
         could_not_be_copied: "%{dependency} não pode ser copiado (completamente)."
         does_not_exist: "não existe."
-        error_enterprise_only: "%{action} só está disponível na edição OpenProject Enterprise"
+        error_enterprise_only: "%{action} só está disponível na edição OpenProject Enterprise."
         error_unauthorized: "não pode ser acedido."
         error_readonly: "tentou escrever, mas não é gravável."
         error_conflict: "A informação foi atualizada entretanto por pelo menos por um outro utilizador."
@@ -1372,6 +1404,8 @@ pt-PT:
           only_one_trial: "Só pode estar ativa uma ficha de avaliação. Elimine a ficha de avaliação anterior antes de adicionar outra."
           unreadable: "não foi possível ler. Tem a certeza que é um token de suporte?"
           already_added: "Esta ficha já foi adicionada."
+        favorite:
+          already_favorited: "já foi marcado como favorito."
         grids/grid:
           overlaps: "sobreposição."
           outside: "está fora da rede."
@@ -1468,10 +1502,19 @@ pt-PT:
           typed_dag:
             circular_dependency: "A relação cria um círculo de relações."
           attributes:
+            base:
+              error_not_deletable: "Esta relação não pode ser eliminada porque não tem permissões de edição para o pacote de trabalho selecionado."
+              error_not_editable: "Esta relação não pode ser editada porque não tem permissões de edição para o pacote de trabalho selecionado."
             to_id:
+              format: "O pacote de trabalho selecionado %{message}"
+              error_not_found: "não foi encontrado."
               error_readonly: "não pode ser alterado para as relações existentes."
+              error_not_manageable: "não pode ser adicionado porque não tem permissões de edição para o pacote de trabalho selecionado."
             from_id:
+              format: "O pacote de trabalho selecionado %{message}"
+              error_not_found: "não foi encontrado."
               error_readonly: "não pode ser alterado para as relações existentes."
+              error_not_manageable: "não pode ser adicionado porque não tem permissões de edição para o pacote de trabalho selecionado."
         repository:
           not_available: "Fornecedor SCM não está disponível"
           not_whitelisted: "não é permitido pela configuração."
@@ -1622,9 +1665,11 @@ pt-PT:
         version:
           undeletable_archived_projects: "A versão não pode ser eliminada, porque tem pacotes de trabalho anexados a ela."
           undeletable_work_packages_attached: "A versão não pode ser apagada pois tem pacotes de trabalho anexados a ela."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Forneça um nome de token"
+              in_use: "Este nome de token já está a ser utilizado, selecione um diferente"
               format: "%{message}"
       template:
         body: "Por favor, verifique os seguintes campos:"
@@ -1744,6 +1789,7 @@ pt-PT:
     attachments: "Anexos"
     actor: "Ator"
     action: "Ação"
+    api_key: "Chave API"
     author: "Autor"
     avatar: "Avatar"
     base: "Erro geral:"
@@ -1874,6 +1920,7 @@ pt-PT:
   button_add_watcher: "Adicionar observadores"
   button_annotate: "Anotar"
   button_apply: "Aplicar"
+  button_apply_changes: "Aplicar alterações"
   button_archive: "Arquivo"
   button_back: "Voltar"
   button_cancel: "Cancelar"
@@ -1923,8 +1970,8 @@ pt-PT:
   button_rollback: "Reverter para esta versão"
   button_save: "Guardar"
   button_save_as: "Guardar como"
-  button_apply_changes: "Aplicar alterações"
   button_save_back: "Salvar e voltar"
+  button_select: "Selecionar"
   button_set_reminder: "Definir lembrete"
   button_show: "Mostrar"
   button_sort: "Ordenar"
@@ -2148,6 +2195,7 @@ pt-PT:
     features:
       baseline_comparison: Comparações de base de referência
       board_view: Quadros avançados
+      calculated_values: Valores calculados
       conditional_highlighting: Realce condicional
       internal_comments: Comentários internos
       custom_actions: Ações personalizadas
@@ -2182,7 +2230,7 @@ pt-PT:
         Já tem um token? Adicione-o com o botão abaixo para atualizar para o plano Enterprise reservado.
       hide_banner: "Ocultar esta faixa"
       homescreen_description: >
-        Os planos Enterprise aumentam a Edição Community do OpenProject que está atualmente a usar. Eles incluem complementos, funcionalidades adicionais e assistência profissional que permite que organizações de todas as dimensões alcancem grandes coisas em conjunto.
+        Os planos Enterprise estendem a edição Community do OpenProject com [complementos Enterprise] adicionais (enterprise_url) e apoio profissional, ideal para organizações que executam o OpenProject num ambiente de missão crítica.
       homescreen_subline: Ao atualizar, estará também a apoiar um projeto de código aberto.
       baseline_comparison:
         description: Destacar as alterações introduzidas nesta lista desde qualquer ponto no passado.
@@ -2220,6 +2268,8 @@ pt-PT:
         description: "Partilhe pacotes de trabalho com utilizadores que não são membros do projeto."
       project_list_sharing:
         description: "Partilhar listas de projetos com utilizadores individuais."
+      calculated_values:
+        description: "Os valores calculados permitem criar um atributo baseado numa fórmula matemática com valores numéricos e outros atributos de projeto e campos personalizados."
       define_custom_style:
         title: "Tema e logótipo de cor personalizada"
         more_info: "Nota: o logótipo usado estará acessível ao público."
@@ -2285,6 +2335,9 @@ pt-PT:
   enumeration_reported_project_statuses: "Estado do projeto reportado"
   enumeration_caption_order_changed: "Ordem alterada com sucesso."
   enumeration_could_not_be_moved: "A enumeração não pode ser movida."
+  enterprise_trials:
+    dialog_component:
+      title: Avaliação gratuita do Enterprise
   error_auth_source_sso_failed: "Single Sign-On (SSO) para o utilizador '%{value}' falhou"
   error_can_not_archive_project: "Este projeto não pode ser arquivado: %{errors}"
   error_can_not_delete_entry: "Não é possível apagar a entrada"
@@ -2313,6 +2366,7 @@ pt-PT:
   error_invalid_selected_value: "O valor selecionado é inválido."
   error_journal_attribute_not_present: "O diário não contém o atributo %{attribute}."
   error_pdf_export_too_many_columns: "Demasiadas colunas selecionadas para a exportação PDF. Reduza o número de colunas."
+  error_pdf_date_range_too_long: "O intervalo de datas do pacote de trabalho selecionado excede o limite de exportação de PDF permitido. Condense o intervalo para um máximo de %{years} anos."
   error_pdf_failed_to_export: "Não foi possível guardar a exportação de PDF: %{error}"
   error_token_authenticity: "Não é possível verificar o token de Cross-Site Request Forgery. Tentou enviar dados em vários navegadores ou abas? Feche todas as abas e tente novamente."
   error_reminder_not_found: "O lembrete não foi encontrado ou já foi notificado."
@@ -2525,17 +2579,15 @@ pt-PT:
         header: "Leia sobre novas funcionalidades e atualizações de produtos."
         learn_about: "Mais informações sobre todas as novas funcionalidades"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
+        "16_5":
           new_features_title: >
             A versão contém várias novas funcionalidades e melhorias, tais como:
           new_features_list:
-            line_0: Opção de sincronização automática da cor do sistema + modo de contraste.
-            line_1: Modo escuro de alto contraste para melhor acessibilidade.
-            line_2: Exportação em PDF das listas de projetos.
-            line_3: Tipo de letra personalizado para todas as exportações de PDF (complemento Enterprise).
-            line_4: Melhoria do diálogo entre os participantes na reunião.
-            line_5: Melhoria do tratamento orçamental nas consultas de projetos e no planeamento orçamental.
-            line_6: Página inicial e de síntese do projeto atualizadas.
+            line_0: Adicione pacotes de trabalho a uma secção de reunião no separador Reuniões.
+            line_1: Escolha o modo de cor de forma mais conveniente com as caixas de verificação "Aumentar contraste".
+            line_2: Filtrar projetos pela última atualização.
+            line_3: Saltar para elementos de destino destacados a partir de ligações profundas.
+            line_4: Confirmar ações críticas com diálogos de perigo mais acessíveis.
     links:
       upgrade_enterprise_edition: "Aprimorar para a edição Enterprise"
       postgres_migration: "A migrar a sua instalação para PostgreSQL"
@@ -2546,7 +2598,8 @@ pt-PT:
       shortcuts: "Atalhos"
       blog: "Blog de OpenProject"
       forums: "Fórum da Comunidade"
-      newsletter: "Alertas de segurança / Boletim informativo"
+      security_alerts: "Alertas de segurança"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2628,7 +2681,7 @@ pt-PT:
         static_token_name: "Token da API"
       ical:
         title: "iCalendar"
-        text_hint: 'Os tokens iCalendar permitem aos utilizadores <a href="%{path}" target="_blank">subscrever calendários do OpenProject</a> e visualizar informações atualizadas sobre pacotes de trabalho de clientes externos.'
+        text_hint_link: 'Os tokens iCalendar permitem que os utilizadores [subscrevam os calendários do OpenProject](docs_url) e vejam informações atualizadas sobre pacotes de trabalho de clientes externos.'
         disabled_text: "As subscrições do iCalendar não são ativadas pelo administrador. Contacte o seu administrador para utilizar esta funcionalidade."
         empty_text_hint: "Para adicionar um token do iCalendar, subscreva um calendário novo ou já existente a partir do módulo Calendários de um projeto. Tem de ter as permissões necessárias."
       oauth:
@@ -2770,6 +2823,7 @@ pt-PT:
   label_required_disk_storage: "Espaço em disco necessário"
   label_send_invitation: Enviar convite
   label_calculated_value: "Valor calculado"
+  label_change_parent: "Alterar pai"
   label_change_plural: "Alterações"
   label_change_properties: "Alterar propriedades"
   label_change_status: "Alterar estado"
@@ -2945,7 +2999,7 @@ pt-PT:
   label_integer: "Número Inteiro"
   label_interface: "Interface"
   label_internal: "Interno"
-  label_introduction_video: "Vídeo introdutório"
+  label_introduction_video: "Vídeo de introdução"
   label_invite_user: "Convidar utilizador"
   label_item: "Item"
   label_item_plural: "Itens"
@@ -3594,6 +3648,7 @@ pt-PT:
   notice_password_confirmation_failed: "A sua palavra passe está incorreta. Não foi possível continuar."
   notice_principals_found_multiple: "Foram encontrados %{number} resultados. Carregue em TAB para ver o primeiro resultado."
   notice_principals_found_single: "Foi encontrado um resultado. Carregue em TAB para vê-lo."
+  notice_parent_item_not_found: "O elemento pai não foi encontrado."
   notice_project_not_deleted: "O projeto não foi eliminado."
   notice_project_not_found: "Projeto não encontrado."
   notice_successful_connection: "Ligação bem sucedida."
@@ -4004,6 +4059,8 @@ pt-PT:
   setting_feeds_limit: "Limite de conteúdo feed"
   setting_file_max_size_displayed: "Tamanho máximo de ficheiros de texto exibido inline"
   setting_host_name: "Nome do host"
+  setting_collaborative_editing_hocuspocus_url: "URL do servidor Hocuspocus"
+  setting_collaborative_editing_hocuspocus_secret: "Segredo do servidor Hocuspocus"
   setting_hours_per_day: "Horas por dia"
   setting_hours_per_day_explanation: >-
     Isto define o que é considerado um "dia" ao apresentar a duração em dias e horas (por exemplo, se um dia tiver 8 horas, 32 horas seriam 4 dias).
@@ -4232,6 +4289,7 @@ pt-PT:
   text_access_token_hint: "Tokens de acesso permitem que conceda acesso de aplicações externas para recursos em OpenProject."
   text_analyze: "Mais análise: %{subject}"
   text_are_you_sure: "Tem a certeza?"
+  open_link_in_a_new_tab: "Abrir a ligação num novo separador"
   text_are_you_sure_continue: "Tem a certeza que deseja continuar?"
   text_are_you_sure_with_children: "Apagar o pacote de trabalho e todos os pacotes de trabalho filhos?"
   text_are_you_sure_with_project_custom_fields: "A eliminação deste atributo também elimina os seus valores em todos os projetos. Tem a certeza de que pretende fazê-lo?"

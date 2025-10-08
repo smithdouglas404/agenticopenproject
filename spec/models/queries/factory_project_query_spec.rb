@@ -33,7 +33,7 @@ require "services/base_services/behaves_like_create_service"
 
 RSpec.describe Queries::Factory,
                "ProjectQuery",
-               with_settings: { enabled_projects_columns: %w[favored name project_status] } do
+               with_settings: { enabled_projects_columns: %w[favorited name project_status] } do
   before do
     scope = instance_double(ActiveRecord::Relation)
 
@@ -52,7 +52,7 @@ RSpec.describe Queries::Factory,
     build_stubbed(:project_query, name: "My query") do |query|
       query.order(id: :asc)
       query.where(:project_status_code, "=", [Project.status_codes[:on_track].to_s])
-      query.select(:project_status, :name, :favored)
+      query.select(:project_status, :name, :favorited)
     end
   end
   let(:custom_field) do
@@ -343,7 +343,7 @@ RSpec.describe Queries::Factory,
 
       it "has the enabled_project_columns columns as selects" do
         expect(find.selects.map(&:attribute))
-          .to eq(%i[project_status name favored])
+          .to eq(%i[project_status name favorited])
       end
 
       it { is_expected.not_to be_changed }
@@ -654,7 +654,7 @@ RSpec.describe Queries::Factory,
 
       it "has the selects of the persisted query" do
         expect(find.selects.map(&:attribute))
-          .to eq(%i[project_status name favored])
+          .to eq(%i[project_status name favorited])
       end
 
       it { is_expected.to be_changed }
@@ -699,7 +699,7 @@ RSpec.describe Queries::Factory,
 
       it "has the selects of the persisted query" do
         expect(find.selects.map(&:attribute))
-          .to eq(%i[project_status name favored])
+          .to eq(%i[project_status name favorited])
       end
 
       it { is_expected.to be_changed }
@@ -805,14 +805,14 @@ RSpec.describe Queries::Factory,
 
       it "keeps selects" do
         expect(find.selects.map(&:attribute))
-          .to eq(%i[project_status name favored])
+          .to eq(%i[project_status name favorited])
       end
 
       it { is_expected.to be_changed }
     end
 
     context "without id, as non admin and with a non existing custom field id",
-            with_settings: { enabled_projects_columns: %w[name created_at cf_1 cf_42] } do
+            with_settings: { enabled_projects_columns: %w[name latest_activity_at cf_1 cf_42] } do
       before do
         custom_field
       end

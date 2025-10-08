@@ -41,7 +41,7 @@ module CustomFields
             value: @target_item.label,
             visually_hide_label: true,
             required: true,
-            autofocus: true,
+            autofocus: @target_item.errors.empty?,
             placeholder: I18n.t("custom_fields.admin.items.placeholder.label"),
             validation_message: validation_message_for(:label)
           )

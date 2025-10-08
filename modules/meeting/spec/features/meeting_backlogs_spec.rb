@@ -179,7 +179,6 @@ RSpec.describe "Meeting Backlogs", :js do
         # edit item
         show_page.edit_agenda_item(item) do
           fill_in "Title", with: "Updated title"
-          click_on "Save"
         end
         show_page.expect_backlog collapsed: false
 
@@ -326,7 +325,6 @@ RSpec.describe "Meeting Backlogs", :js do
         # edit item
         first_occurrence_page.edit_agenda_item(item) do
           fill_in "Title", with: "Updated title"
-          click_on "Save"
         end
         first_occurrence_page.expect_series_backlog collapsed: false
 
@@ -355,7 +353,6 @@ RSpec.describe "Meeting Backlogs", :js do
         item = first_occurrence.agenda_items.first
         first_occurrence_page.edit_agenda_item(item) do
           fill_in "Title", with: "Meeting 1 item"
-          click_on "Save"
         end
 
         first_occurrence_page.select_action(item, I18n.t(:label_agenda_item_move_to_backlog))
@@ -371,7 +368,6 @@ RSpec.describe "Meeting Backlogs", :js do
         other_meeting_item = next_occurrence.agenda_items.first
         next_occurrence_page.edit_agenda_item(other_meeting_item) do
           fill_in "Title", with: "Meeting 2 item"
-          click_on "Save"
         end
 
         next_occurrence_page.select_action(other_meeting_item, I18n.t(:label_agenda_item_move_to_backlog))
@@ -396,7 +392,6 @@ RSpec.describe "Meeting Backlogs", :js do
         # update moved item to check if component is updated correctly
         first_occurrence_page.edit_agenda_item(other_meeting_item) do
           fill_in "Title", with: "Meeting 2 item, now updated"
-          click_on "Save"
         end
         first_occurrence_page.expect_agenda_item(title: "Meeting 2 item, now updated")
 

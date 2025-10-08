@@ -81,11 +81,11 @@ module Overviews
           flex_layout do |flex|
             3.times do
               flex.with_row(mb: 1) do
-                render(Primer::OpenProject::SkeletonBox.new(width: "100%", height: "21px"))
+                render(Primer::Alpha::SkeletonBox.new(width: "100%", height: "21px"))
               end
 
               flex.with_row(mb: 3) do
-                render(Primer::OpenProject::SkeletonBox.new(width: "100%", height: "21px"))
+                render(Primer::Alpha::SkeletonBox.new(width: "100%", height: "21px"))
               end
             end
           end

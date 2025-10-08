@@ -38,6 +38,8 @@ RSpec.describe CustomField do
   let(:field)  { build(:custom_field) }
   let(:field2) { build(:custom_field) }
 
+  it { is_expected.to have_readonly_attribute(:field_format) }
+
   describe "#name" do
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_length_of(:name).is_at_most(256) }

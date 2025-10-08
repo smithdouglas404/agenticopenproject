@@ -36,7 +36,7 @@ ru:
         type: "Тип затрат"
         labor_budget: "Запланированные трудозатраты"
         material_budget: "Запланированные расходы"
-        base_amount: "Base amount"
+        base_amount: "Базовая стоимость"
       work_package:
         budget_subject: "Название бюджета"
     models:

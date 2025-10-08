@@ -32,6 +32,7 @@ pt-PT:
         drive: ID da unidade
         host: Hospedeiro
         name: Nome
+        password: Palavra-passe da aplicação
         provider_type: Tipo de fornecedor
         tenant: ID do Diretório (inquilino)
     errors:
@@ -62,7 +63,7 @@ pt-PT:
               op_application_not_installed: parece não ter a app "OpenProject integration" instalada. Instale-a primeiro e tente novamente.
             password:
               invalid_password: não é válido.
-              unknown_error: não foi possível validar. Verifique a sua ligação de armazenamento e tente novamente.
+              unknown_error: não foi possível validar com o fornecedor de armazenamento de ficheiros. Verifique se a ligação está a funcionar corretamente.
     models:
       file_link: Ficheiro
       storages/storage: Armazenamento
@@ -183,8 +184,6 @@ pt-PT:
           not_found: Não foi possível encontrar a pasta de destino %{folder} em %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Concluir sem isso
-      done_complete_setup: Concluído, terminar configuração
       done_continue: Concluído, continuar
       open_storage: Abrir armazenamentos de ficheiros
       replace_oauth_application: Substituir OpenProject OAuth

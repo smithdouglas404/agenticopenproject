@@ -86,8 +86,8 @@ module Pages
         expect(page).to have_css('[data-test-selector="project-query-name"]', text: name)
       end
 
-      def expect_sidebar_filter(filter_name, selected: false, favored: false, visible: true)
-        submenu.expect_item(filter_name, selected:, favored:, visible:)
+      def expect_sidebar_filter(filter_name, selected: false, favorited: false, visible: true)
+        submenu.expect_item(filter_name, selected:, favorited:, visible:)
       end
 
       def expect_no_sidebar_filter(filter_name)
@@ -221,8 +221,8 @@ module Pages
         wait_for_reload
       end
 
-      def filter_by_favored(value)
-        set_filter("favored", "Favorite", "is", [value])
+      def filter_by_favorited(value)
+        set_filter("favorited", "Favorite", "is", [value])
         wait_for_reload
       end
 
@@ -520,7 +520,7 @@ module Pages
       private
 
       def boolean_filter?(filter)
-        %w[active member_of favored public templated].include?(filter.to_s)
+        %w[active member_of favorited public templated].include?(filter.to_s)
       end
 
       def submenu

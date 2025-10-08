@@ -88,6 +88,8 @@ fil:
     button_list_view: "Tingnan ang listahan"
     button_show_view: "Tanawin sa buong screen"
     button_log_time: "Ang oras ng tala"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "Iba pa"
     button_open_details: "Buksan ang detalyeng view"
     button_close_details: "Isara ang mga detalye na view"
@@ -433,7 +435,7 @@ fil:
     label_sort_lower: "Ilipat sa ibaba"
     label_sorting: "Pag-aayos"
     label_spent_time: "Nauubos na oras"
-    label_star_query: "Favored"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Press enter to save."
     label_public_query: "Publiko"
     label_sum: "Sum"
@@ -1103,6 +1105,7 @@ fil:
       child_work_packages:
         one: "isang bata work package"
         other: "%{count} work package mga bata"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"

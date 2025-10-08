@@ -88,6 +88,8 @@ de:
     button_list_view: "Listenansicht"
     button_show_view: "Vollbildansicht"
     button_log_time: "Zeit buchen"
+    button_start_timer: "Timer starten"
+    button_stop_timer: "Timer stoppen"
     button_more: "Mehr"
     button_open_details: "Detailansicht öffnen"
     button_close_details: "Detailansicht schließen"
@@ -1102,6 +1104,7 @@ de:
       child_work_packages:
         one: "eine Unteraufgabe"
         other: "%{count} untergeordnete Arbeitspakete"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"

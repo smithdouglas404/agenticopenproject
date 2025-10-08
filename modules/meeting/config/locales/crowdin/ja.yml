@@ -202,7 +202,7 @@ ja:
       agenda_items: "議題項目をコピー"
       agenda_text: "古い会議の議題をコピー"
       participants: "参加者リストをコピー"
-      to_clipboard: "クリップボードにコピー"
+      to_clipboard: "リンクをクリップボードにコピー"
     email:
       send_emails: "参加者にメールを送信"
       send_invitation_emails: >
@@ -536,9 +536,13 @@ ja:
   text_meeting_closed_dropdown_description: "この会議は終了しました。これ以上、議題や結果を変更することはできません。"
   text_meeting_not_editable_anymore: "この会議はもう編集できません。"
   text_meeting_not_present_anymore: "この会議は削除されました。別の会議を選択してください。"
-  label_add_work_package_to_meeting_dialog_title: "会議にワークパッケージを追加"
+  label_add_work_package_to_meeting_dialog_title: "会議の選択"
+  label_add_work_package_to_meeting_section_label: "セクションに追加"
   label_add_work_package_to_meeting_dialog_button: "会議に追加"
   label_meeting_selection_caption: "このワークパッケージは、今後の会議または進行中の会議にのみ追加可能です。"
+  label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."
+  placeholder_section_select_meeting_first: "Meeting selection is required first"
+  text_add_work_package_to_meeting_form: "選択したミーティングまたは議題項目としてバックログにワークパッケージが追加されます。"
   text_add_work_package_to_meeting_description: "ワークパッケージは、議論のために1つまたは複数の会議に追加できます。それに関するメモもここで表示されます。"
   text_agenda_item_no_notes: "メモは提供されていません"
   text_agenda_item_not_editable_anymore: "この議題項目はもう編集できません。"

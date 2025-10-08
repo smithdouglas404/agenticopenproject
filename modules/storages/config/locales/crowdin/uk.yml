@@ -32,6 +32,7 @@ uk:
         drive: ID диска
         host: Хост
         name: Назва
+        password: Пароль додатка
         provider_type: Тип постачальника
         tenant: ID каталогу (клієнта)
     errors:
@@ -62,7 +63,7 @@ uk:
               op_application_not_installed: схоже, у вас не встановлено додаток OpenProject integration. Спочатку встановіть його, а потім спробуйте знову.
             password:
               invalid_password: недійсний.
-              unknown_error: не вдалося перевірити. Перевірте підключення до сховища й повторіть спробу.
+              unknown_error: не вдалося перевірити через постачальника файлового сховища. Переконайтеся, що з’єднання працює належним чином.
     models:
       file_link: Файл
       storages/storage: Сховище
@@ -183,8 +184,6 @@ uk:
           not_found: Теку призначення %{folder} не вдалося знайти на %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Завершити без налаштування
-      done_complete_setup: Готово – завершити налаштування
       done_continue: Виконано, продовжити 
       open_storage: Відкрити файлове сховище
       replace_oauth_application: Замінити OpenProject OAuth

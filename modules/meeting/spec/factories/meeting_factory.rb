@@ -48,7 +48,7 @@ FactoryBot.define do
       meeting.project = evaluator.project if evaluator.project
 
       # create backlog
-      create(:meeting_section, meeting:, backlog: true)
+      create(:meeting_section, meeting:, backlog: true, title: I18n.t(:label_agenda_backlog))
     end
 
     factory :meeting_template do |meeting|

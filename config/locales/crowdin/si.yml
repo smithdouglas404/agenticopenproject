@@ -195,10 +195,9 @@ si:
     ldap_auth_failed: "LDAP-සේවාදායකයේ සත්යාපනය කළ නොහැකි විය."
     sync_failed: "Failed to synchronize from LDAP: %{message}."
     back_to_index: "Click here to go back to the list of connection."
-    technical_warning_html: |
+    technical_warning: |
       This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Please visit our documentation for detailed instructions</a>.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: LDAP සම්බන්ධතාවයේ අත්තනෝමතික නම
       host: LDAP ධාරක නම හෝ IP ලිපිනය
@@ -333,16 +332,33 @@ si:
     tab:
       no_results_title_text: දැනට අභිරුචි ක්ෂේත්ර නොමැත.
       no_results_content_text: නව අභිරුචි ක්ෂේත්‍රයක් සාදන්න
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "හෝ"
-  dry_validation:
+  op_dry_validation:
+    or: "or"
     errors:
-      defined: "must not be defined."
-      int?: "must be an integer."
+      array?: "must be an array."
       decimal?: "must be a decimal."
+      defined: "must not be defined."
+      eql?: "must be equal to %{left}."
       filled?: "must be filled."
-      key?: "is missing."
       greater_or_equal_zero: "must be greater or equal to 0."
+      gteq?: "must be greater than or equal to %{num}."
+      hash?: "must be a hash."
+      included_in?:
+        arg:
+          default: "must be one of: %{list}."
+          range: "must be one of: %{list_left} - %{list_right}."
+      int?: "must be an integer."
+      key?: "is missing."
       not_found: "not found."
       rules:
         copy_workflow_from:
@@ -358,6 +374,8 @@ si:
           not_unique: "must be unique within the same hierarchy level."
         parent:
           not_descendant: "must be a descendant of the hierarchy root."
+      str?: "must be a string."
+      type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
       enabled: "Enabled"
@@ -366,7 +384,7 @@ si:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "මාපිය"
+      parent: "Parent"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -429,7 +447,7 @@ si:
     lists:
       active: "Active projects"
       my: "මගේ ව්යාපෘති"
-      favored: "Favorite projects"
+      favorited: "Favorite projects"
       archived: "Archived projects"
       shared: "Shared project lists"
       my_lists: "My project lists"
@@ -595,9 +613,6 @@ si:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Please provide an API token name"
-        token_name_in_use: "This API token name is already in use, please select a different one"
       failed_to_reset_token: "ප්රවේශ ටෝකනය නැවත සකස් කිරීමට අපොහොසත් විය: %{error}"
       failed_to_create_token: "Failed to create access token: %{error}"
       failed_to_revoke_token: "Failed to revoke access token: %{error}"
@@ -615,17 +630,20 @@ si:
     autologins:
       prompt: "Stay logged in for %{num_days}"
     sessions:
-      remembered_devices: "Remembered devices"
-      remembered_devices_caption: "A list of all devices that logged into this account using the 'Stay logged in' option."
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "Browser"
+      expires: "Expires"
+      last_connection: "Last connection"
       device: "Device / OS"
       unknown_browser: "unknown browser"
       unknown_os: "unknown operating system"
-      current: "Current session"
+      unknown: "(unknown)"
+      browser_session: "(Browser session)"
+      current: "Current (this device)"
       title: "Session management"
-      instructions: "This is a list of devices that have logged into your account. Revoke any sessions that you do not recognize or you have no longer access to."
+      instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "You cannot delete your current session."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "This user is currently a member of the following groups:"
       no_results_title_text: This user is currently not a member in any group.
@@ -697,9 +715,7 @@ si:
         excluded_from_totals: "Excluded from totals"
   themes:
     dark: "Dark"
-    dark_high_contrast: "Dark high contrast"
     light: "Light"
-    light_high_contrast: "Light high contrast"
     sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
@@ -967,6 +983,11 @@ si:
         help_text: "උපකාරක පෙළ"
       auth_provider:
         scim_clients: "SCIM clients"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "Context"
       changeset:
@@ -1017,6 +1038,8 @@ si:
         active_user_count_restriction: "Active users"
       enterprise_trial:
         company: "Company"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "පිටුව"
         row_count: "පේළි ගණන"
@@ -1143,6 +1166,8 @@ si:
         is_readonly: "වැඩ පැකේජය කියවීමට-පමණි"
         excluded_from_totals: "Exclude from calculation of totals in hierarchy"
         default_done_ratio: "% Complete"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "දින දර්ශනය"
         ical_token_query_assignment: "Query assignment"
@@ -1196,6 +1221,13 @@ si:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "නොගැලවූ වෙනස්කම් සහිත වැඩ පැකේජයකින් පිටවන විට මට අනතුරු අඟවන්න"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
         theme: "Color mode"
         time_zone: "වේලා කලාපය"
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
@@ -1263,7 +1295,7 @@ si:
         confirmation: "%{attribute}නොගැලපේ."
         could_not_be_copied: "%{dependency} could not be (fully) copied."
         does_not_exist: "නොපවතී."
-        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "ප්රවේශ විය නොහැක."
         error_readonly: "ලිවීමට උත්සාහ කළ නමුත් එය ලිවිය නොහැක."
         error_conflict: "මේ අතර අවම වශයෙන් එක් පරිශීලකයෙකු විසින් තොරතුරු යාවත්කාලීන කර ඇත."
@@ -1375,6 +1407,8 @@ si:
           only_one_trial: "Only one trial token can be active. Please delete the previous trial token before adding another."
           unreadable: "කියවිය නොහැක. එය ආධාරක ටෝකනයක් බව ඔබට විශ්වාසද?"
           already_added: "This token has already been added."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "අතිච්ඡාදනය."
           outside: "ජාලයෙන් පිටත වේ."
@@ -1471,10 +1505,19 @@ si:
           typed_dag:
             circular_dependency: "සම්බන්ධතාවය සබඳතා කවයක් නිර්මාණය කරයි."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "SCM වෙළෙන්දා ලබා ගත නොහැක"
           not_whitelisted: "වින්යාසය මගින් අවසර නැත."
@@ -1625,9 +1668,11 @@ si:
         version:
           undeletable_archived_projects: "එය අමුණා ඇති වැඩ පැකේජ ඇති බැවින් අනුවාදය මකා දැමිය නොහැක."
           undeletable_work_packages_attached: "එය අමුණා ඇති වැඩ පැකේජ ඇති බැවින් අනුවාදය මකා දැමිය නොහැක."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "කරුණාකර පහත සඳහන් ක්ෂේත්ර පරීක්ෂා කරන්න:"
@@ -1747,6 +1792,7 @@ si:
     attachments: "ඇමුණුම්"
     actor: "Actor"
     action: "ක්රියාව"
+    api_key: "API key"
     author: "කර්තෘ"
     avatar: "Avatar"
     base: "සාමාන්ය දෝෂය:"
@@ -1877,6 +1923,7 @@ si:
   button_add_watcher: "මුරකරු එකතු කරන්න"
   button_annotate: "ඇනෝටේට්"
   button_apply: "අයදුම් කරන්න"
+  button_apply_changes: "Apply changes"
   button_archive: "ලේඛනාගාරය"
   button_back: "ආපසු"
   button_cancel: "අවලංගු කරන්න"
@@ -1926,8 +1973,8 @@ si:
   button_rollback: "මෙම අනුවාදය වෙත ආපසු යන්න"
   button_save: "සුරකින්න"
   button_save_as: "ලෙස සුරකින්න"
-  button_apply_changes: "Apply changes"
   button_save_back: "සුරකින්න සහ නැවත"
+  button_select: "Select"
   button_set_reminder: "Set reminder"
   button_show: "පෙන්වන්න"
   button_sort: "වර්ග"
@@ -2151,6 +2198,7 @@ si:
     features:
       baseline_comparison: Baseline Comparisons
       board_view: Advanced Boards
+      calculated_values: Calculated Values
       conditional_highlighting: Conditional Highlighting
       internal_comments: Internal Comments
       custom_actions: Custom Actions
@@ -2185,7 +2233,7 @@ si:
         Already have a token? Add it using the button below to upgrade to the booked Enterprise plan.
       hide_banner: "Hide this banner"
       homescreen_description: >
-        Enterprise plans extend the Community edition of OpenProject you are currently using. They include add-ons, additional features and professional support that enables organisations of all sizes to achieve great things together.
+        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
       homescreen_subline: By upgrading, you will also be supporting an open source project.
       baseline_comparison:
         description: Highlight changes made to this list since any point in the past.
@@ -2223,6 +2271,8 @@ si:
         description: "Share work packages with users who are not members of the project."
       project_list_sharing:
         description: "Share project lists with individual users."
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Custom color theme and logo"
         more_info: "Note: the used logo will be publicly accessible."
@@ -2288,6 +2338,9 @@ si:
   enumeration_reported_project_statuses: "වාර්තා කරන ලද ව්යාපෘති තත්ත්වය"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "පරිශීලක '%{value}' සඳහා තනි සංඥා (SSO) අසමත් විය"
   error_can_not_archive_project: "මෙම ව්යාපෘතිය සංරක්ෂණය කළ නොහැක: %{errors}"
   error_can_not_delete_entry: "ප්රවේශය මකා දැමිය නොහැක"
@@ -2316,6 +2369,7 @@ si:
   error_invalid_selected_value: "වලංගු නොවන තෝරාගත් අගය."
   error_journal_attribute_not_present: "ජර්නලය %{attribute}ගුණාංගය අඩංගු නොවේ."
   error_pdf_export_too_many_columns: "PDF අපනයනය සඳහා තෝරාගෙන ඇති තීරු බොහොමයක්. කරුණාකර තීරු ගණන අඩු කරන්න."
+  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
   error_pdf_failed_to_export: "PDF අපනයනය සුරැකිය නොහැකි විය: %{error}"
   error_token_authenticity: "හරස් අඩවි ඉල්ලීම් ව්යාජ ටෝකනය සත්යාපනය කිරීමට නොහැකි විය. ඔබ බහු බ්රව්සර් හෝ ටැබ් මත දත්ත ඉදිරිපත් කිරීමට උත්සාහ කළාද? කරුණාකර සියලුම ටැබ් වසා නැවත උත්සාහ කරන්න."
   error_reminder_not_found: "The reminder was not found or was already notified about."
@@ -2528,17 +2582,15 @@ si:
         header: "Read about new features and product updates."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
+        "16_5":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Option to auto-sync system color + contrast mode.
-            line_1: Dark high contrast mode for improved accessibility.
-            line_2: PDF export of project lists.
-            line_3: Custom font for all PDF exports (Enterprise add-on).
-            line_4: Improved meeting participants dialog.
-            line_5: Improved budget handling in project queries and budget planning.
-            line_6: Updated Home and Project overview page.
+            line_0: Add work packages to a meeting section in the Meetings tab.
+            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
+            line_2: Filter projects by last update.
+            line_3: Jump to highlighted target elements from deep links.
+            line_4: Confirm critical actions with more accessible danger dialogs.
     links:
       upgrade_enterprise_edition: "Upgrade to Enterprise edition"
       postgres_migration: "ඔබගේ ස්ථාපනය PostgreSQL වෙත සංක්රමණය කිරීම"
@@ -2549,7 +2601,8 @@ si:
       shortcuts: "කෙටිමං"
       blog: "OpenProject බ්ලොග්"
       forums: "ප්රජා සංසදය"
-      newsletter: "ආරක්ෂක ඇඟවීම්/පුවත් ලිපි"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2631,7 +2684,7 @@ si:
         static_token_name: "API token"
       ical:
         title: "iCalendar"
-        text_hint: 'iCalendar tokens allow users to <a href="%{path}" target="_blank">subscribe to OpenProject calendars</a> and view up-to-date work package information from external clients.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "iCalendar subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
         empty_text_hint: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
       oauth:
@@ -2772,7 +2825,8 @@ si:
   label_select_main_menu_item: නව ප්රධාන මෙනු අයිතමය තෝරන්න
   label_required_disk_storage: "අවශ්ය තැටි ගබඩා"
   label_send_invitation: ආරාධනය යවන්න
-  label_calculated_value: "Calculated value"
+  label_calculated_value: "Calculated Value"
+  label_change_parent: "Change parent"
   label_change_plural: "වෙනස්කම්"
   label_change_properties: "ගුණාංග වෙනස් කරන්න"
   label_change_status: "තත්ත්වය වෙනස් කරන්න"
@@ -2948,7 +3002,7 @@ si:
   label_integer: "නිඛිල"
   label_interface: "Interface"
   label_internal: "අභ්යන්තර"
-  label_introduction_video: "හැඳින්වීම වීඩියෝ"
+  label_introduction_video: "Getting started video"
   label_invite_user: "පරිශීලකයාට ආරාධනා කරන්න"
   label_item: "Item"
   label_item_plural: "Items"
@@ -3598,6 +3652,7 @@ si:
   notice_password_confirmation_failed: "ඔබගේ මුරපදය නිවැරදි නොවේ. දිගටම කරගෙන යා නොහැක."
   notice_principals_found_multiple: "සොයාගෙන ඇත %{number} ප්රතිඵල. \n පළමු ප්රතිඵලය අවධානය යොමු කිරීමට ටැබ්."
   notice_principals_found_single: "එක් ප්රති result ලයක් තිබේ. \n එය අවධානය යොමු කිරීමට ටැබ්."
+  notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "ව්යාපෘතිය මකා දැමුවේ නැත."
   notice_project_not_found: "Project not found."
   notice_successful_connection: "සාර්ථක සම්බන්ධතාවයක්."
@@ -4010,6 +4065,8 @@ si:
   setting_feeds_limit: "අන්තර්ගත සීමාව සංග්රහ"
   setting_file_max_size_displayed: "පේළිගත ප්රදර්ශනය පෙළ ගොනු උපරිම ප්රමාණය"
   setting_host_name: "සත්කාරක නාමය"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Hours per day"
   setting_hours_per_day_explanation: >-
     This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).
@@ -4238,6 +4295,7 @@ si:
   text_access_token_hint: "ප්රවේශ ටෝකන ඔබට OpenProject හි සම්පත් සඳහා බාහිර යෙදුම් ප්රවේශය ලබා දීමට ඉඩ සලසයි."
   text_analyze: "තවදුරටත් විශ්ලේෂණය: %{subject}"
   text_are_you_sure: "ඔබට විශ්වාසද?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Are you sure you want to continue?"
   text_are_you_sure_with_children: "වැඩ පැකේජය සහ සියලුම ළමා වැඩ පැකේජ මකන්න?"
   text_are_you_sure_with_project_custom_fields: "Deleting this attribute will also delete its values in all projects. Are you sure you want to do this?"

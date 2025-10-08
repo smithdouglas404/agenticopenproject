@@ -23,7 +23,7 @@ tr:
   js:
     text_are_you_sure: "Emin misiniz?"
     myTimeTracking:
-      noSpecificTime: "No specific time"
+      noSpecificTime: "Belirli bir zaman yok"
     work_packages:
       property_groups:
         costs: "Maliyetler"

@@ -88,6 +88,8 @@ zh-TW:
     button_list_view: "清單檢視"
     button_show_view: "全螢幕瀏覽"
     button_log_time: "工時紀錄"
+    button_start_timer: "啟動計時器"
+    button_stop_timer: "停止計時器"
     button_more: "更多"
     button_open_details: "檢視工作套件所有資料"
     button_close_details: "關閉詳細檢視"
@@ -432,7 +434,7 @@ zh-TW:
     label_sort_lower: "往下移動"
     label_sorting: "排序"
     label_spent_time: "耗時"
-    label_star_query: "喜好"
+    label_star_query: "我的收藏"
     label_press_enter_to_save: "按 Enter 即可儲存。"
     label_public_query: "公開"
     label_sum: "總和"
@@ -1099,6 +1101,7 @@ zh-TW:
         other: "工作套件"
       child_work_packages:
         other: "%{count} 個子工作套件"
+      hour_string: "%{hours} 小時"
       hour:
         one: "1 小時"
         other: "%{count} 小時"

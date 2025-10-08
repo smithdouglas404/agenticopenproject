@@ -47,7 +47,7 @@ module OpPrimer
       fallback_component_args: {},
       **system_arguments
     )
-      super
+      super()
 
       @condition = condition
       @fallback_component = fallback_component

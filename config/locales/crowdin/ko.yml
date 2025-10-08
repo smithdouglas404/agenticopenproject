@@ -195,10 +195,9 @@ ko:
     ldap_auth_failed: "LDAP 서버에서 인증할 수 없습니다."
     sync_failed: "LDAP에서 동기화하지 못했습니다: %{message}."
     back_to_index: "연결 목록으로 돌아가려면 여기를 클릭하세요."
-    technical_warning_html: |
-      이 LDAP 양식에는 LDAP/Active Directory 설정에 대한 기술적 지식이 필요합니다.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">자세한 지침은 설명서를 참조하세요</a>.
+    technical_warning: |
+      이 LDAP 양식에는 LDAP / Active Directory 설정에 대한 기술적 지식이 필요합니다.
+      [자세한 지침은 설명서를 참조하세요](docs_url).
     attribute_texts:
       name: LDAP 연결의 임의 이름
       host: LDAP 호스트 이름 또는 IP 주소
@@ -333,22 +332,39 @@ ko:
     tab:
       no_results_title_text: 사용자 필드가 없습니다.
       no_results_content_text: 새 사용자 필드 생성
+  calculated_values:
+    error_dialog:
+      title: "계산된 값 오류"
+    errors:
+      unknown: "알 수 없는 오류가 발생했습니다. 이 계산된 값의 공식을 검토해 주세요."
+      mathematical: "계산 중에 수학적 오류가 발생했습니다."
+      missing_value: '"%{custom_field_name}" 특성은 이 계산된 값에 필요하지만 비어 있습니다.'
+      disabled_value: '"%{custom_field_name}" 특성은 이 계산된 값에 필요하지만 해당 프로젝트에 대해 비활성화되어 있습니다.'
   concatenation:
     single: "또는"
-  dry_validation:
+  op_dry_validation:
+    or: "또는"
     errors:
-      defined: "- 정의해서는 안 됩니다."
-      int?: "- 정수여야 합니다."
+      array?: "- 배열이어야 합니다."
       decimal?: "- 소수여야 합니다."
+      defined: "- 정의해서는 안 됩니다."
+      eql?: "- %{left}과(와) 같아야 합니다."
       filled?: "- 입력해야 합니다."
-      key?: "- 누락되었습니다."
       greater_or_equal_zero: "- 0보다 크거나 같아야 합니다."
+      gteq?: "- %{num}보다 크거나 같아야 합니다."
+      hash?: "- 해시여야 합니다."
+      included_in?:
+        arg:
+          default: "- 다음 중 하나여야 합니다: %{list}."
+          range: "- 다음 중 하나여야 합니다: %{list_left} - %{list_right}."
+      int?: "- 정수여야 합니다."
+      key?: "- 누락되었습니다."
       not_found: "- 찾을 수 없습니다."
       rules:
         copy_workflow_from:
           workflow_missing: "- 고유한 워크플로가 없습니다."
         custom_field:
-          format_not_supported: "'%{field_format}' 형식은 지원되지 않습니다."
+          format_not_supported: "형식 '%{field_format}'은(는) 지원되지 않습니다."
         item:
           root_item: "- 루트 항목일 수 없습니다."
           not_persisted: "- 이미 존재하는 항목이어야 합니다."
@@ -358,6 +374,8 @@ ko:
           not_unique: "- 동일한 계층 수준 내에서 고유해야 합니다."
         parent:
           not_descendant: "- 계층 루트의 하위 항목이어야 합니다."
+      str?: "- 문자열이어야 합니다."
+      type?: "- %{type}이어야(여야) 합니다."
     rules:
       copy_workflow_from: "워크플로 복사의 유형"
       enabled: "활성화됨"
@@ -429,7 +447,7 @@ ko:
     lists:
       active: "활성 프로젝트"
       my: "내 프로젝트"
-      favored: "즐겨 찾는 프로젝트"
+      favorited: "즐겨 찾는 프로젝트"
       archived: "보관된 프로젝트"
       shared: "공유된 프로젝트 목록"
       my_lists: "내 프로젝트 목록"
@@ -589,9 +607,6 @@ ko:
         token/api:
           title: "API 토큰이 생성되었습니다"
           warning: "이번에만 이 토큰이 표시됩니다. 지금 이 토큰을 복사해야 합니다."
-      errors:
-        token_name_blank: "API 토큰 이름을 입력하세요"
-        token_name_in_use: "이 API 토큰 이름은 이미 사용 중입니다. 다른 이름을 선택하세요."
       failed_to_reset_token: "액세스 토큰을 재설정하지 못함: %{error}"
       failed_to_create_token: "액세스 토큰을 만들지 못했습니다: %{error}"
       failed_to_revoke_token: "액세스 토큰을 취소하지 못했습니다: %{error}"
@@ -609,17 +624,20 @@ ko:
     autologins:
       prompt: "%{num_days}일 동안 로그인 상태 유지"
     sessions:
-      remembered_devices: "장치 저장"
-      remembered_devices_caption: "'로그인 상태 유지' 옵션을 사용하여 이 계정에 로그인한 모든 장치의 목록입니다."
       session_name: "%{os_name}의 %{browser_name} %{browser_version}"
       browser: "브라우저"
+      expires: "만료"
+      last_connection: "마지막 연결"
       device: "장치/OS"
       unknown_browser: "알 수 없는 브라우저"
       unknown_os: "알 수 없는 운영 체제"
-      current: "현재 세션"
+      unknown: "(알 수 없음)"
+      browser_session: "(브라우저 세션)"
+      current: "현재(이 장치)"
       title: "세션 관리"
-      instructions: "사용자 계정에 로그인한 장치의 목록입니다. 알지 못하거나 더 이상 액세스할 수 없는 세션을 취소하세요."
+      instructions: "다음 장치를 통해 계정에 로그인했습니다. 사용자가 알지 못하는 세션이나 제어하지 않는 장치에서 로그인한 세션은 취소하세요."
       may_not_delete_current: "현재 세션을 삭제할 수 없습니다."
+      deletion_warning: "이 세션을 취소하시겠습니까? 이 장치에서 로그아웃됩니다."
     groups:
       member_in_these_groups: "이 사용자는 현재 다음 그룹의 멤버입니다:"
       no_results_title_text: 이 사용자는 현재 어떤 그룹의 멤버도 아닙니다.
@@ -690,9 +708,7 @@ ko:
         excluded_from_totals: "합계에서 제외됨"
   themes:
     dark: "다크"
-    dark_high_contrast: "다크 하이 콘트라스트"
     light: "라이트"
-    light_high_contrast: "라이트 하이 콘트라스트"
     sync_with_os: "자동(OS 색상 모드와 일치)"
   types:
     index:
@@ -959,6 +975,11 @@ ko:
         help_text: "도움말 텍스트"
       auth_provider:
         scim_clients: "SCIM 클라이언트"
+      calculated_value_error:
+        error_code: "오류 코드"
+        customized: "사용자 지정됨"
+        customized_id: "사용자 지정된 ID"
+        customized_type: "사용자 지정된 유형"
       capability:
         context: "컨텍스트"
       changeset:
@@ -1009,6 +1030,8 @@ ko:
         active_user_count_restriction: "활성 사용자"
       enterprise_trial:
         company: "회사"
+      favorite:
+        favorited: "항목"
       grids/grid:
         page: "페이지"
         row_count: "행 수"
@@ -1135,6 +1158,8 @@ ko:
         is_readonly: "읽기 전용 작업 패키지"
         excluded_from_totals: "계층의 합계 계산에서 제외"
         default_done_ratio: "완료 %"
+      token/named:
+        token_name: "토큰 이름"
       token/ical:
         calendar: "달력"
         ical_token_query_assignment: "쿼리 할당"
@@ -1188,6 +1213,13 @@ ko:
         auto_hide_popups: "성공 배너 자동으로 숨기기"
         auto_hide_popups_caption: "활성화하면 녹색 성공 배너가 5초 후에 자동으로 사라집니다."
         warn_on_leaving_unsaved: "저장하지 않고 작업 패키지를 벗어날 때 알려주세요."
+        increase_theme_contrast: "테마 대비 증가"
+        increase_contrast: "대비 증가"
+        increase_contrast_caption: "선택한 색상 모드에 대한 고대비 모드를 활성화합니다."
+        force_light_theme_contrast: "라이트 모드에서 고대비 강제 적용"
+        force_dark_theme_contrast: "다크 모드에서 고대비 강제 적용"
+        force_light_theme_contrast_caption: "자동 색상 모드를 선택하면 라이트 모드의 고대비 버전이 사용됩니다."
+        force_dark_theme_contrast_caption: "자동 색상 모드를 선택하면 다크 모드의 고대비 버전이 사용됩니다."
         theme: "색상 모드"
         time_zone: "표준 시간대"
         mode_guideline: "일부 모드에서는 접근성과 가독성을 위해 사용자 지정 테마 색상을 덮어씁니다. 전체 사용자 지정 테마 지원을 위해서는 라이트 모드를 선택하세요."
@@ -1255,7 +1287,7 @@ ko:
         confirmation: "%{attribute} 속성에 부합하지 않습니다."
         could_not_be_copied: "%{dependency}을(를) (완전히) 복사할 수 없습니다."
         does_not_exist: "존재하지 않음"
-        error_enterprise_only: "%{action}은(는) OpenProject Enterprise Edition에서만 사용할 수 있습니다"
+        error_enterprise_only: "%{action}은(는) OpenProject Enterprise Edition에서만 사용할 수 있습니다."
         error_unauthorized: "액세스하지 못할 수 있습니다."
         error_readonly: "- 쓰려고 했지만 쓸 수 없습니다."
         error_conflict: "그 사이에 정보가 한 명 이상의 다른 사용자에 의해 업데이트되었습니다."
@@ -1366,6 +1398,8 @@ ko:
           only_one_trial: "평가판 토큰은 하나만 활성화할 수 있습니다. 다른 평가판 토큰을 추가하기 전에 이전 토큰을 삭제하세요."
           unreadable: "읽을 수 없습니다. 지원하는 토큰이 확실한가요?"
           already_added: "이미 추가된 토큰입니다."
+        favorite:
+          already_favorited: "- 이미 즐겨찾기에 추가되었습니다."
         grids/grid:
           overlaps: "오버랩"
           outside: "- 그리드의 외부에 있습니다."
@@ -1462,10 +1496,19 @@ ko:
           typed_dag:
             circular_dependency: "이 관계는 관계의 원을 만듭니다."
           attributes:
+            base:
+              error_not_deletable: "선택한 작업 패키지에 대한 편집 권한이 없으므로 이 관계를 삭제할 수 없습니다."
+              error_not_editable: "선택한 작업 패키지에 대한 편집 권한이 없으므로 이 관계를 편집할 수 없습니다."
             to_id:
+              format: "선택한 작업 패키지 %{message}"
+              error_not_found: "- 찾을 수 없습니다."
               error_readonly: "- 기존 관계에 대해서는 변경할 수 없습니다."
+              error_not_manageable: "- 선택한 작업 패키지에 대한 편집 권한이 없으므로 추가할 수 없습니다."
             from_id:
+              format: "선택한 작업 패키지 %{message}"
+              error_not_found: "- 찾을 수 없습니다."
               error_readonly: "- 기존 관계에 대해서는 변경할 수 없습니다."
+              error_not_manageable: "- 선택한 작업 패키지에 대한 편집 권한이 없으므로 추가할 수 없습니다."
         repository:
           not_available: "SCM 업체가 가용하지 않습니다."
           not_whitelisted: "은(는) 설절에 허용되지 않습니다."
@@ -1615,9 +1658,11 @@ ko:
         version:
           undeletable_archived_projects: "첨부된 작업 패키지가 있으므로 이 버전은 삭제할 수 없습니다."
           undeletable_work_packages_attached: "첨부된 작업 패키지가 있으므로 이 버전은 삭제할 수 없습니다."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "토큰 이름을 입력하세요"
+              in_use: "이 토큰 이름은 이미 사용 중입니다. 다른 이름을 선택하세요"
               format: "%{message}"
       template:
         body: "다음 필드를 확인 하십시오."
@@ -1723,6 +1768,7 @@ ko:
     attachments: "첨부 파일"
     actor: "수행자"
     action: "액션"
+    api_key: "API 키"
     author: "작성자"
     avatar: "아바타"
     base: "일반 오류:"
@@ -1853,6 +1899,7 @@ ko:
   button_add_watcher: "주시자 추가"
   button_annotate: "주석 달기"
   button_apply: "적용"
+  button_apply_changes: "변경 사항 적용"
   button_archive: "보관"
   button_back: "뒤로"
   button_cancel: "취소"
@@ -1902,8 +1949,8 @@ ko:
   button_rollback: "이 버전으로 롤백"
   button_save: "저장"
   button_save_as: "다른 이름으로 저장"
-  button_apply_changes: "변경 사항 적용"
   button_save_back: "저장하고 돌아가기"
+  button_select: "선택"
   button_set_reminder: "미리 알림 설정"
   button_show: "표시"
   button_sort: "분류"
@@ -2107,6 +2154,7 @@ ko:
     features:
       baseline_comparison: 기준선 비교
       board_view: 고급 보드
+      calculated_values: 계산된 값
       conditional_highlighting: 조건부 강조 표시
       internal_comments: 내부 코멘트
       custom_actions: 사용자 지정 작업
@@ -2141,7 +2189,7 @@ ko:
         이미 토큰이 있으신가요? 아래 버튼을 사용하여 토큰을 추가하고 예약한 Enterprise 플랜으로 업그레이드하세요.
       hide_banner: "이 배너 숨기기"
       homescreen_description: >
-        Enterprise 플랜은 현재 사용 중인 Community 버전의 OpenProject를 확장합니다. 여기에는 추가 기능, 기타 기능 및 전문가 지원이 포함되어 있으므로 모든 규모의 조직이 함께 탁월한 성과를 달성할 수 있습니다.
+        Enterprise 플랜은 OpenProject Community Edition에 [Enterprise 추가 기능](enterprise_url)과 전문 지원을 포함하여 확장한 플랜으로, 미션 크리티컬 환경에서 OpenProject를 실행하는 조직에 이상적입니다.
       homescreen_subline: 업그레이드하면 오픈 소스 프로젝트도 지원하게 됩니다.
       baseline_comparison:
         description: 과거 어느 시점 이후에 이 목록에서 변경된 사항을 강조 표시합니다.
@@ -2179,6 +2227,8 @@ ko:
         description: "프로젝트 멤버가 아닌 사용자와 작업 패키지를 공유합니다."
       project_list_sharing:
         description: "개별 사용자와 프로젝트 목록을 공유합니다."
+      calculated_values:
+        description: "계산된 값을 통해 숫자 값, 기타 프로젝트 특성 및 사용자 지정 필드를 사용하여 수학 공식 기반 특성을 만들 수 있습니다."
       define_custom_style:
         title: "사용자 지정 색상 테마 및 로고"
         more_info: "참고: 사용된 로그는 공개적으로 액세스 가능합니다."
@@ -2243,6 +2293,9 @@ ko:
   enumeration_reported_project_statuses: "보고된 프로젝트 상태"
   enumeration_caption_order_changed: "주문이 변경되었습니다."
   enumeration_could_not_be_moved: "열거형은 이동할 수 없습니다."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise 평가판
   error_auth_source_sso_failed: "사용자 '%{value}'에 대한 Single Sign-On(SSO) 실패"
   error_can_not_archive_project: "이 프로젝트는 보관할 수 없습니다: %{errors}"
   error_can_not_delete_entry: "항목을 삭제할 수 없습니다."
@@ -2271,6 +2324,7 @@ ko:
   error_invalid_selected_value: "선택된 값이 유효하지 않습니다."
   error_journal_attribute_not_present: "저널에 %{attribute} 특성이 없습니다."
   error_pdf_export_too_many_columns: "PDF 내보내기에 대해 너무 많은 열을 선택했습니다. 열 수를 줄이십시오."
+  error_pdf_date_range_too_long: "선택한 작업 패키지 날짜 범위는 허용되는 PDF 내보내기 제한을 초과합니다. 범위를 최대 %{years}년으로 좁혀주세요."
   error_pdf_failed_to_export: "PDF 내보내기를 저장할 수 없습니다: %{error}"
   error_token_authenticity: "교차 사이트 요청 위조 토큰을 확인할 수 없습니다. 여러 브라우저나 탭에서 데이터 제출을 시도하셨습니까? 모든 탭을 닫고 다시 시도하세요."
   error_reminder_not_found: "미리 알림을 찾을 수 없거나 이미 알림을 받았습니다."
@@ -2483,17 +2537,15 @@ ko:
         header: "새로운 기능 및 제품 업데이트에 대해 알아보세요."
         learn_about: "새로운 모든 기능에 대해 자세히 알아보기"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_4":
+        "16_5":
           new_features_title: >
             이 릴리스에는 다음과 같은 다양한 새로운 기능과 개선 사항이 포함되어 있습니다.
           new_features_list:
-            line_0: 시스템 색상 + 대비 모드를 자동 동기화하는 옵션.
-            line_1: 접근성 향상을 위한 다크 고대비 모드.
-            line_2: 프로젝트 목록의 PDF 내보내기.
-            line_3: 모든 PDF 내보내기를 위한 사용자 지정 글꼴(Enterprise 추가 기능).
-            line_4: 개선된 미팅 참가자 대화 상자.
-            line_5: 프로젝트 쿼리 및 예산 계획의 개선된 예산 처리.
-            line_6: 업데이트된 홈 및 프로젝트 개요 페이지.
+            line_0: 미팅 탭의 미팅 섹션에 작업 패키지를 추가합니다.
+            line_1: '"대비 증가" 확인란으로 색상 모드를 보다 편리하게 선택합니다.'
+            line_2: 마지막 업데이트 기준으로 프로젝트를 필터링합니다.
+            line_3: 딥링크에서 강조 표시된 대상 요소로 이동합니다.
+            line_4: 더욱 쉽게 액세스할 수 있는 위험 대화 상자에서 중요한 작업을 확인합니다.
     links:
       upgrade_enterprise_edition: "Enterprise Edition으로 업그레이드"
       postgres_migration: "설치를 PostgreSQL로 마이그레이션"
@@ -2504,7 +2556,8 @@ ko:
       shortcuts: "바로가기 "
       blog: "OpenProject 블로그"
       forums: "커뮤니티 포럼"
-      newsletter: "보안 알림/뉴스레터"
+      security_alerts: "보안 알림"
+      newsletter: "뉴스레터"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2586,7 +2639,7 @@ ko:
         static_token_name: "API 토큰"
       ical:
         title: "iCalendar"
-        text_hint: 'iCalendar 토큰을 사용하면 사용자가 <a href="%{path}" target="_blank">OpenProject 캘린더를 구독</a>하고 외부 클라이언트의 최신 작업 패키지 정보를 볼 수 있습니다.'
+        text_hint_link: 'iCalendar 토큰을 사용하여 사용자가 [OpenProject 캘린더를 구독](docs_url)하고 외부 클라이언트의 최신 작업 패키지 정보를 볼 수 있습니다.'
         disabled_text: "관리자가 iCalendar 구독을 활성화하지 않았습니다. 이 기능을 사용하려면 관리자에게 문의하세요."
         empty_text_hint: "iCalendar 토큰을 추가하려면 프로젝트의 캘린더 모듈 내에서 새 캘린더 또는 기존 캘린더를 구독하세요. 필요한 권한이 있어야 합니다."
       oauth:
@@ -2728,6 +2781,7 @@ ko:
   label_required_disk_storage: "필요한 디스크 스토리지"
   label_send_invitation: 초대장 보내기
   label_calculated_value: "계산된 값"
+  label_change_parent: "부모 변경"
   label_change_plural: "변경"
   label_change_properties: "속성 변경"
   label_change_status: "상태 변경"
@@ -2903,7 +2957,7 @@ ko:
   label_integer: "정수"
   label_interface: "인터페이스"
   label_internal: "내부"
-  label_introduction_video: "소개 동영상"
+  label_introduction_video: "시작하기 동영상"
   label_invite_user: "사용자 초대"
   label_item: "항목"
   label_item_plural: "항목"
@@ -3552,6 +3606,7 @@ ko:
   notice_password_confirmation_failed: "암호가 올바르지 않습니다. 계속할 수 없습니다."
   notice_principals_found_multiple: "%{number} 개의 결과가 발견되었습니다.\n첫번째 결과를 보려면 탭 해주세요."
   notice_principals_found_single: "한 개의 결과가 있습니다.\n보려면 탭 해주세요."
+  notice_parent_item_not_found: "부모 항목을 찾을 수 없습니다."
   notice_project_not_deleted: "프로젝트가 삭제되지 않았습니다."
   notice_project_not_found: "프로젝트를 찾을 수 없습니다."
   notice_successful_connection: "연결에 성공했습니다."
@@ -3960,6 +4015,8 @@ ko:
   setting_feeds_limit: "피드 콘텐츠 제한"
   setting_file_max_size_displayed: "인라인에 표시되는 텍스트 파일의 최대 크기"
   setting_host_name: "호스트 이름"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus 서버 URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus 서버 비밀번호"
   setting_hours_per_day: "일별 시간"
   setting_hours_per_day_explanation: >-
     일 및 시간으로 기간을 표시할 때 "하루"로 간주되는 시간을 정의합니다(예: 하루가 8시간이면 32시간은 4일이 됩니다).
@@ -4188,6 +4245,7 @@ ko:
   text_access_token_hint: "액세스 토큰을 사용하여 OpenProject의 리소스에 대한 외부 응용 프로그램 액세스 권한을 부여할 수 있습니다."
   text_analyze: "추가 분석: %{subject}"
   text_are_you_sure: "계속하시겠습니까?"
+  open_link_in_a_new_tab: "새 탭에서 링크 열기"
   text_are_you_sure_continue: "계속하시겠습니까?"
   text_are_you_sure_with_children: "작업 패키지 및 모든 자식 작업 패키지를 삭제하시겠습니까?"
   text_are_you_sure_with_project_custom_fields: "이 특성을 삭제하면 모든 프로젝트에서 해당 값도 삭제됩니다. 계속하시겠습니까?"

@@ -150,7 +150,7 @@ For high-availability setups, distribute traffic across multiple servers and ava
 
 > [!IMPORTANT]
 >
-> Some features we plan for the future will only be shipped with Docker-based installations. We also don't plan to provide packaged-based installations for more recent Linux versions, e.g. Ubuntu 24.04.  
+> Some features we plan for the future will only be shipped with Docker-based installations. We also don't plan to provide packaged-based installations for more recent Linux versions, e.g. Ubuntu 24.04.
 
 ### Docker-based installation (recommendation)
 
@@ -219,13 +219,13 @@ OpenProject supports the latest versions of the major browsers.
 
 ##### OpenProject integration
 
-* [OpenProject Integration 2.9.0](https://github.com/nextcloud/integration_openproject/releases/tag/v2.9.0)
+* [OpenProject Integration 2.10.0](https://github.com/nextcloud/integration_openproject/releases/tag/v2.10.0)
 
 ##### Team folders
 
 If you want to use the feature of [automatically managed project folders](../../system-admin-guide/integrations/nextcloud/#4-automatically-managed-project-folders) you need to install the [Team folders](https://apps.nextcloud.com/apps/groupfolders) app in Nextcloud (formerly Group folders).
 
-* [Team folders 19.0.4](https://github.com/nextcloud/groupfolders/releases/tag/v19.0.4)
+* [Team folders 19.1.7](https://github.com/nextcloud/groupfolders/releases/tag/v19.1.7)
 
 ### Keycloak token exchange
 

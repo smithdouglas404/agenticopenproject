@@ -88,6 +88,8 @@ af:
     button_list_view: "List view"
     button_show_view: "Fullscreen view"
     button_log_time: "Log tyd"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "Meer"
     button_open_details: "Open details view"
     button_close_details: "Close details view"
@@ -433,7 +435,7 @@ af:
     label_sort_lower: "Skuif af"
     label_sorting: "Sorting"
     label_spent_time: "Tyd gespandeer"
-    label_star_query: "Favored"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Press enter to save."
     label_public_query: "Openbaar"
     label_sum: "Sum"
@@ -1103,6 +1105,7 @@ af:
       child_work_packages:
         one: "one child work package"
         other: "%{count} work package children"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"

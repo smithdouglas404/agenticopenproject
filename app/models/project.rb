@@ -68,6 +68,7 @@ class Project < ApplicationRecord
            class_name: "Member"
   has_many :users, through: :members, source: :principal
   has_many :principals, through: :member_principals, source: :principal
+  has_many :calculated_value_errors, dependent: :delete_all, as: :customized
 
   has_many :enabled_modules, dependent: :delete_all
   has_and_belongs_to_many :types, -> {
@@ -108,7 +109,7 @@ class Project < ApplicationRecord
   store_attribute :settings, :deactivate_work_package_attachments, :boolean
   store_attribute :settings, :enabled_internal_comments, :boolean
 
-  acts_as_favorable
+  acts_as_favoritable
 
   acts_as_customizable validate_on: :saving_custom_fields
   # extended in Projects::CustomFields in order to support sections

@@ -21,6 +21,8 @@
           title: 'Nyheter'
           at: 'på'
           no_results: 'Ingenting nytt å rapportere.'
+        news_beta:
+          title: 'News (BETA)'
         project_description:
           title: 'Prosjektbeskrivelse'
           no_results: "Ingen beskrivelse har blitt skrevet ennå. Den kan oppgis i \"Prosjektinnstillinger\"."

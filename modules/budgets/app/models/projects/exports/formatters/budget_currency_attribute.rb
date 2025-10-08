@@ -49,11 +49,11 @@ module Projects::Exports::Formatters
       budgets_attribute = BudgetCurrencyAttribute.budget_mapping.fetch(attribute.to_sym)
       return unless project_budgets && budgets_attribute
 
-      budget_format(project_budgets.public_send(budgets_attribute))
+      project_budgets.public_send(budgets_attribute)
     end
 
-    def budget_format(value)
-      number_to_currency(value, precision: 0)
+    def format_options
+      { number_format: currency_format }
     end
   end
 end
