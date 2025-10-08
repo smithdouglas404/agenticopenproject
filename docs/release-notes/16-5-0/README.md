@@ -14,6 +14,10 @@ We released [OpenProject 16.5.0](https://community.openproject.org/versions/2215
 
 ## Important feature changes
 
+Take a look at our release video showing the most important features introduced in OpenProject 16.5.0:
+
+![Release video of OpenProject 16.5](https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject_16_5_release.mp4)
+
 ### Add work packages to a meeting section in the Meetings tab
 
 You can now place a work package directly into a specific agenda section when adding it to a meeting from the Meetings tab. Open a work package, go to the tab *Meetings* and select an upcoming meeting. If you selected one, you can now choose in which section the work package should be displayed. 
