@@ -127,6 +127,7 @@ ja:
       label_configuration_details: メタデータ
       label_client_details: クライアント詳細
       label_attribute_mapping: 属性のマッピング
+      notice_created: A new OpenID provider was successfully created.
       client_details_description: OIDCクライアントとしてのOpenProjectの設定詳細
       no_results_table: プロバイダーが定義されていません。
       plural: OpenID プロバイダー

@@ -207,7 +207,7 @@ pt-PT:
       agenda_items: "Copiar itens da agenda"
       agenda_text: "Copiar agenda da reunião anterior"
       participants: "Copiar lista de participantes"
-      to_clipboard: "Copy link to clipboard"
+      to_clipboard: "Copiar ligação para a área de transferência"
     email:
       send_emails: "Enviar um e-mail aos participantes"
       send_invitation_emails: >
@@ -455,11 +455,11 @@ pt-PT:
   text_meeting_minutes_for_meeting: 'minutos para a reunião "%{meeting}"'
   text_notificiation_invited: "Este e-mail contém uma entrada de ics para a reunião abaixo:"
   text_meeting_ics_description: >-
-    Link to meeting: %{url}
+    Ligação à reunião: %{url}
   text_meeting_ics_meeting_series_description: >-
-    Link to meeting series: %{url}
+    Ligação à série de reuniões: %{url}
   text_meeting_occurrence_ics_description: >-
-    Link to meeting occurrence: %{url} Link to meeting series: %{series_url}
+    Ligação para a ocorrência de reuniões: %{url} Ligação à série de reuniões: %{series_url}
   text_meeting_empty_heading: "A sua reunião está vazia"
   text_meeting_empty_description1: "Comece por adicionar os itens da agenda abaixo. Cada item pode ser tão simples como um título, mas também pode adicionar detalhes adicionais, como a duração e notas."
   text_meeting_empty_description2: 'Também pode adicionar referências a pacotes de trabalho existentes. Ao fazê-lo, as notas relacionadas ficarão automaticamente visíveis no separador "Reuniões" do pacote de trabalho.'
@@ -543,13 +543,13 @@ pt-PT:
   text_meeting_closed_dropdown_description: "Esta reunião está encerrada. Já não é possível modificar os pontos da ordem de trabalhos ou os resultados."
   text_meeting_not_editable_anymore: "Esta reunião não é mais editável."
   text_meeting_not_present_anymore: "Esta reunião foi excluída. Por favor, selecione outra reunião."
-  label_add_work_package_to_meeting_dialog_title: "Select meeting"
-  label_add_work_package_to_meeting_section_label: "Add to section"
+  label_add_work_package_to_meeting_dialog_title: "Selecionar reunião"
+  label_add_work_package_to_meeting_section_label: "Adicionar à secção"
   label_add_work_package_to_meeting_dialog_button: "Adicionar à reunião"
-  label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."
-  label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."
-  placeholder_section_select_meeting_first: "Meeting selection is required first"
-  text_add_work_package_to_meeting_form: "The work package will be added to the selected meeting or backlog as an agenda item."
+  label_meeting_selection_caption: "Só é possível adicionar este pacote de trabalho a uma reunião futura ou em curso."
+  label_section_selection_caption: "Escolha uma secção específica da agenda ou adicione-a ao backlog."
+  placeholder_section_select_meeting_first: "Primeiro é necessário selecionar a reunião"
+  text_add_work_package_to_meeting_form: "O pacote de trabalho será adicionado à reunião selecionada ou ao backlog como elemento da agenda."
   text_add_work_package_to_meeting_description: "Um pacote de trabalho pode ser adicionado a uma ou várias reuniões para discussão. Quaisquer notas relacionadas a ele também serão visíveis aqui."
   text_agenda_item_no_notes: "Nenhuma nota fornecida."
   text_agenda_item_not_editable_anymore: "Este item da agenda não pode ser mais editado."
@@ -577,7 +577,7 @@ pt-PT:
           dialog_body: "Este token irá gerar um URL de subscrição iCal que permite ver todas as suas reuniões numa aplicação de calendário externa."
           create_button: "Criar subscrição"
           name_label: "Nome do token"
-          name_caption: 'You can name it after where you will use it, such as "My phone" or "Work computer".'
+          name_caption: 'Pode dar-lhe o nome do local onde o vai utilizar, como "O meu telemóvel" ou "Computador do trabalho".'
       created_dialog:
         token/ical_meeting:
           title: "Foi gerado um token de subscrição de reunião iCal"

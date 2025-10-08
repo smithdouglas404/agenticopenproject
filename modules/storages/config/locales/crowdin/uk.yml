@@ -32,7 +32,7 @@ uk:
         drive: ID диска
         host: Хост
         name: Назва
-        password: Application password
+        password: Пароль додатка
         provider_type: Тип постачальника
         tenant: ID каталогу (клієнта)
     errors:
@@ -63,7 +63,7 @@ uk:
               op_application_not_installed: схоже, у вас не встановлено додаток OpenProject integration. Спочатку встановіть його, а потім спробуйте знову.
             password:
               invalid_password: недійсний.
-              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
+              unknown_error: не вдалося перевірити через постачальника файлового сховища. Переконайтеся, що з’єднання працює належним чином.
     models:
       file_link: Файл
       storages/storage: Сховище

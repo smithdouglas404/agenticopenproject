@@ -127,6 +127,7 @@ nl:
       label_configuration_details: Metadata
       label_client_details: Client gegevens
       label_attribute_mapping: Attribuut toewijzen
+      notice_created: A new OpenID provider was successfully created.
       client_details_description: Configuratie details van OpenProject als een OIDC client
       no_results_table: Er zijn nog geen aanbieders gedefinieerd.
       plural: OpenID aanbieders

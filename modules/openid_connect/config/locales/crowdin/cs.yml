@@ -127,6 +127,7 @@ cs:
       label_configuration_details: Metadata
       label_client_details: Detaily klienta
       label_attribute_mapping: Mapování atributů
+      notice_created: A new OpenID provider was successfully created.
       client_details_description: Podrobnosti o konfiguraci OpenProject jako klienta OIDC
       no_results_table: Zatím nebyli definováni žádní poskytovatelé.
       plural: Poskytovatelé OpenID

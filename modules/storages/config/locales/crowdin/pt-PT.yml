@@ -32,7 +32,7 @@ pt-PT:
         drive: ID da unidade
         host: Hospedeiro
         name: Nome
-        password: Application password
+        password: Palavra-passe da aplicação
         provider_type: Tipo de fornecedor
         tenant: ID do Diretório (inquilino)
     errors:
@@ -63,7 +63,7 @@ pt-PT:
               op_application_not_installed: parece não ter a app "OpenProject integration" instalada. Instale-a primeiro e tente novamente.
             password:
               invalid_password: não é válido.
-              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
+              unknown_error: não foi possível validar com o fornecedor de armazenamento de ficheiros. Verifique se a ligação está a funcionar corretamente.
     models:
       file_link: Ficheiro
       storages/storage: Armazenamento

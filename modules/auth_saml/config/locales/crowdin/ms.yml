@@ -56,6 +56,7 @@ ms:
       label_mapping: Mapping
       label_requested_attribute_for: "Atribut yang diminta untuk: %{attribute}"
       no_results_table: Tiada pembekal identiti SAML telah ditakrifkan lagi.
+      notice_created: A new SAML identity provider was successfully created.
       plural: Pembekal identiti SAML
       singular: Pembekal identiti SAML
       requested_attributes: Atribut yang diminta

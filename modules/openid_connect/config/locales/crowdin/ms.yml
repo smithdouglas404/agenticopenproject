@@ -127,6 +127,7 @@ ms:
       label_configuration_details: Metadata
       label_client_details: Butiran pelanggan
       label_attribute_mapping: Pemetaan atribut
+      notice_created: A new OpenID provider was successfully created.
       client_details_description: Butiran konfigurasi OpenProject sebagai pelanggan OIDC
       no_results_table: Belum ada penyedia yang ditetapkan lagi.
       plural: Penyedia OpenID

@@ -127,6 +127,7 @@ de:
       label_configuration_details: Metadaten
       label_client_details: Details der Anwendung
       label_attribute_mapping: Attributzuordnung
+      notice_created: A new OpenID provider was successfully created.
       client_details_description: Konfigurationsdetails von OpenProject als OIDC-Client
       no_results_table: Noch keine Anbieter definiert.
       plural: OpenID-Anbieter

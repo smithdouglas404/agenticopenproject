@@ -127,6 +127,7 @@ el:
       label_configuration_details: Metadata
       label_client_details: Client details
       label_attribute_mapping: Χαρτογράφηση χαρακτηριστικού
+      notice_created: A new OpenID provider was successfully created.
       client_details_description: Configuration details of OpenProject as an OIDC client
       no_results_table: Δεν έχουν οριστεί πάροχοι ακόμη.
       plural: Πάροχοι OpenID

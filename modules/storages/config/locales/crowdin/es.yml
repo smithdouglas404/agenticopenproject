@@ -32,7 +32,7 @@ es:
         drive: ID de unidad
         host: Host
         name: Nombre
-        password: Application password
+        password: Contraseña de aplicación
         provider_type: Tipo de proveedor
         tenant: Directory (tenant) ID
     errors:
@@ -63,7 +63,7 @@ es:
               op_application_not_installed: parece que no tienes la aplicación "Integración OpenProject" instalada. Por favor, instálala primero y vuelve a intentarlo.
             password:
               invalid_password: no es válido.
-              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
+              unknown_error: no se ha podido validar con el proveedor de almacenamiento de archivos. Compruebe que la conexión funcione correctamente.
     models:
       file_link: Archivo
       storages/storage: Almacén

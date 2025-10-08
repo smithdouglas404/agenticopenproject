@@ -1994,7 +1994,7 @@ ru:
   button_delete_watcher: "Удаление наблюдателя %{name}"
   button_download: "Скачать"
   button_duplicate: "Дублировать"
-  button_duplicate_and_follow: "Дублировать и следить"
+  button_duplicate_and_follow: "Скопировать и продолжить"
   button_edit: "Правка"
   button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Развернуть все"

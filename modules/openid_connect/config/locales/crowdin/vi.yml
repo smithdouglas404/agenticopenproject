@@ -127,6 +127,7 @@ vi:
       label_configuration_details: Metadata
       label_client_details: Client details
       label_attribute_mapping: Ánh xạ thuộc tính
+      notice_created: A new OpenID provider was successfully created.
       client_details_description: Configuration details of OpenProject as an OIDC client
       no_results_table: Chưa có nhà cung cấp nào được định nghĩa.
       plural: Các nhà cung cấp OpenID

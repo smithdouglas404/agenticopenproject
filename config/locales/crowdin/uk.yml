@@ -196,8 +196,8 @@ uk:
     sync_failed: "Не вдалося виконати синхронізацію з LDAP: %{message}."
     back_to_index: "Натисніть тут, щоб повернутися до списку підключень."
     technical_warning: |
-      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      [Please visit our documentation for detailed instructions](docs_url).
+      Для заповнення форми LDAP вам знадобляться технічні знання щодо конфігурації LDAP / Active Directory.
+      [Докладні вказівки наведено в документації](docs_url).
     attribute_texts:
       name: Назва атрибута LDAP-підключення
       host: Назва хосту LDAP або IP-адреса
@@ -331,58 +331,58 @@ uk:
       no_results_content_text: Створіть нове спеціальне поле
   calculated_values:
     error_dialog:
-      title: "Error with Calculated Value"
+      title: "Помилка, пов’язана з полем «Розраховане значення»"
     errors:
-      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
-      mathematical: "A mathematical error occurred during calculation."
-      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
-      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
+      unknown: "Сталася невідома помилка. Перевірте формулу для цього поля «Розраховане значення»."
+      mathematical: "Під час обчислення сталася математична помилка."
+      missing_value: Атрибут «%{custom_field_name}» обов’язковий для цього поля «Розраховане значення», але є порожнім.
+      disabled_value: Атрибут «%{custom_field_name}» обов’язковий для цього поля «Розраховане значення», але його вимкнено для проєкту.
   concatenation:
     single: "або"
   op_dry_validation:
-    or: "or"
+    or: "або"
     errors:
-      array?: "must be an array."
-      decimal?: "must be a decimal."
-      defined: "must not be defined."
-      eql?: "must be equal to %{left}."
-      filled?: "must be filled."
-      greater_or_equal_zero: "must be greater or equal to 0."
-      gteq?: "must be greater than or equal to %{num}."
-      hash?: "must be a hash."
+      array?: "має бути масивом."
+      decimal?: "має бути десятковим числом."
+      defined: "не має визначатися."
+      eql?: "має дорівнювати %{left}."
+      filled?: "— слід заповнити."
+      greater_or_equal_zero: "має бути більше ніж 0 або дорівнювати йому."
+      gteq?: "має бути більше ніж %{num} або дорівнювати цьому значенню."
+      hash?: "має бути гешом."
       included_in?:
         arg:
-          default: "must be one of: %{list}."
-          range: "must be one of: %{list_left} - %{list_right}."
-      int?: "must be an integer."
-      key?: "is missing."
-      not_found: "not found."
+          default: "має бути якимось із цих елементів: %{list}."
+          range: "має бути якимось із цих елементів: %{list_left} — %{list_right}."
+      int?: "має бути цілим числом."
+      key?: "— відсутній елемент."
+      not_found: "— не знайдено."
       rules:
         copy_workflow_from:
-          workflow_missing: "has no own workflow."
+          workflow_missing: "не має власного робочого процесу."
         custom_field:
-          format_not_supported: "format '%{field_format}' is unsupported."
+          format_not_supported: "формат «%{field_format}» не підтримується."
         item:
-          root_item: "cannot be a root item."
-          not_persisted: "must be an already existing item."
+          root_item: "не може бути кореневим об’єктом."
+          not_persisted: "має бути вже наявним об’єктом."
         label:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "має бути унікальним об’єктом у межах одного рівня ієрархії."
         short:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "має бути унікальним об’єктом у межах одного рівня ієрархії."
         parent:
-          not_descendant: "must be a descendant of the hierarchy root."
-      str?: "must be a string."
-      type?: "must be %{type}."
+          not_descendant: "має бути нащадком кореня ієрархії."
+      str?: "має бути рядком."
+      type?: "має бути типом «%{type}»."
     rules:
-      copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
-      depth: "Depth"
-      item: "Item"
-      label: "Label"
-      score: "Score"
-      short: "Short name"
-      parent: "Parent"
-      blueprint: "Pattern blueprint"
+      copy_workflow_from: "Тип копії робочого процесу"
+      enabled: "Увімкнено"
+      depth: "Глибина"
+      item: "Об’єкт"
+      label: "Мітка"
+      score: "Оцінка"
+      short: "Коротка назва"
+      parent: "Батьківський об’єкт"
+      blueprint: "Структура шаблону"
   global_search:
     title:
       all_projects: 'Пошук за терміном «%{search_term}» у всіх проєктах'
@@ -444,7 +444,7 @@ uk:
     lists:
       active: "Активні проєкти"
       my: "Мої проєкти"
-      favorited: "Favorite projects"
+      favorited: "Вибрані проєкти"
       archived: "Заархівовані проєкти"
       shared: "Спільні проєкти"
       my_lists: "Мої списки проєктів"
@@ -641,18 +641,18 @@ uk:
     sessions:
       session_name: "%{browser_name} %{browser_version} у %{os_name}"
       browser: "Браузер"
-      expires: "Expires"
-      last_connection: "Last connection"
+      expires: "Завершується"
+      last_connection: "Останнє підключення"
       device: "Пристрій / ОС"
       unknown_browser: "невідомий браузер"
       unknown_os: "невідома операційна система"
-      unknown: "(unknown)"
-      browser_session: "(Browser session)"
-      current: "Current (this device)"
+      unknown: "(невідомо)"
+      browser_session: "(Сеанс браузера)"
+      current: "Поточний (цей пристрій)"
       title: "Керування сеансами"
-      instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
+      instructions: "Ви ввійшли в обліковий запис на вказаних далі пристроях. Скасуйте сеанси, які вам не знайомі, чи сеанси на пристроях, якими ви не керуєте."
       may_not_delete_current: "Ви не можете видалити поточний сеанс."
-      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
+      deletion_warning: "Ви справді хочете скасувати цей сеанс? Ви вийдете з облікового запису на цьому пристрої."
     groups:
       member_in_these_groups: "Зараз цей користувач — учасник таких груп:"
       no_results_title_text: Цей користувач зараз не належить до жодної групи.
@@ -994,10 +994,10 @@ uk:
       auth_provider:
         scim_clients: "Клієнти SCIM"
       calculated_value_error:
-        error_code: "Error code"
-        customized: "Customized"
-        customized_id: "Customized ID"
-        customized_type: "Customized type"
+        error_code: "Код помилки"
+        customized: "Персоналізовано"
+        customized_id: "Користувацький ідентифікатор"
+        customized_type: "Користувацький тип"
       capability:
         context: "Контекст"
       changeset:
@@ -1049,7 +1049,7 @@ uk:
       enterprise_trial:
         company: "Компанія"
       favorite:
-        favorited: "Item"
+        favorited: "Об’єкт"
       grids/grid:
         page: "Сторінка"
         row_count: "Кількість рядків"
@@ -1231,13 +1231,13 @@ uk:
         auto_hide_popups: "Автоматично приховувати банери про успішне виконання"
         auto_hide_popups_caption: "Якщо ввімкнено, зелені банери про успішне виконання автоматично зникатимуть через 5 секунд."
         warn_on_leaving_unsaved: "Попереджати мене, коли залишив робочий пакет із незбереженими змінами"
-        increase_theme_contrast: "Increase theme contrast"
-        increase_contrast: "Increase contrast"
-        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
-        force_light_theme_contrast: "Force high-contrast when in Light mode"
-        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
-        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
-        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
+        increase_theme_contrast: "Збільшити контрастність теми"
+        increase_contrast: "Збільшити контрастність"
+        increase_contrast_caption: "Вмикає високу контрастність для вибраного колірного режиму."
+        force_light_theme_contrast: "Примусово вмикати високу контрастність у світлому режимі"
+        force_dark_theme_contrast: "Примусово вмикати високу контрастність у темному режимі"
+        force_light_theme_contrast_caption: "Використовуватиметься висококонтрастна версія світлого режиму, коли налаштовано автоматичний вибір колірного режиму."
+        force_dark_theme_contrast_caption: "Використовуватиметься висококонтрастна версія темного режиму, коли налаштовано автоматичний вибір колірного режиму."
         theme: "Колірний режим"
         time_zone: "Часовий пояс"
         mode_guideline: "Деякі режими перезаписують користувацькі кольори теми, щоб поліпшити доступність і читабельність. Виберіть світлий режим, якщо потрібна повна підтримка користувацької теми."
@@ -1305,7 +1305,7 @@ uk:
         confirmation: "не збігається %{attribute}"
         could_not_be_copied: "%{dependency} не вдалося скопіювати (повністю)."
         does_not_exist: "не існує."
-        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
+        error_enterprise_only: "%{action} можна лише у версії OpenProject Enterprise."
         error_unauthorized: "– можливо, немає доступу."
         error_readonly: "– було здійснено спробу запису, але елемент недоступний для запису."
         error_conflict: "Інформація була оновлена принаймні один інший користувач в той же час."
@@ -1420,7 +1420,7 @@ uk:
           unreadable: "неможливо прочитати. Ви впевнені, що це маркер підтримки?"
           already_added: "Цей маркер уже додано."
         favorite:
-          already_favorited: "has already been favorited."
+          already_favorited: "уже додано у вибране."
         grids/grid:
           overlaps: "перекриваються."
           outside: "знаходиться за межами сітки."
@@ -1518,18 +1518,18 @@ uk:
             circular_dependency: "Відносини створюють коло відносин."
           attributes:
             base:
-              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
-              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
+              error_not_deletable: "Цей зв’язок не можна видалити, оскільки ви не маєте дозволів, потрібних для редагування вибраного пакета робіт."
+              error_not_editable: "Цей зв’язок не можна змінити, оскільки ви не маєте дозволів, потрібних для редагування вибраного пакета робіт."
             to_id:
-              format: "The selected work package %{message}"
-              error_not_found: "could not be found."
+              format: "Вибраний пакет робіт %{message}"
+              error_not_found: "не вдалося знайти."
               error_readonly: "не можна змінити для наявних зв’язків."
-              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
+              error_not_manageable: "не можна додати, оскільки ви не маєте дозволів, потрібних для його редагування."
             from_id:
-              format: "The selected work package %{message}"
-              error_not_found: "could not be found."
+              format: "Вибраний пакет робіт %{message}"
+              error_not_found: "не вдалося знайти."
               error_readonly: "не можна змінити для наявних зв’язків."
-              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
+              error_not_manageable: "не можна додати, оскільки ви не маєте дозволів, потрібних для його редагування."
         repository:
           not_available: "Постачальник SCM недоступний"
           not_whitelisted: "не дозволяється конфігурацією."
@@ -1834,7 +1834,7 @@ uk:
     attachments: "Вкладення"
     actor: "Виконавець"
     action: "Дія"
-    api_key: "API key"
+    api_key: "Ключ API"
     author: "Автор"
     avatar: "Аватар"
     base: "Загальна помилка:"
@@ -2016,7 +2016,7 @@ uk:
   button_save: "Зберегти"
   button_save_as: "Зберегти як"
   button_save_back: "Зберегти та повернутися назад"
-  button_select: "Select"
+  button_select: "Вибрати"
   button_set_reminder: "Установити нагадування"
   button_show: "Показати"
   button_sort: "Сортувати"
@@ -2280,7 +2280,7 @@ uk:
     features:
       baseline_comparison: Порівняння з вихідним рівнем
       board_view: Покращені Дошки
-      calculated_values: Calculated Values
+      calculated_values: Розраховані значення
       conditional_highlighting: Умовне виділення
       internal_comments: Внутрішні коментарі
       custom_actions: Користувацькі дії
@@ -2315,7 +2315,7 @@ uk:
         Уже маєте маркер? Додайте його за допомогою кнопки нижче, щоб перейти на вже замовлений план Enterprise.
       hide_banner: "Приховати цей банер"
       homescreen_description: >
-        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
+        Користувачам планів Enterprise, створених на основі версії Community, доступні додаткові [доповнення Enterprise](enterprise_url) і професійна підтримка, що ідеально для організацій, які використовують OpenProject у середовищах, критично важливих для стратегічних завдань.
       homescreen_subline: Підвищивши рівень, ви також долучитеся до підтримки проєкту з відкритим кодом.
       baseline_comparison:
         description: Виділяйте зміни, внесені в цей список із будь-якого моменту часу в минулому.
@@ -2354,7 +2354,7 @@ uk:
       project_list_sharing:
         description: "Діліться списками проєктів з окремими користувачами."
       calculated_values:
-        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
+        description: "Тип «Розраховані значення» дає змогу створити атрибут на основі математичної формули з використанням числових значень і інших атрибутів проєкту й користувацьких полів."
       define_custom_style:
         title: "Користувацький колір теми й логотип"
         more_info: "Примітка: вибраний логотип буде загальнодоступний."
@@ -2453,7 +2453,7 @@ uk:
   error_invalid_selected_value: "Недійсне вибране значення."
   error_journal_attribute_not_present: "Журнал не містить атрибута %{attribute}."
   error_pdf_export_too_many_columns: "Для експорту PDF-файлу вибрано занадто багато стовпців. Скоротіть кількість стовпців."
-  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
+  error_pdf_date_range_too_long: "Діапазон дат, вибраний для пакета робіт, перевищує допустимий ліміт для експорту у форматі PDF. Скоротіть діапазон до максимального — %{years} р."
   error_pdf_failed_to_export: "Експорт PDF не вдалося зберегти: %{error}"
   error_token_authenticity: "Неможливо підтвердити маркер підробки для запиту між сайтами. Чи спробували ви надіслати дані для кількох веб-переглядачів або вкладок? Закрийте всі вкладки та повторіть спробу."
   error_reminder_not_found: "Нагадування не знайдено, або сповіщення вже надіслано."
@@ -2670,11 +2670,11 @@ uk:
           new_features_title: >
             Випуск включає різноманітні нові функції і покращення, такі як:
           new_features_list:
-            line_0: Add work packages to a meeting section in the Meetings tab.
-            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
-            line_2: Filter projects by last update.
-            line_3: Jump to highlighted target elements from deep links.
-            line_4: Confirm critical actions with more accessible danger dialogs.
+            line_0: додавання пакетів робіт у розділ наради на вкладці «Наради»;
+            line_1: зручніший вибір колірного режиму за допомогою прапорців для збільшення контрастності;
+            line_2: фільтрування проєктів за останнім оновленням;
+            line_3: перехід до виділених цільових об’єктів за допомогою точних посилань;
+            line_4: підтвердження критичних дій у зручніших діалогових вікнах, які з’являються перед виконанням ризикованих дій.
     links:
       upgrade_enterprise_edition: "Оновлення до версії Enterprise"
       postgres_migration: "Міграція інсталяції в PostgreSQL"
@@ -2768,7 +2768,7 @@ uk:
         static_token_name: "Маркер API"
       ical:
         title: "iCalendar"
-        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
+        text_hint_link: 'Маркери iCalendar дають змогу користувачам [підписуватися на календарі OpenProject](docs_url) і переглядати актуальну інформацію про пакети робіт у зовнішніх клієнтах.'
         disabled_text: "Підписки на iCalendar не дозволено адміністратором. Зверніться до нього, якщо вам потрібна ця функція."
         empty_text_hint: "Щоб додати маркер iCalendar, підпишіться на новий або наявний календар у модулі календаря проєкту. У вас мають бути необхідні дозволи."
       oauth:
@@ -2909,8 +2909,8 @@ uk:
   label_select_main_menu_item: Виберіть новий пункт головного меню
   label_required_disk_storage: "Необхідне місце на диску"
   label_send_invitation: Надіслати запрошення
-  label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_calculated_value: "Розраховане значення"
+  label_change_parent: "Змінити батьківський об’єкт"
   label_change_plural: "Зміни"
   label_change_properties: "Змінити властивості"
   label_change_status: "Змінити статус"
@@ -3086,7 +3086,7 @@ uk:
   label_integer: "Ціле число"
   label_interface: "Інтерфейс"
   label_internal: "Власне"
-  label_introduction_video: "Getting started video"
+  label_introduction_video: "Відео про початок роботи"
   label_invite_user: "Запросити користувача"
   label_item: "Елемент"
   label_item_plural: "Елементи"
@@ -3737,7 +3737,7 @@ uk:
   notice_password_confirmation_failed: "Ваш пароль неправильний. Неможливо продовжити."
   notice_principals_found_multiple: "There are %{number} знайдені результати. \nВкладка для фокусування першого результату."
   notice_principals_found_single: "Знайдений один результат. Натисніть <TAB> для переходу до нього."
-  notice_parent_item_not_found: "Parent item not found."
+  notice_parent_item_not_found: "Батьківський об’єкт не знайдено."
   notice_project_not_deleted: "Проект не був видалений."
   notice_project_not_found: "Проєкт не знайдено."
   notice_successful_connection: "Підключення успішно встановлене."
@@ -4381,7 +4381,7 @@ uk:
   text_access_token_hint: "Маркери доступу дозволяють надавати зовнішнім програмам доступ до ресурсів у OpenProject."
   text_analyze: "Подальший аналіз: %{subject}"
   text_are_you_sure: "Ви впевненені?"
-  open_link_in_a_new_tab: "Open link in a new tab"
+  open_link_in_a_new_tab: "Відкрити посилання в новій вкладці"
   text_are_you_sure_continue: "Хочете продовжити?"
   text_are_you_sure_with_children: "Видалити робочий пакет і всі дочірні робочі пакети?"
   text_are_you_sure_with_project_custom_fields: "Видалення цього атрибута також призведе до видалення його значень у всіх проєктах. Ви впевнені?"
