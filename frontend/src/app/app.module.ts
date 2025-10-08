@@ -197,7 +197,6 @@ import {
 import { appBaseSelector, ApplicationBaseComponent } from 'core-app/core/routing/base/application-base.component';
 import { SpotSwitchComponent } from 'core-app/spot/components/switch/switch.component';
 import { OPContextMenuService } from 'core-app/shared/components/op-context-menu/op-context-menu.service';
-import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import {
   TimeEntriesWorkPackageAutocompleterComponent,
 } from 'core-app/shared/components/autocompleter/time-entries-work-package-autocompleter/time-entries-work-package-autocompleter.component';
@@ -208,32 +207,23 @@ import { OpInviteUserModalAugmentService } from 'core-app/features/invite-user-m
 import { TimeEntryTimerService } from 'core-app/shared/components/time_entries/services/time-entry-timer.service';
 import { MyPageComponent } from './features/my-page/my-page.component';
 import { DashboardComponent } from './features/overview/dashboard.component';
+import { DisableTurboDirective } from 'core-app/shared/directives/disable-turbo.directive';
 
 export function initializeServices(injector:Injector) {
   return () => {
     const topMenuService = injector.get(TopMenuService);
     const keyboardShortcuts = injector.get(KeyboardShortcutService);
     const contextMenu = injector.get(OPContextMenuService);
-    const currentProject = injector.get(CurrentProjectService);
     const inviteUserAugmentService = injector.get(OpInviteUserModalAugmentService);
     const timeEntryTimerService = injector.get(TimeEntryTimerService);
 
     // Conditionally add the Revit Add-In settings button
     injector.get(RevitAddInSettingsButtonService);
 
-    const runOnRenderAndLoad = () => {
-      topMenuService.register();
-      contextMenu.register();
-      inviteUserAugmentService.setupListener();
-      timeEntryTimerService.initialize();
-      currentProject.detect();
-    };
-    runOnRenderAndLoad();
-
-    // Register on turbo:render, turbo:load
-    document.addEventListener('turbo:render', runOnRenderAndLoad);
-    document.addEventListener('turbo:load', runOnRenderAndLoad);
-
+    topMenuService.register();
+    contextMenu.register();
+    inviteUserAugmentService.setupListener();
+    timeEntryTimerService.initialize();
     keyboardShortcuts.register();
 
     return injector.get(ConfigurationService).initialize();
@@ -343,6 +333,8 @@ export function runBootstrap(appRef:ApplicationRef) {
 
     // My account
     OpenProjectMyAccountModule,
+
+    DisableTurboDirective
   ],
   providers: [
     { provide: States, useValue: new States() },
