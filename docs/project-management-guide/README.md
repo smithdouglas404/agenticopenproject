@@ -6,6 +6,10 @@ description: Additional information and application guidelines for using OpenPro
 keywords: PM²
 ---
 
+> [!TIP]
+>
+> One special feature of PM² is that the European Commission provides it under an open-source license. This makes it especially interesting and important for OpenProject, and it receives special attention from the OpenProject team to support this open methodology closely.
+
 # PM² Project Management Methodology
 
 Version 3.1, December 2023.
