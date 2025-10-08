@@ -31,16 +31,25 @@
 module WorkPackages
   module ActivitiesTab
     module StimulusControllers
+      CONTROLLERS = %i[
+        auto-scrolling
+        editor
+        index
+        internal-comment
+        lazy-page
+        polling
+        stems
+        quote-comments
+      ].freeze
+
       module_function
 
-      def auto_scrolling_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--auto-scrolling#{suffix}"
-      def editor_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--editor#{suffix}"
-      def index_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--index#{suffix}"
-      def internal_comment_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--internal-comment#{suffix}"
-      def lazy_page_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--lazy-page#{suffix}"
-      def polling_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--polling#{suffix}"
-      def stems_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--stems#{suffix}"
-      def quote_comments_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--quote-comment#{suffix}"
+      # For each controller, define a method named "#{controller_name_with_underscores}_stimulus_controller".
+      CONTROLLERS.each do |controller|
+        define_method("#{controller.to_s.tr('-', '_')}_stimulus_controller") do |suffix = nil|
+          "#{stimulus_controller_namespace}--#{controller}#{suffix}"
+        end
+      end
 
       def index_component_dom_selector
         "##{WorkPackages::ActivitiesTab::IndexComponent.index_content_wrapper_key}"
