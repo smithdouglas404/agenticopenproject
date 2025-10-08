@@ -34,6 +34,12 @@ export function addTurboEventListeners() {
     headers['X-Authentication-Scheme'] = 'Session';
   });
 
+  document.addEventListener('turbo:before-cache', () => {
+    document.querySelectorAll<HTMLDialogElement>('dialog[open]').forEach((openDialog) => {
+      openDialog.close();
+    });
+  });
+
   // Turbo adds nonces to all scripts, even though we want to explicitly pass nonces
   // https://github.com/hotwired/turbo/issues/294#issuecomment-2633216052
   // We remove them manually as a workaround
