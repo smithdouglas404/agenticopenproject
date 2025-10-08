@@ -3,7 +3,7 @@ import { enableProdMode } from '@angular/core';
 
 import 'core-app/core/setup/init-jquery';
 
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { platformBrowser } from '@angular/platform-browser';
 import { initializeLocale } from 'core-app/core/setup/init-locale';
 import { environment } from './environments/environment';
 import { configureErrorReporter } from 'core-app/core/errors/configure-reporter';
@@ -45,7 +45,6 @@ void initializeLocale()
       // Now that DOM is loaded, also run the global listeners
       initializeGlobalListeners();
 
-      // Due to the behaviour of the Edge browser we need to wait for 'DOM ready'
-      void platformBrowserDynamic().bootstrapModule(OpenProjectModule);
+      void platformBrowser().bootstrapModule(OpenProjectModule);
     });
   });
