@@ -28,27 +28,39 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# See also: create_service.rb for comments
-module Storages::Storages
-  class UpdateService < ::BaseServices::Update
-    protected
+module Storages
+  # See also: create_service.rb for comments
+  module Storages
+    class UpdateService < ::BaseServices::Update
+      protected
 
-    def after_perform(service_call)
-      super
+      def after_validate(service_call)
+        return method_that_will_be_service(service_call) if model.is_a? SharepointStorage
 
-      storage = service_call.result
-      return service_call unless storage.provider_type_nextcloud?
-      return service_call unless storage.oauth_application
+        service_call
+      end
 
-      persist_service_result = ::OAuth::Applications::UpdateService
-        .new(model: storage.oauth_application, user:)
-        .call(
-          name: "#{storage.name} (#{I18n.t("storages.provider_types.#{storage}.name")})",
-          redirect_uri: File.join(storage.host, "index.php/apps/integration_openproject/oauth-redirect")
-        )
-      service_call.add_dependent!(persist_service_result)
+      def method_that_will_be_service(service_call)
+        return service_call unless model.automatically_managed? && model.automatically_managed_changed?
 
-      service_call
+        service_call
+      end
+
+      def after_perform(service_call)
+        storage = service_call.result
+        return service_call unless storage.provider_type_nextcloud?
+        return service_call unless storage.oauth_application
+
+        persist_service_result = ::OAuth::Applications::UpdateService
+                                 .new(model: storage.oauth_application, user:)
+                                 .call(
+                                   name: "#{storage.name} (#{I18n.t("storages.provider_types.#{storage}.name")})",
+                                   redirect_uri: File.join(storage.host, "index.php/apps/integration_openproject/oauth-redirect")
+                                 )
+        service_call.add_dependent!(persist_service_result)
+
+        service_call
+      end
     end
   end
 end

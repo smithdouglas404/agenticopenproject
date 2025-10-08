@@ -38,6 +38,7 @@ module Storages
     }.freeze
 
     store_attribute :provider_fields, :tenant_id, :string
+    store_attribute :provider_fields, :managed_drive_id, :string
 
     # For now SharePoint is visible only in tests.
     # This is to prevent it from being shown in the UI, as it is not ready yet.
@@ -94,8 +95,7 @@ module Storages
         storage_oauth_client_configured: oauth_client.present?,
         storage_redirect_uri_configured: oauth_client&.persisted?,
         storage_tenant_drive_configured: tenant_id.present?,
-        # FIXME: Reenable the check once AMPF is configurable
-        # access_management_configured: !automatic_management_unspecified?,
+        access_management_configured: !automatic_management_unspecified?,
         name_configured: name.present?
       }
     end

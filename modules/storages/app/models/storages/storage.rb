@@ -50,20 +50,19 @@ module Storages
     has_many :project_storages, dependent: :destroy, class_name: "Storages::ProjectStorage"
     has_many :projects, through: :project_storages
     has_one :oauth_client, as: :integration, dependent: :destroy
-    # TODO: Are we using this? - 2025-07-14 @mereghost
     has_one :oauth_application, class_name: "::Doorkeeper::Application", as: :integration, dependent: :destroy
     has_many :remote_identities, as: :integration, dependent: :destroy
 
     validates :host, uniqueness: { allow_nil: true }
     validates :name, uniqueness: true
 
-    scope :visible, ->(user = User.current) do
+    scope :visible, lambda { |user = User.current|
       if user.allowed_in_any_project?(:manage_files_in_project)
         all
       else
         where(project_storages: ProjectStorage.where(project: Project.allowed_to(user, :view_file_links)))
       end
-    end
+    }
 
     scope :not_enabled_for_project, ->(project) { where.not(id: project.project_storages.pluck(:storage_id)) }
 
