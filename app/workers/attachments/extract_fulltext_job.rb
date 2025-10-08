@@ -58,7 +58,7 @@ module Attachments
       if @attachment.readable?
         @file = carrierwave_uploader.local_file
         resolver = Plaintext::Resolver.new(@file, @attachment.content_type)
-        @text = resolver.text
+        @text = resolver.text.dup
       end
     rescue StandardError => e
       log_error("Failed to extract plaintext for attachment ##{@attachment&.id}", e)
