@@ -34,7 +34,7 @@ class WorkPackages::ActivitiesTabController < ApplicationController
 
   before_action :find_work_package
   before_action :find_project
-  before_action :find_journal, only: %i[edit cancel_edit update toggle_reaction]
+  before_action :find_journal, only: %i[item_actions edit cancel_edit update toggle_reaction]
   before_action :set_filter
   before_action :authorize
 
@@ -84,6 +84,11 @@ class WorkPackages::ActivitiesTabController < ApplicationController
     end
 
     respond_with_turbo_streams
+  end
+
+  def item_actions
+    render WorkPackages::ActivitiesTab::Journals::ItemComponent::Actions.new(@journal),
+           layout: false
   end
 
   def edit

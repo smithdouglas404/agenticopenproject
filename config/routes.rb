@@ -735,6 +735,7 @@ Rails.application.routes.draw do
     resources :activities, controller: "work_packages/activities_tab", only: %i[index create edit update] do
       member do
         get :cancel_edit
+        get :item_actions
         put :toggle_reaction
       end
 
