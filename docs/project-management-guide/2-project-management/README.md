@@ -21,11 +21,9 @@ A project is a temporary organisational structure set up to create a unique prod
 - A project's output may be a product (e.g. a new application) or a service (e.g. a consulting service, a conference or a training programme).
 The project is defined, planned, and executed under certain external (or self-imposed) constraints. These can relate to scheduling, budgeting, quality, but also to the project's organisational environment (e.g. risk attitude, capabilities, available capacity, etc.).
 
-| Temporary | Unique | Output | Constraints |
-| :--: | :--: | :--: | :--: |
-| Start \& End | Non routine | Product or Service | Scheduling, Budgeting, Quality... |
+![Fig 2.1 Key project characteristics](02.01.png)
 
-Fig 2.1 Key project characteristics
+
 A successful project ends when its scope objective has been achieved and all deliverables have been produced and accepted by the organisation or person that requested the project (the client). The deliverables are then handed over to the client and the project team is disbanded.
 
 Projects are different from normal day-to-day work (operations) and are best managed with a special temporary organisational structure in order to:
