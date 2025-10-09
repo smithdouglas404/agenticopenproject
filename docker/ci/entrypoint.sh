@@ -143,7 +143,7 @@ run_features() {
 	reset_dbs
 	# execute "time bundle exec turbo_tests --verbose -n $JOBS --runtime-log spec/support/runtime-logs/turbo_runtime_features.log {,modules/*/}spec/features"
   # DEBUG: only run the create user feature spec
-	execute "time bundle exec turbo_tests --verbose -n $JOBS --runtime-log spec/support/runtime-logs/turbo_runtime_features.log spec/features/users/create_spec.rb:144"
+	execute "time bundle exec turbo_tests --verbose -n $JOBS --runtime-log spec/support/runtime-logs/turbo_runtime_features.log spec/features/users/create_spec.rb"
   # DEBUG: show the test log
   echo "========== TEST LOG =========="
   execute "cat log/test.log"
