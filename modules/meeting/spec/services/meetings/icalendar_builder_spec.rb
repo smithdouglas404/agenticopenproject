@@ -252,6 +252,39 @@ RSpec.describe Meetings::IcalendarBuilder,
       meeting.scheduled_meeting
     end
 
+    context "when using the cache" do
+      subject(:builder) { described_class.new(timezone:) }
+
+      before do
+        builder.preload_for_recurring_meetings(recurring_meetings: [recurring_meeting])
+      end
+
+      it "preloads the correct caches" do
+        builder.add_series_event(recurring_meeting:)
+
+        expect(builder.instance_variable_get(:@excluded_dates_cache)).to eq(
+          recurring_meeting.id => [second_occurrence.start_time]
+        )
+
+        expect(builder.instance_variable_get(:@instantiated_occurrences_cache)).to eq(
+          recurring_meeting.id => [third_occurence]
+        )
+
+        expect(builder.instance_variable_get(:@series_cache_loaded)).to be true
+      end
+
+      it "puts the correct EXDATEs in the generated event (REGRESSION: #68068)" do
+        builder.add_series_event(recurring_meeting:)
+
+        parsed_calendar = Icalendar::Calendar.parse(builder.to_ical).first
+        event = parsed_calendar.events.find { |e| e.uid == recurring_meeting.uid }
+
+        expect(event.exdate).not_to be_empty
+        exdate_values = event.exdate.map(&:value)
+        expect(exdate_values).to contain_exactly(second_occurrence.start_time)
+      end
+    end
+
     context "when current user needs to take action" do
       subject(:builder) { described_class.new(timezone:, user: user1) }
 
