@@ -60,8 +60,9 @@ RSpec.describe API::V3::Memberships::MembershipRepresenter, "rendering" do
   let(:permissions) do
     [:manage_members]
   end
+  let(:embed_links) { true }
   let(:representer) do
-    described_class.create(member, current_user:, embed_links: true)
+    described_class.create(member, current_user:, embed_links:)
   end
 
   subject { representer.to_json }
@@ -125,33 +126,7 @@ RSpec.describe API::V3::Memberships::MembershipRepresenter, "rendering" do
     end
 
     describe "project" do
-      context "for a project membership" do
-        it_behaves_like "has a titled link" do
-          let(:link) { "project" }
-          let(:href) { api_v3_paths.project(workspace.id) }
-          let(:title) { workspace.name }
-        end
-      end
-
-      context "for a program membership" do
-        let(:workspace) { build_stubbed(:program) }
-
-        it_behaves_like "has a titled link" do
-          let(:link) { "project" }
-          let(:href) { api_v3_paths.program(workspace.id) }
-          let(:title) { workspace.name }
-        end
-      end
-
-      context "for a portfolio membership" do
-        let(:workspace) { build_stubbed(:portfolio) }
-
-        it_behaves_like "has a titled link" do
-          let(:link) { "project" }
-          let(:href) { api_v3_paths.portfolio(workspace.id) }
-          let(:title) { workspace.name }
-        end
-      end
+      it_behaves_like "has workspace linked"
 
       context "for a global membership" do
         let(:workspace) { nil }
@@ -231,45 +206,7 @@ RSpec.describe API::V3::Memberships::MembershipRepresenter, "rendering" do
     describe "project" do
       let(:embedded_path) { "_embedded/project" }
 
-      context "for a project membership" do
-        it "has the project embedded" do
-          expect(subject)
-            .to be_json_eql("Project".to_json)
-            .at_path("#{embedded_path}/_type")
-
-          expect(subject)
-            .to be_json_eql(workspace.name.to_json)
-            .at_path("#{embedded_path}/name")
-        end
-      end
-
-      context "for a program membership" do
-        let(:workspace) { build_stubbed(:program) }
-
-        it "has the program embedded" do
-          expect(subject)
-            .to be_json_eql("Program".to_json)
-                  .at_path("#{embedded_path}/_type")
-
-          expect(subject)
-            .to be_json_eql(workspace.name.to_json)
-                  .at_path("#{embedded_path}/name")
-        end
-      end
-
-      context "for a portfolio membership" do
-        let(:workspace) { build_stubbed(:portfolio) }
-
-        it "has the portfolio embedded" do
-          expect(subject)
-            .to be_json_eql("Portfolio".to_json)
-                  .at_path("#{embedded_path}/_type")
-
-          expect(subject)
-            .to be_json_eql(workspace.name.to_json)
-                  .at_path("#{embedded_path}/name")
-        end
-      end
+      it_behaves_like "has workspace embedded"
 
       context "for a global member" do
         let(:workspace) { nil }
