@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -30,6 +29,42 @@
 
 class CustomValue::ARObjectStrategy < CustomValue::FormatStrategy
   def typed_value
+    cached_typed_value
+  end
+
+  def formatted_value
+
+    
+        
+          
+    
+
+        
+        Expand All
+    
+    @@ -63,11 +57,21 @@ def validate_type_of_value
+  
+    typed_value.to_s
+  end
+  def parse_value(val)
+    if val.is_a?(ar_class)
+      self.memoized_typed_value = val
+      val.id.to_s
+    elsif val.blank?
+      super(nil)
+    else
+      super
+    end
+  end
+  def validate_type_of_value
+    unless custom_field.possible_values(custom_value.customized).include?(value)
+      :inclusion
+    end
+  end
+
+  private
+
+  def cached_typed_value
     return memoized_typed_value if memoized_typed_value
 
     if value.present?
@@ -39,35 +74,11 @@ class CustomValue::ARObjectStrategy < CustomValue::FormatStrategy
     end
   end
 
-  def formatted_value
-    typed_value.to_s
-  end
-
-  def parse_value(val)
-    if val.is_a?(ar_class)
-      self.memoized_typed_value = val
-
-      val.id.to_s
-    elsif val.blank?
-      super(nil)
-    else
-      super
-    end
-  end
-
-  def validate_type_of_value
-    unless custom_field.possible_values(custom_value.customized).include?(value)
-      :inclusion
-    end
-  end
-
-  private
-
   def ar_class
     raise NotImplementedError
   end
 
-  def ar_object(_value)
-    raise NotImplementedError
+  def ar_object(value)
+    ar_class.find_by(id: value)
   end
 end
