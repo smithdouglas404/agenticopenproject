@@ -47,7 +47,7 @@ module.exports = function (config) {
       showSpecTiming: true, // print the time elapsed for each spec
       failFast: false,
     },
-    port: 9876,
+    port: 9876,   
     colors: true,
     failOnEmptyTestSuite: true,
     logLevel: config.LOG_INFO,
