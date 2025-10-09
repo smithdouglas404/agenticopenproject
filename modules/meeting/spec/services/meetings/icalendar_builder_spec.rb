@@ -281,7 +281,7 @@ RSpec.describe Meetings::IcalendarBuilder,
 
         expect(event.exdate).not_to be_empty
         exdate_values = event.exdate.map(&:value)
-        expect(exdate_values).to include(second_occurrence.start_time)
+        expect(exdate_values).to contain_exactly(second_occurrence.start_time)
       end
     end
 
