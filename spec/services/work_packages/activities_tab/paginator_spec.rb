@@ -127,20 +127,26 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator do
     end
 
     context "with pagination" do
-      # Create enough journals to span multiple pages (default limit is 20)
-      25.times do |i|
+      # Create enough journals to span multiple pages (using limit of 5 for testing)
+      let(:test_limit) { 5 }
+
+      10.times do |i|
         let!(:"journal_#{i + 1}") do
           create(:work_package_journal, user:, notes: "Comment #{i + 1}", journable: work_package, version: i + 2)
         end
       end
 
-      it "returns the first page with default limit" do
+      before do
+        params[:limit] = test_limit
+      end
+
+      it "returns the first page with specified limit" do
         pagy, records = paginator.call
 
         expect(pagy.page).to eq(1)
-        expect(pagy.count).to eq(26) # 25 journals + 1 initial
-        expect(pagy.pages).to eq(2)
-        expect(records.size).to eq(20) # Default Pagy limit
+        expect(pagy.count).to eq(11) # 10 journals + 1 initial
+        expect(pagy.pages).to eq(3)
+        expect(records.size).to eq(test_limit)
       end
 
       it "returns the second page when requested" do
@@ -148,7 +154,7 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator do
         pagy, records = paginator.call
 
         expect(pagy.page).to eq(2)
-        expect(records.size).to eq(6) # Remaining items
+        expect(records.size).to eq(test_limit)
       end
 
       context "with anchor to target journal" do

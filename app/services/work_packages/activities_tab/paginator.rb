@@ -48,7 +48,7 @@ class WorkPackages::ActivitiesTab::Paginator
       if anchor_type && target_record_id
         pagy_array_for_target_journal(anchor_type, target_record_id)
       else
-        pagy_array(base_journals)
+        pagy_array(base_journals, **pagy_options)
       end
 
     # For UI display: if user wants "oldest first" UI, reverse the array
@@ -60,6 +60,10 @@ class WorkPackages::ActivitiesTab::Paginator
   private
 
   attr_reader :work_package, :params
+
+  def pagy_options
+    { page: params[:page] || 1, limit: params[:limit] || Pagy::DEFAULT[:limit], max_pages: 100 }.compact
+  end
 
   def extract_target_record_id
     anchor = params[:anchor] # e.g., "comment-78758" (without #)
@@ -83,11 +87,12 @@ class WorkPackages::ActivitiesTab::Paginator
     end
 
     if target_index
-      target_page = (target_index / Pagy::DEFAULT[:limit]) + 1
-      pagy_array(journals, page: target_page)
+      limit = pagy_options[:limit]
+      target_page = (target_index / limit) + 1
+      pagy_array(journals, **pagy_options, page: target_page)
     else
       # Journal might be filtered out or deleted - fallback to page 1
-      pagy_array(journals, page: 1)
+      pagy_array(journals, **pagy_options, page: 1)
     end
   end
 
