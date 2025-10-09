@@ -501,6 +501,7 @@ uk:
   label_agenda_item_move_to_next: "Перейти до наступної наради"
   label_agenda_item_move_to_backlog: "Перемістити в чергу завдань"
   label_agenda_item_move_to_current_meeting: "Перемістити в поточну нараду"
+  label_agenda_item_move_to_section: "Перемістити в розділ"
   label_agenda_item_move_to_top: "Перемістити на верх"
   label_agenda_item_move_to_bottom: "Перемістити в кінець"
   label_agenda_item_move_up: "Перемістити вгору"

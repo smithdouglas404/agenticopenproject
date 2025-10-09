@@ -487,6 +487,7 @@ de:
   label_agenda_item_move_to_next: "Zur nächsten Besprechung verschieben"
   label_agenda_item_move_to_backlog: "In Backlog verschieben"
   label_agenda_item_move_to_current_meeting: "Zur aktuellen Besprechung verschieben"
+  label_agenda_item_move_to_section: "Move to section"
   label_agenda_item_move_to_top: "Nach ganz oben verschieben"
   label_agenda_item_move_to_bottom: "Nach ganz unten verschieben"
   label_agenda_item_move_up: "Nach oben verschieben"

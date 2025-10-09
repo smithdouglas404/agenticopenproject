@@ -487,6 +487,7 @@ pt-BR:
   label_agenda_item_move_to_next: "Mover para a próxima reunião"
   label_agenda_item_move_to_backlog: "Mover para o backlog"
   label_agenda_item_move_to_current_meeting: "Mover para reunião atual"
+  label_agenda_item_move_to_section: "Mover para seção"
   label_agenda_item_move_to_top: "Mover para o inicio"
   label_agenda_item_move_to_bottom: "Mover para o final"
   label_agenda_item_move_up: "Mover para cima"

@@ -1696,6 +1696,7 @@ nl:
       issue_priority:
         one: "Prioriteit"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "Deelnemer"
       news: "Nieuws"
       notification:

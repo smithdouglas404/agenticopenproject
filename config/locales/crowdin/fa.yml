@@ -1700,6 +1700,7 @@ fa:
       issue_priority:
         one: "اولويت"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "عضو"
       news: "News"
       notification:

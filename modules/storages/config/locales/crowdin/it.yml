@@ -201,12 +201,9 @@ it:
     confirm_replace_oauth_application: Questa azione reimposterà le credenziali OAuth correnti. Dopo la conferma sarà necessario reinserire le credenziali presso il provider di archiviazione e tutti gli utenti remoti dovranno autorizzarsi nuovamente nei confronti di OpenProject. Vuoi davvero procedere?
     confirm_replace_oauth_client: Questa azione reimposterà le credenziali OAuth correnti. Dopo la conferma dovrai inserire nuove credenziali dal provider di archiviazione e tutti gli utenti dovranno autorizzare nuovamente %{provider_type}. Vuoi davvero procedere?
     delete_warning:
-      input_delete_confirmation: Inserisci il nome del file di archiviazione %{file_storage} per confermare l'eliminazione.
-      irreversible_notice: L'eliminazione di un file di archiviazione è un'azione irreversibile.
-      project_storage: 'Vuoi davvero eliminare %{file_storage} da questo progetto? Per confermare questa azione, inserisci il nome dell''archivio nel campo sottostante. Ciò facendo:'
       project_storage_delete_result_1: Rimuovi tutti i collegamenti dalle macro-attività di questo progetto ai file e alle cartelle di tale archivio.
       project_storage_delete_result_2: Nel caso in cui questo archivio abbia una cartella di progetto gestita automaticamente, questa e i suoi file verranno eliminati per sempre.
-      storage: 'Vuoi davvero eliminare %{file_storage}? Per confermare questa azione, inserisci il nome dell''archivio nel campo sottostante. Ciò facendo:'
+      storage: 'Vuoi davvero eliminare %{file_storage}? Questa azione:'
       storage_delete_result_1: Rimuovi tutte le impostazioni di archiviazione per tutti i progetti che utilizzano questo archivio.
       storage_delete_result_2: Rimuovi tutti i collegamenti dalle macro-attività di tutti i progetti ai file e alle cartelle di tale archivio.
       storage_delete_result_3: Nel caso in cui questo archivio gestisca automaticamente le cartelle di progetto, quelle e i file in esse contenuti verranno eliminati per sempre.
@@ -482,7 +479,6 @@ it:
         subtitle_short: Consenti a OpenProject di creare cartelle per progetto automaticamente.
         title: Cartelle di progetto gestite automaticamente
       project_settings:
-        delete: Elimina archivio file
         edit: Modifica l'archiviazione dei file per questo progetto
         members_connection_status: Stato della connessione dei membri
         new: Aggiungi un archivio file al progetto

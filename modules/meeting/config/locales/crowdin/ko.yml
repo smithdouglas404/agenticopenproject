@@ -480,6 +480,7 @@ ko:
   label_agenda_item_move_to_next: "다음 미팅으로 이동"
   label_agenda_item_move_to_backlog: "백로그로 이동"
   label_agenda_item_move_to_current_meeting: "현재 미팅으로 이동"
+  label_agenda_item_move_to_section: "섹션으로 이동"
   label_agenda_item_move_to_top: "맨 위로 이동"
   label_agenda_item_move_to_bottom: "맨 아래로 이동"
   label_agenda_item_move_up: "위로 이동"

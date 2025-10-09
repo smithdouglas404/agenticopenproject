@@ -1697,6 +1697,7 @@ it:
       issue_priority:
         one: "Priorità"
         other: "Priorità"
+      meeting_participant: "Partecipante alla riunione"
       member: "Membro"
       news: "Notizie"
       notification:

@@ -501,6 +501,7 @@ sl:
   label_agenda_item_move_to_next: "Move to next meeting"
   label_agenda_item_move_to_backlog: "Move to backlog"
   label_agenda_item_move_to_current_meeting: "Move to current meeting"
+  label_agenda_item_move_to_section: "Move to section"
   label_agenda_item_move_to_top: "Premakni na vrh"
   label_agenda_item_move_to_bottom: "Premakni na dno"
   label_agenda_item_move_up: "Premakni gor"

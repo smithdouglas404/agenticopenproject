@@ -1686,6 +1686,7 @@ th:
       group: "กลุ่ม"
       issue_priority:
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "สมาชิก"
       news: "ข่าวสาร"
       notification:

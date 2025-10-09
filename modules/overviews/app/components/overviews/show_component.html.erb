@@ -54,25 +54,10 @@ See COPYRIGHT and LICENSE files for more details.
       end
     end
 
-    if allowed_to_manage?
-      concat(
-        render(Primer::OpenProject::SubHeader.new(classes: { "grid-mx": sidebar_enabled? })) do |subheader|
-          subheader.with_action_button(
-            scheme: :primary,
-            leading_icon: :plus,
-            label: t(:label_widget_new),
-            data: {
-              controller: "overview--add-widgets",
-              action: "click->overview--add-widgets#addWidget"
-            },
-            test_selector: "overview--add-widgets-button"
-          ) do
-            t(:label_widget)
-          end
-        end
-      )
+    if OpenProject::FeatureDecisions.new_project_overview_active?
+      render Overviews::OverviewGridComponent.new(project:)
+    else
+      render Overviews::DashboardComponent.new(project:, current_user:)
     end
-
-    concat(angular_component_tag("opce-overview", inputs: { projectIdentifier: @project.identifier }))
   end
 %>

@@ -11,7 +11,6 @@ module Grids::Configuration
             "time_entries_list",
             "members",
             "news",
-            "news_beta",
             "documents",
             "custom_text"
 
@@ -70,10 +69,6 @@ module Grids::Configuration
 
     widget_strategy "news" do
       allowed ->(user, project) { user.allowed_in_project?(:view_news, project) }
-    end
-
-    widget_strategy "news_beta" do
-      allowed ->(user, project) { view_beta_widgets.(user, project) && user.allowed_in_project?(:view_news, project) }
     end
 
     widget_strategy "documents" do

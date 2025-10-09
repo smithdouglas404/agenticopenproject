@@ -201,12 +201,9 @@ ms:
     confirm_replace_oauth_application: Tindakan ini akan menetapkan semula kelayakan OAuth semasa. Selepas pengesahan, anda perlu masukkan semula kelayakan di penyedia storan dan semua pengguna jauh perlu membenarkan OpenProject sekali lagi. Adakah anda pasti anda mahu teruskan?
     confirm_replace_oauth_client: Tindakan ini akan menetapkan semula kelayakan OAuth semasa. Selepas pengesahan, anda perlu masukkan semula kelayakan di penyedia storan dan semua pengguna jauh perlu membenarkan %{provider_type} sekali lagi. Adakah anda pasti anda mahu teruskan?
     delete_warning:
-      input_delete_confirmation: Masukkan nama fail storan %{file_storage} untuk mengesahkan pembuangan.
-      irreversible_notice: Memadam fail storan ialah tindakan yang tidak dapat dipulihkan.
-      project_storage: 'Adakah anda pasti anda ingin memadamkan %{file_storage} daripada projek ini? Untuk mengesahkan tindakan ini sila perkenalkan nama storan di dalam ruangan di bawah, ini akan:'
       project_storage_delete_result_1: Padam semua pautan dari pakej kerja projek ini ke fail dan folder storan tersebut.
       project_storage_delete_result_2: Sekiranya storan ini mempunyai folder projek yang dikendalikan secara automatik, folder ini serta failnya akan dipadamkan selamanya.
-      storage: 'Adakah anda pasti anda ingin memadam %{file_storage}? Untuk mengesahkan tindakan ini sila perkenalkan nama storan di dalam ruangan di bawah, ini akan:'
+      storage: 'Are you sure you want to delete %{file_storage}? This will:'
       storage_delete_result_1: Padam semua penyediaan storan untuk semua projek yang menggunakan storan ini.
       storage_delete_result_2: Padam semua pautan daripada pakej kerja semua projek ke fail dan folder storan tersebut.
       storage_delete_result_3: Sekiranya storan ini mempunyai folder projek yang dikendalikan secara automatik, folder tersebut serta fail yang terkandung akan dipadamkan selamanya.
@@ -480,7 +477,6 @@ ms:
         subtitle_short: Benarkan OpenProject ciptakan folder mengikut projek secara automatik.
         title: Folder projek yang dikendalikan secara automatik
       project_settings:
-        delete: Padamkan storan fail
         edit: Edit storan fail ke projek ini
         members_connection_status: Status sambungan ahli
         new: Tambah storan fail ke projek ini

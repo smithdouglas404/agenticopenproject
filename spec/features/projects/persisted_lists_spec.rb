@@ -560,7 +560,10 @@ RSpec.describe "Persisted lists on projects index page",
 
       projects_page.visit!
       projects_page.set_sidebar_filter(my_projects_list.name)
-      projects_page.expect_filter_set("project_status_code", value: "On track")
+      wait_for_reload
+      retry_block do
+        projects_page.expect_filter_set("project_status_code", value: "On track")
+      end
 
       projects_page.open_filters
       projects_page.set_filter(list_custom_field.column_name,
@@ -572,12 +575,15 @@ RSpec.describe "Persisted lists on projects index page",
       projects_page.save_query
 
       projects_page.set_sidebar_filter(my_projects_list.name)
-      projects_page.expect_filter_set("project_status_code", value: "On track")
 
-      projects_page.expect_filter_set(
-        list_custom_field.column_name,
-        value: list_custom_field.possible_values.first.value
-      )
+      wait_for_reload
+      retry_block do
+        projects_page.expect_filter_set("project_status_code", value: "On track")
+        projects_page.expect_filter_set(
+          list_custom_field.column_name,
+          value: list_custom_field.possible_values.first.value
+        )
+      end
     end
 
     it "cannot access another user`s list" do

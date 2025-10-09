@@ -224,12 +224,12 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
         end
 
         before do
-          value_errors_double = double
+          value_errors_double = instance_double(ActiveRecord::Relation)
           allow(value_errors_double).to receive(:where)
-                                          .with(customized_id: project.id, customized_type: "Project")
+                                          .with(custom_field: calculated_value_custom_field)
                                           .and_return([calculated_value_error])
 
-          allow(calculated_value_custom_field).to receive(:calculated_value_errors)
+          allow(project).to receive(:calculated_value_errors)
                                                     .and_return(value_errors_double)
         end
 

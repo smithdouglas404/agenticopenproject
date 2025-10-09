@@ -24,7 +24,8 @@ Basically, we follow Primer's specification of a TreeView:
 In addition to Primer's guidelines, we introduced an option called `select_variant` which can either be
 
 * `none` (default)
-* `multiple`: Whe `multiple` is chosen, there is a checkbox rendered between the leading action and the leading visual to afford multi-selection
+* `single`: When `single` is chosen, one item can be selected. The selection is indicated via an arrow in the slot of the trailing visual
+* `multiple`: When `multiple` is chosen, there is a checkbox rendered between the leading action and the leading visual to afford multi-selection
 
 Further, in multi-select mode, a `selection_strategy` can also be configured. This determines the influence checking a parent has on its children:
 
@@ -38,7 +39,7 @@ Further, in multi-select mode, a `selection_strategy` can also be configured. Th
 We support two loading strategies:
 
 * static (default): All items are loaded when the component is rendered
-* dynamic: Sub-nodes are loaded from the server as soon as a node is expanded. Please note, that this option is currently not available in combination with the `select_variant: :multiple`.
+* dynamic: Sub-nodes are loaded from the server as soon as a node is expanded. Please note, that this option is currently not available in combination with the `select_variant: :multiple` or `select_variant: :single`.
 
 For more examples have a look [here](../../../inspect/primer/alpha/tree_view/loading_skeleton).
 

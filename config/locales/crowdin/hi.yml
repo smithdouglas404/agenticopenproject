@@ -1698,6 +1698,7 @@ hi:
       issue_priority:
         one: "वरीयता"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "सदस्य"
       news: "नया"
       notification:

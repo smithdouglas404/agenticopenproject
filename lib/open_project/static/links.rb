@@ -74,6 +74,12 @@ module OpenProject
           links[:website][:href]
         end
 
+        def reset_cache
+          @cache_key = nil
+          @links = nil
+          @static_links = nil
+        end
+
         private
 
         def links

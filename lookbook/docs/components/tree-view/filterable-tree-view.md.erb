@@ -37,6 +37,11 @@ The search field enables text-based filtering of the tree.
 - Non-matching nodes in a visible path are **greyed out and disabled** (not clickable).
 - Matching characters in results are **highlighted**.
 
+**Single-select considerations:**
+
+- Selections made **before** filtering are preserved, even if they are not visible in the current filter.
+- On form submission, **the selected item** is submitted, even if it is currently not shown (e.g filtered out).
+
 **Multi-select considerations:**
 
 - Selections made **before** filtering are preserved, even if they are not visible in the current filter.
@@ -63,7 +68,7 @@ A segmented control toggles the visible tree scope:
 
 The labels as well as the logic for the segmented control are configurable. For details, please check the technical notes section at the bottom.
 
-The segmented control can be disabled and hidden by passing `:none` as `filter_mode_control_arguments`. Please have a look at [this preview](../../../inspect/primer/open_project/filterable_tree_view/hide_segmented_control) for details.
+The segmented control can be disabled and hidden by passing `hidden: true` as `filter_mode_control_arguments`. Please have a look at [this preview](../../../inspect/primer/open_project/filterable_tree_view/hide_segmented_control) for details.
 
 ---
 

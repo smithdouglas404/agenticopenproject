@@ -201,12 +201,9 @@ pl:
     confirm_replace_oauth_application: Ta czynność zresetuje bieżące dane uwierzytelniające OAuth. Po potwierdzeniu będą Państwo musieli ponownie wprowadzić dane uwierzytelniające u dostawcy pamięci masowej, a wszyscy zdalni użytkownicy będą musieli ponownie autoryzować się w OpenProject. Czy na pewno chcą Państwo kontynuować?
     confirm_replace_oauth_client: Ta czynność spowoduje zresetowanie bieżących poświadczeń OAuth. Po potwierdzeniu będą Państwo musieli wprowadzić nowe dane uwierzytelniające od dostawcy pamięci masowej, a wszyscy użytkownicy będą musieli ponownie autoryzować się na stronie %{provider_type} . Czy na pewno chcą Państwo kontynuować?
     delete_warning:
-      input_delete_confirmation: Aby potwierdzić usunięcie, wprowadź nazwę magazynu plików %{file_storage}.
-      irreversible_notice: Usunięcie magazynu plików jest działaniem nieodwracalnym.
-      project_storage: 'Czy na pewno chcesz usunąć %{file_storage} z tego projektu? Aby potwierdzić to działanie, wprowadź nazwę magazynu w polu poniżej, spowoduje to:'
       project_storage_delete_result_1: Usuń wszystkie linki z pakietów roboczych tego projektu do plików i folderów tego magazynu.
       project_storage_delete_result_2: W przypadku, gdy ten magazyn zawiera automatycznie zarządzany folder projektu, folder ten i jego pliki zostaną bezpowrotnie usunięte.
-      storage: 'Czy na pewno chcesz usunąć %{file_storage}? Aby potwierdzić to działanie, wprowadź nazwę magazynu w polu poniżej, spowoduje to:'
+      storage: 'Czy na pewno chcesz usunąć %{file_storage}? To spowoduje:'
       storage_delete_result_1: Usunięcie wszystkich konfiguracji magazynu ze wszystkich korzystających z niego projektów.
       storage_delete_result_2: Usunięcie wszystkich linków z pakietów roboczych wszystkich projektów do plików i folderów z tego magazynu.
       storage_delete_result_3: W przypadku, gdy ten magazyn zawiera automatycznie zarządzane foldery projektów, foldery te i zawarte w nich pliki zostaną bezpowrotnie usunięte.
@@ -485,7 +482,6 @@ pl:
         subtitle_short: Pozwól OpenProject automatycznie tworzyć foldery dla każdego projektu.
         title: Automatycznie zarządzane foldery projektu
       project_settings:
-        delete: Usuń magazyn plików
         edit: Edytuj magazyn plików tego projektu
         members_connection_status: Status połączenia członków
         new: Dodaj magazyn plików do tego projektu

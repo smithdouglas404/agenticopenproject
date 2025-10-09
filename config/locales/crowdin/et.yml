@@ -1700,6 +1700,7 @@ et:
       issue_priority:
         one: "Prioriteet"
         other: "Prioriteedid"
+      meeting_participant: "Meeting participant"
       member: "Liige"
       news: "Uudised"
       notification:

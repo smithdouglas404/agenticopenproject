@@ -34,35 +34,39 @@ import { appendCollapsedState } from '../../../helpers/collapsible-helper';
 
 export default class extends ApplicationController {
   private turboRequests:TurboRequestsService;
-  static targets = ['container'];
-
-  declare readonly containerTarget:HTMLElement;
 
   static metaNames = ['csrf-token'];
 
   declare readonly csrfToken:string;
 
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   async connect() {
     useMeta(this, { suffix: false });
     const context = await window.OpenProject.getPluginContext();
     this.turboRequests = context.services.turboRequests;
   }
 
-  interceptMoveTo(event:Event):void {
+  intercept(event:Event):void {
     event.preventDefault();
 
     const target = event.currentTarget as HTMLElement;
+
+    const confirmMessage = target.dataset.confirmMessage;
+    if (confirmMessage && !window.confirm(confirmMessage)) {
+      return;
+    }
+
     const url = new URL(target.dataset.href!, window.location.origin);
+    const method = target.dataset.method! || 'PUT';
 
     appendCollapsedState(url.searchParams);
-    url.searchParams.append('current_meeting_id', this.containerTarget.dataset.meeting!);
 
     void this
       .turboRequests
       .request(
         url.toString(),
         {
-          method: 'PUT',
+          method,
           headers: {
             'X-CSRF-Token': this.csrfToken,
             Accept: 'text/vnd.turbo-stream.html',

@@ -1700,6 +1700,7 @@ ne:
       issue_priority:
         one: "Priority"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "Member"
       news: "News"
       notification:

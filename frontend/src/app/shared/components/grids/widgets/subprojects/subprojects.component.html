@@ -6,18 +6,4 @@
     [resource]="resource" />
 </widget-header>
 
-<div class="op-widget-box--body">
-  @if (noEntries) {
-    <op-no-results [title]="text.noResults" />
-  }
-  @for (project of projects; track project; let last = $last) {
-    <span>
-      <a [href]="projectPath(project)"
-        [textContent]="projectName(project)">
-      </a>
-      @if (!last) {
-        <span>, </span>
-      }
-    </span>
-  }
-</div>
+<turbo-frame [id]="frameId" [src]="src" loading="lazy" />

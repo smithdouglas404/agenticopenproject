@@ -4,7 +4,11 @@ Rails.application.routes.draw do
   constraints(Constraints::ProjectIdentifier) do
     scope "projects/:project_id", as: "project" do
       scope module: "overviews" do
-        resource :overview, path: "/", only: [:show]
+        resource :overview, path: "/", only: [:show] do
+          constraints(Constraints::FeatureDecision.new(:new_project_overview)) do
+            get :dashboard, on: :member
+          end
+        end
 
         controller :overviews do
           get "project_custom_fields_sidebar" => :project_custom_fields_sidebar, as: :custom_fields_sidebar
@@ -17,8 +21,17 @@ Rails.application.routes.draw do
 
         namespace :widgets do
           resource :project_status, only: %i[show update]
+          resource :news, only: %i[show]
+          resource :subitems, only: %i[show]
+          resource :members, only: %i[show]
         end
       end
+    end
+  end
+
+  scope module: "overviews" do
+    namespace :widgets do
+      resource :news, only: %i[show]
     end
   end
 

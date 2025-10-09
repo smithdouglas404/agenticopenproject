@@ -342,6 +342,7 @@ module Pages
 
       def save_query
         click_more_menu_item("Save")
+        wait_for_network_idle
       end
 
       def save_query_as(name)

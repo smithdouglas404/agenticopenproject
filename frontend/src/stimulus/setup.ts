@@ -31,6 +31,7 @@ import { OpenProjectStimulusApplication } from 'core-stimulus/openproject-stimul
 import { Application } from '@hotwired/stimulus';
 import { BeforeunloadController } from './controllers/beforeunload.controller';
 import ExternalLinksController from './controllers/external-links.controller';
+import DisableWhenClickedController from 'core-stimulus/controllers/disable-when-clicked.controller';
 
 declare global {
   interface Window {
@@ -41,6 +42,7 @@ declare global {
 OpenProjectStimulusApplication.preregister('application', OpApplicationController);
 OpenProjectStimulusApplication.preregister('async-dialog', AsyncDialogController);
 OpenProjectStimulusApplication.preregister('disable-when-checked', OpDisableWhenCheckedController);
+OpenProjectStimulusApplication.preregister('disable-when-clicked', DisableWhenClickedController);
 OpenProjectStimulusApplication.preregister('flash', FlashController);
 OpenProjectStimulusApplication.preregister('menus--main', MainMenuController);
 OpenProjectStimulusApplication.preregister('password-confirmation-dialog', PasswordConfirmationDialogController);

@@ -30,24 +30,14 @@
 
 module Overviews
   module Widgets
-    class ProjectStatusComponent < ApplicationComponent
+    class ProjectStatusComponent < Grids::WidgetComponent
       include ApplicationHelper
-      include OpPrimer::ComponentHelpers
       include OpTurbo::Streamable
 
-      attr_reader :project, :current_user
+      param :project
 
-      def initialize(project:, current_user:)
-        super()
-
-        @project = project
-        @current_user = current_user
-      end
-
-      private
-
-      def edit_enabled?
-        current_user.allowed_in_project?(:edit_project, project)
+      def title
+        Project.human_attribute_name(:status_code)
       end
     end
   end

@@ -75,3 +75,6 @@ OpenProject::FeatureDecisions.add :portfolio_models,
 OpenProject::FeatureDecisions.add :change_hierarchy_item_parent,
                                   description: "Enables a functionality to change the parent of a hierarchy item of " \
                                                "custom fields of type hierarchy and scored list."
+
+OpenProject::FeatureDecisions.add :new_project_overview,
+                                  description: "Enables the new project overview experience."

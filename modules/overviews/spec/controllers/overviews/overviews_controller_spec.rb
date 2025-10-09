@@ -78,4 +78,12 @@ RSpec.describe Overviews::OverviewsController do
       end
     end
   end
+
+  describe "#dashboard", with_flag: { new_project_overview: true } do
+    it "renders 'dashboard'" do
+      get :dashboard, params: { project_id: project.id }
+
+      expect(response).to be_successful
+    end
+  end
 end

@@ -487,6 +487,7 @@ it:
   label_agenda_item_move_to_next: "Sposta alla prossima riunione"
   label_agenda_item_move_to_backlog: "Sposta nel backlog"
   label_agenda_item_move_to_current_meeting: "Sposta alla riunione attuale"
+  label_agenda_item_move_to_section: "Sposta nella sezione"
   label_agenda_item_move_to_top: "Sposta in cima"
   label_agenda_item_move_to_bottom: "Sposta in fondo"
   label_agenda_item_move_up: "Sposta su"

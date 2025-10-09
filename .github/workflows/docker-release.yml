@@ -62,9 +62,6 @@ jobs:
           REPOSITORY: opf/helm-charts
           WORKFLOW_ID: core_release.yml
         run: |
-          # FIXME: re-enable once workflows are confirmed to be doing the right thing
-          echo "Would have triggered helm charts release with tag: ${{ needs.compute-inputs.outputs.tag }}"
-          exit 0
           curl -i --fail-with-body -H"authorization: Bearer $TOKEN" \
             -XPOST -H"Accept: application/vnd.github.v3+json" \
             https://api.github.com/repos/$REPOSITORY/actions/workflows/$WORKFLOW_ID/dispatches \

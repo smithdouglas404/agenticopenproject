@@ -41,6 +41,10 @@ module Storages
           namespace("commands") do
             register(:create_folder, Commands::CreateFolderCommand)
             register(:delete_folder, Commands::DeleteFolderCommand)
+            register(:rename_file, Commands::RenameFileCommand)
+            register(:create_list, Commands::CreateListCommand)
+            register(:set_permissions, Commands::SetPermissionsCommand)
+            register(:copy_template_folder, Commands::CopyTemplateFolderCommand)
           end
 
           namespace("components") do

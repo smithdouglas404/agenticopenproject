@@ -1726,6 +1726,7 @@ ru:
         few: "Приоритеты"
         many: "Приоритеты"
         other: "Приоритеты"
+      meeting_participant: "Meeting participant"
       member: "Участник"
       news: "Новости"
       notification:

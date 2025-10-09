@@ -43,9 +43,7 @@ RSpec.describe "Show project custom fields on project overview page", :js do
   it "does show the project attributes sidebar" do
     overview_page.visit_page
 
-    within ".op-grid-page" do
-      expect(page).to have_css("#project-custom-fields-sidebar")
-    end
+    expect(page).to have_test_selector "project-custom-fields-sidebar"
   end
 
   describe "with correct order and scoping" do
