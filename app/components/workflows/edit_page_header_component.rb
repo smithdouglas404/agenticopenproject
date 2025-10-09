@@ -29,31 +29,23 @@
 # ++
 
 module Workflows
-  class PageHeaderComponent < ApplicationComponent
+  class EditPageHeaderComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
     include ApplicationHelper
 
-    def initialize(state:)
+    def initialize(tabs:)
       super
-      @state = state
+      @tabs = tabs
     end
 
     def breadcrumb_items
       [{ href: admin_index_path, text: t("label_administration") },
        { href: admin_settings_work_packages_general_path, text: t(:label_work_package_plural) },
-       { href: edit_workflows_path, text: t(:label_workflow) },
        title]
     end
 
     def title
-      case @state
-      when :show
-        t(:label_workflow_summary)
-      when :copy
-        t(:label_workflow_copy)
-      else
-        t(:label_workflow_plural)
-      end
+      Workflow.model_name.human
     end
   end
 end

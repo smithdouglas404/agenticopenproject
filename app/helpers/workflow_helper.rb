@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,34 +26,29 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module Workflows
-  class PageHeaderComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
-    include ApplicationHelper
-
-    def initialize(state:)
-      super
-      @state = state
-    end
-
-    def breadcrumb_items
-      [{ href: admin_index_path, text: t("label_administration") },
-       { href: admin_settings_work_packages_general_path, text: t(:label_work_package_plural) },
-       { href: edit_workflows_path, text: t(:label_workflow) },
-       title]
-    end
-
-    def title
-      case @state
-      when :show
-        t(:label_workflow_summary)
-      when :copy
-        t(:label_workflow_copy)
-      else
-        t(:label_workflow_plural)
-      end
-    end
+module WorkflowHelper
+  def workflow_tabs
+    [
+      {
+        name: "always",
+        partial: "workflows/form",
+        path: edit_workflows_path({ tab: :always }.merge(params.permit(:role_id, :type_id, :used_statuses_only))),
+        label: I18n.t(:"admin.workflows.tabs.default_transitions")
+      },
+      {
+        name: "author",
+        partial: "workflows/form",
+        path: edit_workflows_path({ tab: :author }.merge(params.permit(:role_id, :type_id, :used_statuses_only))),
+        label: I18n.t(:"admin.workflows.tabs.user_author")
+      },
+      {
+        name: "assignee",
+        partial: "workflows/form",
+        path: edit_workflows_path({ tab: :assignee }.merge(params.permit(:role_id, :type_id, :used_statuses_only))),
+        label: I18n.t(:"admin.workflows.tabs.user_assignee")
+      }
+    ]
   end
 end
