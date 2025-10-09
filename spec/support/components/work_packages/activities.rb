@@ -290,7 +290,7 @@ module Components
         if save
           page.within_test_selector("op-wp-journals-container") do
             # wait for the comment to be loaded
-            wait_for { page }.to have_test_selector("op-journal-notes-body", text:)
+            expect(page).to have_test_selector("op-journal-notes-body", text:, wait: 10)
           end
         end
 
