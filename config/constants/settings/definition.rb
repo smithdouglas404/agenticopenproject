@@ -666,7 +666,8 @@ module Settings
       },
       log_level: {
         description: "Set the OpenProject logger level",
-        default: Rails.env.development? ? "debug" : "info",
+        # DEBUG: debug log level for test environment
+        default: Rails.env.local? ? "debug" : "info",
         allowed: %w[debug info warn error fatal],
         writable: false
       },

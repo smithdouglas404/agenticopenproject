@@ -2,7 +2,9 @@
 set -e
 
 export PATH="/usr/lib/postgresql/$PGVERSION/bin:$PATH"
-export JOBS="${CI_JOBS:=$(nproc)}"
+# export JOBS="${CI_JOBS:=$(nproc)}"
+# DEBUG: only run 1 job for debugging the feature test we are interested in
+export JOBS=1
 # for parallel rspec
 export PARALLEL_TEST_PROCESSORS=$JOBS
 export PARALLEL_TEST_FIRST_IS_1=true
@@ -139,7 +141,13 @@ run_units() {
 
 run_features() {
 	reset_dbs
-	execute "time bundle exec turbo_tests --verbose -n $JOBS --runtime-log spec/support/runtime-logs/turbo_runtime_features.log {,modules/*/}spec/features"
+	# execute "time bundle exec turbo_tests --verbose -n $JOBS --runtime-log spec/support/runtime-logs/turbo_runtime_features.log {,modules/*/}spec/features"
+  # DEBUG: only run the create user feature spec
+	execute "time bundle exec turbo_tests --verbose -n $JOBS --runtime-log spec/support/runtime-logs/turbo_runtime_features.log spec/features/users/create_spec.rb:144"
+  # DEBUG: show the test log
+  echo "========== TEST LOG =========="
+  execute "cat log/test.log"
+  echo "========== /TEST LOG =========="
 	cleanup
 }
 
@@ -158,7 +166,8 @@ fi
 
 if [ "$1" == "run-units" ]; then
 	shift
-	run_units
+  # DEBUG: Disable running unit tests
+	echo "DEBUG: Do not run unit tests run_units"
 fi
 
 if [ "$1" == "run-features" ]; then
