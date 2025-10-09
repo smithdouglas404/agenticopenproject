@@ -31,16 +31,15 @@ class Users::InviteController < ApplicationController
   include OpTurbo::ComponentStream
 
   authorize_with_permission :manage_members, global: true
-  before_action :create_form_model, only: %i[start_dialog step]
 
   def start_dialog
     respond_with_dialog(
-      Users::Invitation::DialogComponent.new(@invitation)
+      Users::Invitation::DialogComponent.new(form_model)
     )
   end
 
   def step
-    if @invitation.valid?
+    if form_model.valid?
       respond_with_next_step
     else
       handle_errors_in_step
@@ -52,10 +51,10 @@ class Users::InviteController < ApplicationController
   def handle_errors_in_step
     case params[:step]
     when "project"
-      replace_via_turbo_stream(component: Users::Invitation::ProjectStep::FormComponent.new(@invitation))
+      replace_via_turbo_stream(component: Users::Invitation::ProjectStep::FormComponent.new(form_model))
       respond_with_turbo_streams
     when "principal"
-      replace_via_turbo_stream(component: Users::Invitation::PrincipalStep::FormComponent.new(@invitation))
+      replace_via_turbo_stream(component: Users::Invitation::PrincipalStep::FormComponent.new(form_model))
       respond_with_turbo_streams
     else
       render_400 message: "Invalid step"
@@ -65,8 +64,8 @@ class Users::InviteController < ApplicationController
   def respond_with_next_step
     case params[:step]
     when "project"
-      replace_via_turbo_stream(component: Users::Invitation::PrincipalStep::FormComponent.new(@invitation))
-      replace_via_turbo_stream(component: Users::Invitation::PrincipalStep::FooterComponent.new(@invitation))
+      replace_via_turbo_stream(component: Users::Invitation::PrincipalStep::FormComponent.new(form_model))
+      replace_via_turbo_stream(component: Users::Invitation::PrincipalStep::FooterComponent.new(form_model))
       respond_with_turbo_streams
     when "principal"
       create_invitation
@@ -76,23 +75,30 @@ class Users::InviteController < ApplicationController
   end
 
   def create_invitation
-    # TODO, handle invite by mail
-    call = Members::CreateService
+    project = Project.find_by(id: form_model.project_id)
+
+    call = Members::BulkCreateService
       .new(user: current_user)
-      .call(form_model_params)
+      .call(
+        project:,
+        user_id: form_model.id_or_email,
+        role_ids: [form_model.role_id],
+        notification_message: form_model.message,
+        send_notification: true
+      )
 
     if call.success?
       close_dialog_via_turbo_stream("##{Users::Invitation::DialogComponent::DIALOG_ID}",
                                     additional: {})
     else
-      replace_via_turbo_stream(component: Users::Invitation::PrincipalStep::FormComponent.new(call.result))
+      replace_via_turbo_stream(component: Users::Invitation::PrincipalStep::FormComponent.new(form_model))
     end
 
     respond_with_turbo_streams
   end
 
-  def create_form_model
-    @invitation = Users::Invitation::FormModel.new(form_model_params)
+  def form_model
+    @form_model ||= Users::Invitation::FormModel.new(form_model_params)
   end
 
   def form_model_params

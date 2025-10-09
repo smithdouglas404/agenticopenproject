@@ -30,33 +30,42 @@
 
 module Users::Invitation::PrincipalStep
   class Form < ApplicationForm
+    include OpenProject::StaticRouting::UrlHelpers
+    include Redmine::I18n
+
     form do |f|
+      f.hidden name: :project_id
+      f.hidden name: :principal_type
+
       f.autocompleter(
         name: :id_or_email,
         label: TimeEntry.human_attribute_name(:user),
         required: true,
         autocomplete_options: {
           defaultData: true,
-          component: "opce-user-autocompleter",
-          url: ::API::V3::Utilities::PathHelper::ApiV3Path.principals,
-          searchKey: "any_name_attribute",
-          resource: "principals",
+          component: "opce-members-autocompleter",
+          url: autocomplete_for_member_project_members_path(model.project_id) + ".json",
           focusDirectly: false,
           multiple: false,
           clearable: false,
-          appendTo: "##{Users::Invitation::DialogComponent::DIALOG_ID}",
+          appendTo: "##{Users::Invitation::DialogComponent::DIALOG_ID}"
         }
       )
 
       f.select_list(
         name: "role_id",
         label: "Role",
-        caption: "This is the role..",
-        include_blank: true
-      ) do |city_list|
-        city_list.option(label: "Lopez Island", value: "lopez_island")
-        city_list.option(label: "Bellevue", value: "bellevue")
-        city_list.option(label: "Seattle", value: "seattle")
+        caption: link_translate("users.invite_user_modal.role.description",
+                                links: { docs_link: %i[sysadmin_docs roles_and_permissions] }),
+        include_blank: false,
+        required: true
+      ) do |role_list|
+        ProjectRole
+          .givable
+          .ordered_by_builtin_and_position
+          .find_each do |role|
+          role_list.option(label: role.name, value: role.id)
+        end
       end
     end
   end
