@@ -2,9 +2,7 @@
 set -e
 
 export PATH="/usr/lib/postgresql/$PGVERSION/bin:$PATH"
-# export JOBS="${CI_JOBS:=$(nproc)}"
-# DEBUG: only run 1 job for debugging the feature test we are interested in
-export JOBS=1
+export JOBS="${CI_JOBS:=$(nproc)}"
 # for parallel rspec
 export PARALLEL_TEST_PROCESSORS=$JOBS
 export PARALLEL_TEST_FIRST_IS_1=true
@@ -143,11 +141,13 @@ run_features() {
 	reset_dbs
 	# execute "time bundle exec turbo_tests --verbose -n $JOBS --runtime-log spec/support/runtime-logs/turbo_runtime_features.log {,modules/*/}spec/features"
   # DEBUG: only run the create user feature spec
-	execute "time bundle exec turbo_tests --verbose -n $JOBS --runtime-log spec/support/runtime-logs/turbo_runtime_features.log spec/features/users/create_spec.rb"
-  # DEBUG: show the test log
-  echo "========== TEST LOG =========="
-  execute "cat log/test.log"
-  echo "========== /TEST LOG =========="
+	# execute "time bundle exec turbo_tests --verbose -n $JOBS --runtime-log spec/support/runtime-logs/turbo_runtime_features.log spec/features/users/create_spec.rb"
+  # DEBUG: run all feature specs as running only one seems to not trigger the issue (tried only twice)
+	execute "time bundle exec turbo_tests --verbose -n $JOBS --runtime-log spec/support/runtime-logs/turbo_runtime_features.log {,modules/*/}spec/features"
+  # DEBUG: do not show the test log it would be too big. First see if it's possible to reproduce the failure kinda consistently
+  # echo "========== TEST LOG =========="
+  # execute "cat log/test.log"
+  # echo "========== /TEST LOG =========="
 	cleanup
 }
 
