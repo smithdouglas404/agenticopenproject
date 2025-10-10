@@ -28,9 +28,10 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 <% html_title t(:label_administration), t(:label_workflow_plural) -%>
 
-<%= render Workflows::PageHeaderComponent.new(state: :edit) %>
+<%= render(Workflows::PageHeaderComponent.new(state: :edit, tabs: @tabs)) %>
 
 <%= styled_form_tag({}, method: "get") do %>
+  <%= hidden_field_tag :tab, params[:tab] || "always" %>
   <fieldset class="simple-filters--container">
     <legend><%= t(:text_workflow_edit) %></legend>
     <ul class="simple-filters--filters">
@@ -67,21 +68,8 @@ See COPYRIGHT and LICENSE files for more details.
     <%= hidden_field_tag "type_id", @type.id %>
     <%= hidden_field_tag "role_id", @role.id %>
 
-    <%= render partial: "form",
-               locals: { name: "always", workflows: @workflows["always"] } %>
-
-    <%= augmented_collapsible_section initiallyExpanded: @workflows["author"].present?,
-                                      title: t(:label_additional_workflow_transitions_for_author) do %>
-      <%= render partial: "form", locals: { name: "author", workflows: @workflows["author"] } %>
-    <% end %>
-
-    <%= augmented_collapsible_section initiallyExpanded: @workflows["assignee"].present?,
-                                      title: t(:label_additional_workflow_transitions_for_assignee) do %>
-      <%= render partial: "form", locals: { name: "assignee", workflows: @workflows["assignee"] } %>
-    <% end %>
+    <%= render_tabs @tabs %>
 
     <%= styled_button_tag t(:button_save), class: "-primary -with-icon icon-checkmark" %>
   <% end %>
 <% end %>
-
-<% html_title(Workflow.model_name.human) -%>

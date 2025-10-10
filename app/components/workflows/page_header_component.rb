@@ -32,10 +32,12 @@ module Workflows
   class PageHeaderComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
     include ApplicationHelper
+    include TabsHelper
 
-    def initialize(state:)
-      super
+    def initialize(state:, tabs: [])
+      super()
       @state = state
+      @tabs = tabs
     end
 
     def breadcrumb_items

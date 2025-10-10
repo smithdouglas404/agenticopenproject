@@ -42,6 +42,10 @@ class WorkflowsController < ApplicationController
   before_action :find_optional_role, only: :edit
   before_action :find_optional_type, only: :edit
 
+  def default_url_options
+    super.merge(tab: params[:tab])
+  end
+
   def show
     @workflow_counts = Workflow.count_by_type_and_role
   end
@@ -52,7 +56,34 @@ class WorkflowsController < ApplicationController
     statuses_for_form
 
     if @type && @role && @statuses.any?
+
       workflows_for_form
+      @tabs = [
+        {
+          name: "always",
+          label: t(:label_workflow_transitions_for_always),
+          path: edit_workflows_path(role_id: @role&.id, type_id: @type&.id, tab: "always"),
+          partial: "workflows/form",
+          locals: { name: "always", workflows: @workflows["always"] }
+        },
+        {
+          name: "author",
+          label: t(:label_workflow_transitions_for_author),
+          path: edit_workflows_path(role_id: @role&.id, type_id: @type&.id, tab: "author"),
+          partial: "workflows/form",
+          locals: { name: "author", workflows: @workflows["author"] }
+        },
+        {
+          name: "assignee",
+          label: t(:label_workflow_transitions_for_assignee),
+          path: edit_workflows_path(role_id: @role&.id, type_id: @type&.id, tab: "assignee"),
+          partial: "workflows/form",
+          locals: { name: "assignee", workflows: @workflows["assignee"] }
+        }
+      ]
+      if params[:tab].blank?
+        params[:tab] = "always"
+    end
     end
   end
 

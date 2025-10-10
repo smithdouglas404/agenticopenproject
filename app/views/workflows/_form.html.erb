@@ -26,6 +26,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
+<% name = tab[:locals][:name] if tab && tab[:locals] %>
+<% workflows = tab[:locals][:workflows] if tab && tab[:locals] %>
 <div id="workflow_form_<%= name %>" class="generic-table--container">
   <div class="generic-table--results-container">
     <table class="generic-table workflow-table transitions-<%= name %>">
