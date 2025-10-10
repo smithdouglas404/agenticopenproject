@@ -341,6 +341,9 @@ zh-TW:
       disabled_value: 此計算值需要屬性 "%{custom_field_name}"，但在專案中已停用。
   concatenation:
     single: "或者"
+  danger_dialog:
+    confirmation_live_message_checked: "The button to proceed is now active."
+    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
     or: "或"
     errors:

@@ -342,6 +342,9 @@ ko:
       disabled_value: '"%{custom_field_name}" 특성은 이 계산된 값에 필요하지만 해당 프로젝트에 대해 비활성화되어 있습니다.'
   concatenation:
     single: "또는"
+  danger_dialog:
+    confirmation_live_message_checked: "The button to proceed is now active."
+    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
     or: "또는"
     errors:
