@@ -59,7 +59,8 @@ table
 #workflow_form
   .generic-table--results-container
     position: relative
-    max-height: 600px
+    // Viewport - height of page header and edit box
+    max-height: calc(100vh - 445px)
 
   .workflow-table.generic-table
     // Let space for the turned header
@@ -77,6 +78,10 @@ table
       left: 0
       background: var(--body-background)
       z-index: 2
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08)
+
+    th:first-child
+      z-index: 3
 
     tbody
       span.workflow-table--turned-header
