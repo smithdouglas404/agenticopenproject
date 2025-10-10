@@ -30,27 +30,13 @@
 
 module WorkPackages
   module ActivitiesTab
-    module StimulusControllers
-      module_function
+    module JournalSortingInquirable
+      extend ActiveSupport::Concern
 
-      def auto_scrolling_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--auto-scrolling#{suffix}"
-      def editor_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--editor#{suffix}"
-      def index_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--index#{suffix}"
-      def internal_comment_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--internal-comment#{suffix}"
-      def lazy_page_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--lazy-page#{suffix}"
-      def polling_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--polling#{suffix}"
-      def stems_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--stems#{suffix}"
-      def quote_comments_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--quote-comment#{suffix}"
-
-      def index_component_dom_selector
-        "##{WorkPackages::ActivitiesTab::IndexComponent.index_content_wrapper_key}"
+      def journal_sorting
+        ActiveSupport::StringInquirer
+          .new(User.current.preference&.comments_sorting || OpenProject::Configuration.default_comment_sort_order)
       end
-
-      def add_comment_component_dom_selector
-        "##{WorkPackages::ActivitiesTab::IndexComponent.add_comment_wrapper_key}"
-      end
-
-      def stimulus_controller_namespace = "work-packages--activities-tab"
     end
   end
 end

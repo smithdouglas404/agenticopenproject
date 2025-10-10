@@ -1035,7 +1035,7 @@ RSpec.describe "Work package activity", :js, :with_cuprite do
     let(:work_package) { create(:work_package, project:, author: admin) }
 
     # create enough comments to make the journal container scrollable
-    20.times do |i|
+    25.times do |i|
       let!(:"comment_#{i + 1}") do
         create(:work_package_journal, user: admin, notes: "Comment #{i + 1}", journable: work_package, version: i + 2)
       end

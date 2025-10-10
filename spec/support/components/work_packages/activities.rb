@@ -234,6 +234,9 @@ module Components
       end
 
       def type_comment(text)
+        # Wait for any pending Turbo Stream updates to complete
+        wait_for_network_idle
+
         begin
           open_new_comment_editor if page.find_test_selector("op-open-work-package-journal-form-trigger")
         rescue Capybara::ElementNotFound

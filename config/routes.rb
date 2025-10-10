@@ -735,6 +735,7 @@ Rails.application.routes.draw do
       end
 
       collection do
+        get :page_streams
         get :update_streams
         get :update_filter # filter not persisted
         put :update_sorting # sorting is persisted
