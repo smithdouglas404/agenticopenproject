@@ -35,15 +35,22 @@ module Storages
       protected
 
       def after_validate(service_call)
-        return method_that_will_be_service(service_call) if model.is_a? SharepointStorage
+        return handle_sharepoint_storage(service_call) if model.is_a? SharepointStorage
 
         service_call
       end
 
-      def method_that_will_be_service(service_call)
+      def handle_sharepoint_storage(service_call)
         return service_call unless model.automatically_managed? && model.automatically_managed_changed?
 
-        service_call
+        list_result = Adapters::Providers::Sharepoint::Services::CreateManagedListService.new(model).call
+
+        if list_result.success?
+          model.managed_drive_id = list_result.result.id
+          service_call
+        else
+          service_call.add_error(list_result.errors)
+        end
       end
 
       def after_perform(service_call)
