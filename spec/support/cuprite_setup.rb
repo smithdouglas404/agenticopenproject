@@ -75,8 +75,14 @@ def register_better_cuprite(language, name: :"better_cuprite_#{language}")
       options = options.merge(slowmo: ENV["OPENPROJECT_TESTING_SLOWDOWN_FACTOR"])
     end
 
+    if ENV["CHROME_URL"].present? && ENV["CHROME_WS_URL"].present?
+      raise "Both CHROME_URL and CHROME_WS_URL were passed. Only one can be accepted at a time."
+    end
+
     if ENV["CHROME_URL"].present?
       options = options.merge(url: ENV["CHROME_URL"])
+    elsif ENV["CHROME_WS_URL"].present?
+      options = options.merge(ws_url: ENV["CHROME_WS_URL"])
     end
 
     browser_options = {
