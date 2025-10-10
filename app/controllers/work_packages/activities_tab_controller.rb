@@ -36,7 +36,7 @@ class WorkPackages::ActivitiesTabController < ApplicationController
 
   before_action :find_work_package
   before_action :find_project
-  before_action :find_journal, only: %i[item_actions edit cancel_edit update toggle_reaction]
+  before_action :find_journal, only: %i[emoji_actions item_actions edit cancel_edit update toggle_reaction]
   before_action :set_filter
   before_action :authorize
   before_action :initialize_pagination, only: %i[page_streams]
@@ -111,6 +111,12 @@ class WorkPackages::ActivitiesTabController < ApplicationController
     end
 
     respond_with_turbo_streams
+  end
+
+  def emoji_actions
+    render WorkPackages::ActivitiesTab::Journals::ItemComponent::AddReactions
+            .new(journal: @journal, grouped_emoji_reactions: grouped_emoji_reactions_for_journal),
+           layout: false
   end
 
   def item_actions
