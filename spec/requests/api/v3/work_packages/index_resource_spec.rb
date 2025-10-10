@@ -244,7 +244,7 @@ RSpec.describe "API v3 Work package resource",
       end
     end
 
-    context "when providing timestamps", with_ee: %i[baseline_comparison] do
+    shared_examples_for "when providing timestamps" do
       subject do
         get path
         last_response
@@ -1344,6 +1344,16 @@ RSpec.describe "API v3 Work package resource",
             end
           end
         end
+      end
+    end
+
+    describe "baseline comparison", with_ee: %i[baseline_comparison] do
+      context "without large_instance_wp_allowed_to_sql active", with_settings: { large_instance_wp_allowed_to_sql: false } do
+        it_behaves_like "when providing timestamps"
+      end
+
+      context "with large_instance_wp_allowed_to_sql active", with_settings: { large_instance_wp_allowed_to_sql: true } do
+        it_behaves_like "when providing timestamps"
       end
     end
   end
