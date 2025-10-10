@@ -59,6 +59,7 @@ table
 #workflow_form
   .generic-table--results-container
     position: relative
+    max-height: 600px
 
   .workflow-table.generic-table
     // Let space for the turned header
@@ -69,6 +70,13 @@ table
       font-weight: var(--base-text-weight-bold)
       text-transform: uppercase
       font-size: 0.875rem
+
+    td:first-child:not(:has(.workflow-table--turned-header)),
+    th:first-child
+      position: sticky
+      left: 0
+      background: var(--body-background)
+      z-index: 2
 
     tbody
       span.workflow-table--turned-header
