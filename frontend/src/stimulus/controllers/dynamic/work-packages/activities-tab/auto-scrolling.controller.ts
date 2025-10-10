@@ -29,16 +29,12 @@
  */
 
 import BaseController from './base.controller';
-
-enum AnchorType {
-  Comment = 'comment',
-  Activity = 'activity',
-}
+import { UrlHelpers, ActivityAnchorType, ActivityAnchor } from './services/url-helpers';
 
 interface CustomEventWithIdParam extends Event {
   params:{
     id:string;
-    anchorName:AnchorType;
+    anchorName:ActivityAnchorType;
   };
 }
 
@@ -59,7 +55,7 @@ export default class AutoScrollingController extends BaseController {
     // not using the scrollToActivity method here as it is causing flickering issues
     // in case of a setAnchor click, we can go for a direct scroll approach
     const scrollableContainer = this.scrollableContainer;
-    const activityElement = this.getActivityAnchorElement(anchorName, activityId);
+    const activityElement = this.getActivityAnchorElement({ type: anchorName, id: activityId });
     const locationHash = `#${anchorName}-${activityId}`;
 
     if (scrollableContainer && activityElement) {
@@ -120,12 +116,12 @@ export default class AutoScrollingController extends BaseController {
   }
 
   private handleInitialScroll() {
-    const anchorTypeRegex = new RegExp(`#(${AnchorType.Comment}|${AnchorType.Activity})-(\\d+)`, 'i');
-    const activityIdMatch = window.location.hash.match(anchorTypeRegex); // Ex. [ "#comment-80", "comment", "80" ]
+    const hash = window.location.hash;
+    const anchorInfo = UrlHelpers.extractActivityAnchor(hash);
 
-    if (activityIdMatch && activityIdMatch.length === 3) {
-      const activityElement = this.getActivityAnchorElement(activityIdMatch[1] as AnchorType, activityIdMatch[2]);
-      this.brieflyHighlightAndResetUrl(activityElement, window.location.hash);
+    if (anchorInfo) {
+      const activityElement = this.getActivityAnchorElement(anchorInfo);
+      this.brieflyHighlightAndResetUrl(activityElement, hash);
       this.scrollToActivity(activityElement);
     } else if (this.indexOutlet.sortingAscending && (!this.isMobile() || this.isWithinNotificationCenter())) {
       this.scrollToBottom();
@@ -179,7 +175,6 @@ export default class AutoScrollingController extends BaseController {
     let timeoutId:ReturnType<typeof setTimeout>;
 
     const observer = new MutationObserver(() => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       clearTimeout(timeoutId);
 
       timeoutId = setTimeout(() => {
@@ -211,8 +206,8 @@ export default class AutoScrollingController extends BaseController {
     }
   }
 
-  private getActivityAnchorElement(activityAnchorName:AnchorType, activityId:string):HTMLElement | null {
-    return document.querySelector(`[data-anchor-${activityAnchorName}-id="${activityId}"]`);
+  private getActivityAnchorElement(activityAnchor:ActivityAnchor):HTMLElement | null {
+    return document.querySelector(`[data-anchor-${activityAnchor.type}-id="${activityAnchor.id}"]`);
   }
 
   private get inputContainer():HTMLElement | null {

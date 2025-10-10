@@ -30,27 +30,49 @@
 
 module WorkPackages
   module ActivitiesTab
-    module StimulusControllers
-      module_function
+    module Journals
+      class LazyIndexComponent < IndexComponent
+        def initialize(work_package:, journals:, paginator:, filter: :all)
+          super(work_package:, filter:, deferred: false)
 
-      def auto_scrolling_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--auto-scrolling#{suffix}"
-      def editor_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--editor#{suffix}"
-      def index_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--index#{suffix}"
-      def internal_comment_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--internal-comment#{suffix}"
-      def lazy_page_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--lazy-page#{suffix}"
-      def polling_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--polling#{suffix}"
-      def stems_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--stems#{suffix}"
-      def quote_comments_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--quote-comment#{suffix}"
+          @journals = journals
+          @paginator = paginator
+        end
 
-      def index_component_dom_selector
-        "##{WorkPackages::ActivitiesTab::IndexComponent.index_content_wrapper_key}"
+        def pages
+          current_page = paginator.page
+
+          result = (1..paginator.pages).map do |page|
+            if page == current_page
+              page_component(page)
+            else
+              lazy_page_component(page)
+            end
+          end
+
+          result.tap { it.reverse! if journal_sorting.asc? && paginator.pages > 1 }
+        end
+
+        def page_component(page)
+          WorkPackages::ActivitiesTab::Journals::PageComponent
+            .new(journals:, emoji_reactions: wp_journals_grouped_emoji_reactions, page:, filter:)
+        end
+
+        def lazy_page_component(page)
+          WorkPackages::ActivitiesTab::Journals::LazyPageComponent.new(work_package:, page:)
+        end
+
+        def self.insert_target_modifier_id = "#{wrapper_key}-pages"
+        delegate :insert_target_modifier_id, to: :class
+
+        private
+
+        attr_reader :journals, :paginator
+
+        def insert_target_modified?
+          true
+        end
       end
-
-      def add_comment_component_dom_selector
-        "##{WorkPackages::ActivitiesTab::IndexComponent.add_comment_wrapper_key}"
-      end
-
-      def stimulus_controller_namespace = "work-packages--activities-tab"
     end
   end
 end

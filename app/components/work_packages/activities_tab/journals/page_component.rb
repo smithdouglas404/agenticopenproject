@@ -23,29 +23,39 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module CustomFields
-  module Hierarchy
-    class UpdateScoredItemContract < DryApplicationContract
-      params do
-        required(:item).filled(type?: CustomField::Hierarchy::Item)
-        required(:label).filled(:string)
-        required(:score).filled(:decimal)
-      end
+module WorkPackages
+  module ActivitiesTab
+    module Journals
+      class PageComponent < ApplicationComponent
+        include OpPrimer::ComponentHelpers
+        include OpTurbo::Streamable
+        include WorkPackages::ActivitiesTab::SharedHelpers
 
-      rule(:item) do
-        key.failure(:not_persisted) if value.new_record?
-        key.failure(:root_item) if value.root?
-      end
+        def initialize(journals:, emoji_reactions:, page:, filter: :all)
+          super
 
-      rule(:label) do
-        next if schema_error?(:item)
+          @journals = journals
+          @emoji_reactions = emoji_reactions
+          @filter = filter
+          @page = page
+        end
 
-        key.failure(:not_unique) if values[:item].siblings.exists?(label: value)
+        def render?
+          journals.any?
+        end
+
+        def wrapper_uniq_by
+          page
+        end
+
+        private
+
+        attr_reader :journals, :emoji_reactions, :page, :filter
       end
     end
   end

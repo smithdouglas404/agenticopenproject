@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -23,30 +23,29 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-module CustomFields
-  module Hierarchy
-    class UpdateScoredItemContract < DryApplicationContract
-      params do
-        required(:item).filled(type?: CustomField::Hierarchy::Item)
-        required(:label).filled(:string)
-        required(:score).filled(:decimal)
+module WorkPackages
+  module ActivitiesTab
+    class LazyIndexComponent < IndexComponent
+      def initialize(work_package:, journals:, paginator:, last_server_timestamp:, filter: :all)
+        super(work_package:, last_server_timestamp:, filter:, deferred: false)
+
+        @journals = journals
+        @paginator = paginator
       end
 
-      rule(:item) do
-        key.failure(:not_persisted) if value.new_record?
-        key.failure(:root_item) if value.root?
+      def list_journals_component
+        WorkPackages::ActivitiesTab::Journals::LazyIndexComponent
+          .new(work_package:, journals:, filter:, paginator:)
       end
 
-      rule(:label) do
-        next if schema_error?(:item)
+      private
 
-        key.failure(:not_unique) if values[:item].siblings.exists?(label: value)
-      end
+      attr_reader :journals, :paginator
     end
   end
 end

@@ -56,7 +56,7 @@ module CustomFields
       def insert_item(contract_class:, parent:, label:, short: nil, score: nil, sort_order: nil)
         contract_class
           .new
-          .call({ parent:, label:, short:, score: }.compact)
+          .call({ parent:, label:, short:, score: })
           .to_monad
           .bind { |validation| create_child_item(validation:, sort_order:) }
       end
@@ -72,7 +72,7 @@ module CustomFields
       def update_item(contract_class:, item:, label: nil, short: nil, score: nil)
         contract_class
           .new
-          .call({ item:, label:, short:, score: }.compact)
+          .call({ item:, label:, short:, score: })
           .to_monad
           .bind { |attributes| update_item_attributes(item:, attributes:) }
       end
