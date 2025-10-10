@@ -355,4 +355,46 @@ RSpec.describe CopyProjectJob, type: :model, with_good_job_batches: [CopyProject
       TABLE
     end
   end
+
+  # Bug #58342: combination of class attribute ActionMailer::Base.perform_deliveries that was not thread local, so was
+  # reset to true before every request and job run, and using it to override Journal::NotificationConfiguration.active?
+  # to decide to send notifications could cause notifications to be sent for adding as member despite selecting not to
+  # do it.
+  describe "sending notifications" do
+    shared_let(:project) { create(:project) }
+    shared_let(:admin) { create(:admin) }
+    shared_let(:user) { create(:user) }
+    shared_let(:roles) { [create(:project_role)] }
+    shared_let(:member) { create(:member, user:, project:, roles:) }
+
+    let(:params) { { name: "Copy", identifier: "copy" } }
+
+    def perform_the_job
+      batch = GoodJob::Batch.enqueue(user: admin, source_project: project) do
+        described_class.perform_later(target_project_params: params, associations_to_copy: [:members])
+      end
+      GoodJob.perform_inline
+      batch.reload
+
+      expect(batch).to be_succeeded
+    end
+
+    it "doesn't touch the perform_deliveries" do
+      allow(ActionMailer::Base).to receive(:perform_deliveries=)
+
+      perform_the_job
+
+      expect(ActionMailer::Base).not_to have_received(:perform_deliveries=)
+    end
+
+    it "calls Members::CreateService without send_notifications override" do
+      members_create_service = instance_double(Members::CreateService)
+      allow(Members::CreateService).to receive(:new).and_return(members_create_service)
+      allow(members_create_service).to receive(:call)
+
+      perform_the_job
+
+      expect(members_create_service).to have_received(:call).with(hash_excluding(:send_notifications))
+    end
+  end
 end

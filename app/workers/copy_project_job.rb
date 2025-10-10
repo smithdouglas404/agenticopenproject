@@ -112,20 +112,16 @@ class CopyProjectJob < ApplicationJob
   # rubocop:disable Metrics/AbcSize
   # Most of the cost is from handling errors, we need to check what can be moved around / removed
   def create_project_copy(target_project_params, associations_to_copy, send_mails)
-    errors = []
+    service_result = copy_project(target_project_params, associations_to_copy, send_mails)
+    target_project = service_result.result
+    errors = service_result.errors.full_messages
 
-    ProjectMailer.with_deliveries(send_mails) do
-      service_result = copy_project(target_project_params, associations_to_copy, send_mails)
-      target_project = service_result.result
-      errors = service_result.errors.full_messages
-
-      # We assume the copying worked "successfully" if the project was saved
-      if target_project&.persisted?
-        return target_project, errors
-      else
-        logger.error("Copying project fails with validation errors: #{errors.join("\n")}")
-        return nil, errors
-      end
+    # We assume the copying worked "successfully" if the project was saved
+    if target_project&.persisted?
+      [target_project, errors]
+    else
+      logger.error("Copying project fails with validation errors: #{errors.join("\n")}")
+      [nil, errors]
     end
   rescue ActiveRecord::RecordNotFound => e
     logger.error("Entity missing: #{e.message} #{e.backtrace.join("\n")}")
