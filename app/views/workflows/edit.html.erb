@@ -31,7 +31,7 @@ See COPYRIGHT and LICENSE files for more details.
 <%= render Workflows::EditPageHeaderComponent.new(tabs: workflow_tabs) %>
 
 <%= styled_form_tag({}, method: "get") do %>
-  <%= hidden_field_tag "tab", params[:tab] || "default" %>
+  <%= hidden_field_tag "tab", params[:tab] || "always" %>
 
   <fieldset class="simple-filters--container">
     <legend><%= t(:text_workflow_edit) %></legend>
@@ -77,6 +77,7 @@ See COPYRIGHT and LICENSE files for more details.
   <%= form_tag({ action: :update }, id: "workflow_form", method: :patch) do %>
     <%= hidden_field_tag "type_id", @type.id %>
     <%= hidden_field_tag "role_id", @role.id %>
+    <%= hidden_field_tag "tab", params[:tab] || "always" %>
 
     <%= render_tabs workflow_tabs %>
 
