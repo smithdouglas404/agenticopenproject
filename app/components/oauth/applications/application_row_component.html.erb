@@ -36,7 +36,9 @@
             checked: @application.enabled?,
             data: {
               "test-selector": "op-admin-oauth--application-enabled-toggle-switch"
-            }
+            },
+            on_label: t(:label_switch_on),
+            off_label: t(:label_switch_off)
           )
         )
       end

@@ -2102,6 +2102,9 @@ en:
   button_publish: "Make public"
   button_unpublish: "Make private"
 
+  label_switch_on: "On"
+  label_switch_off: "Off"
+
   consent:
     checkbox_label: I have noted and do consent to the above.
     failure_message: Consent failed, cannot proceed.

@@ -45,7 +45,9 @@
             enabled: !@project_custom_field.required?, # required fields cannot be disabled
             size: :small,
             status_label_position: :start,
-            classes: "op-primer-adjustments__toggle-switch--hidden-loading-indicator"
+            classes: "op-primer-adjustments__toggle-switch--hidden-loading-indicator",
+            on_label: t(:label_switch_on),
+            off_label: t(:label_switch_off)
           )
         )
       end
