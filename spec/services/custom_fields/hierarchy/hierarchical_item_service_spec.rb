@@ -335,38 +335,64 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:cust
                                                                  scored_list_custom_fields: true } do
     current_user { create(:admin) }
 
-    let!(:project) { create(:project) }
-    let!(:custom_field) { create(:scored_list_project_custom_field, projects: [project]) }
+    let!(:project_using_one) { create(:project) }
+    let!(:project_using_two) { create(:project) }
+    let!(:project_having_fields_enabled) { create(:project) }
+    let!(:project_not_having_fields_enabled) { create(:project) }
+    let!(:projects) { [project_using_one, project_using_two, project_having_fields_enabled] }
+    let!(:custom_field) { create(:scored_list_project_custom_field, projects:) }
     let!(:one) { create(:hierarchy_item, parent: custom_field.hierarchy_root, label: "One", score: 1) }
     let!(:two) { create(:hierarchy_item, parent: custom_field.hierarchy_root, label: "Two", score: 2) }
     let!(:calculated_value) do
       create(:calculated_value_project_custom_field,
              :skip_validations,
-             projects: [project],
+             projects:,
              formula: "{{cf_#{custom_field.id}}} * 2")
     end
 
     before do
-      project.custom_values.create!(custom_field: custom_field, value: one.id)
+      project_using_one.custom_values.create!(custom_field: custom_field, value: one.id)
+      project_using_one.custom_values.create!(custom_field: calculated_value, value: "123")
+
+      project_using_two.custom_values.create!(custom_field: custom_field, value: two.id)
+      project_using_two.custom_values.create!(custom_field: calculated_value, value: "123")
     end
 
     describe "updating the score of an item" do
       let!(:contract_class) { CustomFields::Hierarchy::UpdateScoredItemContract }
 
+      subject(:result) { service.update_item(contract_class:, item: one, label: one.label, score: 42) }
+
       it "updates calculated values affected by the change" do
-        result = service.update_item(contract_class:, item: one, score: 42)
         expect(result).to be_success
 
-        expect(project.custom_value_for(calculated_value).value).to eq("84.0")
+        expect(project_using_one.custom_value_for(calculated_value)).to have_attributes(value: "84.0")
+      end
+
+      it "doesn't update calculated values unaffected by the change" do
+        expect(result).to be_success
+
+        expect(project_using_two.custom_value_for(calculated_value)).to have_attributes(value: "123")
+        expect(project_having_fields_enabled.custom_values).to be_empty
+        expect(project_having_fields_enabled.custom_values).to be_empty
       end
     end
 
     describe "deleting an item" do
+      subject(:result) { service.delete_branch(item: one) }
+
       it "updates calculated values affected by the change" do
-        result = service.delete_branch(item: one)
         expect(result).to be_success
 
-        expect(project.custom_value_for(calculated_value).value).to be_nil
+        expect(project_using_one.custom_value_for(calculated_value)).to have_attributes(value: nil)
+      end
+
+      it "doesn't update calculated values unaffected by the change" do
+        expect(result).to be_success
+
+        expect(project_using_two.custom_value_for(calculated_value)).to have_attributes(value: "123")
+        expect(project_having_fields_enabled.custom_values).to be_empty
+        expect(project_having_fields_enabled.custom_values).to be_empty
       end
     end
   end
