@@ -323,8 +323,6 @@ group :development do
   gem "spring-commands-rspec"
   gem "spring-commands-rubocop"
 
-  gem "colored2"
-
   # git hooks manager
   gem "lefthook", require: false
 end
@@ -345,6 +343,8 @@ group :development, :test do
   # REPL with debug commands, Debug changed to byebug due to the issue below
   # https://github.com/puma/puma/issues/2835#issuecomment-2302133927
   gem "byebug"
+
+  gem "colored2"
 
   gem "pry-byebug", "~> 3.11.0", platforms: [:mri]
   gem "pry-rails", "~> 0.3.6"
