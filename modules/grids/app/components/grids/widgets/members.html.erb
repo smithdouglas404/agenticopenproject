@@ -38,12 +38,12 @@ See COPYRIGHT and LICENSE files for more details.
         end
         flex.with_row do
           render Primer::Beta::Link.new(href: project_members_path(@project)) do
-            I18n.t(:"grids.widgets.members.view_all_members")
+            t(".view_all_members")
           end
         end
       end
     else
-      render(Primer::Beta::Text.new(color: :subtle)) { t(:"js.grid.widgets.members.no_results") }
+      render(Primer::Beta::Text.new(color: :subtle)) { t(".no_results") }
     end
   end
 %>

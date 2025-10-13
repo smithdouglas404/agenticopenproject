@@ -45,7 +45,7 @@ module Grids
       end
 
       def title
-        t(:"grids.widgets.members.title")
+        t(".title")
       end
 
       def render?

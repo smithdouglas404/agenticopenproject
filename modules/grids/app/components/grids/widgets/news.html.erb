@@ -30,7 +30,7 @@ See COPYRIGHT and LICENSE files for more details.
 <%=
   widget_wrapper do |container|
     if @newest.empty?
-      render(Primer::Beta::Text.new(color: :subtle)) { t(:"js.grid.widgets.news.no_results") }
+      render(Primer::Beta::Text.new(color: :subtle)) { t(".no_results") }
     else
       @newest.each do |item|
         container.with_row do

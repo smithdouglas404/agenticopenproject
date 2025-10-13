@@ -52,7 +52,7 @@ RSpec.describe Grids::Widgets::Members, type: :component do
 
     context "with no members" do
       it "does render" do
-        expect(rendered_component).to have_content I18n.t(:"js.grid.widgets.members.no_results")
+        expect(rendered_component).to have_content "No visible members."
       end
     end
 

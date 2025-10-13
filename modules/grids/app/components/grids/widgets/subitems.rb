@@ -42,7 +42,7 @@ module Grids
       option :limit, default: -> { SUBITEMS_LIMIT }
 
       def title
-        I18n.t("grids.widgets.subitems.in_this_#{project.workspace_type}")
+        t(".in_this_#{project.workspace_type}")
       end
 
       def displayed_subitems
