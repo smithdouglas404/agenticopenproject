@@ -144,10 +144,12 @@ run_features() {
 	# execute "time bundle exec turbo_tests --verbose -n $JOBS --runtime-log spec/support/runtime-logs/turbo_runtime_features.log spec/features/users/create_spec.rb"
   # DEBUG: run all feature specs as running only one seems to not trigger the issue (tried only twice)
 	execute "time bundle exec turbo_tests --verbose -n $JOBS --runtime-log spec/support/runtime-logs/turbo_runtime_features.log {,modules/*/}spec/features"
-  # DEBUG: do not show the test log it would be too big. First see if it's possible to reproduce the failure kinda consistently
-  # echo "========== TEST LOG =========="
-  # execute "cat log/test.log"
-  # echo "========== /TEST LOG =========="
+
+  # DEBUG: just show the test log for the flaky spec.
+  # By comparing it to local runs, we may learn something...
+  echo "========== TEST LOG =========="
+  execute "sed -n '/create users with external authentication behaves like successful user creation activation registers the user upon submission/,/create users with external authentication behaves like successful user creation activation registers the user upon submission/p' log/test.log"
+  echo "========== /TEST LOG =========="
 	cleanup
 }
 
