@@ -40,7 +40,7 @@ gem "activerecord-import", "~> 2.2.0"
 gem "activerecord-session_store", "~> 2.2.0"
 gem "ox"
 gem "rails", "~> 8.0.3"
-gem "responders", "~> 3.0"
+gem "responders", "~> 3.2"
 
 gem "ffi", "~> 1.15"
 
