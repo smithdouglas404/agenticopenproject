@@ -28,16 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Constraints
-  class ProjectIdentifier
-    REGEX = /(?!#{Regexp.union(Project::RESERVED_IDENTIFIERS)}\z)[\w-]+/
+module Routing
+  module Constraints
+    class FeatureDecision
+      def initialize(flag_name)
+        @flag_name = flag_name
+      end
 
-    REGEX_ANCHORED = /\A#{REGEX}\z/
-    private_constant :REGEX_ANCHORED
-
-    def self.matches?(request)
-      project_id = request.path_parameters[:project_id] || request.params[:project_id]
-      REGEX_ANCHORED === project_id
+      def matches?(...)
+        OpenProject::FeatureDecisions.public_send(:"#{@flag_name}_active?")
+      end
     end
   end
 end

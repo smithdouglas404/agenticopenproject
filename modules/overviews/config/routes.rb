@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   project_scope do
     scope module: "overviews" do
       resource :overview, path: "/", only: [:show] do
-        constraints(Constraints::FeatureDecision.new(:new_project_overview)) do
+        constraints(Routing::Constraints::FeatureDecision.new(:new_project_overview)) do
           get :dashboard, on: :member
         end
       end
