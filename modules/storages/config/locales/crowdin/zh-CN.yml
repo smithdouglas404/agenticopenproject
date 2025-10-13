@@ -203,7 +203,7 @@ zh-CN:
     delete_warning:
       project_storage_delete_result_1: 从此项目的工作包中移除该存储区的文件和文件夹的所有链接。
       project_storage_delete_result_2: 如果这个存储库具有自动托管的项目文件夹，那么该文件夹及其文件将被永久删除。
-      storage: 'Are you sure you want to delete %{file_storage}? This will:'
+      storage: '确定要删除 %{file_storage} 吗？此操作将：'
       storage_delete_result_1: 删除所有使用此存储的项目的所有存储设置。
       storage_delete_result_2: 从所有项目的工作包中删除所有链接到该存储的文件和文件夹。
       storage_delete_result_3: 如果此存储具有自动托管的项目文件夹，这些文件夹及其包含的文件将被永久删除。

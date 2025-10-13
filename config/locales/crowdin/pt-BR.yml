@@ -196,8 +196,8 @@ pt-BR:
     sync_failed: "Não foi possível sincronizar do LDAP: %{message}."
     back_to_index: "Clique aqui para voltar para a lista de conexão."
     technical_warning: |
-      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      [Please visit our documentation for detailed instructions](docs_url).
+      Este formulário LDAP requer conhecimento técnico da sua configuração LDAP / Active Directory.
+      [Consulte nossa documentação para obter instruções detalhadas](docs_url).
     attribute_texts:
       name: Nome arbitrário da conexão LDAP
       host: Nome ou endereço IP do host LDAP
@@ -333,58 +333,61 @@ pt-BR:
       no_results_content_text: Criar um novo campo personalizado
   calculated_values:
     error_dialog:
-      title: "Error with Calculated Value"
+      title: "Erro com o Valor calculado"
     errors:
-      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
-      mathematical: "A mathematical error occurred during calculation."
-      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
-      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
+      unknown: "Ocorreu um erro desconhecido. Revise a fórmula deste Valor calculado."
+      mathematical: "Ocorreu um erro de matemática durante o cálculo."
+      missing_value: O atributo “%{custom_field_name}” é obrigatório para este Valor calculado, mas está vazio.
+      disabled_value: O atributo “%{custom_field_name}” é obrigatório para este Valor calculado, mas está desativado para o projeto.
   concatenation:
     single: "ou"
+  danger_dialog:
+    confirmation_live_message_checked: "The button to proceed is now active."
+    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "ou"
     errors:
-      array?: "must be an array."
-      decimal?: "must be a decimal."
-      defined: "must not be defined."
-      eql?: "must be equal to %{left}."
-      filled?: "must be filled."
-      greater_or_equal_zero: "must be greater or equal to 0."
-      gteq?: "must be greater than or equal to %{num}."
-      hash?: "must be a hash."
+      array?: "deve ser um array."
+      decimal?: "deve ser um número decimal."
+      defined: "não deve ser definido."
+      eql?: "deve ser igual a %{left}."
+      filled?: "deve ser preenchido."
+      greater_or_equal_zero: "deve ser maior ou igual a 0."
+      gteq?: "deve ser maior ou igual a %{num}."
+      hash?: "deve ser um hash."
       included_in?:
         arg:
-          default: "must be one of: %{list}."
-          range: "must be one of: %{list_left} - %{list_right}."
-      int?: "must be an integer."
-      key?: "is missing."
-      not_found: "not found."
+          default: "dave ser um dos: %{list}."
+          range: "deve ser um dos seguintes: %{list_left} - %{list_right}."
+      int?: "deve ser um número inteiro."
+      key?: "está faltando."
+      not_found: "não encontrado."
       rules:
         copy_workflow_from:
-          workflow_missing: "has no own workflow."
+          workflow_missing: "não possui fluxo de trabalho próprio."
         custom_field:
-          format_not_supported: "format '%{field_format}' is unsupported."
+          format_not_supported: "o formato \"%{field_format}\" não é compatível."
         item:
-          root_item: "cannot be a root item."
-          not_persisted: "must be an already existing item."
+          root_item: "não pode ser um item raiz."
+          not_persisted: "deve ser um item já existente."
         label:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "deve ser único dentro do mesmo nível hierárquico."
         short:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "deve ser único dentro do mesmo nível hierárquico."
         parent:
-          not_descendant: "must be a descendant of the hierarchy root."
-      str?: "must be a string."
-      type?: "must be %{type}."
+          not_descendant: "deve ser um descendente da raiz da hierarquia."
+      str?: "deve ser uma cadeia de caracteres."
+      type?: "dever ser %{type}."
     rules:
-      copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
-      depth: "Depth"
+      copy_workflow_from: "Tipo de cópia do fluxo de trabalho"
+      enabled: "Habilitado"
+      depth: "Profundidade"
       item: "Item"
-      label: "Label"
-      score: "Score"
-      short: "Short name"
-      parent: "Parent"
-      blueprint: "Pattern blueprint"
+      label: "Rótulo"
+      score: "Pontuação"
+      short: "Nome abreviado"
+      parent: "Pai"
+      blueprint: "Esquema de padrão"
   global_search:
     title:
       all_projects: 'Pesquisar por “%{search_term}” em todos os projetos'
@@ -446,7 +449,7 @@ pt-BR:
     lists:
       active: "Projetos ativos"
       my: "Meus projetos"
-      favorited: "Favorite projects"
+      favorited: "Projetos favoritos"
       archived: "Projetos arquivados"
       shared: "Listas de projetos compartilhados"
       my_lists: "Minhas listas de projetos"
@@ -631,18 +634,18 @@ pt-BR:
     sessions:
       session_name: "%{browser_name} %{browser_version} em %{os_name}"
       browser: "Navegador"
-      expires: "Expires"
-      last_connection: "Last connection"
+      expires: "Expira"
+      last_connection: "Último acesso"
       device: "Dispositivo / OS"
       unknown_browser: "Navegador desconhecido"
       unknown_os: "Sistema operacional desconhecido"
-      unknown: "(unknown)"
-      browser_session: "(Browser session)"
-      current: "Current (this device)"
+      unknown: "(desconhecido)"
+      browser_session: "(Sessão do navegador)"
+      current: "Atual (este dispositivo)"
       title: "Gerenciamento de sessão"
-      instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
+      instructions: "Você está conectado à sua conta nos seguintes dispositivos. Revogue as sessões que você não reconhecer ou que estejam em dispositivos que você não controla."
       may_not_delete_current: "Você não pode excluir a sessão atual."
-      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
+      deletion_warning: "Tem certeza de que deseja revogar esta sessão? Você será desconectado neste dispositivo."
     groups:
       member_in_these_groups: "No momento, este usuário é um membro dos seguintes grupos: "
       no_results_title_text: No momento, este usuário não é membro de nenhum grupo.
@@ -981,10 +984,10 @@ pt-BR:
       auth_provider:
         scim_clients: "Clientes SCIM"
       calculated_value_error:
-        error_code: "Error code"
-        customized: "Customized"
-        customized_id: "Customized ID"
-        customized_type: "Customized type"
+        error_code: "Código de erro"
+        customized: "Personalizado"
+        customized_id: "ID personalizado"
+        customized_type: "Tipo personalizado"
       capability:
         context: "Contexto"
       changeset:
@@ -1218,13 +1221,13 @@ pt-BR:
         auto_hide_popups: "Ocultar automaticamente as notificações de sucesso"
         auto_hide_popups_caption: "Quando habilitado, as notificações verdes de sucesso desaparecem automaticamente após 5 segundos."
         warn_on_leaving_unsaved: "Alertar-me ao sair de um pacote de trabalho sem salvar as alterações"
-        increase_theme_contrast: "Increase theme contrast"
-        increase_contrast: "Increase contrast"
-        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
-        force_light_theme_contrast: "Force high-contrast when in Light mode"
-        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
-        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
-        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
+        increase_theme_contrast: "Aumentar contraste do tema"
+        increase_contrast: "Aumentar contraste"
+        increase_contrast_caption: "Habilita o modo de alto contraste para o modo de cor selecionado."
+        force_light_theme_contrast: "Forçar alto contraste quando estiver no modo Claro"
+        force_dark_theme_contrast: "Forçar alto contraste quando estiver no modo Escuro"
+        force_light_theme_contrast_caption: "Usa a versão de alto contraste do modo Claro quando o modo de cor automático está selecionado."
+        force_dark_theme_contrast_caption: "Usa a versão de alto contraste do modo Escuro quando o modo de cor automático está selecionado."
         theme: "Modo de cor"
         time_zone: "Fuso horário"
         mode_guideline: "Alguns modos substituirão as cores personalizadas do tema para melhorar acessibilidade e legibilidade. Selecione o modo Claro para suporte total ao tema personalizado."
@@ -1292,7 +1295,7 @@ pt-BR:
         confirmation: "não coincide com %{attribute}."
         could_not_be_copied: "%{dependency} não pôde ser copiado (completamente)."
         does_not_exist: "não existe."
-        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
+        error_enterprise_only: "%{action} só está disponível na edição OpenProject Enterprise."
         error_unauthorized: "não pode ser acessado."
         error_readonly: "tentou escrever, mas não é gravável."
         error_conflict: "As informações foram atualizadas por pelo menos um outro usuário nesse meio tempo."
@@ -1405,7 +1408,7 @@ pt-BR:
           unreadable: "não pode ser lido. Tem certeza que é um token de suporte?"
           already_added: "Este token já foi adicionado."
         favorite:
-          already_favorited: "has already been favorited."
+          already_favorited: "já foi adicionado aos favoritos."
         grids/grid:
           overlaps: "sobreposição."
           outside: "está fora da grade."
@@ -1503,18 +1506,18 @@ pt-BR:
             circular_dependency: "O relacionamento cria um círculo de relacionamentos."
           attributes:
             base:
-              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
-              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
+              error_not_deletable: "Esta relação não pode ser excluída porque você não possui permissões de edição para o pacote de trabalho selecionado."
+              error_not_editable: "Esta relação não pode ser editada porque você não possui permissões de edição para o pacote de trabalho selecionado."
             to_id:
-              format: "The selected work package %{message}"
-              error_not_found: "could not be found."
+              format: "O pacote de trabalho selecionado %{message}"
+              error_not_found: "não pôde ser encontrado."
               error_readonly: "não pode ser alterado para relações existentes."
-              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
+              error_not_manageable: "não pode ser adicionada porque você não possui permissões de edição para o pacote de trabalho selecionado."
             from_id:
-              format: "The selected work package %{message}"
-              error_not_found: "could not be found."
+              format: "O pacote de trabalho selecionado %{message}"
+              error_not_found: "não pôde ser encontrado."
               error_readonly: "não pode ser alterado para relações existentes."
-              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
+              error_not_manageable: "não pode ser adicionado porque você não possui permissões de edição para o pacote de trabalho selecionado."
         repository:
           not_available: "Fornecedor SCM não está disponível"
           not_whitelisted: "não é permitido pela configuração."
@@ -1697,7 +1700,7 @@ pt-BR:
       issue_priority:
         one: "Prioridade"
         other: "Prioridades"
-      meeting_participant: "Meeting participant"
+      meeting_participant: "Participante da reunião"
       member: "Membro"
       news: "Notícias"
       notification:
@@ -1790,7 +1793,7 @@ pt-BR:
     attachments: "Anexos"
     actor: "Ator"
     action: "Ação"
-    api_key: "API key"
+    api_key: "Chave API"
     author: "Autor"
     avatar: "Avatar"
     base: "Erro geral:"
@@ -1972,7 +1975,7 @@ pt-BR:
   button_save: "Salvar"
   button_save_as: "Salvar como"
   button_save_back: "Salvar e voltar"
-  button_select: "Select"
+  button_select: "Selecionar"
   button_set_reminder: "Definir lembrete"
   button_show: "Mostrar"
   button_sort: "Ordenar"
@@ -2196,7 +2199,7 @@ pt-BR:
     features:
       baseline_comparison: Comparações de linha base
       board_view: Quadros avançados
-      calculated_values: Calculated Values
+      calculated_values: Valores calculados
       conditional_highlighting: Realce condicional
       internal_comments: Comentários internos
       custom_actions: Ações Personalizadas
@@ -2231,7 +2234,7 @@ pt-BR:
         Já possui um token? Adicione-o usando o botão abaixo para fazer o "upgrade" para o plano Enterprise.
       hide_banner: "Ocultar este banner"
       homescreen_description: >
-        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
+        Os planos Enterprise expandem a edição Community do OpenProject com [complementos Enterprise](enterprise_url) adicionais e suporte profissional, sendo ideais para organizações que utilizam o OpenProject em um ambiente crítico.
       homescreen_subline: Ao fazer o upgrade, você também estará apoiando um projeto de código aberto.
       baseline_comparison:
         description: Destaque as alterações realizadas nesta lista desde qualquer ponto no passado.
@@ -2270,7 +2273,7 @@ pt-BR:
       project_list_sharing:
         description: "Compartilhar listas de projetos com usuários individuais."
       calculated_values:
-        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
+        description: "Os valores calculados permitem criar um atributo com base em fórmulas matemáticas utilizando valores numéricos, outros atributos do projeto e campos personalizados."
       define_custom_style:
         title: "Tema de cor e logotipo personalizados"
         more_info: "Obs.: o logotipo usado pode ser acessado publicamente."
@@ -2367,7 +2370,7 @@ pt-BR:
   error_invalid_selected_value: "Valor selecionado inválido."
   error_journal_attribute_not_present: "O diário não contem atributo %{attribute}."
   error_pdf_export_too_many_columns: "Muitas colunas selecionadas para a exportação para PDF. Reduza o número de colunas."
-  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
+  error_pdf_date_range_too_long: "O intervalo de datas do pacote de trabalho selecionado excede o limite permitido para exportação em PDF. Reduza o intervalo para no máximo %{years} anos."
   error_pdf_failed_to_export: "Não foi possível salvar a exportação do PDF: %{error}"
   error_token_authenticity: "Não foi possível verificar o token de Falsificação de Solicitação Entre Sites. Você tentou enviar dados em vários navegadores ou abas? Por favor, feche todas as abas e tente novamente."
   error_reminder_not_found: "O lembrete não foi encontrado ou já foi notificado."
@@ -2584,11 +2587,11 @@ pt-BR:
           new_features_title: >
             A versão contém diversos novos recursos e melhorias, como:
           new_features_list:
-            line_0: Add work packages to a meeting section in the Meetings tab.
-            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
-            line_2: Filter projects by last update.
-            line_3: Jump to highlighted target elements from deep links.
-            line_4: Confirm critical actions with more accessible danger dialogs.
+            line_0: Adicione pacotes de trabalho a uma seção da reunião na aba Reuniões.
+            line_1: Escolha o modo de cor de forma mais prática com as caixas de seleção "Aumentar contraste".
+            line_2: Filtrar projetos pela última atualização.
+            line_3: Ir para os elementos de destino destacados a partir dos links diretos.
+            line_4: Confira as ações críticas com caixas de diálogo de perigo mais acessíveis.
     links:
       upgrade_enterprise_edition: "Atualizar para a edição Enterprise"
       postgres_migration: "Migrando sua instalação para PostgreSQL"
@@ -2682,7 +2685,7 @@ pt-BR:
         static_token_name: "Token de API"
       ical:
         title: "iCalendar"
-        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
+        text_hint_link: 'Tokens de iCalendar permitem que os usuários [assinem calendários do OpenProject](docs_url) e vejam informações atualizadas dos pacotes de trabalho de clientes externos.'
         disabled_text: "As assinaturas do iCalendar não estão habilitadas pelo administrador. Entre em contato com o administrador para utilizar este recurso."
         empty_text_hint: "Para adicionar um token de iCalendário, assine um calendário novo ou existente no módulo Calendário de um projeto. Você precisa possuir as permissões necessárias."
       oauth:
@@ -2823,8 +2826,8 @@ pt-BR:
   label_select_main_menu_item: Selecione novo item do menu principal
   label_required_disk_storage: "Armazenamento em disco necessário"
   label_send_invitation: Enviar Convite
-  label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_calculated_value: "Valor calculado"
+  label_change_parent: "Alterar pai"
   label_change_plural: "Mudanças"
   label_change_properties: "Alterar propriedades"
   label_change_status: "Alterar situação"
@@ -3000,7 +3003,7 @@ pt-BR:
   label_integer: "Número inteiro"
   label_interface: "Interface"
   label_internal: "Interno"
-  label_introduction_video: "Getting started video"
+  label_introduction_video: "Vídeo de introdução"
   label_invite_user: "Convidar usuário"
   label_item: "Item"
   label_item_plural: "Itens"
@@ -3649,7 +3652,7 @@ pt-BR:
   notice_password_confirmation_failed: "Sua senha não está correta. Não é possível continuar."
   notice_principals_found_multiple: "Existe(m) %{number} resultado(s) encontrado(s).\nTecle tab para ir ao primeiro resultado."
   notice_principals_found_single: "Existe um resultado. Tecle tab para ir para ele."
-  notice_parent_item_not_found: "Parent item not found."
+  notice_parent_item_not_found: "Item pai não encontrado."
   notice_project_not_deleted: "O projeto não foi excluído."
   notice_project_not_found: "Projeto não encontrado."
   notice_successful_connection: "Conectado com sucesso."
@@ -4292,7 +4295,7 @@ pt-BR:
   text_access_token_hint: "Tokens de acesso permitem que você conceda acesso de aplicativos externos a recursos no OpenProject."
   text_analyze: "Analisar mais: %{subject}"
   text_are_you_sure: "Você tem certeza?"
-  open_link_in_a_new_tab: "Open link in a new tab"
+  open_link_in_a_new_tab: "Abrir link em uma nova aba"
   text_are_you_sure_continue: "Tem certeza de que deseja continuar?"
   text_are_you_sure_with_children: "Excluir o pacote de trabalho e todos os pacotes de trabalho filhos?"
   text_are_you_sure_with_project_custom_fields: "Ao excluir este atributo, os valores associados a ele serão removidos de todos os projetos. Tem certeza de que deseja continuar?"

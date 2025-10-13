@@ -182,7 +182,6 @@ class MeetingSectionsController < ApplicationController
 
   def clear_backlog
     errors = []
-    meeting_section = @meeting.backlog
     @meeting.backlog.agenda_items.each do |item|
       call = ::MeetingAgendaItems::DeleteService
         .new(user: current_user, model: item)
@@ -191,7 +190,7 @@ class MeetingSectionsController < ApplicationController
       errors << call.errors unless call.success?
     end
 
-    update_section_via_turbo_stream(collapsed: true, meeting_section:, current_occurrence: @current_occurrence)
+    update_backlog_via_turbo_stream(meeting: @current_occurrence, collapsed: true)
     render_error_flash_message_via_turbo_stream(message: t("text_backlog_clear_error")) if errors.any?
 
     respond_with_turbo_streams

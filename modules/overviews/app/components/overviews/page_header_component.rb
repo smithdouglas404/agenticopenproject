@@ -48,7 +48,11 @@ module Overviews
     end
 
     def page_title
-      I18n.t("overviews.label_home", workspace_type: project.workspace_label)
+      if OpenProject::FeatureDecisions.new_project_overview_active?
+        I18n.t("overviews.label_home", workspace_type: project.workspace_label)
+      else
+        I18n.t("overviews.label_overview")
+      end
     end
 
     def favorited?

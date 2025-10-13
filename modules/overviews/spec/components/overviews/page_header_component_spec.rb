@@ -65,41 +65,59 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
       expect(rendered_component).to have_css ".PageHeader-contextBar"
     end
 
-    it "renders current page" do
+    it "renders current page", with_flag: { new_project_overview: true } do
       expect(rendered_component).to have_link "Project home", current: "page"
     end
+
+    it "renders current page", with_flag: { new_project_overview: false } do
+      expect(rendered_component).to have_link "Overview", current: "page"
+    end
   end
 
-  it "renders a Page Header (with tab nav)" do
-    expect(rendered_component).to have_element "page-header", class: "PageHeader--withTabNav"
-  end
-
-  context "with Project" do
-    it "renders title" do
-      expect(rendered_component).to have_heading "Project home", class: "PageHeader-title"
+  context "with the feature flag enabled", with_flag: { new_project_overview: true } do
+    it "renders a Page Header (with tab nav)" do
+      expect(rendered_component).to have_element "page-header", class: "PageHeader--withTabNav"
     end
 
-    it_behaves_like "rendering breadcrumbs", ["OpenProject", "Too big to fail", "Project home"]
-  end
+    context "with Project" do
+      it "renders title" do
+        expect(rendered_component).to have_heading "Project home", class: "PageHeader-title"
+      end
 
-  context "with Portfolio" do
-    let(:workspace_type) { :portfolio }
-
-    it "renders title" do
-      expect(rendered_component).to have_heading "Portfolio home", class: "PageHeader-title"
+      it_behaves_like "rendering breadcrumbs", ["OpenProject", "Too big to fail", "Project home"]
     end
 
-    it_behaves_like "rendering breadcrumbs", ["OpenProject", "Too big to fail", "Portfolio home"]
-  end
+    context "with Portfolio" do
+      let(:workspace_type) { :portfolio }
 
-  context "with Program" do
-    let(:workspace_type) { :program }
+      it "renders title" do
+        expect(rendered_component).to have_heading "Portfolio home", class: "PageHeader-title"
+      end
 
-    it "renders title" do
-      expect(rendered_component).to have_heading "Program home", class: "PageHeader-title"
+      it_behaves_like "rendering breadcrumbs", ["OpenProject", "Too big to fail", "Portfolio home"]
     end
 
-    it_behaves_like "rendering breadcrumbs", ["OpenProject", "Too big to fail", "Program home"]
+    context "with Program" do
+      let(:workspace_type) { :program }
+
+      it "renders title" do
+        expect(rendered_component).to have_heading "Program home", class: "PageHeader-title"
+      end
+
+      it_behaves_like "rendering breadcrumbs", ["OpenProject", "Too big to fail", "Program home"]
+    end
+  end
+
+  context "with the feature flag disabled", with_flag: { new_project_overview: false } do
+    it "renders a Page Header" do
+      expect(rendered_component).to have_element "page-header"
+    end
+
+    it "renders title" do
+      expect(rendered_component).to have_heading "Overview", class: "PageHeader-title"
+    end
+
+    it_behaves_like "rendering breadcrumbs", ["OpenProject", "Too big to fail", "Overview"]
   end
 
   describe "actions" do
@@ -140,7 +158,7 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
     end
   end
 
-  describe "tab bar" do
+  describe "tab bar", with_flag: { new_project_overview: true } do
     it "renders a tab bar" do
       expect(rendered_component).to have_css ".PageHeader-tabNavBar"
     end

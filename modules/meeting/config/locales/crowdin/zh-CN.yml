@@ -480,6 +480,7 @@ zh-CN:
   label_agenda_item_move_to_next: "移动到下次会议"
   label_agenda_item_move_to_backlog: "移动到待办事项"
   label_agenda_item_move_to_current_meeting: "移动到当前会议"
+  label_agenda_item_move_to_section: "移动到小节"
   label_agenda_item_move_to_top: "移至顶部"
   label_agenda_item_move_to_bottom: "移至底部"
   label_agenda_item_move_up: "向上移动"

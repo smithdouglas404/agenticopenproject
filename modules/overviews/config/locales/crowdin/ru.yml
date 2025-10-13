@@ -2,14 +2,14 @@ ru:
   overviews:
     label_home: "%{workspace_type} home"
     label_dashboard: "Dashboard"
-    label_overview: 'Overview'
+    label_overview: 'Обзор'
     widgets:
       subitems:
-        in_this_portfolio: "In this portfolio"
-        in_this_program: "In this program"
+        in_this_portfolio: "В этом портфолио"
+        in_this_program: "В этой программе"
         in_this_project: "В этом проекте"
         no_visible_children: "Нет видимых потомков."
       members:
-        title: "Latest members"
-        view_all_members: "View all members"
+        title: "Последние участники"
+        view_all_members: "Просмотреть всех участников"
   permission_manage_overview: 'Управление страницей обзора'

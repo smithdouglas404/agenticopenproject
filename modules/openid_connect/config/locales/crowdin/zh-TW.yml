@@ -127,6 +127,7 @@ zh-TW:
       label_configuration_details: 後設資料
       label_client_details: 客戶端詳細資訊
       label_attribute_mapping: 屬性對應
+      notice_created: 新的 OpenID 提供者已成功建立。
       client_details_description: OpenProject 作為 OIDC 用戶端的細節設定
       no_results_table: 尚未定義任何提供商。
       plural: OpenID 提供商

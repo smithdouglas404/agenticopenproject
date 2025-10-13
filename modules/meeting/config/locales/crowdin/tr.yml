@@ -487,6 +487,7 @@ tr:
   label_agenda_item_move_to_next: "Sonraki toplantıya taşı"
   label_agenda_item_move_to_backlog: "Birikmiş iş listesine taşı"
   label_agenda_item_move_to_current_meeting: "Şuanki toplantıya taşı"
+  label_agenda_item_move_to_section: "Move to section"
   label_agenda_item_move_to_top: "En üste taşı"
   label_agenda_item_move_to_bottom: "En aşağı taşı"
   label_agenda_item_move_up: "Yukarı taşı"

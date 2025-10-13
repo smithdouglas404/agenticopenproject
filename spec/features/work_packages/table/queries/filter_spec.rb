@@ -447,12 +447,15 @@ RSpec.describe "filter work packages", :js do
     end
     let(:wp_without_attachment) { create(:work_package, subject: "WP no attachment", project:) }
     let(:wp_table) { Pages::WorkPackagesTable.new }
+    let(:plaintext_file_handler) do
+      Plaintext::Resolver.file_handlers.find { |h| h.accept? "text/plain" }
+    end
 
     before do
-      allow_any_instance_of(Plaintext::Resolver).to receive(:text).and_return("I am the first text $1.99.")
+      allow(plaintext_file_handler).to receive(:text).and_return("I am the first text $1.99.")
       wp_with_attachment_a
       Attachments::ExtractFulltextJob.perform_now(attachment_a.id)
-      allow_any_instance_of(Plaintext::Resolver).to receive(:text).and_return("I am the second text.")
+      allow(plaintext_file_handler).to receive(:text).and_return("I am the second text.")
       wp_with_attachment_b
       Attachments::ExtractFulltextJob.perform_now(attachment_b.id)
       wp_without_attachment

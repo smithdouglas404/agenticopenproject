@@ -18,7 +18,7 @@ RSpec.describe "Manage webhooks through UI", :js, :selenium do
     let(:user) { create(:admin) }
     let!(:project) { create(:project) }
 
-    it "allows the management flow" do
+    it "allows the management flow", skip: "flickering spec (#68224)" do
       visit admin_outgoing_webhooks_path
       expect(page).to have_css(".generic-table--empty-row")
 

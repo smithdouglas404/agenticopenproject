@@ -86,12 +86,18 @@ module Admin
           {
             label: item.label,
             current: current?(item),
-            value: item.id
+            value: item.id,
+            select_variant: :single,
+            disabled: disabled?(item)
           }
         end
 
         def current?(item)
           item.id == @hierarchy_item.id
+        end
+
+        def disabled?(item)
+          item.id == @hierarchy_item.id || item.id == @hierarchy_item.parent.id
         end
       end
     end

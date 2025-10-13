@@ -54,6 +54,10 @@ See COPYRIGHT and LICENSE files for more details.
       end
     end
 
-    render Overviews::OverviewGridComponent.new(project:)
+    if OpenProject::FeatureDecisions.new_project_overview_active?
+      render Overviews::OverviewGridComponent.new(project:)
+    else
+      render Overviews::DashboardComponent.new(project:, current_user:)
+    end
   end
 %>

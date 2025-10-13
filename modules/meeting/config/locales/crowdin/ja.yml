@@ -480,6 +480,7 @@ ja:
   label_agenda_item_move_to_next: "次の会議に移動"
   label_agenda_item_move_to_backlog: "バックログに移動"
   label_agenda_item_move_to_current_meeting: "現在の会議に移動"
+  label_agenda_item_move_to_section: "Move to section"
   label_agenda_item_move_to_top: "一番上へ移動"
   label_agenda_item_move_to_bottom: "一番下へ移動"
   label_agenda_item_move_up: "上へ"

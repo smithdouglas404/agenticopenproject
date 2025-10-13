@@ -28,8 +28,8 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  component_wrapper do
-    with_enterprise_banner_guard(:calculated_values, variant: :large, image: "enterprise/calculated-values.png") do
+  with_enterprise_banner_guard(:calculated_values, variant: :large, image: "enterprise/calculated-values.png") do
+    component_wrapper do
       settings_primer_form_with(
         model:,
         scope: :custom_field,

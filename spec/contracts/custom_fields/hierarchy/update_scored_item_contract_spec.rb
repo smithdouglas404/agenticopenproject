@@ -44,10 +44,7 @@ RSpec.describe CustomFields::Hierarchy::UpdateScoredItemContract do
       it "is valid" do
         [
           { item: high, label: "VERY HIGH", score: 1.17e-12 },
-          { item: high, label: "HIGH", score: 1.17e-11 },
-          { item: high, label: "VERY HIGH" },
-          { item: high, score: 1.17e-10 },
-          { item: high }
+          { item: high, label: "HIGH", score: 1.17e-11 }
         ].each { |params| expect(subject.call(params)).to be_success }
       end
     end
@@ -100,10 +97,13 @@ RSpec.describe CustomFields::Hierarchy::UpdateScoredItemContract do
         [
           {},
           { item: nil },
-          { item: high, label: nil },
           { item: high, label: 42 },
-          { item: high, score: nil },
-          { item: high, score: "pi" }
+          { item: high, score: "pi" },
+          { item: high, label: nil, score: 4 },
+          { item: high, label: "pi", score: nil },
+          { item: high, label: "pi", score: "threepointonefour" },
+          { item: high, label: 42, score: 4 },
+          { item: high, label: "", score: 4 }
         ].each { |params| expect(subject.call(params)).to be_failure }
       end
     end

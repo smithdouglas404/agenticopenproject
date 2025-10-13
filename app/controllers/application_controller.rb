@@ -152,7 +152,6 @@ class ApplicationController < ActionController::Base
                 :tag_request,
                 :check_if_login_required,
                 :log_requesting_user,
-                :reset_i18n_fallbacks,
                 :check_session_lifetime,
                 :stop_if_feeds_disabled,
                 :set_cache_buster,
@@ -222,14 +221,6 @@ class ApplicationController < ActionController::Base
   def escape_for_logging(string)
     # only allow numbers, ASCII letters, space and the following characters: @.-"'!?=/
     string.gsub(/[^0-9a-zA-Z@._\-"'!?=\/ ]{1}/, "#")
-  end
-
-  def reset_i18n_fallbacks
-    fallbacks = [I18n.default_locale] + Redmine::I18n.valid_languages.map(&:to_sym)
-    return if I18n.fallbacks.defaults == fallbacks
-
-    I18n.fallbacks = nil
-    I18n.fallbacks.defaults = fallbacks
   end
 
   def set_localization

@@ -32,7 +32,7 @@ uk:
         drive: ID диска
         host: Хост
         name: Назва
-        password: Application password
+        password: Пароль додатка
         provider_type: Тип постачальника
         tenant: ID каталогу (клієнта)
     errors:
@@ -63,7 +63,7 @@ uk:
               op_application_not_installed: схоже, у вас не встановлено додаток OpenProject integration. Спочатку встановіть його, а потім спробуйте знову.
             password:
               invalid_password: недійсний.
-              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
+              unknown_error: не вдалося перевірити через постачальника файлового сховища. Переконайтеся, що з’єднання працює належним чином.
     models:
       file_link: Файл
       storages/storage: Сховище
@@ -203,7 +203,7 @@ uk:
     delete_warning:
       project_storage_delete_result_1: Вилучіть усі посилання на файли й папки в цьому сховизі з пакетів робіт поточного проєкту.
       project_storage_delete_result_2: Якщо це сховище містить папку проєкту з автоматичним керуванням, цю папку та всі її файли буде остаточно видалено.
-      storage: 'Are you sure you want to delete %{file_storage}? This will:'
+      storage: 'Ви справді хочете видалити сховище «%{file_storage}»? Це призведе до таких результатів:'
       storage_delete_result_1: вилучити всі налаштування сховища для всіх проєктів, де воно використовується;
       storage_delete_result_2: вилучити всі посилання з пакетів робіт з усіх проєктів на файли й папки в цьому сховищі.
       storage_delete_result_3: Якщо це сховище містить папки проєкту з автоматичним керуванням, цю папку й усі її файли буде остаточно видалено.

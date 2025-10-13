@@ -127,6 +127,7 @@ ru:
       label_configuration_details: Метаданные
       label_client_details: Информация о клиенте
       label_attribute_mapping: Привязки атрибутов
+      notice_created: A new OpenID provider was successfully created.
       client_details_description: Информация о настройке OpenProject в качестве клиента OIDC
       no_results_table: Ни один провайдер еще не был определен.
       plural: Провайдеры OpenID

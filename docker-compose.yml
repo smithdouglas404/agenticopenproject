@@ -127,7 +127,7 @@ services:
   frontend-test:
     build:
       <<: *frontend-build
-    command: "npm run serve:test"
+    command: "npm run serve"
     volumes:
       - ".:/home/dev/openproject"
       - "fedata-test:/home/dev/openproject/public/assets/frontend"
@@ -138,6 +138,8 @@ services:
       FE_HOST: frontend-test
     networks:
       - testing
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://frontend-test:4200/"]
 
   backend-test:
     build:
@@ -148,10 +150,14 @@ services:
     networks:
       - testing
     depends_on:
-      - db-test
-      - selenium-hub
-      - frontend-test
-      - cuprite-chrome
+      db-test:
+        condition: service_started
+      selenium-hub:
+        condition: service_started
+      frontend-test:
+        condition: service_healthy
+      cuprite-chrome:
+        condition: service_started
     environment:
       RAILS_ENV: test
       OPENPROJECT_RAILS__RELATIVE__URL__ROOT: "${OPENPROJECT_RAILS__RELATIVE__URL__ROOT:-}"

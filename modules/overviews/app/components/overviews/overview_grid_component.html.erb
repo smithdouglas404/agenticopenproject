@@ -26,13 +26,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
-
 <%=
-  render(Grids::WidgetGridComponent.new(align_boxes_start: true)) do |grid|
-    grid.with_widget(Overviews::Widgets::DescriptionComponent, @project)
-    grid.with_widget(Overviews::Widgets::ProjectStatusComponent, @project)
-    grid.with_widget(Overviews::Widgets::SubitemsComponent, @project)
-    grid.with_widget(Overviews::Widgets::MembersComponent, @project)
-    grid.with_widget(Overviews::Widgets::NewsComponent, @project)
+  if @project.project?
+    render(Overviews::Workspaces::ProjectOverviewGridComponent.new(project: @project))
+  elsif @project.program?
+    render(Overviews::Workspaces::ProgramOverviewGridComponent.new(program: @project))
+  elsif @project.portfolio?
+    render(Overviews::Workspaces::PortfolioOverviewGridComponent.new(portfolio: @project))
   end
 %>

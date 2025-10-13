@@ -55,11 +55,12 @@ class Meeting::AddToSection < ApplicationForm
     end
   end
 
-  def initialize(wrapper_id: nil, occurrence: nil)
+  def initialize(wrapper_id: nil, occurrence: nil, item: nil)
     super()
 
     @wrapper_id = wrapper_id
     @occurrence = occurrence
+    @selected_section = item&.meeting_section
   end
 
   private
@@ -75,6 +76,7 @@ class Meeting::AddToSection < ApplicationForm
     items.concat(meeting.sections) if meeting.present? && !meeting.templated?
     items.concat(@occurrence.sections) if @occurrence.present? && @occurrence != meeting
     items.push(meeting.backlog) if meeting.present?
+    items.reject! { |i| i == @selected_section } if @selected_section.present?
 
     items
   end

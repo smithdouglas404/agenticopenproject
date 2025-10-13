@@ -45,15 +45,6 @@ class ApplicationMailer < ActionMailer::Base
   default from: Proc.new { Setting.mail_from }
 
   class << self
-    # Activates/deactivates email deliveries during +block+
-    def with_deliveries(temporary_state = true, &)
-      old_state = ActionMailer::Base.perform_deliveries
-      ActionMailer::Base.perform_deliveries = temporary_state
-      yield
-    ensure
-      ActionMailer::Base.perform_deliveries = old_state
-    end
-
     def host
       if OpenProject::Configuration.rails_relative_url_root.blank?
         Setting.host_name

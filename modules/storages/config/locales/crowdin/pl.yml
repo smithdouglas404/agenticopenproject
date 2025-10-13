@@ -32,7 +32,7 @@ pl:
         drive: Identyfikator dysku
         host: Host
         name: Nazwa
-        password: Application password
+        password: Hasło aplikacji
         provider_type: Typ dostawcy
         tenant: Identyfikator katalogu (dzierżawcy)
     errors:
@@ -56,14 +56,14 @@ pl:
         storages/storage:
           attributes:
             host:
-              authorization_header_missing: nie jest w pełni skonfigurowany. Instancja Nextcloud nie otrzymuje nagłówka "Autoryzacja", który jest niezbędny do autoryzacji żądań API na podstawie tokena Bearer. Sprawdź konfigurację serwera HTTP.
+              authorization_header_missing: nie jest w pełni skonfigurowany. Instancja Nextcloud nie otrzymuje nagłówka "Authorization", który jest wymagany do uwierzytelniania zapytań API za pomocą tokenu Bearer. Sprawdź ponownie konfigurację serwera HTTP.
               cannot_be_connected_to: nie można osiągnąć. Upewnij się, że host jest osiągalny i zainstalowana jest aplikacja integracji OpenProject.
               minimal_nextcloud_version_unmet: nie spełnia wymagań wersji minimalnej (konieczna Nextcloud 23 lub wyższa)
               not_nextcloud_server: nie jest serwerem Nextcloud
-              op_application_not_installed: wydaje się, że aplikacja "OpenProject integration" nie jest zainstalowana. Zainstaluj ją najpierw i spróbuj ponownie.
+              op_application_not_installed: wydaje się, że aplikacja „OpenProject integration” nie jest zainstalowana. Zainstaluj ją najpierw i spróbuj ponownie.
             password:
               invalid_password: jest nieprawidłowe
-              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
+              unknown_error: nie udało się zweryfikować z dostawcą usługi przechowywania plików. Sprawdź, czy połączenie działa prawidłowo.
     models:
       file_link: Plik
       storages/storage: Magazyn
@@ -203,7 +203,7 @@ pl:
     delete_warning:
       project_storage_delete_result_1: Usuń wszystkie linki z pakietów roboczych tego projektu do plików i folderów tego magazynu.
       project_storage_delete_result_2: W przypadku, gdy ten magazyn zawiera automatycznie zarządzany folder projektu, folder ten i jego pliki zostaną bezpowrotnie usunięte.
-      storage: 'Are you sure you want to delete %{file_storage}? This will:'
+      storage: 'Czy na pewno chcesz usunąć %{file_storage}? To spowoduje:'
       storage_delete_result_1: Usunięcie wszystkich konfiguracji magazynu ze wszystkich korzystających z niego projektów.
       storage_delete_result_2: Usunięcie wszystkich linków z pakietów roboczych wszystkich projektów do plików i folderów z tego magazynu.
       storage_delete_result_3: W przypadku, gdy ten magazyn zawiera automatycznie zarządzane foldery projektów, foldery te i zawarte w nich pliki zostaną bezpowrotnie usunięte.

@@ -36,7 +36,13 @@ module Overviews
       ::Redmine::MenuManager.map(:project_menu) do |menu|
         menu.push(:overview,
                   { controller: "/overviews/overviews", action: "show" },
-                  caption: ->(project) { I18n.t("overviews.label_home", workspace_type: project.workspace_label) },
+                  caption: ->(project) {
+                    if OpenProject::FeatureDecisions.new_project_overview_active?
+                      I18n.t("overviews.label_home", workspace_type: project.workspace_label)
+                    else
+                      I18n.t("overviews.label_overview")
+                    end
+                  },
                   first: true,
                   icon: "info")
       end

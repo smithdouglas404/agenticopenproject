@@ -203,7 +203,7 @@ zh-TW:
     delete_warning:
       project_storage_delete_result_1: 移除此專案中所有工作套件與該儲存空間檔案及資料夾的連結。
       project_storage_delete_result_2: 如果此儲存空間具有自動管理的專案資料夾，則該資料夾及其檔案將永久刪除。
-      storage: 'Are you sure you want to delete %{file_storage}? This will:'
+      storage: '您確定要刪除 %{file_storage} 嗎？這將：'
       storage_delete_result_1: 刪除使用此儲存的所有項目的所有儲存設定。
       storage_delete_result_2: 移除所有專案中工作套件與該儲存空間檔案及資料夾的所有連結。
       storage_delete_result_3: 如果此儲存空間具有自動管理的專案資料夾，則該資料夾及其檔案將永久刪除。

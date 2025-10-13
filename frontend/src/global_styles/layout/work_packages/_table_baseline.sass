@@ -32,6 +32,12 @@
 
     i
       display: flex
+      // Firefox applies additional baseline spacing to inline SVG
+      // It removes unwanted space
+      .-browser-firefox &
+        display: inline-block
+        vertical-align: middle
+        line-height: 0
 
   &--icon-added
     color: #5F42E0

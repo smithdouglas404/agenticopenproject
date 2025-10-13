@@ -127,6 +127,7 @@ bg:
       label_configuration_details: Метаданни
       label_client_details: Client details
       label_attribute_mapping: Създаване на карта на атрибути
+      notice_created: A new OpenID provider was successfully created.
       client_details_description: Configuration details of OpenProject as an OIDC client
       no_results_table: Все още не са дефинирани доставчици.
       plural: OpenID доставчици

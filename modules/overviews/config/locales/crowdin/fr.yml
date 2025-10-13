@@ -2,7 +2,7 @@ fr:
   overviews:
     label_home: "Accueil %{workspace_type}"
     label_dashboard: "Tableau de bord"
-    label_overview: 'Vue globale'
+    label_overview: 'Vue d''ensemble'
     widgets:
       subitems:
         in_this_portfolio: "Dans ce portefeuille"

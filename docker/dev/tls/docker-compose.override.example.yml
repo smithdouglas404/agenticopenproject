@@ -13,3 +13,5 @@ services:
           - gitlab.local
           - keycloak.local
           - hocuspocus.local
+          - minio.local
+          - minioadmin.local

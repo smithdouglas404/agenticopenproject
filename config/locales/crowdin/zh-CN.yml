@@ -339,6 +339,9 @@ zh-CN:
       disabled_value: 该计算值需要属性 "%{custom_field_name}"，但它在项目中已禁用。
   concatenation:
     single: "或"
+  danger_dialog:
+    confirmation_live_message_checked: "The button to proceed is now active."
+    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
     or: "或"
     errors:
@@ -634,7 +637,7 @@ zh-CN:
       title: "登录设备管理"
       instructions: "您已经通过以下设备登录到您的帐户。请撤销您无法识别或无法控制的设备的会话。"
       may_not_delete_current: "您不能删除当前会话。"
-      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
+      deletion_warning: "确定要撤销此会话吗？您将在此设备上退出登录。"
     groups:
       member_in_these_groups: "此用户当前是以下组的成员："
       no_results_title_text: 此用户当前不是任何组的成员。
@@ -1682,7 +1685,7 @@ zh-CN:
       group: "组"
       issue_priority:
         other: "优先事项"
-      meeting_participant: "Meeting participant"
+      meeting_participant: "会议参与者"
       member: "成员"
       news: "新闻"
       notification:
@@ -2321,7 +2324,7 @@ zh-CN:
   error_invalid_selected_value: "选中的值无效。"
   error_journal_attribute_not_present: "日志不包含 %{attribute} 属性。"
   error_pdf_export_too_many_columns: "选择 PDF 导出的列太多。请减少列数。"
-  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
+  error_pdf_date_range_too_long: "所选工作包日期范围超出允许的 PDF 导出限制。请将范围缩减至最多 %{years} 年。"
   error_pdf_failed_to_export: "无法保存被导出的 PDF 文件：%{error}"
   error_token_authenticity: "无法验证跨站请求伪造令牌。您是否曾尝试在多个浏览器或选项卡上提交数据？请关闭所有选项卡并重试。"
   error_reminder_not_found: "未找到提醒或已收到相关提醒的通知。"
@@ -2538,11 +2541,11 @@ zh-CN:
           new_features_title: >
             此版本包含各种新功能和改进，例如：
           new_features_list:
-            line_0: Add work packages to a meeting section in the Meetings tab.
-            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
-            line_2: Filter projects by last update.
-            line_3: Jump to highlighted target elements from deep links.
-            line_4: Confirm critical actions with more accessible danger dialogs.
+            line_0: 在“会议”选项卡中将工作包添加到会议小节。
+            line_1: 通过“提高对比度”复选框更方便地选择颜色模式。
+            line_2: 按最后更新时间筛选项目。
+            line_3: 从深层链接跳转到高亮显示的目标元素。
+            line_4: 通过更易操作的危险对话框确认关键操作。
     links:
       upgrade_enterprise_edition: "升级到企业版"
       postgres_migration: "将您的安装迁移到 PostgreSQL"

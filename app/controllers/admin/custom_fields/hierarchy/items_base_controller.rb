@@ -97,24 +97,20 @@ module Admin
         end
 
         def change_parent
-          result = parse_parent_input(new_parent_params).bind do |new_parent|
-            validate_new_parent(new_parent).bind do
-              item_service.move_item(item: @active_item, new_parent:)
-            end
-          end
-
-          result.either(
-            ->(result) do
-              redirect_to action: :show,
-                          id: result.parent,
-                          status: :see_other,
-                          notice: I18n.t(:notice_successful_update)
-            end,
-            ->(error) do
-              render_error_flash_message_via_turbo_stream(message: error)
-              respond_with_turbo_streams(&:html)
-            end
-          )
+          parse_parent_input(new_parent_params)
+            .bind { item_service.move_item(item: @active_item, new_parent: it) }
+            .either(
+              ->(result) do
+                redirect_to action: :show,
+                            id: result.parent,
+                            status: :see_other,
+                            notice: I18n.t(:notice_successful_update)
+              end,
+              ->(error) do
+                render_error_flash_message_via_turbo_stream(message: error)
+                respond_with_turbo_streams(&:html)
+              end
+            )
         end
 
         def destroy
@@ -209,13 +205,6 @@ module Admin
           else
             Failure("Invalid input: #{new_parent_input}")
           end
-        end
-
-        def validate_new_parent(new_parent)
-          return Failure("Parent must not be the same as before.") if @active_item.parent.id == new_parent.id
-          return Failure("Parent must not be the current item.") if @active_item.id == new_parent.id
-
-          Success()
         end
 
         def find_model_object

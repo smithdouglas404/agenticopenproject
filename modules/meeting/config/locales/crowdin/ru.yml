@@ -501,6 +501,7 @@ ru:
   label_agenda_item_move_to_next: "Переместить на следующее совещание"
   label_agenda_item_move_to_backlog: "Переместить в бэклог"
   label_agenda_item_move_to_current_meeting: "Переместить на текущую встречу"
+  label_agenda_item_move_to_section: "Move to section"
   label_agenda_item_move_to_top: "В начало"
   label_agenda_item_move_to_bottom: "В конец"
   label_agenda_item_move_up: "Вверх"

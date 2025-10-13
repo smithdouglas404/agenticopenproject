@@ -95,4 +95,13 @@ RSpec.describe Overviews::Widgets::NewsComponent, type: :component do
       end
     end
   end
+
+  context "with project without news module enabled" do
+    let(:project) { create(:project, enabled_module_names: [:wiki]) }
+
+    it "does not render" do
+      expect(rendered_component).not_to have_primer_text "Nothing new to report.", color: "subtle"
+      expect(rendered_component).not_to have_list "News"
+    end
+  end
 end

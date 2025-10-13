@@ -32,7 +32,7 @@ es:
         drive: ID de unidad
         host: Host
         name: Nombre
-        password: Application password
+        password: Contraseña de aplicación
         provider_type: Tipo de proveedor
         tenant: Directory (tenant) ID
     errors:
@@ -63,7 +63,7 @@ es:
               op_application_not_installed: parece que no tienes la aplicación "Integración OpenProject" instalada. Por favor, instálala primero y vuelve a intentarlo.
             password:
               invalid_password: no es válido.
-              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
+              unknown_error: no se ha podido validar con el proveedor de almacenamiento de archivos. Compruebe que la conexión funcione correctamente.
     models:
       file_link: Archivo
       storages/storage: Almacén
@@ -203,7 +203,7 @@ es:
     delete_warning:
       project_storage_delete_result_1: Eliminar todos los enlaces de los paquetes de trabajo de este proyecto a los archivos y carpetas de ese almacén.
       project_storage_delete_result_2: En caso de que este almacenamiento tenga una carpeta de proyecto gestionada automáticamente, esta y sus archivos se eliminarán para siempre.
-      storage: 'Are you sure you want to delete %{file_storage}? This will:'
+      storage: '¿Seguro que desea eliminar %{file_storage}? Esto provocará lo siguiente:'
       storage_delete_result_1: Eliminar todas las configuraciones de almacenamiento de todos los proyectos que utilizan este almacenamiento.
       storage_delete_result_2: Eliminar todos los enlaces de paquetes de trabajo de todos los proyectos a archivos y carpetas de ese almacenamiento.
       storage_delete_result_3: En caso de que este almacenamiento tenga gestión automática de carpetas de proyecto, aquellas y sus archivos contenidos serán eliminados para siempre.

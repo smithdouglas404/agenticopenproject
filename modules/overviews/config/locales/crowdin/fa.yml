@@ -6,10 +6,10 @@ fa:
     widgets:
       subitems:
         in_this_portfolio: "In this portfolio"
-        in_this_program: "In this program"
-        in_this_project: "In this project"
+        in_this_program: "در این برنامه"
+        in_this_project: "در این پروژه"
         no_visible_children: "There are no visible children."
       members:
-        title: "Latest members"
-        view_all_members: "View all members"
+        title: "آخرین اعضا"
+        view_all_members: "مشاهده همه کاربران"
   permission_manage_overview: 'مدیریت صفحه نمای کلی'

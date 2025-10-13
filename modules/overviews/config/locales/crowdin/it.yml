@@ -1,15 +1,15 @@
 it:
   overviews:
-    label_home: "%{workspace_type} home"
+    label_home: "Pagina principale %{workspace_type}"
     label_dashboard: "Dashboard"
-    label_overview: 'Overview'
+    label_overview: 'Panoramica'
     widgets:
       subitems:
-        in_this_portfolio: "In this portfolio"
-        in_this_program: "In this program"
-        in_this_project: "In this project"
-        no_visible_children: "There are no visible children."
+        in_this_portfolio: "In questo portfolio"
+        in_this_program: "In questo programma"
+        in_this_project: "In questo progetto"
+        no_visible_children: "Non ci sono elementi figli visibili."
       members:
-        title: "Latest members"
-        view_all_members: "View all members"
+        title: "Ultimi membri"
+        view_all_members: "Visualizza tutti i membri"
   permission_manage_overview: 'Gestisci la pagina panoramica'

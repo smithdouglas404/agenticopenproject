@@ -480,6 +480,7 @@ zh-TW:
   label_agenda_item_move_to_next: "移至下次會議"
   label_agenda_item_move_to_backlog: "移至待辦清單"
   label_agenda_item_move_to_current_meeting: "移至目前會議"
+  label_agenda_item_move_to_section: "移動到區段"
   label_agenda_item_move_to_top: "移到頂部"
   label_agenda_item_move_to_bottom: "移到底部"
   label_agenda_item_move_up: "向上移 "

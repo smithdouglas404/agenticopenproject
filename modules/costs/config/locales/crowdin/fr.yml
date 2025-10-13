@@ -101,7 +101,7 @@ fr:
   button_log_time: "Journal"
   button_add_activity: "Activité"
   button_add_time_entry: "Consigner temps"
-  button_stop_timer: "Arrêter le minuteur"
+  button_stop_timer: "Arrêter le suivi du temps"
   caption_booked_on_project: "Réservé pour le projet"
   caption_default: "Défaut"
   caption_default_rate_history_for: "Historique des tarifs par défaut pour %{user}"

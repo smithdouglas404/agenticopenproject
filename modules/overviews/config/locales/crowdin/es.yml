@@ -1,15 +1,15 @@
 es:
   overviews:
-    label_home: "%{workspace_type} home"
-    label_dashboard: "Dashboard"
-    label_overview: 'Overview'
+    label_home: "Inicio %{workspace_type}"
+    label_dashboard: "Panel de control"
+    label_overview: 'Resumen'
     widgets:
       subitems:
-        in_this_portfolio: "In this portfolio"
-        in_this_program: "In this program"
-        in_this_project: "In this project"
-        no_visible_children: "There are no visible children."
+        in_this_portfolio: "En este portafolio"
+        in_this_program: "En este programa"
+        in_this_project: "En este proyecto"
+        no_visible_children: "No hay subelementos visibles."
       members:
-        title: "Latest members"
-        view_all_members: "View all members"
+        title: "Nuevos miembros"
+        view_all_members: "Ver todos los miembros"
   permission_manage_overview: 'Administrar la página de resumen'
