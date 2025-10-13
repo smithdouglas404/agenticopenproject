@@ -43,6 +43,9 @@ module Costs::NumberHelper
         I18n.t(:"number.format.separator", default: ".")
       end
 
+    # Fallback: if only comma is used, it's probably the separator
+    separator = "," if value.include?(",") && !value.include?(".")
+
     if separator
       delimiters = Regexp.new("[ .,’˙]".gsub(separator, ""))
 
