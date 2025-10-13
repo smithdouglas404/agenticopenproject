@@ -2102,9 +2102,6 @@ en:
   button_publish: "Make public"
   button_unpublish: "Make private"
 
-  label_switch_on: "On"
-  label_switch_off: "Off"
-
   consent:
     checkbox_label: I have noted and do consent to the above.
     failure_message: Consent failed, cannot proceed.
@@ -3567,6 +3564,8 @@ en:
   label_not_changeable: "(not changeable)"
   label_global: "Global"
   label_seeded_from_env_warning: This record has been created through a setting environment variable. It is not editable through UI.
+  label_switch_on: "On"
+  label_switch_off: "Off"
   macro_execution_error: "Error executing the macro %{macro_name}"
   macro_unavailable: "Macro %{macro_name} cannot be displayed."
   macros:
