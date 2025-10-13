@@ -2,12 +2,19 @@ import { describe, expect, test, vi, beforeEach, afterEach } from "vitest";
 import { OpenProjectApi } from "../../src/extensions/openProjectApi";
 import { onAuthenticatePayload, onLoadDocumentPayload, onStoreDocumentPayload } from "@hocuspocus/server";
 import * as Y from "yjs";
+import type { OpenProjectApiConfiguration } from "../../src/types";
 
 describe("OpenProjectApi", () => {
+  const testConfig:OpenProjectApiConfiguration = {
+    secret: "testSuperSecret1234",
+    apiUrl: "https://test.api",
+    apiKey: "testApiKey",
+  };
+
   describe("onAuthenticate", () => {
     test("when the token is not present throw an error", async () => {
       await expect(() =>
-        new OpenProjectApi({}).onAuthenticate({
+        new OpenProjectApi(testConfig).onAuthenticate({
           token: null,
         } as unknown as onAuthenticatePayload)
       ).rejects.toThrowError("Unauthorized: Token missing.");
@@ -26,7 +33,7 @@ describe("OpenProjectApi", () => {
       const tokenWithWrongSecret = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkb2N1bWVudF9pZCI6MTIxLCJkb2N1bWVudF9uYW1lIjoiVGhlRG9jTmFtZSIsImRvY3VtZW50X3RleHQiOiJlbXB0eSBleGNlcHQgdGhpcyJ9.ANskFI50S6eEji-s5IYp7tLtNsuYpzE8Xz7kzj9CmsE";
 
       await expect(() =>
-        new OpenProjectApi({}).onAuthenticate({
+        new OpenProjectApi(testConfig).onAuthenticate({
           token: tokenWithWrongSecret,
         } as unknown as onAuthenticatePayload)
       ).rejects.toThrowError("Unauthorized: Invalid token.");
@@ -45,7 +52,7 @@ describe("OpenProjectApi", () => {
       const tokenWithWrongDocumentName = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkb2N1bWVudF9pZCI6MTIxLCJkb2N1bWVudF9uYW1lIjoiVGhlRG9jTmFtZSIsImRvY3VtZW50X3RleHQiOiJlbXB0eSBleGNlcHQgdGhpcyJ9.X1uCNy7WlPmOWClAmYSCvNIvi0wahxg_D3UcC1UDmYU";
 
       await expect(() =>
-        new OpenProjectApi({}).onAuthenticate({
+        new OpenProjectApi(testConfig).onAuthenticate({
           token: tokenWithWrongDocumentName,
           documentName: "AnotherDocName",
         } as unknown as onAuthenticatePayload)
@@ -70,7 +77,7 @@ describe("OpenProjectApi", () => {
         documentName: "TheDocName",
       } as unknown as onAuthenticatePayload;
 
-      await new OpenProjectApi({}).onAuthenticate(data);
+      await new OpenProjectApi(testConfig).onAuthenticate(data);
 
       expect(data.context.documentId).toEqual(121);
     });
@@ -109,7 +116,7 @@ describe("OpenProjectApi", () => {
         document,
       } as onLoadDocumentPayload;
 
-      const api = new OpenProjectApi({ apiUrl: "https://test.api", token: "" });
+      const api = new OpenProjectApi(testConfig);
       await api.onLoadDocument(data);
 
       expect(fetchMock).toHaveBeenCalledWith(
@@ -141,7 +148,7 @@ describe("OpenProjectApi", () => {
 
       const initialContent = data.document.getText('content').toString();
 
-      const api = new OpenProjectApi({ apiUrl: "https://test.api", token: "" });
+      const api = new OpenProjectApi(testConfig);
       await api.onLoadDocument(data);
 
       expect(fetchMock).toHaveBeenCalled();
@@ -178,7 +185,7 @@ describe("OpenProjectApi", () => {
         document,
       } as onStoreDocumentPayload;
 
-      const api = new OpenProjectApi({ apiUrl: "https://test.api", token: "" });
+      const api = new OpenProjectApi(testConfig);
       await api.onStoreDocument(data);
 
       expect(fetchMock).toHaveBeenCalledWith(

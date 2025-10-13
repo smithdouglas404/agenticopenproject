@@ -1,32 +1,18 @@
+import type { onAuthenticatePayload, onLoadDocumentPayload, onStoreDocumentPayload } from "@hocuspocus/server";
 import { Extension } from "@hocuspocus/server";
 import { createVerifier } from 'fast-jwt';
-import type { onAuthenticatePayload, onLoadDocumentPayload, onStoreDocumentPayload } from "@hocuspocus/server";
-import type { ApiResponseDocument, OpenProjectApiConfiguration } from "../types";
 import * as Y from "yjs";
-
-const secret = process.env.SECRET;
-if (!secret) {
-  console.log(`SECRET must be provided`);
-  process.exit();
-};
-
-const verifyToken = createVerifier({ key: async () => secret, algorithms: ['HS256'] });
-
-// my local dev env key, it's not a leak :)
-const RAW_KEY = "9e4cb47e0b0dbe407dddd6d022314ee3f9ac147856a15cc3d6d55b2e54fd2fa6";
-const API_KEY = Buffer.from(`apikey:${RAW_KEY}`, "utf-8").toString("base64");
+import type { ApiResponseDocument, OpenProjectApiConfiguration } from "../types";
 
 export class OpenProjectApi implements Extension {
-  configuration: OpenProjectApiConfiguration = {
-    apiUrl: "https://openproject.local",
-    token: "",
-  };
+  configuration: OpenProjectApiConfiguration;
+  verifier: ReturnType<typeof createVerifier>;
+  apiKey: string;
 
   constructor(configuration: OpenProjectApiConfiguration) {
-    this.configuration = {
-      ...this.configuration,
-      ...configuration
-    };
+    this.configuration = configuration;
+    this.verifier = createVerifier({ key: async () => this.configuration.secret, algorithms: ['HS256'] });
+    this.apiKey = Buffer.from(`apikey:${this.configuration.apiKey}`, "utf-8").toString("base64");
   }
 
   async onAuthenticate(data: onAuthenticatePayload) {
@@ -36,7 +22,7 @@ export class OpenProjectApi implements Extension {
     }
     let tokenPayload;
     try {
-      tokenPayload = await verifyToken(token);
+      tokenPayload = await this.verifier(token);
     } catch (_err) {
       throw new Error('Unauthorized: Invalid token.');
     }
@@ -59,7 +45,7 @@ export class OpenProjectApi implements Extension {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Basic ${API_KEY}`,
+        "Authorization": `Basic ${this.apiKey}`,
       },
     });
 
@@ -90,7 +76,7 @@ export class OpenProjectApi implements Extension {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Basic ${API_KEY}`,
+        "Authorization": `Basic ${this.apiKey}`,
       },
       body: JSON.stringify({
         content_binary: base64Data

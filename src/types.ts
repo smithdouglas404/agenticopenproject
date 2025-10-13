@@ -5,8 +5,12 @@ export interface Document {
 }
 
 export interface OpenProjectApiConfiguration {
-  apiUrl?: string;
-  token?: string;
+  /** The base URL of the OpenProject instance, e.g. "https://openproject.example.com" */
+  apiUrl: string;
+  /** The API key for authentication with the OpenProject instance */
+  apiKey: string;
+  /** The secret used to verify JWT tokens */
+  secret: string;
 }
 
 export interface ApiResponseDocument {
