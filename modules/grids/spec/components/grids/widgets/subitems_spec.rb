@@ -62,7 +62,7 @@ RSpec.describe Grids::Widgets::Subitems, type: :component do
 
       context "and a limit greater than the number of all subitems (default: 10)" do
         it "renders all subitems, without a 'view all' item", :aggregate_failures do
-          expect(rendered_component).to have_list "In this project" do |list|
+          expect(rendered_component).to have_list "Subitems" do |list|
             expect(list).to have_list_item count: 3, text: /My Project No. \d+/
             expect(list).to have_no_list_item text: "View all subitems"
           end
@@ -77,7 +77,7 @@ RSpec.describe Grids::Widgets::Subitems, type: :component do
         let(:params) { { limit: 2 } }
 
         it "renders specified subitems, along with a 'view all' item", :aggregate_failures do
-          expect(rendered_component).to have_list "In this project" do |list|
+          expect(rendered_component).to have_list "Subitems" do |list|
             expect(list).to have_list_item count: 2, text: /My Project No. \d+/
             expect(list).to have_list_item text: "View all subitems"
           end

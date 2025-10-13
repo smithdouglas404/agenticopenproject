@@ -4,9 +4,7 @@ en:
 
     widgets:
       subitems:
-        in_this_portfolio: "In this portfolio"
-        in_this_program: "In this program"
-        in_this_project: "In this project"
+        title: "Subitems"
         no_results: "There are no visible children."
         view_all_subitems: "View all subitems"
       members:
