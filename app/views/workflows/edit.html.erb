@@ -82,7 +82,7 @@ See COPYRIGHT and LICENSE files for more details.
     <%= render_tabs workflow_tabs %>
 
     <%=
-      render Primer::Beta::Button.new(scheme: :primary, type: :submit) do
+      render Primer::Beta::Button.new(scheme: :primary, type: :submit, id: "work-flow-save-button") do
         t(:button_save)
       end
     %>
