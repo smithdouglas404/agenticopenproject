@@ -36,7 +36,7 @@ class Grids::Widgets::ProjectStatusesController < Grids::WidgetController
 
     if call.success?
       @project = call.result
-      update_via_turbo_stream(component: Grids::Widgets::ProjectStatusComponent.new(@project, current_user:))
+      update_via_turbo_stream(component: Grids::Widgets::ProjectStatus.new(@project, current_user:))
       render_success_flash_message_via_turbo_stream(message: t(:notice_successful_update))
       respond_with_turbo_streams
     else

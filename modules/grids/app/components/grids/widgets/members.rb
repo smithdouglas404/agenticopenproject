@@ -30,14 +30,26 @@
 
 module Grids
   module Widgets
-    class ProjectStatusComponent < Grids::WidgetComponent
-      include ApplicationHelper
-      include OpTurbo::Streamable
+    class Members < Grids::WidgetComponent
+      MEMBERS_LIMIT = 5
 
       param :project
 
+      def initialize(*)
+        super
+
+        if project
+          @members = project.members.visible(current_user).newest_first
+          @newest_members = @members.limit(MEMBERS_LIMIT).to_a
+        end
+      end
+
       def title
-        Project.human_attribute_name(:status_code)
+        t(:"grids.widgets.members.title")
+      end
+
+      def render?
+        current_user.allowed_in_project?(:view_members, project)
       end
     end
   end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,60 +26,18 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
 module Grids
   module Widgets
-    class SubitemsComponent < Grids::WidgetComponent
-      include OpPrimer::ComponentHelpers
-      include Rails.application.routes.url_helpers
-
-      SUBITEMS_LIMIT = 10
-      private_constant :SUBITEMS_LIMIT
+    class ProjectStatus < Grids::WidgetComponent
+      include ApplicationHelper
+      include OpTurbo::Streamable
 
       param :project
 
-      option :limit, default: -> { SUBITEMS_LIMIT }
-
       def title
-        I18n.t("grids.widgets.subitems.in_this_#{project.workspace_type}")
-      end
-
-      def displayed_subitems
-        subitems_with_more.first
-      end
-
-      def has_more_subitems?
-        subitems_with_more.last
-      end
-
-      def has_no_subitems?
-        displayed_subitems.empty?
-      end
-
-      def wrapper_arguments
-        { full_width: true }
-      end
-
-      private
-
-      def subitems_with_more
-        @subitems_with_more ||= project.children
-          .visible(current_user)
-          .unscope(:order)
-          .newest
-          .extending(FinderMethods::WithMore)
-          .first_with_more(limit)
-      end
-
-      def view_all_subitems_path
-        @view_all_subitems_path ||= projects_path(::API::Decorators::QueryParamsRepresenter.new(project_query).to_h)
-      end
-
-      def project_query
-        ProjectQuery.new
-          .where("active", "=", "t")
-          .where("parent_id", "=", project.id)
+        Project.human_attribute_name(:status_code)
       end
     end
   end

@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe Grids::Widgets::SubitemsComponent, type: :component do
+RSpec.describe Grids::Widgets::Subitems, type: :component do
   include Rails.application.routes.url_helpers
 
   def render_component(...)

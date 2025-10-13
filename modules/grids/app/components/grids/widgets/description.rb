@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,30 +26,17 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
 module Grids
   module Widgets
-    class MembersComponent < Grids::WidgetComponent
-      MEMBERS_LIMIT = 5
-
+    class Description < Grids::WidgetComponent
       param :project
 
-      def initialize(*)
-        super
-
-        if project
-          @members = project.members.visible(current_user).newest_first
-          @newest_members = @members.limit(MEMBERS_LIMIT).to_a
-        end
-      end
+      delegate :description, to: :project
 
       def title
-        t(:"grids.widgets.members.title")
-      end
-
-      def render?
-        current_user.allowed_in_project?(:view_members, project)
+        Project.human_attribute_name(:description)
       end
     end
   end

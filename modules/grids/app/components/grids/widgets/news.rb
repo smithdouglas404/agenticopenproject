@@ -30,21 +30,31 @@
 
 module Grids
   module Widgets
-    class NewsComponent < Grids::WidgetComponent
-      class ItemComponent < ApplicationComponent
-        include ApplicationHelper
-        include OpPrimer::ComponentHelpers
+    class News < Grids::WidgetComponent
+      param :project, optional: true
 
-        attr_reader :item, :project, :current_user
+      def initialize(*, news_limit: 5)
+        super
 
-        def initialize(item:, project:, current_user: User.current, **system_arguments)
-          super()
+        @news =
+          if project
+            project.news.visible(current_user).newest_first
+          else
+            ::News
+              .visible(current_user)
+              .newest_first
+              .includes(:project)
+          end
 
-          @item = item
-          @project = project
-          @current_user = current_user
-          @system_arguments = system_arguments
-        end
+        @newest = @news.limit(news_limit).to_a
+      end
+
+      def title
+        Project.human_attribute_name(:news)
+      end
+
+      def render?
+        project.nil? || project.module_enabled?("news")
       end
     end
   end

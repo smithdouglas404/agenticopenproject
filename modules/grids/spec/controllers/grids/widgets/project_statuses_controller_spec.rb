@@ -73,10 +73,10 @@ RSpec.describe Grids::Widgets::ProjectStatusesController do
       context "when service call succeeds" do
         let(:service_result) { ServiceResult.success(result: project) }
 
-        it "renders turbo streams updating Grids::Widgets::ProjectStatusComponent and flash action", :aggregate_failures do
+        it "renders turbo streams updating Grids::Widgets::ProjectStatus and flash action", :aggregate_failures do
           expect(response).to be_successful
           expect(assigns(:project)).to eq project
-          expect(response).to have_turbo_stream action: "update", target: "grids-widgets-project-status-component"
+          expect(response).to have_turbo_stream action: "update", target: "grids-widgets-project-status"
           expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
         end
       end

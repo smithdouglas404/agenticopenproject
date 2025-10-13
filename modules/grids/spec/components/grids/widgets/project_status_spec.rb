@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe Grids::Widgets::ProjectStatusComponent, type: :component do
+RSpec.describe Grids::Widgets::ProjectStatus, type: :component do
   include Rails.application.routes.url_helpers
 
   def render_component(...)

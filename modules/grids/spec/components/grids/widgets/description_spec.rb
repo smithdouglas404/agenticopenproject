@@ -30,58 +30,18 @@
 
 require "rails_helper"
 
-RSpec.describe Grids::Widgets::MembersComponent, type: :component do
-  include Rails.application.routes.url_helpers
-
+RSpec.describe Grids::Widgets::Description, type: :component do
   def render_component(...)
     render_inline(described_class.new(...))
   end
 
-  let(:project) { nil }
-  let(:user) { nil }
-
-  current_user { user }
+  let(:project) { build_stubbed(:project, description: "**This project is awesome**") }
 
   subject(:rendered_component) do
     render_component(project)
   end
 
-  context "with permissions" do
-    let(:project) { create(:project) }
-    let(:user) { create(:admin) }
-
-    context "with no members" do
-      it "does render" do
-        expect(rendered_component).to have_content I18n.t(:"js.grid.widgets.members.no_results")
-      end
-    end
-
-    context "with members" do
-      let(:member) { create(:user, member_with_permissions: { project => %i[view_members] }) }
-
-      before do
-        member
-      end
-
-      it "renders turbo-frame component wrapper" do
-        expect(rendered_component).to have_element :"turbo-frame"
-      end
-
-      it "renders members items", :aggregate_failures do
-        expect(rendered_component).to have_element class: "op-widget-box--body" do |body|
-          expect(body).to have_link href: project_members_path(project)
-          expect(body).to have_element :"opce-principal"
-        end
-      end
-    end
-  end
-
-  context "without permissions" do
-    let(:project) { create(:project) }
-    let(:user) { create(:anonymous) }
-
-    it "does not render" do
-      expect(rendered_component).not_to have_element "#grids-widgets-members-component-box"
-    end
+  it "renders description text" do
+    expect(rendered_component).to have_css "strong", text: "This project is awesome"
   end
 end
