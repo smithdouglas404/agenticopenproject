@@ -68,3 +68,15 @@
 
     .generic-table--sort-header-outer:hover
       background: none
+
+#workflow_summary
+  td:first-child:not(:has(.workflow-table--turned-header)),
+  th:first-child
+    position: sticky
+    left: -1rem
+    background: var(--body-background)
+    z-index: 2
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08)
+
+  th:first-child
+    z-index: 3
