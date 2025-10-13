@@ -9,6 +9,7 @@
         journal_container.with_row do
           render(
             border_box_container(
+              id: activity_anchor(journal),
               padding: :condensed,
               "aria-label": I18n.t("activities.work_packages.activity_tab.commented"),
               data: {

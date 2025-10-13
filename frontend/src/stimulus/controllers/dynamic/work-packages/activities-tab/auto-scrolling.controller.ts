@@ -39,10 +39,18 @@ interface CustomEventWithIdParam extends Event {
 }
 
 export default class AutoScrollingController extends BaseController {
+  private abortController = new AbortController();
+
   connect() {
     super.connect();
 
+    this.listenToAnchorChanges();
     this.handleInitialScroll();
+  }
+
+  disconnect() {
+    super.disconnect();
+    this.abortController.abort();
   }
 
   setAnchor(event:CustomEventWithIdParam) {
@@ -115,7 +123,22 @@ export default class AutoScrollingController extends BaseController {
     }
   }
 
+  private listenToAnchorChanges() {
+    window.addEventListener('hashchange', () => {
+      this.handleAnchorScroll();
+    }, {signal: this.abortController.signal});
+  }
+
   private handleInitialScroll() {
+    const anchorHandled = this.handleAnchorScroll();
+    if (anchorHandled) return;
+
+    if (this.indexOutlet.sortingAscending && (!this.isMobile() || this.isWithinNotificationCenter())) {
+      this.scrollToBottom();
+    }
+  }
+
+  private handleAnchorScroll():boolean {
     const hash = window.location.hash;
     const anchorInfo = UrlHelpers.extractActivityAnchor(hash);
 
@@ -123,9 +146,10 @@ export default class AutoScrollingController extends BaseController {
       const activityElement = this.getActivityAnchorElement(anchorInfo);
       this.brieflyHighlightAndResetUrl(activityElement, hash);
       this.scrollToActivity(activityElement);
-    } else if (this.indexOutlet.sortingAscending && (!this.isMobile() || this.isWithinNotificationCenter())) {
-      this.scrollToBottom();
+      return true;
     }
+
+    return false;
   }
 
   private scrollToActivity(activityElement:HTMLElement|null) {
@@ -194,16 +218,22 @@ export default class AutoScrollingController extends BaseController {
   }
 
   private brieflyHighlightAndResetUrl(activityElement:HTMLElement|null, locationHash:string) {
-    if (activityElement) {
-      activityElement.classList.add('--anchor-highlighted');
-      setTimeout(() => {
-        document.addEventListener('click', () => {
-          activityElement.classList.remove('--anchor-highlighted');
-          const newLocation = window.location.href.replace(locationHash, '');
-          window.history.replaceState(null, 'Remove anchor', newLocation);
-        }, {once: true});
-      });
-    }
+    if (!activityElement) return;
+
+    const highlightClass = '--anchor-highlighted';
+
+    this.element.querySelectorAll(`.${highlightClass}`).forEach((el) => {
+      el.classList.remove(highlightClass);
+    });
+    activityElement.classList.add(highlightClass);
+
+    setTimeout(() => {
+      document.addEventListener('click', () => {
+        activityElement.classList.remove(highlightClass);
+        const newLocation = window.location.href.replace(locationHash, '');
+        window.history.replaceState(null, 'Remove anchor', newLocation);
+      }, {once: true});
+    });
   }
 
   private getActivityAnchorElement(activityAnchor:ActivityAnchor):HTMLElement | null {
