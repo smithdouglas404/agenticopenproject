@@ -39,10 +39,10 @@ class Meeting::AddToSection < ApplicationForm
         decorated: true,
         defaultData: false,
         multiple: false,
-        focus_directly: false,
         disabled: meeting.blank?,
         placeholder: placeholder_text,
-        append_to: append_to_container
+        append_to: append_to_container,
+        openDirectly: @open_directly
       }
     ) do |select|
       items.each do |item|
@@ -55,12 +55,13 @@ class Meeting::AddToSection < ApplicationForm
     end
   end
 
-  def initialize(wrapper_id: nil, occurrence: nil, item: nil)
+  def initialize(wrapper_id: nil, occurrence: nil, item: nil, open_directly: false)
     super()
 
     @wrapper_id = wrapper_id
     @occurrence = occurrence
     @selected_section = item&.meeting_section
+    @open_directly = open_directly
   end
 
   private
