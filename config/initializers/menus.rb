@@ -112,7 +112,9 @@ Redmine::MenuManager.map :quick_add_menu do |menu|
             }
 
   menu.push :invite_user,
-            { controller: "/users/invite", action: :start_dialog },
+            ->(project) {
+              { controller: "/users/invite", action: :start_dialog, "user_invitation[project_id]": project&.id }
+            },
             caption: :label_invite_user,
             icon: "person-add",
             html: {
@@ -121,6 +123,7 @@ Redmine::MenuManager.map :quick_add_menu do |menu|
                 turbo_stream: true
               }
             },
+            skip_permissions_check: true, # Prevent project specific permission checks
             if: ->(_) { User.current.allowed_in_any_project?(:manage_members) }
 end
 
