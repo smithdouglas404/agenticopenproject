@@ -36,7 +36,7 @@
         scheme: :primary,
         label: I18n.t(:label_document_new),
         tag: :a,
-        href: url_helpers.url_for({ controller: "/documents", action: "new", project_id: project })
+        href: project_documents_path(project)
       ) do |button|
         button.with_leading_visual_icon(icon: :plus)
         I18n.t("activerecord.models.document")

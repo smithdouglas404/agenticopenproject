@@ -3,7 +3,7 @@
     grid.with_area(:name, tag: :div, mr: 3, classes: "ellipsis") do
       render(
         Primer::Beta::Link.new(
-          href: url_helpers.url_for({ controller: "/documents", action: "show", id: document }),
+          href: document_path(document),
           font_weight: :bold,
           mr: 1,
           data: { test_selector: "document-name" }
