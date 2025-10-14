@@ -107,7 +107,7 @@ ja:
     jemalloc_allocator: Jemalloc メモリアロケータ
     journal_aggregation:
       explanation:
-        text: "ユーザーの個々のアクション (例: ワークパッケージを2回更新する)は、指定された時間範囲よりも年齢差が小さい場合、単一のアクションに集約されます。 これらはアプリケーション内で単一のアクションとして表示されます。 これにより、送信されるメールの数が減少し、 %{webhook_link} の遅延にも影響します。"
+        text: "ユーザーの個々のアクション (例:ワークパッケージを2回更新する)は、指定された時間範囲よりも時間差が小さい場合、単一のアクションに集約されます。 これらはアプリケーション内で単一のアクションとして表示されます。 これにより、送信されるメールの数が減少し、 %{webhook_link} の遅延にも影響します。"
         link: "webhook"
     scim_clients:
       authentication_methods:
@@ -580,7 +580,7 @@ ja:
       cannot_delete_inherited_membership_note_admin_html: "プロジェクトのメンバーとしてグループを削除するか、 %{administration_settings_link} のグループからこの特定のメンバーを削除することができます。"
       cannot_delete_inherited_membership_note_non_admin: "プロジェクトのメンバーとしてグループを削除するか、管理者に問い合わせてグループから特定のメンバーを削除することができます。"
     delete_work_package_shares_dialog:
-      title: "ワークパッケージの共有を取り消す"
+      title: "ワークパッケージの共有の取り消し"
       shared_with_this_user_html:
         other: "%{all_shared_work_packages_link} はこのユーザーと共有されています。"
       shared_with_this_group_html:
@@ -663,11 +663,11 @@ ja:
   priorities:
     edit:
       priority_color_text: |
-        クリックして、この優先順位の色を割り当てたり変更したりする。
-        表のワークパッケージをハイライトするために使用できます。
+        クリックして項目の色を設定。
+        表でワークパッケージの強調色として利用されます。
     admin:
       default:
-        caption: この優先順位をデフォルトにすると、以前のデフォルトの優先順位が上書きされる。
+        caption: この優先順位をデフォルトにすると以前のデフォルトの優先順位が上書きされます。
   reactions:
     action_title: "リアクト"
     add_reaction: "リアクションを追加"
@@ -721,9 +721,9 @@ ja:
         tab: "フォームの設定"
       projects:
         tab: プロジェクト
-        enable_all: すべてのプロジェクトで有効にする
+        enable_all: すべてのプロジェクトで有効
         select_projects: プロジェクトを選択
-        select_projects_description: このタイプを使用するプロジェクトを選択します。
+        select_projects_description: このタイプを使用するプロジェクトを選択。
       settings:
         tab: "設定"
         type_color_text: 選択された色は、ガントチャートまたはワークパッケージの表で異なるタイプを区別します。したがって、強い色を使用することをお勧めします。
@@ -1159,7 +1159,7 @@ ja:
         is_closed: "作業が完了"
         is_readonly: "読み取り専用のワークパッケージ"
         excluded_from_totals: "階層内の合計の計算から除外"
-        default_done_ratio: "%完了率"
+        default_done_ratio: "完成(%)"
       token/named:
         token_name: "トークン名"
       token/ical:
@@ -1237,7 +1237,7 @@ ja:
         redirect_existing_links: "既存のリンクをリダイレクトする"
         text: "ページの内容"
       work_package:
-        ancestor: "の子孫" #used for filtering of work packages that are descendants of a given work package
+        ancestor: "と子・孫関係" #used for filtering of work packages that are descendants of a given work package
         begin_insertion: "挿入の始まり"
         begin_deletion: "削除の始まり"
         children: "サブ要素"
@@ -2677,7 +2677,7 @@ ja:
       all: "全て"
       all_title: "全てを表示"
     menu:
-      by_project: "プロジェクトによって未読になりました"
+      by_project: "未読のプロジェクト"
       by_reason: "理由"
       inbox: "受信箱"
     send_notifications: "このアクションの通知を送信"
@@ -4036,7 +4036,7 @@ ja:
   setting_work_package_done_ratio_status_caption_html: >-
     各ステータスには、 <i>% Complete</i> の値があります。ステータスを変更すると、 <i>% Complete</i> が変わります。
   setting_work_package_done_ratio_explanation_html: >
-    <b>ワーク・ベース・</b>モードでは、%Completeは自由に設定できる。オプションで「作業」に値を入力すると、自動的に「残りの作業」が導き出される。<b>ステータス・ベース・</b>モードでは、各ステータスに % Complete の値が関連付けられます。ステータスを変更すると、%Complete も変更される。
+    <b>ワーク・ベース・</b>モードでは、完了(%)は自由に設定することができます。 オプションで「作業」に値を入力すると、自動的に「残りの作業」が導き出されます。 <b>ステータス・ベース・</b>モードでは、各ステータスに 完了(%) の値が関連付けられます。 ステータスを変更すると、完了(%) も変更される。
   setting_work_package_properties: "項目名"
   setting_work_package_startdate_is_adddate: "今日の日付を新しいワークパッケージの開始日とする"
   setting_work_packages_projects_export_limit: "ワークパッケージ/プロジェクトのエクスポート制限"
@@ -4064,7 +4064,7 @@ ja:
     作業パッケージが閉じられても、<i>完了</i>率の値は変わりません。
   setting_percent_complete_on_status_closed_set_100p: "自動的に100%に設定"
   setting_percent_complete_on_status_closed_set_100p_caption: >-
-    終了したワークパッケージは完了したとみなされる。
+    終了したワークパッケージは完了したとみなされます。
   setting_plain_text_mail: "テキストメール（HTMLなし）"
   setting_protocol: "プロトコル"
   setting_project_gantt_query: "プロジェクトポートフォリオガントビュー"
@@ -4111,7 +4111,7 @@ ja:
     <i>総完了</i>率は、階層内の各作業パッケージの<i>作業に対して</i>重み付けされる。<i>作業の</i>ないワークパッケージは無視される。
   setting_total_percent_complete_mode_simple_average: "単純平均"
   setting_total_percent_complete_mode_simple_average_caption_html: >-
-    <i>作業は</i>無視され、<i>合計完了率は</i>階層内の作業パッケージの<i>完了率の</i>単純平均値となる。
+    <i>作業は</i>無視され、<i>合計完了率は</i>階層内の作業パッケージの<i>完了(%)の</i>単純平均値となります。
   setting_accessibility_mode_for_anonymous: "匿名ユーザ向けにアクセシビリティモードを有効"
   setting_user_format: "ユーザー名の形式"
   setting_user_default_timezone: "ユーザーのデフォルトのタイム ゾーン"
@@ -4511,7 +4511,7 @@ ja:
           same_as_remaining_work: "残りの作業と同じ値に設定します。"
         remaining_hours:
           cleared_because_work_is_empty: "ワークが空のためクリア。"
-          cleared_because_percent_complete_is_empty: "% Complete が空のため、クリアされました。"
+          cleared_because_percent_complete_is_empty: "完了(%) が空のため、クリアされました。"
           decreased_by_delta_like_work: "%{delta}によって減少しました。作業の減少に一致します。"
           derived: "作品と完成度から派生したもの。"
           increased_by_delta_like_work: "%{delta}、仕事の増加に合わせて増加した。"

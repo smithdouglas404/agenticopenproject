@@ -80,9 +80,7 @@ module Admin
             add_sub_item_action_item(menu)
           end
 
-          if OpenProject::FeatureDecisions.change_hierarchy_item_parent_active?
-            with_item_group(menu) { change_parent_item(menu) }
-          end
+          with_item_group(menu) { change_parent_item(menu) }
 
           with_item_group(menu) do
             unless first_item?

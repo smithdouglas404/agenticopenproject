@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe WorkPackage::Exports::Formatters::CompoundDoneRatio do
+RSpec.describe WorkPackage::Exports::Formatters::PDF::CompoundDoneRatio do
   subject { described_class.new(:done_ratio) }
 
   describe "#format" do

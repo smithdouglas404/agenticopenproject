@@ -29,15 +29,21 @@
 #++
 module WorkPackage::Exports
   module Formatters
-    class Date < ::Exports::Formatters::Default
-      include WorkPackagesHelper
+    module XLS
+      class DoneRatio < ::Exports::Formatters::Default
+        def self.apply?(name, export_format)
+          name.to_sym.in?(%i[done_ratio derived_done_ratio]) && export_format == :csv
+        end
 
-      def self.apply?(name, export_format)
-        name.to_sym == :date && export_format == :pdf
-      end
+        def format_value(value, _options = {})
+          return if value.nil?
 
-      def format(work_package, **)
-        work_package_formatted_dates(work_package)
+          (value.to_f / 100).ceil(2)
+        end
+
+        def format_options
+          { number_format: percentage_format }
+        end
       end
     end
   end

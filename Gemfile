@@ -40,7 +40,7 @@ gem "activerecord-import", "~> 2.2.0"
 gem "activerecord-session_store", "~> 2.2.0"
 gem "ox"
 gem "rails", "~> 8.0.3"
-gem "responders", "~> 3.0"
+gem "responders", "~> 3.2"
 
 gem "ffi", "~> 1.15"
 
@@ -228,7 +228,7 @@ gem "yabeda-rails"
 
 # opentelemetry
 gem "opentelemetry-exporter-otlp", "~> 0.30.0", require: false
-gem "opentelemetry-instrumentation-all", "~> 0.84.0", require: false
+gem "opentelemetry-instrumentation-all", "~> 0.85.0", require: false
 gem "opentelemetry-sdk", "~> 1.9", require: false
 
 gem "view_component", "~> 4.0.2"
@@ -357,7 +357,7 @@ group :development, :test do
   gem "rubocop-factory_bot", require: false
   gem "rubocop-openproject", require: false
   gem "rubocop-performance", require: false
-  gem "rubocop-rails", require: false
+  gem "rubocop-rails", "= 2.33.3", require: false # 2.33.4 has issues with Rails/ActionControllerFlashBeforeRender
   gem "rubocop-rspec", require: false
   gem "rubocop-rspec_rails", require: false
 
@@ -420,4 +420,4 @@ end
 
 gem "openproject-octicons", "~>19.29.0"
 gem "openproject-octicons_helper", "~>19.29.0"
-gem "openproject-primer_view_components", "~>0.75.1"
+gem "openproject-primer_view_components", "~>0.75.2"

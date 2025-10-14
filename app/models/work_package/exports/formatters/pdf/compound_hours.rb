@@ -27,17 +27,30 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-module Projects::Exports
+module WorkPackage::Exports
   module Formatters
-    class Active < ::Exports::Formatters::Default
-      def self.apply?(attribute, export_format)
-        export_format == :pdf && attribute.to_sym == :active
-      end
+    module PDF
+      class CompoundHours < ::Exports::Formatters::Default
+        def self.apply?(name, export_format)
+          name.to_sym.in?(%i[estimated_hours remaining_hours]) && export_format == :pdf
+        end
 
-      ##
-      # Takes a project and returns yes/no depending on the active attribute
-      def format(project, **)
-        project.active? ? I18n.t(:general_text_Yes) : I18n.t(:general_text_No)
+        def format(work_package, **)
+          hours = format_value(work_package.public_send(attribute))
+          derived_hours = total_prefix(format_value(work_package.public_send(:"derived_#{attribute}")))
+
+          [hours, derived_hours].compact.join(" ").presence
+        end
+
+        def format_value(value, _options = nil)
+          DurationConverter.output(value)
+        end
+
+        private
+
+        def total_prefix(value)
+          value && "· Σ #{value}"
+        end
       end
     end
   end
