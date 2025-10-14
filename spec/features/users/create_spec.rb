@@ -73,28 +73,28 @@ RSpec.describe "create users" do
       end
     end
 
-    it_behaves_like "successful user creation" do
-      describe "activation" do
-        before do
-          allow(User).to receive(:current).and_call_original
+    it_behaves_like "successful user creation"
 
-          visit "/account/activate?token=#{token}"
-        end
+    describe "activation" do
+      before do
+        allow(User).to receive(:current).and_call_original
 
-        it "shows the registration form" do
-          expect(page).to have_text "Create a new account"
-        end
+        visit "/account/activate?token=#{token}"
+      end
 
-        it "registers the user upon submission" do
-          fill_in "user_password", with: "foobarbaz1"
-          fill_in "user_password_confirmation", with: "foobarbaz1"
+      it "shows the registration form" do
+        expect(page).to have_text "Create a new account"
+      end
 
-          click_button "Create"
+      it "registers the user upon submission" do
+        fill_in "user_password", with: "foobarbaz1"
+        fill_in "user_password_confirmation", with: "foobarbaz1"
 
-          # landed on the 'my page'
-          expect(page).to have_text "Welcome, your account has been activated. You are logged in now."
-          user_menu.expect_user_shown "bobfirst boblast"
-        end
+        click_button "Create"
+
+        # landed on the 'my page'
+        expect(page).to have_text "Welcome, your account has been activated. You are logged in now."
+        user_menu.expect_user_shown "bobfirst boblast"
       end
     end
   end
@@ -130,45 +130,45 @@ RSpec.describe "create users" do
       end
     end
 
-    it_behaves_like "successful user creation" do
-      describe "activation" do
-        before do
-          # Ensure we clear any flashes
-          visit "/logout"
+    it_behaves_like "successful user creation"
 
-          allow(User).to receive(:current).and_call_original
+    describe "activation" do
+      before do
+        # Ensure we clear any flashes
+        visit "/logout"
 
-          visit "/account/activate?token=#{token}"
+        allow(User).to receive(:current).and_call_original
+
+        visit "/account/activate?token=#{token}"
+      end
+
+      it "shows the login form prompting the user to login" do
+        expect(page).to have_text "Please login as bob to activate your account."
+      end
+
+      it "registers the user upon submission" do
+        user = User.find_by login: "bob"
+
+        allow(User)
+          .to(receive(:find_by_login))
+          .with("bob")
+          .and_return(user)
+
+        allow(user).to receive(:ldap_auth_source).and_return(auth_source)
+
+        allow(auth_source)
+          .to(receive(:authenticate).with("bob", "dummy"))
+          .and_return({ dn: "cn=bob,ou=users,dc=example,dc=com" })
+
+        within "#content-body" do
+          fill_in "password", with: "dummy" # accepted by DummyAuthSource
+          click_button "Sign in", type: "submit"
         end
 
-        it "shows the login form prompting the user to login" do
-          expect(page).to have_text "Please login as bob to activate your account."
-        end
-
-        it "registers the user upon submission" do
-          user = User.find_by login: "bob"
-
-          allow(User)
-            .to(receive(:find_by_login))
-            .with("bob")
-            .and_return(user)
-
-          allow(user).to receive(:ldap_auth_source).and_return(auth_source)
-
-          allow(auth_source)
-            .to(receive(:authenticate).with("bob", "dummy"))
-            .and_return({ dn: "cn=bob,ou=users,dc=example,dc=com" })
-
-          within "#content-body" do
-            fill_in "password", with: "dummy" # accepted by DummyAuthSource
-            click_button "Sign in", type: "submit"
-          end
-
-          # landed on the 'my page'
-          expect(page).to have_text "Welcome to OpenProject, bobfirst boblast"
-          expect(page).to have_current_path "/", ignore_query: true
-          user_menu.expect_user_shown "bobfirst boblast"
-        end
+        # landed on the 'my page'
+        expect(page).to have_text "Welcome to OpenProject, bobfirst boblast"
+        expect(page).to have_current_path "/", ignore_query: true
+        user_menu.expect_user_shown "bobfirst boblast"
       end
     end
   end
@@ -191,28 +191,28 @@ RSpec.describe "create users" do
         end
       end
 
-      it_behaves_like "successful user creation", redirect_to_edit_page: false do
-        describe "activation" do
-          before do
-            allow(User).to receive(:current).and_call_original
+      it_behaves_like "successful user creation", redirect_to_edit_page: false
 
-            visit "/account/activate?token=#{token}"
-          end
+      describe "activation" do
+        before do
+          allow(User).to receive(:current).and_call_original
 
-          it "shows the registration form" do
-            expect(page).to have_text "Create a new account"
-          end
+          visit "/account/activate?token=#{token}"
+        end
 
-          it "registers the user upon submission" do
-            fill_in "user_password", with: "foobarbaz1"
-            fill_in "user_password_confirmation", with: "foobarbaz1"
+        it "shows the registration form" do
+          expect(page).to have_text "Create a new account"
+        end
 
-            click_button "Create"
+        it "registers the user upon submission" do
+          fill_in "user_password", with: "foobarbaz1"
+          fill_in "user_password_confirmation", with: "foobarbaz1"
 
-            # landed on the 'my page'
-            expect(page).to have_text "Welcome, your account has been activated. You are logged in now."
-            user_menu.expect_user_shown "bobfirst boblast"
-          end
+          click_button "Create"
+
+          # landed on the 'my page'
+          expect(page).to have_text "Welcome, your account has been activated. You are logged in now."
+          user_menu.expect_user_shown "bobfirst boblast"
         end
       end
     end
