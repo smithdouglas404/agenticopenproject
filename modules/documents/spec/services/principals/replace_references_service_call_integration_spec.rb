@@ -40,7 +40,6 @@ RSpec.describe Principals::ReplaceReferencesService, "#call", type: :model do
   shared_let(:to_principal) { create(:user, firstname: "new principal") }
   shared_let(:project) { create(:project) }
   shared_let(:document_type) { create(:document_type) }
-  shared_let(:document_status) { create(:document_status) }
 
   let(:instance) do
     described_class.new
@@ -49,8 +48,7 @@ RSpec.describe Principals::ReplaceReferencesService, "#call", type: :model do
   let(:attributes) do
     {
       project_id: project.id,
-      type_id: document_type.id,
-      status_id: document_status.id
+      type_id: document_type.id
     }
   end
 
