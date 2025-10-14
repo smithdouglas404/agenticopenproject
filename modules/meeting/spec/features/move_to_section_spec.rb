@@ -89,6 +89,21 @@ RSpec.describe "Move agenda items to section", :js do
         show_page.expect_agenda_item_in_section(title: "Item to move", section: section2)
       end
 
+      it "shows a confirmation dialog when moving items with unsaved changes" do
+        another_item = create(:meeting_agenda_item, meeting:, meeting_section: section1, title: "Another item")
+        show_page.visit!
+
+        show_page.edit_agenda_item(another_item, save: false) do
+          fill_in "Title", with: "Unsaved edit"
+        end
+
+        dismiss_confirm do
+          show_page.select_action(agenda_item, I18n.t(:label_agenda_item_move_to_section))
+        end
+
+        show_page.expect_item_edit_form(another_item, visible: true)
+      end
+
       it "doesn't show the current section in the options list" do
         show_page.visit!
         show_page.expect_agenda_item_in_section(title: "Item to move", section: section1)
