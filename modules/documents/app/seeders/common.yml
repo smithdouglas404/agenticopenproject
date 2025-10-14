@@ -45,11 +45,10 @@ document_categories:
     position: 3
 
 document_types:
-  - reference: :document_default_type_standard
-    t_name: Standard
-  - reference: :document_default_type_specification
-    t_name: Specification
-  - reference: :document_default_type_contract
-    t_name: Contract
-  - reference: :document_default_type_report
-    t_name: Report
+  - t_name: Documentation
+  - t_name: Specification
+  - t_name: Other
+  - t_name: Report
+  - t_name: Manual
+  - t_name: Analysis
+  - t_name: Protocol

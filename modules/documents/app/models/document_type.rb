@@ -29,6 +29,9 @@
 #++
 
 class DocumentType < ApplicationRecord
+  default_scope { order(:position) }
+  acts_as_list
+
   has_many :documents, foreign_key: :type_id,
                        dependent: :nullify,
                        inverse_of: :type

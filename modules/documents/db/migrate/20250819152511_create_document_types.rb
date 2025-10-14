@@ -32,6 +32,7 @@ class CreateDocumentTypes < ActiveRecord::Migration[8.0]
   def change
     create_table :document_types do |t|
       t.string :name
+      t.integer :position
 
       t.timestamps
     end
@@ -41,7 +42,6 @@ class CreateDocumentTypes < ActiveRecord::Migration[8.0]
 
     reversible do |dir|
       dir.up do
-        seed_default_types
         migrate_existing_categories_to_types
         migrate_existing_documents_categories_references_to_types
 
@@ -55,30 +55,20 @@ class CreateDocumentTypes < ActiveRecord::Migration[8.0]
 
   private
 
-  def seed_default_types
-    say "seeding default document types"
-    execute <<~SQL.squish
-      INSERT INTO document_types (name, created_at, updated_at)
-      VALUES
-        ('Standard', NOW(), NOW()),
-        ('Specification', NOW(), NOW()),
-        ('Contract', NOW(), NOW()),
-        ('Report', NOW(), NOW())
-    SQL
-  end
-
   def migrate_existing_categories_to_types
     say_with_time "migrating document categories to types" do
       execute <<~SQL.squish
         WITH existing_document_categories AS (
-          SELECT name
+          SELECT
+            name,
+            ROW_NUMBER() OVER (
+              ORDER BY position ASC
+            ) AS position
           FROM enumerations
           WHERE type = 'DocumentCategory'
-          AND name NOT IN ('Standard', 'Specification', 'Contract', 'Report')
-          ORDER BY position ASC
         )
-        INSERT INTO document_types (name, created_at, updated_at)
-          SELECT name, NOW(), NOW()
+        INSERT INTO document_types (name, position, created_at, updated_at)
+          SELECT name, position, NOW(), NOW()
           FROM existing_document_categories
           ON CONFLICT (name) DO NOTHING
       SQL
