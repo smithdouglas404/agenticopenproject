@@ -51,7 +51,7 @@ RSpec.describe "List Documents",
     end
 
     let!(:specifications) { create_list(:document, 3, :collaborative, type: document_types[0], project:) }
-    let!(:reports) { create_list(:document, 2, :legacy, type: document_types[1], project:) }
+    let!(:reports) { create_list(:document, 2, :classic, type: document_types[1], project:) }
 
     it "renders a list of all documents" do
       index_page.visit!

@@ -46,7 +46,7 @@ class DocumentsController < ApplicationController
         .includes(:type)
         .paginate(page: page_param, per_page: per_page_param)
     else
-      legacy_index
+      classic_index
       render layout: false if request.xhr?
     end
   end
@@ -98,7 +98,7 @@ class DocumentsController < ApplicationController
 
   private
 
-  def legacy_index # rubocop:disable Metrics/AbcSize
+  def classic_index # rubocop:disable Metrics/AbcSize
     @group_by = %w(category date title author).include?(params[:group_by]) ? params[:group_by] : "category"
     documents = @project.documents
     @grouped =
