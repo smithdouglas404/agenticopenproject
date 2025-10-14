@@ -34,7 +34,6 @@ module Primer
       # :nodoc:
       class BlockNoteEditor < Primer::Forms::BaseComponent
         include ::OpenProject::StaticRouting::UrlHelpers
-        include ::AvatarHelper
 
         attr_reader :input,
                     :value,
@@ -51,17 +50,15 @@ module Primer
           super()
           @input = input
           @value = value
-          @users = User.active.preload(:attachments).map do |user|
+          @users = User.active.map do |user|
             {
               id: user.id,
-              username: user.name,
-              avatarUrl: avatar_url(user)
+              username: user.name
             }
           end
           @active_user = {
             id: User.current.id,
-            username: User.current.name,
-            avatarUrl: avatar_url(User.current)
+            username: User.current.name
           }
           @document_id = document_id
           @hocuspocus_url = Setting.collaborative_editing_hocuspocus_url
