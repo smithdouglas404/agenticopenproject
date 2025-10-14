@@ -35,7 +35,6 @@ RSpec.describe Principals::DeleteJob, "Documents", type: :model do
 
   shared_let(:project) { create(:project) }
   shared_let(:document_type) { create(:document_type) }
-  shared_let(:document_status) { create(:document_status) }
 
   shared_let(:deleted_user) { create(:deleted_user) }
 
@@ -46,7 +45,6 @@ RSpec.describe Principals::DeleteJob, "Documents", type: :model do
       create(:document,
              project:,
              type: document_type,
-             status: document_status,
              author: principal)
     end
 
