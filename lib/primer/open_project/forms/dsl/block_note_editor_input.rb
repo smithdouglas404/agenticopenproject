@@ -35,6 +35,12 @@ module Primer
         class BlockNoteEditorInput < Primer::Forms::Dsl::Input
           attr_reader :name, :label, :value, :classes, :document_id, :document_name
 
+          ##
+          # @param name [String] The name of the input field.
+          # @param label [String] The label for the input field.
+          # @param value [String] The initial value of the input in base64 format.
+          # @param document_id [String] The ID of the document.
+          # @param document_name [String] The name of the document for the collaborative YJS provider.
           def initialize(name:, label:, value:, document_id:, document_name:, **system_arguments)
             @name = name
             @label = label

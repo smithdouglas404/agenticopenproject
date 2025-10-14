@@ -49,10 +49,10 @@ class DocumentForm < ApplicationForm
 
     if OpenProject::FeatureDecisions.block_note_editor_active? && model.category&.name == "Experimental"
       f.block_note_editor(
-        name: :description,
+        name: :content_binary,
         label: I18n.t("label_document_description"),
         classes: "document-form--long-description",
-        value: model.description,
+        value: model.content_binary,
         document_id: model.id,
         document_name: ::CollaborativeEditing::DocumentIdGenerator.call("documents", model.id)
       )

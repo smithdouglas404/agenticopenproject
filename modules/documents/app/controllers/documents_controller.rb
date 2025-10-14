@@ -30,6 +30,7 @@
 
 class DocumentsController < ApplicationController
   include AttachableServiceCall
+
   default_search_scope :documents
   model_object Document
   before_action :find_project_by_project_id, only: %i[index new create]
@@ -64,6 +65,10 @@ class DocumentsController < ApplicationController
     @document.attributes = document_params
   end
 
+  def edit
+    @categories = DocumentCategory.all
+  end
+
   def create
     call = attachable_create_call ::Documents::CreateService,
                                   args: document_params.merge(project: @project)
@@ -75,10 +80,6 @@ class DocumentsController < ApplicationController
       @document = call.result
       render action: :new, status: :unprocessable_entity
     end
-  end
-
-  def edit
-    @categories = DocumentCategory.all
   end
 
   def update
@@ -103,6 +104,6 @@ class DocumentsController < ApplicationController
   private
 
   def document_params
-    params.fetch(:document, {}).permit("category_id", "title", "description")
+    params.fetch(:document, {}).permit("category_id", "title", "description", "content_binary")
   end
 end

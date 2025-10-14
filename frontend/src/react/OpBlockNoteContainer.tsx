@@ -71,50 +71,53 @@ export default function OpBlockNoteContainer({ inputField,
 
   initOpenProjectApi({ baseUrl: openProjectUrl});
 
-  let collaboration:any;
+  let doc = new Y.Doc();
+
   const collaborationEnabled = Boolean(hocuspocusUrl && documentName && hocuspocusAccessToken && activeUser);
   let hocuspocusProvider:HocuspocusProvider | null = null;
-  let threadStore:any;
 
+  let editorParams:any;
   if(collaborationEnabled) {
-    const doc = new Y.Doc();
     hocuspocusProvider = new HocuspocusProvider({
       url: hocuspocusUrl,
       name: documentName,
       token: hocuspocusAccessToken,
       document: doc
     });
-    const cursorColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
-    collaboration = {
-      provider: hocuspocusProvider,
-      fragment: doc.getXmlFragment('document-store'),
-      user: {
-        name: activeUser.username,
-        color: cursorColor,
+
+    editorParams = {
+      schema,
+      resolveUsers: async (userIds:string[]) => users.filter((user) => userIds.includes(user.id)),
+      collaboration: {
+        provider: hocuspocusProvider,
+        fragment: doc.getXmlFragment('document-store'),
+        user: {
+          name: activeUser.username,
+          color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'),
+        },
+        showCursorLabels: 'activity'
       },
-      showCursorLabels: 'activity'
+    };
+  } else { // collaboration disabled
+    if (inputText) {
+      try {
+        const update = Uint8Array.from(atob(inputText), c => c.charCodeAt(0));
+        Y.applyUpdate(doc, update);
+      } catch (e) {
+        console.error('Failed to load document binary', e);
+        doc = new Y.Doc();
+      }
+    }
+
+    editorParams = {
+      schema,
+      collaboration: {
+        fragment: doc.getXmlFragment('document-store'),
+      },
     };
   }
 
-  let editor:any;
-  if(collaborationEnabled) {
-    const resolveUsers = async (userIds:string[]) => {
-      return users.filter((user) => userIds.includes(user.id));
-    };
-
-    editor = useCreateBlockNote(
-      {
-        resolveUsers,
-        collaboration,
-        schema,
-      },
-      [activeUser, threadStore]
-    );
-  } else {
-    editor = useCreateBlockNote(
-      { schema },
-    );
-  };
+  const editor = useCreateBlockNote(editorParams, [activeUser]);
   type EditorType = typeof editor;
 
   const getCustomSlashMenuItems = (editor:EditorType) => {
@@ -136,13 +139,16 @@ export default function OpBlockNoteContainer({ inputField,
           setIsLoading(true);
         });
       } else {
-        const blocks = await editor.tryParseMarkdownToBlocks(inputText || '');
-        editor.replaceBlocks(editor.document, blocks);
+        doc.on('update', () => {
+          const update = Y.encodeStateAsUpdate(doc);
+          const b64 = btoa(String.fromCharCode(...update));
+          inputField.value = b64;
+        });
         setIsLoading(false);
       }
     }
-    void prepareEditor();
-    return  ()  => {
+    prepareEditor();
+    return () => {
       if (hocuspocusProvider) {
         hocuspocusProvider.destroy();
       }
@@ -156,10 +162,6 @@ export default function OpBlockNoteContainer({ inputField,
         <BlockNoteView
           editor={editor}
           theme={detectTheme()}
-          onChange={async (editor) => {
-            const content = await editor.blocksToMarkdownLossy();
-            inputField.value = content;
-          }}
           className={'block-note-editor-container'}
         >
           <SuggestionMenuController
