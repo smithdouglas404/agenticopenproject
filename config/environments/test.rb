@@ -123,6 +123,11 @@ Rails.application.configure do
   if ENV["TEST_ENV_NUMBER"]
     assets_cache_path = Rails.root.join("tmp/cache/assets/paralleltests#{ENV['TEST_ENV_NUMBER']}")
     config.assets.cache = Sprockets::Cache::FileStore.new(assets_cache_path)
+
+    # use a different log file for each test environment
+    config.logger = ActiveSupport::Logger.new(Rails.root.join("log/test_#{ENV['TEST_ENV_NUMBER']}.log"))
+      .tap  { |logger| logger.formatter = Logger::Formatter.new }
+      .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
   end
 
   # Speed up tests by lowering BCrypt's cost function

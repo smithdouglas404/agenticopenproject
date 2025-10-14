@@ -25,9 +25,9 @@ cleanup() {
 
   # DEBUG: just show the test log for the flaky spec.
   # By comparing it to local runs, we may learn something...
-  if [ -f "log/test.log" ]; then
+  if [ -f "log/test_1.log" ]; then
     echo "========== TEST LOG =========="
-    sed -n '/create users with external authentication behaves like successful user creation activation registers the user upon submission/,/create users with external authentication behaves like successful user creation activation registers the user upon submission/p' log/test.log
+    sed -n '/create users with external authentication behaves like successful user creation activation registers the user upon submission/,/create users with external authentication behaves like successful user creation activation registers the user upon submission/p' log/test*.log
     echo "========== /TEST LOG =========="
   fi
 
