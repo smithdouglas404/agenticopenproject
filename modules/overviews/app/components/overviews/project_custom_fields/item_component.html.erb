@@ -18,10 +18,12 @@
     end
 
     custom_field_value_container.with_row(w: :full) do
-      if not_set?
-        render(Primer::Beta::Text.new) { t("placeholders.default") }
-      else
-        render_value
+      render(authorized_edit_link) do
+        if not_set?
+          render(Primer::Beta::Text.new) { t("placeholders.default") }
+        else
+          render_value
+        end
       end
     end
 
@@ -32,3 +34,7 @@
     end
   end
 %>
+
+<% if @tooltip %>
+  <%= render @tooltip %>
+<% end %>

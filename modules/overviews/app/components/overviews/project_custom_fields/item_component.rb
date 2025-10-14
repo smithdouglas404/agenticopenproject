@@ -42,9 +42,43 @@ module Overviews
         @project_custom_field = project_custom_field
         @project_custom_field_values = project_custom_field_values
         @project = project
+
+        # Set up tooltip for calculated fields
+        if @project_custom_field.calculated_value?
+          @tooltip_id = "calculated-field-tooltip-#{@project_custom_field.id}"
+          @tooltip = Primer::Alpha::Tooltip.new(
+            for_id: @tooltip_id,
+            type: :description,
+            text: I18n.t("custom_fields.calculated_field_not_editable"),
+            direction: :s
+          )
+        end
       end
 
       private
+
+      def allowed_to_edit?
+        !@project_custom_field.calculated_value? &&
+          User.current.allowed_in_project?(:edit_project_attributes, @project)
+      end
+
+      def authorized_edit_link
+        if allowed_to_edit?
+          Primer::Beta::Link.new(
+            href: edit_project_custom_field_path(project_id: @project.id, id: @project_custom_field.id),
+            classes: "hover-input",
+            data: { controller: "async-dialog" },
+            aria: { label: I18n.t(:label_edit) },
+            test_selector: "project-custom-field-edit-button-#{@project_custom_field.id}"
+          )
+        else
+          Primer::Beta::Text.new(
+            tag: :div,
+            id: @tooltip_id,
+            classes: "project-custom-field-non-editable"
+          )
+        end
+      end
 
       def not_set?
         @project_custom_field_values.empty? || @project_custom_field_values.all? { |cf_value| cf_value.value.blank? }

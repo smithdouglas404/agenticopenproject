@@ -35,12 +35,10 @@ module Overviews
       include OpTurbo::Streamable
       include OpPrimer::ComponentHelpers
 
-      def initialize(project:,
-                     project_custom_field_section:)
+      def initialize(project:, project_custom_field:)
         super
-
         @project = project
-        @project_custom_field_section = project_custom_field_section
+        @project_custom_field = project_custom_field
       end
     end
   end

@@ -28,18 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Overviews::ProjectCustomFieldSectionsController < ApplicationController
+class Overviews::ProjectCustomFieldsController < ApplicationController
   include OpTurbo::ComponentStream
 
   before_action :find_project_by_project_id
-  before_action :find_project_custom_field_section
+  before_action :find_project_custom_field
   before_action :authorize
 
-  def show_dialog
+  def edit
     respond_with_dialog(
       Overviews::ProjectCustomFields::EditDialogComponent.new(
         project: @project,
-        project_custom_field_section: @section
+        project_custom_field: @custom_field
       )
     )
   end
@@ -56,7 +56,7 @@ class Overviews::ProjectCustomFieldSectionsController < ApplicationController
     if service_call.success?
       update_sidebar_component
     else
-      handle_errors(service_call.result, @section)
+      handle_errors(service_call.result, @custom_field)
     end
 
     respond_to_with_turbo_streams(status: service_call.success? ? :ok : :unprocessable_entity)
@@ -64,15 +64,15 @@ class Overviews::ProjectCustomFieldSectionsController < ApplicationController
 
   private
 
-  def find_project_custom_field_section
-    @section = ProjectCustomFieldSection.find(params[:id])
+  def find_project_custom_field
+    @custom_field = @project.available_custom_fields.find(params[:id])
   end
 
-  def handle_errors(project_with_errors, section)
+  def handle_errors(project_with_errors, custom_field)
     update_via_turbo_stream(
       component: Overviews::ProjectCustomFields::EditComponent.new(
         project: project_with_errors,
-        project_custom_field_section: section
+        project_custom_field: custom_field
       )
     )
   end

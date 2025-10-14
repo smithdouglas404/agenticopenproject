@@ -30,14 +30,14 @@
 
 require "rails_helper"
 
-RSpec.describe Overviews::ProjectCustomFieldSectionsController do
+RSpec.describe Overviews::ProjectCustomFieldsController do
   describe "routing" do
-    describe "#show" do
+    describe "#edit" do
       it do
-        expect(get("/projects/my-project/project_custom_field_sections/33/show_dialog"))
+        expect(get("/projects/my-project/project_custom_fields/33/edit"))
           .to route_to(
-            controller: "overviews/project_custom_field_sections",
-            action: "show_dialog",
+            controller: "overviews/project_custom_fields",
+            action: "edit",
             project_id: "my-project",
             id: "33"
           )
@@ -46,9 +46,9 @@ RSpec.describe Overviews::ProjectCustomFieldSectionsController do
 
     describe "PUT/PATCH #update" do
       it do
-        expect(put("/projects/my-project/project_custom_field_sections/44"))
+        expect(put("/projects/my-project/project_custom_fields/44"))
           .to route_to(
-            controller: "overviews/project_custom_field_sections",
+            controller: "overviews/project_custom_fields",
             action: "update",
             project_id: "my-project",
             id: "44"
@@ -56,9 +56,9 @@ RSpec.describe Overviews::ProjectCustomFieldSectionsController do
       end
 
       it do
-        expect(patch("/projects/my-project/project_custom_field_sections/44"))
+        expect(patch("/projects/my-project/project_custom_fields/44"))
           .to route_to(
-            controller: "overviews/project_custom_field_sections",
+            controller: "overviews/project_custom_fields",
             action: "update",
             project_id: "my-project",
             id: "44"
@@ -68,12 +68,12 @@ RSpec.describe Overviews::ProjectCustomFieldSectionsController do
   end
 
   describe "named routing" do
-    describe "GET #show" do
+    describe "GET #edit" do
       it do
-        expect(get(show_dialog_project_custom_field_section_path("my-project", 33)))
+        expect(get(edit_project_custom_field_path("my-project", 33)))
           .to route_to(
-            controller: "overviews/project_custom_field_sections",
-            action: "show_dialog",
+            controller: "overviews/project_custom_fields",
+            action: "edit",
             project_id: "my-project",
             id: "33"
           )
@@ -82,9 +82,9 @@ RSpec.describe Overviews::ProjectCustomFieldSectionsController do
 
     describe "PUT/PATCH #update" do
       it do
-        expect(put(project_custom_field_section_path("my-project", 44)))
+        expect(put(project_custom_field_path("my-project", 44)))
           .to route_to(
-            controller: "overviews/project_custom_field_sections",
+            controller: "overviews/project_custom_fields",
             action: "update",
             project_id: "my-project",
             id: "44"
@@ -92,9 +92,9 @@ RSpec.describe Overviews::ProjectCustomFieldSectionsController do
       end
 
       it do
-        expect(patch("/projects/my-project/project_custom_field_sections/44"))
+        expect(patch("/projects/my-project/project_custom_fields/44"))
           .to route_to(
-            controller: "overviews/project_custom_field_sections",
+            controller: "overviews/project_custom_fields",
             action: "update",
             project_id: "my-project",
             id: "44"

@@ -77,11 +77,11 @@ module Pages
         expect(page).to have_no_css("[data-test-selector='project-custom-field-#{custom_field.id}']")
       end
 
-      def open_edit_dialog_for_section(section)
+      def open_edit_dialog_for_custom_field(custom_field)
         within_project_attributes_sidebar do
-          scroll_to_element(page.find("[data-test-selector='project-custom-field-section-#{section.id}']"))
-          within_custom_field_section_container(section) do
-            page.find("[data-test-selector='project-custom-field-section-edit-button']").click
+          scroll_to_element(page.find("[data-test-selector='project-custom-field-#{custom_field.id}']"))
+          within_custom_field_container(custom_field) do
+            page.find("[data-test-selector='project-custom-field-edit-button-#{custom_field.id}']").click
           end
         end
 
