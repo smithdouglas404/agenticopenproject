@@ -30,7 +30,7 @@
 
 class Document < ApplicationRecord
   enum :kind, {
-    legacy: "legacy",
+    classic: "classic",
     collaborative: "collaborative"
   }
 

@@ -46,7 +46,7 @@ RSpec.describe Document do
   describe "Enums" do
     it do
       expect(subject).to define_enum_for(:kind)
-        .with_values(legacy: "legacy", collaborative: "collaborative")
+        .with_values(classic: "classic", collaborative: "collaborative")
         .backed_by_column_of_type(:string)
     end
   end

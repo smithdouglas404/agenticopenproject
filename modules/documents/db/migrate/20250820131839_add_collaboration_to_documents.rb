@@ -36,7 +36,7 @@ class AddCollaborationToDocuments < ActiveRecord::Migration[8.0]
 
     reversible do |dir|
       dir.up do
-        set_existing_documents_to_legacy_kind
+        set_existing_documents_to_classic_kind
         change_title_string_size limit: 255
       end
     end
@@ -44,10 +44,10 @@ class AddCollaborationToDocuments < ActiveRecord::Migration[8.0]
 
   private
 
-  def set_existing_documents_to_legacy_kind
-    say_with_time "setting existing documents to 'legacy' kind" do
+  def set_existing_documents_to_classic_kind
+    say_with_time "setting existing documents to 'classic' kind" do
       execute <<~SQL.squish
-        UPDATE documents SET kind = 'legacy'
+        UPDATE documents SET kind = 'classic'
       SQL
     end
   end
