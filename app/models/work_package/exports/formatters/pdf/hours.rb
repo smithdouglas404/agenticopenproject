@@ -27,16 +27,17 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-
 module WorkPackage::Exports
   module Formatters
-    class WorkHours < ::Exports::Formatters::Default
-      def self.apply?(name, export_format)
-        %i[estimated_hours remaining_hours].include?(name.to_sym) && export_format == :csv
-      end
+    module PDF
+      class Hours < ::Exports::Formatters::Default
+        def self.apply?(name, export_format)
+          name.to_sym == :spent_hours && export_format == :pdf
+        end
 
-      def format_options
-        { number_format: }
+        def format_value(value, _options)
+          DurationConverter.output(value)
+        end
       end
     end
   end

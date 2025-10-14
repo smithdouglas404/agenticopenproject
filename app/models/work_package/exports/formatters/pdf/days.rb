@@ -29,26 +29,21 @@
 #++
 module WorkPackage::Exports
   module Formatters
-    class CompoundHours < ::Exports::Formatters::Default
-      def self.apply?(name, export_format)
-        name.to_sym.in?(%i[estimated_hours remaining_hours]) && export_format == :pdf
-      end
+    module PDF
+      class Days < ::Exports::Formatters::Default
+        def self.apply?(name, export_format)
+          name.to_sym == :duration && export_format == :pdf
+        end
 
-      def format(work_package, **)
-        hours = format_value(work_package.public_send(attribute))
-        derived_hours = total_prefix(format_value(work_package.public_send(:"derived_#{attribute}")))
+        def format_value(value, _options)
+          formatted_days(value)
+        end
 
-        [hours, derived_hours].compact.join(" ").presence
-      end
+        private
 
-      def format_value(value, _options = nil)
-        DurationConverter.output(value)
-      end
-
-      private
-
-      def total_prefix(value)
-        value && "· Σ #{value}"
+        def formatted_days(value)
+          value.nil? ? "" : "#{value} #{I18n.t('export.units.days')}"
+        end
       end
     end
   end

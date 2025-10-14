@@ -29,21 +29,24 @@
 #++
 module WorkPackage::Exports
   module Formatters
-    class CompoundDoneRatio < ::Exports::Formatters::Default
-      def self.apply?(name, export_format)
-        name.to_sym == :done_ratio && export_format == :pdf
-      end
+    module XLS
+      class Costs < ::Exports::Formatters::Default
+        def self.apply?(name, export_format)
+          %i[material_costs labor_costs overall_costs].include?(name.to_sym) && export_format == :csv
+        end
 
-      def format(work_package, **)
-        derived_done_ratio = work_package.derived_done_ratio
-        derived = derived_done_ratio&.positive? ? " · Σ #{format_value(derived_done_ratio)}" : ""
-        "#{format_value(work_package.done_ratio)}#{derived}"
-      end
+        def format_options
+          { number_format: number_format_string }
+        end
 
-      def format_value(value, _options = {})
-        return "" if value.nil?
+        def number_format_string
+          # [$CUR] makes sure we have an actually working currency format with arbitrary currencies
+          curr = "[$CUR]".gsub "CUR", ERB::Util.h(Setting.costs_currency)
+          format = ERB::Util.h Setting.costs_currency_format
+          number = "#,##0.00"
 
-        "#{value}%"
+          format.gsub("%n", number).gsub("%u", curr)
+        end
       end
     end
   end

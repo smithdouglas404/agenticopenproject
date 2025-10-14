@@ -27,17 +27,17 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-module Projects::Exports
+module WorkPackage::Exports
   module Formatters
-    class Public < ::Exports::Formatters::Default
-      def self.apply?(attribute, export_format)
-        export_format == :pdf && attribute.to_sym == :public
-      end
+    module PDF
+      class Currency < ::Exports::Formatters::Default
+        def self.apply?(name, export_format)
+          %i[material_costs labor_costs overall_costs].include?(name.to_sym) && export_format == :pdf
+        end
 
-      ##
-      # Takes a project and returns yes/no depending on the public attribute
-      def format(project, **)
-        project.public? ? I18n.t(:general_text_Yes) : I18n.t(:general_text_No)
+        def format_value(value, _options)
+          value.nil? || value.zero? ? "" : number_to_currency(value)
+        end
       end
     end
   end

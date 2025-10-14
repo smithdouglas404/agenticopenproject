@@ -29,15 +29,17 @@
 #++
 module Projects::Exports
   module Formatters
-    class Favorited < ::Exports::Formatters::Default
-      def self.apply?(attribute, export_format)
-        export_format == :pdf && attribute.to_sym == :favorited
-      end
+    module PDF
+      class Active < ::Exports::Formatters::Default
+        def self.apply?(attribute, export_format)
+          export_format == :pdf && attribute.to_sym == :active
+        end
 
-      ##
-      # Takes a project and returns yes/no depending on the favorited attribute
-      def format(project, **)
-        project.favorited_by?(User.current) ? I18n.t(:general_text_Yes) : I18n.t(:general_text_No)
+        ##
+        # Takes a project and returns yes/no depending on the active attribute
+        def format(project, **)
+          project.active? ? I18n.t(:general_text_Yes) : I18n.t(:general_text_No)
+        end
       end
     end
   end
