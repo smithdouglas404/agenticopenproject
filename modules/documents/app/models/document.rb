@@ -34,12 +34,9 @@ class Document < ApplicationRecord
     collaborative: "collaborative"
   }
 
-  belongs_to :assigned_to, class_name: "Principal", optional: true
   belongs_to :author, class_name: "User", optional: true
   belongs_to :category, class_name: "DocumentCategory", optional: true
   belongs_to :project
-  belongs_to :responsible, class_name: "Principal", optional: true
-  belongs_to :status, class_name: "DocumentStatus", optional: true
   belongs_to :type, class_name: "DocumentType", optional: true
 
   acts_as_attachable delete_permission: :manage_documents,

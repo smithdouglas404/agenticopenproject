@@ -58,13 +58,5 @@ RSpec.describe Principals::ReplaceReferencesService, "#call", type: :model do
     it_behaves_like "rewritten record",
                     :document,
                     :author_id
-
-    it_behaves_like "rewritten record",
-                    :document,
-                    :assigned_to_id
-
-    it_behaves_like "rewritten record",
-                    :document,
-                    :responsible_id
   end
 end

@@ -30,14 +30,9 @@
 
 class AddCollaborationToDocuments < ActiveRecord::Migration[8.0]
   def change
-    add_column :documents, :content, :text
-    add_column :documents, :due_date, :date
     add_column :documents, :kind, :string
 
     add_reference :documents, :author, foreign_key: { to_table: :users }
-    add_reference :documents, :assigned_to, foreign_key: { to_table: :users }
-    add_reference :documents, :responsible, foreign_key: { to_table: :users }
-    add_reference :documents, :status, foreign_key: { to_table: :document_statuses }
 
     reversible do |dir|
       dir.up do

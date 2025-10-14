@@ -56,9 +56,6 @@ RSpec.describe Document do
     it { is_expected.to belong_to(:category).class_name("DocumentCategory").optional }
     it { is_expected.to belong_to(:project) }
     it { is_expected.to belong_to(:type).class_name("DocumentType").optional }
-    it { is_expected.to belong_to(:status).class_name("DocumentStatus").optional }
-    it { is_expected.to belong_to(:assigned_to).class_name("Principal").optional }
-    it { is_expected.to belong_to(:responsible).class_name("Principal").optional }
   end
 
   describe "Validations" do

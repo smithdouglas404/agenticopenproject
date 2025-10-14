@@ -47,8 +47,6 @@ RSpec.describe Principals::DeleteJob, "Documents", type: :model do
              project:,
              type: document_type,
              status: document_status,
-             assigned_to: principal,
-             responsible: principal,
              author: principal)
     end
 
@@ -57,16 +55,8 @@ RSpec.describe Principals::DeleteJob, "Documents", type: :model do
       job
     end
 
-    it "resets assigned_to to the deleted user" do
-      expect(document.reload.assigned_to).to eql(deleted_user)
-    end
-
     it "resets author to the deleted user" do
       expect(document.reload.author).to eql(deleted_user)
-    end
-
-    it "resets responsible to the deleted user" do
-      expect(document.reload.responsible).to eql(deleted_user)
     end
   end
 end
