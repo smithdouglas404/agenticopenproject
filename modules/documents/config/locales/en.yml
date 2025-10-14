@@ -55,8 +55,6 @@ en:
     index_page:
       name: "Name"
       type: "Type"
-      status: "Status"
-      assignee: "Assignee"
       updated_at: "Last edited"
 
     menu:

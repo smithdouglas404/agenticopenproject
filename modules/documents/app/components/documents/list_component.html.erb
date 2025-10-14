@@ -11,14 +11,6 @@
             render(Primer::Beta::Text.new(font_weight: :semibold)) { I18n.t("documents.index_page.type") }
           end
 
-          grid.with_area(:status, tag: :div, color: :muted, mr: 3, hide: :sm) do
-            render(Primer::Beta::Text.new(font_weight: :semibold)) { I18n.t("documents.index_page.status") }
-          end
-
-          grid.with_area(:assignee, tag: :div, color: :muted, mr: 3, hide: :sm) do
-            render(Primer::Beta::Text.new(font_weight: :semibold)) { I18n.t("documents.index_page.assignee") }
-          end
-
           grid.with_area(:updated_at, tag: :div, color: :muted, hide: :sm) do
             render(Primer::Beta::Text.new(font_weight: :semibold)) { I18n.t("documents.index_page.updated_at") }
           end

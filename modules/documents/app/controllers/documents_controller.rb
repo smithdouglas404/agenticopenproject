@@ -43,7 +43,7 @@ class DocumentsController < ApplicationController
   def index
     if OpenProject::FeatureDecisions.collaborative_documents_active?
       @documents = list_documents_query
-        .includes(:type, :status)
+        .includes(:type)
         .paginate(page: page_param, per_page: per_page_param)
     else
       legacy_index
