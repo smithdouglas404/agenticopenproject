@@ -625,7 +625,7 @@ ru:
           name_label: "Имя токена"
       created_dialog:
         token/api:
-          title: "The API token has been generated"
+          title: "Токен доступа к API сгенерирован"
           warning: "Это единственный раз, когда Вы увидите токен. Убедитесь, что вы сохранили его."
       failed_to_reset_token: "Не удалось сбросить маркер доступа: %{error}"
       failed_to_create_token: "Не удалось создать токен доступа: %{error}"

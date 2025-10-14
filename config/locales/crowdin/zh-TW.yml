@@ -342,8 +342,8 @@ zh-TW:
   concatenation:
     single: "或者"
   danger_dialog:
-    confirmation_live_message_checked: "The button to proceed is now active."
-    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+    confirmation_live_message_checked: "繼續的按鈕現已啟用。"
+    confirmation_live_message_unchecked: "繼續的按鈕現在沒有作用。您需要勾選核取方塊才能繼續。"
   op_dry_validation:
     or: "或"
     errors:

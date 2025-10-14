@@ -763,7 +763,7 @@ ja:
       update_relation: "クリックして関係のタイプを変更"
       show_relations: "関連するタスクを表示"
       add_predecessor: "先行を追加"
-      add_successor: "後継者を加える"
+      add_successor: "後継の要素を加える"
       remove: "関係を削除"
       save: "関係を保存"
       abort: "中止"
@@ -927,7 +927,7 @@ ja:
         overdue: "期限の過ぎたもの"
         summary: "サマリ"
         shared_with_users: "ユーザーと共有"
-        shared_with_me: "私と共有"
+        shared_with_me: "共有された項目"
       jump_marks:
         pagination: "表のページ設定に移動する"
         label_pagination: "ここをクリックすると、ワークパッケージ表をスキップしてページ設定に移動します"
