@@ -62,8 +62,6 @@ RSpec.describe "create users" do
 
   shared_examples_for "successful user creation" do |redirect_to_edit_page: true|
     it "creates the user" do
-      expect_flash(message: "Successful creation.")
-
       new_user = User.order(Arel.sql("id DESC")).first
 
       expect(page).to have_current_path redirect_to_edit_page ? edit_user_path(new_user) : user_path(new_user)
@@ -85,6 +83,7 @@ RSpec.describe "create users" do
 
       perform_enqueued_jobs do
         new_user_page.submit!
+        expect_flash(message: "Successful creation.")
       end
     end
 
@@ -114,29 +113,39 @@ RSpec.describe "create users" do
     end
   end
 
-  context "with external authentication", :js do
+  context "with external authentication" do
     before do
-      new_user_page.visit!
+      visit new_user_page.path
 
+      # Normally, the username field would appear on the page once
+      # ldap_auth_source is set, but as we are acting without javascript, we
+      # first create the user and then update it to set the username.
+      #
+      # We can't use the browser because it makes the spec flaky, and we were
+      # unable to find why.
       new_user_page.fill_in! first_name: "bobfirst",
                              last_name: "boblast",
                              email: "bob@mail.com",
-                             login: "bob",
                              ldap_auth_source: auth_source.name
 
       perform_enqueued_jobs do
         new_user_page.submit!
-        wait_for_network_idle
+        expect_flash(message: "Successful creation.")
+
+        # Fill both "Username" fields on the edit user page: as they have the
+        # same name, if only the first one is filled, then second one would
+        # overwrite the value of the first one.
+        page.all(:field, "Username", visible: :all).each do |field|
+          field.fill_in with: "bob"
+        end
+
+        page.click_button "Save"
+        expect_flash(message: "Successful update.")
       end
     end
 
-    after do
-      # Clear session to avoid that the onboarding tour starts
-      page.execute_script("window.sessionStorage.clear();")
-    end
-
     it_behaves_like "successful user creation" do
-      describe "activation", :js do
+      describe "activation" do
         let(:log_level) { "debug" }
 
         before do
@@ -166,9 +175,10 @@ RSpec.describe "create users" do
             .to(receive(:authenticate).with("bob", "dummy"))
             .and_return({ dn: "cn=bob,ou=users,dc=example,dc=com" })
 
-          fill_in "password", with: "dummy" # accepted by DummyAuthSource
-          click_button "Sign in", type: "submit"
-          wait_for_network_idle
+          within "#content-body" do
+            fill_in "password", with: "dummy" # accepted by DummyAuthSource
+            click_button "Sign in", type: "submit"
+          end
 
           # landed on the 'my page'
           expect(page).to have_text "Welcome to OpenProject, bobfirst boblast"
@@ -193,6 +203,7 @@ RSpec.describe "create users" do
 
         perform_enqueued_jobs do
           new_user_page.submit!
+          expect_flash(message: "Successful creation.")
         end
       end
 
@@ -237,6 +248,7 @@ RSpec.describe "create users" do
 
         perform_enqueued_jobs do
           new_user_page.submit!
+          expect_flash(message: "Successful creation.")
         end
       end
 
