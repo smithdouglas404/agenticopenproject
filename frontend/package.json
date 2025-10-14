@@ -130,7 +130,7 @@
     "chartjs-plugin-datalabels": "^2.2.0",
     "codemirror": "^5.62.0",
     "copy-text-to-clipboard": "^3.2.2",
-    "core-js": "^3.2.1",
+    "core-js": "^3.46.0",
     "crossvent": "^1.5.4",
     "dom-autoscroller": "^2.2.8",
     "dom-plane": "^1.0.2",
