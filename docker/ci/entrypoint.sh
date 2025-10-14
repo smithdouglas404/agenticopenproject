@@ -23,6 +23,15 @@ cleanup() {
 	echo "CLEANUP"
 	rm -rf tmp/cache/parallel*
 
+  # DEBUG: just show the test log for the flaky spec.
+  # By comparing it to local runs, we may learn something...
+  if [ -f "log/test.log" ]; then
+    echo "========== TEST LOG =========="
+    sed -n '/create users with external authentication behaves like successful user creation activation registers the user upon submission/,/create users with external authentication behaves like successful user creation activation registers the user upon submission/p' log/test.log
+    echo "========== /TEST LOG =========="
+  fi
+
+
 	if [ ! $exit_code -eq "0" ]; then
 		echo "ERROR: exit code $exit_code"
 		tail -n 1000 $LOG_FILE
@@ -145,11 +154,6 @@ run_features() {
   # DEBUG: run all feature specs as running only one seems to not trigger the issue (tried only twice)
 	execute "time bundle exec turbo_tests --verbose -n $JOBS --runtime-log spec/support/runtime-logs/turbo_runtime_features.log {,modules/*/}spec/features"
 
-  # DEBUG: just show the test log for the flaky spec.
-  # By comparing it to local runs, we may learn something...
-  echo "========== TEST LOG =========="
-  execute "sed -n '/create users with external authentication behaves like successful user creation activation registers the user upon submission/,/create users with external authentication behaves like successful user creation activation registers the user upon submission/p' log/test.log"
-  echo "========== /TEST LOG =========="
 	cleanup
 }
 
