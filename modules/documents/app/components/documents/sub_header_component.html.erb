@@ -1,0 +1,15 @@
+<%=
+  render(Primer::OpenProject::SubHeader.new) do |subheader|
+    # subheader.with_filter_input
+
+    subheader.with_action_button(
+      scheme: :primary,
+      leading_icon: :plus,
+      label: I18n.t(:label_document_new),
+      tag: :a,
+      href: url_helpers.new_project_document_path(project)
+    ) do
+      I18n.t("activerecord.models.document")
+    end
+  end
+%>
