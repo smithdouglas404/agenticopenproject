@@ -32,26 +32,48 @@ import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service
 import { useIntersection } from 'stimulus-use';
 import BaseController from './base.controller';
 
+/**
+ * LazyPageController manages the complete lifecycle of journal pages in the Activities tab.
+ *
+ * Handles both loading and unloading to implement virtual scrolling:
+ * - Loading: Skeleton → Loaded content when entering viewport
+ * - Unloading: Loaded content → Skeleton when leaving viewport
+ *
+ * This unified controller maintains a single IntersectionObserver per page,
+ * avoiding the overhead of remounting controllers during load/unload cycles.
+ *
+ * Virtual scrolling benefits:
+ * - Keeps DOM size constant (~5-7 pages) regardless of total activities
+ * - Reduces memory usage and improves scroll performance
+ * - Seamlessly reloads content when scrolling back to unloaded pages
+ */
 export default class LazyPageController extends BaseController {
   static values = {
-    url: String,
+    loadPageUrl: String,
+    unloadPageUrl: String,
     page: { type: Number, default: 1 },
+    pages: Number,
     isLoaded: { type: Boolean, default: false },
+    isUnloadable: { type: Boolean, default: false },
     loadDelayMs: { type: Number, default: 300 },
+    unloadDelayMs: { type: Number, default: 3000 },
   };
 
-  declare urlValue:string;
+  declare loadPageUrlValue:string;
+  declare unloadPageUrlValue:string;
   declare pageValue:number;
+  declare pagesValue:number;
   declare isLoadedValue:boolean;
+  declare isUnloadableValue:boolean;
   declare loadDelayMsValue:number;
+  declare unloadDelayMsValue:number;
 
   private turboRequests:TurboRequestsService;
   private stopObserving?:() => void;
   private loadTimeout?:number;
+  private unloadTimeout?:number;
 
   connect() {
-    if (this.isLoadedValue) return;
-
     super.connect();
     void this.initializeTurboRequestService();
     this.startObserving();
@@ -60,25 +82,48 @@ export default class LazyPageController extends BaseController {
   disconnect() {
     super.disconnect();
     this.cancelPendingLoad();
+    this.cancelPendingUnload();
     this.stopObserving?.();
   }
 
   appear() {
-    if (this.isLoadedValue) return;
+    // Always cancel pending unload when page comes into view
+    this.cancelPendingUnload();
 
+    // If not loaded yet, schedule loading
+    if (this.isLoadable) {
+      this.scheduleLoad();
+    }
+  }
+
+  disappear() {
+    // Cancel pending load if element leaves viewport before delay expires
+    this.cancelPendingLoad();
+
+    // If loaded and unloadable, schedule unloading
+    if (this.isLoadedValue && this.isUnloadable) {
+      this.scheduleUnload();
+    }
+  }
+
+  private scheduleLoad() {
     // Delay loading to allow rapid scrolling without triggering loads
     this.loadTimeout = window.setTimeout(() => {
       void this.fetchPageStream()
         .catch((error) => {
-          console.error('Error fetching next page:', error);
-        }).finally(() => {
+          console.error('Error fetching page:', error);
+        })
+        .finally(() => {
           this.isLoadedValue = true;
         });
     }, this.loadDelayMsValue);
   }
 
-  disappear() {
-    this.cancelPendingLoad(); // Cancel load if element leaves viewport before delay expires
+  private scheduleUnload() {
+    // Delay unloading to avoid thrashing during rapid scrolling
+    this.unloadTimeout = window.setTimeout(() => {
+      this.unloadContent();
+    }, this.unloadDelayMsValue);
   }
 
   private startObserving(root = this.scrollableContainer) {
@@ -87,23 +132,30 @@ export default class LazyPageController extends BaseController {
     const [_observe, unobserve] = useIntersection(this, {
       root,
       threshold: 0.05,
-      dispatchEvent: false
+      dispatchEvent: false,
     });
 
     this.stopObserving = unobserve;
   }
 
   private fetchPageStream():Promise<{ html:string, headers:Headers }> {
-    const url = this.preparePageStreamsUrl();
+    const url = this.prepareRequestUrl(this.loadPageUrlValue);
     return this.turboRequests.requestStream(url);
   }
 
-  private preparePageStreamsUrl():string {
-    const baseUrl = window.location.origin;
-    const url = new URL(this.urlValue, baseUrl);
+  private unloadContent() {
+    // Request Turbo Stream to replace loaded content with skeleton
+    const url = this.prepareRequestUrl(this.unloadPageUrlValue);
+    void this.turboRequests.requestStream(url);
+  }
 
-    url.searchParams.set('page', this.pageValue.toString());
+  private prepareRequestUrl(requestUrl:string) {
+    const baseUrl = window.location.origin;
+    const url = new URL(requestUrl, baseUrl);
+
     url.searchParams.set('filter', this.indexOutlet.filterValue);
+    url.searchParams.set('page', this.pageValue.toString());
+    url.searchParams.set('pages', this.pagesValue.toString());
 
     return url.toString();
   }
@@ -118,5 +170,20 @@ export default class LazyPageController extends BaseController {
       window.clearTimeout(this.loadTimeout);
       this.loadTimeout = undefined;
     }
+  }
+
+  private cancelPendingUnload() {
+    if (this.unloadTimeout) {
+      window.clearTimeout(this.unloadTimeout);
+      this.unloadTimeout = undefined;
+    }
+  }
+
+  private get isLoadable() {
+    return !this.isLoadedValue && this.pageValue;
+  }
+
+  private get isUnloadable() {
+    return this.isUnloadableValue && this.pageValue && this.pageValue > 1;
   }
 }

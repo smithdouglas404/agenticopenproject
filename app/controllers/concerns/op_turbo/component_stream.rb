@@ -77,6 +77,12 @@ module OpTurbo
         append_via_turbo_stream(component:, target_component:)
       when :prepend
         prepend_via_turbo_stream(component:, target_component:)
+      when :replace
+        turbo_streams << target_component.insert_as_turbo_stream(
+          component:,
+          view_context:,
+          action: :replace
+        )
       end
     end
 

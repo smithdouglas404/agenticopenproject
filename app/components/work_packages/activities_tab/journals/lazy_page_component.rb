@@ -36,14 +36,11 @@ module WorkPackages
         include OpTurbo::Streamable
         include WorkPackages::ActivitiesTab::StimulusControllers
 
-        def initialize(work_package:, page:)
+        def initialize(work_package:, page:, pages:)
           super
           @work_package = work_package
           @page = page
-        end
-
-        def self.wrapper_key
-          WorkPackages::ActivitiesTab::Journals::PageComponent.wrapper_key
+          @pages = pages
         end
 
         def wrapper_uniq_by
@@ -52,19 +49,36 @@ module WorkPackages
 
         private
 
-        attr_reader :work_package, :page
+        attr_reader :work_package, :page, :pages
 
         def wrapper_data_attributes
           {
             controller: lazy_page_stimulus_controller,
             lazy_page_stimulus_controller("-page-value") => page,
-            lazy_page_stimulus_controller("-url-value") => page_streams_url,
-            lazy_page_stimulus_controller("-is-loaded-value") => false
+            lazy_page_stimulus_controller("-pages-value") => pages,
+            lazy_page_stimulus_controller("-load-page-url-value") => page_streams_url,
+            lazy_page_stimulus_controller("-unload-page-url-value") => unload_page_streams_url,
+            lazy_page_stimulus_controller("-is-loaded-value") => false,
+            lazy_page_stimulus_controller("-is-unloadable-value") => unloadable?
           }
         end
 
         def page_streams_url
           page_streams_work_package_activities_path(work_package, format: :turbo_stream)
+        end
+
+        def unload_page_streams_url
+          unload_page_streams_work_package_activities_path(work_package, format: :turbo_stream)
+        end
+
+        # Determines whether this page component can be unloaded from the DOM.
+        #
+        # Only middle pages are unloadable when there are more than 4 total pages.
+        # This optimizes memory usage while keeping first and last pages accessible.
+        #
+        # @return [Boolean] true if the page can be unloaded, false otherwise
+        def unloadable?
+          pages > 4 && page.in?(2...pages)
         end
       end
     end

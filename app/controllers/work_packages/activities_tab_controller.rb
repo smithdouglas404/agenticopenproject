@@ -65,15 +65,19 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   end
 
   def page_streams
-    replace_via_turbo_stream(
+    insert_via_turbo_stream(
+      target_component: WorkPackages::ActivitiesTab::Journals::LazyPageComponent.new(
+        work_package: @work_package,
+        page: @paginator.page,
+        pages: @paginator.pages
+      ),
       component: WorkPackages::ActivitiesTab::Journals::PageComponent.new(
         journals: @paginated_journals,
         emoji_reactions: wp_journals_emoji_reactions,
         page: @paginator.page,
-        pages: @paginator.pages,
-        filter: @filter,
-        work_package: @work_package
-      )
+        filter: @filter
+      ),
+      action: :replace
     )
 
     respond_with_turbo_streams
@@ -81,13 +85,11 @@ class WorkPackages::ActivitiesTabController < ApplicationController
 
   def unload_page_streams
     page = params[:page].to_i
+    pages = params[:pages].to_i
 
-    replace_via_turbo_stream(
-      component: WorkPackages::ActivitiesTab::Journals::LazyPageComponent.new(
-        work_package: @work_package,
-        page:
-      )
-    )
+    component = WorkPackages::ActivitiesTab::Journals::LazyPageComponent
+      .new(work_package: @work_package, page:, pages:)
+    insert_via_turbo_stream(target_component: component, component:, action: :replace)
 
     respond_with_turbo_streams
   end
