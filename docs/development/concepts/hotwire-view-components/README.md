@@ -225,6 +225,7 @@ TODO: is `turbo: true` required here?
 %>
 ```
 
+Rendering of a cancel button to remove the edition form. The button calls the `cancel_edit` action on the controller. The `cancel_edit` action sends a turbo stream `replace` to replace the journal edit form with the journal view.
 ```ruby
 <%=
   component_wrapper do
