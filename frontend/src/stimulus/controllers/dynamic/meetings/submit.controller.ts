@@ -31,16 +31,13 @@
 import { ApplicationController, useMeta } from 'stimulus-use';
 import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
 import { BeforeunloadController } from '../../beforeunload.controller';
-import { appendCollapsedState } from '../../../helpers/collapsible-helper';
+import { appendCollapsedState } from '../../../helpers/meetings-helpers';
+import { hasUnsavedChanges } from '../../../helpers/meetings-helpers';
 
 export default class extends ApplicationController {
   private turboRequests:TurboRequestsService;
   private beforeUnloadController:BeforeunloadController;
   private boundBeforeUnloadHandler = this.beforeUnloadHandler.bind(this);
-
-  static values = { unsavedChangesConfirmationMessage: String };
-
-  declare unsavedChangesConfirmationMessageValue:string;
 
   static metaNames = ['csrf-token'];
 
@@ -79,9 +76,8 @@ export default class extends ApplicationController {
   }
 
   private handleClick(url:string, method:string):void {
-    if (this.hasUnsavedChanges()) {
-      // eslint-disable-next-line no-alert
-      if (window.confirm(this.unsavedChangesConfirmationMessageValue)) {
+    if (hasUnsavedChanges()) {
+      if (window.confirm(I18n.t('js.text_are_you_sure_to_cancel'))) {
         this.sendRequest(url, method);
       }
     } else {
@@ -89,15 +85,8 @@ export default class extends ApplicationController {
     }
   }
 
-  private hasUnsavedChanges():boolean {
-    const textInputs = Array.from(document.querySelectorAll('input[type="text"], input[type="number"]'));
-    const allTextSaved = textInputs.every((input) => (input as HTMLInputElement).value.trim().length === 0);
-
-    return !allTextSaved || window.OpenProject.pageWasEdited;
-  }
-
   private beforeUnloadHandler(event:BeforeUnloadEvent):void {
-    if (this.hasUnsavedChanges()) {
+    if (hasUnsavedChanges()) {
       event.preventDefault();
     }
   }

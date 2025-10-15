@@ -30,7 +30,7 @@
 
 export function appendCollapsedState(
   target:URLSearchParams | FormData,
-  headerSelector:string = '.CollapsibleHeader',
+  headerSelector = '.CollapsibleHeader',
 ):void {
   const header = document.querySelector(headerSelector);
 
@@ -38,4 +38,11 @@ export function appendCollapsedState(
     const collapsed = header.hasAttribute('data-collapsed');
     target.append('collapsed', collapsed.toString());
   }
+}
+
+export function hasUnsavedChanges():boolean {
+  const textInputs = Array.from(document.querySelectorAll('input[type="text"], input[type="number"]'));
+  const allTextSaved = textInputs.every((input) => (input as HTMLInputElement).value.trim().length === 0);
+
+  return !allTextSaved || window.OpenProject.pageWasEdited;
 }
