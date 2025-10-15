@@ -70,7 +70,22 @@ class WorkPackages::ActivitiesTabController < ApplicationController
         journals: @paginated_journals,
         emoji_reactions: wp_journals_emoji_reactions,
         page: @paginator.page,
-        filter: @filter
+        pages: @paginator.pages,
+        filter: @filter,
+        work_package: @work_package
+      )
+    )
+
+    respond_with_turbo_streams
+  end
+
+  def unload_page_streams
+    page = params[:page].to_i
+
+    replace_via_turbo_stream(
+      component: WorkPackages::ActivitiesTab::Journals::LazyPageComponent.new(
+        work_package: @work_package,
+        page:
       )
     )
 

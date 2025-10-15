@@ -38,6 +38,7 @@ module WorkPackages
       def index_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--index#{suffix}"
       def internal_comment_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--internal-comment#{suffix}"
       def lazy_page_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--lazy-page#{suffix}"
+      def unloadable_page_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--unloadable-page#{suffix}"
       def polling_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--polling#{suffix}"
       def stems_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--stems#{suffix}"
       def quote_comments_stimulus_controller(suffix = nil) = "#{stimulus_controller_namespace}--quote-comment#{suffix}"

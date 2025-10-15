@@ -35,14 +35,17 @@ module WorkPackages
         include OpPrimer::ComponentHelpers
         include OpTurbo::Streamable
         include WorkPackages::ActivitiesTab::SharedHelpers
+        include WorkPackages::ActivitiesTab::StimulusControllers
 
-        def initialize(journals:, emoji_reactions:, page:, filter: :all)
+        def initialize(work_package:, journals:, emoji_reactions:, page:, pages:, filter: :all)
           super
 
+          @work_package = work_package
           @journals = journals
           @emoji_reactions = emoji_reactions
           @filter = filter
           @page = page
+          @pages = pages
         end
 
         def render?
@@ -53,9 +56,32 @@ module WorkPackages
           page
         end
 
+        def wrapper_data_attributes
+          {
+            controller: unloadable_page_stimulus_controller,
+            unloadable_page_stimulus_controller("-page-value") => page,
+            unloadable_page_stimulus_controller("-url-value") => unload_page_streams_url,
+            unloadable_page_stimulus_controller("-is-unloadable-value") => unloadable?
+          }
+        end
+
         private
 
-        attr_reader :journals, :emoji_reactions, :page, :filter
+        attr_reader :work_package, :journals, :emoji_reactions, :page, :pages, :unloadable, :filter
+
+        def unload_page_streams_url
+          unload_page_streams_work_package_activities_path(work_package, format: :turbo_stream)
+        end
+
+        # Determines whether this page component can be unloaded from the DOM.
+        #
+        # Only middle pages are unloadable when there are more than 4 total pages.
+        # This optimizes memory usage while keeping first and last pages accessible.
+        #
+        # @return [Boolean] true if the page can be unloaded, false otherwise
+        def unloadable?
+          pages > 4 && page.in?(2...pages)
+        end
       end
     end
   end

@@ -54,8 +54,10 @@ module WorkPackages
         end
 
         def page_component(page)
-          WorkPackages::ActivitiesTab::Journals::PageComponent
-            .new(journals:, emoji_reactions: wp_journals_grouped_emoji_reactions, page:, filter:)
+          WorkPackages::ActivitiesTab::Journals::PageComponent.new(
+            work_package:, journals:, emoji_reactions: wp_journals_grouped_emoji_reactions,
+            page:, pages: paginator.pages, filter:
+          )
         end
 
         def lazy_page_component(page)
