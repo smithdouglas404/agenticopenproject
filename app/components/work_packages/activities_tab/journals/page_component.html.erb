@@ -1,5 +1,5 @@
 <%=
-  component_wrapper do
+  component_wrapper(data: wrapper_data_attributes) do
     flex_layout do |flex_container|
       journals.each do |record|
         flex_container.with_row do
