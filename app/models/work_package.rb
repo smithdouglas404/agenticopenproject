@@ -274,7 +274,12 @@ class WorkPackage < ApplicationRecord
   end
 
   def to_s
-    "#{type.name unless type.is_standard} ##{id}: #{subject}"
+    infoline(show_standard_type: false)
+  end
+
+  def infoline(show_standard_type: true)
+    type_name = (show_standard_type || !type.is_standard) ? type.name : ""
+    "#{type_name} ##{id}: #{subject}"
   end
 
   # Return true if the work_package is closed, otherwise false

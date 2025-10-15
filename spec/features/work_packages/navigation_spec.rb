@@ -36,9 +36,7 @@ RSpec.describe "Work package navigation", :js, :selenium do
   let(:work_package) { build(:work_package, project:) }
   let(:global_html_title) { Components::HtmlTitle.new }
   let(:project_html_title) { Components::HtmlTitle.new project }
-  let(:wp_title_segment) do
-    "#{work_package.type.name}: #{work_package.subject} (##{work_package.id})"
-  end
+  let(:wp_title_segment) { work_package.infoline }
 
   let!(:query) do
     query = build(:query, user:, project:)
@@ -79,7 +77,8 @@ RSpec.describe "Work package navigation", :js, :selenium do
 
     full_work_package.expect_subject
     full_work_package.expect_current_path
-    global_html_title.expect_first_segment "#{wp_title_segment} | Work Packages"
+
+    global_html_title.expect_first_segment "#{wp_title_segment} | Some project"
 
     # deep link work package details pane
 
@@ -124,17 +123,17 @@ RSpec.describe "Work package navigation", :js, :selenium do
 
     full_work_package.expect_subject
     expect(page).to have_current_path project_work_package_path(project, work_package, "activity")
-    project_html_title.expect_first_segment "#{wp_title_segment} | Work Packages"
+    project_html_title.expect_first_segment wp_title_segment
 
     # Switch tabs
     full_work_package.switch_to_tab tab: :relations
     expect(page).to have_current_path project_work_package_path(project, work_package, "relations")
-    project_html_title.expect_first_segment "#{wp_title_segment} | Work Packages"
+    project_html_title.expect_first_segment wp_title_segment
 
     # Back to split screen using the button
     full_work_package.go_back
     global_work_packages.expect_work_package_listed(work_package)
-    expect(page).to have_current_path project_work_packages_path(project) + "/details/#{work_package.id}/relations"
+    expect(page).to have_current_path project_work_packages_path(project) + "/details/#{work_package.id}/overview"
 
     # Link to full screen from index
     global_work_packages.open_full_screen_by_link(work_package)

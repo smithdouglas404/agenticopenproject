@@ -195,9 +195,6 @@ export abstract class WorkPackageSingleViewBase extends UntilDestroyedMixin {
     // Set authorisation data
     this.authorisationService.initModelAuth('work_package', this.workPackage.$links);
 
-    // Push the current title
-    this.titleService.setFirstPart(this.workPackage.subjectWithType(-1));
-
     // Preselect this work package for future list operations
     this.showStaticPagePath = this.PathHelper.workPackagePath(this.workPackageId);
 

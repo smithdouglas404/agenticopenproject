@@ -102,16 +102,10 @@ export class WorkPackageSplitViewComponent extends WorkPackageSingleViewBase imp
     this.observeWorkPackage();
 
     const wpId = (this.$state.params.workPackageId || this.workPackageId) as string;
-    const focusedWP = this.wpTableFocus.focusedWorkPackage;
+    this.wpTableFocus.updateFocus(wpId, false);
 
-    if (!focusedWP) {
-      // Focus on the work package if we're the first route
-      const isFirstRoute = this.firstRoute.name === `${this.baseRoute}.details.overview`;
-      const isSameID = this.firstRoute.params && wpId === this.firstRoute.params.workPackageI;
-      this.wpTableFocus.updateFocus(wpId, (isFirstRoute && isSameID));
-    } else {
-      this.wpTableFocus.updateFocus(wpId, false);
-    }
+    // Push the current title
+    this.titleService.setFirstPart(this.workPackage.subjectWithType(-1));
 
     if (this.wpTableSelection.isEmpty) {
       this.wpTableSelection.setRowState(wpId, true);
