@@ -22,11 +22,15 @@ The approach below is meant to be a thin abstraction layer on top of Hotwire's T
 - Controllers include OpTurbo::ComponentStream module
 - Provides methods for turbo-stream operations:
   - `update_via_turbo_stream`
-  - `append_via_turbo_stream`
-  - `prepend_via_turbo_stream`
   - `replace_via_turbo_stream`
   - `remove_via_turbo_stream`
+  - `modify_via_turbo_stream`
+  - `append_via_turbo_stream`
+  - `prepend_via_turbo_stream`
+  - `add_before_via_turbo_stream`
+  - `render_error_flash_message_via_turbo_stream`
   - `update_flash_message_via_turbo_stream`
+  - `scroll_into_view_via_turbo_stream`
 - Uses `respond_with_turbo_streams` to handle responses
 
 ## Example
