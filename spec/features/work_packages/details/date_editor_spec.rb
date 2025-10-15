@@ -494,6 +494,7 @@ RSpec.describe "date inplace editor", :js, :selenium, with_settings: { date_form
           datepicker.expect_working_days_only true
 
           datepicker.toggle_working_days_only
+          datepicker.wait_for_preview_update
           datepicker.expect_working_days_only false
 
           # Reset "working days only" when switching back to automatic scheduling
