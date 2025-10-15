@@ -395,20 +395,18 @@ RSpec.describe "new work package", :js do
     let(:user) { create(:user, member_with_roles: { project => role }) }
     let(:wp_page) { Pages::Page.new }
 
-    let(:paths) do
-      [
-        new_work_package_path,
-        new_split_work_packages_path,
-        new_project_work_packages_path(project),
-        new_split_project_work_packages_path(project)
-      ]
-    end
-
     it "shows a 403 error on creation paths" do
-      paths.each do |path|
-        visit path
-        wp_page.expect_toast(type: :error, message: I18n.t("api_v3.errors.code_403"))
-      end
+      visit new_work_package_path
+      wp_page.expect_flash(type: :error, message: I18n.t(:notice_not_authorized))
+
+      visit new_project_work_packages_path(project)
+      wp_page.expect_flash(type: :error, message: I18n.t(:notice_not_authorized))
+
+      visit new_split_work_packages_path
+      wp_page.expect_toast(type: :error, message: I18n.t("api_v3.errors.code_403"))
+
+      visit new_split_project_work_packages_path(project)
+      wp_page.expect_toast(type: :error, message: I18n.t("api_v3.errors.code_403"))
     end
   end
 
