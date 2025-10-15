@@ -112,7 +112,7 @@ with the following template:
 %>
 ```
 
-With this setup, we can creat turbo-stream updates in a rails controller quite easily:
+With this setup, turbo-stream updates can be sent from a rails controller:
 ```ruby
 class JournalController < ApplicationController
   include OpTurbo::ComponentStream # include this module!
