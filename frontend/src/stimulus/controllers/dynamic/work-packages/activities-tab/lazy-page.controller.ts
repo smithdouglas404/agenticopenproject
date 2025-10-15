@@ -40,7 +40,7 @@ export default class LazyPageController extends BaseController {
     insertTargetId: String,
     page: { type: Number, default: 1 },
     isLoaded: { type: Boolean, default: false },
-    loadDelayMs: { type: Number, default: 75 },
+    loadDelayMs: { type: Number, default: 300 },
   };
 
   declare urlValue:string;
