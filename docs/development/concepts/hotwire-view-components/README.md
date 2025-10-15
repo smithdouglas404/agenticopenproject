@@ -122,7 +122,7 @@ class JournalController < ApplicationController
   def update
     journal = Journal.find(params[:id])
 
-    journal.update(journal_params) # in real life this is done through a service obviosuly ;)
+    journal.update(journal_params) # in real life this would be done through a service obviously ;)
 
     # update the journal show component
     update_via_turbo_stream(
