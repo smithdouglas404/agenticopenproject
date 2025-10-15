@@ -76,13 +76,15 @@ module Users::Invitation::PrincipalStep
         end
       end
 
-      f.text_area(
-        name: :message,
-        label: I18n.t("users.invite_user_modal.message.label"),
-        caption: I18n.t("users.invite_user_modal.message.description"),
-        rows: 5,
-        style: "resize: none"
-      )
+      if model.principal_type != "PlaceholderUser"
+        f.text_area(
+          name: :message,
+          label: I18n.t("users.invite_user_modal.message.label"),
+          caption: I18n.t("users.invite_user_modal.message.description"),
+          rows: 5,
+          style: "resize: none"
+        )
+      end
     end
 
     def name_label
