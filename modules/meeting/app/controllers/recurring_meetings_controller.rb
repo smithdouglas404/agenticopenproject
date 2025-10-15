@@ -253,7 +253,7 @@ class RecurringMeetingsController < ApplicationController
       .participants
       .invited
       .find_each do |participant|
-      MeetingSeriesMailer.template_completed(
+      MeetingSeriesMailer.invited(
         @recurring_meeting,
         participant.user,
         User.current

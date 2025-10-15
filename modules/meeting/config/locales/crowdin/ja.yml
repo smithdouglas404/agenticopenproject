@@ -212,7 +212,7 @@ ja:
       open_my_meetings_link: "自分のミーティングに移動"
       series:
         title: "[%{project_name}] ミーティングシリーズ '%{title}'"
-        summary: "%{actor} は新しいミーティングシリーズ '%{title}' を立ち上げた"
+        summary: "%{actor} has invited you to a new meeting series '%{title}'"
       series_updated:
         title: "[%{project_name}]の一連の会議 「%{title}」が更新されました"
         summary: "Meeting series '%{title}' has been updated by %{actor}"

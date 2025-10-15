@@ -212,7 +212,7 @@ zh-TW:
       open_my_meetings_link: "前往我的會議"
       series:
         title: "[%{project_name}] 會議系列 '%{title}'"
-        summary: "%{actor} 已設立新的會議系列 '%{title}'"
+        summary: "%{actor} has invited you to a new meeting series '%{title}'"
       series_updated:
         title: "[%{project_name}] 會議系列 '%{title}' 已更新"
         summary: "會議系列 '%{title}' 已由 %{actor}更新"
