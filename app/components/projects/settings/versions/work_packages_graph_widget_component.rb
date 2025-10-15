@@ -35,7 +35,7 @@ module Projects
         option :version
 
         def title
-          I18n.t(:label_work_package_tracking)
+          I18n.t("projects.settings.versions.work_packages_graph")
         end
 
         def call
