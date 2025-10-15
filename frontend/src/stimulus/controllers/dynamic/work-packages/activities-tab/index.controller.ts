@@ -29,8 +29,6 @@
  */
 
 import { Controller } from '@hotwired/stimulus';
-import type { TurboBeforeStreamRenderEvent } from 'core-typings/turbo';
-import { DomHelpers } from './services/dom_helpers';
 import { ViewPortService } from './services/view-port-service';
 
 export default class IndexController extends Controller<HTMLElement> {
@@ -40,7 +38,6 @@ export default class IndexController extends Controller<HTMLElement> {
     sorting: String,
     userId: Number,
     workPackageId: Number,
-    lazyPageTargetPrefix: { type: String, default: 'work-packages-activities-tab-journals-page-component' },
   };
 
   declare filterValue:string;
@@ -48,26 +45,21 @@ export default class IndexController extends Controller<HTMLElement> {
   declare sortingValue:string;
   declare userIdValue:number;
   declare workPackageIdValue:number;
-  declare lazyPageTargetPrefixValue:string;
 
   static targets = ['journalsContainer'];
   declare readonly journalsContainerTarget:HTMLElement;
   declare readonly hasJournalsContainerTarget:boolean;
 
   viewPortService:ViewPortService;
-  private abortController = new AbortController();
-  private lazyPageStreamHandler?:(_event:TurboBeforeStreamRenderEvent) => void;
 
   connect() {
     this.viewPortService = new ViewPortService(this.notificationCenterPathNameValue);
 
-    this.setupLazyPageStreamHandler();
     this.markAsConnected();
     this.setCssClasses();
   }
 
   disconnect() {
-    this.tearDownLazyPageStreamHandler();
     this.markAsDisconnected();
   }
 
@@ -116,40 +108,5 @@ export default class IndexController extends Controller<HTMLElement> {
     if (this.viewPortService.isWithinSplitScreen()) {
       this.element.classList.add('work-packages-activities-tab-index-component--within-split-screen');
     }
-  }
-
-  private setupLazyPageStreamHandler() {
-    if (this.lazyPageStreamHandler) return;
-
-    const { signal } = this.abortController;
-
-    this.lazyPageStreamHandler = (event:TurboBeforeStreamRenderEvent) => {
-      const stream = event.detail.newStream;
-
-      // Check if this stream is for any lazy page in this activity tab
-      if (!stream.target.includes(this.lazyPageTargetPrefixValue)) {
-        return; // Not a lazy page stream, let Turbo handle it
-      }
-
-      event.preventDefault();
-
-      const scrollContainer = this.viewPortService.scrollableContainer;
-      if (scrollContainer) {
-        const isPrepending = this.sortingAscending;
-        void DomHelpers.keepScroll(scrollContainer, isPrepending, () => {
-          event.detail.render(stream);
-          return Promise.resolve();
-        });
-      } else {
-        event.detail.render(stream);
-      }
-    };
-
-    document.addEventListener('turbo:before-stream-render', this.lazyPageStreamHandler as EventListener, { signal });
-  }
-
-  private tearDownLazyPageStreamHandler() {
-    this.abortController.abort();
-    if (this.lazyPageStreamHandler) this.lazyPageStreamHandler = undefined;
   }
 }

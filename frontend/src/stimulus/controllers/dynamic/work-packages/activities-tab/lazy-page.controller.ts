@@ -35,14 +35,12 @@ import BaseController from './base.controller';
 export default class LazyPageController extends BaseController {
   static values = {
     url: String,
-    insertTargetId: String,
     page: { type: Number, default: 1 },
     isLoaded: { type: Boolean, default: false },
     loadDelayMs: { type: Number, default: 300 },
   };
 
   declare urlValue:string;
-  declare insertTargetIdValue:string;
   declare pageValue:number;
   declare isLoadedValue:boolean;
   declare loadDelayMsValue:number;
