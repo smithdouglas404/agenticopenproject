@@ -234,9 +234,6 @@ Rendering of a cancel button to remove the edition form. The button calls the `c
   component_wrapper do
     # ...  
     render(Primer::Beta::Button.new(
-      scheme: :secondary,
-      size: :medium,
-      tag: :a,
       href: cancel_edit_journal_path(journal.id),
       data: { turbo: true, turbo_stream: true } # add this!
     )) do
