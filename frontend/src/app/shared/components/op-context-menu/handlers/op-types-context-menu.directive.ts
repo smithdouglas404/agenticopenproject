@@ -41,6 +41,7 @@ import { Highlighting } from 'core-app/features/work-packages/components/wp-fast
 import { TypeResource } from 'core-app/features/hal/resources/type-resource';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
+import { extendSearchParams } from 'core-stimulus/helpers/url-helpers';
 
 @Directive({
   selector: '[opTypesCreateDropdown]',
@@ -120,9 +121,10 @@ export class OpTypesContextMenuDirective extends OpContextMenuTrigger {
 
           this.$state.go(this.stateName, { type: type.id });
         } else {
-          const link = new URL(`${window.location.origin}${this.pathHelper.projectWorkPackageNewPath(this.currentProject.id!)}`);
-
-          window.location.href = link.href + window.location.search + `&type=${type.id}`;
+          window.location.href = extendSearchParams(
+            this.pathHelper.projectWorkPackageNewPath(this.currentProject.id!),
+            { type: type.id! },
+          );
         }
         return true;
       },

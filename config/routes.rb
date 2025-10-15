@@ -401,7 +401,7 @@ Rails.application.routes.draw do
           constraints: { id: /\d+/, state: /(?!(shares|copy|dialog)).+/ }
 
       # states managed by client-side routing on work_package#index
-      get "(/*state)" => "work_packages#index", on: :collection, as: "", constraints: { state: /(?!(dialog)).+/ }
+      get "(/*state)" => "work_packages#index", on: :collection, as: "", constraints: { state: /(?!(dialog|new)).+/ }
 
       get "/create_new" => "work_packages#index", on: :collection, as: "new_split"
     end
