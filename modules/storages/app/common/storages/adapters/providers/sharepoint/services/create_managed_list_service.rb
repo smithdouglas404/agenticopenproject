@@ -64,7 +64,7 @@ module Storages
 
             def auth_strategy = Registry["sharepoint.authentication.userless"].call
 
-            def get_drive_id(name)
+            def fetch_drive_info(name)
               error "Retrieving drive_id for the #{name} document library as it already exists"
               files_input = Input::Files.build(folder: "/").value_or { return add_validation_error(it) }
 
@@ -76,7 +76,7 @@ module Storages
             end
 
             def handle_failure(input_data, error)
-              return get_drive_id(input_data.name) if error.code == :conflict
+              return fetch_drive_info(input_data.name) if error.code == :conflict
 
               error "Something went wrong: #{error.inspect}"
               add_error(:base, error)
