@@ -92,6 +92,10 @@ module OpTurbo
       turbo_streams << target_component.insert_as_turbo_stream(component:, view_context:, action: :before)
     end
 
+    def replace_target_via_turbo_stream(component:, target_component:)
+      turbo_streams << target_component.insert_as_turbo_stream(component:, view_context:, action: :replace)
+    end
+
     def render_success_flash_message_via_turbo_stream(**)
       render_flash_message_via_turbo_stream(**, scheme: :success)
     end
@@ -117,6 +121,14 @@ module OpTurbo
       turbo_streams << OpTurbo::StreamComponent
         .new(action: :scroll_into_view, target:, behavior:, block:)
         .render_in(view_context)
+    end
+
+    def set_dataset_attributes_via_turbo_stream(target, **attributes)
+      attributes.each do |attribute, value|
+        turbo_streams << OpTurbo::StreamComponent
+          .new(action: :set_dataset_attribute, target:, attribute:, value:)
+          .render_in(view_context)
+      end
     end
 
     def add_caption_to_input_element_via_turbo_stream(target, caption:, clean_other_captions: true)

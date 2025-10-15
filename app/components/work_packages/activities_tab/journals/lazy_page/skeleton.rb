@@ -31,23 +31,13 @@
 module WorkPackages
   module ActivitiesTab
     module Journals
-      class PageComponent < ApplicationComponent
-        include OpPrimer::ComponentHelpers
+      class LazyPage::Skeleton < ApplicationComponent
         include OpTurbo::Streamable
-        include WorkPackages::ActivitiesTab::SharedHelpers
-        include WorkPackages::ActivitiesTab::StimulusControllers
+        include OpPrimer::ComponentHelpers
 
-        def initialize(journals:, emoji_reactions:, page:, filter: :all)
+        def initialize(page:)
           super
-
-          @journals = journals
-          @emoji_reactions = emoji_reactions
-          @filter = filter
           @page = page
-        end
-
-        def render?
-          journals.any?
         end
 
         def wrapper_uniq_by
@@ -56,7 +46,7 @@ module WorkPackages
 
         private
 
-        attr_reader :journals, :emoji_reactions, :page, :filter
+        attr_reader :page
       end
     end
   end

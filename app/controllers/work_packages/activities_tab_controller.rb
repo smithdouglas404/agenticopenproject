@@ -65,14 +65,22 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   end
 
   def page_streams
-    replace_via_turbo_stream(
+    replace_target_via_turbo_stream(
+      target_component: WorkPackages::ActivitiesTab::Journals::LazyPage::Skeleton.new(page: @paginator.page),
       component: WorkPackages::ActivitiesTab::Journals::PageComponent.new(
         journals: @paginated_journals,
         emoji_reactions: wp_journals_emoji_reactions,
         page: @paginator.page,
-        pages: @paginator.pages,
-        filter: @filter,
-        work_package: @work_package
+        filter: @filter
+      )
+    )
+
+    lazy_page_component = WorkPackages::ActivitiesTab::Journals::LazyPageComponent
+    set_dataset_attributes_via_turbo_stream(
+      lazy_page_component.wrapper_key_uniq_by(@paginator.page),
+      lazy_page_stimulus_controller("-is-loaded-value") => true,
+      lazy_page_stimulus_controller("-is-unloadable-value") => lazy_page_component.unloadable?(
+        @paginator.page, @paginator.pages
       )
     )
 
@@ -82,12 +90,24 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   def unload_page_streams
     page = params[:page].to_i
 
-    replace_via_turbo_stream(
-      component: WorkPackages::ActivitiesTab::Journals::LazyPageComponent.new(
-        work_package: @work_package,
-        page:
+    if page > 1
+      replace_target_via_turbo_stream(
+        target_component: WorkPackages::ActivitiesTab::Journals::PageComponent.new(
+          journals: Journal.none,
+          emoji_reactions: {},
+          page:
+        ),
+        component: WorkPackages::ActivitiesTab::Journals::LazyPage::Skeleton.new(page:)
       )
-    )
+
+      set_dataset_attributes_via_turbo_stream(
+        WorkPackages::ActivitiesTab::Journals::LazyPageComponent.wrapper_key_uniq_by(page),
+        lazy_page_stimulus_controller("-is-loaded-value") => false,
+        lazy_page_stimulus_controller("-is-unloadable-value") => false
+      )
+    else
+      @turbo_status = :bad_request
+    end
 
     respond_with_turbo_streams
   end

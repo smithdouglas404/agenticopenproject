@@ -54,14 +54,13 @@ module WorkPackages
         end
 
         def page_component(page)
-          WorkPackages::ActivitiesTab::Journals::PageComponent.new(
-            work_package:, journals:, emoji_reactions: wp_journals_grouped_emoji_reactions,
-            page:, pages: paginator.pages, filter:
-          )
+          WorkPackages::ActivitiesTab::Journals::PageComponent
+            .new(journals:, emoji_reactions: wp_journals_grouped_emoji_reactions, page:, filter:)
         end
 
         def lazy_page_component(page)
-          WorkPackages::ActivitiesTab::Journals::LazyPageComponent.new(work_package:, page:)
+          WorkPackages::ActivitiesTab::Journals::LazyPageComponent
+            .new(work_package:, page:, pages: paginator.pages)
         end
 
         def self.insert_target_modifier_id = "#{wrapper_key}-pages"
