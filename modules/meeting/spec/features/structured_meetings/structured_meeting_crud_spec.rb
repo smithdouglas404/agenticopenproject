@@ -437,6 +437,19 @@ RSpec.describe "Meetings CRUD",
 
         second_section = MeetingSection.find_by!(title: "Second section")
 
+        # try to add an item to the latest section
+        show_page.add_agenda_item(save: false) do
+          fill_in "Title", with: "First item"
+          fill_in "Duration", with: "25"
+        end
+
+        # a confirmation prevents losing unsaved edit state when reordering sections
+        dismiss_confirm do
+          show_page.select_section_action(second_section, "Move to top")
+        end
+
+        click_on "Cancel"
+
         # remove the second section
         show_page.remove_section second_section
 
