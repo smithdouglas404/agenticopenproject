@@ -19,8 +19,7 @@ The approach below is meant to be a thin abstraction layer on top of Hotwire's T
 - Can specify insert targets for append/prepend operations
 
 **Controller Integration**
-- Controllers include OpTurbo::ComponentStream module
-- Provides methods for turbo-stream operations:
+- Controllers must include `OpTurbo::ComponentStream` module, which provides methods for turbo-stream operations:
   - `update_via_turbo_stream`
   - `replace_via_turbo_stream`
   - `remove_via_turbo_stream`
