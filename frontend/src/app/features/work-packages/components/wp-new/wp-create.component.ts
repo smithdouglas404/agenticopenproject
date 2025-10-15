@@ -124,11 +124,6 @@ export class WorkPackageCreateComponent extends UntilDestroyedMixin implements O
     super.ngOnDestroy();
   }
 
-  public switchToFullscreen() {
-    const link = this.stateParams.projectPath ? this.pathHelper.projectWorkPackageNewPath(this.stateParams.projectPath) : this.pathHelper.workPackageNewPath();
-    window.location.href = link + window.location.search;
-  }
-
   public onSaved(params:{ savedResource:WorkPackageResource, isInitial:boolean }) {
     const { savedResource, isInitial } = params;
 

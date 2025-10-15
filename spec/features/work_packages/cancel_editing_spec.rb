@@ -135,35 +135,6 @@ RSpec.describe "Cancel editing work package", :js, :selenium do
     end
   end
 
-  it "allows to move from split to full screen in edit mode" do
-    # Start creating on split view
-    expect_active_edit(new_split_work_packages_path)
-
-    find_by_id("wp-new-inline-edit--field-subject").set "foobar"
-
-    # Expect editing works when moving to full screen
-    find(".work-packages-show-view-button").click
-
-    expect(wp_page).not_to have_alert_dialog
-    expect(page).to have_css("#wp-new-inline-edit--field-subject")
-    expect_subject("foobar")
-
-    # Moving back also works
-    page.execute_script("window.history.back()")
-
-    expect(wp_page).not_to have_alert_dialog
-    expect(page).to have_css("#wp-new-inline-edit--field-subject")
-    expect_subject("foobar")
-
-    # Cancel edition
-    find_by_id("work-packages--edit-actions-cancel").click
-    expect(wp_page).not_to have_alert_dialog
-
-    # Visiting another page does not create alert
-    find(".op-logo--link").click
-    expect(wp_page).not_to have_alert_dialog
-  end
-
   it "correctly cancels setting the back route (Regression #30714)" do
     wp_page = Pages::FullWorkPackage.new work_package
     wp_page.visit!

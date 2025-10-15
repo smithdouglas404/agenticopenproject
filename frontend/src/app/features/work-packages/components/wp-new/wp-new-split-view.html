@@ -9,12 +9,6 @@
       <div class="work-packages--details-content -create-mode">
         <div class="work-packages--new-details-header">
           <wp-type-status [workPackage]="newWorkPackage" />
-          <div class="wp--details--switch-fullscreen-wrapper">
-            <a (click)="switchToFullscreen()"
-              class="work-packages-show-view-button wp--details--switch-fullscreen ">
-              <span class="icon-context icon-to-fullscreen"></span>
-            </a>
-          </div>
         </div>
         <wp-single-view [workPackage]="newWorkPackage"
           [showProject]="copying" />

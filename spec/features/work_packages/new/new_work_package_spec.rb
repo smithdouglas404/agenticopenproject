@@ -495,21 +495,5 @@ RSpec.describe "new work package", :js do
 
       expect(split_create_page).to have_test_selector("op-wp-breadcrumb", text: "Parent:\n#{parent.subject}")
     end
-
-    it "can navigate to the fullscreen page (Regression #49565)" do
-      work_packages_page.visit_index
-
-      context_menu.open_for(parent)
-      context_menu.choose("Create new child")
-
-      subject_field = split_create_page.edit_field(:subject)
-      subject_field.set_value "My subtask"
-
-      find(".work-packages-show-view-button").click
-
-      expect(split_create_page).not_to have_alert_dialog
-      subject_field = wp_page_create.edit_field(:subject)
-      subject_field.expect_value "My subtask"
-    end
   end
 end
