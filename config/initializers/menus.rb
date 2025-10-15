@@ -45,7 +45,9 @@ Redmine::MenuManager.map :top_menu do |menu|
   menu.push :activity,
             { controller: "/activities", action: "index" },
             context: :modules,
-            if: Proc.new { User.current.logged? || !Setting.login_required? },
+            if: Proc.new {
+              Project.visible.active.has_module(:activity).present? && (User.current.logged? || !Setting.login_required?)
+            },
             icon: "history"
 
   menu.push :work_packages,
@@ -55,7 +57,8 @@ Redmine::MenuManager.map :top_menu do |menu|
             icon: "op-view-list",
             if: ->(_) {
               (User.current.logged? || !Setting.login_required?) &&
-                User.current.allowed_in_any_work_package?(:view_work_packages)
+                User.current.allowed_in_any_work_package?(:view_work_packages) &&
+                Project.visible.active.has_module(:work_package_tracking).present?
             }
   menu.push :news,
             { controller: "/news", project_id: nil, action: "index" },
@@ -64,7 +67,8 @@ Redmine::MenuManager.map :top_menu do |menu|
             icon: "megaphone",
             if: ->(_) {
               (User.current.logged? || !Setting.login_required?) &&
-                User.current.allowed_in_any_project?(:view_news)
+                User.current.allowed_in_any_project?(:view_news) &&
+                Project.visible.active.has_module(:news).present?
             }
 
   menu.push :help,
@@ -186,6 +190,9 @@ Redmine::MenuManager.map :global_menu do |menu|
   # Activity
   menu.push :activity,
             { controller: "/activities", action: "index" },
+            if: Proc.new {
+              Project.visible.active.has_module(:activity).present? && (User.current.logged? || !Setting.login_required?)
+            },
             icon: "history",
             after: :projects
 
@@ -214,7 +221,8 @@ Redmine::MenuManager.map :global_menu do |menu|
             after: :boards,
             if: ->(_) {
               (User.current.logged? || !Setting.login_required?) &&
-                User.current.allowed_in_any_project?(:view_news)
+                User.current.allowed_in_any_project?(:view_news) &&
+                Project.visible.active.has_module(:news).present?
             }
 end
 
