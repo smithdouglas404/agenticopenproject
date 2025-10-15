@@ -124,12 +124,14 @@ module MeetingAgendaItems
 
     def add_outcome_action_item(menu)
       menu.with_item(label: t("label_agenda_item_add_outcome"),
-                     href: new_meeting_outcome_path(@meeting_agenda_item.meeting,
-                                                    meeting_agenda_item_id: @meeting_agenda_item&.id,
-                                                    current_occurrence: @current_occurrence),
-                     content_arguments: {
-                       data: { "turbo-stream": true }
-                     }) do |item|
+                     tag: :button,
+                     content_arguments: { data: {
+                       action: "click->meetings--submit#intercept",
+                       href: new_meeting_outcome_path(@meeting_agenda_item.meeting,
+                                                      meeting_agenda_item_id: @meeting_agenda_item&.id,
+                                                      current_occurrence: @current_occurrence),
+                       method: "GET"
+                     } }) do |item|
         item.with_leading_visual_icon(icon: :plus)
       end
     end
