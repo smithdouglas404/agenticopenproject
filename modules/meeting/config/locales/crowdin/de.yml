@@ -217,7 +217,7 @@ de:
       open_my_meetings_link: "Meine Besprechungen anzeigen"
       series:
         title: "[%{project_name}] Terminserie '%{title}'"
-        summary: "%{actor} hat eine neue Terminserie '%{title}' eingerichtet"
+        summary: "%{actor} has invited you to a new meeting series '%{title}'"
       series_updated:
         title: "[%{project_name}] Terminserie '%{title}' wurde aktualisiert"
         summary: "Die Terminserie '%{title}' wurde von %{actor} aktualisiert"

@@ -212,7 +212,7 @@ ko:
       open_my_meetings_link: "내 미팅으로 이동"
       series:
         title: "[%{project_name}] 미팅 시리즈 '%{title}'"
-        summary: "%{actor} 님이 새로운 미팅 시리즈 '%{title}'을(를) 설정했습니다"
+        summary: "%{actor} has invited you to a new meeting series '%{title}'"
       series_updated:
         title: "[%{project_name}] 미팅 시리즈 '%{title}'이(가) 업데이트되었습니다"
         summary: "'%{title}' 미팅 시리즈를 %{actor} 님이 업데이트했습니다"

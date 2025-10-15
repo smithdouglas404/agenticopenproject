@@ -227,7 +227,7 @@ uk:
       open_my_meetings_link: "Перейдіть до Моїх нарад"
       series:
         title: "[%{project_name}] – серія нарад «%{title}»"
-        summary: "%{actor} створив(-ла) нову серію нарад «%{title}»"
+        summary: "%{actor} has invited you to a new meeting series '%{title}'"
       series_updated:
         title: "[%{project_name}]: серію нарад «%{title}» оновлено"
         summary: "Серію нарад «%{title}» оновив(-ла) %{actor}"

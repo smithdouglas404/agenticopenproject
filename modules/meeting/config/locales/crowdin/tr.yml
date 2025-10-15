@@ -217,7 +217,7 @@ tr:
       open_my_meetings_link: "Toplantılarıma git"
       series:
         title: "[%{project_name}] Toplantı serisi '%{title}'"
-        summary: "%{actor} yeni bir toplantı serisi başlattı '%{title}'"
+        summary: "%{actor} has invited you to a new meeting series '%{title}'"
       series_updated:
         title: "[%{project_name}] Toplantı serisi '%{title}' güncellendi"
         summary: "'%{title}' toplantı serisi %{actor} tarafından güncellendi"

@@ -227,7 +227,7 @@ ru:
       open_my_meetings_link: "Перейти к списку моих совещаний"
       series:
         title: "[%{project_name}] Серия совещаний '%{title}'"
-        summary: "%{actor} создал новую серию совещаний '%{title}'"
+        summary: "%{actor} has invited you to a new meeting series '%{title}'"
       series_updated:
         title: "[%{project_name}] Серия встреч '%{title}' была обновлена"
         summary: "Серия совещаний '%{title}' была обновлена пользователем %{actor}"

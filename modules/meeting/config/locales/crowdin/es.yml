@@ -217,7 +217,7 @@ es:
       open_my_meetings_link: "Ir a Mis reuniones"
       series:
         title: "[%{project_name}] Serie de reuniones «%{title}»"
-        summary: "%{actor} ha creado una nueva serie de reuniones «%{title}»"
+        summary: "%{actor} has invited you to a new meeting series '%{title}'"
       series_updated:
         title: "[%{project_name}] Se ha actualizado la serie de reuniones «%{title}»"
         summary: "%{actor} ha actualizado la serie de reuniones «%{title}»"
