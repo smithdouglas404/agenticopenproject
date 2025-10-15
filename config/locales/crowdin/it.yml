@@ -340,6 +340,9 @@ it:
       disabled_value: L'attributo "%{custom_field_name}" è richiesto da questo Valore Calcolato ma è disabilitato per il progetto.
   concatenation:
     single: "oppure"
+  danger_dialog:
+    confirmation_live_message_checked: "The button to proceed is now active."
+    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
     or: "oppure"
     errors:

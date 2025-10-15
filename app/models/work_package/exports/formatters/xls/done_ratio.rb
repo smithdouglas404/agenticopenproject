@@ -29,22 +29,21 @@
 #++
 module WorkPackage::Exports
   module Formatters
-    class Costs < ::Exports::Formatters::Default
-      def self.apply?(name, export_format)
-        %i[material_costs labor_costs overall_costs].include?(name.to_sym) && export_format == :csv
-      end
+    module XLS
+      class DoneRatio < ::Exports::Formatters::Default
+        def self.apply?(name, export_format)
+          name.to_sym.in?(%i[done_ratio derived_done_ratio]) && export_format == :csv
+        end
 
-      def format_options
-        { number_format: number_format_string }
-      end
+        def format_value(value, _options = {})
+          return if value.nil?
 
-      def number_format_string
-        # [$CUR] makes sure we have an actually working currency format with arbitrary currencies
-        curr = "[$CUR]".gsub "CUR", ERB::Util.h(Setting.costs_currency)
-        format = ERB::Util.h Setting.costs_currency_format
-        number = "#,##0.00"
+          (value.to_f / 100).ceil(2)
+        end
 
-        format.gsub("%n", number).gsub("%u", curr)
+        def format_options
+          { number_format: percentage_format }
+        end
       end
     end
   end

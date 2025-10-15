@@ -339,6 +339,9 @@ zh-CN:
       disabled_value: 该计算值需要属性 "%{custom_field_name}"，但它在项目中已禁用。
   concatenation:
     single: "或"
+  danger_dialog:
+    confirmation_live_message_checked: "继续按钮已激活。"
+    confirmation_live_message_unchecked: "继续操作的按钮现在不起作用。您需要勾选复选框才能继续。"
   op_dry_validation:
     or: "或"
     errors:

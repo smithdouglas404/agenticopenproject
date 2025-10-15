@@ -227,7 +227,7 @@ pl:
       open_my_meetings_link: "Przejdź do sekcji Moje spotkania"
       series:
         title: "[%{project_name}] Seria spotkań „%{title}”"
-        summary: "Użytkownik %{actor} utworzył nową serię spotkań „%{title}”"
+        summary: "%{actor} has invited you to a new meeting series '%{title}'"
       series_updated:
         title: "[%{project_name}] Zaktualizowano serię spotkań „%{title}”"
         summary: "Seria spotkań „%{title}” została zaktualizowana przez użytkownika %{actor}"

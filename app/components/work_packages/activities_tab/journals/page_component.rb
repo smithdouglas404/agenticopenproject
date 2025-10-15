@@ -27,17 +27,35 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-module WorkPackage::Exports
-  module Formatters
-    class DoneRatio < ::Exports::Formatters::Default
-      def self.apply?(name, export_format)
-        name.to_sym.in?(%i[done_ratio derived_done_ratio]) && export_format != :pdf
-      end
 
-      def format_value(value, _options = {})
-        return "" if value.nil?
+module WorkPackages
+  module ActivitiesTab
+    module Journals
+      class PageComponent < ApplicationComponent
+        include OpPrimer::ComponentHelpers
+        include OpTurbo::Streamable
+        include WorkPackages::ActivitiesTab::SharedHelpers
 
-        "#{value}%"
+        def initialize(journals:, emoji_reactions:, page:, filter: :all)
+          super
+
+          @journals = journals
+          @emoji_reactions = emoji_reactions
+          @filter = filter
+          @page = page
+        end
+
+        def render?
+          journals.any?
+        end
+
+        def wrapper_uniq_by
+          page
+        end
+
+        private
+
+        attr_reader :journals, :emoji_reactions, :page, :filter
       end
     end
   end

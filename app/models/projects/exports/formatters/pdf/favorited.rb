@@ -27,21 +27,19 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-module WorkPackage::Exports
+module Projects::Exports
   module Formatters
-    class Days < ::Exports::Formatters::Default
-      def self.apply?(name, export_format)
-        name.to_sym == :duration && export_format == :pdf
-      end
+    module PDF
+      class Favorited < ::Exports::Formatters::Default
+        def self.apply?(attribute, export_format)
+          export_format == :pdf && attribute.to_sym == :favorited
+        end
 
-      def format_value(value, _options)
-        formatted_days(value)
-      end
-
-      private
-
-      def formatted_days(value)
-        value.nil? ? "" : "#{value} #{I18n.t('export.units.days')}"
+        ##
+        # Takes a project and returns yes/no depending on the favorited attribute
+        def format(project, **)
+          project.favorited_by?(User.current) ? I18n.t(:general_text_Yes) : I18n.t(:general_text_No)
+        end
       end
     end
   end

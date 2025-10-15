@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,18 +26,16 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
-module WorkPackage::Exports
-  module Formatters
-    class Date < ::Exports::Formatters::Default
-      include WorkPackagesHelper
+# ++
 
-      def self.apply?(name, export_format)
-        name.to_sym == :date && export_format == :pdf
-      end
+module WorkPackages
+  module ActivitiesTab
+    module JournalSortingInquirable
+      extend ActiveSupport::Concern
 
-      def format(work_package, **)
-        work_package_formatted_dates(work_package)
+      def journal_sorting
+        ActiveSupport::StringInquirer
+          .new(User.current.preference&.comments_sorting || OpenProject::Configuration.default_comment_sort_order)
       end
     end
   end

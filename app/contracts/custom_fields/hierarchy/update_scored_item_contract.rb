@@ -31,11 +31,10 @@
 module CustomFields
   module Hierarchy
     class UpdateScoredItemContract < DryApplicationContract
-
       params do
         required(:item).filled(type?: CustomField::Hierarchy::Item)
-        optional(:label).filled(:string)
-        optional(:score).filled(:decimal)
+        required(:label).filled(:string)
+        required(:score).filled(:decimal)
       end
 
       rule(:item) do

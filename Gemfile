@@ -55,6 +55,7 @@ gem "request_store", "~> 1.7.0"
 gem "warden", "~> 1.2"
 gem "warden-basic_auth", "~> 0.2.1"
 
+gem "pagy"
 gem "will_paginate", "~> 4.0.0"
 
 gem "friendly_id", "~> 5.5.0"

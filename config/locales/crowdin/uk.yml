@@ -339,13 +339,16 @@ uk:
       disabled_value: Атрибут «%{custom_field_name}» обов’язковий для цього поля «Розраховане значення», але його вимкнено для проєкту.
   concatenation:
     single: "або"
+  danger_dialog:
+    confirmation_live_message_checked: "The button to proceed is now active."
+    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
     or: "або"
     errors:
       array?: "має бути масивом."
       decimal?: "має бути десятковим числом."
       defined: "не має визначатися."
-      eql?: "має дорівнювати %{left}."
+      eql?: "має бути «%{left}»."
       filled?: "— слід заповнити."
       greater_or_equal_zero: "має бути більше ніж 0 або дорівнювати йому."
       gteq?: "має бути більше ніж %{num} або дорівнювати цьому значенню."

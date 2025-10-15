@@ -29,17 +29,17 @@
 #++
 module Projects::Exports
   module Formatters
-    class RequiredDiskSpace < ::Exports::Formatters::Default
-      def self.apply?(attribute, export_format)
-        export_format == :pdf && attribute.to_sym == :required_disk_space
-      end
+    module PDF
+      class Public < ::Exports::Formatters::Default
+        def self.apply?(attribute, export_format)
+          export_format == :pdf && attribute.to_sym == :public
+        end
 
-      ##
-      # Takes a project and returns the formatted value if the required disk space is greater than 0.
-      def format(project, **)
-        return "" unless project.required_disk_space.to_i > 0
-
-        number_to_human_size(project.required_disk_space, precision: 2)
+        ##
+        # Takes a project and returns yes/no depending on the public attribute
+        def format(project, **)
+          project.public? ? I18n.t(:general_text_Yes) : I18n.t(:general_text_No)
+        end
       end
     end
   end

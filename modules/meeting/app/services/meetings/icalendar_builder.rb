@@ -173,11 +173,11 @@ module Meetings
 
     def preload_for_recurring_meetings(recurring_meetings:)
       @excluded_dates_cache = ScheduledMeeting
+        .cancelled
         .where(recurring_meeting: recurring_meetings)
         .group(:recurring_meeting_id)
         .pluck(:recurring_meeting_id, "array_agg(start_time)")
         .to_h
-        .transform_values { |dates| dates.map { |date| ical_datetime(date) } }
 
       @instantiated_occurrences_cache = ScheduledMeeting
         .where(recurring_meeting: recurring_meetings)
@@ -297,8 +297,7 @@ module Meetings
                          .scheduled_meetings
                          .cancelled
                          .pluck(:start_time)
-                         .map { ical_datetime(it, timezone: recurring_meeting.time_zone) }
-                     end
+                     end.map { ical_datetime(it, timezone: recurring_meeting.time_zone) }
     end
 
     def upcoming_instantiated_schedules(recurring_meeting)

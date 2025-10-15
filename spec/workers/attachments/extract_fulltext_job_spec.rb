@@ -48,11 +48,13 @@ RSpec.describe Attachments::ExtractFulltextJob, type: :job do
 
   let(:text) { "lorem ipsum" }
   let(:attachment) do
-    create(:attachment).tap do |attachment|
-      allow(Attachment)
-        .to receive(:find_by)
-              .with(id: attachment.id)
-              .and_return(attachment)
+    create(:attachment)
+  end
+  let(:plaintext_file_handler) do
+    Plaintext::Resolver.file_handlers.find { |h| h.accept? attachment.content_type }.tap do |plaintext_file_handler|
+      if plaintext_file_handler.nil?
+        fail "Plaintext::FileHandler not found for content type #{attachment.content_type}"
+      end
     end
   end
 
@@ -73,7 +75,7 @@ RSpec.describe Attachments::ExtractFulltextJob, type: :job do
 
   context "with successful text extraction" do
     before do
-      allow_any_instance_of(Plaintext::Resolver).to receive(:text).and_return(text)
+      allow(plaintext_file_handler).to receive(:text).and_return(text)
     end
 
     context "when the attachment is readable" do
@@ -102,8 +104,26 @@ RSpec.describe Attachments::ExtractFulltextJob, type: :job do
     end
   end
 
+  context "when the plaintext handler returns a frozen string (Bug #68047)" do
+    let(:frozen_text) { "frozen string".freeze } # rubocop:disable Style/RedundantFreeze
+
+    before do
+      allow(plaintext_file_handler).to receive(:text).and_return(frozen_text)
+    end
+
+    it "updates the attachment's DB record with fulltext, fulltext_tsv, and file_tsv" do
+      perform_enqueued_jobs
+      expect(extracted_attributes["fulltext"]).to eq frozen_text
+      expect(extracted_attributes["fulltext_tsv"].size).to be > 0
+      expect(extracted_attributes["file_tsv"].size).to be > 0
+    end
+  end
+
   context "with the file not readable" do
     before do
+      allow(Attachment)
+        .to receive(:find_by).with(id: attachment.id)
+        .and_return(attachment)
       allow(attachment).to receive(:readable?).and_return(false)
     end
 
@@ -120,7 +140,7 @@ RSpec.describe Attachments::ExtractFulltextJob, type: :job do
     let(:logger) { Rails.logger }
 
     before do
-      allow_any_instance_of(Plaintext::Resolver).to receive(:text).and_raise(exception_message) # rubocop:disable RSpec/AnyInstance
+      allow(plaintext_file_handler).to receive(:text).and_raise(exception_message)
 
       allow(logger).to receive(:error)
 

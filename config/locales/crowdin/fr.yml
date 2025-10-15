@@ -196,8 +196,8 @@ fr:
     sync_failed: "Échec de la synchronisation à partir de LDAP : %{message}."
     back_to_index: "Cliquez ici pour revenir à la liste des connexions."
     technical_warning: |
-      Ce formulaire LDAP nécessite une connaissance technique de votre configuration LDAP / Active Directory.
-      [Veuillez consulter notre documentation pour des instructions détaillées](docs_url).
+      Ce formulaire LDAP nécessite une connaissance technique de votre configuration LDAP/Active Directory.
+      [Veuillez consulter notre documentation pour obtenir des instructions détaillées](docs_url).
     attribute_texts:
       name: Nom arbitraire de la connexion LDAP
       host: Nom d'hôte ou adresse IP du serveur LDAP
@@ -336,35 +336,38 @@ fr:
     error_dialog:
       title: "Erreur avec la valeur calculée"
     errors:
-      unknown: "Une erreur inconnue s'est produite. Veuillez revoir la formule de cette valeur calculée."
+      unknown: "Une erreur inconnue s'est produite. Veuillez vérifier la formule de cette valeur calculée."
       mathematical: "Une erreur mathématique s'est produite lors du calcul."
-      missing_value: L'attribut "%{custom_field_name}" est requis par cette valeur calculée mais il est vide.
-      disabled_value: L'attribut "%{custom_field_name}" est requis par cette valeur calculée mais est désactivé pour le projet.
+      missing_value: L'attribut « %{custom_field_name} » est requis par cette valeur calculée, mais il est vide.
+      disabled_value: L'attribut « %{custom_field_name} » est requis par cette valeur calculée, mais il est désactivé pour le projet.
   concatenation:
     single: "ou"
+  danger_dialog:
+    confirmation_live_message_checked: "The button to proceed is now active."
+    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
     or: "ou"
     errors:
-      array?: "doit être un tableau"
+      array?: "doit être un tableau."
       decimal?: "doit être une décimale."
       defined: "ne doit pas être défini."
       eql?: "doit être égal à %{left}."
-      filled?: "doivent être remplis."
+      filled?: "doit être rempli."
       greater_or_equal_zero: "doit être supérieur ou égal à 0."
       gteq?: "doit être supérieur ou égal à %{num}."
       hash?: "doit être un hachage."
       included_in?:
         arg:
-          default: "doit être l'un des suivants : %{list}."
-          range: "doit être l'un des suivants : %{list_left} - %{list_right}."
+          default: "doit être l'un des éléments suivants : %{list}."
+          range: "doit être l'un des éléments suivants : %{list_left} - %{list_right}."
       int?: "doit être un nombre entier."
-      key?: "est manquante."
-      not_found: "n'a pas été trouvée."
+      key?: "est manquant."
+      not_found: "est introuvable."
       rules:
         copy_workflow_from:
           workflow_missing: "n'a pas de flux de travail propre."
         custom_field:
-          format_not_supported: "Le format '%{field_format}' n'est pas pris en charge."
+          format_not_supported: "Le format « %{field_format} » n'est pas pris en charge."
         item:
           root_item: "ne peut pas être un élément racine."
           not_persisted: "doit être un élément déjà existant."
@@ -375,15 +378,15 @@ fr:
         parent:
           not_descendant: "doit être un descendant de la racine de la hiérarchie."
       str?: "doit être une chaîne de caractères."
-      type?: "doit être %{type}."
+      type?: "doit être de type : %{type}."
     rules:
-      copy_workflow_from: "Type pour la copie du workflow"
+      copy_workflow_from: "Type de copie du flux de travail"
       enabled: "Activé"
       depth: "Profondeur"
-      item: "Objet"
+      item: "Élément"
       label: "Étiquette"
       score: "Score"
-      short: "Nom court"
+      short: "Nom abrégé"
       parent: "Parent"
       blueprint: "Modèle de plan"
   global_search:
@@ -632,18 +635,18 @@ fr:
     sessions:
       session_name: "%{browser_name} %{browser_version} sur %{os_name}"
       browser: "Navigateur"
-      expires: "Expire"
+      expires: "Expiration"
       last_connection: "Dernière connexion"
       device: "Dispositif/système d'exploitation"
       unknown_browser: "navigateur inconnu"
       unknown_os: "système d'exploitation inconnu"
       unknown: "(inconnu)"
       browser_session: "(Session du navigateur)"
-      current: "Courant (ce dispositif)"
+      current: "Actuel (cet appareil)"
       title: "Gestion de session"
-      instructions: "Vous êtes connecté à votre compte via les appareils suivants. Révoquez les sessions que vous ne reconnaissez pas ou qui proviennent d'appareils que vous ne contrôlez pas."
+      instructions: "Vous êtes connecté(e) à votre compte via les appareils suivants. Révoquez les sessions que vous ne reconnaissez pas ou qui proviennent d'appareils que vous ne contrôlez pas."
       may_not_delete_current: "Vous ne pouvez pas supprimer votre session actuelle."
-      deletion_warning: "Êtes-vous sûr de vouloir révoquer cette session ? Vous serez déconnecté sur cet appareil."
+      deletion_warning: "Voulez-vous vraiment révoquer cette session ? Vous serez déconnecté(e) sur cet appareil."
     groups:
       member_in_these_groups: "Cet utilisateur est actuellement membre des groupes suivants :"
       no_results_title_text: Cet utilisateur n'est actuellement membre d'aucun groupe.
@@ -1037,7 +1040,7 @@ fr:
       enterprise_trial:
         company: "Entreprise"
       favorite:
-        favorited: "Objet"
+        favorited: "Élément"
       grids/grid:
         page: "Page"
         row_count: "Nombre de lignes"
@@ -1222,10 +1225,10 @@ fr:
         increase_theme_contrast: "Augmenter le contraste du thème"
         increase_contrast: "Augmenter le contraste"
         increase_contrast_caption: "Active le mode de contraste élevé pour le mode de couleur choisi."
-        force_light_theme_contrast: "Forcer un contraste élevé en mode lumineux"
+        force_light_theme_contrast: "Forcer un contraste élevé en mode clair"
         force_dark_theme_contrast: "Forcer un contraste élevé en mode sombre"
-        force_light_theme_contrast_caption: "Utilise la version à contraste élevé du mode Lumière lorsque le mode couleur automatique est sélectionné."
-        force_dark_theme_contrast_caption: "Utilise la version à contraste élevé du mode foncé lorsque le mode couleur automatique est sélectionné."
+        force_light_theme_contrast_caption: "Utilise la version à contraste élevé du mode clair lorsque le mode de couleur automatique est sélectionné."
+        force_dark_theme_contrast_caption: "Utilise la version à contraste élevé du mode sombre lorsque le mode de couleur automatique est sélectionné."
         theme: "Mode de couleur"
         time_zone: "Fuseau horaire"
         mode_guideline: "Certains modes écrasent les couleurs des thèmes personnalisés pour des raisons d'accessibilité et de lisibilité. Veuillez sélectionner le mode Clair pour une prise en charge complète des thèmes personnalisés."
@@ -1293,7 +1296,7 @@ fr:
         confirmation: "ne correspond pas à %{attribute}."
         could_not_be_copied: "%{dependency} n'a pas pu être copié (entièrement)."
         does_not_exist: "n'existe pas."
-        error_enterprise_only: "%{action} n'est disponible que dans l'édition OpenProject Enterprise."
+        error_enterprise_only: "%{action} n'est disponible que dans l'édition Enterprise d'OpenProject."
         error_unauthorized: "est interdit d'accès."
         error_readonly: "a tenté d'être écrit mais n'est pas accessible en écriture."
         error_conflict: "Cette information a été mise a jour par au moin un autre utilisateur pendant la même session"
@@ -1406,7 +1409,7 @@ fr:
           unreadable: "ne peut être lu. Êtes-vous sûr qu'il s'agisse d'une licence Entreprise ?"
           already_added: "Ce jeton a déjà été ajouté."
         favorite:
-          already_favorited: "a déjà été mis en favoris."
+          already_favorited: "a déjà été ajouté aux favoris."
         grids/grid:
           overlaps: "superposition."
           outside: "est hors de la grille."
@@ -1504,18 +1507,18 @@ fr:
             circular_dependency: "La relation créée un cercle de relations."
           attributes:
             base:
-              error_not_deletable: "Cette relation ne peut pas être supprimée car vous n'avez pas les droits de modification pour le lot de travail sélectionné."
-              error_not_editable: "Cette relation ne peut pas être éditée car vous n'avez pas les droits d'édition pour le work package sélectionné."
+              error_not_deletable: "Cette relation ne peut pas être supprimée, car vous n'avez pas les permissions de modification pour le lot de travaux sélectionné."
+              error_not_editable: "Cette relation ne peut pas être modifiée, car vous n'avez pas les permissions de modification pour le lot de travaux sélectionné."
             to_id:
-              format: "Le paquet de travail sélectionné %{message}"
-              error_not_found: "n'a pas été trouvée."
+              format: "Le lot de travaux sélectionné %{message}"
+              error_not_found: "est introuvable."
               error_readonly: "ne peut pas être modifié pour les relations existantes."
-              error_not_manageable: "ne peut pas être ajouté car vous ne disposez pas d'autorisations de modification pour le lot de travail sélectionné."
+              error_not_manageable: "ne peut pas être ajouté, car vous ne disposez pas des permissions de modification pour le lot de travaux sélectionné."
             from_id:
-              format: "Le paquet de travail sélectionné %{message}"
-              error_not_found: "n'a pas été trouvée."
+              format: "Le lot de travaux sélectionné %{message}"
+              error_not_found: "est introuvable."
               error_readonly: "ne peut pas être modifié pour les relations existantes."
-              error_not_manageable: "ne peut pas être ajouté car vous ne disposez pas d'autorisations de modification pour le lot de travail sélectionné."
+              error_not_manageable: "ne peut pas être ajouté, car vous ne disposez pas des permissions de modification pour le lot de travaux sélectionné."
         repository:
           not_available: "Le fournisseur de gestion de contrôle de sources n'est pas disponible"
           not_whitelisted: "n'est pas autorisé par la configuration."
@@ -1972,7 +1975,7 @@ fr:
   button_save: "Enregistrer"
   button_save_as: "Enregistrer sous"
   button_save_back: "Enregistrer et revenir"
-  button_select: "Sélectionnez"
+  button_select: "Sélectionner"
   button_set_reminder: "Définir un rappel"
   button_show: "Afficher"
   button_sort: "Trier"
@@ -2231,7 +2234,7 @@ fr:
         Vous avez déjà un jeton ? Ajoutez-le en utilisant le bouton ci-dessous pour passer à l'abonnement Enterprise réservé.
       hide_banner: "Masquer cette bannière"
       homescreen_description: >
-        Les plans d'entreprise prolongent l'édition communautaire d'OpenProject avec des [modules d'entreprise] supplémentaires (enterprise_url) et un support professionnel, idéal pour les organisations qui utilisent OpenProject dans un environnement critique.
+        Les abonnements Enterprise complémentent l'édition Community d'OpenProject avec des [add-ons Enterprise](enterprise_url) supplémentaires et une assistance professionnelle, ce qui s'avère idéal pour les organisations qui utilisent OpenProject dans un environnement critique.
       homescreen_subline: En optant pour une formule d'abonnement supérieure, vous soutiendrez également un projet open source.
       baseline_comparison:
         description: Mettre en évidence les modifications apportées à cette liste depuis n'importe quel point dans le passé.
@@ -2367,7 +2370,7 @@ fr:
   error_invalid_selected_value: "Valeur sélectionnée invalide."
   error_journal_attribute_not_present: "Le journal ne contient pas l’attribut %{attribute}."
   error_pdf_export_too_many_columns: "Trop de colonnes sélectionnées pour l’exportation PDF. Veuillez réduire le nombre de colonnes."
-  error_pdf_date_range_too_long: "L'intervalle de dates du lot de travail sélectionné dépasse la limite d'exportation PDF autorisée. Veuillez condenser la plage à un maximum de %{years} années."
+  error_pdf_date_range_too_long: "La plage de dates du lot de travaux sélectionné dépasse la limite d'exportation PDF autorisée. Veuillez réduire la plage à un maximum de %{years} ans."
   error_pdf_failed_to_export: "L'export PDF n'a pas pu être enregistré: %{error}"
   error_token_authenticity: "Impossible de vérifier le jeton de Cross-Site Request Forgery. Avez-vous essayé d'envoyer des données sur plusieurs navigateurs ou onglets ? Veuillez fermer tous les onglets et réessayer."
   error_reminder_not_found: "Le rappel n'a pas été trouvé ou a déjà été notifié."
@@ -2585,10 +2588,10 @@ fr:
             Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que :
           new_features_list:
             line_0: Ajoutez des lots de travail à une section de réunion dans l'onglet Réunions.
-            line_1: Choisissez le mode de couleur plus facilement grâce aux cases à cocher "Augmenter le contraste".
+            line_1: Choisissez le mode de couleur plus facilement grâce aux cases à cocher « Augmenter le contraste ».
             line_2: Filtrez les projets en fonction de leur dernière mise à jour.
-            line_3: Sauter aux éléments cibles mis en évidence à partir de liens profonds.
-            line_4: Confirmez les actions critiques à l'aide de boîtes de dialogue sur les dangers plus accessibles.
+            line_3: Accédez aux éléments cibles mis en évidence à partir de liens profonds.
+            line_4: Confirmez les actions critiques avec des boîtes de dialogue d'avertissement plus accessibles.
     links:
       upgrade_enterprise_edition: "Passer à la version Entreprise"
       postgres_migration: "Migration de votre installation vers PostgreSQL"
@@ -2682,7 +2685,7 @@ fr:
         static_token_name: "Jeton d'API"
       ical:
         title: "iCalendar"
-        text_hint_link: 'Les jetons iCalendar permettent aux utilisateurs de [s''abonner aux calendriers OpenProject](docs_url) et de voir les informations mises à jour du lot de travaux de clients externes.'
+        text_hint_link: 'Les jetons iCalendar permettent aux utilisateurs de [s''abonner aux calendriers OpenProject](docs_url) et d''afficher des informations à jour sur les lots de travaux provenant de clients externes.'
         disabled_text: "Les abonnements iCalendar ne sont pas activés par l'administrateur. Veuillez contacter votre administrateur pour utiliser cette fonctionnalité."
         empty_text_hint: "Pour ajouter un jeton iCalendar, abonnez-vous à un nouveau calendrier ou à un calendrier existant depuis le module Calendrier d'un projet. Vous devez avoir les autorisations nécessaires."
       oauth:
@@ -2824,7 +2827,7 @@ fr:
   label_required_disk_storage: "Espace disque requis"
   label_send_invitation: Envoyer une invitation
   label_calculated_value: "Valeur calculée"
-  label_change_parent: "Changer de parent"
+  label_change_parent: "Changer le parent"
   label_change_plural: "Changements"
   label_change_properties: "Modifier les propriétés"
   label_change_status: "Changer le statut"
@@ -3650,7 +3653,7 @@ fr:
   notice_password_confirmation_failed: "Votre mot de passe est incorrect. Impossible de continuer."
   notice_principals_found_multiple: "Il y a %{number} résultats trouvés. Tabulation pour sélectionner le premier résultat."
   notice_principals_found_single: "Il y a un seul résultat. Tabulation pour le sélectionner."
-  notice_parent_item_not_found: "L'élément parent n'a pas été trouvé."
+  notice_parent_item_not_found: "L'élément parent est introuvable."
   notice_project_not_deleted: "Le projet n'a pas été supprimé."
   notice_project_not_found: "Projet introuvable."
   notice_successful_connection: "Connection réussie."

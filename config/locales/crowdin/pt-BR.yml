@@ -341,6 +341,9 @@ pt-BR:
       disabled_value: O atributo “%{custom_field_name}” é obrigatório para este Valor calculado, mas está desativado para o projeto.
   concatenation:
     single: "ou"
+  danger_dialog:
+    confirmation_live_message_checked: "The button to proceed is now active."
+    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
     or: "ou"
     errors:

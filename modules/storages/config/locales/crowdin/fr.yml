@@ -63,7 +63,7 @@ fr:
               op_application_not_installed: semble ne pas avoir installé l'application "Intégration OpenProject" . Veuillez d'abord l'installer puis réessayer.
             password:
               invalid_password: n'est pas valide.
-              unknown_error: n'a pas pu être validée avec le fournisseur de stockage de fichiers. Veuillez vérifier que la connexion fonctionne correctement.
+              unknown_error: n'a pas pu être validé auprès du fournisseur d'espace de stockage de fichiers. Veuillez vérifier que la connexion fonctionne correctement.
     models:
       file_link: Fichier
       storages/storage: Stockage
