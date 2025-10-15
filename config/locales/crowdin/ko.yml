@@ -2515,6 +2515,9 @@ ko:
       selected: "선택됨"
     include_sub_items: "하위 항목 포함"
     no_results_text: "결과 없음"
+  toggle_switch:
+    label_on: "On"
+    label_off: "Off"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","

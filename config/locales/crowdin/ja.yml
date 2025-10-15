@@ -2514,6 +2514,9 @@ ja:
       selected: "選択済み"
     include_sub_items: "サブアイテムを含める"
     no_results_text: "結果がありません"
+  toggle_switch:
+    label_on: "On"
+    label_off: "Off"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","

@@ -340,8 +340,8 @@ zh-CN:
   concatenation:
     single: "或"
   danger_dialog:
-    confirmation_live_message_checked: "The button to proceed is now active."
-    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+    confirmation_live_message_checked: "继续按钮已激活。"
+    confirmation_live_message_unchecked: "继续操作的按钮现在不起作用。您需要勾选复选框才能继续。"
   op_dry_validation:
     or: "或"
     errors:
@@ -2511,6 +2511,9 @@ zh-CN:
       selected: "已选择"
     include_sub_items: "包含子条目"
     no_results_text: "无结果"
+  toggle_switch:
+    label_on: "On"
+    label_off: "Off"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","

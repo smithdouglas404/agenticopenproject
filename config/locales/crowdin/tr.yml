@@ -2560,6 +2560,9 @@ tr:
       selected: "Seçilen"
     include_sub_items: "Alt öğeleri dahil et"
     no_results_text: "Sonuç yok"
+  toggle_switch:
+    label_on: "On"
+    label_off: "Off"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
