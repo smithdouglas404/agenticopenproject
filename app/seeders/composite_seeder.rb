@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 class CompositeSeeder < Seeder
   def seed_data!
-    ActiveRecord::Base.transaction do
+    maybe_transactional do
       seed_with(data_seeders)
 
       if discovered_seeders.any?
@@ -72,6 +72,16 @@ class CompositeSeeder < Seeder
 
   def namespace
     raise NotImplementedError, "has to be implemented by subclasses"
+  end
+
+  def maybe_transactional(&block)
+    return block.call unless run_in_transaction?
+
+    ActiveRecord::Base.transaction(&block)
+  end
+
+  def run_in_transaction?
+    true
   end
 
   ##

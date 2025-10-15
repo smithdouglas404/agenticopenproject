@@ -819,6 +819,51 @@ projects:
       * After Sprint Review, will be moderated by Scrum Master.
       * The team discusses the sprint: what went well, what needs to be improved to be more productive for the next sprint or even have more fun.
 
+performance_projects:
+  work_packages:
+  - t_subject: "Project kick-off"
+    status: :default_status_closed
+    type: :default_type_summary_task
+    children:
+    - t_subject: Staff project with members
+      type: :default_type_task
+      status: :default_status_closed
+    - t_subject: Define project scope
+      type: :default_type_task
+      status: :default_status_closed
+    - t_subject: Talk to relevant stakeholders
+      type: :default_type_task
+      status: :default_status_closed
+    - t_subject: Decide for a management method
+      type: :default_type_task
+      status: :default_status_closed
+    - t_subject: Have a kick-off meeting
+      type: :default_type_task
+      status: :default_status_closed
+  - t_subject: Organize awesome open source conference
+    status: :default_status_in_progress
+    type: :default_type_summary_task
+    duration: 15
+    schedule_manually: false
+    children:
+    - t_subject: Set date and location of conference
+      status: :default_status_in_progress
+      type: :default_type_task
+      duration: 4
+      schedule_manually: false
+      children:
+      - t_subject: Send invitation to speakers
+        status: :default_status_in_progress
+        type: :default_type_task
+      - t_subject: Contact sponsoring partners
+        status: :default_status_new
+        type: :default_type_task
+        duration: 2
+      - t_subject: Create sponsorship brochure and hand-outs
+        status: :default_status_new
+        type: :default_type_task
+        duration: 4
+
 statuses:
   - reference: :default_status_new
     t_name: New

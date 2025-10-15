@@ -109,7 +109,7 @@ module DemoData
         author: admin_user,
         assigned_to: find_principal(attributes["assigned_to"]),
         subject: attributes["subject"],
-        description: attributes["description"],
+        description: attributes["description"] || "",
         status: find_status(attributes),
         type: find_type(attributes),
         priority: IssuePriority.default,

@@ -50,5 +50,19 @@ namespace :db do
         raise ArgumentError, "No seeder with class name #{seeder_class_name}"
       end
     end
+
+    desc "Run performance data seeder. Long executions can be interrupted and still generate partial data."
+    task performance: :environment do
+      root_seeder = RootSeeder.new
+      root_seeder.seed!
+
+      # Running outside the root seeder context, so that it can take care of transactions on its own
+      # (thus allowing interrupts and restarts of the seeding)
+      begin
+        PerformanceDataSeeder.new(root_seeder.seed_data).seed!
+      rescue Interrupt
+        puts "Seeding interrupted. You can continue at a later point."
+      end
+    end
   end
 end
