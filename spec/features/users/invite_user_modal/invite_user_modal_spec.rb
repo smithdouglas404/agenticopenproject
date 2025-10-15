@@ -128,6 +128,21 @@ RSpec.describe "Invite user modal", :js do
         expect(select).to have_no_text(principal.mail)
       end
     end
+
+    context "when not selecting the role" do
+      it "keeps the principal selected" do
+        modal.expect_open
+        modal.project_step
+        modal.principal_autocomplete
+
+        modal.click_continue(label: "Invite")
+        modal.expect_error_displayed "Role can't be blank."
+
+        modal.role_autocomplete
+        modal.click_continue(label: "Invite")
+        modal.expect_invited_successfully
+      end
+    end
   end
 
   describe "inviting a placeholder on a WP create", with_ee: %i[placeholder_users] do

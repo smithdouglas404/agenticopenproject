@@ -55,6 +55,10 @@ module Components
         # STEP 2: User name
         principal_step
 
+        expect_invited_successfully
+      end
+
+      def expect_invited_successfully
         text =
           case principal
           when User

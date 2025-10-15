@@ -44,6 +44,7 @@ module Users::Invitation::PrincipalStep
         autocomplete_options: {
           defaultData: true,
           component: "opce-members-autocompleter",
+          model: selected_principal,
           url: autocomplete_for_member_project_members_path(model.project_id, format: :json, type: model.principal_type),
           focusDirectly: false,
           multiple: false,
@@ -85,6 +86,13 @@ module Users::Invitation::PrincipalStep
           style: "resize: none"
         )
       end
+    end
+
+    def selected_principal # rubocop:disable Metrics/AbcSize
+      principal = model.principal
+      return if principal.nil?
+
+      { name: principal.name, id: principal.id }
     end
 
     def name_label
