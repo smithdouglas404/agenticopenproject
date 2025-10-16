@@ -216,18 +216,22 @@ FactoryBot.define do
         end
       end
 
-      factory :boolean_project_custom_field, traits: [:boolean]
-      factory :calculated_value_project_custom_field, traits: [:calculated_value]
-      factory :date_project_custom_field, traits: [:date]
-      factory :float_project_custom_field, traits: [:float]
-      factory :integer_project_custom_field, traits: [:integer]
-      factory :link_project_custom_field, traits: [:link]
-      factory :list_project_custom_field, traits: [:list]
-      factory :scored_list_project_custom_field, traits: [:scored_list]
-      factory :string_project_custom_field, traits: [:string]
-      factory :text_project_custom_field, traits: [:text]
-      factory :user_project_custom_field, traits: [:user]
-      factory :version_project_custom_field, traits: [:version]
+      %w[
+        boolean
+        calculated_value
+        date
+        float
+        integer
+        link
+        list
+        scored_list
+        string
+        text
+        user
+        version
+      ].each do |trait|
+        factory :"#{trait}_project_custom_field", traits: [trait]
+      end
     end
 
     factory :user_custom_field, class: "UserCustomField"
@@ -248,21 +252,25 @@ FactoryBot.define do
         end
       end
 
-      factory :boolean_wp_custom_field, traits: [:boolean]
-      factory :string_wp_custom_field, traits: [:string]
-      factory :text_wp_custom_field, traits: [:text]
-      factory :integer_wp_custom_field, traits: [:integer]
-      factory :float_wp_custom_field, traits: [:float]
-      factory :date_wp_custom_field, traits: [:date]
-      factory :list_wp_custom_field, traits: [:list]
-      factory :multi_list_wp_custom_field, traits: [:multi_list]
-      factory :version_wp_custom_field, traits: [:version]
-      factory :multi_version_wp_custom_field, traits: [:multi_version]
-      factory :user_wp_custom_field, traits: [:user]
-      factory :multi_user_wp_custom_field, traits: [:multi_user]
-      factory :link_wp_custom_field, traits: [:link]
-      factory :hierarchy_wp_custom_field, traits: [:hierarchy]
-      factory :scored_list_wp_custom_field, traits: [:scored_list]
+      %w[
+        boolean
+        string
+        text
+        integer
+        float
+        date
+        list
+        multi_list
+        version
+        multi_version
+        user
+        multi_user
+        link
+        hierarchy
+        scored_list
+      ].each do |trait|
+        factory :"#{trait}_wp_custom_field", traits: [trait]
+      end
     end
 
     factory :issue_custom_field, class: "WorkPackageCustomField" do
