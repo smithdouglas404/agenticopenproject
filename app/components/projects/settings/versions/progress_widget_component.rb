@@ -39,12 +39,8 @@ module Projects
           I18n.t(:label_estimates_and_progress)
         end
 
-        def visible?
+        def render?
           version.estimated_hours.positive? || current_user.allowed_in_project?(:view_time_entries, project)
-        end
-
-        def wrapper_arguments
-          { classes: "-thin" }
         end
       end
     end

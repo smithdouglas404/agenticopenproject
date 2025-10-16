@@ -45,10 +45,6 @@ module Projects
             end
           end
         end
-
-        def wrapper_arguments
-          { classes: "-thin" }
-        end
       end
     end
   end

@@ -42,17 +42,16 @@ module Projects
           return unless version.work_packages.any?
 
           widget_wrapper do |widget|
-            widget.with_body(padding: :none) do
-              tag.opce_wp_overview_graph(
-                "global-scope": version.systemwide?,
-                "initial-filters": helpers.version_wp_overview_graph_initial_filters(version)
+            widget.with_body do
+              helpers.angular_component_tag(
+                "opce-wp-overview-graph",
+                inputs: {
+                  "global-scope": version.systemwide?,
+                  "initial-filters": helpers.version_wp_overview_graph_initial_filters(version)
+                }
               )
             end
           end
-        end
-
-        def wrapper_arguments
-          { classes: "-thin -wider" }
         end
       end
     end
