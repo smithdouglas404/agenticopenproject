@@ -95,9 +95,9 @@ RSpec.shared_context "with seeded project custom fields" do
   end
 
   shared_let(:list_project_custom_field, refind: true) do
-    create(:list_project_custom_field,  name: "List field",
-                                        project_custom_field_section: section_for_select_fields,
-                                        possible_values: ["Option 1", "Option 2", "Option 3"])
+    create(:list_project_custom_field, name: "List field",
+                                       project_custom_field_section: section_for_select_fields,
+                                       possible_values: ["Option 1", "Option 2", "Option 3"])
   end
 
   shared_let(:version_project_custom_field, refind: true) do
@@ -106,27 +106,24 @@ RSpec.shared_context "with seeded project custom fields" do
   end
 
   shared_let(:user_project_custom_field, refind: true) do
-    create(:user_project_custom_field,  name: "User field",
-                                        project_custom_field_section: section_for_select_fields)
+    create(:user_project_custom_field, name: "User field",
+                                       project_custom_field_section: section_for_select_fields)
   end
 
   shared_let(:multi_list_project_custom_field, refind: true) do
-    create(:list_project_custom_field,  name: "Multi list field",
-                                        project_custom_field_section: section_for_multi_select_fields,
-                                        possible_values: ["Option 1", "Option 2", "Option 3"],
-                                        multi_value: true)
+    create(:multi_list_project_custom_field, name: "Multi list field",
+                                             project_custom_field_section: section_for_multi_select_fields,
+                                             possible_values: ["Option 1", "Option 2", "Option 3"])
   end
 
   shared_let(:multi_version_project_custom_field, refind: true) do
-    create(:version_project_custom_field, name: "Multi version field",
-                                          project_custom_field_section: section_for_multi_select_fields,
-                                          multi_value: true)
+    create(:multi_version_project_custom_field, name: "Multi version field",
+                                                project_custom_field_section: section_for_multi_select_fields)
   end
 
   shared_let(:multi_user_project_custom_field, refind: true) do
-    create(:user_project_custom_field, name: "Multi user field",
-                                       project_custom_field_section: section_for_multi_select_fields,
-                                       multi_value: true)
+    create(:multi_user_project_custom_field, name: "Multi user field",
+                                             project_custom_field_section: section_for_multi_select_fields)
   end
 
   let(:input_fields) do
