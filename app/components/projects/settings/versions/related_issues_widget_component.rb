@@ -35,6 +35,8 @@ module Projects
         option :version
         option :issues, default: -> { [] }
 
+        MAX_DISPLAYED_ISSUES = 10
+
         def title
           I18n.t(:label_related_work_packages)
         end
@@ -43,9 +45,24 @@ module Projects
           return if issues.blank?
 
           widget_wrapper do |widget|
-            issues.each do |issue|
+            issues.first(MAX_DISPLAYED_ISSUES).each do |issue|
               widget.with_row do
-                helpers.link_to_work_package(issue, project: issue.project != version.project)
+                helpers.flex_layout(flex_wrap: :nowrap, align_items: :center) do |flex|
+                  flex.with_column(mr: 2) do
+                    render(::WorkPackages::InfoLineComponent.new(work_package: issue, font_size: :small))
+                  end
+                  flex.with_column do
+                    issue.subject
+                  end
+                end
+              end
+            end
+            if issues.size > MAX_DISPLAYED_ISSUES
+              widget.with_row do
+                helpers.link_to(
+                  I18n.t("projects.settings.versions.show_work_packages"),
+                  helpers.project_work_packages_version_path(version)
+                )
               end
             end
           end

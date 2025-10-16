@@ -50,6 +50,15 @@ module WorkPackagesFilterHelper
     project_work_packages_with_query_path(version.project, query, options)
   end
 
+  def project_work_packages_version_path(version, options = {})
+    query = {
+      f: [
+        filter_object("version_id", "=", version.id)
+      ]
+    }
+    project_work_packages_with_query_path(version.project, query, options)
+  end
+
   def project_work_packages_shared_with_path(principal, project, options = {})
     query = {
       f: [

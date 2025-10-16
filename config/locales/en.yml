@@ -566,6 +566,7 @@ en:
         no_results_title_text: There are currently no versions for the project.
         no_results_content_text: Create a new version
         work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: There is no additional recorded disk space consumed by this project.
       work_package_priorities:
