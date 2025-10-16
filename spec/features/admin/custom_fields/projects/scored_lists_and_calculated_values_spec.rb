@@ -69,27 +69,33 @@ RSpec.describe "Scored Lists and Calculated Values", :js, with_ee: %i[calculated
     end
 
     describe "editing scored lists triggers Calculate Value recalculation" do
-      def click_edit_button(hierarchy_item)
-        within("#admin-custom-fields-hierarchy-item-component-#{hierarchy_item.id}") do
-          edit_button = page.find_test_selector("op-hierarchy-item--action-menu")
-          expect(edit_button).to be_present
-          edit_button.click
+      def row_selector(hierarchy_item)
+        "#admin-custom-fields-hierarchy-item-component-#{hierarchy_item.id}"
+      end
+
+      def open_action_menu(hierarchy_item)
+        within(row_selector(hierarchy_item)) do
+          find_test_selector("op-hierarchy-item--action-menu").click
         end
       end
 
       before do
         project.custom_values.create!(custom_field: scored_list, value: one.id)
+        project.custom_values.create!(custom_field: calculated_value, value: "2.0")
       end
 
       it "when updating a score" do
         click_on "Items"
 
-        click_edit_button(one)
-
+        open_action_menu(one)
         click_on "Edit"
+
         expect(page).to have_field("score", with: "1.0")
         fill_in("score", with: "2.0")
         click_on "Save"
+
+        # ensure thet processing finished
+        expect(find(row_selector(one))).to have_text("2.0")
 
         expect(project.reload.custom_value_for(calculated_value).value).to eq("4.0")
       end
@@ -97,11 +103,14 @@ RSpec.describe "Scored Lists and Calculated Values", :js, with_ee: %i[calculated
       it "when deleting an item" do
         click_on "Items"
 
-        click_edit_button(one)
-
+        open_action_menu(one)
         click_on "Delete"
+
         page.find_field("confirm_dangerous_action").click
         click_on "Delete permanently"
+
+        # ensure thet processing finished
+        expect(page).to have_no_selector(row_selector(one))
 
         expect(project.reload.custom_value_for(calculated_value).value).to be_nil
       end
