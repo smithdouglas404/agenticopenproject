@@ -39,13 +39,6 @@ import BaseController from './base.controller';
  * - Loading: Skeleton → Loaded content when entering viewport
  * - Unloading: Loaded content → Skeleton when leaving viewport
  *
- * This unified controller maintains a single IntersectionObserver per page,
- * avoiding the overhead of remounting controllers during load/unload cycles.
- *
- * Virtual scrolling benefits:
- * - Keeps DOM size constant (~5-7 pages) regardless of total activities
- * - Reduces memory usage and improves scroll performance
- * - Seamlessly reloads content when scrolling back to unloaded pages
  */
 export default class LazyPageController extends BaseController {
   static values = {
@@ -87,20 +80,16 @@ export default class LazyPageController extends BaseController {
   }
 
   appear() {
-    // Always cancel pending unload when page comes into view
     this.cancelPendingUnload();
 
-    // If not loaded yet, schedule loading
     if (this.isLoadable) {
       this.scheduleLoad();
     }
   }
 
   disappear() {
-    // Cancel pending load if element leaves viewport before delay expires
     this.cancelPendingLoad();
 
-    // If loaded and unloadable, schedule unloading
     if (this.isLoadedValue && this.isUnloadable) {
       this.scheduleUnload();
     }
@@ -122,7 +111,10 @@ export default class LazyPageController extends BaseController {
   private scheduleUnload() {
     // Delay unloading to avoid thrashing during rapid scrolling
     this.unloadTimeout = window.setTimeout(() => {
-      this.unloadContent();
+      void this.unloadContent()
+        .catch((error) => {
+          console.error('Error unloading page:', error);
+        });
     }, this.unloadDelayMsValue);
   }
 
@@ -141,10 +133,9 @@ export default class LazyPageController extends BaseController {
     return this.turboRequests.requestStream(url);
   }
 
-  private unloadContent() {
-    // Request Turbo Stream to replace loaded content with skeleton
+  private unloadContent():Promise<{ html:string, headers:Headers }> {
     const url = this.prepareRequestUrl(this.unloadPageUrlValue);
-    void this.turboRequests.requestStream(url);
+    return this.turboRequests.requestStream(url);
   }
 
   private prepareRequestUrl(requestUrl:string) {
@@ -182,6 +173,15 @@ export default class LazyPageController extends BaseController {
   }
 
   private get isUnloadable() {
-    return this.isUnloadableValue && this.pageValue && this.pageValue > 1;
+    return this.isUnloadableValue && this.pageValue && this.pageValue > 1 && this.loadedPages.length > 4;
+  }
+
+  private get loadedPages() {
+    const loadedPagesNodes = document.querySelectorAll('[data-work-packages--activities-tab--lazy-page-is-loaded-value="true"]');
+    const loadedPageNumbers = Array.from(loadedPagesNodes)
+      .map((el) => el.getAttribute('data-work-packages--activities-tab--lazy-page-page-value'))
+      .filter((value):value is string => value !== null);
+
+    return loadedPageNumbers;
   }
 }
