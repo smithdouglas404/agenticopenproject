@@ -503,6 +503,7 @@ uk:
         name: OneDrive
         name_placeholder: напр. OneDrive
       sharepoint:
+        drive_description: OpenProject access-managed document library
         label_oauth_client_id: Ідентифікатор (клієнт) додатка Azure OAuth
         label_oauth_client_secret: Значення секрету клієнта Azure OAuth
         name: SharePoint

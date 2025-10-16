@@ -496,6 +496,7 @@ zh-CN:
         name: OneDrive
         name_placeholder: 例如OneDrive
       sharepoint:
+        drive_description: OpenProject access-managed document library
         label_oauth_client_id: Azure OAuth 应用程序 (客户端) ID
         label_oauth_client_secret: Azure OAuth 客户端密钥值
         name: SharePoint

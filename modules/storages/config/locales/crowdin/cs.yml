@@ -502,6 +502,7 @@ cs:
         name: OneDrive
         name_placeholder: např. OneDrive
       sharepoint:
+        drive_description: OpenProject access-managed document library
         label_oauth_client_id: Azure OAuth aplikace (klient) ID
         label_oauth_client_secret: ' utajená Hodnota klienta Azure OAuth'
         name: SharePoint

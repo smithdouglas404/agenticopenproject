@@ -496,6 +496,7 @@ ko:
         name: OneDrive
         name_placeholder: '예: OneDrive'
       sharepoint:
+        drive_description: OpenProject access-managed document library
         label_oauth_client_id: Azure OAuth 애플리케이션(클라이언트) ID
         label_oauth_client_secret: Azure OAuth 클라이언트 비밀번호 값
         name: SharePoint

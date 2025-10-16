@@ -343,8 +343,8 @@ fr:
   concatenation:
     single: "ou"
   danger_dialog:
-    confirmation_live_message_checked: "The button to proceed is now active."
-    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+    confirmation_live_message_checked: "Le bouton pour continuer est maintenant actif."
+    confirmation_live_message_unchecked: "Le bouton pour continuer est maintenant inactif. Vous devez cocher la case pour continuer."
   op_dry_validation:
     or: "ou"
     errors:
@@ -2559,8 +2559,8 @@ fr:
     include_sub_items: "Inclure les sous-projets"
     no_results_text: "Aucun résultat"
   toggle_switch:
-    label_on: "On"
-    label_off: "Off"
+    label_on: "Activé"
+    label_off: "Désactiver"
   general_csv_decimal_separator: ","
   general_csv_encoding: "UTF-8"
   general_csv_separator: "."

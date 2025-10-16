@@ -502,6 +502,7 @@ ru:
         name: OneDrive
         name_placeholder: напр. OneDrive
       sharepoint:
+        drive_description: OpenProject access-managed document library
         label_oauth_client_id: Идентификатор приложения (клиента) Azure OAuth
         label_oauth_client_secret: Секретное значение клиента Azure OAuth
         name: SharePoint

@@ -497,6 +497,7 @@ ja:
         name: OneDrive
         name_placeholder: '例: OneDrive'
       sharepoint:
+        drive_description: OpenProject access-managed document library
         label_oauth_client_id: Azure OAuthアプリケーション（クライアント）ID
         label_oauth_client_secret: Azure OAuth クライアントの秘密値
         name: シェアポイント

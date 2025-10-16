@@ -496,6 +496,7 @@ vi:
         name: OneDrive
         name_placeholder: 'ví dụ: OneDrive'
       sharepoint:
+        drive_description: OpenProject access-managed document library
         label_oauth_client_id: ID Ứng dụng OAuth Azure (khách hàng)
         label_oauth_client_secret: Giá trị Bí mật khách hàng OAuth Azure
         name: SharePoint

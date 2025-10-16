@@ -499,6 +499,7 @@
         name: OneDrive
         name_placeholder: f.eks OneDrive
       sharepoint:
+        drive_description: OpenProject access-managed document library
         label_oauth_client_id: Azure OAuth applikasjon (klient) ID
         label_oauth_client_secret: Azure OAuth klient hemmelig verdi
         name: SharePoint

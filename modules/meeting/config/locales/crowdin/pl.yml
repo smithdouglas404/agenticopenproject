@@ -559,7 +559,7 @@ pl:
   text_meeting_not_editable_anymore: "Tego spotkania nie można już edytować."
   text_meeting_not_present_anymore: "To spotkanie zostało usunięte. Wybierz inne spotkanie."
   label_add_work_package_to_meeting_dialog_title: "Select meeting"
-  label_add_work_package_to_meeting_section_label: "Add to section"
+  label_add_work_package_to_meeting_section_label: "Section"
   label_add_work_package_to_meeting_dialog_button: "Dodaj do spotkania"
   label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."
   label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."

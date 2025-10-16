@@ -502,6 +502,7 @@ lt:
         name: OneDrive
         name_placeholder: pvz. OneDrive
       sharepoint:
+        drive_description: OpenProject access-managed document library
         label_oauth_client_id: Azure OAuth Application (kliento) ID
         label_oauth_client_secret: Azure OAuth kliento slapta reikšmė
         name: SharePoint
