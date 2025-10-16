@@ -66,7 +66,7 @@ module API
       end
 
       property :total, getter: ->(*) { @total }, exec_context: :decorator
-      property :count, getter: ->(*) { count }
+      property :count, getter: ->(*) { represented.to_a.size }, exec_context: :decorator
 
       property :groups,
                exec_context: :decorator,
