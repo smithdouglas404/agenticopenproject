@@ -45,26 +45,30 @@ module Projects
           return if issues.blank?
 
           widget_wrapper do |widget|
-            issues.first(MAX_DISPLAYED_ISSUES).each do |issue|
-              widget.with_row do
-                helpers.flex_layout(flex_wrap: :nowrap, align_items: :center) do |flex|
-                  flex.with_column(mr: 2) do
-                    render(::WorkPackages::InfoLineComponent.new(work_package: issue, font_size: :small))
-                  end
-                  flex.with_column do
-                    issue.subject
-                  end
-                end
+            render_issues(widget)
+            render_view_all_link(widget) if issues.size > MAX_DISPLAYED_ISSUES
+          end
+        end
+
+        private
+
+        def render_issues(widget)
+          issues.first(MAX_DISPLAYED_ISSUES).each do |issue|
+            widget.with_row do
+              helpers.flex_layout(flex_wrap: :nowrap, align_items: :center) do |flex|
+                flex.with_column(mr: 2) { issue.subject }
+                flex.with_column { render(::WorkPackages::InfoLineComponent.new(work_package: issue, font_size: :small)) }
               end
             end
-            if issues.size > MAX_DISPLAYED_ISSUES
-              widget.with_row do
-                helpers.link_to(
-                  I18n.t("projects.settings.versions.show_work_packages"),
-                  helpers.project_work_packages_version_path(version)
-                )
-              end
-            end
+          end
+        end
+
+        def render_view_all_link(widget)
+          widget.with_row do
+            helpers.link_to(
+              I18n.t("projects.settings.versions.show_work_packages"),
+              helpers.project_work_packages_version_path(version)
+            )
           end
         end
       end
