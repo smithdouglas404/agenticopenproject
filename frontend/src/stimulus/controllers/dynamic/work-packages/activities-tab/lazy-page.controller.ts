@@ -82,8 +82,6 @@ export default class LazyPageController extends BaseController {
   }
 
   private startObserving(root = this.scrollableContainer) {
-    if (!root) return;
-
     const [_observe, unobserve] = useIntersection(this, {
       root,
       threshold: 0.05,
