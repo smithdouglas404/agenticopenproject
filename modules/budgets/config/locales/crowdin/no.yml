@@ -21,7 +21,7 @@
 #++
 "no":
   plugin_budgets_engine:
-    name: 'Budsjetter'
+    name: "Budsjetter"
   activerecord:
     attributes:
       budget:
@@ -36,6 +36,7 @@
         type: "Kostnadstype"
         labor_budget: "Planlagte arbeidskostnader"
         material_budget: "Planlagte enhetskostnader"
+        base_amount: "Base amount"
       work_package:
         budget_subject: "Budsjett tittel"
     models:
@@ -61,13 +62,19 @@
   help_currency_format: "Formatet på vist valuta. %n erstattes med valutaverdien, %u ertsattes av valutaenheten."
   help_override_rate: "Skriv inn en verdi her for å overstyre standard sats."
   label_budget: "Budsjett"
-  label_budget_new: "Nytt budsjett"
-  label_budget_plural: "Budsjetter"
+  label_budget_available: "Budget available"
   label_budget_id: "Budsjett #%{id}"
+  label_budget_new: "Nytt budsjett"
+  label_budget_planned: "Budget planned"
+  label_budget_plural: "Budsjetter"
+  label_budget_spent: "Budget spent"
+  label_budget_spent_ratio: "Budget spent ratio"
   label_deliverable: "Budsjett"
-  label_example_placeholder: 'f.eks %{decimal}'
+  label_example_placeholder: "f.eks %{decimal}"
   label_view_all_budgets: "Vis alle budsjett"
   label_yes: "Ja"
+  label_budget_totals: "Totals"
+  label_budget_details: "Budget details"
   notice_budget_conflict: "Arbeidspakker må være i samme prosjekt."
   notice_no_budgets_available: "Ingen budsjetter tilgjengelig."
   permission_edit_budgets: "Rediger budsjetter"

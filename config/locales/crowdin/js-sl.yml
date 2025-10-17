@@ -88,6 +88,8 @@ sl:
     button_list_view: "Prikaz seznama"
     button_show_view: "Celozaslonski pogled"
     button_log_time: "Beleži čas"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "več"
     button_open_details: "Prikaži pogled podrobnosti"
     button_close_details: "Zapri prikaz podrobnosti"
@@ -287,17 +289,6 @@ sl:
         format:
           date: "%{attribute} ni veljaven datum - YYYY-MM-DD format je pričakovan."
         general: "Prišlo je do napake."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Preberite o novih funkcijah in posodobitvah izdelka."
-          learn_about: "Learn more about all new features"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                The release contains various new features and improvements, such as <br> <ul class="%{list_styling_class}"> <li>UX/UI improvements for a more modern look.</li> <li>Meetings: Option to mute email notifications and ICS.</li> <li>Ongoing timers shown in the My time tracking module.</li> <li>Progress reporting: % Complete sum also shown in Status-based mode.</li> <li>Nextcloud Health check: Indicate missing token exchange capability (Enterprise add-on).</li> </ul>
     ical_sharing_modal:
       title: "Subscribe to calendar"
       inital_setup_error_message: "An error occured while fetching data."
@@ -323,7 +314,7 @@ sl:
     label_added_time_by: 'Added by <a href="%{authorLink}">%{author}</a> at %{age}'
     label_ago: "pred dnevi"
     label_all: "vsi"
-    label_all_projects: "All projects"
+    label_all_projects: "Vsi projekti"
     label_all_uppercase: "Vse"
     label_all_work_packages: "Vsi zahtevki"
     label_and: "in"
@@ -443,7 +434,7 @@ sl:
     label_sort_lower: "Premakni dol"
     label_sorting: "Razvrščanje"
     label_spent_time: "Porabljen čas"
-    label_star_query: "Priljubljeno"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Pritisnite enter da shranite. "
     label_public_query: "Javno"
     label_sum: "Vsota"
@@ -783,7 +774,7 @@ sl:
     autocompleter:
       placeholder: "Iskalni niz"
       notFoundText: "Ni najdenih elementov"
-      search: "Search"
+      search: "Išči"
       project:
         placeholder: "Select project"
     repositories:
@@ -1119,6 +1110,7 @@ sl:
         two: "%{count} podrejeni delovni paketi"
         few: "%{count} podrejeni delovni paketi"
         other: "%{count} podrejeni delovni paketi"
+      hour_string: "%{hours} h"
       hour:
         one: "1 ura"
         other: "%{count} ur"
@@ -1231,13 +1223,15 @@ sl:
       selected_filter:
         all: "Vsi projekti"
         selected: "Only selected"
-      search_placeholder: "Search project..."
+      search_placeholder: "Search projects..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Include all sub-projects"
       tooltip:
         include_all_selected: "Project already included since Include all sub-projects is enabled."
         current_project: "This is the current project you are in."
         does_not_match_search: "Project does not match the search criteria."
       no_results: "No project matches your search criteria."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Baseline"
       clear: "Počisti"

@@ -1,5 +1,7 @@
 module Grids
   class Engine < ::Rails::Engine
+    engine_name :grids
+
     include OpenProject::Plugins::ActsAsOpEngine
 
     add_api_path :attachments_by_grid do |id|

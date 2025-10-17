@@ -1,6 +1,6 @@
 ---
 sidebar_navigation:
-  title: Meeting Management
+  title: Meeting management
   priority: 900
 description: Meeting management in OpenProject
 keywords: meetings, meeting management, use case, use-case, agenda

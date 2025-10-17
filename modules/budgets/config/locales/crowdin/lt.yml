@@ -21,7 +21,7 @@
 #++
 lt:
   plugin_budgets_engine:
-    name: 'Biudžetai'
+    name: "Biudžetai"
   activerecord:
     attributes:
       budget:
@@ -36,6 +36,7 @@ lt:
         type: "Kaštų tipas"
         labor_budget: "Suplanuoti darbo kaštai"
         material_budget: "Suplanuoti vienetų kaštai"
+        base_amount: "Base amount"
       work_package:
         budget_subject: "Biudžeto pavadinimas"
     models:
@@ -61,13 +62,19 @@ lt:
   help_currency_format: "Rodomos valiutos formatas. %n yra pakeičiamas valiutos reikšme, %u yra pakeičiamas valiutos vienetu."
   help_override_rate: "Įveskite reikšmę, kad pakeistumėte numatytąjį koeficientą."
   label_budget: "Biudžetas"
-  label_budget_new: "Naujas biudžetas"
-  label_budget_plural: "Biudžetai"
+  label_budget_available: "Budget available"
   label_budget_id: "Biudžetas #%{id}"
+  label_budget_new: "Naujas biudžetas"
+  label_budget_planned: "Budget planned"
+  label_budget_plural: "Biudžetai"
+  label_budget_spent: "Budget spent"
+  label_budget_spent_ratio: "Budget spent ratio"
   label_deliverable: "Biudžetas"
-  label_example_placeholder: 't.y., %{decimal}'
+  label_example_placeholder: "t.y., %{decimal}"
   label_view_all_budgets: "Peržiūrėti visus biudžetus"
   label_yes: "Taip"
+  label_budget_totals: "Totals"
+  label_budget_details: "Budget details"
   notice_budget_conflict: "Darbų paketai turi būti tame pačiame projekte."
   notice_no_budgets_available: "Nėra biudžetų."
   permission_edit_budgets: "Redaguoti biudžetus"

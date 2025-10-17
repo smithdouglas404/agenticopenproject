@@ -31,7 +31,7 @@
 class ProjectQueries::Static
   ACTIVE = "active"
   MY = "my"
-  FAVORED = "favored"
+  FAVORITED = "favorited"
   ARCHIVED = "archived"
   ON_TRACK = "on_track"
   OFF_TRACK = "off_track"
@@ -46,8 +46,8 @@ class ProjectQueries::Static
         static_query_active
       when MY
         static_query_my
-      when FAVORED
-        static_query_favored
+      when FAVORITED
+        static_query_favorited
       when ARCHIVED
         static_query_archived
       when ON_TRACK
@@ -73,9 +73,9 @@ class ProjectQueries::Static
       end
     end
 
-    def static_query_favored
-      list_with(:"projects.lists.favored") do |query|
-        query.where("favored", "=", OpenProject::Database::DB_VALUE_TRUE)
+    def static_query_favorited
+      list_with(:"projects.lists.favorited") do |query|
+        query.where("favorited", "=", OpenProject::Database::DB_VALUE_TRUE)
       end
     end
 

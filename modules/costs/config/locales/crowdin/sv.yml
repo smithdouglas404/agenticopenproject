@@ -30,10 +30,10 @@ sv:
         overridden_costs: "Åsidosatta kostnader"
         spent: "Spenderat"
         spent_on: "Datum"
-        logged_by: "Logged by"
-        entity: Logged for
-        entity_id: Logged for
-        entity_gid: Logged for
+        logged_by: "Loggad av"
+        entity: Loggad för
+        entity_id: Loggad för
+        entity_gid: Loggad för
       cost_type:
         unit: "Enhetsnamn"
         unit_plural: "Enhetsnamn plural"
@@ -58,12 +58,12 @@ sv:
         comments: Kommentar
         activity: Aktivitet
         spent_on: Datum
-        start_time: Start time
-        end_time: Finish time
+        start_time: Starttid
+        end_time: Sluttid
         time: Tid
-        entity: Logged for
-        entity_id: Logged for
-        entity_gid: Logged for
+        entity: Loggad för
+        entity_id: Loggad för
+        entity_gid: Loggad för
     models:
       time_entry:
         one: "Tidspost"
@@ -98,10 +98,10 @@ sv:
     fixed_date: "Referensdatum"
   button_add_rate: "Lägg till timpris"
   button_log_costs: "Logga enhetskostnader"
-  button_log_time: "Log"
+  button_log_time: "Logga"
   button_add_activity: "Aktivitet"
   button_add_time_entry: "Logga tid"
-  button_stop_timer: "Stop timer"
+  button_stop_timer: "Stoppa timer"
   caption_booked_on_project: "Bokade på projekt"
   caption_default: "Standard"
   caption_default_rate_history_for: "Historiskt standardtimpris för %{user}"
@@ -160,26 +160,26 @@ sv:
   label_time: "Tid"
   label_cost: "Cost"
   label_costs: "Kostnader"
-  label_mandatory_fields: "Mandatory fields"
+  label_mandatory_fields: "Obligatoriska fält"
   label_my_time_tracking: "My time tracking"
   label_no_time: "No time tracked"
   label_next_day: "Next day"
   label_next_week: "Nästa vecka"
-  label_next_workweek: "Next work week"
-  label_next_month: "Next month"
-  label_previous_day: "Previous day"
-  label_previous_workweek: "Previous work week"
+  label_next_workweek: "Nästa arbetsvecka"
+  label_next_month: "Nästa månad"
+  label_previous_day: "Föregående dag"
+  label_previous_workweek: "Föregående arbetsvecka"
   label_previous_week: "Föregående vecka"
-  label_previous_month: "Previous month"
-  label_specific_day: "Day %{day}"
+  label_previous_month: "Föregående månad"
+  label_specific_day: "Dag %{day}"
   label_specific_week: "Calendar week %{week}"
   label_specific_month: "Month %{month}"
   label_list: "Lista"
   label_month: "Månad"
-  label_workweek: "Work week"
+  label_workweek: "Arbetsvecka"
   label_day: "Dag"
-  label_today_capitalized: "Today"
-  label_view_mode_switcher: "Change view"
+  label_today_capitalized: "Idag"
+  label_view_mode_switcher: "Ändra vy"
   label_timer_since: "Started at %{time}"
   placeholder_activity_select_work_package_first: Work package selection is required first
   notice_something_wrong: "Ett fel inträffade. Försök igen."

@@ -28,6 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
+# rubocop:disable Metrics/CollectionLiteralLength
 module Settings
   class Definition
     ENV_PREFIX = "OPENPROJECT_"
@@ -463,7 +464,7 @@ module Settings
         default: false
       },
       enabled_projects_columns: {
-        default: %w[favored name project_status public created_at latest_activity_at required_disk_space],
+        default: %w[favorited name project_status public created_at latest_activity_at required_disk_space],
         allowed: -> { ProjectQuery.new.available_selects.map { |s| s.attribute.to_s } }
       },
       enabled_scm: {
@@ -565,6 +566,22 @@ module Settings
       additional_host_names: {
         description: "Additional allowed host names for the application.",
         default: []
+      },
+      collaborative_editing_hocuspocus_url: {
+        format: :string,
+        default: nil,
+        description: "The URL of the hocuspocus server used by BlockNoteJS editor to enable collaborative editing.",
+        default_by_env: {
+          development: "wss://hocuspocus.local"
+        }
+      },
+      collaborative_editing_hocuspocus_secret: {
+        format: :string,
+        default: nil,
+        default_by_env: {
+          development: "secret12345"
+        },
+        description: "The secret used for generating access tokens to access documents on hocuspocus server."
       },
       hours_per_day: {
         description: "This will define what is considered a “day” when displaying duration in a more natural way " \
@@ -741,10 +758,6 @@ module Settings
         default: nil,
         writable: false # this changes a global variable and must therefore not be writable at runtime
       },
-      onboarding_video_url: {
-        description: "Onboarding guide instructional video URL",
-        default: "https://player.vimeo.com/video/163426858?autoplay=1"
-      },
       onboarding_enabled: {
         description: "Enable or disable onboarding guided tour for new users",
         default: true
@@ -865,6 +878,10 @@ module Settings
         writable: false,
         allowed: (0..),
         default: 20
+      },
+      opentelemetry_enabled: {
+        description: "Enable OpenTelemetry metrics",
+        default: false
       },
       rate_limiting: {
         default: {},
@@ -1125,6 +1142,17 @@ module Settings
         default: {
           "host" => nil,
           "port" => 8125
+        },
+        writable: false
+      },
+      metrics: {
+        description: "
+          Publish a reduced set of puma metrics on a separate port for Prometheus consumption,
+          providing autoscaling hints
+        ".squish,
+        default: {
+          "enabled" => false,
+          "port" => 9394
         },
         writable: false
       },
@@ -1642,3 +1670,4 @@ module Settings
     end
   end
 end
+# rubocop:enable Metrics/CollectionLiteralLength

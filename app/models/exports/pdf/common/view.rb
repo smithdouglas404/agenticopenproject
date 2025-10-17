@@ -32,6 +32,7 @@ class Exports::PDF::Common::View
   include Prawn::View
   include Redmine::I18n
 
+  CUSTOM_FONT_NAME = "CustomFont"
   FONT_SPEC = {
     latin: [
       { name: "NotoSans", path: "noto" }
@@ -54,7 +55,17 @@ class Exports::PDF::Common::View
   end
 
   def self.default_font
-    FONT_SPEC[:latin].first[:name]
+    valid_custom_font? ? CUSTOM_FONT_NAME : FONT_SPEC[:latin].first[:name]
+  end
+
+  def self.valid_custom_font?
+    CustomStyle.current.present? &&
+      CustomStyle.current.export_font_regular.present? &&
+      CustomStyle.current.export_font_regular.local_file.present?
+  end
+
+  def self.valid_custom_font_cut?(cut)
+    cut.present? && cut.local_file.present?
   end
 
   def options
@@ -87,58 +98,75 @@ class Exports::PDF::Common::View
     end
   end
 
-  def register_fonts!(document) # rubocop:disable Metrics/AbcSize
-    FONT_SPEC[:latin].each do |font|
-      register_full_font!(font[:name], font_base_path.join(font[:path]), document)
+  def register_fonts!(document)
+    register_custom_font!(document) if Exports::PDF::Common::View.valid_custom_font?
+    register_font_group!(:latin, :register_full_font!, document)
+    register_font_group!(:fonts, :register_base_font!, document)
+    register_font_group!(:mono, :register_full_font!, document)
+  end
+
+  def register_font_group!(group, strategy, document)
+    FONT_SPEC[group].each do |font|
+      path = font_base_path.join(font[:path])
+      public_send(strategy, font[:name], path, document)
     end
-    FONT_SPEC[:fonts].each do |font|
-      register_base_font!(font[:name], font_base_path.join(font[:path]), document)
-    end
-    FONT_SPEC[:mono].each do |font|
-      register_full_font!(font[:name], font_base_path.join(font[:path]), document)
-    end
+  end
+
+  def style_entry(name, file, suffix)
+    { file: file, font: "#{name}-#{suffix}" }
+  end
+
+  def font_or_default(cut, default)
+    cut.present? && cut.local_file.present? ? cut.local_file : default
+  end
+
+  def custom_font_files
+    cs = CustomStyle.current
+    default = cs.export_font_regular.local_file
+    {
+      normal: default,
+      bold: font_or_default(cs.export_font_bold, default),
+      italic: font_or_default(cs.export_font_italic, default),
+      bold_italic: font_or_default(cs.export_font_bold_italic,
+                                   font_or_default(cs.export_font_bold,
+                                                   font_or_default(cs.export_font_italic, default)))
+    }.compact
+  end
+
+  STYLE_SUFFIX = {
+    normal: "Regular",
+    italic: "Italic",
+    bold: "Bold",
+    bold_italic: "BoldItalic"
+  }.freeze
+
+  def register_custom_font!(document)
+    register_font_family!(CUSTOM_FONT_NAME, custom_font_files, document)
   end
 
   def register_base_font!(family, font_path, document)
-    document.font_families[family] = {
-      normal: {
-        file: font_path.join("#{family}-Regular.ttf"),
-        font: "#{family}-Regular"
-      },
-      bold: {
-        file: font_path.join("#{family}-Bold.ttf"),
-        font: "#{family}-Bold"
-      },
-      italic: { # most i18n languages do not have italic, so we use regular instead
-        file: font_path.join("#{family}-Regular.ttf"),
-        font: "#{family}-Regular"
-      },
-      bold_italic: { # most i18n languages do not have bold-italic, so we use bold instead
-        file: font_path.join("#{family}-Bold.ttf"),
-        font: "#{family}-Bold"
-      }
-    }
+    register_font_family!(family, resolved_font_files(family, font_path, variant: :base), document)
   end
 
   def register_full_font!(family, font_path, document)
-    document.font_families[family] = {
-      normal: {
-        file: font_path.join("#{family}-Regular.ttf"),
-        font: "#{family}-Regular"
-      },
-      italic: {
-        file: font_path.join("#{family}-Italic.ttf"),
-        font: "#{family}-Italic"
-      },
-      bold: {
-        file: font_path.join("#{family}-Bold.ttf"),
-        font: "#{family}-Bold"
-      },
-      bold_italic: {
-        file: font_path.join("#{family}-BoldItalic.ttf"),
-        font: "#{family}-BoldItalic"
-      }
+    register_font_family!(family, resolved_font_files(family, font_path, variant: :full), document)
+  end
+
+  def register_font_family!(name, files_by_style, document)
+    document.font_families[name] = STYLE_SUFFIX.each_with_object({}) do |(style, suffix), acc|
+      acc[style] = style_entry(name, files_by_style.fetch(style), suffix)
+    end
+  end
+
+  def resolved_font_files(family, font_path, variant:)
+    # For base fonts, italic uses Regular, bold_italic uses Bold.
+    file_suffix = {
+      normal: "Regular",
+      italic: (variant == :full ? "Italic" : "Regular"),
+      bold: "Bold",
+      bold_italic: (variant == :full ? "BoldItalic" : "Bold")
     }
+    file_suffix.transform_values { |suffix| font_path.join("#{family}-#{suffix}.ttf") }
   end
 
   def title=(title)

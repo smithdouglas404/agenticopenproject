@@ -61,8 +61,13 @@ pl:
         end_after: "Seria spotkań kończy się"
         end_date: "Data zakończenia"
         iterations: "Wystąpienia"
+      meeting_participant:
+        invited: "Zaproszeni"
+        attended: "Uczestniczył"
     errors:
       models:
+        meeting_participant:
+          invalid_user: "%{name} nie jest prawidłowym uczestnikiem."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "W serii znajduje się jedno otwarte spotkanie, które nie jest uwzględnione w nowym harmonogramie. Dostosuj harmonogram tak, aby obejmował wszystkie istniejące spotkania."
@@ -77,10 +82,10 @@ pl:
       meeting_agenda: "Plan spotkania"
       meeting_section: "Sekcja"
       token/ical_meeting:
-        one: "iCal Meeting subscription"
-        few: "iCal Meeting subscription"
-        many: "iCal Meeting subscription"
-        other: "iCal Meeting subscription"
+        one: "Subskrypcja spotkań iCal"
+        few: "Subskrypcje spotkań iCal"
+        many: "Subskrypcje spotkań iCal"
+        other: "Subskrypcje spotkań iCal"
   activity:
     filter:
       meeting: "Spotkania"
@@ -98,7 +103,6 @@ pl:
           updated: "zmieniono z %{old_value} na %{value}"
           updated_html: "zmieniono z <i>%{old_value}</i> na <i>%{value}</i>"
   description_attended: "Obecny"
-  description_invite: "Zaproszony"
   events:
     meeting: Spotkanie zmienione
     meeting_agenda: Zmieniono plan spotkania
@@ -183,25 +187,25 @@ pl:
   label_version: "Wersja"
   label_time_zone: "Strefa czasowa"
   label_start_date: "Data rozpoczęcia"
-  label_subscribe_icalendar: "Subscribe to calendar"
+  label_subscribe_icalendar: "Subskrybuj kalendarz"
   meeting:
     participants:
       label:
-        participants: "Participants"
-        attended: "Attended"
-        mark_as_attended: "Mark as attended"
-        mark_all_as_attended: "Mark all as attended"
-        remove_participant: "Remove participant"
-        manage_participants: "Manage participants"
-        no_participants: "No participants"
-        show_all: "Show all"
+        participants: "Uczestnicy"
+        attended: "Uczestniczył"
+        mark_as_attended: "Oznacz jako obecnych"
+        mark_all_as_attended: "Oznacz wszystkich jako obecnych"
+        remove_participant: "Usuń uczestnika"
+        manage_participants: "Zarządzaj uczestnikami"
+        no_participants: "Brak uczestników"
+        show_all: "Pokaż wszystkie"
       text:
-        template: "These participants will be invited automatically to all future meetings as they are created."
-        manage_participants: "Search for and add project members as participants to this meeting."
-        search_for_members: "Search for project members"
+        template: "Uczestnicy ci będą automatycznie zapraszani na wszystkie przyszłe spotkania w miarę ich tworzenia."
+        manage_participants: "Wyszukaj członków projektu i dodaj ich jako uczestników tego spotkania."
+        search_for_members: "Wyszukaj członków projektu"
       blankslate:
-        heading: "No participants"
-        description: "There are no participants yet."
+        heading: "Brak uczestników"
+        description: "Nie ma jeszcze żadnych uczestników."
     attachments:
       template: "Załączone pliki zostaną uwzględnione we wszystkich przyszłych spotkaniach z tej serii."
       text: "Załączone pliki są dostępne dla wszystkich uczestników spotkania. Można je również przeciągać i upuszczać w notatkach do punktów planu spotkania."
@@ -213,7 +217,7 @@ pl:
       agenda_items: "Skopiuj pozycje porządku obrad"
       agenda_text: "Skopiuj agendę starego spotkania"
       participants: "Skopiuj listę uczestników"
-      to_clipboard: "Skopiuj do schowka"
+      to_clipboard: "Copy link to clipboard"
     email:
       send_emails: "Wyślij wiadomość e-mail do uczestników"
       send_invitation_emails: >
@@ -223,10 +227,10 @@ pl:
       open_my_meetings_link: "Przejdź do sekcji Moje spotkania"
       series:
         title: "[%{project_name}] Seria spotkań „%{title}”"
-        summary: "Użytkownik %{actor} utworzył nową serię spotkań „%{title}”"
-      series_rescheduled:
-        title: "[%{project_name}] Zmieniono terminy serii spotkań „%{title}”"
-        summary: "Użytkownik %{actor} zmienił harmonogram serii spotkań „%{title}”"
+        summary: "%{actor} has invited you to a new meeting series '%{title}'"
+      series_updated:
+        title: "[%{project_name}] Zaktualizowano serię spotkań „%{title}”"
+        summary: "Seria spotkań „%{title}” została zaktualizowana przez użytkownika %{actor}"
         old_schedule: "Stary harmonogram"
         new_schedule: "Nowy harmonogram"
       invited:
@@ -239,13 +243,15 @@ pl:
         summary_series: "Seria spotkań „%{title}” została anulowana przez użytkownika %{actor}."
         summary: "„%{title}” anulował użytkownik %{actor}."
         date_time: "Zaplanowana data/godzina"
-      rescheduled:
-        header: "Spotkanie „%{title}” zostało przełożone"
-        summary: "Spotkanie „%{title}” zostało przełożone przez użytkownika %{actor}"
-        body: "Spotkanie „%{title}” zostało przełożone przez użytkownika %{actor}."
+      updated:
+        header: "Spotkanie „%{title}” zostało zaktualizowane"
+        summary: "Spotkanie „%{title}” zostało zaktualizowane przez użytkownika %{actor}"
+        body: "Spotkanie „%{title}” zostało zaktualizowane przez użytkownika %{actor}."
         old_date_time: "Stara data/godzina"
         new_date_time: "Nowa data/godzina"
-    label_mail_all_participants: "Send email invite to participants"
+        old_location: "Stara lokalizacja"
+        new_location: "Nowa lokalizacja"
+    label_mail_all_participants: "Wyślij zaproszenie w wiadomości e-mail do uczestników"
     types:
       one_time: "Jednorazowe"
       recurring: "Cykliczne"
@@ -272,28 +278,28 @@ pl:
     export:
       your_meeting_export: "Spotkanie jest eksportowane"
       minutes:
-        footer_page_numbers: "P. %{current_page} of %{total_pages}"
-        author: "Author"
-        date: "Date"
-        time: "Time"
-        location: "Location"
-        title: "Minutes"
+        footer_page_numbers: "Str. %{current_page} z %{total_pages}"
+        author: "Autor"
+        date: "Data"
+        time: "Godzina"
+        location: "Lokalizacja"
+        title: "Protokół ze spotkania"
     export_pdf_dialog:
       title: Wyeksportuj PDF
       description: Wygeneruj do druku plik PDF z bieżącym stanem spotkania.
       templates:
         default:
-          label: Default
-          caption: The default template is suitable for most meetings and represent the current state.
+          label: Domyślnie
+          caption: Szablon domyślny jest odpowiedni dla większości spotkań i reprezentuje bieżący stan.
         minutes:
-          label: Minutes
-          caption: The minutes template is suitable for closed and archived meetings.
+          label: Protokół ze spotkania
+          caption: Szablon protokołu jest odpowiedni dla zamkniętych i zarchiwizowanych spotkań.
       first_page_header_left:
-        label: First page header left
-        caption: This text will appear on the first page at the left of the header.
+        label: Nagłówek pierwszej strony po lewej
+        caption: Ten tekst będzie wyświetlany na pierwszej stronie po lewej stronie nagłówka.
       author:
-        label: Author
-        caption: The author of the minutes will be displayed in the subtitle.
+        label: Autor
+        caption: Autor protokołu będzie wyświetlany w podtytule.
       include_participants:
         label: Dołącz listę uczestników
         caption: Lista uczestników zostanie zamieszczona nad planem spotkania.
@@ -330,6 +336,11 @@ pl:
           enable: "Włącz wysyłanie aktualizacji pocztą elektroniczną"
           disable: "Wyłącz wysyłanie aktualizacji pocztą elektroniczną"
       banner:
+        participants:
+          enabled: >
+            Po dodaniu lub usunięciu uczestników wszyscy uczestnicy otrzymają zaktualizowane zaproszenia do kalendarza za pośrednictwem wiadomości e-mail.
+          disabled: >
+            Aktualizacje kalendarza pocztą elektroniczną są wyłączone. Uczestnicy nie będą otrzymywać wiadomości e-mail z informacją o dodaniu lub usunięciu uczestników.
         onetime:
           enabled: >
             Wszyscy uczestnicy będą otrzymywać aktualizowane zaproszenia do kalendarza pocztą elektroniczną z informacjami o zmianach.
@@ -457,6 +468,12 @@ pl:
   text_meeting_agenda_open_are_you_sure: "To zastąpił wszystkie zmiany w protokołach! Czy chcesz kontynuować?"
   text_meeting_minutes_for_meeting: 'protokół ze spotkania "%{meeting}"'
   text_notificiation_invited: "Ten mail zawiera element ics dla poniższego spotkania:"
+  text_meeting_ics_description: >-
+    Link to meeting: %{url}
+  text_meeting_ics_meeting_series_description: >-
+    Link to meeting series: %{url}
+  text_meeting_occurrence_ics_description: >-
+    Link to meeting occurrence: %{url} Link to meeting series: %{series_url}
   text_meeting_empty_heading: "Spotkanie jest puste"
   text_meeting_empty_description1: "Zacznij od dodania pozycji planu spotkania poniżej. Każdy element może mieć prosty tytuł, ale możesz także dodać dodatkowe szczegóły, takie jak czas trwania i notatki."
   text_meeting_empty_description2: 'Możesz również dodawać odwołania do istniejących pakietów roboczych. Jeśli to zrobisz, powiązane notatki będą automatycznie widoczne na karcie „Spotkania” pakietu roboczego.'
@@ -479,11 +496,12 @@ pl:
   label_agenda_item_undisclosed_wp: "Pakiet roboczy nr %{id} nie jest widoczny"
   label_agenda_item_deleted_wp: "Usunięte odniesienie do pakietu roboczego"
   label_agenda_item_actions: "Działania punktów planu spotkania"
-  label_agenda_item_move_to_next_title: "Move to next meeting?"
-  label_agenda_item_move: "Move"
+  label_agenda_item_move_to_next_title: "Przenieść na następne spotkanie?"
+  label_agenda_item_move: "Przenieś"
   label_agenda_item_move_to_next: "Przenieś na następne spotkanie"
   label_agenda_item_move_to_backlog: "Przenieś do backlogu"
   label_agenda_item_move_to_current_meeting: "Przenieś do bieżącego spotkania"
+  label_agenda_item_move_to_section: "Move to section"
   label_agenda_item_move_to_top: "Przenieś na samą górę"
   label_agenda_item_move_to_bottom: "Przenieś na sam dół"
   label_agenda_item_move_up: "Przenieś wyżej"
@@ -532,21 +550,25 @@ pl:
   label_meeting_reopen_action: "Otwórz ponownie spotkanie"
   label_meeting_close_action: "Zamknij spotkanie"
   label_meeting_in_progress_action: "Rozpocznij spotkanie"
-  text_meeting_open_description: "To spotkanie jest otwarte. Możesz dodać/usunąć punkty planu spotkania i edytować je tak, jak chcesz. Gdy plan spotkania będzie gotowy, należy oznaczyć go jako „w toku” w celu dokumentowania wyników."
+  text_meeting_open_description: "Możesz dodawać/usuwać punkty planu spotkania i uczestników. Gdy plan spotkania będzie gotowy, oznacz go jako „w toku”, aby udokumentować wyniki."
   text_meeting_closed_description: "To spotkanie jest zamknięte. Nie można już dodawać/usuwać elementów planu spotkania."
-  text_meeting_in_progress_description: "To spotkanie jest w toku. Możesz udokumentować wyniki każdego punktu planu spotkania, zmienić ich kolejność, a nawet dodać nowe. Gdy spotkanie zostanie ukończone, możesz oznaczyć je jako zamknięte, aby je zablokować."
+  text_meeting_in_progress_description: "Można modyfikować plan spotkania, dokumentować wyniki każdego punktu i rejestrować obecność uczestników. Po zakończeniu spotkania można oznaczyć je jako zamknięte, aby je zablokować."
   text_meeting_open_dropdown_description: "Wszelkie dotychczasowe wyniki pozostaną niezmienione, ale użytkownicy nie będą mogli dodawać nowych wyników."
   text_meeting_in_progress_dropdown_description: "Udokumentuj wyniki, takie jak potrzeby informacyjne lub decyzje podjęte podczas spotkania."
   text_meeting_closed_dropdown_description: "To spotkanie jest zamknięte. Nie można już modyfikować pozycji planu spotkania ani wyników."
   text_meeting_not_editable_anymore: "Tego spotkania nie można już edytować."
   text_meeting_not_present_anymore: "To spotkanie zostało usunięte. Wybierz inne spotkanie."
-  label_add_work_package_to_meeting_dialog_title: "Dodaj pakiet roboczy do spotkania"
+  label_add_work_package_to_meeting_dialog_title: "Select meeting"
+  label_add_work_package_to_meeting_section_label: "Section"
   label_add_work_package_to_meeting_dialog_button: "Dodaj do spotkania"
-  label_meeting_selection_caption: "Ten pakiet roboczy można dodać tylko do nadchodzących lub trwających otwartych spotkań."
+  label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."
+  label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."
+  placeholder_section_select_meeting_first: "Meeting selection is required first"
+  text_add_work_package_to_meeting_form: "The work package will be added to the selected meeting or backlog as an agenda item."
   text_add_work_package_to_meeting_description: "Pakiet roboczy może zostać dodany do jednego lub wielu spotkań w celu omówienia. Wszelkie uwagi dotyczące tego pakietu są również widoczne tutaj."
   text_agenda_item_no_notes: "Brak uwag"
   text_agenda_item_not_editable_anymore: "Tego punktu planu spotkania nie można już edytować."
-  text_agenda_item_move_next_meeting: "This item will be moved to the next meeting on %{date} at %{time}."
+  text_agenda_item_move_next_meeting: "Punkt ten zostanie przeniesiony na następne spotkanie w dniu %{date} o %{time}."
   text_agenda_item_moved_to_next_meeting: "Punkt planu spotkania przeniesiono na następne spotkanie w dniu %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "Ten pakiet roboczy nie został jeszcze zaplanowany w planie nadchodzącego spotkania."
   text_agenda_item_move_next_meeting_cancelled: "Nie można przenieść na następne spotkanie, ponieważ zostało ono anulowane."
@@ -557,26 +579,26 @@ pl:
   my_account:
     access_tokens:
       token/ical_meeting:
-        title: "iCalendar for meetings"
-        text_hint: "iCalendar meeting tokens allow users to subscribe to all their meetings and view up-to-date meeting information in external clients."
-        disabled_text: "iCalendar meeting subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
-        empty_text_hint: 'To add an iCalendar meeting token, go to the <a href="%{path}">meetings section</a> and subscribe from there.'
-        add_button: "Subscribe to calendar"
+        title: "iCalendar dla spotkań"
+        text_hint: "Tokeny spotkań aplikacji iCalendar umożliwiają użytkownikom subskrybowanie wszystkich ich spotkań i wyświetlanie aktualnych informacji o spotkaniach w klientach zewnętrznych."
+        disabled_text: "Subskrypcje spotkań w iCalendar nie zostały włączone przez administratora. Aby użyć tej funkcji, skontaktuj się z administratorem."
+        empty_text_hint: 'Aby dodać token spotkania iCalendar, przejdź do <a href="%{path}">sekcji spotkań</a> i tam dokonaj subskrypcji.'
+        add_button: "Subskrybuj kalendarz"
   my:
     access_token:
       dialog:
         token/ical_meeting:
-          dialog_title: "New iCal subscription token for meetings"
-          dialog_body: "This token will generate an iCal subscription URL that lets you view all your meetings in an external calendar application."
-          create_button: "Create subscription"
-          name_label: "Token name"
-          name_caption: 'You can name it after where you will use it, such as"My phone" or "Work computer.'
+          dialog_title: "Nowy token subskrypcji spotkań iCal"
+          dialog_body: "Ten token wygeneruje adres URL subskrypcji iCal, który umożliwia wyświetlanie wszystkich Twoich spotkań w zewnętrznej aplikacji kalendarza."
+          create_button: "Utwórz subskrypcję"
+          name_label: "Nazwa tokena"
+          name_caption: 'You can name it after where you will use it, such as "My phone" or "Work computer".'
       created_dialog:
         token/ical_meeting:
-          title: "An iCal meeting subscription token has been generated"
-          body: "Treat the following URL as you would a password. Anyone who has access to it can view all your meetings."
-          warning: "This is the only time you will see this token. Make sure to copy it now."
+          title: "Wygenerowano token subskrypcji spotkania iCal"
+          body: "Poniższy adres URL traktuj jak hasło. Każdy, kto ma do niego dostęp, może wyświetlić wszystkie Twoje spotkania."
+          warning: "Jest to jedyny raz, gdy zobaczysz ten token. Koniecznie skopiuj go teraz."
       revocation:
         token/ical_meeting:
-          notice_success: "The iCalendar meeting subscription has been revoked successfully."
-          notice_failure: "Failed to revoke iCalendar meeting subscription: %{error}"
+          notice_success: "Subskrypcja spotkania iCalendar została unieważniona."
+          notice_failure: "Nie udało się unieważnić subskrypcji spotkania iCalendar: %{error}"

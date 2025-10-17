@@ -49,7 +49,7 @@ sv:
   label_is_not_work_package_with_descendants: "is not (includes descendants)"
   label_work_package_attributes: "Arbetspaketsattribut"
   label_less: "<"
-  label_logged_by_reporting: "Logged by"
+  label_logged_by_reporting: "Loggad av"
   label_money: "Kontantvärde"
   label_month_reporting: "Månad (spenderade)"
   label_new_report: "Nya kostnadsrapport"
@@ -91,14 +91,14 @@ sv:
     timesheet:
       title: "Your PDF timesheet export"
       button: "Export PDF timesheet"
-      timesheet: "Timesheet"
+      timesheet: "Tidrapport"
       time: "Tid"
       sums_hours: Sums
       overview_per_user_total: "Overview: Total hours per user"
-      overview_per_user_day: "Overview: Hours per user per day"
+      overview_per_user_day: "Översikt: Timmar per användare och dag"
     cost_reports:
       title: "Your Cost Reports XLS export"
-      start_time: "Start time"
+      start_time: "Starttid"
       end_time: "End time"
   reporting:
     group_by:

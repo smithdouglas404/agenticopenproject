@@ -82,6 +82,7 @@ Rails.application.routes.draw do
       collection do
         get :dialog, controller: "work_package_meetings_tab", action: :add_work_package_to_meeting_dialog
         post :create, controller: "work_package_meetings_tab", action: :add_work_package_to_meeting
+        get :refresh_form, controller: "work_package_meetings_tab", action: :refresh_form
       end
     end
   end
@@ -112,6 +113,8 @@ Rails.application.routes.draw do
         put :move
         get :move_to_next_dialog, action: :move_to_next_meeting_dialog
         post :move_to_next, action: :move_to_next_meeting
+        put :move_to_section_dialog
+        post :move_to_section
       end
     end
     resources :sections, controller: "meeting_sections" do
@@ -120,7 +123,7 @@ Rails.application.routes.draw do
         get :clear_backlog_dialog
       end
       member do
-        get :cancel_edit
+        post :cancel_edit
         put :drop
         put :move
       end

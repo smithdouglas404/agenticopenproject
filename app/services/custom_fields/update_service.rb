@@ -40,6 +40,10 @@ module CustomFields
 
     private
 
+    def set_attributes_params(params)
+      super.except(:field_format)
+    end
+
     def recalculate_values
       return unless recalculate_values?
 

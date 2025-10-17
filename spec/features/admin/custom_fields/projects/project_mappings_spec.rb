@@ -42,7 +42,7 @@ RSpec.describe "Project Custom Field Mappings", :js do
     create(:project_custom_field_project_mapping, project_custom_field:, project: archived_project)
   end
 
-  let(:project_custom_field_mappings_page) { Pages::Admin::CustomFields::CustomFieldsProjects::ProjectMappings.new }
+  let(:project_custom_field_mappings_page) { Pages::Admin::Settings::ProjectCustomFields::ProjectMappings.new }
 
   context "with insufficient permissions" do
     it "is not accessible" do

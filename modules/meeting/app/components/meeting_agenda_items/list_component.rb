@@ -64,7 +64,7 @@ module MeetingAgendaItems
     end
 
     def sections_except_backlog
-      @meeting.sections.reject(&:backlog?)
+      @meeting.sections.reject { |s| s.backlog? || !s.persisted? }
     end
   end
 end

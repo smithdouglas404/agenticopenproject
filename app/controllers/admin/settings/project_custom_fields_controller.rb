@@ -114,38 +114,48 @@ module Admin::Settings
     end
 
     def move
-      call = CustomFields::UpdateService.new(user: current_user, model: @custom_field).call(
+      result = CustomFields::UpdateService.new(user: current_user, model: @custom_field).call(
         move_to: params[:move_to]&.to_sym
       )
 
-      if call.success?
+      if result.success?
         update_sections_via_turbo_stream(project_custom_field_sections: @project_custom_field_sections)
       else
-        # TODO: handle error
+        render_error_flash_message_via_turbo_stream(
+          message: join_flash_messages(result.errors)
+        )
       end
 
       respond_with_turbo_streams
     end
 
     def drop
-      call = ::ProjectCustomFields::DropService.new(user: current_user, project_custom_field: @custom_field).call(
+      result = ::ProjectCustomFields::DropService.new(user: current_user, project_custom_field: @custom_field).call(
         target_id: params[:target_id],
         position: params[:position]
       )
 
-      if call.success?
-        drop_success_streams(call)
+      if result.success?
+        drop_success_streams(result)
       else
-        # TODO: handle error
+        render_error_flash_message_via_turbo_stream(
+          message: join_flash_messages(result.errors)
+        )
       end
 
       respond_with_turbo_streams
     end
 
     def destroy
-      @custom_field.destroy
+      result = CustomFields::DeleteService.new(user: current_user, model: @custom_field).call
 
-      update_section_via_turbo_stream(project_custom_field_section: @custom_field.project_custom_field_section.reload)
+      if result.success?
+        update_section_via_turbo_stream(project_custom_field_section: @custom_field.project_custom_field_section.reload)
+      else
+        render_error_flash_message_via_turbo_stream(
+          message: join_flash_messages(result.errors)
+        )
+      end
 
       respond_with_turbo_streams
     end

@@ -49,6 +49,14 @@ module Admin
           "(#{model.short})"
         end
 
+        def secondary_text
+          if model.short.present?
+            "(#{model.short})"
+          elsif model.score.present?
+            model.score.to_s
+          end
+        end
+
         def show_form? = @show_edit_form || model.new_record?
 
         def children_count
@@ -63,23 +71,29 @@ module Admin
           model.sort_order == model.parent.children.length - 1
         end
 
-        def menu_items(menu)
-          edit_action_item(menu)
-          menu.with_divider
-          add_above_action_item(menu)
-          add_below_action_item(menu)
-          add_sub_item_action_item(menu)
-          menu.with_divider
-          if !first_item?
-            move_to_top_action_item(menu)
-            move_up_action_item(menu)
+        def menu_items(menu) # rubocop:disable Metrics/AbcSize
+          with_item_group(menu) { edit_action_item(menu) }
+
+          with_item_group(menu) do
+            add_above_action_item(menu)
+            add_below_action_item(menu)
+            add_sub_item_action_item(menu)
           end
-          if !last_item?
-            move_down_action_item(menu)
-            move_to_bottom_action_item(menu)
+
+          with_item_group(menu) { change_parent_item(menu) }
+
+          with_item_group(menu) do
+            unless first_item?
+              move_to_top_action_item(menu)
+              move_up_action_item(menu)
+            end
+            unless last_item?
+              move_down_action_item(menu)
+              move_to_bottom_action_item(menu)
+            end
           end
-          menu.with_divider
-          deletion_action_item(menu)
+
+          with_item_group(menu) { deletion_action_item(menu) }
         end
 
         private
@@ -119,6 +133,15 @@ module Admin
             content_arguments: { data: { turbo_frame: ItemsComponent.wrapper_key } },
             href: new_child_custom_field_item_path(@root.custom_field_id, model, position:)
           ) { it.with_leading_visual_icon(icon: "op-arrow-in") }
+        end
+
+        def change_parent_item(menu)
+          menu.with_item(
+            label: I18n.t(:label_change_parent),
+            tag: :a,
+            content_arguments: { data: { controller: "async-dialog" } },
+            href: change_parent_custom_field_item_path(custom_field_id: @root.custom_field_id, id: model.id)
+          ) { it.with_leading_visual_icon(icon: "arrow-switch") }
         end
 
         def move_to_top_action_item(menu)
@@ -173,7 +196,7 @@ module Admin
           menu.with_item(label: I18n.t(:button_delete),
                          scheme: :danger,
                          tag: :a,
-                         href: deletion_dialog_custom_field_item_path(custom_field_id: @root.custom_field_id, id: model.id),
+                         href: delete_custom_field_item_path(custom_field_id: @root.custom_field_id, id: model.id),
                          content_arguments: { data: { controller: "async-dialog" } }) do |item|
             item.with_leading_visual_icon(icon: :trash)
           end

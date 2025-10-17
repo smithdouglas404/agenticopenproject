@@ -78,4 +78,36 @@ FactoryBot.define do
       )
     end
   end
+
+  factory :custom_style_with_export_font_regular, class: "CustomStyle" do
+    export_font_regular do
+      Rack::Test::UploadedFile.new(
+        Rails.public_path.join("fonts/noto/NotoSans-Regular.ttf")
+      )
+    end
+  end
+
+  factory :custom_style_with_export_font_bold, class: "CustomStyle" do
+    export_font_bold do
+      Rack::Test::UploadedFile.new(
+        Rails.public_path.join("fonts/noto/NotoSans-Bold.ttf")
+      )
+    end
+  end
+
+  factory :custom_style_with_export_font_italic, class: "CustomStyle" do
+    export_font_italic do
+      Rack::Test::UploadedFile.new(
+        Rails.public_path.join("fonts/noto/NotoSans-Italic.ttf")
+      )
+    end
+  end
+
+  factory :custom_style_with_export_font_bold_italic, class: "CustomStyle" do
+    export_font_bold_italic do
+      Rack::Test::UploadedFile.new(
+        Rails.public_path.join("fonts/noto/NotoSans-BoldItalic.ttf")
+      )
+    end
+  end
 end

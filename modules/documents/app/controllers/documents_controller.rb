@@ -97,7 +97,7 @@ class DocumentsController < ApplicationController
 
   def destroy
     @document.destroy
-    redirect_to controller: "/documents", action: "index", project_id: @project
+    redirect_to controller: "/documents", action: "index", project_id: @project, status: :see_other
   end
 
   private

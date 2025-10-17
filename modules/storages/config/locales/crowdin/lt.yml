@@ -24,7 +24,7 @@ lt:
       storages/sharepoint_storage:
         host: Sharepoint Site URL
         library: Library ID
-        name: Name
+        name: Vardas
         site: Site ID
       storages/storage:
         authentication_method: Authentication Method
@@ -32,6 +32,7 @@ lt:
         drive: Disko ID
         host: Serveris
         name: Vardas
+        password: Application password
         provider_type: Tiekėjo tipas
         tenant: Direktorijos (savininko) ID
     errors:
@@ -62,7 +63,7 @@ lt:
               op_application_not_installed: panašu neturi įdiegtos „OpenProject integracijos“ aplikacijos. Prašome ją įdiegti ir bandyti dar kartą.
             password:
               invalid_password: netinkamas.
-              unknown_error: nepavyko patikrinti. Prašome patikrinti jūsų saugyklos jungtį ir bandyti dar kartą.
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: Failas
       storages/storage: Saugykla
@@ -183,8 +184,6 @@ lt:
           not_found: The destination folder %{folder} could not be found on %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Baigti be jo
-      done_complete_setup: Atlikta, baigti nustatymą
       done_continue: Baigta, tęsti
       open_storage: Open file storage
       replace_oauth_application: Keisti OpenProject OAuth
@@ -198,16 +197,13 @@ lt:
         sharepoint: Allow OpenProject to access SharePoint data using OAuth.
       redirect_uri_incomplete:
         one_drive: Baigti nustatymą su tinkamu URI peradresavimu.
-        sharepoint: Complete the setup with the correct URI redirection.
+        sharepoint: Baigti nustatymą su tinkamu URI peradresavimu.
     confirm_replace_oauth_application: Atlikus šį veiksmą bus iš naujo nustatyti dabartiniai OAuth įgaliojimai. Patvirtinę turėsite iš naujo įvesti įgaliojimus saugyklos teikėjo klientui, o visi nuotoliniai naudotojai turės iš naujo autorizuotis OpenProject. Ar tikrai norite tęsti?
     confirm_replace_oauth_client: Atlikus šį veiksmą bus iš naujo nustatyti dabartiniai OAuth įgaliojimai. Patvirtinę turėsite įvesti naujus saugojimo paslaugų teikėjo įgaliojimus, o visi naudotojai turės iš naujo atlikti autorizaciją %{provider_type} . Ar tikrai norite tęsti?
     delete_warning:
-      input_delete_confirmation: Įveskite failų saugyklos pavadinimą %{file_storage}, kad patvirtintumėte trynimą.
-      irreversible_notice: Failų saugyklos trynimas yra neatstatomas veiksmas.
-      project_storage: 'Ar tikrai norite ištrinti %{file_storage} iš šio projekto? Šio veiksmo patvirtinimui prašome įvesti saugyklos pavadinimą lauke žemiau, tai:'
       project_storage_delete_result_1: Išims iš šio projekto darbo paketų visas nuorodas į tos saugyklos failus ir aplankus.
       project_storage_delete_result_2: Jei saugykla turi automatiškai tvarkomą projekto aplanką, tai ir jo failai bus visam laikui ištrinti.
-      storage: 'Ar tikrai norite ištrinti %{file_storage}? Šio veiksmo patvirtinimui prašome įvesti saugyklos pavadinimą lake žemiau:'
+      storage: 'Are you sure you want to delete %{file_storage}? This will:'
       storage_delete_result_1: Išimti visus nustatymus visuose projektuose, naudojančiuose šią saugyklą.
       storage_delete_result_2: Išimti iš visų projektų darbo paketų visas nuorodas į failus ir aplankus šioje saugykloje.
       storage_delete_result_3: Jei saugykla turi automatiškai valdomus projekto aplankus, jie ir juose esantys failai bus ištrinti visam laikui.
@@ -236,10 +232,11 @@ lt:
       openproject_oauth: OpenProject OAuth
       project_folders: Projekto aplankai
       redirect_uri: Peradresavimo URI
+      sharepoint_oauth: Azure OAuth
       storage_audience_blank: No audience has been configured.
       storage_audience_description: Exchanging tokens for audience "%{audience}".
       storage_audience_idp: Using access token obtained by identity provider during login, regardless of audience.
-      storage_oauth: Nextcloud OAuth
+      storage_oauth: Storage OAuth
       storage_provider: Saugyklos tiekėjas
       token_exchange: Token Exchange
     health:
@@ -257,7 +254,7 @@ lt:
           group_folder_app: 'Dependency: Group Folders'
           group_folder_contents: Group folder has expected content
           group_folder_presence: Group folder exists
-          header: Automatically managed project folders
+          header: Automatiškai valdomi projekto aplankai
           userless_access: Server-side request authentication
         authentication:
           existing_token: User token
@@ -278,6 +275,7 @@ lt:
           drive_id_exists: Drive exists
           drive_id_format: Drive ID format
           header: Configuration
+          host: Host URL
           host_url_accessible: Host URL accessible
           storage_configured: Configuration complete
           tenant_id: Tenant ID
@@ -402,8 +400,8 @@ lt:
       sharepoint:
         application_link_text: SharePoint site
         integration: SharePoint Administration / OpenProject
-        oauth_configuration: Copy these values from the desired application in the %{application_link_text}.
-        provider_configuration: Please make sure you have administration privileges in the %{application_link_text} or contact your Microsoft administrator before doing the setup. In the portal, you also need to register an Azure application or use an existing one for authentication.
+        oauth_configuration: Kopijuoti šias reikšmes iš norimos aplikacijos %{application_link_text}.
+        provider_configuration: Prašome įsitikinti, kad turite %{application_link_text} administratoriaus privilegijas arba susisiekite su savo Microsoft administratoriumi prieš darydami nustatymus. Portale jums taipogi reikia registruoti Azure aplikaciją arba naudoti esamą autentifikacijai.
       type: 'Prašome įsitikinti, kad turite administratoriaus teises jūsų Nextcloud egzemplioriuje bei kad įdiegtos šios aplikacijos, prieš tęsiant nustatymą:'
       type_link_text: "„Integration OpenProject“"
     label_active: Aktyvus
@@ -484,7 +482,6 @@ lt:
         subtitle_short: Leisti OpenProject kurti aplankus projektams automatiškai
         title: Automatiškai valdomi projekto aplankai
       project_settings:
-        delete: Trinti failų saugyklą
         edit: Keisti šio projekto failų saugyklą
         members_connection_status: Narių jungties būsena
         new: Pridėti failų saugyklą šiam projektui
@@ -505,8 +502,9 @@ lt:
         name: OneDrive
         name_placeholder: pvz. OneDrive
       sharepoint:
-        label_oauth_client_id: Azure OAuth Application (client) ID
-        label_oauth_client_secret: Azure OAuth Client Secret Value
+        drive_description: OpenProject access-managed document library
+        label_oauth_client_id: Azure OAuth Application (kliento) ID
+        label_oauth_client_secret: Azure OAuth kliento slapta reikšmė
         name: SharePoint
         name_placeholder: e.g. SharePoint
     show_attachments_toggle:

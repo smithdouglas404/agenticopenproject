@@ -24,7 +24,7 @@ ms:
       storages/sharepoint_storage:
         host: Sharepoint Site URL
         library: Library ID
-        name: Name
+        name: Nama
         site: Site ID
       storages/storage:
         authentication_method: Kaedah Pengesahan
@@ -32,6 +32,7 @@ ms:
         drive: ID Pemacu
         host: Hos
         name: Nama
+        password: Application password
         provider_type: Jenis penyedia
         tenant: ID Direktori (penyewa) 
     errors:
@@ -62,7 +63,7 @@ ms:
               op_application_not_installed: kelihatan tidak mempunyai aplikasi "Integrasi OpenProject" yang terpasang. Sila pasangkannya terlebih dahulu dan cuba sekali lagi.
             password:
               invalid_password: tidak sah.
-              unknown_error: tidak dapat disahkan. Sila periksa sambungan storan anda dan cuba lagi.
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: Fail
       storages/storage: Penyimpanan
@@ -183,8 +184,6 @@ ms:
           not_found: Folder destinasi %{folder} tidak dapat ditemui pada %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Lengkap tanpanya
-      done_complete_setup: Selesai, penyediaan lengkap
       done_continue: Selesai, teruskan
       open_storage: Buka storan fail
       replace_oauth_application: Ganti OpenProject OAuth
@@ -198,16 +197,13 @@ ms:
         sharepoint: Allow OpenProject to access SharePoint data using OAuth.
       redirect_uri_incomplete:
         one_drive: Lengkapkan penyediaan dengan pengubah hala URI yang betul.
-        sharepoint: Complete the setup with the correct URI redirection.
+        sharepoint: Lengkapkan penyediaan dengan pengubah hala URI yang betul.
     confirm_replace_oauth_application: Tindakan ini akan menetapkan semula kelayakan OAuth semasa. Selepas pengesahan, anda perlu masukkan semula kelayakan di penyedia storan dan semua pengguna jauh perlu membenarkan OpenProject sekali lagi. Adakah anda pasti anda mahu teruskan?
     confirm_replace_oauth_client: Tindakan ini akan menetapkan semula kelayakan OAuth semasa. Selepas pengesahan, anda perlu masukkan semula kelayakan di penyedia storan dan semua pengguna jauh perlu membenarkan %{provider_type} sekali lagi. Adakah anda pasti anda mahu teruskan?
     delete_warning:
-      input_delete_confirmation: Masukkan nama fail storan %{file_storage} untuk mengesahkan pembuangan.
-      irreversible_notice: Memadam fail storan ialah tindakan yang tidak dapat dipulihkan.
-      project_storage: 'Adakah anda pasti anda ingin memadamkan %{file_storage} daripada projek ini? Untuk mengesahkan tindakan ini sila perkenalkan nama storan di dalam ruangan di bawah, ini akan:'
       project_storage_delete_result_1: Padam semua pautan dari pakej kerja projek ini ke fail dan folder storan tersebut.
       project_storage_delete_result_2: Sekiranya storan ini mempunyai folder projek yang dikendalikan secara automatik, folder ini serta failnya akan dipadamkan selamanya.
-      storage: 'Adakah anda pasti anda ingin memadam %{file_storage}? Untuk mengesahkan tindakan ini sila perkenalkan nama storan di dalam ruangan di bawah, ini akan:'
+      storage: 'Are you sure you want to delete %{file_storage}? This will:'
       storage_delete_result_1: Padam semua penyediaan storan untuk semua projek yang menggunakan storan ini.
       storage_delete_result_2: Padam semua pautan daripada pakej kerja semua projek ke fail dan folder storan tersebut.
       storage_delete_result_3: Sekiranya storan ini mempunyai folder projek yang dikendalikan secara automatik, folder tersebut serta fail yang terkandung akan dipadamkan selamanya.
@@ -236,10 +232,11 @@ ms:
       openproject_oauth: OAuth OpenProject
       project_folders: Folder projek
       redirect_uri: ' Pengubah hala URI'
+      sharepoint_oauth: Azure OAuth
       storage_audience_blank: No audience has been configured.
       storage_audience_description: Exchanging tokens for audience "%{audience}".
       storage_audience_idp: Using access token obtained by identity provider during login, regardless of audience.
-      storage_oauth: Nextcloud OAuth
+      storage_oauth: Storage OAuth
       storage_provider: Penyedia storan
       token_exchange: Token Exchange
     health:
@@ -257,7 +254,7 @@ ms:
           group_folder_app: 'Dependency: Group Folders'
           group_folder_contents: Group folder has expected content
           group_folder_presence: Group folder exists
-          header: Automatically managed project folders
+          header: Folder projek yang dikendalikan secara automatik
           userless_access: Server-side request authentication
         authentication:
           existing_token: User token
@@ -278,6 +275,7 @@ ms:
           drive_id_exists: Drive exists
           drive_id_format: Drive ID format
           header: Configuration
+          host: Host URL
           host_url_accessible: Host URL accessible
           storage_configured: Configuration complete
           tenant_id: Tenant ID
@@ -396,8 +394,8 @@ ms:
       sharepoint:
         application_link_text: SharePoint site
         integration: SharePoint Administration / OpenProject
-        oauth_configuration: Copy these values from the desired application in the %{application_link_text}.
-        provider_configuration: Please make sure you have administration privileges in the %{application_link_text} or contact your Microsoft administrator before doing the setup. In the portal, you also need to register an Azure application or use an existing one for authentication.
+        oauth_configuration: Salin nilai-nilai ini dari aplikasi yang diingini di %{application_link_text}.
+        provider_configuration: Sila pastikan anda mempunyai hak pentadbiran dalam %{application_link_text} atau hubungi pentadbir Microsoft anda sebelum membuat penyediaan. Anda juga perlu mendaftar aplikasi Azure atau menggunakan yang sedia ada untuk pengesahan di portal.
       type: 'Sila pastikan anda mempunyai hak keistimewaan pentadbir di, contohnya, Nextcloud, dan mempunyai aplikasi berikut dipasangkan sebelum membuat penyediaan:'
       type_link_text: "\"Integrasi OpenProject\""
     label_active: Aktif
@@ -479,7 +477,6 @@ ms:
         subtitle_short: Benarkan OpenProject ciptakan folder mengikut projek secara automatik.
         title: Folder projek yang dikendalikan secara automatik
       project_settings:
-        delete: Padamkan storan fail
         edit: Edit storan fail ke projek ini
         members_connection_status: Status sambungan ahli
         new: Tambah storan fail ke projek ini
@@ -500,8 +497,9 @@ ms:
         name: OneDrive
         name_placeholder: cth. OneDrive
       sharepoint:
-        label_oauth_client_id: Azure OAuth Application (client) ID
-        label_oauth_client_secret: Azure OAuth Client Secret Value
+        drive_description: OpenProject access-managed document library
+        label_oauth_client_id: ID Aplikasi (pelanggan) OAuth Azure 
+        label_oauth_client_secret: Nilai Pelanggan Rahsia OAuth Azure
         name: SharePoint
         name_placeholder: e.g. SharePoint
     show_attachments_toggle:

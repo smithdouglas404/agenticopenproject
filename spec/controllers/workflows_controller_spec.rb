@@ -253,8 +253,8 @@ RSpec.describe WorkflowsController do
 
       allow(Workflows::BulkUpdateService)
         .to receive(:new)
-        .with(role:, type:)
-        .and_return(service)
+              .with(role: role, type: type, tab: "always")
+              .and_return(service)
 
       service
     end
@@ -279,7 +279,7 @@ RSpec.describe WorkflowsController do
 
     it "redirects to edit" do
       expect(response)
-        .to redirect_to edit_workflows_path(role_id: role.id, type_id: type.id)
+        .to redirect_to edit_workflows_path(role_id: role.id, type_id: type.id, tab: "always")
     end
   end
 

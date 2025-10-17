@@ -22,16 +22,17 @@ zh-CN:
         storage: 存储
         storage_url: 存储 URL
       storages/sharepoint_storage:
-        host: Sharepoint Site URL
-        library: Library ID
-        name: Name
-        site: Site ID
+        host: Sharepoint 站点 URL
+        library: 库 ID
+        name: 名称
+        site: 站点 ID
       storages/storage:
         authentication_method: 身份验证方式
         creator: 创建者
         drive: 驱动器 ID
         host: 主机
         name: 名称
+        password: 应用密码
         provider_type: 提供商类型
         tenant: 目录 (租户) ID
     errors:
@@ -62,7 +63,7 @@ zh-CN:
               op_application_not_installed: 似乎没有安装应用“OpenProject 集成”。请先安装，然后重试。
             password:
               invalid_password: 无效。
-              unknown_error: 无法验证。请检查您的存储区连接，然后重试。
+              unknown_error: 无法通过文件存储提供商的验证。请确认连接是否正常。
     models:
       file_link: 文件
       storages/storage: 存储
@@ -183,8 +184,6 @@ zh-CN:
           not_found: '%{storage_name} 上找不到目标文件夹 %{folder} 。'
   storages:
     buttons:
-      complete_without_setup: 没有它就完成
-      done_complete_setup: 完成，完成设置
       done_continue: 完成, 继续
       open_storage: 打开文件存储
       replace_oauth_application: 替换 OpenProject OAuth
@@ -195,19 +194,16 @@ zh-CN:
       oauth_client_incomplete:
         nextcloud: 允许 OpenProject 使用 OAuth 访问 Nextcloud 数据。
         one_drive: 允许 OpenProject 使用 OAuth 访问Azure 数据来连接 OneDrive。
-        sharepoint: Allow OpenProject to access SharePoint data using OAuth.
+        sharepoint: 允许 OpenProject 使用 OAuth 访问 SharePoint 数据。
       redirect_uri_incomplete:
         one_drive: 使用正确的 URI 重定向完成设置。
-        sharepoint: Complete the setup with the correct URI redirection.
+        sharepoint: 使用正确的 URI 重定向完成设置。
     confirm_replace_oauth_application: 此操作将重置当前的 OAuth 凭据。确认后，您必须在存储提供商处重新输入凭据，并且所有远程用户都必须再次针对 OpenProject 进行授权。您确定要继续吗？
     confirm_replace_oauth_client: 此操作将重置当前的 OAuth 凭据。确认后，您必须输入存储提供商的新凭据，并且所有用户都必须再次针对 %{provider_type} 进行授权。您确定要继续吗？
     delete_warning:
-      input_delete_confirmation: 输入文件存储区名称 %{file_storage} 以确认删除。
-      irreversible_notice: 删除文件存储区是不可逆转的操作。
-      project_storage: '确定要从此项目中删除 %{file_storage} 吗？要确认此操作，请在下面的字段中输入存储区名称，这将：'
       project_storage_delete_result_1: 从此项目的工作包中移除该存储区的文件和文件夹的所有链接。
       project_storage_delete_result_2: 如果这个存储库具有自动托管的项目文件夹，那么该文件夹及其文件将被永久删除。
-      storage: '您确定要删除 %{file_storage} 吗？请在下面的字段中输入存储名称以确认此操作。进行此操作将会：'
+      storage: '确定要删除 %{file_storage} 吗？此操作将：'
       storage_delete_result_1: 删除所有使用此存储的项目的所有存储设置。
       storage_delete_result_2: 从所有项目的工作包中删除所有链接到该存储的文件和文件夹。
       storage_delete_result_3: 如果此存储具有自动托管的项目文件夹，这些文件夹及其包含的文件将被永久删除。
@@ -236,10 +232,11 @@ zh-CN:
       openproject_oauth: OpenProject OAuth
       project_folders: 项目文件夹
       redirect_uri: 重定向 URI
+      sharepoint_oauth: Azure OAuth
       storage_audience_blank: 没有配置受众。
       storage_audience_description: 为受众 “%{audience}” 交换令牌。
       storage_audience_idp: 使用身份提供者在登录时获得的访问令牌，不管受众如何。
-      storage_oauth: Nextcloud OAuth
+      storage_oauth: 存储 OAuth
       storage_provider: 存储提供商
       token_exchange: 令牌交换
     health:
@@ -278,6 +275,7 @@ zh-CN:
           drive_id_exists: 驱动器已存在
           drive_id_format: 驱动器 ID 格式
           header: 配置
+          host: 主机 URL
           host_url_accessible: 主机 URL 可访问
           storage_configured: 配置完成
           tenant_id: 租户 ID
@@ -317,15 +315,15 @@ zh-CN:
         oidc_token_acquisition_failed: 您的 OpenID Connect 设置中没有指明令牌的接收方，也没有提供令牌交换功能。请查看我们的文档以获取更多信息。
         oidc_token_exchange_failed: 您的 OpenID Connect 提供商上的 Token Exchange 设置似乎存在问题。请检查其配置并重试。
         oidc_token_refresh_failed: 当检查你对这个存储的访问权限时出现错误。详情请查看服务器日志。
-        sp_client_cant_delete_folder: The client is having trouble deleting folders in SharePoint. Please check the setup documentation for your storage.
-        sp_client_id_missing: The configured OAuth 2 client id is missing for SharePoint. Please check the configuration.
-        sp_client_secret_missing: The configured OAuth 2 client secret is missing for SharePoint. Please check the configuration.
-        sp_client_write_permission_missing: The client seems to have write permissions missing in SharePoint. Please check the setup documentation for your storage.
-        sp_existing_test_folder: The folder %{folder_name} needed for testing already exists in SharePoint. Please delete it and try again.
-        sp_oauth_request_error: The user-bound request to SharePoint failed. Please check the server logs for further information.
-        sp_oauth_token_missing: OpenProject cannot test the user level communication with SharePoint as the user did not yet link their SharePoint account.
-        sp_tenant_id_missing: The configured directory (tenant) id is missing for SharePoint. Please check the configuration.
-        sp_unexpected_content: Unexpected content found in the SharePoint drive.
+        sp_client_cant_delete_folder: 客户在删除 SharePoint 中的文件夹时遇到问题。请查看存储的设置文档。
+        sp_client_id_missing: SharePoint 缺少配置的 OAuth 2 客户端 id。请检查配置。
+        sp_client_secret_missing: SharePoint 缺少配置的 OAuth 2 客户端密钥。请检查配置。
+        sp_client_write_permission_missing: 客户端似乎在 SharePoint 中没有写入权限。请查看您的存储空间的设置文档。
+        sp_existing_test_folder: 测试所需的文件夹 %{folder_name} 已存在于 SharePoint 中。请删除此文件夹并重试。
+        sp_oauth_request_error: 向 SharePoint 发送的用户绑定请求失败。请查看服务器日志以获取更多信息。
+        sp_oauth_token_missing: OpenProject 无法测试与 SharePoint 的用户级通信，因为用户尚未关联他们的 SharePoint 帐户。
+        sp_tenant_id_missing: SharePoint 缺少配置的目录（租户）id。请检查配置。
+        sp_unexpected_content: 在 SharePoint 驱动器中发现意外内容。
         unknown_error: 连接无法验证。出现未知错误。请查看服务器日志以获取更多信息。
       label_error: 错误
       label_failed: 失败
@@ -394,10 +392,10 @@ zh-CN:
       setting_up_storages: 如需设置文件存储，请访问
       setting_up_storages_non_admin: 管理员可以在“管理/文件存储”中设置文件存储。
       sharepoint:
-        application_link_text: SharePoint site
-        integration: SharePoint Administration / OpenProject
-        oauth_configuration: Copy these values from the desired application in the %{application_link_text}.
-        provider_configuration: Please make sure you have administration privileges in the %{application_link_text} or contact your Microsoft administrator before doing the setup. In the portal, you also need to register an Azure application or use an existing one for authentication.
+        application_link_text: SharePoint 站点
+        integration: SharePoint 管理 / OpenProject
+        oauth_configuration: 从 %{application_link_text} 中的所需应用程序复制这些值。
+        provider_configuration: 请确保您在%{application_link_text}具有管理权限，或在进行设置之前与您的 Microsoft 管理员联系。在门户中，您还需要注册一个 Azure 应用程序或使用现有的应用程序进行身份验证。
       type: '请确保您在 Nextcloud 实例中具有管理权限，并在进行设置之前安装了以下应用程序：'
       type_link_text: "“集成 OpenProject”"
     label_active: 有效
@@ -478,7 +476,6 @@ zh-CN:
         subtitle_short: 允许 OpenProject 自动创建每个项目的文件夹。
         title: 自动托管的项目文件夹
       project_settings:
-        delete: 删除文件存储区
         edit: 编辑文件存储到此项目
         members_connection_status: 成员连接状态
         new: 将文件存储添加到此项目
@@ -499,10 +496,11 @@ zh-CN:
         name: OneDrive
         name_placeholder: 例如OneDrive
       sharepoint:
-        label_oauth_client_id: Azure OAuth Application (client) ID
-        label_oauth_client_secret: Azure OAuth Client Secret Value
+        drive_description: OpenProject access-managed document library
+        label_oauth_client_id: Azure OAuth 应用程序 (客户端) ID
+        label_oauth_client_secret: Azure OAuth 客户端密钥值
         name: SharePoint
-        name_placeholder: e.g. SharePoint
+        name_placeholder: 例如 SharePoint
     show_attachments_toggle:
       description: 禁用此选项将隐藏工作包文件选项卡上的附件列表。 工作包描述中的文件仍将上传到内部附件存储。
       label: 在工作包文件选项卡中显示附件

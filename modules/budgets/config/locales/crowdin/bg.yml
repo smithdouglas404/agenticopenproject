@@ -21,7 +21,7 @@
 #++
 bg:
   plugin_budgets_engine:
-    name: 'Бюджети'
+    name: "Бюджети"
   activerecord:
     attributes:
       budget:
@@ -36,6 +36,7 @@ bg:
         type: "Тип разход"
         labor_budget: "Планирани разходи за труд"
         material_budget: "Планирани единични разходи"
+        base_amount: "Base amount"
       work_package:
         budget_subject: "Заглавие на бюджета"
     models:
@@ -61,13 +62,19 @@ bg:
   help_currency_format: "Формат на показваните валутни стойности. %n се заменя с валутната стойност, %u се заменя с валутната единица."
   help_override_rate: "Въведете стойност тук, за да отмените ставката по подразбиране."
   label_budget: "Бюджет"
-  label_budget_new: "Добавете бюджет"
-  label_budget_plural: "Бюджети"
+  label_budget_available: "Budget available"
   label_budget_id: "Бюджет #%{id}"
+  label_budget_new: "Добавете бюджет"
+  label_budget_planned: "Budget planned"
+  label_budget_plural: "Бюджети"
+  label_budget_spent: "Budget spent"
+  label_budget_spent_ratio: "Budget spent ratio"
   label_deliverable: "Бюджет"
-  label_example_placeholder: 'e.g., %{decimal}'
+  label_example_placeholder: "e.g., %{decimal}"
   label_view_all_budgets: "Преглед на всички бюджети"
   label_yes: "Да"
+  label_budget_totals: "Totals"
+  label_budget_details: "Budget details"
   notice_budget_conflict: "Work packages must be of the same project."
   notice_no_budgets_available: "Няма налични бюджети."
   permission_edit_budgets: "Редактиране на бюджети"

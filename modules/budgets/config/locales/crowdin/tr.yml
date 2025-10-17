@@ -21,7 +21,7 @@
 #++
 tr:
   plugin_budgets_engine:
-    name: 'Bütçe'
+    name: "Bütçe"
   activerecord:
     attributes:
       budget:
@@ -36,6 +36,7 @@ tr:
         type: "Maliyet türü"
         labor_budget: "Planlanmış iş gücü maliyetleri"
         material_budget: "Planlanan birim maliyetler"
+        base_amount: "Matrah tutarı"
       work_package:
         budget_subject: "Bütçe başlığı"
     models:
@@ -61,13 +62,19 @@ tr:
   help_currency_format: "Görüntülenen para birimi değerlerinin biçimi. % n, para birimi değeri ile değiştirilir,% u ist para birimi yerine geçer.%u%n"
   help_override_rate: "Varsayılan oranı geçersiz kılmak için buraya bir değer girin."
   label_budget: "Bütçe"
-  label_budget_new: "Yeni bütçe"
-  label_budget_plural: "Bütçeler"
+  label_budget_available: "Mevcut bütçe"
   label_budget_id: "Bütçe #%{id}"
+  label_budget_new: "Yeni bütçe"
+  label_budget_planned: "Planlanan bütçe"
+  label_budget_plural: "Bütçeler"
+  label_budget_spent: "Harcanan bütçe"
+  label_budget_spent_ratio: "Bütçe harcama oranı"
   label_deliverable: "Bütçe"
-  label_example_placeholder: 'ör. %{decimal}'
+  label_example_placeholder: "ör. %{decimal}"
   label_view_all_budgets: "Tüm bütçeleri görüntüle"
   label_yes: "Evet"
+  label_budget_totals: "Toplamlar"
+  label_budget_details: "Bütçe ayrıntıları"
   notice_budget_conflict: "İş paketleri aynı projeye ait olmalıdır."
   notice_no_budgets_available: "Hiçbir bütçe yok."
   permission_edit_budgets: "Bütçeleri düzenleme"

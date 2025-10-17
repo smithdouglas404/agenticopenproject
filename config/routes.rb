@@ -55,7 +55,11 @@ Rails.application.routes.draw do
 
   # Respond with 410 gone for APIV2 calls
   match "/api/v2(/*unmatched_route)", to: proc { [410, {}, [""]] }, via: :all
+
+  # Respond with 404 for source maps that are not found
+  # This prevents routing errors in test when developer mode is activated
   match "/assets/compiler.js.map", to: proc { [404, {}, [""]] }, via: :all
+  match "*.css.map", to: proc { [404, {}, [""]] }, via: :all
 
   # Redirect wp short url for work packages to full URL
   get "/wp(/)" => redirect("#{rails_relative_url_root}/work_packages")
@@ -208,10 +212,12 @@ Rails.application.routes.draw do
         resource :project, controller: "/admin/custom_fields/custom_field_projects", only: :destroy
         resources :items, controller: "/admin/custom_fields/hierarchy/items" do
           member do
-            get :deletion_dialog
+            get :change_parent, action: :change_parent_dialog
+            post :change_parent, action: :change_parent
+            get :delete, action: :deletion_dialog
+            post :move
             get :new_child, action: :new
             post :new_child, action: :create
-            post :move
           end
         end
       end
@@ -238,7 +244,7 @@ Rails.application.routes.draw do
   end
 
   # generic route for adding/removing favorites
-  scope ":object_type/:object_id", constraints: OpenProject::Acts::Favorable::RouteConstraint do
+  scope ":object_type/:object_id", constraints: OpenProject::Acts::Favoritable::RouteConstraint do
     post "/favorite" => "favorites#favorite"
     delete "/favorite" => "favorites#unfavorite"
   end
@@ -524,6 +530,12 @@ Rails.application.routes.draw do
     delete "design/export_logo" => "custom_styles#export_logo_delete", as: "custom_style_export_logo_delete"
     delete "design/export_cover" => "custom_styles#export_cover_delete", as: "custom_style_export_cover_delete"
     delete "design/export_footer" => "custom_styles#export_footer_delete", as: "custom_style_export_footer_delete"
+    delete "design/export_font_regular" => "custom_styles#export_font_regular_delete",
+           as: "custom_style_export_font_regular_delete"
+    delete "design/export_font_bold" => "custom_styles#export_font_bold_delete", as: "custom_style_export_font_bold_delete"
+    delete "design/export_font_italic" => "custom_styles#export_font_italic_delete", as: "custom_style_export_font_italic_delete"
+    delete "design/export_font_bold_italic" => "custom_styles#export_font_bold_italic_delete",
+           as: "custom_style_export_font_bold_italic_delete"
     delete "design/favicon" => "custom_styles#favicon_delete", as: "custom_style_favicon_delete"
     delete "design/touch_icon" => "custom_styles#touch_icon_delete", as: "custom_style_touch_icon_delete"
     post "design/colors" => "custom_styles#update_colors", as: "update_design_colors"
@@ -531,7 +543,9 @@ Rails.application.routes.draw do
     post "design/export_cover_text_color" => "custom_styles#update_export_cover_text_color",
          as: "update_custom_style_export_cover_text_color"
 
-    resource :custom_style, only: %i[update show create], path: "design"
+    resource :custom_style, only: %i[update show create], path: "design" do
+      get :export_demo_pdf_download
+    end
 
     resources :attribute_help_texts, only: %i(index new create edit update destroy)
 
@@ -624,6 +638,16 @@ Rails.application.routes.draw do
           post :link
           delete :unlink
         end
+        resources :items, controller: "/admin/settings/project_custom_fields/hierarchy/items" do
+          member do
+            get :change_parent, action: :change_parent_dialog
+            post :change_parent, action: :change_parent
+            get :delete, action: :deletion_dialog
+            post :move
+            get :new_child, action: :new
+            post :new_child, action: :create
+          end
+        end
       end
       resources :project_custom_field_sections, controller: "/admin/settings/project_custom_field_sections",
                                                 only: %i[create update destroy] do
@@ -711,10 +735,13 @@ Rails.application.routes.draw do
     resources :activities, controller: "work_packages/activities_tab", only: %i[index create edit update] do
       member do
         get :cancel_edit
+        get :emoji_actions
+        get :item_actions
         put :toggle_reaction
       end
 
       collection do
+        get :page_streams
         get :update_streams
         get :update_filter # filter not persisted
         put :update_sorting # sorting is persisted
@@ -897,7 +924,7 @@ Rails.application.routes.draw do
     post "/my/change_password", action: "change_password"
 
     get "/my/account", action: "account"
-    get "/my/settings", action: "settings"
+    get "/my/locale", action: "locale"
     get "/my/interface", action: "interface"
     get "/my/notifications", action: "notifications"
     get "/my/reminders", action: "reminders"

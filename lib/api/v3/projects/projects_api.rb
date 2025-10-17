@@ -79,6 +79,7 @@ module API
             mount API::V3::Versions::VersionsByProjectAPI
             mount API::V3::Types::TypesByProjectAPI
             mount API::V3::Queries::QueriesByProjectAPI
+            mount API::V3::Favorites::FavoriteActionsAPI, with: { favorite_object_getter: ->(*) { @project } }
           end
         end
       end

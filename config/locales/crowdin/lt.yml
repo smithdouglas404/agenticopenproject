@@ -59,6 +59,10 @@ lt:
       tab_interface: "Interface"
       tab_branding: "Branding"
       tab_pdf_export_styles: "PDF export styles"
+      tab_pdf_export_font: "PDF export font"
+      fonts:
+        file_too_large: "is too large (maximum size is %{count} MB)."
+        file_is_invalid: "is not a valid TTF font file."
       colors:
         primary-button-color: "Pagrindinis mygtukas"
         accent-color: "Akcentas"
@@ -137,15 +141,15 @@ lt:
       new:
         title: "New SCIM client"
       revoke_static_token_dialog_component:
-        confirm_button: "Revoke"
+        confirm_button: "Atšaukti"
         title: "Revoke static token"
-        heading: "Are you sure you want to revoke this token?"
+        heading: "Ar tikrai norite atšaukti šį raktą?"
         description: "The SCIM client that uses this token will no longer be able to access OpenProject's SCIM server API."
       table_component:
         blank_slate:
           title: "No SCIM clients configured yet"
           description: "Add clients to see them here"
-        user_count: "Users"
+        user_count: "Naudotojai"
       token_list_component:
         description: "The tokens you generate here can be passed by a SCIM client to access the OpenProject SCIM API."
         heading: "Tokens"
@@ -158,6 +162,11 @@ lt:
         expired: "Expired on %{date}"
         revoked: "Revoked on %{date}"
         title: "Access token table"
+    workflows:
+      tabs:
+        default_transitions: "Default transitions"
+        user_author: "User is author"
+        user_assignee: "User is assignee"
   authentication:
     login_and_registration: "Login and registration"
   announcements:
@@ -191,10 +200,9 @@ lt:
     ldap_auth_failed: "LDAP serveryje autentifikacija nepavyko."
     sync_failed: "Nepavyko sinchronizuoti su LDAP: %{message}."
     back_to_index: "Spauskite čia, kad gryžtumėte į jungčių sąrašą."
-    technical_warning_html: |
+    technical_warning: |
       This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Please visit our documentation for detailed instructions</a>.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: LDAP prisijungimui suteiktas pavadinimas
       host: LDAP serverio vardas arba IP adresas
@@ -326,14 +334,36 @@ lt:
     tab:
       no_results_title_text: Nėra jokių pasirinktinų laukų.
       no_results_content_text: Sukurti naują pasirinktinį lauką
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "arba"
-  dry_validation:
+  danger_dialog:
+    confirmation_live_message_checked: "The button to proceed is now active."
+    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+  op_dry_validation:
+    or: "or"
     errors:
+      array?: "must be an array."
+      decimal?: "must be a decimal."
       defined: "must not be defined."
-      int?: "must be an integer."
+      eql?: "must be equal to %{left}."
       filled?: "must be filled."
       greater_or_equal_zero: "must be greater or equal to 0."
+      gteq?: "must be greater than or equal to %{num}."
+      hash?: "must be a hash."
+      included_in?:
+        arg:
+          default: "must be one of: %{list}."
+          range: "must be one of: %{list_left} - %{list_right}."
+      int?: "must be an integer."
+      key?: "is missing."
       not_found: "not found."
       rules:
         copy_workflow_from:
@@ -349,14 +379,17 @@ lt:
           not_unique: "must be unique within the same hierarchy level."
         parent:
           not_descendant: "must be a descendant of the hierarchy root."
+      str?: "must be a string."
+      type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
       enabled: "Enabled"
       depth: "Depth"
       item: "Item"
       label: "Label"
+      score: "Score"
       short: "Short name"
-      parent: "Tėvas"
+      parent: "Parent"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -419,7 +452,7 @@ lt:
     lists:
       active: "Aktyvūs projektai"
       my: "Mano projektai"
-      favored: "Mėgstami projektai"
+      favorited: "Favorite projects"
       archived: "Archyvuoti projektai"
       shared: "Shared project lists"
       my_lists: "Mano projektų sąrašai"
@@ -591,15 +624,12 @@ lt:
           dialog_title: "Create new API token"
           attention_text: "Treat API tokens like passwords. Anyone with this token will have access to information from this instance, share it only with trusted users."
           dialog_body: "This token will allow third-party applications to communicate with your instance. To differentiate the new API token, please give it a name."
-          create_button: "Create"
-          name_label: "Token name"
+          create_button: "Sukurti"
+          name_label: "Žetono pavadinimas"
       created_dialog:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Please provide an API token name"
-        token_name_in_use: "This API token name is already in use, please select a different one"
       failed_to_reset_token: "Atpažinimo rakto nepavyko nustatyti iš naujo: %{error}"
       failed_to_create_token: "Failed to create access token: %{error}"
       failed_to_revoke_token: "Failed to revoke access token: %{error}"
@@ -617,17 +647,20 @@ lt:
     autologins:
       prompt: "Likti prisijungus %{num_days}"
     sessions:
-      remembered_devices: "Atsiminti įrenginiai"
-      remembered_devices_caption: "Sąrašas visų įrenginių, iš kurių buvo prisijungta prie šios paskyros su parinktimi „Likti prisijungus“."
       session_name: "%{browser_name} %{browser_version} %{os_name}"
       browser: "Naršyklė"
+      expires: "Expires"
+      last_connection: "Last connection"
       device: "Įrenginys / OS"
       unknown_browser: "nežinoma naršyklė"
       unknown_os: "nežinoma operacinė sistema"
-      current: "Dabartinė sesija"
+      unknown: "(unknown)"
+      browser_session: "(Browser session)"
+      current: "Current (this device)"
       title: "Sesijos valdymas"
-      instructions: "Toliau pateikiamas sąrašas įrenginių, kurie yra prisijungę prie jūsų paskyros. Panaikinkite visus seansus, kurių neatpažįstate arba prie kurių nebeturite prieigos."
+      instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Jūs negalite ištrinti savo dabartinės sesijos."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "Šis naudotojas šiuo metu yra šių grupių narys:"
       no_results_title_text: Šis naudotojas nėra jokios grupės narys.
@@ -652,8 +685,8 @@ lt:
   priorities:
     edit:
       priority_color_text: |
-        Click to assign or change the color of this priority.
-        It can be used for highlighting work packages in the table.
+        Spauskite, kad priskirtumėte arba pakeistumėte šio prioriteto spalvą.
+        Ji gali būti naudojama paryškinti darbo paketus lentelėje.
     admin:
       default:
         caption: Making this priority default will override the previous default priority.
@@ -701,10 +734,8 @@ lt:
         excluded_from_totals: "Excluded from totals"
   themes:
     dark: "Tamsi"
-    dark_high_contrast: "Dark high contrast"
     light: "Šviesi"
-    light_high_contrast: "Šviesi kontrastinga"
-    sync_with_os: "Automatic (match OS colour mode)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: Nėra jokių rūšių.
@@ -924,7 +955,7 @@ lt:
   account:
     delete: "Pašaslinti paskyrą"
     delete_confirmation: "Ar tikrai norite ištrinti paskyrą?"
-    deletion_pending: "Paskyra užrakinta ir pažymėta pašalinimui. Pastebėtina, kad šis procesas vyksta fone. Gali užtrukti kelias akimirkas, kol naudotojas bus pilnai pašalintas."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Naudotojo duomenys (pvz., el. paštas, nustatymai, darbo paketai, wiki įrašai) bus ištrinti kiek įmanoma. Tačiau duomenys, kaip darbo paketai, viki įrašai, negali būti ištrinti nepaveikiant kitų naudotojų darbo. Taigi, tokie duomenys priskiriami ištrinto naudotojo paskyrai „Ištrintas naudotojas“. Kadangi kiekvieno ištrinto naudotojo duomenys priskiriami tam pačiam naudotojui, nėra įmanoma išskirti atskirų ištrintojo naudotojo duomenų.'
@@ -955,7 +986,7 @@ lt:
   activemodel:
     attributes:
       projects/copy_options:
-        dependencies: "Dependencies"
+        dependencies: "Priklausomybės"
   activerecord:
     attributes:
       announcements:
@@ -973,6 +1004,11 @@ lt:
         help_text: "Pagalbos tekstas"
       auth_provider:
         scim_clients: "SCIM clients"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "Context"
       changeset:
@@ -1017,12 +1053,14 @@ lt:
       enterprise_token:
         starts_at: "Galioja nuo"
         subscriber: "Prenumeruotojas"
-        subscription: "Subscription"
-        plan: "Plan"
+        subscription: "Prenumerata"
+        plan: "Planas"
         encoded_token: "„Enterprise“ paramos raktas"
         active_user_count_restriction: "Active users"
       enterprise_trial:
-        company: "Company"
+        company: "Kompanija"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Puslapis"
         row_count: "Eilučių skaičius"
@@ -1055,6 +1093,7 @@ lt:
         active_value:
           true: "išarchyvuota"
           false: "suarchyvuotas"
+        attribute_groups: "Attribute Groups"
         description: "Aprašymas"
         enabled_modules: "Įgalinti moduliai"
         identifier: "Identifikatorius"
@@ -1088,10 +1127,10 @@ lt:
       project/phase:
         date_range: "Laikotarpis"
         definition: "Definition"
-        duration: "Duration"
-        start_date: "Start date"
+        duration: "Trukmė"
+        start_date: "Pradžios data"
         start_date_caption: "Follows the previous phase."
-        finish_date: "Finish date"
+        finish_date: "Pabaigos data"
       project/phase_definition:
         name: "Vardas"
         color: "Spalva"
@@ -1148,6 +1187,8 @@ lt:
         is_readonly: "Darbų paketas nekeičiamas"
         excluded_from_totals: "Exclude from calculation of totals in hierarchy"
         default_done_ratio: "% Complete"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Kalendorius"
         ical_token_query_assignment: "Query assignment"
@@ -1159,7 +1200,7 @@ lt:
         ongoing: "Vykstantys"
       type:
         description: "Numatytasis aprašymo tekstas"
-        attribute_groups: "Form configuration"
+        attribute_groups: "Formos konfigūracija"
         is_in_roadmap: "Rodoma plane pagal nutylėjimą"
         is_default: "Pagal nutylėjimą įjungta naujiems projektams"
         is_milestone: "Yra svarbus etapas"
@@ -1186,7 +1227,7 @@ lt:
         password_confirmation: "Patvirtinimas"
         consented_at: "Sutikimo laikas"
       group:
-        identity_url: "Identity URL"
+        identity_url: "Identiteto URL"
       user_preference:
         header_look_and_feel: "Look and feel"
         header_alerts: "Alerts"
@@ -1201,9 +1242,16 @@ lt:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "Įspėti mane, kai palieku darbų paketą su neišsaugotais pakeitimais"
-        theme: "Colour mode"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
+        theme: "Color mode"
         time_zone: "Laiko juosta"
-        mode_guideline: "Some modes will overwrite custom theme colours for accessibility and legibility. Please select Light mode for full custom theme support."
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Daily reminders"
         workdays: "Darbo dienos"
       version:
@@ -1268,7 +1316,7 @@ lt:
         confirmation: "nesutampa su %{attribute}."
         could_not_be_copied: "%{dependency} negali (pilnai) būti nukopijuota(s)."
         does_not_exist: "neegzistuoja."
-        error_enterprise_only: "%{action} galimas tik OpenProject Enterprise versijoje"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "negali būti pasiektas."
         error_readonly: "bandytas įrašyti, bet įrašyti nebuvo galima."
         error_conflict: "Tuo metu informaciją pakeitė bent vienas kitas naudotojas."
@@ -1311,7 +1359,7 @@ lt:
         odd: "turi būti nelyginis."
         regex_match_failed: "neatitinka reguliariosios išraiškos %{expression}."
         regex_invalid: "negalėjo būti patvirtintas su susieta reguliaria išraiška."
-        regex_list_invalid: "could not be parsed as regular expression in lines %{invalid_lines}."
+        regex_list_invalid: "Lines %{invalid_lines} could not be parsed as regular expression."
         hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "turi būti mažesnis arba lygus didžiausiam ilgiui."
         taken: "jau užimtas."
@@ -1346,6 +1394,11 @@ lt:
               minimum: "turite įtraukti bent vieną nario, konteksto ar id filtrą su „=“ operatoriumi."
         custom_field:
           at_least_one_custom_option: "Turi būti prieinama bent viena savybė."
+          referenced_in_other_fields_html:
+            one: "%{name} is used in project attribute calculation %{links}."
+            few: "%{name} is used in project attribute calculations: %{links}."
+            many: "%{name} is used in project attribute calculations: %{links}."
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1377,6 +1430,8 @@ lt:
           only_one_trial: "Only one trial token can be active. Please delete the previous trial token before adding another."
           unreadable: "neįmanoma perskaityti. Ar tai tikrai yra paramos raktas?"
           already_added: "This token has already been added."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "persidengia."
           outside: "yra už tinklelio."
@@ -1473,10 +1528,19 @@ lt:
           typed_dag:
             circular_dependency: "Ryšys sukuria ryšių ciklą."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "SCM tiekėjas neprieinamas"
           not_whitelisted: "neleidžiama pagal konfigūraciją."
@@ -1578,7 +1642,8 @@ lt:
               cant_exceed_work: "cannot be higher than Work."
               must_be_set_when_work_is_set: "required when Work is set."
               must_be_set_when_work_and_percent_complete_are_set: "required when Work and % Complete are set."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 must be empty when Work is empty and % Complete is 100%.
           readonly_status: "Darbo paketas yra tik skaitymo būsenoje, taigi jo atributų keisti negalima."
@@ -1628,9 +1693,11 @@ lt:
         version:
           undeletable_archived_projects: "Versija negali būti pašalinta, nes prie jos yra prijungtų darbo paketų."
           undeletable_work_packages_attached: "Versija negali būti pašalinta, nes prie jos yra prijungtų darbo paketų."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Prašome patikrinti šiuos laukelius:"
@@ -1648,7 +1715,7 @@ lt:
         many: "Authentication providers"
         other: "Authentication providers"
       category: "Kategorija"
-      color: "Color"
+      color: "Spalva"
       comment: "Komentaras"
       custom_action: "Pasirinktinis veiksmas"
       custom_field: "Kliento laukelis"
@@ -1666,6 +1733,7 @@ lt:
         few: "Priorities"
         many: "Priorities"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "Narys"
       news: "Naujienos"
       notification:
@@ -1778,6 +1846,7 @@ lt:
     attachments: "Priedai"
     actor: "Actor"
     action: "Veiksmas"
+    api_key: "API key"
     author: "Autorius"
     avatar: "Nuotrauka"
     base: "Bendroji klaida:"
@@ -1802,7 +1871,7 @@ lt:
     derived_start_date: "Išvestinė pradžios data"
     direction: "Direction"
     display_sums: "Rodyti suvestines"
-    domain: "Domain"
+    domain: "Domenas"
     due_date: "Pabaigos data"
     estimated_hours: "Darbas"
     estimated_time: "Darbas"
@@ -1908,6 +1977,7 @@ lt:
   button_add_watcher: "Pridėti stebėtojų"
   button_annotate: "Rašyti pastabą"
   button_apply: "Taikyti"
+  button_apply_changes: "Pritaikyti pakeitimus"
   button_archive: "Archyvuoti"
   button_back: "Atgal"
   button_cancel: "Atšaukti"
@@ -1957,8 +2027,8 @@ lt:
   button_rollback: "Grąžinti į šią versiją"
   button_save: "Išsaugoti"
   button_save_as: "Įrašyti kaip"
-  button_apply_changes: "Pritaikyti pakeitimus"
   button_save_back: "Įrašyti ir grįžti atgal"
+  button_select: "Select"
   button_set_reminder: "Set reminder"
   button_show: "Rodyti"
   button_sort: "Rūšiuoti"
@@ -1971,7 +2041,7 @@ lt:
   button_unwatch: "Nestebėti"
   button_update: "Atnaujinti"
   button_upgrade: "Atnaujinti"
-  button_buy_now: "Buy now"
+  button_buy_now: "Pirkti dabar"
   button_upload: "Įkelti"
   button_view: "Peržiūrėti"
   button_watch: "Stebėti"
@@ -2020,7 +2090,7 @@ lt:
     copy_options:
       dependencies_label: "Copy from project"
   create_project:
-    template_label: "Use template"
+    template_label: "Naudoti šabloną"
     copy_options:
       dependencies_label: "Copy from template"
   create_wiki_page: "Create new wiki page"
@@ -2222,6 +2292,7 @@ lt:
     features:
       baseline_comparison: Baseline Comparisons
       board_view: Advanced Boards
+      calculated_values: Calculated Values
       conditional_highlighting: Conditional Highlighting
       internal_comments: Internal Comments
       custom_actions: Custom Actions
@@ -2245,31 +2316,31 @@ lt:
       work_package_sharing: Share work packages with external users
       work_package_subject_generation: Work Package Subject Generation
     upsell:
-      buy_now_button: "Buy now"
+      buy_now_button: "Pirkti dabar"
       plans_title: "Enterprise plans"
       title: "Enterprise priedas"
       plan_title: "Enterprise %{plan} add-on"
       plan_name: "%{plan} enterprise plan"
       plan_text_html: "Available starting with the %{plan_name}."
-      unlimited: "Unlimited"
+      unlimited: "Neribota"
       already_have_token: >
         Already have a token? Add it using the button below to upgrade to the booked Enterprise plan.
       hide_banner: "Hide this banner"
       homescreen_description: >
-        Enterprise plans extend the Community edition of OpenProject you are currently using. They include add-ons, additional features and professional support that enables organisations of all sizes to achieve great things together.
+        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
       homescreen_subline: By upgrading, you will also be supporting an open source project.
       baseline_comparison:
         description: Paryškinti pakeitimus, padarytus šiame sąraše, nuo bet kokio laiko momento praeityje.
       benefits:
-        description: "What are the benefits of the Enterprise on-premises edition?"
-        high_security: "Security features"
-        high_security_text: "Single sign on (SAML, OpenID Connect, CAS), LDAP groups."
-        installation: "Installation support"
-        installation_text: "Experienced software engineers guide you through the complete installation and setup process in your own infrastructure."
-        premium_features: "Enterprise add-ons"
-        premium_features_text: "Agile boards, custom theme and logo, graphs, intelligent workflows with custom actions, full text search for work package attachments and multi-select custom fields."
-        professional_support: "Professional support"
-        professional_support_text: "Get reliable, high-touch support from senior support engineers with expert knowledge about running OpenProject in business-critical environments."
+        description: "Kokie yra Enterprise vietinės versijos privalumai?"
+        high_security: "Saugumo funkcijos"
+        high_security_text: "Vienas prisijungimas (SAML, OpenID Connect, CAS), LDAP grupės."
+        installation: "Diegimo pagalba"
+        installation_text: "Patyręs programų inžinierius ves jus per visą diegimo ir nustatymo procesą naudojant jūsų pačių infrastruktūrą."
+        premium_features: "Enterprise priedai"
+        premium_features_text: "Agile lentos, savo tema ir logotipas, grafai, protingi darbo scenarijai su apibrėžtais veiksmais, pilna teksto paieška darbo paketų prieduose ir galimybė pasirinkti daugiau nei vieną reikšmę pritaikytuose laukuose."
+        professional_support: "Profesionali pagalba"
+        professional_support_text: "Gaukite patikimą, artimą pagalbą iš patyrusių pagalbos inžinierių su ekspertinėmis žiniomis apie OpenProject naudojimą verslui kritinėse aplinkose."
       work_package_subject_generation:
         description: "Create automatically generated subjects using referenced attributes and text."
       customize_life_cycle:
@@ -2294,6 +2365,8 @@ lt:
         description: "Bendrinkite darbo paketus su naudotojais, kurie nėra projekto nariai."
       project_list_sharing:
         description: "Share project lists with individual users."
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Custom color theme and logo"
         more_info: "Pastaba: panaudotas logotipas bus viešai prieinamas."
@@ -2339,7 +2412,7 @@ lt:
       request_again: "Request again"
       resend_action: "Resend confirmation email"
       welcome_title: "Quick feature overview"
-      welcome_description: "Get a quick overview of project management and team collaboration with OpenProject Enterprise edition."
+      welcome_description: "Gaukite greitą apžvalgą apie projektų valdymą ir komandos bendradarbiavimą naudojant OpenProject Enterprise versiją."
       confirmation_info: >
         We sent you an email on %{date} to %{email} with all the information to start the free trial of OpenProject Enterprise. Please check your inbox and click the confirmation link provided to start your 14-day free trial.
       confirmation_subline: >
@@ -2361,6 +2434,9 @@ lt:
   enumeration_reported_project_statuses: "Pranešta projekto būsena"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "Bendroji autentifikacija (SSO) vartotojui „%{value}“ nepavyko"
   error_can_not_archive_project: "Projekto negalima suarchyvuoti: %{errors}"
   error_can_not_delete_entry: "Nepavyko ištrinti įrašo"
@@ -2389,6 +2465,7 @@ lt:
   error_invalid_selected_value: "Netinkama parinkta reikšmė."
   error_journal_attribute_not_present: "Žurnale nėra atributo %{attribute}."
   error_pdf_export_too_many_columns: "PDF eksportavimui pasirinkta per daug stulpelių. Prašome sumažinti stulpelių skaičių."
+  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
   error_pdf_failed_to_export: "PDF eksportas negali būti išsaugotas: %{error}"
   error_token_authenticity: "Neįmanoma patikrinti Cross-Site Request Forgery žetono. Gal bandėte nusiųsti duomenis iš kelių naršyklių ar kortelių? Prašome uždaryti visas korteles ir pabandyti dar kartą."
   error_reminder_not_found: "The reminder was not found or was already notified about."
@@ -2504,6 +2581,10 @@ lt:
     your_projects_export: "Projects are being exported"
     succeeded: "Export completed"
     failed: "An error has occurred while trying to export the work packages: %{message}"
+    demo:
+      heading: "Demo PDF"
+      footer: "Generated by OpenProject"
+      button_text: Generate Demo PDF
     errors:
       embedded_table_with_too_many_columns: "This embedded work package table could not fit on the page, please reduce the number of columns."
     format:
@@ -2566,11 +2647,14 @@ lt:
       tesseract: "Tesseract pasiekiamas (pasirinktinai)"
   filterable_tree_view:
     filter_mode:
-      all: "All"
+      all: "Visi"
       label: "Filter mode"
       selected: "Selected"
     include_sub_items: "Include sub-items"
     no_results_text: "No results"
+  toggle_switch:
+    label_on: "On"
+    label_off: "Off"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
@@ -2593,6 +2677,19 @@ lt:
       community: "OpenProject community"
       upsell:
         title: "Pagerinti į Enterprise versiją"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Add work packages to a meeting section in the Meetings tab.
+            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
+            line_2: Filter projects by last update.
+            line_3: Jump to highlighted target elements from deep links.
+            line_4: Confirm critical actions with more accessible danger dialogs.
     links:
       upgrade_enterprise_edition: "Pagerinti į Enterprise versiją"
       postgres_migration: "Migruojame jūsų instaliaciją į PostgreSQL"
@@ -2603,7 +2700,8 @@ lt:
       shortcuts: "Nuorodos"
       blog: "OpenProject blogas"
       forums: "Bendruomenės forumas"
-      newsletter: "Saugos įspėjimai / Naujienos"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2678,14 +2776,14 @@ lt:
       simple_revoke_confirmation: "Ar tikrai norite atšaukti šį raktą?"
       token/api:
         title: "API"
-        text_hint: "API tokens allow third-party applications to communicate with this OpenProject instance via REST APIs."
-        disabled_text: "API tokens are not enabled by the administrator. Please contact your administrator to use this feature."
+        text_hint: "API žetonai leidžia trečiųjų šalių aplikacijoms komunikuoti su šiuo OpenProject per REST"
+        disabled_text: "Administratorius neįjungė API žetonų. Prašome susisiekti su administratoriumi, kad galėtumėte naudoti šią savybę."
         add_button: "API Token"
       api:
         static_token_name: "API žetonas"
       ical:
         title: "iCalendar"
-        text_hint: 'iCalendar žetonai leidžia naudotojams <a href="%{path}" target="_blank">prenumeruoti OpenProject kalendorius</a> ir gauti naujausią darbų paketų informaciją išoriniuose klientuose.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "Administratorius neįjungė iCalendar prenumeratų. Prašome susisiekti su administratoriumi, kad galėtumėte naudoti šią savybę."
         empty_text_hint: "Norėdami pridėti iCalendar žetoną, prenumeruokite naują ar esamą kalendorių iš projekto kalendoriaus modulio. Jūs turite turėti reikiamas teises."
       oauth:
@@ -2698,7 +2796,7 @@ lt:
         static_token_name: "RSS žetonas"
         disabled_text: "Administratorius neįjungė RSS žetonų. Prašome susisiekti su administratoriumi, kad galėtumėte naudoti šią savybę."
       storages:
-        title: "File storages"
+        title: "Failų saugyklos"
         text_hint: "Failų saugyklų žetonai jungia šį OpenProject egzempliorių su išorine failų saugykla."
         empty_text_hint: "Su jūsų paskyra nėra susietos saugyklos prieigos."
         revoke_token: "Ar tikrai norite išimti šį žetoną? Jums vėl reikės prisijungti prie %{storage}"
@@ -2768,6 +2866,7 @@ lt:
   label_api_access_key: "API prieigos raktas"
   label_api_access_key_created_on: "API prieigos raktas sukurtas prieš %{value}"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar žetonas „%{token_name}“ skirtas „%{calendar_name}“ projekte „%{project_name}“'
   label_ical_access_key_not_present: "iCalendar žetono(ų) nėra."
@@ -2825,7 +2924,8 @@ lt:
   label_select_main_menu_item: Pasirinkti naują pagrindinio meniu punktą
   label_required_disk_storage: "Reikalinga vieta diske"
   label_send_invitation: Siųsti pakvietimą
-  label_calculated_value: "Calculated value"
+  label_calculated_value: "Calculated Value"
+  label_change_parent: "Change parent"
   label_change_plural: "Pakeitimai"
   label_change_properties: "Pakeisti nustatymus"
   label_change_status: "Pakeisti būseną"
@@ -2875,7 +2975,7 @@ lt:
   label_dashboard: "Skydelis"
   label_database_version: "PostgreSQL versija"
   label_date: "Data"
-  label_dates: "Dates"
+  label_dates: "Datos"
   label_date_and_time: "Data ir laikas"
   label_date_format: "Datos formatas"
   label_date_from: "Nuo"
@@ -3001,7 +3101,7 @@ lt:
   label_integer: "Sveikasis skaičius"
   label_interface: "Interface"
   label_internal: "Vidinis"
-  label_introduction_video: "Įvado video"
+  label_introduction_video: "Getting started video"
   label_invite_user: "Pakviesti vartotoją"
   label_item: "Item"
   label_item_plural: "Items"
@@ -3016,6 +3116,7 @@ lt:
   label_journal_diff: "Aprašymų palyginimas"
   label_language: "Kalba"
   label_languages: "Kalbos"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Peršokti į projektą..."
   label_keyword_plural: "Raktažodžiai"
   label_language_based: "Paremta vartotojo kalba"
@@ -3035,6 +3136,7 @@ lt:
   label_link_url: "Nuoroda (URL)"
   label_list: "Sąrašas"
   label_loading: "Įkeliama..."
+  label_locked: "locked"
   label_lock_user: "Užrakinti vartotoją"
   label_logged_as: "Prisijungęs kaip"
   label_login: "Prisijungti"
@@ -3042,6 +3144,10 @@ lt:
   label_custom_export_logo: "Savas eksporto logotipas"
   label_custom_export_cover: "Savas eksporto viršelio fonas"
   label_custom_export_footer: "Custom export footer image"
+  label_custom_export_font_regular: "Regular"
+  label_custom_export_font_bold: "Bold"
+  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Savas eksporto viršelio fono perdengimas"
   label_custom_export_cover_text_color: "Teksto spalva"
   label_custom_pdf_export_settings: "Savi PDF eksporto nustatymai"
@@ -3113,7 +3219,7 @@ lt:
   label_no_due_date: "be pabaigos datos"
   label_no_start_date: "nėra pradžios datos"
   label_no_parent_page: "Nėra tėvinio puslapio"
-  label_notification_center_plural: "Notifications"
+  label_notification_center_plural: "Pranešimai"
   label_nothing_display: "Nėra ką rodyti"
   label_nobody: "niekas"
   label_not_configured: "Not configured"
@@ -3129,6 +3235,8 @@ lt:
   label_operator_equals_or: "yra (ARBA)"
   label_operator_equals_all: "yra (IR)"
   label_operator_shared_with_user_any: "bet kuris"
+  label_open: "atverti"
+  label_closed: "uždaryta"
   label_open_menu: "Atidaryti meniu"
   label_open_work_packages: "atidarytas"
   label_open_work_packages_plural: "atidarytas"
@@ -3146,7 +3254,7 @@ lt:
   label_password_rule_special: "Specialūs simboliai"
   label_password_rule_uppercase: "Didžiosios raidės"
   label_path_encoding: "Kelio koduotė"
-  label_per_page: "Per page:"
+  label_per_page: "Puslapyje:"
   label_people: "Žmonės"
   label_permissions: "Leidimai"
   label_permissions_report: "Leidimų ataskaita"
@@ -3189,7 +3297,7 @@ lt:
   label_project_custom_field_plural: "Projekto atributai"
   label_project_settings: "Projekto nustatymai"
   label_project_attributes_settings: "Projekto atributų nustatymai"
-  label_project_storage_plural: "File storages"
+  label_project_storage_plural: "Failų saugyklos"
   label_project_storage_project_folder: "File storages: Project folders"
   label_projects_disk_usage_information: "%{count} projektai, naudojantys %{used_disk_space} disko vietos"
   label_project_view_all: "Peržiūrėti visus projektus"
@@ -3197,6 +3305,8 @@ lt:
   label_project_hide_details: "Slėpti detalią projekto informaciją"
   label_portfolio: "Portfolio"
   label_portfolio_new: "New portfolio"
+  label_program: "Program"
+  label_program_new: "New program"
   label_public_projects: "Vieši projektai"
   label_query_new: "Nauja užklausa"
   label_query_plural: "Naudotojo užklausos"
@@ -3345,7 +3455,7 @@ lt:
   label_watched_work_packages: "Stebėti darbų paketus"
   label_what_is_this: "Kas tai?"
   label_week: "Savaitė"
-  label_widget: "Widget"
+  label_widget: "Valdiklis"
   label_widget_new: "New widget"
   label_wiki_content_added: "Wiki puslapis pridėtas"
   label_wiki_content_updated: "Wiki puslapis atnaujintas"
@@ -3643,6 +3753,7 @@ lt:
   notice_password_confirmation_failed: "Jūsų slaptažodis yra neteisingas. Negalima tęsti."
   notice_principals_found_multiple: "Rasta %{number} rezultatai (-as, -ų).\nPaspauskite 'Tab', kad susikoncentruotumėte į pirmą rezultatą."
   notice_principals_found_single: "Yra vienas rezultatas.\nPaspauskite 'Tab', kad susikoncentruotumėte į jį."
+  notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "Projektas nebuvo panaikintas."
   notice_project_not_found: "Project not found."
   notice_successful_connection: "Sėkmingas susijungimas."
@@ -3698,6 +3809,7 @@ lt:
   permission_add_messages: "Skelbti pranešimus"
   permission_add_project: "Kurti projektus"
   permission_add_portfolios: "Create portfolios"
+  permission_add_programs: "Create programs"
   permission_add_work_package_attachments: "Prisegti priedus"
   permission_add_work_package_attachments_explanation: "Leidžia pridėti priedus be darbo paketo keitimo teisių"
   permission_add_internal_comments: "Write internal comments"
@@ -3812,13 +3924,15 @@ lt:
       one: "1 projektas"
       other: "%{count} projektai (-as, -ų)"
     destroy:
-      confirmation: "Jei tęsite, projektas %{identifier} bus galutinai sunaikintas. Šio veiksmo patvirtinimui prašome įvesti projekto pavadinimą į žemiau pateiktą lauką. Tai padarys:"
-      project_delete_result_1: "Ištrins visus susijusius duomenis."
-      project_delete_result_2: "Ištrins visus projekto valdomus aplankus susijusiose saugyklose."
-      info: "Projekto ištrynimas yra negrįžtamas veiksmas."
-      project_verification: "Įveskite projekto pavadinimą %{name}, kad patvirtintumėte ištrynimą."
-      subprojects_confirmation: "Jo sub-projektas(-ai): %{value} taip pat bus ištrintas(-i)."
-      title: "Ištrinti projektą %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Project phase: %{phase}"
       project_phase_any: "Project phase: Any"
@@ -4051,6 +4165,8 @@ lt:
   setting_feeds_limit: "Naujienų kanalų turinio limitas"
   setting_file_max_size_displayed: "Maksimalus tekstinių failų dydis rodomas vienoje eilutėje"
   setting_host_name: "Serverio vardas"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Hours per day"
   setting_hours_per_day_explanation: >-
     This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).
@@ -4153,7 +4269,7 @@ lt:
   setting_working_days: "Darbo dienos"
   settings:
     authentication:
-      login: "Login"
+      login: "Prisijungimo vardas"
       registration: "Registration"
       sso: "Single Sign-On (SSO)"
       omniauth_direct_login_hint_html: >
@@ -4269,6 +4385,7 @@ lt:
   status_invited: pakviestas
   status_locked: užrakintas
   status_registered: registruotas
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:
@@ -4278,6 +4395,7 @@ lt:
   text_access_token_hint: "Prieigos raktai leidžia išorinėms aplikacijoms pasiekti OpenProject resursus."
   text_analyze: "Toliau analizuoti: %{subject}"
   text_are_you_sure: "Ar esate įsitikinę?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Ar tikrai norite tęsti?"
   text_are_you_sure_with_children: "Ištrinti darbų paketą ir visus jo vaikų paketus?"
   text_are_you_sure_with_project_custom_fields: "Ištrynus šį atributą taipogi bus ištrintos ir jo reikšmės visuose projektuose. Ar tikrai norite tai padaryti?"
@@ -4305,6 +4423,18 @@ lt:
     Tai yra nuotrauka, kuri rodoma jūsų PDF eksportų viršelio puslapio fone. Ji turi būti daugmaž 800px pločio ir 500px aukščio, PNG arba JPEG formato nuotrauka.
   text_custom_export_footer_instructions: >
     PDF exports will include a graphical element positioned to the left of the footer. This image must be a PNG or JPEG file with approximately 200 pixels in width.
+  label_custom_export_font_instructions: >
+    Upload and manage custom TrueType (.ttf) fonts used in your PDF exports. For best results, use matching files from the same font family. If no font is provided, the default NotoSans font will be used.
+  label_custom_export_images_instructions: >
+    Upload and manage custom image files used in your PDF exports.
+  text_custom_export_font_regular_instructions: >
+    This is the font file for regular text. It needs to be in TTF format and is required.
+  text_custom_export_font_bold_instructions: >
+    This is the font file for bold text. It needs to be in TTF format.
+  text_custom_export_font_italic_instructions: >
+    This is the font file for italic text. It needs to be in TTF format.
+  text_custom_export_font_bold_italic_instructions: >
+    This is the font file for bold and italic text. It needs to be in TTF format.
   text_custom_favicon_instructions: >
     Šis mažas paveikslėlis atsiranda Jūsų naršyklės lange, kortelėje šalia puslapio pavadinimo. Jis turi būti kvadratinis 32 pikselio ilgio ir pločio PNG paveikslėlis su permatomu fonu.
   text_custom_touch_icon_instructions: >

@@ -33,6 +33,8 @@ pt-PT:
           not_set: 'Não definido'
           finished: 'Terminado'
           discontinued: 'Descontinuado'
+        project_status_beta:
+          title: 'Estado do projeto (BETA)'
         subprojects:
           title: 'Subprojetos'
           no_results: 'Nenhum subprojeto.'

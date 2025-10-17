@@ -52,8 +52,7 @@ class Meeting < ApplicationRecord
 
   has_many :participants,
            dependent: :destroy,
-           class_name: "MeetingParticipant",
-           after_add: :send_participant_added_mail
+           class_name: "MeetingParticipant"
 
   has_many :agenda_items, dependent: :destroy, class_name: "MeetingAgendaItem", inverse_of: :meeting
   has_many :sections, -> { where(backlog: false) }, dependent: :delete_all, class_name: "MeetingSection"
@@ -255,6 +254,12 @@ class Meeting < ApplicationRecord
     end
   end
 
+  def send_emails?
+    return false if template? && recurring_meeting.scheduled_meetings.none?
+
+    persisted? && notify?
+  end
+
   private
 
   def add_new_participants_as_watcher
@@ -263,16 +268,8 @@ class Meeting < ApplicationRecord
     end
   end
 
-  def send_participant_added_mail(participant)
-    return if templated? || new_record? || !notify?
-
-    if Journal::NotificationConfiguration.active?
-      MeetingMailer.invited(self, participant.user, User.current).deliver_later
-    end
-  end
-
   def send_updated_mail
-    return if templated? || new_record? || !notify?
+    return unless send_emails?
 
     MeetingNotificationService
       .new(self)

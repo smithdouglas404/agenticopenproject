@@ -56,6 +56,7 @@ de:
       label_mapping: Zuordnung
       label_requested_attribute_for: "Angefordertes Attribut für: %{attribute}"
       no_results_table: Es wurden noch keine SAML-Identitätsanbieter definiert.
+      notice_created: A new SAML identity provider was successfully created.
       plural: SAML-Identitätsanbieter
       singular: SAML-Identitätsanbieter
       requested_attributes: Angeforderte Attribute

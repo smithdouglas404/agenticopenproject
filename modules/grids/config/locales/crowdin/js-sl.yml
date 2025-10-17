@@ -33,6 +33,8 @@ sl:
           not_set: 'Ni nastavljeno'
           finished: 'Končano'
           discontinued: 'Opuščeno'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Podprojekti'
           no_results: 'Ni podprojektov. '

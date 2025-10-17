@@ -322,7 +322,7 @@ RSpec.describe Projects::SetAttributesService, type: :model do
           end
         end
 
-        def ref(custom_field) = "{{cf_#{custom_field.id}}}"
+        using CustomFieldFormulaReferencing
 
         context "when trying to explicitly set values of calculated custom fields" do
           let!(:cf_static) { create(:integer_project_custom_field, projects: [project]) }
@@ -355,12 +355,12 @@ RSpec.describe Projects::SetAttributesService, type: :model do
           let!(:cf_calculated1) do
             create(:calculated_value_project_custom_field, :skip_validations,
                    projects: [project],
-                   formula: "#{ref cf_static} * 7")
+                   formula: "#{cf_static} * 7")
           end
           let!(:cf_calculated2) do
             create(:calculated_value_project_custom_field, :skip_validations,
                    projects: [project],
-                   formula: "#{ref cf_calculated1} * 11")
+                   formula: "#{cf_calculated1} * 11")
           end
 
           let(:call_attributes) do
@@ -391,12 +391,12 @@ RSpec.describe Projects::SetAttributesService, type: :model do
           let!(:cf_calculated1) do
             create(:calculated_value_project_custom_field, :skip_validations,
                    projects: [project],
-                   formula: "#{ref cf_static} * 7")
+                   formula: "#{cf_static} * 7")
           end
           let!(:cf_calculated2) do
             create(:calculated_value_project_custom_field, :skip_validations,
                    projects: [project],
-                   formula: "#{ref cf_calculated1} * 11")
+                   formula: "#{cf_calculated1} * 11")
           end
 
           let(:call_attributes) do
@@ -428,15 +428,15 @@ RSpec.describe Projects::SetAttributesService, type: :model do
           let!(:cf_c) { create(:integer_project_custom_field, projects: [project]) }
           let!(:cf_calculated1) do
             create(:calculated_value_project_custom_field, :skip_validations,
-                   projects: [project], formula: "#{ref cf_a} * 7")
+                   projects: [project], formula: "#{cf_a} * 7")
           end
           let!(:cf_calculated2) do
             create(:calculated_value_project_custom_field, :skip_validations,
-                   projects: [project], formula: "#{ref cf_b} * 11")
+                   projects: [project], formula: "#{cf_b} * 11")
           end
           let!(:cf_calculated3) do
             create(:calculated_value_project_custom_field, :skip_validations,
-                   projects: [project], formula: "#{ref cf_c} * 13")
+                   projects: [project], formula: "#{cf_c} * 13")
           end
 
           let(:call_attributes) do
@@ -474,16 +474,16 @@ RSpec.describe Projects::SetAttributesService, type: :model do
           let!(:cf_calculated1) do
             create(:calculated_value_project_custom_field, :skip_validations,
                    projects: [project],
-                   formula: "#{ref cf_static} * 7")
+                   formula: "#{cf_static} * 7")
           end
           let!(:cf_calculated2) do
             create(:calculated_value_project_custom_field, :skip_validations,
-                   formula: "#{ref cf_calculated1} * 11")
+                   formula: "#{cf_calculated1} * 11")
           end
           let!(:cf_calculated3) do
             create(:calculated_value_project_custom_field, :skip_validations,
                    projects: [project],
-                   formula: "#{ref cf_calculated2} * 13")
+                   formula: "#{cf_calculated2} * 13")
           end
 
           let(:call_attributes) do
@@ -522,17 +522,17 @@ RSpec.describe Projects::SetAttributesService, type: :model do
           let!(:cf_calculated1) do
             create(:calculated_value_project_custom_field, :skip_validations,
                    projects: [project],
-                   formula: "#{ref cf_static} * 7")
+                   formula: "#{cf_static} * 7")
           end
           let!(:cf_calculated2) do
             create(:calculated_value_project_custom_field, :skip_validations, :admin_only,
                    projects: [project],
-                   formula: "#{ref cf_calculated1} * 11")
+                   formula: "#{cf_calculated1} * 11")
           end
           let!(:cf_calculated3) do
             create(:calculated_value_project_custom_field, :skip_validations,
                    projects: [project],
-                   formula: "#{ref cf_calculated2} * 13")
+                   formula: "#{cf_calculated2} * 13")
           end
 
           let(:call_attributes) do
@@ -565,7 +565,7 @@ RSpec.describe Projects::SetAttributesService, type: :model do
           let!(:cf_calculated) do
             create(:calculated_value_project_custom_field, :skip_validations,
                    projects: [project],
-                   formula: "#{ref cf_static} * #{ref cf_referenced}")
+                   formula: "#{cf_static} * #{cf_referenced}")
           end
 
           let(:call_attributes) do
@@ -632,7 +632,7 @@ RSpec.describe Projects::SetAttributesService, type: :model do
             let!(:cf_referenced) do
               create(:calculated_value_project_custom_field, :skip_validations, :admin_only,
                      projects: [project],
-                     formula: "21 * #{ref cf_referenced1}")
+                     formula: "21 * #{cf_referenced1}")
             end
 
             before do

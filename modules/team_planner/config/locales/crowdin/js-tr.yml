@@ -3,7 +3,7 @@ tr:
   js:
     team_planner:
       add_existing: 'Mevcut olanı ekle'
-      label_team_planner_plural: 'Team planners'
+      label_team_planner_plural: 'Takım planlayıcıları'
       add_existing_title: 'Mevcut iş paketlerini ekle'
       create_label: 'Takım planlayıcısı'
       create_title: 'Yeni takım planlayıcısı oluştur'

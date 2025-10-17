@@ -88,6 +88,8 @@ pt-PT:
     button_list_view: "Ver lista"
     button_show_view: "Ver em ecrã completo"
     button_log_time: "Tempo de registro"
+    button_start_timer: "Iniciar temporizador"
+    button_stop_timer: "Parar temporizador"
     button_more: "Mais"
     button_open_details: "Abrir visão detalhada"
     button_close_details: "Fechar visão detalhada"
@@ -288,17 +290,6 @@ pt-PT:
         format:
           date: "%{attribute} não é data válida - AAAA-MM-DD esperado."
         general: "Ocorreu um erro."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Leia sobre novos recursos e atualizações de produtos."
-          learn_about: "Saiba mais sobre todas as novas funcionalidades"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                A versão contém várias novas funcionalidades e melhorias, tais como <br> <ul class="%{list_styling_class}"> <li>Melhorias UX/UI para um aspeto mais moderno.</li> <li>Reuniões: Opção para silenciar as notificações por e-mail e ICS.</li> <li>Temporizadores em curso apresentados no módulo O meu controlo de tempo.</li> <li>Relatório de progresso: a soma de % concluído também é apresentada no modo baseado no estado.</li> <li>Verificação de integridade do Nextcloud: Indicar a falta de capacidade de troca de tokens (complemento Enterprise).</li> </ul>
     ical_sharing_modal:
       title: "Subscrever o calendário"
       inital_setup_error_message: "Ocorreu um erro ao recuperar os dados."
@@ -1080,8 +1071,8 @@ pt-PT:
     notice_successful_delete: "Eliminado com sucesso."
     notice_successful_update: "Actualizado com sucesso."
     notice_job_started: "trabalho iniciado."
-    no_job_id: "No job ID returned from server."
-    invalid_job_response: "Invalid response from server."
+    no_job_id: "Não foi devolvida qualquer ID de trabalho do servidor."
+    invalid_job_response: "Resposta inválida do servidor."
     notice_bad_request: "Pedido inválido."
     relations:
       empty: Não existe relação
@@ -1114,6 +1105,7 @@ pt-PT:
       child_work_packages:
         one: "pacote de trabalho infantil"
         other: "%{count} pacotes de trabalho filhos"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"
@@ -1224,13 +1216,15 @@ pt-PT:
       selected_filter:
         all: "Todos os projetos"
         selected: "Apenas os selecionados"
-      search_placeholder: "Pesquisar projetos..."
+      search_placeholder: "Procurar projetos..."
+      search_placeholder_favorites: "Procurar favoritos..."
       include_subprojects: "Incluir todos os subprojetos"
       tooltip:
         include_all_selected: "Projeto já incluído porque todos os subprojetos estão ativados."
         current_project: "Este é o projeto atual em que está."
         does_not_match_search: "O projeto não corresponde aos critérios de pesquisa."
       no_results: "Nenhum projeto corresponde aos seus critérios de pesquisa."
+      no_favorite_results: "Nenhum projeto favorito corresponde aos seus critérios de pesquisa."
     baseline:
       toggle_title: "Linha de base"
       clear: "Limpar"

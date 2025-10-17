@@ -31,7 +31,7 @@ bg:
       events:
         created: "Създадено"
         updated: "Updated"
-        comment: "Comment"
+        comment: "Коментар"
         internal_comment: "Internal comment"
       explanation:
         text: >

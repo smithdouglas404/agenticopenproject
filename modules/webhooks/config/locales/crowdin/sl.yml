@@ -31,7 +31,7 @@ sl:
       events:
         created: "Ustvarjen"
         updated: "Posodobljen"
-        comment: "Comment"
+        comment: "Komentar"
         internal_comment: "Internal comment"
       explanation:
         text: >

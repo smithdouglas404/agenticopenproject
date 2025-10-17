@@ -33,6 +33,8 @@ fi:
           not_set: 'Määrittelemätön'
           finished: 'Valmis'
           discontinued: 'Discontinued'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Aliprojektit'
           no_results: 'Ei aliprojekteja.'

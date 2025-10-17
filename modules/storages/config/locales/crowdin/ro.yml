@@ -24,7 +24,7 @@ ro:
       storages/sharepoint_storage:
         host: Sharepoint Site URL
         library: Library ID
-        name: Name
+        name: Nume
         site: Site ID
       storages/storage:
         authentication_method: Authentication Method
@@ -32,6 +32,7 @@ ro:
         drive: Drive ID
         host: Server gazdă
         name: Nume
+        password: Application password
         provider_type: Tip furnizor
         tenant: Directory (tenant) ID
     errors:
@@ -62,7 +63,7 @@ ro:
               op_application_not_installed: pare să nu aibă aplicația "OpenProject integration". Vă rugăm să o instalați mai întâi și apoi să încercați din nou.
             password:
               invalid_password: is not valid.
-              unknown_error: could not be validated. Please check your storage connection and try again.
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: Fișier
       storages/storage: Depozitare
@@ -183,8 +184,6 @@ ro:
           not_found: The destination folder %{folder} could not be found on %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Complete without it
-      done_complete_setup: Done, complete setup
       done_continue: Done, continue
       open_storage: Open file storage
       replace_oauth_application: Înlocuiește OpenProject OAuth
@@ -202,12 +201,9 @@ ro:
     confirm_replace_oauth_application: This action will reset the current OAuth credentials. After confirming you will have to reenter the credentials at the storage provider and all remote users will have to authorize against OpenProject again. Are you sure you want to proceed?
     confirm_replace_oauth_client: This action will reset the current OAuth credentials. After confirming you will have to enter new credentials from the storage provider and all users will have to authorize against %{provider_type} again. Are you sure you want to proceed?
     delete_warning:
-      input_delete_confirmation: Enter the file storage name %{file_storage} to confirm deletion.
-      irreversible_notice: Deleting a file storage is an irreversible action.
-      project_storage: 'Are you sure you want to delete %{file_storage} from this project? To confirm this action please introduce the storage name in the field below, this will:'
       project_storage_delete_result_1: Remove all links from work packages of this project to files and folders of that storage.
       project_storage_delete_result_2: In case this storage has an automatically managed project folder, this and its files will be deleted forever.
-      storage: 'Are you sure you want to delete %{file_storage}? To confirm this action please introduce the storage name in the field below, this will:'
+      storage: 'Are you sure you want to delete %{file_storage}? This will:'
       storage_delete_result_1: Remove all storage setups for all projects using this storage.
       storage_delete_result_2: Remove all links from work packages of all projects to files and folders of that storage.
       storage_delete_result_3: In case this storage has automatically managed project folders, those and their contained files will be deleted forever.
@@ -230,16 +226,17 @@ ro:
         subtitle: Access management
       access_management_section: Access and project folders
       automatically_managed_folders: Automatically managed folders
-      general_information: General information
+      general_information: Informatii generale
       oauth_configuration: OAuth configuration
       one_drive_oauth: Azure OAuth
       openproject_oauth: OpenProject OAuth
       project_folders: Project folders
       redirect_uri: Redirecționați URI
+      sharepoint_oauth: Azure OAuth
       storage_audience_blank: No audience has been configured.
       storage_audience_description: Exchanging tokens for audience "%{audience}".
       storage_audience_idp: Using access token obtained by identity provider during login, regardless of audience.
-      storage_oauth: Ecran Nextcloud
+      storage_oauth: Storage OAuth
       storage_provider: Storage provider
       token_exchange: Token Exchange
     health:
@@ -278,6 +275,7 @@ ro:
           drive_id_exists: Drive exists
           drive_id_format: Drive ID format
           header: Configuration
+          host: Host URL
           host_url_accessible: Host URL accessible
           storage_configured: Configuration complete
           tenant_id: Tenant ID
@@ -298,7 +296,7 @@ ro:
         nc_group_folder_not_found: The group folder could not be found.
         nc_host_not_found: No Nextcloud server found at the configured host url. Please check the configuration.
         nc_oauth_request_not_found: The endpoint to fetch the currently connected user was not found. Please check the server logs for further information.
-        nc_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
+        nc_oauth_request_unauthorized: Utilizatorul curent nu este autorizat să acceseze spațiul de stocare de la distanță. Te rog să verifici jurnalele serverului pentru informații suplimentare.
         nc_oauth_token_missing: OpenProject cannot test the user level communication with Nextcloud as the user did not yet link their Nextcloud account.
         nc_unexpected_content: Unexpected content found in the managed group folder.
         nc_userless_access_denied: The configured app password is invalid.
@@ -308,7 +306,7 @@ ro:
         od_drive_id_invalid: The configured drive id seems invalid. Please check the configuration.
         od_drive_id_not_found: The configured drive id could not be found. Please check the configuration.
         od_oauth_request_not_found: The endpoint to fetch the currently connected user was not found. Please check the server logs for further information.
-        od_oauth_request_unauthorized: The current user isn't authorized to access the remote file storage. Please check the server logs for further information.
+        od_oauth_request_unauthorized: Utilizatorul curent nu este autorizat să acceseze spațiul de stocare de la distanță. Te rog să verifici jurnalele serverului pentru informații suplimentare.
         od_oauth_token_missing: OpenProject cannot test the user level communication with OneDrive as the user did not yet link their Microsoft account.
         od_tenant_id_wrong: The configured directory (tenant) id is invalid. Please check the configuration.
         od_test_folder_exists: The folder %{folder_name} needed for testing already exists. Please delete it and try again.
@@ -366,7 +364,7 @@ ro:
       host: Vă rugăm să adăugați adresa de găzduire a spațiului de stocare, inclusiv https://. Nu trebuie să fie mai lungă de 255 de caractere.
       managed_project_folders_application_password_caption: 'Enable automatic managed folders by copying this value from: %{provider_type_link}.'
       name: Dați un nume stocării pentru ca utilizatorii să poată diferenția între mai multe spațiul de stocare.
-      new_storage: Read our documentation on <a target='_blank' href='%{provider_link}'>setting up a %{provider_name} file storage</a> integration for more information.
+      new_storage: Citește documentația noastră despre <a target='_blank' href='%{provider_link}'>de configurare a integrării fișierului %{provider_name}</a> pentru mai multe informații.
       nextcloud:
         application_link_text: application “Integration OpenProject”
         integration: Administrare Nextcloud / OpenProject
@@ -483,14 +481,13 @@ ro:
         subtitle_short: Permite OpenProject să creeze dosare per proiect automat.
         title: Automatically managed project folders
       project_settings:
-        delete: Delete file storage
         edit: Edit the file storage to this project
         members_connection_status: Members connection status
         new: Adaugă un fișier de stocare în acest proiect
       project_storage_members:
         subtitle: Check the connection status for the storage %{storage_name_link} of all project members.
         title: Members connection status
-    permission_header_explanation: 'File permissions on external storages are applied only to folders and files within automatically managed project folders. Note that not all file permissions are supported by all storage providers. Please check the documentation on <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>file storage permissions</a> for more information.'
+    permission_header_explanation: 'Permisiunile de fișiere pe memoria externă sunt aplicate numai dosarelor și fișierelor din dosarele de proiect administrate automat. Ține cont că nu toate permisiunile fișierelor sunt acceptate de toți furnizorii de stocare. Te rog să verifici documentația pe <a target=''_blank'' href=''https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#file-storages-permissions''>permisiuni de stocare a fișierului</a> pentru mai multe informații.'
     provider_types:
       label: Tip flux
       nextcloud:
@@ -504,6 +501,7 @@ ro:
         name: OneDrive
         name_placeholder: e.g. OneDrive
       sharepoint:
+        drive_description: OpenProject access-managed document library
         label_oauth_client_id: Azure OAuth Application (client) ID
         label_oauth_client_secret: Azure OAuth Client Secret Value
         name: SharePoint

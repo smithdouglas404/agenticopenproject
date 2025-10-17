@@ -76,7 +76,7 @@ RSpec.describe "Admin Create a new file storage",
         expect(page).not_to have_test_selector("label-openproject_oauth_application_configured-status")
 
         # OAuth client
-        wait_for { page }.to have_test_selector("storage-oauth-client-label", text: "Nextcloud OAuth")
+        wait_for { page }.to have_test_selector("storage-oauth-client-label", text: "Storage OAuth")
         expect(page).not_to have_test_selector("label-storage_oauth_client_configured-status")
         expect(page).to have_test_selector("storage-oauth-client-id-description",
                                            text: "Allow OpenProject to access Nextcloud data using OAuth.")
@@ -159,8 +159,8 @@ RSpec.describe "Admin Create a new file storage",
           expect(application_password_input.value).to be_empty
 
           # Clicking submit with application password empty should show an error
-          click_on("Done, complete setup")
-          expect(page).to have_text("Password can't be blank.")
+          click_on("Finish setup")
+          expect(page).to have_text("Application password can't be blank.")
 
           # Test the error path for an invalid storage password.
           # Mock a valid response (=401) for example.com, so the password validation should fail
@@ -170,8 +170,8 @@ RSpec.describe "Admin Create a new file storage",
           expect(automatically_managed_switch).to be_checked
           fill_in "Application password", with: "1234567890"
           # Clicking submit with application password empty should show an error
-          click_on("Done, complete setup")
-          expect(page).to have_text("Password is not valid.")
+          click_on("Finish setup")
+          expect(page).to have_text("Application password is not valid.")
 
           # Test the happy path for a valid storage password.
           # Mock a valid response (=200) for example.com, so the password validation should succeed
@@ -180,7 +180,7 @@ RSpec.describe "Admin Create a new file storage",
           automatically_managed_switch = page.find('[name="storages_nextcloud_storage[automatic_management_enabled]"]')
           expect(automatically_managed_switch).to be_checked
           fill_in "Application password", with: "1234567890"
-          click_on("Done, complete setup")
+          click_on("Finish setup")
         end
 
         expect(page).to have_current_path(edit_admin_settings_storage_path(Storages::Storage.last))
@@ -238,8 +238,8 @@ RSpec.describe "Admin Create a new file storage",
           expect(application_password_input.value).to be_empty
 
           # Clicking submit with application password empty should show an error
-          click_on("Done, complete setup")
-          expect(page).to have_text("Password can't be blank.")
+          click_on("Finish setup")
+          expect(page).to have_text("Application password can't be blank.")
 
           # Test the error path for an invalid storage password.
           # Mock a valid response (=401) for example.com, so the password validation should fail
@@ -249,8 +249,8 @@ RSpec.describe "Admin Create a new file storage",
           expect(automatically_managed_switch).to be_checked
           fill_in "Application password", with: "1234567890"
           # Clicking submit with application password empty should show an error
-          click_on("Done, complete setup")
-          expect(page).to have_text("Password is not valid.")
+          click_on("Finish setup")
+          expect(page).to have_text("Application password is not valid.")
 
           # Test the happy path for a valid storage password.
           # Mock a valid response (=200) for example.com, so the password validation should succeed
@@ -259,7 +259,7 @@ RSpec.describe "Admin Create a new file storage",
           automatically_managed_switch = page.find('[name="storages_nextcloud_storage[automatic_management_enabled]"]')
           expect(automatically_managed_switch).to be_checked
           fill_in "Application password", with: "1234567890"
-          click_on("Done, complete setup")
+          click_on("Finish setup")
         end
 
         expect(page).to have_current_path(edit_admin_settings_storage_path(Storages::Storage.last))
@@ -395,7 +395,7 @@ RSpec.describe "Admin Create a new file storage",
 
           expect(page).to have_test_selector("storage-oauth-client-redirect-uri")
 
-          click_on "Done, complete setup"
+          click_on "Finish setup"
         end
 
         expect(page).to have_current_path(edit_admin_settings_storage_path(Storages::Storage.last))

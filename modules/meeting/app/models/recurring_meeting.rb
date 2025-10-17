@@ -305,10 +305,6 @@ class RecurringMeeting < ApplicationRecord
   def end_date_constraints
     return if end_date.nil?
 
-    if end_date < Date.current
-      errors.add(:end_date, :after_today)
-    end
-
     if parsed_start_date.present? && end_date < parsed_start_date
       errors.add(:end_date, :after, date: format_date(parsed_start_date))
     end

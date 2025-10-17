@@ -56,6 +56,7 @@ zh-TW:
       label_mapping: 對應
       label_requested_attribute_for: "要求的屬性為： %{attribute}"
       no_results_table: 目前尚未定義 SAML 身分提供者。
+      notice_created: 新的 SAML 身分提供者已成功建立。
       plural: SAML 身分提供商
       singular: SAML 身分提供商
       requested_attributes: 要求的屬性

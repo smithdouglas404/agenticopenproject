@@ -33,11 +33,13 @@ sv:
           not_set: 'Ej inställd'
           finished: 'Avslutad'
           discontinued: 'Discontinued'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Delprojekt'
           no_results: 'Inga delprojekt.'
         project_favorites:
-          title: 'Favorite projects'
+          title: 'Favoritprojekt'
           no_results: 'You currently have no favorite projects. Click on the star icon in the project dashboard to add one to your favorites.'
         time_entries_current_user:
           title: 'My spent time'

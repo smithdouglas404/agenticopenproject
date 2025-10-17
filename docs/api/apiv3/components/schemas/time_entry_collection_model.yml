@@ -62,7 +62,7 @@ examples:
             project:
               href: "/api/v3/projects/1"
               title: Some project
-            workPackage:
+            entity:
               href: "/api/v3/work_packages/1"
               title: Some work package
             user:
@@ -89,7 +89,7 @@ examples:
             project:
               href: "/api/v3/projects/42"
               title: Some other project
-            workPackage:
+            entity:
               href: "/api/v3/work_packages/541"
               title: Some other work package
             user:

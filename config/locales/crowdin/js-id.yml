@@ -88,6 +88,8 @@ id:
     button_list_view: "Tampilan tabel"
     button_show_view: "Tampilan layar penuh"
     button_log_time: "Catatan waktu"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "Lanjut"
     button_open_details: "Lihat tampilan detail"
     button_close_details: "Menutup tampilan rinci"
@@ -288,17 +290,6 @@ id:
         format:
           date: "%{attribute} is no valid date - YYYY-MM-DD expected."
         general: "An error has occurred."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Read about new features and product updates."
-          learn_about: "Learn more about all new features"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                The release contains various new features and improvements, such as <br> <ul class="%{list_styling_class}"> <li>UX/UI improvements for a more modern look.</li> <li>Meetings: Option to mute email notifications and ICS.</li> <li>Ongoing timers shown in the My time tracking module.</li> <li>Progress reporting: % Complete sum also shown in Status-based mode.</li> <li>Nextcloud Health check: Indicate missing token exchange capability (Enterprise add-on).</li> </ul>
     ical_sharing_modal:
       title: "Subscribe to calendar"
       inital_setup_error_message: "An error occured while fetching data."
@@ -324,7 +315,7 @@ id:
     label_added_time_by: 'Added by <a href="%{authorLink}">%{author}</a> at %{age}'
     label_ago: "hari yang lalu"
     label_all: "semua"
-    label_all_projects: "All projects"
+    label_all_projects: "Semua proyek"
     label_all_uppercase: "Semua"
     label_all_work_packages: "Semua paket kerja"
     label_and: "dan"
@@ -444,7 +435,7 @@ id:
     label_sort_lower: "Pindahkan ke bawah"
     label_sorting: "Mengurutkan"
     label_spent_time: "Durasi"
-    label_star_query: "Favored"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Press enter to save."
     label_public_query: "Publik"
     label_sum: "Total"
@@ -781,7 +772,7 @@ id:
     autocompleter:
       placeholder: "Type to search"
       notFoundText: "No items found"
-      search: "Search"
+      search: "Cari"
       project:
         placeholder: "Select project"
     repositories:
@@ -1111,6 +1102,7 @@ id:
         other: "paket kerja"
       child_work_packages:
         other: "Paket kerja %{count} turunan"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"
@@ -1220,13 +1212,15 @@ id:
       selected_filter:
         all: "Semua proyek"
         selected: "Only selected"
-      search_placeholder: "Search project..."
+      search_placeholder: "Search projects..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Include all sub-projects"
       tooltip:
         include_all_selected: "Project already included since Include all sub-projects is enabled."
         current_project: "This is the current project you are in."
         does_not_match_search: "Project does not match the search criteria."
       no_results: "No project matches your search criteria."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Baseline"
       clear: "Clear"

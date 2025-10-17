@@ -411,17 +411,17 @@ RSpec.describe "Persisted lists on projects index page",
       projects_page.expect_no_columns("Public")
     end
 
-    it "allows favoring persisted query" do
-      projects_page.expect_sidebar_filter("Persisted query", favored: false)
+    it "allows favoriting persisted query" do
+      projects_page.expect_sidebar_filter("Persisted query", favorited: false)
 
       projects_page.set_sidebar_filter("Persisted query")
-      projects_page.expect_sidebar_filter("Persisted query", selected: true, favored: false)
+      projects_page.expect_sidebar_filter("Persisted query", selected: true, favorited: false)
 
       projects_page.mark_query_favorite
-      projects_page.expect_sidebar_filter("Persisted query", selected: true, favored: true)
+      projects_page.expect_sidebar_filter("Persisted query", selected: true, favorited: true)
 
       projects_page.unmark_query_favorite
-      projects_page.expect_sidebar_filter("Persisted query", selected: true, favored: false)
+      projects_page.expect_sidebar_filter("Persisted query", selected: true, favorited: false)
     end
 
     it "loads the query with a custom field filter (Regression#57298)" do
@@ -560,7 +560,10 @@ RSpec.describe "Persisted lists on projects index page",
 
       projects_page.visit!
       projects_page.set_sidebar_filter(my_projects_list.name)
-      projects_page.expect_filter_set("project_status_code", value: "On track")
+      wait_for_reload
+      retry_block do
+        projects_page.expect_filter_set("project_status_code", value: "On track")
+      end
 
       projects_page.open_filters
       projects_page.set_filter(list_custom_field.column_name,
@@ -572,12 +575,15 @@ RSpec.describe "Persisted lists on projects index page",
       projects_page.save_query
 
       projects_page.set_sidebar_filter(my_projects_list.name)
-      projects_page.expect_filter_set("project_status_code", value: "On track")
 
-      projects_page.expect_filter_set(
-        list_custom_field.column_name,
-        value: list_custom_field.possible_values.first.value
-      )
+      wait_for_reload
+      retry_block do
+        projects_page.expect_filter_set("project_status_code", value: "On track")
+        projects_page.expect_filter_set(
+          list_custom_field.column_name,
+          value: list_custom_field.possible_values.first.value
+        )
+      end
     end
 
     it "cannot access another user`s list" do
@@ -621,10 +627,10 @@ RSpec.describe "Persisted lists on projects index page",
 
     let!(:invalid_list) do
       # Faking a query that has references stored to a custom field that no longer exists (e.g. has been deleted)
-      create(:project_query, name: "My projects list", user:, select: %w[name created_at cf_1]) do |query|
+      create(:project_query, name: "My projects list", user:, select: %w[name latest_activity_at cf_1]) do |query|
         query.where("member_of", "=", OpenProject::Database::DB_VALUE_TRUE)
         query.where("cf_1", "=", 1)
-        query.where("created_at", "=", "2020-01-01")
+        query.where("latest_activity_at", "=", "2020-01-01")
 
         query.save(validate: false)
       end
@@ -633,11 +639,11 @@ RSpec.describe "Persisted lists on projects index page",
     it "still shows the query falling back to a valid subset" do
       visit projects_path(query_id: invalid_list.id)
 
-      # Keeps only the 'Name' column as the cf does not exist and Created on is admin only.
+      # Keeps only the 'Name' column as the cf does not exist and "Latest activity at" is admin only.
       projects_page.expect_columns "Name"
-      projects_page.expect_no_columns "Created on"
+      projects_page.expect_no_columns "Latest activity at"
 
-      # Keeps only the 'I am member' filter as the cf does not exist and created_at is admin only.
+      # Keeps only the 'I am member' filter as the cf does not exist and latest_activity_at is admin only.
       projects_page.expect_filter_count 1
       projects_page.expect_filter_set("member_of")
 

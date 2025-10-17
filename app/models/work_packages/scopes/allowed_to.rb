@@ -39,7 +39,7 @@ module WorkPackages::Scopes
       def allowed_to(user, permission) # rubocop:disable Metrics/PerceivedComplexity
         permissions = Authorization.contextual_permissions(permission, :work_package, raise_on_unknown: true)
 
-        return none if user.locked?
+        return none if user.locked? || user.deleted?
         return none if permissions.empty?
 
         if user.admin? && permissions.all?(&:grant_to_admin?)

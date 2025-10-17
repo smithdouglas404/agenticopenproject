@@ -58,8 +58,13 @@ ja:
         end_after: "一連の会議が終了"
         end_date: "完了日"
         iterations: "回数"
+      meeting_participant:
+        invited: "招待済み"
+        attended: "出席"
     errors:
       models:
+        meeting_participant:
+          invalid_user: "%{name}は有効な参加者ではありません。"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "新しいスケジュールではカバーされていない一連の会議があります。すべての会議を含むようにスケジュールを調整してください。"
@@ -74,7 +79,7 @@ ja:
       meeting_agenda: "アジェンダ"
       meeting_section: "セクション"
       token/ical_meeting:
-        other: "iCal Meeting subscription"
+        other: "iCal Meeting サブスクリプション"
   activity:
     filter:
       meeting: "会議"
@@ -92,7 +97,6 @@ ja:
           updated: "%{old_value} から %{value} に変更されました"
           updated_html: "<i>%{old_value}</i> から <i>%{value}</i> に変更されました"
   description_attended: "出席した"
-  description_invite: "招待済み"
   events:
     meeting: 会議が編集されました
     meeting_agenda: 会議の議題が編集されました
@@ -146,7 +150,7 @@ ja:
   label_recurring_meeting_series_end: "一連の会議を終了"
   label_recurring_meeting_series_end_now: "シリーズを今すぐ終了する"
   label_meeting_more:
-    other: "There are %{count} more meetings."
+    other: "あと%{count}の会議があります。"
   label_my_meetings: "私の会議"
   label_all_meetings: "すべての会議"
   label_upcoming_meetings: "今後の会議"
@@ -198,7 +202,7 @@ ja:
       agenda_items: "議題項目をコピー"
       agenda_text: "古い会議の議題をコピー"
       participants: "参加者リストをコピー"
-      to_clipboard: "クリップボードにコピー"
+      to_clipboard: "リンクをクリップボードにコピー"
     email:
       send_emails: "参加者にメールを送信"
       send_invitation_emails: >
@@ -208,10 +212,10 @@ ja:
       open_my_meetings_link: "自分のミーティングに移動"
       series:
         title: "[%{project_name}] ミーティングシリーズ '%{title}'"
-        summary: "%{actor} は新しいミーティングシリーズ '%{title}' を立ち上げた"
-      series_rescheduled:
-        title: "[%{project_name}] ミーティングシリーズ '%{title}' リスケジュール"
-        summary: "%{actor} は、ミーティングシリーズ'%{title}' のスケジュールを変更した"
+        summary: "%{actor} has invited you to a new meeting series '%{title}'"
+      series_updated:
+        title: "[%{project_name}]の一連の会議 「%{title}」が更新されました"
+        summary: "Meeting series '%{title}' has been updated by %{actor}"
         old_schedule: "古いスケジュール"
         new_schedule: "新しいスケジュール"
       invited:
@@ -224,12 +228,14 @@ ja:
         summary_series: "ミーティングシリーズ '%{title}' は、 %{actor} によってキャンセルされました。"
         summary: "'%{title}' は %{actor} によってキャンセルされました。"
         date_time: "スケジュールされた日時"
-      rescheduled:
-        header: "ミーティング '%{title}' は予定変更となりました"
-        summary: "会議 '%{title}' は %{actor} によってスケジュール変更されました"
-        body: "ミーティング '%{title}' は %{actor}によってスケジュール変更されました。"
+      updated:
+        header: "Meeting '%{title}' has been updated"
+        summary: "Meeting '%{title}' has been updated by %{actor}"
+        body: "The meeting '%{title}' has been updated by %{actor}."
         old_date_time: "古い日付/時刻"
         new_date_time: "新しい日付/時刻"
+        old_location: "Old location"
+        new_location: "New location"
     label_mail_all_participants: "Send email invite to participants"
     types:
       one_time: "会議"
@@ -315,6 +321,11 @@ ja:
           enable: "メールアドレスの更新を有効にする"
           disable: "メールアドレスの更新を無効にする"
       banner:
+        participants:
+          enabled: >
+            All participants will receive updated calendar invites via email when you add or remove participants.
+          disabled: >
+            Email calendar updates are disabled. Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             すべての参加者は、更新されたカレンダーの招待状をメールで受信します。
@@ -347,7 +358,7 @@ ja:
     occurrence:
       infoline: "このミーティングは、定期的に開催されるミーティング・シリーズの一環である。"
       error_no_next: "次回の開催はありません。"
-      first_already_exists: "このミーティングシリーズの最初の発生は既にインスタンス化されています。"
+      first_already_exists: "このミーティングシリーズの最初の発生は既にサイト化されています。"
       first_created: >
         最初の会議がテンプレートから正常に作成されました。今後作成されるミーティングはすべて、前回の開催時に自動的に作成されます。
     template:
@@ -436,6 +447,12 @@ ja:
   text_meeting_agenda_open_are_you_sure: "数分内のすべての変更が上書きされます！続けますか？"
   text_meeting_minutes_for_meeting: '会議の議事録 "%{meeting}"'
   text_notificiation_invited: "このメールには以下のミーティングのicsエントリーが含まれています:"
+  text_meeting_ics_description: >-
+    Link to meeting: %{url}
+  text_meeting_ics_meeting_series_description: >-
+    Link to meeting series: %{url}
+  text_meeting_occurrence_ics_description: >-
+    Link to meeting occurrence: %{url} Link to meeting series: %{series_url}
   text_meeting_empty_heading: "あなたの会議は空です。"
   text_meeting_empty_description1: "まず、以下に議題項目を追加してください。各項目はタイトルだけの簡単なものでも構いませんが、所要時間やメモなどの詳細を追加することもできます。"
   text_meeting_empty_description2: '既存のワークパッケージへの参照を追加することもできます。これを行うと、関連するメモがその作業パッケージの「会議」タブに自動的に表示されます。'
@@ -463,6 +480,7 @@ ja:
   label_agenda_item_move_to_next: "次の会議に移動"
   label_agenda_item_move_to_backlog: "バックログに移動"
   label_agenda_item_move_to_current_meeting: "現在の会議に移動"
+  label_agenda_item_move_to_section: "Move to section"
   label_agenda_item_move_to_top: "一番上へ移動"
   label_agenda_item_move_to_bottom: "一番下へ移動"
   label_agenda_item_move_up: "上へ"
@@ -511,17 +529,21 @@ ja:
   label_meeting_reopen_action: "会議を再開する"
   label_meeting_close_action: "会議を終了する"
   label_meeting_in_progress_action: "会議を開始"
-  text_meeting_open_description: "このミーティングは開いています．議題項目を追加/削除し，自由に編集することができます． 議題の準備ができたら、成果を文書化するために進行中であることをマークしてください。"
+  text_meeting_open_description: "You can add/remove agenda items and participants. Once the agenda is ready, mark it as in progress to document outcomes."
   text_meeting_closed_description: "この会議は終了しています。これ以上、議題項目の追加/削除はできません。"
-  text_meeting_in_progress_description: "このミーティングは進行中です．各アジェンダ項目の成果を記録し，それらを再編成し，新しいものを追加することさえできます． ミーティングが完了すると、ミーティングをクローズとしてマークしてロックできます。"
+  text_meeting_in_progress_description: "議題を変更したり、各項目のアウトカムを記録したり、参加者の出席を追跡することができます。 ミーティングが完了すると、ミーティングをクローズとしてマークしてロックできます。"
   text_meeting_open_dropdown_description: "既存の結果は残りますが、ユーザーは新しい結果を追加することはできません。"
   text_meeting_in_progress_dropdown_description: "会議中に取られた情報のニーズや意思決定などの成果を記録します。"
   text_meeting_closed_dropdown_description: "この会議は終了しました。これ以上、議題や結果を変更することはできません。"
   text_meeting_not_editable_anymore: "この会議はもう編集できません。"
   text_meeting_not_present_anymore: "この会議は削除されました。別の会議を選択してください。"
-  label_add_work_package_to_meeting_dialog_title: "会議にワークパッケージを追加"
+  label_add_work_package_to_meeting_dialog_title: "会議の選択"
+  label_add_work_package_to_meeting_section_label: "Section"
   label_add_work_package_to_meeting_dialog_button: "会議に追加"
   label_meeting_selection_caption: "このワークパッケージは、今後の会議または進行中の会議にのみ追加可能です。"
+  label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."
+  placeholder_section_select_meeting_first: "Meeting selection is required first"
+  text_add_work_package_to_meeting_form: "選択したミーティングまたは議題項目としてバックログにワークパッケージが追加されます。"
   text_add_work_package_to_meeting_description: "ワークパッケージは、議論のために1つまたは複数の会議に追加できます。それに関するメモもここで表示されます。"
   text_agenda_item_no_notes: "メモは提供されていません"
   text_agenda_item_not_editable_anymore: "この議題項目はもう編集できません。"
@@ -549,7 +571,7 @@ ja:
           dialog_body: "このトークンは、外部カレンダーアプリケーションですべてのミーティングを表示することができるiCalサブスクリプションURLを生成します。"
           create_button: "サブスクリプションを作成"
           name_label: "トークン名"
-          name_caption: 'あなたはそれを使用する場所の名前を付けることができます、例えば「私の電話」または「仕事用コンピュータ」。'
+          name_caption: '「マイフォン」や「ワークコンピュータ」など、どこで使用するかにちなんで名付けることができます。'
       created_dialog:
         token/ical_meeting:
           title: "iCalミーティング購読トークンが生成されました"

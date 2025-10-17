@@ -30,6 +30,7 @@
 
 class Principal < ApplicationRecord
   include ::Scopes::Scoped
+  default_scope -> { where.not(status: Principal.statuses[:deleted]) }
 
   # Account statuses
   # Disables enum scopes to include not_builtin (cf. Principals::Scopes::Status)
@@ -37,7 +38,8 @@ class Principal < ApplicationRecord
     active: 1,
     registered: 2,
     locked: 3,
-    invited: 4
+    invited: 4,
+    deleted: 5
   }, scopes: false
 
   self.table_name = "#{table_name_prefix}users#{table_name_suffix}"

@@ -44,7 +44,7 @@ ms:
       meeting_agenda_item:
         title: "Tajuk"
         author: "Pengarang"
-        duration_in_minutes: "Duration"
+        duration_in_minutes: "Tempoh"
         description: "Nota-nota"
         presenter: "Penyampai"
       meeting_section:
@@ -58,8 +58,13 @@ ms:
         end_after: "Meeting series ends"
         end_date: "End date"
         iterations: "Kejadian"
+      meeting_participant:
+        invited: "Telah dijemput"
+        attended: "Dihadiri"
     errors:
       models:
+        meeting_participant:
+          invalid_user: "%{name} is not a valid participant."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "There is one open meeting in the series that is not covered by the new schedule. Adjust the schedule to include all existing meetings."
@@ -92,7 +97,6 @@ ms:
           updated: "ditukar daripada %{old_value} kepada %{value}"
           updated_html: "ditukar daripada <i>%{old_value}</i> kepada <i>%{value}</i>"
   description_attended: "dihadiri"
-  description_invite: "dijemput"
   events:
     meeting: Mesyuarat diedit
     meeting_agenda: Agenda mesyuarat yang diedit
@@ -168,24 +172,24 @@ ms:
   label_version: "Versi"
   label_time_zone: "Zon waktu"
   label_start_date: "Tarikh mula"
-  label_subscribe_icalendar: "Subscribe to calendar"
+  label_subscribe_icalendar: "Langgan kalendar"
   meeting:
     participants:
       label:
-        participants: "Participants"
-        attended: "Attended"
+        participants: "Peserta-peserta"
+        attended: "Dihadiri"
         mark_as_attended: "Mark as attended"
         mark_all_as_attended: "Mark all as attended"
         remove_participant: "Remove participant"
-        manage_participants: "Manage participants"
-        no_participants: "No participants"
-        show_all: "Show all"
+        manage_participants: "Urus peserta"
+        no_participants: "Tiada peserta"
+        show_all: "Paparkan semua"
       text:
-        template: "These participants will be invited automatically to all future meetings as they are created."
+        template: "Peserta ini akan dijemput secara automatik ke semua mesyuarat akan datang apabila ia dibuat."
         manage_participants: "Search for and add project members as participants to this meeting."
         search_for_members: "Search for project members"
       blankslate:
-        heading: "No participants"
+        heading: "Tiada peserta"
         description: "There are no participants yet."
     attachments:
       template: "Fail yang dilampirkan ini akan disertakan dalam semua mesyuarat akan datang dalam siri ini."
@@ -198,7 +202,7 @@ ms:
       agenda_items: "Salin item agenda"
       agenda_text: "Salin agenda mesyuarat lama"
       participants: "Salin senarai peserta"
-      to_clipboard: "Copy to clipboard"
+      to_clipboard: "Copy link to clipboard"
     email:
       send_emails: "E-mel peserta"
       send_invitation_emails: >
@@ -208,10 +212,10 @@ ms:
       open_my_meetings_link: "Go to My meetings"
       series:
         title: "[%{project_name}] Meeting series '%{title}'"
-        summary: "%{actor} has set up a new meeting series '%{title}'"
-      series_rescheduled:
-        title: "[%{project_name}] Meeting series '%{title}' rescheduled"
-        summary: "%{actor} has changed the schedule for meeting series '%{title}'"
+        summary: "%{actor} has invited you to a new meeting series '%{title}'"
+      series_updated:
+        title: "[%{project_name}] Meeting series '%{title}' has been updated"
+        summary: "Meeting series '%{title}' has been updated by %{actor}"
         old_schedule: "Old schedule"
         new_schedule: "New schedule"
       invited:
@@ -224,12 +228,14 @@ ms:
         summary_series: "Meeting series '%{title}' has been cancelled by %{actor}."
         summary: "'%{title}' has been cancelled by %{actor}."
         date_time: "Scheduled date/time"
-      rescheduled:
-        header: "Meeting '%{title}' has been rescheduled"
-        summary: "Meeting '%{title}' has been rescheduled by %{actor}"
-        body: "The meeting '%{title}' has been rescheduled by %{actor}."
+      updated:
+        header: "Meeting '%{title}' has been updated"
+        summary: "Meeting '%{title}' has been updated by %{actor}"
+        body: "The meeting '%{title}' has been updated by %{actor}."
         old_date_time: "Tarikh/masa lama"
         new_date_time: "Tarikh/masa baharu"
+        old_location: "Old location"
+        new_location: "New location"
     label_mail_all_participants: "Send email invite to participants"
     types:
       one_time: "Sekali"
@@ -258,11 +264,11 @@ ms:
       your_meeting_export: "Meeting is being exported"
       minutes:
         footer_page_numbers: "P. %{current_page} of %{total_pages}"
-        author: "Author"
-        date: "Date"
-        time: "Time"
-        location: "Location"
-        title: "Minutes"
+        author: "Pengarang"
+        date: "Tarikh"
+        time: "Masa"
+        location: "Lokasi"
+        title: "Minit Mesyuarat"
     export_pdf_dialog:
       title: Export PDF
       description: Generate a printable PDF file of this meeting at the current state.
@@ -271,13 +277,13 @@ ms:
           label: Default
           caption: The default template is suitable for most meetings and represent the current state.
         minutes:
-          label: Minutes
+          label: Minit Mesyuarat
           caption: The minutes template is suitable for closed and archived meetings.
       first_page_header_left:
         label: First page header left
         caption: This text will appear on the first page at the left of the header.
       author:
-        label: Author
+        label: Pengarang
         caption: The author of the minutes will be displayed in the subtitle.
       include_participants:
         label: Include list of participants
@@ -294,7 +300,7 @@ ms:
       footer_text:
         label: Footer text
         caption: This text will appear on every page at the center of the footer.
-      submit_button: Download
+      submit_button: Muat turun
     notifications:
       sidepanel:
         title: "Email calendar updates"
@@ -315,6 +321,11 @@ ms:
           enable: "Enable email updates"
           disable: "Disable email updates"
       banner:
+        participants:
+          enabled: >
+            All participants will receive updated calendar invites via email when you add or remove participants.
+          disabled: >
+            Email calendar updates are disabled. Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             All participants will receive updated calendar invites via email informing them of your changes.
@@ -436,6 +447,12 @@ ms:
   text_meeting_agenda_open_are_you_sure: "Ini akan menggantikan semua perubahan dalam minit mesyuarat! Adakah anda ingin teruskan?"
   text_meeting_minutes_for_meeting: 'minit untuk mesyuarat "%{meeting}"'
   text_notificiation_invited: "Mel ini mengandungi entri ics untuk mesyuarat dibawah:"
+  text_meeting_ics_description: >-
+    Link to meeting: %{url}
+  text_meeting_ics_meeting_series_description: >-
+    Link to meeting series: %{url}
+  text_meeting_occurrence_ics_description: >-
+    Link to meeting occurrence: %{url} Link to meeting series: %{series_url}
   text_meeting_empty_heading: "Mesyuarat anda kosong"
   text_meeting_empty_description1: "Mulakan dengan menambah item agenda dibawah. Setiap item boleh jadi seringkas tajuk, tapi anda juga boleh menambah butiran tambahan seperti tempoh masa dan nota."
   text_meeting_empty_description2: 'Anda juga boleh menambah rujukan ke pakej kerja yang sedia ada. Apabila anda lakukannya, nota berkaitan boleh dilihat dalam tab "Mesyuarat" pakej kerja secara automatik.'
@@ -452,17 +469,18 @@ ms:
   label_meeting_index_later: "Next week and later"
   label_agenda_items: "Item-item agenda"
   label_agenda_items_reordered: "disusun semula"
-  label_agenda_item_add: "Add agenda item"
-  label_agenda_item_remove_from_agenda: "Remove from agenda"
+  label_agenda_item_add: "Tambah item agenda"
+  label_agenda_item_remove_from_agenda: "Keluarkan daripada agenda"
   label_agenda_item_remove_from_backlog: "Remove from backlog"
   label_agenda_item_undisclosed_wp: "Pakej kerja #%{id} tidak kelihatan"
   label_agenda_item_deleted_wp: " Rujukan pakej kerja yang dipadam"
   label_agenda_item_actions: "Tindakan item agenda"
   label_agenda_item_move_to_next_title: "Move to next meeting?"
-  label_agenda_item_move: "Move"
+  label_agenda_item_move: "Alih"
   label_agenda_item_move_to_next: "Move to next meeting"
   label_agenda_item_move_to_backlog: "Move to backlog"
   label_agenda_item_move_to_current_meeting: "Move to current meeting"
+  label_agenda_item_move_to_section: "Move to section"
   label_agenda_item_move_to_top: "Alih ke paling atas"
   label_agenda_item_move_to_bottom: "Alih ke paling bawah"
   label_agenda_item_move_up: "Alihkan ke atas"
@@ -511,17 +529,21 @@ ms:
   label_meeting_reopen_action: "Buka semula mesyuarat"
   label_meeting_close_action: "Tutup mesyuarat"
   label_meeting_in_progress_action: "Start meeting"
-  text_meeting_open_description: "This meeting is open. You can add/remove agenda items and edit them as you please. Once the agenda is ready, mark it as in progress to document outcomes."
+  text_meeting_open_description: "You can add/remove agenda items and participants. Once the agenda is ready, mark it as in progress to document outcomes."
   text_meeting_closed_description: "Mesyuarat ini ditutup. Anda tidak boleh tambah/keluarkan item agenda lagi."
-  text_meeting_in_progress_description: "This meeting is in progress. You can document outcomes for each agenda item, re-arrange them, and even add new ones. Once the meeting is complete, you can mark it as closed to lock it."
+  text_meeting_in_progress_description: "You can modify the agenda, document outcomes for each item and track attendance for participants. Once the meeting is complete, you can mark it as closed to lock it."
   text_meeting_open_dropdown_description: "Any existing outcomes will remain but users will not be able to add new outcomes."
   text_meeting_in_progress_dropdown_description: "Document outcomes like information needs or decisions taken during the meeting."
   text_meeting_closed_dropdown_description: "This meeting is closed. You cannot modify agenda items or outcomes anymore."
   text_meeting_not_editable_anymore: "Mesyuarat ini tidak boleh diedit lagi."
   text_meeting_not_present_anymore: "Mesyuarat ini telah dipadamkan. Sila pilih mesyuarat lain."
-  label_add_work_package_to_meeting_dialog_title: "Tambah pakej kerja ke mesyuarat"
+  label_add_work_package_to_meeting_dialog_title: "Select meeting"
+  label_add_work_package_to_meeting_section_label: "Section"
   label_add_work_package_to_meeting_dialog_button: "Tambah ke mesyuarat"
-  label_meeting_selection_caption: "Hanya boleh tambahkan pakej kerja ini ke mesyuarat terbuka akan datang atau yang sedang berlangsung."
+  label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."
+  label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."
+  placeholder_section_select_meeting_first: "Meeting selection is required first"
+  text_add_work_package_to_meeting_form: "The work package will be added to the selected meeting or backlog as an agenda item."
   text_add_work_package_to_meeting_description: "Pakej kerja boleh ditambah ke satu atau beberapa mesyuarat untuk perbincangan. Sebarang nota berkaitan juga boleh dilihat di sini."
   text_agenda_item_no_notes: "Tiada nota disediakan"
   text_agenda_item_not_editable_anymore: "Item agenda tidak boleh diedit lagi."
@@ -540,7 +562,7 @@ ms:
         text_hint: "iCalendar meeting tokens allow users to subscribe to all their meetings and view up-to-date meeting information in external clients."
         disabled_text: "iCalendar meeting subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
         empty_text_hint: 'To add an iCalendar meeting token, go to the <a href="%{path}">meetings section</a> and subscribe from there.'
-        add_button: "Subscribe to calendar"
+        add_button: "Langgan kalendar"
   my:
     access_token:
       dialog:
@@ -549,7 +571,7 @@ ms:
           dialog_body: "This token will generate an iCal subscription URL that lets you view all your meetings in an external calendar application."
           create_button: "Create subscription"
           name_label: "Token name"
-          name_caption: 'You can name it after where you will use it, such as"My phone" or "Work computer.'
+          name_caption: 'You can name it after where you will use it, such as "My phone" or "Work computer".'
       created_dialog:
         token/ical_meeting:
           title: "An iCal meeting subscription token has been generated"

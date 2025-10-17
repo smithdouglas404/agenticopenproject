@@ -31,7 +31,7 @@ ka:
       events:
         created: "შეიქმნა"
         updated: "განახლებულია"
-        comment: "Comment"
+        comment: "კომენტარი"
         internal_comment: "Internal comment"
       explanation:
         text: >

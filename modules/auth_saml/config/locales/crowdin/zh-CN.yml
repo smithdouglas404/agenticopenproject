@@ -56,6 +56,7 @@ zh-CN:
       label_mapping: 映射
       label_requested_attribute_for: "请求属性： %{attribute}"
       no_results_table: 尚未定义 SAML 身份提供商。
+      notice_created: 成功创建了一个新的 SAML 身份提供程序。
       plural: SAML 身份供应商
       singular: SAML 身份提供商
       requested_attributes: 请求的属性

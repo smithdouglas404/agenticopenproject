@@ -32,24 +32,42 @@ require "icalendar/tzinfo"
 
 module Meetings
   class IcalendarBuilder
-    attr_reader :timezone, :calendar, :calendar_timezones
+    attr_reader :builder_internal_timezone, :calendar, :all_times, :calendar_generated_for_user
 
-    def initialize(timezone:)
-      @timezone = timezone
+    def initialize(timezone:, user: User.current)
+      @calendar_generated_for_user = user
+      @builder_internal_timezone = timezone
       @calendar = build_icalendar
-      @calendar_timezones = Set.new
+      @all_times = Hash.new { |hash, key| hash[key] = Array.new }
       @excluded_dates_cache = {}
       @instantiated_occurrences_cache = {}
       @series_cache_loaded = false
+      @action_needed_from_user_as_attendee = true
+    end
+
+    def treat_participations_from_user_as_accepted!
+      @action_needed_from_user_as_attendee = false
+    end
+
+    def calendar_title=(title)
+      calendar.x_wr_calname = title
     end
 
     def add_single_meeting_event(meeting:, cancelled: false) # rubocop:disable Metrics/AbcSize
       calendar.event do |e|
         e.dtstart = ical_datetime(meeting.start_time)
         e.dtend = ical_datetime(meeting.end_time)
-        e.url = url_helpers.meeting_url(meeting)
-        e.summary = "[#{meeting.project.name}] #{meeting.title}"
-        e.description = "[#{meeting.project.name}] #{I18n.t(:label_meeting)}: #{meeting.title}"
+
+        e.created = meeting.created_at.utc
+        e.last_modified = meeting.updated_at.utc
+        e.sequence = meeting.lock_version
+
+        url = url_helpers.meeting_url(meeting)
+        e.url = url
+
+        e.description = I18n.t(:text_meeting_ics_description, url:)
+        e.summary = meeting.title
+
         e.uid = meeting.uid
         e.organizer = ical_organizer
         e.location = meeting.location.presence
@@ -66,14 +84,20 @@ module Meetings
     def add_series_event(recurring_meeting:, cancelled: false) # rubocop:disable Metrics/AbcSize
       calendar.event do |e|
         e.uid = recurring_meeting.uid
-        e.summary = "[#{recurring_meeting.project.name}] #{recurring_meeting.title}"
-        e.description = "[#{recurring_meeting.project.name}] #{I18n.t(:label_meeting_series)}: #{recurring_meeting.title}"
+        e.summary = recurring_meeting.title
+
+        url = url_helpers.recurring_meeting_url(recurring_meeting)
+        e.url = url
+        e.description = I18n.t(:text_meeting_ics_meeting_series_description, url:)
         e.organizer = ical_organizer
 
+        e.created = recurring_meeting.template.created_at.utc
+        e.last_modified = [recurring_meeting.template.updated_at, recurring_meeting.updated_at].max.utc
+        e.sequence = recurring_meeting.template.lock_version
+
         e.rrule = recurring_meeting.schedule.rrules.first.to_ical # We currently only have one recurrence rule
-        e.dtstart = ical_datetime(recurring_meeting.template.start_time)
-        e.dtend = ical_datetime(recurring_meeting.template.end_time)
-        e.url = url_helpers.project_recurring_meeting_url(recurring_meeting.project, recurring_meeting)
+        e.dtstart = ical_datetime(recurring_meeting.template.start_time, timezone: recurring_meeting.time_zone)
+        e.dtend = ical_datetime(recurring_meeting.template.end_time, timezone: recurring_meeting.time_zone)
         e.location = recurring_meeting.template.location.presence
         e.status = if cancelled
                      "CANCELLED"
@@ -82,6 +106,15 @@ module Meetings
                    end
 
         add_attendees(event: e, meeting: recurring_meeting.template)
+
+        # Add all occurence dates to the dates set, so that we bake in all timezone rules correcly
+        if recurring_meeting.end_after_never?
+          all_times[recurring_meeting.time_zone].push(5.years.from_now.in_time_zone(recurring_meeting.time_zone))
+        else
+          all_times[recurring_meeting.time_zone].push(
+            recurring_meeting.schedule.all_occurrences.max.in_time_zone(recurring_meeting.time_zone)
+          )
+        end
 
         # Add exceptions for all cancelled recurrences
         set_excluded_recurrence_dates(event: e, recurring_meeting: recurring_meeting)
@@ -97,16 +130,23 @@ module Meetings
 
       calendar.event do |e|
         e.uid = recurring_meeting.uid
-        e.summary = "[#{recurring_meeting.project.name}] #{recurring_meeting.title}"
-        e.description = "[#{recurring_meeting.project.name}] #{I18n.t(:label_meeting_series)}: #{recurring_meeting.title}"
+        e.summary = recurring_meeting.title
+
+        occurrence_url = url_helpers.meeting_url(meeting)
+        e.url = occurrence_url
+        e.description = I18n.t(:text_meeting_occurrence_ics_description,
+                               series_url: url_helpers.recurring_meeting_url(recurring_meeting),
+                               url: occurrence_url)
         e.organizer = ical_organizer
 
-        e.recurrence_id = ical_datetime(scheduled_meeting.start_time)
-        e.dtstart = ical_datetime(meeting.start_time)
-        e.dtend = ical_datetime(meeting.end_time)
-        e.url = url_helpers.project_meeting_url(meeting.project, meeting)
-        e.location = meeting.location.presence
+        e.created = meeting.created_at.utc
+        e.last_modified = meeting.updated_at.utc
         e.sequence = meeting.lock_version
+
+        e.recurrence_id = ical_datetime(scheduled_meeting.start_time, timezone: recurring_meeting.time_zone)
+        e.dtstart = ical_datetime(meeting.start_time, timezone: recurring_meeting.time_zone)
+        e.dtend = ical_datetime(meeting.end_time, timezone: recurring_meeting.time_zone)
+        e.location = meeting.location.presence
 
         add_attendees(event: e, meeting: meeting)
         e.status = if scheduled_meeting.cancelled?
@@ -126,20 +166,18 @@ module Meetings
     end
 
     def to_ical
-      calendar_timezones.each do |ical_tzinfo|
-        calendar.add_timezone(ical_tzinfo)
-      end
-
+      calendar.timezones.clear
+      build_timezones
       calendar.to_ical
     end
 
     def preload_for_recurring_meetings(recurring_meetings:)
       @excluded_dates_cache = ScheduledMeeting
+        .cancelled
         .where(recurring_meeting: recurring_meetings)
         .group(:recurring_meeting_id)
         .pluck(:recurring_meeting_id, "array_agg(start_time)")
         .to_h
-        .transform_values { |dates| dates.map { |date| ical_datetime(date) } }
 
       @instantiated_occurrences_cache = ScheduledMeeting
         .where(recurring_meeting: recurring_meetings)
@@ -160,11 +198,8 @@ module Meetings
     def build_icalendar
       ::Icalendar::Calendar.new.tap do |calendar|
         calendar.prodid = "-//OpenProject GmbH//#{OpenProject::VERSION}//Meeting//EN"
+        calendar.refresh_interval = 6.hours.iso8601
       end
-    end
-
-    def add_timezone_definition(time)
-      calendar_timezones << timezone.tzinfo.ical_timezone(time)
     end
 
     def add_attendees(event:, meeting:)
@@ -177,8 +212,8 @@ module Meetings
           {
             "CN" => user.name,
             "EMAIL" => user.mail,
-            "PARTSTAT" => "NEEDS-ACTION",
-            "RSVP" => "TRUE",
+            "PARTSTAT" => attendee_participation_status(user),
+            "RSVP" => attendee_rsvp_needed?(user) ? "TRUE" : "FALSE",
             "CUTYPE" => "INDIVIDUAL",
             "ROLE" => "REQ-PARTICIPANT"
           }
@@ -188,14 +223,55 @@ module Meetings
       end
     end
 
-    def tzid
-      @tzid ||= timezone.tzinfo.canonical_identifier
+    def attendee_participation_status(user)
+      if calendar_generated_for_user == user && @action_needed_from_user_as_attendee
+        "NEEDS-ACTION"
+      else
+        "ACCEPTED" # until we handle RSVPs properly, we assume participants have accepted
+      end
     end
 
-    def ical_datetime(time)
+    def attendee_rsvp_needed?(user)
+      calendar_generated_for_user == user && @action_needed_from_user_as_attendee
+    end
+
+    def ical_datetime(time, timezone: builder_internal_timezone)
+      tzid = timezone.tzinfo.canonical_identifier
+
       time_in_time_zone = time.in_time_zone(timezone)
-      add_timezone_definition(time_in_time_zone)
+      all_times[timezone] << time_in_time_zone
+
       Icalendar::Values::DateTime.new time_in_time_zone, "tzid" => tzid
+    end
+
+    def format_ical_offset(offset_seconds)
+      hours = offset_seconds / 3600
+      minutes = (offset_seconds.abs / 60) % 60
+      sprintf("%<hours>+03d%<minutes>02d", hours:, minutes:)
+    end
+
+    def build_timezones # rubocop:disable Metrics/AbcSize
+      all_times.each do |timezone, times|
+        calendar.timezone do |tz|
+          tz.tzid = timezone.tzinfo.canonical_identifier
+          transitions = timezone.tzinfo.transitions_up_to(times.max + 6.months, times.min - 6.months)
+
+          transitions.each do |tr|
+            if tr.offset.dst?
+              tz.daylight { |d| transition_to_component(d, tr) }
+            else
+              tz.standard { |s| transition_to_component(s, tr) }
+            end
+          end
+        end
+      end
+    end
+
+    def transition_to_component(component, transition)
+      component.dtstart = transition.at.utc.strftime("%Y%m%dT%H%M%SZ")
+      component.tzoffsetfrom = format_ical_offset(transition.previous_offset.utc_total_offset)
+      component.tzoffsetto = format_ical_offset(transition.offset.utc_total_offset)
+      component.tzname = transition.offset.abbreviation.to_s
     end
 
     def ical_organizer
@@ -221,8 +297,7 @@ module Meetings
                          .scheduled_meetings
                          .cancelled
                          .pluck(:start_time)
-                         .map { ical_datetime(it) }
-                     end
+                     end.map { ical_datetime(it, timezone: recurring_meeting.time_zone) }
     end
 
     def upcoming_instantiated_schedules(recurring_meeting)

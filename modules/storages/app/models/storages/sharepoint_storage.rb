@@ -38,11 +38,12 @@ module Storages
     }.freeze
 
     store_attribute :provider_fields, :tenant_id, :string
+    store_attribute :provider_fields, :managed_drive_id, :string
 
     # For now SharePoint is visible only in tests.
     # This is to prevent it from being shown in the UI, as it is not ready yet.
     def self.visible?
-      OpenProject::FeatureDecisions.sharepoint_storage_active? || Rails.env.local?
+      OpenProject::FeatureDecisions.sharepoint_storage_active?
     end
 
     def self.short_provider_name = :sharepoint

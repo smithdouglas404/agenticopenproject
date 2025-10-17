@@ -33,6 +33,8 @@ uk:
           not_set: 'Не встановлено'
           finished: 'Завершено'
           discontinued: 'Припинено'
+        project_status_beta:
+          title: 'Статус проєкту (BETA)'
         subprojects:
           title: 'Підпроекти'
           no_results: 'Немає підпроектів.'

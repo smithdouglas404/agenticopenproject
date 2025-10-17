@@ -24,12 +24,16 @@ import AutoScrollingController from './controllers/dynamic/work-packages/activit
 import PollingController from './controllers/dynamic/work-packages/activities-tab/polling.controller';
 import StemsController from './controllers/dynamic/work-packages/activities-tab/stems.controller';
 import EditorController from './controllers/dynamic/work-packages/activities-tab/editor.controller';
+import LazyPageController from './controllers/dynamic/work-packages/activities-tab/lazy-page.controller';
 
 import AutoSubmit from '@stimulus-components/auto-submit';
 import AutoThemeSwitcher from './controllers/auto-theme-switcher.controller';
 import { OpenProjectStimulusApplication } from 'core-stimulus/openproject-stimulus-application';
 import { Application } from '@hotwired/stimulus';
 import { BeforeunloadController } from './controllers/beforeunload.controller';
+import ExternalLinksController from './controllers/external-links.controller';
+import DisableWhenClickedController from 'core-stimulus/controllers/disable-when-clicked.controller';
+import HighlightTargetElementController from 'core-stimulus/controllers/highlight-target-element.controller';
 
 declare global {
   interface Window {
@@ -40,6 +44,7 @@ declare global {
 OpenProjectStimulusApplication.preregister('application', OpApplicationController);
 OpenProjectStimulusApplication.preregister('async-dialog', AsyncDialogController);
 OpenProjectStimulusApplication.preregister('disable-when-checked', OpDisableWhenCheckedController);
+OpenProjectStimulusApplication.preregister('disable-when-clicked', DisableWhenClickedController);
 OpenProjectStimulusApplication.preregister('flash', FlashController);
 OpenProjectStimulusApplication.preregister('menus--main', MainMenuController);
 OpenProjectStimulusApplication.preregister('password-confirmation-dialog', PasswordConfirmationDialogController);
@@ -63,8 +68,11 @@ OpenProjectStimulusApplication.preregister('work-packages--activities-tab--auto-
 OpenProjectStimulusApplication.preregister('work-packages--activities-tab--polling', PollingController);
 OpenProjectStimulusApplication.preregister('work-packages--activities-tab--stems', StemsController);
 OpenProjectStimulusApplication.preregister('work-packages--activities-tab--editor', EditorController);
+OpenProjectStimulusApplication.preregister('work-packages--activities-tab--lazy-page', LazyPageController);
 OpenProjectStimulusApplication.preregister('beforeunload', BeforeunloadController);
 OpenProjectStimulusApplication.preregister('auto-theme-switcher', AutoThemeSwitcher);
+OpenProjectStimulusApplication.preregister('external-links', ExternalLinksController);
+OpenProjectStimulusApplication.preregister('highlight-target-element', HighlightTargetElementController);
 
 const instance = OpenProjectStimulusApplication.start();
 window.Stimulus = instance;

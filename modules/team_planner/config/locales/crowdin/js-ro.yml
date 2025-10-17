@@ -3,7 +3,7 @@ ro:
   js:
     team_planner:
       add_existing: 'Adaugă existent'
-      label_team_planner_plural: 'Team planners'
+      label_team_planner_plural: 'Planificare echipă'
       add_existing_title: 'Adaugă pachete de lucru existente'
       create_label: 'Planificator echipă'
       create_title: 'Creează planificare echipă nouă'

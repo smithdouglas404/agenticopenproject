@@ -156,6 +156,17 @@ RSpec.describe MyController do
     end
   end
 
+  describe "locale" do
+    it "renders the locale template" do
+      as_logged_in_user user do
+        get :locale
+      end
+
+      expect(response).to be_successful
+      expect(response).to render_template "locale"
+    end
+  end
+
   describe "settings" do
     describe "PATCH" do
       let(:language) { "en" }

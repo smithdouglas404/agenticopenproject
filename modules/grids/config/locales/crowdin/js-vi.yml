@@ -33,6 +33,8 @@ vi:
           not_set: 'Không được thiết lập'
           finished: 'Hoàn thành'
           discontinued: 'Ngừng'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
           title: 'Các dự án con'
           no_results: 'Không có dự án con.'

@@ -59,6 +59,10 @@ sk:
       tab_interface: "Interface"
       tab_branding: "Branding"
       tab_pdf_export_styles: "PDF export styles"
+      tab_pdf_export_font: "PDF export font"
+      fonts:
+        file_too_large: "is too large (maximum size is %{count} MB)."
+        file_is_invalid: "is not a valid TTF font file."
       colors:
         primary-button-color: "Primary button"
         accent-color: "Accent"
@@ -137,7 +141,7 @@ sk:
       new:
         title: "New SCIM client"
       revoke_static_token_dialog_component:
-        confirm_button: "Revoke"
+        confirm_button: "Odvolať"
         title: "Revoke static token"
         heading: "Are you sure you want to revoke this token?"
         description: "The SCIM client that uses this token will no longer be able to access OpenProject's SCIM server API."
@@ -145,7 +149,7 @@ sk:
         blank_slate:
           title: "No SCIM clients configured yet"
           description: "Add clients to see them here"
-        user_count: "Users"
+        user_count: "Užívatelia"
       token_list_component:
         description: "The tokens you generate here can be passed by a SCIM client to access the OpenProject SCIM API."
         heading: "Tokens"
@@ -158,6 +162,11 @@ sk:
         expired: "Expired on %{date}"
         revoked: "Revoked on %{date}"
         title: "Access token table"
+    workflows:
+      tabs:
+        default_transitions: "Default transitions"
+        user_author: "User is author"
+        user_assignee: "User is assignee"
   authentication:
     login_and_registration: "Login and registration"
   announcements:
@@ -191,10 +200,9 @@ sk:
     ldap_auth_failed: "Nemožno overiť v LDAP-Serveri."
     sync_failed: "Failed to synchronize from LDAP: %{message}."
     back_to_index: "Click here to go back to the list of connection."
-    technical_warning_html: |
+    technical_warning: |
       This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Please visit our documentation for detailed instructions</a>.
+      [Please visit our documentation for detailed instructions](docs_url).
     attribute_texts:
       name: Arbitrary name of the LDAP connection
       host: LDAP host name or IP address
@@ -329,14 +337,36 @@ sk:
     tab:
       no_results_title_text: Momentálne nie sú k dispozícií žiadne vlastné polia.
       no_results_content_text: Vytvoriť nové vlastné pole
+  calculated_values:
+    error_dialog:
+      title: "Error with Calculated Value"
+    errors:
+      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      mathematical: "A mathematical error occurred during calculation."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
   concatenation:
     single: "alebo"
-  dry_validation:
+  danger_dialog:
+    confirmation_live_message_checked: "The button to proceed is now active."
+    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+  op_dry_validation:
+    or: "or"
     errors:
+      array?: "must be an array."
+      decimal?: "must be a decimal."
       defined: "must not be defined."
-      int?: "must be an integer."
+      eql?: "must be equal to %{left}."
       filled?: "must be filled."
       greater_or_equal_zero: "must be greater or equal to 0."
+      gteq?: "must be greater than or equal to %{num}."
+      hash?: "must be a hash."
+      included_in?:
+        arg:
+          default: "must be one of: %{list}."
+          range: "must be one of: %{list_left} - %{list_right}."
+      int?: "must be an integer."
+      key?: "is missing."
       not_found: "not found."
       rules:
         copy_workflow_from:
@@ -352,14 +382,17 @@ sk:
           not_unique: "must be unique within the same hierarchy level."
         parent:
           not_descendant: "must be a descendant of the hierarchy root."
+      str?: "must be a string."
+      type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
       enabled: "Enabled"
       depth: "Depth"
       item: "Item"
       label: "Label"
+      score: "Score"
       short: "Short name"
-      parent: "Nadradený balíček"
+      parent: "Parent"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -422,7 +455,7 @@ sk:
     lists:
       active: "Active projects"
       my: "Moje projekty"
-      favored: "Favorite projects"
+      favorited: "Favorite projects"
       archived: "Archived projects"
       shared: "Shared project lists"
       my_lists: "My project lists"
@@ -594,15 +627,12 @@ sk:
           dialog_title: "Create new API token"
           attention_text: "Treat API tokens like passwords. Anyone with this token will have access to information from this instance, share it only with trusted users."
           dialog_body: "This token will allow third-party applications to communicate with your instance. To differentiate the new API token, please give it a name."
-          create_button: "Create"
+          create_button: "Vytvoriť"
           name_label: "Token name"
       created_dialog:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Please provide an API token name"
-        token_name_in_use: "This API token name is already in use, please select a different one"
       failed_to_reset_token: "Nepodarilo sa obnoviť prístupový token: %{error}"
       failed_to_create_token: "Failed to create access token: %{error}"
       failed_to_revoke_token: "Failed to revoke access token: %{error}"
@@ -620,17 +650,20 @@ sk:
     autologins:
       prompt: "Stay logged in for %{num_days}"
     sessions:
-      remembered_devices: "Remembered devices"
-      remembered_devices_caption: "A list of all devices that logged into this account using the 'Stay logged in' option."
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "Browser"
+      expires: "Expires"
+      last_connection: "Last connection"
       device: "Device / OS"
       unknown_browser: "unknown browser"
       unknown_os: "unknown operating system"
-      current: "Current session"
+      unknown: "(unknown)"
+      browser_session: "(Browser session)"
+      current: "Current (this device)"
       title: "Session management"
-      instructions: "This is a list of devices that have logged into your account. Revoke any sessions that you do not recognize or you have no longer access to."
+      instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "You cannot delete your current session."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "This user is currently a member of the following groups:"
       no_results_title_text: This user is currently not a member in any group.
@@ -655,8 +688,8 @@ sk:
   priorities:
     edit:
       priority_color_text: |
-        Click to assign or change the color of this priority.
-        It can be used for highlighting work packages in the table.
+        Kliknite na položku priradiť alebo zmeniť farbu tejto priority.
+        Je možné použiť na zvýraznenie pracovných balíčkov v tabuľke.
     admin:
       default:
         caption: Making this priority default will override the previous default priority.
@@ -704,10 +737,8 @@ sk:
         excluded_from_totals: "Excluded from totals"
   themes:
     dark: "Dark"
-    dark_high_contrast: "Dark high contrast"
     light: "Light"
-    light_high_contrast: "Light high contrast"
-    sync_with_os: "Automatic (match OS colour mode)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: Momentálne neexistujú žiadne typy.
@@ -927,7 +958,7 @@ sk:
   account:
     delete: "Vymazať účet"
     delete_confirmation: "Ste si istý, že chcete vymazať daný účet?"
-    deletion_pending: "Account has been locked and was scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Dáta, ktoré daný používateľ vytvoril (čiže e-mail, nastavenia, pracovné balíčky, wiki stránky a pod.), budú odstránené do takej miery, do akej to bude možné. Pamätajte však, že pracovné balíčky a wiki stránky nemôžu byť odstránené bez skomplikovania prác ostatných používateľov. Takéto dáta budú preto preradené na účet nazvaný "Odstránený používateľ". Keďže dáta všetkých odstránených účtov sú automaticky priraďované na uvedený účet, nebude možné rozlíšiť dáta tohto používateľa od dát ostatných už odstránených používateľov.'
@@ -958,7 +989,7 @@ sk:
   activemodel:
     attributes:
       projects/copy_options:
-        dependencies: "Dependencies"
+        dependencies: "Závislosti"
   activerecord:
     attributes:
       announcements:
@@ -976,6 +1007,11 @@ sk:
         help_text: "Text pomocníka"
       auth_provider:
         scim_clients: "SCIM clients"
+      calculated_value_error:
+        error_code: "Error code"
+        customized: "Customized"
+        customized_id: "Customized ID"
+        customized_type: "Customized type"
       capability:
         context: "Context"
       changeset:
@@ -1026,6 +1062,8 @@ sk:
         active_user_count_restriction: "Active users"
       enterprise_trial:
         company: "Company"
+      favorite:
+        favorited: "Item"
       grids/grid:
         page: "Stránka"
         row_count: "Počet riadkov"
@@ -1058,6 +1096,7 @@ sk:
         active_value:
           true: "unarchived"
           false: "archivované"
+        attribute_groups: "Attribute Groups"
         description: "Popis"
         enabled_modules: "Zapnuté moduly"
         identifier: "Identifikátor"
@@ -1091,10 +1130,10 @@ sk:
       project/phase:
         date_range: "Časové obdobie"
         definition: "Definition"
-        duration: "Duration"
-        start_date: "Start date"
+        duration: "Trvanie"
+        start_date: "Dátum začiatku"
         start_date_caption: "Follows the previous phase."
-        finish_date: "Finish date"
+        finish_date: "Dátum dokončenia"
       project/phase_definition:
         name: "Názov"
         color: "Farba"
@@ -1151,6 +1190,8 @@ sk:
         is_readonly: "Pracovný balíček iba na čítanie"
         excluded_from_totals: "Exclude from calculation of totals in hierarchy"
         default_done_ratio: "% Complete"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Kalendár"
         ical_token_query_assignment: "Query assignment"
@@ -1162,7 +1203,7 @@ sk:
         ongoing: "Ongoing"
       type:
         description: "Default text for description"
-        attribute_groups: "Form configuration"
+        attribute_groups: "Konfigurácia formulára"
         is_in_roadmap: "Zobraziť v Roadmap štandardne"
         is_default: "Aktivované pre nové projekty štandardne"
         is_milestone: "Je medzník"
@@ -1204,9 +1245,16 @@ sk:
         auto_hide_popups: "Automatically hide success banners"
         auto_hide_popups_caption: "When enabled, the green success banners will automatically disappear after 5 seconds."
         warn_on_leaving_unsaved: "Upozorbiť ma, pri opustení pracovného balíčka s neuloženými zmenami"
-        theme: "Colour mode"
+        increase_theme_contrast: "Increase theme contrast"
+        increase_contrast: "Increase contrast"
+        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
+        force_light_theme_contrast: "Force high-contrast when in Light mode"
+        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
+        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
+        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
+        theme: "Color mode"
         time_zone: "Časové pásmo"
-        mode_guideline: "Some modes will overwrite custom theme colours for accessibility and legibility. Please select Light mode for full custom theme support."
+        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Daily reminders"
         workdays: "Working days"
       version:
@@ -1243,8 +1291,8 @@ sk:
         priority: "Priorita"
         progress: "% Complete"
         readonly: "Read only"
-        remaining_hours: "Remaining work"
-        remaining_time: "Remaining work"
+        remaining_hours: "Zostávajúca práca"
+        remaining_time: "Zostávajúca práca"
         shared_with_users: "Shared with"
         schedule_manually: "Manuálne plánovanie"
         spent_hours: "Strávený čas"
@@ -1271,7 +1319,7 @@ sk:
         confirmation: "%{attribute} sa nezhoduje."
         could_not_be_copied: "%{dependency} could not be (fully) copied."
         does_not_exist: "neexistuje."
-        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition"
+        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: "may not be accessed."
         error_readonly: "was attempted to be written but is not writable."
         error_conflict: "Informácia bola medzičasom aktualizovaná aspoň jedným iným používateľom."
@@ -1314,7 +1362,7 @@ sk:
         odd: "musí byť nepárne."
         regex_match_failed: "does not match the regular expression %{expression}."
         regex_invalid: "nebolo možné overiť s príslušným regulárnym výrazom."
-        regex_list_invalid: "could not be parsed as regular expression in lines %{invalid_lines}."
+        regex_list_invalid: "Lines %{invalid_lines} could not be parsed as regular expression."
         hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
         smaller_than_or_equal_to_max_length: "musí byť menšie alebo rovné ako maximálne dĺžka."
         taken: "už existuje v systéme."
@@ -1349,6 +1397,11 @@ sk:
               minimum: "need to include at least one filter for principal, context or id with the '=' operator."
         custom_field:
           at_least_one_custom_option: "Musí byť k dispozícii aspoň jedna možnosť."
+          referenced_in_other_fields_html:
+            one: "%{name} is used in project attribute calculation %{links}."
+            few: "%{name} is used in project attribute calculations: %{links}."
+            many: "%{name} is used in project attribute calculations: %{links}."
+            other: "%{name} is used in project attribute calculations: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1380,6 +1433,8 @@ sk:
           only_one_trial: "Only one trial token can be active. Please delete the previous trial token before adding another."
           unreadable: "nedá sa čítať. Ste si istý, že máte správny Token podpory Enterprise edition?"
           already_added: "This token has already been added."
+        favorite:
+          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "prekrývajú."
           outside: "je mimo mriežku."
@@ -1476,10 +1531,19 @@ sk:
           typed_dag:
             circular_dependency: "Vzťah vytvorí kruh vzťahov."
           attributes:
+            base:
+              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
+              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
             to_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
             from_id:
+              format: "The selected work package %{message}"
+              error_not_found: "could not be found."
               error_readonly: "cannot be changed for existing relations."
+              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
         repository:
           not_available: "SCM dodávateľ nie je k dispozícii"
           not_whitelisted: "nie je povolené aktuálnou konfiguráciou."
@@ -1581,7 +1645,8 @@ sk:
               cant_exceed_work: "cannot be higher than Work."
               must_be_set_when_work_is_set: "required when Work is set."
               must_be_set_when_work_and_percent_complete_are_set: "required when Work and % Complete are set."
-              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: '>- must be 0h when Work is set and % Complete is 100%.'
+              must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
+                must be 0h when Work is set and % Complete is 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 must be empty when Work is empty and % Complete is 100%.
           readonly_status: "The work package is in a readonly status so its attributes cannot be changed."
@@ -1631,9 +1696,11 @@ sk:
         version:
           undeletable_archived_projects: "The version cannot be deleted as it has work packages attached to it."
           undeletable_work_packages_attached: "The version cannot be deleted as it has work packages attached to it."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Skontrolujte nasledujúce polia:"
@@ -1651,7 +1718,7 @@ sk:
         many: "Authentication providers"
         other: "Authentication providers"
       category: "Kategória"
-      color: "Color"
+      color: "Farba"
       comment: "Komentár"
       custom_action: "Vlastná akcia"
       custom_field: "Vlastné pole"
@@ -1669,6 +1736,7 @@ sk:
         few: "Priorities"
         many: "Priorities"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "Člen"
       news: "Novinky"
       notification:
@@ -1781,6 +1849,7 @@ sk:
     attachments: "Prílohy"
     actor: "Actor"
     action: "Akcia"
+    api_key: "API key"
     author: "Autor"
     avatar: "Avatar"
     base: "Všeobecná chyba:"
@@ -1911,6 +1980,7 @@ sk:
   button_add_watcher: "Pridať pozorovateľa"
   button_annotate: "Komentovať"
   button_apply: "Použiť"
+  button_apply_changes: "Apply changes"
   button_archive: "Archivovať"
   button_back: "Späť"
   button_cancel: "Zrušíť"
@@ -1960,8 +2030,8 @@ sk:
   button_rollback: "Vrátenie k tejto verzii"
   button_save: "Uložiť"
   button_save_as: "Uložiť ako"
-  button_apply_changes: "Apply changes"
   button_save_back: "Uloženie a návrat"
+  button_select: "Select"
   button_set_reminder: "Set reminder"
   button_show: "Ukázať"
   button_sort: "Zoradiť"
@@ -2023,7 +2093,7 @@ sk:
     copy_options:
       dependencies_label: "Copy from project"
   create_project:
-    template_label: "Use template"
+    template_label: "Použiť šablónu"
     copy_options:
       dependencies_label: "Copy from template"
   create_wiki_page: "Create new wiki page"
@@ -2225,6 +2295,7 @@ sk:
     features:
       baseline_comparison: Baseline Comparisons
       board_view: Advanced Boards
+      calculated_values: Calculated Values
       conditional_highlighting: Conditional Highlighting
       internal_comments: Internal Comments
       custom_actions: Custom Actions
@@ -2259,7 +2330,7 @@ sk:
         Already have a token? Add it using the button below to upgrade to the booked Enterprise plan.
       hide_banner: "Hide this banner"
       homescreen_description: >
-        Enterprise plans extend the Community edition of OpenProject you are currently using. They include add-ons, additional features and professional support that enables organisations of all sizes to achieve great things together.
+        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
       homescreen_subline: By upgrading, you will also be supporting an open source project.
       baseline_comparison:
         description: Highlight changes made to this list since any point in the past.
@@ -2271,7 +2342,7 @@ sk:
         installation_text: "Experienced software engineers guide you through the complete installation and setup process in your own infrastructure."
         premium_features: "Enterprise add-ons"
         premium_features_text: "Agile boards, custom theme and logo, graphs, intelligent workflows with custom actions, full text search for work package attachments and multi-select custom fields."
-        professional_support: "Professional support"
+        professional_support: "Profesionálna podpora"
         professional_support_text: "Get reliable, high-touch support from senior support engineers with expert knowledge about running OpenProject in business-critical environments."
       work_package_subject_generation:
         description: "Create automatically generated subjects using referenced attributes and text."
@@ -2297,6 +2368,8 @@ sk:
         description: "Share work packages with users who are not members of the project."
       project_list_sharing:
         description: "Share project lists with individual users."
+      calculated_values:
+        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Custom color theme and logo"
         more_info: "Note: the used logo will be publicly accessible."
@@ -2364,6 +2437,9 @@ sk:
   enumeration_reported_project_statuses: "Nahlásený stav projektu"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "Jednoduché prihlásenie (SSO) pre používateľa '%{value}' zlyhalo"
   error_can_not_archive_project: "This project cannot be archived: %{errors}"
   error_can_not_delete_entry: "Záznam sa nedá odstrániť"
@@ -2392,6 +2468,7 @@ sk:
   error_invalid_selected_value: "Vybratá neplatná hodnota."
   error_journal_attribute_not_present: "Denník neobsahuje atribút %{attribute}."
   error_pdf_export_too_many_columns: "Vybraných príliš veľa stĺpcov pre export do PDF. Znížte počet stĺpcov."
+  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
   error_pdf_failed_to_export: "PDF export nie je možné uložiť: %{error}"
   error_token_authenticity: "Nepodarilo sa overiť Token medzi lokalitami. Ak ste sa pokúsili uložiť údaje na viaceré karty alebo prehliadače, zatvorte ich a opätovne načítajte túto stránku a skúste to znova."
   error_reminder_not_found: "The reminder was not found or was already notified about."
@@ -2507,6 +2584,10 @@ sk:
     your_projects_export: "Projects are being exported"
     succeeded: "Export completed"
     failed: "An error has occurred while trying to export the work packages: %{message}"
+    demo:
+      heading: "Demo PDF"
+      footer: "Generated by OpenProject"
+      button_text: Generate Demo PDF
     errors:
       embedded_table_with_too_many_columns: "This embedded work package table could not fit on the page, please reduce the number of columns."
     format:
@@ -2569,11 +2650,14 @@ sk:
       tesseract: "Tesseract k dispozícii (voliteľné)"
   filterable_tree_view:
     filter_mode:
-      all: "All"
+      all: "Všetky"
       label: "Filter mode"
       selected: "Selected"
     include_sub_items: "Include sub-items"
     no_results_text: "No results"
+  toggle_switch:
+    label_on: "On"
+    label_off: "Off"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
@@ -2596,6 +2680,19 @@ sk:
       community: "OpenProject komunita"
       upsell:
         title: "Upgrade to Enterprise edition"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_5":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Add work packages to a meeting section in the Meetings tab.
+            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
+            line_2: Filter projects by last update.
+            line_3: Jump to highlighted target elements from deep links.
+            line_4: Confirm critical actions with more accessible danger dialogs.
     links:
       upgrade_enterprise_edition: "Upgrade to Enterprise edition"
       postgres_migration: "Migrating your installation to PostgreSQL"
@@ -2606,7 +2703,8 @@ sk:
       shortcuts: "Skratky"
       blog: "OpenProject blog"
       forums: "Komunitné fórum"
-      newsletter: "Bezpečnostné upozornenia / Newsletter"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2688,7 +2786,7 @@ sk:
         static_token_name: "API token"
       ical:
         title: "iCalendar"
-        text_hint: 'iCalendar tokens allow users to <a href="%{path}" target="_blank">subscribe to OpenProject calendars</a> and view up-to-date work package information from external clients.'
+        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
         disabled_text: "iCalendar subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
         empty_text_hint: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
       oauth:
@@ -2771,6 +2869,7 @@ sk:
   label_api_access_key: "Prístupový kľúč API"
   label_api_access_key_created_on: "Prístupový kľúč pre API vytvorený %{value} vzad"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'iCalendar token "%{token_name}" for "%{calendar_name}" in "%{project_name}"'
   label_ical_access_key_not_present: "iCalendar token(s) not present."
@@ -2828,7 +2927,8 @@ sk:
   label_select_main_menu_item: Vyberte novú položku hlavného menu
   label_required_disk_storage: "Požadované miesto na disku"
   label_send_invitation: Poslať pozvánku
-  label_calculated_value: "Calculated value"
+  label_calculated_value: "Calculated Value"
+  label_change_parent: "Change parent"
   label_change_plural: "Zmeny"
   label_change_properties: "Zmeniť vlastnosti"
   label_change_status: "Zmeniť stav"
@@ -2878,7 +2978,7 @@ sk:
   label_dashboard: "Dashboard"
   label_database_version: "PostgreSQL version"
   label_date: "Dátum"
-  label_dates: "Dates"
+  label_dates: "Dátumy"
   label_date_and_time: "Dátum a čas"
   label_date_format: "Formát dátumu"
   label_date_from: "Od"
@@ -3004,7 +3104,7 @@ sk:
   label_integer: "Celé číslo"
   label_interface: "Interface"
   label_internal: "Interné"
-  label_introduction_video: "Úvodné video"
+  label_introduction_video: "Getting started video"
   label_invite_user: "Pozvať používateľa"
   label_item: "Item"
   label_item_plural: "Items"
@@ -3019,6 +3119,7 @@ sk:
   label_journal_diff: "Porovnanie popisu"
   label_language: "Jazyk"
   label_languages: "Languages"
+  label_locale: "Language and region"
   label_jump_to_a_project: "Skok do projektu..."
   label_keyword_plural: "Kľúčové slová"
   label_language_based: "Založené na jazyku používateľa"
@@ -3038,6 +3139,7 @@ sk:
   label_link_url: "Link (URL)"
   label_list: "Zoznam"
   label_loading: "Načítava sa..."
+  label_locked: "locked"
   label_lock_user: "Zamknúť užívateľa"
   label_logged_as: "Prihlásený ako"
   label_login: "Prihlásiť sa"
@@ -3045,6 +3147,10 @@ sk:
   label_custom_export_logo: "Custom export logo"
   label_custom_export_cover: "Custom export cover background"
   label_custom_export_footer: "Custom export footer image"
+  label_custom_export_font_regular: "Regular"
+  label_custom_export_font_bold: "Bold"
+  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
   label_custom_pdf_export_settings: "Custom PDF export settings"
@@ -3132,6 +3238,8 @@ sk:
   label_operator_equals_or: "is (OR)"
   label_operator_equals_all: "is (AND)"
   label_operator_shared_with_user_any: "akékoľvek"
+  label_open: "otvorené"
+  label_closed: "uzatvorené"
   label_open_menu: "Otvorte menu"
   label_open_work_packages: "otvorené"
   label_open_work_packages_plural: "otvorené"
@@ -3149,7 +3257,7 @@ sk:
   label_password_rule_special: "Špeciálne znaky"
   label_password_rule_uppercase: "Veľké písmená"
   label_path_encoding: "Kódovanie cesty"
-  label_per_page: "Per page:"
+  label_per_page: "Na stranu:"
   label_people: "Ľudia"
   label_permissions: "Oprávnenia"
   label_permissions_report: "Výkaz oprávnení"
@@ -3200,6 +3308,8 @@ sk:
   label_project_hide_details: "Skryť detaily projektu"
   label_portfolio: "Portfolio"
   label_portfolio_new: "New portfolio"
+  label_program: "Program"
+  label_program_new: "New program"
   label_public_projects: "Verejné projekty"
   label_query_new: "Nový dopyt"
   label_query_plural: "Vlastné dopyty"
@@ -3217,7 +3327,7 @@ sk:
   label_relation_edit: "Edit relation"
   label_relation_new: "Nový vzťah"
   label_release_notes: "Zoznam zmien"
-  label_remaining_work: "Remaining work"
+  label_remaining_work: "Zostávajúca práca"
   label_remove_column: "Odstrániť stĺpec"
   label_remove_columns: "Odstrániť vybraté stĺpce"
   label_renamed: "premenované"
@@ -3645,6 +3755,7 @@ sk:
   notice_password_confirmation_failed: "Heslo nie je správne. Nie je možné pokračovať."
   notice_principals_found_multiple: "Nájdených %{number} výsledkov. \nStlačte TAB pre prechod na prvý výsledok."
   notice_principals_found_single: "Bol nájdený jeden výsledok.\nStlačením tlačidla TAB zobraziť."
+  notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "Projekt nebol odstránený."
   notice_project_not_found: "Project not found."
   notice_successful_connection: "Úspešne pripojené."
@@ -3701,6 +3812,7 @@ sk:
   permission_add_messages: "Publikovať správy"
   permission_add_project: "Create projects"
   permission_add_portfolios: "Create portfolios"
+  permission_add_programs: "Create programs"
   permission_add_work_package_attachments: "Pridať prílohy"
   permission_add_work_package_attachments_explanation: "Allows adding attachments without Edit work packages permission"
   permission_add_internal_comments: "Write internal comments"
@@ -3815,13 +3927,15 @@ sk:
       one: "1 projekt"
       other: "%{count} projektov"
     destroy:
-      confirmation: "If you continue, the project %{identifier} will be permanently destroyed. To confirm this action please introduce the project name in the field below, this will:"
-      project_delete_result_1: "Delete all related data."
-      project_delete_result_2: "Delete all managed project folders in the attached storages."
-      info: "Odstránenie projektu je nevratná akcia."
-      project_verification: "Zadajte názov projektu %{name} pre potvrdenie odstránenia."
-      subprojects_confirmation: "Podprojekt (podprojekty): %{value} budú taktiež odstránené."
-      title: "Odstrániť projekt %{name}"
+      title: "Delete project"
+      heading: "Permanently delete this project?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+        one: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+        other: >
+          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
     filters:
       project_phase: "Project phase: %{phase}"
       project_phase_any: "Project phase: Any"
@@ -4056,6 +4170,8 @@ sk:
   setting_feeds_limit: "Limit obsahu informačných kanálov"
   setting_file_max_size_displayed: "Maximálna veľkosť textových súborov zobrazených priamo na stránke"
   setting_host_name: "Názov serveru (Host name)"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Hours per day"
   setting_hours_per_day_explanation: >-
     This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).
@@ -4158,7 +4274,7 @@ sk:
   setting_working_days: "Working days"
   settings:
     authentication:
-      login: "Login"
+      login: "Prihlasovacie meno"
       registration: "Registration"
       sso: "Single Sign-On (SSO)"
       omniauth_direct_login_hint_html: >
@@ -4274,6 +4390,7 @@ sk:
   status_invited: pozvaný
   status_locked: zamknuté
   status_registered: registrovaný
+  status_deleted: deleted
   #Used in array.to_sentence.
   support:
     array:
@@ -4283,6 +4400,7 @@ sk:
   text_access_token_hint: "Prístupové tokeny umožňujú udeliť externých aplikácií prístup k zdrojom v OpenProject."
   text_analyze: "Ďalej analyzovať: %{subject}"
   text_are_you_sure: "Ste si istí?"
+  open_link_in_a_new_tab: "Open link in a new tab"
   text_are_you_sure_continue: "Are you sure you want to continue?"
   text_are_you_sure_with_children: "Zmazať pracovný balíček a všetky podradené pracovné balíčky?"
   text_are_you_sure_with_project_custom_fields: "Deleting this attribute will also delete its values in all projects. Are you sure you want to do this?"
@@ -4310,6 +4428,18 @@ sk:
     This is the image that appears in the background of a cover page in your PDF exports. It needs to be an about 800px width by 500px height sized PNG or JPEG image file.
   text_custom_export_footer_instructions: >
     PDF exports will include a graphical element positioned to the left of the footer. This image must be a PNG or JPEG file with approximately 200 pixels in width.
+  label_custom_export_font_instructions: >
+    Upload and manage custom TrueType (.ttf) fonts used in your PDF exports. For best results, use matching files from the same font family. If no font is provided, the default NotoSans font will be used.
+  label_custom_export_images_instructions: >
+    Upload and manage custom image files used in your PDF exports.
+  text_custom_export_font_regular_instructions: >
+    This is the font file for regular text. It needs to be in TTF format and is required.
+  text_custom_export_font_bold_instructions: >
+    This is the font file for bold text. It needs to be in TTF format.
+  text_custom_export_font_italic_instructions: >
+    This is the font file for italic text. It needs to be in TTF format.
+  text_custom_export_font_bold_italic_instructions: >
+    This is the font file for bold and italic text. It needs to be in TTF format.
   text_custom_favicon_instructions: >
     This is the tiny icon that appears in your browser window/tab next to the page's title. It needs to be a squared 32 by 32 pixels sized PNG image file with a transparent background.
   text_custom_touch_icon_instructions: >

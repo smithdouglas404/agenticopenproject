@@ -29,7 +29,6 @@ RSpec.describe "Switching to project from work package", :js do
     expect(link[:href]).to include(project_path(project.id))
 
     link.click
-    # Redirection causes a trailing / on the path
-    expect(page).to have_current_path("#{project_path(project.id)}/")
+    expect(page).to have_current_path project_path(project.id)
   end
 end

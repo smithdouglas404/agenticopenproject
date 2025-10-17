@@ -31,7 +31,7 @@ si:
       events:
         created: "Created"
         updated: "Updated"
-        comment: "Comment"
+        comment: "අදහස් දක්වන්න"
         internal_comment: "Internal comment"
       explanation:
         text: >

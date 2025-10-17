@@ -30,7 +30,7 @@
 
 class ApplicationRecord < ActiveRecord::Base
   include ::OpenProject::Acts::Watchable
-  include ::OpenProject::Acts::Favorable
+  include ::OpenProject::Acts::Favoritable
 
   self.abstract_class = true
 

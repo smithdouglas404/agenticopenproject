@@ -35,12 +35,31 @@ class Queries::WorkPackages::Filter::VersionFilter <
     @allowed_values ||= versions.pluck(:id).map { |id| [id.to_s, id.to_s] }
   end
 
+  def available_operators
+    [
+      Queries::Operators::EqualsOr,
+      Queries::Operators::NotEquals,
+      Queries::Operators::All,
+      Queries::Operators::None,
+      Queries::Operators::Versions::OpenStatus,
+      Queries::Operators::Versions::LockedStatus,
+      Queries::Operators::Versions::ClosedStatus
+    ]
+  end
+
   def type
     :list_optional
   end
 
   def human_name
     WorkPackage.human_attribute_name("version")
+  end
+
+  def joins
+    case operator
+    when "o", "c", "l"
+      :version
+    end
   end
 
   def self.key
@@ -56,6 +75,19 @@ class Queries::WorkPackages::Filter::VersionFilter <
 
     values
       .filter_map { |version_id| available_versions[version_id.to_i] }
+  end
+
+  def operator_strategy
+    case operator
+    when "o"
+      Queries::Operators::Versions::OpenStatus
+    when "c"
+      Queries::Operators::Versions::ClosedStatus
+    when "l"
+      Queries::Operators::Versions::LockedStatus
+    else
+      super
+    end
   end
 
   private

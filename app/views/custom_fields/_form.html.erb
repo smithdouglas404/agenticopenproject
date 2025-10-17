@@ -33,7 +33,7 @@ See COPYRIGHT and LICENSE files for more details.
   class="form--section"
   id="custom_field_form">
 
-  <%= f.hidden_field :field_format %>
+  <%= f.hidden_field :field_format if @custom_field.new_record? %>
 
   <div class="form--field -required" id="custom_field_name_attributes">
     <%= f.text_field :name,
@@ -92,21 +92,26 @@ See COPYRIGHT and LICENSE files for more details.
           <span class="form--toolbar-item">
             <%= link_to t("custom_fields.reorder_alphabetical"),
                         { action: :reorder_alphabetical },
-                        method: :post,
-                        data: { confirm: t("custom_fields.reorder_confirmation") } %>
+                        data: {
+                          turbo_method: :post,
+                          turbo_confirm: t("custom_fields.reorder_confirmation")
+                        } %>
           </span>
         </div>
       <% end %>
       <div class="form--field">
         <%= render partial: "custom_fields/custom_options", locals: { custom_field: @custom_field, f: f } %>
-        <button
-          type="button"
-          class="spot-link"
-          data-test-selector="add-custom-option"
-          data-action="admin--custom-fields#addOption">
-          <span class="spot-icon spot-icon_1_25 spot-icon_add"></span>
-          <span><%= t(:button_add) %></span>
-        </button>
+        <%=
+          render Primer::Beta::Button.new(
+            scheme: :link,
+            test_selector: "add-custom-option",
+            data: { action: "admin--custom-fields#addOption" },
+            mt: 2
+          ) do |button|
+            button.with_leading_visual_icon(icon: :plus)
+            t(:button_add)
+          end
+        %>
       </div>
     </fieldset>
   <% end %>
