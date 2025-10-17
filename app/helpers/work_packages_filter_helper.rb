@@ -51,11 +51,15 @@ module WorkPackagesFilterHelper
   end
 
   def project_work_packages_version_path(version, options = {})
-    query = {
-      f: [
-        filter_object("version_id", "=", version.id)
-      ]
-    }
+    filters = [
+      filter_object("version_id", "=", version.id)
+    ]
+    if version.systemwide? || %w[hierarchy tree].include?(version.sharing)
+      # include all projects that share this version
+      project_ids = version.projects.visible.ids
+      filters << filter_object("project_id", "=", project_ids) unless project_ids.empty?
+    end
+    query = { f: filters }
     project_work_packages_with_query_path(version.project, query, options)
   end
 
