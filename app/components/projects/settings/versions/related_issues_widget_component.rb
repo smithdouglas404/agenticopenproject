@@ -56,8 +56,10 @@ module Projects
           issues.first(MAX_DISPLAYED_ISSUES).each do |issue|
             widget.with_row do
               helpers.flex_layout(flex_wrap: :nowrap, align_items: :center) do |flex|
-                flex.with_column(mr: 2) { issue.subject }
-                flex.with_column { render(::WorkPackages::InfoLineComponent.new(work_package: issue, font_size: :small)) }
+                flex.with_column(mr: 2) do
+                  render(::WorkPackages::InfoLineComponent.new(work_package: issue, font_size: :small))
+                end
+                flex.with_column(classes: "ellipsis", flex: 1) { issue.subject }
               end
             end
           end
