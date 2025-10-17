@@ -59,7 +59,7 @@ RSpec.describe "Meeting drag and drop", :js, :selenium do
     show_page.expect_agenda_item_in_section(title: "Item to drag", section: section1)
 
     item_element = page.find("#meeting-agenda-items-item-component-show-component-#{agenda_item.id}")
-    drag_handle = item_element.find(".handle")
+    drag_handle = item_element.find(".handle svg")
 
     target_section = page.find("#meeting-sections-show-component-#{section2.id}")
 
@@ -69,6 +69,8 @@ RSpec.describe "Meeting drag and drop", :js, :selenium do
 
     show_page.expect_no_agenda_item_in_section(title: "Item to drag", section: section1)
     show_page.expect_agenda_item_in_section(title: "Item to drag", section: section2)
+
+    wait_for_network_idle
 
     expect(agenda_item.reload.meeting_section).to eq(section2)
   end
