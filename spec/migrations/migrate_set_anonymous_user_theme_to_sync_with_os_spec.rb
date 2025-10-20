@@ -33,31 +33,51 @@ require Rails.root.join("db/migrate/20251017111720_set_anonymous_user_theme_to_s
 
 RSpec.describe SetAnonymousUserThemeToSyncWithOs, type: :model do
   let(:anonymous_user) { User.anonymous }
-  let(:pref) { anonymous_user.pref }
+
+  before do
+    # Ensure the anonymous user has a preference entry
+    anonymous_user.pref.update(settings: { "theme" => "light" })
+  end
 
   describe "up migration" do
     it "sets the anonymous user theme to sync_with_os" do
-      # Simulate default theme before migration
-      pref.settings["theme"] = "light"
-      pref.save!
+      expect(anonymous_user.pref.settings["theme"]).to eq("light")
 
       ActiveRecord::Migration.suppress_messages { described_class.migrate(:up) }
 
-      pref.reload
-      expect(pref.settings["theme"]).to eq("sync_with_os")
-      expect(pref.sync_with_os_theme?).to be true
+      anonymous_user.pref.reload
+      expect(anonymous_user.pref.settings["theme"]).to eq("sync_with_os")
+    end
+
+    it "does not affect other users" do
+      other_user = create(:user)
+      other_user.pref.update(settings: { "theme" => "dark" })
+
+      ActiveRecord::Migration.suppress_messages { described_class.migrate(:up) }
+
+      other_user.pref.reload
+      expect(other_user.pref.settings["theme"]).to eq("dark")
     end
   end
 
   describe "down migration" do
     it "reverts the anonymous user theme back to light" do
-      pref.settings["theme"] = "sync_with_os"
-      pref.save!
+      anonymous_user.pref.update(settings: { "theme" => "sync_with_os" })
 
       ActiveRecord::Migration.suppress_messages { described_class.migrate(:down) }
 
-      pref.reload
-      expect(pref.settings["theme"]).to eq("light")
+      anonymous_user.pref.reload
+      expect(anonymous_user.pref.settings["theme"]).to eq("light")
+    end
+
+    it "does not modify other user preferences" do
+      other_user = create(:user)
+      other_user.pref.update(settings: { "theme" => "dark" })
+
+      ActiveRecord::Migration.suppress_messages { described_class.migrate(:down) }
+
+      other_user.pref.reload
+      expect(other_user.pref.settings["theme"]).to eq("dark")
     end
   end
 end

@@ -2,24 +2,24 @@
 
 class SetAnonymousUserThemeToSyncWithOs < ActiveRecord::Migration[8.0]
   def up
-    anonymous_user = User.anonymous
-    return unless anonymous_user
-
-    pref = anonymous_user.pref
-    return unless pref
-
-    pref.settings["theme"] = "sync_with_os"
-    pref.save!
+    say "Set anonymous user theme to sync_with_os"
+    execute <<~SQL.squish
+      UPDATE user_preferences
+      SET settings = settings || '{"theme": "sync_with_os"}'::jsonb
+      WHERE user_id = (
+        SELECT id FROM users WHERE type = 'AnonymousUser' LIMIT 1
+      );
+    SQL
   end
 
   def down
-    anonymous_user = User.anonymous
-    return unless anonymous_user
-
-    pref = anonymous_user.pref
-    return unless pref
-
-    pref.settings["theme"] = "light"
-    pref.save!
+    say "Rollback: Reset anonymous user theme to light"
+    execute <<~SQL.squish
+      UPDATE user_preferences
+      SET settings = settings || '{"theme": "light"}'::jsonb
+      WHERE user_id = (
+        SELECT id FROM users WHERE type = 'AnonymousUser' LIMIT 1
+      );
+    SQL
   end
 end
