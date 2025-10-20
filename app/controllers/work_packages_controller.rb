@@ -72,6 +72,15 @@ class WorkPackagesController < ApplicationController
   def show
     respond_to do |format|
       format.html do
+        unless show_route_complete?
+          # redirect /work_packages/:id to a full route with project and tab
+          redirect_to action: "show",
+                      id: params[:id],
+                      project_id: params[:project_id] || work_package.project.identifier,
+                      tab: params[:tab] || "activity"
+          return
+        end
+
         render :show,
                locals: { work_package:, menu_name: project_or_global_menu }
       end
@@ -275,5 +284,9 @@ class WorkPackagesController < ApplicationController
 
   def login_back_url_params
     params.permit(:query_id, :state, :query_props)
+  end
+
+  def show_route_complete?
+    params[:project_id].present? && params[:tab].present?
   end
 end

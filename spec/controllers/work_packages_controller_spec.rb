@@ -261,10 +261,10 @@ RSpec.describe WorkPackagesController do
     let(:call_action) { get("show", params: { id: "1337" }) }
 
     requires_permission_in_project do
-      it "renders the show builder template" do
+      it "redirects to the full url" do
         call_action
 
-        expect(response).to render_template("work_packages/show")
+        expect(response).to redirect_to("/projects/test_project/work_packages/1337/activity")
       end
     end
   end
