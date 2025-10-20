@@ -74,9 +74,9 @@ class Meeting::AddToSection < ApplicationForm
 
   def items # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
     items = []
-    items.concat(meeting.sections) if meeting.present? && !meeting.templated?
+    items.concat(meeting.sections) if meeting.present?
     items.concat(@occurrence.sections) if @occurrence.present? && @occurrence != meeting
-    items.push(meeting.backlog) if meeting.present? && meeting.backlog.present?
+    items.push(meeting.backlog) if meeting.present? && !meeting.template? && meeting.backlog.present?
     items.reject! { |i| i == @selected_section } if @selected_section.present?
 
     items
