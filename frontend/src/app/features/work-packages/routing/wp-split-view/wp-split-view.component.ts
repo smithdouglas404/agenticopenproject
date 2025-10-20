@@ -104,9 +104,6 @@ export class WorkPackageSplitViewComponent extends WorkPackageSingleViewBase imp
     const wpId = (this.$state.params.workPackageId || this.workPackageId) as string;
     this.wpTableFocus.updateFocus(wpId, false);
 
-    // Push the current title
-    this.titleService.setFirstPart(this.workPackage.subjectWithType(-1));
-
     if (this.wpTableSelection.isEmpty) {
       this.wpTableSelection.setRowState(wpId, true);
     }
