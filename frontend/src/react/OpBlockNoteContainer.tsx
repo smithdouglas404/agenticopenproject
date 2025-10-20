@@ -79,7 +79,7 @@ export default function OpBlockNoteContainer({ inputField,
   let editorParams:Partial<BlockNoteEditorOptions<any, any, any>>;
   if(collaborationEnabled) {
     hocuspocusProvider = new HocuspocusProvider({
-      url: `${hocuspocusUrl}?documentId=${documentId}&returnUrl=${encodeURIComponent(openProjectUrl)}`,
+      url: `${hocuspocusUrl}?document_id=${documentId}&openproject_base_path=${encodeURIComponent(openProjectUrl)}`,
       name: documentName,
       token: oauthToken,
       document: doc

@@ -32,6 +32,7 @@ module Documents
   module OAuth
     class EnsureApplicationService < BaseServices::BaseCallable
       APPLICATION_NAME = "Documents OAuth Application"
+      APPLICATION_UID = "documents_yjs_provider"
 
       def perform
         application = find_or_create_application
@@ -46,7 +47,7 @@ module Documents
       private
 
       def find_or_create_application
-        existing = Doorkeeper::Application.find_by(name: APPLICATION_NAME)
+        existing = Doorkeeper::Application.find_by(uid: APPLICATION_UID)
         return existing if existing
 
         create_application
@@ -56,6 +57,7 @@ module Documents
         result = ::OAuth::Applications::CreateService
           .new(user: User.system)
           .call(
+            uid: APPLICATION_UID,
             name: APPLICATION_NAME,
             redirect_uri: "urn:ietf:wg:oauth:2.0:oob",
             scopes: "api_v3",
