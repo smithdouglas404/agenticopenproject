@@ -71,4 +71,33 @@ FactoryBot.define do
         "authorization_endpoint" => "https://accounts.google.com/o/oauth2/v2/auth" }
     end
   end
+
+  factory :oidc_provider_entra, class: "OpenIDConnect::Provider" do
+    display_name { "Microsoft Entra" }
+    slug { "oidc-microsoft-entra" }
+    limit_self_registration { false }
+    creator factory: :user
+
+    options do
+      {
+        "scope" => "openid email profile",
+        "issuer" => "https://login.microsoftonline.com/e36f1dbc-fdae-427e-b61b-0d96ddfb81a4/v2.0",
+        "tenant" => "e36f1dbc-fdae-427e-b61b-0d96ddfb81a4",
+        "jwks_uri" => "https://login.microsoftonline.com/e36f1dbc-fdae-427e-b61b-0d96ddfb81a4/discovery/v2.0/keys",
+        "client_id" => "client_id",
+        "sync_groups" => false,
+        "groups_claim" => "groups",
+        "client_secret" => "client_secret",
+        "group_regexes" => [],
+        "oidc_provider" => "microsoft_entra",
+        "group_prefixes" => [],
+        "token_endpoint" => "https://login.microsoftonline.com/e36f1dbc-fdae-427e-b61b-0d96ddfb81a4/oauth2/v2.0/token",
+        "userinfo_endpoint" => "https://graph.microsoft.com/oidc/userinfo",
+        "end_session_endpoint" => "https://login.microsoftonline.com/e36f1dbc-fdae-427e-b61b-0d96ddfb81a4/oauth2/v2.0/logout",
+        "grant_types_supported" => ["authorization_code", "implicit"],
+        "authorization_endpoint" => "https://login.microsoftonline.com/e36f1dbc-fdae-427e-b61b-0d96ddfb81a4/oauth2/v2.0/authorize",
+        "post_logout_redirect_uri" => ""
+      }
+    end
+  end
 end
