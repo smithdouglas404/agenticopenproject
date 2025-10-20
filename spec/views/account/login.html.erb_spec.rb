@@ -53,6 +53,10 @@ RSpec.describe "account/login" do
   end
 
   context "if user is not logged in" do
+    before do
+      User.anonymous.pref.update(settings: { "theme" => "sync_with_os" })
+    end
+
     it "uses the OS-synced theme preference by default" do
       theme_data = view.user_theme_data_attributes
 
