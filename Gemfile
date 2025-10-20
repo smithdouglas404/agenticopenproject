@@ -290,7 +290,7 @@ group :test do
   gem "cuprite", "~> 0.17.0"
   gem "rspec-wait"
   gem "selenium-devtools"
-  gem "selenium-webdriver", "~> 4.36"
+  gem "selenium-webdriver", "~> 4.37"
 
   gem "fuubar", "~> 2.5.0", require: false
   gem "timecop", "~> 0.9.0"
