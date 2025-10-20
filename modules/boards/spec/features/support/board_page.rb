@@ -365,9 +365,9 @@ module Pages
 
     def expect_query(name, editable: true)
       if editable
-        expect(page).to have_field("editable-toolbar-title", with: name)
+        expect(page).to have_field("editable-toolbar-title", with: name, wait: 10)
       else
-        expect(page).to have_css(".editable-toolbar-title--fixed", text: name)
+        expect(page).to have_css(".editable-toolbar-title--fixed", text: name, wait: 10)
       end
     end
 

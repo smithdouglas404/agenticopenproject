@@ -110,6 +110,7 @@ export class WorkPackageBreadcrumbParentComponent {
   }
 
   public switchToFullscreenForWp(wp:WorkPackageResource):void {
-    window.location.href = this.pathHelper.genericWorkPackagePath(wp.project?.identifier, wp.id!) + window.location.search;
+    const link = this.pathHelper.genericWorkPackagePath(wp.project?.identifier, wp.id!) + window.location.search;
+    Turbo.visit(link, { action: 'advance' });
   }
 }

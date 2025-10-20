@@ -78,6 +78,8 @@ import { firstValueFrom } from 'rxjs';
 import {
   WorkPackageIsolatedQuerySpaceDirective,
 } from 'core-app/features/work-packages/directives/query-space/wp-isolated-query-space.directive';
+import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 
 export interface DisabledButtonPlaceholder {
   text:string;
@@ -160,7 +162,8 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
 
   public buttonPlaceholder:DisabledButtonPlaceholder|undefined;
 
-  constructor(readonly apiv3Service:ApiV3Service,
+  constructor(
+    readonly apiv3Service:ApiV3Service,
     readonly I18n:I18nService,
     readonly state:StateService,
     readonly cdRef:ChangeDetectorRef,
@@ -184,7 +187,10 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
     readonly boardActionRegistry:BoardActionsRegistryService,
     readonly causedUpdates:CausedUpdatesService,
     readonly keepTab:KeepTabService,
-    readonly $state:StateService) {
+    readonly $state:StateService,
+    readonly currentProject:CurrentProjectService,
+    readonly pathHelper:PathHelperService,
+  ) {
     super(I18n, injector);
   }
 
@@ -498,10 +504,9 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
 
   openFullViewOnDoubleClick(event:{ workPackageId:string, double:boolean }) {
     if (event.double) {
-      this.state.go(
-        'work-packages.show',
-        { workPackageId: event.workPackageId },
-      );
+      const projectIdentifier = this.currentProject.identifier;
+      const link = this.pathHelper.genericWorkPackagePath(projectIdentifier, event.workPackageId) + window.location.search;
+      Turbo.visit(link, { action: 'advance' });
     }
   }
 

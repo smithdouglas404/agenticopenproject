@@ -79,6 +79,8 @@ RSpec.describe "Work Package boards spec",
     page.go_back
     expect(page).to have_current_path project_work_package_board_path(project, board_view)
 
+    wait_for_network_idle
+
     # Open the details page with the info icon
     card = board_page.card_for(wp)
     split_view = card.open_details_view
