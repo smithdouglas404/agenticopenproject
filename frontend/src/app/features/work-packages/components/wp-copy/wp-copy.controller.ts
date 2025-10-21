@@ -70,7 +70,7 @@ export class WorkPackageCopyController extends WorkPackageCreateComponent {
       this.$state.go(this.cancelState, this.$state.params);
     } else {
       const link = this.pathHelper.genericWorkPackagePath(this.currentProjectService.id, this.copiedWorkPackageId);
-      window.location.href = (link + window.location.search);
+      Turbo.visit(link + window.location.search, { action: 'advance' });
     }
   }
 

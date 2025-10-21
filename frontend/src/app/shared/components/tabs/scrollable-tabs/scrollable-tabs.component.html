@@ -28,8 +28,20 @@
               [attr.aria-selected]="tab.id === currentTabId"
               (click)="clickTab(tab, $event)"
               [attr.title]="tabTitle(tab)"
-              [textContent]="tab.name"
               >
+              <span [textContent]="tab.name"></span>
+              @if (counter(tab) | async; as tabCounter) {
+                @if (tab.showCountAsBubble) {
+                <op-tab-count [count]="tabCounter"
+                              [attr.data-test-selector]="'tab-counter-' + tab.name"
+                />
+                }
+                @if (tabCounter > 0 && !tab.showCountAsBubble) {
+                <span
+                  data-test-selector="tab-count"
+                > ({{ tabCounter }})</span>
+                }
+              }
             </a>
           }
           @if (tab.route) {

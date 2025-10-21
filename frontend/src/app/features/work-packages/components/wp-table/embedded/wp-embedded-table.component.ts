@@ -181,10 +181,9 @@ export class WorkPackageEmbeddedTableComponent extends WorkPackageEmbeddedBaseCo
 
   handleWorkPackageClicked(event:{ workPackageId:string; double:boolean }) {
     if (event.double) {
-      this.$state.go(
-        'work-packages.show',
-        { workPackageId: event.workPackageId },
-      );
+      const projectIdentifier = this.currentProject.identifier;
+      const link = this.pathHelper.genericWorkPackagePath(projectIdentifier, event.workPackageId) + window.location.search;
+      Turbo.visit(link, { action: 'advance' });
     }
   }
 

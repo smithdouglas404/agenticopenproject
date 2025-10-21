@@ -29,6 +29,7 @@ import { WpDestroyModalComponent } from 'core-app/shared/components/modals/wp-de
 import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
+import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 
 export class WorkPackageViewContextMenu extends OpContextMenuHandler {
   @InjectField() protected states!:States;
@@ -42,6 +43,8 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
   @InjectField() protected wpTableSelection:WorkPackageViewSelectionService;
 
   @InjectField() protected WorkPackageContextMenuHelper!:WorkPackageContextMenuHelperService;
+
+  @InjectField() protected currentProject:CurrentProjectService;
 
   @InjectField() protected pathHelper:PathHelperService;
 
@@ -215,10 +218,10 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
             return false;
           }
 
-          this.$state.go(
-            'work-packages.show',
-            { workPackageId: this.workPackageId },
-          );
+          const projectIdentifier = this.currentProject.identifier;
+          const link = this.pathHelper.genericWorkPackagePath(projectIdentifier, this.workPackageId) + window.location.search;
+          Turbo.visit(link, { action: 'advance' });
+
           return true;
         },
       });

@@ -136,6 +136,7 @@ export class WorkPackageCreateComponent extends UntilDestroyedMixin implements O
           this.notificationService.showSave(savedResource, isInitial);
         });
     } else {
+      window.OpenProject.pageState = 'submitted';
       Turbo.visit(this.pathHelper.projectWorkPackagePath(savedResource.project.identifier, savedResource.id!) + window.location.search);
     }
 

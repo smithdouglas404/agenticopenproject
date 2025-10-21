@@ -116,6 +116,13 @@ export class InAppNotificationEntryComponent implements OnInit {
     this.storeService.openFullView(id);
   }
 
+  fullScreenLink():string {
+    const href = this.notification._links.resource?.href;
+    const id = href && HalResource.matchFromLink(href, 'work_packages');
+
+    return id ? this.pathHelper.workPackagePath(id) : this.pathHelper.workPackagesPath(null);
+  }
+
   projectClicked(event:MouseEvent):void { // eslint-disable-line class-methods-use-this
     event.stopPropagation();
   }
