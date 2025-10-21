@@ -61,18 +61,20 @@ function getCSSVariable(variable:string) {
   return getComputedStyle(document.body).getPropertyValue(variable).trim();
 }
 
-const EMPHASIS_COLORS = PRIMER_COLORS
-  .map((color) => getCSSVariable(`--display-${color}-scale-6`));
+function getEmphasisColors() {
+  return PRIMER_COLORS.map((color) => getCSSVariable(`--display-${color}-scale-6`));
+}
 
-const MUTED_COLORS = PRIMER_COLORS
-  .map((color) => getCSSVariable(`--display-${color}-scale-2`));
+function getMutedColors() {
+  return PRIMER_COLORS.map((color) => getCSSVariable(`--display-${color}-scale-2`));
+}
 
 function getEmphasisColor(i:number) {
-  return EMPHASIS_COLORS[i % EMPHASIS_COLORS.length];
+  return getEmphasisColors()[i % PRIMER_COLORS.length];
 }
 
 function getMutedColor(i:number) {
-  return MUTED_COLORS[i % MUTED_COLORS.length];
+  return getMutedColors()[i % PRIMER_COLORS.length];
 }
 
 function colorizeDefaultDataset(dataset:ChartDataset, i:number) {
