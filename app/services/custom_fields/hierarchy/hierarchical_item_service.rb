@@ -83,7 +83,18 @@ module CustomFields
       def delete_branch(item:)
         return Failure(:item_is_root) if item.root?
 
-        item.destroy ? Success() : Failure(item.errors)
+        # We need to remember item_ids and custom_field and pass them separately
+        # to update_calculated_values_for_hierarchy, as after destroying the
+        # item, the methods will not return expected value (will return empty
+        # list and nil)
+        item_ids = item.self_and_descendant_ids
+        custom_field = item.root&.custom_field
+        if item.destroy
+          update_calculated_values_for_hierarchy(item_ids:, custom_field:)
+          Success()
+        else
+          Failure(item.errors)
+        end
       end
 
       # Gets all nodes in a tree from the item/node back to the root.
@@ -178,10 +189,28 @@ module CustomFields
 
       def update_item_attributes(item:, attributes:)
         if item.update(label: attributes[:label], short: attributes[:short], score: attributes[:score])
+          if item.score_previously_changed?
+            # Only changes to item are of interest, so no need to pass descendant ids
+            update_calculated_values_for_hierarchy(item_ids: item.id, custom_field: item.root&.custom_field)
+          end
           Success(item)
         else
           Failure(item.errors)
         end
+      end
+
+      # Recalculates Calculated Values in all projects that use the hierarchy's custom field
+      def update_calculated_values_for_hierarchy(item_ids:, custom_field:)
+        return unless custom_field&.field_format_scored_list?
+
+        custom_field.class.customized_class
+          .where(custom_values: custom_field.custom_values.where(value: item_ids))
+          .find_each do |customized|
+            affected_cfs = customized.available_custom_fields.affected_calculated_fields([custom_field.id])
+
+            customized.calculate_custom_fields(affected_cfs)
+            customized.save if customized.changed_for_autosave?
+          end
       end
 
       def update_item_order(item:, new_sort_order:)
