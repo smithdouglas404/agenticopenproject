@@ -210,8 +210,6 @@ RSpec.describe "Work Package boards spec",
 
     wait_for_network_idle
 
-    board_page.expect_query "List 1", editable: true
-    board_page.expect_not_any_card
-    board_page.expect_path
+    expect(page).to have_current_path "/work_packages"
   end
 end
