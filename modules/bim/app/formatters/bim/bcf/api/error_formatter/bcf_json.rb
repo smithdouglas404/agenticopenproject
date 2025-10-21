@@ -29,7 +29,7 @@
 module Bim::Bcf
   module API
     module ErrorFormatter
-      class Json < Grape::ErrorFormatter::Base
+      class BcfJson < Grape::ErrorFormatter::Base
         class << self
           def call(message, _backtrace, _options = {}, env = nil, _original_exception = nil)
             present(message, env)
