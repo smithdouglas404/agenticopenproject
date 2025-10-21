@@ -32,6 +32,7 @@ module Queries::Documents
   ::Queries::Register.register(DocumentQuery) do
     filter Filters::ProjectFilter
     filter Filters::TypeFilter
+    filter Filters::TitleFilter
 
     order Orders::DefaultOrder
   end

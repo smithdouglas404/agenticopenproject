@@ -69,6 +69,27 @@ RSpec.describe "List Documents",
       index_page.expect_pagination_range(from: 1, to: 3, total: 3)
     end
 
+    it "allows searching by document title" do
+      document = create(:document, title: "Book", project:, category: document_categories[0])
+      index_page.visit!
+
+      within_test_selector("documents-sub-header") do
+        fill_in "title", with: "bo"
+        wait_for_network_idle
+      end
+
+      index_page.expect_documents_listed([document])
+      index_page.expect_pagination_range(from: 1, to: 1, total: 1)
+
+      within_test_selector("documents-sub-header") do
+        click_button accessible_name: "Clear"
+        wait_for_network_idle
+      end
+
+      index_page.expect_documents_listed(specifications + reports)
+      index_page.expect_pagination_range(from: 1, to: 6, total: 6)
+    end
+
     it "renders content that is accessible" do
       index_page.visit!
 

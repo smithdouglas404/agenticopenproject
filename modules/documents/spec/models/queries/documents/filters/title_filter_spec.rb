@@ -27,45 +27,22 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-#
-module Documents
-  class SubHeaderComponent < ApplicationComponent
-    alias_method :project, :model
 
-    def initialize(query:, project:)
-      super(project)
-      @query = query
-    end
+require "spec_helper"
 
-    def filter_input_value
-      @query.find_active_filter(:title)&.values&.first
-    end
+RSpec.describe Queries::Documents::Filters::TitleFilter do
+  include_context "filter tests"
+  let(:values) { ["A title"] }
+  let(:model) { Document }
 
-    def sub_header_data_attributes
-      {
-        controller: "filter--filters-form",
-        "filter--filters-form-perform-turbo-requests-value": true,
-        "filter--filters-form-output-format-value": "json",
-        "filter--filters-form-clear-button-id-value": clear_button_id,
-        test_selector: "documents-sub-header"
-      }
-    end
+  it_behaves_like "basic query filter" do
+    let(:class_key) { :title }
+    let(:human_name) { "Title" }
+    let(:type) { :string }
+    let(:model) { Document }
 
-    def filter_input_data_attributes
-      {
-        "filter-name": "title",
-        "filter-type": "string",
-        "filter-operator": "~",
-        "filter--filters-form-target": "simpleFilter filterValueContainer simpleValue"
-      }
-    end
-
-    def clear_button_id
-      "documents-filters-form-clear-button"
-    end
-
-    def can_add_document?
-      User.current.allowed_in_project?(:manage_documents, project)
+    describe "#allowed_values" do
+      it { expect(instance.allowed_values).to be_nil }
     end
   end
 end

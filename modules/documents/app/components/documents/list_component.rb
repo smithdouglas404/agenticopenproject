@@ -32,6 +32,7 @@
 module Documents
   class ListComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
+    include OpTurbo::Streamable
 
     alias_method :documents, :model
 

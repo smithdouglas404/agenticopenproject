@@ -27,45 +27,43 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-#
-module Documents
-  class SubHeaderComponent < ApplicationComponent
-    alias_method :project, :model
 
-    def initialize(query:, project:)
-      super(project)
-      @query = query
+class Queries::Documents::Filters::TitleFilter < Queries::Documents::Filters::DocumentFilter
+  def type
+    :string
+  end
+
+  def where
+    case operator
+    when "="
+      ["LOWER(documents.title) IN (?)", sql_value]
+    when "!"
+      ["LOWER(documents.title) NOT IN (?)", sql_value]
+    when "~", "**"
+      ["LOWER(documents.title) LIKE ?", "%#{sql_value}%"]
+    when "!~"
+      ["LOWER(documents.title) NOT LIKE ?", "%#{sql_value}%"]
+    else
+      raise "Unsupported operator #{operator}"
     end
+  end
 
-    def filter_input_value
-      @query.find_active_filter(:title)&.values&.first
-    end
+  def human_name
+    Document.human_attribute_name(:title)
+  end
 
-    def sub_header_data_attributes
-      {
-        controller: "filter--filters-form",
-        "filter--filters-form-perform-turbo-requests-value": true,
-        "filter--filters-form-output-format-value": "json",
-        "filter--filters-form-clear-button-id-value": clear_button_id,
-        test_selector: "documents-sub-header"
-      }
-    end
+  def self.key
+    :title
+  end
 
-    def filter_input_data_attributes
-      {
-        "filter-name": "title",
-        "filter-type": "string",
-        "filter-operator": "~",
-        "filter--filters-form-target": "simpleFilter filterValueContainer simpleValue"
-      }
-    end
+  private
 
-    def clear_button_id
-      "documents-filters-form-clear-button"
-    end
-
-    def can_add_document?
-      User.current.allowed_in_project?(:manage_documents, project)
+  def sql_value
+    case operator
+    when "=", "!"
+      values.map { self.class.connection.quote_string(it.downcase) }.join(",")
+    when "**", "~", "!~"
+      values.first.downcase
     end
   end
 end

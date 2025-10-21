@@ -37,6 +37,7 @@ en:
     attributes:
       document:
         content_binary: "Content binary"
+        title: "Title"
 
   activity:
     filter:
@@ -50,6 +51,11 @@ en:
   documents:
     page_header:
       heading: "All documents"
+
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
 
     documents_list_blank_slate:
       heading: "There are no documents yet"

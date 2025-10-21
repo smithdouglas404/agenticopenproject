@@ -31,6 +31,7 @@
 class DocumentsController < ApplicationController
   include AttachableServiceCall
   include PaginationHelper
+  include OpTurbo::ComponentStream
 
   default_search_scope :documents
   model_object Document
@@ -40,10 +41,22 @@ class DocumentsController < ApplicationController
   before_action :find_project_from_association, except: %i[index new create]
   before_action :authorize
 
-  def index
+  def index # rubocop:disable Metrics/AbcSize
     @documents = list_documents_query
       .includes(:category)
       .paginate(page: page_param, per_page: per_page_param)
+
+    respond_to do |format|
+      format.html { render }
+
+      format.turbo_stream do
+        replace_via_turbo_stream component: Documents::ListComponent.new(@documents, project: @project)
+        current_url = url_for(params.permit(:controller, :action, :filters, :sortBy))
+        turbo_streams << turbo_stream.push_state(current_url)
+
+        render turbo_stream: turbo_streams
+      end
+    end
   end
 
   def show
@@ -100,11 +113,11 @@ class DocumentsController < ApplicationController
   end
 
   def list_documents_query
-    query = ParamsToQueryService.new(Document, current_user).call(params)
-    query.where(:project_id, "=", [@project.id])
-    query.order(updated_at: :desc) unless params[:sortBy]
+    @query = ParamsToQueryService.new(Document, current_user).call(params)
+    @query.where(:project_id, "=", [@project.id])
+    @query.order(updated_at: :desc) unless params[:sortBy]
 
-    query.results
+    @query.results
   end
 
   def generate_oauth_token
