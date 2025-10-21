@@ -76,8 +76,13 @@ export function detectOnboardingTour():void {
       void triggerTour('workPackages');
     }
 
-    // ------------------------------- Tutorial Gantt module -------------------------------
+    // ------------------------------- Tutorial WP Full page -------------------------------
     if (currentTourPart === 'wpTourFinished') {
+      void triggerTour('workPackagesFullView');
+    }
+
+    // ------------------------------- Tutorial Gantt module -------------------------------
+    if (currentTourPart === 'wpFullViewTourFinished') {
       void triggerTour('gantt');
       return;
     }
