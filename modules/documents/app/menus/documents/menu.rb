@@ -28,24 +28,37 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-Rails.application.routes.draw do
-  resources :projects, only: [] do
-    resources :documents, only: %i[create new index] do
-      collection do
-        get :menu, to: "documents/menus#show"
-      end
+module Documents
+  class Menu < Submenu
+    attr_reader :project, :params
+
+    def initialize(project: nil, params: nil)
+      super(view_type: nil, project:, params:)
     end
-  end
 
-  resources :documents, except: %i[create new index]
+    def menu_items
+      [menu_group(header: nil, children: document_status_options),
+       menu_group(header: I18n.t("documents.menu.types"), children: document_type_options)]
+    end
 
-  namespace :admin do
-    namespace :settings do
-      resources :document_categories, except: [:show] do
-        member do
-          put :move
-          get :reassign
-        end
+    def document_status_options
+      [menu_item(title: I18n.t("documents.menu.all"), selected: params[:filters].blank?)]
+    end
+
+    def document_type_options
+      @document_type_options ||= menu_item_filter_for(DocumentCategory, :category_id)
+    end
+
+    def query_path(query_params)
+      project_documents_path(project, query_params)
+    end
+
+    private
+
+    def menu_item_filter_for(model_class, filter_id)
+      model_class.pluck(:id, :name).map do |id, title|
+        filters = [{ filter_id => { operator: "=", values: [id.to_s] } }].to_json
+        menu_item(title:, query_params: { filters: })
       end
     end
   end

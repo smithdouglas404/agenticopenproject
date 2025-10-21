@@ -61,8 +61,20 @@ module Documents
         end
       end
 
+      def expect_submenu_opened(title)
+        submenu.expect_item(title, selected: true)
+      end
+
+      def expect_submenu_filters(*titles)
+        titles.each { submenu.expect_item(it) }
+      end
+
       def expect_pagination_range(from:, to:, total:)
         pagination.expect_range(from, to, total)
+      end
+
+      def submenu
+        @submenu ||= Components::Submenu.new
       end
 
       def pagination

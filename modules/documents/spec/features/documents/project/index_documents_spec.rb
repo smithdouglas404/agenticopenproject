@@ -45,12 +45,27 @@ RSpec.describe "List Documents",
   current_user { member }
 
   context "with documents" do
-    let!(:documents) { create_list(:document, 3, project:) }
+    let(:document_categories) do
+      %w[Specification Report Requirement].map { create(:document_category, name: it) }
+    end
+
+    let!(:specifications) { create_list(:document, 3, category: document_categories[0], project:) }
+    let!(:reports) { create_list(:document, 2, category: document_categories[1], project:) }
 
     it "renders a list of all documents" do
       index_page.visit!
 
-      index_page.expect_documents_listed(documents)
+      index_page.expect_documents_listed(specifications + reports)
+      index_page.expect_submenu_opened("All documents")
+      index_page.expect_pagination_range(from: 1, to: 5, total: 5)
+    end
+
+    it "allows filtering by document category" do
+      index_page.visit!
+
+      index_page.submenu.click_item("Specification")
+      index_page.expect_documents_listed(specifications)
+      index_page.expect_submenu_opened("Specification")
       index_page.expect_pagination_range(from: 1, to: 3, total: 3)
     end
 
