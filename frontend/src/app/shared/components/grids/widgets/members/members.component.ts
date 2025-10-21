@@ -10,6 +10,6 @@ import { AbstractTurboWidgetComponent } from 'core-app/shared/components/grids/w
   standalone: false,
 })
 export class WidgetMembersComponent extends AbstractTurboWidgetComponent {
-  override frameId = 'overviews-widgets-members-component';
+  override frameId = 'grids-widgets-members';
   override name = 'members';
 }

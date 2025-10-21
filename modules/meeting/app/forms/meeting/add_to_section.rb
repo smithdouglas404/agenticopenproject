@@ -39,10 +39,10 @@ class Meeting::AddToSection < ApplicationForm
         decorated: true,
         defaultData: false,
         multiple: false,
-        focus_directly: false,
         disabled: meeting.blank?,
         placeholder: placeholder_text,
-        append_to: append_to_container
+        append_to: append_to_container,
+        openDirectly: @open_directly
       }
     ) do |select|
       items.each do |item|
@@ -55,12 +55,13 @@ class Meeting::AddToSection < ApplicationForm
     end
   end
 
-  def initialize(wrapper_id: nil, occurrence: nil, item: nil)
+  def initialize(wrapper_id: nil, occurrence: nil, item: nil, open_directly: false)
     super()
 
     @wrapper_id = wrapper_id
     @occurrence = occurrence
     @selected_section = item&.meeting_section
+    @open_directly = open_directly
   end
 
   private
@@ -71,11 +72,11 @@ class Meeting::AddToSection < ApplicationForm
     @wrapper_id.nil? ? "body" : "##{@wrapper_id}"
   end
 
-  def items # rubocop:disable Metrics/AbcSize
+  def items # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
     items = []
-    items.concat(meeting.sections) if meeting.present? && !meeting.templated?
+    items.concat(meeting.sections) if meeting.present?
     items.concat(@occurrence.sections) if @occurrence.present? && @occurrence != meeting
-    items.push(meeting.backlog) if meeting.present?
+    items.push(meeting.backlog) if meeting.present? && !meeting.template? && meeting.backlog.present?
     items.reject! { |i| i == @selected_section } if @selected_section.present?
 
     items

@@ -28,7 +28,7 @@
           tag: :a,
           href: meeting_sections_path(@meeting),
           content_arguments: { data: {
-            action: "click->meetings--add-params#intercept",
+            action: "click->meetings--submit#intercept",
             href: meeting_sections_path(@meeting),
             method: "POST"
           } }

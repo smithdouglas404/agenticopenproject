@@ -62,6 +62,9 @@ Rails.application.config.after_initialize do
       # Allow requests to CLI in dev mode
       connect_src = default_src + [OpenProject::Configuration.enterprise_trial_creation_host]
 
+      # Allow connections to asset host for source maps
+      connect_src << asset_host if asset_host.present?
+
       # Rules for media (e.g. video sources)
       media_src = default_src
       media_src << asset_host if asset_host.present?

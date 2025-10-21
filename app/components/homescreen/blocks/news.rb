@@ -32,7 +32,7 @@ module Homescreen
   module Blocks
     class News < Grids::WidgetComponent
       def call
-        render(Overviews::Widgets::NewsComponent.new(news_limit: 3))
+        render(Grids::Widgets::News.new(limit: 3))
       end
     end
   end

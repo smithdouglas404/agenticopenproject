@@ -62,10 +62,10 @@ gem "friendly_id", "~> 5.5.0"
 
 gem "scimitar", "~> 2.13"
 
-gem "acts_as_list", "~> 1.2.0"
+gem "acts_as_list", "~> 1.2.5"
 gem "acts_as_tree", "~> 2.9.0"
 gem "awesome_nested_set", "~> 3.8.0"
-gem "closure_tree", "~> 9.1.1"
+gem "closure_tree", "~> 9.2.0"
 gem "rubytree", "~> 2.1.0"
 
 gem "addressable", "~> 2.8.0"
@@ -83,7 +83,7 @@ gem "htmldiff"
 gem "stringex", "~> 2.8.5"
 
 # CommonMark markdown parser with GFM extension
-gem "commonmarker", "~> 2.4.1"
+gem "commonmarker", "~> 2.5.0"
 
 # HTML pipeline for transformations on text formatter output
 # such as sanitization or additional features
@@ -134,7 +134,7 @@ gem "rack-protection", "~> 3.2.0"
 # It allows whitelisting, blacklisting, throttling, and tracking based
 # on arbitrary properties of the request.
 # https://github.com/kickstarter/rack-attack
-gem "rack-attack", "~> 6.7.0"
+gem "rack-attack", "~> 6.8.0"
 
 # Browser detection for incompatibility checks
 gem "browser", "~> 6.2.0"
@@ -197,9 +197,9 @@ gem "fog-aws"
 
 gem "aws-sdk-core", "~> 3.233"
 # File upload via fog + screenshots on travis
-gem "aws-sdk-s3", "~> 1.199"
+gem "aws-sdk-s3", "~> 1.200"
 
-gem "openproject-token", "~> 7.4.0"
+gem "openproject-token", "~> 8.0.0"
 
 gem "plaintext", "~> 0.3.2"
 
@@ -227,9 +227,9 @@ gem "yabeda-puma-plugin"
 gem "yabeda-rails"
 
 # opentelemetry
-gem "opentelemetry-exporter-otlp", "~> 0.30.0", require: false
+gem "opentelemetry-exporter-otlp", "~> 0.31.0", require: false
 gem "opentelemetry-instrumentation-all", "~> 0.85.0", require: false
-gem "opentelemetry-sdk", "~> 1.9", require: false
+gem "opentelemetry-sdk", "~> 1.10", require: false
 
 gem "view_component", "~> 4.0.2"
 # Lookbook
@@ -290,7 +290,7 @@ group :test do
   gem "cuprite", "~> 0.17.0"
   gem "rspec-wait"
   gem "selenium-devtools"
-  gem "selenium-webdriver", "~> 4.36"
+  gem "selenium-webdriver", "~> 4.37"
 
   gem "fuubar", "~> 2.5.0", require: false
   gem "timecop", "~> 0.9.0"
@@ -420,4 +420,4 @@ end
 
 gem "openproject-octicons", "~>19.29.0"
 gem "openproject-octicons_helper", "~>19.29.0"
-gem "openproject-primer_view_components", "~>0.75.1"
+gem "openproject-primer_view_components", "~>0.75.2"

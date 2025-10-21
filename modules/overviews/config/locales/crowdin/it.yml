@@ -3,13 +3,4 @@ it:
     label_home: "Pagina principale %{workspace_type}"
     label_dashboard: "Dashboard"
     label_overview: 'Panoramica'
-    widgets:
-      subitems:
-        in_this_portfolio: "In questo portfolio"
-        in_this_program: "In questo programma"
-        in_this_project: "In questo progetto"
-        no_visible_children: "Non ci sono elementi figli visibili."
-      members:
-        title: "Ultimi membri"
-        view_all_members: "Visualizza tutti i membri"
   permission_manage_overview: 'Gestisci la pagina panoramica'

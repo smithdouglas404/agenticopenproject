@@ -227,7 +227,7 @@ ru:
       open_my_meetings_link: "Перейти к списку моих совещаний"
       series:
         title: "[%{project_name}] Серия совещаний '%{title}'"
-        summary: "%{actor} создал новую серию совещаний '%{title}'"
+        summary: "%{actor} has invited you to a new meeting series '%{title}'"
       series_updated:
         title: "[%{project_name}] Серия встреч '%{title}' была обновлена"
         summary: "Серия совещаний '%{title}' была обновлена пользователем %{actor}"
@@ -456,8 +456,8 @@ ru:
   permission_view_meetings: "Просмотреть совещания"
   permission_manage_agendas: "Управление повестками"
   permission_manage_agendas_explanation: "Позволяет создавать, редактировать и удалять пункты повестки дня"
-  permission_manage_outcomes: "Управление результатами"
-  permission_send_meeting_invites_and_outcomes: "Рассылать приглашения на собрания и результаты их проведения участникам"
+  permission_manage_outcomes: "Управление итогами"
+  permission_send_meeting_invites_and_outcomes: "Рассылать приглашения и итоги проведения совещаний участникам"
   project_module_meetings: "Совещания"
   text_duration_in_hours: "Длительность в часах"
   text_in_hours: "в часах"
@@ -515,8 +515,8 @@ ru:
   label_agenda_outcome_actions: "Действия по итогам"
   label_agenda_outcome_edit: "Редактировать итог"
   label_agenda_outcome_delete: "Удалить итог"
-  text_outcome_not_editable_anymore: "Этот результат больше не редактируется."
-  text_outcome_cannot_be_added: "Результат больше нельзя добавить."
+  text_outcome_not_editable_anymore: "Этот итог недоступен для редактирования."
+  text_outcome_cannot_be_added: "Нельзя добавить итог."
   label_backlog_clear: "Очистить бэклог"
   label_backlog_clear_button: "Очистить все"
   text_backlog_clear_error: "При попытке очистить бэклог произошла одна или несколько ошибок."
@@ -526,9 +526,9 @@ ru:
   label_agenda_backlog_clear_title: "Очистить бэклог по повестке дня?"
   text_agenda_backlog_clear_description: >
     Вы уверены, что хотите удалить все пункты повестки дня? Это действие необратимо.
-  label_series_backlog: "Журнал серий"
+  label_series_backlog: "Бэклог серий"
   text_series_backlog: >
-    Бэклог используется для всех вхождений этой серии. Вы можете перетащить элементы из и обратно для их добавления или удаления с конкретной встречи.
+    Общий бэклог для всех совещаний серии. Вы можете добавлять и удалять элементы в конкретное совещание при помощи перетаскивания.
   label_series_backlog_clear_title: "Очистить бэклог серии?"
   text_series_backlog_clear_description: >
     Это приведет к удалению всех элементов в бэклоге серии, который разделен со всеми встречами в этой серии. Вы уверены, что хотите продолжить? Это действие необратимо.
@@ -559,7 +559,7 @@ ru:
   text_meeting_not_editable_anymore: "Это совещание больше нельзя редактировать."
   text_meeting_not_present_anymore: "Это совещание было удалено. Пожалуйста, выберите другое."
   label_add_work_package_to_meeting_dialog_title: "Выберите совещание"
-  label_add_work_package_to_meeting_section_label: "Добавить в раздел"
+  label_add_work_package_to_meeting_section_label: "Section"
   label_add_work_package_to_meeting_dialog_button: "Добавить в совещание"
   label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."
   label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."

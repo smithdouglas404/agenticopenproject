@@ -68,6 +68,7 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
       unify_milestone_dates
     else
       update_dates
+      update_ignore_non_working_days
     end
     shift_dates_to_soonest_working_days
     update_duration_to_one_day_for_milestones
@@ -300,6 +301,12 @@ class WorkPackages::SetAttributesService < BaseServices::SetAttributes
 
     work_package.due_date = new_due_date(min_start)
     work_package.start_date = min_start
+  end
+
+  def update_ignore_non_working_days
+    if work_package.schedule_automatically? && work_package.children.any?
+      work_package.ignore_non_working_days = work_package.children.any?(&:ignore_non_working_days)
+    end
   end
 
   def unify_milestone_dates

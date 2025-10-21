@@ -156,7 +156,7 @@ module MeetingSections
                      tag: :button,
                      scheme: :danger,
                      content_arguments: { data: {
-                       action: "click->meetings--add-params#intercept",
+                       action: "click->meetings--submit#intercept",
                        href: meeting_section_path(@meeting_section.meeting, @meeting_section),
                        method: "DELETE",
                        confirm_message: confirm_text,

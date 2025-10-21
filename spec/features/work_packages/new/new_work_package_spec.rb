@@ -290,12 +290,23 @@ RSpec.describe "new work package", :js do
 
       # Set date
       date_field.click_to_open_datepicker
-      date = Time.zone.today.iso8601
+      date = Date.current.iso8601
       date_field.set_milestone_date date
       date_field.save!
 
       # Expect date to be displayed
       date_field.expect_value date
+
+      # Save work package
+      wp_page.subject_field.set(subject)
+      wp_page.save!
+      wp_page.expect_and_dismiss_toaster(message: "Successful creation.")
+
+      # Expect date to be saved
+      expect(WorkPackage.last).to have_attributes(
+        start_date: Date.current,
+        is_milestone?: true
+      )
     end
 
     it_behaves_like "work package creation workflow" do
@@ -372,6 +383,21 @@ RSpec.describe "new work package", :js do
       # Cancel
       date_field.cancel_by_click
       date_field.expect_value "no start date - no finish date"
+    end
+
+    it "Keeps 'Working days only' value upon saving (Bug #68380)" do
+      create_work_package_globally(type_task, project.name)
+      expect(page).to have_selector(safeguard_selector, wait: 10)
+
+      datepicker = wp_page.edit_field(:combinedDate).click_to_open_datepicker
+
+      datepicker.uncheck_working_days_only
+      datepicker.save!
+
+      wp_page.save!
+      wp_page.expect_and_dismiss_toaster(message: "Successful creation.")
+
+      expect(WorkPackage.last).to have_attributes(ignore_non_working_days: true)
     end
 
     context "with a project without type_bug" do

@@ -1,6 +1,17 @@
 zh-TW:
   grids:
     label_widget_in_grid: "網格(Grid) %{grid_name} 中包含的工具集"
+    widgets:
+      subitems:
+        title: "Subitems"
+        no_results: "There are no visible children."
+        view_all_subitems: "View all subitems"
+      members:
+        title: "Latest members"
+        no_results: "No visible members."
+        view_all_members: "View all members"
+      news:
+        no_results: "Nothing new to report."
   activerecord:
     attributes:
       grids/grid:

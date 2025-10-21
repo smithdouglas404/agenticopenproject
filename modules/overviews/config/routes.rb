@@ -18,20 +18,7 @@ Rails.application.routes.draw do
         resources :project_custom_field_sections, only: [:update], as: :custom_field_sections do
           get :show_dialog, on: :member
         end
-
-        namespace :widgets do
-          resource :project_status, only: %i[show update]
-          resource :news, only: %i[show]
-          resource :subitems, only: %i[show]
-          resource :members, only: %i[show]
-        end
       end
-    end
-  end
-
-  scope module: "overviews" do
-    namespace :widgets do
-      resource :news, only: %i[show]
     end
   end
 

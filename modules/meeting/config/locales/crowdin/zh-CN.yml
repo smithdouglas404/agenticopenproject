@@ -212,7 +212,7 @@ zh-CN:
       open_my_meetings_link: "转到我的会议"
       series:
         title: "[%{project_name}] 会议系列 '%{title}'"
-        summary: "%{actor} 设置了一个新的会议系列 '%{title}'"
+        summary: "%{actor} has invited you to a new meeting series '%{title}'"
       series_updated:
         title: "[%{project_name}] 会议系列 '%{title}' 已更新"
         summary: "会议系列 '%{title}' 已由 %{actor} 更新"
@@ -538,7 +538,7 @@ zh-CN:
   text_meeting_not_editable_anymore: "本次会议已不可编辑。"
   text_meeting_not_present_anymore: "此次会议已被删除。请选择另一次会议。"
   label_add_work_package_to_meeting_dialog_title: "选择会议"
-  label_add_work_package_to_meeting_section_label: "添加到章节"
+  label_add_work_package_to_meeting_section_label: "Section"
   label_add_work_package_to_meeting_dialog_button: "添加到会议"
   label_meeting_selection_caption: "只能将此工作包添加到一个即将举行或正在举行的公开会议。"
   label_section_selection_caption: "选择议程的某个部分，或将其添加到待办事项中。"

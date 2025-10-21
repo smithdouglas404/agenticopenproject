@@ -162,6 +162,11 @@ it:
         expired: "Scaduto il %{date}"
         revoked: "Revocato il %{date}"
         title: "Tabella dei token di accesso"
+    workflows:
+      tabs:
+        default_transitions: "Default transitions"
+        user_author: "User is author"
+        user_assignee: "User is assignee"
   authentication:
     login_and_registration: "Accesso e registrazione"
   announcements:
@@ -521,6 +526,8 @@ it:
       versions:
         no_results_title_text: Al momento non esistono versioni per il progetto.
         no_results_content_text: Crea una nuova versione
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: Nessuno spazio su disco registrato aggiuntivo consumato da questo progetto.
       work_package_priorities:
@@ -2557,6 +2564,9 @@ it:
       selected: "Selezionati"
     include_sub_items: "Includi sottovoci"
     no_results_text: "Nessun risultato"
+  toggle_switch:
+    label_on: "On"
+    label_off: "Off"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","

@@ -135,7 +135,7 @@ module MeetingAgendaItems
     end
 
     def copy_action_item(menu)
-      url = meeting_url(@meeting, anchor: "item-#{@meeting_agenda_item.id}")
+      url = meeting_url(@meeting, anchor: "meeting-agenda-item-#{@meeting_agenda_item.id}")
       menu.with_item(label: t("meeting.copy.to_clipboard"),
                      tag: :"clipboard-copy",
                      content_arguments: { value: url }) do |item|
@@ -153,12 +153,14 @@ module MeetingAgendaItems
 
       menu.with_item(
         label: t(:label_agenda_item_move_to_next),
-        href: move_to_next_dialog_meeting_agenda_item_path(@meeting_agenda_item.meeting,
-                                                           @meeting_agenda_item,
-                                                           datetime: next_date.iso8601),
-        content_arguments: {
-          data: { controller: "async-dialog" }
-        }
+        tag: :button,
+        content_arguments: { data: {
+          action: "click->meetings--submit#intercept",
+          href: move_to_next_dialog_meeting_agenda_item_path(@meeting_agenda_item.meeting,
+                                                             @meeting_agenda_item,
+                                                             datetime: next_date.iso8601),
+          method: "GET"
+        } }
       ) do |item|
         item.with_leading_visual_icon(icon: "arrow-right")
       end
@@ -194,15 +196,16 @@ module MeetingAgendaItems
 
     def move_action_item(menu, move_to, label_text, icon)
       menu.with_item(label: label_text,
-                     href: move_meeting_agenda_item_path(
-                       @meeting_agenda_item.meeting,
-                       @meeting_agenda_item,
-                       move_to:,
-                       current_occurrence: @current_occurrence
-                     ),
-                     form_arguments: {
-                       method: :put, data: { "turbo-stream": true }
-                     }) do |item|
+                     tag: :button,
+                     content_arguments: { data: {
+                       action: "click->meetings--submit#intercept",
+                       href: move_meeting_agenda_item_path(
+                         @meeting_agenda_item.meeting,
+                         @meeting_agenda_item,
+                         move_to:,
+                         current_occurrence: @current_occurrence
+                       )
+                     } }) do |item|
         item.with_leading_visual_icon(icon:)
       end
     end
@@ -213,7 +216,7 @@ module MeetingAgendaItems
       menu.with_item(label: I18n.t(:label_agenda_item_move_to_backlog),
                      tag: :button,
                      content_arguments: { data: {
-                       action: "click->meetings--add-params#intercept",
+                       action: "click->meetings--submit#intercept",
                        href: drop_meeting_agenda_item_path(
                          @meeting_agenda_item.meeting,
                          @meeting_agenda_item,
@@ -232,7 +235,7 @@ module MeetingAgendaItems
       menu.with_item(label: I18n.t(:label_agenda_item_move_to_current_meeting),
                      tag: :button,
                      content_arguments: { data: {
-                       action: "click->meetings--add-params#intercept",
+                       action: "click->meetings--submit#intercept",
                        href: drop_meeting_agenda_item_path(
                          @meeting_agenda_item.meeting,
                          @meeting_agenda_item,
@@ -251,7 +254,7 @@ module MeetingAgendaItems
       menu.with_item(label: I18n.t(:label_agenda_item_move_to_section),
                      tag: :button,
                      content_arguments: { data: {
-                       action: "click->meetings--add-params#intercept",
+                       action: "click->meetings--submit#intercept",
                        href: move_to_section_dialog_meeting_agenda_item_path(
                          @meeting_agenda_item.meeting,
                          @meeting_agenda_item,

@@ -3,13 +3,4 @@ tr:
     label_home: "%{workspace_type} ev"
     label_dashboard: "Gösterge paneli"
     label_overview: 'Genel Bakış'
-    widgets:
-      subitems:
-        in_this_portfolio: "Bu portföyde"
-        in_this_program: "Bu programda"
-        in_this_project: "Bu projede"
-        no_visible_children: "Görünürde hiç çocuk yok."
-      members:
-        title: "Son üyeler"
-        view_all_members: "View all members"
   permission_manage_overview: 'Genel bakış sayfasını yönet'

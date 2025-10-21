@@ -162,6 +162,11 @@ zh-CN:
         expired: "已于 %{date} 到期"
         revoked: "已于 %{date} 撤销"
         title: "访问令牌表"
+    workflows:
+      tabs:
+        default_transitions: "Default transitions"
+        user_author: "User is author"
+        user_assignee: "User is assignee"
   authentication:
     login_and_registration: "登录和注册"
   announcements:
@@ -340,8 +345,8 @@ zh-CN:
   concatenation:
     single: "或"
   danger_dialog:
-    confirmation_live_message_checked: "The button to proceed is now active."
-    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+    confirmation_live_message_checked: "继续按钮已激活。"
+    confirmation_live_message_unchecked: "继续操作的按钮现在不起作用。您需要勾选复选框才能继续。"
   op_dry_validation:
     or: "或"
     errors:
@@ -520,6 +525,8 @@ zh-CN:
       versions:
         no_results_title_text: 目前这个项目没有版本。
         no_results_content_text: 创建一个新的版本
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: 此项目没有已记录的额外磁盘空间消耗。
       work_package_priorities:
@@ -2511,6 +2518,9 @@ zh-CN:
       selected: "已选择"
     include_sub_items: "包含子条目"
     no_results_text: "无结果"
+  toggle_switch:
+    label_on: "On"
+    label_off: "Off"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","

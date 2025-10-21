@@ -162,6 +162,11 @@ ko:
         expired: "%{date}에 만료됨"
         revoked: "%{date}에 취소됨"
         title: "액세스 토큰 테이블"
+    workflows:
+      tabs:
+        default_transitions: "Default transitions"
+        user_author: "User is author"
+        user_assignee: "User is assignee"
   authentication:
     login_and_registration: "로그인 및 등록"
   announcements:
@@ -523,6 +528,8 @@ ko:
       versions:
         no_results_title_text: 프로젝트에 버전이 없습니다.
         no_results_content_text: 새 버전 생성
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: 이 프로젝트에서 사용하는 추가 기록 디스크 공간이 없습니다.
       work_package_priorities:
@@ -2515,6 +2522,9 @@ ko:
       selected: "선택됨"
     include_sub_items: "하위 항목 포함"
     no_results_text: "결과 없음"
+  toggle_switch:
+    label_on: "On"
+    label_off: "Off"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
