@@ -53,8 +53,8 @@ module MemberHelper
     invite_new_users possibly_separated_ids_for_entity(member_params, :user), send_notification: @send_notification
   end
 
-  def invite_new_user(id, send_notification: true) # rubocop:disable Metrics/PerceivedComplexity
-    if id.present? && (id.to_i == 0 || EmailValidator.valid?(id)) # we've got an email - invite that user
+  def invite_new_user(id, send_notification: true)
+    if id.present? && EmailValidator.valid?(id) # we've got an email - invite that user
       invite_existing_or_new_users(email: id, send_notification:)
     else
       id
