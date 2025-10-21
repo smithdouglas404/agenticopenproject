@@ -78,8 +78,12 @@ export default function OpBlockNoteContainer({ inputField,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let editorParams:Partial<BlockNoteEditorOptions<any, any, any>>;
   if(collaborationEnabled) {
+    const url = new URL(hocuspocusUrl);
+    url.searchParams.set('document_id', documentId);
+    url.searchParams.set('openproject_base_path', openProjectUrl);
+
     hocuspocusProvider = new HocuspocusProvider({
-      url: `${hocuspocusUrl}?document_id=${documentId}&openproject_base_path=${encodeURIComponent(openProjectUrl)}`,
+      url: url.toString(),
       name: documentName,
       token: oauthToken,
       document: doc
@@ -152,6 +156,7 @@ export default function OpBlockNoteContainer({ inputField,
       if (collaborationEnabled && hocuspocusProvider) {
         hocuspocusProvider.destroy();
       } else {
+        // disable Yjs update listener. Opposite of doc.on('update', ...);
         doc.off('update', updateInput);
       }
     };

@@ -108,9 +108,9 @@ patch:
                 raw:
                   type: string
                   description: The raw markdown content
-            content_binary:
-              type: string
-              description: The binary content of the document, base64 encoded
+            # content_binary:
+            #   type: string
+            #   description: The binary content of the document, base64 encoded
         examples:
           request:
             value:

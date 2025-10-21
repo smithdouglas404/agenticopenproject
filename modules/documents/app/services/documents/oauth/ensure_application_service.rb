@@ -30,6 +30,12 @@
 
 module Documents
   module OAuth
+    ##
+    # Service to ensure the existence of the Documents OAuth application.
+    #
+    # This service is responsible for finding or creating a Doorkeeper OAuth application
+    # that is used for authenticating the YJS provider with the OpenProject API.
+    # The application is created as a confidential client with API v3 scope.
     class EnsureApplicationService < BaseServices::BaseCallable
       APPLICATION_NAME = "Documents OAuth Application"
       APPLICATION_UID = "documents_yjs_provider"
