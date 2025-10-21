@@ -28,38 +28,43 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Primer
-  module OpenProject
-    module Forms
-      # :nodoc:
-      class BlockNoteEditor < Primer::Forms::BaseComponent
-        include ::OpenProject::StaticRouting::UrlHelpers
+require "spec_helper"
 
-        attr_reader :input,
-                    :value,
-                    :active_user,
-                    :hocuspocus_url,
-                    :open_project_url,
-                    :document_name,
-                    :document_id,
-                    :oauth_token
+RSpec.describe Documents::OAuth::EnsureApplicationService do
+  subject(:service_call) { described_class.new.call }
 
-        delegate :name, to: :@input
+  describe "#call" do
+    context "when the OAuth application does not exist" do
+      it "creates a new application" do
+        expect { service_call }.to change(Doorkeeper::Application, :count).by(1)
+      end
 
-        def initialize(input:, value:, document_name:, document_id:, oauth_token: nil)
-          super()
-          @input = input
-          @value = value
-          @active_user = {
-            id: User.current.id,
-            username: User.current.name
-          }
-          @document_id = document_id
-          @document_name = document_name
-          @oauth_token = oauth_token
-          @hocuspocus_url = Setting.collaborative_editing_hocuspocus_url
-          @open_project_url = root_url
-        end
+      it "returns a successful service result" do
+        result = service_call
+        expect(result).to be_success
+      end
+
+      it "creates an application with the correct attributes" do
+        result = service_call
+        application = result.result
+
+        expect(application.uid).to eq(described_class::APPLICATION_UID)
+      end
+    end
+
+    context "when the OAuth application already exists" do
+      let!(:existing_application) do
+        create(:oauth_application, uid: described_class::APPLICATION_UID)
+      end
+
+      it "does not create a new application" do
+        expect { service_call }.not_to change(Doorkeeper::Application, :count)
+      end
+
+      it "returns a successful service result with the existing application" do
+        result = service_call
+        expect(result).to be_success
+        expect(result.result).to eq(existing_application)
       end
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,40 +28,39 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-en:
-  plugin_openproject_documents:
-    name: "OpenProject Documents"
-    description: "An OpenProject plugin to allow creation of documents in projects."
+module Documents
+  module OAuth
+    class GenerateTokenService < BaseServices::BaseCallable
+      def initialize(user:)
+        super()
 
-  activerecord:
-    models:
-      document: "Document"
-    attributes:
-      document:
-        content_binary: "Content binary"
+        @user = user
+      end
 
-  activity:
-    filter:
-      document: "Documents"
+      def perform
+        application_result = EnsureApplicationService.new.call
+        return application_result unless application_result.success?
 
-  default_doc_category_tech: "Technical documentation"
-  default_doc_category_user: "User documentation"
+        application = application_result.result
 
-  enumeration_doc_categories: "Document categories"
+        token = create_access_token(application)
 
-  documents:
-    label_attachment_author: "Attachment author"
-    label_categories: "Categories"
-    new_category: "New category"
+        if token.persisted?
+          ServiceResult.success(result: token)
+        else
+          ServiceResult.failure(errors: token.errors)
+        end
+      end
 
-  label_document_added: "Document added"
-  label_document_new: "New document"
-  label_document_plural: "Documents"
-  label_documents: "Documents"
-  label_document_title: "Title"
-  label_document_description: "Description"
-  label_document_category: "Category"
+      private
 
-  permission_manage_documents: "Manage documents"
-  permission_view_documents: "View documents"
-  project_module_documents: "Documents"
+      def create_access_token(application)
+        application.access_tokens.create(
+          resource_owner_id: @user.id,
+          scopes: "api_v3",
+          expires_in: 24.hours.to_i
+        )
+      end
+    end
+  end
+end

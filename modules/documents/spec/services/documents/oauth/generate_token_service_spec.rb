@@ -28,30 +28,42 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module CollaborativeEditing
-  module DocumentIdGenerator
-    module_function
+require "spec_helper"
 
-    def call(category, id)
-      OpenSSL::HMAC.hexdigest("SHA256", Rails.application.secret_key_base, "#{category}#{id}")
+RSpec.describe Documents::OAuth::GenerateTokenService do
+  subject(:service_call) { described_class.new(user:).call }
+
+  let(:user) { create(:user) }
+
+  describe "#call" do
+    it "creates a new access token" do
+      expect { service_call }.to change(Doorkeeper::AccessToken, :count).by(1)
+    end
+
+    it "returns a successful service result" do
+      result = service_call
+      expect(result).to be_success
+    end
+
+    it "creates a token that belongs to the provided user" do
+      result = service_call
+      token = result.result
+
+      expect(token.resource_owner_id).to eq(user.id)
     end
   end
 
-  module DocumentAccessTokenGenerator
-    module_function
+  context "with different users" do
+    let(:user1) { create(:user) }
+    let(:user2) { create(:user) }
 
-    def call(document_id, document_text)
-      if Setting.collaborative_editing_hocuspocus_secret.present?
-        JWT.encode(
-          {
-            document_id:,
-            document_text:,
-            exp: 20.minutes.from_now.to_i
-          },
-          Setting.collaborative_editing_hocuspocus_secret,
-          "HS256"
-        )
-      end
+    it "creates separate tokens for different users" do
+      result1 = described_class.new(user: user1).call
+      result2 = described_class.new(user: user2).call
+
+      expect(result1.result.resource_owner_id).to eq(user1.id)
+      expect(result2.result.resource_owner_id).to eq(user2.id)
+      expect(result1.result.token).not_to eq(result2.result.token)
     end
   end
 end

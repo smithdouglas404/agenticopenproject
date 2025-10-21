@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,40 +28,8 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-en:
-  plugin_openproject_documents:
-    name: "OpenProject Documents"
-    description: "An OpenProject plugin to allow creation of documents in projects."
-
-  activerecord:
-    models:
-      document: "Document"
-    attributes:
-      document:
-        content_binary: "Content binary"
-
-  activity:
-    filter:
-      document: "Documents"
-
-  default_doc_category_tech: "Technical documentation"
-  default_doc_category_user: "User documentation"
-
-  enumeration_doc_categories: "Document categories"
-
-  documents:
-    label_attachment_author: "Attachment author"
-    label_categories: "Categories"
-    new_category: "New category"
-
-  label_document_added: "Document added"
-  label_document_new: "New document"
-  label_document_plural: "Documents"
-  label_documents: "Documents"
-  label_document_title: "Title"
-  label_document_description: "Description"
-  label_document_category: "Category"
-
-  permission_manage_documents: "Manage documents"
-  permission_view_documents: "View documents"
-  project_module_documents: "Documents"
+class AddYDocBlobToDocuments < ActiveRecord::Migration[8.0]
+  def change
+    add_column :documents, :content_binary, :text
+  end
+end
