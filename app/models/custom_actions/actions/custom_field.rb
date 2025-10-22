@@ -63,8 +63,6 @@ class CustomActions::Actions::CustomField < CustomActions::Actions::Base
       end
 
       klass.include(strategy(custom_field))
-      # Override all the apply methods from the strategies with the correct implementation
-      klass.include(CustomActions::Actions::Strategies::CustomField)
       klass
     end
 
@@ -100,6 +98,12 @@ class CustomActions::Actions::CustomField < CustomActions::Actions::Base
     custom_field.name
   end
 
+  def apply(work_package)
+    if work_package.respond_to?(custom_field.attribute_setter)
+      set_custom_field_value(work_package)
+      validate_custom_field(work_package)
+    end
+  end
 
   private
 
