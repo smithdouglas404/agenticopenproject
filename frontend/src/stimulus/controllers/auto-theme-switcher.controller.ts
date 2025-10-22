@@ -61,6 +61,9 @@ export default class AutoThemeSwitcher extends Controller {
     } else {
       this.applyTheme(this.themeValue, this.increaseContrastValue);
     }
+
+    const wrapper = document.getElementById('wrapper')!;
+    wrapper.style.display = '';
   }
 
   syncWithOS():void {
