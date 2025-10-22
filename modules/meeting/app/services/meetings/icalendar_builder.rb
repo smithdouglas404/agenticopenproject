@@ -42,11 +42,6 @@ module Meetings
       @excluded_dates_cache = {}
       @instantiated_occurrences_cache = {}
       @series_cache_loaded = false
-      @action_needed_from_user_as_attendee = true
-    end
-
-    def treat_participations_from_user_as_accepted!
-      @action_needed_from_user_as_attendee = false
     end
 
     def calendar_title=(title)
@@ -212,27 +207,37 @@ module Meetings
           {
             "CN" => user.name,
             "EMAIL" => user.mail,
-            "PARTSTAT" => attendee_participation_status(user),
-            "RSVP" => attendee_rsvp_needed?(user) ? "TRUE" : "FALSE",
+            "PARTSTAT" => attendee_participation_status(participant),
+            "RSVP" => attendee_rsvp_needed?(participant) ? "TRUE" : nil,
             "CUTYPE" => "INDIVIDUAL",
             "ROLE" => "REQ-PARTICIPANT"
-          }
+          }.compact
         )
 
         event.append_attendee(address)
       end
     end
 
-    def attendee_participation_status(user)
-      if calendar_generated_for_user == user && @action_needed_from_user_as_attendee
+    def attendee_participation_status(participant) # rubocop:disable Metrics/PerceivedComplexity
+      return nil if participant.participation_status.nil?
+
+      if participant.needs_action?
         "NEEDS-ACTION"
-      else
-        "ACCEPTED" # until we handle RSVPs properly, we assume participants have accepted
+      elsif participant.accepted?
+        "ACCEPTED"
+      elsif participant.declined?
+        "DECLINED"
+      elsif participant.tentative?
+        "TENTATIVE"
+      elsif participant.delegated?
+        "DELEGATED"
+      elsif participant.unknown?
+        nil
       end
     end
 
-    def attendee_rsvp_needed?(user)
-      calendar_generated_for_user == user && @action_needed_from_user_as_attendee
+    def attendee_rsvp_needed?(participant)
+      calendar_generated_for_user == participant.user && participant.needs_action?
     end
 
     def ical_datetime(time, timezone: builder_internal_timezone)
