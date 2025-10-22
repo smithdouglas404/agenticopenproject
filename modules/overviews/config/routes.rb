@@ -1,23 +1,23 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  constraints(Constraints::ProjectIdentifier) do
-    scope "projects/:project_id", as: "project" do
-      scope module: "overviews" do
-        resource :overview, path: "/", only: [:show] do
-          constraints(Constraints::FeatureDecision.new(:new_project_overview)) do
-            get :dashboard, on: :member
-          end
-        end
+  extend Routing::Helpers::ProjectScope
 
-        controller :overviews do
-          get "project_custom_fields_sidebar" => :project_custom_fields_sidebar, as: :custom_fields_sidebar
-          get "project_life_cycle_sidebar" => :project_life_cycle_sidebar, as: :life_cycle_sidebar
+  project_scope do
+    scope module: "overviews" do
+      resource :overview, path: "/", only: [:show] do
+        constraints(Routing::Constraints::FeatureDecision.new(:new_project_overview)) do
+          get :dashboard, on: :member
         end
+      end
 
-        resources :project_custom_field_sections, only: [:update], as: :custom_field_sections do
-          get :show_dialog, on: :member
-        end
+      controller :overviews do
+        get "project_custom_fields_sidebar" => :project_custom_fields_sidebar, as: :custom_fields_sidebar
+        get "project_life_cycle_sidebar" => :project_life_cycle_sidebar, as: :life_cycle_sidebar
+      end
+
+      resources :project_custom_field_sections, only: [:update], as: :custom_field_sections do
+        get :show_dialog, on: :member
       end
     end
   end

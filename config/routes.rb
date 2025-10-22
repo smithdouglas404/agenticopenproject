@@ -29,6 +29,8 @@
 #++
 
 Rails.application.routes.draw do
+  extend Routing::Helpers::ProjectScope
+
   root to: "homescreen#index", as: "home"
   rails_relative_url_root = OpenProject::Configuration["rails_relative_url_root"] || ""
 
@@ -452,29 +454,29 @@ Rails.application.routes.draw do
       get "(/revisions/:rev)/diff(/*repo_path)",
           action: :diff,
           format: "html",
-          constraints: { rev: /[\w.\-]+/, repo_path: /.*/ }
+          constraints: { rev: /[\w.-]+/, repo_path: /.*/ }
 
       get "(/revisions/:rev)/:format/*repo_path",
           action: :entry,
           format: /raw/,
-          rev: /[\w.\-]+/
+          rev: /[\w.-]+/
 
       %w{diff annotate changes entry browse}.each do |action|
         get "(/revisions/:rev)/#{action}(/*repo_path)",
             format: "html",
             action:,
-            constraints: { rev: /[\w.\-]+/, repo_path: /.*/ },
+            constraints: { rev: /[\w.-]+/, repo_path: /.*/ },
             as: "#{action}_revision"
       end
 
-      get "/revision(/:rev)", rev: /[\w.\-]+/,
+      get "/revision(/:rev)", rev: /[\w.-]+/,
                               action: :revision,
                               as: "show_revision"
 
       get "(/revisions/:rev)(/*repo_path)",
           action: :show,
           format: "html",
-          constraints: { rev: /[\w.\-]+/, repo_path: /.*/ },
+          constraints: { rev: /[\w.-]+/, repo_path: /.*/ },
           as: "show_revisions_path"
     end
   end
@@ -508,7 +510,7 @@ Rails.application.routes.draw do
 
     get "/enterprise", to: redirect("#{rails_relative_url_root}/admin/enterprise_tokens")
 
-    constraints(Constraints::Enterprise) do
+    constraints(Routing::Constraints::Enterprise) do
       resources :enterprise_tokens, only: %i[index new create destroy] do
         member do
           get :destroy_dialog

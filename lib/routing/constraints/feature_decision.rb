@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,12 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Constraints
-  module Enterprise
-    module_function
+module Routing
+  module Constraints
+    class FeatureDecision
+      def initialize(flag_name)
+        @flag_name = flag_name
+      end
 
-    def matches?(_request)
-      OpenProject::Configuration.ee_manager_visible?
+      def matches?(...)
+        OpenProject::FeatureDecisions.public_send(:"#{@flag_name}_active?")
+      end
     end
   end
 end

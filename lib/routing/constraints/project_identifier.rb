@@ -28,23 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-Rails.application.routes.draw do
-  extend Routing::Helpers::ProjectScope
+module Routing
+  module Constraints
+    class ProjectIdentifier
+      REGEX = /(?!#{Regexp.union(Project::RESERVED_IDENTIFIERS)}\z)[\w-]+/
 
-  scope module: "grids" do
-    # project-scoped widget routes
-    project_scope do
-      namespace :widgets do
-        resource :members, only: %i[show]
-        resource :news, only: %i[show]
-        resource :project_status, only: %i[show update]
-        resource :subitems, only: %i[show]
+      REGEX_ANCHORED = /\A#{REGEX}\z/
+      private_constant :REGEX_ANCHORED
+
+      def self.matches?(request)
+        project_id = request.path_parameters[:project_id] || request.params[:project_id]
+        REGEX_ANCHORED === project_id
       end
-    end
-
-    # global widget routes
-    namespace :widgets do
-      resource :news, only: %i[show]
     end
   end
 end

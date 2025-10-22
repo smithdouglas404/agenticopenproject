@@ -27,8 +27,10 @@
 #++
 
 Rails.application.routes.draw do
+  extend Routing::Helpers::ProjectScope
+
   scope "", as: "backlogs" do
-    scope "projects/:project_id", as: "project" do
+    project_scope do
       resources :backlogs,         controller: :rb_master_backlogs,  only: :index
 
       resources :sprints,          controller: :rb_sprints,          only: %i[show update] do
@@ -51,7 +53,7 @@ Rails.application.routes.draw do
     end
   end
 
-  scope "projects/:project_id", as: "project", module: "projects" do
+  project_scope module: "projects" do
     namespace "settings" do
       resource :backlogs, only: %i[show update] do
         member do
