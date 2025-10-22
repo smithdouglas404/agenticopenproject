@@ -29,6 +29,13 @@
 #++
 
 class DocumentForm < ApplicationForm
+  attr_reader :oauth_token
+
+  def initialize(oauth_token: nil)
+    super()
+    @oauth_token = oauth_token
+  end
+
   form do |f|
     f.select_list(
       name: :category_id,
@@ -49,11 +56,13 @@ class DocumentForm < ApplicationForm
 
     if OpenProject::FeatureDecisions.block_note_editor_active? && model.category&.name == "Experimental"
       f.block_note_editor(
-        name: :description,
+        name: :content_binary,
         label: I18n.t("label_document_description"),
         classes: "document-form--long-description",
-        value: model.description,
-        document_id: ::CollaborativeEditing::DocumentIdGenerator.call("documents", model.id)
+        value: model.content_binary,
+        document_id: model.id,
+        document_name: model.title,
+        oauth_token: @oauth_token
       )
     else
       f.rich_text_area(

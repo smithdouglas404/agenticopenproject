@@ -42,10 +42,10 @@ export default class extends Controller {
 
   static values = {
     inputText: String,
-    users: Array,
     activeUser: Object,
     hocuspocusUrl: String,
-    hocuspocusAccessToken: String,
+    oauthToken: String,
+    documentName: String,
     documentId: String,
     openProjectUrl: String,
   };
@@ -53,10 +53,10 @@ export default class extends Controller {
   declare readonly blockNoteEditorTarget:HTMLElement;
   declare readonly blockNoteInputFieldTarget:HTMLInputElement;
   declare readonly inputTextValue:string;
-  declare readonly usersValue:User[];
   declare readonly activeUserValue:User;
   declare readonly hocuspocusUrlValue:string;
-  declare readonly hocuspocusAccessTokenValue:string;
+  declare readonly oauthTokenValue:string;
+  declare readonly documentNameValue:string;
   declare readonly documentIdValue:string;
   declare readonly openProjectUrlValue:string;
 
@@ -69,10 +69,10 @@ export default class extends Controller {
     return React.createElement(OpBlockNoteContainer, {
       inputField: this.blockNoteInputFieldTarget,
       inputText: this.inputTextValue,
-      users: this.usersValue,
-      activeUser: this.activeUserValue,
       hocuspocusUrl: this.hocuspocusUrlValue,
-      hocuspocusAccessToken: this.hocuspocusAccessTokenValue,
+      oauthToken: this.oauthTokenValue,
+      activeUser: this.activeUserValue,
+      documentName: this.documentNameValue,
       documentId: this.documentIdValue,
       openProjectUrl: this.openProjectUrlValue,
     });

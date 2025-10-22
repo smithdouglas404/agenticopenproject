@@ -26,6 +26,9 @@ ko:
   activerecord:
     models:
       document: "문서"
+    attributes:
+      document:
+        content_binary: "Content binary"
   activity:
     filter:
       document: "문서"

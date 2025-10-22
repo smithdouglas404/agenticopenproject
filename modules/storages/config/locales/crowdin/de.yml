@@ -249,10 +249,10 @@ de:
         ampf_configuration:
           client_folder_creation: Automatische Ordnererstellung
           client_folder_removal: Automatische Ordnerlöschung
-          drive_contents: Laufwerk hat erwarteten Inhalt
+          drive_contents: Drive content
           files_request: Gruppenordnerdateien werden abgerufen
           group_folder_app: 'Abhängigkeit: Gruppenordner'
-          group_folder_contents: Gruppenordner hat erwarteten Inhalt
+          group_folder_contents: Group folder content
           group_folder_presence: Gruppenordner existiert
           header: Automatisch verwaltete Projektordner
           userless_access: Serverseitige Anfrageauthentifizierung

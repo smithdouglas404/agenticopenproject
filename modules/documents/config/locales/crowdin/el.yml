@@ -26,6 +26,9 @@ el:
   activerecord:
     models:
       document: "Έγγραφο"
+    attributes:
+      document:
+        content_binary: "Content binary"
   activity:
     filter:
       document: "Έγγραφα"

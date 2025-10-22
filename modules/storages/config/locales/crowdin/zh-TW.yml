@@ -249,10 +249,10 @@ zh-TW:
         ampf_configuration:
           client_folder_creation: 自動新增資料夾
           client_folder_removal: 自動刪除資料夾
-          drive_contents: 硬碟有預期內容
+          drive_contents: 磁碟內容
           files_request: 正在擷取群組資料夾檔案
           group_folder_app: '依賴：群組資料夾'
-          group_folder_contents: 群組資料夾包含預期的內容
+          group_folder_contents: 群組資料夾內容
           group_folder_presence: 群組目錄已存在
           header: 自動管理的專案資料夾
           userless_access: 服務器端要求認證

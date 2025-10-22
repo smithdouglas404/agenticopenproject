@@ -1,4 +1,4 @@
-ARG RUBY_VERSION="3.4.5"
+ARG RUBY_VERSION="3.4.7"
 # Add SBOM scan context for intermediate steps
 ARG BUILDKIT_SBOM_SCAN_CONTEXT=true
 ARG BUILDKIT_SBOM_SCAN_STAGE=true

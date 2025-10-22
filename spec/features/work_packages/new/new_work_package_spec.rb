@@ -385,6 +385,21 @@ RSpec.describe "new work package", :js do
       date_field.expect_value "no start date - no finish date"
     end
 
+    it "Keeps 'Working days only' value upon saving (Bug #68380)" do
+      create_work_package_globally(type_task, project.name)
+      expect(page).to have_selector(safeguard_selector, wait: 10)
+
+      datepicker = wp_page.edit_field(:combinedDate).click_to_open_datepicker
+
+      datepicker.uncheck_working_days_only
+      datepicker.save!
+
+      wp_page.save!
+      wp_page.expect_and_dismiss_toaster(message: "Successful creation.")
+
+      expect(WorkPackage.last).to have_attributes(ignore_non_working_days: true)
+    end
+
     context "with a project without type_bug" do
       let!(:project_without_bug) do
         create(:project, name: "Unrelated project", types: [type_task])

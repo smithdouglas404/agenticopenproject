@@ -26,6 +26,9 @@ zh-CN:
   activerecord:
     models:
       document: "文档"
+    attributes:
+      document:
+        content_binary: "Content binary"
   activity:
     filter:
       document: "文档"

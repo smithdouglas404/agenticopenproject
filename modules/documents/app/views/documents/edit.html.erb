@@ -44,6 +44,6 @@ See COPYRIGHT and LICENSE files for more details.
     url: document_path(@document),
     method: :patch
   ) do |f|
-    render DocumentForm.new(f)
+    render DocumentForm.new(f, oauth_token: @oauth_token)
   end
 %>

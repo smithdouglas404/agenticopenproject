@@ -72,37 +72,7 @@ If you want to run the tests directly to rspec, you can use this command:
 
 Some tests can fail on GitHub actions CI, and pass locally which makes them harder to reproduce, diagnose, and fix.
 
-Possible reasons are:
-
-* Different configuration between CI environment and local environment
-  * GitHub actions run with `CI=true` environment variable. This setting will eager load the app before running tests. As some classes may monkey patch parts of the code, the behavior can be different when the app is fully loaded.
-    * Try running the tests with `CI=true`.
-  * OpenProject configuration difference
-    * Try changing or disabling any environment variables prefixed with `OPENPROJECT_` in your environment or `.env` files.
-    * Try changing or removing `config/configuration.yml` settings under the `test:` key.
-* Missing executables
-  * Source control management tests may need `svnadmin` or `git` to execute properly.
-  * LDAP tests may need `java` to spin up a LDAP server instance.
-* Different test execution order
-  * Parts of the OpenProject code are using memoization and caching for performance, and some tests can do weird things like prepending a module or other meta programming. Without proper clean up of the global state, subsequent tests may fail. It can go unnoticed depending on the test execution order.
-  * RSpec tests order is different on each run. The order is defined by the random seed which can be set with `--seed` option. When running rspec, the random seed is displayed like this: `Randomized with seed 18352`.
-  * Try running tests locally with the same random seed as the one used on CI.
-    * Once you determined that the failure is order dependant, use [`--bisect`](https://rspec.info/features/3-12/rspec-core/command-line/bisect/) to isolate the minimal set of examples that reproduce the same failures.
-* Faster / slower machine and race conditions
-  * Some system tests using browser and performing ajax requests may not be synchronized with the test execution: the test is testing something that has not happened yet. Sometimes the ajax runs at the right time and the test passes, sometimes it runs at the wrong time and the test fails.
-  * Use `script/bulk_run_rspec` to run the same test multiple times. If it has both failing and passing results, it means it is a flickering test.
-  * To help diagnose why a system test is failing:
-    * Browser screenshots are created for failing system tests involving a browser. You can find them in the job log output.
-    * Try running with `OPENPROJECT_TESTING_NO_HEADLESS=1` to view what the browser is doing. Use `OPENPROJECT_TESTING_AUTO_DEVTOOLS=1` to have DevTools opened so that you can use `debugger` statements in the js code.
-    * If the interactions are still too fast to understand why the test is failing, use `OPENPROJECT_TESTING_SLOWDOWN_FACTOR`, providing the number of seconds to slow down every browser command with. For example, if you'd like to slow down every interaction by 200 milliseconds, run with `OPENPROJECT_TESTING_SLOWDOWN_FACTOR=0.2`.
-* Migration executed locally
-  * While developing on another branch, you may run migrations and forget to roll them back when switching branches. This can lead to different test results: a migration modifying a database column default value can impact system behavior and change test results.
-  * To find if this is your case, run `rails db:migrate:status` to list migration status. Look for `up    <migration-id>  ********** NO FILE **********` patterns. If you have some, try looking up the commit associated with this migration and check if it explains behavior difference.
-  * To look up commits referencing the migration, use the `<migration-id>` from previous command and run `git log -p --all -- '**/*<migration-id>*'`. For instance `git log -p --all -- '**/*20220816065025*'`.
-  * If you find a commit and want to roll the associated migration back:
-    * Checkout the commit: `git switch --detach <commit-sha>`
-    * Roll the migration back: `rails db:migrate:down VERSION=<migration-id>`
-    * Switch back to where you left: `git switch -`
+These are flaky tests and should be fixed as soon as possible as they undermine the trust we have in our test results. [Follow our advice on handling flaky tests](../handling-flaky-tests/) for more information.
 
 ### Skip test execution on GitHub Actions CI
 

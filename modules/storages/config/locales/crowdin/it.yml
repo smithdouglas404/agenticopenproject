@@ -249,10 +249,10 @@ it:
         ampf_configuration:
           client_folder_creation: Creazione automatica delle cartelle
           client_folder_removal: Eliminazione automatica delle cartelle
-          drive_contents: L'unità ha il contenuto atteso
+          drive_contents: Drive content
           files_request: Recupero dei file delle cartelle di gruppo
           group_folder_app: 'Dipendenza: Cartelle di gruppo'
-          group_folder_contents: La cartella di gruppo ha i contenuti attesi
+          group_folder_contents: Group folder content
           group_folder_presence: La cartella di gruppo esiste
           header: Cartelle di progetto gestite automaticamente
           userless_access: Autenticazione richiesta lato server

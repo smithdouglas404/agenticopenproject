@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -28,29 +27,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module CollaborativeEditing
-  module DocumentIdGenerator
-    module_function
+module MeetingAgendaItems
+  module EditableItem
+    extend ActiveSupport::Concern
 
-    def call(category, id)
-      OpenSSL::HMAC.hexdigest("SHA256", Rails.application.secret_key_base, "#{category}#{id}")
+    included do
+      validate :validate_editable
     end
-  end
 
-  module DocumentAccessTokenGenerator
-    module_function
+    protected
 
-    def call(document_id, document_text)
-      if Setting.collaborative_editing_hocuspocus_secret.present?
-        JWT.encode(
-          {
-            document_id:,
-            document_text:,
-            exp: 20.minutes.from_now.to_i
-          },
-          Setting.collaborative_editing_hocuspocus_secret,
-          "HS256"
-        )
+    def validate_editable
+      unless model.editable?
+        errors.add :base, I18n.t(:text_agenda_item_not_editable_anymore)
       end
     end
   end

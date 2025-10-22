@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,15 +28,37 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Bim::Bcf
-  module API
-    module ErrorFormatter
-      class Json < Grape::ErrorFormatter::Base
-        class << self
-          def call(message, _backtrace, _options = {}, env = nil, _original_exception = nil)
-            present(message, env)
-          end
-        end
+module Documents
+  class Menu < Submenu
+    attr_reader :project, :params
+
+    def initialize(project: nil, params: nil)
+      super(view_type: nil, project:, params:)
+    end
+
+    def menu_items
+      [menu_group(header: nil, children: document_status_options),
+       menu_group(header: I18n.t("documents.menu.types"), children: document_type_options)]
+    end
+
+    def document_status_options
+      [menu_item(title: I18n.t("documents.menu.all"), selected: params[:filters].blank?)]
+    end
+
+    def document_type_options
+      @document_type_options ||= menu_item_filter_for(DocumentCategory, :category_id)
+    end
+
+    def query_path(query_params)
+      project_documents_path(project, query_params)
+    end
+
+    private
+
+    def menu_item_filter_for(model_class, filter_id)
+      model_class.pluck(:id, :name).map do |id, title|
+        filters = [{ filter_id => { operator: "=", values: [id.to_s] } }].to_json
+        menu_item(title:, query_params: { filters: })
       end
     end
   end

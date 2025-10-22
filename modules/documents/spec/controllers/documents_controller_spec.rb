@@ -57,11 +57,6 @@ RSpec.describe DocumentsController do
       expect(response).to be_successful
       expect(response).to render_template("index")
     end
-
-    it "group documents by category, if no other sorting is given" do
-      expect(assigns(:grouped)).not_to be_nil
-      expect(assigns(:grouped).keys.map(&:name)).to eql [default_category.name]
-    end
   end
 
   describe "new" do

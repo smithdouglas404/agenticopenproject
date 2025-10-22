@@ -26,6 +26,9 @@ tr:
   activerecord:
     models:
       document: "Belge"
+    attributes:
+      document:
+        content_binary: "Content binary"
   activity:
     filter:
       document: "Belgeler"

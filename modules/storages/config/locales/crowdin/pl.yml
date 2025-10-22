@@ -249,10 +249,10 @@ pl:
         ampf_configuration:
           client_folder_creation: Automatyczne tworzenie folderów
           client_folder_removal: Automatyczne usuwanie folderów
-          drive_contents: Dysk ma oczekiwaną zawartość
+          drive_contents: Drive content
           files_request: Pobieranie plików folderów grup
           group_folder_app: 'Zależne: foldery grup'
-          group_folder_contents: Folder grupy ma oczekiwaną zawartość
+          group_folder_contents: Group folder content
           group_folder_presence: Folder grupy istnieje
           header: Automatycznie zarządzane foldery projektu
           userless_access: Uwierzytelnianie żądań po stronie serwera

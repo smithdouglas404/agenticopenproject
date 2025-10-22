@@ -249,10 +249,10 @@ tr:
         ampf_configuration:
           client_folder_creation: Otomatik klasör oluşturma
           client_folder_removal: Otomatik klasör silme
-          drive_contents: Sürücü beklenen içeriğe sahiptir
+          drive_contents: Drive content
           files_request: Grup klasörü dosyalarını getirme
           group_folder_app: 'Bağımlılık: Grup Klasörleri'
-          group_folder_contents: Grup klasörü beklenen içeriğe sahiptir
+          group_folder_contents: Group folder content
           group_folder_presence: Grup klasörü mevcut
           header: Otomatik olarak yönetilen proje klasörleri
           userless_access: Server-side request authentication

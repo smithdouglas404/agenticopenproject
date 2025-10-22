@@ -1191,6 +1191,25 @@ RSpec.describe WorkPackages::UpdateAncestorsService,
         expect(future_parent.reload.schedule_manually).to be(true)
       end
     end
+
+    context "when a manually scheduled parent with two children has one child deleted" do
+      let_work_packages(<<~TABLE)
+        hierarchy | scheduling mode
+        parent    | manual
+          child1  | manual
+          child2  | manual
+      TABLE
+      let(:initiator_work_package) { child1 }
+
+      before do
+        child1.destroy
+      end
+
+      it "keeps the scheduling mode to manual (Bug #68465)" do
+        expect(call_result).to be_success
+        expect(parent.reload).to have_attributes(schedule_manually: true)
+      end
+    end
   end
 
   describe "ignore_non_working_days propagation" do

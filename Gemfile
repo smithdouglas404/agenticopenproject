@@ -62,10 +62,10 @@ gem "friendly_id", "~> 5.5.0"
 
 gem "scimitar", "~> 2.13"
 
-gem "acts_as_list", "~> 1.2.0"
+gem "acts_as_list", "~> 1.2.6"
 gem "acts_as_tree", "~> 2.9.0"
 gem "awesome_nested_set", "~> 3.8.0"
-gem "closure_tree", "~> 9.1.1"
+gem "closure_tree", "~> 9.2.0"
 gem "rubytree", "~> 2.1.0"
 
 gem "addressable", "~> 2.8.0"
@@ -261,7 +261,7 @@ group :test do
   gem "turbo_tests", github: "opf/turbo_tests", ref: "with-patches"
 
   gem "rack_session_access"
-  gem "rspec", "~> 3.13.0"
+  gem "rspec", "~> 3.13.2"
   # also add to development group, so 'spec' rake task gets loaded
   gem "rspec-rails", "~> 8.0.0", group: :development
 
@@ -290,7 +290,7 @@ group :test do
   gem "cuprite", "~> 0.17.0"
   gem "rspec-wait"
   gem "selenium-devtools"
-  gem "selenium-webdriver", "~> 4.36"
+  gem "selenium-webdriver", "~> 4.37"
 
   gem "fuubar", "~> 2.5.0", require: false
   gem "timecop", "~> 0.9.0"

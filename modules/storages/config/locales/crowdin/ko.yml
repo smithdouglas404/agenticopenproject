@@ -249,10 +249,10 @@ ko:
         ampf_configuration:
           client_folder_creation: 자동 폴더 생성
           client_folder_removal: 자동 폴더 삭제
-          drive_contents: 드라이브에 예상 콘텐츠가 있습니다
+          drive_contents: Drive content
           files_request: 그룹 폴더 파일 가져오기
           group_folder_app: '종속성: 그룹 폴더'
-          group_folder_contents: 그룹 폴더에 예상 콘텐츠가 있습니다
+          group_folder_contents: Group folder content
           group_folder_presence: 그룹 폴더가 존재합니다
           header: 자동으로 관리되는 프로젝트 폴더
           userless_access: 서버 측 요청 인증

@@ -148,7 +148,7 @@ export abstract class DatePickerEditFieldComponent extends EditFieldComponent im
       this.resource.startDate = startDate;
     }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    this.resource.includeNonWorkingDays = includeNonWorkingDays;
+    this.resource.ignoreNonWorkingDays = includeNonWorkingDays;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     this.resource.scheduleManually = scheduleManually;
 

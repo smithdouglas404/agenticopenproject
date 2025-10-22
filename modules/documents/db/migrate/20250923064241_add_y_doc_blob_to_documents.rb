@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,20 +28,8 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module MeetingSections
-  module ModifiableItem
-    extend ActiveSupport::Concern
-
-    included do
-      validate :validate_modifiable
-    end
-
-    protected
-
-    def validate_modifiable
-      unless model.modifiable?
-        errors.add :base, I18n.t(:text_agenda_item_not_editable_anymore)
-      end
-    end
+class AddYDocBlobToDocuments < ActiveRecord::Migration[8.0]
+  def change
+    add_column :documents, :content_binary, :text
   end
 end

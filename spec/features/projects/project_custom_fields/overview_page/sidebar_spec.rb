@@ -861,6 +861,31 @@ RSpec.describe "Show project custom fields on project overview page", :js do
       end
     end
 
+    describe "with scored list CF", with_flag: { scored_list_custom_fields: true } do
+      let!(:scored_list) do
+        create(:scored_list_project_custom_field,
+               projects: [project],
+               name: "Scored List",
+               project_custom_field_section: section_for_input_fields,
+               possible_values: %w[Ten])
+      end
+      let!(:item) { create(:hierarchy_item, score: 10, label: "Ten") }
+
+      before do
+        create(:custom_value, :skip_validations, customized: project, custom_field: scored_list, value: item.id.to_s)
+      end
+
+      it "shows the correct value for the project custom field" do
+        overview_page.visit_page
+
+        overview_page.within_project_attributes_sidebar do
+          overview_page.within_custom_field_container(scored_list) do
+            expect(page).to have_text "Ten"
+          end
+        end
+      end
+    end
+
     describe "with multi list CF" do
       describe "with value set by user" do
         it "shows the correct values for the project custom field if given" do

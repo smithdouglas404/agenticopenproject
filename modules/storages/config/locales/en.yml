@@ -250,10 +250,10 @@ en:
         ampf_configuration:
           client_folder_creation: Automatic folder creation
           client_folder_removal: Automatic folder deletion
-          drive_contents: Drive has expected content
+          drive_contents: Drive content
           files_request: Fetching group folder files
           group_folder_app: 'Dependency: Group Folders'
-          group_folder_contents: Group folder has expected content
+          group_folder_contents: Group folder content
           group_folder_presence: Group folder exists
           header: Automatically managed project folders
           userless_access: Server-side request authentication

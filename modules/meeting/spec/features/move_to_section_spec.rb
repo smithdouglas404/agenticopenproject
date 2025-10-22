@@ -336,5 +336,31 @@ RSpec.describe "Move agenda items to section", :js do
         first_occurrence_page.expect_series_backlog collapsed: false
       end
     end
+
+    context "when template has multiple sections" do
+      let(:template) { recurring_meeting.template }
+      let!(:section1) { create(:meeting_section, meeting: template, title: "Template section 1") }
+      let!(:section2) { create(:meeting_section, meeting: template, title: "Template section 2") }
+      let!(:agenda_item) do
+        create(:meeting_agenda_item, meeting: template, meeting_section: section1, title: "Template item")
+      end
+      let(:template_page) { Pages::Meetings::Show.new(template) }
+
+      it "allows moving items from one section to another in templates (Regression #68426)" do
+        template_page.visit!
+        template_page.select_action(agenda_item, I18n.t(:label_agenda_item_move_to_section))
+
+        within("#move-to-section-dialog") do
+          select_autocomplete page.find("opce-autocompleter"),
+                              query: "Template section 2",
+                              select_text: "Template section 2",
+                              results_selector: "#move-to-section-dialog"
+          click_button "Save"
+        end
+
+        template_page.expect_agenda_item_in_section(title: agenda_item.title, section: section2)
+        template_page.expect_no_agenda_item_in_section(title: agenda_item.title, section: section1)
+      end
+    end
   end
 end

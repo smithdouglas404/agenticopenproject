@@ -26,6 +26,9 @@ fi:
   activerecord:
     models:
       document: "Asiakirja"
+    attributes:
+      document:
+        content_binary: "Content binary"
   activity:
     filter:
       document: "Asiakirjat"

@@ -26,6 +26,9 @@ zh-TW:
   activerecord:
     models:
       document: "文件"
+    attributes:
+      document:
+        content_binary: "Content binary"
   activity:
     filter:
       document: "文件"

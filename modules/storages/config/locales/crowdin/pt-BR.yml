@@ -249,10 +249,10 @@ pt-BR:
         ampf_configuration:
           client_folder_creation: Criação automática de pasta
           client_folder_removal: Exclusão automática de pasta
-          drive_contents: O drive contém o conteúdo esperado
+          drive_contents: Drive content
           files_request: Buscando arquivos da pasta do grupo
           group_folder_app: 'Dependência: Pastas de grupo'
-          group_folder_contents: A pasta do grupo contém o conteúdo esperado
+          group_folder_contents: Group folder content
           group_folder_presence: A pasta do grupo existe
           header: Pastas de projeto gerenciadas automaticamente
           userless_access: Autenticação de solicitações no servidor

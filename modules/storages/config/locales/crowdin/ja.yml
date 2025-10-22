@@ -249,10 +249,10 @@ ja:
         ampf_configuration:
           client_folder_creation: 自動フォルダ作成
           client_folder_removal: フォルダの自動削除
-          drive_contents: ドライブに期待される内容
+          drive_contents: Drive content
           files_request: グループフォルダファイルの取得
           group_folder_app: '依存関係グループフォルダ'
-          group_folder_contents: グループフォルダには期待された内容がある
+          group_folder_contents: Group folder content
           group_folder_presence: グループフォルダが存在する
           header: 自動的に管理されるプロジェクトフォルダ
           userless_access: サーバー側のリクエスト認証

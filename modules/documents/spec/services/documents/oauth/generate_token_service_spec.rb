@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,20 +28,42 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module MeetingAgendaItems
-  module ModifiableItem
-    extend ActiveSupport::Concern
+require "spec_helper"
 
-    included do
-      validate :validate_modifiable
+RSpec.describe Documents::OAuth::GenerateTokenService do
+  subject(:service_call) { described_class.new(user:).call }
+
+  let(:user) { create(:user) }
+
+  describe "#call" do
+    it "creates a new access token" do
+      expect { service_call }.to change(Doorkeeper::AccessToken, :count).by(1)
     end
 
-    protected
+    it "returns a successful service result" do
+      result = service_call
+      expect(result).to be_success
+    end
 
-    def validate_modifiable
-      unless model.modifiable?
-        errors.add :base, I18n.t(:text_agenda_item_not_editable_anymore)
-      end
+    it "creates a token that belongs to the provided user" do
+      result = service_call
+      token = result.result
+
+      expect(token.resource_owner_id).to eq(user.id)
+    end
+  end
+
+  context "with different users" do
+    let(:user1) { create(:user) }
+    let(:user2) { create(:user) }
+
+    it "creates separate tokens for different users" do
+      result1 = described_class.new(user: user1).call
+      result2 = described_class.new(user: user2).call
+
+      expect(result1.result.resource_owner_id).to eq(user1.id)
+      expect(result2.result.resource_owner_id).to eq(user2.id)
+      expect(result1.result.token).not_to eq(result2.result.token)
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -34,7 +36,7 @@ module Redmine
     include ActionView::Helpers::NumberHelper
 
     IN_CONTEXT_TRANSLATION_CODE = :lol
-    IN_CONTEXT_TRANSLATION_NAME = "In-Context Crowdin Translation".freeze
+    IN_CONTEXT_TRANSLATION_NAME = "In-Context Crowdin Translation"
 
     def self.included(base)
       base.extend Redmine::I18n

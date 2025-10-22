@@ -1,6 +1,6 @@
 # Testing OpenProject
 
-OpenProject uses automated tests throughout the stack. Tests that are executed in the browser (angular frontend, rspec system tests) require to have Chrome installed. To ensure we deliver high quality code to our customers, it's essential to conduct various types of tests.
+OpenProject uses automated tests throughout the stack. Tests that are executed in the browser (angular frontend, RSpec system tests) require to have Chrome installed. To ensure we deliver high quality code to our customers, it's essential to conduct various types of tests.
 
 
 
@@ -9,6 +9,7 @@ OpenProject uses automated tests throughout the stack. Tests that are executed i
 | [Testing architecture](#testing-architecture) (this page)   | Overview of the architecture and involved parties regarding testing |
 | [Continuous testing workflow](continuous-testing-workflow/) | Overview of our CI and Continuous testing pipelines and how to debug them |
 | [Running tests locally](running-tests-locally/)             | Guides on how to run tests on your machine or on Docker      |
+| [Handling flaky tests](handling-flaky-tests/)               | Guides to identify, debug, and fix tests that intermittently pass or fail |
 
 
 
@@ -299,7 +300,7 @@ OpenProject strives to be accessible for all users while also retaining a high u
 1. Make accessibility testing an integral part of the development lifecycle, starting with the requirements.
 2. Use specialized browser extension to help identify and resolve common accessibility issues.
 3. Follow the best practices of the [WCAG 2 checklists](https://www.w3.org/WAI/WCAG22/quickref/) and [accessibility patterns](https://www.w3.org/WAI/ARIA/apg/patterns/) from ARIA authoring practices guide to ensure screen readers and other assistive technologies are well supported.
-4. Use [axe-core-rspec](https://github.com/dequelabs/axe-core-gems/blob/develop/packages/axe-core-rspec/README.md) in automated accessibility tests to provide continuous regression testing against common accessibility issues.
+4. Use [axe-core for RSpec](https://github.com/dequelabs/axe-core-gems/blob/develop/packages/axe-core-rspec/README.md) in automated accessibility tests to provide continuous regression testing against common accessibility issues.
 5. Use [capybara-accessible-selectors](https://github.com/citizensadvice/capybara_accessible_selectors) in [feature tests](#feature-tests) to find UI elements using screen-reader compatible selectors. This ensures the page elements used by feature tests are accessible to assistive technologies.
 6. Consult with accessibility experts to conduct audits and provide recommendations for improvements. Alternatively, consult the development colleagues with experience in accessibility testing to evaluate requirements and implementation proposals.
 
