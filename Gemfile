@@ -49,7 +49,7 @@ gem "rdoc", ">= 2.4.2"
 gem "doorkeeper", "~> 5.8.0"
 # Maintain our own omniauth due to relative URL root issues
 # see upstream PR: https://github.com/omniauth/omniauth/pull/903
-gem "omniauth", git: "https://github.com/opf/omniauth", ref: "7eb21563ba047ef86d71f099975587b5ec88f9c9"
+gem "omniauth", git: "https://github.com/opf/omniauth", ref: "9017aec069a25a695e8cb1e30b7bbf43f8eba591"
 gem "request_store", "~> 1.7.0"
 
 gem "warden", "~> 1.2"
@@ -128,7 +128,7 @@ gem "oj", "~> 3.16.0"
 gem "daemons"
 gem "good_job", "= 3.99.1" # update should be done manually in sync with saas-openproject version.
 
-gem "rack-protection", "~> 3.2.0"
+gem "rack-protection", "~> 4.2.1"
 
 # Rack::Attack is a rack middleware to protect your web app from bad clients.
 # It allows whitelisting, blacklisting, throttling, and tracking based
@@ -182,11 +182,13 @@ end
 gem "i18n-js", "~> 4.2.3"
 gem "rails-i18n", "~> 8.0.0"
 
-gem "sprockets", "~> 3.7.2" # lock sprockets below 4.0
+gem "sprockets", "~> 4.2.2"
 gem "sprockets-rails", "~> 3.5.1"
 
 gem "puma", "~> 6.5"
 gem "puma-plugin-statsd", "~> 2.0"
+
+gem 'rack', '~> 3.2.3'
 gem "rack-timeout", "~> 0.7.0", require: "rack/timeout/base"
 
 gem "nokogiri", "~> 1.18.10"
