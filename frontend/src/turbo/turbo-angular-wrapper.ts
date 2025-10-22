@@ -1,31 +1,31 @@
-import { skip } from 'rxjs/operators';
-import { fromEvent } from 'rxjs';
-import { runBootstrap } from 'core-app/app.module';
-import { OpenProjectPluginContext } from 'core-app/features/plugins/plugin-context';
+import { initializeServices, runBootstrap } from 'core-app/app.module';
+import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 
 export function addTurboAngularWrapper() {
-  // When turbo:load fires, the angular application needs to be rebootstrapped.
-  // However, we don't want this to happen on the initial page load
-  fromEvent(document, 'turbo:load')
-    .pipe(
-      skip(1), // Skip the first turbo:load event
-    )
-    .subscribe(() => {
-      void window
-        .OpenProject
-        .getPluginContext()
-        .then((pluginContext:OpenProjectPluginContext) => {
-          const appRef = pluginContext.appRef;
-
-          // Remove all previous references to components
-          // This is mainly the base component
-          appRef.components.slice().forEach((component) => {
-            appRef.detachView(component.hostView);
-            component.destroy();
-          });
-
-          // Run bootstrap again to initialize the new application
-          runBootstrap(appRef);
-        });
+  // When turbo:render fires, the Angular application needs to be rebootstrapped.
+  // However, we first need to clean up components that are already initialized.
+  document.addEventListener('turbo:before-render', () => {
+    void window.OpenProject.getPluginContext().then(({ appRef }) => {
+      // Remove all previous references to components
+      // This is mainly the base component
+      appRef.components.slice().forEach((component) => {
+        appRef.detachView(component.hostView);
+        component.destroy();
+      });
     });
+  });
+
+  document.addEventListener('turbo:render', () => {
+    void window.OpenProject.getPluginContext().then(({ appRef }) => {
+      runBootstrap(appRef);
+      initializeServices(appRef.injector)();
+    });
+  });
+
+  document.addEventListener('turbo:load', () => {
+    void window.OpenProject.getPluginContext().then(({ appRef:{ injector } }) => {
+      const currentProject = injector.get(CurrentProjectService);
+      currentProject.detect();
+    });
+  });
 }

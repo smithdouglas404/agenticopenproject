@@ -252,6 +252,7 @@ export function initializeUiRouterListeners(injector:Injector) {
     // but for pages without any angular routes, this will stay empty.
     // So we also allow routes to happen after some delay
     if (openprojectBaseApp === null) {
+      console.error("NO OPENPROJECT BASEAPP - this shouldn't be displayed!!!");
       // Get the current path and compare
       const path = window.location.pathname;
       const pathWithSearch = path + window.location.search;
