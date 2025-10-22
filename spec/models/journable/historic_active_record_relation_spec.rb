@@ -50,7 +50,8 @@ RSpec.describe Journable::HistoricActiveRecordRelation do
              monday => { description: "The work package as it has been on Monday", estimated_hours: 5 },
              wednesday => { description: "The work package as it has been on Wednesday", estimated_hours: 10 },
              friday => { description: "The work package as it is since Friday", estimated_hours: 10 }
-           })
+           },
+           position: 1)
   end
   let(:journable) { work_package }
   let(:monday_journal) do
@@ -96,8 +97,16 @@ RSpec.describe Journable::HistoricActiveRecordRelation do
     describe "updated_at" do
       subject { historic_relation.pluck(:updated_at) }
 
-      it "returns the updated_at of the work package" do
+      it "returns the updated_at of the journal active on the queried for date" do
         expect(subject).to eq [wednesday]
+      end
+    end
+
+    describe "timestamp" do
+      subject { historic_relation.pluck(:timestamp) }
+
+      it "returns the timestamp queried for" do
+        expect(subject).to eq [wednesday.to_s]
       end
     end
 
@@ -120,14 +129,26 @@ RSpec.describe Journable::HistoricActiveRecordRelation do
     end
   end
 
+  shared_examples "historic work package is returned" do
+    let(:expected_timestamp) { wednesday }
+    let(:expected_journal) { wednesday_journal }
+
+    it "returns the requested work package with journal_id and timestamp added and attributes adapted", :aggregate_failures do
+      expect(subject.to_a).to match [work_package]
+      expect(subject.to_a.first.journal_id).to eql expected_journal.id
+      expect(subject.to_a.first.timestamp).to eql expected_timestamp.to_s
+      expect(subject.to_a.first.created_at).to eql work_package.created_at
+      expect(subject.to_a.first.updated_at).to eql expected_journal.updated_at
+      expect(subject.to_a.first.position).to be_nil
+    end
+  end
+
   describe "#where" do
     describe "project_id in array (Arel::Nodes::HomogeneousIn)" do
       let(:relation) { WorkPackage.where(project_id: [project.id, 1, 2, 3]) }
 
       describe "#to_a" do
-        it "returns the requested work package" do
-          expect(subject.to_a).to include work_package
-        end
+        it_behaves_like "historic work package is returned"
       end
     end
 
@@ -135,9 +156,7 @@ RSpec.describe Journable::HistoricActiveRecordRelation do
       let(:relation) { WorkPackage.where.not(project_id: [9999, 999]) }
 
       describe "#to_a" do
-        it "returns the requested work package" do
-          expect(subject.to_a).to include work_package
-        end
+        it_behaves_like "historic work package is returned"
       end
     end
 
@@ -145,9 +164,7 @@ RSpec.describe Journable::HistoricActiveRecordRelation do
       let(:relation) { WorkPackage.where(id: [work_package.id, 999, 9999]) }
 
       describe "#to_a" do
-        it "returns the requested work package" do
-          expect(subject.to_a).to include work_package
-        end
+        it_behaves_like "historic work package is returned"
       end
     end
 
@@ -155,35 +172,27 @@ RSpec.describe Journable::HistoricActiveRecordRelation do
       let(:relation) { WorkPackage.where(id: [work_package.id, 99, 999, 9999]) }
 
       describe "#to_a" do
-        it "returns the requested work package" do
-          expect(subject.to_a).to include work_package
-        end
+        it_behaves_like "historic work package is returned"
       end
     end
 
     describe "sql string (as used by Query#statement)" do
       let(:relation) { WorkPackage.where("(work_packages.description ILIKE '%been on Wednesday%')") }
 
-      it "returns the requested work package" do
-        expect(subject).to include work_package
-      end
+      it_behaves_like "historic work package is returned"
 
       describe "when the sql where statement includes work_package.id" do
         # This is used, for example, in 'follows' relations.
         let(:relation) { WorkPackage.where("(work_packages.id IN (#{work_package.id}))") }
 
-        it "returns the requested work package" do
-          expect(subject).to include work_package
-        end
+        it_behaves_like "historic work package is returned"
       end
 
       describe "when the sql where statement includes \"work_package\".\"id\"" do
         # This is used in the manual-sorting feature.
         let(:relation) { WorkPackage.where("(\"work_packages\".\"id\" IN (#{work_package.id}))") }
 
-        it "returns the requested work package" do
-          expect(subject).to include work_package
-        end
+        it_behaves_like "historic work package is returned"
       end
 
       describe "when searching for a single custom field" do
@@ -217,8 +226,9 @@ RSpec.describe Journable::HistoricActiveRecordRelation do
           let(:values) { %w(Friday_CV) }
           let(:historic_relation) { relation.at_timestamp(Timestamp.new("PT0S")) }
 
-          it "returns the requested work package" do
-            expect(subject).to include work_package
+          it_behaves_like "historic work package is returned" do
+            let(:expected_timestamp) { "PT0S" }
+            let(:expected_journal) { friday_journal }
           end
         end
 
@@ -237,9 +247,7 @@ RSpec.describe Journable::HistoricActiveRecordRelation do
             end
           end
 
-          it "returns the requested work package" do
-            expect(subject).to include work_package
-          end
+          it_behaves_like "historic work package is returned"
         end
 
         context "with a different historic value" do
@@ -327,8 +335,9 @@ RSpec.describe Journable::HistoricActiveRecordRelation do
           let(:int_values) { "3" }
           let(:historic_relation) { relation.at_timestamp(Timestamp.new("PT0S")) }
 
-          it "returns the requested work package" do
-            expect(subject).to include work_package
+          it_behaves_like "historic work package is returned" do
+            let(:expected_timestamp) { "PT0S" }
+            let(:expected_journal) { friday_journal }
           end
         end
 
@@ -337,9 +346,7 @@ RSpec.describe Journable::HistoricActiveRecordRelation do
           let(:int_values) { "2" }
           let(:historic_relation) { relation.at_timestamp(wednesday) }
 
-          it "returns the requested work package" do
-            expect(subject).to include work_package
-          end
+          it_behaves_like "historic work package is returned"
         end
 
         # Guards against regression #58600
@@ -363,33 +370,25 @@ RSpec.describe Journable::HistoricActiveRecordRelation do
         )
       end
 
-      it "returns the requested work package" do
-        expect(subject).to include work_package
-      end
+      it_behaves_like "historic work package is returned"
     end
 
     describe "work_packages.updated_at > ?" do
       # as used by spec/features/work_packages/timeline/timeline_dates_spec.rb
       let(:relation) { WorkPackage.where("work_packages.updated_at > '2022-01-01'") }
 
-      it "returns the requested work package" do
-        expect(subject).to include work_package
-      end
+      it_behaves_like "historic work package is returned"
 
       describe "when using quotation marks" do
         let(:relation) { WorkPackage.where("\"work_packages\".\"updated_at\" > '2022-01-01'") }
 
-        it "returns the requested work package" do
-          expect(subject).to include work_package
-        end
+        it_behaves_like "historic work package is returned"
       end
 
       describe "when using a hash" do
         let(:relation) { WorkPackage.where(work_packages: { updated_at: ("2022-01-01".to_datetime).. }) }
 
-        it "returns the requested work package" do
-          expect(subject).to include work_package
-        end
+        it_behaves_like "historic work package is returned"
       end
     end
 
@@ -397,24 +396,18 @@ RSpec.describe Journable::HistoricActiveRecordRelation do
       # as used by spec/features/work_packages/table/queries/filter_spec.rb
       let(:relation) { WorkPackage.where("work_packages.created_at > '2022-01-01'") }
 
-      it "returns the requested work package" do
-        expect(subject).to include work_package
-      end
+      it_behaves_like "historic work package is returned"
 
       describe "when using quotation marks" do
         let(:relation) { WorkPackage.where("\"work_packages\".\"created_at\" > '2022-01-01'") }
 
-        it "returns the requested work package" do
-          expect(subject).to include work_package
-        end
+        it_behaves_like "historic work package is returned"
       end
 
       describe "when using a hash" do
         let(:relation) { WorkPackage.where(work_packages: { created_at: ("2022-01-01".to_datetime).. }) }
 
-        it "returns the requested work package" do
-          expect(subject).to include work_package
-        end
+        it_behaves_like "historic work package is returned"
       end
     end
   end
@@ -422,41 +415,31 @@ RSpec.describe Journable::HistoricActiveRecordRelation do
   describe "#order" do
     let(:relation) { WorkPackage.order(description: :desc) }
 
-    it "returns the requested work package" do
-      expect(subject).to include work_package
-    end
+    it_behaves_like "historic work package is returned"
 
     describe "manual order clause" do
       let(:relation) { WorkPackage.order("work_packages.description DESC") }
 
-      it "returns the requested work package" do
-        expect(subject).to include work_package
-      end
+      it_behaves_like "historic work package is returned"
     end
 
     describe "manual order clause using work_packages.id" do
       # This is used in the manual-sorting feature.
       let(:relation) { WorkPackage.order("work_packages.id DESC") }
 
-      it "returns the requested work package" do
-        expect(subject).to include work_package
-      end
+      it_behaves_like "historic work package is returned"
     end
 
     describe "order clause with work_packages.id" do
       let(:relation) { WorkPackage.order(id: :desc) }
 
-      it "returns the requested work package" do
-        expect(subject).to include work_package
-      end
+      it_behaves_like "historic work package is returned"
     end
 
     describe "several order clauses" do
       let(:relation) { WorkPackage.order(subject: :asc, id: :desc) }
 
-      it "returns the requested work package" do
-        expect(subject).to include work_package
-      end
+      it_behaves_like "historic work package is returned"
     end
   end
 
@@ -466,9 +449,7 @@ RSpec.describe Journable::HistoricActiveRecordRelation do
 
       before { work_package.time_entries << create(:time_entry) }
 
-      it "returns the requested work package" do
-        expect(subject).to include work_package
-      end
+      it_behaves_like "historic work package is returned"
     end
 
     describe "using a manual sql expression" do
@@ -478,9 +459,7 @@ RSpec.describe Journable::HistoricActiveRecordRelation do
           .joins("LEFT OUTER JOIN ordered_work_packages ON ordered_work_packages.work_package_id = work_packages.id")
       end
 
-      it "returns the requested work package" do
-        expect(subject).to include work_package
-      end
+      it_behaves_like "historic work package is returned"
     end
 
     describe "using an initial scope with a include(:project)" do
@@ -491,8 +470,14 @@ RSpec.describe Journable::HistoricActiveRecordRelation do
           .where(projects: { id: project.id })
       end
 
-      it "returns the requested work package" do
-        expect(subject).to include work_package
+      it "returns the requested work package with attributes adapted", :aggregate_failures do
+        # Different from the other cases, the work package will not have journal_id and timestamp properties here since
+        # an include will lead to an explicit projection which does not include the fields as the values
+        # seem to be taken from WorkPackage.column_names
+        expect(subject.to_a).to match [work_package]
+        expect(subject.to_a.first.created_at).to eql work_package.created_at
+        expect(subject.to_a.first.updated_at).to eql wednesday_journal.updated_at
+        expect(subject.to_a.first.position).to be_nil
       end
     end
   end
