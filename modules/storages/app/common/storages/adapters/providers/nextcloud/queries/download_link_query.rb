@@ -35,7 +35,6 @@ module Storages
         module Queries
           class DownloadLinkQuery < Base
             def call(auth_strategy:, input_data:)
-              binding.pry
               Authentication[auth_strategy].call(storage: @storage, http_options:) do |http|
                 handle_response(http.post(request_url, json: { fileId: input_data.file_id })).fmap do |token|
                   URI(download_link(token, input_data.origin_name))
