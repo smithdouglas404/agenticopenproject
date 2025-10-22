@@ -261,7 +261,7 @@ group :test do
   gem "turbo_tests", github: "opf/turbo_tests", ref: "with-patches"
 
   gem "rack_session_access"
-  gem "rspec", "~> 3.13.0"
+  gem "rspec", "~> 3.13.2"
   # also add to development group, so 'spec' rake task gets loaded
   gem "rspec-rails", "~> 8.0.0", group: :development
 
