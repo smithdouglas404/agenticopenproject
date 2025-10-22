@@ -35,7 +35,7 @@ module Storages
         private_class_method :new
 
         def self.build(file_id:, origin_name: nil, contract: DownloadLinkContract.new)
-          contract.call(file_id:).to_monad.fmap { |it| new(file_id: it[:file_id], origin_name:) }
+          contract.call(file_id:).to_monad.fmap { |file| new(file_id: file[:file_id], origin_name:) }
         end
       end
     end
