@@ -84,7 +84,7 @@ For pull requests, the commit of the PR branch is merged into the head commit of
 
 It looks like this: `HEAD is now at 52dd921c Merge 438daa2353d74f5a6afe5bf03af4e298b97a365d into e63289cc26cdb6f675c23fe26dfc4f0de9b8c8d6`.
 
-The format is "Merge <pr commit> into <target branch commit>", so checkout `<target branch commit>` in detached HEAD, then merge `<pr commit>` to run the exact same code as CI.
+The format is "Merge \<pr commit\> into \<target branch commit\>", so checkout `<target branch commit>` in detached HEAD, then merge `<pr commit>` to run the exact same code as CI.
 
 This information is given by `script/github_pr_errors --display-rerun-info`.
 
