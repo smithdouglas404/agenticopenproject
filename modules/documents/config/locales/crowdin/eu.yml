@@ -26,6 +26,9 @@ eu:
   activerecord:
     models:
       document: "Dokumentua"
+    attributes:
+      document:
+        content_binary: "Content binary"
   activity:
     filter:
       document: "Dokumentuak"

@@ -127,7 +127,7 @@ zh-CN:
       label_configuration_details: 元数据
       label_client_details: 客户端详细信息
       label_attribute_mapping: 属性映射
-      notice_created: A new OpenID provider was successfully created.
+      notice_created: 新的 OpenID 提供程序已成功创建。
       client_details_description: OpenProject 作为 OIDC 客户端的配置详细信息
       no_results_table: 尚未定义提供商。
       plural: OpenID 提供商

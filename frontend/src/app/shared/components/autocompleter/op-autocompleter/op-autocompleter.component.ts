@@ -360,8 +360,12 @@ export class OpAutocompleterComponent<T extends IAutocompleteItem = IAutocomplet
       }
 
       if (this.openDirectly) {
-        this.ngSelectInstance.open();
-        this.ngSelectInstance.focus();
+        // Autocompleters within dialogs need longer to be visible, which is why we have to delay the opening further
+        const timeout = this.ngSelectInstance.element.closest('dialog') ? 200 : 0;
+        setTimeout(() => {
+          this.ngSelectInstance.open();
+          this.ngSelectInstance.focus();
+        }, timeout);
       } else if (this.focusDirectly) {
         this.ngSelectInstance.focus();
       }

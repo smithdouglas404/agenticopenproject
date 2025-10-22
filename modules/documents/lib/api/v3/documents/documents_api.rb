@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require "base64"
+require "json"
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -62,6 +65,27 @@ module API
               ::API::V3::Documents::DocumentRepresenter.new(document,
                                                             current_user:,
                                                             embed_links: true)
+            end
+
+            patch do
+              unless OpenProject::FeatureDecisions.block_note_editor_active?
+                raise ::API::Errors::Unauthorized.new(message: I18n.t("api_v3.errors.code_403"))
+              end
+
+              doc = document
+              request_body = JSON.parse(request.body.read)
+
+              result = ::Documents::UpdateService
+                .new(user: current_user, model: doc)
+                .call(request_body)
+
+              if result.success?
+                ::API::V3::Documents::DocumentRepresenter.new(doc,
+                                                              current_user:,
+                                                              embed_links: true)
+              else
+                fail ::API::Errors::ErrorBase.create_and_merge_errors(doc.errors)
+              end
             end
 
             mount ::API::V3::Attachments::AttachmentsByDocumentAPI

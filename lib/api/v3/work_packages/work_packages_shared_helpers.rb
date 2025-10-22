@@ -35,10 +35,6 @@ module API
         def notify_according_to_params
           params[:notify] != "false"
         end
-
-        def validate_custom_fields_according_to_params
-          params[:validateCustomFields]
-        end
       end
     end
   end

@@ -26,6 +26,9 @@ ja:
   activerecord:
     models:
       document: "ドキュメント"
+    attributes:
+      document:
+        content_binary: "Content binary"
   activity:
     filter:
       document: "ドキュメント"

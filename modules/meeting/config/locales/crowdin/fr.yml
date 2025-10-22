@@ -545,7 +545,7 @@ fr:
   text_meeting_not_editable_anymore: "Cette réunion n'est plus modifiable."
   text_meeting_not_present_anymore: "Cette réunion a été supprimée. Veuillez sélectionner une autre réunion."
   label_add_work_package_to_meeting_dialog_title: "Sélectionner la réunion"
-  label_add_work_package_to_meeting_section_label: "Ajouter à la section"
+  label_add_work_package_to_meeting_section_label: "Section"
   label_add_work_package_to_meeting_dialog_button: "Ajouter à la réunion"
   label_meeting_selection_caption: "Il n'est possible d'ajouter ce lot de travaux qu'à une réunion à venir ou en cours."
   label_section_selection_caption: "Choisissez une section particulière de l'ordre du jour ou ajoutez-la au backlog."

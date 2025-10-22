@@ -26,6 +26,9 @@ hr:
   activerecord:
     models:
       document: "Dokument"
+    attributes:
+      document:
+        content_binary: "Content binary"
   activity:
     filter:
       document: "Dokumenti"

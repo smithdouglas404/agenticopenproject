@@ -84,8 +84,6 @@ module API
                                                                parse_service: ::API::V3::WorkPackages::ParseParamsService,
                                                                params_modifier: ->(attributes) {
                                                                  attributes[:send_notifications] = notify_according_to_params
-                                                                 attributes[:validate_custom_fields] =
-                                                                   validate_custom_fields_according_to_params
                                                                  attributes
                                                                })
                                                           .mount

@@ -26,6 +26,9 @@ vi:
   activerecord:
     models:
       document: "Tài liệu"
+    attributes:
+      document:
+        content_binary: "Content binary"
   activity:
     filter:
       document: "Tài liệu"

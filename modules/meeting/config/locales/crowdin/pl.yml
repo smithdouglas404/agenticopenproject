@@ -227,7 +227,7 @@ pl:
       open_my_meetings_link: "Przejdź do sekcji Moje spotkania"
       series:
         title: "[%{project_name}] Seria spotkań „%{title}”"
-        summary: "Użytkownik %{actor} utworzył nową serię spotkań „%{title}”"
+        summary: "%{actor} has invited you to a new meeting series '%{title}'"
       series_updated:
         title: "[%{project_name}] Zaktualizowano serię spotkań „%{title}”"
         summary: "Seria spotkań „%{title}” została zaktualizowana przez użytkownika %{actor}"
@@ -559,7 +559,7 @@ pl:
   text_meeting_not_editable_anymore: "Tego spotkania nie można już edytować."
   text_meeting_not_present_anymore: "To spotkanie zostało usunięte. Wybierz inne spotkanie."
   label_add_work_package_to_meeting_dialog_title: "Select meeting"
-  label_add_work_package_to_meeting_section_label: "Add to section"
+  label_add_work_package_to_meeting_section_label: "Section"
   label_add_work_package_to_meeting_dialog_button: "Dodaj do spotkania"
   label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."
   label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."

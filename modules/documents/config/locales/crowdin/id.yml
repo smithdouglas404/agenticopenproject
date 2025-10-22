@@ -26,6 +26,9 @@ id:
   activerecord:
     models:
       document: "Dokumen"
+    attributes:
+      document:
+        content_binary: "Content binary"
   activity:
     filter:
       document: "Dokumen"

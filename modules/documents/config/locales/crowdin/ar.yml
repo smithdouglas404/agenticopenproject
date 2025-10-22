@@ -26,6 +26,9 @@ ar:
   activerecord:
     models:
       document: "الوثيقة"
+    attributes:
+      document:
+        content_binary: "Content binary"
   activity:
     filter:
       document: "الوثائق"

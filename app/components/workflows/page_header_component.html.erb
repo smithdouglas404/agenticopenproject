@@ -28,7 +28,7 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  render Primer::OpenProject::PageHeader.new do |header|
+  render Primer::OpenProject::PageHeader.new(classes: "workflows-page-header") do |header|
     header.with_title { title }
     header.with_breadcrumbs(breadcrumb_items)
 

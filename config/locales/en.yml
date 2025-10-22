@@ -171,6 +171,11 @@ en:
         expired: "Expired on %{date}"
         revoked: "Revoked on %{date}"
         title: "Access token table"
+    workflows:
+      tabs:
+        default_transitions: "Default transitions"
+        user_author: "User is author"
+        user_assignee: "User is assignee"
 
   authentication:
     login_and_registration: "Login and registration"
@@ -566,6 +571,8 @@ en:
       versions:
         no_results_title_text: There are currently no versions for the project.
         no_results_content_text: Create a new version
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: There is no additional recorded disk space consumed by this project.
       work_package_priorities:

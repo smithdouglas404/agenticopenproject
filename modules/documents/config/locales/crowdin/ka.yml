@@ -26,6 +26,9 @@ ka:
   activerecord:
     models:
       document: "დოკუმენტი"
+    attributes:
+      document:
+        content_binary: "Content binary"
   activity:
     filter:
       document: "დოკუმენტები"

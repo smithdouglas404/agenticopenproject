@@ -47,7 +47,8 @@ RSpec.describe Storages::Adapters::Providers::Sharepoint::StorageWizard do
   it "has all steps pending in correct order" do
     expect(wizard.pending_steps).to eq(%i[general_information
                                           oauth_client
-                                          redirect_uri])
+                                          redirect_uri
+                                          access_management])
   end
 
   context "when name was set" do
@@ -85,7 +86,7 @@ RSpec.describe Storages::Adapters::Providers::Sharepoint::StorageWizard do
         end
 
         it "did not finish the final step immediately" do
-          expect(wizard.pending_steps).to eq(%i[redirect_uri])
+          expect(wizard.pending_steps).to eq(%i[redirect_uri access_management])
         end
 
         it "after some time, the final step is completed" do

@@ -13,14 +13,8 @@ vi:
           no_results: 'Chưa có tài liệu.'
         members:
           title: 'Thành viên'
-          no_results: 'Không có thành viên nào được hiển thị.'
-          view_all_members: 'Xem tất cả thành viên'
-          add: 'Thành viên'
-          too_many: 'Hiển thị %{count} trong tổng số %{total} thành viên.'
         news:
           title: 'Tin tức'
-          at: 'tại'
-          no_results: 'Không có tin tức mới để báo cáo.'
         project_description:
           title: 'Mô tả dự án'
           no_results: "Chưa có mô tả nào được viết. Có thể cung cấp trong 'Cài đặt dự án'."
@@ -36,8 +30,7 @@ vi:
         project_status_beta:
           title: 'Project status (BETA)'
         subprojects:
-          title: 'Các dự án con'
-          no_results: 'Không có dự án con.'
+          title: 'Subitems'
         project_favorites:
           title: 'Dự án yêu thích'
           no_results: 'Hiện tại bạn không có dự án yêu thích nào. Nhấp vào biểu tượng sao trên bảng điều khiển dự án để thêm một dự án vào danh sách yêu thích của bạn.'

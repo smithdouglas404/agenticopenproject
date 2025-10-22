@@ -217,7 +217,7 @@ de:
       open_my_meetings_link: "Meine Besprechungen anzeigen"
       series:
         title: "[%{project_name}] Terminserie '%{title}'"
-        summary: "%{actor} hat eine neue Terminserie '%{title}' eingerichtet"
+        summary: "%{actor} has invited you to a new meeting series '%{title}'"
       series_updated:
         title: "[%{project_name}] Terminserie '%{title}' wurde aktualisiert"
         summary: "Die Terminserie '%{title}' wurde von %{actor} aktualisiert"
@@ -545,7 +545,7 @@ de:
   text_meeting_not_editable_anymore: "Diese Besprechung ist nicht mehr bearbeitbar."
   text_meeting_not_present_anymore: "Dieses Meeting wurde gelöscht. Bitte wählen Sie eine andere Besprechung."
   label_add_work_package_to_meeting_dialog_title: "Besprechung auswählen"
-  label_add_work_package_to_meeting_section_label: "Zum Abschnitt hinzufügen"
+  label_add_work_package_to_meeting_section_label: "Section"
   label_add_work_package_to_meeting_dialog_button: "Zur Besprechung hinzufügen"
   label_meeting_selection_caption: "Dieses Arbeitspaket kann nur zu einer bevorstehenden oder laufenden Besprechung hinzugefügt werden."
   label_section_selection_caption: "Wählen Sie einen bestimmten Abschnitt der Tagesordnung aus oder fügen Sie es zum Backlog hinzu."

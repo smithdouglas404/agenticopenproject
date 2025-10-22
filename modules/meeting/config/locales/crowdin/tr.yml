@@ -217,7 +217,7 @@ tr:
       open_my_meetings_link: "Toplantılarıma git"
       series:
         title: "[%{project_name}] Toplantı serisi '%{title}'"
-        summary: "%{actor} yeni bir toplantı serisi başlattı '%{title}'"
+        summary: "%{actor} has invited you to a new meeting series '%{title}'"
       series_updated:
         title: "[%{project_name}] Toplantı serisi '%{title}' güncellendi"
         summary: "'%{title}' toplantı serisi %{actor} tarafından güncellendi"
@@ -545,7 +545,7 @@ tr:
   text_meeting_not_editable_anymore: "Bu toplantıyı artık düzenleyemezsiniz."
   text_meeting_not_present_anymore: "Toplantı silinmiş. Başka bir toplantı seçin lütfen."
   label_add_work_package_to_meeting_dialog_title: "Toplantı seç"
-  label_add_work_package_to_meeting_section_label: "Bölüme ekle"
+  label_add_work_package_to_meeting_section_label: "Section"
   label_add_work_package_to_meeting_dialog_button: "Toplantıya ekle"
   label_meeting_selection_caption: "Bu iş paketini sadece yaklaşan veya devam eden bir toplantıya eklemek mümkündür."
   label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."

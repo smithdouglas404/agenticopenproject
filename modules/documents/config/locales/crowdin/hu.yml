@@ -26,6 +26,9 @@ hu:
   activerecord:
     models:
       document: "Dokumentum"
+    attributes:
+      document:
+        content_binary: "Content binary"
   activity:
     filter:
       document: "Dokumentumok"

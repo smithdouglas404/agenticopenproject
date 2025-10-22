@@ -1,4 +1,4 @@
-FROM ruby:3.4.5-bookworm AS develop
+FROM ruby:3.4.7-bookworm AS develop
 MAINTAINER operations@openproject.com
 
 ARG DEV_UID=1000

@@ -162,6 +162,11 @@ zh-TW:
         expired: "於 %{date} 過期"
         revoked: "於 %{date} 撤銷"
         title: "存取令牌列表"
+    workflows:
+      tabs:
+        default_transitions: "預設轉換"
+        user_author: "使用者為作者"
+        user_assignee: "使用者為執行者"
   authentication:
     login_and_registration: "登入及註冊"
   announcements:
@@ -522,6 +527,8 @@ zh-TW:
       versions:
         no_results_title_text: 目前的專案沒有設定版本
         no_results_content_text: 建立一個新版本
+        work_packages_graph: 工作套件圖表
+        show_work_packages: 顯示工作套件
       storage:
         no_results_title_text: 該專案沒有額外消耗磁碟空間。
       work_package_priorities:
@@ -1202,7 +1209,7 @@ zh-TW:
         header_look_and_feel: "介面與外觀"
         header_alerts: "提醒"
         button_update_look_and_feel: "更新介面與外觀"
-        button_update_alerts: "更新警示"
+        button_update_alerts: "更新提醒設定"
         comments_sorting: "顯示工作套件活動，排序方式為"
         disable_keyboard_shortcuts: "停用鍵盤快速鍵"
         disable_keyboard_shortcuts_caption_html: |-
@@ -1265,7 +1272,7 @@ zh-TW:
         spent_hours: "耗時"
         spent_time: "耗時"
         subproject: "子專案"
-        time_entries: "工時紀錄"
+        time_entries: "工作紀錄"
         type: "類型"
         version: "版本"
         watcher: "監看者"
@@ -1748,7 +1755,7 @@ zh-TW:
       news: "最新消息"
       project_details: "專案詳細資訊"
       subproject: "包含子專案"
-      time_entry: "耗時"
+      time_entry: "工時"
       wiki_edit: "維基"
       work_package: "工作套件"
     project_phase:
@@ -2511,6 +2518,9 @@ zh-TW:
       selected: "已選取"
     include_sub_items: "包含子項目"
     no_results_text: "查無結果"
+  toggle_switch:
+    label_on: "開啟"
+    label_off: "關閉"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
@@ -3232,7 +3242,7 @@ zh-TW:
   label_sort_highest: "移到頂端"
   label_sort_lower: "往下移動"
   label_sort_lowest: "移到底部"
-  label_spent_time: "耗時"
+  label_spent_time: "工時"
   label_start_to_end: "開始到結束"
   label_start_to_start: "開始到開始"
   label_statistics: "統計"
@@ -3257,8 +3267,8 @@ zh-TW:
   label_this_week: "本週"
   label_this_year: "今年"
   label_time: "時間"
-  label_time_entry_plural: "耗時"
-  label_time_entry_activity_plural: "耗時活動"
+  label_time_entry_plural: "工時"
+  label_time_entry_activity_plural: "工時活動"
   label_title: "標題"
   label_projects_menu: "專案"
   label_today: "今天"
@@ -3746,7 +3756,7 @@ zh-TW:
   permission_view_members: "檢視成員"
   permission_view_reportings: "檢視報表"
   permission_view_shared_work_packages: "檢視參與的工作套件"
-  permission_view_time_entries: "檢視耗時"
+  permission_view_time_entries: "檢視工時"
   permission_view_timelines: "檢視時間軸"
   permission_view_user_email: "檢視使用者的郵件地址"
   permission_view_wiki_edits: "檢視維基歷史"

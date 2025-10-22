@@ -26,6 +26,9 @@ lt:
   activerecord:
     models:
       document: "Dokumentas"
+    attributes:
+      document:
+        content_binary: "Content binary"
   activity:
     filter:
       document: "Dokumentai"

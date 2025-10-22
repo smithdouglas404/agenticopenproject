@@ -249,10 +249,10 @@ fr:
         ampf_configuration:
           client_folder_creation: Création automatique de dossier
           client_folder_removal: Suppression automatique de dossier
-          drive_contents: Le lecteur contient le contenu attendu
+          drive_contents: Drive content
           files_request: Récupération des fichiers du dossier du groupe
           group_folder_app: 'Dépendance : dossiers de groupe'
-          group_folder_contents: Le dossier de groupe contient le contenu attendu
+          group_folder_contents: Group folder content
           group_folder_presence: Le dossier de groupe existe
           header: Dossiers de projets gérés automatiquement
           userless_access: Authentification de la requête côté serveur
@@ -498,6 +498,7 @@ fr:
         name: OneDrive
         name_placeholder: par exemple OneDrive
       sharepoint:
+        drive_description: OpenProject access-managed document library
         label_oauth_client_id: ID de l'application Azure OAuth (client)
         label_oauth_client_secret: Clé secrète du client OAuth Azure
         name: SharePoint

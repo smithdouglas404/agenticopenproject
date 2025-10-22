@@ -31,8 +31,14 @@
 require "spec_helper"
 require_relative "shared_context"
 
-RSpec.describe "Edit project custom field calculated value", :js, with_flag: { calculated_value_project_attribute: true } do
+RSpec.describe "Edit project custom field calculated value", :js,
+               with_flag: { calculated_value_project_attribute: true } do
   include_context "with seeded project custom fields"
+
+  shared_let(:scored_list_project_custom_field) do
+    create(:scored_list_project_custom_field, :skip_validations, name: "Scored list field",
+                                                                 project_custom_field_section: section_for_select_fields)
+  end
 
   let(:calculated_value) { calculated_from_int_project_custom_field }
 
@@ -165,11 +171,23 @@ RSpec.describe "Edit project custom field calculated value", :js, with_flag: { c
             click_on(float_project_custom_field.name)
           end
 
+          # Input divide operator
+          pattern_input.send_keys(" / ")
+          expect(page).to have_no_css(".op-pattern-input--suggestions-dropdown .ActionListItem")
+
+          # Open suggestion list again
+          pattern_input.send_keys("/")
+          within ".op-pattern-input--suggestions-dropdown" do
+            expect(page).to have_css(".ActionListItem", text: scored_list_project_custom_field.name)
+            click_on(scored_list_project_custom_field.name)
+          end
+
           click_on("Save")
           wait_for_network_idle
 
           new_formula = calculated_value.reload.formula_string
-          expect(new_formula).to eq("#{integer_project_custom_field} * 2 + #{float_project_custom_field}")
+          expect(new_formula)
+            .to eq("#{integer_project_custom_field} * 2 + #{float_project_custom_field} / #{scored_list_project_custom_field}")
         end
       end
     end

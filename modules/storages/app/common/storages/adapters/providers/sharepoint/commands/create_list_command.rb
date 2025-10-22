@@ -83,7 +83,7 @@ module Storages
             end
 
             def list_uri(name)
-              "#{request_uri}/#{UrlBuilder.path(name)}?$expand=drive&$select=id,name,drive"
+              "#{request_uri}#{UrlBuilder.path(name)}?$expand=drive&$select=id,name,drive"
             end
           end
         end

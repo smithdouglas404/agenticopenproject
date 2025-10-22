@@ -162,6 +162,11 @@ ja:
         expired: "%{date} に期限切れ"
         revoked: "%{date} で取り消されました"
         title: "アクセストークンテーブル"
+    workflows:
+      tabs:
+        default_transitions: "Default transitions"
+        user_author: "User is author"
+        user_assignee: "User is assignee"
   authentication:
     login_and_registration: "ログインと登録"
   announcements:
@@ -521,6 +526,8 @@ ja:
       versions:
         no_results_title_text: 現在、プロジェクトのバージョンはありません。
         no_results_content_text: 新しいバージョンを作成
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: このプロジェクトによって使用される追加のディスク領域はありません。
       work_package_priorities:
@@ -2514,6 +2521,9 @@ ja:
       selected: "選択済み"
     include_sub_items: "サブアイテムを含める"
     no_results_text: "結果がありません"
+  toggle_switch:
+    label_on: "On"
+    label_off: "Off"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","

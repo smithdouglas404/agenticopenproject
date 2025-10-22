@@ -26,6 +26,9 @@ mn:
   activerecord:
     models:
       document: "Баримт бичиг"
+    attributes:
+      document:
+        content_binary: "Content binary"
   activity:
     filter:
       document: "Баримт бичгүүд"

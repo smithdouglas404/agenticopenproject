@@ -104,7 +104,7 @@ module Overviews
       end
 
       def not_set?
-        @project_custom_field_values.empty? || @project_custom_field_values.all? { |cf_value| cf_value.value.blank? }
+        @project_custom_field_values.none?(&:value?)
       end
 
       def calculation_error?

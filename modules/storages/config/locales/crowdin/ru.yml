@@ -249,10 +249,10 @@ ru:
         ampf_configuration:
           client_folder_creation: Автоматическое создание папки
           client_folder_removal: Автоматическое удаление папок
-          drive_contents: Диск ожидал контента
+          drive_contents: Drive content
           files_request: Получение файлов групповых папок
           group_folder_app: 'Зависимость: Папки группы'
-          group_folder_contents: Папка группы ожидала содержимое
+          group_folder_contents: Group folder content
           group_folder_presence: Папка группы существует
           header: Автоматически управляемые папки проекта
           userless_access: Аутентификация на стороне сервера
@@ -502,6 +502,7 @@ ru:
         name: OneDrive
         name_placeholder: напр. OneDrive
       sharepoint:
+        drive_description: OpenProject access-managed document library
         label_oauth_client_id: Идентификатор приложения (клиента) Azure OAuth
         label_oauth_client_secret: Секретное значение клиента Azure OAuth
         name: SharePoint

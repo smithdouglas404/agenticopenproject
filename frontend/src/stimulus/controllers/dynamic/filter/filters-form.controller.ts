@@ -72,6 +72,8 @@ export default class FiltersFormController extends Controller {
   declare readonly singleDayTargets:HTMLInputElement[];
   declare readonly simpleValueTargets:HTMLInputElement[];
 
+  declare readonly hasFilterFormToggleTarget:boolean;
+
   autoReloadTargets:HTMLElement[];
 
   static values = {
@@ -148,8 +150,10 @@ export default class FiltersFormController extends Controller {
   }
 
   displayFiltersValueChanged() {
-    this.toggleButtonActive();
-    this.toggleFilterFormVisible();
+    if (this.hasFilterFormToggleTarget){
+      this.toggleButtonActive();
+      this.toggleFilterFormVisible();
+    }
   }
 
   toggleButtonActive() {

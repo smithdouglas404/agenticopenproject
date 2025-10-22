@@ -162,6 +162,11 @@ de:
         expired: "Abgelaufen am %{date}"
         revoked: "Widerrufen am %{date}"
         title: "Zugangs-Token Tabelle"
+    workflows:
+      tabs:
+        default_transitions: "Default transitions"
+        user_author: "User is author"
+        user_assignee: "User is assignee"
   authentication:
     login_and_registration: "Anmeldung und Registrierung"
   announcements:
@@ -520,6 +525,8 @@ de:
       versions:
         no_results_title_text: Derzeit gibt es keine Versionen für das Projekt.
         no_results_content_text: Neue Version erstellen
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: Durch dieses Projekt wird kein zusätzlicher erfasster Speicherplatz verbraucht.
       work_package_priorities:
@@ -2552,6 +2559,9 @@ de:
       selected: "Ausgewählt"
     include_sub_items: "Unterelemente einbeziehen"
     no_results_text: "Keine Ergebnisse"
+  toggle_switch:
+    label_on: "On"
+    label_off: "Off"
   general_csv_decimal_separator: ","
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","

@@ -56,10 +56,6 @@ class MeetingSection < ApplicationRecord
     !meeting&.closed?
   end
 
-  def modifiable?
-    !meeting&.closed?
-  end
-
   def agenda_items_sum_duration_in_minutes
     agenda_items.sum(:duration_in_minutes)
   end
