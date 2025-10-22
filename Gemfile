@@ -62,7 +62,7 @@ gem "friendly_id", "~> 5.5.0"
 
 gem "scimitar", "~> 2.13"
 
-gem "acts_as_list", "~> 1.2.5"
+gem "acts_as_list", "~> 1.2.6"
 gem "acts_as_tree", "~> 2.9.0"
 gem "awesome_nested_set", "~> 3.8.0"
 gem "closure_tree", "~> 9.2.0"
