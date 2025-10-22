@@ -31,11 +31,11 @@
 module Storages
   module Adapters
     module Input
-      DownloadLink = Data.define(:file_link) do
+      DownloadLink = Data.define(:file_id, :origin_name) do
         private_class_method :new
 
-        def self.build(file_link:, contract: DownloadLinkContract.new)
-          contract.call(file_link:).to_monad.fmap { |it| new(**it.to_h) }
+        def self.build(file_id:, origin_name: nil, contract: DownloadLinkContract.new)
+          contract.call(file_id:).to_monad.fmap { |it| new(file_id: it[:file_id], origin_name:) }
         end
       end
     end

@@ -33,7 +33,7 @@ module Storages
     module Input
       class DownloadLinkContract < DryApplicationContract
         params do
-          required(:file_link).filled(type?: FileLink)
+          required(:file_id).filled(:string)
         end
       end
     end

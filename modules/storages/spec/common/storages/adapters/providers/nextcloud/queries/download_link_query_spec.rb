@@ -45,7 +45,7 @@ module Storages
 
             let(:file_link) { create(:file_link, origin_id: "182") }
             let(:not_existent_file_link) { create(:file_link, origin_id: "DeathStarNumberThree") }
-            let(:input_data) { Input::DownloadLink.build(file_link:).value! }
+            let(:input_data) { Input::DownloadLink.build(file_id: file_link.origin_id, origin_name: file_link.origin_name).value! }
 
             subject { described_class.new(storage) }
 
@@ -60,7 +60,6 @@ module Storages
               context "with outbound request successful" do
                 it "returns a result with a download url", vcr: "nextcloud/download_link_query_success" do
                   download_link = subject.call(auth_strategy:, input_data:)
-
                   expect(download_link).to be_success
 
                   uri = download_link.value!
@@ -70,7 +69,8 @@ module Storages
                 end
 
                 it "returns an error if the file is not found", vcr: "nextcloud/download_link_query_not_found" do
-                  input_data = Input::DownloadLink.build(file_link: not_existent_file_link).value!
+                  input_data = Input::DownloadLink.build(file_id: not_existent_file_link.origin_id,
+                                                         origin_name: not_existent_file_link.origin_name).value!
                   download_link = subject.call(auth_strategy:, input_data:)
 
                   expect(download_link).to be_failure
