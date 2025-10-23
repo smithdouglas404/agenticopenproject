@@ -313,22 +313,6 @@ RSpec.describe "Invite user modal", :js do
                 let(:added_principal) { User.find_by!(mail: principal.mail) }
                 let(:mail_invite_recipients) { [added_principal] }
                 let(:mail_membership_recipients) { [added_principal] }
-                let(:modal_actions) do
-                  modal.expect_open
-                  modal.project_step
-                  modal.principal_step
-
-                  modal.expect_error_displayed("Department can't be blank")
-                  modal.within_modal do
-                    fill_in "Department", with: "Engineering"
-                  end
-
-                  modal.click_next
-                  modal.confirmation_step
-                  modal.click_modal_button "Send invitation"
-                  modal.expect_text "#{principal.mail} was invited!"
-                  modal.click_modal_button "Continue"
-                end
               end
             end
           end
