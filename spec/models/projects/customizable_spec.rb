@@ -199,11 +199,17 @@ RSpec.describe Project, "customizable" do
         .to contain_exactly(text_custom_field, bool_custom_field)
     end
 
-    describe "#valid?" do
+    describe "#valid?", with_flag: { calculated_value_project_attribute: true } do
       let(:another_section) { create(:project_custom_field_section) }
 
       let!(:required_text_custom_field) do
         create(:text_project_custom_field,
+               is_required: true,
+               project_custom_field_section: another_section)
+      end
+
+      let!(:calculated_custom_field) do
+        create(:calculated_value_project_custom_field,
                is_required: true,
                project_custom_field_section: another_section)
       end
@@ -215,6 +221,8 @@ RSpec.describe Project, "customizable" do
                         })
 
         expect(project).not_to be_valid(:saving_custom_fields)
+        # Only the required_text_custom_field fails validation,
+        # the calculated_custom_field is not validated at all.
         expect(project.errors.details)
           .to eq({ required_text_custom_field.attribute_getter => [{ error: :blank }] })
         expect { project.save!(context: :saving_custom_fields) }.to raise_error(ActiveRecord::RecordInvalid)
@@ -355,11 +363,17 @@ RSpec.describe Project, "customizable" do
         .to eq("bar")
     end
 
-    describe "#valid?" do
+    describe "#valid?", with_flag: { calculated_value_project_attribute: true } do
       let(:another_section) { create(:project_custom_field_section) }
 
       let(:required_text_custom_field) do
         create(:text_project_custom_field,
+               is_required: true,
+               project_custom_field_section: another_section)
+      end
+
+      let(:required_calculated_custom_field) do
+        create(:calculated_value_project_custom_field,
                is_required: true,
                project_custom_field_section: another_section)
       end
@@ -374,6 +388,7 @@ RSpec.describe Project, "customizable" do
       it "validates only the user provided custom values" do
         # The required custom field is created after the project
         required_text_custom_field
+        required_calculated_custom_field
 
         # By default no custom fields are validated during the update.
         expect(project).to be_valid(:saving_custom_fields)
@@ -385,6 +400,11 @@ RSpec.describe Project, "customizable" do
         # thus, the project becomes invalid
         expect(project.reload).not_to be_valid(:saving_custom_fields)
         expect { project.save!(context: :saving_custom_fields) }.to raise_error(ActiveRecord::RecordInvalid)
+
+        # only the required_text_custom_field fails validation,
+        # the calculated_custom_field is not validated at all.
+        expect(project.errors.details)
+          .to eq({ required_text_custom_field.attribute_getter => [{ error: :blank }] })
 
         # but we still want to allow updating forms without the invalid required custom field values.
         # This is possible to do by omitting the required custom field from the list to be validated.

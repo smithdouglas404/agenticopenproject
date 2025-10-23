@@ -237,7 +237,7 @@ module Redmine
         def validate_custom_values
           custom_values_to_validate
             .uniq
-            .reject(&:marked_for_destruction?)
+            .reject { |cv| cv.marked_for_destruction? || cv.calculated_value? }
             .select(&:invalid?)
             .each { |custom_value| add_custom_value_errors! custom_value }
         end

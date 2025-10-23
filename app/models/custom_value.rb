@@ -48,6 +48,7 @@ class CustomValue < ApplicationRecord
            :required?,
            :max_length,
            :min_length,
+           :calculated_value?,
            to: :custom_field
 
   delegate :to_s, to: :value

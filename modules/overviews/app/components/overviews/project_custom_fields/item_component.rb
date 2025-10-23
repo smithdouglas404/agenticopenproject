@@ -101,6 +101,10 @@ module Overviews
         )
       end
 
+      def required?
+        @project_custom_field.required? && !@project_custom_field.calculated_value?
+      end
+
       def not_set?
         @project_custom_field_values.none?(&:value?)
       end
