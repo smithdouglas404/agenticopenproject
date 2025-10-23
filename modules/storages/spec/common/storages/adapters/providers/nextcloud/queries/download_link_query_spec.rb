@@ -57,6 +57,19 @@ module Storages
                 expect(method.parameters).to contain_exactly(%i[keyreq storage], %i[keyreq auth_strategy], %i[keyreq input_data])
               end
 
+              context "with file_id string with invalid file id", vcr: "nextcloud/download_link_query_success" do
+                let(:input_data) { Input::DownloadLink.build(file_id: "rubbish!@#", origin_name: "rubbish.txt").value! }
+
+                it "returns an error for invalid file_id" do
+                  download_link = subject.call(auth_strategy:, input_data:)
+                  expect(download_link).to be_failure
+
+                  error = download_link.failure
+                  expect(error.source).to eq(described_class)
+                  expect(error.code).to eq(:invalid_file_id)
+                end
+              end
+
               context "with outbound request successful" do
                 it "returns a result with a download url", vcr: "nextcloud/download_link_query_success" do
                   download_link = subject.call(auth_strategy:, input_data:)
