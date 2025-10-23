@@ -3976,6 +3976,11 @@ en:
   permission_edit_wiki_pages: "Edit wiki pages"
   permission_export_work_packages: "Export work packages"
   permission_export_wiki_pages: "Export wiki pages"
+  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email_explanation: >
+    Allows users to invite new members by email.
+    Invited users will receive an email with a link to set their password and activate their account.
+    Depends on the permission to manage members
   permission_list_attachments: "List attachments"
   permission_log_own_time: "Log own time"
   permission_log_time: "Log time for other users"
@@ -4005,6 +4010,9 @@ en:
   permission_share_work_packages: "Share work packages"
   permission_manage_types: "Select types"
   permission_manage_own_reminders: "Create own reminders"
+  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals_explanation: >
+    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
   permission_view_project: "View projects"
   permission_view_changesets: "View repository revisions in OpenProject"
   permission_view_internal_comments: "View internal comments"

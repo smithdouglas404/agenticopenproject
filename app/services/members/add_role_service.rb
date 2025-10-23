@@ -28,25 +28,25 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Only return placeholders that are visible to the current user.
-#
-# Either the user has:
-# - the global `manage_placeholder_user`
-# - or `manage_members` permission in any project,
-# - or all principals in visible projects are returned
-module PlaceholderUsers::Scopes
-  module Visible
-    extend ActiveSupport::Concern
+module Members
+  class AddRoleService
+    attr_reader :current_user
 
-    class_methods do
-      def visible(user = User.current)
-        if user.allowed_globally?(:manage_placeholder_user) ||
-           user.allowed_in_any_project?(:manage_members) ||
-           user.allowed_globally?(:view_all_principals)
-          all
-        else
-          in_visible_project_or_me_or_same_groups(user)
-        end
+    def initialize(current_user:)
+      @current_user = current_user
+    end
+
+    def call(user_id:, role_id:, project_id:, entity: nil, send_notifications: true)
+      member = Member.find_by(user_id:, project_id:, entity:)
+
+      if member.nil?
+        Members::CreateService
+          .new(user: current_user)
+          .call(send_notifications:, user_id:, project_id:, entity:, role_ids: [role_id])
+      else
+        Members::UpdateService
+          .new(model: member, user: current_user)
+          .call(send_notifications:, role_ids: (member.role_ids + [role_id]).uniq)
       end
     end
   end

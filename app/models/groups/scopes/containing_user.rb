@@ -28,25 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Only return placeholders that are visible to the current user.
-#
-# Either the user has:
-# - the global `manage_placeholder_user`
-# - or `manage_members` permission in any project,
-# - or all principals in visible projects are returned
-module PlaceholderUsers::Scopes
-  module Visible
+module Groups::Scopes
+  module ContainingUser
     extend ActiveSupport::Concern
 
     class_methods do
-      def visible(user = User.current)
-        if user.allowed_globally?(:manage_placeholder_user) ||
-           user.allowed_in_any_project?(:manage_members) ||
-           user.allowed_globally?(:view_all_principals)
-          all
-        else
-          in_visible_project_or_me_or_same_groups(user)
-        end
+      ##
+      # Returns the groups that contain the given user
+      # @param user [User] The user to check for membership. Defaults to the current user.
+      def containing_user(user = User.current)
+        joins(:group_users).where(group_users: { user_id: user.id })
       end
     end
   end

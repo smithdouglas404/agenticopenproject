@@ -211,7 +211,7 @@ class User < Principal
   # Override acts_as_customizable to skip custom field validation for invited users
   # since custom field values cannot be provided during the invitation process.
   # We only skip the validation if no custom field changes are present.
-  def custom_field_values_to_validate
+  def custom_values_to_validate
     if invited? && custom_field_changes.empty?
       []
     else

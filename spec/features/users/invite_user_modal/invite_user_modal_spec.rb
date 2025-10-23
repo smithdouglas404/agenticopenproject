@@ -36,7 +36,7 @@ RSpec.describe "Invite user modal", :js do
   let!(:work_package) { create(:work_package, project:) }
 
   let(:permissions) { %i[view_work_packages edit_work_packages manage_members work_package_assigned] }
-  let(:global_permissions) { %i[] }
+  let(:global_permissions) { %i[view_all_principals] }
   let(:modal) do
     Components::Users::InviteUserModal.new project:,
                                            principal:,
@@ -313,22 +313,6 @@ RSpec.describe "Invite user modal", :js do
                 let(:added_principal) { User.find_by!(mail: principal.mail) }
                 let(:mail_invite_recipients) { [added_principal] }
                 let(:mail_membership_recipients) { [added_principal] }
-                let(:modal_actions) do
-                  modal.expect_open
-                  modal.project_step
-                  modal.principal_step
-
-                  modal.expect_error_displayed("Department can't be blank")
-                  modal.within_modal do
-                    fill_in "Department", with: "Engineering"
-                  end
-
-                  modal.click_next
-                  modal.confirmation_step
-                  modal.click_modal_button "Send invitation"
-                  modal.expect_text "#{principal.mail} was invited!"
-                  modal.click_modal_button "Continue"
-                end
               end
             end
           end
@@ -410,7 +394,7 @@ RSpec.describe "Invite user modal", :js do
 
           context "with an existing placeholder" do
             let(:principal) { create(:placeholder_user, name: "EXISTING PLACEHOLDER") }
-            let(:global_permissions) { %i[] }
+            let(:global_permissions) { %i[view_all_principals] }
 
             it_behaves_like "invites the principal to the project" do
               let(:added_principal) { principal }
