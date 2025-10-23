@@ -60,6 +60,7 @@ module Storages
               context "with outbound request successful" do
                 it "returns a result with a download url", vcr: "nextcloud/download_link_query_success" do
                   download_link = subject.call(auth_strategy:, input_data:)
+
                   expect(download_link).to be_success
 
                   uri = download_link.value!
