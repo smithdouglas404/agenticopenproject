@@ -95,7 +95,7 @@ EXPOSE 8080
 CMD ["./docker/prod/web"]
 ENTRYPOINT ["./docker/prod/entrypoint-slim.sh"]
 VOLUME ["$APP_DATA_PATH"]
-
+ENV OPENPROJECT_EDITION=bim
 # -------------------------------------
 # all-in-one (public)
 # -------------------------------------
