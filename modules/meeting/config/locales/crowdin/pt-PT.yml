@@ -498,6 +498,7 @@ pt-PT:
   label_agenda_item_work_package: "Pacote de trabalho do ponto da ordem de trabalhos"
   label_section_rename: "Mudar o nome da secção"
   label_agenda_outcome: "Resultado"
+  label_agenda_new_outcome: "New outcome"
   label_agenda_outcome_actions: "Ações dos resultados da agenda"
   label_agenda_outcome_edit: "Editar resultado"
   label_agenda_outcome_delete: "Remover resultado"

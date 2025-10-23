@@ -491,6 +491,7 @@ ja:
   label_agenda_item_work_package: "議題項目のワークパッケージ"
   label_section_rename: "セクション名を変更"
   label_agenda_outcome: "結果"
+  label_agenda_new_outcome: "New outcome"
   label_agenda_outcome_actions: "議題の結果アクション"
   label_agenda_outcome_edit: "結果を編集"
   label_agenda_outcome_delete: "結果を削除"

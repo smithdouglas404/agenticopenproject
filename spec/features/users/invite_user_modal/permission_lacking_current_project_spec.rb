@@ -53,7 +53,7 @@ RSpec.describe "Inviting user in project the current user is lacking permission 
   let!(:invite_project) { create(:project, members: { current_user => invite_role }) }
 
   current_user do
-    create(:user)
+    create(:user, global_permissions: %i[view_all_principals])
   end
 
   specify "user cannot invite in current project but for different one" do

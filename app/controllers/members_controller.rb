@@ -177,10 +177,11 @@ class MembersController < ApplicationController
     }
   end
 
-  def suggest_invite_via_email?(user, query, principals)
-    user.allowed_globally?(:create_user) &&
-      query =~ mail_regex &&
-      principals.none? { |p| p.mail == query || p.login == query } &&
+  def suggest_invite_via_email?(user, query, visible_principals)
+    return false unless user_allowed_to_invite?(user)
+
+    query =~ mail_regex &&
+      visible_principals.none? { |p| p.mail == query || p.login == query } &&
       query # finally return email
   end
 
