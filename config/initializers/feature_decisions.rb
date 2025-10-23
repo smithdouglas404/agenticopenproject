@@ -45,7 +45,8 @@ OpenProject::FeatureDecisions.add :built_in_oauth_applications,
                                   description: "Allows the display and use of built-in OAuth applications."
 
 OpenProject::FeatureDecisions.add :calculated_value_project_attribute,
-                                  description: "Allows the use of calculated values as a project attribute."
+                                  description: "Allows the use of calculated values as a project attribute.",
+                                  force_active: true
 
 OpenProject::FeatureDecisions.add :oidc_group_sync,
                                   description: "Allows to synchronize groups from OpenID Connect providers",
