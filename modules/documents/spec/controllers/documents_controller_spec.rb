@@ -163,6 +163,46 @@ RSpec.describe DocumentsController do
     end
   end
 
+  describe "generate_oauth_token" do
+    let(:manage_role) { create(:project_role, permissions: [:manage_documents]) }
+    let(:view_only_role) { create(:project_role, permissions: [:view_documents]) }
+    let(:user_with_manage) { create(:user) }
+    let(:user_without_manage) { create(:user) }
+
+    before do
+      create(:member, project:, user: user_with_manage, roles: [manage_role])
+      create(:member, project:, user: user_without_manage, roles: [view_only_role])
+    end
+
+    context "when user has manage_documents permission" do
+      current_user { user_with_manage }
+
+      it "generates an OAuth token for new action" do
+        get :new, params: { project_id: project.id }
+        expect(assigns(:oauth_token)).to be_present
+      end
+
+      it "generates an OAuth token for edit action" do
+        get :edit, params: { id: document.id }
+        expect(assigns(:oauth_token)).to be_present
+      end
+    end
+
+    context "when user does not have manage_documents permission" do
+      current_user { user_without_manage }
+
+      it "does not generate an OAuth token for new action" do
+        get :new, params: { project_id: project.id }
+        expect(assigns(:oauth_token)).to be_nil
+      end
+
+      it "does not generate an OAuth token for edit action" do
+        get :edit, params: { id: document.id }
+        expect(assigns(:oauth_token)).to be_nil
+      end
+    end
+  end
+
   def file_attachment
     test_document = "#{OpenProject::Documents::Engine.root}/spec/assets/attachments/testfile.txt"
     Rack::Test::UploadedFile.new(test_document, "text/plain")

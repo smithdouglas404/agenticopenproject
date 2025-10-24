@@ -121,6 +121,11 @@ class DocumentsController < ApplicationController
   end
 
   def generate_oauth_token
+    # do not generate a token if the user is not allowed to manage documents
+    if !current_user.allowed_in_project?(:manage_documents, @project)
+      return
+    end
+
     result = Documents::OAuth::GenerateTokenService
       .new(user: current_user)
       .call
