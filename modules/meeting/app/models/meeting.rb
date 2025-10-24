@@ -44,12 +44,6 @@ class Meeting < ApplicationRecord
 
   has_many :time_entries, dependent: :delete_all, inverse_of: :entity, as: :entity
 
-  # Legacy association to minutes, agendas, contents
-  # to be removed in 17.0
-  has_one :agenda, dependent: :destroy, class_name: "MeetingAgenda"
-  has_one :minutes, dependent: :destroy, class_name: "MeetingMinutes"
-  has_many :contents, -> { readonly }, class_name: "MeetingContent"
-
   has_many :participants,
            dependent: :destroy,
            class_name: "MeetingParticipant"

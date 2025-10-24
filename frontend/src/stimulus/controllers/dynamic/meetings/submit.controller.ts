@@ -57,6 +57,30 @@ export default class extends ApplicationController {
     this.turboRequests = context.services.turboRequests;
   }
 
+  interceptOutcomeFormSubmission(event:SubmitEvent):void {
+    event.preventDefault();
+
+    const form = event.target as HTMLFormElement;
+    const outcomeContainer = form.closest('.op-meeting-agenda-item--outcomes');
+
+    const otherOpenForms = outcomeContainer ? Array.from(outcomeContainer.querySelectorAll('form.meeting-agenda-item-outcome-form')).filter((f) => f !== form) : [];
+
+    if (otherOpenForms.length > 0) {
+      if (!window.confirm(I18n.t('js.text_are_you_sure_to_cancel'))) {
+        return;
+      }
+    }
+
+    void this.turboRequests.request(form.action, {
+      method: form.method.toUpperCase(),
+      headers: {
+        'X-CSRF-Token': this.csrfToken,
+        Accept: 'text/vnd.turbo-stream.html',
+      },
+      body: new FormData(form),
+    });
+  }
+
   intercept(event:Event):void {
     event.preventDefault();
 

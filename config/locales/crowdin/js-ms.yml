@@ -1131,71 +1131,8 @@ ms:
       list: "Jadual"
       timeline: "Gantt"
     invite_user_modal:
-      back: "Kembali"
       invite: "Jemput"
-      title:
-        invite: "Jemput pengguna"
-        invite_to_project: "Jemput %{type} ke %{project}"
-        User: "pengguna"
-        Group: "kumpulan"
-        PlaceholderUser: "pengguna placeholder"
-        invite_principal_to_project: "Jemput %{principal} ke %{project}"
-      project:
-        label: "Projek"
-        required: "Sila pilih projek"
-        lacking_permission: "Sila pilih projek lain kerana anda kekurangan kebenaran untuk menugaskan pengguna ke projek yang dipilih masa ini."
-        lacking_permission_info: "Anda kekurangan kebenaran untuk menugaskan pengguna ke projek yang sedang dijalankan. Anda perlu memilih yang lain."
-        next_button: "Seterusnya"
-        no_results: "Tiada projek yang ditemui"
-        no_invite_rights: "Anda tidak dibenarkan untuk menjemput ahli ke projek ini"
-      type:
-        required: "Sila pilih jenis untuk dijemput"
-        user:
-          title: "Pengguna"
-          description: "Kebenaran berdasarkan peranan yang ditugaskan dalam projek terpilih"
-        group:
-          title: "Kumpulan"
-          description: "Kebenaran berdasarkan peranan yang ditugaskan dalam projek terpilih"
-        placeholder:
-          title: "Pengguna placeholder"
-          title_no_ee: "Pengguna placeholder (Edisi Enterprise hanyalah tambahan)"
-          description: "Tidak mempunyai akses ke projek dan tiada e-mel yang dihantar keluar."
-          description_no_ee: 'Tidak mempunyai akses ke projek dan tiada e-mel dihantar keluar. <br>Lihat<a href="%{eeHref}" target="_blank">Edisi Enterprise</a>'
-      principal:
-        label:
-          name_or_email: "Nama atau alamat e-mel"
-          name: "Nama"
-        already_member_message: "Sudah menjadi ahli kepada %{project}"
-        no_results_user: "Tiada pengguna ditemui"
-        invite_user: "Jemput:"
-        no_results_placeholder: "Tiada placeholder yang ditemui"
-        create_new_placeholder: "Cipta placeholder baharu:"
-        no_results_group: "Tiada kumpulan ditemui"
-        next_button: "Seterusnya"
-        required:
-          user: "Sila pilih pengguna"
-          placeholder: "Sila pilih placeholder"
-          group: "Sila pilih kumpulan"
-      role:
-        label: "Peranan dalam %{project}"
-        no_roles_found: "Tiada peranan ditemui"
-        description: >-
-          Ini adalah peranan yang pengguna akan menerima apabila mereka menyertai projek anda. Peranan tersebut menentukan tindakan yang mereka dibenarkan untuk ambil dan maklumat yang mereka boleh lihat. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Ketahui lebih lanjut tentang peranan dan kebenaran. </a>
-        required: "Sila pilih peranan"
-        next_button: "Seterusnya"
-      message:
-        label: "Mesej jemputan"
-        description: "Kami akan menghantar e-mel ke pengguna, dimana anda boleh menambah mesej peribadi di sini. Satu penerangan untuk jemputan akan berguna, atau mungkin sedikit maklumat berkenaan projek untuk bantu mereka bermula."
-        next_button: "Seterusnya"
-      summary:
-        next_button: "Hantar jemputan"
-      success:
-        title: "%{principal} telah dijemput!"
-        description:
-          user: "Pengguna kini boleh log masuk untuk mengakses %{project}. Sementara itu, anda boleh merancang dengan pengguna tersebut dan tugaskan pakej kerja sebagai contoh."
-          placeholder: "Placeholder kini boleh digunakan dalam %{project}. Sementara itu anda sudah boleh merancang dengan pengguna tersebut dan tugaskan pakej kerja sebagai contoh."
-          group: "Kumpulan tersebut kini sebahagian daripada %{project}. Sementara itu anda sudah boleh merancang dengan kumpulan tersebut dan menugaskan pakej kerja sebagai contoh."
-        next_button: "Teruskan"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "Status dikeluarkan daripada jumlah hierarki"

@@ -172,7 +172,7 @@ export class OpAutocompleterComponent<T extends IAutocompleteItem = IAutocomplet
 
   @Input() public placeholder:string = this.I18n.t('js.autocompleter.placeholder');
   @Input() public notFoundText:string = this.I18n.t('js.autocompleter.notFoundText');
-  @Input() public addTagText?:string;
+  @Input() public addTagText?:string = this.I18n.t('js.autocomplete_ng_select.add_tag');
   @Input() public ariaLabel?:string = this.I18n.t('js.autocompleter.search');
 
   @Input() public loadingText:string = this.I18n.t('js.ajax.loading');

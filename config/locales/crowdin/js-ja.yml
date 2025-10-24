@@ -1132,71 +1132,8 @@ ja:
       list: "表"
       timeline: "ガント"
     invite_user_modal:
-      back: "戻る"
       invite: "招待"
-      title:
-        invite: "ユーザを招待"
-        invite_to_project: "%{type} を %{project} に招待する"
-        User: "ユーザー"
-        Group: "グループ"
-        PlaceholderUser: "プレースホルダー ユーザー"
-        invite_principal_to_project: "%{principal} を %{project} に招待する"
-      project:
-        label: "プロジェクト"
-        required: "プロジェクトを選択してください"
-        lacking_permission: "現在選択されているプロジェクトにユーザーを割り当てる権限がないため、別のプロジェクトを選択してください。"
-        lacking_permission_info: "現在参加しているプロジェクトにユーザーを割り当てる権限がありません。別のプロジェクトを選択する必要があります。"
-        next_button: "次へ"
-        no_results: "プロジェクトが見つかりませんでした"
-        no_invite_rights: "このプロジェクトにメンバーを招待することは許可されていません"
-      type:
-        required: "招待するタイプを選択してください"
-        user:
-          title: "ユーザ"
-          description: "選択したプロジェクトで割り当てられたロールに基づく権限"
-        group:
-          title: "グループ"
-          description: "選択したプロジェクトで割り当てられたロールに基づく権限"
-        placeholder:
-          title: "プレースホルダー ユーザー"
-          title_no_ee: "プレースホルダユーザ（Enterprise版のみのアドオン）"
-          description: "プロジェクトにアクセスできず、電子メールも送信されません。"
-          description_no_ee: 'プロジェクトにはアクセスできず、メールも送信されません。<br><a href="%{eeHref}" target="_blank">エンタープライズ版を</a>チェック'
-      principal:
-        label:
-          name_or_email: "名前またはメールアドレス"
-          name: "名称"
-        already_member_message: "既に %{project} のメンバーです"
-        no_results_user: "ユーザーが見つかりませんでした"
-        invite_user: "招待:"
-        no_results_placeholder: "プレースホルダが見つかりません"
-        create_new_placeholder: "新しいプレースホルダを作成:"
-        no_results_group: "グループが見つかりませんでした"
-        next_button: "次へ"
-        required:
-          user: "ユーザーを選択してください"
-          placeholder: "プレースホルダを選択してください"
-          group: "グループを選択してください"
-      role:
-        label: "%{project} でのロール"
-        no_roles_found: "ロールが見つかりません"
-        description: >-
-          これはユーザがプロジェクトに参加する際に与えられるロールです。ロールによって、どのようなアクションが許可され、どのような情報を見ることが許可されるかが定義されます。 <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> ロールと権限の詳細については、こちらをご覧ください。 </a>
-        required: "ロールを選択してください"
-        next_button: "次へ"
-      message:
-        label: "招待メッセージ"
-        description: "私たちはユーザーに電子メールを送信します。ここに個人的なメッセージを追加することができます。招待状に関する説明や、プロジェクトに関するちょっとした情報などを添えていただくと、より効果的です。"
-        next_button: "次へ"
-      summary:
-        next_button: "招待状を送信"
-      success:
-        title: "%{principal} が招待されました！"
-        description:
-          user: "ユーザはログインして %{project} にアクセスできるようになりました。一方で、そのユーザを使って計画を立てたり、ワークパッケージを割り当てたりすることができます。"
-          placeholder: "プレースホルダーを %{project} で使用できるようになりました。一方で、そのユーザを使って計画を立てたり、ワークパッケージを割り当てたりすることができます。"
-          group: "グループは %{project} の一部になりました。一方で、そのグループを使って計画を立てたり、ワークパッケージを割り当てたりすることができます。"
-        next_button: "続行"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "階層合計から除外される状態"

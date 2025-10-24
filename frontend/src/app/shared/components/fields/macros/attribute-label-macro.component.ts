@@ -48,6 +48,7 @@ import {
 } from 'core-app/shared/components/fields/macros/attribute-model-loader.service';
 import { capitalize } from 'core-app/shared/helpers/string-helpers';
 import { firstValueFrom } from 'rxjs';
+import { IOPFieldSchema } from 'core-app/features/hal/interfaces';
 
 @Component({
   templateUrl: './attribute-label-macro.html',
