@@ -33,7 +33,7 @@
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@types/resize-observer-browser": "^0.1.4",
-    "@types/urijs": "^1.19.6",
+    "@types/urijs": "^1.19.26",
     "@types/uuid": "^11.0.0",
     "@types/webpack-env": "^1.16.0",
     "@typescript-eslint/eslint-plugin": "8.46.2",
