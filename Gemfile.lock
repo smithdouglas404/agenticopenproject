@@ -873,7 +873,7 @@ GEM
       view_component (>= 3.1, < 5.0)
     openproject-token (8.0.0)
       activemodel
-    openssl (3.3.0)
+    openssl (3.3.1)
     openssl-signature_algorithm (1.3.0)
       openssl (> 2.0)
     opentelemetry-api (1.7.0)
@@ -1454,7 +1454,7 @@ GEM
       rack (>= 2.0.9)
     warden-basic_auth (0.2.1)
       warden (~> 1.2)
-    webauthn (3.4.2)
+    webauthn (3.4.3)
       android_key_attestation (~> 0.3.0)
       bindata (~> 2.4)
       cbor (~> 0.5.9)
@@ -2020,7 +2020,7 @@ CHECKSUMS
   openproject-two_factor_authentication (1.0.0)
   openproject-webhooks (1.0.0)
   openproject-xls_export (1.0.0)
-  openssl (3.3.0) sha256=ff3a573fc97ab30f69483fddc80029f91669bf36532859bd182d1836f45aee79
+  openssl (3.3.1) sha256=d6682286baedc205e57928111bafa595d6902b086c1dc7abd88ae20acb1cf837
   openssl-signature_algorithm (1.3.0) sha256=a3b40b5e8276162d4a6e50c7c97cdaf1446f9b2c3946a6fa2c14628e0c957e80
   opentelemetry-api (1.7.0) sha256=ccfd264ea6f2db5bf4185e3c07a1297977b44a944e2ce65457c4fe63a697214f
   opentelemetry-common (0.23.0) sha256=da721190479d57bae0ad2207468f47f3e2c3b9a91024b5bc32c9d280183eb32c
@@ -2246,7 +2246,7 @@ CHECKSUMS
   virtus (2.0.0) sha256=8841dae4eb7fcc097320ba5ea516bf1839e5d056c61ee27138aa4bddd6e3d1c2
   warden (1.2.9) sha256=46684f885d35a69dbb883deabf85a222c8e427a957804719e143005df7a1efd0
   warden-basic_auth (0.2.1) sha256=bfc752e0109c0182c3e69e930284c5e1e81e7b4a354aeb2b5914ead1391f3c6e
-  webauthn (3.4.2) sha256=09b7a4c68f96886b87110ec6700d266b7fff67e8b9bc54858999d4f4194e8ff0
+  webauthn (3.4.3) sha256=9be6f5f838f3405b0226e560aa40b67cc8c15ec9154509b997caa7ec9a05e1fc
   webfinger (2.1.3) sha256=567a52bde77fb38ca6b67e55db755f988766ec4651c1d24916a65aa70540695c
   webmock (3.25.1) sha256=ab9d5d9353bcbe6322c83e1c60a7103988efc7b67cd72ffb9012629c3d396323
   webrick (1.9.1) sha256=b42d3c94f166f3fb73d87e9b359def9b5836c426fc8beacf38f2184a21b2a989
