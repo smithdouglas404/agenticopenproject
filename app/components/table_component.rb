@@ -31,8 +31,17 @@
 ##
 # Abstract view component. Subclass this for a concrete table.
 class TableComponent < ApplicationComponent
-  def initialize(rows: [], **)
+  def initialize(rows: [], table_arguments: {}, **)
     super(rows, **)
+
+    @system_arguments = table_arguments
+    @system_arguments[:tag] = :table
+    @system_arguments[:classes] = class_names(
+      @system_arguments[:classes],
+      "generic-table"
+    )
+    @system_arguments[:data] ||= {}
+    @system_arguments[:data][:controller] = "table-highlighting"
   end
 
   class << self
