@@ -120,14 +120,18 @@ See COPYRIGHT and LICENSE files for more details.
         </div>
       </div>
 
-      <div class="wp-inline-create-button">
-        <a class="budget-add-row wp-inline-create--add-link"
-          role="button"
-          title="<%= t(:button_add_budget_item) %>"
-          data-action="costs--budget-subform#addRow">
-          <%= op_icon("icon icon-add") %>
-        </a>
-      </div>
+      <%=
+        render(
+          Primer::Beta::IconButton.new(
+            scheme: :invisible,
+            icon: :plus,
+            tooltip_direction: :e,
+            aria: { label: t(:button_add_budget_item) },
+            data: { action: "costs--budget-subform#addRow" },
+            mt: 2
+          )
+        )
+      %>
       <table style="display:none"
             data-costs--budget-subform-target="template">
         <%= render partial: "budgets/items/material_budget_item",

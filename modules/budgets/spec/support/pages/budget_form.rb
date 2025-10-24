@@ -106,13 +106,15 @@ module Pages
     end
 
     def add_unit_costs_row!
-      find(:region, Budget.human_attribute_name(:material_budget)).click_on I18n.t(:button_add_budget_item)
+      find(:region, Budget.human_attribute_name(:material_budget))
+        .click_on accessible_name: I18n.t(:button_add_budget_item)
 
       @unit_rows = unit_rows + 1
     end
 
     def add_labor_costs_row!
-      find(:region, Budget.human_attribute_name(:labor_budget)).click_on I18n.t(:button_add_budget_item)
+      find(:region, Budget.human_attribute_name(:labor_budget))
+        .click_on accessible_name: I18n.t(:button_add_budget_item)
 
       @labor_rows = labor_rows + 1
     end

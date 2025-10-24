@@ -51,7 +51,7 @@ RSpec.describe "updating a budget", :js, :selenium do
       create(:default_hourly_rate, user:, rate: 25.0, valid_from: 1.day.ago)
     end
 
-    it "creates the cost items" do
+    it "creates the cost items", :selenium do
       budget_page.visit!
       click_on "Update"
 
@@ -318,7 +318,9 @@ RSpec.describe "updating a budget", :js, :selenium do
 
       click_on "Update"
 
-      page.find("#budget_existing_labor_budget_item_attributes_#{labor_budget_item.id} a.delete-budget-item").click
+      page.find("#budget_existing_labor_budget_item_attributes_#{labor_budget_item.id}")
+        .click_on accessible_name: "Delete"
+
       click_on "Submit"
 
       expect(budget_page.labor_costs_at(1)).to have_no_content "125.00 EUR"
