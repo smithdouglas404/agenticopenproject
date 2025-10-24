@@ -29,7 +29,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 <div class="generic-table--container <%= container_class %>" data-test-selector="<%= test_selector %>" id="<%= container_id %>">
   <div class="generic-table--results-container">
-    <table class="generic-table" data-controller="table-highlighting">
+    <%= render(Primer::BaseComponent.new(**@system_arguments)) do %>
       <colgroup>
         <% headers.each do |_name, _options| %>
           <col>
@@ -67,7 +67,7 @@ See COPYRIGHT and LICENSE files for more details.
         <% end %>
         <%= render_collection rows %>
       </tbody>
-    </table>
+    <% end %>
     <% if inline_create_link %>
       <div class="wp-inline-create-button">
         <%= inline_create_link %>
