@@ -3,24 +3,42 @@ title: OpenProject 16.6.0
 sidebar_navigation:
     title: 16.6.0
 release_version: 16.6.0
-release_date: 2025-10-23
+release_date: 2025-11-05
 ---
 
 # OpenProject 16.6.0
 
-Release date: 2025-10-23
+Release date: 2025-11-05
 
-We released OpenProject [OpenProject 16.6.0](https://community.openproject.org/versions/1413).
-The release contains several bug fixes and we recommend updating to the newest version.
-In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
+We released [OpenProject 16.6.0](https://community.openproject.org/versions/1413). The release contains several bug fixes and we recommend updating to the newest version. In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
 
 ## Important feature changes
 
-<!-- Inform about the major features in this section -->
+Take a look at our release video showing the most important features introduced in OpenProject 16.6.0:
 
-## Important updates and breaking changes
+![Release video of OpenProject 16.6](https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject_16_6_release.mp4)
 
-<!-- Remove this section if empty, add to it in pull requests linking to tickets and provide information -->
+### Calculated values for project evaluation and scoring (Enterprise add-on)
+
+### Project attributes type hierarchy
+
+### Performance updates
+
+### New index page for Documents module
+
+### Possibility to change parent of a custom field item
+
+### Updated 'More' menu of meetings with a 'Add to section' option
+
+### Editing of individual work package/project attributes allowed even if certain other attributes are invalid (eg. required field empty)
+
+### Work package type workflow table with a sticky header and sticky first column
+
+### Mini calendar re-added in the date picker of mobile web
+
+## Important technical updates
+
+### Autoscaling
 
 <!--more-->
 
@@ -97,12 +115,13 @@ In these Release Notes, we will give an overview of important feature changes. A
 <!-- Warning: Anything above this line will be automatically removed by the release script -->
 
 ## Contributions
-A very special thank you goes to our sponsors for this release.
-Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes.
-Special thanks for reporting and finding bugs go to Sven Kunze, Stefan Weiberg, Александр Татаринцев, Gábor Alexovics, Alexander Aleschenko, Tobias Nowakow.
 
-Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings!
-Would you like to help out with translations yourself?
-Then take a look at our translation guide and find out exactly how you can contribute.
-It is very much appreciated!
+A very special thank you goes to Helmholtz-Zentrum Berlin, City of Cologne, Deutsche Bahn and ZenDiS for sponsoring released or upcoming features. Your support, alongside the efforts of our amazing Community, helps drive these innovations. Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes. Special thanks for reporting and finding bugs go to Sven Kunze, Stefan Weiberg, Александр Татаринцев, Gábor Alexovics, Alexander Aleschenko, Tobias Nowakow.
 
+Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to particularly thank the following users:
+
+- [Haura Nabila Rinaldi](https://crowdin.com/profile/hauranblr), for a great number of translations into Indonesian.
+- [Samo](https://crowdin.com/profile/SamoE), for a great number of translations into Turkish.
+- [Kuma Yamashita](https://crowdin.com/profile/dredgk), for a great number of translations into Japanese.
+
+Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
