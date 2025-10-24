@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -28,41 +27,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Primer
-  module OpenProject
-    module Forms
-      # :nodoc:
-      class BlockNoteEditor < Primer::Forms::BaseComponent
-        include ::OpenProject::StaticRouting::UrlHelpers
+require "spec_helper"
 
-        attr_reader :input,
-                    :value,
-                    :active_user,
-                    :hocuspocus_url,
-                    :open_project_url,
-                    :document_name,
-                    :document_id,
-                    :oauth_token,
-                    :attachments_upload_url
+RSpec.describe API::V3::Utilities::PathHelper do
+  let(:helper) { Class.new.tap { |c| c.extend(described_class) }.api_v3_paths }
 
-        delegate :name, to: :@input
+  describe "#document" do
+    subject { helper.attachments_by_document 42 }
 
-        def initialize(input:, value:, document_name:, document_id:, attachments_upload_url:, oauth_token: nil)
-          super()
-          @input = input
-          @value = value
-          @active_user = {
-            id: User.current.id,
-            username: User.current.name
-          }
-          @document_id = document_id
-          @document_name = document_name
-          @oauth_token = oauth_token
-          @hocuspocus_url = Setting.collaborative_editing_hocuspocus_url
-          @open_project_url = root_url
-          @attachments_upload_url = attachments_upload_url
-        end
-      end
-    end
+    it { is_expected.to eql("/api/v3/documents/42/attachments") }
+  end
+
+  describe "#attachments_by_document" do
+    subject { helper.prepare_attachments_by_document 42 }
+
+    it { is_expected.to eql("/api/v3/documents/42/attachments/prepare") }
   end
 end
