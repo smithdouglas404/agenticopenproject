@@ -90,6 +90,7 @@ module Storages
 
               input_data = Adapters::Input::SetPermissions.build(file_id:, user_permissions: []).value_or do |failure|
                 log_validation_error(failure, file_id:, context: "hide_folder")
+                return Failure(:hide_inactive_folders)
               end
 
               set_permissions.call(auth_strategy:, input_data:).or do |error|
