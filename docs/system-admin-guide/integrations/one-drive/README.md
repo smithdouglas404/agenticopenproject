@@ -3,7 +3,7 @@ sidebar_navigation:
   title: OneDrive integration setup
   priority: 601
 description: Set up One Drive as a file storage in your OpenProject instance
-keywords: OneDrive, SharePoint, file storage, integration
+keywords: OneDrive, file storage, integration
 ---
 
 # OneDrive (Enterprise add-on) integration setup
@@ -36,8 +36,7 @@ OneDrive for Business plan as well. There might be some differences in the setup
 documentation.
 
 > [!NOTE]
-> This guide only covers the integration setup. Please go to
-> our [OneDrive integration user guide](../../../user-guide/file-management/nextcloud-integration/) to learn
+> This guide only covers the integration setup. Please go to our [OneDrive integration user guide](../../../user-guide/file-management/nextcloud-integration/) to learn
 > more about how to work with the OneDrive integration.
 
 ## Minimum requirements
