@@ -36,6 +36,8 @@ module API
         include API::V3::Attachments::AttachableRepresenterMixin
         include API::Decorators::DateProperty
 
+        self.to_eager_load = [:author, { project: :enabled_modules }]
+
         self_link title_getter: ->(*) { represented.title }
 
         property :id
