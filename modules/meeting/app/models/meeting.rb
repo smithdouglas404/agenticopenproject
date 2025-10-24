@@ -114,7 +114,9 @@ class Meeting < ApplicationRecord
 
   before_save :add_new_participants_as_watcher
 
-  after_update :send_updated_mail, if: -> { saved_change_to_start_time? || saved_change_to_duration? || saved_change_to_location? }
+  after_update :send_updated_mail, if: -> {
+    saved_change_to_start_time? || saved_change_to_duration? || saved_change_to_location?
+  }
 
   enum :state, {
     open: 0, # 0 -> default, leave values for future states between open and closed
