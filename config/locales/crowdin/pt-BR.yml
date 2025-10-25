@@ -2594,15 +2594,15 @@ pt-BR:
         header: "Leia sobre novos recursos e atualizações do produto."
         learn_about: "Saiba mais sobre todos os novos recursos"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_5":
+        "16_6":
           new_features_title: >
-            A versão contém diversos novos recursos e melhorias, como:
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Adicione pacotes de trabalho a uma seção da reunião na aba Reuniões.
-            line_1: Escolha o modo de cor de forma mais prática com as caixas de seleção "Aumentar contraste".
-            line_2: Filtrar projetos pela última atualização.
-            line_3: Ir para os elementos de destino destacados a partir dos links diretos.
-            line_4: Confira as ações críticas com caixas de diálogo de perigo mais acessíveis.
+            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
+            line_1: Project attributes type hierarchy.
+            line_2: Performance updates with great impact.
+            line_3: New index page for Documents module.
+            line_4: Possibility to change parent of a custom field item.
     links:
       upgrade_enterprise_edition: "Atualizar para a edição Enterprise"
       postgres_migration: "Migrando sua instalação para PostgreSQL"

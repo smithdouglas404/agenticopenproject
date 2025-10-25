@@ -2552,15 +2552,15 @@ ko:
         header: "새로운 기능 및 제품 업데이트에 대해 알아보세요."
         learn_about: "새로운 모든 기능에 대해 자세히 알아보기"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_5":
+        "16_6":
           new_features_title: >
-            이 릴리스에는 다음과 같은 다양한 새로운 기능과 개선 사항이 포함되어 있습니다.
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: 미팅 탭의 미팅 섹션에 작업 패키지를 추가합니다.
-            line_1: '"대비 증가" 확인란으로 색상 모드를 보다 편리하게 선택합니다.'
-            line_2: 마지막 업데이트 기준으로 프로젝트를 필터링합니다.
-            line_3: 딥링크에서 강조 표시된 대상 요소로 이동합니다.
-            line_4: 더욱 쉽게 액세스할 수 있는 위험 대화 상자에서 중요한 작업을 확인합니다.
+            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
+            line_1: Project attributes type hierarchy.
+            line_2: Performance updates with great impact.
+            line_3: New index page for Documents module.
+            line_4: Possibility to change parent of a custom field item.
     links:
       upgrade_enterprise_edition: "Enterprise Edition으로 업그레이드"
       postgres_migration: "설치를 PostgreSQL로 마이그레이션"

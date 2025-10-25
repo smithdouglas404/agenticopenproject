@@ -2548,15 +2548,15 @@ zh-CN:
         header: "了解新功能和产品更新。"
         learn_about: "详细了解所有新功能"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_5":
+        "16_6":
           new_features_title: >
-            此版本包含各种新功能和改进，例如：
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: 在“会议”选项卡中将工作包添加到会议小节。
-            line_1: 通过“提高对比度”复选框更方便地选择颜色模式。
-            line_2: 按最后更新时间筛选项目。
-            line_3: 从深层链接跳转到高亮显示的目标元素。
-            line_4: 通过更易操作的危险对话框确认关键操作。
+            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
+            line_1: Project attributes type hierarchy.
+            line_2: Performance updates with great impact.
+            line_3: New index page for Documents module.
+            line_4: Possibility to change parent of a custom field item.
     links:
       upgrade_enterprise_edition: "升级到企业版"
       postgres_migration: "将您的安装迁移到 PostgreSQL"

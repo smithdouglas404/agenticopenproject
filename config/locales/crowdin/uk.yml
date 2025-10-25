@@ -2681,15 +2681,15 @@ uk:
         header: "Читайте про нові функції і оновлення продуктів."
         learn_about: "Дізнайтеся більше про всі нові функції"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_5":
+        "16_6":
           new_features_title: >
-            Випуск включає різноманітні нові функції і покращення, такі як:
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: додавання пакетів робіт у розділ наради на вкладці «Наради»;
-            line_1: зручніший вибір колірного режиму за допомогою прапорців для збільшення контрастності;
-            line_2: фільтрування проєктів за останнім оновленням;
-            line_3: перехід до виділених цільових об’єктів за допомогою точних посилань;
-            line_4: підтвердження критичних дій у зручніших діалогових вікнах, які з’являються перед виконанням ризикованих дій.
+            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
+            line_1: Project attributes type hierarchy.
+            line_2: Performance updates with great impact.
+            line_3: New index page for Documents module.
+            line_4: Possibility to change parent of a custom field item.
     links:
       upgrade_enterprise_edition: "Оновлення до версії Enterprise"
       postgres_migration: "Міграція інсталяції в PostgreSQL"

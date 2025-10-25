@@ -2589,15 +2589,15 @@ de:
         header: "Lesen Sie über neue Funktionen und Updates."
         learn_about: "Erfahren Sie mehr über die neuen Funktionen"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_5":
+        "16_6":
           new_features_title: >
-            Dieses Release enthält verschiedene neue Funktionen und Verbesserungen, wie z. B:
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Fügen Sie Arbeitspakete zu einem Besprechungsabschnitt auf der Registerkarte Besprechungen hinzu.
-            line_1: Wählen Sie den Farbmodus bequemer mit den Kontrollkästchen "Kontrast erhöhen".
-            line_2: Filtern Sie Projekte nach letzter Aktualisierung.
-            line_3: Springen Sie von Deep Links zu markierten Zielelementen.
-            line_4: Bestätigen Sie kritische Aktionen mit besser zugänglichen Gefahrendialogen.
+            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
+            line_1: Project attributes type hierarchy.
+            line_2: Performance updates with great impact.
+            line_3: New index page for Documents module.
+            line_4: Possibility to change parent of a custom field item.
     links:
       upgrade_enterprise_edition: "Auf Enterprise Edition upgraden"
       postgres_migration: "Migration Ihrer Installation zu PostgreSQL"
