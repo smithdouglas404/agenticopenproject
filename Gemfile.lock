@@ -1152,8 +1152,8 @@ GEM
       multi_json
     puma (6.6.1)
       nio4r (~> 2.0)
-    puma-plugin-statsd (2.6.0)
-      puma (>= 5.0, < 7)
+    puma-plugin-statsd (2.7.0)
+      puma (>= 5.0, < 8)
     raabro (1.4.0)
     racc (1.8.1)
     rack (2.2.20)
@@ -1660,7 +1660,7 @@ DEPENDENCIES
   pry-rescue (~> 1.6.0)
   puffing-billy (~> 4.0.0)
   puma (~> 6.5)
-  puma-plugin-statsd (~> 2.0)
+  puma-plugin-statsd (~> 2.7)
   rack-attack (~> 6.8.0)
   rack-cors (~> 2.0.2)
   rack-mini-profiler
@@ -2118,7 +2118,7 @@ CHECKSUMS
   public_suffix (6.0.2) sha256=bfa7cd5108066f8c9602e0d6d4114999a5df5839a63149d3e8b0f9c1d3558394
   puffing-billy (4.0.2) sha256=c983610f737e3847301f64cf41dccd9dcedcac9219af54d6eaf8178cbe48b3cc
   puma (6.6.1) sha256=b9b56e4a4ea75d1bfa6d9e1972ee2c9f43d0883f011826d914e8e37b3694ea1e
-  puma-plugin-statsd (2.6.0) sha256=c13ffe6a2fa2d3c245af673316e6d2556f5d0c151455d1934dffc96ce814ea03
+  puma-plugin-statsd (2.7.0) sha256=04f243a7233f4d06ec0e26f1a3522bce18a5910ae711763fabff22681bdad08b
   raabro (1.4.0) sha256=d4fa9ff5172391edb92b242eed8be802d1934b1464061ae5e70d80962c5da882
   racc (1.8.1) sha256=4a7f6929691dbec8b5209a0b373bc2614882b55fc5d2e447a21aaa691303d62f
   rack (2.2.20) sha256=85da3447a4845230a00803d47413ed4d1dd9823f948a8d93c0b2d1e149c07170
