@@ -100,77 +100,101 @@ RSpec.describe Projects::CreateService, type: :model do
         User.current = user
       end
 
-      context "with correct handling of custom fields with default values" do
-        let!(:text_custom_field_with_default) do
-          create(:text_project_custom_field,
-                 default_value: "default",
-                 project_custom_field_section: section)
-        end
-
-        context "if the default value is not explicitly set to blank" do
-          let(:project_attributes) do
-            { custom_field_values: {
-              text_custom_field.id => "foo",
-              bool_custom_field.id => true
-            } }
+      describe "activating custom fields" do
+        context "with default values" do
+          let!(:text_custom_field_with_default) do
+            create(:text_project_custom_field,
+                   default_value: "default",
+                   project_custom_field_section: section)
           end
 
-          it "activates custom fields with default values" do
+          context "if the default value is not explicitly set to blank" do
+            let(:project_attributes) do
+              { custom_field_values: {
+                text_custom_field.id => "foo",
+                bool_custom_field.id => true
+              } }
+            end
+
+            it "activates custom fields with default values" do
+              subject
+              expect(project.project_custom_field_project_mappings.pluck(:custom_field_id))
+                .to contain_exactly(text_custom_field.id, bool_custom_field.id, text_custom_field_with_default.id)
+            end
+          end
+
+          context "if the default value is explicitly set to blank" do
+            let(:project_attributes) do
+              { custom_field_values: {
+                text_custom_field.id => "foo",
+                bool_custom_field.id => true,
+                text_custom_field_with_default.id => ""
+              } }
+            end
+
+            it "does not activate custom fields with default values" do
+              subject
+              expect(project.project_custom_field_project_mappings.pluck(:custom_field_id))
+                .to contain_exactly(text_custom_field.id, bool_custom_field.id)
+            end
+          end
+        end
+
+        context "with required custom fields", with_flag: { calculated_value_project_attribute: true } do
+          let!(:calculated_custom_field) do
+            create(:calculated_value_project_custom_field,
+                   project_custom_field_section: section)
+          end
+          let!(:required_calculated_custom_field) do
+            create(:calculated_value_project_custom_field,
+                   is_required: true,
+                   project_custom_field_section: section)
+          end
+
+          let(:project_attributes) do
+            { custom_field_values: { text_custom_field.id => "foo" } }
+          end
+
+          it "activates required calculated custom fields even if no value is provided" do
             subject
             expect(project.project_custom_field_project_mappings.pluck(:custom_field_id))
-              .to contain_exactly(text_custom_field.id, bool_custom_field.id, text_custom_field_with_default.id)
+              .to contain_exactly(required_calculated_custom_field.id, text_custom_field.id)
           end
         end
 
-        context "if the default value is explicitly set to blank" do
+        context "with hidden custom fields" do
           let(:project_attributes) do
             { custom_field_values: {
               text_custom_field.id => "foo",
               bool_custom_field.id => true,
-              text_custom_field_with_default.id => ""
+              hidden_custom_field.id => "hidden"
             } }
           end
 
-          it "does not activate custom fields with default values" do
-            subject
-            expect(project.project_custom_field_project_mappings.pluck(:custom_field_id))
-              .to contain_exactly(text_custom_field.id, bool_custom_field.id)
-          end
-        end
-      end
-
-      context "with hidden custom fields" do
-        let(:project_attributes) do
-          { custom_field_values: {
-            text_custom_field.id => "foo",
-            bool_custom_field.id => true,
-            hidden_custom_field.id => "hidden"
-          } }
-        end
-
-        context "with admin permission" do
-          it "does activate hidden custom fields" do
-            subject
-            expect(project.project_custom_field_project_mappings.pluck(:custom_field_id))
-              .to contain_exactly(text_custom_field.id, bool_custom_field.id, hidden_custom_field.id)
-            expect(project.custom_value_for(hidden_custom_field).typed_value).to eq("hidden")
-          end
-        end
-
-        context "without admin permission" do
-          let(:user) { create(:user) }
-
-          before do
-            mock_permissions_for(user) do |mock|
-              mock.allow_globally :add_project
+          context "with admin permission" do
+            it "does activate hidden custom fields" do
+              subject
+              expect(project.project_custom_field_project_mappings.pluck(:custom_field_id))
+                .to contain_exactly(text_custom_field.id, bool_custom_field.id, hidden_custom_field.id)
+              expect(project.custom_value_for(hidden_custom_field).typed_value).to eq("hidden")
             end
           end
 
-          it "does not activate hidden custom fields" do
-            subject
-            expect(subject).not_to be_success
-            expect(subject.errors[hidden_custom_field.attribute_name])
-              .to include "was attempted to be written but is not writable."
+          context "without admin permission" do
+            let(:user) { create(:user) }
+
+            before do
+              mock_permissions_for(user) do |mock|
+                mock.allow_globally :add_project
+              end
+            end
+
+            it "does not activate hidden custom fields" do
+              subject
+              expect(subject).not_to be_success
+              expect(subject.errors[hidden_custom_field.attribute_name])
+                .to include "was attempted to be written but is not writable."
+            end
           end
         end
       end

@@ -98,10 +98,11 @@ module Projects::Concerns
     end
 
     def build_missing_project_custom_field_project_mappings(project)
-      # Activate custom fields for this project (via mapping table) if values have been provided
-      # for custom_fields, but no mapping exists.
+      # Activate all custom fields (via mapping table) that are required or
+      # have a value provided by the user, but no mapping exists.
+
       custom_field_ids = project.custom_values
-        .select { |cv| cv.value.present? }
+        .select { |cv| cv.value.present? || cv.required? }
         .pluck(:custom_field_id).uniq
       activated_custom_field_ids = project.project_custom_field_project_mappings.pluck(:custom_field_id).uniq
 
