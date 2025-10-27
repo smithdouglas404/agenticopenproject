@@ -161,11 +161,11 @@ git clone https://github.com/nodenv/node-build.git $(nodenv root)/plugins/node-b
 
 You can find the latest LTS version here: [nodejs.org/en/download/](https://nodejs.org/en/download/)
 
-At the time of writing this is v22.15.0 Install and activate it with:
+At the time of writing this is v22.21.0 Install and activate it with:
 
 ```shell
-nodenv install 22.15.0
-nodenv global 22.15.0
+nodenv install 22.21.0
+nodenv global 22.21.0
 nodenv rehash
 ```
 
@@ -187,7 +187,7 @@ bundler --version
 Bundler version 2.7.2
 
 node --version
-v22.15.0
+v22.21.0
 
 npm --version
 10.5.0
