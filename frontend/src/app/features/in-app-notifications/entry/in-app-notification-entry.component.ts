@@ -119,11 +119,7 @@ export class InAppNotificationEntryComponent implements OnInit {
   }
 
   fullScreenLink():string {
-    if (!this.workPackageId) {
-      return;
-    }
-
-    return id ? this.pathHelper.workPackagePath(this.workPackageId) : this.pathHelper.workPackagesPath(null);
+    return this.workPackageId ? this.pathHelper.workPackagePath(this.workPackageId) : this.pathHelper.workPackagesPath(null);
   }
 
   projectClicked(event:MouseEvent):void { // eslint-disable-line class-methods-use-this
