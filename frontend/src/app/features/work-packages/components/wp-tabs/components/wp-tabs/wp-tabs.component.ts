@@ -59,7 +59,7 @@ export class WpTabsComponent implements OnInit {
   private getDisplayableTabs() {
     return this
       .wpTabsService
-      .getDisplayableTabs(this.workPackage)
+      .getDisplayableTabs(this.workPackage, this.routedFromAngular)
       .map((tab) => {
         if (this.routedFromAngular) {
           return ({
