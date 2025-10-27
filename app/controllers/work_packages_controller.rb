@@ -72,7 +72,7 @@ class WorkPackagesController < ApplicationController
   def show
     respond_to do |format|
       format.html do
-        unless show_route_complete?
+        if show_route_incomplete?
           # redirect /work_packages/:id to a full route with project and tab
           redirect_to action: "show",
                       id: params[:id],
@@ -286,7 +286,7 @@ class WorkPackagesController < ApplicationController
     params.permit(:query_id, :state, :query_props)
   end
 
-  def show_route_complete?
-    params[:project_id].present? && params[:tab].present?
+  def show_route_incomplete?
+    params[:project_id].blank? && params[:tab].blank?
   end
 end
