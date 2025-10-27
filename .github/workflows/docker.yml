@@ -96,14 +96,20 @@ jobs:
       matrix:
         include:
           - platform: linux/amd64
+            digest: amd64-slim
+            bim_support: false
+            debian_base: trixie
+            target: slim
+            runner: runner=4cpu-linux-x64
+          - platform: linux/amd64
             digest: amd64-bim
             bim_support: true
             debian_base: bookworm
-            target: slim
+            target: slim-bim
             runner: runner=4cpu-linux-x64
           - platform: linux/arm64/v8
             digest: arm64-slim
-            debian_base: bookworm
+            debian_base: trixie
             bim_support: false
             target: slim
             runner: runner=4cpu-linux-arm64
@@ -115,7 +121,7 @@ jobs:
             runner: runner=4cpu-linux-x64
           - platform: linux/arm64/v8
             digest: arm64-aio
-            debian_base: bookworm
+            debian_base: trixie
             bim_support: false
             target: all-in-one
             runner: runner=4cpu-linux-arm64
@@ -267,7 +273,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        target: [slim, all-in-one]
+        target: [slim, slim-bim, all-in-one]
     needs:
       - setup
       - build
