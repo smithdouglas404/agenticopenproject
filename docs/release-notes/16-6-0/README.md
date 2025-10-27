@@ -32,6 +32,8 @@ OpenProject 16.6 introduces new project attribute types that make portfolio eval
 
 **Calculated values** enable automatic computations based on formulas using numeric project attributes, including scores from Scored lists. This allows teams to calculate project scores or priorities consistently across the portfolio.
 
+![alt text](openproject-16-6-project-attributes-calculated-value.png)
+
 Together, these additions give project portfolio managers a flexible foundation for data-driven project evaluation and more transparent portfolio decisions. 
 
 >[!NOTE]
