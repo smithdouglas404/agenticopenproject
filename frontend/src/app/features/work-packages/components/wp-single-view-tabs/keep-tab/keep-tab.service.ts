@@ -72,7 +72,7 @@ export class KeepTabService {
   public goCurrentShowState(workPackageId:string):void {
     const projectIdentifier = this.currentProject.identifier;
     const link = this.pathHelper.genericWorkPackagePath(projectIdentifier, workPackageId, this.currentShowTab) + window.location.search;
-    Turbo.visit(link, { action: 'advance' });
+    window.location.href = link;
   }
 
   public goCurrentDetailsState(params:Record<string, unknown> = {}):void {

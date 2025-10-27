@@ -122,10 +122,7 @@ export class ScrollableTabsComponent extends UntilDestroyedMixin implements Afte
 
     // Override history to avoid that browser back leads you to a different tab instead of the page you originated from
     if (tab.path) {
-      if (document.referrer != '') {
-        history.replaceState({ isBase: true }, '', new URL(document.referrer).pathname);
-      }
-      window.location.href = tab.path;
+      Turbo.visit(tab.path, { action: document.referrer != '' ? 'replace' : 'advance' })
     }
   }
 
