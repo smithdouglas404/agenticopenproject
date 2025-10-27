@@ -7,7 +7,7 @@
 - **Size**: Large monorepo (~840MB, ~1M+ lines of code)
 - **History**: Originally forked from Redmine over a decade ago, evolved significantly as an independent project
 - **Backend**: Ruby 3.4.5, Rails ~8.0.3
-- **Frontend**: Node.js 22.15.0, npm 10.1.0+, TypeScript
+- **Frontend**: Node.js 22.21.0, npm 10.1.0+, TypeScript
 - **Database**: PostgreSQL (required)
 - **Architecture**: Server-rendered HTML with Hotwire (Turbo + Stimulus). Legacy Angular components exist and are being migrated to custom elements. Uses GitHub's Primer Design System via ViewComponent.
 - **Editions**: OpenProject comes in Community and Enterprise editions
@@ -19,7 +19,7 @@
 ### Ruby and Node Versions
 **ALWAYS verify versions before building:**
 - Ruby: `3.4.5` (see `.ruby-version`)
-- Node: `^22.15.0` (see `package.json` engines)
+- Node: `^22.21.0` (see `package.json` engines)
 - Bundler: Latest 2.x
 
 ### Development Environment Options

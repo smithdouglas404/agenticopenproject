@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,56 +26,19 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module Homescreen
-  module Blocks
-    class NewFeatures < Grids::WidgetComponent
-      def title
-        I18n.t(:label_new_features)
-      end
-
-      def feature_teaser_image
-        "#{feature_version}_features.svg"
-      end
-
-      def new_features_header
-        I18n.t("homescreen.blocks.new_features.header")
-      end
-
-      def learn_more_link_text
-        I18n.t("homescreen.blocks.new_features.learn_about")
-      end
-
-      def new_features_title
-        I18n.t("#{base_i18n_key}.new_features_title",
-               default: "Missing feature title")
-      end
-
-      def new_features
-        I18n.t("#{base_i18n_key}.new_features_list").values
-      end
-
-      def teaser_exists?
-        I18n.exists?(base_i18n_key)
-      end
-
-      def base_i18n_key
-        "homescreen.blocks.new_features.#{feature_version}"
-      end
-
-      def has_image?
-        helpers.has_rails_asset?(feature_teaser_image)
-      end
-
-      private
-
-      def feature_version
-        [
-          OpenProject::VERSION::MAJOR,
-          OpenProject::VERSION::MINOR
-        ].join("_")
-      end
+module AssetHelper
+  ##
+  # In development mode, assets are dynamically compiled
+  # while in production, they are precompiled.
+  #
+  # This results in different ways to check for the existence of an asset.
+  def has_rails_asset?(logical_path)
+    if Rails.configuration.assets.compile
+      Rails.application.assets.find_asset(logical_path).present?
+    else
+      Rails.application.assets_manifest.assets[logical_path].present?
     end
   end
 end
