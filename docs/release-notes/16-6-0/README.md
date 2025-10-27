@@ -41,9 +41,9 @@ When enabled in a project, the calculated value can be displayed on the project 
 
 ### Performance updates
 
-text
+OpenProject 16.6 introduces several backend optimizations that significantly improve performance in large environments. [Database queries for collection endpoints in the API v3 have been optimized](https://community.openproject.org/wp/68457) to avoid unnecessary counting operations, and the [autocompleter for adding work package relations now requests only the data it actually needs](https://community.openproject.org/wp/68458).
 
-screenshot
+These improvements reduce query load and shorten response times, especially for installations with thousands of projects and work packages.
 
 ### New index page for Documents module
 
