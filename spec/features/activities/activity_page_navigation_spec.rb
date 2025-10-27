@@ -142,6 +142,19 @@ RSpec.describe "Activity page navigation", :js do
       expect(page).to have_heading("#{user.name}'s activity")
       expect(page).to have_link(user.name)
       expect(page).to have_no_link(another_user.name)
+
+      # Applying filters should keep the user filter applied
+      click_button "Apply"
+
+      expect(page).to have_link(user.name)
+      expect(page).to have_no_link(another_user.name)
+
+      # Navigating to the previous/next pages should keep the user filter applied
+      click_link("Previous")
+      click_link("Next")
+
+      expect(page).to have_link(user.name)
+      expect(page).to have_no_link(another_user.name)
     end
   end
 
