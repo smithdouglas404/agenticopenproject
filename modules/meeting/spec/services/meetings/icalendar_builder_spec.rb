@@ -57,10 +57,40 @@ RSpec.describe Meetings::IcalendarBuilder,
   context "with a single meeting" do
     let(:meeting) { create(:meeting, :author_participates, start_time: Time.zone.parse("2025-08-30 10:00")) }
 
+    context "when meeting has been created before we added RSVP support" do
+      subject(:builder) { described_class.new(timezone:, user: meeting.author) }
+
+      let(:parsed_calendar) { Icalendar::Calendar.parse(builder.to_ical).first }
+
+      before do
+        meeting.participants.first.update(participation_status: "unknown")
+      end
+
+      it "does not set PARTSTAT and RSVP for current user" do
+        builder.add_single_meeting_event(meeting:)
+        builder.update_calendar_status(cancelled: false)
+
+        event = parsed_calendar.events.first
+        expect(event.attendee).not_to be_empty
+
+        # Find the current user's attendee entry
+        current_user_attendee = event.attendee.find { |a| a.to_s.include?(meeting.author.mail) }
+        expect(current_user_attendee).to be_present
+        expect(current_user_attendee.ical_params).not_to have_key("partstat")
+        expect(current_user_attendee.ical_params["rsvp"]).to be_nil
+        expect(current_user_attendee.ical_params["cutype"]).to eq(["INDIVIDUAL"])
+        expect(current_user_attendee.ical_params["role"]).to eq(["REQ-PARTICIPANT"])
+      end
+    end
+
     context "when current user needs to take action" do
       subject(:builder) { described_class.new(timezone:, user: meeting.author) }
 
       let(:parsed_calendar) { Icalendar::Calendar.parse(builder.to_ical).first }
+
+      before do
+        meeting.participants.first.update(participation_status: :needs_action)
+      end
 
       it "sets PARTSTAT to NEEDS-ACTION and RSVP to TRUE for current user" do
         builder.add_single_meeting_event(meeting:)
@@ -90,7 +120,11 @@ RSpec.describe Meetings::IcalendarBuilder,
 
     context "when current user has accepted all invitations" do
       subject(:builder) do
-        described_class.new(timezone:, user: meeting.author).tap(&:treat_participations_from_user_as_accepted!)
+        described_class.new(timezone:, user: meeting.author)
+      end
+
+      before do
+        meeting.participants.first.update(participation_status: :accepted)
       end
 
       let(:parsed_calendar) { Icalendar::Calendar.parse(builder.to_ical).first }
@@ -104,7 +138,7 @@ RSpec.describe Meetings::IcalendarBuilder,
 
         event.attendee.each do |attendee|
           expect(attendee.ical_params["partstat"]).to eq(["ACCEPTED"])
-          expect(attendee.ical_params["rsvp"]).to eq(["FALSE"])
+          expect(attendee.ical_params["rsvp"]).to be_nil
           expect(attendee.ical_params["cutype"]).to eq(["INDIVIDUAL"])
           expect(attendee.ical_params["role"]).to eq(["REQ-PARTICIPANT"])
         end
@@ -117,7 +151,7 @@ RSpec.describe Meetings::IcalendarBuilder,
 
       subject(:builder) { described_class.new(timezone:, user: other_user) }
 
-      it "sets PARTSTAT to ACCEPTED and RSVP to FALSE for all attendees" do
+      it "does not set PARTSTAT and RSVP for any attendees" do
         builder.add_single_meeting_event(meeting:)
         builder.update_calendar_status(cancelled: false)
 
@@ -125,8 +159,8 @@ RSpec.describe Meetings::IcalendarBuilder,
         expect(event.attendee).not_to be_empty
 
         event.attendee.each do |attendee|
-          expect(attendee.ical_params["partstat"]).to eq(["ACCEPTED"])
-          expect(attendee.ical_params["rsvp"]).to eq(["FALSE"])
+          expect(attendee.ical_params["partstat"]).to be_nil
+          expect(attendee.ical_params["rsvp"]).to be_nil
           expect(attendee.ical_params["cutype"]).to eq(["INDIVIDUAL"])
           expect(attendee.ical_params["role"]).to eq(["REQ-PARTICIPANT"])
         end
@@ -138,8 +172,8 @@ RSpec.describe Meetings::IcalendarBuilder,
       let(:user2) { create(:user, firstname: "Jane", lastname: "Smith", mail: "jane@example.com") }
       let(:meeting_with_participants) do
         meeting = create(:meeting, start_time: Time.zone.parse("2025-08-30 10:00"))
-        create(:meeting_participant, meeting:, user: user1)
-        create(:meeting_participant, meeting:, user: user2)
+        create(:meeting_participant, :needs_action, meeting:, user: user1)
+        create(:meeting_participant, :accepted, meeting:, user: user2)
         meeting
       end
 
@@ -170,39 +204,9 @@ RSpec.describe Meetings::IcalendarBuilder,
 
           # Jane is not the current user, so she should have ACCEPTED and RSVP=FALSE
           expect(jane_attendee.ical_params["partstat"]).to eq(["ACCEPTED"])
-          expect(jane_attendee.ical_params["rsvp"]).to eq(["FALSE"])
+          expect(jane_attendee.ical_params["rsvp"]).to be_nil
           expect(jane_attendee.ical_params["cutype"]).to eq(["INDIVIDUAL"])
           expect(jane_attendee.ical_params["role"]).to eq(["REQ-PARTICIPANT"])
-        end
-      end
-
-      context "when current user has accepted all invitations" do
-        subject(:builder) do
-          described_class.new(timezone:, user: user1).tap(&:treat_participations_from_user_as_accepted!)
-        end
-
-        let(:parsed_calendar) { Icalendar::Calendar.parse(builder.to_ical).first }
-
-        it "sets PARTSTAT to ACCEPTED and RSVP to FALSE for all multiple attendees" do
-          builder.add_single_meeting_event(meeting: meeting_with_participants)
-          builder.update_calendar_status(cancelled: false)
-
-          event = parsed_calendar.events.first
-          expect(event.attendee.count).to eq(2)
-
-          # Find attendees by email
-          john_attendee = event.attendee.find { |a| a.to_s.include?("john@example.com") }
-          jane_attendee = event.attendee.find { |a| a.to_s.include?("jane@example.com") }
-
-          expect(john_attendee).to be_present
-          expect(jane_attendee).to be_present
-
-          [john_attendee, jane_attendee].each do |attendee|
-            expect(attendee.ical_params["partstat"]).to eq(["ACCEPTED"])
-            expect(attendee.ical_params["rsvp"]).to eq(["FALSE"])
-            expect(attendee.ical_params["cutype"]).to eq(["INDIVIDUAL"])
-            expect(attendee.ical_params["role"]).to eq(["REQ-PARTICIPANT"])
-          end
         end
       end
     end
@@ -288,6 +292,14 @@ RSpec.describe Meetings::IcalendarBuilder,
     context "when current user needs to take action" do
       subject(:builder) { described_class.new(timezone:, user: user1) }
 
+      before do
+        recurring_meeting.template.participants.find_by(user: user1).update(participation_status: :needs_action)
+        recurring_meeting.meetings.each do |meeting|
+          meeting.participants.find_by(user: user1).update(participation_status: :needs_action)
+        end
+        recurring_meeting.template.participants.find_by(user: user2).update(participation_status: :declined)
+      end
+
       let(:parsed_calendar) { Icalendar::Calendar.parse(builder.to_ical).first }
 
       it "sets PARTSTAT to NEEDS-ACTION and RSVP to TRUE for current user in recurring meeting series" do
@@ -307,9 +319,9 @@ RSpec.describe Meetings::IcalendarBuilder,
         expect(current_user_attendee.ical_params["cutype"]).to eq(["INDIVIDUAL"])
         expect(current_user_attendee.ical_params["role"]).to eq(["REQ-PARTICIPANT"])
 
-        # Other user should have ACCEPTED and RSVP=FALSE
-        expect(other_user_attendee.ical_params["partstat"]).to eq(["ACCEPTED"])
-        expect(other_user_attendee.ical_params["rsvp"]).to eq(["FALSE"])
+        # Other user should have DECLINED
+        expect(other_user_attendee.ical_params["partstat"]).to eq(["DECLINED"])
+        expect(other_user_attendee.ical_params["rsvp"]).to be_nil
         expect(other_user_attendee.ical_params["cutype"]).to eq(["INDIVIDUAL"])
         expect(other_user_attendee.ical_params["role"]).to eq(["REQ-PARTICIPANT"])
 
@@ -321,8 +333,8 @@ RSpec.describe Meetings::IcalendarBuilder,
 
           expect(current_user_override.ical_params["partstat"]).to eq(["NEEDS-ACTION"])
           expect(current_user_override.ical_params["rsvp"]).to eq(["TRUE"])
-          expect(other_user_override.ical_params["partstat"]).to eq(["ACCEPTED"])
-          expect(other_user_override.ical_params["rsvp"]).to eq(["FALSE"])
+          expect(other_user_override.ical_params["partstat"]).to be_nil
+          expect(other_user_override.ical_params["rsvp"]).to be_nil
         end
       end
 
@@ -353,12 +365,12 @@ RSpec.describe Meetings::IcalendarBuilder,
 
     context "when current user has accepted all invitations" do
       subject(:builder) do
-        described_class.new(timezone:, user: user1).tap(&:treat_participations_from_user_as_accepted!)
+        described_class.new(timezone:, user: user1)
       end
 
       let(:parsed_calendar) { Icalendar::Calendar.parse(builder.to_ical).first }
 
-      it "sets PARTSTAT to ACCEPTED and RSVP to FALSE for all attendees in recurring meeting series" do
+      it "does not set PARTSTAT and RSVP for all attendees in recurring meeting series" do
         builder.add_series_event(recurring_meeting:)
 
         master = parsed_calendar.events.find { |e| e.rrule.present? && e.recurrence_id.blank? }
@@ -367,8 +379,8 @@ RSpec.describe Meetings::IcalendarBuilder,
         # Check master event attendees
         expect(master.attendee).not_to be_empty
         master.attendee.each do |attendee|
-          expect(attendee.ical_params["partstat"]).to eq(["ACCEPTED"])
-          expect(attendee.ical_params["rsvp"]).to eq(["FALSE"])
+          expect(attendee.ical_params["partstat"]).to be_nil
+          expect(attendee.ical_params["rsvp"]).to be_nil
           expect(attendee.ical_params["cutype"]).to eq(["INDIVIDUAL"])
           expect(attendee.ical_params["role"]).to eq(["REQ-PARTICIPANT"])
         end
@@ -377,8 +389,8 @@ RSpec.describe Meetings::IcalendarBuilder,
         overrides.each do |override_event|
           expect(override_event.attendee).not_to be_empty
           override_event.attendee.each do |attendee|
-            expect(attendee.ical_params["partstat"]).to eq(["ACCEPTED"])
-            expect(attendee.ical_params["rsvp"]).to eq(["FALSE"])
+            expect(attendee.ical_params["partstat"]).to be_nil
+            expect(attendee.ical_params["rsvp"]).to be_nil
             expect(attendee.ical_params["cutype"]).to eq(["INDIVIDUAL"])
             expect(attendee.ical_params["role"]).to eq(["REQ-PARTICIPANT"])
           end

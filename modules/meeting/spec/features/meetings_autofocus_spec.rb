@@ -59,8 +59,9 @@ RSpec.describe "Meetings autofocus", :js do
   let(:notes_field) do
     TextEditorField.new(page, "Notes", selector: ".op-meeting-agenda-item-form--notes")
   end
-  let(:outcome_field) do
-    TextEditorField.new(page, "Outcome", selector: test_selector("meeting-outcome-input"))
+
+  def outcome_field_for(agenda_item)
+    TextEditorField.new(page, "Outcome", selector: test_selector("meeting-outcome-input-for-#{agenda_item.id}"))
   end
 
   before do
@@ -107,6 +108,7 @@ RSpec.describe "Meetings autofocus", :js do
 
     show_page.expect_agenda_item title: "Second"
     second = MeetingAgendaItem.find_by(title: "Second")
+    outcome_field = outcome_field_for(second)
 
     # add outcome
     show_page.add_outcome_from_menu(second) do
@@ -219,6 +221,7 @@ RSpec.describe "Meetings autofocus", :js do
 
     show_page.expect_agenda_item title: "Second"
     second = MeetingAgendaItem.find_by(title: "Second")
+    outcome_field = outcome_field_for(second)
 
     # add outcome
     show_page.add_outcome_from_menu(second) do

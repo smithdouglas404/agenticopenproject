@@ -62,6 +62,7 @@ tr:
       meeting_participant:
         invited: "Davet edilen"
         attended: "Katıldığım"
+        participation_status: "Participation status"
     errors:
       models:
         meeting_participant:
@@ -498,6 +499,7 @@ tr:
   label_agenda_item_work_package: "Gündem maddesinin iş parçası"
   label_section_rename: "Seçimi yeniden adlandır"
   label_agenda_outcome: "Sonuçlar"
+  label_agenda_new_outcome: "New outcome"
   label_agenda_outcome_actions: "Gündem sonuçları eylemleri"
   label_agenda_outcome_edit: "Sonuç düzenle"
   label_agenda_outcome_delete: "Sonuç kaldır"

@@ -88,6 +88,10 @@ module OpenProject::Documents
       "#{document(id)}/attachments"
     end
 
+    add_api_path :prepare_attachments_by_document do |id|
+      "#{document(id)}/attachments/prepare"
+    end
+
     add_api_endpoint "API::V3::Root" do
       mount ::API::V3::Documents::DocumentsAPI
     end

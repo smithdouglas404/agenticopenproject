@@ -78,6 +78,16 @@ export class PathHelperService {
     return `${this.ifcModelsPath(projectIdentifier)}/${modelId}/edit`;
   }
 
+  public inviteUserPath(projectId:string|null) {
+    const path = `${this.staticBase}/users/invite`;
+
+    if (projectId) {
+      return `${path}?user_invitation[project_id]=${projectId}`;
+    }
+
+    return path;
+  }
+
   public ifcModelsDeletePath(projectIdentifier:string, modelId:number|string) {
     return `${this.ifcModelsPath(projectIdentifier)}/${modelId}`;
   }

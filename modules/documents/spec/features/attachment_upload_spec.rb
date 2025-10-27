@@ -59,7 +59,7 @@ RSpec.describe "Upload attachment to documents",
     login_as(user)
   end
 
-  shared_examples "can upload an image" do
+  shared_examples "can upload an image in CKEditor" do
     it "can upload an image" do
       visit new_project_document_path(project)
 
@@ -143,10 +143,47 @@ RSpec.describe "Upload attachment to documents",
       allow_any_instance_of(Attachment).to receive(:diskfile).and_return image_fixture # rubocop:disable RSpec/AnyInstance
     end
 
-    it_behaves_like "can upload an image"
+    it_behaves_like "can upload an image in CKEditor"
   end
 
   context "for internal uploads", with_direct_uploads: false do
-    it_behaves_like "can upload an image"
+    it_behaves_like "can upload an image in CKEditor"
+  end
+
+  shared_examples "can upload an image in BlockNote" do
+    it "is possible to upload attachments from the editor" do
+      visit edit_document_path(document)
+      expect(page).to have_css(".document-form--long-description")
+      expect(page).not_to have_element("opce-ckeditor-augmented-textarea")
+      expect(page).to have_no_css("img[alt='image.png']")
+
+      editor.open_add_image_dialog
+      expect do
+        attach_file(image_fixture.path, make_visible: true) do
+          find(:button, text: "Upload image").click
+        end
+        expect(page).to have_css("img[alt='image.png'][src*='/api/v3/attachments/']")
+      end.to change { document.attachments.count }.by(1)
+
+      click_on "Save"
+      expect_flash(message: "Successful update.")
+
+      visit edit_document_path(document)
+      expect(page).to have_css("img[alt='image.png'][src*='/api/v3/attachments/']")
+    end
+  end
+
+  context "for collaborative documents", with_flag: { block_note_editor: true } do
+    let(:experimental_category) { create(:document_category, name: "Experimental", project:) }
+    let(:document) { create(:document, category: experimental_category, project:) }
+    let(:editor) { FormFields::Primerized::BlockNoteEditorInput.new }
+
+    context "with internal uploads" do
+      it_behaves_like "can upload an image in BlockNote"
+    end
+
+    context "with uploads to an external storage", :with_direct_uploads do
+      it_behaves_like "can upload an image in BlockNote"
+    end
   end
 end

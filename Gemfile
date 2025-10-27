@@ -113,7 +113,7 @@ gem "ruby-duration", "~> 3.2.0"
 # `config/initializers/mail_starttls_patch.rb` has also been patched to
 # fix STARTTLS handling until https://github.com/mikel/mail/pull/1536 is
 # released.
-gem "mail", "= 2.8.1"
+gem "mail", "2.9.0"
 
 gem "csv", "~> 3.3"
 
@@ -228,10 +228,10 @@ gem "yabeda-rails"
 
 # opentelemetry
 gem "opentelemetry-exporter-otlp", "~> 0.31.0", require: false
-gem "opentelemetry-instrumentation-all", "~> 0.85.0", require: false
+gem "opentelemetry-instrumentation-all", "~> 0.86.1", require: false
 gem "opentelemetry-sdk", "~> 1.10", require: false
 
-gem "view_component", "~> 4.0.2"
+gem "view_component", "~> 4.1.0"
 # Lookbook
 gem "lookbook", "2.3.13"
 
