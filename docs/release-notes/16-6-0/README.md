@@ -24,9 +24,9 @@ OpenProject 16.6 introduces a new project attribute type: Calculated value.
 
 ![OpenProject 16.6: New project attribute of type 'Calculated value' available in the administration](project_attribute_calculated_value.png)
 
-This attribute allows administrators to define formulas that automatically compute results based on existing numeric project attributes, such as integers or floats. 
+This attribute allows administrators to define formulas that automatically compute results based on existing numeric project attributes, such as *Integer* or *Float*. 
 
-Calculated values can combine multiple attributes and constants using mathematical operators ( + , – , × , ÷ ) and parentheses to control order of operations. The computed result is displayed directly on the project overview and in the project list, providing a transparent and consistent way to evaluate or score projects across the portfolio.
+Calculated values can combine multiple attributes and constants using mathematical operators (+, –, ×, ÷) and parentheses to control the order of operations. The computed result is displayed directly on the project overview and in the project list, providing a transparent and consistent way to evaluate or score projects across the portfolio.
 
 Here's an example of a calculated value called 'Calculated Project Score' with the following formula: Benefit ​* 0.3 - Effort * 0.1
 
@@ -35,7 +35,7 @@ Here's an example of a calculated value called 'Calculated Project Score' with t
 >[!NOTE]
 > Please note that this new project attribute is part of our [Enterprise add-ons in the Enterprise Professional plan](/pricing).
 
-When enabled in a project, the calculated value can be displayed on the project overview page. It will automatically update if one of its values (e.g. 'Benefit' or 'Effort' in this example) is changed.
+When enabled in a project, the calculated value can be displayed on the project overview page. It automatically updates whenever one of its source attributes (e.g., *Benefit* or *Effort* in this example) is changed.
 
 ![OpenProject 16.6: Project overview page showing three project attributes: Benefit = 5, Effort = 1, Calculated Project Score = automatically set to 1,4](openproject-16-6-project-attributes-calculated-values-overview-page-highlighted.png)
 
