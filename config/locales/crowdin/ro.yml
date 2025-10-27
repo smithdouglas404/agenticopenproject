@@ -322,6 +322,7 @@ ro:
     reorder_alphabetical: "Reordonează valorile alfabetic"
     reorder_confirmation: "Avertisment: Ordinea curentă a valorilor disponibile se va pierde. Continuați?"
     placeholder_version_select: "Work package or project selection is required first"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Marchează câmpul personalizat ca obligatoriu. Acest lucru va face obligatorie completarea câmpului atunci când se creează resurse noi sau se actualizează resursele existente."
       is_required_for_project: "Bifează pentru a activa acest atribut și a-l face obligatoriu în toate proiectele. Nu poate fi dezactivat pentru proiecte individuale."
@@ -669,6 +670,57 @@ ro:
     memberships:
       no_results_title_text: Acest utilizator nu este în acest moment participant în vreun proiect.
     open_profile: "Open profile"
+    invite_user_modal:
+      invite: "Invite"
+      title:
+        invite: "Invite user"
+        invite_to_project: "Invite %{type} to %{project}"
+        invite_principal_to_project: "Invite %{principal} to %{project}"
+      project:
+        label: "Project"
+        required: "Please select a project"
+        next_button: "Next"
+        no_results: "No projects were found"
+        no_invite_rights: "You are not allowed to invite members to this project"
+      type:
+        required: "Please select the type to be invited"
+        user:
+          title: "Invite user to %{project_name}"
+          description: "Permissions based on the assigned role in the selected project"
+        group:
+          title: "Invite group to %{project_name}"
+          description: "Permissions based on the assigned role in the selected project"
+        placeholder_user:
+          title: "Add placeholder user to %{project_name}"
+          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
+          description: "Has no access to the project and no emails are sent out."
+        already_member_message: "Already a member of %{project}"
+      principal:
+        no_results_user: "No users were found"
+        invite_user: "Invite:"
+        no_results_placeholder: "No placeholders were found"
+        create_new_placeholder: "Create new placeholder:"
+        no_results_group: "No groups were found"
+        invite_to_project: "Invite to %{project_name}"
+        required:
+          user: "Please select a user"
+          placeholder: "Please select a placeholder"
+          group: "Please select a group"
+      role:
+        label: "Role in %{project}"
+        no_roles_found: "No roles were found"
+        description: >
+          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+        required: "Please select a role"
+      message:
+        label: "Invitation message"
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
+      summary:
+        next_button: "Send invitation"
+      success_message:
+        user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
+        placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
+        group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
   page:
     text: "Text"
   placeholder_users:
@@ -1251,6 +1303,9 @@ ro:
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Daily reminders"
         workdays: "Zile lucrătoare"
+      users/invitation/form_model:
+        principal_type: "Invitation type"
+        id_or_email: "Name or email address"
       version:
         effective_date: "Dată finalizare"
         sharing: "Distribuire"
@@ -2641,15 +2696,15 @@ ro:
         header: "Read about new features and product updates."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_5":
+        "16_6":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Add work packages to a meeting section in the Meetings tab.
-            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
-            line_2: Filter projects by last update.
-            line_3: Jump to highlighted target elements from deep links.
-            line_4: Confirm critical actions with more accessible danger dialogs.
+            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
+            line_1: Project attributes type hierarchy.
+            line_2: Performance updates with great impact.
+            line_3: New index page for Documents module.
+            line_4: Possibility to change parent of a custom field item.
     links:
       upgrade_enterprise_edition: "Actualizează la ediția Enterprise"
       postgres_migration: "Migrarea instalației dvs. către PostgreSQL"
@@ -2973,7 +3028,8 @@ ro:
   label_duplicated_by: "dublat de"
   label_duplicate: "duplicat"
   label_duplicates: "dublează"
-  label_edit: "Editare"
+  label_edit: "Editează"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Editare: %{x}"
   label_enable_multi_select: "Comutare selecție multiplă"
   label_enabled_project_custom_fields: "Câmpuri personalizate activate"
@@ -3030,7 +3086,7 @@ ro:
   label_global_roles: "Roluri globale"
   label_git_path: "Calea catre directorul .git"
   label_greater_or_equal: ">="
-  label_group_by: "Grupare după"
+  label_group_by: "Grupează după"
   label_group_new: "Grupare nouă"
   label_group: "Grup"
   label_group_named: "Grup %{name}"
@@ -3400,6 +3456,7 @@ ro:
   label_user_search: "Căutare utilizator"
   label_user_settings: "Setări utilizator"
   label_users_settings: "Setări utilizatori"
+  label_value_x: "Value: %{x}"
   label_version_new: "Versiune nouă"
   label_version_edit: "Editați versiunea"
   label_version_plural: "Versiuni"
@@ -3814,6 +3871,9 @@ ro:
   permission_edit_wiki_pages: "Editare pagini wiki"
   permission_export_work_packages: "Export pachete de lucru"
   permission_export_wiki_pages: "Export pagini wiki"
+  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email_explanation: >
+    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
   permission_list_attachments: "Listare atașamente"
   permission_log_own_time: "Înregistrare timp propriu"
   permission_log_time: "Înregistrare timp pentru alți utilizatori"
@@ -3843,6 +3903,9 @@ ro:
   permission_share_work_packages: "Partajare pachete de lucru"
   permission_manage_types: "Selectare tipuri"
   permission_manage_own_reminders: "Create own reminders"
+  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals_explanation: >
+    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
   permission_view_project: "Vezi proiecte"
   permission_view_changesets: "Vizualizare revizii repo în OpenProject"
   permission_view_internal_comments: "Vezi comentariile interne"

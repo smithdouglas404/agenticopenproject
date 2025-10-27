@@ -321,6 +321,7 @@ pt-BR:
     reorder_alphabetical: "Reorganizar valores em ordem alfabética"
     reorder_confirmation: "Aviso: A ordem atual dos valores disponíveis será perdida. Continuar?"
     placeholder_version_select: "Primeiro é necessária a seleção do pacote de trabalho ou projeto"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Marcar o campo personalizado como obrigatório. Isto tornará obrigatório o preenchimento do campo ao criar novos recursos ou ao atualizar recursos existentes."
       is_required_for_project: "Marque esta opção para ativar este atributo e torná-lo obrigatório em todos os projetos. Este atributo não pode ser desativado em projetos individuais."
@@ -662,6 +663,57 @@ pt-BR:
     memberships:
       no_results_title_text: Atualmente, este usuário não é um membro de um projeto.
     open_profile: "Abrir perfil"
+    invite_user_modal:
+      invite: "Invite"
+      title:
+        invite: "Invite user"
+        invite_to_project: "Invite %{type} to %{project}"
+        invite_principal_to_project: "Invite %{principal} to %{project}"
+      project:
+        label: "Project"
+        required: "Please select a project"
+        next_button: "Next"
+        no_results: "No projects were found"
+        no_invite_rights: "You are not allowed to invite members to this project"
+      type:
+        required: "Please select the type to be invited"
+        user:
+          title: "Invite user to %{project_name}"
+          description: "Permissions based on the assigned role in the selected project"
+        group:
+          title: "Invite group to %{project_name}"
+          description: "Permissions based on the assigned role in the selected project"
+        placeholder_user:
+          title: "Add placeholder user to %{project_name}"
+          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
+          description: "Has no access to the project and no emails are sent out."
+        already_member_message: "Already a member of %{project}"
+      principal:
+        no_results_user: "No users were found"
+        invite_user: "Invite:"
+        no_results_placeholder: "No placeholders were found"
+        create_new_placeholder: "Create new placeholder:"
+        no_results_group: "No groups were found"
+        invite_to_project: "Invite to %{project_name}"
+        required:
+          user: "Please select a user"
+          placeholder: "Please select a placeholder"
+          group: "Please select a group"
+      role:
+        label: "Role in %{project}"
+        no_roles_found: "No roles were found"
+        description: >
+          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+        required: "Please select a role"
+      message:
+        label: "Invitation message"
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
+      summary:
+        next_button: "Send invitation"
+      success_message:
+        user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
+        placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
+        group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
   page:
     text: "Texto"
   placeholder_users:
@@ -1240,6 +1292,9 @@ pt-BR:
         mode_guideline: "Alguns modos substituirão as cores personalizadas do tema para melhorar acessibilidade e legibilidade. Selecione o modo Claro para suporte total ao tema personalizado."
         daily_reminders: "Lembretes diários"
         workdays: "Dias úteis"
+      users/invitation/form_model:
+        principal_type: "Invitation type"
+        id_or_email: "Name or email address"
       version:
         effective_date: "Data de conclusão"
         sharing: "Compartilhamento"
@@ -2593,15 +2648,15 @@ pt-BR:
         header: "Leia sobre novos recursos e atualizações do produto."
         learn_about: "Saiba mais sobre todos os novos recursos"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_5":
+        "16_6":
           new_features_title: >
-            A versão contém diversos novos recursos e melhorias, como:
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Adicione pacotes de trabalho a uma seção da reunião na aba Reuniões.
-            line_1: Escolha o modo de cor de forma mais prática com as caixas de seleção "Aumentar contraste".
-            line_2: Filtrar projetos pela última atualização.
-            line_3: Ir para os elementos de destino destacados a partir dos links diretos.
-            line_4: Confira as ações críticas com caixas de diálogo de perigo mais acessíveis.
+            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
+            line_1: Project attributes type hierarchy.
+            line_2: Performance updates with great impact.
+            line_3: New index page for Documents module.
+            line_4: Possibility to change parent of a custom field item.
     links:
       upgrade_enterprise_edition: "Atualizar para a edição Enterprise"
       postgres_migration: "Migrando sua instalação para PostgreSQL"
@@ -2926,6 +2981,7 @@ pt-BR:
   label_duplicate: "duplicado"
   label_duplicates: "Duplicados"
   label_edit: "Editar"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Editar: %{x}"
   label_enable_multi_select: "Alterna para seleção múltipla"
   label_enabled_project_custom_fields: "Campos personalizados habilitados"
@@ -3352,6 +3408,7 @@ pt-BR:
   label_user_search: "Busca por usuário"
   label_user_settings: "Configurações do usuário"
   label_users_settings: "Configurações de usuário"
+  label_value_x: "Value: %{x}"
   label_version_new: "Nova versão"
   label_version_edit: "Editar versão"
   label_version_plural: "Versões"
@@ -3764,6 +3821,9 @@ pt-BR:
   permission_edit_wiki_pages: "Editar páginas wiki"
   permission_export_work_packages: "Exportar pacotes de trabalho"
   permission_export_wiki_pages: "Exportar páginas wiki"
+  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email_explanation: >
+    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
   permission_list_attachments: "Lista de anexos"
   permission_log_own_time: "Registrar própria hora"
   permission_log_time: "Registrar hora para outros usuários"
@@ -3793,6 +3853,9 @@ pt-BR:
   permission_share_work_packages: "Compartilhar pacotes de trabalho"
   permission_manage_types: "Selecionar tipos"
   permission_manage_own_reminders: "Criar seus próprios lembretes"
+  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals_explanation: >
+    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
   permission_view_project: "Visualizar projetos"
   permission_view_changesets: "Revisões do repositório vistas no OpenProject"
   permission_view_internal_comments: "Visualizar comentários internos"

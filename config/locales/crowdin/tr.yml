@@ -323,6 +323,7 @@ tr:
     reorder_alphabetical: "Değerleri alfabetik olarak yeniden sıralayın"
     reorder_confirmation: "Uyarı: Mevcut değerlerin sırası kaybolacak. Devam et?"
     placeholder_version_select: "Öncelikle iş paketi veya proje seçimi gereklidir"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Özel alanı gerekli olarak işaretleyin. Bu, yeni kaynaklar oluştururken veya mevcut kaynakları güncellerken alanın doldurulmasını zorunlu hale getirecektir."
       is_required_for_project: "Bu özelliği etkinleştirmek ve tüm projelerde gerekli kılmak için işaretleyin. Tek tek projeler için devre dışı bırakılamaz."
@@ -664,6 +665,57 @@ tr:
     memberships:
       no_results_title_text: Bu kullanıcı şuan için bir proje üyesi değil.
     open_profile: "Profili aç"
+    invite_user_modal:
+      invite: "Invite"
+      title:
+        invite: "Invite user"
+        invite_to_project: "Invite %{type} to %{project}"
+        invite_principal_to_project: "Invite %{principal} to %{project}"
+      project:
+        label: "Project"
+        required: "Please select a project"
+        next_button: "Next"
+        no_results: "No projects were found"
+        no_invite_rights: "You are not allowed to invite members to this project"
+      type:
+        required: "Please select the type to be invited"
+        user:
+          title: "Invite user to %{project_name}"
+          description: "Permissions based on the assigned role in the selected project"
+        group:
+          title: "Invite group to %{project_name}"
+          description: "Permissions based on the assigned role in the selected project"
+        placeholder_user:
+          title: "Add placeholder user to %{project_name}"
+          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
+          description: "Has no access to the project and no emails are sent out."
+        already_member_message: "Already a member of %{project}"
+      principal:
+        no_results_user: "No users were found"
+        invite_user: "Invite:"
+        no_results_placeholder: "No placeholders were found"
+        create_new_placeholder: "Create new placeholder:"
+        no_results_group: "No groups were found"
+        invite_to_project: "Invite to %{project_name}"
+        required:
+          user: "Please select a user"
+          placeholder: "Please select a placeholder"
+          group: "Please select a group"
+      role:
+        label: "Role in %{project}"
+        no_roles_found: "No roles were found"
+        description: >
+          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+        required: "Please select a role"
+      message:
+        label: "Invitation message"
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
+      summary:
+        next_button: "Send invitation"
+      success_message:
+        user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
+        placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
+        group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
   page:
     text: "Metin"
   placeholder_users:
@@ -1243,6 +1295,9 @@ tr:
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Günlük hatırlatmalar"
         workdays: "İş Günleri"
+      users/invitation/form_model:
+        principal_type: "Invitation type"
+        id_or_email: "Name or email address"
       version:
         effective_date: "Bitiş tarihi"
         sharing: "Paylaşım"
@@ -2596,15 +2651,15 @@ tr:
         header: "Yeni özellikler ve ürün güncellemeleri hakkında bilgi edinin."
         learn_about: "Tüm yeni özellikler hakkında daha fazla bilgi edinin"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_5":
+        "16_6":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Add work packages to a meeting section in the Meetings tab.
-            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
-            line_2: Filter projects by last update.
-            line_3: Jump to highlighted target elements from deep links.
-            line_4: Confirm critical actions with more accessible danger dialogs.
+            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
+            line_1: Project attributes type hierarchy.
+            line_2: Performance updates with great impact.
+            line_3: New index page for Documents module.
+            line_4: Possibility to change parent of a custom field item.
     links:
       upgrade_enterprise_edition: "Enterprise sürümüne yükseltin"
       postgres_migration: "Kurulumunuzu PostgreSQL'e taşıyın"
@@ -2929,6 +2984,7 @@ tr:
   label_duplicate: "kopya"
   label_duplicates: "kopyalayan"
   label_edit: "Düzenle"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Düzenle: %{x}"
   label_enable_multi_select: "Çoklu seçimi etkinleştir"
   label_enabled_project_custom_fields: "Etkin özel alanlar"
@@ -3355,6 +3411,7 @@ tr:
   label_user_search: "Kullanıcı ara"
   label_user_settings: "Kullanıcı ayarları"
   label_users_settings: "Kullanıcı ayarları"
+  label_value_x: "Value: %{x}"
   label_version_new: "Yeni sürüm"
   label_version_edit: "Sürümü düzenle"
   label_version_plural: "Sürümler"
@@ -3766,6 +3823,9 @@ tr:
   permission_edit_wiki_pages: "Wiki sayfalarını düzenlemek"
   permission_export_work_packages: "İş paketlerini dışarı aktar"
   permission_export_wiki_pages: "Wiki sayfalarını dışarı aktar"
+  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email_explanation: >
+    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
   permission_list_attachments: "Ekleri listelemek"
   permission_log_own_time: "Kendi zamanını günlüğe kaydet"
   permission_log_time: "Diğer kullanıcıların zamanını günlüğe kaydet"
@@ -3795,6 +3855,9 @@ tr:
   permission_share_work_packages: "İş paketini paylaşma"
   permission_manage_types: "İş paketi türlerini seçmek"
   permission_manage_own_reminders: "Kendi hatırlatıcısını oluşturma"
+  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals_explanation: >
+    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
   permission_view_project: "Projeleri görüntüleme"
   permission_view_changesets: "OpenProject'de depo revizyonlarını görüntüle"
   permission_view_internal_comments: "Dahili yorumları görüntüle"

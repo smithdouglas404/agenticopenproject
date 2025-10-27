@@ -319,6 +319,7 @@ uk:
     reorder_alphabetical: "Перевпорядкувати значення за алфавітом"
     reorder_confirmation: "Увага! Поточний порядок доступних значень буде втрачено. Продовжити?"
     placeholder_version_select: "Спочатку потрібно вибрати пакет робіт або проєкт"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Позначте користувацьке поле як обов’язкове. Так його потрібно буде заповнювати під час створення нових або оновлення наявних ресурсів."
       is_required_for_project: "Установіть прапорець, щоб увімкнути цей атрибут і зробити його обов’язковим в усіх проєктах. Його не можна деактивувати для окремих проєктів."
@@ -672,6 +673,57 @@ uk:
     memberships:
       no_results_title_text: Цей користувач наразі не є учасником проекту.
     open_profile: "Відкрити профіль"
+    invite_user_modal:
+      invite: "Invite"
+      title:
+        invite: "Invite user"
+        invite_to_project: "Invite %{type} to %{project}"
+        invite_principal_to_project: "Invite %{principal} to %{project}"
+      project:
+        label: "Project"
+        required: "Please select a project"
+        next_button: "Next"
+        no_results: "No projects were found"
+        no_invite_rights: "You are not allowed to invite members to this project"
+      type:
+        required: "Please select the type to be invited"
+        user:
+          title: "Invite user to %{project_name}"
+          description: "Permissions based on the assigned role in the selected project"
+        group:
+          title: "Invite group to %{project_name}"
+          description: "Permissions based on the assigned role in the selected project"
+        placeholder_user:
+          title: "Add placeholder user to %{project_name}"
+          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
+          description: "Has no access to the project and no emails are sent out."
+        already_member_message: "Already a member of %{project}"
+      principal:
+        no_results_user: "No users were found"
+        invite_user: "Invite:"
+        no_results_placeholder: "No placeholders were found"
+        create_new_placeholder: "Create new placeholder:"
+        no_results_group: "No groups were found"
+        invite_to_project: "Invite to %{project_name}"
+        required:
+          user: "Please select a user"
+          placeholder: "Please select a placeholder"
+          group: "Please select a group"
+      role:
+        label: "Role in %{project}"
+        no_roles_found: "No roles were found"
+        description: >
+          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+        required: "Please select a role"
+      message:
+        label: "Invitation message"
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
+      summary:
+        next_button: "Send invitation"
+      success_message:
+        user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
+        placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
+        group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
   page:
     text: "Текст"
   placeholder_users:
@@ -1253,6 +1305,9 @@ uk:
         mode_guideline: "Деякі режими перезаписують користувацькі кольори теми, щоб поліпшити доступність і читабельність. Виберіть світлий режим, якщо потрібна повна підтримка користувацької теми."
         daily_reminders: "Щоденні нагадування"
         workdays: "Робочі дні"
+      users/invitation/form_model:
+        principal_type: "Invitation type"
+        id_or_email: "Name or email address"
       version:
         effective_date: "Дата закінчення"
         sharing: "Поширення"
@@ -2680,15 +2735,15 @@ uk:
         header: "Читайте про нові функції і оновлення продуктів."
         learn_about: "Дізнайтеся більше про всі нові функції"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_5":
+        "16_6":
           new_features_title: >
-            Випуск включає різноманітні нові функції і покращення, такі як:
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: додавання пакетів робіт у розділ наради на вкладці «Наради»;
-            line_1: зручніший вибір колірного режиму за допомогою прапорців для збільшення контрастності;
-            line_2: фільтрування проєктів за останнім оновленням;
-            line_3: перехід до виділених цільових об’єктів за допомогою точних посилань;
-            line_4: підтвердження критичних дій у зручніших діалогових вікнах, які з’являються перед виконанням ризикованих дій.
+            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
+            line_1: Project attributes type hierarchy.
+            line_2: Performance updates with great impact.
+            line_3: New index page for Documents module.
+            line_4: Possibility to change parent of a custom field item.
     links:
       upgrade_enterprise_edition: "Оновлення до версії Enterprise"
       postgres_migration: "Міграція інсталяції в PostgreSQL"
@@ -3013,6 +3068,7 @@ uk:
   label_duplicate: "Дублювати"
   label_duplicates: "Дублікати"
   label_edit: "Редагувати"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Редагувати: %{x}"
   label_enable_multi_select: "Перемкнути мультиселекцію"
   label_enabled_project_custom_fields: "Увімкнено спеціальні поля"
@@ -3096,7 +3152,7 @@ uk:
   label_index_by_title: "Індекс за назвою"
   label_information: "Інформація"
   label_information_plural: "Інформація"
-  label_installation_guides: "Інструкції зі встановлення"
+  label_installation_guides: "Інструкції із встановлення"
   label_integer: "Ціле число"
   label_interface: "Інтерфейс"
   label_internal: "Власне"
@@ -3439,6 +3495,7 @@ uk:
   label_user_search: "Знайти користувача:"
   label_user_settings: "Налаштування користувача"
   label_users_settings: "Налаштування користувачів"
+  label_value_x: "Value: %{x}"
   label_version_new: "Нова версія"
   label_version_edit: "Редагувати версію"
   label_version_plural: "Версії"
@@ -3854,6 +3911,9 @@ uk:
   permission_edit_wiki_pages: "Редагування wiki-сторінок"
   permission_export_work_packages: "Експорт робочих пакетів"
   permission_export_wiki_pages: "Експорт wiki-сторінок"
+  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email_explanation: >
+    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
   permission_list_attachments: "Список вкладень"
   permission_log_own_time: "Реєструвати власний час"
   permission_log_time: "Реєструвати час для інших користувачів"
@@ -3883,6 +3943,9 @@ uk:
   permission_share_work_packages: "Надати доступ до пакетів робіт"
   permission_manage_types: "Виберіть типи"
   permission_manage_own_reminders: "Створюйте власні нагадування"
+  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals_explanation: >
+    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
   permission_view_project: "Перегляд проєктів"
   permission_view_changesets: "Перегляд змін репозиторію (сховища) в OpenProject"
   permission_view_internal_comments: "Перегляд внутрішніх коментарів"

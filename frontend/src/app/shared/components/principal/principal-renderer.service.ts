@@ -78,6 +78,7 @@ export class PrincipalRendererService {
     for (let i = 0; i < users.length; i++) {
       const userElement = document.createElement('span');
       if (multiLine) {
+        container.classList.add('-multiline');
         userElement.classList.add('op-principal--multi-line');
       }
 

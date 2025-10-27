@@ -62,7 +62,7 @@ gem "friendly_id", "~> 5.5.0"
 
 gem "scimitar", "~> 2.13"
 
-gem "acts_as_list", "~> 1.2.5"
+gem "acts_as_list", "~> 1.2.6"
 gem "acts_as_tree", "~> 2.9.0"
 gem "awesome_nested_set", "~> 3.8.0"
 gem "closure_tree", "~> 9.2.0"
@@ -113,7 +113,7 @@ gem "ruby-duration", "~> 3.2.0"
 # `config/initializers/mail_starttls_patch.rb` has also been patched to
 # fix STARTTLS handling until https://github.com/mikel/mail/pull/1536 is
 # released.
-gem "mail", "= 2.8.1"
+gem "mail", "2.9.0"
 
 gem "csv", "~> 3.3"
 
@@ -195,9 +195,9 @@ gem "carrierwave", "~> 1.3.4"
 gem "carrierwave_direct", "~> 2.1.0"
 gem "fog-aws"
 
-gem "aws-sdk-core", "~> 3.233"
+gem "aws-sdk-core", "~> 3.234"
 # File upload via fog + screenshots on travis
-gem "aws-sdk-s3", "~> 1.200"
+gem "aws-sdk-s3", "~> 1.201"
 
 gem "openproject-token", "~> 8.0.0"
 
@@ -228,10 +228,10 @@ gem "yabeda-rails"
 
 # opentelemetry
 gem "opentelemetry-exporter-otlp", "~> 0.31.0", require: false
-gem "opentelemetry-instrumentation-all", "~> 0.85.0", require: false
+gem "opentelemetry-instrumentation-all", "~> 0.86.1", require: false
 gem "opentelemetry-sdk", "~> 1.10", require: false
 
-gem "view_component", "~> 4.0.2"
+gem "view_component", "~> 4.1.0"
 # Lookbook
 gem "lookbook", "2.3.13"
 
@@ -261,7 +261,7 @@ group :test do
   gem "turbo_tests", github: "opf/turbo_tests", ref: "with-patches"
 
   gem "rack_session_access"
-  gem "rspec", "~> 3.13.0"
+  gem "rspec", "~> 3.13.2"
   # also add to development group, so 'spec' rake task gets loaded
   gem "rspec-rails", "~> 8.0.0", group: :development
 
@@ -393,7 +393,7 @@ gem "googleauth", require: false
 gem "disposable", "~> 0.6.2"
 
 # Used for formula evaluation of calculated values
-gem "dentaku", "~> 3.5", ">= 3.5.5"
+gem "dentaku", "~> 3.5"
 
 group :postgres do
   gem "pg", "~> 1.6.2"

@@ -57,7 +57,9 @@ module CustomFields
     end
 
     def recalculate_values?
-      model.field_format_calculated_value? && model.formula_previously_changed?
+      return false unless model.field_format_calculated_value?
+
+      model.formula_previously_changed? || (model.is_required_previously_changed? && model.is_required?)
     end
   end
 end

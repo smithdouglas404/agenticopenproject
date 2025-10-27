@@ -53,7 +53,7 @@ module Homescreen
       end
 
       def new_features
-        I18n.t("#{base_i18n_key}.new_features_list")
+        I18n.t("#{base_i18n_key}.new_features_list").values
       end
 
       def teaser_exists?
@@ -62,6 +62,10 @@ module Homescreen
 
       def base_i18n_key
         "homescreen.blocks.new_features.#{feature_version}"
+      end
+
+      def has_image?
+        Rails.application.assets_manifest.assets.has_key?(feature_teaser_image)
       end
 
       private

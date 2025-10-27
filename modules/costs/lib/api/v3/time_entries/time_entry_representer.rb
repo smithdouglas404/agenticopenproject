@@ -181,6 +181,9 @@ module API
         end
 
         self.to_eager_load = [:user, :activity, { project: :enabled_modules }]
+
+        # entity is a polymorphic association and thus can't be eager-loaded, but it can be preloaded
+        self.to_preload = [:entity]
       end
     end
   end

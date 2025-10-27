@@ -30,7 +30,11 @@
 
 Rails.application.routes.draw do
   resources :projects, only: [] do
-    resources :documents, only: %i[create new index]
+    resources :documents, only: %i[create new index] do
+      collection do
+        get :menu, to: "documents/menus#show"
+      end
+    end
   end
 
   resources :documents, except: %i[create new index]

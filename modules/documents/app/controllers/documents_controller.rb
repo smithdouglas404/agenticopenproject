@@ -30,30 +30,33 @@
 
 class DocumentsController < ApplicationController
   include AttachableServiceCall
+  include PaginationHelper
+  include OpTurbo::ComponentStream
 
   default_search_scope :documents
   model_object Document
+
   before_action :find_project_by_project_id, only: %i[index new create]
   before_action :find_model_object, except: %i[index new create]
   before_action :find_project_from_association, except: %i[index new create]
   before_action :authorize
 
-  def index
-    @group_by = %w(category date title author).include?(params[:group_by]) ? params[:group_by] : "category"
-    documents = @project.documents
-    @grouped =
-      case @group_by
-      when "date"
-        documents.group_by { |d| d.updated_at.to_date }
-      when "title"
-        documents.group_by { |d| d.title.first.upcase }
-      when "author"
-        documents.with_attachments.group_by { |d| d.attachments.last.author }
-      else
-        documents.includes(:category).group_by(&:category)
-      end
+  def index # rubocop:disable Metrics/AbcSize
+    @documents = list_documents_query
+      .includes(:category)
+      .paginate(page: page_param, per_page: per_page_param)
 
-    render layout: false if request.xhr?
+    respond_to do |format|
+      format.html { render }
+
+      format.turbo_stream do
+        replace_via_turbo_stream component: Documents::ListComponent.new(@documents, project: @project)
+        current_url = url_for(params.permit(:controller, :action, :filters, :sortBy))
+        turbo_streams << turbo_stream.push_state(current_url)
+
+        render turbo_stream: turbo_streams
+      end
+    end
   end
 
   def show
@@ -109,7 +112,20 @@ class DocumentsController < ApplicationController
     params.fetch(:document, {}).permit("category_id", "title", "description", "content_binary")
   end
 
+  def list_documents_query
+    @query = ParamsToQueryService.new(Document, current_user).call(params)
+    @query.where(:project_id, "=", [@project.id])
+    @query.order(updated_at: :desc) unless params[:sortBy]
+
+    @query.results
+  end
+
   def generate_oauth_token
+    # do not generate a token if the user is not allowed to manage documents
+    if !current_user.allowed_in_project?(:manage_documents, @project)
+      return
+    end
+
     result = Documents::OAuth::GenerateTokenService
       .new(user: current_user)
       .call

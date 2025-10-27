@@ -322,6 +322,7 @@ ko:
     reorder_alphabetical: "알파벳순으로 값 재정렬"
     reorder_confirmation: "경고: 사용 가능한 값의 현재 순서가 손실됩니다. 계속하시겠습니까?"
     placeholder_version_select: "먼저 작업 패키지 또는 프로젝트를 선택해야 합니다"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "사용자 지정 필드를 필수로 표시합니다. 이렇게 하면 새 리소스를 생성하거나 기존 리소스를 업데이트할 때 이 필드를 반드시 입력해야 합니다."
       is_required_for_project: "이 특성을 활성화하려면 선택하고 모든 프로젝트에서 필수로 지정하세요. 개별 프로젝트에 대해 비활성화할 수는 없습니다."
@@ -657,6 +658,57 @@ ko:
     memberships:
       no_results_title_text: 이 사용자는 프로젝트의 멤버가 아닙니다.
     open_profile: "프로필 열기"
+    invite_user_modal:
+      invite: "Invite"
+      title:
+        invite: "Invite user"
+        invite_to_project: "Invite %{type} to %{project}"
+        invite_principal_to_project: "Invite %{principal} to %{project}"
+      project:
+        label: "Project"
+        required: "Please select a project"
+        next_button: "Next"
+        no_results: "No projects were found"
+        no_invite_rights: "You are not allowed to invite members to this project"
+      type:
+        required: "Please select the type to be invited"
+        user:
+          title: "Invite user to %{project_name}"
+          description: "Permissions based on the assigned role in the selected project"
+        group:
+          title: "Invite group to %{project_name}"
+          description: "Permissions based on the assigned role in the selected project"
+        placeholder_user:
+          title: "Add placeholder user to %{project_name}"
+          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
+          description: "Has no access to the project and no emails are sent out."
+        already_member_message: "Already a member of %{project}"
+      principal:
+        no_results_user: "No users were found"
+        invite_user: "Invite:"
+        no_results_placeholder: "No placeholders were found"
+        create_new_placeholder: "Create new placeholder:"
+        no_results_group: "No groups were found"
+        invite_to_project: "Invite to %{project_name}"
+        required:
+          user: "Please select a user"
+          placeholder: "Please select a placeholder"
+          group: "Please select a group"
+      role:
+        label: "Role in %{project}"
+        no_roles_found: "No roles were found"
+        description: >
+          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+        required: "Please select a role"
+      message:
+        label: "Invitation message"
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
+      summary:
+        next_button: "Send invitation"
+      success_message:
+        user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
+        placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
+        group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
   page:
     text: "텍스트"
   placeholder_users:
@@ -1235,6 +1287,9 @@ ko:
         mode_guideline: "일부 모드에서는 접근성과 가독성을 위해 사용자 지정 테마 색상을 덮어씁니다. 전체 사용자 지정 테마 지원을 위해서는 라이트 모드를 선택하세요."
         daily_reminders: "일일 미리 알림"
         workdays: "근무일"
+      users/invitation/form_model:
+        principal_type: "Invitation type"
+        id_or_email: "Name or email address"
       version:
         effective_date: "완료 날짜"
         sharing: "공유"
@@ -2551,15 +2606,15 @@ ko:
         header: "새로운 기능 및 제품 업데이트에 대해 알아보세요."
         learn_about: "새로운 모든 기능에 대해 자세히 알아보기"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_5":
+        "16_6":
           new_features_title: >
-            이 릴리스에는 다음과 같은 다양한 새로운 기능과 개선 사항이 포함되어 있습니다.
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: 미팅 탭의 미팅 섹션에 작업 패키지를 추가합니다.
-            line_1: '"대비 증가" 확인란으로 색상 모드를 보다 편리하게 선택합니다.'
-            line_2: 마지막 업데이트 기준으로 프로젝트를 필터링합니다.
-            line_3: 딥링크에서 강조 표시된 대상 요소로 이동합니다.
-            line_4: 더욱 쉽게 액세스할 수 있는 위험 대화 상자에서 중요한 작업을 확인합니다.
+            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
+            line_1: Project attributes type hierarchy.
+            line_2: Performance updates with great impact.
+            line_3: New index page for Documents module.
+            line_4: Possibility to change parent of a custom field item.
     links:
       upgrade_enterprise_edition: "Enterprise Edition으로 업그레이드"
       postgres_migration: "설치를 PostgreSQL로 마이그레이션"
@@ -2884,6 +2939,7 @@ ko:
   label_duplicate: "중복"
   label_duplicates: "복제"
   label_edit: "편집"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "편집: %{x}"
   label_enable_multi_select: "다중 선택 토글"
   label_enabled_project_custom_fields: "사용자 정의 필드 사용"
@@ -3310,6 +3366,7 @@ ko:
   label_user_search: "사용자 검색"
   label_user_settings: "사용자 설정"
   label_users_settings: "사용자 설정"
+  label_value_x: "Value: %{x}"
   label_version_new: "새 버전"
   label_version_edit: "버전 편집"
   label_version_plural: "버전"
@@ -3720,6 +3777,9 @@ ko:
   permission_edit_wiki_pages: "위키 페이지 편집"
   permission_export_work_packages: "작업 패키지 내보내기"
   permission_export_wiki_pages: "위키 페이지 내보내기"
+  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email_explanation: >
+    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
   permission_list_attachments: "첨부 파일 나열"
   permission_log_own_time: "내 시간 기록"
   permission_log_time: "다른 사용자의 시간 기록"
@@ -3749,6 +3809,9 @@ ko:
   permission_share_work_packages: "작업 패키지 공유"
   permission_manage_types: "유형 선택"
   permission_manage_own_reminders: "고유한 미리 알림 만들기"
+  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals_explanation: >
+    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
   permission_view_project: "프로젝트 보기"
   permission_view_changesets: "OpenProject에서 리포지토리 수정 사항 보기"
   permission_view_internal_comments: "내부 코멘트 보기"

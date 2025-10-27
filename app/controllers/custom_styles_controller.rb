@@ -254,6 +254,6 @@ class CustomStylesController < ApplicationController
     end
 
     @custom_style.send(remove_method)
-    redirect_to custom_style_path
+    redirect_to custom_style_path, status: :see_other
   end
 end

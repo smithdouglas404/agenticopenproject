@@ -26,6 +26,10 @@ zh-CN:
   activerecord:
     models:
       document: "文档"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "标题"
   activity:
     filter:
       document: "文档"
@@ -33,6 +37,22 @@ zh-CN:
   default_doc_category_user: "用户文档"
   enumeration_doc_categories: "文档类别"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "Name"
+      type: "Type"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "Types"
     label_attachment_author: "附件作者"
     label_categories: "类别"
     new_category: "新类别"

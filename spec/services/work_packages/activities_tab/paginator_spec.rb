@@ -255,5 +255,256 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator do
         end
       end
     end
+
+    context "with :only_comments filter" do
+      let!(:journal_with_notes) do
+        create(:work_package_journal,
+               user:,
+               notes: "This is a comment",
+               journable: work_package,
+               version: 2)
+      end
+      let!(:journal_without_notes) do
+        create(:work_package_journal,
+               user:,
+               notes: "",
+               journable: work_package,
+               version: 3)
+      end
+
+      before do
+        params[:filter] = :only_comments
+      end
+
+      it "includes journals with notes" do
+        _pagy, records = paginator.call
+
+        journal_notes = records.map(&:notes)
+        expect(journal_notes).to include("This is a comment")
+      end
+
+      it "excludes journals without notes" do
+        _pagy, records = paginator.call
+
+        expect(records.map(&:id)).not_to include(journal_without_notes.id)
+      end
+
+      context "with changesets" do
+        let(:repository) { create(:repository_subversion, project:) }
+        let!(:changeset) do
+          create(:changeset,
+                 repository:,
+                 committed_on: 1.day.ago,
+                 revision: "rev1")
+        end
+
+        before do
+          work_package.changesets << changeset
+        end
+
+        it "excludes changesets (code commits are not comments)" do
+          _pagy, records = paginator.call
+
+          expect(records).not_to include(changeset)
+        end
+      end
+
+      context "with pagination" do
+        let(:test_limit) { 2 }
+
+        before do
+          # Create journals with notes by updating work package
+          work_package.subject = "Updated 1"
+          work_package.save!
+          work_package.journals.last.update_column(:notes, "Comment 1")
+
+          work_package.subject = "Updated 2"
+          work_package.save!
+          work_package.journals.last.update_column(:notes, "Comment 2")
+
+          params[:limit] = test_limit
+        end
+
+        it "paginates filtered results correctly" do
+          pagy, records = paginator.call
+
+          expect(pagy.count).to be >= 2
+          expect(records.size).to eq(test_limit)
+        end
+      end
+    end
+
+    context "with :only_changes filter" do
+      let(:initial_journal) { work_package.journals.find_by(version: 1) }
+
+      before do
+        params[:filter] = :only_changes
+      end
+
+      it "includes the initial journal (version = 1)" do
+        _pagy, records = paginator.call
+
+        expect(records.map(&:id)).to include(initial_journal.id)
+      end
+
+      context "with attribute changes" do
+        before do
+          # Create journal with attribute change
+          work_package.subject = "Updated subject"
+          work_package.save!
+        end
+
+        it "includes journals with attribute changes" do
+          _pagy, records = paginator.call
+
+          changed_journal = work_package.journals.order(:version).last
+          expect(records.map(&:id)).to include(changed_journal.id)
+        end
+      end
+
+      context "with only notes (no attribute changes)" do
+        let!(:notes_only_journal) do
+          journal = work_package.journals.last
+          journal.update_column(:notes, "Just a comment")
+          journal
+        end
+
+        it "may include journals with only notes (acceptable false positive)" do
+          _pagy, records = paginator.call
+
+          expect(records).not_to be_empty
+        end
+      end
+
+      context "with attachment changes" do
+        before do
+          work_package.attachments << create(:attachment)
+          work_package.save!
+        end
+
+        it "includes journals with attachment changes" do
+          _pagy, records = paginator.call
+
+          attachment_journal = work_package.journals.order(:version).last
+          expect(records.map(&:id)).to include(attachment_journal.id)
+        end
+      end
+
+      context "with cause attribute" do
+        let!(:journal_with_cause) do
+          work_package.subject = "Changed by system"
+          work_package.save!
+          journal = work_package.journals.last
+          journal.update_column(:cause, { type: "system_update" })
+          journal
+        end
+
+        it "includes journals with cause" do
+          _pagy, records = paginator.call
+
+          expect(records.map(&:id)).to include(journal_with_cause.id)
+        end
+      end
+
+      context "with custom field changes" do
+        let!(:custom_field) { create(:work_package_custom_field, field_format: "string") }
+
+        before do
+          project.work_package_custom_fields << custom_field
+          work_package.type.custom_fields << custom_field
+          work_package.custom_field_values = { custom_field.id => "Custom value" }
+          work_package.save!
+        end
+
+        it "includes journals with custom field changes" do
+          _pagy, records = paginator.call
+
+          cf_journal = work_package.journals.order(:version).last
+          expect(records.map(&:id)).to include(cf_journal.id)
+        end
+      end
+
+      context "with file link changes" do
+        let(:storage) { create(:nextcloud_storage) }
+        let(:file_link) { create(:file_link, container: work_package, storage:) }
+
+        before do
+          create(:project_storage, project:, storage:)
+          file_link # Trigger file link creation which creates a journal
+        end
+
+        it "includes journals with file link changes" do
+          _pagy, records = paginator.call
+
+          file_link_journal = work_package.journals.order(:version).last
+          expect(records.map(&:id)).to include(file_link_journal.id)
+        end
+      end
+    end
+
+    context "with filter and deep linking" do
+      let!(:journal_with_notes) do
+        create(:work_package_journal,
+               user:,
+               notes: "Comment 1",
+               journable: work_package,
+               version: 2)
+      end
+      let!(:journal_without_notes) do
+        create(:work_package_journal,
+               user:,
+               notes: "",
+               journable: work_package,
+               version: 3)
+      end
+
+      before do
+        params[:filter] = :only_comments
+      end
+
+      context "when anchoring to a journal that matches the filter" do
+        it "returns the page containing the target journal" do
+          params[:anchor] = "comment-#{journal_with_notes.id}"
+          _pagy, records = paginator.call
+
+          expect(paginator.filter).to eq(:all) # resets to :all when anchoring
+          expect(records.map(&:id)).to include(journal_with_notes.id)
+        end
+      end
+
+      context "when anchoring to a journal that doesn't match the filter" do
+        it "ignores the filter and shows all journals (fallback behavior)" do
+          params[:anchor] = "comment-#{journal_without_notes.id}"
+          _pagy, records = paginator.call
+
+          expect(paginator.filter).to eq(:all) # resets to :all when anchoring
+          expect(records.map(&:id)).to include(journal_without_notes.id)
+          expect(records.map(&:id)).to include(journal_with_notes.id)
+        end
+      end
+    end
+
+    context "with all journals filtered out" do
+      let(:work_package) { create(:work_package, project:, author: user) }
+
+      before do
+        # Create only journals without notes
+        3.times do |i|
+          create(:work_package_journal,
+                 user:,
+                 notes: "",
+                 journable: work_package,
+                 version: i + 2)
+        end
+        params[:filter] = :only_comments
+      end
+
+      it "returns empty results" do
+        pagy, records = paginator.call
+
+        expect(pagy.count).to eq(0)
+        expect(records).to be_empty
+      end
+    end
   end
 end

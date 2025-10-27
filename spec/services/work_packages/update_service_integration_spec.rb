@@ -1861,6 +1861,9 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
 
       work_package.association(:self_and_ancestors).reset
 
+      # ensure the parent missing custom field is validated
+      parent.custom_values_to_validate = parent.custom_field_values
+
       expect(parent.valid?(:saving_custom_fields)).to be(false)
 
       expect(subject).to be_success
@@ -1896,11 +1899,22 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
       mandatory_custom_field
     end
 
-    it "is a failure and does not save the change" do
-      expect(subject).to be_failure
+    it "ignores the mandatory custom field because no value is provided" do
+      expect(subject).to be_success
 
       expect(work_package.reload.subject)
-        .to eq "The old subject"
+        .to eq "A new subject"
+    end
+
+    context "when the mandatory custom field is provided but invalid" do
+      let(:attributes) { { subject: "A new subject", "custom_field_#{mandatory_custom_field.id}" => "" } }
+
+      it "is a failure and does not save the change" do
+        expect(subject).to be_failure
+
+        expect(work_package.reload.subject)
+          .to eq "The old subject"
+      end
     end
   end
 

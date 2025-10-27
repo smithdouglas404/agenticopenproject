@@ -68,6 +68,10 @@ module Storages
             register(:general_information, SharepointContract)
           end
 
+          namespace("models") do
+            register(:managed_folder_identifier, ManagedFolderIdentifier)
+          end
+
           namespace("validators") do
             register(:connection, Validators::ConnectionValidator)
           end

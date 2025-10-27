@@ -84,7 +84,7 @@ For pull requests, the commit of the PR branch is merged into the head commit of
 
 It looks like this: `HEAD is now at 52dd921c Merge 438daa2353d74f5a6afe5bf03af4e298b97a365d into e63289cc26cdb6f675c23fe26dfc4f0de9b8c8d6`.
 
-The format is "Merge <pr commit> into <target branch commit>", so checkout `<target branch commit>` in detached HEAD, then merge `<pr commit>` to run the exact same code as CI.
+The format is "Merge \<pr commit\> into \<target branch commit\>", so checkout `<target branch commit>` in detached HEAD, then merge `<pr commit>` to run the exact same code as CI.
 
 This information is given by `script/github_pr_errors --display-rerun-info`.
 
@@ -123,7 +123,7 @@ If switching a lot between branches during development and migrating databases e
 
 Reset the test database to its pristine state:
 ```shell
-rails db:drop db:create db:migrate RAILS_ENV=test
+bin/rails db:drop db:create db:migrate RAILS_ENV=test
 ```
 
 The test database can be safely reset because it does not contain any data.
@@ -182,7 +182,7 @@ export DISABLE_SPRING=1
 CI does not run a frontend proxy: it precompiles assets. While differences are rare, it is closer to CI to precompile assets as well.
 
 ```shell
-rails assets:clobber openproject:plugins:register_frontend assets:precompile
+bin/rails assets:clobber openproject:plugins:register_frontend assets:precompile
 export OPENPROJECT_DISABLE_DEV_ASSET_PROXY=1
 ```
 

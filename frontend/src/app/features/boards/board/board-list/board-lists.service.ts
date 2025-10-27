@@ -15,6 +15,7 @@ import {
   switchMap,
 } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { IOPFieldSchema } from 'core-app/features/hal/interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class BoardListsService {

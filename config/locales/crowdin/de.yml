@@ -85,11 +85,11 @@ de:
         title: "Enterprise-Token hinzufügen"
         type_token_text: "Enterprise-Token Text"
         token_placeholder: "Enterprise-Token Text hier einfügen"
-      add_token: "Enterprise edition Support Token hochladen"
+      add_token: "Enterprise-Edition Support Token hochladen"
       replace_token: "Aktuellen Enterprise edition Support Token ersetzen"
       order: "Enterprise on-premises bestellen"
-      paste: "Enterprise edition Support Token hier einfügen"
-      required_for_feature: "Dieses Add-on ist nur mit einem aktiven Enterprise edition Support-Token verfügbar."
+      paste: "Enterprise-Edition Support Token hier einfügen"
+      required_for_feature: "Dieses Add-on ist nur mit einem aktiven Enterprise-Edition Support-Token verfügbar."
       enterprise_link: "Klicken Sie hier für weitere Informationen."
       start_trial: "Kostenlose Testversion starten"
       book_now: "Jetzt buchen"
@@ -319,6 +319,7 @@ de:
     reorder_alphabetical: "Alphabetisch umsortieren"
     reorder_confirmation: "Warnung: Die aktuelle Reihenfolge der verfügbaren Werte geht verloren. Fortfahren?"
     placeholder_version_select: "Zunächst muss ein Arbeitspaket oder ein Projekt ausgewählt werden"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Markieren Sie das benutzerdefinierte Feld als erforderlich. Dies macht es zwingend erforderlich, das Feld auszufüllen, wenn neue oder aktualisierte Ressourcen erstellt werden."
       is_required_for_project: "Das Attribut in allen Projekten erforderlich machen. Es kann dann nicht für einzelne Projekte deaktiviert werden."
@@ -660,6 +661,57 @@ de:
     memberships:
       no_results_title_text: Dieser Nutzer ist derzeit in keinem Projekt Mitglied.
     open_profile: "Profil öffnen"
+    invite_user_modal:
+      invite: "Invite"
+      title:
+        invite: "Invite user"
+        invite_to_project: "Invite %{type} to %{project}"
+        invite_principal_to_project: "Invite %{principal} to %{project}"
+      project:
+        label: "Project"
+        required: "Please select a project"
+        next_button: "Next"
+        no_results: "No projects were found"
+        no_invite_rights: "You are not allowed to invite members to this project"
+      type:
+        required: "Please select the type to be invited"
+        user:
+          title: "Invite user to %{project_name}"
+          description: "Permissions based on the assigned role in the selected project"
+        group:
+          title: "Invite group to %{project_name}"
+          description: "Permissions based on the assigned role in the selected project"
+        placeholder_user:
+          title: "Add placeholder user to %{project_name}"
+          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
+          description: "Has no access to the project and no emails are sent out."
+        already_member_message: "Already a member of %{project}"
+      principal:
+        no_results_user: "No users were found"
+        invite_user: "Invite:"
+        no_results_placeholder: "No placeholders were found"
+        create_new_placeholder: "Create new placeholder:"
+        no_results_group: "No groups were found"
+        invite_to_project: "Invite to %{project_name}"
+        required:
+          user: "Please select a user"
+          placeholder: "Please select a placeholder"
+          group: "Please select a group"
+      role:
+        label: "Role in %{project}"
+        no_roles_found: "No roles were found"
+        description: >
+          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+        required: "Please select a role"
+      message:
+        label: "Invitation message"
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
+      summary:
+        next_button: "Send invitation"
+      success_message:
+        user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
+        placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
+        group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
   page:
     text: "Text"
   placeholder_users:
@@ -888,7 +940,7 @@ de:
       label_child_singular: "Unteraufgabe"
       label_child_plural: "Unteraufgaben"
       new_child: "Neue Unteraufgabe"
-      new_child_description: "Erstellt ein zugehöriges Arbeitspaket als Unterelement des aktuellen (übergeordneten) Arbeitspakets"
+      new_child_description: "Erstellt ein zugehöriges Arbeitspaket als Unteraufgabe des aktuellen (übergeordneten) Arbeitspakets"
       child: "Unteraufgabe"
       child_description: "Macht das zugehörige Arbeitspaket zu einer Unteraufgabe des aktuellen (übergeordneten) Arbeitspakets"
       parent: "Übergeordnetes Arbeitspaket"
@@ -1235,6 +1287,9 @@ de:
         mode_guideline: "Einige Modi überschreiben benutzerdefinierte Theme-Farben zur Verbesserung von Barrierefreiheit und Lesbarkeit. Bitte wählen Sie den Hellmodus für die vollständige Unterstützung Ihres benutzerdefinierten Themes."
         daily_reminders: "Tägliche Erinnerungen"
         workdays: "Arbeitstage"
+      users/invitation/form_model:
+        principal_type: "Invitation type"
+        id_or_email: "Name or email address"
       version:
         effective_date: "Endtermin"
         sharing: "Gemeinsame Verwendung"
@@ -1606,7 +1661,7 @@ de:
               status_transition_invalid: "ist ungültig, da kein valider Übergang vom alten zum neuen Status für die aktuelle Rolle des Nutzers existiert."
               status_invalid_in_type: "ist ungültig, da der aktuelle Status nicht in diesem Typ vorhanden ist."
             type:
-              cannot_be_milestone_due_to_children: "kann kein Meilenstein werden, da dieses Arbeitspaket Unterelemente besitzt."
+              cannot_be_milestone_due_to_children: "kann kein Meilenstein werden, da dieses Arbeitspaket Unteraufgaben besitzt."
             priority_id:
               only_active_priorities_allowed: "muss aktiv sein."
             category:
@@ -2365,7 +2420,7 @@ de:
   error_custom_option_not_found: "Option ist nicht vorhanden."
   error_enterprise_plan_needed: "Sie benötigen den Enterprise-Plan %{plan}, um diese Aktion durchzuführen."
   error_enterprise_activation_user_limit: "Ihr Konto konnte nicht aktiviert werden (Nutzerlimit erreicht). Bitte kontaktieren Sie Ihren Administrator um Zugriff zu erhalten."
-  error_enterprise_token_invalid_domain: "Die Enterprise edition ist nicht aktiv. Die aktuelle Domain (%{actual}) entspricht nicht dem erwarteten Hostnamen (%{expected})."
+  error_enterprise_token_invalid_domain: "Die Enterprise-Edition ist nicht aktiv. Die aktuelle Domain (%{actual}) entspricht nicht dem erwarteten Hostnamen (%{expected})."
   error_failed_to_delete_entry: "Fehler beim Löschen dieses Eintrags."
   error_in_dependent: "Fehler beim Versuch, abhängiges Objekt zu ändern: %{dependent_class} #%{related_id} - %{related_subject}: %{error}"
   error_in_new_dependent: "Fehler beim Versuch, abhängiges Objekt zu erstellen: %{dependent_class} - %{related_subject}: %{error}"
@@ -2588,15 +2643,15 @@ de:
         header: "Lesen Sie über neue Funktionen und Updates."
         learn_about: "Erfahren Sie mehr über die neuen Funktionen"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_5":
+        "16_6":
           new_features_title: >
-            Dieses Release enthält verschiedene neue Funktionen und Verbesserungen, wie z. B:
+            The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Fügen Sie Arbeitspakete zu einem Besprechungsabschnitt auf der Registerkarte Besprechungen hinzu.
-            line_1: Wählen Sie den Farbmodus bequemer mit den Kontrollkästchen "Kontrast erhöhen".
-            line_2: Filtern Sie Projekte nach letzter Aktualisierung.
-            line_3: Springen Sie von Deep Links zu markierten Zielelementen.
-            line_4: Bestätigen Sie kritische Aktionen mit besser zugänglichen Gefahrendialogen.
+            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
+            line_1: Project attributes type hierarchy.
+            line_2: Performance updates with great impact.
+            line_3: New index page for Documents module.
+            line_4: Possibility to change parent of a custom field item.
     links:
       upgrade_enterprise_edition: "Auf Enterprise Edition upgraden"
       postgres_migration: "Migration Ihrer Installation zu PostgreSQL"
@@ -2637,7 +2692,7 @@ de:
         dates:
           working: "%{date} ist jetzt ein Arbeitstag"
           non_working: "%{date} ist jetzt ein arbeitsfreier Tag"
-      progress_mode_changed_to_status_based: Fortschrittberechnung wurde auf Status-basiert gesetzt
+      progress_mode_changed_to_status_based: Fortschrittberechnung wurde auf Status-bezogen gesetzt
       status_excluded_from_totals_set_to_false_message: jetzt in den Gesamtwerten der Hierarchie enthalten
       status_excluded_from_totals_set_to_true_message: jetzt von den Hierarchie-Gesamtwerten ausgeschlossen
       status_percent_complete_changed: "% abgeschlossen von %{old_value}% auf %{new_value} % geändert"
@@ -2921,6 +2976,7 @@ de:
   label_duplicate: "Duplikat"
   label_duplicates: "Duplikat von"
   label_edit: "Bearbeiten"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Bearbeiten: %{x}"
   label_enable_multi_select: "Mehrfachauswahl umschalten"
   label_enabled_project_custom_fields: "Aktivierte benutzerdefinierte Felder"
@@ -2933,7 +2989,7 @@ de:
   label_enumerations: "Aufzählungen"
   label_enterprise: "Enterprise"
   label_enterprise_active_users: "%{current}/%{limit} gebuchte aktive Nutzer"
-  label_enterprise_edition: "Enterprise edition"
+  label_enterprise_edition: "Enterprise Edition"
   label_enterprise_support: "Enterprise Support"
   label_environment: "Umgebung"
   label_estimates_and_progress: "Schätzungen und Fortschritt"
@@ -3347,6 +3403,7 @@ de:
   label_user_search: "Nach Benutzer suchen"
   label_user_settings: "Benutzereinstellungen"
   label_users_settings: "Benutzereinstellungen"
+  label_value_x: "Value: %{x}"
   label_version_new: "Neue Version"
   label_version_edit: "Version bearbeiten"
   label_version_plural: "Versionen"
@@ -3760,6 +3817,9 @@ de:
   permission_edit_wiki_pages: "Wiki-Seiten bearbeiten"
   permission_export_work_packages: "Arbeitspakete exportieren"
   permission_export_wiki_pages: "Wiki-Seiten exportieren"
+  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email_explanation: >
+    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
   permission_list_attachments: "Anhänge auflisten"
   permission_log_own_time: "Eigenen Zeitaufwand verbuchen"
   permission_log_time: "Zeitaufwand für andere Benutzer verbuchen"
@@ -3789,6 +3849,9 @@ de:
   permission_share_work_packages: "Arbeitspakete teilen"
   permission_manage_types: "Typen auswählen"
   permission_manage_own_reminders: "Eigene Erinnerungen erstellen"
+  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals_explanation: >
+    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
   permission_view_project: "Projekt anzeigen"
   permission_view_changesets: "Revisionen des Projektarchivs in OpenProject ansehen"
   permission_view_internal_comments: "Interne Kommentare ansehen"
@@ -3960,7 +4023,7 @@ de:
       update_timeout: "Speichere die Informationen bzgl. des genutzten Festplattenspeichers eines Projektarchivs für N Minuten.\nErhöhen Sie diesen Wert zur Verbesserung der Performance, da die Erfassung des genutzten Festplattenspeichers Ressourcen-intensiv ist."
       oauth_application_details: "Der Client Geheimcode wird nach dem Schließen dieses Fensters nicht mehr zugänglich sein. Bitte kopieren Sie diese Werte in die Nextcloud OpenProject Integrationseinstellungen:"
       oauth_application_details_link_text: "Zu den Einstellungen gehen"
-      setup_documentation_details: "Wenn Sie Hilfe bei der Konfiguration eines neuen Datei-Speichers benötigen, konsultieren Sie bitte die Dokumentation: "
+      setup_documentation_details: "Wenn Sie Hilfe bei der Konfiguration eines neuen Dateispeichers benötigen, konsultieren Sie bitte die Dokumentation: "
       setup_documentation_details_link_text: "Dateispeicher einrichten"
       show_warning_details: "Um diesen Dateispeicher nutzen zu können, müssen Sie das Modul und den spezifischen Speicher in den Projekteinstellungen jedes gewünschten Projekts aktivieren."
     subversion:
@@ -4519,7 +4582,7 @@ de:
   warning_user_limit_reached_admin: >
     Das Hinzufügen zusätzlicher Benutzer überschreitet das aktuelle Benutzerlimit. Bitte <a href="%{upgrade_url}">aktualisieren Sie Ihr Abonnement</a> um sicherzustellen, dass externe Benutzer auf diese Instanz zugreifen können.
   warning_user_limit_reached_instructions: >
-    Du hast dein Nutzerlimit erreicht (%{current}/%{max} active users). Bitte kontaktiere sales@openproject.com um deinen Enterprise edition Plan upzugraden und weitere Nutzer hinzuzufügen.
+    Du hast dein Nutzerlimit erreicht (%{current}/%{max} active users). Bitte kontaktiere sales@openproject.com um deinen Enterprise Edition Plan upzugraden und weitere Nutzer hinzuzufügen.
   warning_protocol_mismatch_html: >
 
   warning_bar:

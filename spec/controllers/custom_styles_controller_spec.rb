@@ -217,7 +217,7 @@ RSpec.describe CustomStylesController do
 
         it "removes the logo from custom_style" do
           expect(response).to redirect_to(action: :show)
-          expect(response).to have_http_status(:found)
+          expect(response).to have_http_status(:see_other)
         end
       end
 
@@ -710,6 +710,7 @@ RSpec.describe CustomStylesController do
           allow(CustomStyle).to receive(:current).and_return(style)
           delete :export_font_regular_delete
           expect(response).to redirect_to(action: :show)
+          expect(response).to have_http_status(:see_other)
           expect(style.reload.export_font_regular).not_to be_present
         end
 
@@ -718,6 +719,7 @@ RSpec.describe CustomStylesController do
           allow(CustomStyle).to receive(:current).and_return(style)
           delete :export_font_bold_delete
           expect(response).to redirect_to(action: :show)
+          expect(response).to have_http_status(:see_other)
           expect(style.reload.export_font_bold).not_to be_present
         end
 
@@ -726,6 +728,7 @@ RSpec.describe CustomStylesController do
           allow(CustomStyle).to receive(:current).and_return(style)
           delete :export_font_italic_delete
           expect(response).to redirect_to(action: :show)
+          expect(response).to have_http_status(:see_other)
           expect(style.reload.export_font_italic).not_to be_present
         end
 
@@ -734,6 +737,7 @@ RSpec.describe CustomStylesController do
           allow(CustomStyle).to receive(:current).and_return(style)
           delete :export_font_bold_italic_delete
           expect(response).to redirect_to(action: :show)
+          expect(response).to have_http_status(:see_other)
           expect(style.reload.export_font_bold_italic).not_to be_present
         end
       end

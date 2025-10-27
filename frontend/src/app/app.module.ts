@@ -59,7 +59,6 @@ import {
   OpenprojectMembersModule,
 } from 'core-app/shared/components/autocompleter/members-autocompleter/members.module';
 import { OpenprojectAugmentingModule } from 'core-app/core/augmenting/openproject-augmenting.module';
-import { OpenprojectInviteUserModalModule } from 'core-app/features/invite-user-modal/invite-user-modal.module';
 import { OpenprojectModalModule } from 'core-app/shared/components/modal/modal.module';
 import {
   RevitAddInSettingsButtonService,
@@ -204,7 +203,6 @@ import {
 import {
   OpWpDatePickerInstanceComponent,
 } from 'core-app/shared/components/datepicker/wp-date-picker-modal/wp-date-picker-instance.component';
-import { OpInviteUserModalAugmentService } from 'core-app/features/invite-user-modal/invite-user-modal-augment.service';
 import { TimeEntryTimerService } from 'core-app/shared/components/time_entries/services/time-entry-timer.service';
 import { WorkPackageFullCopyEntryComponent } from 'core-app/features/work-packages/routing/wp-full-copy/wp-full-copy-entry.component';
 import { WorkPackageFullCreateEntryComponent } from 'core-app/features/work-packages/routing/wp-full-create/wp-full-create-entry.component';
@@ -218,7 +216,6 @@ export function initializeServices(injector:Injector) {
     const keyboardShortcuts = injector.get(KeyboardShortcutService);
     const contextMenu = injector.get(OPContextMenuService);
     const currentProject = injector.get(CurrentProjectService);
-    const inviteUserAugmentService = injector.get(OpInviteUserModalAugmentService);
     const timeEntryTimerService = injector.get(TimeEntryTimerService);
 
     // Conditionally add the Revit Add-In settings button
@@ -227,7 +224,6 @@ export function initializeServices(injector:Injector) {
     const runOnRenderAndLoad = () => {
       topMenuService.register();
       contextMenu.register();
-      inviteUserAugmentService.setupListener();
       timeEntryTimerService.initialize();
       currentProject.detect();
     };
@@ -331,9 +327,6 @@ export function runBootstrap(appRef:ApplicationRef) {
 
     // Modals
     OpenprojectModalModule,
-
-    // Invite user modal
-    OpenprojectInviteUserModalModule,
 
     // Tabs
     OpenprojectTabsModule,

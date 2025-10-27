@@ -26,6 +26,10 @@ ko:
   activerecord:
     models:
       document: "문서"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "Title"
   activity:
     filter:
       document: "문서"
@@ -33,6 +37,22 @@ ko:
   default_doc_category_user: "사용자 설명서"
   enumeration_doc_categories: "문서 범주"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "Name"
+      type: "Type"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "Types"
     label_attachment_author: "첨부 파일 작성자"
     label_categories: "카테고리"
     new_category: "새 카테고리"

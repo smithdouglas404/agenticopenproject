@@ -30,7 +30,7 @@ zh-TW:
         project_status_beta:
           title: '專案狀態 (BETA)'
         subprojects:
-          title: 'Subitems'
+          title: '子項目'
         project_favorites:
           title: '收藏的專案'
           no_results: '您目前沒有收藏的專案。點擊項目儀表板中的星形圖示將其新增到您的收藏夾中。'
