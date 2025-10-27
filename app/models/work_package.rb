@@ -274,7 +274,7 @@ class WorkPackage < ApplicationRecord
   end
 
   def to_s
-    infoline(show_standard_type: false)
+    "#{type.name unless type.is_standard} ##{id}: #{subject}"
   end
 
   def infoline(show_standard_type: true)

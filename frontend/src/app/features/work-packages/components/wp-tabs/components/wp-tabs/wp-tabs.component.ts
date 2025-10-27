@@ -11,6 +11,7 @@ import {
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
+import { WpTabDefinition } from 'core-app/features/work-packages/components/wp-tabs/components/wp-tab-wrapper/tab';
 
 @Component({
   selector: 'op-wp-tabs',
@@ -56,7 +57,7 @@ export class WpTabsComponent implements OnInit {
     this.tabs = this.getDisplayableTabs();
   }
 
-  private getDisplayableTabs() {
+  private getDisplayableTabs():WpTabDefinition[]{
     return this
       .wpTabsService
       .getDisplayableTabs(this.workPackage, this.routedFromAngular)

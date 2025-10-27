@@ -201,6 +201,7 @@ RSpec.describe "Work Package boards spec",
 
     # Go to full view of WP
     split_view.switch_to_fullscreen
+    wait_for_network_idle
     find_by_id("action-show-more-dropdown-menu").click
     click_link(I18n.t("js.button_delete"))
 
@@ -210,6 +211,6 @@ RSpec.describe "Work Package boards spec",
 
     wait_for_network_idle
 
-    expect(page).to have_current_path "/work_packages"
+    expect(page).to have_current_path "/projects/#{project.identifier}/work_packages"
   end
 end

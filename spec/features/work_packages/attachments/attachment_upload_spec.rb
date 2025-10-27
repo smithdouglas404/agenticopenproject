@@ -228,6 +228,8 @@ RSpec.describe "Upload attachment to work package", :js, :selenium do
         wp_page.switch_to_tab(tab: "Files")
 
         wp_page.expect_tab "Files"
+
+        attachments = Components::Attachments.new
         attachments.drag_and_drop_file test_selector("op-attachments--drop-box"),
                                        image_fixture.path,
                                        :center,

@@ -122,6 +122,10 @@ export class InAppNotificationEntryComponent implements OnInit {
     return this.workPackageId ? this.pathHelper.workPackagePath(this.workPackageId) : this.pathHelper.workPackagesPath(null);
   }
 
+  onLinkClick(e:Event):void {
+    e.stopPropagation();
+  }
+
   projectClicked(event:MouseEvent):void { // eslint-disable-line class-methods-use-this
     event.stopPropagation();
   }

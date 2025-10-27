@@ -287,6 +287,6 @@ class WorkPackagesController < ApplicationController
   end
 
   def show_route_incomplete?
-    params[:project_id].blank? && params[:tab].blank?
+    params[:project_id].blank? || params[:tab].blank?
   end
 end

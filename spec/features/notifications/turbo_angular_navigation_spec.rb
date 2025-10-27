@@ -69,6 +69,7 @@ RSpec.describe "Turbo and Angular navigation integration", :js do
       # Step 3: Click on the work package #id from the notifications list
       # This should open the work package in full view
       center.click_id notification
+      wait_for_network_idle
       full_screen.expect_subject
 
       # Step 4: Click back once

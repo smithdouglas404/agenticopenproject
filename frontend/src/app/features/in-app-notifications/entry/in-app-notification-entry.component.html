@@ -16,6 +16,7 @@
         [attr.title]="workPackage.subject"
         [textContent]="'#' + workPackage.id"
         [attr.href]="fullScreenLink()"
+        (click)="onLinkClick($event)"
         >
       </a>
       @if (project) {

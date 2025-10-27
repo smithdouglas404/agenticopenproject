@@ -46,6 +46,7 @@ import { WorkPackageNotificationService } from 'core-app/features/work-packages/
 import { WorkPackageService } from 'core-app/features/work-packages/services/work-package.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { BackRoutingService } from 'core-app/features/work-packages/components/back-routing/back-routing.service';
 
 @Component({
   templateUrl: './wp-destroy.modal.html',
@@ -96,6 +97,7 @@ export class WpDestroyModalComponent extends OpModalComponent implements OnInit 
     readonly notificationService:WorkPackageNotificationService,
     readonly currentProject:CurrentProjectService,
     readonly pathHelper:PathHelperService,
+    readonly backRoutingService:BackRoutingService,
   ) {
     super(locals, cdRef, elementRef);
   }
@@ -158,10 +160,12 @@ export class WpDestroyModalComponent extends OpModalComponent implements OnInit 
         this.busy = false;
         this.closeMe($event);
         this.wpTableFocus.clear('Clearing after destroying work packages');
-
-        const projectIdentifier = this.currentProject.identifier;
-        const link = this.pathHelper.workPackagesPath(projectIdentifier) + window.location.search;
-        Turbo.visit(link, { action: 'advance' });
+        if (this.$state.current.data.baseRoute) {
+          this.backRoutingService.goBack(true);
+        } else {
+          const projectIdentifier = this.currentProject.identifier;
+          window.location.href = this.pathHelper.workPackagesPath(projectIdentifier) + window.location.search;
+        }
       })
       .catch(() => {
         this.busy = false;
