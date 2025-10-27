@@ -298,7 +298,7 @@ group :test do
   # Record your test suite's HTTP interactions and replay them during future test runs for fast, deterministic, accurate tests.
   gem "vcr"
   # Mock backend requests (for ruby tests)
-  gem "webmock", "~> 3.12", require: false
+  gem "webmock", "~> 3.26", require: false
 
   # Mock selenium requests through proxy (for feature tests)
   gem "puffing-billy", "~> 4.0.0"
