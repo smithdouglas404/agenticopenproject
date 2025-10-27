@@ -20,26 +20,24 @@ Take a look at our release video showing the most important features introduced 
 
 ### Calculated values for project evaluation and scoring (Enterprise add-on)
 
-OpenProject 16.6 introduces new project attribute types that make portfolio evaluation measurable and transparent: Hierarchy, Scored list, and Calculated value:
+OpenProject 16.6 introduces a new project attribute type: Calculated value. 
 
-![OpenProject administration with new types of project attributes: Calculated value, Hierarchy and Scored list are highlighted.](openproject-16-6-project-attributes.png)
+![OpenProject 16.6: New project attribute of type 'Calculated value' available in the administration](project_attribute_calculated_value.png)
 
-**Hierarchy** project attributes let you organize project information in a structured, nested way — for example, grouping initiatives by region, department, or program.
+This attribute allows administrators to define formulas that automatically compute results based on existing numeric project attributes, such as integers or floats. 
 
-![OpenProject administration shows a project attribute type hierarchy: The name is 'Strategic initiative' and it shows 3 items with sub-items, e.g. 'Digital transformation', and the options to edit, add sub-items, change parent and more.](openproject-16-6-project-attributes-hierarchy.png)
+Calculated values can combine multiple attributes and constants using mathematical operators ( + , – , × , ÷ ) and parentheses to control order of operations. The computed result is displayed directly on the project overview and in the project list, providing a transparent and consistent way to evaluate or score projects across the portfolio.
 
-**Scored lists** extend this concept by allowing administrators to assign numeric scores to list options, such as effort levels or risk ratings. These values can then be used as input for calculated results.
+Here's an example of a calculated value called 'Calculated Project Score' with the following formula: Benefit ​* 0.3 - Effort * 0.1
 
-**Calculated values** enable automatic computations based on formulas using numeric project attributes, including scores from Scored lists. This allows teams to calculate project scores or priorities consistently across the portfolio.
-
-![alt text](openproject-16-6-project-attributes-calculated-value.png)
-
-Together, these additions give project portfolio managers a flexible foundation for data-driven project evaluation and more transparent portfolio decisions. 
+![OpenProject 16.6: Formula example for a project attribute of type 'Calculated Project Score': Benefit​* 0.3 - Effort * 0.1](openproject-16-6-project-attributes-calculated-value-formula.png)
 
 >[!NOTE]
-> Please note that these new project attributes are part of our Enterprise add-ons in the Enterprise Professional plan.
+> Please note that this new project attribute is part of our [Enterprise add-ons in the Enterprise Professional plan](/pricing).
 
-screenshot
+When enabled in a project, the calculated value can be displayed on the project overview page. It will automatically update if one of its values (e.g. 'Benefit' or 'Effort' in this example) is changed.
+
+![OpenProject 16.6: Project overview page showing three project attributes: Benefit = 5, Effort = 1, Calculated Project Score = automatically set to 1,4](openproject-16-6-project-attributes-calculated-values-overview-page-highlighted.png)
 
 ### Performance updates
 
