@@ -110,17 +110,20 @@ export class InAppNotificationEntryComponent implements OnInit {
   }
 
   showFullView():void {
-    const href = this.notification._links.resource?.href;
-    const id = href && HalResource.matchFromLink(href, 'work_packages');
+    if (!this.workPackageId) {
+      return;
+    }
 
-    this.storeService.openFullView(id);
+    const link = this.pathHelper.workPackagePath(this.workPackageId) + window.location.search;
+    Turbo.visit(link, { action: 'advance' });
   }
 
   fullScreenLink():string {
-    const href = this.notification._links.resource?.href;
-    const id = href && HalResource.matchFromLink(href, 'work_packages');
+    if (!this.workPackageId) {
+      return;
+    }
 
-    return id ? this.pathHelper.workPackagePath(id) : this.pathHelper.workPackagesPath(null);
+    return id ? this.pathHelper.workPackagePath(this.workPackageId) : this.pathHelper.workPackagesPath(null);
   }
 
   projectClicked(event:MouseEvent):void { // eslint-disable-line class-methods-use-this

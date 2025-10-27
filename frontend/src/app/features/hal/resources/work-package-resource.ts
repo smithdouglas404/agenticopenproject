@@ -177,7 +177,7 @@ export class WorkPackageBaseResource extends HalResource {
    */
   public subjectWithType(truncateSubject = 40):string {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    return `${this.type.name} #${this.id}: ${this.truncatedSubject(truncateSubject)}`;
+    return `${this.type.name}: ${this.subjectWithId(truncateSubject)}`;
   }
 
   /**
