@@ -31,25 +31,25 @@
 require "spec_helper"
 
 module TableHelpers::ColumnType
-  RSpec.describe Subject do
+  RSpec.describe Identifier do
     subject(:column_type) { described_class.new }
 
     describe "#extract_data" do
-      it "extracts the identifier metadata along with the :subject attribute value" do
-        attribute = :subject
-        raw_header = "subject   "
+      it "extracts the identifier metadata without any attributes" do
+        attribute = :identifier
+        raw_header = "  identifier       "
         work_packages_data =
           [
             {
               index: 0,
-              row: { raw_header => "  Work package 2  " }
+              row: { raw_header => "  work_package_42  " }
             }
           ]
         work_package_data = work_packages_data.first
 
         expect(column_type.extract_data(attribute, raw_header, work_package_data, work_packages_data))
-          .to eq({ attributes: { subject: "Work package 2" },
-                   identifier: :work_package2 })
+          .to eq({ attributes: {},
+                   identifier: :work_package42 })
       end
     end
   end

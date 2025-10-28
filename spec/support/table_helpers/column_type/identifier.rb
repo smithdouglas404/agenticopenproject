@@ -28,28 +28,13 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
+module TableHelpers
+  module ColumnType
+    class Identifier < Generic
+      include WithIdentifierMetadata
 
-module TableHelpers::ColumnType
-  RSpec.describe Subject do
-    subject(:column_type) { described_class.new }
-
-    describe "#extract_data" do
-      it "extracts the identifier metadata along with the :subject attribute value" do
-        attribute = :subject
-        raw_header = "subject   "
-        work_packages_data =
-          [
-            {
-              index: 0,
-              row: { raw_header => "  Work package 2  " }
-            }
-          ]
-        work_package_data = work_packages_data.first
-
-        expect(column_type.extract_data(attribute, raw_header, work_package_data, work_packages_data))
-          .to eq({ attributes: { subject: "Work package 2" },
-                   identifier: :work_package2 })
+      def attributes_for_raw_value(*)
+        {}
       end
     end
   end

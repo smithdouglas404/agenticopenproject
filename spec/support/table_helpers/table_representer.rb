@@ -75,6 +75,9 @@ module TableHelpers
           .values_for_attribute(:subject)
           .zip(get_hierarchy_levels(table_data))
           .map! { |subject, level| column.format("#{'  ' * level}#{subject}") }
+      elsif column.attribute == :identifier
+        table_data.work_package_identifiers
+          .map! { |identifier| column.format(identifier) }
       else
         table_data
           .values_for_attribute(column.attribute)
