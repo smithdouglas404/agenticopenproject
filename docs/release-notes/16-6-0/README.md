@@ -75,23 +75,19 @@ With this improvement, users can still update visible fields such as status, ass
 
 ### Work package type workflow table with a sticky header and sticky first column
 
-text
-
-screenshot
+In *Administration → Work packages → Workflows*, the workflow table now features a sticky header and sticky first column. This makes it much easier for project administrators to keep track of which transitions are enabled when scrolling through large tables. The table is now split into three tabs — Default transitions, User is author, and User is assignee — each showing the relevant workflow configuration. As you scroll vertically or horizontally, the header row and first column remain visible, providing better orientation when managing complex workflow setups.
 
 ### Mini calendar re-added in the date picker of mobile web
 
-text
-
-screenshot
+On mobile devices, including Safari on iOS, the date picker now once again includes a mini calendar view for selecting start and finish dates. This update makes it easier to see the weekday of a selected date and to distinguish working days from non-working days at a glance. The mini calendar replaces the previous text-only date input, providing a more intuitive way to choose dates while avoiding Safari’s inconsistent native date picker behavior. The calendar shows a single month view and is now the default way to select dates on mobile devices.
 
 ## Important technical updates
 
 ### Autoscaling
 
-text
+OpenProject 16.6 introduces autoscaling support for containerized installations. The application now exposes Puma metrics (including busy_threads and backlog) that can be used by a horizontal pod autoscaler to automatically scale web instances based on load. 
 
-screenshot
+Autoscaling can be configured through the Helm chart, allowing system administrators to optimize resource usage and reduce operational costs during periods of low activity.
 
 <!--more-->
 
