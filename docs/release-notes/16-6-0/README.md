@@ -63,9 +63,9 @@ To do so, administrators need to navigate to *Administration → Custom fields*,
 
 ### Updated 'More' menu of meetings with a 'Add to section' option
 
-text
+In the Meetings module, the *More (three dots) menu* for agenda items has been improved to make it easier to move work packages between sections. Moderators can now directly move an item to another section without manually reordering it step by step. The new Move to section option opens a dialog where users can select the desired section — including the backlog — from a dropdown list. This streamlines meeting organization, especially for larger meetings with multiple sections and many related work packages.
 
-screenshot
+![OpenProject 16.6: Meetings module showing the options when clicking on the More menu on an agenda item](meetings_move_menu.png)
 
 ### Editing of individual work package/project attributes allowed even if certain other attributes are invalid (eg. required field empty)
 
