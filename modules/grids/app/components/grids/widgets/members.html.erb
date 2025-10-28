@@ -53,9 +53,7 @@ See COPYRIGHT and LICENSE files for more details.
             scheme: :primary,
             tag: :a,
             href: project_members_path(@project),
-            label: t(:button_add_member),
-            data: { turbo: true },
-            type: :submit
+            label: t(:button_add_member)
           ) do |button|
             button.with_leading_visual_icon(icon: "plus")
             t("activerecord.models.member")
