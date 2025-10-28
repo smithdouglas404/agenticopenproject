@@ -27,35 +27,33 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-require "carrierwave"
+require "spec_helper"
 
-##
-# Adapt carrierwave to match fixes for CVE-2023-49090.
-# https://github.com/carrierwaveuploader/carrierwave/security/advisories/GHSA-vfmv-jfc5-pjjw
-module OpenProject::Patches::CarrierwaveSanitizedFile
-  extend ActiveSupport::Concern
+# Adapt the carrierwave sanitized file tests to the content type detector
+RSpec.describe OpenProject::Patches::CarrierwaveSanitizedFile do
+  let(:file) { FileHelpers.mock_uploaded_file(name: "original-filename.txt") }
 
-  included do
-    def content_type
-      return @content_type if @content_type
+  it "uses the first one when multiple mime types are given using a semicolon" do
+    allow(file).to receive(:content_type).and_return("image/png; text/html")
 
-      if @file.respond_to?(:content_type) and @file.content_type
-        Marcel::MimeType.for(declared_type: @file.content_type.to_s.chomp)
-      elsif path
-        @content_type = Attachment.content_type_for(path)
-      end
-    end
+    sanitized_file = CarrierWave::SanitizedFile.new(file)
 
-    # create the directory if it doesn't exist
-    # Overwritten to avoid ruby 2.7 deprecations
-    def mkdir!(path, directory_permissions)
-      options = {}
-      options[:mode] = directory_permissions if directory_permissions
-      FileUtils.mkdir_p(File.dirname(path), **options)
-    end
+    expect(sanitized_file.content_type).to eq("image/png")
   end
-end
 
-OpenProject::Patches.patch_gem_version "carrierwave", "1.3.4" do
-  CarrierWave::SanitizedFile.include OpenProject::Patches::CarrierwaveSanitizedFile
+  it "uses the first one when multiple mime types are given using a comma" do
+    allow(file).to receive(:content_type).and_return("image/png, text/html")
+
+    sanitized_file = CarrierWave::SanitizedFile.new(file)
+
+    expect(sanitized_file.content_type).to eq("image/png")
+  end
+
+  it "drops content type parameters" do
+    allow(file).to receive(:content_type).and_return("text/html; charset=utf-8")
+
+    sanitized_file = CarrierWave::SanitizedFile.new(file)
+
+    expect(sanitized_file.content_type).to eq("text/html")
+  end
 end
