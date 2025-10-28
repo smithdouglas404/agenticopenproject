@@ -33,7 +33,7 @@ Here's an example of a calculated value called 'Calculated Project Score' with t
 ![OpenProject 16.6: Formula example for a project attribute of type 'Calculated Project Score': Benefit​* 0.3 - Effort * 0.1](openproject-16-6-project-attributes-calculated-value-formula.png)
 
 >[!NOTE]
-> Please note that this new project attribute is part of our [Enterprise add-ons in the Enterprise Professional plan](/pricing).
+> Please note that this new project attribute is part of our [Enterprise add-ons in the Enterprise Professional plan](https://www.openproject.org/pricing/).
 
 When enabled in a project, the calculated value can be displayed on the project overview page. It automatically updates whenever one of its source attributes (e.g., *Benefit* or *Effort* in this example) is changed.
 
@@ -47,15 +47,19 @@ These improvements reduce query load and shorten response times, especially for 
 
 ### New index page for Documents module
 
-text
+With OpenProject 16.6, a new index page provides a structured overview of all documents within a project. The list is sorted by last edited, showing the latest changes first, and includes columns for Name, Type, and Last edited. Users can search documents via a quick text filter or narrow results by document type using the filter menu on the left. A new Create document button lets users quickly add new items, with Note set as the default type. The view automatically respects project permissions, ensuring that users only see documents they are allowed to access. On mobile, the list is optimized to show just the most relevant information — the document name and its last edited date.
 
-screenshot
+While this is a small feature by itself, it marks the beginning of a major improvement of the Documents module, which will make managing and collaborating on documents in OpenProject much easier in the future.
+
+![OpenProject 16.6: Redesigned index page for the Documents module, showing a table with clickable name, type and last edited.](openproject-16-6-documents-index-page.png)
 
 ### Possibility to change parent of a custom field item
 
-text
+Administrators can now change the parent of an item within a hierarchical custom field. This makes it easier to rearrange existing items without recreating them from scratch. 
 
-screenshot
+To do so, administrators need to navigate to *Administration → Custom fields*, select a custom field type hierarchy and click on the *Items* tab. Then they click on the *More* icon and select *Change parent*. A dialog opens showing the current hierarchy tree. From there, administrators can search, select a new parent, and save the updated structure. The hierarchy is updated immediately after saving.
+
+![OpenProject 16.6: Custom field type hierarchy in the administration, tab 'Items', one item is selected with the 'More' menu and the option to change parent is higlighted](openproject-16-6-custom-field-hierarchy-change-parent.png)
 
 ### Updated 'More' menu of meetings with a 'Add to section' option
 
