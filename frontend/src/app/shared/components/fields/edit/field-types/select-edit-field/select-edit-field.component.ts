@@ -79,7 +79,7 @@ export class SelectEditFieldComponent extends EditFieldComponent implements OnIn
     onCreate: (newElement:HalResource) => this.onCreate(newElement),
     onChange: (value:HalResource) => this.onChange(value),
     onAddNew: (value:HalResource) => this.onNewValueAdded(value),
-    onKeydown: (event:JQuery.TriggeredEvent) => this.handler.handleUserKeydown(event, true),
+    onKeydown: (event:KeyboardEvent) => this.handler.handleUserKeydown(event, true),
     onOpen: () => this.onOpen(),
     onClose: () => this.onClose(),
     onAfterViewInit: (component:CreateAutocompleterComponent) => this._autocompleterComponent = component,
@@ -230,9 +230,9 @@ export class SelectEditFieldComponent extends EditFieldComponent implements OnIn
   }
 
   public onOpen() {
-    jQuery(this.hiddenOverflowContainer).one('scroll', () => {
+    document.querySelector(this.hiddenOverflowContainer)!.addEventListener('scroll', () => {
       this._autocompleterComponent.closeSelect();
-    });
+    }, { once: true });
   }
 
   public onClose() {

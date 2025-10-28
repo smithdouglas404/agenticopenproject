@@ -142,9 +142,9 @@ export class MultiSelectEditFieldComponent extends EditFieldComponent implements
   }
 
   public onOpen() {
-    jQuery(this.hiddenOverflowContainer).one('scroll', () => {
+    document.querySelector(this.hiddenOverflowContainer)?.addEventListener('scroll', () => {
       this.ngSelectComponent.close();
-    });
+    }, { once: true });
   }
 
   public onClose() {

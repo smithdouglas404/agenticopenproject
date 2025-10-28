@@ -48,7 +48,7 @@ export class OPContextMenuService {
     this.$transitions.onStart({}, () => this.close());
 
     // Listen to keyups on window to close context menus
-    jQuery(window).on('keydown', (evt:JQuery.TriggeredEvent) => {
+    window.addEventListener('keydown', (evt) => {
       if (this.active && evt.key === 'Escape') {
         this.close(true);
       }
@@ -81,7 +81,7 @@ export class OPContextMenuService {
    * @param component The context menu component to mount
    *
    */
-  public show(menu:OpContextMenuHandler, event:JQuery.TriggeredEvent|Event, component:ComponentType<unknown> = OPContextMenuComponent):void {
+  public show(menu:OpContextMenuHandler, event:Event, component:ComponentType<unknown> = OPContextMenuComponent):void {
     this.close();
 
     // Create a portal for the given component class and render it
@@ -118,18 +118,24 @@ export class OPContextMenuService {
     this.active = null;
   }
 
-  public reposition(event:JQuery.TriggeredEvent|Event):void {
+  public reposition(event:Event):void {
     if (!this.active) {
       return;
     }
 
-    this.activeMenu
-      .position(this.active.positionArgs(event))
-      .css('visibility', 'visible');
+    this.active.computePosition(this.activeMenu, event)
+      .then(({ x, y }) => {
+        Object.assign(this.activeMenu.style, {
+          left: `${x}px`,
+          top: `${y}px`,
+          position: 'absolute',
+          visibility: 'visible'
+        });
+      });
   }
 
-  public get activeMenu():JQuery {
-    return jQuery(this.portalHostElement).find('.dropdown');
+  public get activeMenu():HTMLElement {
+    return this.portalHostElement.querySelector('.dropdown')!;
   }
 
   /**

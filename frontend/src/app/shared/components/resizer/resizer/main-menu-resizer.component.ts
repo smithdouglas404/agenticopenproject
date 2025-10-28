@@ -66,7 +66,7 @@ export class MainMenuResizerComponent extends UntilDestroyedMixin implements OnI
 
   private elementWidth:number;
 
-  private mainMenu = jQuery('#main-menu')[0];
+  private mainMenu = document.querySelector('#main-menu')!;
 
   public moving = false;
 

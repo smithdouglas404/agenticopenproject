@@ -159,7 +159,9 @@ export class DisplayFieldRenderer<T extends HalResource = HalResource> {
 
     if (field.isFormattable && !field.isEmpty()) {
       try {
-        titleContent = _.escape(jQuery(`<div>${labelContent}</div>`).text());
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = labelContent;
+        titleContent = _.escape(tempDiv.textContent || '');
       } catch (e) {
         console.error('Failed to parse formattable labelContent');
         titleContent = `Label for ${field.displayName}`;

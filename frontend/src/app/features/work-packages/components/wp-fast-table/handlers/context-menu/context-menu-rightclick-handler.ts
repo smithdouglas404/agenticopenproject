@@ -24,18 +24,18 @@ export class ContextMenuRightClickHandler extends ContextMenuHandler {
   }
 
   public eventScope(view:TableEventComponent) {
-    return jQuery(view.workPackageTable.tableAndTimelineContainer);
+    return view.workPackageTable.tableAndTimelineContainer;
   }
 
-  public handleEvent(view:TableEventComponent, evt:JQuery.TriggeredEvent):boolean {
+  public handleEvent(view:TableEventComponent, evt:Event):boolean {
     if (!view.workPackageTable.configuration.contextMenuEnabled) {
       return false;
     }
-    const target = jQuery(evt.target);
+    const target = evt.target as HTMLElement;
 
     // We want to keep the original context menu on hrefs
     // (currently, this is only the id
-    if (target.closest(`.${uiStateLinkClass}`).length) {
+    if (target.closest(`.${uiStateLinkClass}`)) {
       debugLog('Allowing original context menu on state link');
       return true;
     }
@@ -44,8 +44,8 @@ export class ContextMenuRightClickHandler extends ContextMenuHandler {
     evt.stopPropagation();
 
     // Locate the row from event
-    const element = target.closest(this.SELECTOR);
-    const wpId = element.data('workPackageId');
+    const element = target.closest<HTMLElement>(this.SELECTOR);
+    const wpId = element?.dataset.workPackageId;
 
     if (wpId) {
       const [index] = view.workPackageTable.findRenderedRow(wpId);

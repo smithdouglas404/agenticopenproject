@@ -8,7 +8,7 @@ export function wpOnboardingTourSteps():OnboardingStep[] {
       showSkip: false,
       nextButton: { text: I18n.t('js.onboarding.buttons.next') },
       onNext() {
-        jQuery('.inline-edit--display-field.id a ')[0].click();
+        document.querySelector<HTMLElement>('.inline-edit--display-field.id a')?.click();
       },
     },
     {
@@ -22,7 +22,7 @@ export function wpOnboardingTourSteps():OnboardingStep[] {
       showSkip: false,
       nextButton: { text: I18n.t('js.onboarding.buttons.next') },
       onNext() {
-        jQuery('.work-packages-back-button')[0].click();
+        document.querySelector<HTMLElement>('.work-packages-back-button')?.click();
       },
     },
     {
@@ -39,7 +39,7 @@ export function wpOnboardingTourSteps():OnboardingStep[] {
         });
       }),
       onNext() {
-        jQuery('.main-menu--arrow-left-to-project')[0].click();
+        document.querySelector<HTMLElement>('.main-menu--arrow-left-to-project')?.click();
       },
     },
     {
@@ -47,7 +47,7 @@ export function wpOnboardingTourSteps():OnboardingStep[] {
       showSkip: false,
       nextButton: { text: I18n.t('js.onboarding.buttons.next') },
       onNext() {
-        jQuery('#main-menu-gantt')[0].click();
+        document.querySelector<HTMLElement>('#main-menu-gantt')?.click();
       },
     },
     {

@@ -23,20 +23,20 @@ export class CardDblClickHandler implements CardEventHandler {
   }
 
   public eventScope(card:WorkPackageCardViewComponent) {
-    return jQuery(card.container.nativeElement);
+    return card.container.nativeElement;
   }
 
-  public handleEvent(card:WorkPackageCardViewComponent, evt:JQuery.TriggeredEvent) {
-    const target = jQuery(evt.target);
+  public handleEvent(card:WorkPackageCardViewComponent, evt:Event) {
+    const target = evt.target as HTMLElement;
 
     // Ignore links
-    if (target.is('a') || target.parent().is('a')) {
+    if (target instanceof HTMLAnchorElement || target.parentElement instanceof HTMLAnchorElement) {
       return true;
     }
 
     // Locate the row from event
-    const element = target.closest('wp-single-card');
-    const wpId = element.data('workPackageId');
+    const element = target.closest<HTMLElement>('wp-single-card')!;
+    const wpId = element.dataset.workPackageId;
 
     if (!wpId) {
       return true;

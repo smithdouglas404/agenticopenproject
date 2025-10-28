@@ -34,11 +34,11 @@ export class RowDoubleClickHandler implements TableEventHandler {
   }
 
   public eventScope(view:TableEventComponent) {
-    return jQuery(view.workPackageTable.tbody);
+    return view.workPackageTable.tbody;
   }
 
-  public handleEvent(view:TableEventComponent, evt:JQuery.TriggeredEvent) {
-    const target = jQuery(evt.target);
+  public handleEvent(view:TableEventComponent, evt:MouseEvent) {
+    const target = evt.target as HTMLElement;
 
     // Skip clicks with modifiers
     if (isClickedWithModifier(evt)) {
@@ -47,17 +47,17 @@ export class RowDoubleClickHandler implements TableEventHandler {
 
     // Shortcut to any clicks within a cell
     // We don't want to handle these.
-    if (target.hasClass(`${displayClassName}`) || target.hasClass(`${activeFieldClassName}`)) {
+    if (target.classList.contains(`${displayClassName}`) || target.classList.contains(`${activeFieldClassName}`)) {
       debugLog('Skipping click on inner cell');
       return true;
     }
 
     // Locate the row from event
-    const element = target.closest(this.SELECTOR).closest(`.${tableRowClassName}`);
-    const wpId = element.data('workPackageId');
+    const element = target.closest<HTMLElement>(this.SELECTOR)!.closest<HTMLTableRowElement>(`.${tableRowClassName}`)!;
+    const wpId = element.dataset.workPackageId!;
 
     // Ignore links
-    if (target.is('a') || target.parent().is('a')) {
+    if (target instanceof HTMLAnchorElement || target.parentElement instanceof HTMLAnchorElement) {
       return true;
     }
 

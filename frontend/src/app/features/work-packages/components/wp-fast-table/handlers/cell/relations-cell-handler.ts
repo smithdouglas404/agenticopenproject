@@ -21,24 +21,24 @@ export class RelationsCellHandler extends ClickOrEnterHandler implements TableEv
   }
 
   public eventScope(view:TableEventComponent) {
-    return jQuery(view.workPackageTable.tableAndTimelineContainer);
+    return view.workPackageTable.tableAndTimelineContainer;
   }
 
   constructor(public readonly injector:Injector) {
     super();
   }
 
-  protected processEvent(table:WorkPackageTable, evt:JQuery.TriggeredEvent):void {
+  protected processEvent(table:WorkPackageTable, evt:MouseEvent|KeyboardEvent):void {
     debugLog('Handled click on relation cell %o', evt.target);
     evt.preventDefault();
 
     // Locate the relation td
-    const td = jQuery(evt.target).closest(`.${relationCellTdClassName}`);
-    const columnId = td.data('columnId');
+    const td = (evt.target as HTMLElement).closest<HTMLTableColElement>(`.${relationCellTdClassName}`);
+    const columnId = td?.dataset.columnId ?? '';
 
     // Locate the row
-    const rowElement = jQuery(evt.target).closest(`.${tableRowClassName}`);
-    const workPackageId = rowElement.data('workPackageId');
+    const rowElement = (evt.target as HTMLElement).closest<HTMLTableRowElement>(`.${tableRowClassName}`);
+    const workPackageId = rowElement?.dataset.workPackageId ?? '';
 
     // If currently expanded
     if (this.wpTableRelationColumns.getExpandFor(workPackageId) === columnId) {

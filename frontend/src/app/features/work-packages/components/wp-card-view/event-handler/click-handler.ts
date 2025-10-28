@@ -33,20 +33,20 @@ export class CardClickHandler implements CardEventHandler {
   }
 
   public eventScope(card:WorkPackageCardViewComponent) {
-    return jQuery(card.container.nativeElement);
+    return card.container.nativeElement;
   }
 
-  public handleEvent(card:WorkPackageCardViewComponent, evt:JQuery.TriggeredEvent) {
-    const target = jQuery(evt.target);
+  public handleEvent(card:WorkPackageCardViewComponent, evt:MouseEvent) {
+    const target = evt.target as HTMLElement;
 
     // Ignore links
-    if (target.is('a') || target.parent().is('a')) {
+    if (target instanceof HTMLAnchorElement || target.parentElement instanceof HTMLAnchorElement) {
       return true;
     }
 
     // Locate the card from event
-    const element = target.closest('wp-single-card');
-    const wpId = element.data('workPackageId');
+    const element = target.closest<HTMLElement>('wp-single-card')!;
+    const wpId = element.dataset.workPackageId;
 
     if (!wpId) {
       return true;
@@ -57,14 +57,14 @@ export class CardClickHandler implements CardEventHandler {
     return false;
   }
 
-  protected handleWorkPackage(card:WorkPackageCardViewComponent, wpId:any, element:JQuery, evt:JQuery.TriggeredEvent) {
+  protected handleWorkPackage(card:WorkPackageCardViewComponent, wpId:any, element:HTMLElement, evt:MouseEvent) {
     this.setSelection(card, wpId, element, evt);
 
     card.itemClicked.emit({ workPackageId: wpId, double: false });
   }
 
-  protected setSelection(card:WorkPackageCardViewComponent, wpId:string, element:JQuery, evt:JQuery.TriggeredEvent) {
-    const classIdentifier = element.data('classIdentifier');
+  protected setSelection(card:WorkPackageCardViewComponent, wpId:string, element:HTMLElement, evt:MouseEvent) {
+    const classIdentifier = element.dataset.classIdentifier!;
     const index = this.wpCardView.findRenderedCard(classIdentifier);
 
     // Update single selection if no modifier present

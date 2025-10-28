@@ -534,22 +534,23 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
 
     const schema = (await this.schemaCache.ensureLoaded(entry as TimeEntryResource)) as TimeEntrySchema;
 
-    jQuery(event.el).tooltip({
-      content: this.tooltipContentString(event.event.extendedProps.entry as TimeEntryResource, schema),
-      items: '.fc-event',
-      close() {
-        jQuery('.ui-helper-hidden-accessible').remove();
-      },
-      track: true,
-    });
+    const tooltip = document.createElement('tool-tip');
+    tooltip.textContent = this.tooltipContentString(event.event.extendedProps.entry as TimeEntryResource, schema);
+    event.el.appendChild(tooltip);
+
+    // TODO: port tooltips
+    // jQuery(event.el).tooltip({
+    //   content: this.tooltipContentString(event.event.extendedProps.entry as TimeEntryResource, schema),
+    //   items: '.fc-event',
+    //   close() {
+    //     document.querySelectorAll('.ui-helper-hidden-accessible').forEach(element => element.remove());
+    //   },
+    //   track: true,
+    // });
   }
 
   private removeTooltip(event:CalendarViewEvent):void {
-    const target = jQuery(event.el);
-
-    if (target.tooltip('instance')) {
-      jQuery(event.el).tooltip('disable');
-    }
+    // TODO: port tooltips
   }
 
   private prependDuration(event:CalendarViewEvent):void {
@@ -561,9 +562,9 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
 
     const formattedDuration = this.timezone.formattedDuration(timeEntry.hours as string);
 
-    jQuery(event.el)
-      .find('.fc-event-title')
-      .prepend(`<div class="fc-duration">${formattedDuration}</div>`);
+    event.el
+      .querySelector('.fc-event-title')
+      ?.insertAdjacentHTML('afterbegin', `<div class="fc-duration">${formattedDuration}</div>`);
   }
 
   /* Fade out event text to the bottom to avoid it being cut of weirdly.
@@ -582,19 +583,20 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    const $element = jQuery(event.el);
-    const fadeout = jQuery('<div class="fc-fadeout"></div>');
+    const element = event.el;
+    const fadeout = document.createElement('div');
+    fadeout.classList.add('fc-fadeout');
 
     const hslaStart = this.colors.toHsla(this.entryName(timeEntry), 0);
     const hslaEnd = this.colors.toHsla(this.entryName(timeEntry), 100);
 
-    fadeout.css('background', `-webkit-linear-gradient(${hslaStart} 0%, ${hslaEnd} 100%`);
+    fadeout.style.background = `-webkit-linear-gradient(${hslaStart} 0%, ${hslaEnd} 100%`;
 
     ['-moz-linear-gradient', '-o-linear-gradient', 'linear-gradient', '-ms-linear-gradient'].forEach((style) => {
-      fadeout.css('background-image', `${style}(${hslaStart} 0%, ${hslaEnd} 100%`);
+      fadeout.style.backgroundImage = `${style}(${hslaStart} 0%, ${hslaEnd} 100%`;
     });
 
-    $element.append(fadeout);
+    element.append(fadeout);
   }
 
   private beforeEventRemove(event:CalendarViewEvent):void {

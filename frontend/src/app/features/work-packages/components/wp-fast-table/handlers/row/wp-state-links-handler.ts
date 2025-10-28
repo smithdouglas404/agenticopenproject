@@ -34,12 +34,12 @@ export class WorkPackageStateLinksHandler implements TableEventHandler {
   }
 
   public eventScope(view:TableEventComponent) {
-    return jQuery(view.workPackageTable.tableAndTimelineContainer);
+    return view.workPackageTable.tableAndTimelineContainer;
   }
 
   protected workPackage:WorkPackageResource;
 
-  public handleEvent(view:TableEventComponent, evt:JQuery.TriggeredEvent) {
+  public handleEvent(view:TableEventComponent, evt:KeyboardEvent) {
     evt.stopPropagation();
 
     // Avoid the state capture when clicking with modifier to allow browser opening in new tab

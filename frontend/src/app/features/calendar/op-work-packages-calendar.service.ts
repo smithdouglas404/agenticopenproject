@@ -335,7 +335,7 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
 
     event.preventDefault();
 
-    const handler = new WorkPackageViewContextMenu(this.injector, workPackageId, jQuery(event.target as HTMLElement));
+    const handler = new WorkPackageViewContextMenu(this.injector, workPackageId, event.target as HTMLElement);
     this.contextMenuService.show(handler, event);
   }
 

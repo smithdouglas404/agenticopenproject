@@ -45,7 +45,7 @@ import { TodayLineElement } from './wp-timeline.today-line';
   standalone: false,
 })
 export class WorkPackageTableTimelineStaticElements implements OnInit {
-  public $element:HTMLElement;
+  public element:HTMLElement;
 
   private container:HTMLElement;
 
@@ -54,7 +54,7 @@ export class WorkPackageTableTimelineStaticElements implements OnInit {
   constructor(elementRef:ElementRef,
     public states:States,
     public workPackageTimelineTableController:WorkPackageTimelineTableController) {
-    this.$element = elementRef.nativeElement;
+    this.element = elementRef.nativeElement;
 
     this.elements = [
       new TodayLineElement(),
@@ -62,7 +62,7 @@ export class WorkPackageTableTimelineStaticElements implements OnInit {
   }
 
   ngOnInit() {
-    this.container = this.$element.querySelector('.wp-table-timeline--static-elements') as HTMLElement;
+    this.container = this.element.querySelector('.wp-table-timeline--static-elements') as HTMLElement;
     this.workPackageTimelineTableController
       .onRefreshRequested('static elements', (vp:TimelineViewParameters) => this.update(vp));
   }

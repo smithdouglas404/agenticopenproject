@@ -35,7 +35,7 @@ import { openExternalLinksInNewTab, performAnchorHijacking } from './global-list
 export function initializeGlobalListeners():void {
   document
     .documentElement
-    .addEventListener('click', (evt:MouseEvent) => {
+    .addEventListener('click', (evt) => {
       const target = evt.target as HTMLElement;
 
       // Avoid defaulting clicks on elements already removed from DOM
@@ -61,7 +61,6 @@ export function initializeGlobalListeners():void {
         performAnchorHijacking,
       ];
 
-      // eslint-disable-next-line no-restricted-syntax
       for (const fn of callbacks) {
         if (fn.call(linkElement, evt, linkElement)) {
           evt.preventDefault();
@@ -82,11 +81,9 @@ export function initializeGlobalListeners():void {
   });
 
   // Disable global drag & drop handling, which results in the browser loading the image and losing the page
-  jQuery(document.documentElement)
-    .on('dragover drop', (evt:Event) => {
-      evt.preventDefault();
-      return false;
-    });
+  const disableDragDefaults = (evt:Event) => { evt.preventDefault(); };
+  document.documentElement.addEventListener('dragover', disableDragDefaults);
+  document.documentElement.addEventListener('drop', disableDragDefaults);
 
   // Bootstrap legacy app code
   setupServerResponse();

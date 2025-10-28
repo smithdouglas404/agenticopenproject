@@ -26,15 +26,15 @@ export class HierarchyClickHandler extends ClickOrEnterHandler implements TableE
   }
 
   public eventScope(view:TableEventComponent) {
-    return jQuery(view.workPackageTable.tbody);
+    return view.workPackageTable.tbody;
   }
 
-  public processEvent(table:WorkPackageTable, evt:JQuery.TriggeredEvent):void {
-    const target = jQuery(evt.target);
+  public processEvent(table:WorkPackageTable, evt:MouseEvent|KeyboardEvent):void {
+    const target = evt.target as HTMLElement;
 
     // Locate the row from event
-    const element = target.closest(`.${tableRowClassName}`);
-    const wpId = element.data('workPackageId');
+    const element = target.closest<HTMLElement>(`.${tableRowClassName}`);
+    const wpId = element?.dataset.workPackageId ?? '';
 
     this.wpTableHierarchies.toggle(wpId);
 

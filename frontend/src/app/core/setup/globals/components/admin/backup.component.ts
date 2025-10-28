@@ -101,7 +101,7 @@ export class BackupComponent implements AfterViewInit {
     return this.mayIncludeAttachments ? '' : this.text.attachmentsDisabled;
   }
 
-  public triggerBackup(event?:JQuery.TriggeredEvent) {
+  public triggerBackup(event?:Event) {
     if (event) {
       event.stopPropagation();
       event.preventDefault();

@@ -35,28 +35,28 @@ export class RowClickHandler implements TableEventHandler {
   }
 
   public eventScope(view:TableEventComponent) {
-    return jQuery(view.workPackageTable.tbody);
+    return view.workPackageTable.tbody;
   }
 
-  public handleEvent(view:TableEventComponent, evt:JQuery.TriggeredEvent) {
-    const target = jQuery(evt.target);
+  public handleEvent(view:TableEventComponent, evt:MouseEvent) {
+    const target = evt.target as HTMLElement;
 
     // Ignore links
-    if (target.is('a') || target.parent().is('a')) {
+    if (target instanceof HTMLAnchorElement || target.parentElement instanceof HTMLAnchorElement) {
       return true;
     }
 
     // Shortcut to any clicks within a cell
     // We don't want to handle these.
-    if (target.hasClass(`${displayClassName}`) || target.hasClass(`${activeFieldClassName}`)) {
+    if (target.classList.contains(`${displayClassName}`) || target.classList.contains(`${activeFieldClassName}`)) {
       debugLog('Skipping click on inner cell');
       return true;
     }
 
     // Locate the row from event
-    const element = target.closest(this.SELECTOR);
-    const wpId = element.data('workPackageId');
-    const classIdentifier = element.data('classIdentifier');
+    const element = target.closest<HTMLTableRowElement>(this.SELECTOR)!;
+    const wpId = element.dataset.workPackageId;
+    const classIdentifier = element.dataset.classIdentifier!;
 
     if (!wpId) {
       return true;

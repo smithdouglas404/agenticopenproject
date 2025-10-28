@@ -77,7 +77,7 @@ export class OpTypesContextMenuDirective extends OpContextMenuTrigger {
     }
   }
 
-  protected open(evt:JQuery.TriggeredEvent) {
+  protected open(evt:Event) {
     this.isOpen = !this.isOpen;
     if (this.isOpen) {
       void this
@@ -112,9 +112,9 @@ export class OpTypesContextMenuDirective extends OpContextMenuTrigger {
       href: this.$state.href(this.stateName, { type: type.id! }),
       ariaLabel: type.name,
       class: Highlighting.inlineClass('type', type.id!),
-      onClick: ($event:JQuery.TriggeredEvent) => {
+      onClick: (event:MouseEvent) => {
         this.isOpen = false;
-        if (isClickedWithModifier($event)) {
+        if (isClickedWithModifier(event)) {
           return false;
         }
 

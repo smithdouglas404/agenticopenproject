@@ -26,46 +26,37 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
+export const getNodeIndex = (element:Element) => Array.from(element.parentNode!.children).indexOf(element);
+
+export const toggleElement = (element:HTMLElement, value?:boolean) => {
+  if (typeof value === 'undefined') {
+    element.hidden = !element.hidden;
+  } else {
+    element.hidden = !value;
+  }
+};
+
+export const showElement = (element:HTMLElement) => toggleElement(element, true);
+
+export const hideElement = (element:HTMLElement) => toggleElement(element, false);
+
 /**
- * Moved from app/assets/javascripts/colors.js
- *
- * Make this a component instead of modifying it the next time
- * this needs changes
+ * Mimics jQuery(':visible')
  */
-export function makeColorPreviews() {
-  document.querySelectorAll<HTMLElement>('.color--preview').forEach(function (preview) {
-    let input:HTMLInputElement|null = null;
-    const target = preview.dataset.target;
+export function isVisible(elem:HTMLElement|null) {
+  if (!elem) return false;
 
-    if (target) {
-      input = document.querySelector<HTMLInputElement>(target);
-    } else {
-      const next = preview.nextElementSibling;
-      if (next && next instanceof HTMLInputElement) {
-        input = next;
-      }
-    }
+  // Check if element is in the DOM
+  if (!document.contains(elem)) return false;
 
-    if (input === null) {
-      return;
-    }
+  // Check if dimensions are visible
+  return !!(
+    elem.offsetWidth
+    || elem.offsetHeight
+    || elem.getClientRects().length
+  );
+}
 
-    const listener = function () {
-      let previewColor = '';
-
-      if (input.value && input.value.length > 0) {
-        previewColor = input.value;
-      } else if (input.getAttribute('placeholder')
-        && input.getAttribute('placeholder')!.length > 0) {
-        previewColor = input.getAttribute('placeholder')!;
-      }
-
-      preview.style.backgroundColor = previewColor;
-    };
-
-    input.addEventListener('keyup', listener);
-    input.addEventListener('change', listener);
-    input.addEventListener('focus', listener);
-    listener();
-  });
+export function queryVisible<T extends HTMLElement = HTMLElement>(selector:string, node:Element|Document = document) {
+  return Array.from(node.querySelectorAll<T>(selector)).filter(isVisible);
 }

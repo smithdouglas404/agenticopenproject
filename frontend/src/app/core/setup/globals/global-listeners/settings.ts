@@ -1,4 +1,5 @@
 import { retrieveCkEditorInstance } from 'core-app/shared/helpers/ckeditor-helpers';
+import { hideElement, showElement, toggleElement } from 'core-app/shared/helpers/dom-helpers';
 import invariant from 'tiny-invariant';
 
 /**
@@ -7,25 +8,29 @@ import invariant from 'tiny-invariant';
  * This should not be loaded globally and ideally refactored into components
  */
 export function listenToSettingChanges() {
-  jQuery('#settings_session_ttl_enabled').on('change', function () {
-    jQuery('#settings_session_ttl_container').toggle(jQuery(this).is(':checked'));
-  }).trigger('change');
+  const ttlEnabled = document.querySelector<HTMLInputElement>('#settings_session_ttl_enabled');
+  ttlEnabled?.addEventListener('change', () => {
+    toggleElement(document.querySelector('#settings_session_ttl_container')!, ttlEnabled.checked);
+  });
+  ttlEnabled?.dispatchEvent(new Event('change', { bubbles: true }));
 
   /** Sync SCM vendor select when enabled SCMs are changed */
-  jQuery('[name="settings[enabled_scm][]"]').change(function (this:HTMLInputElement) {
-    const wasDisabled = !this.checked;
-    const vendor = this.value;
-    const select = jQuery('#settings_repositories_automatic_managed_vendor');
-    const option = select.find(`option[value="${vendor}"]`);
+  const enabledScm = document.querySelector<HTMLInputElement>('[name="settings[enabled_scm][]"]');
+  enabledScm?.addEventListener('change', (event) => {
+    const checkbox = event.target as HTMLInputElement;
+    const wasDisabled = !checkbox.checked;
+    const vendor = checkbox.value;
+    const select = document.querySelector<HTMLSelectElement>('#settings_repositories_automatic_managed_vendor')!;
+    const option = select.querySelector<HTMLOptionElement>(`option[value="${vendor}"]`);
 
     // Skip non-manageable SCMs
-    if (option.length === 0) {
+    if (!option) {
       return;
     }
 
-    option.prop('disabled', wasDisabled);
-    if (wasDisabled && option.prop('selected')) {
-      select.val('');
+    option.disabled = wasDisabled;
+    if (wasDisabled && option.selected) {
+      select.value = '';
     }
   });
 
@@ -77,43 +82,46 @@ export function listenToSettingChanges() {
   /* end Javascript for Settings::TextSettingComponent */
 
   /** Toggle notification settings fields */
-  jQuery('#email_delivery_method_switch').on('change', function () {
-    const delivery_method = jQuery(this).val();
-    jQuery('.email_delivery_method_settings').hide();
-    jQuery(`#email_delivery_method_${delivery_method}`).show();
-  }).trigger('change');
+  const emailDeliveryMethodSwitch = document.querySelector<HTMLSelectElement>('#email_delivery_method_switch');
+  emailDeliveryMethodSwitch?.addEventListener('change', (event) => {
+    const delivery_method = (event.target as HTMLSelectElement).value;
+    document
+      .querySelectorAll<HTMLElement>('.email_delivery_method_settings')
+      .forEach((elem) => hideElement(elem));
+    showElement(document.querySelector(`#email_delivery_method_${delivery_method}`)!);
+  });
+  emailDeliveryMethodSwitch?.dispatchEvent(new Event('change', { bubbles: true }));
 
-  jQuery('#settings_smtp_authentication').on('change', function () {
-    const isNone = jQuery(this).val() === 'none';
-    jQuery('#settings_smtp_user_name,#settings_smtp_password')
-      .closest('.form--field')
-      .toggle(!isNone);
+  document.querySelector<HTMLSelectElement>('#settings_smtp_authentication')?.addEventListener('change', (event) => {
+    const isNone = (event.target as HTMLSelectElement).value === 'none';
+    document
+      .querySelectorAll('#settings_smtp_user_name,#settings_smtp_password')
+      .forEach((field) => toggleElement(field.closest('.form--field')!, !isNone));
   });
 
   /** Toggle repository checkout fieldsets required when option is disabled */
-  jQuery('.settings-repositories--checkout-toggle').change(function (this:HTMLInputElement) {
-    const wasChecked = this.checked;
-    const fieldset = jQuery(this).closest('fieldset');
-
-    fieldset
-      .find('input,select')
-      .filter(':not([type=checkbox])')
-      .filter(':not([type=hidden])')
-      .removeAttr('required') // Rails 4.0 still seems to use attribute
-      .prop('required', wasChecked);
+  document.querySelectorAll<HTMLInputElement>('.settings-repositories--checkout-toggle').forEach((toggle) => {
+    toggle.addEventListener('change', (event) => {
+      const wasChecked = (event.target as HTMLInputElement).checked;
+      const fieldset = toggle.closest('fieldset')!;
+      fieldset
+        .querySelectorAll<HTMLInputElement|HTMLSelectElement>('input,select:not([type=checkbox],[type=hidden])')
+        .forEach((field) => { field.required = wasChecked; });
+    });
   });
 
   /** Toggle highlighted attributes visibility depending on if the highlighting mode 'inline' was selected */
-  jQuery('.settings--highlighting-mode select').change(function () {
-    const highlightingMode = jQuery(this).val();
-    jQuery('.settings--highlighted-attributes').toggle(highlightingMode === 'inline');
+  document.querySelector<HTMLSelectElement>('.settings--highlighting-mode select')?.addEventListener('change', (event) => {
+    const highlightingMode = (event.target as HTMLSelectElement).value;
+    document.querySelectorAll<HTMLElement>('.settings--highlighted-attributes')
+      .forEach((elem) => { toggleElement(elem, highlightingMode === 'inline'); });
   });
 
-  jQuery('#tab-content-work_packages form').submit(() => {
-    const availableAttributes = jQuery(".settings--highlighted-attributes input[type='checkbox']");
-    const selectedAttributes = jQuery(".settings--highlighted-attributes input[type='checkbox']:checked");
+  document.querySelector<HTMLFormElement>('#tab-content-work_packages form')?.addEventListener('submit', () => {
+    const availableAttributes = document.querySelectorAll<HTMLInputElement>(".settings--highlighted-attributes input[type='checkbox']");
+    const selectedAttributes = document.querySelectorAll<HTMLInputElement>(".settings--highlighted-attributes input[type='checkbox']:checked");
     if (selectedAttributes.length === availableAttributes.length) {
-      availableAttributes.prop('checked', false);
+      availableAttributes.forEach((availableAttribute) => { availableAttribute.checked = false; });
     }
   });
 }

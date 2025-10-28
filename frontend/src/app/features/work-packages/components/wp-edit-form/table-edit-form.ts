@@ -93,12 +93,12 @@ export class TableEditForm extends EditForm<WorkPackageResource> {
     this.resourceSubscription.unsubscribe();
   }
 
-  public findContainer(fieldName:string):JQuery {
-    return this.rowContainer.find(`.${tdClassName}.${fieldName} .${editFieldContainerClass}`).first();
+  public findContainer(fieldName:string) {
+    return this.rowContainer?.querySelectorAll<HTMLElement>(`.${tdClassName}.${fieldName} .${editFieldContainerClass}`);
   }
 
   public findCell(fieldName:string) {
-    return this.rowContainer.find(`.${tdClassName}.${fieldName}`).first();
+    return this.rowContainer?.querySelector<HTMLTableCellElement>(`.${tdClassName}.${fieldName}`);
   }
 
   public activateField(form:EditForm, schema:IFieldSchema, fieldName:string, errors:string[]):Promise<EditFieldHandler> {
@@ -107,12 +107,12 @@ export class TableEditForm extends EditForm<WorkPackageResource> {
         // Forcibly set the width since the edit field may otherwise
         // be given more width. Thereby preserve a minimum width of 150.
         // To avoid flickering content, the padding is removed, too.
-        const td = this.findCell(fieldName);
-        td.addClass(editModeClassName);
-        let width = parseInt(td.css('width'));
+        const td = this.findCell(fieldName)!;
+        td.classList.add(editModeClassName);
+        let width = parseInt(td.style.width);
         width = width > 150 ? width - 10 : 150;
-        td.css('max-width', `${width}px`);
-        td.css('width', `${width}px`);
+        td.style.maxWidth = `${width}px`;
+        td.style.width = `${width}px`;
 
         return this.editingPortalService.create(
           cell,
@@ -127,13 +127,13 @@ export class TableEditForm extends EditForm<WorkPackageResource> {
 
   public reset(fieldName:string, focus?:boolean) {
     const cell = this.findContainer(fieldName);
-    const td = this.findCell(fieldName);
+    const td = this.findCell(fieldName)!;
 
-    if (cell.length) {
-      this.findCell(fieldName).css('width', '');
-      this.findCell(fieldName).css('max-width', '');
+    if (cell?.length) {
+      td.style.width = '';
+      td.style.maxWidth = '';
       this.cellBuilder.refresh(cell[0], this.resource, fieldName);
-      td.removeClass(editModeClassName);
+      td.classList.remove(editModeClassName);
 
       if (focus) {
         this.FocusHelper.focus(cell[0]);
@@ -154,10 +154,9 @@ export class TableEditForm extends EditForm<WorkPackageResource> {
 
   protected focusOnFirstError():void {
     // Focus the first field that is erroneous
-    jQuery(this.table.tableAndTimelineContainer)
-      .find(`.${activeFieldContainerClassName}.-error .${activeFieldClassName}`)
-      .first()
-      .trigger('focus');
+    this.table.tableAndTimelineContainer
+      ?.querySelector<HTMLElement>(`.${activeFieldContainerClassName}.-error .${activeFieldClassName}`)
+      ?.focus();
   }
 
   /**
@@ -181,7 +180,7 @@ export class TableEditForm extends EditForm<WorkPackageResource> {
       const interval = setInterval(() => {
         const container = this.findContainer(fieldName);
 
-        if (container.length > 0) {
+        if (container && container.length > 0) {
           clearInterval(interval);
           resolve(container[0]);
         }
@@ -190,6 +189,6 @@ export class TableEditForm extends EditForm<WorkPackageResource> {
   }
 
   private get rowContainer() {
-    return jQuery(this.table.tableAndTimelineContainer).find(`.${this.classIdentifier}-table`);
+    return this.table.tableAndTimelineContainer.querySelector(`.${this.classIdentifier}-table`);
   }
 }

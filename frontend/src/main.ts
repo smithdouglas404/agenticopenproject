@@ -41,11 +41,9 @@ if (environment.production) {
 // Import the correct locale early on
 void initializeLocale()
   .then(() => {
-    jQuery(() => {
-      // Now that DOM is loaded, also run the global listeners
-      initializeGlobalListeners();
+    // Now that DOM is loaded, also run the global listeners
+    document.addEventListener('DOMContentLoaded', () => { initializeGlobalListeners(); }, { once: true });
 
-      // Due to the behaviour of the Edge browser we need to wait for 'DOM ready'
-      void platformBrowserDynamic().bootstrapModule(OpenProjectModule);
-    });
+    // Due to the behaviour of the Edge browser we need to wait for 'DOM ready'
+    void platformBrowserDynamic().bootstrapModule(OpenProjectModule);
   });

@@ -29,7 +29,7 @@ export class OpenProjectHeaderInterceptor implements HttpInterceptor {
   }
 
   private handleAuthenticatedRequest(req:HttpRequest<any>, next:HttpHandler):Observable<HttpEvent<any>> {
-    const csrf_token:string|undefined = jQuery('meta[name=csrf-token]').attr('content');
+    const csrf_token = document.querySelector('meta[name=csrf-token]')?.getAttribute('content');
 
     let newHeaders = req.headers
       .set('X-Authentication-Scheme', 'Session')

@@ -152,7 +152,7 @@ export class IFCViewerService extends ViewerBridgeService {
       const formData = new FormData();
       formData.append(
         'authenticity_token',
-        jQuery('meta[name=csrf-token]').attr('content') as string,
+        document.querySelector('meta[name=csrf-token]')?.getAttribute('content') ?? '',
       );
       formData.append(
         '_method',

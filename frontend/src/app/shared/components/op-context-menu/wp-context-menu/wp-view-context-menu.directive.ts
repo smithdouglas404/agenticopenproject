@@ -29,6 +29,9 @@ import { WpDestroyModalComponent } from 'core-app/shared/components/modals/wp-de
 import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
+import { Placement } from '@floating-ui/dom';
+
+export interface PositionArgs { placement?:Placement, reference?:HTMLElement }
 
 export class WorkPackageViewContextMenu extends OpContextMenuHandler {
   @InjectField() protected states!:States;
@@ -64,15 +67,24 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
 
   private copyToClipboardService:CopyToClipboardService;
 
+  protected reference:HTMLElement;
+
   constructor(
     public injector:Injector,
     protected workPackageId:string,
-    protected $element:JQuery,
-    protected additionalPositionArgs:any = {},
+    protected element:HTMLElement,
+    additionalPositionArgs:PositionArgs = {},
     protected allowSplitScreenActions:boolean = true,
   ) {
     super(injector.get(OPContextMenuService));
     this.copyToClipboardService = injector.get(CopyToClipboardService);
+
+    if (typeof additionalPositionArgs.placement !== 'undefined') {
+      this.placement = additionalPositionArgs.placement;
+    }
+    if (typeof additionalPositionArgs.reference !== 'undefined') {
+      this.reference = additionalPositionArgs.reference;
+    }
   }
 
   public get locals():OpContextMenuLocalsMap {
@@ -81,13 +93,6 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
       label: I18n.t('js.label_work_package_context_menu'),
       items: this.items,
     };
-  }
-
-  public positionArgs(evt:JQuery.TriggeredEvent) {
-    const position = super.positionArgs(evt);
-    _.assign(position, this.additionalPositionArgs);
-
-    return position;
   }
 
   public triggerContextMenuAction(action:WorkPackageAction) {
@@ -195,8 +200,8 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
       linkText: action.text,
       href: action.href,
       icon: action.icon != null ? action.icon : `icon-${action.key}`,
-      onClick: ($event:JQuery.TriggeredEvent) => {
-        if (action.href && isClickedWithModifier($event)) {
+      onClick: (event:MouseEvent) => {
+        if (action.href && isClickedWithModifier(event)) {
           return false;
         }
 
@@ -212,8 +217,8 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
         class: 'openFullScreenView',
         href: this.$state.href('work-packages.show', { workPackageId: this.workPackageId }),
         linkText: I18n.t('js.button_open_fullscreen'),
-        onClick: ($event:JQuery.TriggeredEvent) => {
-          if (isClickedWithModifier($event)) {
+        onClick: (event) => {
+          if (isClickedWithModifier(event)) {
             return false;
           }
 
@@ -235,8 +240,8 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
             { workPackageId: this.workPackageId, tabIdentifier: 'overview' },
           ),
           linkText: I18n.t('js.button_open_details'),
-          onClick: ($event:JQuery.TriggeredEvent) => {
-            if (isClickedWithModifier($event)) {
+          onClick: (event) => {
+            if (isClickedWithModifier(event)) {
               return false;
             }
 

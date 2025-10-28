@@ -23,15 +23,15 @@ export class GroupRowHandler implements TableEventHandler {
   }
 
   public eventScope(view:TableEventComponent) {
-    return jQuery(view.workPackageTable.tbody);
+    return view.workPackageTable.tbody;
   }
 
-  public handleEvent(view:TableEventComponent, evt:JQuery.TriggeredEvent) {
+  public handleEvent(view:TableEventComponent, evt:Event) {
     evt.preventDefault();
     evt.stopPropagation();
 
-    const groupHeader = jQuery(evt.target).parents(`.${rowGroupClassName}`);
-    const groupIdentifier = groupHeader.data('groupIdentifier');
+    const groupHeader = (evt.target as HTMLElement).closest<HTMLElement>(`.${rowGroupClassName}`);
+    const groupIdentifier = groupHeader?.dataset.groupIdentifier ?? '';
 
     this.workPackageViewCollapsedGroupsService.toggleGroupCollapseState(groupIdentifier);
   }
