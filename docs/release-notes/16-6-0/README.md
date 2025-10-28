@@ -167,10 +167,12 @@ Autoscaling can be configured through the Helm chart, allowing system administra
 
 A very special thank you goes to Helmholtz-Zentrum Berlin, City of Cologne, Deutsche Bahn and ZenDiS for sponsoring released or upcoming features. Your support, alongside the efforts of our amazing Community, helps drive these innovations. Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes. Special thanks for reporting and finding bugs go to Sven Kunze, Stefan Weiberg, Александр Татаринцев, Gábor Alexovics, Alexander Aleschenko, Tobias Nowakow.
 
+This release, we specifically want to thank Emon for reporting a security vulnerability on our website. Reports and feedback like this are one of the reasons we love OSS and appreciate being part of such an amazing community.
+
 Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to particularly thank the following users:
 
-- [Haura Nabila Rinaldi](https://crowdin.com/profile/hauranblr), for a great number of translations into Indonesian.
-- [Samo](https://crowdin.com/profile/SamoE), for a great number of translations into Turkish.
-- [Kuma Yamashita](https://crowdin.com/profile/dredgk), for a great number of translations into Japanese.
+- [William](https://crowdin.com/profile/williamfromtw), for a great number of translations into Chinese Traditional.
+- [Pickart](https://crowdin.com/profile/fantasmak10), for a great number of translations into Catalan.
+- [Maxime77](https://crowdin.com/profile/maxime77), for a great number of translations into French.
 
 Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!
