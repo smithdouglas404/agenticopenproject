@@ -162,7 +162,7 @@ gem "matrix", "~> 0.4.3"
 
 gem "meta-tags", "~> 2.22.0"
 
-gem "paper_trail", "~> 16.0.0"
+gem "paper_trail", "~> 17.0.0"
 
 gem "op-clamav-client", "~> 3.4", require: "clamav"
 
