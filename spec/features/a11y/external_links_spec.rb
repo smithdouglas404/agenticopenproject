@@ -44,7 +44,7 @@ RSpec.describe "External links", :js do
     expect(page.all(:link, target: "_blank")).to all match_selector(:link, described_by: "Open link in a new tab")
   end
 
-  it "updates external links to open in a new tab" do
+  it "updates external links to open in a new tab and sets rel attributes" do
     visit "/"
 
     page.execute_script <<~JS
@@ -56,6 +56,16 @@ RSpec.describe "External links", :js do
 
     # Wait for mutation observer to detect and update the link
     expect(page).to have_link("External Example", href: "https://example.com", target: "_blank")
+
+    link = find_link("External Example", href: "https://example.com", match: :first)
+
+    # Verify accessibility and security attributes
+    expect(link[:target]).to eq("_blank")
+    expect(link[:rel]).to include("noopener")
+    expect(link[:rel]).to include("noreferrer")
+
+    # It should also get the accessibility description
+    expect(link[:"aria-describedby"]).to include("open-blank-target-link-description")
   end
 
   it "does not modify links with empty href or download attribute" do
