@@ -1225,6 +1225,39 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
         TABLE
       end
     end
+
+    context "with work packages having automatically generated subjects" do
+      shared_let(:type_autosubject) do
+        create(:type,
+               name: "Autosubject",
+               patterns: { subject: { blueprint: "{{author}} {{start_date}} - {{finish_date}}", enabled: true } })
+      end
+
+      before_all do
+        set_factory_default(:type, type_autosubject)
+      end
+
+      let_work_packages(<<~TABLE)
+        | hierarchy      | MTWTFSS | scheduling mode
+        | parent         | XXX     | automatic
+        |   child        | XX      | manual
+        |   work_package |   X     | manual
+      TABLE
+
+      let(:attributes) { { start_date: _table.thursday, due_date: _table.friday } }
+
+      it "updates the dates of the parent" do
+        expect(subject).to be_success
+        expect(subject.all_results.pluck(:id)).to contain_exactly(work_package.id, parent.id)
+
+        expect_work_packages_after_reload([parent, child, work_package], <<~TABLE)
+          | identifier     | MTWTFSS | scheduling mode
+          | parent         | XXXXX   | automatic
+          |   child        | XX      | manual
+          |   work_package |    XX   | manual
+        TABLE
+      end
+    end
   end
 
   context "when switching scheduling mode to automatic" do
