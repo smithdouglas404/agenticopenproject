@@ -97,5 +97,12 @@ fi
 
 id $APP_USER || useradd -d /home/$APP_USER -m $APP_USER
 
-rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# Remove unnecessary packages
+apt-get purge -y --auto-remove \
+    unbound \
+    libexpat1 \
+    tar \
+    binutils
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 truncate -s 0 /var/log/*log
