@@ -36,7 +36,7 @@ module Homescreen
       end
 
       def feature_teaser_image
-        "#{feature_version}_features.svg"
+        "#{feature_version}_features.png"
       end
 
       def new_features_header
