@@ -204,10 +204,9 @@ export class EditFormComponent extends EditForm<HalResource> implements OnInit, 
 
   protected focusOnFirstError():void {
     // Focus the first field that is erroneous
-    jQuery(this.elementRef.nativeElement)
-      .find(`.${activeFieldContainerClassName}.-error .${activeFieldClassName}`)
-      .first()
-      .trigger('focus');
+    this.elementRef.nativeElement
+      .querySelector(`.${activeFieldContainerClassName}.-error .${activeFieldClassName}`)
+      ?.focus();
   }
 
   private skipField(field:EditableAttributeFieldComponent) {

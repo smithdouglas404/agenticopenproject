@@ -107,7 +107,7 @@ export function updateMenuItem(menuItemClass:string|undefined, action:'add'|'rem
     return;
   }
 
-  const menuItem = jQuery(`#main-menu .${menuItemClass}`)[0];
+  const menuItem = document.querySelector(`#main-menu .${menuItemClass}`);
 
   if (!menuItem) {
     return;

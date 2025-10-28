@@ -191,13 +191,23 @@ export class ScrollableTabsComponent extends UntilDestroyedMixin implements Afte
   }
 
   private scrollIntoVisibleArea(tabId:string) {
-    const tab:JQuery<Element> = jQuery(this.pane).find(`[data-tab-id=${tabId}]`);
-    const position:JQueryCoordinates = tab.position();
-
-    const tabRightBorderAt:number = position.left + Number(tab.outerWidth());
+    const tab = this.pane.querySelector<HTMLElement>(`[data-tab-id=${tabId}]`)!;
+    const position = getPosition(tab);
+    const tabRightBorderAt = position.left + tab.offsetWidth;
 
     if (this.pane.scrollLeft + this.container.clientWidth < tabRightBorderAt) {
       this.pane.scrollLeft = tabRightBorderAt - this.container.clientWidth + 40; // 40px to not overlap by buttons
     }
   }
+}
+
+function getPosition(el:HTMLElement) {
+  const offsetParent = el.offsetParent || document.body;
+  const elRect = el.getBoundingClientRect();
+  const parentRect = offsetParent.getBoundingClientRect();
+
+  return {
+    top: elRect.top - parentRect.top - parseFloat(getComputedStyle(offsetParent).borderTopWidth),
+    left: elRect.left - parentRect.left - parseFloat(getComputedStyle(offsetParent).borderLeftWidth)
+  };
 }

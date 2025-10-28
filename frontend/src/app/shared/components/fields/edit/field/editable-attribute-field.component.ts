@@ -86,7 +86,7 @@ export class EditableAttributeFieldComponent extends UntilDestroyedMixin impleme
 
   public active = false;
 
-  private $element:JQuery;
+  private element:HTMLElement;
 
   public destroyed = false;
 
@@ -114,7 +114,7 @@ export class EditableAttributeFieldComponent extends UntilDestroyedMixin impleme
 
   public ngOnInit():void {
     this.fieldRenderer = new DisplayFieldRenderer(this.injector, 'single-view', this.displayFieldOptions);
-    this.$element = jQuery<HTMLElement>(this.elementRef.nativeElement);
+    this.element = this.elementRef.nativeElement;
 
     // Register on the form if we're in an editable context
     this.editForm?.register(this);
@@ -157,7 +157,7 @@ export class EditableAttributeFieldComponent extends UntilDestroyedMixin impleme
     this.setActive(false);
 
     if (focus) {
-      setTimeout(() => this.$element.find(`.${displayClassName}`).focus(), 20);
+      setTimeout(() => this.element.querySelector<HTMLElement>(`.${displayClassName}`)?.focus(), 20);
     }
   }
 
@@ -174,8 +174,8 @@ export class EditableAttributeFieldComponent extends UntilDestroyedMixin impleme
     }
 
     // Skip activation if the user clicked on a link or within a macro
-    const target = jQuery(event.target as HTMLElement);
-    if (target.closest(`a:not(.${displayTriggerLink}),macro`, this.displayContainer.nativeElement).length > 0) {
+    const target = event.target as HTMLElement;
+    if (closestWithContext(target, `a:not(.${displayTriggerLink}),macro`, this.displayContainer.nativeElement)) {
       return true;
     }
 
@@ -240,4 +240,19 @@ export class EditableAttributeFieldComponent extends UntilDestroyedMixin impleme
 
     return this.schemaCache.of(this.resource);
   }
+}
+
+function closestWithContext(element:HTMLElement, selector:string, context:HTMLElement|Document = document) {
+  let el:HTMLElement|null = element;
+  while (el && el !== context && el.nodeType === 1) {
+    if (el.matches(selector)) {
+      return el;
+    }
+    el = el.parentElement;
+  }
+  // Check if context itself matches
+  if (el === context && el.matches(selector)) {
+    return el;
+  }
+  return null;
 }

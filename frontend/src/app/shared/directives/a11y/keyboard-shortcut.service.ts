@@ -97,15 +97,15 @@ export class KeyboardShortcutService {
     const key = accessKeys[keyName];
 
     return () => {
-      const elem = jQuery(`[accesskey=${key}]:first`);
-      if (elem.is('input') || elem.attr('id') === 'global-search-input') {
+      const elem = document.querySelector<HTMLElement>(`[accesskey=${key}]:first`)!;
+      if (elem instanceof HTMLInputElement || elem.getAttribute('id') === 'global-search-input') {
         // timeout with delay so that the key is not
         // triggered on the input
-        setTimeout(() => this.FocusHelper.focus(elem[0]), 200);
-      } else if (elem.is('[href]')) {
-        this.clickLink(elem[0] as HTMLLinkElement);
+        setTimeout(() => this.FocusHelper.focus(elem), 200);
+      } else if (elem instanceof HTMLAnchorElement) {
+        this.clickLink(elem);
       } else {
-        elem[0].click();
+        elem.click();
       }
     };
   }
@@ -126,7 +126,7 @@ export class KeyboardShortcutService {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  clickLink(link:HTMLLinkElement):void {
+  clickLink(link:HTMLAnchorElement):void {
     const event = new MouseEvent('click', {
       view: window,
       bubbles: true,

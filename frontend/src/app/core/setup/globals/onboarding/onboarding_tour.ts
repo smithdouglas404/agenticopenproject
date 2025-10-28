@@ -45,16 +45,19 @@ function initializeTour(storageValue:string) {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-assignment
   window.onboardingTourInstance = new window.EnjoyHint({
     onStart() {
-      jQuery('#content-wrapper, #menu-sidebar').addClass('-hidden-overflow');
+      document.querySelectorAll('#content-wrapper, #menu-sidebar')
+        .forEach((elem) => elem.classList.add('-hidden-overflow'));
       sessionStorage.setItem(onboardingTourStorageKey, storageValue);
     },
     onEnd() {
       sessionStorage.setItem(onboardingTourStorageKey, storageValue);
-      jQuery('#content-wrapper, #menu-sidebar').removeClass('-hidden-overflow');
+      document.querySelectorAll('#content-wrapper, #menu-sidebar')
+        .forEach((elem) => elem.classList.remove('-hidden-overflow'));
     },
     onSkip() {
       sessionStorage.setItem(onboardingTourStorageKey, 'skipped');
-      jQuery('#content-wrapper, #menu-sidebar').removeClass('-hidden-overflow');
+      document.querySelectorAll('#content-wrapper, #menu-sidebar')
+        .forEach((elem) => elem.classList.remove('-hidden-overflow'));
     },
   });
 }
@@ -80,8 +83,8 @@ function workPackageTour() {
 function ganttTour(configuration:ConfigurationService) {
   initializeTour('ganttTourFinished');
 
-  const boardsDemoDataAvailable = jQuery('meta[name=boards_demo_data_available]').attr('content') === 'true';
-  const teamPlannerDemoDataAvailable = jQuery('meta[name=demo_view_of_type_team_planner_seeded]').attr('content') === 'true';
+  const boardsDemoDataAvailable = document.querySelector('meta[name=boards_demo_data_available]')?.getAttribute('content') === 'true';
+  const teamPlannerDemoDataAvailable = document.querySelector('meta[name=demo_view_of_type_team_planner_seeded]')?.getAttribute('content') === 'true';
   const eeTokenAvailable = configuration.availableFeatures.includes('board_view');
 
   waitForElement('.work-package--results-tbody', '#content', () => {
@@ -110,7 +113,7 @@ function ganttTour(configuration:ConfigurationService) {
 function boardTour(configuration:ConfigurationService) {
   initializeTour('boardsTourFinished');
 
-  const teamPlannerDemoDataAvailable = jQuery('meta[name=demo_view_of_type_team_planner_seeded]').attr('content') === 'true';
+  const teamPlannerDemoDataAvailable = document.querySelector('meta[name=demo_view_of_type_team_planner_seeded]')?.getAttribute('content') === 'true';
   const eeTokenAvailable = configuration.availableFeatures.includes('board_view');
 
   waitForElement('wp-single-card', '#content', () => {

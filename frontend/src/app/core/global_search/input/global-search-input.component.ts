@@ -165,7 +165,7 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
 
   // detect if click is outside or inside the element
   @HostListener('click', ['$event'])
-  public handleClick(event:JQuery.TriggeredEvent):void {
+  public handleClick(event:MouseEvent):void {
     event.preventDefault();
 
     // handle click on search button
@@ -173,7 +173,7 @@ export class GlobalSearchInputComponent implements AfterViewInit, OnDestroy {
       if (this.deviceService.isTablet) {
         this.toggleMobileSearch();
         // open ng-select menu on default
-        jQuery('.ng-input input').focus();
+        document.querySelector<HTMLInputElement>('.ng-input input')?.focus();
         // only for mobile and not for all devices!
         // See https://github.com/opf/openproject/commit/a2eb0cd6025f2ecaca00f4ed81c4eb8e9399bd86
         event.stopPropagation();

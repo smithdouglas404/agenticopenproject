@@ -108,7 +108,7 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
   @Input() public board:Board;
 
   /** Access to the loading indicator element */
-  @ViewChild('loadingIndicator', { static: true }) indicator:ElementRef;
+  @ViewChild('loadingIndicator', { static: true }) indicator:ElementRef<HTMLElement>;
 
   /** Access to the card view */
   @ViewChild(WorkPackageCardViewComponent) cardView:WorkPackageCardViewComponent;
@@ -447,7 +447,7 @@ export class BoardListComponent extends AbstractWidgetComponent implements OnIni
   }
 
   private get indicatorInstance() {
-    return this.loadingIndicator.indicator(jQuery(this.indicator.nativeElement));
+    return this.loadingIndicator.indicator(this.indicator.nativeElement);
   }
 
   private setQueryProps(filters:ApiV3Filter[]) {

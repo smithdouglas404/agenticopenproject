@@ -55,7 +55,7 @@ export class WorkPackageTable {
     public readonly injector:Injector,
     public tableAndTimelineContainer:HTMLElement,
     public scrollContainer:HTMLElement,
-    public tbody:HTMLElement,
+    public tbody:HTMLTableSectionElement,
     public timelineBody:HTMLElement,
     public timelineController:WorkPackageTimelineTableController,
     public configuration:WorkPackageTableConfiguration,

@@ -93,7 +93,7 @@ export class RelationsRenderPass {
   }
 
   protected renderRelationRow(
-    relationRow:HTMLElement,
+    relationRow:HTMLTableRowElement,
     row:RowRenderInfo,
     label:string,
     column:QueryColumn,
@@ -103,7 +103,7 @@ export class RelationsRenderPass {
   ) {
     relationRow.classList.add(...row.additionalClasses);
     this.relationRowBuilder.appendRelationLabel(
-      jQuery(relationRow),
+      relationRow,
       label,
       column.id,
     );
@@ -134,7 +134,7 @@ export class RelationsRenderPass {
   public refreshRelationRow(
     renderedRow:RelationRenderInfo,
     workPackage:WorkPackageResource,
-    oldRow:JQuery,
+    oldRow:HTMLTableRowElement,
   ) {
     const newRow = this.relationRowBuilder.refreshRow(workPackage, oldRow);
     this.relationRowBuilder.appendRelationLabel(

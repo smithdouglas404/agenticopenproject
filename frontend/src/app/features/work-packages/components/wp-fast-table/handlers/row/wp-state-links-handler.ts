@@ -9,6 +9,7 @@ import { KeepTabService } from '../../../wp-single-view-tabs/keep-tab/keep-tab.s
 import { tableRowClassName } from '../../builders/rows/single-row-builder';
 import { uiStateLinkClass } from '../../builders/ui-state-link-builder';
 import { TableEventComponent, TableEventHandler } from '../table-handler-registry';
+import { EventType } from 'core-app/features/work-packages/routing/wp-view-base/event-handling/event-handler-registry';
 
 export class WorkPackageStateLinksHandler implements TableEventHandler {
   // Injections
@@ -25,8 +26,8 @@ export class WorkPackageStateLinksHandler implements TableEventHandler {
   constructor(public readonly injector:Injector) {
   }
 
-  public get EVENT() {
-    return 'click.table.wpLink';
+  public get EVENT():EventType {
+    return 'click';
   }
 
   public get SELECTOR() {
@@ -34,12 +35,12 @@ export class WorkPackageStateLinksHandler implements TableEventHandler {
   }
 
   public eventScope(view:TableEventComponent) {
-    return jQuery(view.workPackageTable.tableAndTimelineContainer);
+    return view.workPackageTable.tableAndTimelineContainer;
   }
 
   protected workPackage:WorkPackageResource;
 
-  public handleEvent(view:TableEventComponent, evt:JQuery.TriggeredEvent) {
+  public handleEvent(view:TableEventComponent, evt:KeyboardEvent) {
     evt.stopPropagation();
 
     // Avoid the state capture when clicking with modifier to allow browser opening in new tab
