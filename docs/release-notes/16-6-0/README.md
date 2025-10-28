@@ -67,11 +67,11 @@ In the Meetings module, the *More (three dots) menu* for agenda items has been i
 
 ![OpenProject 16.6: Meetings module showing the options when clicking on the More menu on an agenda item](meetings_move_menu.png)
 
-### Editing of individual work package/project attributes allowed even if certain other attributes are invalid (eg. required field empty)
+### Editing individual attributes even if other fields are invalid
 
-text
+In OpenProject 16.6, users can now edit individual attributes of a project, work package, or other object even if other required fields are missing or invalid. Previously, a single missing value — for example, a required custom field added after a project’s creation — could block users from saving any changes at all.
 
-screenshot
+With this improvement, users can still update visible fields such as status, assignee, or priority without being blocked by unrelated validation errors elsewhere. Required fields remain enforced when creating new resources or when the field is visible in the form. This change helps reduce user frustration and ensures smoother editing in complex projects with many custom fields.
 
 ### Work package type workflow table with a sticky header and sticky first column
 
