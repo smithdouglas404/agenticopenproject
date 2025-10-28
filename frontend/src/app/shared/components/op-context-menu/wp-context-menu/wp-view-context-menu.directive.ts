@@ -207,19 +207,20 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
     }));
 
     if (selected.length === 1 && !isNewResource(this.workPackage)) {
+      const projectIdentifier = this.currentProject.identifier;
+      const link = this.pathHelper.genericWorkPackagePath(projectIdentifier, this.workPackageId) + window.location.search;
+
       items.unshift({
         disabled: false,
         icon: 'icon-view-fullscreen',
         class: 'openFullScreenView',
-        href: this.$state.href('work-packages.show', { workPackageId: this.workPackageId }),
+        href: link,
         linkText: I18n.t('js.button_open_fullscreen'),
         onClick: ($event:JQuery.TriggeredEvent) => {
           if (isClickedWithModifier($event)) {
             return false;
           }
 
-          const projectIdentifier = this.currentProject.identifier;
-          const link = this.pathHelper.genericWorkPackagePath(projectIdentifier, this.workPackageId) + window.location.search;
           Turbo.visit(link, { action: 'advance' });
 
           return true;

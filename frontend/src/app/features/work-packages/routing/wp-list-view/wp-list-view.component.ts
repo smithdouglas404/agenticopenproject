@@ -30,10 +30,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Injector,
-  OnInit,
   ElementRef,
-  NgZone, inject,
+  inject,
+  Injector,
+  NgZone,
+  OnInit,
 } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { CausedUpdatesService } from 'core-app/features/boards/board/caused-updates/caused-updates.service';
@@ -190,7 +191,7 @@ export class WorkPackageListViewComponent extends UntilDestroyedMixin implements
     if (event.requestedState === 'split') {
       this.keepTab.goCurrentDetailsState(params);
     } else {
-      this.keepTab.goCurrentShowState(params.workPackageId);
+      this.openInFullView(event.workPackageId);
     }
   }
 
@@ -208,7 +209,6 @@ export class WorkPackageListViewComponent extends UntilDestroyedMixin implements
 
   private openInFullView(workPackageId:string) {
     const projectIdentifier = this.CurrentProject.identifier;
-    const link = this.pathHelper.genericWorkPackagePath(projectIdentifier, workPackageId) + window.location.search;
-    Turbo.visit(link, { action: 'advance' });
+    window.location.href = this.pathHelper.genericWorkPackagePath(projectIdentifier, workPackageId) + window.location.search;
   }
 }

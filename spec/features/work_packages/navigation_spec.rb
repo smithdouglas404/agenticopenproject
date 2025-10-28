@@ -185,6 +185,8 @@ RSpec.describe "Work package navigation", :js, :selenium do
 
     visit my_page_path
 
+    wait_for_network_idle
+
     page.find(".wp-table--cell-td.id a", text: work_package.id).click
 
     full_page = Pages::FullWorkPackage.new work_package, work_package.project
@@ -205,7 +207,7 @@ RSpec.describe "Work package navigation", :js, :selenium do
 
     it "filters out the work package" do
       wp_table = Pages::WorkPackagesTable.new project
-      wp_table.visit!
+      wp_table.visit_query query
 
       wp_table.expect_work_package_listed work_package
       full_view = wp_table.open_full_screen_by_link work_package
@@ -219,6 +221,7 @@ RSpec.describe "Work package navigation", :js, :selenium do
       # Go back to list
       full_view.go_back
 
+      wp_table = Pages::WorkPackagesTable.new project
       wp_table.ensure_work_package_not_listed! work_package
     end
   end

@@ -49,7 +49,7 @@ RSpec.describe "Notification center navigation", :js do
 
       # Navigate to full view and back
       wp_full = split_screen.switch_to_fullscreen
-      expect(page).to have_current_path "/work_packages/#{work_package.id}/relations"
+      expect(page).to have_current_path "/projects/#{project.identifier}/work_packages/#{work_package.id}/relations"
 
       page.execute_script("window.history.back()")
       expect(page).to have_current_path "/notifications/details/#{work_package.id}/relations"

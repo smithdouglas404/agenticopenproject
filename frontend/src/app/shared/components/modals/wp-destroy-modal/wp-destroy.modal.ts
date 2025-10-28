@@ -160,7 +160,7 @@ export class WpDestroyModalComponent extends OpModalComponent implements OnInit 
         this.busy = false;
         this.closeMe($event);
         this.wpTableFocus.clear('Clearing after destroying work packages');
-        if (this.$state.current.data.baseRoute) {
+        if (this.$state.current.data?.baseRoute) {
           this.backRoutingService.goBack(true);
         } else {
           const projectIdentifier = this.currentProject.identifier;

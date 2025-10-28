@@ -65,6 +65,9 @@ RSpec.describe WorkPackagesController do
              "with having the necessary permissions" do
       before do
         expect(WorkPackage).to receive_message_chain("visible.find_by").and_return(stub_work_package)
+        mock_permissions_for(current_user) do |mock|
+          mock.allow_in_project :view_work_packages, project: stub_work_package.project
+        end
       end
 
       instance_eval(&)

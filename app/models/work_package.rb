@@ -278,7 +278,7 @@ class WorkPackage < ApplicationRecord
   end
 
   def infoline(show_standard_type: true)
-    type_name = (show_standard_type || !type.is_standard) ? type.name : ""
+    type_name = show_standard_type || !type.is_standard ? type.name : ""
     "#{type_name}: #{subject} (##{id})"
   end
 

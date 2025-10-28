@@ -243,6 +243,10 @@ RSpec.describe "Work package with relation query group", :js, :selenium do
       full_wp.visit!
       relations_tab = find(".op-tab-row--link", text: "RELATIONS")
       relations_tab.click
+
+      wait_for_network_idle
+      full_wp.ensure_page_loaded
+
       relations = Components::WorkPackages::Relations.new(work_package)
       embedded_table = Pages::EmbeddedWorkPackagesTable.new(first("wp-single-view .work-packages-embedded-view--container"))
 

@@ -1,4 +1,3 @@
-import { waitForElement } from 'core-app/core/setup/globals/onboarding/helpers';
 import { OnboardingStep } from 'core-app/core/setup/globals/onboarding/onboarding_tour';
 
 export function wpFullViewOnboardingTourSteps():OnboardingStep[] {

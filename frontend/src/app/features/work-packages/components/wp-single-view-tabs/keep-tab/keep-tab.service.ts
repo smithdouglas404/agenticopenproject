@@ -27,7 +27,10 @@
 //++
 
 import {
-  StateService, Transition, TransitionService, UIRouterGlobals,
+  StateService,
+  Transition,
+  TransitionService,
+  UIRouterGlobals,
 } from '@uirouter/core';
 import { ReplaySubject } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -71,8 +74,7 @@ export class KeepTabService {
 
   public goCurrentShowState(workPackageId:string):void {
     const projectIdentifier = this.currentProject.identifier;
-    const link = this.pathHelper.genericWorkPackagePath(projectIdentifier, workPackageId, this.currentShowTab) + window.location.search;
-    window.location.href = link;
+    window.location.href = this.pathHelper.genericWorkPackagePath(projectIdentifier, workPackageId, this.currentShowTab) + window.location.search;
   }
 
   public goCurrentDetailsState(params:Record<string, unknown> = {}):void {

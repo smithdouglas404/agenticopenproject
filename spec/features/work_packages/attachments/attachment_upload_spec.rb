@@ -226,7 +226,10 @@ RSpec.describe "Upload attachment to work package", :js, :selenium do
     shared_examples "attachment dropzone common" do
       it "can drag something to the files tab and have it open" do
         wp_page.switch_to_tab(tab: "Files")
+        wait_for_network_idle
 
+        wp_page = Pages::FullWorkPackage.new(work_package, project)
+        wp_page.ensure_page_loaded
         wp_page.expect_tab "Files"
 
         attachments = Components::Attachments.new
@@ -243,6 +246,9 @@ RSpec.describe "Upload attachment to work package", :js, :selenium do
 
       it "can drag something from the files tab and create a comment with it" do
         wp_page.switch_to_tab(tab: "Activity")
+        wait_for_network_idle
+        wp_page = Pages::FullWorkPackage.new(work_package, project)
+        wp_page.ensure_page_loaded
         wp_page.wait_for_activity_tab
 
         attachments.drag_and_drop_file ".work-package-comment",
