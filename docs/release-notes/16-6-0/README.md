@@ -47,9 +47,11 @@ These improvements reduce query load and shorten response times, especially for 
 
 ### New index page for Documents module
 
-With OpenProject 16.6, a new index page provides a structured overview of all documents within a project. The list is sorted by last edited, showing the latest changes first, and includes columns for Name, Type, and Last edited. Users can search documents via a quick text filter or narrow results by document type using the filter menu on the left. A new Create document button lets users quickly add new items, with Note set as the default type. The view automatically respects project permissions, ensuring that users only see documents they are allowed to access. On mobile, the list is optimized to show just the most relevant information — the document name and its last edited date.
+With OpenProject 16.6, a new index page provides a structured overview of all documents within a project. The list is sorted by last edited, showing the latest changes first, and includes columns for Name, Type, and Last edited. Users can search documents via a quick text filter or narrow results by document type using the filter menu on the left. 
 
-While this is a small feature by itself, it marks the beginning of a major improvement of the Documents module, which will make managing and collaborating on documents in OpenProject much easier in the future.
+A new Create document button lets users quickly add new items, with Note set as the default type. Of course, the view automatically respects project permissions, ensuring that users only see documents they are allowed to access. On mobile, the list is optimized to show just the most relevant information.
+
+While this is a small update by itself, it marks the beginning of a major improvement of the Documents module, which will make managing and [live collaborating on documents in OpenProject](https://community.openproject.org/wp/66309) much easier in the future.
 
 ![OpenProject 16.6: Redesigned index page for the Documents module, showing a table with clickable name, type and last edited.](openproject-16-6-documents-index-page.png)
 
@@ -63,7 +65,9 @@ To do so, administrators need to navigate to *Administration → Custom fields*,
 
 ### Updated 'More' menu of meetings with a 'Add to section' option
 
-In the Meetings module, the *More (three dots) menu* for agenda items has been improved to make it easier to move work packages between sections. Moderators can now directly move an item to another section without manually reordering it step by step. The new Move to section option opens a dialog where users can select the desired section — including the backlog — from a dropdown list. This streamlines meeting organization, especially for larger meetings with multiple sections and many related work packages.
+In the Meetings module, the *More (three dots) menu* for agenda items has been improved to make it easier to move work packages between sections. Moderators can now directly move an item to another section without manually reordering it step by step. 
+
+The new *Move → Move to section* option opens a dialog where users can select the desired section from a dropdown list. Additionally, users can still move an agenda item to the backlog or to the next meeting (if it's part of a meeting series).
 
 ![OpenProject 16.6: Meetings module showing the options when clicking on the More menu on an agenda item](meetings_move_menu.png)
 
@@ -75,7 +79,11 @@ With this improvement, users can still update visible fields such as status, ass
 
 ### Work package type workflow table with a sticky header and sticky first column
 
-In *Administration → Work packages → Workflows*, the workflow table now features a sticky header and sticky first column. This makes it much easier for project administrators to keep track of which transitions are enabled when scrolling through large tables. The table is now split into three tabs — Default transitions, User is author, and User is assignee — each showing the relevant workflow configuration. As you scroll vertically or horizontally, the header row and first column remain visible, providing better orientation when managing complex workflow setups.
+In *Administration → Work packages → Workflows*, the workflow table now features a sticky header and sticky first column. This makes it much easier for project administrators to keep track of which transitions are enabled when scrolling through large tables, vertically or horizontally.
+
+Additionally, the table is now split into three tabs — *Default transitions*, *User is author*, and *User is assignee* — each showing the relevant workflow configuration. Before 16.6, these additional transitions were often overlooked as they were positioned below the table.
+
+![OpenProject 16.6: Administration for work package workflows highlighting the new tabs and that the header and right column are sticky when scrolling](openproject-16-6-work-package-workflow-highlighted.png)
 
 ### Mini calendar re-added in the date picker of mobile web
 
