@@ -73,12 +73,11 @@ module Settings
         }
       ) do |session_ttl_check_box|
         session_ttl_check_box.nested_form(
-          classes: { "d-none" => !Setting.session_ttl_enabled? },
+          classes: ["mt-2", { "d-none" => !Setting.session_ttl_enabled? }],
           data: {
             target_name: "session-ttl-enabled",
             show_when_checked_target: "effect",
-            show_when: "checked",
-            visibility_class: "d-none"
+            show_when: "checked"
           }
         ) do |builder|
           SessionTtlForm.new(builder)
