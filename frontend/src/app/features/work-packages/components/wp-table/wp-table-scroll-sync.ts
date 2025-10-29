@@ -98,7 +98,7 @@ export function createScrollSync(element:HTMLElement) {
       target(elTable).on(`wheel${scrollSyncEventNamespace}`, (ev:WheelEvent) => {
         syncWheelEvent(ev, elTable, elTimeline);
       });
-      target(elTable).on(`scroll${scrollSyncEventNamespace}`, (ev:CustomEvent) => {
+      target(elTable).on(`scroll${scrollSyncEventNamespace}`, (ev:Event) => {
         syncedLeft = true;
         if (!syncedRight) {
           elTimeline.scrollTop = (ev.target as HTMLElement).scrollTop;
@@ -113,7 +113,7 @@ export function createScrollSync(element:HTMLElement) {
       target(elTimeline).on(`wheel${scrollSyncEventNamespace}`, (ev:WheelEvent) => {
         syncWheelEvent(ev, elTable, elTimeline);
       });
-      target(elTimeline).on(`scroll${scrollSyncEventNamespace}`, (ev:CustomEvent) => {
+      target(elTimeline).on(`scroll${scrollSyncEventNamespace}`, (ev:Event) => {
         syncedRight = true;
         if (!syncedLeft) {
           elTable.scrollTop = (ev.target as HTMLElement).scrollTop;
