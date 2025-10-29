@@ -10,6 +10,7 @@ import { TableEventComponent, TableEventHandler } from '../table-handler-registr
 import { ClickOrEnterHandler } from '../click-or-enter-handler';
 import { WorkPackageTable } from '../../wp-fast-table';
 import { tableRowClassName } from '../../builders/rows/single-row-builder';
+import { EventType } from 'core-app/features/work-packages/routing/wp-view-base/event-handling/event-handler-registry';
 
 export class EditCellHandler extends ClickOrEnterHandler implements TableEventHandler {
   // Injections
@@ -19,8 +20,8 @@ export class EditCellHandler extends ClickOrEnterHandler implements TableEventHa
 
   // Keep a reference to all
 
-  public get EVENT() {
-    return 'click.table.cell, keydown.table.cell';
+  public get EVENT():EventType[] {
+    return ['click', 'keydown'];
   }
 
   public get SELECTOR() {

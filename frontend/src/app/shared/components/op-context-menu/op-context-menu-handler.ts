@@ -1,4 +1,4 @@
-import { computePosition, ComputePositionReturn, flip, offset, Placement, shift } from '@floating-ui/dom';
+import { computePosition, ComputePositionReturn, flip, Placement, shift } from '@floating-ui/dom';
 import { OPContextMenuService } from 'core-app/shared/components/op-context-menu/op-context-menu.service';
 import { OpContextMenuItem } from 'core-app/shared/components/op-context-menu/op-context-menu.types';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';

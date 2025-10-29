@@ -8,6 +8,7 @@ import { WorkPackageCardViewService } from 'core-app/features/work-packages/comp
 import { OPContextMenuService } from 'core-app/shared/components/op-context-menu/op-context-menu.service';
 import { WorkPackageViewContextMenu } from 'core-app/shared/components/op-context-menu/wp-context-menu/wp-view-context-menu.directive';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
+import { EventType } from 'core-app/features/work-packages/routing/wp-view-base/event-handling/event-handler-registry';
 
 export class CardRightClickHandler implements CardEventHandler {
   // Injections
@@ -21,8 +22,8 @@ export class CardRightClickHandler implements CardEventHandler {
     card:WorkPackageCardViewComponent) {
   }
 
-  public get EVENT() {
-    return 'contextmenu.cardView.rightclick';
+  public get EVENT():EventType {
+    return 'contextmenu'; // FIXME: contextmenu has limited browser support.
   }
 
   public get SELECTOR() {

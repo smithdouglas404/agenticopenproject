@@ -1,14 +1,15 @@
 import { Injector } from '@angular/core';
 import { TableEventComponent } from 'core-app/features/work-packages/components/wp-fast-table/handlers/table-handler-registry';
 import { ContextMenuHandler } from './context-menu-handler';
+import { EventType } from 'core-app/features/work-packages/routing/wp-view-base/event-handling/event-handler-registry';
 
 export class ContextMenuKeyboardHandler extends ContextMenuHandler {
   constructor(public readonly injector:Injector) {
     super(injector);
   }
 
-  public get EVENT() {
-    return 'keydown.table.contextmenu';
+  public get EVENT():EventType {
+    return 'keydown';
   }
 
   public get SELECTOR() {

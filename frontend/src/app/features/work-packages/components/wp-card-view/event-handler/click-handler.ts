@@ -7,6 +7,7 @@ import { WorkPackageCardViewService } from 'core-app/features/work-packages/comp
 import { StateService } from '@uirouter/core';
 import { DeviceService } from 'core-app/core/browser/device.service';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
+import { EventType } from 'core-app/features/work-packages/routing/wp-view-base/event-handling/event-handler-registry';
 
 export class CardClickHandler implements CardEventHandler {
   // Injections
@@ -24,8 +25,8 @@ export class CardClickHandler implements CardEventHandler {
     card:WorkPackageCardViewComponent) {
   }
 
-  public get EVENT() {
-    return 'click.cardView.card';
+  public get EVENT():EventType {
+    return 'click';
   }
 
   public get SELECTOR() {

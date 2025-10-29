@@ -4,6 +4,7 @@ import { WorkPackageCardViewComponent } from 'core-app/features/work-packages/co
 import { WorkPackageViewSelectionService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-selection.service';
 import { StateService } from '@uirouter/core';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
+import { EventType } from 'core-app/features/work-packages/routing/wp-view-base/event-handling/event-handler-registry';
 
 export class CardDblClickHandler implements CardEventHandler {
   @InjectField() $state:StateService;
@@ -14,8 +15,8 @@ export class CardDblClickHandler implements CardEventHandler {
     card:WorkPackageCardViewComponent) {
   }
 
-  public get EVENT() {
-    return 'dblclick.cardView.card';
+  public get EVENT():EventType {
+    return 'dblclick';
   }
 
   public get SELECTOR() {

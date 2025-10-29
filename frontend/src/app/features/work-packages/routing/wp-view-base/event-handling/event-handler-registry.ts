@@ -1,9 +1,11 @@
 import { EventEmitter, InjectionToken, Injector } from '@angular/core';
 import { delegate } from '@knowledgecode/delegate';
 
+export type EventType = keyof HTMLElementEventMap;
+
 export interface WorkPackageViewEventHandler<T> {
   /** Event name to register * */
-  EVENT:string;
+  EVENT:EventType|EventType[];
 
   /** Event context CSS selector */
   SELECTOR:string;
@@ -41,9 +43,12 @@ export abstract class WorkPackageViewHandlerRegistry<T> {
     this.eventHandlers.map((factory) => {
       const handler = factory(viewRef);
       const target = handler.eventScope(viewRef);
+      const types = Array.isArray(handler.EVENT) ? handler.EVENT : [handler.EVENT];
 
-      delegate(target).on(handler.EVENT, handler.SELECTOR, (evt) => {
-        handler.handleEvent(viewRef, evt.originalEvent);
+      types.forEach((type) => {
+        delegate(target).on(type, handler.SELECTOR, (evt) => {
+          handler.handleEvent(viewRef, evt.originalEvent);
+        });
       });
 
       return handler;

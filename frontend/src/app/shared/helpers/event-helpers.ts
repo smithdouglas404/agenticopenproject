@@ -45,10 +45,11 @@ class EventListenerRegistry {
     options?:AddEventListenerOptions|boolean
   ) {
     const [namespace, type] = this.getNamespaceAndType(namespacedEvent);
-    if (!namespace) return;
 
     this.listenerMap.set(namespace, this.listenerMap.get(namespace) ?? new Map<EventType, EventListeners>());
     const listenersForNamespace = this.listenerMap.get(namespace)!;
+
+    if (!type) return;
 
     if (!listenersForNamespace.has(type)) {
       listenersForNamespace.set(type, [handler]);
@@ -82,8 +83,6 @@ class EventListenerRegistry {
 
   off(namespacedEvent:NamespacedEvent|NamespacedEvents) {
     const [namespace, type] = this.getNamespaceAndType(namespacedEvent);
-    if (!namespace) return;
-
     const listenersForNamespace = this.listenerMap.get(namespace);
     if (!listenersForNamespace) return;
 
@@ -115,6 +114,8 @@ class EventListenerRegistry {
     const listenersForNamespace = this.listenerMap.get(namespace);
     if (!listenersForNamespace) return;
 
+    if (!type) return;
+
     const listeners = listenersForNamespace.get(type);
     if (!listeners) return;
 
@@ -131,9 +132,9 @@ class EventListenerRegistry {
     }
   }
 
-  private getNamespaceAndType(namespacedEvent:NamespacedEvent|NamespacedEvents):[EventNamespace|null, EventType] {
-    const [eventType, namespace = null] = namespacedEvent.split('.') as [EventType, EventNamespace?];
-    return [namespace, eventType];
+  private getNamespaceAndType(namespacedEvent:NamespacedEvent|NamespacedEvents):[EventNamespace, EventType|null] {
+    const [namespace, type = null] = namespacedEvent.split('.').reverse() as [EventNamespace, EventType?];
+    return [namespace, type];
   }
 }
 

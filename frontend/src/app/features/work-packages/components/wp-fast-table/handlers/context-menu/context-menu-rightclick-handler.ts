@@ -7,6 +7,7 @@ import { tableRowClassName } from '../../builders/rows/single-row-builder';
 import { timelineCellClassName } from '../../builders/timeline/timeline-row-builder';
 import { uiStateLinkClass } from '../../builders/ui-state-link-builder';
 import { ContextMenuHandler } from './context-menu-handler';
+import { EventType } from 'core-app/features/work-packages/routing/wp-view-base/event-handling/event-handler-registry';
 
 export class ContextMenuRightClickHandler extends ContextMenuHandler {
   @InjectField() readonly wpTableSelection:WorkPackageViewSelectionService;
@@ -15,8 +16,8 @@ export class ContextMenuRightClickHandler extends ContextMenuHandler {
     super(injector);
   }
 
-  public get EVENT() {
-    return 'contextmenu.table.rightclick';
+  public get EVENT():EventType {
+    return 'contextmenu'; // FIXME: contextmenu has limited browser support.
   }
 
   public get SELECTOR() {

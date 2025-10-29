@@ -4,14 +4,15 @@ import { contextMenuLinkClassName } from 'core-app/features/work-packages/compon
 import { TableEventComponent } from 'core-app/features/work-packages/components/wp-fast-table/handlers/table-handler-registry';
 import { uiStateLinkClass } from '../../builders/ui-state-link-builder';
 import { ContextMenuHandler } from './context-menu-handler';
+import { EventType } from 'core-app/features/work-packages/routing/wp-view-base/event-handling/event-handler-registry';
 
 export class ContextMenuClickHandler extends ContextMenuHandler {
   constructor(public readonly injector:Injector) {
     super(injector);
   }
 
-  public get EVENT() {
-    return 'click.table.contextmenu';
+  public get EVENT():EventType {
+    return 'click';
   }
 
   public get SELECTOR() {

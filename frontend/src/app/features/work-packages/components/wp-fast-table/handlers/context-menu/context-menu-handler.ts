@@ -6,6 +6,7 @@ import { tableRowClassName } from '../../builders/rows/single-row-builder';
 import { WorkPackageTable } from '../../wp-fast-table';
 import { TableEventComponent, TableEventHandler } from '../table-handler-registry';
 import { PositionArgs } from 'core-app/shared/components/op-context-menu/wp-context-menu/wp-view-context-menu.directive';
+import { EventType } from 'core-app/features/work-packages/routing/wp-view-base/event-handling/event-handler-registry';
 
 export abstract class ContextMenuHandler implements TableEventHandler {
   // Injections
@@ -18,7 +19,7 @@ export abstract class ContextMenuHandler implements TableEventHandler {
     return `.${tableRowClassName}`;
   }
 
-  public abstract get EVENT():string;
+  public abstract get EVENT():EventType|EventType[];
 
   public abstract get SELECTOR():string;
 

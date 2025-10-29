@@ -11,6 +11,7 @@ import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decora
 import { TableEventComponent, TableEventHandler } from '../table-handler-registry';
 import { tableRowClassName } from '../../builders/rows/single-row-builder';
 import { tdClassName } from '../../builders/cell-builder';
+import { EventType } from 'core-app/features/work-packages/routing/wp-view-base/event-handling/event-handler-registry';
 
 export class RowDoubleClickHandler implements TableEventHandler {
   // Injections
@@ -25,8 +26,8 @@ export class RowDoubleClickHandler implements TableEventHandler {
   constructor(public readonly injector:Injector) {
   }
 
-  public get EVENT() {
-    return 'dblclick.table.row';
+  public get EVENT():EventType {
+    return 'dblclick';
   }
 
   public get SELECTOR() {

@@ -6,6 +6,7 @@ import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decora
 import { tableRowClassName } from '../../builders/rows/single-row-builder';
 import { WorkPackageTable } from '../../wp-fast-table';
 import { ClickOrEnterHandler } from '../click-or-enter-handler';
+import { EventType } from 'core-app/features/work-packages/routing/wp-view-base/event-handling/event-handler-registry';
 
 export class HierarchyClickHandler extends ClickOrEnterHandler implements TableEventHandler {
   // Injections
@@ -17,8 +18,8 @@ export class HierarchyClickHandler extends ClickOrEnterHandler implements TableE
     super();
   }
 
-  public get EVENT() {
-    return 'click.table.hierarchy';
+  public get EVENT():EventType {
+    return 'click';
   }
 
   public get SELECTOR() {

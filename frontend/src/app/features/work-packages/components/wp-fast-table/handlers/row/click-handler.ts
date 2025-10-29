@@ -10,6 +10,7 @@ import { debugLog } from 'core-app/shared/helpers/debug_output';
 import { TableEventComponent, TableEventHandler } from '../table-handler-registry';
 import { tableRowClassName } from '../../builders/rows/single-row-builder';
 import { KeepTabService } from '../../../wp-single-view-tabs/keep-tab/keep-tab.service';
+import { EventType } from 'core-app/features/work-packages/routing/wp-view-base/event-handling/event-handler-registry';
 
 export class RowClickHandler implements TableEventHandler {
   // Injections
@@ -26,8 +27,8 @@ export class RowClickHandler implements TableEventHandler {
   constructor(public readonly injector:Injector) {
   }
 
-  public get EVENT() {
-    return 'click.table.row';
+  public get EVENT():EventType {
+    return 'click';
   }
 
   public get SELECTOR() {
