@@ -175,7 +175,8 @@ export class EditableAttributeFieldComponent extends UntilDestroyedMixin impleme
 
     // Skip activation if the user clicked on a link or within a macro
     const target = event.target as HTMLElement;
-    if (closestWithContext(target, `a:not(.${displayTriggerLink}),macro`, this.displayContainer.nativeElement)) {
+    const foundElement = target.closest(`a:not(.${displayTriggerLink}),macro`);
+    if (foundElement && this.displayContainer.nativeElement.contains(foundElement)) {
       return true;
     }
 
@@ -242,17 +243,3 @@ export class EditableAttributeFieldComponent extends UntilDestroyedMixin impleme
   }
 }
 
-function closestWithContext(element:HTMLElement, selector:string, context:HTMLElement|Document = document) {
-  let el:HTMLElement|null = element;
-  while (el && el !== context && el.nodeType === 1) {
-    if (el.matches(selector)) {
-      return el;
-    }
-    el = el.parentElement;
-  }
-  // Check if context itself matches
-  if (el === context && el.matches(selector)) {
-    return el;
-  }
-  return null;
-}
