@@ -37,32 +37,27 @@ module Primer
 
         attr_reader :input,
                     :value,
-                    :users,
                     :active_user,
                     :hocuspocus_url,
-                    :hocuspocus_access_token,
                     :open_project_url,
-                    :document_id
+                    :document_name,
+                    :document_id,
+                    :oauth_token
 
         delegate :name, to: :@input
 
-        def initialize(input:, value:, document_id:)
+        def initialize(input:, value:, document_name:, document_id:, oauth_token: nil)
           super()
           @input = input
           @value = value
-          @users = User.active.map do |user|
-            {
-              id: user.id,
-              username: user.name
-            }
-          end
           @active_user = {
             id: User.current.id,
             username: User.current.name
           }
           @document_id = document_id
+          @document_name = document_name
+          @oauth_token = oauth_token
           @hocuspocus_url = Setting.collaborative_editing_hocuspocus_url
-          @hocuspocus_access_token = ::CollaborativeEditing::DocumentAccessTokenGenerator.call(document_id, value)
           @open_project_url = root_url
         end
       end

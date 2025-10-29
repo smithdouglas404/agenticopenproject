@@ -1,15 +1,6 @@
 sv:
   overviews:
     label_home: "%{workspace_type} hem"
-    label_dashboard: "Dashboard"
+    label_dashboard: "Översikt"
     label_overview: 'Översikt'
-    widgets:
-      subitems:
-        in_this_portfolio: "In this portfolio"
-        in_this_program: "In this program"
-        in_this_project: "I detta projekt"
-        no_visible_children: "There are no visible children."
-      members:
-        title: "Latest members"
-        view_all_members: "Visa alla medlemmar"
   permission_manage_overview: 'Hantera översiktssida'

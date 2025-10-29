@@ -162,6 +162,11 @@ id:
         expired: "Expired on %{date}"
         revoked: "Revoked on %{date}"
         title: "Access token table"
+    workflows:
+      tabs:
+        default_transitions: "Default transitions"
+        user_author: "User is author"
+        user_assignee: "User is assignee"
   authentication:
     login_and_registration: "Login and registration"
   announcements:
@@ -313,6 +318,7 @@ id:
     reorder_alphabetical: "Susun ulang nilai menurut abjad"
     reorder_confirmation: "Peringatan: Urutan nilai yang tersedia saat ini akan hilang.  Melanjutkan?"
     placeholder_version_select: "Work package or project selection is required first"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Tandai bidang khusus sesuai kebutuhan. Ini akan membuatnya wajib diisi saat membuat sumber daya baru atau memperbarui sumber daya yang sudah ada."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects."
@@ -342,7 +348,7 @@ id:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "atau"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -383,7 +389,7 @@ id:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Induk"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -519,6 +525,8 @@ id:
       versions:
         no_results_title_text: There are currently no versions for the project.
         no_results_content_text: Create a new version
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: Tidak ada ruang disk terekam tambahan yang digunakan oleh proyek ini.
       work_package_priorities:
@@ -626,7 +634,7 @@ id:
       session_name: "%{browser_name} %{browser_version} di %{os_name}"
       browser: "Browser"
       expires: "Expires"
-      last_connection: "Last connection"
+      last_connection: "Terakhir koneksi"
       device: "Device / OS"
       unknown_browser: "peramban tidak dikenal"
       unknown_os: "sistem operasi tidak dikenal"
@@ -2540,15 +2548,15 @@ id:
         header: "Read about new features and product updates."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_5":
+        "16_6":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Add work packages to a meeting section in the Meetings tab.
-            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
-            line_2: Filter projects by last update.
-            line_3: Jump to highlighted target elements from deep links.
-            line_4: Confirm critical actions with more accessible danger dialogs.
+            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
+            line_1: Project attributes type hierarchy.
+            line_2: Performance updates with great impact.
+            line_3: New index page for Documents module.
+            line_4: Possibility to change parent of a custom field item.
     links:
       upgrade_enterprise_edition: "Upgrade to Enterprise edition"
       postgres_migration: "Migrasi instalasi anda ke PostgreSQL"
@@ -2784,7 +2792,7 @@ id:
   label_required_disk_storage: "Storage yang dibutuhkan"
   label_send_invitation: Kirim undangan
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Perubahan induk"
   label_change_plural: "Perubahan"
   label_change_properties: "Ubah properti"
   label_change_status: "Ubah status"
@@ -2873,6 +2881,7 @@ id:
   label_duplicate: "duplicate"
   label_duplicates: "duplikat"
   label_edit: "Edit"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Edit: %{x}"
   label_enable_multi_select: "Beralih ke multiselect"
   label_enabled_project_custom_fields: "Enabled custom fields"
@@ -2995,7 +3004,7 @@ id:
   label_link_url: "Link (URL)"
   label_list: "List"
   label_loading: "Loading..."
-  label_locked: "locked"
+  label_locked: "terkunci"
   label_lock_user: "Mengunci pengguna"
   label_logged_as: "Login sbg"
   label_login: "Login"
@@ -3005,7 +3014,7 @@ id:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "Miring"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
@@ -3299,6 +3308,7 @@ id:
   label_user_search: "Cari user"
   label_user_settings: "User settings"
   label_users_settings: "Users settings"
+  label_value_x: "Value: %{x}"
   label_version_new: "Versi baru"
   label_version_edit: "Ubah versi"
   label_version_plural: "Versi"
@@ -3636,7 +3646,7 @@ id:
   #Default format for numbers
   number:
     format:
-      delimiter: "."
+      delimiter: ","
       precision: 3
       separator: "."
     human:
@@ -3777,7 +3787,7 @@ id:
       one: "1 project"
       other: "%{count} proyek"
     destroy:
-      title: "Delete project"
+      title: "Hapus proyek"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4238,7 +4248,7 @@ id:
   status_invited: invited
   status_locked: terkunci
   status_registered: telah terdaftar
-  status_deleted: deleted
+  status_deleted: dihapus
   #Used in array.to_sentence.
   support:
     array:

@@ -89,7 +89,7 @@ fa:
     button_show_view: "نمایش تمام صفحه"
     button_log_time: "پیگیری زمان"
     button_start_timer: "Start timer"
-    button_stop_timer: "Stop timer"
+    button_stop_timer: "توقف زمان‌سنج"
     button_more: "بیشتر"
     button_open_details: "بازکردن نمای جزییات"
     button_close_details: "بستن نمایش جزئیات"
@@ -262,7 +262,7 @@ fa:
         farRight: "منتهای راست"
         description: >
           Select the attributes you want to be shown in the respective positions of the Gantt chart at all times. Note that when hovering over an element, its date labels will be shown instead of these attributes.
-      button_activate: "نمایش Gant chart"
+      button_activate: "نمایش نمودار گانت"
       button_deactivate: "عدم نمایش Gantt chart"
       filter:
         noneSelection: "(هیچ)"
@@ -443,7 +443,7 @@ fa:
     label_total_sum: "Total sum"
     label_subject: "موضوع"
     label_this_week: "this week"
-    label_today: "Today"
+    label_today: "امروز"
     label_time_entry_plural: "زمان صرف شده"
     label_up: "بالا"
     label_user_plural: "Users"
@@ -1124,7 +1124,7 @@ fa:
       all_projects: "In all projects"
       close_search: "Close search"
       current_project_and_all_descendants: "In this project + subprojects"
-      current_project: "In this project"
+      current_project: "در این پروژه"
       recently_viewed: "Recently viewed"
       title:
         all_projects: "all projects"

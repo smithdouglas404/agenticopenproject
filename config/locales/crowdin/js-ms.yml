@@ -22,7 +22,7 @@
 ms:
   js:
     ajax:
-      hide: "Sembunyikan"
+      hide: "Sembunyi"
       loading: "Memuatkan..."
       updating: "Mengemas kini..."
     attachments:
@@ -64,18 +64,18 @@ ms:
     button_add: "Tambah"
     button_back: "Kembali"
     button_back_to_list_view: "Kembali ke paparan senarai"
-    button_cancel: "Batal"
+    button_cancel: "Batalkan"
     button_close: "Tutup"
     button_change_project: "Beralih ke projek lain"
     button_check_all: "Semak semua"
     button_configure-form: "Konfigurasi borang"
     button_confirm: "Sahkan"
-    button_continue: "Seterusnya"
+    button_continue: "Teruskan"
     button_copy: "Salin"
     button_copy_to_clipboard: "Salin ke papan klip"
     button_copy_link_to_clipboard: "Salin pautan ke papan klip"
     button_copy_to_other_project: "Salin dalam projek lain"
-    button_custom-fields: "Ruang tersuai"
+    button_custom-fields: "Ruangan tersuai"
     button_delete: "Padamkan"
     button_delete_watcher: "Padam pemerhati"
     button_details_view: "Paparan butiran"
@@ -352,8 +352,8 @@ ms:
     label_edit_comment: "Edit komen ini"
     label_edit_status: "Edit status pakej kerja tersebut"
     label_email: "E-mel"
-    label_equals: "adalah"
-    label_expand: "Kembang"
+    label_equals: "ialah"
+    label_expand: "Kembangkan"
     label_expanded: "dikembangkan"
     label_expand_all: "Kembangkan semua"
     label_expand_project_menu: "Kembangkan menu projek"
@@ -371,8 +371,8 @@ ms:
     label_hide_column: "Sembunyikan kolum"
     label_hide_project_menu: "Sembunyikan menu projek"
     label_in: "dalam"
-    label_in_less_than: "kurang daripada"
-    label_in_more_than: "lebih daripada"
+    label_in_less_than: "dalam kurang daripada"
+    label_in_more_than: "dalam lebih daripada"
     label_incoming_emails: "E-mel masuk"
     label_information_plural: "Maklumat"
     label_invalid: "Tidak sah"
@@ -401,7 +401,7 @@ ms:
     label_no_value: "Tiada nilai"
     label_none: "tiada"
     label_not_contains: "tidak mengandungi"
-    label_not_equals: "adalah bukan"
+    label_not_equals: "adalah tidak"
     label_on: "pada"
     label_open_menu: "Buka menu"
     label_open_context_menu: "Buka menu konteks"
@@ -457,8 +457,8 @@ ms:
     label_warning: "Amaran"
     label_work_package: "Pakej kerja"
     label_work_package_parent: "Pakej kerja induk"
-    label_work_package_plural: "Pakej kerja"
-    label_watch: "Perhati"
+    label_work_package_plural: "Pakej pekerjaan"
+    label_watch: "Lihat"
     label_watch_work_package: "Perhatikan pakej kerja"
     label_watcher_added_successfully: "Pemerhati berjaya ditambah!"
     label_watcher_deleted_successfully: "Pemerhati berjaya dikeluarkan!"
@@ -604,7 +604,7 @@ ms:
             description: "Terima pemberitahuan setiap kali sesiapa menyebut saya di mana saja"
           assignee: "Penerima tugasan"
           responsible: "Bertanggungjawab"
-          shared: "Telah dikongsi"
+          shared: "Dikongsi"
           watched: "Pemerhati"
           work_package_commented: "Semua komen baharu"
           work_package_created: "Pakej kerja baharu"
@@ -936,7 +936,7 @@ ms:
         default: "-"
         date: "Pilih tarikh"
       query:
-        column_names: "Kolum-kolum"
+        column_names: "Kolum"
         group_by: "Kumpulkan hasil mengikut"
         group: "Kumpulkan mengikut"
         group_by_disabled_by_hierarchy: "Kumpulkan mengikut telah dinyahaktifkan kerana mod hierarki sedang aktif."
@@ -954,7 +954,7 @@ ms:
         rename_query_placeholder: "Nama paparan ini"
         star_text: "Tandakan paparan ini sebagai kegemaran dan tambah ke bar sisi pandangan yang disimpan di sisi kiri."
         public_text: >
-          Terbitkan paparan ini bagi membenarkan pengguna lain untuk akses paparan anda. Pengguna dengan kebenaran 'Urus paparan awam' boleh mengubah suai atau padamkan pertanyaan awam. Ini tidak akan mempengaruhi keterlihatan hasil pakej kerja dalam paparan itu dan bergantung kepada kebenaran mereka, pengguna mungkin akan melihat hasil yang berbeza.
+          Terbitkan paparan ini, membenarkan pengguna lain untuk akses paparan anda. Pengguna dengan kebenaran 'Urus paparan awam' boleh ubah suai atau keluarkan pertanyaan awam. Ini tidak akan mempengaruhi keterlihatan hasil pakej kerja dalam paparan itu dan bergantung kepada kebenaran mereka, pengguna mungkin melihat hasil yang berbeza.
         errors:
           unretrievable_query: "Tidak dapat untuk memperolehi paparan dari URL"
           not_found: "Tiada paparan seperti itu"
@@ -1021,13 +1021,13 @@ ms:
         watchers: Pemerhati-pemerhati
         files: Fail-fail
       time_relative:
-        days: "hari-hari"
+        days: "hari"
         weeks: "minggu"
         months: "bulan-bulan"
     toolbar:
       settings:
         configure_view: "Paparan konfigurasi"
-        columns: "Kolum-kolum"
+        columns: "Kolum"
         sort_by: "Susun mengikut"
         group_by: "Kumpulkan mengikut"
         display_sums: "Paparkan jumlah"
@@ -1041,7 +1041,7 @@ ms:
         share_calendar: "Langgan kalendar"
         page_settings: "Namakan semula paparan"
         delete: "Padamkan"
-      filter: "Saring"
+      filter: "Penyaring"
       unselected_title: "Pakej kerja"
       search_query_label: "Cari paparan yang disimpan"
     modals:

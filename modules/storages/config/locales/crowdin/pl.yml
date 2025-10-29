@@ -249,10 +249,10 @@ pl:
         ampf_configuration:
           client_folder_creation: Automatyczne tworzenie folderów
           client_folder_removal: Automatyczne usuwanie folderów
-          drive_contents: Dysk ma oczekiwaną zawartość
+          drive_contents: Drive content
           files_request: Pobieranie plików folderów grup
           group_folder_app: 'Zależne: foldery grup'
-          group_folder_contents: Folder grupy ma oczekiwaną zawartość
+          group_folder_contents: Group folder content
           group_folder_presence: Folder grupy istnieje
           header: Automatycznie zarządzane foldery projektu
           userless_access: Uwierzytelnianie żądań po stronie serwera
@@ -416,7 +416,7 @@ pl:
     label_edit_token_exchange: Edytuj konfigurację wymiany tokenów
     label_existing_manual_folder: Istniejący folder z ręcznie zarządzanymi uprawnieniami
     label_file_storage: Magazyn plików
-    label_host: Adres URL hosta 
+    label_host: Adres URL hosta
     label_inactive: Nieaktywny
     label_managed_project_folders:
       application_password: Hasło aplikacji
@@ -502,6 +502,7 @@ pl:
         name: OneDrive
         name_placeholder: np. OneDrive
       sharepoint:
+        drive_description: OpenProject access-managed document library
         label_oauth_client_id: Identyfikator aplikacji OAuth Azure (klienta)
         label_oauth_client_secret: Tajny klucz klienta OAuth Azure
         name: SharePoint

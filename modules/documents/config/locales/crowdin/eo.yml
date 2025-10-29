@@ -26,6 +26,10 @@ eo:
   activerecord:
     models:
       document: "Dokumento"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "Titolo"
   activity:
     filter:
       document: "Dokumentoj"
@@ -33,6 +37,22 @@ eo:
   default_doc_category_user: "Dokumentado por la uzanto"
   enumeration_doc_categories: "Kategorioj de dokumentoj"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "Nomo"
+      type: "Tipo"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "Specoj"
     label_attachment_author: "Aŭtoro de la kunsendaĵo"
     label_categories: "Categories"
     new_category: "Nova kategorio"

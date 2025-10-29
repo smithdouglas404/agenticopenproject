@@ -26,6 +26,10 @@ el:
   activerecord:
     models:
       document: "Έγγραφο"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "Τίτλος"
   activity:
     filter:
       document: "Έγγραφα"
@@ -33,6 +37,22 @@ el:
   default_doc_category_user: "Τεκμηρίωση χρήστη"
   enumeration_doc_categories: "Κατηγορίες εγγράφων"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "Όνομα"
+      type: "Τύπος"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "Τύποι"
     label_attachment_author: "Συγγραφέας συνημμένου"
     label_categories: "Κατηγορίες"
     new_category: "Νέα κατηγορία"

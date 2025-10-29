@@ -162,6 +162,11 @@ fr:
         expired: "Expiré le %{date}"
         revoked: "Révoqué le %{date}"
         title: "Tableau des jetons d'accès"
+    workflows:
+      tabs:
+        default_transitions: "Transitions par défaut"
+        user_author: "L'utilisateur est l'auteur"
+        user_assignee: "L'utilisateur est assigné"
   authentication:
     login_and_registration: "Connexion et inscription"
   announcements:
@@ -317,6 +322,7 @@ fr:
     reorder_alphabetical: "Réorganiser les valeurs par ordre alphabétique"
     reorder_confirmation: "Attention : l'ordre actuel des valeurs disponibles sera perdu. Continuer ?"
     placeholder_version_select: "La sélection d'un lot de travaux ou d'un projet est requise en premier lieu"
+    calculated_field_not_editable: "Attribut non modifiable. Cette valeur est calculée automatiquement."
     instructions:
       is_required: "Marquer le champ personnalisé comme requis. Cela rendra obligatoire de remplir le champ lors de la création ou de la mise à jour des ressources existantes."
       is_required_for_project: "Cocher pour activer cet attribut et le rendre nécessaire dans tous les projets. Il ne peut pas être désactivé pour certains projets."
@@ -343,8 +349,8 @@ fr:
   concatenation:
     single: "ou"
   danger_dialog:
-    confirmation_live_message_checked: "The button to proceed is now active."
-    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+    confirmation_live_message_checked: "Le bouton pour continuer est maintenant actif."
+    confirmation_live_message_unchecked: "Le bouton pour continuer est maintenant inactif. Vous devez cocher la case pour continuer."
   op_dry_validation:
     or: "ou"
     errors:
@@ -523,6 +529,8 @@ fr:
       versions:
         no_results_title_text: Aucune version du projet pour le moment.
         no_results_content_text: Créer une nouvelle version
+        work_packages_graph: Graphique des lots de travaux
+        show_work_packages: Afficher tous les lots de travaux
       storage:
         no_results_title_text: Il n'y a pas d'espace disque supplémentaire utilisé par ce projet.
       work_package_priorities:
@@ -607,7 +615,7 @@ fr:
     access_token:
       dialog:
         token/api:
-          dialog_title: "Créer un nouveau jeton API"
+          dialog_title: "Créer un nouveau jeton d'API"
           attention_text: "Traitez les jetons API comme des mots de passe. Toute personne possédant ce jeton aura accès aux informations de cette instance. Partagez-le uniquement avec des utilisateurs de confiance."
           dialog_body: "Ce jeton permettra aux applications tierces de communiquer avec votre instance. Pour différencier le nouveau jeton d'API, veuillez lui donner un nom."
           create_button: "Créer"
@@ -1823,7 +1831,7 @@ fr:
     due_date: "Date de fin"
     estimated_hours: "Travail"
     estimated_time: "Travail"
-    email: "E-mail"
+    email: "Adresse e-mail"
     entity_type: "Entité"
     expires_at: "Expire le"
     firstname: "Prénom"
@@ -2226,7 +2234,7 @@ fr:
     upsell:
       buy_now_button: "Acheter maintenant"
       plans_title: "Formules d'abonnement Enterprise"
-      title: "Add-on Enterprise"
+      title: "Module Enterprise"
       plan_title: "Add-on Enterprise %{plan}"
       plan_name: "Abonnement Enterprise %{plan}"
       plan_text_html: "Disponible à partir de l'abonnement %{plan_name}."
@@ -2553,14 +2561,14 @@ fr:
       tesseract: "Tesseract disponible (optionnel)"
   filterable_tree_view:
     filter_mode:
-      all: "Tout"
+      all: "Tous"
       label: "Mode de filtrage"
       selected: "Sélectionné"
     include_sub_items: "Inclure les sous-projets"
     no_results_text: "Aucun résultat"
   toggle_switch:
-    label_on: "On"
-    label_off: "Off"
+    label_on: "Activer"
+    label_off: "Désactiver"
   general_csv_decimal_separator: ","
   general_csv_encoding: "UTF-8"
   general_csv_separator: "."
@@ -2587,17 +2595,17 @@ fr:
         header: "Découvrez les nouvelles fonctionnalités et les mises à jour des produits."
         learn_about: "En savoir plus sur les nouvelles fonctionnalités"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_5":
+        "16_6":
           new_features_title: >
             Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que :
           new_features_list:
-            line_0: Ajoutez des lots de travail à une section de réunion dans l'onglet Réunions.
-            line_1: Choisissez le mode de couleur plus facilement grâce aux cases à cocher « Augmenter le contraste ».
-            line_2: Filtrez les projets en fonction de leur dernière mise à jour.
-            line_3: Accédez aux éléments cibles mis en évidence à partir de liens profonds.
-            line_4: Confirmez les actions critiques avec des boîtes de dialogue d'avertissement plus accessibles.
+            line_0: Valeurs calculées pour l'évaluation et la notation des projets (Enterprise add-on).
+            line_1: Hiérarchie des types d'attributs du projet.
+            line_2: Des mises à jour de performance avec un impact important.
+            line_3: Nouvelle page d'index pour le module Documents.
+            line_4: Possibilité de changer le parent d'un champ personnalisé.
     links:
-      upgrade_enterprise_edition: "Passer à la version Entreprise"
+      upgrade_enterprise_edition: "Passer à la version Enterprise"
       postgres_migration: "Migration de votre installation vers PostgreSQL"
       user_guides: "Guides d'utilisation"
       faq: "FAQ"
@@ -2920,6 +2928,7 @@ fr:
   label_duplicate: "dupliquer"
   label_duplicates: "Doublons"
   label_edit: "Éditer"
+  label_edit_attribute: "Modifier l'attribut"
   label_edit_x: "Modifier : %{x}"
   label_enable_multi_select: "Basculer multisélection"
   label_enabled_project_custom_fields: "Champs personnalisés activés"
@@ -3160,7 +3169,7 @@ fr:
   label_password_rule_special: "Caractères spéciaux"
   label_password_rule_uppercase: "Majuscules"
   label_path_encoding: "Encodage du chemin d'accès"
-  label_per_page: "Par page :"
+  label_per_page: "Par page:"
   label_people: "Participants"
   label_permissions: "Autorisations"
   label_permissions_report: "Rapport d'autorisations"
@@ -3346,6 +3355,7 @@ fr:
   label_user_search: "Recherche d'Utilisateurs"
   label_user_settings: "Paramètres de l'utilisateur"
   label_users_settings: "Paramètres des utilisateurs"
+  label_value_x: "Valeur : %{x}"
   label_version_new: "Nouvelle version"
   label_version_edit: "Modifier la version"
   label_version_plural: "Versions"
@@ -3685,7 +3695,7 @@ fr:
   #Default format for numbers
   number:
     format:
-      delimiter: ","
+      delimiter: "."
       precision: 3
       separator: ","
     human:

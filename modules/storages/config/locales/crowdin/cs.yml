@@ -32,7 +32,7 @@ cs:
         drive: ID disku
         host: Hostitel
         name: Název
-        password: Application password
+        password: Heslo aplikace
         provider_type: Typ poskytovatele
         tenant: ID adresáře (tenant)
     errors:
@@ -249,10 +249,10 @@ cs:
         ampf_configuration:
           client_folder_creation: Automatic folder creation
           client_folder_removal: Automatic folder deletion
-          drive_contents: Drive has expected content
+          drive_contents: Drive content
           files_request: Fetching group folder files
           group_folder_app: 'Dependency: Group Folders'
-          group_folder_contents: Group folder has expected content
+          group_folder_contents: Group folder content
           group_folder_presence: Group folder exists
           header: Automaticky spravované projektové složky
           userless_access: Server-side request authentication
@@ -275,7 +275,7 @@ cs:
           drive_id_exists: Drive exists
           drive_id_format: Drive ID format
           header: Configuration
-          host: Host URL
+          host: URL adresa hostitele
           host_url_accessible: Host URL accessible
           storage_configured: Configuration complete
           tenant_id: Tenant ID
@@ -502,6 +502,7 @@ cs:
         name: OneDrive
         name_placeholder: např. OneDrive
       sharepoint:
+        drive_description: OpenProject access-managed document library
         label_oauth_client_id: Azure OAuth aplikace (klient) ID
         label_oauth_client_secret: ' utajená Hodnota klienta Azure OAuth'
         name: SharePoint

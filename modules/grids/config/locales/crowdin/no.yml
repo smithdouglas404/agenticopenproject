@@ -1,6 +1,17 @@
 "no":
   grids:
     label_widget_in_grid: "Widget i tabell %{grid_name}"
+    widgets:
+      subitems:
+        title: "Subitems"
+        no_results: "There are no visible children."
+        view_all_subitems: "View all subitems"
+      members:
+        title: "Latest members"
+        no_results: "Ingen synlige medlemmer."
+        view_all_members: "Vis alle medlemmer"
+      news:
+        no_results: "Ingenting nytt å rapportere."
   activerecord:
     attributes:
       grids/grid:

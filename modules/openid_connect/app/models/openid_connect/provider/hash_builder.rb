@@ -30,38 +30,63 @@
 
 module OpenIDConnect
   module Provider::HashBuilder
-    def attribute_map
-      OpenIDConnect::Provider::MAPPABLE_ATTRIBUTES
-        .index_with { |attr| public_send(:"mapping_#{attr}") }
-        .compact_blank
-    end
+    STATE_GENERATOR = -> { SecureRandom.hex(42) }
 
-    def to_h # rubocop:disable Metrics/AbcSize
+    def to_omniauth_hash # rubocop:disable Metrics/AbcSize
+      client_options = {
+        identifier: client_id,
+        secret: client_secret,
+        authorization_endpoint:,
+        token_endpoint:,
+        userinfo_endpoint:,
+        jwks_uri:,
+        end_session_endpoint:,
+        host: host || ::UrlBuilder.host_from_endpoint(authorization_endpoint),
+        redirect_uri:
+      }.compact
       {
-        name: slug,
-        oidc_provider:,
+        name: slug.to_sym,
         icon:,
-        host:,
         scheme:,
         port:,
         display_name:,
-        userinfo_endpoint:,
-        authorization_endpoint:,
-        jwks_uri:,
         issuer:,
-        scope:,
-        identifier: client_id,
-        secret: client_secret,
-        token_endpoint:,
-        limit_self_registration:,
-        end_session_endpoint:,
+        scope: scopes,
         attribute_map:,
         post_logout_redirect_uri:,
-        claims:,
-        acr_values:
+        claims: add_groups_claim(JSON.parse(claims.presence || "{}")).to_json,
+        acr_values:,
+        client_options:
       }
-       .merge(provider_specific_to_h)
-       .compact_blank
+        .merge(provider_specific_to_h)
+        .compact
+    end
+
+    def to_h
+      hash = to_omniauth_hash
+      hash.merge(
+        limit_self_registration:,
+        # Remember oidc session values when logging in user
+        retain_from_session: %w[
+          omniauth.oidc_sid
+          omniauth.oidc_access_token
+          omniauth.oidc_refresh_token
+          omniauth.oidc_expires_in
+          omniauth.oidc_groups
+        ],
+        single_sign_out_callback: single_sign_out_callback(hash),
+        backchannel_logout_callback: ::OpenProject::OpenIDConnect::SessionMapper.method(:handle_logout)
+      )
+    end
+
+    private
+
+    def single_sign_out_callback(omniauth_hash)
+      Proc.new do
+        next unless omniauth_hash[:client_options][:end_session_endpoint]
+
+        redirect_to "#{omni_auth_start_path(omniauth_hash[:name])}/logout"
+      end
     end
 
     def provider_specific_to_h
@@ -69,16 +94,25 @@ module OpenIDConnect
       when "google"
         {
           client_auth_method: :not_basic,
-          send_nonce: false
+          send_nonce: false,
+          state: STATE_GENERATOR
         }
       when "microsoft_entra"
-        {
-          use_graph_api:,
-          tenant:
-        }
+        {}
       else
         {}
       end
+    end
+
+    def attribute_map
+      OpenIDConnect::Provider::MAPPABLE_ATTRIBUTES
+        .index_with { |attr| public_send(:"mapping_#{attr}") }
+        .compact_blank
+    end
+
+    def add_groups_claim(claims)
+      claims = { "id_token" => { groups_claim => nil } }.deep_merge(claims) if sync_groups
+      claims
     end
   end
 end

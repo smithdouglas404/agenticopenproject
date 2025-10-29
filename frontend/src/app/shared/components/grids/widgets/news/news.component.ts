@@ -35,6 +35,6 @@ import { AbstractTurboWidgetComponent } from 'core-app/shared/components/grids/w
   standalone: false,
 })
 export class WidgetNewsComponent extends AbstractTurboWidgetComponent {
-  override frameId = 'overviews-widgets-news-component';
+  override frameId = 'grids-widgets-news';
   override name = 'news';
 }

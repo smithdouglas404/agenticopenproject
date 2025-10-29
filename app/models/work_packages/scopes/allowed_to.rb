@@ -127,14 +127,28 @@ module WorkPackages::Scopes
         # 	)
         # ```
         # Postgresql however sometimes turns to a sequential scan with the query above.
+        #
+        # Index scans can still happen in the combination of the CTE with the check outside of the
+        # CTEs for the existence of any record.
+        # This is particularly likely in case AR.exists? is used which adds a LIMIT 1
+        # to the query. In this case, there is a known shortcoming that PostgreSQL's query planner
+        # will make poor choices
+        # (https://www.postgresql.org/message-id/flat/CA%2BU5nMLbXfUT9cWDHJ3tpxjC3bTWqizBKqTwDgzebCB5bAGCgg%40mail.gmail.com).
+        #
+        # Once AR supports adding materialization hints (https://github.com/rails/rails/pull/54322), the inner
+        # `allowed` CTE can be abandoned as it is only used for being able to provide such a hint.
         allowed_by_projects_and_work_packages = Arel.sql(<<~SQL.squish)
-          SELECT * from work_packages
-          WHERE project_id in (SELECT id FROM member_projects)
-          AND NOT EXISTS (
-            SELECT 1 FROM entity_member_projects_without_duplicates
-            WHERE entity_member_projects_without_duplicates.id = work_packages.project_id
-            AND entity_member_projects_without_duplicates.entity_id != work_packages.id
+          WITH allowed AS MATERIALIZED (
+            SELECT id from work_packages
+            WHERE project_id in (SELECT id FROM member_projects)
+            AND NOT EXISTS (
+              SELECT 1 FROM entity_member_projects_without_duplicates
+              WHERE entity_member_projects_without_duplicates.id = work_packages.project_id
+              AND entity_member_projects_without_duplicates.entity_id != work_packages.id
+            )
           )
+
+          SELECT * from allowed
         SQL
 
         with(member_projects: Arel.sql(allowed_via_project_or_work_package_membership.to_sql),
@@ -142,7 +156,13 @@ module WorkPackages::Scopes
              project_member_projects:,
              entity_member_projects_without_duplicates:,
              allowed_by_projects_and_work_packages:)
-          .from("allowed_by_projects_and_work_packages work_packages")
+          .where(<<~SQL.squish)
+            EXISTS (
+              SELECT 1
+              FROM allowed_by_projects_and_work_packages
+              WHERE work_packages.id = allowed_by_projects_and_work_packages.id
+            )
+          SQL
       end
 
       def allowed_to_admin_relation(permissions)

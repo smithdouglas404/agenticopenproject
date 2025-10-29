@@ -162,6 +162,11 @@ bg:
         expired: "Expired on %{date}"
         revoked: "Revoked on %{date}"
         title: "Access token table"
+    workflows:
+      tabs:
+        default_transitions: "Default transitions"
+        user_author: "User is author"
+        user_assignee: "User is assignee"
   authentication:
     login_and_registration: "Login and registration"
   announcements:
@@ -317,6 +322,7 @@ bg:
     reorder_alphabetical: "Пренареждане на стойностите по азбучен ред"
     reorder_confirmation: "Внимание: Текущият ред на наличните стойности ще бъде загубен. Желаете ли да продължите?"
     placeholder_version_select: "Work package or project selection is required first"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects."
@@ -346,7 +352,7 @@ bg:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "или"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -387,7 +393,7 @@ bg:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Горна категория"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -450,7 +456,7 @@ bg:
     lists:
       active: "Активни проекти"
       my: "Моите проекти"
-      favorited: "Favorite projects"
+      favorited: "Любими проекти"
       archived: "Архивирани проекти"
       shared: "Споделени списъци с проекти"
       my_lists: "My project lists"
@@ -523,6 +529,8 @@ bg:
       versions:
         no_results_title_text: В момента няма версии за проекта.
         no_results_content_text: Създаване на нова версия
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: There is no additional recorded disk space consumed by this project.
       work_package_priorities:
@@ -635,8 +643,8 @@ bg:
     sessions:
       session_name: "%{browser_name} %{browser_version} на %{os_name}"
       browser: "Браузър"
-      expires: "Expires"
-      last_connection: "Last connection"
+      expires: "Изтича на"
+      last_connection: "Последната връзка"
       device: "Устройство / операционна система"
       unknown_browser: "Неизвестен браузър"
       unknown_os: "непозната операционна система"
@@ -1796,7 +1804,7 @@ bg:
     attachments: "Прикачени файлове"
     actor: "Actor"
     action: "Действие"
-    api_key: "API key"
+    api_key: "API ключ"
     author: "Автор"
     avatar: "Аватар"
     base: "Обща грешка:"
@@ -2589,15 +2597,15 @@ bg:
         header: "Read about new features and product updates."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_5":
+        "16_6":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Add work packages to a meeting section in the Meetings tab.
-            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
-            line_2: Filter projects by last update.
-            line_3: Jump to highlighted target elements from deep links.
-            line_4: Confirm critical actions with more accessible danger dialogs.
+            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
+            line_1: Project attributes type hierarchy.
+            line_2: Performance updates with great impact.
+            line_3: New index page for Documents module.
+            line_4: Possibility to change parent of a custom field item.
     links:
       upgrade_enterprise_edition: "Upgrade to Enterprise edition"
       postgres_migration: "Migrating your installation to PostgreSQL"
@@ -2833,7 +2841,7 @@ bg:
   label_required_disk_storage: "Необходимо дисково пространство"
   label_send_invitation: Send invitation
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Смяна на главният работен пакет"
   label_change_plural: "Промени"
   label_change_properties: "Промяна на свойствата"
   label_change_status: "Промяна на статуса"
@@ -2922,6 +2930,7 @@ bg:
   label_duplicate: "дубликат"
   label_duplicates: "дублирания"
   label_edit: "Редактиране"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Редактиране: %{x}"
   label_enable_multi_select: "Превключване към множествен избор"
   label_enabled_project_custom_fields: "Разрешени потребителски полета"
@@ -3054,7 +3063,7 @@ bg:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "Наклонени букви"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Персонализирано експортиране овърлея на корицата"
   label_custom_export_cover_text_color: "Цвят на текста"
@@ -3132,7 +3141,7 @@ bg:
   label_nobody: "nobody"
   label_not_configured: "Not configured"
   label_not_found: "не е намерен"
-  label_none: "никой"
+  label_none: "none"
   label_none_parentheses: "(none)"
   label_not_contains: "doesn't contain"
   label_not_equals: "is not"
@@ -3348,6 +3357,7 @@ bg:
   label_user_search: "Търсене на потребител"
   label_user_settings: "Потребителски настройки"
   label_users_settings: "Потребителски настройки"
+  label_value_x: "Value: %{x}"
   label_version_new: "Нова версия"
   label_version_edit: "Edit version"
   label_version_plural: "Версии"
@@ -3687,7 +3697,7 @@ bg:
   #Default format for numbers
   number:
     format:
-      delimiter: "."
+      delimiter: ","
       precision: 3
       separator: "."
     human:
@@ -3829,7 +3839,7 @@ bg:
       one: "1 проект"
       other: "%{count} проекти"
     destroy:
-      title: "Delete project"
+      title: "Изтриване на проект"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4292,7 +4302,7 @@ bg:
   status_invited: Поканен
   status_locked: locked
   status_registered: registered
-  status_deleted: deleted
+  status_deleted: изтрит
   #Used in array.to_sentence.
   support:
     array:

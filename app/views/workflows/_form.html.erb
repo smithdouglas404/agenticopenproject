@@ -26,10 +26,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
+
+<% name = tab[:name] %>
+<% workflows = @workflows[name] %>
+
+<%=
+  if name == "assignee"
+    render(Primer::OpenProject::Heading.new(tag: :h3, my: 3)) { t(:label_additional_workflow_transitions_for_assignee) }
+  elsif name == "author"
+    render(Primer::OpenProject::Heading.new(tag: :h3, my: 3)) { t(:label_additional_workflow_transitions_for_author) }
+  end
+%>
+
 <div id="workflow_form_<%= name %>" class="generic-table--container">
   <div class="generic-table--results-container">
     <table class="generic-table workflow-table transitions-<%= name %>">
-      <thead>
+      <thead class="-sticky">
         <tr>
           <th></th>
           <th colspan="<%= @statuses.length %>">
@@ -39,7 +51,7 @@ See COPYRIGHT and LICENSE files for more details.
                   <%= t(:label_new_statuses_allowed) %>
                 </span>
                 <span class="workflow-table--check-all">
-                  (<%= check_all_links "workflow_form_" + name %>)
+                  (<%= check_all_links "workflow_form_#{name}" %>)
                 </span>
               </div>
             </div>

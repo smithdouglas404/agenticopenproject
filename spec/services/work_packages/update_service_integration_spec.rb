@@ -1387,6 +1387,65 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
         TABLE
       end
     end
+
+    context "when the work package has working days only and the child has not" do
+      let_work_packages(<<~TABLE)
+        | hierarchy    | scheduling mode | days counting
+        | work_package | manual          | working days only
+        |   child      | manual          | all days
+      TABLE
+
+      it "unsets working days only for the parent" do
+        expect(subject).to be_success
+        expect(subject.all_results.pluck(:subject)).to contain_exactly("work_package")
+
+        expect_work_packages_after_reload([work_package, child], <<~TABLE)
+          | hierarchy    | scheduling mode | days counting
+          | work_package | automatic       | all days
+          |   child      | manual          | all days
+        TABLE
+      end
+    end
+
+    context "when the work package has not working days only and the child has" do
+      let_work_packages(<<~TABLE)
+        | hierarchy    | scheduling mode | days counting
+        | work_package | manual          | all days
+        |   child      | manual          | working days only
+      TABLE
+
+      it "sets working days only for the parent" do
+        expect(subject).to be_success
+        expect(subject.all_results.pluck(:subject)).to contain_exactly("work_package")
+
+        expect_work_packages_after_reload([work_package, child], <<~TABLE)
+          | hierarchy    | scheduling mode | days counting
+          | work_package | automatic       | working days only
+          |   child      | manual          | working days only
+        TABLE
+      end
+    end
+
+    context "when the work package has working days only and one of the children has not" do
+      let_work_packages(<<~TABLE)
+        | hierarchy    | scheduling mode | days counting
+        | work_package | manual          | working days only
+        |   child1     | manual          | working days only
+        |   child2     | manual          | all days
+      TABLE
+
+      it "unsets working days only for the parent" do
+        expect(subject).to be_success
+        expect(subject.all_results.pluck(:subject)).to contain_exactly("work_package")
+
+        expect_work_packages_after_reload([work_package, child1, child2], <<~TABLE)
+          | hierarchy    | scheduling mode | days counting
+          | work_package | automatic       | all days
+          |   child1     | manual          | working days only
+          |   child2     | manual          | all days
+        TABLE
+      end
+    end
   end
 
   context "when setting dates" do
@@ -1802,6 +1861,9 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
 
       work_package.association(:self_and_ancestors).reset
 
+      # ensure the parent missing custom field is validated
+      parent.custom_values_to_validate = parent.custom_field_values
+
       expect(parent.valid?(:saving_custom_fields)).to be(false)
 
       expect(subject).to be_success
@@ -1837,11 +1899,22 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
       mandatory_custom_field
     end
 
-    it "is a failure and does not save the change" do
-      expect(subject).to be_failure
+    it "ignores the mandatory custom field because no value is provided" do
+      expect(subject).to be_success
 
       expect(work_package.reload.subject)
-        .to eq "The old subject"
+        .to eq "A new subject"
+    end
+
+    context "when the mandatory custom field is provided but invalid" do
+      let(:attributes) { { subject: "A new subject", "custom_field_#{mandatory_custom_field.id}" => "" } }
+
+      it "is a failure and does not save the change" do
+        expect(subject).to be_failure
+
+        expect(work_package.reload.subject)
+          .to eq "The old subject"
+      end
     end
   end
 

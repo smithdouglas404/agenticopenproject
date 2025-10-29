@@ -28,6 +28,26 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
+# Paginates work package activities (journals and changesets) with support for filtering and anchor navigation.
+#
+# Filter modes:
+# - :all - Shows all activities (default)
+# - :only_comments - Shows only journals with notes
+# - :only_changes - Shows only journals with detected changes using SQL heuristics
+#
+# Anchor format (filter is reset to :all when using anchors):
+# - "comment-{journal_id}" - Navigate to specific journal by ID
+# - "activity-{sequence_version}" - Navigate to journal by sequence version
+#
+# @param work_package [WorkPackage] The work package to paginate activities for
+# @param params [Hash] Pagination and filtering parameters
+#
+# @option params [Integer] :page Page number (default: 1)
+# @option params [Integer] :limit Records per page (default: Pagy::DEFAULT[:limit])
+# @option params [Symbol] :filter Filter mode (:all, :only_comments, :only_changes)
+# @option params [String] :anchor Anchor to navigate to specific journal
+#
+# @return [Array<Pagy, Array>] Pagy pagination object and array of activity records
 class WorkPackages::ActivitiesTab::Paginator
   include Pagy::Backend
   include WorkPackages::ActivitiesTab::JournalSortingInquirable
@@ -36,9 +56,12 @@ class WorkPackages::ActivitiesTab::Paginator
     new(work_package, params).call
   end
 
+  attr_reader :work_package, :params, :filter
+
   def initialize(work_package, params = {})
     @work_package = work_package
     @params = params
+    @filter = params[:filter]&.to_sym || :all
   end
 
   def call
@@ -46,6 +69,7 @@ class WorkPackages::ActivitiesTab::Paginator
 
     pagy, records =
       if anchor_type && target_record_id
+        @filter = :all # Ignore filter when jumping to specific journal
         pagy_array_for_target_journal(anchor_type, target_record_id)
       else
         pagy_array(base_journals, **pagy_options)
@@ -58,8 +82,6 @@ class WorkPackages::ActivitiesTab::Paginator
   end
 
   private
-
-  attr_reader :work_package, :params
 
   def pagy_options
     { page: params[:page] || 1, limit: params[:limit] || Pagy::DEFAULT[:limit], max_pages: 100 }.compact
@@ -105,15 +127,28 @@ class WorkPackages::ActivitiesTab::Paginator
   end
 
   def fetch_ar_journals
-    work_package
+    journals = work_package
       .journals
       .internal_visible
-      .includes(:user, :customizable_journals, :attachable_journals, :storable_journals, :notifications)
+      .includes(
+        :user,
+        :customizable_journals,
+        :attachable_journals,
+        :storable_journals,
+        :notifications
+      )
       .reorder(version: :desc) # Always fetch newest first for pagination
       .with_sequence_version
+
+    journals = journals.where.not(notes: [nil, ""]) if filter == :only_comments
+    journals = apply_only_changes_filter_heuristic(journals) if filter == :only_changes
+
+    journals
   end
 
   def fetch_revisions
+    return Changeset.none if filter == :only_comments
+
     work_package.changesets.includes(:user, :repository)
   end
 
@@ -130,5 +165,66 @@ class WorkPackages::ActivitiesTab::Paginator
     elsif record.is_a?(Changeset)
       record.committed_on.to_i
     end
+  end
+
+  # SQL-based heuristic to filter journals with changes.
+  #
+  # Includes journals that have:
+  #   * Initial journal (version = 1) - always included
+  #   * Attachment changes (attachable_journals association)
+  #   * Custom field changes (customizable_journals association)
+  #   * File link changes (storages_file_links_journals association)
+  #   * Cause metadata (system-triggered changes)
+  #   * Attribute/data changes (compares work_package_journals columns with immediate predecessor)
+  #
+  # Note: This heuristic may include false positives (journals without actual changes)
+  # for performance reasons, as it uses EXISTS subqueries and cannot guarantee perfect accuracy.
+  def apply_only_changes_filter_heuristic(journals)
+    sql = <<~SQL.squish
+      version = 1
+      OR EXISTS (SELECT 1 FROM attachable_journals WHERE attachable_journals.journal_id = journals.id)
+      OR EXISTS (SELECT 1 FROM customizable_journals WHERE customizable_journals.journal_id = journals.id)
+      OR EXISTS (SELECT 1 FROM storages_file_links_journals WHERE storages_file_links_journals.journal_id = journals.id)
+      OR (cause IS NOT NULL AND cause != '{}')
+      OR EXISTS (#{attribute_data_changes_condition_sql})
+    SQL
+
+    journals.where(OpenProject::SqlSanitization.sanitize(sql))
+  end
+
+  def attribute_data_changes_condition_sql
+    <<~SQL.squish
+      SELECT 1
+        FROM journals predecessor
+        INNER JOIN work_package_journals pred_data ON predecessor.data_id = pred_data.id
+        INNER JOIN work_package_journals curr_data ON journals.data_id = curr_data.id
+        WHERE predecessor.journable_id = journals.journable_id
+          AND predecessor.journable_type = journals.journable_type
+          AND predecessor.version = (#{max_predecessor_version_sql})
+          AND (#{data_changes_condition_sql})
+    SQL
+  end
+
+  # Identify the immediate predecessor journal for comparison.
+  # NB: Journal versions are incremental but not guaranteed to be sequential.
+  def max_predecessor_version_sql
+    <<~SQL.squish
+      SELECT MAX(version)
+      FROM journals p2
+      WHERE p2.journable_id = journals.journable_id
+        AND p2.journable_type = journals.journable_type
+        AND p2.version < journals.version
+    SQL
+  end
+
+  # Detect changes in work_package_journals columns.
+  def data_changes_condition_sql
+    data_change_columns.map do |column_name|
+      "pred_data.#{column_name} IS DISTINCT FROM curr_data.#{column_name}"
+    end.join(" OR ")
+  end
+
+  def data_change_columns
+    Journal::WorkPackageJournal.column_names - ["id", "project_phase_definition_id"]
   end
 end

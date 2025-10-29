@@ -41,7 +41,7 @@ ru:
         changed: "изменено"
         created: "создано"
         commented: "прокомментировано"
-        internal_comment: Служебный комментарий
+        internal_comment: Внутренний комментарий
         internal_journal: Внутренние комментарии видны ограниченной группе членов.
         unsaved_changes_confirmation_message: У вас есть несохраненные изменения. Вы уверены, что хотите закрыть редактор?
         internal_comment_confirmation:
@@ -121,7 +121,7 @@ ru:
       created_token_dialog_component:
         title: "Токен доступа создан"
         heading: "Токен доступа сгенерирован"
-        label_token: "Токен доступа"
+        label_token: "Токен"
         one_time_hint: "Это единственный раз, когда Вы увидите токен. Убедитесь, что вы сохранили его."
       delete_scim_client_dialog_component:
         title: "Удалить клиента SCIM"
@@ -153,7 +153,7 @@ ru:
       token_list_component:
         description: "Токены, которые Вы генерируете здесь, могут быть переданы SCIM-клиенту для доступа к API серверу SCIM."
         heading: "Токены"
-        label_add_token: "Токен"
+        label_add_token: "Токен доступа"
         label_aria_add_token: "Добавить токен"
       token_table_component:
         blank_slate:
@@ -162,6 +162,11 @@ ru:
         expired: "Истекает %{date}"
         revoked: "Отменено %{date}"
         title: "Таблица токенов доступа"
+    workflows:
+      tabs:
+        default_transitions: "Default transitions"
+        user_author: "User is author"
+        user_assignee: "User is assignee"
   authentication:
     login_and_registration: "Войти и зарегистрироваться"
   announcements:
@@ -316,6 +321,7 @@ ru:
     reorder_alphabetical: "Переупорядочить значения по алфавиту"
     reorder_confirmation: "Внимание: Текущий порядок доступных значений будет утерян. Продолжить?"
     placeholder_version_select: "Сначала необходимо выбрать пакет работ или проект"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Пометить пользовательское поле как обязательное. Это сделает заполнение поля обязательным при создании новых или обновлении существующих ресурсов."
       is_required_for_project: "Установите флажок, чтобы включить этот атрибут и сделать его обязательным для всех проектов. Он не может быть отключен для отдельных проектов."
@@ -359,7 +365,7 @@ ru:
         arg:
           default: "должно быть одним из: %{list}."
           range: "должно быть одним из: %{list_left} - %{list_right}."
-      int?: "должно быть целое число."
+      int?: "должно быть целым числом."
       key?: "отсутствует."
       not_found: "не найдено."
       rules:
@@ -386,7 +392,7 @@ ru:
       label: "Метка"
       score: "Оценка"
       short: "Короткое имя"
-      parent: "Верхний уровень"
+      parent: "Родитель"
       blueprint: "Шаблон чертежа"
   global_search:
     title:
@@ -522,6 +528,8 @@ ru:
       versions:
         no_results_title_text: На данный момент этапы в проекте отсутствуют.
         no_results_content_text: Создать новую версию
+        work_packages_graph: Диаграмма по пакетам работ
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: Для этого проекта дополнительного дискового пространства не требуется.
       work_package_priorities:
@@ -622,7 +630,7 @@ ru:
           attention_text: "Treat API tokens like passwords. Anyone with this token will have access to information from this instance, share it only with trusted users."
           dialog_body: "Этот токен позволит сторонним приложениям взаимодействовать с вашим экземпляром. Чтобы выделить новый токен API, пожалуйста, дайте ему имя."
           create_button: "Создать"
-          name_label: "Имя токена"
+          name_label: "Название токена"
       created_dialog:
         token/api:
           title: "Токен доступа к API сгенерирован"
@@ -646,8 +654,8 @@ ru:
     sessions:
       session_name: "%{browser_name} %{browser_version} на %{os_name}"
       browser: "Браузер"
-      expires: "Истекает"
-      last_connection: "Последнее подключение"
+      expires: "Срок действия"
+      last_connection: "Последнее соединение"
       device: "Устройство / ОС"
       unknown_browser: "неизвестный браузер"
       unknown_os: "неизвестная операционная система"
@@ -693,7 +701,7 @@ ru:
     react_with: "Реакция %{reaction}"
     and_user: "и %{user}"
     and_others:
-      one: и ещё 1
+      one: и еще 1
       few: и %{count} других
       many: и %{count} других
       other: и %{count} других
@@ -882,7 +890,7 @@ ru:
     label_edit_x: "Редактировать %{x}"
     label_add_description: "Добавить описание"
     lag:
-      subject: "Задержка"
+      subject: "Отставание"
       caption: |-
         Минимальное количество рабочих дней, которое должно быть между двумя пакетами работ.
         Оно также может быть отрицательным.
@@ -909,13 +917,13 @@ ru:
       parent: "Родитель"
       parent_description: "Делает связанный с этим пакет работ родителем (потомка) пакета работ"
       label_closest: "Ближайший"
-      label_blocks_singular: "блокирует"
-      label_blocks_plural: "блокирует"
+      label_blocks_singular: "заблокирован"
+      label_blocks_plural: "заблокированы"
       blocks_description: "Связанный пакет работ не может быть закрыт до тех пор, пока не будет закрыт этот пакет"
-      label_blocked_singular: "блокируется"
-      label_blocked_plural: "блокируется"
-      label_blocked_by_singular: "блокируется"
-      label_blocked__by_plural: "блокируется"
+      label_blocked_singular: "блокирует"
+      label_blocked_plural: "блокируют"
+      label_blocked_by_singular: "блокируют"
+      label_blocked__by_plural: "блокируют"
       blocked_description: "Связанный пакет работ не может быть закрыт до тех пор, пока не будет закрыт связанный пакет"
       blocked_by_description: "Связанный пакет работ не может быть закрыт до тех пор, пока не будет закрыт связанный пакет"
       label_duplicates_singular: "Дублирует"
@@ -928,7 +936,7 @@ ru:
       duplicated_by_description: "Связанный пакет работ является копией этого"
       duplicated_description: "Связанный пакет работ является копией этого"
       label_includes_singular: "включает"
-      label_includes_plural: "включает"
+      label_includes_plural: "включает в себя"
       includes_description: "Отмечает связанный пакет работ как включающий этот пакет без дополнительного эффекта"
       label_partof_singular: "является частью"
       label_partof_plural: "является частью"
@@ -982,7 +990,7 @@ ru:
   activemodel:
     attributes:
       projects/copy_options:
-        dependencies: "Зависимости"
+        dependencies: "Связи"
   activerecord:
     attributes:
       announcements:
@@ -1160,7 +1168,7 @@ ru:
         include_subprojects: "Включить подпроекты"
         results: "Результаты"
       relation:
-        lag: "Задержка"
+        lag: "Отставание"
         from: "Похожий пакет работ"
         to: "Похожий пакет работ"
         relation_type: "Тип отношения"
@@ -1184,7 +1192,7 @@ ru:
         excluded_from_totals: "Исключить из расчета итогов в иерархии"
         default_done_ratio: "% завершения"
       token/named:
-        token_name: "Название токена"
+        token_name: "Имя токена"
       token/ical:
         calendar: "Календарь"
         ical_token_query_assignment: "Задание запроса"
@@ -1196,7 +1204,7 @@ ru:
         ongoing: "В процессе"
       type:
         description: "Текст для описания по умолчанию"
-        attribute_groups: "Настройка формы"
+        attribute_groups: "Настройка форм"
         is_in_roadmap: "По умолчанию отображается в дорожной карте"
         is_default: "В новых проектах активируется по умолчанию"
         is_milestone: "Это веха"
@@ -1480,7 +1488,7 @@ ru:
           attributes:
             start_date:
               must_be_before_finish_date: "должно быть до даты окончания."
-              non_continuous_dates: "не может быть раньше, чем дата окончания предыдущей фазы."
+              non_continuous_dates: "не может быть раньше, чем дата окончания предыдущего этапа."
             finish_date:
               must_be_after_start_date: "должно быть после даты начала."
           cannot_be_a_non_working_day: "не может быть нерабочим днем."
@@ -1639,7 +1647,7 @@ ru:
               must_be_set_when_work_is_set: "требуется, если установлен параметр Предполагаемое время."
               must_be_set_when_work_and_percent_complete_are_set: "требуется, если установлены параметры Предполагаемое время и % завершения."
               must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                must be 0h when Work is set and % Complete is 100%.
+                должно быть равно 0ч, если установлен параметр Предполагаемое время и % завершения установлен в 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 должно быть пустым, если параметр Предполагаемое время не установлен, а % завершения равен 100%.
           readonly_status: "Пакет работ находится в статусе доступном только для чтения, поэтому его атрибуты не могут быть изменены."
@@ -1669,8 +1677,8 @@ ru:
               special: "спецсимволы (например, \"%\")"
               reused:
                 one: "уже использовался ранее. Пожалуйста, укажите другое значение."
-                few: "уже использовался ранее. Пожалуйста, укажите отличающийся пароль от %{count} использованных ранее."
-                many: "уже использовался ранее. Пожалуйста, укажите отличающийся пароль от %{count} использованных ранее."
+                few: "использовалось ранее. Пожалуйста, укажите отличающееся от ваших последних %{count}."
+                many: "использовалось ранее. Пожалуйста, укажите отличающееся от ваших последних %{count}."
                 other: "уже использовался ранее. Пожалуйста, укажите пароль отличающийся от использованных ранее %{count}."
               match:
                 confirm: "Подтвердите новый пароль."
@@ -1842,7 +1850,7 @@ ru:
     attachments: "Вложения"
     actor: "Источник"
     action: "Действие"
-    api_key: "API key"
+    api_key: "API-ключ"
     author: "Автор"
     avatar: "Аватар\n"
     base: "Общая ошибка:"
@@ -1998,7 +2006,7 @@ ru:
   button_delete_watcher: "Удаление наблюдателя %{name}"
   button_download: "Скачать"
   button_duplicate: "Дублировать"
-  button_duplicate_and_follow: "Скопировать и продолжить"
+  button_duplicate_and_follow: "Скопировать и наблюдать"
   button_edit: "Правка"
   button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Развернуть все"
@@ -2239,7 +2247,7 @@ ru:
         other: "%{count} секунд"
     units:
       minute_abbreviated:
-        one: "минута"
+        one: "мин"
         few: "минуты"
         many: "минут"
         other: "мин"
@@ -2328,7 +2336,7 @@ ru:
       baseline_comparison:
         description: Выделите изменения, внесенные в этот список с любого момента в прошлом.
       benefits:
-        description: "Каковы преимущества корпоративной версии?"
+        description: "Какие преимущества у корпоративной версии на собственных мощностях?"
         high_security: "Функции безопасности"
         high_security_text: "Технология единого входа (SAML, OpenID Connect, CAS), группы LDAP."
         installation: "Поддержка во время процесса установки"
@@ -2342,7 +2350,7 @@ ru:
       customize_life_cycle:
         description: "Создание и организация этапов и стадий проекта, отличных от тех, что предусмотрены планированием цикла проекта PM2."
       conditional_highlighting:
-        description: "Нужно выделить определённые пакеты работ из общего списка? Используйте условное выделение в таблице пакетов работ."
+        description: "Нужно ли выделять определённые пакеты работ из общего списка? Используйте условное выделение в таблице пакетов работ."
       work_package_query_relation_columns:
         description: "Нужно видеть отношения или дочерние элементы в списке пакетов работ?"
       edit_attribute_groups:
@@ -2674,18 +2682,18 @@ ru:
       upsell:
         title: "Обновитесь до корпоративной версии"
       new_features:
-        header: "Read about new features and product updates."
-        learn_about: "Learn more about all new features"
+        header: "Читайте о новых возможностях и обновлениях продуктов."
+        learn_about: "Узнайте больше о всех новых функциях"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_5":
+        "16_6":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Add work packages to a meeting section in the Meetings tab.
-            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
-            line_2: Filter projects by last update.
-            line_3: Jump to highlighted target elements from deep links.
-            line_4: Confirm critical actions with more accessible danger dialogs.
+            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
+            line_1: Project attributes type hierarchy.
+            line_2: Performance updates with great impact.
+            line_3: New index page for Documents module.
+            line_4: Possibility to change parent of a custom field item.
     links:
       upgrade_enterprise_edition: "Обновить до корпоративной версии"
       postgres_migration: "Перенос вашей установки в PostgreSQL"
@@ -2776,7 +2784,7 @@ ru:
         disabled_text: "Токены API не включены администратором. Пожалуйста, обратитесь к администратору для использования этой функции."
         add_button: "API токен"
       api:
-        static_token_name: "Токен API"
+        static_token_name: "API-токен"
       ical:
         title: "iCalendar"
         text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
@@ -3010,6 +3018,7 @@ ru:
   label_duplicate: "дублировать"
   label_duplicates: "Дублирует"
   label_edit: "Правка"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Правка: %{x}"
   label_enable_multi_select: "Разрешен множественный выбор"
   label_enabled_project_custom_fields: "Доступные настраиваемые поля"
@@ -3250,7 +3259,7 @@ ru:
   label_password_rule_special: "Специальные символы"
   label_password_rule_uppercase: "Верхний регистр"
   label_path_encoding: "Кодирование пути"
-  label_per_page: "На страницу:"
+  label_per_page: "На странице:"
   label_people: "Люди"
   label_permissions: "Разрешения"
   label_permissions_report: "Отчёт о разрешениях"
@@ -3436,6 +3445,7 @@ ru:
   label_user_search: "Найти пользователя"
   label_user_settings: "Настройки пользователя"
   label_users_settings: "Настройки пользователей"
+  label_value_x: "Value: %{x}"
   label_version_new: "Новый этап"
   label_version_edit: "Изменить версию"
   label_version_plural: "Этапы"
@@ -3920,7 +3930,7 @@ ru:
       one: "1 проект"
       other: "%{count} проектов"
     destroy:
-      title: "Delete project"
+      title: "Удалить проект"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4381,7 +4391,7 @@ ru:
   status_invited: приглашено
   status_locked: заблокировано
   status_registered: Зарегистрирован
-  status_deleted: удалено
+  status_deleted: '﻿Удалено'
   #Used in array.to_sentence.
   support:
     array:

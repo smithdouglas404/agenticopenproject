@@ -1158,7 +1158,7 @@ ka:
           title: "მომხმარებელი"
           description: "Permissions based on the assigned role in the selected project"
         group:
-          title: "ჯგუფი"
+          title: "ჯგუფები"
           description: "Permissions based on the assigned role in the selected project"
         placeholder:
           title: "Placeholder user"

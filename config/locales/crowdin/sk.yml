@@ -162,6 +162,11 @@ sk:
         expired: "Expired on %{date}"
         revoked: "Revoked on %{date}"
         title: "Access token table"
+    workflows:
+      tabs:
+        default_transitions: "Default transitions"
+        user_author: "User is author"
+        user_assignee: "User is assignee"
   authentication:
     login_and_registration: "Login and registration"
   announcements:
@@ -317,6 +322,7 @@ sk:
     reorder_alphabetical: "Reorder values alphabetically"
     reorder_confirmation: "Warning: The current order of available values will be lost. Continue?"
     placeholder_version_select: "Work package or project selection is required first"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects."
@@ -346,7 +352,7 @@ sk:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "alebo"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -387,7 +393,7 @@ sk:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Nadradený balíček"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -523,6 +529,8 @@ sk:
       versions:
         no_results_title_text: V súčasnosti neexistujú žiadne verzie projektu.
         no_results_content_text: Vytvoriť novú verziu
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: There is no additional recorded disk space consumed by this project.
       work_package_priorities:
@@ -647,8 +655,8 @@ sk:
     sessions:
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "Browser"
-      expires: "Expires"
-      last_connection: "Last connection"
+      expires: "Expiruje"
+      last_connection: "Posledné prihlásenie"
       device: "Device / OS"
       unknown_browser: "unknown browser"
       unknown_os: "unknown operating system"
@@ -1844,7 +1852,7 @@ sk:
     attachments: "Prílohy"
     actor: "Actor"
     action: "Akcia"
-    api_key: "API key"
+    api_key: "API kľúč"
     author: "Autor"
     avatar: "Avatar"
     base: "Všeobecná chyba:"
@@ -2679,15 +2687,15 @@ sk:
         header: "Read about new features and product updates."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_5":
+        "16_6":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Add work packages to a meeting section in the Meetings tab.
-            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
-            line_2: Filter projects by last update.
-            line_3: Jump to highlighted target elements from deep links.
-            line_4: Confirm critical actions with more accessible danger dialogs.
+            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
+            line_1: Project attributes type hierarchy.
+            line_2: Performance updates with great impact.
+            line_3: New index page for Documents module.
+            line_4: Possibility to change parent of a custom field item.
     links:
       upgrade_enterprise_edition: "Upgrade to Enterprise edition"
       postgres_migration: "Migrating your installation to PostgreSQL"
@@ -2923,7 +2931,7 @@ sk:
   label_required_disk_storage: "Požadované miesto na disku"
   label_send_invitation: Poslať pozvánku
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Zmeniť nadradený objekt"
   label_change_plural: "Zmeny"
   label_change_properties: "Zmeniť vlastnosti"
   label_change_status: "Zmeniť stav"
@@ -3012,6 +3020,7 @@ sk:
   label_duplicate: "skopírovať"
   label_duplicates: "duplikáty"
   label_edit: "Upraviť"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Edit: %{x}"
   label_enable_multi_select: "Prepnúť multiselect"
   label_enabled_project_custom_fields: "Povolené vlastné polia"
@@ -3134,7 +3143,7 @@ sk:
   label_link_url: "Link (URL)"
   label_list: "Zoznam"
   label_loading: "Načítava sa..."
-  label_locked: "locked"
+  label_locked: "zamknuté"
   label_lock_user: "Zamknúť užívateľa"
   label_logged_as: "Prihlásený ako"
   label_login: "Prihlásiť sa"
@@ -3144,7 +3153,7 @@ sk:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "Kurzíva"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
@@ -3438,6 +3447,7 @@ sk:
   label_user_search: "Hľadať používateľa"
   label_user_settings: "User settings"
   label_users_settings: "Users settings"
+  label_value_x: "Value: %{x}"
   label_version_new: "Nová verzia"
   label_version_edit: "Edit version"
   label_version_plural: "Verzie"
@@ -3922,7 +3932,7 @@ sk:
       one: "1 projekt"
       other: "%{count} projektov"
     destroy:
-      title: "Delete project"
+      title: "Vymazať projekt"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4385,7 +4395,7 @@ sk:
   status_invited: pozvaný
   status_locked: zamknuté
   status_registered: registrovaný
-  status_deleted: deleted
+  status_deleted: odstránené
   #Used in array.to_sentence.
   support:
     array:

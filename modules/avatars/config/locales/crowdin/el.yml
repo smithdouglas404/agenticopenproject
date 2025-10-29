@@ -17,7 +17,7 @@ el:
   wrong_file_format: "Οι επιτρεπόμενες μορφές είναι jpg, png, gif"
   empty_file_error: "Παρακαλούμε ανεβάστε μια έγκυρη εικόνα (jpg, png, gif)"
   avatars:
-    label_avatar: "Εικόνα προφίλ"
+    label_avatar: "Άβαταρ"
     label_gravatar: 'Gravatar'
     label_current_avatar: 'Τρέχον άβαταρ'
     label_local_avatar: 'Προσαρμοσμένο άβαταρ'

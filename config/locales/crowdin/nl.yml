@@ -162,6 +162,11 @@ nl:
         expired: "Expired on %{date}"
         revoked: "Revoked on %{date}"
         title: "Access token table"
+    workflows:
+      tabs:
+        default_transitions: "Default transitions"
+        user_author: "User is author"
+        user_assignee: "User is assignee"
   authentication:
     login_and_registration: "Login and registration"
   announcements:
@@ -314,6 +319,7 @@ nl:
     reorder_alphabetical: "Rangschik waarden alfabetisch"
     reorder_confirmation: "Waarschuwing: De huidige volgorde van beschikbare waarden zal verloren gaan. Doorgaan?"
     placeholder_version_select: "Werkpakket- of projectselectie is eerst vereist"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources."
       is_required_for_project: "Vink aan om dit attribuut te activeren en het in alle projecten vereist te maken. Het kan niet worden gedeactiveerd voor individuele projecten."
@@ -343,49 +349,49 @@ nl:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "of"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
       defined: "must not be defined."
       eql?: "must be equal to %{left}."
-      filled?: "must be filled."
-      greater_or_equal_zero: "must be greater or equal to 0."
+      filled?: "moet ingevuld zijn."
+      greater_or_equal_zero: "moet groter dan, of gelijk zijn aan 0."
       gteq?: "must be greater than or equal to %{num}."
       hash?: "must be a hash."
       included_in?:
         arg:
           default: "must be one of: %{list}."
           range: "must be one of: %{list_left} - %{list_right}."
-      int?: "must be an integer."
+      int?: "moet een geheel getal zijn."
       key?: "is missing."
-      not_found: "not found."
+      not_found: "niet gevonden."
       rules:
         copy_workflow_from:
           workflow_missing: "has no own workflow."
         custom_field:
           format_not_supported: "format '%{field_format}' is unsupported."
         item:
-          root_item: "cannot be a root item."
-          not_persisted: "must be an already existing item."
+          root_item: "kan geen root-item zijn."
+          not_persisted: "moet een reeds bestaand item zijn."
         label:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "moet uniek zijn binnen hetzelfde hiërarchieniveau."
         short:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "moet uniek zijn binnen hetzelfde hiërarchieniveau."
         parent:
-          not_descendant: "must be a descendant of the hierarchy root."
+          not_descendant: "moet een afstammeling zijn van de root van de hiërarchie."
       str?: "must be a string."
       type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
-      depth: "Depth"
+      enabled: "Ingeschakeld"
+      depth: "Diepte"
       item: "Item"
       label: "Label"
       score: "Score"
-      short: "Short name"
-      parent: "Parent"
-      blueprint: "Pattern blueprint"
+      short: "Verkorte Naam"
+      parent: "Bovenliggend werkpakket"
+      blueprint: "Patroonblauwdruk"
   global_search:
     title:
       all_projects: 'Zoek naar "%{search_term}" in alle projecten'
@@ -447,7 +453,7 @@ nl:
     lists:
       active: "Actieve projecten"
       my: "Mijn projecten"
-      favorited: "Favorite projects"
+      favorited: "Favoriete projecten"
       archived: "Gearchiveerde projecten"
       shared: "Gedeelde projectlijsten"
       my_lists: "Mijn projectlijsten"
@@ -520,6 +526,8 @@ nl:
       versions:
         no_results_title_text: Momenteel zijn er geen versies voor het project.
         no_results_content_text: Maak een nieuwe versie
+        work_packages_graph: Werkpakketten grafiek
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: Er is geen extra opgenomen schijfruimte verbruikt door dit project.
       work_package_priorities:
@@ -632,8 +640,8 @@ nl:
     sessions:
       session_name: "%{browser_name} %{browser_version} op %{os_name}"
       browser: "Browser"
-      expires: "Expires"
-      last_connection: "Last connection"
+      expires: "Verloopt"
+      last_connection: "Laatste verbinding"
       device: "Apparaat / OS"
       unknown_browser: "Onbekende browser"
       unknown_os: "Onbekend besturingssysteem"
@@ -909,7 +917,7 @@ nl:
       label_duplicated_by_plural: "gedupliceerd door"
       duplicated_by_description: "Het gerelateerde werkpakket is een kopie van deze"
       duplicated_description: "Het gerelateerde werkpakket is een kopie van deze"
-      label_includes_singular: "samenhangend"
+      label_includes_singular: "bevat"
       label_includes_plural: "bevat"
       includes_description: "Markeert het gerelateerde werkpakket als inclusief met dit werkpakket zonder bijkomend effect"
       label_partof_singular: "onderdeel van"
@@ -1049,9 +1057,9 @@ nl:
         cause_type: "Cause type"
       ldap_auth_source:
         account: "Account"
-        attr_firstname: "Voornaam kenmerk"
+        attr_firstname: "Voornaam"
         attr_lastname: "Achternaam"
-        attr_login: "Gebruikersnaam kenmerk"
+        attr_login: "Gebruikersnaam attribuut"
         attr_mail: "Emailadres"
         filter_string: "Tekenreeksen filteren"
         admin: "Beheerder"
@@ -1166,7 +1174,7 @@ nl:
         excluded_from_totals: "Uitsluiten van berekening van totalen in hiërarchie"
         default_done_ratio: "% Voltooid"
       token/named:
-        token_name: "Token name"
+        token_name: "Tokennaam"
       token/ical:
         calendar: "Kalender"
         ical_token_query_assignment: "Query assignment"
@@ -1619,7 +1627,7 @@ nl:
               must_be_set_when_work_is_set: "vereist wanneer Werk is ingesteld."
               must_be_set_when_work_and_percent_complete_are_set: "vereist wanneer Werk en % Voltooid zijn ingesteld."
               must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                must be 0h when Work is set and % Complete is 100%.
+                moet 0h zijn als Werk is ingesteld en % Voltooid 100% is.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 moet leeg zijn als Werk leeg is en % Voltooid 100% is.
           readonly_status: "Het werkpakket heeft een alleen-lezen status dus kunne attributen niet worden gewijzigd."
@@ -1648,7 +1656,7 @@ nl:
               numeric: "numerieke (bijvoorbeeld ' 1')"
               special: "speciale (bijvoorbeeld ' %')"
               reused:
-                one: "is reeds eerder gebruikt. Kies er één die verschilt van uw vorige."
+                one: "is reeds eerder gebruikt. Kies er één die verschilt van uw laatste %{count}."
                 other: "is reeds eerder gebruikt. Kies er één die verschilt van uw laatste %{count}."
               match:
                 confirm: "Bevestig nieuw wachtwoord."
@@ -1792,7 +1800,7 @@ nl:
     attachments: "Bijlagen"
     actor: "Actor"
     action: "Actie"
-    api_key: "API key"
+    api_key: "API-sleutel"
     author: "Auteur"
     avatar: "Avatar"
     base: "Algemene fout:"
@@ -2102,29 +2110,29 @@ nl:
   datetime:
     distance_in_words:
       about_x_hours:
-        one: "ongeveer 1 uur"
+        one: "ongeveer %{count} uur"
         other: "ongeveer %{count} uren"
       about_x_months:
-        one: "ongeveer 1 maand"
+        one: "ongeveer %{count} maand"
         other: "ongeveer %{count} maanden"
       about_x_years:
-        one: "ongeveer 1 jaar"
+        one: "ongeveer %{count} jaar"
         other: "ongeveer %{count} jaren"
       almost_x_years:
-        one: "bijna 1 jaar"
+        one: "bijna %{count} jaar"
         other: "bijna %{count} jaren"
       half_a_minute: "een halve minuut"
       less_than_x_minutes:
-        one: "minder dan 1 minuut"
+        one: "minder dan %{count} minuut"
         other: "minder dan %{count} minuten"
       less_than_x_seconds:
-        one: "minder dan 1 seconde"
+        one: "minder dan %{count} seconde"
         other: "minder dan %{count} seconden"
       over_x_years:
-        one: "meer dan 1 jaar"
+        one: "meer dan %{count} jaar"
         other: "meer dan %{count} jaren"
       x_days:
-        one: "1 dag"
+        one: "%{count} dag"
         other: "%{count} dagen"
       x_minutes:
         one: "1 minuut"
@@ -2133,7 +2141,7 @@ nl:
         one: "1 min."
         other: "%{count} minuten"
       x_hours:
-        one: "1 uur"
+        one: "%{count} uur"
         other: "%{count} uren"
       x_hours_abbreviated:
         one: "1 uur"
@@ -2142,7 +2150,7 @@ nl:
         one: "1 week"
         other: "%{count} weken"
       x_months:
-        one: "1 maand"
+        one: "%{count} maand"
         other: "%{count} maanden"
       x_years:
         one: "1 jaar"
@@ -2525,10 +2533,10 @@ nl:
         label: "Sjabloon"
         none_enabled: "No template has been enabled for this work package type"
       footer_center:
-        label: Footer text
-        caption: This text will appear on every page at the center of the footer.
+        label: Voettekst
+        caption: Deze tekst verschijnt op elke pagina in het midden van de voettekst.
       footer_right:
-        label: Footer text
+        label: Voettekst
         caption: This text will appear on every page at the right of the footer.
       hyphenation:
         label: Hyphenation
@@ -2582,18 +2590,18 @@ nl:
       upsell:
         title: "Upgrade naar Enterprise-editie"
       new_features:
-        header: "Read about new features and product updates."
+        header: "Lees over nieuwe functies en product-updates."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_5":
+        "16_6":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Add work packages to a meeting section in the Meetings tab.
-            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
-            line_2: Filter projects by last update.
-            line_3: Jump to highlighted target elements from deep links.
-            line_4: Confirm critical actions with more accessible danger dialogs.
+            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
+            line_1: Project attributes type hierarchy.
+            line_2: Performance updates with great impact.
+            line_3: New index page for Documents module.
+            line_4: Possibility to change parent of a custom field item.
     links:
       upgrade_enterprise_edition: "Upgrade naar Enterprise-editie"
       postgres_migration: "Uw installatie overzetten naar PostgreSQL"
@@ -2829,7 +2837,7 @@ nl:
   label_required_disk_storage: "Vereiste schijfruimte"
   label_send_invitation: Verstuur uitnodiging
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Wijzig bovenliggende pagina"
   label_change_plural: "Wijzigingen"
   label_change_properties: "Eigenschappen wijzigen"
   label_change_status: "Status wijzigen"
@@ -2918,6 +2926,7 @@ nl:
   label_duplicate: "dupliceren"
   label_duplicates: "duplicaten"
   label_edit: "Wijzig"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Bewerken: %{x}"
   label_enable_multi_select: "Omschakelen multiselect"
   label_enabled_project_custom_fields: "Ingeschakelde aangepaste velden"
@@ -3040,7 +3049,7 @@ nl:
   label_link_url: "Link (URL)"
   label_list: "Lijst"
   label_loading: "Laden..."
-  label_locked: "locked"
+  label_locked: "geblokkeerd"
   label_lock_user: "Gebruiker vergrendelen"
   label_logged_as: "Ingelogd als"
   label_login: "Aanmelden"
@@ -3050,7 +3059,7 @@ nl:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "Schuingedrukt"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Tekstkleur"
@@ -3344,6 +3353,7 @@ nl:
   label_user_search: "Zoeken naar gebruiker"
   label_user_settings: "Gebruikersinstellingen"
   label_users_settings: "Gebruikersinstellingen"
+  label_value_x: "Value: %{x}"
   label_version_new: "Nieuwe versie"
   label_version_edit: "Versie bewerken"
   label_version_plural: "Versies"
@@ -3404,7 +3414,7 @@ nl:
     other: "%{count} gesloten"
     zero: "0 gesloten"
   label_x_comments:
-    one: "1 reactie"
+    one: "%{count} reactie"
     other: "%{count} reacties"
     zero: "geen reacties"
   label_x_open_work_packages_abbr:
@@ -3682,7 +3692,7 @@ nl:
   #Default format for numbers
   number:
     format:
-      delimiter: "."
+      delimiter: ","
       precision: 3
       separator: "."
     human:
@@ -3824,7 +3834,7 @@ nl:
       one: "1 project"
       other: "%{count} projecten"
     destroy:
-      title: "Delete project"
+      title: "Verwijder project"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4287,7 +4297,7 @@ nl:
   status_invited: uitgenodigd
   status_locked: geblokkeerd
   status_registered: geregistreerd
-  status_deleted: deleted
+  status_deleted: verwijderd
   #Used in array.to_sentence.
   support:
     array:
@@ -4432,10 +4442,10 @@ nl:
   time:
     am: "am"
     formats:
-      default: "%m/%d/%Y %I:%M %p"
+      default: "%d-%m-%Y %H:%M"
       long: "%B %d, %Y %H:%M"
       short: "%d %b %H:%M"
-      time: "%I:%M %p"
+      time: "%H:%M"
     pm: "PM"
   timeframe:
     show: "Toon tijdschema"

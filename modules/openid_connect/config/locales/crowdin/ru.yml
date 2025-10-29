@@ -113,7 +113,7 @@ ru:
       custom:
         name: Пользовательский
       upsell:
-        title: "Технология единого входа (SSO) с использованием OpenID connect"
+        title: "Single Sign-On (SSO) с подключением OpenID"
         description: Подключить OpenProject к провайдеру идентификации OpenID connect
       label_add_new: Добавить нового провайдера OpenID
       label_edit: Редактировать провайдера OpenID %{name}

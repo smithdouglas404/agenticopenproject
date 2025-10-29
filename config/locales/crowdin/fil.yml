@@ -162,6 +162,11 @@ fil:
         expired: "Expired on %{date}"
         revoked: "Revoked on %{date}"
         title: "Access token table"
+    workflows:
+      tabs:
+        default_transitions: "Default transitions"
+        user_author: "User is author"
+        user_assignee: "User is assignee"
   authentication:
     login_and_registration: "Login and registration"
   announcements:
@@ -317,6 +322,7 @@ fil:
     reorder_alphabetical: "Reorder values alphabetically"
     reorder_confirmation: "Warning: The current order of available values will be lost. Continue?"
     placeholder_version_select: "Work package or project selection is required first"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects."
@@ -387,7 +393,7 @@ fil:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Magulang"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -523,6 +529,8 @@ fil:
       versions:
         no_results_title_text: Sa kasalukuyan ay walang mga bersyon para sa proyekto.
         no_results_content_text: Gumawa ng bagong bersyon
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: There is no additional recorded disk space consumed by this project.
       work_package_priorities:
@@ -635,7 +643,7 @@ fil:
     sessions:
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "Browser"
-      expires: "Expires"
+      expires: "Natapos"
       last_connection: "Last connection"
       device: "Device / OS"
       unknown_browser: "unknown browser"
@@ -2589,15 +2597,15 @@ fil:
         header: "Read about new features and product updates."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_5":
+        "16_6":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Add work packages to a meeting section in the Meetings tab.
-            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
-            line_2: Filter projects by last update.
-            line_3: Jump to highlighted target elements from deep links.
-            line_4: Confirm critical actions with more accessible danger dialogs.
+            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
+            line_1: Project attributes type hierarchy.
+            line_2: Performance updates with great impact.
+            line_3: New index page for Documents module.
+            line_4: Possibility to change parent of a custom field item.
     links:
       upgrade_enterprise_edition: "Upgrade to Enterprise edition"
       postgres_migration: "Migrating your installation to PostgreSQL"
@@ -2833,7 +2841,7 @@ fil:
   label_required_disk_storage: "Kinakailangan lalagyan ng disk"
   label_send_invitation: Magpadala ng imbitasyon
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Palitan ng magulang"
   label_change_plural: "Pagbabago"
   label_change_properties: "Baguhin ang mga properry"
   label_change_status: "Baguhin ang estado"
@@ -2922,6 +2930,7 @@ fil:
   label_duplicate: "gayahin"
   label_duplicates: "mga ginaya"
   label_edit: "I-edit"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Edit: %{x}"
   label_enable_multi_select: "Toggle multi select"
   label_enabled_project_custom_fields: "Pinagana ang mga custom na patlang"
@@ -3044,7 +3053,7 @@ fil:
   label_link_url: "Link (URL)"
   label_list: "Listahan"
   label_loading: "Naglo-load..."
-  label_locked: "locked"
+  label_locked: "nakakandado"
   label_lock_user: "I-kandado ang gumagamit"
   label_logged_as: "Naka-log in bilang"
   label_login: "Mag-sign in"
@@ -3348,6 +3357,7 @@ fil:
   label_user_search: "Maghanap para sa gumagamit"
   label_user_settings: "User settings"
   label_users_settings: "Users settings"
+  label_value_x: "Value: %{x}"
   label_version_new: "Bagong bersyon"
   label_version_edit: "Edit version"
   label_version_plural: "Mga bersyon"
@@ -3829,7 +3839,7 @@ fil:
       one: "Isang proyekto"
       other: "%{count} mga proyekto"
     destroy:
-      title: "Delete project"
+      title: "Burahin ang proyekto"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4290,7 +4300,7 @@ fil:
   status_invited: imbitado
   status_locked: nakakandado
   status_registered: narehistro
-  status_deleted: deleted
+  status_deleted: binura
   #Used in array.to_sentence.
   support:
     array:

@@ -11,17 +11,20 @@
     custom_field_value_container.with_row(mb: 1) do
       render OpenProject::Common::AttributeLabelComponent.new(
         attribute: @project_custom_field.attribute_name,
-        model: @project
+        model: @project,
+        required: @project_custom_field.required?
       ) do
         render(Primer::Beta::Text.new(font_weight: :bold)) { @project_custom_field.name }
       end
     end
 
     custom_field_value_container.with_row(w: :full) do
-      if not_set?
-        render(Primer::Beta::Text.new) { t("placeholders.default") }
-      else
-        render_value
+      render(authorized_edit_wrapper) do
+        if not_set?
+          render(Primer::Beta::Text.new) { t("placeholders.default") }
+        else
+          render_value
+        end
       end
     end
 
@@ -32,3 +35,5 @@
     end
   end
 %>
+
+<%= render_calculated_value_tooltip if calculated_value? %>

@@ -1,6 +1,17 @@
 sv:
   grids:
     label_widget_in_grid: "Widget som finns i rutnät %{grid_name}"
+    widgets:
+      subitems:
+        title: "Subitems"
+        no_results: "There are no visible children."
+        view_all_subitems: "View all subitems"
+      members:
+        title: "Latest members"
+        no_results: "Inga synliga medlemmar."
+        view_all_members: "Visa alla medlemmar"
+      news:
+        no_results: "Inget nytt att rapportera."
   activerecord:
     attributes:
       grids/grid:

@@ -26,6 +26,10 @@ bg:
   activerecord:
     models:
       document: "Документ"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "Заглавие"
   activity:
     filter:
       document: "Документи"
@@ -33,6 +37,22 @@ bg:
   default_doc_category_user: "Документация за потребителя"
   enumeration_doc_categories: "Категории документи"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "Име"
+      type: "Тип"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "Видове"
     label_attachment_author: "Автор на файла"
     label_categories: "Categories"
     new_category: "Нова категория"

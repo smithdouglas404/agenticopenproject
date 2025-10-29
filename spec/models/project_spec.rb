@@ -37,7 +37,7 @@ RSpec.describe Project do
 
   let(:active) { true }
   let(:project) { create(:project, active:) }
-  let(:build_project) { build_stubbed(:project, active:) }
+  let(:build_project) { build(:project, active:) }
   let(:user) { create(:user) }
 
   describe ".templated" do
@@ -477,8 +477,14 @@ RSpec.describe Project do
   end
 
   it_behaves_like "acts_as_customizable included" do
-    let(:model_instance) { project }
-    let(:custom_field) { create(:string_project_custom_field) }
+    let!(:model_instance) { project }
+    let!(:new_model_instance) { build_project }
+    let!(:custom_field) { create(:string_project_custom_field) }
+
+    before do
+      allow(project).to receive(:available_custom_fields) { ProjectCustomField.all }
+      allow(new_model_instance).to receive(:available_custom_fields) { ProjectCustomField.all }
+    end
 
     describe "valid?" do
       let(:custom_field) { create(:string_project_custom_field, is_required: true) }
@@ -487,6 +493,11 @@ RSpec.describe Project do
         model_instance.custom_field_values = { custom_field.id => "test" }
         model_instance.save
         model_instance.custom_field_values = { custom_field.id => nil }
+        # Ensure the custom values are validated.
+        # Note: Since the default behavior is to not validate custom values unless they are
+        # received from the user input, the :saving_custom_fields validation context might
+        # not be required anymore.
+        model_instance.custom_values_to_validate = model_instance.custom_field_values
       end
 
       context "without a validation context" do

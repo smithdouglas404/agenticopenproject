@@ -26,6 +26,10 @@ cs:
   activerecord:
     models:
       document: "Dokument"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "Název"
   activity:
     filter:
       document: "Dokumenty"
@@ -33,6 +37,22 @@ cs:
   default_doc_category_user: "Dokumentace uživatele"
   enumeration_doc_categories: "Kategorie dokumentů"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "Název:"
+      type: "Typ"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "Typy"
     label_attachment_author: "Autor přílohy"
     label_categories: "Kategorie"
     new_category: "Nová kategorie"

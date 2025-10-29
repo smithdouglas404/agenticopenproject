@@ -87,7 +87,7 @@ zh-CN:
         token_placeholder: "在此处粘贴您的企业版支持令牌"
       add_token: "上传企业版支持令牌"
       replace_token: "替换您当前的支持令牌"
-      order: "订购本地部署的 Enterprise edition"
+      order: "订购本地部署版的 Enterprise edition"
       paste: "粘贴您企业版的支持令牌"
       required_for_feature: "此功能仅限具激活的企业版支持令牌的订阅者使用。"
       enterprise_link: "如需了解详细信息，请单击此处。"
@@ -162,6 +162,11 @@ zh-CN:
         expired: "已于 %{date} 到期"
         revoked: "已于 %{date} 撤销"
         title: "访问令牌表"
+    workflows:
+      tabs:
+        default_transitions: "默认转换"
+        user_author: "用户是作者"
+        user_assignee: "用户是指派人"
   authentication:
     login_and_registration: "登录和注册"
   announcements:
@@ -314,6 +319,7 @@ zh-CN:
     reorder_alphabetical: "按字母顺序重新排序"
     reorder_confirmation: "警告：可用值的当前顺序将丢失。是否继续？"
     placeholder_version_select: "需要先选择工作包或项目"
+    calculated_field_not_editable: "不可编辑属性。此值是自动计算的。"
     instructions:
       is_required: "将自定义字段标记为必填项。这将使在创建新资源或更新现有资源时，填写该字段成为强制要求。"
       is_required_for_project: "选中可启用此属性，并使其成为所有项目的必选项。单个项目不能停用该属性。"
@@ -346,28 +352,28 @@ zh-CN:
     or: "或"
     errors:
       array?: "必须为一个数组。"
-      decimal?: "必须为一个小数。"
-      defined: "不可被定义。"
+      decimal?: "必须为小数。"
+      defined: "不得定义。"
       eql?: "必须等于 %{left}。"
-      filled?: "必须填写。"
-      greater_or_equal_zero: "必须大于或等于 0。"
+      filled?: "必须填写"
+      greater_or_equal_zero: "必须大于或等于 0"
       gteq?: "必须大于或等于 %{num}。"
       hash?: "必须是一个哈希值。"
       included_in?:
         arg:
           default: "必须是其中之一： %{list}。"
           range: "必须是其中之一： %{list_left} - %{list_right}。"
-      int?: "必须为一个整数。"
-      key?: "已缺失。"
+      int?: "必须为整数"
+      key?: "缺失。"
       not_found: "未找到。"
       rules:
         copy_workflow_from:
           workflow_missing: "没有自己的工作流。"
         custom_field:
-          format_not_supported: "不支持 '%{field_format}' 格式。"
+          format_not_supported: "格式 '%{field_format}' 不受支持。"
         item:
-          root_item: "不能为根项。"
-          not_persisted: "必须是已存在的项。"
+          root_item: "不能为根项目"
+          not_persisted: "必须是已存在的项目"
         label:
           not_unique: "在同一层级内必须是唯一的。"
         short:
@@ -379,13 +385,13 @@ zh-CN:
     rules:
       copy_workflow_from: "工作流副本的类型"
       enabled: "已启用"
-      depth: "深度"
+      depth: "深"
       item: "条目"
       label: "标签"
       score: "分数"
       short: "简称"
       parent: "父级"
-      blueprint: "模式蓝图"
+      blueprint: "图案蓝图"
   global_search:
     title:
       all_projects: '在所有项目中搜索“%{search_term}”'
@@ -520,6 +526,8 @@ zh-CN:
       versions:
         no_results_title_text: 目前这个项目没有版本。
         no_results_content_text: 创建一个新的版本
+        work_packages_graph: 工作包图
+        show_work_packages: 显示工作包
       storage:
         no_results_title_text: 此项目没有已记录的额外磁盘空间消耗。
       work_package_priorities:
@@ -1035,7 +1043,7 @@ zh-CN:
         page: "页"
         row_count: "行数"
         column_count: "列数"
-        widgets: "小部件"
+        widgets: "微件"
       journal:
         notes: "备注"
         cause_type: "Cause 类型"
@@ -2512,8 +2520,8 @@ zh-CN:
     include_sub_items: "包含子条目"
     no_results_text: "无结果"
   toggle_switch:
-    label_on: "On"
-    label_off: "Off"
+    label_on: "开启"
+    label_off: "关闭"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
@@ -2540,15 +2548,15 @@ zh-CN:
         header: "了解新功能和产品更新。"
         learn_about: "详细了解所有新功能"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_5":
+        "16_6":
           new_features_title: >
             此版本包含各种新功能和改进，例如：
           new_features_list:
-            line_0: 在“会议”选项卡中将工作包添加到会议小节。
-            line_1: 通过“提高对比度”复选框更方便地选择颜色模式。
-            line_2: 按最后更新时间筛选项目。
-            line_3: 从深层链接跳转到高亮显示的目标元素。
-            line_4: 通过更易操作的危险对话框确认关键操作。
+            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
+            line_1: Project attributes type hierarchy.
+            line_2: Performance updates with great impact.
+            line_3: New index page for Documents module.
+            line_4: Possibility to change parent of a custom field item.
     links:
       upgrade_enterprise_edition: "升级到企业版"
       postgres_migration: "将您的安装迁移到 PostgreSQL"
@@ -2873,6 +2881,7 @@ zh-CN:
   label_duplicate: "重复"
   label_duplicates: "复制"
   label_edit: "编辑"
+  label_edit_attribute: "编辑属性"
   label_edit_x: "编辑：%{x}"
   label_enable_multi_select: "切换多选"
   label_enabled_project_custom_fields: "启用自定义字段"
@@ -3205,7 +3214,7 @@ zh-CN:
   label_revision_id: "修订版本 %{value}"
   label_revision_plural: "修订"
   label_roadmap: "路线图"
-  label_roadmap_edit: "编辑路线图 %{name}"
+  label_roadmap_edit: "编辑路线图%{name}"
   label_roadmap_due_in: "%{value} 到期"
   label_roadmap_no_work_packages: "该版本没有工作包。"
   label_roadmap_overdue: "%{value} 超时"
@@ -3299,6 +3308,7 @@ zh-CN:
   label_user_search: "搜索用户"
   label_user_settings: "用户设置"
   label_users_settings: "用户设置"
+  label_value_x: "值: %{x}"
   label_version_new: "新版本"
   label_version_edit: "编辑版本"
   label_version_plural: "版本"
@@ -3902,7 +3912,7 @@ zh-CN:
       managed: "在 OpenProject 中创建新的存储库"
     storage:
       not_available: "磁盘存储开销不可用于此存储库。"
-      update_timeout: "在 N 分钟内保留存储库最后所需磁盘空间的信息。由于计算存储库所需的磁盘空间可能增加系统开销，增加该值可以减少性能影响。"
+      update_timeout: "在 N 分钟内保留存储库最后所需的磁盘空间信息。由于计算存储库所需的磁盘空间可能增加系统开销，增加该值可以减少性能影响。"
       oauth_application_details: "关闭此窗口后，将无法再次访问客户端密钥值。请将这些值复制到 Nextcloud OpenProject 集成设置中："
       oauth_application_details_link_text: "转到设置页面"
       setup_documentation_details: "如果您在配置新文件存储方面需要帮助，请查看文档："
@@ -4097,7 +4107,7 @@ zh-CN:
   setting_session_ttl_hint: "当设置的值低于5时，其作用类似于禁用。"
   setting_session_ttl_enabled: "会话过期"
   setting_start_of_week: "一周起始日"
-  setting_sys_api_enabled: "启用版本库管理 web 服务"
+  setting_sys_api_enabled: "启用存储库管理网页服务"
   setting_sys_api_description: "存储库管理网页服务提供了集成的，用户授权的存储库访问。"
   setting_time_format: "时间"
   setting_total_percent_complete_mode: "计算 完成% 层次结构总数"
@@ -4463,7 +4473,7 @@ zh-CN:
   warning_user_limit_reached_admin: >
     添加额外的用户将超出当前限制。请<a href="%{upgrade_url}">升级您的计划</a>，以确保外部用户能够访问此实例。
   warning_user_limit_reached_instructions: >
-    您达到了用户限制（%{current}/%{max}活跃用户）。 请联系sales@openproject.com以升级您的Enterprise edition计划并添加其他用户。
+    您已达到用户限制（%{current}/%{max} 活跃用户）。请联系 sales@openproject.com 升级您的企业版计划以添加额外用户。
   warning_protocol_mismatch_html: >
 
   warning_bar:

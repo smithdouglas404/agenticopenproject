@@ -1114,7 +1114,7 @@ lv:
         other: "%{count} h"
         zero: "0 h"
       day:
-        one: "1 dienas"
+        one: "%{count} dienas"
         other: "%{count} dienām"
         zero: "0 days"
       word:

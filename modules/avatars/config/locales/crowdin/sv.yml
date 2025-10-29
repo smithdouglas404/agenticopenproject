@@ -17,7 +17,7 @@ sv:
   wrong_file_format: "Tillåtna format är jpg, png, gif"
   empty_file_error: "Vänligen ladda upp en giltig bild (jpg, png, gif)"
   avatars:
-    label_avatar: "Profilbild"
+    label_avatar: "Avatar"
     label_gravatar: 'Gravatar'
     label_current_avatar: 'Aktuell avatar'
     label_local_avatar: 'Anpassad avatar'

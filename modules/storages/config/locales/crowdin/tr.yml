@@ -249,10 +249,10 @@ tr:
         ampf_configuration:
           client_folder_creation: Otomatik klasör oluşturma
           client_folder_removal: Otomatik klasör silme
-          drive_contents: Sürücü beklenen içeriğe sahiptir
+          drive_contents: Drive content
           files_request: Grup klasörü dosyalarını getirme
           group_folder_app: 'Bağımlılık: Grup Klasörleri'
-          group_folder_contents: Grup klasörü beklenen içeriğe sahiptir
+          group_folder_contents: Group folder content
           group_folder_presence: Grup klasörü mevcut
           header: Otomatik olarak yönetilen proje klasörleri
           userless_access: Server-side request authentication
@@ -275,7 +275,7 @@ tr:
           drive_id_exists: Sürücü mevcut
           drive_id_format: Sürücü Kimliği biçimi
           header: Yapılandırma
-          host: Ana Bilgisayar URL'si
+          host: Barındırıcı URL'si
           host_url_accessible: Ana bilgisayar URL'si erişilebilir
           storage_configured: Yapılandırma tamamlandı
           tenant_id: Kiracı Kimliği
@@ -412,7 +412,7 @@ tr:
     label_edit_token_exchange: Anahtar değişimi yapılandırmasını düzenleme
     label_existing_manual_folder: Elle yönetilen izinlere sahip mevcut klasör
     label_file_storage: Dosya deposu
-    label_host: Barındırıcı URL'si
+    label_host: Ana Bilgisayar URL'si
     label_inactive: Etkin değil
     label_managed_project_folders:
       application_password: Uygulama şifresi
@@ -499,6 +499,7 @@ tr:
         name: OneDrive
         name_placeholder: ör. OneDrive
       sharepoint:
+        drive_description: OpenProject access-managed document library
         label_oauth_client_id: Azure OAuth Application (client) ID
         label_oauth_client_secret: Azure OAuth Client Secret Value
         name: SharePoint

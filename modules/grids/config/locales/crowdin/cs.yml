@@ -1,6 +1,17 @@
 cs:
   grids:
     label_widget_in_grid: "Widget obsažený v mřížce %{grid_name}"
+    widgets:
+      subitems:
+        title: "Subitems"
+        no_results: "There are no visible children."
+        view_all_subitems: "View all subitems"
+      members:
+        title: "Latest members"
+        no_results: "Žádní viditelní členové."
+        view_all_members: "Zobrazit všechny členy"
+      news:
+        no_results: "Žádné novinky."
   activerecord:
     attributes:
       grids/grid:

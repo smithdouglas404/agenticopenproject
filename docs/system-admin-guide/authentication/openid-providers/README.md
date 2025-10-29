@@ -444,6 +444,9 @@ OPENPROJECT_OPENID__CONNECT_KEYCLOAK_USERINFO__ENDPOINT="/realms/<REALM>/protoco
 # Optional: endpoint to redirect users for logout
 OPENPROJECT_OPENID__CONNECT_KEYCLOAK_END__SESSION__ENDPOINT="http://keycloak.example.com/realms/<REALM>/protocol/openid-connect/logout"
 
+# Optional: space separated list of grant types supported by the provider
+OPENPROJECT_OPENID__CONNECT_KEYCLOAK_GRANT__TYPES__SUPPORTED="authorization_code urn:ietf:params:oauth:grant-type:token-exchange"
+
 # Host name of Keycloak, required if endpoint information are not absolute URLs
 OPENPROJECT_OPENID__CONNECT_KEYCLOAK_HOST="<Hostname of the keycloak server>"
 
@@ -464,6 +467,12 @@ OPENPROJECT_OPENID__CONNECT_KEYCLOAK_ACR__VALUES="phr phrh Multi_Factor"
 
 # Optional: Claim mapping using JSON, see Step 7 above for more information on syntax
 OPENPROJECT_OPENID__CONNECT_KEYCLOAK_CLAIMS="{\"id_token\":{\"acr\":{\"essential\":true,\"values\":[\"phr\",\"phrh\",\"Multi_Factor\"]}}}"
+
+# Optional: Whether group synchronization should be enabled (default: false)
+OPENPROJECT_OPENID__CONNECT_KEYCLOAK_SYNC__GROUPS="true"
+
+# Optional: The name of the claim in the ID token that contains the group memberships
+OPENPROJECT_OPENID__CONNECT_KEYCLOAK_GROUPS__CLAIM="groups"
 ```
 
 

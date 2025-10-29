@@ -32,7 +32,7 @@
         drive: Stasjon ID
         host: Vert
         name: Navn
-        password: Application password
+        password: Applikasjonspassord
         provider_type: Tjenestetype
         tenant: Katalog (leietaker) ID
     errors:
@@ -249,10 +249,10 @@
         ampf_configuration:
           client_folder_creation: Automatic folder creation
           client_folder_removal: Automatic folder deletion
-          drive_contents: Drive has expected content
+          drive_contents: Drive content
           files_request: Fetching group folder files
           group_folder_app: 'Dependency: Group Folders'
-          group_folder_contents: Group folder has expected content
+          group_folder_contents: Group folder content
           group_folder_presence: Group folder exists
           header: Automatisk administrerte prosjektmapper
           userless_access: Server-side request authentication
@@ -275,7 +275,7 @@
           drive_id_exists: Drive exists
           drive_id_format: Drive ID format
           header: Configuration
-          host: Host URL
+          host: Vert URL
           host_url_accessible: Host URL accessible
           storage_configured: Configuration complete
           tenant_id: Tenant ID
@@ -499,6 +499,7 @@
         name: OneDrive
         name_placeholder: f.eks OneDrive
       sharepoint:
+        drive_description: OpenProject access-managed document library
         label_oauth_client_id: Azure OAuth applikasjon (klient) ID
         label_oauth_client_secret: Azure OAuth klient hemmelig verdi
         name: SharePoint

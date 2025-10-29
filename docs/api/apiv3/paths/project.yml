@@ -12,8 +12,8 @@ delete:
   responses:
     '204':
       description: |-
-        Returned if the project was successfully deleted. There is currently no end point to query for the actual deletion status.
-        Such an end point _might_ be added in the future.
+        Returned if the project was successfully deleted. There is currently no endpoint to query for the actual deletion status.
+        Such an endpoint _might_ be added in the future.
       headers: {}
     '403':
       content:

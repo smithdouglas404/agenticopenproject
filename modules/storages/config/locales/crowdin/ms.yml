@@ -32,7 +32,7 @@ ms:
         drive: ID Pemacu
         host: Hos
         name: Nama
-        password: Application password
+        password: Kata laluan aplikasi
         provider_type: Jenis penyedia
         tenant: ID Direktori (penyewa) 
     errors:
@@ -231,8 +231,8 @@ ms:
       one_drive_oauth: OAuth Azure
       openproject_oauth: OAuth OpenProject
       project_folders: Folder projek
-      redirect_uri: ' Pengubah hala URI'
-      sharepoint_oauth: Azure OAuth
+      redirect_uri: Ubah hala URI
+      sharepoint_oauth: OAuth Azure
       storage_audience_blank: No audience has been configured.
       storage_audience_description: Exchanging tokens for audience "%{audience}".
       storage_audience_idp: Using access token obtained by identity provider during login, regardless of audience.
@@ -249,10 +249,10 @@ ms:
         ampf_configuration:
           client_folder_creation: Automatic folder creation
           client_folder_removal: Automatic folder deletion
-          drive_contents: Drive has expected content
+          drive_contents: Drive content
           files_request: Fetching group folder files
           group_folder_app: 'Dependency: Group Folders'
-          group_folder_contents: Group folder has expected content
+          group_folder_contents: Group folder content
           group_folder_presence: Group folder exists
           header: Folder projek yang dikendalikan secara automatik
           userless_access: Server-side request authentication
@@ -275,7 +275,7 @@ ms:
           drive_id_exists: Drive exists
           drive_id_format: Drive ID format
           header: Configuration
-          host: Host URL
+          host: URL Hos
           host_url_accessible: Host URL accessible
           storage_configured: Configuration complete
           tenant_id: Tenant ID
@@ -428,7 +428,7 @@ ms:
     label_redirect_uri: ' Pengubah hala URI'
     label_show_storage_redirect_uri: Paparkan ubah hala URI
     label_status: Status
-    label_storage: Storan
+    label_storage: Penyimpanan
     label_uri: URI
     member_connection_status:
       connected: Disambungkan
@@ -497,6 +497,7 @@ ms:
         name: OneDrive
         name_placeholder: cth. OneDrive
       sharepoint:
+        drive_description: OpenProject access-managed document library
         label_oauth_client_id: ID Aplikasi (pelanggan) OAuth Azure 
         label_oauth_client_secret: Nilai Pelanggan Rahsia OAuth Azure
         name: SharePoint

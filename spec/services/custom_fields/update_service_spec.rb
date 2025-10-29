@@ -66,6 +66,8 @@ RSpec.describe CustomFields::UpdateService, type: :model do
     end
 
     describe "calculated value custom field", with_flag: { calculated_value_project_attribute: true } do
+      using CustomFieldFormulaReferencing
+
       shared_let(:project1) { create(:project) }
       shared_let(:project2) { create(:project) }
       shared_let(:project3) { create(:project) }
@@ -106,16 +108,16 @@ RSpec.describe CustomFields::UpdateService, type: :model do
       context "when updating formula of calculated value" do
         let!(:static) { create(:integer_project_custom_field, projects:) }
         let!(:custom_field) do
-          create(:calculated_value_project_custom_field, :skip_validations,
+          create(:calculated_value_project_custom_field,
                  projects: [project1, project2],
                  formula: "1 + 1")
         end
         let!(:custom_field2) do
-          create(:calculated_value_project_custom_field, :skip_validations,
+          create(:calculated_value_project_custom_field,
                  projects: [project1, project3],
-                 formula: "{{cf_#{custom_field.id}}} * 10.5")
+                 formula: "#{custom_field} * 10.5")
         end
-        let(:attributes) { { formula: "{{cf_#{static.id}}} * 2" } }
+        let(:attributes) { { formula: "#{static} * 2" } }
 
         before do
           projects.each.with_index(1) do |project, i|
@@ -127,6 +129,7 @@ RSpec.describe CustomFields::UpdateService, type: :model do
 
         it "updates calculated values on all objects that have the field enabled" do
           expect(subject).to be_success
+          expect(subject.result).to have_attributes(formula_string: "#{static} * 2")
 
           aggregate_failures do
             expect(project1.custom_value_attributes(all: true))
@@ -141,17 +144,86 @@ RSpec.describe CustomFields::UpdateService, type: :model do
         end
 
         it "saves the objects when there are changes" do
-          allow(project1).to receive(:save)
-          allow(project2).to receive(:save)
-          allow(project3).to receive(:save)
-          allow(project4).to receive(:save)
+          projects.each { allow(it).to receive(:save) }
 
           expect(subject).to be_success
+          expect(subject.result).to have_attributes(formula_string: "#{static} * 2")
 
           expect(project1).to have_received(:save)
           expect(project2).to have_received(:save)
           expect(project3).not_to have_received(:save)
           expect(project4).not_to have_received(:save)
+        end
+      end
+
+      context "when updating is_required of calculated value to false" do
+        let!(:custom_field) { create(:calculated_value_project_custom_field, is_required: true) }
+        let(:attributes) { { is_required: false } }
+
+        it "doesn't try to update calculated values" do
+          expect(subject).to be_success
+          expect(subject.result).to have_attributes(is_required: false)
+
+          expect(Project).not_to have_received(:find_each)
+        end
+      end
+
+      context "when updating is_required of calculated value to true" do
+        let(:attributes) { { is_required: true } }
+
+        context "when custom field has static formula" do
+          let!(:custom_field) { create(:calculated_value_project_custom_field, formula: "1 + 1") }
+
+          it "updates calculated values on all objects" do
+            expect(subject).to be_success
+            expect(subject.result).to have_attributes(is_required: true)
+
+            aggregate_failures do
+              projects.each do |project|
+                expect(project.custom_value_attributes(all: true)).to include(custom_field.id => "2")
+              end
+            end
+          end
+
+          it "saves all objects" do
+            projects.each { allow(it).to receive(:save) }
+
+            expect(subject).to be_success
+            expect(subject.result).to have_attributes(is_required: true)
+
+            expect(projects).to all(have_received(:save))
+          end
+        end
+
+        context "when custom field formula references other fields" do
+          let!(:static) { create(:integer_project_custom_field, projects: [project1, project2, project3]) }
+          let!(:custom_field) { create(:calculated_value_project_custom_field, formula: "#{static} * 3") }
+
+          before do
+            create(:custom_value, customized: project1, custom_field: static, value: 1)
+            create(:custom_value, customized: project3, custom_field: static, value: 2)
+          end
+
+          it "updates calculated values on all objects that have the static field set" do
+            expect(subject).to be_success
+            expect(subject.result).to have_attributes(is_required: true)
+
+            aggregate_failures do
+              expect(project1.custom_value_attributes(all: true)).to include(custom_field.id => "3")
+              expect(project2.custom_value_attributes(all: true)).to include(custom_field.id => nil)
+              expect(project3.custom_value_attributes(all: true)).to include(custom_field.id => "6")
+              expect(project4.custom_value_attributes(all: true)).to include(custom_field.id => nil)
+            end
+          end
+
+          it "saves all objects" do
+            projects.each { allow(it).to receive(:save) }
+
+            expect(subject).to be_success
+            expect(subject.result).to have_attributes(is_required: true)
+
+            expect(projects).to all(have_received(:save))
+          end
         end
       end
     end

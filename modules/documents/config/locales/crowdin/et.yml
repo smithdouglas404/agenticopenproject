@@ -26,6 +26,10 @@ et:
   activerecord:
     models:
       document: "Dokument"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "Pealkiri"
   activity:
     filter:
       document: "Dokumendid"
@@ -33,6 +37,22 @@ et:
   default_doc_category_user: "Kasutaja dokumentatsioon"
   enumeration_doc_categories: "Dokumentide kategooriad"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "Nimi"
+      type: "Tüüp"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "Tüübid"
     label_attachment_author: "Lisatud faili autor"
     label_categories: "Kategooriad"
     new_category: "Uus kategooria"

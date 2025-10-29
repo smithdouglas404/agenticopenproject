@@ -41,6 +41,9 @@ RSpec.describe "create users" do
   let(:mail_body) { mail.body.parts.first.body.to_s }
   let(:token) { mail_body.scan(/token=(.*)$/).first.first.strip }
   let(:user_menu) { Components::UserMenu.new }
+  let(:required_custom_field) do
+    create(:user_custom_field, :string, name: "Department", is_required: true)
+  end
 
   before do
     allow(User).to receive(:current).and_return current_user
@@ -66,7 +69,6 @@ RSpec.describe "create users" do
       new_user_page.fill_in! first_name: "bobfirst",
                              last_name: "boblast",
                              email: "bob@mail.com"
-
       perform_enqueued_jobs do
         new_user_page.submit!
         expect_flash(message: "Successful creation.")
@@ -213,6 +215,46 @@ RSpec.describe "create users" do
           # landed on the 'my page'
           expect(page).to have_text "Welcome, your account has been activated. You are logged in now."
           user_menu.expect_user_shown "bobfirst boblast"
+        end
+
+        context "with required custom fields" do
+          before do
+            required_custom_field
+          end
+
+          it "I can activate a user with a custom field value including validation" do
+            # The required custom field is created after the register form is shown.
+            # This simulates a case where the user could remove the required custom field
+            # from the form to be submitted in order to circumvent validation.
+            expect(page).to have_no_field("user_custom_field_values_#{required_custom_field.id}")
+
+            # Try to submit without filling the required custom field
+            fill_in "user_password", with: "foobarbaz1"
+            fill_in "user_password_confirmation", with: "foobarbaz1"
+
+            click_button "Create"
+
+            # Should stay on the form and show validation error
+            expect(page).to have_text "Create a new account"
+            expect(page).to have_css(".Banner--error", text: /Department can't be blank/)
+
+            # Now fill the required custom field
+            fill_in "user[custom_field_values][#{required_custom_field.id}]", with: "Engineering"
+
+            # Refill password
+            fill_in "user_password", with: "foobarbaz1"
+            fill_in "user_password_confirmation", with: "foobarbaz1"
+
+            click_button "Create"
+
+            # Should succeed now
+            expect(page).to have_text "Welcome, your account has been activated. You are logged in now."
+            user_menu.expect_user_shown "bobfirst boblast"
+
+            # Verify the custom field value was saved
+            activated_user = User.find_by(mail: "bob@mail.com")
+            expect(activated_user.typed_custom_value_for(required_custom_field)).to eq("Engineering")
+          end
         end
       end
     end

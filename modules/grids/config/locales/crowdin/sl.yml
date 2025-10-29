@@ -1,6 +1,17 @@
 sl:
   grids:
     label_widget_in_grid: "Gradnik je vsebovan v mreži %{grid_name}"
+    widgets:
+      subitems:
+        title: "Subitems"
+        no_results: "There are no visible children."
+        view_all_subitems: "View all subitems"
+      members:
+        title: "Latest members"
+        no_results: "Ni še vidnih članov. "
+        view_all_members: "Poglej vse člane"
+      news:
+        no_results: "Ni ničesar novega za poročati."
   activerecord:
     attributes:
       grids/grid:

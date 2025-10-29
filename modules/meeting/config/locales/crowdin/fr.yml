@@ -217,7 +217,7 @@ fr:
       open_my_meetings_link: "Accéder à Mes réunions"
       series:
         title: "[%{project_name}] Série de réunions « %{title} »"
-        summary: "%{actor} has invited you to a new meeting series '%{title}'"
+        summary: "%{actor} a mis en place une nouvelle série de réunions « %{title} »"
       series_updated:
         title: "[%{project_name}] La série de réunions '%{title}' a été mise à jour"
         summary: "La série de réunions '%{title}' a été mise à jour par %{actor}"
@@ -270,19 +270,19 @@ fr:
       minutes:
         footer_page_numbers: "P. %{current_page} de %{total_pages}"
         author: "Auteur"
-        date: "Date"
+        date: "date"
         time: "Heure "
         location: "Lieu"
-        title: "minutes"
+        title: "Minutes"
     export_pdf_dialog:
       title: Exporter au format PDF
       description: Générez un fichier PDF imprimable de cette réunion dans son état actuel.
       templates:
         default:
-          label: Défaut
+          label: défaut
           caption: Le modèle par défaut est adapté à la plupart des réunions et représente l'état actuel.
         minutes:
-          label: Minutes
+          label: minutes
           caption: Le modèle de procès-verbal est adapté pour les réunions fermées et archivées.
       first_page_header_left:
         label: En-tête de la première page à gauche
@@ -545,7 +545,7 @@ fr:
   text_meeting_not_editable_anymore: "Cette réunion n'est plus modifiable."
   text_meeting_not_present_anymore: "Cette réunion a été supprimée. Veuillez sélectionner une autre réunion."
   label_add_work_package_to_meeting_dialog_title: "Sélectionner la réunion"
-  label_add_work_package_to_meeting_section_label: "Ajouter à la section"
+  label_add_work_package_to_meeting_section_label: "Section"
   label_add_work_package_to_meeting_dialog_button: "Ajouter à la réunion"
   label_meeting_selection_caption: "Il n'est possible d'ajouter ce lot de travaux qu'à une réunion à venir ou en cours."
   label_section_selection_caption: "Choisissez une section particulière de l'ordre du jour ou ajoutez-la au backlog."
@@ -583,7 +583,7 @@ fr:
         token/ical_meeting:
           title: "Un jeton d'abonnement à une réunion iCal a été généré"
           body: "Traite l'URL suivante comme un mot de passe. Quiconque y a accès peut voir toutes vos réunions."
-          warning: "Note : Ceci est la seule fois où vous verrez ce jeton, veuillez le copier maintenant."
+          warning: "C'est la seule fois que vous verrez ce jeton. Pensez à le copier maintenant."
       revocation:
         token/ical_meeting:
           notice_success: "L'abonnement à la réunion iCalendar a été révoqué avec succès."

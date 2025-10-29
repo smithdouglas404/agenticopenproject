@@ -32,7 +32,7 @@ vi:
         drive: ID Ổ đĩa
         host: Máy chủ
         name: Tên
-        password: Application password
+        password: Mật khẩu ứng dụng
         provider_type: Loại nhà cung cấp
         tenant: ID Thư mục (người thuê)
     errors:
@@ -249,10 +249,10 @@ vi:
         ampf_configuration:
           client_folder_creation: Automatic folder creation
           client_folder_removal: Automatic folder deletion
-          drive_contents: Drive has expected content
+          drive_contents: Drive content
           files_request: Fetching group folder files
           group_folder_app: 'Dependency: Group Folders'
-          group_folder_contents: Group folder has expected content
+          group_folder_contents: Group folder content
           group_folder_presence: Group folder exists
           header: Các thư mục dự án được quản lý tự động
           userless_access: Server-side request authentication
@@ -275,7 +275,7 @@ vi:
           drive_id_exists: Drive exists
           drive_id_format: Drive ID format
           header: Configuration
-          host: Host URL
+          host: URL máy chủ
           host_url_accessible: Host URL accessible
           storage_configured: Configuration complete
           tenant_id: Tenant ID
@@ -496,6 +496,7 @@ vi:
         name: OneDrive
         name_placeholder: 'ví dụ: OneDrive'
       sharepoint:
+        drive_description: OpenProject access-managed document library
         label_oauth_client_id: ID Ứng dụng OAuth Azure (khách hàng)
         label_oauth_client_secret: Giá trị Bí mật khách hàng OAuth Azure
         name: SharePoint

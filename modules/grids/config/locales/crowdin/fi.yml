@@ -1,6 +1,17 @@
 fi:
   grids:
     label_widget_in_grid: "Widget contained in Grid %{grid_name}"
+    widgets:
+      subitems:
+        title: "Subitems"
+        no_results: "There are no visible children."
+        view_all_subitems: "View all subitems"
+      members:
+        title: "Latest members"
+        no_results: "Ei nähtävissä olevia jäseniä."
+        view_all_members: "Näytä kaikki jäsenet"
+      news:
+        no_results: "Ei mitään uutta raportoitavaksi."
   activerecord:
     attributes:
       grids/grid:

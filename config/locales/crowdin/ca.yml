@@ -162,6 +162,11 @@ ca:
         expired: "Expired on %{date}"
         revoked: "Revoked on %{date}"
         title: "Access token table"
+    workflows:
+      tabs:
+        default_transitions: "Default transitions"
+        user_author: "User is author"
+        user_assignee: "User is assignee"
   authentication:
     login_and_registration: "Login and registration"
   announcements:
@@ -263,7 +268,7 @@ ca:
     label_no_color: "Sense color"
     label_properties: "Propietats"
     label_really_delete_color: >
-      Esteu segur que voleu suprimir el següent tipus de projecte? Els projectes amb aquest tipus no se suprimiran.
+      Estàs segur que vols eliminar el següent color? Els tipus amb aquest color no s'eliminaràn.
   custom_actions:
     actions:
       name: "Accions"
@@ -314,6 +319,7 @@ ca:
     reorder_alphabetical: "Reorganitza els valors alfabèticament"
     reorder_confirmation: "Alerta: L'ordre actual dels valors disponibles es perdran. Vols continuar?"
     placeholder_version_select: "Work package or project selection is required first"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects."
@@ -343,7 +349,7 @@ ca:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "o"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -384,7 +390,7 @@ ca:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Pare"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -447,7 +453,7 @@ ca:
     lists:
       active: "Projectes actius"
       my: "Els meus projectes"
-      favorited: "Favorite projects"
+      favorited: "Projectes preferits"
       archived: "Projectes arxivats"
       shared: "Shared project lists"
       my_lists: "My project lists"
@@ -520,6 +526,8 @@ ca:
       versions:
         no_results_title_text: Actualment no hi ha cap versió per al projecte.
         no_results_content_text: Crear una nova versió
+        work_packages_graph: Gràfica de paquets de treball
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: No hi ha espai addicional de disc gravat consumit per aquest projecte.
       work_package_priorities:
@@ -632,7 +640,7 @@ ca:
     sessions:
       session_name: "%{browser_name}%{browser_version} en %{os_name}"
       browser: "Navegador"
-      expires: "Expires"
+      expires: "Caduca"
       last_connection: "Last connection"
       device: "Dispositiu / Sistema Operatiu"
       unknown_browser: "navegador desconegut"
@@ -1167,7 +1175,7 @@ ca:
         excluded_from_totals: "Exclude from calculation of totals in hierarchy"
         default_done_ratio: "% Complete"
       token/named:
-        token_name: "Token name"
+        token_name: "Nom del token"
       token/ical:
         calendar: "Calendari"
         ical_token_query_assignment: "Query assignment"
@@ -1793,7 +1801,7 @@ ca:
     attachments: "Fitxers adjunts"
     actor: "Actor"
     action: "Acció"
-    api_key: "API key"
+    api_key: "Clau API"
     author: "Autor/a"
     avatar: "Avatar"
     base: "Error General:"
@@ -2583,18 +2591,18 @@ ca:
       upsell:
         title: "Actualitza a l'edició Enterprise"
       new_features:
-        header: "Read about new features and product updates."
+        header: "Llegeix sobre les noves funcions i actualitzacions del producte. "
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_5":
+        "16_6":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Add work packages to a meeting section in the Meetings tab.
-            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
-            line_2: Filter projects by last update.
-            line_3: Jump to highlighted target elements from deep links.
-            line_4: Confirm critical actions with more accessible danger dialogs.
+            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
+            line_1: Project attributes type hierarchy.
+            line_2: Performance updates with great impact.
+            line_3: New index page for Documents module.
+            line_4: Possibility to change parent of a custom field item.
     links:
       upgrade_enterprise_edition: "Actualitza a l'edició Enterprise"
       postgres_migration: "Migrant la teva instal·lació a PostgreSQL"
@@ -2830,7 +2838,7 @@ ca:
   label_required_disk_storage: "Emmagatzematge de disc necessari"
   label_send_invitation: Enviar invitació
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Canviar pare"
   label_change_plural: "Canvis"
   label_change_properties: "Canvia les propietats"
   label_change_status: "Canvia l'estat"
@@ -2919,6 +2927,7 @@ ca:
   label_duplicate: "duplicats"
   label_duplicates: "duplicats"
   label_edit: "Editar"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Edita: %{x}"
   label_enable_multi_select: "Activa/desactiva selecció múltiple"
   label_enabled_project_custom_fields: "Habilita camps personalitzats"
@@ -3041,7 +3050,7 @@ ca:
   label_link_url: "Link (URL)"
   label_list: "Llista"
   label_loading: "Carregant..."
-  label_locked: "locked"
+  label_locked: "bloquejat"
   label_lock_user: "Bloqueja usuari"
   label_logged_as: "Connectat com a"
   label_login: "Iniciar sessió"
@@ -3051,7 +3060,7 @@ ca:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "Cursiva"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
@@ -3345,6 +3354,7 @@ ca:
   label_user_search: "Cercar per usuari"
   label_user_settings: "Configuració de l'usuari"
   label_users_settings: "Configuració d'usuaris"
+  label_value_x: "Value: %{x}"
   label_version_new: "Nova versió"
   label_version_edit: "Edita la versió"
   label_version_plural: "Versions"
@@ -3822,7 +3832,7 @@ ca:
       one: "1 projecte"
       other: "%{count} projectes"
     destroy:
-      title: "Delete project"
+      title: "Eliminar projecte"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4283,7 +4293,7 @@ ca:
   status_invited: convidat
   status_locked: bloquejat
   status_registered: registrat
-  status_deleted: deleted
+  status_deleted: suprimit
   #Used in array.to_sentence.
   support:
     array:

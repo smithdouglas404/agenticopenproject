@@ -26,6 +26,10 @@ zh-TW:
   activerecord:
     models:
       document: "文件"
+    attributes:
+      document:
+        content_binary: "二進制內容"
+        title: "標題"
   activity:
     filter:
       document: "文件"
@@ -33,6 +37,22 @@ zh-TW:
   default_doc_category_user: "使用者文件"
   enumeration_doc_categories: "文件類別"
   documents:
+    page_header:
+      heading: "所有文件"
+    subheader:
+      filter:
+        label: "文件名篩選器"
+        placeholder: "在此鍵入名稱以搜尋文件"
+    documents_list_blank_slate:
+      heading: "尚未有任何文件"
+      description: "此檢視中沒有文件。您可以點擊下面的按鈕添加一個。"
+    index_page:
+      name: "名稱"
+      type: "類型"
+      updated_at: "最近編輯紀錄"
+    menu:
+      all: "所有文件"
+      types: "類型"
     label_attachment_author: "附件作者"
     label_categories: "類別"
     new_category: "新增類別"

@@ -54,15 +54,7 @@ module Overviews
           .controller_actions
           .push(
             "overviews/overviews/show",
-            "overviews/overviews/dashboard",
-            "overviews/widgets/project_statuses/show",
-            "overviews/widgets/subitems/show"
-          )
-
-        OpenProject::AccessControl.permission(:edit_project)
-          .controller_actions
-          .push(
-            "overviews/widgets/project_statuses/update"
+            "overviews/overviews/dashboard"
           )
 
         OpenProject::AccessControl.permission(:view_project_attributes)
@@ -74,8 +66,8 @@ module Overviews
         OpenProject::AccessControl.permission(:edit_project_attributes)
           .controller_actions
           .push(
-            "overviews/project_custom_field_sections/show_dialog",
-            "overviews/project_custom_field_sections/update"
+            "overviews/project_custom_fields/edit",
+            "overviews/project_custom_fields/update"
           )
 
         OpenProject::AccessControl.permission(:view_project_phases)
@@ -110,17 +102,6 @@ module Overviews
                            require: :member
           end
         end
-
-        OpenProject::AccessControl.permission(:view_news)
-                                  .controller_actions
-                                  .push(
-                                    "overviews/widgets/news/show"
-                                  )
-        OpenProject::AccessControl.permission(:view_members)
-                                  .controller_actions
-                                  .push(
-                                    "overviews/widgets/members/show"
-                                  )
       end
     end
 

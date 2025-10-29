@@ -162,6 +162,11 @@
         expired: "Expired on %{date}"
         revoked: "Revoked on %{date}"
         title: "Access token table"
+    workflows:
+      tabs:
+        default_transitions: "Default transitions"
+        user_author: "User is author"
+        user_assignee: "User is assignee"
   authentication:
     login_and_registration: "Login and registration"
   announcements:
@@ -317,6 +322,7 @@
     reorder_alphabetical: "Omorganiser verdier alfabetisk"
     reorder_confirmation: "Advarsel: Gjeldende rekkefølge for tilgjengelige verdier vil gå tapt. Vil du fortsette?"
     placeholder_version_select: "Work package or project selection is required first"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Marker det egendefinerte feltet som påkrevd. Dette vil gjøre det obligatorisk å fylle ut feltet når du oppretter nye eller oppdaterer eksisterende ressurser."
       is_required_for_project: "Marker for å aktivere denne attributten og gjøre den påkrevd i alle prosjekter. Det kan ikke deaktiveres for enkeltprosjekter."
@@ -346,7 +352,7 @@
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "eller"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -381,13 +387,13 @@
       type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
+      enabled: "Aktivert"
       depth: "Depth"
-      item: "Item"
+      item: "Element"
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Overordnet"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -450,7 +456,7 @@
     lists:
       active: "Aktive prosjekter"
       my: "Mine prosjekter"
-      favorited: "Favorite projects"
+      favorited: "Favorittprosjekter"
       archived: "Arkiverte prosjekter"
       shared: "Offentlige prosjektlister"
       my_lists: "My project lists"
@@ -523,6 +529,8 @@
       versions:
         no_results_title_text: Det finnes ingen versjoner for prosjektet.
         no_results_content_text: Lag en ny versjon
+        work_packages_graph: Arbeidspakkediagram
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: Det er ingen ekstra registrert diskplass brukt av dette prosjektet.
       work_package_priorities:
@@ -635,8 +643,8 @@
     sessions:
       session_name: "%{browser_name} %{browser_version} på %{os_name}"
       browser: "Nettleser"
-      expires: "Expires"
-      last_connection: "Last connection"
+      expires: "Utløper"
+      last_connection: "Siste tilkobling"
       device: "Enhet / Operativsystem"
       unknown_browser: "ukjent nettleser"
       unknown_os: "ukjent operativsystem"
@@ -981,7 +989,7 @@
         filename: "Fil"
         filesize: "Størrelse"
       attribute_help_text:
-        attribute_name: "Egenskap"
+        attribute_name: "Attributt"
         help_text: "Hjelpetekst"
       auth_provider:
         scim_clients: "SCIM clients"
@@ -1041,7 +1049,7 @@
       enterprise_trial:
         company: "Firma"
       favorite:
-        favorited: "Item"
+        favorited: "Element"
       grids/grid:
         page: "Side"
         row_count: "Antall rader"
@@ -1622,7 +1630,7 @@
               must_be_set_when_work_is_set: "kreves når Arbeid er satt."
               must_be_set_when_work_and_percent_complete_are_set: "påkrevd når gjenværende arbeid og % Fullført er satt."
               must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                must be 0h when Work is set and % Complete is 100%.
+                må være 0 timer når arbeidet er satt og % Komplett er 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 må være tom når arbeidet er tomt og % Komplett er 100%.
           readonly_status: "Arbeidspakken er i skrivebeskyttet status slik at egenskapene ikke kan endres."
@@ -1651,7 +1659,7 @@
               numeric: "numerisk (f.eks. \"1\")"
               special: "spesialtegn (f.eks. \"%\")"
               reused:
-                one: "har blitt brukt tidligere. Vennligst velg en som er forskjellig fra den forrige."
+                one: "har blitt brukt tidligere. Vennligst velg en som er forskjellig fra den forrige %{count}."
                 other: "har blitt brukt tidligere. Vennligst velg et som er forskjellig fra dine siste %{count}."
               match:
                 confirm: "Bekreft nytt passord."
@@ -1795,7 +1803,7 @@
     attachments: "Vedlegg"
     actor: "Aktør"
     action: "Handling"
-    api_key: "API key"
+    api_key: "API-nøkkel"
     author: "Forfatter"
     avatar: "Profilbilde"
     base: "Generell feil:"
@@ -2470,7 +2478,7 @@
             wide: "Bred"
             very_wide: "Veldig bred"
         paper_size:
-          label: "Papirformat"
+          label: "Papirstørrelse"
           caption: "Avhengig av diagramstørrelsen blir mer enn en side eksportert."
         long_text_fields:
           input_caption: "Som standard er alle lange tekstfelt valgt."
@@ -2585,18 +2593,18 @@
       upsell:
         title: "Oppgrader til Enterprise utgaven"
       new_features:
-        header: "Read about new features and product updates."
+        header: "Les om nye funksjoner og produktoppdateringer."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_5":
+        "16_6":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: Add work packages to a meeting section in the Meetings tab.
-            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
-            line_2: Filter projects by last update.
-            line_3: Jump to highlighted target elements from deep links.
-            line_4: Confirm critical actions with more accessible danger dialogs.
+            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
+            line_1: Project attributes type hierarchy.
+            line_2: Performance updates with great impact.
+            line_3: New index page for Documents module.
+            line_4: Possibility to change parent of a custom field item.
     links:
       upgrade_enterprise_edition: "Oppgrader til Enterprise utgaven"
       postgres_migration: "Overføre installasjonen til PostgreSQL"
@@ -2687,7 +2695,7 @@
         disabled_text: "API-nøkler er ikke aktivert av administratoren. Kontakt systemansvarlig for å bruke denne funksjonen."
         add_button: "API Token"
       api:
-        static_token_name: "API-token"
+        static_token_name: "API-nøkkel"
       ical:
         title: "iCalendar"
         text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
@@ -2832,7 +2840,7 @@
   label_required_disk_storage: "Nødvendig lagringsplass"
   label_send_invitation: Send invitasjon
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Endre overordnet"
   label_change_plural: "Endringer"
   label_change_properties: "Endre egenskaper"
   label_change_status: "Endre status"
@@ -2921,6 +2929,7 @@
   label_duplicate: "duplikat"
   label_duplicates: "duplikater"
   label_edit: "Rediger"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Rediger: %{x}"
   label_enable_multi_select: "Veksle multivalg"
   label_enabled_project_custom_fields: "Aktiverte egendefinerte felt"
@@ -3043,7 +3052,7 @@
   label_link_url: "Lenke (URL)"
   label_list: "Liste"
   label_loading: "Laster..."
-  label_locked: "locked"
+  label_locked: "låst"
   label_lock_user: "Lås bruker"
   label_logged_as: "Innlogget som"
   label_login: "Logg inn"
@@ -3053,7 +3062,7 @@
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "Kursiv"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Egendefinert eksport fremside bakgrunnsoverlegg"
   label_custom_export_cover_text_color: "Tekstfarge"
@@ -3347,6 +3356,7 @@
   label_user_search: "Søk etter bruker"
   label_user_settings: "Brukerinnstillinger"
   label_users_settings: "Brukerinnstillinger"
+  label_value_x: "Value: %{x}"
   label_version_new: "Ny versjon"
   label_version_edit: "Rediger versjon"
   label_version_plural: "Versjoner"
@@ -3407,11 +3417,11 @@
     other: "%{count} stengt"
     zero: "0 lukket"
   label_x_comments:
-    one: "1 kommentar"
+    one: "%{count} kommentar"
     other: "%{count} kommentarer"
     zero: "ingen kommentarer"
   label_x_open_work_packages_abbr:
-    one: "1 åpen"
+    one: "%{count} åpen"
     other: "%{count} åpne"
     zero: "0 åpen"
   label_x_work_packages:
@@ -3419,7 +3429,7 @@
     other: "%{count} arbeidspakker"
     zero: "Ingen arbeidspakker"
   label_x_projects:
-    one: "1 prosjekt"
+    one: "%{count} prosjekt"
     other: "%{count} prosjekter"
     zero: "ingen prosjekter"
   label_x_files:
@@ -3686,7 +3696,7 @@
   #Default format for numbers
   number:
     format:
-      delimiter: "."
+      delimiter: ";"
       precision: 3
       separator: ","
     human:
@@ -3825,10 +3835,10 @@
       archived: "Arkivert"
     count:
       zero: "0 projects"
-      one: "1 prosjekt"
+      one: "%{count} prosjekt"
       other: "%{count} prosjekter"
     destroy:
-      title: "Delete project"
+      title: "Slett prosjekt"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4291,7 +4301,7 @@
   status_invited: invitert
   status_locked: låst
   status_registered: registrert
-  status_deleted: deleted
+  status_deleted: slettet
   #Used in array.to_sentence.
   support:
     array:
@@ -4484,7 +4494,7 @@
     assign_random_password: "Tilordne et tilfeldig passord (sendt til brukeren via e-post)"
     blocked: "midlertidig låst"
     blocked_num_failed_logins:
-      one: "midlertidig utesteng (ett mislykkede pålogginger)"
+      one: "midlertidig utesteng (%{count} mislykkede pålogginger)"
       other: "midlertidig låst (%{count} mislykkede innloggingsforsøk)"
     confirm_status_change: "Du er i ferd med å endre status for '%{name}'. Er du sikker på at du vil fortsette?"
     deleted: "Slettet bruker"

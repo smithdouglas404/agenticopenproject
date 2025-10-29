@@ -75,7 +75,7 @@ RSpec.describe "API v3 Group resource", content_type: :json do
           .to be_json_eql(group.name.to_json)
           .at_path("name")
 
-        expect(JSON::parse(subject.body).dig("_links", "members").map { |link| link["href"] })
+        expect(JSON::parse(subject.body).dig("_links", "members").pluck("href"))
           .to match_array(members.map { |m| api_v3_paths.user(m.id) })
       end
     end
@@ -116,56 +116,119 @@ RSpec.describe "API v3 Group resource", content_type: :json do
       }.to_json
     end
 
-    before do
-      post path, body
-    end
+    subject(:response) { post path, body }
 
-    context "when the user is allowed and the input is valid" do
+    context "when the user is allowed" do
       current_user { create(:admin) }
 
-      it "responds with 201" do
-        expect(last_response).to have_http_status(:created)
+      context "and the input is valid" do
+        it "responds with 201" do
+          expect(response).to have_http_status(:created)
+        end
+
+        it "creates the group and sets the members" do
+          subject
+          group = Group.find_by(name: "The new group")
+          expect(group)
+            .to be_present
+
+          expect(group.users)
+            .to match_array members
+        end
+
+        it "returns the newly created group" do
+          expect(response.body)
+            .to be_json_eql("Group".to_json)
+            .at_path("_type")
+
+          expect(response.body)
+            .to be_json_eql("The new group".to_json)
+            .at_path("name")
+        end
       end
 
-      it "creates the group and sets the members" do
-        group = Group.find_by(name: "The new group")
-        expect(group)
-          .to be_present
+      context "and the input is invalid" do
+        let(:body) do
+          {
+            name: ""
+          }.to_json
+        end
 
-        expect(group.users)
-          .to match_array members
+        it "responds with 422 and explains the error" do
+          expect(response).to have_http_status(:unprocessable_entity)
+
+          expect(response.body)
+            .to be_json_eql("Name can't be blank.".to_json)
+            .at_path("message")
+        end
       end
 
-      it "returns the newly created group" do
-        expect(last_response.body)
-          .to be_json_eql("Group".to_json)
-          .at_path("_type")
+      describe "custom fields" do
+        context "with a required custom field" do
+          let!(:required_custom_field) do
+            create(:group_custom_field, :string,
+                   name: "Department",
+                   is_required: true)
+          end
 
-        expect(last_response.body)
-          .to be_json_eql("The new group".to_json)
-          .at_path("name")
-      end
-    end
+          context "when no custom field value is provided" do
+            let(:body) { { name: "The new group with CF" }.to_json }
 
-    context "when the user is allowed and the input is invalid" do
-      current_user { create(:admin) }
+            it "responds with 422 and explains the custom field error" do
+              expect(response).to have_http_status(:unprocessable_entity)
 
-      let(:body) do
-        {
-          name: ""
-        }.to_json
-      end
+              expect(response.body)
+                .to be_json_eql("Department can't be blank.".to_json)
+                .at_path("message")
+            end
+          end
 
-      it "responds with 422 and explains the error" do
-        expect(last_response).to have_http_status(:unprocessable_entity)
+          context "when the custom field value is provided but empty" do
+            let(:body) do
+              {
+                name: "The new group with CF",
+                "customField#{required_custom_field.id}" => ""
+              }.to_json
+            end
 
-        expect(last_response.body)
-          .to be_json_eql("Name can't be blank.".to_json)
-          .at_path("message")
+            it "responds with 422 and explains the custom field error" do
+              expect(response).to have_http_status(:unprocessable_entity)
+
+              expect(response.body)
+                .to be_json_eql("Department can't be blank.".to_json)
+                .at_path("message")
+            end
+          end
+
+          context "when the custom field value is provided and valid" do
+            let(:body) do
+              {
+                name: "The new group with CF",
+                "customField#{required_custom_field.id}" => "Engineering"
+              }.to_json
+            end
+
+            it "responds with 201" do
+              expect(response).to have_http_status(:created)
+            end
+
+            it "returns the newly created group" do
+              expect(response.body)
+                .to be_json_eql("Group".to_json)
+                .at_path("_type")
+
+              expect(response.body)
+                .to be_json_eql("The new group with CF".to_json)
+                .at_path("name")
+            end
+          end
+        end
       end
     end
 
     context "not having the necessary permission" do
+      before { response }
+
       it_behaves_like "unauthorized access"
     end
   end
@@ -223,7 +286,7 @@ RSpec.describe "API v3 Group resource", content_type: :json do
       current_user { admin }
 
       it "responds with 200" do
-        expect(last_response).to have_http_status(:ok)
+        expect(response).to have_http_status(:ok)
       end
 
       it "updates the group" do
@@ -238,17 +301,17 @@ RSpec.describe "API v3 Group resource", content_type: :json do
       end
 
       it "returns the updated group" do
-        expect(last_response.body)
+        expect(response.body)
           .to be_json_eql("Group".to_json)
           .at_path("_type")
 
-        expect(last_response.body)
+        expect(response.body)
           .to be_json_eql([{ href: api_v3_paths.user(members.last.id), title: members.last.name },
                            { href: api_v3_paths.user(another_user.id), title: another_user.name }].to_json)
           .at_path("_links/members")
 
         # unchanged
-        expect(last_response.body)
+        expect(response.body)
           .to be_json_eql(group.name.to_json)
           .at_path("name")
 
@@ -290,10 +353,10 @@ RSpec.describe "API v3 Group resource", content_type: :json do
       end
 
       it "returns 422" do
-        expect(last_response.status)
-          .to be(422)
+        expect(response)
+          .to have_http_status(422)
 
-        expect(last_response.body)
+        expect(response.body)
           .to be_json_eql("Name can't be blank.".to_json)
           .at_path("message")
       end
@@ -306,6 +369,143 @@ RSpec.describe "API v3 Group resource", content_type: :json do
 
         expect(group.updated_at)
           .to eql group_updated_at
+      end
+    end
+
+    describe "custom fields" do
+      current_user { admin }
+
+      context "with a required custom field" do
+        let!(:required_custom_field) do
+          create(:group_custom_field, :string,
+                 name: "Department",
+                 is_required: true)
+        end
+
+        context "when no custom field value is provided" do
+          it "responds with 200" do
+            expect(response).to have_http_status(:ok)
+          end
+
+          it "keeps the custom field value empty" do
+            response
+            expect(group.reload.typed_custom_value_for(required_custom_field))
+              .to be_nil
+          end
+        end
+
+        context "when the custom field is provided but empty" do
+          let(:body) do
+            {
+              _links: {
+                members: [
+                  {
+                    href: api_v3_paths.user(members.last.id)
+                  },
+                  {
+                    href: api_v3_paths.user(another_user.id)
+                  }
+                ]
+              },
+              "customField#{required_custom_field.id}" => ""
+            }.to_json
+          end
+
+          it "responds with 422 and explains the custom field error" do
+            expect(response).to have_http_status(:unprocessable_entity)
+
+            expect(response.body)
+              .to be_json_eql("Department can't be blank.".to_json)
+              .at_path("message")
+          end
+
+          it "does not alter the group" do
+            group.reload
+
+            expect(group.users)
+              .to match_array members
+
+            expect(group.updated_at)
+              .to eql group_updated_at
+          end
+        end
+
+        context "when the custom field value is being cleared" do
+          let(:group_updated_at_with_cf) { group.reload.updated_at }
+          let(:body) do
+            {
+              _links: {
+                members: [
+                  {
+                    href: api_v3_paths.user(members.last.id)
+                  },
+                  {
+                    href: api_v3_paths.user(another_user.id)
+                  }
+                ]
+              },
+              "customField#{required_custom_field.id}" => ""
+            }.to_json
+          end
+
+          before do
+            # Set an initial value for the custom field
+            group.custom_field_values = { required_custom_field.id => "Initial Department" }
+            group.save!
+            group_updated_at_with_cf
+          end
+
+          it "responds with 422 and explains the custom field error" do
+            expect(response).to have_http_status(:unprocessable_entity)
+
+            expect(response.body)
+              .to be_json_eql("Department can't be blank.".to_json)
+              .at_path("message")
+          end
+
+          it "does not alter the group" do
+            group.reload
+
+            expect(group.users)
+              .to match_array members
+
+            expect(group.updated_at)
+              .to eql group_updated_at_with_cf
+
+            # Custom field value should remain unchanged
+            expect(group.typed_custom_value_for(required_custom_field))
+              .to eq("Initial Department")
+          end
+        end
+
+        context "when the custom field value is provided and valid" do
+          let(:body) do
+            {
+              _links: {
+                members: [
+                  {
+                    href: api_v3_paths.user(members.last.id)
+                  },
+                  {
+                    href: api_v3_paths.user(another_user.id)
+                  }
+                ]
+              },
+              name: "Updated group with valid CF",
+              "customField#{required_custom_field.id}" => "Engineering"
+            }.to_json
+          end
+
+          it "responds with 200" do
+            expect(response).to have_http_status(:ok)
+          end
+
+          it "updates the group with the custom field value" do
+            response
+            expect(group.reload.typed_custom_value_for(required_custom_field))
+              .to eq("Engineering")
+          end
+        end
       end
     end
 
@@ -350,8 +550,6 @@ RSpec.describe "API v3 Group resource", content_type: :json do
         delete path
       end
     end
-
-    subject(:response) { last_response }
 
     context "with required permissions" do
       current_user { admin }
@@ -446,7 +644,7 @@ RSpec.describe "API v3 Group resource", content_type: :json do
       end
 
       it "is the reduced set of properties of the embedded elements" do
-        expect(last_response.body)
+        expect(response.body)
           .to be_json_eql(expected.to_json)
       end
     end

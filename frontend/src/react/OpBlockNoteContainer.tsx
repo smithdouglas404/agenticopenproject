@@ -28,27 +28,23 @@
  * ++
  */
 
-import { BlockNoteSchema, defaultBlockSpecs, filterSuggestionItems } from '@blocknote/core';
+import { BlockNoteEditorOptions, BlockNoteSchema, defaultBlockSpecs, filterSuggestionItems } from '@blocknote/core';
+import { User } from '@blocknote/core/comments';
 import { BlockNoteView } from '@blocknote/mantine';
 import { getDefaultReactSlashMenuItems, SuggestionMenuController, useCreateBlockNote } from '@blocknote/react';
-import { initOpenProjectApi, getDefaultOpenProjectSlashMenuItems, openProjectWorkPackageBlockSpec } from 'op-blocknote-extensions';
-import { useEffect, useState } from 'react';
-import { OpColorMode } from 'core-app/core/setup/globals/theme-utils';
 import { HocuspocusProvider } from '@hocuspocus/provider';
+import { OpColorMode } from 'core-app/core/setup/globals/theme-utils';
+import { getDefaultOpenProjectSlashMenuItems, initOpenProjectApi, openProjectWorkPackageBlockSpec } from 'op-blocknote-extensions';
+import { useEffect, useState } from 'react';
 import * as Y from 'yjs';
-import {
-  DefaultThreadStoreAuth,
-  YjsThreadStore,
-} from '@blocknote/core/comments';
-import { User } from '@blocknote/core/comments';
 
 export interface OpBlockNoteContainerProps {
   inputField:HTMLInputElement;
   inputText?:string;
   hocuspocusUrl:string;
-  hocuspocusAccessToken:string;
-  users:User[];
+  oauthToken:string,
   activeUser:User;
+  documentName:string;
   documentId:string;
   openProjectUrl:string;
 }
@@ -56,7 +52,7 @@ export interface OpBlockNoteContainerProps {
 const schema = BlockNoteSchema.create({
   blockSpecs: {
     ...defaultBlockSpecs,
-    openProjectWorkPackage: openProjectWorkPackageBlockSpec,
+    openProjectWorkPackage: openProjectWorkPackageBlockSpec(),
   },
 });
 
@@ -64,99 +60,104 @@ const detectTheme = ():OpColorMode => { return window.OpenProject.theme.detectOp
 
 export default function OpBlockNoteContainer({ inputField,
                                                inputText,
-                                               users,
-                                               activeUser,
                                                hocuspocusUrl,
-                                               hocuspocusAccessToken,
+                                               oauthToken,
+                                               activeUser,
+                                               documentName,
                                                documentId,
                                                openProjectUrl }:OpBlockNoteContainerProps) {
-  initOpenProjectApi({ baseUrl: openProjectUrl});
-
   const [isLoading, setIsLoading] = useState(true);
 
-  let collaboration:any;
-  let comments:any;
-  const collaborationEnabled = Boolean(hocuspocusUrl && documentId && hocuspocusAccessToken && activeUser);
+  initOpenProjectApi({ baseUrl: openProjectUrl });
+
+  let doc = new Y.Doc();
+
+  const collaborationEnabled = Boolean(hocuspocusUrl && documentName && oauthToken && activeUser);
   let hocuspocusProvider:HocuspocusProvider | null = null;
-  let threadStore:any;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let editorParams:Partial<BlockNoteEditorOptions<any, any, any>>;
   if(collaborationEnabled) {
-    const doc = new Y.Doc();
+    const url = new URL(hocuspocusUrl);
+    url.searchParams.set('document_id', documentId);
+    url.searchParams.set('openproject_base_path', openProjectUrl);
+
     hocuspocusProvider = new HocuspocusProvider({
-      url: hocuspocusUrl,
-      name: documentId,
-      token: hocuspocusAccessToken,
+      url: url.toString(),
+      name: documentName,
+      token: oauthToken,
       document: doc
     });
-    const cursorColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
-    collaboration = {
-      provider: hocuspocusProvider,
-      fragment: doc.getXmlFragment('document-store'),
-      user: {
-        name: activeUser.username,
-        color: cursorColor,
+
+    editorParams = {
+      schema,
+      collaboration: {
+        provider: hocuspocusProvider,
+        fragment: doc.getXmlFragment('document-store'),
+        user: {
+          name: activeUser.username,
+          color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'),
+        },
+        showCursorLabels: 'activity'
       },
-      showCursorLabels: 'activity'
     };
-    threadStore = new YjsThreadStore(
-      activeUser.id,
-      doc.getMap('threads'),
-      new DefaultThreadStoreAuth(activeUser.id, 'editor'),
-    );
-    comments = {
-      threadStore: threadStore,
+  } else { // collaboration disabled
+    if (inputText) {
+      try {
+        const update = Uint8Array.from(atob(inputText), c => c.charCodeAt(0));
+        Y.applyUpdate(doc, update);
+      } catch (e) {
+        console.error('Failed to load document binary', e);
+        doc = new Y.Doc();
+      }
+    }
+
+    editorParams = {
+      schema,
+      collaboration: {
+        provider: null,
+        fragment: doc.getXmlFragment('document-store'),
+        user: {
+          name: activeUser.username,
+          color: '#333333',
+        },
+      },
     };
   }
 
-  let editor:any;
-  if(collaborationEnabled) {
-    const resolveUsers = async (userIds:string[]) => {
-      return users.filter((user) => userIds.includes(user.id));
-    };
-
-    editor = useCreateBlockNote(
-      {
-        resolveUsers,
-        collaboration,
-        schema,
-        comments
-      },
-      [activeUser, threadStore]
-    );
-  } else {
-    editor = useCreateBlockNote(
-      { schema },
-    );
-  };
+  const editor = useCreateBlockNote(editorParams, [activeUser]);
   type EditorType = typeof editor;
 
   const getCustomSlashMenuItems = (editor:EditorType) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return [
       ...getDefaultReactSlashMenuItems(editor),
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       ...getDefaultOpenProjectSlashMenuItems(editor),
     ];
   };
 
   useEffect(() => {
-    async function prepareEditor() {
-      if(collaborationEnabled && hocuspocusProvider) {
-        hocuspocusProvider.on('synced', async () => {
-          console.log('BlockNote collaboration synced');
-          setIsLoading(false);
-        });
-        hocuspocusProvider.on('disconnect', () => {
-          console.error('BlockNote collaboration disconnected');
-          setIsLoading(true);
-        });
-      } else {
-        const blocks = await editor.tryParseMarkdownToBlocks(inputText || '');
-        editor.replaceBlocks(editor.document, blocks);
-        setIsLoading(false);
-      }
+    const updateInput = () => {
+      const update = Y.encodeStateAsUpdate(doc);
+      const b64 = btoa(String.fromCharCode(...update));
+      inputField.value = b64;
+    };
+
+    if(collaborationEnabled && hocuspocusProvider) {
+      hocuspocusProvider.on('synced', () => setIsLoading(false));
+      hocuspocusProvider.on('disconnect', () => setIsLoading(true));
+    } else {
+      doc.on('update', updateInput);
+      setIsLoading(false);
     }
-    void prepareEditor();
-    return  ()  => {
-      if (hocuspocusProvider) {
+
+    return () => {
+      if (collaborationEnabled && hocuspocusProvider) {
         hocuspocusProvider.destroy();
+      } else {
+        // disable Yjs update listener. Opposite of doc.on('update', ...);
+        doc.off('update', updateInput);
       }
     };
   }, []);
@@ -168,15 +169,11 @@ export default function OpBlockNoteContainer({ inputField,
         <BlockNoteView
           editor={editor}
           theme={detectTheme()}
-          onChange={async (editor) => {
-            const content = await editor.blocksToMarkdownLossy();
-            inputField.value = content;
-          }}
           className={'block-note-editor-container'}
         >
           <SuggestionMenuController
             triggerCharacter="/"
-            getItems={async (query:string) => filterSuggestionItems(getCustomSlashMenuItems(editor), query)}
+            getItems={async (query:string) => Promise.resolve(filterSuggestionItems(getCustomSlashMenuItems(editor), query))}
           />
         </BlockNoteView>
       }

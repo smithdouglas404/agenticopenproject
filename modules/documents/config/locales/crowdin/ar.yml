@@ -26,6 +26,10 @@ ar:
   activerecord:
     models:
       document: "الوثيقة"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "العنوان"
   activity:
     filter:
       document: "الوثائق"
@@ -33,6 +37,22 @@ ar:
   default_doc_category_user: "توثيق المستخدم"
   enumeration_doc_categories: "فئات الوثائق"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "الاسم"
+      type: "النّوع"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "الأنواع"
     label_attachment_author: "مؤلف مرفق"
     label_categories: "الأقسام"
     new_category: "فئة جديدة"

@@ -162,6 +162,11 @@ pt-BR:
         expired: "Expirado em %{date}"
         revoked: "Revogado em  %{date}"
         title: "Tabela de tokens de acesso"
+    workflows:
+      tabs:
+        default_transitions: "Default transitions"
+        user_author: "User is author"
+        user_assignee: "User is assignee"
   authentication:
     login_and_registration: "Entrar e cadastrar"
   announcements:
@@ -316,6 +321,7 @@ pt-BR:
     reorder_alphabetical: "Reorganizar valores em ordem alfabética"
     reorder_confirmation: "Aviso: A ordem atual dos valores disponíveis será perdida. Continuar?"
     placeholder_version_select: "Primeiro é necessária a seleção do pacote de trabalho ou projeto"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Marcar o campo personalizado como obrigatório. Isto tornará obrigatório o preenchimento do campo ao criar novos recursos ou ao atualizar recursos existentes."
       is_required_for_project: "Marque esta opção para ativar este atributo e torná-lo obrigatório em todos os projetos. Este atributo não pode ser desativado em projetos individuais."
@@ -522,6 +528,8 @@ pt-BR:
       versions:
         no_results_title_text: Atualmente, não há versões para o projeto.
         no_results_content_text: Criar uma nova versão
+        work_packages_graph: Gráfico de pacotes de trabalho
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: Não há espaço adicional gravado em disco que seja consumido por este projeto.
       work_package_priorities:
@@ -671,7 +679,7 @@ pt-BR:
     edit:
       priority_color_text: |
         Clique para atribuir ou alterar a cor desta prioridade.
-        Ela pode ser usada para destacar pacotes de trabalho na tabela.
+        Pode ser usado para destacar pacotes de trabalho na tabela.
     admin:
       default:
         caption: Definir esta prioridade como padrão substituirá a prioridade padrão anterior.
@@ -2041,7 +2049,7 @@ pt-BR:
     copy_options:
       dependencies_label: "Copiar do modelo"
   create_wiki_page: "Criar nova página wiki"
-  create_wiki_page_button: "Página Wiki"
+  create_wiki_page_button: "Página wiki"
   date:
     abbr_day_names:
       - "Dom"
@@ -2239,15 +2247,15 @@ pt-BR:
       baseline_comparison:
         description: Destaque as alterações realizadas nesta lista desde qualquer ponto no passado.
       benefits:
-        description: "Quais são os benefícios da edição Enterprise on-premises?"
+        description: "Quais os benefícios da edição Enterprise Edition local?"
         high_security: "Recursos de segurança"
-        high_security_text: "Autenticação única (SAML, OpenID Connect, CAS), grupos LDAP."
+        high_security_text: "Logon único (SAML, OpenID Connect, CAS), grupos LDAP."
         installation: "Suporte à instalação"
-        installation_text: "Engenheiros de software experientes guiam você por todo o processo de instalação e configuração na sua própria infraestrutura."
+        installation_text: "Engenheiros de software experientes darão orientações durante todo o processo de instalação e configuração em sua própria infraestrutura."
         premium_features: "Complementos Enterprise"
-        premium_features_text: "Quadros ágeis, tema e logo personalizados, gráficos, fluxos de trabalho inteligentes com ações personalizadas, busca por texto completo em arquivos anexos aos pacotes de trabalho e campos personalizados com seleção múltipla."
+        premium_features_text: "Painéis práticos, gráficos de temas e logotipos personalizados, fluxos de trabalho inteligentes com ações personalizadas, pesquisa de texto completo para anexos em pacotes de trabalho e campos personalizados de multi-seleção."
         professional_support: "Suporte profissional"
-        professional_support_text: "Receba suporte confiável e personalizado de engenheiros de suporte sênior com conhecimento especializado para operar o OpenProject em ambientes críticos para os negócios."
+        professional_support_text: "Receba suporte confiável de alto nível de engenheiros sênior, com conhecimento especializado sobre a gerenciamento"
       work_package_subject_generation:
         description: "Crie assuntos gerados automaticamente com base em atributos e textos referenciados."
       customize_life_cycle:
@@ -2317,7 +2325,7 @@ pt-BR:
       request_again: "Solicitar novamente"
       resend_action: "Reenviar e-mail de confirmação"
       welcome_title: "Visão geral rápida dos recursos"
-      welcome_description: "Tenha uma visão rápida sobre gerenciamento de projetos e colaboração em equipe com a edição Enterprise do OpenProject."
+      welcome_description: "Obtenha uma visão geral da gestão de projetos e colaboração entre equipes com o OpenProject edição Enterprise."
       confirmation_info: >
         Enviamos um e-mail em %{date} para %{email} com todas as informações para iniciar a avaliação gratuita do OpenProject Enterprise. Por favor, verifique sua caixa de entrada e clique no link de confirmação para começar seu período de avaliação gratuito de 14 dias.
       confirmation_subline: >
@@ -2527,7 +2535,7 @@ pt-BR:
         none_enabled: "Nenhum modelo foi ativado para este tipo de pacote de trabalho"
       footer_center:
         label: Texto do rodapé
-        caption: Este texto aparecerá em todas as páginas à direita do rodapé.
+        caption: Este texto aparecerá centralizado no rodapé de todas as páginas.
       footer_right:
         label: Texto do rodapé
         caption: Este texto aparecerá em todas as páginas à direita do rodapé.
@@ -2586,15 +2594,15 @@ pt-BR:
         header: "Leia sobre novos recursos e atualizações do produto."
         learn_about: "Saiba mais sobre todos os novos recursos"
         #We need to include the version to invalidate outdated translations in other locales
-        "16_5":
+        "16_6":
           new_features_title: >
             A versão contém diversos novos recursos e melhorias, como:
           new_features_list:
-            line_0: Adicione pacotes de trabalho a uma seção da reunião na aba Reuniões.
-            line_1: Escolha o modo de cor de forma mais prática com as caixas de seleção "Aumentar contraste".
-            line_2: Filtrar projetos pela última atualização.
-            line_3: Ir para os elementos de destino destacados a partir dos links diretos.
-            line_4: Confira as ações críticas com caixas de diálogo de perigo mais acessíveis.
+            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
+            line_1: Project attributes type hierarchy.
+            line_2: Performance updates with great impact.
+            line_3: New index page for Documents module.
+            line_4: Possibility to change parent of a custom field item.
     links:
       upgrade_enterprise_edition: "Atualizar para a edição Enterprise"
       postgres_migration: "Migrando sua instalação para PostgreSQL"
@@ -2919,6 +2927,7 @@ pt-BR:
   label_duplicate: "duplicado"
   label_duplicates: "Duplicados"
   label_edit: "Editar"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Editar: %{x}"
   label_enable_multi_select: "Alterna para seleção múltipla"
   label_enabled_project_custom_fields: "Campos personalizados habilitados"
@@ -3345,6 +3354,7 @@ pt-BR:
   label_user_search: "Busca por usuário"
   label_user_settings: "Configurações do usuário"
   label_users_settings: "Configurações de usuário"
+  label_value_x: "Value: %{x}"
   label_version_new: "Nova versão"
   label_version_edit: "Editar versão"
   label_version_plural: "Versões"
@@ -3683,7 +3693,7 @@ pt-BR:
   #Default format for numbers
   number:
     format:
-      delimiter: "."
+      delimiter: ","
       precision: 3
       separator: "."
     human:

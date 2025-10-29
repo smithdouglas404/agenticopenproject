@@ -6,8 +6,8 @@ pt-BR:
         identifier: Identificador
         secret: Segredo
         scope: Escopo
-        assertion_consumer_service_url: URL do ACS (Serviço de consumidor de afirmação)
-        limit_self_registration: Restringir auto-registro
+        assertion_consumer_service_url: URL do ACS (Serviço Consumidor de Aserção)
+        limit_self_registration: Limitar auto registro
         sp_entity_id: ID da entidade do serviço
         metadata_url: URL de metadados do provedor de identidade
         name_identifier_format: Formato do identificador de nome

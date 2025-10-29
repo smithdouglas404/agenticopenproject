@@ -35,16 +35,17 @@ module Overviews
       include OpTurbo::Streamable
       include OpPrimer::ComponentHelpers
 
-      def initialize(project:,
-                     project_custom_field_section:)
-        super
+      attr_reader :wrapper_id
 
+      def initialize(project:, project_custom_field:, wrapper_id: nil)
+        super
         @project = project
-        @project_custom_field_section = project_custom_field_section
+        @project_custom_field = project_custom_field
+        @wrapper_id = wrapper_id
       end
 
       def wrapper_uniq_by
-        @project_custom_field_section.id
+        @project_custom_field.id
       end
     end
   end
