@@ -139,11 +139,18 @@ export default function OpBlockNoteContainer({ inputField,
 
   async function uploadFile(file:File) {
     const pluginContext = await window.OpenProject.getPluginContext();
-    const service = pluginContext.services.attachmentsResourceService;
-    const iUploadFile = fileToIUploadFile(file);
-    const result = await service.addAttachments('documents', attachmentsUploadUrl, [iUploadFile]).toPromise();
+    try {
+      const service = pluginContext.services.attachmentsResourceService;
+      const iUploadFile = fileToIUploadFile(file);
+      const result = await service.addAttachments('documents', attachmentsUploadUrl, [iUploadFile]).toPromise();
 
-    return result?.[0]._links.downloadLocation.href ?? '';
+      return result?.[0]._links.downloadLocation.href ?? '';
+    } catch(error:any) {
+      const toastService = pluginContext.services.notifications;
+      toastService.addError(error);
+
+      return '';
+    }
   }
 
   const getCustomSlashMenuItems = (editor:EditorType) => {
