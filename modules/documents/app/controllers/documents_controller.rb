@@ -30,33 +30,31 @@
 
 class DocumentsController < ApplicationController
   include AttachableServiceCall
+  include FlashMessagesOutputSafetyHelper
   include PaginationHelper
   include OpTurbo::ComponentStream
 
   default_search_scope :documents
   model_object Document
 
-  before_action :find_project_by_project_id, only: %i[index new create]
-  before_action :find_model_object, except: %i[index new create]
-  before_action :find_project_from_association, except: %i[index new create]
+  before_action :find_project_by_project_id, only: %i[index search new create]
+  before_action :find_model_object, except: %i[index search new create]
+  before_action :find_project_from_association, except: %i[index search new create]
   before_action :authorize
 
-  def index # rubocop:disable Metrics/AbcSize
+  def index
     @documents = list_documents_query
       .includes(:category)
       .paginate(page: page_param, per_page: per_page_param)
+  end
 
-    respond_to do |format|
-      format.html { render }
+  def search
+    index
+    replace_via_turbo_stream component: Documents::ListComponent.new(@documents, project: @project)
+    current_url = url_for(params.permit(:controller, :filters, :sortBy).merge(action: "index"))
+    turbo_streams << turbo_stream.push_state(current_url)
 
-      format.turbo_stream do
-        replace_via_turbo_stream component: Documents::ListComponent.new(@documents, project: @project)
-        current_url = url_for(params.permit(:controller, :action, :filters, :sortBy))
-        turbo_streams << turbo_stream.push_state(current_url)
-
-        render turbo_stream: turbo_streams
-      end
-    end
+    respond_with_turbo_streams
   end
 
   def show
@@ -102,8 +100,13 @@ class DocumentsController < ApplicationController
   end
 
   def destroy
-    @document.destroy
-    redirect_to controller: "/documents", action: "index", project_id: @project, status: :see_other
+    if @document.destroy
+      flash[:notice] = I18n.t(:notice_successful_delete)
+    else
+      flash[:error] = join_flash_messages(@document.errors.full_messages)
+    end
+
+    redirect_to project_documents_path(@project), status: :see_other
   end
 
   private
