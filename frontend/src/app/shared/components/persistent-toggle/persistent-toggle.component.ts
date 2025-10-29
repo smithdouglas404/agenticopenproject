@@ -84,7 +84,7 @@ export class PersistentToggleComponent implements OnInit {
 
     if (isNowHidden) {
       slideUp(this.targetNotification, 400);
-      window.requestAnimationFrame(() => this.targetNotification.hidden = true);
+      setTimeout(() => this.targetNotification.hidden = true, 400);
     } else {
       this.targetNotification.hidden = false;
       slideDown(this.targetNotification, 400);
