@@ -80,6 +80,7 @@ export default class OpShowWhenCheckedController extends ApplicationController {
           el.style.setProperty('visibility', shouldShow ? 'visible' : 'hidden');
         } else if (el.dataset.visibilityClass) {
           el.classList.toggle(el.dataset.visibilityClass, !shouldShow);
+          el.ariaHidden = (!shouldShow).toString();
         } else {
           el.hidden = !shouldShow;
         }
