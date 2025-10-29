@@ -83,13 +83,13 @@ module Settings
     # @param name [Symbol] The name of the setting
     # @param options [Hash] Additional options for the check box
     # @return [Object] The check box input
-    def check_box(name:, **options)
+    def check_box(name:, **options, &)
       options.reverse_merge!(
         label: setting_label(name),
         checked: setting_value(name),
         disabled: setting_disabled?(name)
       )
-      form.check_box(name:, **options)
+      form.check_box(name:, **options, &)
     end
 
     # Creates a radio button group for a setting.
