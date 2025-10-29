@@ -175,10 +175,7 @@ module API
           { href: api_v3_paths.favor_workspace(represented.id) }
         end
 
-        associated_project :parent,
-                           skip_render: ->(*) {
-                             represented.parent && !represented.parent.visible? && !current_user.admin?
-                           }
+        associated_project :parent
 
         property :id
         property :identifier,

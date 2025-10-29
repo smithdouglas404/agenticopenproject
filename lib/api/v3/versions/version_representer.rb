@@ -34,6 +34,7 @@ module API
     module Versions
       class VersionRepresenter < ::API::Decorators::Single
         include API::Decorators::LinkedResource
+        include API::V3::Workspaces::LinkedResource
         include API::Decorators::DateProperty
         include API::Decorators::FormattableProperty
         include ::API::Caching::CachedRepresenter
@@ -73,9 +74,7 @@ module API
           }
         end
 
-        associated_resource :project,
-                            as: :definingProject,
-                            skip_render: ->(*) { !represented.project || !represented.project.visible?(current_user) }
+        associated_project as: :definingProject
 
         link :availableInProjects do
           {

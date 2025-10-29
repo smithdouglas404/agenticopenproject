@@ -103,14 +103,15 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
               .and_return(parent_visible)
     end
   end
-  let(:representer) { described_class.create(project, current_user: user, embed_links: true) }
+  let(:embed_links) { true }
+  let(:representer) { described_class.create(project, current_user:, embed_links:) }
   let(:parent_visible) { true }
   let(:ancestors) { [parent_workspace] }
 
-  let(:user) { build_stubbed(:user) }
+  let(:current_user) { build_stubbed(:user) }
 
   before do
-    mock_permissions_for(user) do |mock|
+    mock_permissions_for(current_user) do |mock|
       mock.allow_in_project *permissions, project:
     end
   end
@@ -194,7 +195,7 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
     describe "int custom field" do
       context "if the user is admin" do
         before do
-          allow(user)
+          allow(current_user)
             .to receive(:admin?)
                   .and_return(true)
         end
@@ -334,74 +335,8 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
     end
 
     describe "parent" do
-      let(:link) { "parent" }
-
-      context "for a project" do
-        it_behaves_like "has a titled link" do
-          let(:href) { api_v3_paths.project(parent_workspace.id) }
-          let(:title) { parent_workspace.name }
-        end
-      end
-
-      context "for a portfolio" do
-        it_behaves_like "has a titled link" do
-          let(:parent_workspace) do
-            build_stubbed(:portfolio).tap do |parent|
-              allow(parent)
-                .to receive(:visible?)
-                      .and_return(true)
-            end
-          end
-          let(:href) { api_v3_paths.portfolio(parent_workspace.id) }
-          let(:title) { parent_workspace.name }
-        end
-      end
-
-      context "for a program" do
-        it_behaves_like "has a titled link" do
-          let(:parent_workspace) do
-            build_stubbed(:program).tap do |parent|
-              allow(parent)
-                .to receive(:visible?)
-                      .and_return(true)
-            end
-          end
-          let(:href) { api_v3_paths.program(parent_workspace.id) }
-          let(:title) { parent_workspace.name }
-        end
-      end
-
-      context "if lacking the permissions to see the parent" do
-        let(:parent_visible) { false }
-
-        it_behaves_like "has a titled link" do
-          let(:href) { API::V3::URN_UNDISCLOSED }
-          let(:title) { I18n.t(:"api_v3.undisclosed.parent") }
-        end
-      end
-
-      context "if lacking the permissions to see the parent but being an admin (archived project)" do
-        let(:parent_visible) { false }
-
-        before do
-          allow(user)
-            .to receive(:admin?)
-                  .and_return(true)
-        end
-
-        it_behaves_like "has a titled link" do
-          let(:href) { api_v3_paths.project(parent_workspace.id) }
-          let(:title) { parent_workspace.name }
-        end
-      end
-
-      context "without a parent" do
-        let(:parent_workspace) { nil }
-        let(:ancestors) { [] }
-
-        it_behaves_like "has an untitled link" do
-          let(:href) { nil }
-        end
+      it_behaves_like "has workspace linked", :parent_workspace do
+        let(:link) { :parent }
       end
     end
 
@@ -469,7 +404,7 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
         let(:parent_visible) { false }
 
         before do
-          allow(user)
+          allow(current_user)
             .to receive(:admin?)
                   .and_return(true)
         end
@@ -645,7 +580,7 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
     describe "link custom field" do
       context "if the user is admin and the field is invisible" do
         before do
-          allow(user)
+          allow(current_user)
             .to receive(:admin?)
                   .and_return(true)
 
@@ -725,7 +660,7 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
     describe "delete" do
       context "for a user being admin" do
         before do
-          allow(user)
+          allow(current_user)
             .to receive(:admin?)
                   .and_return(true)
         end
@@ -787,7 +722,7 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
       end
 
       context "when the project isn't favored yet and the user is not logged in" do
-        let(:user) { build_stubbed(:anonymous) }
+        let(:current_user) { build_stubbed(:anonymous) }
         let(:favorited) { false }
 
         it_behaves_like "has no link" do
@@ -821,7 +756,7 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
       # This should not happen at all since the anonymous user cannot favor a project
       # in the first place.
       context "when the project is favored yet and the user is not logged in" do
-        let(:user) { build_stubbed(:anonymous) }
+        let(:current_user) { build_stubbed(:anonymous) }
         let(:favorited) { true }
 
         it_behaves_like "has no link" do
@@ -833,35 +768,8 @@ RSpec.describe API::V3::Projects::ProjectRepresenter, "rendering" do
 
   describe "_embedded" do
     describe "parent" do
-      let(:embedded_path) { "_embedded/parent" }
-
-      before do
-        allow(parent_workspace)
-          .to receive(:visible?)
-                .and_return(parent_visible)
-      end
-
-      context "when the user is allowed to see the parent" do
-        let(:parent_visible) { true }
-
-        it "has the parent embedded" do
-          expect(generated)
-            .to be_json_eql("Project".to_json)
-                  .at_path("#{embedded_path}/_type")
-
-          expect(generated)
-            .to be_json_eql(parent_workspace.name.to_json)
-                  .at_path("#{embedded_path}/name")
-        end
-      end
-
-      context "when the user is forbidden to see the parent" do
-        let(:parent_visible) { false }
-
-        it "hides the parent" do
-          expect(generated)
-            .not_to have_json_path(embedded_path)
-        end
+      it_behaves_like "has workspace embedded", :parent_workspace do
+        let(:embedded_path) { "_embedded/parent" }
       end
     end
 

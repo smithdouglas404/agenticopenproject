@@ -36,13 +36,13 @@ RSpec.describe API::V3::News::NewsRepresenter, "rendering" do
   let(:news) do
     build_stubbed(:news,
                   project: workspace,
-                  author: user)
+                  author: current_user)
   end
   let(:workspace) { build_stubbed(:project) }
-  let(:user) { build_stubbed(:user) }
+  let(:current_user) { build_stubbed(:user) }
   let(:embed_links) { true }
   let(:representer) do
-    described_class.create(news, current_user: user, embed_links:)
+    described_class.create(news, current_user:, embed_links:)
   end
   let(:permissions) { all_permissions }
   let(:all_permissions) { %i() }
@@ -71,8 +71,8 @@ RSpec.describe API::V3::News::NewsRepresenter, "rendering" do
     describe "author" do
       it_behaves_like "has a titled link" do
         let(:link) { :author }
-        let(:title) { user.name }
-        let(:href) { api_v3_paths.user user.id }
+        let(:title) { current_user.name }
+        let(:href) { api_v3_paths.user current_user.id }
       end
     end
   end
@@ -118,7 +118,7 @@ RSpec.describe API::V3::News::NewsRepresenter, "rendering" do
 
     describe "author" do
       let(:embedded_path) { "_embedded/author" }
-      let(:embedded_resource) { user }
+      let(:embedded_resource) { current_user }
       let(:embedded_resource_type) { "User" }
 
       it_behaves_like "has the resource embedded"
