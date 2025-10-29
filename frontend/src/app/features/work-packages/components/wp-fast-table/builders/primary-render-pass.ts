@@ -15,6 +15,7 @@ import {
   ChildRelationsRenderPass,
 } from 'core-app/features/work-packages/components/wp-fast-table/builders/relations/child-relations-render-pass';
 import { getNodeIndex } from 'core-app/shared/helpers/dom-helpers';
+import invariant from 'tiny-invariant';
 
 export type RenderedRowType = 'primary'|'relations'|'child_relations';
 
@@ -154,11 +155,7 @@ public readonly injector:Injector,
   public spliceRow(row:HTMLTableRowElement, selector:string, renderedInfo:RowRenderInfo) {
     // Insert into table using the selector
     const matches = this.tableBody.querySelectorAll(selector);
-
-    if (!matches.length) {
-      console.warn(`No match found for selector: ${selector}`);
-      return;
-    }
+    invariant(matches.length, `No matches found for selector: ${selector}`);
 
     // If it matches multiple, select the last element
     const target = matches[matches.length - 1];
