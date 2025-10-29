@@ -94,7 +94,7 @@ export class TableEditForm extends EditForm<WorkPackageResource> {
   }
 
   public findContainer(fieldName:string) {
-    return this.rowContainer?.querySelectorAll<HTMLElement>(`.${tdClassName}.${fieldName} .${editFieldContainerClass}`);
+    return this.rowContainer?.querySelector<HTMLElement>(`.${tdClassName}.${fieldName} .${editFieldContainerClass}`);
   }
 
   public findCell(fieldName:string) {
@@ -129,14 +129,14 @@ export class TableEditForm extends EditForm<WorkPackageResource> {
     const cell = this.findContainer(fieldName);
     const td = this.findCell(fieldName)!;
 
-    if (cell?.length) {
+    if (cell) {
       td.style.width = '';
       td.style.maxWidth = '';
-      this.cellBuilder.refresh(cell[0], this.resource, fieldName);
+      this.cellBuilder.refresh(cell, this.resource, fieldName);
       td.classList.remove(editModeClassName);
 
       if (focus) {
-        this.FocusHelper.focus(cell[0]);
+        this.FocusHelper.focus(cell);
       }
     }
   }
@@ -180,9 +180,9 @@ export class TableEditForm extends EditForm<WorkPackageResource> {
       const interval = setInterval(() => {
         const container = this.findContainer(fieldName);
 
-        if (container && container.length > 0) {
+        if (container) {
           clearInterval(interval);
-          resolve(container[0]);
+          resolve(container);
         }
       }, 100);
     });
