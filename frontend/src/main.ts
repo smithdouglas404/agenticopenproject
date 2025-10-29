@@ -41,9 +41,7 @@ if (environment.production) {
 // Import the correct locale early on
 void initializeLocale()
   .then(() => {
-    // Now that DOM is loaded, also run the global listeners
-    document.addEventListener('DOMContentLoaded', () => { initializeGlobalListeners(); }, { once: true });
+    initializeGlobalListeners();
 
-    // Due to the behaviour of the Edge browser we need to wait for 'DOM ready'
     void platformBrowserDynamic().bootstrapModule(OpenProjectModule);
   });
