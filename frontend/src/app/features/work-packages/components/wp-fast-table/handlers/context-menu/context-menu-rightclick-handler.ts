@@ -17,7 +17,7 @@ export class ContextMenuRightClickHandler extends ContextMenuHandler {
   }
 
   public get EVENT():EventType {
-    return 'contextmenu'; // FIXME: contextmenu has limited browser support.
+    return 'contextmenu'; // N.B.: contextmenu is not supported by Safari on iOS.
   }
 
   public get SELECTOR() {
