@@ -352,7 +352,7 @@ fa:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "یا"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -393,7 +393,7 @@ fa:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "بالادستی"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -644,7 +644,7 @@ fa:
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "Browser"
       expires: "Expires"
-      last_connection: "Last connection"
+      last_connection: "آخرین اتصال"
       device: "Device / OS"
       unknown_browser: "unknown browser"
       unknown_os: "unknown operating system"
@@ -665,14 +665,14 @@ fa:
       no_results_title_text: This user is currently not a member of a project.
     open_profile: "Open profile"
     invite_user_modal:
-      invite: "Invite"
+      invite: "دعوت"
       title:
         invite: "Invite user"
         invite_to_project: "Invite %{type} to %{project}"
-        invite_principal_to_project: "Invite %{principal} to %{project}"
+        invite_principal_to_project: "دعوت %{principal} به %{project}"
       project:
-        label: "Project"
-        required: "Please select a project"
+        label: "پروژه"
+        required: "لطفا یک پروژه انتخاب شود"
         next_button: "Next"
         no_results: "No projects were found"
         no_invite_rights: "You are not allowed to invite members to this project"
@@ -686,20 +686,20 @@ fa:
           description: "Permissions based on the assigned role in the selected project"
         placeholder_user:
           title: "Add placeholder user to %{project_name}"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
+          title_no_ee: "Placeholder کاربر (فقط برای نسخه حرفه ای)"
           description: "Has no access to the project and no emails are sent out."
         already_member_message: "Already a member of %{project}"
       principal:
         no_results_user: "No users were found"
-        invite_user: "Invite:"
+        invite_user: "دعوت:"
         no_results_placeholder: "No placeholders were found"
         create_new_placeholder: "Create new placeholder:"
         no_results_group: "No groups were found"
         invite_to_project: "Invite to %{project_name}"
         required:
-          user: "Please select a user"
+          user: "لطفا یک کاربر را انتخاب کنید"
           placeholder: "Please select a placeholder"
-          group: "Please select a group"
+          group: "لطفا یک گروه انتخاب کنید"
       role:
         label: "Role in %{project}"
         no_roles_found: "No roles were found"
@@ -710,7 +710,7 @@ fa:
         label: "Invitation message"
         description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
       summary:
-        next_button: "Send invitation"
+        next_button: "ارسال دعوت نامه"
       success_message:
         user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
         placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
@@ -1190,7 +1190,7 @@ fa:
         sort_by: "Sort results by"
         filters: "فیلترها"
         timeline_labels: "برچسب های خط زمان"
-        timeline_visible: "نمایش نمودار گانت"
+        timeline_visible: "نمایش Gant chart"
         timeline_zoom_level: "Gantt chart zoom level"
         timestamps: "Baseline timestamps"
         sort_criteria: "Sort criteria"
@@ -1831,7 +1831,7 @@ fa:
           one: "<i>%{count} hour</i>"
           other: "<i>%{count} hours</i>"
         updated: "changed from %{old_value} to %{value}"
-        logged_for: "Logged for"
+        logged_for: "گزارش شده برای"
     filter:
       changeset: "Changesets"
       message: "Forums"
@@ -2895,7 +2895,7 @@ fa:
   label_required_disk_storage: "Required disk storage"
   label_send_invitation: ارسال دعوت نامه
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "تغییر والدین"
   label_change_plural: "Changes"
   label_change_properties: "Change properties"
   label_change_status: "Change status"
@@ -3117,7 +3117,7 @@ fa:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "مورب"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
@@ -4346,7 +4346,7 @@ fa:
       display_format: "Display format"
       deletion: "Deletion"
     working_days:
-      section_work_week: "Work week"
+      section_work_week: "هفته کاری"
       section_holidays_and_closures: "Holidays and closures"
     work_packages:
       not_allowed_text: "You do not have the necessary permissions to view this page."

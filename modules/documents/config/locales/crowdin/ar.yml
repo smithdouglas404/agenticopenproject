@@ -29,7 +29,7 @@ ar:
     attributes:
       document:
         content_binary: "Content binary"
-        title: "Title"
+        title: "العنوان"
   activity:
     filter:
       document: "الوثائق"
@@ -47,12 +47,12 @@ ar:
       heading: "There are no documents yet"
       description: "There are no documents in this view. You can click the button below to add one."
     index_page:
-      name: "Name"
-      type: "Type"
+      name: "الاسم"
+      type: "النّوع"
       updated_at: "Last edited"
     menu:
       all: "All documents"
-      types: "Types"
+      types: "الأنواع"
     label_attachment_author: "مؤلف مرفق"
     label_categories: "الأقسام"
     new_category: "فئة جديدة"

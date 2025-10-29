@@ -66,10 +66,10 @@ nl:
         entity_gid: Logged for
     models:
       time_entry:
-        one: "Tijdregistratie"
+        one: "Tijd invoer"
         other: "Tijdregistraties"
       cost_entry:
-        one: "Kostenregistratie"
+        one: "Kosteninvoer"
         other: "Kostenregistraties"
       cost_type:
         one: "Soort kosten"

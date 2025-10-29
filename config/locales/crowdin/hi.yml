@@ -352,7 +352,7 @@ hi:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "या"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -393,7 +393,7 @@ hi:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "जनक"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -671,7 +671,7 @@ hi:
         invite_to_project: "Invite %{type} to %{project}"
         invite_principal_to_project: "Invite %{principal} to %{project}"
       project:
-        label: "Project"
+        label: "परियोजना"
         required: "Please select a project"
         next_button: "Next"
         no_results: "No projects were found"
@@ -710,7 +710,7 @@ hi:
         label: "Invitation message"
         description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
       summary:
-        next_button: "Send invitation"
+        next_button: "आमंत्रण भेजें"
       success_message:
         user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
         placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."

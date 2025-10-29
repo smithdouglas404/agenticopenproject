@@ -29,7 +29,7 @@ lt:
     attributes:
       document:
         content_binary: "Content binary"
-        title: "Title"
+        title: "Pavadinimas"
   activity:
     filter:
       document: "Dokumentai"
@@ -47,12 +47,12 @@ lt:
       heading: "There are no documents yet"
       description: "There are no documents in this view. You can click the button below to add one."
     index_page:
-      name: "Name"
-      type: "Type"
+      name: "Vardas"
+      type: "Tipas"
       updated_at: "Last edited"
     menu:
       all: "All documents"
-      types: "Types"
+      types: "Tipai"
     label_attachment_author: "Priedo autorius"
     label_categories: "Categories"
     new_category: "Nauja kategorija"

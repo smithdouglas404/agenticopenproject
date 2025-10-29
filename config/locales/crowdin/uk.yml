@@ -526,7 +526,7 @@ uk:
       versions:
         no_results_title_text: Наразі не існує версій для проекту.
         no_results_content_text: Створіть нову версію
-        work_packages_graph: Work packages graph
+        work_packages_graph: Графік робочих пакетів
         show_work_packages: Show work packages
       storage:
         no_results_title_text: Цей проєкт не потребує додаткового дискового простору.
@@ -674,56 +674,56 @@ uk:
       no_results_title_text: Цей користувач наразі не є учасником проекту.
     open_profile: "Відкрити профіль"
     invite_user_modal:
-      invite: "Invite"
+      invite: "Запросити"
       title:
-        invite: "Invite user"
-        invite_to_project: "Invite %{type} to %{project}"
-        invite_principal_to_project: "Invite %{principal} to %{project}"
+        invite: "Запросити користувача"
+        invite_to_project: "Запросити користувача «%{type}» у проєкт «%{project}» "
+        invite_principal_to_project: "Запросити користувача «%{principal}» у проєкт «%{project}»"
       project:
-        label: "Project"
-        required: "Please select a project"
-        next_button: "Next"
-        no_results: "No projects were found"
-        no_invite_rights: "You are not allowed to invite members to this project"
+        label: "Проєкт"
+        required: "Виберіть проєкт"
+        next_button: "Далі"
+        no_results: "Жодних проєктів не знайдено"
+        no_invite_rights: "Ви не можете запрошувати учасників до цього проєкту"
       type:
-        required: "Please select the type to be invited"
+        required: "Виберіть тип користувача, якого потрібно запросити"
         user:
           title: "Invite user to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          description: "Дозволи, що ґрунтуються на призначеній ролі у вибраному проєкті"
         group:
           title: "Invite group to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          description: "Дозволи, що ґрунтуються на призначеній ролі у вибраному проєкті"
         placeholder_user:
           title: "Add placeholder user to %{project_name}"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Has no access to the project and no emails are sent out."
-        already_member_message: "Already a member of %{project}"
+          title_no_ee: "Прототип користувача (лише у версії Enterprise)"
+          description: "Немає доступу до проєкту; електронні листи не відправляються."
+        already_member_message: "Уже учасник проєкту «%{project}»"
       principal:
-        no_results_user: "No users were found"
-        invite_user: "Invite:"
-        no_results_placeholder: "No placeholders were found"
-        create_new_placeholder: "Create new placeholder:"
-        no_results_group: "No groups were found"
+        no_results_user: "Користувачів не знайдено"
+        invite_user: "Запросити:"
+        no_results_placeholder: "Прототипів не знайдено"
+        create_new_placeholder: "Створити новий прототип:"
+        no_results_group: "Груп не знайдено"
         invite_to_project: "Invite to %{project_name}"
         required:
-          user: "Please select a user"
-          placeholder: "Please select a placeholder"
-          group: "Please select a group"
+          user: "Виберіть користувача"
+          placeholder: "Виберіть прототип"
+          group: "Виберіть групу"
       role:
-        label: "Role in %{project}"
-        no_roles_found: "No roles were found"
+        label: "Ролі у проєкті «%{project}»"
+        no_roles_found: "Ролей не знайдено"
         description: >
           This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
-        required: "Please select a role"
+        required: "Виберіть роль"
       message:
-        label: "Invitation message"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
+        label: "Повідомлення із запрошенням"
+        description: "Ми надішлемо електронний лист користувачу, у яке ви можете додати особисте повідомлення. Радимо додати пояснення про запрошення або, можливо, деяку інформацію про проєкт, щоб спростити користувачу початок роботи."
       summary:
-        next_button: "Send invitation"
+        next_button: "Надіслати запрошення"
       success_message:
-        user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
+        user: "Користувач тепер може ввійти, щоб отримати доступ до проєкту %{project}. Тим часом ви вже можете включати цього користувача в план і призначати йому пакети робіт."
+        placeholder_user: "Прототип тепер може ввійти, щоб отримати доступ до проєкту «%{project}». Тим часом ви вже можете включати цього користувача в план і призначати йому пакети робіт."
+        group: "Ця група тепер входить у проєкт «%{project}». Тим часом ви вже можете включати її в план і призначати їй пакети робіт."
   page:
     text: "Текст"
   placeholder_users:
@@ -815,7 +815,7 @@ uk:
           label_with_context: "%{attribute_context}: %{attribute_label}"
           context:
             work_package: "Робочий пакет"
-            parent: "Батьківський"
+            parent: "Батьківський об’єкт"
             project: "Проєкт"
         pattern:
           label: "Шаблон теми"
@@ -961,7 +961,7 @@ uk:
       new_child_description: "Створює звʼязаний пакет робіт як піделемент поточного (батьківського) пакета робіт"
       child: "Дочірній"
       child_description: "Вкладає звʼязаний пакет робіт як піделемент поточного (батьківського) пакета робіт"
-      parent: "Батьківський"
+      parent: "Батьківський об’єкт"
       parent_description: "Установлює звʼязаний пакет робіт батьківським відносно поточного (дочірнього) пакета робіт"
       label_closest: "Найближчі"
       label_blocks_singular: "блоки"
@@ -1307,7 +1307,7 @@ uk:
         workdays: "Робочі дні"
       users/invitation/form_model:
         principal_type: "Invitation type"
-        id_or_email: "Name or email address"
+        id_or_email: "Ім‘я або електронна адреса"
       version:
         effective_date: "Дата закінчення"
         sharing: "Поширення"
@@ -1337,8 +1337,8 @@ uk:
         journal_internal: Внутрішній журнал
         notify: "Сповіщати" #used in custom actions
         parent: "Джерело"
-        parent_issue: "Батьківський"
-        parent_work_package: "Батьківський"
+        parent_issue: "Батьківський об’єкт"
+        parent_work_package: "Батьківський об’єкт"
         priority: "Пріоритет"
         progress: "% завершення"
         readonly: "Лише читання"
@@ -2737,7 +2737,7 @@ uk:
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            Випуск включає різноманітні нові функції і покращення, такі як:
           new_features_list:
             line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
             line_1: Project attributes type hierarchy.
@@ -2926,7 +2926,7 @@ uk:
   label_ical_access_key_not_present: "Немає маркерів iCalendar."
   label_ical_access_key_generation_hint: "Автоматично створено під час оформлення підписки на календар."
   label_ical_access_key_latest: "останні"
-  label_ical_access_key_revoke: "Відкликати"
+  label_ical_access_key_revoke: "Анулювати"
   label_add_column: "Додати стовпець"
   label_applied_status: "Застосовний статус"
   label_archive_project: "Архівний проект"
@@ -3152,7 +3152,7 @@ uk:
   label_index_by_title: "Індекс за назвою"
   label_information: "Інформація"
   label_information_plural: "Інформація"
-  label_installation_guides: "Інструкції із встановлення"
+  label_installation_guides: "Інструкції зі встановлення"
   label_integer: "Ціле число"
   label_interface: "Інтерфейс"
   label_internal: "Власне"
@@ -3289,7 +3289,7 @@ uk:
   label_operator_none: "не вказано"
   label_operator_equals_or: "є (АБО)"
   label_operator_equals_all: "є (І)"
-  label_operator_shared_with_user_any: "будь-який"
+  label_operator_shared_with_user_any: "усі"
   label_open: "відкрити"
   label_closed: "зачинено"
   label_open_menu: "Відкрити меню"
@@ -4446,7 +4446,7 @@ uk:
   status_archived: "в архіві"
   status_blocked: "заблоковано"
   status_invited: запрошені
-  status_locked: Заблоковано
+  status_locked: заблоковано
   status_registered: Зареєстровано
   status_deleted: видалено
   #Used in array.to_sentence.

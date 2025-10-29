@@ -8,7 +8,7 @@ de:
         project_folder_type: Projektordner-Typ
       storages/file_link:
         origin: Ursprung
-        storage: Dateispeicher-Scope
+        storage: Dateispeicher
       storages/nextcloud_storage:
         authentication_methods:
           oauth2_sso: Single-Sign-On über OpenID Connect Identity Provider
@@ -19,7 +19,7 @@ de:
       storages/project_storage:
         project_folder: Projektordner
         project_folder_mode: Projektordnermodus
-        storage: Dateispeicher
+        storage: Dateispeicher-Scope
         storage_url: Speicher-URL
       storages/sharepoint_storage:
         host: Sharepoint Site-URL
@@ -120,11 +120,11 @@ de:
         remote_folders: 'Inhalt des Gruppenordners lesen:'
         rename_project_folder: 'Verwalteten Projektordner umbenennen:'
       sharepoint_sync_service:
-        create_folder: 'Managed Project Folder Creation:'
-        ensure_root_folder_permissions: 'Set Base Folder Permissions:'
-        hide_inactive_folders: 'Hide Inactive Folders Step:'
-        remote_folders: 'Read contents of the group folder:'
-        rename_project_folder: 'Rename managed project Folder:'
+        create_folder: 'Verwaltete Projekt-Ordnererstellung:'
+        ensure_root_folder_permissions: 'Basisordner-Berechtigungen festlegen:'
+        hide_inactive_folders: 'Verstecke Inaktive Ordner:'
+        remote_folders: 'Inhalt des Gruppenordners lesen:'
+        rename_project_folder: 'Verwalteten Projektordner umbenennen:'
     errors:
       messages:
         error: Ein unerwarteter Fehler ist aufgetreten. Bitte überprüfen Sie die OpenProject Logdateien für weitere Informationen oder kontaktieren Sie einen Administrator
@@ -189,21 +189,21 @@ de:
         sharepoint_sync_service:
           attributes:
             create_folder:
-              conflict: The %{folder_name} already exists on %{parent_location}.
-              not_found: "%{parent_location} wasn't found."
+              conflict: Der %{folder_name} existiert bereits auf %{parent_location}.
+              not_found: "%{parent_location} wurde nicht gefunden."
             hide_inactive_folders:
-              permission_not_set: could not set permissions on %{path}.
+              permission_not_set: konnte die Berechtigungen für %{path} nicht setzen.
             rename_project_folder:
-              conflict: OpenProject could not rename the folder %{current_path} to %{project_folder_name} as a folder with the same name already exists
-              forbidden: OpenProject does not have access to %{current_path} in order to rename it.
-              not_found: "%{current_path} wasn't found."
+              conflict: OpenProject konnte den Ordner %{current_path} nicht in %{project_folder_name} umbenennen, da ein Ordner mit dem gleichen Namen bereits existiert
+              forbidden: OpenProject hat keinen Zugriff auf %{current_path} um es umzubenennen.
+              not_found: "%{current_path} wurde nicht gefunden."
             set_folders_permissions:
-              permission_not_set: could not set permissions on %{path}.
-          error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information
-          not_allowed: OpenProject wasn't allowed to access your OneDrive drive. Please check the permissions set on the Azure Application.
+              permission_not_set: konnte die Berechtigungen für %{path} nicht setzen.
+          error: Ein unerwarteter Fehler ist aufgetreten. Bitte stellen Sie sicher, dass OneDrive erreichbar ist und überprüfen Sie die Protokolle von OpenProject Worker für weitere Informationen
+          not_allowed: OpenProject konnte nicht auf dein OneDrive-Laufwerk zugreifen. Bitte überprüfe die Berechtigungen der Azure Anwendung.
           not_found: OpenProject could not access your library %{drive_name}. Please check you Sharepoint site document libraries.
-          unauthorized: OpenProject could not sync with OneDrive. Please check your storage and Azure Application configuration.
-          user_does_not_exist: "%{user} does not exist in Nextcloud."
+          unauthorized: OpenProject konnte nicht mit OneDrive synchronisieren. Bitte überprüfen Sie Ihren Speicher und die Konfiguration der Azure Anwendung.
+          user_does_not_exist: "%{user} existiert nicht in Nextcloud."
         upload_link_service:
           not_found: Der Zielordner %{folder} konnte nicht auf %{storage_name} gefunden werden.
   storages:
@@ -306,7 +306,7 @@ de:
         failures:
           one: "%{count} Überprüfung fehlgeschlagen"
           other: "%{count} Überprüfungen fehlgeschlagen"
-        success: Alle Prüfungen bestanden
+        success: Alle Überprüfungen bestanden
         warnings:
           one: "%{count} Überprüfung hat eine Warnung zurückgegeben"
           other: "%{count} Überprüfungen haben eine Warnung zurückgegeben"
@@ -334,13 +334,13 @@ de:
         od_test_folder_exists: Der für den Test benötigte Ordner %{folder_name} existiert bereits. Bitte löschen Sie ihn und versuchen Sie es erneut.
         od_unexpected_content: Unerwarteter Inhalt auf dem Laufwerk gefunden.
         offline_access_scope_missing: Es wird empfohlen, den OpenID Connect-Anbieter so zu konfigurieren, dass er den Scope offline_access anfordert. Die Integration kann trotzdem funktionieren, aber stellen Sie sicher, dass die Aktualisierungstoken nicht ablaufen.
-        oidc_cant_refresh_token: Beim Versuch, Ihren Zugriff auf den Speicher zu überprüfen, ist ein Fehler aufgetreten. Bitte überprüfen Sie die Server-Protokolle auf weitere Informationen.
+        oidc_cant_refresh_token: Beim Überprüfen Ihres Zugriffs auf den Speicher ist ein Fehler aufgetreten. Bitte sehen Sie die Serverprotokolle für weitere Informationen ein.
         oidc_non_oidc_user: Der aktuelle Benutzer wurde zwar bereitgestellt, aber nicht von einem OpenID Connect (OIDC) Identity Provider. Bitte wiederholen Sie die Prüfung mit einem OIDC-bereitgestellten Benutzer.
         oidc_non_provisioned_user: Der aktuelle Benutzer wird nicht von einem OpenID Connect Identity Provider bereitgestellt. Bitte führen Sie die Prüfung mit einem bereitgestellten Benutzer erneut durch.
         oidc_provider_cant_exchange: Der OpenID Connect-Provider scheint den Token-Austausch nicht zu unterstützen, aber der Token-Austausch wurde für die Speicherung konfiguriert.
         oidc_token_acquisition_failed: Ihre OpenID-Connect-Konfiguration stellt weder die erforderliche Audience bereit, noch unterstützt sie die Token-Austausch-Funktion. Bitte lesen Sie unsere Dokumentation für weitere Informationen.
-        oidc_token_exchange_failed: Es scheint ein Problem mit der Token-Exchange-Konfiguration Ihres OpenID-Connect-Anbieters zu geben. Bitte überprüfen Sie die Einstellungen und versuchen Sie es erneut.
-        oidc_token_refresh_failed: Beim Überprüfen Ihres Zugriffs auf den Speicher ist ein Fehler aufgetreten. Bitte sehen Sie die Serverprotokolle für weitere Informationen ein.
+        oidc_token_exchange_failed: Es scheint ein Problem mit dem Token Exchange Setup auf Ihrem OpenID Connect Provider zu geben. Bitte überprüfen Sie die Konfiguration und versuchen Sie es erneut.
+        oidc_token_refresh_failed: Beim Versuch, Ihren Zugriff auf den Speicher zu überprüfen, ist ein Fehler aufgetreten. Bitte überprüfen Sie die Server-Protokolle auf weitere Informationen.
         sp_client_cant_delete_folder: Der Client hat Probleme beim Löschen von Ordnern in SharePoint. Bitte überprüfen Sie die Setup-Dokumentation für Ihren Speicher.
         sp_client_id_missing: Die konfigurierte OAuth 2 Client-ID fehlt für SharePoint. Bitte überprüfen Sie die Konfiguration.
         sp_client_secret_missing: Das konfigurierte OAuth 2-Client-Geheimnis fehlt für SharePoint. Bitte überprüfen Sie die Konfiguration.
@@ -545,4 +545,4 @@ de:
     upsell:
       description: |-
         Integrieren Sie Ihr OneDrive als Dateispeicher mit OpenProject. Laden Sie Dateien hoch und verknüpfen Sie diese direkt mit Arbeitspaketen in einem Projekt.
-      title: OneDrive-Integration
+      title: OneDrive Integration

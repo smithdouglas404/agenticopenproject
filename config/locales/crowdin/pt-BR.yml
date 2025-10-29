@@ -528,7 +528,7 @@ pt-BR:
       versions:
         no_results_title_text: Atualmente, não há versões para o projeto.
         no_results_content_text: Criar uma nova versão
-        work_packages_graph: Work packages graph
+        work_packages_graph: Gráfico de pacotes de trabalho
         show_work_packages: Show work packages
       storage:
         no_results_title_text: Não há espaço adicional gravado em disco que seja consumido por este projeto.
@@ -664,56 +664,56 @@ pt-BR:
       no_results_title_text: Atualmente, este usuário não é um membro de um projeto.
     open_profile: "Abrir perfil"
     invite_user_modal:
-      invite: "Invite"
+      invite: "Convidar"
       title:
-        invite: "Invite user"
-        invite_to_project: "Invite %{type} to %{project}"
-        invite_principal_to_project: "Invite %{principal} to %{project}"
+        invite: "Convidar usuário"
+        invite_to_project: "Convide %{type} para %{project}"
+        invite_principal_to_project: "Convide %{principal} para %{project}"
       project:
-        label: "Project"
-        required: "Please select a project"
-        next_button: "Next"
-        no_results: "No projects were found"
-        no_invite_rights: "You are not allowed to invite members to this project"
+        label: "Projeto"
+        required: "Selecione um projeto"
+        next_button: "Próxima"
+        no_results: "Nenhum projeto foi encontrado"
+        no_invite_rights: "Você não tem permissão para convidar membros para este projeto"
       type:
-        required: "Please select the type to be invited"
+        required: "Selecione o tipo a ser convidado"
         user:
           title: "Invite user to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          description: "Permissões baseadas no papel atribuído no projeto selecionado"
         group:
           title: "Invite group to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          description: "Permissões baseadas no papel atribuído no projeto selecionado"
         placeholder_user:
           title: "Add placeholder user to %{project_name}"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Has no access to the project and no emails are sent out."
-        already_member_message: "Already a member of %{project}"
+          title_no_ee: "Usuário do espaço reservado (complemento apenas da edição Enterprise)"
+          description: "Não possui acesso ao projeto e nenhum e-mail é enviado."
+        already_member_message: "Já é um membro de %{project}"
       principal:
-        no_results_user: "No users were found"
-        invite_user: "Invite:"
-        no_results_placeholder: "No placeholders were found"
-        create_new_placeholder: "Create new placeholder:"
-        no_results_group: "No groups were found"
+        no_results_user: "Nenhum usuário foi encontrado"
+        invite_user: "Convite:"
+        no_results_placeholder: "Nenhum espaço reservado encontrado"
+        create_new_placeholder: "Criar novo espaço reservado:"
+        no_results_group: "Nenhum grupo encontrado"
         invite_to_project: "Invite to %{project_name}"
         required:
-          user: "Please select a user"
-          placeholder: "Please select a placeholder"
-          group: "Please select a group"
+          user: "Selecione um usuário"
+          placeholder: "Selecione um espaço reservado"
+          group: "Selecione um grupo"
       role:
-        label: "Role in %{project}"
-        no_roles_found: "No roles were found"
+        label: "Papel em %{project}"
+        no_roles_found: "Nenhum papel encontrado"
         description: >
           This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
-        required: "Please select a role"
+        required: "Selecione um papel"
       message:
-        label: "Invitation message"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
+        label: "Mensagem de convite"
+        description: "Enviaremos um e-mail para o usuário, à qual você pode adicionar uma mensagem pessoal por aqui. Uma explicação para o convite pode se útil, ou talvez algumas informações sobre o projeto para ajudá-lo a começar."
       summary:
-        next_button: "Send invitation"
+        next_button: "Enviar Convite"
       success_message:
-        user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
+        user: "O usuário agora pode entrar para acessar %{project}. Enquanto isso, você já pode planejar com este usuário e atribuir pacotes de trabalho por exemplo."
+        placeholder_user: "O espaço reservado agora pode ser usado em %{project}. Enquanto isso, você já pode planejar com este usuário e atribuir pacotes de trabalho por exemplo."
+        group: "O grupo agora faz parte de %{project}. Enquanto isso, você já pode planejar com este grupo e atribuir pacotes de trabalho por exemplo."
   page:
     text: "Texto"
   placeholder_users:
@@ -730,7 +730,7 @@ pt-BR:
     edit:
       priority_color_text: |
         Clique para atribuir ou alterar a cor desta prioridade.
-        Ela pode ser usada para destacar pacotes de trabalho na tabela.
+        Pode ser usado para destacar pacotes de trabalho na tabela.
     admin:
       default:
         caption: Definir esta prioridade como padrão substituirá a prioridade padrão anterior.
@@ -1294,7 +1294,7 @@ pt-BR:
         workdays: "Dias úteis"
       users/invitation/form_model:
         principal_type: "Invitation type"
-        id_or_email: "Name or email address"
+        id_or_email: "Nome ou endereço de e-mail"
       version:
         effective_date: "Data de conclusão"
         sharing: "Compartilhamento"
@@ -2103,7 +2103,7 @@ pt-BR:
     copy_options:
       dependencies_label: "Copiar do modelo"
   create_wiki_page: "Criar nova página wiki"
-  create_wiki_page_button: "Página Wiki"
+  create_wiki_page_button: "Página wiki"
   date:
     abbr_day_names:
       - "Dom"
@@ -2301,15 +2301,15 @@ pt-BR:
       baseline_comparison:
         description: Destaque as alterações realizadas nesta lista desde qualquer ponto no passado.
       benefits:
-        description: "Quais são os benefícios da edição Enterprise on-premises?"
+        description: "Quais os benefícios da edição Enterprise Edition local?"
         high_security: "Recursos de segurança"
-        high_security_text: "Autenticação única (SAML, OpenID Connect, CAS), grupos LDAP."
+        high_security_text: "Logon único (SAML, OpenID Connect, CAS), grupos LDAP."
         installation: "Suporte à instalação"
-        installation_text: "Engenheiros de software experientes guiam você por todo o processo de instalação e configuração na sua própria infraestrutura."
+        installation_text: "Engenheiros de software experientes darão orientações durante todo o processo de instalação e configuração em sua própria infraestrutura."
         premium_features: "Complementos Enterprise"
-        premium_features_text: "Quadros ágeis, tema e logo personalizados, gráficos, fluxos de trabalho inteligentes com ações personalizadas, busca por texto completo em arquivos anexos aos pacotes de trabalho e campos personalizados com seleção múltipla."
+        premium_features_text: "Painéis práticos, gráficos de temas e logotipos personalizados, fluxos de trabalho inteligentes com ações personalizadas, pesquisa de texto completo para anexos em pacotes de trabalho e campos personalizados de multi-seleção."
         professional_support: "Suporte profissional"
-        professional_support_text: "Receba suporte confiável e personalizado de engenheiros de suporte sênior com conhecimento especializado para operar o OpenProject em ambientes críticos para os negócios."
+        professional_support_text: "Receba suporte confiável de alto nível de engenheiros sênior, com conhecimento especializado sobre a gerenciamento"
       work_package_subject_generation:
         description: "Crie assuntos gerados automaticamente com base em atributos e textos referenciados."
       customize_life_cycle:
@@ -2379,7 +2379,7 @@ pt-BR:
       request_again: "Solicitar novamente"
       resend_action: "Reenviar e-mail de confirmação"
       welcome_title: "Visão geral rápida dos recursos"
-      welcome_description: "Tenha uma visão rápida sobre gerenciamento de projetos e colaboração em equipe com a edição Enterprise do OpenProject."
+      welcome_description: "Obtenha uma visão geral da gestão de projetos e colaboração entre equipes com o OpenProject edição Enterprise."
       confirmation_info: >
         Enviamos um e-mail em %{date} para %{email} com todas as informações para iniciar a avaliação gratuita do OpenProject Enterprise. Por favor, verifique sua caixa de entrada e clique no link de confirmação para começar seu período de avaliação gratuito de 14 dias.
       confirmation_subline: >
@@ -2589,7 +2589,7 @@ pt-BR:
         none_enabled: "Nenhum modelo foi ativado para este tipo de pacote de trabalho"
       footer_center:
         label: Texto do rodapé
-        caption: Este texto aparecerá em todas as páginas à direita do rodapé.
+        caption: Este texto aparecerá centralizado no rodapé de todas as páginas.
       footer_right:
         label: Texto do rodapé
         caption: Este texto aparecerá em todas as páginas à direita do rodapé.
@@ -2650,7 +2650,7 @@ pt-BR:
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            A versão contém diversos novos recursos e melhorias, como:
           new_features_list:
             line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
             line_1: Project attributes type hierarchy.
@@ -3747,7 +3747,7 @@ pt-BR:
   #Default format for numbers
   number:
     format:
-      delimiter: "."
+      delimiter: ","
       precision: 3
       separator: "."
     human:

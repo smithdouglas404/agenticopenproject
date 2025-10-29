@@ -379,7 +379,7 @@ pt-PT:
     label_import: "Importar"
     label_latest_activity: "Atividade mais recente"
     label_last_updated_on: "Última actualização em"
-    label_learn_more_link: "Saber mais"
+    label_learn_more_link: "Mais informações"
     label_less_or_equal: "<="
     label_less_than_ago: "menos que dias atrás"
     label_loading: "A carregar..."
@@ -705,7 +705,7 @@ pt-PT:
     time_entry:
       work_package_required: "Requer que selecione um pacote de trabalho primeiro."
       title: "Tempo de registro"
-      tracking: "Registo de tempo"
+      tracking: "Controlo do tempo"
       stop: "Parar"
     timer:
       start_new_timer: "Iniciar novo temporizador"

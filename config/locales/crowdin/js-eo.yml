@@ -225,7 +225,7 @@ eo:
           Changing progress calculation mode from work-based to status-based will result in all existing <i>% Complete</i> values to be lost and replaced with values associated with each status. Existing values for <i>Remaining work</i> may also be recalculated to reflect this change. This action is not reversible.
     custom_actions:
       date:
-        specific: "je"
+        specific: "en"
         current_date: "Nuna dato"
     error:
       internal: "Okazis interna eraro."
@@ -896,7 +896,7 @@ eo:
         percentComplete: "% Complete"
         percentCompleteAlternative: "Progress"
         dueDate: "Findato"
-        duration: "Duration"
+        duration: "Daŭro"
         spentTime: "Uzata tempo"
         category: "Kategorio"
         percentageDone: "Percentage done"

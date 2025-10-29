@@ -3,15 +3,15 @@ fr:
     label_widget_in_grid: "Widget contenu dans la grille %{grid_name}"
     widgets:
       subitems:
-        title: "Subitems"
-        no_results: "There are no visible children."
-        view_all_subitems: "View all subitems"
+        title: "Sous-éléments"
+        no_results: "Il n'y a pas d'enfants visibles."
+        view_all_subitems: "Voir tous les sous-items"
       members:
-        title: "Latest members"
-        no_results: "No visible members."
-        view_all_members: "View all members"
+        title: "Derniers membres"
+        no_results: "Aucun membre visible."
+        view_all_members: "Afficher tous les membres"
       news:
-        no_results: "Nothing new to report."
+        no_results: "Rien de nouveau à signaler."
   activerecord:
     attributes:
       grids/grid:

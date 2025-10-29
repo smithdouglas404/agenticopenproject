@@ -37,7 +37,7 @@ id:
               can_only_contain_work_packages_of_current_sprint: "hanya bisa berisi ID paket kerja dalam sprint saat ini."
               must_block_at_least_one_work_package: "harus berisi ID minimal satu tiket."
             version_id:
-              task_version_must_be_the_same_as_story_version: "harus sesuai dengan versi orang tua."
+              task_version_must_be_the_same_as_story_version: "harus sama seperti versi kisah orang tua."
         sprint:
           cannot_end_before_it_starts: "Sprint tidak bisa berakhir sebelum mulai."
   backlogs:
@@ -69,7 +69,7 @@ id:
     remaining_hours_ideal: "Pekerjaan yang tersisa (ideal)"
     show_burndown_chart: "Burndown grafik"
     story: "Cerita"
-    story_points: "Cerita point"
+    story_points: "Cerita poin"
     story_points_ideal: "Cerita poin (ideal)"
     task: "Tugas"
     task_color: "Warna tugas"
@@ -79,7 +79,7 @@ id:
       button_update_backlogs: "Perbarui modul backlog"
     x_more: "%{count} lebih ..."
   backlogs_active: "aktif"
-  backlogs_any: "Apa saja"
+  backlogs_any: "apapun"
   backlogs_inactive: "Proyek tidak menunjukkan aktivitas"
   backlogs_points_burn_direction: "Poin terbakar habis / turun"
   backlogs_product_backlog: "Backlog produk"
@@ -145,7 +145,7 @@ id:
   points_resolved: "poin terselesaikan"
   points_to_accept: "poin tidak diterima"
   points_to_resolve: "poin tidak terselesaikan"
-  project_module_backlogs: "Backlog"
+  project_module_backlogs: "Backlogs"
   rb_label_copy_tasks: "Salin paket kerja"
   rb_label_copy_tasks_all: "Semua"
   rb_label_copy_tasks_none: "Tidak ada"

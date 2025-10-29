@@ -32,7 +32,7 @@ vi:
         drive: ID Ổ đĩa
         host: Máy chủ
         name: Tên
-        password: Application password
+        password: Mật khẩu ứng dụng
         provider_type: Loại nhà cung cấp
         tenant: ID Thư mục (người thuê)
     errors:
@@ -120,11 +120,11 @@ vi:
         remote_folders: 'Đọc nội dung của thư mục nhóm:'
         rename_project_folder: 'Đổi tên thư mục dự án được quản lý:'
       sharepoint_sync_service:
-        create_folder: 'Managed Project Folder Creation:'
-        ensure_root_folder_permissions: 'Set Base Folder Permissions:'
-        hide_inactive_folders: 'Hide Inactive Folders Step:'
-        remote_folders: 'Read contents of the group folder:'
-        rename_project_folder: 'Rename managed project Folder:'
+        create_folder: 'Tạo thư mục dự án được quản lý:'
+        ensure_root_folder_permissions: 'Thiết lập quyền cho thư mục cơ sở:'
+        hide_inactive_folders: 'Ẩn bước các thư mục không hoạt động:'
+        remote_folders: 'Đọc nội dung của thư mục nhóm:'
+        rename_project_folder: 'Đổi tên thư mục dự án được quản lý:'
     errors:
       messages:
         error: Đã xảy ra lỗi không mong muốn. Vui lòng kiểm tra nhật ký OpenProject để biết thêm thông tin hoặc liên hệ với quản trị viên
@@ -189,21 +189,21 @@ vi:
         sharepoint_sync_service:
           attributes:
             create_folder:
-              conflict: The %{folder_name} already exists on %{parent_location}.
-              not_found: "%{parent_location} wasn't found."
+              conflict: '%{folder_name} đã tồn tại ở %{parent_location}.'
+              not_found: "Không tìm thấy %{parent_location}."
             hide_inactive_folders:
-              permission_not_set: could not set permissions on %{path}.
+              permission_not_set: không thể thiết lập quyền trên %{path}.
             rename_project_folder:
-              conflict: OpenProject could not rename the folder %{current_path} to %{project_folder_name} as a folder with the same name already exists
-              forbidden: OpenProject does not have access to %{current_path} in order to rename it.
-              not_found: "%{current_path} wasn't found."
+              conflict: OpenProject không thể đổi tên thư mục %{current_path} thành %{project_folder_name} vì đã có một thư mục có cùng tên
+              forbidden: OpenProject không có quyền truy cập vào %{current_path} để đổi tên nó.
+              not_found: "Không tìm thấy %{current_path}."
             set_folders_permissions:
-              permission_not_set: could not set permissions on %{path}.
+              permission_not_set: không thể thiết lập quyền trên %{path}.
           error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information
-          not_allowed: OpenProject wasn't allowed to access your OneDrive drive. Please check the permissions set on the Azure Application.
+          not_allowed: OpenProject không được phép truy cập ổ đĩa OneDrive của bạn. Vui lòng kiểm tra các quyền được thiết lập trên Ứng dụng Azure.
           not_found: OpenProject could not access your library %{drive_name}. Please check you Sharepoint site document libraries.
-          unauthorized: OpenProject could not sync with OneDrive. Please check your storage and Azure Application configuration.
-          user_does_not_exist: "%{user} does not exist in Nextcloud."
+          unauthorized: OpenProject không thể đồng bộ với OneDrive. Hãy kiểm tra cấu hình lưu trữ và ứng dụng Azure..
+          user_does_not_exist: "%{user} không tồn tại trong Nextcloud."
         upload_link_service:
           not_found: The destination folder %{folder} could not be found on %{storage_name}.
   storages:
@@ -299,7 +299,7 @@ vi:
           drive_id_exists: Drive exists
           drive_id_format: Drive ID format
           header: Configuration
-          host: Host URL
+          host: URL máy chủ
           host_url_accessible: Host URL accessible
           storage_configured: Configuration complete
           tenant_id: Tenant ID

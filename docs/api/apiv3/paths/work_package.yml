@@ -133,7 +133,7 @@ patch:
     specific attributes independently without having to provide values for all required custom fields.
 
     To override this behavior and validate all required custom fields regardless of whether they are included in the
-    request, set the `validateCustomFields` query parameter to `true`.
+    request, set `validateCustomFields` to `true` in the `_meta` object of the request body.
   parameters:
     - name: id
       description: Work package id
@@ -152,29 +152,20 @@ patch:
         type: boolean
         default: true
       example: false
-    - name: validateCustomFields
-      description: |-
-        When set to true, explicitly validates all required custom fields on the work package, regardless of whether
-        they are provided in the request body. This overrides the default behavior where only custom fields included
-        in the request are validated. Use this parameter when you need to ensure all required custom fields have
-        valid values before allowing the update to proceed.
-      in: query
-      required: false
-      schema:
-        type: boolean
-        default: false
-      example: true
   requestBody:
     content:
       application/json:
         schema:
-          $ref: '../components/schemas/work_package_model.yml'
+          $ref: '../components/schemas/work_package_patch_model.yml'
+        examples:
+          'With custom field validation':
+            $ref: '../components/examples/work_package_with_meta_validation.yml'
   responses:
     '200':
       content:
         application/hal+json:
           schema:
-            '$ref': '../components/schemas/work_package_patch_model.yml'
+            '$ref': '../components/schemas/work_package_model.yml'
       description: OK
     '400':
       $ref: '../components/responses/invalid_request_body.yml'

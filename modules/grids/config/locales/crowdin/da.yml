@@ -9,7 +9,7 @@ da:
       members:
         title: "Latest members"
         no_results: "No visible members."
-        view_all_members: "View all members"
+        view_all_members: "Vis alle medlemmer"
       news:
         no_results: "Nothing new to report."
   activerecord:

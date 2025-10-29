@@ -36,7 +36,7 @@ module Homescreen
       end
 
       def feature_teaser_image
-        "#{feature_version}_features.svg"
+        "#{feature_version}_features.png"
       end
 
       def new_features_header
@@ -65,7 +65,7 @@ module Homescreen
       end
 
       def has_image?
-        Rails.application.assets_manifest.assets.has_key?(feature_teaser_image)
+        helpers.has_rails_asset?(feature_teaser_image)
       end
 
       private

@@ -75,7 +75,7 @@ ru:
           name: Администратор проекта
       global_roles:
         item_0:
-          name: Менеджер по персоналу и проектам
+          name: Персонал и менеджер проектов
         item_1:
           name: Стандартная глобальная роль
     standard:
@@ -93,13 +93,13 @@ ru:
           start_gate: Готов к закрытию
       priorities:
         item_0:
-          name: Низкий
+          name: Низкое
         item_1:
-          name: Обычный
+          name: Обычное
         item_2:
-          name: Высокий
+          name: Высокое
         item_3:
-          name: Немедленно
+          name: Срочно
       projects:
         demo-project:
           name: Демо-проект
@@ -165,7 +165,7 @@ ru:
                     Пожалуйста, сообщите нам, если у вас есть какие-либо вопросы или нужна поддержка. Свяжитесь с нами: [support[at]openproject.com](mailto:support@openproject.com).
               item_5:
                 options:
-                  name: Пакет работ
+                  name: Пакеты работ
               item_6:
                 options:
                   name: Вехи
@@ -336,7 +336,7 @@ ru:
                     Пожалуйста, сообщите нам, если у Вас возникнут вопросы или Вам понадобится поддержка. Свяжитесь с нами: [support[at]openproject.com](mailto:support@openproject.com).
               item_5:
                 options:
-                  name: Пакет работ
+                  name: Пакеты работ
               item_6:
                 options:
                   name: План проекта
@@ -481,7 +481,7 @@ ru:
           name: Другие
       types:
         item_0:
-          name: Задача
+          name: Задание
         item_1:
           name: Веха
         item_2:

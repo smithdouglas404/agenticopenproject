@@ -348,7 +348,7 @@ el:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "ή"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -389,7 +389,7 @@ el:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Γονέας"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -525,7 +525,7 @@ el:
       versions:
         no_results_title_text: Δεν υπάρχουν προς το παρόν εκδόσεις για το έργο.
         no_results_content_text: Δημιουργήστε μια νέα έκδοση
-        work_packages_graph: Work packages graph
+        work_packages_graph: Γράφημα πακέτων εργασίας
         show_work_packages: Show work packages
       storage:
         no_results_title_text: There is no additional recorded disk space consumed by this project.
@@ -560,7 +560,7 @@ el:
       all_shares: "All shares"
     menu:
       all: "Όλα"
-      invited: "Invited"
+      invited: "Καλεσμένος/η"
       locked: "Κλειδωμένο"
       project_roles: "Project roles"
       wp_shares: "Work package shares"
@@ -639,7 +639,7 @@ el:
     sessions:
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "Browser"
-      expires: "Expires"
+      expires: "Λήγει"
       last_connection: "Last connection"
       device: "Device / OS"
       unknown_browser: "unknown browser"
@@ -661,19 +661,19 @@ el:
       no_results_title_text: Αυτός ο χρήστης δεν είναι προς το παρόν μέλος κάποιου έργου.
     open_profile: "Open profile"
     invite_user_modal:
-      invite: "Invite"
+      invite: "Πρόσκληση"
       title:
-        invite: "Invite user"
-        invite_to_project: "Invite %{type} to %{project}"
-        invite_principal_to_project: "Invite %{principal} to %{project}"
+        invite: "Προσκαλέστε χρήστη"
+        invite_to_project: "Προσκαλέστε %{type} στο %{project}"
+        invite_principal_to_project: "Πρόσκληση %{principal} στο %{project}"
       project:
-        label: "Project"
-        required: "Please select a project"
-        next_button: "Next"
-        no_results: "No projects were found"
+        label: "Έργο"
+        required: "Παρακαλούμε επιλέξτε ένα έργο"
+        next_button: "Επόμενο"
+        no_results: "Δεν βρέθηκαν έργα"
         no_invite_rights: "You are not allowed to invite members to this project"
       type:
-        required: "Please select the type to be invited"
+        required: "Παρακαλώ επιλέξτε τον τύπο που θα προσκληθεί"
         user:
           title: "Invite user to %{project_name}"
           description: "Permissions based on the assigned role in the selected project"
@@ -684,33 +684,33 @@ el:
           title: "Add placeholder user to %{project_name}"
           title_no_ee: "Placeholder user (Enterprise edition only add-on)"
           description: "Has no access to the project and no emails are sent out."
-        already_member_message: "Already a member of %{project}"
+        already_member_message: "Ήδη μέλος του %{project}"
       principal:
-        no_results_user: "No users were found"
-        invite_user: "Invite:"
-        no_results_placeholder: "No placeholders were found"
-        create_new_placeholder: "Create new placeholder:"
-        no_results_group: "No groups were found"
+        no_results_user: "Δεν βρέθηκαν χρήστες"
+        invite_user: "Πρόσκληση:"
+        no_results_placeholder: "Δεν βρέθηκαν placeholders"
+        create_new_placeholder: "Δημιουργία νέου placeholder:"
+        no_results_group: "Δεν βρέθηκαν ομάδες"
         invite_to_project: "Invite to %{project_name}"
         required:
-          user: "Please select a user"
-          placeholder: "Please select a placeholder"
-          group: "Please select a group"
+          user: "Παρακαλώ επιλέξτε ένα χρήστη"
+          placeholder: "Παρακαλώ επιλέξτε ένα placeholder"
+          group: "Παρακαλούμε επιλέξτε μια ομάδα"
       role:
-        label: "Role in %{project}"
-        no_roles_found: "No roles were found"
+        label: "Ρόλος στο %{project}"
+        no_roles_found: "Δεν βρέθηκε κανένας ρόλος"
         description: >
           This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
-        required: "Please select a role"
+        required: "Παρακαλούμε επιλέξτε ένα ρόλο"
       message:
-        label: "Invitation message"
+        label: "Μήνυμα πρόσκλησης"
         description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
       summary:
-        next_button: "Send invitation"
+        next_button: "Αποστολή πρόσκλησης"
       success_message:
         user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
         placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
+        group: "Η ομάδα είναι τώρα μέρος του %{project}. Εν τω μεταξύ, μπορείτε να προγραμματίσετε ήδη με αυτή την ομάδα και να αντιστοιχίσετε πακέτα εργασίας."
   page:
     text: "Κείμενο"
   placeholder_users:
@@ -1160,7 +1160,7 @@ el:
         workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Required for all projects"
-        custom_field_section: Section
+        custom_field_section: Ενότητα
       project/phase:
         date_range: "Εύρος ημερομηνίας"
         definition: "Definition"
@@ -1176,7 +1176,7 @@ el:
         finish_gate: "Finish phase gate"
         finish_gate_name: "Finish phase gate name"
       query:
-        sums: "Sums"
+        sums: "Σύνολα"
         columns: "Στήλες"
         column_names: "Στήλες"
         relations_to_type_column: "Συσχετίσεις με %{type}"
@@ -1293,7 +1293,7 @@ el:
         workdays: "Working days"
       users/invitation/form_model:
         principal_type: "Invitation type"
-        id_or_email: "Name or email address"
+        id_or_email: "Όνομα ή διεύθυνση email"
       version:
         effective_date: "Ημερομηνία λήξης"
         sharing: "Κοινή Χρήση"
@@ -1328,8 +1328,8 @@ el:
         priority: "Προτεραιότητα"
         progress: "% Complete"
         readonly: "Read only"
-        remaining_hours: "Remaining work"
-        remaining_time: "Remaining work"
+        remaining_hours: "Υπολειπόμενες Ώρες"
+        remaining_time: "Υπολειπόμενες Ώρες"
         shared_with_users: "Shared with"
         schedule_manually: "Χειροκίνητος προγραμματισμός"
         spent_hours: "Χρόνος που δαπανήθηκε"
@@ -1827,7 +1827,7 @@ el:
           one: "<i>%{count} hour</i>"
           other: "<i>%{count} hours</i>"
         updated: "changed from %{old_value} to %{value}"
-        logged_for: "Logged for"
+        logged_for: "Καταχώρηση για"
     filter:
       changeset: "Σύνολα Αλλαγών"
       message: "Φόρουμ"
@@ -1854,9 +1854,9 @@ el:
     attachments: "Συνημμένα"
     actor: "Actor"
     action: "Ενέργεια"
-    api_key: "API key"
+    api_key: "Κλειδί API"
     author: "Συγγραφέας"
-    avatar: "Avatar"
+    avatar: "Άβαταρ"
     base: "Γενικό σφάλμα:"
     body: "Body"
     blocks_ids: "Ταυτότητες μπλοκαρισμένων πακέτων εργασίας"
@@ -2001,7 +2001,7 @@ el:
   button_continue: "Συνέχεια"
   button_copy: "Αντιγραφή"
   button_copy_to_clipboard: "Αντιγραφή στο πρόχειρο"
-  button_copy_link_to_clipboard: "Copy link to clipboard"
+  button_copy_link_to_clipboard: "Αντιγραφή συνδέσμου στο πρόχειρο"
   button_create: "Δημιουργία"
   button_create_and_continue: "Δημιουργία και συνέχεια"
   button_decline: "Απόρριψη"
@@ -2644,7 +2644,7 @@ el:
       upsell:
         title: "Upgrade to Enterprise edition"
       new_features:
-        header: "Read about new features and product updates."
+        header: "Διαβάστε για τις νέες λειτουργίες και τις ενημερώσεις προϊόντων."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
@@ -2891,7 +2891,7 @@ el:
   label_required_disk_storage: "Απαιτούμενος χώρος στον δίσκο"
   label_send_invitation: Αποστολή πρόσκλησης
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Αλλαγή γονέα"
   label_change_plural: "Αλλαγές"
   label_change_properties: "Αλλαγή ιδιοτήτων"
   label_change_status: "Αλλαγή κατάστασης"
@@ -3103,7 +3103,7 @@ el:
   label_link_url: "Link (URL)"
   label_list: "Προβολή λίστας"
   label_loading: "Φόρτωση..."
-  label_locked: "locked"
+  label_locked: "κλειδωμένο"
   label_lock_user: "Κλείδωμα χρήστη"
   label_logged_as: "Συνδεδεμένος ως"
   label_login: "Σύνδεση"
@@ -3113,7 +3113,7 @@ el:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "Πλάγια γραφή"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
@@ -3291,7 +3291,7 @@ el:
   label_relation_edit: "Edit relation"
   label_relation_new: "Νέα συσχέτιση"
   label_release_notes: "Σημειώσεις έκδοσης"
-  label_remaining_work: "Remaining work"
+  label_remaining_work: "Υπολειπόμενες Ώρες"
   label_remove_column: "Κατάργηση στήλης"
   label_remove_columns: "Αφαιρέστε τις επιλεγμένες στήλες"
   label_renamed: "μετονομάστηκε"
@@ -3746,7 +3746,7 @@ el:
   #Default format for numbers
   number:
     format:
-      delimiter: "."
+      delimiter: ","
       precision: 3
       separator: "."
     human:
@@ -3894,7 +3894,7 @@ el:
       one: "1 έργο"
       other: "%{count} έργα"
     destroy:
-      title: "Delete project"
+      title: "Διαγραφή έργου"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4301,7 +4301,7 @@ el:
     project_attributes:
       heading: "Project attributes"
       label_new_attribute: "Project attribute"
-      label_new_section: "Section"
+      label_new_section: "Ενότητα"
       label_edit_section: "Edit title"
       label_section_actions: "Section actions"
       heading_description: "These project attributes appear in the overview page of each project. You can add new attributes, group them into sections and re-order them as you please. These attributes can be enabled or disabled but not re-ordered at a project level."
@@ -4357,7 +4357,7 @@ el:
   status_invited: προσκεκλημένος
   status_locked: κλειδωμένο
   status_registered: εγγεγραμμένο
-  status_deleted: deleted
+  status_deleted: διαγραμμένο
   #Used in array.to_sentence.
   support:
     array:

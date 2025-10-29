@@ -527,7 +527,7 @@ es:
       versions:
         no_results_title_text: Actualmente no hay versiones para este proyecto.
         no_results_content_text: Crear un nueva versión
-        work_packages_graph: Work packages graph
+        work_packages_graph: Gráfico de paquetes de trabajo
         show_work_packages: Show work packages
       storage:
         no_results_title_text: No se ha registrado el uso de espacio en disco adicional por este proyecto.
@@ -663,56 +663,56 @@ es:
       no_results_title_text: El usuario no es actualmente un miembro del proyecto.
     open_profile: "Abrir perfil"
     invite_user_modal:
-      invite: "Invite"
+      invite: "Invitar"
       title:
-        invite: "Invite user"
-        invite_to_project: "Invite %{type} to %{project}"
-        invite_principal_to_project: "Invite %{principal} to %{project}"
+        invite: "Invitar usuario"
+        invite_to_project: "Invitar a %{type} a %{project}"
+        invite_principal_to_project: "Invitar a %{principal} a %{project}"
       project:
-        label: "Project"
-        required: "Please select a project"
-        next_button: "Next"
-        no_results: "No projects were found"
-        no_invite_rights: "You are not allowed to invite members to this project"
+        label: "Proyecto"
+        required: "Por favor, seleccione un proyecto"
+        next_button: "Siguiente"
+        no_results: "No se encontraron proyectos"
+        no_invite_rights: "No tiene permiso para invitar a miembros a este proyecto"
       type:
-        required: "Please select the type to be invited"
+        required: "Por favor, seleccione el tipo de miembro al que invitará"
         user:
           title: "Invite user to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          description: "Permisos basados en el rol asignado en el proyecto seleccionado"
         group:
           title: "Invite group to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          description: "Permisos basados en el rol asignado en el proyecto seleccionado"
         placeholder_user:
           title: "Add placeholder user to %{project_name}"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Has no access to the project and no emails are sent out."
-        already_member_message: "Already a member of %{project}"
+          title_no_ee: "Usuario de marcador de posición (extensión solo para Enterprise)"
+          description: "No tiene acceso al proyecto y no se enviarán correos electrónicos."
+        already_member_message: "Ya es miembro de %{project}"
       principal:
-        no_results_user: "No users were found"
-        invite_user: "Invite:"
-        no_results_placeholder: "No placeholders were found"
-        create_new_placeholder: "Create new placeholder:"
-        no_results_group: "No groups were found"
+        no_results_user: "No se encontraron usuarios"
+        invite_user: "Invitar:"
+        no_results_placeholder: "No se encontraron marcadores de posición"
+        create_new_placeholder: "Crear marcador de posición:"
+        no_results_group: "No se encontraron grupos"
         invite_to_project: "Invite to %{project_name}"
         required:
-          user: "Please select a user"
-          placeholder: "Please select a placeholder"
-          group: "Please select a group"
+          user: "Seleccione un usuario"
+          placeholder: "Seleccione un marcador de posición"
+          group: "Por favor, seleccione un grupo"
       role:
-        label: "Role in %{project}"
-        no_roles_found: "No roles were found"
+        label: "Rol en %{project}"
+        no_roles_found: "No se encontraron roles"
         description: >
           This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
-        required: "Please select a role"
+        required: "Por favor, seleccione un rol"
       message:
-        label: "Invitation message"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
+        label: "Mensaje de invitación"
+        description: "Enviaremos un correo electrónico al usuario, al cual puede añadir un mensaje personal aquí. Una explicación sobre la invitación podría ser útil, o bien información básica sobre el proyecto para ayudarles a empezar."
       summary:
-        next_button: "Send invitation"
+        next_button: "Enviar invitación"
       success_message:
-        user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
+        user: "El usuario ya puede iniciar sesión para acceder a %{project}. Mientras tanto, puede crear planes con ese usuario y asignarle paquetes de trabajo."
+        placeholder_user: "El marcador de posición ya puede usarse en %{project}. Mientras tanto, puede crear planes con ese usuario y asignarle paquetes de trabajo."
+        group: "El grupo ya forma parte de %{project}. Mientras tanto, puede crear planes con ese grupo y asignar paquetes de trabajo a este."
   page:
     text: "Texto"
   placeholder_users:
@@ -846,7 +846,7 @@ es:
           automatic_with_children: "Fechas determinadas por paquetes de trabajo secundarios."
           automatic_with_predecessor: "La fecha de inicio la fija un predecesor."
           manual_mobile: "Programado manualmente."
-          manually_scheduled: "Programado manualmente. No afectadas por relaciones."
+          manually_scheduled: "Programado manualmente. Fechas no afectadas por relaciones."
       blankslate:
         title: "Sin predecesores"
         description: "Para activar la programación automática, este paquete de trabajo debe tener al menos un predecesor. Entonces se programará automáticamente para que comience después del predecesor más cercano."
@@ -1294,7 +1294,7 @@ es:
         workdays: "Días laborables"
       users/invitation/form_model:
         principal_type: "Invitation type"
-        id_or_email: "Name or email address"
+        id_or_email: "Nombre o dirección de correo electrónico"
       version:
         effective_date: "Fecha de finalización"
         sharing: "Compartiendo"
@@ -2620,8 +2620,8 @@ es:
     include_sub_items: "Incluir subelementos"
     no_results_text: "No hay resultados"
   toggle_switch:
-    label_on: "On"
-    label_off: "Off"
+    label_on: "Encendido"
+    label_off: "Apagado"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
@@ -2650,7 +2650,7 @@ es:
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            El lanzamiento incluye varias funciones nuevas y mejoras, tales como:
           new_features_list:
             line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
             line_1: Project attributes type hierarchy.

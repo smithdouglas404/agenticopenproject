@@ -29,7 +29,7 @@ nl:
     attributes:
       document:
         content_binary: "Content binary"
-        title: "Title"
+        title: "Titel"
   activity:
     filter:
       document: "Documenten"
@@ -47,12 +47,12 @@ nl:
       heading: "There are no documents yet"
       description: "There are no documents in this view. You can click the button below to add one."
     index_page:
-      name: "Name"
+      name: "Naam"
       type: "Type"
       updated_at: "Last edited"
     menu:
       all: "All documents"
-      types: "Types"
+      types: "Typen"
     label_attachment_author: "Auteur bijlage"
     label_categories: "Categorieën"
     new_category: "Nieuwe categorie"

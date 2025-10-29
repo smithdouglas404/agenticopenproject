@@ -29,7 +29,7 @@ ru:
     attributes:
       document:
         content_binary: "Content binary"
-        title: "Title"
+        title: "Заголовок"
   activity:
     filter:
       document: "Документы"
@@ -47,12 +47,12 @@ ru:
       heading: "There are no documents yet"
       description: "There are no documents in this view. You can click the button below to add one."
     index_page:
-      name: "Name"
-      type: "Type"
+      name: "Имя"
+      type: "Тип"
       updated_at: "Last edited"
     menu:
       all: "All documents"
-      types: "Types"
+      types: "Типы"
     label_attachment_author: "Автор вложения"
     label_categories: "Категории"
     new_category: "Новая категория"
@@ -60,9 +60,9 @@ ru:
   label_document_new: "Новый документ"
   label_document_plural: "Документы"
   label_documents: "Документы"
-  label_document_title: "Название"
+  label_document_title: "Заголовок"
   label_document_description: "Описание"
-  label_document_category: "Категории документов"
+  label_document_category: "Категория"
   permission_manage_documents: "Управление документами"
   permission_view_documents: "Просмотр документов"
   project_module_documents: "Документы"

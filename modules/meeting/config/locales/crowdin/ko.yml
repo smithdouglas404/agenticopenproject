@@ -540,7 +540,7 @@ ko:
   text_meeting_not_editable_anymore: "이 미팅은 더 이상 편집할 수 없습니다."
   text_meeting_not_present_anymore: "이 미팅은 삭제되었습니다. 다른 미팅을 선택해 주세요."
   label_add_work_package_to_meeting_dialog_title: "미팅 선택"
-  label_add_work_package_to_meeting_section_label: "Section"
+  label_add_work_package_to_meeting_section_label: "섹션"
   label_add_work_package_to_meeting_dialog_button: "미팅에 추가"
   label_meeting_selection_caption: "향후 또는 진행 중인 미팅에만 이 작업 패키지를 추가할 수 있습니다."
   label_section_selection_caption: "의제의 특정 섹션을 선택하거나 백로그에 추가하세요."

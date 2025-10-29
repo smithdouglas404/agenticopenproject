@@ -393,7 +393,7 @@ af:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Ouer"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -671,9 +671,9 @@ af:
         invite_to_project: "Invite %{type} to %{project}"
         invite_principal_to_project: "Invite %{principal} to %{project}"
       project:
-        label: "Project"
+        label: "Projek"
         required: "Please select a project"
-        next_button: "Next"
+        next_button: "Volgende"
         no_results: "No projects were found"
         no_invite_rights: "You are not allowed to invite members to this project"
       type:
@@ -710,7 +710,7 @@ af:
         label: "Invitation message"
         description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
       summary:
-        next_button: "Send invitation"
+        next_button: "Stuur uitnodiging"
       success_message:
         user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
         placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
@@ -4362,7 +4362,7 @@ af:
   status_invited: invited
   status_locked: locked
   status_registered: registered
-  status_deleted: deleted
+  status_deleted: geskrap
   #Used in array.to_sentence.
   support:
     array:

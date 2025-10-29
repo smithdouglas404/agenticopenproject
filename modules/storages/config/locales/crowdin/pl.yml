@@ -120,11 +120,11 @@ pl:
         remote_folders: 'Odczytaj zawartość folderu grupy:'
         rename_project_folder: 'Zmień nazwę zarządzanego folderu projektu:'
       sharepoint_sync_service:
-        create_folder: 'Managed Project Folder Creation:'
-        ensure_root_folder_permissions: 'Set Base Folder Permissions:'
-        hide_inactive_folders: 'Hide Inactive Folders Step:'
-        remote_folders: 'Read contents of the group folder:'
-        rename_project_folder: 'Rename managed project Folder:'
+        create_folder: 'Utworzenie zarządzanego folderu projektu:'
+        ensure_root_folder_permissions: 'Ustaw podstawowe uprawnienia do folderu:'
+        hide_inactive_folders: 'Krok „Ukryj nieaktywne foldery”:'
+        remote_folders: 'Odczytaj zawartość folderu grupy:'
+        rename_project_folder: 'Zmień nazwę zarządzanego folderu projektu:'
     errors:
       messages:
         error: Wystąpił nieoczekiwany błąd. Sprawdź dzienniki OpenProject, aby uzyskać więcej informacji lub skontaktuj się z administratorem
@@ -189,21 +189,21 @@ pl:
         sharepoint_sync_service:
           attributes:
             create_folder:
-              conflict: The %{folder_name} already exists on %{parent_location}.
-              not_found: "%{parent_location} wasn't found."
+              conflict: Folder %{folder_name} już istnieje w lokalizacji %{parent_location}.
+              not_found: "Nie znaleziono lokalizacji %{parent_location}."
             hide_inactive_folders:
-              permission_not_set: could not set permissions on %{path}.
+              permission_not_set: nie można ustawić uprawnień do lokalizacji %{path}.
             rename_project_folder:
-              conflict: OpenProject could not rename the folder %{current_path} to %{project_folder_name} as a folder with the same name already exists
-              forbidden: OpenProject does not have access to %{current_path} in order to rename it.
-              not_found: "%{current_path} wasn't found."
+              conflict: OpenProject nie mógł zmienić nazwy folderu %{current_path} na %{project_folder_name}, ponieważ istnieje już folder o tej samej nazwie.
+              forbidden: OpenProject nie ma dostępu do folderu %{current_path}, aby zmienić jego nazwę.
+              not_found: "Nie znaleziono lokalizacji %{current_path}."
             set_folders_permissions:
-              permission_not_set: could not set permissions on %{path}.
-          error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information
-          not_allowed: OpenProject wasn't allowed to access your OneDrive drive. Please check the permissions set on the Azure Application.
+              permission_not_set: nie można ustawić uprawnień do lokalizacji %{path}.
+          error: Wystąpił nieoczekiwany błąd. Upewnij się, że usługa OneDrive jest osiągalna i sprawdź dzienniki pracowników OpenProject, aby uzyskać więcej informacji
+          not_allowed: OpenProject nie mógł uzyskać dostępu do Twojego dysku w usłudze OneDrive. Sprawdź uprawnienia ustawione w aplikacji Azure.
           not_found: OpenProject could not access your library %{drive_name}. Please check you Sharepoint site document libraries.
-          unauthorized: OpenProject could not sync with OneDrive. Please check your storage and Azure Application configuration.
-          user_does_not_exist: "%{user} does not exist in Nextcloud."
+          unauthorized: OpenProject nie może zsynchronizować się z OneDrive. Sprawdź konfigurację magazynu i aplikacji Azure.
+          user_does_not_exist: "Użytkownik %{user} nie istnieje w Nextcloud."
         upload_link_service:
           not_found: Folder docelowy %{folder} nie został znaleziony w magazynie %{storage_name}.
   storages:
@@ -440,7 +440,7 @@ pl:
     label_edit_token_exchange: Edytuj konfigurację wymiany tokenów
     label_existing_manual_folder: Istniejący folder z ręcznie zarządzanymi uprawnieniami
     label_file_storage: Magazyn plików
-    label_host: Adres URL hosta 
+    label_host: Adres URL hosta
     label_inactive: Nieaktywny
     label_managed_project_folders:
       application_password: Hasło aplikacji

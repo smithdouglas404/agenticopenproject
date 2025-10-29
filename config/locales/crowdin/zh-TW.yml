@@ -668,58 +668,58 @@ zh-TW:
         required: "請選擇一個專案"
         next_button: "下一步"
         no_results: "找不到專案"
-        no_invite_rights: "You are not allowed to invite members to this project"
+        no_invite_rights: "您不能邀請成員加入此專案"
       type:
-        required: "Please select the type to be invited"
+        required: "請選擇要邀請的類型"
         user:
-          title: "Invite user to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          title: "邀請使用者至 %{project_name}"
+          description: "根據所選專案中指定角色的權限"
         group:
-          title: "Invite group to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          title: "邀請群組至 %{project_name}"
+          description: "根據所選專案中指定角色的權限"
         placeholder_user:
-          title: "Add placeholder user to %{project_name}"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Has no access to the project and no emails are sent out."
-        already_member_message: "Already a member of %{project}"
+          title: "新增佔位符使用者至 %{project_name}"
+          title_no_ee: "佔位符使用者（僅限企業版附加元件）"
+          description: "無法存取專案，也不會傳送電子郵件。"
+        already_member_message: "已經是 %{project} 的會員"
       principal:
-        no_results_user: "No users were found"
-        invite_user: "Invite:"
-        no_results_placeholder: "No placeholders were found"
-        create_new_placeholder: "Create new placeholder:"
-        no_results_group: "No groups were found"
-        invite_to_project: "Invite to %{project_name}"
+        no_results_user: "未找到使用者"
+        invite_user: "邀請："
+        no_results_placeholder: "未找到佔位符"
+        create_new_placeholder: "建立新的佔位符："
+        no_results_group: "未發現任何群組"
+        invite_to_project: "邀請至 %{project_name}"
         required:
-          user: "Please select a user"
-          placeholder: "Please select a placeholder"
-          group: "Please select a group"
+          user: "請選擇使用者"
+          placeholder: "請選擇一個佔位符"
+          group: "請選擇群組"
       role:
-        label: "Role in %{project}"
-        no_roles_found: "No roles were found"
+        label: "在 %{project} 中的角色"
+        no_roles_found: "未找到任何角色"
         description: >
-          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
-        required: "Please select a role"
+          這是使用者加入專案時將收到的角色。角色定義允許他們執行哪些動作，以及允許他們檢視哪些資訊。[進一步瞭解角色和權限。](docs_url)
+        required: "請選擇角色"
       message:
-        label: "Invitation message"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
+        label: "邀請訊息"
+        description: "我們會寄送一封電子郵件給使用者，您可以在此加入個人訊息。說明邀請的原因或提供一些有關專案的資訊，能夠幫助他們更順利開始使用。"
       summary:
-        next_button: "Send invitation"
+        next_button: "發送邀請函"
       success_message:
-        user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
+        user: "使用者現在可以登入 %{project}。與此同時，您已經可以與該使用者一起進行規劃，例如指派工作套件。"
+        placeholder_user: "佔位符現在可在 %{project} 中使用。與此同時，您已經可以使用該使用者進行規劃，例如指派工作套件。"
+        group: "現在該群組成為 %{project} 的一部分。與此同時，您已經可以使用該群組進行規劃，例如指派工作套件。"
   page:
     text: "文字"
   placeholder_users:
     right_to_manage_members_missing: >
-      您無權刪除佔位使用者。您無權管理佔位使用者為成員的所有專案的成員。
+      您無權刪除佔位符使用者。您無權管理佔位使用者為成員的所有專案的成員。
     delete_tooltip: "刪除佔位使用者"
     deletion_info:
-      heading: "刪除佔位使用者 %{name}"
+      heading: "刪除佔位符使用者 %{name}"
       data_consequences: >
         出現的所有佔位符用戶(例如，作為受理人、負責人或其他用戶值) 將被重新分配給一個名為“已刪除用戶”的帳戶。 由於每個已刪除帳戶的數據都會被重新分配給此帳戶，因此無法將用戶創建的數據與另一個已刪除帳戶的數據區分。
       irreversible: "這一行動是不可還原的"
-      confirmation: "輸入佔位使用者名稱 %{name} 確認刪除。"
+      confirmation: "輸入佔位符使用者名稱 %{name} 確認刪除。"
   priorities:
     edit:
       priority_color_text: |
@@ -1284,8 +1284,8 @@ zh-TW:
         daily_reminders: "每日提醒"
         workdays: "工作日"
       users/invitation/form_model:
-        principal_type: "Invitation type"
-        id_or_email: "Name or email address"
+        principal_type: "邀請函類型"
+        id_or_email: "姓名或電子郵件地址"
       version:
         effective_date: "完成日期"
         sharing: "分享"
@@ -1752,7 +1752,7 @@ zh-TW:
       news: "最新消息"
       notification:
         other: "通知"
-      placeholder_user: "佔位使用者"
+      placeholder_user: "佔位符使用者"
       project:
         other: "專案"
       project_query:
@@ -2229,7 +2229,7 @@ zh-TW:
       ldap_groups: 同步LDAP使用者與群組
       nextcloud_sso: Nextcloud 儲存空間的單一登入(SSO)
       one_drive_sharepoint_file_storage: OneDrive/SharePoint 檔案儲存
-      placeholder_users: 佔位使用者
+      placeholder_users: 佔位符使用者
       project_list_sharing: 專案清單分享
       readonly_work_packages: 唯讀工作套件
       scim_api: SCIM 伺服器 API
@@ -2310,9 +2310,9 @@ zh-TW:
       virus_scanning:
         description: "確保在其他使用者存取 OpenProject 中上傳的檔案前，對其進行病毒掃描。"
       placeholder_users:
-        title: 佔位使用者
+        title: 佔位符使用者
         description: >
-          「佔位使用者」是一種將工作套件分配給不屬於您專案成員的方法。它們在一系列場景中十分有用；例如，如果您需要追蹤尚未命名或可用的資源的任務，或者如果您不想讓該人員存取專案，但仍希望追蹤分配給他們的任務。
+          「佔位符使用者」是一種將工作套件分配給不屬於您專案成員的方法。它們在一系列場景中十分有用；例如，如果您需要追蹤尚未命名或可用的資源的任務，或者如果您不想讓該人員存取專案，但仍希望追蹤分配給他們的任務。
       internal_comments:
         title: 內部備註
         description: "內部備註讓內部團隊可以私下溝通。這些僅對某些專案角色可见，永遠不會公開顯示。"
@@ -2604,13 +2604,13 @@ zh-TW:
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            該版本包含多種新功能和改進，例如：
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: 專案評估和評分的計算值（企業附加元件）。
+            line_1: 專案屬性類型層級。
+            line_2: 影響力極大的效能更新。
+            line_3: 文件模組新增索引頁。
+            line_4: 可更改自訂欄位項目的父項。
     links:
       upgrade_enterprise_edition: "升級到企業版"
       postgres_migration: "將您的安裝遷移到 PostgreSQL"
@@ -2976,7 +2976,7 @@ zh-TW:
   label_filter_add: "新增條件"
   label_filter_by: "篩選條件："
   label_filter_any_name_attribute: "名稱屬性"
-  label_filter_plural: "篩選條件"
+  label_filter_plural: "篩選器"
   label_filters_toggle: "顯示/隱藏篩選條件"
   label_float: "浮點數"
   label_folder: "資料夾"
@@ -2991,8 +2991,8 @@ zh-TW:
   label_global_modules: "全域模組"
   label_global_roles: "全域角色"
   label_git_path: ".git 目錄的路徑"
-  label_greater_or_equal: "之前"
-  label_group_by: "分類"
+  label_greater_or_equal: ">="
+  label_group_by: "分組依據"
   label_group_new: "新增群組"
   label_group: "群組"
   label_group_named: "群組名稱 %{name}"
@@ -3004,7 +3004,7 @@ zh-TW:
   label_hierarchy: "階層"
   label_hierarchy_leaf: "頁面結構頁"
   label_home: "Home"
-  label_subject_or_id: "名稱或 id"
+  label_subject_or_id: "主旨或 id"
   label_calendar_subscriptions: "訂閱行事曆"
   label_identifier: "識別碼"
   label_in: "在"
@@ -3053,7 +3053,7 @@ zh-TW:
   label_latest_revision_plural: "最新版本"
   label_ldap_authentication: "LDAP 認證"
   label_learn_more: "了解更多"
-  label_less_or_equal: "之後"
+  label_less_or_equal: "<="
   label_less_than_ago: "幾天內"
   label_link_url: "連結(URL)"
   label_list: "清單"
@@ -3181,9 +3181,9 @@ zh-TW:
   label_permissions: "權限"
   label_permissions_report: "權限列表"
   label_personalize_page: "個人化本頁"
-  label_placeholder_user: "佔位使用者"
-  label_placeholder_user_new: "新的佔位使用者"
-  label_placeholder_user_plural: "佔位使用者"
+  label_placeholder_user: "佔位符使用者"
+  label_placeholder_user_new: "新的佔位符使用者"
+  label_placeholder_user_plural: "佔位符使用者"
   label_planning: "計劃中"
   label_please_login: "請登入"
   label_plugins: "擴充套件"
@@ -3732,7 +3732,7 @@ zh-TW:
   permission_archive_project: "封存專案"
   permission_create_user: "新增使用者"
   permission_manage_user: "編輯使用者"
-  permission_manage_placeholder_user: "建立、編輯及刪除佔位使用者"
+  permission_manage_placeholder_user: "建立、編輯及刪除佔位符使用者"
   permission_add_subprojects: "建立子專案"
   permission_add_work_package_watchers: "新增監看者"
   permission_assign_versions: "指派版本"
@@ -3772,9 +3772,9 @@ zh-TW:
   permission_edit_wiki_pages: "編輯維基頁面"
   permission_export_work_packages: "匯出工作套件"
   permission_export_wiki_pages: "匯出維基頁面"
-  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email: "透過電子郵件邀請會員"
   permission_invite_members_by_email_explanation: >
-    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
+    允許使用者透過電子郵件邀請新會員。受邀的使用者會收到一封電子郵件，內含設定密碼和啟動帳戶的連結。取決於管理會員的權限
   permission_list_attachments: "列出附件"
   permission_log_own_time: "記錄個人耗時"
   permission_log_time: "紀錄他人耗時"
@@ -3804,9 +3804,9 @@ zh-TW:
   permission_share_work_packages: "參與工作套件"
   permission_manage_types: "選擇類型"
   permission_manage_own_reminders: "建立自己的提醒事項"
-  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals: "檢視所有使用者和群組"
   permission_view_all_principals_explanation: >
-    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
+    允許使用者查看系統中的所有使用者和群組，即使他們不是任何已加入專案或群組的成員。
   permission_view_project: "檢視專案"
   permission_view_changesets: "在 OpenProject 檢視版本庫修訂"
   permission_view_internal_comments: "檢視內部留言"

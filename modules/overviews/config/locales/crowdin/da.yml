@@ -2,5 +2,5 @@ da:
   overviews:
     label_home: "%{workspace_type} home"
     label_dashboard: "Dashboard"
-    label_overview: 'Overview'
+    label_overview: 'Overblik'
   permission_manage_overview: 'Manage overview page'

@@ -268,7 +268,7 @@ ca:
     label_no_color: "Sense color"
     label_properties: "Propietats"
     label_really_delete_color: >
-      Esteu segur que voleu suprimir el següent tipus de projecte? Els projectes amb aquest tipus no se suprimiran.
+      Estàs segur que vols eliminar el següent color? Els tipus amb aquest color no s'eliminaràn.
   custom_actions:
     actions:
       name: "Accions"
@@ -349,7 +349,7 @@ ca:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "o"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -390,7 +390,7 @@ ca:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Pare"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -453,7 +453,7 @@ ca:
     lists:
       active: "Projectes actius"
       my: "Els meus projectes"
-      favorited: "Favorite projects"
+      favorited: "Projectes preferits"
       archived: "Projectes arxivats"
       shared: "Shared project lists"
       my_lists: "My project lists"
@@ -526,7 +526,7 @@ ca:
       versions:
         no_results_title_text: Actualment no hi ha cap versió per al projecte.
         no_results_content_text: Crear una nova versió
-        work_packages_graph: Work packages graph
+        work_packages_graph: Gràfica de paquets de treball
         show_work_packages: Show work packages
       storage:
         no_results_title_text: No hi ha espai addicional de disc gravat consumit per aquest projecte.
@@ -640,7 +640,7 @@ ca:
     sessions:
       session_name: "%{browser_name}%{browser_version} en %{os_name}"
       browser: "Navegador"
-      expires: "Expires"
+      expires: "Caduca"
       last_connection: "Last connection"
       device: "Dispositiu / Sistema Operatiu"
       unknown_browser: "navegador desconegut"
@@ -662,56 +662,56 @@ ca:
       no_results_title_text: Aquest usuari no és actualment membre de cap projecte.
     open_profile: "Open profile"
     invite_user_modal:
-      invite: "Invite"
+      invite: "Convida"
       title:
-        invite: "Invite user"
-        invite_to_project: "Invite %{type} to %{project}"
-        invite_principal_to_project: "Invite %{principal} to %{project}"
+        invite: "Invitar usuari"
+        invite_to_project: "Convida %{type} a %{project}"
+        invite_principal_to_project: "Convida %{principal} a %{project}"
       project:
-        label: "Project"
-        required: "Please select a project"
-        next_button: "Next"
-        no_results: "No projects were found"
-        no_invite_rights: "You are not allowed to invite members to this project"
+        label: "Projecte"
+        required: "Si us plau, selecciona un projecte"
+        next_button: "Següent"
+        no_results: "No s'han trobat projectes"
+        no_invite_rights: "No tens permisos per convidar membres a aquest projecte"
       type:
-        required: "Please select the type to be invited"
+        required: "Si us plau, selecciona la classe a convidar"
         user:
           title: "Invite user to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          description: "Permisos basats en el rol assignat en el projecte seleccionat"
         group:
           title: "Invite group to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          description: "Permisos basats en el rol assignat en el projecte seleccionat"
         placeholder_user:
           title: "Add placeholder user to %{project_name}"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Has no access to the project and no emails are sent out."
-        already_member_message: "Already a member of %{project}"
+          title_no_ee: "Usuari de marcador de posició (extensió només de l'edició Enterprise)"
+          description: "No té accés al projecte i no s'han enviat els correus electrònics."
+        already_member_message: "Ja és membre del %{project}"
       principal:
-        no_results_user: "No users were found"
-        invite_user: "Invite:"
-        no_results_placeholder: "No placeholders were found"
-        create_new_placeholder: "Create new placeholder:"
-        no_results_group: "No groups were found"
+        no_results_user: "No s'ha trobat cap usuari"
+        invite_user: "Convida:"
+        no_results_placeholder: "No s'ha trobat cap usuari de marcador de posició."
+        create_new_placeholder: "Crea un usuari de marcador de posició:"
+        no_results_group: "No s'ha trobat cap grup"
         invite_to_project: "Invite to %{project_name}"
         required:
-          user: "Please select a user"
-          placeholder: "Please select a placeholder"
-          group: "Please select a group"
+          user: "Si us plau, selecciona un usuari"
+          placeholder: "Si us plau, selecciona un usuari de marcador de posició"
+          group: "Si us plau, selecciona un grup"
       role:
-        label: "Role in %{project}"
-        no_roles_found: "No roles were found"
+        label: "Rol en %{project}"
+        no_roles_found: "No s'ha trobat cap rol"
         description: >
           This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
-        required: "Please select a role"
+        required: "Si us plau, selecciona un rol"
       message:
-        label: "Invitation message"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
+        label: "Missatge d'invitació"
+        description: "Enviarem un correu electrònic a l'usuari, al qual pots afegir un missatge personal aquí. Una explicació per a la invitació pot ser útil, o potser una mica d'informació amb relació al projecte per ajudar als usuaris a començar."
       summary:
-        next_button: "Send invitation"
+        next_button: "Enviar la invitació"
       success_message:
-        user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
+        user: "L'usuari ara pot iniciar sessió per accedir a %{project}. Per tant, ja pots planejar amb aquest usuari i assignar-li paquets de treball."
+        placeholder_user: "L'usuari de marcador de posició ara pot ser utilitzat a %{project}. Per tant, ja pots planejar amb aquest usuari i assignar-li paquets de treball."
+        group: "El grup és ara part de %{project}. Per tant, ja pots planejar amb aquest grup i assignar-li paquets de treball."
   page:
     text: "Text"
   placeholder_users:
@@ -1226,7 +1226,7 @@ ca:
         excluded_from_totals: "Exclude from calculation of totals in hierarchy"
         default_done_ratio: "% Complete"
       token/named:
-        token_name: "Token name"
+        token_name: "Nom del token"
       token/ical:
         calendar: "Calendari"
         ical_token_query_assignment: "Query assignment"
@@ -1294,7 +1294,7 @@ ca:
         workdays: "Dies laborals"
       users/invitation/form_model:
         principal_type: "Invitation type"
-        id_or_email: "Name or email address"
+        id_or_email: "Nom o adreça de correu electrònic"
       version:
         effective_date: "Data de finalització"
         sharing: "Compartint"
@@ -1855,7 +1855,7 @@ ca:
     attachments: "Fitxers adjunts"
     actor: "Actor"
     action: "Acció"
-    api_key: "API key"
+    api_key: "Clau API"
     author: "Autor/a"
     avatar: "Avatar"
     base: "Error General:"
@@ -2645,7 +2645,7 @@ ca:
       upsell:
         title: "Actualitza a l'edició Enterprise"
       new_features:
-        header: "Read about new features and product updates."
+        header: "Llegeix sobre les noves funcions i actualitzacions del producte. "
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
@@ -2892,7 +2892,7 @@ ca:
   label_required_disk_storage: "Emmagatzematge de disc necessari"
   label_send_invitation: Enviar invitació
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Canviar pare"
   label_change_plural: "Canvis"
   label_change_properties: "Canvia les propietats"
   label_change_status: "Canvia l'estat"
@@ -3104,7 +3104,7 @@ ca:
   label_link_url: "Link (URL)"
   label_list: "Llista"
   label_loading: "Carregant..."
-  label_locked: "locked"
+  label_locked: "bloquejat"
   label_lock_user: "Bloqueja usuari"
   label_logged_as: "Connectat com a"
   label_login: "Iniciar sessió"
@@ -3114,7 +3114,7 @@ ca:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "Cursiva"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
@@ -3892,7 +3892,7 @@ ca:
       one: "1 projecte"
       other: "%{count} projectes"
     destroy:
-      title: "Delete project"
+      title: "Eliminar projecte"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4353,7 +4353,7 @@ ca:
   status_invited: convidat
   status_locked: bloquejat
   status_registered: registrat
-  status_deleted: deleted
+  status_deleted: suprimit
   #Used in array.to_sentence.
   support:
     array:

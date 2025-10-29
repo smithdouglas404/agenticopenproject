@@ -26,8 +26,8 @@ vi:
     attributes:
       budget:
         author: "Tác giả"
-        available: "Có sẵn"
-        budget: "Dự kiến"
+        available: "Khả dụng"
+        budget: "Có kế hoạch"
         budget_ratio: "Đã chi (tỷ lệ)"
         description: "Mô tả"
         spent: "Đã chi"

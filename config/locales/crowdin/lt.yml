@@ -349,7 +349,7 @@ lt:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "arba"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -384,13 +384,13 @@ lt:
       type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
+      enabled: "Įjungtas"
       depth: "Depth"
       item: "Item"
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Tėvas"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -453,7 +453,7 @@ lt:
     lists:
       active: "Aktyvūs projektai"
       my: "Mano projektai"
-      favorited: "Favorite projects"
+      favorited: "Mėgstami projektai"
       archived: "Archyvuoti projektai"
       shared: "Shared project lists"
       my_lists: "Mano projektų sąrašai"
@@ -526,7 +526,7 @@ lt:
       versions:
         no_results_title_text: Projektas neturi jokių laidų.
         no_results_content_text: Sukurti naują versiją
-        work_packages_graph: Work packages graph
+        work_packages_graph: Darbo paketų grafas
         show_work_packages: Show work packages
       storage:
         no_results_title_text: Šis projektas papildomos vietos diske nenaudoja.
@@ -652,7 +652,7 @@ lt:
     sessions:
       session_name: "%{browser_name} %{browser_version} %{os_name}"
       browser: "Naršyklė"
-      expires: "Expires"
+      expires: "Baigiasi"
       last_connection: "Last connection"
       device: "Įrenginys / OS"
       unknown_browser: "nežinoma naršyklė"
@@ -674,56 +674,56 @@ lt:
       no_results_title_text: Šis naudotojas šiuo metu nėra projekto narys.
     open_profile: "Open profile"
     invite_user_modal:
-      invite: "Invite"
+      invite: "Pakviesti"
       title:
-        invite: "Invite user"
-        invite_to_project: "Invite %{type} to %{project}"
-        invite_principal_to_project: "Invite %{principal} to %{project}"
+        invite: "Pakviesti vartotoją"
+        invite_to_project: "Pakviesti %{type} į %{project}"
+        invite_principal_to_project: "Pakviesti %{principal} į %{project}"
       project:
-        label: "Project"
-        required: "Please select a project"
-        next_button: "Next"
-        no_results: "No projects were found"
-        no_invite_rights: "You are not allowed to invite members to this project"
+        label: "Projektas"
+        required: "Pasirinkite projektą"
+        next_button: "Kitas"
+        no_results: "Nerasta jokių projektų"
+        no_invite_rights: "Jums neleidžiama kviesti narių į projektą"
       type:
-        required: "Please select the type to be invited"
+        required: "Prašome pasirinkti kokio tipo dalyvį kviesti"
         user:
           title: "Invite user to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          description: "Teisės, suteiktos pagal pasirinktame projekte turimą rolę"
         group:
           title: "Invite group to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          description: "Teisės, suteiktos pagal pasirinktame projekte turimą rolę"
         placeholder_user:
           title: "Add placeholder user to %{project_name}"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Has no access to the project and no emails are sent out."
-        already_member_message: "Already a member of %{project}"
+          title_no_ee: "Statytiniai naudotojai (Enterprise versijos priedas)"
+          description: "Neturi prieigos prie projekto ir jokie el. pašto laiškai nebuvo išsiųsti."
+        already_member_message: "Jau yra %{project} narys"
       principal:
-        no_results_user: "No users were found"
-        invite_user: "Invite:"
-        no_results_placeholder: "No placeholders were found"
-        create_new_placeholder: "Create new placeholder:"
-        no_results_group: "No groups were found"
+        no_results_user: "Nerasta jokių naudotojų"
+        invite_user: "Pakviesti:"
+        no_results_placeholder: "Nerasta jokių statytinių naudotojų"
+        create_new_placeholder: "Kurti naują statytinį naudotoją:"
+        no_results_group: "Nerasta jokių grupių"
         invite_to_project: "Invite to %{project_name}"
         required:
-          user: "Please select a user"
-          placeholder: "Please select a placeholder"
-          group: "Please select a group"
+          user: "Parinkite naudotoją"
+          placeholder: "Prašome parinkti statytinį naudotoją"
+          group: "Prašome parinkti grupę"
       role:
-        label: "Role in %{project}"
-        no_roles_found: "No roles were found"
+        label: "Vaidmuo projekte %{project}"
+        no_roles_found: "Nerasta jokių vaidmenų"
         description: >
           This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
-        required: "Please select a role"
+        required: "Prašome parinkti vaidmenį"
       message:
-        label: "Invitation message"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
+        label: "Kvietimo pranešimas"
+        description: "Mes siųsime el. pašto laišką naudotojui, į kurį jūs galite pridėti asmeninį pranešimą. Paaiškinimas, kodėl šis pranešimas buvo atsiųstas, galėtų būti naudingas gavėjui. Taipogi šiek tiek informacijos apie projektą galbūt galėtų padėti pradėti darbą su projektu."
       summary:
-        next_button: "Send invitation"
+        next_button: "Siųsti pakvietimą"
       success_message:
-        user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
+        user: "Naudotojas gali prisijungti ir pasiekti %{project}. Tuo pačiu, jūs jau galite planuoti darbus su šiuo naudotoju ir pavyzdžiui priskirti jam darbo užduotis."
+        placeholder_user: "Statytinis naudotojas gali prisijungti ir pasiekti %{project}. Tuo pačiu, jūs jau galite planuoti darbus su šiuo naudotoju ir pavyzdžiui priskirti jam darbo užduotis."
+        group: "Grupė jau tapo %{project} dalimi. Tuo pačiu, jūs jau galite planuoti darbus su šia grupe ir pavyzdžiui priskirti jai darbo užduotis."
   page:
     text: "Tekstas"
   placeholder_users:
@@ -1242,7 +1242,7 @@ lt:
         excluded_from_totals: "Exclude from calculation of totals in hierarchy"
         default_done_ratio: "% Complete"
       token/named:
-        token_name: "Token name"
+        token_name: "Žetono pavadinimas"
       token/ical:
         calendar: "Kalendorius"
         ical_token_query_assignment: "Query assignment"
@@ -1310,7 +1310,7 @@ lt:
         workdays: "Darbo dienos"
       users/invitation/form_model:
         principal_type: "Invitation type"
-        id_or_email: "Name or email address"
+        id_or_email: "Vardas arba elektroninio pašto adresas"
       version:
         effective_date: "Pabaigos data"
         sharing: "Pasidalijimas"
@@ -1903,7 +1903,7 @@ lt:
     attachments: "Priedai"
     actor: "Actor"
     action: "Veiksmas"
-    api_key: "API key"
+    api_key: "API raktas"
     author: "Autorius"
     avatar: "Nuotrauka"
     base: "Bendroji klaida:"
@@ -2735,7 +2735,7 @@ lt:
       upsell:
         title: "Pagerinti į Enterprise versiją"
       new_features:
-        header: "Read about new features and product updates."
+        header: "Skaitykite apie naujas savybes ir produkto atnaujinimus."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
@@ -2982,7 +2982,7 @@ lt:
   label_required_disk_storage: "Reikalinga vieta diske"
   label_send_invitation: Siųsti pakvietimą
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Keisti pirmtaką"
   label_change_plural: "Pakeitimai"
   label_change_properties: "Pakeisti nustatymus"
   label_change_status: "Pakeisti būseną"
@@ -3194,7 +3194,7 @@ lt:
   label_link_url: "Nuoroda (URL)"
   label_list: "Sąrašas"
   label_loading: "Įkeliama..."
-  label_locked: "locked"
+  label_locked: "užrakinti"
   label_lock_user: "Užrakinti vartotoją"
   label_logged_as: "Prisijungęs kaip"
   label_login: "Prisijungti"
@@ -3204,7 +3204,7 @@ lt:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "Pasvirasis"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Savas eksporto viršelio fono perdengimas"
   label_custom_export_cover_text_color: "Teksto spalva"
@@ -3989,7 +3989,7 @@ lt:
       one: "1 projektas"
       other: "%{count} projektai (-as, -ų)"
     destroy:
-      title: "Delete project"
+      title: "Ištrinti projektą"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4450,7 +4450,7 @@ lt:
   status_invited: pakviestas
   status_locked: užrakintas
   status_registered: registruotas
-  status_deleted: deleted
+  status_deleted: panaikintas
   #Used in array.to_sentence.
   support:
     array:

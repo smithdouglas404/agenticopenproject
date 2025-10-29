@@ -120,7 +120,7 @@ ro:
         remote_folders: 'Read contents of the group folder:'
         rename_project_folder: 'Rename managed project Folder:'
       sharepoint_sync_service:
-        create_folder: 'Managed Project Folder Creation:'
+        create_folder: 'Creare dosar proiect gestionat:'
         ensure_root_folder_permissions: 'Set Base Folder Permissions:'
         hide_inactive_folders: 'Hide Inactive Folders Step:'
         remote_folders: 'Read contents of the group folder:'
@@ -299,7 +299,7 @@ ro:
           drive_id_exists: Drive exists
           drive_id_format: Drive ID format
           header: Configuration
-          host: Host URL
+          host: URL Gazdă
           host_url_accessible: Host URL accessible
           storage_configured: Configuration complete
           tenant_id: Tenant ID

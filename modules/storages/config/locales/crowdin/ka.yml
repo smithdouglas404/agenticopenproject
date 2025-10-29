@@ -299,7 +299,7 @@ ka:
           drive_id_exists: Drive exists
           drive_id_format: Drive ID format
           header: Configuration
-          host: Host URL
+          host: ჰოსტის URL
           host_url_accessible: Host URL accessible
           storage_configured: Configuration complete
           tenant_id: Tenant ID

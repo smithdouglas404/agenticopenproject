@@ -4,14 +4,14 @@ ru:
     widgets:
       subitems:
         title: "Subitems"
-        no_results: "There are no visible children."
+        no_results: "Нет видимых потомков."
         view_all_subitems: "View all subitems"
       members:
-        title: "Latest members"
-        no_results: "No visible members."
-        view_all_members: "View all members"
+        title: "Последние участники"
+        no_results: "Нет видимых участников."
+        view_all_members: "Просмотреть всех участников"
       news:
-        no_results: "Nothing new to report."
+        no_results: "Ничего нового для отчета."
   activerecord:
     attributes:
       grids/grid:

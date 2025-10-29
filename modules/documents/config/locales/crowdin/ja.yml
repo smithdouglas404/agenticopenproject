@@ -29,7 +29,7 @@ ja:
     attributes:
       document:
         content_binary: "Content binary"
-        title: "Title"
+        title: "タイトル"
   activity:
     filter:
       document: "ドキュメント"
@@ -47,12 +47,12 @@ ja:
       heading: "There are no documents yet"
       description: "There are no documents in this view. You can click the button below to add one."
     index_page:
-      name: "Name"
-      type: "Type"
+      name: "名称"
+      type: "タイプ"
       updated_at: "Last edited"
     menu:
       all: "All documents"
-      types: "Types"
+      types: "ワークパッケージのタイプ"
     label_attachment_author: "添付ファイルの作成者"
     label_categories: "カテゴリ"
     new_category: "新規カテゴリ"

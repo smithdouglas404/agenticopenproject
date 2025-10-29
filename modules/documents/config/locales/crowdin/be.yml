@@ -47,7 +47,7 @@ be:
       heading: "There are no documents yet"
       description: "There are no documents in this view. You can click the button below to add one."
     index_page:
-      name: "Name"
+      name: "Імя"
       type: "Type"
       updated_at: "Last edited"
     menu:

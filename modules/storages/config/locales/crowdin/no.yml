@@ -32,7 +32,7 @@
         drive: Stasjon ID
         host: Vert
         name: Navn
-        password: Application password
+        password: Applikasjonspassord
         provider_type: Tjenestetype
         tenant: Katalog (leietaker) ID
     errors:
@@ -120,11 +120,11 @@
         remote_folders: 'Les innholdet i gruppemappen:'
         rename_project_folder: 'Endre navn på administrert prosjektmappe:'
       sharepoint_sync_service:
-        create_folder: 'Managed Project Folder Creation:'
-        ensure_root_folder_permissions: 'Set Base Folder Permissions:'
-        hide_inactive_folders: 'Hide Inactive Folders Step:'
-        remote_folders: 'Read contents of the group folder:'
-        rename_project_folder: 'Rename managed project Folder:'
+        create_folder: 'Forvaltet prosjektmappeoppretting:'
+        ensure_root_folder_permissions: 'Angi standard mappetillatelser:'
+        hide_inactive_folders: 'Skjul inaktive mapper:'
+        remote_folders: 'Les innholdet i gruppemappen:'
+        rename_project_folder: 'Endre navn på administrert prosjektmappe:'
     errors:
       messages:
         error: Det oppstod en uventet feil. Sjekk OpenProject logger for mer informasjon eller kontakt en administrator
@@ -189,21 +189,21 @@
         sharepoint_sync_service:
           attributes:
             create_folder:
-              conflict: The %{folder_name} already exists on %{parent_location}.
-              not_found: "%{parent_location} wasn't found."
+              conflict: '%{folder_name} finnes allerede på %{parent_location}.'
+              not_found: "%{parent_location} ble ikke funnet."
             hide_inactive_folders:
-              permission_not_set: could not set permissions on %{path}.
+              permission_not_set: kunne ikke sette tillatelser på %{path}.
             rename_project_folder:
-              conflict: OpenProject could not rename the folder %{current_path} to %{project_folder_name} as a folder with the same name already exists
-              forbidden: OpenProject does not have access to %{current_path} in order to rename it.
-              not_found: "%{current_path} wasn't found."
+              conflict: OpenProject kunne ikke endre navn på mappen %{current_path} til %{project_folder_name} da en mappe med samme navn allerede eksisterer
+              forbidden: OpenProject har ikke tilgang til å endre navn på %{current_path}.
+              not_found: "%{current_path} ble ikke funnet."
             set_folders_permissions:
-              permission_not_set: could not set permissions on %{path}.
+              permission_not_set: kunne ikke sette tillatelser på %{path}.
           error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information
-          not_allowed: OpenProject wasn't allowed to access your OneDrive drive. Please check the permissions set on the Azure Application.
+          not_allowed: OpenProject har ikke fått tilgang til din OneDrive stasjon. Vennligst sjekk tillatelsene som er angitt i Azure appen.
           not_found: OpenProject could not access your library %{drive_name}. Please check you Sharepoint site document libraries.
           unauthorized: OpenProject could not sync with OneDrive. Please check your storage and Azure Application configuration.
-          user_does_not_exist: "%{user} does not exist in Nextcloud."
+          user_does_not_exist: "%{user} finnes ikke i Nextcloud."
         upload_link_service:
           not_found: Målmappen %{folder} ble ikke funnet på %{storage_name}.
   storages:
@@ -299,7 +299,7 @@
           drive_id_exists: Drive exists
           drive_id_format: Drive ID format
           header: Configuration
-          host: Host URL
+          host: Vert URL
           host_url_accessible: Host URL accessible
           storage_configured: Configuration complete
           tenant_id: Tenant ID

@@ -9,9 +9,9 @@ ar:
       members:
         title: "Latest members"
         no_results: "No visible members."
-        view_all_members: "View all members"
+        view_all_members: "عرض جميع الأعضاء"
       news:
-        no_results: "Nothing new to report."
+        no_results: "لا شيء جديد للتقرير."
   activerecord:
     attributes:
       grids/grid:

@@ -352,30 +352,30 @@ ro:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "sau"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
       defined: "must not be defined."
       eql?: "must be equal to %{left}."
-      filled?: "must be filled."
-      greater_or_equal_zero: "must be greater or equal to 0."
+      filled?: "trebuie completat"
+      greater_or_equal_zero: "trebuie să fie mai mare sau egal cu 0."
       gteq?: "must be greater than or equal to %{num}."
       hash?: "must be a hash."
       included_in?:
         arg:
           default: "must be one of: %{list}."
           range: "must be one of: %{list_left} - %{list_right}."
-      int?: "must be an integer."
+      int?: "trebuie să fie un număr întreg."
       key?: "is missing."
-      not_found: "not found."
+      not_found: "nu a fost găsit."
       rules:
         copy_workflow_from:
-          workflow_missing: "has no own workflow."
+          workflow_missing: "nu are un flux de lucru propriu."
         custom_field:
           format_not_supported: "format '%{field_format}' is unsupported."
         item:
-          root_item: "cannot be a root item."
+          root_item: "nu poate fi un element root."
           not_persisted: "must be an already existing item."
         label:
           not_unique: "must be unique within the same hierarchy level."
@@ -387,13 +387,13 @@ ro:
       type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
-      depth: "Depth"
-      item: "Item"
-      label: "Label"
-      score: "Score"
-      short: "Short name"
-      parent: "Parent"
+      enabled: "Activat"
+      depth: "Adâncime"
+      item: "Element"
+      label: "Etichetă"
+      score: "Scor"
+      short: "Nume scurt"
+      parent: "Părinte"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -456,7 +456,7 @@ ro:
     lists:
       active: "Proiecte active"
       my: "Proiectele mele"
-      favorited: "Favorite projects"
+      favorited: "Proiecte favorite"
       archived: "Proiecte arhivate"
       shared: "Listă proiecte partajate"
       my_lists: "Listele mele de proiecte"
@@ -529,7 +529,7 @@ ro:
       versions:
         no_results_title_text: În acest moment nu există versiuni pentru acest proiect.
         no_results_content_text: Creează versiune nouă
-        work_packages_graph: Work packages graph
+        work_packages_graph: Graficul pachetelor de lucru
         show_work_packages: Show work packages
       storage:
         no_results_title_text: Acest proiect nu consumă spațiu suplimentar pe disc.
@@ -649,7 +649,7 @@ ro:
     sessions:
       session_name: "%{browser_name} %{browser_version} pe %{os_name}"
       browser: "Browser"
-      expires: "Expires"
+      expires: "Expirare"
       last_connection: "Last connection"
       device: "Dispozitiv / OS"
       unknown_browser: "browser necunoscut"
@@ -671,56 +671,56 @@ ro:
       no_results_title_text: Acest utilizator nu este în acest moment participant în vreun proiect.
     open_profile: "Open profile"
     invite_user_modal:
-      invite: "Invite"
+      invite: "Invită"
       title:
-        invite: "Invite user"
-        invite_to_project: "Invite %{type} to %{project}"
-        invite_principal_to_project: "Invite %{principal} to %{project}"
+        invite: "Invită utilizator"
+        invite_to_project: "Invită %{type} la %{project}"
+        invite_principal_to_project: "Invitați %{principal} la %{project}"
       project:
-        label: "Project"
-        required: "Please select a project"
-        next_button: "Next"
-        no_results: "No projects were found"
-        no_invite_rights: "You are not allowed to invite members to this project"
+        label: "Proiect"
+        required: "Te rog selectează un proiect"
+        next_button: "Înainte"
+        no_results: "Nu au fost găsite proiecte"
+        no_invite_rights: "Nu aveți voie să invitați membri în acest proiect"
       type:
-        required: "Please select the type to be invited"
+        required: "Te rog selectează tipul de invitat"
         user:
           title: "Invite user to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          description: "Permisiuni bazate pe rolul atribuit în proiectul selectat"
         group:
           title: "Invite group to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          description: "Permisiuni bazate pe rolul atribuit în proiectul selectat"
         placeholder_user:
           title: "Add placeholder user to %{project_name}"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Has no access to the project and no emails are sent out."
-        already_member_message: "Already a member of %{project}"
+          title_no_ee: "Utilizator de tip Placeholder (add-on numai pentru ediția Enterprise)"
+          description: "Nu are acces la proiect și nu se trimite niciun e-mail."
+        already_member_message: "Deja membru al %{project}"
       principal:
-        no_results_user: "No users were found"
-        invite_user: "Invite:"
-        no_results_placeholder: "No placeholders were found"
-        create_new_placeholder: "Create new placeholder:"
-        no_results_group: "No groups were found"
+        no_results_user: "Nu au fost găsiți utilizatori"
+        invite_user: "Invită"
+        no_results_placeholder: "Nu au fost găsiți spații libere"
+        create_new_placeholder: "Creați un nou spațiu rezervat:"
+        no_results_group: "Nu au fost găsite grupuri"
         invite_to_project: "Invite to %{project_name}"
         required:
-          user: "Please select a user"
-          placeholder: "Please select a placeholder"
-          group: "Please select a group"
+          user: "Te rog selectează un utilizator"
+          placeholder: "Te rog selectează un substituent"
+          group: "Te rog selectează un grup"
       role:
-        label: "Role in %{project}"
-        no_roles_found: "No roles were found"
+        label: "Rolul în %{project}"
+        no_roles_found: "Nu au fost găsite roluri"
         description: >
           This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
-        required: "Please select a role"
+        required: "Te rog selectează un rol"
       message:
-        label: "Invitation message"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
+        label: "Mesaj invitație"
+        description: "Vom trimite un e-mail utilizatorului, la care puteți adăuga un mesaj personal aici. Ar putea fi utilă o explicație pentru invitație sau poate câteva informații despre proiect pentru a-i ajuta să înceapă."
       summary:
-        next_button: "Send invitation"
+        next_button: "Trimite invitație"
       success_message:
-        user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
+        user: "Utilizatorul se poate autentifica acum pentru a accesa %{project}. Între timp, puteți deja să planificați cu acel utilizator și să atribuiți pachete de lucru, de exemplu."
+        placeholder_user: "Marca de poziție poate fi utilizată acum în %{project}. Între timp, puteți deja să planificați cu acel utilizator și să atribuiți pachete de lucru, de exemplu."
+        group: "Grupul este acum o parte din %{project}. Între timp, puteți deja să planificați cu acest grup și să atribuiți pachete de lucru, de exemplu."
   page:
     text: "Text"
   placeholder_users:
@@ -1305,7 +1305,7 @@ ro:
         workdays: "Zile lucrătoare"
       users/invitation/form_model:
         principal_type: "Invitation type"
-        id_or_email: "Name or email address"
+        id_or_email: "Numele și adresa dvs. de e-mail."
       version:
         effective_date: "Dată finalizare"
         sharing: "Distribuire"
@@ -2394,7 +2394,7 @@ ro:
         title: "Single Sign-On for Nextcloud Storage"
         description: "Enable seamless and secure authentication for your Nextcloud storage with Single Sign-On. Simplify access management and enhance user convenience."
       scim_api:
-        title: "SCIM clients"
+        title: "Clienți SCIM"
         description: "Automate user management in OpenProject by seamlessly integrating external identity services like Microsoft Entra or Keycloak through our SCIM Server API. Available starting with the Enterprise corporate plan."
       sso_auth_providers:
         title: "Single Sign-On (SSO)"
@@ -2693,7 +2693,7 @@ ro:
       upsell:
         title: "Actualizează la ediția Enterprise"
       new_features:
-        header: "Read about new features and product updates."
+        header: "Citește despre noile caracteristici și actualizări de produse."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
@@ -2940,7 +2940,7 @@ ro:
   label_required_disk_storage: "Spațiu pe disc necesar"
   label_send_invitation: Trimite invitație
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Modifică părinte"
   label_change_plural: "Modificări"
   label_change_properties: "Modificare proprietăţi"
   label_change_status: "Modificare stare"
@@ -3028,7 +3028,7 @@ ro:
   label_duplicated_by: "dublat de"
   label_duplicate: "duplicat"
   label_duplicates: "dublează"
-  label_edit: "Editează"
+  label_edit: "Editare"
   label_edit_attribute: "Edit attribute"
   label_edit_x: "Editare: %{x}"
   label_enable_multi_select: "Comutare selecție multiplă"
@@ -3077,7 +3077,7 @@ ro:
   label_follows: "urmează după"
   label_force_user_language_to_default: "Setare limbă pentru utilizatorii care au o limbă implicită nepermisă"
   label_form_configuration: "Configurare formular"
-  label_formula: "Formula"
+  label_formula: "Formulă"
   label_gantt_chart: "Grafic Gantt"
   label_gantt_chart_plural: "Diagrame Gantt"
   label_general: "General"
@@ -3086,7 +3086,7 @@ ro:
   label_global_roles: "Roluri globale"
   label_git_path: "Calea catre directorul .git"
   label_greater_or_equal: ">="
-  label_group_by: "Grupează după"
+  label_group_by: "Grupare după"
   label_group_new: "Grupare nouă"
   label_group: "Grup"
   label_group_named: "Grup %{name}"
@@ -3152,7 +3152,7 @@ ro:
   label_link_url: "Link (URL)"
   label_list: "Listă"
   label_loading: "Se încarcă..."
-  label_locked: "locked"
+  label_locked: "blocat"
   label_lock_user: "Blocați utilizatorul"
   label_logged_as: "Autentificat ca"
   label_login: "Autentificare"
@@ -3945,7 +3945,7 @@ ro:
       one: "un proiect"
       other: "%{count} proiecte"
     destroy:
-      title: "Delete project"
+      title: "Ștergeți proiectul"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4408,7 +4408,7 @@ ro:
   status_invited: invitat
   status_locked: blocat
   status_registered: înregistrat
-  status_deleted: deleted
+  status_deleted: șters
   #Used in array.to_sentence.
   support:
     array:

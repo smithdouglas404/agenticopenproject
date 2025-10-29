@@ -350,7 +350,7 @@ da:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "eller"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -391,7 +391,7 @@ da:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Overordnet"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -641,8 +641,8 @@ da:
     sessions:
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "Browser"
-      expires: "Expires"
-      last_connection: "Last connection"
+      expires: "Udløber"
+      last_connection: "Seneste session"
       device: "Device / OS"
       unknown_browser: "unknown browser"
       unknown_os: "unknown operating system"
@@ -663,56 +663,56 @@ da:
       no_results_title_text: This user is currently not a member of a project.
     open_profile: "Open profile"
     invite_user_modal:
-      invite: "Invite"
+      invite: "Invitér"
       title:
-        invite: "Invite user"
-        invite_to_project: "Invite %{type} to %{project}"
-        invite_principal_to_project: "Invite %{principal} to %{project}"
+        invite: "Invitér bruger"
+        invite_to_project: "Inviter %{type} til %{project}"
+        invite_principal_to_project: "Inviter %{principal} til %{project}"
       project:
-        label: "Project"
-        required: "Please select a project"
-        next_button: "Next"
-        no_results: "No projects were found"
-        no_invite_rights: "You are not allowed to invite members to this project"
+        label: "Prjoekt"
+        required: "Vælg et projekt"
+        next_button: "Næste"
+        no_results: "Ingen projekter blev fundet"
+        no_invite_rights: "Du har ikke tilladelse til at invitere medlemmer til dette projekt"
       type:
-        required: "Please select the type to be invited"
+        required: "Vælg venligst den type, der skal inviteres"
         user:
           title: "Invite user to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          description: "Tilladelser baseret på den tildelte rolle i det valgte projekt"
         group:
           title: "Invite group to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          description: "Tilladelser baseret på den tildelte rolle i det valgte projekt"
         placeholder_user:
           title: "Add placeholder user to %{project_name}"
           title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Has no access to the project and no emails are sent out."
-        already_member_message: "Already a member of %{project}"
+          description: "Har ikke adgang til projektet, og ingen e-mails er sendt ud."
+        already_member_message: "Allerede medlem af %{project}"
       principal:
-        no_results_user: "No users were found"
-        invite_user: "Invite:"
-        no_results_placeholder: "No placeholders were found"
-        create_new_placeholder: "Create new placeholder:"
-        no_results_group: "No groups were found"
+        no_results_user: "Ingen brugere blev fundet"
+        invite_user: "Invitér:"
+        no_results_placeholder: "Ingen pladsholdere blev fundet"
+        create_new_placeholder: "Opret ny pladsholder:"
+        no_results_group: "Ingen grupper blev fundet"
         invite_to_project: "Invite to %{project_name}"
         required:
-          user: "Please select a user"
-          placeholder: "Please select a placeholder"
-          group: "Please select a group"
+          user: "Vælg venligst en bruger"
+          placeholder: "Vælg venligst en pladsholder"
+          group: "Vælg venligst en gruppe"
       role:
-        label: "Role in %{project}"
+        label: "Rolle i %{project}"
         no_roles_found: "No roles were found"
         description: >
           This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
-        required: "Please select a role"
+        required: "Vælg venligst en rolle"
       message:
-        label: "Invitation message"
+        label: "Invitations besked"
         description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
       summary:
         next_button: "Send invitation"
       success_message:
-        user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
+        user: "Brugeren kan nu logge ind for at få adgang til %{project}. I mellemtiden kan du allerede planlægge med den pågældende bruger og tildele arbejdspakker for eksempel."
+        placeholder_user: "Pladsholderen kan nu bruges i %{project}. I mellemtiden kan du allerede planlægge med den pågældende bruger og tildele arbejdspakker for eksempel."
+        group: "Gruppen er nu en del af %{project}. I mellemtiden kan du allerede planlægge med denne gruppe og tildele arbejdspakker for eksempel."
   page:
     text: "Tekst"
   placeholder_users:
@@ -1295,7 +1295,7 @@ da:
         workdays: "Working days"
       users/invitation/form_model:
         principal_type: "Invitation type"
-        id_or_email: "Name or email address"
+        id_or_email: "Navn eller e-mailadresse"
       version:
         effective_date: "Finish date"
         sharing: "Deler"
@@ -1856,7 +1856,7 @@ da:
     attachments: "Vedhæftninger"
     actor: "Actor"
     action: "Handling"
-    api_key: "API key"
+    api_key: "API-nøgle"
     author: "Forfatter"
     avatar: "Avatar"
     base: "Generel fejl:"
@@ -1914,7 +1914,7 @@ da:
     operator: "Operator"
     password: "Adgangskode"
     priority: "Prioritet"
-    project: "Projekt"
+    project: "Prjoekt"
     project_ids: "Project IDs"
     project_phase: "Project phase"
     project_phase_definition: "Project phase"
@@ -2893,7 +2893,7 @@ da:
   label_required_disk_storage: "Påkrævet disklagerplads"
   label_send_invitation: Send invitation
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Ændr overordnede"
   label_change_plural: "Ændringer"
   label_change_properties: "Skift egenskaber"
   label_change_status: "Skift status"
@@ -3105,7 +3105,7 @@ da:
   label_link_url: "Link (URL)"
   label_list: "Liste"
   label_loading: "Henter..."
-  label_locked: "locked"
+  label_locked: "Spærret"
   label_lock_user: "Lock user"
   label_logged_as: "Logget ind som"
   label_login: "Log ind"
@@ -3115,7 +3115,7 @@ da:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "Kursiv"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
@@ -4358,7 +4358,7 @@ da:
   status_invited: inviteret
   status_locked: Spærret
   status_registered: registreret
-  status_deleted: deleted
+  status_deleted: slettet
   #Used in array.to_sentence.
   support:
     array:

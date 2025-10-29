@@ -32,7 +32,7 @@ ru:
         drive: ID диска
         host: Хост
         name: Имя
-        password: Application password
+        password: Пароль приложения
         provider_type: Тип поставщика
         tenant: ID каталога (арендатора)
     errors:
@@ -120,11 +120,11 @@ ru:
         remote_folders: 'Чтение содержимого групповой папки:'
         rename_project_folder: 'Переименовать управляемую папку проекта:'
       sharepoint_sync_service:
-        create_folder: 'Managed Project Folder Creation:'
-        ensure_root_folder_permissions: 'Set Base Folder Permissions:'
-        hide_inactive_folders: 'Hide Inactive Folders Step:'
-        remote_folders: 'Read contents of the group folder:'
-        rename_project_folder: 'Rename managed project Folder:'
+        create_folder: 'Создание управляемых папок проекта:'
+        ensure_root_folder_permissions: 'Установить разрешения для базовых папок:'
+        hide_inactive_folders: 'Скрыть неактивные папки:'
+        remote_folders: 'Чтение содержимого групповой папки:'
+        rename_project_folder: 'Переименовать управляемую папку проекта:'
     errors:
       messages:
         error: Произошла непредвиденная ошибка. Пожалуйста, проверьте журналы OpenProject для получения дополнительной информации или свяжитесь с администратором
@@ -189,21 +189,21 @@ ru:
         sharepoint_sync_service:
           attributes:
             create_folder:
-              conflict: The %{folder_name} already exists on %{parent_location}.
-              not_found: "%{parent_location} wasn't found."
+              conflict: '%{folder_name} уже существует в %{parent_location}.'
+              not_found: "%{parent_location} не найден."
             hide_inactive_folders:
-              permission_not_set: could not set permissions on %{path}.
+              permission_not_set: не удалось установить разрешения на %{path}.
             rename_project_folder:
-              conflict: OpenProject could not rename the folder %{current_path} to %{project_folder_name} as a folder with the same name already exists
-              forbidden: OpenProject does not have access to %{current_path} in order to rename it.
-              not_found: "%{current_path} wasn't found."
+              conflict: OpenProject не смог переименовать папку %{current_path} в %{project_folder_name}, так как папка с таким именем уже существует
+              forbidden: OpenProject не имеет доступа к %{current_path}, чтобы переименовать его.
+              not_found: "%{current_path} не найден."
             set_folders_permissions:
-              permission_not_set: could not set permissions on %{path}.
-          error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information
-          not_allowed: OpenProject wasn't allowed to access your OneDrive drive. Please check the permissions set on the Azure Application.
+              permission_not_set: не удалось установить разрешения на %{path}.
+          error: Произошла непредвиденная ошибка. Пожалуйста, убедитесь, что OneDrive доступен и проверьте журналы работы OpenProject для дополнительной информации
+          not_allowed: OpenProject не был разрешен доступ к OneDrive. Пожалуйста, проверьте разрешения, установленные в приложении Azure.
           not_found: OpenProject could not access your library %{drive_name}. Please check you Sharepoint site document libraries.
-          unauthorized: OpenProject could not sync with OneDrive. Please check your storage and Azure Application configuration.
-          user_does_not_exist: "%{user} does not exist in Nextcloud."
+          unauthorized: OpenProject не удалось синхронизировать с OneDrive. Пожалуйста, проверьте конфигурацию хранилища и приложения Azure.
+          user_does_not_exist: "%{user} не существует в Nextcloud."
         upload_link_service:
           not_found: Папка %{folder} не найдена в хранилище %{storage_name}.
   storages:
@@ -299,7 +299,7 @@ ru:
           drive_id_exists: Диск существует
           drive_id_format: Формат ID диска
           header: Конфигурация
-          host: Host URL
+          host: URL хоста
           host_url_accessible: Адрес хоста доступен
           storage_configured: Настройка завершена
           tenant_id: Идентификатор арендатора
@@ -308,7 +308,7 @@ ru:
           few: "%{count} проверка не удалась"
           many: "%{count} проверка не удалась"
           other: "%{count} проверка не удалась"
-        success: Все проверки пройдены
+        success: Проверка прошла успешна
         warnings:
           one: "%{count} проверка с предупреждением"
           few: "%{count} проверки с предупреждениями"
@@ -335,7 +335,7 @@ ru:
         od_oauth_request_unauthorized: Текущий пользователь не авторизован для доступа к удаленному файловому хранилищу. Пожалуйста, проверьте журналы сервера для получения дополнительной информации.
         od_oauth_token_missing: OpenProject не может протестировать связь уровня пользователя с OneDrive, так как пользователь еще не связал свою учетную запись Майкрософт.
         od_tenant_id_wrong: Настроенный идентификатор каталога недействителен. Пожалуйста, проверьте конфигурацию.
-        od_test_folder_exists: Папка %{folder_name}, необходимая для тестирования уже существует. Пожалуйста, удалите её и повторите попытку.
+        od_test_folder_exists: Папка %{folder_name}, необходимая для тестирования уже существует. Удалите ее и повторите попытку.
         od_unexpected_content: На диске обнаружено неожидаемое содержимое.
         offline_access_scope_missing: Рекомендуется настроить провайдера OpenID Connect для запроса области offline_access. Интеграция может работать в любом случае, но убедитесь, что токены обновления не истекают.
         oidc_cant_refresh_token: Произошла ошибка во время проверки Вашего доступа к хранилищу. Пожалуйста, проверьте журналы сервера для получения дополнительной информации.
@@ -343,7 +343,7 @@ ru:
         oidc_non_provisioned_user: Текущий пользователь не представлен провайдером идентификации OpenID Connect. Пожалуйста, повторите проверку пользователя.
         oidc_provider_cant_exchange: The OpenID Connect provider does not seem to support token exchange, but token exchange was configured for the storage.
         oidc_token_acquisition_failed: Ваша настройка OpenID Connect не обеспечивает необходимую аудиторию и не предоставляет возможности обмена токенами. Пожалуйста, ознакомьтесь с нашей документацией для получения дополнительной информации.
-        oidc_token_exchange_failed: Похоже, возникла проблема с настройкой Token Exchange вашего провайдера OpenID Connect. Пожалуйста, проверьте его конфигурацию и повторите попытку.
+        oidc_token_exchange_failed: Похоже, возникла проблема с настройкой Exchange Token вашего провайдера OpenID Connect. Пожалуйста, проверьте его конфигурацию и повторите попытку.
         oidc_token_refresh_failed: Произошла ошибка во время проверки Вашего доступа к хранилищу. Пожалуйста, проверьте журналы сервера для получения дополнительной информации.
         sp_client_cant_delete_folder: The client is having trouble deleting folders in SharePoint. Please check the setup documentation for your storage.
         sp_client_id_missing: The configured OAuth 2 client id is missing for SharePoint. Please check the configuration.
@@ -366,7 +366,7 @@ ru:
       no_report_description: Запуск проверок для полного отчёта о состоянии этого файлового хранилища.
       open_report: Открыть полный отчёт о состоянии
       project_folders:
-        subtitle: Автоматически управляемые папки проектов
+        subtitle: Автоматически управляемые папки проекта
       since: с %{datetime}
       summary:
         failure: Некоторые проверки не удались, и система работает не так, как ожидалось.
@@ -521,7 +521,7 @@ ru:
         name: Nextcloud
         name_placeholder: например,  Nextcloud
       one_drive:
-        label_oauth_client_id: ID приложения (клиента) Azure OAuth
+        label_oauth_client_id: Идентификатор приложения (клиента) Azure OAuth
         label_oauth_client_secret: Секретное значение клиента Azure OAuth
         name: OneDrive
         name_placeholder: напр. OneDrive

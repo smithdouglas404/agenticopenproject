@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -25,11 +27,33 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
+require "spec_helper"
 
-module OpenProject
-  module Hooks
-    class ViewAccountLoginBottom < OpenProject::Hook::ViewListener
-      render_on :view_account_login_bottom, partial: "announcements/show"
-    end
+# Adapt the carrierwave sanitized file tests to the content type detector
+RSpec.describe OpenProject::Patches::CarrierwaveSanitizedFile do
+  let(:file) { FileHelpers.mock_uploaded_file(name: "original-filename.txt") }
+
+  it "uses the first one when multiple mime types are given using a semicolon" do
+    allow(file).to receive(:content_type).and_return("image/png; text/html")
+
+    sanitized_file = CarrierWave::SanitizedFile.new(file)
+
+    expect(sanitized_file.content_type).to eq("image/png")
+  end
+
+  it "uses the first one when multiple mime types are given using a comma" do
+    allow(file).to receive(:content_type).and_return("image/png, text/html")
+
+    sanitized_file = CarrierWave::SanitizedFile.new(file)
+
+    expect(sanitized_file.content_type).to eq("image/png")
+  end
+
+  it "drops content type parameters" do
+    allow(file).to receive(:content_type).and_return("text/html; charset=utf-8")
+
+    sanitized_file = CarrierWave::SanitizedFile.new(file)
+
+    expect(sanitized_file.content_type).to eq("text/html")
   end
 end

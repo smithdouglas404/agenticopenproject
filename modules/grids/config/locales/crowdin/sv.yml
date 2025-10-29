@@ -8,10 +8,10 @@ sv:
         view_all_subitems: "View all subitems"
       members:
         title: "Latest members"
-        no_results: "No visible members."
-        view_all_members: "View all members"
+        no_results: "Inga synliga medlemmar."
+        view_all_members: "Visa alla medlemmar"
       news:
-        no_results: "Nothing new to report."
+        no_results: "Inget nytt att rapportera."
   activerecord:
     attributes:
       grids/grid:

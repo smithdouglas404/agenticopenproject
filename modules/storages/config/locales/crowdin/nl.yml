@@ -32,7 +32,7 @@ nl:
         drive: Drive ID
         host: Host
         name: Naam
-        password: Application password
+        password: App wachtwoord
         provider_type: Type provider
         tenant: Directory (tenant) ID
     errors:
@@ -121,10 +121,10 @@ nl:
         rename_project_folder: 'Hernoem beheerde projectmap:'
       sharepoint_sync_service:
         create_folder: 'Managed Project Folder Creation:'
-        ensure_root_folder_permissions: 'Set Base Folder Permissions:'
+        ensure_root_folder_permissions: 'Machtigingen voor basismappen instellen:'
         hide_inactive_folders: 'Hide Inactive Folders Step:'
-        remote_folders: 'Read contents of the group folder:'
-        rename_project_folder: 'Rename managed project Folder:'
+        remote_folders: 'Inhoud van de groepsmap lezen:'
+        rename_project_folder: 'Hernoem beheerde projectmap:'
     errors:
       messages:
         error: An unexpected error occurred. Please check OpenProject logs for more information or contact an administrator
@@ -189,21 +189,21 @@ nl:
         sharepoint_sync_service:
           attributes:
             create_folder:
-              conflict: The %{folder_name} already exists on %{parent_location}.
+              conflict: De %{folder_name} bestaat al op %{parent_location}.
               not_found: "%{parent_location} wasn't found."
             hide_inactive_folders:
-              permission_not_set: could not set permissions on %{path}.
+              permission_not_set: Kan machtigingen niet instellen op %{path}.
             rename_project_folder:
               conflict: OpenProject could not rename the folder %{current_path} to %{project_folder_name} as a folder with the same name already exists
-              forbidden: OpenProject does not have access to %{current_path} in order to rename it.
-              not_found: "%{current_path} wasn't found."
+              forbidden: OpenProject heeft geen toegang tot %{current_path} om deze te hernoemen.
+              not_found: "%{current_path} is niet gevonden."
             set_folders_permissions:
-              permission_not_set: could not set permissions on %{path}.
+              permission_not_set: Kan machtigingen niet instellen op %{path}.
           error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information
           not_allowed: OpenProject wasn't allowed to access your OneDrive drive. Please check the permissions set on the Azure Application.
           not_found: OpenProject could not access your library %{drive_name}. Please check you Sharepoint site document libraries.
           unauthorized: OpenProject could not sync with OneDrive. Please check your storage and Azure Application configuration.
-          user_does_not_exist: "%{user} does not exist in Nextcloud."
+          user_does_not_exist: "%{user} bestaat niet in Nextcloud."
         upload_link_service:
           not_found: The destination folder %{folder} could not be found on %{storage_name}.
   storages:

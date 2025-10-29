@@ -30,7 +30,7 @@ zh-CN:
         project_status_beta:
           title: '项目状态（测试版）'
         subprojects:
-          title: 'Subitems'
+          title: '子项目'
         project_favorites:
           title: '收藏的项目'
           no_results: '您目前没有收藏项目，单击项目仪表板中的星形图标将项目添加到收藏夹。'

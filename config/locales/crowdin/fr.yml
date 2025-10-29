@@ -164,9 +164,9 @@ fr:
         title: "Tableau des jetons d'accès"
     workflows:
       tabs:
-        default_transitions: "Default transitions"
-        user_author: "User is author"
-        user_assignee: "User is assignee"
+        default_transitions: "Transitions par défaut"
+        user_author: "L'utilisateur est l'auteur"
+        user_assignee: "L'utilisateur est assigné"
   authentication:
     login_and_registration: "Connexion et inscription"
   announcements:
@@ -322,7 +322,7 @@ fr:
     reorder_alphabetical: "Réorganiser les valeurs par ordre alphabétique"
     reorder_confirmation: "Attention : l'ordre actuel des valeurs disponibles sera perdu. Continuer ?"
     placeholder_version_select: "La sélection d'un lot de travaux ou d'un projet est requise en premier lieu"
-    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
+    calculated_field_not_editable: "Attribut non modifiable. Cette valeur est calculée automatiquement."
     instructions:
       is_required: "Marquer le champ personnalisé comme requis. Cela rendra obligatoire de remplir le champ lors de la création ou de la mise à jour des ressources existantes."
       is_required_for_project: "Cocher pour activer cet attribut et le rendre nécessaire dans tous les projets. Il ne peut pas être désactivé pour certains projets."
@@ -529,8 +529,8 @@ fr:
       versions:
         no_results_title_text: Aucune version du projet pour le moment.
         no_results_content_text: Créer une nouvelle version
-        work_packages_graph: Work packages graph
-        show_work_packages: Show work packages
+        work_packages_graph: Graphique des lots de travaux
+        show_work_packages: Afficher tous les lots de travaux
       storage:
         no_results_title_text: Il n'y a pas d'espace disque supplémentaire utilisé par ce projet.
       work_package_priorities:
@@ -615,7 +615,7 @@ fr:
     access_token:
       dialog:
         token/api:
-          dialog_title: "Créer un nouveau jeton API"
+          dialog_title: "Créer un nouveau jeton d'API"
           attention_text: "Traitez les jetons API comme des mots de passe. Toute personne possédant ce jeton aura accès aux informations de cette instance. Partagez-le uniquement avec des utilisateurs de confiance."
           dialog_body: "Ce jeton permettra aux applications tierces de communiquer avec votre instance. Pour différencier le nouveau jeton d'API, veuillez lui donner un nom."
           create_button: "Créer"
@@ -665,56 +665,56 @@ fr:
       no_results_title_text: Cet utilisateur n'est membre d'aucun projet pour le moment.
     open_profile: "Ouvrir le profil"
     invite_user_modal:
-      invite: "Invite"
+      invite: "invite"
       title:
-        invite: "Invite user"
-        invite_to_project: "Invite %{type} to %{project}"
-        invite_principal_to_project: "Invite %{principal} to %{project}"
+        invite: "Inviter utilisateur"
+        invite_to_project: "Inviter %{type} à %{project}"
+        invite_principal_to_project: "Inviter %{principal} à %{project}"
       project:
-        label: "Project"
-        required: "Please select a project"
-        next_button: "Next"
-        no_results: "No projects were found"
-        no_invite_rights: "You are not allowed to invite members to this project"
+        label: "Projet"
+        required: "Veuillez sélectionner un projet"
+        next_button: "Suivante"
+        no_results: "Aucun projet trouvé"
+        no_invite_rights: "Vous n'êtes pas autorisé à inviter des membres à ce projet"
       type:
-        required: "Please select the type to be invited"
+        required: "Veuillez sélectionner le type d'invité"
         user:
-          title: "Invite user to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          title: "Inviter un utilisateur dans %{project_name}"
+          description: "Permissions basées sur le rôle assigné dans le projet sélectionné"
         group:
-          title: "Invite group to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          title: "Inviter un groupe à rejoindre %{project_name}"
+          description: "Permissions basées sur le rôle assigné dans le projet sélectionné"
         placeholder_user:
-          title: "Add placeholder user to %{project_name}"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Has no access to the project and no emails are sent out."
-        already_member_message: "Already a member of %{project}"
+          title: "Ajouter un espace réservé utilisateur à %{project_name}"
+          title_no_ee: "Utilisateur fictif (add-on de la version Entreprise uniquement)"
+          description: "N'a pas d'accès au projet et aucun e-mail n'est envoyé."
+        already_member_message: "Déjà membre de %{project}"
       principal:
-        no_results_user: "No users were found"
-        invite_user: "Invite:"
-        no_results_placeholder: "No placeholders were found"
-        create_new_placeholder: "Create new placeholder:"
-        no_results_group: "No groups were found"
-        invite_to_project: "Invite to %{project_name}"
+        no_results_user: "Aucun utilisateur n'a été trouvé"
+        invite_user: "Invité :"
+        no_results_placeholder: "Aucuns utilisateurs fictifs n'a été trouvé"
+        create_new_placeholder: "Créer un nouveau utilisateur fictif :"
+        no_results_group: "Aucun groupe n'a été trouvé"
+        invite_to_project: "Inviter à rejoindre %{project_name}"
         required:
-          user: "Please select a user"
-          placeholder: "Please select a placeholder"
-          group: "Please select a group"
+          user: "Veuillez sélectionner un utilisateur"
+          placeholder: "Veuillez sélectionner un utilisateur fictif"
+          group: "Veuillez sélectionner un groupe"
       role:
-        label: "Role in %{project}"
-        no_roles_found: "No roles were found"
+        label: "Rôle dans %{project}"
+        no_roles_found: "Aucun rôle trouvé."
         description: >
-          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
-        required: "Please select a role"
+
+        required: "Veuillez sélectionner un rôle"
       message:
-        label: "Invitation message"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
+        label: "Message d'invitation"
+        description: "Nous enverrons un e-mail à l'utilisateur, auquel vous pourrez ajouter un message personnel ici. Une explication concernant l'invitation pourrait être utile, ou peut-être quelques informations concernant le projet pour les aider à démarrer."
       summary:
-        next_button: "Send invitation"
+        next_button: "Envoyer une invitation"
       success_message:
-        user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
+        user: "L'utilisateur peut maintenant se connecter pour accéder à %{project}. En attendant, vous pouvez déjà planifier avec cet utilisateur et assigner des lots de travaux par exemple."
+        placeholder_user: "Le utilisateur fictif peut maintenant être utilisé dans %{project}. En attendant, vous pouvez déjà planifier des taches avec cet utilisateur et l'assigner à des lots de travaux par exemple."
+        group: "Le groupe fait maintenant partie du %{project}. Entre-temps, vous pouvez déjà planifier avec ce groupe et l'assigner des lots de travaux par exemple."
   page:
     text: "Texte"
   placeholder_users:
@@ -1294,8 +1294,8 @@ fr:
         daily_reminders: "Rappels quotidiens"
         workdays: "Jours ouvrés"
       users/invitation/form_model:
-        principal_type: "Invitation type"
-        id_or_email: "Name or email address"
+        principal_type: "Type d'invitation"
+        id_or_email: "Nom ou adresse e-mail"
       version:
         effective_date: "Date de fin"
         sharing: "Partage"
@@ -1885,7 +1885,7 @@ fr:
     due_date: "Date de fin"
     estimated_hours: "Travail"
     estimated_time: "Travail"
-    email: "E-mail"
+    email: "Adresse e-mail"
     entity_type: "Entité"
     expires_at: "Expire le"
     firstname: "Prénom"
@@ -2288,7 +2288,7 @@ fr:
     upsell:
       buy_now_button: "Acheter maintenant"
       plans_title: "Formules d'abonnement Enterprise"
-      title: "Add-on Enterprise"
+      title: "Module Enterprise"
       plan_title: "Add-on Enterprise %{plan}"
       plan_name: "Abonnement Enterprise %{plan}"
       plan_text_html: "Disponible à partir de l'abonnement %{plan_name}."
@@ -2615,7 +2615,7 @@ fr:
       tesseract: "Tesseract disponible (optionnel)"
   filterable_tree_view:
     filter_mode:
-      all: "Tout"
+      all: "Tous"
       label: "Mode de filtrage"
       selected: "Sélectionné"
     include_sub_items: "Inclure les sous-projets"
@@ -2651,15 +2651,15 @@ fr:
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que :
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: Valeurs calculées pour l'évaluation et la notation des projets (Enterprise add-on).
+            line_1: Hiérarchie des types d'attributs du projet.
+            line_2: Des mises à jour de performance avec un impact important.
+            line_3: Nouvelle page d'index pour le module Documents.
+            line_4: Possibilité de changer le parent d'un champ personnalisé.
     links:
-      upgrade_enterprise_edition: "Passer à la version Entreprise"
+      upgrade_enterprise_edition: "Passer à la version Enterprise"
       postgres_migration: "Migration de votre installation vers PostgreSQL"
       user_guides: "Guides d'utilisation"
       faq: "FAQ"
@@ -2982,7 +2982,7 @@ fr:
   label_duplicate: "dupliquer"
   label_duplicates: "Doublons"
   label_edit: "Éditer"
-  label_edit_attribute: "Edit attribute"
+  label_edit_attribute: "Modifier l'attribut"
   label_edit_x: "Modifier : %{x}"
   label_enable_multi_select: "Basculer multisélection"
   label_enabled_project_custom_fields: "Champs personnalisés activés"
@@ -3223,7 +3223,7 @@ fr:
   label_password_rule_special: "Caractères spéciaux"
   label_password_rule_uppercase: "Majuscules"
   label_path_encoding: "Encodage du chemin d'accès"
-  label_per_page: "Par page :"
+  label_per_page: "Par page:"
   label_people: "Participants"
   label_permissions: "Autorisations"
   label_permissions_report: "Rapport d'autorisations"
@@ -3409,7 +3409,7 @@ fr:
   label_user_search: "Recherche d'Utilisateurs"
   label_user_settings: "Paramètres de l'utilisateur"
   label_users_settings: "Paramètres des utilisateurs"
-  label_value_x: "Value: %{x}"
+  label_value_x: "Valeur : %{x}"
   label_version_new: "Nouvelle version"
   label_version_edit: "Modifier la version"
   label_version_plural: "Versions"
@@ -3749,7 +3749,7 @@ fr:
   #Default format for numbers
   number:
     format:
-      delimiter: ","
+      delimiter: "."
       precision: 3
       separator: ","
     human:
@@ -3823,9 +3823,9 @@ fr:
   permission_edit_wiki_pages: "Éditer les pages wiki"
   permission_export_work_packages: "Exporter les lots de travaux"
   permission_export_wiki_pages: "Exporter les pages wiki"
-  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email: "Invitez les membres par courrier électronique"
   permission_invite_members_by_email_explanation: >
-    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
+    Permet aux utilisateurs d'inviter de nouveaux membres par courrier électronique. Les utilisateurs invités recevront un courriel contenant un lien leur permettant de définir leur mot de passe et d'activer leur compte. Dépend de l'autorisation de gérer les membres
   permission_list_attachments: "Lister les pièces jointes"
   permission_log_own_time: "Enregistrer son propre temps"
   permission_log_time: "Saisir le temps pour d'autres utilisateurs"
@@ -3855,9 +3855,9 @@ fr:
   permission_share_work_packages: "Partager des lots de travaux"
   permission_manage_types: "Sélectionner types"
   permission_manage_own_reminders: "Créer des rappels personnalisés"
-  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals: "Afficher tous les utilisateurs et groupes"
   permission_view_all_principals_explanation: >
-    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
+    Permet aux utilisateurs de voir tous les utilisateurs et groupes du système, même s'ils ne sont pas membres d'un projet ou d'un groupe.
   permission_view_project: "Voir les projets"
   permission_view_changesets: "Voir révisions du dépôt dans OpenProject"
   permission_view_internal_comments: "Voir les commentaires internes"

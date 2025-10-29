@@ -29,7 +29,7 @@ lv:
     attributes:
       document:
         content_binary: "Content binary"
-        title: "Title"
+        title: "Virsraksts"
   activity:
     filter:
       document: "Dokumenti"
@@ -47,12 +47,12 @@ lv:
       heading: "There are no documents yet"
       description: "There are no documents in this view. You can click the button below to add one."
     index_page:
-      name: "Name"
-      type: "Type"
+      name: "Nosaukums"
+      type: "Veids"
       updated_at: "Last edited"
     menu:
       all: "All documents"
-      types: "Types"
+      types: "Veidi"
     label_attachment_author: "Attachment author"
     label_categories: "Categories"
     new_category: "New category"

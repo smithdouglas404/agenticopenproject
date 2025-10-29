@@ -299,7 +299,7 @@ ca:
           drive_id_exists: Drive exists
           drive_id_format: Drive ID format
           header: Configuration
-          host: Host URL
+          host: URL d'allotjament
           host_url_accessible: Host URL accessible
           storage_configured: Configuration complete
           tenant_id: Tenant ID

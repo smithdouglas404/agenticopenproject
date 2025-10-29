@@ -41,7 +41,7 @@ ru:
         changed: "изменено"
         created: "создано"
         commented: "прокомментировано"
-        internal_comment: Служебный комментарий
+        internal_comment: Внутренний комментарий
         internal_journal: Внутренние комментарии видны ограниченной группе членов.
         unsaved_changes_confirmation_message: У вас есть несохраненные изменения. Вы уверены, что хотите закрыть редактор?
         internal_comment_confirmation:
@@ -121,7 +121,7 @@ ru:
       created_token_dialog_component:
         title: "Токен доступа создан"
         heading: "Токен доступа сгенерирован"
-        label_token: "Токен доступа"
+        label_token: "Токен"
         one_time_hint: "Это единственный раз, когда Вы увидите токен. Убедитесь, что вы сохранили его."
       delete_scim_client_dialog_component:
         title: "Удалить клиента SCIM"
@@ -153,7 +153,7 @@ ru:
       token_list_component:
         description: "Токены, которые Вы генерируете здесь, могут быть переданы SCIM-клиенту для доступа к API серверу SCIM."
         heading: "Токены"
-        label_add_token: "Токен"
+        label_add_token: "Токен доступа"
         label_aria_add_token: "Добавить токен"
       token_table_component:
         blank_slate:
@@ -365,7 +365,7 @@ ru:
         arg:
           default: "должно быть одним из: %{list}."
           range: "должно быть одним из: %{list_left} - %{list_right}."
-      int?: "должно быть целое число."
+      int?: "должно быть целым числом."
       key?: "отсутствует."
       not_found: "не найдено."
       rules:
@@ -392,7 +392,7 @@ ru:
       label: "Метка"
       score: "Оценка"
       short: "Короткое имя"
-      parent: "Верхний уровень"
+      parent: "Родитель"
       blueprint: "Шаблон чертежа"
   global_search:
     title:
@@ -528,7 +528,7 @@ ru:
       versions:
         no_results_title_text: На данный момент этапы в проекте отсутствуют.
         no_results_content_text: Создать новую версию
-        work_packages_graph: Work packages graph
+        work_packages_graph: Диаграмма по пакетам работ
         show_work_packages: Show work packages
       storage:
         no_results_title_text: Для этого проекта дополнительного дискового пространства не требуется.
@@ -630,7 +630,7 @@ ru:
           attention_text: "Treat API tokens like passwords. Anyone with this token will have access to information from this instance, share it only with trusted users."
           dialog_body: "Этот токен позволит сторонним приложениям взаимодействовать с вашим экземпляром. Чтобы выделить новый токен API, пожалуйста, дайте ему имя."
           create_button: "Создать"
-          name_label: "Имя токена"
+          name_label: "Название токена"
       created_dialog:
         token/api:
           title: "Токен доступа к API сгенерирован"
@@ -654,8 +654,8 @@ ru:
     sessions:
       session_name: "%{browser_name} %{browser_version} на %{os_name}"
       browser: "Браузер"
-      expires: "Истекает"
-      last_connection: "Последнее подключение"
+      expires: "Срок действия"
+      last_connection: "Последнее соединение"
       device: "Устройство / ОС"
       unknown_browser: "неизвестный браузер"
       unknown_os: "неизвестная операционная система"
@@ -676,56 +676,56 @@ ru:
       no_results_title_text: Этот пользователь в данный момент в проекте не участвует.
     open_profile: "Открыть профиль"
     invite_user_modal:
-      invite: "Invite"
+      invite: "Пригласить"
       title:
-        invite: "Invite user"
-        invite_to_project: "Invite %{type} to %{project}"
-        invite_principal_to_project: "Invite %{principal} to %{project}"
+        invite: "Пригласить пользователя"
+        invite_to_project: "Пригласить %{type} в %{project}"
+        invite_principal_to_project: "Пригласить %{principal} в %{project}"
       project:
-        label: "Project"
-        required: "Please select a project"
-        next_button: "Next"
-        no_results: "No projects were found"
-        no_invite_rights: "You are not allowed to invite members to this project"
+        label: "Проект"
+        required: "Пожалуйста, выберите проект"
+        next_button: "Следующие"
+        no_results: "Проекты не найдены"
+        no_invite_rights: "Вы не можете пригласить участников в этот проект"
       type:
-        required: "Please select the type to be invited"
+        required: "Пожалуйста, выберите тип для приглашения"
         user:
           title: "Invite user to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          description: "Права доступа, основанные роли исполнителя в выбранном проекте"
         group:
           title: "Invite group to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          description: "Права доступа, основанные роли исполнителя в выбранном проекте"
         placeholder_user:
           title: "Add placeholder user to %{project_name}"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Has no access to the project and no emails are sent out."
-        already_member_message: "Already a member of %{project}"
+          title_no_ee: "Пользователь-заполнитель (только для корпоративной версии)"
+          description: "Нет доступа к проекту и письма не отправляются."
+        already_member_message: "Уже член %{project}"
       principal:
-        no_results_user: "No users were found"
-        invite_user: "Invite:"
-        no_results_placeholder: "No placeholders were found"
-        create_new_placeholder: "Create new placeholder:"
-        no_results_group: "No groups were found"
+        no_results_user: "Пользователи не найдены."
+        invite_user: "Приглашение:"
+        no_results_placeholder: "Заполнители не найдены"
+        create_new_placeholder: "Создать новый плейсхолдер:"
+        no_results_group: "Группы не найдены"
         invite_to_project: "Invite to %{project_name}"
         required:
-          user: "Please select a user"
-          placeholder: "Please select a placeholder"
-          group: "Please select a group"
+          user: "Пожалуйста, выберите пользователя"
+          placeholder: "Пожалуйста, выберите заполнитель"
+          group: "Пожалуйста, выберите группу"
       role:
-        label: "Role in %{project}"
-        no_roles_found: "No roles were found"
+        label: "Роль в %{project}"
+        no_roles_found: "Роли не найдены"
         description: >
           This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
-        required: "Please select a role"
+        required: "Пожалуйста, выберите роль"
       message:
-        label: "Invitation message"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
+        label: "Сообщение о приглашении"
+        description: "Мы отправим пользователю электронное письмо, к которому вы можете что-нибудь добавить. Приглашение облегчит им начало работы, если у них будет немного информации о проекте."
       summary:
-        next_button: "Send invitation"
+        next_button: "Отправить приглашение"
       success_message:
-        user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
+        user: "Теперь пользователь может войти в систему и получить доступ к %{project}. Тем временем вы уже можете планировать работу с этим пользователем и назначать пакеты работ."
+        placeholder_user: "Теперь плейсхолдер может быть использован в %{project}. Тем временем вы уже можете планировать с этим пользователем и назначать рабочие пакеты."
+        group: "Теперь группа является частью %{project}. Тем временем вы уже можете спланировать работу с этой группой и назначить пакеты работ."
   page:
     text: "Текст"
   placeholder_users:
@@ -752,7 +752,7 @@ ru:
     react_with: "Реакция %{reaction}"
     and_user: "и %{user}"
     and_others:
-      one: и ещё 1
+      one: и еще 1
       few: и %{count} других
       many: и %{count} других
       other: и %{count} других
@@ -973,8 +973,8 @@ ru:
       blocks_description: "Связанный пакет работ не может быть закрыт до тех пор, пока не будет закрыт этот пакет"
       label_blocked_singular: "блокирует"
       label_blocked_plural: "блокируют"
-      label_blocked_by_singular: "блокируется"
-      label_blocked__by_plural: "блокируется"
+      label_blocked_by_singular: "блокируют"
+      label_blocked__by_plural: "блокируют"
       blocked_description: "Связанный пакет работ не может быть закрыт до тех пор, пока не будет закрыт связанный пакет"
       blocked_by_description: "Связанный пакет работ не может быть закрыт до тех пор, пока не будет закрыт связанный пакет"
       label_duplicates_singular: "Дублирует"
@@ -1041,7 +1041,7 @@ ru:
   activemodel:
     attributes:
       projects/copy_options:
-        dependencies: "Зависимости"
+        dependencies: "Связи"
   activerecord:
     attributes:
       announcements:
@@ -1243,7 +1243,7 @@ ru:
         excluded_from_totals: "Исключить из расчета итогов в иерархии"
         default_done_ratio: "% завершения"
       token/named:
-        token_name: "Название токена"
+        token_name: "Имя токена"
       token/ical:
         calendar: "Календарь"
         ical_token_query_assignment: "Задание запроса"
@@ -1255,7 +1255,7 @@ ru:
         ongoing: "В процессе"
       type:
         description: "Текст для описания по умолчанию"
-        attribute_groups: "Настройка формы"
+        attribute_groups: "Настройка форм"
         is_in_roadmap: "По умолчанию отображается в дорожной карте"
         is_default: "В новых проектах активируется по умолчанию"
         is_milestone: "Это веха"
@@ -1311,7 +1311,7 @@ ru:
         workdays: "Рабочие дни"
       users/invitation/form_model:
         principal_type: "Invitation type"
-        id_or_email: "Name or email address"
+        id_or_email: "Имя или email адрес"
       version:
         effective_date: "Дата окончания"
         sharing: "Совместное использование"
@@ -1542,7 +1542,7 @@ ru:
           attributes:
             start_date:
               must_be_before_finish_date: "должно быть до даты окончания."
-              non_continuous_dates: "не может быть раньше, чем дата окончания предыдущей фазы."
+              non_continuous_dates: "не может быть раньше, чем дата окончания предыдущего этапа."
             finish_date:
               must_be_after_start_date: "должно быть после даты начала."
           cannot_be_a_non_working_day: "не может быть нерабочим днем."
@@ -1701,7 +1701,7 @@ ru:
               must_be_set_when_work_is_set: "требуется, если установлен параметр Предполагаемое время."
               must_be_set_when_work_and_percent_complete_are_set: "требуется, если установлены параметры Предполагаемое время и % завершения."
               must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                must be 0h when Work is set and % Complete is 100%.
+                должно быть равно 0ч, если установлен параметр Предполагаемое время и % завершения установлен в 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 должно быть пустым, если параметр Предполагаемое время не установлен, а % завершения равен 100%.
           readonly_status: "Пакет работ находится в статусе доступном только для чтения, поэтому его атрибуты не могут быть изменены."
@@ -1731,8 +1731,8 @@ ru:
               special: "спецсимволы (например, \"%\")"
               reused:
                 one: "уже использовался ранее. Пожалуйста, укажите другое значение."
-                few: "уже использовался ранее. Пожалуйста, укажите отличающийся пароль от %{count} использованных ранее."
-                many: "уже использовался ранее. Пожалуйста, укажите отличающийся пароль от %{count} использованных ранее."
+                few: "использовалось ранее. Пожалуйста, укажите отличающееся от ваших последних %{count}."
+                many: "использовалось ранее. Пожалуйста, укажите отличающееся от ваших последних %{count}."
                 other: "уже использовался ранее. Пожалуйста, укажите пароль отличающийся от использованных ранее %{count}."
               match:
                 confirm: "Подтвердите новый пароль."
@@ -1904,7 +1904,7 @@ ru:
     attachments: "Вложения"
     actor: "Источник"
     action: "Действие"
-    api_key: "API key"
+    api_key: "API-ключ"
     author: "Автор"
     avatar: "Аватар\n"
     base: "Общая ошибка:"
@@ -2301,7 +2301,7 @@ ru:
         other: "%{count} секунд"
     units:
       minute_abbreviated:
-        one: "минута"
+        one: "мин"
         few: "минуты"
         many: "минут"
         other: "мин"
@@ -2390,7 +2390,7 @@ ru:
       baseline_comparison:
         description: Выделите изменения, внесенные в этот список с любого момента в прошлом.
       benefits:
-        description: "Каковы преимущества корпоративной версии?"
+        description: "Какие преимущества у корпоративной версии на собственных мощностях?"
         high_security: "Функции безопасности"
         high_security_text: "Технология единого входа (SAML, OpenID Connect, CAS), группы LDAP."
         installation: "Поддержка во время процесса установки"
@@ -2404,7 +2404,7 @@ ru:
       customize_life_cycle:
         description: "Создание и организация этапов и стадий проекта, отличных от тех, что предусмотрены планированием цикла проекта PM2."
       conditional_highlighting:
-        description: "Нужно выделить определённые пакеты работ из общего списка? Используйте условное выделение в таблице пакетов работ."
+        description: "Нужно ли выделять определённые пакеты работ из общего списка? Используйте условное выделение в таблице пакетов работ."
       work_package_query_relation_columns:
         description: "Нужно видеть отношения или дочерние элементы в списке пакетов работ?"
       edit_attribute_groups:
@@ -2736,8 +2736,8 @@ ru:
       upsell:
         title: "Обновитесь до корпоративной версии"
       new_features:
-        header: "Read about new features and product updates."
-        learn_about: "Learn more about all new features"
+        header: "Читайте о новых возможностях и обновлениях продуктов."
+        learn_about: "Узнайте больше о всех новых функциях"
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
@@ -2838,7 +2838,7 @@ ru:
         disabled_text: "Токены API не включены администратором. Пожалуйста, обратитесь к администратору для использования этой функции."
         add_button: "API токен"
       api:
-        static_token_name: "Токен API"
+        static_token_name: "API-токен"
       ical:
         title: "iCalendar"
         text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
@@ -3313,7 +3313,7 @@ ru:
   label_password_rule_special: "Специальные символы"
   label_password_rule_uppercase: "Верхний регистр"
   label_path_encoding: "Кодирование пути"
-  label_per_page: "На страницу:"
+  label_per_page: "На странице:"
   label_people: "Люди"
   label_permissions: "Разрешения"
   label_permissions_report: "Отчёт о разрешениях"
@@ -3990,7 +3990,7 @@ ru:
       one: "1 проект"
       other: "%{count} проектов"
     destroy:
-      title: "Delete project"
+      title: "Удалить проект"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4451,7 +4451,7 @@ ru:
   status_invited: приглашено
   status_locked: заблокировано
   status_registered: Зарегистрирован
-  status_deleted: удалено
+  status_deleted: '﻿Удалено'
   #Used in array.to_sentence.
   support:
     array:

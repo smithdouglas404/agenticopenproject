@@ -8,10 +8,10 @@ fi:
         view_all_subitems: "View all subitems"
       members:
         title: "Latest members"
-        no_results: "No visible members."
-        view_all_members: "View all members"
+        no_results: "Ei nähtävissä olevia jäseniä."
+        view_all_members: "Näytä kaikki jäsenet"
       news:
-        no_results: "Nothing new to report."
+        no_results: "Ei mitään uutta raportoitavaksi."
   activerecord:
     attributes:
       grids/grid:

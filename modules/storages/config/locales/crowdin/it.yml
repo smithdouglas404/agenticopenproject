@@ -120,11 +120,11 @@ it:
         remote_folders: 'Leggi i contenuti della cartella di gruppo:'
         rename_project_folder: 'Rinomina la cartella di progetto gestita:'
       sharepoint_sync_service:
-        create_folder: 'Managed Project Folder Creation:'
-        ensure_root_folder_permissions: 'Set Base Folder Permissions:'
-        hide_inactive_folders: 'Hide Inactive Folders Step:'
-        remote_folders: 'Read contents of the group folder:'
-        rename_project_folder: 'Rename managed project Folder:'
+        create_folder: 'Creazione della cartella di progetto gestita:'
+        ensure_root_folder_permissions: 'Imposta le autorizzazioni della cartella base:'
+        hide_inactive_folders: 'Nascondi il passaggio delle cartelle inattive:'
+        remote_folders: 'Leggi i contenuti della cartella di gruppo:'
+        rename_project_folder: 'Rinomina la cartella di progetto gestita:'
     errors:
       messages:
         error: Si è verificato un errore inatteso. Controlla i log di OpenProject per maggiori informazioni o contatta un amministratore
@@ -189,21 +189,21 @@ it:
         sharepoint_sync_service:
           attributes:
             create_folder:
-              conflict: The %{folder_name} already exists on %{parent_location}.
-              not_found: "%{parent_location} wasn't found."
+              conflict: '%{folder_name} esiste già su %{parent_location}.'
+              not_found: "Impossibile trovare %{parent_location}."
             hide_inactive_folders:
-              permission_not_set: could not set permissions on %{path}.
+              permission_not_set: impossibile impostare i permessi su %{path}.
             rename_project_folder:
-              conflict: OpenProject could not rename the folder %{current_path} to %{project_folder_name} as a folder with the same name already exists
-              forbidden: OpenProject does not have access to %{current_path} in order to rename it.
-              not_found: "%{current_path} wasn't found."
+              conflict: OpenProject non ha potuto rinominare la cartella %{current_path} in %{project_folder_name} poiché esiste già una cartella con lo stesso nome
+              forbidden: OpenProject non ha accesso a %{current_path} per rinominarlo.
+              not_found: "Impossibile trovare %{current_path}."
             set_folders_permissions:
-              permission_not_set: could not set permissions on %{path}.
-          error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information
-          not_allowed: OpenProject wasn't allowed to access your OneDrive drive. Please check the permissions set on the Azure Application.
+              permission_not_set: impossibile impostare i permessi su %{path}.
+          error: Si è verificato un errore imprevisto. Assicurati che OneDrive sia raggiungibile e controlla i log dei worker di OpenProject per ulteriori informazioni
+          not_allowed: OpenProject non è stato autorizzato ad accedere al tuo drive OneDrive. Verifica le autorizzazioni impostate sull'applicazione Azure.
           not_found: OpenProject could not access your library %{drive_name}. Please check you Sharepoint site document libraries.
-          unauthorized: OpenProject could not sync with OneDrive. Please check your storage and Azure Application configuration.
-          user_does_not_exist: "%{user} does not exist in Nextcloud."
+          unauthorized: OpenProject non è riuscito a sincronizzarsi con OneDrive. Verifica la configurazione dell'archiviazione e dell'applicazione Azure.
+          user_does_not_exist: "%{user} non esiste in Nextcloud."
         upload_link_service:
           not_found: Impossibile trovare la cartella di destinazione %{folder} su %{storage_name}.
   storages:

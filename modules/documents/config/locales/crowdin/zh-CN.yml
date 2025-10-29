@@ -28,7 +28,7 @@ zh-CN:
       document: "文档"
     attributes:
       document:
-        content_binary: "Content binary"
+        content_binary: "内容二进制文件"
         title: "标题"
   activity:
     filter:
@@ -38,21 +38,21 @@ zh-CN:
   enumeration_doc_categories: "文档类别"
   documents:
     page_header:
-      heading: "All documents"
+      heading: "所有文档"
     subheader:
       filter:
-        label: "Document name filter"
-        placeholder: "Type here to search document names"
+        label: "文档名称过滤器"
+        placeholder: "在此输入搜索文档名称"
     documents_list_blank_slate:
-      heading: "There are no documents yet"
-      description: "There are no documents in this view. You can click the button below to add one."
+      heading: "还没有文档"
+      description: "此视图中没有文档。您可以点击下面的按钮添加一个文档。"
     index_page:
-      name: "Name"
-      type: "Type"
-      updated_at: "Last edited"
+      name: "名称"
+      type: "类型"
+      updated_at: "上次编辑"
     menu:
-      all: "All documents"
-      types: "Types"
+      all: "所有文档"
+      types: "类型"
     label_attachment_author: "附件作者"
     label_categories: "类别"
     new_category: "新类别"

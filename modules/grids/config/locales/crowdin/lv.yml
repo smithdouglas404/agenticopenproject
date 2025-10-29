@@ -9,9 +9,9 @@ lv:
       members:
         title: "Latest members"
         no_results: "No visible members."
-        view_all_members: "View all members"
+        view_all_members: "Apskatīt visus"
       news:
-        no_results: "Nothing new to report."
+        no_results: "Nav jaunu ziņojumu."
   activerecord:
     attributes:
       grids/grid:

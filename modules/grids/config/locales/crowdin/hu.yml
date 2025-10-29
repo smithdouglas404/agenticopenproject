@@ -8,10 +8,10 @@ hu:
         view_all_subitems: "View all subitems"
       members:
         title: "Latest members"
-        no_results: "No visible members."
-        view_all_members: "View all members"
+        no_results: "Nincsenek látható tagok."
+        view_all_members: "Az összes tag megtekintése"
       news:
-        no_results: "Nothing new to report."
+        no_results: "Semmi új jelenteni való."
   activerecord:
     attributes:
       grids/grid:

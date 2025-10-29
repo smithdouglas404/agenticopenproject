@@ -527,7 +527,7 @@ pt-PT:
       versions:
         no_results_title_text: Atualmente, não existem versões para o projeto.
         no_results_content_text: Crie uma nova versão
-        work_packages_graph: Work packages graph
+        work_packages_graph: Gráfico de pacotes de trabalho
         show_work_packages: Show work packages
       storage:
         no_results_title_text: Não há espaço adicional gravado em disco que seja consumido por este projeto.
@@ -663,56 +663,56 @@ pt-PT:
       no_results_title_text: Este utilizador atualmente não é um membro de um projeto.
     open_profile: "Abrir perfil"
     invite_user_modal:
-      invite: "Invite"
+      invite: "Convidar"
       title:
-        invite: "Invite user"
-        invite_to_project: "Invite %{type} to %{project}"
-        invite_principal_to_project: "Invite %{principal} to %{project}"
+        invite: "Convidar utilizador"
+        invite_to_project: "Convidar %{type} para %{project}"
+        invite_principal_to_project: "Convidar %{principal} para %{project}"
       project:
-        label: "Project"
-        required: "Please select a project"
-        next_button: "Next"
-        no_results: "No projects were found"
-        no_invite_rights: "You are not allowed to invite members to this project"
+        label: "Projecto"
+        required: "Selecione um projeto"
+        next_button: "Próxima"
+        no_results: "Nenhum projeto foi encontrado"
+        no_invite_rights: "Não tem permissão para convidar membros para este projeto"
       type:
-        required: "Please select the type to be invited"
+        required: "Selecione o tipo a ser convidado"
         user:
           title: "Invite user to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          description: "Permissões com base numa função atribuída no projeto selecionado"
         group:
           title: "Invite group to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          description: "Permissões com base numa função atribuída no projeto selecionado"
         placeholder_user:
           title: "Add placeholder user to %{project_name}"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Has no access to the project and no emails are sent out."
-        already_member_message: "Already a member of %{project}"
+          title_no_ee: "Utilizador de espaço reservado (complemento apenas para a edição Enterprise)"
+          description: "Não tem acesso ao projeto e nenhum e-mail é enviado."
+        already_member_message: "Já é membro de %{project}"
       principal:
-        no_results_user: "No users were found"
-        invite_user: "Invite:"
-        no_results_placeholder: "No placeholders were found"
-        create_new_placeholder: "Create new placeholder:"
-        no_results_group: "No groups were found"
+        no_results_user: "Nenhum utilizador foi encontrado."
+        invite_user: "Convidar:"
+        no_results_placeholder: "Nenhum espaço reservado encontrado"
+        create_new_placeholder: "Criar novo espaço reservado:"
+        no_results_group: "Nenhum grupo foi encontrado."
         invite_to_project: "Invite to %{project_name}"
         required:
-          user: "Please select a user"
-          placeholder: "Please select a placeholder"
-          group: "Please select a group"
+          user: "Selecione um utilizador"
+          placeholder: "Selecione um espaço reservado"
+          group: "Selecione um grupo."
       role:
-        label: "Role in %{project}"
-        no_roles_found: "No roles were found"
+        label: "Função em %{project}"
+        no_roles_found: "Nenhuma função encontrada"
         description: >
           This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
-        required: "Please select a role"
+        required: "Selecione um perfil"
       message:
-        label: "Invitation message"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
+        label: "Mensagem de convite"
+        description: "Enviaremos um e-mail ao utilizador, no qual pode adicionar uma mensagem pessoal. Uma explicação para o convite pode ajudar, ou talvez algumas informações sobre o projeto para que ele/ela possa começar."
       summary:
-        next_button: "Send invitation"
+        next_button: "Enviar convite"
       success_message:
-        user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
+        user: "O utilizador agora pode iniciar sessão para aceder a %{project}. Enquanto isso, já pode planear com este utilizador e atribuir pacotes de trabalho, por exemplo."
+        placeholder_user: "O espaço reservado agora pode ser usado em %{project}. Enquanto isso, já pode planear com este utilizador e atribuir pacotes de trabalho, por exemplo."
+        group: "O grupo agora faz parte de %{project}. Enquanto isso, já pode planear com este grupo e atribuir pacotes de trabalho, por exemplo."
   page:
     text: "Conteúdo"
   placeholder_users:
@@ -1091,7 +1091,7 @@ pt-PT:
       enterprise_token:
         starts_at: "Válido desde"
         subscriber: "Assinante"
-        subscription: "Assinatura"
+        subscription: "Subscrição"
         plan: "Plano"
         encoded_token: "Token de suporte da versão Enterprise"
         active_user_count_restriction: "Utilizadores ativos"
@@ -1294,7 +1294,7 @@ pt-PT:
         workdays: "Dias úteis"
       users/invitation/form_model:
         principal_type: "Invitation type"
-        id_or_email: "Name or email address"
+        id_or_email: "Nome ou endereço de e-mail"
       version:
         effective_date: "Data de término"
         sharing: "Compartilhar"
@@ -2050,7 +2050,7 @@ pt-PT:
   button_unwatch: "Não observar"
   button_update: "Atualizar"
   button_upgrade: "Atualizar"
-  button_buy_now: "Compre agora"
+  button_buy_now: "Comprar agora"
   button_upload: "Carregar"
   button_view: "Ver"
   button_watch: "Observar"
@@ -2287,7 +2287,7 @@ pt-PT:
     upsell:
       buy_now_button: "Comprar agora"
       plans_title: "Planos Enterprise"
-      title: "Suplemento Enterprise"
+      title: "Complemento Enterprise"
       plan_title: "Complemento %{plan} Enterprise"
       plan_name: "Plano Enterprise %{plan}"
       plan_text_html: "Disponível a partir do %{plan_name}."
@@ -2650,7 +2650,7 @@ pt-PT:
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            A versão contém várias novas funcionalidades e melhorias, tais como:
           new_features_list:
             line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
             line_1: Project attributes type hierarchy.
@@ -3668,7 +3668,7 @@ pt-PT:
   more_actions: "Mais funções"
   noscript_description: "Tem de ativar o JavaScript para usar o OpenProject!"
   noscript_heading: "JavaScript desativado"
-  noscript_learn_more: "Saber mais"
+  noscript_learn_more: "Mais informações"
   notice_accessibility_mode: O modo de acessibilidade pode ser ativado nas [definições de conta](url).
   notice_account_activated: "A sua conta foi ativada. É agora possível autenticar-se."
   notice_account_already_activated: A conta já foi ativada.
@@ -3747,7 +3747,7 @@ pt-PT:
   #Default format for numbers
   number:
     format:
-      delimiter: "."
+      delimiter: ","
       precision: 3
       separator: "."
     human:
@@ -3850,7 +3850,7 @@ pt-PT:
   permission_select_project_phases: "Selecionar fases do projeto"
   permission_select_project_phases_explanation: "Ativar/desativar as fases de um projeto. Permite ao utilizador selecionar o ciclo de vida adequado para o projeto, uma vez que as fases inativas não serão visíveis na página de visão geral do projeto nem na lista de projetos."
   permission_select_project_modules: "Selecione módulos do projeto"
-  permission_share_work_packages: "Partilhar pacotes de trabalho"
+  permission_share_work_packages: "Compartilhar pacotes de trabalho"
   permission_manage_types: "Selecione tipos"
   permission_manage_own_reminders: "Crie os seus próprios lembretes"
   permission_view_all_principals: "View all users and groups"

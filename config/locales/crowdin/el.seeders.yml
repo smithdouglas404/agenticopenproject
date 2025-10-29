@@ -122,7 +122,7 @@ el:
             item_2:
               name: Tasks
             item_3:
-              name: Team planner
+              name: Προγραμματισμός Ομάδας
           boards:
             kanban:
               name: Kanban board

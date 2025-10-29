@@ -29,7 +29,7 @@ es:
     attributes:
       document:
         content_binary: "Content binary"
-        title: "Title"
+        title: "Título"
   activity:
     filter:
       document: "Documentos"
@@ -47,12 +47,12 @@ es:
       heading: "There are no documents yet"
       description: "There are no documents in this view. You can click the button below to add one."
     index_page:
-      name: "Name"
-      type: "Type"
+      name: "Nombre"
+      type: "Tipo"
       updated_at: "Last edited"
     menu:
       all: "All documents"
-      types: "Types"
+      types: "Tipos"
     label_attachment_author: "Autor del archivo adjunto"
     label_categories: "Categorías"
     new_category: "Nueva categoría"

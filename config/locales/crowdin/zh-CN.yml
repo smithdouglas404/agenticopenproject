@@ -87,7 +87,7 @@ zh-CN:
         token_placeholder: "在此处粘贴您的企业版支持令牌"
       add_token: "上传企业版支持令牌"
       replace_token: "替换您当前的支持令牌"
-      order: "订购本地部署版的 Enterprise edition"
+      order: "订购本地部署的 Enterprise edition"
       paste: "粘贴您企业版的支持令牌"
       required_for_feature: "此功能仅限具激活的企业版支持令牌的订阅者使用。"
       enterprise_link: "如需了解详细信息，请单击此处。"
@@ -164,9 +164,9 @@ zh-CN:
         title: "访问令牌表"
     workflows:
       tabs:
-        default_transitions: "Default transitions"
-        user_author: "User is author"
-        user_assignee: "User is assignee"
+        default_transitions: "默认转换"
+        user_author: "用户是作者"
+        user_assignee: "用户是指派人"
   authentication:
     login_and_registration: "登录和注册"
   announcements:
@@ -319,7 +319,7 @@ zh-CN:
     reorder_alphabetical: "按字母顺序重新排序"
     reorder_confirmation: "警告：可用值的当前顺序将丢失。是否继续？"
     placeholder_version_select: "需要先选择工作包或项目"
-    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
+    calculated_field_not_editable: "不可编辑属性。此值是自动计算的。"
     instructions:
       is_required: "将自定义字段标记为必填项。这将使在创建新资源或更新现有资源时，填写该字段成为强制要求。"
       is_required_for_project: "选中可启用此属性，并使其成为所有项目的必选项。单个项目不能停用该属性。"
@@ -352,28 +352,28 @@ zh-CN:
     or: "或"
     errors:
       array?: "必须为一个数组。"
-      decimal?: "必须为一个小数。"
-      defined: "不可被定义。"
+      decimal?: "必须为小数。"
+      defined: "不得定义。"
       eql?: "必须等于 %{left}。"
-      filled?: "必须填写。"
-      greater_or_equal_zero: "必须大于或等于 0。"
+      filled?: "必须填写"
+      greater_or_equal_zero: "必须大于或等于 0"
       gteq?: "必须大于或等于 %{num}。"
       hash?: "必须是一个哈希值。"
       included_in?:
         arg:
           default: "必须是其中之一： %{list}。"
           range: "必须是其中之一： %{list_left} - %{list_right}。"
-      int?: "必须为一个整数。"
-      key?: "已缺失。"
+      int?: "必须为整数"
+      key?: "缺失。"
       not_found: "未找到。"
       rules:
         copy_workflow_from:
           workflow_missing: "没有自己的工作流。"
         custom_field:
-          format_not_supported: "不支持 '%{field_format}' 格式。"
+          format_not_supported: "格式 '%{field_format}' 不受支持。"
         item:
-          root_item: "不能为根项。"
-          not_persisted: "必须是已存在的项。"
+          root_item: "不能为根项目"
+          not_persisted: "必须是已存在的项目"
         label:
           not_unique: "在同一层级内必须是唯一的。"
         short:
@@ -385,13 +385,13 @@ zh-CN:
     rules:
       copy_workflow_from: "工作流副本的类型"
       enabled: "已启用"
-      depth: "深度"
+      depth: "深"
       item: "条目"
       label: "标签"
       score: "分数"
       short: "简称"
       parent: "父级"
-      blueprint: "模式蓝图"
+      blueprint: "图案蓝图"
   global_search:
     title:
       all_projects: '在所有项目中搜索“%{search_term}”'
@@ -526,8 +526,8 @@ zh-CN:
       versions:
         no_results_title_text: 目前这个项目没有版本。
         no_results_content_text: 创建一个新的版本
-        work_packages_graph: Work packages graph
-        show_work_packages: Show work packages
+        work_packages_graph: 工作包图
+        show_work_packages: 显示工作包
       storage:
         no_results_title_text: 此项目没有已记录的额外磁盘空间消耗。
       work_package_priorities:
@@ -656,56 +656,56 @@ zh-CN:
       no_results_title_text: 该用户当前非项目成员。
     open_profile: "人员详情"
     invite_user_modal:
-      invite: "Invite"
+      invite: "邀请"
       title:
-        invite: "Invite user"
-        invite_to_project: "Invite %{type} to %{project}"
-        invite_principal_to_project: "Invite %{principal} to %{project}"
+        invite: "邀请用户"
+        invite_to_project: "邀请%{type}加入 %{project}"
+        invite_principal_to_project: "邀请 %{principal} 加入 %{project}"
       project:
-        label: "Project"
-        required: "Please select a project"
-        next_button: "Next"
-        no_results: "No projects were found"
-        no_invite_rights: "You are not allowed to invite members to this project"
+        label: "项目"
+        required: "请选择一个项目"
+        next_button: "下一个"
+        no_results: "没有找到项目"
+        no_invite_rights: "您无权邀请成员加入此项目"
       type:
-        required: "Please select the type to be invited"
+        required: "请选择要邀请的类型"
         user:
-          title: "Invite user to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          title: "邀请用户访问 %{project_name}"
+          description: "基于所选项目中指定角色的权限"
         group:
-          title: "Invite group to %{project_name}"
-          description: "Permissions based on the assigned role in the selected project"
+          title: "邀请小组访问 %{project_name}"
+          description: "基于所选项目中指定角色的权限"
         placeholder_user:
           title: "Add placeholder user to %{project_name}"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Has no access to the project and no emails are sent out."
-        already_member_message: "Already a member of %{project}"
+          title_no_ee: "占位符用户（Enterprise edition 附加功能）"
+          description: "无法访问该项目并且未发送电子邮件。"
+        already_member_message: "已经是 %{project} 的成员"
       principal:
-        no_results_user: "No users were found"
-        invite_user: "Invite:"
-        no_results_placeholder: "No placeholders were found"
-        create_new_placeholder: "Create new placeholder:"
-        no_results_group: "No groups were found"
-        invite_to_project: "Invite to %{project_name}"
+        no_results_user: "没有找到用户"
+        invite_user: "邀请："
+        no_results_placeholder: "没有找到占位符"
+        create_new_placeholder: "创建新的占位符："
+        no_results_group: "没有找到组"
+        invite_to_project: "邀请访问 %{project_name}"
         required:
-          user: "Please select a user"
-          placeholder: "Please select a placeholder"
-          group: "Please select a group"
+          user: "请选择一个用户"
+          placeholder: "请选择一个占位符"
+          group: "请选择一个组"
       role:
-        label: "Role in %{project}"
-        no_roles_found: "No roles were found"
+        label: "%{project} 中的角色"
+        no_roles_found: "没有找到角色"
         description: >
           This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
-        required: "Please select a role"
+        required: "请选择一个角色"
       message:
-        label: "Invitation message"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
+        label: "邀请消息"
+        description: "我们将向用户发送一封电子邮件，您可以在此处添加要向其发送的个人消息。提供邀请说明可能会很有用，您也可以添加一些有关该项目的信息以帮助他们开始。"
       summary:
-        next_button: "Send invitation"
+        next_button: "发送邀请"
       success_message:
-        user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
+        user: "该用户现在可以登录以访问 %{project}。同时，您已经可以与该用户一起制定计划并分配工作包等。"
+        placeholder_user: "现在可以在 %{project} 中使用占位符。同时，您已经可以与该用户一起制定计划并分配工作包等。"
+        group: "该组现已加入 %{project}。同时，您已经可以与该组一起制定计划并分配工作包等。"
   page:
     text: "文本"
   placeholder_users:
@@ -1094,7 +1094,7 @@ zh-CN:
         page: "页"
         row_count: "行数"
         column_count: "列数"
-        widgets: "微件"
+        widgets: "小部件"
       journal:
         notes: "备注"
         cause_type: "Cause 类型"
@@ -1285,7 +1285,7 @@ zh-CN:
         workdays: "工作日"
       users/invitation/form_model:
         principal_type: "Invitation type"
-        id_or_email: "Name or email address"
+        id_or_email: "用户名或电子邮件地址"
       version:
         effective_date: "完成日期"
         sharing: "共享"
@@ -2574,8 +2574,8 @@ zh-CN:
     include_sub_items: "包含子条目"
     no_results_text: "无结果"
   toggle_switch:
-    label_on: "On"
-    label_off: "Off"
+    label_on: "开启"
+    label_off: "关闭"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
@@ -2604,7 +2604,7 @@ zh-CN:
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            此版本包含各种新功能和改进，例如：
           new_features_list:
             line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
             line_1: Project attributes type hierarchy.
@@ -2935,7 +2935,7 @@ zh-CN:
   label_duplicate: "重复"
   label_duplicates: "复制"
   label_edit: "编辑"
-  label_edit_attribute: "Edit attribute"
+  label_edit_attribute: "编辑属性"
   label_edit_x: "编辑：%{x}"
   label_enable_multi_select: "切换多选"
   label_enabled_project_custom_fields: "启用自定义字段"
@@ -3268,7 +3268,7 @@ zh-CN:
   label_revision_id: "修订版本 %{value}"
   label_revision_plural: "修订"
   label_roadmap: "路线图"
-  label_roadmap_edit: "编辑路线图%{name}"
+  label_roadmap_edit: "编辑路线图 %{name}"
   label_roadmap_due_in: "%{value} 到期"
   label_roadmap_no_work_packages: "该版本没有工作包。"
   label_roadmap_overdue: "%{value} 超时"
@@ -3362,7 +3362,7 @@ zh-CN:
   label_user_search: "搜索用户"
   label_user_settings: "用户设置"
   label_users_settings: "用户设置"
-  label_value_x: "Value: %{x}"
+  label_value_x: "值: %{x}"
   label_version_new: "新版本"
   label_version_edit: "编辑版本"
   label_version_plural: "版本"
@@ -3771,9 +3771,9 @@ zh-CN:
   permission_edit_wiki_pages: "编辑维基页面"
   permission_export_work_packages: "导出工作包"
   permission_export_wiki_pages: "导出维基页面"
-  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email: "通过电子邮件邀请成员"
   permission_invite_members_by_email_explanation: >
-    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
+    允许用户通过电子邮件邀请新会员。邀请用户将收到一封包含链接的电子邮件来设置密码并激活他们的帐户。 依赖于管理会员的权限
   permission_list_attachments: "列出附件"
   permission_log_own_time: "记录自己的时间"
   permission_log_time: "记录其他用户的时间"
@@ -3803,9 +3803,9 @@ zh-CN:
   permission_share_work_packages: "共享工作包"
   permission_manage_types: "选择类型"
   permission_manage_own_reminders: "创建个人提醒事项"
-  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals: "查看所有用户和组"
   permission_view_all_principals_explanation: >
-    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
+    允许用户在系统中查看所有用户和组，即使他们不是任何加入的项目或组的成员。
   permission_view_project: "查看项目"
   permission_view_changesets: "查看 OpenProject 存储库修订"
   permission_view_internal_comments: "查看内部评论"
@@ -3972,7 +3972,7 @@ zh-CN:
       managed: "在 OpenProject 中创建新的存储库"
     storage:
       not_available: "磁盘存储开销不可用于此存储库。"
-      update_timeout: "在 N 分钟内保留存储库最后所需的磁盘空间信息。由于计算存储库所需的磁盘空间可能增加系统开销，增加该值可以减少性能影响。"
+      update_timeout: "在 N 分钟内保留存储库最后所需磁盘空间的信息。由于计算存储库所需的磁盘空间可能增加系统开销，增加该值可以减少性能影响。"
       oauth_application_details: "关闭此窗口后，将无法再次访问客户端密钥值。请将这些值复制到 Nextcloud OpenProject 集成设置中："
       oauth_application_details_link_text: "转到设置页面"
       setup_documentation_details: "如果您在配置新文件存储方面需要帮助，请查看文档："
@@ -4167,7 +4167,7 @@ zh-CN:
   setting_session_ttl_hint: "当设置的值低于5时，其作用类似于禁用。"
   setting_session_ttl_enabled: "会话过期"
   setting_start_of_week: "一周起始日"
-  setting_sys_api_enabled: "启用存储库管理网页服务"
+  setting_sys_api_enabled: "启用版本库管理 web 服务"
   setting_sys_api_description: "存储库管理网页服务提供了集成的，用户授权的存储库访问。"
   setting_time_format: "时间"
   setting_total_percent_complete_mode: "计算 完成% 层次结构总数"
@@ -4533,7 +4533,7 @@ zh-CN:
   warning_user_limit_reached_admin: >
     添加额外的用户将超出当前限制。请<a href="%{upgrade_url}">升级您的计划</a>，以确保外部用户能够访问此实例。
   warning_user_limit_reached_instructions: >
-    您已达到用户限制（%{current}/%{max} 活跃用户）。请联系 sales@openproject.com 升级您的企业版计划以添加额外用户。
+    您达到了用户限制（%{current}/%{max}活跃用户）。 请联系sales@openproject.com以升级您的Enterprise edition计划并添加其他用户。
   warning_protocol_mismatch_html: >
 
   warning_bar:

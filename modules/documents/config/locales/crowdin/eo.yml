@@ -29,7 +29,7 @@ eo:
     attributes:
       document:
         content_binary: "Content binary"
-        title: "Title"
+        title: "Titolo"
   activity:
     filter:
       document: "Dokumentoj"
@@ -47,12 +47,12 @@ eo:
       heading: "There are no documents yet"
       description: "There are no documents in this view. You can click the button below to add one."
     index_page:
-      name: "Name"
-      type: "Type"
+      name: "Nomo"
+      type: "Tipo"
       updated_at: "Last edited"
     menu:
       all: "All documents"
-      types: "Types"
+      types: "Specoj"
     label_attachment_author: "Aŭtoro de la kunsendaĵo"
     label_categories: "Categories"
     new_category: "Nova kategorio"

@@ -37,7 +37,7 @@ fa:
               can_only_contain_work_packages_of_current_sprint: "can only contain IDs of work packages in the current sprint."
               must_block_at_least_one_work_package: "must contain the ID of at least one ticket."
             version_id:
-              task_version_must_be_the_same_as_story_version: "باید با نسخه اصلی (والد) داستان یکسان باشد."
+              task_version_must_be_the_same_as_story_version: "باید از  همان نگارش داستان زادآوران باشد."
         sprint:
           cannot_end_before_it_starts: "Sprint cannot end before it starts."
   backlogs:
@@ -69,7 +69,7 @@ fa:
     remaining_hours_ideal: "کار باقی مانده (ایده آل)"
     show_burndown_chart: "Burndown Chart"
     story: "Story"
-    story_points: "وزن دهی کار"
+    story_points: "Story Points"
     story_points_ideal: "Story Points (ideal)"
     task: "Task"
     task_color: "Task color"
@@ -90,7 +90,7 @@ fa:
   backlogs_sprint_unestimated: "Closed or active sprints with unestimated stories"
   backlogs_sprint_unsized: "پروژه کارهایی مربوط به دوره های کوتاه کاری فعال و تازه مسدود شده دارد که اندازه گیری نشده است"
   backlogs_sprints: "دوره کوتاه کاری"
-  backlogs_story: "کار"
+  backlogs_story: "Story"
   backlogs_story_type: "انواع کار"
   backlogs_task: "وظیفه"
   backlogs_task_type: "نوع وظیفه"

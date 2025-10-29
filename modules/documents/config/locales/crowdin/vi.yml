@@ -29,7 +29,7 @@ vi:
     attributes:
       document:
         content_binary: "Content binary"
-        title: "Title"
+        title: "Tiêu đề"
   activity:
     filter:
       document: "Tài liệu"
@@ -47,12 +47,12 @@ vi:
       heading: "There are no documents yet"
       description: "There are no documents in this view. You can click the button below to add one."
     index_page:
-      name: "Name"
-      type: "Type"
+      name: "Tên"
+      type: "Kiểu"
       updated_at: "Last edited"
     menu:
       all: "All documents"
-      types: "Types"
+      types: "Các loại"
     label_attachment_author: "Tác giả tài liệu đính kèm"
     label_categories: "Categories"
     new_category: "Danh mục mới"
