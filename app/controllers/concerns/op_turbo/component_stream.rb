@@ -50,24 +50,24 @@ module OpTurbo
       respond_to_with_turbo_streams(&format_block)
     end
 
-    def update_via_turbo_stream(component:, status: :ok, method: nil)
-      modify_via_turbo_stream(component:, action: :update, status:, method:)
+    def update_via_turbo_stream(component:, status: :ok, **)
+      modify_via_turbo_stream(component:, action: :update, status:, **)
     end
 
-    def replace_via_turbo_stream(component:, status: :ok, method: nil)
-      modify_via_turbo_stream(component:, action: :replace, status:, method:)
+    def replace_via_turbo_stream(component:, status: :ok, **)
+      modify_via_turbo_stream(component:, action: :replace, status:, **)
     end
 
-    def remove_via_turbo_stream(component:, status: :ok)
-      modify_via_turbo_stream(component:, action: :remove, status:)
+    def remove_via_turbo_stream(component:, status: :ok, **)
+      modify_via_turbo_stream(component:, action: :remove, status:, **)
     end
 
-    def modify_via_turbo_stream(component:, action:, status:, method: nil)
+    def modify_via_turbo_stream(component:, action:, status:, **)
       @turbo_status = status
       turbo_streams << component.render_as_turbo_stream(
         view_context:,
         action:,
-        method:
+        **
       )
     end
 
@@ -128,6 +128,14 @@ module OpTurbo
     def close_dialog_via_turbo_stream(target, additional: {})
       turbo_streams << OpTurbo::StreamComponent
         .new(action: :closeDialog, target:, additional: additional.to_json)
+        .render_in(view_context)
+    end
+
+    def update_dialog_title_via_turbo_stream(dialog_id, new_title:)
+      turbo_streams << OpTurbo::StreamComponent
+        .new(action: :update,
+             target: "#{dialog_id}-title",
+             template: new_title)
         .render_in(view_context)
     end
 

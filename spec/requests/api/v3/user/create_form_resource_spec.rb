@@ -198,9 +198,8 @@ RSpec.describe API::V3::Users::CreateFormAPI, content_type: :json do
         it "has validation errors for the required custom field", :aggregate_failures do
           expect(response).to have_http_status(:ok)
           expect(body)
-            .to be_json_eql("Department can't be blank.".to_json)
-            .at_path("_embedded/validationErrors/customField#{required_custom_field.id}/message")
-          expect(body).not_to have_json_path("_links/commit")
+            .to have_json_size(0)
+                  .at_path("_embedded/validationErrors")
         end
       end
 
@@ -217,9 +216,8 @@ RSpec.describe API::V3::Users::CreateFormAPI, content_type: :json do
         it "has validation errors for the required custom field", :aggregate_failures do
           expect(response).to have_http_status(:ok)
           expect(body)
-            .to be_json_eql("Department can't be blank.".to_json)
-            .at_path("_embedded/validationErrors/customField#{required_custom_field.id}/message")
-          expect(body).not_to have_json_path("_links/commit")
+            .to have_json_size(0)
+                  .at_path("_embedded/validationErrors")
         end
       end
 

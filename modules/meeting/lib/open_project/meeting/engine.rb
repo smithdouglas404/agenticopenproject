@@ -176,8 +176,6 @@ module OpenProject::Meeting
     patch_with_namespace :BasicData, :SettingSeeder
 
     replace_principal_references "Meeting" => %i[author_id],
-                                 "MeetingAgenda" => %i[author_id],
-                                 "MeetingMinutes" => %i[author_id],
                                  "MeetingAgendaItem" => %i[author_id presenter_id],
                                  "MeetingParticipant" => :user_id,
                                  "MeetingOutcome" => :author_id
@@ -187,7 +185,6 @@ module OpenProject::Meeting
 
     add_api_endpoint "API::V3::Root" do
       mount ::API::V3::Meetings::MeetingsAPI
-      mount ::API::V3::Meetings::MeetingContentsAPI
     end
 
     config.to_prepare do
@@ -222,18 +219,6 @@ module OpenProject::Meeting
 
     add_api_path :attachments_by_meeting do |id|
       "#{meeting(id)}/attachments"
-    end
-
-    add_api_path :attachments_by_meeting_content do |id|
-      "#{meeting_content(id)}/attachments"
-    end
-
-    add_api_path :attachments_by_meeting_agenda do |id|
-      attachments_by_meeting_content id
-    end
-
-    add_api_path :attachments_by_meeting_minutes do |id|
-      attachments_by_meeting_content id
     end
   end
 end

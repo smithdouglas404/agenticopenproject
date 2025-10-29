@@ -663,6 +663,57 @@ pt-BR:
     memberships:
       no_results_title_text: Atualmente, este usuário não é um membro de um projeto.
     open_profile: "Abrir perfil"
+    invite_user_modal:
+      invite: "Convidar"
+      title:
+        invite: "Convidar usuário"
+        invite_to_project: "Convide %{type} para %{project}"
+        invite_principal_to_project: "Convide %{principal} para %{project}"
+      project:
+        label: "Projeto"
+        required: "Selecione um projeto"
+        next_button: "Próxima"
+        no_results: "Nenhum projeto foi encontrado"
+        no_invite_rights: "Você não tem permissão para convidar membros para este projeto"
+      type:
+        required: "Selecione o tipo a ser convidado"
+        user:
+          title: "Invite user to %{project_name}"
+          description: "Permissões baseadas no papel atribuído no projeto selecionado"
+        group:
+          title: "Invite group to %{project_name}"
+          description: "Permissões baseadas no papel atribuído no projeto selecionado"
+        placeholder_user:
+          title: "Add placeholder user to %{project_name}"
+          title_no_ee: "Usuário do espaço reservado (complemento apenas da edição Enterprise)"
+          description: "Não possui acesso ao projeto e nenhum e-mail é enviado."
+        already_member_message: "Já é um membro de %{project}"
+      principal:
+        no_results_user: "Nenhum usuário foi encontrado"
+        invite_user: "Convite:"
+        no_results_placeholder: "Nenhum espaço reservado encontrado"
+        create_new_placeholder: "Criar novo espaço reservado:"
+        no_results_group: "Nenhum grupo encontrado"
+        invite_to_project: "Invite to %{project_name}"
+        required:
+          user: "Selecione um usuário"
+          placeholder: "Selecione um espaço reservado"
+          group: "Selecione um grupo"
+      role:
+        label: "Papel em %{project}"
+        no_roles_found: "Nenhum papel encontrado"
+        description: >
+          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+        required: "Selecione um papel"
+      message:
+        label: "Mensagem de convite"
+        description: "Enviaremos um e-mail para o usuário, à qual você pode adicionar uma mensagem pessoal por aqui. Uma explicação para o convite pode se útil, ou talvez algumas informações sobre o projeto para ajudá-lo a começar."
+      summary:
+        next_button: "Enviar Convite"
+      success_message:
+        user: "O usuário agora pode entrar para acessar %{project}. Enquanto isso, você já pode planejar com este usuário e atribuir pacotes de trabalho por exemplo."
+        placeholder_user: "O espaço reservado agora pode ser usado em %{project}. Enquanto isso, você já pode planejar com este usuário e atribuir pacotes de trabalho por exemplo."
+        group: "O grupo agora faz parte de %{project}. Enquanto isso, você já pode planejar com este grupo e atribuir pacotes de trabalho por exemplo."
   page:
     text: "Texto"
   placeholder_users:
@@ -1241,6 +1292,9 @@ pt-BR:
         mode_guideline: "Alguns modos substituirão as cores personalizadas do tema para melhorar acessibilidade e legibilidade. Selecione o modo Claro para suporte total ao tema personalizado."
         daily_reminders: "Lembretes diários"
         workdays: "Dias úteis"
+      users/invitation/form_model:
+        principal_type: "Invitation type"
+        id_or_email: "Nome ou endereço de e-mail"
       version:
         effective_date: "Data de conclusão"
         sharing: "Compartilhamento"
@@ -3767,6 +3821,9 @@ pt-BR:
   permission_edit_wiki_pages: "Editar páginas wiki"
   permission_export_work_packages: "Exportar pacotes de trabalho"
   permission_export_wiki_pages: "Exportar páginas wiki"
+  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email_explanation: >
+    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
   permission_list_attachments: "Lista de anexos"
   permission_log_own_time: "Registrar própria hora"
   permission_log_time: "Registrar hora para outros usuários"
@@ -3796,6 +3853,9 @@ pt-BR:
   permission_share_work_packages: "Compartilhar pacotes de trabalho"
   permission_manage_types: "Selecionar tipos"
   permission_manage_own_reminders: "Criar seus próprios lembretes"
+  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals_explanation: >
+    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
   permission_view_project: "Visualizar projetos"
   permission_view_changesets: "Revisões do repositório vistas no OpenProject"
   permission_view_internal_comments: "Visualizar comentários internos"

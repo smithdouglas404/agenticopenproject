@@ -673,6 +673,57 @@ uk:
     memberships:
       no_results_title_text: Цей користувач наразі не є учасником проекту.
     open_profile: "Відкрити профіль"
+    invite_user_modal:
+      invite: "Запросити"
+      title:
+        invite: "Запросити користувача"
+        invite_to_project: "Запросити користувача «%{type}» у проєкт «%{project}» "
+        invite_principal_to_project: "Запросити користувача «%{principal}» у проєкт «%{project}»"
+      project:
+        label: "Проєкт"
+        required: "Виберіть проєкт"
+        next_button: "Далі"
+        no_results: "Жодних проєктів не знайдено"
+        no_invite_rights: "Ви не можете запрошувати учасників до цього проєкту"
+      type:
+        required: "Виберіть тип користувача, якого потрібно запросити"
+        user:
+          title: "Invite user to %{project_name}"
+          description: "Дозволи, що ґрунтуються на призначеній ролі у вибраному проєкті"
+        group:
+          title: "Invite group to %{project_name}"
+          description: "Дозволи, що ґрунтуються на призначеній ролі у вибраному проєкті"
+        placeholder_user:
+          title: "Add placeholder user to %{project_name}"
+          title_no_ee: "Прототип користувача (лише у версії Enterprise)"
+          description: "Немає доступу до проєкту; електронні листи не відправляються."
+        already_member_message: "Уже учасник проєкту «%{project}»"
+      principal:
+        no_results_user: "Користувачів не знайдено"
+        invite_user: "Запросити:"
+        no_results_placeholder: "Прототипів не знайдено"
+        create_new_placeholder: "Створити новий прототип:"
+        no_results_group: "Груп не знайдено"
+        invite_to_project: "Invite to %{project_name}"
+        required:
+          user: "Виберіть користувача"
+          placeholder: "Виберіть прототип"
+          group: "Виберіть групу"
+      role:
+        label: "Ролі у проєкті «%{project}»"
+        no_roles_found: "Ролей не знайдено"
+        description: >
+          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+        required: "Виберіть роль"
+      message:
+        label: "Повідомлення із запрошенням"
+        description: "Ми надішлемо електронний лист користувачу, у яке ви можете додати особисте повідомлення. Радимо додати пояснення про запрошення або, можливо, деяку інформацію про проєкт, щоб спростити користувачу початок роботи."
+      summary:
+        next_button: "Надіслати запрошення"
+      success_message:
+        user: "Користувач тепер може ввійти, щоб отримати доступ до проєкту %{project}. Тим часом ви вже можете включати цього користувача в план і призначати йому пакети робіт."
+        placeholder_user: "Прототип тепер може ввійти, щоб отримати доступ до проєкту «%{project}». Тим часом ви вже можете включати цього користувача в план і призначати йому пакети робіт."
+        group: "Ця група тепер входить у проєкт «%{project}». Тим часом ви вже можете включати її в план і призначати їй пакети робіт."
   page:
     text: "Текст"
   placeholder_users:
@@ -1254,6 +1305,9 @@ uk:
         mode_guideline: "Деякі режими перезаписують користувацькі кольори теми, щоб поліпшити доступність і читабельність. Виберіть світлий режим, якщо потрібна повна підтримка користувацької теми."
         daily_reminders: "Щоденні нагадування"
         workdays: "Робочі дні"
+      users/invitation/form_model:
+        principal_type: "Invitation type"
+        id_or_email: "Ім‘я або електронна адреса"
       version:
         effective_date: "Дата закінчення"
         sharing: "Поширення"
@@ -3098,7 +3152,7 @@ uk:
   label_index_by_title: "Індекс за назвою"
   label_information: "Інформація"
   label_information_plural: "Інформація"
-  label_installation_guides: "Інструкції із встановлення"
+  label_installation_guides: "Інструкції зі встановлення"
   label_integer: "Ціле число"
   label_interface: "Інтерфейс"
   label_internal: "Власне"
@@ -3857,6 +3911,9 @@ uk:
   permission_edit_wiki_pages: "Редагування wiki-сторінок"
   permission_export_work_packages: "Експорт робочих пакетів"
   permission_export_wiki_pages: "Експорт wiki-сторінок"
+  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email_explanation: >
+    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
   permission_list_attachments: "Список вкладень"
   permission_log_own_time: "Реєструвати власний час"
   permission_log_time: "Реєструвати час для інших користувачів"
@@ -3886,6 +3943,9 @@ uk:
   permission_share_work_packages: "Надати доступ до пакетів робіт"
   permission_manage_types: "Виберіть типи"
   permission_manage_own_reminders: "Створюйте власні нагадування"
+  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals_explanation: >
+    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
   permission_view_project: "Перегляд проєктів"
   permission_view_changesets: "Перегляд змін репозиторію (сховища) в OpenProject"
   permission_view_internal_comments: "Перегляд внутрішніх коментарів"

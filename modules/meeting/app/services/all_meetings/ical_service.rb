@@ -46,7 +46,6 @@ module AllMeetings
         end
 
         calendar.preload_for_recurring_meetings(recurring_meetings: recurring_meetings)
-        calendar.treat_participations_from_user_as_accepted!
         calendar.calendar_title = "#{Setting.app_title} - #{I18n.t('label_my_meetings')}"
 
         recurring_meetings.each do |recurring_meeting|

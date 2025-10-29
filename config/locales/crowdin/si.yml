@@ -664,6 +664,57 @@ si:
     memberships:
       no_results_title_text: මෙම පරිශීලකයා දැනට ව්යාපෘතියක සාමාජිකයෙකු නොවේ.
     open_profile: "Open profile"
+    invite_user_modal:
+      invite: "Invite"
+      title:
+        invite: "පරිශීලකයාට ආරාධනා කරන්න"
+        invite_to_project: "Invite %{type} to %{project}"
+        invite_principal_to_project: "Invite %{principal} to %{project}"
+      project:
+        label: "ව්යාපෘති"
+        required: "Please select a project"
+        next_button: "ඊළඟ"
+        no_results: "No projects were found"
+        no_invite_rights: "You are not allowed to invite members to this project"
+      type:
+        required: "Please select the type to be invited"
+        user:
+          title: "Invite user to %{project_name}"
+          description: "Permissions based on the assigned role in the selected project"
+        group:
+          title: "Invite group to %{project_name}"
+          description: "Permissions based on the assigned role in the selected project"
+        placeholder_user:
+          title: "Add placeholder user to %{project_name}"
+          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
+          description: "Has no access to the project and no emails are sent out."
+        already_member_message: "Already a member of %{project}"
+      principal:
+        no_results_user: "No users were found"
+        invite_user: "Invite:"
+        no_results_placeholder: "No placeholders were found"
+        create_new_placeholder: "Create new placeholder:"
+        no_results_group: "No groups were found"
+        invite_to_project: "Invite to %{project_name}"
+        required:
+          user: "Please select a user"
+          placeholder: "Please select a placeholder"
+          group: "Please select a group"
+      role:
+        label: "Role in %{project}"
+        no_roles_found: "No roles were found"
+        description: >
+          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+        required: "Please select a role"
+      message:
+        label: "Invitation message"
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
+      summary:
+        next_button: "ආරාධනය යවන්න"
+      success_message:
+        user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
+        placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
+        group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
   page:
     text: "පෙළ"
   placeholder_users:
@@ -1244,6 +1295,9 @@ si:
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Daily reminders"
         workdays: "Working days"
+      users/invitation/form_model:
+        principal_type: "Invitation type"
+        id_or_email: "Name or email address"
       version:
         effective_date: "අවසන් දිනය"
         sharing: "බෙදාගැනීම"
@@ -3771,6 +3825,9 @@ si:
   permission_edit_wiki_pages: "විකි පිටු සංස්කරණය කරන්න"
   permission_export_work_packages: "අපනයන වැඩ පැකේජ"
   permission_export_wiki_pages: "විකි පිටු අපනයනය කරන්න"
+  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email_explanation: >
+    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
   permission_list_attachments: "ලැයිස්තු ඇමුණුම්"
   permission_log_own_time: "Log own time"
   permission_log_time: "Log time for other users"
@@ -3800,6 +3857,9 @@ si:
   permission_share_work_packages: "Share work packages"
   permission_manage_types: "වර්ග තෝරන්න"
   permission_manage_own_reminders: "Create own reminders"
+  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals_explanation: >
+    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
   permission_view_project: "View projects"
   permission_view_changesets: "OpenProject හි නිධි සංශෝධන බලන්න"
   permission_view_internal_comments: "View internal comments"
