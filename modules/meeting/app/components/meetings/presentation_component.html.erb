@@ -20,15 +20,14 @@
     %>
 
     <!-- Main content area -->
-    <div class="op-meeting-presentation--content">
+    <div class="op-meeting-presentation--content" data-controller="meetings--submit">
       <turbo-frame id="presentation-content" style="width: 100%">
         <%= render(border_box_container) do |container| %>
-          <%= container.with_row(pl: 0) do %>
-            <%= render MeetingAgendaItems::ItemComponent::ShowComponent.new(
-              meeting_agenda_item: current_item,
-              single_mode: true
-            ) %>
-          <% end %>
+          <%= render MeetingAgendaItems::ItemComponent.new(
+            container:,
+            meeting_agenda_item: current_item,
+            single_mode: true
+          ) %>
         <% end %>
       </turbo-frame>
     </div>
@@ -38,7 +37,7 @@
       <div class="op-meeting-presentation--footer-left">
         <%= render(Primer::Beta::Button.new(
           tag: :a,
-          href: presentation_project_meeting_path(@project, @meeting, current_id: previous_id),
+          href: project_meeting_presentation_path(@project, @meeting, current_id: previous_id),
           data: { "meetings--presentation-target": "previousButton" },
           disabled: !has_previous?
         )) do |button| %>
@@ -54,7 +53,7 @@
       <div class="op-meeting-presentation--footer-right">
         <%= render(Primer::Beta::Button.new(
           tag: :a,
-          href: presentation_project_meeting_path(@project, @meeting, current_id: next_id),
+          href: project_meeting_presentation_path(@project, @meeting, current_id: next_id),
           data: { "meetings--presentation-target": "nextButton" },
           disabled: !has_next?
         )) do |button| %>

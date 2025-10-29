@@ -80,10 +80,6 @@ class MeetingsController < ApplicationController
     end
   end
 
-  def presentation
-    render layout: "meetings/presentation"
-  end
-
   def check_for_updates
     respond_to do |format|
       format.html do

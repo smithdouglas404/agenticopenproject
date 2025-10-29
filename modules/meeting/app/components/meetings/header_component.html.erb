@@ -47,7 +47,7 @@
         mobile_label: I18n.t("meeting.presentation_mode.button_present"),
         mobile_icon: :play,
         size: :medium,
-        href: presentation_project_meeting_path(@project, @meeting)
+        href: project_meeting_presentation_path(@project, @meeting)
       ) do |button|
         button.with_leading_visual_icon(icon: :play)
         I18n.t("meeting.presentation_mode.button_present")
