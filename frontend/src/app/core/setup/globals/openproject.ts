@@ -31,6 +31,7 @@ import { input, InputState } from '@openproject/reactivestates';
 import { getMetaElement, GlobalHelpers } from 'core-app/core/setup/globals/global-helpers';
 import { firstValueFrom } from 'rxjs';
 import { ThemeUtils } from './theme-utils';
+import { WrapperUtils } from './wrapper-utils';
 
 export type OpenProjectPageState = 'pristine'|'edited'|'submitted';
 
@@ -46,6 +47,7 @@ export class OpenProject {
    * Theme utilities for system theme detection and application
    */
   public theme = new ThemeUtils();
+  public wrapper = new WrapperUtils();
 
   /** Globally setable variable whether the page was edited or submitted */
   pageState:OpenProjectPageState = 'pristine';
