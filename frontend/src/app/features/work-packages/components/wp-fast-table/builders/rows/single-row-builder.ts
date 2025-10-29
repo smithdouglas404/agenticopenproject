@@ -177,7 +177,8 @@ export class SingleRowBuilder {
    */
   public refreshRow(workPackage:WorkPackageResource, row:HTMLTableRowElement):HTMLTableRowElement {
     // Detach all current edit cells
-    const cells = Array.from(row.querySelectorAll<HTMLTableCellElement>(`.${tdClassName}`));
+    const cells = Array.from(row.querySelectorAll<HTMLTableCellElement>(`.${tdClassName}`))
+      .map((el) => el.parentNode!.removeChild(el));
 
     // Remember the order of all new edit cells
     const newCells:HTMLTableCellElement[] = [];
