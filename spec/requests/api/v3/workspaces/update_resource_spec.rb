@@ -281,7 +281,6 @@ RSpec.describe "API v3 Workspace resource update", content_type: :json do
       end
     end
 
-
     describe "permissions" do
       context "without permission to patch projects" do
         let(:permissions) { [] }
