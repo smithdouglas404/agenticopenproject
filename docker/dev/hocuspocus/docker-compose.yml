@@ -1,5 +1,7 @@
 services:
   hocuspocus:
+    # In case of MacOS you need to specify the platform:
+    # platform: linux/amd64
     image:  openproject/hocuspocus:main-defdb238
     labels:
       - "traefik.enable=true"
