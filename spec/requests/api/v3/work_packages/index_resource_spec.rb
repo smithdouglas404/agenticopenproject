@@ -901,6 +901,10 @@ RSpec.describe "API v3 Work package resource",
         before do
           work_package.update_column(:project_id, project2.id)
           current_journal.data.update_column(:project_id, project2.id)
+
+          allow(project2)
+            .to receive(:visible?)
+                  .and_return(true)
         end
 
         it "finds the work package" do
