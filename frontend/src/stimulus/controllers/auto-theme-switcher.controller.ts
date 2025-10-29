@@ -61,8 +61,6 @@ export default class AutoThemeSwitcher extends Controller {
     } else {
       this.applyTheme(this.themeValue, this.increaseContrastValue);
     }
-
-    window.OpenProject.wrapper.removeFocusWrapper();
   }
 
   syncWithOS():void {

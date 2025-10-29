@@ -200,6 +200,7 @@ See COPYRIGHT and LICENSE files for more details.
   if (savedMainMenuWidth >= 0) {
     document.documentElement.style.setProperty('--main-menu-width', savedMainMenuWidth + 'px');
   }
+    window.OpenProject.wrapper.removeFocusWrapper();
 <% end %>
 
 <%= nonced_javascript_tag do %>
