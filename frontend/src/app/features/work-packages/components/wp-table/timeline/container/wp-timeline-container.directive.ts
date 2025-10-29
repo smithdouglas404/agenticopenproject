@@ -448,8 +448,7 @@ export class WorkPackageTimelineTableController extends UntilDestroyedMixin impl
     // RR: kept both variants for documentation purpose.
     // A: calculate the minimal width based on the width of the timeline view
     // B: calculate the minimal width based on the window width
-    const width = this.element.children[0]?.clientWidth || 0; // A
-    // const width = document.body.clientWidth; // B
+    const width = this.element.children[0]?.clientWidth || document.body.clientWidth; // A with fallback to B
 
     const { pixelPerDay } = currentParams;
     const visibleDays = Math.ceil((width / pixelPerDay) * 1.5);
