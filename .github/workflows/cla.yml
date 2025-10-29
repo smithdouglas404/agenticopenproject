@@ -46,6 +46,7 @@ jobs:
             bsatarnejad,
             cbliard,
             copilot[bot],
+            copilot-swe-agent[bot],
             corinnaguenther,
             crohr,
             dependabot[bot],
