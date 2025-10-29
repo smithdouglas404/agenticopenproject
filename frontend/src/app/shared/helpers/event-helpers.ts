@@ -133,7 +133,9 @@ class EventListenerRegistry {
   }
 
   private getNamespaceAndType(namespacedEvent:NamespacedEvent|NamespacedEvents):[EventNamespace, EventType|null] {
-    const [namespace, type = null] = namespacedEvent.split('.').reverse() as [EventNamespace, EventType?];
+    const parts = namespacedEvent.split('.').reverse();
+    const namespace = parts[0] as EventNamespace;
+    const type = parts[1] || null;
     return [namespace, type];
   }
 }
