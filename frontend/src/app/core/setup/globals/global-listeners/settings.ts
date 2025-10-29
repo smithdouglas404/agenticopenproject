@@ -8,12 +8,6 @@ import invariant from 'tiny-invariant';
  * This should not be loaded globally and ideally refactored into components
  */
 export function listenToSettingChanges() {
-  const ttlEnabled = document.querySelector<HTMLInputElement>('#settings_session_ttl_enabled');
-  ttlEnabled?.addEventListener('change', () => {
-    toggleElement(document.querySelector('#settings_session_ttl_container')!, ttlEnabled.checked);
-  });
-  ttlEnabled?.dispatchEvent(new Event('change', { bubbles: true }));
-
   /** Sync SCM vendor select when enabled SCMs are changed */
   const enabledScm = document.querySelector<HTMLInputElement>('[name="settings[enabled_scm][]"]');
   enabledScm?.addEventListener('change', (event) => {

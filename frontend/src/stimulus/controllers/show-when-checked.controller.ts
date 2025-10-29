@@ -39,9 +39,14 @@ export default class OpShowWhenCheckedController extends ApplicationController {
     reversed: Boolean,
   };
 
+  static classes = ['visibility'];
+
   declare reversedValue:boolean;
   declare readonly hasReversedValue:boolean;
   declare readonly effectTargets:HTMLElement[];
+
+  declare readonly visibilityClass:string;
+  declare readonly hasVisibilityClass:boolean;
 
   private boundListener = this.toggle.bind(this);
 
@@ -78,8 +83,10 @@ export default class OpShowWhenCheckedController extends ApplicationController {
 
         if (el.dataset.setVisibility === 'true') {
           el.style.setProperty('visibility', shouldShow ? 'visible' : 'hidden');
-        } else if (el.dataset.visibilityClass) {
-          el.classList.toggle(el.dataset.visibilityClass, !shouldShow);
+        } else if (this.hasVisibilityClass || ('visibilityClass' in el.dataset)) {
+          const visibilityClass = this.visibilityClass ?? el.dataset.visibilityClass!;
+          el.classList.toggle(visibilityClass, !shouldShow);
+          el.ariaHidden = (!shouldShow).toString();
         } else {
           el.hidden = !shouldShow;
         }
