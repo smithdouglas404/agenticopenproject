@@ -102,22 +102,26 @@ module MeetingAgendaItems
       return unless editable?
 
       menu.with_item(label: t("label_edit"),
-                     href: edit_meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item,
-                                                         current_occurrence: @current_occurrence),
-                     content_arguments: {
-                       data: { "turbo-stream": true }
-                     }) do |item|
+                     tag: :button,
+                     content_arguments: { data: {
+                       action: "click->meetings--submit#intercept",
+                       href: edit_meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item,
+                                                           current_occurrence: @current_occurrence),
+                       method: "GET"
+                     } }) do |item|
         item.with_leading_visual_icon(icon: :pencil)
       end
     end
 
     def add_note_action_item(menu)
       menu.with_item(label: t("label_agenda_item_add_notes"),
-                     href: edit_meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item,
-                                                         display_notes_input: true, current_occurrence: @current_occurrence),
-                     content_arguments: {
-                       data: { "turbo-stream": true }
-                     }) do |item|
+                     tag: :button,
+                     content_arguments: { data: {
+                       action: "click->meetings--submit#intercept",
+                       href: edit_meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item,
+                                                           display_notes_input: true, current_occurrence: @current_occurrence),
+                       method: "GET"
+                     } }) do |item|
         item.with_leading_visual_icon(icon: :note)
       end
     end
