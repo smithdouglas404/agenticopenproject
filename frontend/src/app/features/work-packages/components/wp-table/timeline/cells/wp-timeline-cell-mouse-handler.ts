@@ -189,7 +189,7 @@ export function registerWorkPackageMouseHandler(this:void,
         deactivate(direction, false);
       };
 
-      bodyTarget.on('keyup.timelinecell', () => keyPressFn);
+      bodyTarget.on('keyup.timelinecell', keyPressFn);
     };
   }
 

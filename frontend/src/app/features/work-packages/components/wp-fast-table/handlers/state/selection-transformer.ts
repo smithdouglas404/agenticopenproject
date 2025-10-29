@@ -61,7 +61,9 @@ export class SelectionTransformer {
     context.querySelectorAll(`.${tableRowClassName}.${checkedClassName}`).forEach((el) => el.classList.remove(checkedClassName));
 
     _.each(state.selected, (selected:boolean, workPackageId:any) => {
-      context.querySelector(`.${tableRowClassName}[data-work-package-id="${workPackageId}"]`)?.classList.toggle(checkedClassName, selected);
+      context.querySelectorAll(`.${tableRowClassName}[data-work-package-id="${workPackageId}"]`).forEach((el) => {
+        el.classList.toggle(checkedClassName, selected);
+      });
     });
   }
 }
