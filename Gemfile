@@ -197,7 +197,7 @@ gem "fog-aws"
 
 gem "aws-sdk-core", "~> 3.235"
 # File upload via fog + screenshots on travis
-gem "aws-sdk-s3", "~> 1.201"
+gem "aws-sdk-s3", "~> 1.202"
 
 gem "openproject-token", "~> 8.0.0"
 
