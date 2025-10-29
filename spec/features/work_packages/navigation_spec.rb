@@ -217,11 +217,13 @@ RSpec.describe "Work package navigation", :js, :selenium do
       subject.update "bar"
 
       full_view.expect_and_dismiss_toaster message: "Successful update."
+      work_package.reload
+      expect(work_package.subject).to eq("bar")
 
       # Go back to list
       full_view.go_back
 
-      wp_table = Pages::WorkPackagesTable.new project
+      expect(page).to have_field("editable-toolbar-title", with: query.name, wait: 10)
       wp_table.ensure_work_package_not_listed! work_package
     end
   end
