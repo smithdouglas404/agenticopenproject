@@ -1,6 +1,6 @@
 services:
   hocuspocus:
-    # In case of MacOS you need to specify the platform:
+    # In case of MacOS you need to specify the platform in your `docker/dev/hocuspocus/docker-compose.override.yml`:
     # platform: linux/amd64
     image:  openproject/hocuspocus:main-defdb238
     labels:
