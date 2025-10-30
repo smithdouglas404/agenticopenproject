@@ -662,6 +662,57 @@ it:
     memberships:
       no_results_title_text: Questo utente non è attualmente membro di alcun progetto.
     open_profile: "Apri il profilo"
+    invite_user_modal:
+      invite: "Invita"
+      title:
+        invite: "Invita utente"
+        invite_to_project: "Invita %{type} a %{project}"
+        invite_principal_to_project: "Invita %{principal} a %{project}"
+      project:
+        label: "Progetto"
+        required: "Sei pregato di selezionare un progetto"
+        next_button: "Prossimo"
+        no_results: "Nessun progetto è stato trovato"
+        no_invite_rights: "Non puoi invitare i membri a questo progetto"
+      type:
+        required: "Sei pregato di selezionare il tipo da invitare"
+        user:
+          title: "Invite user to %{project_name}"
+          description: "I permessi basati sul ruolo assegnato nel progetto selezionato"
+        group:
+          title: "Invite group to %{project_name}"
+          description: "I permessi basati sul ruolo assegnato nel progetto selezionato"
+        placeholder_user:
+          title: "Add placeholder user to %{project_name}"
+          title_no_ee: "Utente del segnaposto (funzionalità solo dell'edizione Enterprise)"
+          description: "Non ha accesso al progetto e non è inviata alcuna email."
+        already_member_message: "Già un membro di %{project}"
+      principal:
+        no_results_user: "Nessun utente è stato trovato"
+        invite_user: "Invito:"
+        no_results_placeholder: "Nessun segnaposto è stato trovato"
+        create_new_placeholder: "Crea nuovo segnaposto:"
+        no_results_group: "Nessun gruppo è stato trovato"
+        invite_to_project: "Invite to %{project_name}"
+        required:
+          user: "Sei pregato di selezionare un utente"
+          placeholder: "Sei pregato di selezionare un segnaposto"
+          group: "Sei pregato di selezionare un gruppo"
+      role:
+        label: "Ruolo in %{project}"
+        no_roles_found: "Nessun ruolo è stato trovato"
+        description: >
+          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+        required: "Sei pregato di selezionare un ruolo"
+      message:
+        label: "Messaggio di invito"
+        description: "Invieremo un'email all'utente, a cui puoi aggiungere qui un messaggio personale. Una spiegazione per l'invito potrebbe essere utile o forse qualche informazione sul progetto per aiutarli a iniziare."
+      summary:
+        next_button: "Invia invito"
+      success_message:
+        user: "L'utente può ora connettersi per accedere a %{project}. Nel mentre puoi ad esempio già pianificare con quell'utente e assegnare pacchetti di lavoro."
+        placeholder_user: "Il segnaposto è ora utilizzabile in %{project}. Nel mentre puoi ad esempio già pianificare con quell'utente e assegnare pacchetti di lavoro."
+        group: "Il gruppo è ora parte di %{project}. Nel mentre puoi ad esempio già pianificare con quel gruppo e assegnare pacchetti di lavoro."
   page:
     text: "Testo"
   placeholder_users:
@@ -1241,6 +1292,9 @@ it:
         mode_guideline: "Alcune modalità sovrascriveranno i colori personalizzati del tema per l'accessibilità e la leggibilità. Seleziona la modalità Chiara per il supporto completo del tema personalizzato."
         daily_reminders: "Promemoria giornalieri"
         workdays: "Giorni lavorativi"
+      users/invitation/form_model:
+        principal_type: "Invitation type"
+        id_or_email: "Nome o indirizzo email"
       version:
         effective_date: "Data di fine"
         sharing: "Condivisione"
@@ -3768,6 +3822,9 @@ it:
   permission_edit_wiki_pages: "Modificare pagine wiki"
   permission_export_work_packages: "Esportare macro-attività"
   permission_export_wiki_pages: "Esportare pagine wiki"
+  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email_explanation: >
+    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
   permission_list_attachments: "Elencare allegati"
   permission_log_own_time: "Registrare il proprio tempo"
   permission_log_time: "Registrare il tempo per gli altri utenti"
@@ -3797,6 +3854,9 @@ it:
   permission_share_work_packages: "Condividi macro-attività"
   permission_manage_types: "Seleziona i tipi"
   permission_manage_own_reminders: "Crea promemoria"
+  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals_explanation: >
+    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
   permission_view_project: "Visualizza progetti"
   permission_view_changesets: "Visualizza l'archivio revisioni in OpenProject"
   permission_view_internal_comments: "Visualizzare commenti interni"

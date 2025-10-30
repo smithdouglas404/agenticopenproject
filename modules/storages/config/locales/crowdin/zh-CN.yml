@@ -119,6 +119,12 @@ zh-CN:
         hide_inactive_folders: '隐藏非活动文件夹步骤：'
         remote_folders: '读取组文件夹的内容：'
         rename_project_folder: '重命名托管项目文件夹：'
+      sharepoint_sync_service:
+        create_folder: '托管项目文件夹创建：'
+        ensure_root_folder_permissions: '设置基础文件夹权限：'
+        hide_inactive_folders: '隐藏非活动文件夹步骤：'
+        remote_folders: '读取组文件夹的内容：'
+        rename_project_folder: '重命名托管项目文件夹：'
     errors:
       messages:
         error: 发生意外错误。请检查日志获取更多信息或联系管理员
@@ -171,6 +177,23 @@ zh-CN:
             remote_folders:
               request_error: OpenProject 无法访问您的驱动器 %{drive_id}。请检查您的存储配置是否正确。
             rename_project_folder:
+              conflict: OpenProject 无法将文件夹 %{current_path} 重命名为 %{project_folder_name}，因为已存在同名文件夹。
+              forbidden: OpenProject 用户无法访问 %{current_path} 文件夹。
+              not_found: "%{current_path} 没有找到。"
+            set_folders_permissions:
+              permission_not_set: 无法设置 %{path} 上的权限。
+          error: 发生意外错误。请确保 OneDrive 可以访问，并检查 OpenProject 工作日志以获取更多信息。
+          not_allowed: OpenProject 未被允许访问您的 OneDrive 驱动器。请检查 Azure 应用程序上设置的权限。
+          unauthorized: OpenProject 无法与 Nextcloud 同步。请检查您的存储设备和 Nextcloud 配置。
+          user_does_not_exist: "在 Nextcloud 中不存在 %{user}  。"
+        sharepoint_sync_service:
+          attributes:
+            create_folder:
+              conflict: '%{folder_name} 已经存在于 %{parent_location} 上。'
+              not_found: "未找到 %{parent_location} 。"
+            hide_inactive_folders:
+              permission_not_set: 无法设置 %{path} 上的权限。
+            rename_project_folder:
               conflict: OpenProject 无法将文件夹 %{current_path} 重命名为 %{project_folder_name} ，因为已存在同名文件夹
               forbidden: OpenProject 用户无法访问 %{current_path} 文件夹。
               not_found: "%{current_path} 没有找到。"
@@ -178,6 +201,7 @@ zh-CN:
               permission_not_set: 无法设置 %{path} 上的权限。
           error: 发生意外错误。请确保 OneDrive 可以访问，并检查 OpenProject 工作日志以获取更多信息
           not_allowed: OpenProject 未被允许访问您的 OneDrive 驱动器。请检查 Azure 应用程序上设置的权限。
+          not_found: OpenProject 无法访问您的库 %{drive_name}。请检查您的 Sharepoint 站点文档库。
           unauthorized: OpenProject 无法与 Nextcloud 同步。请检查您的存储设备和 Nextcloud 配置。
           user_does_not_exist: "在 Nextcloud 中不存在 %{user}  。"
         upload_link_service:

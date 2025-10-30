@@ -119,6 +119,12 @@ ko:
         hide_inactive_folders: '비활성 폴더 숨기기 단계:'
         remote_folders: '그룹 폴더의 콘텐츠 읽기:'
         rename_project_folder: '관리되는 프로젝트 폴더의 이름 바꾸기:'
+      sharepoint_sync_service:
+        create_folder: '관리되는 프로젝트 폴더 생성:'
+        ensure_root_folder_permissions: '기본 폴더 권한 설정:'
+        hide_inactive_folders: '비활성 폴더 숨기기 단계:'
+        remote_folders: '그룹 폴더의 콘텐츠 읽기:'
+        rename_project_folder: '관리되는 프로젝트 폴더의 이름 바꾸기:'
     errors:
       messages:
         error: 예기치 않은 오류가 발생했습니다. OpenProject 로그에서 자세한 내용을 확인하거나 관리자에게 문의하세요
@@ -176,8 +182,26 @@ ko:
               not_found: "%{current_path}을(를) 찾을 수 없습니다."
             set_folders_permissions:
               permission_not_set: '- %{path}에 대한 권한을 설정할 수 없습니다.'
+          error: 예기치 않은 오류가 발생했습니다. OneDrive에 연결할 수 있는지 확인하고 OpenProject 작업자 로그에서 자세한 내용을 확인하세요.
+          not_allowed: OpenProject가 OneDrive 드라이브에 액세스하도록 허용되지 않았습니다. Azure 애플리케이션에 설정된 권한을 확인하세요.
+          unauthorized: OpenProject가 OneDrive와 동기화할 수 없습니다. 저장소 및 Azure 애플리케이션 구성을 확인하세요.
+          user_does_not_exist: "%{user}이(가) Nextcloud에 없습니다."
+        sharepoint_sync_service:
+          attributes:
+            create_folder:
+              conflict: '%{folder_name}은(는) 이미 %{parent_location}에 있습니다.'
+              not_found: "%{parent_location}을(를) 찾을 수 없습니다."
+            hide_inactive_folders:
+              permission_not_set: '- %{path}에 대한 권한을 설정할 수 없습니다.'
+            rename_project_folder:
+              conflict: 같은 이름의 폴더가 이미 있으므로 OpenProject에서 %{current_path} 폴더의 이름을 %{project_folder_name}(으)로 바꿀 수 없습니다.
+              forbidden: OpenProject에는 이름을 바꾸기 위한 %{current_path} 폴더에 대한 액세스 권한이 없습니다.
+              not_found: "%{current_path}을(를) 찾을 수 없습니다."
+            set_folders_permissions:
+              permission_not_set: '- %{path}에 대한 권한을 설정할 수 없습니다.'
           error: 예기치 않은 오류가 발생했습니다. OneDrive에 연결할 수 있는지 확인하고 OpenProject 작업자 로그에서 자세한 내용을 확인하세요
           not_allowed: OpenProject가 OneDrive 드라이브에 액세스하도록 허용되지 않았습니다. Azure 애플리케이션에 설정된 권한을 확인하세요.
+          not_found: OpenProject가 라이브러리 %{drive_name}에 액세스할 수 없습니다. SharePoint 사이트 문서 라이브러리를 확인하세요.
           unauthorized: OpenProject가 OneDrive와 동기화할 수 없습니다. 저장소 및 Azure 애플리케이션 구성을 확인하세요.
           user_does_not_exist: "%{user}이(가) Nextcloud에 없습니다."
         upload_link_service:

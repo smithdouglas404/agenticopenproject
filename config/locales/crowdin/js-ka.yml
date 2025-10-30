@@ -1135,7 +1135,6 @@ ka:
       list: "ცხრილი"
       timeline: "განტი"
     invite_user_modal:
-      back: "უკან"
       invite: "მოწვევა"
       title:
         invite: "მომხმარებლის მოწვევა"
@@ -1200,6 +1199,7 @@ ka:
           placeholder: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
           group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
         next_button: "გაგრძელება"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "Status excluded from hierarchy totals"

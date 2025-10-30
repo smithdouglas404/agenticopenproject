@@ -1130,7 +1130,6 @@ vi:
       list: "Bảng"
       timeline: "Biểu đồ sự kiện"
     invite_user_modal:
-      back: "Quay lại"
       invite: "Mời"
       title:
         invite: "Mời người dùng"
@@ -1195,6 +1194,7 @@ vi:
           placeholder: "Người dùng tạm thời có thể được sử dụng trong %{project}. Trong khi đó, bạn có thể lên kế hoạch với người dùng đó và phân công các gói công việc ví dụ."
           group: "Nhóm hiện đã là một phần của %{project}. Trong khi đó, bạn có thể lên kế hoạch với nhóm đó và phân công các gói công việc ví dụ."
         next_button: "Tiếp tục"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "Trạng thái loại trừ khỏi tổng hợp phân cấp"

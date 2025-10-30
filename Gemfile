@@ -39,7 +39,7 @@ gem "activemodel-serializers-xml", "~> 1.0.1"
 gem "activerecord-import", "~> 2.2.0"
 gem "activerecord-session_store", "~> 2.2.0"
 gem "ox"
-gem "rails", "~> 8.0.3"
+gem "rails", "~> 8.0.4"
 gem "responders", "~> 3.2"
 
 gem "ffi", "~> 1.15"
@@ -110,10 +110,7 @@ gem "email_validator", "~> 2.2.3"
 gem "json_schemer", "~> 2.4.0"
 gem "ruby-duration", "~> 3.2.0"
 
-# `config/initializers/mail_starttls_patch.rb` has also been patched to
-# fix STARTTLS handling until https://github.com/mikel/mail/pull/1536 is
-# released.
-gem "mail", "= 2.8.1"
+gem "mail", "2.9.0"
 
 gem "csv", "~> 3.3"
 
@@ -123,7 +120,7 @@ gem "sys-filesystem", "~> 1.5.0", require: false
 gem "bcrypt", "~> 3.1.6"
 
 gem "multi_json", "~> 1.17.0"
-gem "oj", "~> 3.16.0"
+gem "oj", "~> 3.16.12"
 
 gem "daemons"
 gem "good_job", "= 3.99.1" # update should be done manually in sync with saas-openproject version.
@@ -160,9 +157,9 @@ gem "ttfunk", "~> 1.7.0" # remove after https://github.com/prawnpdf/prawn/issues
 # prawn implicitly depends on matrix gem no longer in ruby core with 3.1
 gem "matrix", "~> 0.4.3"
 
-gem "meta-tags", "~> 2.22.0"
+gem "meta-tags", "~> 2.22.2"
 
-gem "paper_trail", "~> 16.0.0"
+gem "paper_trail", "~> 17.0.0"
 
 gem "op-clamav-client", "~> 3.4", require: "clamav"
 
@@ -185,8 +182,8 @@ gem "rails-i18n", "~> 8.0.0"
 gem "sprockets", "~> 3.7.2" # lock sprockets below 4.0
 gem "sprockets-rails", "~> 3.5.1"
 
-gem "puma", "~> 6.5"
-gem "puma-plugin-statsd", "~> 2.0"
+gem "puma", "~> 7.1"
+gem "puma-plugin-statsd", "~> 2.7"
 gem "rack-timeout", "~> 0.7.0", require: "rack/timeout/base"
 
 gem "nokogiri", "~> 1.18.10"
@@ -195,9 +192,9 @@ gem "carrierwave", "~> 1.3.4"
 gem "carrierwave_direct", "~> 2.1.0"
 gem "fog-aws"
 
-gem "aws-sdk-core", "~> 3.234"
+gem "aws-sdk-core", "~> 3.235"
 # File upload via fog + screenshots on travis
-gem "aws-sdk-s3", "~> 1.201"
+gem "aws-sdk-s3", "~> 1.202"
 
 gem "openproject-token", "~> 8.0.0"
 
@@ -228,20 +225,20 @@ gem "yabeda-rails"
 
 # opentelemetry
 gem "opentelemetry-exporter-otlp", "~> 0.31.0", require: false
-gem "opentelemetry-instrumentation-all", "~> 0.85.0", require: false
+gem "opentelemetry-instrumentation-all", "~> 0.86.1", require: false
 gem "opentelemetry-sdk", "~> 1.10", require: false
 
-gem "view_component", "~> 4.0.2"
+gem "view_component", "~> 4.1.0"
 # Lookbook
 gem "lookbook", "2.3.13"
 
 # Require factory_bot for usage with openproject plugins testing
-gem "factory_bot", "~> 6.5.0", require: false
+gem "factory_bot", "~> 6.5.6", require: false
 # require factory_bot_rails for convenience in core development
 gem "factory_bot_rails", "~> 6.5.0", require: false
 
 gem "turbo_power", "~> 0.7.0"
-gem "turbo-rails", "~> 2.0.17"
+gem "turbo-rails", "~> 2.0.20"
 
 # There is a problem with version 1.4.0. Do not update until you're sure there is no infinite hang
 # happenning in failing tests when WebMock or VCR stub cannot be found.
@@ -290,7 +287,7 @@ group :test do
   gem "cuprite", "~> 0.17.0"
   gem "rspec-wait"
   gem "selenium-devtools"
-  gem "selenium-webdriver", "~> 4.37"
+  gem "selenium-webdriver", "~> 4.38"
 
   gem "fuubar", "~> 2.5.0", require: false
   gem "timecop", "~> 0.9.0"
@@ -298,7 +295,7 @@ group :test do
   # Record your test suite's HTTP interactions and replay them during future test runs for fast, deterministic, accurate tests.
   gem "vcr"
   # Mock backend requests (for ruby tests)
-  gem "webmock", "~> 3.12", require: false
+  gem "webmock", "~> 3.26", require: false
 
   # Mock selenium requests through proxy (for feature tests)
   gem "puffing-billy", "~> 4.0.0"

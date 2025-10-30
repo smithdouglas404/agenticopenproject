@@ -73,6 +73,7 @@ Rails.application.reloader.to_prepare do
                      },
                      permissible_on: :global,
                      require: :loggedin,
+                     dependencies: :view_all_principals,
                      contract_actions: { users: %i[read create] }
 
       map.permission :manage_user,
@@ -83,7 +84,16 @@ Rails.application.reloader.to_prepare do
                      },
                      permissible_on: :global,
                      require: :loggedin,
+                     dependencies: :view_all_principals,
                      contract_actions: { users: %i[read update] }
+
+      map.permission :view_all_principals,
+                     {
+                       users: %i[index show]
+                     },
+                     permissible_on: :global,
+                     require: :loggedin,
+                     contract_actions: { users: %i[read] }
 
       map.permission :manage_placeholder_user,
                      {
@@ -92,6 +102,7 @@ Rails.application.reloader.to_prepare do
                        admin: %i[index]
                      },
                      permissible_on: :global,
+                     dependencies: :view_all_principals,
                      require: :loggedin,
                      contract_actions: { placeholder_users: %i[create read update] }
 
@@ -181,6 +192,12 @@ Rails.application.reloader.to_prepare do
                      require: :member,
                      dependencies: :view_members,
                      contract_actions: { members: %i[create update destroy] }
+
+      map.permission :invite_members_by_email,
+                     {},
+                     permissible_on: :project,
+                     require: :member,
+                     dependencies: :manage_members
 
       map.permission :view_members,
                      {

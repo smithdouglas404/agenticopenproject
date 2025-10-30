@@ -38,6 +38,8 @@ RSpec.describe "API v3 Group resource", content_type: :json do
   subject(:response) { last_response }
 
   shared_let(:project) { create(:project) }
+  shared_let(:admin) { create(:admin) }
+
   let(:group) do
     create(:group, member_with_roles: { project => role }, members:)
   end
@@ -46,7 +48,6 @@ RSpec.describe "API v3 Group resource", content_type: :json do
   let(:members) do
     create_list(:user, 2)
   end
-  let(:admin) { create(:admin) }
 
   current_user do
     create(:user,
@@ -119,7 +120,7 @@ RSpec.describe "API v3 Group resource", content_type: :json do
     subject(:response) { post path, body }
 
     context "when the user is allowed" do
-      current_user { create(:admin) }
+      current_user { admin }
 
       context "and the input is valid" do
         it "responds with 201" do
@@ -147,12 +148,14 @@ RSpec.describe "API v3 Group resource", content_type: :json do
         end
       end
 
-      context "and the input is invalid" do
-        let(:body) do
-          {
-            name: ""
-          }.to_json
-        end
+    context "when the user is allowed and the input is invalid" do
+      current_user { admin }
+
+      let(:body) do
+        {
+          name: ""
+        }.to_json
+      end
 
         it "responds with 422 and explains the error" do
           expect(response).to have_http_status(:unprocessable_entity)
@@ -601,11 +604,22 @@ RSpec.describe "API v3 Group resource", content_type: :json do
       get get_path
     end
 
-    it_behaves_like "API V3 collection response", 2, 2, "Group" do
-      let(:elements) { [other_group, group] }
+    context "when visible" do
+      let(:current_user) { create(:user, global_permissions: %i[view_all_principals]) }
+
+      it_behaves_like "API V3 collection response", 2, 2, "Group" do
+        let(:elements) { [other_group, group] }
+      end
+    end
+
+    context "when only mine is visible" do
+      it_behaves_like "API V3 collection response", 1, 1, "Group" do
+        let(:elements) { [group] }
+      end
     end
 
     context "when signaling" do
+      let(:current_user) { admin }
       let(:get_path) { api_v3_paths.path_for :groups, select: "total,count,elements/*" }
 
       let(:expected) do

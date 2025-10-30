@@ -28,11 +28,14 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
+require_relative "../../flash/expectations"
+
 module Components
   module Common
     class Modal
       include Capybara::DSL
       include Capybara::RSpecMatchers
+      include Flash::Expectations
       include RSpec::Matchers
 
       def expect_title(text)

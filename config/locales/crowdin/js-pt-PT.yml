@@ -1135,71 +1135,8 @@ pt-PT:
       list: "Tabela"
       timeline: "Gantt"
     invite_user_modal:
-      back: "Voltar"
       invite: "Convidar"
-      title:
-        invite: "Convidar utilizador"
-        invite_to_project: "Convidar %{type} para %{project}"
-        User: "utilizador"
-        Group: "grupo"
-        PlaceholderUser: "utilizador do espaço reservado"
-        invite_principal_to_project: "Convidar %{principal} para %{project}"
-      project:
-        label: "Projecto"
-        required: "Selecione um projeto"
-        lacking_permission: "Selecione um projeto diferente, uma vez que não tem permissões para atribuir utilizadores ao atualmente selecionado."
-        lacking_permission_info: "Não tem permissão para atribuir utilizadores ao projeto em que está atualmente. Tem de selecionar um diferente."
-        next_button: "Próxima"
-        no_results: "Nenhum projeto foi encontrado"
-        no_invite_rights: "Não tem permissão para convidar membros para este projeto"
-      type:
-        required: "Selecione o tipo a ser convidado"
-        user:
-          title: "Utilizador"
-          description: "Permissões com base numa função atribuída no projeto selecionado"
-        group:
-          title: "Grupo"
-          description: "Permissões com base numa função atribuída no projeto selecionado"
-        placeholder:
-          title: "Utilizador de espaço reservado"
-          title_no_ee: "Utilizador de espaço reservado (complemento apenas para a edição Enterprise)"
-          description: "Não tem acesso ao projeto e nenhum e-mail é enviado."
-          description_no_ee: 'Não tem acesso ao projeto e nenhum e-mail é enviado. <br>Confira a <a href="%{eeHref}" target="_blank">edição Enterprise</a>'
-      principal:
-        label:
-          name_or_email: "Nome ou endereço de e-mail"
-          name: "Nome"
-        already_member_message: "Já é membro de %{project}"
-        no_results_user: "Nenhum utilizador foi encontrado."
-        invite_user: "Convidar:"
-        no_results_placeholder: "Nenhum espaço reservado encontrado"
-        create_new_placeholder: "Criar novo espaço reservado:"
-        no_results_group: "Nenhum grupo foi encontrado."
-        next_button: "Próxima"
-        required:
-          user: "Selecione um utilizador"
-          placeholder: "Selecione um espaço reservado"
-          group: "Selecione um grupo."
-      role:
-        label: "Função em %{project}"
-        no_roles_found: "Nenhuma função encontrada"
-        description: >-
-          Esta é uma função que o utilizador vai receber quando se juntar ao projeto. A função define as ações que pode fazer e as informações que pode visualizar. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Aprenda mais sobre funções e permissões. </a>
-        required: "Selecione um perfil"
-        next_button: "Próxima"
-      message:
-        label: "Mensagem de convite"
-        description: "Enviaremos um e-mail ao utilizador, no qual pode adicionar uma mensagem pessoal. Uma explicação para o convite pode ajudar, ou talvez algumas informações sobre o projeto para que ele/ela possa começar."
-        next_button: "Seguinte"
-      summary:
-        next_button: "Enviar convite"
-      success:
-        title: "%{principal} foi convidado!"
-        description:
-          user: "O utilizador agora pode iniciar sessão para aceder a %{project}. Enquanto isso, já pode planear com este utilizador e atribuir pacotes de trabalho, por exemplo."
-          placeholder: "O espaço reservado agora pode ser usado em %{project}. Enquanto isso, já pode planear com este utilizador e atribuir pacotes de trabalho, por exemplo."
-          group: "O grupo agora faz parte de %{project}. Enquanto isso, já pode planear com este grupo e atribuir pacotes de trabalho, por exemplo."
-        next_button: "Continuar"
+      placeholder_add_tag: "Criar utilizador de espaço reservado"
     exclusion_info:
       modal:
         title: "Estado excluído dos totais da hierarquia"

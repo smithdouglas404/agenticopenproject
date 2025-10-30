@@ -665,6 +665,57 @@ tr:
     memberships:
       no_results_title_text: Bu kullanıcı şuan için bir proje üyesi değil.
     open_profile: "Profili aç"
+    invite_user_modal:
+      invite: "Davet et"
+      title:
+        invite: "Kullanıcı davet et"
+        invite_to_project: "%{type} 'ı %{project} projesine davet edin"
+        invite_principal_to_project: "%{principal} 'i %{project} projesine davet edin\n"
+      project:
+        label: "Proje"
+        required: "Lütfen bir proje seçin"
+        next_button: "Sonraki"
+        no_results: "Hiç proje bulunamadı"
+        no_invite_rights: "Bu projeye üye davet etme izniniz yok"
+      type:
+        required: "Lütfen davet edilecek türü seçin"
+        user:
+          title: "Invite user to %{project_name}"
+          description: "Seçilen projede atanan role dayalı izinler"
+        group:
+          title: "Invite group to %{project_name}"
+          description: "Seçilen projede atanan role dayalı izinler"
+        placeholder_user:
+          title: "Add placeholder user to %{project_name}"
+          title_no_ee: "Yer tutucu kullanıcı (yalnızca Enterprise sürümü eklentisi)"
+          description: "Projeye erişimi yoktur ve e-posta gönderilmez."
+        already_member_message: "Zaten %{project} üyesi"
+      principal:
+        no_results_user: "Hiçbir kullanıcı bulunamadı"
+        invite_user: "Davet et"
+        no_results_placeholder: "Hiçbir yer bulunamadı."
+        create_new_placeholder: "Yeni yer tutucu oluşturun:"
+        no_results_group: "Hiç grup bulunamadı."
+        invite_to_project: "Invite to %{project_name}"
+        required:
+          user: "Lütfen bir kullanıcı seçin"
+          placeholder: "Lütfen bir yer tutucu seçin"
+          group: "Lütfen bir grup seçin"
+      role:
+        label: "rol %{project}"
+        no_roles_found: "Hiç rol bulunamadı."
+        description: >
+          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+        required: "Lütfen bir rol seçin."
+      message:
+        label: "Davet Mesajı"
+        description: "Kullanıcıya, buradan kişisel bir mesaj ekleyebileceğiniz bir e-posta göndereceğiz. Davet için bir açıklama yararlı olabilir veya belki de başlamalarına yardımcı olacak projeyle ilgili bir parça bilgi olabilir."
+      summary:
+        next_button: "Davet gönder"
+      success_message:
+        user: "Kullanıcı artık %{project} 'e erişmek için oturum açabilir. Bu arada, o kullanıcıyla zaten plan yapabilir ve örneğin iş paketleri atayabilirsiniz."
+        placeholder_user: "Kullanıcı artık %{project} 'e erişmek için oturum açabilir. Bu arada, o kullanıcıyla zaten plan yapabilir ve örneğin iş paketleri atayabilirsiniz."
+        group: "Grup artık %{project} 'nin bir parçası. Bu arada, bu grupla zaten plan yapabilir ve örneğin iş paketleri atayabilirsiniz."
   page:
     text: "Metin"
   placeholder_users:
@@ -1244,6 +1295,9 @@ tr:
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Günlük hatırlatmalar"
         workdays: "İş Günleri"
+      users/invitation/form_model:
+        principal_type: "Invitation type"
+        id_or_email: "İsim veya e-posta adresi"
       version:
         effective_date: "Bitiş tarihi"
         sharing: "Paylaşım"
@@ -3769,6 +3823,9 @@ tr:
   permission_edit_wiki_pages: "Wiki sayfalarını düzenlemek"
   permission_export_work_packages: "İş paketlerini dışarı aktar"
   permission_export_wiki_pages: "Wiki sayfalarını dışarı aktar"
+  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email_explanation: >
+    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
   permission_list_attachments: "Ekleri listelemek"
   permission_log_own_time: "Kendi zamanını günlüğe kaydet"
   permission_log_time: "Diğer kullanıcıların zamanını günlüğe kaydet"
@@ -3798,6 +3855,9 @@ tr:
   permission_share_work_packages: "İş paketini paylaşma"
   permission_manage_types: "İş paketi türlerini seçmek"
   permission_manage_own_reminders: "Kendi hatırlatıcısını oluşturma"
+  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals_explanation: >
+    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
   permission_view_project: "Projeleri görüntüleme"
   permission_view_changesets: "OpenProject'de depo revizyonlarını görüntüle"
   permission_view_internal_comments: "Dahili yorumları görüntüle"

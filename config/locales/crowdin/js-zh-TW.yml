@@ -1130,7 +1130,6 @@ zh-TW:
       list: "表格"
       timeline: "甘特圖"
     invite_user_modal:
-      back: "返回"
       invite: "邀請"
       title:
         invite: "邀請加入"
@@ -1195,6 +1194,7 @@ zh-TW:
           placeholder: "該佔位符現在可在 %{project} 中使用。您也可以開始與該使用者一起規劃，並指派工作套件等操作。"
           group: "該群組現在已成為 %{project} 的一部分。您也可以開始與該群組一起規劃，並指派工作套件等操作。"
         next_button: "繼續"
+      placeholder_add_tag: "建立佔位符使用者"
     exclusion_info:
       modal:
         title: "從層次結構總計中排除的狀態"

@@ -1131,71 +1131,8 @@ zh-CN:
       list: "表"
       timeline: "甘特图"
     invite_user_modal:
-      back: "返回"
       invite: "邀请"
-      title:
-        invite: "邀请用户"
-        invite_to_project: "邀请%{type}加入 %{project}"
-        User: "用户"
-        Group: "组"
-        PlaceholderUser: "占位符用户"
-        invite_principal_to_project: "邀请 %{principal} 加入 %{project}"
-      project:
-        label: "项目"
-        required: "请选择一个项目"
-        lacking_permission: "请选择其他项目，因为您缺少将用户分配至当前所选项目的权限。"
-        lacking_permission_info: "您缺少将用户分配至您当前所在项目的权限。您需要选择其他项目。"
-        next_button: "下一个"
-        no_results: "没有找到项目"
-        no_invite_rights: "您无权邀请成员加入此项目"
-      type:
-        required: "请选择要邀请的类型"
-        user:
-          title: "用户"
-          description: "基于所选项目中所分配角色的权限"
-        group:
-          title: "组"
-          description: "基于所选项目中所分配角色的权限"
-        placeholder:
-          title: "占位符用户"
-          title_no_ee: "占位符用户（Enterprise edition 特定功能）"
-          description: "无法访问该项目并且未发送电子邮件。"
-          description_no_ee: '无法访问该项目并且未发送电子邮件。<br>请参见 <a href="%{eeHref}" target="_blank">Enterprise edition</a>'
-      principal:
-        label:
-          name_or_email: "用户名或电子邮件地址"
-          name: "名称"
-        already_member_message: "已经是 %{project} 的成员"
-        no_results_user: "没有找到用户"
-        invite_user: "邀请："
-        no_results_placeholder: "没有找到占位符"
-        create_new_placeholder: "创建新的占位符："
-        no_results_group: "没有找到组"
-        next_button: "下一个"
-        required:
-          user: "请选择一个用户"
-          placeholder: "请选择一个占位符"
-          group: "请选择一个组"
-      role:
-        label: "%{project} 中的角色"
-        no_roles_found: "没有找到角色"
-        description: >-
-          这是用户在加入您的项目时将获得的角色。角色定义了允许其执行哪些操作以及允许其查看哪些信息。<a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank">详细了解角色和权限</a>。
-        required: "请选择一个角色"
-        next_button: "下一个"
-      message:
-        label: "邀请消息"
-        description: "我们将向用户发送一封电子邮件，您可以在此处添加要向其发送的个人消息。提供邀请说明可能会很有用，您也可以添加一些有关该项目的信息以帮助他们开始。"
-        next_button: "下一个"
-      summary:
-        next_button: "发送邀请"
-      success:
-        title: "%{principal} 已被邀请！"
-        description:
-          user: "该用户现在可以登录以访问 %{project}。同时，您已经可以与该用户一起制定计划并分配工作包等。"
-          placeholder: "现在可以在 %{project} 中使用占位符。同时，您已经可以与该用户一起制定计划并分配工作包等。"
-          group: "该组现已加入 %{project}。同时，您已经可以与该组一起制定计划并分配工作包等。"
-        next_button: "继续"
+      placeholder_add_tag: "创建占位符用户"
     exclusion_info:
       modal:
         title: "从层次结构总计中排除的状态"

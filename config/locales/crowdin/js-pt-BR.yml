@@ -1134,7 +1134,6 @@ pt-BR:
       list: "Tabela"
       timeline: "Gantt"
     invite_user_modal:
-      back: "Voltar"
       invite: "Convidar"
       title:
         invite: "Convidar usuário"
@@ -1199,6 +1198,7 @@ pt-BR:
           placeholder: "O espaço reservado agora pode ser usado em %{project}. Enquanto isso, você já pode planejar com este usuário e atribuir pacotes de trabalho por exemplo."
           group: "O grupo agora faz parte de %{project}. Enquanto isso, você já pode planejar com este grupo e atribuir pacotes de trabalho por exemplo."
         next_button: "Continuar"
+      placeholder_add_tag: "Criar usuário de espaço reservado"
     exclusion_info:
       modal:
         title: "Status excluído dos totais da hierarquia"

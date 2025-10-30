@@ -1135,7 +1135,6 @@ fr:
       list: "Tableau"
       timeline: "Gantt"
     invite_user_modal:
-      back: "Retour"
       invite: "invite"
       title:
         invite: "Inviter utilisateur"
@@ -1200,6 +1199,7 @@ fr:
           placeholder: "Le utilisateur fictif peut maintenant être utilisé dans %{project}. En attendant, vous pouvez déjà planifier des taches avec cet utilisateur et l'assigner à des lots de travaux par exemple."
           group: "Le groupe fait maintenant partie du %{project}. Entre-temps, vous pouvez déjà planifier avec ce groupe et l'assigner des lots de travaux par exemple."
         next_button: "Continuer"
+      placeholder_add_tag: "Créer un utilisateur fictif"
     exclusion_info:
       modal:
         title: "Statut exclu des totaux de la hiérarchie"

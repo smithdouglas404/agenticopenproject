@@ -119,6 +119,12 @@ ru:
         hide_inactive_folders: 'Скрыть неактивные папки:'
         remote_folders: 'Чтение содержимого групповой папки:'
         rename_project_folder: 'Переименовать управляемую папку проекта:'
+      sharepoint_sync_service:
+        create_folder: 'Создание управляемых папок проекта:'
+        ensure_root_folder_permissions: 'Установить разрешения для базовых папок:'
+        hide_inactive_folders: 'Скрыть неактивные папки:'
+        remote_folders: 'Чтение содержимого групповой папки:'
+        rename_project_folder: 'Переименовать управляемую папку проекта:'
     errors:
       messages:
         error: Произошла непредвиденная ошибка. Пожалуйста, проверьте журналы OpenProject для получения дополнительной информации или свяжитесь с администратором
@@ -171,6 +177,23 @@ ru:
             remote_folders:
               request_error: OpenProject не смог получить доступ к диску %{drive_id}. Пожалуйста, проверьте правильность конфигурации хранилища.
             rename_project_folder:
+              conflict: OpenProject не смог переименовать папку %{current_path} в %{project_folder_name}, так как папка с таким же именем уже существует.
+              forbidden: OpenProject не имеет доступа к %{current_path}, чтобы переименовать его.
+              not_found: "%{current_path} не найден."
+            set_folders_permissions:
+              permission_not_set: не удалось установить разрешения на %{path}.
+          error: Произошла непредвиденная ошибка. Пожалуйста, убедитесь, что OneDrive доступен и проверьте журналы работы OpenProject для более подробной информации.
+          not_allowed: OpenProject не был разрешен доступ к OneDrive. Пожалуйста, проверьте разрешения, установленные в приложении Azure.
+          unauthorized: OpenProject не удалось синхронизировать с OneDrive. Пожалуйста, проверьте конфигурацию хранилища и приложения Azure.
+          user_does_not_exist: "%{user} не существует в Nextcloud."
+        sharepoint_sync_service:
+          attributes:
+            create_folder:
+              conflict: '%{folder_name} уже существует в %{parent_location}.'
+              not_found: "%{parent_location} не найден."
+            hide_inactive_folders:
+              permission_not_set: не удалось установить разрешения на %{path}.
+            rename_project_folder:
               conflict: OpenProject не смог переименовать папку %{current_path} в %{project_folder_name}, так как папка с таким именем уже существует
               forbidden: OpenProject не имеет доступа к %{current_path}, чтобы переименовать его.
               not_found: "%{current_path} не найден."
@@ -178,6 +201,7 @@ ru:
               permission_not_set: не удалось установить разрешения на %{path}.
           error: Произошла непредвиденная ошибка. Пожалуйста, убедитесь, что OneDrive доступен и проверьте журналы работы OpenProject для дополнительной информации
           not_allowed: OpenProject не был разрешен доступ к OneDrive. Пожалуйста, проверьте разрешения, установленные в приложении Azure.
+          not_found: OpenProject не смог получить доступ к Вашей библиотеке %{drive_name}. Пожалуйста, проверьте библиотеки документов на сайте Sharepoint.
           unauthorized: OpenProject не удалось синхронизировать с OneDrive. Пожалуйста, проверьте конфигурацию хранилища и приложения Azure.
           user_does_not_exist: "%{user} не существует в Nextcloud."
         upload_link_service:

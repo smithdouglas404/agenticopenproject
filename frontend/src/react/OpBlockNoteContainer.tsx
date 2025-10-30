@@ -37,6 +37,7 @@ import { OpColorMode } from 'core-app/core/setup/globals/theme-utils';
 import { getDefaultOpenProjectSlashMenuItems, initOpenProjectApi, openProjectWorkPackageBlockSpec } from 'op-blocknote-extensions';
 import { useEffect, useState } from 'react';
 import * as Y from 'yjs';
+import { IUploadFile } from 'core-app/core/upload/upload.service';
 
 export interface OpBlockNoteContainerProps {
   inputField:HTMLInputElement;
@@ -47,6 +48,7 @@ export interface OpBlockNoteContainerProps {
   documentName:string;
   documentId:string;
   openProjectUrl:string;
+  attachmentsUploadUrl:string;
 }
 
 const schema = BlockNoteSchema.create({
@@ -65,7 +67,8 @@ export default function OpBlockNoteContainer({ inputField,
                                                activeUser,
                                                documentName,
                                                documentId,
-                                               openProjectUrl }:OpBlockNoteContainerProps) {
+                                               openProjectUrl,
+                                               attachmentsUploadUrl }:OpBlockNoteContainerProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   initOpenProjectApi({ baseUrl: openProjectUrl });
@@ -100,6 +103,7 @@ export default function OpBlockNoteContainer({ inputField,
         },
         showCursorLabels: 'activity'
       },
+      uploadFile,
     };
   } else { // collaboration disabled
     if (inputText) {
@@ -122,11 +126,32 @@ export default function OpBlockNoteContainer({ inputField,
           color: '#333333',
         },
       },
+      uploadFile,
     };
   }
 
   const editor = useCreateBlockNote(editorParams, [activeUser]);
   type EditorType = typeof editor;
+
+  const fileToIUploadFile = (file:File):IUploadFile => ({
+    file: file
+  });
+
+  async function uploadFile(file:File) {
+    const pluginContext = await window.OpenProject.getPluginContext();
+    try {
+      const service = pluginContext.services.attachmentsResourceService;
+      const iUploadFile = fileToIUploadFile(file);
+      const result = await service.addAttachments('documents', attachmentsUploadUrl, [iUploadFile]).toPromise();
+
+      return result?.[0]._links.downloadLocation.href ?? '';
+    } catch(error:any) {
+      const toastService = pluginContext.services.notifications;
+      toastService.addError(error);
+
+      return '';
+    }
+  }
 
   const getCustomSlashMenuItems = (editor:EditorType) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
