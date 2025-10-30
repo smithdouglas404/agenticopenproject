@@ -66,6 +66,6 @@ export function toggleElementByClass(element:Element, className:string, value?:b
  * @param value force visibility (optional): `true` to show the element/`false` to hide the element.
  */
 export function toggleElementByVisibility(element:HTMLElement, value?:boolean) {
-  value ??= element.style.getPropertyValue('visibility') === 'visible';
+  value ??= element.style.getPropertyValue('visibility') !== 'visible';
   element.style.setProperty('visibility', value ? 'visible' : 'hidden');
 };
