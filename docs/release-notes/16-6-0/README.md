@@ -20,17 +20,17 @@ Take a look at our release video showing the most important features introduced 
 
 ### Calculated values for project evaluation and scoring (Enterprise add-on)
 
-OpenProject 16.6 introduces new project attribute types that make portfolio evaluation measurable and transparent: Hierarchy, Scored list, and Calculated value:
+OpenProject 16.6 introduces new project attribute types that make portfolio evaluation measurable and transparent: Hierarchy, Weighted item list, and Calculated value:
 
-![OpenProject administration with new types of project attributes: Calculated value, Hierarchy and Scored list are highlighted.](openproject-16-6-project-attributes.png)
+![OpenProject administration with new types of project attributes: Calculated value, Hierarchy and Weighted item list are highlighted.](openproject-16-6-project-attributes-updated.png)
 
 **Hierarchy** project attributes let you organize project information in a structured, nested way — for example, grouping initiatives by region, department, or program.
 
 ![OpenProject administration shows a project attribute type hierarchy: The name is 'Strategic initiative' and it shows 3 items with sub-items, e.g. 'Digital transformation', and the options to edit, add sub-items, change parent and more.](openproject-16-6-project-attributes-hierarchy.png)
 
-**Scored lists** extend this concept by allowing administrators to assign numeric scores to list options, such as effort levels or risk ratings. These values can then be used as input for calculated results.
+**Weighted item lists** extend this concept by allowing administrators to assign numeric scores to list options, such as effort levels or risk ratings. These values can then be used as input for calculated results.
 
-**Calculated values** enable automatic computations based on formulas using numeric project attributes, including scores from Scored lists or even other calculated values. The computed result is displayed directly on the project overview and in the project list. It automatically updates whenever one of its source attributes (e.g., *Benefit* or *Effort* in the example below) is changed. This allows teams to calculate project scores and prioritise consistently across the portfolio.
+**Calculated values** enable automatic computations based on formulas using numeric project attributes, including scores from Weighted item lists or even other calculated values. The computed result is displayed directly on the project overview and in the project list. It automatically updates whenever one of its source attributes (e.g., *Benefit* or *Effort* in the example below) is changed. This allows teams to calculate project scores and prioritise consistently across the portfolio.
 
 Here's an example of a calculated value called 'Overall score (calculated)' with the following formula: (Strategic impact * 0.6) + ( Benefit​* 0.3) - (Effort * 0.1)
 
