@@ -28,36 +28,14 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Queries::Filters::Strategies
-  class Date < Queries::Filters::Strategies::Integer
-    self.supported_operators = [
-      "<t+", ">t+", "t+", "t", ">t-", "<t-", "t-",
-      "<w+", ">w+", "w+", "w", ">w-", "<w-", "w-",
-      "=d", "<>d", "!*"
-    ]
-    self.default_operator = "t"
+require "spec_helper"
+require_relative "shared_examples"
 
-    def validate
-      if operator == Queries::Operators::OnDate ||
-         operator == Queries::Operators::BetweenDate
-        validate_values_all_date
-      else
-        super
-      end
-    end
+RSpec.describe Queries::Operators::InWeeks do
+  let(:to)             { value.weeks.since.end_of_week(weekday) }
+  let(:from)           { to - 1.week }
+  let(:symbol)         { "w+" }
+  let(:value_required) { true }
 
-    private
-
-    def validate_values_all_date
-      unless values.all? { |value| value.blank? || date?(value) }
-        errors.add(:values, I18n.t("activerecord.errors.messages.not_a_date"))
-      end
-    end
-
-    def date?(str)
-      true if ::Date.parse(str)
-    rescue ArgumentError
-      false
-    end
-  end
+  it_behaves_like "weeks filter"
 end

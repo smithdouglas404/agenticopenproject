@@ -72,6 +72,9 @@ export class FilterIntegerValueComponent extends UntilDestroyedMixin {
       case 'dueDate':
       case 'updatedAt':
       case 'createdAt':
+        if (['>w-', '<w-', 'w-', '<w+', '>w+', 'w+'].includes(this.filter.operator.id)) {
+          return this.I18n.t('js.work_packages.time_relative.weeks');
+        }
         return this.I18n.t('js.work_packages.time_relative.days');
       default:
         return '';

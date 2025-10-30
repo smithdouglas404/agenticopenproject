@@ -28,36 +28,42 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Queries::Filters::Strategies
-  class Date < Queries::Filters::Strategies::Integer
-    self.supported_operators = [
-      "<t+", ">t+", "t+", "t", ">t-", "<t-", "t-",
-      "<w+", ">w+", "w+", "w", ">w-", "<w-", "w-",
-      "=d", "<>d", "!*"
-    ]
-    self.default_operator = "t"
+require "spec_helper"
 
-    def validate
-      if operator == Queries::Operators::OnDate ||
-         operator == Queries::Operators::BetweenDate
-        validate_values_all_date
-      else
-        super
-      end
-    end
+RSpec.shared_examples_for "weeks filter" do
+  subject(:sql) { described_class.sql_for_field([value], :db_table, :db_field) }
 
-    private
+  def quoted_date(date)
+    ActiveRecord::Base.connection.quoted_date(date)
+  end
 
-    def validate_values_all_date
-      unless values.all? { |value| value.blank? || date?(value) }
-        errors.add(:values, I18n.t("activerecord.errors.messages.not_a_date"))
-      end
-    end
+  let(:weekday)   { OpenProject::Internationalization::Date.beginning_of_week }
+  let(:label_key) { "label_#{described_class.class_name.underscore}" }
+  let(:expected) do
+    str = []
+    str << "db_table.db_field > '#{quoted_date(from)}'" if from.present?
+    str << "db_table.db_field <= '#{quoted_date(to)}'" if to.present?
 
-    def date?(str)
-      true if ::Date.parse(str)
-    rescue ArgumentError
-      false
+    str.join(" AND ").presence || "1 = 1"
+  end
+
+  it "has correct value required flag" do
+    expect(described_class.value_required).to eq value_required
+  end
+
+  it "has correct label" do
+    expect(described_class.label_key).to eq label_key
+  end
+
+  it "has correct symbol" do
+    expect(described_class.symbol).to eq symbol
+  end
+
+  [-5, -1, 0, 2].each do |prime|
+    describe "#{prime} weeks" do
+      let(:value) { prime }
+
+      it { expect(sql).to eq(expected) }
     end
   end
 end

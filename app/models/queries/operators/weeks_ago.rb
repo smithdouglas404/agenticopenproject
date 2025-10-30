@@ -28,36 +28,23 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Queries::Filters::Strategies
-  class Date < Queries::Filters::Strategies::Integer
-    self.supported_operators = [
-      "<t+", ">t+", "t+", "t", ">t-", "<t-", "t-",
-      "<w+", ">w+", "w+", "w", ">w-", "<w-", "w-",
-      "=d", "<>d", "!*"
-    ]
-    self.default_operator = "t"
+module Queries
+  module Operators
+    class WeeksAgo < Base
+      label "weeks_ago"
+      set_symbol "w-"
 
-    def validate
-      if operator == Queries::Operators::OnDate ||
-         operator == Queries::Operators::BetweenDate
-        validate_values_all_date
-      else
-        super
+      extend DateRangeClauses
+
+      def self.sql_for_field(values, db_table, db_field)
+        weekday = OpenProject::Internationalization::Date.beginning_of_week
+        value = values.first.to_i
+
+        to = value.weeks.ago.end_of_week(weekday).to_date
+        from = to - 6.days
+
+        date_range_clause(db_table, db_field, from, to)
       end
-    end
-
-    private
-
-    def validate_values_all_date
-      unless values.all? { |value| value.blank? || date?(value) }
-        errors.add(:values, I18n.t("activerecord.errors.messages.not_a_date"))
-      end
-    end
-
-    def date?(str)
-      true if ::Date.parse(str)
-    rescue ArgumentError
-      false
     end
   end
 end

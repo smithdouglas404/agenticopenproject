@@ -55,6 +55,7 @@ export default class FiltersFormController extends Controller {
     'filterValueContainer',
     'filterValueSelect',
     'days',
+    'weeks',
     'singleDay',
     'simpleValue',
   ];
@@ -69,6 +70,7 @@ export default class FiltersFormController extends Controller {
   declare readonly filterValueContainerTargets:HTMLElement[];
   declare readonly filterValueSelectTargets:HTMLSelectElement[];
   declare readonly daysTargets:HTMLInputElement[];
+  declare readonly weeksTargets:HTMLInputElement[];
   declare readonly singleDayTargets:HTMLInputElement[];
   declare readonly simpleValueTargets:HTMLInputElement[];
 
@@ -99,6 +101,7 @@ export default class FiltersFormController extends Controller {
       ...this.filterValueContainerTargets,
       ...this.filterValueSelectTargets,
       ...this.daysTargets,
+      ...this.weeksTargets,
       ...this.singleDayTargets,
     ];
   }
@@ -287,6 +290,7 @@ export default class FiltersFormController extends Controller {
 
   private readonly noValueOperators = ['*', '!*', 't', 'w'];
   private readonly daysOperators = ['>t-', '<t-', 't-', '<t+', '>t+', 't+'];
+  private readonly weeksOperators = ['>w-', '<w-', 'w-', '<w+', '>w+', 'w+'];
   private readonly onDateOperator = '=d';
   private readonly betweenDatesOperator = '<>d';
 
@@ -304,14 +308,22 @@ export default class FiltersFormController extends Controller {
         valueContainer.classList.add('days');
         valueContainer.classList.remove('on-date');
         valueContainer.classList.remove('between-dates');
+        valueContainer.classList.remove('weeks');
+      } else if (this.weeksOperators.includes(selectedOperator)) {
+        valueContainer.classList.add('weeks');
+        valueContainer.classList.remove('on-date');
+        valueContainer.classList.remove('days');
+        valueContainer.classList.remove('between-dates');
       } else if (selectedOperator === this.onDateOperator) {
         valueContainer.classList.add('on-date');
         valueContainer.classList.remove('days');
         valueContainer.classList.remove('between-dates');
+        valueContainer.classList.remove('weeks');
       } else if (selectedOperator === this.betweenDatesOperator) {
         valueContainer.classList.add('between-dates');
         valueContainer.classList.remove('days');
         valueContainer.classList.remove('on-date');
+        valueContainer.classList.remove('weeks');
       }
     }
   }
@@ -487,6 +499,10 @@ export default class FiltersFormController extends Controller {
 
     if (valueContainer.classList.contains('days')) {
       const dateValue = this.findTargetByName(filterName, this.daysTargets)?.value;
+
+      value = _.without([dateValue], '');
+    } else if (valueContainer.classList.contains('weeks')) {
+      const dateValue = this.findTargetByName(filterName, this.weeksTargets)?.value;
 
       value = _.without([dateValue], '');
     } else if (valueContainer.classList.contains('on-date')) {

@@ -62,6 +62,12 @@ module Queries::Operators
     Queries::Operators::Required,
     Queries::Operators::Parent,
     Queries::Operators::Children,
-    Queries::Operators::Child
+    Queries::Operators::Child,
+    Queries::Operators::InLessThanWeeks,
+    Queries::Operators::InMoreThanWeeks,
+    Queries::Operators::InWeeks,
+    Queries::Operators::LessThanWeeksAgo,
+    Queries::Operators::MoreThanWeeksAgo,
+    Queries::Operators::WeeksAgo
   ].index_by { |o| o.symbol.to_s }.freeze
 end
