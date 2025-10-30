@@ -73,9 +73,7 @@ class Overviews::ProjectCustomFieldsController < ApplicationController
   def process_hierarchy_params
     values = params.dig(:project, :custom_field_values)
 
-    return if values.nil? || !values.is_a?(Array)
-
-    ids = values.map do |value|
+    ids = Array(values).reject(&:empty?).map do |value|
       MultiJson.load(value, symbolize_keys: true)[:value]
     end
 
