@@ -30,13 +30,13 @@ OpenProject 16.6 introduces new project attribute types that make portfolio eval
 
 **Scored lists** extend this concept by allowing administrators to assign numeric scores to list options, such as effort levels or risk ratings. These values can then be used as input for calculated results.
 
-**Calculated values** enable automatic computations based on formulas using numeric project attributes, including scores from Scored lists. The computed result is displayed directly on the project overview and in the project list. It automatically updates whenever one of its source attributes (e.g., *Benefit* or *Effort* in the example below) is changed. This allows teams to calculate project scores or priorities consistently across the portfolio.
+**Calculated values** enable automatic computations based on formulas using numeric project attributes, including scores from Scored lists or even other calculated values. The computed result is displayed directly on the project overview and in the project list. It automatically updates whenever one of its source attributes (e.g., *Benefit* or *Effort* in the example below) is changed. This allows teams to calculate project scores and prioritise consistently across the portfolio.
 
 Here's an example of a calculated value called 'Overall score (calculated)' with the following formula: (Strategic impact * 0.6) + ( Benefit​* 0.3) - (Effort * 0.1)
 
-![Formula example for a project attribute of type 'Calculated Project Score': (Strategic impact * 0.6) + ( Benefit​* 0.3) - (Effort * 0.1)](openproject-16-6-project-attributes-calculated-value.png)
+![Formula example for a project attribute of type 'Calculated Project Score': (Strategic impact * 0.6) + ( Benefit ​* 0.3) - (Effort * 0.1)](openproject-16-6-project-attributes-calculated-value.png)
 
-Together, these additions give project portfolio managers a flexible foundation for data-driven project evaluation and more transparent portfolio decisions. 
+Together, these additions give project portfolio managers a flexible foundation for data-driven project evaluation and more transparent portfolio decisions. Of course, all project attributes, including calculated values, can be used for many other purposes.
 
 >[!NOTE]
 > Please note that these new project attributes are part of our [Enterprise add-ons in the Enterprise Professional plan](https://www.openproject.org/pricing/).
@@ -47,13 +47,13 @@ Together, these additions give project portfolio managers a flexible foundation 
 
 OpenProject 16.6 introduces several backend optimizations that significantly improve performance in large environments. [Database queries for collection endpoints in the API v3 have been optimized](https://community.openproject.org/wp/68457) to avoid unnecessary counting operations, and the [autocompleter for adding work package relations now requests only the data it actually needs](https://community.openproject.org/wp/68458).
 
-These improvements reduce query load and shorten response times, especially for installations with thousands of projects and work packages.
+These improvements reduce query load and shorten response times, especially for installations with thousands of projects and millions of work packages.
 
 ### New index page for Documents module
 
-With OpenProject 16.6, a new index page provides a structured overview of all documents within a project. The list is sorted by last edited, showing the latest changes first, and includes columns for Name, Type, and Last edited. Users can search documents via a quick text filter or narrow results by document type using the filter menu on the left. 
+With OpenProject 16.6, a new index page provides a structured overview of all documents within a project. The list is sorted by last edited, showing the latest changes first, and includes columns for Name, Type (the category), and Last edited. Users can search documents via a quick text filter or narrow results by document category using the *Types* filter menu on the left. A new *Create document* button lets users quickly add new items. 
 
-A new Create document button lets users quickly add new items, with Note set as the default type. Of course, the view automatically respects project permissions, ensuring that users only see documents they are allowed to access. On mobile, the list is optimized to show just the most relevant information.
+Of course, the view automatically respects project permissions, ensuring that users only see documents they are allowed to access. On mobile, the list is optimized to show just the most relevant information.
 
 While this is a small update by itself, it marks the beginning of a major improvement of the Documents module, which will make managing and [live collaborating on documents in OpenProject](https://community.openproject.org/wp/66309) much easier in the future.
 
@@ -61,15 +61,15 @@ While this is a small update by itself, it marks the beginning of a major improv
 
 ### Possibility to change parent of a custom field item
 
-Administrators can now change the parent of an item within a hierarchical custom field. This makes it easier to rearrange existing items without recreating them from scratch. 
+Administrators can now change the parent of an item within a hierarchical custom field or project attribute. This makes it easier to rearrange existing items without recreating them from scratch. 
 
-To do so, administrators need to navigate to *Administration → Custom fields*, select a custom field type hierarchy and click on the *Items* tab. Then they click on the *More* icon and select *Change parent*. A dialog opens showing the current hierarchy tree. From there, administrators can search, select a new parent, and save the updated structure. The hierarchy is updated immediately after saving.
+To do so, administrators need to navigate to *Administration → Custom fields*, select a custom field type hierarchy and click on the *Items* tab. Then they click on the *More* icon and select *Change parent*. A dialog opens showing the current hierarchy tree. From there, administrators can search, select a new parent, and save the updated structure. The hierarchy is updated immediately after saving. Like mentioned above, this also works for project attributes.
 
 ![OpenProject 16.6: Custom field type hierarchy in the administration, tab 'Items', one item is selected with the 'More' menu and the option to change parent is higlighted](openproject-16-6-custom-field-hierarchy-change-parent.png)
 
-### Updated 'More' menu of meetings with a 'Add to section' option
+### Updated 'More' menu of meetings with an 'Add to section' option
 
-In the Meetings module, the *More (three dots) menu* for agenda items has been improved to make it easier to move work packages between sections. Moderators can now directly move an item to another section without manually reordering it step by step. 
+In the Meetings module, the *More (three dots) menu* for agenda items has been improved to make it easier to move items between sections. Moderators can now directly move an item to another section without manually reordering it step by step. 
 
 The new *Move → Move to section* option opens a dialog where users can select the desired section from a dropdown list. Additionally, users can still move an agenda item to the backlog or to the next meeting (if it's part of a meeting series).
 
@@ -77,9 +77,9 @@ The new *Move → Move to section* option opens a dialog where users can select 
 
 ### Editing individual attributes even if other fields are invalid
 
-In OpenProject 16.6, users can now edit individual attributes of a project, work package, or other object even if other required fields are missing or invalid. Previously, a single missing value — for example, a required custom field added after a project’s creation — could block users from saving any changes at all.
+In OpenProject 16.6, users can now edit individual attributes of a project, work package, or other object even if some required fields are missing or invalid. Previously, a single missing value — for example, a required custom field added after a project’s creation — could block users from saving any changes at all.
 
-With this improvement, users can still update visible fields such as status, assignee, or priority without being blocked by unrelated validation errors elsewhere. Required fields remain enforced when creating new resources or when the field is visible in the form. This change helps reduce user frustration and ensures smoother editing in complex projects with many custom fields.
+With this improvement, OpenProject now only enforces required fields when they are visible in the form being edited. For example, a user can update a project name even if a required custom field for that project has not been filled in, since that field is not shown in the name edit view. However, when editing a work package where the required field is part of the form, the value must still be provided before saving. This change helps reduce unnecessary validation errors and prevents users from being blocked by unrelated fields.
 
 ### Work package type workflow table with a sticky header and sticky first column
 
