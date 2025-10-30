@@ -218,8 +218,8 @@ module IncomingEmails
 
     def system_mail_addresses
       [
-        Setting.mail_from,
-        ApplicationMailer.mail_from
+        ApplicationMailer.mail_from,
+        ApplicationMailer.reply_to
       ]
         .map { |mail| mail.to_s.strip.downcase }
     end

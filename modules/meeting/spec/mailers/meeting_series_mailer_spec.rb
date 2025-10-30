@@ -69,7 +69,7 @@ RSpec.describe MeetingSeriesMailer do
       expect(mail.subject).to include(series.project.name)
       expect(mail.subject).to include(series.title)
       expect(mail.to).to contain_exactly(recipient.mail)
-      expect(mail.from).to eq([ApplicationMailer.mail_from])
+      expect(mail.from).to eq([ApplicationMailer.reply_to])
     end
 
     it "renders the text body" do
@@ -97,7 +97,7 @@ RSpec.describe MeetingSeriesMailer do
       expect(mail.subject).to include(series.project.name)
       expect(mail.subject).to include(series.title)
       expect(mail.to).to contain_exactly(recipient.mail)
-      expect(mail.from).to eq([ApplicationMailer.mail_from])
+      expect(mail.from).to eq([ApplicationMailer.reply_to])
     end
 
     it "renders the text body" do

@@ -275,7 +275,7 @@ module Meetings
     end
 
     def ical_organizer
-      Icalendar::Values::CalAddress.new("mailto:#{ApplicationMailer.mail_from}", cn: Setting.app_title)
+      Icalendar::Values::CalAddress.new("mailto:#{ApplicationMailer.reply_to}", cn: Setting.app_title)
     end
 
     def url_helpers
