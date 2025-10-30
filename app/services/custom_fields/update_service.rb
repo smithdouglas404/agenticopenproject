@@ -47,7 +47,7 @@ module CustomFields
     def recalculate_values
       return unless recalculate_values?
 
-      model.class.customized_class.find_each do |customized|
+      recalculate_scope.find_each do |customized|
         affected_cfs = customized.available_custom_fields.affected_calculated_fields([model.id])
 
         customized.calculate_custom_fields(affected_cfs)
@@ -61,5 +61,34 @@ module CustomFields
 
       model.formula_previously_changed? || (model.is_required_previously_changed? && model.is_required?)
     end
+
+    def recalculate_scope
+      if model.is_required_previously_changed? && model.is_required?
+        if model.formula_previously_changed?
+          customized_class
+        else
+          customized_class.where(
+            customized_relation_exists(CustomValue.where(value: [nil, ""]))
+          )
+        end
+      else
+        customized_class.where(
+          customized_relation_exists(CustomValue.where.not(value: [nil, ""]))
+            .or(customized_relation_exists(CalculatedValueError))
+        )
+      end
+    end
+
+    def customized_relation_exists(scope)
+      scope
+        .where(
+          scope.arel_table[:customized_id].eq(customized_class.arel_table[:id]),
+          customized_type: customized_class,
+          custom_field_id: model.id
+        )
+        .select(1).arel.exists
+    end
+
+    def customized_class = model.class.customized_class
   end
 end
