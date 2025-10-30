@@ -139,6 +139,7 @@ RSpec.describe Meetings::PDF::Default::Exporter do
     end
     let(:outcome1) { create(:meeting_outcome, meeting_agenda_item:, notes: "An outcome") }
     let(:outcome2) { create(:meeting_outcome, meeting_agenda_item:, notes: "A second outcome") }
+    let(:outcome3) { create(:meeting_outcome, meeting_agenda_item: wp_agenda_item, notes: "A single outcome") }
     let(:attachment) { create(:attachment, container: meeting) }
     let(:meeting_backlog_item) do
       create(:meeting_agenda_item, meeting_section: meeting.backlog,
@@ -152,8 +153,9 @@ RSpec.describe Meetings::PDF::Default::Exporter do
       User.current = user
       meeting_agenda_item # create the agenda item
       wp_agenda_item # create the wp agenda item
-      outcome1 # create the outcome
-      outcome2 # create the outcome
+      outcome1 # create the outcome for first agenda item
+      outcome2 # create the outcome for first agenda item
+      outcome3 # create the outcome for wp agenda item
       attachment # create the attachment
       meeting_backlog_item # create the backlog item
       attended # create the attended participant
@@ -183,15 +185,17 @@ RSpec.describe Meetings::PDF::Default::Exporter do
           "Untitled section", "  ", "15 mins",
           "Agenda Item TOP 1", "  ", "15 mins", "  ", "Export User",
           "foo",
-          "✓   Outcome",
+          "✓   Outcome 1",
           "An outcome",
-          "✓   Outcome",
+          "✓   Outcome 2",
           "A second outcome",
 
           "Second section", "  ", "10 mins",
 
           "Task", "##{work_package.id}", "Important task", " (Workin' on it)", "  ", "10 mins",
           "bar",
+          "✓   Outcome",
+          "A single outcome",
 
           "Attachments",
           attachment.filename,

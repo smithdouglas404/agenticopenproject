@@ -81,25 +81,27 @@ module Meetings::PDF::Common::Agenda
   end
 
   def write_outcomes(agenda_item)
-    agenda_item
-      .outcomes
-      .all
-      .reject { |outcome| outcome.notes.blank? }
-      .each do |outcome|
+    outcomes = agenda_item
+                 .outcomes
+                 .all
+                 .reject { |outcome| outcome.notes.blank? }
+    outcomes.each_with_index do |outcome, index|
       pdf.indent(styles.outcome_indent) do
         write_optional_page_break
-        write_outcome_title
+        write_outcome_title(index, outcomes.size > 1)
         write_outcome_notes(outcome.notes)
       end
     end
   end
 
-  def write_outcome_title
+  def write_outcome_title(index, multiple_outcomes)
+    text = I18n.t("label_agenda_outcome")
+    text = "#{text} #{(index + 1).to_s}" if multiple_outcomes
     with_vertical_margin(styles.outcome_title_margins) do
       style = styles.outcome_title
       pdf.formatted_text([
                            styles.outcome_symbol.merge({ text: "✓ " }),
-                           style.merge({ text: I18n.t("label_agenda_outcome") })
+                           style.merge({ text: })
                          ], style)
     end
   end
