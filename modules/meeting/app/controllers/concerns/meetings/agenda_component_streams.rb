@@ -197,17 +197,21 @@ module Meetings
         update_new_button_via_turbo_stream(disabled: false, meeting:) if form_hidden == true
       end
 
-      def update_item_via_turbo_stream(current_occurrence:, state: :show, meeting_agenda_item: @meeting_agenda_item,
-                                       display_notes_input: nil)
+      def update_item_via_turbo_stream(current_occurrence:,
+                                       state: :show,
+                                       meeting_agenda_item: @meeting_agenda_item,
+                                       presentation_mode: false,
+                                       **)
         update_via_turbo_stream(
           component: MeetingAgendaItems::ItemComponent.new(
             state:,
             meeting_agenda_item:,
-            display_notes_input:,
-            current_occurrence:
+            current_occurrence:,
+            presentation_mode:,
+            **
           )
         )
-        update_show_items_via_turbo_stream(current_occurrence:)
+        update_show_items_via_turbo_stream(current_occurrence:) unless presentation_mode
       end
 
       def add_item_via_turbo_stream(current_occurrence:, meeting_agenda_item: @meeting_agenda_item, clear_slate: false) # rubocop:disable Metrics/AbcSize

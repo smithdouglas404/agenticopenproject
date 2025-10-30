@@ -75,7 +75,7 @@
             add_outcome_action_item(menu) if add_outcome_action?
           end
 
-          if editable? && !single_mode?
+          if editable? && !presentation_mode?
             with_item_group(menu) do
               menu.with_sub_menu_item(label: I18n.t("label_agenda_item_move")) do |submenu|
                 submenu.with_leading_visual_icon(icon: :"op-arrow-in")

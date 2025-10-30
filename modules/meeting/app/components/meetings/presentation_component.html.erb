@@ -7,6 +7,7 @@
 
         header.with_action_button(
           tag: :a,
+          scheme: :invisible,
           mobile_icon: :x,
           mobile_label: t(:"meeting.presentation_mode.exit"),
           href: meeting_path(@meeting),
@@ -26,7 +27,7 @@
           <%= render MeetingAgendaItems::ItemComponent.new(
             container:,
             meeting_agenda_item: current_item,
-            single_mode: true
+            presentation_mode: true
           ) %>
         <% end %>
       </turbo-frame>
@@ -37,6 +38,7 @@
       <div class="op-meeting-presentation--footer-left">
         <%= render(Primer::Beta::Button.new(
           tag: :a,
+          scheme: :link,
           href: project_meeting_presentation_path(@project, @meeting, current_id: previous_id),
           data: { "meetings--presentation-target": "previousButton" },
           disabled: !has_previous?
@@ -53,6 +55,7 @@
       <div class="op-meeting-presentation--footer-right">
         <%= render(Primer::Beta::Button.new(
           tag: :a,
+          scheme: :link,
           href: project_meeting_presentation_path(@project, @meeting, current_id: next_id),
           data: { "meetings--presentation-target": "nextButton" },
           disabled: !has_next?

@@ -43,7 +43,7 @@ module MeetingAgendaItems
       display_notes_input: nil,
       first_and_last: [],
       current_occurrence: nil,
-      single_mode: false
+      presentation_mode: false
     )
       super
 
@@ -53,7 +53,7 @@ module MeetingAgendaItems
       @container = container
       @first_and_last = first_and_last
       @current_occurrence = current_occurrence
-      @single_mode = single_mode
+      @presentation_mode = presentation_mode
     end
 
     ##
@@ -82,15 +82,13 @@ module MeetingAgendaItems
       {
         meeting_agenda_item: @meeting_agenda_item,
         display_notes_input: (@display_notes_input if @state == :edit),
-        current_occurrence: @current_occurrence
+        current_occurrence: @current_occurrence,
+        presentation_mode: @presentation_mode
       }.compact
     end
 
     def show_component_params
-      child_component_params.merge(
-        first_and_last: @first_and_last,
-        single_mode: @single_mode
-      ).compact
+      child_component_params.merge(first_and_last: @first_and_last).compact
     end
 
     def wrapper_arguments
