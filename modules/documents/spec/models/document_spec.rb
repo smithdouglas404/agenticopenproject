@@ -52,7 +52,6 @@ RSpec.describe Document do
   end
 
   describe "Associations" do
-    it { is_expected.to belong_to(:author).class_name("User").optional }
     it { is_expected.to belong_to(:category).class_name("DocumentCategory").optional }
     it { is_expected.to belong_to(:project) }
     it { is_expected.to belong_to(:type).class_name("DocumentType").optional }

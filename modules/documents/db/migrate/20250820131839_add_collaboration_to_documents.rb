@@ -32,8 +32,6 @@ class AddCollaborationToDocuments < ActiveRecord::Migration[8.0]
   def change
     add_column :documents, :kind, :string
 
-    add_reference :documents, :author, foreign_key: { to_table: :users }
-
     reversible do |dir|
       dir.up do
         set_existing_documents_to_classic_kind
