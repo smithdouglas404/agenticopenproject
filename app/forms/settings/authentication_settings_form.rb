@@ -39,8 +39,9 @@ module Settings
             size: 6,
             min: 0,
             caption: I18n.t("setting_session_ttl_hint"),
-            trailing_visual: { text: { text: I18n.t(:label_minute_plural) } },
-            input_width: :small
+            trailing_visual: { text: { id: "settings_session_ttl_unit", text: I18n.t(:label_minute_plural) } },
+            input_width: :small,
+            aria: { describedby: "settings_session_ttl_unit" }
           )
         end
       end
