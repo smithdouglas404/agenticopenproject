@@ -99,7 +99,7 @@ module CustomFields
           label: I18n.t("custom_fields.admin.items.placeholder.score"),
           type: :number,
           step: :any,
-          value: @target_item.score,
+          value: @target_item.score, # TODO: use weight after the renaming.
           visually_hide_label: true,
           full_width: false,
           required: true,

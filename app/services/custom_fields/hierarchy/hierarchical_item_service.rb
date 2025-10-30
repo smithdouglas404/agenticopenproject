@@ -56,7 +56,7 @@ module CustomFields
       def insert_item(contract_class:, parent:, label:, short: nil, score: nil, sort_order: nil)
         contract_class
           .new
-          .call({ parent:, label:, short:, score: })
+          .call({ parent:, label:, short:, score:, weight: score })
           .to_monad
           .bind { |validation| create_child_item(validation:, sort_order:) }
       end
@@ -72,7 +72,7 @@ module CustomFields
       def update_item(contract_class:, item:, label: nil, short: nil, score: nil)
         contract_class
           .new
-          .call({ item:, label:, short:, score: })
+          .call({ item:, label:, short:, score:, weight: score })
           .to_monad
           .bind { |attributes| update_item_attributes(item:, attributes:) }
       end
@@ -188,7 +188,8 @@ module CustomFields
       end
 
       def update_item_attributes(item:, attributes:)
-        if item.update(label: attributes[:label], short: attributes[:short], score: attributes[:score])
+        if item.update(label: attributes[:label], short: attributes[:short], score: attributes[:score],
+                       weight: attributes[:score])
           if item.score_previously_changed?
             # Only changes to item are of interest, so no need to pass descendant ids
             update_calculated_values_for_hierarchy(item_ids: item.id, custom_field: item.root&.custom_field)
