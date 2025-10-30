@@ -376,6 +376,13 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:cust
         expect(project_having_fields_enabled.custom_values).to be_empty
         expect(project_having_fields_enabled.custom_values).to be_empty
       end
+
+      it "updates both score and weight fields" do
+        expect(result).to be_success
+        one.reload
+        expect(one.score).to eq(42)
+        expect(one.weight).to eq(42)
+      end
     end
 
     describe "deleting an item" do
