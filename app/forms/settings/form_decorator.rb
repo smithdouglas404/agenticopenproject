@@ -174,6 +174,16 @@ module Settings
       end
     end
 
+    # Creates a group for a setting
+    #
+    # @param ** [Hash] Additional options for the group
+    # @see Primer::Forms::Dsl::FormObject#group
+    def group(**, &)
+      form.group(**) do |g|
+        yield Settings::FormDecorator.new(g)
+      end
+    end
+
     # Creates a save button to submit the form
     #
     # @return [Object] The submit button
