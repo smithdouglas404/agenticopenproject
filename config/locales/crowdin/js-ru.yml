@@ -1072,8 +1072,8 @@ ru:
     notice_successful_delete: "Удаление завершено."
     notice_successful_update: "Обновление завершено"
     notice_job_started: "задание начато."
-    no_job_id: "No job ID returned from server."
-    invalid_job_response: "Invalid response from server."
+    no_job_id: "Идентификатор задания не был получен с сервера."
+    invalid_job_response: "Недопустимый ответ сервера."
     notice_bad_request: "Неверный запрос."
     relations:
       empty: Отношений не существует
@@ -1143,7 +1143,7 @@ ru:
       timeline: "Гант"
     invite_user_modal:
       invite: "Пригласить"
-      placeholder_add_tag: "Create placeholder user"
+      placeholder_add_tag: "Создать пользователя-заполнителя"
     exclusion_info:
       modal:
         title: "Статус исключён из иерархии итогов"
@@ -1160,7 +1160,7 @@ ru:
       selected_filter:
         all: "Все проекты"
         selected: "Только выбранные"
-      search_placeholder: "Search projects..."
+      search_placeholder: "Поиск проектов..."
       search_placeholder_favorites: "Поиск в избранном..."
       include_subprojects: "Включить все подпроекты"
       tooltip:
@@ -1168,7 +1168,7 @@ ru:
         current_project: "Это текущий проект, в котором вы находитесь."
         does_not_match_search: "Ни один проект не соответствует критериям поиска."
       no_results: "Ни один проект не соответствует критериям поиска."
-      no_favorite_results: "No favorite project matches your search criteria."
+      no_favorite_results: "Ни один избранный проект не соответствует критериям поиска."
     baseline:
       toggle_title: "Базовый уровень"
       clear: "Очистить"

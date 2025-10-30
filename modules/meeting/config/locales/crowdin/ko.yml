@@ -61,7 +61,7 @@ ko:
       meeting_participant:
         invited: "초대됨"
         attended: "참석함"
-        participation_status: "Participation status"
+        participation_status: "참여자 상태"
     errors:
       models:
         meeting_participant:
@@ -213,7 +213,7 @@ ko:
       open_my_meetings_link: "내 미팅으로 이동"
       series:
         title: "[%{project_name}] 미팅 시리즈 '%{title}'"
-        summary: "%{actor} has invited you to a new meeting series '%{title}'"
+        summary: "%{actor} 님이 새로운 미팅 시리즈 '%{title}'에 회원님을 초대했습니다"
       series_updated:
         title: "[%{project_name}] 미팅 시리즈 '%{title}'이(가) 업데이트되었습니다"
         summary: "'%{title}' 미팅 시리즈를 %{actor} 님이 업데이트했습니다"
@@ -492,7 +492,7 @@ ko:
   label_agenda_item_work_package: "의제 항목 작업 패키지"
   label_section_rename: "섹션 이름 바꾸기"
   label_agenda_outcome: "결과"
-  label_agenda_new_outcome: "New outcome"
+  label_agenda_new_outcome: "새로운 결과"
   label_agenda_outcome_actions: "의제 결과 작업"
   label_agenda_outcome_edit: "결과 편집"
   label_agenda_outcome_delete: "결과 제거"

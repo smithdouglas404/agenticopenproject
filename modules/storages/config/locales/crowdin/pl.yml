@@ -177,12 +177,12 @@ pl:
             remote_folders:
               request_error: OpenProject nie mógł uzyskać dostępu do Twojego dysku %{drive_id}. Sprawdź, czy konfiguracja magazynu jest prawidłowa.
             rename_project_folder:
-              conflict: OpenProject could not rename the folder %{current_path} to %{project_folder_name} as a folder with the same name already exists.
+              conflict: OpenProject nie może zmienić nazwy folderu %{current_path} na %{project_folder_name}, ponieważ istnieje już folder o tej samej nazwie.
               forbidden: OpenProject nie ma dostępu do folderu %{current_path}, aby zmienić jego nazwę.
               not_found: "Nie znaleziono lokalizacji %{current_path}."
             set_folders_permissions:
               permission_not_set: nie można ustawić uprawnień do lokalizacji %{path}.
-          error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information.
+          error: Wystąpił nieoczekiwany błąd. Upewnij się, że usługa OneDrive jest osiągalna i sprawdź dzienniki pracowników OpenProject, aby uzyskać więcej informacji.
           not_allowed: OpenProject nie mógł uzyskać dostępu do Twojego dysku w usłudze OneDrive. Sprawdź uprawnienia ustawione w aplikacji Azure.
           unauthorized: OpenProject nie może zsynchronizować się z OneDrive. Sprawdź konfigurację magazynu i aplikacji Azure.
           user_does_not_exist: "Użytkownik %{user} nie istnieje w Nextcloud."
@@ -201,7 +201,7 @@ pl:
               permission_not_set: nie można ustawić uprawnień do lokalizacji %{path}.
           error: Wystąpił nieoczekiwany błąd. Upewnij się, że usługa OneDrive jest osiągalna i sprawdź dzienniki pracowników OpenProject, aby uzyskać więcej informacji
           not_allowed: OpenProject nie mógł uzyskać dostępu do Twojego dysku w usłudze OneDrive. Sprawdź uprawnienia ustawione w aplikacji Azure.
-          not_found: OpenProject could not access your library %{drive_name}. Please check you Sharepoint site document libraries.
+          not_found: OpenProject nie może uzyskać dostępu do Twojej biblioteki %{drive_name}. Sprawdź biblioteki dokumentów Twojej witryny Sharepoint.
           unauthorized: OpenProject nie może zsynchronizować się z OneDrive. Sprawdź konfigurację magazynu i aplikacji Azure.
           user_does_not_exist: "Użytkownik %{user} nie istnieje w Nextcloud."
         upload_link_service:
@@ -273,10 +273,10 @@ pl:
         ampf_configuration:
           client_folder_creation: Automatyczne tworzenie folderów
           client_folder_removal: Automatyczne usuwanie folderów
-          drive_contents: Drive content
+          drive_contents: Zawartość dysku
           files_request: Pobieranie plików folderów grup
           group_folder_app: 'Zależne: foldery grup'
-          group_folder_contents: Group folder content
+          group_folder_contents: Zawartość folderu grupy
           group_folder_presence: Folder grupy istnieje
           header: Automatycznie zarządzane foldery projektu
           userless_access: Uwierzytelnianie żądań po stronie serwera
@@ -526,7 +526,7 @@ pl:
         name: OneDrive
         name_placeholder: np. OneDrive
       sharepoint:
-        drive_description: OpenProject access-managed document library
+        drive_description: Biblioteka dokumentów OpenProject z zarządzaniem dostępem
         label_oauth_client_id: Identyfikator aplikacji OAuth Azure (klienta)
         label_oauth_client_secret: Tajny klucz klienta OAuth Azure
         name: SharePoint

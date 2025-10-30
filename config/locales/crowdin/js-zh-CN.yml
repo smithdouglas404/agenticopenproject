@@ -1132,7 +1132,7 @@ zh-CN:
       timeline: "甘特图"
     invite_user_modal:
       invite: "邀请"
-      placeholder_add_tag: "Create placeholder user"
+      placeholder_add_tag: "创建占位符用户"
     exclusion_info:
       modal:
         title: "从层次结构总计中排除的状态"

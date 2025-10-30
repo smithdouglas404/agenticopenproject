@@ -56,7 +56,7 @@ ru:
       label_mapping: Привязки
       label_requested_attribute_for: "Запрошенный атрибут для: %{attribute}"
       no_results_table: Провайдеры SAML еще не определены.
-      notice_created: A new SAML identity provider was successfully created.
+      notice_created: Новый провайдер идентификации SAML был успешно создан.
       plural: Провайдеры SAML
       singular: Провайдер SAML
       requested_attributes: Запрошенные атрибуты

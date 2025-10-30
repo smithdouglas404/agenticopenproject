@@ -63,7 +63,7 @@ ru:
               op_application_not_installed: похоже, что приложение "Интеграция с OpenProject" не установлено. Сначала установите его и повторите попытку.
             password:
               invalid_password: недействителен.
-              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
+              unknown_error: не удалось подтвердить соединение с провайдером файлового хранилища. Пожалуйста, убедитесь, что соединение работает правильно.
     models:
       file_link: Файл
       storages/storage: Хранилище
@@ -177,12 +177,12 @@ ru:
             remote_folders:
               request_error: OpenProject не смог получить доступ к диску %{drive_id}. Пожалуйста, проверьте правильность конфигурации хранилища.
             rename_project_folder:
-              conflict: OpenProject could not rename the folder %{current_path} to %{project_folder_name} as a folder with the same name already exists.
+              conflict: OpenProject не смог переименовать папку %{current_path} в %{project_folder_name}, так как папка с таким же именем уже существует.
               forbidden: OpenProject не имеет доступа к %{current_path}, чтобы переименовать его.
               not_found: "%{current_path} не найден."
             set_folders_permissions:
               permission_not_set: не удалось установить разрешения на %{path}.
-          error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information.
+          error: Произошла непредвиденная ошибка. Пожалуйста, убедитесь, что OneDrive доступен и проверьте журналы работы OpenProject для более подробной информации.
           not_allowed: OpenProject не был разрешен доступ к OneDrive. Пожалуйста, проверьте разрешения, установленные в приложении Azure.
           unauthorized: OpenProject не удалось синхронизировать с OneDrive. Пожалуйста, проверьте конфигурацию хранилища и приложения Azure.
           user_does_not_exist: "%{user} не существует в Nextcloud."
@@ -201,7 +201,7 @@ ru:
               permission_not_set: не удалось установить разрешения на %{path}.
           error: Произошла непредвиденная ошибка. Пожалуйста, убедитесь, что OneDrive доступен и проверьте журналы работы OpenProject для дополнительной информации
           not_allowed: OpenProject не был разрешен доступ к OneDrive. Пожалуйста, проверьте разрешения, установленные в приложении Azure.
-          not_found: OpenProject could not access your library %{drive_name}. Please check you Sharepoint site document libraries.
+          not_found: OpenProject не смог получить доступ к Вашей библиотеке %{drive_name}. Пожалуйста, проверьте библиотеки документов на сайте Sharepoint.
           unauthorized: OpenProject не удалось синхронизировать с OneDrive. Пожалуйста, проверьте конфигурацию хранилища и приложения Azure.
           user_does_not_exist: "%{user} не существует в Nextcloud."
         upload_link_service:
@@ -218,7 +218,7 @@ ru:
       oauth_client_incomplete:
         nextcloud: Разрешить OpenProject доступ к данным Nextcloud с помощью OAuth.
         one_drive: Разрешить OpenProject доступ к данным Azure, используя OAuth для подключения OneDrive.
-        sharepoint: Allow OpenProject to access SharePoint data using OAuth.
+        sharepoint: Разрешить OpenProject доступ к данным SharePoint через OAuth.
       redirect_uri_incomplete:
         one_drive: Завершите установку с правильным перенаправлением URI.
         sharepoint: Завершите установку с правильным перенаправлением URI.
@@ -227,7 +227,7 @@ ru:
     delete_warning:
       project_storage_delete_result_1: Удалить все ссылки из пакетов работ этого проекта в файлы и папки этого хранилища.
       project_storage_delete_result_2: В случае, если хранилище имеет автоматически управляемую папку проекта, она и ее файлы будут удалены навсегда.
-      storage: 'Are you sure you want to delete %{file_storage}? This will:'
+      storage: 'Вы уверены, что хотите удалить %{file_storage}? Это будет:'
       storage_delete_result_1: Удалить все настройки хранилища для всех проектов, использующих это хранилище.
       storage_delete_result_2: Удалить все ссылки из пакетов работ всех проектов в файлы и папки этого хранилища.
       storage_delete_result_3: В случае, если хранилище имеет автоматически управляемые папки проектов, они и содержащиеся в них файлы будут удалены навсегда.
@@ -260,7 +260,7 @@ ru:
       storage_audience_blank: Аудитория не была настроена.
       storage_audience_description: Обмен токенами для аудитории "%{audience}".
       storage_audience_idp: Использование токена доступа, полученного поставщиком идентификационных данных при входе в систему, независимо от аудитории.
-      storage_oauth: Storage OAuth
+      storage_oauth: Хранилище OAuth
       storage_provider: Поставщик хранилища
       token_exchange: Обмен токенами
     health:
@@ -273,10 +273,10 @@ ru:
         ampf_configuration:
           client_folder_creation: Автоматическое создание папки
           client_folder_removal: Автоматическое удаление папок
-          drive_contents: Drive content
+          drive_contents: Содержимое диска
           files_request: Получение файлов групповых папок
           group_folder_app: 'Зависимость: Папки группы'
-          group_folder_contents: Group folder content
+          group_folder_contents: Содержимое групповой папки
           group_folder_presence: Папка группы существует
           header: Автоматически управляемые папки проекта
           userless_access: Аутентификация на стороне сервера
@@ -341,19 +341,19 @@ ru:
         oidc_cant_refresh_token: Произошла ошибка во время проверки Вашего доступа к хранилищу. Пожалуйста, проверьте журналы сервера для получения дополнительной информации.
         oidc_non_oidc_user: Текущий пользователь не представлен провайдером идентификации OpenID Connect(OIDC). Пожалуйста, повторите проверку пользователя, идентифицированного через OIDC.
         oidc_non_provisioned_user: Текущий пользователь не представлен провайдером идентификации OpenID Connect. Пожалуйста, повторите проверку пользователя.
-        oidc_provider_cant_exchange: The OpenID Connect provider does not seem to support token exchange, but token exchange was configured for the storage.
+        oidc_provider_cant_exchange: Провайдер OpenID Connect, похоже, не поддерживает обмен токенами, но обмен токенами был настроен для хранилища.
         oidc_token_acquisition_failed: Ваша настройка OpenID Connect не обеспечивает необходимую аудиторию и не предоставляет возможности обмена токенами. Пожалуйста, ознакомьтесь с нашей документацией для получения дополнительной информации.
         oidc_token_exchange_failed: Похоже, возникла проблема с настройкой Exchange Token вашего провайдера OpenID Connect. Пожалуйста, проверьте его конфигурацию и повторите попытку.
         oidc_token_refresh_failed: Произошла ошибка во время проверки Вашего доступа к хранилищу. Пожалуйста, проверьте журналы сервера для получения дополнительной информации.
-        sp_client_cant_delete_folder: The client is having trouble deleting folders in SharePoint. Please check the setup documentation for your storage.
-        sp_client_id_missing: The configured OAuth 2 client id is missing for SharePoint. Please check the configuration.
-        sp_client_secret_missing: The configured OAuth 2 client secret is missing for SharePoint. Please check the configuration.
-        sp_client_write_permission_missing: The client seems to have write permissions missing in SharePoint. Please check the setup documentation for your storage.
-        sp_existing_test_folder: The folder %{folder_name} needed for testing already exists in SharePoint. Please delete it and try again.
-        sp_oauth_request_error: The user-bound request to SharePoint failed. Please check the server logs for further information.
-        sp_oauth_token_missing: OpenProject cannot test the user level communication with SharePoint as the user did not yet link their SharePoint account.
-        sp_tenant_id_missing: The configured directory (tenant) id is missing for SharePoint. Please check the configuration.
-        sp_unexpected_content: Unexpected content found in the SharePoint drive.
+        sp_client_cant_delete_folder: У клиента возникли проблемы с удалением папок в SharePoint. Пожалуйста, проверьте документацию по настройке Вашего хранилища.
+        sp_client_id_missing: Настроенный идентификатор клиента OAuth 2 отсутствует для SharePoint. Пожалуйста, проверьте конфигурацию.
+        sp_client_secret_missing: Настроенный ключ клиента OAuth 2 отсутствует для SharePoint. Пожалуйста, проверьте конфигурацию.
+        sp_client_write_permission_missing: Похоже, что у клиента отсутствуют разрешения на запись в SharePoint. Пожалуйста, проверьте документацию по настройке Вашего хранилища.
+        sp_existing_test_folder: Папка %{folder_name}, необходимая для тестирования, уже существует в SharePoint. Пожалуйста, удалите ее и попробуйте снова.
+        sp_oauth_request_error: Запрос к SharePoint, связанный с пользователем, завершился неудачей. Пожалуйста, проверьте журналы сервера для получения дополнительной информации.
+        sp_oauth_token_missing: OpenProject не может протестировать взаимодействие с SharePoint на уровне пользователя, поскольку пользователь еще не связал свою учетную запись с SharePoint.
+        sp_tenant_id_missing: Настроенный идентификатор каталога (арендатора) отсутствует для SharePoint. Пожалуйста, проверьте конфигурацию.
+        sp_unexpected_content: Неожиданное содержимое обнаружено на диске SharePoint.
         unknown_error: Соединение не удалось подтвердить. Произошла неизвестная ошибка. Пожалуйста, проверьте журналы сервера для получения дополнительной информации.
       label_error: Ошибка
       label_failed: Ошибка
@@ -374,8 +374,8 @@ ru:
         warning: Некоторые проверки вернули предупреждение. Это может привести к неожиданному поведению.
       title: Отчёт о состоянии хранилища
     health_email_notifications:
-      description_disabled: Admins will not receive updates by email when there are important updates.
-      description_enabled: Admins will receive updates by email when there are important updates.
+      description_disabled: Администраторы не будут получать обновления по электронной почте, когда выходят важные обновления.
+      description_enabled: Администраторы будут получать обновления по электронной почте, когда есть важные обновления.
       error_could_not_be_saved: Не удалось сохранить настройки уведомления по электронной почте. Пожалуйста, попробуйте еще раз.
       title: Уведомлять администраторов по электронной почте
     help_texts:
@@ -422,7 +422,7 @@ ru:
       setting_up_storages: Для настройки файловых хранилищ посетите
       setting_up_storages_non_admin: Администраторы могут настроить файловые хранилища в Администрирование / Файловые хранилища.
       sharepoint:
-        application_link_text: SharePoint site
+        application_link_text: Сайт SharePoint
         integration: Администрирование SharePoint / OpenProject
         oauth_configuration: Скопируйте эти значения из желаемого приложения в %{application_link_text}.
         provider_configuration: Перед установкой убедитесь, что у вас есть права администрирования в %{application_link_text} или обратитесь к администратору Microsoft. На портале вам также нужно зарегистрировать приложение Azure или использовать существующее для аутентификации.
@@ -526,7 +526,7 @@ ru:
         name: OneDrive
         name_placeholder: напр. OneDrive
       sharepoint:
-        drive_description: OpenProject access-managed document library
+        drive_description: Библиотека документов OpenProject
         label_oauth_client_id: Идентификатор приложения (клиента) Azure OAuth
         label_oauth_client_secret: Секретное значение клиента Azure OAuth
         name: SharePoint

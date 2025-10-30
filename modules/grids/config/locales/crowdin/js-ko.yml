@@ -30,7 +30,7 @@ ko:
         project_status_beta:
           title: '프로젝트 상태(베타)'
         subprojects:
-          title: 'Subitems'
+          title: '하위 항목'
         project_favorites:
           title: '즐겨 찾는 프로젝트'
           no_results: '즐겨 찾는 프로젝트가 현재 없습니다. 프로젝트 대시보드에서 별 아이콘을 클릭하여 즐겨찾기에 추가하세요.'

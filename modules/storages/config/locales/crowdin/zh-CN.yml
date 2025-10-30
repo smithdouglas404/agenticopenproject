@@ -177,12 +177,12 @@ zh-CN:
             remote_folders:
               request_error: OpenProject 无法访问您的驱动器 %{drive_id}。请检查您的存储配置是否正确。
             rename_project_folder:
-              conflict: OpenProject could not rename the folder %{current_path} to %{project_folder_name} as a folder with the same name already exists.
+              conflict: OpenProject 无法将文件夹 %{current_path} 重命名为 %{project_folder_name}，因为已存在同名文件夹。
               forbidden: OpenProject 用户无法访问 %{current_path} 文件夹。
               not_found: "%{current_path} 没有找到。"
             set_folders_permissions:
               permission_not_set: 无法设置 %{path} 上的权限。
-          error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information.
+          error: 发生意外错误。请确保 OneDrive 可以访问，并检查 OpenProject 工作日志以获取更多信息。
           not_allowed: OpenProject 未被允许访问您的 OneDrive 驱动器。请检查 Azure 应用程序上设置的权限。
           unauthorized: OpenProject 无法与 Nextcloud 同步。请检查您的存储设备和 Nextcloud 配置。
           user_does_not_exist: "在 Nextcloud 中不存在 %{user}  。"
@@ -201,7 +201,7 @@ zh-CN:
               permission_not_set: 无法设置 %{path} 上的权限。
           error: 发生意外错误。请确保 OneDrive 可以访问，并检查 OpenProject 工作日志以获取更多信息
           not_allowed: OpenProject 未被允许访问您的 OneDrive 驱动器。请检查 Azure 应用程序上设置的权限。
-          not_found: OpenProject could not access your library %{drive_name}. Please check you Sharepoint site document libraries.
+          not_found: OpenProject 无法访问您的库 %{drive_name}。请检查您的 Sharepoint 站点文档库。
           unauthorized: OpenProject 无法与 Nextcloud 同步。请检查您的存储设备和 Nextcloud 配置。
           user_does_not_exist: "在 Nextcloud 中不存在 %{user}  。"
         upload_link_service:
@@ -273,10 +273,10 @@ zh-CN:
         ampf_configuration:
           client_folder_creation: 自动创建文件夹
           client_folder_removal: 自动删除文件夹
-          drive_contents: Drive content
+          drive_contents: 驱动器内容
           files_request: 正在获取组文件夹文件
           group_folder_app: '依赖：组文件夹'
-          group_folder_contents: Group folder content
+          group_folder_contents: 群组文件夹内容
           group_folder_presence: 组文件夹已存在
           header: 自动托管的项目文件夹
           userless_access: 服务器端请求身份验证
@@ -520,7 +520,7 @@ zh-CN:
         name: OneDrive
         name_placeholder: 例如OneDrive
       sharepoint:
-        drive_description: OpenProject access-managed document library
+        drive_description: OpenProject 访问受控的文档库
         label_oauth_client_id: Azure OAuth 应用程序（客户端）ID
         label_oauth_client_secret: Azure OAuth 客户端密钥值
         name: SharePoint

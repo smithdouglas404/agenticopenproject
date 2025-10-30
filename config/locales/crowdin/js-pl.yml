@@ -1144,7 +1144,7 @@ pl:
       timeline: "Wykres Gantta"
     invite_user_modal:
       invite: "Zaproś"
-      placeholder_add_tag: "Create placeholder user"
+      placeholder_add_tag: "Utwórz użytkownika zastępczego"
     exclusion_info:
       modal:
         title: "Status wyłączono z sum hierarchii"

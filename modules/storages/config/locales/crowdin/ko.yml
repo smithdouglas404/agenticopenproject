@@ -177,12 +177,12 @@ ko:
             remote_folders:
               request_error: OpenProject가 드라이브 %{drive_id}에 액세스할 수 없습니다. 저장소 구성이 올바른지 확인하세요.
             rename_project_folder:
-              conflict: OpenProject could not rename the folder %{current_path} to %{project_folder_name} as a folder with the same name already exists.
+              conflict: 같은 이름의 폴더가 이미 있으므로 OpenProject에서 %{current_path} 폴더의 이름을 %{project_folder_name}(으)로 바꿀 수 없습니다.
               forbidden: OpenProject에는 이름을 바꾸기 위한 %{current_path} 폴더에 대한 액세스 권한이 없습니다.
               not_found: "%{current_path}을(를) 찾을 수 없습니다."
             set_folders_permissions:
               permission_not_set: '- %{path}에 대한 권한을 설정할 수 없습니다.'
-          error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information.
+          error: 예기치 않은 오류가 발생했습니다. OneDrive에 연결할 수 있는지 확인하고 OpenProject 작업자 로그에서 자세한 내용을 확인하세요.
           not_allowed: OpenProject가 OneDrive 드라이브에 액세스하도록 허용되지 않았습니다. Azure 애플리케이션에 설정된 권한을 확인하세요.
           unauthorized: OpenProject가 OneDrive와 동기화할 수 없습니다. 저장소 및 Azure 애플리케이션 구성을 확인하세요.
           user_does_not_exist: "%{user}이(가) Nextcloud에 없습니다."
@@ -201,7 +201,7 @@ ko:
               permission_not_set: '- %{path}에 대한 권한을 설정할 수 없습니다.'
           error: 예기치 않은 오류가 발생했습니다. OneDrive에 연결할 수 있는지 확인하고 OpenProject 작업자 로그에서 자세한 내용을 확인하세요
           not_allowed: OpenProject가 OneDrive 드라이브에 액세스하도록 허용되지 않았습니다. Azure 애플리케이션에 설정된 권한을 확인하세요.
-          not_found: OpenProject could not access your library %{drive_name}. Please check you Sharepoint site document libraries.
+          not_found: OpenProject가 라이브러리 %{drive_name}에 액세스할 수 없습니다. SharePoint 사이트 문서 라이브러리를 확인하세요.
           unauthorized: OpenProject가 OneDrive와 동기화할 수 없습니다. 저장소 및 Azure 애플리케이션 구성을 확인하세요.
           user_does_not_exist: "%{user}이(가) Nextcloud에 없습니다."
         upload_link_service:
@@ -273,10 +273,10 @@ ko:
         ampf_configuration:
           client_folder_creation: 자동 폴더 생성
           client_folder_removal: 자동 폴더 삭제
-          drive_contents: Drive content
+          drive_contents: 드라이브 콘텐츠
           files_request: 그룹 폴더 파일 가져오기
           group_folder_app: '종속성: 그룹 폴더'
-          group_folder_contents: Group folder content
+          group_folder_contents: 그룹 폴더 콘텐츠
           group_folder_presence: 그룹 폴더가 존재합니다
           header: 자동으로 관리되는 프로젝트 폴더
           userless_access: 서버 측 요청 인증
@@ -520,7 +520,7 @@ ko:
         name: OneDrive
         name_placeholder: '예: OneDrive'
       sharepoint:
-        drive_description: OpenProject access-managed document library
+        drive_description: OpenProject 액세스 관리 문서 라이브러리
         label_oauth_client_id: Azure OAuth 애플리케이션(클라이언트) ID
         label_oauth_client_secret: Azure OAuth 클라이언트 비밀번호 값
         name: SharePoint

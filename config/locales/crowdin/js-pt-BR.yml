@@ -1135,7 +1135,7 @@ pt-BR:
       timeline: "Gantt"
     invite_user_modal:
       invite: "Convidar"
-      placeholder_add_tag: "Create placeholder user"
+      placeholder_add_tag: "Criar usuário de espaço reservado"
     exclusion_info:
       modal:
         title: "Status excluído dos totais da hierarquia"

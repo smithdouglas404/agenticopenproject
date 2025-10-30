@@ -164,9 +164,9 @@ ko:
         title: "액세스 토큰 테이블"
     workflows:
       tabs:
-        default_transitions: "Default transitions"
-        user_author: "User is author"
-        user_assignee: "User is assignee"
+        default_transitions: "기본 전환"
+        user_author: "사용자가 작성자입니다"
+        user_assignee: "사용자가 담당자입니다"
   authentication:
     login_and_registration: "로그인 및 등록"
   announcements:
@@ -322,7 +322,7 @@ ko:
     reorder_alphabetical: "알파벳순으로 값 재정렬"
     reorder_confirmation: "경고: 사용 가능한 값의 현재 순서가 손실됩니다. 계속하시겠습니까?"
     placeholder_version_select: "먼저 작업 패키지 또는 프로젝트를 선택해야 합니다"
-    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
+    calculated_field_not_editable: "편집할 수 없는 특성입니다. 이 값은 자동으로 계산됩니다."
     instructions:
       is_required: "사용자 지정 필드를 필수로 표시합니다. 이렇게 하면 새 리소스를 생성하거나 기존 리소스를 업데이트할 때 이 필드를 반드시 입력해야 합니다."
       is_required_for_project: "이 특성을 활성화하려면 선택하고 모든 프로젝트에서 필수로 지정하세요. 개별 프로젝트에 대해 비활성화할 수는 없습니다."
@@ -349,8 +349,8 @@ ko:
   concatenation:
     single: "또는"
   danger_dialog:
-    confirmation_live_message_checked: "The button to proceed is now active."
-    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+    confirmation_live_message_checked: "진행 버튼이 이제 활성화되었습니다."
+    confirmation_live_message_unchecked: "계속 버튼이 이제 비활성화되었습니다. 계속하려면 확인란을 선택해야 합니다."
   op_dry_validation:
     or: "또는"
     errors:
@@ -530,7 +530,7 @@ ko:
         no_results_title_text: 프로젝트에 버전이 없습니다.
         no_results_content_text: 새 버전 생성
         work_packages_graph: 작업 패키지 그래프
-        show_work_packages: Show work packages
+        show_work_packages: 작업 패키지 표시
       storage:
         no_results_title_text: 이 프로젝트에서 사용하는 추가 기록 디스크 공간이 없습니다.
       work_package_priorities:
@@ -673,13 +673,13 @@ ko:
       type:
         required: "초대 유형을 선택해주십시오"
         user:
-          title: "Invite user to %{project_name}"
+          title: "%{project_name}에 사용자 초대"
           description: "선택한 프로젝트 내 할당된 역할을 토대로 하는 권한"
         group:
-          title: "Invite group to %{project_name}"
+          title: "%{project_name}에 그룹 초대"
           description: "선택한 프로젝트 내 할당된 역할을 토대로 하는 권한"
         placeholder_user:
-          title: "Add placeholder user to %{project_name}"
+          title: "%{project_name}에 플레이스홀더 사용자 추가"
           title_no_ee: "플레이스홀더 사용자(Enterprise Edition 전용 추가 기능)"
           description: "프로젝트에 대한 접근 권한이 없으며 이메일이 보내지지 않았습니다."
         already_member_message: "이미 %{project}의 멤버입니다"
@@ -689,7 +689,7 @@ ko:
         no_results_placeholder: "플레이스홀더가 없습니다"
         create_new_placeholder: "새 플레이스홀더 생성:"
         no_results_group: "그룹이 없습니다"
-        invite_to_project: "Invite to %{project_name}"
+        invite_to_project: "%{project_name}에 초대"
         required:
           user: "사용자를 선택하십시오"
           placeholder: "플레이스홀더를 선택하십시오"
@@ -698,7 +698,7 @@ ko:
         label: "%{project} 내 역할"
         no_roles_found: "역할이 없습니다"
         description: >
-          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+          사용자가 프로젝트에 참여할 때 부여되는 역할입니다. 역할에 따라 사용자가 수행할 수 있는 작업과 볼 수 있는 정보가 정의됩니다. [역할 및 권한에 대해 자세히 알아보세요.](docs_url)
         required: "역할을 선택하십시오"
       message:
         label: "초대 메시지"
@@ -1288,7 +1288,7 @@ ko:
         daily_reminders: "일일 미리 알림"
         workdays: "근무일"
       users/invitation/form_model:
-        principal_type: "Invitation type"
+        principal_type: "초대 유형"
         id_or_email: "이름 또는 이메일 주소"
       version:
         effective_date: "완료 날짜"
@@ -2578,8 +2578,8 @@ ko:
     include_sub_items: "하위 항목 포함"
     no_results_text: "결과 없음"
   toggle_switch:
-    label_on: "On"
-    label_off: "Off"
+    label_on: "켜기"
+    label_off: "끄기"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
@@ -2610,11 +2610,11 @@ ko:
           new_features_title: >
             이 릴리스에는 다음과 같은 다양한 새로운 기능과 개선 사항이 포함되어 있습니다.
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: 프로젝트 평가 및 점수 매기기를 위한 계산된 값(Enterprise 추가 기능).
+            line_1: 프로젝트 특성 유형 계층.
+            line_2: 상당한 영향을 미치는 성능 업데이트.
+            line_3: 문서 모듈의 새로운 색인 페이지.
+            line_4: 사용자 지정 필드 항목의 부모 변경 가능.
     links:
       upgrade_enterprise_edition: "Enterprise Edition으로 업그레이드"
       postgres_migration: "설치를 PostgreSQL로 마이그레이션"
@@ -2939,7 +2939,7 @@ ko:
   label_duplicate: "중복"
   label_duplicates: "복제"
   label_edit: "편집"
-  label_edit_attribute: "Edit attribute"
+  label_edit_attribute: "특성 편집"
   label_edit_x: "편집: %{x}"
   label_enable_multi_select: "다중 선택 토글"
   label_enabled_project_custom_fields: "사용자 정의 필드 사용"
@@ -3366,7 +3366,7 @@ ko:
   label_user_search: "사용자 검색"
   label_user_settings: "사용자 설정"
   label_users_settings: "사용자 설정"
-  label_value_x: "Value: %{x}"
+  label_value_x: "값: %{x}"
   label_version_new: "새 버전"
   label_version_edit: "버전 편집"
   label_version_plural: "버전"
@@ -3777,9 +3777,9 @@ ko:
   permission_edit_wiki_pages: "위키 페이지 편집"
   permission_export_work_packages: "작업 패키지 내보내기"
   permission_export_wiki_pages: "위키 페이지 내보내기"
-  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email: "이메일로 멤버 초대"
   permission_invite_members_by_email_explanation: >
-    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
+    사용자가 이메일로 새로운 멤버를 초대할 수 있습니다. 초대된 사용자는 암호를 설정하고 계정을 활성화하는 링크가 포함된 이메일을 받게 됩니다. 멤버를 관리하는 권한에 따라 다릅니다
   permission_list_attachments: "첨부 파일 나열"
   permission_log_own_time: "내 시간 기록"
   permission_log_time: "다른 사용자의 시간 기록"
@@ -3809,9 +3809,9 @@ ko:
   permission_share_work_packages: "작업 패키지 공유"
   permission_manage_types: "유형 선택"
   permission_manage_own_reminders: "고유한 미리 알림 만들기"
-  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals: "모든 사용자 및 그룹 보기"
   permission_view_all_principals_explanation: >
-    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
+    사용자가 참여 프로젝트나 그룹의 멤버가 아니더라도 시스템의 모든 사용자와 그룹을 볼 수 있도록 허용합니다.
   permission_view_project: "프로젝트 보기"
   permission_view_changesets: "OpenProject에서 리포지토리 수정 사항 보기"
   permission_view_internal_comments: "내부 코멘트 보기"

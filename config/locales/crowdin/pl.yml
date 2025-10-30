@@ -164,9 +164,9 @@ pl:
         title: "Tabela tokenów dostępu"
     workflows:
       tabs:
-        default_transitions: "Default transitions"
-        user_author: "User is author"
-        user_assignee: "User is assignee"
+        default_transitions: "Przejścia domyślne"
+        user_author: "Użytkownik jest autorem"
+        user_assignee: "Użytkownik jest przypisaną osobą"
   authentication:
     login_and_registration: "Logowanie i rejestracja"
   announcements:
@@ -319,7 +319,7 @@ pl:
     reorder_alphabetical: "Ustaw kolejność wartości alfabetycznie"
     reorder_confirmation: "Ostrzeżenie: Bieżąca kolejność dostępnych wartości zostanie utracona. Kontynuować?"
     placeholder_version_select: "W pierwszej kolejności wymagany jest wybór pakietu roboczego lub projektu"
-    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
+    calculated_field_not_editable: "Atrybut nieedytowalny. Ta wartość jest obliczana automatycznie."
     instructions:
       is_required: "Oznacz pole niestandardowe jako wymagane. To spowoduje obowiązkowe wypełnianie pola podczas tworzenia nowych lub aktualizacji istniejących zasobów."
       is_required_for_project: "Zaznacz, aby włączyć ten atrybut i uczynić go wymaganym we wszystkich projektach. Nie można go wyłączyć dla poszczególnych projektów."
@@ -346,8 +346,8 @@ pl:
   concatenation:
     single: "lub"
   danger_dialog:
-    confirmation_live_message_checked: "The button to proceed is now active."
-    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+    confirmation_live_message_checked: "Przycisk kontynuowania jest już aktywny."
+    confirmation_live_message_unchecked: "Przycisk kontynuowania jest teraz nieaktywny. Aby kontynuować, zaznacz pole wyboru."
   op_dry_validation:
     or: "lub"
     errors:
@@ -527,7 +527,7 @@ pl:
         no_results_title_text: Nie ma innych wersji tego projektu.
         no_results_content_text: Utwórz nową wersję projektu
         work_packages_graph: Wykres pakietów roboczych
-        show_work_packages: Show work packages
+        show_work_packages: Pokaż pakiety robocze
       storage:
         no_results_title_text: Nie ma dodatkowego zarejestrowanego miejsca na dysku zużytego przez ten projekt.
       work_package_priorities:
@@ -688,13 +688,13 @@ pl:
       type:
         required: "Wybierz typ, który ma zostać zaproszony"
         user:
-          title: "Invite user to %{project_name}"
+          title: "Zaproś użytkownika do projektu %{project_name}"
           description: "Uprawnienia na podstawie przypisanej roli w wybranym projekcie"
         group:
-          title: "Invite group to %{project_name}"
+          title: "Zaproś grupę do projektu %{project_name}"
           description: "Uprawnienia na podstawie przypisanej roli w wybranym projekcie"
         placeholder_user:
-          title: "Add placeholder user to %{project_name}"
+          title: "Dodaj użytkownika zastępczego do projektu %{project_name}"
           title_no_ee: "Użytkownik zastępczy (dodatek dostępny tylko w wersji Enterprise)"
           description: "Nie ma dostępu do projektu i nie są wysyłane żadne wiadomości e-mail."
         already_member_message: "Już jest członkiem %{project}"
@@ -704,7 +704,7 @@ pl:
         no_results_placeholder: "Nie znaleziono elementów zastępczych"
         create_new_placeholder: "Utwórz nowy element zastępczy:"
         no_results_group: "Nie znaleziono żadnych grup"
-        invite_to_project: "Invite to %{project_name}"
+        invite_to_project: "Zaproś do projektu %{project_name}"
         required:
           user: "Wybierz użytkownika"
           placeholder: "Wybierz element zastępczy"
@@ -713,7 +713,7 @@ pl:
         label: "Rola w %{project}"
         no_roles_found: "Nie znaleziono żadnych ról"
         description: >
-          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+          Jest to rola, którą użytkownik otrzyma po dołączeniu do projektu. Rola określa, jakie działania może podejmować i jakie informacje może zobaczyć. [Dowiedz się więcej o rolach i uprawnieniach.](docs_url)
         required: "Wybierz rolę"
       message:
         label: "Wiadomość z zaproszeniem"
@@ -1308,7 +1308,7 @@ pl:
         daily_reminders: "Codzienne przypomnienia"
         workdays: "Dni robocze"
       users/invitation/form_model:
-        principal_type: "Invitation type"
+        principal_type: "Typ zaproszenia"
         id_or_email: "Nazwa lub adres e-mail"
       version:
         effective_date: "Data zakończenia"
@@ -2709,8 +2709,8 @@ pl:
     include_sub_items: "Uwzględnij elementy podrzędne"
     no_results_text: "Brak wyników"
   toggle_switch:
-    label_on: "On"
-    label_off: "Off"
+    label_on: "Wł."
+    label_off: "Wył."
   general_csv_decimal_separator: ","
   general_csv_encoding: "UTF-8"
   general_csv_separator: "."
@@ -2741,11 +2741,11 @@ pl:
           new_features_title: >
             Wydanie zawiera różne nowe funkcje i ulepszenia, takie jak:
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: Obliczone wartości oceny projektu i punktacji (dodatek Enterprise).
+            line_1: Hierarchia typów atrybutów projektu.
+            line_2: Aktualizacje działania o dużym wpływie.
+            line_3: Nowa strona indeksu modułu Dokumenty.
+            line_4: Możliwość zmiany elementu nadrzędnego pozycji pola niestandardowego.
     links:
       upgrade_enterprise_edition: "Aktualizuj do wersji Enterprise"
       postgres_migration: "Migrowanie instalacji do PostgreSQL"
@@ -3070,7 +3070,7 @@ pl:
   label_duplicate: "duplikat"
   label_duplicates: "Duplikaty"
   label_edit: "Edytuj"
-  label_edit_attribute: "Edit attribute"
+  label_edit_attribute: "Edytuj atrybut"
   label_edit_x: "Edytuj: %{x}"
   label_enable_multi_select: "Włącz wybór wielokrotny"
   label_enabled_project_custom_fields: "Aktywne pola niestandardowe"
@@ -3497,7 +3497,7 @@ pl:
   label_user_search: "Szukaj użytkownika"
   label_user_settings: "Ustawienia użytkownika"
   label_users_settings: "Ustawienia użytkowników"
-  label_value_x: "Value: %{x}"
+  label_value_x: "Wartość: %{x}"
   label_version_new: "Nowa wersja"
   label_version_edit: "Edytuj wersję"
   label_version_plural: "Wersje"
@@ -3914,9 +3914,9 @@ pl:
   permission_edit_wiki_pages: "Edycja stron wiki"
   permission_export_work_packages: "Eksportowanie pakietów roboczych"
   permission_export_wiki_pages: "Eksportowanie stron wiki"
-  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email: "Zaproś członków pocztą elektroniczną"
   permission_invite_members_by_email_explanation: >
-    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
+    Umożliwia użytkownikom zapraszanie nowych członków pocztą elektroniczną. Zaproszeni użytkownicy otrzymają wiadomość e-mail z linkiem do ustawienia hasła i aktywacji konta. Zależy od uprawnień do zarządzania członkami
   permission_list_attachments: "Lista załączników"
   permission_log_own_time: "Zarejestruj spędzony czas"
   permission_log_time: "Zarejestruj czas pozostałych użytkowników"
@@ -3946,9 +3946,9 @@ pl:
   permission_share_work_packages: "Udostępnij pakiety robocze"
   permission_manage_types: "Select types"
   permission_manage_own_reminders: "Tworzenie własnych przypomnień"
-  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals: "Wyświetl wszystkich użytkowników i grupy"
   permission_view_all_principals_explanation: >
-    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
+    Umożliwia użytkownikom wyświetlanie wszystkich użytkowników i grup w systemie, nawet jeśli nie są oni członkami żadnych dołączonych projektów lub grup.
   permission_view_project: "Wyświetl projekty"
   permission_view_changesets: "Zobacz repozytorium poprawek OpenProject"
   permission_view_internal_comments: "Wyświetlanie komentarzy wewnętrznych"

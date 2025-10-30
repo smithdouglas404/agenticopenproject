@@ -676,7 +676,7 @@ zh-CN:
           title: "邀请小组访问 %{project_name}"
           description: "基于所选项目中指定角色的权限"
         placeholder_user:
-          title: "Add placeholder user to %{project_name}"
+          title: "将占位符用户添加到 %{project_name}"
           title_no_ee: "占位符用户（Enterprise edition 附加功能）"
           description: "无法访问该项目并且未发送电子邮件。"
         already_member_message: "已经是 %{project} 的成员"
@@ -695,7 +695,7 @@ zh-CN:
         label: "%{project} 中的角色"
         no_roles_found: "没有找到角色"
         description: >
-          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+          这是用户在加入您的项目时将获得的角色。角色定义了允许其执行哪些操作以及允许其查看哪些信息。[详细了解角色和权限](docs_url)。
         required: "请选择一个角色"
       message:
         label: "邀请消息"
@@ -1284,7 +1284,7 @@ zh-CN:
         daily_reminders: "每日提醒"
         workdays: "工作日"
       users/invitation/form_model:
-        principal_type: "Invitation type"
+        principal_type: "邀请类型"
         id_or_email: "用户名或电子邮件地址"
       version:
         effective_date: "完成日期"
@@ -2606,11 +2606,11 @@ zh-CN:
           new_features_title: >
             此版本包含各种新功能和改进，例如：
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: 项目评估和评分的计算值（Enterprise 附加组件）。
+            line_1: 项目特性类型层次结构。
+            line_2: 可以产生重大影响的性能更新。
+            line_3: '“文档”模块的新索引页面。'
+            line_4: 可以更改自定义字段条目的父项。
     links:
       upgrade_enterprise_edition: "升级到企业版"
       postgres_migration: "将您的安装迁移到 PostgreSQL"

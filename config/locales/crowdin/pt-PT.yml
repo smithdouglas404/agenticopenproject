@@ -164,9 +164,9 @@ pt-PT:
         title: "Tabela de tokens de acesso"
     workflows:
       tabs:
-        default_transitions: "Default transitions"
-        user_author: "User is author"
-        user_assignee: "User is assignee"
+        default_transitions: "Transições padrão"
+        user_author: "O utilizador é o autor"
+        user_assignee: "O utilizador é encarregado"
   authentication:
     login_and_registration: "Iniciar sessão e registo"
   announcements:
@@ -320,7 +320,7 @@ pt-PT:
     reorder_alphabetical: "Reordenar valores em ordem alfabética"
     reorder_confirmation: "Aviso: A ordem atual de valores disponíveis será perdida. Continuar?"
     placeholder_version_select: "A seleção do pacote de trabalho ou do projeto é necessária em primeiro lugar"
-    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
+    calculated_field_not_editable: "Atributo não editável. Este valor é calculado automaticamente."
     instructions:
       is_required: "Marque o campo personalizado como obrigatório. Isto tornará obrigatório o preenchimento do campo ao criar novos recursos ou ao atualizar recursos existentes."
       is_required_for_project: "Selecione para ativar este atributo e torná-lo obrigatório em todos os projetos. Não pode ser desativado para projetos individuais."
@@ -347,8 +347,8 @@ pt-PT:
   concatenation:
     single: "ou"
   danger_dialog:
-    confirmation_live_message_checked: "The button to proceed is now active."
-    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+    confirmation_live_message_checked: "O botão para prosseguir está agora ativo."
+    confirmation_live_message_unchecked: "O botão para prosseguir está agora inativo. Tem de assinalar a caixa de verificação para continuar."
   op_dry_validation:
     or: "ou"
     errors:
@@ -528,7 +528,7 @@ pt-PT:
         no_results_title_text: Atualmente, não existem versões para o projeto.
         no_results_content_text: Crie uma nova versão
         work_packages_graph: Gráfico de pacotes de trabalho
-        show_work_packages: Show work packages
+        show_work_packages: Mostrar pacotes de trabalho
       storage:
         no_results_title_text: Não há espaço adicional gravado em disco que seja consumido por este projeto.
       work_package_priorities:
@@ -677,13 +677,13 @@ pt-PT:
       type:
         required: "Selecione o tipo a ser convidado"
         user:
-          title: "Invite user to %{project_name}"
+          title: "Convidar utilizador para %{project_name}"
           description: "Permissões com base numa função atribuída no projeto selecionado"
         group:
-          title: "Invite group to %{project_name}"
+          title: "Convidar grupo para %{project_name}"
           description: "Permissões com base numa função atribuída no projeto selecionado"
         placeholder_user:
-          title: "Add placeholder user to %{project_name}"
+          title: "Adicionar utilizador de espaço reservado a %{project_name}"
           title_no_ee: "Utilizador de espaço reservado (complemento apenas para a edição Enterprise)"
           description: "Não tem acesso ao projeto e nenhum e-mail é enviado."
         already_member_message: "Já é membro de %{project}"
@@ -693,7 +693,7 @@ pt-PT:
         no_results_placeholder: "Nenhum espaço reservado encontrado"
         create_new_placeholder: "Criar novo espaço reservado:"
         no_results_group: "Nenhum grupo foi encontrado."
-        invite_to_project: "Invite to %{project_name}"
+        invite_to_project: "Convidar para %{project_name}"
         required:
           user: "Selecione um utilizador"
           placeholder: "Selecione um espaço reservado"
@@ -702,7 +702,7 @@ pt-PT:
         label: "Função em %{project}"
         no_roles_found: "Nenhuma função encontrada"
         description: >
-          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+          Esta é a função que o utilizador irá receber quando se juntar ao seu projeto. A função define as ações que pode realizar e as informações que pode ver. [Mais informações sobre funções e permissões.](docs_url)
         required: "Selecione um perfil"
       message:
         label: "Mensagem de convite"
@@ -1293,7 +1293,7 @@ pt-PT:
         daily_reminders: "Lembretes diários"
         workdays: "Dias úteis"
       users/invitation/form_model:
-        principal_type: "Invitation type"
+        principal_type: "Tipo de convite"
         id_or_email: "Nome ou endereço de e-mail"
       version:
         effective_date: "Data de término"
@@ -2620,8 +2620,8 @@ pt-PT:
     include_sub_items: "Incluir sub-elementos"
     no_results_text: "Sem resultados"
   toggle_switch:
-    label_on: "On"
-    label_off: "Off"
+    label_on: "Ligar"
+    label_off: "Desligar"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
@@ -2652,11 +2652,11 @@ pt-PT:
           new_features_title: >
             A versão contém várias novas funcionalidades e melhorias, tais como:
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: Valores calculados para avaliação e pontuação de projetos (complemento Enterprise).
+            line_1: Hierarquia de tipos de atributos do projeto.
+            line_2: Atualizações de desempenho com grande impacto.
+            line_3: Nova página de índice para o módulo Documentos.
+            line_4: Possibilidade de alterar o pai de um elemento de campo personalizado.
     links:
       upgrade_enterprise_edition: "Aprimorar para a edição Enterprise"
       postgres_migration: "A migrar a sua instalação para PostgreSQL"
@@ -2981,7 +2981,7 @@ pt-PT:
   label_duplicate: "duplicado"
   label_duplicates: "duplicados"
   label_edit: "Editar"
-  label_edit_attribute: "Edit attribute"
+  label_edit_attribute: "Editar atributo"
   label_edit_x: "Editar: %{x}"
   label_enable_multi_select: "Alternar para selecção múltipla"
   label_enabled_project_custom_fields: "Campos personalizados activados"
@@ -3408,7 +3408,7 @@ pt-PT:
   label_user_search: "Procurar utilizadores"
   label_user_settings: "Definições do utilizador"
   label_users_settings: "Definições do utilizador"
-  label_value_x: "Value: %{x}"
+  label_value_x: "Valor: %{x}"
   label_version_new: "Nova versão"
   label_version_edit: "Editar versão"
   label_version_plural: "Versões"
@@ -3821,9 +3821,9 @@ pt-PT:
   permission_edit_wiki_pages: "Editar páginas wiki"
   permission_export_work_packages: "Exportar pacotes de trabalho"
   permission_export_wiki_pages: "Exportar páginas wiki"
-  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email: "Convidar membros por e-mail"
   permission_invite_members_by_email_explanation: >
-    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
+    Permite aos utilizadores convidar novos membros por e-mail. Os utilizadores convidados receberão um e-mail com um link para definir a palavra-passe e ativar a conta. Depende da permissão para gerir membros
   permission_list_attachments: "Lista de anexos"
   permission_log_own_time: "Registar o próprio tempo"
   permission_log_time: "Registar tempo para outros utilizadores"
@@ -3853,9 +3853,9 @@ pt-PT:
   permission_share_work_packages: "Compartilhar pacotes de trabalho"
   permission_manage_types: "Selecione tipos"
   permission_manage_own_reminders: "Crie os seus próprios lembretes"
-  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals: "Ver todos os utilizadores e grupos"
   permission_view_all_principals_explanation: >
-    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
+    Permite que os utilizadores vejam todos os utilizadores e grupos no sistema, mesmo que não sejam membros de quaisquer projetos ou grupos associados.
   permission_view_project: "Ver projetos"
   permission_view_changesets: "Revisões de vista de repositório em OpenProject"
   permission_view_internal_comments: "Ver comentários internos"

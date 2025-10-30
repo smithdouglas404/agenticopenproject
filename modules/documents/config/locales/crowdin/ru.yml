@@ -28,7 +28,7 @@ ru:
       document: "Документ"
     attributes:
       document:
-        content_binary: "Content binary"
+        content_binary: "Содержимое бинарное"
         title: "Заголовок"
   activity:
     filter:
@@ -38,20 +38,20 @@ ru:
   enumeration_doc_categories: "Категории документов"
   documents:
     page_header:
-      heading: "All documents"
+      heading: "Все документы"
     subheader:
       filter:
-        label: "Document name filter"
-        placeholder: "Type here to search document names"
+        label: "Фильтр по названию документа"
+        placeholder: "Введите здесь для поиска по названию документа"
     documents_list_blank_slate:
-      heading: "There are no documents yet"
-      description: "There are no documents in this view. You can click the button below to add one."
+      heading: "Пока нет никаких документов"
+      description: "В этом представлении нет документов. Нажмите на кнопку ниже, чтобы добавить документ."
     index_page:
       name: "Имя"
       type: "Тип"
-      updated_at: "Last edited"
+      updated_at: "Последнее редактирование"
     menu:
-      all: "All documents"
+      all: "Все документы"
       types: "Типы"
     label_attachment_author: "Автор вложения"
     label_categories: "Категории"

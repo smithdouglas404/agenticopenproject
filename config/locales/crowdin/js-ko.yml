@@ -1132,7 +1132,7 @@ ko:
       timeline: "Gantt"
     invite_user_modal:
       invite: "초대"
-      placeholder_add_tag: "Create placeholder user"
+      placeholder_add_tag: "플레이스홀더 사용자 만들기"
     exclusion_info:
       modal:
         title: "계층 합계에서 상태 제외됨"

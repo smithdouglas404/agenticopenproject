@@ -3,9 +3,9 @@ pt-PT:
     label_widget_in_grid: "Widget contido na Grelha %{grid_name}"
     widgets:
       subitems:
-        title: "Subitems"
+        title: "Sub-elementos"
         no_results: "Não há filhos visíveis."
-        view_all_subitems: "View all subitems"
+        view_all_subitems: "Ver todos os sub-elemntos"
       members:
         title: "Membros mais recentes"
         no_results: "Nenhum membro visível."

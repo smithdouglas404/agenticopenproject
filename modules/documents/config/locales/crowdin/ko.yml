@@ -28,7 +28,7 @@ ko:
       document: "문서"
     attributes:
       document:
-        content_binary: "Content binary"
+        content_binary: "콘텐츠 바이너리"
         title: "제목"
   activity:
     filter:
@@ -38,20 +38,20 @@ ko:
   enumeration_doc_categories: "문서 범주"
   documents:
     page_header:
-      heading: "All documents"
+      heading: "모든 문서"
     subheader:
       filter:
-        label: "Document name filter"
-        placeholder: "Type here to search document names"
+        label: "문서 이름 필터"
+        placeholder: "문서 이름을 검색하려면 여기에 입력하세요"
     documents_list_blank_slate:
-      heading: "There are no documents yet"
-      description: "There are no documents in this view. You can click the button below to add one."
+      heading: "아직 문서가 없습니다"
+      description: "이 보기에는 문서가 없습니다. 아래 버튼을 클릭하여 문서를 추가할 수 있습니다."
     index_page:
       name: "이름"
       type: "타입"
-      updated_at: "Last edited"
+      updated_at: "마지막 편집"
     menu:
-      all: "All documents"
+      all: "모든 문서"
       types: "유형"
     label_attachment_author: "첨부 파일 작성자"
     label_categories: "카테고리"

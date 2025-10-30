@@ -213,7 +213,7 @@ zh-CN:
       open_my_meetings_link: "转到我的会议"
       series:
         title: "[%{project_name}] 会议系列 '%{title}'"
-        summary: "%{actor} has invited you to a new meeting series '%{title}'"
+        summary: "%{actor} 邀请您参加新的会议系列 '%{title}'"
       series_updated:
         title: "[%{project_name}] 会议系列 '%{title}' 已更新"
         summary: "会议系列 '%{title}' 已由 %{actor} 更新"

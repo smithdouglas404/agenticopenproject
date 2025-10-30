@@ -30,7 +30,7 @@ ru:
         project_status_beta:
           title: 'Статус проекта (BETA)'
         subprojects:
-          title: 'Subitems'
+          title: 'Подпункты'
         project_favorites:
           title: 'Избранные проекты'
           no_results: 'В настоящее время у вас нет избранных проектов. Нажмите на значок звезды в панели управления проекта, чтобы добавить его в избранное.'
