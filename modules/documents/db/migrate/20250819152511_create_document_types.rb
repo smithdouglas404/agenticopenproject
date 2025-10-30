@@ -33,6 +33,7 @@ class CreateDocumentTypes < ActiveRecord::Migration[8.0]
     create_table :document_types do |t|
       t.string :name
       t.integer :position
+      t.boolean :is_default, default: false, null: false
 
       t.timestamps
     end
@@ -63,12 +64,13 @@ class CreateDocumentTypes < ActiveRecord::Migration[8.0]
             name,
             ROW_NUMBER() OVER (
               ORDER BY position ASC
-            ) AS position
+            ) AS position,
+            COALESCE(is_default, false) AS is_default
           FROM enumerations
           WHERE type = 'DocumentCategory'
         )
-        INSERT INTO document_types (name, position, created_at, updated_at)
-          SELECT name, position, NOW(), NOW()
+        INSERT INTO document_types (name, position, is_default, created_at, updated_at)
+          SELECT name, position, is_default, NOW(), NOW()
           FROM existing_document_categories
           ON CONFLICT (name) DO NOTHING
       SQL
