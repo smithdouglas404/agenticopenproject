@@ -32,15 +32,17 @@ module Settings
   class AuthenticationSettingsForm < ApplicationForm
     class SessionTtlForm < ApplicationForm
       settings_form do |f|
-        f.text_field(
-          name: :session_ttl,
-          type: :number,
-          size: 6,
-          min: 0,
-          caption: I18n.t("setting_session_ttl_hint"),
-          trailing_visual: { text: { text: I18n.t(:label_minute_plural) } },
-          input_width: :small
-        )
+        f.group(ml: -4) do |g|
+          g.text_field(
+            name: :session_ttl,
+            type: :number,
+            size: 6,
+            min: 0,
+            caption: I18n.t("setting_session_ttl_hint"),
+            trailing_visual: { text: { text: I18n.t(:label_minute_plural) } },
+            input_width: :small
+          )
+        end
       end
     end
 
