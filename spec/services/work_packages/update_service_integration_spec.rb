@@ -1177,7 +1177,6 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
       end
     end
 
-    # TODO: TODO: TODO: write the same test, but with automatically generated subjects
     context "when the work package is automatically scheduled, has a child and no dates" do
       let_work_packages(<<~TABLE)
         hierarchy              | MTWTFSS        | scheduling mode | predecessors
@@ -1200,6 +1199,38 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
           new_parent             |   X     | automatic
           work_package           |   X     | automatic
           child                  |   [     | automatic
+        TABLE
+      end
+    end
+
+    context "with work packages having automatically generated subjects, " \
+            "when the work package is automatically scheduled, has a child and no dates" do
+      before_all do
+        set_factory_default(:type, autosubject_type)
+      end
+
+      let_work_packages(<<~TABLE)
+        hierarchy              | MTWTFSS        | scheduling mode | predecessors
+        new_parent_predecessor | XXXX           | manual          |
+        new_parent             |     XXXX       | automatic       | new_parent_predecessor
+        work_package           |                | automatic       |
+          child                |                | automatic       | child_predecessor
+        child_predecessor      |                | manual          |
+      TABLE
+      let(:attributes) { { parent: new_parent } }
+
+      it "sets child start date to be soonest start (after new grandparent predecessor), " \
+         "and grandparent and work package start and due dates to be same as child start date" do
+        expect(subject).to be_success
+        expect(work_package.reload.parent).to eq new_parent
+        expect(subject.all_results.map(&:id)).to contain_exactly(child.id, work_package.id, new_parent.id)
+
+        expect_work_packages(subject.all_results + [new_parent_predecessor], <<~TABLE)
+          identifier             | MTWTFSS | scheduling mode
+          new_parent_predecessor | XXXX      | manual
+          new_parent             |     X     | automatic
+          work_package           |     X     | automatic
+          child                  |     [     | automatic
         TABLE
       end
     end
