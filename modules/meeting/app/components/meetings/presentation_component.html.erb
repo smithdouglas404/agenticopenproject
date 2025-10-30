@@ -1,4 +1,16 @@
-<%= component_wrapper(class: "op-meeting-presentation") do %>
+<%= component_wrapper(
+      class: "op-meeting-presentation",
+      data: {
+        controller: "meetings--presentation poll-for-changes",
+        poll_for_changes_continuous_value: true,
+        poll_for_changes_url_value: check_for_updates_project_meeting_presentation_path(
+          @meeting.project,
+          @meeting,
+          meeting_agenda_item_id: current_item.id
+        ),
+        poll_for_changes_interval_value: check_for_updates_interval,
+      }
+  ) do %>
   <%=
     render Primer::OpenProject::PageHeader.new(classes: "op-meeting-presentation-header") do |header|
       header.with_breadcrumbs([])
@@ -18,19 +30,22 @@
       end
     end
   %>
-
-  <!-- Main content area -->
-  <div class="op-meeting-presentation--content" data-controller="meetings--submit">
-    <turbo-frame id="presentation-content" style="width: 100%">
-      <%= render(border_box_container) do |container| %>
-        <%= render MeetingAgendaItems::ItemComponent.new(
-          container:,
-          meeting_agenda_item: current_item,
-          presentation_mode: true
-        ) %>
-      <% end %>
-    </turbo-frame>
-  </div>
+  <%= content_tag :div,
+                  id: "op-meeting-presentation-content",
+                  class: "op-meeting-presentation--content",
+                  data: {
+                    controller: "meetings--submit",
+                    poll_for_changes_target: "reference",
+                    reference_value: current_item.updated_at.iso8601
+                  } do %>
+    <%= render(border_box_container) do |container| %>
+      <%= render MeetingAgendaItems::ItemComponent.new(
+        container:,
+        meeting_agenda_item: current_item,
+        presentation_mode: true
+      ) %>
+    <% end %>
+  <% end %>
 
   <!-- Footer with controls -->
   <div class="op-meeting-presentation--footer">

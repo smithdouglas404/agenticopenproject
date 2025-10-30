@@ -57,7 +57,11 @@ Rails.application.routes.draw do
 
       resource :presentation,
                only: %i[show edit],
-               controller: "meeting_presentation"
+               controller: "meeting_presentation" do
+        collection do
+          get :check_for_updates
+        end
+      end
     end
 
     resources :recurring_meetings do

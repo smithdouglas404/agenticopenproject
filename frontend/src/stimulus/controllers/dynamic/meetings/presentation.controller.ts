@@ -10,6 +10,7 @@ export default class PresentationController extends Controller {
   nextButtonTarget:HTMLButtonElement;
 
   private abortController = new AbortController();
+  private openFieldsSelector = 'input, textarea, op-ckeditor, [contenteditable]';
 
   connect() {
     const { signal } = this.abortController;
@@ -23,7 +24,7 @@ export default class PresentationController extends Controller {
     }
 
     // Ignore key events when focus is on an input, textarea, or contenteditable element
-    if ((event.target as HTMLElement).closest('input, textarea, op-ckeditor, [contenteditable]')) {
+    if ((event.target as HTMLElement).closest(this.openFieldsSelector)) {
       return;
     }
 

@@ -1,13 +1,5 @@
 <% html_title "#{t(:label_meeting)}: #{@meeting.title} - #{t('meeting.presentation_mode.title')}" %>
 
-<%
-  content_controller "meetings--presentation",
-                     check_for_updates_url_value: check_for_updates_project_meeting_path(@project, @meeting),
-                     check_for_updates_interval_value: 5_000,
-                     current_index_value: @current_index,
-                     meeting_url_value: meeting_url(@meeting)
-%>
-
 <%=
   render Meetings::PresentationComponent.new(
     meeting: @meeting,

@@ -44,6 +44,11 @@ module Meetings
       @current_index = sorted_agenda_item_ids.index(@current_item)
     end
 
+    # Define the interval so it can be overriden through tests
+    def check_for_updates_interval
+      5_000
+    end
+
     def current_item
       return nil if @current_item.nil?
 

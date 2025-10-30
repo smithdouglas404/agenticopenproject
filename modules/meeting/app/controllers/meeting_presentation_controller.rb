@@ -30,23 +30,44 @@
 
 class MeetingPresentationController < ApplicationController
   include OpTurbo::ComponentStream
+  include Meetings::AgendaComponentStreams
 
   before_action :check_feature_flag
 
   before_action :find_meeting
+  before_action :find_agenda_item, only: [:check_for_updates]
 
-  load_and_authorize_with_permission_in_optional_project :view_meetings,
-                                                         only: %i[show]
+  load_and_authorize_with_permission_in_optional_project :view_meetings
 
   layout "meetings/presentation"
 
   def show; end
+
+  def check_for_updates
+    if params[:reference] == @meeting_agenda_item.updated_at.iso8601
+      head :no_content
+      return
+    end
+
+    turbo_streams << turbo_stream.set_dataset_attribute(
+      "#op-meeting-presentation-content",
+      "reference-value",
+      @meeting_agenda_item.updated_at.iso8601
+    )
+    update_item_via_turbo_stream(current_occurrence: @meeting, presentation_mode: true)
+
+    respond_with_turbo_streams
+  end
 
   private
 
   def find_meeting
     @meeting = Meeting.find(params[:meeting_id])
     @project = @meeting.project
+  end
+
+  def find_agenda_item
+    @meeting_agenda_item = @meeting.agenda_items.find(params[:meeting_agenda_item_id])
   end
 
   def check_feature_flag
