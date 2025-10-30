@@ -201,7 +201,7 @@ module CustomFields
 
       # Recalculates Calculated Values in all projects that use the hierarchy's custom field
       def update_calculated_values_for_hierarchy(item_ids:, custom_field:)
-        return unless custom_field&.field_format_scored_list?
+        return unless custom_field&.field_format_weighted_item_list?
 
         custom_field.class.customized_class
           .where(custom_values: custom_field.custom_values.where(value: item_ids))

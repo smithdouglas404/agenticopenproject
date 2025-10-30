@@ -123,7 +123,7 @@ RSpec.describe OpenProject::CustomFieldFormat do
   describe ".disabled_formats" do
     it "returns disabled formats" do
       formats = described_class.disabled_formats
-      expect(formats).to match_array(%w[calculated_value scored_list])
+      expect(formats).to match_array(%w[calculated_value weighted_item_list])
     end
 
     context "with feature flags enabled", with_flag: { calculated_value_project_attribute: true } do

@@ -36,7 +36,7 @@
             OpenProject::CustomFieldFormat.available_for_class_name("Project")
                                           # Reject hierarchy as long as the feature flag for scored lists is not active,
                                           # as they share the same selection component
-                                          .reject { |format| format.name == "hierarchy" && !OpenProject::FeatureDecisions.scored_list_custom_fields_active? }
+                                          .reject { |format| format.name == "hierarchy" && !OpenProject::FeatureDecisions.weighted_item_list_custom_fields_active? }
                                           .sort_by(&:name)
                                           .map do |format|
               sub_menu.with_item(

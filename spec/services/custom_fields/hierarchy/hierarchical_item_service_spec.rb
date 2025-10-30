@@ -339,7 +339,7 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:cust
     let!(:project_having_fields_enabled) { create(:project) }
     let!(:project_not_having_fields_enabled) { create(:project) }
     let!(:projects) { [project_using_one, project_using_two, project_having_fields_enabled] }
-    let!(:custom_field) { create(:scored_list_project_custom_field, projects:) }
+    let!(:custom_field) { create(:weighted_item_list_project_custom_field, projects:) }
     let!(:one) { create(:hierarchy_item, parent: custom_field.hierarchy_root, label: "One", score: 1) }
     let!(:two) { create(:hierarchy_item, parent: custom_field.hierarchy_root, label: "Two", score: 2) }
     let!(:calculated_value) do

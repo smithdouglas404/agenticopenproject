@@ -158,7 +158,7 @@ module Admin
           case @custom_field.field_format
           when "hierarchy"
             ::CustomFields::Hierarchy::InsertListItemContract
-          when "scored_list"
+          when "weighted_item_list"
             ::CustomFields::Hierarchy::InsertScoredItemContract
           else
             raise ArgumentError, "unsupported custom field format '#{@custom_field.field_format}'"
@@ -169,7 +169,7 @@ module Admin
           case @custom_field.field_format
           when "hierarchy"
             ::CustomFields::Hierarchy::UpdateListItemContract
-          when "scored_list"
+          when "weighted_item_list"
             ::CustomFields::Hierarchy::UpdateScoredItemContract
           else
             raise ArgumentError, "unsupported custom field format '#{@custom_field.field_format}'"

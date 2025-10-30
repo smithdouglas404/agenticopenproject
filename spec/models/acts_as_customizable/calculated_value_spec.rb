@@ -383,7 +383,7 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
     end
 
     context "when using scored lists" do
-      let(:cf_list) { build_stubbed(:scored_list_project_custom_field) }
+      let(:cf_list) { build_stubbed(:weighted_item_list_project_custom_field) }
       let(:cf1) { build_stubbed(:calculated_value_project_custom_field) }
       let(:hierarchy_item) { create(:hierarchy_item, score: 7) }
 

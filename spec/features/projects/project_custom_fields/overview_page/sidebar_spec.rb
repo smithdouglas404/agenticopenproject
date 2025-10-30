@@ -862,8 +862,8 @@ RSpec.describe "Show project custom fields on project overview page", :js do
     end
 
     describe "with scored list CF" do
-      let!(:scored_list) do
-        create(:scored_list_project_custom_field,
+      let!(:weighted_item_list) do
+        create(:weighted_item_list_project_custom_field,
                projects: [project],
                name: "Scored List",
                project_custom_field_section: section_for_input_fields,
@@ -872,14 +872,14 @@ RSpec.describe "Show project custom fields on project overview page", :js do
       let!(:item) { create(:hierarchy_item, score: 10, label: "Ten") }
 
       before do
-        create(:custom_value, :skip_validations, customized: project, custom_field: scored_list, value: item.id.to_s)
+        create(:custom_value, :skip_validations, customized: project, custom_field: weighted_item_list, value: item.id.to_s)
       end
 
       it "shows the correct value for the project custom field" do
         overview_page.visit_page
 
         overview_page.within_project_attributes_sidebar do
-          overview_page.within_custom_field_container(scored_list) do
+          overview_page.within_custom_field_container(weighted_item_list) do
             expect(page).to have_text "Ten"
           end
         end

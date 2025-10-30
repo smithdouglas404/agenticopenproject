@@ -37,19 +37,19 @@ RSpec.describe "Scored Lists and Calculated Values", :js,
   current_user { create(:admin) }
 
   let!(:project) { create(:project) }
-  let!(:scored_list) { create(:scored_list_project_custom_field, projects: [project]) }
-  let!(:one) { create(:hierarchy_item, parent: scored_list.hierarchy_root, label: "One", score: 1) }
-  let!(:two) { create(:hierarchy_item, parent: scored_list.hierarchy_root, label: "Two", score: 2) }
+  let!(:weighted_item_list) { create(:weighted_item_list_project_custom_field, projects: [project]) }
+  let!(:one) { create(:hierarchy_item, parent: weighted_item_list.hierarchy_root, label: "One", score: 1) }
+  let!(:two) { create(:hierarchy_item, parent: weighted_item_list.hierarchy_root, label: "Two", score: 2) }
   let!(:calculated_value) do
     create(:calculated_value_project_custom_field,
            :skip_validations,
            projects: [project],
-           formula: "{{cf_#{scored_list.id}}} * 2")
+           formula: "{{cf_#{weighted_item_list.id}}} * 2")
   end
 
   context "with sufficient permissions" do
     before do
-      visit edit_admin_settings_project_custom_field_path(scored_list)
+      visit edit_admin_settings_project_custom_field_path(weighted_item_list)
     end
 
     it "shows a correct breadcrumb menu" do
@@ -57,7 +57,7 @@ RSpec.describe "Scored Lists and Calculated Values", :js,
         expect(page).to have_link("Administration")
         expect(page).to have_link("Projects")
         expect(page).to have_link("Project attributes")
-        expect(page).to have_text(scored_list.name)
+        expect(page).to have_text(weighted_item_list.name)
       end
     end
 
@@ -80,7 +80,7 @@ RSpec.describe "Scored Lists and Calculated Values", :js,
       end
 
       before do
-        project.custom_values.create!(custom_field: scored_list, value: one.id)
+        project.custom_values.create!(custom_field: weighted_item_list, value: one.id)
         project.custom_values.create!(custom_field: calculated_value, value: "2.0")
       end
 

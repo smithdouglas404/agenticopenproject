@@ -62,7 +62,7 @@ module Admin
           case field_format
           when "hierarchy"
             :short
-          when "scored_list"
+          when "weighted_item_list"
             :score
           else
             raise ArgumentError, "Unsupported field format: #{field_format}"

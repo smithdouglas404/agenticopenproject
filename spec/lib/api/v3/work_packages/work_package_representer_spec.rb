@@ -1244,7 +1244,7 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
         let(:custom_field_values) { [build_stubbed(:custom_value, custom_field:, value:)] }
 
         context "with format scored list" do
-          let(:custom_field) { build_stubbed(:scored_list_wp_custom_field) }
+          let(:custom_field) { build_stubbed(:weighted_item_list_wp_custom_field) }
           let(:service) { CustomFields::Hierarchy::HierarchicalItemService.new }
           let(:contract_class) { CustomFields::Hierarchy::InsertScoredItemContract }
           let(:scored_item) do
