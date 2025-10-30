@@ -96,3 +96,40 @@ export function isVisible(elem:HTMLElement|null) {
 export function queryVisible<T extends HTMLElement = HTMLElement>(selector:string, node:Element|Document = document) {
   return Array.from(node.querySelectorAll<T>(selector)).filter(isVisible);
 }
+
+/**
+ * Ensures that the given HTMLElement has a unique and stable `id` attribute.
+ *
+ * - If the element already has an `id`, it is returned unchanged.
+ * - Otherwise, a new ID is generated using the provided prefix, a short random
+ *   session-specific salt, and an incrementing counter.
+ * - This guarantees uniqueness across multiple controller instances or scripts
+ *   on the same page, while remaining stable for the element’s lifetime.
+ *
+ * The generated ID is stable only within the current page session — it will be
+ * regenerated if the page is reloaded or the script is re-executed.
+ *
+ * @example
+ * ```ts
+ * const div = document.createElement('div');
+ * console.log(ensureId(div));       // "el-ab3f-0"
+ * console.log(ensureId(div));       // "el-ab3f-0" (same on subsequent calls)
+ *
+ * const span = document.createElement('span');
+ * console.log(ensureId(span, 'fx')); // "fx-ab3f-1"
+ * ```
+ *
+ * @param {HTMLElement} el - The element to ensure has an ID.
+ * @param {string} [prefix='el'] - The prefix to use for the generated ID.
+ * @returns {string} The existing or newly generated element ID.
+ */
+const idSalt = Math.random().toString(36).slice(2, 6);
+let elementId = 0;
+
+export function ensureId(el:HTMLElement, prefix = 'el'):string {
+  if (!el.id) {
+    // eslint-disable-next-line no-plusplus
+    el.id = `${prefix}-${idSalt}-${elementId++}`;
+  }
+  return el.id;
+}
