@@ -216,7 +216,7 @@ module Settings
         default: 20
       },
       cache_expires_in_seconds: {
-        description: "Expiration time for memcache entries, empty for no expiry be default",
+        description: "Expiration time for memcache entries, empty for no expiration be default",
         format: :integer,
         default: nil,
         writable: false
