@@ -1,5 +1,4 @@
 import { retrieveCkEditorInstance } from 'core-app/shared/helpers/ckeditor-helpers';
-import { toggleElement } from 'core-app/shared/helpers/dom-helpers';
 import invariant from 'tiny-invariant';
 
 /**
@@ -84,20 +83,5 @@ export function listenToSettingChanges() {
         .querySelectorAll<HTMLInputElement|HTMLSelectElement>('input,select:not([type=checkbox],[type=hidden])')
         .forEach((field) => { field.required = wasChecked; });
     });
-  });
-
-  /** Toggle highlighted attributes visibility depending on if the highlighting mode 'inline' was selected */
-  document.querySelector<HTMLSelectElement>('.settings--highlighting-mode select')?.addEventListener('change', (event) => {
-    const highlightingMode = (event.target as HTMLSelectElement).value;
-    document.querySelectorAll<HTMLElement>('.settings--highlighted-attributes')
-      .forEach((elem) => { toggleElement(elem, highlightingMode === 'inline'); });
-  });
-
-  document.querySelector<HTMLFormElement>('#tab-content-work_packages form')?.addEventListener('submit', () => {
-    const availableAttributes = document.querySelectorAll<HTMLInputElement>(".settings--highlighted-attributes input[type='checkbox']");
-    const selectedAttributes = document.querySelectorAll<HTMLInputElement>(".settings--highlighted-attributes input[type='checkbox']:checked");
-    if (selectedAttributes.length === availableAttributes.length) {
-      availableAttributes.forEach((availableAttribute) => { availableAttribute.checked = false; });
-    }
   });
 }
