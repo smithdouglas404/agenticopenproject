@@ -1,5 +1,5 @@
 import { retrieveCkEditorInstance } from 'core-app/shared/helpers/ckeditor-helpers';
-import { hideElement, showElement, toggleElement } from 'core-app/shared/helpers/dom-helpers';
+import { toggleElement } from 'core-app/shared/helpers/dom-helpers';
 import invariant from 'tiny-invariant';
 
 /**
@@ -74,24 +74,6 @@ export function listenToSettingChanges() {
       selectSwitch.addEventListener('change', langSelectSwitchChangeListener);
     });
   /* end Javascript for Settings::TextSettingComponent */
-
-  /** Toggle notification settings fields */
-  const emailDeliveryMethodSwitch = document.querySelector<HTMLSelectElement>('#email_delivery_method_switch');
-  emailDeliveryMethodSwitch?.addEventListener('change', (event) => {
-    const delivery_method = (event.target as HTMLSelectElement).value;
-    document
-      .querySelectorAll<HTMLElement>('.email_delivery_method_settings')
-      .forEach((elem) => hideElement(elem));
-    showElement(document.querySelector(`#email_delivery_method_${delivery_method}`)!);
-  });
-  emailDeliveryMethodSwitch?.dispatchEvent(new Event('change', { bubbles: true }));
-
-  document.querySelector<HTMLSelectElement>('#settings_smtp_authentication')?.addEventListener('change', (event) => {
-    const isNone = (event.target as HTMLSelectElement).value === 'none';
-    document
-      .querySelectorAll('#settings_smtp_user_name,#settings_smtp_password')
-      .forEach((field) => toggleElement(field.closest('.form--field')!, !isNone));
-  });
 
   /** Toggle repository checkout fieldsets required when option is disabled */
   document.querySelectorAll<HTMLInputElement>('.settings-repositories--checkout-toggle').forEach((toggle) => {
