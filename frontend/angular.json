@@ -26,18 +26,16 @@
               "jquery",
               "contra/emitter",
               "crossvent",
-              "chart.js",
               "create-point-cb",
               "core-vendor/enjoyhint",
-              "tablesorter",
-              "chartjs-plugin-datalabels"
+              "tablesorter"
             ],
             "preserveSymlinks": true,
             "outputPath": {
               "base": "../public/assets/frontend",
               "browser": ""
             },
-            "index": "src/index2.html",
+            "index": false,
             "browser": "src/main.ts",
             "polyfills": ["src/polyfills.ts"],
             "tsConfig": "tsconfig.app.json",
@@ -55,7 +53,7 @@
                 "bundleName": "backlogs"
               },
               "src/styles.scss",
-              "node_modules/@blocknote/mantine/dist/style.css",
+              "node_modules/@blocknote/mantine/src/style.css",
               "node_modules/codemirror/lib/codemirror.css",
               "src/vendor/jquery-ui-1.14.1/jquery-ui.css",
               "src/vendor/jquery-ui-1.14.1/jquery-ui.structure.css",
@@ -65,7 +63,15 @@
             "stylePreprocessorOptions": {
               "includePaths": [
                 "src/assets/sass"
-              ]
+              ],
+              "sass": {
+                "silenceDeprecations": [
+                  "color-functions",
+                  "global-builtin",
+                  "import",
+                  "mixed-decls"
+                ]
+              }
             },
             "scripts": [
               {
@@ -98,12 +104,14 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "define": { "process.env.NODE_ENV": "'production'" }
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "define": { "process.env.NODE_ENV": "'development'" }
             }
           },
           "defaultConfiguration": "production"

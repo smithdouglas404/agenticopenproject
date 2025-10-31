@@ -23,8 +23,8 @@ sv:
   js:
     ajax:
       hide: "Dölj"
-      loading: "Loading…"
-      updating: "Updating…"
+      loading: "Laddar…"
+      updating: "Uppdaterar…"
     attachments:
       delete: "Radera bilaga"
       delete_confirmation: |
@@ -55,7 +55,7 @@ sv:
       title: Backup OpenProject
       options: Alternativ
       include_attachments: Include attachments
-      download_backup: Download backup
+      download_backup: Ladda ner säkerhetskopia
       request_backup: Request backup
     close_popup_title: "Stäng popup"
     close_filter_title: "Stäng filter"
@@ -76,7 +76,7 @@ sv:
     button_copy_link_to_clipboard: "Kopiera länk till urklipp"
     button_copy_to_other_project: "Duplicate in another project"
     button_custom-fields: "Anpassade fält"
-    button_delete: "Radera"
+    button_delete: "Ta bort"
     button_delete_watcher: "Ta bort bevakare"
     button_details_view: "Detaljvy"
     button_duplicate: "Duplicera"
@@ -88,16 +88,18 @@ sv:
     button_list_view: "Listvy"
     button_show_view: "Helskärmsläge"
     button_log_time: "Logga tid"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stoppa timer"
     button_more: "Mer"
     button_open_details: "Öppna detaljvyn"
     button_close_details: "Stäng detaljvyn"
     button_open_fullscreen: "Öppna fullskärmsläge"
     button_show_cards: "Visa kortvy"
     button_show_list: "Visa listvy"
-    button_show_table: "Show table view"
+    button_show_table: "Visa tabellvy"
     button_show_gantt: "Show Gantt view"
     button_show_fullscreen: "Show fullscreen view"
-    button_more_actions: "More actions"
+    button_more_actions: "Fler åtgärder"
     button_quote: "Citat"
     button_save: "Spara"
     button_settings: "Inställningar"
@@ -169,7 +171,7 @@ sv:
           language_hint: "Ange det formateringsspråk som används för att belysa (om det stöds)."
         dropdown:
           macros: "Makron"
-          chose_macro: "Choose macro"
+          chose_macro: "Välj makro"
         toc: "Innehållsförteckning"
         toolbar_help: "Klicka på välj widget och visa verktygsfältet. Dubbelklicka om du vill redigera widget"
         wiki_page_include:
@@ -205,7 +207,7 @@ sv:
         calendar:
           empty_state_header: "Non-working days"
           empty_state_description: 'No specific non-working days are defined for this year. Click on "+ Non-working day" below to add a date.'
-          new_date: "(new)"
+          new_date: "(ny)"
         add_non_working_day: "Non-working day"
         already_added_error: "A non-working day for this date exists already. There can only be one non-working day created for each unique date."
         change_button: "Save and reschedule"
@@ -287,17 +289,6 @@ sv:
         format:
           date: "%{attribute} är inget giltigt datum - förväntat format är åååå-mm-dd."
         general: "Ett fel har inträffat."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Läs om nya funktioner och produktuppdateringar."
-          learn_about: "Learn more about all new features"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                The release contains various new features and improvements, such as <br> <ul class="%{list_styling_class}"> <li>UX/UI improvements for a more modern look.</li> <li>Meetings: Option to mute email notifications and ICS.</li> <li>Ongoing timers shown in the My time tracking module.</li> <li>Progress reporting: % Complete sum also shown in Status-based mode.</li> <li>Nextcloud Health check: Indicate missing token exchange capability (Enterprise add-on).</li> </ul>
     ical_sharing_modal:
       title: "Subscribe to calendar"
       inital_setup_error_message: "An error occured while fetching data."
@@ -306,7 +297,7 @@ sv:
       token_name_label: "Where will you be using this?"
       token_name_placeholder: 'Ange ett namn, t. ex. "Telefon"'
       token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="my/access_token", target="_blank">access tokens</a> list.'
-      copy_url_label: "Copy URL"
+      copy_url_label: "Kopiera URL"
       ical_generation_error_text: "An error occured while generating the calendar URL."
       success_message: 'The URL "%{name}" was successfully copied to your clipboard. Paste it in your calendar client to complete the subscription.'
     label_activate: "Aktivera"
@@ -323,13 +314,13 @@ sv:
     label_added_time_by: 'Added by <a href="%{authorLink}">%{author}</a> at %{age}'
     label_ago: "dagar sedan"
     label_all: "alla"
-    label_all_projects: "All projects"
+    label_all_projects: "Alla projekt"
     label_all_uppercase: "Alla"
     label_all_work_packages: "alla arbetspaket"
     label_and: "och"
     label_ascending: "Stigande"
     label_author: "Författare: %{user}"
-    label_avatar: "Profilbild"
+    label_avatar: "Avatar"
     label_between: "mellan"
     label_board: "Tavla"
     label_board_locked: "Låst"
@@ -339,7 +330,7 @@ sv:
     label_create: "Skapa"
     label_create_work_package: "Skapa nya arbetspaket"
     label_created_by: "Skapad av"
-    label_current: "current"
+    label_current: "nuvarande"
     label_date: "Datum"
     label_date_with_format: "Ange %{date_attribute} med följande format: %{format}"
     label_deactivate: "Deaktivera"
@@ -348,7 +339,7 @@ sv:
     label_details: "Detaljer"
     label_display: "Visa"
     label_cancel_comment: "Avbryt kommentar"
-    label_closed_work_packages: "stängda"
+    label_closed_work_packages: "stängt"
     label_collapse: "Fäll ihop"
     label_collapsed: "hopfällda"
     label_collapse_all: "Fäll ihop alla"
@@ -383,7 +374,7 @@ sv:
     label_in_more_than: "i mer än"
     label_incoming_emails: "Inkommande E-post"
     label_information_plural: "Information"
-    label_invalid: "Invalid"
+    label_invalid: "Ogiltig"
     label_import: "Importera"
     label_latest_activity: "Senaste aktivitet"
     label_last_updated_on: "Senast uppdaterad den"
@@ -399,13 +390,13 @@ sv:
     label_menu_collapse: "fäll ihop"
     label_menu_expand: "expandera"
     label_more_than_ago: "mer än dagar sedan"
-    label_moderate_comment: "Moderate comment"
+    label_moderate_comment: "Moderera kommentar"
     label_next: "Nästa"
     label_no_color: "Ingen färg"
     label_no_data: "Ingen data att visa"
     label_no_due_date: "no finish date"
     label_no_start_date: "inget startdatum"
-    label_no_date: "no date"
+    label_no_date: "inget datum"
     label_no_value: "Inget värde"
     label_none: "inga"
     label_not_contains: "innehåller inte"
@@ -423,7 +414,7 @@ sv:
     label_project_plural: "Projekt"
     label_visibility_settings: "Synlighet inställningar"
     label_quote_comment: "Citera denna kommentar"
-    label_recent: "Recent"
+    label_recent: "Senaste"
     label_reset: "Återställ"
     label_remove: "Ta bort"
     label_remove_column: "Ta bort kolumn"
@@ -432,7 +423,7 @@ sv:
     label_report: "Rapport"
     label_repository_plural: "Versionsarkiv"
     label_save_as: "Spara som"
-    label_search_columns: "Search a column"
+    label_search_columns: "Sök i en kolumn"
     label_select_watcher: "Välj en bevakare..."
     label_selected_filter_list: "Valda filter"
     label_show_attributes: "Visa alla attribut"
@@ -443,7 +434,7 @@ sv:
     label_sort_lower: "Flytta ned"
     label_sorting: "Sortering"
     label_spent_time: "Förbrukad tid"
-    label_star_query: "Föredragen"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Tryck på enter för att spara."
     label_public_query: "Offentlig"
     label_sum: "Summa"
@@ -451,7 +442,7 @@ sv:
     label_total_sum: "Total sum"
     label_subject: "Ämne"
     label_this_week: "denna vecka"
-    label_today: "Today"
+    label_today: "Idag"
     label_time_entry_plural: "Förbrukad tid"
     label_up: "Upp"
     label_user_plural: "Användare"
@@ -476,15 +467,15 @@ sv:
     label_unwatch_work_package: "Sluta bevaka arbetspaket"
     label_uploaded_by: "Uppladdad av"
     label_default_queries: "Standard"
-    label_starred_queries: "Favorite"
+    label_starred_queries: "Favorit"
     label_global_queries: "Offentlig"
-    label_custom_queries: "Private"
+    label_custom_queries: "Privat"
     label_columns: "Kolumner"
     label_attachments: Bilagor
     label_drop_files: "Drop files here to attach files."
     label_drop_or_click_files: "Drop files here or click to attach files."
     label_drop_folders_hint: Du kan inte ladda upp mappar som bilaga. Välj enstaka filer.
-    label_add_attachments: "Attach files"
+    label_add_attachments: "Bifoga filer"
     label_formattable_attachment_hint: "Bifoga och länka filer genom att släppa på fältet, eller klistra in från Urklipp."
     label_remove_file: "Radera %{fileName}"
     label_remove_watcher: "Ta bort bevakare %{name}"
@@ -502,7 +493,7 @@ sv:
     label_version_plural: "Versioner"
     label_view_has_changed: "Denna vy har osparade ändringar. Klicka för att spara dem."
     help_texts:
-      show_modal: "Show help text"
+      show_modal: "Visa hjälptext"
     onboarding:
       buttons:
         skip: "Hoppa över"
@@ -545,7 +536,7 @@ sv:
       title: "Notifications"
       no_unread: "No unread notifications"
       reasons:
-        mentioned: "Mentioned"
+        mentioned: "Omnämnd"
         watched: "Bevakare"
         assigned: "Tilldelad till"
         #The enum value is named 'responsible' in the database and that is what is transported through the API
@@ -557,16 +548,16 @@ sv:
         processed: "Processed"
         prioritized: "Prioritized"
         dateAlert: "Date alert"
-        shared: "Shared"
-        reminder: "Reminder"
+        shared: "Delad"
+        reminder: "Påminnelse"
       date_alerts:
         milestone_date: "Milestone date"
         overdue: "Overdue"
         overdue_since: "since %{difference_in_days}."
-        property_today: "is today."
+        property_today: "är idag."
         property_is: "is in %{difference_in_days}."
         property_was: "was %{difference_in_days} ago."
-        property_is_deleted: "is deleted."
+        property_is_deleted: "är raderad."
       center:
         label_actor_and: "och"
         and_more_users:
@@ -575,10 +566,10 @@ sv:
         no_results:
           at_all: "New notifications will appear here when there is activity that concerns you."
           with_current_filter: "There are no notifications in this view at the moment"
-        mark_all_read: "Mark all as read"
-        mark_as_read: "Mark as read"
+        mark_all_read: "Markera alla som lästa"
+        mark_as_read: "Markera som läst"
         mark_all_read_confirmation: "This will mark all notifications in this view as read. Are you sure you want to do this?"
-        text_update_date_by: "%{date} by"
+        text_update_date_by: "%{date} av"
         total_count_warning: "Showing the %{newest_count} most recent notifications. %{more_count} more are not displayed."
         empty_state:
           no_notification: "Looks like you are all caught up."
@@ -599,27 +590,27 @@ sv:
           no_notification: No notification
           timeframes:
             normal:
-              PT0S: same day
-              P1D: 1 day before
-              P3D: 3 days before
-              P7D: a week before
+              PT0S: samma dag
+              P1D: 1 dag innan
+              P3D: 3 dagar innan
+              P7D: en vecka innan
             overdue:
               P1D: varje dag
-              P3D: every 3 days
-              P7D: every week
+              P3D: var 3:e dag
+              P7D: varje vecka
         reasons:
           mentioned:
-            title: "Mentioned"
+            title: "Omnämnd"
             description: "Receive a notification every time someone mentions me anywhere"
           assignee: "Tilldelad till"
           responsible: "Huvudansvarig"
-          shared: "Shared"
+          shared: "Delad"
           watched: "Bevakare"
-          work_package_commented: "All new comments"
+          work_package_commented: "Alla nya kommentarer"
           work_package_created: "New work packages"
-          work_package_processed: "All status changes"
+          work_package_processed: "Alla statusändringar"
           work_package_prioritized: "All priority changes"
-          work_package_scheduled: "All date changes"
+          work_package_scheduled: "Alla datumändringar"
         global:
           immediately:
             title: "Participating"
@@ -646,7 +637,7 @@ sv:
       page_navigation: "Pagination navigation"
       per_page_navigation: 'Items per page selection'
       pages:
-        page_number: Page %{number}
+        page_number: Sida %{number}
         show_per_page: Show %{number} per page
     placeholders:
       default: "-"
@@ -665,7 +656,7 @@ sv:
     reminders:
       settings:
         daily:
-          add_time: "Add time"
+          add_time: "Lägg till tid"
           enable: "Enable daily email reminders"
           explanation: "You will receive these reminders only for unread notifications and only at hours you specify. %{no_time_zone}"
           no_time_zone: "Until you configure a time zone for your account, the times will be interpreted to be in UTC."
@@ -683,16 +674,16 @@ sv:
             Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications:
           news_added: "Nyheter tillagda"
           news_commented: "Comment on a news item"
-          document_added: "Documents added"
-          forum_messages: "New forum messages"
+          document_added: "Dokument tillagt"
+          forum_messages: "Nya forummeddelanden"
           wiki_page_added: "Wiki-sidan tillagd"
           wiki_page_updated: "Wiki-sidan uppdaterad"
-          membership_added: "Membership added"
+          membership_added: "Medlemskap tillagt"
           membership_updated: "Membership updated"
-        title: "Email reminders"
+        title: "E-postpåminnelser"
         pause:
           label: "Temporarily pause daily email reminders"
-          first_day: "First day"
+          first_day: "Första dagen"
           last_day: "Last day"
     text_are_you_sure: "Är du säker?"
     text_are_you_sure_to_cancel: "You have unsaved changes on this page. Are you sure you want to discard them?"
@@ -716,7 +707,7 @@ sv:
       tracking: "Tidredovisning"
       stop: "Stop"
     timer:
-      start_new_timer: "Start new timer"
+      start_new_timer: "Starta ny timer"
       timer_already_running: "To start a new timer, you must first stop the current timer:"
       timer_already_stopped: "No active timer for this work package, have you stopped it in another window?"
       tracking_time: "Tracking time"
@@ -769,7 +760,7 @@ sv:
       update_description: "Ange eller uppdatera beskrivningen av denna relation"
       toggle_description: "Visa/dölj relationsbeskrivning"
       update_relation: "Klicka för att ändra relationstypen"
-      show_relations: "Show relations"
+      show_relations: "Visa relationer"
       add_predecessor: "Lägg till föregångare"
       add_successor: "Add successor"
       remove: "Radera relation"
@@ -781,9 +772,9 @@ sv:
     autocompleter:
       placeholder: "Skriv för att söka"
       notFoundText: "Inga objekt hittades"
-      search: "Search"
+      search: "Sök"
       project:
-        placeholder: "Select project"
+        placeholder: "Välj projekt"
     repositories:
       select_tag: "Välj etikett"
       select_branch: "Välj gren"
@@ -824,7 +815,7 @@ sv:
       share: "Dela"
       selected_count: "%{count} selected"
       selection:
-        mixed: "Mixed"
+        mixed: "Blandad"
     work_packages:
       bulk_actions:
         edit: "Lägg till/Ändra"
@@ -910,7 +901,7 @@ sv:
         percentageDone: "Procent gjort"
         priority: "Prioritet"
         projectName: "Projekt"
-        remainingWork: "Remaining work"
+        remainingWork: "Återstående arbete"
         remainingWorkAlternative: "Återstående timmar"
         responsible: "Ansvarig"
         startDate: "Startdatum"
@@ -922,9 +913,9 @@ sv:
         updatedAt: "Uppdaterat den"
         versionName: "Version"
         version: "Version"
-        work: "Work"
+        work: "Arbete"
         workAlternative: "Beräknad tid"
-        remainingTime: "Remaining work"
+        remainingTime: "Återstående arbete"
       default_queries:
         manually_sorted: "New manually sorted query"
         latest_activity: "Senaste aktivitet"
@@ -934,8 +925,8 @@ sv:
         all_open: "Alla öppna"
         overdue: "Overdue"
         summary: "Sammanfattning"
-        shared_with_users: "Shared with users"
-        shared_with_me: "Shared with me"
+        shared_with_users: "Delade med användare"
+        shared_with_me: "Delade med mig"
       jump_marks:
         pagination: "Gå till sidnumrering för tabell"
         label_pagination: "Klicka här för att hoppa arbetspaketets tabell och gå till sidnumrering"
@@ -943,7 +934,7 @@ sv:
         label_content: "Klicka här för att hoppa över menyn och gå till innehållet"
       placeholders:
         default: "-"
-        date: "Select date"
+        date: "Välj datum"
       query:
         column_names: "Kolumner"
         group_by: "Gruppera resultat efter"
@@ -955,7 +946,7 @@ sv:
         move_column_left: "Flytta kolumnen till vänster"
         move_column_right: "Flytta kolumnen till höger"
         hide_column: "Dölj kolumn"
-        insert_columns: "Insert columns"
+        insert_columns: "Infoga kolumner"
         filters: "Filter"
         display_sums: "Visa summor"
         confirm_edit_cancel: "Är du säker på att du vill avbryta redigering av namnet på den här vyn? Titeln kommer att återställas till föregående värde."
@@ -973,13 +964,13 @@ sv:
         button_label: "Set reminder"
         title:
           new: "Set a reminder"
-          edit: "Edit reminder"
+          edit: "Redigera påminnelse"
         subtitle: "You will receive a notification for this work package at the chosen time."
         presets:
-          tomorrow: "Tomorrow"
-          three_days: "In 3 days"
-          week: "In a week"
-          month: "In a month"
+          tomorrow: "Imorgon"
+          three_days: "Om 3 dagar"
+          week: "Om en vecka"
+          month: "Om en månad"
           custom: "At a particular date/time"
       scheduling:
         is_parent: "The dates of this work package are automatically deduced from its children. Activate 'Manual scheduling' to set the dates."
@@ -1035,7 +1026,7 @@ sv:
         months: "månader"
     toolbar:
       settings:
-        configure_view: "Configure view"
+        configure_view: "Konfigurera vy"
         columns: "Kolumner"
         sort_by: "Sortera efter"
         group_by: "Gruppera efter"
@@ -1049,7 +1040,7 @@ sv:
         visibility_settings: "Synlighet inställningar"
         share_calendar: "Subscribe to calendar"
         page_settings: "Byt namn på vyn"
-        delete: "Radera"
+        delete: "Ta bort"
       filter: "Filter"
       unselected_title: "Arbetspaket"
       search_query_label: "Sök sparade vyer"
@@ -1060,7 +1051,7 @@ sv:
       button_save: "Spara"
       button_submit: "Skicka"
       button_cancel: "Avbryt"
-      button_delete: "Radera"
+      button_delete: "Ta bort"
       form_submit:
         title: "Bekräfta för att fortsätta"
         text: "Är du säker på att du vill utföra den här åtgärden?"
@@ -1079,6 +1070,8 @@ sv:
     notice_successful_delete: "Raderades utan problem."
     notice_successful_update: "Uppdaterades utan problem."
     notice_job_started: "job started."
+    no_job_id: "No job ID returned from server."
+    invalid_job_response: "Invalid response from server."
     notice_bad_request: "Felaktig förfrågan."
     relations:
       empty: Inga samband finns
@@ -1111,12 +1104,13 @@ sv:
       child_work_packages:
         one: "ett barnarbetspaket"
         other: "%{count} arbetspaket barn"
+      hour_string: "%{hours} h"
       hour:
         one: "1 tim"
         other: "%{count} timmar"
         zero: "0 h"
       day:
-        one: "1 dag"
+        one: "En dag"
         other: "%{count} dagar"
         zero: "0 dagar"
       word:
@@ -1130,7 +1124,7 @@ sv:
       close_search: "Stäng sökning"
       current_project_and_all_descendants: "I detta projekt + delprojekt"
       current_project: "I detta projekt"
-      recently_viewed: "Recently viewed"
+      recently_viewed: "Nyligen visade"
       title:
         all_projects: "alla projekt"
         project_and_subprojects: "och alla delprojekt"
@@ -1140,71 +1134,8 @@ sv:
       list: "Tabell"
       timeline: "Gantt-schema"
     invite_user_modal:
-      back: "Tillbaka"
-      invite: "Invite"
-      title:
-        invite: "Bjud in användare"
-        invite_to_project: "Invite %{type} to %{project}"
-        User: "användare"
-        Group: "group"
-        PlaceholderUser: "placeholder user"
-        invite_principal_to_project: "Invite %{principal} to %{project}"
-      project:
-        label: "Projekt"
-        required: "Please select a project"
-        lacking_permission: "Please select a different project since you lack permissions to assign users to the currently selected."
-        lacking_permission_info: "You lack the permission to assign users to the project you are currently in. You need to select a different one."
-        next_button: "Nästa"
-        no_results: "Inga projekt hittades"
-        no_invite_rights: "You are not allowed to invite members to this project"
-      type:
-        required: "Please select the type to be invited"
-        user:
-          title: "Användare"
-          description: "Permissions based on the assigned role in the selected project"
-        group:
-          title: "Grupp"
-          description: "Permissions based on the assigned role in the selected project"
-        placeholder:
-          title: "Placeholder user"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Has no access to the project and no emails are sent out."
-          description_no_ee: 'Has no access to the project and no emails are sent out. <br>Check out the <a href="%{eeHref}" target="_blank">Enterprise edition</a>'
-      principal:
-        label:
-          name_or_email: "Namn eller e-postadress"
-          name: "Namn"
-        already_member_message: "Already a member of %{project}"
-        no_results_user: "Inga användare hittades"
-        invite_user: "Invite:"
-        no_results_placeholder: "No placeholders were found"
-        create_new_placeholder: "Create new placeholder:"
-        no_results_group: "Inga grupper hittades"
-        next_button: "Nästa"
-        required:
-          user: "Vänligen välj en användare"
-          placeholder: "Please select a placeholder"
-          group: "Please select a group"
-      role:
-        label: "Role in %{project}"
-        no_roles_found: "Inga roller hittades"
-        description: >-
-          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Learn more about roles and permissions. </a>
-        required: "Please select a role"
-        next_button: "Nästa"
-      message:
-        label: "Invitation message"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
-        next_button: "Nästa"
-      summary:
-        next_button: "Skicka inbjudan"
-      success:
-        title: "%{principal} was invited!"
-        description:
-          user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-          placeholder: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-          group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
-        next_button: "Fortsätt"
+      invite: "Bjud in"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "Status excluded from hierarchy totals"
@@ -1214,26 +1145,28 @@ sv:
       no_results: "You have no favorite projects"
       no_results_subtext: "Add one or multiple projects as favorite through their overview or in a project list."
     include_projects:
-      toggle_title: "Include projects"
+      toggle_title: "Inkludera projekt"
       title: "Projekt"
       clear_selection: "Clear selection"
       apply: "Tilldela"
       selected_filter:
         all: "Alla projekt"
         selected: "Only selected"
-      search_placeholder: "Search project..."
+      search_placeholder: "Sök projekt..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Include all sub-projects"
       tooltip:
         include_all_selected: "Project already included since Include all sub-projects is enabled."
         current_project: "This is the current project you are in."
         does_not_match_search: "Project does not match the search criteria."
       no_results: "No project matches your search criteria."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
-      toggle_title: "Baseline"
+      toggle_title: "Baslinje"
       clear: "Rensa"
       apply: "Tilldela"
       header_description: "Highlight changes made to this list since any point in the past."
-      show_changes_since: "Show changes since"
+      show_changes_since: "Visa ändringar sedan"
       help_description: "Reference time zone for the baseline."
       time_description: "In your local time: %{datetime}"
       time: "Tid"
@@ -1242,14 +1175,14 @@ sv:
       drop_down:
         none: "-"
         yesterday: "igår"
-        last_working_day: "last working day"
+        last_working_day: "sista arbetsdagen"
         last_week: "förra veckan"
         last_month: "förra månaden"
-        a_specific_date: "a specific date"
+        a_specific_date: "ett specifikt datum"
         between_two_specific_dates: "between two specific dates"
       legends:
-        changes_since: "Changes since"
-        changes_between: "Changes between"
+        changes_since: "Ändringar sedan"
+        changes_between: "Förändringar mellan"
         now_meets_filter_criteria: "Now meets filter criteria"
         no_longer_meets_filter_criteria: "No longer meets filter criteria"
         maintained_with_changes: "Maintained with changes"

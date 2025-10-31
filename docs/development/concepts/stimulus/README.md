@@ -69,7 +69,7 @@ OpenProjectStimulusApplication.preregisterDynamic(
 );
 ```
 
-This ensures that the controller is loaded only when it is needed, and not at application startup. The controller will then be engaded when the `data-controller` attribute is present in the DOM through the same mechanism as for the core dynamic controllers.
+This ensures that the controller is loaded only when it is needed, and not at application startup. The controller will then be enabled when the `data-controller` attribute is present in the DOM through the same mechanism as for the core dynamic controllers.
 
 ### Requiring a page controller
 

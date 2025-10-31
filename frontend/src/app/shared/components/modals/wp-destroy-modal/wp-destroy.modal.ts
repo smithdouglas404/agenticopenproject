@@ -45,7 +45,6 @@ import {
   WorkPackageNotificationService,
 } from 'core-app/features/work-packages/services/notifications/work-package-notification.service';
 import { WorkPackageService } from 'core-app/features/work-packages/services/work-package.service';
-import isNotNull from 'core-app/core/state/is-not-null';
 
 @Component({
   templateUrl: './wp-destroy.modal.html',
@@ -149,7 +148,7 @@ export class WpDestroyModalComponent extends OpModalComponent implements OnInit 
     this.busy = true;
     const ids = this.workPackages
       .map((el) => el.id)
-      .filter(isNotNull);
+      .filter((id) => id !== null);
     this.workPackageService.performBulkDelete(ids, true)
       .then(() => {
         this.busy = false;

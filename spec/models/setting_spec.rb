@@ -501,7 +501,7 @@ RSpec.describe Setting do
            smtp_timeout: 1234
          } do
         described_class.reload_mailer_settings!
-        expect(ActionMailer::Base).to have_received(:perform_deliveries=).with(true)
+        expect(ActionMailer::Base).not_to have_received(:perform_deliveries=).with(true)
         expect(ActionMailer::Base).to have_received(:delivery_method=).with(:smtp)
         expect(ActionMailer::Base.smtp_settings[:smtp_authentication]).to be_nil
         expect(ActionMailer::Base.smtp_settings).to eq(address: "smtp.example.com",
@@ -529,7 +529,7 @@ RSpec.describe Setting do
            smtp_ssl: 1
          } do
         described_class.reload_mailer_settings!
-        expect(ActionMailer::Base).to have_received(:perform_deliveries=).with(true)
+        expect(ActionMailer::Base).not_to have_received(:perform_deliveries=).with(true)
         expect(ActionMailer::Base).to have_received(:delivery_method=).with(:smtp)
         expect(ActionMailer::Base.smtp_settings[:smtp_authentication]).to be_nil
         expect(ActionMailer::Base.smtp_settings).to eq(address: "smtp.example.com",
@@ -556,7 +556,7 @@ RSpec.describe Setting do
            smtp_ssl: 0
          } do
         described_class.reload_mailer_settings!
-        expect(ActionMailer::Base).to have_received(:perform_deliveries=).with(true)
+        expect(ActionMailer::Base).not_to have_received(:perform_deliveries=).with(true)
         expect(ActionMailer::Base).to have_received(:delivery_method=).with(:smtp)
         expect(ActionMailer::Base.smtp_settings[:smtp_authentication]).to be_nil
         expect(ActionMailer::Base.smtp_settings).to eq(address: "smtp.example.com",
@@ -586,7 +586,7 @@ RSpec.describe Setting do
            smtp_ssl: 1
          } do
         described_class.reload_mailer_settings!
-        expect(ActionMailer::Base).to have_received(:perform_deliveries=).with(true)
+        expect(ActionMailer::Base).not_to have_received(:perform_deliveries=).with(true)
         expect(ActionMailer::Base).to have_received(:delivery_method=).with(:smtp)
         expect(ActionMailer::Base.smtp_settings[:smtp_authentication]).to be_nil
         expect(ActionMailer::Base.smtp_settings).to eq(address: "smtp.example.com",

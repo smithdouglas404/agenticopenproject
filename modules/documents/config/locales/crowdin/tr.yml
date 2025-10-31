@@ -26,6 +26,10 @@ tr:
   activerecord:
     models:
       document: "Belge"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "Başlık"
   activity:
     filter:
       document: "Belgeler"
@@ -33,6 +37,22 @@ tr:
   default_doc_category_user: "Kullanıcı belgeleri"
   enumeration_doc_categories: "Belge kategorileri"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "İsim"
+      type: "Tür"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "Türler"
     label_attachment_author: "Ek yazar"
     label_categories: "Kategoriler"
     new_category: "Yeni kategori"

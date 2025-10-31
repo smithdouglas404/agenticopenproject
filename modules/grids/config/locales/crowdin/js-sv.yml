@@ -13,14 +13,8 @@ sv:
           no_results: 'Inga dokument ännu.'
         members:
           title: 'Medlemmar'
-          no_results: 'Inga synliga medlemmar.'
-          view_all_members: 'Visa alla medlemmar'
-          add: 'Medlem'
-          too_many: 'Visar %{count} av %{total} medlemmar.'
         news:
           title: 'Nyheter'
-          at: 'vid'
-          no_results: 'Inget nytt att rapportera.'
         project_description:
           title: 'Projektbeskrivning'
           no_results: "Ingen beskrivning har skrivits ännu. Den kan anges i 'Projektinställningar'."
@@ -33,11 +27,12 @@ sv:
           not_set: 'Ej inställd'
           finished: 'Avslutad'
           discontinued: 'Discontinued'
+        project_status_beta:
+          title: 'Project status (BETA)'
         subprojects:
-          title: 'Delprojekt'
-          no_results: 'Inga delprojekt.'
+          title: 'Subitems'
         project_favorites:
-          title: 'Favorite projects'
+          title: 'Favoritprojekt'
           no_results: 'You currently have no favorite projects. Click on the star icon in the project dashboard to add one to your favorites.'
         time_entries_current_user:
           title: 'My spent time'

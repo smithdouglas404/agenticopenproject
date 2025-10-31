@@ -26,6 +26,10 @@ af:
   activerecord:
     models:
       document: "Dokument"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "Titel"
   activity:
     filter:
       document: "Dokumente"
@@ -33,6 +37,22 @@ af:
   default_doc_category_user: "Gebruikerdokumentasie"
   enumeration_doc_categories: "Dokumentkategorieë"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "Naam"
+      type: "Soort"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "Soorte"
     label_attachment_author: "Skrywer van aanhegsel"
     label_categories: "Categories"
     new_category: "Nuwe kategorie"
@@ -40,9 +60,9 @@ af:
   label_document_new: "New document"
   label_document_plural: "Dokumente"
   label_documents: "Dokumente"
-  label_document_title: "Title"
-  label_document_description: "Description"
-  label_document_category: "Category"
+  label_document_title: "Titel"
+  label_document_description: "Beskrywing"
+  label_document_category: "Kategorie"
   permission_manage_documents: "Manage documents"
   permission_view_documents: "View documents"
   project_module_documents: "Dokumente"

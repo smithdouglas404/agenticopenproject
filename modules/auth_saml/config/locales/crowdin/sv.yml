@@ -22,7 +22,7 @@ sv:
         signature_method: Signature algorithm
         digest_method: Digest algorithm
         format: "Format"
-        icon: "Custom icon"
+        icon: "Anpassad ikon"
     errors:
       models:
         saml/provider:
@@ -56,6 +56,7 @@ sv:
       label_mapping: Mapping
       label_requested_attribute_for: "Requested attribute for: %{attribute}"
       no_results_table: No SAML identity providers have been defined yet.
+      notice_created: A new SAML identity provider was successfully created.
       plural: SAML identity providers
       singular: SAML identity provider
       requested_attributes: Requested attributes
@@ -72,7 +73,7 @@ sv:
         legend: >
           These attributes are added to the SAML XML metadata to signify to the identify provider which attributes OpenProject requires. You may still need to explicitly configure your identity provider to send these attributes. Please refer to your IdP's documentation.
         name: 'Requested attribute key'
-        format: 'Attribute format'
+        format: 'Attributformat'
       section_headers:
         configuration: "Primary configuration"
         attributes: "Attribut"

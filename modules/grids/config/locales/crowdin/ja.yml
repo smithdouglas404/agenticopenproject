@@ -1,6 +1,17 @@
 ja:
   grids:
     label_widget_in_grid: "グリッド %{grid_name} に含まれるウィジェット"
+    widgets:
+      subitems:
+        title: "Subitems"
+        no_results: "There are no visible children."
+        view_all_subitems: "View all subitems"
+      members:
+        title: "Latest members"
+        no_results: "表示するメンバーはありません。"
+        view_all_members: "すべてのメンバーを表示"
+      news:
+        no_results: "新しい報告はありません。"
   activerecord:
     attributes:
       grids/grid:

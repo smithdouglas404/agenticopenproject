@@ -30,10 +30,13 @@
     width: 60rem
     min-height: 40vh
 
-  &_auto-size
-    @media #{$spot-mq-desktop}
-      width: auto
-      min-height: auto
+  &_full-screen-when-narrow
+    @media #{$spot-mq-mobile}
+      width: 100dvw
+      height: 100dvh
+      max-height: unset
+      max-width: unset
+      border-radius: 0
 
   &--header
     @include spot-subheader-big
@@ -45,9 +48,6 @@
 
     + .spot-divider
       margin-top: $spot-spacing-1
-
-    > .spot-icon
-      margin-right: $spot-spacing-0-5
 
     &-title
       flex-grow: 1

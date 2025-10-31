@@ -33,8 +33,8 @@ module Primer
             add_input ColorSelectInput.new(builder:, form:, **decorate_options(**), &)
           end
 
-          def html_content(**, &)
-            add_input HtmlContentInput.new(builder:, form:, **, &)
+          def html_content(&)
+            add_input HtmlContent.new(&)
           end
 
           def pattern_input(**, &)

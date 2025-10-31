@@ -59,7 +59,6 @@ import {
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import isNewResource, { HAL_NEW_RESOURCE_ID } from 'core-app/features/hal/helpers/is-new-resource';
 import waitForUploadsFinished from 'core-app/core/upload/wait-for-uploads-finished';
-import isNotNull from 'core-app/core/state/is-not-null';
 
 @Injectable()
 export class AttachmentsResourceService extends ResourceStoreService<IAttachment> {
@@ -164,7 +163,7 @@ export class AttachmentsResourceService extends ResourceStoreService<IAttachment
         map((responses) =>
           responses
             .map((response) => response.body)
-            .filter(isNotNull)),
+            .filter((body) => body !== null)),
       );
   }
 

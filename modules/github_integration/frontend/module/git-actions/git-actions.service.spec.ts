@@ -26,8 +26,6 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-/*jshint expr: true*/
-
 import { GitActionsService } from './git-actions.service';
 import { WorkPackageResource } from "core-app/features/hal/resources/work-package-resource";
 import { TestBed, waitForAsync } from '@angular/core/testing';

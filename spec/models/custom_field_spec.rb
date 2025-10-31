@@ -38,6 +38,8 @@ RSpec.describe CustomField do
   let(:field)  { build(:custom_field) }
   let(:field2) { build(:custom_field) }
 
+  it { is_expected.to have_readonly_attribute(:field_format) }
+
   describe "#name" do
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_length_of(:name).is_at_most(256) }
@@ -593,6 +595,30 @@ RSpec.describe CustomField do
 
       field.destroy
       expect(described_class.where(id: field.id)).not_to exist
+    end
+  end
+
+  describe "#cast_value" do
+    describe "handling all registered formats" do
+      before do
+        allow(User).to receive(:find_by).with(id: 1).and_return(build(:user))
+        allow(Version).to receive(:find_by).with(id: 1).and_return(build(:version))
+        allow(CustomField::Hierarchy::Item).to receive(:find_by).with(id: 1).and_return(build(:hierarchy_item))
+      end
+
+      OpenProject::CustomFieldFormat.registered.map(&:name).each do |field_format|
+        it "handles custom field with format #{field_format}" do
+          field = build(:custom_field, field_format:)
+
+          input = field_format == "date" ? "2025.10.27" : "1"
+
+          if field_format == "empty"
+            expect(field.cast_value(input)).to be_nil
+          else
+            expect(field.cast_value(input)).not_to be_nil
+          end
+        end
+      end
     end
   end
 end

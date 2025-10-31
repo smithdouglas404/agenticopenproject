@@ -78,6 +78,16 @@ export class PathHelperService {
     return `${this.ifcModelsPath(projectIdentifier)}/${modelId}/edit`;
   }
 
+  public inviteUserPath(projectId:string|null) {
+    const path = `${this.staticBase}/users/invite`;
+
+    if (projectId) {
+      return `${path}?user_invitation[project_id]=${projectId}`;
+    }
+
+    return path;
+  }
+
   public ifcModelsDeletePath(projectIdentifier:string, modelId:number|string) {
     return `${this.ifcModelsPath(projectIdentifier)}/${modelId}`;
   }
@@ -221,6 +231,10 @@ export class PathHelperService {
     return `${this.projectPath(projectIdentifier)}/dashboards`;
   }
 
+  public projectWidgetPath(projectIdentifier:string, widgetName:string) {
+    return `${this.projectPath(projectIdentifier)}/widgets/${widgetName}`;
+  }
+
   public timeEntriesPath(workPackageId:string|number) {
     const suffix = '/time_entries';
 
@@ -276,6 +290,10 @@ export class PathHelperService {
 
   public versionShowPath(id:string|number) {
     return `${this.staticBase}/versions/${id}`;
+  }
+
+  public widgetPath(widgetName:string) {
+    return `${this.staticBase}/widgets/${widgetName}`;
   }
 
   public workPackagePath(id:string|number) {

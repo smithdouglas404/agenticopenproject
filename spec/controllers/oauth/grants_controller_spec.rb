@@ -58,7 +58,7 @@ RSpec.describe OAuth::GrantsController do
       it do
         post :revoke_application, params: { application_id: 1 }
         expect(flash[:notice]).to include "Foo"
-        expect(response).to redirect_to controller: "/my", action: :access_token
+        expect(response).to redirect_to("/my/access_tokens")
       end
     end
   end

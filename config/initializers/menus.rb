@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -43,7 +45,9 @@ Redmine::MenuManager.map :top_menu do |menu|
   menu.push :activity,
             { controller: "/activities", action: "index" },
             context: :modules,
-            if: Proc.new { User.current.logged? || !Setting.login_required? },
+            if: Proc.new {
+              Project.visible.active.has_module(:activity).present? && (User.current.logged? || !Setting.login_required?)
+            },
             icon: "history"
 
   menu.push :work_packages,
@@ -53,7 +57,8 @@ Redmine::MenuManager.map :top_menu do |menu|
             icon: "op-view-list",
             if: ->(_) {
               (User.current.logged? || !Setting.login_required?) &&
-                User.current.allowed_in_any_work_package?(:view_work_packages)
+                User.current.allowed_in_any_work_package?(:view_work_packages) &&
+                Project.visible.active.has_module(:work_package_tracking).present?
             }
   menu.push :news,
             { controller: "/news", project_id: nil, action: "index" },
@@ -62,7 +67,8 @@ Redmine::MenuManager.map :top_menu do |menu|
             icon: "megaphone",
             if: ->(_) {
               (User.current.logged? || !Setting.login_required?) &&
-                User.current.allowed_in_any_project?(:view_news)
+                User.current.allowed_in_any_project?(:view_news) &&
+                Project.visible.active.has_module(:news).present?
             }
 
   menu.push :help,
@@ -106,12 +112,18 @@ Redmine::MenuManager.map :quick_add_menu do |menu|
             }
 
   menu.push :invite_user,
-            nil,
+            ->(project) {
+              { controller: "/users/invite", action: :start_dialog, project_id: project&.id }
+            },
             caption: :label_invite_user,
             icon: "person-add",
             html: {
-              "invite-user-modal-augment": "invite-user-modal-augment"
+              target: nil,
+              data: {
+                turbo_stream: true
+              }
             },
+            skip_permissions_check: true, # Prevent project specific permission checks
             if: ->(_) { User.current.allowed_in_any_project?(:manage_members) }
 end
 
@@ -184,6 +196,9 @@ Redmine::MenuManager.map :global_menu do |menu|
   # Activity
   menu.push :activity,
             { controller: "/activities", action: "index" },
+            if: Proc.new {
+              Project.visible.active.has_module(:activity).present? && (User.current.logged? || !Setting.login_required?)
+            },
             icon: "history",
             after: :projects
 
@@ -212,7 +227,8 @@ Redmine::MenuManager.map :global_menu do |menu|
             after: :boards,
             if: ->(_) {
               (User.current.logged? || !Setting.login_required?) &&
-                User.current.allowed_in_any_project?(:view_news)
+                User.current.allowed_in_any_project?(:view_news) &&
+                Project.visible.active.has_module(:news).present?
             }
 end
 
@@ -227,10 +243,10 @@ Redmine::MenuManager.map :my_menu do |menu|
             { controller: "/my", action: "account" },
             caption: :label_profile,
             icon: "person-fill"
-  menu.push :settings,
-            { controller: "/my", action: "settings" },
-            caption: :label_setting_plural,
-            icon: "gear"
+  menu.push :locale,
+            { controller: "/my", action: "locale" },
+            caption: :label_locale,
+            icon: "globe"
   menu.push :interface,
             { controller: "/my", action: "interface" },
             caption: :label_interface,
@@ -240,14 +256,14 @@ Redmine::MenuManager.map :my_menu do |menu|
             caption: :button_change_password,
             if: ->(_) { User.current.change_password_allowed? },
             icon: "lock"
-  menu.push :access_token,
-            { controller: "/my", action: "access_token" },
+  menu.push :access_tokens,
+            { controller: "/my/access_tokens", action: "index" },
             caption: I18n.t("my_account.access_tokens.access_tokens"),
             icon: "key"
   menu.push :sessions,
             { controller: "/my/sessions", action: :index },
             caption: :"users.sessions.title",
-            icon: "op-installation-services"
+            icon: "devices"
   menu.push :notifications,
             { controller: "/my", action: "notifications" },
             caption: I18n.t("js.notifications.settings.title"),

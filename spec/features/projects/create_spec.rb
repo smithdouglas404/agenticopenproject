@@ -46,7 +46,7 @@ RSpec.describe "Projects", "creation",
 
   context "with the button on the toolbar items" do
     it "can navigate to the create project page" do
-      projects_page.navigate_to_new_project_page_from_toolbar_items
+      projects_page.create_new_workspace
 
       expect(page).to have_heading "New project"
 
@@ -55,7 +55,7 @@ RSpec.describe "Projects", "creation",
   end
 
   it "can create a project" do
-    projects_page.navigate_to_new_project_page_from_toolbar_items
+    projects_page.create_new_workspace
 
     expect(page).to have_heading "New project"
 
@@ -69,7 +69,7 @@ RSpec.describe "Projects", "creation",
   end
 
   it "does not create a project with an already existing identifier" do
-    projects_page.navigate_to_new_project_page_from_toolbar_items
+    projects_page.create_new_workspace
 
     expect(page).to have_heading "New project"
 
@@ -100,7 +100,7 @@ RSpec.describe "Projects", "creation",
     end
 
     it "can create a project" do
-      projects_page.navigate_to_new_project_page_from_toolbar_items
+      projects_page.create_new_workspace
 
       expect(page).to have_heading "New project"
 
@@ -154,7 +154,7 @@ RSpec.describe "Projects", "creation",
     end
 
     it "can create a project" do
-      projects_page.navigate_to_new_project_page_from_toolbar_items
+      projects_page.create_new_workspace
 
       expect(page).to have_heading "New project"
 

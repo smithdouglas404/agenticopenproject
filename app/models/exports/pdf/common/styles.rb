@@ -62,7 +62,7 @@ module Exports::PDF::Common::Styles
   end
 
   def resolve_font(style)
-    opts_font(style || {})
+    opts_font(style || { size: 10 })
   end
 
   def resolve_margin(style)

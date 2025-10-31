@@ -31,8 +31,7 @@ module Projects
   module Settings
     class TypeForm < ApplicationForm
       form do |f|
-        f.hidden name: :workspace_type,
-                 value: Project.workspace_types[:project]
+        f.hidden name: :workspace_type
       end
     end
   end

@@ -57,13 +57,14 @@ class WorkflowsController < ApplicationController
   end
 
   def update
+    tab = params[:tab] || "always"
     call = Workflows::BulkUpdateService
-           .new(role: @role, type: @type)
+           .new(role: @role, type: @type, tab:)
            .call(permitted_status_params)
 
     if call.success?
       flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to action: "edit", role_id: @role, type_id: @type
+      redirect_to action: "edit", role_id: @role, type_id: @type, tab:
     end
   end
 

@@ -2,10 +2,6 @@ group :development, :test do
   gem 'ladle'
 end
 
-gem 'omniauth-openid_connect-providers',
-    git: 'https://github.com/opf/omniauth-openid_connect-providers.git',
-    ref: 'c7e2498a8b093cfc5693d4960cae2e903a5e10cd'
-
 gem 'omniauth-openid-connect',
     git: 'https://github.com/opf/omniauth-openid-connect.git',
     ref: 'e923d9dd14fa4ca04b98720ac2185807b263f5ed'
@@ -32,7 +28,6 @@ group :opf_plugins do
 
   gem 'grids',                                 path: 'modules/grids'
   gem 'my_page',                               path: 'modules/my_page'
-  gem 'dashboards',                            path: 'modules/dashboards'
   gem 'openproject-boards',                    path: 'modules/boards'
   gem 'overviews',                             path: 'modules/overviews'
   gem 'budgets',                               path: 'modules/budgets'

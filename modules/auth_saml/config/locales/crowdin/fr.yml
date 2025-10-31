@@ -56,6 +56,7 @@ fr:
       label_mapping: Mapping
       label_requested_attribute_for: "Attribut demandé pour : %{attribute}"
       no_results_table: Aucun fournisseur d'identité SAML n'a encore été défini.
+      notice_created: Un nouveau fournisseur d'identité SAML a été créé avec succès.
       plural: Fournisseurs d'identité SAML
       singular: Fournisseur d'identité SAML
       requested_attributes: Attributs demandés

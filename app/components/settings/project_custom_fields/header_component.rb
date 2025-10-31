@@ -51,6 +51,12 @@ module Settings
       def allow_custom_field_creation?
         @allow_custom_field_creation
       end
+
+      def show_enterprise_icon?(custom_field_format)
+        if custom_field_format.name == "calculated_value"
+          !EnterpriseToken.allows_to?(:calculated_values)
+        end
+      end
     end
   end
 end

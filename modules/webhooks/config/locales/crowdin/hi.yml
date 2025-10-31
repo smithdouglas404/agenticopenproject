@@ -31,7 +31,7 @@ hi:
       events:
         created: "रचनातिथी"
         updated: "Updated"
-        comment: "Comment"
+        comment: "टिप्पणी"
         internal_comment: "Internal comment"
       explanation:
         text: >

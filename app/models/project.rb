@@ -52,7 +52,7 @@ class Project < ApplicationRecord
     project: "project",
     program: "program",
     portfolio: "portfolio"
-  }
+  }, validate: true
 
   has_many :members, -> {
     # TODO: check whether this should
@@ -68,6 +68,7 @@ class Project < ApplicationRecord
            class_name: "Member"
   has_many :users, through: :members, source: :principal
   has_many :principals, through: :member_principals, source: :principal
+  has_many :calculated_value_errors, dependent: :delete_all, as: :customized
 
   has_many :enabled_modules, dependent: :delete_all
   has_and_belongs_to_many :types, -> {
@@ -108,7 +109,7 @@ class Project < ApplicationRecord
   store_attribute :settings, :deactivate_work_package_attachments, :boolean
   store_attribute :settings, :enabled_internal_comments, :boolean
 
-  acts_as_favorable
+  acts_as_favoritable
 
   acts_as_customizable validate_on: :saving_custom_fields
   # extended in Projects::CustomFields in order to support sections
@@ -198,7 +199,8 @@ class Project < ApplicationRecord
   scopes :activated_in_storage,
          :allowed_to,
          :available_custom_fields,
-         :visible
+         :visible,
+         :assignable_parents
 
   scope :has_module, ->(mod) {
     where(["#{Project.table_name}.id IN (SELECT em.project_id FROM #{EnabledModule.table_name} em WHERE em.name=?)", mod.to_s])
@@ -256,6 +258,17 @@ class Project < ApplicationRecord
 
   def to_s
     name
+  end
+
+  def workspace_label
+    case workspace_type
+    when "program"
+      I18n.t("label_program")
+    when "portfolio"
+      I18n.t("label_portfolio")
+    else
+      I18n.t("label_project")
+    end
   end
 
   # Return true if this project is allowed to do the specified action.

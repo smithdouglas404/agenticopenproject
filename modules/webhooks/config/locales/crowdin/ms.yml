@@ -31,7 +31,7 @@ ms:
       events:
         created: "Dicipta"
         updated: "Telah dikemas kini"
-        comment: "Comment"
+        comment: "Komen"
         internal_comment: "Internal comment"
       explanation:
         text: >

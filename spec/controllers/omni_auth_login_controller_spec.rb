@@ -31,8 +31,8 @@
 require "spec_helper"
 
 # Concern is included into AccountController and depends on methods available there
-RSpec.describe OmniAuthLoginController, :skip_2fa_stage do
-  let!(:auth_provider) { create(:oidc_provider_google, slug: "google") }
+RSpec.describe OmniAuthLoginController, :skip_2fa_stage, with_ee: %i[sso_auth_providers] do
+  let!(:auth_provider) { create(:oidc_provider_google, slug: "google", limit_self_registration: false) }
   let(:omniauth_strategy) { double("Google Strategy", name: "google") } # rubocop:disable RSpec/VerifiedDoubles
   let(:omniauth_hash) do
     OmniAuth::AuthHash.new(
@@ -371,7 +371,7 @@ RSpec.describe OmniAuthLoginController, :skip_2fa_stage do
             end
 
             context "with other provider availabe" do
-              let(:other_provider_slug) { "some other" }
+              let(:other_provider_slug) { "some-other" }
 
               before do
                 create(:oidc_provider, slug: other_provider_slug)
@@ -387,7 +387,7 @@ RSpec.describe OmniAuthLoginController, :skip_2fa_stage do
                 # The authorization is successful which results in the registration
                 # of a new user in this case because we changed the provider
                 # and there isn't a user with that identity URL yet.
-                new_user = UserAuthProviderLink.with_identity_url("some other:123545").first.principal
+                new_user = UserAuthProviderLink.with_identity_url("some-other:123545").first.principal
                 expect(OpenProject::OmniAuth::Authorization)
                   .to have_received(:after_login!).with(new_user, any_args)
               end

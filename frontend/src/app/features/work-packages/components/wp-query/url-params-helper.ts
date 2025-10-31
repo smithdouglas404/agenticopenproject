@@ -113,7 +113,7 @@ export class UrlParamsHelperService {
 
     const parts:string[] = [];
     _.each(params, (value, key) => {
-      if (!value) {
+      if (value === undefined || value === null) {
         return;
       }
       if (!Array.isArray(value)) {

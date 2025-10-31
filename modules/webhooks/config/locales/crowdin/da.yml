@@ -31,7 +31,7 @@ da:
       events:
         created: "Oprettet"
         updated: "Updated"
-        comment: "Comment"
+        comment: "Kommentér"
         internal_comment: "Internal comment"
       explanation:
         text: >

@@ -265,16 +265,6 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
   }
 
   /**
-   * angular 2 doesn't support track by property any more but requires a custom function
-   * https://github.com/angular/angular/issues/12969
-   * @param _index
-   * @param elem
-   */
-  public trackByName(_index:number, elem:{ name:string }):string {
-    return elem.name;
-  }
-
-  /**
    * Allow other modules to register groups to insert into the single view
    */
   public prependedAttributeGroupComponents() {

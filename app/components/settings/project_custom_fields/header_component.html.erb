@@ -34,6 +34,9 @@
             content_arguments: { data: { test_selector: "add-project-custom-field-attribute" } }
           ) do |sub_menu|
             OpenProject::CustomFieldFormat.available_for_class_name("Project")
+                                          # Reject hierarchy as long as the feature flag for scored lists is not active,
+                                          # as they share the same selection component
+                                          .reject { |format| format.name == "hierarchy" && !OpenProject::FeatureDecisions.scored_list_custom_fields_active? }
                                           .sort_by(&:name)
                                           .map do |format|
               sub_menu.with_item(
@@ -42,7 +45,11 @@
                 href: new_admin_settings_project_custom_field_path(field_format: format.name),
                 content_arguments: { data: { turbo: "false",
                                              test_selector: "new-project-custom-field-button" } }
-              )
+              ) do |item|
+                if show_enterprise_icon?(format)
+                  item.with_trailing_visual_icon(icon: :"op-enterprise-addons", classes: "upsell-colored")
+                end
+              end
             end
           end
         end

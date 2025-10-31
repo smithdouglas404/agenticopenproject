@@ -3,7 +3,7 @@
   js:
     team_planner:
       add_existing: 'Legg til eksisterende'
-      label_team_planner_plural: 'Team planners'
+      label_team_planner_plural: 'Teamplanleggere'
       add_existing_title: 'Legg til eksisterende oppgaver'
       create_label: 'Teamplanlegger'
       create_title: 'Opprett ny teamplanlegger'

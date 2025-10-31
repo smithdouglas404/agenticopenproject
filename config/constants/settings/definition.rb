@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,9 +28,10 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
+# rubocop:disable Metrics/CollectionLiteralLength
 module Settings
   class Definition
-    ENV_PREFIX = "OPENPROJECT_".freeze
+    ENV_PREFIX = "OPENPROJECT_"
     AR_BOOLEAN_TYPE = ActiveRecord::Type::Boolean.new
     DEFINITIONS = {
       activity_days_default: {
@@ -461,7 +464,7 @@ module Settings
         default: false
       },
       enabled_projects_columns: {
-        default: %w[favored name project_status public created_at latest_activity_at required_disk_space],
+        default: %w[favorited name project_status public created_at latest_activity_at required_disk_space],
         allowed: -> { ProjectQuery.new.available_selects.map { |s| s.attribute.to_s } }
       },
       enabled_scm: {
@@ -564,6 +567,14 @@ module Settings
         description: "Additional allowed host names for the application.",
         default: []
       },
+      collaborative_editing_hocuspocus_url: {
+        format: :string,
+        default: nil,
+        description: "The URL of the hocuspocus server used by BlockNoteJS editor to enable collaborative editing.",
+        default_by_env: {
+          development: "wss://hocuspocus.local"
+        }
+      },
       hours_per_day: {
         description: "This will define what is considered a “day” when displaying duration in a more natural way " \
                      "(for example, if a day is 8 hours, 32 hours would be 4 days).",
@@ -621,6 +632,11 @@ module Settings
       },
       journal_aggregation_time_minutes: {
         default: 5
+      },
+      large_instance_wp_allowed_to_sql: {
+        description: "When querying for allowed work packages, use SQL better suited for instances " \
+                     "with a larger set of work packages, projects, members and users",
+        default: false
       },
       ldap_force_no_page: {
         description: "Force LDAP to respond as a single page, in case paged responses do not work with your server.",
@@ -720,6 +736,7 @@ module Settings
       oauth_allow_remapping_of_existing_users: {
         description: "When set to false, prevent users from other identity providers to take over accounts " \
                      "that exist in OpenProject.",
+        format: :boolean,
         default: true
       },
       omniauth_direct_login_provider: {
@@ -732,10 +749,6 @@ module Settings
         format: :string,
         default: nil,
         writable: false # this changes a global variable and must therefore not be writable at runtime
-      },
-      onboarding_video_url: {
-        description: "Onboarding guide instructional video URL",
-        default: "https://player.vimeo.com/video/163426858?autoplay=1"
       },
       onboarding_enabled: {
         description: "Enable or disable onboarding guided tour for new users",
@@ -857,6 +870,10 @@ module Settings
         writable: false,
         allowed: (0..),
         default: 20
+      },
+      opentelemetry_enabled: {
+        description: "Enable OpenTelemetry metrics",
+        default: false
       },
       rate_limiting: {
         default: {},
@@ -1117,6 +1134,17 @@ module Settings
         default: {
           "host" => nil,
           "port" => 8125
+        },
+        writable: false
+      },
+      metrics: {
+        description: "
+          Publish a reduced set of puma metrics on a separate port for Prometheus consumption,
+          providing autoscaling hints
+        ".squish,
+        default: {
+          "enabled" => false,
+          "port" => 9394
         },
         writable: false
       },
@@ -1634,3 +1662,4 @@ module Settings
     end
   end
 end
+# rubocop:enable Metrics/CollectionLiteralLength

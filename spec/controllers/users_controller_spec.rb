@@ -473,26 +473,22 @@ RSpec.describe UsersController do
     end
 
     it "to be success" do
-      expect(response)
-        .to have_http_status(:ok)
+      expect(response).to have_http_status(:ok)
     end
 
     it "renders the index" do
-      expect(response)
-        .to have_rendered("index")
+      expect(response).to have_rendered("index")
     end
 
     it "assigns users" do
-      expect(assigns(:users))
-        .to contain_exactly(user, admin)
+      expect(assigns(:users)).to contain_exactly(user, admin)
     end
 
     context "with a name filter" do
       let(:params) { { name: user.firstname } }
 
       it "assigns users" do
-        expect(assigns(:users))
-          .to contain_exactly(user)
+        expect(assigns(:users)).to contain_exactly(user)
       end
     end
 
@@ -504,8 +500,15 @@ RSpec.describe UsersController do
       end
 
       it "assigns users" do
-        expect(assigns(:users))
-          .to contain_exactly(user)
+        expect(assigns(:users)).to contain_exactly(user)
+      end
+    end
+
+    context "with a user scheduled for deletion present" do
+      let!(:deleted_user) { create(:user_marked_for_deletion) }
+
+      it "does not include this user to the users list" do
+        expect(assigns(:users)).to contain_exactly(user, admin)
       end
     end
   end
@@ -614,7 +617,7 @@ RSpec.describe UsersController do
 
   describe "PATCH #update" do
     shared_let(:user_with_manage_user_global_permission) do
-      create(:user, login: "human-resources", global_permissions: [:manage_user])
+      create(:user, login: "human-resources", global_permissions: %i[view_all_principals manage_user])
     end
     shared_let(:some_user) { create(:user, firstname: "User being updated") }
     shared_let(:some_admin) { create(:admin, firstname: "Admin being updated") }
@@ -887,9 +890,9 @@ RSpec.describe UsersController do
         end
 
         context "when not login_required", with_settings: { login_required: false } do
-          it "responds with 200" do
+          it "responds with 404" do
             expect(response)
-              .to have_http_status(:ok)
+              .to have_http_status(:not_found)
           end
         end
 

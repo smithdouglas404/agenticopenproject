@@ -38,8 +38,9 @@ RSpec.shared_context "with a project with an arrangement of custom fields" do
   shared_let(:string_cf) { create(:string_project_custom_field, position: 7) }
   shared_let(:date_cf) { create(:date_project_custom_field, position: 8) }
   shared_let(:hidden_cf) { create(:string_project_custom_field, position: 9, admin_only: true) }
+  shared_let(:link_cf) { create(:link_project_custom_field, position: 10) }
 
-  let!(:not_used_string_cf) { create(:string_project_custom_field, position: 10) }
+  let!(:not_used_string_cf) { create(:string_project_custom_field, position: 11) }
 
   shared_let(:system_version) { create(:version, sharing: "system") }
 
@@ -70,7 +71,8 @@ RSpec.shared_context "with a project with an arrangement of custom fields" do
                       string_cf.id => "Some small text",
                       date_cf.id => Time.zone.today,
                       user_cf.id => other_user.id,
-                      hidden_cf.id => "hidden"
+                      hidden_cf.id => "hidden",
+                      link_cf.id => "https://www.example.com"
                     })
     project.save!(validate: false)
 

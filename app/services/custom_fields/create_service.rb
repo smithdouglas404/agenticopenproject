@@ -58,7 +58,13 @@ module CustomFields
 
       if cf.is_a?(ProjectCustomField)
         add_cf_to_visible_columns(cf)
-      elsif cf.field_format_hierarchy?
+      end
+
+      if cf.field_format_calculated_value? && cf.is_required?
+        calculate_values(cf)
+      end
+
+      if cf.hierarchical_list?
         CustomFields::Hierarchy::HierarchicalItemService.new.generate_root(cf)
       end
 
@@ -67,8 +73,19 @@ module CustomFields
 
     private
 
+    def calculate_values(custom_field)
+      custom_field.class.customized_class.find_each do |customized|
+        # for create service maybe there is no need to determine affected_cfs and just use [custom_field]
+        affected_cfs = customized.available_custom_fields.affected_calculated_fields([custom_field.id])
+
+        customized.calculate_custom_fields(affected_cfs)
+
+        customized.save if customized.changed_for_autosave?
+      end
+    end
+
     def add_cf_to_visible_columns(custom_field)
-      Setting.enabled_projects_columns = (Setting.enabled_projects_columns + [custom_field.column_name]).uniq
+      Setting.enabled_projects_columns |= [custom_field.column_name]
     end
   end
 end

@@ -30,7 +30,7 @@
 
 module Redmine::MenuManager::TopMenu::UserMenu
   def render_user_top_menu_node(items = first_level_menu_items_for(:account_menu))
-    if omniauth_direct_login?
+    if omniauth_direct_login? && !User.current.logged?
       render_direct_login
     else
       render_user_drop_down items

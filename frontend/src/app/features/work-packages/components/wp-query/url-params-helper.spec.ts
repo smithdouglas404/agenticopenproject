@@ -26,8 +26,6 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-/* jshint expr: true */
-
 import { UrlParamsHelperService } from 'core-app/features/work-packages/components/wp-query/url-params-helper';
 
 describe('UrlParamsHelper', () => {
@@ -42,6 +40,7 @@ describe('UrlParamsHelper', () => {
     const params = {
       ids: [1, 2, 3],
       str: '@#$%',
+      importantOption: false
     };
     let queryString:string;
 
@@ -50,11 +49,15 @@ describe('UrlParamsHelper', () => {
     });
 
     it("concatenates propertys with '&'", () => {
-      expect(queryString.split('&').length).toEqual(4);
+      expect(queryString.split('&').length).toEqual(5);
     });
 
     it('escapes special characters', () => {
       expect(queryString.indexOf('@') === -1).toBeTruthy();
+    });
+
+    it('does not omit false', () => {
+      expect(queryString.includes('importantOption=false')).toBeTruthy();
     });
   });
 

@@ -1,6 +1,17 @@
 pl:
   grids:
     label_widget_in_grid: "Widżet zawarty w siatce %{grid_name}"
+    widgets:
+      subitems:
+        title: "Podpozycje"
+        no_results: "Nie ma żadnych widocznych elementów podrzędnych."
+        view_all_subitems: "Wyświetl wszystkie podpozycje"
+      members:
+        title: "Ostatni członkowie"
+        no_results: "Brak widocznych członków."
+        view_all_members: "Zobacz wszystkich członków"
+      news:
+        no_results: "Utwórz nowy raport."
   activerecord:
     attributes:
       grids/grid:

@@ -59,6 +59,12 @@ See COPYRIGHT and LICENSE files for more details.
         <%= t(:label_example) %>: <%= @guessed_host %>
       </span>
     </div>
+    <div class="form--field">
+      <%= setting_url_field :collaborative_editing_hocuspocus_url, size: 60, container_class: "-middle" %>
+      <span class="form--field-instructions">
+        <%= t(:label_example) %>: wss://websocket.server/path
+      </span>
+    </div>
     <div class="form--field"><%= setting_check_box :cache_formatted_text %></div>
     <div class="form--field">
       <%= setting_text_area :allowed_link_protocols, rows: 5, container_class: "-wide" %>
@@ -87,7 +93,7 @@ See COPYRIGHT and LICENSE files for more details.
         <%= t(
               :text_notice_security_badge_displayed_html,
               information_panel_label: t(:label_information),
-              more_info_url: ::OpenProject::Static::Links[:security_badge_documentation][:href],
+              more_info_url: ::OpenProject::Static::Links.url_for(:security_badge_documentation),
               information_panel_path: info_admin_index_path
             ) %>
       </span>

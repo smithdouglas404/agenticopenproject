@@ -3,7 +3,7 @@ ms:
   js:
     team_planner:
       add_existing: 'Tambah sedia ada'
-      label_team_planner_plural: 'Team planners'
+      label_team_planner_plural: 'Perancang pasukan'
       add_existing_title: 'Tambah pakej kerja sedia ada'
       create_label: 'Perancang pasukan'
       create_title: 'Cipta perancang pasukan baharu'

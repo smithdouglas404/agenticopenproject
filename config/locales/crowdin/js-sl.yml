@@ -88,6 +88,8 @@ sl:
     button_list_view: "Prikaz seznama"
     button_show_view: "Celozaslonski pogled"
     button_log_time: "Beleži čas"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "več"
     button_open_details: "Prikaži pogled podrobnosti"
     button_close_details: "Zapri prikaz podrobnosti"
@@ -285,19 +287,8 @@ sl:
         update_conflict_refresh: "Kliknite tukaj za osvežitev vira in posodobite na najnovejšo različico."
         edit_prohibited: "Urejanje %{attribute} je onemogočeno za ta vir. Ta atribut je izpeljan iz povezav (podrejenih virov) ali pa ga ni mogoče urejati."
         format:
-          date: "%{attribute} ni veljaven datum - YYYY-MM-DD format je pričakovan."
+          date: "%{attribute} ni veljaven datum - leto-mesec-san je pričakovano."
         general: "Prišlo je do napake."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Preberite o novih funkcijah in posodobitvah izdelka."
-          learn_about: "Learn more about all new features"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                The release contains various new features and improvements, such as <br> <ul class="%{list_styling_class}"> <li>UX/UI improvements for a more modern look.</li> <li>Meetings: Option to mute email notifications and ICS.</li> <li>Ongoing timers shown in the My time tracking module.</li> <li>Progress reporting: % Complete sum also shown in Status-based mode.</li> <li>Nextcloud Health check: Indicate missing token exchange capability (Enterprise add-on).</li> </ul>
     ical_sharing_modal:
       title: "Subscribe to calendar"
       inital_setup_error_message: "An error occured while fetching data."
@@ -323,7 +314,7 @@ sl:
     label_added_time_by: 'Added by <a href="%{authorLink}">%{author}</a> at %{age}'
     label_ago: "pred dnevi"
     label_all: "vsi"
-    label_all_projects: "All projects"
+    label_all_projects: "Vsi projekti"
     label_all_uppercase: "Vse"
     label_all_work_packages: "Vsi zahtevki"
     label_and: "in"
@@ -333,7 +324,7 @@ sl:
     label_between: "med"
     label_board: "Board"
     label_board_locked: "Zaklenjeno"
-    label_board_plural: "Table"
+    label_board_plural: "Deske"
     label_board_sticky: "Lepljivo"
     label_change: "Spremeni"
     label_create: "Ustvari"
@@ -443,7 +434,7 @@ sl:
     label_sort_lower: "Premakni dol"
     label_sorting: "Razvrščanje"
     label_spent_time: "Porabljen čas"
-    label_star_query: "Priljubljeno"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Pritisnite enter da shranite. "
     label_public_query: "Javno"
     label_sum: "Vsota"
@@ -783,7 +774,7 @@ sl:
     autocompleter:
       placeholder: "Iskalni niz"
       notFoundText: "Ni najdenih elementov"
-      search: "Search"
+      search: "Išči"
       project:
         placeholder: "Select project"
     repositories:
@@ -1081,6 +1072,8 @@ sl:
     notice_successful_delete: "Uspešen izbris."
     notice_successful_update: "Posodobitev uspela."
     notice_job_started: "job started."
+    no_job_id: "No job ID returned from server."
+    invalid_job_response: "Invalid response from server."
     notice_bad_request: "Napačen zahtevek."
     relations:
       empty: Ni relacij
@@ -1117,6 +1110,7 @@ sl:
         two: "%{count} podrejeni delovni paketi"
         few: "%{count} podrejeni delovni paketi"
         other: "%{count} podrejeni delovni paketi"
+      hour_string: "%{hours} h"
       hour:
         one: "1 ura"
         other: "%{count} ur"
@@ -1148,71 +1142,8 @@ sl:
       list: "Tabela"
       timeline: "Gant"
     invite_user_modal:
-      back: "Nazaj"
       invite: "Povabi"
-      title:
-        invite: "Povabi uporabnika"
-        invite_to_project: "Povabi %{type} na %{project}"
-        User: "uporabnik"
-        Group: "skupina"
-        PlaceholderUser: "nadomestni uporabnik"
-        invite_principal_to_project: "Povabi %{principal} na %{project}"
-      project:
-        label: "Projekt"
-        required: "Prosim izberi projekt"
-        lacking_permission: "Please select a different project since you lack permissions to assign users to the currently selected."
-        lacking_permission_info: "You lack the permission to assign users to the project you are currently in. You need to select a different one."
-        next_button: "Naprej"
-        no_results: "Nobeni projekti niso bili najdeni"
-        no_invite_rights: "Nimate dovoljenja za vabljenje članov v ta projekt"
-      type:
-        required: "Prosim izberi tip za povabilo"
-        user:
-          title: "Uporabnik"
-          description: "Dovoljenja glede na dodeljeno vlogo v izbranem projektu"
-        group:
-          title: "Skupina"
-          description: "Dovoljenja glede na dodeljeno vlogo v izbranem projektu"
-        placeholder:
-          title: "Nadomestni uporabnik"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Nima dostopa do projekta in nobenih e-mailov ni bilo poslanih."
-          description_no_ee: 'Has no access to the project and no emails are sent out. <br>Check out the <a href="%{eeHref}" target="_blank">Enterprise edition</a>'
-      principal:
-        label:
-          name_or_email: "Ime ali e-mail naslov"
-          name: "Ime"
-        already_member_message: "Je že član %{project}"
-        no_results_user: "Nobenih uporabnikov ni bilo najdenih"
-        invite_user: "Povabi:"
-        no_results_placeholder: "Nobenih rezerviranih mest ni bilo najdenih"
-        create_new_placeholder: "Ustvari novo rezervirano mesto:"
-        no_results_group: "Nobenih skupin ni bilo najdenih"
-        next_button: "Naprej"
-        required:
-          user: "Izberite uporabnika"
-          placeholder: "Izberite rezervirano mesto"
-          group: "Izberite skupino."
-      role:
-        label: "Vloge v %{project}"
-        no_roles_found: "No roles were found"
-        description: >-
-          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Learn more about roles and permissions. </a>
-        required: "Izberite vlogo"
-        next_button: "Naprej"
-      message:
-        label: "Sporočilo s povabilom"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
-        next_button: "Naprej"
-      summary:
-        next_button: "Pošlji povabilo"
-      success:
-        title: "%{principal} je bil povabljen!"
-        description:
-          user: "Uporabnik se lahko zdaj prijavi za dostop do %{project}. Medtem lahko planirate s tem uporabnikom in mu dodelite delovne naloge."
-          placeholder: "Rezervirano mesto se zdaj lahko uporabi v %{project}. Medtem lahko planirate s tem uporabnikom in mu dodelite delovne naloge."
-          group: "Skupina je zdaj del %{project}. Medtem lahko planirate s to skupino in ji dodelite delovne naloge."
-        next_button: "Nadaljuj"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "Status excluded from hierarchy totals"
@@ -1229,13 +1160,15 @@ sl:
       selected_filter:
         all: "Vsi projekti"
         selected: "Only selected"
-      search_placeholder: "Search project..."
+      search_placeholder: "Search projects..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Include all sub-projects"
       tooltip:
         include_all_selected: "Project already included since Include all sub-projects is enabled."
         current_project: "This is the current project you are in."
         does_not_match_search: "Project does not match the search criteria."
       no_results: "No project matches your search criteria."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Baseline"
       clear: "Počisti"

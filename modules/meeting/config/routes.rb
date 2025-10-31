@@ -44,8 +44,6 @@ Rails.application.routes.draw do
         put :update_title
         get :details_dialog
         put :update_details
-        get :participants_dialog
-        put :update_participants
         put :change_state
         post :notify
         get :history
@@ -84,6 +82,7 @@ Rails.application.routes.draw do
       collection do
         get :dialog, controller: "work_package_meetings_tab", action: :add_work_package_to_meeting_dialog
         post :create, controller: "work_package_meetings_tab", action: :add_work_package_to_meeting
+        get :refresh_form, controller: "work_package_meetings_tab", action: :refresh_form
       end
     end
   end
@@ -99,6 +98,8 @@ Rails.application.routes.draw do
       get :new_dialog
       get "menu" => "meetings/menus#show"
       get :fetch_timezone
+
+      get "ical/:token", controller: "meetings/ical", action: :index, as: "ical_feed"
     end
 
     resources :agenda_items, controller: "meeting_agenda_items" do
@@ -112,6 +113,8 @@ Rails.application.routes.draw do
         put :move
         get :move_to_next_dialog, action: :move_to_next_meeting_dialog
         post :move_to_next, action: :move_to_next_meeting
+        put :move_to_section_dialog
+        post :move_to_section
       end
     end
     resources :sections, controller: "meeting_sections" do
@@ -120,7 +123,7 @@ Rails.application.routes.draw do
         get :clear_backlog_dialog
       end
       member do
-        get :cancel_edit
+        post :cancel_edit
         put :drop
         put :move
       end
@@ -132,6 +135,15 @@ Rails.application.routes.draw do
       end
       member do
         get :cancel_edit
+      end
+    end
+    resources :participants, controller: "meeting_participants" do
+      collection do
+        get :manage_participants_dialog
+        post :mark_all_attended
+      end
+      member do
+        post :toggle_attendance
       end
     end
 
@@ -167,9 +179,7 @@ Rails.application.routes.draw do
     end
 
     member do
-      match "/:tab" => "meetings#show", :constraints => { tab: /(agenda|minutes)/ },
-            :via => :get,
-            :as => "tab"
+      get "/:tab" => "meetings#show", :constraints => { tab: /(agenda|minutes)/ }, :as => "tab"
     end
   end
 end

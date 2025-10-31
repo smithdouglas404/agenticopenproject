@@ -33,14 +33,34 @@ module Primer
     module Forms
       # :nodoc:
       class BlockNoteEditor < Primer::Forms::BaseComponent
-        attr_reader :input, :value
+        include ::OpenProject::StaticRouting::UrlHelpers
+
+        attr_reader :input,
+                    :value,
+                    :active_user,
+                    :hocuspocus_url,
+                    :open_project_url,
+                    :document_name,
+                    :document_id,
+                    :oauth_token,
+                    :attachments_upload_url
 
         delegate :name, to: :@input
 
-        def initialize(input:, value:)
+        def initialize(input:, value:, document_name:, document_id:, attachments_upload_url:, oauth_token: nil)
           super()
           @input = input
           @value = value
+          @active_user = {
+            id: User.current.id,
+            username: User.current.name
+          }
+          @document_id = document_id
+          @document_name = document_name
+          @oauth_token = oauth_token
+          @hocuspocus_url = Setting.collaborative_editing_hocuspocus_url
+          @open_project_url = root_url
+          @attachments_upload_url = attachments_upload_url
         end
       end
     end

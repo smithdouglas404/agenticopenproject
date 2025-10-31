@@ -26,6 +26,10 @@ uk:
   activerecord:
     models:
       document: "Документ"
+    attributes:
+      document:
+        content_binary: "Двійковий вміст"
+        title: "Назва "
   activity:
     filter:
       document: "Документи"
@@ -33,6 +37,22 @@ uk:
   default_doc_category_user: "Документація користувача"
   enumeration_doc_categories: "Категорії документів"
   documents:
+    page_header:
+      heading: "Усі документи"
+    subheader:
+      filter:
+        label: "Фільтр за назвою документів"
+        placeholder: "Введіть текст тут, щоб шукати назви документів"
+    documents_list_blank_slate:
+      heading: "Документів ще немає"
+      description: "У цьому поданні немає документів. Щоб додати, натисніть кнопку нижче."
+    index_page:
+      name: "Назва"
+      type: "Тип"
+      updated_at: "Останнє редагування"
+    menu:
+      all: "Усі документи"
+      types: "Типи"
     label_attachment_author: "Автор додатку"
     label_categories: "Категорії"
     new_category: "Нова категорія"

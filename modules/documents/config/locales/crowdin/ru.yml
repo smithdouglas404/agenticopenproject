@@ -26,6 +26,10 @@ ru:
   activerecord:
     models:
       document: "Документ"
+    attributes:
+      document:
+        content_binary: "Содержимое бинарное"
+        title: "Заголовок"
   activity:
     filter:
       document: "Документы"
@@ -33,6 +37,22 @@ ru:
   default_doc_category_user: "Документация пользователя"
   enumeration_doc_categories: "Категории документов"
   documents:
+    page_header:
+      heading: "Все документы"
+    subheader:
+      filter:
+        label: "Фильтр по названию документа"
+        placeholder: "Введите здесь для поиска по названию документа"
+    documents_list_blank_slate:
+      heading: "Пока нет никаких документов"
+      description: "В этом представлении нет документов. Нажмите на кнопку ниже, чтобы добавить документ."
+    index_page:
+      name: "Имя"
+      type: "Тип"
+      updated_at: "Последнее редактирование"
+    menu:
+      all: "Все документы"
+      types: "Типы"
     label_attachment_author: "Автор вложения"
     label_categories: "Категории"
     new_category: "Новая категория"
@@ -40,9 +60,9 @@ ru:
   label_document_new: "Новый документ"
   label_document_plural: "Документы"
   label_documents: "Документы"
-  label_document_title: "Название"
+  label_document_title: "Заголовок"
   label_document_description: "Описание"
-  label_document_category: "Категории документов"
+  label_document_category: "Категория"
   permission_manage_documents: "Управление документами"
   permission_view_documents: "Просмотр документов"
   project_module_documents: "Документы"

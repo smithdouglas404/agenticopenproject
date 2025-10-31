@@ -31,7 +31,7 @@
 module Storages
   module Adapters
     module Input
-      class DownloadLinkContract < Dry::Validation::Contract
+      class DownloadLinkContract < DryApplicationContract
         params do
           required(:file_link).filled(type?: FileLink)
         end

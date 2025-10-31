@@ -3,7 +3,7 @@ ru:
   js:
     storages:
       authentication_error: "Ошибка аутентификации с %{storageType}"
-      link_files_in_storage: "Файлы ссылок в %{storageType}"
+      link_files_in_storage: "Связать файлы в %{storageType}"
       link_existing_files: "Связать существующие файлы"
       upload_files: "Загрузить файлы"
       drop_files: "Перетащите файлы сюда, чтобы загрузить их в %{name}."
@@ -17,7 +17,8 @@ ru:
       new_folder: "Новая папка"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
         default: "Хранилище"
       information:
         authentication_error: "Запрос %{storageType} не может быть аутентифицирован, это ошибка."

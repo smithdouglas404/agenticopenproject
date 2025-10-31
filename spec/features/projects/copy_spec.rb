@@ -342,9 +342,7 @@ RSpec.describe "Projects copy", :js,
       end
 
       context "with non-admin user" do
-        it "does not show invisible fields in the form and but still activates them" do
-          pending "Admin-only project attributes currently prevent users from creating projects (OP#64479)"
-
+        it "does not show invisible fields in the form but still activates them" do
           expect(page).to have_heading "Copy project \"#{project.name}\""
 
           expect(page).to have_no_content "Text for Admins only"
@@ -459,7 +457,7 @@ RSpec.describe "Projects copy", :js,
 
         overview_page.within_project_attributes_sidebar do
           # User has no permission to edit project attributes.
-          expect(page).to have_no_css("[data-test-selector='project-custom-field-section-edit-button']")
+          expect(page).to have_no_css("[data-test-selector*='project-custom-field-edit-button']")
           # The custom fields are still copied from the parent project.
           expect(page).to have_content(project_custom_field.name)
           expect(page).to have_content("some text cf")

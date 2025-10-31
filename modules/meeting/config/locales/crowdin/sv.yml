@@ -28,7 +28,7 @@ sv:
   activerecord:
     attributes:
       meeting:
-        type: "Meeting type"
+        type: "Mötestyp"
         location: "Plats"
         duration: "Varaktighet"
         notes: "Anteckningar"
@@ -40,27 +40,33 @@ sv:
         participants_invited: "Inbjudna"
         project: "Projekt"
         start_date: "Datum"
-        start_time: "Start time"
-        start_time_hour: "Start time"
+        start_time: "Starttid"
+        start_time_hour: "Starttid"
       meeting_agenda_item:
         title: "Titel"
         author: "Upphovsman"
-        duration_in_minutes: "Duration"
+        duration_in_minutes: "Varaktighet"
         description: "Anteckningar"
         presenter: "Presenter"
       meeting_section:
         title: "Titel"
       recurring_meeting:
-        frequency: "Frequency"
+        frequency: "Frekvens"
         interval: "Interval"
         start_date: "Starts on"
-        start_time: "Start time"
-        start_time_hour: "Start time"
+        start_time: "Starttid"
+        start_time_hour: "Starttid"
         end_after: "Meeting series ends"
         end_date: "Slutdatum"
-        iterations: "Occurrences"
+        iterations: "Förekomster"
+      meeting_participant:
+        invited: "Invited"
+        attended: "Attended"
+        participation_status: "Participation status"
     errors:
       models:
+        meeting_participant:
+          invalid_user: "%{name} is not a valid participant."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "There is one open meeting in the series that is not covered by the new schedule. Adjust the schedule to include all existing meetings."
@@ -69,11 +75,14 @@ sv:
       messages:
         invalid_time_format: "är inte en giltig tid. Använd formatet HH:MM"
     models:
-      recurring_meeting: "Recurring meeting"
-      meeting: "One-time meeting"
+      recurring_meeting: "Återkommande möte"
+      meeting: "Engångsmöte"
       meeting_agenda_item: "Agenda item"
       meeting_agenda: "Agenda"
       meeting_section: "Section"
+      token/ical_meeting:
+        one: "iCal Meeting subscription"
+        other: "iCal Meeting subscription"
   activity:
     filter:
       meeting: "Möten"
@@ -82,7 +91,7 @@ sv:
         duration:
           added: "set to %{value}"
           added_html: "set to <i>%{value}</i>"
-          removed: "removed"
+          removed: "borttagen"
           updated: "changed from %{old_value} to %{value}"
           updated_html: "changed from <i>%{old_value}</i> to <i>%{value}</i>"
         position:
@@ -91,7 +100,6 @@ sv:
           updated: "changed from %{old_value} to %{value}"
           updated_html: "changed from <i>%{old_value}</i> to <i>%{value}</i>"
   description_attended: "deltog"
-  description_invite: "inbjudna"
   events:
     meeting: Mötet redigerat
     meeting_agenda: Mötets agenda redigerat
@@ -106,32 +114,32 @@ sv:
   label_meeting_new: "Nytt möte"
   label_meeting_new_dynamic: "New one-time meeting"
   label_meeting_new_recurring: "New recurring meeting"
-  label_meeting_create: "Create meeting"
-  label_meeting_copy: "Copy meeting"
+  label_meeting_create: "Skapa möte"
+  label_meeting_copy: "Kopiera möte"
   label_meeting_edit: "Redigera möte"
   label_meeting_agenda: "Agenda"
   label_meeting_minutes: "Protokoll"
   label_meeting_close: "Stäng"
   label_meeting_open: "Öppna"
   label_meeting_index_delete: "Ta bort"
-  label_meeting_open_this_meeting: "Open this meeting"
+  label_meeting_open_this_meeting: "Öppna detta möte"
   label_meeting_agenda_close: "Stäng agendan för att påbörja protokollet"
   label_meeting_date_time: "Datum/tid"
   label_meeting_date_and_time: "Datum och tid"
   label_meeting_diff: "Skillnad"
   label_meeting_send_updates: "Send email calendar updates"
-  label_recurring_meeting: "Recurring meeting"
+  label_recurring_meeting: "Återkommande möte"
   label_recurring_meeting_part_of: "Part of a meeting series"
   label_recurring_meeting_new: "New recurring meeting"
-  label_recurring_meeting_plural: "Recurring meetings"
-  label_template: "Template"
+  label_recurring_meeting_plural: "Återkommande möten"
+  label_template: "Mall"
   label_recurring_meeting_view: "View meeting series"
   label_recurring_meeting_create: "Öppna"
   label_recurring_meeting_copy: "Copy as one-time"
   label_recurring_meeting_cancel: "Cancel this occurrence"
   label_recurring_meeting_delete: "Delete occurrence"
   label_recurring_meeting_restore: "Restore this occurrence"
-  label_recurring_meeting_schedule: "Schedule"
+  label_recurring_meeting_schedule: "Schema"
   label_recurring_meeting_next_occurrence: "Next occurrence"
   label_recurring_meeting_no_end_date: "There are more scheduled meetings (%{schedule})."
   label_recurring_meeting_more:
@@ -149,14 +157,14 @@ sv:
   label_meeting_more:
     one: "There is one more meeting."
     other: "There are %{count} more meetings."
-  label_my_meetings: "My meetings"
-  label_all_meetings: "All meetings"
+  label_my_meetings: "Mina möten"
+  label_all_meetings: "Alla möten"
   label_upcoming_meetings: "Kommande möten"
   label_past_meetings: "Tidigare möten"
-  label_upcoming_meetings_short: "Upcoming"
+  label_upcoming_meetings_short: "Kommande"
   label_past_meetings_short: "Past"
   label_involvement: "Involvering"
-  label_invitations: "Invitations"
+  label_invitations: "Inbjudningar"
   label_invited_user: "Invited user"
   label_past_invitations: "Tidigare inbjudningar"
   label_attended: "Attended"
@@ -170,9 +178,25 @@ sv:
   label_version: "Version"
   label_time_zone: "Tidszon"
   label_start_date: "Startdatum"
+  label_subscribe_icalendar: "Subscribe to calendar"
   meeting:
     participants:
-      template: "These participants will be invited automatically to all future meetings as they are created."
+      label:
+        participants: "Deltagare"
+        attended: "Attended"
+        mark_as_attended: "Mark as attended"
+        mark_all_as_attended: "Mark all as attended"
+        remove_participant: "Ta bort deltagare"
+        manage_participants: "Hantera deltagare"
+        no_participants: "Inga deltagare"
+        show_all: "Visa alla"
+      text:
+        template: "These participants will be invited automatically to all future meetings as they are created."
+        manage_participants: "Search for and add project members as participants to this meeting."
+        search_for_members: "Search for project members"
+      blankslate:
+        heading: "Inga deltagare"
+        description: "There are no participants yet."
     attachments:
       template: "These attached files will be included in all future meetings in the series."
       text: "Attached files are available to all meeting participants. You can also drag and drop these into agenda item notes."
@@ -180,26 +204,26 @@ sv:
       title: "Copy meeting: %{title}"
       attachments: "Kopiera bilagor"
       attachments_text: "Copy over all attached files to the new meeting"
-      agenda: "Copy agenda"
+      agenda: "Kopiera agenda"
       agenda_items: "Copy agenda items"
       agenda_text: "Copy the agenda of the old meeting"
       participants: "Kopiera deltagarlista"
-      to_clipboard: "Copy to clipboard"
+      to_clipboard: "Kopiera länk till urklipp"
     email:
       send_emails: "Email participants"
       send_invitation_emails: >
         Send an email invitation immediately to the participants selected above. You can also do this manually at any time later.
       send_invitation_emails_structured: "Send an email invitation immediately to all participants. You can also do this manually at any time later."
       open_meeting_link: "Open meeting"
-      open_my_meetings_link: "Go to My meetings"
+      open_my_meetings_link: "Gå till mina möten"
       series:
         title: "[%{project_name}] Meeting series '%{title}'"
-        summary: "%{actor} has set up a new meeting series '%{title}'"
-      series_rescheduled:
-        title: "[%{project_name}] Meeting series '%{title}' rescheduled"
-        summary: "%{actor} has changed the schedule for meeting series '%{title}'"
-        old_schedule: "Old schedule"
-        new_schedule: "New schedule"
+        summary: "%{actor} has invited you to a new meeting series '%{title}'"
+      series_updated:
+        title: "[%{project_name}] Meeting series '%{title}' has been updated"
+        summary: "Meeting series '%{title}' has been updated by %{actor}"
+        old_schedule: "Gammalt schema"
+        new_schedule: "Nytt schema"
       invited:
         summary: "%{actor} has sent you an invitation for the meeting '%{title}'"
       cancelled:
@@ -210,23 +234,25 @@ sv:
         summary_series: "Meeting series '%{title}' has been cancelled by %{actor}."
         summary: "'%{title}' has been cancelled by %{actor}."
         date_time: "Scheduled date/time"
-      rescheduled:
-        header: "Meeting '%{title}' has been rescheduled"
-        summary: "Meeting '%{title}' has been rescheduled by %{actor}"
-        body: "The meeting '%{title}' has been rescheduled by %{actor}."
+      updated:
+        header: "Meeting '%{title}' has been updated"
+        summary: "Meeting '%{title}' has been updated by %{actor}"
+        body: "The meeting '%{title}' has been updated by %{actor}."
         old_date_time: "Old date/time"
-        new_date_time: "New date/time"
-    label_mail_all_participants: "Email calendar invite to all participants"
+        new_date_time: "Nytt datum/tid"
+        old_location: "Gammal plats"
+        new_location: "Ny plats"
+    label_mail_all_participants: "Send email invite to participants"
     types:
       one_time: "One-time"
-      recurring: "Recurring"
+      recurring: "Återkommande"
       recurring_text: "Create meeting series with dynamic template for each occurrence."
       structured_text: "Organize your meeting as a dynamic list of agenda items, optionally linking them to a work package."
       structured_text_copy: "Copying a meeting will currently not copy the associated meeting agenda items, just the details"
     copied: "Kopierat från möte #%{id}"
     delete_dialog:
       one_time:
-        title: "Delete meeting"
+        title: "Radera möte"
         heading: "Delete this meeting?"
         confirmation_message_html: >
           This action is not reversible. Please proceed with caution.
@@ -239,12 +265,32 @@ sv:
     blankslate:
       title: "No meetings to display"
       desc: "There are no meetings that meet the active filter criteria."
-    label_export_pdf: "Export PDF"
+    label_export_pdf: "Exportera PDF"
     export:
       your_meeting_export: "Meeting is being exported"
+      minutes:
+        footer_page_numbers: "P. %{current_page} of %{total_pages}"
+        author: "Upphovsman"
+        date: "Datum"
+        time: "Tid"
+        location: "Plats"
+        title: "Protokoll"
     export_pdf_dialog:
-      title: Export PDF
+      title: Exportera PDF
       description: Generate a printable PDF file of this meeting at the current state.
+      templates:
+        default:
+          label: Standard
+          caption: The default template is suitable for most meetings and represent the current state.
+        minutes:
+          label: Protokoll
+          caption: The minutes template is suitable for closed and archived meetings.
+      first_page_header_left:
+        label: First page header left
+        caption: This text will appear on the first page at the left of the header.
+      author:
+        label: Upphovsman
+        caption: The author of the minutes will be displayed in the subtitle.
       include_participants:
         label: Include list of participants
         caption: A list of participants will be preset above the meeting agenda.
@@ -260,7 +306,7 @@ sv:
       footer_text:
         label: Footer text
         caption: This text will appear on every page at the center of the footer.
-      submit_button: Download
+      submit_button: Ladda ner
     notifications:
       sidepanel:
         title: "Email calendar updates"
@@ -281,6 +327,11 @@ sv:
           enable: "Enable email updates"
           disable: "Disable email updates"
       banner:
+        participants:
+          enabled: >
+            All participants will receive updated calendar invites via email when you add or remove participants.
+          disabled: >
+            Email calendar updates are disabled. Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             All participants will receive updated calendar invites via email informing them of your changes.
@@ -297,9 +348,9 @@ sv:
           disabled: >
             Email calendar updates are disabled for the meeting series. Participants will not receive an email informing them of your changes to this template or to individual occurrences.
   meeting_section:
-    untitled_title: "Untitled section"
+    untitled_title: "Namnlös sektion"
     delete_confirmation: "Deleting the section will also delete all of its agenda items. Are you sure you want to do this?"
-    placeholder_title: "New section"
+    placeholder_title: "Ny sektion"
     empty_text: "Drag items here or create a new one"
   recurring_meeting:
     time_zone_difference_banner:
@@ -317,33 +368,33 @@ sv:
       first_created: >
         The first meeting has been successfuly created from template. All future meetings will be created automatically at the time of the previous occurrence.
     template:
-      button_finalize: "Open first meeting"
+      button_finalize: "Öppna första mötet"
       blank_title: "Your meeting series template is empty"
       description: >
         This template will be used whenever new meetings in the series get created. You can add agenda items, participants, and attachments to this template.
       blankslate_finalize: >
         When you're done preparing this template, click the '%{button_title}' button above to finish the setup and schedule the first meeting of the series.
-      label_view_template: "View template"
-      label_edit_template: "Edit template"
+      label_view_template: "Visa mall"
+      label_edit_template: "Redigera mall"
       banner_html: >
         You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already created meetings.
     frequency:
       x_daily:
-        one: "Every day"
-        other: "Every %{count} days"
+        one: "Varje dag"
+        other: "Var %{count}:e dag"
       x_weekly:
-        one: "Every week"
+        one: "Varje vecka"
         other: "Every %{count} weeks"
       every_weekday: "Every %{day_of_the_week}"
-      working_days: "Every working day"
+      working_days: "Varje arbetsdag"
     end_after:
-      never: "never"
+      never: "aldrig"
       specific_date: "after a specific date"
       iterations: "after a number of occurrences"
-    starts: "Starts"
+    starts: "Startar"
     in_words:
       daily_interval: "Every %{interval} days"
-      working_days: "Every working day"
+      working_days: "Varje arbetsdag"
       weekly: "Every week on %{weekday}"
       weekly_interval: "Every %{interval} weeks on %{weekday}"
       frequency: "%{base} at %{time}"
@@ -404,33 +455,40 @@ sv:
   text_meeting_agenda_open_are_you_sure: "Detta kommer att skriva över alla ändringar i anteckningarna! Vill du fortsätta?"
   text_meeting_minutes_for_meeting: 'protokollet för mötet "%{meeting}"'
   text_notificiation_invited: "Detta mail innehåller en ics-post för mötet nedan:"
+  text_meeting_ics_description: >-
+    Link to meeting: %{url}
+  text_meeting_ics_meeting_series_description: >-
+    Link to meeting series: %{url}
+  text_meeting_occurrence_ics_description: >-
+    Link to meeting occurrence: %{url} Link to meeting series: %{series_url}
   text_meeting_empty_heading: "Your meeting is empty"
   text_meeting_empty_description1: "Start by adding agenda items below. Each item can be as simple as just a title, but you can also add additional details like duration and notes."
   text_meeting_empty_description2: 'You can also add references to existing work packages. When you do, related notes will automatically be visible in the work package''s "Meetings" tab.'
   label_meeting_empty_action: "Add agenda item"
-  label_meeting_actions: "Meeting actions"
-  label_meeting_edit_title: "Edit meeting title"
-  label_meeting_delete: "Delete meeting"
+  label_meeting_actions: "Mötesåtgärder"
+  label_meeting_edit_title: "Redigera mötestitel"
+  label_meeting_delete: "Radera möte"
   label_meeting_created_by: "Skapad av"
-  label_meeting_last_updated: "Last updated"
-  label_meeting_reload: "Reload"
-  label_meeting_index_today: "Today"
-  label_meeting_index_tomorrow: "Tomorrow"
-  label_meeting_index_this_week: "Later this week"
+  label_meeting_last_updated: "Senast uppdaterad"
+  label_meeting_reload: "Ladda om"
+  label_meeting_index_today: "Idag"
+  label_meeting_index_tomorrow: "Imorgon"
+  label_meeting_index_this_week: "Senare denna vecka"
   label_meeting_index_later: "Next week and later"
   label_agenda_items: "Agenda items"
   label_agenda_items_reordered: "reordered"
   label_agenda_item_add: "Add agenda item"
-  label_agenda_item_remove_from_agenda: "Remove from agenda"
+  label_agenda_item_remove_from_agenda: "Ta bort från agenda"
   label_agenda_item_remove_from_backlog: "Remove from backlog"
   label_agenda_item_undisclosed_wp: "Work package #%{id} not visible"
   label_agenda_item_deleted_wp: "Deleted work package reference"
   label_agenda_item_actions: "Agenda items actions"
   label_agenda_item_move_to_next_title: "Move to next meeting?"
-  label_agenda_item_move: "Move"
+  label_agenda_item_move: "Flytta"
   label_agenda_item_move_to_next: "Move to next meeting"
   label_agenda_item_move_to_backlog: "Move to backlog"
   label_agenda_item_move_to_current_meeting: "Move to current meeting"
+  label_agenda_item_move_to_section: "Move to section"
   label_agenda_item_move_to_top: "Flytta till toppen"
   label_agenda_item_move_to_bottom: "Flytta längst ned"
   label_agenda_item_move_up: "Flytta upp"
@@ -439,8 +497,9 @@ sv:
   label_agenda_item_add_outcome: "Add outcome"
   label_agenda_item_work_package_add: "Add work package"
   label_agenda_item_work_package: "Agenda item work package"
-  label_section_rename: "Rename section"
+  label_section_rename: "Döp om sektion"
   label_agenda_outcome: "Outcome"
+  label_agenda_new_outcome: "New outcome"
   label_agenda_outcome_actions: "Agenda outcome actions"
   label_agenda_outcome_edit: "Edit outcome"
   label_agenda_outcome_delete: "Remove outcome"
@@ -462,10 +521,10 @@ sv:
   text_series_backlog_clear_description: >
     This will remove all items in the series backlog, which is shared with all meetings in the series. Are you sure you want to continue? This action is not reversible.
   text_agenda_item_title: 'Agenda item "%{title}"'
-  text_agenda_work_package_deleted: 'Agenda item for deleted work package'
-  text_deleted_agenda_item: 'Deleted agenda item'
+  text_agenda_work_package_deleted: "Agenda item for deleted work package"
+  text_deleted_agenda_item: "Deleted agenda item"
   label_initial_meeting_details: "Möte"
-  label_meeting_details: "Meeting details"
+  label_meeting_details: "Mötesdetaljer"
   label_meeting_series_details: "Meeting series details"
   label_meeting_details_edit: "Edit meeting details"
   label_meeting_state: "Meeting status"
@@ -478,23 +537,22 @@ sv:
   label_meeting_state_in_progress: "Pågående"
   label_meeting_reopen_action: "Reopen meeting"
   label_meeting_close_action: "Close meeting"
-  label_meeting_in_progress_action: "Start meeting"
-  text_meeting_open_description: "This meeting is open. You can add/remove agenda items and edit them as you please. Once the agenda is ready, mark it as in progress to document outcomes."
+  label_meeting_in_progress_action: "Starta möte"
+  text_meeting_open_description: "You can add/remove agenda items and participants. Once the agenda is ready, mark it as in progress to document outcomes."
   text_meeting_closed_description: "This meeting is closed. You cannot add/remove agenda items anymore."
-  text_meeting_in_progress_description: "This meeting is in progress. You can document outcomes for each agenda item, re-arrange them, and even add new ones. Once the meeting is complete, you can mark it as closed to lock it."
+  text_meeting_in_progress_description: "You can modify the agenda, document outcomes for each item and track attendance for participants. Once the meeting is complete, you can mark it as closed to lock it."
   text_meeting_open_dropdown_description: "Any existing outcomes will remain but users will not be able to add new outcomes."
   text_meeting_in_progress_dropdown_description: "Document outcomes like information needs or decisions taken during the meeting."
   text_meeting_closed_dropdown_description: "This meeting is closed. You cannot modify agenda items or outcomes anymore."
-  label_meeting_manage_participants: "Hantera deltagare"
-  label_meeting_no_participants: "Inga deltagare"
-  label_meeting_show_hide_participants: "Show/hide %{count} more"
-  label_meeting_show_all_participants: "Visa alla"
-  label_meeting_add_participants: "Lägg till deltagare"
   text_meeting_not_editable_anymore: "This meeting is not editable anymore."
   text_meeting_not_present_anymore: "This meeting was deleted. Please select another meeting."
-  label_add_work_package_to_meeting_dialog_title: "Add work package to meeting"
+  label_add_work_package_to_meeting_dialog_title: "Select meeting"
+  label_add_work_package_to_meeting_section_label: "Section"
   label_add_work_package_to_meeting_dialog_button: "Add to meeting"
-  label_meeting_selection_caption: "It's only possible to add this work package to upcoming or ongoing open meetings."
+  label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."
+  label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."
+  placeholder_section_select_meeting_first: "Meeting selection is required first"
+  text_add_work_package_to_meeting_form: "The work package will be added to the selected meeting or backlog as an agenda item."
   text_add_work_package_to_meeting_description: "A work package can be added to one or multiple meetings for discussion. Any notes concerning it are also visible here."
   text_agenda_item_no_notes: "No notes provided"
   text_agenda_item_not_editable_anymore: "This agenda item is not editable anymore."
@@ -506,4 +564,29 @@ sv:
   text_work_package_has_no_past_meeting_agenda_items: "This work package was not mentioned in a past meeting."
   text_email_updates_muted: "Email calendar updates are muted. Participants will not receive updated invites via email when you make changes."
   text_email_updates_enabled: "Email calendar updates are enabled. All participants will receive updated invites via email when you make changes."
-
+  my_account:
+    access_tokens:
+      token/ical_meeting:
+        title: "iCalendar for meetings"
+        text_hint: "iCalendar meeting tokens allow users to subscribe to all their meetings and view up-to-date meeting information in external clients."
+        disabled_text: "iCalendar meeting subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
+        empty_text_hint: 'To add an iCalendar meeting token, go to the <a href="%{path}">meetings section</a> and subscribe from there.'
+        add_button: "Subscribe to calendar"
+  my:
+    access_token:
+      dialog:
+        token/ical_meeting:
+          dialog_title: "New iCal subscription token for meetings"
+          dialog_body: "This token will generate an iCal subscription URL that lets you view all your meetings in an external calendar application."
+          create_button: "Skapa prenumeration"
+          name_label: "Token name"
+          name_caption: 'You can name it after where you will use it, such as "My phone" or "Work computer".'
+      created_dialog:
+        token/ical_meeting:
+          title: "An iCal meeting subscription token has been generated"
+          body: "Treat the following URL as you would a password. Anyone who has access to it can view all your meetings."
+          warning: "This is the only time you will see this token. Make sure to copy it now."
+      revocation:
+        token/ical_meeting:
+          notice_success: "The iCalendar meeting subscription has been revoked successfully."
+          notice_failure: "Failed to revoke iCalendar meeting subscription: %{error}"

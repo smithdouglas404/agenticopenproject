@@ -57,7 +57,9 @@ RSpec.describe "SCIM API Groups", with_ee: [:scim_api] do
     context "with the feature flag enabled", with_flag: { scim_api: true } do
       before { group }
 
-      it "responds with group list" do
+      it "responds with a list of groups excluding marked for deletion" do
+        create(:group_marked_for_deletion)
+
         get "/scim_v2/Groups", {}, headers
 
         response_body = JSON.parse(last_response.body)
@@ -255,22 +257,20 @@ RSpec.describe "SCIM API Groups", with_ee: [:scim_api] do
 
         get "/scim_v2/Groups/#{group.id}", "", headers
 
+        expect(last_response).to have_http_status(404)
         response_body = JSON.parse(last_response.body)
-        expect(response_body).to eq("displayName" => group.name,
-                                    "externalId" => external_group_id,
-                                    "id" => group.id.to_s,
-                                    "members" => [{ "value" => user.id.to_s }],
-                                    "meta" => { "location" => "http://test.host/scim_v2/Groups/#{group.id}",
-                                                "created" => group.created_at.iso8601,
-                                                "lastModified" => group.updated_at.iso8601,
-                                                "resourceType" => "Group" },
-                                    "schemas" => ["urn:ietf:params:scim:schemas:core:2.0:Group"])
+        expect(response_body).to eq(
+          "detail" => "Resource \"#{group.id}\" not found",
+          "schemas" => ["urn:ietf:params:scim:api:messages:2.0:Error"],
+          "status" => "404"
+        )
 
         perform_enqueued_jobs
         assert_performed_jobs 1
 
         get "/scim_v2/Groups/#{group.id}", "", headers
 
+        expect(last_response).to have_http_status(404)
         response_body = JSON.parse(last_response.body)
         expect(response_body).to eq(
           "detail" => "Resource \"#{group.id}\" not found",

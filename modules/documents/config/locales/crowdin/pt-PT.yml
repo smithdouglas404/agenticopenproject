@@ -26,6 +26,10 @@ pt-PT:
   activerecord:
     models:
       document: "Documento"
+    attributes:
+      document:
+        content_binary: "Conteúdo binário"
+        title: "Título"
   activity:
     filter:
       document: "Documentos"
@@ -33,6 +37,22 @@ pt-PT:
   default_doc_category_user: "Documentação de utilizador"
   enumeration_doc_categories: "Categorias de documentos"
   documents:
+    page_header:
+      heading: "Todos os documentos"
+    subheader:
+      filter:
+        label: "Filtro de nome do documento"
+        placeholder: "Escreva aqui para pesquisar nomes de documentos"
+    documents_list_blank_slate:
+      heading: "Ainda não existem documentos"
+      description: "Não existem documentos nesta vista. Pode clicar no botão abaixo para adicionar um."
+    index_page:
+      name: "Nome"
+      type: "Tipo"
+      updated_at: "Última edição"
+    menu:
+      all: "Todos os documentos"
+      types: "Tipos"
     label_attachment_author: "Autor do anexo"
     label_categories: "Categorias"
     new_category: "Nova categoria"

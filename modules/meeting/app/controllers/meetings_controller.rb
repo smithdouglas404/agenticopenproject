@@ -38,7 +38,7 @@ class MeetingsController < ApplicationController
   before_action :redirect_to_project, only: %i[show]
   before_action :set_activity, only: %i[history]
   before_action :find_copy_from_meeting, only: %i[create]
-  before_action :convert_params, only: %i[create update update_participants]
+  before_action :convert_params, only: %i[create update]
   before_action :prevent_template_destruction, only: :destroy
 
   helper :watchers
@@ -106,7 +106,7 @@ class MeetingsController < ApplicationController
       text = I18n.t(:notice_successful_create)
       unless User.current.pref.time_zone?
         link = I18n.t(:notice_timezone_missing, zone: formatted_time_zone_offset)
-        text += " #{view_context.link_to(link, { controller: '/my', action: :settings, anchor: 'pref_time_zone' },
+        text += " #{view_context.link_to(link, { controller: '/my', action: :locale, anchor: 'pref_time_zone' },
                                          class: 'link_to_profile')}"
       end
       flash[:notice] = text.html_safe # rubocop:disable Rails/OutputSafety
@@ -238,18 +238,6 @@ class MeetingsController < ApplicationController
   end
 
   def details_dialog; end
-
-  def participants_dialog; end
-
-  def update_participants
-    @meeting.participants_attributes = @converted_params.delete(:participants_attributes)
-    @meeting.save
-
-    update_sidebar_details_component_via_turbo_stream
-    update_sidebar_participants_component_via_turbo_stream
-
-    respond_with_turbo_streams
-  end
 
   def update_title
     @meeting.update(title: meeting_params[:title])
@@ -393,41 +381,13 @@ class MeetingsController < ApplicationController
 
     # We group meetings into individual groups, but only for upcoming meetings
     if params[:upcoming] == "false"
-      @meetings = show_more_pagination(@query.results)
+      @meetings = show_more_pagination(@query.results, limit: params[:limit])
     else
-      @grouped_meetings = group_meetings(@query.results)
+      service = ::GroupMeetingsService.new(@query.results, limit: params[:limit])
+      call = service.call
+
+      @grouped_meetings = call.result
     end
-  end
-
-  def group_meetings(all_meetings) # rubocop:disable Metrics/AbcSize
-    next_week = Time
-      .current
-      .next_occurring(OpenProject::Internationalization::Date.beginning_of_week)
-      .beginning_of_day
-    groups = Hash.new { |h, k| h[k] = [] }
-    groups[:later] = show_more_pagination(all_meetings
-                                            .where(start_time: next_week..)
-                                            .order(start_time: :asc))
-
-    all_meetings
-      .where(start_time: ...next_week)
-      .order(start_time: :asc)
-      .each do |meeting|
-      start_date = in_user_zone(meeting.start_time).to_date
-
-      group_key =
-        if start_date == Time.zone.today
-          :today
-        elsif start_date == Time.zone.tomorrow
-          :tomorrow
-        else
-          :this_week
-        end
-
-      groups[group_key] << meeting
-    end
-
-    groups
   end
 
   def build_meeting
@@ -465,7 +425,7 @@ class MeetingsController < ApplicationController
 
     @converted_params[:project] = @project if @project.present?
     @converted_params[:duration] = @converted_params[:duration].to_hours if @converted_params[:duration].present?
-    @converted_params[:send_notifications] = meeting_params[:notify] == "1" && params[:meeting][:copied_from_meeting_id].present?
+    @converted_params[:send_notifications] = meeting_params[:notify] == "1"
 
     # Handle participants separately for each meeting type
     @converted_params[:participants_attributes] ||= {}

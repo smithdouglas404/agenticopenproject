@@ -31,7 +31,7 @@ lv:
       events:
         created: "Izveidots"
         updated: "Updated"
-        comment: "Comment"
+        comment: "Komentârs"
         internal_comment: "Internal comment"
       explanation:
         text: >

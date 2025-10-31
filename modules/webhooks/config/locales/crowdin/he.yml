@@ -31,7 +31,7 @@ he:
       events:
         created: "נוצר"
         updated: "Updated"
-        comment: "Comment"
+        comment: "תגובה"
         internal_comment: "Internal comment"
       explanation:
         text: >

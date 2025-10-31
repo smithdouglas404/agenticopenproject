@@ -46,7 +46,7 @@ module Admin
           }
         ]
 
-        if @custom_field.field_format_hierarchy?
+        if @custom_field.hierarchical_list?
           tabs << {
             name: "items",
             path: custom_field_items_path(@custom_field),
@@ -55,7 +55,7 @@ module Admin
         end
 
         if @custom_field.is_a?(WorkPackageCustomField) ||
-          @custom_field.is_a?(ProjectCustomField)
+           @custom_field.is_a?(ProjectCustomField)
           tabs <<
             {
               name: "custom_field_projects",

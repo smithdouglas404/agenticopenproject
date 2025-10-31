@@ -56,7 +56,9 @@ RSpec.describe "user deletion:", :js do
 
       dialog.confirm_flow_with user_password
 
-      expect(page).to have_content "Account has been locked and was scheduled for deletion"
+      expect(page).to have_content("Account has been scheduled for deletion. " \
+                                   "Note that this process takes place in the background. " \
+                                   "It might take a few moments until the user is fully deleted.")
       expect(page).to have_current_path "/login"
     end
 
@@ -72,7 +74,7 @@ RSpec.describe "user deletion:", :js do
 
   context "user with global add role" do
     let!(:user) { create(:user) }
-    let(:current_user) { create(:user, global_permissions: [:manage_user]) }
+    let(:current_user) { create(:user, global_permissions: %i[manage_user view_all_principals]) }
 
     it "can not delete even if settings allow it" do
       Setting.users_deletable_by_admins = 1
@@ -115,7 +117,9 @@ RSpec.describe "user deletion:", :js do
 
       dialog.confirm_flow_with user_password, should_fail: false
 
-      expect(page).to have_content "Account has been locked and was scheduled for deletion"
+      expect(page).to have_content("Account has been scheduled for deletion. " \
+                                   "Note that this process takes place in the background. " \
+                                   "It might take a few moments until the user is fully deleted.")
       expect(page).to have_current_path "/users"
     end
 
@@ -133,7 +137,9 @@ RSpec.describe "user deletion:", :js do
 
       dialog.confirm_flow_with user_password, with_keyboard: true, should_fail: false
 
-      expect(page).to have_content "Account has been locked and was scheduled for deletion"
+      expect(page).to have_content("Account has been scheduled for deletion. " \
+                                   "Note that this process takes place in the background. " \
+                                   "It might take a few moments until the user is fully deleted.")
       expect(page).to have_current_path "/users"
     end
 

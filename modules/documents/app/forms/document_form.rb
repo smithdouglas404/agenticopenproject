@@ -29,6 +29,13 @@
 #++
 
 class DocumentForm < ApplicationForm
+  attr_reader :oauth_token
+
+  def initialize(oauth_token: nil)
+    super()
+    @oauth_token = oauth_token
+  end
+
   form do |f|
     f.select_list(
       name: :category_id,
@@ -49,10 +56,14 @@ class DocumentForm < ApplicationForm
 
     if OpenProject::FeatureDecisions.block_note_editor_active? && model.category&.name == "Experimental"
       f.block_note_editor(
-        name: :description,
+        name: :content_binary,
         label: I18n.t("label_document_description"),
         classes: "document-form--long-description",
-        value: model.description
+        value: model.content_binary,
+        document_id: model.id,
+        document_name: model.title,
+        oauth_token: @oauth_token,
+        attachments_upload_url: uploads_url
       )
     else
       f.rich_text_area(
@@ -91,6 +102,14 @@ class DocumentForm < ApplicationForm
       I18n.t("button_save")
     else
       I18n.t("button_create")
+    end
+  end
+
+  def uploads_url
+    if OpenProject::Configuration.direct_uploads?
+      ::API::V3::Utilities::PathHelper::ApiV3Path.prepare_attachments_by_document(model.id)
+    else
+      ::API::V3::Utilities::PathHelper::ApiV3Path.attachments_by_document(model.id)
     end
   end
 end

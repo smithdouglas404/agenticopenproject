@@ -26,6 +26,10 @@ ca:
   activerecord:
     models:
       document: "Document"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "Títol"
   activity:
     filter:
       document: "Documents"
@@ -33,6 +37,22 @@ ca:
   default_doc_category_user: "Documentació d'usuari"
   enumeration_doc_categories: "Categories de documents"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "Nom"
+      type: "Tipus"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "Tipus"
     label_attachment_author: "Autor de l'adjunt"
     label_categories: "Categories"
     new_category: "Nova categoria"
@@ -40,9 +60,9 @@ ca:
   label_document_new: "Nou document"
   label_document_plural: "Documents"
   label_documents: "Documents"
-  label_document_title: "Title"
-  label_document_description: "Description"
-  label_document_category: "Category"
+  label_document_title: "Títol"
+  label_document_description: "Descripció"
+  label_document_category: "Categoria"
   permission_manage_documents: "Administrar documents"
   permission_view_documents: "Visualitzar documents"
   project_module_documents: "Documents"

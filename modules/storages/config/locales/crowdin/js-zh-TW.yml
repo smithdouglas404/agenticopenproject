@@ -17,7 +17,8 @@ zh-TW:
       new_folder: "新增資料夾"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "Sharepoint"
         default: "儲存空間"
       information:
         authentication_error: "%{storageType} 的請求無法驗證，這是一個錯誤。"

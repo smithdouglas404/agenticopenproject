@@ -57,6 +57,7 @@ properties:
       - project
       - user
       - activity
+      - entity
     properties:
       self:
         allOf:
@@ -106,13 +107,13 @@ properties:
               The project the time entry is bundled in. The project might be different from the work package's project once the workPackage is moved.
 
               **Resource**: Project
-      workPackage:
+      entity:
         allOf:
           - "$ref": "./link.yml"
           - description: |-
-              The work package the time entry is created on
+              The entity the time entry is created on
 
-              **Resource**: WorkPackage
+              **Resource**: WorkPackage, Meeting
       user:
         allOf:
           - "$ref": "./link.yml"
@@ -158,7 +159,7 @@ examples:
       project:
         href: "/api/v3/projects/11"
         title: DeathStarV2
-      workPackage:
+      entity:
         href: "/api/v3/work_packages/77"
         title: Build new hangar
       user:

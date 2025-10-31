@@ -26,6 +26,10 @@ ka:
   activerecord:
     models:
       document: "დოკუმენტი"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "სათაური"
   activity:
     filter:
       document: "დოკუმენტები"
@@ -33,6 +37,22 @@ ka:
   default_doc_category_user: "User documentation"
   enumeration_doc_categories: "Document categories"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "სახელი"
+      type: "ტიპი"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "ტიპები"
     label_attachment_author: "Attachment author"
     label_categories: "Categories"
     new_category: "ახალი კატეგორია"
@@ -40,9 +60,9 @@ ka:
   label_document_new: "ახალი დოკუმენტი"
   label_document_plural: "დოკუმენტები"
   label_documents: "დოკუმენტები"
-  label_document_title: "Title"
-  label_document_description: "Description"
-  label_document_category: "Category"
+  label_document_title: "სათაური"
+  label_document_description: "აღწერა"
+  label_document_category: "კატეგორია"
   permission_manage_documents: "Manage documents"
   permission_view_documents: "დოკუმენტების ნახვა"
   project_module_documents: "დოკუმენტები"

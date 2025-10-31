@@ -1,6 +1,17 @@
 sk:
   grids:
     label_widget_in_grid: "Widget contained in Grid %{grid_name}"
+    widgets:
+      subitems:
+        title: "Subitems"
+        no_results: "There are no visible children."
+        view_all_subitems: "View all subitems"
+      members:
+        title: "Latest members"
+        no_results: "No visible members."
+        view_all_members: "Zobraziť všetkých členov"
+      news:
+        no_results: "Nič nové pre nahlásenie."
   activerecord:
     attributes:
       grids/grid:
@@ -8,7 +19,7 @@ sk:
         row_count: "Počet riadkov"
         column_count: "Počet stĺpcov"
         widgets: "Miniaplikácie"
-        scope: "Scope"
+        scope: "Rozsah"
     errors:
       models:
         grids/grid:

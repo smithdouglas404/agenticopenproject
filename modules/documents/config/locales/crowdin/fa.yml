@@ -26,6 +26,10 @@ fa:
   activerecord:
     models:
       document: "سند"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "عنوان"
   activity:
     filter:
       document: "اسناد"
@@ -33,6 +37,22 @@ fa:
   default_doc_category_user: "اسناد کاربر"
   enumeration_doc_categories: "Document categories"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "نام"
+      type: "نوع"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "انواع"
     label_attachment_author: "نویسنده پیوست"
     label_categories: "Categories"
     new_category: "New category"
@@ -40,8 +60,8 @@ fa:
   label_document_new: "سند نو"
   label_document_plural: "اسناد"
   label_documents: "اسناد"
-  label_document_title: "Title"
-  label_document_description: "Description"
+  label_document_title: "عنوان"
+  label_document_description: "توضیحات"
   label_document_category: "Category"
   permission_manage_documents: "مدیریت اسناد"
   permission_view_documents: "دیدن اسناد"

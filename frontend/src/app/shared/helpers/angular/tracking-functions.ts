@@ -17,18 +17,6 @@ export function compareByName<T extends HalResource>(a:T|undefined|null, b:T|und
   return compareByAttribute('name')(a, b);
 }
 
-export function trackByName(i:number, item:any) {
-  return _.get(item, 'name');
-}
-
-export function trackByHref(i:number, item:{ href?:unknown }) {
-  return _.get(item, 'href');
-}
-
-export function trackByProperty(prop:string) {
-  return (i:number, item:unknown) => _.get(item, prop);
-}
-
 export function trackByHrefAndProperty(propertyName:string) {
   return (i:number, item:HalResource) => {
     const href:string = _.get(item, 'href') || '';

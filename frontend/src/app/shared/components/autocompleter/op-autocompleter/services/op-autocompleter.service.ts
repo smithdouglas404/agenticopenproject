@@ -63,6 +63,8 @@ export class OpAutocompleterService extends UntilDestroyedMixin {
   protected createParams(resource:TOpAutocompleterResource):{ [p:string]:string } {
     if (resource === 'work_packages') {
       return {
+        // see op-autocompleter/op-autocompleter.component.html for required attributes
+        select: 'elements/id,elements/subject,elements/author,elements/type,elements/project,elements/status',
         sortBy: '[["updatedAt","desc"]]',
       };
     }

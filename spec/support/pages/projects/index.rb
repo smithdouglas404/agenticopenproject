@@ -86,8 +86,8 @@ module Pages
         expect(page).to have_css('[data-test-selector="project-query-name"]', text: name)
       end
 
-      def expect_sidebar_filter(filter_name, selected: false, favored: false, visible: true)
-        submenu.expect_item(filter_name, selected:, favored:, visible:)
+      def expect_sidebar_filter(filter_name, selected: false, favorited: false, visible: true)
+        submenu.expect_item(filter_name, selected:, favorited:, visible:)
       end
 
       def expect_no_sidebar_filter(filter_name)
@@ -221,8 +221,8 @@ module Pages
         wait_for_reload
       end
 
-      def filter_by_favored(value)
-        set_filter("favored", "Favorite", "is", [value])
+      def filter_by_favorited(value)
+        set_filter("favorited", "Favorite", "is", [value])
         wait_for_reload
       end
 
@@ -267,8 +267,8 @@ module Pages
 
         not_protected_columns = Regexp.new("^(?!#{(columns + ['Name']).join('$|')}$).*$")
 
-        while (item = page.all(".op-draggable-autocomplete--item", text: not_protected_columns)[0])
-          item.find(".op-draggable-autocomplete--remove-item").click
+        while (items = page.all(".op-draggable-autocomplete--item", text: not_protected_columns)[0]) # rubocop:disable Capybara/FindAllFirst
+          items.find(".op-draggable-autocomplete--remove-item").click
         end
 
         remaining_columns = page.all(".op-draggable-autocomplete--item").map { |i| i.text.downcase }
@@ -336,12 +336,13 @@ module Pages
         end
       end
 
-      def navigate_to_new_project_page_from_toolbar_items
-        page.find('[data-test-selector="project-new-button"]').click
+      def create_new_workspace
+        page.find('[data-test-selector="workspace-new-button"]').click
       end
 
       def save_query
         click_more_menu_item("Save")
+        wait_for_network_idle
       end
 
       def save_query_as(name)
@@ -520,7 +521,7 @@ module Pages
       private
 
       def boolean_filter?(filter)
-        %w[active member_of favored public templated].include?(filter.to_s)
+        %w[active member_of favorited public templated].include?(filter.to_s)
       end
 
       def submenu

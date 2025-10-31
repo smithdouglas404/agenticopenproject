@@ -41,6 +41,9 @@ RSpec.describe API::V3::Projects::Schemas::ProjectSchemaRepresenter do
   let(:custom_field) do
     build_stubbed(:integer_project_custom_field)
   end
+  let(:calculated_value_cf) do
+    build_stubbed(:calculated_value_project_custom_field, formula: "23 + {{cf_#{custom_field.id}}}")
+  end
   let(:allowed_status) { ["some status"] }
   let(:contract) do
     contract = double("contract")
@@ -55,25 +58,15 @@ RSpec.describe API::V3::Projects::Schemas::ProjectSchemaRepresenter do
     end
 
     allow(contract)
-      .to receive(:available_custom_fields)
-      .and_return([custom_field])
-
-    allow(contract)
       .to receive(:assignable_values)
       .with(:status_code, current_user)
       .and_return(allowed_status)
 
     allow(contract)
-      .to receive(:model)
-      .and_return(model)
+      .to receive_messages(available_custom_fields: [custom_field, calculated_value_cf], model: model)
 
     allow(model)
-      .to receive(:new_record?)
-      .and_return(new_record)
-
-    allow(model)
-      .to receive(:id)
-      .and_return(model_id)
+      .to receive_messages(new_record?: new_record, id: model_id)
 
     contract
   end
@@ -93,12 +86,81 @@ RSpec.describe API::V3::Projects::Schemas::ProjectSchemaRepresenter do
     end
   end
 
-  context "generation" do
+  describe "generation" do
     subject(:generated) { representer.to_json }
 
     describe "_type" do
       it "is indicated as Schema" do
         expect(subject).to be_json_eql("Schema".to_json).at_path("_type")
+      end
+    end
+
+    describe "_attributeGroups" do
+      context "without existing sections" do
+        it "renders an empty section attribute group" do
+          expect(subject)
+            .to be_json_eql([].to_json)
+            .at_path("_attributeGroups")
+        end
+      end
+
+      context "with existing sections" do
+        let!(:user_section) { create(:project_custom_field_section, name: "Common Project Attributes") }
+        let!(:user_custom_field) do
+          create(:text_project_custom_field, project_custom_field_section: user_section)
+        end
+        let!(:admin_section) { create(:project_custom_field_section, name: "Admin Project Attributes") }
+        let!(:admin_custom_field) do
+          create(:text_project_custom_field, project_custom_field_section: admin_section, admin_only: true)
+        end
+
+        before do
+          allow(contract.model)
+            .to receive(:available_custom_fields)
+            .and_return(ProjectCustomField.all)
+        end
+
+        context "with a user" do
+          it "renders section attribute group elements of the schema" do
+            expect(subject)
+              .to be_json_eql(
+                [
+                  {
+                    _type: "ProjectFormCustomFieldSection",
+                    id: user_section.id,
+                    name: "Common Project Attributes",
+                    attributes: ["customField#{user_custom_field.id}"]
+                  }
+                ].to_json
+              )
+              .at_path("_attributeGroups")
+          end
+        end
+
+        context "with an admin" do
+          let(:current_user) { build_stubbed(:admin) }
+
+          it "renders section attribute group elements of the schema" do
+            expect(subject)
+              .to be_json_eql(
+                [
+                  {
+                    _type: "ProjectFormCustomFieldSection",
+                    id: user_section.id,
+                    name: "Common Project Attributes",
+                    attributes: ["customField#{user_custom_field.id}"]
+                  },
+                  {
+                    _type: "ProjectFormCustomFieldSection",
+                    id: admin_section.id,
+                    name: "Admin Project Attributes",
+                    attributes: ["customField#{admin_custom_field.id}"]
+                  }
+                ].to_json
+              )
+              .at_path("_attributeGroups")
+          end
+        end
       end
     end
 
@@ -234,6 +296,18 @@ RSpec.describe API::V3::Projects::Schemas::ProjectSchemaRepresenter do
       it_behaves_like "has basic schema properties" do
         let(:type) { "Integer" }
         let(:name) { custom_field.name }
+        let(:required) { false }
+        let(:writable) { false }
+      end
+    end
+
+    describe "calculated value custom field" do
+      let(:path) { "customField#{calculated_value_cf.id}" }
+
+      it_behaves_like "has basic schema properties" do
+        let(:type) { "CalculatedValue" }
+        let(:name) { calculated_value_cf.name }
+        let(:formula) { "23 + {{cf_#{custom_field.id}}}" }
         let(:required) { false }
         let(:writable) { false }
       end

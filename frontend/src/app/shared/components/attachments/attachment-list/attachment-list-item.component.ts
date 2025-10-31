@@ -183,9 +183,6 @@ export class OpAttachmentListItemComponent extends UntilDestroyedMixin implement
         title: this.text.deleteTitle,
         button_continue: this.text.deleteTitle,
       },
-      icon: {
-        continue: 'delete',
-      },
       dangerHighlighting: true,
     };
     void this.confirmDialogService

@@ -15,7 +15,12 @@ module Primer
           @rich_text_data = rich_text_options.delete(:data) { {} }
           @rich_text_data[:"test-selector"] ||= "augmented-text-area-#{@input.name}"
           @rich_text_options = rich_text_options
-          @text_area_id = @input.id || builder.field_id(@input.name)
+          @text_area_id =
+            if @input.id
+              [builder.options[:namespace], @input.id].compact.join("_")
+            else
+              builder.field_id(@input.name)
+            end
         end
       end
     end

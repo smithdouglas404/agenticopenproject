@@ -107,37 +107,6 @@ RSpec.describe Meeting do
     end
   end
 
-  describe "all_changeable_participants" do
-    describe "WITH a user having the view_meetings permission" do
-      let(:project_members) { { user1 => role } }
-
-      it "contains the user" do
-        expect(meeting.all_changeable_participants).to eq([user1])
-      end
-    end
-
-    describe "WITH a user not having the view_meetings permission" do
-      let(:role2) { create(:project_role, permissions: []) }
-      let(:project_members) { { user1 => role, user2 => role2 } }
-
-      it "does not contain the user" do
-        expect(meeting.all_changeable_participants).not_to include(user2)
-      end
-    end
-
-    describe "WITH a user being locked but invited" do
-      let(:locked_user) { create(:locked_user) }
-
-      before do
-        meeting.participants_attributes = [{ user_id: locked_user.id, invited: 1 }]
-      end
-
-      it "contains the user" do
-        expect(meeting.all_changeable_participants).to include(locked_user)
-      end
-    end
-  end
-
   describe "participants and author as watchers" do
     let(:project_members) { { user1 => role, user2 => role } }
 

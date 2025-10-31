@@ -32,8 +32,15 @@ See COPYRIGHT and LICENSE files for more details.
   {
     name: :login,
     path: admin_settings_authentication_path(tab: :login),
-    label: :"settings.authentication.login_and_sso",
+    label: :"settings.authentication.login",
     partial: "admin/settings/authentication_settings/login"
+  },
+  {
+    name: :sso,
+    path: admin_settings_authentication_path(tab: :sso),
+    label: :"settings.authentication.sso",
+    partial: "admin/settings/authentication_settings/sso",
+    enterprise_feature: :sso_auth_providers
   },
   {
     name: :registration,

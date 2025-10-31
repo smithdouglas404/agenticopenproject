@@ -1,5 +1,8 @@
 ---
 description: |-
+  The work packages endpoints return collections or single entities of type `WorkPackage`. The following tables list the different properties
+  of `WorkPackage` entities.
+
   ## Actions
 
   | Link                | Description                                                              | Condition                              |

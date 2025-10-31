@@ -106,9 +106,9 @@ class Projects::IndexPageHeaderComponent < ApplicationComponent
     query.persisted?
   end
 
-  def can_toggle_favor? = query.persisted?
+  def can_toggle_favorite? = query.persisted?
 
-  def currently_favored? = query.favored_by?(current_user)
+  def currently_favorited? = query.favorited_by?(current_user)
 
   def breadcrumb_items
     [
@@ -147,7 +147,10 @@ class Projects::IndexPageHeaderComponent < ApplicationComponent
       mobile_icon: nil, # Do not show on mobile as it is already part of the menu
       mobile_label: nil,
       href:,
-      data: { "turbo-stream": true, method: },
+      data: {
+        turbo_stream: true,
+        turbo_method: method
+      },
       target: ""
     ) do
       render(
@@ -166,7 +169,10 @@ class Projects::IndexPageHeaderComponent < ApplicationComponent
       label:,
       href:,
       content_arguments: {
-        data: { "turbo-stream": true, method: }
+        data: {
+          turbo_stream: true,
+          turbo_method: method
+        }
       }
     ) do |item|
       item.with_leading_visual_icon(icon: :"op-save")

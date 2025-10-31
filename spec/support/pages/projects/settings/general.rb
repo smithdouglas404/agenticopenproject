@@ -48,7 +48,12 @@ module Pages
 
         def click_copy_action
           page.find_test_selector("project-settings-more-menu").click
-          page.find_test_selector("project-settings--copy").click
+          page.find(:menuitem, "Copy").click # TODO: scope to More menu
+        end
+
+        def click_delete_action
+          page.find_test_selector("project-settings-more-menu").click
+          page.find(:menuitem, "Delete").click # TODO: scope to More menu
         end
 
         def expect_field_label_with_help_text(label_text)

@@ -26,6 +26,10 @@ hu:
   activerecord:
     models:
       document: "Dokumentum"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "Cím"
   activity:
     filter:
       document: "Dokumentumok"
@@ -33,6 +37,22 @@ hu:
   default_doc_category_user: "Felhasználói dokumentáció"
   enumeration_doc_categories: "Dokumentum kategóriák"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "Név"
+      type: "Típus"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "Típus"
     label_attachment_author: "Melléklet szerzője"
     label_categories: "Kategóriák"
     new_category: "Új kategória"
@@ -40,9 +60,9 @@ hu:
   label_document_new: "Új dokumentum"
   label_document_plural: "Dokumentumok"
   label_documents: "Dokumentumok"
-  label_document_title: "Title"
-  label_document_description: "Description"
-  label_document_category: "Category"
+  label_document_title: "Cím"
+  label_document_description: "Leírás"
+  label_document_category: "Kategória"
   permission_manage_documents: "Dokumentumok kezelése"
   permission_view_documents: "Dokumetumok megtekintése"
   project_module_documents: "Dokumentumok"

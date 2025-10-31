@@ -162,7 +162,7 @@ RSpec.describe EnvData::CustomDesignSeeder, :webmock do
     it "uses those variables" do
       reset(:seed_design)
 
-      expect { seeder.seed! }.to raise_error /Hex code is invalid/
+      expect { seeder.seed! }.to raise_error /Hex code is not a valid 6-digit hexadecimal color code./
     end
   end
 

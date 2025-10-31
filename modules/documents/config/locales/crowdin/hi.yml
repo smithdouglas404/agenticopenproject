@@ -26,6 +26,10 @@ hi:
   activerecord:
     models:
       document: "Document"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "शीर्षक"
   activity:
     filter:
       document: "Documents"
@@ -33,6 +37,22 @@ hi:
   default_doc_category_user: "User documentation"
   enumeration_doc_categories: "Document categories"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "नाम"
+      type: "प्रकार"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "प्रकार"
     label_attachment_author: "Attachment author"
     label_categories: "Categories"
     new_category: "नई श्रेणी"
@@ -40,9 +60,9 @@ hi:
   label_document_new: "New document"
   label_document_plural: "Documents"
   label_documents: "Documents"
-  label_document_title: "Title"
+  label_document_title: "शीर्षक"
   label_document_description: "Description"
-  label_document_category: "Category"
+  label_document_category: "श्रेणी"
   permission_manage_documents: "Manage documents"
   permission_view_documents: "View documents"
   project_module_documents: "Documents"

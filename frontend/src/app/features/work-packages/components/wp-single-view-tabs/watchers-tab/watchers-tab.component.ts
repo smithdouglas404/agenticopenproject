@@ -36,7 +36,6 @@ import {
   WorkPackageWatchersService,
 } from 'core-app/features/work-packages/components/wp-single-view-tabs/watchers-tab/wp-watchers.service';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
-import { trackByHref } from 'core-app/shared/helpers/angular/tracking-functions';
 import {
   WorkPackageNotificationService,
 } from 'core-app/features/work-packages/services/notifications/work-package-notification.service';
@@ -54,8 +53,6 @@ export class WorkPackageWatchersTabComponent extends UntilDestroyedMixin impleme
   @Input() public workPackage:WorkPackageResource;
 
   public workPackageId:string;
-
-  public trackByHref = trackByHref;
 
   public error = false;
 

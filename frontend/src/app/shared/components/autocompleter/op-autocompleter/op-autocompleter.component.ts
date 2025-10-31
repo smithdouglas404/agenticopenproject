@@ -26,7 +26,6 @@ import {
 import { DropdownPosition, NgSelectComponent } from '@ng-select/ng-select';
 import { BehaviorSubject, merge, NEVER, Observable, of, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, switchMap, tap } from 'rxjs/operators';
-import { AddTagFn, GroupValueFn } from '@ng-select/ng-select/lib/ng-select.component';
 
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import {
@@ -70,6 +69,11 @@ export interface IAutocompleterTemplateComponent {
   labelTemplate?:TemplateRef<Element>;
   footerTemplate?:TemplateRef<Element>;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-redundant-type-constituents
+type AddTagFn = (term:string) => any | Promise<any>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-redundant-type-constituents
+type GroupValueFn = (key:string | any, children:any[]) => string | any;
 
 @Component({
   selector: 'op-autocompleter',
@@ -168,7 +172,7 @@ export class OpAutocompleterComponent<T extends IAutocompleteItem = IAutocomplet
 
   @Input() public placeholder:string = this.I18n.t('js.autocompleter.placeholder');
   @Input() public notFoundText:string = this.I18n.t('js.autocompleter.notFoundText');
-  @Input() public addTagText?:string;
+  @Input() public addTagText?:string = this.I18n.t('js.autocomplete_ng_select.add_tag');
   @Input() public ariaLabel?:string = this.I18n.t('js.autocompleter.search');
 
   @Input() public loadingText:string = this.I18n.t('js.ajax.loading');
@@ -356,8 +360,12 @@ export class OpAutocompleterComponent<T extends IAutocompleteItem = IAutocomplet
       }
 
       if (this.openDirectly) {
-        this.ngSelectInstance.open();
-        this.ngSelectInstance.focus();
+        // Autocompleters within dialogs need longer to be visible, which is why we have to delay the opening further
+        const timeout = this.ngSelectInstance.element.closest('dialog') ? 200 : 0;
+        setTimeout(() => {
+          this.ngSelectInstance.open();
+          this.ngSelectInstance.focus();
+        }, timeout);
       } else if (this.focusDirectly) {
         this.ngSelectInstance.focus();
       }

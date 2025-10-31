@@ -100,6 +100,9 @@ RSpec.describe "Types", :js do
 
     index_page.delete "Renamed type"
 
+    wait_for_network_idle
+
+    expect_and_dismiss_flash(message: I18n.t(:notice_successful_delete))
     index_page.expect_listed(existing_type)
   end
 

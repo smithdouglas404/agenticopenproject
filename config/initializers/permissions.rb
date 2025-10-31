@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -35,6 +37,18 @@ Rails.application.reloader.to_prepare do
                      require: :loggedin,
                      contract_actions: { projects: %i[create] }
 
+      map.permission :add_portfolios,
+                     { projects: %i[new create] },
+                     permissible_on: :global,
+                     require: :loggedin,
+                     visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? }
+
+      map.permission :add_programs,
+                     { projects: %i[new create] },
+                     permissible_on: :global,
+                     require: :loggedin,
+                     visible: -> { OpenProject::FeatureDecisions.portfolio_models_active? }
+
       map.permission :archive_project,
                      {
                        "projects/archive": %i[create]
@@ -59,6 +73,7 @@ Rails.application.reloader.to_prepare do
                      },
                      permissible_on: :global,
                      require: :loggedin,
+                     dependencies: :view_all_principals,
                      contract_actions: { users: %i[read create] }
 
       map.permission :manage_user,
@@ -69,7 +84,16 @@ Rails.application.reloader.to_prepare do
                      },
                      permissible_on: :global,
                      require: :loggedin,
+                     dependencies: :view_all_principals,
                      contract_actions: { users: %i[read update] }
+
+      map.permission :view_all_principals,
+                     {
+                       users: %i[index show]
+                     },
+                     permissible_on: :global,
+                     require: :loggedin,
+                     contract_actions: { users: %i[read] }
 
       map.permission :manage_placeholder_user,
                      {
@@ -78,6 +102,7 @@ Rails.application.reloader.to_prepare do
                        admin: %i[index]
                      },
                      permissible_on: :global,
+                     dependencies: :view_all_principals,
                      require: :loggedin,
                      contract_actions: { placeholder_users: %i[create read update] }
 
@@ -168,6 +193,12 @@ Rails.application.reloader.to_prepare do
                      dependencies: :view_members,
                      contract_actions: { members: %i[create update destroy] }
 
+      map.permission :invite_members_by_email,
+                     {},
+                     permissible_on: :project,
+                     require: :member,
+                     dependencies: :manage_members
+
       map.permission :view_members,
                      {
                        members: %i[index menu],
@@ -247,7 +278,8 @@ Rails.application.reloader.to_prepare do
                        work_packages: %i[show index show_conflict_flash_message share_upsell],
                        work_packages_api: [:get],
                        "work_packages/reports": %i[report report_details],
-                       "work_packages/activities_tab": %i[index update_streams update_sorting update_filter],
+                       "work_packages/activities_tab": %i[index page_streams item_actions update_streams update_sorting
+                                                          update_filter],
                        "work_packages/menus": %i[show],
                        "work_packages/hover_card": %i[show],
                        work_package_relations_tab: %i[index],
@@ -292,7 +324,7 @@ Rails.application.reloader.to_prepare do
                        # FIXME: Although the endpoint is removed, the code checking whether a user
                        # is eligible to add work packages through the API still seems to rely on this.
                        journals: [:new],
-                       "work_packages/activities_tab": %i[create toggle_reaction sanitize_internal_mentions]
+                       "work_packages/activities_tab": %i[emoji_actions create toggle_reaction sanitize_internal_mentions]
                      },
                      permissible_on: %i[work_package project],
                      dependencies: :view_work_packages

@@ -42,118 +42,104 @@ module Storages
             let(:auth_strategy) { Registry["one_drive.authentication.user_bound"].call(user, storage) }
             let(:input_data) { Input::FilesInfo.build(file_ids:).value! }
 
-            subject(:query) { described_class.new(storage) }
+            it_behaves_like "adapter files_info_query: basic query setup"
 
-            describe "#call" do
-              it "responds with correct parameters" do
-                expect(described_class).to respond_to(:call)
+            context "with an empty array of file ids" do
+              let(:file_ids) { [] }
+              let(:expected_file_infos) { [] }
 
-                method = described_class.method(:call)
-                expect(method.parameters).to contain_exactly(%i[keyreq storage], %i[keyreq auth_strategy], %i[keyreq input_data])
+              it_behaves_like "adapter files_info_query: successful list response"
+            end
+
+            context "with outbound requests successful", vcr: "one_drive/files_info_query_success" do
+              let(:file_ids) do
+                %w(
+                  01AZJL5PKU2WV3U3RKKFF2A7ZCWVBXRTEU
+                  01AZJL5PJTICED3C5YSVAY6NWTBNA2XERU
+                  01AZJL5PNCQCEBFI3N7JGZSX5AOX32Z3LA
+                )
+              end
+              let(:expected_file_infos) do
+                [
+                  Results::StorageFileInfo.new(
+                    status: "ok",
+                    status_code: 200,
+                    id: "01AZJL5PKU2WV3U3RKKFF2A7ZCWVBXRTEU",
+                    name: "Folder with spaces",
+                    size: 35141,
+                    mime_type: "application/x-op-directory",
+                    created_at: Time.parse("2023-09-26T14:38:57Z"),
+                    last_modified_at: Time.parse("2023-09-26T14:38:57Z"),
+                    owner_name: "Eric Schubert",
+                    owner_id: "0a0d38a9-a59b-4245-93fa-0d2cf727f17a",
+                    last_modified_by_name: "Eric Schubert",
+                    last_modified_by_id: "0a0d38a9-a59b-4245-93fa-0d2cf727f17a",
+                    location: "/Folder%20with%20spaces"
+                  ),
+                  Results::StorageFileInfo.new(
+                    status: "ok",
+                    status_code: 200,
+                    id: "01AZJL5PJTICED3C5YSVAY6NWTBNA2XERU",
+                    name: "Document.docx",
+                    size: 22514,
+                    mime_type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    created_at: Time.parse("2023-09-26T14:40:58Z"),
+                    last_modified_at: Time.parse("2023-09-26T14:42:03Z"),
+                    owner_name: "Eric Schubert",
+                    owner_id: "0a0d38a9-a59b-4245-93fa-0d2cf727f17a",
+                    last_modified_by_name: "Eric Schubert",
+                    last_modified_by_id: "0a0d38a9-a59b-4245-93fa-0d2cf727f17a",
+                    location: "/Folder/Document.docx"
+                  ),
+                  Results::StorageFileInfo.new(
+                    status: "ok",
+                    status_code: 200,
+                    id: "01AZJL5PNCQCEBFI3N7JGZSX5AOX32Z3LA",
+                    name: "NextcloudHub.md",
+                    size: 1095,
+                    mime_type: "application/octet-stream",
+                    created_at: Time.parse("2023-09-26T14:45:25Z"),
+                    last_modified_at: Time.parse("2023-09-26T14:46:13Z"),
+                    owner_name: "Eric Schubert",
+                    owner_id: "0a0d38a9-a59b-4245-93fa-0d2cf727f17a",
+                    last_modified_by_name: "Eric Schubert",
+                    last_modified_by_id: "0a0d38a9-a59b-4245-93fa-0d2cf727f17a",
+                    location: "/Folder/Subfolder/NextcloudHub.md"
+                  )
+                ]
               end
 
-              context "without outbound request involved" do
-                context "with an empty array of file ids" do
-                  let(:file_ids) { [] }
+              it_behaves_like "adapter files_info_query: successful list response"
+            end
 
-                  it "returns an empty array" do
-                    result = query.call(auth_strategy:, input_data:)
-
-                    expect(result).to be_success
-                    expect(result.value!).to eq([])
-                  end
-                end
+            context "with one outbound request returning not found", vcr: "one_drive/files_info_query_one_not_found" do
+              let(:file_ids) { %w[01AZJL5PJTICED3C5YSVAY6NWTBNA2XERU not_existent] }
+              let(:expected_file_infos) do
+                [
+                  Results::StorageFileInfo.new(
+                    status: "ok",
+                    status_code: 200,
+                    id: "01AZJL5PJTICED3C5YSVAY6NWTBNA2XERU",
+                    name: "Document.docx",
+                    size: 22514,
+                    mime_type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    created_at: Time.parse("2023-09-26T14:40:58Z"),
+                    last_modified_at: Time.parse("2023-09-26T14:42:03Z"),
+                    owner_name: "Eric Schubert",
+                    owner_id: "0a0d38a9-a59b-4245-93fa-0d2cf727f17a",
+                    last_modified_by_name: "Eric Schubert",
+                    last_modified_by_id: "0a0d38a9-a59b-4245-93fa-0d2cf727f17a",
+                    location: "/Folder/Document.docx"
+                  ),
+                  Results::StorageFileInfo.new(
+                    status: :not_found,
+                    status_code: 404,
+                    id: "not_existent"
+                  )
+                ]
               end
 
-              context "with outbound requests successful", vcr: "one_drive/files_info_query_success" do
-                context "with an array of file ids" do
-                  let(:file_ids) do
-                    %w(
-                      01AZJL5PKU2WV3U3RKKFF2A7ZCWVBXRTEU
-                      01AZJL5PJTICED3C5YSVAY6NWTBNA2XERU
-                      01AZJL5PNCQCEBFI3N7JGZSX5AOX32Z3LA
-                    )
-                  end
-
-                  # rubocop:disable RSpec/ExampleLength
-                  it "must return an array of file information when called" do
-                    result = query.call(auth_strategy:, input_data:)
-                    expect(result).to be_success
-
-                    file_infos = result.value!
-                    expect(file_infos.size).to eq(3)
-                    expect(file_infos).to all(be_a(Results::StorageFileInfo))
-                    expect(file_infos.map(&:to_h))
-                      .to eq([{
-                               status: "ok",
-                               status_code: 200,
-                               id: "01AZJL5PKU2WV3U3RKKFF2A7ZCWVBXRTEU",
-                               name: "Folder with spaces",
-                               size: 35141,
-                               mime_type: "application/x-op-directory",
-                               created_at: Time.parse("2023-09-26T14:38:57Z"),
-                               last_modified_at: Time.parse("2023-09-26T14:38:57Z"),
-                               owner_name: "Eric Schubert",
-                               owner_id: "0a0d38a9-a59b-4245-93fa-0d2cf727f17a",
-                               last_modified_by_name: "Eric Schubert",
-                               last_modified_by_id: "0a0d38a9-a59b-4245-93fa-0d2cf727f17a",
-                               permissions: nil,
-                               location: "/Folder%20with%20spaces"
-                             },
-                              {
-                                status: "ok",
-                                status_code: 200,
-                                id: "01AZJL5PJTICED3C5YSVAY6NWTBNA2XERU",
-                                name: "Document.docx",
-                                size: 22514,
-                                mime_type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                                created_at: Time.parse("2023-09-26T14:40:58Z"),
-                                last_modified_at: Time.parse("2023-09-26T14:42:03Z"),
-                                owner_name: "Eric Schubert",
-                                owner_id: "0a0d38a9-a59b-4245-93fa-0d2cf727f17a",
-                                last_modified_by_name: "Eric Schubert",
-                                last_modified_by_id: "0a0d38a9-a59b-4245-93fa-0d2cf727f17a",
-                                permissions: nil,
-                                location: "/Folder/Document.docx"
-                              },
-                              {
-                                status: "ok",
-                                status_code: 200,
-                                id: "01AZJL5PNCQCEBFI3N7JGZSX5AOX32Z3LA",
-                                name: "NextcloudHub.md",
-                                size: 1095,
-                                mime_type: "application/octet-stream",
-                                created_at: Time.parse("2023-09-26T14:45:25Z"),
-                                last_modified_at: Time.parse("2023-09-26T14:46:13Z"),
-                                owner_name: "Eric Schubert",
-                                owner_id: "0a0d38a9-a59b-4245-93fa-0d2cf727f17a",
-                                last_modified_by_name: "Eric Schubert",
-                                last_modified_by_id: "0a0d38a9-a59b-4245-93fa-0d2cf727f17a",
-                                permissions: nil,
-                                location: "/Folder/Subfolder/NextcloudHub.md"
-                              }])
-                  end
-                  # rubocop:enable RSpec/ExampleLength
-                end
-              end
-
-              context "with one outbound request returning not found", vcr: "one_drive/files_info_query_one_not_found" do
-                context "with an array of file ids" do
-                  let(:file_ids) { %w[01AZJL5PJTICED3C5YSVAY6NWTBNA2XERU not_existent] }
-
-                  it "must return an array of file information when called" do
-                    result = query.call(auth_strategy:, input_data:)
-                    expect(result).to be_success
-                    file_infos = result.value!
-
-                    expect(file_infos.size).to eq(2)
-                    expect(file_infos).to all(be_a(Results::StorageFileInfo))
-                    expect(file_infos[1].id).to eq("not_existent")
-                    expect(file_infos[1].status).to eq(:not_found)
-                    expect(file_infos[1].status_code).to eq(404)
-                  end
-                end
-              end
+              it_behaves_like "adapter files_info_query: successful list response"
             end
           end
         end

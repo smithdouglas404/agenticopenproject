@@ -39,50 +39,38 @@ module Storages
           RSpec.describe OpenFileLinkQuery, :vcr, :webmock do
             let(:user) { create(:user) }
             let(:storage) { create(:one_drive_sandbox_storage, oauth_client_token_user: user) }
-            let(:file_id) { "01AZJL5PJTICED3C5YSVAY6NWTBNA2XERU" }
             let(:auth_strategy) { Registry.resolve("one_drive.authentication.user_bound").call(user, storage) }
-            let(:input_data) { Input::OpenFileLink.build(file_id:).value! }
 
-            subject { described_class.new(storage) }
+            it_behaves_like "adapter open_file_link_query: basic query setup"
 
-            describe "#call" do
-              it "responds with correct parameters" do
-                expect(described_class).to respond_to(:call)
-
-                method = described_class.method(:call)
-                expect(method.parameters).to contain_exactly(%i[keyreq storage],
-                                                             %i[keyreq auth_strategy],
-                                                             %i[keyreq input_data])
-              end
-
-              context "with outbound requests successful" do
-                context "with open location flag not set", vcr: "one_drive/open_file_link_query_success" do
-                  it "returns the url for opening the file on storage" do
-                    call = subject.call(auth_strategy:, input_data:)
-                    expect(call).to be_success
-                    expect(call.value!).to eq("https://finn.sharepoint.com/sites/openprojectfilestoragetests/_layouts/15/Doc.aspx?sourcedoc=%7B3D884033-B88B-4195-8F36-D30B41AB9234%7D&file=Document.docx&action=default&mobileredirect=true")
-                  end
+            context "with outbound requests successful" do
+              context "with open location flag not set", vcr: "one_drive/open_file_link_query_success" do
+                let(:file_id) { "01AZJL5PJTICED3C5YSVAY6NWTBNA2XERU" }
+                let(:input_data) { Input::OpenFileLink.build(file_id:).value! }
+                let(:open_file_link) do
+                  "https://finn.sharepoint.com/sites/openprojectfilestoragetests/_layouts/15/Doc.aspx" \
+                    "?sourcedoc=%7B3D884033-B88B-4195-8F36-D30B41AB9234%7D&file=Document.docx" \
+                    "&action=default&mobileredirect=true"
                 end
 
-                context "with open location flag set", vcr: "one_drive/open_file_link_location_query_success" do
-                  it "returns the url for opening the file on storage" do
-                    call = subject.call(auth_strategy:, input_data: input_data.with(open_location: true))
-                    expect(call).to be_success
-                    expect(call.value!).to eq("https://finn.sharepoint.com/sites/openprojectfilestoragetests/VCR/Folder")
-                  end
-                end
+                it_behaves_like "adapter open_file_link_query: successful link response"
               end
 
-              context "with not existent file id", vcr: "one_drive/open_file_link_query_missing_file_id" do
-                let(:file_id) { "iamnotexistent" }
+              context "with open location flag set", vcr: "one_drive/open_file_link_location_query_success" do
+                let(:file_id) { "01AZJL5PJTICED3C5YSVAY6NWTBNA2XERU" }
+                let(:input_data) { Input::OpenFileLink.build(file_id:, open_location: true).value! }
+                let(:open_file_link) { "https://finn.sharepoint.com/sites/openprojectfilestoragetests/VCR/Folder" }
 
-                it "must return not found" do
-                  result = subject.call(auth_strategy:, input_data:)
-                  expect(result).to be_failure
-                  expect(result.failure.source).to be(Internal::DriveItemQuery)
-                  expect(result.failure.code).to eq(:not_found)
-                end
+                it_behaves_like "adapter open_file_link_query: successful link response"
               end
+            end
+
+            context "with not existent file id", vcr: "one_drive/open_file_link_query_missing_file_id" do
+              let(:file_id) { "iamnotexistent" }
+              let(:input_data) { Input::OpenFileLink.build(file_id:).value! }
+              let(:error_source) { Internal::DriveItemQuery }
+
+              it_behaves_like "adapter open_file_link_query: not found"
             end
           end
         end

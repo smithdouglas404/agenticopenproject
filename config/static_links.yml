@@ -1,6 +1,9 @@
 api_docs:
   href: https://www.openproject.org/docs/api/
   label: :label_api_doc
+api:
+  authentication_basic_auth:
+    href: https://www.openproject.org/docs/api/introduction/#api-key-through-basic-auth
 blog:
   href: https://www.openproject.org/blog
   label: homescreen.links.blog
@@ -55,6 +58,8 @@ enterprise_features:
     href: https://www.openproject.org/docs/system-admin-guide/projects/project-life-cycle/
   default:
     href: https://www.openproject.org/enterprise-edition
+  feature_comparison:
+    href: https://www.openproject.org/pricing/#features
   form_configuration:
     href: https://www.openproject.org/docs/system-admin-guide/manage-work-packages/work-package-types/#work-package-form-configuration-enterprise-add-on
   internal_comments:
@@ -72,7 +77,7 @@ enterprise_support_as_community:
   href: https://www.openproject.org/pricing/#support
   label: :label_enterprise_support
 enterprise_welcome_video:
-  href: https://www.youtube.com/embed/zLMSydhFSkw?autoplay=1'
+  href: https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject-Enterprise-add-ons.mp4
 forums:
   href: https://community.openproject.org/projects/openproject/forums
   label: homescreen.links.forums
@@ -81,6 +86,8 @@ get_started_videos:
 glossary:
   href: https://www.openproject.org/docs/glossary/
   label: homescreen.links.glossary
+github:
+  href: https://github.com/opf/openproject
 ical_docs:
   href: https://www.openproject.org/docs/user-guide/calendar/#subscribe-to-a-calendar
 installation_guides:
@@ -96,9 +103,15 @@ manual_installation:
 newsletter:
   href: https://www.openproject.org/newsletter
   label: homescreen.links.newsletter
+security_alerts:
+  href: https://www.openproject.org/security-and-privacy/#mailing-list
+  label: homescreen.links.security_alerts
 oauth_authorization_code_flow:
   href: https://oauth.net/2/grant-types/authorization-code/
   label: oauth.flows.authorization_code
+onboarding_video_url:
+  href: https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/Getting_started_with_OpenProject.mp4
+  label: top_menu.getting_started
 openproject_docs:
   href: https://www.openproject.org/docs/
 origin_mdn_documentation:
@@ -127,7 +140,7 @@ report_bug:
   href: https://www.openproject.org/docs/development/report-a-bug/
   label: :label_report_bug
 roadmap:
-  href: https://community.openproject.org/projects/openproject/roadmap
+  href: https://www.openproject.org/roadmap/
   label: :label_development_roadmap
 security_badge_documentation:
   href: https://www.openproject.org/docs/system-admin-guide/information/#security-badge
@@ -149,15 +162,19 @@ storage_docs:
     href: https://portal.azure.com/
   one_drive_setup:
     href: https://www.openproject.org/docs/system-admin-guide/integrations/one-drive/
-  share_point_drive_id_guide:
+  sharepoint_drive_id_guide:
     href: https://www.openproject.org/docs/system-admin-guide/integrations/one-drive/drive-guide/
-  share_point_oauth_application:
+  sharepoint_oauth_application:
     href: https://portal.azure.com/
-  share_point_setup:
+  sharepoint_setup:
     href: https://www.openproject.org/docs/system-admin-guide/integrations/one-drive/
   troubleshooting:
     href: https://www.openproject.org/docs/user-guide/file-management/nextcloud-integration/#possible-errors-and-troubleshooting
 sysadmin_docs:
+  roles_and_permissions:
+    href: https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions
+  ldap:
+    href: https://www.openproject.org/docs/system-admin-guide/authentication/ldap-connections/
   oidc:
     href: https://www.openproject.org/docs/system-admin-guide/authentication/openid-providers/
   oidc_acr_values:
@@ -170,6 +187,8 @@ sysadmin_docs:
     href: https://www.openproject.org/docs/system-admin-guide/authentication/saml/
   scim:
     href: https://www.openproject.org/docs/system-admin-guide/authentication/scim/
+  scim_authentication:
+    href: https://www.openproject.org/docs/system-admin-guide/authentication/scim/#step-3-choose-an-authentication-method
   scim_jwt_authetication_method:
     href: https://www.openproject.org/docs/system-admin-guide/authentication/scim/#c-jwt-from-identity-provider
 text_formatting:
@@ -199,6 +218,9 @@ upsell_get_quote:
 user_guides:
   href: https://www.openproject.org/docs/user-guide/
   label: homescreen.links.user_guides
+user_guide:
+  access_tokens:
+    href: https://www.openproject.org/docs/user-guide/account-settings/#access-tokens
 webinar_videos:
   href: https://www.youtube.com/watch?v=un6zCm8_FT4
 website:

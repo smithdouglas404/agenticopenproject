@@ -37,17 +37,25 @@ module CustomField::CalculatedValue
   MATH_OPERATORS_FOR_FORMULA = %w[+ - * / % ( )].freeze
 
   # Field formats that can be used within a formula.
-  FIELD_FORMATS_FOR_FORMULA = %w[int float calculated_value].freeze
+  FIELD_FORMATS_FOR_FORMULA = %w[int float calculated_value scored_list].freeze
 
   def self.calculator_instance
     Dentaku::Calculator.new(case_sensitive: true)
   end
 
   class_methods do
+    def with_formula_referencing(id)
+      where("(formula -> 'referenced_custom_fields') @> ?", id)
+    end
+
     # Select custom fields of type calculated_value that are listed in
     # changed_cf_ids, or are referencing custom fields in changed_cf_ids either
     # directly or through other calculated fields
     def affected_calculated_fields(changed_cf_ids)
+      return [] if changed_cf_ids.empty?
+
+      # exclude ids that are not in the scope
+      changed_cf_ids = where(id: changed_cf_ids).pluck(:id)
       return [] if changed_cf_ids.empty?
 
       to_check = field_format_calculated_value
@@ -131,10 +139,12 @@ module CustomField::CalculatedValue
         cache[id] = if field_format_calculated_value?
                       referenced_custom_fields = formula_referenced_custom_field_ids
 
-                      next true if referenced_custom_fields.include?(original_id) || referenced_custom_fields.include?(id)
-
-                      ProjectCustomField.where(id: referenced_custom_fields).any? do |referenced_field|
-                        referenced_field.formula_references_id?(original_id, cache)
+                      if referenced_custom_fields.include?(original_id) || referenced_custom_fields.include?(id)
+                        true
+                      else
+                        ProjectCustomField.where(id: referenced_custom_fields).any? do |referenced_field|
+                          referenced_field.formula_references_id?(original_id, cache)
+                        end
                       end
                     else
                       false

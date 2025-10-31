@@ -29,12 +29,12 @@ sv:
     review_comments_count: "Review comments count"
     github: "GitHub identifer"
     github_avatar_url: "Avatar URL"
-    github_updated_at: "Updated at"
-    github_login: "GitHub login"
+    github_updated_at: "Uppdaterad den"
+    github_login: "GitHub-inloggning"
     host: "Host"
-    labels: "Labels"
+    labels: "Etiketter"
     repository: "Versionsarkiv"
-    changed_files_count: "Changed files"
+    changed_files_count: "Ändrade filer"
   button_add_deploy_target: Add deploy target
   label_deploy_target: Deploy target
   label_deploy_target_new: New deploy target

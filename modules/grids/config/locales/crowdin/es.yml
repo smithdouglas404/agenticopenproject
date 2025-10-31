@@ -1,6 +1,17 @@
 es:
   grids:
     label_widget_in_grid: "Widget contenido en la cuadrícula %{grid_name}"
+    widgets:
+      subitems:
+        title: "Subelementos"
+        no_results: "No hay subelementos visibles."
+        view_all_subitems: "Ver todos los subelementos"
+      members:
+        title: "Nuevos miembros"
+        no_results: "No hay miembros visibles."
+        view_all_members: "Ver todos los miembros"
+      news:
+        no_results: "Nada nuevo sobre lo que informar."
   activerecord:
     attributes:
       grids/grid:

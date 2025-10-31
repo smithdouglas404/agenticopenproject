@@ -37,8 +37,19 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { CalendarOptions, DateSelectArg, EventApi, EventDropArg, EventInput } from '@fullcalendar/core';
-import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
+import {
+  CalendarOptions,
+  DateSelectArg,
+  EventApi,
+  EventDropArg,
+  EventInput,
+} from '@fullcalendar/core';
+import {
+  BehaviorSubject,
+  combineLatest,
+  Observable,
+  Subject,
+} from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -63,22 +74,21 @@ import interactionPlugin, {
 import { FullCalendarComponent } from '@fullcalendar/angular';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
-import {
-  WorkPackageViewFiltersService,
-} from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-filters.service';
+import { WorkPackageViewFiltersService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-filters.service';
 import { IsolatedQuerySpace } from 'core-app/features/work-packages/directives/query-space/isolated-query-space';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import { splitViewRoute } from 'core-app/features/work-packages/routing/split-view-routes.helper';
 import { QueryFilterInstanceResource } from 'core-app/features/hal/resources/query-filter-instance-resource';
 import { PrincipalsResourceService } from 'core-app/core/state/principals/principals.service';
-import { ApiV3ListFilter, ApiV3ListParameters } from 'core-app/core/apiv3/paths/apiv3-list-resource.interface';
+import {
+  ApiV3ListFilter,
+  ApiV3ListParameters,
+} from 'core-app/core/apiv3/paths/apiv3-list-resource.interface';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { OpCalendarService } from 'core-app/features/calendar/op-calendar.service';
-import {
-  HalResourceEditingService,
-} from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
+import { HalResourceEditingService } from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
 import { HalResourceNotificationService } from 'core-app/features/hal/services/hal-resource-notification.service';
 import { SchemaCacheService } from 'core-app/core/schemas/schema-cache.service';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
@@ -86,9 +96,7 @@ import { MAGIC_PAGE_NUMBER } from 'core-app/core/apiv3/helpers/get-paginated-res
 import { CalendarDragDropService } from 'core-app/features/team-planner/team-planner/calendar-drag-drop.service';
 import { StatusResource } from 'core-app/features/hal/resources/status-resource';
 import { ResourceChangeset } from 'core-app/shared/components/fields/changeset/resource-changeset';
-import {
-  KeepTabService,
-} from 'core-app/features/work-packages/components/wp-single-view-tabs/keep-tab/keep-tab.service';
+import { KeepTabService } from 'core-app/features/work-packages/components/wp-single-view-tabs/keep-tab/keep-tab.service';
 import { HalError } from 'core-app/features/hal/services/hal-error';
 import { ActionsService } from 'core-app/core/state/actions/actions.service';
 import {
@@ -97,7 +105,10 @@ import {
   teamPlannerPageRefresh,
 } from 'core-app/features/team-planner/team-planner/planner/team-planner.actions';
 import { imagePath } from 'core-app/shared/helpers/images/path-helper';
-import { skeletonEvents, skeletonResources } from './loading-skeleton-data';
+import {
+  skeletonEvents,
+  skeletonResources,
+} from './loading-skeleton-data';
 import { CapabilitiesResourceService } from 'core-app/core/state/capabilities/capabilities.service';
 import { ICapability } from 'core-app/core/state/capabilities/capability.model';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
@@ -108,13 +119,21 @@ import { RawOptionsFromRefiners } from '@fullcalendar/core/internal';
 import { ViewOptionRefiners } from '@fullcalendar/common';
 import { ResourceApi } from '@fullcalendar/resource';
 import { DeviceService } from 'core-app/core/browser/device.service';
-import { EffectCallback, registerEffectCallbacks } from 'core-app/core/state/effects/effect-handler.decorator';
+import {
+  EffectCallback,
+  registerEffectCallbacks,
+} from 'core-app/core/state/effects/effect-handler.decorator';
 import {
   addBackgroundEvents,
   removeBackgroundEvents,
 } from 'core-app/features/team-planner/team-planner/planner/background-events';
 import moment from 'moment-timezone';
 import allLocales from '@fullcalendar/core/locales-all';
+import { octiconElement } from 'core-app/shared/helpers/op-icon-builder';
+import {
+  personIconData,
+  toDOMString,
+} from '@openproject/octicons-angular';
 
 export type TeamPlannerViewOptionKey = 'resourceTimelineWorkWeek'|'resourceTimelineWeek'|'resourceTimelineTwoWeeks'|'resourceTimelineFourWeeks'|'resourceTimelineEightWeeks';
 export type TeamPlannerViewOptions = { [K in TeamPlannerViewOptionKey]:RawOptionsFromRefiners<Required<ViewOptionRefiners>> };
@@ -311,6 +330,13 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
 
   private initialCalendarView = this.workPackagesCalendar.initialView || 'resourceTimelineWorkWeek';
 
+  private personIcon = toDOMString(
+    personIconData, // SVG data for the icon.
+    'small',
+    { 'aria-hidden': 'true',
+      class: ' op-team-planner--add-existing-icon',},
+  );
+
   private viewOptionDefaults = {
     type: 'resourceTimeline',
     slotDuration: { days: 1 },
@@ -318,7 +344,7 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
       {
         field: 'title',
         headerContent: {
-          html: `<span class="spot-link spot-link_inactive"><span aria-label="${this.text.assignee}" class="spot-icon spot-icon_user"></span><span class="hidden-for-mobile">${this.text.assignee}</span></span>`,
+          html: `<span class="spot-link spot-link_inactive">${this.personIcon}<span class="hidden-for-mobile">${this.text.assignee}</span></span>`,
         },
       },
     ],

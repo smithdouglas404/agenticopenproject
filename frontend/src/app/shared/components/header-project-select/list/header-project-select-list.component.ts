@@ -38,7 +38,7 @@ export class OpHeaderProjectSelectListComponent implements OnInit, OnChanges {
 
   @Input() projects:IProjectData[] = [];
 
-  @Input() favored:string[] = [];
+  @Input() favorited:string[] = [];
 
   @Input() displayMode:string;
 
@@ -78,7 +78,8 @@ export class OpHeaderProjectSelectListComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes:SimpleChanges) {
-    if (changes.displayMode || changes.projects || changes.favored) {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (changes.displayMode || changes.projects || changes.favorited) {
       this.updateProjectFilter();
     }
   }
@@ -89,24 +90,24 @@ export class OpHeaderProjectSelectListComponent implements OnInit, OnChanges {
         return true;
       }
 
-      return this.showWhenFavored(project);
+      return this.showWhenFavorited(project);
     });
   }
 
-  showWhenFavored(project:IProjectData):boolean {
-    if (this.isFavored(project)) {
+  showWhenFavorited(project:IProjectData):boolean {
+    if (this.isFavorited(project)) {
       return true;
     }
 
-    return project.children.length > 0 && project.children.some((child) => this.showWhenFavored(child));
+    return project.children.length > 0 && project.children.some((child) => this.showWhenFavorited(child));
   }
 
-  isFavored(project:IProjectData):boolean {
-    return this.favored.includes(project.id.toString());
+  isFavorited(project:IProjectData):boolean {
+    return this.favorited.includes(project.id.toString());
   }
 
   extendedUrl(projectId:string|null):string {
-    const currentMenuItem = document.querySelector('meta[name="current_menu_item"]') as HTMLMetaElement;
+    const currentMenuItem = document.querySelector<HTMLMetaElement>('meta[name="current_menu_item"]')!;
     const url = projectId === null ? window.appBasePath : this.pathHelper.projectPath(projectId);
 
     if (!currentMenuItem) {

@@ -162,9 +162,7 @@ module API
             if constraint.is_a?(Class)
               result_scope
             else
-              result_scope
-                .includes(constraint.includes_values)
-                .merge constraint
+              result_scope.merge(constraint)
             end
           end
         end

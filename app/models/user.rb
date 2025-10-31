@@ -68,6 +68,7 @@ class User < Principal
   # unlike on other token types, all previously generated ical_tokens are kept
   # in order to keep all previously generated ical urls valid and usable
   has_many :ical_tokens, class_name: "::Token::ICal", dependent: :destroy
+  has_many :ical_meeting_tokens, class_name: "::Token::ICalMeeting", dependent: :destroy
 
   belongs_to :ldap_auth_source, optional: true
 
@@ -207,6 +208,17 @@ class User < Principal
     end
   end
 
+  # Override acts_as_customizable to skip custom field validation for invited users
+  # since custom field values cannot be provided during the invitation process.
+  # We only skip the validation if no custom field changes are present.
+  def custom_values_to_validate
+    if invited? && custom_field_changes.empty?
+      []
+    else
+      super
+    end
+  end
+
   def self.search_in_project(query, options)
     options.fetch(:project).users.like(query)
   end
@@ -272,15 +284,6 @@ class User < Principal
     end
 
     user
-  end
-
-  # Returns the user who matches the given autologin +key+ or nil
-  def self.try_to_autologin(key)
-    token = Token::AutoLogin.find_by_plaintext_value(key) # rubocop:disable Rails/DynamicFindBy
-    # Make sure there's only 1 token that matches the key
-    if token && (token.created_at > Setting.autologin.to_i.day.ago) && token.user&.active?
-      token.user
-    end
   end
 
   # Columns required for formatting the user's name.
@@ -567,8 +570,8 @@ class User < Principal
   end
 
   def scim_emails=(emails)
-    email = (emails.find { |email| email.primary == true }) ||
-            (emails.find { |email| email.type == "work" }) ||
+    email = emails.find { |email| email.primary == true } ||
+            emails.find { |email| email.type == "work" } ||
             emails.min
 
     self.mail = email&.value

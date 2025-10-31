@@ -133,9 +133,104 @@ RSpec.describe ProjectsController do
         it_behaves_like "successful request"
       end
     end
+
+    context "as a non-admin with global add_portfolios permission", with_flag: { portfolio_models: true } do
+      let(:parent) { nil }
+      let(:user) { create(:user, global_permissions: [:add_portfolios]) }
+      let(:template) { nil }
+
+      it_behaves_like "successful request"
+    end
+
+    context "as a non-admin with global add_programs permission", with_flag: { portfolio_models: true } do
+      let(:parent) { nil }
+      let(:user) { create(:user, global_permissions: [:add_programs]) }
+      let(:template) { nil }
+
+      it_behaves_like "successful request"
+    end
   end
 
   describe "#create" do
+    describe "permission checks" do
+      let(:project) { build_stubbed(:project) }
+      let(:service_result) { ServiceResult.success(result: project) }
+      let(:parent) { nil }
+
+      before do
+        creation_service = instance_double(Projects::CreateService, call: service_result)
+
+        allow(Projects::CreateService)
+          .to receive(:new)
+                .with(user:)
+                .and_return(creation_service)
+
+        post :create, params: { project: { name: "New Project" }, parent_id: parent&.id }
+      end
+
+      shared_examples_for "successful create request" do
+        it "redirects to project show", :aggregate_failures do
+          expect(response).to redirect_to project_path(project)
+          expect(flash[:notice]).to eq I18n.t(:notice_successful_create)
+        end
+      end
+
+      shared_examples_for "forbidden create request" do
+        it "returns 403 Not Authorized" do
+          expect(response).not_to be_successful
+          expect(response).to have_http_status :forbidden
+        end
+      end
+
+      context "as an admin" do
+        it_behaves_like "successful create request"
+
+        context "with a parent" do
+          let(:parent) { create(:project) }
+
+          it_behaves_like "successful create request"
+        end
+      end
+
+      context "as a non-admin with global add_project permission" do
+        let(:user) { create(:user, global_permissions: [:add_project]) }
+
+        it_behaves_like "successful create request"
+
+        context "with a parent with public permissions" do
+          let(:user) { create(:user, global_permissions: [:add_project], member_with_permissions: { parent => [] }) }
+          let(:parent) { create(:project) }
+
+          it_behaves_like "successful create request"
+        end
+      end
+
+      context "as a non-admin without global add_project permission" do
+        let(:user) { create(:user, global_permissions: []) }
+
+        it_behaves_like "forbidden create request"
+
+        context "with a parent with add_subprojects permissions" do
+          let(:user) { create(:user, member_with_permissions: { parent => [:add_subprojects] }) }
+          let(:parent) { create(:project) }
+
+          it_behaves_like "successful create request"
+        end
+      end
+
+      context "as a non-admin with global add_portfolios permission", with_flag: { portfolio_models: true } do
+        let(:user) { create(:user, global_permissions: [:add_portfolios]) }
+
+        it_behaves_like "successful create request"
+      end
+
+      context "as a non-admin with global add_programs permission", with_flag: { portfolio_models: true } do
+        let(:user) { create(:user, global_permissions: [:add_programs]) }
+
+        it_behaves_like "successful create request"
+      end
+    end
+
     context "without a template" do
       before do
         creation_service = instance_double(Projects::CreateService, call: service_result)
@@ -296,9 +391,9 @@ RSpec.describe ProjectsController do
     let(:project) { create(:project, identifier: "blog") }
 
     it "gets destroy info" do
-      get :destroy_info, params: { id: project.id }
+      get :destroy_info, params: { id: project.id }, format: :turbo_stream
       expect(response).to be_successful
-      expect(response).to render_template "destroy_info"
+      expect(response).to have_turbo_stream action: "dialog", target: "projects-delete-dialog-component"
 
       expect { project.reload }.not_to raise_error
     end

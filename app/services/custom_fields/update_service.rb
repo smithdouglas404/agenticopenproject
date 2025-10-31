@@ -30,5 +30,36 @@
 
 module CustomFields
   class UpdateService < ::BaseServices::Update
+    protected
+
+    def after_perform(service_call)
+      super.tap do
+        recalculate_values
+      end
+    end
+
+    private
+
+    def set_attributes_params(params)
+      super.except(:field_format)
+    end
+
+    def recalculate_values
+      return unless recalculate_values?
+
+      model.class.customized_class.find_each do |customized|
+        affected_cfs = customized.available_custom_fields.affected_calculated_fields([model.id])
+
+        customized.calculate_custom_fields(affected_cfs)
+
+        customized.save if customized.changed_for_autosave?
+      end
+    end
+
+    def recalculate_values?
+      return false unless model.field_format_calculated_value?
+
+      model.formula_previously_changed? || (model.is_required_previously_changed? && model.is_required?)
+    end
   end
 end

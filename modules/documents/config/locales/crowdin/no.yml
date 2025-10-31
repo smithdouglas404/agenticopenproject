@@ -26,6 +26,10 @@
   activerecord:
     models:
       document: "Dokument"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "Tittel"
   activity:
     filter:
       document: "Dokumenter"
@@ -33,6 +37,22 @@
   default_doc_category_user: "Brukerdokumentasjon"
   enumeration_doc_categories: "Dokumentkategorier"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "Navn"
+      type: "Type"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "Typer"
     label_attachment_author: "Vedleggsforfatter"
     label_categories: "Categories"
     new_category: "Ny kategori"
@@ -40,9 +60,9 @@
   label_document_new: "Nytt dokumenter"
   label_document_plural: "Dokumenter"
   label_documents: "Dokumenter"
-  label_document_title: "Title"
-  label_document_description: "Description"
-  label_document_category: "Category"
+  label_document_title: "Tittel"
+  label_document_description: "Beskrivelse"
+  label_document_category: "Kategori"
   permission_manage_documents: "Administrere dokumenter"
   permission_view_documents: "Vise dokumenter"
   project_module_documents: "Dokumenter"

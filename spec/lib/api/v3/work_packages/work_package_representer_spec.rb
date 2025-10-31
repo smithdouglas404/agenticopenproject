@@ -23,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -77,6 +77,7 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
                   ignore_non_working_days:,
                   status:) do |wp|
       allow(wp).to receive_messages(available_custom_fields:,
+                                    custom_field_values:,
                                     spent_hours:,
                                     derived_start_date:,
                                     derived_due_date:)
@@ -115,6 +116,7 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
   end
   let(:status) { build_stubbed(:status, updated_at: Time.zone.now) }
   let(:available_custom_fields) { [] }
+  let(:custom_field_values) { [] }
 
   before do
     login_as current_user
@@ -1018,7 +1020,10 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
             let(:link) { "timeEntries" }
             let(:href) do
               api_v3_paths.path_for(:time_entries,
-                                    filters: [{ work_package_id: { operator: "=", values: [work_package.id.to_s] } }])
+                                    filters: [
+                                      { entity_type: { operator: "=", values: ["WorkPackage"] } },
+                                      { entity_id: { operator: "=", values: [work_package.id.to_s] } }
+                                    ])
             end
             let(:title) { "Time entries" }
           end
@@ -1231,6 +1236,47 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
           let(:permission) { :select_custom_fields }
           let(:href) { project_settings_custom_fields_path(work_package.project.identifier) }
           let(:title) { "Custom fields" }
+        end
+      end
+
+      describe "customField" do
+        let(:available_custom_fields) { [custom_field] }
+        let(:custom_field_values) { [build_stubbed(:custom_value, custom_field:, value:)] }
+
+        context "with format scored list" do
+          let(:custom_field) { build_stubbed(:scored_list_wp_custom_field) }
+          let(:service) { CustomFields::Hierarchy::HierarchicalItemService.new }
+          let(:contract_class) { CustomFields::Hierarchy::InsertScoredItemContract }
+          let(:scored_item) do
+            service
+              .insert_item(contract_class:, parent: custom_field.hierarchy_root, label: "TIE Fighter", score: 16.7)
+              .value!
+          end
+          let(:value) { scored_item.id }
+
+          it_behaves_like "has a titled link" do
+            let(:link) { "customField#{custom_field.id}" }
+            let(:href) { "/api/v3/custom_field_items/#{scored_item.id}" }
+            let(:title) { "TIE Fighter" }
+          end
+        end
+
+        context "with format hierarchy" do
+          let(:custom_field) { build_stubbed(:hierarchy_wp_custom_field) }
+          let(:service) { CustomFields::Hierarchy::HierarchicalItemService.new }
+          let(:contract_class) { CustomFields::Hierarchy::InsertListItemContract }
+          let(:item) do
+            service
+              .insert_item(contract_class:, parent: custom_field.hierarchy_root, label: "TIE Fighter", short: "TF")
+              .value!
+          end
+          let(:value) { item.id }
+
+          it_behaves_like "has a titled link" do
+            let(:link) { "customField#{custom_field.id}" }
+            let(:href) { "/api/v3/custom_field_items/#{item.id}" }
+            let(:title) { "TIE Fighter (TF)" }
+          end
         end
       end
 

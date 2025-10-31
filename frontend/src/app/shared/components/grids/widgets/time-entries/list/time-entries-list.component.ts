@@ -95,8 +95,8 @@ export abstract class WidgetTimeEntriesListComponent extends AbstractWidgetCompo
 
   public get total():string {
     const duration = this.entries.reduce((current, entry) => current + this.timezone.toHours(entry.hours), 0);
-
-    return this.i18n.t('js.units.hour', { count: duration });
+    const amount = this.i18n.t('js.units.hour', { count: duration });
+    return this.i18n.t('js.label_total_amount', { amount });
   }
 
   public get anyEntries():boolean {

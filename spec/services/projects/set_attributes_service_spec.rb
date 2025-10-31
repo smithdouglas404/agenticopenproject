@@ -322,7 +322,7 @@ RSpec.describe Projects::SetAttributesService, type: :model do
           end
         end
 
-        def ref(custom_field) = "{{cf_#{custom_field.id}}}"
+        using CustomFieldFormulaReferencing
 
         context "when trying to explicitly set values of calculated custom fields" do
           let!(:cf_static) { create(:integer_project_custom_field, projects: [project]) }
@@ -355,12 +355,12 @@ RSpec.describe Projects::SetAttributesService, type: :model do
           let!(:cf_calculated1) do
             create(:calculated_value_project_custom_field, :skip_validations,
                    projects: [project],
-                   formula: "#{ref cf_static} * 7")
+                   formula: "#{cf_static} * 7")
           end
           let!(:cf_calculated2) do
             create(:calculated_value_project_custom_field, :skip_validations,
                    projects: [project],
-                   formula: "#{ref cf_calculated1} * 11")
+                   formula: "#{cf_calculated1} * 11")
           end
 
           let(:call_attributes) do
@@ -391,12 +391,12 @@ RSpec.describe Projects::SetAttributesService, type: :model do
           let!(:cf_calculated1) do
             create(:calculated_value_project_custom_field, :skip_validations,
                    projects: [project],
-                   formula: "#{ref cf_static} * 7")
+                   formula: "#{cf_static} * 7")
           end
           let!(:cf_calculated2) do
             create(:calculated_value_project_custom_field, :skip_validations,
                    projects: [project],
-                   formula: "#{ref cf_calculated1} * 11")
+                   formula: "#{cf_calculated1} * 11")
           end
 
           let(:call_attributes) do
@@ -428,15 +428,15 @@ RSpec.describe Projects::SetAttributesService, type: :model do
           let!(:cf_c) { create(:integer_project_custom_field, projects: [project]) }
           let!(:cf_calculated1) do
             create(:calculated_value_project_custom_field, :skip_validations,
-                   projects: [project], formula: "#{ref cf_a} * 7")
+                   projects: [project], formula: "#{cf_a} * 7")
           end
           let!(:cf_calculated2) do
             create(:calculated_value_project_custom_field, :skip_validations,
-                   projects: [project], formula: "#{ref cf_b} * 11")
+                   projects: [project], formula: "#{cf_b} * 11")
           end
           let!(:cf_calculated3) do
             create(:calculated_value_project_custom_field, :skip_validations,
-                   projects: [project], formula: "#{ref cf_c} * 13")
+                   projects: [project], formula: "#{cf_c} * 13")
           end
 
           let(:call_attributes) do
@@ -474,16 +474,16 @@ RSpec.describe Projects::SetAttributesService, type: :model do
           let!(:cf_calculated1) do
             create(:calculated_value_project_custom_field, :skip_validations,
                    projects: [project],
-                   formula: "#{ref cf_static} * 7")
+                   formula: "#{cf_static} * 7")
           end
           let!(:cf_calculated2) do
             create(:calculated_value_project_custom_field, :skip_validations,
-                   formula: "#{ref cf_calculated1} * 11")
+                   formula: "#{cf_calculated1} * 11")
           end
           let!(:cf_calculated3) do
             create(:calculated_value_project_custom_field, :skip_validations,
                    projects: [project],
-                   formula: "#{ref cf_calculated2} * 13")
+                   formula: "#{cf_calculated2} * 13")
           end
 
           let(:call_attributes) do
@@ -495,14 +495,20 @@ RSpec.describe Projects::SetAttributesService, type: :model do
           end
 
           before do
-            create(:custom_value, customized: project, custom_field: cf_static, value: -5)
-            create(:custom_value, customized: project, custom_field: cf_calculated1, value: -6)
-            create(:custom_value, customized: project, custom_field: cf_calculated2, value: -6)
-            create(:custom_value, customized: project, custom_field: cf_calculated3, value: -6)
+            create(:custom_value, customized: project, custom_field: cf_static).update_columns(value: -5)
+            [cf_calculated1, cf_calculated2, cf_calculated3].each do |custom_field|
+              create(:custom_value, customized: project, custom_field:).update_columns(value: -6)
+            end
           end
 
           it "calculates only accessible values" do
             expect(subject.result.custom_value_attributes).to eq(
+              cf_static.id => "3",
+              cf_calculated1.id => "21",
+              cf_calculated3.id => "-6"
+            )
+
+            expect(subject.result.custom_value_attributes(all: true)).to eq(
               cf_static.id => "3",
               cf_calculated1.id => "21",
               cf_calculated2.id => "-6",
@@ -516,17 +522,17 @@ RSpec.describe Projects::SetAttributesService, type: :model do
           let!(:cf_calculated1) do
             create(:calculated_value_project_custom_field, :skip_validations,
                    projects: [project],
-                   formula: "#{ref cf_static} * 7")
+                   formula: "#{cf_static} * 7")
           end
           let!(:cf_calculated2) do
             create(:calculated_value_project_custom_field, :skip_validations, :admin_only,
                    projects: [project],
-                   formula: "#{ref cf_calculated1} * 11")
+                   formula: "#{cf_calculated1} * 11")
           end
           let!(:cf_calculated3) do
             create(:calculated_value_project_custom_field, :skip_validations,
                    projects: [project],
-                   formula: "#{ref cf_calculated2} * 13")
+                   formula: "#{cf_calculated2} * 13")
           end
 
           let(:call_attributes) do
@@ -544,13 +550,109 @@ RSpec.describe Projects::SetAttributesService, type: :model do
             create(:custom_value, customized: project, custom_field: cf_calculated3, value: -6)
           end
 
-          it "calculates only accessible values" do
+          it "calculates all values" do
             expect(subject.result.custom_value_attributes).to eq(
               cf_static.id => "3",
               cf_calculated1.id => "21",
-              cf_calculated2.id => "-6",
-              cf_calculated3.id => "-6"
+              cf_calculated2.id => "231",
+              cf_calculated3.id => "3003"
             )
+          end
+        end
+
+        context "when referenced value field is for admin only" do
+          let!(:cf_static) { create(:integer_project_custom_field, projects: [project]) }
+          let!(:cf_calculated) do
+            create(:calculated_value_project_custom_field, :skip_validations,
+                   projects: [project],
+                   formula: "#{cf_static} * #{cf_referenced}")
+          end
+
+          let(:call_attributes) do
+            {
+              custom_field_values: {
+                cf_static.id => 3
+              }
+            }
+          end
+
+          before do
+            create(:custom_value, customized: project, custom_field: cf_static, value: 1)
+            create(:custom_value, customized: project, custom_field: cf_calculated, value: -6)
+          end
+
+          context "when referenced value is static" do
+            let!(:cf_referenced) { create(:integer_project_custom_field, :admin_only, projects: [project]) }
+
+            before do
+              create(:custom_value, customized: project, custom_field: cf_referenced, value: 2)
+            end
+
+            it "calculates using existing value" do
+              expect(subject.result.custom_value_attributes).to eq(
+                cf_static.id => "3",
+                cf_calculated.id => "6"
+              )
+
+              expect(subject.result.custom_value_attributes(all: true)).to eq(
+                cf_static.id => "3",
+                cf_referenced.id => "2",
+                cf_calculated.id => "6"
+              )
+            end
+          end
+
+          context "when referenced value is calculated value without references" do
+            let!(:cf_referenced) do
+              create(:calculated_value_project_custom_field, :skip_validations, :admin_only,
+                     projects: [project],
+                     formula: "21 * -2")
+            end
+
+            before do
+              create(:custom_value, customized: project, custom_field: cf_referenced, value: 2)
+            end
+
+            it "calculates using existing value" do
+              expect(subject.result.custom_value_attributes).to eq(
+                cf_static.id => "3",
+                cf_calculated.id => "6"
+              )
+
+              expect(subject.result.custom_value_attributes(all: true)).to eq(
+                cf_static.id => "3",
+                cf_referenced.id => "2",
+                cf_calculated.id => "6"
+              )
+            end
+          end
+
+          context "when referenced value is calculated value with unchanged reference" do
+            let!(:cf_referenced1) { create(:integer_project_custom_field, :admin_only, projects: [project]) }
+            let!(:cf_referenced) do
+              create(:calculated_value_project_custom_field, :skip_validations, :admin_only,
+                     projects: [project],
+                     formula: "21 * #{cf_referenced1}")
+            end
+
+            before do
+              create(:custom_value, customized: project, custom_field: cf_referenced1, value: -2)
+              create(:custom_value, customized: project, custom_field: cf_referenced, value: 2)
+            end
+
+            it "calculates using existing value" do
+              expect(subject.result.custom_value_attributes).to eq(
+                cf_static.id => "3",
+                cf_calculated.id => "6"
+              )
+
+              expect(subject.result.custom_value_attributes(all: true)).to eq(
+                cf_static.id => "3",
+                cf_referenced1.id => "-2",
+                cf_referenced.id => "2",
+                cf_calculated.id => "6"
+              )
+            end
           end
         end
       end

@@ -1,6 +1,17 @@
 bg:
   grids:
     label_widget_in_grid: "Приспособление, съдържащо се в мрежата %{grid_name}"
+    widgets:
+      subitems:
+        title: "Subitems"
+        no_results: "There are no visible children."
+        view_all_subitems: "View all subitems"
+      members:
+        title: "Latest members"
+        no_results: "No visible members."
+        view_all_members: "Покажи всички членове"
+      news:
+        no_results: "Нищо ново за отчитане."
   activerecord:
     attributes:
       grids/grid:

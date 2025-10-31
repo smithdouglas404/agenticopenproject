@@ -21,7 +21,7 @@ pl:
         project_folder_mode: Tryb folderu projektu
         storage: Magazyn danych
         storage_url: Adres URL magazynu
-      storages/share_point_storage:
+      storages/sharepoint_storage:
         host: Adres URL witryny Sharepoint
         library: Identyfikator biblioteki
         name: Nazwa
@@ -32,6 +32,7 @@ pl:
         drive: Identyfikator dysku
         host: Host
         name: Nazwa
+        password: Hasło aplikacji
         provider_type: Typ dostawcy
         tenant: Identyfikator katalogu (dzierżawcy)
     errors:
@@ -55,14 +56,14 @@ pl:
         storages/storage:
           attributes:
             host:
-              authorization_header_missing: nie jest w pełni skonfigurowany. Instancja Nextcloud nie otrzymuje nagłówka "Autoryzacja", który jest niezbędny do autoryzacji żądań API na podstawie tokena Bearer. Sprawdź konfigurację serwera HTTP.
+              authorization_header_missing: nie jest w pełni skonfigurowany. Instancja Nextcloud nie otrzymuje nagłówka "Authorization", który jest wymagany do uwierzytelniania zapytań API za pomocą tokenu Bearer. Sprawdź ponownie konfigurację serwera HTTP.
               cannot_be_connected_to: nie można osiągnąć. Upewnij się, że host jest osiągalny i zainstalowana jest aplikacja integracji OpenProject.
               minimal_nextcloud_version_unmet: nie spełnia wymagań wersji minimalnej (konieczna Nextcloud 23 lub wyższa)
               not_nextcloud_server: nie jest serwerem Nextcloud
-              op_application_not_installed: wydaje się, że aplikacja "OpenProject integration" nie jest zainstalowana. Zainstaluj ją najpierw i spróbuj ponownie.
+              op_application_not_installed: wydaje się, że aplikacja „OpenProject integration” nie jest zainstalowana. Zainstaluj ją najpierw i spróbuj ponownie.
             password:
               invalid_password: jest nieprawidłowe
-              unknown_error: '— nie można sprawdzić poprawności. Sprawdź połączenie z magazynem i spróbuj ponownie.'
+              unknown_error: nie udało się zweryfikować z dostawcą usługi przechowywania plików. Sprawdź, czy połączenie działa prawidłowo.
     models:
       file_link: Plik
       storages/storage: Magazyn
@@ -113,6 +114,12 @@ pl:
         remove_user_from_group: 'Usuń użytkownika z grupy:'
         rename_project_folder: 'Zmień nazwę zarządzanego folderu projektu:'
       one_drive_sync_service:
+        create_folder: 'Utworzenie zarządzanego folderu projektu:'
+        ensure_root_folder_permissions: 'Ustaw podstawowe uprawnienia do folderu:'
+        hide_inactive_folders: 'Krok „Ukryj nieaktywne foldery”:'
+        remote_folders: 'Odczytaj zawartość folderu grupy:'
+        rename_project_folder: 'Zmień nazwę zarządzanego folderu projektu:'
+      sharepoint_sync_service:
         create_folder: 'Utworzenie zarządzanego folderu projektu:'
         ensure_root_folder_permissions: 'Ustaw podstawowe uprawnienia do folderu:'
         hide_inactive_folders: 'Krok „Ukryj nieaktywne foldery”:'
@@ -170,6 +177,23 @@ pl:
             remote_folders:
               request_error: OpenProject nie mógł uzyskać dostępu do Twojego dysku %{drive_id}. Sprawdź, czy konfiguracja magazynu jest prawidłowa.
             rename_project_folder:
+              conflict: OpenProject nie może zmienić nazwy folderu %{current_path} na %{project_folder_name}, ponieważ istnieje już folder o tej samej nazwie.
+              forbidden: OpenProject nie ma dostępu do folderu %{current_path}, aby zmienić jego nazwę.
+              not_found: "Nie znaleziono lokalizacji %{current_path}."
+            set_folders_permissions:
+              permission_not_set: nie można ustawić uprawnień do lokalizacji %{path}.
+          error: Wystąpił nieoczekiwany błąd. Upewnij się, że usługa OneDrive jest osiągalna i sprawdź dzienniki pracowników OpenProject, aby uzyskać więcej informacji.
+          not_allowed: OpenProject nie mógł uzyskać dostępu do Twojego dysku w usłudze OneDrive. Sprawdź uprawnienia ustawione w aplikacji Azure.
+          unauthorized: OpenProject nie może zsynchronizować się z OneDrive. Sprawdź konfigurację magazynu i aplikacji Azure.
+          user_does_not_exist: "Użytkownik %{user} nie istnieje w Nextcloud."
+        sharepoint_sync_service:
+          attributes:
+            create_folder:
+              conflict: Folder %{folder_name} już istnieje w lokalizacji %{parent_location}.
+              not_found: "Nie znaleziono lokalizacji %{parent_location}."
+            hide_inactive_folders:
+              permission_not_set: nie można ustawić uprawnień do lokalizacji %{path}.
+            rename_project_folder:
               conflict: OpenProject nie mógł zmienić nazwy folderu %{current_path} na %{project_folder_name}, ponieważ istnieje już folder o tej samej nazwie.
               forbidden: OpenProject nie ma dostępu do folderu %{current_path}, aby zmienić jego nazwę.
               not_found: "Nie znaleziono lokalizacji %{current_path}."
@@ -177,14 +201,13 @@ pl:
               permission_not_set: nie można ustawić uprawnień do lokalizacji %{path}.
           error: Wystąpił nieoczekiwany błąd. Upewnij się, że usługa OneDrive jest osiągalna i sprawdź dzienniki pracowników OpenProject, aby uzyskać więcej informacji
           not_allowed: OpenProject nie mógł uzyskać dostępu do Twojego dysku w usłudze OneDrive. Sprawdź uprawnienia ustawione w aplikacji Azure.
+          not_found: OpenProject nie może uzyskać dostępu do Twojej biblioteki %{drive_name}. Sprawdź biblioteki dokumentów Twojej witryny Sharepoint.
           unauthorized: OpenProject nie może zsynchronizować się z OneDrive. Sprawdź konfigurację magazynu i aplikacji Azure.
           user_does_not_exist: "Użytkownik %{user} nie istnieje w Nextcloud."
         upload_link_service:
           not_found: Folder docelowy %{folder} nie został znaleziony w magazynie %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Ukończ bez tego
-      done_complete_setup: Gotowe, konfiguracja ukończona
       done_continue: Gotowe, kontynuuj
       open_storage: Otwórz magazyn plików
       replace_oauth_application: Zastąp OpenProject OAuth
@@ -195,19 +218,16 @@ pl:
       oauth_client_incomplete:
         nextcloud: Zezwalaj OpenProject na dostęp do danych Nextcloud przy użyciu OAuth.
         one_drive: Zezwalaj OpenProject na dostęp do danych Azure przy użyciu OAuth w celu połączenia z usługą OneDrive.
-        share_point: Zezwalaj OpenProject na dostęp do danych SharePoint przy użyciu OAuth.
+        sharepoint: Zezwalaj OpenProject na dostęp do danych SharePoint przy użyciu OAuth.
       redirect_uri_incomplete:
         one_drive: Ukończ konfigurację z poprawnym przekierowaniem identyfikatora URI.
-        share_point: Ukończ konfigurację z poprawnym przekierowaniem identyfikatora URI.
+        sharepoint: Ukończ konfigurację z poprawnym przekierowaniem identyfikatora URI.
     confirm_replace_oauth_application: Ta czynność zresetuje bieżące dane uwierzytelniające OAuth. Po potwierdzeniu będą Państwo musieli ponownie wprowadzić dane uwierzytelniające u dostawcy pamięci masowej, a wszyscy zdalni użytkownicy będą musieli ponownie autoryzować się w OpenProject. Czy na pewno chcą Państwo kontynuować?
     confirm_replace_oauth_client: Ta czynność spowoduje zresetowanie bieżących poświadczeń OAuth. Po potwierdzeniu będą Państwo musieli wprowadzić nowe dane uwierzytelniające od dostawcy pamięci masowej, a wszyscy użytkownicy będą musieli ponownie autoryzować się na stronie %{provider_type} . Czy na pewno chcą Państwo kontynuować?
     delete_warning:
-      input_delete_confirmation: Aby potwierdzić usunięcie, wprowadź nazwę magazynu plików %{file_storage}.
-      irreversible_notice: Usunięcie magazynu plików jest działaniem nieodwracalnym.
-      project_storage: 'Czy na pewno chcesz usunąć %{file_storage} z tego projektu? Aby potwierdzić to działanie, wprowadź nazwę magazynu w polu poniżej, spowoduje to:'
       project_storage_delete_result_1: Usuń wszystkie linki z pakietów roboczych tego projektu do plików i folderów tego magazynu.
       project_storage_delete_result_2: W przypadku, gdy ten magazyn zawiera automatycznie zarządzany folder projektu, folder ten i jego pliki zostaną bezpowrotnie usunięte.
-      storage: 'Czy na pewno chcesz usunąć %{file_storage}? Aby potwierdzić to działanie, wprowadź nazwę magazynu w polu poniżej, spowoduje to:'
+      storage: 'Czy na pewno chcesz usunąć %{file_storage}? To spowoduje:'
       storage_delete_result_1: Usunięcie wszystkich konfiguracji magazynu ze wszystkich korzystających z niego projektów.
       storage_delete_result_2: Usunięcie wszystkich linków z pakietów roboczych wszystkich projektów do plików i folderów z tego magazynu.
       storage_delete_result_3: W przypadku, gdy ten magazyn zawiera automatycznie zarządzane foldery projektów, foldery te i zawarte w nich pliki zostaną bezpowrotnie usunięte.
@@ -236,10 +256,11 @@ pl:
       openproject_oauth: OpenProject OAuth
       project_folders: Foldery projektu
       redirect_uri: Przekieruj URI
+      sharepoint_oauth: Azure OAuth
       storage_audience_blank: Nie skonfigurowano żadnych odbiorców.
       storage_audience_description: Wymienianie tokenów dla odbiorców „%{audience}”.
       storage_audience_idp: Użycie tokena dostępu uzyskanego przez dostawcę tożsamości podczas logowania, niezależnie od odbiorców.
-      storage_oauth: Nextcloud OAuth
+      storage_oauth: Magazyn OAuth
       storage_provider: Dostawca magazynu
       token_exchange: Wymiana tokenów
     health:
@@ -252,10 +273,10 @@ pl:
         ampf_configuration:
           client_folder_creation: Automatyczne tworzenie folderów
           client_folder_removal: Automatyczne usuwanie folderów
-          drive_contents: Dysk ma oczekiwaną zawartość
+          drive_contents: Zawartość dysku
           files_request: Pobieranie plików folderów grup
           group_folder_app: 'Zależne: foldery grup'
-          group_folder_contents: Folder grupy ma oczekiwaną zawartość
+          group_folder_contents: Zawartość folderu grupy
           group_folder_presence: Folder grupy istnieje
           header: Automatycznie zarządzane foldery projektu
           userless_access: Uwierzytelnianie żądań po stronie serwera
@@ -278,6 +299,7 @@ pl:
           drive_id_exists: Dysk istnieje
           drive_id_format: Format Drive ID
           header: Konfiguracja
+          host: Adres URL hosta
           host_url_accessible: Adres URL hosta jest dostępny
           storage_configured: Ukończono konfigurację
           tenant_id: Identyfikator dzierżawcy
@@ -323,6 +345,15 @@ pl:
         oidc_token_acquisition_failed: Twoja konfiguracja OpenID Connect nie zapewnia niezbędnych odbiorców ani możliwości wymiany tokenów. Sprawdź naszą dokumentację, aby uzyskać więcej informacji.
         oidc_token_exchange_failed: Wygląda na to, że wystąpił problem z konfiguracją wymiany tokenów u Twojego dostawcy OpenID Connect. Sprawdź jego konfigurację i spróbuj ponownie.
         oidc_token_refresh_failed: Podczas próby sprawdzenia Twojego dostępu do magazynu wystąpił błąd. Aby uzyskać dalsze informacje, sprawdź dzienniki serwera.
+        sp_client_cant_delete_folder: Klient ma problemy z usunięciem folderów w usłudze SharePoint. Sprawdź dokumentację konfiguracji swojej pamięci masowej.
+        sp_client_id_missing: Brakuje skonfigurowanego identyfikatora klienta OAuth 2 dla SharePoint. Sprawdź konfigurację.
+        sp_client_secret_missing: Brakuje skonfigurowanego klucza tajnego klienta OAuth 2 dla SharePoint. Sprawdź konfigurację.
+        sp_client_write_permission_missing: Klient nie ma uprawnień zapisu w usłudze SharePoint. Sprawdź dokumentację konfiguracji swojej pamięci masowej.
+        sp_existing_test_folder: Wymagany do testowania folder %{folder_name} już istnieje w usłudze SharePoint. Usuń go i spróbuj ponownie.
+        sp_oauth_request_error: Związane z użytkownikiem żądanie do usługi SharePoint nie powiodło się. W celu uzyskania dodatkowych informacji sprawdź dzienniki serwera.
+        sp_oauth_token_missing: Aplikacja OpenProject nie może przetestować komunikacji z usługą SharePoint na poziomie użytkownika, ponieważ użytkownik nie powiązał jeszcze swojego konta SharePoint.
+        sp_tenant_id_missing: Brakuje skonfigurowanego identyfikatora katalogu (dzierżawcy) usługi SharePoint. Sprawdź konfigurację.
+        sp_unexpected_content: Na dysku usługi SharePoint znaleziono nieoczekiwaną zawartość.
         unknown_error: Nie można zweryfikować połączenia. Wystąpił nieznany błąd. Aby uzyskać dalsze informacje, sprawdź dzienniki serwera.
       label_error: Błąd
       label_failed: Niepowodzenie
@@ -343,10 +374,10 @@ pl:
         warning: Niektóre kontrole zwróciły ostrzeżenie. Może to prowadzić do nieoczekiwanego sposobu działania.
       title: Raport o stanie
     health_email_notifications:
-      description_disabled: Admins will not receive updates by email when there are important updates.
-      description_enabled: Admins will receive updates by email when there are important updates.
+      description_disabled: Administratorzy nie będą otrzymywać aktualizacji pocztą elektroniczną, gdy pojawią się ważne aktualizacje.
+      description_enabled: Administratorzy będą otrzymywać aktualizacje pocztą elektroniczną, gdy pojawią się ważne aktualizacje.
       error_could_not_be_saved: Nie można zapisać ustawień powiadomień e-mail. Spróbuj ponownie.
-      title: Email updates to admins
+      title: Aktualizacje wysyłane pocztą elektroniczną do administratorów
     help_texts:
       project_folder: Folder projektu jest domyślnym folderem do przesyłania plików tego projektu. Użytkownicy mogą jednak przesyłać pliki do innych lokalizacji.
       project_folder_bulk: Folder projektu jest domyślnym folderem do przesyłania plików dla wszystkich wybranych projektów. Możesz to zmienić indywidualnie w ustawieniach poszczególnych projektów. Użytkownicy mogą jednak przesyłać pliki do innych lokalizacji.
@@ -390,7 +421,7 @@ pl:
       setting_up_additional_storages_non_admin: Administratorzy mogą skonfigurować dodatkowe magazyny plików w obszarze Administracja / Magazyny plików.
       setting_up_storages: Aby skonfigurować magazyny plików, odwiedź
       setting_up_storages_non_admin: Administratorzy mogą skonfigurować magazyny plików w obszarze Administracja / Magazyny plików.
-      share_point:
+      sharepoint:
         application_link_text: Witryna SharePoint
         integration: Administracja SharePoint/OpenProject
         oauth_configuration: Skopiuj te wartości z żądanej aplikacji w %{application_link_text}.
@@ -409,7 +440,7 @@ pl:
     label_edit_token_exchange: Edytuj konfigurację wymiany tokenów
     label_existing_manual_folder: Istniejący folder z ręcznie zarządzanymi uprawnieniami
     label_file_storage: Magazyn plików
-    label_host: Adres URL hosta 
+    label_host: Adres URL hosta
     label_inactive: Nieaktywny
     label_managed_project_folders:
       application_password: Hasło aplikacji
@@ -475,7 +506,6 @@ pl:
         subtitle_short: Pozwól OpenProject automatycznie tworzyć foldery dla każdego projektu.
         title: Automatycznie zarządzane foldery projektu
       project_settings:
-        delete: Usuń magazyn plików
         edit: Edytuj magazyn plików tego projektu
         members_connection_status: Status połączenia członków
         new: Dodaj magazyn plików do tego projektu
@@ -495,7 +525,8 @@ pl:
         label_oauth_client_secret: Tajny klucz klienta OAuth Azure
         name: OneDrive
         name_placeholder: np. OneDrive
-      share_point:
+      sharepoint:
+        drive_description: Biblioteka dokumentów OpenProject z zarządzaniem dostępem
         label_oauth_client_id: Identyfikator aplikacji OAuth Azure (klienta)
         label_oauth_client_secret: Tajny klucz klienta OAuth Azure
         name: SharePoint
@@ -510,7 +541,7 @@ pl:
         label: Użyj tokena dostępu uzyskanego podczas logowania użytkownika
       manual:
         helptext: OpenProject wymieni token z dostawcą tożsamości danej grupy odbiorców.
-        label: Ręcznie określ odbiorców, których token dostępu chcesz wymienić
+        label: Manually specify audience for which to exchange access token (Recommended)
     storage_list_blank_slate:
       description: Dodaj magazyn, aby zobaczyć go tutaj.
       heading: Nie masz jeszcze żadnych magazynów.

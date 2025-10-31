@@ -12,13 +12,14 @@ sv:
       login_to: "Login to %{storageType}"
       no_connection: "No %{storageType} connection"
       open_storage: "Open %{storageType}"
-      select_location: "Select location"
-      choose_location: "Choose location"
-      new_folder: "New folder"
+      select_location: "Välj plats"
+      choose_location: "Välj plats"
+      new_folder: "Ny mapp"
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
-        default: "Storage"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
+        default: "Lagring"
       information:
         authentication_error: "The request to %{storageType} could not be authenticated, that's an error."
         connection_error: >
@@ -48,7 +49,7 @@ sv:
         managed_project_folder_no_access: >
           You have no access yet to the managed project folder. Please wait a bit and try again.
         cannot_create_folder: Failed to create folder. Avoid using special characters and symbols and make sure the folder does not exist already.
-        upload_keep_both: "Keep both"
+        upload_keep_both: "Behåll båda"
         upload_replace: "Ersätt"
       file_links:
         empty: >
@@ -56,16 +57,16 @@ sv:
         download: "Download %{fileName}"
         open: "Open file on storage"
         open_location: "Open file in location"
-        remove: "Remove file link"
+        remove: "Ta bort fillänk"
         remove_confirmation: >
           Are you sure you want to unlink the file from this work package? Unlinking does not affect the original file and only removes the connection to this work package.
-        remove_short: "Remove link"
+        remove_short: "Ta bort länk"
         select: "Select files"
         select_all: "Markera alla"
         selection:
           zero: "Select files to link"
-          one: "Link 1 file"
-          other: "Link %{count} files"
+          one: "Länka 1 fil"
+          other: "Länka %{count} filer"
         success_create:
           one: "Successfully created 1 file link."
           other: "Successfully created %{count} file links."

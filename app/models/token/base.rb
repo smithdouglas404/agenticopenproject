@@ -51,8 +51,8 @@ module Token
     self.table_name = "tokens"
     serialize :data, coder: ::Serializers::IndifferentHashSerializer
 
-    # Hashed tokens belong to a user and are unique per type
-    belongs_to :user
+    # Tokens belong to a user and are unique per type
+    belongs_to :user, optional: false
 
     # Create a plain and hashed value when creating a new token
     after_initialize :initialize_values
@@ -80,6 +80,12 @@ module Token
     # Generate a random hex token value
     def self.generate_token_value
       SecureRandom.hex(32)
+    end
+
+    ##
+    # Get the value for the token.
+    def display_value
+      value
     end
 
     protected

@@ -31,7 +31,7 @@ fi:
       events:
         created: "Luotu"
         updated: "Päivitetty"
-        comment: "Comment"
+        comment: "Kommentti"
         internal_comment: "Internal comment"
       explanation:
         text: >

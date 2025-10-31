@@ -31,7 +31,7 @@ ar:
       events:
         created: "تم إنشاؤه"
         updated: "محدث"
-        comment: "Comment"
+        comment: "تعليق"
         internal_comment: "Internal comment"
       explanation:
         text: >

@@ -17,12 +17,12 @@ import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service
     <a (click)="editTimeEntry()"
        [title]="text.edit"
        class="no-decoration-on-hover">
-      <op-icon icon-classes="icon-context icon-edit"></op-icon>
+      <op-icon icon-classes="icon-context icon-edit" />
     </a>
     <a (click)="deleteTimeEntry()"
        [title]="text.delete"
        class="no-decoration-on-hover">
-      <op-icon icon-classes="icon-context icon-delete"></op-icon>
+      <op-icon icon-classes="icon-context icon-delete" />
     </a>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

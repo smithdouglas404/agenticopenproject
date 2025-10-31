@@ -26,6 +26,10 @@ hr:
   activerecord:
     models:
       document: "Dokument"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "Naziv"
   activity:
     filter:
       document: "Dokumenti"
@@ -33,6 +37,22 @@ hr:
   default_doc_category_user: "Korisnička dokumentacija"
   enumeration_doc_categories: "Kategorije dokumenata"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "Naziv"
+      type: "Tip"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "Tipovi"
     label_attachment_author: "Autor privitka"
     label_categories: "Categories"
     new_category: "Nova kategorija"
@@ -40,9 +60,9 @@ hr:
   label_document_new: "Novi dokument"
   label_document_plural: "Dokumenti"
   label_documents: "Dokumenti"
-  label_document_title: "Title"
-  label_document_description: "Description"
-  label_document_category: "Category"
+  label_document_title: "Naziv"
+  label_document_description: "Opis"
+  label_document_category: "Kategorija"
   permission_manage_documents: "Upravljanje dokumentima"
   permission_view_documents: "Pogledaj dokumente"
   project_module_documents: "Dokumenti"

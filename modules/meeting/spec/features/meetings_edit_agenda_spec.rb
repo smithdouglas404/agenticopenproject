@@ -79,11 +79,11 @@ RSpec.describe "Meetings edit agenda", :js do
 
     second_item = MeetingAgendaItem.find_by(title: "Agenda Item #2")
 
-    show_page.edit_agenda_item(first_item) do
+    show_page.edit_agenda_item(first_item, save: false) do
       expect(show_page).to have_selector :rich_text, "Notes", text: "Preliminary notes ✅"
     end
 
-    show_page.edit_agenda_item(second_item) do
+    show_page.edit_agenda_item(second_item, save: false) do
       expect(show_page).to have_selector :rich_text, "Notes", text: "More notes..."
     end
   end

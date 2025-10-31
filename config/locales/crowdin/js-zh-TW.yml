@@ -88,6 +88,8 @@ zh-TW:
     button_list_view: "清單檢視"
     button_show_view: "全螢幕瀏覽"
     button_log_time: "工時紀錄"
+    button_start_timer: "啟動計時器"
+    button_stop_timer: "停止計時器"
     button_more: "更多"
     button_open_details: "檢視工作套件所有資料"
     button_close_details: "關閉詳細檢視"
@@ -287,17 +289,6 @@ zh-TW:
         format:
           date: "%{attribute} 不是有效日期 - 需要 YYYY-MM-DD。"
         general: "發生錯誤。"
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "了解新功能和產品更新。"
-          learn_about: "瞭解更多新功能的資訊"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                該版本包含各種新功能和改進，例如<br> <ul class="%{list_styling_class}"> <li>UX/UI 的改進，讓外觀更現代。</li> <li>會議：可將電子郵件通知和 ICS 設為靜音。</li> <li>在「我的時間追蹤」模組中顯示正在進行的計時器。</li> <li>進度報告：以狀態為基礎的模式也會顯示完成總和的百分比。</li> <li>Nextcloud 健康檢查：顯示遺失的代幣交換功能 (企業附加元件)。</li> </ul>
     ical_sharing_modal:
       title: "訂閱日曆"
       inital_setup_error_message: "更新資料時發生錯誤"
@@ -367,7 +358,7 @@ zh-TW:
     label_expand_project_menu: "展開專案選單"
     label_export: "匯出"
     label_export_preparing: "導出文件已開始準備並將很快被下載。"
-    label_favorites: "我的最愛"
+    label_favorites: "我的收藏"
     label_filename: "檔案"
     label_filesize: "檔案大小"
     label_general: "一般"
@@ -442,8 +433,8 @@ zh-TW:
     label_sort_higher: "往上移動"
     label_sort_lower: "往下移動"
     label_sorting: "排序"
-    label_spent_time: "耗時"
-    label_star_query: "喜好"
+    label_spent_time: "工時"
+    label_star_query: "我的收藏"
     label_press_enter_to_save: "按 Enter 即可儲存。"
     label_public_query: "公開"
     label_sum: "總和"
@@ -452,7 +443,7 @@ zh-TW:
     label_subject: "名稱"
     label_this_week: "本週"
     label_today: "今日"
-    label_time_entry_plural: "耗時"
+    label_time_entry_plural: "工時"
     label_up: "向上"
     label_user_plural: "使用者"
     label_activity_show_only_comments: "只顯示活動與留言"
@@ -476,7 +467,7 @@ zh-TW:
     label_unwatch_work_package: "取消追蹤"
     label_uploaded_by: "上傳者"
     label_default_queries: "預設"
-    label_starred_queries: "收藏"
+    label_starred_queries: "我的收藏"
     label_global_queries: "公開"
     label_custom_queries: "私人"
     label_columns: "欄位"
@@ -564,7 +555,7 @@ zh-TW:
         overdue: "逾期"
         overdue_since: "自 %{difference_in_days} 天."
         property_today: "今天"
-        property_is: "在 %{difference_in_days}中。"
+        property_is: "剩 %{difference_in_days} 天。"
         property_was: " %{difference_in_days}天前"
         property_is_deleted: "已刪除"
       center:
@@ -904,7 +895,7 @@ zh-TW:
         percentCompleteAlternative: "進度"
         dueDate: "完成日期"
         duration: "時長"
-        spentTime: "耗時"
+        spentTime: "工時"
         category: "類別"
         percentageDone: "完成百分比"
         priority: "優先等級"
@@ -1078,6 +1069,8 @@ zh-TW:
     notice_successful_delete: "刪除成功"
     notice_successful_update: "更新成功"
     notice_job_started: "工作已開始"
+    no_job_id: "伺服器未回傳工作 ID。"
+    invalid_job_response: "伺服器回應無效。"
     notice_bad_request: "錯誤的請求"
     relations:
       empty: 無關聯存在
@@ -1108,6 +1101,7 @@ zh-TW:
         other: "工作套件"
       child_work_packages:
         other: "%{count} 個子工作套件"
+      hour_string: "%{hours} 小時"
       hour:
         one: "1 小時"
         other: "%{count} 小時"
@@ -1136,71 +1130,8 @@ zh-TW:
       list: "表格"
       timeline: "甘特圖"
     invite_user_modal:
-      back: "返回"
       invite: "邀請"
-      title:
-        invite: "邀請加入"
-        invite_to_project: "邀請%{type} 加入 %{project}"
-        User: "使用者"
-        Group: "群組"
-        PlaceholderUser: "佔位使用者"
-        invite_principal_to_project: "邀請 %{principal} 加入 %{project}"
-      project:
-        label: "專案"
-        required: "請選擇一個專案"
-        lacking_permission: "請選擇其他項目，因為您缺少將用戶分配至當前所選項目的權限。"
-        lacking_permission_info: "您缺少將用戶分配至您當前所在項目的權限。您需要選擇其他項目。"
-        next_button: "下一個"
-        no_results: "找不到專案"
-        no_invite_rights: "您無權邀請成員加入此專案"
-      type:
-        required: "請選擇要邀請的類型"
-        user:
-          title: "使用者"
-          description: "基於所選項目中所分配角色的權限"
-        group:
-          title: "群組"
-          description: "基於所選專案中所分配角色的權限"
-        placeholder:
-          title: "佔位使用者"
-          title_no_ee: "佔位使用者（僅限企業版附加元件）"
-          description: "無法訪問該專案並且未發送電子郵件。"
-          description_no_ee: '由於沒有存取專案權限，所以不會發送電子郵件。<br>請查看<a href="%{eeHref}" target="_blank">企業版</a>。'
-      principal:
-        label:
-          name_or_email: "名稱或電子郵件地址"
-          name: "名稱"
-        already_member_message: "已是「 %{project} 」成員"
-        no_results_user: "找不到使用者。"
-        invite_user: "邀請"
-        no_results_placeholder: "沒有找到佔位符"
-        create_new_placeholder: "創建新的佔位符："
-        no_results_group: "找不到群組。"
-        next_button: "下一個"
-        required:
-          user: "請選擇一個使用者"
-          placeholder: "請選擇佔位使用者"
-          group: "請選擇一個群組"
-      role:
-        label: "%{project} 中的角色"
-        no_roles_found: "找不到角色。"
-        description: >-
-          這是用戶在加入您的專案時將獲得的角色。角色定義了允許其執行哪些操作以及允許其查看哪些信息。<a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank">詳細瞭解角色和權限</a>。
-        required: "請選擇一個角色： "
-        next_button: "下一個"
-      message:
-        label: "邀請訊息"
-        description: "我們將向用戶發送一封電子郵件，您可以在此處添加要向其發送的個人消息。提供邀請說明可能會很有用，您也可以添加一些有關該專案的信息以幫助他們開始。"
-        next_button: "下一個"
-      summary:
-        next_button: "發送邀請"
-      success:
-        title: "%{principal} 已被邀請！"
-        description:
-          user: "該使用者現在可以登入並存取 %{project}。同時，您已可開始與該使用者一起規劃，並指派工作套件等操作。"
-          placeholder: "該預留位置現在可在 %{project} 中使用。您也可以開始與該使用者一起規劃，並指派工作套件等操作。"
-          group: "該群組現在已成為 %{project} 的一部分。您也可以開始與該群組一起規劃，並指派工作套件等操作。"
-        next_button: "繼續"
+      placeholder_add_tag: "建立佔位符使用者"
     exclusion_info:
       modal:
         title: "從層次結構總計中排除的狀態"
@@ -1217,13 +1148,15 @@ zh-TW:
       selected_filter:
         all: "所有專案"
         selected: "僅所選專案"
-      search_placeholder: "搜尋專案 ..."
+      search_placeholder: "搜尋專案..."
+      search_placeholder_favorites: "搜尋我的收藏..."
       include_subprojects: "包含子專案"
       tooltip:
         include_all_selected: "自啓用“包含所有子項目”後已包含的項目。"
         current_project: "這是您當前所在的專案。"
         does_not_match_search: "沒有符合搜尋條件"
       no_results: "沒有符合搜尋條件"
+      no_favorite_results: "沒有符合您搜尋條件的收藏專案。"
     baseline:
       toggle_title: "差異線"
       clear: "清除"

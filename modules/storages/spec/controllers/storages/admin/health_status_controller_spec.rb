@@ -83,6 +83,7 @@ RSpec.describe Storages::Admin::HealthStatusController do
       expect(yaml["storage"]).to eq storage.name
       expect(yaml["storage_type"]).to eq storage.to_s
       expect(yaml.dig("base_configuration", "storage_configured", "state")).to eq("failure")
+      expect(yaml.dig("configuration", "host")).to eq(storage.host)
     end
   end
 

@@ -235,7 +235,7 @@ module API
           "Project"
         end
 
-        self.to_eager_load = [:enabled_modules]
+        self.to_eager_load = %i[enabled_modules parent]
 
         self.checked_permissions = %i[add_work_packages view_project]
       end

@@ -38,7 +38,7 @@ module CustomFields
 
     def persisted_cf_has_no_items_or_projects?
       custom_field.persisted? &&
-      custom_field.field_format_hierarchy? &&
+        custom_field.hierarchical_list? &&
         custom_field.hierarchy_root.children.empty? &&
         custom_field.projects.empty?
     end

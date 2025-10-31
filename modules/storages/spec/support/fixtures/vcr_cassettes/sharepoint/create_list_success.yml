@@ -1,0 +1,220 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://login.microsoftonline.com/e36f1dbc-fdae-427e-b61b-0d96ddfb81a4/oauth2/v2.0/token
+    body:
+      encoding: ASCII-8BIT
+      string: grant_type=client_credentials&scope=https%3A%2F%2Fgraph.microsoft.com%2F.default+offline_access&client_id=404e0567-19a1-4a64-b2d1-d3b0c99f2ed9&client_secret=QRB8Q%7Ei.1rID_.MC9FTfRGq-FTE5SgWYsoeLacWf
+    headers:
+      User-Agent:
+      - httpx.rb/1.6.0
+      Accept:
+      - "*/*"
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Content-Length:
+      - '199'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-store, no-cache
+      Pragma:
+      - no-cache
+      Content-Type:
+      - application/json; charset=utf-8
+      Expires:
+      - "-1"
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      X-Content-Type-Options:
+      - nosniff
+      P3p:
+      - CP="DSP CUR OTPi IND OTRi ONL FIN"
+      X-Ms-Request-Id:
+      - bb09c284-c71b-4989-8e6a-3e28429b3400
+      X-Ms-Ests-Server:
+      - 2.1.21894.4 - NEULR1 ProdSlices
+      X-Ms-Srs:
+      - 1.P
+      Content-Security-Policy-Report-Only:
+      - object-src 'none'; base-uri 'self'; script-src 'self' 'nonce-fETRoixtsie_6YMZsJ2mpw'
+        'unsafe-inline' 'unsafe-eval' https://*.msauth.net https://*.msftauth.net
+        https://*.msftauthimages.net https://*.msauthimages.net https://*.msidentity.com
+        https://*.microsoftonline-p.com https://*.microsoftazuread-sso.com https://*.azureedge.net
+        https://*.outlook.com https://*.office.com https://*.office365.com https://*.microsoft.com
+        https://*.bing.com 'report-sample'; report-uri https://csp.microsoft.com/report/ESTS-UX-All
+      Cross-Origin-Opener-Policy-Report-Only:
+      - same-origin; report-to="coop-endpoint"
+      Reporting-Endpoints:
+      - coop-endpoint="https://idux.azurewebsites.net/api/coopReport"
+      X-Xss-Protection:
+      - '0'
+      Set-Cookie:
+      - fpc=AmAN1-4g8LZOnFC4P3cywZ1Z-dCOAQAAADNRY-AOAAAA; expires=Wed, 22-Oct-2025
+        14:16:20 GMT; path=/; secure; HttpOnly; SameSite=None, x-ms-gateway-slice=estsfd;
+        path=/; secure; samesite=none; httponly, stsservicecookie=estsfd; path=/;
+        secure; samesite=none; httponly
+      Date:
+      - Mon, 22 Sep 2025 14:16:20 GMT
+      Content-Length:
+      - '1935'
+    body:
+      encoding: UTF-8
+      string: '{"token_type":"Bearer","expires_in":3599,"ext_expires_in":3599,"access_token":"<ACCESS_TOKEN>"}'
+  recorded_at: Mon, 22 Sep 2025 14:16:20 GMT
+- request:
+    method: post
+    uri: https://graph.microsoft.com/v1.0/sites/ymt6d.sharepoint.com:/sites/OPTest:/lists
+    body:
+      encoding: UTF-8
+      string: '{"displayName":"OpenProject Test","description":"A document library
+        used in testing the Create List Command","list":{"template":"documentLibrary"}}'
+    headers:
+      User-Agent:
+      - httpx.rb/1.6.0
+      Accept:
+      - "*/*"
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '147'
+      Authorization:
+      - Bearer <BEARER TOKEN>
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Cache-Control:
+      - no-store, no-cache
+      Content-Type:
+      - application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false;charset=utf-8
+      Content-Encoding:
+      - gzip
+      Etag:
+      - efbf4ee6-0179-44b3-83cb-84cd48b06f1d,0
+      Location:
+      - https://ymt6d.sharepoint.com/_api/v2.0/sites('ymt6d.sharepoint.com')/lists('efbf4ee6-0179-44b3-83cb-84cd48b06f1d')
+      Vary:
+      - Accept-Encoding
+      Strict-Transport-Security:
+      - max-age=31536000
+      Request-Id:
+      - eefde704-2809-4654-be49-92b9dc10507c
+      Client-Request-Id:
+      - eefde704-2809-4654-be49-92b9dc10507c
+      X-Ms-Ags-Diagnostic:
+      - '{"ServerInfo":{"DataCenter":"Germany West Central","Slice":"E","Ring":"4","ScaleUnit":"006","RoleInstance":"FR1PEPF00001FCB"}}'
+      Splogid:
+      - 533fc8a1-405f-0000-83a4-a989229c2033
+      Odata-Version:
+      - '4.0'
+      Date:
+      - Mon, 22 Sep 2025 14:16:20 GMT
+    body:
+      encoding: UTF-8
+      string: '{"@odata.context":"https://graph.microsoft.com/v1.0/$metadata#Collection(microsoft.graph.list)/$entity","@odata.etag":"efbf4ee6-0179-44b3-83cb-84cd48b06f1d,0","eTag":"efbf4ee6-0179-44b3-83cb-84cd48b06f1d,0","lastModifiedDateTime":"2025-09-22T14:16:21Z","createdDateTime":"2025-09-22T14:16:21Z","description":"A
+        document library used in testing the Create List Command","id":"efbf4ee6-0179-44b3-83cb-84cd48b06f1d","name":"OpenProject
+        Test","webUrl":"https://ymt6d.sharepoint.com/sites/OPTest/OpenProject%20Test","displayName":"OpenProject
+        Test","parentReference":{"siteId":"ymt6d.sharepoint.com,1099e315-d0c7-47c7-8640-aa9504b70fff,6af246f0-e3be-45ef-b91a-8eca4dcc5d8f"},"list":{"contentTypesEnabled":false,"hidden":false,"template":"documentLibrary"}}'
+  recorded_at: Mon, 22 Sep 2025 14:16:21 GMT
+- request:
+    method: get
+    uri: https://graph.microsoft.com/v1.0/sites/ymt6d.sharepoint.com:/sites/OPTest:/lists/OpenProject%20Test?$expand=drive&$select=id,name,drive
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - httpx.rb/1.6.0
+      Accept:
+      - "*/*"
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer <BEARER TOKEN>
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false;charset=utf-8
+      Content-Encoding:
+      - gzip
+      Etag:
+      - '"efbf4ee6-0179-44b3-83cb-84cd48b06f1d,0"'
+      Vary:
+      - Accept-Encoding
+      Strict-Transport-Security:
+      - max-age=31536000
+      Request-Id:
+      - a23e4c61-372c-4802-bb97-ee5ab32ab287
+      Client-Request-Id:
+      - a23e4c61-372c-4802-bb97-ee5ab32ab287
+      X-Ms-Ags-Diagnostic:
+      - '{"ServerInfo":{"DataCenter":"Germany West Central","Slice":"E","Ring":"4","ScaleUnit":"006","RoleInstance":"FR1PEPF00001FCB"}}'
+      Splogid:
+      - 533fc8a1-80aa-0000-83a4-a0a536197857
+      Odata-Version:
+      - '4.0'
+      Date:
+      - Mon, 22 Sep 2025 14:16:21 GMT
+    body:
+      encoding: UTF-8
+      string: '{"@odata.context":"https://graph.microsoft.com/v1.0/$metadata#Collection(microsoft.graph.list)(id,name,drive,drive())/$entity","@odata.etag":"\"efbf4ee6-0179-44b3-83cb-84cd48b06f1d,0\"","id":"efbf4ee6-0179-44b3-83cb-84cd48b06f1d","name":"OpenProject
+        Test","drive@odata.context":"https://graph.microsoft.com/v1.0/$metadata#Collection(microsoft.graph.list)(''efbf4ee6-0179-44b3-83cb-84cd48b06f1d'')/drive/$entity","drive":{"createdDateTime":"2025-09-22T14:16:21Z","description":"A
+        document library used in testing the Create List Command","id":"b!FeOZEMfQx0eGQKqVBLcP__BG8mq-4-9FuRqOyk3MXY_mTr_veQGzRIPLhM1IsG8d","lastModifiedDateTime":"2025-09-22T14:16:21Z","name":"OpenProject
+        Test","webUrl":"https://ymt6d.sharepoint.com/sites/OPTest/OpenProject%20Test","driveType":"documentLibrary","createdBy":{"user":{"displayName":"SharePoint
+        App"}},"owner":{"group":{"email":"OPTest@ymt6d.onmicrosoft.com","id":"5dfb4269-d3e3-4c70-83f5-c4937ff6dcdb","displayName":"OP
+        Test Owners"}},"quota":{"deleted":4522248,"remaining":27487616771416,"state":"normal","total":27487790694400,"used":169400736}}}'
+  recorded_at: Mon, 22 Sep 2025 14:16:22 GMT
+- request:
+    method: delete
+    uri: https://graph.microsoft.com/v1.0/sites/ymt6d.sharepoint.com:/sites/OPTest:/lists/OpenProject%20Test
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - Bearer <BEARER TOKEN>
+      User-Agent:
+      - httpx.rb/1.6.0
+      Accept:
+      - "*/*"
+      Accept-Encoding:
+      - gzip, deflate
+  response:
+    status:
+      code: 204
+      message: No Content
+    headers:
+      Cache-Control:
+      - no-store, no-cache
+      Strict-Transport-Security:
+      - max-age=31536000
+      Request-Id:
+      - 2eb5600c-d639-45f0-a545-099491731c3e
+      Client-Request-Id:
+      - 2eb5600c-d639-45f0-a545-099491731c3e
+      X-Ms-Ags-Diagnostic:
+      - '{"ServerInfo":{"DataCenter":"Germany West Central","Slice":"E","Ring":"4","ScaleUnit":"006","RoleInstance":"FR1PEPF00001FC1"}}'
+      Splogid:
+      - 533fc8a1-50c9-0000-83a4-a60967e1706b
+      Date:
+      - Mon, 22 Sep 2025 14:16:22 GMT
+    body:
+      encoding: UTF-8
+      string: ''
+  recorded_at: Mon, 22 Sep 2025 14:16:22 GMT
+recorded_with: VCR 6.3.1

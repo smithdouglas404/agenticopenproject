@@ -4,8 +4,12 @@ import {
   WorkPackageContextMenuHelperService,
 } from 'core-app/features/work-packages/components/wp-table/context-menu-helper/wp-context-menu-helper.service';
 import { States } from 'core-app/core/states/states.service';
-import { WorkPackageRelationsHierarchyService } from 'core-app/features/work-packages/components/wp-relations/wp-relations-hierarchy/wp-relations-hierarchy.service';
-import { WorkPackageViewSelectionService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-selection.service';
+import {
+  WorkPackageRelationsHierarchyService,
+} from 'core-app/features/work-packages/components/wp-relations/wp-relations-hierarchy/wp-relations-hierarchy.service';
+import {
+  WorkPackageViewSelectionService,
+} from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-selection.service';
 import { isClickedWithModifier } from 'core-app/shared/helpers/link-handling/link-handling';
 import { OpContextMenuHandler } from 'core-app/shared/components/op-context-menu/op-context-menu-handler';
 import { OPContextMenuService } from 'core-app/shared/components/op-context-menu/op-context-menu.service';
@@ -13,12 +17,13 @@ import {
   OpContextMenuItem,
   OpContextMenuLocalsMap,
 } from 'core-app/shared/components/op-context-menu/op-context-menu.types';
-import { PERMITTED_CONTEXT_MENU_ACTIONS } from 'core-app/shared/components/op-context-menu/wp-context-menu/wp-static-context-menu-actions';
+import {
+  PERMITTED_CONTEXT_MENU_ACTIONS,
+} from 'core-app/shared/components/op-context-menu/wp-context-menu/wp-static-context-menu-actions';
 import { OpModalService } from 'core-app/shared/components/modal/modal.service';
 import { StateService } from '@uirouter/core';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { CopyToClipboardService } from 'core-app/shared/components/copy-to-clipboard/copy-to-clipboard.service';
-import { TimeEntryCreateService } from 'core-app/shared/components/time_entries/create/create.service';
 import { splitViewRoute } from 'core-app/features/work-packages/routing/split-view-routes.helper';
 import { WpDestroyModalComponent } from 'core-app/shared/components/modals/wp-destroy-modal/wp-destroy.modal';
 import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
@@ -37,8 +42,6 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
   @InjectField() protected wpTableSelection:WorkPackageViewSelectionService;
 
   @InjectField() protected WorkPackageContextMenuHelper!:WorkPackageContextMenuHelperService;
-
-  @InjectField() protected timeEntryCreateService:TimeEntryCreateService;
 
   @InjectField() protected pathHelper:PathHelperService;
 

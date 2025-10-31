@@ -43,7 +43,7 @@ module OpenProject::Meeting
       project_module :meetings do
         permission :view_meetings,
                    {
-                     meetings: %i[index show check_for_updates download_ics participants_dialog
+                     meetings: %i[index show check_for_updates download_ics
                                   generate_pdf_dialog history],
                      "meetings/menus": %i[show],
                      work_package_meetings_tab: %i[index count],
@@ -57,18 +57,21 @@ module OpenProject::Meeting
                      "recurring_meetings/schedule": %i[update_text],
                      "meetings/menus": %i[show]
                    },
+                   dependencies: :view_meetings,
                    permissible_on: :project,
                    require: :member,
                    contract_actions: { meetings: %i[create] }
         permission :edit_meetings,
                    {
                      meetings: %i[edit cancel_edit update update_title change_state toggle_notifications_dialog
-                                  details_dialog update_details update_participants toggle_notifications],
+                                  details_dialog update_details toggle_notifications],
                      recurring_meetings: %i[edit cancel_edit update update_title details_dialog update_details
                                             notify end_series end_series_dialog],
-                     work_package_meetings_tab: %i[add_work_package_to_meeting_dialog add_work_package_to_meeting]
+                     work_package_meetings_tab: %i[add_work_package_to_meeting_dialog add_work_package_to_meeting refresh_form],
+                     meeting_participants: %i[create destroy mark_all_attended toggle_attendance manage_participants_dialog]
                    },
                    permissible_on: :project,
+                   dependencies: :view_meetings,
                    require: :member
         permission :delete_meetings,
                    {
@@ -76,26 +79,31 @@ module OpenProject::Meeting
                      recurring_meetings: %i[delete_dialog destroy delete_scheduled_dialog destroy_scheduled]
                    },
                    permissible_on: :project,
+                   dependencies: :view_meetings,
                    require: :member
         permission :send_meeting_invites_and_outcomes,
                    { meetings: %i[notify icalendar] },
                    permissible_on: :project,
+                   dependencies: :view_meetings,
                    require: :member
         permission :manage_agendas,
                    {
                      meetings: %i[change_state],
                      meeting_agenda_items: %i[new cancel_new create edit cancel_edit update destroy drop move
-                                              move_to_next_meeting move_to_next_meeting_dialog],
+                                              move_to_next_meeting move_to_next_meeting_dialog
+                                              move_to_section move_to_section_dialog],
                      meeting_sections: %i[new cancel_new create edit cancel_edit update destroy drop move
                                           clear_backlog clear_backlog_dialog]
                    },
                    permissible_on: :project, # TODO: Change this to :meeting when MeetingRoles are available
+                   dependencies: :view_meetings,
                    require: :member
         permission :manage_outcomes,
                    {
                      meeting_outcomes: %i[new cancel_new create edit cancel_edit update destroy]
                    },
                    permissible_on: :project,
+                   dependencies: :view_meetings,
                    require: :member
       end
 
@@ -157,14 +165,17 @@ module OpenProject::Meeting
       end
     end
 
+    initializer "openproject-meetings.feature_decisions" do
+      OpenProject::FeatureDecisions.add :meeting_ical_subscription,
+                                        description: "Allows users to subscribe to all of their meetings via iCalendar"
+    end
+
     activity_provider :meetings, class_name: "Activities::MeetingActivityProvider", default: false
 
     patches [:Project]
     patch_with_namespace :BasicData, :SettingSeeder
 
     replace_principal_references "Meeting" => %i[author_id],
-                                 "MeetingAgenda" => %i[author_id],
-                                 "MeetingMinutes" => %i[author_id],
                                  "MeetingAgendaItem" => %i[author_id presenter_id],
                                  "MeetingParticipant" => :user_id,
                                  "MeetingOutcome" => :author_id
@@ -174,7 +185,6 @@ module OpenProject::Meeting
 
     add_api_endpoint "API::V3::Root" do
       mount ::API::V3::Meetings::MeetingsAPI
-      mount ::API::V3::Meetings::MeetingContentsAPI
     end
 
     config.to_prepare do
@@ -183,7 +193,7 @@ module OpenProject::Meeting
       PermittedParams.permit(:search, :meetings)
 
       ::Exports::Register.register do
-        single(::Meeting, Meetings::PDF::Exporter)
+        single(::Meeting, Meetings::Exporter)
       end
     end
 
@@ -209,18 +219,6 @@ module OpenProject::Meeting
 
     add_api_path :attachments_by_meeting do |id|
       "#{meeting(id)}/attachments"
-    end
-
-    add_api_path :attachments_by_meeting_content do |id|
-      "#{meeting_content(id)}/attachments"
-    end
-
-    add_api_path :attachments_by_meeting_agenda do |id|
-      attachments_by_meeting_content id
-    end
-
-    add_api_path :attachments_by_meeting_minutes do |id|
-      attachments_by_meeting_content id
     end
   end
 end

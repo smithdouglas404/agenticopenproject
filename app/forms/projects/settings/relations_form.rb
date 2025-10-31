@@ -49,6 +49,10 @@ module Projects
 
       private
 
+      def render?
+        model.project?
+      end
+
       def project_autocompleter_model
         return nil unless parent
         return { id: parent.id, name: I18n.t(:"api_v3.undisclosed.parent") } unless parent.visible? || User.current.admin?

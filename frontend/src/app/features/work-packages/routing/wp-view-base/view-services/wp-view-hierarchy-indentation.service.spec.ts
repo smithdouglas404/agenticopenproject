@@ -26,8 +26,6 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-/* jshint expr: true */
-
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { States } from 'core-app/core/states/states.service';
 import { IsolatedQuerySpace } from 'core-app/features/work-packages/directives/query-space/isolated-query-space';

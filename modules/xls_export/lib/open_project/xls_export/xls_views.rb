@@ -69,6 +69,14 @@ class OpenProject::XlsExport::XlsViews
     "0.00"
   end
 
+  def date_format
+    @date_format ||= Spreadsheet::Format.new(
+      number_format: "yyyy-mm-dd",
+      horizontal_align: :left,
+      vertical_align: :top
+    )
+  end
+
   def project_representation(value)
     ar_presentation(Project, value, &:name)
   end

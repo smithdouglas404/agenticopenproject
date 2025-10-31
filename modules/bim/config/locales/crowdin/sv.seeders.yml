@@ -13,7 +13,7 @@ sv:
         item_2:
           name: Hög
         item_3:
-          name: Critical
+          name: Kritisk
       statuses:
         item_0:
           name: Ny
@@ -55,7 +55,7 @@ sv:
               group_name: Barn
       groups:
         item_0:
-          name: Architects
+          name: Arkitekter
         item_1:
           name: BIM Coordinators
         item_2:
@@ -67,7 +67,7 @@ sv:
         item_5:
           name: MEP Engineers
         item_6:
-          name: Planners
+          name: Planerare
         item_7:
           name: Structural Engineers
       welcome:
@@ -101,11 +101,11 @@ sv:
             item_0: Category 1 (to be changed in Project settings)
           queries:
             item_0:
-              name: Project plan
+              name: Projektplan
             item_1:
               name: Milstolpar
             item_2:
-              name: Tasks
+              name: Uppgifter
             item_3:
               name: Team planerare
           boards:
@@ -115,7 +115,7 @@ sv:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Välkommen
               item_1:
                 options:
                   name: Komma igång
@@ -163,18 +163,18 @@ sv:
             item_0: Category 1 (to be changed in Project settings)
           queries:
             item_0:
-              name: Project plan
+              name: Projektplan
             item_1:
               name: Milstolpar
             item_2:
-              name: Tasks
+              name: Uppgifter
             item_3:
               name: Team planerare
           project-overview:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Välkommen
               item_1:
                 options:
                   name: Komma igång
@@ -265,7 +265,7 @@ sv:
                     *   This overview informs all participants about the decisions made
                     *   ...
                 item_1:
-                  subject: Summarize results
+                  subject: Sammanfatta resultaten
                   description: |-
                     ## Goal
 
@@ -307,7 +307,7 @@ sv:
               subject: Construction phase
               children:
                 item_0:
-                  subject: Start constructing
+                  subject: Börja konstruera
                   description: |-
                     ## Goal
 
@@ -417,18 +417,18 @@ sv:
             item_0: Category 1 (to be changed in Project settings)
           queries:
             item_0:
-              name: Project plan
+              name: Projektplan
             item_1:
               name: Milstolpar
             item_2:
-              name: Tasks
+              name: Uppgifter
             item_3:
               name: Team planerare
           project-overview:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Välkommen
               item_1:
                 options:
                   name: Komma igång
@@ -690,11 +690,11 @@ sv:
             item_3:
               name: Remarks
             item_4:
-              name: Project plan
+              name: Projektplan
             item_5:
               name: Milstolpar
             item_6:
-              name: Tasks
+              name: Uppgifter
             item_7:
               name: Team planerare
           boards:
@@ -704,7 +704,7 @@ sv:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Välkommen
               item_1:
                 options:
                   name: Komma igång

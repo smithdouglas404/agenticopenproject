@@ -26,6 +26,10 @@ lt:
   activerecord:
     models:
       document: "Dokumentas"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "Pavadinimas"
   activity:
     filter:
       document: "Dokumentai"
@@ -33,6 +37,22 @@ lt:
   default_doc_category_user: "Vartotojo dokumentacija"
   enumeration_doc_categories: "Dokumentų kategorijos"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "Vardas"
+      type: "Tipas"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "Tipai"
     label_attachment_author: "Priedo autorius"
     label_categories: "Categories"
     new_category: "Nauja kategorija"
@@ -40,9 +60,9 @@ lt:
   label_document_new: "Naujas dokumentas"
   label_document_plural: "Dokumentai"
   label_documents: "Dokumentai"
-  label_document_title: "Title"
-  label_document_description: "Description"
-  label_document_category: "Category"
+  label_document_title: "Pavadinimas"
+  label_document_description: "Aprašymas"
+  label_document_category: "Kategorija"
   permission_manage_documents: "Valdyti dokumentus"
   permission_view_documents: "Peržiūrėti dokumentus"
   project_module_documents: "Dokumentai"

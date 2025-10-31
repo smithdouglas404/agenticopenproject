@@ -49,7 +49,7 @@ module Meetings
     end
 
     def elements
-      @elements ||= @meeting.invited_or_attended_participants.sort
+      @elements ||= @meeting.participants.sort
     end
 
     def count
@@ -71,10 +71,6 @@ module Meetings
       if participant.attended?
         flex.with_column(ml: 1) do
           render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) { t("description_attended").capitalize }
-        end
-      elsif participant.invited?
-        flex.with_column(ml: 1) do
-          render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) { t("description_invite").capitalize }
         end
       end
     end

@@ -3,7 +3,7 @@ ca:
   js:
     team_planner:
       add_existing: 'Afegir existent'
-      label_team_planner_plural: 'Team planners'
+      label_team_planner_plural: 'Planificadors d''equips'
       add_existing_title: 'Afegir paquets de treball existents'
       create_label: 'Planificador d''equips'
       create_title: 'Crea un nou planificador d''equips'

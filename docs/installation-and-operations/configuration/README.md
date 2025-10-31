@@ -719,9 +719,8 @@ OPENPROJECT_AFTER__LOGIN__DEFAULT__REDIRECT__URL="/my/page"
 
 ### Onboarding video url
 
-`onboarding_video_url`: An URL for the video displayed on the onboarding modal. This is only shown when the user logs in for the first time.
-
-*default="[https://player.vimeo.com/video/163426858?autoplay=1](https://player.vimeo.com/video/163426858?autoplay=1)"*
+`onboarding_video_url`: A URL for the video displayed on the onboarding modal.
+This video URL is whitelisted in the content security policy.
 
 ### Enterprise fail fast
 

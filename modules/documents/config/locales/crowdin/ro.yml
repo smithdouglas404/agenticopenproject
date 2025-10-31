@@ -26,6 +26,10 @@ ro:
   activerecord:
     models:
       document: "Document"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "Titlu"
   activity:
     filter:
       document: "Documente"
@@ -33,6 +37,22 @@ ro:
   default_doc_category_user: "Documentația utilizatorului"
   enumeration_doc_categories: "Document nou"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "Nume"
+      type: "Tip"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "Tipuri"
     label_attachment_author: "Autorul anexei"
     label_categories: "Categorii"
     new_category: "Categorie nouă"

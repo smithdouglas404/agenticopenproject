@@ -26,6 +26,10 @@ fi:
   activerecord:
     models:
       document: "Asiakirja"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "Otsikko"
   activity:
     filter:
       document: "Asiakirjat"
@@ -33,6 +37,22 @@ fi:
   default_doc_category_user: "Käyttöohjeet"
   enumeration_doc_categories: "Tiedostoluokat"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "Nimi"
+      type: "Tyyppi"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "Tehtävätyypit"
     label_attachment_author: "Liitteen laatija"
     label_categories: "Categories"
     new_category: "Uusi luokka"
@@ -40,9 +60,9 @@ fi:
   label_document_new: "Uusi asiakirja"
   label_document_plural: "Asiakirjat"
   label_documents: "Asiakirjat"
-  label_document_title: "Title"
-  label_document_description: "Description"
-  label_document_category: "Category"
+  label_document_title: "Otsikko"
+  label_document_description: "Kuvaus"
+  label_document_category: "Kategoria"
   permission_manage_documents: "Hallitse asiakirjoja"
   permission_view_documents: "Näytä asiakirjat"
   project_module_documents: "Asiakirjat"

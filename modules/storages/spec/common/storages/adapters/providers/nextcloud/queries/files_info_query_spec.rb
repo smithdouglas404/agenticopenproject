@@ -40,72 +40,81 @@ module Storages
             let(:user) { create(:user) }
             let(:auth_strategy) { Registry["nextcloud.authentication.user_bound"].call(user, storage) }
             let(:storage) do
-              create(:nextcloud_storage_with_local_connection, :as_not_automatically_managed, oauth_client_token_user: user)
+              create(:nextcloud_storage_with_local_connection,
+                     :as_not_automatically_managed,
+                     oauth_client_token_user: user)
             end
-
             let(:input_data) { Input::FilesInfo.build(file_ids:).value! }
 
-            subject { described_class.new(storage) }
+            it_behaves_like "adapter files_info_query: basic query setup"
 
-            describe "#call" do
+            context "with an empty array of file ids" do
+              let(:file_ids) { [] }
+              let(:expected_file_infos) { [] }
+
+              it_behaves_like "adapter files_info_query: successful list response"
+            end
+
+            context "with several file ids", vcr: "nextcloud/files_info_query_success" do
               let(:file_ids) { %w[182 203 222] }
-
-              context "without outbound request involved" do
-                context "with an empty array of file ids" do
-                  let(:file_ids) { [] }
-
-                  it "returns an empty array" do
-                    result = subject.call(auth_strategy:, input_data:)
-
-                    expect(result).to be_success
-                    expect(result.value!).to eq([])
-                  end
-                end
+              let(:expected_file_infos) do
+                [
+                  Results::StorageFileInfo.new(
+                    status: "Forbidden",
+                    status_code: 403,
+                    id: "182"
+                  ),
+                  Results::StorageFileInfo.new(
+                    status: "Forbidden",
+                    status_code: 403,
+                    id: "203"
+                  ),
+                  Results::StorageFileInfo.new(
+                    status: "OK",
+                    status_code: 200,
+                    id: "222",
+                    name: "Screenshot 2023-08-15 at 3.00.54 PM.jpg",
+                    created_at: Time.parse("1970-01-01T00:00:00Z"),
+                    last_modified_at: Time.parse("2023-08-16T12:06:20Z"),
+                    mime_type: "image/jpeg",
+                    size: 81944,
+                    owner_name: "member",
+                    owner_id: "member",
+                    permissions: "RMGDNVW",
+                    location: "/OpenProject/Scrum%20project%20%282%29/Screenshot%202023-08-15%20at%203.00.54%20PM.jpg"
+                  )
+                ]
               end
 
-              context "with outbound request successful", vcr: "nextcloud/files_info_query_success" do
-                context "with an array of file ids" do
-                  it "must return an array of file information when called" do
-                    result = subject.call(auth_strategy:, input_data:)
-                    expect(result).to be_success
+              it_behaves_like "adapter files_info_query: successful list response"
+            end
 
-                    file_infos = result.value!
-                    expect(file_infos.size).to eq(3)
-                    expect(file_infos).to all(be_a(Results::StorageFileInfo))
-                  end
-                end
+            context "with not existent file id requested", vcr: "nextcloud/files_info_query_not_found" do
+              let(:file_ids) { %w[1234] }
+              let(:expected_file_infos) { [Results::StorageFileInfo.new(status: "Not Found", status_code: 404, id: "1234")] }
+
+              it_behaves_like "adapter files_info_query: successful list response"
+            end
+
+            context "with multiple file IDs, with different errors",
+                    vcr: "nextcloud/files_info_query_only_one_not_authorized" do
+              let(:file_ids) { %w[182 1234] }
+              let(:expected_file_infos) do
+                [
+                  Results::StorageFileInfo.new(
+                    status: "Forbidden",
+                    status_code: 403,
+                    id: "182"
+                  ),
+                  Results::StorageFileInfo.new(
+                    status: "Not Found",
+                    status_code: 404,
+                    id: "1234"
+                  )
+                ]
               end
 
-              context "with outbound request not found" do
-                context "with a single file id", vcr: "nextcloud/files_info_query_not_found" do
-                  let(:file_ids) { %w[1234] }
-
-                  it "returns an HTTP 200 with individual status code per file ID" do
-                    result = subject.call(auth_strategy:, input_data:)
-                    expect(result).to be_success
-
-                    file_infos = result.value!
-                    expect(file_infos.size).to eq(1)
-                    expect(file_infos.first.to_h).to include(status: "Not Found", status_code: 404)
-                  end
-                end
-              end
-
-              context "with outbound request not authorized" do
-                context "with multiple file IDs, one of which is not authorized",
-                        vcr: "nextcloud/files_info_query_only_one_not_authorized" do
-                  let(:file_ids) { %w[182 1234] }
-
-                  it "returns an HTTP 200 with individual status code per file ID" do
-                    result = subject.call(auth_strategy:, input_data:)
-                    expect(result).to be_success
-
-                    file_infos = result.value!
-                    expect(file_infos.size).to eq(2)
-                    expect(file_infos.map(&:status_code)).to contain_exactly(403, 404)
-                  end
-                end
-              end
+              it_behaves_like "adapter files_info_query: successful list response"
             end
           end
         end

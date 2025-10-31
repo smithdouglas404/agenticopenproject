@@ -15,14 +15,17 @@
           )
         )
       end
-      flex.with_column(mr: 2) do
-        render(
-          OpenProject::Common::AttributeLabelComponent.new(
-            attribute: :status,
-            model: project,
-            current_user: user
+
+      unless hide_help_text?
+        flex.with_column(mr: 2) do
+          render(
+            OpenProject::Common::AttributeLabelComponent.new(
+              attribute: :status,
+              model: project,
+              current_user: user
+            )
           )
-        )
+        end
       end
     end
   end

@@ -88,6 +88,8 @@ cs:
     button_list_view: "Zobrazit jako seznam"
     button_show_view: "Celá obrazovka"
     button_log_time: "Čas protokolu"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "Více"
     button_open_details: "Otevřít podrobností - panel"
     button_close_details: "Zavřít zobrazení podrobností"
@@ -288,17 +290,6 @@ cs:
         format:
           date: "%{attribute} není platné datum - RRRR-MM-DD očekáváno."
         general: "Došlo k chybě."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Přečtěte si o nových funkcích a aktualizacích produktů."
-          learn_about: "Learn more about all new features"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                The release contains various new features and improvements, such as <br> <ul class="%{list_styling_class}"> <li>UX/UI improvements for a more modern look.</li> <li>Meetings: Option to mute email notifications and ICS.</li> <li>Ongoing timers shown in the My time tracking module.</li> <li>Progress reporting: % Complete sum also shown in Status-based mode.</li> <li>Nextcloud Health check: Indicate missing token exchange capability (Enterprise add-on).</li> </ul>
     ical_sharing_modal:
       title: "Přihlásit kalendář k odběru"
       inital_setup_error_message: "Při načítání dat došlo k chybě."
@@ -324,7 +315,7 @@ cs:
     label_added_time_by: 'Přidal <a href="%{authorLink}">%{author}</a> v %{age}'
     label_ago: "dnů před"
     label_all: "vše"
-    label_all_projects: "All projects"
+    label_all_projects: "Všechny projekty"
     label_all_uppercase: "Vše"
     label_all_work_packages: "všechny pracovní balíčky"
     label_and: "a"
@@ -444,7 +435,7 @@ cs:
     label_sort_lower: "Přesunout níž"
     label_sorting: "Řazení"
     label_spent_time: "Strávený čas"
-    label_star_query: "Oblíbená"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Stiskněte Enter pro uložení."
     label_public_query: "Veřejné"
     label_sum: "Suma"
@@ -784,7 +775,7 @@ cs:
     autocompleter:
       placeholder: "Zadejte hledaný text"
       notFoundText: "Nenalezeny žádné položky"
-      search: "Search"
+      search: "Vyhledávání"
       project:
         placeholder: "Vybrat projekt"
     repositories:
@@ -979,7 +970,7 @@ cs:
           edit: "Upravit připomínku"
         subtitle: "Za tento pracovní balíček obdržíte oznámení ve zvoleném čase."
         presets:
-          tomorrow: "Tomorrow"
+          tomorrow: "Zítra"
           three_days: "In 3 days"
           week: "In a week"
           month: "In a month"
@@ -1082,6 +1073,8 @@ cs:
     notice_successful_delete: "Úspěšné odstranění."
     notice_successful_update: "Úspěšná aktualizace."
     notice_job_started: "Úloha byla zahájena"
+    no_job_id: "No job ID returned from server."
+    invalid_job_response: "Invalid response from server."
     notice_bad_request: "Chybný požadavek."
     relations:
       empty: Neexistuje žádný vztah
@@ -1118,6 +1111,7 @@ cs:
         few: "%{count} podřazených pracovních balíčků"
         many: "%{count} podřazených pracovních balíčků"
         other: "%{count} podřazených pracovních balíčků"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"
@@ -1149,71 +1143,8 @@ cs:
       list: "Tabulka"
       timeline: "Ganttův diagram"
     invite_user_modal:
-      back: "Zpět"
       invite: "Pozvat"
-      title:
-        invite: "Pozvat uživatele"
-        invite_to_project: "Pozvat %{type} do %{project}"
-        User: "uživatel"
-        Group: "Skupina"
-        PlaceholderUser: "placeholder uživatel"
-        invite_principal_to_project: "Pozvat %{principal} do %{project}"
-      project:
-        label: "Projekt"
-        required: "Vyberte projekt"
-        lacking_permission: "Vyberte jiný projekt, protože nemáte oprávnění pro přiřazení uživatelů k aktuálně vybranému."
-        lacking_permission_info: "Chybí vám oprávnění k přiřazení uživatelů k projektu, ve kterém se právě nacházíte. Musíte vybrat jiný."
-        next_button: "Další"
-        no_results: "Nebyly nalezeny žádné projekty"
-        no_invite_rights: "Nejste oprávněni pozvat členy do tohoto projektu"
-      type:
-        required: "Vyberte prosím typ, který chcete pozvat"
-        user:
-          title: "Uživatel"
-          description: "Oprávnění založená na přiřazené roli ve vybraném projektu"
-        group:
-          title: "Skupina"
-          description: "Oprávnění založená na přiřazené roli ve vybraném projektu"
-        placeholder:
-          title: "placeholder uživatel"
-          title_no_ee: "placeholder uživatel (pouze funkce Enterprise Edition)"
-          description: "Nemá přístup k projektu a nejsou odesílány žádné e-maily."
-          description_no_ee: 'Nemá přístup k projektu a nejsou odeslány žádné e-maily. <br>Podívejte se na <a href="%{eeHref}" target="_blank">Enterprise Edition</a>'
-      principal:
-        label:
-          name_or_email: "Jméno nebo e-mailová adresa"
-          name: "Jméno"
-        already_member_message: "Už jsi členem %{project}"
-        no_results_user: "Nebyli nalezeni žádní uživatelé"
-        invite_user: "Pozvat"
-        no_results_placeholder: "Nebyly nalezeny žádné placeholdery"
-        create_new_placeholder: "Vytvořit nový placeholder"
-        no_results_group: "Nebyly nalezeny žádné skupiny"
-        next_button: "Další"
-        required:
-          user: "Vyberte prosím uživatele"
-          placeholder: "Vyberte prosím placeholder"
-          group: "Zvolte prosím skupinu."
-      role:
-        label: "Role v %{project}"
-        no_roles_found: "Nebyly nalezeny žádné role."
-        description: >-
-          Toto je role, kterou uživatel obdrží, když se připojí k vašemu projektu. Role vymezuje, která změny mohou provádět a jaké informace mohou vidět. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Další informace o rolích a oprávněních. </a>
-        required: "Vyberte prosím roli"
-        next_button: "Další"
-      message:
-        label: "Pozvánka"
-        description: "Pošleme uživateli e-mail, ke kterému můžete přidat osobní zprávu. Vysvětlení pozvánky by mohlo být užitečné, nebo pár informací o projektu, které by jim pomohly začít."
-        next_button: "Další"
-      summary:
-        next_button: "Odeslat pozvánku"
-      success:
-        title: "%{principal} byl pozván!"
-        description:
-          user: "Uživatel se nyní může přihlásit do %{project}. Mezitím již můžete s tímto uživatelem plánovat a přiřazovat například pracovní balíčky."
-          placeholder: "Zástupného uživatele lze nyní použít v %{project}. Mezitím již můžete plánovat s tímto uživatelem a přiřadit mu například pracovní balíčky."
-          group: "Skupina je nyní součástí %{project}. Mezitím již můžete s touto skupinou plánovat a přiřadit například pracovní balíčky."
-        next_button: "Pokračovat"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "Status vyloučen z součtů hierarchie"
@@ -1230,13 +1161,15 @@ cs:
       selected_filter:
         all: "Všechny projekty"
         selected: "Pouze vybrané"
-      search_placeholder: "Hledat projekt..."
+      search_placeholder: "Search projects..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Zahrnout všechny podprojekty"
       tooltip:
         include_all_selected: "Projekt je již zahrnut, protože Zahrnout všechny podprojekty je povoleno."
         current_project: "Toto je aktuální projekt, ve kterém se nacházíte."
         does_not_match_search: "Projekt neodpovídá kritériím vyhledávání."
       no_results: "Žádný projekt neodpovídá vašim kritériím vyhledávání."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Směrný plán"
       clear: "Vyčistit"

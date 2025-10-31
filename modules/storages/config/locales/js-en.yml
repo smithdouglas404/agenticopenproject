@@ -18,7 +18,8 @@ en:
 
       types:
         nextcloud: "Nextcloud"
-        one_drive: "OneDrive/SharePoint"
+        one_drive: "OneDrive"
+        sharepoint: "SharePoint"
         default: "Storage"
 
       information:

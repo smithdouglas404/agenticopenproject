@@ -26,6 +26,10 @@ he:
   activerecord:
     models:
       document: "מסמך"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "כותרת"
   activity:
     filter:
       document: "מסמכים"
@@ -33,6 +37,22 @@ he:
   default_doc_category_user: "User documentation"
   enumeration_doc_categories: "קטגוריות מסמכים"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "שם"
+      type: "סוג"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "סוגים"
     label_attachment_author: "Attachment author"
     label_categories: "Categories"
     new_category: "קטגוריה חדשה"
@@ -40,9 +60,9 @@ he:
   label_document_new: "מסמך חדש"
   label_document_plural: "מסמכים"
   label_documents: "מסמכים"
-  label_document_title: "Title"
-  label_document_description: "Description"
-  label_document_category: "Category"
+  label_document_title: "כותרת"
+  label_document_description: "תיאור"
+  label_document_category: "קטגוריה"
   permission_manage_documents: "ניהול מסמכים"
   permission_view_documents: "צפיה במסמכים"
   project_module_documents: "מסמכים"

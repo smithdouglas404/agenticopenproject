@@ -40,18 +40,18 @@ class RecurringMeeting < ApplicationRecord
   belongs_to :project
   belongs_to :author, class_name: "User"
 
-  validates_presence_of :start_time, :title, :frequency, :end_after, :time_zone
-  validates_presence_of :end_date, if: -> { end_after_specific_date? }
-  validates_numericality_of :iterations,
-                            only_integer: true,
+  validates :start_time, :title, :frequency, :end_after, :time_zone, presence: true
+  validates :end_date, presence: { if: -> { end_after_specific_date? } }
+  validates :iterations,
+            numericality: { only_integer: true,
                             greater_than_or_equal_to: 1,
                             less_than_or_equal_to: MAX_ITERATIONS,
-                            if: -> { end_after_iterations? }
-  validates_numericality_of :interval,
-                            only_integer: true,
+                            if: -> { end_after_iterations? } }
+  validates :interval,
+            numericality: { only_integer: true,
                             greater_than_or_equal_to: 1,
                             less_than_or_equal_to: MAX_INTERVAL,
-                            if: -> { !frequency_working_days? }
+                            if: -> { !frequency_working_days? } }
 
   validate :end_date_constraints,
            if: -> { end_after_specific_date? }
@@ -61,8 +61,8 @@ class RecurringMeeting < ApplicationRecord
   # Unset any previously set schedule before running validations
   before_validation :unset_schedule
 
-  after_save :unset_schedule
   before_destroy :remove_jobs
+  after_save :unset_schedule
 
   enum :frequency,
        {
@@ -97,6 +97,10 @@ class RecurringMeeting < ApplicationRecord
     includes(:project)
       .references(:projects)
       .merge(Project.allowed_to(args.first || User.current, :view_meetings))
+  }
+
+  scope :participated_by, ->(user) {
+    left_outer_joins(template: :participants).where(participants: { user_id: user.id })
   }
 
   # Virtual attributes that can be passed on to the template on save
@@ -216,7 +220,7 @@ class RecurringMeeting < ApplicationRecord
   def reschedule_required?(previous: false)
     (previous ? previous_changes : changes)
       .keys
-      .intersect?(%w[frequency start_date start_time start_time_hour iterations interval end_after end_date])
+      .intersect?(%w[frequency start_date start_time start_time_hour iterations interval end_after end_date location])
   end
 
   def scheduled_occurrences(limit:)
@@ -300,10 +304,6 @@ class RecurringMeeting < ApplicationRecord
 
   def end_date_constraints
     return if end_date.nil?
-
-    if end_date < Date.current
-      errors.add(:end_date, :after_today)
-    end
 
     if parsed_start_date.present? && end_date < parsed_start_date
       errors.add(:end_date, :after, date: format_date(parsed_start_date))

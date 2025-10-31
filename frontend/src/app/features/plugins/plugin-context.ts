@@ -1,4 +1,4 @@
-import { Injector, NgZone } from '@angular/core';
+import { ApplicationRef, Injector, NgZone } from '@angular/core';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import {
@@ -87,6 +87,9 @@ export class OpenProjectPluginContext {
 
   // Angular zone reference
   @InjectField() public readonly zone:NgZone;
+
+  // Angular application reference
+  @InjectField() public readonly appRef:ApplicationRef;
 
   // Angular2 global injector reference
   constructor(public readonly injector:Injector) {

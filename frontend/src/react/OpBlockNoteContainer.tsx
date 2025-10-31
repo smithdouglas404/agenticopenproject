@@ -28,54 +28,173 @@
  * ++
  */
 
-import { BlockNoteSchema, defaultBlockSpecs, filterSuggestionItems } from "@blocknote/core";
-import { BlockNoteView } from "@blocknote/mantine";
-import { getDefaultReactSlashMenuItems, SuggestionMenuController, useCreateBlockNote } from "@blocknote/react";
-import { dummyBlockSpec, getDefaultOpenProjectSlashMenuItems, openProjectWorkPackageBlockSpec } from "op-blocknote-extensions";
-import { useEffect, useState } from "react";
-import { OpTheme } from "core-app/core/setup/globals/theme-utils";
+import { BlockNoteEditorOptions, BlockNoteSchema, defaultBlockSpecs, filterSuggestionItems } from '@blocknote/core';
+import { User } from '@blocknote/core/comments';
+import * as blockNoteLocales from '@blocknote/core/locales';
+import { BlockNoteView } from '@blocknote/mantine';
+import { getDefaultReactSlashMenuItems, SuggestionMenuController, useCreateBlockNote } from '@blocknote/react';
+import { HocuspocusProvider } from '@hocuspocus/provider';
+import { OpColorMode } from 'core-app/core/setup/globals/theme-utils';
+import { getDefaultOpenProjectSlashMenuItems, initOpenProjectApi, openProjectWorkPackageBlockSpec } from 'op-blocknote-extensions';
+import { useEffect, useState } from 'react';
+import * as Y from 'yjs';
+import { IUploadFile } from 'core-app/core/upload/upload.service';
 
 export interface OpBlockNoteContainerProps {
-  inputField: HTMLInputElement;
-  inputText?: string;
+  inputField:HTMLInputElement;
+  inputText?:string;
+  hocuspocusUrl:string;
+  oauthToken:string,
+  activeUser:User;
+  documentName:string;
+  documentId:string;
+  openProjectUrl:string;
+  attachmentsUploadUrl:string;
 }
 
 const schema = BlockNoteSchema.create({
   blockSpecs: {
     ...defaultBlockSpecs,
-    openProjectWorkPackage: openProjectWorkPackageBlockSpec,
-    dummy: dummyBlockSpec,
+    openProjectWorkPackage: openProjectWorkPackageBlockSpec(),
   },
 });
 
-const detectTheme = (): OpTheme => {
-  if (document.body.getAttribute('data-color-mode') === 'dark') {
-    return 'dark';
-  }
-  return 'light';
-};
+const detectTheme = ():OpColorMode => { return window.OpenProject.theme.detectOpColorMode(); };
 
-export default function OpBlockNoteContainer({ inputField, inputText }: OpBlockNoteContainerProps) {
+export default function OpBlockNoteContainer({ inputField,
+                                               inputText,
+                                               hocuspocusUrl,
+                                               oauthToken,
+                                               activeUser,
+                                               documentName,
+                                               documentId,
+                                               openProjectUrl,
+                                               attachmentsUploadUrl }:OpBlockNoteContainerProps) {
   const [isLoading, setIsLoading] = useState(true);
 
-  const editor = useCreateBlockNote({ schema });
+  initOpenProjectApi({ baseUrl: openProjectUrl });
+
+  const userLocale = window.I18n.locale;
+  const blockNoteLocaleString = Object.keys(blockNoteLocales).includes(userLocale) ? userLocale : 'en';
+  const blockNoteLocale = blockNoteLocales[blockNoteLocaleString as keyof typeof blockNoteLocales];
+
+  let doc = new Y.Doc();
+
+  const collaborationEnabled = Boolean(hocuspocusUrl && documentName && oauthToken && activeUser);
+  let hocuspocusProvider:HocuspocusProvider | null = null;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let editorParams:Partial<BlockNoteEditorOptions<any, any, any>>;
+  if(collaborationEnabled) {
+    const url = new URL(hocuspocusUrl);
+    url.searchParams.set('document_id', documentId);
+    url.searchParams.set('openproject_base_path', openProjectUrl);
+
+    hocuspocusProvider = new HocuspocusProvider({
+      url: url.toString(),
+      name: documentName,
+      token: oauthToken,
+      document: doc
+    });
+
+    editorParams = {
+      schema,
+      collaboration: {
+        provider: hocuspocusProvider,
+        fragment: doc.getXmlFragment('document-store'),
+        user: {
+          name: activeUser.username,
+          color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'),
+        },
+        showCursorLabels: 'activity'
+      },
+      dictionary: blockNoteLocale,
+      uploadFile,
+    };
+  } else { // collaboration disabled
+    if (inputText) {
+      try {
+        const update = Uint8Array.from(atob(inputText), c => c.charCodeAt(0));
+        Y.applyUpdate(doc, update);
+      } catch (e) {
+        console.error('Failed to load document binary', e);
+        doc = new Y.Doc();
+      }
+    }
+
+    editorParams = {
+      schema,
+      collaboration: {
+        provider: null,
+        fragment: doc.getXmlFragment('document-store'),
+        user: {
+          name: activeUser.username,
+          color: '#333333',
+        },
+      },
+      dictionary: blockNoteLocale,
+      uploadFile,
+    };
+  }
+
+  const editor = useCreateBlockNote(editorParams, [activeUser]);
   type EditorType = typeof editor;
 
-  const getCustomSlashMenuItems = (editor: EditorType) => {
+  const fileToIUploadFile = (file:File):IUploadFile => ({
+    file: file
+  });
+
+  async function uploadFile(file:File) {
+    const pluginContext = await window.OpenProject.getPluginContext();
+    try {
+      const service = pluginContext.services.attachmentsResourceService;
+      const iUploadFile = fileToIUploadFile(file);
+      const result = await service.addAttachments('documents', attachmentsUploadUrl, [iUploadFile]).toPromise();
+
+      return result?.[0]._links.downloadLocation.href ?? '';
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch(error:any) {
+      const toastService = pluginContext.services.notifications;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      toastService.addError(error);
+
+      return '';
+    }
+  }
+
+  const getCustomSlashMenuItems = (editor:EditorType) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return [
       ...getDefaultReactSlashMenuItems(editor),
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       ...getDefaultOpenProjectSlashMenuItems(editor),
     ];
   };
 
   useEffect(() => {
-    async function loadInitialContent() {
-      const blocks = await editor.tryParseMarkdownToBlocks(inputText || "");
-      editor.replaceBlocks(editor.document, blocks);
+    const updateInput = () => {
+      const update = Y.encodeStateAsUpdate(doc);
+      const b64 = btoa(String.fromCharCode(...update));
+      inputField.value = b64;
+    };
+
+    if(collaborationEnabled && hocuspocusProvider) {
+      hocuspocusProvider.on('synced', () => setIsLoading(false));
+      hocuspocusProvider.on('disconnect', () => setIsLoading(true));
+    } else {
+      doc.on('update', updateInput);
       setIsLoading(false);
     }
-    loadInitialContent();
-  }, [editor]);
+
+    return () => {
+      if (collaborationEnabled && hocuspocusProvider) {
+        hocuspocusProvider.destroy();
+      } else {
+        // disable Yjs update listener. Opposite of doc.on('update', ...);
+        doc.off('update', updateInput);
+      }
+    };
+  }, []);
 
   return (
     <>
@@ -84,14 +203,11 @@ export default function OpBlockNoteContainer({ inputField, inputText }: OpBlockN
         <BlockNoteView
           editor={editor}
           theme={detectTheme()}
-          onChange={async (editor) => {
-            const content = await editor.blocksToMarkdownLossy();
-            inputField.value = content;
-          }}
+          className={'block-note-editor-container'}
         >
           <SuggestionMenuController
             triggerCharacter="/"
-            getItems={async (query: string) => filterSuggestionItems(getCustomSlashMenuItems(editor), query)}
+            getItems={async (query:string) => Promise.resolve(filterSuggestionItems(getCustomSlashMenuItems(editor), query))}
           />
         </BlockNoteView>
       }

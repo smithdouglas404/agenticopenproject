@@ -39,6 +39,8 @@ module Exports
         ApplicationController.helpers.link_to(@href, @href)
       end
 
+      delegate :blank?, to: :@href
+
       def to_s
         @href
       end

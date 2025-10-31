@@ -28,35 +28,33 @@
  * ++
  */
 
-export type OpTheme = 'light' | 'light_high_contrast' | 'dark';
+export type OpColorMode = 'light' | 'dark';
+
+export type OpTheme = OpColorMode | 'sync_with_os';
 
 export class ThemeUtils {
-  public applySystemThemeImmediately():void {
-    const theme = this.detectSystemTheme();
-    this.applyThemeToBody(theme);
+  public detectOpColorMode():OpColorMode {
+    return document.body.getAttribute('data-color-mode') as OpColorMode;
   }
 
-  public detectSystemTheme():OpTheme {
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  public detectSystemColorMode():OpColorMode {
+    return this.prefersSystemLightMode() ? 'light' : 'dark';
   }
 
-  public applyThemeToBody(theme:OpTheme):void {
-    const increaseContrast = window.matchMedia('(prefers-contrast: more)').matches;
+  public prefersSystemLightMode():boolean {
+    return window.matchMedia('(prefers-color-scheme: light)').matches;
+  }
+
+  public prefersSystemHighContrast():boolean {
+    return window.matchMedia('(prefers-contrast: more)').matches;
+  }
+
+  public applyThemeToBody(colorMode:OpColorMode, increaseContrast:boolean):void {
     const body = document.body;
+    const otherColorMode = (colorMode === 'light' ? 'dark' : 'light');
 
-    switch (theme) {
-      case 'dark':
-        body.setAttribute('data-color-mode', 'dark');
-        body.setAttribute('data-dark-theme', 'dark');
-        body.removeAttribute('data-light-theme');
-        break;
-      case 'light':
-        body.setAttribute('data-color-mode', 'light');
-        body.setAttribute('data-light-theme', increaseContrast ? 'light_high_contrast' : 'light');
-        body.removeAttribute('data-dark-theme');
-        break;
-      default: // Do nothing
-        break;
-    }
+    body.setAttribute('data-color-mode', colorMode);
+    body.setAttribute(`data-${colorMode}-theme`, increaseContrast ? `${colorMode}_high_contrast` : colorMode);
+    body.removeAttribute(`data-${otherColorMode}-theme`);
   }
 }

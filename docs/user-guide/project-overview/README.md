@@ -182,9 +182,9 @@ You can also archive a project under [project settings](../projects/project-sett
 
 <video src="https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject-Quick_guide-Widgets.mp4"></video>
 
-To add a widget to the project overview, hover around the existing widgets. The **+** icon will appear automatically. 
+To add a widget to the project overview, click the green **+Widget** button. Alternatively, hover around the existing widgets and click the **+** icon that will appear automatically. 
 
-![Add a widget on the project overview page in OpenProject](openproject_user_guide_project_overview_add_widget_icon.png)
+![Add a widget on the project overview page in OpenProject](openproject_user_guide_project_overview_add_widget_button.png)
 
 Click the **+** icon and choose which kind of widget you want to add.
 

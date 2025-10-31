@@ -1,4 +1,9 @@
-import { Injectable, Injector } from '@angular/core';
+import {
+  ChangeDetectorRef, inject,
+  Injectable,
+  Injector,
+  OnDestroy,
+} from '@angular/core';
 import { OpModalService } from 'core-app/shared/components/modal/modal.service';
 import { AddGridWidgetModalComponent } from 'core-app/shared/components/grids/widgets/add/add.modal';
 import { GridWidgetResource } from 'core-app/features/hal/resources/grid-widget-resource';
@@ -14,19 +19,28 @@ import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { GridResource } from 'core-app/features/hal/resources/grid-resource';
 
 @Injectable()
-export class GridAddWidgetService {
+export class GridAddWidgetService implements OnDestroy {
+  readonly opModalService = inject(OpModalService);
+  readonly injector = inject(Injector);
+  readonly halResource = inject(HalResourceService);
+  readonly layout = inject(GridAreaService);
+  readonly drag = inject(GridDragAndDropService);
+  readonly move = inject(GridMoveService);
+  readonly resize = inject(GridResizeService);
+  readonly i18n = inject(I18nService);
+  readonly cdRef = inject(ChangeDetectorRef);
+
   text = { add: this.i18n.t('js.grid.add_widget') };
 
-  constructor(
-    readonly opModalService:OpModalService,
-    readonly injector:Injector,
-    readonly halResource:HalResourceService,
-    readonly layout:GridAreaService,
-    readonly drag:GridDragAndDropService,
-    readonly move:GridMoveService,
-    readonly resize:GridResizeService,
-    readonly i18n:I18nService,
-  ) {
+  private boundListener = this.createNewWidget.bind(this);
+
+
+  constructor() {
+    document.addEventListener('overview:addWidget', this.boundListener);
+  }
+
+  ngOnDestroy():void {
+    document.removeEventListener('overview:addWidget', this.boundListener);
   }
 
   public isAddable(area:GridArea) {
@@ -41,7 +55,7 @@ export class GridAddWidgetService {
       .select(area)
       .then(async (widgetResource) => {
         if (this.layout.isGap(area)) {
-          this.addLine(area as GridGap);
+          this.addLine(area);
         }
 
         const newArea = new GridWidgetArea(widgetResource);
@@ -125,5 +139,11 @@ export class GridAddWidgetService {
 
   public get isAllowed() {
     return this.layout.gridResource && this.layout.gridResource.updateImmediately;
+  }
+
+  private async createNewWidget():Promise<void> {
+    const newGap = new GridGap(1, 2, 1, 2, 'row');
+    await this.widget(newGap);
+    this.cdRef.detectChanges();
   }
 }

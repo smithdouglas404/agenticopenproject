@@ -38,7 +38,7 @@ RSpec.describe "Role updating", :js do
   end
 
   context "with a global role" do
-    let!(:role) { create(:global_role, permissions: %i[manage_user add_project]) }
+    let!(:role) { create(:global_role, permissions: %i[view_all_principals manage_user add_project]) }
 
     it "allows removing permissions" do
       expect do
@@ -48,7 +48,10 @@ RSpec.describe "Role updating", :js do
         click_button "Save"
 
         role.reload
-      end.to change(role, :permissions).from(%i[manage_user add_project]).to([:manage_user])
+      end
+        .to change(role, :permissions)
+        .from(%i[view_all_principals manage_user add_project])
+        .to(%i[view_all_principals manage_user])
     end
   end
 end

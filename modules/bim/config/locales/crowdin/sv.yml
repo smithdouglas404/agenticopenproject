@@ -81,13 +81,13 @@ sv:
       bim/ifc_models/ifc_model: "IFC-modell"
     attributes:
       bim/ifc_models/ifc_model:
-        ifc_attachment: "IFC file"
+        ifc_attachment: "IFC-fil"
         is_default: "Default model"
-        attachments: "IFC file"
+        attachments: "IFC-fil"
       bim/bcf/issue:
         bcf_comment: "BCF comment"
         bim_snippet: "BIM snippet"
-        reference_links: "Reference links"
+        reference_links: "Referenslänkar"
         stage: "Stage"
         viewpoint: "Viewpoint"
     errors:
@@ -126,8 +126,8 @@ sv:
     conversion_status:
       label: 'Processing?'
       pending: 'Pending'
-      processing: 'Processing'
-      completed: 'Completed'
+      processing: 'Bearbetar'
+      completed: 'Slutförda'
       error: 'Fel'
     processing_notice:
       processing_default: 'The following default IFC models are still being processed and are thus not available, yet:'
@@ -136,7 +136,7 @@ sv:
     conversion:
       missing_commands: "The following IFC converter commands are missing on this system: %{names}"
   project_module_ifc_models: "IFC-modeller"
-  permission_view_ifc_models: "View IFC models"
+  permission_view_ifc_models: "Visa IFC-modeller"
   permission_manage_ifc_models: "Import and manage IFC models"
   extraction:
     available:

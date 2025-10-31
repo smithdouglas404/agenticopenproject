@@ -21,7 +21,7 @@
 #++
 fi:
   plugin_budgets_engine:
-    name: 'Budjetit'
+    name: "Budjetit"
   activerecord:
     attributes:
       budget:
@@ -36,6 +36,7 @@ fi:
         type: "Kustannustyyppi"
         labor_budget: "Suunnitellut työvoimakustannukset"
         material_budget: "Suunnitellut yksikkökustannukset"
+        base_amount: "Base amount"
       work_package:
         budget_subject: "Budjetin otsikko"
     models:
@@ -61,13 +62,19 @@ fi:
   help_currency_format: "Käytetty valuuttamuoto. %n korvataan arvolla, %u korvataan valuuttayksiköllä."
   help_override_rate: "Anna tähän arvo ohittaaksesi vakiohinnan."
   label_budget: "Budjetti"
-  label_budget_new: "Uusi budjetti"
-  label_budget_plural: "Budjetit"
+  label_budget_available: "Budget available"
   label_budget_id: "Budjetti #%{id}"
+  label_budget_new: "Uusi budjetti"
+  label_budget_planned: "Budget planned"
+  label_budget_plural: "Budjetit"
+  label_budget_spent: "Budget spent"
+  label_budget_spent_ratio: "Budget spent ratio"
   label_deliverable: "Budjetti"
-  label_example_placeholder: 'e.g., %{decimal}'
+  label_example_placeholder: "e.g., %{decimal}"
   label_view_all_budgets: "Näytä kaikki budjetit"
   label_yes: "Kyllä"
+  label_budget_totals: "Totals"
+  label_budget_details: "Budget details"
   notice_budget_conflict: "Work packages must be of the same project."
   notice_no_budgets_available: "Budjetteja ei ole saatavilla."
   permission_edit_budgets: "Budjettien muokkaus"

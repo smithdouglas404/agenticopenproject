@@ -88,6 +88,8 @@ lt:
     button_list_view: "Sąrašo vaizdas"
     button_show_view: "Viso ekrano vaizdas"
     button_log_time: "Registruoti laiką"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "Daugiau"
     button_open_details: "Atverti detalų vaizdą"
     button_close_details: "Užverti detalų vaizdą"
@@ -288,17 +290,6 @@ lt:
         format:
           date: "%{attribute} nėra tinkama data - tikimasi YYYY-MM-DD."
         general: "Įvyko klaida."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Skaitykite apie naujas savybes ir produkto atnaujinimus."
-          learn_about: "Learn more about all new features"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                The release contains various new features and improvements, such as <br> <ul class="%{list_styling_class}"> <li>UX/UI improvements for a more modern look.</li> <li>Meetings: Option to mute email notifications and ICS.</li> <li>Ongoing timers shown in the My time tracking module.</li> <li>Progress reporting: % Complete sum also shown in Status-based mode.</li> <li>Nextcloud Health check: Indicate missing token exchange capability (Enterprise add-on).</li> </ul>
     ical_sharing_modal:
       title: "Prenumeruoti kalendorių"
       inital_setup_error_message: "Gaunant duomenis įvyko klaida."
@@ -324,7 +315,7 @@ lt:
     label_added_time_by: 'Pridėjo <a href="%{authorLink}">%{author}</a> %{age}'
     label_ago: "dienų prieš"
     label_all: "visi"
-    label_all_projects: "All projects"
+    label_all_projects: "Visi projektai"
     label_all_uppercase: "Visi"
     label_all_work_packages: "visi darbų paketai"
     label_and: "ir"
@@ -444,7 +435,7 @@ lt:
     label_sort_lower: "Žemyn"
     label_sorting: "Rikiavimas"
     label_spent_time: "Praleista laiko"
-    label_star_query: "Mėgiamiausi"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Saugojimui spauskite enter."
     label_public_query: "Viešas"
     label_sum: "Suma"
@@ -699,7 +690,7 @@ lt:
           last_day: "Paskutinė diena"
     text_are_you_sure: "Ar esate įsitikinę?"
     text_are_you_sure_to_cancel: "You have unsaved changes on this page. Are you sure you want to discard them?"
-    breadcrumb: "Breadcrumb"
+    breadcrumb: "Susijusi informacija"
     text_data_lost: "Visa įvesta informacija bus prarasta."
     text_user_wrote: "%{value} parašė:"
     types:
@@ -784,7 +775,7 @@ lt:
     autocompleter:
       placeholder: "Paieškai pradėkite rinkti tekstą"
       notFoundText: "Nieko nerasta"
-      search: "Search"
+      search: "Paieška"
       project:
         placeholder: "Pasirinkite projektą"
     repositories:
@@ -1082,6 +1073,8 @@ lt:
     notice_successful_delete: "Sėkmingas panaikinimas."
     notice_successful_update: "Sėkmingai atnaujinta."
     notice_job_started: "darbas pradėtas."
+    no_job_id: "No job ID returned from server."
+    invalid_job_response: "Invalid response from server."
     notice_bad_request: "Netinkama užklausa."
     relations:
       empty: Nėra jokių ryšių
@@ -1118,6 +1111,7 @@ lt:
         few: "%{count} darbo paketo vaikai"
         many: "%{count} darbo paketo vaikų"
         other: "%{count} darbų paketo vaikai"
+      hour_string: "%{hours} h"
       hour:
         one: "1 val"
         other: "%{count} val"
@@ -1149,71 +1143,8 @@ lt:
       list: "Stalas"
       timeline: "Gantt"
     invite_user_modal:
-      back: "Atgal"
       invite: "Pakviesti"
-      title:
-        invite: "Pakviesti vartotoją"
-        invite_to_project: "Pakviesti %{type} į %{project}"
-        User: "naudotojas"
-        Group: "grupė"
-        PlaceholderUser: "statytinis naudotojas"
-        invite_principal_to_project: "Pakviesti %{principal} į %{project}"
-      project:
-        label: "Projektas"
-        required: "Pasirinkite projektą"
-        lacking_permission: "Prašome pasirinkti kitą projektą, nes dabar pasirinktame jūs neturite teisių priskirti naudotojus."
-        lacking_permission_info: "Jums trūksta teisių priskirti naudotojus projekte, kuriame dabar esate. Turėtumėte pasirinkti kitą projektą."
-        next_button: "Kitas"
-        no_results: "Nerasta jokių projektų"
-        no_invite_rights: "Jums neleidžiama kviesti narių į projektą"
-      type:
-        required: "Prašome pasirinkti kokio tipo dalyvį kviesti"
-        user:
-          title: "Naudotojas"
-          description: "Teisės, suteiktos pagal pasirinktame projekte turimą vaidmenį"
-        group:
-          title: "Grupė"
-          description: "Teisės, suteiktos pagal pasirinktame projekte turimą rolę"
-        placeholder:
-          title: "Statytinis naudotojas"
-          title_no_ee: "Statytiniai naudotojai (Enterprise versijos priedas)"
-          description: "Neturi prieigos prie projekto ir jokie el. pašto laiškai nebuvo išsiųsti."
-          description_no_ee: 'Neturi prieigos prie projekto ir jokie el. pašto laiškai nebuvo išsiųsti. <br>Pabandykite <a href="%{eeHref}" target="_blank">Enterprise versiją</a>'
-      principal:
-        label:
-          name_or_email: "Vardas arba elektroninio pašto adresas"
-          name: "Vardas"
-        already_member_message: "Jau yra %{project} narys"
-        no_results_user: "Nerasta jokių naudotojų"
-        invite_user: "Pakviesti:"
-        no_results_placeholder: "Nerasta jokių statytinių naudotojų"
-        create_new_placeholder: "Kurti naują statytinį naudotoją:"
-        no_results_group: "Nerasta jokių grupių"
-        next_button: "Kitas"
-        required:
-          user: "Parinkite naudotoją"
-          placeholder: "Prašome parinkti statytinį naudotoją"
-          group: "Prašome parinkti grupę"
-      role:
-        label: "Vaidmuo projekte %{project}"
-        no_roles_found: "Nerasta jokių vaidmenų"
-        description: >-
-          Tai yra vaidmuo, kurį naudotojas gaus, kai prisijungs prie jūsų projekto. Vaidmuo nurodo, kokius veiksmus leidžiama atlikti ir kokią informaciją galima matyti. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Sužinokite daugiau apie vaidmenis ir teises. </a>
-        required: "Prašome parinkti vaidmenį"
-        next_button: "Kitas"
-      message:
-        label: "Kvietimo pranešimas"
-        description: "Mes siųsime el. pašto laišką naudotojui, į kurį jūs galite pridėti asmeninį pranešimą. Paaiškinimas, kodėl šis pranešimas buvo atsiųstas, galėtų būti naudingas gavėjui. Taipogi šiek tiek informacijos apie projektą galbūt galėtų padėti pradėti darbą su projektu."
-        next_button: "Kitas"
-      summary:
-        next_button: "Siųsti pakvietimą"
-      success:
-        title: "%{principal} buvo pakviestas!"
-        description:
-          user: "Naudotojas gali prisijungti ir pasiekti %{project}. Tuo pačiu, jūs jau galite planuoti darbus su šiuo naudotoju ir pavyzdžiui priskirti jam darbo užduotis."
-          placeholder: "Statytinis naudotojas gali prisijungti ir pasiekti %{project}. Tuo pačiu, jūs jau galite planuoti darbus su šiuo naudotoju ir pavyzdžiui priskirti jam darbo užduotis."
-          group: "Grupė jau tapo %{project} dalimi. Tuo pačiu, jūs jau galite planuoti darbus su šia grupe ir pavyzdžiui priskirti jai darbo užduotis."
-        next_button: "Tęsti"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "Status excluded from hierarchy totals"
@@ -1230,13 +1161,15 @@ lt:
       selected_filter:
         all: "Visi projektai"
         selected: "Tik pasirinktus"
-      search_placeholder: "Ieškoti projekte..."
+      search_placeholder: "Search projects..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Įtraukti visus sub-projektus"
       tooltip:
         include_all_selected: "Projektas jau įtrauktas, nes įjungta parinktis įtraukti visus sub-projektus."
         current_project: "Tai dabartinis projektas, kuriame jūs esate."
         does_not_match_search: "Projektas neatitinka paieškos kriterijaus."
       no_results: "Nei vienas projektas neatitinka jūsų paieškos kriterijaus."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "Bazinė linija"
       clear: "Išvalyti"

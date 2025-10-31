@@ -42,6 +42,7 @@ export type WorkPackageAction = {
   indexBy?:(actions:WorkPackageAction[]) => number,
   link?:string;
   href?:string;
+  hidden?:boolean;
 };
 
 @Injectable()

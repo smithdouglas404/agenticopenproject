@@ -26,8 +26,6 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-/* jshint expr: true */
-
 import { HookService } from 'core-app/features/plugins/hook-service';
 
 describe('HookService', () => {

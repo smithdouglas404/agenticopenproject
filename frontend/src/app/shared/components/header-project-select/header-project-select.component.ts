@@ -64,6 +64,8 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
 
   public textFieldFocused = false;
 
+  public portfolioModelsEnabled = this.configuration.activeFeatureFlags.includes('portfolioModels');
+
   public canCreateNewProjects$ = this.currentUserService.hasCapabilities$('projects/create', 'global');
 
   public projects$ = combineLatest([
@@ -108,7 +110,7 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
     .apiV3Service
     .projects
     .signalled(
-      ApiV3Filter('favored', '=', true),
+      ApiV3Filter('favorited', '=', true),
       [
         'elements/id',
       ],
@@ -123,7 +125,7 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
 
   public text = {
     all: this.I18n.t('js.label_all_uppercase'),
-    favored: this.I18n.t('js.label_favorites'),
+    favorited: this.I18n.t('js.label_favorites'),
     no_favorites: this.I18n.t('js.favorite_projects.no_results'),
     no_favorites_subtext: this.I18n.t('js.favorite_projects.no_results_subtext'),
     project: {
@@ -133,14 +135,16 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
       select: this.I18n.t('js.label_all_projects'),
     },
     search_placeholder: this.I18n.t('js.include_projects.search_placeholder'),
+    search_favorites_placeholder: this.I18n.t('js.include_projects.search_placeholder_favorites'),
     no_results: this.I18n.t('js.include_projects.no_results'),
+    no_favorite_results: this.I18n.t('js.include_projects.no_favorite_results'),
   };
 
-  public displayMode:'all'|'favored';
+  public displayMode:'all'|'favorited';
 
   public displayModeOptions = [
     { value: 'all', title: this.text.all },
-    { value: 'favored', title: this.text.favored },
+    { value: 'favorited', title: this.text.favorited },
   ];
 
   /* This seems like a way too convoluted loading check, but there's a good reason we need it.
@@ -193,7 +197,7 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
   }
 
   ngOnInit():void {
-    const stored = window.OpenProject.guardedLocalStorage(this.displayModeLocalStorageKey) as 'all'|'favored'|undefined;
+    const stored = window.OpenProject.guardedLocalStorage(this.displayModeLocalStorageKey) as 'all'|'favorited'|undefined;
     this.displayMode = stored || 'all';
   }
 
@@ -207,7 +211,7 @@ export class OpHeaderProjectSelectComponent extends UntilDestroyedMixin implemen
     });
   }
 
-  displayModeChange(mode:'all'|'favored'):void {
+  displayModeChange(mode:'all'|'favorited'):void {
     this.displayMode = mode;
     window.OpenProject.guardedLocalStorage(this.displayModeLocalStorageKey, mode);
 

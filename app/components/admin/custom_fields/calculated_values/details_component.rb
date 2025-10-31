@@ -31,6 +31,7 @@
 module Admin::CustomFields::CalculatedValues
   class DetailsComponent < ApplicationComponent
     include ApplicationHelper
+    include EnterpriseHelper
     include OpPrimer::ComponentHelpers
     include OpTurbo::Streamable
 

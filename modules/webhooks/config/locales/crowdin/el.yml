@@ -31,7 +31,7 @@ el:
       events:
         created: "Δημιουργήθηκε"
         updated: "Ενημερωμένο"
-        comment: "Comment"
+        comment: "Σχόλιο"
         internal_comment: "Internal comment"
       explanation:
         text: >

@@ -312,6 +312,7 @@ project_roles:
       - :comment_news
       - :view_wiki_pages
       - :view_project_attributes
+      - :view_project_phases
   - reference: :default_role_anonymous
     t_name: Anonymous
     position: 1
@@ -320,6 +321,7 @@ project_roles:
       - :view_work_packages
       - :view_wiki_pages
       - :view_project_attributes
+      - :view_project_phases
   - reference: :default_role_member
     t_name: Member
     position: 3
@@ -378,6 +380,7 @@ project_roles:
       - :view_internal_comments
       - :add_internal_comments
       - :edit_own_internal_comments
+      - :view_project_phases
   - reference: :default_role_reader
     t_name: Reader
     position: 4
@@ -402,6 +405,7 @@ project_roles:
       - :view_team_planner
       - :view_shared_work_packages
       - :view_project_attributes
+      - :view_project_phases
   - reference: :default_role_project_admin
     t_name: Project admin
     position: 5
@@ -415,6 +419,8 @@ global_roles:
       - :create_user
       - :manage_user
       - :manage_placeholder_user
+      - :view_all_principals
+      - :invite_users_by_email
   - reference: :default_role_standard_global
     t_name: Standard global role
     position: 7

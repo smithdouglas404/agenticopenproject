@@ -3,7 +3,7 @@ lt:
   js:
     team_planner:
       add_existing: 'Pridėti esamą'
-      label_team_planner_plural: 'Team planners'
+      label_team_planner_plural: 'Komandos planai'
       add_existing_title: 'Pridėti esamus darbų paketus'
       create_label: 'Komandos planas'
       create_title: 'Kurti naują komandos planą'

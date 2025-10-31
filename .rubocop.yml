@@ -24,7 +24,7 @@ AllCops:
   # Enable any new cops in new versions by default
   NewCops: enable
   Exclude:
-    - '**/node_modules/**/*'
+    - "**/node_modules/**/*"
 
 # Disable it as it is deprecated
 # From https://docs.rubocop.org/rubocop-capybara/cops_capybara.html#capybaraclicklinkorbuttonstyle
@@ -42,12 +42,11 @@ Gemspec/RequiredRubyVersion:
   Exclude:
     - modules/**/*.gemspec
 
-
 Layout/ConditionPosition:
   Enabled: false
 
 Layout/DotPosition:
-    EnforcedStyle: leading
+  EnforcedStyle: leading
 
 Layout/LineLength:
   Max: 130
@@ -126,8 +125,8 @@ Metrics/ParameterLists:
 Metrics/AbcSize:
   Enabled: true
   Exclude:
-    - 'spec/**/*.rb'
-    - 'modules/*/spec/**/*.rb'
+    - "spec/**/*.rb"
+    - "modules/*/spec/**/*.rb"
 
 Naming/AccessorMethodName:
   Enabled: false
@@ -167,7 +166,7 @@ Rails/ContentTag:
 Rails/I18nLocaleAssignment:
   Enabled: true
   Exclude:
-    - 'spec/**/*.rb'
+    - "spec/**/*.rb"
 
 # Do not bother if `let` statements use an index in their name
 RSpec/IndexedLet:
@@ -189,8 +188,8 @@ RSpec/ExampleLength:
   Max: 25
   Enabled: true
   Exclude:
-    - 'spec/features/**/*.rb'
-    - 'modules/*/spec/features/**/*.rb'
+    - "spec/features/**/*.rb"
+    - "modules/*/spec/features/**/*.rb"
 
 # We have specs that have no expect(..) syntax,
 # but only helper classes that expect themselves
@@ -200,8 +199,8 @@ RSpec/NoExpectationExample:
 RSpec/DescribeClass:
   Enabled: true
   Exclude:
-    - 'spec/features/**/*.rb'
-    - 'modules/*/spec/features/**/*.rb'
+    - "spec/features/**/*.rb"
+    - "modules/*/spec/features/**/*.rb"
 
 # Nothing wrong with `include_examples` when used properly.
 RSpec/IncludeExamples:
@@ -215,11 +214,12 @@ RSpecRails/HttpStatus:
 Rails/DynamicFindBy:
   Enabled: true
   Exclude:
-    - 'spec/features/**/*.rb'
-    - 'spec/support/**/*.rb'
-    - 'modules/*/spec/features/**/*.rb'
+    - "spec/features/**/*.rb"
+    - "spec/support/**/*.rb"
+    - "modules/*/spec/features/**/*.rb"
   Whitelist:
     - find_by_login
+    - find_by_mail
 
 # Allow reorder to prevent find each cop triggering
 Rails/FindEach:
@@ -240,8 +240,8 @@ RSpec/MultipleExpectations:
   Max: 15
   Enabled: true
   Exclude:
-    - 'spec/features/**/*.rb'
-    - 'modules/*/spec/features/**/*.rb'
+    - "spec/features/**/*.rb"
+    - "modules/*/spec/features/**/*.rb"
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: false
@@ -260,6 +260,8 @@ RSpec/SpecFilePathFormat:
   CustomTransform:
     OpenIDConnect: openid_connect
     OAuthClients: oauth_clients
+    OAuth: oauth
+    ICal: ical
   IgnoreMethods: true
 
 # Prevent  "fit" or similar to be committed
@@ -277,6 +279,11 @@ RSpec/LeadingSubject:
 RSpec/NamedSubject:
   Enabled: false
 
+# expect not_to change is not working as expected
+# if you chain it with multiple expected changes
+RSpec/ChangeByZero:
+  Enabled: false
+
 RSpec/ContextWording:
   Prefixes:
     - and
@@ -287,7 +294,7 @@ RSpec/ContextWording:
     - having
     - if
     - in
-    - 'on'
+    - "on"
     - to
     - unless
     - via

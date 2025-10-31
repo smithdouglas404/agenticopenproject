@@ -30,6 +30,7 @@ get:
         + name_and_identifier: based on both the name and the identifier.
         + parent_id: filters projects by their parent.
         + principal: based on members of the project.
+        + project_status_code: based on status code of the project
         + storage_id: filters projects by linked storages
         + storage_url: filters projects by linked storages identified by the host url
         + type_id: based on the types active in a project.

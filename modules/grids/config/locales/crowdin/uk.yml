@@ -1,6 +1,17 @@
 uk:
   grids:
     label_widget_in_grid: "Віджет, що міститься в сітці %{grid_name}"
+    widgets:
+      subitems:
+        title: "Піделементи"
+        no_results: "Немає видимих дочірніх об’єктів."
+        view_all_subitems: "Переглянути всі піделементи"
+      members:
+        title: "Останні учасники"
+        no_results: "Немає видимих учасників."
+        view_all_members: "Переглянути всіх учасників"
+      news:
+        no_results: "Нічого нового для звітування."
   activerecord:
     attributes:
       grids/grid:

@@ -49,7 +49,7 @@ Projects and subprojects are displayed according to their hierarchy in the drop-
 
 Alternatively, you can open the list of all existing projects using the [**Global modules**](../../user-guide/home/global-modules/#projects) menu.
 
-Also, you will see your newest and favored projects on the application landing page in the **Projects** section. Here you can simply click on one of the projects to open it. Alternatively, select favorite projects from the **All projects** dropdown menu by using the respective switch.
+Also, you will see your newest and favorited projects on the application landing page in the **Projects** section. Here you can simply click on one of the projects to open it. Alternatively, select favorite projects from the **All projects** dropdown menu by using the respective switch.
 
 ![Favorite projects displayed on OpenProject overview page](openproject_getting_started_favorite_projects.png)
 
@@ -59,7 +59,7 @@ There are several ways to create a new project in OpenProject.
 
 1. Click the green button **+ Project** directly on the system's home screen in the **Project** section.
 
-   ![Button to create a new project on the OpenProjec homepage](openproject_getting_started_project_new_project_button.png)
+   ![Button to create a new project on the OpenProject homepage](openproject_getting_started_project_new_project_button.png)
 
 2. You can use the **+ Project** button at the bottom of *All projects* dropdown menu in the header navigation to create a new project.
 

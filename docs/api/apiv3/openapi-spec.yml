@@ -350,6 +350,8 @@ paths:
     "$ref": "./paths/project_types.yml"
   "/api/v3/projects/{id}/versions":
     "$ref": "./paths/project_versions.yml"
+  "/api/v3/projects/{id}/favorite":
+    "$ref": "./paths/project_favorite.yml"
   "/api/v3/queries":
     "$ref": "./paths/queries.yml"
   "/api/v3/queries/available_projects":
@@ -615,6 +617,8 @@ components:
       $ref: "./components/examples/work_package_create_valid.yml"
     WorkPackageEditSubject:
       $ref: "./components/examples/work_package_edit_subject.yml"
+    WorkPackageWithMetaValidation:
+      $ref: "./components/examples/work_package_with_meta_validation.yml"
 
   responses:
     InvalidQuery:

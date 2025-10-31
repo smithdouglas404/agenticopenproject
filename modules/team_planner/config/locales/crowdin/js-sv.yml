@@ -3,7 +3,7 @@ sv:
   js:
     team_planner:
       add_existing: 'Lägg till befintlig'
-      label_team_planner_plural: 'Team planners'
+      label_team_planner_plural: 'Team planerare'
       add_existing_title: 'Add existing work packages'
       create_label: 'Team planerare'
       create_title: 'Skapa ny teamplanerare'
@@ -15,8 +15,8 @@ sv:
       one_week: '1-week'
       four_weeks: '4-week'
       eight_weeks: '8-week'
-      work_week: 'Work week'
-      today: 'Today'
+      work_week: 'Arbetsvecka'
+      today: 'Idag'
       drag_here_to_remove: 'Drag here to remove assignee and start and end dates.'
       cannot_drag_here: 'Cannot remove the work package due to permissions or editing restrictions.'
       cannot_drag_to_non_working_day: 'This work package cannot start/finish on a non-working day.'

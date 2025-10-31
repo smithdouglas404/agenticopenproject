@@ -26,7 +26,7 @@ class RecurringMeetingsController < ApplicationController
         RecurringMeeting.visible
       end
 
-    @recurring_meetings = show_more_pagination(results)
+    @recurring_meetings = show_more_pagination(results, limit: params[:limit])
 
     respond_to do |format|
       format.html do
@@ -136,15 +136,11 @@ class RecurringMeetingsController < ApplicationController
   end
 
   def end_series
-    call = ::RecurringMeetings::UpdateService
-      .new(model: @recurring_meeting, user: current_user)
-      .call(end_after: "specific_date", end_date: Time.zone.today)
+    call = ::RecurringMeetings::EndService
+      .new(@recurring_meeting, current_user:)
+      .call
 
-    if call.success?
-      @recurring_meeting.scheduled_meetings.upcoming.destroy_all
-    else
-      flash[:error] = call.message
-    end
+    call.apply_flash_message!(flash)
     redirect_to action: :show
   end
 
@@ -209,7 +205,7 @@ class RecurringMeetingsController < ApplicationController
       if params[:occurrence_id].present?
         occurrence = @recurring_meeting.meetings.find_by(id: params[:occurrence_id])
         ["#{@recurring_meeting.title} - #{occurrence.start_time.to_date.iso8601}",
-         service.generate_occurrence(occurrence)]
+         service.generate_single_occurrence(meeting: occurrence)]
       else
         [@recurring_meeting.title, service.generate_series]
       end
@@ -257,7 +253,7 @@ class RecurringMeetingsController < ApplicationController
       .participants
       .invited
       .find_each do |participant|
-      MeetingSeriesMailer.template_completed(
+      MeetingSeriesMailer.invited(
         @recurring_meeting,
         participant.user,
         User.current
@@ -289,7 +285,7 @@ class RecurringMeetingsController < ApplicationController
     @direction = params.fetch(:direction, "upcoming")
   end
 
-  def build_meeting_limits
+  def build_meeting_limits # rubocop:disable Metrics/AbcSize
     @max_count =
       if @direction == "past"
         @recurring_meeting.scheduled_instances(upcoming: false).count
@@ -300,7 +296,7 @@ class RecurringMeetingsController < ApplicationController
         [total, 0].max
       end
 
-    @count = [show_more_limit_param, @max_count].compact.min
+    @count = [show_more_limit_param(limit: params[:limit]), @max_count].compact.min
   end
 
   def scheduled_meeting(start_time)
@@ -311,10 +307,6 @@ class RecurringMeetingsController < ApplicationController
     @scheduled_meeting = @recurring_meeting.scheduled_meetings.find_or_initialize_by(start_time: params[:start_time])
 
     render_400 unless @scheduled_meeting.meeting_id.nil?
-  end
-
-  def find_optional_project
-    @project = Project.find(params[:project_id]) if params[:project_id].present?
   end
 
   def find_meeting

@@ -26,6 +26,10 @@ vi:
   activerecord:
     models:
       document: "Tài liệu"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "Tiêu đề"
   activity:
     filter:
       document: "Tài liệu"
@@ -33,6 +37,22 @@ vi:
   default_doc_category_user: "Tài liệu người dùng"
   enumeration_doc_categories: "Danh mục tài liệu"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "Tên"
+      type: "Kiểu"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "Các loại"
     label_attachment_author: "Tác giả tài liệu đính kèm"
     label_categories: "Categories"
     new_category: "Danh mục mới"
@@ -40,9 +60,9 @@ vi:
   label_document_new: "Tài liệu mới"
   label_document_plural: "Tài liệu"
   label_documents: "Tài liệu"
-  label_document_title: "Title"
-  label_document_description: "Description"
-  label_document_category: "Category"
+  label_document_title: "Tiêu đề"
+  label_document_description: "Mô tả"
+  label_document_category: "Thể loại"
   permission_manage_documents: "Quản lý tài liệu"
   permission_view_documents: "Xem tài liệu"
   project_module_documents: "Tài liệu"

@@ -3,7 +3,7 @@ hu:
   js:
     team_planner:
       add_existing: 'Létező tartalom hozzáadása'
-      label_team_planner_plural: 'Team planners'
+      label_team_planner_plural: 'Csoport tervezők'
       add_existing_title: 'Meglévő munkacsomagok hozzáadása'
       create_label: 'Csoport tervező'
       create_title: 'Új csoport tervező létrehozása'

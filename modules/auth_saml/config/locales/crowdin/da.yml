@@ -56,6 +56,7 @@ da:
       label_mapping: Kortlægning
       label_requested_attribute_for: "Anmodet attribut til: %{attribute}"
       no_results_table: Ingen SAML-identitetsudbydere defineret endnu.
+      notice_created: A new SAML identity provider was successfully created.
       plural: SAML-identitetsudbydere
       singular: SAML-identitetsudbyder
       requested_attributes: Anmodede attributter

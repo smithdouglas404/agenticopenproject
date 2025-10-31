@@ -173,10 +173,11 @@ RSpec.describe "SCIM API Authentication" do
 
         response_body = JSON.parse(last_response.body)
         expect(response_body).to eq(
-          { "detail" => "Requires authentication", "schemas" => ["urn:ietf:params:scim:api:messages:2.0:Error"],
-            "status" => "401" }
+          { "detail" => "This endpoint requires an enterprise subscription of at least corporate",
+            "schemas" => ["urn:ietf:params:scim:api:messages:2.0:Error"],
+            "status" => "403" }
         )
-        expect(last_response).to have_http_status(401)
+        expect(last_response).to have_http_status(403)
       end
     end
   end

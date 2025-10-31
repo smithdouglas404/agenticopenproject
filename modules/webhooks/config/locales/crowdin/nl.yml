@@ -22,7 +22,7 @@ nl:
     plural: Webhooks
     resources:
       time_entry:
-        name: "Tijd invoer"
+        name: "Tijdregistratie"
     outgoing:
       no_results_table: Er zijn nog geen webhooks gedefinieerd.
       label_add_new: Nieuwe webhook toevoegen
@@ -31,7 +31,7 @@ nl:
       events:
         created: "Gemaakt"
         updated: "Bijgewerkt"
-        comment: "Comment"
+        comment: "Commentaar"
         internal_comment: "Internal comment"
       explanation:
         text: >

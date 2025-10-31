@@ -124,11 +124,7 @@ class MeetingAgendaItem < ApplicationRecord
   end
 
   def editable?
-    !(meeting&.closed? || deleted_work_package?)
-  end
-
-  def modifiable?
-    !(meeting&.closed? || (deleted_work_package? && work_package_id.present?))
+    !meeting&.closed?
   end
 
   def copy_attributes

@@ -88,6 +88,8 @@ ka:
     button_list_view: "სიის ხედი"
     button_show_view: "Fullscreen view"
     button_log_time: "ჟურნალში დროის ჩაწერა"
+    button_start_timer: "Start timer"
+    button_stop_timer: "Stop timer"
     button_more: "კიდევ"
     button_open_details: "Open details view"
     button_close_details: "Close details view"
@@ -288,17 +290,6 @@ ka:
         format:
           date: "%{attribute} is no valid date - YYYY-MM-DD expected."
         general: "An error has occurred."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "Read about new features and product updates."
-          learn_about: "Learn more about all new features"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                The release contains various new features and improvements, such as <br> <ul class="%{list_styling_class}"> <li>UX/UI improvements for a more modern look.</li> <li>Meetings: Option to mute email notifications and ICS.</li> <li>Ongoing timers shown in the My time tracking module.</li> <li>Progress reporting: % Complete sum also shown in Status-based mode.</li> <li>Nextcloud Health check: Indicate missing token exchange capability (Enterprise add-on).</li> </ul>
     ical_sharing_modal:
       title: "Subscribe to calendar"
       inital_setup_error_message: "An error occured while fetching data."
@@ -324,7 +315,7 @@ ka:
     label_added_time_by: 'Added by <a href="%{authorLink}">%{author}</a> at %{age}'
     label_ago: "დღის წინ"
     label_all: "ყველა"
-    label_all_projects: "All projects"
+    label_all_projects: "ყველა პროექტი"
     label_all_uppercase: "ყველა"
     label_all_work_packages: "all work packages"
     label_and: "და"
@@ -444,7 +435,7 @@ ka:
     label_sort_lower: "ჩატანა"
     label_sorting: "დალაგება"
     label_spent_time: "დახარჯული დრო"
-    label_star_query: "რჩეულია"
+    label_star_query: "Favorited"
     label_press_enter_to_save: "Press enter to save."
     label_public_query: "საჯარო"
     label_sum: "ჯამი"
@@ -782,7 +773,7 @@ ka:
     autocompleter:
       placeholder: "მოსაძებნად აკრიფეთ"
       notFoundText: "ელემენტები ვერ ვიპოვე"
-      search: "Search"
+      search: "ძებნა"
       project:
         placeholder: "აირჩიეთ პროექტი"
     repositories:
@@ -1080,6 +1071,8 @@ ka:
     notice_successful_delete: "Successful deletion."
     notice_successful_update: "Successful update."
     notice_job_started: "დავალება გაეშვა."
+    no_job_id: "No job ID returned from server."
+    invalid_job_response: "Invalid response from server."
     notice_bad_request: "არასწორი მოთხოვნა."
     relations:
       empty: No relation exists
@@ -1112,6 +1105,7 @@ ka:
       child_work_packages:
         one: "one child work package"
         other: "%{count} work package children"
+      hour_string: "%{hours} h"
       hour:
         one: "1 სთ"
         other: "%{count} სთ"
@@ -1141,71 +1135,8 @@ ka:
       list: "ცხრილი"
       timeline: "განტი"
     invite_user_modal:
-      back: "უკან"
       invite: "მოწვევა"
-      title:
-        invite: "მომხმარებლის მოწვევა"
-        invite_to_project: "Invite %{type} to %{project}"
-        User: "მომხმარებელი"
-        Group: "ჯგუფი"
-        PlaceholderUser: "placeholder user"
-        invite_principal_to_project: "Invite %{principal} to %{project}"
-      project:
-        label: "პროექტი"
-        required: "Please select a project"
-        lacking_permission: "Please select a different project since you lack permissions to assign users to the currently selected."
-        lacking_permission_info: "You lack the permission to assign users to the project you are currently in. You need to select a different one."
-        next_button: "შემდეგი"
-        no_results: "No projects were found"
-        no_invite_rights: "You are not allowed to invite members to this project"
-      type:
-        required: "Please select the type to be invited"
-        user:
-          title: "მომხმარებელი"
-          description: "Permissions based on the assigned role in the selected project"
-        group:
-          title: "ჯგუფი"
-          description: "Permissions based on the assigned role in the selected project"
-        placeholder:
-          title: "Placeholder user"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Has no access to the project and no emails are sent out."
-          description_no_ee: 'Has no access to the project and no emails are sent out. <br>Check out the <a href="%{eeHref}" target="_blank">Enterprise edition</a>'
-      principal:
-        label:
-          name_or_email: "Name or email address"
-          name: "სახელი"
-        already_member_message: "Already a member of %{project}"
-        no_results_user: "No users were found"
-        invite_user: "მოწვევა:"
-        no_results_placeholder: "No placeholders were found"
-        create_new_placeholder: "Create new placeholder:"
-        no_results_group: "No groups were found"
-        next_button: "შემდეგი"
-        required:
-          user: "Please select a user"
-          placeholder: "Please select a placeholder"
-          group: "Please select a group"
-      role:
-        label: "Role in %{project}"
-        no_roles_found: "No roles were found"
-        description: >-
-          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Learn more about roles and permissions. </a>
-        required: "Please select a role"
-        next_button: "შემდეგი"
-      message:
-        label: "Invitation message"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
-        next_button: "შემდეგი"
-      summary:
-        next_button: "Send invitation"
-      success:
-        title: "%{principal} was invited!"
-        description:
-          user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-          placeholder: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-          group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
-        next_button: "გაგრძელება"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "Status excluded from hierarchy totals"
@@ -1222,13 +1153,15 @@ ka:
       selected_filter:
         all: "ყველა პროექტი"
         selected: "მხოლოდ მონიშნული"
-      search_placeholder: "Search project..."
+      search_placeholder: "Search projects..."
+      search_placeholder_favorites: "Search favorites..."
       include_subprojects: "Include all sub-projects"
       tooltip:
         include_all_selected: "Project already included since Include all sub-projects is enabled."
         current_project: "This is the current project you are in."
         does_not_match_search: "Project does not match the search criteria."
       no_results: "No project matches your search criteria."
+      no_favorite_results: "No favorite project matches your search criteria."
     baseline:
       toggle_title: "ბაზისური ხაზი"
       clear: "გასუფთავება"

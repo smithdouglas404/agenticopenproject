@@ -21,20 +21,20 @@
 #++
 ja:
   attributes:
-    additions_count: "Number of additions"
-    deletions_count: "Number of deletions"
-    comments_count: "Comments count"
-    github_html_url: "Pull Request URL"
-    github_app_owner_avatar_url: "Owner avatar URL"
-    review_comments_count: "Review comments count"
-    github: "GitHub identifer"
-    github_avatar_url: "Avatar URL"
-    github_updated_at: "Updated at"
-    github_login: "GitHub login"
-    host: "Host"
-    labels: "Labels"
+    additions_count: "追加数"
+    deletions_count: "削除数"
+    comments_count: "コメント数"
+    github_html_url: "プルリクエストURL"
+    github_app_owner_avatar_url: "オーナーのアバターURL"
+    review_comments_count: "レビューコメント数"
+    github: "GitHub 識別子"
+    github_avatar_url: "アバター URL"
+    github_updated_at: "更新日時"
+    github_login: "GitHubログイン"
+    host: "ホスト"
+    labels: "ラベル"
     repository: "リポジトリ"
-    changed_files_count: "Changed files"
+    changed_files_count: "変更されたファイル"
   button_add_deploy_target: デプロイ先を追加
   label_deploy_target: デプロイ先
   label_deploy_target_new: 新しいデプロイ先
@@ -47,9 +47,9 @@ ja:
     description: "OpenProjectとGitHubを統合してワークフローを改善"
   project_module_github: "GitHub"
   permission_show_github_content: "GitHub コンテンツを表示する"
-  permission_introspection: Read running OpenProject core version and build SHA
+  permission_introspection: OpenProjectコアバージョンの読み込みとSHAのビルド
   text_deploy_target_type_info: >
-    So far we only support OpenProject itself.
+    これまでのところ、OpenProjectそのもののみをサポートしています。
   text_deploy_target_api_key_info: >
-    An OpenProject [API key](docs_url) belonging to a user who has the global introspection permission.
+    グローバルイントロスペクション権限を持つユーザーに属する OpenProject [API キー](docs_url) 。
   text_pull_request_deployed_to: "%{pr_link} は %{deploy_target_link} にデプロイされました"

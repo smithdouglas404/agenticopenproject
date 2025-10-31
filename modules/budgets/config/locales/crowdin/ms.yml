@@ -21,7 +21,7 @@
 #++
 ms:
   plugin_budgets_engine:
-    name: 'Anggaran'
+    name: "Anggaran"
   activerecord:
     attributes:
       budget:
@@ -36,6 +36,7 @@ ms:
         type: "Jenis kos"
         labor_budget: "Kos buruh terancang"
         material_budget: "Kos unit yang dirancang"
+        base_amount: "Base amount"
       work_package:
         budget_subject: "Tajuk anggaran"
     models:
@@ -61,13 +62,19 @@ ms:
   help_currency_format: "Format nilai mata wang yang dipaparkan. %n digantikan dengan nilai mata wang, %u digantikan dengan unit mata wang."
   help_override_rate: "Masukkan nilai disini untuk gantikan kadar default."
   label_budget: "Anggaran"
-  label_budget_new: "Anggaran baharu"
-  label_budget_plural: "Anggaran"
+  label_budget_available: "Budget available"
   label_budget_id: "Anggaran #%{id}"
+  label_budget_new: "Anggaran baharu"
+  label_budget_planned: "Budget planned"
+  label_budget_plural: "Anggaran"
+  label_budget_spent: "Budget spent"
+  label_budget_spent_ratio: "Budget spent ratio"
   label_deliverable: "Anggaran"
-  label_example_placeholder: 'cth., %{decimal}'
+  label_example_placeholder: "cth., %{decimal}"
   label_view_all_budgets: "Lihat semua anggaran"
   label_yes: "Ya"
+  label_budget_totals: "Totals"
+  label_budget_details: "Budget details"
   notice_budget_conflict: "Pakej-pakej kerja mestilah daripada projek yang sama."
   notice_no_budgets_available: "Tiada anggaran yang tersedia."
   permission_edit_budgets: "Edit anggaran"

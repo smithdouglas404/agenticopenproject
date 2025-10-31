@@ -23,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -48,11 +48,25 @@ module CustomFields
         required: true
       )
 
-      details_form.check_box(
-        name: :multi_value,
-        label: I18n.t("activerecord.attributes.custom_field.multi_value"),
-        caption: I18n.t("custom_fields.instructions.multi_select")
-      )
+      if model.is_a?(ProjectCustomField)
+        details_form.select_list(
+          name: :custom_field_section_id,
+          label: I18n.t("activerecord.attributes.project_custom_field.custom_field_section"),
+          required: true
+        ) do |list|
+          ProjectCustomFieldSection.find_each do |cs|
+            list.option(value: cs.id, label: cs.name)
+          end
+        end
+      end
+
+      if model.multi_value_possible?
+        details_form.check_box(
+          name: :multi_value,
+          label: I18n.t("activerecord.attributes.custom_field.multi_value"),
+          caption: I18n.t("custom_fields.instructions.multi_select")
+        )
+      end
 
       details_form.check_box(
         name: :is_required,

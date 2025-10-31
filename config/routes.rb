@@ -55,7 +55,11 @@ Rails.application.routes.draw do
 
   # Respond with 410 gone for APIV2 calls
   match "/api/v2(/*unmatched_route)", to: proc { [410, {}, [""]] }, via: :all
+
+  # Respond with 404 for source maps that are not found
+  # This prevents routing errors in test when developer mode is activated
   match "/assets/compiler.js.map", to: proc { [404, {}, [""]] }, via: :all
+  match "*.css.map", to: proc { [404, {}, [""]] }, via: :all
 
   # Redirect wp short url for work packages to full URL
   get "/wp(/)" => redirect("#{rails_relative_url_root}/work_packages")
@@ -180,6 +184,10 @@ Rails.application.routes.draw do
       as: "custom_style_export_cover",
       constraints: { filename: /[^\/]*/ }
 
+  get "custom_style/:digest/export_footer/:filename" => "custom_styles#export_footer_download",
+      as: "custom_style_export_footer",
+      constraints: { filename: /[^\/]*/ }
+
   get "custom_style/:digest/favicon/:filename" => "custom_styles#favicon_download",
       as: "custom_style_favicon",
       constraints: { filename: /[^\/]*/ }
@@ -204,10 +212,12 @@ Rails.application.routes.draw do
         resource :project, controller: "/admin/custom_fields/custom_field_projects", only: :destroy
         resources :items, controller: "/admin/custom_fields/hierarchy/items" do
           member do
-            get :deletion_dialog
+            get :change_parent, action: :change_parent_dialog
+            post :change_parent, action: :change_parent
+            get :delete, action: :deletion_dialog
+            post :move
             get :new_child, action: :new
             post :new_child, action: :create
-            post :move
           end
         end
       end
@@ -234,7 +244,7 @@ Rails.application.routes.draw do
   end
 
   # generic route for adding/removing favorites
-  scope ":object_type/:object_id", constraints: OpenProject::Acts::Favorable::RouteConstraint do
+  scope ":object_type/:object_id", constraints: OpenProject::Acts::Favoritable::RouteConstraint do
     post "/favorite" => "favorites#favorite"
     delete "/favorite" => "favorites#unfavorite"
   end
@@ -257,7 +267,13 @@ Rails.application.routes.draw do
     resource :menu, only: %i[show]
   end
 
-  resources :projects, except: %i[show edit update] do
+  # Extracted from the resources definition right below so that the
+  # default parameters can be defined.
+  resources :projects,
+            only: %i[new],
+            defaults: { workspace_type: "project" }
+
+  resources :projects, except: %i[new show edit update] do
     scope module: "projects" do
       namespace "settings" do
         resource :general, only: %i[show update], controller: "general" do
@@ -463,6 +479,16 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :portfolios,
+            only: %i[new],
+            defaults: { workspace_type: "portfolio" },
+            controller: "projects"
+
+  resources :programs,
+            only: %i[new],
+            defaults: { workspace_type: "program" },
+            controller: "projects"
+
   resources :project_phases, only: [] do
     member do
       get "/hover_card" => "project_phases/hover_card#show", as: "hover_card"
@@ -503,6 +529,13 @@ Rails.application.routes.draw do
     delete "design/logo" => "custom_styles#logo_delete", as: "custom_style_logo_delete"
     delete "design/export_logo" => "custom_styles#export_logo_delete", as: "custom_style_export_logo_delete"
     delete "design/export_cover" => "custom_styles#export_cover_delete", as: "custom_style_export_cover_delete"
+    delete "design/export_footer" => "custom_styles#export_footer_delete", as: "custom_style_export_footer_delete"
+    delete "design/export_font_regular" => "custom_styles#export_font_regular_delete",
+           as: "custom_style_export_font_regular_delete"
+    delete "design/export_font_bold" => "custom_styles#export_font_bold_delete", as: "custom_style_export_font_bold_delete"
+    delete "design/export_font_italic" => "custom_styles#export_font_italic_delete", as: "custom_style_export_font_italic_delete"
+    delete "design/export_font_bold_italic" => "custom_styles#export_font_bold_italic_delete",
+           as: "custom_style_export_font_bold_italic_delete"
     delete "design/favicon" => "custom_styles#favicon_delete", as: "custom_style_favicon_delete"
     delete "design/touch_icon" => "custom_styles#touch_icon_delete", as: "custom_style_touch_icon_delete"
     post "design/colors" => "custom_styles#update_colors", as: "update_design_colors"
@@ -510,7 +543,9 @@ Rails.application.routes.draw do
     post "design/export_cover_text_color" => "custom_styles#update_export_cover_text_color",
          as: "update_custom_style_export_cover_text_color"
 
-    resource :custom_style, only: %i[update show create], path: "design"
+    resource :custom_style, only: %i[update show create], path: "design" do
+      get :export_demo_pdf_download
+    end
 
     resources :attribute_help_texts, only: %i(index new create edit update destroy)
 
@@ -603,6 +638,16 @@ Rails.application.routes.draw do
           post :link
           delete :unlink
         end
+        resources :items, controller: "/admin/settings/project_custom_fields/hierarchy/items" do
+          member do
+            get :change_parent, action: :change_parent_dialog
+            post :change_parent, action: :change_parent
+            get :delete, action: :deletion_dialog
+            post :move
+            get :new_child, action: :new
+            post :new_child, action: :create
+          end
+        end
       end
       resources :project_custom_field_sections, controller: "/admin/settings/project_custom_field_sections",
                                                 only: %i[create update destroy] do
@@ -690,10 +735,13 @@ Rails.application.routes.draw do
     resources :activities, controller: "work_packages/activities_tab", only: %i[index create edit update] do
       member do
         get :cancel_edit
+        get :emoji_actions
+        get :item_actions
         put :toggle_reaction
       end
 
       collection do
+        get :page_streams
         get :update_streams
         get :update_filter # filter not persisted
         put :update_sorting # sorting is persisted
@@ -774,6 +822,11 @@ Rails.application.routes.draw do
   resources :users, constraints: { id: /(\d+|me)/ }, except: :edit do
     resources :memberships, controller: "users/memberships", only: %i[update create destroy]
 
+    collection do
+      get "/invite" => "users/invite#start_dialog"
+      post "/invite/step" => "users/invite#step"
+    end
+
     member do
       get "/hover_card" => "users/hover_card#show"
       get "/edit(/:tab)" => "users#edit", as: "edit"
@@ -846,7 +899,6 @@ Rails.application.routes.draw do
   scope "my" do
     get "/deletion_info" => "users#deletion_info", as: "delete_my_account_info"
     post "/oauth/revoke_application/:application_id" => "oauth/grants#revoke_application", as: "revoke_my_oauth_application"
-    delete "/storage_token/:id" => "my#delete_storage_token", as: "storage_token_delete"
 
     resources :sessions, controller: "my/sessions", as: "my_sessions", only: %i[index show destroy]
     resources :auto_login_tokens, controller: "my/auto_login_tokens", as: "my_auto_login_tokens", only: %i[destroy]
@@ -855,25 +907,35 @@ Rails.application.routes.draw do
     post "/dismiss_banner" => "my/enterprise_banners#dismiss", as: "dismiss_enterprise_banner"
   end
 
+  namespace :my do
+    resources :access_tokens, only: %i[index] do
+      collection do
+        get :dialog
+        post :generate_rss_key
+        delete :revoke_rss_key
+
+        post :generate_api_key
+      end
+
+      delete :revoke_api_key
+      delete :revoke_ical_token
+      delete :revoke_storage_token
+      delete :revoke_ical_meeting_token
+    end
+  end
+
   scope controller: "my" do
     get "/my/password", action: "password"
     post "/my/change_password", action: "change_password"
 
     get "/my/account", action: "account"
-    get "/my/settings", action: "settings"
+    get "/my/locale", action: "locale"
     get "/my/interface", action: "interface"
     get "/my/notifications", action: "notifications"
     get "/my/reminders", action: "reminders"
 
     patch "/my/account", action: "update_account"
     patch "/my/settings", action: "update_settings"
-
-    post "/my/generate_rss_key", action: "generate_rss_key"
-    delete "/my/revoke_rss_key", action: "revoke_rss_key"
-    post "/my/generate_api_key", action: "generate_api_key"
-    delete "/my/revoke_api_key", action: "revoke_api_key"
-    delete "/my/revoke_ical_token", action: "revoke_ical_token"
-    get "/my/access_token", action: "access_token"
   end
 
   scope controller: "onboarding" do

@@ -40,15 +40,6 @@ See COPYRIGHT and LICENSE files for more details.
   <meta name="current_menu_item" content="<%= current_menu_item %>"/>
   <%# Disable prefetching for now %>
   <meta name="turbo-prefetch" content="false">
-  <%# Apply system theme immediately to prevent flickering %>
-  <% if User.current.pref.sync_with_system_theme? %>
-    <%= nonced_javascript_tag do %>
-      // Apply system theme before body renders to prevent flickering
-      (function() {
-        window.OpenProject.theme.applySystemThemeImmediately();
-      })();
-    <% end %>
-  <% end %>
 </head>
 <%= content_tag :body,
                 class: "#{body_css_classes}  __overflowing_element_container __overflowing_body",
@@ -72,6 +63,7 @@ See COPYRIGHT and LICENSE files for more details.
   <div id="polite" aria-live="polite" aria-atomic="true" class="sr-only"></div>
   <div id="assertive" aria-live="assertive" aria-atomic="true" class="sr-only"></div>
 </live-region>
+<span id="open-blank-target-link-description" class="sr-only"><%= I18n.t("open_link_in_a_new_tab") %></span>
 <opce-spot-drop-modal-portal></opce-spot-drop-modal-portal>
 <% main_menu = render_main_menu(local_assigns.fetch(:menu_name, nil), @project) %>
 <% side_displayed = content_for?(:sidebar) || content_for?(:main_menu) || !main_menu.blank? %>

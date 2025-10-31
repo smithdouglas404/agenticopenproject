@@ -57,11 +57,6 @@ RSpec.describe DocumentsController do
       expect(response).to be_successful
       expect(response).to render_template("index")
     end
-
-    it "group documents by category, if no other sorting is given" do
-      expect(assigns(:grouped)).not_to be_nil
-      expect(assigns(:grouped).keys.map(&:name)).to eql [default_category.name]
-    end
   end
 
   describe "new" do
@@ -157,13 +152,54 @@ RSpec.describe DocumentsController do
       document
     end
 
-    it "deletes the document and redirect back to documents-page of the project" do
+    it "deletes the document and redirects with 303 See Other" do
       expect do
         delete :destroy, params: { id: document.id }
       end.to change(Document, :count).by -1
 
-      expect(response).to redirect_to "/projects/#{project.identifier}/documents"
+      expect(response).to have_http_status(:see_other)
+      expect(response).to redirect_to project_documents_path(project)
       expect { Document.find(document.id) }.to raise_error ActiveRecord::RecordNotFound
+    end
+  end
+
+  describe "generate_oauth_token" do
+    let(:manage_role) { create(:project_role, permissions: [:manage_documents]) }
+    let(:view_only_role) { create(:project_role, permissions: [:view_documents]) }
+    let(:user_with_manage) { create(:user) }
+    let(:user_without_manage) { create(:user) }
+
+    before do
+      create(:member, project:, user: user_with_manage, roles: [manage_role])
+      create(:member, project:, user: user_without_manage, roles: [view_only_role])
+    end
+
+    context "when user has manage_documents permission" do
+      current_user { user_with_manage }
+
+      it "generates an OAuth token for new action" do
+        get :new, params: { project_id: project.id }
+        expect(assigns(:oauth_token)).to be_present
+      end
+
+      it "generates an OAuth token for edit action" do
+        get :edit, params: { id: document.id }
+        expect(assigns(:oauth_token)).to be_present
+      end
+    end
+
+    context "when user does not have manage_documents permission" do
+      current_user { user_without_manage }
+
+      it "does not generate an OAuth token for new action" do
+        get :new, params: { project_id: project.id }
+        expect(assigns(:oauth_token)).to be_nil
+      end
+
+      it "does not generate an OAuth token for edit action" do
+        get :edit, params: { id: document.id }
+        expect(assigns(:oauth_token)).to be_nil
+      end
     end
   end
 

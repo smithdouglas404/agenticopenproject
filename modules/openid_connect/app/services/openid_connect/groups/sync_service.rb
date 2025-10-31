@@ -54,7 +54,7 @@ module OpenIDConnect
       private
 
       def process_oidc_group(oidc_group_name)
-        oidc_group_name = filter_and_name_group(oidc_group_name)
+        oidc_group_name = group_matcher.call(oidc_group_name)
         return nil if oidc_group_name.nil?
 
         group = find_group(oidc_group_name)
@@ -69,18 +69,6 @@ module OpenIDConnect
       def remove_groups_except(keep_groups)
         (@user.groups - keep_groups).each do |group|
           update_group_users(group, removed: @user.id)
-        end
-      end
-
-      def filter_and_name_group(group_name)
-        matcher = authentication_provider.group_matchers.find { |m| m.match?(group_name) }
-        return nil if matcher.nil?
-
-        match = matcher.match(group_name)
-        if match.size > 1
-          match[1..].join.presence
-        else
-          group_name
         end
       end
 
@@ -105,6 +93,10 @@ module OpenIDConnect
 
       def authentication_provider
         @user.authentication_provider # TODO: should we find that differently? (risk of multiple auth providers)
+      end
+
+      def group_matcher
+        @group_matcher ||= GroupMatchService.new(authentication_provider.group_matchers)
       end
     end
   end

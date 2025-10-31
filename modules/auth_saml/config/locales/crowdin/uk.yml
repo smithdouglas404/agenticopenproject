@@ -56,6 +56,7 @@ uk:
       label_mapping: Зіставлення
       label_requested_attribute_for: "Запитаний атрибут для: %{attribute}"
       no_results_table: Поки не визначеного жодного постачальника ідентифікаційних даних SAML.
+      notice_created: Нового постачальника ідентифікаційних даних SAML успішно створено.
       plural: Постачальники ідентифікаційних даних SAML
       singular: Постачальник ідентифікаційних даних SAML
       requested_attributes: Запитувані атрибути

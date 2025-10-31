@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "jsx": "react-jsx",
     "outDir": "./dist/out-tsc",
     "strict": true,
     "strictPropertyInitialization": false,

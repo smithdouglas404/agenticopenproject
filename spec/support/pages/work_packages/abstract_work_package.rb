@@ -129,6 +129,13 @@ module Pages
 
     def ensure_page_loaded
       expect_angular_frontend_initialized
+
+      # wait for work packages page to be visible and have content in it
+      has_selector?(".work-packages-page--ui-view div")
+      # wait for content loader to disappear (in the activity tab)
+      has_no_selector?("content-loader", wait: 10)
+
+      nil
     end
 
     def disable_ajax_requests

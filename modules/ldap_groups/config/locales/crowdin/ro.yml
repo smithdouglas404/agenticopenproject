@@ -13,7 +13,7 @@ ro:
         dn: 'DN'
         auth_source: 'Auth source'
         ldap_auth_source: 'Conexiune LDAP'
-        sync_users: 'Sincronizați utilizatorii'
+        sync_users: 'Sincronizează utilizatorii'
       ldap_groups/synchronized_filter:
         filter_string: 'Filtru LDAP'
         auth_source: 'Auth source'
@@ -57,7 +57,7 @@ ro:
       add_new: 'Adaugă grup LDAP sincronizat'
       destroy:
         title: 'Îndepărtați grupul sincronizat %{name}'
-        confirmation: "Dacă continuați, grupul sincronizat %{name} și toți utilizatorii %{users_count} sincronizați prin intermediul acestuia vor fi eliminați."
+        confirmation: "Dacă, continui, grupul sincronizat %{name} și toți utilizatorii %{users_count} sincronizați prin intermediul acestuia vor fi eliminați."
         info: "Notă: Grupul OpenProject în sine și membrii adăugați în afara acestei sincronizări LDAP nu vor fi eliminați."
         verification: "Introdu numele grupului %{name} pentru a verifica ștergerea."
       help_text_html: |
@@ -75,6 +75,6 @@ ro:
         sync_users_text: >
           Dacă activați această opțiune, utilizatorii găsiți vor fi, de asemenea, creați automat în OpenProject. Fără această opțiune, doar conturile existente în OpenProject vor fi adăugate la grupuri.
         dn_text: 'Introdu DN-ul complet al grupului în LDAP'
-        group_text: 'Selectați un grup OpenProject existent cu care membrii grupului LDAP trebuie să fie sincronizați'
+        group_text: 'Selectează un grup OpenProject existent cu care membrii grupului LDAP trebuie să fie sincronizați'
       upsell:
         description: 'Profită de grupurile LDAP sincronizate pentru a gestiona utilizatorii, a le modifica permisiunile și a facilita gestionarea utilizatorilor între grupuri.'

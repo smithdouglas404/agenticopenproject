@@ -30,16 +30,44 @@
 
 import { Controller } from '@hotwired/stimulus';
 import { useMatchMedia } from 'stimulus-use';
+import { OpColorMode, OpTheme } from 'core-app/core/setup/globals/theme-utils';
 
 export default class AutoThemeSwitcher extends Controller {
   static values = {
-    mode: String,
+    theme: String,
+    increaseContrast: Boolean,
+    forceLightContrast: Boolean,
+    forceDarkContrast: Boolean,
   };
 
-  declare readonly modeValue:string;
+  static targets = ['desktopLogo', 'mobileLogo'];
+  static classes = ['desktopLightHighContrastLogo', 'mobileWhiteLogo'];
+
+  declare readonly themeValue:OpTheme;
+  declare readonly increaseContrastValue:boolean;
+  declare readonly forceLightContrastValue:boolean;
+  declare readonly forceDarkContrastValue:boolean;
+  declare readonly desktopLogoTarget:HTMLLinkElement;
+  declare readonly mobileLogoTarget:HTMLLinkElement;
+  declare readonly desktopLightHighContrastLogoClass:string;
+  declare readonly mobileWhiteLogoClass:string;
+  declare readonly hasMobileLogoTarget:boolean;
+
+  private colorModeContrastPreferences:Record<OpColorMode, boolean>;
 
   connect() {
-    if (this.modeValue !== 'sync_with_os') return;
+    if (this.themeValue === 'sync_with_os') {
+      this.syncWithOS();
+    } else {
+      this.applyTheme(this.themeValue, this.increaseContrastValue);
+    }
+  }
+
+  syncWithOS():void {
+    this.colorModeContrastPreferences = {
+      light: this.forceLightContrastValue,
+      dark: this.forceDarkContrastValue,
+    };
 
     useMatchMedia(this, {
       mediaQueries: {
@@ -47,17 +75,38 @@ export default class AutoThemeSwitcher extends Controller {
         highContrastMode: '(prefers-contrast: more)',
       },
     });
+
+    this.applySystemTheme();
   }
 
-  isLightMode():void {
-    window.OpenProject.theme.applyThemeToBody('light');
+  applyTheme(theme:OpColorMode, increaseContrast:boolean):void {
+    window.OpenProject.theme.applyThemeToBody(theme, increaseContrast);
+    this.updateOpLogoContrast(theme, increaseContrast);
   }
 
-  notLightMode():void {
-    window.OpenProject.theme.applyThemeToBody('dark');
+  lightModeChanged():void {
+    this.applySystemTheme();
   }
 
   highContrastModeChanged():void {
-    window.OpenProject.theme.applySystemThemeImmediately();
+    this.applySystemTheme();
+  }
+
+  private applySystemTheme():void {
+    const colorMode = window.OpenProject.theme.detectSystemColorMode();
+    const prefersSystemHighContrast = window.OpenProject.theme.prefersSystemHighContrast();
+    const increaseContrast = prefersSystemHighContrast || this.colorModeContrastPreferences[colorMode];
+
+    this.applyTheme(colorMode, increaseContrast);
+  }
+
+  private updateOpLogoContrast(colorMode:OpColorMode, increaseContrast:boolean):void {
+    const isLightHighContrast = (colorMode === 'light' && increaseContrast);
+
+    this.desktopLogoTarget.classList.toggle(this.desktopLightHighContrastLogoClass, isLightHighContrast);
+    // Custom logos are not supported on mobile
+    if (this.hasMobileLogoTarget) {
+      this.mobileLogoTarget.classList.toggle(this.mobileWhiteLogoClass, !isLightHighContrast);
+    }
   }
 }

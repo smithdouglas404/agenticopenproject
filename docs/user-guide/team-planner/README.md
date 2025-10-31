@@ -14,8 +14,7 @@ The team planner module helps you get a complete overview of what each member of
 
 Essentially, the team planner is a calendar view with an assignee column on the left side. Each work package assigned to a team member will appear as a card that spans a certain duration (start date to finish date). These cards can be moved, stretched, shortened or removed to organize the planning of your team.
 
-> [!NOTE]
-> Team planner is an Enterprise add-on and can only be used with [Enterprise cloud](../../enterprise-guide/enterprise-cloud-guide/) or  [Enterprise on-premises](../../enterprise-guide/enterprise-on-premises-guide/). An upgrade from the free community edition is easy and helps support OpenProject.
+[feature: team_planner_view ]
 
 To use this module, you must have the work packages module enabled.
 
@@ -42,7 +41,7 @@ Clicking on the **Team planners** entry on the left sidebar takes you to the tea
 5. New team planners by default appear under the **Private** heading in the left menu bar. These are visible only to you.
 
 > [!TIP]
-> Both *public* and *private* team planners can be added as **favored** planners.
+> Both *public* and *private* team planners can be added as **favorited** planners.
 
 ## Team planner basics
 

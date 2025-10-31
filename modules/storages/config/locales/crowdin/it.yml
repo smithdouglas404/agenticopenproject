@@ -21,7 +21,7 @@ it:
         project_folder_mode: Modalità delle cartelle di progetto
         storage: Archivio
         storage_url: URL di archiviazione
-      storages/share_point_storage:
+      storages/sharepoint_storage:
         host: URL sito di Sharepoint
         library: ID Raccolta
         name: Nome
@@ -32,6 +32,7 @@ it:
         drive: ID Drive
         host: Host
         name: Nome
+        password: Password applicazione
         provider_type: Tipo di fonte
         tenant: ID della directory (tenant).
     errors:
@@ -62,7 +63,7 @@ it:
               op_application_not_installed: non è installata l'app "Integrazione OpenProject". Installala e riprova.
             password:
               invalid_password: non è valido.
-              unknown_error: non piò essere convalidato. Controlla la connessione dell'archiviazione e riprova.
+              unknown_error: non è stato convalidato con il provider di archiviazione file. Verifica che la connessione funzioni correttamente.
     models:
       file_link: File
       storages/storage: Archivio
@@ -113,6 +114,12 @@ it:
         remove_user_from_group: 'Rimuovi Utenti dal Gruppo:'
         rename_project_folder: 'Rinomina la cartella del progetto gestita:'
       one_drive_sync_service:
+        create_folder: 'Creazione della cartella di progetto gestita:'
+        ensure_root_folder_permissions: 'Imposta le autorizzazioni della cartella base:'
+        hide_inactive_folders: 'Nascondi il passaggio delle cartelle inattive:'
+        remote_folders: 'Leggi i contenuti della cartella di gruppo:'
+        rename_project_folder: 'Rinomina la cartella di progetto gestita:'
+      sharepoint_sync_service:
         create_folder: 'Creazione della cartella di progetto gestita:'
         ensure_root_folder_permissions: 'Imposta le autorizzazioni della cartella base:'
         hide_inactive_folders: 'Nascondi il passaggio delle cartelle inattive:'
@@ -170,6 +177,23 @@ it:
             remote_folders:
               request_error: OpenProject non ha potuto accedere all'unità %{drive_id}. Verifica se la sua configurazione dell'archiviazione è corretta.
             rename_project_folder:
+              conflict: OpenProject non ha potuto rinominare la cartella %{current_path} in %{project_folder_name} poiché esiste già una cartella con lo stesso nome.
+              forbidden: OpenProject non ha accesso a %{current_path} per rinominarlo.
+              not_found: "Impossibile trovare %{current_path}."
+            set_folders_permissions:
+              permission_not_set: impossibile impostare i permessi su %{path}.
+          error: Si è verificato un errore imprevisto. Assicurati che OneDrive sia raggiungibile e controlla i log dei worker di OpenProject per ulteriori informazioni.
+          not_allowed: OpenProject non è stato autorizzato ad accedere al tuo drive OneDrive. Verifica le autorizzazioni impostate sull'applicazione Azure.
+          unauthorized: OpenProject non è riuscito a sincronizzarsi con OneDrive. Verifica la configurazione dell'archiviazione e dell'applicazione Azure.
+          user_does_not_exist: "%{user} non esiste in Nextcloud."
+        sharepoint_sync_service:
+          attributes:
+            create_folder:
+              conflict: '%{folder_name} esiste già su %{parent_location}.'
+              not_found: "Impossibile trovare %{parent_location}."
+            hide_inactive_folders:
+              permission_not_set: impossibile impostare i permessi su %{path}.
+            rename_project_folder:
               conflict: OpenProject non ha potuto rinominare la cartella %{current_path} in %{project_folder_name} poiché esiste già una cartella con lo stesso nome
               forbidden: OpenProject non ha accesso a %{current_path} per rinominarlo.
               not_found: "Impossibile trovare %{current_path}."
@@ -177,14 +201,13 @@ it:
               permission_not_set: impossibile impostare i permessi su %{path}.
           error: Si è verificato un errore imprevisto. Assicurati che OneDrive sia raggiungibile e controlla i log dei worker di OpenProject per ulteriori informazioni
           not_allowed: OpenProject non è stato autorizzato ad accedere al tuo drive OneDrive. Verifica le autorizzazioni impostate sull'applicazione Azure.
+          not_found: OpenProject non ha potuto accedere alla libreria %{drive_name}. Controlla le librerie di documenti del sito Sharepoint.
           unauthorized: OpenProject non è riuscito a sincronizzarsi con OneDrive. Verifica la configurazione dell'archiviazione e dell'applicazione Azure.
           user_does_not_exist: "%{user} non esiste in Nextcloud."
         upload_link_service:
           not_found: Impossibile trovare la cartella di destinazione %{folder} su %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Completa senza
-      done_complete_setup: Fatto, configurazione completa
       done_continue: Fatto, continua
       open_storage: Apri archivio file
       replace_oauth_application: Sostituisci OpenProject OAuth
@@ -195,19 +218,16 @@ it:
       oauth_client_incomplete:
         nextcloud: Consenti a OpenProject di accedere ai dati Nextcloud utilizzando OAuth.
         one_drive: Consenti a OpenProject di accedere ai dati Azure utilizzando OAuth per collegare OneDrive.
-        share_point: Consenti a OpenProject di accedere ai dati SharePoint utilizzando OAuth.
+        sharepoint: Consenti a OpenProject di accedere ai dati SharePoint utilizzando OAuth.
       redirect_uri_incomplete:
         one_drive: Completa la configurazione con il corretto reindirizzamento URI.
-        share_point: Completa la configurazione con il corretto reindirizzamento URI.
+        sharepoint: Completa la configurazione con il corretto reindirizzamento URI.
     confirm_replace_oauth_application: Questa azione reimposterà le credenziali OAuth correnti. Dopo la conferma sarà necessario reinserire le credenziali presso il provider di archiviazione e tutti gli utenti remoti dovranno autorizzarsi nuovamente nei confronti di OpenProject. Vuoi davvero procedere?
     confirm_replace_oauth_client: Questa azione reimposterà le credenziali OAuth correnti. Dopo la conferma dovrai inserire nuove credenziali dal provider di archiviazione e tutti gli utenti dovranno autorizzare nuovamente %{provider_type}. Vuoi davvero procedere?
     delete_warning:
-      input_delete_confirmation: Inserisci il nome del file di archiviazione %{file_storage} per confermare l'eliminazione.
-      irreversible_notice: L'eliminazione di un file di archiviazione è un'azione irreversibile.
-      project_storage: 'Vuoi davvero eliminare %{file_storage} da questo progetto? Per confermare questa azione, inserisci il nome dell''archivio nel campo sottostante. Ciò facendo:'
       project_storage_delete_result_1: Rimuovi tutti i collegamenti dalle macro-attività di questo progetto ai file e alle cartelle di tale archivio.
       project_storage_delete_result_2: Nel caso in cui questo archivio abbia una cartella di progetto gestita automaticamente, questa e i suoi file verranno eliminati per sempre.
-      storage: 'Vuoi davvero eliminare %{file_storage}? Per confermare questa azione, inserisci il nome dell''archivio nel campo sottostante. Ciò facendo:'
+      storage: 'Vuoi davvero eliminare %{file_storage}? Questa azione:'
       storage_delete_result_1: Rimuovi tutte le impostazioni di archiviazione per tutti i progetti che utilizzano questo archivio.
       storage_delete_result_2: Rimuovi tutti i collegamenti dalle macro-attività di tutti i progetti ai file e alle cartelle di tale archivio.
       storage_delete_result_3: Nel caso in cui questo archivio gestisca automaticamente le cartelle di progetto, quelle e i file in esse contenuti verranno eliminati per sempre.
@@ -236,10 +256,11 @@ it:
       openproject_oauth: OpenProject OAuth
       project_folders: Cartelle del progetto
       redirect_uri: URI di reindirizzamento
+      sharepoint_oauth: Azure OAuth
       storage_audience_blank: Non è stato configurato nessun pubblico.
       storage_audience_description: Scambio di token per il pubblico "%{audience}".
       storage_audience_idp: Utilizzando il token di accesso ottenuto dal provider di identità durante l'accesso, indipendentemente dal pubblico.
-      storage_oauth: Nextcloud OAuth
+      storage_oauth: Storage OAuth
       storage_provider: Fornitore di archiviazione
       token_exchange: Scambio token
     health:
@@ -252,10 +273,10 @@ it:
         ampf_configuration:
           client_folder_creation: Creazione automatica delle cartelle
           client_folder_removal: Eliminazione automatica delle cartelle
-          drive_contents: L'unità ha il contenuto atteso
+          drive_contents: Contenuto dell'unità
           files_request: Recupero dei file delle cartelle di gruppo
           group_folder_app: 'Dipendenza: Cartelle di gruppo'
-          group_folder_contents: La cartella di gruppo ha i contenuti attesi
+          group_folder_contents: Contenuto della cartella di gruppo
           group_folder_presence: La cartella di gruppo esiste
           header: Cartelle di progetto gestite automaticamente
           userless_access: Autenticazione richiesta lato server
@@ -278,6 +299,7 @@ it:
           drive_id_exists: L'unità esiste
           drive_id_format: Formato ID unità
           header: Configurazione
+          host: URL dell'host
           host_url_accessible: Host URL accessibile
           storage_configured: Configurazione completa
           tenant_id: ID tenant
@@ -319,6 +341,15 @@ it:
         oidc_token_acquisition_failed: La configurazione di OpenID Connect non fornisce il pubblico necessario, né fornisce capacità di scambio di token. Consulta la nostra documentazione per maggiori informazioni.
         oidc_token_exchange_failed: Sembra esserci un problema con la configurazione di Token Exchange sul tuo OpenID Connect Provider. Controlla la sua configurazione e riprova.
         oidc_token_refresh_failed: Si è verificato un errore durante il tentativo di verificare il tuo accesso all'archiviazione. Controlla i log del server per ulteriori informazioni.
+        sp_client_cant_delete_folder: Il cliente riscontra problemi con l'eliminazione delle cartelle su SharePoint. Consulta la documentazione di configurazione del tuo archivio.
+        sp_client_id_missing: L'ID client OAuth 2 configurato per SharePoint è mancante. Controlla la configurazione.
+        sp_client_secret_missing: Il segreto del client OAuth 2 configurato per SharePoint è mancante. Controlla la configurazione.
+        sp_client_write_permission_missing: Il client non ha i permessi di scrittura necessari su SharePoint. Consulta la documentazione di configurazione del tuo archivio.
+        sp_existing_test_folder: La cartella %{folder_name} necessaria per il test esiste già su SharePoint. Eliminala e riprova.
+        sp_oauth_request_error: La richiesta vincolata all'utente verso SharePoint non è riuscita. Controlla i log del server per ulteriori informazioni.
+        sp_oauth_token_missing: OpenProject non può testare la comunicazione a livello utente con SharePoint poiché l'utente non ha ancora collegato il proprio account SharePoint.
+        sp_tenant_id_missing: L'ID directory (tenant) configurato per SharePoint è mancante. Controlla la configurazione.
+        sp_unexpected_content: Contenuto inatteso nello spazio di archiviazione SharePoint.
         unknown_error: Non è stato possibile verificare la connessione. Si è verificato un errore sconosciuto. Per maggiori informazioni consulta i log del server.
       label_error: Errore
       label_failed: Non riuscito
@@ -386,7 +417,7 @@ it:
       setting_up_additional_storages_non_admin: Gli amministratori possono impostare ulteriori archivi file in Amministrazione / Archivi file.
       setting_up_storages: Per impostare archivi file, visita
       setting_up_storages_non_admin: Gli amministratori possono impostare archivi file in Amministrazione / Archivi file.
-      share_point:
+      sharepoint:
         application_link_text: Sito SharePoint
         integration: SharePoint Administration / OpenProject
         oauth_configuration: Copia questi valori dall'applicazione desiderata nel %{application_link_text}.
@@ -472,7 +503,6 @@ it:
         subtitle_short: Consenti a OpenProject di creare cartelle per progetto automaticamente.
         title: Cartelle di progetto gestite automaticamente
       project_settings:
-        delete: Elimina archivio file
         edit: Modifica l'archiviazione dei file per questo progetto
         members_connection_status: Stato della connessione dei membri
         new: Aggiungi un archivio file al progetto
@@ -492,7 +522,8 @@ it:
         label_oauth_client_secret: Valore segreto client Azure OAuth
         name: OneDrive
         name_placeholder: es. OneDrive
-      share_point:
+      sharepoint:
+        drive_description: Libreria documenti gestita da OpenProject
         label_oauth_client_id: ID dell'applicazione Azure OAuth (client)
         label_oauth_client_secret: Valore segreto client Azure OAuth
         name: Microsoft SharePoint Online
@@ -507,7 +538,7 @@ it:
         label: Usa il token di accesso ottenuto durante il login dell'utente
       manual:
         helptext: OpenProject scambierà un token con il provider di identità per il pubblico indicato.
-        label: Specifica manualmente il pubblico per cui scambiare il token di accesso
+        label: Specifica manualmente il pubblico per cui scambiare il token di accesso (Consigliato)
     storage_list_blank_slate:
       description: Aggiungi un archivio per vederli qui.
       heading: Non hai ancora archivi.

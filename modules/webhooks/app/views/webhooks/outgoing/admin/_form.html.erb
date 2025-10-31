@@ -2,7 +2,7 @@
   <p>
     <%= t "webhooks.outgoing.form.introduction" %>
     <br>
-    <%= link_to t("webhooks.outgoing.form.apiv3_doc_url"), OpenProject::Static::Links.links[:api_docs][:href] %>
+    <%= link_to t("webhooks.outgoing.form.apiv3_doc_url"), OpenProject::Static::Links.url_for(:api_docs) %>
   </p>
 
   <div class="form--field -required">

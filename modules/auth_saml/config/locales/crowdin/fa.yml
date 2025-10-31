@@ -56,6 +56,7 @@ fa:
       label_mapping: نگاشت
       label_requested_attribute_for: "ویژگی درخواست شده برای: %{attribute}"
       no_results_table: هیچ ارائه دهنده سخت‌افزار احراز هویتی تعریف نشده است.
+      notice_created: A new SAML identity provider was successfully created.
       plural: ارائه دهنده های سخت‌افزار احراز هویت
       singular: ارائه دهنده سخت‌افزار احراز هویت
       requested_attributes: ویژگی های درخواستی

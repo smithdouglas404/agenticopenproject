@@ -127,6 +127,22 @@ module Components
         end
       end
 
+      def expect_project_create_button
+        expect(page).to have_css(".spot-action-bar--action.-primary", text: "Project")
+      end
+
+      def expect_no_project_create_button
+        expect(page).to have_no_css(".spot-action-bar--action.-primary", text: "Project")
+      end
+
+      def expect_project_list_button
+        expect(page).to have_css(".spot-action-bar--action", text: "Project lists")
+      end
+
+      def expect_no_project_list_button
+        expect(page).to have_no_css(".spot-action-bar--action.-primary", text: "Project lists")
+      end
+
       def autocompleter_item_selector
         '[data-test-selector="op-header-project-select--item"]'
       end

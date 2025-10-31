@@ -3,7 +3,7 @@ lv:
   js:
     team_planner:
       add_existing: 'Add existing'
-      label_team_planner_plural: 'Team planners'
+      label_team_planner_plural: 'Komandas plānotāji'
       add_existing_title: 'Add existing work packages'
       create_label: 'Komandas plānotājs'
       create_title: 'Izveidot jaunu komandas plānotāju'

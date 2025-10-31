@@ -37,16 +37,24 @@ module OpenProject::Documents
     register "openproject-documents",
              author_url: "http://www.openproject.org",
              bundled: true do
-      menu :project_menu,
-           :documents,
-           { controller: "/documents", action: "index" },
-           caption: :label_document_plural,
-           before: :members,
-           icon: "note"
+      ::Redmine::MenuManager.map(:project_menu) do |menu|
+        menu.push :documents,
+                  { controller: "/documents", action: "index" },
+                  caption: :label_document_plural,
+                  before: :members,
+                  icon: "note"
+
+        menu.push :documents_sub_menu,
+                  { controller: "/documents", action: "index" },
+                  parent: :documents,
+                  partial: "documents/menus/menu",
+                  caption: :label_document_plural
+      end
 
       project_module :documents do |_map|
         permission :view_documents,
-                   { documents: %i[index show download] },
+                   { documents: %i[index search show download],
+                     "documents/menus": %i[show] },
                    permissible_on: :project
         permission :manage_documents,
                    { documents: %i[new create edit update destroy] },
@@ -78,6 +86,10 @@ module OpenProject::Documents
 
     add_api_path :attachments_by_document do |id|
       "#{document(id)}/attachments"
+    end
+
+    add_api_path :prepare_attachments_by_document do |id|
+      "#{document(id)}/attachments/prepare"
     end
 
     add_api_endpoint "API::V3::Root" do

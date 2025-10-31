@@ -26,6 +26,10 @@ zh-CN:
   activerecord:
     models:
       document: "文档"
+    attributes:
+      document:
+        content_binary: "内容二进制文件"
+        title: "标题"
   activity:
     filter:
       document: "文档"
@@ -33,6 +37,22 @@ zh-CN:
   default_doc_category_user: "用户文档"
   enumeration_doc_categories: "文档类别"
   documents:
+    page_header:
+      heading: "所有文档"
+    subheader:
+      filter:
+        label: "文档名称过滤器"
+        placeholder: "在此输入搜索文档名称"
+    documents_list_blank_slate:
+      heading: "还没有文档"
+      description: "此视图中没有文档。您可以点击下面的按钮添加一个文档。"
+    index_page:
+      name: "名称"
+      type: "类型"
+      updated_at: "上次编辑"
+    menu:
+      all: "所有文档"
+      types: "类型"
     label_attachment_author: "附件作者"
     label_categories: "类别"
     new_category: "新类别"

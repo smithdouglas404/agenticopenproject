@@ -38,37 +38,28 @@ module Storages
         module Queries
           RSpec.describe OpenFileLinkQuery do
             let(:storage) { create(:nextcloud_storage, host: "https://example.com") }
-            let(:file_id) { "1337" }
             let(:auth_strategy) { Registry["nextcloud.authentication.userless"].call }
-            let(:input_data) { Input::OpenFileLink.build(file_id:).value! }
+            let(:file_id) { "1337" }
+            let(:open_location) { false }
+            let(:input_data) { Input::OpenFileLink.build(file_id:, open_location:).value! }
+            let(:open_file_link) { "#{storage.host}/index.php/f/#{file_id}?openfile=#{open_location ? '0' : '1'}" }
 
-            it "responds to .call" do
-              expect(described_class).to respond_to(:call)
+            it_behaves_like "adapter open_file_link_query: basic query setup"
 
-              method = described_class.method(:call)
-              expect(method.parameters).to contain_exactly(%i[keyreq storage],
-                                                           %i[keyreq auth_strategy],
-                                                           %i[keyreq input_data])
+            context "with open location flag not set" do
+              it_behaves_like "adapter open_file_link_query: successful link response"
             end
 
-            it "returns the url for opening the file on storage" do
-              url = described_class.call(storage:, auth_strategy:, input_data:).value!
-              expect(url).to eq("#{storage.host}/index.php/f/#{file_id}?openfile=1")
-            end
+            context "with open location flag set" do
+              let(:open_location) { true }
 
-            it "returns the url for opening the file's location on storage" do
-              input_data = Input::OpenFileLink.build(file_id:, open_location: true).value!
-              url = described_class.call(storage:, auth_strategy:, input_data:).value!
-              expect(url).to eq("#{storage.host}/index.php/f/#{file_id}?openfile=0")
+              it_behaves_like "adapter open_file_link_query: successful link response"
             end
 
             context "with a storage with host url with a sub path" do
               let(:storage) { create(:nextcloud_storage, host: "https://example.com/html") }
 
-              it "returns the url for opening the file on storage" do
-                url = described_class.call(storage:, auth_strategy:, input_data:).value!
-                expect(url).to eq("#{storage.host}/index.php/f/#{file_id}?openfile=1")
-              end
+              it_behaves_like "adapter open_file_link_query: successful link response"
             end
           end
         end

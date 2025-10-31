@@ -92,9 +92,8 @@ RSpec.describe "Meetings CRUD",
         within_window(first_window) do
           item = MeetingAgendaItem.find_by(title: "Update toast test item")
 
-          show_page.edit_agenda_item(item) do
+          show_page.edit_agenda_item(item, wait_for_reference_update: true) do
             fill_in "Title", with: "Updated title"
-            click_on "Save"
           end
 
           # Expect no notification in window1
@@ -161,7 +160,7 @@ RSpec.describe "Meetings CRUD",
 
           ## Close meeting
           find_test_selector("close-meeting-button").click
-          expect(page).to have_text "This meeting is in progress."
+          expect(page).to have_text "Once the meeting is complete, you can mark it as closed to lock it."
           find_test_selector("close-meeting-button").click
           expect(page).to have_text "This meeting is closed."
 
@@ -284,7 +283,6 @@ RSpec.describe "Meetings CRUD",
             item = MeetingAgendaItem.find_by(title: "Backlog agenda item")
             next_occurrence_page.edit_agenda_item(item) do
               fill_in "Title", with: "Edited title"
-              click_on "Save"
             end
 
             next_occurrence_page.trigger_change_poll

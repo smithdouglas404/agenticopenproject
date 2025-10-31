@@ -31,9 +31,12 @@ export class TurboRequestsService {
       init.signal = controller.signal;
     }
 
-    const defaultHeaders = {
+    const defaultHeaders:{'X-Authentication-Scheme':string, 'X-CSRF-Token'?:string} = {
       'X-Authentication-Scheme': 'Session',
     };
+    if(init.method && !(init.method === 'GET' || init.method === 'HEAD')) {
+      defaultHeaders['X-CSRF-Token'] = document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content;
+    }
 
     init.headers = {
       ...defaultHeaders,
@@ -98,9 +101,6 @@ export class TurboRequestsService {
       {
         method: form.method,
         body: formData,
-        headers: {
-          'X-CSRF-Token': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement).content,
-        },
       },
       true,
       requestId || requestUrlWithParams,

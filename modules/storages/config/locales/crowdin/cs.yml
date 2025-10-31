@@ -21,10 +21,10 @@ cs:
         project_folder_mode: Project folder mode
         storage: Úložiště
         storage_url: Storage URL
-      storages/share_point_storage:
+      storages/sharepoint_storage:
         host: Sharepoint Site URL
         library: Library ID
-        name: Name
+        name: 'Název:'
         site: Site ID
       storages/storage:
         authentication_method: Authentication Method
@@ -32,6 +32,7 @@ cs:
         drive: ID disku
         host: Hostitel
         name: Název
+        password: Heslo aplikace
         provider_type: Typ poskytovatele
         tenant: ID adresáře (tenant)
     errors:
@@ -62,7 +63,7 @@ cs:
               op_application_not_installed: Zdá se, že aplikace "OpenProject integration" není nainstalována. Prosím nainstalujte ji a zkuste to znovu.
             password:
               invalid_password: není platné.
-              unknown_error: nelze potvrdit. Zkontrolujte připojení k úložišti a zkuste to znovu.
+              unknown_error: could not be validated with the file storage provider. Please verify that the connection is functioning properly.
     models:
       file_link: Soubor
       storages/storage: Úložiště
@@ -113,6 +114,12 @@ cs:
         remove_user_from_group: 'Odebrat uživatele ze skupiny:'
         rename_project_folder: 'Přejmenovat spravovanou složku projektu:'
       one_drive_sync_service:
+        create_folder: 'Managed Project Folder Creation:'
+        ensure_root_folder_permissions: 'Nastavit základní oprávnění složky:'
+        hide_inactive_folders: 'Hide Inactive Folders Step:'
+        remote_folders: 'Read contents of the group folder:'
+        rename_project_folder: 'Přejmenovat spravovanou složku projektu:'
+      sharepoint_sync_service:
         create_folder: 'Managed Project Folder Creation:'
         ensure_root_folder_permissions: 'Nastavit základní oprávnění složky:'
         hide_inactive_folders: 'Hide Inactive Folders Step:'
@@ -170,6 +177,23 @@ cs:
             remote_folders:
               request_error: OpenProject nemůže přistupovat k vašemu disku %{drive_id}. Zkontrolujte, zda je vaše konfigurace úložiště správná.
             rename_project_folder:
+              conflict: OpenProject could not rename the folder %{current_path} to %{project_folder_name} as a folder with the same name already exists.
+              forbidden: OpenProject does not have access to %{current_path} in order to rename it.
+              not_found: "%{current_path} nebyl nalezen."
+            set_folders_permissions:
+              permission_not_set: nelze nastavit oprávnění na %{path}.
+          error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information.
+          not_allowed: Aplikaci OpenProject nebyl povolen přístup k vaší jednotce OneDrive. Zkontrolujte prosím oprávnění nastavená v aplikaci Azure.
+          unauthorized: OpenProject se nepodařilo synchronizovat s OneDrive. Zkontrolujte prosím konfiguraci úložiště a aplikace Azure
+          user_does_not_exist: "%{user} neexistuje v Nextcloudu."
+        sharepoint_sync_service:
+          attributes:
+            create_folder:
+              conflict: The %{folder_name} already exists on %{parent_location}.
+              not_found: "%{parent_location} nebyl nalezen."
+            hide_inactive_folders:
+              permission_not_set: nelze nastavit oprávnění na %{path}.
+            rename_project_folder:
               conflict: OpenProject nemůže přejmenovat složku %{current_path} na %{project_folder_name} jako složku se stejným názvem již existuje
               forbidden: OpenProject does not have access to %{current_path} in order to rename it.
               not_found: "%{current_path} nebyl nalezen."
@@ -177,14 +201,13 @@ cs:
               permission_not_set: nelze nastavit oprávnění na %{path}.
           error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information
           not_allowed: Aplikaci OpenProject nebyl povolen přístup k vaší jednotce OneDrive. Zkontrolujte prosím oprávnění nastavená v aplikaci Azure.
+          not_found: OpenProject could not access your library %{drive_name}. Please check you Sharepoint site document libraries.
           unauthorized: OpenProject se nepodařilo synchronizovat s OneDrive. Zkontrolujte prosím konfiguraci úložiště a aplikace Azure
           user_does_not_exist: "%{user} neexistuje v Nextcloudu."
         upload_link_service:
           not_found: The destination folder %{folder} could not be found on %{storage_name}.
   storages:
     buttons:
-      complete_without_setup: Dokončit bez něj
-      done_complete_setup: Hotovo, kompletní nastavení
       done_continue: Hotovo, pokračovat
       open_storage: Otevřít soubor v úložišti
       replace_oauth_application: Nahradit OpenProject OAuth
@@ -195,19 +218,16 @@ cs:
       oauth_client_incomplete:
         nextcloud: Povolit OpenProject přístup k Nextcloud datům pomocí OAuth.
         one_drive: Allow OpenProject to access Azure data using OAuth to connect OneDrive.
-        share_point: Allow OpenProject to access SharePoint data using OAuth.
+        sharepoint: Allow OpenProject to access SharePoint data using OAuth.
       redirect_uri_incomplete:
         one_drive: Dokončete nastavení správným přesměrováním URI.
-        share_point: Complete the setup with the correct URI redirection.
+        sharepoint: Dokončete nastavení správným přesměrováním URI.
     confirm_replace_oauth_application: Tato akce obnoví aktuální OAuth přihlašovací údaje. Po potvrzení budete muset znovu zadat přihlašovací údaje u poskytovatele úložiště a všichni vzdálení uživatelé budou muset znovu autorizovat proti OpenProject Jste si jisti, že chcete pokračovat?
     confirm_replace_oauth_client: This action will reset the current OAuth credentials. After confirming you will have to enter new credentials from the storage provider and all users will have to authorize against %{provider_type} again. Are you sure you want to proceed?
     delete_warning:
-      input_delete_confirmation: Zadejte název úložiště souboru %{file_storage} pro potvrzení odstranění.
-      irreversible_notice: Smazání úložiště souborů je nevratná akce.
-      project_storage: 'Opravdu chcete odstranit %{file_storage} z tohoto projektu? Chcete-li potvrdit tuto akci, vložte prosím název úložiště do níže uvedeného pole, toto bude:'
       project_storage_delete_result_1: Odstraňte všechny odkazy z pracovních balíčků tohoto projektu do souborů a složek tohoto úložiště.
       project_storage_delete_result_2: V případě, že toto úložiště automaticky spravuje složky projektů, budou tyto a jejich obsažené soubory navždy smazány.
-      storage: 'Jste si jisti, že chcete odstranit %{file_storage}? Pro potvrzení této akce prosím vložte název úložiště do níže uvedeného pole:'
+      storage: 'Are you sure you want to delete %{file_storage}? This will:'
       storage_delete_result_1: Odstranit všechna nastavení úložiště pro všechny projekty používající toto úložiště.
       storage_delete_result_2: Odstraňte všechny odkazy z pracovních balíčků všech projektů do souborů a složek tohoto úložiště.
       storage_delete_result_3: V případě, že toto úložiště automaticky spravuje složky projektů, budou tyto a jejich obsažené soubory navždy smazány.
@@ -236,10 +256,11 @@ cs:
       openproject_oauth: OpenProject OAuth
       project_folders: Projektové složky
       redirect_uri: Přesměrovat URI
+      sharepoint_oauth: Azure OAuth
       storage_audience_blank: No audience has been configured.
       storage_audience_description: Exchanging tokens for audience "%{audience}".
       storage_audience_idp: Using access token obtained by identity provider during login, regardless of audience.
-      storage_oauth: Nextcloud OAuth
+      storage_oauth: Storage OAuth
       storage_provider: Poskytovatel úložiště
       token_exchange: Token Exchange
     health:
@@ -252,12 +273,12 @@ cs:
         ampf_configuration:
           client_folder_creation: Automatic folder creation
           client_folder_removal: Automatic folder deletion
-          drive_contents: Drive has expected content
+          drive_contents: Drive content
           files_request: Fetching group folder files
           group_folder_app: 'Dependency: Group Folders'
-          group_folder_contents: Group folder has expected content
+          group_folder_contents: Group folder content
           group_folder_presence: Group folder exists
-          header: Automatically managed project folders
+          header: Automaticky spravované projektové složky
           userless_access: Server-side request authentication
         authentication:
           existing_token: User token
@@ -278,6 +299,7 @@ cs:
           drive_id_exists: Drive exists
           drive_id_format: Drive ID format
           header: Configuration
+          host: URL adresa hostitele
           host_url_accessible: Host URL accessible
           storage_configured: Configuration complete
           tenant_id: Tenant ID
@@ -323,6 +345,15 @@ cs:
         oidc_token_acquisition_failed: Your OpenID Connect setup doesn't provide the necessary audience, nor does it provide token exchange capabilities. Please check out our documentation for more information.
         oidc_token_exchange_failed: There seems to be a problem with the Token Exchange setup on your OpenID Connect Provider. Please check its configuration and try again.
         oidc_token_refresh_failed: There was an error while trying to check your access to the storage. Please check the server logs for further information.
+        sp_client_cant_delete_folder: The client is having trouble deleting folders in SharePoint. Please check the setup documentation for your storage.
+        sp_client_id_missing: The configured OAuth 2 client id is missing for SharePoint. Please check the configuration.
+        sp_client_secret_missing: The configured OAuth 2 client secret is missing for SharePoint. Please check the configuration.
+        sp_client_write_permission_missing: The client seems to have write permissions missing in SharePoint. Please check the setup documentation for your storage.
+        sp_existing_test_folder: The folder %{folder_name} needed for testing already exists in SharePoint. Please delete it and try again.
+        sp_oauth_request_error: The user-bound request to SharePoint failed. Please check the server logs for further information.
+        sp_oauth_token_missing: OpenProject cannot test the user level communication with SharePoint as the user did not yet link their SharePoint account.
+        sp_tenant_id_missing: The configured directory (tenant) id is missing for SharePoint. Please check the configuration.
+        sp_unexpected_content: Unexpected content found in the SharePoint drive.
         unknown_error: The connection could not be validated. An unknown error occurred. Please check the server logs for further information.
       label_error: Chyba
       label_failed: Chyba
@@ -390,10 +421,10 @@ cs:
       setting_up_additional_storages_non_admin: Administrators can set up additional file storages in Administration / File storages.
       setting_up_storages: Pro nastavení úložišť souborů navštivte prosím
       setting_up_storages_non_admin: Administrators can set up file storages in Administration / File storages.
-      share_point:
+      sharepoint:
         application_link_text: SharePoint site
         integration: SharePoint Administration / OpenProject
-        oauth_configuration: Copy these values from the desired application in the %{application_link_text}.
+        oauth_configuration: Zkopírujte tyto hodnoty z požadované aplikace v %{application_link_text}.
         provider_configuration: Před instalací se ujistěte, že máte oprávnění k administraci v %{application_link_text} nebo se obraťte na správce Microsoftu. Na portálu musíte také zaregistrovat Azure aplikaci nebo použít existující aplikaci pro autentizaci.
       type: 'Ujistěte se prosím, že máte oprávnění administrace v Nextcloud instanci a máte nainstalovanou následující aplikaci:'
       type_link_text: "„Integration OpenProject“"
@@ -475,7 +506,6 @@ cs:
         subtitle_short: Nechat OpenProject vytvářet složky pro každý projekt automaticky.
         title: Automaticky spravované projektové složky
       project_settings:
-        delete: Odstranit úložiště souborů
         edit: Upravit úložiště souborů pro tento projekt
         members_connection_status: Stav připojení členů
         new: Přidat úložiště souborů k tomuto projektu
@@ -495,9 +525,10 @@ cs:
         label_oauth_client_secret: ' utajená Hodnota klienta Azure OAuth'
         name: OneDrive
         name_placeholder: např. OneDrive
-      share_point:
-        label_oauth_client_id: Azure OAuth Application (client) ID
-        label_oauth_client_secret: Azure OAuth Client Secret Value
+      sharepoint:
+        drive_description: OpenProject access-managed document library
+        label_oauth_client_id: Azure OAuth aplikace (klient) ID
+        label_oauth_client_secret: ' utajená Hodnota klienta Azure OAuth'
         name: SharePoint
         name_placeholder: e.g. SharePoint
     show_attachments_toggle:
@@ -510,7 +541,7 @@ cs:
         label: Use access token obtained during user log in
       manual:
         helptext: OpenProject will exchange a token with the identity provider for the given audience.
-        label: Manually specify audience for which to exchange access token
+        label: Manually specify audience for which to exchange access token (Recommended)
     storage_list_blank_slate:
       description: Přidejte úložiště, abyste je viděli zde.
       heading: Zatím nemáte žádné úložiště.

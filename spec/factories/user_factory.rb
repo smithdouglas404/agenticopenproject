@@ -100,6 +100,16 @@ FactoryBot.define do
       status { User.statuses[:locked] }
     end
 
+    factory :user_marked_for_deletion do
+      firstname { "Deleted" }
+      lastname { "User" }
+      sequence(:login) { |n| "deleted#{n}" }
+      sequence(:mail) { |n| "deleted#{n}@bob.com" }
+      password { "adminADMIN!" }
+      password_confirmation { "adminADMIN!" }
+      status { User.statuses[:deleted] }
+    end
+
     factory :invited_user do
       status { User.statuses[:invited] }
     end

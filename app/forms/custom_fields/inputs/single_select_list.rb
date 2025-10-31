@@ -23,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -54,8 +54,8 @@ class CustomFields::Inputs::SingleSelectList < CustomFields::Inputs::Base::Autoc
 
   def list_items
     case @custom_field.field_format
-    when "hierarchy"
-      hierarchy_items.map do |item|
+    when "hierarchy", "scored_list"
+      hierarchical_list_items.map do |item|
         {
           label: item.ancestry_path,
           value: item.id,
@@ -73,7 +73,7 @@ class CustomFields::Inputs::SingleSelectList < CustomFields::Inputs::Base::Autoc
     end
   end
 
-  def hierarchy_items
+  def hierarchical_list_items
     CustomFields::Hierarchy::HierarchicalItemService.new
       .get_descendants(item: @custom_field.hierarchy_root, include_self: false)
       .value_or([])

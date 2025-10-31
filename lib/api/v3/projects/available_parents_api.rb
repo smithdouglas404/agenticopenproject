@@ -44,7 +44,7 @@ module API
                                                                          project = if params[:of]
                                                                                      Project.find(params[:of])
                                                                                    else
-                                                                                     Project.new
+                                                                                     Project.new(workspace_type: "project")
                                                                                    end
 
                                                                          contract_class = if project.new_record?

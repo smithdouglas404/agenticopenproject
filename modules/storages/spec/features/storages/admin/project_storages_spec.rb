@@ -181,8 +181,11 @@ RSpec.describe "Admin lists project mappings for a storage",
     it "links to the delete page of a storage" do
       page.find_test_selector("storage-delete-button").click
 
-      expect(page).to have_text("DELETE FILE STORAGE")
-      expect(page).to have_current_path(confirm_destroy_admin_settings_storage_path(storage))
+      within_test_selector("op-storages--destroy-confirm-dialog") do
+        expect(page).to have_text("Delete file storage")
+        expect(page).to have_unchecked_field("I understand that this deletion cannot be reversed")
+        expect(page).to have_button("Delete permanently", disabled: true)
+      end
     end
 
     describe "Linking a project to a storage with a manually managed folder" do

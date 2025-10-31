@@ -26,6 +26,10 @@ sv:
   activerecord:
     models:
       document: "Dokument"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "Titel"
   activity:
     filter:
       document: "Dokument"
@@ -33,16 +37,32 @@ sv:
   default_doc_category_user: "Användardokumentation"
   enumeration_doc_categories: "Dokumentkategorier"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "Namn"
+      type: "Typ"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "Typer"
     label_attachment_author: "Författare för bilaga"
-    label_categories: "Categories"
+    label_categories: "Kategorier"
     new_category: "Ny kategori"
   label_document_added: "Dokumentet tillagt"
   label_document_new: "Nytt dokument"
   label_document_plural: "Dokument"
   label_documents: "Dokument"
-  label_document_title: "Title"
-  label_document_description: "Description"
-  label_document_category: "Category"
+  label_document_title: "Titel"
+  label_document_description: "Beskrivning"
+  label_document_category: "Kategori"
   permission_manage_documents: "Hantera dokument"
   permission_view_documents: "Visa dokument"
   project_module_documents: "Dokument"

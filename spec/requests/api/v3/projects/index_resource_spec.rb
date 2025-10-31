@@ -230,56 +230,56 @@ RSpec.describe "API v3 Project resource index", content_type: :json do
     end
   end
 
-  context "when filtering for favored" do
-    let(:favored_project) { create(:project) }
-    let(:unfavored_project) { create(:project) }
+  context "when filtering for favorited" do
+    let(:favorited_project) { create(:project) }
+    let(:unfavorited_project) { create(:project) }
 
-    let(:projects) { [favored_project, unfavored_project] }
+    let(:projects) { [favorited_project, unfavorited_project] }
 
     current_user do
-      create(:user, member_with_roles: { favored_project => role,
-                                         unfavored_project => role }) do |user|
-        favored_project.set_favored(user)
+      create(:user, member_with_roles: { favorited_project => role,
+                                         unfavorited_project => role }) do |user|
+        favorited_project.set_favorited(user)
       end
     end
 
     context "when filtering for favorite projects" do
       let(:filters) do
-        [{ favored: { operator: "=", values: ["t"] } }]
+        [{ favorited: { operator: "=", values: ["t"] } }]
       end
 
       it_behaves_like "API V3 collection response", 1, 1, "Project" do
-        let(:elements) { [favored_project] }
+        let(:elements) { [favorited_project] }
       end
     end
 
     context "when filtering for nonfavorite projects" do
       let(:filters) do
-        [{ favored: { operator: "=", values: ["f"] } }]
+        [{ favorited: { operator: "=", values: ["f"] } }]
       end
 
       it_behaves_like "API V3 collection response", 1, 1, "Project" do
-        let(:elements) { [unfavored_project] }
+        let(:elements) { [unfavorited_project] }
       end
     end
 
     context "when not filtering for favorite projects" do
       let(:filters) do
-        [{ favored: { operator: "!", values: ["t"] } }]
+        [{ favorited: { operator: "!", values: ["t"] } }]
       end
 
       it_behaves_like "API V3 collection response", 1, 1, "Project" do
-        let(:elements) { [unfavored_project] }
+        let(:elements) { [unfavorited_project] }
       end
     end
 
     context "when not filtering for nonfavorite projects" do
       let(:filters) do
-        [{ favored: { operator: "!", values: ["f"] } }]
+        [{ favorited: { operator: "!", values: ["f"] } }]
       end
 
       it_behaves_like "API V3 collection response", 1, 1, "Project" do
-        let(:elements) { [favored_project] }
+        let(:elements) { [favorited_project] }
       end
     end
   end

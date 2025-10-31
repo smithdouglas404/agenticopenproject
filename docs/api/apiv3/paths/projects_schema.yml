@@ -9,6 +9,18 @@ get:
             response:
               value:
                 _dependencies: []
+                _attributeGroups:
+                - _type: ProjectFormCustomFieldSection
+                  name: Project Details
+                  attributes:
+                  - customField30
+                  - customField34
+                - _type: ProjectFormCustomFieldSection
+                  name: Budget Information
+                  attributes:
+                  - customField31
+                  - customField32
+                  - customField35
                 _links:
                   self:
                     href: "/api/v3/projects/schema"

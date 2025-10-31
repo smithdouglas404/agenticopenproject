@@ -31,7 +31,7 @@ lt:
       events:
         created: "Sukurta"
         updated: "Atnaujinta"
-        comment: "Comment"
+        comment: "Komentaras"
         internal_comment: "Internal comment"
       explanation:
         text: >

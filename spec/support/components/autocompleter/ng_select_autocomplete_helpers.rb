@@ -33,11 +33,7 @@ module Components::Autocompleter
     end
 
     def ng_click_autocompleter(target)
-      if using_cuprite?
-        target.click
-      else
-        page.execute_script("arguments[0].click();", target.native)
-      end
+      target.click
     end
 
     def ng_find_dropdown(element, results_selector: nil)
@@ -163,31 +159,33 @@ module Components::Autocompleter
       expect(element).to have_css(".ng-value .ng-value-label", text: value, wait: 10)
     end
 
-    # Finds the currently visible, expanded user auto completer and returns its dropdown menu options.
+    # Checks for the currently visible, expanded user auto completer to contain the provided options.
     # A user always has a name, but their email is only visible in certain circumstances, so that value
     # might be nil.
     #
-    # The options are returned as an Array of Hashes, like this example with two users:
+    # The expected options are to be provided as an Array of Hashes, like this example with two users:
     #
     #   [
     #     { name: "Bob", email: nil },
     #     { name: "Alice", email: "alice@example.com" }
     #   ]
     #
-    # The order of elements in the Array is equal to the visible order on the website.
-    def visible_user_auto_completer_options
-      find(".ng-dropdown-panel [role='listbox']").all(".ng-option[role='option']").filter_map do |opt|
-        name = opt.find(".op-user-autocompleter--name", wait: 0).text
-        email =
-          if opt.has_css?(".op-autocompleter__option-principal-email", wait: 0)
-            opt.find(".op-autocompleter__option-principal-email", wait: 0).text
+    # The order the elements are provided in is also expected.
+    def expect_visible_user_auto_completer_options(expected)
+      within(".ng-dropdown-panel [role='listbox']") do
+        expected.each_with_index do |option, index|
+          expect(page)
+            .to have_css(".ng-option[role='option']:nth-child(#{index + 1}) .op-user-autocompleter--name",
+                         text: option[:name])
+          if option[:email]
+            expect(page)
+              .to have_css(".ng-option[role='option']:nth-child(#{index + 1}) .op-autocompleter__option-principal-email",
+                           text: option[:email])
+          else
+            expect(page)
+              .to have_no_css(".ng-option[role='option']:nth-child(#{index + 1}) .op-autocompleter__option-principal-email")
           end
-
-        { name:, email: }
-      rescue Capybara::ElementNotFound
-        # In rare cases, the auto completer result body includes additional elements that do not contain all of the
-        # expected information. For example in the share modal. We will omit these entries.
-        nil
+        end
       end
     end
   end

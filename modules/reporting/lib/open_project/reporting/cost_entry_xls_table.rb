@@ -41,7 +41,8 @@ class OpenProject::Reporting::CostEntryXlsTable < OpenProject::XlsExport::XlsVie
 
   def build_cost_rows
     sorted_results.each do |result|
-      spreadsheet.add_row(cost_row(result))
+      row = spreadsheet.add_row(cost_row(result))
+      row.set_format 0, date_format
     end
   end
 
@@ -73,7 +74,7 @@ class OpenProject::Reporting::CostEntryXlsTable < OpenProject::XlsExport::XlsVie
   end
 
   def cost_main_columns(result)
-    main_cols = [show_field(:spent_on, result.fields["spent_on"])]
+    main_cols = [result.fields["spent_on"].to_date]
     main_cols.concat cost_main_times_columns(result) if with_times_column?
     main_cols
   end

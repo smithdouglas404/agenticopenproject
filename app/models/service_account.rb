@@ -43,7 +43,7 @@ class ServiceAccount < User
 
   def available_custom_fields = []
 
-  def logged? = false
+  def logged? = true
 
   def builtin? = true
 

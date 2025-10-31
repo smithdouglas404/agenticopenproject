@@ -164,12 +164,12 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
         series.template.participants << MeetingParticipant.new(user: recipient, invited: true)
       end
 
-      it "sends out rescheduled mails" do
+      it "sends out updated mails" do
         expect(service_result).to be_success
         perform_enqueued_jobs
         expect(ActionMailer::Base.deliveries.count).to eq(1)
         expect(ActionMailer::Base.deliveries.first.subject)
-          .to eq "[#{project.name}] Meeting series '#{series.title}' rescheduled"
+          .to eq "[#{project.name}] Meeting series '#{series.title}' has been updated"
       end
     end
   end

@@ -23,7 +23,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
@@ -31,7 +31,7 @@
 FactoryBot.define do
   factory :custom_field do
     transient do
-      # These values are used internally to customize the  custom field name
+      # These values are used internally to customize the custom field name
       # when using traits. They are not meant to be set externally.
       _format_name do
         [
@@ -189,6 +189,14 @@ FactoryBot.define do
       multi_value
     end
 
+    trait :scored_list do
+      field_format { "scored_list" }
+      hierarchy_root do
+        service = CustomFields::Hierarchy::HierarchicalItemService.new
+        service.generate_root(instance).value!
+      end
+    end
+
     factory :project_custom_field, class: "ProjectCustomField" do
       project_custom_field_section
 
@@ -196,7 +204,7 @@ FactoryBot.define do
         projects { [] }
       end
 
-      # enable the the custom_field for the given projects
+      # Enable the custom_field for the given projects
       after(:create) do |custom_field, evaluator|
         projects = Array(evaluator.projects)
         next if projects.blank?
@@ -208,17 +216,23 @@ FactoryBot.define do
         end
       end
 
-      factory :boolean_project_custom_field, traits: [:boolean]
-      factory :string_project_custom_field, traits: [:string]
-      factory :text_project_custom_field, traits: [:text]
-      factory :integer_project_custom_field, traits: [:integer]
-      factory :calculated_value_project_custom_field, traits: [:calculated_value]
-      factory :float_project_custom_field, traits: [:float]
-      factory :date_project_custom_field, traits: [:date]
-      factory :list_project_custom_field, traits: [:list]
-      factory :version_project_custom_field, traits: [:version]
-      factory :user_project_custom_field, traits: [:user]
-      factory :link_project_custom_field, traits: [:link]
+      %w[
+        boolean
+        calculated_value
+        date
+        float
+        hierarchy multi_hierarchy
+        integer
+        link
+        list multi_list
+        scored_list
+        string
+        text
+        user multi_user
+        version multi_version
+      ].each do |trait|
+        factory :"#{trait}_project_custom_field", traits: [trait]
+      end
     end
 
     factory :user_custom_field, class: "UserCustomField"
@@ -239,20 +253,22 @@ FactoryBot.define do
         end
       end
 
-      factory :boolean_wp_custom_field, traits: [:boolean]
-      factory :string_wp_custom_field, traits: [:string]
-      factory :text_wp_custom_field, traits: [:text]
-      factory :integer_wp_custom_field, traits: [:integer]
-      factory :float_wp_custom_field, traits: [:float]
-      factory :date_wp_custom_field, traits: [:date]
-      factory :list_wp_custom_field, traits: [:list]
-      factory :multi_list_wp_custom_field, traits: [:multi_list]
-      factory :version_wp_custom_field, traits: [:version]
-      factory :multi_version_wp_custom_field, traits: [:multi_version]
-      factory :user_wp_custom_field, traits: [:user]
-      factory :multi_user_wp_custom_field, traits: [:multi_user]
-      factory :link_wp_custom_field, traits: [:link]
-      factory :hierarchy_wp_custom_field, traits: [:hierarchy]
+      %w[
+        boolean
+        date
+        float
+        hierarchy multi_hierarchy
+        integer
+        link
+        list multi_list
+        scored_list
+        string
+        text
+        user multi_user
+        version multi_version
+      ].each do |trait|
+        factory :"#{trait}_wp_custom_field", traits: [trait]
+      end
     end
 
     factory :issue_custom_field, class: "WorkPackageCustomField" do

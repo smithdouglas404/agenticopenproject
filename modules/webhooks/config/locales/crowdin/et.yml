@@ -31,7 +31,7 @@ et:
       events:
         created: "Loodud"
         updated: "Updated"
-        comment: "Comment"
+        comment: "Kommentaar"
         internal_comment: "Internal comment"
       explanation:
         text: >

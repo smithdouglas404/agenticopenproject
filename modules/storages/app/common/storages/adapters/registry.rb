@@ -62,7 +62,7 @@ module Storages
       # Need to make this dynamic to ease new providers to be registered
       import Providers::Nextcloud::NextcloudRegistry
       import Providers::OneDrive::OneDriveRegistry
-      import Providers::SharePoint::SharePointRegistry
+      import Providers::Sharepoint::SharepointRegistry
     end
   end
 end

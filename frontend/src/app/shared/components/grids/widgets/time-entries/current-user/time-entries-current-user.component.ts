@@ -38,10 +38,13 @@ export class WidgetTimeEntriesCurrentUserComponent extends AbstractWidgetCompone
   }
 
   public get total() {
-    const duration = this.entries.reduce((current, entry) => current + this.timezone.toHours(entry.hours), 0);
+    const duration = this
+      .entries
+      .reduce((current, entry) => current + this.timezone.toHours(entry.hours), 0);
 
     if (duration > 0) {
-      return this.i18n.t('js.units.hour', { count: duration });
+      const amount = this.i18n.t('js.units.hour_string', { hours: duration.toFixed(2)});
+      return this.i18n.t('js.label_total_amount', { amount });
     }
     return this.i18n.t('js.placeholders.default');
   }

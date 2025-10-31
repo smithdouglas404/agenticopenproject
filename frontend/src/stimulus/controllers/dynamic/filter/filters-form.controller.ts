@@ -72,6 +72,8 @@ export default class FiltersFormController extends Controller {
   declare readonly singleDayTargets:HTMLInputElement[];
   declare readonly simpleValueTargets:HTMLInputElement[];
 
+  declare readonly hasFilterFormToggleTarget:boolean;
+
   autoReloadTargets:HTMLElement[];
 
   static values = {
@@ -79,12 +81,14 @@ export default class FiltersFormController extends Controller {
     outputFormat: { type: String, default: 'params' },
     performTurboRequests: { type: Boolean, default: false },
     clearButtonId: String,
+    urlPathName: String,
   };
 
   declare displayFiltersValue:boolean;
   declare outputFormatValue:string;
   declare performTurboRequestsValue:boolean;
   declare readonly clearButtonIdValue:string;
+  declare urlPathNameValue:string;
 
   private boundListener = this.sendForm.bind(this);
 
@@ -148,8 +152,10 @@ export default class FiltersFormController extends Controller {
   }
 
   displayFiltersValueChanged() {
-    this.toggleButtonActive();
-    this.toggleFilterFormVisible();
+    if (this.hasFilterFormToggleTarget){
+      this.toggleButtonActive();
+      this.toggleFilterFormVisible();
+    }
   }
 
   toggleButtonActive() {
@@ -334,7 +340,8 @@ export default class FiltersFormController extends Controller {
     const ajaxIndicator = document.querySelector('#ajax-indicator') as HTMLElement;
     ajaxIndicator.style.display = '';
 
-    const url = `${window.location.pathname}?${params.toString()}`;
+    const pathName = this.urlPathNameValue || window.location.pathname;
+    const url = `${pathName}?${params.toString()}`;
 
     if (this.performTurboRequestsValue) {
       fetch(url, {

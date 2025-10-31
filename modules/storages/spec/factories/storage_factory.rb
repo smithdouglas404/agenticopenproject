@@ -94,6 +94,13 @@ FactoryBot.define do
     authentication_method { "two_way_oauth2" }
     storage_audience { nil }
 
+    trait :with_oauth_configured do
+      after(:create) do |storage, _evaluator|
+        create(:oauth_client, integration: storage)
+        create(:oauth_application, integration: storage)
+      end
+    end
+
     trait :oidc_sso_enabled do
       storage_audience { "nextcloud" }
       authentication_method { "oauth2_sso" }
@@ -225,9 +232,9 @@ FactoryBot.define do
     end
   end
 
-  factory :share_point_storage,
+  factory :sharepoint_storage,
           parent: :storage,
-          class: "::Storages::SharePointStorage" do
+          class: "::Storages::SharepointStorage" do
     host { "https://openproject.sharepoint.com/sites/ProjectX" }
     automatically_managed { false }
 
@@ -240,8 +247,8 @@ FactoryBot.define do
     end
 
     trait :sandbox do
-      tenant_id { ENV.fetch("SHARE_POINT_TEST_TENANT_ID", "e36f1dbc-fdae-427e-b61b-0d96ddfb81a4") }
-      host { ENV.fetch("SHARE_POINT_TEST_HOST", "https://ymt6d.sharepoint.com/sites/OPTest") }
+      tenant_id { ENV.fetch("SHAREPOINT_TEST_TENANT_ID", "e36f1dbc-fdae-427e-b61b-0d96ddfb81a4") }
+      host { ENV.fetch("SHAREPOINT_TEST_HOST", "https://ymt6d.sharepoint.com/sites/OPTest") }
 
       transient do
         oauth_client_token_user { association :user }
@@ -249,18 +256,18 @@ FactoryBot.define do
 
       after(:create) do |storage, evaluator|
         create(:oauth_client,
-               client_id: ENV.fetch("SHARE_POINT_TEST_OAUTH_CLIENT_ID",
+               client_id: ENV.fetch("SHAREPOINT_TEST_OAUTH_CLIENT_ID",
                                     "MISSING_SHARE_POINT_TEST_OAUTH_CLIENT_ID"),
-               client_secret: ENV.fetch("SHARE_POINT_TEST_OAUTH_CLIENT_SECRET",
+               client_secret: ENV.fetch("SHAREPOINT_TEST_OAUTH_CLIENT_SECRET",
                                         "MISSING_SHARE_POINT_TEST_OAUTH_CLIENT_SECRET"),
                integration: storage)
 
         create(:oauth_client_token,
                oauth_client: storage.oauth_client,
                user: evaluator.oauth_client_token_user,
-               access_token: ENV.fetch("SHARE_POINT_TEST_OAUTH_CLIENT_ACCESS_TOKEN",
+               access_token: ENV.fetch("SHAREPOINT_TEST_OAUTH_CLIENT_ACCESS_TOKEN",
                                        "MISSING_SHARE_POINT_TEST_OAUTH_CLIENT_ACCESS_TOKEN"),
-               refresh_token: ENV.fetch("SHARE_POINT_TEST_OAUTH_CLIENT_REFRESH_TOKEN",
+               refresh_token: ENV.fetch("SHAREPOINT_TEST_OAUTH_CLIENT_REFRESH_TOKEN",
                                         "MISSING_SHARE_POINT_TEST_OAUTH_CLIENT_REFRESH_TOKEN"),
                token_type: "bearer")
       end

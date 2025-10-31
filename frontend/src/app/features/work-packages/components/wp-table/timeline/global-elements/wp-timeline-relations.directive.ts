@@ -34,7 +34,9 @@ import { State } from '@openproject/reactivestates';
 import { combineLatest } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 import { States } from 'core-app/core/states/states.service';
-import { WorkPackageViewTimelineService } from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-timeline.service';
+import {
+  WorkPackageViewTimelineService,
+} from 'core-app/features/work-packages/routing/wp-view-base/view-services/wp-view-timeline.service';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destroyed.mixin';
 import { RelationsStateValue, WorkPackageRelationsService } from '../../../wp-relations/wp-relations.service';
@@ -48,13 +50,13 @@ const DEBUG_DRAW_RELATION_LINES_WITH_COLOR = false;
 export const timelineGlobalElementCssClassname = 'relation-line';
 
 function newSegment(vp:TimelineViewParameters,
-  classNames:string[],
-  yPosition:number,
-  top:number,
-  left:number,
-  width:number,
-  height:number,
-  color?:string):HTMLElement {
+                    classNames:string[],
+                    yPosition:number,
+                    top:number,
+                    left:number,
+                    width:number,
+                    height:number,
+                    color?:string):HTMLElement {
   const segment = document.createElement('div');
   segment.classList.add(
     timelineElementCssClass,
@@ -85,14 +87,14 @@ export class WorkPackageTableTimelineRelations extends UntilDestroyedMixin imple
 
   private container:JQuery;
 
-  private workPackagesWithRelations:{ [workPackageId:string]:State<RelationsStateValue> } = {};
+  private workPackagesWithRelations:{ [workPackageId:string]:RelationsStateValue } = {};
 
   constructor(public readonly injector:Injector,
-    public elementRef:ElementRef,
-    public states:States,
-    public workPackageTimelineTableController:WorkPackageTimelineTableController,
-    public wpTableTimeline:WorkPackageViewTimelineService,
-    public wpRelations:WorkPackageRelationsService) {
+              public elementRef:ElementRef,
+              public states:States,
+              public workPackageTimelineTableController:WorkPackageTimelineTableController,
+              public wpTableTimeline:WorkPackageViewTimelineService,
+              public wpRelations:WorkPackageRelationsService) {
     super();
   }
 
@@ -123,29 +125,28 @@ export class WorkPackageTableTimelineRelations extends UntilDestroyedMixin imple
       this.wpTableTimeline.live$(),
     ])
       .pipe(
-        filter(([_, timeline]) => timeline.visible),
+        filter(([_render, timeline]) => timeline.visible),
         this.untilDestroyed(),
         map(([rendered, _]) => rendered),
       )
       .subscribe((list) => {
         // ... make sure that the corresponding relations are loaded ...
         const wps = _.compact(list.map((row) => row.workPackageId) as string[]);
-        this.wpRelations.requireAll(wps);
-
-        wps.forEach((wpId) => {
-          const relationsForWorkPackage = this.wpRelations.state(wpId);
-          this.workPackagesWithRelations[wpId] = relationsForWorkPackage;
-
-          // ... once they are loaded, display them.
-          relationsForWorkPackage.values$()
-            .pipe(
-              take(1),
-            )
-            .subscribe(() => {
-              this.renderWorkPackagesRelations([wpId]);
-            });
-        });
+        void this.wpRelations.requireAll(wps);
       });
+
+    // When the relations are updated, redraw them
+    this
+      .wpRelations
+      .observeChanges()
+      .pipe(
+        this.untilDestroyed(),
+        filter(([_, state]) => !!state),
+      ).subscribe(([wpId, state]) => {
+        this.workPackagesWithRelations[wpId] = state!;
+        this.renderWorkPackagesRelations([wpId]);
+    });
+
 
     // When a WorkPackage changes, redraw the corresponding relations
     this.states.workPackages.observeChange()
@@ -166,7 +167,7 @@ export class WorkPackageTableTimelineRelations extends UntilDestroyedMixin imple
       }
 
       this.removeRelationElementsForWorkPackage(workPackageId);
-      const relations = _.values(workPackageWithRelation.value);
+      const relations = _.values(workPackageWithRelation);
       const relationsList = _.values(relations);
       relationsList.forEach((relation) => {
         if (!(relation.type === 'precedes'
@@ -228,11 +229,11 @@ export class WorkPackageTableTimelineRelations extends UntilDestroyedMixin imple
   }
 
   private renderRelation(vp:TimelineViewParameters,
-    e:TimelineRelationElement,
-    idxFrom:number,
-    idxTo:number,
-    startCell:WorkPackageTimelineCell,
-    endCell:WorkPackageTimelineCell) {
+                         e:TimelineRelationElement,
+                         idxFrom:number,
+                         idxTo:number,
+                         startCell:WorkPackageTimelineCell,
+                         endCell:WorkPackageTimelineCell) {
     const rowFrom = this.workPackageIdOrder[idxFrom];
     const rowTo = this.workPackageIdOrder[idxTo];
 

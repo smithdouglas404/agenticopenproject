@@ -3,7 +3,7 @@ id:
   js:
     team_planner:
       add_existing: 'Add existing'
-      label_team_planner_plural: 'Team planners'
+      label_team_planner_plural: 'Rencana tim'
       add_existing_title: 'Add existing work packages'
       create_label: 'Rencana tim'
       create_title: 'Buat rencana tim baru'

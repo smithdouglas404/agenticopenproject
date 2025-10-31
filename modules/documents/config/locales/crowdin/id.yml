@@ -26,6 +26,10 @@ id:
   activerecord:
     models:
       document: "Dokumen"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "Judul"
   activity:
     filter:
       document: "Dokumen"
@@ -33,6 +37,22 @@ id:
   default_doc_category_user: "Dokumentasi pengguna"
   enumeration_doc_categories: "Kategori dokumen"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "Nama"
+      type: "Tipe"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "Tipe"
     label_attachment_author: "Lampiran penulis"
     label_categories: "Categories"
     new_category: "Kategori Baru"
@@ -40,9 +60,9 @@ id:
   label_document_new: "Dokumen baru"
   label_document_plural: "Dokumen"
   label_documents: "Dokumen"
-  label_document_title: "Title"
-  label_document_description: "Description"
-  label_document_category: "Category"
+  label_document_title: "Judul"
+  label_document_description: "Deskripsi"
+  label_document_category: "Kategori"
   permission_manage_documents: "Kelola dokumen"
   permission_view_documents: "Lihat dokumen"
   project_module_documents: "Dokumen"

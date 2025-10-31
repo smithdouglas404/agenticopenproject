@@ -85,7 +85,7 @@ Continue by filling out the information for the *Azure OAuth* and once again cli
 
 ![OAuth applications details in OneDrive file storages setup in OpenProject](openproject_system_guide_new_onedrive_storage_OAuth.png)
 
-Finally, copy the *Redirect URl* and click the green *Done, complete setup* button.
+Finally, copy the *Redirect URl* and click the green *Finish setup* button.
 
 ![Redirect URI details in OneDrive file storage setup in OpenProject](openproject_system_guide_new_onedrive_storage_redirect_URL.png)
 

@@ -31,7 +31,7 @@ ca:
       events:
         created: "Creat"
         updated: "Actualitzat"
-        comment: "Comment"
+        comment: "Comentari"
         internal_comment: "Internal comment"
       explanation:
         text: >

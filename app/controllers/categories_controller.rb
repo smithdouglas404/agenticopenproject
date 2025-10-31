@@ -76,20 +76,21 @@ class CategoriesController < ApplicationController
     end
   end
 
-  def destroy
+  def destroy # rubocop:disable Metrics/AbcSize
     @issue_count = @category.work_packages.size
     if @issue_count == 0
       # No issue assigned to this category
       @category.destroy
-      redirect_to project_settings_categories_path(@project)
+      redirect_to project_settings_categories_path(@project), status: :see_other
       return
     elsif params[:todo]
       reassign_to = @project.categories.find_by(id: params[:reassign_to_id]) if params[:todo] == "reassign"
       @category.destroy(reassign_to)
-      redirect_to project_settings_categories_path(@project)
+      redirect_to project_settings_categories_path(@project), status: :see_other
       return
     end
     @categories = @project.categories - [@category]
+    render status: :unprocessable_entity
   end
 
   private

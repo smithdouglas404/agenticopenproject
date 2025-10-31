@@ -83,7 +83,7 @@ export default class QuoteCommentController extends Controller {
   private setCommentRestriction(isInternal:boolean) {
     if (isInternal && !this.workPackagesActivitiesTabInternalCommentOutlet.internalCheckboxTarget.checked) {
       this.workPackagesActivitiesTabInternalCommentOutlet.internalCheckboxTarget.checked = isInternal;
-      this.workPackagesActivitiesTabInternalCommentOutlet.toggleInternal();
+      this.workPackagesActivitiesTabInternalCommentOutlet.updateInternalState();
     }
   }
 

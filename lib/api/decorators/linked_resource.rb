@@ -42,6 +42,8 @@ module API
       def from_hash(hash, *)
         return super unless hash && hash["_links"]
 
+        validate_links!(hash["_links"])
+
         copied_hash = hash.deep_dup
 
         representable_attrs.find_all do |dfn|
@@ -67,6 +69,15 @@ module API
           link.from_hash(href)
           struct.id
         end
+      end
+
+      def validate_links!(links)
+        raise ::API::Errors::BadRequest.new(I18n.t("api_v3.errors.bad_request.links_not_an_object")) unless links.is_a?(Hash)
+
+        invalid, = links.find { |_, link| !(link.is_a?(Hash) || link.is_a?(Array)) }
+        return if invalid.nil?
+
+        raise ::API::Errors::BadRequest.new(I18n.t("api_v3.errors.bad_request.invalid_link", key: invalid))
       end
 
       module ClassMethods

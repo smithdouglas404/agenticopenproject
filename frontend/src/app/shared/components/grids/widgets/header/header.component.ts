@@ -30,6 +30,7 @@ import {
   ChangeDetectionStrategy, Component, EventEmitter, Input, Output,
 } from '@angular/core';
 import { GridAreaService } from 'core-app/shared/components/grids/grid/area.service';
+import { GridDragAndDropService } from 'core-app/shared/components/grids/grid/drag-and-drop.service';
 
 @Component({
   selector: 'widget-header',
@@ -45,7 +46,10 @@ export class WidgetHeaderComponent {
 
   @Output() onRenamed = new EventEmitter<string>();
 
-  constructor(readonly layout:GridAreaService) {
+  constructor(
+    readonly layout:GridAreaService,
+    readonly drag:GridDragAndDropService,
+  ) {
 
   }
 

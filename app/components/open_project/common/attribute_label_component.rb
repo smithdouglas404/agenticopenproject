@@ -36,6 +36,7 @@ module OpenProject
         model:,
         tag: :span,
         current_user: User.current,
+        required: false,
         **system_arguments
       )
         super()
@@ -47,6 +48,8 @@ module OpenProject
           @system_arguments[:classes],
           "op-attribute-label"
         )
+
+        @required = required
 
         @help_text = ::AttributeHelpText.for(model)
           &.cached(current_user)

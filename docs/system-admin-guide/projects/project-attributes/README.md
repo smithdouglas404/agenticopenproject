@@ -108,7 +108,7 @@ Name the section and save it.
 
 You can group project attributes into sections to better organize them. Either drag and drop project attributes into a section or create new ones directly within a section by clicking **+Project attribute** button (only visible if a section is empty).
 
-![Add a new project attribute directly into an empty section in OpenProject adminstration](open_project_system_admin_guide_project_attributes_empty_section.png)
+![Add a new project attribute directly into an empty section in OpenProject administration](open_project_system_admin_guide_project_attributes_empty_section.png)
 
 You can click on more icon to the right of each section to rename it, delete it or change its order.
 

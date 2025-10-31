@@ -31,8 +31,8 @@ vi:
       events:
         created: "Đã tạo"
         updated: "Đã cập nhật"
-        comment: "Comment"
-        internal_comment: "Internal comment"
+        comment: "Nhận xét"
+        internal_comment: "ghi chú nội bộ"
       explanation:
         text: >
           Khi xảy ra một sự kiện như tạo gói công việc hoặc cập nhật dự án, OpenProject sẽ gửi một yêu cầu POST đến các điểm cuối web đã cấu hình. Thông thường, sự kiện được gửi sau khi %{link} đã trôi qua.

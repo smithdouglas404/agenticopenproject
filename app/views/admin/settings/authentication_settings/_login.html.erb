@@ -29,33 +29,9 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%=
   settings_primer_form_with(scope: :settings,
-                                  url: admin_settings_authentication_path(tab: params[:tab]),
-                                  method: :patch) do |f|
+                            url: admin_settings_authentication_path(tab: params[:tab]),
+                            method: :patch) do |f|
     render_inline_settings_form(f) do |form|
-      form.select_list(
-        name: :omniauth_direct_login_provider,
-        input_width: :medium,
-        label: I18n.t(:setting_omniauth_direct_login_provider),
-        caption: I18n.t(
-          "settings.authentication.omniauth_direct_login_hint_html",
-          internal_path: internal_signin_url
-        ).html_safe,
-        include_blank: I18n.t(:label_none_parentheses)
-      ) do |select|
-        AuthProvider
-          .where(available: true)
-          .order("lower(display_name) ASC")
-          .select(:type, :display_name, :slug)
-          .to_a
-          .each do |provider|
-          select.option(
-            value: provider.slug,
-            label: "#{provider.display_name} (#{provider.human_type})",
-            selected: Setting.omniauth_direct_login_provider == provider.slug
-          )
-        end
-      end
-
       form.select_list(
         name: :autologin,
         input_width: :medium,

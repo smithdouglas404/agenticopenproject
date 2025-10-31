@@ -41,6 +41,10 @@ module Storages
 
     def self.short_provider_name = :one_drive
 
+    def self.non_confidential_provider_fields
+      super + %i[tenant_id drive_id]
+    end
+
     def self.allowed_by_enterprise_token?
       EnterpriseToken.allows_to?(:one_drive_sharepoint_file_storage)
     end

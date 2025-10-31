@@ -53,6 +53,11 @@ RSpec.describe "Recurring meetings creation",
            lastname: "Second",
            member_with_permissions: { project => %i[view_meetings] })
   end
+  shared_let(:third_user) do
+    create(:user,
+           lastname: "Third",
+           member_with_permissions: { project => %i[view_meetings] })
+  end
   shared_let(:no_member_user) do
     create(:user,
            lastname: "Third")
@@ -103,21 +108,21 @@ RSpec.describe "Recurring meetings creation",
       # Add participants
       template_page.open_participant_form
       template_page.in_participant_form do
-        template_page.expect_participant_invited(user, invited: true)
-        template_page.expect_participant_invited(other_user, invited: false)
+        template_page.expect_participant(user, editable: false)
+        template_page.expect_available_participants(count: 1)
+
+        template_page.select_participant(other_user)
+        template_page.expect_participant(other_user, editable: false)
         template_page.expect_available_participants(count: 2)
-        expect(page).to have_button("Save")
 
-        template_page.invite_participant(other_user)
-
-        template_page.expect_participant_invited(user, invited: true)
-        template_page.expect_participant_invited(other_user, invited: true)
-
-        click_on("Save")
+        page.find(".close-button").click
       end
       wait_for_network_idle
 
       expect(page).to have_css("#meetings-side-panel-participants-component", text: 2)
+
+      perform_enqueued_jobs
+      expect(ActionMailer::Base.deliveries.size).to eq 0
 
       expect(page).to have_link("Open first meeting")
 
@@ -134,8 +139,34 @@ RSpec.describe "Recurring meetings creation",
 
       perform_enqueued_jobs
       expect(ActionMailer::Base.deliveries.size).to eq 2
+      expect(ActionMailer::Base.deliveries.map(&:to).flatten)
+        .to contain_exactly user.mail, other_user.mail
       title = ActionMailer::Base.deliveries.map(&:subject).uniq.first
       expect(title).to eq "[#{project.name}] Meeting series 'Some title'"
+      ActionMailer::Base.deliveries.clear
+
+      # Edit the template again
+      template_page.visit!
+
+      template_page.open_participant_form
+      template_page.in_participant_form do
+        template_page.expect_participant(user, editable: false)
+        template_page.expect_participant(other_user, editable: false)
+        template_page.expect_available_participants(count: 2)
+
+        template_page.select_participant(third_user)
+        template_page.expect_participant(third_user, editable: false)
+        template_page.expect_available_participants(count: 3)
+
+        page.find(".close-button").click
+      end
+      wait_for_network_idle
+
+      expect(page).to have_css("#meetings-side-panel-participants-component", text: 3)
+
+      perform_enqueued_jobs
+      expect(ActionMailer::Base.deliveries.size).to eq 1
+      expect(ActionMailer::Base.deliveries.first.to).to contain_exactly(third_user.mail)
     end
   end
 

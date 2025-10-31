@@ -34,7 +34,10 @@ module API
 
         resources :time_entries do
           get &::API::V3::Utilities::Endpoints::Index.new(model: TimeEntry,
-                                                          scope: -> { TimeEntry.includes(TimeEntryRepresenter.to_eager_load) })
+                                                          scope: lambda do
+                                                            TimeEntry.eager_load(TimeEntryRepresenter.to_eager_load)
+                                                                     .preload(TimeEntryRepresenter.to_preload)
+                                                          end)
                                                      .mount
           post &::API::V3::Utilities::Endpoints::Create.new(model: TimeEntry).mount
 

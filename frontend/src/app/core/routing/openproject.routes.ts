@@ -282,6 +282,9 @@ export function initializeUiRouterListeners(injector:Injector) {
       toastService.add(toParams.flash_message as IToast);
     }
 
+    // Reset the page state on navigation
+    window.OpenProject.pageState = 'pristine';
+
     return true;
   });
 }

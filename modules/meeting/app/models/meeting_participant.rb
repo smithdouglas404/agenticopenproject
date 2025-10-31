@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -31,8 +32,19 @@ class MeetingParticipant < ApplicationRecord
   belongs_to :meeting
   belongs_to :user
 
+  validates :user, :meeting, presence: true
+
   scope :invited, -> { where(invited: true) }
   scope :attended, -> { where(attended: true) }
+
+  enum :participation_status, {
+    needs_action: "needs-action",
+    accepted: "accepted",
+    declined: "declined",
+    tentative: "tentative",
+    delegated: "delegated",
+    unknown: "unknown" # this status is used for existing participants when introducing the field
+  }
 
   def name
     user.present? ? user.name : I18n.t("user.deleted")
@@ -50,6 +62,6 @@ class MeetingParticipant < ApplicationRecord
 
   def copy_attributes
     # create a clean attribute set allowing to attach participants to different meetings
-    attributes.reject { |k, _v| ["id", "meeting_id", "attended", "created_at", "updated_at"].include?(k) }
+    attributes.except("id", "meeting_id", "attended", "created_at", "updated_at")
   end
 end

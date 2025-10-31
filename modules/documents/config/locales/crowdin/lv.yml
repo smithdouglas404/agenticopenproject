@@ -26,6 +26,10 @@ lv:
   activerecord:
     models:
       document: "Dokuments"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "Virsraksts"
   activity:
     filter:
       document: "Dokumenti"
@@ -33,6 +37,22 @@ lv:
   default_doc_category_user: "Lietotāja dokumentācija"
   enumeration_doc_categories: "Dokumentu kategorijas"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "Nosaukums"
+      type: "Veids"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "Veidi"
     label_attachment_author: "Attachment author"
     label_categories: "Categories"
     new_category: "New category"
@@ -40,9 +60,9 @@ lv:
   label_document_new: "Jauns dokuments"
   label_document_plural: "Dokumenti"
   label_documents: "Dokumenti"
-  label_document_title: "Title"
-  label_document_description: "Description"
-  label_document_category: "Category"
+  label_document_title: "Virsraksts"
+  label_document_description: "Apraksts"
+  label_document_category: "Sadaļa"
   permission_manage_documents: "Pārvaldīt dokumentus"
   permission_view_documents: "Skatīt dokumentus"
   project_module_documents: "Dokumenti"

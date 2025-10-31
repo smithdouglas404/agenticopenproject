@@ -59,6 +59,10 @@ fr:
       tab_interface: "Interface"
       tab_branding: "Image de marque"
       tab_pdf_export_styles: "Styles d'exportation PDF"
+      tab_pdf_export_font: "Police d'exportation PDF"
+      fonts:
+        file_too_large: "est trop volumineux (la taille maximale est de %{count} Mo)."
+        file_is_invalid: "n'est pas un fichier de police TTF valide."
       colors:
         primary-button-color: "Bouton principal"
         accent-color: "Couleur d'accentuation"
@@ -158,6 +162,11 @@ fr:
         expired: "Expiré le %{date}"
         revoked: "Révoqué le %{date}"
         title: "Tableau des jetons d'accès"
+    workflows:
+      tabs:
+        default_transitions: "Transitions par défaut"
+        user_author: "L'utilisateur est l'auteur"
+        user_assignee: "L'utilisateur est la personne assignée"
   authentication:
     login_and_registration: "Connexion et inscription"
   announcements:
@@ -191,10 +200,9 @@ fr:
     ldap_auth_failed: "Authentification impossible sur le serveur LDAP."
     sync_failed: "Échec de la synchronisation à partir de LDAP : %{message}."
     back_to_index: "Cliquez ici pour revenir à la liste des connexions."
-    technical_warning_html: |
+    technical_warning: |
       Ce formulaire LDAP nécessite une connaissance technique de votre configuration LDAP/Active Directory.
-      <br>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Veuillez consulter notre documentation pour obtenir des instructions détaillées</a>.
+      [Veuillez consulter notre documentation pour obtenir des instructions détaillées](docs_url).
     attribute_texts:
       name: Nom arbitraire de la connexion LDAP
       host: Nom d'hôte ou adresse IP du serveur LDAP
@@ -297,6 +305,7 @@ fr:
         placeholder:
           label: "Étiquette de l'élément"
           short: "Nom abrégé"
+          score: "Score"
       notice:
         remember_items_and_projects: "N'oubliez pas de définir les éléments et les projets dans les onglets respectifs de ce champ personnalisé."
       hierarchy:
@@ -313,6 +322,7 @@ fr:
     reorder_alphabetical: "Réorganiser les valeurs par ordre alphabétique"
     reorder_confirmation: "Attention : l'ordre actuel des valeurs disponibles sera perdu. Continuer ?"
     placeholder_version_select: "La sélection d'un lot de travaux ou d'un projet est requise en premier lieu"
+    calculated_field_not_editable: "Attribut non modifiable. Cette valeur est calculée automatiquement."
     instructions:
       is_required: "Marquer le champ personnalisé comme requis. Cela rendra obligatoire de remplir le champ lors de la création ou de la mise à jour des ressources existantes."
       is_required_for_project: "Cocher pour activer cet attribut et le rendre nécessaire dans tous les projets. Il ne peut pas être désactivé pour certains projets."
@@ -328,17 +338,42 @@ fr:
     tab:
       no_results_title_text: Il n'y a actuellement aucun champ personnalisé.
       no_results_content_text: Créer un nouveau champ personnalisé
+  calculated_values:
+    error_dialog:
+      title: "Erreur avec la valeur calculée"
+    errors:
+      unknown: "Une erreur inconnue s'est produite. Veuillez vérifier la formule de cette valeur calculée."
+      mathematical: "Une erreur mathématique s'est produite lors du calcul."
+      missing_value: L'attribut « %{custom_field_name} » est requis par cette valeur calculée, mais il est vide.
+      disabled_value: L'attribut « %{custom_field_name} » est requis par cette valeur calculée, mais il est désactivé pour le projet.
   concatenation:
     single: "ou"
-  dry_validation:
+  danger_dialog:
+    confirmation_live_message_checked: "Le bouton pour continuer est maintenant actif."
+    confirmation_live_message_unchecked: "Le bouton pour continuer est maintenant inactif. Vous devez cocher la case pour continuer."
+  op_dry_validation:
+    or: "ou"
     errors:
-      int?: "doit être un nombre entier."
+      array?: "doit être un tableau."
+      decimal?: "doit être une décimale."
+      defined: "ne doit pas être défini."
+      eql?: "doit être égal à %{left}."
       filled?: "doit être rempli."
       greater_or_equal_zero: "doit être supérieur ou égal à 0."
-      not_found: "introuvable."
+      gteq?: "doit être supérieur ou égal à %{num}."
+      hash?: "doit être un hachage."
+      included_in?:
+        arg:
+          default: "doit être l'un des éléments suivants : %{list}."
+          range: "doit être l'un des éléments suivants : %{list_left} - %{list_right}."
+      int?: "doit être un nombre entier."
+      key?: "est manquant."
+      not_found: "est introuvable."
       rules:
         copy_workflow_from:
           workflow_missing: "n'a pas de flux de travail propre."
+        custom_field:
+          format_not_supported: "Le format « %{field_format} » n'est pas pris en charge."
         item:
           root_item: "ne peut pas être un élément racine."
           not_persisted: "doit être un élément déjà existant."
@@ -348,20 +383,23 @@ fr:
           not_unique: "doit être unique au sein d'un même niveau hiérarchique."
         parent:
           not_descendant: "doit être un descendant de la racine de la hiérarchie."
+      str?: "doit être une chaîne de caractères."
+      type?: "doit être de type : %{type}."
     rules:
       copy_workflow_from: "Type de copie du flux de travail"
       enabled: "Activé"
       depth: "Profondeur"
       item: "Élément"
       label: "Étiquette"
+      score: "Score"
       short: "Nom abrégé"
       parent: "Parent"
       blueprint: "Modèle de plan"
   global_search:
     title:
-      all_projects: 'Recherche de "%{search_term}" dans tous les projets'
-      current_project: 'Recherche de "%{search_term}" dans %{project_name}'
-      project_and_subprojects: 'Recherche de "%{search_term}" dans %{project_name} et tous les sous-projets'
+      all_projects: 'Recherche de « %{search_term} » dans tous les projets'
+      current_project: 'Recherche de « %{search_term} » dans %{project_name}'
+      project_and_subprojects: 'Recherche de « %{search_term} » dans %{project_name} et tous les sous-projets'
     placeholder: "Rechercher dans %{app_title}"
     overwritten_tabs:
       all: "Tous"
@@ -374,7 +412,7 @@ fr:
       description: En regroupant les utilisateurs, vous pouvez les ajouter en tant que membres aux mêmes projets ou leur attribuer les mêmes rôles globaux.
     table_component:
       blank_slate:
-        description: You can define named groups of users with specific permissions.
+        description: Vous pouvez définir des groupes nommés d'utilisateurs avec des permissions spécifiques.
         title: Aucun groupe n'a encore été configuré
       user_count: Nombre d'utilisateurs
     users:
@@ -418,7 +456,7 @@ fr:
     lists:
       active: "Projets actifs"
       my: "Mes projets"
-      favored: "Projets favoris"
+      favorited: "Projets favoris"
       archived: "Projets archivés"
       shared: "Listes de projets partagées"
       my_lists: "Mes listes de projets"
@@ -464,7 +502,7 @@ fr:
       life_cycle:
         header:
           title: "Cycle de vie du projet"
-          description_html: "Les phases actives du projet définissent le cycle de vie de ce projet et sont définies dans les <a href=%{admin_settings_url} target=\"_blank\">paramètres d'administration</a>. Les phases activées seront affichées dans votre <a href=%{overview_url} target=\"_blank\">aperçu du projet</a>."
+          description_html: 'Les phases actives du projet définissent le cycle de vie de ce projet et sont définies dans les <a href=%{admin_settings_url} target="_blank">paramètres d''administration</a>. Les phases activées seront affichées dans votre <a href=%{overview_url} target="_blank">aperçu du projet</a>.'
         non_defined: "Aucune phase n'est actuellement définie."
         section_header: "Phases"
         step:
@@ -491,6 +529,8 @@ fr:
       versions:
         no_results_title_text: Aucune version du projet pour le moment.
         no_results_content_text: Créer une nouvelle version
+        work_packages_graph: Graphique des lots de travaux
+        show_work_packages: Afficher les lots de travaux
       storage:
         no_results_title_text: Il n'y a pas d'espace disque supplémentaire utilisé par ce projet.
       work_package_priorities:
@@ -573,26 +613,23 @@ fr:
       will_revoke_access_to_all: "Cette action aura pour effet de révoquer l'accès de ces personnes à l'ensemble de ces éléments."
   my:
     access_token:
-      create_dialog:
-        title: Jeton généré
-        header: Le jeton %{type} a été généré
-        warning: Notez que c'est la seule fois que vous verrez ce jeton, assurez-vous de le copier maintenant.
-      errors:
-        token_name_blank: "Veuillez fournir un nom de jeton d'API"
-        token_name_in_use: "Ce nom de jeton d'API est déjà utilisé, veuillez en choisir un autre"
-      new_access_token_dialog_title: "Créer un nouveau jeton d'API"
-      new_access_token_dialog_show_button_text: "Jeton d'API"
-      new_access_token_dialog_text_field_placeholder_text: "Mon jeton d'API"
-      new_access_token_dialog_text_field_label: "Nom"
-      new_access_token_dialog_submit_button_text: "Créer"
-      new_access_token_dialog_text: "Ce jeton permettra aux applications tierces de communiquer avec votre instance. Pour différencier le nouveau jeton d'API, veuillez lui donner un nom."
-      new_access_token_dialog_attention_text: "Traitez les jetons d'API comme des mots de passe. Toute personne possédant ce lien aura accès aux informations de cette instance. Partagez-les uniquement avec des utilisateurs de confiance."
+      dialog:
+        token/api:
+          dialog_title: "Créer un nouveau jeton d'API"
+          attention_text: "Traitez les jetons API comme des mots de passe. Toute personne possédant ce jeton aura accès aux informations de cette instance. Partagez-le uniquement avec des utilisateurs de confiance."
+          dialog_body: "Ce jeton permettra aux applications tierces de communiquer avec votre instance. Pour différencier le nouveau jeton d'API, veuillez lui donner un nom."
+          create_button: "Créer"
+          name_label: "Nom du jeton"
+      created_dialog:
+        token/api:
+          title: "Le jeton d'API a été généré"
+          warning: "Note : Ceci est la seule fois où vous verrez ce jeton, veuillez le copier maintenant."
       failed_to_reset_token: "Impossible de réinitialiser le jeton d’accès : %{error}"
       failed_to_create_token: "Impossible de créer le jeton d'accès : %{error}"
       failed_to_revoke_token: "Impossible de révoquer le jeton d'accès : %{error}"
       notice_reset_token: "Un nouveau jeton de %{type} a été généré. Votre jeton d’accès est :"
       token_value_warning: "Note : Ceci est la seule fois où vous verrez ce jeton, veuillez le copier maintenant."
-      no_results_title_text: Aucun jeton d'accès disponible pour le moment.
+      no_results_title_text: "Aucun jeton d'accès disponible pour le moment."
       notice_api_token_revoked: "Le jeton d'API a été supprimé. Pour créer un nouveau jeton, veuillez utiliser le bouton dans la section API."
       notice_rss_token_revoked: "Le jeton d'API a été supprimé. Pour créer un nouveau jeton, veuillez utiliser le lien dans la section RSS."
       notice_ical_token_revoked: 'Le jeton iCalendar « %{token_name} » pour le calendrier « %{calendar_name} » du projet « %{project_name} » a été révoqué. L''URL iCalendar liée à ce jeton est maintenant invalide.'
@@ -604,17 +641,20 @@ fr:
     autologins:
       prompt: "Restez connecté pendant %{num_days}"
     sessions:
-      remembered_devices: "Appareils enregistrés"
-      remembered_devices_caption: "Une liste de tous les appareils connectés à ce compte à l'aide de l'option \"rester connecté\"."
       session_name: "%{browser_name} %{browser_version} sur %{os_name}"
       browser: "Navigateur"
+      expires: "Expiration"
+      last_connection: "Dernière connexion"
       device: "Dispositif/système d'exploitation"
       unknown_browser: "navigateur inconnu"
       unknown_os: "système d'exploitation inconnu"
-      current: "Session en cours"
+      unknown: "(inconnu)"
+      browser_session: "(Session du navigateur)"
+      current: "Actuel (cet appareil)"
       title: "Gestion de session"
-      instructions: "Cette liste répertorie tous les appareils qui se sont connectés à votre compte. Révoquez toutes les sessions que vous ne reconnaissez pas ou auxquelles vous n'avez plus accès."
+      instructions: "Vous êtes connecté(e) à votre compte via les appareils suivants. Révoquez les sessions que vous ne reconnaissez pas ou qui proviennent d'appareils que vous ne contrôlez pas."
       may_not_delete_current: "Vous ne pouvez pas supprimer votre session actuelle."
+      deletion_warning: "Voulez-vous vraiment révoquer cette session ? Vous serez déconnecté(e) sur cet appareil."
     groups:
       member_in_these_groups: "Cet utilisateur est actuellement membre des groupes suivants :"
       no_results_title_text: Cet utilisateur n'est actuellement membre d'aucun groupe.
@@ -624,6 +664,57 @@ fr:
     memberships:
       no_results_title_text: Cet utilisateur n'est membre d'aucun projet pour le moment.
     open_profile: "Ouvrir le profil"
+    invite_user_modal:
+      invite: "Inviter"
+      title:
+        invite: "Inviter un utilisateur"
+        invite_to_project: "Inviter %{type} à rejoindre %{project}"
+        invite_principal_to_project: "Inviter %{principal} à rejoindre %{project}"
+      project:
+        label: "Projet"
+        required: "Veuillez sélectionner un projet"
+        next_button: "Suivant"
+        no_results: "Aucun projet trouvé"
+        no_invite_rights: "Vous n'avez pas l'autorisation d'inviter des membres dans ce projet"
+      type:
+        required: "Veuillez sélectionner le type à inviter"
+        user:
+          title: "Inviter un utilisateur dans %{project_name}"
+          description: "Permissions basées sur le rôle assigné dans le projet sélectionné"
+        group:
+          title: "Inviter un groupe à rejoindre %{project_name}"
+          description: "Permissions basées sur le rôle assigné dans le projet sélectionné"
+        placeholder_user:
+          title: "Ajouter un utilisateur fictif à %{project_name}"
+          title_no_ee: "Utilisateur fictif (add-on de la version Enterprise uniquement)"
+          description: "N'a pas d'accès au projet et aucun e-mail n'est envoyé."
+        already_member_message: "Déjà membre de %{project}"
+      principal:
+        no_results_user: "Aucun utilisateur n'a été trouvé"
+        invite_user: "Invité :"
+        no_results_placeholder: "Aucun utilisateur fictif n'a été trouvé"
+        create_new_placeholder: "Créer un nouveau utilisateur fictif :"
+        no_results_group: "Aucun groupe n'a été trouvé"
+        invite_to_project: "Inviter à rejoindre %{project_name}"
+        required:
+          user: "Veuillez sélectionner un utilisateur"
+          placeholder: "Veuillez sélectionner un utilisateur fictif"
+          group: "Veuillez sélectionner un groupe"
+      role:
+        label: "Rôle dans %{project}"
+        no_roles_found: "Aucun rôle n'a été trouvé"
+        description: >
+
+        required: "Veuillez sélectionner un rôle"
+      message:
+        label: "Message d'invitation"
+        description: "Nous enverrons un e-mail à l'utilisateur, auquel vous pourrez ajouter un message personnel ici. Une explication concernant l'invitation pourrait être utile ou peut-être quelques informations concernant le projet pour l'aider à démarrer."
+      summary:
+        next_button: "Envoyer une invitation"
+      success_message:
+        user: "L'utilisateur peut maintenant se connecter pour accéder à %{project}. En attendant, vous pouvez déjà compter sur cet utilisateur et l'assigner à des lots de travaux, par exemple."
+        placeholder_user: "L'utilisateur fictif peut maintenant être utilisé dans %{project}. En attendant, vous pouvez déjà planifier des taches avec cet utilisateur et l'assigner à des lots de travaux, par exemple."
+        group: "Le groupe fait maintenant partie du projet %{project}. En attendant, vous pouvez déjà compter sur ce groupe et l'assigner à des lots de travaux, par exemple."
   page:
     text: "Texte"
   placeholder_users:
@@ -633,7 +724,7 @@ fr:
     deletion_info:
       heading: "Supprimer l’utilisateur fictif %{name}"
       data_consequences: >
-        Toutes les occurrences de l'utilisateur de remplacement (par exemple, en tant que responsable ou autre valeur utilisateur) seront réaffectées à un compte appelé « Utilisateur supprimé ». Comme les données de chaque compte supprimé sont réaffectées à ce compte, il ne sera pas possible de distinguer les données que l'utilisateur a créées des données d'un autre compte supprimé.
+        Toutes les occurrences de l'utilisateur fictif (par exemple, en tant que responsable ou autre valeur utilisateur) seront réaffectées à un compte appelé « Utilisateur supprimé ». Comme les données de chaque compte supprimé sont réaffectées à ce compte, il ne sera pas possible de distinguer les données que l'utilisateur a créées des données d'un autre compte supprimé.
       irreversible: "Cette action est irréversible"
       confirmation: "Saisissez le nom d'utilisateur fictif %{name} pour confirmer ça suppression."
   priorities:
@@ -685,8 +776,7 @@ fr:
   themes:
     dark: "Sombre"
     light: "Clair"
-    light_high_contrast: "Clair avec contraste élevé"
-    sync_with_os: "Automatique (correspond au mode couleur du système d'exploitation)"
+    sync_with_os: "Automatique (correspond au mode de couleur du système d'exploitation)"
   types:
     index:
       no_results_title_text: Il n'y a actuellement aucun type.
@@ -719,7 +809,7 @@ fr:
         pattern:
           label: "Modèle de sujet"
           caption: Créez des modèles en ajoutant du texte ou saisissez « / » pour rechercher les [attributs pris en charge](attributes_url).
-          insert_as_text: "Aucun attribut n'a été trouvé. Ajouter en tant que texte : « %{word} »"
+          insert_as_text: 'Aucun attribut n''a été trouvé. Ajouter en tant que texte : « %{word} »'
       export_configuration:
         tab: "Générer un fichier PDF"
         intro: "Sélectionnez les modèles disponibles que vous souhaitez activer pour ce type. Le modèle détermine la conception et les attributs visibles dans le fichier PDF exporté d'un lot de travaux utilisant ce type. Le premier modèle de la liste est sélectionné par défaut."
@@ -862,8 +952,8 @@ fr:
       parent: "Parent"
       parent_description: "Fait du lot de travaux lié un parent du lot de travaux actuel (enfant)"
       label_closest: "Le plus proche"
-      label_blocks_singular: "blocs"
-      label_blocks_plural: "blocs"
+      label_blocks_singular: "bloque"
+      label_blocks_plural: "bloquent"
       blocks_description: "Le lot de travaux associé ne peut pas être fermé avant que celui-ci soit fermé en premier"
       label_blocked_singular: "bloqué par"
       label_blocked_plural: "bloqués par"
@@ -904,7 +994,7 @@ fr:
   account:
     delete: "Supprimer le compte"
     delete_confirmation: "Êtes-vous sûr de vouloir supprimer le compte ?"
-    deletion_pending: "Le compte a été verrouillé et a été programmé pour suppression. Notez que ce processus a lieu en arrière-plan. Cela peut prendre quelques instants avant que l'utilisateur soit complètement supprimé."
+    deletion_pending: "La suppression du compte a été programmée. Notez que ce processus se déroule en arrière-plan. La suppression complète de l'utilisateur peut prendre quelques instants."
     deletion_info:
       data_consequences:
         other: 'Les données créées par l''utilisateur (e.g. e-mail, préférences, lots de travaux, entrées wiki) seront supprimées autant que possible. Notez toutefois que les données comme les lots de travaux et les entrées wiki ne peuvent pas être supprimées sans impacter le travail des autres utilisateurs. Ces données sont donc réaffectées à un compte appelé «Utilisateur supprimé». Étant donné que les données de chaque compte supprimé sont réaffectées à ce compte, il ne sera plus possible de distinguer les données créées par cet utilisateur de celles d''un autre compte supprimé.'
@@ -953,6 +1043,11 @@ fr:
         help_text: "Texte d’aide"
       auth_provider:
         scim_clients: "Clients SCIM"
+      calculated_value_error:
+        error_code: "Code d’erreur"
+        customized: "Personnalisé"
+        customized_id: "ID personnalisé"
+        customized_type: "Type personnalisé"
       capability:
         context: "Contexte"
       changeset:
@@ -980,6 +1075,8 @@ fr:
         admin_only: "Administrateurs uniquement"
       custom_value:
         value: "Valeur"
+      design_color:
+        variable: "Variable"
       doorkeeper/application:
         uid: "Id du client"
         secret: "Clé secrète du client"
@@ -1001,6 +1098,8 @@ fr:
         active_user_count_restriction: "Utilisateurs actifs"
       enterprise_trial:
         company: "Entreprise"
+      favorite:
+        favorited: "Élément"
       grids/grid:
         page: "Page"
         row_count: "Nombre de lignes"
@@ -1033,6 +1132,7 @@ fr:
         active_value:
           true: "désarchivé"
           false: "archivé"
+        attribute_groups: "Groupes d'attributs"
         description: "Description"
         enabled_modules: "Modules activés"
         identifier: "Identifiant"
@@ -1059,6 +1159,7 @@ fr:
         types: "Types"
         versions: "Versions"
         work_packages: "Lots de Travaux"
+        workspace_type: "Type d'espace de travail"
       project_custom_field:
         is_required: "Requis pour tous les projets"
         custom_field_section: Section
@@ -1125,6 +1226,8 @@ fr:
         is_readonly: "Paquet de travail en lecture seule"
         excluded_from_totals: "Exclure du calcul des totaux dans la hiérarchie"
         default_done_ratio: "% Réalisé"
+      token/named:
+        token_name: "Nom du jeton"
       token/ical:
         calendar: "Calendrier"
         ical_token_query_assignment: "Affectation d'une requête"
@@ -1178,11 +1281,21 @@ fr:
         auto_hide_popups: "Masquer automatiquement les bannières de réussite"
         auto_hide_popups_caption: "Lorsque cette option est activée, les bannières vertes de réussite disparaissent automatiquement après 5 secondes."
         warn_on_leaving_unsaved: "M'avertir lorsque je quitte un lot de travaux contenant des modifications non enregistrées"
-        theme: "Mode couleur"
+        increase_theme_contrast: "Augmenter le contraste du thème"
+        increase_contrast: "Augmenter le contraste"
+        increase_contrast_caption: "Active le mode de contraste élevé pour le mode de couleur choisi."
+        force_light_theme_contrast: "Forcer un contraste élevé en mode clair"
+        force_dark_theme_contrast: "Forcer un contraste élevé en mode sombre"
+        force_light_theme_contrast_caption: "Utilise la version à contraste élevé du mode clair lorsque le mode de couleur automatique est sélectionné."
+        force_dark_theme_contrast_caption: "Utilise la version à contraste élevé du mode sombre lorsque le mode de couleur automatique est sélectionné."
+        theme: "Mode de couleur"
         time_zone: "Fuseau horaire"
         mode_guideline: "Certains modes écrasent les couleurs des thèmes personnalisés pour des raisons d'accessibilité et de lisibilité. Veuillez sélectionner le mode Clair pour une prise en charge complète des thèmes personnalisés."
         daily_reminders: "Rappels quotidiens"
         workdays: "Jours ouvrés"
+      users/invitation/form_model:
+        principal_type: "Type d'invitation"
+        id_or_email: "Nom ou adresse e-mail"
       version:
         effective_date: "Date de fin"
         sharing: "Partage"
@@ -1245,7 +1358,7 @@ fr:
         confirmation: "ne correspond pas à %{attribute}."
         could_not_be_copied: "%{dependency} n'a pas pu être copié (entièrement)."
         does_not_exist: "n'existe pas."
-        error_enterprise_only: "%{action} n'est disponible que dans la version Entreprise d'OpenProject."
+        error_enterprise_only: "%{action} n'est disponible que dans l'édition Enterprise d'OpenProject."
         error_unauthorized: "est interdit d'accès."
         error_readonly: "a tenté d'être écrit mais n'est pas accessible en écriture."
         error_conflict: "Cette information a été mise a jour par au moin un autre utilisateur pendant la même session"
@@ -1288,7 +1401,8 @@ fr:
         odd: "doit être impair."
         regex_match_failed: "ne correspond pas à l'expression régulière %{expression}."
         regex_invalid: "n’a pas pu être validé avec l’expression régulière associée."
-        regex_list_invalid: "n'a pas pu être analysé comme une expression régulière dans les lignes %{invalid_lines}."
+        regex_list_invalid: "Les lignes %{invalid_lines} n'ont pas pu être analysées comme des expressions régulières."
+        hexcode_invalid: "n'est pas un code couleur hexadécimal valide à 6 chiffres."
         smaller_than_or_equal_to_max_length: "doit être inférieur ou égal à la longueur maximale."
         taken: "a déjà été pris."
         too_long: "est trop long (le maximum est de %{count} caractères)."
@@ -1322,6 +1436,9 @@ fr:
               minimum: "devez inclure au moins un filtre pour le principal, le contexte ou l'identifiant avec l'opérateur '='."
         custom_field:
           at_least_one_custom_option: "Au moins une option doit être disponible."
+          referenced_in_other_fields_html:
+            one: "%{name} est utilisé dans le calcul des attributs du projet %{links}."
+            other: "%{name} est utilisé dans les calculs des attributs du projet : %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1353,6 +1470,8 @@ fr:
           only_one_trial: "Un seul jeton d'essai peut être actif. Veuillez supprimer le jeton d'essai précédent avant d'en ajouter un autre."
           unreadable: "ne peut être lu. Êtes-vous sûr qu'il s'agisse d'une licence Entreprise ?"
           already_added: "Ce jeton a déjà été ajouté."
+        favorite:
+          already_favorited: "a déjà été ajouté aux favoris."
         grids/grid:
           overlaps: "superposition."
           outside: "est hors de la grille."
@@ -1449,10 +1568,19 @@ fr:
           typed_dag:
             circular_dependency: "La relation créée un cercle de relations."
           attributes:
+            base:
+              error_not_deletable: "Cette relation ne peut pas être supprimée, car vous n'avez pas les permissions de modification pour le lot de travaux sélectionné."
+              error_not_editable: "Cette relation ne peut pas être modifiée, car vous n'avez pas les permissions de modification pour le lot de travaux sélectionné."
             to_id:
+              format: "Le lot de travaux sélectionné %{message}"
+              error_not_found: "est introuvable."
               error_readonly: "ne peut pas être modifié pour les relations existantes."
+              error_not_manageable: "ne peut pas être ajouté, car vous ne disposez pas des permissions de modification pour le lot de travaux sélectionné."
             from_id:
+              format: "Le lot de travaux sélectionné %{message}"
+              error_not_found: "est introuvable."
               error_readonly: "ne peut pas être modifié pour les relations existantes."
+              error_not_manageable: "ne peut pas être ajouté, car vous ne disposez pas des permissions de modification pour le lot de travaux sélectionné."
         repository:
           not_available: "Le fournisseur de gestion de contrôle de sources n'est pas disponible"
           not_whitelisted: "n'est pas autorisé par la configuration."
@@ -1555,7 +1683,7 @@ fr:
               must_be_set_when_work_is_set: "requis lorsque le Travail est défini."
               must_be_set_when_work_and_percent_complete_are_set: "requis lorsque le Travail et le % Complété sont définis."
               must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                doit être 0h lorsque le travail est défini et % Complété est de 100 %.
+                doit être de 0 h lorsque le Travail est défini et que le % d'achèvement est de 100 %.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 doit être vide lorsque le Travail est vide et le % Complété est de 100 %.
           readonly_status: "Le lot de travaux est en lecture seule, ses attributs ne peuvent donc pas être changés."
@@ -1603,9 +1731,11 @@ fr:
         version:
           undeletable_archived_projects: "La version ne peut pas être supprimée, car des lots de travaux y sont attachés."
           undeletable_work_packages_attached: "La version ne peut pas être supprimée car des lots de travaux y sont attachés."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Veuillez fournir un nom de jeton"
+              in_use: "Ce nom de jeton est déjà utilisé. Veuillez en choisir un autre"
               format: "%{message}"
       template:
         body: "Veuillez vérifier les champs suivants :"
@@ -1633,12 +1763,13 @@ fr:
       issue_priority:
         one: "Priorité"
         other: "Priorités"
+      meeting_participant: "Participant à la réunion"
       member: "Membre"
       news: "Actualités"
       notification:
         one: "Notification"
         other: "Notifications"
-      placeholder_user: "Utilisateur de remplacement"
+      placeholder_user: "Utilisateur fictif"
       project:
         one: "Projet"
         other: "Projets"
@@ -1725,6 +1856,7 @@ fr:
     attachments: "Fichiers"
     actor: "Acteur"
     action: "Action"
+    api_key: "Clé API"
     author: "Auteur"
     avatar: "Avatar"
     base: "Erreur générale :"
@@ -1753,7 +1885,7 @@ fr:
     due_date: "Date de fin"
     estimated_hours: "Travail"
     estimated_time: "Travail"
-    email: "E-mail"
+    email: "Adresse e-mail"
     entity_type: "Entité"
     expires_at: "Expire le"
     firstname: "Prénom"
@@ -1855,6 +1987,7 @@ fr:
   button_add_watcher: "Ajouter observateur"
   button_annotate: "Annoter"
   button_apply: "Appliquer"
+  button_apply_changes: "Appliquer les modifications"
   button_archive: "Archiver"
   button_back: "Retour"
   button_cancel: "Annuler"
@@ -1881,7 +2014,7 @@ fr:
   button_duplicate: "Dupliquer"
   button_duplicate_and_follow: "Dupliquer et suivre"
   button_edit: "Éditer"
-  button_edit_associated_wikipage: "Éditer la page wiki associée : %{page_title}"
+  button_edit_associated_wikipage: "Modifier la page wiki associée : %{page_title}"
   button_expand_all: "Tout déplier"
   button_favorite: "Ajouter aux favoris"
   button_filter: "Filtrer"
@@ -1904,8 +2037,8 @@ fr:
   button_rollback: "Revenir à cette version"
   button_save: "Enregistrer"
   button_save_as: "Enregistrer sous"
-  button_apply_changes: "Appliquer les modifications"
   button_save_back: "Enregistrer et revenir"
+  button_select: "Sélectionner"
   button_set_reminder: "Définir un rappel"
   button_show: "Afficher"
   button_sort: "Trier"
@@ -1965,11 +2098,11 @@ fr:
       succeeded: 'Le projet "%{source_project_name}" a été copié vers "%{target_project_name}".'
     source_project_label: "Projet copié"
     copy_options:
-      dependencies_label: 'Copier à partir du projet'
+      dependencies_label: "Copier à partir du projet"
   create_project:
     template_label: "Utiliser le modèle"
     copy_options:
-      dependencies_label: 'Copier à partir du modèle'
+      dependencies_label: "Copier à partir du modèle"
   create_wiki_page: "Créer une nouvelle page wiki"
   create_wiki_page_button: "Page wiki"
   date:
@@ -2129,6 +2262,7 @@ fr:
     features:
       baseline_comparison: Comparaisons de référence
       board_view: Tableaux avancés
+      calculated_values: Valeurs calculées
       conditional_highlighting: Mise en surbrillance conditionnelle
       internal_comments: Commentaires internes
       custom_actions: Actions personnalisées
@@ -2141,7 +2275,7 @@ fr:
       ldap_groups: Synchronisation des utilisateurs LDAP et des groupes
       nextcloud_sso: Authentification unique pour le stockage Nextcloud
       one_drive_sharepoint_file_storage: Stockage de fichiers OneDrive/SharePoint
-      placeholder_users: Utilisateurs de remplacement
+      placeholder_users: Utilisateurs fictifs
       project_list_sharing: Partage de liste de projets
       readonly_work_packages: Lots de travaux en lecture seule
       scim_api: API du serveur SCIM
@@ -2154,7 +2288,7 @@ fr:
     upsell:
       buy_now_button: "Acheter maintenant"
       plans_title: "Formules d'abonnement Enterprise"
-      title: "Add-on Enterprise"
+      title: "Module Enterprise"
       plan_title: "Add-on Enterprise %{plan}"
       plan_name: "Abonnement Enterprise %{plan}"
       plan_text_html: "Disponible à partir de l'abonnement %{plan_name}."
@@ -2163,7 +2297,7 @@ fr:
         Vous avez déjà un jeton ? Ajoutez-le en utilisant le bouton ci-dessous pour passer à l'abonnement Enterprise réservé.
       hide_banner: "Masquer cette bannière"
       homescreen_description: >
-        Les abonnements Enterprise prolongent l'édition Community d'OpenProject que vous utilisez actuellement. Ils comprennent des add-ons, des fonctionnalités supplémentaires et une assistance professionnelle qui permet aux organisations de toutes tailles de réaliser de grandes choses ensemble.
+        Les abonnements Enterprise complémentent l'édition Community d'OpenProject avec des [add-ons Enterprise](enterprise_url) supplémentaires et une assistance professionnelle, ce qui s'avère idéal pour les organisations qui utilisent OpenProject dans un environnement critique.
       homescreen_subline: En optant pour une formule d'abonnement supérieure, vous soutiendrez également un projet open source.
       baseline_comparison:
         description: Mettre en évidence les modifications apportées à cette liste depuis n'importe quel point dans le passé.
@@ -2201,6 +2335,8 @@ fr:
         description: "Partagez les lots de travaux avec des utilisateurs qui ne sont pas membres du projet."
       project_list_sharing:
         description: "Partagez les listes de projets avec des utilisateurs individuels."
+      calculated_values:
+        description: "Les valeurs calculées vous permettent de créer un attribut basé sur une formule mathématique en utilisant des valeurs numériques et d'autres attributs de projet et champs personnalisés."
       define_custom_style:
         title: "Thème de couleur et logo personnalisés"
         more_info: "Remarque : le logo utilisé sera accessible publiquement."
@@ -2214,10 +2350,13 @@ fr:
       scim_api:
         title: "Clients SCIM"
         description: "Automatisez la gestion des utilisateurs dans OpenProject en intégrant de manière transparente des services d'identité externes tels que Microsoft Entra ou Keycloak via notre API de serveur SCIM. Disponible à partir de l'abonnement Enterprise."
+      sso_auth_providers:
+        title: "Authentification unique (SSO)"
+        description: "Permettez aux utilisateurs de se connecter via des fournisseurs SSO externes utilisant SAML ou OpenID Connect pour assurer un accès transparent et une intégration fluide avec les systèmes d'identité existants."
       virus_scanning:
         description: "Assurez-vous que les fichiers téléversés dans OpenProject sont analysés pour détecter les virus avant d'être accessibles aux autres utilisateurs."
       placeholder_users:
-        title: Utilisateurs de remplacement
+        title: Utilisateurs fictifs
         description: >
           Les utilisateurs fictifs sont un moyen d'attribuer des lots de travaux à des utilisateurs qui ne font pas partie de votre projet. Ils peuvent être utiles dans une série de scénarios ; par exemple, si vous avez besoin de suivre des tâches pour une ressource qui n'est pas encore nommée ou disponible, ou si vous ne voulez pas donner à cette personne l'accès à OpenProject mais voulez quand même suivre les tâches qui lui sont assignées.
       internal_comments:
@@ -2263,6 +2402,9 @@ fr:
   enumeration_reported_project_statuses: "Statuts de projet signalés"
   enumeration_caption_order_changed: "La commande a été modifiée avec succès."
   enumeration_could_not_be_moved: "L'énumération n'a pas pu être déplacée."
+  enterprise_trials:
+    dialog_component:
+      title: Essai Enterprise
   error_auth_source_sso_failed: "Single Sign-On (SSO) pour l’utilisateur '%{value}' a échoué"
   error_can_not_archive_project: "Ce projet ne peut être archivé : %{errors}"
   error_can_not_delete_entry: "Impossible de supprimer l’élément"
@@ -2291,6 +2433,7 @@ fr:
   error_invalid_selected_value: "Valeur sélectionnée invalide."
   error_journal_attribute_not_present: "Le journal ne contient pas l’attribut %{attribute}."
   error_pdf_export_too_many_columns: "Trop de colonnes sélectionnées pour l’exportation PDF. Veuillez réduire le nombre de colonnes."
+  error_pdf_date_range_too_long: "La plage de dates du lot de travaux sélectionné dépasse la limite d'exportation PDF autorisée. Veuillez réduire la plage à un maximum de %{years} ans."
   error_pdf_failed_to_export: "L'export PDF n'a pas pu être enregistré: %{error}"
   error_token_authenticity: "Impossible de vérifier le jeton de Cross-Site Request Forgery. Avez-vous essayé d'envoyer des données sur plusieurs navigateurs ou onglets ? Veuillez fermer tous les onglets et réessayer."
   error_reminder_not_found: "Le rappel n'a pas été trouvé ou a déjà été notifié."
@@ -2403,8 +2546,13 @@ fr:
           label: "Inclure des descriptions"
           caption: "Cette option permet d'ajouter une colonne de description au format brut."
     your_work_packages_export: "Les lots de travaux sont exportés"
+    your_projects_export: "Les projets sont en cours d'exportation"
     succeeded: "Exportation terminée"
     failed: "Une erreur s'est produite lors de l'exportation des lots de travaux : %{message}"
+    demo:
+      heading: "PDF de démo"
+      footer: "Généré par OpenProject"
+      button_text: Générer un PDF de démo
     errors:
       embedded_table_with_too_many_columns: "Ce tableau des lots de travaux ne tient pas sur la page. Veuillez réduire le nombre de colonnes."
     format:
@@ -2465,6 +2613,16 @@ fr:
       xls2csv: "Xls2csv disponible (optionel)"
       catppt: "Catppt disponible (optionel)"
       tesseract: "Tesseract disponible (optionnel)"
+  filterable_tree_view:
+    filter_mode:
+      all: "Tous"
+      label: "Mode de filtrage"
+      selected: "Sélectionné"
+    include_sub_items: "Inclure les sous-projets"
+    no_results_text: "Aucun résultat"
+  toggle_switch:
+    label_on: "Activé"
+    label_off: "Désactiver"
   general_csv_decimal_separator: ","
   general_csv_encoding: "UTF-8"
   general_csv_separator: "."
@@ -2486,9 +2644,22 @@ fr:
     blocks:
       community: "Communauté OpenProject"
       upsell:
-        title: "Passer à la version Entreprise"
+        title: "Passer à la version Enterprise"
+      new_features:
+        header: "Découvrez les nouvelles fonctionnalités et les mises à jour des produits."
+        learn_about: "En savoir plus sur les nouvelles fonctionnalités"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_6":
+          new_features_title: >
+            Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que :
+          new_features_list:
+            line_0: Valeurs calculées pour l'évaluation et la notation des projets (add-on Enterprise).
+            line_1: Hiérarchie des types d'attributs du projet.
+            line_2: Des mises à jour de performance avec un impact important.
+            line_3: Nouvelle page d'index pour le module Documents.
+            line_4: Possibilité de changer le parent d'un champ personnalisé.
     links:
-      upgrade_enterprise_edition: "Passer à la version Entreprise"
+      upgrade_enterprise_edition: "Passer à la version Enterprise"
       postgres_migration: "Migration de votre installation vers PostgreSQL"
       user_guides: "Guides d'utilisation"
       faq: "FAQ"
@@ -2497,7 +2668,8 @@ fr:
       shortcuts: "Raccourcis"
       blog: "Blog OpenProject"
       forums: "Forum de la communauté"
-      newsletter: "Alertes de sécurité / Lettre d’information"
+      security_alerts: "Alertes de sécurité"
+      newsletter: "Lettre d'information"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2570,14 +2742,16 @@ fr:
         expiration: "Expiration"
       indefinite_expiration: "Jamais"
       simple_revoke_confirmation: "Voulez-vous vraiment révoquer ce jeton ?"
-      api:
+      token/api:
         title: "API"
         text_hint: "Les jetons d'API permettent aux applications tierces de communiquer avec cette instance OpenProject via les API REST."
-        static_token_name: "Jeton d'API"
         disabled_text: "Les jetons d'API ne sont pas activés par l'administrateur. Veuillez contacter votre administrateur pour utiliser cette fonctionnalité."
+        add_button: "Jeton d'API"
+      api:
+        static_token_name: "Jeton d'API"
       ical:
         title: "iCalendar"
-        text_hint: 'Les jetons iCalendar permettent aux utilisateurs de <a href="%{path}" target="_blank">s''abonner aux calendriers OpenProject</a> et d''afficher des informations à jour sur les lots de travaux provenant de clients externes.'
+        text_hint_link: 'Les jetons iCalendar permettent aux utilisateurs de [s''abonner aux calendriers OpenProject](docs_url) et d''afficher des informations à jour sur les lots de travaux provenant de clients externes.'
         disabled_text: "Les abonnements iCalendar ne sont pas activés par l'administrateur. Veuillez contacter votre administrateur pour utiliser cette fonctionnalité."
         empty_text_hint: "Pour ajouter un jeton iCalendar, abonnez-vous à un nouveau calendrier ou à un calendrier existant depuis le module Calendrier d'un projet. Vous devez avoir les autorisations nécessaires."
       oauth:
@@ -2660,6 +2834,7 @@ fr:
   label_api_access_key: "Clé d'accès API"
   label_api_access_key_created_on: "Clé d'accès API créé il y a %{value}"
   label_api_access_key_type: "API"
+  label_auto_option: "(auto)"
   label_ical_access_key_type: "iCalendar"
   label_ical_access_key_description: 'Jeton iCalendar « %{token_name} » pour « %{calendar_name} » dans « %{project_name} »'
   label_ical_access_key_not_present: "Jeton(s) iCalendar absent(s)."
@@ -2718,6 +2893,7 @@ fr:
   label_required_disk_storage: "Espace disque requis"
   label_send_invitation: Envoyer une invitation
   label_calculated_value: "Valeur calculée"
+  label_change_parent: "Changer le parent"
   label_change_plural: "Changements"
   label_change_properties: "Modifier les propriétés"
   label_change_status: "Changer le statut"
@@ -2806,6 +2982,7 @@ fr:
   label_duplicate: "dupliquer"
   label_duplicates: "Doublons"
   label_edit: "Éditer"
+  label_edit_attribute: "Modifier l'attribut"
   label_edit_x: "Modifier : %{x}"
   label_enable_multi_select: "Basculer multisélection"
   label_enabled_project_custom_fields: "Champs personnalisés activés"
@@ -2893,10 +3070,11 @@ fr:
   label_integer: "Nombre entier"
   label_interface: "Interface"
   label_internal: "Interne"
-  label_introduction_video: "Vidéo de présentation"
+  label_introduction_video: "Vidéo de démarrage"
   label_invite_user: "Inviter utilisateur"
   label_item: "Élément"
   label_item_plural: "Éléments"
+  label_scored_list: "Liste notée"
   label_share: "Partager"
   label_share_project_list: "Partager la liste des projets"
   label_share_work_package: "Partager le lot de travaux"
@@ -2907,6 +3085,7 @@ fr:
   label_journal_diff: "Comparaison de description"
   label_language: "Langue"
   label_languages: "Langues"
+  label_locale: "Langue et région"
   label_jump_to_a_project: "Aller à un projet…"
   label_keyword_plural: "Mots clés"
   label_language_based: "Basé sur le langage de l'utilisateur"
@@ -2926,12 +3105,18 @@ fr:
   label_link_url: "Lien (URL)"
   label_list: "Liste"
   label_loading: "Chargement…"
+  label_locked: "verrouillé"
   label_lock_user: "Verrouiller l’utilisateur"
   label_logged_as: "Connecté en tant que"
   label_login: "Connexion"
   label_custom_logo: "Logo personnalisé"
   label_custom_export_logo: "Logo d'exportation personnalisé"
   label_custom_export_cover: "Arrière-plan de la couverture d'exportation personnalisée"
+  label_custom_export_footer: "Image de pied de page d'exportation personnalisée"
+  label_custom_export_font_regular: "Normale"
+  label_custom_export_font_bold: "Gras"
+  label_custom_export_font_italic: "Italique"
+  label_custom_export_font_bold_italic: "Gras Italique"
   label_custom_export_cover_overlay: "Superposition de l'arrière-plan de la couverture d'exportation personnalisée"
   label_custom_export_cover_text_color: "Couleur du texte"
   label_custom_pdf_export_settings: "Paramètres d'exportation PDF personnalisés"
@@ -3019,6 +3204,8 @@ fr:
   label_operator_equals_or: "est (OU)"
   label_operator_equals_all: "est (ET)"
   label_operator_shared_with_user_any: "tous"
+  label_open: "ouvrir"
+  label_closed: "fermé"
   label_open_menu: "Ouvrir le menu"
   label_open_work_packages: "ouverts"
   label_open_work_packages_plural: "ouverts"
@@ -3041,9 +3228,9 @@ fr:
   label_permissions: "Autorisations"
   label_permissions_report: "Rapport d'autorisations"
   label_personalize_page: "Personaliser cette page"
-  label_placeholder_user: "Utilisateur de remplacement"
-  label_placeholder_user_new: "Nouvel utilisateur de remplacement"
-  label_placeholder_user_plural: "Utilisateurs de remplacement"
+  label_placeholder_user: "Utilisateur fictif"
+  label_placeholder_user_new: "Nouvel utilisateur fictif"
+  label_placeholder_user_plural: "Utilisateurs fictifs"
   label_planning: "Planification"
   label_please_login: "Veuillez vous connecter"
   label_plugins: "Plugins"
@@ -3085,6 +3272,10 @@ fr:
   label_project_view_all: "Afficher tous les projets"
   label_project_show_details: "Afficher les détails du projet"
   label_project_hide_details: "Masquer les détails du projet"
+  label_portfolio: "Portefeuille"
+  label_portfolio_new: "Nouveau portefeuille"
+  label_program: "Programme"
+  label_program_new: "Nouveau programme"
   label_public_projects: "Projets publics"
   label_query_new: "Nouvelle requête"
   label_query_plural: "Requêtes personnalisées"
@@ -3218,6 +3409,7 @@ fr:
   label_user_search: "Recherche d'Utilisateurs"
   label_user_settings: "Paramètres de l'utilisateur"
   label_users_settings: "Paramètres des utilisateurs"
+  label_value_x: "Valeur : %{x}"
   label_version_new: "Nouvelle version"
   label_version_edit: "Modifier la version"
   label_version_plural: "Versions"
@@ -3233,6 +3425,8 @@ fr:
   label_watched_work_packages: "Lots de travaux suivis"
   label_what_is_this: "Qu'est-ce que c'est?"
   label_week: "Semaine"
+  label_widget: "Widget"
+  label_widget_new: "Nouveau widget"
   label_wiki_content_added: "Page wiki ajoutée"
   label_wiki_content_updated: "Page wiki mise à jour"
   label_wiki_toc: "Table des matières"
@@ -3527,6 +3721,7 @@ fr:
   notice_password_confirmation_failed: "Votre mot de passe est incorrect. Impossible de continuer."
   notice_principals_found_multiple: "Il y a %{number} résultats trouvés. Tabulation pour sélectionner le premier résultat."
   notice_principals_found_single: "Il y a un seul résultat. Tabulation pour le sélectionner."
+  notice_parent_item_not_found: "L'élément parent est introuvable."
   notice_project_not_deleted: "Le projet n'a pas été supprimé."
   notice_project_not_found: "Projet introuvable."
   notice_successful_connection: "Connection réussie."
@@ -3554,7 +3749,7 @@ fr:
   #Default format for numbers
   number:
     format:
-      delimiter: ","
+      delimiter: "."
       precision: 3
       separator: ","
     human:
@@ -3580,6 +3775,8 @@ fr:
   permission_add_work_packages: "Ajouter des lots de travaux"
   permission_add_messages: "Poster des messages"
   permission_add_project: "Créer des projets"
+  permission_add_portfolios: "Créer des portefeuilles"
+  permission_add_programs: "Créer des programmes"
   permission_add_work_package_attachments: "Ajouter pièces jointes"
   permission_add_work_package_attachments_explanation: "Permet d'ajouter des pièces jointes sans avoir le droit de modifier les lots de travaux"
   permission_add_internal_comments: "Écrire des commentaires internes"
@@ -3626,6 +3823,9 @@ fr:
   permission_edit_wiki_pages: "Éditer les pages wiki"
   permission_export_work_packages: "Exporter les lots de travaux"
   permission_export_wiki_pages: "Exporter les pages wiki"
+  permission_invite_members_by_email: "Inviter des membres par e-mail"
+  permission_invite_members_by_email_explanation: >
+    Permet aux utilisateurs d'inviter de nouveaux membres par e-mail. Les utilisateurs invités recevront un e-mail contenant un lien leur permettant de définir leur mot de passe et d'activer leur compte. Cela dépend de l'autorisation de gérer les membres
   permission_list_attachments: "Lister les pièces jointes"
   permission_log_own_time: "Enregistrer son propre temps"
   permission_log_time: "Saisir le temps pour d'autres utilisateurs"
@@ -3655,6 +3855,9 @@ fr:
   permission_share_work_packages: "Partager des lots de travaux"
   permission_manage_types: "Sélectionner types"
   permission_manage_own_reminders: "Créer des rappels personnalisés"
+  permission_view_all_principals: "Afficher tous les utilisateurs et groupes"
+  permission_view_all_principals_explanation: >
+    Permet aux utilisateurs de voir tous les utilisateurs et groupes du système, même s'ils ne sont pas membres d'un projet ou d'un groupe.
   permission_view_project: "Voir les projets"
   permission_view_changesets: "Voir révisions du dépôt dans OpenProject"
   permission_view_internal_comments: "Voir les commentaires internes"
@@ -3694,13 +3897,15 @@ fr:
       one: "1 projet"
       other: "%{count} projets"
     destroy:
-      confirmation: "Si vous continuez, le projet %{identifier} sera définitivement supprimé. Pour confirmer cette action, veuillez saisir le nom du projet dans le champ ci-dessous. Cela va :"
-      project_delete_result_1: "Supprimer toutes les données associées."
-      project_delete_result_2: "Supprimer tous les dossiers de projet gérés dans les unités de stockage attachées."
-      info: "La suppression du projet est une action irréversible."
-      project_verification: "Saisissez le nom du projet %{name} pour valider la suppression."
-      subprojects_confirmation: "Son(ses) sous-projet(s): %{value} sera(seront) également supprimé(s)."
-      title: "Supprimer le projet %{name}"
+      title: "Supprimer le projet"
+      heading: "Supprimer définitivement ce projet ?"
+      confirmation_message_for_subprojects_html:
+        zero: >
+          Vous êtes sur le point de supprimer définitivement toutes les données relatives au projet <strong>%{name}</strong>.
+        one: >
+          Vous êtes sur le point de supprimer définitivement toutes les données relatives au projet <strong>%{name}</strong> et à ce sous-projet :
+        other: >
+          Vous êtes sur le point de supprimer définitivement toutes les données relatives au projet <strong>%{name}</strong> et à ces sous-projets :
     filters:
       project_phase: "Phase du projet : %{phase}"
       project_phase_any: "Phase du projet : toutes"
@@ -3876,6 +4081,7 @@ fr:
   setting_attachment_whitelist: "Liste blanche de téléversement des pièces jointes"
   setting_email_delivery_method: "Méthode de livraison d'e-mail"
   setting_emails_salutation: "S'adresser à l'utilisateur dans les e-mails avec"
+  setting_oauth_allow_remapping_of_existing_users: "Permettre le remappage des utilisateurs existants"
   setting_sendmail_location: "Emplacement de l’exécutable sendmail"
   setting_smtp_enable_starttls_auto: "Utiliser automatiquement STARTTLS si disponible"
   setting_smtp_ssl: "Utiliser la connexion SSL"
@@ -3934,6 +4140,8 @@ fr:
   setting_feeds_limit: "Limite du contenu du flux"
   setting_file_max_size_displayed: "Taille maximale de l'affichage du fichers texte inline"
   setting_host_name: "Nom d'hôte"
+  setting_collaborative_editing_hocuspocus_url: "URL du serveur Hocuspocus"
+  setting_collaborative_editing_hocuspocus_secret: "Secret du serveur Hocuspocus"
   setting_hours_per_day: "Heures par jour"
   setting_hours_per_day_explanation: >-
     Cela définit ce qui est considéré comme un « jour » lors de l'affichage de la durée en jours et en heures (par exemple, si un jour dure 8 heures, 32 heures représentent 4 jours).
@@ -4036,11 +4244,13 @@ fr:
   setting_working_days: "Jours ouvrés"
   settings:
     authentication:
-      login_and_sso: "Connexion et SSO"
+      login: "Connexion"
       registration: "Inscription"
-      single_sign_on: "Authentification unique"
+      sso: "Authentification unique (SSO)"
       omniauth_direct_login_hint_html: >
         Si cette option est activée, les demandes de connexion seront redirigées vers le fournisseur omniauth configuré. La liste déroulante de connexion et la page de connexion seront désactivées. <br/> <strong>Remarque :</strong> lorsque cette option est activée, les utilisateurs peuvent toujours se connecter en interne en visitant la page de connexion <code>%{internal_path}</code>, sauf si vous désactivez également les connexions par mot de passe.
+      remapping_existing_users_hint: >
+        Si cette option est activée, elle permet à tout fournisseur d'identité configuré de connecter des utilisateurs existants en fonction de leur adresse e-mail, même si l'utilisateur ne s'est jamais connecté auparavant via ce fournisseur. Cela peut être utile lors de la migration de l'instance OpenProject vers un nouveau fournisseur SSO, mais n'est pas recommandé si vous utilisez un fournisseur qui n'est pas approuvé par l'ensemble des utilisateurs de votre instance.
     attachments:
       whitelist_text_html: >
         Définissez une liste d'extensions de fichiers et/ou de types MIME valides pour les fichiers téléversés. <br/> Entrez les extensions de fichier (par exemple, <code>%{ext_example}</code>) ou les types mime (par exemple, <code>%{mime_example}</code>). <br/> Laissez vide pour permettre le téléversement de tout type de fichier. Plusieurs valeurs autorisées (une ligne pour chaque valeur).
@@ -4150,6 +4360,7 @@ fr:
   status_invited: invité
   status_locked: verrouillé
   status_registered: enregistré
+  status_deleted: supprimé
   #Used in array.to_sentence.
   support:
     array:
@@ -4159,6 +4370,7 @@ fr:
   text_access_token_hint: "Les jetons d'accès vous permettent d'octroyer aux applications externes un accès aux ressources dans OpenProject."
   text_analyze: "Analyse suivante: %{subject}"
   text_are_you_sure: "Êtes-vous sûr ?"
+  open_link_in_a_new_tab: "Ouvrir le lien dans un nouvel onglet"
   text_are_you_sure_continue: "Voulez-vous vraiment continuer ?"
   text_are_you_sure_with_children: "Supprimer le lot de travaux et tous les lots de travaux enfants ?"
   text_are_you_sure_with_project_custom_fields: "Supprimer cet attribut supprimera également ses valeurs dans tous les projets. Voulez-vous vraiment continuer ?"
@@ -4184,6 +4396,20 @@ fr:
     Il s'agit du logo qui apparaît dans vos exportations PDF. Il doit s'agir d'un fichier image PNG ou JPEG. Un logo noir ou coloré sur fond transparent ou blanc est recommandé.
   text_custom_export_cover_instructions: >
     Il s'agit de l'image qui apparaît en arrière-plan de la page de couverture de vos exportations PDF. Elle doit être un fichier image PNG ou JPEG d'environ 800 px de largeur et 500 px de hauteur.
+  text_custom_export_footer_instructions: >
+    Les exportations PDF comprendront un élément graphique placé à gauche du pied de page. Cette image doit être un fichier PNG ou JPEG d'une largeur d'environ 200 pixels.
+  label_custom_export_font_instructions: >
+    Téléversez et gérez des polices TrueType (.ttf) personnalisées utilisées dans vos exportations PDF. Pour assurer de meilleurs résultats, utilisez des fichiers correspondants issus de la même famille de polices. Si aucune police n'est fournie, la police NotoSans par défaut sera utilisée.
+  label_custom_export_images_instructions: >
+    Téléversez et gérez des fichiers image personnalisés utilisés dans vos exportations PDF.
+  text_custom_export_font_regular_instructions: >
+    Il s'agit du fichier de police pour le texte normal. Il doit être obligatoirement au format TTF.
+  text_custom_export_font_bold_instructions: >
+    Il s'agit du fichier de police pour le texte en gras. Il doit être au format TTF.
+  text_custom_export_font_italic_instructions: >
+    Il s'agit du fichier de police pour le texte en italique. Il doit être au format TTF.
+  text_custom_export_font_bold_italic_instructions: >
+    Il s'agit du fichier de police pour le texte en gras et en italique. Il doit être au format TTF.
   text_custom_favicon_instructions: >
     Il s'agit de la petite icône qui apparaît dans la fenêtre/onglet de votre navigateur à côté du titre de la page. Il doit s'agir d'une image PNG carrée de 32 pixels x 32 pixels avec un fond transparent.
   text_custom_touch_icon_instructions: >
@@ -4523,6 +4749,8 @@ fr:
       code_500_missing_enterprise_token: "La requête ne peut pas être traitée en raison d'un jeton Enterprise invalide ou manquant."
       bad_request:
         emoji_reactions_activity_type_not_supported: "Ce type d'activité ne prend pas en charge les réactions via émojis."
+        invalid_link: "Le lien sous la clé '%{key}' n'est pas valide."
+        links_not_an_object: "_links doit être un objet JSON."
       conflict:
         multiple_reminders_not_allowed: |-
           Vous ne pouvez définir qu'un seul rappel à la fois pour un lot de travaux. Veuillez supprimer ou mettre à jour le rappel existant.
@@ -4725,3 +4953,6 @@ fr:
     description: "Ajoute le fournisseur SAML OmniAuth à OpenProject"
   enterprise_plans:
     legacy_enterprise: "Abonnement Enterprise"
+  token:
+    hashed_token:
+      display_value_placeholder: "***"

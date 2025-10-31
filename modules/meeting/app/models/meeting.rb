@@ -44,16 +44,9 @@ class Meeting < ApplicationRecord
 
   has_many :time_entries, dependent: :delete_all, inverse_of: :entity, as: :entity
 
-  # Legacy association to minutes, agendas, contents
-  # to be removed in 17.0
-  has_one :agenda, dependent: :destroy, class_name: "MeetingAgenda"
-  has_one :minutes, dependent: :destroy, class_name: "MeetingMinutes"
-  has_many :contents, -> { readonly }, class_name: "MeetingContent"
-
   has_many :participants,
            dependent: :destroy,
-           class_name: "MeetingParticipant",
-           after_add: :send_participant_added_mail
+           class_name: "MeetingParticipant"
 
   has_many :agenda_items, dependent: :destroy, class_name: "MeetingAgendaItem", inverse_of: :meeting
   has_many :sections, -> { where(backlog: false) }, dependent: :delete_all, class_name: "MeetingSection"
@@ -85,6 +78,10 @@ class Meeting < ApplicationRecord
       .merge(Project.allowed_to(args.first || User.current, :view_meetings))
   }
 
+  scope :participated_by, ->(user) {
+    joins(:participants).where(meeting_participants: { user_id: user.id })
+  }
+
   acts_as_attachable(
     after_remove: :attachments_changed,
     order: "#{Attachment.table_name}.file",
@@ -111,13 +108,15 @@ class Meeting < ApplicationRecord
 
   accepts_nested_attributes_for :participants, allow_destroy: true
 
-  validates_presence_of :title, :project_id
+  validates :title, :project_id, presence: true
 
-  validates_numericality_of :duration, greater_than: 0
+  validates :duration, numericality: { greater_than: 0 }
 
   before_save :add_new_participants_as_watcher
 
-  after_update :send_rescheduling_mail, if: -> { saved_change_to_start_time? || saved_change_to_duration? }
+  after_update :send_updated_mail, if: -> {
+    saved_change_to_start_time? || saved_change_to_duration? || saved_change_to_location?
+  }
 
   enum :state, {
     open: 0, # 0 -> default, leave values for future states between open and closed
@@ -193,21 +192,6 @@ class Meeting < ApplicationRecord
     end
   end
 
-  def invited_or_attended_participants
-    participants.where(invited: true).or(participants.where(attended: true))
-  end
-
-  def all_changeable_participants
-    changeable_participants = participants.select(&:invited).collect(&:user)
-    changeable_participants = changeable_participants + participants.select(&:attended).collect(&:user)
-    changeable_participants = changeable_participants +
-      User.allowed_members(:view_meetings, project)
-
-    changeable_participants
-      .compact
-      .uniq(&:id)
-  end
-
   def self.group_by_time(meetings)
     by_start_year_month_date = ActiveSupport::OrderedHash.new do |hy, year|
       hy[year] = ActiveSupport::OrderedHash.new do |hm, month|
@@ -266,6 +250,12 @@ class Meeting < ApplicationRecord
     end
   end
 
+  def send_emails?
+    return false if template? && recurring_meeting.scheduled_meetings.none?
+
+    persisted? && notify?
+  end
+
   private
 
   def add_new_participants_as_watcher
@@ -274,25 +264,23 @@ class Meeting < ApplicationRecord
     end
   end
 
-  def send_participant_added_mail(participant)
-    return if templated? || new_record? || !notify?
-
-    if Journal::NotificationConfiguration.active?
-      MeetingMailer.invited(self, participant.user, User.current).deliver_later
-    end
-  end
-
-  def send_rescheduling_mail
-    return if templated? || new_record? || !notify?
+  def send_updated_mail
+    return unless send_emails?
 
     MeetingNotificationService
       .new(self)
-      .call :rescheduled,
-            changes: {
-              old_start: saved_change_to_start_time? ? saved_change_to_start_time.first : start_time,
-              new_start: start_time,
-              old_duration: saved_change_to_duration? ? saved_change_to_duration.first : duration,
-              new_duration: duration
-            }
+      .call :updated,
+            changes: updated_mail_changes
+  end
+
+  def updated_mail_changes
+    {
+      old_start: saved_change_to_start_time? ? saved_change_to_start_time.first : start_time,
+      new_start: start_time,
+      old_duration: saved_change_to_duration? ? saved_change_to_duration.first : duration,
+      new_duration: duration,
+      old_location: saved_change_to_location? ? saved_change_to_location.first : location,
+      new_location: location
+    }
   end
 end

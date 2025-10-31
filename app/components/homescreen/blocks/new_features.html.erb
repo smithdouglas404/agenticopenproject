@@ -1,0 +1,40 @@
+<%= widget_wrapper do %>
+  <% if teaser_exists? %>
+    <div class="op-new-features">
+      <p class="widget-box--additional-info">
+        <%= new_features_header %>
+      </p>
+      <div class="widget-box--description">
+        <div>
+          <p><%= new_features_title %></p>
+          <ul>
+            <% new_features.each do |line| %>
+              <li><%= line %></li>
+            <% end %>
+          </ul>
+        </div>
+        <% if has_image? %>
+        <img
+          class="widget-box--teaser-image op-new-features--teaser-image"
+          role="presentation"
+          src="<%= asset_path(feature_teaser_image) %>"
+          alt="">
+        <% else %>
+          <%=
+            render(Primer::Alpha::Banner.new(mb: 3, icon: :stop, scheme: :danger)) do
+            "Missing teaser image for the next release. Please add it to app/assets/images#{feature_teaser_image}"
+            end
+          %>
+        <% end %>
+      </div>
+
+      <%= helpers.static_link_to :current_release_notes, label: learn_more_link_text %>
+    </div>
+  <% else %>
+    <%=
+      render(Primer::Alpha::Banner.new(mb: 3, icon: :stop, scheme: :danger)) do
+        "Missing teaser data for the next release. Please add it to #{base_i18n_key}"
+      end
+    %>
+  <% end %>
+<% end %>

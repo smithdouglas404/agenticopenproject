@@ -57,6 +57,9 @@ RSpec.describe WorkPackageTypes::Patterns::TokenPropertyMapper do
       work_package.type.custom_fields << custom_field
     end
   end
+  shared_let(:custom_field_not_on_type) do
+    create(:string_wp_custom_field)
+  end
 
   shared_let(:boolean_custom_field) do
     create(:boolean_wp_custom_field).tap do |custom_field|
@@ -100,37 +103,59 @@ RSpec.describe WorkPackageTypes::Patterns::TokenPropertyMapper do
     end
   end
 
-  it "multi value fields are supported" do
-    token = described_class.new.tokens_for_type(work_package.type).detect do |t|
-      t.key == :"custom_field_#{mult_list_custom_field.id}"
-    end
-    expect(token.call(work_package)).to eq(%w[A B])
-  end
+  describe "#partitioned_tokens_for_type" do
+    subject { described_class.new.partitioned_tokens_for_type(work_package.type) }
 
-  it "supports boolean custom fields" do
-    token = described_class.new.tokens_for_type(work_package.type).detect do |t|
-      t.key == :"custom_field_#{boolean_custom_field.id}"
-    end
-
-    expect(token.call(work_package)).to be(true)
-  end
-
-  it "must return nil if custom field is not activated in project" do
-    token = described_class.new.tokens_for_type(work_package.type).detect do |t|
-      t.key == :"custom_field_#{not_activated_custom_field.id}"
+    it "multi value fields are supported" do
+      enabled, = subject
+      token = enabled.detect do |t|
+        t.key == :"custom_field_#{mult_list_custom_field.id}"
+      end
+      expect(token.call(work_package)).to eq(%w[A B])
     end
 
-    expect { token.call(work_package) }.not_to raise_error
-    expect(token.call(work_package)).to eq(:attribute_not_available)
-  end
+    it "supports boolean custom fields" do
+      enabled, = subject
+      token = enabled.detect do |t|
+        t.key == :"custom_field_#{boolean_custom_field.id}"
+      end
 
-  it "returns all possible tokens" do
-    cf = string_custom_field
-    tokens = described_class.new.tokens_for_type(work_package.type)
+      expect(token.call(work_package)).to be(true)
+    end
 
-    expect(tokens.first).to be_a(WorkPackageTypes::Patterns::AttributeToken)
-    expect(detect(tokens, :project_status).label).to eq(Project.human_attribute_name(:status_code))
-    expect(detect(tokens, :"custom_field_#{cf.id}").label).to eq(cf.name)
+    it "must return :attribute_not_available if custom field is not activated in project" do
+      enabled, = subject
+      token = enabled.detect do |t|
+        t.key == :"custom_field_#{not_activated_custom_field.id}"
+      end
+
+      expect { token.call(work_package) }.not_to raise_error
+      expect(token.call(work_package)).to eq(:attribute_not_available)
+    end
+
+    it "returns all possible tokens as enabled" do
+      cf = string_custom_field
+      enabled, = subject
+
+      expect(enabled.first).to be_a(WorkPackageTypes::Patterns::AttributeToken)
+      expect(detect(enabled, :project_status)&.label).to eq(Project.human_attribute_name(:status_code))
+      expect(detect(enabled, :"custom_field_#{cf.id}")&.label).to eq(cf.name)
+    end
+
+    it "does not return possible tokens as disabled" do
+      cf = string_custom_field
+      _, disabled = subject
+
+      expect(detect(disabled, :project_status)).to be_nil
+      expect(detect(disabled, :"custom_field_#{cf.id}")).to be_nil
+    end
+
+    it "returns a token that's not on the correct type as disabled" do
+      cf = custom_field_not_on_type
+      enabled, disabled = subject
+      expect(detect(enabled, :"custom_field_#{cf.id}")).to be_nil
+      expect(detect(disabled, :"custom_field_#{cf.id}")&.label).to eq(cf.name)
+    end
   end
 
   private

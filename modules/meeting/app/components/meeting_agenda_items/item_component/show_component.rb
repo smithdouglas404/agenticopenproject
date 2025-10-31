@@ -36,13 +36,14 @@ module MeetingAgendaItems
     include OpPrimer::ComponentHelpers
     include Redmine::I18n
 
-    def initialize(meeting_agenda_item:, first_and_last: [])
+    def initialize(meeting_agenda_item:, first_and_last: [], current_occurrence: nil)
       super
 
       @meeting_agenda_item = meeting_agenda_item
       @meeting = meeting_agenda_item.meeting
       @series = @meeting.recurring_meeting
       @first_and_last = first_and_last
+      @current_occurrence = current_occurrence
     end
 
     def wrapper_uniq_by
@@ -62,7 +63,6 @@ module MeetingAgendaItems
     def add_outcome_action?
       editable? &&
         @meeting.in_progress? &&
-        !@meeting_agenda_item.outcomes.exists? &&
         !@meeting_agenda_item.in_backlog? &&
         User.current.allowed_in_project?(:manage_outcomes, @meeting.project)
     end
@@ -101,38 +101,46 @@ module MeetingAgendaItems
       return unless editable?
 
       menu.with_item(label: t("label_edit"),
-                     href: edit_meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item),
-                     content_arguments: {
-                       data: { "turbo-stream": true }
-                     }) do |item|
+                     tag: :button,
+                     content_arguments: { data: {
+                       action: "click->meetings--submit#intercept",
+                       href: edit_meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item,
+                                                           current_occurrence: @current_occurrence),
+                       method: "GET"
+                     } }) do |item|
         item.with_leading_visual_icon(icon: :pencil)
       end
     end
 
     def add_note_action_item(menu)
       menu.with_item(label: t("label_agenda_item_add_notes"),
-                     href: edit_meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item,
-                                                         display_notes_input: true),
-                     content_arguments: {
-                       data: { "turbo-stream": true }
-                     }) do |item|
+                     tag: :button,
+                     content_arguments: { data: {
+                       action: "click->meetings--submit#intercept",
+                       href: edit_meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item,
+                                                           display_notes_input: true, current_occurrence: @current_occurrence),
+                       method: "GET"
+                     } }) do |item|
         item.with_leading_visual_icon(icon: :note)
       end
     end
 
     def add_outcome_action_item(menu)
       menu.with_item(label: t("label_agenda_item_add_outcome"),
-                     href: new_meeting_outcome_path(@meeting_agenda_item.meeting,
-                                                    meeting_agenda_item_id: @meeting_agenda_item&.id),
-                     content_arguments: {
-                       data: { "turbo-stream": true }
-                     }) do |item|
+                     tag: :button,
+                     content_arguments: { data: {
+                       action: "click->meetings--submit#intercept",
+                       href: new_meeting_outcome_path(@meeting_agenda_item.meeting,
+                                                      meeting_agenda_item_id: @meeting_agenda_item&.id,
+                                                      current_occurrence: @current_occurrence),
+                       method: "GET"
+                     } }) do |item|
         item.with_leading_visual_icon(icon: :plus)
       end
     end
 
     def copy_action_item(menu)
-      url = meeting_url(@meeting, anchor: "item-#{@meeting_agenda_item.id}")
+      url = meeting_url(@meeting, anchor: "meeting-agenda-item-#{@meeting_agenda_item.id}")
       menu.with_item(label: t("meeting.copy.to_clipboard"),
                      tag: :"clipboard-copy",
                      content_arguments: { value: url }) do |item|
@@ -150,12 +158,14 @@ module MeetingAgendaItems
 
       menu.with_item(
         label: t(:label_agenda_item_move_to_next),
-        href: move_to_next_dialog_meeting_agenda_item_path(@meeting_agenda_item.meeting,
-                                                    @meeting_agenda_item,
-                                                    datetime: next_date.iso8601),
-        content_arguments: {
-          data: { controller: "async-dialog" }
-        }
+        tag: :button,
+        content_arguments: { data: {
+          action: "click->meetings--submit#intercept",
+          href: move_to_next_dialog_meeting_agenda_item_path(@meeting_agenda_item.meeting,
+                                                             @meeting_agenda_item,
+                                                             datetime: next_date.iso8601),
+          method: "GET"
+        } }
       ) do |item|
         item.with_leading_visual_icon(icon: "arrow-right")
       end
@@ -176,9 +186,10 @@ module MeetingAgendaItems
       label = @meeting_agenda_item.work_package_id.present? ? wp_agenda_item_delete_label : t(:text_destroy)
       menu.with_item(label:,
                      scheme: :danger,
-                     href: meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item),
+                     href: meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item,
+                                                    current_occurrence: @current_occurrence),
                      form_arguments: {
-                       method: :delete, data: { confirm: t("text_are_you_sure"), "turbo-stream": true }
+                       method: :delete, data: { turbo_confirm: t(:text_are_you_sure), "turbo-stream": true }
                      }) do |item|
         item.with_leading_visual_icon(icon: :trash)
       end
@@ -190,11 +201,16 @@ module MeetingAgendaItems
 
     def move_action_item(menu, move_to, label_text, icon)
       menu.with_item(label: label_text,
-                     href: move_meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item,
-                                                         move_to:),
-                     form_arguments: {
-                       method: :put, data: { "turbo-stream": true }
-                     }) do |item|
+                     tag: :button,
+                     content_arguments: { data: {
+                       action: "click->meetings--submit#intercept",
+                       href: move_meeting_agenda_item_path(
+                         @meeting_agenda_item.meeting,
+                         @meeting_agenda_item,
+                         move_to:,
+                         current_occurrence: @current_occurrence
+                       )
+                     } }) do |item|
         item.with_leading_visual_icon(icon:)
       end
     end
@@ -205,8 +221,13 @@ module MeetingAgendaItems
       menu.with_item(label: I18n.t(:label_agenda_item_move_to_backlog),
                      tag: :button,
                      content_arguments: { data: {
-                       action: "click->meetings--add-params#interceptMoveTo",
-                       href: drop_meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item, type: :to_backlog)
+                       action: "click->meetings--submit#intercept",
+                       href: drop_meeting_agenda_item_path(
+                         @meeting_agenda_item.meeting,
+                         @meeting_agenda_item,
+                         type: :to_backlog,
+                         current_occurrence: @current_occurrence
+                       )
                      } }) do |item|
         item.with_leading_visual_icon(icon: "discussion-outdated")
       end
@@ -214,14 +235,38 @@ module MeetingAgendaItems
 
     def move_to_current_meeting_action_item(menu)
       return unless editable?
+      return if many_sections?
 
       menu.with_item(label: I18n.t(:label_agenda_item_move_to_current_meeting),
                      tag: :button,
                      content_arguments: { data: {
-                       action: "click->meetings--add-params#interceptMoveTo",
-                       href: drop_meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item, type: :to_current)
+                       action: "click->meetings--submit#intercept",
+                       href: drop_meeting_agenda_item_path(
+                         @meeting_agenda_item.meeting,
+                         @meeting_agenda_item,
+                         type: :to_current,
+                         current_occurrence: @current_occurrence
+                       )
                      } }) do |item|
         item.with_leading_visual_icon(icon: "cross-reference")
+      end
+    end
+
+    def move_to_section_action_item(menu)
+      return unless editable?
+      return unless many_sections?
+
+      menu.with_item(label: I18n.t(:label_agenda_item_move_to_section),
+                     tag: :button,
+                     content_arguments: { data: {
+                       action: "click->meetings--submit#intercept",
+                       href: move_to_section_dialog_meeting_agenda_item_path(
+                         @meeting_agenda_item.meeting,
+                         @meeting_agenda_item,
+                         current_occurrence: @current_occurrence
+                       )
+                     } }) do |item|
+        item.with_leading_visual_icon(icon: "op-move")
       end
     end
 
@@ -247,10 +292,6 @@ module MeetingAgendaItems
       @meeting.templated?
     end
 
-    def note_or_outcome_action_added?
-      (@meeting_agenda_item.editable? && @meeting_agenda_item.notes.blank?) || add_outcome_action?
-    end
-
     def move_to_different_section_or_meeting_action_added?
       return false unless editable?
 
@@ -259,6 +300,24 @@ module MeetingAgendaItems
 
     def editable?
       @editable ||= @meeting_agenda_item.editable? && can_manage_agendas?
+    end
+
+    def in_section?
+      true
+    end
+
+    # def visible_sections?
+    #   return true if @meeting.templated?
+    #
+    #   @meeting.sections.many?
+    # end
+
+    def many_sections?
+      if @meeting_agenda_item.in_backlog? && @current_occurrence.present?
+        @current_occurrence.sections.many?
+      else
+        @meeting.sections.many?
+      end
     end
   end
 end

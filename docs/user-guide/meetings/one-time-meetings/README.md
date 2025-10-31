@@ -235,17 +235,19 @@ In order to edit the title of the meeting select the dropdown menu behind the th
 
 ### Add meeting participants
 
-You will see the list of all the invited project members under **Participants**. You can add participants (Invitees and Attendees) to a meeting in [edit mode](#edit-a-meeting). The process is the same whether you are creating a new meeting or editing an existing one. You can either click the cogwheel icon next to **Participants** section or click the **Add participants** link under the list of existing participants.
+You will see the list of all the invited project members under **Participants**. You can add participants (Invitees and Attendees) to a meeting in [edit mode](#edit-a-meeting). The process is the same whether you are creating a new meeting or editing an existing one. You can either click the cogwheel icon next to **Participants** section or click the **Manage participants** link under the list of existing participants.
 
 ![Add meeting participants in OpenProject](openproject_userguide_meetings_add_participants.png)
 
-You will see the list of all the project members and be able to tell, based on the check marks next to the name under the *Invited* column, who was invited. After the meeting, you can record who actually took part using the checkmarks under the Attended column.
+The participants list will show everyone invited to the meeting so far. Initially, it only contains the meeting creator. To add participants, use the search bar to find one or more project members, then click **Add**.
 
 ![A form showing invited and attending meeting participants in OpenProject](openproject_userguide_meetings_add_new_participants_form.png)
 
-To remove an invited project member from a meeting, simply uncheck both check marks.
+To remove a participant, click the *x* icon on the far right of their name.
 
-Click on the **Save** button to confirm the changes.
+Once the meeting has started (status set to *In progress*), you can record attendance by selecting the **Mark as attended** button.
+
+![Button to mark meeting participants as attended in OpenProject meetings module](openproject_userguide_meetings_mark_participants_attendance_button.png)
 
 ### Send email to all participants
 

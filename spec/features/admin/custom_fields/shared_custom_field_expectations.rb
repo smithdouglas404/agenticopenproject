@@ -80,9 +80,6 @@ RSpec.shared_examples_for "list custom fields" do |type|
 
     expect(page).to have_text("Successful creation")
 
-    click_on "Operating System"
-    wait_for_reload
-
     expect(page).to have_field("custom_field_multi_value", checked: true)
 
     expect(page).to have_css(".custom-option-row", count: 3)

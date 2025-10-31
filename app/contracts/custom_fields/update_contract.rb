@@ -30,5 +30,6 @@
 
 module CustomFields
   class UpdateContract < BaseContract
+    include CustomFields::EnterpriseGuard
   end
 end

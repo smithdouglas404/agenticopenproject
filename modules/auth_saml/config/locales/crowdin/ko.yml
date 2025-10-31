@@ -56,6 +56,7 @@ ko:
       label_mapping: 매핑
       label_requested_attribute_for: "요청된 특성 대상: %{attribute}"
       no_results_table: 아직 정의된 SAML ID 공급자가 없습니다.
+      notice_created: 새로운 SAML ID 공급자가 생성되었습니다.
       plural: SAML ID 공급자
       singular: SAML ID 공급자
       requested_attributes: 요청된 특성

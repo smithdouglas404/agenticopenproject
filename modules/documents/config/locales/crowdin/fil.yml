@@ -26,6 +26,10 @@ fil:
   activerecord:
     models:
       document: "Dokumento"
+    attributes:
+      document:
+        content_binary: "Content binary"
+        title: "Pamagat"
   activity:
     filter:
       document: "Mga dokumento"
@@ -33,6 +37,22 @@ fil:
   default_doc_category_user: "Dokumento para sa mga gagamit"
   enumeration_doc_categories: "Mga kategorya ng dokumento"
   documents:
+    page_header:
+      heading: "All documents"
+    subheader:
+      filter:
+        label: "Document name filter"
+        placeholder: "Type here to search document names"
+    documents_list_blank_slate:
+      heading: "There are no documents yet"
+      description: "There are no documents in this view. You can click the button below to add one."
+    index_page:
+      name: "Pangalan"
+      type: "Uri"
+      updated_at: "Last edited"
+    menu:
+      all: "All documents"
+      types: "Mga uri"
     label_attachment_author: "Attachment author"
     label_categories: "Categories"
     new_category: "Bagong kategorya"
@@ -40,9 +60,9 @@ fil:
   label_document_new: "Bagong dokumento"
   label_document_plural: "Mga dokumento"
   label_documents: "Mga dokumento"
-  label_document_title: "Title"
-  label_document_description: "Description"
-  label_document_category: "Category"
+  label_document_title: "Pamagat"
+  label_document_description: "Deskripsyon"
+  label_document_category: "Kategorya"
   permission_manage_documents: "Pamahalaan ang mga dokumento"
   permission_view_documents: "Tingnan ang dokumento"
   project_module_documents: "Mga dokumento"

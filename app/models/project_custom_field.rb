@@ -33,6 +33,7 @@ class ProjectCustomField < CustomField
                                             inverse_of: :custom_fields
   has_many :project_custom_field_project_mappings, class_name: "ProjectCustomFieldProjectMapping", foreign_key: :custom_field_id,
                                                    dependent: :destroy, inverse_of: :project_custom_field
+  has_many :projects, through: :project_custom_field_project_mappings
 
   acts_as_list column: :position_in_custom_field_section, scope: [:custom_field_section_id]
 

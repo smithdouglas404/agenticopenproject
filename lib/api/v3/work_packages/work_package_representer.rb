@@ -308,7 +308,10 @@ module API
              cache_if: -> { view_time_entries_allowed? } do
           next if represented.new_record?
 
-          filters = [{ work_package_id: { operator: "=", values: [represented.id.to_s] } }]
+          filters = [
+            { entity_type: { operator: "=", values: ["WorkPackage"] } },
+            { entity_id: { operator: "=", values: [represented.id.to_s] } }
+          ]
 
           {
             href: api_v3_paths.path_for(:time_entries, filters:),
@@ -672,10 +675,10 @@ module API
 
           @view_own_time_entries_allowed = if represented.new_record?
                                              current_user.allowed_in_any_work_package?(:view_own_time_entries,
-                                                                                         in_project: represented.project)
-                                             else
-                                               current_user.allowed_in_work_package?(:view_own_time_entries, represented)
-                                             end
+                                                                                       in_project: represented.project)
+                                           else
+                                             current_user.allowed_in_work_package?(:view_own_time_entries, represented)
+                                           end
         end
 
         def log_time_allowed?

@@ -10,8 +10,7 @@ keywords: work package, share, share work packages
 
 It is possible to share work packages with users that are not members of a project or are not yet registered on your instance. In the latter case a user will need to register in order to view the work package.
 
-> [!NOTE]
-> Sharing work packages with non-member is an Enterprise add-on and can only be used with [Enterprise cloud](../../../enterprise-guide/enterprise-cloud-guide/) or  [Enterprise on-premises](../../../enterprise-guide/enterprise-on-premises-guide/). An upgrade from the free community edition is easy and helps support OpenProject.
+[feature: work_package_sharing ]
 
 ## Share a work package
 

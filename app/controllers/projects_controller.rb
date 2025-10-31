@@ -39,6 +39,11 @@ class ProjectsController < ApplicationController
   before_action :authorize, only: %i[copy_form copy deactivate_work_package_attachments]
   before_action :authorize_global, only: %i[new create]
   before_action :require_admin, only: %i[destroy destroy_info]
+  before_action :not_authorized_on_feature_flag_inactive,
+                only: %i[new create],
+                if: -> {
+                  params[:workspace_type].in?(Project.workspace_types.values_at(:program, :portfolio))
+                }
   before_action :find_optional_template, only: %i[new create]
   before_action :find_optional_parent, only: :new
 
@@ -49,8 +54,6 @@ class ProjectsController < ApplicationController
   include QueriesHelper
   include ProjectsHelper
   include Queries::Loading
-
-  helper_method :has_managed_project_folders?
 
   current_menu_item :index do
     :projects
@@ -145,8 +148,8 @@ class ProjectsController < ApplicationController
   # Delete @project
   def destroy
     service_call = ::Projects::ScheduleDeletionService
-                     .new(user: current_user, model: @project)
-                     .call
+                    .new(user: current_user, model: @project)
+                    .call
 
     if service_call.success?
       flash[:notice] = I18n.t("projects.delete.scheduled")
@@ -154,13 +157,11 @@ class ProjectsController < ApplicationController
       flash[:error] = I18n.t("projects.delete.schedule_failed", errors: service_call.errors.full_messages.join("\n"))
     end
 
-    redirect_to projects_path
+    redirect_to projects_path, status: :see_other
   end
 
   def destroy_info
-    @project_to_destroy = @project
-
-    hide_project_in_layout
+    respond_with_dialog Projects::DeleteDialogComponent.new(project: @project)
   end
 
   def deactivate_work_package_attachments
@@ -184,7 +185,7 @@ class ProjectsController < ApplicationController
   def from_template? = @template.present?
 
   def new_blank
-    @new_project = @parent&.children&.build || Project.new
+    @new_project = @parent&.children&.build(params.permit(:workspace_type)) || Project.new(params.permit(:workspace_type))
 
     render layout: "no_menu"
   end
@@ -243,14 +244,6 @@ class ProjectsController < ApplicationController
     @parent = Project.visible(current_user).find(params[:parent_id]) if params[:parent_id].present?
   end
 
-  def has_managed_project_folders?(project)
-    project.project_storages.any?(&:project_folder_automatic?)
-  end
-
-  def hide_project_in_layout
-    @project = nil
-  end
-
   def export_list(query, mime_type)
     job = Projects::ExportJob.perform_later(
       export: Projects::Export.create,
@@ -268,6 +261,10 @@ class ProjectsController < ApplicationController
 
   def supported_export_formats
     ::Exports::Register.list_formats(Project).map(&:to_s)
+  end
+
+  def not_authorized_on_feature_flag_inactive
+    render_403 unless OpenProject::FeatureDecisions.portfolio_models_active?
   end
 
   helper_method :supported_export_formats

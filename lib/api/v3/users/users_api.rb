@@ -97,14 +97,14 @@ module API
 
               desc "Set lock on user account"
               post do
-                user_transition(@user.active? || @user.locked?) do
+                user_transition(@user.active? || @user.locked? || @user.deleted?) do
                   @user.lock! unless @user.locked?
                 end
               end
 
               desc "Remove lock on user account"
               delete do
-                user_transition(@user.locked? || @user.active?) do
+                user_transition(@user.locked? || @user.active? || @user.deleted?) do
                   @user.activate! unless @user.active?
                 end
               end

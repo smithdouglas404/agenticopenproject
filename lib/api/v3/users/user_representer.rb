@@ -47,7 +47,7 @@ module API
         self_link
 
         link :showUser do
-          next if represented.new_record? || represented.locked?
+          next if represented.new_record? || represented.locked? || represented.deleted?
 
           {
             href: api_v3_paths.show_user(represented.id),
