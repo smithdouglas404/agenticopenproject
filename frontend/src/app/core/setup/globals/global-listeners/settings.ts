@@ -7,26 +7,6 @@ import invariant from 'tiny-invariant';
  * This should not be loaded globally and ideally refactored into components
  */
 export function listenToSettingChanges() {
-  /** Sync SCM vendor select when enabled SCMs are changed */
-  const enabledScm = document.querySelector<HTMLInputElement>('[name="settings[enabled_scm][]"]');
-  enabledScm?.addEventListener('change', (event) => {
-    const checkbox = event.target as HTMLInputElement;
-    const wasDisabled = !checkbox.checked;
-    const vendor = checkbox.value;
-    const select = document.querySelector<HTMLSelectElement>('#settings_repositories_automatic_managed_vendor')!;
-    const option = select.querySelector<HTMLOptionElement>(`option[value="${vendor}"]`);
-
-    // Skip non-manageable SCMs
-    if (!option) {
-      return;
-    }
-
-    option.disabled = wasDisabled;
-    if (wasDisabled && option.selected) {
-      select.value = '';
-    }
-  });
-
   /* Javascript for Settings::TextSettingComponent */
   const langSelectSwitchData = (select:HTMLSelectElement) => {
     const id = select.getAttribute('id') || '';
@@ -73,15 +53,4 @@ export function listenToSettingChanges() {
       selectSwitch.addEventListener('change', langSelectSwitchChangeListener);
     });
   /* end Javascript for Settings::TextSettingComponent */
-
-  /** Toggle repository checkout fieldsets required when option is disabled */
-  document.querySelectorAll<HTMLInputElement>('.settings-repositories--checkout-toggle').forEach((toggle) => {
-    toggle.addEventListener('change', (event) => {
-      const wasChecked = (event.target as HTMLInputElement).checked;
-      const fieldset = toggle.closest('fieldset')!;
-      fieldset
-        .querySelectorAll<HTMLInputElement|HTMLSelectElement>('input,select:not([type=checkbox],[type=hidden])')
-        .forEach((field) => { field.required = wasChecked; });
-    });
-  });
 }
