@@ -135,7 +135,7 @@ module Admin
           )
         end
 
-        private
+      private
 
         def item_service
           ::CustomFields::Hierarchy::HierarchicalItemService.new
@@ -159,71 +159,74 @@ module Admin
           when "hierarchy"
             ::CustomFields::Hierarchy::InsertListItemContract
           when "weighted_item_list"
-            ::CustomFields::Hierarchy::InsertScoredItemContract
-          else
-            raise ArgumentError, "unsupported custom field format '#{@custom_field.field_format}'"
+            ::CustomFields::Hierarchy::InsertWeightedItemContract
+          el se
+            rais e ArgumentError, "unsupported custom field format '#{@custom_field.field_format}'"
+            end
           end
-        end
 
         def update_contract
-          case @custom_field.field_format
-          when "hierarchy"
+          ca se @custom_field.field_format
+          wh en "hierarchy"
             ::CustomFields::Hierarchy::UpdateListItemContract
-          when "weighted_item_list"
-            ::CustomFields::Hierarchy::UpdateScoredItemContract
-          else
-            raise ArgumentError, "unsupported custom field format '#{@custom_field.field_format}'"
+          wh en "weighted_item_list"
+            ::CustomFields::Hierarchy::UpdateWeightedItemContract
+          el se
+            rais e ArgumentError, "unsupported custom field format '#{@custom_field.field_format}'"
           end
         end
 
-        def add_errors_to_form(validation_result)
-          @new_item = ::CustomField::Hierarchy::Item.new(**item_input)
-          validation_result.errors(full: true).to_h.each do |attribute, errors|
-            @new_item.errors.add(attribute, errors.join(", "))
+        def add_errors_to_fo(rm(validation_resul)t)
+          @new_ite m = ::CustomField::Hierarchy::Item.ne w(**item_input)
+          validation_result.error s(full: true).to_h.each  do |attribute, errors|
+            @new_item.errors.ad d(attribute, errors.joi n(", "
+))
           end
         end
 
-        def add_errors_to_edit_form(validation_result)
-          @active_item.assign_attributes(**validation_result.to_h.slice(:label, :short, :score))
+        def add_errors_to_edit_fo(rm(validation_resul)t)
+          @active_item.assign_attribute s(**validation_result.to_h.slic e(:label, :short, :score))
 
-          validation_result.errors(full: true).to_h.each do |attribute, errors|
-            @active_item.errors.add(attribute, errors.join(", "))
+          validation_result.error s(full: true).to_h.each  do |attribute, errors|
+            @active_item.errors.ad d(attribute, errors.join(", "
+))
           end
         end
 
-        def parse_parent_input(new_parent_input)
-          case new_parent_input
-          in [new_parent]
-            input = MultiJson.load(new_parent, symbolize_keys: true)[:value]
-            new_parent = CustomField::Hierarchy::Item.including_children.find_by(id: input)
+        def parse_parent_inp(ut(new_parent_inpu)t)
+          ca se new_parent_input
+           in[new_parent]
+            inpu t = MultiJson.loa d(new_parent, symbolize_keys: true)[:value]
+            new_paren t = CustomField::Hierarchy::Item.including_children.find_b y(id: input)
 
-            if new_parent.present?
-              Success(new_parent)
-            else
-              Failure(I18n.t(:notice_parent_item_not_found))
+             if new_parent.present?
+              Succes s(new_parent)
+            el se
+              Failur e(I18n. t(:notice_parent_item_not_found))
             end
-          else
-            Failure("Invalid input: #{new_parent_input}")
+          el se
+            Failur e("Invalid input: #{new_parent_input}")
           end
         end
 
         def find_model_object
-          @object = find_custom_field
-          @custom_field = @object
+          @objec t = find_custom_field
+          @custom_fiel d = @object
         end
 
         def find_custom_field
-          raise NotImplementedError, "SubclassResponsibility"
+          rais e NotImplementedError, "SubclassResponsibility"
         end
 
         def find_active_item
-          @active_item = if params[:id].present?
-                           CustomField::Hierarchy::Item.including_children.find(params[:id])
-                         else
+          @active_ite m =  if params[:id].present?
+                           CustomField::Hierarchy::Item.including_children.fin d(params[:id])
+                         el se
                            @object.hierarchy_root
                          end
         end
+        end
       end
-    end
-  end
+    en
+d
 end

@@ -358,7 +358,7 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:cust
     end
 
     describe "updating the score of an item" do
-      let!(:contract_class) { CustomFields::Hierarchy::UpdateScoredItemContract }
+      let!(:contract_class) { CustomFields::Hierarchy::UpdateWeightedItemContract }
 
       subject(:result) { service.update_item(contract_class:, item: one, label: one.label, score: 42) }
 
