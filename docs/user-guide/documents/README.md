@@ -8,25 +8,26 @@ keywords: documents
 
 # Documents
 
-The Documents module allows you to write or upload document directly to the project.
+The Documents module allows you to write or upload documents directly to the project.
 
+> [!NOTE]
 > Please note that this module only allows you to manually write or upload documents directly to a project. For more advanced functionalities, please take a look at the [file storages integrations](../file-management).
 
 ## Document index
 
 To use the Documents module, make sure it is enabled in the Project settings of your project (Project settings → Modules). 
 
-Once is enabled, you can navigate to the 'Documents' module in the sidebar of the your project to get to the Documents index that lists all available documents:
+Once it is enabled, you can navigate to the *Documents* module in the sidebar of your project to get to the Documents index that lists all available documents:
 
-![Documents index lists all available documents](documents-new-index.png)
+![Documents index lists of all available documents in an OpenProject project](documents-new-index.png)
 
 The Documents index page lets you:
 
-1. View all documents or
+1. View all documents
 2. Filter by document type
 3. Quick-filter the list of documents based on the document title
 4. Add a new document
-5. View a list of all available documents, including their type and the date it was last edited
+5. View a list of all available documents, including their type and the date they were last edited
 
 A document in OpenProject can be:
 
@@ -38,7 +39,7 @@ A document in OpenProject can be:
 
 To view a document, simply click on the name of a document in the index. You will then see the document:
 
-![Viewing a document with an attachment](documents-new-view-with-attachment.png)
+![Viewing a document with an attachment in OpenProject](documents-new-view-with-attachment.png)
 
 A document has:
 
@@ -51,7 +52,7 @@ A document has:
 
 To create a new document, click on the *+ Document* button. 
 
-![Documents New New Document](documents-new-new-document.png)
+![Create a new document in OpenProject Documents module](documents-new-new-document.png)
 
 In the form that appears, select the document category, give it a title and an optional description. You can optionally also attach a file to the document.
 
@@ -59,13 +60,14 @@ Please note that that these document categories are created by the administrator
 
 The uploaded documents are visible to all project members who have the necessary permissions.
 
-> **Note**: There is no versioning of documents. An edit of any field or the contents of the document is visible to all members.
+> [!NOTE]
+> There is no versioning of documents. An edit of any field or the contents of the document is visible to all members.
 
 ## Edit or delete a project document
 
 You can edit or delete documents anytime. To do that, click on the 'Edit' button when viewing a document. This will take you to edit view:
 
-![Editing a document](documents-new-edit.png)
+![Edit a document in OpenProject Documents module](documents-new-edit.png)
 
 ## Frequently asked questions (FAQ)
 
