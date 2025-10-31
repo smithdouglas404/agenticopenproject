@@ -2,7 +2,6 @@ import { DeviceService } from 'core-app/core/browser/device.service';
 import { scrollHeaderOnMobile } from 'core-app/core/setup/globals/global-listeners/top-menu-scroll';
 import { detectOnboardingTour } from 'core-app/core/setup/globals/onboarding/onboarding_tour_trigger';
 import { installMenuLogic } from 'core-app/core/setup/globals/global-listeners/action-menu';
-import { listenToSettingChanges } from 'core-app/core/setup/globals/global-listeners/settings';
 import { makeColorPreviews } from 'core-app/core/setup/globals/global-listeners/color-preview';
 import { dangerZoneValidation } from 'core-app/core/setup/globals/global-listeners/danger-zone-validation';
 import { fixFragmentAnchors } from 'core-app/core/setup/globals/global-listeners/fix-fragment-anchors';
@@ -41,9 +40,6 @@ export function addTurboGlobalListeners() {
     document.querySelectorAll<HTMLElement>('.toolbar-items').forEach((menu) => {
       installMenuLogic(menu);
     });
-
-    // Legacy settings listener
-    listenToSettingChanges();
 
     // Color patches preview the color
     makeColorPreviews();
