@@ -101,10 +101,8 @@ RSpec.describe "Meeting Outcomes CRUD", :js do
           field.set_value "It means no worries"
         end
 
-        dismiss_confirm do
-          page.within("#meeting-agenda-items-outcomes-base-component-#{item.id}") do
-            click_link_or_button "Outcome"
-          end
+        page.within("#meeting-agenda-items-outcomes-new-button-component-#{item.id}") do
+          click_link_or_button "Outcome"
         end
 
         show_page.in_outcome_component(wp_item) do
