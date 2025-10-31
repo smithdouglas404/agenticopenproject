@@ -51,7 +51,7 @@ These improvements reduce query load and shorten response times, especially for 
 
 ### New index page for Documents module
 
-With OpenProject 16.6, a new index page provides a structured overview of all documents within a project. The list is sorted by last edited, showing the latest changes first, and includes columns for Name, Type (the category), and Last edited. Users can search documents via a quick text filter or narrow results by document category using the *Types* filter menu on the left. A new *Create document* button lets users quickly add new items. 
+With OpenProject 16.6, a new index page provides a structured overview of all documents within a project. The list is sorted by last edited, showing the latest changes first, and includes columns for Name, Type (the category), and Last edited. Users can search document titles via a quick text filter or narrow results by document category using the *Types* filter menu on the left. A new *Create document* button lets users quickly add new items. 
 
 Of course, the view automatically respects project permissions, ensuring that users only see documents they are allowed to access. On mobile, the list is optimized to show just the most relevant information.
 
