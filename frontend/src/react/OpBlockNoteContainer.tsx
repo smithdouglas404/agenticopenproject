@@ -30,6 +30,7 @@
 
 import { BlockNoteEditorOptions, BlockNoteSchema, defaultBlockSpecs, filterSuggestionItems } from '@blocknote/core';
 import { User } from '@blocknote/core/comments';
+import * as blockNoteLocales from '@blocknote/core/locales';
 import { BlockNoteView } from '@blocknote/mantine';
 import { getDefaultReactSlashMenuItems, SuggestionMenuController, useCreateBlockNote } from '@blocknote/react';
 import { HocuspocusProvider } from '@hocuspocus/provider';
@@ -73,6 +74,10 @@ export default function OpBlockNoteContainer({ inputField,
 
   initOpenProjectApi({ baseUrl: openProjectUrl });
 
+  const userLocale = window.I18n.locale;
+  const blockNoteLocaleString = Object.keys(blockNoteLocales).includes(userLocale) ? userLocale : 'en';
+  const blockNoteLocale = blockNoteLocales[blockNoteLocaleString as keyof typeof blockNoteLocales];
+
   let doc = new Y.Doc();
 
   const collaborationEnabled = Boolean(hocuspocusUrl && documentName && oauthToken && activeUser);
@@ -103,6 +108,7 @@ export default function OpBlockNoteContainer({ inputField,
         },
         showCursorLabels: 'activity'
       },
+      dictionary: blockNoteLocale,
       uploadFile,
     };
   } else { // collaboration disabled
@@ -126,6 +132,7 @@ export default function OpBlockNoteContainer({ inputField,
           color: '#333333',
         },
       },
+      dictionary: blockNoteLocale,
       uploadFile,
     };
   }
@@ -145,8 +152,10 @@ export default function OpBlockNoteContainer({ inputField,
       const result = await service.addAttachments('documents', attachmentsUploadUrl, [iUploadFile]).toPromise();
 
       return result?.[0]._links.downloadLocation.href ?? '';
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch(error:any) {
       const toastService = pluginContext.services.notifications;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       toastService.addError(error);
 
       return '';
