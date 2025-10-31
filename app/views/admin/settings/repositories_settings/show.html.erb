@@ -40,7 +40,16 @@ See COPYRIGHT and LICENSE files for more details.
   end
 %>
 
-<%= styled_form_tag(admin_settings_repositories_path, method: :patch) do %>
+<%=
+  styled_form_tag(
+    admin_settings_repositories_path,
+    method: :patch,
+    data: {
+      controller: "disable-when-checked show-when-checked",
+      disable_when_checked_reversed_value: true
+    }
+  ) do
+%>
   <section class="form--section">
     <div class="form--field">
       <%= setting_check_box :autofetch_changesets %>
@@ -76,10 +85,27 @@ See COPYRIGHT and LICENSE files for more details.
     </div>
     <%
     available_scms = OpenProject::SCM::Manager.registered
-      .map { |vendor, klass| [klass.vendor_name, vendor.to_s] }
+      .map do |vendor, klass|
+        [
+          klass.vendor_name,
+          vendor.to_s,
+          {
+            data: { disable_when_checked_target: "cause", target_name: vendor.to_s }
+          }
+        ]
+      end
 
     manageable_scms = OpenProject::SCM::Manager.manageable
-      .map { |vendor, klass| [klass.vendor_name, vendor.to_s, { disabled: !klass.enabled? }] }
+      .map do |vendor, klass|
+        [
+          klass.vendor_name,
+          vendor.to_s,
+          {
+            disabled: !klass.enabled?,
+            data: { disable_when_checked_target: "effect", target_name: vendor.to_s }
+          }
+        ]
+      end
     %>
     <div class="form--field">
 

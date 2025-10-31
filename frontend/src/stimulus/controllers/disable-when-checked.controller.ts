@@ -35,5 +35,16 @@ export default class OpDisableWhenCheckedController extends ApplicationControlle
     affectedTargets.forEach((el) => {
       el.disabled = (this.hasReversedValue && this.reversedValue) ? !checked : checked;
     });
+
+    // specific handling for select options
+    affectedTargets
+      .filter((el) => el instanceof HTMLOptGroupElement || el instanceof HTMLOptionElement)
+      .map((option) => option.closest('select')!)
+      .filter((select, index, self) => self.indexOf(select) === index) // unique
+      .forEach((select) => {
+        if (select.options[select.selectedIndex]?.disabled) {
+          select.value = '';
+        }
+      });
   }
 }

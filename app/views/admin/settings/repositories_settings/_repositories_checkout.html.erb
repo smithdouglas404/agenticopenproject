@@ -12,11 +12,20 @@
             <input type="hidden" name="<%= key %>" value="0" id="<% "#{key}_hidden" %>">
             <%= setting_label key, label: :setting_repository_checkout_display %>
             <div class="form--field-container">
-              <%= styled_check_box_tag key, 1, enabled, class: "settings-repositories--checkout-toggle" %>
+              <%=
+                styled_check_box_tag key, 1, enabled, data: {
+                  show_when_checked_target: "cause",
+                  target_name: "#{setting_base}_enabled"
+                }
+              %>
             </div>
             <div class="form--field-instructions"><%= t("repositories.checkout.enable_instructions_text") %></div>
           </div>
-          <div class="form--field">
+          <div
+            class="form--field"
+            data-show-when-checked-target="effect"
+            data-target-name="<%= "#{setting_base}_enabled" %>"
+            <%= "hidden" unless enabled %>>
             <% key = "#{setting_base}[base_url]" %>
             <%= setting_label key, label: :setting_repository_checkout_base_url %>
             <div class="form--field-container">
@@ -25,7 +34,11 @@
             </div>
             <div class="form--field-instructions"><%= simple_format t("repositories.checkout.base_url_text") %></div>
           </div>
-          <div class="form--field">
+          <div
+            class="form--field"
+            data-show-when-checked-target="effect"
+            data-target-name="<%= "#{setting_base}_enabled" %>"
+            <%= "hidden" unless enabled %>>
             <% key = "#{setting_base}[text]" %>
             <%= setting_label key, label: :setting_repository_checkout_text %>
             <div class="form--field-container">
