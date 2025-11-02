@@ -26,7 +26,8 @@ Once you are in the right tab:
 3. Check if you **only want the statuses that are used by this type** to be displayed (this option is disabled per default, but you can always activate it).
 4. Click the **Edit** button.
 
-**Note**: If you have created a [new status](../work-package-status) and want to add it to a workflow of a certain work package type, you need to deselect this option. Only this way also status that are not (yet) used by this type will appear in the list and can be added to a workflow.
+> [!NOTE]
+> If you have created a [new status](../work-package-status) and want to add it to a workflow of a certain work package type, you need to deselect this option. Only this way also status that are not (yet) used by this type will appear in the list and can be added to a workflow.
 
 
 ![System-admin-guide-work-package-workflows](System-admin-guide-work-package-workflows.png)
