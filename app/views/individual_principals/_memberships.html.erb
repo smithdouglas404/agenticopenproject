@@ -70,7 +70,7 @@ See COPYRIGHT and LICENSE files for more details.
             </tr>
           </thead>
           <tbody>
-            <% memberships.where.not(project: nil).each do |membership| %>
+            <% memberships.where.not(project: nil).find_each do |membership| %>
               <% next if membership.new_record? %>
               <tr id="member-<%= membership.id %>"
                 class="member"
