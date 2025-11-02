@@ -45,9 +45,9 @@ export class PersistentToggleComponent implements OnInit {
   /** Element reference */
   private element:HTMLElement;
 
-  private targetNotification:HTMLElement;
+  private targetNotification:HTMLElement|null;
 
-  constructor(private elementRef:ElementRef) {
+  constructor(private elementRef:ElementRef<HTMLElement>) {
   }
 
   ngOnInit():void {
@@ -58,36 +58,41 @@ export class PersistentToggleComponent implements OnInit {
     this.isHidden = window.OpenProject.guardedLocalStorage(this.identifier) === 'true';
 
     // Set initial state
-    this.targetNotification.hidden = !!this.isHidden;
+    if (this.targetNotification) {
+      this.targetNotification.hidden = !!this.isHidden;
 
-    // Register click handler
-    this.element
-      .parentElement
-      ?.querySelector('.persistent-toggle--click-handler')
-      ?.addEventListener('click', () => this.toggle(!this.isHidden));
+      // Register click handler
+      this.element
+        .parentElement
+        ?.querySelector('.persistent-toggle--click-handler')
+        ?.addEventListener('click', () => this.toggle(!this.isHidden));
 
-    // Register target toaster close icon
-    this.targetNotification
-      .querySelector('.op-toast--close')
-      ?.addEventListener('click', () => this.toggle(true));
+      // Register target toaster close icon
+      this.targetNotification
+        .querySelector('.op-toast--close')
+        ?.addEventListener('click', () => this.toggle(true));
+    }
   }
 
   private getTargetNotification() {
     return this.element
       .parentElement!
-      .querySelector<HTMLElement>('.persistent-toggle--toaster')!;
+      .querySelector<HTMLElement>('.persistent-toggle--toaster');
   }
 
   private toggle(isNowHidden:boolean) {
     this.isHidden = isNowHidden;
     window.OpenProject.guardedLocalStorage(this.identifier, (!!isNowHidden).toString());
 
+    const targetNotification = this.targetNotification;
+    if (!targetNotification) return; 
+
     if (isNowHidden) {
-      slideUp(this.targetNotification, 400);
-      window.requestAnimationFrame(() => this.targetNotification.hidden = true);
+      slideUp(targetNotification, 400);
+      window.requestAnimationFrame(() => { targetNotification.hidden = true; });
     } else {
-      this.targetNotification.hidden = false;
-      slideDown(this.targetNotification, 400);
+      targetNotification.hidden = false;
+      slideDown(targetNotification, 400);
     }
   }
 }
