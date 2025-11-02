@@ -164,9 +164,9 @@ pl:
         title: "Tabela tokenów dostępu"
     workflows:
       tabs:
-        default_transitions: "Default transitions"
-        user_author: "User is author"
-        user_assignee: "User is assignee"
+        default_transitions: "Przejścia domyślne"
+        user_author: "Użytkownik jest autorem"
+        user_assignee: "Użytkownik jest przypisaną osobą"
   authentication:
     login_and_registration: "Logowanie i rejestracja"
   announcements:
@@ -319,7 +319,7 @@ pl:
     reorder_alphabetical: "Ustaw kolejność wartości alfabetycznie"
     reorder_confirmation: "Ostrzeżenie: Bieżąca kolejność dostępnych wartości zostanie utracona. Kontynuować?"
     placeholder_version_select: "W pierwszej kolejności wymagany jest wybór pakietu roboczego lub projektu"
-    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
+    calculated_field_not_editable: "Atrybut nieedytowalny. Ta wartość jest obliczana automatycznie."
     instructions:
       is_required: "Oznacz pole niestandardowe jako wymagane. To spowoduje obowiązkowe wypełnianie pola podczas tworzenia nowych lub aktualizacji istniejących zasobów."
       is_required_for_project: "Zaznacz, aby włączyć ten atrybut i uczynić go wymaganym we wszystkich projektach. Nie można go wyłączyć dla poszczególnych projektów."
@@ -346,8 +346,8 @@ pl:
   concatenation:
     single: "lub"
   danger_dialog:
-    confirmation_live_message_checked: "The button to proceed is now active."
-    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+    confirmation_live_message_checked: "Przycisk kontynuowania jest już aktywny."
+    confirmation_live_message_unchecked: "Przycisk kontynuowania jest teraz nieaktywny. Aby kontynuować, zaznacz pole wyboru."
   op_dry_validation:
     or: "lub"
     errors:
@@ -526,8 +526,8 @@ pl:
       versions:
         no_results_title_text: Nie ma innych wersji tego projektu.
         no_results_content_text: Utwórz nową wersję projektu
-        work_packages_graph: Work packages graph
-        show_work_packages: Show work packages
+        work_packages_graph: Wykres pakietów roboczych
+        show_work_packages: Pokaż pakiety robocze
       storage:
         no_results_title_text: Nie ma dodatkowego zarejestrowanego miejsca na dysku zużytego przez ten projekt.
       work_package_priorities:
@@ -1844,7 +1844,7 @@ pl:
   attributes:
     active: "Aktywne"
     assigned_to: "Przypisany do"
-    assignee: "Przypisana osoba"
+    assignee: "Przypisany do"
     attachments: "Załączniki"
     actor: "Aktor"
     action: "Działanie"
@@ -2655,8 +2655,8 @@ pl:
     include_sub_items: "Uwzględnij elementy podrzędne"
     no_results_text: "Brak wyników"
   toggle_switch:
-    label_on: "On"
-    label_off: "Off"
+    label_on: "Wł."
+    label_off: "Wył."
   general_csv_decimal_separator: ","
   general_csv_encoding: "UTF-8"
   general_csv_separator: "."
@@ -2685,13 +2685,13 @@ pl:
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            Wydanie zawiera różne nowe funkcje i ulepszenia, takie jak:
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: Obliczone wartości oceny projektu i punktacji (dodatek Enterprise).
+            line_1: Hierarchia typów atrybutów projektu.
+            line_2: Aktualizacje działania o dużym wpływie.
+            line_3: Nowa strona indeksu modułu Dokumenty.
+            line_4: Możliwość zmiany elementu nadrzędnego pozycji pola niestandardowego.
     links:
       upgrade_enterprise_edition: "Aktualizuj do wersji Enterprise"
       postgres_migration: "Migrowanie instalacji do PostgreSQL"
@@ -3016,7 +3016,7 @@ pl:
   label_duplicate: "duplikat"
   label_duplicates: "Duplikaty"
   label_edit: "Edytuj"
-  label_edit_attribute: "Edit attribute"
+  label_edit_attribute: "Edytuj atrybut"
   label_edit_x: "Edytuj: %{x}"
   label_enable_multi_select: "Włącz wybór wielokrotny"
   label_enabled_project_custom_fields: "Aktywne pola niestandardowe"
@@ -3257,7 +3257,7 @@ pl:
   label_password_rule_special: "Znaki specjalne"
   label_password_rule_uppercase: "Wielkie litery"
   label_path_encoding: "Path encoding"
-  label_per_page: "Na stronę:"
+  label_per_page: "Na stronie:"
   label_people: "Ludzie"
   label_permissions: "Uprawnienia"
   label_permissions_report: "Raport uprawnień"
@@ -3443,7 +3443,7 @@ pl:
   label_user_search: "Szukaj użytkownika"
   label_user_settings: "Ustawienia użytkownika"
   label_users_settings: "Ustawienia użytkowników"
-  label_value_x: "Value: %{x}"
+  label_value_x: "Wartość: %{x}"
   label_version_new: "Nowa wersja"
   label_version_edit: "Edytuj wersję"
   label_version_plural: "Wersje"

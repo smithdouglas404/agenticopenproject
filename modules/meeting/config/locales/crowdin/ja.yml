@@ -538,7 +538,7 @@ ja:
   text_meeting_not_editable_anymore: "この会議はもう編集できません。"
   text_meeting_not_present_anymore: "この会議は削除されました。別の会議を選択してください。"
   label_add_work_package_to_meeting_dialog_title: "会議の選択"
-  label_add_work_package_to_meeting_section_label: "Section"
+  label_add_work_package_to_meeting_section_label: "セクション"
   label_add_work_package_to_meeting_dialog_button: "会議に追加"
   label_meeting_selection_caption: "このワークパッケージは、今後の会議または進行中の会議にのみ追加可能です。"
   label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."

@@ -287,7 +287,7 @@ sl:
         update_conflict_refresh: "Kliknite tukaj za osvežitev vira in posodobite na najnovejšo različico."
         edit_prohibited: "Urejanje %{attribute} je onemogočeno za ta vir. Ta atribut je izpeljan iz povezav (podrejenih virov) ali pa ga ni mogoče urejati."
         format:
-          date: "%{attribute} ni veljaven datum - YYYY-MM-DD format je pričakovan."
+          date: "%{attribute} ni veljaven datum - leto-mesec-san je pričakovano."
         general: "Prišlo je do napake."
     ical_sharing_modal:
       title: "Subscribe to calendar"
@@ -324,7 +324,7 @@ sl:
     label_between: "med"
     label_board: "Board"
     label_board_locked: "Zaklenjeno"
-    label_board_plural: "Table"
+    label_board_plural: "Deske"
     label_board_sticky: "Lepljivo"
     label_change: "Spremeni"
     label_create: "Ustvari"

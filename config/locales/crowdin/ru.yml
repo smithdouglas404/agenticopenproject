@@ -41,7 +41,7 @@ ru:
         changed: "изменено"
         created: "создано"
         commented: "прокомментировано"
-        internal_comment: Служебный комментарий
+        internal_comment: Внутренний комментарий
         internal_journal: Внутренние комментарии видны ограниченной группе членов.
         unsaved_changes_confirmation_message: У вас есть несохраненные изменения. Вы уверены, что хотите закрыть редактор?
         internal_comment_confirmation:
@@ -61,8 +61,8 @@ ru:
       tab_pdf_export_styles: "Стили экспорта PDF"
       tab_pdf_export_font: "Шрифт для экспорта в PDF"
       fonts:
-        file_too_large: "is too large (maximum size is %{count} MB)."
-        file_is_invalid: "is not a valid TTF font file."
+        file_too_large: "слишком большой (максимальный размер - %{count} MB)."
+        file_is_invalid: "не является действительным файлом шрифта TTF."
       colors:
         primary-button-color: "Основная кнопка"
         accent-color: "Оттенок"
@@ -121,7 +121,7 @@ ru:
       created_token_dialog_component:
         title: "Токен доступа создан"
         heading: "Токен доступа сгенерирован"
-        label_token: "Токен доступа"
+        label_token: "Токен"
         one_time_hint: "Это единственный раз, когда Вы увидите токен. Убедитесь, что вы сохранили его."
       delete_scim_client_dialog_component:
         title: "Удалить клиента SCIM"
@@ -132,8 +132,8 @@ ru:
       form:
         auth_provider_description: "Это служба, которую пользователи, добавленные провайдером SCIM, будут использовать для аутентификации в OpenProject."
         authentication_method_description_html: "Вот как клиент SCIM аутентифицируется в OpenProject. Пожалуйста, убедитесь, что токены OAuth включают область <code>scim_v2</code>."
-        description: "Please refer to our [documentation on configuring SCIM clients](docs_url) for more information on these configuration options."
-        jwt_sub_description: "For example, for Keycloak, this is the UUID of the service account  associated with the SCIM client. Consult [our documentation](docs_url) to learn how to find  the subject claim for your use case."
+        description: "Обратитесь к [документации по настройке клиентов SCIM](docs_url) для получения дополнительной информации об этих параметрах конфигурации."
+        jwt_sub_description: "Например, для Keycloak, это UUID учетной записи сервиса, связанной с клиентом SCIM. Обратитесь к [нашей документации](docs_url) чтобы узнать, как найти предмет претензии для вашего варианта использования."
         name_description: "Выберите имя, которое поможет другим администраторам лучше понять, зачем был настроен этот клиент."
       index:
         description: "Клиенты SCIM, настроенные здесь, могут взаимодействовать с API сервера SCIM для предоставления, обновления и удаления учетных записей и групп пользователей."
@@ -153,7 +153,7 @@ ru:
       token_list_component:
         description: "Токены, которые Вы генерируете здесь, могут быть переданы SCIM-клиенту для доступа к API серверу SCIM."
         heading: "Токены"
-        label_add_token: "Токен"
+        label_add_token: "Токен доступа"
         label_aria_add_token: "Добавить токен"
       token_table_component:
         blank_slate:
@@ -164,9 +164,9 @@ ru:
         title: "Таблица токенов доступа"
     workflows:
       tabs:
-        default_transitions: "Default transitions"
-        user_author: "User is author"
-        user_assignee: "User is assignee"
+        default_transitions: "Переходы по умолчанию"
+        user_author: "Пользователь является автором"
+        user_assignee: "Пользователь является назначенным"
   authentication:
     login_and_registration: "Войти и зарегистрироваться"
   announcements:
@@ -201,8 +201,8 @@ ru:
     sync_failed: "Не удалось синхронизировать с LDAP: %{message}."
     back_to_index: "Нажмите здесь, чтобы вернуться к списку подключений."
     technical_warning: |
-      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      [Please visit our documentation for detailed instructions](docs_url).
+      Эта форма LDAP требует технических знаний установки LDAP / Active Directory.
+      [Пожалуйста, посетите нашу документацию для получения подробных инструкций](docs_url).
     attribute_texts:
       name: Произвольное имя подключения LDAP
       host: Имя хоста или IP-адрес LDAP
@@ -321,7 +321,7 @@ ru:
     reorder_alphabetical: "Переупорядочить значения по алфавиту"
     reorder_confirmation: "Внимание: Текущий порядок доступных значений будет утерян. Продолжить?"
     placeholder_version_select: "Сначала необходимо выбрать пакет работ или проект"
-    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
+    calculated_field_not_editable: "Не редактируемый атрибут. Это значение рассчитывается автоматически."
     instructions:
       is_required: "Пометить пользовательское поле как обязательное. Это сделает заполнение поля обязательным при создании новых или обновлении существующих ресурсов."
       is_required_for_project: "Установите флажок, чтобы включить этот атрибут и сделать его обязательным для всех проектов. Он не может быть отключен для отдельных проектов."
@@ -339,17 +339,17 @@ ru:
       no_results_content_text: Создать новое настраиваемое поле
   calculated_values:
     error_dialog:
-      title: "Error with Calculated Value"
+      title: "Ошибка с расчетным значением"
     errors:
-      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
-      mathematical: "A mathematical error occurred during calculation."
-      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
-      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
+      unknown: "Произошла неизвестная ошибка. Пожалуйста, просмотрите формулу для этого рассчитываемого значения."
+      mathematical: "Во время расчета произошла математическая ошибка."
+      missing_value: Атрибут "%{custom_field_name}" необходим для этого рассчитываемого значения, но он пуст.
+      disabled_value: Атрибут "%{custom_field_name}" необходим для этого рассчитываемого значения, но он отключен для этого проекта.
   concatenation:
     single: "или"
   danger_dialog:
-    confirmation_live_message_checked: "The button to proceed is now active."
-    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+    confirmation_live_message_checked: "Кнопка для продолжения активна."
+    confirmation_live_message_unchecked: "Кнопка для продолжения неактивна. Чтобы продолжить, поставьте галочку."
   op_dry_validation:
     or: "или"
     errors:
@@ -365,7 +365,7 @@ ru:
         arg:
           default: "должно быть одним из: %{list}."
           range: "должно быть одним из: %{list_left} - %{list_right}."
-      int?: "должно быть целое число."
+      int?: "должно быть целым числом."
       key?: "отсутствует."
       not_found: "не найдено."
       rules:
@@ -392,7 +392,7 @@ ru:
       label: "Метка"
       score: "Оценка"
       short: "Короткое имя"
-      parent: "Верхний уровень"
+      parent: "Родитель"
       blueprint: "Шаблон чертежа"
   global_search:
     title:
@@ -408,10 +408,10 @@ ru:
     edit:
       synchronized_groups: "Синхронизированные группы"
     index:
-      description: By grouping users together, you can add them as members to the same projects or assign the same global roles to them.
+      description: Объединяя пользователей в группы, Вы можете добавлять их в качестве участников в одни и те же проекты или назначать им одинаковые глобальные роли.
     table_component:
       blank_slate:
-        description: You can define named groups of users with specific permissions.
+        description: Вы можете определить именованные группы пользователей с определенными полномочиями.
         title: Группы еще не созданы
       user_count: Количество пользователей
     users:
@@ -421,7 +421,7 @@ ru:
     synchronized_groups:
       blankslate:
         action: Параметры аутентификации
-        description: When this group is automatically synced with groups in external identity providers like OpenID, they will appear here. You can set this up in your Authentication settings.
+        description: Когда эта группа автоматически синхронизируется с группами во внешних провайдерах идентификации, таких как OpenID, они будут отображаться здесь. Вы можете настроить это в настройках аутентификации.
         title: Синхронизированных групп пока нет
   incoming_mails:
     ignore_filenames: >
@@ -528,8 +528,8 @@ ru:
       versions:
         no_results_title_text: На данный момент этапы в проекте отсутствуют.
         no_results_content_text: Создать новую версию
-        work_packages_graph: Work packages graph
-        show_work_packages: Show work packages
+        work_packages_graph: Диаграмма по пакетам работ
+        show_work_packages: Показать пакеты работ
       storage:
         no_results_title_text: Для этого проекта дополнительного дискового пространства не требуется.
       work_package_priorities:
@@ -627,10 +627,10 @@ ru:
       dialog:
         token/api:
           dialog_title: "Создать новый токен API"
-          attention_text: "Treat API tokens like passwords. Anyone with this token will have access to information from this instance, share it only with trusted users."
+          attention_text: "Относитесь к API-токенам как к паролям. Любой, у кого есть этот токен, будет иметь доступ к информации из данного экземпляра, делитесь им только с доверенными пользователями."
           dialog_body: "Этот токен позволит сторонним приложениям взаимодействовать с вашим экземпляром. Чтобы выделить новый токен API, пожалуйста, дайте ему имя."
           create_button: "Создать"
-          name_label: "Имя токена"
+          name_label: "Название токена"
       created_dialog:
         token/api:
           title: "Токен доступа к API сгенерирован"
@@ -654,18 +654,18 @@ ru:
     sessions:
       session_name: "%{browser_name} %{browser_version} на %{os_name}"
       browser: "Браузер"
-      expires: "Истекает"
-      last_connection: "Последнее подключение"
+      expires: "Срок действия"
+      last_connection: "Последнее соединение"
       device: "Устройство / ОС"
       unknown_browser: "неизвестный браузер"
       unknown_os: "неизвестная операционная система"
       unknown: "(неизвестно)"
-      browser_session: "(Browser session)"
+      browser_session: "(Сессия браузера)"
       current: "Текущее (это устройство)"
       title: "Управление сессиями"
-      instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
+      instructions: "Вы вошли в свою учетную запись через следующие устройства. Отмените сеансы, которые вы не узнаете или устройства, которые вы не контролируете."
       may_not_delete_current: "Вы не можете удалить ваш текущий сеанс."
-      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
+      deletion_warning: "Вы уверены, что хотите отменить эту сессию? Вы выйдите на этом устройстве."
     groups:
       member_in_these_groups: "Этот пользователь в настоящее время является членом следующих групп:"
       no_results_title_text: Этот пользователь в настоящее время не является членом какой-либо группы.
@@ -701,7 +701,7 @@ ru:
     react_with: "Реакция %{reaction}"
     and_user: "и %{user}"
     and_others:
-      one: и ещё 1
+      one: и еще 1
       few: и %{count} других
       many: и %{count} других
       other: и %{count} других
@@ -739,7 +739,7 @@ ru:
   themes:
     dark: "Тёмная"
     light: "Светлая"
-    sync_with_os: "Automatic (match OS color mode)"
+    sync_with_os: "Автоматически (соответствует цветовому режиму ОС)"
   types:
     index:
       no_results_title_text: В данный момент типы отсутствуют.
@@ -771,7 +771,7 @@ ru:
             project: "Проект"
         pattern:
           label: "Шаблон темы"
-          caption: Create patterns by adding text, or type "/" to search for [supported attributes](attributes_url).
+          caption: Создать шаблоны, добавляя текст или наберите "/" для поиска [поддерживаемых атрибутов](attributes_url).
           insert_as_text: 'Атрибуты не найдены. Добавить как текст: "%{word}"'
       export_configuration:
         tab: "Создать PDF"
@@ -922,8 +922,8 @@ ru:
       blocks_description: "Связанный пакет работ не может быть закрыт до тех пор, пока не будет закрыт этот пакет"
       label_blocked_singular: "блокирует"
       label_blocked_plural: "блокируют"
-      label_blocked_by_singular: "блокируется"
-      label_blocked__by_plural: "блокируется"
+      label_blocked_by_singular: "блокируют"
+      label_blocked__by_plural: "блокируют"
       blocked_description: "Связанный пакет работ не может быть закрыт до тех пор, пока не будет закрыт связанный пакет"
       blocked_by_description: "Связанный пакет работ не может быть закрыт до тех пор, пока не будет закрыт связанный пакет"
       label_duplicates_singular: "Дублирует"
@@ -959,7 +959,7 @@ ru:
   account:
     delete: "Удалить учётную запись"
     delete_confirmation: "Вы уверены, что хотите удалить учетную запись?"
-    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
+    deletion_pending: "Учетная запись была запланирована для удаления. Обратите внимание, что этот процесс происходит в фоновом режиме. Может пройти несколько минут, пока пользователь будет полностью удален."
     deletion_info:
       data_consequences:
         other: 'Данные, созданные пользователем (адрес электронной почты, предпочтения, пакеты работ, wiki-записи) полностью не удаляются. Рабочие пакеты, wiki-записи и пр. могут влиять на работы других пользователей, поэтому такие данные не удаляются, а закрепляются за другой, специальной учетной записью, именуемой «Удаленный пользователь». После такого переназначения определить кому принадлежали эти данные ранее становиться невозможно.'
@@ -990,7 +990,7 @@ ru:
   activemodel:
     attributes:
       projects/copy_options:
-        dependencies: "Зависимости"
+        dependencies: "Связи"
   activerecord:
     attributes:
       announcements:
@@ -1009,10 +1009,10 @@ ru:
       auth_provider:
         scim_clients: "Клиенты SCIM"
       calculated_value_error:
-        error_code: "Error code"
-        customized: "Customized"
-        customized_id: "Customized ID"
-        customized_type: "Customized type"
+        error_code: "Код ошибки"
+        customized: "Настраиваемый"
+        customized_id: "Настраиваемый ID"
+        customized_type: "Настраиваемый тип"
       capability:
         context: "Контекст"
       changeset:
@@ -1192,7 +1192,7 @@ ru:
         excluded_from_totals: "Исключить из расчета итогов в иерархии"
         default_done_ratio: "% завершения"
       token/named:
-        token_name: "Название токена"
+        token_name: "Имя токена"
       token/ical:
         calendar: "Календарь"
         ical_token_query_assignment: "Задание запроса"
@@ -1204,7 +1204,7 @@ ru:
         ongoing: "В процессе"
       type:
         description: "Текст для описания по умолчанию"
-        attribute_groups: "Настройка формы"
+        attribute_groups: "Настройка форм"
         is_in_roadmap: "По умолчанию отображается в дорожной карте"
         is_default: "В новых проектах активируется по умолчанию"
         is_milestone: "Это веха"
@@ -1248,14 +1248,14 @@ ru:
         warn_on_leaving_unsaved: "При покидании рабочего пакета предупреждать о не сохраненных изменениях"
         increase_theme_contrast: "Увеличить контрастность темы"
         increase_contrast: "Увеличить контраст"
-        increase_contrast_caption: "Enables high-contrast mode for the chosen colour mode."
-        force_light_theme_contrast: "Force high-contrast when in Light mode"
-        force_dark_theme_contrast: "Force high-contrast when in Dark mode"
-        force_light_theme_contrast_caption: "Uses the high-contrast version of Light mode when automatic color mode is selected."
-        force_dark_theme_contrast_caption: "Uses the high-contrast version of Dark mode when automatic color mode is selected."
-        theme: "Color mode"
+        increase_contrast_caption: "Включает режим высокой контрастности для выбранного цветового режима."
+        force_light_theme_contrast: "Принудительная высокая контрастность в светлом режиме"
+        force_dark_theme_contrast: "Принудительная высокая контрастность в темном режиме"
+        force_light_theme_contrast_caption: "Использует высококонтрастную версию светлого режима, когда выбран автоматический цветовой режим."
+        force_dark_theme_contrast_caption: "Использует высококонтрастную версию темного режима, когда выбран автоматический цветовой режим."
+        theme: "Цветовой режим"
         time_zone: "Часовой пояс"
-        mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
+        mode_guideline: "Некоторые режимы перезаписывают цвета пользовательских тем для обеспечения доступности и читаемости. Пожалуйста, выберите светлый режим для полной поддержки пользовательских тем."
         daily_reminders: "Ежедневные напоминания"
         workdays: "Рабочие дни"
       version:
@@ -1320,7 +1320,7 @@ ru:
         confirmation: "не совпадает со значением поля %{attribute}."
         could_not_be_copied: "%{dependency} не может быть скопировано (полностью)."
         does_not_exist: "не существует."
-        error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
+        error_enterprise_only: "%{action} доступно только в корпоративной версии OpenProject."
         error_unauthorized: "не доступен."
         error_readonly: "запись не разрешена."
         error_conflict: "Информация была обновлена одновременно с вами  по крайней мере одним пользователем."
@@ -1343,7 +1343,7 @@ ru:
         inclusion_nested: "не задано одно из допустимых значений в пути '%{path}'."
         invalid: "неверно."
         invalid_characters: "содержит недопустимые символы."
-        not_allowed_custom_fields_referenced: "contains custom fields that are not allowed: %{custom_fields}."
+        not_allowed_custom_fields_referenced: "содержит настраиваемые поля, которые не разрешены: %{custom_fields}."
         invalid_url: "не является допустимым URL-адресом."
         invalid_url_scheme: "не является поддерживаемым протоколом (разрешены следующие: %{allowed_schemes})."
         less_than_or_equal_to: "должно быть меньше или равно %{count}."
@@ -1363,8 +1363,8 @@ ru:
         odd: "должно быть нечетным."
         regex_match_failed: "не соответствует регулярному выражению %{expression}."
         regex_invalid: "не может быть проверен связанным регулярным выражением."
-        regex_list_invalid: "Lines %{invalid_lines} could not be parsed as regular expression."
-        hexcode_invalid: "is not a valid 6-digit hexadecimal color code."
+        regex_list_invalid: "Строки %{invalid_lines} не могут быть проанализированы как регулярное выражение."
+        hexcode_invalid: "неверный 6-значный шестнадцатеричный код цвета."
         smaller_than_or_equal_to_max_length: "должно быть меньше или равно максимальной длине."
         taken: "уже принято."
         too_long: "слишком длинно (максимум — %{count} знаков)."
@@ -1399,10 +1399,10 @@ ru:
         custom_field:
           at_least_one_custom_option: "По крайней мере один параметр должен быть доступен."
           referenced_in_other_fields_html:
-            one: "%{name} is used in project attribute calculation %{links}."
+            one: "%{name} используется для расчета атрибута проекта %{links}."
             few: "%{name} is used in project attribute calculations: %{links}."
             many: "%{name} is used in project attribute calculations: %{links}."
-            other: "%{name} is used in project attribute calculations: %{links}."
+            other: "%{name} используется для расчета атрибутов проекта: %{links}."
         custom_fields_project:
           attributes:
             project_ids:
@@ -1435,7 +1435,7 @@ ru:
           unreadable: "невозможно прочитать. Вы уверены, что это маркер поддержки?"
           already_added: "Этот токен уже был добавлен."
         favorite:
-          already_favorited: "has already been favorited."
+          already_favorited: "уже добавлено."
         grids/grid:
           overlaps: "перекрытие."
           outside: "за пределами сетки."
@@ -1488,7 +1488,7 @@ ru:
           attributes:
             start_date:
               must_be_before_finish_date: "должно быть до даты окончания."
-              non_continuous_dates: "не может быть раньше, чем дата окончания предыдущей фазы."
+              non_continuous_dates: "не может быть раньше, чем дата окончания предыдущего этапа."
             finish_date:
               must_be_after_start_date: "должно быть после даты начала."
           cannot_be_a_non_working_day: "не может быть нерабочим днем."
@@ -1533,18 +1533,18 @@ ru:
             circular_dependency: "Зацикливание зависимостей."
           attributes:
             base:
-              error_not_deletable: "This relation cannot be deleted because you do not have edit permissions for the selected work package."
-              error_not_editable: "This relation cannot be edited because you do not have edit permissions for the selected work package."
+              error_not_deletable: "Это отношение не может быть удалено, потому что у вас нет прав на редактирование выбранного пакета работ."
+              error_not_editable: "Это отношение не может быть изменено, потому что у вас нет прав на редактирование выбранного пакета работ."
             to_id:
-              format: "The selected work package %{message}"
-              error_not_found: "could not be found."
+              format: "Выбранный пакет работ %{message}"
+              error_not_found: "не найдено."
               error_readonly: "не может быть изменен для существующих отношений."
-              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
+              error_not_manageable: "невозможно добавить, потому что у вас нет прав на редактирование выбранного пакета работ."
             from_id:
-              format: "The selected work package %{message}"
-              error_not_found: "could not be found."
+              format: "Выбранный пакет работ %{message}"
+              error_not_found: "не найдено."
               error_readonly: "не может быть изменен для существующих отношений."
-              error_not_manageable: "cannot be added because you do not have edit permissions for the selected work package."
+              error_not_manageable: "невозможно добавить, потому что у вас нет прав на редактирование выбранного пакета работ."
         repository:
           not_available: "SCM поставщик не доступен"
           not_whitelisted: "не допускается конфигурацией."
@@ -1647,7 +1647,7 @@ ru:
               must_be_set_when_work_is_set: "требуется, если установлен параметр Предполагаемое время."
               must_be_set_when_work_and_percent_complete_are_set: "требуется, если установлены параметры Предполагаемое время и % завершения."
               must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                must be 0h when Work is set and % Complete is 100%.
+                должно быть равно 0ч, если установлен параметр Предполагаемое время и % завершения установлен в 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 должно быть пустым, если параметр Предполагаемое время не установлен, а % завершения равен 100%.
           readonly_status: "Пакет работ находится в статусе доступном только для чтения, поэтому его атрибуты не могут быть изменены."
@@ -1677,8 +1677,8 @@ ru:
               special: "спецсимволы (например, \"%\")"
               reused:
                 one: "уже использовался ранее. Пожалуйста, укажите другое значение."
-                few: "уже использовался ранее. Пожалуйста, укажите отличающийся пароль от %{count} использованных ранее."
-                many: "уже использовался ранее. Пожалуйста, укажите отличающийся пароль от %{count} использованных ранее."
+                few: "использовалось ранее. Пожалуйста, укажите отличающееся от ваших последних %{count}."
+                many: "использовалось ранее. Пожалуйста, укажите отличающееся от ваших последних %{count}."
                 other: "уже использовался ранее. Пожалуйста, укажите пароль отличающийся от использованных ранее %{count}."
               match:
                 confirm: "Подтвердите новый пароль."
@@ -1700,8 +1700,8 @@ ru:
         token/named:
           attributes:
             token_name:
-              blank: "Please provide a token name"
-              in_use: "This token name is already in use, please select a different one"
+              blank: "Пожалуйста, укажите имя токена"
+              in_use: "Это имя токена уже используется, пожалуйста, выберите другое"
               format: "%{message}"
       template:
         body: "Пожалуйста, проверьте следующие поля:"
@@ -1737,7 +1737,7 @@ ru:
         few: "Приоритеты"
         many: "Приоритеты"
         other: "Приоритеты"
-      meeting_participant: "Meeting participant"
+      meeting_participant: "Участник совещания"
       member: "Участник"
       news: "Новости"
       notification:
@@ -1850,7 +1850,7 @@ ru:
     attachments: "Вложения"
     actor: "Источник"
     action: "Действие"
-    api_key: "API key"
+    api_key: "API-ключ"
     author: "Автор"
     avatar: "Аватар\n"
     base: "Общая ошибка:"
@@ -2008,7 +2008,7 @@ ru:
   button_duplicate: "Дублировать"
   button_duplicate_and_follow: "Скопировать и наблюдать"
   button_edit: "Правка"
-  button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
+  button_edit_associated_wikipage: "Редактировать связанную wiki-страницу: %{page_title}"
   button_expand_all: "Развернуть все"
   button_favorite: "Добавить в избранное"
   button_filter: "Фильтр"
@@ -2032,7 +2032,7 @@ ru:
   button_save: "Сохранить"
   button_save_as: "Сохранить как"
   button_save_back: "Сохранить и вернуться"
-  button_select: "Select"
+  button_select: "Выбрать"
   button_set_reminder: "Установить напоминание"
   button_show: "Показать"
   button_sort: "Сортировать"
@@ -2247,7 +2247,7 @@ ru:
         other: "%{count} секунд"
     units:
       minute_abbreviated:
-        one: "минута"
+        one: "мин"
         few: "минуты"
         many: "минут"
         other: "мин"
@@ -2296,7 +2296,7 @@ ru:
     features:
       baseline_comparison: Сравнение базовых уровней
       board_view: Расширенные доски
-      calculated_values: Calculated Values
+      calculated_values: Рассчитанные значения
       conditional_highlighting: Условное выделение
       internal_comments: Служебный комментарий
       custom_actions: Пользовательские действия
@@ -2331,12 +2331,12 @@ ru:
         Уже есть токен? Добавьте его с помощью кнопки ниже, чтобы перейти на корпоративную лицензию.
       hide_banner: "Скрыть этот баннер"
       homescreen_description: >
-        Enterprise plans extend the Community edition of OpenProject with additional [Enterprise add-ons](enterprise_url) and professional support, ideal for organizations running OpenProject in a mission-critical environment.
+        Планы Enterprise расширяют редакцию OpenProject для сообществ дополнительными [Enterprise add-ons](enterprise_url) и профессиональной поддержкой, что идеально подходит для организаций, использующих OpenProject в критически важной среде.
       homescreen_subline: При обновлении вы также поддержите проект с открытым исходным кодом.
       baseline_comparison:
         description: Выделите изменения, внесенные в этот список с любого момента в прошлом.
       benefits:
-        description: "Каковы преимущества корпоративной версии?"
+        description: "Какие преимущества у корпоративной версии на собственных мощностях?"
         high_security: "Функции безопасности"
         high_security_text: "Технология единого входа (SAML, OpenID Connect, CAS), группы LDAP."
         installation: "Поддержка во время процесса установки"
@@ -2350,7 +2350,7 @@ ru:
       customize_life_cycle:
         description: "Создание и организация этапов и стадий проекта, отличных от тех, что предусмотрены планированием цикла проекта PM2."
       conditional_highlighting:
-        description: "Нужно выделить определённые пакеты работ из общего списка? Используйте условное выделение в таблице пакетов работ."
+        description: "Нужно ли выделять определённые пакеты работ из общего списка? Используйте условное выделение в таблице пакетов работ."
       work_package_query_relation_columns:
         description: "Нужно видеть отношения или дочерние элементы в списке пакетов работ?"
       edit_attribute_groups:
@@ -2370,7 +2370,7 @@ ru:
       project_list_sharing:
         description: "Делитесь списками проектов с отдельными пользователями."
       calculated_values:
-        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
+        description: "Рассчитанные значения позволяют создать атрибут, основанный на математической формуле, с использованием числовых значений и других атрибутов проекта и пользовательских полей."
       define_custom_style:
         title: "Пользовательская цветовая тема и логотип"
         more_info: "Примечание: используемый логотип будет общедоступным."
@@ -2385,8 +2385,8 @@ ru:
         title: "Клиенты SCIM"
         description: "Автоматизируйте управление пользователями в OpenProject, легко интегрируя внешние службы идентификации, такие как Microsoft Entra или Keycloak, через наш сервер API SCIM."
       sso_auth_providers:
-        title: "Single Sign-On (SSO)"
-        description: "Enable users to log in via external SSO providers using SAML or OpenID Connect for seamless access and integration with existing identity systems."
+        title: "Единая регистрация (SSO)"
+        description: "Разрешить пользователям входить через внешние SSO провайдеры, используя SAML или OpenID Connect для бесшовного доступа и интеграции с существующими идентификационными системами."
       virus_scanning:
         description: "Будьте уверены в том, что загруженные в OpenProject файлы проверены на наличие вирусов, прежде чем они станут доступны другим пользователям."
       placeholder_users:
@@ -2440,7 +2440,7 @@ ru:
   enumeration_could_not_be_moved: "Перечисление не может быть перенесено."
   enterprise_trials:
     dialog_component:
-      title: Enterprise Trial
+      title: Корпоративная временная лицензия
   error_auth_source_sso_failed: "Сбой единого входа (SSO) для пользователя «%{value}»"
   error_can_not_archive_project: "Этот проект невозможно заархивировать: %{errors}"
   error_can_not_delete_entry: "Не удается удалить содержимое"
@@ -2469,7 +2469,7 @@ ru:
   error_invalid_selected_value: "Выбранное значение недопустимо."
   error_journal_attribute_not_present: "Журнал не содержит атрибут %{attribute}."
   error_pdf_export_too_many_columns: "Для экспорта в PDF-файл выбрано слишком много столбцов. Пожалуйста, сократите количество столбцов."
-  error_pdf_date_range_too_long: "The selected work package date range exceeds the allowable PDF export limit. Please condense the range to a maximum of %{years} years."
+  error_pdf_date_range_too_long: "Выбранный диапазон дат пакета работ превышает допустимый лимит экспорта в PDF. Пожалуйста, сократите диапазон до %{years} лет."
   error_pdf_failed_to_export: "Не удалось сохранить экспорт в PDF: %{error}"
   error_token_authenticity: "Не удалось проверить CSRF-токен. Возможно, вы попытались отправить данные сразу из нескольких браузеров или вкладок. Закройте все вкладки и попробуйте снова."
   error_reminder_not_found: "Напоминание не было найдено или о нем уже было сообщено."
@@ -2582,13 +2582,13 @@ ru:
           label: "Включить описания"
           caption: "Эта опция добавит колонку описания в необработанном формате."
     your_work_packages_export: "Пакеты работ экспортируются"
-    your_projects_export: "Projects are being exported"
+    your_projects_export: "Проекты экспортируются"
     succeeded: "Экспорт завершен"
     failed: "Произошла ошибка при попытке экспортировать пакеты работ: %{message}"
     demo:
-      heading: "Demo PDF"
-      footer: "Generated by OpenProject"
-      button_text: Generate Demo PDF
+      heading: "Демо PDF"
+      footer: "Создано OpenProject"
+      button_text: Создать демо PDF
     errors:
       embedded_table_with_too_many_columns: "Эта встроенная таблица пакета работ не помещается на странице, пожалуйста, сократите количество столбцов таблицы."
     format:
@@ -2652,13 +2652,13 @@ ru:
   filterable_tree_view:
     filter_mode:
       all: "Bсе"
-      label: "Filter mode"
-      selected: "Selected"
-    include_sub_items: "Include sub-items"
-    no_results_text: "No results"
+      label: "Режим фильтрации"
+      selected: "Выбрано"
+    include_sub_items: "Включить подпункты"
+    no_results_text: "Нет результатов"
   toggle_switch:
-    label_on: "On"
-    label_off: "Off"
+    label_on: "Включено"
+    label_off: "Выключено"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
@@ -2682,18 +2682,18 @@ ru:
       upsell:
         title: "Обновитесь до корпоративной версии"
       new_features:
-        header: "Read about new features and product updates."
-        learn_about: "Learn more about all new features"
+        header: "Читайте о новых возможностях и обновлениях продуктов."
+        learn_about: "Узнайте больше о всех новых функциях"
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            Релиз содержит различные новые функции и улучшения, такие как:
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: Рассчитанные значения для оценки проектов и подсчета баллов.
+            line_1: Иерархия типов атрибутов проекта.
+            line_2: Улучшение производительности.
+            line_3: Новая главная страница модуля "Документы".
+            line_4: Возможность изменения родительского элемента настраиваемого поля.
     links:
       upgrade_enterprise_edition: "Обновить до корпоративной версии"
       postgres_migration: "Перенос вашей установки в PostgreSQL"
@@ -2784,10 +2784,10 @@ ru:
         disabled_text: "Токены API не включены администратором. Пожалуйста, обратитесь к администратору для использования этой функции."
         add_button: "API токен"
       api:
-        static_token_name: "Токен API"
+        static_token_name: "API-токен"
       ical:
         title: "iCalendar"
-        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
+        text_hint_link: 'Токены iCalendar позволяют пользователям [подписываться на календари OpenProject](docs_url) и просматривать актуальную информацию о пакетах работ во внешних клиентах.'
         disabled_text: "Подписки на iCalendar не включены администратором. Обратитесь к администратору для использования этой функции."
         empty_text_hint: "Чтобы добавить токен iCalendar, подпишитесь на новый или существующий календарь из модуля календаря проекта. Вы должны иметь необходимые разрешения."
       oauth:
@@ -2928,7 +2928,7 @@ ru:
   label_select_main_menu_item: Выберите новый пункт главного меню
   label_required_disk_storage: "Требуется место на диске"
   label_send_invitation: Отправить приглашение
-  label_calculated_value: "Calculated Value"
+  label_calculated_value: "Рассчитанное значение"
   label_change_parent: "Изменить родителя"
   label_change_plural: "Изменения"
   label_change_properties: "Изменить свойства"
@@ -3018,7 +3018,7 @@ ru:
   label_duplicate: "дублировать"
   label_duplicates: "Дублирует"
   label_edit: "Правка"
-  label_edit_attribute: "Edit attribute"
+  label_edit_attribute: "Изменить атрибут"
   label_edit_x: "Правка: %{x}"
   label_enable_multi_select: "Разрешен множественный выбор"
   label_enabled_project_custom_fields: "Доступные настраиваемые поля"
@@ -3106,7 +3106,7 @@ ru:
   label_integer: "Целое число"
   label_interface: "Интерфейс"
   label_internal: "Внутренние"
-  label_introduction_video: "Getting started video"
+  label_introduction_video: "Видео о начале работы"
   label_invite_user: "Пригласить пользователя"
   label_item: "Элемент"
   label_item_plural: "Элементы"
@@ -3259,7 +3259,7 @@ ru:
   label_password_rule_special: "Специальные символы"
   label_password_rule_uppercase: "Верхний регистр"
   label_path_encoding: "Кодирование пути"
-  label_per_page: "На страницу:"
+  label_per_page: "На странице:"
   label_people: "Люди"
   label_permissions: "Разрешения"
   label_permissions_report: "Отчёт о разрешениях"
@@ -3445,7 +3445,7 @@ ru:
   label_user_search: "Найти пользователя"
   label_user_settings: "Настройки пользователя"
   label_users_settings: "Настройки пользователей"
-  label_value_x: "Value: %{x}"
+  label_value_x: "Значение: %{x}"
   label_version_new: "Новый этап"
   label_version_edit: "Изменить версию"
   label_version_plural: "Этапы"
@@ -3930,15 +3930,15 @@ ru:
       one: "1 проект"
       other: "%{count} проектов"
     destroy:
-      title: "Delete project"
-      heading: "Permanently delete this project?"
+      title: "Удалить проект"
+      heading: "Удалить этот проект?"
       confirmation_message_for_subprojects_html:
         zero: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong>.
+          Вы собираетесь навсегда удалить все данные, относящиеся к проекту <strong>%{name}</strong>.
         one: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong> and this subproject:
+          Вы собираетесь навсегда удалить все данные, относящиеся к проекту <strong>%{name}</strong> и этому подпроекту:
         other: >
-          You are about to permanently delete all data relating to project <strong>%{name}</strong> and these subprojects:
+          Вы собираетесь навсегда удалить все данные, относящиеся к проекту <strong>%{name}</strong> и этим подпроектам:
     filters:
       project_phase: "Этап проекта: %{phase}"
       project_phase_any: "Этап проекта: Любой"
@@ -4112,7 +4112,7 @@ ru:
   setting_attachment_whitelist: "Белый список загрузки вложений"
   setting_email_delivery_method: "Метод доставки электронной почты"
   setting_emails_salutation: "Адрес пользователя в письмах с"
-  setting_oauth_allow_remapping_of_existing_users: "Allow remapping of existing users"
+  setting_oauth_allow_remapping_of_existing_users: "Разрешить перераспределение существующих пользователей"
   setting_sendmail_location: "Расположение исполняемого файла sendmail"
   setting_smtp_enable_starttls_auto: "Автоматически использовать STARTTLS, если таковые имеются"
   setting_smtp_ssl: "Использовать SSL-подключение"
@@ -4171,8 +4171,8 @@ ru:
   setting_feeds_limit: "Предел содержимого новостной ленты"
   setting_file_max_size_displayed: "Максимальная длина  строки текстовых файлов"
   setting_host_name: "Имя компьютера в сети"
-  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
-  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
+  setting_collaborative_editing_hocuspocus_url: "URL-адрес сервера Hocuspocus"
+  setting_collaborative_editing_hocuspocus_secret: "Токен сервера Hocuspocus"
   setting_hours_per_day: "Количество часов в день"
   setting_hours_per_day_explanation: >-
     Это определяет, что считается «днем» при более естественном отображении продолжительности (например, если день длится 8 часов, то 32 часа будет 4 дня).
@@ -4277,11 +4277,11 @@ ru:
     authentication:
       login: "Входное имя"
       registration: "Регистрация"
-      sso: "Single Sign-On (SSO)"
+      sso: "Единая регистрация (SSO)"
       omniauth_direct_login_hint_html: >
         Если эта опция включена, запросы на вход в систему будут перенаправлены на настроенный провайдер omniauth. Выпадающий список входа и страница входа будут отключены. <br/> <strong>Примечание:</strong> Если вы также не отключите вход по паролю, то пользователи все еще могут войти внутри системы, посетив страницу входа <code>%{internal_path}</code>.
       remapping_existing_users_hint: >
-        If enabled, allows any configured identity provider to login existing users based on their email address, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
+        Если эта опция включена, она позволяет любому сконфигурированному провайдеру идентификации регистрировать существующих пользователей на основе их адреса электронной почты, даже если пользователь никогда раньше не регистрировался через этого провайдера. Это может быть полезно при переносе OpenProject на нового провайдера SSO, но не рекомендуется при использовании провайдера, которому не доверяют все пользователи OpenProject.
     attachments:
       whitelist_text_html: >
         Определите список допустимых расширений файлов и/или mime типов для загруженных файлов. <br/> Введите расширения файлов (например, <code>%{ext_example}</code>) или mime типы (e. ., <code>%{mime_example}</code>). <br/> Оставьте пустым, чтобы разрешить загрузку любого типа файла. Допустимы несколько значений (одна строка для каждого значения).
@@ -4391,7 +4391,7 @@ ru:
   status_invited: приглашено
   status_locked: заблокировано
   status_registered: Зарегистрирован
-  status_deleted: удалено
+  status_deleted: '﻿Удалено'
   #Used in array.to_sentence.
   support:
     array:
@@ -4401,7 +4401,7 @@ ru:
   text_access_token_hint: "Маркеры доступа позволяют предоставить внешним приложениям доступ к ресурсам в OpenProject."
   text_analyze: "Дополнительный анализ: %{subject}"
   text_are_you_sure: "Вы уверены?"
-  open_link_in_a_new_tab: "Open link in a new tab"
+  open_link_in_a_new_tab: "Открыть ссылку в новой вкладке"
   text_are_you_sure_continue: "Вы уверены, что хотите продолжить?"
   text_are_you_sure_with_children: "Удалить пакет работ и все дочерние пакеты работ?"
   text_are_you_sure_with_project_custom_fields: "Удаление этого атрибута также приведет к удалению его значений во всех проектах. Вы уверены, что хотите это сделать?"
@@ -4428,19 +4428,19 @@ ru:
   text_custom_export_cover_instructions: >
     Это изображение, которое появляется на обложке страницы в экспорте PDF. Он должен быть около 800px ширины на 500px высоты в PNG или JPEG файл изображения.
   text_custom_export_footer_instructions: >
-    PDF exports will include a graphical element positioned to the left of the footer. This image must be a PNG or JPEG file with approximately 200 pixels in width.
+    Экспорт PDF будет включать графический элемент, расположенный слева от нижнего колонтитула. Это изображение должно быть PNG или JPEG файлом шириной примерно 200 пикселей.
   label_custom_export_font_instructions: >
-    Upload and manage custom TrueType (.ttf) fonts used in your PDF exports. For best results, use matching files from the same font family. If no font is provided, the default NotoSans font will be used.
+    Загрузите и управляйте пользовательскими шрифтами TrueType (.ttf), используемыми в экспорте PDF. Для наилучшего результата используйте подходящие файлы из одного и того же семейства шрифтов. Если шрифт отсутствует, будет использоваться шрифт NotoSans по умолчанию.
   label_custom_export_images_instructions: >
-    Upload and manage custom image files used in your PDF exports.
+    Загрузите и управляйте пользовательскими файлами изображений, используемыми в экспорте PDF.
   text_custom_export_font_regular_instructions: >
-    This is the font file for regular text. It needs to be in TTF format and is required.
+    Это файл шрифта для обычного текста. Он должен быть в формате TTF и является обязательным.
   text_custom_export_font_bold_instructions: >
-    This is the font file for bold text. It needs to be in TTF format.
+    Это файл шрифта для жирного текста. Он должен быть в формате TTF.
   text_custom_export_font_italic_instructions: >
-    This is the font file for italic text. It needs to be in TTF format.
+    Это файл шрифта для курсивного текста. Он должен быть в формате TTF.
   text_custom_export_font_bold_italic_instructions: >
-    This is the font file for bold and italic text. It needs to be in TTF format.
+    Это файл шрифта для жирного и курсивного текста. Он должен быть в формате TTF.
   text_custom_favicon_instructions: >
     Это крошечный значок, который появляется в окне / вкладке вашего браузера рядом с заголовком страницы. Это должен быть файл изображения в формате PNG размером 32 на 32 пикселя с прозрачным фоном.
   text_custom_touch_icon_instructions: >
@@ -4782,8 +4782,8 @@ ru:
       code_500_missing_enterprise_token: "Запрос не может быть обработан из-за недействительного или отсутствующего корпоративного токена."
       bad_request:
         emoji_reactions_activity_type_not_supported: "Этот тип деятельности не поддерживает реакции эмодзи."
-        invalid_link: "The link under key '%{key}' is not valid."
-        links_not_an_object: "_links must be a JSON object."
+        invalid_link: "Ссылка с ключом '%{key}' недействительна."
+        links_not_an_object: "_links должен быть объектом JSON."
       conflict:
         multiple_reminders_not_allowed: |-
           Вы можете установить только одно напоминание для пакета работ. Пожалуйста, удалите или обновите напоминание.

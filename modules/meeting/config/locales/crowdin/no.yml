@@ -207,7 +207,7 @@
       agenda_items: "Copy agenda items"
       agenda_text: "Kopier sakslisten fra det forrige møtet"
       participants: "Copy list of participants"
-      to_clipboard: "Copy link to clipboard"
+      to_clipboard: "Kopier lenke til utklippstavlen"
     email:
       send_emails: "Send e-post til deltakere"
       send_invitation_emails: >
@@ -545,7 +545,7 @@
   text_meeting_not_editable_anymore: "Dette møtet er ikke lenger redigerbart."
   text_meeting_not_present_anymore: "Dette møtet ble slettet. Velg et annet møte."
   label_add_work_package_to_meeting_dialog_title: "Select meeting"
-  label_add_work_package_to_meeting_section_label: "Section"
+  label_add_work_package_to_meeting_section_label: "Seksjon"
   label_add_work_package_to_meeting_dialog_button: "Legg til i møte"
   label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."
   label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."

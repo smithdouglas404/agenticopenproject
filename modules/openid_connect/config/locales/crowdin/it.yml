@@ -127,7 +127,7 @@ it:
       label_configuration_details: Metadati
       label_client_details: Dettagli client
       label_attribute_mapping: Mappatura attributi
-      notice_created: A new OpenID provider was successfully created.
+      notice_created: È stato creato con successo un nuovo provider OpenID.
       client_details_description: Dettagli di configurazione di OpenProject come client OIDC
       no_results_table: Non è stato definito alcun provider.
       plural: OpenID provider

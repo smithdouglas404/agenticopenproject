@@ -3,15 +3,15 @@ pt-BR:
     label_widget_in_grid: "Widget contido na Grade %{grid_name}"
     widgets:
       subitems:
-        title: "Subitems"
-        no_results: "There are no visible children."
-        view_all_subitems: "View all subitems"
+        title: "Subitens"
+        no_results: "Não há filhos visíveis."
+        view_all_subitems: "Visualizar todos os subitens"
       members:
-        title: "Latest members"
-        no_results: "No visible members."
-        view_all_members: "View all members"
+        title: "Últimos membros"
+        no_results: "Nenhum membro visível."
+        view_all_members: "Visualizar todos os membros"
       news:
-        no_results: "Nothing new to report."
+        no_results: "Nada de novo para relatar."
   activerecord:
     attributes:
       grids/grid:

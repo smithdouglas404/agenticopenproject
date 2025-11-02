@@ -36,7 +36,7 @@ class Meeting::SendEmailUpdates < ApplicationForm
       checked: true,
       data: {
         "show-when-checked-target": "cause",
-        "show-when-checked-target-name": "notification-banner"
+        "target-name": "notification-banner"
       }
     )
   end

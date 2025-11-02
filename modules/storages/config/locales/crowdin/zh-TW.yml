@@ -512,7 +512,7 @@ zh-TW:
         label: 使用使用者登入時取得的存取令牌(Token)
       manual:
         helptext: OpenProject 將針對指定的受眾（audience），與身份提供者進行令牌(Token)交換。
-        label: 手動指定要交換存取令牌(Token)的受眾（audience）
+        label: Manually specify audience for which to exchange access token (Recommended)
     storage_list_blank_slate:
       description: 新增的儲存空間將在此顯示
       heading: 目前沒有任何儲存空間

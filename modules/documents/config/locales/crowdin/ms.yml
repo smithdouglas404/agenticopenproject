@@ -29,7 +29,7 @@ ms:
     attributes:
       document:
         content_binary: "Content binary"
-        title: "Title"
+        title: "Tajuk"
   activity:
     filter:
       document: "Dokumen"
@@ -47,12 +47,12 @@ ms:
       heading: "There are no documents yet"
       description: "There are no documents in this view. You can click the button below to add one."
     index_page:
-      name: "Name"
-      type: "Type"
+      name: "Nama"
+      type: "Jenis"
       updated_at: "Last edited"
     menu:
       all: "All documents"
-      types: "Types"
+      types: "Jenis"
     label_attachment_author: "Pengarang lampiran"
     label_categories: "Categories"
     new_category: "Kategori baharu"

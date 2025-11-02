@@ -393,7 +393,7 @@ hr:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Matični"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -649,7 +649,7 @@ hr:
     sessions:
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "Browser"
-      expires: "Expires"
+      expires: "Vrijedi do"
       last_connection: "Last connection"
       device: "Device / OS"
       unknown_browser: "unknown browser"
@@ -1828,7 +1828,7 @@ hr:
     attachments: "Prilozi"
     actor: "Actor"
     action: "Radnja"
-    api_key: "API key"
+    api_key: "API ključ"
     author: "Autor"
     avatar: "Avatar"
     base: "Opća greška:"
@@ -2639,7 +2639,7 @@ hr:
       upsell:
         title: "Upgrade to Enterprise edition"
       new_features:
-        header: "Read about new features and product updates."
+        header: "Informirajte se o novim značajkama i ažuriranjima proizvoda."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
@@ -2886,7 +2886,7 @@ hr:
   label_required_disk_storage: "Potraban diskovni prostor"
   label_send_invitation: Pošalji pozivnicu
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Promijeni nadređenog"
   label_change_plural: "Promjene"
   label_change_properties: "Promjeni značajke"
   label_change_status: "Promijeni status"
@@ -3098,7 +3098,7 @@ hr:
   label_link_url: "Link (URL)"
   label_list: "Popis"
   label_loading: "Učitavanje..."
-  label_locked: "locked"
+  label_locked: "zaključano"
   label_lock_user: "Lock user"
   label_logged_as: "Prijavljen kao"
   label_login: "Prijavi se"
@@ -4349,7 +4349,7 @@ hr:
   status_invited: pozvani
   status_locked: zaključano
   status_registered: registriran
-  status_deleted: deleted
+  status_deleted: izbrisano
   #Used in array.to_sentence.
   support:
     array:

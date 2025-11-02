@@ -4,14 +4,14 @@ tr:
     widgets:
       subitems:
         title: "Subitems"
-        no_results: "There are no visible children."
+        no_results: "Görünürde hiç çocuk yok."
         view_all_subitems: "View all subitems"
       members:
-        title: "Latest members"
-        no_results: "No visible members."
-        view_all_members: "View all members"
+        title: "Son üyeler"
+        no_results: "Görünür üye yok."
+        view_all_members: "Tüm üyeleri göster"
       news:
-        no_results: "Nothing new to report."
+        no_results: "Rapor için yeni birşey bulunamadı."
   activerecord:
     attributes:
       grids/grid:

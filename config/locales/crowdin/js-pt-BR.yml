@@ -1141,7 +1141,7 @@ pt-BR:
         invite_to_project: "Convide %{type} para %{project}"
         User: "usuário"
         Group: "grupo"
-        PlaceholderUser: "usuário do espaço reservado"
+        PlaceholderUser: "usuário de espaço reservado"
         invite_principal_to_project: "Convide %{principal} para %{project}"
       project:
         label: "Projeto"
@@ -1160,8 +1160,8 @@ pt-BR:
           title: "Grupo"
           description: "Permissões baseadas no papel atribuído no projeto selecionado"
         placeholder:
-          title: "Usuário do espaço reservado"
-          title_no_ee: "Usuário do espaço reservado (complemento apenas da edição Enterprise)"
+          title: "Usuário de espaço reservado"
+          title_no_ee: "Usuário de espaço reservado (complemento apenas da edição Enterprise)"
           description: "Não possui acesso ao projeto e nenhum e-mail é enviado."
           description_no_ee: 'Não possui acesso ao projeto e nenhum e-mail é enviado. <br>Confira a <a href="%{eeHref}" target="_blank">edição Enterprise</a>'
       principal:

@@ -30,7 +30,7 @@ eo:
       meeting:
         type: "Meeting type"
         location: "Location"
-        duration: "Duration"
+        duration: "Daŭro"
         notes: "Notoj"
         participants: "Participants"
         participant:
@@ -127,7 +127,7 @@ eo:
   label_meeting_date_and_time: "Dato kaj horo"
   label_meeting_diff: "Diff"
   label_meeting_send_updates: "Send email calendar updates"
-  label_recurring_meeting: "Recurring meeting"
+  label_recurring_meeting: "Ripeta renkontiĝo"
   label_recurring_meeting_part_of: "Part of a meeting series"
   label_recurring_meeting_new: "New recurring meeting"
   label_recurring_meeting_plural: "Recurring meetings"
@@ -444,7 +444,7 @@ eo:
   permission_manage_agendas_explanation: "Allows creating, editing and removing agenda items"
   permission_manage_outcomes: "Manage outcomes"
   permission_send_meeting_invites_and_outcomes: "Send meeting invites and outcomes to participants"
-  project_module_meetings: "Meetings"
+  project_module_meetings: "Renkontiĝoj"
   text_duration_in_hours: "Duration in hours"
   text_in_hours: "in hours"
   text_meeting_agenda_for_meeting: 'agenda for the meeting "%{meeting}"'

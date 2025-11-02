@@ -30,10 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: {
-  calculated_value_project_attribute: true,
-  scored_list_custom_fields: true
-} do
+RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_value_project_attribute: true } do
   using CustomFieldFormulaReferencing
   include CalculatedValues::ErrorsHelper
 

@@ -29,7 +29,7 @@ fi:
     attributes:
       document:
         content_binary: "Content binary"
-        title: "Title"
+        title: "Otsikko"
   activity:
     filter:
       document: "Asiakirjat"
@@ -47,12 +47,12 @@ fi:
       heading: "There are no documents yet"
       description: "There are no documents in this view. You can click the button below to add one."
     index_page:
-      name: "Name"
-      type: "Type"
+      name: "Nimi"
+      type: "Tyyppi"
       updated_at: "Last edited"
     menu:
       all: "All documents"
-      types: "Types"
+      types: "Tehtävätyypit"
     label_attachment_author: "Liitteen laatija"
     label_categories: "Categories"
     new_category: "Uusi luokka"

@@ -352,7 +352,7 @@ ar:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "أو"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -393,7 +393,7 @@ ar:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "الجذر"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -667,7 +667,7 @@ ar:
     sessions:
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "Browser"
-      expires: "Expires"
+      expires: "انتهاء الصلاحية"
       last_connection: "Last connection"
       device: "Device / OS"
       unknown_browser: "unknown browser"
@@ -1900,7 +1900,7 @@ ar:
     attachments: "المرفقات"
     actor: "Actor"
     action: "الإجراء"
-    api_key: "API key"
+    api_key: "مفتاح API"
     author: "المؤلف"
     avatar: "الصورة الرمزية"
     base: "خطأ عام:"
@@ -3021,7 +3021,7 @@ ar:
   label_required_disk_storage: "التخزين على القرص المطلوب"
   label_send_invitation: Send invitation
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "تغيير الوالد"
   label_change_plural: "التغييرات"
   label_change_properties: "تغيير الخصائص"
   label_change_status: "تغيير الحالة"
@@ -3233,7 +3233,7 @@ ar:
   label_link_url: "Link (URL)"
   label_list: "القائمة"
   label_loading: "جاري التحميل..."
-  label_locked: "locked"
+  label_locked: "مقفل"
   label_lock_user: "Lock user"
   label_logged_as: "تسجيل الدخول ك"
   label_login: "تسجيل الدخول"
@@ -3243,7 +3243,7 @@ ar:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "مائل"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
@@ -4488,7 +4488,7 @@ ar:
   status_invited: مدعوّ
   status_locked: مقفل
   status_registered: تم التسجيل
-  status_deleted: deleted
+  status_deleted: محذوف
   #Used in array.to_sentence.
   support:
     array:
@@ -4681,12 +4681,12 @@ ar:
     assign_random_password: "تعيين كلمة مرور عشوائي (إرسالها إلى المستخدم عبر البريد الإلكتروني)"
     blocked: "مغلق مؤقتاً"
     blocked_num_failed_logins:
-      zero: "مغلق مؤقتا (محاولات تسجيل الدخول الفاشلة%{count})"
+      zero: "مغلق مؤقتا ( فشل واحد في محاولة تسجيل الدخول)\nمغلق مؤقتا\"(محاولات تسجيل الدخول الفاشلة%{count})"
       one: "مغلق مؤقتا ( فشل واحد في محاولة تسجيل الدخول)"
-      two: "مغلق مؤقتا (محاولات تسجيل الدخول الفاشلة%{count})"
-      few: "مغلق مؤقتا (محاولات تسجيل الدخول الفاشلة%{count})"
-      many: "مغلق مؤقتا (محاولات تسجيل الدخول الفاشلة%{count})"
-      other: "مغلق مؤقتا (محاولات تسجيل الدخول الفاشلة%{count})"
+      two: "مغلق مؤقتا ( فشل واحد في محاولة تسجيل الدخول)\nمغلق مؤقتا\"(محاولات تسجيل الدخول الفاشلة%{count})"
+      few: "مغلق مؤقتا ( فشل واحد في محاولة تسجيل الدخول)\nمغلق مؤقتا\"(محاولات تسجيل الدخول الفاشلة%{count})"
+      many: "مغلق مؤقتا ( فشل واحد في محاولة تسجيل الدخول)\nمغلق مؤقتا\"(محاولات تسجيل الدخول الفاشلة%{count})"
+      other: "مغلق مؤقتا ( فشل واحد في محاولة تسجيل الدخول)\nمغلق مؤقتا\"(محاولات تسجيل الدخول الفاشلة%{count})"
     confirm_status_change: "You are about to change the status of '%{name}'. Are you sure you want to continue?"
     deleted: "حذف المستخدم"
     error_status_change_failed: "فشل تغيير حالة المستخدم نتيجة للأخطاء التالية: %{errors}"

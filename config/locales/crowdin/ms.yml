@@ -91,7 +91,7 @@ ms:
       paste: "Sisipkan token sokongan edisi Enterprise anda"
       required_for_feature: "Tambahan ini hanya tersedia dengan token sokongan edisi Enterprise yang aktif."
       enterprise_link: "Untuk maklumat lanjut, klik disini."
-      start_trial: "Mulakan tempoh percubaan percuma"
+      start_trial: "Mulakan percubaan percuma"
       book_now: "Tempah sekarang"
       get_quote: "Dapatkan sebut harga"
       buttons:
@@ -351,48 +351,48 @@ ms:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "atau"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
       defined: "must not be defined."
       eql?: "must be equal to %{left}."
-      filled?: "must be filled."
-      greater_or_equal_zero: "must be greater or equal to 0."
+      filled?: "mesti diisi."
+      greater_or_equal_zero: "mestilah lebih besar atau sama dengan 0."
       gteq?: "must be greater than or equal to %{num}."
       hash?: "must be a hash."
       included_in?:
         arg:
           default: "must be one of: %{list}."
           range: "must be one of: %{list_left} - %{list_right}."
-      int?: "must be an integer."
+      int?: "mestilah integer."
       key?: "is missing."
-      not_found: "not found."
+      not_found: "tidak dijumpai."
       rules:
         copy_workflow_from:
           workflow_missing: "has no own workflow."
         custom_field:
           format_not_supported: "format '%{field_format}' is unsupported."
         item:
-          root_item: "cannot be a root item."
-          not_persisted: "must be an already existing item."
+          root_item: "tidak boleh menjadi punca item."
+          not_persisted: "mestilah item yang sedia ada."
         label:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "mestilah unik dalam tahap hierarki yang sama."
         short:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "mestilah unik dalam tahap hierarki yang sama."
         parent:
-          not_descendant: "must be a descendant of the hierarchy root."
+          not_descendant: "mestilah keturunan akar hierarki."
       str?: "must be a string."
       type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
-      depth: "Depth"
+      enabled: "Didayakan"
+      depth: "Kedalaman"
       item: "Item"
       label: "Label"
       score: "Score"
-      short: "Short name"
-      parent: "Parent"
+      short: "Nama pendek"
+      parent: "Ibu bapa"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -455,7 +455,7 @@ ms:
     lists:
       active: "Projek yang aktif"
       my: "Projek saya"
-      favorited: "Favorite projects"
+      favorited: "Projek kegemaran"
       archived: "Projek yang diarkibkan"
       shared: "Senarai projek yang dikongsi"
       my_lists: "Senarai projek saya"
@@ -528,7 +528,7 @@ ms:
       versions:
         no_results_title_text: Tiada versi untuk projek tersebut buat masa ini.
         no_results_content_text: Cipta versi baharu
-        work_packages_graph: Work packages graph
+        work_packages_graph: Graf pakej kerja
         show_work_packages: Show work packages
       storage:
         no_results_title_text: Tiada ruang cakera terekod tambahan yang digunakan untuk projek ini.
@@ -589,7 +589,7 @@ ms:
       cannot_delete_inherited_membership_note_admin_html: "Anda boleh sama ada mengeluarkan kumpulan tersebut sebagai ahli projek atau ahli tertentu ini dari kumpulan tersebut dalam %{administration_settings_link}."
       cannot_delete_inherited_membership_note_non_admin: "Anda boleh sama ada mengeluarkan kumpulan tersebut sebagai ahli projek atau hubungi pentadbir anda untuk mengeluarkan ahli tertentu ini dari kumpulan tersebut."
     delete_work_package_shares_dialog:
-      title: "Tarik semula perkongsian pakej kerja"
+      title: "Batalkan perkongsian pakej kerja"
       shared_with_this_user_html:
         other: "%{all_shared_work_packages_link} telah dikongsikan dengan pengguna ini."
       shared_with_this_group_html:
@@ -636,7 +636,7 @@ ms:
     sessions:
       session_name: "%{browser_name}%{browser_version} pada %{os_name}"
       browser: "Pelayar"
-      expires: "Expires"
+      expires: "Tamat tempoh"
       last_connection: "Last connection"
       device: "Peranti / OS"
       unknown_browser: "pelayar yang tidak diketahui"
@@ -1317,7 +1317,7 @@ ms:
         greater_than_start_date: "perlu lebih besar dari tarikh mula."
         inclusion: "tidak ditetapkan pada salah satu nilai yang dibenarkan."
         inclusion_nested: "tidak ditetapkan pada salah satu nilai yang dibenarkan pada laluan '%{path}'."
-        invalid: "tidak sah."
+        invalid: "adalah tidak sah."
         invalid_characters: "contains invalid characters."
         not_allowed_custom_fields_referenced: "contains custom fields that are not allowed: %{custom_fields}."
         invalid_url: "bukan URL yang sah."
@@ -1620,7 +1620,7 @@ ms:
               must_be_set_when_work_is_set: "diperlukan apabila Kerja ditetapkan."
               must_be_set_when_work_and_percent_complete_are_set: "diperlukan apabila Kerja dan % Selesai ditetapkan."
               must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                must be 0h when Work is set and % Complete is 100%.
+                mestilah 0j apabila Kerja ditetapkan dan % Selesai ialah 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 mesti kosong apabila Kerja kosong dan % Selesai ialah 100%.
           readonly_status: "Pakej kerja berada dalam status baca sahaja maka atributnya tidak boleh diubah."
@@ -1760,7 +1760,7 @@ ms:
       subproject: "Termasuk subprojek"
       time_entry: "Masa yang dihabiskan"
       wiki_edit: "Wiki"
-      work_package: "Pakej kerja"
+      work_package: "Pakej pekerjaan"
     project_phase:
       activated: "diaktifkan"
       added_date: "set to %{date}"
@@ -1778,7 +1778,7 @@ ms:
     attachments: "Lampiran"
     actor: "Actor"
     action: "Tindakan"
-    api_key: "API key"
+    api_key: "Kekunci API"
     author: "Pengarang"
     avatar: "Avatar"
     base: "Ralat Umum:"
@@ -1818,7 +1818,7 @@ ms:
     id: "ID"
     is_default: "Nilai default"
     is_for_all: "Untuk semua projek"
-    public: "Umum"
+    public: "Awam"
     principal: "User or group"
     #kept for backwards compatibility
     issue: "Pakej kerja"
@@ -1916,7 +1916,7 @@ ms:
   button_change: "Tukar"
   button_change_parent_page: "Tukar halaman induk"
   button_change_password: "Tukar kata laluan"
-  button_check_all: "Semak semua"
+  button_check_all: "Tanda semua"
   button_clear: "Kosongkan"
   button_click_to_reveal: "Klik untuk dedahkan"
   button_close: "Tutup"
@@ -2547,7 +2547,7 @@ ms:
       upsell:
         title: "Naik taraf ke edisi Enterprise"
       new_features:
-        header: "Read about new features and product updates."
+        header: "Baca berkenaan fitur-fitur baharu dan kemas kini produk."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
@@ -2746,7 +2746,7 @@ ms:
   label_applied_status: "Status yang dilaksanakan"
   label_archive_project: "Arkib projek"
   label_ascending: "Menaik"
-  label_assigned_to_me_work_packages: "Pakej kerja yang ditugaskan kepada saya"
+  label_assigned_to_me_work_packages: "Pakej kerja yang ditugaskan pada saya"
   label_associated_revisions: "Semakan yang berhubungan"
   label_attachment_plural: "Lampiran"
   label_attribute: "Atribut"
@@ -2794,7 +2794,7 @@ ms:
   label_required_disk_storage: "Storan cakera yang diperlukan"
   label_send_invitation: Hantar jemputan
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Ubah induk"
   label_change_plural: "Perubahan"
   label_change_properties: "Tukar ciri-ciri"
   label_change_status: "Tukar status"
@@ -3005,8 +3005,8 @@ ms:
   label_less_than_ago: "kurang dari beberapa hari yang lalu"
   label_link_url: "Pautan (URL) "
   label_list: "Senarai"
-  label_loading: "Sedang memuatkan..."
-  label_locked: "locked"
+  label_loading: "Memuatkan..."
+  label_locked: "dikunci"
   label_lock_user: "Kunci pengguna"
   label_logged_as: "Log masuk sebagai"
   label_login: "Daftar masuk"
@@ -3354,7 +3354,7 @@ ms:
   label_work_package_hierarchy: "Hierarki pakej kerja"
   label_work_package_new: "Pakej kerja baharu"
   label_work_package_edit: "Edit pakej kerja %{name}"
-  label_work_package_plural: "Pakej kerja"
+  label_work_package_plural: "Pakej pekerjaan"
   label_work_package_status: "Status pakej kerja"
   label_work_package_status_new: "Status baharu"
   label_work_package_status_plural: "Status pakej kerja"
@@ -3472,7 +3472,7 @@ ms:
     storages:
       health:
         plaintext:
-          storage: "Storan"
+          storage: "Penyimpanan"
           healthy:
             summary: 'Berita gembira! Status storan anda, %{storage_name}, kini dipaparkan sebagai "Sihat".'
             error-solved-on: "Diselesaikan Pada"
@@ -3625,7 +3625,7 @@ ms:
   notice_project_not_deleted: "Projek tersebut tidak dipadam."
   notice_project_not_found: "Projek tidak ditemui."
   notice_successful_connection: "Sambungan berjaya."
-  notice_successful_create: "Penciptaan berjaya."
+  notice_successful_create: "Penciptaan yang berjaya."
   notice_successful_delete: "Pemadaman yang berjaya."
   notice_successful_cancel: "Pembatalan yang berjaya."
   notice_successful_update: "Kemas kini berjaya."
@@ -3789,7 +3789,7 @@ ms:
       one: "1 projek"
       other: "%{count} projek"
     destroy:
-      title: "Delete project"
+      title: "Padam projek"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -3815,7 +3815,7 @@ ms:
       remove_from_templates: "Keluarkan dari templat"
   project_module_activity: "Aktiviti"
   project_module_forums: "Forum-forum"
-  project_module_work_package_tracking: "Pakej kerja"
+  project_module_work_package_tracking: "Pakej pekerjaan"
   project_module_news: "Berita"
   project_module_repository: "Repositori"
   project_module_wiki: "Wiki"
@@ -3832,7 +3832,7 @@ ms:
     name_or_identifier: "Nama atau pengenal"
     only_subproject_id: "Hanya subprojek"
     shared_with_user: "Dikongsi dengan pengguna"
-    shared_with_me: "Dikongsikan dengan saya"
+    shared_with_me: "Dikongsi dengan saya"
     subproject_id: "Termasuk suprojek"
   repositories:
     at_identifier: "pada %{identifier}"
@@ -4236,7 +4236,7 @@ ms:
       display_format: "Format paparan"
       deletion: "Pemadaman"
     working_days:
-      section_work_week: "Minggu bekerja"
+      section_work_week: "Minggu kerja"
       section_holidays_and_closures: "Hari perayaan dan penutupan"
     work_packages:
       not_allowed_text: "You do not have the necessary permissions to view this page."
@@ -4252,7 +4252,7 @@ ms:
   status_invited: dijemput
   status_locked: dikunci
   status_registered: berdaftar
-  status_deleted: deleted
+  status_deleted: dipadam
   #Used in array.to_sentence.
   support:
     array:
@@ -4418,7 +4418,7 @@ ms:
   queries:
     apply_filter: Gunakan saringan pra-konfigurasi
     configure_view:
-      heading: Paparan konfigurasi
+      heading: Konfigurasi paparan
       columns:
         input_label: "Tambah kolum-kolum"
         input_placeholder: "Pilih satu kolum"
@@ -4466,7 +4466,7 @@ ms:
   version_status_closed: "ditutup"
   version_status_locked: "terkunci"
   version_status_open: "buka"
-  note: Perhatian
+  note: Nota
   note_password_login_disabled: "Kata laluan log masuk telah dibatalkan oleh %{configuration}."
   warning: Amaran
   warning_attachments_not_saved: "%{count} fail tidak dapat disimpan."

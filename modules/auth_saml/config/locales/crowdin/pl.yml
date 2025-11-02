@@ -56,7 +56,7 @@ pl:
       label_mapping: Mapowanie
       label_requested_attribute_for: "Wymagany atrybut dla: %{attribute}"
       no_results_table: Jeszcze nie zdefiniowano żadnych dostawców tożsamości SAML.
-      notice_created: A new SAML identity provider was successfully created.
+      notice_created: Nowy dostawca tożsamości SAML został utworzony.
       plural: Dostawcy tożsamości SAML
       singular: Dostawca tożsamości SAML
       requested_attributes: Wymagane atrybuty

@@ -257,7 +257,7 @@ uk:
       labels:
         title: "Конфігурація мітки"
         bar: "смуга міток"
-        left: "Зліва"
+        left: "Ліворуч"
         right: "Зправа"
         farRight: "Далі вправо"
         description: >
@@ -337,7 +337,7 @@ uk:
     label_deactivate: "Деактивувати"
     label_descending: "За спаданням"
     label_description: "Опис"
-    label_details: "Детальніше"
+    label_details: "Деталі"
     label_display: "Вигляд"
     label_cancel_comment: "Скасувати додавання коментаря"
     label_closed_work_packages: "закрито"
@@ -379,7 +379,7 @@ uk:
     label_import: "Імпортувати"
     label_latest_activity: "Останні дії"
     label_last_updated_on: "Останнє оновлення"
-    label_learn_more_link: "Докладніше"
+    label_learn_more_link: "Дізнатися більше"
     label_less_or_equal: "<="
     label_less_than_ago: "менше, ніж день тому"
     label_loading: "Завантаження..."
@@ -431,8 +431,8 @@ uk:
     label_show_in_menu: "Показати вигляд у меню"
     label_sort_by: "Сортувати за"
     label_sorted_by: "відсортовано за"
-    label_sort_higher: "Рухатися вгору"
-    label_sort_lower: "Пересунути нижче"
+    label_sort_higher: "Перемістити вгору"
+    label_sort_lower: "Перемістити вниз"
     label_sorting: "Сортування"
     label_spent_time: "Витрачений час"
     label_star_query: "Вибране"
@@ -725,7 +725,7 @@ uk:
       label_discard: Скасувати вибір
       typeahead_placeholder: Пошук можливих спостерігачів
     relation_labels:
-      parent: "Батьківський"
+      parent: "Батьківський об’єкт"
       child: "Дочірній"
       children: "Дочірні елементи"
       relates: "Пов'язано з"
@@ -741,7 +741,7 @@ uk:
       required: "Необхідний для"
       relation_type: "Тип зв'язку"
     relations_hierarchy:
-      parent_headline: "Батьківський"
+      parent_headline: "Батьківський об’єкт"
       hierarchy_headline: "Ієрархія"
       children_headline: "Дочірні елементи"
     relation_buttons:
@@ -782,7 +782,7 @@ uk:
       select_tag: "Виберіть мітку"
       select_branch: "Виберіть гілку"
     field_value_enter_prompt: "Введіть значення для «%{field}»"
-    project_menu_details: "Детальніше"
+    project_menu_details: "Деталі"
     sort:
       sorted_asc: "Застосовується сортування за зростанням,"
       sorted_dsc: "Застосовується сортування за спаданням,"

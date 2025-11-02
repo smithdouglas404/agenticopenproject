@@ -190,7 +190,7 @@ de:
         no_participants: "Keine Teilnehmer"
         show_all: "Alle anzeigen"
       text:
-        template: "Diese Teilnehmer werden automatisch zu allen zukünftigen Besprechungen eingeladen, sobald sie erstellt werden."
+        template: "Diese Teilnehmer werden automatisch zu allen zukünftigen Besprechungen eingeladen, sobald diese erstellt werden."
         manage_participants: "Suchen Sie nach Projektmitgliedern, um sie als Teilnehmer zu dieser Besprechung hinzuzufügen."
         search_for_members: "Suche nach Projektmitgliedern"
       blankslate:
@@ -217,7 +217,7 @@ de:
       open_my_meetings_link: "Meine Besprechungen anzeigen"
       series:
         title: "[%{project_name}] Terminserie '%{title}'"
-        summary: "%{actor} has invited you to a new meeting series '%{title}'"
+        summary: "%{actor} hat Sie zu einer neuen Terminserie '%{title}' eingeladen"
       series_updated:
         title: "[%{project_name}] Terminserie '%{title}' wurde aktualisiert"
         summary: "Die Terminserie '%{title}' wurde von %{actor} aktualisiert"
@@ -272,7 +272,7 @@ de:
         author: "Verfasser:in"
         date: "Datum"
         time: "Zeit"
-        location: "Ort"
+        location: "Ort/Raum"
         title: "Protokoll"
     export_pdf_dialog:
       title: PDF exportieren
@@ -487,7 +487,7 @@ de:
   label_agenda_item_move_to_next: "Zur nächsten Besprechung verschieben"
   label_agenda_item_move_to_backlog: "In Backlog verschieben"
   label_agenda_item_move_to_current_meeting: "Zur aktuellen Besprechung verschieben"
-  label_agenda_item_move_to_section: "Move to section"
+  label_agenda_item_move_to_section: "In Abschnitt verschieben"
   label_agenda_item_move_to_top: "Nach ganz oben verschieben"
   label_agenda_item_move_to_bottom: "Nach ganz unten verschieben"
   label_agenda_item_move_up: "Nach oben verschieben"
@@ -545,7 +545,7 @@ de:
   text_meeting_not_editable_anymore: "Diese Besprechung ist nicht mehr bearbeitbar."
   text_meeting_not_present_anymore: "Dieses Meeting wurde gelöscht. Bitte wählen Sie eine andere Besprechung."
   label_add_work_package_to_meeting_dialog_title: "Besprechung auswählen"
-  label_add_work_package_to_meeting_section_label: "Section"
+  label_add_work_package_to_meeting_section_label: "Abschnitt"
   label_add_work_package_to_meeting_dialog_button: "Zur Besprechung hinzufügen"
   label_meeting_selection_caption: "Dieses Arbeitspaket kann nur zu einer bevorstehenden oder laufenden Besprechung hinzugefügt werden."
   label_section_selection_caption: "Wählen Sie einen bestimmten Abschnitt der Tagesordnung aus oder fügen Sie es zum Backlog hinzu."
@@ -577,7 +577,7 @@ de:
           dialog_title: "Neues iCal-Abonnement-Token für Besprechungen"
           dialog_body: "Dieses Token generiert eine iCal-URL, mit der Sie alle Ihre Termine in einer externen Kalenderanwendung anzeigen können."
           create_button: "Abonnement erstellen"
-          name_label: "Tokenname"
+          name_label: "Token-Name"
           name_caption: 'Sie können den Token beliebig nennen, z. B. passend zum Gerät an dem es eingesetzt wird, wie "Mein Handy" oder "Arbeitsrechner".'
       created_dialog:
         token/ical_meeting:

@@ -352,7 +352,7 @@ ka:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "ან"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -393,7 +393,7 @@ ka:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "მშობელი"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -643,7 +643,7 @@ ka:
     sessions:
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "ბრაუზერი"
-      expires: "Expires"
+      expires: "ვადა"
       last_connection: "Last connection"
       device: "მოწყობილობა / ოს-ი"
       unknown_browser: "unknown browser"
@@ -1107,7 +1107,7 @@ ka:
         templated_value:
           true: "marked as template"
           false: "unmarked as template"
-        types: "ტიპები"
+        types: "ტიპი"
         versions: "ვერსიები"
         work_packages: "სამუშაო პაკეტები"
         workspace_type: "Workspace type"
@@ -1804,7 +1804,7 @@ ka:
     attachments: "მიმაგრებული ფაილები"
     actor: "Actor"
     action: "ქმედება"
-    api_key: "API key"
+    api_key: "API გასაღები"
     author: "ავტორი"
     avatar: "ავატარი"
     base: "ზოგადი შეცდომა:"
@@ -2841,7 +2841,7 @@ ka:
   label_required_disk_storage: "Required disk storage"
   label_send_invitation: Send invitation
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "მშობლის შეცვლა"
   label_change_plural: "ცვლილებები"
   label_change_properties: "Change properties"
   label_change_status: "სტატუსის შეცვლა"
@@ -3053,7 +3053,7 @@ ka:
   label_link_url: "Link (URL)"
   label_list: "სია"
   label_loading: "იტვირთება..."
-  label_locked: "locked"
+  label_locked: "დაბლოკილია"
   label_lock_user: "მომხმარებლის დაბლოკვა"
   label_logged_as: "შესული ხართ როგორც"
   label_login: "შესვლა"
@@ -3063,7 +3063,7 @@ ka:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "დახრილი"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "ტექსტის ფერი"
@@ -3839,7 +3839,7 @@ ka:
       one: "1 პროექტი"
       other: "%{count} projects"
     destroy:
-      title: "Delete project"
+      title: "პროექტის წაშლა"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4302,7 +4302,7 @@ ka:
   status_invited: მოწვეულია
   status_locked: დაბლოკილია
   status_registered: რეგისტრირებული
-  status_deleted: deleted
+  status_deleted: წაშლილია
   #Used in array.to_sentence.
   support:
     array:

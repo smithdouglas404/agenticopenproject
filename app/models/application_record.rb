@@ -82,4 +82,22 @@ class ApplicationRecord < ActiveRecord::Base
 
     ActiveRecord::Base.connection.select_value(union_query)
   end
+
+  # Returns all the attribute names as symbols.
+  # @return [Array<Symbol>]
+  def attribute_keys
+    attribute_names.map(&:to_sym)
+  end
+
+  # Returns the keys of the attributes that have been changed.
+  # @return [Array<Symbol>]
+  def changed_attribute_keys
+    changes.keys.map(&:to_sym)
+  end
+
+  # Returns the keys of the attributes that have been changed before the last save.
+  # @return [Array<Symbol>]
+  def changed_attribute_keys_before_last_save
+    previous_changes.keys.map(&:to_sym)
+  end
 end

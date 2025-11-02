@@ -352,28 +352,28 @@ zh-CN:
     or: "或"
     errors:
       array?: "必须为一个数组。"
-      decimal?: "必须为一个小数。"
-      defined: "不可被定义。"
+      decimal?: "必须为小数。"
+      defined: "不得定义。"
       eql?: "必须等于 %{left}。"
-      filled?: "必须填写。"
-      greater_or_equal_zero: "必须大于或等于 0。"
+      filled?: "必须填写"
+      greater_or_equal_zero: "必须大于或等于 0"
       gteq?: "必须大于或等于 %{num}。"
       hash?: "必须是一个哈希值。"
       included_in?:
         arg:
           default: "必须是其中之一： %{list}。"
           range: "必须是其中之一： %{list_left} - %{list_right}。"
-      int?: "必须为一个整数。"
-      key?: "已缺失。"
+      int?: "必须为整数"
+      key?: "缺失。"
       not_found: "未找到。"
       rules:
         copy_workflow_from:
           workflow_missing: "没有自己的工作流。"
         custom_field:
-          format_not_supported: "不支持 '%{field_format}' 格式。"
+          format_not_supported: "格式 '%{field_format}' 不受支持。"
         item:
-          root_item: "不能为根项。"
-          not_persisted: "必须是已存在的项。"
+          root_item: "不能为根项目"
+          not_persisted: "必须是已存在的项目"
         label:
           not_unique: "在同一层级内必须是唯一的。"
         short:
@@ -385,13 +385,13 @@ zh-CN:
     rules:
       copy_workflow_from: "工作流副本的类型"
       enabled: "已启用"
-      depth: "深度"
+      depth: "深"
       item: "条目"
       label: "标签"
       score: "分数"
       short: "简称"
       parent: "父级"
-      blueprint: "模式蓝图"
+      blueprint: "图案蓝图"
   global_search:
     title:
       all_projects: '在所有项目中搜索“%{search_term}”'
@@ -526,7 +526,7 @@ zh-CN:
       versions:
         no_results_title_text: 目前这个项目没有版本。
         no_results_content_text: 创建一个新的版本
-        work_packages_graph: 工作包图表
+        work_packages_graph: 工作包图
         show_work_packages: 显示工作包
       storage:
         no_results_title_text: 此项目没有已记录的额外磁盘空间消耗。
@@ -2552,11 +2552,11 @@ zh-CN:
           new_features_title: >
             此版本包含各种新功能和改进，例如：
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: 项目评估和评分的计算值（Enterprise 附加组件）。
+            line_1: 项目特性类型层次结构。
+            line_2: 可以产生重大影响的性能更新。
+            line_3: '“文档”模块的新索引页面。'
+            line_4: 可以更改自定义字段条目的父项。
     links:
       upgrade_enterprise_edition: "升级到企业版"
       postgres_migration: "将您的安装迁移到 PostgreSQL"

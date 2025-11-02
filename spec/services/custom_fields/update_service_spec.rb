@@ -37,7 +37,7 @@ RSpec.describe CustomFields::UpdateService, type: :model do
   describe "#call" do
     let(:user) { build_stubbed(:admin) }
     let(:contract_class) { CustomFields::UpdateContract }
-    let(:contract_instance) { instance_double(CustomFields::UpdateContract, validate: true) }
+    let(:contract_instance) { instance_double(contract_class, validate: true) }
 
     let(:instance) do
       described_class.new(user:,
@@ -121,9 +121,10 @@ RSpec.describe CustomFields::UpdateService, type: :model do
 
         before do
           projects.each.with_index(1) do |project, i|
-            create(:custom_value, customized: project, custom_field: static, value: i)
-            create(:custom_value, customized: project, custom_field: custom_field, value: 0)
-            create(:custom_value, customized: project, custom_field: custom_field2, value: 0)
+            # using update_columns to prevent auto enabling for the project
+            create(:custom_value, customized: project, custom_field: static).update_columns(value: i)
+            create(:custom_value, customized: project, custom_field: custom_field).update_columns(value: 0)
+            create(:custom_value, customized: project, custom_field: custom_field2).update_columns(value: 0)
           end
         end
 

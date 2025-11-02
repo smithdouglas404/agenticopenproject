@@ -30,7 +30,7 @@ uk:
         project_status_beta:
           title: 'Статус проєкту (BETA)'
         subprojects:
-          title: 'Subitems'
+          title: 'Піделементи'
         project_favorites:
           title: 'Обрані проєкти'
           no_results: 'Зараз у вас немає обраних проєктів. Натисніть значок зірочки на панелі керування проєктом, щоб додати його в обране.'

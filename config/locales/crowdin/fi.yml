@@ -352,7 +352,7 @@ fi:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "tai"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -393,7 +393,7 @@ fi:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Ylätaso"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -643,7 +643,7 @@ fi:
     sessions:
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "Browser"
-      expires: "Expires"
+      expires: "Vanhentuu"
       last_connection: "Last connection"
       device: "Device / OS"
       unknown_browser: "unknown browser"
@@ -1804,7 +1804,7 @@ fi:
     attachments: "Liitteet"
     actor: "Actor"
     action: "Toiminto"
-    api_key: "API key"
+    api_key: "API avain"
     author: "Tekijä"
     avatar: "Avatar"
     base: "Yleinen virhe:"
@@ -2594,7 +2594,7 @@ fi:
       upsell:
         title: "Upgrade to Enterprise edition"
       new_features:
-        header: "Read about new features and product updates."
+        header: "Tietoa uusista ominaisuuksista ja tuotepäivityksistä."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
@@ -2841,7 +2841,7 @@ fi:
   label_required_disk_storage: "Tarvittava levytila"
   label_send_invitation: Lähetä kutsu
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Vaihda pääkohdetta"
   label_change_plural: "Muutokset"
   label_change_properties: "Vaihda asetuksia"
   label_change_status: "Muuta tila"
@@ -3053,7 +3053,7 @@ fi:
   label_link_url: "Link (URL)"
   label_list: "Lista"
   label_loading: "Lataa..."
-  label_locked: "locked"
+  label_locked: "lukittu"
   label_lock_user: "Lukitse käyttäjä"
   label_logged_as: "Kirjautuneena"
   label_login: "Kirjaudu"
@@ -3063,7 +3063,7 @@ fi:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "Kursivoitu"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
@@ -3839,7 +3839,7 @@ fi:
       one: "1 projekti"
       other: "%{count} projects"
     destroy:
-      title: "Delete project"
+      title: "Poista projekti"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4302,7 +4302,7 @@ fi:
   status_invited: kutsuttu
   status_locked: lukittu
   status_registered: registered
-  status_deleted: deleted
+  status_deleted: poistettu
   #Used in array.to_sentence.
   support:
     array:

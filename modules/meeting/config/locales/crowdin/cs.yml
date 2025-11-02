@@ -217,7 +217,7 @@ cs:
       agenda_items: "Kopírovat položky agendy"
       agenda_text: "Zkopírujte program staré schůzky"
       participants: "Kopírovat seznam účastníků"
-      to_clipboard: "Copy link to clipboard"
+      to_clipboard: "Kopírovat odkaz do schránky"
     email:
       send_emails: "Účastníci e-mailu"
       send_invitation_emails: >
@@ -559,7 +559,7 @@ cs:
   text_meeting_not_editable_anymore: "Tato schůzka již není upravitelná."
   text_meeting_not_present_anymore: "Tato schůzka byla odstraněna. Vyberte prosím jinou schůzku."
   label_add_work_package_to_meeting_dialog_title: "Select meeting"
-  label_add_work_package_to_meeting_section_label: "Section"
+  label_add_work_package_to_meeting_section_label: "Sekce"
   label_add_work_package_to_meeting_dialog_button: "Přidat do schůzky"
   label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."
   label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."

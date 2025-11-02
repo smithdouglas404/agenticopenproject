@@ -470,7 +470,7 @@ fa:
   label_meeting_created_by: "ایجاد شده توسط"
   label_meeting_last_updated: "Last updated"
   label_meeting_reload: "Reload"
-  label_meeting_index_today: "Today"
+  label_meeting_index_today: "امروز"
   label_meeting_index_tomorrow: "Tomorrow"
   label_meeting_index_this_week: "Later this week"
   label_meeting_index_later: "Next week and later"

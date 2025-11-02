@@ -164,9 +164,9 @@ it:
         title: "Tabella dei token di accesso"
     workflows:
       tabs:
-        default_transitions: "Default transitions"
-        user_author: "User is author"
-        user_assignee: "User is assignee"
+        default_transitions: "Transizioni predefinite"
+        user_author: "L'utente è l'autore"
+        user_assignee: "L'utente è l'assegnatario"
   authentication:
     login_and_registration: "Accesso e registrazione"
   announcements:
@@ -320,7 +320,7 @@ it:
     reorder_alphabetical: "Riordina i valori alfabeticamente"
     reorder_confirmation: "Attenzione: l'ordine corrente dei valori disponibili sarà perso. Continuare?"
     placeholder_version_select: "Prima è necessario selezionare la macro-attività o il progetto"
-    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
+    calculated_field_not_editable: "Attributo non modificabile. Questo valore viene calcolato automaticamente."
     instructions:
       is_required: "Contrassegna il campo personalizzato come obbligatorio. Ciò renderà obbligatorio compilare il campo durante la creazione di nuove risorse o l'aggiornamento di risorse esistenti."
       is_required_for_project: "Spunta la casella per abilitare questo attributo e renderlo necessario in tutti i progetti. Non può essere disattivato per i singoli progetti."
@@ -347,8 +347,8 @@ it:
   concatenation:
     single: "oppure"
   danger_dialog:
-    confirmation_live_message_checked: "The button to proceed is now active."
-    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+    confirmation_live_message_checked: "Il pulsante per procedere è ora attivo."
+    confirmation_live_message_unchecked: "Il pulsante per procedere è ora inattivo. Devi spuntare la casella per continuare."
   op_dry_validation:
     or: "oppure"
     errors:
@@ -527,8 +527,8 @@ it:
       versions:
         no_results_title_text: Al momento non esistono versioni per il progetto.
         no_results_content_text: Crea una nuova versione
-        work_packages_graph: Work packages graph
-        show_work_packages: Show work packages
+        work_packages_graph: Grafico delle macro-attività
+        show_work_packages: Mostra macro-attività
       storage:
         no_results_title_text: Nessuno spazio su disco registrato aggiuntivo consumato da questo progetto.
       work_package_priorities:
@@ -2596,13 +2596,13 @@ it:
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            Questa versione contiene diverse nuove funzionalità e miglioramenti, come ad esempio:
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: Valori calcolati per la valutazione e il punteggio del progetto (componente aggiuntivo Enterprise).
+            line_1: Gerarchia dei tipi di attributi del progetto.
+            line_2: Aggiornamenti delle prestazioni di grande impatto.
+            line_3: Nuova pagina indice per il modulo Documenti.
+            line_4: Possibilità di cambiare il genitore di un elemento di campo personalizzato.
     links:
       upgrade_enterprise_edition: "Aggiorna ad Enterprise edition"
       postgres_migration: "Migrazione dell'installazione su PostgreSQL"
@@ -2927,7 +2927,7 @@ it:
   label_duplicate: "duplica"
   label_duplicates: "duplica"
   label_edit: "Modifica"
-  label_edit_attribute: "Edit attribute"
+  label_edit_attribute: "Modifica attributo"
   label_edit_x: "Modifica: %{x}"
   label_enable_multi_select: "Attiva/disattiva multiselezione"
   label_enabled_project_custom_fields: "Campi personalizzati abilitati"
@@ -3354,7 +3354,7 @@ it:
   label_user_search: "Cerca per utente"
   label_user_settings: "Impostazioni utente"
   label_users_settings: "Impostazioni utenti"
-  label_value_x: "Value: %{x}"
+  label_value_x: "Valore: %{x}"
   label_version_new: "Nuova versione"
   label_version_edit: "Modifica versione"
   label_version_plural: "Versioni"
@@ -3694,7 +3694,7 @@ it:
   #Default format for numbers
   number:
     format:
-      delimiter: "."
+      delimiter: ","
       precision: 3
       separator: "."
     human:

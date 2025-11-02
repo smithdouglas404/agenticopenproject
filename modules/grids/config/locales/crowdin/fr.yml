@@ -5,7 +5,7 @@ fr:
       subitems:
         title: "Sous-éléments"
         no_results: "Il n'y a pas d'enfants visibles."
-        view_all_subitems: "Voir tous les sous-items"
+        view_all_subitems: "Voir tous les sous-éléments"
       members:
         title: "Derniers membres"
         no_results: "Aucun membre visible."

@@ -352,7 +352,7 @@ fa:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "یا"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -393,7 +393,7 @@ fa:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "بالادستی"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -644,7 +644,7 @@ fa:
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "Browser"
       expires: "Expires"
-      last_connection: "Last connection"
+      last_connection: "آخرین اتصال"
       device: "Device / OS"
       unknown_browser: "unknown browser"
       unknown_os: "unknown operating system"
@@ -1139,7 +1139,7 @@ fa:
         sort_by: "Sort results by"
         filters: "فیلترها"
         timeline_labels: "برچسب های خط زمان"
-        timeline_visible: "نمایش نمودار گانت"
+        timeline_visible: "نمایش Gant chart"
         timeline_zoom_level: "Gantt chart zoom level"
         timestamps: "Baseline timestamps"
         sort_criteria: "Sort criteria"
@@ -1777,7 +1777,7 @@ fa:
           one: "<i>%{count} hour</i>"
           other: "<i>%{count} hours</i>"
         updated: "changed from %{old_value} to %{value}"
-        logged_for: "Logged for"
+        logged_for: "گزارش شده برای"
     filter:
       changeset: "Changesets"
       message: "Forums"
@@ -2841,7 +2841,7 @@ fa:
   label_required_disk_storage: "Required disk storage"
   label_send_invitation: ارسال دعوت نامه
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "تغییر والدین"
   label_change_plural: "Changes"
   label_change_properties: "Change properties"
   label_change_status: "Change status"
@@ -3063,7 +3063,7 @@ fa:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "مورب"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
@@ -4286,7 +4286,7 @@ fa:
       display_format: "Display format"
       deletion: "Deletion"
     working_days:
-      section_work_week: "Work week"
+      section_work_week: "هفته کاری"
       section_holidays_and_closures: "Holidays and closures"
     work_packages:
       not_allowed_text: "You do not have the necessary permissions to view this page."

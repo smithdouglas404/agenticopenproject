@@ -164,9 +164,9 @@ es:
         title: "Tabla de tokens de acceso"
     workflows:
       tabs:
-        default_transitions: "Default transitions"
-        user_author: "User is author"
-        user_assignee: "User is assignee"
+        default_transitions: "Transiciones predeterminadas"
+        user_author: "Usuario es autor"
+        user_assignee: "Usuario es asignado"
   authentication:
     login_and_registration: "Inicio de sesión y registro"
   announcements:
@@ -320,7 +320,7 @@ es:
     reorder_alphabetical: "Ordenar los valores alfabéticamente"
     reorder_confirmation: "Advertencia: Se perderá el orden actual de los valores disponibles. ¿Quiere continuar?"
     placeholder_version_select: "Primero debe seleccionar el paquete de trabajo o el proyecto"
-    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
+    calculated_field_not_editable: "Atributo no editable. Este valor se calcula automáticamente."
     instructions:
       is_required: "Marcar el campo personalizado como necesario. Esto hará obligatorio rellenar el campo cuando se creen nuevos o se actualicen los recursos existentes."
       is_required_for_project: "Marque esta casilla para activar este atributo y hacerlo obligatorio en todos los proyectos. No puede desactivarse para proyectos individuales."
@@ -347,8 +347,8 @@ es:
   concatenation:
     single: "o bien"
   danger_dialog:
-    confirmation_live_message_checked: "The button to proceed is now active."
-    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+    confirmation_live_message_checked: "El botón para continuar ya está activo."
+    confirmation_live_message_unchecked: "El botón para continuar ya está inactivo. Debe marcar la casilla para continuar."
   op_dry_validation:
     or: "o"
     errors:
@@ -527,8 +527,8 @@ es:
       versions:
         no_results_title_text: Actualmente no hay versiones para este proyecto.
         no_results_content_text: Crear un nueva versión
-        work_packages_graph: Work packages graph
-        show_work_packages: Show work packages
+        work_packages_graph: Gráfico de paquetes de trabajo
+        show_work_packages: Mostrar los paquetes de trabajo
       storage:
         no_results_title_text: No se ha registrado el uso de espacio en disco adicional por este proyecto.
       work_package_priorities:
@@ -2566,8 +2566,8 @@ es:
     include_sub_items: "Incluir subelementos"
     no_results_text: "No hay resultados"
   toggle_switch:
-    label_on: "On"
-    label_off: "Off"
+    label_on: "Encendido"
+    label_off: "Apagado"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
@@ -2596,13 +2596,13 @@ es:
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            El lanzamiento incluye varias funciones nuevas y mejoras, tales como:
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: Valores calculados para la evaluación y puntuación del proyecto (extensión Enterprise).
+            line_1: Jerarquía de tipos de atributos del proyecto.
+            line_2: Actualizaciones de rendimiento con gran impacto.
+            line_3: Nueva página de índice para el módulo Documentos.
+            line_4: Posibilidad de cambiar el principal de un elemento de campo personalizado.
     links:
       upgrade_enterprise_edition: "Actualizar a Enterprise"
       postgres_migration: "Migrando su instalación a PostgreSQL"
@@ -2927,7 +2927,7 @@ es:
   label_duplicate: "duplicar"
   label_duplicates: "duplicados"
   label_edit: "Editar"
-  label_edit_attribute: "Edit attribute"
+  label_edit_attribute: "Editar atributo"
   label_edit_x: "Editar: %{x}"
   label_enable_multi_select: "Selección multiple"
   label_enabled_project_custom_fields: "Habilitar campos personalizados"
@@ -3354,7 +3354,7 @@ es:
   label_user_search: "Búsqueda de usuario"
   label_user_settings: "Configuración de usuario"
   label_users_settings: "Ajustes de usuario"
-  label_value_x: "Value: %{x}"
+  label_value_x: "Valor: %{x}"
   label_version_new: "Nueva versión"
   label_version_edit: "Editar versión"
   label_version_plural: "Versiones"

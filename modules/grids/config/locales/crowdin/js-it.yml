@@ -30,7 +30,7 @@ it:
         project_status_beta:
           title: 'Stato del progetto (BETA)'
         subprojects:
-          title: 'Subitems'
+          title: 'Sottoelementi'
         project_favorites:
           title: 'Progetti preferiti'
           no_results: 'Al momento non hai progetti preferiti. Clicca sull''icona della stella nella dashboard del progetto per aggiungerne uno ai tuoi preferiti.'
@@ -41,7 +41,7 @@ it:
           title: 'Tempo trascorso (ultimi 7 giorni)'
           no_results: 'Nessuna voce sul tempo per gli ultimi 7 giorni.'
         work_packages_accountable:
-          title: "Macro-attività di cui sono responsabile"
+          title: "Macro-attività di cui sono responsabile del risultato"
         work_packages_assigned:
           title: 'Macro-attività assegnate a me'
         work_packages_created:

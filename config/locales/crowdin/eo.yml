@@ -352,7 +352,7 @@ eo:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "aŭ"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -387,13 +387,13 @@ eo:
       type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
+      enabled: "Ŝaltita"
       depth: "Depth"
       item: "Item"
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Patro"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -643,7 +643,7 @@ eo:
     sessions:
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "Browser"
-      expires: "Expires"
+      expires: "Senvalidiĝas"
       last_connection: "Last connection"
       device: "Device / OS"
       unknown_browser: "unknown browser"
@@ -1117,7 +1117,7 @@ eo:
       project/phase:
         date_range: "Data intervalo"
         definition: "Definition"
-        duration: "Duration"
+        duration: "Daŭro"
         start_date: "Komencdato"
         start_date_caption: "Follows the previous phase."
         finish_date: "Findato"
@@ -1262,7 +1262,7 @@ eo:
         derived_remaining_hours: "Total remaining work"
         derived_remaining_time: "Total remaining work"
         done_ratio: "% Complete"
-        duration: "Duration"
+        duration: "Daŭro"
         end_insertion: "Fino de enmeto"
         end_deletion: "Fino de forigo"
         ignore_non_working_days: "Ignore non working days"
@@ -2594,7 +2594,7 @@ eo:
       upsell:
         title: "Upgrade to Enterprise edition"
       new_features:
-        header: "Read about new features and product updates."
+        header: "Legu pri novaj plibonigoj kaj aktualigoj de produkto."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
@@ -3063,7 +3063,7 @@ eo:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "Kursiva"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
@@ -3395,14 +3395,14 @@ eo:
   label_work: "Work"
   label_work_package: "Laborpakaĵo"
   label_work_package_attachments: "Work package attachments"
-  label_work_package_category_new: "New category"
+  label_work_package_category_new: "Nova kategorio"
   label_work_package_category_plural: "Work package categories"
   label_work_package_comments: "Work package comments"
   label_work_package_hierarchy: "Work package hierarchy"
   label_work_package_new: "New work package"
   label_work_package_edit: "Redakti laborpakaĵon %{name}"
   label_work_package_plural: "Laborpakaĵoj"
-  label_work_package_status: "Stato de la laborpakaĵo"
+  label_work_package_status: "Stato de la Laborpakaĵo"
   label_work_package_status_new: "Nova stato"
   label_work_package_status_plural: "Laborpakaĵa stato"
   label_work_package_types: "Laborpakaĵa tipo"
@@ -3839,7 +3839,7 @@ eo:
       one: "1 projekto"
       other: "%{count} projektoj"
     destroy:
-      title: "Delete project"
+      title: "Forigi projekton"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4302,7 +4302,7 @@ eo:
   status_invited: invited
   status_locked: locked
   status_registered: registered
-  status_deleted: deleted
+  status_deleted: forigita
   #Used in array.to_sentence.
   support:
     array:

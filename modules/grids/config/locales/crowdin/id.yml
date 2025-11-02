@@ -8,7 +8,7 @@ id:
         view_all_subitems: "View all subitems"
       members:
         title: "Latest members"
-        no_results: "No visible members."
+        no_results: "Tidak ada anggota yang terlihat."
         view_all_members: "View all members"
       news:
         no_results: "Nothing new to report."

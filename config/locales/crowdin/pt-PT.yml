@@ -164,9 +164,9 @@ pt-PT:
         title: "Tabela de tokens de acesso"
     workflows:
       tabs:
-        default_transitions: "Default transitions"
-        user_author: "User is author"
-        user_assignee: "User is assignee"
+        default_transitions: "Transições padrão"
+        user_author: "O utilizador é o autor"
+        user_assignee: "O utilizador é encarregado"
   authentication:
     login_and_registration: "Iniciar sessão e registo"
   announcements:
@@ -320,7 +320,7 @@ pt-PT:
     reorder_alphabetical: "Reordenar valores em ordem alfabética"
     reorder_confirmation: "Aviso: A ordem atual de valores disponíveis será perdida. Continuar?"
     placeholder_version_select: "A seleção do pacote de trabalho ou do projeto é necessária em primeiro lugar"
-    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
+    calculated_field_not_editable: "Atributo não editável. Este valor é calculado automaticamente."
     instructions:
       is_required: "Marque o campo personalizado como obrigatório. Isto tornará obrigatório o preenchimento do campo ao criar novos recursos ou ao atualizar recursos existentes."
       is_required_for_project: "Selecione para ativar este atributo e torná-lo obrigatório em todos os projetos. Não pode ser desativado para projetos individuais."
@@ -347,8 +347,8 @@ pt-PT:
   concatenation:
     single: "ou"
   danger_dialog:
-    confirmation_live_message_checked: "The button to proceed is now active."
-    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+    confirmation_live_message_checked: "O botão para prosseguir está agora ativo."
+    confirmation_live_message_unchecked: "O botão para prosseguir está agora inativo. Tem de assinalar a caixa de verificação para continuar."
   op_dry_validation:
     or: "ou"
     errors:
@@ -527,8 +527,8 @@ pt-PT:
       versions:
         no_results_title_text: Atualmente, não existem versões para o projeto.
         no_results_content_text: Crie uma nova versão
-        work_packages_graph: Work packages graph
-        show_work_packages: Show work packages
+        work_packages_graph: Gráfico de pacotes de trabalho
+        show_work_packages: Mostrar pacotes de trabalho
       storage:
         no_results_title_text: Não há espaço adicional gravado em disco que seja consumido por este projeto.
       work_package_priorities:
@@ -1040,7 +1040,7 @@ pt-PT:
       enterprise_token:
         starts_at: "Válido desde"
         subscriber: "Assinante"
-        subscription: "Assinatura"
+        subscription: "Subscrição"
         plan: "Plano"
         encoded_token: "Token de suporte da versão Enterprise"
         active_user_count_restriction: "Utilizadores ativos"
@@ -1996,7 +1996,7 @@ pt-PT:
   button_unwatch: "Não observar"
   button_update: "Atualizar"
   button_upgrade: "Atualizar"
-  button_buy_now: "Compre agora"
+  button_buy_now: "Comprar agora"
   button_upload: "Carregar"
   button_view: "Ver"
   button_watch: "Observar"
@@ -2233,7 +2233,7 @@ pt-PT:
     upsell:
       buy_now_button: "Comprar agora"
       plans_title: "Planos Enterprise"
-      title: "Suplemento Enterprise"
+      title: "Complemento Enterprise"
       plan_title: "Complemento %{plan} Enterprise"
       plan_name: "Plano Enterprise %{plan}"
       plan_text_html: "Disponível a partir do %{plan_name}."
@@ -2566,8 +2566,8 @@ pt-PT:
     include_sub_items: "Incluir sub-elementos"
     no_results_text: "Sem resultados"
   toggle_switch:
-    label_on: "On"
-    label_off: "Off"
+    label_on: "Ligar"
+    label_off: "Desligar"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
@@ -2596,13 +2596,13 @@ pt-PT:
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            A versão contém várias novas funcionalidades e melhorias, tais como:
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: Valores calculados para avaliação e pontuação de projetos (complemento Enterprise).
+            line_1: Hierarquia de tipos de atributos do projeto.
+            line_2: Atualizações de desempenho com grande impacto.
+            line_3: Nova página de índice para o módulo Documentos.
+            line_4: Possibilidade de alterar o pai de um elemento de campo personalizado.
     links:
       upgrade_enterprise_edition: "Aprimorar para a edição Enterprise"
       postgres_migration: "A migrar a sua instalação para PostgreSQL"
@@ -2927,7 +2927,7 @@ pt-PT:
   label_duplicate: "duplicado"
   label_duplicates: "duplicados"
   label_edit: "Editar"
-  label_edit_attribute: "Edit attribute"
+  label_edit_attribute: "Editar atributo"
   label_edit_x: "Editar: %{x}"
   label_enable_multi_select: "Alternar para selecção múltipla"
   label_enabled_project_custom_fields: "Campos personalizados activados"
@@ -3354,7 +3354,7 @@ pt-PT:
   label_user_search: "Procurar utilizadores"
   label_user_settings: "Definições do utilizador"
   label_users_settings: "Definições do utilizador"
-  label_value_x: "Value: %{x}"
+  label_value_x: "Valor: %{x}"
   label_version_new: "Nova versão"
   label_version_edit: "Editar versão"
   label_version_plural: "Versões"
@@ -3614,7 +3614,7 @@ pt-PT:
   more_actions: "Mais funções"
   noscript_description: "Tem de ativar o JavaScript para usar o OpenProject!"
   noscript_heading: "JavaScript desativado"
-  noscript_learn_more: "Saber mais"
+  noscript_learn_more: "Mais informações"
   notice_accessibility_mode: O modo de acessibilidade pode ser ativado nas [definições de conta](url).
   notice_account_activated: "A sua conta foi ativada. É agora possível autenticar-se."
   notice_account_already_activated: A conta já foi ativada.
@@ -3693,7 +3693,7 @@ pt-PT:
   #Default format for numbers
   number:
     format:
-      delimiter: "."
+      delimiter: ","
       precision: 3
       separator: "."
     human:
@@ -3793,7 +3793,7 @@ pt-PT:
   permission_select_project_phases: "Selecionar fases do projeto"
   permission_select_project_phases_explanation: "Ativar/desativar as fases de um projeto. Permite ao utilizador selecionar o ciclo de vida adequado para o projeto, uma vez que as fases inativas não serão visíveis na página de visão geral do projeto nem na lista de projetos."
   permission_select_project_modules: "Selecione módulos do projeto"
-  permission_share_work_packages: "Partilhar pacotes de trabalho"
+  permission_share_work_packages: "Compartilhar pacotes de trabalho"
   permission_manage_types: "Selecione tipos"
   permission_manage_own_reminders: "Crie os seus próprios lembretes"
   permission_view_project: "Ver projetos"

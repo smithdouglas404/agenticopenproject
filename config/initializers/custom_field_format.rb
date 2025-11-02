@@ -95,9 +95,6 @@ OpenProject::CustomFieldFormat.map do |fields|
                                                      label: :label_scored_list,
                                                      only: %w(Project WorkPackage),
                                                      order: 13,
-                                                     enabled: lambda do
-                                                       OpenProject::FeatureDecisions.scored_list_custom_fields_active?
-                                                     end,
                                                      formatter: "CustomValue::ScoredListStrategy")
 
   fields.register OpenProject::CustomFieldFormat.new("calculated_value",

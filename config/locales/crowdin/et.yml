@@ -352,7 +352,7 @@ et:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "või"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -368,7 +368,7 @@ et:
           range: "must be one of: %{list_left} - %{list_right}."
       int?: "must be an integer."
       key?: "is missing."
-      not_found: "not found."
+      not_found: "ei leitud."
       rules:
         copy_workflow_from:
           workflow_missing: "has no own workflow."
@@ -387,13 +387,13 @@ et:
       type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
+      enabled: "Sees"
       depth: "Depth"
       item: "Item"
-      label: "Label"
+      label: "Silt"
       score: "Score"
-      short: "Short name"
-      parent: "Parent"
+      short: "Lühinimi"
+      parent: "Pärineb teemast"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -456,7 +456,7 @@ et:
     lists:
       active: "Aktiivsed projektid"
       my: "Minu projektid"
-      favorited: "Favorite projects"
+      favorited: "Lemmikprojektid"
       archived: "Arhiveeritud projektid"
       shared: "Jagatud projektide nimekiri"
       my_lists: "My project lists"
@@ -643,8 +643,8 @@ et:
     sessions:
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "Veebilehitseja"
-      expires: "Expires"
-      last_connection: "Last connection"
+      expires: "Aegub"
+      last_connection: "Viimati sisselogitud"
       device: "Seade / OS"
       unknown_browser: "tundmatu veebilehitseja"
       unknown_os: "unknown operating system"
@@ -1740,7 +1740,7 @@ et:
       user: "Kasutaja"
       version: "Versioon"
       workflow: "Töövoog"
-      work_package: "Tööpakett"
+      work_package: "Teema"
       wiki: "Viki"
       wiki_page: "Viki leht"
   errors:
@@ -1786,7 +1786,7 @@ et:
       subproject: "Kaasa alamprojektid"
       time_entry: "Kulutatud aeg"
       wiki_edit: "Viki"
-      work_package: "Tööpaketid"
+      work_package: "Teemad"
     project_phase:
       activated: "aktiveeritud"
       added_date: "set to %{date}"
@@ -1804,7 +1804,7 @@ et:
     attachments: "Manused"
     actor: "Actor"
     action: "Tegevus"
-    api_key: "API key"
+    api_key: "Veebiteenuse API võti"
     author: "Autor"
     avatar: "Profiilipilt"
     base: "Üldine tõrge:"
@@ -1847,7 +1847,7 @@ et:
     public: "Avalik"
     principal: "Kasutaja või rühm"
     #kept for backwards compatibility
-    issue: "Tööpakett"
+    issue: "Teema"
     journal: "Päevik"
     journal_notes: "Kommentaar"
     lastname: "Perekonnanimi"
@@ -3053,7 +3053,7 @@ et:
   label_link_url: "Link (URL)"
   label_list: "Nimistu"
   label_loading: "Laadimine..."
-  label_locked: "locked"
+  label_locked: "lukustatud"
   label_lock_user: "Lukusta kasutaja"
   label_logged_as: "Logitud sisse kui"
   label_login: "Logi sisse"
@@ -3063,7 +3063,7 @@ et:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "Krusiiv"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Teksti värv"
@@ -3393,7 +3393,7 @@ et:
   label_wiki_show_submenu_item: "Näita kui alammenüüd (<--) "
   label_wiki_start: "Esileht"
   label_work: "Töö"
-  label_work_package: "Tööpakett"
+  label_work_package: "Teema"
   label_work_package_attachments: "Work package attachments"
   label_work_package_category_new: "Uus kategooria"
   label_work_package_category_plural: "Teema kategooriad"
@@ -3402,7 +3402,7 @@ et:
   label_work_package_new: "Uus teema"
   label_work_package_edit: "Muuda teemat %{name}"
   label_work_package_plural: "Teemad"
-  label_work_package_status: "Tööpaketi olek"
+  label_work_package_status: "Teema olek"
   label_work_package_status_new: "Uus olek"
   label_work_package_status_plural: "Teemade olekud"
   label_work_package_types: "Work package types"
@@ -3462,7 +3462,7 @@ et:
       errors:
         no_project_context: "Calling create_work_package_link macro from outside project context."
         invalid_type: "No type found with name '%{type}' in project '%{project}'."
-      link_name: "Uus tööpakett"
+      link_name: "Uus teema"
       link_name_type: "New %{type_name}"
   mail:
     actions: "Tegevused"
@@ -3839,7 +3839,7 @@ et:
       one: "1 projekt"
       other: "%{count} projekti"
     destroy:
-      title: "Delete project"
+      title: "Kustuta projekt"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -3865,7 +3865,7 @@ et:
       remove_from_templates: "Remove from templates"
   project_module_activity: "Tegevus"
   project_module_forums: "Foorumid"
-  project_module_work_package_tracking: "Tööpaketid"
+  project_module_work_package_tracking: "Teemad"
   project_module_news: "Uudised"
   project_module_repository: "Hoidla"
   project_module_wiki: "Viki"
@@ -4302,7 +4302,7 @@ et:
   status_invited: ktsutud
   status_locked: lukustatud
   status_registered: registreeritud
-  status_deleted: deleted
+  status_deleted: kustutatud
   #Used in array.to_sentence.
   support:
     array:

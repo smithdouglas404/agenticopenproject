@@ -30,7 +30,7 @@ de:
         project_status_beta:
           title: 'Projektstatus (BETA)'
         subprojects:
-          title: 'Subitems'
+          title: 'Unterelemente'
         project_favorites:
           title: 'Favorisierte Projekte'
           no_results: 'Sie haben derzeit keine favorisierten Projekte. Klicken Sie auf den Stern auf der Projektübersicht, um ein Projekt zu Ihren Favoriten hinzuzufügen.'

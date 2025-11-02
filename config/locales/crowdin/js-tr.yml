@@ -60,7 +60,7 @@ tr:
     close_popup_title: "Açılır pencereyi kapat"
     close_filter_title: "Filtreyi kapat"
     close_form_title: "Formu kapat"
-    button_add_watcher: "Takip eden ekle"
+    button_add_watcher: "Takipçi ekle"
     button_add: "Ekle"
     button_back: "Geri"
     button_back_to_list_view: "Liste görünümüne geri dön"
@@ -103,7 +103,7 @@ tr:
     button_quote: "Alıntı"
     button_save: "Kaydet"
     button_settings: "Ayarlar"
-    button_uncheck_all: "Tüm işaretleri kaldır"
+    button_uncheck_all: "Tümünü işaretleme"
     button_update: "Güncelleştirme"
     button_export-atom: "Atom indir"
     button_generate_pdf: "PDF oluştur"
@@ -425,7 +425,7 @@ tr:
     label_repository_plural: "Depolar"
     label_save_as: "Farklı Kaydet"
     label_search_columns: "Bir sütunda arama yap"
-    label_select_watcher: "Takip eden seç..."
+    label_select_watcher: "Takipçi seç..."
     label_selected_filter_list: "Seçilen filtreler"
     label_show_attributes: "Tüm öznitelikleri göster"
     label_show_in_menu: "Görünümü menüde göster"
@@ -460,8 +460,8 @@ tr:
     label_work_package_plural: "İş paketleri"
     label_watch: "Takip et"
     label_watch_work_package: "İş paketini takip et"
-    label_watcher_added_successfully: "Takip eden başarıyla eklendi!"
-    label_watcher_deleted_successfully: "Takip eden başarıyla silindi!"
+    label_watcher_added_successfully: "Takipçi başarıyla eklendi!"
+    label_watcher_deleted_successfully: "Takipçi başarıyla silindi!"
     label_work_package_details_you_are_here: "%{type} %{subject} için %{tab} sekmesindesiniz."
     label_work_package_context_menu: "İş paketi bağlam menüsü"
     label_unwatch: "Takip etme"
@@ -479,7 +479,7 @@ tr:
     label_add_attachments: "Dosyaları ekle"
     label_formattable_attachment_hint: "Dosyaları bu alana sürükleyerek ekleyebilir veya panodan yapıştırabilirsiniz."
     label_remove_file: "%{fileName} Sil"
-    label_remove_watcher: "%{name} isimli takip edeni sil"
+    label_remove_watcher: "%{name} isimli takipçi sil"
     label_remove_all_files: Tüm dosyaları temizle
     label_add_description: "%{file} için açıklama ekle"
     label_upload_notification: "Dosyalar yükleniyor..."
@@ -545,7 +545,7 @@ tr:
         responsible: "Sorumlu"
         created: "Oluşturuldu"
         scheduled: "Zamanlandı"
-        commented: "Yorumlandı"
+        commented: "Yorumlananlar"
         processed: "İşlendi"
         prioritized: "Öncelikli"
         dateAlert: "Tarih uyarısı"
@@ -615,13 +615,13 @@ tr:
         global:
           immediately:
             title: "Katılım"
-            description: "Dahil olduğunuz iş paketlerindeki tüm faaliyetler için bildirimler (atanan, sorumlu veya izleyici)."
+            description: "Dahil olduğunuz (vekil, sorumlu veya gözlemci) iş paketlerindeki tüm faaliyetler için bildirimler."
           delayed:
             title: "Katılmayan"
             description: "Tüm projelerdeki faaliyetler için ek bildirimler."
           date_alerts:
             title: "Tarih uyarısı"
-            description: "Dahil olduğunuz açık iş paketleri için önemli tarihler yaklaştığında otomatik bildirimler (atanan, sorumlu veya izleyici)."
+            description: "Dahil olduğunuz (vekil, sorumlu veya gözlemci) açık iş paketleri için önemli tarihler yaklaştığında otomatik bildirimler."
           overdue: Süresi geçtiğinde
         project_specific:
           title: "Projeye özel bildirim ayarları"
@@ -658,7 +658,7 @@ tr:
       settings:
         daily:
           add_time: "Zaman ekle"
-          enable: "Günlük e-posta hatırlatıcılarını etkinleştir"
+          enable: "Günlük email hatırlatıcılarını etkinleştir"
           explanation: "Bu hatırlatıcıları yalnızca okunmamış bildirimler için ve yalnızca sizin belirlediğiniz saatlerde alacaksınız. %{no_time_zone}"
           no_time_zone: "Hesabınız için bir saat dilimi yapılandırana kadar, saatler UTC olarak yorumlanacaktır."
           time_label: "Zaman %{counter}:"
@@ -666,7 +666,7 @@ tr:
         workdays:
           title: "Bu günlerde e-posta hatırlatıcıları alın"
         immediate:
-          title: "Bana e-posta hatırlatıcısı gönder"
+          title: "Bana email hatırlatıcısı gönder"
           mentioned: "Birisi benden @bahsettiğinde hemen"
           personal_reminder: "Kişisel bir hatırlatma aldığımda hemen"
         alerts:
@@ -675,15 +675,15 @@ tr:
             Bildirimler bugün iş paketleri ile sınırlıdır. Bildirimlere eklenene kadar bu etkinlikler için e-posta uyarıları almaya devam etmeyi seçebilirsiniz:
           news_added: "Haber eklendiğinde"
           news_commented: "Bir habere yorum yapıldığında"
-          document_added: "Belge eklendiğinde"
+          document_added: "Belgeler eklendi"
           forum_messages: "Yeni forum iletileri yazıldığında"
           wiki_page_added: "Wiki sayfası eklendiğinde"
           wiki_page_updated: "Wiki sayfası güncellendiğinde"
           membership_added: "Üyelik eklendiğinde"
           membership_updated: "Üyelik güncellendiğinde"
-        title: "E-posta hatırlatıcıları"
+        title: "Email hatırlatıcıları"
         pause:
-          label: "E-posta hatırlatıcılarını geçici olarak durdur"
+          label: "Email hatırlatıcılarını geçici olarak durdur"
           first_day: "İlk gün"
           last_day: "Son gün"
     text_are_you_sure: "Emin misiniz?"
@@ -716,26 +716,26 @@ tr:
     two_factor_authentication:
       label_two_factor_authentication: "İki aşamalı kimlik doğrulama"
     watchers:
-      label_loading: takip edenler yükleniyor...
-      label_error_loading: Takip edenleri yüklerken bir hata oluştu
-      label_search_watchers: Takip eden arama
+      label_loading: takipçiler yükleniyor...
+      label_error_loading: Takipçileri yüklerken bir hata oluştu
+      label_search_watchers: Takipçi arama
       label_add: Takip eden ekle
       label_discard: Seçimi gözardı et
-      typeahead_placeholder: Olası takip edenler için arayın
+      typeahead_placeholder: Olası takipçiler için arayın
     relation_labels:
       parent: "Üst"
       child: "Alt"
       children: "Alt"
-      relates: "İlişkili"
-      duplicates: "Kopyalayan"
-      duplicated: "Kopyalanan"
+      relates: "Alakalı"
+      duplicates: "Çoğaltır"
+      duplicated: "Tarafından çoğaltılır"
       blocks: "Engeller"
       blocked: "Bağlı"
       precedes: "İletletir"
       follows: "Takip eder"
       includes: "İçerir"
       partof: "Bölümü"
-      requires: "Gerektiren"
+      requires: "Şunu gerektirir"
       required: "Gerektirir"
       relation_type: "ilişki türü"
     relations_hierarchy:
@@ -762,7 +762,7 @@ tr:
       toggle_description: "İlişki açıklamasını göster"
       update_relation: "İlişki türünü değiştirmek için tıklayın"
       show_relations: "İlişkileri göster"
-      add_predecessor: "Öncül ekle"
+      add_predecessor: "Öncelik ekle"
       add_successor: "Yedek personel ekle"
       remove: "İlişkiyi kaldır"
       save: "İlişkiyi kaydet"

@@ -44,13 +44,13 @@ RSpec.describe OpenProject::CustomFieldFormat do
       context "with calculated values feature flag enabled", with_flag: { calculated_value_project_attribute: true } do
         it_behaves_like "custom field formats",
                         "Project",
-                        %w[bool calculated_value date float int link list string text user version]
+                        %w[bool calculated_value date float int link list scored_list string text user version]
       end
 
       context "with calculated values feature flag disabled" do
         it_behaves_like "custom field formats",
                         "Project",
-                        %w[bool date float int link list string text user version]
+                        %w[bool date float int link list scored_list string text user version]
       end
     end
 
@@ -58,13 +58,13 @@ RSpec.describe OpenProject::CustomFieldFormat do
       context "with a custom_field_hierarchies ee", with_ee: [:custom_field_hierarchies] do
         it_behaves_like "custom field formats",
                         "WorkPackage",
-                        %w[bool date float int link list string text user version hierarchy]
+                        %w[bool date float hierarchy int link list scored_list string text user version]
       end
 
       context "without a custom_field_hierarchies ee" do
         it_behaves_like "custom field formats",
                         "WorkPackage",
-                        %w[bool date float int link list string text user version]
+                        %w[bool date float int link list scored_list string text user version]
       end
     end
 
@@ -104,18 +104,18 @@ RSpec.describe OpenProject::CustomFieldFormat do
     context "with a custom_field_hierarchies ee", with_ee: [:custom_field_hierarchies] do
       it_behaves_like "available custom field formats",
                       "including hierarchy",
-                      %w[bool date float int link list string text user version hierarchy empty]
+                      %w[bool date float hierarchy int link list scored_list string text user version empty]
     end
 
     context "without a custom_field_hierarchies ee" do
       it_behaves_like "available custom field formats",
                       "excluding hierarchy",
-                      %w[bool date float int link list string text user version empty]
+                      %w[bool date float int link list scored_list string text user version empty]
 
       context "with calculated values feature flag enabled", with_flag: { calculated_value_project_attribute: true } do
         it_behaves_like "available custom field formats",
                         "including calculated values",
-                        %w[bool calculated_value date float int link list string text user version empty]
+                        %w[bool calculated_value date float int link list scored_list string text user version empty]
       end
     end
   end
@@ -123,11 +123,10 @@ RSpec.describe OpenProject::CustomFieldFormat do
   describe ".disabled_formats" do
     it "returns disabled formats" do
       formats = described_class.disabled_formats
-      expect(formats).to match_array(%w[calculated_value scored_list])
+      expect(formats).to match_array(%w[calculated_value])
     end
 
-    context "with feature flags enabled",
-            with_flag: { calculated_value_project_attribute: true, scored_list_custom_fields: true } do
+    context "with feature flags enabled", with_flag: { calculated_value_project_attribute: true } do
       it "returns no disabled formats" do
         formats = described_class.disabled_formats
         expect(formats).to be_empty

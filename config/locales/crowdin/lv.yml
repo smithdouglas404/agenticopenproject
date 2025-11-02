@@ -352,7 +352,7 @@ lv:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "vai"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -649,7 +649,7 @@ lv:
     sessions:
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "Browser"
-      expires: "Expires"
+      expires: "Termiņš izbeidzas"
       last_connection: "Last connection"
       device: "Device / OS"
       unknown_browser: "unknown browser"
@@ -2886,7 +2886,7 @@ lv:
   label_required_disk_storage: "Nepieciešamā diska krātuve"
   label_send_invitation: Nosūtīt ielūgumu
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Mainīt vecāku"
   label_change_plural: "Changes"
   label_change_properties: "Change properties"
   label_change_status: "Change status"
@@ -3108,7 +3108,7 @@ lv:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "Slīps"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"

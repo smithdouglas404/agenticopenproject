@@ -212,7 +212,7 @@ ko:
       open_my_meetings_link: "내 미팅으로 이동"
       series:
         title: "[%{project_name}] 미팅 시리즈 '%{title}'"
-        summary: "%{actor} has invited you to a new meeting series '%{title}'"
+        summary: "%{actor} 님이 새로운 미팅 시리즈 '%{title}'에 회원님을 초대했습니다"
       series_updated:
         title: "[%{project_name}] 미팅 시리즈 '%{title}'이(가) 업데이트되었습니다"
         summary: "'%{title}' 미팅 시리즈를 %{actor} 님이 업데이트했습니다"
@@ -538,7 +538,7 @@ ko:
   text_meeting_not_editable_anymore: "이 미팅은 더 이상 편집할 수 없습니다."
   text_meeting_not_present_anymore: "이 미팅은 삭제되었습니다. 다른 미팅을 선택해 주세요."
   label_add_work_package_to_meeting_dialog_title: "미팅 선택"
-  label_add_work_package_to_meeting_section_label: "Section"
+  label_add_work_package_to_meeting_section_label: "섹션"
   label_add_work_package_to_meeting_dialog_button: "미팅에 추가"
   label_meeting_selection_caption: "향후 또는 진행 중인 미팅에만 이 작업 패키지를 추가할 수 있습니다."
   label_section_selection_caption: "의제의 특정 섹션을 선택하거나 백로그에 추가하세요."

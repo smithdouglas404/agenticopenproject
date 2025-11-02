@@ -2,7 +2,7 @@ vi:
   js:
     grid:
       add_widget: 'Thêm widget'
-      remove: 'Xóa widget'
+      remove: 'Xóa widget'
       configure: 'Cấu hình widget'
       widgets:
         missing_permission: "Bạn không có quyền cần thiết để xem widget này."
@@ -38,12 +38,12 @@ vi:
           title: 'Thời gian hiện tại (My spent time)'
           displayed_days: 'Số ngày được hiển thị trong widget:'
         time_entries_list:
-          title: 'Thời gian đã chi (7 ngày qua)'
-          no_results: 'Không có mục thời gian nào trong 7 ngày qua.'
+          title: 'Thời gian làm việc (trong 7 ngày gần nhất)'
+          no_results: 'Không có ghi nhận thời gian làm việc trong 7 ngày gần nhất.'
         work_packages_accountable:
-          title: "Gói công việc tôi chịu trách nhiệm"
+          title: "Gói công việc mà tôi có trách nhiệm"
         work_packages_assigned:
-          title: 'Gói công việc được giao cho tôi'
+          title: 'Work package được chỉ định cho tôi'
         work_packages_created:
           title: 'Công việc tạo bởi tôi'
         work_packages_watched:

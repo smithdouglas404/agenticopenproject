@@ -275,7 +275,7 @@ tr:
           drive_id_exists: Sürücü mevcut
           drive_id_format: Sürücü Kimliği biçimi
           header: Yapılandırma
-          host: Ana Bilgisayar URL'si
+          host: Barındırıcı URL'si
           host_url_accessible: Ana bilgisayar URL'si erişilebilir
           storage_configured: Yapılandırma tamamlandı
           tenant_id: Kiracı Kimliği
@@ -412,7 +412,7 @@ tr:
     label_edit_token_exchange: Anahtar değişimi yapılandırmasını düzenleme
     label_existing_manual_folder: Elle yönetilen izinlere sahip mevcut klasör
     label_file_storage: Dosya deposu
-    label_host: Barındırıcı URL'si
+    label_host: Ana Bilgisayar URL'si
     label_inactive: Etkin değil
     label_managed_project_folders:
       application_password: Uygulama şifresi
@@ -514,7 +514,7 @@ tr:
         label: Use access token obtained during user log in
       manual:
         helptext: OpenProject will exchange a token with the identity provider for the given audience.
-        label: Manually specify audience for which to exchange access token
+        label: Manually specify audience for which to exchange access token (Recommended)
     storage_list_blank_slate:
       description: Onları burada görmek için bir depolama ekleyin.
       heading: Henüz hiç depolamanız yok.

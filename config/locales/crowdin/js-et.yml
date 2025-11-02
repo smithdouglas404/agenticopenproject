@@ -234,7 +234,7 @@ et:
       embedded_table_loading: "The embedded view could not be loaded: %{message}"
     enumeration_activities: "Tegevused (ajajälgimine)"
     enumeration_doc_categories: "Dokumentide kategooriad"
-    enumeration_work_package_priorities: "Tööpakettide prioriteedid"
+    enumeration_work_package_priorities: "Teemade prioriteedid"
     filter:
       more_values_not_shown: "There are %{total} more results, search to filter results."
       description:
@@ -317,7 +317,7 @@ et:
     label_all: "kõik"
     label_all_projects: "Kõik projektid"
     label_all_uppercase: "Kõik"
-    label_all_work_packages: "kõik tööpaketid"
+    label_all_work_packages: "kõik teemad"
     label_and: "ja"
     label_ascending: "Kasvav"
     label_author: "Author: %{user}"
@@ -329,7 +329,7 @@ et:
     label_board_sticky: "Külgejääv"
     label_change: "Muuda"
     label_create: "Loo uus"
-    label_create_work_package: "Lisa uus tööpakett"
+    label_create_work_package: "Lisa uus teema"
     label_created_by: "Autor"
     label_current: "current"
     label_date: "Kuupäev"
@@ -455,9 +455,9 @@ et:
     label_value_derived_from_children: "(value derived from children)"
     label_children_derived_duration: "Work package's children derived duration"
     label_warning: "Hoiatus"
-    label_work_package: "Tööpakett"
+    label_work_package: "Teema"
     label_work_package_parent: "Parent work package"
-    label_work_package_plural: "Tööpaketid"
+    label_work_package_plural: "Teemad"
     label_watch: "Vaata"
     label_watch_work_package: "Watch work package"
     label_watcher_added_successfully: "Watcher successfully added!"
@@ -789,7 +789,7 @@ et:
       activate_asc: "activate to apply an ascending sort"
       activate_dsc: "activate to apply a descending sort"
       activate_no: "activate to remove the sort"
-    text_work_packages_destroy_confirmation: "Oled kindel, et soovid valitud tööpaketti(d) kustutada?"
+    text_work_packages_destroy_confirmation: "Oled Sa kindel oma soovis valitud teema(d) kustutada?"
     text_query_destroy_confirmation: "Are you sure you want to delete the selected view?"
     tl_toolbar:
       zooms: "Suumi tase"
@@ -855,13 +855,13 @@ et:
         modification_label: "Modified within the comparison time period"
         column_incompatible: "This column does not show changes in Baseline mode."
       filters:
-        title: "Filtreeri tööpakette"
+        title: "Filtreeri teemasid"
         baseline_incompatible: "This filter attribute is not taken into consideration in Baseline mode."
         baseline_warning: "Baseline mode is on but some of your active filters are not included in the comparison."
       inline_create:
         title: "Click here to add a new work package to this list"
       create:
-        title: "Uus tööpakett"
+        title: "Uus teema"
         header: "New %{type}"
         header_no_type: "New work package (Type not yet set)"
         header_with_parent: "New %{type} (Child of %{parent_type} #%{id})"

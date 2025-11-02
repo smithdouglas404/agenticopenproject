@@ -348,7 +348,7 @@ id:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "atau"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -389,7 +389,7 @@ id:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Induk"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -634,7 +634,7 @@ id:
       session_name: "%{browser_name} %{browser_version} di %{os_name}"
       browser: "Browser"
       expires: "Expires"
-      last_connection: "Last connection"
+      last_connection: "Terakhir koneksi"
       device: "Device / OS"
       unknown_browser: "peramban tidak dikenal"
       unknown_os: "sistem operasi tidak dikenal"
@@ -2792,7 +2792,7 @@ id:
   label_required_disk_storage: "Storage yang dibutuhkan"
   label_send_invitation: Kirim undangan
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Perubahan induk"
   label_change_plural: "Perubahan"
   label_change_properties: "Ubah properti"
   label_change_status: "Ubah status"
@@ -2922,7 +2922,7 @@ id:
   label_filter_add: "Tambah Filter"
   label_filter_by: "Filter by"
   label_filter_any_name_attribute: "Name attributes"
-  label_filter_plural: "Penyaring"
+  label_filter_plural: "Filter"
   label_filters_toggle: "Tampilkan/Sembunyikan penyaringan"
   label_float: "Float"
   label_folder: "Folder"
@@ -3004,7 +3004,7 @@ id:
   label_link_url: "Link (URL)"
   label_list: "List"
   label_loading: "Loading..."
-  label_locked: "locked"
+  label_locked: "terkunci"
   label_lock_user: "Mengunci pengguna"
   label_logged_as: "Login sbg"
   label_login: "Login"
@@ -3014,7 +3014,7 @@ id:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "Miring"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
@@ -3646,7 +3646,7 @@ id:
   #Default format for numbers
   number:
     format:
-      delimiter: "."
+      delimiter: ","
       precision: 3
       separator: "."
     human:
@@ -3787,7 +3787,7 @@ id:
       one: "1 project"
       other: "%{count} proyek"
     destroy:
-      title: "Delete project"
+      title: "Hapus proyek"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4248,7 +4248,7 @@ id:
   status_invited: invited
   status_locked: terkunci
   status_registered: telah terdaftar
-  status_deleted: deleted
+  status_deleted: dihapus
   #Used in array.to_sentence.
   support:
     array:

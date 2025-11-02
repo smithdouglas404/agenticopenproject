@@ -41,7 +41,7 @@ de:
         changed: "geändert"
         created: "erstellt"
         commented: "kommentiert"
-        internal_comment: interner Kommentar
+        internal_comment: Interner Kommentar
         internal_journal: Interne Kommentare sind nur für eine einschränkbare Gruppe von Mitgliedern sichtbar.
         unsaved_changes_confirmation_message: Sie haben ungespeicherte Änderungen. Sind Sie sicher, dass Sie den Editor schließen möchten?
         internal_comment_confirmation:
@@ -126,7 +126,7 @@ de:
       delete_scim_client_dialog_component:
         title: "SCIM-Client löschen"
         heading: "Sind Sie sicher, dass Sie diesen SCIM-Client löschen möchten?"
-        description: "Von diesem SCIM-Client verwaltete Nutzer:innen können nicht mehr von ihm aktualisiert werden."
+        description: "Von diesem SCIM-Client verwaltete Benutzer können nicht mehr von ihm aktualisiert werden."
       edit:
         label_delete_scim_client: "SCIM-Client löschen"
       form:
@@ -136,7 +136,7 @@ de:
         jwt_sub_description: "Beispielsweise für Keycloak ist dies die UUID des Service-Accounts der zum SCIM-Client gehört. Weitere Informationen finden Sie in [unserer Dokumentation](docs_url)."
         name_description: "Wählen Sie einen Namen, der anderen Administratoren hilft, besser zu verstehen, warum dieser Client konfiguriert wurde."
       index:
-        description: "SCIM-Clients, die hier konfiguriert werden, können mit der OpenProject SCIM-Server-API interagieren, um Nutzerkonten und Gruppen zu erstellen, zu aktualisieren und zu entfernen."
+        description: "SCIM-Clients, die hier konfiguriert werden, können mit der OpenProject SCIM-Server-API interagieren, um Benutzerkonten und Gruppen zu erstellen, zu aktualisieren und zu entfernen."
         label_create_button: "SCIM-Client hinzufügen"
       new:
         title: "Neuer SCIM-Client"
@@ -164,9 +164,9 @@ de:
         title: "Zugangs-Token Tabelle"
     workflows:
       tabs:
-        default_transitions: "Default transitions"
-        user_author: "User is author"
-        user_assignee: "User is assignee"
+        default_transitions: "Standard-Übergänge"
+        user_author: "Benutzer ist Autor"
+        user_assignee: "Benutzer ist zugewiesen"
   authentication:
     login_and_registration: "Anmeldung und Registrierung"
   announcements:
@@ -319,7 +319,7 @@ de:
     reorder_alphabetical: "Alphabetisch umsortieren"
     reorder_confirmation: "Warnung: Die aktuelle Reihenfolge der verfügbaren Werte geht verloren. Fortfahren?"
     placeholder_version_select: "Zunächst muss ein Arbeitspaket oder ein Projekt ausgewählt werden"
-    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
+    calculated_field_not_editable: "Nicht editierbares Attribut. Dieser Wert wird automatisch berechnet."
     instructions:
       is_required: "Markieren Sie das benutzerdefinierte Feld als erforderlich. Dies macht es zwingend erforderlich, das Feld auszufüllen, wenn neue oder aktualisierte Ressourcen erstellt werden."
       is_required_for_project: "Das Attribut in allen Projekten erforderlich machen. Es kann dann nicht für einzelne Projekte deaktiviert werden."
@@ -346,8 +346,8 @@ de:
   concatenation:
     single: "oder"
   danger_dialog:
-    confirmation_live_message_checked: "The button to proceed is now active."
-    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+    confirmation_live_message_checked: "Die Schaltfläche zum Fortfahren ist nun aktiv."
+    confirmation_live_message_unchecked: "Die Schaltfläche zum Fortfahren ist inaktiv. Sie müssen das Kontrollkästchen ankreuzen, um fortzufahren."
   op_dry_validation:
     or: "oder"
     errors:
@@ -372,7 +372,7 @@ de:
         custom_field:
           format_not_supported: "format '%{field_format}' wird nicht unterstützt."
         item:
-          root_item: "kann kein Wurzelelement sein."
+          root_item: "kann keine Hierarchiewurzel sein."
           not_persisted: "muss ein bereits vorhandenes Element sein."
         label:
           not_unique: "muss innerhalb der gleichen Hierarchieebene eindeutig sein."
@@ -386,12 +386,12 @@ de:
       copy_workflow_from: "Typ für Workflow-Kopie"
       enabled: "Aktiviert"
       depth: "Tiefe"
-      item: "Element"
-      label: "Beschreibung"
+      item: "Favorisiert"
+      label: "Bezeichnung"
       score: "Wert"
       short: "Kurzname"
-      parent: "Elternelement"
-      blueprint: "Muster-Blaupause"
+      parent: "Übergeordnetes Arbeitspaket"
+      blueprint: "Blaupause für Muster"
   global_search:
     title:
       all_projects: 'Suche nach "%{search_term}" in allen Projekten'
@@ -526,8 +526,8 @@ de:
       versions:
         no_results_title_text: Derzeit gibt es keine Versionen für das Projekt.
         no_results_content_text: Neue Version erstellen
-        work_packages_graph: Work packages graph
-        show_work_packages: Show work packages
+        work_packages_graph: Arbeitspaket-Graph
+        show_work_packages: Arbeitspakete anzeigen
       storage:
         no_results_title_text: Durch dieses Projekt wird kein zusätzlicher erfasster Speicherplatz verbraucht.
       work_package_priorities:
@@ -616,7 +616,7 @@ de:
           attention_text: "Behandeln Sie API-Tokens wie Passwörter. Jeder, der über diesen Link verfügt, hat Zugang zu den Informationen dieser Instanz."
           dialog_body: "Dieses Token ermöglicht es Anwendungen von Drittanbietern, mit Ihrer Instanz zu kommunizieren. Um das neue API-Token zu unterscheiden, geben Sie ihm bitte einen Namen."
           create_button: "Anlegen"
-          name_label: "Tokenname"
+          name_label: "Token-Name"
       created_dialog:
         token/api:
           title: "Der API-Token wurde generiert"
@@ -640,7 +640,7 @@ de:
     sessions:
       session_name: "%{browser_name} %{browser_version} unter %{os_name}"
       browser: "Browser"
-      expires: "Läuft ab"
+      expires: "Läuft aus"
       last_connection: "Letzte Anmeldung"
       device: "Gerät / Betriebssystem"
       unknown_browser: "unbekannter Browser"
@@ -676,7 +676,7 @@ de:
   priorities:
     edit:
       priority_color_text: |
-        Klicken zum Zuweisen einer Farbe für diese Priorität. Diese wird für die Hervorhebung von Arbeitspaketen in Tabellen verwendet.
+        Klicken zum Zuweisen einer Farbe für diesen Prioritätswert. Diese wird für die Hervorhebung von Arbeitspaketen in Tabellen verwendet.
     admin:
       default:
         caption: Wird diese Priorität als Standard gesetzt, überschreibt das den vorherhigen Standardwert.
@@ -731,7 +731,7 @@ de:
       projects:
         tab: Projekte
         enable_all: Für alle Projekte aktivieren
-        select_projects: Projekte auswählen
+        select_projects: Projekt auswählen
         select_projects_description: Wählen Sie die Projekte aus, in denen Sie diesen Typ verwenden möchten.
       settings:
         tab: "Einstellungen"
@@ -1042,7 +1042,7 @@ de:
       enterprise_trial:
         company: "Unternehmen"
       favorite:
-        favorited: "Favorisiert"
+        favorited: "Element"
       grids/grid:
         page: "Seite"
         row_count: "Anzahl der Zeilen"
@@ -1170,7 +1170,7 @@ de:
         excluded_from_totals: "Von der Berechnung der Gesamtsumme in der Hierarchie ausschließen"
         default_done_ratio: "% abgeschlossen"
       token/named:
-        token_name: "Token-Name"
+        token_name: "Tokenname"
       token/ical:
         calendar: "Kalender"
         ical_token_query_assignment: "Zuordnung der Abfrage"
@@ -1182,7 +1182,7 @@ de:
         ongoing: "Fortlaufend"
       type:
         description: "Standardtext für Beschreibung"
-        attribute_groups: "Formular-Konfiguration"
+        attribute_groups: "Formularkonfiguration"
         is_in_roadmap: "In Roadmap standardmäßig angezeigt"
         is_default: "Typ für neue Projekte standardmäßig aktiviert"
         is_milestone: "Ist ein Meilenstein"
@@ -1703,7 +1703,7 @@ de:
       issue_priority:
         one: "Priorität"
         other: "Prioritäten"
-      meeting_participant: "Meeting participant"
+      meeting_participant: "Besprechungsteilnehmer"
       member: "Mitglied"
       news: "Neuigkeiten"
       notification:
@@ -1723,7 +1723,7 @@ de:
         other: "Rollen"
       scim_client:
         one: "SCIM-Client"
-        other: "SCIM-Clients"
+        other: "SCIM-clients"
       status: "Arbeitspaket-Status"
       token/api:
         one: Zugangs-Token
@@ -1796,7 +1796,7 @@ de:
     attachments: "Anhänge"
     actor: "Ausführender Benutzer"
     action: "Aktion"
-    api_key: "API-Key"
+    api_key: "API-Schlüssel"
     author: "Autor"
     avatar: "Profilfoto"
     base: "Allgemeiner Fehler:"
@@ -2159,7 +2159,7 @@ de:
         other: "%{count} Sek."
     units:
       minute_abbreviated:
-        one: "Min"
+        one: "Min."
         other: "Min"
       hour:
         one: "Stunde"
@@ -2212,7 +2212,7 @@ de:
       define_custom_style: Selbstdefiniertes Logo und Farbthema
       edit_attribute_groups: Attributgruppen bearbeiten
       gantt_pdf_export: Gantt PDF Export
-      ldap_groups: LDAP Konten und Gruppen Synchronisation
+      ldap_groups: LDAP-Benutzer- und Gruppensynchronisation
       nextcloud_sso: Single Sign-On für Nextcloud-Speicher
       one_drive_sharepoint_file_storage: OneDrive/SharePoint-Datei-Speicher
       placeholder_users: Platzhalter-Benutzer
@@ -2242,14 +2242,14 @@ de:
       baseline_comparison:
         description: An dieser Liste vorgenommene Änderungen seit einem beliebigen Zeitpunkt in der Vergangenheit hervorheben.
       benefits:
-        description: "Was sind die Vorteile der Enterprise On-premises Edition?"
-        high_security: "Sicherheitsfunktionen"
+        description: "Was sind die Vorteile von Enterprise on-premises?"
+        high_security: "Weitere Sicherheitsfunktionen"
         high_security_text: "Single Sign on (SAML, OpenID Connect, CAS), LDAP Gruppen."
         installation: "Installations-Support"
         installation_text: "Erfahrene Software-Ingenieure führen Sie durch den gesamten Installations- und Einrichtungsprozess in Ihrer eigenen Infrastruktur."
         premium_features: "Enterprise Add-ons"
         premium_features_text: "Agile Boards, benutzerdefinierte Farben und Logo, Graphen, intelligente Workflows mit benutzerdefinierten Aktionen, Volltextsuche für Anhänge von Arbeitspaketen und Mehrfachauswahl benutzerdefinierter Felder."
-        professional_support: "Professioneller Support"
+        professional_support: "Professionelle Unterstützung"
         professional_support_text: "Sie bekommen zuverlässigen und persönlichen Support von Experten, die sich mit dem Einsatz von OpenProject in geschäftskritischen Umgebungen auskennen."
       work_package_subject_generation:
         description: "Erstellen Sie automatisch generierte Betreffe mit referenzierten Attributen und Text."
@@ -2561,8 +2561,8 @@ de:
     include_sub_items: "Unterelemente einbeziehen"
     no_results_text: "Keine Ergebnisse"
   toggle_switch:
-    label_on: "On"
-    label_off: "Off"
+    label_on: "Ein"
+    label_off: "Aus"
   general_csv_decimal_separator: ","
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
@@ -2591,13 +2591,13 @@ de:
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            Dieses Release enthält verschiedene neue Funktionen und Verbesserungen, wie z. B:
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: Berechnete Werte für Projektbewertung und Scoring (Enterprise Add-on).
+            line_1: Projektattribute vom Typ Hierarchie.
+            line_2: Verbesserte Performance in vielen Bereichen.
+            line_3: Neue Übersichtsseite für das Dokumente-Modul.
+            line_4: Möglichkeit, das übergeordnete Element eines benutzerdefinierten Feldes zu ändern.
     links:
       upgrade_enterprise_edition: "Auf Enterprise Edition upgraden"
       postgres_migration: "Migration Ihrer Installation zu PostgreSQL"
@@ -2922,7 +2922,7 @@ de:
   label_duplicate: "Duplikat"
   label_duplicates: "Duplikat von"
   label_edit: "Bearbeiten"
-  label_edit_attribute: "Edit attribute"
+  label_edit_attribute: "Attribut bearbeiten"
   label_edit_x: "Bearbeiten: %{x}"
   label_enable_multi_select: "Mehrfachauswahl umschalten"
   label_enabled_project_custom_fields: "Aktivierte benutzerdefinierte Felder"
@@ -3012,7 +3012,7 @@ de:
   label_internal: "Intern"
   label_introduction_video: "Einführungsvideo"
   label_invite_user: "Nutzer einladen"
-  label_item: "Element"
+  label_item: "Favorisiert"
   label_item_plural: "Elemente"
   label_scored_list: "Bewertete Liste"
   label_share: "Teilen"
@@ -3045,7 +3045,7 @@ de:
   label_link_url: "Link (URL)"
   label_list: "Liste"
   label_loading: "Lade..."
-  label_locked: "Gesperrt"
+  label_locked: "gesperrt"
   label_lock_user: "Benutzer sperren"
   label_logged_as: "Angemeldet als"
   label_login: "Anmelden"
@@ -3349,7 +3349,7 @@ de:
   label_user_search: "Nach Benutzer suchen"
   label_user_settings: "Benutzereinstellungen"
   label_users_settings: "Benutzereinstellungen"
-  label_value_x: "Value: %{x}"
+  label_value_x: "Wert: %{x}"
   label_version_new: "Neue Version"
   label_version_edit: "Version bearbeiten"
   label_version_plural: "Versionen"

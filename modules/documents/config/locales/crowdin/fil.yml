@@ -29,7 +29,7 @@ fil:
     attributes:
       document:
         content_binary: "Content binary"
-        title: "Title"
+        title: "Pamagat"
   activity:
     filter:
       document: "Mga dokumento"
@@ -47,12 +47,12 @@ fil:
       heading: "There are no documents yet"
       description: "There are no documents in this view. You can click the button below to add one."
     index_page:
-      name: "Name"
-      type: "Type"
+      name: "Pangalan"
+      type: "Uri"
       updated_at: "Last edited"
     menu:
       all: "All documents"
-      types: "Types"
+      types: "Mga uri"
     label_attachment_author: "Attachment author"
     label_categories: "Categories"
     new_category: "Bagong kategorya"

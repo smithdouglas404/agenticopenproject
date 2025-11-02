@@ -78,6 +78,7 @@ export default class extends ApplicationController {
   private handleClick(url:string, method:string):void {
     if (hasUnsavedChanges()) {
       if (window.confirm(I18n.t('js.text_are_you_sure_to_cancel'))) {
+        window.OpenProject.pageState = 'pristine';
         this.sendRequest(url, method);
       }
     } else {

@@ -164,9 +164,9 @@ uk:
         title: "Таблиця маркерів доступу"
     workflows:
       tabs:
-        default_transitions: "Default transitions"
-        user_author: "User is author"
-        user_assignee: "User is assignee"
+        default_transitions: "Стандартні переходи"
+        user_author: "Користувач є автором"
+        user_assignee: "Користувач є призначеною особою"
   authentication:
     login_and_registration: "Вхід і реєстрація"
   announcements:
@@ -319,7 +319,7 @@ uk:
     reorder_alphabetical: "Перевпорядкувати значення за алфавітом"
     reorder_confirmation: "Увага! Поточний порядок доступних значень буде втрачено. Продовжити?"
     placeholder_version_select: "Спочатку потрібно вибрати пакет робіт або проєкт"
-    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
+    calculated_field_not_editable: "Атрибут не підлягає редагуванню. Його значення обчислюється автоматично."
     instructions:
       is_required: "Позначте користувацьке поле як обов’язкове. Так його потрібно буде заповнювати під час створення нових або оновлення наявних ресурсів."
       is_required_for_project: "Установіть прапорець, щоб увімкнути цей атрибут і зробити його обов’язковим в усіх проєктах. Його не можна деактивувати для окремих проєктів."
@@ -346,8 +346,8 @@ uk:
   concatenation:
     single: "або"
   danger_dialog:
-    confirmation_live_message_checked: "The button to proceed is now active."
-    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
+    confirmation_live_message_checked: "Кнопка для продовження активна."
+    confirmation_live_message_unchecked: "Кнопка для продовження зараз неактивна. Щоб продовжити, поставте прапорець."
   op_dry_validation:
     or: "або"
     errors:
@@ -526,8 +526,8 @@ uk:
       versions:
         no_results_title_text: Наразі не існує версій для проекту.
         no_results_content_text: Створіть нову версію
-        work_packages_graph: Work packages graph
-        show_work_packages: Show work packages
+        work_packages_graph: Графік робочих пакетів
+        show_work_packages: Показати пакети робіт
       storage:
         no_results_title_text: Цей проєкт не потребує додаткового дискового простору.
       work_package_priorities:
@@ -764,7 +764,7 @@ uk:
           label_with_context: "%{attribute_context}: %{attribute_label}"
           context:
             work_package: "Робочий пакет"
-            parent: "Батьківський"
+            parent: "Батьківський об’єкт"
             project: "Проєкт"
         pattern:
           label: "Шаблон теми"
@@ -910,7 +910,7 @@ uk:
       new_child_description: "Створює звʼязаний пакет робіт як піделемент поточного (батьківського) пакета робіт"
       child: "Дочірній"
       child_description: "Вкладає звʼязаний пакет робіт як піделемент поточного (батьківського) пакета робіт"
-      parent: "Батьківський"
+      parent: "Батьківський об’єкт"
       parent_description: "Установлює звʼязаний пакет робіт батьківським відносно поточного (дочірнього) пакета робіт"
       label_closest: "Найближчі"
       label_blocks_singular: "блоки"
@@ -1283,8 +1283,8 @@ uk:
         journal_internal: Внутрішній журнал
         notify: "Сповіщати" #used in custom actions
         parent: "Джерело"
-        parent_issue: "Батьківський"
-        parent_work_package: "Батьківський"
+        parent_issue: "Батьківський об’єкт"
+        parent_work_package: "Батьківський об’єкт"
         priority: "Пріоритет"
         progress: "% завершення"
         readonly: "Лише читання"
@@ -2653,8 +2653,8 @@ uk:
     include_sub_items: "Включити піделементи"
     no_results_text: "Немає результатів"
   toggle_switch:
-    label_on: "On"
-    label_off: "Off"
+    label_on: "Увімкнено"
+    label_off: "Вимкнено"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
@@ -2683,13 +2683,13 @@ uk:
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            Випуск включає різноманітні нові функції і покращення, такі як:
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: Обчислені значення для оцінки проєктів і підрахунку балів (доповнення версії Enterprise).
+            line_1: Ієрархія типів атрибутів проєкту.
+            line_2: Значні покращення продуктивності.
+            line_3: Нова індексна сторінка модуля «Документи».
+            line_4: Можливість змінити батьківський об’єкт елемента користувацького поля.
     links:
       upgrade_enterprise_edition: "Оновлення до версії Enterprise"
       postgres_migration: "Міграція інсталяції в PostgreSQL"
@@ -2872,7 +2872,7 @@ uk:
   label_ical_access_key_not_present: "Немає маркерів iCalendar."
   label_ical_access_key_generation_hint: "Автоматично створено під час оформлення підписки на календар."
   label_ical_access_key_latest: "останні"
-  label_ical_access_key_revoke: "Відкликати"
+  label_ical_access_key_revoke: "Анулювати"
   label_add_column: "Додати стовпець"
   label_applied_status: "Застосовний статус"
   label_archive_project: "Архівний проект"
@@ -3014,7 +3014,7 @@ uk:
   label_duplicate: "Дублювати"
   label_duplicates: "Дублікати"
   label_edit: "Редагувати"
-  label_edit_attribute: "Edit attribute"
+  label_edit_attribute: "Редагувати атрибут"
   label_edit_x: "Редагувати: %{x}"
   label_enable_multi_select: "Перемкнути мультиселекцію"
   label_enabled_project_custom_fields: "Увімкнено спеціальні поля"
@@ -3235,7 +3235,7 @@ uk:
   label_operator_none: "не вказано"
   label_operator_equals_or: "є (АБО)"
   label_operator_equals_all: "є (І)"
-  label_operator_shared_with_user_any: "будь-який"
+  label_operator_shared_with_user_any: "усі"
   label_open: "відкрити"
   label_closed: "зачинено"
   label_open_menu: "Відкрити меню"
@@ -3441,7 +3441,7 @@ uk:
   label_user_search: "Знайти користувача:"
   label_user_settings: "Налаштування користувача"
   label_users_settings: "Налаштування користувачів"
-  label_value_x: "Value: %{x}"
+  label_value_x: "Значення: %{x}"
   label_version_new: "Нова версія"
   label_version_edit: "Редагувати версію"
   label_version_plural: "Версії"
@@ -4386,7 +4386,7 @@ uk:
   status_archived: "в архіві"
   status_blocked: "заблоковано"
   status_invited: запрошені
-  status_locked: Заблоковано
+  status_locked: заблоковано
   status_registered: Зареєстровано
   status_deleted: видалено
   #Used in array.to_sentence.

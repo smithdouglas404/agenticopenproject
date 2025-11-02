@@ -249,10 +249,10 @@ es:
         ampf_configuration:
           client_folder_creation: Creación automática de carpetas
           client_folder_removal: Eliminación automática de carpetas
-          drive_contents: Drive content
+          drive_contents: Contenido de la unidad
           files_request: Obteniendo archivos de carpetas de grupo
           group_folder_app: 'Dependencia: Carpetas de grupo'
-          group_folder_contents: Group folder content
+          group_folder_contents: Contenido de la carpeta de grupo
           group_folder_presence: La carpeta del grupo existe
           header: Carpetas de proyecto gestionadas automáticamente
           userless_access: Autenticación de solicitudes del lado del servidor
@@ -498,7 +498,7 @@ es:
         name: OneDrive
         name_placeholder: ej. OneDrive
       sharepoint:
-        drive_description: OpenProject access-managed document library
+        drive_description: Biblioteca de documentos con gestión de acceso de OpenProject
         label_oauth_client_id: Identificador de la aplicación Azure OAuth (cliente)
         label_oauth_client_secret: Valor secreto del cliente de Azure OAuth
         name: SharePoint
@@ -513,7 +513,7 @@ es:
         label: Usar token de acceso obtenido durante el inicio de sesión del usuario
       manual:
         helptext: OpenProject intercambiará un token con el proveedor de identidad para la audiencia dada.
-        label: Especificar manualmente la audiencia con la que intercambiar el token de acceso
+        label: Especificar manualmente la audiencia con la que intercambiar el token de acceso (recomendado)
     storage_list_blank_slate:
       description: Añade un almacenamiento para verlos aquí.
       heading: Aún no tiene ningún almacenamiento.

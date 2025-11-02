@@ -39,7 +39,7 @@ hu:
         unit_plural: "Többes számú egység neve"
         default: "Költségtípus alapértelmezés szerint"
       work_package:
-        costs_by_type: "Elhasznált egységek"
+        costs_by_type: "Elköltött egység"
         labor_costs: "Munkaerő költségek"
         material_costs: "Egység költségek"
         overall_costs: "Összes költség"
@@ -76,7 +76,7 @@ hu:
         other: "Költségtípusok"
       time_entry_activity:
         one: "Időkövetési tevékenység"
-        other: "Időkövetési tevékenységek"
+        other: "Időnyilvántartási tevékenységek"
       rate: "Díj"
     errors:
       models:
@@ -142,7 +142,7 @@ hu:
   label_work_package_filter_add: "Munkacsomag szűrő hozzáadása"
   label_kind: "Típus"
   label_less_or_equal: "<="
-  label_log_costs: "Naplózott költségek"
+  label_log_costs: "Költségek naplózása"
   label_new_time_entry_activity: "Új időrögzítési tevékenység"
   label_time_entry_activity_form_description: "A munkaidő-nyilvántartási tevékenység változásai minden olyan projektben tükröződnek, ahol ez engedélyezve van."
   label_no: "Nem"

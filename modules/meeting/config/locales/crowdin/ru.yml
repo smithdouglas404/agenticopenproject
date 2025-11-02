@@ -82,10 +82,10 @@ ru:
       meeting_agenda: "Повестка дня"
       meeting_section: "Раздел"
       token/ical_meeting:
-        one: "подписка на совещание iCal"
+        one: "Подписка на совещание iCal"
         few: "iCal Meeting subscription"
         many: "iCal Meeting subscription"
-        other: "iCal Meeting subscription"
+        other: "Подписка на совещание iCal"
   activity:
     filter:
       meeting: "Совещания"
@@ -227,7 +227,7 @@ ru:
       open_my_meetings_link: "Перейти к списку моих совещаний"
       series:
         title: "[%{project_name}] Серия совещаний '%{title}'"
-        summary: "%{actor} has invited you to a new meeting series '%{title}'"
+        summary: "%{actor} приглашает вас на новую серию совещаний '%{title}'"
       series_updated:
         title: "[%{project_name}] Серия встреч '%{title}' была обновлена"
         summary: "Серия совещаний '%{title}' была обновлена пользователем %{actor}"
@@ -282,14 +282,14 @@ ru:
         author: "Автор"
         date: "Дата"
         time: "Время"
-        location: "Местоположение"
+        location: "Расположение"
         title: "Протокол"
     export_pdf_dialog:
       title: Экспорт в PDF
       description: Создать печатный PDF-файл этого совещания в текущем состоянии.
       templates:
         default:
-          label: По-умолчанию
+          label: по умолчанию
           caption: Шаблон по умолчанию подходит для большинства встреч и представляет текущее состояние.
         minutes:
           label: Протокол
@@ -329,7 +329,7 @@ ru:
           disable: "Отключить обновления календаря по электронной почте?"
         message:
           enable: >
-            All participants will receive updated calendar invites via email every time there is a change to the meeting date, time, location or participants. Once enabled, an email will be sent out immediately to all participants.
+            Все участники будут получать обновленные календарные приглашения по электронной почте каждый раз, когда изменяется дата, время, место или участники встречи. Как только эта функция включена, всем участникам будет немедленно отправлено электронное письмо.
           disable: >
             Участники больше не будут получать по электронной почте обновленные приглашения календаря, если изменились дата, время, место проведения или участники собрания. Если у них уже было приглашение на эту встречу, оно может перестать быть точным.
         confirm_label:
@@ -338,9 +338,9 @@ ru:
       banner:
         participants:
           enabled: >
-            All participants will receive updated calendar invites via email when you add or remove participants.
+            Все участники будут получать обновления приглашений в календарь по электронной почте при добавлении или удалении участников.
           disabled: >
-            Email calendar updates are disabled. Participants will not receive an email informing them when you add or remove participants.
+            Обновления календаря отключены. Участники не получат письмо, информирующее их при добавлении или удалении участников.
         onetime:
           enabled: >
             Все участники получат по электронной почте обновленные приглашения календаря, информирующие их о Ваших изменениях.
@@ -447,7 +447,7 @@ ru:
       confirm_button: "Отменить событие"
     end_series_dialog:
       title: "Завершить серию совещаний"
-  notice_successful_notification: "Email calendar update sent to all participants"
+  notice_successful_notification: "Обновление календаря отправлено всем участникам по электронной почте"
   notice_timezone_missing: Не установлен часовой пояс и применена %{zone}. Чтобы выбрать часовой пояс, пожалуйста, нажмите сюда.
   notice_meeting_updated: "Эта страница была обновлена кем-то другим. Перезагрузите страницу, чтобы просмотреть изменения."
   permission_create_meetings: "Создание совещания"
@@ -491,7 +491,7 @@ ru:
   label_agenda_items: "Пункты повестки"
   label_agenda_items_reordered: "переупорядочено"
   label_agenda_item_add: "Добавить пункт повестки"
-  label_agenda_item_remove_from_agenda: "Исключить из повестки"
+  label_agenda_item_remove_from_agenda: "Удалить из повестки"
   label_agenda_item_remove_from_backlog: "Удалить из бэклога"
   label_agenda_item_undisclosed_wp: "Пакет работ #%{id} невидим"
   label_agenda_item_deleted_wp: "Ссылка на удалённый пакет работ"
@@ -501,7 +501,7 @@ ru:
   label_agenda_item_move_to_next: "Переместить на следующее совещание"
   label_agenda_item_move_to_backlog: "Переместить в бэклог"
   label_agenda_item_move_to_current_meeting: "Переместить на текущую встречу"
-  label_agenda_item_move_to_section: "Move to section"
+  label_agenda_item_move_to_section: "Переместить в раздел"
   label_agenda_item_move_to_top: "В начало"
   label_agenda_item_move_to_bottom: "В конец"
   label_agenda_item_move_up: "Вверх"
@@ -559,12 +559,12 @@ ru:
   text_meeting_not_editable_anymore: "Это совещание больше нельзя редактировать."
   text_meeting_not_present_anymore: "Это совещание было удалено. Пожалуйста, выберите другое."
   label_add_work_package_to_meeting_dialog_title: "Выберите совещание"
-  label_add_work_package_to_meeting_section_label: "Section"
+  label_add_work_package_to_meeting_section_label: "Раздел"
   label_add_work_package_to_meeting_dialog_button: "Добавить в совещание"
-  label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."
-  label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."
-  placeholder_section_select_meeting_first: "Meeting selection is required first"
-  text_add_work_package_to_meeting_form: "The work package will be added to the selected meeting or backlog as an agenda item."
+  label_meeting_selection_caption: "Можно только добавить этот пакет работ на предстоящее или текущее совещание."
+  label_section_selection_caption: "Выберите конкретный раздел повестки дня или добавьте его в бэклог."
+  placeholder_section_select_meeting_first: "Сначала необходимо выбрать совещание"
+  text_add_work_package_to_meeting_form: "Рабочий пакет будет добавлен в выбранное совещание или бэклог в качестве пункта повестки дня."
   text_add_work_package_to_meeting_description: "Пакет работ может быть добавлен к одному или нескольким совещаниям для обсуждения. Любые заметки об этом также видны здесь."
   text_agenda_item_no_notes: "Примечания отсутствуют"
   text_agenda_item_not_editable_anymore: "Этот пункт повестки больше не редактируется."
@@ -579,26 +579,26 @@ ru:
   my_account:
     access_tokens:
       token/ical_meeting:
-        title: "iCalendar for meetings"
-        text_hint: "iCalendar meeting tokens allow users to subscribe to all their meetings and view up-to-date meeting information in external clients."
-        disabled_text: "iCalendar meeting subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
-        empty_text_hint: 'To add an iCalendar meeting token, go to the <a href="%{path}">meetings section</a> and subscribe from there.'
+        title: "iCalendar для совещаний"
+        text_hint: "Токены iCalendar позволяют пользователям подписываться на все свои совещания и просматривать актуальную информацию о них во внешних клиентах."
+        disabled_text: "Подписки на совещания iCalendar не включены администратором. Пожалуйста, свяжитесь с администратором для использования этой функции."
+        empty_text_hint: 'Чтобы добавить токен iCalendar, перейдите в <a href="%{path}">раздел совещаний</a> и оформите подписку там.'
         add_button: "Подписаться на календарь"
   my:
     access_token:
       dialog:
         token/ical_meeting:
-          dialog_title: "New iCal subscription token for meetings"
-          dialog_body: "This token will generate an iCal subscription URL that lets you view all your meetings in an external calendar application."
-          create_button: "Create subscription"
-          name_label: "Имя токена"
-          name_caption: 'You can name it after where you will use it, such as "My phone" or "Work computer".'
+          dialog_title: "Новый токен подписки iCal для совещаний"
+          dialog_body: "Этот токен генерирует URL-адрес подписки iCal, который позволяет просматривать все ваши встречи во внешнем  приложении календаря."
+          create_button: "Создать подписку"
+          name_label: "Название токена"
+          name_caption: 'Вы можете назвать его в соответствии с местом, где будете его использовать, например, "Мой телефон" или "Рабочий компьютер".'
       created_dialog:
         token/ical_meeting:
-          title: "An iCal meeting subscription token has been generated"
-          body: "Treat the following URL as you would a password. Anyone who has access to it can view all your meetings."
+          title: "Сгенерирован токен подписки на совещание iCal"
+          body: "Относитесь к следующему URL-адресу так же, как к паролю. Любой, кто имеет к нему доступ, может просматривать все Ваши совещания."
           warning: "Это единственный раз, когда Вы увидите токен. Убедитесь, что вы сохранили его."
       revocation:
         token/ical_meeting:
-          notice_success: "The iCalendar meeting subscription has been revoked successfully."
-          notice_failure: "Failed to revoke iCalendar meeting subscription: %{error}"
+          notice_success: "Подписка на совещания iCalendar была успешно отменена."
+          notice_failure: "Не удалось отменить подписку на совещания iCalendar: %{error}"

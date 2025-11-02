@@ -29,7 +29,7 @@
     attributes:
       document:
         content_binary: "Content binary"
-        title: "Title"
+        title: "Tittel"
   activity:
     filter:
       document: "Dokumenter"
@@ -47,12 +47,12 @@
       heading: "There are no documents yet"
       description: "There are no documents in this view. You can click the button below to add one."
     index_page:
-      name: "Name"
+      name: "Navn"
       type: "Type"
       updated_at: "Last edited"
     menu:
       all: "All documents"
-      types: "Types"
+      types: "Typer"
     label_attachment_author: "Vedleggsforfatter"
     label_categories: "Categories"
     new_category: "Ny kategori"

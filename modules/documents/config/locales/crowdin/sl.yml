@@ -29,7 +29,7 @@ sl:
     attributes:
       document:
         content_binary: "Content binary"
-        title: "Title"
+        title: "Naslov"
   activity:
     filter:
       document: "Dokumenti"
@@ -47,12 +47,12 @@ sl:
       heading: "There are no documents yet"
       description: "There are no documents in this view. You can click the button below to add one."
     index_page:
-      name: "Name"
-      type: "Type"
+      name: "Ime"
+      type: "Vrsta"
       updated_at: "Last edited"
     menu:
       all: "All documents"
-      types: "Types"
+      types: "Tipi"
     label_attachment_author: "Avtor priloge"
     label_categories: "Categories"
     new_category: "Nova kategorija"

@@ -30,10 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe CustomField::CalculatedValue, with_flag: {
-  calculated_value_project_attribute: true,
-  scored_list_custom_fields: true
-} do
+RSpec.describe CustomField::CalculatedValue, with_flag: { calculated_value_project_attribute: true } do
   using CustomFieldFormulaReferencing
 
   subject(:custom_field) { create(:calculated_value_project_custom_field, formula: "1 + 1") }

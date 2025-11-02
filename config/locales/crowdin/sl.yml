@@ -351,7 +351,7 @@ sl:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "ali"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -392,7 +392,7 @@ sl:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Nadrejeni"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -528,7 +528,7 @@ sl:
       versions:
         no_results_title_text: Trenutno ni nobene različice za projekt.
         no_results_content_text: Ustvari novo različico
-        work_packages_graph: Work packages graph
+        work_packages_graph: Graf delovnih paketov
         show_work_packages: Show work packages
       storage:
         no_results_title_text: There is no additional recorded disk space consumed by this project.
@@ -654,7 +654,7 @@ sl:
     sessions:
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "Browser"
-      expires: "Expires"
+      expires: "Poteče"
       last_connection: "Last connection"
       device: "Device / OS"
       unknown_browser: "unknown browser"
@@ -1851,7 +1851,7 @@ sl:
     attachments: "Priponka"
     actor: "Actor"
     action: "Dejanje"
-    api_key: "API key"
+    api_key: "API ključ"
     author: "Avtor"
     avatar: "Avatar"
     base: "Splošna napaka:"
@@ -2146,7 +2146,7 @@ sl:
       - "Februar"
       - "marec"
       - "april"
-      - "maj"
+      - "Maj"
       - "junij"
       - "julij"
       - "avgust"
@@ -2683,7 +2683,7 @@ sl:
       upsell:
         title: "Upgrade to Enterprise edition"
       new_features:
-        header: "Read about new features and product updates."
+        header: "Preberite o novih funkcijah in posodobitvah izdelka."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
@@ -2930,7 +2930,7 @@ sl:
   label_required_disk_storage: "Potrebna kapaciteta diska"
   label_send_invitation: Pošlji povabilo
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Zamenjaj nadrejenega"
   label_change_plural: "Spremembe"
   label_change_properties: "Sprememba lastnosti"
   label_change_status: "Spremeni status"
@@ -3142,7 +3142,7 @@ sl:
   label_link_url: "Link (URL)"
   label_list: "Seznam"
   label_loading: "Nalaganje..."
-  label_locked: "locked"
+  label_locked: "zaklenjeno"
   label_lock_user: "Zakleni uporabnika"
   label_logged_as: "Prijavljen(a) kot"
   label_login: "Prijava"
@@ -3152,7 +3152,7 @@ sl:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "Nagnjeno"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
@@ -3932,7 +3932,7 @@ sl:
       one: "1 projekt"
       other: "%{count} projektov"
     destroy:
-      title: "Delete project"
+      title: "Brisanje projekta"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4394,7 +4394,7 @@ sl:
   status_invited: Povabljen
   status_locked: zaklenjeno
   status_registered: registriran
-  status_deleted: deleted
+  status_deleted: Izbrisano
   #Used in array.to_sentence.
   support:
     array:

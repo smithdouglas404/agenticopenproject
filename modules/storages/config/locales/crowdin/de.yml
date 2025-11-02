@@ -8,7 +8,7 @@ de:
         project_folder_type: Projektordner-Typ
       storages/file_link:
         origin: Ursprung
-        storage: Dateispeicher-Scope
+        storage: Dateispeicher
       storages/nextcloud_storage:
         authentication_methods:
           oauth2_sso: Single-Sign-On über OpenID Connect Identity Provider
@@ -19,7 +19,7 @@ de:
       storages/project_storage:
         project_folder: Projektordner
         project_folder_mode: Projektordnermodus
-        storage: Dateispeicher
+        storage: Dateispeicher-Scope
         storage_url: Speicher-URL
       storages/sharepoint_storage:
         host: Sharepoint Site-URL
@@ -203,7 +203,7 @@ de:
     delete_warning:
       project_storage_delete_result_1: Entfernen Sie alle Links von Arbeitspaketen dieses Projekts zu Dateien und Ordnern dieses Speichers.
       project_storage_delete_result_2: Falls dieser Speicher einen automatisch verwalteten Projektordner hat, werden dieser und seine Dateien unwiderbringlich gelöscht.
-      storage: 'Are you sure you want to delete %{file_storage}? This will:'
+      storage: 'Sind Sie sicher, dass Sie %{file_storage} löschen möchten? Dies wird:'
       storage_delete_result_1: Alle eingerichteten Projektdateispeicher, die diesen Dateispeicher verwenden, werden gelöscht.
       storage_delete_result_2: Alle Dateiverknüpfungen aus Arbeitspaketen sämtlicher Projekte zu Dateien und Ordnern auf diesem Dateispeicher werden gelöscht.
       storage_delete_result_3: Hat dieser Dateispeicher automatisch verwaltete Projektordner, so werden diese und die enthaltenen Dateien permanent gelöscht.
@@ -249,10 +249,10 @@ de:
         ampf_configuration:
           client_folder_creation: Automatische Ordnererstellung
           client_folder_removal: Automatische Ordnerlöschung
-          drive_contents: Drive content
+          drive_contents: Speicherinhalt
           files_request: Gruppenordnerdateien werden abgerufen
           group_folder_app: 'Abhängigkeit: Gruppenordner'
-          group_folder_contents: Group folder content
+          group_folder_contents: Inhalt des Gruppenordners
           group_folder_presence: Gruppenordner existiert
           header: Automatisch verwaltete Projektordner
           userless_access: Serverseitige Anfrageauthentifizierung
@@ -282,7 +282,7 @@ de:
         failures:
           one: "%{count} Überprüfung fehlgeschlagen"
           other: "%{count} Überprüfungen fehlgeschlagen"
-        success: Alle Prüfungen bestanden
+        success: Alle Überprüfungen bestanden
         warnings:
           one: "%{count} Überprüfung hat eine Warnung zurückgegeben"
           other: "%{count} Überprüfungen haben eine Warnung zurückgegeben"
@@ -310,13 +310,13 @@ de:
         od_test_folder_exists: Der für den Test benötigte Ordner %{folder_name} existiert bereits. Bitte löschen Sie ihn und versuchen Sie es erneut.
         od_unexpected_content: Unerwarteter Inhalt auf dem Laufwerk gefunden.
         offline_access_scope_missing: Es wird empfohlen, den OpenID Connect-Anbieter so zu konfigurieren, dass er den Scope offline_access anfordert. Die Integration kann trotzdem funktionieren, aber stellen Sie sicher, dass die Aktualisierungstoken nicht ablaufen.
-        oidc_cant_refresh_token: Beim Versuch, Ihren Zugriff auf den Speicher zu überprüfen, ist ein Fehler aufgetreten. Bitte überprüfen Sie die Server-Protokolle auf weitere Informationen.
+        oidc_cant_refresh_token: Beim Überprüfen Ihres Zugriffs auf den Speicher ist ein Fehler aufgetreten. Bitte sehen Sie die Serverprotokolle für weitere Informationen ein.
         oidc_non_oidc_user: Der aktuelle Benutzer wurde zwar bereitgestellt, aber nicht von einem OpenID Connect (OIDC) Identity Provider. Bitte wiederholen Sie die Prüfung mit einem OIDC-bereitgestellten Benutzer.
         oidc_non_provisioned_user: Der aktuelle Benutzer wird nicht von einem OpenID Connect Identity Provider bereitgestellt. Bitte führen Sie die Prüfung mit einem bereitgestellten Benutzer erneut durch.
         oidc_provider_cant_exchange: Der OpenID Connect-Provider scheint den Token-Austausch nicht zu unterstützen, aber der Token-Austausch wurde für die Speicherung konfiguriert.
         oidc_token_acquisition_failed: Ihre OpenID-Connect-Konfiguration stellt weder die erforderliche Audience bereit, noch unterstützt sie die Token-Austausch-Funktion. Bitte lesen Sie unsere Dokumentation für weitere Informationen.
-        oidc_token_exchange_failed: Es scheint ein Problem mit der Token-Exchange-Konfiguration Ihres OpenID-Connect-Anbieters zu geben. Bitte überprüfen Sie die Einstellungen und versuchen Sie es erneut.
-        oidc_token_refresh_failed: Beim Überprüfen Ihres Zugriffs auf den Speicher ist ein Fehler aufgetreten. Bitte sehen Sie die Serverprotokolle für weitere Informationen ein.
+        oidc_token_exchange_failed: Es scheint ein Problem mit dem Token Exchange Setup auf Ihrem OpenID Connect Provider zu geben. Bitte überprüfen Sie die Konfiguration und versuchen Sie es erneut.
+        oidc_token_refresh_failed: Beim Versuch, Ihren Zugriff auf den Speicher zu überprüfen, ist ein Fehler aufgetreten. Bitte überprüfen Sie die Server-Protokolle auf weitere Informationen.
         sp_client_cant_delete_folder: Der Client hat Probleme beim Löschen von Ordnern in SharePoint. Bitte überprüfen Sie die Setup-Dokumentation für Ihren Speicher.
         sp_client_id_missing: Die konfigurierte OAuth 2 Client-ID fehlt für SharePoint. Bitte überprüfen Sie die Konfiguration.
         sp_client_secret_missing: Das konfigurierte OAuth 2-Client-Geheimnis fehlt für SharePoint. Bitte überprüfen Sie die Konfiguration.
@@ -498,7 +498,7 @@ de:
         name: OneDrive
         name_placeholder: z.B. OneDrive
       sharepoint:
-        drive_description: OpenProject access-managed document library
+        drive_description: OpenProject zugriffsverwaltete Dokumentenbibliothek
         label_oauth_client_id: Azure OAuth Anwendungs-ID (Client)
         label_oauth_client_secret: Azure OAuth Client-Geheimwert
         name: SharePoint
@@ -513,7 +513,7 @@ de:
         label: Das beim Benutzer-Login erhaltene Access Token verwenden
       manual:
         helptext: OpenProject tauscht ein Token mit dem Identity Provider für die angegebene Audience aus.
-        label: Manuell die Audience angeben, für die das Access Token eingetauscht werden soll
+        label: Manuell die Audience angeben, für die das Access Token eingetauscht werden soll (Empfohlen)
     storage_list_blank_slate:
       description: Fügen Sie einen Dateispeicher hinzu, um ihn hier zu sehen.
       heading: Sie haben noch keine Dateispeicher.
@@ -521,4 +521,4 @@ de:
     upsell:
       description: |-
         Integrieren Sie Ihr OneDrive als Dateispeicher mit OpenProject. Laden Sie Dateien hoch und verknüpfen Sie diese direkt mit Arbeitspaketen in einem Projekt.
-      title: OneDrive-Integration
+      title: OneDrive Integration

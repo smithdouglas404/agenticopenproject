@@ -141,7 +141,7 @@ cs:
       new:
         title: "New SCIM client"
       revoke_static_token_dialog_component:
-        confirm_button: "Odvolat"
+        confirm_button: "Zrušit"
         title: "Odvolat statický token"
         heading: "Opravdu chcete zrušit tento token?"
         description: "The SCIM client that uses this token will no longer be able to access OpenProject's SCIM server API."
@@ -352,49 +352,49 @@ cs:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "nebo"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
       defined: "must not be defined."
       eql?: "must be equal to %{left}."
-      filled?: "must be filled."
-      greater_or_equal_zero: "must be greater or equal to 0."
+      filled?: "musí být vyplněno"
+      greater_or_equal_zero: "musí být větší nebo rovno 0."
       gteq?: "must be greater than or equal to %{num}."
       hash?: "must be a hash."
       included_in?:
         arg:
           default: "must be one of: %{list}."
           range: "must be one of: %{list_left} - %{list_right}."
-      int?: "must be an integer."
+      int?: "musí být celé číslo"
       key?: "is missing."
-      not_found: "not found."
+      not_found: "nenalezeno"
       rules:
         copy_workflow_from:
           workflow_missing: "has no own workflow."
         custom_field:
           format_not_supported: "format '%{field_format}' is unsupported."
         item:
-          root_item: "cannot be a root item."
-          not_persisted: "must be an already existing item."
+          root_item: "nemůže být kořenová položka."
+          not_persisted: "musí být již existující položka."
         label:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "musí být v rámci stejné hierarchie jedinečné."
         short:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "musí být v rámci stejné hierarchie jedinečné."
         parent:
-          not_descendant: "must be a descendant of the hierarchy root."
+          not_descendant: "musí být potomkem kořenu hierarchie."
       str?: "must be a string."
       type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
-      depth: "Depth"
-      item: "Item"
-      label: "Label"
+      enabled: "Zapnuto"
+      depth: "Hloubka"
+      item: "Položka"
+      label: "Popisek"
       score: "Score"
-      short: "Short name"
-      parent: "Parent"
-      blueprint: "Pattern blueprint"
+      short: "Krátký název"
+      parent: "Nadřazený"
+      blueprint: "Vzhled plánu"
   global_search:
     title:
       all_projects: 'Search for "%{search_term}" in all projects'
@@ -456,7 +456,7 @@ cs:
     lists:
       active: "Aktivní projekty"
       my: "Moje projekty"
-      favorited: "Favorite projects"
+      favorited: "Oblíbené projekty"
       archived: "Archivované projekty"
       shared: "Sdílené seznamy projektů"
       my_lists: "Moje seznamy projektů"
@@ -529,7 +529,7 @@ cs:
       versions:
         no_results_title_text: V současné době neexistují žádné verze pro projekt.
         no_results_content_text: Vytvořit novou verzi
-        work_packages_graph: Work packages graph
+        work_packages_graph: Graf pracovních balíčků
         show_work_packages: Show work packages
       storage:
         no_results_title_text: Neexistuje žádné další diskové místo využívané tímto projektem.
@@ -655,8 +655,8 @@ cs:
     sessions:
       session_name: "%{browser_name} %{browser_version} na %{os_name}"
       browser: "Prohlížeč"
-      expires: "Expires"
-      last_connection: "Last connection"
+      expires: "Vyprší"
+      last_connection: "Poslední připojení"
       device: "Zařízení / OS"
       unknown_browser: "neznámý prohlížeč"
       unknown_os: "neznámý operační systém"
@@ -1066,7 +1066,7 @@ cs:
       enterprise_trial:
         company: "Společnost"
       favorite:
-        favorited: "Item"
+        favorited: "Položka"
       grids/grid:
         page: "Stránka"
         row_count: "Počet řádků"
@@ -1194,7 +1194,7 @@ cs:
         excluded_from_totals: "Vyloučit z výpočtu úhrnů v hierarchii"
         default_done_ratio: "% Dokončeno"
       token/named:
-        token_name: "Token name"
+        token_name: "Název tokenu"
       token/ical:
         calendar: "Kalendář"
         ical_token_query_assignment: "Query assignment"
@@ -1649,7 +1649,7 @@ cs:
               must_be_set_when_work_is_set: "vyžadováno, když je nastavena Práce."
               must_be_set_when_work_and_percent_complete_are_set: "je vyžadováno, když je nastavena práce a % Dokončit."
               must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                must be 0h when Work is set and % Complete is 100%.
+                musí být 0h, když je nastavena práce a % Dokončeno je 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 musí být prázdný, pokud je položka Práce prázdná a % Dokončeno je 100 %.
           readonly_status: "Pracovní balíček je ve stavu jen pro čtení, takže jeho atributy nelze změnit."
@@ -1852,7 +1852,7 @@ cs:
     attachments: "Přílohy"
     actor: "Actor"
     action: "Akce"
-    api_key: "API key"
+    api_key: "API klíč"
     author: "Autor"
     avatar: "Avatar"
     base: "Obecná chyba:"
@@ -2392,7 +2392,7 @@ cs:
       virus_scanning:
         description: "Zajistěte, aby nahrané soubory v OpenProjectu byly před zpřístupněním ostatním uživatelům zkontrolovány na přítomnost virů."
       placeholder_users:
-        title: Placeholder uživatelé
+        title: Placeholder uživatel
         description: >
           Placeholder uživatelé jsou způsob, jak přiřadit pracovní balíčky uživatelům, kteří nejsou součástí vašeho projektu. Mohou být užiteční v řadě scénářů; například, pokud potřebujete sledovat úkoly u zdroje, který ještě nejsou pojmenovány nebo dostupné, nebo pokud nechcete této osobě umožnit přístup k OpenProject ale stále chcete sledovat úkoly, které jim byly přiděleny.
       internal_comments:
@@ -2684,7 +2684,7 @@ cs:
       upsell:
         title: "Upgradovat na Enterprise Edici"
       new_features:
-        header: "Read about new features and product updates."
+        header: "Přečtěte si o nových funkcích a aktualizacích produktů."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
@@ -2931,7 +2931,7 @@ cs:
   label_required_disk_storage: "Požadované úložiště disku"
   label_send_invitation: Odeslat pozvánku
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Změnit nadřazený"
   label_change_plural: "Změny"
   label_change_properties: "Změnit vlastnosti"
   label_change_status: "Změnit stav"
@@ -3143,7 +3143,7 @@ cs:
   label_link_url: "Odkaz URL"
   label_list: "Seznam"
   label_loading: "Načítání..."
-  label_locked: "locked"
+  label_locked: "uzamčeno"
   label_lock_user: "Uzamknout uživatele"
   label_logged_as: "Přihlášen jako"
   label_login: "Přihlásit se"
@@ -3153,7 +3153,7 @@ cs:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "Kurzíva"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Překrytí obalu vlastního exportu"
   label_custom_export_cover_text_color: "Barva textu"
@@ -3932,7 +3932,7 @@ cs:
       one: "1 projekt"
       other: "%{count} projektů"
     destroy:
-      title: "Delete project"
+      title: "Odstranit projekt"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4395,7 +4395,7 @@ cs:
   status_invited: pozván
   status_locked: uzamčeno
   status_registered: registrován
-  status_deleted: deleted
+  status_deleted: Smazáno
   #Used in array.to_sentence.
   support:
     array:

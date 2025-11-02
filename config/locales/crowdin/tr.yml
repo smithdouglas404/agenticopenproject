@@ -122,7 +122,7 @@ tr:
         title: "Anahtar oluşturuldu"
         heading: "Bir anahtar oluşturuldu"
         label_token: "Erişim Anahtarı"
-        one_time_hint: "This is the only time you will see this token. Make sure to copy it now."
+        one_time_hint: "Bu anahtarı sadece bir kez göreceksiniz. Şimdi kopyaladığınızdan emin olun."
       delete_scim_client_dialog_component:
         title: "SCIM istemcisini sil"
         heading: "Are you sure you want to delete this SCIM client?"
@@ -353,14 +353,14 @@ tr:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "veya"
+    or: "ya da"
     errors:
       array?: "bir dizi olmalıdır."
       decimal?: "ondalık sayı olmalıdır."
       defined: "tanımlanmamış olmalıdır."
       eql?: "%{left}'e eşit olmalıdır."
       filled?: "doldurulmalı."
-      greater_or_equal_zero: "0'a eşit ya da büyük olmalı."
+      greater_or_equal_zero: "sıfıra eşit ya da büyük olmalı."
       gteq?: "%{num} değerine eşit ya da daha büyük olması gerekir."
       hash?: "bir hash olmalıdır."
       included_in?:
@@ -390,11 +390,11 @@ tr:
       copy_workflow_from: "İş akışı kopyası için tür"
       enabled: "Etkin"
       depth: "Derinlik"
-      item: "Item"
-      label: "Label"
-      score: "Score"
-      short: "Short name"
-      parent: "Ebeveyn"
+      item: "Öğe"
+      label: "Etiket"
+      score: "Skor"
+      short: "Kısa adı"
+      parent: "Üst"
       blueprint: "Kalıp planı"
   global_search:
     title:
@@ -530,7 +530,7 @@ tr:
       versions:
         no_results_title_text: Şu anda proje için sürüm mevcut değil.
         no_results_content_text: Yeni bir sürüm oluştur
-        work_packages_graph: Work packages graph
+        work_packages_graph: İş paketleri grafiği
         show_work_packages: Show work packages
       storage:
         no_results_title_text: Bu proje tarafından tüketilen ek kayıtlı disk alanı yoktur.
@@ -1004,7 +1004,7 @@ tr:
       changeset:
         repository: "Depo"
       comment:
-        commented: "Yorumlandı" #an object that this comment belongs to
+        commented: "Yorumlananlar" #an object that this comment belongs to
       custom_action:
         actions: "Eylemler"
       custom_field:
@@ -1378,7 +1378,7 @@ tr:
               format: "%{message}"
         capability:
           context:
-            global: "Genel"
+            global: "Küresel"
           query:
             filters:
               minimum: "'=' işleci ile ilke, bağlam veya kimlik için en az bir filtre içermesi gerekir."
@@ -1731,7 +1731,7 @@ tr:
         other: "Yetkiler"
       scim_client:
         one: "SCIM client"
-        other: "SCIM clients"
+        other: "SCIM istemcileri"
       status: "İş paketi durumu"
       token/api:
         one: Erişim simgesi
@@ -1746,7 +1746,7 @@ tr:
   errors:
     header_invalid_fields:
       one: "Aşağıdaki alanla ilgili bir sorun oluştu:"
-      other: "Aşağıdaki alanlar ile ilgili sorunlar oluştu:"
+      other: "Aşağıdaki alanları ile ilgili sorunlar oluştu:"
     header_additional_invalid_fields:
       one: "Ek olarak, aşağıdaki alanla ilgili bir sorun vardı:"
       other: "Ek olarak, aşağıdaki alanlarla ilgili bir sorun vardı:"
@@ -1777,7 +1777,7 @@ tr:
           one: "<i>%{count} saat</i>"
           other: "<i>%{count} saat</i>"
         updated: "%{old_value} tarihinden %{value} tarihine ayarlandı"
-        logged_for: "Logged for"
+        logged_for: "Şunun için kaydedildi"
     filter:
       changeset: "Değişiklik listeleri"
       message: "Forumlar"
@@ -1791,7 +1791,7 @@ tr:
       activated: "etkinleştirildi"
       added_date: "%{date} tarihine ayarlandı"
       changed_date: "changed from %{from} to %{to}"
-      deactivated: "devre dışı bırakıldı"
+      deactivated: "devre dışı bırakmak"
       deleted_project_phase: "Deleted project phase"
       phase_and_both_gates: "%{phase_message}. %{start_gate_message}, ve %{finish_gate_message}"
       phase_and_one_gate: "%{phase_message}. %{gate_message}"
@@ -1804,7 +1804,7 @@ tr:
     attachments: "Ekler"
     actor: "Aktör"
     action: "Eylem"
-    api_key: "API key"
+    api_key: "API anahtarı"
     author: "Sahibi"
     avatar: "Avatar"
     base: "Genel Hata:"
@@ -2696,7 +2696,7 @@ tr:
         disabled_text: "API belirteçleri yönetici tarafından etkinleştirilmemiştir. Bu özelliği kullanmak için lütfen yöneticinize başvurun."
         add_button: "API Anahtarı"
       api:
-        static_token_name: "API anahtarı"
+        static_token_name: "API belirteci"
       ical:
         title: "iCalendar"
         text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
@@ -2729,12 +2729,12 @@ tr:
       watched: "Takip edilen"
       reminder: "Hatırlatıcı"
     facets:
-      unread: "Okunmamış"
+      unread: "okunmamış"
       unread_title: "Okunmayanları göster"
       all: "Hepsi"
       all_title: "Tümünü göster"
     menu:
-      by_project: "Projelere göre Okunmayanlar"
+      by_project: "Proje tarafından okunmadı"
       by_reason: "Sebep"
       inbox: "Gelen kutusu"
     send_notifications: "Bu işlem için bildirim gönder"
@@ -2841,7 +2841,7 @@ tr:
   label_required_disk_storage: "Gerekli disk alanı"
   label_send_invitation: Davet gönder
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Ebeveyni değiştir"
+  label_change_parent: "Üstünü değiştir"
   label_change_plural: "Değişiklikler"
   label_change_properties: "Özellikleri değiştir"
   label_change_status: "Durumu değiştir"
@@ -3695,7 +3695,7 @@ tr:
   #Default format for numbers
   number:
     format:
-      delimiter: "."
+      delimiter: ","
       precision: 3
       separator: "."
     human:
@@ -4262,8 +4262,8 @@ tr:
       label_add_description: "Proje aşaması tanımı ekleyin"
       filter:
         label: "Proje aşaması ara"
-      section_header: "Aşamalar"
-      non_defined: "Şu anda herhangi bir aşama tanımlanmamıştır."
+      section_header: "Fazlar"
+      non_defined: "Şu anda herhangi bir faz tanımlanmamıştır."
       phase_gates: "Aşama kapıları"
       new:
         description: "Changes to this project phase will be reflected in all projects where it is enabled."

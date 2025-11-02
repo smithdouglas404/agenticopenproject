@@ -183,13 +183,13 @@ zh-CN:
         remove_participant: "移除参与者"
         manage_participants: "管理与会者"
         no_participants: "无参加者"
-        show_all: "显示全部"
+        show_all: "全部显示"
       text:
-        template: "这些参加者将被自动邀请参加今后创建的所有会议。"
+        template: "这些与会者将被自动邀请参加之后创建的所有会议。"
         manage_participants: "搜索并添加项目成员作为本次会议的参与者。"
         search_for_members: "搜索项目成员"
       blankslate:
-        heading: "无参加者"
+        heading: "沒有与会者"
         description: "还没有参加者。"
     attachments:
       template: "这些文件将被自动添加到之后创建的所有系列会议中。"
@@ -212,7 +212,7 @@ zh-CN:
       open_my_meetings_link: "转到我的会议"
       series:
         title: "[%{project_name}] 会议系列 '%{title}'"
-        summary: "%{actor} has invited you to a new meeting series '%{title}'"
+        summary: "%{actor} 邀请您参加新的会议系列 '%{title}'"
       series_updated:
         title: "[%{project_name}] 会议系列 '%{title}' 已更新"
         summary: "会议系列 '%{title}' 已由 %{actor} 更新"
@@ -268,7 +268,7 @@ zh-CN:
         date: "日期"
         time: "时间"
         location: "地点"
-        title: "分钟"
+        title: "会议记录"
     export_pdf_dialog:
       title: 导出 PDF
       description: 生成当前状态下此会议的可打印 PDF 文件。
@@ -277,7 +277,7 @@ zh-CN:
           label: 默认
           caption: 默认模板适用于大多数会议，并反映当前状态。
         minutes:
-          label: 会议记录
+          label: 分钟
           caption: 会议记录模板适用于已关闭会议和已归档会议。
       first_page_header_left:
         label: 第一页页眉左侧

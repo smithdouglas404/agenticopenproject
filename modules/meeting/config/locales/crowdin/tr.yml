@@ -117,7 +117,7 @@ tr:
   label_meeting_copy: "Toplantıyı kopyala"
   label_meeting_edit: "Toplantıyı Düzenle"
   label_meeting_agenda: "Gündem"
-  label_meeting_minutes: "Notlar"
+  label_meeting_minutes: "Dakika"
   label_meeting_close: "Kapat"
   label_meeting_open: "Aç"
   label_meeting_index_delete: "Sil"
@@ -477,7 +477,7 @@ tr:
   label_agenda_items: "Gündem maddeleri"
   label_agenda_items_reordered: "yeniden sıralandı"
   label_agenda_item_add: "Gündem maddesi ekle"
-  label_agenda_item_remove_from_agenda: "Gündemden kaldır"
+  label_agenda_item_remove_from_agenda: "Gündemden çıkarıldı"
   label_agenda_item_remove_from_backlog: "Birikmiş iş listesinden çıkar"
   label_agenda_item_undisclosed_wp: "#%{id} numaralı iş parçası görünmez"
   label_agenda_item_deleted_wp: "Silinmiş iş parçsına referans"
@@ -545,7 +545,7 @@ tr:
   text_meeting_not_editable_anymore: "Bu toplantıyı artık düzenleyemezsiniz."
   text_meeting_not_present_anymore: "Toplantı silinmiş. Başka bir toplantı seçin lütfen."
   label_add_work_package_to_meeting_dialog_title: "Toplantı seç"
-  label_add_work_package_to_meeting_section_label: "Section"
+  label_add_work_package_to_meeting_section_label: "Bölüm"
   label_add_work_package_to_meeting_dialog_button: "Toplantıya ekle"
   label_meeting_selection_caption: "Bu iş paketini sadece yaklaşan veya devam eden bir toplantıya eklemek mümkündür."
   label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."
@@ -583,7 +583,7 @@ tr:
         token/ical_meeting:
           title: "Bir iCal toplantı abonelik anahtarı oluşturuldu"
           body: "Treat the following URL as you would a password. Anyone who has access to it can view all your meetings."
-          warning: "This is the only time you will see this token. Make sure to copy it now."
+          warning: "Bu anahtarı sadece bir kez göreceksiniz. Şimdi kopyaladığınızdan emin olun."
       revocation:
         token/ical_meeting:
           notice_success: "The iCalendar meeting subscription has been revoked successfully."

@@ -228,10 +228,12 @@ class CustomField < ApplicationRecord
       ActiveRecord::Type::Boolean.new.cast(value)
     when "int"
       value.to_i
-    when "float"
+    when "float", "calculated_value"
       value.to_f
     when "user", "version"
       field_format.classify.constantize.find_by(id: value.to_i)
+    when "hierarchy", "scored_list"
+      CustomField::Hierarchy::Item.find_by(id: value.to_i)
     end
   end
 

@@ -29,7 +29,7 @@ hr:
     attributes:
       document:
         content_binary: "Content binary"
-        title: "Title"
+        title: "Naziv"
   activity:
     filter:
       document: "Dokumenti"
@@ -47,12 +47,12 @@ hr:
       heading: "There are no documents yet"
       description: "There are no documents in this view. You can click the button below to add one."
     index_page:
-      name: "Name"
-      type: "Type"
+      name: "Naziv"
+      type: "Tip"
       updated_at: "Last edited"
     menu:
       all: "All documents"
-      types: "Types"
+      types: "Tipovi"
     label_attachment_author: "Autor privitka"
     label_categories: "Categories"
     new_category: "Nova kategorija"

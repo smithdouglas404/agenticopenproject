@@ -331,8 +331,7 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:cust
     end
   end
 
-  context "with scored list and calculated values", with_flag: { calculated_value_project_attribute: true,
-                                                                 scored_list_custom_fields: true } do
+  context "with scored list and calculated values", with_flag: { calculated_value_project_attribute: true } do
     current_user { create(:admin) }
 
     let!(:project_using_one) { create(:project) }

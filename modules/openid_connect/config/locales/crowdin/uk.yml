@@ -127,7 +127,7 @@ uk:
       label_configuration_details: Метадані
       label_client_details: Відомості про клієнта
       label_attribute_mapping: Зіставлення атрибутів
-      notice_created: A new OpenID provider was successfully created.
+      notice_created: Нового постачальника OpenID успішно створено.
       client_details_description: Деталі конфігурації OpenProject як клієнта OIDC
       no_results_table: Ще не додано жодного постачальника.
       plural: Постачальники OpenID

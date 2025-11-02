@@ -57,7 +57,7 @@ hu:
         start_time: "Kezdés"
         start_time_hour: "Kezdés"
         end_after: "Az ismétlődő megbeszélés véget ér"
-        end_date: "Záró dátum"
+        end_date: "Záró dátuma"
         iterations: "Előfordulások"
       meeting_participant:
         invited: "Meghívott"
@@ -132,7 +132,7 @@ hu:
   label_recurring_meeting_new: "Új ismétlődő megbeszélés"
   label_recurring_meeting_plural: "Ismétlődő megbeszélések"
   label_template: "Sablon"
-  label_recurring_meeting_view: "Ismétlődő megbeszélések megtekintése"
+  label_recurring_meeting_view: "Ismétlődő megbeszélés megtekintése"
   label_recurring_meeting_create: "Open"
   label_recurring_meeting_copy: "Copy as one-time"
   label_recurring_meeting_cancel: "Törölje ezt az eseményt"
@@ -172,7 +172,7 @@ hu:
   label_notify: "Küldés véleményezésre"
   label_icalendar: "iCalendar küldése"
   label_icalendar_download: "iCalendar esemény letöltése"
-  label_view_meeting_series: "Ismétlődő megbeszélés megtekintése"
+  label_view_meeting_series: "Ismétlődő megbeszélések megtekintése"
   label_meeting_series: "Ismétlődő megbeszélések"
   label_version: "Verzió"
   label_time_zone: "Időzóna"
@@ -264,7 +264,7 @@ hu:
     blankslate:
       title: "Nincsenek megjelenítendő megbeszélések"
       desc: "Nincsenek olyan megbeszélések, amelyek megfelelnek az aktív szűrési kritériumoknak."
-    label_export_pdf: "Exportálás PDF-be"
+    label_export_pdf: "PDF exportálása"
     export:
       your_meeting_export: "Megbeszélés exportálás alatt..."
       minutes:
@@ -275,7 +275,7 @@ hu:
         location: "Helyszín"
         title: "Jegyzőkönyv"
     export_pdf_dialog:
-      title: PDF exportálása
+      title: Exportálás PDF-be
       description: Generate a printable PDF file of this meeting at the current state.
       templates:
         default:
@@ -416,7 +416,7 @@ hu:
         desc: >
           There are no additional meetings planned in this series. To schedule additional meetings or extend the series, go to the template and edit meeting details to change the end date, frequency or interval.
     delete_dialog:
-      title: "Delete meeting series"
+      title: "Ismétlődő megbeszélés törlése"
       heading: "Permanently delete this meeting series?"
       confirmation_message_html:
         zero: >
@@ -432,7 +432,7 @@ hu:
         Any meeting information not in the template will be lost. Do you want to continue?
       confirm_button: "Cancel occurrence"
     end_series_dialog:
-      title: "End meeting series"
+      title: "Ismétlődő megbeszélés befejezése"
   notice_successful_notification: "Email calendar update sent to all participants"
   notice_timezone_missing: Nincs időzóna beállítva, %{zone} a feltételezett. Időzóna beállításához kattintson ide.
   notice_meeting_updated: "Ezt az oldalt valaki más frissítette. A változások megtekintéséhez töltse újra."
@@ -545,7 +545,7 @@ hu:
   text_meeting_not_editable_anymore: "Ez a megbeszélés már nem szerkeszthető."
   text_meeting_not_present_anymore: "Ez a megbeszélés törlésre került. Kérjük, válasszon ki egy másik megbeszélést."
   label_add_work_package_to_meeting_dialog_title: "Select meeting"
-  label_add_work_package_to_meeting_section_label: "Section"
+  label_add_work_package_to_meeting_section_label: "Szekció "
   label_add_work_package_to_meeting_dialog_button: "Hozzáadás a megbeszéléshez"
   label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."
   label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."
@@ -569,7 +569,7 @@ hu:
         text_hint: "iCalendar meeting tokens allow users to subscribe to all their meetings and view up-to-date meeting information in external clients."
         disabled_text: "iCalendar meeting subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
         empty_text_hint: 'To add an iCalendar meeting token, go to the <a href="%{path}">meetings section</a> and subscribe from there.'
-        add_button: "Subscribe to calendar"
+        add_button: "Feliratkozás az iCalendars-ra"
   my:
     access_token:
       dialog:

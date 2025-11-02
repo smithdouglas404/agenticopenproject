@@ -3,15 +3,15 @@ ru:
     label_widget_in_grid: "Виджет содержится в Сетке %{grid_name}"
     widgets:
       subitems:
-        title: "Subitems"
-        no_results: "There are no visible children."
-        view_all_subitems: "View all subitems"
+        title: "Подпункты"
+        no_results: "Нет видимых потомков."
+        view_all_subitems: "Отобразить все подпункты"
       members:
-        title: "Latest members"
-        no_results: "No visible members."
-        view_all_members: "View all members"
+        title: "Последние участники"
+        no_results: "Нет видимых участников."
+        view_all_members: "Просмотреть всех участников"
       news:
-        no_results: "Nothing new to report."
+        no_results: "Ничего нового для отчета."
   activerecord:
     attributes:
       grids/grid:

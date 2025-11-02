@@ -29,7 +29,7 @@ ka:
     attributes:
       document:
         content_binary: "Content binary"
-        title: "Title"
+        title: "სათაური"
   activity:
     filter:
       document: "დოკუმენტები"
@@ -47,12 +47,12 @@ ka:
       heading: "There are no documents yet"
       description: "There are no documents in this view. You can click the button below to add one."
     index_page:
-      name: "Name"
-      type: "Type"
+      name: "სახელი"
+      type: "ტიპი"
       updated_at: "Last edited"
     menu:
       all: "All documents"
-      types: "Types"
+      types: "ტიპები"
     label_attachment_author: "Attachment author"
     label_categories: "Categories"
     new_category: "ახალი კატეგორია"

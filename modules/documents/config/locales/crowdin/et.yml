@@ -29,7 +29,7 @@ et:
     attributes:
       document:
         content_binary: "Content binary"
-        title: "Title"
+        title: "Pealkiri"
   activity:
     filter:
       document: "Dokumendid"
@@ -47,12 +47,12 @@ et:
       heading: "There are no documents yet"
       description: "There are no documents in this view. You can click the button below to add one."
     index_page:
-      name: "Name"
-      type: "Type"
+      name: "Nimi"
+      type: "Tüüp"
       updated_at: "Last edited"
     menu:
       all: "All documents"
-      types: "Types"
+      types: "Tüübid"
     label_attachment_author: "Lisatud faili autor"
     label_categories: "Kategooriad"
     new_category: "Uus kategooria"

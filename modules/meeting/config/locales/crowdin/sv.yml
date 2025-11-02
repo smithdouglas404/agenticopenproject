@@ -74,7 +74,7 @@ sv:
       messages:
         invalid_time_format: "är inte en giltig tid. Använd formatet HH:MM"
     models:
-      recurring_meeting: "Recurring meeting"
+      recurring_meeting: "Återkommande möte"
       meeting: "Engångsmöte"
       meeting_agenda_item: "Agenda item"
       meeting_agenda: "Agenda"
@@ -131,7 +131,7 @@ sv:
   label_recurring_meeting_part_of: "Part of a meeting series"
   label_recurring_meeting_new: "New recurring meeting"
   label_recurring_meeting_plural: "Återkommande möten"
-  label_template: "Template"
+  label_template: "Mall"
   label_recurring_meeting_view: "View meeting series"
   label_recurring_meeting_create: "Öppna"
   label_recurring_meeting_copy: "Copy as one-time"
@@ -207,7 +207,7 @@ sv:
       agenda_items: "Copy agenda items"
       agenda_text: "Copy the agenda of the old meeting"
       participants: "Kopiera deltagarlista"
-      to_clipboard: "Copy link to clipboard"
+      to_clipboard: "Kopiera länk till urklipp"
     email:
       send_emails: "Email participants"
       send_invitation_emails: >

@@ -32,7 +32,7 @@ cs:
         drive: ID disku
         host: Hostitel
         name: Název
-        password: Application password
+        password: Heslo aplikace
         provider_type: Typ poskytovatele
         tenant: ID adresáře (tenant)
     errors:
@@ -275,7 +275,7 @@ cs:
           drive_id_exists: Drive exists
           drive_id_format: Drive ID format
           header: Configuration
-          host: Host URL
+          host: URL adresa hostitele
           host_url_accessible: Host URL accessible
           storage_configured: Configuration complete
           tenant_id: Tenant ID
@@ -517,7 +517,7 @@ cs:
         label: Use access token obtained during user log in
       manual:
         helptext: OpenProject will exchange a token with the identity provider for the given audience.
-        label: Manually specify audience for which to exchange access token
+        label: Manually specify audience for which to exchange access token (Recommended)
     storage_list_blank_slate:
       description: Přidejte úložiště, abyste je viděli zde.
       heading: Zatím nemáte žádné úložiště.

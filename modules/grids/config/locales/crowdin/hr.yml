@@ -9,9 +9,9 @@ hr:
       members:
         title: "Latest members"
         no_results: "No visible members."
-        view_all_members: "View all members"
+        view_all_members: "Pogledaj sve članove"
       news:
-        no_results: "Nothing new to report."
+        no_results: "Nema promjena za izvjestiti."
   activerecord:
     attributes:
       grids/grid:

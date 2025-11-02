@@ -352,7 +352,7 @@
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "eller"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -387,13 +387,13 @@
       type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
+      enabled: "Aktivert"
       depth: "Depth"
-      item: "Item"
+      item: "Element"
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Overordnet"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -456,7 +456,7 @@
     lists:
       active: "Aktive prosjekter"
       my: "Mine prosjekter"
-      favorited: "Favorite projects"
+      favorited: "Favorittprosjekter"
       archived: "Arkiverte prosjekter"
       shared: "Offentlige prosjektlister"
       my_lists: "My project lists"
@@ -529,7 +529,7 @@
       versions:
         no_results_title_text: Det finnes ingen versjoner for prosjektet.
         no_results_content_text: Lag en ny versjon
-        work_packages_graph: Work packages graph
+        work_packages_graph: Arbeidspakkediagram
         show_work_packages: Show work packages
       storage:
         no_results_title_text: Det er ingen ekstra registrert diskplass brukt av dette prosjektet.
@@ -643,8 +643,8 @@
     sessions:
       session_name: "%{browser_name} %{browser_version} på %{os_name}"
       browser: "Nettleser"
-      expires: "Expires"
-      last_connection: "Last connection"
+      expires: "Utløper"
+      last_connection: "Siste tilkobling"
       device: "Enhet / Operativsystem"
       unknown_browser: "ukjent nettleser"
       unknown_os: "ukjent operativsystem"
@@ -989,7 +989,7 @@
         filename: "Fil"
         filesize: "Størrelse"
       attribute_help_text:
-        attribute_name: "Egenskap"
+        attribute_name: "Attributt"
         help_text: "Hjelpetekst"
       auth_provider:
         scim_clients: "SCIM clients"
@@ -1049,7 +1049,7 @@
       enterprise_trial:
         company: "Firma"
       favorite:
-        favorited: "Item"
+        favorited: "Element"
       grids/grid:
         page: "Side"
         row_count: "Antall rader"
@@ -1630,7 +1630,7 @@
               must_be_set_when_work_is_set: "kreves når Arbeid er satt."
               must_be_set_when_work_and_percent_complete_are_set: "påkrevd når gjenværende arbeid og % Fullført er satt."
               must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                must be 0h when Work is set and % Complete is 100%.
+                må være 0 timer når arbeidet er satt og % Komplett er 100%.
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 må være tom når arbeidet er tomt og % Komplett er 100%.
           readonly_status: "Arbeidspakken er i skrivebeskyttet status slik at egenskapene ikke kan endres."
@@ -1803,7 +1803,7 @@
     attachments: "Vedlegg"
     actor: "Aktør"
     action: "Handling"
-    api_key: "API key"
+    api_key: "API-nøkkel"
     author: "Forfatter"
     avatar: "Profilbilde"
     base: "Generell feil:"
@@ -2478,7 +2478,7 @@
             wide: "Bred"
             very_wide: "Veldig bred"
         paper_size:
-          label: "Papirformat"
+          label: "Papirstørrelse"
           caption: "Avhengig av diagramstørrelsen blir mer enn en side eksportert."
         long_text_fields:
           input_caption: "Som standard er alle lange tekstfelt valgt."
@@ -2593,7 +2593,7 @@
       upsell:
         title: "Oppgrader til Enterprise utgaven"
       new_features:
-        header: "Read about new features and product updates."
+        header: "Les om nye funksjoner og produktoppdateringer."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
@@ -2695,7 +2695,7 @@
         disabled_text: "API-nøkler er ikke aktivert av administratoren. Kontakt systemansvarlig for å bruke denne funksjonen."
         add_button: "API Token"
       api:
-        static_token_name: "API-token"
+        static_token_name: "API-nøkkel"
       ical:
         title: "iCalendar"
         text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
@@ -2840,7 +2840,7 @@
   label_required_disk_storage: "Nødvendig lagringsplass"
   label_send_invitation: Send invitasjon
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Endre overordnet"
   label_change_plural: "Endringer"
   label_change_properties: "Endre egenskaper"
   label_change_status: "Endre status"
@@ -3052,7 +3052,7 @@
   label_link_url: "Lenke (URL)"
   label_list: "Liste"
   label_loading: "Laster..."
-  label_locked: "locked"
+  label_locked: "låst"
   label_lock_user: "Lås bruker"
   label_logged_as: "Innlogget som"
   label_login: "Logg inn"
@@ -3062,7 +3062,7 @@
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "Kursiv"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Egendefinert eksport fremside bakgrunnsoverlegg"
   label_custom_export_cover_text_color: "Tekstfarge"
@@ -3696,7 +3696,7 @@
   #Default format for numbers
   number:
     format:
-      delimiter: "."
+      delimiter: ";"
       precision: 3
       separator: ","
     human:
@@ -3838,7 +3838,7 @@
       one: "1 prosjekt"
       other: "%{count} prosjekter"
     destroy:
-      title: "Delete project"
+      title: "Slett prosjekt"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4301,7 +4301,7 @@
   status_invited: invitert
   status_locked: låst
   status_registered: registrert
-  status_deleted: deleted
+  status_deleted: slettet
   #Used in array.to_sentence.
   support:
     array:

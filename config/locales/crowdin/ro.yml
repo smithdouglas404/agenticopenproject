@@ -352,30 +352,30 @@ ro:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "sau"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
       defined: "must not be defined."
       eql?: "must be equal to %{left}."
-      filled?: "must be filled."
-      greater_or_equal_zero: "must be greater or equal to 0."
+      filled?: "trebuie completat"
+      greater_or_equal_zero: "trebuie să fie mai mare sau egal cu 0."
       gteq?: "must be greater than or equal to %{num}."
       hash?: "must be a hash."
       included_in?:
         arg:
           default: "must be one of: %{list}."
           range: "must be one of: %{list_left} - %{list_right}."
-      int?: "must be an integer."
+      int?: "trebuie să fie un număr întreg."
       key?: "is missing."
-      not_found: "not found."
+      not_found: "nu a fost găsit."
       rules:
         copy_workflow_from:
-          workflow_missing: "has no own workflow."
+          workflow_missing: "nu are un flux de lucru propriu."
         custom_field:
           format_not_supported: "format '%{field_format}' is unsupported."
         item:
-          root_item: "cannot be a root item."
+          root_item: "nu poate fi un element root."
           not_persisted: "must be an already existing item."
         label:
           not_unique: "must be unique within the same hierarchy level."
@@ -387,13 +387,13 @@ ro:
       type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
-      depth: "Depth"
-      item: "Item"
-      label: "Label"
-      score: "Score"
-      short: "Short name"
-      parent: "Parent"
+      enabled: "Activat"
+      depth: "Adâncime"
+      item: "Element"
+      label: "Etichetă"
+      score: "Scor"
+      short: "Nume scurt"
+      parent: "Părinte"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -456,7 +456,7 @@ ro:
     lists:
       active: "Proiecte active"
       my: "Proiectele mele"
-      favorited: "Favorite projects"
+      favorited: "Proiecte favorite"
       archived: "Proiecte arhivate"
       shared: "Listă proiecte partajate"
       my_lists: "Listele mele de proiecte"
@@ -529,7 +529,7 @@ ro:
       versions:
         no_results_title_text: În acest moment nu există versiuni pentru acest proiect.
         no_results_content_text: Creează versiune nouă
-        work_packages_graph: Work packages graph
+        work_packages_graph: Graficul pachetelor de lucru
         show_work_packages: Show work packages
       storage:
         no_results_title_text: Acest proiect nu consumă spațiu suplimentar pe disc.
@@ -649,7 +649,7 @@ ro:
     sessions:
       session_name: "%{browser_name} %{browser_version} pe %{os_name}"
       browser: "Browser"
-      expires: "Expires"
+      expires: "Expirare"
       last_connection: "Last connection"
       device: "Dispozitiv / OS"
       unknown_browser: "browser necunoscut"
@@ -2340,7 +2340,7 @@ ro:
         title: "Single Sign-On for Nextcloud Storage"
         description: "Enable seamless and secure authentication for your Nextcloud storage with Single Sign-On. Simplify access management and enhance user convenience."
       scim_api:
-        title: "SCIM clients"
+        title: "Clienți SCIM"
         description: "Automate user management in OpenProject by seamlessly integrating external identity services like Microsoft Entra or Keycloak through our SCIM Server API. Available starting with the Enterprise corporate plan."
       sso_auth_providers:
         title: "Single Sign-On (SSO)"
@@ -2639,7 +2639,7 @@ ro:
       upsell:
         title: "Actualizează la ediția Enterprise"
       new_features:
-        header: "Read about new features and product updates."
+        header: "Citește despre noile caracteristici și actualizări de produse."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
@@ -2886,7 +2886,7 @@ ro:
   label_required_disk_storage: "Spațiu pe disc necesar"
   label_send_invitation: Trimite invitație
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Modifică părinte"
   label_change_plural: "Modificări"
   label_change_properties: "Modificare proprietăţi"
   label_change_status: "Modificare stare"
@@ -3023,7 +3023,7 @@ ro:
   label_follows: "urmează după"
   label_force_user_language_to_default: "Setare limbă pentru utilizatorii care au o limbă implicită nepermisă"
   label_form_configuration: "Configurare formular"
-  label_formula: "Formula"
+  label_formula: "Formulă"
   label_gantt_chart: "Grafic Gantt"
   label_gantt_chart_plural: "Diagrame Gantt"
   label_general: "General"
@@ -3098,7 +3098,7 @@ ro:
   label_link_url: "Link (URL)"
   label_list: "Listă"
   label_loading: "Se încarcă..."
-  label_locked: "locked"
+  label_locked: "blocat"
   label_lock_user: "Blocați utilizatorul"
   label_logged_as: "Autentificat ca"
   label_login: "Autentificare"
@@ -3885,7 +3885,7 @@ ro:
       one: "un proiect"
       other: "%{count} proiecte"
     destroy:
-      title: "Delete project"
+      title: "Ștergeți proiectul"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4348,7 +4348,7 @@ ro:
   status_invited: invitat
   status_locked: blocat
   status_registered: înregistrat
-  status_deleted: deleted
+  status_deleted: șters
   #Used in array.to_sentence.
   support:
     array:

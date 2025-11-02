@@ -661,14 +661,14 @@ zh-TW:
     text: "文字"
   placeholder_users:
     right_to_manage_members_missing: >
-      您無權刪除佔位使用者。您無權管理佔位使用者為成員的所有專案的成員。
+      您無權刪除佔位符使用者。您無權管理佔位使用者為成員的所有專案的成員。
     delete_tooltip: "刪除佔位使用者"
     deletion_info:
-      heading: "刪除佔位使用者 %{name}"
+      heading: "刪除佔位符使用者 %{name}"
       data_consequences: >
         出現的所有佔位符用戶(例如，作為受理人、負責人或其他用戶值) 將被重新分配給一個名為“已刪除用戶”的帳戶。 由於每個已刪除帳戶的數據都會被重新分配給此帳戶，因此無法將用戶創建的數據與另一個已刪除帳戶的數據區分。
       irreversible: "這一行動是不可還原的"
-      confirmation: "輸入佔位使用者名稱 %{name} 確認刪除。"
+      confirmation: "輸入佔位符使用者名稱 %{name} 確認刪除。"
   priorities:
     edit:
       priority_color_text: |
@@ -1698,7 +1698,7 @@ zh-TW:
       news: "最新消息"
       notification:
         other: "通知"
-      placeholder_user: "佔位使用者"
+      placeholder_user: "佔位符使用者"
       project:
         other: "專案"
       project_query:
@@ -2175,7 +2175,7 @@ zh-TW:
       ldap_groups: 同步LDAP使用者與群組
       nextcloud_sso: Nextcloud 儲存空間的單一登入(SSO)
       one_drive_sharepoint_file_storage: OneDrive/SharePoint 檔案儲存
-      placeholder_users: 佔位使用者
+      placeholder_users: 佔位符使用者
       project_list_sharing: 專案清單分享
       readonly_work_packages: 唯讀工作套件
       scim_api: SCIM 伺服器 API
@@ -2256,9 +2256,9 @@ zh-TW:
       virus_scanning:
         description: "確保在其他使用者存取 OpenProject 中上傳的檔案前，對其進行病毒掃描。"
       placeholder_users:
-        title: 佔位使用者
+        title: 佔位符使用者
         description: >
-          「佔位使用者」是一種將工作套件分配給不屬於您專案成員的方法。它們在一系列場景中十分有用；例如，如果您需要追蹤尚未命名或可用的資源的任務，或者如果您不想讓該人員存取專案，但仍希望追蹤分配給他們的任務。
+          「佔位符使用者」是一種將工作套件分配給不屬於您專案成員的方法。它們在一系列場景中十分有用；例如，如果您需要追蹤尚未命名或可用的資源的任務，或者如果您不想讓該人員存取專案，但仍希望追蹤分配給他們的任務。
       internal_comments:
         title: 內部備註
         description: "內部備註讓內部團隊可以私下溝通。這些僅對某些專案角色可见，永遠不會公開顯示。"
@@ -2550,13 +2550,13 @@ zh-TW:
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            該版本包含多種新功能和改進，例如：
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: 專案評估和評分的計算值（企業附加元件）。
+            line_1: 專案屬性類型層級。
+            line_2: 影響力極大的效能更新。
+            line_3: 文件模組新增索引頁。
+            line_4: 可更改自訂欄位項目的父項。
     links:
       upgrade_enterprise_edition: "升級到企業版"
       postgres_migration: "將您的安裝遷移到 PostgreSQL"
@@ -3127,9 +3127,9 @@ zh-TW:
   label_permissions: "權限"
   label_permissions_report: "權限列表"
   label_personalize_page: "個人化本頁"
-  label_placeholder_user: "佔位使用者"
-  label_placeholder_user_new: "新的佔位使用者"
-  label_placeholder_user_plural: "佔位使用者"
+  label_placeholder_user: "佔位符使用者"
+  label_placeholder_user_new: "新的佔位符使用者"
+  label_placeholder_user_plural: "佔位符使用者"
   label_planning: "計劃中"
   label_please_login: "請登入"
   label_plugins: "擴充套件"
@@ -3678,7 +3678,7 @@ zh-TW:
   permission_archive_project: "封存專案"
   permission_create_user: "新增使用者"
   permission_manage_user: "編輯使用者"
-  permission_manage_placeholder_user: "建立、編輯及刪除佔位使用者"
+  permission_manage_placeholder_user: "建立、編輯及刪除佔位符使用者"
   permission_add_subprojects: "建立子專案"
   permission_add_work_package_watchers: "新增監看者"
   permission_assign_versions: "指派版本"

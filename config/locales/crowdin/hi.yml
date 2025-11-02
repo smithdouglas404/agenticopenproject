@@ -352,7 +352,7 @@ hi:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "या"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -393,7 +393,7 @@ hi:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "जनक"
       blueprint: "Pattern blueprint"
   global_search:
     title:

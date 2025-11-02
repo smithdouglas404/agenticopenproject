@@ -180,7 +180,7 @@ module API
           end
         end
 
-        self.to_eager_load = [:user, :activity, { project: :enabled_modules }]
+        self.to_eager_load = [:user, :activity, { project: :enabled_modules }, { custom_values: :custom_field }]
 
         # entity is a polymorphic association and thus can't be eager-loaded, but it can be preloaded
         self.to_preload = [:entity]

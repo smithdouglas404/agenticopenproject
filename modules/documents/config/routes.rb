@@ -33,6 +33,7 @@ Rails.application.routes.draw do
     resources :documents, only: %i[create new index] do
       collection do
         get :menu, to: "documents/menus#show"
+        get :search
       end
     end
   end

@@ -351,7 +351,7 @@ hu:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "vagy"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -392,7 +392,7 @@ hu:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Szülő"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -455,7 +455,7 @@ hu:
     lists:
       active: "Aktív projektek"
       my: "Az én projektjeim"
-      favorited: "Favorite projects"
+      favorited: "Kedvenc projektek"
       archived: "Archivált projektek"
       shared: "Shared project lists"
       my_lists: "Projekt listáim"
@@ -528,7 +528,7 @@ hu:
       versions:
         no_results_title_text: Jelenleg nincsenek verziók a projekthez.
         no_results_content_text: Új verzió létrehozása
-        work_packages_graph: Work packages graph
+        work_packages_graph: Munka-csomag grafikon
         show_work_packages: Show work packages
       storage:
         no_results_title_text: "Ebben a projektben nincs további rögzített lemezterület.\n"
@@ -642,7 +642,7 @@ hu:
     sessions:
       session_name: "%{browser_name} %{browser_version} %{os_name} operációs rendszeren"
       browser: "Böngésző"
-      expires: "Expires"
+      expires: "Lejár"
       last_connection: "Last connection"
       device: "Eszköz / Operációs rendszer"
       unknown_browser: "ismeretlen böngésző"
@@ -1128,7 +1128,7 @@ hu:
         finish_gate: "Finish phase gate"
         finish_gate_name: "Finish phase gate name"
       query:
-        sums: "Sums"
+        sums: "Össz."
         columns: "Oszlopok"
         column_names: "Oszlopok"
         relations_to_type_column: "Kapcsolatok %{type}-hoz"
@@ -1683,7 +1683,7 @@ hu:
             token_name:
               blank: "Please provide a token name"
               in_use: "This token name is already in use, please select a different one"
-              format: "%{message}"
+              format: "%{message}\n"
       template:
         body: "Kérjük, ellenőrizze az alábbi mezőket:"
         header:
@@ -1776,7 +1776,7 @@ hu:
           one: "<i>%{count} hour</i>"
           other: "<i>%{count} hours</i>"
         updated: "Átállítva %{old_value}-ról/-ről %{value}-ra/-re"
-        logged_for: "Logged for"
+        logged_for: "Következőnek naplózva"
     filter:
       changeset: "Commit-ok"
       message: "Fórumok"
@@ -1803,7 +1803,7 @@ hu:
     attachments: "Csatolmány"
     actor: "Actor"
     action: "Művelet"
-    api_key: "API key"
+    api_key: "API-kulcs"
     author: "Szerző"
     avatar: "Profilkép"
     base: "Általános hiba:"
@@ -2536,10 +2536,10 @@ hu:
         label: "Sablon"
         none_enabled: "No template has been enabled for this work package type"
       footer_center:
-        label: Footer text
-        caption: This text will appear on every page at the center of the footer.
+        label: Lábléc szöveg
+        caption: Ez a szöveg minden oldalon, a fejléc közepén fog megjelenni.
       footer_right:
-        label: Footer text
+        label: Lábléc szöveg
         caption: This text will appear on every page at the right of the footer.
       hyphenation:
         label: Hyphenation
@@ -2593,7 +2593,7 @@ hu:
       upsell:
         title: "Váltás Vállalati Verzióra"
       new_features:
-        header: "Read about new features and product updates."
+        header: "Itt találhatóak az új funkciók és a frissítések"
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
@@ -2840,7 +2840,7 @@ hu:
   label_required_disk_storage: "Szükséges lemezterület"
   label_send_invitation: Meghívó küldése
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Szülő módosítása"
   label_change_plural: "Változtat"
   label_change_properties: "A tulajdonságok megváltoztatása"
   label_change_status: "Az állapot megváltoztatása"
@@ -3027,7 +3027,7 @@ hu:
   label_share_work_package: "Share work package"
   label_show_all_registered_users: "Minden regisztrált felhasználó megjelenítése"
   label_show_less: "Kevesebb mutatása"
-  label_show_more: "Show more"
+  label_show_more: "Több"
   label_journal: "Hírközlés"
   label_journal_diff: "Leírás összehasonlítás"
   label_language: "Nyelv"
@@ -3052,7 +3052,7 @@ hu:
   label_link_url: "Link (URL)"
   label_list: "Lista"
   label_loading: "Betöltés..."
-  label_locked: "locked"
+  label_locked: "zárolt"
   label_lock_user: "Felhasználó zárolása"
   label_logged_as: "Bejelentkezve mint"
   label_login: "Bejelentkezés"
@@ -3062,7 +3062,7 @@ hu:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "Dőlt betű"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
@@ -3837,7 +3837,7 @@ hu:
       one: "1 projekt"
       other: "%{count} projekt"
     destroy:
-      title: "Delete project"
+      title: "Projekt törlése"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4300,7 +4300,7 @@ hu:
   status_invited: meghívott
   status_locked: zárolt
   status_registered: regisztrált
-  status_deleted: deleted
+  status_deleted: Törölve
   #Used in array.to_sentence.
   support:
     array:

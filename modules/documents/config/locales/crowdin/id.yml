@@ -29,7 +29,7 @@ id:
     attributes:
       document:
         content_binary: "Content binary"
-        title: "Title"
+        title: "Judul"
   activity:
     filter:
       document: "Dokumen"
@@ -47,12 +47,12 @@ id:
       heading: "There are no documents yet"
       description: "There are no documents in this view. You can click the button below to add one."
     index_page:
-      name: "Name"
-      type: "Type"
+      name: "Nama"
+      type: "Tipe"
       updated_at: "Last edited"
     menu:
       all: "All documents"
-      types: "Types"
+      types: "Tipe"
     label_attachment_author: "Lampiran penulis"
     label_categories: "Categories"
     new_category: "Kategori Baru"

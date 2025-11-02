@@ -217,7 +217,7 @@ pt-PT:
       open_my_meetings_link: "Ir para As minhas reuniões"
       series:
         title: "[%{project_name}] Série de reuniões \"%{title}\""
-        summary: "%{actor} has invited you to a new meeting series '%{title}'"
+        summary: "%{actor} enviou-lhe um convite para uma nova série de reuniões '%{title}'"
       series_updated:
         title: "[%{project_name}] A série de reuniões '%{title}' foi atualizada"
         summary: "A série de reuniões '%{title}' foi atualizada por %{actor}"
@@ -526,7 +526,7 @@ pt-PT:
   label_meeting_series_details: "Detalhes das séries de reuniões"
   label_meeting_details_edit: "Editar detalhes da reunião"
   label_meeting_state: "Estado da reunião"
-  label_meeting_state_open: "Aberto"
+  label_meeting_state_open: "Abrir"
   label_meeting_state_closed: "Fechado"
   label_meeting_state_agenda_created: "Agenda criada"
   label_meeting_state_planned: "Planeada"
@@ -545,7 +545,7 @@ pt-PT:
   text_meeting_not_editable_anymore: "Esta reunião não é mais editável."
   text_meeting_not_present_anymore: "Esta reunião foi excluída. Por favor, selecione outra reunião."
   label_add_work_package_to_meeting_dialog_title: "Selecionar reunião"
-  label_add_work_package_to_meeting_section_label: "Section"
+  label_add_work_package_to_meeting_section_label: "Secção"
   label_add_work_package_to_meeting_dialog_button: "Adicionar à reunião"
   label_meeting_selection_caption: "Só é possível adicionar este pacote de trabalho a uma reunião futura ou em curso."
   label_section_selection_caption: "Escolha uma secção específica da agenda ou adicione-a ao backlog."

@@ -28,8 +28,8 @@ ru:
       document: "Документ"
     attributes:
       document:
-        content_binary: "Content binary"
-        title: "Title"
+        content_binary: "Содержимое бинарное"
+        title: "Заголовок"
   activity:
     filter:
       document: "Документы"
@@ -38,21 +38,21 @@ ru:
   enumeration_doc_categories: "Категории документов"
   documents:
     page_header:
-      heading: "All documents"
+      heading: "Все документы"
     subheader:
       filter:
-        label: "Document name filter"
-        placeholder: "Type here to search document names"
+        label: "Фильтр по названию документа"
+        placeholder: "Введите здесь для поиска по названию документа"
     documents_list_blank_slate:
-      heading: "There are no documents yet"
-      description: "There are no documents in this view. You can click the button below to add one."
+      heading: "Пока нет никаких документов"
+      description: "В этом представлении нет документов. Нажмите на кнопку ниже, чтобы добавить документ."
     index_page:
-      name: "Name"
-      type: "Type"
-      updated_at: "Last edited"
+      name: "Имя"
+      type: "Тип"
+      updated_at: "Последнее редактирование"
     menu:
-      all: "All documents"
-      types: "Types"
+      all: "Все документы"
+      types: "Типы"
     label_attachment_author: "Автор вложения"
     label_categories: "Категории"
     new_category: "Новая категория"
@@ -60,9 +60,9 @@ ru:
   label_document_new: "Новый документ"
   label_document_plural: "Документы"
   label_documents: "Документы"
-  label_document_title: "Название"
+  label_document_title: "Заголовок"
   label_document_description: "Описание"
-  label_document_category: "Категории документов"
+  label_document_category: "Категория"
   permission_manage_documents: "Управление документами"
   permission_view_documents: "Просмотр документов"
   project_module_documents: "Документы"

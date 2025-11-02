@@ -54,14 +54,14 @@ el:
         frequency: "Συχνότητα"
         interval: "Διάστημα"
         start_date: "Ξεκινάει στις"
-        start_time: "Start time"
-        start_time_hour: "Start time"
+        start_time: "Ώρα έναρξης"
+        start_time_hour: "Ώρα έναρξης"
         end_after: "Η σειρά συνεδριάσεων τελειώνει"
         end_date: "Ημερομηνία λήξης"
         iterations: "Επαναλήψεις"
       meeting_participant:
         invited: "Καλεσμένος/η"
-        attended: "Παρευρέθηκε"
+        attended: "Συμμετείχα"
     errors:
       models:
         meeting_participant:
@@ -166,7 +166,7 @@ el:
   label_invitations: "Προσκλήσεις"
   label_invited_user: "Προσκεκλημένος χρήστης"
   label_past_invitations: "Προηγούμενες προσκλήσεις"
-  label_attended: "Συμμετείχα"
+  label_attended: "Παρευρέθηκε"
   label_attended_user: "Attended user"
   label_created_by_me: "Δημιουργήθηκε από εμένα"
   label_notify: "Αποστολή για αναθεώρηση"
@@ -182,7 +182,7 @@ el:
     participants:
       label:
         participants: "Συμμετέχοντες"
-        attended: "Attended"
+        attended: "Συμμετείχα"
         mark_as_attended: "Σήμανση ως συμμετέχων"
         mark_all_as_attended: "Σήμανση όλων ως συμμετέχων"
         remove_participant: "Κατάργηση συμμετέχοντα"
@@ -393,7 +393,7 @@ el:
     starts: "Starts"
     in_words:
       daily_interval: "Every %{interval} days"
-      working_days: "Every working day"
+      working_days: "Κάθε εργάσιμη ημέρα"
       weekly: "Every week on %{weekday}"
       weekly_interval: "Every %{interval} weeks on %{weekday}"
       frequency: "%{base} at %{time}"
@@ -466,7 +466,7 @@ el:
   label_meeting_empty_action: "Add agenda item"
   label_meeting_actions: "Meeting actions"
   label_meeting_edit_title: "Edit meeting title"
-  label_meeting_delete: "Delete meeting"
+  label_meeting_delete: "Διαγραφή συνάντησης"
   label_meeting_created_by: "Δημιουργήθηκε από"
   label_meeting_last_updated: "Last updated"
   label_meeting_reload: "Reload"
@@ -545,7 +545,7 @@ el:
   text_meeting_not_editable_anymore: "This meeting is not editable anymore."
   text_meeting_not_present_anymore: "This meeting was deleted. Please select another meeting."
   label_add_work_package_to_meeting_dialog_title: "Select meeting"
-  label_add_work_package_to_meeting_section_label: "Section"
+  label_add_work_package_to_meeting_section_label: "Ενότητα"
   label_add_work_package_to_meeting_dialog_button: "Add to meeting"
   label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."
   label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."

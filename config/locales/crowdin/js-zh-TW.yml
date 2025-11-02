@@ -1137,7 +1137,7 @@ zh-TW:
         invite_to_project: "邀請%{type} 加入 %{project}"
         User: "使用者"
         Group: "群組"
-        PlaceholderUser: "佔位使用者"
+        PlaceholderUser: "佔位符使用者"
         invite_principal_to_project: "邀請 %{principal} 加入 %{project}"
       project:
         label: "專案"
@@ -1156,8 +1156,8 @@ zh-TW:
           title: "群組"
           description: "基於所選專案中所分配角色的權限"
         placeholder:
-          title: "佔位使用者"
-          title_no_ee: "佔位使用者（僅限企業版附加元件）"
+          title: "佔位符使用者"
+          title_no_ee: "佔位符使用者（僅限企業版附加元件）"
           description: "無法訪問該專案並且未發送電子郵件。"
           description_no_ee: '由於沒有存取專案權限，所以不會發送電子郵件。<br>請查看<a href="%{eeHref}" target="_blank">企業版</a>。'
       principal:
@@ -1173,7 +1173,7 @@ zh-TW:
         next_button: "下一個"
         required:
           user: "請選擇一個使用者"
-          placeholder: "請選擇佔位使用者"
+          placeholder: "請選擇佔位符"
           group: "請選擇一個群組"
       role:
         label: "%{project} 中的角色"
@@ -1192,7 +1192,7 @@ zh-TW:
         title: "%{principal} 已被邀請！"
         description:
           user: "該使用者現在可以登入並存取 %{project}。同時，您已可開始與該使用者一起規劃，並指派工作套件等操作。"
-          placeholder: "該預留位置現在可在 %{project} 中使用。您也可以開始與該使用者一起規劃，並指派工作套件等操作。"
+          placeholder: "該佔位符現在可在 %{project} 中使用。您也可以開始與該使用者一起規劃，並指派工作套件等操作。"
           group: "該群組現在已成為 %{project} 的一部分。您也可以開始與該群組一起規劃，並指派工作套件等操作。"
         next_button: "繼續"
     exclusion_info:

@@ -45,6 +45,12 @@ class Overviews::ProjectCustomFieldsController < ApplicationController
   end
 
   def update
+    # FIXME: submitted format of form parameters are not configurable for the tree view component. Hence, we
+    # need to process it before giving them in standard format to the update service.
+    if @custom_field.hierarchical_list?
+      process_hierarchy_params
+    end
+
     service_call = ::Projects::UpdateService
                     .new(
                       user: current_user,
@@ -63,6 +69,16 @@ class Overviews::ProjectCustomFieldsController < ApplicationController
   end
 
   private
+
+  def process_hierarchy_params
+    values = params.dig(:project, :custom_field_values)
+
+    ids = Array(values).reject(&:empty?).map do |value|
+      MultiJson.load(value, symbolize_keys: true)[:value]
+    end
+
+    params[:project][:custom_field_values] = { @custom_field.id.to_s => ids.one? ? ids.first : ids }
+  end
 
   def find_project_custom_field
     @custom_field = @project.available_custom_fields.find(params[:id])

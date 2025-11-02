@@ -9,9 +9,9 @@ bg:
       members:
         title: "Latest members"
         no_results: "No visible members."
-        view_all_members: "View all members"
+        view_all_members: "Покажи всички членове"
       news:
-        no_results: "Nothing new to report."
+        no_results: "Нищо ново за отчитане."
   activerecord:
     attributes:
       grids/grid:

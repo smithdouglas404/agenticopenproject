@@ -352,7 +352,7 @@ si:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "හෝ"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -393,7 +393,7 @@ si:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "මාපිය"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -643,7 +643,7 @@ si:
     sessions:
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "Browser"
-      expires: "Expires"
+      expires: "කල් ඉකුත්"
       last_connection: "Last connection"
       device: "Device / OS"
       unknown_browser: "unknown browser"
@@ -1804,7 +1804,7 @@ si:
     attachments: "ඇමුණුම්"
     actor: "Actor"
     action: "ක්රියාව"
-    api_key: "API key"
+    api_key: "API ප්රධාන"
     author: "කර්තෘ"
     avatar: "Avatar"
     base: "සාමාන්ය දෝෂය:"
@@ -2594,7 +2594,7 @@ si:
       upsell:
         title: "Upgrade to Enterprise edition"
       new_features:
-        header: "Read about new features and product updates."
+        header: "නව විශේෂාංග සහ නිෂ්පාදන යාවත්කාලීන කිරීම් ගැන කියවන්න."
         learn_about: "Learn more about all new features"
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
@@ -2841,7 +2841,7 @@ si:
   label_required_disk_storage: "අවශ්ය තැටි ගබඩා"
   label_send_invitation: ආරාධනය යවන්න
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "මාපිය වෙනස් කරන්න"
   label_change_plural: "වෙනස්කම්"
   label_change_properties: "ගුණාංග වෙනස් කරන්න"
   label_change_status: "තත්ත්වය වෙනස් කරන්න"
@@ -3053,7 +3053,7 @@ si:
   label_link_url: "Link (URL)"
   label_list: "ලැයිස්තුව"
   label_loading: "පැටවීම..."
-  label_locked: "locked"
+  label_locked: "අගුළු දමා ඇත"
   label_lock_user: "පරිශීලක අගුළු"
   label_logged_as: "ලෙස ලොගින් වී"
   label_login: "පුරනය වන්න"
@@ -3063,7 +3063,7 @@ si:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "ඇල අකුරු"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
@@ -3839,7 +3839,7 @@ si:
       one: "1 ව්යාපෘතිය"
       other: "%{count} ව්යාපෘති"
     destroy:
-      title: "Delete project"
+      title: "ව්යාපෘතිය මකන්න"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4302,7 +4302,7 @@ si:
   status_invited: ආරාධනා
   status_locked: අගුළු දමා ඇත
   status_registered: ලියාපදිංචි
-  status_deleted: deleted
+  status_deleted: මකා දැමූ
   #Used in array.to_sentence.
   support:
     array:

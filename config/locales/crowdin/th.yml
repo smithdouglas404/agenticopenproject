@@ -393,7 +393,7 @@ th:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "หัวข้อหลัก"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -638,7 +638,7 @@ th:
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "Browser"
       expires: "Expires"
-      last_connection: "Last connection"
+      last_connection: "ครั้งสุดท้ายที่เข้าระบบ"
       device: "Device / OS"
       unknown_browser: "unknown browser"
       unknown_os: "unknown operating system"
@@ -1780,7 +1780,7 @@ th:
     attachments: "ไฟล์แนบ"
     actor: "Actor"
     action: "Action"
-    api_key: "API key"
+    api_key: "คีย์ API"
     author: "ผู้เขียน"
     avatar: "รูปโปรไฟล์"
     base: "ข้อผิดพลาดทั่วไป:"
@@ -3008,7 +3008,7 @@ th:
   label_link_url: "Link (URL)"
   label_list: "รายการ"
   label_loading: "กำลังโหลด..."
-  label_locked: "locked"
+  label_locked: "ล็อก"
   label_lock_user: "Lock user"
   label_logged_as: "เข้าสู่ระบบในนาม"
   label_login: "ลงชื่อเข้าใช้"
@@ -3018,7 +3018,7 @@ th:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "ตัวเอียง"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
@@ -4255,7 +4255,7 @@ th:
   status_invited: invited
   status_locked: ล็อก
   status_registered: ลงทะเบียน
-  status_deleted: deleted
+  status_deleted: ถูกลบ
   #Used in array.to_sentence.
   support:
     array:

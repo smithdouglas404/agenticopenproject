@@ -393,7 +393,7 @@ fil:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Magulang"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -643,7 +643,7 @@ fil:
     sessions:
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "Browser"
-      expires: "Expires"
+      expires: "Natapos"
       last_connection: "Last connection"
       device: "Device / OS"
       unknown_browser: "unknown browser"
@@ -2841,7 +2841,7 @@ fil:
   label_required_disk_storage: "Kinakailangan lalagyan ng disk"
   label_send_invitation: Magpadala ng imbitasyon
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Palitan ng magulang"
   label_change_plural: "Pagbabago"
   label_change_properties: "Baguhin ang mga properry"
   label_change_status: "Baguhin ang estado"
@@ -3053,7 +3053,7 @@ fil:
   label_link_url: "Link (URL)"
   label_list: "Listahan"
   label_loading: "Naglo-load..."
-  label_locked: "locked"
+  label_locked: "nakakandado"
   label_lock_user: "I-kandado ang gumagamit"
   label_logged_as: "Naka-log in bilang"
   label_login: "Mag-sign in"
@@ -3839,7 +3839,7 @@ fil:
       one: "Isang proyekto"
       other: "%{count} mga proyekto"
     destroy:
-      title: "Delete project"
+      title: "Burahin ang proyekto"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4300,7 +4300,7 @@ fil:
   status_invited: imbitado
   status_locked: nakakandado
   status_registered: narehistro
-  status_deleted: deleted
+  status_deleted: binura
   #Used in array.to_sentence.
   support:
     array:

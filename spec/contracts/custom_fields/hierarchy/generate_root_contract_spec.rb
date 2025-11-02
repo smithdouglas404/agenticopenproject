@@ -30,9 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe CustomFields::Hierarchy::GenerateRootContract,
-               with_ee: [:custom_field_hierarchies],
-               with_flag: { scored_list_custom_fields: true } do
+RSpec.describe CustomFields::Hierarchy::GenerateRootContract, with_ee: [:custom_field_hierarchies] do
   subject { described_class.new }
 
   describe "#call" do

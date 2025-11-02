@@ -89,7 +89,7 @@ ro:
     button_show_view: "Vizualizare pe tot ecranul"
     button_log_time: "Înregistrare timp"
     button_start_timer: "Start timer"
-    button_stop_timer: "Stop timer"
+    button_stop_timer: "Oprește cronometrul"
     button_more: "Mai mult"
     button_open_details: "Deschide vizualizare detaliată"
     button_close_details: "Închide vizualizare detalii"

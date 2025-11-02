@@ -207,13 +207,21 @@ module IncomingEmails
 
     def mail_from_system?
       # Ignore emails received from the application emission address to avoid hell cycles
-      if sender_email.downcase == Setting.mail_from.to_s.strip.downcase
+      if system_mail_addresses.include?(sender_email.downcase)
         log "ignoring email from emission address [#{sender_email}]", report: false
         # don't report back errors to ourselves
         return true
       end
 
       false
+    end
+
+    def system_mail_addresses
+      [
+        ApplicationMailer.mail_from,
+        ApplicationMailer.reply_to
+      ]
+        .map { |mail| mail.to_s.strip.downcase }
     end
 
     def ignored_by_header?

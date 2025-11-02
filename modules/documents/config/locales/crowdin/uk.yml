@@ -28,8 +28,8 @@ uk:
       document: "Документ"
     attributes:
       document:
-        content_binary: "Content binary"
-        title: "Title"
+        content_binary: "Двійковий вміст"
+        title: "Назва "
   activity:
     filter:
       document: "Документи"
@@ -38,21 +38,21 @@ uk:
   enumeration_doc_categories: "Категорії документів"
   documents:
     page_header:
-      heading: "All documents"
+      heading: "Усі документи"
     subheader:
       filter:
-        label: "Document name filter"
-        placeholder: "Type here to search document names"
+        label: "Фільтр за назвою документів"
+        placeholder: "Введіть текст тут, щоб шукати назви документів"
     documents_list_blank_slate:
-      heading: "There are no documents yet"
-      description: "There are no documents in this view. You can click the button below to add one."
+      heading: "Документів ще немає"
+      description: "У цьому поданні немає документів. Щоб додати, натисніть кнопку нижче."
     index_page:
-      name: "Name"
-      type: "Type"
-      updated_at: "Last edited"
+      name: "Назва"
+      type: "Тип"
+      updated_at: "Останнє редагування"
     menu:
-      all: "All documents"
-      types: "Types"
+      all: "Усі документи"
+      types: "Типи"
     label_attachment_author: "Автор додатку"
     label_categories: "Категорії"
     new_category: "Нова категорія"

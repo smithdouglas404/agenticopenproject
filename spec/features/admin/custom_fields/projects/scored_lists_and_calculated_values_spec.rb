@@ -31,9 +31,9 @@
 require "spec_helper"
 require_relative "shared_context"
 
-RSpec.describe "Scored Lists and Calculated Values", :js, with_ee: %i[calculated_values],
-                                                          with_flag: { scored_list_custom_fields: true,
-                                                                       calculated_value_project_attribute: true } do
+RSpec.describe "Scored Lists and Calculated Values", :js,
+               with_ee: %i[calculated_values],
+               with_flag: { calculated_value_project_attribute: true } do
   current_user { create(:admin) }
 
   let!(:project) { create(:project) }

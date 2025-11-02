@@ -350,7 +350,7 @@ da:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "eller"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -391,7 +391,7 @@ da:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Overordnet"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -641,8 +641,8 @@ da:
     sessions:
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "Browser"
-      expires: "Expires"
-      last_connection: "Last connection"
+      expires: "Udløber"
+      last_connection: "Seneste session"
       device: "Device / OS"
       unknown_browser: "unknown browser"
       unknown_os: "unknown operating system"
@@ -1802,7 +1802,7 @@ da:
     attachments: "Vedhæftninger"
     actor: "Actor"
     action: "Handling"
-    api_key: "API key"
+    api_key: "API-nøgle"
     author: "Forfatter"
     avatar: "Avatar"
     base: "Generel fejl:"
@@ -1860,7 +1860,7 @@ da:
     operator: "Operator"
     password: "Adgangskode"
     priority: "Prioritet"
-    project: "Projekt"
+    project: "Prjoekt"
     project_ids: "Project IDs"
     project_phase: "Project phase"
     project_phase_definition: "Project phase"
@@ -2839,7 +2839,7 @@ da:
   label_required_disk_storage: "Påkrævet disklagerplads"
   label_send_invitation: Send invitation
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Ændr overordnede"
   label_change_plural: "Ændringer"
   label_change_properties: "Skift egenskaber"
   label_change_status: "Skift status"
@@ -3051,7 +3051,7 @@ da:
   label_link_url: "Link (URL)"
   label_list: "Liste"
   label_loading: "Henter..."
-  label_locked: "locked"
+  label_locked: "Spærret"
   label_lock_user: "Lock user"
   label_logged_as: "Logget ind som"
   label_login: "Log ind"
@@ -3061,7 +3061,7 @@ da:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "Kursiv"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
@@ -4298,7 +4298,7 @@ da:
   status_invited: inviteret
   status_locked: Spærret
   status_registered: registreret
-  status_deleted: deleted
+  status_deleted: slettet
   #Used in array.to_sentence.
   support:
     array:

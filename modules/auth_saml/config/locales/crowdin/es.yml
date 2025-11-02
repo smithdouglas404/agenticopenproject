@@ -56,7 +56,7 @@ es:
       label_mapping: Asignación
       label_requested_attribute_for: "Atributo solicitado para: %{attribute}"
       no_results_table: Aún no se han definido proveedores de identidad SAML.
-      notice_created: A new SAML identity provider was successfully created.
+      notice_created: Se ha creado correctamente un nuevo proveedor de identidad SAML.
       plural: Proveedores de identidad SAML
       singular: Proveedor de identidad SAML
       requested_attributes: Atributos solicitados

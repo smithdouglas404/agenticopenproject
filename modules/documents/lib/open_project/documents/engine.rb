@@ -53,7 +53,7 @@ module OpenProject::Documents
 
       project_module :documents do |_map|
         permission :view_documents,
-                   { documents: %i[index show download],
+                   { documents: %i[index search show download],
                      "documents/menus": %i[show] },
                    permissible_on: :project
         permission :manage_documents,

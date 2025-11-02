@@ -8,10 +8,10 @@ nl:
         view_all_subitems: "View all subitems"
       members:
         title: "Latest members"
-        no_results: "No visible members."
-        view_all_members: "View all members"
+        no_results: "Geen zichtbare leden."
+        view_all_members: "Alle leden bekijken"
       news:
-        no_results: "Nothing new to report."
+        no_results: "Niets nieuws om te rapporteren."
   activerecord:
     attributes:
       grids/grid:

@@ -32,7 +32,7 @@ ms:
         drive: ID Pemacu
         host: Hos
         name: Nama
-        password: Application password
+        password: Kata laluan aplikasi
         provider_type: Jenis penyedia
         tenant: ID Direktori (penyewa) 
     errors:
@@ -231,8 +231,8 @@ ms:
       one_drive_oauth: OAuth Azure
       openproject_oauth: OAuth OpenProject
       project_folders: Folder projek
-      redirect_uri: ' Pengubah hala URI'
-      sharepoint_oauth: Azure OAuth
+      redirect_uri: Ubah hala URI
+      sharepoint_oauth: OAuth Azure
       storage_audience_blank: No audience has been configured.
       storage_audience_description: Exchanging tokens for audience "%{audience}".
       storage_audience_idp: Using access token obtained by identity provider during login, regardless of audience.
@@ -275,7 +275,7 @@ ms:
           drive_id_exists: Drive exists
           drive_id_format: Drive ID format
           header: Configuration
-          host: Host URL
+          host: URL Hos
           host_url_accessible: Host URL accessible
           storage_configured: Configuration complete
           tenant_id: Tenant ID
@@ -428,7 +428,7 @@ ms:
     label_redirect_uri: ' Pengubah hala URI'
     label_show_storage_redirect_uri: Paparkan ubah hala URI
     label_status: Status
-    label_storage: Storan
+    label_storage: Penyimpanan
     label_uri: URI
     member_connection_status:
       connected: Disambungkan
@@ -512,7 +512,7 @@ ms:
         label: Use access token obtained during user log in
       manual:
         helptext: OpenProject will exchange a token with the identity provider for the given audience.
-        label: Manually specify audience for which to exchange access token
+        label: Manually specify audience for which to exchange access token (Recommended)
     storage_list_blank_slate:
       description: Tambah storan untuk melihatnya di sini.
       heading: Anda masih belum ada sebarang storan.

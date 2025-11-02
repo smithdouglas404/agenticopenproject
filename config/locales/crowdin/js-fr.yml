@@ -190,7 +190,7 @@ fr:
           without_type: "Créer un lot de travaux"
           with_type: "Créer un lot de travaux (Type : %{typename})"
         embedded_table:
-          button: "Intégrer le lot de travaux"
+          button: "Intégrer le tableau du lot de travaux"
           text: "[Placeholder] Tableau du lot de travaux intégré"
         embedded_calendar:
           text: "[Placeholder] Calendrier embarqué"
@@ -239,7 +239,7 @@ fr:
       more_values_not_shown: "Il y a %{total} résultats supplémentaires, effectuez une recherche pour filtrer les résultats."
       description:
         text_open_filter: "Ouvrir ce filtre avec la touche « ALT » et les touches fléchées."
-        text_close_filter: "Pour sélectionner une entrée, laissez le focus par exemple en appuyant sur Entrée. Pour quitter sans filtre, sélectionnez la première entrée (vide)."
+        text_close_filter: "Pour sélectionner une entrée, laissez le focus par exemple en appuyant sur enter. Pour quitter sans filtre, sélectionnez la première entrée (vide)."
       noneElement: "(aucun)"
       time_zone_converted:
         two_values: "%{from} - %{to} dans votre heure locale."
@@ -387,7 +387,7 @@ fr:
     label_manage_columns: "Gérer et réorganiser les colonnes"
     label_me: "moi"
     label_meeting_agenda: "Ordre du jour"
-    label_meeting_minutes: "Compte-rendu"
+    label_meeting_minutes: "Minutes"
     label_menu_collapse: "réduire"
     label_menu_expand: "développer"
     label_more_than_ago: "il y a plus de quelques jours"
@@ -687,7 +687,7 @@ fr:
           first_day: "Premier jour"
           last_day: "Dernier jour"
     text_are_you_sure: "Êtes-vous sûr ?"
-    text_are_you_sure_to_cancel: "Vous avez des modifications non enregistrées sur cette page. Êtes-vous sûr de vouloir les supprimer ?"
+    text_are_you_sure_to_cancel: "Vous avez des modifications non enregistrées sur cette page. Voulez-vous vraiment les supprimer ?"
     breadcrumb: "Fil d'Ariane"
     text_data_lost: "Toutes les données saisies seront perdues."
     text_user_wrote: "%{value} écrit:"
@@ -944,8 +944,8 @@ fr:
         hierarchy_disabled_by_group_by: "Le mode hiérarchie est désactivé, car les résultats sont groupés par %{column}."
         sort_ascending: "Trier par ordre croissant"
         sort_descending: "Trier par ordre décroissant"
-        move_column_left: "Déplacer la colonne à gauche"
-        move_column_right: "Déplacer la colonne à droite"
+        move_column_left: "Déplacer la colonne de gauche"
+        move_column_right: "Déplacer le colonne de droite"
         hide_column: "Masquer la colonne"
         insert_columns: "Insérer des colonnes"
         filters: "Filtres"
@@ -983,7 +983,7 @@ fr:
         configure_button: "Configurer le tableau du lot de travaux"
         summary: "Tableau avec lignes de lots de travaux et colonnes d’attributs de lots de travaux."
         text_inline_edit: "La plupart des cellules de ce tableau sont des boutons qui activent la fonctionnalité d'édition en ligne de l’attribut."
-        text_sort_hint: "Avec les liens dans les entêtes de tableau, vous pouvez trier, regrouper, réorganiser, supprimer et ajouter des colonnes."
+        text_sort_hint: "Avec les liens dans les en-têtes de tableau vous pouvez trier, regrouper, réorganiser, supprimer et ajouter des colonnes."
         text_select_hint: "Les boîtes de sélection doivent être ouvertes avec la touche « ALT » et les flèches directionelles."
       table_configuration:
         button: "Configurer ce tableau du lot de travaux"
@@ -1003,7 +1003,7 @@ fr:
           none: "Pas de surlignement"
           inline: "Attribut(s) en surbrillance"
           inline_all: "Tous les attributs"
-          entire_row_by: "Ligne entière selon"
+          entire_row_by: "Ligne entière par"
           status: "Statut"
           priority: "Priorité"
           type: "Type"
@@ -1012,7 +1012,7 @@ fr:
           automatic: "Automatique"
           manually: "Manuellement"
           warning: "Vous perdrez votre tri précédent lors de l'activation du mode de tri automatique."
-        columns_help_text: "Utilisez le champ de saisie ci-dessus pour ajouter des colonnes à votre vue de tableau. Vous pouvez glisser-déposer les colonnes pour les réorganiser."
+        columns_help_text: "Utilisez le champ de saisie ci-dessus pour ajouter des colonnes à votre vue table. Vous pouvez glisser-déposer les colonnes pour les réorganiser."
         relation_filters:
           filter_work_packages_by_relation_type: "Filtrer les lots de travaux par type de relation"
       tabs:
@@ -1159,12 +1159,12 @@ fr:
           description: "Permissions basées sur le rôle attribué dans le projet sélectionné"
         group:
           title: "Groupe"
-          description: "Permissions basées sur le rôle attribué dans le projet sélectionné"
+          description: "Permissions basées sur le rôle assigné dans le projet sélectionné"
         placeholder:
-          title: "Utilisateur de remplacement"
+          title: "Utilisateur fictif"
           title_no_ee: "Utilisateur fictif (add-on de la version Entreprise uniquement)"
           description: "N'a pas d'accès au projet et aucun e-mail n'est envoyé."
-          description_no_ee: 'N''a pas accès au projet et aucun courriel n''est envoyé. <br>Consultez la <a href="%{eeHref}" target="_blank">version Entreprise</a>.'
+          description_no_ee: 'N''a pas accès au projet et aucun e-mail n''est envoyé. <br>Consultez la <a href="%{eeHref}" target="_blank">version Entreprise</a>.'
       principal:
         label:
           name_or_email: "Nom ou adresse e-mail"
@@ -1172,7 +1172,7 @@ fr:
         already_member_message: "Déjà membre de %{project}"
         no_results_user: "Aucun utilisateur n'a été trouvé"
         invite_user: "Invité :"
-        no_results_placeholder: "Aucuns utilisateurs fictifs n'a été trouvé"
+        no_results_placeholder: "Aucun utilisateur fictif n'a été trouvé"
         create_new_placeholder: "Créer un nouveau utilisateur fictif :"
         no_results_group: "Aucun groupe n'a été trouvé"
         next_button: "Suivante"
@@ -1233,7 +1233,7 @@ fr:
       show_changes_since: "Afficher les modifications depuis"
       help_description: "Fuseau horaire de référence pour la Référence."
       time_description: "Dans votre fuseau horaire : %{datetime}"
-      time: "Heure"
+      time: "Heure "
       from: "De"
       to: "À"
       drop_down:

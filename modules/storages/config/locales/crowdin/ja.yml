@@ -32,7 +32,7 @@ ja:
         drive: ドライブID
         host: ホスト
         name: 名称
-        password: Application password
+        password: アプリケーションのパスワード
         provider_type: プロバイダー・タイプ
         tenant: ディレクトリ（テナント）ID
     errors:
@@ -275,7 +275,7 @@ ja:
           drive_id_exists: ドライブは存在する
           drive_id_format: ドライブIDフォーマット
           header: 構成
-          host: Host URL
+          host: ホスト URL
           host_url_accessible: アクセス可能なホストURL
           storage_configured: 設定完了
           tenant_id: テナントID
@@ -512,7 +512,7 @@ ja:
         label: ユーザーログイン時に取得したアクセストークンを使用する
       manual:
         helptext: OpenProjectは、指定されたオーディエンスのIDプロバイダとトークンを交換します。
-        label: アクセストークンを交換する対象者を手動で指定する
+        label: Manually specify audience for which to exchange access token (Recommended)
     storage_list_blank_slate:
       description: ストレージを追加して、ここで見ることができる。
       heading: あなたはまだ倉庫を持っていない。

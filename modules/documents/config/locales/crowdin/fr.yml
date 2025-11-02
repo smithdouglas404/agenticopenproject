@@ -42,7 +42,7 @@ fr:
     subheader:
       filter:
         label: "Filtre sur le nom du document"
-        placeholder: "Tapez ici pour rechercher des noms de documents"
+        placeholder: "Saisissez votre texte ici pour rechercher des noms de documents"
     documents_list_blank_slate:
       heading: "Il n'y a pas encore de documents"
       description: "Il n'y a pas de documents dans cette vue. Vous pouvez cliquer sur le bouton ci-dessous pour en ajouter un."

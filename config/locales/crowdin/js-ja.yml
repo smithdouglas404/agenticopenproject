@@ -90,7 +90,7 @@ ja:
     button_show_view: "全画面表示"
     button_log_time: "時間を記録"
     button_start_timer: "Start timer"
-    button_stop_timer: "Stop timer"
+    button_stop_timer: "タイマー停止"
     button_more: "続き"
     button_open_details: "詳細表示を開く"
     button_close_details: "詳細表示を閉じる"

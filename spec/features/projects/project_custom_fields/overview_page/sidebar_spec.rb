@@ -861,7 +861,7 @@ RSpec.describe "Show project custom fields on project overview page", :js do
       end
     end
 
-    describe "with scored list CF", with_flag: { scored_list_custom_fields: true } do
+    describe "with scored list CF" do
       let!(:scored_list) do
         create(:scored_list_project_custom_field,
                projects: [project],

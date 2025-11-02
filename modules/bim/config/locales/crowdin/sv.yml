@@ -127,7 +127,7 @@ sv:
       label: 'Processing?'
       pending: 'Pending'
       processing: 'Bearbetar'
-      completed: 'Slutförd'
+      completed: 'Slutförda'
       error: 'Fel'
     processing_notice:
       processing_default: 'The following default IFC models are still being processed and are thus not available, yet:'

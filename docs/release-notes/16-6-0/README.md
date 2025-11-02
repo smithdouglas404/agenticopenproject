@@ -3,24 +3,103 @@ title: OpenProject 16.6.0
 sidebar_navigation:
     title: 16.6.0
 release_version: 16.6.0
-release_date: 2025-10-23
+release_date: 2025-11-05
 ---
 
 # OpenProject 16.6.0
 
-Release date: 2025-10-23
+Release date: 2025-11-05
 
-We released OpenProject [OpenProject 16.6.0](https://community.openproject.org/versions/1413).
-The release contains several bug fixes and we recommend updating to the newest version.
-In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
+We released [OpenProject 16.6.0](https://community.openproject.org/versions/1413). The release contains several bug fixes and we recommend updating to the newest version. In these Release Notes, we will give an overview of important feature changes. At the end, you will find a complete list of all changes and bug fixes.
 
 ## Important feature changes
 
-<!-- Inform about the major features in this section -->
+Take a look at our release video showing the most important features introduced in OpenProject 16.6.0:
 
-## Important updates and breaking changes
+![Release video of OpenProject 16.6](https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject_16_6_release.mp4)
 
-<!-- Remove this section if empty, add to it in pull requests linking to tickets and provide information -->
+### Calculated values for project evaluation and scoring (Enterprise add-on)
+
+OpenProject 16.6 introduces new project attribute types that make portfolio evaluation measurable and transparent: Hierarchy, Scored list, and Calculated value:
+
+![OpenProject administration with new types of project attributes: Calculated value, Hierarchy and Scored list are highlighted.](openproject-16-6-project-attributes.png)
+
+**Hierarchy** project attributes let you organize project information in a structured, nested way — for example, grouping initiatives by region, department, or program.
+
+![OpenProject administration shows a project attribute type hierarchy: The name is 'Strategic initiative' and it shows 3 items with sub-items, e.g. 'Digital transformation', and the options to edit, add sub-items, change parent and more.](openproject-16-6-project-attributes-hierarchy.png)
+
+**Scored lists** extend this concept by allowing administrators to assign numeric scores to list options, such as effort levels or risk ratings. These values can then be used as input for calculated results.
+
+**Calculated values** enable automatic computations based on formulas using numeric project attributes, including scores from Scored lists or even other calculated values. The computed result is displayed directly on the project overview and in the project list. It automatically updates whenever one of its source attributes (e.g., *Benefit* or *Effort* in the example below) is changed. This allows teams to calculate project scores and prioritise consistently across the portfolio.
+
+Here's an example of a calculated value called 'Overall score (calculated)' with the following formula: (Strategic impact * 0.6) + ( Benefit​* 0.3) - (Effort * 0.1)
+
+![Formula example for a project attribute of type 'Calculated Project Score': (Strategic impact * 0.6) + ( Benefit ​* 0.3) - (Effort * 0.1)](openproject-16-6-project-attributes-calculated-value.png)
+
+Together, these additions give project portfolio managers a flexible foundation for data-driven project evaluation and more transparent portfolio decisions. Of course, all project attributes, including calculated values, can be used for many other purposes.
+
+>[!NOTE]
+> Please note that these new project attributes are part of our [Enterprise add-ons in the Enterprise Professional plan](https://www.openproject.org/pricing/).
+
+![OpenProject 16.6: Project overview page showing three project attributes: Benefit = 10, Effort = 60, Overall Score (calculated) = automatically set to -1,2](openproject-16-6-project-attributes-overview-page.png)
+
+### Performance updates
+
+OpenProject 16.6 introduces several backend optimizations that significantly improve performance in large environments. [Database queries for collection endpoints in the API v3 have been optimized](https://community.openproject.org/wp/68457) to avoid unnecessary counting operations, and the [autocompleter for adding work package relations now requests only the data it actually needs](https://community.openproject.org/wp/68458).
+
+These improvements reduce query load and shorten response times, especially for installations with thousands of projects and millions of work packages.
+
+### New index page for Documents module
+
+With OpenProject 16.6, a new index page provides a structured overview of all documents within a project. The list is sorted by last edited, showing the latest changes first, and includes columns for Name, Type (the category), and Last edited. Users can search documents via a quick text filter or narrow results by document category using the *Types* filter menu on the left. A new *Create document* button lets users quickly add new items. 
+
+Of course, the view automatically respects project permissions, ensuring that users only see documents they are allowed to access. On mobile, the list is optimized to show just the most relevant information.
+
+While this is a small update by itself, it marks the beginning of a major improvement of the Documents module, which will make managing and [live collaborating on documents in OpenProject](https://community.openproject.org/wp/66309) much easier in the future.
+
+![OpenProject 16.6: Redesigned index page for the Documents module, showing a table with clickable name, type and last edited.](openproject-16-6-documents-index-page.png)
+
+### Possibility to change parent of a custom field item
+
+Administrators can now change the parent of an item within a hierarchical custom field or project attribute. This makes it easier to rearrange existing items without recreating them from scratch. 
+
+To do so, administrators need to navigate to *Administration → Custom fields*, select a custom field type hierarchy and click on the *Items* tab. Then they click on the *More* icon and select *Change parent*. A dialog opens showing the current hierarchy tree. From there, administrators can search, select a new parent, and save the updated structure. The hierarchy is updated immediately after saving. Like mentioned above, this also works for project attributes.
+
+![OpenProject 16.6: Custom field type hierarchy in the administration, tab 'Items', one item is selected with the 'More' menu and the option to change parent is higlighted](openproject-16-6-custom-field-hierarchy-change-parent.png)
+
+### Updated 'More' menu of meetings with an 'Add to section' option
+
+In the Meetings module, the *More (three dots) menu* for agenda items has been improved to make it easier to move items between sections. Moderators can now directly move an item to another section without manually reordering it step by step. 
+
+The new *Move → Move to section* option opens a dialog where users can select the desired section from a dropdown list. Additionally, users can still move an agenda item to the backlog or to the next meeting (if it's part of a meeting series).
+
+![OpenProject 16.6: Meetings module showing the options when clicking on the More menu on an agenda item](meetings_move_menu.png)
+
+### Editing individual attributes even if other fields are invalid
+
+In OpenProject 16.6, users can now edit individual attributes of a project, work package, or other object even if some required fields are missing or invalid. Previously, a single missing value — for example, a required custom field added after a project’s creation — could block users from saving any changes at all.
+
+With this improvement, OpenProject now only enforces required fields when they are visible in the form being edited. For example, a user can update a project name even if a required custom field for that project has not been filled in, since that field is not shown in the name edit view. However, when editing a work package where the required field is part of the form, the value must still be provided before saving. This change helps reduce unnecessary validation errors and prevents users from being blocked by unrelated fields.
+
+### Work package type workflow table with a sticky header and sticky first column
+
+In *Administration → Work packages → Workflows*, the workflow table now features a sticky header and sticky first column. This makes it much easier for project administrators to keep track of which transitions are enabled when scrolling through large tables, vertically or horizontally.
+
+Additionally, the table is now split into three tabs — *Default transitions*, *User is author*, and *User is assignee* — each showing the relevant workflow configuration. Before 16.6, these additional transitions were often overlooked as they were positioned below the table.
+
+![OpenProject 16.6: Administration for work package workflows highlighting the new tabs and that the header and right column are sticky when scrolling](openproject-16-6-work-package-workflow-highlighted.png)
+
+### Mini calendar re-added in the date picker of mobile web
+
+On mobile devices, including Safari on iOS, the date picker now once again includes a mini calendar view for selecting start and finish dates. This update makes it easier to see the weekday of a selected date and to distinguish working days from non-working days at a glance. The mini calendar replaces the previous text-only date input, providing a more intuitive way to choose dates while avoiding Safari’s inconsistent native date picker behavior. The calendar shows a single month view and is now the default way to select dates on mobile devices.
+
+## Important technical updates
+
+### Autoscaling
+
+OpenProject 16.6 introduces autoscaling support for containerized installations. The application now exposes Puma metrics (including busy_threads and backlog) that can be used by a horizontal pod autoscaler to automatically scale web instances based on load. 
+
+Autoscaling can be configured through the Helm chart, allowing system administrators to optimize resource usage and reduce operational costs during periods of low activity.
 
 <!--more-->
 
@@ -97,12 +176,15 @@ In these Release Notes, we will give an overview of important feature changes. A
 <!-- Warning: Anything above this line will be automatically removed by the release script -->
 
 ## Contributions
-A very special thank you goes to our sponsors for this release.
-Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes.
-Special thanks for reporting and finding bugs go to Sven Kunze, Stefan Weiberg, Александр Татаринцев, Gábor Alexovics, Alexander Aleschenko, Tobias Nowakow.
 
-Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings!
-Would you like to help out with translations yourself?
-Then take a look at our translation guide and find out exactly how you can contribute.
-It is very much appreciated!
+A very special thank you goes to Helmholtz-Zentrum Berlin, City of Cologne, Deutsche Bahn and ZenDiS for sponsoring released or upcoming features. Your support, alongside the efforts of our amazing Community, helps drive these innovations. Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes. Special thanks for reporting and finding bugs go to Sven Kunze, Stefan Weiberg, Александр Татаринцев, Gábor Alexovics, Alexander Aleschenko, Tobias Nowakow.
 
+This release, we specifically want to thank Emon for reporting a security vulnerability on our website. Reports and feedback like this are one of the reasons we love OSS and appreciate being part of such an amazing community.
+
+Last but not least, we are very grateful for our very engaged translation contributors on Crowdin, who translated quite a few OpenProject strings! This release we would like to particularly thank the following users:
+
+- [William](https://crowdin.com/profile/williamfromtw), for a great number of translations into Chinese Traditional.
+- [Pickart](https://crowdin.com/profile/fantasmak10), for a great number of translations into Catalan.
+- [Maxime77](https://crowdin.com/profile/maxime77), for a great number of translations into French.
+
+Would you like to help out with translations yourself? Then take a look at our [translation guide](../../contributions-guide/translate-openproject/) and find out exactly how you can contribute. It is very much appreciated!

@@ -393,7 +393,7 @@ af:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Ouer"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -4302,7 +4302,7 @@ af:
   status_invited: invited
   status_locked: locked
   status_registered: registered
-  status_deleted: deleted
+  status_deleted: geskrap
   #Used in array.to_sentence.
   support:
     array:

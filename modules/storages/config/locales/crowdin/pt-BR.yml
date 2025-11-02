@@ -249,10 +249,10 @@ pt-BR:
         ampf_configuration:
           client_folder_creation: Criação automática de pasta
           client_folder_removal: Exclusão automática de pasta
-          drive_contents: Drive content
+          drive_contents: Conteúdo da unidade
           files_request: Buscando arquivos da pasta do grupo
           group_folder_app: 'Dependência: Pastas de grupo'
-          group_folder_contents: Group folder content
+          group_folder_contents: Conteúdo da pasta do grupo
           group_folder_presence: A pasta do grupo existe
           header: Pastas de projeto gerenciadas automaticamente
           userless_access: Autenticação de solicitações no servidor
@@ -498,7 +498,7 @@ pt-BR:
         name: OneDrive
         name_placeholder: 'por ex.: OneDrive'
       sharepoint:
-        drive_description: OpenProject access-managed document library
+        drive_description: Biblioteca de documentos do OpenProject com acesso gerenciado
         label_oauth_client_id: ID do aplicativo Azure OAuth (cliente)
         label_oauth_client_secret: Valor secreto do cliente Azure OAuth
         name: SharePoint
@@ -513,7 +513,7 @@ pt-BR:
         label: Usar token de acesso obtido durante o login do usuário
       manual:
         helptext: O OpenProject trocará um token com o provedor de identidade para o público-alvo especificado.
-        label: Especificar manualmente o público-alvo para o qual trocar o token de acesso
+        label: Manually specify audience for which to exchange access token (Recommended)
     storage_list_blank_slate:
       description: Adicione um armazenamento para vê-lo aqui.
       heading: Ainda não tem nenhum armazenamento.

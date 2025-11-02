@@ -249,10 +249,10 @@ ko:
         ampf_configuration:
           client_folder_creation: 자동 폴더 생성
           client_folder_removal: 자동 폴더 삭제
-          drive_contents: Drive content
+          drive_contents: 드라이브 콘텐츠
           files_request: 그룹 폴더 파일 가져오기
           group_folder_app: '종속성: 그룹 폴더'
-          group_folder_contents: Group folder content
+          group_folder_contents: 그룹 폴더 콘텐츠
           group_folder_presence: 그룹 폴더가 존재합니다
           header: 자동으로 관리되는 프로젝트 폴더
           userless_access: 서버 측 요청 인증
@@ -496,7 +496,7 @@ ko:
         name: OneDrive
         name_placeholder: '예: OneDrive'
       sharepoint:
-        drive_description: OpenProject access-managed document library
+        drive_description: OpenProject 액세스 관리 문서 라이브러리
         label_oauth_client_id: Azure OAuth 애플리케이션(클라이언트) ID
         label_oauth_client_secret: Azure OAuth 클라이언트 비밀번호 값
         name: SharePoint
@@ -511,7 +511,7 @@ ko:
         label: 사용자 로그인 시 얻은 액세스 토큰을 사용하세요
       manual:
         helptext: OpenProject는 지정된 오디언스에 대한 ID 공급자와 토큰을 교환합니다.
-        label: 액세스 토큰을 교환할 오디언스를 수동으로 지정하세요
+        label: 액세스 토큰을 교환할 오디언스를 수동으로 지정하세요(권장)
     storage_list_blank_slate:
       description: 여기에서 보려면 저장소를 추가합니다.
       heading: 아직 저장소가 없습니다.

@@ -32,7 +32,7 @@ vi:
         drive: ID Ổ đĩa
         host: Máy chủ
         name: Tên
-        password: Application password
+        password: Mật khẩu ứng dụng
         provider_type: Loại nhà cung cấp
         tenant: ID Thư mục (người thuê)
     errors:
@@ -275,7 +275,7 @@ vi:
           drive_id_exists: Drive exists
           drive_id_format: Drive ID format
           header: Configuration
-          host: Host URL
+          host: URL máy chủ
           host_url_accessible: Host URL accessible
           storage_configured: Configuration complete
           tenant_id: Tenant ID
@@ -511,7 +511,7 @@ vi:
         label: Use access token obtained during user log in
       manual:
         helptext: OpenProject will exchange a token with the identity provider for the given audience.
-        label: Manually specify audience for which to exchange access token
+        label: Manually specify audience for which to exchange access token (Recommended)
     storage_list_blank_slate:
       description: Thêm một lưu trữ để thấy chúng ở đây.
       heading: Bạn chưa có lưu trữ nào.

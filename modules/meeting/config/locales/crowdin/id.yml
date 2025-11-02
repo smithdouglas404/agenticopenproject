@@ -538,7 +538,7 @@ id:
   text_meeting_not_editable_anymore: "This meeting is not editable anymore."
   text_meeting_not_present_anymore: "This meeting was deleted. Please select another meeting."
   label_add_work_package_to_meeting_dialog_title: "Select meeting"
-  label_add_work_package_to_meeting_section_label: "Section"
+  label_add_work_package_to_meeting_section_label: "Bagian"
   label_add_work_package_to_meeting_dialog_button: "Add to meeting"
   label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."
   label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."

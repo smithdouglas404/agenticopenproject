@@ -352,7 +352,7 @@ sk:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "alebo"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -393,7 +393,7 @@ sk:
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Nadradený balíček"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -655,8 +655,8 @@ sk:
     sessions:
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "Browser"
-      expires: "Expires"
-      last_connection: "Last connection"
+      expires: "Expiruje"
+      last_connection: "Posledné prihlásenie"
       device: "Device / OS"
       unknown_browser: "unknown browser"
       unknown_os: "unknown operating system"
@@ -1852,7 +1852,7 @@ sk:
     attachments: "Prílohy"
     actor: "Actor"
     action: "Akcia"
-    api_key: "API key"
+    api_key: "API kľúč"
     author: "Autor"
     avatar: "Avatar"
     base: "Všeobecná chyba:"
@@ -2931,7 +2931,7 @@ sk:
   label_required_disk_storage: "Požadované miesto na disku"
   label_send_invitation: Poslať pozvánku
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Zmeniť nadradený objekt"
   label_change_plural: "Zmeny"
   label_change_properties: "Zmeniť vlastnosti"
   label_change_status: "Zmeniť stav"
@@ -3143,7 +3143,7 @@ sk:
   label_link_url: "Link (URL)"
   label_list: "Zoznam"
   label_loading: "Načítava sa..."
-  label_locked: "locked"
+  label_locked: "zamknuté"
   label_lock_user: "Zamknúť užívateľa"
   label_logged_as: "Prihlásený ako"
   label_login: "Prihlásiť sa"
@@ -3153,7 +3153,7 @@ sk:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "Kurzíva"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
@@ -3932,7 +3932,7 @@ sk:
       one: "1 projekt"
       other: "%{count} projektov"
     destroy:
-      title: "Delete project"
+      title: "Vymazať projekt"
       heading: "Permanently delete this project?"
       confirmation_message_for_subprojects_html:
         zero: >
@@ -4395,7 +4395,7 @@ sk:
   status_invited: pozvaný
   status_locked: zamknuté
   status_registered: registrovaný
-  status_deleted: deleted
+  status_deleted: odstránené
   #Used in array.to_sentence.
   support:
     array:

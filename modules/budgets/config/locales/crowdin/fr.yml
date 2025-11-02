@@ -73,7 +73,7 @@ fr:
   label_example_placeholder: "par ex. %{decimal}"
   label_view_all_budgets: "Afficher tous les budgets"
   label_yes: "Oui"
-  label_budget_totals: "Total"
+  label_budget_totals: "Totaux"
   label_budget_details: "Détails du budget"
   notice_budget_conflict: "Les lots de travaux doivent appartenir au même projet."
   notice_no_budgets_available: "Aucun budget disponible."

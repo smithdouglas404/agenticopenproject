@@ -166,7 +166,7 @@ fr:
       tabs:
         default_transitions: "Transitions par défaut"
         user_author: "L'utilisateur est l'auteur"
-        user_assignee: "L'utilisateur est assigné"
+        user_assignee: "L'utilisateur est la personne assignée"
   authentication:
     login_and_registration: "Connexion et inscription"
   announcements:
@@ -397,9 +397,9 @@ fr:
       blueprint: "Modèle de plan"
   global_search:
     title:
-      all_projects: 'Recherche de "%{search_term}" dans tous les projets'
-      current_project: 'Recherche de "%{search_term}" dans %{project_name}'
-      project_and_subprojects: 'Recherche de "%{search_term}" dans %{project_name} et tous les sous-projets'
+      all_projects: 'Recherche de « %{search_term} » dans tous les projets'
+      current_project: 'Recherche de « %{search_term} » dans %{project_name}'
+      project_and_subprojects: 'Recherche de « %{search_term} » dans %{project_name} et tous les sous-projets'
     placeholder: "Rechercher dans %{app_title}"
     overwritten_tabs:
       all: "Tous"
@@ -530,7 +530,7 @@ fr:
         no_results_title_text: Aucune version du projet pour le moment.
         no_results_content_text: Créer une nouvelle version
         work_packages_graph: Graphique des lots de travaux
-        show_work_packages: Afficher tous les lots de travaux
+        show_work_packages: Afficher les lots de travaux
       storage:
         no_results_title_text: Il n'y a pas d'espace disque supplémentaire utilisé par ce projet.
       work_package_priorities:
@@ -615,14 +615,14 @@ fr:
     access_token:
       dialog:
         token/api:
-          dialog_title: "Créer un nouveau jeton API"
+          dialog_title: "Créer un nouveau jeton d'API"
           attention_text: "Traitez les jetons API comme des mots de passe. Toute personne possédant ce jeton aura accès aux informations de cette instance. Partagez-le uniquement avec des utilisateurs de confiance."
           dialog_body: "Ce jeton permettra aux applications tierces de communiquer avec votre instance. Pour différencier le nouveau jeton d'API, veuillez lui donner un nom."
           create_button: "Créer"
           name_label: "Nom du jeton"
       created_dialog:
         token/api:
-          title: "Un jeton a été généré"
+          title: "Le jeton d'API a été généré"
           warning: "Note : Ceci est la seule fois où vous verrez ce jeton, veuillez le copier maintenant."
       failed_to_reset_token: "Impossible de réinitialiser le jeton d’accès : %{error}"
       failed_to_create_token: "Impossible de créer le jeton d'accès : %{error}"
@@ -673,7 +673,7 @@ fr:
     deletion_info:
       heading: "Supprimer l’utilisateur fictif %{name}"
       data_consequences: >
-        Toutes les occurrences de l'utilisateur de remplacement (par exemple, en tant que responsable ou autre valeur utilisateur) seront réaffectées à un compte appelé « Utilisateur supprimé ». Comme les données de chaque compte supprimé sont réaffectées à ce compte, il ne sera pas possible de distinguer les données que l'utilisateur a créées des données d'un autre compte supprimé.
+        Toutes les occurrences de l'utilisateur fictif (par exemple, en tant que responsable ou autre valeur utilisateur) seront réaffectées à un compte appelé « Utilisateur supprimé ». Comme les données de chaque compte supprimé sont réaffectées à ce compte, il ne sera pas possible de distinguer les données que l'utilisateur a créées des données d'un autre compte supprimé.
       irreversible: "Cette action est irréversible"
       confirmation: "Saisissez le nom d'utilisateur fictif %{name} pour confirmer ça suppression."
   priorities:
@@ -1715,7 +1715,7 @@ fr:
       notification:
         one: "Notification"
         other: "Notifications"
-      placeholder_user: "Utilisateur de remplacement"
+      placeholder_user: "Utilisateur fictif"
       project:
         one: "Projet"
         other: "Projets"
@@ -1831,7 +1831,7 @@ fr:
     due_date: "Date de fin"
     estimated_hours: "Travail"
     estimated_time: "Travail"
-    email: "E-mail"
+    email: "Adresse e-mail"
     entity_type: "Entité"
     expires_at: "Expire le"
     firstname: "Prénom"
@@ -2221,7 +2221,7 @@ fr:
       ldap_groups: Synchronisation des utilisateurs LDAP et des groupes
       nextcloud_sso: Authentification unique pour le stockage Nextcloud
       one_drive_sharepoint_file_storage: Stockage de fichiers OneDrive/SharePoint
-      placeholder_users: Utilisateurs de remplacement
+      placeholder_users: Utilisateurs fictifs
       project_list_sharing: Partage de liste de projets
       readonly_work_packages: Lots de travaux en lecture seule
       scim_api: API du serveur SCIM
@@ -2234,7 +2234,7 @@ fr:
     upsell:
       buy_now_button: "Acheter maintenant"
       plans_title: "Formules d'abonnement Enterprise"
-      title: "Add-on Enterprise"
+      title: "Module Enterprise"
       plan_title: "Add-on Enterprise %{plan}"
       plan_name: "Abonnement Enterprise %{plan}"
       plan_text_html: "Disponible à partir de l'abonnement %{plan_name}."
@@ -2302,7 +2302,7 @@ fr:
       virus_scanning:
         description: "Assurez-vous que les fichiers téléversés dans OpenProject sont analysés pour détecter les virus avant d'être accessibles aux autres utilisateurs."
       placeholder_users:
-        title: Utilisateurs de remplacement
+        title: Utilisateurs fictifs
         description: >
           Les utilisateurs fictifs sont un moyen d'attribuer des lots de travaux à des utilisateurs qui ne font pas partie de votre projet. Ils peuvent être utiles dans une série de scénarios ; par exemple, si vous avez besoin de suivre des tâches pour une ressource qui n'est pas encore nommée ou disponible, ou si vous ne voulez pas donner à cette personne l'accès à OpenProject mais voulez quand même suivre les tâches qui lui sont assignées.
       internal_comments:
@@ -2561,13 +2561,13 @@ fr:
       tesseract: "Tesseract disponible (optionnel)"
   filterable_tree_view:
     filter_mode:
-      all: "Tout"
+      all: "Tous"
       label: "Mode de filtrage"
       selected: "Sélectionné"
     include_sub_items: "Inclure les sous-projets"
     no_results_text: "Aucun résultat"
   toggle_switch:
-    label_on: "Activer"
+    label_on: "Activé"
     label_off: "Désactiver"
   general_csv_decimal_separator: ","
   general_csv_encoding: "UTF-8"
@@ -2597,15 +2597,15 @@ fr:
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que
+            Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que :
           new_features_list:
-            line_0: Valeurs calculées pour l'évaluation et la notation des projets (Enterprise add-on).
+            line_0: Valeurs calculées pour l'évaluation et la notation des projets (add-on Enterprise).
             line_1: Hiérarchie des types d'attributs du projet.
             line_2: Des mises à jour de performance avec un impact important.
             line_3: Nouvelle page d'index pour le module Documents.
             line_4: Possibilité de changer le parent d'un champ personnalisé.
     links:
-      upgrade_enterprise_edition: "Passer à la version Entreprise"
+      upgrade_enterprise_edition: "Passer à la version Enterprise"
       postgres_migration: "Migration de votre installation vers PostgreSQL"
       user_guides: "Guides d'utilisation"
       faq: "FAQ"
@@ -2692,7 +2692,7 @@ fr:
         title: "API"
         text_hint: "Les jetons d'API permettent aux applications tierces de communiquer avec cette instance OpenProject via les API REST."
         disabled_text: "Les jetons d'API ne sont pas activés par l'administrateur. Veuillez contacter votre administrateur pour utiliser cette fonctionnalité."
-        add_button: "Jeton API"
+        add_button: "Jeton d'API"
       api:
         static_token_name: "Jeton d'API"
       ical:
@@ -3174,9 +3174,9 @@ fr:
   label_permissions: "Autorisations"
   label_permissions_report: "Rapport d'autorisations"
   label_personalize_page: "Personaliser cette page"
-  label_placeholder_user: "Utilisateur de remplacement"
-  label_placeholder_user_new: "Nouvel utilisateur de remplacement"
-  label_placeholder_user_plural: "Utilisateurs de remplacement"
+  label_placeholder_user: "Utilisateur fictif"
+  label_placeholder_user_new: "Nouvel utilisateur fictif"
+  label_placeholder_user_plural: "Utilisateurs fictifs"
   label_planning: "Planification"
   label_please_login: "Veuillez vous connecter"
   label_plugins: "Plugins"
@@ -3695,7 +3695,7 @@ fr:
   #Default format for numbers
   number:
     format:
-      delimiter: ","
+      delimiter: "."
       precision: 3
       separator: ","
     human:

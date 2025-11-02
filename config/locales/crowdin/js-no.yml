@@ -302,7 +302,7 @@
       ical_generation_error_text: "Det oppstod en feil ved generering av kalenderURL."
       success_message: 'URL-adressen "%{name}" ble vellykket kopiert til utklippstavlen. Lim den inn i kalenderklienten for å fullføre abonnementet.'
     label_activate: "Aktiver"
-    label_assignee: "Utførende"
+    label_assignee: "Deltaker"
     label_add_column_after: "Legg til kolonne etter"
     label_add_column_before: "Legg til kolonne før"
     label_add_columns: "Legg til kolonner"
@@ -603,7 +603,7 @@
           mentioned:
             title: "Nevnt"
             description: "Motta en melding hver gang noen nevner meg hvor som helst"
-          assignee: "Utførende"
+          assignee: "Deltaker"
           responsible: "Ansvarlig"
           shared: "Delt"
           watched: "Overvåker"
@@ -615,13 +615,13 @@
         global:
           immediately:
             title: "Deltar"
-            description: "Varsler for alle aktiviteter i arbeidspakker du er involvert i (utførende, ansvarlig eller overvåker)."
+            description: "Varsler for alle aktiviteter i arbeidspakker du er involvert i (oppdragstaker, ansvarlig eller overvåker)."
           delayed:
             title: "Ikke-deltakende"
             description: "Melding om ytterligere aktiviteter i alle prosjekter."
           date_alerts:
             title: "Dato varsler"
-            description: "Automatiske varsler når viktige datoer nærmer seg for åpne arbeidspakker du er med i (utførende, ansvarlig eller overvåker)."
+            description: "Automatiske varsler når viktige datoer nærmer seg for åpne arbeidspakker du er med i (oppdragstaker, ansvarlig eller overvåker)."
           overdue: Når forfalt
         project_specific:
           title: "Prosjekt-spesifikke varslingsinnstillinger"
@@ -888,7 +888,7 @@
         estimatesAndTime: "Estimater og tid"
         other: "Øvrig"
       properties:
-        assignee: "Utførende"
+        assignee: "Deltaker"
         author: "Forfatter"
         createdAt: "Opprettet"
         description: "Beskrivelse"

@@ -130,7 +130,7 @@ hu:
       notice_created: A new OpenID provider was successfully created.
       client_details_description: Configuration details of OpenProject as an OIDC client
       no_results_table: Nincs szolgáltató definiálva
-      plural: OpenID szolgáltatók
+      plural: OpenID szolgáltató
       singular: OpenID szolgáltató
       section_texts:
         group_mapping: Map group names provided by the identity provider to groups in OpenProject.

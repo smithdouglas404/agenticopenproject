@@ -350,49 +350,49 @@ ja:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "または"
     errors:
       array?: "must be an array."
-      decimal?: "must be a decimal."
-      defined: "must not be defined."
+      decimal?: "10進数である必要があります。"
+      defined: "を定義してはならない。"
       eql?: "must be equal to %{left}."
-      filled?: "must be filled."
-      greater_or_equal_zero: "must be greater or equal to 0."
+      filled?: "を入力する必要があります。"
+      greater_or_equal_zero: "は 0 以上でなければなりません。"
       gteq?: "must be greater than or equal to %{num}."
       hash?: "must be a hash."
       included_in?:
         arg:
           default: "must be one of: %{list}."
           range: "must be one of: %{list_left} - %{list_right}."
-      int?: "must be an integer."
-      key?: "is missing."
-      not_found: "not found."
+      int?: "は整数でなければなりません。"
+      key?: "は見つかりません。"
+      not_found: "見つかりません。"
       rules:
         copy_workflow_from:
-          workflow_missing: "has no own workflow."
+          workflow_missing: "独自のワークフローはありません。"
         custom_field:
-          format_not_supported: "format '%{field_format}' is unsupported."
+          format_not_supported: "フォーマット '%{field_format}' はサポートされていません。"
         item:
-          root_item: "cannot be a root item."
-          not_persisted: "must be an already existing item."
+          root_item: "をルート・アイテムにすることはできません。"
+          not_persisted: "は既存のアイテムである必要があります。"
         label:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "は、同じ階層レベル内で一意である必要があります。"
         short:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "は、同じ階層レベル内で一意である必要があります。"
         parent:
-          not_descendant: "must be a descendant of the hierarchy root."
+          not_descendant: "階層ルートの子孫でなければなりません。"
       str?: "must be a string."
       type?: "must be %{type}."
     rules:
-      copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
-      depth: "Depth"
-      item: "Item"
+      copy_workflow_from: "ワークフローコピーのタイプ"
+      enabled: "有効"
+      depth: "深さ"
+      item: "項目"
       label: "Label"
-      score: "Score"
-      short: "Short name"
-      parent: "Parent"
-      blueprint: "Pattern blueprint"
+      score: "スコア"
+      short: "ショートネーム"
+      parent: "親項目"
+      blueprint: "パターンの建設計画"
   global_search:
     title:
       all_projects: 'すべてのプロジェクトで "%{search_term}" を検索'
@@ -454,7 +454,7 @@ ja:
     lists:
       active: "アクティブなプロジェクト"
       my: "参加しているプロジェクト"
-      favorited: "Favorite projects"
+      favorited: "お気に入りプロジェクト"
       archived: "アーカイブされたプロジェクト"
       shared: "共有されたプロジェクト"
       my_lists: "自分のプロジェクトリスト"
@@ -527,7 +527,7 @@ ja:
       versions:
         no_results_title_text: 現在、プロジェクトのバージョンはありません。
         no_results_content_text: 新しいバージョンを作成
-        work_packages_graph: Work packages graph
+        work_packages_graph: ワークパッケージのグラフ
         show_work_packages: Show work packages
       storage:
         no_results_title_text: このプロジェクトによって使用される追加のディスク領域はありません。
@@ -635,8 +635,8 @@ ja:
     sessions:
       session_name: "%{browser_name} %{browser_version} の %{os_name}"
       browser: "ブラウザ"
-      expires: "Expires"
-      last_connection: "Last connection"
+      expires: "有効期限"
+      last_connection: "前回の接続"
       device: "デバイス / OS"
       unknown_browser: "不明なブラウザ"
       unknown_os: "不明なオペレーティング システム"
@@ -1040,7 +1040,7 @@ ja:
       enterprise_trial:
         company: "会社"
       favorite:
-        favorited: "Item"
+        favorited: "項目"
       grids/grid:
         page: "ページ"
         row_count: "行数"
@@ -1778,7 +1778,7 @@ ja:
     attachments: "添付ファイル"
     actor: "アクター"
     action: "操作"
-    api_key: "API key"
+    api_key: "APIキー"
     author: "作成者"
     avatar: "アバター"
     base: "一般的なエラー:"
@@ -2552,7 +2552,7 @@ ja:
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            このリリースには、以下のようなさまざまな新機能と改善が含まれています：
           new_features_list:
             line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
             line_1: Project attributes type hierarchy.
@@ -2794,7 +2794,7 @@ ja:
   label_required_disk_storage: "必要なディスク ストレージ"
   label_send_invitation: 招待状を送信
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "親タスクの変更"
   label_change_plural: "変更"
   label_change_properties: "プロパティの変更"
   label_change_status: "ステータスの変更"

@@ -45,7 +45,7 @@ ms:
         title: "Tajuk"
         author: "Pengarang"
         duration_in_minutes: "Tempoh"
-        description: "Nota-nota"
+        description: "Nota"
         presenter: "Penyampai"
       meeting_section:
         title: "Tajuk"
@@ -115,7 +115,7 @@ ms:
   label_meeting_copy: "Salin mesyuarat"
   label_meeting_edit: "Edit Mesyuarat"
   label_meeting_agenda: "Agenda"
-  label_meeting_minutes: "Minit Mesyuarat"
+  label_meeting_minutes: "Minit"
   label_meeting_close: "Tutup"
   label_meeting_open: "Buka"
   label_meeting_index_delete: "Padamkan"
@@ -202,7 +202,7 @@ ms:
       agenda_items: "Salin item agenda"
       agenda_text: "Salin agenda mesyuarat lama"
       participants: "Salin senarai peserta"
-      to_clipboard: "Copy link to clipboard"
+      to_clipboard: "Salin pautan ke papan klip"
     email:
       send_emails: "E-mel peserta"
       send_invitation_emails: >
@@ -538,7 +538,7 @@ ms:
   text_meeting_not_editable_anymore: "Mesyuarat ini tidak boleh diedit lagi."
   text_meeting_not_present_anymore: "Mesyuarat ini telah dipadamkan. Sila pilih mesyuarat lain."
   label_add_work_package_to_meeting_dialog_title: "Select meeting"
-  label_add_work_package_to_meeting_section_label: "Section"
+  label_add_work_package_to_meeting_section_label: "Bahagian"
   label_add_work_package_to_meeting_dialog_button: "Tambah ke mesyuarat"
   label_meeting_selection_caption: "It is only possible to add this work package to an upcoming or an ongoing meeting."
   label_section_selection_caption: "Choose a particular section of the agenda or add it to the backlog."

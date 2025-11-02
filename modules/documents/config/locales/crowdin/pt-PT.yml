@@ -28,8 +28,8 @@ pt-PT:
       document: "Documento"
     attributes:
       document:
-        content_binary: "Content binary"
-        title: "Title"
+        content_binary: "Conteúdo binário"
+        title: "Título"
   activity:
     filter:
       document: "Documentos"
@@ -38,21 +38,21 @@ pt-PT:
   enumeration_doc_categories: "Categorias de documentos"
   documents:
     page_header:
-      heading: "All documents"
+      heading: "Todos os documentos"
     subheader:
       filter:
-        label: "Document name filter"
-        placeholder: "Type here to search document names"
+        label: "Filtro de nome do documento"
+        placeholder: "Escreva aqui para pesquisar nomes de documentos"
     documents_list_blank_slate:
-      heading: "There are no documents yet"
-      description: "There are no documents in this view. You can click the button below to add one."
+      heading: "Ainda não existem documentos"
+      description: "Não existem documentos nesta vista. Pode clicar no botão abaixo para adicionar um."
     index_page:
-      name: "Name"
-      type: "Type"
-      updated_at: "Last edited"
+      name: "Nome"
+      type: "Tipo"
+      updated_at: "Última edição"
     menu:
-      all: "All documents"
-      types: "Types"
+      all: "Todos os documentos"
+      types: "Tipos"
     label_attachment_author: "Autor do anexo"
     label_categories: "Categorias"
     new_category: "Nova categoria"

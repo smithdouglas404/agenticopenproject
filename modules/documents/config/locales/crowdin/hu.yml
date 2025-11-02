@@ -29,7 +29,7 @@ hu:
     attributes:
       document:
         content_binary: "Content binary"
-        title: "Title"
+        title: "Cím"
   activity:
     filter:
       document: "Dokumentumok"
@@ -47,12 +47,12 @@ hu:
       heading: "There are no documents yet"
       description: "There are no documents in this view. You can click the button below to add one."
     index_page:
-      name: "Name"
-      type: "Type"
+      name: "Név"
+      type: "Típus"
       updated_at: "Last edited"
     menu:
       all: "All documents"
-      types: "Types"
+      types: "Típus"
     label_attachment_author: "Melléklet szerzője"
     label_categories: "Kategóriák"
     new_category: "Új kategória"

@@ -445,7 +445,7 @@ OPENPROJECT_OPENID__CONNECT_KEYCLOAK_USERINFO__ENDPOINT="/realms/<REALM>/protoco
 OPENPROJECT_OPENID__CONNECT_KEYCLOAK_END__SESSION__ENDPOINT="http://keycloak.example.com/realms/<REALM>/protocol/openid-connect/logout"
 
 # Optional: space separated list of grant types supported by the provider
-OPENPROJECT_OPENID__CONNECT_KEYCLOAK_GRANT_TYPES_SUPPORTED="authorization_code urn:ietf:params:oauth:grant-type:token-exchange"
+OPENPROJECT_OPENID__CONNECT_KEYCLOAK_GRANT__TYPES__SUPPORTED="authorization_code urn:ietf:params:oauth:grant-type:token-exchange"
 
 # Host name of Keycloak, required if endpoint information are not absolute URLs
 OPENPROJECT_OPENID__CONNECT_KEYCLOAK_HOST="<Hostname of the keycloak server>"

@@ -296,7 +296,7 @@ RSpec.describe API::V3::Utilities::CustomFieldInjector do
 
     {
       hierarchy: { with_ee: [:custom_field_hierarchies] },
-      scored_list: { with_flag: { scored_list_custom_fields: true } }
+      scored_list: {}
     }.each do |format, tags|
       describe "#{format} custom field", **tags do
         let(:custom_field) do

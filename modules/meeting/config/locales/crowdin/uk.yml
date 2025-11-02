@@ -227,7 +227,7 @@ uk:
       open_my_meetings_link: "Перейдіть до Моїх нарад"
       series:
         title: "[%{project_name}] – серія нарад «%{title}»"
-        summary: "%{actor} has invited you to a new meeting series '%{title}'"
+        summary: "%{actor} запрошує вас на нову серію нарад «%{title}»"
       series_updated:
         title: "[%{project_name}]: серію нарад «%{title}» оновлено"
         summary: "Серію нарад «%{title}» оновив(-ла) %{actor}"
@@ -559,7 +559,7 @@ uk:
   text_meeting_not_editable_anymore: "Цю нараду більше не можна редагувати."
   text_meeting_not_present_anymore: "Цю нараду видалено. Виберіть іншу нараду."
   label_add_work_package_to_meeting_dialog_title: "Вибрати нараду"
-  label_add_work_package_to_meeting_section_label: "Section"
+  label_add_work_package_to_meeting_section_label: "Розділ"
   label_add_work_package_to_meeting_dialog_button: "Додати до наради"
   label_meeting_selection_caption: "Цей пакет робіт можна додати лише до майбутньої або поточної наради."
   label_section_selection_caption: "Виберіть конкретний розділ порядку денного чи додайте його в чергу завдань."

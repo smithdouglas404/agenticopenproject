@@ -249,10 +249,10 @@ uk:
         ampf_configuration:
           client_folder_creation: Автоматичне створення папки
           client_folder_removal: Автоматичне видалення папки
-          drive_contents: Drive content
+          drive_contents: Вміст диска
           files_request: Отримання файлів із папок групи
           group_folder_app: 'Залежність: папки групи'
-          group_folder_contents: Group folder content
+          group_folder_contents: Вміст папки групи
           group_folder_presence: Папка групи вже існує
           header: Папки проєкту з автоматичним керуванням
           userless_access: Автентифікація запиту на стороні сервера
@@ -503,7 +503,7 @@ uk:
         name: OneDrive
         name_placeholder: напр. OneDrive
       sharepoint:
-        drive_description: OpenProject access-managed document library
+        drive_description: Бібліотека документів OpenProject із керуванням на основі доступу
         label_oauth_client_id: Ідентифікатор (клієнт) додатка Azure OAuth
         label_oauth_client_secret: Значення секрету клієнта Azure OAuth
         name: SharePoint
@@ -518,7 +518,7 @@ uk:
         label: Використовувати маркер доступу, отриманий під час входу користувача
       manual:
         helptext: OpenProject отримає маркер у постачальника ідентифікаційних даних для визначеної аудиторії.
-        label: Вручну вказати аудиторію, для якої потрібно отримати маркер доступу
+        label: Вручну вказувати аудиторію, для якої потрібно отримати маркер доступу (рекомендовано)
     storage_list_blank_slate:
       description: Додайте сховище, щоб воно з’явилося тут.
       heading: У вас ще немає жодного сховища.

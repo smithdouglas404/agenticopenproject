@@ -58,10 +58,12 @@ module MeetingAgendaItems
       return unless edit_enabled?
 
       menu.with_item(label: t("label_agenda_outcome_edit"),
-                     href: edit_meeting_outcome_path(@meeting, @meeting_outcome),
-                     content_arguments: {
-                       data: { "turbo-stream": true }
-                     }) do |item|
+                     tag: :button,
+                     content_arguments: { data: {
+                       action: "click->meetings--submit#intercept",
+                       href: edit_meeting_outcome_path(@meeting, @meeting_outcome),
+                       method: "GET"
+                     } }) do |item|
         item.with_leading_visual_icon(icon: :pencil)
       end
     end
@@ -81,15 +83,14 @@ module MeetingAgendaItems
       return unless edit_enabled?
 
       menu.with_item(label: t("label_agenda_outcome_delete"),
+                     tag: :button,
                      scheme: :danger,
-                     href: meeting_outcome_path(@meeting, @meeting_outcome),
-                     form_arguments: {
-                       method: :delete,
-                       data: {
-                         turbo_confirm: t(:text_are_you_sure),
-                         turbo_stream: true
-                       }
-                     }) do |item|
+                     content_arguments: { data: {
+                       action: "click->meetings--submit#intercept",
+                       href: meeting_outcome_path(@meeting, @meeting_outcome),
+                       method: "DELETE",
+                       confirm_message: t(:text_are_you_sure)
+                     } }) do |item|
         item.with_leading_visual_icon(icon: :trash)
       end
     end

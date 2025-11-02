@@ -29,7 +29,7 @@ tr:
     attributes:
       document:
         content_binary: "Content binary"
-        title: "Title"
+        title: "Başlık"
   activity:
     filter:
       document: "Belgeler"
@@ -47,12 +47,12 @@ tr:
       heading: "There are no documents yet"
       description: "There are no documents in this view. You can click the button below to add one."
     index_page:
-      name: "Name"
-      type: "Type"
+      name: "İsim"
+      type: "Tür"
       updated_at: "Last edited"
     menu:
       all: "All documents"
-      types: "Types"
+      types: "Türler"
     label_attachment_author: "Ek yazar"
     label_categories: "Kategoriler"
     new_category: "Yeni kategori"

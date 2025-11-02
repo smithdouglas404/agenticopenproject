@@ -127,7 +127,7 @@ ko:
       label_configuration_details: 메타데이터
       label_client_details: 클라이언트 세부 정보
       label_attribute_mapping: 특성 매핑
-      notice_created: A new OpenID provider was successfully created.
+      notice_created: 새로운 OpenID 공급자가 생성되었습니다.
       client_details_description: OIDC 클라이언트인 OpenProject의 구성 세부 정보
       no_results_table: 아직 정의된 공급자가 없습니다.
       plural: OpenID 공급자
