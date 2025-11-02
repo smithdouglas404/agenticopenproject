@@ -45,22 +45,22 @@ import { slideDown, slideUp } from 'es6-slide-up-down';
 */
 function closeMenu(menu:HTMLElement, event:MouseEvent) {
   // do not close the menu, if the user accidentally clicked next to a menu item (but still within the menu)
-  if (event.target !== menu.querySelector(' > li.drop-down.open > ul')) {
-    const li = menu.querySelector(' > li.drop-down.open')!;
+  if (event.target !== menu.querySelector(':scope > li.drop-down.open > ul')) {
+    const li = menu.querySelector(':scope > li.drop-down.open')!;
     li.classList.remove('open');
-    const ul = li.querySelector<HTMLUListElement>('> ul');
+    const ul = li.querySelector<HTMLUListElement>(':scope > ul');
     slideUp(ul!, ANIMATION_RATE_MS);
   }
 }
 
 function openMenu(menu:HTMLElement) {
-  const dropDown = menu.querySelector(' > li.drop-down')!;
+  const dropDown = menu.querySelector(':scope > li.drop-down')!;
   // do not open a menu, which is already open
   if (!dropDown.classList.contains('open')) {
-    const ul = dropDown.querySelector<HTMLUListElement>('> ul')!;
+    const ul = dropDown.querySelector<HTMLUListElement>(':scope > ul')!;
     slideDown(ul, ANIMATION_RATE_MS);
     window.requestAnimationFrame(() => {
-      dropDown.querySelector<HTMLAnchorElement>('li > a:first')?.focus();
+      dropDown.querySelector<HTMLAnchorElement>('li > a:first-child')?.focus();
       // when clicking on something, which is not the menu, close the menu
       document.addEventListener('click', (evt) => closeMenu(menu, evt), { once: true });
     });
@@ -70,7 +70,7 @@ function openMenu(menu:HTMLElement) {
 
 // open the given submenu when clicking on it
 export function installMenuLogic(menu:HTMLElement) {
-  menu.querySelector('> li.drop-down')?.addEventListener('click', (event) => {
+  menu.querySelector(':scope > li.drop-down')?.addEventListener('click', (event) => {
     openMenu(menu);
     // and prevent default action (href) for that element
     // but not for the menu items.
