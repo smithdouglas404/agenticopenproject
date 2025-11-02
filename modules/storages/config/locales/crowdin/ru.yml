@@ -541,7 +541,7 @@ ru:
         label: Использовать токен доступа, полученный при входе пользователя
       manual:
         helptext: OpenProject обменяется токеном с поставщиком идентификационных данных для данной аудитории.
-        label: Manually specify audience for which to exchange access token (Recommended)
+        label: Вручную укажите аудиторию для которой можно изменить токен доступа (рекомендуется)
     storage_list_blank_slate:
       description: Добавьте хранилище, чтобы увидеть его здесь.
       heading: У вас пока нет хранилищ.
