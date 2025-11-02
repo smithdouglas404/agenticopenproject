@@ -65,7 +65,7 @@ The uploaded documents are visible to all project members who have the necessary
 
 ## Edit or delete a project document
 
-You can edit or delete documents anytime. To do that, click on the 'Edit' button when viewing a document. This will take you to edit view:
+You can edit or delete documents anytime. To do that, click on the *Edit* button when viewing a document. This will take you to edit view:
 
 ![Edit a document in OpenProject Documents module](documents-new-edit.png)
 
