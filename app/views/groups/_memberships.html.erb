@@ -69,21 +69,25 @@ See COPYRIGHT and LICENSE files for more details.
             <tbody>
             <% memberships.where.not(project: nil).each do |membership| %>
               <% next if membership.new_record? %>
-              <tr id="member-<%= membership.id %>" class="member">
+              <tr id="member-<%= membership.id %>"
+                class="member"
+                data-controller="reveal"
+                data-reveal-hidden-class="d-none">
                 <td class="project">
                   <%= link_to membership.project.name, project_members_path(membership.project) %>
                 </td>
                 <td class="roles">
-                      <span id="member-<%= membership.id %>-roles">
-                        <%= h membership.roles.sort.collect(&:to_s).join(', ') %>
-                      </span>
-                  <%= labelled_tabular_form_for(:membership,
-                                                url: membership_of_group_path(@group, membership),
-                                                method: :patch,
-                                                html: {
-                                                  id: "member-#{membership.id}-roles-form",
-                                                  style: 'display:none;'
-                                                }) do |f| %>
+                  <span id="member-<%= membership.id %>-roles" data-reveal-target="item">
+                    <%= h membership.roles.sort.collect(&:to_s).join(', ') %>
+                  </span>
+                  <%= labelled_tabular_form_for(
+                        :membership,
+                        url: membership_of_group_path(@group, membership),
+                        method: :patch,
+                        id: "member-#{membership.id}-roles-form",
+                        data: { reveal_target: "item" },
+                        html: { class: "d-none" }
+                      ) do |f| %>
                     <% roles.each do |role| %>
                       <label class="form--label-with-check-box">
                         <%= f.collection_check_box :role_ids,
@@ -97,20 +101,24 @@ See COPYRIGHT and LICENSE files for more details.
                       </label>
                     <% end %>
                     <p class="generic-table--cell-controls">
-                      <%= submit_tag t(:button_change), class: 'button -primary -small' %>
-                      <%= link_to_function t(:button_cancel), "jQuery('#member-#{membership.id}-roles').show(); jQuery('#member-#{membership.id}-roles-form').hide();",
-                                           class: 'button -small' %>
+                      <%= submit_tag t(:button_change), class: "memberships--edit-submit-button button -primary -small" %>
+                      <%= button_tag t(:button_cancel), type: "button",
+                                                        data: { action: "reveal#toggle" },
+                                                        class: "button -small" %>
                     </p>
                   <% end %>
                 </td>
                 <td class="buttons">
-                  <%= link_to_function icon_wrapper('icon icon-edit', t(:button_edit)),
-                                       "jQuery('#member-#{membership.id}-roles').hide(); jQuery('#member-#{membership.id}-roles-form').show();" do %>
-                  <% end %>
+                  <%= link_to(
+                        icon_wrapper("icon icon-edit", t(:button_edit)),
+                        "#",
+                        data: { action: "reveal#toggle" },
+                        aria: { label: t(:button_edit) }
+                      ) %>
                   <%= link_to t(:button_remove),
                               membership_of_group_path(@group, membership),
                               data: { turbo_method: :delete },
-                              class: 'icon icon-remove' %>
+                              class: "icon icon-remove" %>
                 </td>
               </tr>
             <% end %>

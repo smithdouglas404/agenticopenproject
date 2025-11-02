@@ -72,66 +72,78 @@ See COPYRIGHT and LICENSE files for more details.
           <tbody>
             <% memberships.where.not(project: nil).each do |membership| %>
               <% next if membership.new_record? %>
-                <tr id="member-<%= membership.id %>" class="member">
-                  <td class="project">
-                    <%= link_to_project membership.project %>
-                  </td>
-                  <td class="roles">
-                    <span id="member-<%= membership.id %>-roles"
-                          class="member-<%= membership.id %>--edit-toggle-item">
-                      <%=h membership.roles.sort.collect(&:to_s).join(', ') %>
-                    </span>
-                    <%= labelled_tabular_form_for(:membership,
-                                                  url: polymorphic_path([@individual_principal, :membership], id: membership),
-                                                  method: :patch,
-                                                  html: {
-                                                    id: "member-#{membership.id}-roles-form",
-                                                    class: "member-#{membership.id}--edit-toggle-item",
-                                                    style: 'display:none;'
-                                                  }) do |f| %>
-                      <div>
-                        <% roles.each do |role| %>
-                            <label class="form--label-with-check-box">
-                            <%= f.collection_check_box :role_ids,
-                                                       role.id,
-                                                       membership.roles.include?(role),
-                                                       role.name,
-                                                       disabled: membership.member_roles.detect {|mr| mr.role_id == role.id && !mr.inherited_from.nil?},
-                                                       no_label: true,
-                                                       id: nil
-                            %>
-                            <%= role %>
-                            </label>
-                        <% end %>
-                      </div>
-                      <p><%= submit_tag t(:button_change), class: 'memberships--edit-submit-button button -primary -small' %>
-                        <%= link_to_function t(:button_cancel),
-                                             "jQuery('.member-#{membership.id}--edit-toggle-item').toggle();",
-                  class: 'button -small' %></p>
-                    <% end %>
-                  </td>
-                  <%= call_individual_principals_memberships_hook(@individual_principal,
-                                                                 'row',
-                                                                 membership: membership,
-                                                                 roles: roles,
-                                                                 projects: projects) %>
-                  <td class="buttons">
-                    <% if User.current.allowed_in_project?(:manage_members, membership.project) %>
-                      <%= link_to_function icon_wrapper('icon icon-edit', t(:button_edit)),
-                                           "jQuery('.member-#{membership.id}--edit-toggle-item').toggle();",
-                                           class: "member-#{membership.id}--edit-toggle-item memberships--edit-button",
-                                           title: t(:button_edit) %>
-                      <%= link_to(icon_wrapper('icon icon-remove', t(:button_remove)),
-                                  polymorphic_path([@individual_principal, :membership], id: membership),
-                                  data: { turbo_method: :delete },
-                                  title: t(:button_remove)) if membership.deletable? %>
-                    <% end %>
-                  </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-
+              <tr id="member-<%= membership.id %>"
+                class="member"
+                data-controller="reveal"
+                data-reveal-hidden-class="d-none">
+                <td class="project">
+                  <%= link_to_project membership.project %>
+                </td>
+                <td class="roles">
+                  <span id="member-<%= membership.id %>-roles"
+                        class="member-<%= membership.id %>--edit-toggle-item"
+                        data-reveal-target="item">
+                    <%=h membership.roles.sort.collect(&:to_s).join(', ') %>
+                  </span>
+                  <%= labelled_tabular_form_for(
+                        :membership,
+                        url: polymorphic_path([@individual_principal, :membership], id: membership),
+                        method: :patch,
+                        id: "member-#{membership.id}-roles-form",
+                        data: { reveal_target: "item" },
+                        html: { class: "d-none member-#{membership.id}--edit-toggle-item" }
+                      ) do |f| %>
+                    <div>
+                      <% roles.each do |role| %>
+                          <label class="form--label-with-check-box">
+                          <%= f.collection_check_box :role_ids,
+                                                      role.id,
+                                                      membership.roles.include?(role),
+                                                      role.name,
+                                                      disabled: membership.member_roles.detect {|mr| mr.role_id == role.id && !mr.inherited_from.nil?},
+                                                      no_label: true,
+                                                      id: nil
+                          %>
+                          <%= role %>
+                          </label>
+                      <% end %>
+                    </div>
+                    <p>
+                      <%= submit_tag t(:button_change), class: "memberships--edit-submit-button button -primary -small" %>
+                      <%= button_tag t(:button_cancel), type: "button",
+                                                        data: { action: "reveal#toggle" },
+                                                        class: "button -small" %>
+                    </p>
+                  <% end %>
+                </td>
+                <%= call_individual_principals_memberships_hook(@individual_principal,
+                                                                'row',
+                                                                membership: membership,
+                                                                roles: roles,
+                                                                projects: projects) %>
+                <td class="buttons">
+                  <% if User.current.allowed_in_project?(:manage_members, membership.project) %>
+                    <%= link_to(
+                          icon_wrapper("icon icon-edit", t(:button_edit)),
+                          "#",
+                          data: { action: "reveal#toggle" },
+                          class: "member-#{membership.id}--edit-toggle-item memberships--edit-button",
+                          aria: { label: t(:button_edit) }
+                        ) %>
+                    <%= if membership.deletable?
+                          link_to(
+                            icon_wrapper("icon icon-remove", t(:button_remove)),
+                            polymorphic_path([@individual_principal, :membership], id: membership),
+                            data: { turbo_method: :delete },
+                            aria: { label: t(:button_remove) }
+                          )
+                        end %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
         </div>
       </div>
     <% else %>
