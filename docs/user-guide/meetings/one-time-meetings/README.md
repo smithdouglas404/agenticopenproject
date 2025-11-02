@@ -130,7 +130,7 @@ If you select the **Work package** option, you can link a work package by enteri
 
 After you have finalized the agenda, you can always edit the agenda items, add notes, move an item up or down or delete it. Clicking on the **More** (three dots) menu icon on the right edge of each agenda item will display a menu of available options, including editing, copying link to clipboard, moving the agenda item within the agenda or to the backlog, or deleting it.
 
-![Edit, copy, move or delete an agenda item](meeting-more-menu-agenda-item.png)
+![Edit, copy, move or delete an agenda item in OpenProject meetings module](meeting-more-menu-agenda-item.png)
 
 You may also re-order agenda items by clicking on the drag handle (the icon with six dots) on the left edge of each agenda item and dragging that item above or below.
 
