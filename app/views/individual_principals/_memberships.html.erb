@@ -30,7 +30,7 @@ See COPYRIGHT and LICENSE files for more details.
 <% projects = ::Members::CreateContract
   .new(@individual_principal.memberships.build, current_user)
   .assignable_projects
-  .order(Arel.sql('lft')) %>
+  .order(Arel.sql("lft")) %>
 <% memberships = @individual_principal.memberships.where(id: Member.visible(current_user)) %>
 
 <div class="grid-block grid-block_visible-overflow">
@@ -42,7 +42,7 @@ See COPYRIGHT and LICENSE files for more details.
           <colgroup>
             <col>
             <col>
-            <%= call_individual_principals_memberships_hook(@individual_principal, 'colgroup') %>
+            <%= call_individual_principals_memberships_hook(@individual_principal, "colgroup") %>
             <col>
           </colgroup>
           <thead>
@@ -65,7 +65,7 @@ See COPYRIGHT and LICENSE files for more details.
                   </div>
                 </div>
               </th>
-              <%= call_individual_principals_memberships_hook(@individual_principal, 'header') %>
+              <%= call_individual_principals_memberships_hook(@individual_principal, "header") %>
               <th><div class="generic-table--empty-header"></div></th>
             </tr>
           </thead>
@@ -83,7 +83,7 @@ See COPYRIGHT and LICENSE files for more details.
                   <span id="member-<%= membership.id %>-roles"
                         class="member-<%= membership.id %>--edit-toggle-item"
                         data-reveal-target="item">
-                    <%=h membership.roles.sort.collect(&:to_s).join(', ') %>
+                    <%= h membership.roles.sort.collect(&:to_s).join(", ") %>
                   </span>
                   <%= labelled_tabular_form_for(
                         :membership,
@@ -97,13 +97,12 @@ See COPYRIGHT and LICENSE files for more details.
                       <% roles.each do |role| %>
                           <label class="form--label-with-check-box">
                           <%= f.collection_check_box :role_ids,
-                                                      role.id,
-                                                      membership.roles.include?(role),
-                                                      role.name,
-                                                      disabled: membership.member_roles.detect {|mr| mr.role_id == role.id && !mr.inherited_from.nil?},
-                                                      no_label: true,
-                                                      id: nil
-                          %>
+                                                     role.id,
+                                                     membership.roles.include?(role),
+                                                     role.name,
+                                                     disabled: membership.member_roles.detect { |mr| mr.role_id == role.id && !mr.inherited_from.nil? },
+                                                     no_label: true,
+                                                     id: nil %>
                           <%= role %>
                           </label>
                       <% end %>
@@ -116,11 +115,13 @@ See COPYRIGHT and LICENSE files for more details.
                     </p>
                   <% end %>
                 </td>
-                <%= call_individual_principals_memberships_hook(@individual_principal,
-                                                                'row',
-                                                                membership: membership,
-                                                                roles: roles,
-                                                                projects: projects) %>
+                <%= call_individual_principals_memberships_hook(
+                      @individual_principal,
+                      "row",
+                      membership: membership,
+                      roles: roles,
+                      projects: projects
+                    ) %>
                 <td class="buttons">
                   <% if User.current.allowed_in_project?(:manage_members, membership.project) %>
                     <%= link_to(
@@ -152,31 +153,32 @@ See COPYRIGHT and LICENSE files for more details.
   </div>
   <div class="grid-content">
     <% if projects.any? %>
-      <%= labelled_tabular_form_for(:membership,
-                                    url: polymorphic_path([@individual_principal, :memberships]),
-                                    html: {id: "new_project_membership"}) do %>
+      <%= labelled_tabular_form_for(
+            :membership,
+            url: polymorphic_path([@individual_principal, :memberships]),
+            html: { id: "new_project_membership" }
+          ) do %>
         <fieldset class="form--fieldset">
-          <legend class="form--fieldset-legend"><%=t(:label_available_projects)%></legend>
-          <% principal_project_ids = @individual_principal.projects.ids  %>
-          <% filter = [{ name: 'active', operator: '=', values: ['t'] }] %>
-          <% filter << { name: 'id', operator: '!', values: principal_project_ids.map(&:to_s)} if principal_project_ids.any? %>
-          <%= angular_component_tag 'opce-project-autocompleter',
+          <legend class="form--fieldset-legend"><%= t(:label_available_projects) %></legend>
+          <% principal_project_ids = @individual_principal.projects.ids %>
+          <% filter = [{ name: "active", operator: "=", values: ["t"] }] %>
+          <% filter << { name: "id", operator: "!", values: principal_project_ids.map(&:to_s) } if principal_project_ids.any? %>
+          <%= angular_component_tag "opce-project-autocompleter",
                                     inputs: {
                                       filters: filter,
-                                      inputName: 'membership[project_id]'
+                                      inputName: "membership[project_id]"
                                     },
                                     data: {
-                                      'test-selector': 'membership_project_id'
+                                      "test-selector": "membership_project_id"
                                     },
-                                    class: 'form--field'
-          %>
+                                    class: "form--field" %>
           <div class="form--field -vertical">
             <%= styled_label_tag nil, "#{t(:label_role_plural)}:" %>
             <div class="form--field-container -vertical">
-              <%= labeled_check_box_tags 'membership[role_ids][]', roles %>
+              <%= labeled_check_box_tags "membership[role_ids][]", roles %>
             </div>
           </div>
-          <div><%= styled_button_tag t(:button_add), class: '-primary -with-icon icon-checkmark' %></div>
+          <div><%= styled_button_tag t(:button_add), class: "-primary -with-icon icon-checkmark" %></div>
         </fieldset>
       <% end %>
     <% end %>

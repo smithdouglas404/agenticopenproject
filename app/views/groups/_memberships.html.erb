@@ -27,7 +27,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 <% roles = ProjectRole.givable %>
-<% projects = Project.active.order(Arel.sql('lft')) %>
+<% projects = Project.active.order(Arel.sql("lft")) %>
 <% memberships = @group.memberships %>
 
 <div class="grid-block grid-block_visible-overflow">
@@ -78,7 +78,7 @@ See COPYRIGHT and LICENSE files for more details.
                 </td>
                 <td class="roles">
                   <span id="member-<%= membership.id %>-roles" data-reveal-target="item">
-                    <%= h membership.roles.sort.collect(&:to_s).join(', ') %>
+                    <%= h membership.roles.sort.collect(&:to_s).join(", ") %>
                   </span>
                   <%= labelled_tabular_form_for(
                         :membership,
@@ -95,8 +95,7 @@ See COPYRIGHT and LICENSE files for more details.
                                                    membership.roles.include?(role),
                                                    role.name,
                                                    no_label: true,
-                                                   id: nil
-                        %>
+                                                   id: nil %>
                         <%= role %>
                       </label>
                     <% end %>
@@ -139,25 +138,24 @@ See COPYRIGHT and LICENSE files for more details.
           <%= label_tag "membership_project_id", t(:description_choose_project), class: "sr-only" %>
 
           <% group_project_ids = @group.projects.ids %>
-          <% filters = [{ name: 'active', operator: '=', values: ['t'] }] %>
-          <% filters << { name: 'id', operator: '!', values: group_project_ids.map(&:to_s) } if group_project_ids.any? %>
-          <%= angular_component_tag 'opce-project-autocompleter',
+          <% filters = [{ name: "active", operator: "=", values: ["t"] }] %>
+          <% filters << { name: "id", operator: "!", values: group_project_ids.map(&:to_s) } if group_project_ids.any? %>
+          <%= angular_component_tag "opce-project-autocompleter",
                                     inputs: {
                                       filters: filters,
-                                      inputName: 'membership[project_id]'
+                                      inputName: "membership[project_id]"
                                     },
                                     data: {
-                                      'test-selector': 'membership_project_id'
+                                      "test-selector": "membership_project_id"
                                     },
-                                    class: 'form--field'
-          %>
+                                    class: "form--field" %>
           <div class="form--field -vertical">
             <%= styled_label_tag nil, "#{t(:label_role_plural)}:" %>
             <div class="form--field-container -vertical">
-              <%= labeled_check_box_tags 'membership[role_ids][]', roles %>
+              <%= labeled_check_box_tags "membership[role_ids][]", roles %>
             </div>
           </div>
-          <div><%= styled_button_tag t(:button_add), class: '-primary -with-icon icon-checkmark' %></div>
+          <div><%= styled_button_tag t(:button_add), class: "-primary -with-icon icon-checkmark" %></div>
         </fieldset>
       <% end %>
     <% end %>
