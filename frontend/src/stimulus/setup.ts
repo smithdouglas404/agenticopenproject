@@ -27,6 +27,7 @@ import EditorController from './controllers/dynamic/work-packages/activities-tab
 import LazyPageController from './controllers/dynamic/work-packages/activities-tab/lazy-page.controller';
 
 import AutoSubmit from '@stimulus-components/auto-submit';
+import RevealController from '@stimulus-components/reveal';
 import AutoThemeSwitcher from './controllers/auto-theme-switcher.controller';
 import { OpenProjectStimulusApplication } from 'core-stimulus/openproject-stimulus-application';
 import { Application } from '@hotwired/stimulus';
@@ -63,6 +64,7 @@ OpenProjectStimulusApplication.preregister('pattern-input', PatternInputControll
 OpenProjectStimulusApplication.preregister('scroll-into-view', ScrollIntoViewController);
 OpenProjectStimulusApplication.preregister('ckeditor-focus', CkeditorFocusController);
 OpenProjectStimulusApplication.preregister('auto-submit', AutoSubmit);
+OpenProjectStimulusApplication.preregister('reveal', RevealController);
 OpenProjectStimulusApplication.preregister('work-packages--activities-tab--index', IndexController);
 OpenProjectStimulusApplication.preregister('work-packages--activities-tab--auto-scrolling', AutoScrollingController);
 OpenProjectStimulusApplication.preregister('work-packages--activities-tab--polling', PollingController);
