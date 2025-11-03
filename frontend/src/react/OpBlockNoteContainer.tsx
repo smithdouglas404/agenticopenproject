@@ -50,6 +50,7 @@ export interface OpBlockNoteContainerProps {
   documentId:string;
   openProjectUrl:string;
   attachmentsUploadUrl:string;
+  attachmentsCollectionKey:string;
 }
 
 const schema = BlockNoteSchema.create({
@@ -69,7 +70,8 @@ export default function OpBlockNoteContainer({ inputField,
                                                documentName,
                                                documentId,
                                                openProjectUrl,
-                                               attachmentsUploadUrl }:OpBlockNoteContainerProps) {
+                                               attachmentsUploadUrl,
+                                               attachmentsCollectionKey }:OpBlockNoteContainerProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   initOpenProjectApi({ baseUrl: openProjectUrl });
@@ -109,7 +111,7 @@ export default function OpBlockNoteContainer({ inputField,
         showCursorLabels: 'activity'
       },
       dictionary: blockNoteLocale,
-      uploadFile,
+      ...(isReadyForAttachmentUpload() && { uploadFile }),
     };
   } else { // collaboration disabled
     if (inputText) {
@@ -133,13 +135,21 @@ export default function OpBlockNoteContainer({ inputField,
         },
       },
       dictionary: blockNoteLocale,
-      uploadFile,
+      ...(isReadyForAttachmentUpload() && { uploadFile }),
     };
   }
 
   const editor = useCreateBlockNote(editorParams, [activeUser]);
   type EditorType = typeof editor;
 
+  function isReadyForAttachmentUpload():boolean {
+    return (
+      attachmentsCollectionKey !== undefined &&
+      attachmentsCollectionKey !== '' &&
+      attachmentsUploadUrl !== undefined &&
+      attachmentsUploadUrl !== ''
+    );
+}
   const fileToIUploadFile = (file:File):IUploadFile => ({
     file: file
   });
@@ -149,9 +159,9 @@ export default function OpBlockNoteContainer({ inputField,
     try {
       const service = pluginContext.services.attachmentsResourceService;
       const iUploadFile = fileToIUploadFile(file);
-      const result = await service.addAttachments('documents', attachmentsUploadUrl, [iUploadFile]).toPromise();
+      const result = await service.addAttachments(attachmentsCollectionKey, attachmentsUploadUrl, [iUploadFile]).toPromise();
 
-      return result?.[0]._links.downloadLocation.href ?? '';
+      return result?.[0]._links.staticDownloadLocation.href ?? '';
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch(error:any) {
       const toastService = pluginContext.services.notifications;

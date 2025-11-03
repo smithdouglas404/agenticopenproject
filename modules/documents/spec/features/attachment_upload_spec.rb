@@ -186,10 +186,39 @@ RSpec.describe "Upload attachment to documents",
     end
   end
 
+  shared_examples "with attachments list in the sidebar" do
+    it "is possible to upload attachments from the sidebar" do
+      expect(page).to have_no_content("image.png")
+      expect do
+        attachments_list.drag_enter
+        attachments_list.drop(image_fixture.path)
+        expect(page).to have_no_css("op-toast") # wait for upload to finish
+        attachments_list.expect_attached("image.png")
+      end.to change { document.attachments.count }.by(1)
+    end
+
+    context "when an attachment is present" do
+      let!(:attachment) { create(:attachment, filename: "test.jpg", container: document) }
+
+      before do
+        visit edit_document_path(document)
+      end
+
+      it "is possible to delete attachments from the sidebar" do
+        attachments_list.expect_attached("test.jpg")
+        expect do
+          attachments_list.delete("test.jpg")
+          attachments_list.expect_empty
+        end.to change { document.attachments.count }.by(-1)
+      end
+    end
+  end
+
   context "for collaborative documents", with_flag: { block_note_editor: true } do
     let(:experimental_category) { create(:document_category, name: "Experimental", project:) }
     let(:document) { create(:document, category: experimental_category, project:) }
     let(:editor) { FormFields::Primerized::BlockNoteEditorInput.new }
+    let(:attachments_list) { Components::AttachmentsList.new }
 
     before do
       visit edit_document_path(document)
@@ -200,11 +229,13 @@ RSpec.describe "Upload attachment to documents",
     context "with internal uploads" do
       it_behaves_like "can upload an image in BlockNote"
       it_behaves_like "with non-whitelisted file types"
+      it_behaves_like "with attachments list in the sidebar"
     end
 
     context "with uploads to an external storage", :with_direct_uploads do
       it_behaves_like "can upload an image in BlockNote"
       it_behaves_like "with non-whitelisted file types"
+      it_behaves_like "with attachments list in the sidebar"
     end
   end
 end

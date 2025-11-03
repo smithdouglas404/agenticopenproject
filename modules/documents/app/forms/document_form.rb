@@ -63,7 +63,8 @@ class DocumentForm < ApplicationForm
         document_id: model.id,
         document_name: model.title,
         oauth_token: @oauth_token,
-        attachments_upload_url: uploads_url
+        attachments_upload_url: uploads_url,
+        attachments_collection_key: ::API::V3::Utilities::PathHelper::ApiV3Path.attachments_by_document(model.id)
       )
     else
       f.rich_text_area(

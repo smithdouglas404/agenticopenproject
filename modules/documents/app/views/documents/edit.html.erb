@@ -28,7 +28,6 @@
 
   ++#
 %>
-
 <%=
   render Primer::OpenProject::PageHeader.new do |header|
     header.with_title { @document.title }
@@ -41,12 +40,39 @@
 %>
 
 <%=
-  settings_primer_form_with(
-    model: @document,
-    url: document_path(@document),
-    method: :patch,
-    data: { turbo: false }
-  ) do |f|
-    render DocumentForm.new(f, oauth_token: @oauth_token)
+  render(Primer::Alpha::Layout.new(stacking_breakpoint: :md)) do |component|
+    component.with_main do
+      settings_primer_form_with(
+        model: @document,
+        url: document_path(@document),
+        method: :patch,
+        data: { turbo: false }
+      ) do |f|
+        render DocumentForm.new(f, oauth_token: @oauth_token)
+      end
+    end
+
+    component.with_sidebar(row_placement: :start, col_placement: :end) do
+      render(Primer::OpenProject::SidePanel.new) do |panel|
+        panel.with_section do |section|
+          section.with_title { t(:label_attachment_plural) }
+          section.with_footer_button(
+            color: :accent,
+            id: "documents-add-attachments",
+            classes: "hide-when-print"
+          ) do |button|
+            button.with_leading_visual_icon(icon: "op-add-attachment")
+            t("js.label_add_attachments")
+          end
+          list_attachments(
+            api_v3_document_resource(@document),
+            inputs: {
+              allowUploading: true,
+              externalUploadButton: "#documents-add-attachments"
+            }
+          )
+        end
+      end
+    end
   end
 %>
