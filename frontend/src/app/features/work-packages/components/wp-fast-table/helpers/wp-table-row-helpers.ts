@@ -63,7 +63,7 @@ export function scrollTableRowIntoView(workPackageId:string):void {
 function getScrollParent(element:HTMLElement, includeHidden = false) {
   const overflowRegex = includeHidden ? /(auto|scroll|hidden)/ : /(auto|scroll)/;
 
-  let parent:HTMLElement|null = element;
+  let parent:HTMLElement|null = element.parentElement;
 
   while (parent && parent !== document.body) {
     const style = getComputedStyle(parent);
