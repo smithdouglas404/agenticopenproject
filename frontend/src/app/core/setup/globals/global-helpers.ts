@@ -47,7 +47,7 @@ export class GlobalHelpers {
 }
 
 export function getMetaElement(name:string):HTMLMetaElement|null {
-  return document.head.querySelector(`meta[name="${name}"]`);
+  return document.head.querySelector(`meta[name="${CSS.escape(name)}"]`);
 }
 
 export function getMetaContent(name:string):string;
