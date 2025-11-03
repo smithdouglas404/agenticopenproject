@@ -43,9 +43,3 @@ $body-height: 460px
   .wp-datepicker-dialog--content,
   #wp-datepicker-dialog--content
     height: inherit
-
-// Spot modal has 60rem width as the parent element,
-// So we should set the width to the spot modal itself
-@media #{$spot-mq-desktop}
-  .spot-modal:has(.wp-datepicker-dialog--content)
-    width: 600px
