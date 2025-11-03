@@ -219,7 +219,7 @@ module IncomingEmails
     def system_mail_addresses
       [
         ApplicationMailer.mail_from,
-        ApplicationMailer.reply_to
+        ApplicationMailer.reply_to_address
       ]
         .map { |mail| mail.to_s.strip.downcase }
     end
