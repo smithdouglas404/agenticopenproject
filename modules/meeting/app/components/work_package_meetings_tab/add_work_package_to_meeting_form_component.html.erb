@@ -20,7 +20,7 @@
           render(MeetingAgendaItem::MeetingForm.new(f, wrapper_id: "add-work-package-to-meeting-dialog"))
         end
         flex.with_row(mb: 3) do
-          render(Meeting::AddToSection.new(f, wrapper_id: "add-work-package-to-meeting-dialog"))
+          render(Meeting::AddToSection.new(f, wrapper_id: "add-work-package-to-meeting-dialog", move_to_section: false))
         end
         flex.with_row do
           render(MeetingAgendaItem::Notes.new(f))
