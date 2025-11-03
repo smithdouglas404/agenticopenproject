@@ -19,6 +19,7 @@ import { ConfigurationService } from 'core-app/core/config/configuration.service
 
 import 'core-vendor/enjoyhint';
 import { wpFullViewOnboardingTourSteps } from 'core-app/core/setup/globals/onboarding/tours/work_package_full_view_tour';
+import { getMetaContent } from '../global-helpers';
 
 declare global {
   interface Window {
@@ -94,8 +95,8 @@ function workPackageFullViewTour() {
 function ganttTour(configuration:ConfigurationService) {
   initializeTour('ganttTourFinished');
 
-  const boardsDemoDataAvailable = document.querySelector('meta[name=boards_demo_data_available]')?.getAttribute('content') === 'true';
-  const teamPlannerDemoDataAvailable = document.querySelector('meta[name=demo_view_of_type_team_planner_seeded]')?.getAttribute('content') === 'true';
+  const boardsDemoDataAvailable = getMetaContent('boards_demo_data_available') === 'true';
+  const teamPlannerDemoDataAvailable = getMetaContent('demo_view_of_type_team_planner_seeded') === 'true';
   const eeTokenAvailable = configuration.availableFeatures.includes('board_view');
 
   waitForElement('.work-package--results-tbody', '#content', () => {
@@ -124,7 +125,7 @@ function ganttTour(configuration:ConfigurationService) {
 function boardTour(configuration:ConfigurationService) {
   initializeTour('boardsTourFinished');
 
-  const teamPlannerDemoDataAvailable = document.querySelector('meta[name=demo_view_of_type_team_planner_seeded]')?.getAttribute('content') === 'true';
+  const teamPlannerDemoDataAvailable = getMetaContent('demo_view_of_type_team_planner_seeded') === 'true';
   const eeTokenAvailable = configuration.availableFeatures.includes('board_view');
 
   waitForElement('wp-single-card', '#content', () => {

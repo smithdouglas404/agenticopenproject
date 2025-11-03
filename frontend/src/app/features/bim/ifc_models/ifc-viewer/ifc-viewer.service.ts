@@ -45,6 +45,7 @@ import { BIMViewer } from '@xeokit/xeokit-bim-viewer/dist/xeokit-bim-viewer.es';
 import { BcfViewpointData, CreateBcfViewpointData } from 'core-app/features/bim/bcf/api/bcf-api.model';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import idFromLink from 'core-app/features/hal/helpers/id-from-link';
+import { getMetaContent } from 'core-app/core/setup/globals/global-helpers';
 
 export interface XeokitElements {
   canvasElement:HTMLElement;
@@ -152,7 +153,7 @@ export class IFCViewerService extends ViewerBridgeService {
       const formData = new FormData();
       formData.append(
         'authenticity_token',
-        document.querySelector('meta[name=csrf-token]')?.getAttribute('content') ?? '',
+        getMetaContent('csrf-token')
       );
       formData.append(
         '_method',

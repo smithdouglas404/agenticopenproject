@@ -19,6 +19,7 @@ import { IProjectData } from 'core-app/shared/components/searchable-project-list
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
+import { getMetaContent } from 'core-app/core/setup/globals/global-helpers';
 
 @Component({
   selector: '[op-header-project-select-list]',
@@ -107,13 +108,13 @@ export class OpHeaderProjectSelectListComponent implements OnInit, OnChanges {
   }
 
   extendedUrl(projectId:string|null):string {
-    const currentMenuItem = document.querySelector<HTMLMetaElement>('meta[name="current_menu_item"]')!;
+    const currentMenuItem = getMetaContent('current_menu_item');
     const url = projectId === null ? window.appBasePath : this.pathHelper.projectPath(projectId);
 
     if (!currentMenuItem) {
       return url;
     }
 
-    return `${url}?jump=${encodeURIComponent(currentMenuItem.content)}`;
+    return `${url}?jump=${encodeURIComponent(currentMenuItem)}`;
   }
 }
