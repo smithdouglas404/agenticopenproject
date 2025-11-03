@@ -30,17 +30,20 @@
 
 module Overviews
   module ProjectCustomFields
-    class ShowComponent < ApplicationComponent
+    class ItemsComponent < ApplicationComponent
       include ApplicationHelper
       include OpPrimer::ComponentHelpers
-      include OpTurbo::Streamable
 
-      def initialize(project:, project_custom_field_section:, project_custom_fields:)
+      def initialize(project_custom_fields:, project:)
         super
 
-        @project = project
-        @project_custom_field_section = project_custom_field_section
         @project_custom_fields = project_custom_fields
+        @project = project
+      end
+
+      def attribute_load_service
+        @attribute_load_service ||= ::ProjectCustomFields::LoadService.new(project: @project,
+                                                                           project_custom_fields: @project_custom_fields)
       end
     end
   end

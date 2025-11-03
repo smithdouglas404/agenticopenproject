@@ -28,19 +28,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Overviews
-  module ProjectCustomFields
-    class ShowComponent < ApplicationComponent
-      include ApplicationHelper
-      include OpPrimer::ComponentHelpers
-      include OpTurbo::Streamable
+module Grids
+  module Widgets
+    class ProjectAttributeSection < Grids::WidgetComponent
+      param :section
+      param :project_custom_fields
+      param :project
 
-      def initialize(project:, project_custom_field_section:, project_custom_fields:)
-        super
-
-        @project = project
-        @project_custom_field_section = project_custom_field_section
-        @project_custom_fields = project_custom_fields
+      def title
+        section.name
       end
     end
   end

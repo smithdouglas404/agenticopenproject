@@ -28,12 +28,7 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  render(Grids::WidgetGridComponent.new(align_boxes_start: true)) do |grid|
-    grid.with_widget(Grids::Widgets::Description, @portfolio)
-    grid.with_widget(Grids::Widgets::ProjectStatus, @portfolio)
-    grid.with_widget(Grids::Widgets::Subitems, @portfolio)
-    grid.with_widget(Grids::Widgets::Members, @portfolio)
-
-    render(Grids::ProjectAttributeWidgets.new(@portfolio, grid))
+  available_project_attributes_grouped_by_section.each do |section, project_custom_fields|
+    @grid.with_widget(Grids::Widgets::ProjectAttributeSection, section, project_custom_fields, @project)
   end
 %>

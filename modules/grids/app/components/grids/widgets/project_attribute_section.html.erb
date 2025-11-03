@@ -28,12 +28,12 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  render(Grids::WidgetGridComponent.new(align_boxes_start: true)) do |grid|
-    grid.with_widget(Grids::Widgets::Description, @portfolio)
-    grid.with_widget(Grids::Widgets::ProjectStatus, @portfolio)
-    grid.with_widget(Grids::Widgets::Subitems, @portfolio)
-    grid.with_widget(Grids::Widgets::Members, @portfolio)
-
-    render(Grids::ProjectAttributeWidgets.new(@portfolio, grid))
+  widget_wrapper do
+    render(
+      Overviews::ProjectCustomFields::ItemsComponent.new(
+        project_custom_fields:,
+        project:
+      )
+    )
   end
 %>

@@ -33,5 +33,7 @@ See COPYRIGHT and LICENSE files for more details.
     grid.with_widget(Grids::Widgets::ProjectStatus, @program)
     grid.with_widget(Grids::Widgets::Subitems, @program)
     grid.with_widget(Grids::Widgets::Members, @program)
+
+    render(Grids::ProjectAttributeWidgets.new(@program, grid))
   end
 %>

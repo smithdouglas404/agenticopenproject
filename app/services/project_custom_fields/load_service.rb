@@ -28,20 +28,29 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Overviews
-  module ProjectCustomFields
-    class ShowComponent < ApplicationComponent
-      include ApplicationHelper
-      include OpPrimer::ComponentHelpers
-      include OpTurbo::Streamable
+module ProjectCustomFields
+  class LoadService
+    def initialize(project:, project_custom_fields:)
+      super()
+      @project = project
+      @project_custom_fields = project_custom_fields
+      eager_load_project_custom_field_values
+    end
 
-      def initialize(project:, project_custom_field_section:, project_custom_fields:)
-        super
+    def get_eager_loaded_project_custom_field_values_for(custom_field_id)
+      @eager_loaded_project_custom_field_values.select { |pcfv| pcfv.custom_field_id == custom_field_id }
+    end
 
-        @project = project
-        @project_custom_field_section = project_custom_field_section
-        @project_custom_fields = project_custom_fields
-      end
+    private
+
+    def eager_load_project_custom_field_values
+      @eager_loaded_project_custom_field_values = CustomValue
+                                                    .includes(custom_field: :custom_options)
+                                                    .where(
+                                                      custom_field_id: @project_custom_fields.pluck(:id),
+                                                      customized_id: @project.id
+                                                    )
+                                                    .to_a
     end
   end
 end
