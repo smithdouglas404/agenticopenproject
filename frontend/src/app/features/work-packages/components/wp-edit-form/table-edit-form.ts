@@ -109,7 +109,7 @@ export class TableEditForm extends EditForm<WorkPackageResource> {
         // To avoid flickering content, the padding is removed, too.
         const td = this.findCell(fieldName)!;
         td.classList.add(editModeClassName);
-        let width = parseInt(td.style.width);
+        let width = td.offsetWidth;
         width = width > 150 ? width - 10 : 150;
         td.style.maxWidth = `${width}px`;
         td.style.width = `${width}px`;
