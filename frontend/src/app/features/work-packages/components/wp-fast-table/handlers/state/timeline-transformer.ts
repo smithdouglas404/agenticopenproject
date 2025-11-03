@@ -28,7 +28,7 @@ export class TimelineTransformer {
    */
   private renderVisibility(visible:boolean) {
     const container = this.table.tableAndTimelineContainer.parentElement!;
-    container.querySelector<HTMLElement>('.work-packages-tabletimeline--timeline-side')?.toggleAttribute('hidden', !visible);
-    container.querySelector<HTMLElement>('.work-packages-tabletimeline--table-side')?.classList.toggle('-timeline-visible', visible);
+    container.querySelectorAll('.work-packages-tabletimeline--timeline-side, .work-packages-tabletimeline--table-side')
+      .forEach((sideEl) => sideEl.classList.toggle('-timeline-visible', visible));
   }
 }
