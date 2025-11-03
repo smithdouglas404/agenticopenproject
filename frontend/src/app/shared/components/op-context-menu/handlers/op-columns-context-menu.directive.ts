@@ -116,16 +116,14 @@ export class OpColumnsContextMenu extends OpContextMenuTrigger {
         icon: 'icon-sort-descending',
         onClick: (evt:any) => {
           if (this.wpTableSortBy.isManualSortingMode) {
-            this.confirmDialog.confirm({
+            void this.confirmDialog.confirm({
               text: this.text.confirmDelete,
             }).then(() => {
               this.wpTableSortBy.setAsSingleSortCriteria(c, QUERY_SORT_BY_DESC);
-              return true;
             });
-            return false;
+            return;
           }
           this.wpTableSortBy.addSortCriteria(c, QUERY_SORT_BY_DESC);
-          return true;
         },
       },
       {
@@ -135,16 +133,14 @@ export class OpColumnsContextMenu extends OpContextMenuTrigger {
         icon: 'icon-sort-ascending',
         onClick: (evt:any) => {
           if (this.wpTableSortBy.isManualSortingMode) {
-            this.confirmDialog.confirm({
+            void this.confirmDialog.confirm({
               text: this.text.confirmDelete,
             }).then(() => {
               this.wpTableSortBy.setAsSingleSortCriteria(c, QUERY_SORT_BY_ASC);
-              return true;
             });
-            return false;
+            return;
           }
           this.wpTableSortBy.addSortCriteria(c, QUERY_SORT_BY_ASC);
-          return true;
         },
       },
       {
@@ -157,7 +153,6 @@ export class OpColumnsContextMenu extends OpContextMenuTrigger {
             this.wpTableHierarchies.setEnabled(false);
           }
           this.wpTableGroupBy.setBy(c);
-          return true;
         },
       },
       {
@@ -167,7 +162,6 @@ export class OpColumnsContextMenu extends OpContextMenuTrigger {
         icon: 'icon-column-left',
         onClick: () => {
           this.wpTableColumns.shift(c, -1);
-          return true;
         },
       },
       {
@@ -177,7 +171,6 @@ export class OpColumnsContextMenu extends OpContextMenuTrigger {
         icon: 'icon-column-right',
         onClick: () => {
           this.wpTableColumns.shift(c, 1);
-          return true;
         },
       },
       {
@@ -193,7 +186,6 @@ export class OpColumnsContextMenu extends OpContextMenuTrigger {
               document.querySelector<HTMLElement>(`#${focusColumn.id}`)?.focus();
             }
           });
-          return true;
         },
       },
       {
@@ -206,7 +198,6 @@ export class OpColumnsContextMenu extends OpContextMenuTrigger {
             this.injector,
             { initialTab: 'columns' },
           );
-          return true;
         },
       },
     ];

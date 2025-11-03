@@ -117,7 +117,6 @@ export class WorkPackageStatusDropdownDirective extends OpContextMenuTrigger {
       class: Highlighting.inlineClass('status', status.id!),
       onClick: () => {
         this.updateStatus(status);
-        return true;
       },
     }));
   }

@@ -71,7 +71,6 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
   private eventListeners = {
     typeFormUpdater: () => {
       this.updateHiddenFields();
-      return true;
     }
   };
 
@@ -116,7 +115,6 @@ export class TypeFormConfigurationComponent extends UntilDestroyedMixin implemen
           this.form.requestSubmit();
         }
       }, 50);
-      return true;
     });
 
     // Capture regular form submit

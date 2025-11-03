@@ -83,8 +83,6 @@ export class BoardsToolbarMenuDirective extends OpContextMenuTrigger {
         onClick: () => {
           this.opContextMenu.close();
           this.opModalService.show(BoardConfigurationModalComponent, this.injector, { board: this.board });
-
-          return true;
         },
       },
       {
@@ -93,10 +91,8 @@ export class BoardsToolbarMenuDirective extends OpContextMenuTrigger {
         icon: 'icon-edit',
         onClick: () => {
           if (this.board.grid.updateImmediately) {
-            document.querySelector(selectableTitleIdentifier)?.dispatchEvent(new CustomEvent(triggerEditingEvent));
+            document.querySelector(selectableTitleIdentifier)?.dispatchEvent(new CustomEvent(triggerEditingEvent, { bubbles: true }));
           }
-
-          return true;
         },
       },
       {
@@ -118,8 +114,6 @@ export class BoardsToolbarMenuDirective extends OpContextMenuTrigger {
                 },
               );
           }
-
-          return true;
         },
       },
     ];

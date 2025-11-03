@@ -27,7 +27,7 @@ export function setupServerResponse() {
       clearTimeout(resizeTo);
     }
     resizeTo = setTimeout(() => {
-      window.dispatchEvent(new CustomEvent('resizeEnd'));
+      window.dispatchEvent(new CustomEvent('resizeEnd', { bubbles: true }));
     }, 200);
   });
 
@@ -51,13 +51,14 @@ export function setupServerResponse() {
   addClickEventToAllErrorMessages();
 
   // Click handler for formatting help
-  delegate(document.body).on('click', '.formatting-help-link-button', () => {
+  delegate(document.body).on('click', '.formatting-help-link-button', (event:Event) => {
     window.open(
       `${window.appBasePath}/help/wiki_syntax`,
       '',
       'resizable=yes, location=no, width=600, height=640, menubar=no, status=no, scrollbars=yes'
     );
-    return false;
+    event.preventDefault();
+    event.stopPropagation();
   });
 }
 

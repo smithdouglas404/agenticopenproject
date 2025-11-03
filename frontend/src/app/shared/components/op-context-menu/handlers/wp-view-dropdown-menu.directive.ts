@@ -88,7 +88,6 @@ export class WorkPackageViewDropdownMenuDirective extends OpContextMenuTrigger {
               // Necessary for the timeline buttons to disappear
               this.wpTableTimeline.toggle();
             }
-            return true;
           },
         },
       );
@@ -107,7 +106,6 @@ export class WorkPackageViewDropdownMenuDirective extends OpContextMenuTrigger {
             if (this.wpTableTimeline.isVisible) {
               this.wpTableTimeline.toggle();
             }
-            return true;
           },
         },
       );
@@ -126,7 +124,6 @@ export class WorkPackageViewDropdownMenuDirective extends OpContextMenuTrigger {
               this.wpTableTimeline.toggle();
             }
             this.wpDisplayRepresentationService.setDisplayRepresentation(wpDisplayListRepresentation);
-            return true;
           },
         },
       );

@@ -201,8 +201,6 @@ export class OpSettingsMenuDirective extends OpContextMenuTrigger {
         onClick: (event:MouseEvent) => {
           this.opContextMenu.close();
           this.opModalService.show(WpTableConfigurationModalComponent, this.injector);
-
-          return true;
         },
       },
       {
@@ -217,7 +215,6 @@ export class OpSettingsMenuDirective extends OpContextMenuTrigger {
             this.injector,
             { initialTab: 'columns' },
           );
-          return true;
         },
       },
       {
@@ -231,7 +228,6 @@ export class OpSettingsMenuDirective extends OpContextMenuTrigger {
             this.injector,
             { initialTab: 'sort-by' },
           );
-          return true;
         },
       },
       {
@@ -246,7 +242,6 @@ export class OpSettingsMenuDirective extends OpContextMenuTrigger {
             this.injector,
             { initialTab: 'display-settings' },
           );
-          return true;
         },
       },
       {
@@ -256,10 +251,8 @@ export class OpSettingsMenuDirective extends OpContextMenuTrigger {
         icon: 'icon-edit',
         onClick: (event:MouseEvent) => {
           if (this.allowQueryAction(event, 'update')) {
-            document.querySelector(`${selectableTitleIdentifier}`)?.dispatchEvent(new CustomEvent(triggerEditingEvent));
+            document.querySelector(`${selectableTitleIdentifier}`)?.dispatchEvent(new CustomEvent(triggerEditingEvent, { bubbles: true }));
           }
-
-          return true;
         },
       },
       {
@@ -274,8 +267,6 @@ export class OpSettingsMenuDirective extends OpContextMenuTrigger {
           } else if (query.id && this.allowQueryAction(event, 'updateImmediately')) {
             this.wpListService.save(query);
           }
-
-          return true;
         },
       },
       {
@@ -287,8 +278,6 @@ export class OpSettingsMenuDirective extends OpContextMenuTrigger {
           if (this.allowFormAction(event, 'create_new')) {
             this.opModalService.show(SaveQueryModalComponent, this.injector);
           }
-
-          return true;
         },
       },
       {
@@ -301,8 +290,6 @@ export class OpSettingsMenuDirective extends OpContextMenuTrigger {
             && window.confirm(this.I18n.t('js.text_query_destroy_confirmation'))) {
             this.wpListService.delete();
           }
-
-          return true;
         },
       },
       {
@@ -315,8 +302,6 @@ export class OpSettingsMenuDirective extends OpContextMenuTrigger {
           if (this.authorisationService.can('query', 'icalUrl')) {
             this.opModalService.show(QueryGetIcalUrlModalComponent, this.injector);
           }
-
-          return true;
         },
       },
       {
@@ -333,7 +318,6 @@ export class OpSettingsMenuDirective extends OpContextMenuTrigger {
               void this.turboRequests.requestStream(href);
             }
           }
-          return true;
         },
       },
       {
@@ -345,8 +329,6 @@ export class OpSettingsMenuDirective extends OpContextMenuTrigger {
           if (this.allowQueryAction(event, 'unstar') || this.allowQueryAction(event, 'star')) {
             this.opModalService.show(QuerySharingModalComponent, this.injector);
           }
-
-          return true;
         },
       },
       {
