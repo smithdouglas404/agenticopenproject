@@ -212,7 +212,7 @@ export class EditableAttributeFieldComponent extends UntilDestroyedMixin impleme
     // This can be both a direct click as well as a "click" via keyboard, e.g. the <Enter> key.
     if (evt?.type === 'click') {
       // Get the position where the user clicked.
-      positionOffset = getPosition(evt);
+      positionOffset = getPosition(evt as MouseEvent);
     }
 
     void this.activateOnForm()

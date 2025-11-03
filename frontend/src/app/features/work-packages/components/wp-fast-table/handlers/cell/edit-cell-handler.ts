@@ -61,8 +61,11 @@ export class EditCellHandler extends ClickOrEnterHandler implements TableEventHa
     // Get any existing edit state for this work package
     const form = table.editing.startEditing(workPackage, classIdentifier);
 
-    // Get the position where the user clicked.
-    const positionOffset = getPosition(evt);
+    let positionOffset = 0;    
+    if (evt.type === 'click') {
+      // Get the position where the user clicked.
+      positionOffset = getPosition(evt as MouseEvent);
+    }
 
     // Activate the field
     form.activate(fieldName)
