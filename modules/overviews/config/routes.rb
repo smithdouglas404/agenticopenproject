@@ -5,9 +5,7 @@ Rails.application.routes.draw do
     scope "projects/:project_id", as: "project" do
       scope module: "overviews" do
         resource :overview, path: "/", only: [:show] do
-          constraints(Constraints::FeatureDecision.new(:new_project_overview)) do
-            get :dashboard, on: :member
-          end
+          get :dashboard, on: :member
         end
 
         controller :overviews do
