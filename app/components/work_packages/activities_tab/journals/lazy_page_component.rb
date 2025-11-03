@@ -36,7 +36,7 @@ module WorkPackages
         include OpTurbo::Streamable
         include WorkPackages::ActivitiesTab::StimulusControllers
 
-        def initialize(work_package:, page:)
+        def initialize(work_package:, page:, filter:)
           super
           @work_package = work_package
           @page = page
@@ -52,12 +52,13 @@ module WorkPackages
 
         private
 
-        attr_reader :work_package, :page
+        attr_reader :work_package, :page, :filter
 
         def wrapper_data_attributes
           {
             controller: lazy_page_stimulus_controller,
             lazy_page_stimulus_controller("-page-value") => page,
+            lazy_page_stimulus_controller("-filter-value") => filter,
             lazy_page_stimulus_controller("-url-value") => page_streams_url,
             lazy_page_stimulus_controller("-is-loaded-value") => false
           }

@@ -59,7 +59,7 @@ module WorkPackages
         end
 
         def lazy_page_component(page)
-          WorkPackages::ActivitiesTab::Journals::LazyPageComponent.new(work_package:, page:)
+          WorkPackages::ActivitiesTab::Journals::LazyPageComponent.new(work_package:, page:, filter:)
         end
 
         def self.insert_target_modifier_id = "#{wrapper_key}-pages"

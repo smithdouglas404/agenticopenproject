@@ -36,12 +36,14 @@ export default class LazyPageController extends BaseController {
   static values = {
     url: String,
     page: { type: Number, default: 1 },
+    filter: String,
     isLoaded: { type: Boolean, default: false },
     loadDelayMs: { type: Number, default: 300 },
   };
 
   declare urlValue:string;
   declare pageValue:number;
+  declare filterValue:string;
   declare isLoadedValue:boolean;
   declare loadDelayMsValue:number;
 
@@ -101,7 +103,7 @@ export default class LazyPageController extends BaseController {
     const url = new URL(this.urlValue, baseUrl);
 
     url.searchParams.set('page', this.pageValue.toString());
-    url.searchParams.set('filter', this.indexOutlet.filterValue);
+    url.searchParams.set('filter', this.filterValue);
 
     return url.toString();
   }
