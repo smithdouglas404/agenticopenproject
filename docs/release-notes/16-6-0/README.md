@@ -59,9 +59,9 @@ While this is a small update by itself, it marks the beginning of a major improv
 
 ![OpenProject 16.6: Redesigned index page for the Documents module, showing a table with clickable name, type and last edited.](openproject-16-6-documents-index-page.png)
 
-### Possibility to change parent of a custom field item
+### Possibility to change parent of a custom field item (Enterprise add-on)
 
-Administrators can now change the parent of an item within a hierarchical custom field or project attribute. This makes it easier to rearrange existing items without recreating them from scratch. 
+Administrators can now change the parent of an item within a [hierarchical custom field (Enterprise add-on)](../../system-admin-guide/custom-fields/#hierarchy-custom-field-enterprise-add-on) or project attribute. This makes it easier to rearrange existing items without recreating them from scratch. 
 
 To do so, administrators need to navigate to *Administration → Custom fields*, select a custom field type hierarchy and click on the *Items* tab. Then they click on the *More* icon and select *Change parent*. A dialog opens showing the current hierarchy tree. From there, administrators can search, select a new parent, and save the updated structure. The hierarchy is updated immediately after saving. Like mentioned above, this also works for project attributes.
 
@@ -72,6 +72,8 @@ To do so, administrators need to navigate to *Administration → Custom fields*,
 In the Meetings module, the *More (three dots) menu* for agenda items has been improved to make it easier to move items between sections. Moderators can now directly move an item to another section without manually reordering it step by step. 
 
 The new *Move → Move to section* option opens a dialog where users can select the desired section from a dropdown list. Additionally, users can still move an agenda item to the backlog or to the next meeting (if it's part of a meeting series).
+
+[Learn more about meeting management with OpenProject](../../user-guide/work-packages/add-work-packages-to-meetings).
 
 ![OpenProject 16.6: Meetings module showing the options when clicking on the More menu on an agenda item](meetings_move_menu.png)
 
@@ -86,6 +88,8 @@ With this improvement, OpenProject now only enforces required fields when they a
 In *Administration → Work packages → Workflows*, the workflow table now features a sticky header and sticky first column. This makes it much easier for project administrators to keep track of which transitions are enabled when scrolling through large tables, vertically or horizontally.
 
 Additionally, the table is now split into three tabs — *Default transitions*, *User is author*, and *User is assignee* — each showing the relevant workflow configuration. Before 16.6, these additional transitions were often overlooked as they were positioned below the table.
+
+[Read more about managing work package workflows in OpenProject](../../system-admin-guide/manage-work-packages/work-package-workflows/).
 
 ![OpenProject 16.6: Administration for work package workflows highlighting the new tabs and that the header and right column are sticky when scrolling](openproject-16-6-work-package-workflow-highlighted.png)
 
