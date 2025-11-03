@@ -6,6 +6,7 @@ import {
   waitForElement,
 } from 'core-app/core/setup/globals/onboarding/helpers';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
+import { getMetaContent } from '../global-helpers';
 
 async function triggerTour(name:OnboardingTourNames):Promise<void> {
   debugLog(`Loading and triggering onboarding tour ${name}`);
@@ -25,7 +26,7 @@ export function detectOnboardingTour():void {
   // ------------------------------- Global -------------------------------
   const url = new URL(window.location.href);
   const isMobile = document.body.classList.contains('-browser-mobile');
-  const demoProjectsAvailable = document.querySelector('meta[name=demo_projects_available]')?.getAttribute('content') === 'true';
+  const demoProjectsAvailable = getMetaContent('demo_projects_available') == 'true';
   let currentTourPart = sessionStorage.getItem(onboardingTourStorageKey);
   let tourCancelled = false;
 
