@@ -452,7 +452,7 @@ RSpec.describe "Projects lists columns", :js, with_settings: { login_required?: 
 
         project.custom_field_values = { integer_custom_field.id => 0 }
         project.save!
-
+        project.reload
         project.calculate_custom_fields([division_by_zero_calculated_value])
 
         projects_page.visit!

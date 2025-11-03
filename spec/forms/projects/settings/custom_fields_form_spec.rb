@@ -30,7 +30,7 @@
 #
 require "spec_helper"
 
-RSpec.describe Projects::Settings::CustomFieldsForm, type: :forms do
+RSpec.describe Projects::Settings::CustomFieldsForm, type: :forms, with_flag: { calculated_value_project_attribute: true } do
   let(:string_project_custom_field) { create(:string_project_custom_field, name: "String field", is_required: true) }
   let(:boolean_project_custom_field) { create(:boolean_project_custom_field, name: "Boolean field", is_required: true) }
   let(:text_project_custom_field) { create(:text_project_custom_field, name: "Text field", is_required: true) }
@@ -50,26 +50,29 @@ RSpec.describe Projects::Settings::CustomFieldsForm, type: :forms do
   let(:version_project_custom_field) { create(:version_project_custom_field, name: "Version field", is_required: true) }
   let(:user_project_custom_field) { create(:user_project_custom_field, name: "User field", is_required: true) }
   let(:link_project_custom_field) { create(:link_project_custom_field, name: "Link field", is_required: true) }
+  let!(:calculated_project_custom_field) do
+    create(:calculated_value_project_custom_field, name: "Calculated field", is_required: true, is_for_all: true)
+  end
 
   let(:user) { create(:user) }
   let(:version) { create(:version) }
 
   let(:custom_field_values) do
     {
-      "#{string_project_custom_field.id}": "str_val",
-      "#{boolean_project_custom_field.id}": true,
-      "#{integer_project_custom_field.id}": 43,
-      "#{float_project_custom_field.id}": 78.23,
-      "#{date_project_custom_field.id}}": Date.civil(2024, 0o3, 20),
-      "#{link_project_custom_field.id}}": "https://rubygems.org/",
-      "#{list_project_custom_field.id}}": list_project_custom_field.possible_values.first.id,
-      "#{multi_list_project_custom_field.id}}": multi_list_project_custom_field.possible_values.last(2).map(&:id),
-      "#{version_project_custom_field.id}}": version,
-      "#{user_project_custom_field.id}}": user
-    }
+      string_project_custom_field => "str_val",
+      boolean_project_custom_field => true,
+      integer_project_custom_field => 43,
+      float_project_custom_field => 78.23,
+      date_project_custom_field => Date.civil(2024, 0o3, 20),
+      link_project_custom_field => "https://rubygems.org/",
+      list_project_custom_field => list_project_custom_field.possible_values.first.id,
+      multi_list_project_custom_field => multi_list_project_custom_field.possible_values.last(2).map(&:id),
+      version_project_custom_field => version,
+      user_project_custom_field => user
+    }.transform_keys { it.id.to_s }
   end
 
-  let(:model) { create(:project, custom_field_values:) }
+  let(:model) { build(:project, custom_field_values:) }
   let(:current_user) { build_stubbed(:admin) }
 
   current_user { build_stubbed(:admin) }
@@ -127,5 +130,10 @@ RSpec.describe Projects::Settings::CustomFieldsForm, type: :forms do
       expect(autocompleter["data-url"]).to be_json_eql(%{"/api/v3/principals"})
       expect(autocompleter["data-input-value"]).to be_json_eql(%{"#{user.id}"})
     end
+  end
+
+  it "does not render the required calculated field" do
+    expect(page).to have_no_text("Calculated field")
+    expect(page).to have_no_field("Calculated field", disabled: true)
   end
 end
