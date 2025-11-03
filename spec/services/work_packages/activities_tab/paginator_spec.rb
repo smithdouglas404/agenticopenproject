@@ -357,15 +357,14 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator, with_settings: { journal_
         it "includes journals with attribute changes" do
           _pagy, records = paginator.call
 
+          changes = journal_with_attribute_change.reload.get_changes
+          expect(changes).to have_key("subject")
           expect(records.map(&:id)).to include(journal_with_attribute_change.id)
         end
       end
 
       context "with only notes added (no attribute/association changes)" do
         let!(:notes_only_journal) do
-          journal = work_package.journals.last
-          journal.update_column(:notes, "Just a comment")
-
           work_package.add_journal(notes: "Comment only")
           work_package.save!
           work_package.journals.order(:version).last
@@ -374,11 +373,13 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator, with_settings: { journal_
         it "excludes journals with only notes (no actual changes to track)" do
           _pagy, records = paginator.call
 
+          changes = notes_only_journal.reload.get_changes
+          expect(changes).to eq({}) # no changes
           expect(records.map(&:id)).not_to include(notes_only_journal.id)
         end
       end
 
-      context "with cause attribute" do
+      context "with cause change" do
         let!(:journal_with_cause) do
           work_package.subject = "Changed by system"
           work_package.save!
@@ -390,72 +391,13 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator, with_settings: { journal_
         it "includes journals with cause metadata" do
           _pagy, records = paginator.call
 
+          changes = journal_with_cause.reload.get_changes
+          expect(changes.keys).to contain_exactly("subject", "cause")
           expect(records.map(&:id)).to include(journal_with_cause.id)
         end
       end
 
-      context "with attachment added" do
-        let!(:journal_with_attachment_added) do
-          work_package.attachments << create(:attachment)
-          work_package.save!
-          work_package.journals.order(:version).last
-        end
-
-        it "includes journals where attachments were added" do
-          _pagy, records = paginator.call
-
-          expect(records.map(&:id)).to include(journal_with_attachment_added.id)
-        end
-      end
-
-      context "with custom field value changed" do
-        let!(:custom_field) { create(:work_package_custom_field, field_format: "string") }
-
-        let!(:journal_with_cf_set) do
-          project.work_package_custom_fields << custom_field
-          work_package.type.custom_fields << custom_field
-          work_package.custom_field_values = { custom_field.id => "Initial value" }
-          work_package.save!
-          work_package.journals.order(:version).last
-        end
-
-        let!(:journal_with_cf_changed) do
-          work_package.custom_field_values = { custom_field.id => "Changed value" }
-          work_package.save!
-          work_package.journals.order(:version).last
-        end
-
-        it "includes journals where custom field value was initially set" do
-          _pagy, records = paginator.call
-
-          expect(records.map(&:id)).to include(journal_with_cf_set.id)
-        end
-
-        it "includes journals where custom field value was changed" do
-          _pagy, records = paginator.call
-
-          expect(records.map(&:id)).to include(journal_with_cf_changed.id)
-        end
-      end
-
-      context "with file link added" do
-        let(:storage) { create(:nextcloud_storage) }
-
-        let!(:journal_with_file_link_added) do
-          create(:project_storage, project:, storage:)
-          create(:file_link, container: work_package, storage:)
-          work_package.reload
-          work_package.journals.order(:version).last
-        end
-
-        it "includes journals where file links were added" do
-          _pagy, records = paginator.call
-
-          expect(records.map(&:id)).to include(journal_with_file_link_added.id)
-        end
-      end
-
-      context "with attachable_journals record but no attachment change" do
+      context "with attachment changes" do
         let!(:journal_with_attachment_added) do
           attachment = create(:attachment, container: nil, author: user)
           work_package.attachments << attachment
@@ -490,7 +432,7 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator, with_settings: { journal_
         end
       end
 
-      context "with customizable_journals record but no custom field value change" do
+      context "with custom field value changes" do
         let!(:custom_field) { create(:work_package_custom_field, field_format: "string") }
 
         let!(:journal_with_cf_set) do
@@ -526,7 +468,7 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator, with_settings: { journal_
         end
       end
 
-      context "with storable_journals record but no file link change" do
+      context "with file link changes" do
         let(:storage) { create(:nextcloud_storage) }
 
         let!(:journal_with_file_link_added) do
