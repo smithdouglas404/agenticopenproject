@@ -106,7 +106,7 @@
     "@mantine/core": "^8.3.5",
     "@mantine/hooks": "^8.3.5",
     "@mantine/utils": "^6.0.22",
-    "@ng-select/ng-option-highlight": "^20.5.0",
+    "@ng-select/ng-option-highlight": "^20.6.1",
     "@ng-select/ng-select": "^20.1.0",
     "@ngneat/content-loader": "^7.0.0",
     "@openproject/octicons-angular": "^19.30.1",
