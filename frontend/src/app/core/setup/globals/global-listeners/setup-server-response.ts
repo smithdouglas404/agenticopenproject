@@ -1,5 +1,5 @@
 // Legacy code ported from app/assets/javascripts/application.js.erb
-import { delegate } from '@knowledgecode/delegate';
+import { delegate, DelegateEvent } from '@knowledgecode/delegate';
 import { showElement } from 'core-app/shared/helpers/dom-helpers';
 import { slideDown, slideUp } from 'es6-slide-up-down';
 
@@ -51,7 +51,7 @@ export function setupServerResponse() {
   addClickEventToAllErrorMessages();
 
   // Click handler for formatting help
-  delegate(document.body).on('click', '.formatting-help-link-button', (event:Event) => {
+  delegate(document.body).on('click', '.formatting-help-link-button', (event:DelegateEvent) => {
     window.open(
       `${window.appBasePath}/help/wiki_syntax`,
       '',

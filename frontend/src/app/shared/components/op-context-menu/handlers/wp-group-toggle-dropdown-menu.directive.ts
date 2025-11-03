@@ -64,6 +64,7 @@ export class WorkPackageGroupToggleDropdownMenuDirective extends OpContextMenuTr
         icon: 'icon-minus2',
         onClick: (evt) => {
           this.wpViewCollapsedGroups.setAllGroupsCollapseStateTo(true);
+          return true;
         },
       },
       {
@@ -72,6 +73,7 @@ export class WorkPackageGroupToggleDropdownMenuDirective extends OpContextMenuTr
         icon: 'icon-plus',
         onClick: (evt) => {
           this.wpViewCollapsedGroups.setAllGroupsCollapseStateTo(false);
+          return true;
         },
       },
     ];

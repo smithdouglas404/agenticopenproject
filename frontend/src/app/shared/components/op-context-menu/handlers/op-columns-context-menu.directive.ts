@@ -121,9 +121,10 @@ export class OpColumnsContextMenu extends OpContextMenuTrigger {
             }).then(() => {
               this.wpTableSortBy.setAsSingleSortCriteria(c, QUERY_SORT_BY_DESC);
             });
-            return;
+            return true;
           }
           this.wpTableSortBy.addSortCriteria(c, QUERY_SORT_BY_DESC);
+          return true;
         },
       },
       {
@@ -138,9 +139,10 @@ export class OpColumnsContextMenu extends OpContextMenuTrigger {
             }).then(() => {
               this.wpTableSortBy.setAsSingleSortCriteria(c, QUERY_SORT_BY_ASC);
             });
-            return;
+            return true;
           }
           this.wpTableSortBy.addSortCriteria(c, QUERY_SORT_BY_ASC);
+          return true;
         },
       },
       {
@@ -153,6 +155,7 @@ export class OpColumnsContextMenu extends OpContextMenuTrigger {
             this.wpTableHierarchies.setEnabled(false);
           }
           this.wpTableGroupBy.setBy(c);
+          return true;
         },
       },
       {
@@ -162,6 +165,7 @@ export class OpColumnsContextMenu extends OpContextMenuTrigger {
         icon: 'icon-column-left',
         onClick: () => {
           this.wpTableColumns.shift(c, -1);
+          return true;
         },
       },
       {
@@ -171,6 +175,7 @@ export class OpColumnsContextMenu extends OpContextMenuTrigger {
         icon: 'icon-column-right',
         onClick: () => {
           this.wpTableColumns.shift(c, 1);
+          return true;
         },
       },
       {
@@ -186,6 +191,7 @@ export class OpColumnsContextMenu extends OpContextMenuTrigger {
               document.querySelector<HTMLElement>(`#${focusColumn.id}`)?.focus();
             }
           });
+          return true;
         },
       },
       {
@@ -198,6 +204,7 @@ export class OpColumnsContextMenu extends OpContextMenuTrigger {
             this.injector,
             { initialTab: 'columns' },
           );
+          return true;
         },
       },
     ];

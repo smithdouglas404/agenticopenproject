@@ -116,9 +116,7 @@ export class OpTypesContextMenuDirective extends OpContextMenuTrigger {
         if (this.routedFromAngular) {
           this.isOpen = false;
           if (isClickedWithModifier(event)) {
-            event.preventDefault();
-            event.stopPropagation();
-            return;
+            return false;
           }
 
           this.$state.go(this.stateName, { type: type.id });
@@ -128,6 +126,7 @@ export class OpTypesContextMenuDirective extends OpContextMenuTrigger {
             { type: type.id! },
           );
         }
+        return true;
       },
     }));
   }
