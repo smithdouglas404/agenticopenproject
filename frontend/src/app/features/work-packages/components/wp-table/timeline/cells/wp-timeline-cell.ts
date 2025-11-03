@@ -99,7 +99,10 @@ export class WorkPackageTimelineCell {
   }
 
   public clear() {
-    this.cellElement.innerHTML = '';
+    if (this.cellElement) {
+      this.cellElement.innerHTML = '';
+    }
+
     this.wpElement = null;
   }
 
@@ -108,7 +111,7 @@ export class WorkPackageTimelineCell {
   }
 
   private get cellElement() {
-    return this.cellContainer.querySelector<HTMLTableCellElement>(`.${this.classIdentifier}`)!;
+    return this.cellContainer.querySelector<HTMLTableCellElement>(`.${this.classIdentifier}`);
   }
 
   private lazyInit(renderer:TimelineCellRenderer, renderInfo:RenderInfo):Promise<void> {
