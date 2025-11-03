@@ -97,7 +97,7 @@ export class KeyboardShortcutService {
     const key = accessKeys[keyName];
 
     return () => {
-      const elem = document.querySelector<HTMLElement>(`[accesskey=${key}]:first`)!;
+      const elem = document.querySelector<HTMLElement>(`[accesskey=${key}]`)!;
       if (elem instanceof HTMLInputElement || elem.getAttribute('id') === 'global-search-input') {
         // timeout with delay so that the key is not
         // triggered on the input
