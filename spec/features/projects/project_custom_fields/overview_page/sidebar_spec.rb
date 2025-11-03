@@ -573,7 +573,7 @@ RSpec.describe "Show project custom fields on project overview page", :js do
       end
     end
 
-    describe "with calculated value CFs" do
+    describe "with calculated value CFs", with_ee: %i[calculated_values] do
       describe "with value set by user" do
         it "shows the correct value for the project custom field if given" do
           overview_page.visit_page
@@ -861,7 +861,7 @@ RSpec.describe "Show project custom fields on project overview page", :js do
       end
     end
 
-    describe "with weighted item list CF" do
+    describe "with weighted item list CF", with_ee: %i[weighted_item_lists] do
       let!(:weighted_item_list) do
         create(:weighted_item_list_project_custom_field,
                projects: [project],
