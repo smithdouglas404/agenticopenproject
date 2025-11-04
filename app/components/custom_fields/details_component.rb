@@ -59,7 +59,7 @@ module CustomFields
                             when "weighted_item_list"
                               { key: :weighted_item_lists, image: "enterprise/weighted_item_lists.png" }
                             else
-                              {}
+                              raise "Custom fields of format #{custom_field.field_format} are not supported by #{self.class.name}"
                             end
     end
   end
