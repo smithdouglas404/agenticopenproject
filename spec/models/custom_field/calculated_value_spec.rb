@@ -621,14 +621,16 @@ RSpec.describe CustomField::CalculatedValue,
       let(:formula) { "abc + 2" }
 
       it_behaves_like "invalid formula",
-                      "Only numeric values, project factors, calculated values and mathematical operators are allowed."
+                      "Only numeric values, mathematical operators and project attributes of type integer, float, " \
+                      "calculated value and weighted list are allowed."
     end
 
     context "with a formula containing references to custom fields without pattern-mustaches" do
       let(:formula) { "100 * cf_3" }
 
       it_behaves_like "invalid formula",
-                      "Only numeric values, project factors, calculated values and mathematical operators are allowed."
+                      "Only numeric values, mathematical operators and project attributes of type integer, float, " \
+                      "calculated value and weighted list are allowed."
     end
 
     context "with a formula that is not a valid equation" do
