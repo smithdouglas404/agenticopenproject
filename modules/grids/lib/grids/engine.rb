@@ -16,7 +16,6 @@ module Grids
           .controller_actions
           .push(
             "grids/widgets/project_statuses/show",
-            "grids/widgets/subitems/show"
           )
 
         OpenProject::AccessControl.permission(:edit_project)
