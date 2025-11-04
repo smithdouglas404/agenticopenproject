@@ -368,19 +368,19 @@ en:
 
   calculated_values:
     error_dialog:
-      title: "Error with Calculated Value"
+      title: "Error with Calculated value"
     errors:
-      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
+      unknown: "An unknown error occurred. Please review the formula for this Calculated value."
       mathematical: "A mathematical error occurred during calculation."
-      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
-      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated value, but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated value, but is disabled for the project.
 
   concatenation:
     single: "or"
 
   danger_dialog:
     confirmation_live_message_checked: "The button to proceed is now active."
-    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."  
+    confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
 
   op_dry_validation:
     or: "or"
@@ -2314,7 +2314,7 @@ en:
     features:
       baseline_comparison: Baseline Comparisons
       board_view: Advanced Boards
-      calculated_values: Calculated Values
+      calculated_values: Calculated values
       conditional_highlighting: Conditional Highlighting
       internal_comments: Internal Comments
       custom_actions: Custom Actions
@@ -2389,7 +2389,7 @@ en:
       project_list_sharing:
         description: "Share project lists with individual users."
       calculated_values:
-        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
+        description: "Calculated values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Custom color theme and logo"
         more_info: "Note: the used logo will be publicly accessible."
@@ -2973,7 +2973,7 @@ en:
   label_select_main_menu_item: Select new main menu item
   label_required_disk_storage: "Required disk storage"
   label_send_invitation: Send invitation
-  label_calculated_value: "Calculated Value"
+  label_calculated_value: "Calculated value"
   label_change_parent: "Change parent"
   label_change_plural: "Changes"
   label_change_properties: "Change properties"
