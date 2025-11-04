@@ -36,7 +36,7 @@
     "@types/urijs": "^1.19.26",
     "@types/uuid": "^11.0.0",
     "@types/webpack-env": "^1.16.0",
-    "@typescript-eslint/eslint-plugin": "8.46.2",
+    "@typescript-eslint/eslint-plugin": "8.46.3",
     "@typescript-eslint/parser": "8.46.2",
     "angular-eslint": "^20.5.0",
     "browserslist": "^4.27.0",
