@@ -29,6 +29,7 @@ import { WpDestroyModalComponent } from 'core-app/shared/components/modals/wp-de
 import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
+import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 
 export class WorkPackageViewContextMenu extends OpContextMenuHandler {
   @InjectField() protected states!:States;
@@ -42,6 +43,8 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
   @InjectField() protected wpTableSelection:WorkPackageViewSelectionService;
 
   @InjectField() protected WorkPackageContextMenuHelper!:WorkPackageContextMenuHelperService;
+
+  @InjectField() protected currentProject:CurrentProjectService;
 
   @InjectField() protected pathHelper:PathHelperService;
 
@@ -103,7 +106,7 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
         this.editSelectedWorkPackages(link!);
         break;
 
-      case 'copy':
+      case 'duplicate':
         this.copySelectedWorkPackages(link!);
         break;
 
@@ -162,11 +165,9 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
       return;
     }
 
-    const params = {
-      copiedFromWorkPackageId: selected[0].id,
-    };
-
-    this.$state.go(`${this.baseRoute}.copy`, params);
+    if (selected[0].id) {
+      window.location.href = this.pathHelper.workPackageCopyPath(selected[0].project.id, selected[0].id);
+    }
   }
 
   private logTimeForSelectedWorkPackage() {
@@ -206,21 +207,22 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
     }));
 
     if (selected.length === 1 && !isNewResource(this.workPackage)) {
+      const projectIdentifier = this.currentProject.identifier;
+      const link = this.pathHelper.genericWorkPackagePath(projectIdentifier, this.workPackageId) + window.location.search;
+
       items.unshift({
         disabled: false,
         icon: 'icon-view-fullscreen',
         class: 'openFullScreenView',
-        href: this.$state.href('work-packages.show', { workPackageId: this.workPackageId }),
+        href: link,
         linkText: I18n.t('js.button_open_fullscreen'),
         onClick: ($event:JQuery.TriggeredEvent) => {
           if (isClickedWithModifier($event)) {
             return false;
           }
 
-          this.$state.go(
-            'work-packages.show',
-            { workPackageId: this.workPackageId },
-          );
+          Turbo.visit(link, { action: 'advance' });
+
           return true;
         },
       });

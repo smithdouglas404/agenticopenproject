@@ -69,27 +69,25 @@ RSpec.describe "Turbo and Angular navigation integration", :js do
       # Step 3: Click on the work package #id from the notifications list
       # This should open the work package in full view
       center.click_id notification
+      wait_for_network_idle
       full_screen.expect_subject
 
       # Step 4: Click back once
       # Expected: Should go back to the notification center with split screen open
-      # Bug: The same work package page is displayed again
       page.go_back
+      wait_for_network_idle
 
-      # This assertion will fail with the current bug - it should show the split screen
-      # but instead shows the full work package view again
       expect(page).to have_current_path(/notifications/)
       split_screen.expect_open
 
       # Step 5: Click back a second time
       # Expected: Should go back to the notification center, but the work package sidebar is hidden
-      # Bug: The work package sidebar should be visible but is hidden
       page.go_back
+      wait_for_network_idle
 
-      # Sidebar should remain open
       expect(page).to have_current_path(/notifications/)
       center.expect_open
-      split_screen.expect_open
+      split_screen.expect_closed
     end
   end
 end

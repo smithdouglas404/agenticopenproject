@@ -661,6 +661,57 @@ ca:
     memberships:
       no_results_title_text: Aquest usuari no és actualment membre de cap projecte.
     open_profile: "Open profile"
+    invite_user_modal:
+      invite: "Convida"
+      title:
+        invite: "Invitar usuari"
+        invite_to_project: "Convida %{type} a %{project}"
+        invite_principal_to_project: "Convida %{principal} a %{project}"
+      project:
+        label: "Projecte"
+        required: "Si us plau, selecciona un projecte"
+        next_button: "Següent"
+        no_results: "No s'han trobat projectes"
+        no_invite_rights: "No tens permisos per convidar membres a aquest projecte"
+      type:
+        required: "Si us plau, selecciona la classe a convidar"
+        user:
+          title: "Invite user to %{project_name}"
+          description: "Permisos basats en el rol assignat en el projecte seleccionat"
+        group:
+          title: "Invite group to %{project_name}"
+          description: "Permisos basats en el rol assignat en el projecte seleccionat"
+        placeholder_user:
+          title: "Add placeholder user to %{project_name}"
+          title_no_ee: "Usuari de marcador de posició (extensió només de l'edició Enterprise)"
+          description: "No té accés al projecte i no s'han enviat els correus electrònics."
+        already_member_message: "Ja és membre del %{project}"
+      principal:
+        no_results_user: "No s'ha trobat cap usuari"
+        invite_user: "Convida:"
+        no_results_placeholder: "No s'ha trobat cap usuari de marcador de posició."
+        create_new_placeholder: "Crea un usuari de marcador de posició:"
+        no_results_group: "No s'ha trobat cap grup"
+        invite_to_project: "Invite to %{project_name}"
+        required:
+          user: "Si us plau, selecciona un usuari"
+          placeholder: "Si us plau, selecciona un usuari de marcador de posició"
+          group: "Si us plau, selecciona un grup"
+      role:
+        label: "Rol en %{project}"
+        no_roles_found: "No s'ha trobat cap rol"
+        description: >
+          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+        required: "Si us plau, selecciona un rol"
+      message:
+        label: "Missatge d'invitació"
+        description: "Enviarem un correu electrònic a l'usuari, al qual pots afegir un missatge personal aquí. Una explicació per a la invitació pot ser útil, o potser una mica d'informació amb relació al projecte per ajudar als usuaris a començar."
+      summary:
+        next_button: "Enviar la invitació"
+      success_message:
+        user: "L'usuari ara pot iniciar sessió per accedir a %{project}. Per tant, ja pots planejar amb aquest usuari i assignar-li paquets de treball."
+        placeholder_user: "L'usuari de marcador de posició ara pot ser utilitzat a %{project}. Per tant, ja pots planejar amb aquest usuari i assignar-li paquets de treball."
+        group: "El grup és ara part de %{project}. Per tant, ja pots planejar amb aquest grup i assignar-li paquets de treball."
   page:
     text: "Text"
   placeholder_users:
@@ -1241,6 +1292,9 @@ ca:
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Daily reminders"
         workdays: "Dies laborals"
+      users/invitation/form_model:
+        principal_type: "Invitation type"
+        id_or_email: "Nom o adreça de correu electrònic"
       version:
         effective_date: "Data de finalització"
         sharing: "Compartint"
@@ -3764,6 +3818,9 @@ ca:
   permission_edit_wiki_pages: "Editar les pàgines wiki"
   permission_export_work_packages: "Exportar paquets de treball"
   permission_export_wiki_pages: "Exportar les pàgines wiki"
+  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email_explanation: >
+    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
   permission_list_attachments: "Llista d'adjunts"
   permission_log_own_time: "Registra temps propi"
   permission_log_time: "Registra temps per altres usuaris"
@@ -3793,6 +3850,9 @@ ca:
   permission_share_work_packages: "Share work packages"
   permission_manage_types: "Seleccioneu tipus"
   permission_manage_own_reminders: "Create own reminders"
+  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals_explanation: >
+    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
   permission_view_project: "Veure projectes"
   permission_view_changesets: "Veure les revisions del repositori a OpenProject"
   permission_view_internal_comments: "View internal comments"

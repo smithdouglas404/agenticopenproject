@@ -84,9 +84,6 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
   /** Whether the board is editable */
   editable:boolean;
 
-  /** Go back to boards using back-button */
-  backButtonCallback:() => void;
-
   /** Current query title to render */
   selectedTitle?:string;
 

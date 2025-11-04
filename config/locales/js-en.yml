@@ -1210,82 +1210,8 @@ en:
       timeline: "Gantt"
 
     invite_user_modal:
-      back: "Back"
       invite: "Invite"
-      title:
-        invite: "Invite user"
-        invite_to_project: "Invite %{type} to %{project}"
-        User: "user"
-        Group: "group"
-        PlaceholderUser: "placeholder user"
-        invite_principal_to_project: "Invite %{principal} to %{project}"
-      project:
-        label: "Project"
-        required: "Please select a project"
-        lacking_permission: "Please select a different project since you lack permissions to assign users to the currently selected."
-        lacking_permission_info: "You lack the permission to assign users to the project you are currently in. You need to select a different one."
-        next_button: "Next"
-        no_results: "No projects were found"
-        no_invite_rights: "You are not allowed to invite members to this project"
-      type:
-        required: "Please select the type to be invited"
-        user:
-          title: "User"
-          description: "Permissions based on the assigned role in the selected project"
-        group:
-          title: "Group"
-          description: "Permissions based on the assigned role in the selected project"
-        placeholder:
-          title: "Placeholder user"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Has no access to the project and no emails are sent out."
-          description_no_ee: 'Has no access to the project and no emails are sent out.
-            <br>Check out the <a href="%{eeHref}" target="_blank">Enterprise edition</a>'
-
-      principal:
-        label:
-          name_or_email: "Name or email address"
-          name: "Name"
-        already_member_message: "Already a member of %{project}"
-        no_results_user: "No users were found"
-        invite_user: "Invite:"
-        no_results_placeholder: "No placeholders were found"
-        create_new_placeholder: "Create new placeholder:"
-        no_results_group: "No groups were found"
-        next_button: "Next"
-        required:
-          user: "Please select a user"
-          placeholder: "Please select a placeholder"
-          group: "Please select a group"
-
-      role:
-        label: "Role in %{project}"
-        no_roles_found: "No roles were found"
-        description: >-
-          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see.
-          <a
-          href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions"
-          target="_blank">
-          Learn more about roles and permissions.
-          </a>
-        required: "Please select a role"
-        next_button: "Next"
-
-      message:
-        label: "Invitation message"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
-        next_button: "Next"
-
-      summary:
-        next_button: "Send invitation"
-
-      success:
-        title: "%{principal} was invited!"
-        description:
-          user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-          placeholder: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-          group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
-        next_button: "Continue"
+      placeholder_add_tag: "Create placeholder user"
 
     exclusion_info:
       modal:

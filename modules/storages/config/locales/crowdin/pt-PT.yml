@@ -119,6 +119,12 @@ pt-PT:
         hide_inactive_folders: 'Passo "Ocultar pastas inativas":'
         remote_folders: 'Ler conteúdo da pasta de grupo:'
         rename_project_folder: 'Renomear pasta do projeto gerido:'
+      sharepoint_sync_service:
+        create_folder: 'Criação de pastas de projeto geridas:'
+        ensure_root_folder_permissions: 'Definir permissões da pasta base:'
+        hide_inactive_folders: 'Passo "Ocultar pastas inativas":'
+        remote_folders: 'Ler conteúdo da pasta de grupo:'
+        rename_project_folder: 'Renomear pasta do projeto gerido:'
     errors:
       messages:
         error: Ocorreu um erro inesperado. Verifique os registos do OpenProject para obter mais informações ou contacte um administrador
@@ -171,6 +177,23 @@ pt-PT:
             remote_folders:
               request_error: O OpenProject não conseguiu aceder à sua unidade %{drive_id}. Verifique se a sua configuração de armazenamento está correta.
             rename_project_folder:
+              conflict: O OpenProject não conseguiu mudar o nome da pasta %{current_path} para %{project_folder_name} porque já existe uma pasta com o mesmo nome.
+              forbidden: "O OpenProject não tem acesso a %{current_path} para poder renomeá-lo.\n"
+              not_found: "%{current_path} não foi encontrado."
+            set_folders_permissions:
+              permission_not_set: não foi possível definir permissões em %{path}.
+          error: Ocorreu um erro inesperado. Confirme se o seu OneDrive está acessível e verifique os registos de trabalho do OpenProject para mais informações.
+          not_allowed: O OpenProject não tinha permissão para aceder à sua unidade do OneDrive. Verifique as permissões definidas na aplicação do Azure.
+          unauthorized: Não foi possível sincronizar o OpenProject com o OneDrive. Verifique o seu armazenamento e a configuração da aplicação do Azure.
+          user_does_not_exist: "%{user} não existe no Nextcloud."
+        sharepoint_sync_service:
+          attributes:
+            create_folder:
+              conflict: A pasta %{folder_name} já existe em %{parent_location}.
+              not_found: "%{parent_location} não foi encontrado."
+            hide_inactive_folders:
+              permission_not_set: não foi possível definir permissões em %{path}.
+            rename_project_folder:
               conflict: O OpenProject não conseguiu renomear a pasta %{current_path} para %{project_folder_name} porque já existe uma pasta com o mesmo nome
               forbidden: "O OpenProject não tem acesso a %{current_path} para poder renomeá-lo.\n"
               not_found: "%{current_path} não foi encontrado."
@@ -178,6 +201,7 @@ pt-PT:
               permission_not_set: não foi possível definir permissões em %{path}.
           error: Ocorreu um erro inesperado. Confirme se o seu OneDrive está acessível e verifique os registos de trabalho do OpenProject para mais informações
           not_allowed: O OpenProject não tinha permissão para aceder à sua unidade do OneDrive. Verifique as permissões definidas na aplicação do Azure.
+          not_found: O OpenProject não conseguiu aceder à sua biblioteca %{drive_name}. Verifique as bibliotecas de documentos do seu site Sharepoint.
           unauthorized: Não foi possível sincronizar o OpenProject com o OneDrive. Verifique o seu armazenamento e a configuração da aplicação do Azure.
           user_does_not_exist: "%{user} não existe no Nextcloud."
         upload_link_service:

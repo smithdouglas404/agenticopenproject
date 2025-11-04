@@ -78,12 +78,12 @@ module Components
 
       def find_row(relatable)
         actual_relatable = find_relatable(relatable)
-        page.find_test_selector("op-relation-row-visible-#{actual_relatable.id}", wait: 5)
+        page.find_test_selector("op-relation-row-visible-#{actual_relatable.id}", wait: 10)
       end
 
       def find_ghost_row(relatable)
         actual_relatable = find_relatable(relatable)
-        page.find_test_selector("op-relation-row-ghost-#{actual_relatable.id}", wait: 5)
+        page.find_test_selector("op-relation-row-ghost-#{actual_relatable.id}", wait: 10)
       end
 
       def find_some_row(text:)

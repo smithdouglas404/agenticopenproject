@@ -118,10 +118,11 @@ export class ScrollableTabsComponent extends UntilDestroyedMixin implements Afte
     this.currentTabId = tab.id;
     this.tabSelected.emit(tab);
 
-    // If the tab does not provide its own link,
-    // avoid propagation
-    if (!tab.path) {
-      event.preventDefault();
+    event.preventDefault();
+
+    // Override history to avoid that browser back leads you to a different tab instead of the page you originated from
+    if (tab.path) {
+      Turbo.visit(tab.path, { action: document.referrer != '' ? 'replace' : 'advance' })
     }
   }
 

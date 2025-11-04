@@ -309,11 +309,11 @@ module Pages::Meetings
     end
 
     def in_outcome_component(item, &)
-      page.within("#meeting-agenda-items-outcomes-base-component-#{item.id}", &)
+      page.within("#meeting-agenda-items-outcomes-wrapper-component-#{item.id}", &)
     end
 
     def add_outcome(item, &)
-      page.within("#meeting-agenda-items-outcomes-base-component-#{item.id}") do
+      page.within("#meeting-agenda-items-outcomes-wrapper-component-#{item.id}") do
         click_link_or_button "Outcome"
       end
       expect_outcome_form(item)
@@ -332,11 +332,11 @@ module Pages::Meetings
     end
 
     def expect_outcome(text)
-      expect(page).to have_css("#meeting-agenda-items-outcomes-show-notes-component", text:)
+      expect(page).to have_css(".op-meeting-outcome-notes--content", text:)
     end
 
     def expect_no_outcome(text)
-      expect(page).to have_no_css("#meeting-agenda-items-outcomes-show-notes-component", text:)
+      expect(page).to have_no_css(".op-meeting-outcome-notes--content", text:)
     end
 
     def expect_no_outcome_button

@@ -26,7 +26,12 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { ChangeDetectorRef, Injector } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Directive,
+  Injector,
+  Input,
+} from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import {
@@ -62,9 +67,19 @@ import { ProjectsResourceService } from 'core-app/core/state/projects/projects.s
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { ToastService } from 'core-app/shared/components/toaster/toast.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { StateService } from '@uirouter/angular';
 
-export class WorkPackageSingleViewBase extends UntilDestroyedMixin {
+@Directive()
+export abstract class WorkPackageSingleViewBase extends UntilDestroyedMixin {
+  @Input() routedFromAngular:boolean = true;
+
+  @Input() workPackageId:string;
+
+  @Input() activeTab:string = 'activity';
+
   @InjectField() states:States;
+
+  @InjectField() $state:StateService;
 
   @InjectField() i18n:I18nService;
 
@@ -115,9 +130,12 @@ export class WorkPackageSingleViewBase extends UntilDestroyedMixin {
 
   constructor(
     public injector:Injector,
-    protected workPackageId:string,
   ) {
     super();
+
+    if (this.routedFromAngular && this.workPackageId === undefined) {
+      this.workPackageId = this.$state.params.workPackageId as string;
+    }
   }
 
   /**
@@ -138,6 +156,9 @@ export class WorkPackageSingleViewBase extends UntilDestroyedMixin {
         } else {
           this.workPackage = wp;
         }
+
+        // Push the current title
+        this.titleService.setFirstPart(this.workPackage.subjectWithType(-1));
 
         this.cdRef.detectChanges();
       }, (error) => {
@@ -176,9 +197,6 @@ export class WorkPackageSingleViewBase extends UntilDestroyedMixin {
 
     // Set authorisation data
     this.authorisationService.initModelAuth('work_package', this.workPackage.$links);
-
-    // Push the current title
-    this.titleService.setFirstPart(this.workPackage.subjectWithType(-1));
 
     // Preselect this work package for future list operations
     this.showStaticPagePath = this.PathHelper.workPackagePath(this.workPackageId);

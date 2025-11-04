@@ -1134,71 +1134,8 @@ el:
       list: "Πίνακας"
       timeline: "Gantt"
     invite_user_modal:
-      back: "Επιστροφή"
       invite: "Πρόσκληση"
-      title:
-        invite: "Προσκαλέστε χρήστη"
-        invite_to_project: "Προσκαλέστε %{type} στο %{project}"
-        User: "χρήστης"
-        Group: "ομάδα"
-        PlaceholderUser: "placeholder χρήστης"
-        invite_principal_to_project: "Πρόσκληση %{principal} στο %{project}"
-      project:
-        label: "Έργο"
-        required: "Παρακαλούμε επιλέξτε ένα έργο"
-        lacking_permission: "Παρακαλώ επιλέξτε ένα διαφορετικό πρότζεκτ καθώς δεν έχετε δικαιώματα να εγγράψετε τους χρήστες στο επιλεγμένο."
-        lacking_permission_info: "You lack the permission to assign users to the project you are currently in. You need to select a different one."
-        next_button: "Επόμενο"
-        no_results: "Δεν βρέθηκαν έργα"
-        no_invite_rights: "You are not allowed to invite members to this project"
-      type:
-        required: "Παρακαλώ επιλέξτε τον τύπο που θα προσκληθεί"
-        user:
-          title: "Χρήστης"
-          description: "Permissions based on the assigned role in the selected project"
-        group:
-          title: "Ομάδα"
-          description: "Permissions based on the assigned role in the selected project"
-        placeholder:
-          title: "Placeholder χρήστης"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Has no access to the project and no emails are sent out."
-          description_no_ee: 'Has no access to the project and no emails are sent out. <br>Check out the <a href="%{eeHref}" target="_blank">Enterprise edition</a>'
-      principal:
-        label:
-          name_or_email: "Όνομα ή διεύθυνση email"
-          name: "Όνομα"
-        already_member_message: "Ήδη μέλος του %{project}"
-        no_results_user: "Δεν βρέθηκαν χρήστες"
-        invite_user: "Πρόσκληση:"
-        no_results_placeholder: "Δεν βρέθηκαν placeholders"
-        create_new_placeholder: "Δημιουργία νέου placeholder:"
-        no_results_group: "Δεν βρέθηκαν ομάδες"
-        next_button: "Επόμενο"
-        required:
-          user: "Παρακαλώ επιλέξτε ένα χρήστη"
-          placeholder: "Παρακαλώ επιλέξτε ένα placeholder"
-          group: "Παρακαλούμε επιλέξτε μια ομάδα"
-      role:
-        label: "Ρόλος στο %{project}"
-        no_roles_found: "Δεν βρέθηκε κανένας ρόλος"
-        description: >-
-          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Learn more about roles and permissions. </a>
-        required: "Παρακαλούμε επιλέξτε ένα ρόλο"
-        next_button: "Επόμενο"
-      message:
-        label: "Μήνυμα πρόσκλησης"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
-        next_button: "Επόμενο"
-      summary:
-        next_button: "Αποστολή πρόσκλησης"
-      success:
-        title: "%{principal} προσκλήθηκε!"
-        description:
-          user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-          placeholder: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-          group: "Η ομάδα είναι τώρα μέρος του %{project}. Εν τω μεταξύ, μπορείτε να προγραμματίσετε ήδη με αυτή την ομάδα και να αντιστοιχίσετε πακέτα εργασίας."
-        next_button: "Συνέχεια"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "Status excluded from hierarchy totals"

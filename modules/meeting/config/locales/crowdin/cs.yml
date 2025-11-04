@@ -64,6 +64,7 @@ cs:
       meeting_participant:
         invited: "Pozvané"
         attended: "Zúčastnil se"
+        participation_status: "Participation status"
     errors:
       models:
         meeting_participant:
@@ -452,7 +453,7 @@ cs:
   notice_meeting_updated: "Tato stránka byla aktualizována někým jiným. Pro zobrazení změn znovu načtena."
   permission_create_meetings: "Vytvořit schůzku\n"
   permission_edit_meetings: "Upravit schůzku"
-  permission_delete_meetings: "Odstranit schůzky"
+  permission_delete_meetings: "Smazat schůzku"
   permission_view_meetings: "Zobrazit schůzky"
   permission_manage_agendas: "Správa zápisů"
   permission_manage_agendas_explanation: "Allows creating, editing and removing agenda items"
@@ -512,6 +513,7 @@ cs:
   label_agenda_item_work_package: "Pracovní balíček k bodu programu"
   label_section_rename: "Přejmenovat sekci"
   label_agenda_outcome: "Výsledek"
+  label_agenda_new_outcome: "New outcome"
   label_agenda_outcome_actions: "Agenda outcome actions"
   label_agenda_outcome_edit: "Upravit výsledek"
   label_agenda_outcome_delete: "Odstranit výsledek"

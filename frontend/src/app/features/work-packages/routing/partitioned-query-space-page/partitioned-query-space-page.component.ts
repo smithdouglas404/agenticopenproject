@@ -44,7 +44,6 @@ import { ComponentType } from '@angular/cdk/overlay';
 import { Ng2StateDeclaration } from '@uirouter/angular';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { OpModalService } from 'core-app/shared/components/modal/modal.service';
-import { InviteUserModalComponent } from 'core-app/features/invite-user-modal/invite-user.component';
 import { WorkPackageFilterContainerComponent } from 'core-app/features/work-packages/components/filters/filter-container/filter-container.directive';
 import isPersistedResource from 'core-app/features/hal/helpers/is-persisted-resource';
 import { UIRouterGlobals } from '@uirouter/core';
@@ -128,9 +127,6 @@ export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase imp
 
   /** We need to pass the correct partition state to the view to manage the grid */
   currentPartition:ViewPartitionState = '-split';
-
-  /** What route (if any) should we go back to using the back button left of the title? */
-  backButtonCallback:() => void|undefined;
 
   /** Which filter container component to mount */
   filterContainerDefinition:DynamicComponentDefinition = {
@@ -274,8 +270,6 @@ export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase imp
       });
     }
   }
-
-  protected inviteModal = InviteUserModalComponent;
 
   protected loadQuery(firstPage = false):Promise<QueryResource> {
     let promise:Promise<QueryResource>;

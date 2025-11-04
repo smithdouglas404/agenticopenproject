@@ -1,6 +1,8 @@
 services:
   hocuspocus:
-    image:  openproject/hocuspocus:main-88913ad0
+    # In case of MacOS you need to specify the platform in your `docker/dev/hocuspocus/docker-compose.override.yml`:
+    # platform: linux/amd64
+    image:  openproject/hocuspocus:main-defdb238
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.hocuspocus.rule=Host(`hocuspocus.local`)"
@@ -11,7 +13,8 @@ services:
     networks:
       - gateway
     environment:
-      - SECRET=secret12345
+      - ALLOWED_DOMAINS=openproject.local,localhost
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
 networks:
   gateway:
     external: true

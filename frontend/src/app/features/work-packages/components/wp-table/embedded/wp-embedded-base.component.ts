@@ -20,6 +20,7 @@ import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import { WorkPackageStatesInitializationService } from '../../wp-list/wp-states-initialization.service';
 import { firstValueFrom } from 'rxjs';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 
 @Directive()
 export abstract class WorkPackageEmbeddedBaseComponent extends WorkPackagesViewBase implements AfterViewInit {
@@ -52,6 +53,8 @@ export abstract class WorkPackageEmbeddedBaseComponent extends WorkPackagesViewB
   @InjectField() wpStatesInitialization:WorkPackageStatesInitializationService;
 
   @InjectField() currentProject:CurrentProjectService;
+
+  @InjectField() pathHelper:PathHelperService;
 
   @InjectField() cdRef:ChangeDetectorRef;
 

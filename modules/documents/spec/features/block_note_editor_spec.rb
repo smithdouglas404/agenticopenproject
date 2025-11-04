@@ -30,17 +30,18 @@
 
 require "rails_helper"
 
-RSpec.describe "BlockNote editor rendering", :js do
+RSpec.describe "BlockNote editor rendering", :js, with_flag: { block_note_editor: true } do
   let(:admin) { create(:admin) }
   let(:project) { create(:project) }
   let(:category) { create(:document_category, name: "Experimental", project:) }
   let(:document) { create(:document, category:) }
+  let(:editor) { FormFields::Primerized::BlockNoteEditorInput.new }
 
   before do
     login_as(admin)
   end
 
-  it "renders the blocknote editor when editting a document", with_flag: { block_note_editor: true } do
+  it "renders the BlockNote editor when editting a document" do
     visit edit_document_path(document)
 
     expect(page).to have_field("Category", required: true)
@@ -58,5 +59,27 @@ RSpec.describe "BlockNote editor rendering", :js do
     visit edit_document_path(document)
 
     expect(page).to have_test_selector("blocknote-document-description", text: "Additional text")
+  end
+
+  it "renders the BlockNote editor in the users locale" do
+    admin.update!(language: "de")
+    visit edit_document_path(document)
+
+    expect(page).to have_test_selector("blocknote-document-description")
+    expect(page).to have_no_content("Überschrift")
+
+    editor.open_command_dialog
+    expect(page).to have_content("Überschrift")
+  end
+
+  it "renders the blocknote editor in english if the users locale is not available for BlockNote" do
+    admin.update!(language: "af")
+    visit edit_document_path(document)
+
+    expect(page).to have_test_selector("blocknote-document-description")
+    expect(page).to have_no_content("Heading")
+
+    editor.open_command_dialog
+    expect(page).to have_content("Heading")
   end
 end
