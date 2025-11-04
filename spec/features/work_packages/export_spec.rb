@@ -208,8 +208,7 @@ RSpec.describe "work package export", :js, :selenium do
     end
 
     it "opens the dialog and exports" do
-      settings_menu.open_and_choose I18n.t("js.toolbar.settings.export")
-      click_on export_type
+      open_export_dialog!
       export!
     end
   end
