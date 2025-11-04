@@ -30,21 +30,21 @@
 
 require "spec_helper"
 
-RSpec.describe CustomFields::Hierarchy::UpdateScoredItemContract do
+RSpec.describe CustomFields::Hierarchy::UpdateWeightedItemContract do
   subject { described_class.new }
 
   # rubocop:disable Rails/DeprecatedActiveModelErrorsMethods
   describe "#call" do
     let!(:impact) { create(:hierarchy_item) }
-    let!(:high) { create(:hierarchy_item, label: "HIGH", score: 1.17e-12, parent: impact) }
-    let!(:middle) { create(:hierarchy_item, label: "Middle", score: 1, parent: impact) }
-    let!(:low) { create(:hierarchy_item, label: "low", score: 9.81e6, parent: impact) }
+    let!(:high) { create(:hierarchy_item, label: "HIGH", weight: 1.17e-12, parent: impact) }
+    let!(:middle) { create(:hierarchy_item, label: "Middle", weight: 1, parent: impact) }
+    let!(:low) { create(:hierarchy_item, label: "low", weight: 9.81e6, parent: impact) }
 
     context "when all required fields are valid" do
       it "is valid" do
         [
-          { item: high, label: "VERY HIGH", score: 1.17e-12 },
-          { item: high, label: "HIGH", score: 1.17e-11 }
+          { item: high, label: "VERY HIGH", weight: 1.17e-12 },
+          { item: high, label: "HIGH", weight: 1.17e-11 }
         ].each { |params| expect(subject.call(params)).to be_success }
       end
     end
@@ -98,12 +98,12 @@ RSpec.describe CustomFields::Hierarchy::UpdateScoredItemContract do
           {},
           { item: nil },
           { item: high, label: 42 },
-          { item: high, score: "pi" },
-          { item: high, label: nil, score: 4 },
-          { item: high, label: "pi", score: nil },
-          { item: high, label: "pi", score: "threepointonefour" },
-          { item: high, label: 42, score: 4 },
-          { item: high, label: "", score: 4 }
+          { item: high, weight: "pi" },
+          { item: high, label: nil, weight: 4 },
+          { item: high, label: "pi", weight: nil },
+          { item: high, label: "pi", weight: "threepointonefour" },
+          { item: high, label: 42, weight: 4 },
+          { item: high, label: "", weight: 4 }
         ].each { |params| expect(subject.call(params)).to be_failure }
       end
     end

@@ -30,11 +30,11 @@
 
 module CustomFields
   module Hierarchy
-    class UpdateScoredItemContract < DryApplicationContract
+    class UpdateWeightedItemContract < DryApplicationContract
       params do
         required(:item).filled(type?: CustomField::Hierarchy::Item)
         required(:label).filled(:string)
-        required(:score).filled(:decimal)
+        required(:weight).filled(:decimal)
       end
 
       rule(:item) do

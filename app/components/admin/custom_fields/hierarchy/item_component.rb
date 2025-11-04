@@ -52,8 +52,8 @@ module Admin
         def secondary_text
           if model.short.present?
             "(#{model.short})"
-          elsif model.score.present?
-            model.score.to_s
+          elsif model.weight.present?
+            model.weight.to_s
           end
         end
 

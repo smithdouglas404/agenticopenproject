@@ -49,8 +49,8 @@ module CustomFields
           case @secondary_input_format
           when :short
             short_input_field(input_group)
-          when :score
-            score_input_field(input_group)
+          when :weight
+            weight_input_field(input_group)
           else
             raise ArgumentError, "Unsupported secondary input format: #{secondary_input_format}"
           end
@@ -93,18 +93,18 @@ module CustomFields
         )
       end
 
-      def score_input_field(form_group)
+      def weight_input_field(form_group)
         form_group.text_field(
-          name: :score,
-          label: I18n.t("custom_fields.admin.items.placeholder.score"),
+          name: :weight,
+          label: I18n.t("custom_fields.admin.items.placeholder.weight"),
           type: :number,
           step: :any,
-          value: @target_item.score,
+          value: @target_item.weight,
           visually_hide_label: true,
           full_width: false,
           required: true,
-          placeholder: I18n.t("custom_fields.admin.items.placeholder.score"),
-          validation_message: validation_message_for(:score)
+          placeholder: I18n.t("custom_fields.admin.items.placeholder.weight"),
+          validation_message: validation_message_for(:weight)
         )
       end
 

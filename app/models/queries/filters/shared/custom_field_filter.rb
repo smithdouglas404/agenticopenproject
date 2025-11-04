@@ -96,7 +96,7 @@ module Queries::Filters::Shared::CustomFieldFilter
         ::Queries::Filters::Shared::CustomFields::User
       when "list", "version"
         ::Queries::Filters::Shared::CustomFields::ListOptional
-      when "hierarchy", "scored_list"
+      when "hierarchy", "weighted_item_list"
         ::Queries::Filters::Shared::CustomFields::Hierarchy
       when "bool"
         ::Queries::Filters::Shared::CustomFields::Bool

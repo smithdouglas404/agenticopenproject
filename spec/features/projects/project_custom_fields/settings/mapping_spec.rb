@@ -406,7 +406,9 @@ RSpec.describe "Projects custom fields mapping via project settings", :js do
       end
     end
 
-    describe "calculated value fields", with_flag: { calculated_value_project_attribute: true } do
+    describe "calculated value fields",
+             with_ee: %i[calculated_values],
+             with_flag: { calculated_value_project_attribute: true } do
       let!(:admin) do
         create(:admin)
       end

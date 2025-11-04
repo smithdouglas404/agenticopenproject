@@ -30,12 +30,12 @@
 
 require "spec_helper"
 
-RSpec.describe CustomValue::ScoredListStrategy do
+RSpec.describe CustomValue::WeightedItemListStrategy do
   let(:instance) { described_class.new(custom_value) }
   let(:custom_value) { instance_double(CustomValue, value:, custom_field:, customized:) }
   let(:customized) { instance_double(Project) }
   let(:custom_field) { build(:custom_field, hierarchy_root:) }
-  let(:hierarchy_item) { build_stubbed(:hierarchy_item, score: 42) }
+  let(:hierarchy_item) { build_stubbed(:hierarchy_item, weight: 42) }
   let(:hierarchy_root) { build_stubbed(:hierarchy_item) }
 
   before do
@@ -56,7 +56,7 @@ RSpec.describe CustomValue::ScoredListStrategy do
         expect(CustomField::Hierarchy::Item).not_to have_received(:find_by)
       end
 
-      context "without score set" do
+      context "without weight set" do
         let(:hierarchy_item) { build_stubbed(:hierarchy_item) }
 
         it "returns nil for typed value" do
@@ -83,7 +83,7 @@ RSpec.describe CustomValue::ScoredListStrategy do
         expect(subject.typed_value).to eq 42
       end
 
-      context "without score set" do
+      context "without weight set" do
         let(:hierarchy_item) { build_stubbed(:hierarchy_item) }
 
         it "returns nil for typed value" do

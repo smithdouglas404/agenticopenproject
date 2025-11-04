@@ -60,7 +60,9 @@ RSpec.describe CustomFields::CreateService, type: :model do
         .to receive(:new).with(instance_of(ProjectCustomField), user, options: {}).and_return(contract_instance)
     end
 
-    describe "calculated value custom field", with_flag: { calculated_value_project_attribute: true } do
+    describe "calculated value custom field",
+             with_ee: %i[calculated_values],
+             with_flag: { calculated_value_project_attribute: true } do
       using CustomFieldFormulaReferencing
 
       shared_let(:project_custom_field_section) { create(:project_custom_field_section) }

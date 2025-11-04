@@ -31,13 +31,15 @@
 require "spec_helper"
 require_relative "shared_context"
 
-RSpec.describe "Edit project custom field calculated value", :js,
+RSpec.describe "Edit project custom field calculated value",
+               :js,
+               with_ee: %i[calculated_values weighted_item_lists],
                with_flag: { calculated_value_project_attribute: true } do
   include_context "with seeded project custom fields"
 
-  shared_let(:scored_list_project_custom_field) do
-    create(:scored_list_project_custom_field, :skip_validations, name: "Scored list field",
-                                                                 project_custom_field_section: section_for_select_fields)
+  shared_let(:weighted_item_list_project_custom_field) do
+    create(:weighted_item_list_project_custom_field, :skip_validations, name: "Weighted item list field",
+                                                                        project_custom_field_section: section_for_select_fields)
   end
 
   let(:calculated_value) { calculated_from_int_project_custom_field }
@@ -73,7 +75,7 @@ RSpec.describe "Edit project custom field calculated value", :js,
       end
     end
 
-    context "without calculated_values enterprise feature" do
+    context "without calculated_values enterprise feature", with_ee: [] do
       it do
         expect(page)
           .to have_enterprise_banner(:premium)
@@ -82,7 +84,7 @@ RSpec.describe "Edit project custom field calculated value", :js,
       end
     end
 
-    context "with calculated_values enterprise feature", with_ee: %i[calculated_values] do
+    context "with calculated_values enterprise feature" do
       it "allows to change basic attributes and the section of the calculated value" do
         expect(page).to have_css(".PageHeader-title", text: calculated_value.name)
 
@@ -178,8 +180,8 @@ RSpec.describe "Edit project custom field calculated value", :js,
           # Open suggestion list again
           pattern_input.send_keys("/")
           within ".op-pattern-input--suggestions-dropdown" do
-            expect(page).to have_css(".ActionListItem", text: scored_list_project_custom_field.name)
-            click_on(scored_list_project_custom_field.name)
+            expect(page).to have_css(".ActionListItem", text: weighted_item_list_project_custom_field.name)
+            click_on(weighted_item_list_project_custom_field.name)
           end
 
           click_on("Save")
@@ -187,13 +189,15 @@ RSpec.describe "Edit project custom field calculated value", :js,
 
           new_formula = calculated_value.reload.formula_string
           expect(new_formula)
-            .to eq("#{integer_project_custom_field} * 2 + #{float_project_custom_field} / #{scored_list_project_custom_field}")
+            .to eq(
+              "#{integer_project_custom_field} * 2 + #{float_project_custom_field} / #{weighted_item_list_project_custom_field}"
+            )
         end
       end
     end
   end
 
-  context "without the feature flag", with_ee: %i[calculated_values], with_flag: { calculated_value_project_attribute: false } do
+  context "without the feature flag", with_flag: { calculated_value_project_attribute: false } do
     it "prevents saving a calculated value" do
       expect do
         login_as(admin)

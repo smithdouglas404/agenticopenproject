@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe CustomFields::Hierarchy::InsertScoredItemContract do
+RSpec.describe CustomFields::Hierarchy::InsertWeightedItemContract do
   subject { described_class.new }
 
   # rubocop:disable Rails/DeprecatedActiveModelErrorsMethods
@@ -38,7 +38,7 @@ RSpec.describe CustomFields::Hierarchy::InsertScoredItemContract do
     let(:parent) { create(:hierarchy_item) }
 
     context "when all required fields are valid" do
-      let(:params) { { parent:, label: "Valid Label", score: 0.1337 } }
+      let(:params) { { parent:, label: "Valid Label", weight: 0.1337 } }
 
       it "is valid" do
         result = subject.call(params)
@@ -47,13 +47,13 @@ RSpec.describe CustomFields::Hierarchy::InsertScoredItemContract do
     end
 
     context "when inputs are empty" do
-      let(:params) { { parent:, label: "", score: "" } }
+      let(:params) { { parent:, label: "", weight: "" } }
 
       it "is invalid" do
         result = subject.call(params)
         expect(result).to be_failure
         expect(result.errors.to_h).to include(label: ["must be filled."])
-        expect(result.errors.to_h).to include(score: ["must be filled."])
+        expect(result.errors.to_h).to include(weight: ["must be filled."])
       end
     end
 
@@ -64,13 +64,13 @@ RSpec.describe CustomFields::Hierarchy::InsertScoredItemContract do
         result = subject.call(params)
         expect(result).to be_failure
         expect(result.errors.to_h).to include(label: ["is missing."])
-        expect(result.errors.to_h).to include(score: ["is missing."])
+        expect(result.errors.to_h).to include(weight: ["is missing."])
       end
     end
 
     context "when parent is not of type 'Item'" do
       let(:invalid_parent) { create(:custom_field) }
-      let(:params) { { parent: invalid_parent, label: "Valid Label", score: 0.1337 } }
+      let(:params) { { parent: invalid_parent, label: "Valid Label", weight: 0.1337 } }
 
       it "is invalid" do
         result = subject.call(params)
@@ -80,9 +80,9 @@ RSpec.describe CustomFields::Hierarchy::InsertScoredItemContract do
     end
 
     context "when label is not unique within the same hierarchy level" do
-      let(:params) { { parent:, label: "Duplicate Label", score: 0.1337 } }
+      let(:params) { { parent:, label: "Duplicate Label", weight: 0.1337 } }
 
-      before { create(:hierarchy_item, parent:, label: "Duplicate Label", score: 0.1337) }
+      before { create(:hierarchy_item, parent:, label: "Duplicate Label", weight: 0.1337) }
 
       it "is invalid" do
         result = subject.call(params)
@@ -117,21 +117,21 @@ RSpec.describe CustomFields::Hierarchy::InsertScoredItemContract do
       end
     end
 
-    context "when score is not a decimal value" do
-      let(:params) { { parent:, label: "Valid Label", score: "pi" } }
+    context "when weight is not a decimal value" do
+      let(:params) { { parent:, label: "Valid Label", weight: "pi" } }
 
       it "is invalid with localized validation errors" do
         result = subject.call(params)
         expect(result).to be_failure
-        expect(result.errors.to_h).to include(score: ["must be a decimal."])
+        expect(result.errors.to_h).to include(weight: ["must be a decimal."])
       end
     end
 
     context "when inputs are valid" do
       it "creates a success result" do
         [
-          { parent:, label: "A label", score: 0.1337 },
-          { parent:, label: "Another label", score: 1.47e12 }
+          { parent:, label: "A label", weight: 0.1337 },
+          { parent:, label: "Another label", weight: 1.47e12 }
         ].each { |params| expect(subject.call(params)).to be_success }
       end
     end
@@ -139,15 +139,15 @@ RSpec.describe CustomFields::Hierarchy::InsertScoredItemContract do
     context "when inputs are invalid" do
       it "creates a failure result" do
         [
-          { parent:, label: "A label", score: "" },
-          { parent:, label: "A label", score: nil },
-          { parent:, label: "", score: 1.47e12 },
-          { parent:, label: nil, score: 1.47e12 },
+          { parent:, label: "A label", weight: "" },
+          { parent:, label: "A label", weight: nil },
+          { parent:, label: "", weight: 1.47e12 },
+          { parent:, label: nil, weight: 1.47e12 },
           { parent: },
           { parent: nil },
-          { parent: nil, label: "A label", score: 1.47e12 },
-          { parent: "parent", label: "A label", score: 1.47e12 },
-          { parent: 42, label: "A label", score: 1.47e12 }
+          { parent: nil, label: "A label", weight: 1.47e12 },
+          { parent: "parent", label: "A label", weight: 1.47e12 },
+          { parent: 42, label: "A label", weight: 1.47e12 }
         ].each { |params| expect(subject.call(params)).to be_failure }
       end
     end

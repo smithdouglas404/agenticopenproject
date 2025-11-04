@@ -31,6 +31,7 @@
 module CustomFields
   class DetailsComponent < ApplicationComponent
     include ApplicationHelper
+    include EnterpriseHelper
     include OpPrimer::ComponentHelpers
     include OpTurbo::Streamable
 
@@ -49,6 +50,17 @@ module CustomFields
 
     def form_method
       model.new_record? ? :post : :put
+    end
+
+    def enterprise_addon
+      @enterprise_addon ||= case custom_field.field_format
+                            when "hierarchy"
+                              { key: :custom_field_hierarchies, image: "enterprise/hierarchies.png" }
+                            when "weighted_item_list"
+                              { key: :weighted_item_lists, image: "enterprise/weighted_item_lists.png" }
+                            else
+                              raise "Custom fields of format #{custom_field.field_format} are not supported by #{self.class.name}"
+                            end
     end
   end
 end

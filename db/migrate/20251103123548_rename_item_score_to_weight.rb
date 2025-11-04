@@ -28,18 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module CustomFields
-  module Hierarchy
-    class GenerateRootContract < DryApplicationContract
-      params do
-        required(:custom_field).filled(type?: CustomField)
-      end
+class RenameItemScoreToWeight < ActiveRecord::Migration[8.0]
+  def up
+    rename_column :hierarchical_items, :score, :weight
 
-      rule(:custom_field) do
-        field_format = value.field_format
-        key.failure(:format_not_supported, field_format:) if %w[hierarchy weighted_item_list].exclude?(field_format)
-        key.failure(:defined) if value.hierarchy_root.present?
-      end
-    end
+    execute <<~SQL.squish
+      UPDATE custom_fields
+      SET field_format = 'weighted_item_list'
+      WHERE field_format = 'scored_list';
+    SQL
+  end
+
+  def down
+    rename_column :hierarchical_items, :weight, :score
+
+    execute <<~SQL.squish
+      UPDATE custom_fields
+      SET field_format = 'scored_list'
+      WHERE field_format = 'weighted_item_list';
+    SQL
   end
 end
