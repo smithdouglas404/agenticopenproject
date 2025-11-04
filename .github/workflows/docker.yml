@@ -31,3 +31,6 @@ jobs:
             openproject/hocuspocus:${{ github.ref_name }}-${{ env.SHORT_SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      - name: Summarize build
+        run: |
+          echo "Built `openproject/hocuspocus:${{ github.ref_name }}-${{ env.SHORT_SHA }}`" >> $GITHUB_STEP_SUMMARY
