@@ -122,13 +122,18 @@ export class SingleHierarchyRowBuilder extends SingleRowBuilder {
     const hierarchyLevel = level === undefined || null ? ancestors.length : level;
     const hierarchyElement = this.buildHierarchyIndicator(workPackage, row, hierarchyLevel);
 
-    const td = row.querySelector<HTMLTableCellElement>('td.subject')!;
-    td.classList.add('-with-hierarchy');
-    td.prepend(hierarchyElement);
+    const subjectCell = row.querySelector<HTMLTableCellElement>('td.subject');
+    if (!subjectCell) return;
+
+    subjectCell.classList.add('-with-hierarchy');
+    subjectCell.prepend(hierarchyElement);
 
     // Assure that the content is still visible when the hierarchy indentation is very large
-    td.style.setProperty('minWidth', `${125 + (hierarchyIndentation * hierarchyLevel)}px`);
-    td.querySelector<HTMLElement>('.wp-table--cell-container')?.style.setProperty('width', `calc(100% - ${hierarchyBaseIndentation}px - ${hierarchyIndentation * hierarchyLevel}px)`);
+    subjectCell.style.minWidth = `${125 + (hierarchyIndentation * hierarchyLevel)}px`;
+    const container = subjectCell.querySelector<HTMLElement>('.wp-table--cell-container');
+    if (container) {
+      container.style.width = `calc(100% - ${hierarchyBaseIndentation}px - ${hierarchyIndentation * hierarchyLevel}px)`;
+    }
   }
 
   /**
