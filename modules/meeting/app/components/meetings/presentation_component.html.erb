@@ -2,7 +2,7 @@
       class: "op-meeting-presentation",
       data: {
         controller: "meetings--presentation poll-for-changes zen-mode",
-        zen_mode_autostart_value: true,
+        zen_mode_autostart_value: @initial,
         poll_for_changes_continuous_value: true,
         poll_for_changes_url_value: check_for_updates_project_meeting_presentation_path(
           @meeting.project,
@@ -12,7 +12,7 @@
         ),
         poll_for_changes_interval_value: check_for_updates_interval,
       }
-  ) do %>
+    ) do %>
   <%=
     render Primer::OpenProject::PageHeader.new(classes: "op-meeting-presentation-header") do |header|
       header.with_breadcrumbs([])
@@ -40,6 +40,13 @@
                     poll_for_changes_target: "reference",
                     reference_value: current_item.updated_at.iso8601
                   } do %>
+    <div class="op-meeting-presentation--header">
+      <div class="op-meeting-presentation--header-title">
+        <%= render(Primer::Beta::Text.new(color: :subtle)) { MeetingSection.model_name.human } %>:
+        <%= render(Primer::Beta::Text.new(font_weight: :bold, color: :subtle)) { current_section.title } %>
+      </div>
+    </div>
+
     <%= render(border_box_container) do |container| %>
       <%= render MeetingAgendaItems::ItemComponent.new(
         container:,
@@ -60,6 +67,14 @@
       )) do |button| %>
         <% button.with_leading_visual_icon(icon: :"chevron-left") %>
         <%= t('meeting.presentation_mode.previous') %>
+      <% end %>
+      <% if previous_item %>
+        <div class="op-meeting-presentation--footer-agenda-item">
+          <% if previous_item.meeting_section != current_section %>
+            <%= render(Primer::Beta::Text.new(font_weight: :bold, color: :subtle)) { previous_item.meeting_section.title } %>:
+          <% end %>
+          <%= render(Primer::Beta::Text.new(color: :subtle)) { previous_item.display_title } %>
+        </div>
       <% end %>
     </div>
 
@@ -83,6 +98,14 @@
         <%= t('meeting.presentation_mode.next') %>
         <% button.with_trailing_visual_icon(icon: :"chevron-right") %>
       <% end %>
+      <div class="op-meeting-presentation--footer-agenda-item">
+        <% if next_item %>
+          <% if next_item.meeting_section != current_section %>
+            <%= render(Primer::Beta::Text.new(font_weight: :bold, color: :subtle)) { next_item.meeting_section.title } %>:
+          <% end %>
+          <%= render(Primer::Beta::Text.new(color: :subtle)) { next_item.display_title } %>
+        <% end %>
+      </div>
     </div>
   </div>
 <% end %>

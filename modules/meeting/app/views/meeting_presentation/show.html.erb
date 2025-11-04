@@ -3,7 +3,7 @@
 <%=
   render Meetings::PresentationComponent.new(
     meeting: @meeting,
-    sorted_agenda_item_ids: @sorted_agenda_item_ids,
+    sorted_agenda_item_ids:,
     current_id: @current_id,
     started_at: @started_at
   )

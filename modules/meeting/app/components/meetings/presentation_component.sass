@@ -9,6 +9,13 @@
   flex-direction: column
   padding: 50px
 
+  &--header
+    display: flex
+    margin-bottom: var(--base-size-16)
+
+  &--header-item
+    flex: 1
+
   &--content
     flex: 1 1 auto
     min-height: 0
@@ -47,13 +54,8 @@
     align-items: center
     gap: var(--base-size-8)
 
-  &--footer-left,
   &--footer-right
-    display: flex
-    align-items: center
-
-  &--footer-right
-    justify-content: flex-end
+    text-align: right
 
   &--progress
     text-align: center

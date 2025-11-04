@@ -37,12 +37,13 @@ module Meetings
     def initialize(meeting:, sorted_agenda_item_ids:, current_id: nil, started_at: nil)
       super()
 
+      @initial = current_id.nil?
       @meeting = meeting
       @project = meeting.project
       @started_at = started_at || Time.current
       @agenda_item_ids = sorted_agenda_item_ids
-      @current_item = current_id.nil? ? @agenda_item_ids.first : current_id.to_i
-      @current_index = sorted_agenda_item_ids.index(@current_item)
+      @current_id = current_id.nil? ? @agenda_item_ids.first : current_id.to_i
+      @current_index = sorted_agenda_item_ids.index(@current_id)
     end
 
     # Define the interval so it can be overriden through tests
@@ -51,13 +52,21 @@ module Meetings
     end
 
     def render?
-      @agenda_item_ids.any?
+      @agenda_item_ids.any? && current_item
     end
 
     def current_item
-      return nil if @current_item.nil?
+      return nil if @current_id.nil?
 
-      @meeting.agenda_items.find_by(id: @current_item)
+      if defined?(@current_item)
+        @current_item
+      else
+        @current_item = @meeting.agenda_items.find_by(id: @current_id)
+      end
+    end
+
+    def current_section
+      current_item&.meeting_section
     end
 
     def total_items
@@ -70,6 +79,28 @@ module Meetings
 
     def has_next?
       @current_index < total_items - 1
+    end
+
+    def next_item
+      return nil unless has_next?
+
+      if defined?(@next_item)
+        @next_item
+      else
+        next_id = @agenda_item_ids[@current_index + 1]
+        @next_item = @meeting.agenda_items.find_by(id: next_id)
+      end
+    end
+
+    def previous_item
+      return nil unless has_previous?
+
+      if defined?(@previous_item)
+        @previous_item
+      else
+        previous_id = @agenda_item_ids[@current_index - 1]
+        @meeting.agenda_items.find_by(id: previous_id)
+      end
     end
 
     def progress_text

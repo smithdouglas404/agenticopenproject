@@ -96,7 +96,7 @@ class MeetingPresentationController < ApplicationController
   end
 
   def determine_current_id
-    return sorted_agenda_item_ids.first if params[:current_id].blank?
+    return nil if params[:current_id].blank?
 
     current_id = params[:current_id].to_i
     return current_id if params[:action_type].blank?
@@ -132,4 +132,6 @@ class MeetingPresentationController < ApplicationController
             .order(:position)
             .flat_map { |section| section.agenda_items.order(:position).pluck(:id) }
   end
+  helper_method :sorted_agenda_item_ids
+
 end
