@@ -139,7 +139,7 @@ You will see a list of all available project attributes in a pane on the right s
 
 ![Project overview page showing project attributes on the right side](openproject_user_guide_project_overview_project_attributes_section_new.png)
 
-To edit the value of any visible project attribute, click the **Edit** (pencil) icon next to the name of the section containing that project attribute. A modal will be displayed with all the attributes in that section.
+To edit the value of any visible project attribute, simply click that on that value. A modal will be displayed with all the attributes in that section.
 
 ![Edit a project attribute section on project overview page](openproject_user_guide_project_overview_project_attributes_section_edit_new.png)
 
