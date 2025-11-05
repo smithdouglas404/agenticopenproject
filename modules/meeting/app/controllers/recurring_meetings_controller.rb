@@ -167,9 +167,9 @@ class RecurringMeetingsController < ApplicationController
   end
 
   def template_completed # rubocop:disable Metrics/AbcSize
-    call = ::RecurringMeetings::InitOccurrenceService
+    call = ::RecurringMeetings::TemplateCompletedService
       .new(user: current_user, recurring_meeting: @recurring_meeting)
-      .call(start_time: @first_occurrence)
+      .call(notify: params[:meeting][:notify] == "1", first_occurrence: @first_occurrence)
 
     if call.success?
       init_next_occurrence_job(@first_occurrence)
