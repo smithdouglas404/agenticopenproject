@@ -45,4 +45,8 @@ class CustomFieldSection < ApplicationRecord
   def shown_in_sidebar?
     shown_in == SHOWN_IN_SIDEBAR_KEY
   end
+
+  def shown_in_main_section?
+    shown_in == SHOWN_IN_MAIN_SECTION_KEY
+  end
 end

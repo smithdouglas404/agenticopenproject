@@ -50,7 +50,9 @@ module Overviews
 
       def available_project_custom_fields_grouped_by_section
         @available_project_custom_fields_grouped_by_section ||=
-          @project.available_custom_fields.group_by(&:project_custom_field_section)
+          @project.available_custom_fields
+                  .group_by(&:project_custom_field_section)
+                  .select { |section, _| section.shown_in_sidebar? }
       end
     end
   end

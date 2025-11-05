@@ -39,7 +39,9 @@ module Grids
 
     def available_project_attributes_grouped_by_section
       @available_project_attributes_grouped_by_section ||=
-        @project.available_custom_fields.group_by(&:project_custom_field_section)
+        @project.available_custom_fields
+                .group_by(&:project_custom_field_section)
+                .select { |section, _| section.shown_in_main_section? }
     end
   end
 end

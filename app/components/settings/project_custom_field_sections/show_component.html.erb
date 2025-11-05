@@ -35,7 +35,7 @@
                 end
                 menu.with_item(
                   label: t("settings.project_attributes.sections.positions.main_section.label"),
-                  active: !@project_custom_field_section.shown_in_sidebar?,
+                  active: @project_custom_field_section.shown_in_main_section?,
                   **menu_item_options_for(@project_custom_field_section, ProjectCustomFieldSection::SHOWN_IN_MAIN_SECTION_KEY)
                 ) do |item|
                   item.with_leading_visual_icon(icon: :"op-view-cards")
