@@ -26,14 +26,14 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import 'core-vendor/jquery-ui-1.14.1/jquery-ui';
-import jQuery from 'jquery';
 import { Impediment } from './impediment';
 import { Model } from './model';
 import { Task } from './task';
 import { UserPreferences } from './common';
 
-const $ = jQuery;
+// jQuery and jQuery UI are loaded globally in init-vendors.ts
+declare const $: JQueryStatic;
+declare const jQuery: JQueryStatic;
 
 /***************************************
   TASKBOARD

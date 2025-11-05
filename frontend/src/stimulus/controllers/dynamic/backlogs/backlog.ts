@@ -26,13 +26,13 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import 'core-vendor/jquery-ui-1.14.1/jquery-ui';
-import jQuery from 'jquery';
 import { Burndown } from './burndown';
 import { EditableSprint } from './sprint';
 import { EditableStory, EditableStoryType } from './story';
 
-const $ = jQuery;
+// jQuery and jQuery UI are loaded globally in init-vendors.ts
+declare const $: JQueryStatic;
+declare const jQuery: JQueryStatic;
 
 /******************************************
   BACKLOG
