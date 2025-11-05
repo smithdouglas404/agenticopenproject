@@ -67,7 +67,7 @@ module Storages::Admin::Forms
     end
 
     def nextcloud_integration_link(target: "_blank")
-      href = ::UrlBuilder.url(storage.uri, "settings/admin/openproject")
+      href = Storages::UrlBuilder.url(storage.uri, "settings/admin/openproject")
       render(Primer::Beta::Link.new(href:, underline: true, target:)) { I18n.t("storages.instructions.nextcloud.integration") }
     end
 

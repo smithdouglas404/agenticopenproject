@@ -31,14 +31,14 @@
 module NextcloudGroupUserHelper
   def create_group(authentication, storage, group)
     authentication.call(storage:, http_options: { headers: { "OCS-APIRequest" => "true" } }) do |http|
-      http.post(::UrlBuilder.url(storage.uri, "ocs/v1.php/cloud/groups"),
+      http.post(Storages::UrlBuilder.url(storage.uri, "ocs/v1.php/cloud/groups"),
                 form: { "groupid" => group })
     end
   end
 
   def remove_group(authentication, storage, group)
     authentication.call(storage:, http_options: { headers: { "OCS-APIRequest" => "true" } }) do |http|
-      http.delete(::UrlBuilder.url(storage.uri, "/ocs/v1.php/cloud/groups", group))
+      http.delete(Storages::UrlBuilder.url(storage.uri, "/ocs/v1.php/cloud/groups", group))
     end
   end
 end

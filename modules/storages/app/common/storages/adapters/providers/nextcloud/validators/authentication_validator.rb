@@ -136,7 +136,7 @@ module Storages
             end
 
             def offline_access
-              if @user.authentication_provider.scopes.include?(:offline_access)
+              if @user.authentication_provider.scopes.include?("offline_access")
                 pass_check(:offline_access)
               else
                 warn_check(:offline_access, :offline_access_scope_missing)

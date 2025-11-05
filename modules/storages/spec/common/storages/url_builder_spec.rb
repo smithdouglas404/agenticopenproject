@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe ::UrlBuilder do
+RSpec.describe Storages::UrlBuilder do
   describe "url" do
     context "if storage is of Nextcloud provider type" do
       context "with a standard host url" do
