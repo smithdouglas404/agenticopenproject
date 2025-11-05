@@ -40,10 +40,6 @@ module Storages
                   URI(download_link(token, input_data.origin_name))
                 end
               end
-
-              # direct_download_request(auth_strategy:, file_link: input_data.file_link)
-              #   .bind { |response_body| direct_download_token(body: response_body) }
-              #   .map { |download_token| download_link(download_token, file_link.origin_name) }
             end
 
             private
