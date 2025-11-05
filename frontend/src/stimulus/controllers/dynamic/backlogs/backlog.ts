@@ -26,9 +26,13 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
+import 'core-vendor/jquery-ui-1.14.1/jquery-ui';
+import jQuery from 'jquery';
 import { Burndown } from './burndown';
 import { EditableSprint } from './sprint';
 import { EditableStory, EditableStoryType } from './story';
+
+const $ = jQuery;
 
 /******************************************
   BACKLOG
@@ -76,9 +80,9 @@ export class Backlog {
     this.$.find('.add_new_story').click((e) => this.handleNewStoryClick(e));
 
     if (this.isSprintBacklog()) {
-      new EditableSprint(this.getSprint()[0]);
+      const sprint = new EditableSprint(this.getSprint()[0]);
       this.burndown = new Burndown(this.$.find('.show_burndown_chart')[0]);
-      this.burndown.setSprintId(this.getSprint().data('this').getID());
+      this.burndown.setSprintId(parseInt(sprint.getID(), 10));
     }
 
     // Initialize each item in the backlog
