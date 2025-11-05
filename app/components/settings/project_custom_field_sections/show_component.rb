@@ -157,6 +157,31 @@ module Settings
                                        test_selector: "new-project-custom-field-in-section-button-#{format.name}" } }
         )
       end
+
+      def position_icon_for_section(section)
+        section.shown_in_sidebar? ? :"op-view-split" : :"op-view-cards"
+      end
+
+      def position_label_for_section(section)
+        if section.shown_in_sidebar?
+          t("settings.project_attributes.sections.positions.side_panel.label")
+        else
+          t("settings.project_attributes.sections.positions.main_section.label")
+        end
+      end
+
+      def menu_item_options_for(section, key)
+        {
+          href: admin_settings_project_custom_field_section_path(section),
+          form_arguments: {
+            method: :put,
+            inputs: [{
+              name: "shown_in",
+              value: key
+            }]
+          }
+        }
+      end
     end
   end
 end

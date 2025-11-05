@@ -29,9 +29,20 @@
 #++
 
 class CustomFieldSection < ApplicationRecord
+  SHOWN_IN_SIDEBAR_KEY = "sidebar"
+  SHOWN_IN_MAIN_SECTION_KEY = "main_section"
+  DEFAULT_SHOWN_IN_KEY = SHOWN_IN_SIDEBAR_KEY.freeze
+
   acts_as_list scope: [:type]
 
   validates :name, presence: true
 
   default_scope { order(:position) }
+
+  scope :shown_in_sidebar, -> { where(shown_in: SHOWN_IN_SIDEBAR_KEY) }
+  scope :shown_in_main_section, -> { where(shown_in: SHOWN_IN_MAIN_SECTION_KEY) }
+
+  def shown_in_sidebar?
+    shown_in == SHOWN_IN_SIDEBAR_KEY
+  end
 end

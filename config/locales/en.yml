@@ -4558,6 +4558,15 @@ en:
       new:
         heading: "New attribute"
         description: "Changes to this project attribute will be reflected in all projects where it is enabled. Required attributes cannot be disabled on a per-project basis."
+      sections:
+        positions:
+          label: "Project attribute shown in:"
+          main_section:
+            label: "Main section"
+            description: "Add all the project attributes as individual widgets in the main section of the project overview."
+          side_panel:
+            label: "Side-panel"
+            description: "Add all the project attributes in a section inside the right side-panel in the project overview."
     project_phase_definitions:
       heading: "Project life cycle"
       heading_description: "Project life cycle define the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."
