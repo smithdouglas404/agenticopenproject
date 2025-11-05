@@ -54,7 +54,7 @@ class DocumentForm < ApplicationForm
       required: true
     )
 
-    if OpenProject::FeatureDecisions.block_note_editor_active? && model.type&.name == "Experimental"
+    if OpenProject::FeatureDecisions.block_note_editor_active?
       f.block_note_editor(
         name: :content_binary,
         label: I18n.t("label_document_description"),

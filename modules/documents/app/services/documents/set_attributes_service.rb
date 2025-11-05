@@ -33,13 +33,7 @@ module Documents
     include Attachments::SetReplacements
 
     def set_default_attributes(_params)
-      model.kind = experimental_block_note_editor_active? ? :collaborative : :classic
-    end
-
-    private
-
-    def experimental_block_note_editor_active?
-      model.type&.name == "Experimental" && OpenProject::FeatureDecisions.block_note_editor_active?
+      model.kind = OpenProject::FeatureDecisions.block_note_editor_active? ? :collaborative : :classic
     end
   end
 end
