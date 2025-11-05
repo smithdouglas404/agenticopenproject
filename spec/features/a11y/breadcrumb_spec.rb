@@ -45,10 +45,7 @@ RSpec.describe "Breadcrumbs (#63777)", :js do
       within ".PageHeader-breadcrumbs" do
         expect(page).to have_link href: "#", text: "Active projects", aria: { current: "page" }
         expect(page).to have_link href: "/projects", text: "Projects"
-        expect(page).to have_link href: "/", text: "OpenProject"
       end
-
-      expect(page).to have_link href: "/", text: "OpenProject", class: "PageHeader-parentLink", visible: :hidden
     end
   end
 
@@ -59,23 +56,14 @@ RSpec.describe "Breadcrumbs (#63777)", :js do
       within ".PageHeader-breadcrumbs" do
         expect(page).to have_link href: "#", text: "My projects", aria: { current: "page" }
         expect(page).to have_link href: "/projects", text: "Projects"
-        expect(page).to have_link href: "/", text: "OpenProject"
       end
-
-      expect(page).to have_link href: "/projects", text: "Projects", class: "PageHeader-parentLink", visible: :hidden
     end
   end
 
   context "when being on the home screen" do
-    it "does not display a (mobile) back link" do
+    it "does not show breadcrumbs" do
       visit "/"
-
-      within ".PageHeader-breadcrumbs" do
-        expect(page).to have_link href: "#", text: "Home", aria: { current: "page" }
-        expect(page).to have_link href: "/", text: "OpenProject"
-
-        expect(page).to have_no_css ".PageHeader-parentLink"
-      end
+      expect(page).to have_css ".PageHeader--noBreadcrumb"
     end
   end
 end
