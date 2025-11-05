@@ -590,11 +590,7 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
     const hslaStart = this.colors.toHsla(this.entryName(timeEntry), 0);
     const hslaEnd = this.colors.toHsla(this.entryName(timeEntry), 100);
 
-    fadeout.style.background = `-webkit-linear-gradient(${hslaStart} 0%, ${hslaEnd} 100%`;
-
-    ['-moz-linear-gradient', '-o-linear-gradient', 'linear-gradient', '-ms-linear-gradient'].forEach((style) => {
-      fadeout.style.backgroundImage = `${style}(${hslaStart} 0%, ${hslaEnd} 100%`;
-    });
+    fadeout.style.backgroundImage = `linear-gradient(${hslaStart} 0%, ${hslaEnd} 100%)`;
 
     element.append(fadeout);
   }
