@@ -28,8 +28,8 @@ zh-CN:
       document: "文档"
     attributes:
       document:
-        content_binary: "内容二进制文件"
-        title: "标题"
+        content_binary: "二进制内容"
+        title: "文档标题"
   activity:
     filter:
       document: "文档"

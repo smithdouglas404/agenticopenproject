@@ -302,7 +302,7 @@ de:
         placeholder:
           label: "Elementbezeichnung"
           short: "Kurzname"
-          weight: "Weight"
+          weight: "Gewichtung"
       notice:
         remember_items_and_projects: "Denken Sie daran, Einträge und Projekte in den jeweiligen Registerkarten für dieses benutzerdefinierte Feld festzulegen."
       hierarchy:
@@ -321,8 +321,8 @@ de:
     placeholder_version_select: "Zunächst muss ein Arbeitspaket oder ein Projekt ausgewählt werden"
     calculated_field_not_editable: "Nicht editierbares Attribut. Dieser Wert wird automatisch berechnet."
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-      is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
+      is_required: "Markieren Sie das benutzerdefinierte Feld als erforderlich. Dadurch wird das Ausfüllen des Feldes bei der Erstellung neuer Felder obligatorisch. Bei der Aktualisierung bestehender Felder wird kein Wert benötigt."
+      is_required_for_project: "Aktivieren Sie dieses Attribut und machen Sie es in allen Projekten erforderlich. Es kann für einzelne Projekte nicht deaktiviert werden. Bestehende Projekte benötigen keinen Wert, wenn sie aktualisiert werden."
       is_for_all: "Markieren Sie das benutzerdefinierte Feld als verfügbar in allen bestehenden und neuen Projekten."
       multi_select: "Ermöglicht dem Benutzer, diesem benutzerdefinierten Feld mehrere Werte zuzuweisen."
       searchable: "Fügen Sie die Feldwerte hinzu, wenn Sie die globale Suchfunktion verwenden."
@@ -337,12 +337,12 @@ de:
       no_results_content_text: Neues benutzerdefiniertes Feld anlegen
   calculated_values:
     error_dialog:
-      title: "Error with Calculated value"
+      title: "Fehler in Berechnetem Wert"
     errors:
-      unknown: "An unknown error occurred. Please review the formula for this Calculated value."
-      mathematical: "The mathematical formula leads to an error. Please review the project calculation attribute and try again."
-      missing_value: The attribute "%{custom_field_name}" is required by this Calculated value, but is empty.
-      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated value, but is disabled for the project.
+      unknown: "Ein unbekannter Fehler ist aufgetreten. Bitte überprüfen Sie die Formel für diesen Berechneten Wert."
+      mathematical: "Die mathematische Formel führt zu einem Fehler. Bitte überprüfen Sie das Attribut der Projektberechnung und versuchen Sie es erneut."
+      missing_value: Das Attribut "%{custom_field_name}" wird für diesen Berechneten Wert benötigt, ist aber leer.
+      disabled_value: Das Attribut "%{custom_field_name}" wird für diesen Berechneten Wert benötigt, ist aber leer.
   concatenation:
     single: "oder"
   danger_dialog:
@@ -388,7 +388,7 @@ de:
       depth: "Tiefe"
       item: "Element"
       label: "Bezeichnung"
-      weight: "Weight"
+      weight: "Gewichtung"
       short: "Kurzname"
       parent: "Übergeordnetes Arbeitspaket"
       blueprint: "Blaupause für Muster"
@@ -1379,10 +1379,10 @@ de:
             other: "%{name} wird bei der Berechnung von Projektattribute verwendet %{links}."
           attributes:
             formula:
-              blank: "Formula can't be blank."
-              invalid: "Formula is invalid."
-              invalid_characters: "Only numeric values, mathematical operators and project attributes of type integer, float, calculated value and weighted list are allowed."
-              not_allowed_custom_fields_referenced: "The attribute %{custom_fields} cannot be used because it leads to a circular reference; one attribute depends on the other."
+              blank: "Die Formel kann nicht leer sein."
+              invalid: "Die Formel ist ungültig."
+              invalid_characters: "Nur numerische Werte, mathematische Operatoren und Projektattribute vom Typ Integer, Float, Berechneter Wert und Gewichtete Liste sind erlaubt."
+              not_allowed_custom_fields_referenced: "Das Attribut %{custom_fields} kann nicht verwendet werden, da es zu einem Zirkelbezug führt; ein Attribut hängt vom anderen ab."
               format: "%{message}"
         custom_fields_project:
           attributes:
@@ -2207,11 +2207,11 @@ de:
     features:
       baseline_comparison: Grundlinie (Planungsvergleich)
       board_view: Erweiterte agile Boards
-      calculated_values: Calculated values
+      calculated_values: Berechnete Werte
       conditional_highlighting: Bedingte Hervorhebung
       internal_comments: Interne Kommentare
       custom_actions: Benutzerdefinierte Aktionen
-      custom_field_hierarchies: Hierarchies
+      custom_field_hierarchies: Hierarchien
       customize_life_cycle: Projektlebenszyklus anpassen
       date_alerts: Datums-Erinnerungen
       define_custom_style: Selbstdefiniertes Logo und Farbthema
@@ -2227,7 +2227,7 @@ de:
       sso_auth_providers: Single-Sign-On
       team_planner_view: Teamplaner
       virus_scanning: Antivirus-Überprüfung
-      weighted_item_lists: Weighted item lists
+      weighted_item_lists: Gewichtete Listen
       work_package_query_relation_columns: Arbeitspaket-Relationsspalten
       work_package_sharing: Teilen von Arbeitspaketen mit externen Nutzer:innen
       work_package_subject_generation: Arbeitspaket-Betreff Generierung
@@ -2274,17 +2274,17 @@ de:
       readonly_work_packages:
         description: "Arbeitspakete in bestimmten Status als schreibgeschützt markieren."
       custom_field_hierarchies:
-        description: "Hierarchy custom fields allow organizing hierarchical structures in work packages and projects by making use of multi-level select lists."
+        description: "Benutzerdefinierte Felder vom Typ Hierarchie erlauben es, hierarchische Strukturen in Arbeitspaketen und Projekten zu organisieren, indem sie mehrstufige Auswahllisten nutzen."
       date_alerts:
         description: "Mit Datums-Erinnerungen werden Sie über bevorstehende Start- oder Endtermine informiert, so dass Sie nie einen wichtigen Termin verpassen oder übersehen."
       weighted_item_lists:
-        description: "Weighted item lists allow you to create a list with underlying numeric values associated."
+        description: "Mit Gewichteten Listen können Sie eine Liste erstellen, die mit numerischen Werten verknüpft ist."
       work_package_sharing:
         description: "Teilen Sie Arbeitspakete mit Benutzern, die nicht Mitglieder des Projekts sind."
       project_list_sharing:
         description: "Projektlisten mit einzelnen Benutzern und Gruppen teilen."
       calculated_values:
-        description: "Calculated values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
+        description: "Mit Berechneten Werten können Sie ein auf einer mathematischen Formel basierendes Attribut erstellen, in das numerische Werte und anderen Projektattributen und benutzerdefinierten Feldern einfließen."
       define_custom_style:
         title: "Selbstdefiniertes Farbthema und Logo"
         more_info: "Hinweis: Das verwendete Logo wird öffentlich zugänglich sein."
@@ -2840,7 +2840,7 @@ de:
   label_select_main_menu_item: Neuen Hauptmenüpunkt auwählen
   label_required_disk_storage: "Erforderlicher Festplattenspeicher"
   label_send_invitation: Einladung senden
-  label_calculated_value: "Calculated value"
+  label_calculated_value: "Berechneter Wert"
   label_change_parent: "Übergeordnetes Arbeitspaket ändern"
   label_change_plural: "Änderungen"
   label_change_properties: "Eigenschaften ändern"
@@ -3022,7 +3022,7 @@ de:
   label_invite_user: "Nutzer einladen"
   label_item: "Element"
   label_item_plural: "Elemente"
-  label_weighted_item_list: "Weighted item list"
+  label_weighted_item_list: "Gewichtete Listen"
   label_share: "Teilen"
   label_share_project_list: "Projektliste teilen"
   label_share_work_package: "Arbeitspaket teilen"
@@ -3832,7 +3832,7 @@ de:
     default: "-"
   project:
     archive:
-      title: "Archive project"
+      title: "Projekt archivieren"
       are_you_sure: "Sind Sie sicher, dass Sie das Projekt '%{name}' archivieren wollen?"
       archived: "Archiviert"
     count:

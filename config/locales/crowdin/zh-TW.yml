@@ -304,7 +304,7 @@ zh-TW:
         placeholder:
           label: "項目標籤"
           short: "簡稱"
-          weight: "Weight"
+          weight: "權重"
       notice:
         remember_items_and_projects: "請記得在此自訂欄位索引標籤中設定項目和專案。"
       hierarchy:
@@ -323,8 +323,8 @@ zh-TW:
     placeholder_version_select: "需要先選擇工作套件或專案"
     calculated_field_not_editable: "不可編輯屬性。此值會自動計算。"
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
-      is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
+      is_required: "將自訂欄位標記為必填。這將使您在建立新資源時必須填寫該欄位。更新現有資源時則不需要填寫值。"
+      is_required_for_project: "勾選以啟用此屬性，並使其成為所有專案的必要屬性。個別專案無法停用。現有專案更新時將不需要此值。"
       is_for_all: "將客製欄位標記為「所有現有專案」和「新專案」中可用。"
       multi_select: "允許使用者為此自訂欄位指定多個值。"
       searchable: "使用全域搜尋功能時包含此欄位。"
@@ -339,12 +339,12 @@ zh-TW:
       no_results_content_text: 建立一個新的自定義欄位
   calculated_values:
     error_dialog:
-      title: "Error with Calculated value"
+      title: "與計算值的誤差"
     errors:
-      unknown: "An unknown error occurred. Please review the formula for this Calculated value."
-      mathematical: "The mathematical formula leads to an error. Please review the project calculation attribute and try again."
-      missing_value: The attribute "%{custom_field_name}" is required by this Calculated value, but is empty.
-      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated value, but is disabled for the project.
+      unknown: "發生未知錯誤。請查看此計算值的公式。"
+      mathematical: "數學公式導致錯誤。請檢視專案計算屬性，然後再試一次。"
+      missing_value: 此計算值需要屬性 "%{custom_field_name}"，但該屬性為空。
+      disabled_value: 此計算值需要屬性 "%{custom_field_name}"，但在專案中已停用。
   concatenation:
     single: "或者"
   danger_dialog:
@@ -390,7 +390,7 @@ zh-TW:
       depth: "深度"
       item: "項目"
       label: "標籤"
-      weight: "Weight"
+      weight: "權重"
       short: "簡稱"
       parent: "上層"
       blueprint: "樣式藍圖"
@@ -1374,10 +1374,10 @@ zh-TW:
             other: "%{name} 用於專案屬性計算： %{links}。"
           attributes:
             formula:
-              blank: "Formula can't be blank."
-              invalid: "Formula is invalid."
-              invalid_characters: "Only numeric values, mathematical operators and project attributes of type integer, float, calculated value and weighted list are allowed."
-              not_allowed_custom_fields_referenced: "The attribute %{custom_fields} cannot be used because it leads to a circular reference; one attribute depends on the other."
+              blank: "公式不能為空白。"
+              invalid: "公式無效。"
+              invalid_characters: "只允許數值、數學運算符號以及整數、浮點數、計算值和加權列表類型的專案屬性。"
+              not_allowed_custom_fields_referenced: "不能使用屬性 %{custom_fields} ，因為這會導致循環引用；一個屬性依賴於另一個屬性。"
               format: "%{message}"
         custom_fields_project:
           attributes:
@@ -2167,11 +2167,11 @@ zh-TW:
     features:
       baseline_comparison: 比較差異
       board_view: 進階看板
-      calculated_values: Calculated values
+      calculated_values: 計算值
       conditional_highlighting: 條件強調
       internal_comments: 內部備註
       custom_actions: 自訂動作
-      custom_field_hierarchies: Hierarchies
+      custom_field_hierarchies: 階層
       customize_life_cycle: 自訂生命週期
       date_alerts: 日期提醒
       define_custom_style: 自訂布景主題與logo
@@ -2187,7 +2187,7 @@ zh-TW:
       sso_auth_providers: 單一帳號登入(SSO)
       team_planner_view: 團隊規劃檢視
       virus_scanning: 掃描病毒
-      weighted_item_lists: Weighted item lists
+      weighted_item_lists: 加權項目清單
       work_package_query_relation_columns: 工作套件查詢關聯列
       work_package_sharing: 與外部使用者共用工作套件
       work_package_subject_generation: 工作套件標題產生
@@ -2234,17 +2234,17 @@ zh-TW:
       readonly_work_packages:
         description: "將特定狀態的工作套件標記為唯讀。"
       custom_field_hierarchies:
-        description: "Hierarchy custom fields allow organizing hierarchical structures in work packages and projects by making use of multi-level select lists."
+        description: "階層自訂欄位可利用多層選擇清單，在工作套件和專案中組織階層結構。"
       date_alerts:
         description: "透過日期提醒，您將收到即將到來的開始或結束日期的通知，這樣您就不會錯過或忘記重要的截止日期。"
       weighted_item_lists:
-        description: "Weighted item lists allow you to create a list with underlying numeric values associated."
+        description: "加權項目清單可讓您建立一個與基本數值相關的清單。"
       work_package_sharing:
         description: "與不是專案成員的使用者共同參與工作套件。"
       project_list_sharing:
         description: "分享專案清單給個別使用者。"
       calculated_values:
-        description: "Calculated values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
+        description: "計算值可讓您使用數值及其他專案屬性和自訂欄位，建立以數學公式為基礎的屬性。"
       define_custom_style:
         title: "自訂布景主題顏色與logo"
         more_info: "備註：Logo可被公開存取。"
@@ -2799,7 +2799,7 @@ zh-TW:
   label_select_main_menu_item: 選擇新的主選單項目
   label_required_disk_storage: "所使用的磁碟空間"
   label_send_invitation: 發送邀請
-  label_calculated_value: "Calculated value"
+  label_calculated_value: "計算值"
   label_change_parent: "變更父項"
   label_change_plural: "更改"
   label_change_properties: "更改屬性"
@@ -2981,7 +2981,7 @@ zh-TW:
   label_invite_user: "邀請使用者"
   label_item: "欄位"
   label_item_plural: "欄位"
-  label_weighted_item_list: "Weighted item list"
+  label_weighted_item_list: "加權項目清單"
   label_share: "參與"
   label_share_project_list: "分享專案清單"
   label_share_work_package: "參與工作套件"
@@ -3787,7 +3787,7 @@ zh-TW:
     default: "-"
   project:
     archive:
-      title: "Archive project"
+      title: "封存專案"
       are_you_sure: "是否確定要封存專案 '%{name}'？"
       archived: "封存"
     count:
