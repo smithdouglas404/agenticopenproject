@@ -29,4 +29,12 @@
 #++
 
 class Grids::Widgets::SubitemsController < Grids::WidgetController
+  skip_before_action :load_and_authorize_in_optional_project
+  before_action :load_project, only: :show
+
+  private
+
+  def load_project
+    @project = Project.find(params[:project_id]) if params[:project_id].present?
+  end
 end

@@ -51,7 +51,7 @@ See COPYRIGHT and LICENSE files for more details.
             end
 
             row.with_column(ml: 2) do
-              render(Primer::Beta::Link.new(href: project_path(child))) { child.name }
+              render(Primer::Beta::Link.new(href: project_path(child), target: "_top")) { child.name }
             end
 
             row.with_column(ml: 2) do
