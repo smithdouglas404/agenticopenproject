@@ -73,7 +73,7 @@ export class Backlog {
     });
 
     // Observe menu items
-    this.$.find('.add_new_story').click(this.handleNewStoryClick);
+    this.$.find('.add_new_story').click((e) => this.handleNewStoryClick(e));
 
     if (this.isSprintBacklog()) {
       new EditableSprint(this.getSprint()[0]);
@@ -127,8 +127,8 @@ export class Backlog {
     return this.$.children('.stories').first();
   }
 
-  handleNewStoryClick(e:JQuery.Event) {
-    const toggler = $(this).parents('.header').find('.toggler');
+  handleNewStoryClick(e:JQuery.TriggeredEvent) {
+    const toggler = $(e.currentTarget).parents('.header').find('.toggler');
     if (toggler.hasClass('closed')) {
       toggler.click();
     }

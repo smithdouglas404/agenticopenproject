@@ -52,7 +52,10 @@ export class Model {
     let result;
 
     isNew = this.isNew();
-    result = new Model(data as any); // FIXME: what should actually be passed here?
+    // Parse the HTML response and extract the model element
+    const $response = $(data);
+    const modelEl = $response.filter('.model')[0] || $response.find('.model')[0];
+    result = new Model(modelEl);
 
     this.unmarkSaving();
     this.refresh(result);
@@ -190,7 +193,7 @@ export class Model {
               let newInput = self.findFactory(typeId, statusId, 'status_id');
               newInput = self.prepareInputFromFactory(newInput, fieldId, 'status_id', fieldOrder, maxTabIndex);
               // @ts-expect-error TS(2683): 'this' implicitly has type 'any' because it does n... Remove this comment to see the full error message
-              newInput = self.replaceStatusForNewType(input, newInput, $(this).parent().find('.status_id').val(), editor);
+              self.replaceStatusForNewType(input, newInput, $(this).parent().find('.status_id').val(), editor);
             });
           } else {
             input = $(`#${fieldName}_options`).clone(true);

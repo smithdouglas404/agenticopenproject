@@ -69,8 +69,8 @@ export class Taskboard extends Model {
   }
 
   initializeNewButtons() {
-    this.$.find('#tasks .add_new.clickable').click(this.handleAddNewTaskClick);
-    this.$.find('#impediments .add_new.clickable').click(this.handleAddNewImpedimentClick);
+    this.$.find('#tasks .add_new.clickable').click((e) => this.handleAddNewTaskClick(e));
+    this.$.find('#impediments .add_new.clickable').click((e) => this.handleAddNewImpedimentClick(e));
   }
 
   initializeSortables() {
@@ -148,14 +148,14 @@ export class Taskboard extends Model {
     ui.item.removeClass('dragging');
   }
 
-  handleAddNewImpedimentClick(e:JQuery.Event) {
-    const row = $(this).parents('tr').first();
-    $('#taskboard').data('this').newImpediment(row);
+  handleAddNewImpedimentClick(e:JQuery.TriggeredEvent) {
+    const row = $(e.currentTarget).parents('tr').first();
+    this.newImpediment(row);
   }
 
-  handleAddNewTaskClick(e:JQuery.Event) {
-    const row = $(this).parents('tr').first();
-    $('#taskboard').data('this').newTask(row);
+  handleAddNewTaskClick(e:JQuery.TriggeredEvent) {
+    const row = $(e.currentTarget).parents('tr').first();
+    this.newTask(row);
   }
 
   loadColWidthPreference() {
