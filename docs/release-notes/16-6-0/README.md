@@ -67,7 +67,7 @@ To do so, administrators need to navigate to *Administration → Custom fields*,
 
 ![OpenProject 16.6: Custom field type hierarchy in the administration, tab 'Items', one item is selected with the 'More' menu and the option to change parent is higlighted](openproject-16-6-custom-field-hierarchy-change-parent.png)
 
-### Updated 'More' menu of meetings with an 'Move to section' option
+### Updated 'More' menu of meetings with a 'Move to section' option
 
 In the Meetings module, the *More (three dots) menu* for agenda items has been improved to make it easier to move items between sections. Moderators can now directly move an item to another section without manually reordering it step by step. 
 
