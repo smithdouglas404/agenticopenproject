@@ -27,7 +27,7 @@
 //++
 
 import { Controller } from '@hotwired/stimulus';
-import { useMutation } from 'stimulus-use';
+import { useDebounce, useMutation } from 'stimulus-use';
 
 /**
  * A simple controller to allow <select> elements automatically grow to fit
@@ -40,17 +40,21 @@ export default class SelectAutosizeController extends Controller<HTMLSelectEleme
     sizeLimit: { type: Number, default: 10 }
   };
 
+  static debounces = ['updateSize'];
+
   declare sizeLimitValue:number;
 
   connect() {
     useMutation(this, { childList: true });
+    useDebounce(this, { wait: 100 });
+
     this.updateSize();
   }
 
   mutate(mutations:MutationRecord[]) {
-    mutations
-      .filter((mutation) => mutation.type === 'childList')
-      .forEach(() => { this.updateSize(); });
+    if (mutations.some(m => m.type === 'childList')) {
+      this.updateSize();
+    }
   }
 
   private updateSize() {
