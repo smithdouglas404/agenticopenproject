@@ -64,6 +64,7 @@ ru:
       meeting_participant:
         invited: "Приглашённые"
         attended: "Участвовал"
+        participation_status: "Статус участия"
     errors:
       models:
         meeting_participant:
@@ -512,6 +513,7 @@ ru:
   label_agenda_item_work_package: "Пакет работ по пунктам повестки"
   label_section_rename: "Переименовать раздел"
   label_agenda_outcome: "Итог"
+  label_agenda_new_outcome: "Новый результат"
   label_agenda_outcome_actions: "Действия по итогам"
   label_agenda_outcome_edit: "Редактировать итог"
   label_agenda_outcome_delete: "Удалить итог"

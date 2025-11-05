@@ -322,7 +322,7 @@ es:
     placeholder_version_select: "Primero debe seleccionar el paquete de trabajo o el proyecto"
     calculated_field_not_editable: "Atributo no editable. Este valor se calcula automáticamente."
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
       is_for_all: "Marque el campo personalizado como disponible en todos los proyectos existentes y nuevos."
       multi_select: "Permite al usuario asignar varios valores a este campo personalizado."
@@ -662,6 +662,57 @@ es:
     memberships:
       no_results_title_text: El usuario no es actualmente un miembro del proyecto.
     open_profile: "Abrir perfil"
+    invite_user_modal:
+      invite: "Invitar"
+      title:
+        invite: "Invitar usuario"
+        invite_to_project: "Invitar a %{type} a %{project}"
+        invite_principal_to_project: "Invitar a %{principal} a %{project}"
+      project:
+        label: "Proyecto"
+        required: "Por favor, seleccione un proyecto"
+        next_button: "Siguiente"
+        no_results: "No se encontraron proyectos"
+        no_invite_rights: "No tiene permiso para invitar a miembros a este proyecto"
+      type:
+        required: "Por favor, seleccione el tipo de miembro al que invitará"
+        user:
+          title: "Invitar usuario %{project_name}"
+          description: "Permisos basados en el rol asignado en el proyecto seleccionado"
+        group:
+          title: "Invitar grupo a %{project_name}"
+          description: "Permisos basados en el rol asignado en el proyecto seleccionado"
+        placeholder_user:
+          title: "Añadir usuario de marcador de posición a %{project_name}"
+          title_no_ee: "Usuario de marcador de posición (extensión solo para Enterprise)"
+          description: "No tiene acceso al proyecto y no se enviarán correos electrónicos."
+        already_member_message: "Ya es miembro de %{project}"
+      principal:
+        no_results_user: "No se encontraron usuarios"
+        invite_user: "Invitar:"
+        no_results_placeholder: "No se encontraron marcadores de posición"
+        create_new_placeholder: "Crear marcador de posición:"
+        no_results_group: "No se encontraron grupos"
+        invite_to_project: "Invitar a %{project_name}"
+        required:
+          user: "Seleccione un usuario"
+          placeholder: "Seleccione un marcador de posición"
+          group: "Por favor, seleccione un grupo"
+      role:
+        label: "Rol en %{project}"
+        no_roles_found: "No se encontraron roles"
+        description: >
+          Este es el rol que el usuario recibirá al unirse al proyecto. El rol define las acciones que puede realizar y la información que pueden ver. [Obtenga más información sobre roles y permisos.](docs_url)
+        required: "Por favor, seleccione un rol"
+      message:
+        label: "Mensaje de invitación"
+        description: "Enviaremos un correo electrónico al usuario, al cual puede añadir un mensaje personal aquí. Una explicación sobre la invitación podría ser útil, o bien información básica sobre el proyecto para ayudarles a empezar."
+      summary:
+        next_button: "Enviar invitación"
+      success_message:
+        user: "El usuario ya puede iniciar sesión para acceder a %{project}. Mientras tanto, puede crear planes con ese usuario y asignarle paquetes de trabajo."
+        placeholder_user: "El marcador de posición ya puede usarse en %{project}. Mientras tanto, puede crear planes con ese usuario y asignarle paquetes de trabajo."
+        group: "El grupo ya forma parte de %{project}. Mientras tanto, puede crear planes con ese grupo y asignar paquetes de trabajo a este."
   page:
     text: "Texto"
   placeholder_users:
@@ -795,7 +846,7 @@ es:
           automatic_with_children: "Fechas determinadas por paquetes de trabajo secundarios."
           automatic_with_predecessor: "La fecha de inicio la fija un predecesor."
           manual_mobile: "Programado manualmente."
-          manually_scheduled: "Programado manualmente. No afectadas por relaciones."
+          manually_scheduled: "Programado manualmente. Fechas no afectadas por relaciones."
       blankslate:
         title: "Sin predecesores"
         description: "Para activar la programación automática, este paquete de trabajo debe tener al menos un predecesor. Entonces se programará automáticamente para que comience después del predecesor más cercano."
@@ -1241,6 +1292,9 @@ es:
         mode_guideline: "Algunos modos sobrescribirán los colores de los temas personalizados por motivos de accesibilidad y legibilidad. Seleccione el modo Claro para obtener una compatibilidad total con los temas personalizados."
         daily_reminders: "Recordatorios diarios"
         workdays: "Días laborables"
+      users/invitation/form_model:
+        principal_type: "Tipo de invitación"
+        id_or_email: "Nombre o dirección de correo electrónico"
       version:
         effective_date: "Fecha de finalización"
         sharing: "Compartiendo"
@@ -3775,6 +3829,9 @@ es:
   permission_edit_wiki_pages: "Editar wiki página"
   permission_export_work_packages: "Exportar Paquetes de Trabajo"
   permission_export_wiki_pages: "Exportar wiki página"
+  permission_invite_members_by_email: "Invitar a miembros por correo electrónico"
+  permission_invite_members_by_email_explanation: >
+    Permite a los usuarios invitar a nuevos miembros por correo electrónico. Los usuarios invitados recibirán un correo electrónico con un enlace para establecer su contraseña y activar su cuenta. Depende del permiso para gestionar miembros
   permission_list_attachments: "Lista archivos adjuntos"
   permission_log_own_time: "Registrar tiempo para uno mismo"
   permission_log_time: "Registrar tiempo para otros usuarios"
@@ -3804,6 +3861,9 @@ es:
   permission_share_work_packages: "Compartir paquetes de trabajo"
   permission_manage_types: "Seleccionar Tipos"
   permission_manage_own_reminders: "Crear recordatorios propios"
+  permission_view_all_principals: "Ver todos los usuarios y grupos"
+  permission_view_all_principals_explanation: >
+    Permite a los usuarios ver todos los usuarios y grupos del sistema, incluso si no son miembros de ningún proyecto o grupo al que se hayan unido.
   permission_view_project: "Ver proyectos"
   permission_view_changesets: "Ver las revisiones del repositorio en OpenProject"
   permission_view_internal_comments: "Ver comentarios internos"

@@ -48,6 +48,7 @@ export class WorkPackageActivityTabComponent extends ActivityPanelBaseController
   ngOnInit() {
     const { workPackageId } = this.uiRouterGlobals.params as unknown as { workPackageId:string };
     this.workPackageId = (this.workPackage.id as string) || workPackageId;
+
     super.ngOnInit();
     if (window.location.hash) {
       this.activitiesTabContentElement.nativeElement.scrollIntoView();

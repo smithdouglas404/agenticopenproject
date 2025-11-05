@@ -52,9 +52,6 @@ export class TeamPlannerPageComponent extends PartitionedQuerySpacePageComponent
     unsaved_title: this.I18n.t('js.team_planner.unsaved_title'),
   };
 
-  /** Go back using back-button */
-  backButtonCallback:() => void;
-
   /** Current query title to render */
   selectedTitle = this.text.unsaved_title;
 

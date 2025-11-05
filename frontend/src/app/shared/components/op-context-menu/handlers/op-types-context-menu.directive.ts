@@ -29,17 +29,19 @@
 import { OpContextMenuItem } from 'core-app/shared/components/op-context-menu/op-context-menu.types';
 import { StateService } from '@uirouter/core';
 import { OPContextMenuService } from 'core-app/shared/components/op-context-menu/op-context-menu.service';
-import { Directive, ElementRef, Input } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  Input,
+} from '@angular/core';
 import { isClickedWithModifier } from 'core-app/shared/helpers/link-handling/link-handling';
-import {
-  OpContextMenuTrigger,
-} from 'core-app/shared/components/op-context-menu/handlers/op-context-menu-trigger.directive';
-import { BrowserDetector } from 'core-app/core/browser/browser-detector.service';
+import { OpContextMenuTrigger } from 'core-app/shared/components/op-context-menu/handlers/op-context-menu-trigger.directive';
 import { WorkPackageCreateService } from 'core-app/features/work-packages/components/wp-new/wp-create.service';
-import {
-  Highlighting,
-} from 'core-app/features/work-packages/components/wp-fast-table/builders/highlighting/highlighting.functions';
+import { Highlighting } from 'core-app/features/work-packages/components/wp-fast-table/builders/highlighting/highlighting.functions';
 import { TypeResource } from 'core-app/features/hal/resources/type-resource';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
+import { extendSearchParams } from 'core-stimulus/helpers/url-helpers';
 
 @Directive({
   selector: '[opTypesCreateDropdown]',
@@ -52,14 +54,17 @@ export class OpTypesContextMenuDirective extends OpContextMenuTrigger {
 
   @Input('dropdownActive') active:boolean;
 
+  @Input() routedFromAngular:boolean = true;
+
   public isOpen = false;
 
   constructor(
     readonly elementRef:ElementRef,
     readonly opContextMenu:OPContextMenuService,
-    readonly browserDetector:BrowserDetector,
     readonly wpCreate:WorkPackageCreateService,
     readonly $state:StateService,
+    readonly pathHelper:PathHelperService,
+    readonly currentProject:CurrentProjectService,
   ) {
     super(elementRef, opContextMenu);
   }
@@ -69,11 +74,6 @@ export class OpTypesContextMenuDirective extends OpContextMenuTrigger {
 
     if (!this.active) {
       return;
-    }
-
-    // Force full-view create if in mobile view
-    if (this.browserDetector.isMobile) {
-      this.stateName = 'work-packages.new';
     }
   }
 
@@ -113,12 +113,19 @@ export class OpTypesContextMenuDirective extends OpContextMenuTrigger {
       ariaLabel: type.name,
       class: Highlighting.inlineClass('type', type.id!),
       onClick: ($event:JQuery.TriggeredEvent) => {
-        this.isOpen = false;
-        if (isClickedWithModifier($event)) {
-          return false;
-        }
+        if (this.routedFromAngular) {
+          this.isOpen = false;
+          if (isClickedWithModifier($event)) {
+            return false;
+          }
 
-        this.$state.go(this.stateName, { type: type.id });
+          this.$state.go(this.stateName, { type: type.id });
+        } else {
+          window.location.href = extendSearchParams(
+            this.pathHelper.projectWorkPackageNewPath(this.currentProject.id!),
+            { type: type.id! },
+          );
+        }
         return true;
       },
     }));

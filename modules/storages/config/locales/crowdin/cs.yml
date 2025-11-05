@@ -119,6 +119,12 @@ cs:
         hide_inactive_folders: 'Hide Inactive Folders Step:'
         remote_folders: 'Read contents of the group folder:'
         rename_project_folder: 'Přejmenovat spravovanou složku projektu:'
+      sharepoint_sync_service:
+        create_folder: 'Managed Project Folder Creation:'
+        ensure_root_folder_permissions: 'Nastavit základní oprávnění složky:'
+        hide_inactive_folders: 'Hide Inactive Folders Step:'
+        remote_folders: 'Read contents of the group folder:'
+        rename_project_folder: 'Přejmenovat spravovanou složku projektu:'
     errors:
       messages:
         error: Došlo k neočekávané chybě. Zkontrolujte prosím OpenProject logy pro více informací nebo kontaktujte správce
@@ -171,6 +177,23 @@ cs:
             remote_folders:
               request_error: OpenProject nemůže přistupovat k vašemu disku %{drive_id}. Zkontrolujte, zda je vaše konfigurace úložiště správná.
             rename_project_folder:
+              conflict: OpenProject could not rename the folder %{current_path} to %{project_folder_name} as a folder with the same name already exists.
+              forbidden: OpenProject does not have access to %{current_path} in order to rename it.
+              not_found: "%{current_path} nebyl nalezen."
+            set_folders_permissions:
+              permission_not_set: nelze nastavit oprávnění na %{path}.
+          error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information.
+          not_allowed: Aplikaci OpenProject nebyl povolen přístup k vaší jednotce OneDrive. Zkontrolujte prosím oprávnění nastavená v aplikaci Azure.
+          unauthorized: OpenProject se nepodařilo synchronizovat s OneDrive. Zkontrolujte prosím konfiguraci úložiště a aplikace Azure
+          user_does_not_exist: "%{user} neexistuje v Nextcloudu."
+        sharepoint_sync_service:
+          attributes:
+            create_folder:
+              conflict: The %{folder_name} already exists on %{parent_location}.
+              not_found: "%{parent_location} nebyl nalezen."
+            hide_inactive_folders:
+              permission_not_set: nelze nastavit oprávnění na %{path}.
+            rename_project_folder:
               conflict: OpenProject nemůže přejmenovat složku %{current_path} na %{project_folder_name} jako složku se stejným názvem již existuje
               forbidden: OpenProject does not have access to %{current_path} in order to rename it.
               not_found: "%{current_path} nebyl nalezen."
@@ -178,6 +201,7 @@ cs:
               permission_not_set: nelze nastavit oprávnění na %{path}.
           error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information
           not_allowed: Aplikaci OpenProject nebyl povolen přístup k vaší jednotce OneDrive. Zkontrolujte prosím oprávnění nastavená v aplikaci Azure.
+          not_found: OpenProject could not access your library %{drive_name}. Please check you Sharepoint site document libraries.
           unauthorized: OpenProject se nepodařilo synchronizovat s OneDrive. Zkontrolujte prosím konfiguraci úložiště a aplikace Azure
           user_does_not_exist: "%{user} neexistuje v Nextcloudu."
         upload_link_service:

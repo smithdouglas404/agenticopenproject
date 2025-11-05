@@ -78,6 +78,16 @@ export class PathHelperService {
     return `${this.ifcModelsPath(projectIdentifier)}/${modelId}/edit`;
   }
 
+  public inviteUserPath(projectId:string|null) {
+    const path = `${this.staticBase}/users/invite`;
+
+    if (projectId) {
+      return `${path}?user_invitation[project_id]=${projectId}`;
+    }
+
+    return path;
+  }
+
   public ifcModelsDeletePath(projectIdentifier:string, modelId:number|string) {
     return `${this.ifcModelsPath(projectIdentifier)}/${modelId}`;
   }
@@ -202,6 +212,10 @@ export class PathHelperService {
     return `${this.staticBase}/work_packages`;
   }
 
+  public workPackageNewPath():string {
+    return `${this.staticBase}/work_packages/new`;
+  }
+
   public projectWorkPackageNewPath(projectId:string) {
     return `${this.workPackagesPath(projectId)}/new`;
   }
@@ -290,11 +304,23 @@ export class PathHelperService {
     return `${this.staticBase}/work_packages/${id}`;
   }
 
+  public genericWorkPackagePath(projectIdentifier:string|null, workPackageId:string|number, tab = 'activity') {
+    if (projectIdentifier) {
+      return `${this.projectWorkPackagePath(projectIdentifier, workPackageId)}/${tab}`;
+    }
+
+    return `${this.workPackagePath(workPackageId)}/${tab}`;
+  }
+
   public workPackageShortPath(id:string|number) {
     return `${this.staticBase}/wp/${id}`;
   }
 
-  public workPackageCopyPath(workPackageId:string|number) {
+  public workPackageCopyPath(projectIdentifier:string|null, workPackageId:string|number) {
+    if (projectIdentifier) {
+      return `${this.workPackagesPath(projectIdentifier)}/${workPackageId}/copy`;
+    }
+
     return `${this.workPackagePath(workPackageId)}/copy`;
   }
 
@@ -306,6 +332,7 @@ export class PathHelperService {
     return `${this.workPackagesPath(projectIdentifier)}/details/${workPackageId}`;
   }
 
+  // Todo: Remove?
   public workPackageDetailsCopyPath(projectIdentifier:string, workPackageId:string|number) {
     return this.workPackageDetailsPath(projectIdentifier, workPackageId, 'copy');
   }

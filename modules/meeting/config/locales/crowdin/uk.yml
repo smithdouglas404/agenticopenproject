@@ -64,6 +64,7 @@ uk:
       meeting_participant:
         invited: "Запрошені"
         attended: "Відвідано"
+        participation_status: "Статус участі"
     errors:
       models:
         meeting_participant:
@@ -512,6 +513,7 @@ uk:
   label_agenda_item_work_package: "Пакет робіт пункту порядку денного"
   label_section_rename: "Перейменувати розділ"
   label_agenda_outcome: "Результат"
+  label_agenda_new_outcome: "Новий результат"
   label_agenda_outcome_actions: "Дії з результатами порядку денного"
   label_agenda_outcome_edit: "Редагувати результат"
   label_agenda_outcome_delete: "Вилучити результат"

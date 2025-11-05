@@ -91,7 +91,9 @@ export class WorkPackageSingleContextMenuDirective extends OpContextMenuTrigger 
         void this.timeEntryService.stop();
         break;
       case 'copy':
-        this.$state.go('work-packages.copy', { copiedFromWorkPackageId: this.workPackage.id });
+        if (this.workPackage.id) {
+          window.location.href = `${this.PathHelper.workPackageCopyPath(this.workPackage.project.identifier, this.workPackage.id)}`;
+        }
         break;
       case 'delete':
         this.opModalService.show(WpDestroyModalComponent, this.injector, { workPackages: [this.workPackage] });

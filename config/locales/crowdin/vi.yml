@@ -324,7 +324,7 @@ vi:
     placeholder_version_select: "Work package or project selection is required first"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
       is_for_all: "Đánh dấu trường tùy chỉnh là khả dụng trong tất cả các dự án hiện có và mới."
       multi_select: "Allows the user to assign multiple values to this custom field."
@@ -658,6 +658,57 @@ vi:
     memberships:
       no_results_title_text: Người dùng này không phải là thành viên của dự án.
     open_profile: "Open profile"
+    invite_user_modal:
+      invite: "Mời"
+      title:
+        invite: "Mời người dùng"
+        invite_to_project: "Mời %{type} vào %{project}"
+        invite_principal_to_project: "Mời %{principal} vào %{project}"
+      project:
+        label: "Dự án"
+        required: "Vui lòng chọn một dự án"
+        next_button: "Tiếp"
+        no_results: "Không tìm thấy dự án nào"
+        no_invite_rights: "Bạn không được phép mời thành viên vào dự án này"
+      type:
+        required: "Vui lòng chọn loại để mời"
+        user:
+          title: "Invite user to %{project_name}"
+          description: "Quyền dựa trên vai trò được phân công trong dự án đã chọn"
+        group:
+          title: "Invite group to %{project_name}"
+          description: "Quyền dựa trên vai trò được phân công trong dự án đã chọn"
+        placeholder_user:
+          title: "Add placeholder user to %{project_name}"
+          title_no_ee: "Người dùng tạm thời (chỉ có trong phiên bản Doanh nghiệp)"
+          description: "Không có quyền truy cập vào dự án và không có email được gửi đi."
+        already_member_message: "Đã là thành viên của %{project}"
+      principal:
+        no_results_user: "Không tìm thấy người dùng"
+        invite_user: "Mời:"
+        no_results_placeholder: "Không tìm thấy người dùng tạm thời"
+        create_new_placeholder: "Tạo người dùng tạm thời mới:"
+        no_results_group: "Không tìm thấy nhóm"
+        invite_to_project: "Invite to %{project_name}"
+        required:
+          user: "Vui lòng chọn một người dùng"
+          placeholder: "Vui lòng chọn một người dùng tạm thời"
+          group: "Vui lòng chọn một nhóm"
+      role:
+        label: "Vai trò trong %{project}"
+        no_roles_found: "Không tìm thấy vai trò nào"
+        description: >
+          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+        required: "Vui lòng chọn một vai trò"
+      message:
+        label: "Tin nhắn mời"
+        description: "Chúng tôi sẽ gửi email đến người dùng, bạn có thể thêm một tin nhắn cá nhân tại đây. Một lời giải thích về lời mời có thể hữu ích, hoặc có thể là một chút thông tin về dự án để giúp họ bắt đầu."
+      summary:
+        next_button: "Gửi lời mời"
+      success_message:
+        user: "Người dùng có thể đăng nhập để truy cập %{project}. Trong khi đó, bạn có thể lên kế hoạch với người dùng đó và phân công các gói công việc ví dụ."
+        placeholder_user: "Người dùng tạm thời có thể được sử dụng trong %{project}. Trong khi đó, bạn có thể lên kế hoạch với người dùng đó và phân công các gói công việc ví dụ."
+        group: "Nhóm hiện đã là một phần của %{project}. Trong khi đó, bạn có thể lên kế hoạch với nhóm đó và phân công các gói công việc ví dụ."
   page:
     text: "Văn bản"
   placeholder_users:
@@ -1236,6 +1287,9 @@ vi:
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Daily reminders"
         workdays: "Ngày làm việc"
+      users/invitation/form_model:
+        principal_type: "Invitation type"
+        id_or_email: "Tên hoặc địa chỉ email"
       version:
         effective_date: "Ngày hoàn thành"
         sharing: "Chia sẻ"
@@ -3732,6 +3786,9 @@ vi:
   permission_edit_wiki_pages: "Chỉnh sửa trang wiki"
   permission_export_work_packages: "Xuất gói công việc"
   permission_export_wiki_pages: "Xuất trang wiki"
+  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email_explanation: >
+    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
   permission_list_attachments: "Liệt kê tệp đính kèm"
   permission_log_own_time: "Ghi nhật ký thời gian của riêng bạn"
   permission_log_time: "Ghi nhật ký thời gian cho người khác"
@@ -3761,6 +3818,9 @@ vi:
   permission_share_work_packages: "Chia sẻ gói công việc"
   permission_manage_types: "Chọn loại"
   permission_manage_own_reminders: "Create own reminders"
+  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals_explanation: >
+    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
   permission_view_project: "Xem dự án"
   permission_view_changesets: "Xem các sửa đổi kho trong OpenProject"
   permission_view_internal_comments: "View internal comments"

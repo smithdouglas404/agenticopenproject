@@ -1134,71 +1134,8 @@ da:
       list: "Table"
       timeline: "Gantt"
     invite_user_modal:
-      back: "Tilbage"
       invite: "Invitér"
-      title:
-        invite: "Invitér bruger"
-        invite_to_project: "Inviter %{type} til %{project}"
-        User: "bruger"
-        Group: "gruppe"
-        PlaceholderUser: "pladsholder bruger"
-        invite_principal_to_project: "Inviter %{principal} til %{project}"
-      project:
-        label: "Projekt"
-        required: "Vælg et projekt"
-        lacking_permission: "Please select a different project since you lack permissions to assign users to the currently selected."
-        lacking_permission_info: "You lack the permission to assign users to the project you are currently in. You need to select a different one."
-        next_button: "Næste"
-        no_results: "Ingen projekter blev fundet"
-        no_invite_rights: "Du har ikke tilladelse til at invitere medlemmer til dette projekt"
-      type:
-        required: "Vælg venligst den type, der skal inviteres"
-        user:
-          title: "Bruger"
-          description: "Tilladelser baseret på den tildelte rolle i det valgte projekt"
-        group:
-          title: "Gruppe"
-          description: "Tilladelser baseret på den tildelte rolle i det valgte projekt"
-        placeholder:
-          title: "Pladsholder bruger"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Har ikke adgang til projektet, og ingen e-mails er sendt ud."
-          description_no_ee: 'Has no access to the project and no emails are sent out. <br>Check out the <a href="%{eeHref}" target="_blank">Enterprise edition</a>'
-      principal:
-        label:
-          name_or_email: "Navn eller e-mailadresse"
-          name: "Navn"
-        already_member_message: "Allerede medlem af %{project}"
-        no_results_user: "Ingen brugere blev fundet"
-        invite_user: "Invitér:"
-        no_results_placeholder: "Ingen pladsholdere blev fundet"
-        create_new_placeholder: "Opret ny pladsholder:"
-        no_results_group: "Ingen grupper blev fundet"
-        next_button: "Næste"
-        required:
-          user: "Vælg venligst en bruger"
-          placeholder: "Vælg venligst en pladsholder"
-          group: "Vælg venligst en gruppe"
-      role:
-        label: "Rolle i %{project}"
-        no_roles_found: "No roles were found"
-        description: >-
-          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Learn more about roles and permissions. </a>
-        required: "Vælg venligst en rolle"
-        next_button: "Næste"
-      message:
-        label: "Invitations besked"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
-        next_button: "Næste"
-      summary:
-        next_button: "Send invitation"
-      success:
-        title: "%{principal} blev inviteret!"
-        description:
-          user: "Brugeren kan nu logge ind for at få adgang til %{project}. I mellemtiden kan du allerede planlægge med den pågældende bruger og tildele arbejdspakker for eksempel."
-          placeholder: "Pladsholderen kan nu bruges i %{project}. I mellemtiden kan du allerede planlægge med den pågældende bruger og tildele arbejdspakker for eksempel."
-          group: "Gruppen er nu en del af %{project}. I mellemtiden kan du allerede planlægge med denne gruppe og tildele arbejdspakker for eksempel."
-        next_button: "Fortsæt"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "Status excluded from hierarchy totals"

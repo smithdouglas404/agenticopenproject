@@ -119,6 +119,12 @@ it:
         hide_inactive_folders: 'Nascondi il passaggio delle cartelle inattive:'
         remote_folders: 'Leggi i contenuti della cartella di gruppo:'
         rename_project_folder: 'Rinomina la cartella di progetto gestita:'
+      sharepoint_sync_service:
+        create_folder: 'Creazione della cartella di progetto gestita:'
+        ensure_root_folder_permissions: 'Imposta le autorizzazioni della cartella base:'
+        hide_inactive_folders: 'Nascondi il passaggio delle cartelle inattive:'
+        remote_folders: 'Leggi i contenuti della cartella di gruppo:'
+        rename_project_folder: 'Rinomina la cartella di progetto gestita:'
     errors:
       messages:
         error: Si è verificato un errore inatteso. Controlla i log di OpenProject per maggiori informazioni o contatta un amministratore
@@ -171,6 +177,23 @@ it:
             remote_folders:
               request_error: OpenProject non ha potuto accedere all'unità %{drive_id}. Verifica se la sua configurazione dell'archiviazione è corretta.
             rename_project_folder:
+              conflict: OpenProject non ha potuto rinominare la cartella %{current_path} in %{project_folder_name} poiché esiste già una cartella con lo stesso nome.
+              forbidden: OpenProject non ha accesso a %{current_path} per rinominarlo.
+              not_found: "Impossibile trovare %{current_path}."
+            set_folders_permissions:
+              permission_not_set: impossibile impostare i permessi su %{path}.
+          error: Si è verificato un errore imprevisto. Assicurati che OneDrive sia raggiungibile e controlla i log dei worker di OpenProject per ulteriori informazioni.
+          not_allowed: OpenProject non è stato autorizzato ad accedere al tuo drive OneDrive. Verifica le autorizzazioni impostate sull'applicazione Azure.
+          unauthorized: OpenProject non è riuscito a sincronizzarsi con OneDrive. Verifica la configurazione dell'archiviazione e dell'applicazione Azure.
+          user_does_not_exist: "%{user} non esiste in Nextcloud."
+        sharepoint_sync_service:
+          attributes:
+            create_folder:
+              conflict: '%{folder_name} esiste già su %{parent_location}.'
+              not_found: "Impossibile trovare %{parent_location}."
+            hide_inactive_folders:
+              permission_not_set: impossibile impostare i permessi su %{path}.
+            rename_project_folder:
               conflict: OpenProject non ha potuto rinominare la cartella %{current_path} in %{project_folder_name} poiché esiste già una cartella con lo stesso nome
               forbidden: OpenProject non ha accesso a %{current_path} per rinominarlo.
               not_found: "Impossibile trovare %{current_path}."
@@ -178,6 +201,7 @@ it:
               permission_not_set: impossibile impostare i permessi su %{path}.
           error: Si è verificato un errore imprevisto. Assicurati che OneDrive sia raggiungibile e controlla i log dei worker di OpenProject per ulteriori informazioni
           not_allowed: OpenProject non è stato autorizzato ad accedere al tuo drive OneDrive. Verifica le autorizzazioni impostate sull'applicazione Azure.
+          not_found: OpenProject non ha potuto accedere alla libreria %{drive_name}. Controlla le librerie di documenti del sito Sharepoint.
           unauthorized: OpenProject non è riuscito a sincronizzarsi con OneDrive. Verifica la configurazione dell'archiviazione e dell'applicazione Azure.
           user_does_not_exist: "%{user} non esiste in Nextcloud."
         upload_link_service:

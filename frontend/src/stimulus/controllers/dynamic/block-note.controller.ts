@@ -48,6 +48,8 @@ export default class extends Controller {
     documentName: String,
     documentId: String,
     openProjectUrl: String,
+    attachmentsUploadUrl: String,
+    attachmentsCollectionKey: String,
   };
 
   declare readonly blockNoteEditorTarget:HTMLElement;
@@ -59,6 +61,8 @@ export default class extends Controller {
   declare readonly documentNameValue:string;
   declare readonly documentIdValue:string;
   declare readonly openProjectUrlValue:string;
+  declare readonly attachmentsUploadUrlValue:string;
+  declare readonly attachmentsCollectionKeyValue:string;
 
   connect() {
     const root = createRoot(this.blockNoteEditorTarget);
@@ -75,6 +79,8 @@ export default class extends Controller {
       documentName: this.documentNameValue,
       documentId: this.documentIdValue,
       openProjectUrl: this.openProjectUrlValue,
+      attachmentsUploadUrl: this.attachmentsUploadUrlValue,
+      attachmentsCollectionKey: this.attachmentsCollectionKeyValue,
     });
   }
 }

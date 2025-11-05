@@ -323,7 +323,7 @@ hu:
     placeholder_version_select: "Work package or project selection is required first"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
       is_for_all: "Mark the custom field as available in all existing and new projects."
       multi_select: "Allows the user to assign multiple values to this custom field."
@@ -663,6 +663,57 @@ hu:
     memberships:
       no_results_title_text: Ez a felhasználó jelenleg nem tagja egy projektnek sem.
     open_profile: "Open profile"
+    invite_user_modal:
+      invite: "Meghívás"
+      title:
+        invite: "Felhasználó meghívása"
+        invite_to_project: "Meghívás %{type} a %{project}"
+        invite_principal_to_project: "Meghívás %{principal} a %{project} "
+      project:
+        label: "Projekt"
+        required: "Válasszon projektet"
+        next_button: " Következő"
+        no_results: "Egyetlen projekt sem található"
+        no_invite_rights: "Nincs jogosultságod meghívni felhasználókat ehhez a projekthez"
+      type:
+        required: "Kérjük, válassza ki a meghívandó típust\n"
+        user:
+          title: "Invite user to %{project_name}"
+          description: "Jogosultságok a kiválasztott projektben kijelölt szerepkör alapján\n"
+        group:
+          title: "Invite group to %{project_name}"
+          description: "Jogosultságok a kiválasztott projektben kijelölt szerepkör alapján\n"
+        placeholder_user:
+          title: "Add placeholder user to %{project_name}"
+          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
+          description: "Nincs hozzáférése a projekthez, és nem küld ki e-maileket.\n"
+        already_member_message: "Már tagja a %{project}-nek"
+      principal:
+        no_results_user: "Nem található felhasználó."
+        invite_user: "Meghívás:"
+        no_results_placeholder: "Ben találhatók teszt felhasználók"
+        create_new_placeholder: "Új teszt felhasználó létrehozása"
+        no_results_group: "Nem találhatók csoportok."
+        invite_to_project: "Invite to %{project_name}"
+        required:
+          user: "Válassz egy felhasználót"
+          placeholder: "Kérjük válasszon egy tesztfelhasználót"
+          group: "Válaszd ki a csoportot"
+      role:
+        label: "Szerepek a %{project}"
+        no_roles_found: "Nem található szerepkör."
+        description: >
+          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+        required: "Kérjük, válasszon szerepet"
+      message:
+        label: "Meghívó üzenet"
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
+      summary:
+        next_button: "Meghívó küldése"
+      success_message:
+        user: "A felhasználó most már bejelentkezhet, hogy hozzáférjen a %{project}-hez. Eközben már tervezhet ezzel a felhasználóval, és például munkacsomagokat rendelhet hozzá."
+        placeholder_user: "A tesztfelhasználó mostantól használható a %{project}-ben. Eközben már tervezhetünk ezzel a felhasználóval, és például munkacsomagokat rendelhetünk hozzá."
+        group: "A csoport mostantól a %{project} része. Eközben már tervezhet ezzel a csoporttal, és például munkacsomagokat rendelhet hozzá.\n"
   page:
     text: "Szöveg"
   placeholder_users:
@@ -1243,6 +1294,9 @@ hu:
         mode_guideline: "Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support."
         daily_reminders: "Daily reminders"
         workdays: "Munkanapok"
+      users/invitation/form_model:
+        principal_type: "Invitation type"
+        id_or_email: "Név vagy e-mail cím"
       version:
         effective_date: "Befejezési dátum"
         sharing: "Megosztás"
@@ -3777,6 +3831,9 @@ hu:
   permission_edit_wiki_pages: "Wiki lapok szerkesztése"
   permission_export_work_packages: "feladatcsoportok exportálása"
   permission_export_wiki_pages: "Wiki oldalak exportálása"
+  permission_invite_members_by_email: "Invite members by email"
+  permission_invite_members_by_email_explanation: >
+    Allows users to invite new members by email. Invited users will receive an email with a link to set their password and activate their account. Depends on the permission to manage members
   permission_list_attachments: "Mellékletek listája"
   permission_log_own_time: "Saját idő naplózása"
   permission_log_time: "Mások idejének naplózása"
@@ -3806,6 +3863,9 @@ hu:
   permission_share_work_packages: "Share work packages"
   permission_manage_types: "Jelölje ki a típust"
   permission_manage_own_reminders: "Create own reminders"
+  permission_view_all_principals: "View all users and groups"
+  permission_view_all_principals_explanation: >
+    Allows users to see all users and groups in the system, even if they are not members of any joined projects or groups.
   permission_view_project: "View projects"
   permission_view_changesets: "Tároló verziók megtekintése az OpenProject-ben"
   permission_view_internal_comments: "View internal comments"

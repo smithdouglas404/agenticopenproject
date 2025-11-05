@@ -176,10 +176,8 @@ export class WorkPackageBaseResource extends HalResource {
    * Return "<type name>: <subject> (#<id>)" if type and id are known.
    */
   public subjectWithType(truncateSubject = 40):string {
-    const type = this.type ? `${this.type.name}: ` : '';
-    const subject = this.subjectWithId(truncateSubject);
-
-    return `${type}${subject}`;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    return `${this.type.name}: ${this.subjectWithId(truncateSubject)}`;
   }
 
   /**
@@ -187,9 +185,12 @@ export class WorkPackageBaseResource extends HalResource {
    */
   public subjectWithId(truncateSubject = 40):string {
     const id = isNewResource(this) ? '' : ` (#${this.id || ''})`;
-    const subject = truncateSubject <= 0 ? this.subject : _.truncate(this.subject, { length: truncateSubject });
 
-    return `${subject}${id}`;
+    return `${this.truncatedSubject(truncateSubject)}${id}`;
+  }
+
+  public truncatedSubject(length = 40):string {
+    return length <= 0 ? this.subject : _.truncate(this.subject, { length: length });
   }
 
   public get isLeaf():boolean {

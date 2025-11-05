@@ -45,7 +45,6 @@ class ApplicationMailer < ActionMailer::Base
   default from: Proc.new { Setting.mail_from }
 
   class << self
-
     ##
     # Provide an easy way to get the default from address
     # which is overridden for SaaS for tenant specific from addresses

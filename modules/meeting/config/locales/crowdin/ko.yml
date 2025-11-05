@@ -61,6 +61,7 @@ ko:
       meeting_participant:
         invited: "초대됨"
         attended: "참석함"
+        participation_status: "참여자 상태"
     errors:
       models:
         meeting_participant:
@@ -491,6 +492,7 @@ ko:
   label_agenda_item_work_package: "의제 항목 작업 패키지"
   label_section_rename: "섹션 이름 바꾸기"
   label_agenda_outcome: "결과"
+  label_agenda_new_outcome: "새로운 결과"
   label_agenda_outcome_actions: "의제 결과 작업"
   label_agenda_outcome_edit: "결과 편집"
   label_agenda_outcome_delete: "결과 제거"

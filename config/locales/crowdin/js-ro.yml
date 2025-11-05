@@ -104,7 +104,7 @@ ro:
     button_save: "Salvează"
     button_settings: "Setări"
     button_uncheck_all: "Deselectează tot"
-    button_update: "Actualizează"
+    button_update: "Actualizare"
     button_export-atom: "Descarcă Atom"
     button_generate_pdf: "Generează PDF"
     button_create: "Creează"
@@ -1138,71 +1138,8 @@ ro:
       list: "Tabel"
       timeline: "Gantt"
     invite_user_modal:
-      back: "Înapoi"
       invite: "Invită"
-      title:
-        invite: "Invită utilizator"
-        invite_to_project: "Invită %{type} la %{project}"
-        User: "utilizator"
-        Group: "grup"
-        PlaceholderUser: "utilizator placeholder"
-        invite_principal_to_project: "Invitați %{principal} la %{project}"
-      project:
-        label: "Proiect"
-        required: "Te rog selectează un proiect"
-        lacking_permission: "Te rog selectează un alt proiect, deoarece nu ai permisiuni pentru a atribui utilizatori la cel selectat în prezent."
-        lacking_permission_info: "Nu aveți permisiunea de a atribui utilizatori la proiectul în care vă aflați în prezent. Trebuie să selectați un alt proiect."
-        next_button: "Înainte"
-        no_results: "Nu au fost găsite proiecte"
-        no_invite_rights: "Nu aveți voie să invitați membri în acest proiect"
-      type:
-        required: "Te rog selectează tipul de invitat"
-        user:
-          title: "Utilizator"
-          description: "Permisiuni bazate pe rolul atribuit în proiectul selectat"
-        group:
-          title: "Grup"
-          description: "Permisiuni bazate pe rolul atribuit în proiectul selectat"
-        placeholder:
-          title: "Utilizator placeholder"
-          title_no_ee: "Utilizator de tip Placeholder (add-on numai pentru ediția Enterprise)"
-          description: "Nu are acces la proiect și nu se trimite niciun e-mail."
-          description_no_ee: 'Nu are acces la proiect și nu se trimite niciun e-mail.  <br>Verificați<a href="%{eeHref}" ținta="_blank">ediția Enterprise</a>'
-      principal:
-        label:
-          name_or_email: "Numele și adresa dvs. de e-mail."
-          name: "Nume"
-        already_member_message: "Deja membru al %{project}"
-        no_results_user: "Nu au fost găsiți utilizatori"
-        invite_user: "Invită"
-        no_results_placeholder: "Nu au fost găsiți spații libere"
-        create_new_placeholder: "Creați un nou spațiu rezervat:"
-        no_results_group: "Nu au fost găsite grupuri"
-        next_button: "Înainte"
-        required:
-          user: "Te rog selectează un utilizator"
-          placeholder: "Te rog selectează un substituent"
-          group: "Te rog selectează un grup"
-      role:
-        label: "Rolul în %{project}"
-        no_roles_found: "Nu au fost găsite roluri"
-        description: >-
-          This is the role that the user will receive when they join your project. Rolul definește acțiunile pe care utilizatorul are voie să le întreprindă și informațiile pe care le poate vedea. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Aflați mai multe despre roluri și permisiuni. </a>
-        required: "Te rog selectează un rol"
-        next_button: "Înainte"
-      message:
-        label: "Mesaj invitație"
-        description: "Vom trimite un e-mail utilizatorului, la care puteți adăuga un mesaj personal aici. Ar putea fi utilă o explicație pentru invitație sau poate câteva informații despre proiect pentru a-i ajuta să înceapă."
-        next_button: "Înainte"
-      summary:
-        next_button: "Trimite invitație"
-      success:
-        title: "%{principal} a fost invitat!"
-        description:
-          user: "Utilizatorul se poate autentifica acum pentru a accesa %{project}. Între timp, puteți deja să planificați cu acel utilizator și să atribuiți pachete de lucru, de exemplu."
-          placeholder: "Marca de poziție poate fi utilizată acum în %{project}. Între timp, puteți deja să planificați cu acel utilizator și să atribuiți pachete de lucru, de exemplu."
-          group: "Grupul este acum o parte din %{project}. Între timp, puteți deja să planificați cu acest grup și să atribuiți pachete de lucru, de exemplu."
-        next_button: "Continuă"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "Status exclus din totalul ierarhic"

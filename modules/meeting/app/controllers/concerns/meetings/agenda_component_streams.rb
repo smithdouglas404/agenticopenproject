@@ -184,17 +184,6 @@ module Meetings
         end
       end
 
-      def render_base_outcome_component_via_turbo_stream(meeting:, meeting_agenda_item:, meeting_outcome:, edit:)
-        update_via_turbo_stream(
-          component: MeetingAgendaItems::Outcomes::BaseComponent.new(
-            meeting:,
-            meeting_agenda_item:,
-            meeting_outcome:,
-            edit:
-          )
-        )
-      end
-
       def update_list_via_turbo_stream(meeting: @meeting, form_hidden: true, form_type: :simple)
         update_via_turbo_stream(
           component: MeetingAgendaItems::ListComponent.new(
@@ -313,6 +302,14 @@ module Meetings
         )
       end
 
+      def update_outcomes_via_turbo_stream(meeting_agenda_item: @meeting_agenda_item)
+        update_via_turbo_stream(
+          component: MeetingAgendaItems::Outcomes::WrapperComponent.new(
+            meeting_agenda_item:
+          )
+        )
+      end
+
       def update_section_via_turbo_stream(meeting_section: @meeting_section, form_hidden: true, form_type: :simple,
                                           force_wrapper: false, state: :show, collapsed: nil, current_occurrence: nil)
         update_via_turbo_stream(
@@ -389,6 +386,11 @@ module Meetings
             )
           )
         end
+      end
+
+      def update_meeting_metadata_via_turbo_stream
+        update_header_component_via_turbo_stream
+        update_sidebar_component_via_turbo_stream
       end
 
       def update_all_via_turbo_stream

@@ -3,13 +3,7 @@ import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { HalLink } from 'core-app/features/hal/hal-link/hal-link';
 import { HalResourceService } from 'core-app/features/hal/services/hal-resource.service';
 import { OpenprojectHalModuleHelpers } from 'core-app/features/hal/helpers/lazy-accessor';
-
-interface HalSource {
-  _links:any;
-  _embedded:any;
-  _type?:string;
-  type?:any;
-}
+import { HalSource } from 'core-app/features/hal/interfaces';
 
 export function cloneHalResourceCollection<T extends HalResource>(values:T[]|undefined):T[] {
   if (_.isNil(values)) {

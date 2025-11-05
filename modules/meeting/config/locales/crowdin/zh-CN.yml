@@ -61,6 +61,7 @@ zh-CN:
       meeting_participant:
         invited: "已邀请"
         attended: "已参加"
+        participation_status: "参与状态"
     errors:
       models:
         meeting_participant:
@@ -491,6 +492,7 @@ zh-CN:
   label_agenda_item_work_package: "议程项目工作包"
   label_section_rename: "重命名章节"
   label_agenda_outcome: "成果"
+  label_agenda_new_outcome: "新的结果"
   label_agenda_outcome_actions: "议程成果行动"
   label_agenda_outcome_edit: "编辑成果"
   label_agenda_outcome_delete: "删除成果"

@@ -62,6 +62,7 @@ uz:
       meeting_participant:
         invited: "Invited"
         attended: "Attended"
+        participation_status: "Participation status"
     errors:
       models:
         meeting_participant:
@@ -498,6 +499,7 @@ uz:
   label_agenda_item_work_package: "Agenda item work package"
   label_section_rename: "Rename section"
   label_agenda_outcome: "Outcome"
+  label_agenda_new_outcome: "New outcome"
   label_agenda_outcome_actions: "Agenda outcome actions"
   label_agenda_outcome_edit: "Edit outcome"
   label_agenda_outcome_delete: "Remove outcome"

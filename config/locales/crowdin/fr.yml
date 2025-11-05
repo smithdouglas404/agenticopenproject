@@ -324,7 +324,7 @@ fr:
     placeholder_version_select: "La sélection d'un lot de travaux ou d'un projet est requise en premier lieu"
     calculated_field_not_editable: "Attribut non modifiable. Cette valeur est calculée automatiquement."
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
       is_for_all: "Marquer le champ personnalisé comme disponible dans tous les projets existants et nouveaux."
       multi_select: "Permet à l'utilisateur d'assigner plusieurs valeurs à ce champ personnalisé."
@@ -664,6 +664,57 @@ fr:
     memberships:
       no_results_title_text: Cet utilisateur n'est membre d'aucun projet pour le moment.
     open_profile: "Ouvrir le profil"
+    invite_user_modal:
+      invite: "Inviter"
+      title:
+        invite: "Inviter un utilisateur"
+        invite_to_project: "Inviter %{type} à rejoindre %{project}"
+        invite_principal_to_project: "Inviter %{principal} à rejoindre %{project}"
+      project:
+        label: "Projet"
+        required: "Veuillez sélectionner un projet"
+        next_button: "Suivant"
+        no_results: "Aucun projet trouvé"
+        no_invite_rights: "Vous n'avez pas l'autorisation d'inviter des membres dans ce projet"
+      type:
+        required: "Veuillez sélectionner le type à inviter"
+        user:
+          title: "Inviter un utilisateur dans %{project_name}"
+          description: "Permissions basées sur le rôle assigné dans le projet sélectionné"
+        group:
+          title: "Inviter un groupe à rejoindre %{project_name}"
+          description: "Permissions basées sur le rôle assigné dans le projet sélectionné"
+        placeholder_user:
+          title: "Ajouter un utilisateur fictif à %{project_name}"
+          title_no_ee: "Utilisateur fictif (add-on de la version Enterprise uniquement)"
+          description: "N'a pas d'accès au projet et aucun e-mail n'est envoyé."
+        already_member_message: "Déjà membre de %{project}"
+      principal:
+        no_results_user: "Aucun utilisateur n'a été trouvé"
+        invite_user: "Invité :"
+        no_results_placeholder: "Aucun utilisateur fictif n'a été trouvé"
+        create_new_placeholder: "Créer un nouveau utilisateur fictif :"
+        no_results_group: "Aucun groupe n'a été trouvé"
+        invite_to_project: "Inviter à rejoindre %{project_name}"
+        required:
+          user: "Veuillez sélectionner un utilisateur"
+          placeholder: "Veuillez sélectionner un utilisateur fictif"
+          group: "Veuillez sélectionner un groupe"
+      role:
+        label: "Rôle dans %{project}"
+        no_roles_found: "Aucun rôle n'a été trouvé"
+        description: >
+
+        required: "Veuillez sélectionner un rôle"
+      message:
+        label: "Message d'invitation"
+        description: "Nous enverrons un e-mail à l'utilisateur, auquel vous pourrez ajouter un message personnel ici. Une explication concernant l'invitation pourrait être utile ou peut-être quelques informations concernant le projet pour l'aider à démarrer."
+      summary:
+        next_button: "Envoyer une invitation"
+      success_message:
+        user: "L'utilisateur peut maintenant se connecter pour accéder à %{project}. En attendant, vous pouvez déjà compter sur cet utilisateur et l'assigner à des lots de travaux, par exemple."
+        placeholder_user: "L'utilisateur fictif peut maintenant être utilisé dans %{project}. En attendant, vous pouvez déjà planifier des taches avec cet utilisateur et l'assigner à des lots de travaux, par exemple."
+        group: "Le groupe fait maintenant partie du projet %{project}. En attendant, vous pouvez déjà compter sur ce groupe et l'assigner à des lots de travaux, par exemple."
   page:
     text: "Texte"
   placeholder_users:
@@ -1242,6 +1293,9 @@ fr:
         mode_guideline: "Certains modes écrasent les couleurs des thèmes personnalisés pour des raisons d'accessibilité et de lisibilité. Veuillez sélectionner le mode Clair pour une prise en charge complète des thèmes personnalisés."
         daily_reminders: "Rappels quotidiens"
         workdays: "Jours ouvrés"
+      users/invitation/form_model:
+        principal_type: "Type d'invitation"
+        id_or_email: "Nom ou adresse e-mail"
       version:
         effective_date: "Date de fin"
         sharing: "Partage"
@@ -3777,6 +3831,9 @@ fr:
   permission_edit_wiki_pages: "Éditer les pages wiki"
   permission_export_work_packages: "Exporter les lots de travaux"
   permission_export_wiki_pages: "Exporter les pages wiki"
+  permission_invite_members_by_email: "Inviter des membres par e-mail"
+  permission_invite_members_by_email_explanation: >
+    Permet aux utilisateurs d'inviter de nouveaux membres par e-mail. Les utilisateurs invités recevront un e-mail contenant un lien leur permettant de définir leur mot de passe et d'activer leur compte. Cela dépend de l'autorisation de gérer les membres
   permission_list_attachments: "Lister les pièces jointes"
   permission_log_own_time: "Enregistrer son propre temps"
   permission_log_time: "Saisir le temps pour d'autres utilisateurs"
@@ -3806,6 +3863,9 @@ fr:
   permission_share_work_packages: "Partager des lots de travaux"
   permission_manage_types: "Sélectionner types"
   permission_manage_own_reminders: "Créer des rappels personnalisés"
+  permission_view_all_principals: "Afficher tous les utilisateurs et groupes"
+  permission_view_all_principals_explanation: >
+    Permet aux utilisateurs de voir tous les utilisateurs et groupes du système, même s'ils ne sont pas membres d'un projet ou d'un groupe.
   permission_view_project: "Voir les projets"
   permission_view_changesets: "Voir révisions du dépôt dans OpenProject"
   permission_view_internal_comments: "Voir les commentaires internes"

@@ -148,7 +148,7 @@ RSpec.describe "Quick-add menu", :js do
       quick_add.expect_work_package_type other_project_type.name
 
       quick_add.click_link other_project_type.name
-      expect(page).to have_current_path new_work_packages_path(type: other_project_type.id)
+      expect(page).to have_current_path new_work_package_path(type: other_project_type.id)
     end
   end
 

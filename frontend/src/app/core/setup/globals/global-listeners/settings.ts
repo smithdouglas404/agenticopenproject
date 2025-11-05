@@ -7,10 +7,6 @@ import invariant from 'tiny-invariant';
  * This should not be loaded globally and ideally refactored into components
  */
 export function listenToSettingChanges() {
-  jQuery('#settings_session_ttl_enabled').on('change', function () {
-    jQuery('#settings_session_ttl_container').toggle(jQuery(this).is(':checked'));
-  }).trigger('change');
-
   /** Sync SCM vendor select when enabled SCMs are changed */
   jQuery('[name="settings[enabled_scm][]"]').change(function (this:HTMLInputElement) {
     const wasDisabled = !this.checked;

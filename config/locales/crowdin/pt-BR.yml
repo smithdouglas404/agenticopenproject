@@ -323,7 +323,7 @@ pt-BR:
     placeholder_version_select: "Primeiro é necessária a seleção do pacote de trabalho ou projeto"
     calculated_field_not_editable: "Atributo não editável. O valor é calculado automaticamente."
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
       is_for_all: "Marcar o campo personalizado como disponível em todos os projetos existentes e novos."
       multi_select: "Permite que o usuário atribua múltiplos valores a este campo personalizado."
@@ -663,6 +663,57 @@ pt-BR:
     memberships:
       no_results_title_text: Atualmente, este usuário não é um membro de um projeto.
     open_profile: "Abrir perfil"
+    invite_user_modal:
+      invite: "Convidar"
+      title:
+        invite: "Convidar usuário"
+        invite_to_project: "Convide %{type} para %{project}"
+        invite_principal_to_project: "Convide %{principal} para %{project}"
+      project:
+        label: "Projeto"
+        required: "Selecione um projeto"
+        next_button: "Próxima"
+        no_results: "Nenhum projeto foi encontrado"
+        no_invite_rights: "Você não tem permissão para convidar membros para este projeto"
+      type:
+        required: "Selecione o tipo a ser convidado"
+        user:
+          title: "Convidar usuário para %{project_name}"
+          description: "Permissões baseadas no papel atribuído no projeto selecionado"
+        group:
+          title: "Convidar grupo para %{project_name}"
+          description: "Permissões baseadas no papel atribuído no projeto selecionado"
+        placeholder_user:
+          title: "Adicionar usuário de espaço reservado a %{project_name}"
+          title_no_ee: "Usuário de espaço reservado (complemento apenas da edição Enterprise)"
+          description: "Não possui acesso ao projeto e nenhum e-mail é enviado."
+        already_member_message: "Já é um membro de %{project}"
+      principal:
+        no_results_user: "Nenhum usuário foi encontrado"
+        invite_user: "Convite:"
+        no_results_placeholder: "Nenhum espaço reservado encontrado"
+        create_new_placeholder: "Criar novo espaço reservado:"
+        no_results_group: "Nenhum grupo encontrado"
+        invite_to_project: "Convidar para %{project_name}"
+        required:
+          user: "Selecione um usuário"
+          placeholder: "Selecione um espaço reservado"
+          group: "Selecione um grupo"
+      role:
+        label: "Papel em %{project}"
+        no_roles_found: "Nenhum papel encontrado"
+        description: >
+          Este é a função que o usuário receberá ao entrar no seu projeto. A função define quais ações ele poderá realizar e quais informações poderá visualizar. [Saiba mais sobre funções e permissões.](docs_url)
+        required: "Selecione um papel"
+      message:
+        label: "Mensagem de convite"
+        description: "Enviaremos um e-mail para o usuário, à qual você pode adicionar uma mensagem pessoal por aqui. Uma explicação para o convite pode se útil, ou talvez algumas informações sobre o projeto para ajudá-lo a começar."
+      summary:
+        next_button: "Enviar Convite"
+      success_message:
+        user: "O usuário agora pode entrar para acessar %{project}. Enquanto isso, você já pode planejar com este usuário e atribuir pacotes de trabalho por exemplo."
+        placeholder_user: "O espaço reservado agora pode ser usado em %{project}. Enquanto isso, você já pode planejar com esse usuário e, por exemplo, atribuir pacotes de trabalho."
+        group: "O grupo agora faz parte de %{project}. Enquanto isso, você já pode planejar com este grupo e atribuir pacotes de trabalho por exemplo."
   page:
     text: "Texto"
   placeholder_users:
@@ -1241,6 +1292,9 @@ pt-BR:
         mode_guideline: "Alguns modos substituirão as cores personalizadas do tema para melhorar acessibilidade e legibilidade. Selecione o modo Claro para suporte total ao tema personalizado."
         daily_reminders: "Lembretes diários"
         workdays: "Dias úteis"
+      users/invitation/form_model:
+        principal_type: "Tipo de convite"
+        id_or_email: "Nome ou endereço de e-mail"
       version:
         effective_date: "Data de conclusão"
         sharing: "Compartilhamento"
@@ -3775,6 +3829,9 @@ pt-BR:
   permission_edit_wiki_pages: "Editar páginas wiki"
   permission_export_work_packages: "Exportar pacotes de trabalho"
   permission_export_wiki_pages: "Exportar páginas wiki"
+  permission_invite_members_by_email: "Convidar membros por e-mail"
+  permission_invite_members_by_email_explanation: >
+    Permite que usuários convidem novos membros por e-mail. Os usuários convidados receberão um e-mail com um link para definir sua senha e ativar a conta. Depende da permissão para gerenciar membros
   permission_list_attachments: "Lista de anexos"
   permission_log_own_time: "Registrar própria hora"
   permission_log_time: "Registrar hora para outros usuários"
@@ -3804,6 +3861,9 @@ pt-BR:
   permission_share_work_packages: "Compartilhar pacotes de trabalho"
   permission_manage_types: "Selecionar tipos"
   permission_manage_own_reminders: "Criar seus próprios lembretes"
+  permission_view_all_principals: "Visualizar todos os usuários e grupos"
+  permission_view_all_principals_explanation: >
+    Permite que os usuários visualizem todos os usuários e grupos do sistema, mesmo que não sejam membros de nenhum projeto ou grupo do qual façam parte.
   permission_view_project: "Visualizar projetos"
   permission_view_changesets: "Revisões do repositório vistas no OpenProject"
   permission_view_internal_comments: "Visualizar comentários internos"

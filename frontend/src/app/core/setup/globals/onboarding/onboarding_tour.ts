@@ -18,6 +18,7 @@ import { ganttOnboardingTourSteps } from 'core-app/core/setup/globals/onboarding
 import { ConfigurationService } from 'core-app/core/config/configuration.service';
 
 import 'core-vendor/enjoyhint';
+import { wpFullViewOnboardingTourSteps } from 'core-app/core/setup/globals/onboarding/tours/work_package_full_view_tour';
 
 declare global {
   interface Window {
@@ -72,6 +73,16 @@ function workPackageTour() {
   initializeTour('wpTourFinished');
   waitForElement('.work-package--results-tbody', '#content', () => {
     const steps:OnboardingStep[] = wpOnboardingTourSteps();
+
+    startTour(steps);
+  });
+}
+
+
+function workPackageFullViewTour() {
+  initializeTour('wpFullViewTourFinished');
+  waitForElement('.work-package--single-view', '#content', () => {
+    const steps:OnboardingStep[] = wpFullViewOnboardingTourSteps();
 
     startTour(steps);
   });
@@ -146,6 +157,9 @@ export function start(name:OnboardingTourNames, configuration:ConfigurationServi
       break;
     case 'workPackages':
       workPackageTour();
+      break;
+    case 'workPackagesFullView':
+      workPackageFullViewTour();
       break;
     case 'gantt':
       ganttTour(configuration);

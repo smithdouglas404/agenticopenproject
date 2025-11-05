@@ -1130,71 +1130,8 @@ vi:
       list: "Bảng"
       timeline: "Biểu đồ sự kiện"
     invite_user_modal:
-      back: "Quay lại"
       invite: "Mời"
-      title:
-        invite: "Mời người dùng"
-        invite_to_project: "Mời %{type} vào %{project}"
-        User: "người dùng"
-        Group: "nhóm"
-        PlaceholderUser: "người dùng tạm thời"
-        invite_principal_to_project: "Mời %{principal} vào %{project}"
-      project:
-        label: "Dự án"
-        required: "Vui lòng chọn một dự án"
-        lacking_permission: "Vui lòng chọn một dự án khác vì bạn không có quyền phân công người dùng cho dự án hiện tại."
-        lacking_permission_info: "Bạn không có quyền phân công người dùng cho dự án hiện tại. Bạn cần chọn một dự án khác."
-        next_button: "Tiếp theo"
-        no_results: "Không tìm thấy dự án nào"
-        no_invite_rights: "Bạn không được phép mời thành viên vào dự án này"
-      type:
-        required: "Vui lòng chọn loại để mời"
-        user:
-          title: "Người dùng"
-          description: "Quyền dựa trên vai trò được phân công trong dự án đã chọn"
-        group:
-          title: "Nhóm"
-          description: "Quyền dựa trên vai trò được phân công trong dự án đã chọn"
-        placeholder:
-          title: "Người dùng tạm thời"
-          title_no_ee: "Người dùng tạm thời (chỉ có trong phiên bản Doanh nghiệp)"
-          description: "Không có quyền truy cập vào dự án và không có email được gửi đi."
-          description_no_ee: 'Không có quyền truy cập vào dự án và không có email được gửi đi. <br>Xem thêm <a href="%{eeHref}" target="_blank">phiên bản Doanh nghiệp</a>'
-      principal:
-        label:
-          name_or_email: "Tên hoặc địa chỉ email"
-          name: "Tên"
-        already_member_message: "Đã là thành viên của %{project}"
-        no_results_user: "Không tìm thấy người dùng"
-        invite_user: "Mời:"
-        no_results_placeholder: "Không tìm thấy người dùng tạm thời"
-        create_new_placeholder: "Tạo người dùng tạm thời mới:"
-        no_results_group: "Không tìm thấy nhóm"
-        next_button: "Tiếp theo"
-        required:
-          user: "Vui lòng chọn một người dùng"
-          placeholder: "Vui lòng chọn một người dùng tạm thời"
-          group: "Vui lòng chọn một nhóm"
-      role:
-        label: "Vai trò trong %{project}"
-        no_roles_found: "Không tìm thấy vai trò nào"
-        description: >-
-          Đây là vai trò mà người dùng sẽ nhận được khi tham gia dự án của bạn. Vai trò xác định các hành động mà họ được phép thực hiện và thông tin mà họ được phép xem. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Tìm hiểu thêm về vai trò và quyền hạn. </a>
-        required: "Vui lòng chọn một vai trò"
-        next_button: "Tiếp theo"
-      message:
-        label: "Tin nhắn mời"
-        description: "Chúng tôi sẽ gửi email đến người dùng, bạn có thể thêm một tin nhắn cá nhân tại đây. Một lời giải thích về lời mời có thể hữu ích, hoặc có thể là một chút thông tin về dự án để giúp họ bắt đầu."
-        next_button: "Tiếp theo"
-      summary:
-        next_button: "Gửi lời mời"
-      success:
-        title: "%{principal} đã được mời!"
-        description:
-          user: "Người dùng có thể đăng nhập để truy cập %{project}. Trong khi đó, bạn có thể lên kế hoạch với người dùng đó và phân công các gói công việc ví dụ."
-          placeholder: "Người dùng tạm thời có thể được sử dụng trong %{project}. Trong khi đó, bạn có thể lên kế hoạch với người dùng đó và phân công các gói công việc ví dụ."
-          group: "Nhóm hiện đã là một phần của %{project}. Trong khi đó, bạn có thể lên kế hoạch với nhóm đó và phân công các gói công việc ví dụ."
-        next_button: "Tiếp tục"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "Trạng thái loại trừ khỏi tổng hợp phân cấp"
