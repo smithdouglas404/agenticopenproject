@@ -43,13 +43,15 @@ import { slideDown, slideUp } from 'es6-slide-up-down';
     </ul>
   The following code is responsible to open and close the "more functions" submenu.
 */
-function closeMenu(menu:HTMLElement, event:MouseEvent) {
+function closeMenu(menu:HTMLElement, event:MouseEvent, cleanup:() => void) {
   // do not close the menu, if the user accidentally clicked next to a menu item (but still within the menu)
   if (event.target !== menu.querySelector(':scope > li.drop-down.open > ul')) {
     const li = menu.querySelector(':scope > li.drop-down.open')!;
     li.classList.remove('open');
     const ul = li.querySelector<HTMLUListElement>(':scope > ul');
     slideUp(ul!, ANIMATION_RATE_MS);
+    // no need to watch for clicks, when the menu is already closed
+    cleanup();
   }
 }
 
@@ -62,7 +64,8 @@ function openMenu(menu:HTMLElement) {
     window.requestAnimationFrame(() => {
       dropDown.querySelector<HTMLAnchorElement>('li > a:first-child')?.focus();
       // when clicking on something, which is not the menu, close the menu
-      document.addEventListener('click', (evt) => closeMenu(menu, evt), { once: true });
+      const clickHandler = (evt:MouseEvent) => closeMenu(menu, evt, () => document.removeEventListener('click', clickHandler));
+      document.addEventListener('click', clickHandler);
     });
     dropDown.classList.add('open');
   }
