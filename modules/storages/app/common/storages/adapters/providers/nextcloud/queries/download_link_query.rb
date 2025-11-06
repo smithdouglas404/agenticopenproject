@@ -36,8 +36,10 @@ module Storages
           class DownloadLinkQuery < Base
             def call(auth_strategy:, input_data:)
               Authentication[auth_strategy].call(storage: @storage, http_options:) do |http|
-                handle_response(http.post(request_url, json: { fileId: input_data.file_id })).fmap do |token|
-                  URI(download_link(token, input_data.origin_name))
+                fetch_origin_name(input_data, auth_strategy).bind do |origin_name|
+                  fetch_download_token(auth_strategy, input_data.file_id).fmap do |token|
+                    URI(download_link(token, origin_name))
+                  end
                 end
               end
             end
@@ -64,6 +66,25 @@ module Storages
                 Failure(error.with(code: :unauthorized))
               else
                 Failure(error.with(code: error))
+              end
+            end
+
+            def fetch_origin_name(input_data, auth_strategy)
+              file_info_result = FileInfoQuery.call(storage: @storage, auth_strategy:, input_data:)
+              return file_info_result unless file_info_result.success?
+
+              name = file_info_result.value!.name
+              if name.blank?
+                error = Results::Error.new(source: self.class, payload: file_info_result.value!)
+                Failure(error.with(code: :invalid_file_name))
+              else
+                Success(name)
+              end
+            end
+
+            def fetch_download_token(auth_strategy, file_id)
+              Authentication[auth_strategy].call(storage: @storage, http_options:) do |http|
+                handle_response(http.post(request_url, json: { fileId: file_id }))
               end
             end
 
