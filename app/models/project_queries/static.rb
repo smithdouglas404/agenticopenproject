@@ -37,6 +37,8 @@ class ProjectQueries::Static
   OFF_TRACK = "off_track"
   AT_RISK = "at_risk"
 
+  PORTFOLIO_ALL = "portfolio_all"
+
   DEFAULT = ACTIVE
 
   class << self
@@ -56,6 +58,8 @@ class ProjectQueries::Static
         static_query_status_off_track
       when AT_RISK
         static_query_status_at_risk
+      when PORTFOLIO_ALL
+        static_query_portfolio_all
       end
     end
 
@@ -100,6 +104,12 @@ class ProjectQueries::Static
     def static_query_status_at_risk
       list_with(:"activerecord.attributes.project.status_codes.at_risk") do |query|
         query.where("project_status_code", "=", Project.status_codes[:at_risk])
+      end
+    end
+
+    def static_query_portfolio_all
+      list_with(:"projects.lists.portfolio_all") do |query|
+        query.where("project_workspace_type", "=", "portfolio")
       end
     end
 

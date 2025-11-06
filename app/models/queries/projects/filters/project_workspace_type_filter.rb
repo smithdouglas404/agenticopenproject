@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,22 +26,28 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module Portfolios
-  class ListComponent < ApplicationComponent
-    include ApplicationHelper
-    include OpPrimer::ComponentHelpers
-    include OpTurbo::Streamable
-
-    def initialize(query:, current_user:)
-      super
-      @query = query
-      @current_user = current_user
+class Queries::Projects::Filters::ProjectWorkspaceTypeFilter < Queries::Projects::Filters::Base
+  def allowed_values
+    @allowed_values ||= Project.workspace_types.map do |type, id|
+      [I18n.t("label_#{type}"), id.to_s]
     end
+  end
 
-    def portfolios
-      @query.results
-    end
+  def type
+    :list
+  end
+
+  def where
+    operator_strategy.sql_for_field(values, model.table_name, :workspace_type)
+  end
+
+  def self.key
+    :project_workspace_type
+  end
+
+  def human_name
+    I18n.t("activerecord.attributes.project.workspace_type")
   end
 end

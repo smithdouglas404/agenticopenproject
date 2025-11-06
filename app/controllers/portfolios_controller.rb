@@ -39,9 +39,11 @@ class PortfoliosController < ApplicationController
   # FIXME: remove
   no_authorization_required! :index
 
-  before_action :load_query_or_deny_access, only: %i[index]
+  # before_action :load_query_or_deny_access, only: %i[index]
 
   def index # rubocop:disable Metrics/AbcSize
+    @query = ProjectQueries::Static.query(ProjectQueries::Static::PORTFOLIO_ALL)
+
     respond_to do |format|
       format.html do
         flash.now[:error] = @query.errors.full_messages if @query.errors.any?
@@ -50,13 +52,13 @@ class PortfoliosController < ApplicationController
       end
 
       format.turbo_stream do
-        replace_via_turbo_stream(
-          component: Projects::IndexPageHeaderComponent.new(query: @query, current_user:, state: :show, params:)
-        )
-        update_via_turbo_stream(
-          component: Filter::FilterButtonComponent.new(query: @query, disable_buttons: false)
-        )
-        replace_via_turbo_stream(component: Projects::TableComponent.new(query: @query, current_user:, params:))
+        # replace_via_turbo_stream(
+        #   component: Projects::IndexPageHeaderComponent.new(query: @query, current_user:, state: :show, params:)
+        # )
+        # update_via_turbo_stream(
+        #   component: Filter::FilterButtonComponent.new(query: @query, disable_buttons: false)
+        # )
+        # replace_via_turbo_stream(component: Projects::TableComponent.new(query: @query, current_user:, params:))
 
         current_url = url_for(params.permit(:controller, :action, :query_id, :filters, :columns, :sortBy, :page, :per_page))
         turbo_streams << turbo_stream.push_state(current_url)
