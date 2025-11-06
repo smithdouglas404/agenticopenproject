@@ -151,100 +151,55 @@ module Storages
 
               after { delete_created_folders }
 
-              context "with newly created folders" do
-                it "sets permissions for project's (private with 3 members) folder according to member's roles",
-                   vcr: "sharepoint/set_permissions_service_multi_user_project" do
+              it "sets permissions for project's (private with 3 members) folder according to member's roles",
+                 vcr: "sharepoint/set_permissions_service_multi_user_project" do
+                service.call
+
+                expect(remote_permissions_for(project_storage))
+                  .to eq({ write: [admin_remote_identity.origin_user_id,
+                                   single_project_user_remote_identity.origin_user_id,
+                                   multiple_project_user_remote_identity.origin_user_id] })
+              end
+
+              it "sets permissions for project's (private with 1 members) folder according to member's roles",
+                 vcr: "sharepoint/set_permissions_service_single_user_project" do
+                service.call
+
+                expect(remote_permissions_for(disallowed_chars_project_storage))
+                  .to eq({ write: [admin_remote_identity.origin_user_id,
+                                   multiple_project_user_remote_identity.origin_user_id] })
+              end
+
+              it "on public projects allow read access for all users and write to admins",
+                 vcr: "sharepoint/set_permissions_service_public_project" do
+                service.call
+
+                expect(remote_permissions_for(public_project_storage))
+                  .to eq({ write: [admin_remote_identity.origin_user_id],
+                           read: [single_project_user_remote_identity.origin_user_id,
+                                  multiple_project_user_remote_identity.origin_user_id] })
+              end
+
+              context "when passing a project storages scope" do
+                subject(:service) { described_class.new(storage:, project_storages_scope:) }
+
+                let(:project_storages_scope) { ProjectStorage.where(id: [project_storage.id, unmanaged_project_storage.id]) }
+
+                it "sets permissions for the active managed project storages in scope",
+                   vcr: "sharepoint/set_permissions_service_project_storage_scoped" do
                   service.call
 
-                  expect(remote_permissions_for(project_storage))
-                    .to eq({ write: [admin_remote_identity.origin_user_id,
-                                     single_project_user_remote_identity.origin_user_id,
-                                     multiple_project_user_remote_identity.origin_user_id] })
-                end
-
-                it "sets permissions for project's (private with 1 members) folder according to member's roles",
-                   vcr: "sharepoint/set_permissions_service_single_user_project" do
-                  service.call
-
-                  expect(remote_permissions_for(disallowed_chars_project_storage))
-                    .to eq({ write: [admin_remote_identity.origin_user_id,
-                                     multiple_project_user_remote_identity.origin_user_id] })
-                end
-
-                it "on public projects allow read access for all users and write to admins",
-                   vcr: "sharepoint/set_permissions_service_public_project" do
-                  service.call
-
-                  expect(remote_permissions_for(public_project_storage))
-                    .to eq({ write: [admin_remote_identity.origin_user_id],
-                             read: [single_project_user_remote_identity.origin_user_id,
-                                    multiple_project_user_remote_identity.origin_user_id] })
-                end
-
-                context "when passing a project storages scope" do
-                  subject(:service) { described_class.new(storage:, project_storages_scope:) }
-
-                  let(:project_storages_scope) { ProjectStorage.where(id: [project_storage.id, unmanaged_project_storage.id]) }
-
-                  it "sets permissions for the active managed project storages in scope",
-                     vcr: "sharepoint/set_permissions_service_project_storage_scoped" do
-                    service.call
-
-                    expect(remote_permissions_for(project_storage)).not_to be_empty
-                    expect(remote_permissions_for(public_project_storage)).to be_empty
-                  end
+                  expect(remote_permissions_for(project_storage)).not_to be_empty
+                  expect(remote_permissions_for(public_project_storage)).to be_empty
                 end
               end
 
-              context "when users are already logged in", vcr: "sharepoint/sync_service_set_permissions" do
-                it "adds them to the project folder" do
-                  original_folder = create_folder_for(inactive_project_storage)
-                  inactive_project_storage.update(project_folder_id: original_folder.id)
-
-                  service.call
-
-                  expect(remote_permissions_for(project_storage))
-                    .to eq({ write: %w[f220e557-9477-47d5-94a7-672843be6b0a
-                                       a9023fd0-c421-4695-b83c-bb3ba67708d6
-                                       49abf87c-31df-47ef-858d-fbc801b0985a] })
-
-                  expect(remote_permissions_for(disallowed_chars_project_storage))
-                    .to include({ write: %w[248aeb72-b231-4e71-a466-67fa7df2a285 33db2c84-275d-46af-afb0-c26eb786b194] })
-
-                  expect(remote_permissions_for(inactive_project_storage)).to be_empty
-                end
-              end
-
-              context "when the project is public", vcr: "sharepoint/sync_service_public_project" do
-                before do
-                  # ensuring the project_folder_ids match the cassette
-                  project_storage.update!(project_folder_id: "01AZJL5PLBQEL7TBIV5FD2HOAR4LSCH3HF")
-                  disallowed_chars_project_storage.update!(project_folder_id: "01AZJL5PLTTFRO3FI2SNCK7AL6JV6CPSB6")
-                  public_project_storage.update!(project_folder_id: "01AZJL5PIISB6WZDU6AVCLDNEGCY22UULI")
-                end
-
-                it "allows any logged in user to read the files" do
-                  service.call
-
-                  expect(remote_permissions_for(public_project_storage))
-                    .to eq({ read: %w[248aeb72-b231-4e71-a466-67fa7df2a285 2ff33b8f-2843-40c1-9a17-d786bca17fba],
-                             write: ["33db2c84-275d-46af-afb0-c26eb786b194"] })
-                end
-              end
-
-              context "when the user is an admin", vcr: "sharepoint/sync_service_admin_access" do
-                before do
-                  # ensuring the project_folder_ids match the cassette
-                  project_storage.update!(project_folder_id: "01AZJL5PN33BSGWNSWKRHYXH74YI4QLSDH")
-                  disallowed_chars_project_storage.update!(project_folder_id: "01AZJL5PIXSSWKBU73FFGKZN6LXAULGDXO")
-                  public_project_storage.update!(project_folder_id: "01AZJL5PMDPQHEYW65ENB26FQNWK73Y7NU")
-                end
-
+              context "when the user is an admin", vcr: "sharepoint/set_permissions_service_admin_all_access" do
                 it "ensures they have full access to all folders" do
                   service.call
 
                   [project_storage, disallowed_chars_project_storage, public_project_storage].each do |ps|
-                    expect(remote_permissions_for(ps)[:write]).to include("33db2c84-275d-46af-afb0-c26eb786b194")
+                    expect(remote_permissions_for(ps)[:write]).to include(admin_remote_identity.origin_user_id)
                   end
                 end
               end
@@ -255,21 +210,14 @@ module Storages
                 before { allow(Rails.logger).to receive_messages(%i[error warn]) }
 
                 context "when setting permission fails" do
-                  before do
-                    # ensuring the project_folder_ids match the cassette
-                    project_storage.update!(project_folder_id: "01AZJL5POLGVTUAI3545DJ6CN24YVYIGMV")
-                    disallowed_chars_project_storage.update!(project_folder_id: "01AZJL5PNQGJLKUIKERBFKYNTB732KYF3V")
-                    public_project_storage.update!(project_folder_id: "01AZJL5PIYDDYS33Z4T5E2GODLZ2ABLOFV")
-                  end
-
-                  it "logs the occurrence", vcr: "sharepoint/sync_service_fail_add_user" do
+                  it "logs the occurrence", vcr: "sharepoint/set_permissions_service_invalid_user" do
                     single_project_user_remote_identity.update(origin_user_id: "my_name_is_mud")
 
                     service.call
                     expect(Rails.logger)
                       .to have_received(:error)
                             .with(error_code: :bad_request,
-                                  data: { body: /noResolvedUsers/, status: Integer }).twice
+                                  data: { body: /One or more users could/, status: Integer }).twice
                   end
                 end
               end
