@@ -74,8 +74,9 @@ module MeetingAgendaItems
         dismiss_scheme: :none
       ) do
         if @meeting.template?
+          draft = @meeting.draft? ? "draft_" : ""
           t(
-            "recurring_meeting.template.banner_html",
+            "recurring_meeting.template.#{draft}banner_html",
             link: link_to(
               @meeting.recurring_meeting.title,
               project_recurring_meeting_path(@meeting.project, @meeting.recurring_meeting)

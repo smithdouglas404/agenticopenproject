@@ -42,7 +42,8 @@ RSpec.describe "Recurring meetings creation",
   shared_let(:user) do
     create(:user,
            lastname: "First",
-           member_with_permissions: { project => %i[view_meetings create_meetings edit_meetings delete_meetings] }).tap do |u|
+           member_with_permissions: { project => %i[view_meetings create_meetings edit_meetings delete_meetings
+                                                    manage_agendas] }).tap do |u|
       u.pref[:time_zone] = "Etc/UTC"
 
       u.save!
@@ -75,7 +76,6 @@ RSpec.describe "Recurring meetings creation",
 
   context "with a user with permissions" do
     it "can create a recurring meeting" do
-      pending "needs specification"
       login_as current_user
       meetings_page.visit!
       expect(page).to have_current_path(meetings_page.path)
@@ -95,14 +95,14 @@ RSpec.describe "Recurring meetings creation",
       meetings_page.set_end_after "a specific date"
       meetings_page.set_end_date "2025-01-15"
 
-      sleep 0.5 # quick fix as wait_for_network_idle isn't working all the time
-      expect(page).to have_text "Every week on Tuesday at 01:30 PM"
+      # quick fix as wait_for_network_idle isn't working all the time
+      expect(page).to have_text("Every week on Tuesday at 01:30 PM", wait: 2)
 
       click_on "Create meeting"
       wait_for_network_idle
       expect_and_dismiss_flash(type: :success, message: "Successful creation.")
 
-      # Use is redirected to the template
+      # User is redirected to the template
       expect(page).to have_current_path(project_meeting_path(project, meeting.template))
       expect(page).to have_content(I18n.t("recurring_meeting.template.description"))
 
@@ -125,10 +125,17 @@ RSpec.describe "Recurring meetings creation",
       perform_enqueued_jobs
       expect(ActionMailer::Base.deliveries.size).to eq 0
 
-      expect(page).to have_link("Open first meeting")
+      # Before exiting draft mode, user is always redirected to the template
+      show_page.visit!
+      expect(page).to have_current_path(project_meeting_path(project, meeting.template))
 
-      click_link_or_button "Open first meeting"
+      expect(page).to have_css("#meetings-side-panel-state-component")
+
+      template_page.open_first_meeting
       wait_for_network_idle
+
+      # State component is only visible for draft mode in a template
+      expect(page).to have_no_selector("#meetings-side-panel-state-component")
 
       # Sends out an invitation to the series
       show_page.visit!

@@ -413,6 +413,10 @@ en:
         You are currently editing a template of a meeting series: %{link}.
         Every new occurrence of a meeting in the series will use this template.
         Changes will not affect past or already-created meetings.
+      draft_banner_html: >
+        You are currently editing a template of a meeting series: %{link}.
+        Every new occurrence of a meeting in the series will use this template.
+        Changes will not affect past or already-created meetings.
         No email invites will be sent in this current draft mode until you open the first meeting.
     frequency:
       x_daily:

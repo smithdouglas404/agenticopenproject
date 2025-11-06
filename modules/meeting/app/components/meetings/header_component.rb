@@ -80,6 +80,7 @@ module Meetings
         mobile_label: action_button_label,
         mobile_icon: :check,
         size: :medium,
+        id: "open-meeting-button",
         data: {
           action: "click->meetings--submit#intercept",
           href: action_button_href,

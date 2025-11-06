@@ -35,22 +35,26 @@ class RecurringMeetingsController < ApplicationController
     end
   end
 
-  def new
-    @recurring_meeting = RecurringMeeting.new(project: @project)
-  end
-
   def show
-    if @direction == "past"
-      @meetings = @recurring_meeting.scheduled_instances(upcoming: false).limit(@count)
+    if @recurring_meeting.template.draft?
+      redirect_to meeting_path(@recurring_meeting.template)
     else
-      @meetings, @planned_meetings = upcoming_meetings(count: @count)
-    end
+      if @direction == "past"
+        @meetings = @recurring_meeting.scheduled_instances(upcoming: false).limit(@count)
+      else
+        @meetings, @planned_meetings = upcoming_meetings(count: @count)
+      end
 
-    respond_to do |format|
-      format.html do
-        render :show, locals: { menu_name: project_or_global_menu }
+      respond_to do |format|
+        format.html do
+          render :show, locals: { menu_name: project_or_global_menu }
+        end
       end
     end
+  end
+
+  def new
+    @recurring_meeting = RecurringMeeting.new(project: @project)
   end
 
   def init

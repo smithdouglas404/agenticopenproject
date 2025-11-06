@@ -50,7 +50,8 @@ RSpec.describe "Recurring meetings complete template",
   let(:current_user) { user }
   let(:show_page) { Pages::RecurringMeeting::Show.new(recurring_meeting).with_capybara_page(page) }
   let(:request) do
-    post template_completed_project_recurring_meeting_path(project, recurring_meeting), as: :turbo_stream
+    post template_completed_project_recurring_meeting_path(project, recurring_meeting), as: :turbo_stream,
+                                                                                        params: { meeting: { notify: "1" } }
   end
 
   subject do

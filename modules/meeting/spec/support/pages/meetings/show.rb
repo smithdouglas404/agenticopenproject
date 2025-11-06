@@ -597,6 +597,17 @@ module Pages::Meetings
       end
     end
 
+    def open_first_meeting
+      page.within("#meetings-side-panel-state-component") do
+        click_on("Open first meeting")
+      end
+
+      expect(page).to have_dialog(I18n.t("text_exit_draft_mode_dialog_template_title"))
+      page.within_dialog(I18n.t("text_exit_draft_mode_dialog_template_title")) do
+        click_on "Open meeting"
+      end
+    end
+
     def start_meeting
       page.within("#meetings-side-panel-state-component") do
         click_on("Start meeting")
