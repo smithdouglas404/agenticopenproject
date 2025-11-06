@@ -468,6 +468,7 @@ en:
       search:
         label: Portfolio name filter
         placeholder: Search portfolios
+      empty: "There are no portfolios."
 
   projects:
     copy:

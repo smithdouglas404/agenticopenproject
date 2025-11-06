@@ -1,0 +1,11 @@
+<%=
+  flex_layout do |flex|
+    flex.with_row do
+      flex_layout do |header|
+        header.with_row do
+          link_to @portfolio.name, project_overview_path(@portfolio)
+        end
+      end
+    end
+  end
+%>

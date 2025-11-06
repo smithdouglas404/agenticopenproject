@@ -1,34 +1,36 @@
-<%= component_wrapper(tag: "turbo-frame") do
-  flex_layout do |index_container|
-    index_container.with_row do
-      render(
-        border_box_container(
-          mb: 4, data: {
-          # TODO
-          "test-selector": "op-admin-oauth--built-in-applications"
-        }
-        )
-      ) do |component|
-
-        if portfolios.empty?
-          # TODO
-          component.with_row do
-            render(
-              Primer::Beta::Text.new(
-                data: {
-                  "test-selector": "op-admin-oauth--built-in-applications-placeholder"
-                }
-              )
-            ) do
-              t("oauth.empty_application_lists")
+<%=
+  component_wrapper(tag: "turbo-frame") do
+    flex_layout do |index_container|
+      index_container.with_row do
+        render(
+          border_box_container(
+            mb: 4,
+            data: {
+              "test-selector": "op-portfolios--portfolios"
+            }
+          )
+        ) do |component|
+          if portfolios.empty?
+            component.with_row do
+              render(
+                Primer::Beta::Text.new(
+                  data: {
+                    "test-selector": "op-portfolios--portfolios-placeholder"
+                  }
+                )
+              ) do
+                t("portfolios.index.empty")
+              end
             end
           end
-        end
 
-        portfolios.each do |portfolio|
-          component.with_row { portfolio.name }
+          portfolios.each do |portfolio|
+            component.with_row do
+              render(Portfolios::PreviewComponent.new(portfolio:, current_user: @current_user))
+            end
+          end
         end
       end
     end
   end
-end %>
+%>
