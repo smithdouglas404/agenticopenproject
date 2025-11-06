@@ -505,7 +505,7 @@ In OpenProject, a watcher is a [user](#user) who receives [notifications](#notif
 
 ### Weighted item list
 
-In OpenProject, a Weighted item list can be used as both [custom field](#custom-field) and [project attribute](#project-attribute) and is available as [Enterprise add-on](#enterprise-add-on). It allows adding items as a hierarchy, together with underlying numerical values. This can be helpful for project evaluation, but also used for other purposes.
+In OpenProject, a Weighted item list can be used both as a [custom field](#custom-field) and as a [project attribute](#project-attribute) and is available as an [Enterprise add-on](#enterprise-add-on). It allows adding items as a hierarchy, together with underlying numerical values. This can be helpful for project evaluation, but also used for other purposes.
 
 ### Widget
 
