@@ -53,7 +53,8 @@ module Meetings
       def update_header_via_turbo_stream
         update_via_turbo_stream(
           component: Meetings::PresentationMode::HeaderComponent.new(
-            meeting: @meeting
+            meeting: @meeting,
+            current_item: @meeting_agenda_item
           )
         )
       end

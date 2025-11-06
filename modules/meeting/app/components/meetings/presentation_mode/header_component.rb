@@ -33,10 +33,17 @@ module Meetings
     class HeaderComponent < ApplicationComponent
       include OpTurbo::Streamable
 
-      def initialize(meeting:)
+      attr_reader :meeting, :current_item
+
+      def initialize(meeting:, current_item:)
         super()
 
         @meeting = meeting
+        @current_item = current_item
+      end
+
+      def current_section
+        current_item&.meeting_section
       end
     end
   end

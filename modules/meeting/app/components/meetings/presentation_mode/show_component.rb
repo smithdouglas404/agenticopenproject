@@ -35,6 +35,8 @@ module Meetings
       include OpTurbo::Streamable
       include OpPrimer::ComponentHelpers
 
+      attr_reader :meeting
+
       def initialize(meeting:, sorted_agenda_item_ids:, current_id: nil, started_at: nil)
         super()
 

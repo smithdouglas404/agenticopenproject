@@ -51,12 +51,14 @@ RSpec.describe "Meeting Presentation Mode",
            author: user
   end
 
-  shared_let(:meeting_section) { create(:meeting_section, meeting:, position: 1) }
-  shared_let(:first_agenda_item) { create(:meeting_agenda_item, meeting:, meeting_section:, title: "First Item", position: 1) }
-  shared_let(:second_agenda_item) { create(:meeting_agenda_item, meeting:, meeting_section:, title: "Second Item", position: 2) }
+  shared_let(:first_meeting_section) { create(:meeting_section, meeting:, title: "Blockers", position: 1) }
+  shared_let(:second_meeting_section) { create(:meeting_section, meeting:, title: "Other topics", position: 2) }
+  shared_let(:first_agenda_item) { create(:meeting_agenda_item, meeting:, meeting_section: first_meeting_section, title: "First Item", position: 1) }
+  shared_let(:second_agenda_item) { create(:meeting_agenda_item, meeting:, meeting_section: first_meeting_section, title: "Second Item", position: 2) }
+  shared_let(:third_agenda_item) { create(:meeting_agenda_item, meeting:, meeting_section: second_meeting_section, title: "Third Item", position: 1) }
 
   let(:show_page) { Pages::Meetings::Show.new(meeting) }
-  let(:editor) { Components::WysiwygEditor.new "#meetings-presentation-component", "opce-ckeditor-augmented-textarea" }
+  let(:editor) { Components::WysiwygEditor.new "#op-meeting-presentation-content", "opce-ckeditor-augmented-textarea" }
 
   def outcome_field_for(agenda_item)
     TextEditorField.new(page, "Outcome", selector: test_selector("meeting-outcome-input-for-#{agenda_item.id}"))
@@ -85,25 +87,67 @@ RSpec.describe "Meeting Presentation Mode",
     expect(page).to have_text("First Item")
     expect(page).to have_link("Next")
     expect(page).to have_button("Previous", disabled: true)
-    expect(page).to have_text("1 of 2")
+    expect(page).to have_text("1 of 3")
+
+    within_test_selector("meeting-presentation-header") do
+      expect(page).to have_text("Blockers")
+    end
+
+    within_test_selector("meeting-presentation-footer") do
+      expect(page).to have_text("Second Item")
+      expect(page).to have_no_text("Blockers")
+      expect(page).to have_no_text("Other topics")
+    end
 
     # 1. Navigate between agenda items
     click_link_or_button "Next"
 
-    expect(page).to have_text("Second Item")
-    expect(page).to have_no_text("First Item")
-    expect(page).to have_link("Previous")
-    expect(page).to have_button("Next", disabled: true)
-    expect(page).to have_text("2 of 2")
+    within_test_selector("meeting-presentation-agenda-item") do
+      expect(page).to have_text("Second Item")
+      expect(page).to have_no_text("First Item")
+    end
+
+    within_test_selector("meeting-presentation-footer") do
+      expect(page).to have_text("First Item")
+      expect(page).to have_text("Third Item")
+      expect(page).to have_no_text("Blockers")
+      expect(page).to have_text("Other topics")
+      expect(page).to have_link("Previous")
+      expect(page).to have_link("Next")
+    end
+
+    expect(page).to have_text("2 of 3")
+
+    # 1. Navigate between agenda items
+    click_link_or_button "Next"
+
+    within_test_selector("meeting-presentation-agenda-item") do
+      expect(page).to have_text("Third Item")
+      expect(page).to have_no_text("First Item")
+      expect(page).to have_no_text("Second Item")
+    end
+
+    # On third item, footer shows second item and first item
+    within_test_selector("meeting-presentation-footer") do
+      # Shows second item with section
+      expect(page).to have_text("Second Item")
+      expect(page).to have_text("Blockers")
+
+      # Doesn't show first item or current section
+      expect(page).to have_no_text("First Item")
+      expect(page).to have_no_text("Other topics")
+      expect(page).to have_link("Previous")
+      expect(page).to have_button("Next", disabled: true)
+    end
+
+    expect(page).to have_text("3 of 3")
 
     click_link_or_button "Previous"
+    expect(page).to have_text("2 of 3")
 
-    expect(page).to have_text("First Item")
-    expect(page).to have_no_text("Second Item")
-    expect(page).to have_link("Next")
+    click_link_or_button "Previous"
+    expect(page).to have_text("1 of 3")
     expect(page).to have_button("Previous", disabled: true)
-
-    expect(page).to have_text("1 of 2")
 
     # 2. Edit an agenda item (add notes)
     item = MeetingAgendaItem.find(first_agenda_item.id)
@@ -152,6 +196,39 @@ RSpec.describe "Meeting Presentation Mode",
 
     # Verify we're back on the show page
     expect(page).to have_current_path(project_meeting_path(project, meeting), ignore_query: true)
+  end
+
+  it "automatically refreshes when things get updated" do
+    visit project_meeting_presentation_path(project, meeting)
+    expect(page).to have_css(".op-meeting-presentation")
+    expect(page).to have_text("Sprint Planning")
+    expect(page).to have_text("First Item")
+
+    # In the background, update the first agenda item
+    MeetingAgendaItems::UpdateService
+      .new(model: first_agenda_item, user: User.system)
+      .call(title: "Updated Item")
+      .on_failure { |result| raise "Failed to update agenda item in background: #{result.errors.full_messages}" }
+
+    # In the background, delete the second item
+    # so that the "new" second item is now the third one
+    MeetingAgendaItems::DeleteService
+      .new(model: second_agenda_item, user: User.system)
+      .call
+      .on_failure { |result| raise "Failed to update agenda item in background: #{result.errors.full_messages}" }
+
+    # Wait for the changes to appear
+    expect(page).to have_text("Updated Item", wait: 10)
+    expect(page).to have_no_text("Second Item")
+
+    # On third item, footer shows second item and first item
+    within_test_selector("meeting-presentation-footer") do
+      # Shows second item with section
+      expect(page).to have_text("Third Item")
+      expect(page).to have_text("Other topics")
+      expect(page).to have_no_text("Second Item")
+      expect(page).to have_no_text("Blockers")
+    end
   end
 
   context "with an empty meeting" do

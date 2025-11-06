@@ -5,31 +5,25 @@
         zen_mode_autostart_value: @initial,
         poll_for_changes_continuous_value: true,
         poll_for_changes_url_value: check_for_updates_project_meeting_presentation_path(
-          @meeting.project,
-          @meeting,
+          meeting.project,
+          meeting,
           meeting_agenda_item_id: current_item.id,
           started_at: started_at_param
         ),
         poll_for_changes_interval_value: check_for_updates_interval,
       }
     ) do %>
-  <%= render Meetings::PresentationMode::HeaderComponent.new(meeting: @meeting) %>
   <%= content_tag :div,
                   id: "op-meeting-presentation-content",
                   class: "op-meeting-presentation--content",
                   data: {
                     controller: "meetings--submit",
                     poll_for_changes_target: "reference",
-                    reference_value: @meeting.changed_hash
+                    reference_value: meeting.changed_hash
                   } do %>
-    <div class="op-meeting-presentation--header">
-      <div class="op-meeting-presentation--header-title">
-        <%= render(Primer::Beta::Text.new(color: :subtle)) { MeetingSection.model_name.human } %>:
-        <%= render(Primer::Beta::Text.new(font_weight: :bold, color: :subtle)) { current_section.title } %>
-      </div>
-    </div>
+    <%= render Meetings::PresentationMode::HeaderComponent.new(meeting:, current_item:) %>
 
-    <%= render(border_box_container) do |container| %>
+    <%= render(border_box_container(test_selector: "meeting-presentation-agenda-item")) do |container| %>
       <%= render MeetingAgendaItems::ItemComponent.new(
         container:,
         meeting_agenda_item: current_item,
@@ -39,7 +33,7 @@
   <% end %>
 
   <%= render Meetings::PresentationMode::FooterComponent.new(
-    meeting: @meeting,
+    meeting: meeting,
     sorted_agenda_item_ids: @agenda_item_ids,
     current_item: current_item,
     started_at: @started_at

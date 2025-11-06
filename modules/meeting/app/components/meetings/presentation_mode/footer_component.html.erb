@@ -1,4 +1,5 @@
-<%= component_wrapper(class: "op-meeting-presentation--footer") do %>
+<%= component_wrapper(class: "op-meeting-presentation--footer",
+                      data: { "test-selector": "meeting-presentation-footer" }) do %>
   <div class="op-meeting-presentation--footer-left">
     <%= render(Primer::Beta::Button.new(
       tag: :a,
