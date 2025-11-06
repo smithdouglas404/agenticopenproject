@@ -64,7 +64,7 @@ RSpec.describe WorkPackage do
   end
 
   let(:values) { work_package.custom_value_for(custom_field) }
-  let(:typed_values) { work_package.typed_custom_value_for(custom_field.id) }
+  let(:typed_values) { work_package.typed_custom_value_for(custom_field) }
 
   it "returns the properly typed values" do
     expect(values.map(&:value)).to eq(custom_values)

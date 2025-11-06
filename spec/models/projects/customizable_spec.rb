@@ -118,6 +118,11 @@ RSpec.describe Project, "customizable" do
     end
 
     describe "#custom_field_values and #custom_value_for" do
+      it "raises an ArgumentError when a non custom field argument is provided" do
+        expect { project.custom_value_for("invalid") }
+          .to raise_error(ArgumentError, /Expected a CustomField, got String/)
+      end
+
       context "when no custom fields are mapped to this project" do
         it "#custom_value_for returns nil" do
           expect(project.custom_value_for(text_custom_field))

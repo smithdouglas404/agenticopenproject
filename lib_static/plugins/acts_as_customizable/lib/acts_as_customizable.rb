@@ -162,19 +162,20 @@ module Redmine
           custom_field_values.reject(&:admin_only?)
         end
 
-        def custom_value_for(c)
-          field_id = (c.is_a?(CustomField) ? c.id : c.to_i)
-          values = custom_field_values.select { |v| v.custom_field_id == field_id }
+        def custom_value_for(custom_field)
+          raise ArgumentError, "Expected a CustomField, got #{custom_field.class}" unless custom_field.is_a?(CustomField)
 
-          if values.size > 1
+          values = custom_field_values.select { |v| v.custom_field_id == custom_field.id }
+
+          if values.size > 1 && custom_field.multi_value?
             values.sort_by { |v| v.id.to_i } # need to cope with nil
           else
             values.first
           end
         end
 
-        def typed_custom_value_for(c)
-          cvs = custom_value_for(c)
+        def typed_custom_value_for(custom_field)
+          cvs = custom_value_for(custom_field)
 
           case cvs
           when Array
@@ -186,8 +187,8 @@ module Redmine
           end
         end
 
-        def formatted_custom_value_for(c)
-          cvs = custom_value_for(c)
+        def formatted_custom_value_for(custom_field)
+          cvs = custom_value_for(custom_field)
 
           case cvs
           when Array

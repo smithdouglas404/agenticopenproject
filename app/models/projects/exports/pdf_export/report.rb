@@ -195,7 +195,7 @@ module Projects::Exports::PDFExport
     end
 
     def write_formattable_custom_field(project, custom_field)
-      custom_field_value = project.custom_value_for(custom_field.id)
+      custom_field_value = project.custom_value_for(custom_field)
       write_project_markdown custom_field_value.value, custom_field.name
     end
 
