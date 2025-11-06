@@ -55,6 +55,7 @@ import { DayResourceService } from 'core-app/core/state/days/day.service';
 import allLocales from '@fullcalendar/core/locales-all';
 import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { ensureId, generateId } from 'core-app/shared/helpers/dom-helpers';
 
 interface TimeEntrySchema extends SchemaResource {
   activity:IFieldSchema;
@@ -534,23 +535,27 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
 
     const schema = (await this.schemaCache.ensureLoaded(entry as TimeEntryResource)) as TimeEntrySchema;
 
-    const tooltip = document.createElement('tool-tip');
-    tooltip.textContent = this.tooltipContentString(event.event.extendedProps.entry as TimeEntryResource, schema);
-    event.el.appendChild(tooltip);
+    const forEl = event.el;
+    const forId = ensureId(forEl);
 
-    // TODO: port tooltips
-    // jQuery(event.el).tooltip({
-    //   content: this.tooltipContentString(event.event.extendedProps.entry as TimeEntryResource, schema),
-    //   items: '.fc-event',
-    //   close() {
-    //     document.querySelectorAll('.ui-helper-hidden-accessible').forEach(element => element.remove());
-    //   },
-    //   track: true,
-    // });
+    const tooltip = document.createElement('tool-tip');
+    tooltip.innerHTML = this.tooltipContentString(event.event.extendedProps.entry as TimeEntryResource, schema);
+    tooltip.id = generateId('tooltip');
+    tooltip.setAttribute('for', forId);
+    tooltip.setAttribute('popover', 'manual');
+    tooltip.setAttribute('data-type', 'description');
+    tooltip.classList.add('position-absolute');
+
+    event.el.appendChild(tooltip);
   }
 
   private removeTooltip(event:CalendarViewEvent):void {
-    // TODO: port tooltips
+    const forId = event.el.id;
+    if (!forId) {
+      return;
+    }
+
+    document.querySelector(`tool-tip[for="${forId}"]`)?.remove();
   }
 
   private prependDuration(event:CalendarViewEvent):void {
