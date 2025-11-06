@@ -95,7 +95,7 @@ A board in OpenProject is a view that allows you to see your work packages as ca
 
 ### Calculated value
 
-Calculated value is a [project attribute](#project-attribute) in OpenProject and available as [Enterprise add-on](#enterprise-add-on). It enables automatic automatic computations based on formulas using numeric project attributes. This is very helpful for project scoring and evaluation. [Read more about calculated values in our system admin guide](../system-admin-guide/projects/project-attributes/#calculated-value-project-attribute-enterprise-add-on).
+A Calculated value is a [project attribute](#project-attribute) in OpenProject and available as [Enterprise add-on](#enterprise-add-on). It enables automatic automatic computations based on formulas using numeric project attributes. This is very helpful for project scoring and evaluation. [Read more about calculated values in our system admin guide](../system-admin-guide/projects/project-attributes/#calculated-value-project-attribute-enterprise-add-on).
 
 ### CAPTCHA
 
