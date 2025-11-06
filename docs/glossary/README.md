@@ -501,7 +501,7 @@ Versions in OpenProject are defined as an attribute for [work packages](#work-pa
 
 ### Watcher
 
-In OpenProject, a watcher is a [user](#user) who receives [notifications](#notifications) about updates or changes to a specific [work package](#work-package), even if they are not the assignee or responsible person. Watching a work package helps users stay informed about its progress, comments, or status changes without actively participating in the task. Users can choose to watch a work package themselves or be added as watchers by other project members with sufficient permissions.
+In OpenProject, a watcher is a [user](#user) who receives [notifications](#notifications) about updates or changes to a specific [work package](#work-package), even if they are not the assignee or the accountable. Watching a work package helps users stay informed about its progress, comments, or status changes without actively participating in the task. Users can choose to watch a work package themselves or be added as watchers by other project members with sufficient permissions.
 
 ### Weighted item list
 
