@@ -321,7 +321,7 @@ de:
     placeholder_version_select: "Zunächst muss ein Arbeitspaket oder ein Projekt ausgewählt werden"
     calculated_field_not_editable: "Nicht editierbares Attribut. Dieser Wert wird automatisch berechnet."
     instructions:
-      is_required: "Markieren Sie das benutzerdefinierte Feld als erforderlich. Dadurch wird das Ausfüllen des Feldes bei der Erstellung neuer oder der Aktualisierung bestehender Felder obligatorisch. Bestehende Felder müssen bei einer Aktualisierung nicht ausgefüllt werden."
+      is_required: "Markieren Sie das benutzerdefinierte Feld als erforderlich. Dadurch wird das Ausfüllen des Feldes bei der Erstellung neuer Felder obligatorisch. Bei der Aktualisierung bestehender Felder wird kein Wert benötigt."
       is_required_for_project: "Aktivieren Sie dieses Attribut und machen Sie es in allen Projekten erforderlich. Es kann für einzelne Projekte nicht deaktiviert werden. Bestehende Projekte benötigen keinen Wert, wenn sie aktualisiert werden."
       is_for_all: "Markieren Sie das benutzerdefinierte Feld als verfügbar in allen bestehenden und neuen Projekten."
       multi_select: "Ermöglicht dem Benutzer, diesem benutzerdefinierten Feld mehrere Werte zuzuweisen."

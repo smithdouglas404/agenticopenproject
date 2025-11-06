@@ -63,6 +63,7 @@ fa:
   label_document_title: "عنوان"
   label_document_description: "توضیحات"
   label_document_category: "Category"
+  label_document_type: "Type"
   permission_manage_documents: "مدیریت اسناد"
   permission_view_documents: "دیدن اسناد"
   project_module_documents: "اسناد"

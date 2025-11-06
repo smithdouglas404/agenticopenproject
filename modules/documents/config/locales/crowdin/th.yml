@@ -63,6 +63,7 @@ th:
   label_document_title: "ชื่อเรื่อง"
   label_document_description: "คำอธิบาย"
   label_document_category: "ประเภท"
+  label_document_type: "Type"
   permission_manage_documents: "Manage documents"
   permission_view_documents: "View documents"
   project_module_documents: "Documents"

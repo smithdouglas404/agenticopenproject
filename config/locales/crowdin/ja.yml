@@ -322,7 +322,7 @@ ja:
     placeholder_version_select: "最初にワークパッケージまたはプロジェクトの選択が必要です"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources. Existing resources will not require a value when being updated."
+      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
       is_for_all: "既存および新規のすべてのプロジェクトで利用可能なカスタムフィールドとしてマークします。"
       multi_select: "ユーザーがこのカスタムフィールドに複数の値を割り当てることを許可します。"

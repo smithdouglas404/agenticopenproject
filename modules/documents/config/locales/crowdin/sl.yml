@@ -63,6 +63,7 @@ sl:
   label_document_title: "Naslov"
   label_document_description: "Opis"
   label_document_category: "Kategorija"
+  label_document_type: "Type"
   permission_manage_documents: "Uredi dokumente"
   permission_view_documents: "Poglej dokumente"
   project_module_documents: "Dokumenti"

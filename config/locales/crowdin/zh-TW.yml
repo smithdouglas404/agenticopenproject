@@ -323,7 +323,7 @@ zh-TW:
     placeholder_version_select: "需要先選擇工作套件或專案"
     calculated_field_not_editable: "不可編輯屬性。此值會自動計算。"
     instructions:
-      is_required: "將自訂欄位標記為必填。這將使您在建立新資源或更新現有資源時，必須填寫該欄位。更新現有資源時則不需要填寫值。"
+      is_required: "將自訂欄位標記為必填。這將使您在建立新資源時必須填寫該欄位。更新現有資源時則不需要填寫值。"
       is_required_for_project: "勾選以啟用此屬性，並使其成為所有專案的必要屬性。個別專案無法停用。現有專案更新時將不需要此值。"
       is_for_all: "將客製欄位標記為「所有現有專案」和「新專案」中可用。"
       multi_select: "允許使用者為此自訂欄位指定多個值。"

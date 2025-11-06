@@ -63,6 +63,7 @@ ar:
   label_document_title: "العنوان"
   label_document_description: "الوصف"
   label_document_category: "الفئة"
+  label_document_type: "Type"
   permission_manage_documents: "إدارة الوثائق"
   permission_view_documents: "عرض الوثائق"
   project_module_documents: "الوثائق"

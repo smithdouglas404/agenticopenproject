@@ -321,7 +321,7 @@ uk:
     placeholder_version_select: "Спочатку потрібно вибрати пакет робіт або проєкт"
     calculated_field_not_editable: "Атрибут не підлягає редагуванню. Його значення обчислюється автоматично."
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources. Existing resources will not require a value when being updated."
+      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
       is_for_all: "Позначте користувацьке поле як доступне в усіх наявних і нових проєктах."
       multi_select: "Дає змогу користувачу задавати кілька значень цього користувацького поля."

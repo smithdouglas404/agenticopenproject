@@ -63,6 +63,7 @@ ms:
   label_document_title: "Tajuk"
   label_document_description: "Deskripsi"
   label_document_category: "Kategori"
+  label_document_type: "Type"
   permission_manage_documents: "Urus dokumen"
   permission_view_documents: "Lihat dokumen"
   project_module_documents: "Dokumen"

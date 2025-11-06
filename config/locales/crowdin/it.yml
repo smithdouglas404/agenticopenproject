@@ -322,7 +322,7 @@ it:
     placeholder_version_select: "Prima è necessario selezionare la macro-attività o il progetto"
     calculated_field_not_editable: "Attributo non modificabile. Questo valore viene calcolato automaticamente."
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources. Existing resources will not require a value when being updated."
+      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
       is_for_all: "Contrassegna il campo personalizzato come disponibile in tutti i progetti esistenti e nuovi."
       multi_select: "Consente all'utente di assegnare più valori a questo campo personalizzato."

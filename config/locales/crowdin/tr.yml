@@ -325,7 +325,7 @@ tr:
     placeholder_version_select: "Öncelikle iş paketi veya proje seçimi gereklidir"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources. Existing resources will not require a value when being updated."
+      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
       is_for_all: "Özel alanı tüm mevcut ve yeni projelerde kullanılabilir olarak işaretleyin."
       multi_select: "Kullanıcının bu özel alana birden fazla değer atamasına izin verir."

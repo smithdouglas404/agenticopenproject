@@ -63,6 +63,7 @@ bg:
   label_document_title: "Заглавие"
   label_document_description: "Описание"
   label_document_category: "Категория"
+  label_document_type: "Type"
   permission_manage_documents: "Управление на документите"
   permission_view_documents: "Преглед на документите"
   project_module_documents: "Документи"
