@@ -105,7 +105,7 @@
     "@knowledgecode/delegate": "^0.8.5",
     "@kolkov/ngx-gallery": "^2.0.1",
     "@mantine/core": "^8.3.6",
-    "@mantine/hooks": "^8.3.5",
+    "@mantine/hooks": "^8.3.6",
     "@mantine/utils": "^6.0.22",
     "@ng-select/ng-option-highlight": "^20.6.3",
     "@ng-select/ng-select": "^20.1.0",
