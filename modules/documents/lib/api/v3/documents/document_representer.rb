@@ -43,6 +43,14 @@ module API
 
         self_link title_getter: ->(*) { represented.title }
 
+        link :update,
+             cache_if: -> { current_user.allowed_in_project?(:manage_documents, represented.project) } do
+          {
+            href: api_v3_paths.document(represented.id),
+            method: :patch
+          }
+        end
+
         property :id
 
         property :title
