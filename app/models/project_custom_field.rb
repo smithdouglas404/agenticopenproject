@@ -78,9 +78,15 @@ class ProjectCustomField < CustomField
 
     already_activated_in_project_ids = ProjectCustomFieldProjectMapping.where(custom_field_id: id).pluck(:project_id)
 
-    mappings = Project.where.not(id: already_activated_in_project_ids).map do |project|
-      { project_id: project.id, custom_field_id: id }
+    mappings = Project.where.not(id: already_activated_in_project_ids).pluck(:id).map do |project_id|
+      { project_id:, custom_field_id: id }
     end
-    ProjectCustomFieldProjectMapping.create!(mappings)
+
+    if mappings.any?
+      ProjectCustomFieldProjectMapping.upsert_all(
+        mappings,
+        unique_by: %i[custom_field_id project_id]
+      )
+    end
   end
 end
