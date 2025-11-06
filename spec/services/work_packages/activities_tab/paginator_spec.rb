@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe WorkPackages::ActivitiesTab::Paginator do
+RSpec.describe WorkPackages::ActivitiesTab::Paginator, with_settings: { journal_aggregation_time_minutes: 0 } do
   shared_let(:user) { create(:admin) }
   shared_let(:project) { create(:project) }
   shared_let(:work_package) { create(:work_package, :created_in_past, project:, author: user, created_at: 4.days.ago) }
@@ -348,49 +348,38 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator do
       end
 
       context "with attribute changes" do
-        before do
-          # Create journal with attribute change
+        let!(:journal_with_attribute_change) do
           work_package.subject = "Updated subject"
           work_package.save!
+          work_package.journals.order(:version).last
         end
 
         it "includes journals with attribute changes" do
           _pagy, records = paginator.call
 
-          changed_journal = work_package.journals.order(:version).last
-          expect(records.map(&:id)).to include(changed_journal.id)
+          changes = journal_with_attribute_change.reload.get_changes
+          expect(changes).to have_key("subject")
+          expect(records.map(&:id)).to include(journal_with_attribute_change.id)
         end
       end
 
-      context "with only notes (no attribute changes)" do
+      context "with only notes added (no attribute/association changes)" do
         let!(:notes_only_journal) do
-          journal = work_package.journals.last
-          journal.update_column(:notes, "Just a comment")
-          journal
-        end
-
-        it "may include journals with only notes (acceptable false positive)" do
-          _pagy, records = paginator.call
-
-          expect(records).not_to be_empty
-        end
-      end
-
-      context "with attachment changes" do
-        before do
-          work_package.attachments << create(:attachment)
+          work_package.add_journal(notes: "Comment only")
           work_package.save!
+          work_package.journals.order(:version).last
         end
 
-        it "includes journals with attachment changes" do
+        it "excludes journals with only notes (no actual changes to track)" do
           _pagy, records = paginator.call
 
-          attachment_journal = work_package.journals.order(:version).last
-          expect(records.map(&:id)).to include(attachment_journal.id)
+          changes = notes_only_journal.reload.get_changes
+          expect(changes).to eq({}) # no changes
+          expect(records.map(&:id)).not_to include(notes_only_journal.id)
         end
       end
 
-      context "with cause attribute" do
+      context "with cause change" do
         let!(:journal_with_cause) do
           work_package.subject = "Changed by system"
           work_package.save!
@@ -399,45 +388,120 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator do
           journal
         end
 
-        it "includes journals with cause" do
+        it "includes journals with cause metadata" do
           _pagy, records = paginator.call
 
+          changes = journal_with_cause.reload.get_changes
+          expect(changes.keys).to contain_exactly("subject", "cause")
           expect(records.map(&:id)).to include(journal_with_cause.id)
         end
       end
 
-      context "with custom field changes" do
-        let!(:custom_field) { create(:work_package_custom_field, field_format: "string") }
-
-        before do
-          project.work_package_custom_fields << custom_field
-          work_package.type.custom_fields << custom_field
-          work_package.custom_field_values = { custom_field.id => "Custom value" }
+      context "with attachment changes" do
+        let!(:journal_with_attachment_added) do
+          attachment = create(:attachment, container: nil, author: user)
+          work_package.attachments << attachment
           work_package.save!
+          work_package.journals.order(:version).last
         end
 
-        it "includes journals with custom field changes" do
+        let(:attachment) { journal_with_attachment_added.attachable_journals.first&.attachment }
+
+        let!(:journal_with_attachment_snapshot) do
+          work_package.add_journal(notes: "Unrelated to Attachments change")
+          work_package.save!
+          work_package.journals.order(:version).last
+        end
+
+        it "includes journal where attachment was added" do
+          _pagy, records = paginator.call
+          expect(records.map(&:id)).to include(journal_with_attachment_added.id)
+
+          changes = journal_with_attachment_added.reload.get_changes
+          expect(changes).to have_key("attachments_#{attachment.id}")
+        end
+
+        it "excludes journal with only attachment snapshot" do
           _pagy, records = paginator.call
 
-          cf_journal = work_package.journals.order(:version).last
-          expect(records.map(&:id)).to include(cf_journal.id)
+          expect(journal_with_attachment_snapshot.reload.attachable_journals.count).to eq(1)
+          changes = journal_with_attachment_snapshot.reload.get_changes
+          expect(changes).to eq({}) # no changes
+
+          expect(records.map(&:id)).not_to include(journal_with_attachment_snapshot.id)
+        end
+      end
+
+      context "with custom field value changes" do
+        let!(:custom_field) { create(:work_package_custom_field, field_format: "string") }
+
+        let!(:journal_with_cf_set) do
+          project.work_package_custom_fields << custom_field
+          work_package.type.custom_fields << custom_field
+          work_package.custom_field_values = { custom_field.id => "Value" }
+          work_package.save!
+          work_package.journals.order(:version).last
+        end
+
+        let!(:journal_with_cf_snapshot) do
+          work_package.add_journal(notes: "Unrelated to CF change")
+          work_package.save!
+          work_package.journals.order(:version).last
+        end
+
+        it "includes journal where custom field was set" do
+          _pagy, records = paginator.call
+          expect(records.map(&:id)).to include(journal_with_cf_set.id)
+
+          changes = journal_with_cf_set.reload.get_changes
+          expect(changes).to have_key("custom_fields_#{custom_field.id}")
+        end
+
+        it "excludes journal with only custom field snapshot" do
+          _pagy, records = paginator.call
+
+          expect(journal_with_cf_snapshot.reload.customizable_journals.count).to eq(1)
+          changes = journal_with_cf_snapshot.reload.get_changes
+          expect(changes).to eq({}) # no changes
+
+          expect(records.map(&:id)).not_to include(journal_with_cf_snapshot.id)
         end
       end
 
       context "with file link changes" do
         let(:storage) { create(:nextcloud_storage) }
-        let(:file_link) { create(:file_link, container: work_package, storage:) }
 
-        before do
+        let!(:journal_with_file_link_added) do
           create(:project_storage, project:, storage:)
-          file_link # Trigger file link creation which creates a journal
+          create(:file_link, container: work_package, storage:)
+          work_package.add_journal(notes: "Here be file links")
+          work_package.save!
+          work_package.journals.order(:version).last
         end
 
-        it "includes journals with file link changes" do
+        let!(:journal_with_file_link_snapshot) do
+          work_package.add_journal(notes: "Unrelated change")
+          work_package.save!
+          work_package.journals.order(:version).last
+        end
+
+        it "includes journal where file link was added" do
+          _pagy, records = paginator.call
+          expect(records.map(&:id)).to include(journal_with_file_link_added.id)
+
+          file_link = journal_with_file_link_added.reload.storable_journals.first&.file_link
+          changes = journal_with_file_link_added.reload.get_changes
+          expect(changes).to have_key("file_links_#{file_link.id}")
+        end
+
+        it "excludes journal with only file link snapshot" do
           _pagy, records = paginator.call
 
-          file_link_journal = work_package.journals.order(:version).last
-          expect(records.map(&:id)).to include(file_link_journal.id)
+          expect(journal_with_file_link_snapshot.reload.storable_journals.count).to eq(1)
+          changes = journal_with_file_link_snapshot.reload.get_changes
+          expect(changes).to eq({}) # no changes
+
+          expect(records.map(&:id)).not_to include(journal_with_file_link_snapshot.id)
         end
       end
     end

@@ -63,6 +63,7 @@ eu:
   label_document_title: "Title"
   label_document_description: "Description"
   label_document_category: "Category"
+  label_document_type: "Type"
   permission_manage_documents: "Kudeatu dokumentuak"
   permission_view_documents: "Ikusi dokumentuak"
   project_module_documents: "Dokumentuak"

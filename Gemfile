@@ -176,7 +176,7 @@ group :production do
   gem "redis", "~> 5.4.0"
 end
 
-gem "i18n-js", "~> 4.2.3"
+gem "i18n-js", "~> 4.2.4"
 gem "rails-i18n", "~> 8.0.0"
 
 gem "sprockets", "~> 3.7.2" # lock sprockets below 4.0
@@ -196,7 +196,7 @@ gem "aws-sdk-core", "~> 3.236"
 # File upload via fog + screenshots on travis
 gem "aws-sdk-s3", "~> 1.202"
 
-gem "openproject-token", "~> 8.0.0"
+gem "openproject-token", "~> 8.1.0"
 
 gem "plaintext", "~> 0.3.2"
 
@@ -363,7 +363,7 @@ group :development, :test do
   gem "erblint-github", require: false
 
   # Brakeman scanner
-  gem "brakeman", "~> 7.1.0"
+  gem "brakeman", "~> 7.1.1"
 
   # i18n-tasks helps find and manage missing and unused translations.
   gem "i18n-tasks", "~> 1.0.13", require: false

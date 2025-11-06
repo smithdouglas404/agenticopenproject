@@ -29,8 +29,10 @@
 #++
 
 class Projects::ArchiveController < ApplicationController
+  include OpTurbo::ComponentStream
+
   before_action :find_project_by_project_id
-  before_action :authorize, only: [:create]
+  before_action :authorize, only: %i[create dialog]
   before_action :require_admin, only: [:destroy]
 
   def create
@@ -39,6 +41,10 @@ class Projects::ArchiveController < ApplicationController
 
   def destroy
     change_status_action(:unarchive)
+  end
+
+  def dialog
+    respond_with_dialog Projects::ArchiveDialogComponent.new(project: @project)
   end
 
   private

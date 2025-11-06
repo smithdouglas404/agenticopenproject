@@ -63,6 +63,7 @@ fil:
   label_document_title: "Pamagat"
   label_document_description: "Deskripsyon"
   label_document_category: "Kategorya"
+  label_document_type: "Type"
   permission_manage_documents: "Pamahalaan ang mga dokumento"
   permission_view_documents: "Tingnan ang dokumento"
   project_module_documents: "Mga dokumento"

@@ -63,6 +63,7 @@ uk:
   label_document_title: "Назва"
   label_document_description: "Опис"
   label_document_category: "Категорія"
+  label_document_type: "Type"
   permission_manage_documents: "Керування документами"
   permission_view_documents: "Перегляд документів"
   project_module_documents: "Документи"

@@ -65,7 +65,9 @@ RSpec.describe CustomFields::UpdateService, type: :model do
       end
     end
 
-    describe "calculated value custom field", with_flag: { calculated_value_project_attribute: true } do
+    describe "calculated value custom field",
+             with_ee: %i[calculated_values],
+             with_flag: { calculated_value_project_attribute: true } do
       using CustomFieldFormulaReferencing
 
       shared_let(:project1) { create(:project) }

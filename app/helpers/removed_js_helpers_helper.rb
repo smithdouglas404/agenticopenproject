@@ -46,7 +46,7 @@ module RemovedJsHelpersHelper
   def csp_onclick(callback_str, selector, prevent_default: true)
     content_for(:additional_js_dom_ready) do
       raw <<~JS # rubocop:disable Rails/OutputSafety
-        document.querySelector('#{selector}')?.addEventListener('click', function(event) {
+        document.querySelector('#{j(selector)}')?.addEventListener('click', function(event) {
           #{callback_str&.delete_suffix(';')};#{"\n  event.preventDefault();" if prevent_default}
         });
       JS

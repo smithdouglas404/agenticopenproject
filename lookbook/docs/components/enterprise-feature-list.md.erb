@@ -6,7 +6,8 @@ For develop usage see [this document](./enterprise).
 
 This is the lists of all currently registered feature IDs.
 
-<% OpenProject::Token::FEATURES_PER_PLAN.values.flatten.uniq.map(&:to_s).sort.each do |fid| %>
+<% OpenProject::Token::FEATURES_PER_PLAN.values.reduce(Set.new, :|).to_a.uniq.map(&:to_s).sort.each do |fid| %>
+
 ## <%= I18n.t("ee.features.#{fid}", locale: 'en', default: fid.humanize) %>
 
 **Feature ID**<br>

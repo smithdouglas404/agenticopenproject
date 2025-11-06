@@ -32,9 +32,8 @@ require "rails_helper"
 
 RSpec.describe "BlockNote editor rendering", :js, with_flag: { block_note_editor: true } do
   let(:admin) { create(:admin) }
-  let(:project) { create(:project) }
-  let(:category) { create(:document_category, name: "Experimental", project:) }
-  let(:document) { create(:document, category:) }
+  let(:type) { create(:document_type, :experimental) }
+  let(:document) { create(:document, type:) }
   let(:editor) { FormFields::Primerized::BlockNoteEditorInput.new }
 
   before do
@@ -44,7 +43,7 @@ RSpec.describe "BlockNote editor rendering", :js, with_flag: { block_note_editor
   it "renders the BlockNote editor when editting a document" do
     visit edit_document_path(document)
 
-    expect(page).to have_field("Category", required: true)
+    expect(page).to have_field("Type", required: true)
     expect(page).to have_field("Title", required: true)
 
     expect(page).to have_test_selector("blocknote-document-description")

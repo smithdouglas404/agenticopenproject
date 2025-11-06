@@ -41,6 +41,14 @@ module Admin
           @active_item = active_item
           @hierarchy_service = ::CustomFields::Hierarchy::HierarchicalItemService.new
         end
+
+        def href_for(item)
+          if @custom_field.is_a?(ProjectCustomField)
+            admin_settings_project_custom_field_item_path(@custom_field.id, item)
+          else
+            custom_field_item_path(@custom_field.id, item)
+          end
+        end
       end
     end
   end

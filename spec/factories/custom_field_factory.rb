@@ -189,8 +189,8 @@ FactoryBot.define do
       multi_value
     end
 
-    trait :scored_list do
-      field_format { "scored_list" }
+    trait :weighted_item_list do
+      field_format { "weighted_item_list" }
       hierarchy_root do
         service = CustomFields::Hierarchy::HierarchicalItemService.new
         service.generate_root(instance).value!
@@ -225,7 +225,7 @@ FactoryBot.define do
         integer
         link
         list multi_list
-        scored_list
+        weighted_item_list
         string
         text
         user multi_user
@@ -261,7 +261,7 @@ FactoryBot.define do
         integer
         link
         list multi_list
-        scored_list
+        weighted_item_list
         string
         text
         user multi_user

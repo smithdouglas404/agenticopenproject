@@ -63,6 +63,7 @@ ro:
   label_document_title: "Titlu"
   label_document_description: "Descriere"
   label_document_category: "Categorie"
+  label_document_type: "Type"
   permission_manage_documents: "Administrează documentele"
   permission_view_documents: "Vezi documente"
   project_module_documents: "Documente"

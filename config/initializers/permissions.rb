@@ -51,7 +51,7 @@ Rails.application.reloader.to_prepare do
 
       map.permission :archive_project,
                      {
-                       "projects/archive": %i[create]
+                       "projects/archive": %i[create dialog]
                      },
                      permissible_on: :project,
                      require: :member

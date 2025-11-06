@@ -63,6 +63,7 @@ lv:
   label_document_title: "Virsraksts"
   label_document_description: "Apraksts"
   label_document_category: "Sadaļa"
+  label_document_type: "Type"
   permission_manage_documents: "Pārvaldīt dokumentus"
   permission_view_documents: "Skatīt dokumentus"
   project_module_documents: "Dokumenti"

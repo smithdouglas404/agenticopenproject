@@ -69,5 +69,16 @@ RSpec.describe RemovedJsHelpersHelper do
         });
       JS
     end
+
+    it "escapes selector" do
+      helper.csp_onclick("console.log('hello');", "[data-attr^='foo']")
+
+      expect(helper.content_for(:additional_js_dom_ready)).to eq(<<~JS)
+        document.querySelector('[data-attr^=\\'foo\\']')?.addEventListener('click', function(event) {
+          console.log('hello');
+          event.preventDefault();
+        });
+      JS
+    end
   end
 end

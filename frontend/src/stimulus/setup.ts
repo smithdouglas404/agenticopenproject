@@ -35,6 +35,7 @@ import { BeforeunloadController } from './controllers/beforeunload.controller';
 import ExternalLinksController from './controllers/external-links.controller';
 import DisableWhenClickedController from 'core-stimulus/controllers/disable-when-clicked.controller';
 import HighlightTargetElementController from 'core-stimulus/controllers/highlight-target-element.controller';
+import SelectAutosizeController from 'core-stimulus/controllers/select-autosize.controller';
 
 declare global {
   interface Window {
@@ -75,6 +76,7 @@ OpenProjectStimulusApplication.preregister('beforeunload', BeforeunloadControlle
 OpenProjectStimulusApplication.preregister('auto-theme-switcher', AutoThemeSwitcher);
 OpenProjectStimulusApplication.preregister('external-links', ExternalLinksController);
 OpenProjectStimulusApplication.preregister('highlight-target-element', HighlightTargetElementController);
+OpenProjectStimulusApplication.preregister('select-autosize', SelectAutosizeController);
 
 const instance = OpenProjectStimulusApplication.start();
 window.Stimulus = instance;

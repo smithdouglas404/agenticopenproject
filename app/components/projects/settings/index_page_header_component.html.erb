@@ -79,10 +79,12 @@
         menu.with_item(
           tag: :a,
           label: t(:button_archive),
-          href: project_archive_path(@project, status: "", name: @project.name),
+          href: helpers.dialog_project_archive_path(project),
           content_arguments: {
-            data: { turbo_method: :post, turbo_confirm: t("project.archive.are_you_sure", name: @project.name) },
-            test_selector: "project-settings--archive"
+            data: {
+              turbo_stream: true,
+              test_selector: "project-settings--archive"
+            }
           }
         ) do |item|
           item.with_leading_visual_icon(icon: "lock")

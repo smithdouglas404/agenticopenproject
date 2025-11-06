@@ -452,10 +452,10 @@ module ApplicationHelper
     end
   end
 
-  # To avoid the menu flickering, disable it
-  # by default unless we're in test mode
-  def initial_menu_styles(side_displayed)
-    Rails.env.test? || !side_displayed ? "" : "display:none"
+  # To avoid FOUC (menu flickering / dark mode on logout), hide page
+  # wrapper on load except in test environment.
+  def initial_menu_styles
+    Rails.env.test? || "display:none"
   end
 
   def initial_menu_classes(side_displayed, show_decoration)

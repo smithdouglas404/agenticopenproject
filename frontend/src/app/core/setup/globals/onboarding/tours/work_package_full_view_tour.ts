@@ -8,7 +8,7 @@ export function wpFullViewOnboardingTourSteps():OnboardingStep[] {
       nextButton: { text: I18n.t('js.onboarding.buttons.next') },
       containerClass: '-dark -hidden-arrow',
       onNext() {
-        jQuery('.main-menu--arrow-left-to-project')[0].click();
+        document.querySelector<HTMLElement>('.main-menu--arrow-left-to-project')?.click();
       },
     },
     {
@@ -16,7 +16,7 @@ export function wpFullViewOnboardingTourSteps():OnboardingStep[] {
       showSkip: false,
       nextButton: { text: I18n.t('js.onboarding.buttons.next') },
       onNext() {
-        jQuery('#main-menu-gantt')[0].click();
+        document.querySelector<HTMLElement>('#main-menu-gantt')?.click();
       },
     },
     {

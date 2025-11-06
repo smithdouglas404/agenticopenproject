@@ -63,6 +63,7 @@ eo:
   label_document_title: "Titolo"
   label_document_description: "Priskribo"
   label_document_category: "Kategorio"
+  label_document_type: "Type"
   permission_manage_documents: "Administri dokumentojn"
   permission_view_documents: "Vidi dokumentojn"
   project_module_documents: "Dokumentoj"

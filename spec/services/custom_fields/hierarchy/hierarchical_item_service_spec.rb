@@ -331,7 +331,9 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:cust
     end
   end
 
-  context "with scored list and calculated values", with_flag: { calculated_value_project_attribute: true } do
+  context "with weighted item list and calculated values",
+          with_ee: %i[calculated_values weighted_item_lists],
+          with_flag: { calculated_value_project_attribute: true } do
     current_user { create(:admin) }
 
     let!(:project_using_one) { create(:project) }
@@ -339,9 +341,9 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:cust
     let!(:project_having_fields_enabled) { create(:project) }
     let!(:project_not_having_fields_enabled) { create(:project) }
     let!(:projects) { [project_using_one, project_using_two, project_having_fields_enabled] }
-    let!(:custom_field) { create(:scored_list_project_custom_field, projects:) }
-    let!(:one) { create(:hierarchy_item, parent: custom_field.hierarchy_root, label: "One", score: 1) }
-    let!(:two) { create(:hierarchy_item, parent: custom_field.hierarchy_root, label: "Two", score: 2) }
+    let!(:custom_field) { create(:weighted_item_list_project_custom_field, projects:) }
+    let!(:one) { create(:hierarchy_item, parent: custom_field.hierarchy_root, label: "One", weight: 1) }
+    let!(:two) { create(:hierarchy_item, parent: custom_field.hierarchy_root, label: "Two", weight: 2) }
     let!(:calculated_value) do
       create(:calculated_value_project_custom_field,
              :skip_validations,
@@ -357,10 +359,10 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:cust
       project_using_two.custom_values.create!(custom_field: calculated_value, value: "123")
     end
 
-    describe "updating the score of an item" do
-      let!(:contract_class) { CustomFields::Hierarchy::UpdateScoredItemContract }
+    describe "updating the weight of an item" do
+      let!(:contract_class) { CustomFields::Hierarchy::UpdateWeightedItemContract }
 
-      subject(:result) { service.update_item(contract_class:, item: one, label: one.label, score: 42) }
+      subject(:result) { service.update_item(contract_class:, item: one, label: one.label, weight: 42) }
 
       it "updates calculated values affected by the change" do
         expect(result).to be_success

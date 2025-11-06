@@ -535,7 +535,7 @@ zh-CN:
         label: 使用用户登录时获得的访问令牌
       manual:
         helptext: OpenProject 将与指定受众的身份提供者交换一个令牌。
-        label: Manually specify audience for which to exchange access token (Recommended)
+        label: 手动指定要交换访问令牌的受众（推荐）
     storage_list_blank_slate:
       description: 在这里添加一个存储以查看它们。
       heading: 您还没有任何存储。

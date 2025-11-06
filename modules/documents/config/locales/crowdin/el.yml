@@ -63,6 +63,7 @@ el:
   label_document_title: "Τίτλος"
   label_document_description: "Περιγραφή"
   label_document_category: "Κατηγορία"
+  label_document_type: "Type"
   permission_manage_documents: "Διαχείριση εγγράφων"
   permission_view_documents: "Προβολή εγγράφων"
   project_module_documents: "Έγγραφα"

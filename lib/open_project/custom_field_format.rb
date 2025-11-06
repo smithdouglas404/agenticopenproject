@@ -103,12 +103,22 @@ module OpenProject
         registered.select(&:available?)
       end
 
+      def enabled
+        registered.select(&:enabled?)
+      end
+
       def available_formats
         available.map(&:name)
       end
 
       def find_by(name:)
         registered_by_name[name.to_s]
+      end
+
+      def enabled_for_class_name(class_name)
+        enabled
+          .select { |format| format.for_class_name?(class_name) && !format.label.nil? }
+          .sort_by(&:order)
       end
 
       def available_for_class_name(class_name)

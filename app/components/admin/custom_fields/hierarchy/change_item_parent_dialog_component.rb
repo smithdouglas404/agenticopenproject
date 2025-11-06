@@ -50,7 +50,7 @@ module Admin
         def form_arguments
           {
             id: form_id,
-            url: change_parent_custom_field_item_path(custom_field_id: @custom_field.id, id: @hierarchy_item.id),
+            url:,
             model: form_model,
             method: :post
           }
@@ -64,6 +64,15 @@ module Admin
 
         def form_model
           CustomField::Hierarchy::Forms::NewParentFormModel.new(new_parent: [])
+        end
+
+        def url
+          if @custom_field.is_a?(ProjectCustomField)
+            change_parent_admin_settings_project_custom_field_item_path(project_custom_field_id: @custom_field.id,
+                                                                        id: @hierarchy_item.id)
+          else
+            change_parent_custom_field_item_path(custom_field_id: @custom_field.id, id: @hierarchy_item.id)
+          end
         end
       end
     end

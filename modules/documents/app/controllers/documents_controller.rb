@@ -112,7 +112,7 @@ class DocumentsController < ApplicationController
   private
 
   def document_params
-    params.fetch(:document, {}).permit("category_id", "title", "description", "content_binary")
+    params.fetch(:document, {}).permit("type_id", "title", "description", "content_binary")
   end
 
   def list_documents_query
