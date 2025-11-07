@@ -108,7 +108,7 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
   let(:project_phases) { [project_phase, other_project_phase].compact }
   let(:project_phase_definition) { build_stubbed(:project_phase_definition) }
   let(:type) do
-    type = workspace.types.first || build_stubbed(:type)
+    type = workspace&.types&.first || build_stubbed(:type)
 
     type.is_milestone = type_milestone
 
@@ -127,7 +127,7 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
       permissions.each do |permission|
         perm = OpenProject::AccessControl.permission(permission)
         mock.allow_globally perm.name if perm.global?
-        mock.allow_in_project perm.name, project: workspace if perm.project?
+        mock.allow_in_project perm.name, project: workspace if perm.project? && workspace
       end
     end
 
@@ -669,36 +669,7 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
     end
 
     describe "project" do
-      let(:embedded_path) { "_embedded/project" }
-      let(:href_path) { "_links/project/href" }
-
-      context "for a project" do
-        it_behaves_like "has a titled link" do
-          let(:link) { "project" }
-          let(:href) { api_v3_paths.project(workspace.id) }
-          let(:title) { workspace.name }
-        end
-      end
-
-      context "for a portfolio" do
-        let(:workspace) { build_stubbed(:portfolio) }
-
-        it_behaves_like "has a titled link" do
-          let(:link) { "project" }
-          let(:href) { api_v3_paths.portfolio(workspace.id) }
-          let(:title) { workspace.name }
-        end
-      end
-
-      context "for a program" do
-        let(:workspace) { build_stubbed(:program) }
-
-        it_behaves_like "has a titled link" do
-          let(:link) { "project" }
-          let(:href) { api_v3_paths.program(workspace.id) }
-          let(:title) { workspace.name }
-        end
-      end
+      it_behaves_like "has workspace linked"
     end
 
     describe "projectPhase" do
@@ -1453,29 +1424,7 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
     end
 
     describe "project" do
-      let(:embedded_path) { "_embedded/project" }
-      let(:embedded_resource) { workspace }
-      let(:embedded_resource_type) { "Project" }
-
-      context "for a project" do
-        let(:embedded_resource_type) { "Project" }
-
-        it_behaves_like "has the resource embedded"
-      end
-
-      context "for a program" do
-        let(:workspace) { build_stubbed(:program) }
-        let(:embedded_resource_type) { "Program" }
-
-        it_behaves_like "has the resource embedded"
-      end
-
-      context "for a portfolio" do
-        let(:workspace) { build_stubbed(:portfolio) }
-        let(:embedded_resource_type) { "Portfolio" }
-
-        it_behaves_like "has the resource embedded"
-      end
+      it_behaves_like "has workspace embedded"
     end
 
     describe "projectPhase" do

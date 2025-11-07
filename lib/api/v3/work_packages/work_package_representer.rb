@@ -271,7 +271,7 @@ module API
 
         link :addChild,
              cache_if: -> { add_work_packages_allowed? } do
-          next if represented.milestone? || represented.new_record?
+          next if represented.milestone? || represented.new_record? || represented.project.nil?
 
           {
             href: api_v3_paths.work_packages_by_workspace(represented.project.identifier),
@@ -725,7 +725,7 @@ module API
         end
 
         def any_phase_active_in_project?
-          represented.project.phases.any?(&:active?)
+          represented.project&.phases&.any?(&:active?)
         end
 
         def relations
