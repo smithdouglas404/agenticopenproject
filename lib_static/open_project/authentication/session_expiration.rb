@@ -30,7 +30,7 @@
 
 module OpenProject
   module Authentication
-    module SessionExpiry
+    module SessionExpiration
       def session_ttl_enabled?
         Setting.session_ttl_enabled? && Setting.session_ttl.to_i >= 5
       end
