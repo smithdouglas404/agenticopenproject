@@ -13,9 +13,9 @@
           end
         end
 
-        # TODO: render status_code
+        # TODO: WP-68876 render status_code
 
-        # TODO: render progress bar
+        # TODO: WP-68877 render progress bar
       end
     end
 
@@ -66,16 +66,17 @@
           ) + content_tag(:span, project_count_label)
         end
 
-        footer.with_column(mr: 3) do
-          render(
-            Primer::Beta::Octicon.new(
-              icon: "op-budget",
-              align_self: :center,
-              "aria-label": "TODO",
-              mr: 1
-            )
-          ) + content_tag(:span, budget_label)
-        end
+        # TODO: WP-68872 render budget
+        # footer.with_column(mr: 3) do
+        #   render(
+        #     Primer::Beta::Octicon.new(
+        #       icon: "op-budget",
+        #       align_self: :center,
+        #       "aria-label": "TODO",
+        #       mr: 1
+        #     )
+        #   ) + content_tag(:span, budget_label)
+        # end
 
         footer.with_column do
           render(

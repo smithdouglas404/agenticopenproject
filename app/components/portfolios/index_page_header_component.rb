@@ -80,10 +80,9 @@ module Portfolios
 
     def currently_favorited? = query.favorited_by?(current_user)
 
-    # TODO
     def breadcrumb_items
       [
-        { href: projects_path, text: t(:label_project_plural), skip_for_mobile: first_menu_item? },
+        { href: portfolios_path, text: t(:label_portfolio_plural), skip_for_mobile: first_menu_item? },
         current_breadcrumb_element
       ]
     end
@@ -111,45 +110,6 @@ module Portfolios
       current_item = current_section&.children&.select { |x| x.selected == true }&.first
       # TODO
       current_item&.title == ::ProjectQueries::Static.query(ProjectQueries::Static::DEFAULT).name
-    end
-
-    def header_save_action(header:, message:, label:, href:, method: nil)
-      header.with_action_text { message }
-
-      header.with_action_link(
-        mobile_icon: nil, # Do not show on mobile as it is already part of the menu
-        mobile_label: nil,
-        href:,
-        data: {
-          turbo_stream: true,
-          turbo_method: method
-        },
-        target: ""
-      ) do
-        render(
-          Primer::Beta::Octicon.new(
-            icon: "op-save",
-            align_self: :center,
-            "aria-label": label,
-            mr: 1
-          )
-        ) + content_tag(:span, label)
-      end
-    end
-
-    def menu_save_item(menu:, label:, href:, method: nil)
-      menu.with_item(
-        label:,
-        href:,
-        content_arguments: {
-          data: {
-            turbo_stream: true,
-            turbo_method: method
-          }
-        }
-      ) do |item|
-        item.with_leading_visual_icon(icon: :"op-save")
-      end
     end
   end
 end

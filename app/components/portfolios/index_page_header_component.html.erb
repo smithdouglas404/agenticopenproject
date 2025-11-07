@@ -2,18 +2,6 @@
   <%=
     render(Primer::OpenProject::PageHeader.new(state: @state)) do |header|
       header.with_title(data: { "test-selector": "portfolio-query-name" }) do |title|
-        # TODO: can be removed?
-        # title.with_editable_form(
-        #   model: query,
-        #   update_path: @query.new_record? ? project_queries_path(projects_query_params) : project_query_path(@query, projects_query_params),
-        #   method: @query.new_record? ? :post : :put,
-        #   cancel_path: projects_path(**projects_query_params, **{ query_id: query.id }.compact),
-        #   input_name: "name",
-        #   label: ProjectQuery.human_attribute_name(:name),
-        #   placeholder: I18n.t(:"projects.lists.new.placeholder"),
-        #   scope: "query",
-        #   id: "project-save-form"
-        # )
         page_title
       end
       header.with_breadcrumbs(breadcrumb_items, selected_item_font_weight: current_breadcrumb_element == page_title ? :bold : :normal)
