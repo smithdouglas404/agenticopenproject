@@ -38,10 +38,16 @@ module Grids
 
       option :limit, default: -> { NEWS_LIMIT }
 
-      def initialize(...)
-        super
+      def no_news?
+        news_module_disabled? || newest.empty?
+      end
 
-        @news =
+      def newest
+        @newest ||= news.limit(limit).to_a
+      end
+
+      def news
+        @news ||=
           if project
             project.news.visible(current_user).newest_first
           else
@@ -50,16 +56,14 @@ module Grids
               .newest_first
               .includes(:project)
           end
-
-        @newest = @news.limit(limit).to_a
       end
 
       def title
         Project.human_attribute_name(:news)
       end
 
-      def render?
-        project.nil? || project.module_enabled?("news")
+      def news_module_disabled?
+        project.present? && !project.module_enabled?("news")
       end
     end
   end
