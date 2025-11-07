@@ -100,16 +100,14 @@ module Portfolios
     def current_section
       return @current_section if defined?(@current_section)
 
-      # TODO
-      @current_section = Projects::Menu
+      @current_section = Portfolios::Menu
                            .new(controller_path:, params:, current_user:)
                            .selected_menu_group
     end
 
     def first_menu_item?
       current_item = current_section&.children&.select { |x| x.selected == true }&.first
-      # TODO
-      current_item&.title == ::ProjectQueries::Static.query(ProjectQueries::Static::DEFAULT).name
+      current_item&.title == ::ProjectQueries::Static.query(ProjectQueries::Static::ACTIVE_PORTFOLIOS).name
     end
   end
 end

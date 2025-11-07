@@ -72,6 +72,7 @@ module Queries
                      controller_name.chomp("Controller")
                    end
 
+      # Portfolios have no dedicated query class, they reuse the existing ProjectQuery.
       model_name = "Projects" if model_name == "Portfolios"
 
       "#{model_name.singularize}Query".constantize

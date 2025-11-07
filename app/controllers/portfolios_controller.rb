@@ -39,6 +39,8 @@ class PortfoliosController < ApplicationController
   # FIXME: remove
   no_authorization_required! :index
 
+  # Must be called before `load_query_or_deny_access`
+  before_action :set_default_query, only: %i[index]
   before_action :load_query_or_deny_access, only: %i[index]
 
   current_menu_item :index do
@@ -64,10 +66,9 @@ class PortfoliosController < ApplicationController
 
         current_url = url_for(params.permit(:controller, :action, :query_id, :filters, :columns, :sortBy, :page, :per_page))
         turbo_streams << turbo_stream.push_state(current_url)
-        # TODO:
         turbo_streams << turbo_stream.turbo_frame_set_src(
-          "projects_sidemenu",
-          projects_menu_url(query_id: @query.id, controller_path: "projects")
+          "portfolios_sidemenu",
+          portfolios_menu_url(query_id: @query.id, controller_path: "portfolios")
         )
 
         turbo_streams << turbo_stream.replace("flash-messages", helpers.render_flash_messages)
@@ -77,4 +78,9 @@ class PortfoliosController < ApplicationController
     end
   end
 
+  private
+
+  def set_default_query
+    params[:query_id] ||= ProjectQueries::Static::ACTIVE_PORTFOLIOS
+  end
 end

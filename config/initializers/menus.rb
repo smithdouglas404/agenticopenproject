@@ -196,6 +196,11 @@ Redmine::MenuManager.map :global_menu do |menu|
               User.current.logged? || !Setting.login_required?
             }
 
+  menu.push :portfolios_query_select,
+            { controller: "/portfolios", action: "index" },
+            parent: :portfolios,
+            partial: "portfolios/menus/menu"
+
   # Projects
   menu.push :projects,
             { controller: "/projects", project_id: nil, action: "index" },

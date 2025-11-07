@@ -55,6 +55,7 @@ module Portfolios
     end
 
     def budget_label
+      # TODO: replace dummy text
       "34,000 EUR budget - 12,000 EUR spent"
     end
 

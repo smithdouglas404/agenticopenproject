@@ -494,6 +494,10 @@ Rails.application.routes.draw do
             defaults: { workspace_type: "portfolio" },
             controller: "projects"
 
+  namespace :portfolios do
+    resource :menu, only: %i[show]
+  end
+
   resources :portfolios, only: %i[index]
 
   resources :programs,
