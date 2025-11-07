@@ -54,13 +54,13 @@ class PortfoliosController < ApplicationController
       end
 
       format.turbo_stream do
-        # replace_via_turbo_stream(
-        #   component: Projects::IndexPageHeaderComponent.new(query: @query, current_user:, state: :show, params:)
-        # )
-        # update_via_turbo_stream(
-        #   component: Filter::FilterButtonComponent.new(query: @query, disable_buttons: false)
-        # )
-        # replace_via_turbo_stream(component: Projects::TableComponent.new(query: @query, current_user:, params:))
+        replace_via_turbo_stream(
+          component: Portfolios::IndexPageHeaderComponent.new(query: @query, current_user:, params:)
+        )
+        update_via_turbo_stream(
+          component: Filter::FilterButtonComponent.new(query: @query, disable_buttons: false)
+        )
+        replace_via_turbo_stream(component: Portfolios::ListComponent.new(query: @query, current_user:))
 
         current_url = url_for(params.permit(:controller, :action, :query_id, :filters, :columns, :sortBy, :page, :per_page))
         turbo_streams << turbo_stream.push_state(current_url)
