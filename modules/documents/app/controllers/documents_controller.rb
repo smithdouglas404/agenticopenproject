@@ -59,6 +59,10 @@ class DocumentsController < ApplicationController
 
   def show
     @attachments = @document.attachments.order(Arel.sql("created_at DESC"))
+    # we will need to generate tokens for both view only and writer users
+    # so when we build the show page it is necessary to include the following line
+    #
+    # generate_oauth_token
   end
 
   def new
@@ -124,11 +128,6 @@ class DocumentsController < ApplicationController
   end
 
   def generate_oauth_token
-    # do not generate a token if the user is not allowed to manage documents
-    if !current_user.allowed_in_project?(:manage_documents, @project)
-      return
-    end
-
     result = Documents::OAuth::GenerateTokenService
       .new(user: current_user)
       .call
