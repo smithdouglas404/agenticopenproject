@@ -468,6 +468,125 @@ RSpec.describe WorkPackages::ActivitiesTab::Paginator, with_settings: { journal_
         end
       end
 
+      context "with multi-value custom field" do
+        let!(:multi_select_cf) do
+          create(:work_package_custom_field,
+                 field_format: "list",
+                 multi_value: true,
+                 possible_values: ["Option 1", "Option 2", "Option 3"])
+        end
+        let!(:option1) { multi_select_cf.custom_options.find_by(value: "Option 1") }
+        let!(:option2) { multi_select_cf.custom_options.find_by(value: "Option 2") }
+        let!(:option3) { multi_select_cf.custom_options.find_by(value: "Option 3") }
+
+        let!(:other_cf) { create(:work_package_custom_field, field_format: "string") }
+
+        let!(:journal_with_multi_cf_set) do
+          project.work_package_custom_fields << multi_select_cf
+          project.work_package_custom_fields << other_cf
+          work_package.type.custom_fields << multi_select_cf
+          work_package.type.custom_fields << other_cf
+          work_package.custom_field_values = { multi_select_cf.id => [option1.id, option2.id] }
+          work_package.save!
+          work_package.journals.order(:version).last
+        end
+
+        let!(:journal_with_multi_cf_snapshot) do
+          work_package.add_journal(notes: "Just a comment")
+          work_package.save!
+          work_package.journals.order(:version).last
+        end
+
+        it "includes journal where multi-value custom field was set" do
+          _pagy, records = paginator.call
+          expect(records.map(&:id)).to include(journal_with_multi_cf_set.id)
+
+          changes = journal_with_multi_cf_set.reload.get_changes
+          expect(changes).to have_key("custom_fields_#{multi_select_cf.id}")
+        end
+
+        it "excludes journal with only notes and multi-value CF snapshot" do
+          _pagy, records = paginator.call
+
+          expect(journal_with_multi_cf_snapshot.reload.customizable_journals.count).to eq(2)
+
+          changes = journal_with_multi_cf_snapshot.reload.get_changes
+          expect(changes).not_to have_key("custom_fields_#{multi_select_cf.id}")
+          expect(changes).not_to have_key("custom_fields_#{other_cf.id}")
+
+          expect(records.map(&:id)).not_to include(journal_with_multi_cf_snapshot.id)
+        end
+
+        context "when adding an option to existing selection" do
+          let!(:journal_adding_option) do
+            journal_with_multi_cf_snapshot
+
+            work_package.reload.custom_field_values = { multi_select_cf.id => [option1.id, option2.id, option3.id] }
+            work_package.save!
+            work_package.journals.order(:version).last
+          end
+
+          it "detects the addition as a change" do
+            _pagy, records = paginator.call
+
+            expect(records.map(&:id)).to include(journal_adding_option.id)
+
+            changes = journal_adding_option.reload.get_changes
+            expect(changes).to have_key("custom_fields_#{multi_select_cf.id}")
+
+            change = changes["custom_fields_#{multi_select_cf.id}"]
+            new_value, old_value = change
+            expect(new_value).not_to eq(old_value)
+          end
+        end
+
+        context "when removing an option from existing selection" do
+          let!(:journal_removing_option) do
+            journal_with_multi_cf_snapshot
+
+            work_package.reload.custom_field_values = { multi_select_cf.id => [option1.id] }
+            work_package.save!
+            work_package.journals.order(:version).last
+          end
+
+          it "detects the removal as a change" do
+            _pagy, records = paginator.call
+
+            expect(records.map(&:id)).to include(journal_removing_option.id)
+
+            changes = journal_removing_option.reload.get_changes
+            expect(changes).to have_key("custom_fields_#{multi_select_cf.id}")
+
+            change = changes["custom_fields_#{multi_select_cf.id}"]
+            new_value, old_value = change
+            expect(new_value).not_to eq(old_value)
+          end
+        end
+
+        context "when changing options (adding and removing simultaneously)" do
+          let!(:journal_changing_options) do
+            journal_with_multi_cf_snapshot
+
+            work_package.reload.custom_field_values = { multi_select_cf.id => [option2.id, option3.id] }
+            work_package.save!
+            work_package.journals.order(:version).last
+          end
+
+          it "detects both additions and removals as changes" do
+            _pagy, records = paginator.call
+
+            expect(records.map(&:id)).to include(journal_changing_options.id)
+
+            changes = journal_changing_options.reload.get_changes
+            expect(changes).to have_key("custom_fields_#{multi_select_cf.id}")
+
+            change = changes["custom_fields_#{multi_select_cf.id}"]
+            new_value, old_value = change
+            expect(new_value).not_to eq(old_value)
+          end
+        end
+      end
+
       context "with file link changes" do
         let(:storage) { create(:nextcloud_storage) }
 
