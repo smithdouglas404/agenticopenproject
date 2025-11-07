@@ -58,7 +58,7 @@ module API
         def project_visible?(project)
           # Explicitly check for admin as an archived project
           # will lead to the admin losing permissions in the project.
-          project && !project.visible? && !current_user.admin?
+          project && !project.visible? && !current_user&.admin?
         end
 
         class_methods do

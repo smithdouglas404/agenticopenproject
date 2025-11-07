@@ -42,15 +42,25 @@ module API
           }
         end
 
-        def create_setter_lambda(name, property_name: name, namespaces: %i(projects programs portfolios))
+        def create_setter_lambda(name, namespaces: %i(projects programs portfolios))
           ->(fragment:, **) {
-            ::API::Decorators::LinkObject
-              .new(represented,
-                   property_name:,
-                   namespace: namespaces,
-                   getter: :"#{name}_id",
-                   setter: :"#{name}_id=")
-              .from_hash(fragment)
+            id = ::API::Utilities::ResourceLinkParser.parse_id(
+              fragment["href"],
+              property: name,
+              expected_version: "3",
+              expected_namespace: namespaces
+            )
+
+            # In case an identifier is provided, which might
+            # start with numbers, the id needs to be looked up
+            # in the DB.
+            id = if id.to_i.to_s == id
+                   id.to_i # return numerical ID
+                 else
+                   Project.where(identifier: id).pick(:id) # lookup Project by identifier
+                 end
+
+            represented.public_send("#{name}_id=", id) if id
           }
         end
       end

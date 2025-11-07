@@ -36,29 +36,10 @@ module API
         self_link
 
         include API::Decorators::LinkedResource
+        include API::V3::Workspaces::LinkedResource
         include API::Decorators::DateProperty
 
-        associated_resource :project,
-                            setter: ->(fragment:, **) {
-                              id = id_from_href "projects", fragment["href"]
-
-                              # In case an identifier is provided, which might
-                              # start with numbers, the id needs to be looked up
-                              # in the DB.
-                              id = if id.to_i.to_s == id
-                                     id.to_i # return numerical ID
-                                   else
-                                     Project.where(identifier: id).pick(:id) # lookup Project by identifier
-                                   end
-
-                              represented.project_id = id if id
-                            },
-                            skip_link: ->(*) {
-                              false
-                            },
-                            skip_render: ->(*) {
-                              represented.project.nil?
-                            }
+        associated_project
 
         link :results do
           path = if represented.project
