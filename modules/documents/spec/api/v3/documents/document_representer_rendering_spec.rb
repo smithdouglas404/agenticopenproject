@@ -38,13 +38,14 @@ RSpec.describe API::V3::Documents::DocumentRepresenter, "rendering" do
                   description: "Some description") do |document|
       allow(document)
         .to receive(:project)
-        .and_return(project)
+        .and_return(workspace)
     end
   end
-  let(:project) { build_stubbed(:project) }
-  let(:user) { build_stubbed(:user) }
+  let(:workspace) { build_stubbed(:project) }
+  let(:current_user) { build_stubbed(:user) }
+  let(:embed_links) { true }
   let(:representer) do
-    described_class.create(document, current_user: user, embed_links: true)
+    described_class.create(document, current_user:, embed_links:)
   end
   let(:permissions) { all_permissions }
   let(:all_permissions) { %i(manage_documents) }
@@ -63,11 +64,7 @@ RSpec.describe API::V3::Documents::DocumentRepresenter, "rendering" do
       let(:href) { api_v3_paths.attachments_by_document document.id }
     end
 
-    it_behaves_like "has a titled link" do
-      let(:link) { :project }
-      let(:title) { project.name }
-      let(:href) { api_v3_paths.project project.id }
-    end
+    it_behaves_like "has workspace linked"
 
     it_behaves_like "has an untitled action link" do
       let(:link) { :addAttachment }
@@ -121,10 +118,6 @@ RSpec.describe API::V3::Documents::DocumentRepresenter, "rendering" do
   end
 
   describe "_embedded" do
-    it "has project embedded" do
-      expect(subject)
-        .to be_json_eql(project.name.to_json)
-        .at_path("_embedded/project/name")
-    end
+    it_behaves_like "has workspace embedded"
   end
 end
