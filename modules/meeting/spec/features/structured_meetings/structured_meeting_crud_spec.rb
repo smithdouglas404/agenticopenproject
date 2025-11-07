@@ -285,7 +285,7 @@ RSpec.describe "Meetings CRUD",
     expect(page).to have_css(".flash", text: I18n.t("activerecord.errors.messages.error_conflict"))
   end
 
-  it "can copy the meeting via the dialog form" do
+  it "can duplicate the meeting via the dialog form" do
     show_page.add_agenda_item do
       fill_in "Title", with: "My agenda item"
       fill_in "Duration", with: "25"
@@ -309,9 +309,9 @@ RSpec.describe "Meetings CRUD",
 
     retry_block do
       click_on("op-meetings-header-action-trigger")
-      click_on "Copy"
+      click_on "Duplicate"
       # dynamically wait for the modal to be loaded
-      show_page.expect_modal("Copy meeting")
+      show_page.expect_modal("Duplicate meeting")
     end
 
     fill_in "Title", with: ""
