@@ -144,7 +144,7 @@ module API
       end
 
       def avatar_link_expiration_seconds
-        @avatar_link_expiration_seconds ||= OpenProject::Configuration.avatar_link_expiry_seconds.to_i
+        @avatar_link_expiration_seconds ||= OpenProject::Configuration.avatar_link_expiration_seconds.to_i
       end
     end
   end
