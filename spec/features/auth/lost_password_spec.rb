@@ -91,9 +91,9 @@ RSpec.describe "Lost password" do
     end
   end
 
-  context "when user has identity_url" do
+  context "when user only authenticates via SSO" do
     let!(:provider) { create(:saml_provider, slug: "saml", display_name: "The SAML provider") }
-    let!(:user) { create(:user, authentication_provider: provider) }
+    let!(:user) { create(:user, :passwordless, authentication_provider: provider) }
 
     it "sends an email with external auth info" do
       visit account_lost_password_path
@@ -109,6 +109,26 @@ RSpec.describe "Lost password" do
       mail = ActionMailer::Base.deliveries.first
       expect(mail.subject).to eq I18n.t("mail_password_change_not_possible.title")
       expect(mail.body.parts.first.body.to_s).to include "(The SAML provider)"
+    end
+  end
+
+  context "when authenticates via password & SSO" do
+    let!(:provider) { create(:saml_provider, slug: "saml", display_name: "The SAML provider") }
+    let!(:user) { create(:user, authentication_provider: provider) }
+
+    it "sends an email with external auth info" do
+      visit account_lost_password_path
+
+      # shows same flash for invalid and existing users
+      fill_in "mail", with: user.mail
+      click_on "Submit"
+
+      expect_flash(message: I18n.t(:notice_account_lost_email_sent))
+
+      perform_enqueued_jobs
+      expect(ActionMailer::Base.deliveries.size).to be 1
+      mail = ActionMailer::Base.deliveries.first
+      expect(mail.subject).to eq I18n.t("mail_subject_lost_password", value: Setting.app_title)
     end
   end
 end
