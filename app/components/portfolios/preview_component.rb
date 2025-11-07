@@ -57,5 +57,9 @@ module Portfolios
     def budget_label
       "34,000 EUR budget - 12,000 EUR spent"
     end
+
+    def updated_at_label
+      I18n.t(:label_updated_time, value: distance_of_time_in_words(Time.current, @portfolio.updated_at))
+    end
   end
 end
