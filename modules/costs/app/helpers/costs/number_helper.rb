@@ -44,7 +44,8 @@ module Costs::NumberHelper
       end
 
     # Fallback: if only comma is used, it's probably the separator
-    separator = "," if value.include?(",") && !value.include?(".")
+    separator = "," if value.count(",") == 1 && !value.include?(".")
+
 
     if separator
       delimiters = Regexp.new("[ .,’˙]".gsub(separator, ""))
