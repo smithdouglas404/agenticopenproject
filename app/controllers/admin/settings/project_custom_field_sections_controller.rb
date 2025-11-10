@@ -121,14 +121,7 @@ module Admin::Settings
     end
 
     def project_custom_field_section_params
-      # Special case since we cannot nest parameters within an ActionMenu
-      if params[:shown_in].present? && params[:project_custom_field_section].blank?
-        params[:project_custom_field_section] = {
-          shown_in: params[:shown_in]
-        }
-      end
-
-      params.expect(project_custom_field_section: %i[name shown_in])
+      params.expect(project_custom_field_section: %i[name overview])
     end
   end
 end

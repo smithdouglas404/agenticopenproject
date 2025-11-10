@@ -28,7 +28,10 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  widget_wrapper(classes: "op-project-custom-field-section-container", test_selector: "project-custom-field-section-widget-#{section.id}") do
+  widget_wrapper(
+    classes: "op-project-custom-field-section-container",
+    test_selector: "project-custom-field-section-widget-#{section.id}"
+  ) do
     render(
       Overviews::ProjectCustomFields::ItemsComponent.new(
         project_custom_fields:,

@@ -158,15 +158,15 @@ module Settings
         )
       end
 
-      def position_icon_for_section(section)
-        section.shown_in_sidebar? ? :"op-view-split" : :"op-view-cards"
+      def display_representation_icon_for_section(section)
+        section.shown_in_overview_sidebar? ? :"op-view-split" : :"op-view-cards"
       end
 
-      def position_label_for_section(section)
-        if section.shown_in_sidebar?
-          t("settings.project_attributes.sections.positions.side_panel.label")
+      def display_representation_label_for_section(section)
+        if section.shown_in_overview_sidebar?
+          t("settings.project_attributes.sections.display_representation.overview.side_panel.label")
         else
-          t("settings.project_attributes.sections.positions.main_section.label")
+          t("settings.project_attributes.sections.display_representation.overview.main_section.label")
         end
       end
 
@@ -176,7 +176,7 @@ module Settings
           form_arguments: {
             method: :put,
             inputs: [{
-              name: "shown_in",
+              name: "project_custom_field_section[overview]",
               value: key
             }]
           }

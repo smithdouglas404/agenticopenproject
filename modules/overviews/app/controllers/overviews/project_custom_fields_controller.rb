@@ -110,6 +110,6 @@ class Overviews::ProjectCustomFieldsController < ApplicationController
   end
 
   def field_shown_in_sidebar?(custom_field)
-    CustomFieldSection.find(custom_field.custom_field_section_id).shown_in_sidebar?
+    CustomFieldSection.find(custom_field.custom_field_section_id).shown_in_overview_sidebar?
   end
 end

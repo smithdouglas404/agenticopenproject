@@ -68,7 +68,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, with_
 
         # The section is updated directly
         section = CustomFieldSection.find(section_for_input_fields.id)
-        expect(section.shown_in_main_section?).to be(true)
+        expect(section.shown_in_overview_main_section?).to be(true)
         expect(page).to have_test_selector("section-position-selector", text: "Main section")
       end
     end
@@ -78,7 +78,7 @@ RSpec.describe "Show project custom fields on project overview page", :js, with_
     before do
       # Move one section to the main section
       section = CustomFieldSection.find(section_for_input_fields.id)
-      section.shown_in = "main_section"
+      section.display_representation = { overview: "main_section" }
       section.save!
 
       overview_page.visit!

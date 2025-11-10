@@ -29,9 +29,9 @@
 #++
 
 class CustomFieldSection < ApplicationRecord
-  SHOWN_IN_SIDEBAR_KEY = "sidebar"
-  SHOWN_IN_MAIN_SECTION_KEY = "main_section"
-  DEFAULT_SHOWN_IN_KEY = SHOWN_IN_SIDEBAR_KEY.freeze
+  OVERVIEW__SIDEBAR_KEY = "sidebar"
+  OVERVIEW__MAIN_SECTION_KEY = "main_section"
+  DEFAULT_OVERVIEW_KEY = OVERVIEW__SIDEBAR_KEY.freeze
 
   acts_as_list scope: [:type]
 
@@ -39,14 +39,13 @@ class CustomFieldSection < ApplicationRecord
 
   default_scope { order(:position) }
 
-  scope :shown_in_sidebar, -> { where(shown_in: SHOWN_IN_SIDEBAR_KEY) }
-  scope :shown_in_main_section, -> { where(shown_in: SHOWN_IN_MAIN_SECTION_KEY) }
+  store_attribute :display_representation, :overview, :string
 
-  def shown_in_sidebar?
-    shown_in == SHOWN_IN_SIDEBAR_KEY
+  def shown_in_overview_sidebar?
+    overview == OVERVIEW__SIDEBAR_KEY
   end
 
-  def shown_in_main_section?
-    shown_in == SHOWN_IN_MAIN_SECTION_KEY
+  def shown_in_overview_main_section?
+    overview == OVERVIEW__MAIN_SECTION_KEY
   end
 end

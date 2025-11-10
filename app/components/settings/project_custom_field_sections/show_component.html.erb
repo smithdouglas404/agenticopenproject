@@ -18,30 +18,30 @@
               render(Primer::Alpha::ActionMenu.new(select_variant: :single, size: :small, test_selector: "section-position-selector")) do |menu|
                 menu.with_show_button(
                   mr: 2,
-                  aria: { label: t("settings.project_attributes.sections.positions.label") }
+                  aria: { label: t("settings.project_attributes.sections.display_representation.overview.label") }
                 ) do |button|
                   button.with_trailing_visual_icon(icon: :"triangle-down")
-                  button.with_leading_visual_icon(icon: position_icon_for_section(@project_custom_field_section))
-                  position_label_for_section(@project_custom_field_section)
+                  button.with_leading_visual_icon(icon: display_representation_icon_for_section(@project_custom_field_section))
+                  display_representation_label_for_section(@project_custom_field_section)
                 end
 
                 menu.with_item(
-                  label: t("settings.project_attributes.sections.positions.side_panel.label"),
-                  active: @project_custom_field_section.shown_in_sidebar?,
+                  label: t("settings.project_attributes.sections.display_representation.overview.side_panel.label"),
+                  active: @project_custom_field_section.shown_in_overview_sidebar?,
                   test_selector: "section-position-selector--side-panel-option",
-                  **menu_item_options_for(@project_custom_field_section, ProjectCustomFieldSection::SHOWN_IN_SIDEBAR_KEY)
+                  **menu_item_options_for(@project_custom_field_section, ProjectCustomFieldSection::OVERVIEW__SIDEBAR_KEY)
                 ) do |item|
                   item.with_leading_visual_icon(icon: :"op-view-split")
-                  item.with_description.with_content(t("settings.project_attributes.sections.positions.side_panel.description"))
+                  item.with_description.with_content(t("settings.project_attributes.sections.display_representation.overview.side_panel.description"))
                 end
                 menu.with_item(
-                  label: t("settings.project_attributes.sections.positions.main_section.label"),
-                  active: @project_custom_field_section.shown_in_main_section?,
+                  label: t("settings.project_attributes.sections.display_representation.overview.main_section.label"),
+                  active: @project_custom_field_section.shown_in_overview_main_section?,
                   test_selector: "section-position-selector--main-section-option",
-                  **menu_item_options_for(@project_custom_field_section, ProjectCustomFieldSection::SHOWN_IN_MAIN_SECTION_KEY)
+                  **menu_item_options_for(@project_custom_field_section, ProjectCustomFieldSection::OVERVIEW__MAIN_SECTION_KEY)
                 ) do |item|
                   item.with_leading_visual_icon(icon: :"op-view-cards")
-                  item.with_description.with_content(t("settings.project_attributes.sections.positions.main_section.description"))
+                  item.with_description.with_content(t("settings.project_attributes.sections.display_representation.overview.main_section.description"))
                 end
               end
             end
