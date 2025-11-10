@@ -43,6 +43,8 @@ interface InternalFilterValue {
   value:string[];
 }
 
+type FilterFunc<T> = (_value:T) => boolean;
+
 export default class FiltersFormController extends Controller {
   static targets = [
     'filterFormToggle',
@@ -231,7 +233,7 @@ export default class FiltersFormController extends Controller {
     ];
 
     selectors.some((selector) => {
-      const target = element.querySelector(selector) as HTMLElement;
+      const target = element.querySelector<HTMLElement>(selector);
 
       if (target) {
         window.setTimeout(() => {
@@ -265,7 +267,7 @@ export default class FiltersFormController extends Controller {
     // it is focused. This handler will find the sibling input of the clear button inside the
     // PrimerTextField and triggers the input in order to notify the auto-reloading filter mechanism.
     const element = event.currentTarget as HTMLElement;
-    const primerTextField = element.closest('primer-text-field') as PrimerTextFieldElement;
+    const primerTextField = element.closest<PrimerTextFieldElement>('primer-text-field')!;
     const inputElement = primerTextField.inputElement;
 
     const inputEvent = new Event('input', {
@@ -337,7 +339,7 @@ export default class FiltersFormController extends Controller {
     // Remove the page parameter when changing filters, so that pagination resets
     params.delete('page');
     params.set('filters', newFilters);
-    const ajaxIndicator = document.querySelector('#ajax-indicator') as HTMLElement;
+    const ajaxIndicator = document.querySelector<HTMLElement>('#ajax-indicator')!;
     ajaxIndicator.style.display = '';
 
     const pathName = this.urlPathNameValue || window.location.pathname;
@@ -394,7 +396,7 @@ export default class FiltersFormController extends Controller {
     const filters:InternalFilterValue[] = [];
 
     advancedFilters.forEach((filter) => {
-      const filterName = filter.getAttribute('data-filter-name') as string;
+      const filterName = filter.getAttribute('data-filter-name')!;
       const filterType = filter.getAttribute('data-filter-type');
       const parsedOperator = this.findTargetByName(filterName, this.operatorTargets)?.value;
       const valueContainer = this.findTargetByName(filterName, this.filterValueContainerTargets);
@@ -437,14 +439,14 @@ export default class FiltersFormController extends Controller {
   private readonly dateFilterTypes = ['datetime_past', 'date'];
 
   private parseFilterValue(valueContainer:HTMLElement, filterName:string, filterType:string, operator:string) {
-    const checkbox = valueContainer.querySelector('input[type="checkbox"]') as HTMLInputElement;
+    const checkbox = valueContainer.querySelector<HTMLInputElement>('input[type="checkbox"]');
 
     if (checkbox) {
       return [checkbox.checked ? 't' : 'f'];
     }
 
     if (valueContainer.dataset.filterAutocomplete === 'true') {
-      return (valueContainer.querySelector('input[name="value"]') as HTMLInputElement)?.value.split(',');
+      return (valueContainer.querySelector<HTMLInputElement>('input[name="value"]'))?.value.split(',');
     }
 
     if (this.operatorsWithoutValues.includes(operator)) {
@@ -511,7 +513,7 @@ export default class FiltersFormController extends Controller {
   private findTargetByName<T extends HTMLElement>(
     filterName:string,
     targets:T[],
-    targetFilter?:(target:T) => boolean,
+    targetFilter?:FilterFunc<T>,
   ):T | undefined {
     return this.findTargetBy(
       filterName,
@@ -524,16 +526,16 @@ export default class FiltersFormController extends Controller {
   private findTargetById<T extends HTMLElement>(
     filterName:string,
     targets:T[],
-    targetFilter?:(target:T) => boolean,
+    targetFilter?:FilterFunc<T>,
   ):T | undefined {
     return this.findTargetBy(filterName, (target:T) => target.id, targets, targetFilter);
   }
 
   private findTargetBy<T extends HTMLElement>(
     attributeValue:string,
-    attributeGetter:(target:T) => string | null,
+    attributeGetter:(_target:T) => string | null,
     targets:T[],
-    targetFilter?:(target:T) => boolean,
+    targetFilter?:FilterFunc<T>,
   ):T | undefined {
     return targets.find((target) => {
       return attributeGetter(target) === attributeValue && (!targetFilter || targetFilter(target));

@@ -38,7 +38,17 @@ class CustomField::Hierarchy::Item < ApplicationRecord
 
   def to_s = short.nil? ? label : "#{label} (#{short})"
 
-  def ancestry_path
-    self_and_ancestors.filter_map(&:to_s).reverse.join(" / ")
+  def ancestry_path(include_shorts_and_weights: false)
+    path = self_and_ancestors.filter_map(&:to_s).reverse.join(" / ")
+
+    return path unless include_shorts_and_weights
+
+    if short.present?
+      "#{path} (#{short})"
+    elsif weight.present?
+      "#{path} #{weight}"
+    else
+      path
+    end
   end
 end

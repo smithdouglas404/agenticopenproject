@@ -81,6 +81,8 @@ module Filter
         { autocomplete_options: user_autocomplete_options }
       when Queries::Filters::Shared::CustomFields::ListOptional
         { autocomplete_options: custom_field_list_autocomplete_options(filter) }
+      when Queries::Filters::Shared::CustomFields::Hierarchy
+        { autocomplete_options: custom_field_hierarchy_autocomplete_options(filter) }
       when Queries::Projects::Filters::ProjectStatusFilter,
            Queries::Projects::Filters::TypeFilter
         { autocomplete_options: list_autocomplete_options(filter) }
@@ -98,6 +100,11 @@ module Filter
                 else
                   { items: filter.allowed_values.map { |name, id| { name:, id: } } }
                 end
+      autocomplete_options.merge(options).merge(model: filter.values)
+    end
+
+    def custom_field_hierarchy_autocomplete_options(filter)
+      options = { items: filter.allowed_values.map { |name, id| { name:, id: } } }
       autocomplete_options.merge(options).merge(model: filter.values)
     end
 
