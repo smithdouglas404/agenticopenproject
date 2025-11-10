@@ -401,9 +401,9 @@ RSpec.describe "Open the Meetings tab",
             1
           )
 
-          meetings_tab.expect_upcoming_counter_to_be(1)
-
           wait_for_network_idle
+
+          meetings_tab.expect_upcoming_counter_to_be(1)
 
           page.within_test_selector("op-meeting-container-#{ongoing_meeting.id}") do
             expect(page).to have_content("Some notes to be added")
