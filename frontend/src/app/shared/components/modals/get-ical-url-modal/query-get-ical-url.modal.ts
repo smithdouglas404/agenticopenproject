@@ -34,7 +34,7 @@ import { OpModalComponent } from 'core-app/shared/components/modal/modal.compone
 import { OpModalLocalsToken } from 'core-app/shared/components/modal/modal.service';
 import { OpModalLocalsMap } from 'core-app/shared/components/modal/modal.types';
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject, OnInit,
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, inject,
 } from '@angular/core';
 import {
   UntypedFormGroup,
@@ -59,6 +59,19 @@ interface TokenNameFormValue {
   standalone: false,
 })
 export class QueryGetIcalUrlModalComponent extends OpModalComponent implements OnInit {
+  public readonly elementRef = inject(ElementRef);
+  public locals:OpModalLocalsMap = inject(OpModalLocalsToken);
+  public readonly I18n = inject(I18nService);
+  public readonly states = inject(States);
+  public readonly querySpace = inject(IsolatedQuerySpace);
+  public readonly cdRef = inject(ChangeDetectorRef);
+  public readonly wpListService = inject(WorkPackagesListService);
+  public readonly halNotification = inject(HalResourceNotificationService);
+  public readonly toastService = inject(ToastService);
+  public readonly pathService = inject(PathHelperService);
+  protected apiV3Service = inject(ApiV3Service);
+  protected copyToClipboardService = inject(CopyToClipboardService);
+
   public tokenName = '';
 
   public query:QueryResource;
@@ -90,21 +103,13 @@ export class QueryGetIcalUrlModalComponent extends OpModalComponent implements O
     return this.tokenNameForm.get('name');
   }
 
-  constructor(
-    readonly elementRef:ElementRef,
-    @Inject(OpModalLocalsToken) public locals:OpModalLocalsMap,
-    readonly I18n:I18nService,
-    readonly states:States,
-    readonly querySpace:IsolatedQuerySpace,
-    readonly cdRef:ChangeDetectorRef,
-    readonly wpListService:WorkPackagesListService,
-    readonly halNotification:HalResourceNotificationService,
-    readonly toastService:ToastService,
-    readonly pathService:PathHelperService,
-    protected apiV3Service:ApiV3Service,
-    protected copyToClipboardService:CopyToClipboardService,
-  ) {
-    super(locals, cdRef, elementRef);
+  constructor() {
+    // Pass required deps to the base class using inject()
+    super(
+      inject(OpModalLocalsToken),
+      inject(ChangeDetectorRef),
+      inject(ElementRef),
+    );
   }
 
   ngOnInit():void {
@@ -127,7 +132,6 @@ export class QueryGetIcalUrlModalComponent extends OpModalComponent implements O
     if (this.isBusy) {
       return;
     }
-
 
     const tokenName = (this.tokenNameForm.value as TokenNameFormValue)?.name;
 
