@@ -88,9 +88,9 @@ module Projects
 
     def allowed_new_workspace_types
       allowed_types = []
-      allowed_types << Project.workspace_types[:project] if @current_user.allowed_globally?(:add_project)
       allowed_types << Project.workspace_types[:portfolio] if @current_user.allowed_globally?(:add_portfolios) && OpenProject::FeatureDecisions.portfolio_models_active?
       allowed_types << Project.workspace_types[:program] if @current_user.allowed_globally?(:add_programs) && OpenProject::FeatureDecisions.portfolio_models_active?
+      allowed_types << Project.workspace_types[:project] if @current_user.allowed_globally?(:add_project)
       allowed_types
     end
 
