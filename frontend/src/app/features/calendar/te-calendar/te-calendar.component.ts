@@ -726,7 +726,7 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
       void this.fetchTimeEntries(
         this.memoizedTimeEntries.start,
         this.memoizedTimeEntries.end,
-      ).then(async (collection) => {
+      ).then((collection) => {
         this.entries.emit(collection);
         this.ucCalendar.getApi().refetchEvents();
       });
