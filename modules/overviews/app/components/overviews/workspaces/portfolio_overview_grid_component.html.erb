@@ -34,6 +34,6 @@ See COPYRIGHT and LICENSE files for more details.
     grid.with_widget(Grids::Widgets::Subitems, @portfolio)
     grid.with_widget(Grids::Widgets::Members, @portfolio)
 
-    render(Grids::ProjectAttributeWidgets.new(@portfolio, grid))
+    grid.with_widget(Grids::ProjectAttributeWidgets, @project)
   end
 %>

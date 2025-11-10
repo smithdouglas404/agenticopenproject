@@ -29,13 +29,25 @@
 #++
 
 module Grids
-  class ProjectAttributeWidgets < ApplicationComponent
-    def initialize(project, grid)
-      @project = project
-      @grid = grid
+  class ProjectAttributeWidgets < Grids::WidgetComponent
+    include OpTurbo::Streamable
 
-      super()
+    renders_many :widgets, Grids::Widgets::ProjectAttributeSection
+
+    param :project
+
+    def title
+      ""
     end
+
+    # For each configured section, call the the `with_widget` slot
+    def before_render
+      available_project_attributes_grouped_by_section.each do |section, project_custom_fields|
+        with_widget(section, project_custom_fields, @project)
+      end
+    end
+
+    private
 
     def available_project_attributes_grouped_by_section
       @available_project_attributes_grouped_by_section ||=

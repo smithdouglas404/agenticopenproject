@@ -26,9 +26,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
-
-<%=
-  available_project_attributes_grouped_by_section.each do |section, project_custom_fields|
-    @grid.with_widget(Grids::Widgets::ProjectAttributeSection, section, project_custom_fields, @project)
-  end
-%>
+<%= component_wrapper(class: "grids-project-attribute-widgets") do %>
+  <% widgets.each do |widget| %>
+    <%= render widget %>
+  <% end %>
+<% end %>

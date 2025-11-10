@@ -60,7 +60,11 @@ class Overviews::ProjectCustomFieldsController < ApplicationController
                     .call(permitted_params.project)
 
     if service_call.success?
-      update_sidebar_component
+      if field_shown_in_sidebar?(@custom_field)
+        update_sidebar_component
+      else
+        update_widgets_component
+      end
     else
       handle_errors(service_call.result, @custom_field)
     end
@@ -97,5 +101,15 @@ class Overviews::ProjectCustomFieldsController < ApplicationController
     update_via_turbo_stream(
       component: Overviews::ProjectCustomFields::SidePanelComponent.new(project: @project)
     )
+  end
+
+  def update_widgets_component
+    update_via_turbo_stream(
+      component: Grids::ProjectAttributeWidgets.new(@project)
+    )
+  end
+
+  def field_shown_in_sidebar?(custom_field)
+    CustomFieldSection.find(custom_field.custom_field_section_id).shown_in_sidebar?
   end
 end

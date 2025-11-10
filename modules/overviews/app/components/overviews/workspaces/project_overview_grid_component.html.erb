@@ -35,6 +35,6 @@ See COPYRIGHT and LICENSE files for more details.
     grid.with_widget(Grids::Widgets::Members, @project)
     grid.with_widget(Grids::Widgets::News, @project)
 
-    render(Grids::ProjectAttributeWidgets.new(@project, grid))
+    grid.with_widget(Grids::ProjectAttributeWidgets, @project)
   end
 %>
