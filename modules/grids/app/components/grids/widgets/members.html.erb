@@ -29,11 +29,11 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%=
   widget_wrapper do
-    if members_by_role.any?
+    if can_view_members? && members_by_role.any?
       flex_layout(style: "gap: var(--base-size-8, 8px)") do |flex|
         spacer_component = Primer::Beta::Text.new(mr: 1).with_content(", ")
 
-        members_by_role.each_with_index do |role_data, i|
+        members_by_role.each do |role_data|
           flex.with_row do
             render(Primer::Beta::Text.new(font_weight: :semibold)) { role_data[:role].name }
           end
@@ -68,16 +68,29 @@ See COPYRIGHT and LICENSE files for more details.
           end
         end
       end
-    else
-      render(Primer::Beta::Blankslate.new(test_selector: "op-custom-fields--hierarchy-items-blankslate")) do |component|
-        component.with_visual_icon(icon: :person)
 
-        component.with_heading(tag: :h3).with_content(t(".add_member_heading"))
-        component.with_description { t(".add_member_description") }
-        component.with_primary_action(tag: :a, href: "#", scheme: :secondary) do |button|
-          button.with_leading_visual_icon(icon: :plus)
-          t("activerecord.models.member")
+    elsif can_view_members?
+      render(Primer::Beta::Blankslate.new(test_selector: "widget-empty-members")) do |component|
+        component.with_visual_icon(icon: :person)
+        component.with_heading(tag: :h3).with_content(title)
+        component.with_description { I18n.t("js.grid.widgets.empty") }
+
+        if can_manage_members?
+          component.with_primary_action(
+            tag: :a,
+            href: project_members_path(@project, add_user: true),
+            scheme: :secondary
+          ) do |button|
+            button.with_leading_visual_icon(icon: :plus)
+            t("activerecord.models.member")
+          end
         end
+      end
+
+    else
+      render(Primer::Beta::Blankslate.new(test_selector: "widget-no-permission")) do |component|
+        component.with_heading(tag: :h3).with_content(title)
+        component.with_description { t("js.grid.widgets.not_available") }
       end
     end
   end
