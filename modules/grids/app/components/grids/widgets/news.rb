@@ -27,7 +27,6 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-
 module Grids
   module Widgets
     class News < Grids::WidgetComponent
@@ -35,11 +34,10 @@ module Grids
       private_constant :NEWS_LIMIT
 
       param :project, optional: true
-
       option :limit, default: -> { NEWS_LIMIT }
 
-      def no_news?
-        news_module_disabled? || newest.empty?
+      def title
+        Project.human_attribute_name(:news)
       end
 
       def newest
@@ -47,23 +45,23 @@ module Grids
       end
 
       def news
-        @news ||=
-          if project
-            project.news.visible(current_user).newest_first
-          else
-            ::News
-              .visible(current_user)
-              .newest_first
-              .includes(:project)
-          end
+        @news ||= if project
+                    project.news.visible(current_user).newest_first
+                  else
+                    ::News.visible(current_user).newest_first.includes(:project)
+                  end
       end
 
-      def title
-        Project.human_attribute_name(:news)
+      def no_news?
+        news_module_disabled? || newest.empty?
       end
 
       def news_module_disabled?
         project.present? && !project.module_enabled?("news")
+      end
+
+      def can_manage_news?
+        current_user.allowed_in_project?(:manage_news, project)
       end
     end
   end
