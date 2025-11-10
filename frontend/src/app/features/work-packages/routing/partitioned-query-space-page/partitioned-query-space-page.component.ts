@@ -54,8 +54,8 @@ import { CurrentProjectService } from 'core-app/core/current-project/current-pro
 
 export interface DynamicComponentDefinition {
   component:ComponentType<any>;
-  inputs?:{ [inputName:string]:any };
-  outputs?:{ [outputName:string]:Function };
+  inputs?:Record<string, any>;
+  outputs?:Record<string, Function>;
 }
 
 export interface ToolbarButtonComponentDefinition extends DynamicComponentDefinition {
@@ -93,7 +93,7 @@ export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase imp
 
   @InjectField() configuration:ConfigurationService;
 
-  text:{ [key:string]:string } = {
+  text:Record<string, string> = {
     jump_to_pagination: this.I18n.t('js.work_packages.jump_marks.pagination'),
     text_jump_to_pagination: this.I18n.t('js.work_packages.jump_marks.label_pagination'),
   };
@@ -127,9 +127,6 @@ export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase imp
 
   /** We need to pass the correct partition state to the view to manage the grid */
   currentPartition:ViewPartitionState = '-split';
-
-  /** What route (if any) should we go back to using the back button left of the title? */
-  backButtonCallback:() => void|undefined;
 
   /** Which filter container component to mount */
   filterContainerDefinition:DynamicComponentDefinition = {
@@ -198,7 +195,7 @@ export class PartitionedQuerySpacePageComponent extends WorkPackagesViewBase imp
    * @param state The current or entering state
    */
   protected setPartition(state:Ng2StateDeclaration):void {
-    this.currentPartition = (state.data && state.data.partition) ? state.data.partition : '-split';
+    this.currentPartition = (state.data?.partition) ? state.data.partition : '-split';
   }
 
   protected setupInformationLoadedListener():void {

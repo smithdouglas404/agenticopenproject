@@ -100,6 +100,7 @@ module Projects
     def after_perform(call)
       super.tap do |super_call|
         copy_activated_custom_fields(super_call)
+        update_calculated_value_custom_fields(super_call.result)
       end
     end
 

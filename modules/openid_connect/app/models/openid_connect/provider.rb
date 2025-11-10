@@ -144,7 +144,7 @@ module OpenIDConnect
     end
 
     def scopes
-      (scope || "openid email profile").split.map(&:to_sym)
+      (scope || "").split
     end
 
     def backchannel_logout_url
@@ -161,9 +161,16 @@ module OpenIDConnect
       end
     end
 
-    def redirect_uri
-      base_redirect_uri = "#{Setting.protocol}://#{Setting.host_name}#{OpenProject::Configuration['rails_relative_url_root']}"
-      URI.join(base_redirect_uri, "/auth/#{slug}/callback").to_s
+    def to_h
+      claims = self.claims.presence || "{}"
+      claims = add_groups_claim(JSON.parse(claims)).to_json
+      super.merge(claims:, acr_values:)
+    end
+
+    def add_groups_claim(claims)
+      claims = { "id_token" => { groups_claim => nil } }.deep_merge(claims) if sync_groups
+
+      claims
     end
   end
 end

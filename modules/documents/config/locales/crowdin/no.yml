@@ -63,6 +63,7 @@
   label_document_title: "Tittel"
   label_document_description: "Beskrivelse"
   label_document_category: "Kategori"
+  label_document_type: "Type"
   permission_manage_documents: "Administrere dokumenter"
   permission_view_documents: "Vise dokumenter"
   project_module_documents: "Dokumenter"

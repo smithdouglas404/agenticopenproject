@@ -63,6 +63,7 @@ tr:
   label_document_title: "Başlık"
   label_document_description: "Açıklama"
   label_document_category: "Kategori"
+  label_document_type: "Type"
   permission_manage_documents: "Belgeleri yönetme"
   permission_view_documents: "Belgeleri görüntüleme"
   project_module_documents: "Belgeler"

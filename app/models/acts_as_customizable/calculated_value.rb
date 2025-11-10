@@ -98,9 +98,23 @@ module ActsAsCustomizable::CalculatedValue
     end
 
     def handle_calculation_errors!(given_cfs, enabled_ids, calculated_fields, result, errors)
+      # Skip creating error objects if the project is not persisted, because the error objects
+      # require the customized object (project) to be saved in the database.
+      return unless is_a?(Project) && persisted?
+
       remove_calculated_value_errors!(calculated_fields.map(&:id))
 
-      return unless is_a?(Project) && errors.any?
+      create_calculated_value_errors(given_cfs, enabled_ids, calculated_fields, result, errors)
+    end
+
+    def remove_calculated_value_errors!(custom_field_ids)
+      return if custom_field_ids.empty?
+
+      CalculatedValueError.where(customized: self, custom_field_id: custom_field_ids).delete_all
+    end
+
+    def create_calculated_value_errors(given_cfs, enabled_ids, calculated_fields, result, errors)
+      return if errors.empty?
 
       enabled_calculated_fields = calculated_fields.filter { it.id.in?(enabled_ids) }
 
@@ -111,12 +125,6 @@ module ActsAsCustomizable::CalculatedValue
         given_values: given_cfs,
         calculated_fields: enabled_calculated_fields
       )
-    end
-
-    def remove_calculated_value_errors!(custom_field_ids)
-      return if custom_field_ids.empty?
-
-      CalculatedValueError.where(customized: self, custom_field_id: custom_field_ids).delete_all
     end
   end
 end

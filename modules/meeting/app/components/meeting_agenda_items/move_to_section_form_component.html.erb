@@ -46,7 +46,7 @@ See COPYRIGHT and LICENSE files for more details.
           end
         end
         flex.with_row(mb: 3) do
-          render(Meeting::AddToSection.new(f, wrapper_id: "move-to-section-dialog", occurrence: @meeting, item: @agenda_item, open_directly: true))
+          render(Meeting::AddToSection.new(f, wrapper_id: "move-to-section-dialog", occurrence: @meeting, item: @agenda_item))
         end
       end
     end

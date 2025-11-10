@@ -32,7 +32,7 @@ module Projects::Concerns
   module NewProjectService
     private
 
-    def after_validate(service_call)
+    def before_perform(service_call)
       super.tap do |super_call|
         build_missing_project_custom_field_project_mappings(super_call.result)
       end
@@ -98,10 +98,11 @@ module Projects::Concerns
     end
 
     def build_missing_project_custom_field_project_mappings(project)
-      # Activate custom fields for this project (via mapping table) if values have been provided
-      # for custom_fields, but no mapping exists.
+      # Activate all custom fields (via mapping table) that are required or
+      # have a value provided by the user, but no mapping exists.
+
       custom_field_ids = project.custom_values
-        .select { |cv| cv.value.present? }
+        .select { |cv| cv.value? || cv.required? }
         .pluck(:custom_field_id).uniq
       activated_custom_field_ids = project.project_custom_field_project_mappings.pluck(:custom_field_id).uniq
 
@@ -109,6 +110,26 @@ module Projects::Concerns
         .map { |custom_field_id| { custom_field_id: } }
 
       project.project_custom_field_project_mappings.build(mappings)
+    end
+
+    def update_calculated_value_custom_fields(model)
+      changed_cf_ids = model.custom_values.map(&:custom_field_id)
+
+      # Using unscope(where: :admin_only) to fix an issue when non admin user
+      # edits a custom field which is used by an admin only calculated value
+      # field. Without this unscoping, admin only value and all fields
+      # referencing it (recursively) will not be recalculated and there will
+      # even be no place for that recalculatin to be triggered unless an admin
+      # edits same value again.
+      #
+      # This may need to be handled differently to make it work for other custom
+      # field containers, like WorkPackage. User custom fields also has
+      # admin_only check.
+      affected_cfs = model.available_custom_fields.unscope(where: :admin_only).affected_calculated_fields(changed_cf_ids)
+
+      model.calculate_custom_fields(affected_cfs)
+
+      model.save if model.persisted? && model.changed_for_autosave?
     end
   end
 end

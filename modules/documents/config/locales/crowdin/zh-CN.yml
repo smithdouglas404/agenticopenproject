@@ -28,8 +28,8 @@ zh-CN:
       document: "文档"
     attributes:
       document:
-        content_binary: "内容二进制文件"
-        title: "标题"
+        content_binary: "二进制内容"
+        title: "文档标题"
   activity:
     filter:
       document: "文档"
@@ -63,6 +63,7 @@ zh-CN:
   label_document_title: "标题"
   label_document_description: "描述"
   label_document_category: "类别"
+  label_document_type: "类型"
   permission_manage_documents: "管理文档"
   permission_view_documents: "查看文档"
   project_module_documents: "文档"

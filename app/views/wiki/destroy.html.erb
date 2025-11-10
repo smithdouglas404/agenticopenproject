@@ -62,7 +62,7 @@ See COPYRIGHT and LICENSE files for more details.
       <%= styled_select_tag "reassign_to_id",
                             options_for_select(wiki_page_options_for_select(@reassignable_to)),
                             { container_class: "-wide" } %>
-      <% csp_onclick("jQuery('#todo_reassign').attr('checked', true)", "#reassign_to_id") %>
+      <% csp_onclick("document.getElementById('todo_reassign').checked = true", "#reassign_to_id") %>
     </div>
   <% end %>
 

@@ -30,7 +30,7 @@
 
 class Queries::Documents::Filters::TypeFilter < Queries::Documents::Filters::DocumentFilter
   def allowed_values
-    @allowed_values ||= DocumentCategory.pluck(:name, :id)
+    @allowed_values ||= DocumentType.pluck(:name, :id)
   end
 
   def available?
@@ -42,6 +42,6 @@ class Queries::Documents::Filters::TypeFilter < Queries::Documents::Filters::Doc
   end
 
   def self.key
-    :category_id
+    :type_id
   end
 end

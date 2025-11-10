@@ -63,6 +63,7 @@ hu:
   label_document_title: "Cím"
   label_document_description: "Leírás"
   label_document_category: "Kategória"
+  label_document_type: "Type"
   permission_manage_documents: "Dokumentumok kezelése"
   permission_view_documents: "Dokumetumok megtekintése"
   project_module_documents: "Dokumentumok"

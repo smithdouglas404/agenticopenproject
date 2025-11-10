@@ -63,6 +63,7 @@ ru:
   label_document_title: "Заголовок"
   label_document_description: "Описание"
   label_document_category: "Категория"
+  label_document_type: "Type"
   permission_manage_documents: "Управление документами"
   permission_view_documents: "Просмотр документов"
   project_module_documents: "Документы"

@@ -37,10 +37,14 @@ RSpec.describe Grids::Widgets::News, type: :component do
     render_inline(described_class.new(...))
   end
 
-  let(:project) { nil }
-  let(:user) { create(:admin) }
+  shared_let(:project_red) { create(:project, name: "Red", enabled_module_names: [:news]) }
+  shared_let(:project_blue) { create(:project, name: "Blue", enabled_module_names: [:news]) }
+  shared_let(:author) { create(:user) }
+  shared_let(:admin) { create(:admin) }
 
-  current_user { user }
+  let(:project) { nil }
+
+  current_user { admin }
 
   subject(:rendered_component) do
     render_component(project)
@@ -58,14 +62,14 @@ RSpec.describe Grids::Widgets::News, type: :component do
     end
 
     context "with news" do
-      let(:author) { create(:user) }
-      let!(:news) { create_list(:news, 2, author:) }
+      let!(:news_red) { create(:news, project: project_red, author:) }
+      let!(:news_blue) { create(:news, project: project_blue, author:) }
 
-      it "renders news items", :aggregate_failures do
+      it "renders news items from all projects", :aggregate_failures do
         expect(rendered_component).to have_list_item(count: 2)
         expect(rendered_component).to have_list_item(position: 2) do |item|
-          expect(item).to have_link href: news_path(news.first)
-          expect(item).to have_content /Added by .+ on \d{2}\/\d{2}\/\d{4} \d{2}:\d{2} [AP]M/
+          expect(item).to have_link href: news_path(news_red)
+          expect(item).to have_content(/Added by .+ on \d{2}\/\d{2}\/\d{4} \d{2}:\d{2} [AP]M/)
           expect(item).to have_link href: user_path(author)
         end
       end
@@ -73,7 +77,9 @@ RSpec.describe Grids::Widgets::News, type: :component do
   end
 
   context "with project" do
-    let(:project) { create(:project) }
+    let(:project) { project_red }
+    # these news from another project should not be visible
+    let!(:some_other_news) { create(:news, project: project_blue, author:) }
 
     context "with no news" do
       it "renders a message" do
@@ -82,14 +88,13 @@ RSpec.describe Grids::Widgets::News, type: :component do
     end
 
     context "with news" do
-      let(:author) { create(:user) }
-      let!(:news) { create_list(:news, 3, project:, author:) }
+      let!(:news) { create_list(:news, 3, project: project, author:) }
 
-      it "renders news items", :aggregate_failures do
+      it "renders news items of that project", :aggregate_failures do
         expect(rendered_component).to have_list_item(count: 3)
         expect(rendered_component).to have_list_item(position: 3) do |item|
           expect(item).to have_link href: news_path(news.first)
-          expect(item).to have_content /Added by .+ on \d{2}\/\d{2}\/\d{4} \d{2}:\d{2} [AP]M/
+          expect(item).to have_content(/Added by .+ on \d{2}\/\d{2}\/\d{4} \d{2}:\d{2} [AP]M/)
           expect(item).to have_link href: user_path(author)
         end
       end
@@ -97,11 +102,16 @@ RSpec.describe Grids::Widgets::News, type: :component do
   end
 
   context "with project without news module enabled" do
-    let(:project) { create(:project, enabled_module_names: [:wiki]) }
+    let(:project) { project_red }
+    let!(:news) { create(:news, project:, author:) }
 
-    it "does not render" do
-      expect(rendered_component).not_to have_primer_text "Nothing new to report.", color: "subtle"
+    before do
+      project.enabled_module_names -= %w[news]
+    end
+
+    it "renders 'nothing to report' message" do
       expect(rendered_component).not_to have_list "News"
+      expect(rendered_component).to have_primer_text "Nothing new to report.", color: "subtle"
     end
   end
 end

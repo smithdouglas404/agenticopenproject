@@ -39,7 +39,7 @@ export interface GridResourceLinks {
 export class GridBaseResource extends HalResource {
   public widgets:GridWidgetResource[];
 
-  public options:{ [key:string]:unknown };
+  public options:Record<string, unknown>;
 
   public rowCount:number;
 
@@ -50,7 +50,7 @@ export class GridBaseResource extends HalResource {
 
     this.widgets = this
       .widgets
-      .map((widget:Object) => {
+      .map((widget:object) => {
         const widgetResource = new GridWidgetResource(this.injector,
           widget,
           true,

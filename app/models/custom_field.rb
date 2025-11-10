@@ -54,7 +54,7 @@ class CustomField < ApplicationRecord
   has_many :calculated_value_errors, dependent: :delete_all, inverse_of: "custom_field"
 
   scope :hierarchy_root_and_children, -> { includes(hierarchy_root: { children: :children }) }
-  scope :required, -> { where(is_required: true) }
+  scope :required, -> { where(is_required: true).where.not(field_format: "calculated_value") }
 
   scope :field_format_calculated_value, -> { where(field_format: "calculated_value") }
 
@@ -232,7 +232,7 @@ class CustomField < ApplicationRecord
       value.to_f
     when "user", "version"
       field_format.classify.constantize.find_by(id: value.to_i)
-    when "hierarchy", "scored_list"
+    when "hierarchy", "weighted_item_list"
       CustomField::Hierarchy::Item.find_by(id: value.to_i)
     end
   end
@@ -319,8 +319,8 @@ class CustomField < ApplicationRecord
     field_format == "hierarchy"
   end
 
-  def field_format_scored_list?
-    field_format == "scored_list"
+  def field_format_weighted_item_list?
+    field_format == "weighted_item_list"
   end
 
   def field_format_calculated_value?
@@ -330,7 +330,7 @@ class CustomField < ApplicationRecord
   def calculated_value? = field_format_calculated_value?
 
   def hierarchical_list?
-    field_format_hierarchy? || field_format_scored_list?
+    field_format_hierarchy? || field_format_weighted_item_list?
   end
 
   def multi_value_possible?

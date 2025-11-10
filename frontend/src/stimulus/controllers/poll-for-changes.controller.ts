@@ -66,7 +66,7 @@ export default class PollForChangesController extends ApplicationController {
 
   buildReference():string {
     if (this.hasReferenceTarget) {
-      return this.referenceTarget.dataset.referenceValue as string;
+      return this.referenceTarget.dataset.referenceValue!;
     }
 
     return this.referenceValue;

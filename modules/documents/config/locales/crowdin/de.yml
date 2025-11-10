@@ -63,6 +63,7 @@ de:
   label_document_title: "Titel"
   label_document_description: "Beschreibung"
   label_document_category: "Kategorie"
+  label_document_type: "Typ"
   permission_manage_documents: "Dokumente verwalten"
   permission_view_documents: "Dokumente ansehen"
   project_module_documents: "Dokumente"

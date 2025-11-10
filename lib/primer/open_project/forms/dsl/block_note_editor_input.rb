@@ -33,7 +33,15 @@ module Primer
     module Forms
       module Dsl
         class BlockNoteEditorInput < Primer::Forms::Dsl::Input
-          attr_reader :name, :label, :value, :classes, :document_id, :document_name, :oauth_token, :attachments_upload_url
+          attr_reader :name,
+                      :label,
+                      :value,
+                      :classes,
+                      :document_id,
+                      :document_name,
+                      :oauth_token,
+                      :attachments_upload_url,
+                      :attachments_collection_key
 
           ##
           # @param name [String] The name of the input field.
@@ -42,8 +50,8 @@ module Primer
           # @param document_id [String] The ID of the document.
           # @param document_name [String] The name of the document for the collaborative YJS provider.
           # @param oauth_token [String, nil] The OAuth token for external server authentication.
-          def initialize(name:, label:, value:, document_id:, document_name:, attachments_upload_url:, oauth_token: nil,
-                         **system_arguments)
+          def initialize(name:, label:, value:, document_id:, document_name:, attachments_upload_url: "",
+                         attachments_collection_key: "", oauth_token: nil, **system_arguments)
             @name = name
             @label = label
             @value = value
@@ -52,12 +60,14 @@ module Primer
             @document_name = document_name
             @oauth_token = oauth_token
             @attachments_upload_url = attachments_upload_url
+            @attachments_collection_key = attachments_collection_key
 
             super(**system_arguments)
           end
 
           def to_component
-            BlockNoteEditor.new(input: self, value:, document_id:, document_name:, oauth_token:, attachments_upload_url:)
+            BlockNoteEditor.new(input: self, value:, document_id:, document_name:, oauth_token:, attachments_upload_url:,
+                                attachments_collection_key:)
           end
 
           def type

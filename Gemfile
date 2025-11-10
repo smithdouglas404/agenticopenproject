@@ -176,7 +176,7 @@ group :production do
   gem "redis", "~> 5.4.0"
 end
 
-gem "i18n-js", "~> 4.2.3"
+gem "i18n-js", "~> 4.2.4"
 gem "rails-i18n", "~> 8.0.0"
 
 gem "sprockets", "~> 3.7.2" # lock sprockets below 4.0
@@ -194,9 +194,9 @@ gem "fog-aws"
 
 gem "aws-sdk-core", "~> 3.236"
 # File upload via fog + screenshots on travis
-gem "aws-sdk-s3", "~> 1.202"
+gem "aws-sdk-s3", "~> 1.203"
 
-gem "openproject-token", "~> 8.0.0"
+gem "openproject-token", "~> 8.1.0"
 
 gem "plaintext", "~> 0.3.2"
 
@@ -225,7 +225,7 @@ gem "yabeda-rails"
 
 # opentelemetry
 gem "opentelemetry-exporter-otlp", "~> 0.31.0", require: false
-gem "opentelemetry-instrumentation-all", "~> 0.86.1", require: false
+gem "opentelemetry-instrumentation-all", "~> 0.87.0", require: false
 gem "opentelemetry-sdk", "~> 1.10", require: false
 
 gem "view_component", "~> 4.1.0"
@@ -242,7 +242,7 @@ gem "turbo-rails", "~> 2.0.20"
 
 # There is a problem with version 1.4.0. Do not update until you're sure there is no infinite hang
 # happenning in failing tests when WebMock or VCR stub cannot be found.
-gem "httpx", "~> 1.6.2"
+gem "httpx", "~> 1.6.3"
 
 # Brings actual deep freezing to most ruby objects
 gem "ice_nine"
@@ -303,7 +303,7 @@ group :test do
 
   gem "equivalent-xml", "~> 0.6"
   gem "json_spec", "~> 1.1.4"
-  gem "shoulda-matchers", "~> 6.0", require: nil
+  gem "shoulda-matchers", "~> 7.0", require: nil
 
   gem "parallel_tests", "~> 4.0"
 end
@@ -363,7 +363,7 @@ group :development, :test do
   gem "erblint-github", require: false
 
   # Brakeman scanner
-  gem "brakeman", "~> 7.1.0"
+  gem "brakeman", "~> 7.1.1"
 
   # i18n-tasks helps find and manage missing and unused translations.
   gem "i18n-tasks", "~> 1.0.13", require: false
@@ -415,6 +415,6 @@ gemfiles.each do |file|
   send(:eval_gemfile, file) if File.readable?(file)
 end
 
-gem "openproject-octicons", "~>19.29.0"
-gem "openproject-octicons_helper", "~>19.29.0"
-gem "openproject-primer_view_components", "~>0.75.2"
+gem "openproject-octicons", "~>19.30.1"
+gem "openproject-octicons_helper", "~>19.30.1"
+gem "openproject-primer_view_components", "~>0.76.0"

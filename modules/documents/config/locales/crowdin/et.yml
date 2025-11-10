@@ -63,6 +63,7 @@ et:
   label_document_title: "Pealkiri"
   label_document_description: "Teave"
   label_document_category: "Kategooria"
+  label_document_type: "Type"
   permission_manage_documents: "Dokumentide haldamine"
   permission_view_documents: "Dokumentide vaatamine"
   project_module_documents: "Dokumendid"

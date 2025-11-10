@@ -51,6 +51,17 @@ RSpec.describe CustomFields::UpdateContract do
 
     context "with calculated_values enterprise feature", with_ee: %i[calculated_values] do
       it_behaves_like "contract is valid"
+
+      context "with a CustomFields::RecalculateValuesJob already existing",
+              with_good_job: CustomFields::RecalculateValuesJob do
+        before do
+          CustomFields::RecalculateValuesJob
+            .set(wait: 10.minutes) # GoodJob executes inline job without wait immediately
+            .perform_later(user: current_user, custom_field_id: cf.id)
+        end
+
+        it_behaves_like "contract is invalid", base: :previous_custom_field_recalculation_unprocessed
+      end
     end
   end
 end

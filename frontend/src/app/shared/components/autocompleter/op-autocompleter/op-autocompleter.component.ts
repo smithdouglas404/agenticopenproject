@@ -217,7 +217,7 @@ export class OpAutocompleterComponent<T extends IAutocompleteItem = IAutocomplet
 
   @Input() public labelForId?:string;
 
-  @Input() public inputAttrs?:{ [key:string]:string } = {};
+  @Input() public inputAttrs?:Record<string, string> = {};
 
   @Input() public tabIndex?:number;
 
@@ -240,7 +240,7 @@ export class OpAutocompleterComponent<T extends IAutocompleteItem = IAutocomplet
 
   @Input() public url:string;
 
-  @Input() public debounceTimeMs:number = 250;
+  @Input() public debounceTimeMs = 250;
 
   @Output() public open = new EventEmitter<unknown>();
 
@@ -390,7 +390,7 @@ export class OpAutocompleterComponent<T extends IAutocompleteItem = IAutocomplet
     repositionDropdownBugfix(this.ngSelectInstance);
   }
 
-  public opened():void { // eslint-disable-line no-unused-vars
+  public opened():void {
     this.repositionDropdown();
     this.open.emit();
   }
@@ -540,7 +540,7 @@ export class OpAutocompleterComponent<T extends IAutocompleteItem = IAutocomplet
    * @param inputs Initial inputs to the templating component
    * @protected
    */
-  protected applyTemplates(component:Type<IAutocompleterTemplateComponent>, inputs:{ [key:string]:unknown } = {}) {
+  protected applyTemplates(component:Type<IAutocompleterTemplateComponent>, inputs:Record<string, unknown> = {}) {
     const componentRef = this.vcRef.createComponent(component, { injector: this.templateInjector });
     Object.keys(inputs).forEach((key) => {
       const value = inputs[key];

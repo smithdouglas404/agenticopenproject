@@ -83,8 +83,8 @@ export interface IUserAutocompleteItem {
 export class UserAutocompleterComponent extends OpAutocompleterComponent<IUserAutocompleteItem> implements OnInit, ControlValueAccessor {
   @Input() public inviteUserToProject:string|undefined;
 
-  @Input() public isOpenedInModal:boolean = false;
-  @Input() public hoverCards:boolean = true;
+  @Input() public isOpenedInModal = false;
+  @Input() public hoverCards = true;
 
   @Input() public url:string = this.apiV3Service.users.path;
 

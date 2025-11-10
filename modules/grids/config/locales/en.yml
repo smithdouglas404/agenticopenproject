@@ -8,10 +8,15 @@ en:
         no_results: "There are no visible children."
         view_all_subitems: "View all subitems"
       members:
-        title: "Latest members"
+        title: "Members"
+        no_results: "No visible members."
         view_all_members: "View all members"
+        show_members_count: "Show all %{count} members"
         add_member_heading: "Add members to get started"
         add_member_description: "Add existing users from this instance to this project or invite new ones"
+        x_more:
+          one: "and one more member."
+          other: "and %{count} more members."
       news:
         no_results: "Nothing new to report."
 

@@ -451,12 +451,12 @@ export default class PageController extends Controller {
   }
 
   private operatorChanged(field:string, select:JQuery) {
-    if (!select || !select.length) {
+    if (!select?.length) {
       return;
     }
     const optionTag = select.find(`option[value="${select.val() as string}"]`);
-    const arity = parseInt(optionTag.attr('data-arity') as string, 10);
-    const forcedType = optionTag.attr('data-forced') as string;
+    const arity = parseInt(optionTag.attr('data-arity')!, 10);
+    const forcedType = optionTag.attr('data-forced')!;
     this.changeArgumentVisibility(field, arity, forcedType);
   }
 
@@ -481,7 +481,7 @@ export default class PageController extends Controller {
       [`#${fieldName}_arg_2`, argNr === 2],
     ];
 
-    // eslint-disable-next-line no-restricted-syntax
+
     for (const [fieldSelector, active] of fields) {
       this.setActiveState(fieldSelector, active && !forcedType);
       this.knownForcedTypes.forEach((knownForcedType) => {
@@ -647,7 +647,7 @@ export default class PageController extends Controller {
   }
 
   private removeGroupBy(groupBy:JQuery) {
-    this.addingGroupByEnabled(groupBy.attr('data-group-by') as string, true);
+    this.addingGroupByEnabled(groupBy.attr('data-group-by')!, true);
     groupBy.remove();
   }
 
@@ -669,7 +669,7 @@ export default class PageController extends Controller {
       },
 
       observe_click: (elementId:string, callback:(e:Event) => void) => {
-        const target = document.getElementById(elementId) as HTMLElement;
+        const target = document.getElementById(elementId)!;
         target?.addEventListener('click', callback);
       },
 
@@ -721,7 +721,7 @@ export default class PageController extends Controller {
   }
 
   private attachSettingsCallback(element:JQuery, callback:(response:string) => void) {
-    if (!element || !element.length) {
+    if (!element?.length) {
       return;
     }
 

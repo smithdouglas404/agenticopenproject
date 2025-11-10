@@ -91,7 +91,7 @@ module Queries::Filters::Shared
           :text
         when "date"
           :date
-        when "hierarchy", "scored_list"
+        when "hierarchy", "weighted_item_list"
           :hierarchy
         else
           :string

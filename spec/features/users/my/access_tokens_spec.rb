@@ -363,6 +363,7 @@ RSpec.describe "my access tokens", :js do
                 find_test_selector("oauth-token-row-#{app.id}-revoke").click
               end
             end
+            expect_and_dismiss_flash message: "Revocation of application #{app.name} successful."
           end
 
           User.current.reload

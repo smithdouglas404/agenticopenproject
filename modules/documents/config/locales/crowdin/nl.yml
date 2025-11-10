@@ -63,6 +63,7 @@ nl:
   label_document_title: "Titel"
   label_document_description: "Omschrijving"
   label_document_category: "Categorie"
+  label_document_type: "Type"
   permission_manage_documents: "Beheer documenten"
   permission_view_documents: "Bekijk documenten"
   project_module_documents: "Documenten"

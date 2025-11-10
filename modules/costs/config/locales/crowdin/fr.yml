@@ -31,7 +31,7 @@ fr:
         spent: "Consommé"
         spent_on: "Date"
         logged_by: "Saisi par"
-        entity: Connecté(e) pendant
+        entity: Connecté(e) pour
         entity_id: Connecté(e) pendant
         entity_gid: Connecté(e) pendant
       cost_type:

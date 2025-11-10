@@ -42,7 +42,7 @@ class Meeting::AddToSection < ApplicationForm
         disabled: meeting.blank?,
         placeholder: placeholder_text,
         append_to: append_to_container,
-        openDirectly: @open_directly
+        openDirectly: @move_to_section
       }
     ) do |select|
       items.each do |item|
@@ -55,13 +55,13 @@ class Meeting::AddToSection < ApplicationForm
     end
   end
 
-  def initialize(wrapper_id: nil, occurrence: nil, item: nil, open_directly: false)
+  def initialize(wrapper_id: nil, occurrence: nil, item: nil, move_to_section: true)
     super()
 
     @wrapper_id = wrapper_id
-    @occurrence = occurrence
+    @occurrence = meeting == occurrence ? nil : occurrence
     @selected_section = item&.meeting_section
-    @open_directly = open_directly
+    @move_to_section = move_to_section
   end
 
   private
@@ -74,9 +74,11 @@ class Meeting::AddToSection < ApplicationForm
 
   def items # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
     items = []
-    items.concat(meeting.sections) if meeting.present?
-    items.concat(@occurrence.sections) if @occurrence.present? && @occurrence != meeting
+
+    items.concat(meeting.sections) if meeting.present? && @occurrence.nil?
+    items.concat(@occurrence.sections) if @occurrence.present?
     items.push(meeting.backlog) if meeting.present? && !meeting.template? && meeting.backlog.present?
+
     items.reject! { |i| i == @selected_section } if @selected_section.present?
 
     items
@@ -110,10 +112,10 @@ class Meeting::AddToSection < ApplicationForm
   end
 
   def caption
-    I18n.t("label_section_selection_caption") if @occurrence.nil?
+    I18n.t("label_section_selection_caption") unless @move_to_section
   end
 
   def input_width
-    @occurrence.present? ? nil : :large
+    @move_to_section ? nil : :large
   end
 end

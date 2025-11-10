@@ -36,7 +36,7 @@ module CustomField::OrderStatements
     "list" => :join_for_order_by_list_sql,
     "user" => :join_for_order_by_user_sql,
     "version" => :join_for_order_by_version_sql,
-    %w[hierarchy scored_list] => :join_for_order_by_hierarchy_sql
+    %w[hierarchy weighted_item_list] => :join_for_order_by_hierarchy_sql
   ).freeze
 
   # Returns the expression to use in ORDER BY clause to sort objects by their
@@ -70,7 +70,7 @@ module CustomField::OrderStatements
   # Returns the expression to use in SELECT clause if it differs from one used
   # to group by
   def group_by_select_statement
-    return unless %w[list hierarchy scored_list].include?(field_format)
+    return unless %w[list hierarchy weighted_item_list].include?(field_format)
 
     # MIN needed to not add this column to group by, ANY_VALUE can be used when
     # minimum required PostgreSQL becomes 16

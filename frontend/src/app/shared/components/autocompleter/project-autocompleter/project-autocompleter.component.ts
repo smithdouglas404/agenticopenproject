@@ -92,7 +92,7 @@ export class ProjectAutocompleterComponent extends OpAutocompleterComponent<IPro
 
   @Input() public isInlineContext = false;
 
-  @Input() public disabledProjects:{ [key:string]:string|boolean } = {};
+  @Input() public disabledProjects:Record<string, string|boolean> = {};
 
   // This function allows mapping of the results before they are fed to the tree
   // structuring and destructuring algorithms used internally the this component
@@ -151,7 +151,7 @@ export class ProjectAutocompleterComponent extends OpAutocompleterComponent<IPro
       return {
         ...project,
         disabled,
-        disabledReason: (typeof this.disabledProjects[id] === 'string') ? this.disabledProjects[id] as string : '',
+        disabledReason: (typeof this.disabledProjects[id] === 'string') ? this.disabledProjects[id] : '',
       };
     });
   }
@@ -194,7 +194,7 @@ export class ProjectAutocompleterComponent extends OpAutocompleterComponent<IPro
             href: project._links.self.href,
             name: project.name,
             disabled,
-            disabledReason: (typeof this.disabledProjects[id] === 'string') ? this.disabledProjects[id] as string : '',
+            disabledReason: (typeof this.disabledProjects[id] === 'string') ? this.disabledProjects[id] : '',
             ancestors: project._links.ancestors,
             children: [],
           };

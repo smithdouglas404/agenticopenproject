@@ -1169,7 +1169,7 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
       describe "move" do
         it_behaves_like "has a titled action link" do
           let(:link) { "move" }
-          let(:href) { work_package_path(work_package, "move/new") }
+          let(:href) { "/work_packages/#{work_package.id}/move/new" }
           let(:permission) { :move_work_packages }
           let(:title) { "Move work package '#{work_package.subject}'" }
         end
@@ -1243,20 +1243,20 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
         let(:available_custom_fields) { [custom_field] }
         let(:custom_field_values) { [build_stubbed(:custom_value, custom_field:, value:)] }
 
-        context "with format scored list" do
-          let(:custom_field) { build_stubbed(:scored_list_wp_custom_field) }
+        context "with format weighted item list" do
+          let(:custom_field) { build_stubbed(:weighted_item_list_wp_custom_field) }
           let(:service) { CustomFields::Hierarchy::HierarchicalItemService.new }
-          let(:contract_class) { CustomFields::Hierarchy::InsertScoredItemContract }
-          let(:scored_item) do
+          let(:contract_class) { CustomFields::Hierarchy::InsertWeightedItemContract }
+          let(:weighted_item) do
             service
-              .insert_item(contract_class:, parent: custom_field.hierarchy_root, label: "TIE Fighter", score: 16.7)
+              .insert_item(contract_class:, parent: custom_field.hierarchy_root, label: "TIE Fighter", weight: 16.7)
               .value!
           end
-          let(:value) { scored_item.id }
+          let(:value) { weighted_item.id }
 
           it_behaves_like "has a titled link" do
             let(:link) { "customField#{custom_field.id}" }
-            let(:href) { "/api/v3/custom_field_items/#{scored_item.id}" }
+            let(:href) { "/api/v3/custom_field_items/#{weighted_item.id}" }
             let(:title) { "TIE Fighter" }
           end
         end

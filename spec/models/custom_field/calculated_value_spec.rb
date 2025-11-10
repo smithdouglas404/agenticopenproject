@@ -30,7 +30,9 @@
 
 require "spec_helper"
 
-RSpec.describe CustomField::CalculatedValue, with_flag: { calculated_value_project_attribute: true } do
+RSpec.describe CustomField::CalculatedValue,
+               with_ee: %i[calculated_values weighted_item_lists],
+               with_flag: { calculated_value_project_attribute: true } do
   using CustomFieldFormulaReferencing
 
   subject(:custom_field) { create(:calculated_value_project_custom_field, formula: "1 + 1") }
@@ -216,14 +218,14 @@ RSpec.describe CustomField::CalculatedValue, with_flag: { calculated_value_proje
   describe "#usable_custom_field_references_for_formula" do
     let!(:int) { create(:project_custom_field, :integer, default_value: 4, is_for_all: true) }
     let!(:float) { create(:project_custom_field, :float, default_value: 5.5, is_for_all: true) }
-    let!(:scored_list) { create(:project_custom_field, :scored_list, is_for_all: true) }
+    let!(:weighted_item_list) { create(:project_custom_field, :weighted_item_list, is_for_all: true) }
     let!(:other_calculated_value) { create(:calculated_value_project_custom_field, formula: "2 + 2", is_for_all: true) }
 
     current_user { create(:admin) }
 
     context "with permission to see all custom fields" do
       it "returns custom fields with formats that can be used in formulas" do
-        expected = [int, float, other_calculated_value, scored_list]
+        expected = [int, float, other_calculated_value, weighted_item_list]
         expect(subject.usable_custom_field_references_for_formula).to match_array(expected)
       end
 
@@ -582,7 +584,7 @@ RSpec.describe CustomField::CalculatedValue, with_flag: { calculated_value_proje
     let(:formula) { "" }
 
     context "with an empty formula" do
-      it_behaves_like "invalid formula", "can't be blank."
+      it_behaves_like "invalid formula", "Formula can't be blank."
     end
 
     context "with a formula containing only allowed characters" do
@@ -612,25 +614,29 @@ RSpec.describe CustomField::CalculatedValue, with_flag: { calculated_value_proje
     context "when omitting trailing decimals after a decimal point" do
       let(:formula) { "1.5 + 1. - 3.25" }
 
-      it_behaves_like "invalid formula", "is invalid."
+      it_behaves_like "invalid formula", "Formula is invalid."
     end
 
     context "with a formula containing forbidden characters" do
       let(:formula) { "abc + 2" }
 
-      it_behaves_like "invalid formula", "contains invalid characters."
+      it_behaves_like "invalid formula",
+                      "Only numeric values, mathematical operators and project attributes of type integer, float, " \
+                      "calculated value and weighted list are allowed."
     end
 
     context "with a formula containing references to custom fields without pattern-mustaches" do
       let(:formula) { "100 * cf_3" }
 
-      it_behaves_like "invalid formula", "contains invalid characters."
+      it_behaves_like "invalid formula",
+                      "Only numeric values, mathematical operators and project attributes of type integer, float, " \
+                      "calculated value and weighted list are allowed."
     end
 
     context "with a formula that is not a valid equation" do
       let(:formula) { "1 / + - 3" }
 
-      it_behaves_like "invalid formula", "is invalid."
+      it_behaves_like "invalid formula", "Formula is invalid."
     end
 
     context "with a formula that contains custom fields that are not visible to the user" do
@@ -652,7 +658,8 @@ RSpec.describe CustomField::CalculatedValue, with_flag: { calculated_value_proje
 
       current_user { user }
 
-      it_behaves_like "invalid formula", /contains custom fields that are not allowed: (int, float|float, int)./
+      it_behaves_like "invalid formula",
+                      /The attribute (int, float|float, int) cannot be used because it leads to a circular reference/
     end
   end
 end

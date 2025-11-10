@@ -278,6 +278,12 @@ RSpec.describe "Edit project custom fields on project overview page", :js, :sele
 
             dialog.expect_closed
           end
+
+          it "displays the custom field label without the required asterisk" do
+            expect(page).to have_css("span", text: calculated_field.name) do |label|
+              expect(label).to have_no_css("span", text: "*")
+            end
+          end
         end
 
         describe "using int" do
@@ -288,6 +294,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js, :sele
           end
 
           let(:custom_field) { integer_project_custom_field }
+          let(:calculated_field) { calculated_from_int_project_custom_field }
 
           it_behaves_like "a calculated custom field input"
         end
@@ -300,6 +307,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js, :sele
           end
 
           let(:custom_field) { integer_project_custom_field }
+          let(:calculated_field) { calculated_from_int_and_float_project_custom_field }
 
           it_behaves_like "a calculated custom field input"
         end

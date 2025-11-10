@@ -92,17 +92,17 @@ export class WorkPackageTabsService {
     }
   }
 
-  getDisplayableTabs(workPackage:WorkPackageResource):WpTabDefinition[] {
+  getDisplayableTabs(workPackage:WorkPackageResource, routedFromAngular = true):WpTabDefinition[] {
     return this
       .tabs
       .filter(
-        (tab) => !tab.displayable || tab.displayable(workPackage, this.$state),
+        (tab) => !tab.displayable || tab.displayable(workPackage, routedFromAngular ? this.$state : null),
       )
       .map(
         (tab) => ({
           ...tab,
           counter: tab.count
-            ? (injector:Injector) => tab.count!(workPackage, injector || this.injector) // eslint-disable-line @typescript-eslint/no-non-null-assertion
+            ? (injector:Injector) => tab.count!(workPackage, injector || this.injector)
             : (_:Injector) => from([0]),
         }),
       );
@@ -118,7 +118,7 @@ export class WorkPackageTabsService {
         component: WorkPackageOverviewTabComponent,
         name: this.I18n.t('js.work_packages.tabs.overview'),
         id: 'overview',
-        displayable: (_, $state) => $state.includes('**.details.*'),
+        displayable: (_, $state) => $state ? $state.includes('**.details.*') : false,
       },
       {
         id: 'activity',

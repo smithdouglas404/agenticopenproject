@@ -67,6 +67,16 @@ class ApplicationMailer < ActionMailer::Base
       end
     end
 
+    ##
+    # Return the email address of reply to
+    #
+    # @return [String] the default from address
+    def reply_to_address
+      address = reply_to
+      # Extract email from "Name <email>" format if present
+      address[/<(.+)>/, 1] || address
+    end
+
     def host
       if OpenProject::Configuration.rails_relative_url_root.blank?
         Setting.host_name
@@ -75,9 +85,7 @@ class ApplicationMailer < ActionMailer::Base
       end
     end
 
-    def protocol
-      Setting.protocol
-    end
+    delegate :protocol, to: :Setting
 
     def default_url_options
       options = super.merge(host:, protocol:)

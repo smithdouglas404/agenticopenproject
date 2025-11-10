@@ -51,7 +51,7 @@ Rails.application.reloader.to_prepare do
 
       map.permission :archive_project,
                      {
-                       "projects/archive": %i[create]
+                       "projects/archive": %i[create dialog]
                      },
                      permissible_on: :project,
                      require: :member
@@ -290,7 +290,8 @@ Rails.application.reloader.to_prepare do
 
       wpt.permission :add_work_packages,
                      {
-                       work_package_relations: %i[new create]
+                       work_package_relations: %i[new create],
+                       work_packages: %i[new]
                      },
                      permissible_on: :project,
                      dependencies: :view_work_packages,
@@ -313,7 +314,10 @@ Rails.application.reloader.to_prepare do
                      contract_actions: { work_packages: %i[move] }
 
       wpt.permission :copy_work_packages,
-                     { "work_packages/moves": %i[new create] },
+                     {
+                       "work_packages/moves": %i[new create],
+                       work_packages: %i[copy]
+                     },
                      permissible_on: %i[work_package project],
                      require: :loggedin,
                      dependencies: :view_work_packages,

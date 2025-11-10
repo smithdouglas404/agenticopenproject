@@ -361,15 +361,15 @@ module ApplicationHelper
     hidden_field_tag("back_url", CGI.escape(back_url), id: nil) if back_url.present?
   end
 
-  def back_url_to_current_page_hidden_field_tag
-    back_url = params[:back_url]
+  def back_url_to_current_page
+    back_url = params[:back_url] if params.present?
     if back_url.present?
       back_url = back_url.to_s
-    elsif request.get? and params.present?
+    elsif request.get? && params.present?
       back_url = request.url
     end
 
-    hidden_field_tag("back_url", back_url) if back_url.present?
+    back_url
   end
 
   def check_all_links(form_name)
@@ -452,10 +452,10 @@ module ApplicationHelper
     end
   end
 
-  # To avoid the menu flickering, disable it
-  # by default unless we're in test mode
-  def initial_menu_styles(side_displayed)
-    Rails.env.test? || !side_displayed ? "" : "display:none"
+  # To avoid FOUC (menu flickering / dark mode on logout), hide page
+  # wrapper on load except in test environment.
+  def initial_menu_styles
+    Rails.env.test? || "display:none"
   end
 
   def initial_menu_classes(side_displayed, show_decoration)

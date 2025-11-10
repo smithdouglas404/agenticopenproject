@@ -40,6 +40,6 @@ module OpenProject
   end
 end
 
-OpenProject::Patches.patch_gem_version "openproject-primer_view_components", "0.75.2" do
+OpenProject::Patches.patch_gem_version "openproject-primer_view_components", "0.76.0" do
   Primer::OpenProject::PageHeader.prepend OpenProject::Patches::PrimerPageHeaderBreadcrumb
 end

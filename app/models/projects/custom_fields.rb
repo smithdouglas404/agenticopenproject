@@ -40,7 +40,9 @@ module Projects::CustomFields
     has_many :project_custom_fields, through: :project_custom_field_project_mappings,
                                      class_name: "ProjectCustomField"
 
-    def enabled_custom_field_ids = project_custom_field_ids
+    def enabled_custom_field_ids
+      project_custom_field_project_mappings.map(&:custom_field_id)
+    end
 
     def available_custom_fields
       return all_visible_custom_fields if new_record?

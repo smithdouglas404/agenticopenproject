@@ -304,7 +304,7 @@ hu:
         placeholder:
           label: "Item label"
           short: "Short name"
-          score: "Score"
+          weight: "Weight"
       notice:
         remember_items_and_projects: "Remember to set items and projects in the respective tabs for this custom field."
       hierarchy:
@@ -323,8 +323,8 @@ hu:
     placeholder_version_select: "Work package or project selection is required first"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources."
-      is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects."
+      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
+      is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
       is_for_all: "Mark the custom field as available in all existing and new projects."
       multi_select: "Allows the user to assign multiple values to this custom field."
       searchable: "Include the field values when using the global search functionality."
@@ -339,12 +339,12 @@ hu:
       no_results_content_text: Új egyéni mező létrehozása
   calculated_values:
     error_dialog:
-      title: "Error with Calculated Value"
+      title: "Error with Calculated value"
     errors:
-      unknown: "An unknown error occurred. Please review the formula for this Calculated Value."
-      mathematical: "A mathematical error occurred during calculation."
-      missing_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is empty.
-      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated Value but is disabled for the project.
+      unknown: "An unknown error occurred. Please review the formula for this Calculated value."
+      mathematical: "The mathematical formula leads to an error. Please review the project calculation attribute and try again."
+      missing_value: The attribute "%{custom_field_name}" is required by this Calculated value, but is empty.
+      disabled_value: The attribute "%{custom_field_name}" is required by this Calculated value, but is disabled for the project.
   concatenation:
     single: "vagy"
   danger_dialog:
@@ -390,7 +390,7 @@ hu:
       depth: "Depth"
       item: "Item"
       label: "Label"
-      score: "Score"
+      weight: "Weight"
       short: "Short name"
       parent: "Szülő"
       blueprint: "Pattern blueprint"
@@ -840,17 +840,17 @@ hu:
           click_on_show_relations_to_open_gantt: 'Click on "%{button_name}" for Gantt overview.'
           manual_mobile: "Ignoring relations."
           manual_gap_between_predecessors: "There is a gap between this and all predecessors."
-          manual_overlap_with_predecessors: "Overlaps with at least one predecessor."
+          manual_overlap_with_predecessors: "Átfedések legalább egy megelőző feladattal."
           manual_with_children: "This has child work packages but their start dates are ignored."
         title:
           automatic_mobile: "Automatically scheduled."
           automatic_with_children: "The dates are determined by child work packages."
-          automatic_with_predecessor: "The start date is set by a predecessor."
+          automatic_with_predecessor: "A kezdési időpontot egy megelőző feladat határozza meg."
           manual_mobile: "Manually scheduled."
           manually_scheduled: "Manually scheduled. Dates not affected by relations."
       blankslate:
-        title: "No predecessors"
-        description: "To enable automatic scheduling, this work package needs to have at least one predecessor. It will then automatically be scheduled to start after the closest predecessor."
+        title: "Nincsenek megelőző feladatok"
+        description: "Az automatikus ütemezés lehetővé tételéhez ennek a munkacsomagnak legalább egy megelőző feladattal kell rendelkeznie. Ekkor automatikusan a legközelebbi megelőző feladat utánra lesz ütemezve."
       ignore_non_working_days:
         title: "Working days only"
       mode:
@@ -863,15 +863,15 @@ hu:
         aria_label: "Datepicker tabs"
         children: "Gyermekek"
         dates: "Dátumok"
-        predecessors: "Predecessors"
-        successors: "Successors"
+        predecessors: "Megelőző feladatok"
+        successors: "Követő feladatok"
         blankslate:
           predecessors:
-            title: "No predecessors"
-            description: "This work package does not have any predecessors."
+            title: "Nincsenek megelőző feladatok"
+            description: "Ennek a munkacsomagnak nincsenek megelőző feladatai."
           successors:
-            title: "No successors"
-            description: "This work package does not have any successors."
+            title: "Nincsenek követő feladatok"
+            description: "Ennek a munkacsomagnak nincs követő feladata."
           children:
             title: "No children"
             description: "This work package does not have any children."
@@ -921,7 +921,7 @@ hu:
       no_results_title_text: There are currently no relations available.
       blankslate_heading: "No relations"
       blankslate_description: "This work package does not have any relations yet."
-    label_add_child_button: "Child"
+    label_add_child_button: "Gyerek"
     label_add_x: "Add %{x}"
     label_edit_x: "Edit %{x}"
     label_add_description: "Add description"
@@ -936,50 +936,50 @@ hu:
       label_relates_plural: "Kapcsolódó"
       label_relates_to_singular: "Kapcsolódó"
       label_relates_to_plural: "Kapcsolódó"
-      relates_description: "Creates a visible link between the two work packages with no additional effect"
-      relates_to_description: "Creates a visible link between the two work packages with no additional effect"
-      label_precedes_singular: "successor (after)"
-      label_precedes_plural: "successors (after)"
-      precedes_description: "The related work package necessarily needs to start after this one finishes"
-      label_follows_singular: "predecessor (before)"
-      label_follows_plural: "predecessors (before)"
-      follows_description: "The related work package necessarily needs to finish before this one can start"
+      relates_description: "Látható kapcsolatot hoz létre a két munkacsomag között, további hatás nélkül"
+      relates_to_description: "Látható kapcsolatot hoz létre a két munkacsomag között, további hatás nélkül"
+      label_precedes_singular: "követő feladat (utána)"
+      label_precedes_plural: "követő feladatok (utána)"
+      precedes_description: "A kapcsolódó munkacsomagnak feltétlenül el kell kezdeni, miután ez a munkacsomag befejeződött"
+      label_follows_singular: "megelőző feladat (előtte)"
+      label_follows_plural: "megelőző feladatok (előtte)"
+      follows_description: "A kapcsolódó munkacsomagnak feltétlenül be kell fejeződnie, mielőtt ez a munkacsomag elkezdődhet"
       label_child_singular: "child"
       label_child_plural: "children"
       new_child: "Új gyermek kapcsolat hozzáadása"
-      new_child_description: "Creates a related work package as a sub-item of the current (parent) work package"
+      new_child_description: "Új kapcsolódó munkacsomagot hoz létre az aktuális munkacsomag (szülő) alelemeként"
       child: "Child"
       child_description: "Makes the related work package a sub-item of the current (parent) work package"
       parent: "Szülő"
-      parent_description: "Makes the related work package a parent of the current (child) work package"
+      parent_description: "A kapcsolódó munkacsomagot az aktuális munkacsomag (gyermek) szülőjévé teszi"
       label_closest: "Closest"
-      label_blocks_singular: "blokkolja"
-      label_blocks_plural: "blokkolja"
-      blocks_description: "The related work package cannot be closed until this one is closed first"
-      label_blocked_singular: "Blokkolta"
-      label_blocked_plural: "Blokkolta"
-      label_blocked_by_singular: "Blokkolta"
-      label_blocked__by_plural: "Blokkolta"
-      blocked_description: "This work package cannot be closed until the related one is closed first"
-      blocked_by_description: "This work package cannot be closed until the related one is closed first"
-      label_duplicates_singular: "Ismétlődések"
-      label_duplicates_plural: "Ismétlődések"
-      duplicates_description: "This is a copy of the related work package"
-      label_duplicated_singular: "Ismétlődések szerint"
-      label_duplicated_plural: "Ismétlődések szerint"
-      label_duplicated_by_singular: "Ismétlődések szerint"
-      label_duplicated_by_plural: "Ismétlődések szerint"
-      duplicated_by_description: "The related work package is a copy of this"
-      duplicated_description: "The related work package is a copy of this"
+      label_blocks_singular: "akadályozza"
+      label_blocks_plural: "akadályozzák"
+      blocks_description: "A kapcsolódó munkacsomag nem zárható le, amíg ezt a munkacsomagot nem zárják le először"
+      label_blocked_singular: "akadályozva van"
+      label_blocked_plural: "akadályozva van"
+      label_blocked_by_singular: "akadályozva van"
+      label_blocked__by_plural: "akadályozzák"
+      blocked_description: "Ezt a munkacsomagot nem lehet lezárni, amíg a kapcsolódó munkacsomagot le nem zárják"
+      blocked_by_description: "Ezt a munkacsomagot nem lehet lezárni, amíg a kapcsolódó munkacsomagot le nem zárják"
+      label_duplicates_singular: "másolat"
+      label_duplicates_plural: "másolatok"
+      duplicates_description: "Ez a munkacsomag, a kapcsolódó munkacsomag másolata"
+      label_duplicated_singular: "lemásolta a(z)"
+      label_duplicated_plural: "lemásolták ezek"
+      label_duplicated_by_singular: "lemásolta a(z)"
+      label_duplicated_by_plural: "lemásolták ezek"
+      duplicated_by_description: "A kapcsolódó munkacsomag, ennek a munkacsomagnak egy másolata"
+      duplicated_description: "A kapcsolódó munkacsomag, ennek a munkacsomagnak egy másolata"
       label_includes_singular: "tartalmazza"
       label_includes_plural: "tartalmazza"
-      includes_description: "Marks the related work package as including this one with no additional effect"
+      includes_description: "A kapcsolódó munkacsomag magába foglalja ezt a munkacsomagot, de ez nem befolyásolja a státuszt"
       label_partof_singular: "része"
       label_partof_plural: "része"
       label_part_of_singular: "része"
       label_part_of_plural: "része"
-      partof_description: "Marks the related work package as being part of this one with no additional effect"
-      part_of_description: "Marks the related work package as being part of this one with no additional effect"
+      partof_description: "A kapcsolódó munkacsomag ehhez a munkacsomaghoz tartozik, de ez csak jelölés, nincs további hatása"
+      part_of_description: "A kapcsolódó munkacsomag ehhez a munkacsomaghoz tartozik, de ez csak jelölés, nincs további hatása"
       label_requires_singular: "igényel"
       label_requires_plural: "igényel"
       requires_description: "Marks the related work package as a requirement to this one"
@@ -988,7 +988,7 @@ hu:
       required_description: "Marks this work package as being a requirement to the related one"
       label_parent_singular: "parent"
       label_parent_plural: "parent"
-      label_other_relations: "Other relations"
+      label_other_relations: "Egyéb kapcsolatok"
       ghost_relation_title: "Kapcsolódó feladatcsoport"
       ghost_relation_description: "This is not visible to you due to permissions."
   label_invitation: Meghívó
@@ -1381,8 +1381,6 @@ hu:
         inclusion: "nem a megengedett értékek egyike lett beállítva."
         inclusion_nested: "nincs beállítva az '%{path}' elérési útvonalon a megengedett értékek egyikére."
         invalid: "érvénytelen."
-        invalid_characters: "contains invalid characters."
-        not_allowed_custom_fields_referenced: "contains custom fields that are not allowed: %{custom_fields}."
         invalid_url: "nem érvényes URL."
         invalid_url_scheme: "nem támogatott protokoll (támogatott: %{allowed_schemes})."
         less_than_or_equal_to: "kisebbnek vagy egyenlőnek kell lennie mint, %{count}."
@@ -1437,9 +1435,17 @@ hu:
               minimum: "tartalmaznia kell legalább egy szűrőt a fő, kontextus vagy azonosító számára a '=' operátorral.\n"
         custom_field:
           at_least_one_custom_option: "Minimum egy opciónak elérhetőnek kell lennie."
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             one: "%{name} is used in project attribute calculation %{links}."
             other: "%{name} is used in project attribute calculations: %{links}."
+          attributes:
+            formula:
+              blank: "Formula can't be blank."
+              invalid: "Formula is invalid."
+              invalid_characters: "Only numeric values, mathematical operators and project attributes of type integer, float, calculated value and weighted list are allowed."
+              not_allowed_custom_fields_referenced: "The attribute %{custom_fields} cannot be used because it leads to a circular reference; one attribute depends on the other."
+              format: "%{message}"
         custom_fields_project:
           attributes:
             project_ids:
@@ -2263,11 +2269,11 @@ hu:
     features:
       baseline_comparison: Baseline Comparisons
       board_view: Advanced Boards
-      calculated_values: Calculated Values
+      calculated_values: Calculated values
       conditional_highlighting: Conditional Highlighting
       internal_comments: Internal Comments
       custom_actions: Custom Actions
-      custom_field_hierarchies: Custom fields of type hierarchy
+      custom_field_hierarchies: Hierarchies
       customize_life_cycle: Customize Life Cycle
       date_alerts: Date Alerts
       define_custom_style: Custom theme and logo
@@ -2283,6 +2289,7 @@ hu:
       sso_auth_providers: Single Sign-On
       team_planner_view: Team Planner View
       virus_scanning: Antivirus Scanning
+      weighted_item_lists: Weighted item lists
       work_package_query_relation_columns: Work Package Query Relation Columns
       work_package_sharing: Share work packages with external users
       work_package_subject_generation: Work Package Subject Generation
@@ -2329,15 +2336,17 @@ hu:
       readonly_work_packages:
         description: "Mark work packages as read-only for specific statuses."
       custom_field_hierarchies:
-        description: "Hierarchy custom fields allow organizing hierarchical structures in work packages by making use of multi-level select lists."
+        description: "Hierarchy custom fields allow organizing hierarchical structures in work packages and projects by making use of multi-level select lists."
       date_alerts:
         description: "With date alerts, you will be notified of upcoming start or finish dates so that you never miss or forget an important deadline."
+      weighted_item_lists:
+        description: "Weighted item lists allow you to create a list with underlying numeric values associated."
       work_package_sharing:
         description: "Share work packages with users who are not members of the project."
       project_list_sharing:
         description: "Share project lists with individual users."
       calculated_values:
-        description: "Calculated Values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
+        description: "Calculated values allow you to create a mathematical formula based attribute using numeric values and other project attributes and custom fields."
       define_custom_style:
         title: "Custom color theme and logo"
         more_info: "Megjegyzés: a használt logó nyilvánosan elérhető lesz."
@@ -2571,7 +2580,7 @@ hu:
       attribute_not_found: "attribute not found: %{attribute}"
       model_not_found: "invalid attribute model: %{model}"
       resource_not_found: "resource not found: %{resource}"
-      rich_text_unsupported: "Rich text embedding currently not supported in export"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: óra
       days: nap
@@ -2893,7 +2902,7 @@ hu:
   label_select_main_menu_item: Válasszon ki új fő menüpontot
   label_required_disk_storage: "Szükséges lemezterület"
   label_send_invitation: Meghívó küldése
-  label_calculated_value: "Calculated Value"
+  label_calculated_value: "Calculated value"
   label_change_parent: "Szülő módosítása"
   label_change_plural: "Változtat"
   label_change_properties: "A tulajdonságok megváltoztatása"
@@ -3075,7 +3084,7 @@ hu:
   label_invite_user: "Felhasználó meghívása"
   label_item: "Item"
   label_item_plural: "Items"
-  label_scored_list: "Scored list"
+  label_weighted_item_list: "Weighted item list"
   label_share: "Megosztás"
   label_share_project_list: "Share project list"
   label_share_work_package: "Share work package"
@@ -3288,7 +3297,7 @@ hu:
   label_related_work_packages: "Kapcsolódó munkacsomagok"
   label_relates: "Kapcsolódó"
   label_relates_to: "Kapcsolódó"
-  label_relation: "Relation"
+  label_relation: "Kapcsolat"
   label_relation_actions: "Relation actions"
   label_relation_delete: "Kapcsolat törlése"
   label_relation_edit: "Edit relation"
@@ -3890,6 +3899,7 @@ hu:
     default: "-"
   project:
     archive:
+      title: "Archive project"
       are_you_sure: "Biztosan szeretnéd arhiválni a projektet '%{name}'?"
       archived: "Archiválva"
     count:

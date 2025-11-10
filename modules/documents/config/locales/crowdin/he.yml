@@ -63,6 +63,7 @@ he:
   label_document_title: "כותרת"
   label_document_description: "תיאור"
   label_document_category: "קטגוריה"
+  label_document_type: "Type"
   permission_manage_documents: "ניהול מסמכים"
   permission_view_documents: "צפיה במסמכים"
   project_module_documents: "מסמכים"
