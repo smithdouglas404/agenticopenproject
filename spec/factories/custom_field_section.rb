@@ -31,6 +31,7 @@
 FactoryBot.define do
   factory :custom_field_section do
     sequence(:name) { |n| "Section No. #{n}" }
+    shown_in { "sidebar" }
     created_at { Time.zone.now }
     updated_at { Time.zone.now }
 
