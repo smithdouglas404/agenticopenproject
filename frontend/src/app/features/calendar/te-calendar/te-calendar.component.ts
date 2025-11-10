@@ -56,6 +56,7 @@ import allLocales from '@fullcalendar/core/locales-all';
 import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { ensureId, generateId } from 'core-app/shared/helpers/dom-helpers';
+import { target } from 'core-app/shared/helpers/event-helpers';
 
 interface TimeEntrySchema extends SchemaResource {
   activity:IFieldSchema;
@@ -504,7 +505,7 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    void this.addTooltip(event);
+    void this.addPopover(event);
     this.prependDuration(event);
     this.appendFadeout(event);
   }
@@ -526,7 +527,7 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private async addTooltip(event:CalendarViewEvent):Promise<void> {
+  private async addPopover(event:CalendarViewEvent):Promise<void> {
     if (this.browserDetector.isMobile) {
       return;
     }
@@ -535,27 +536,46 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
 
     const schema = (await this.schemaCache.ensureLoaded(entry as TimeEntryResource)) as TimeEntrySchema;
 
-    const forEl = event.el;
-    const forId = ensureId(forEl);
+    const anchorEl = event.el;
+    const anchorId = ensureId(anchorEl);
+    anchorEl.role = 'button';
 
-    const tooltip = document.createElement('tool-tip');
-    tooltip.innerHTML = this.tooltipContentString(event.event.extendedProps.entry as TimeEntryResource, schema);
-    tooltip.id = generateId('tooltip');
-    tooltip.setAttribute('for', forId);
-    tooltip.setAttribute('popover', 'manual');
-    tooltip.setAttribute('data-type', 'description');
-    tooltip.classList.add('position-absolute');
+    const popoverEl = document.createElement('anchored-position');
+    popoverEl.id = generateId('popover');
+    popoverEl.role = 'dialog';
+    popoverEl.innerHTML = this.popoverContentString(event.event.extendedProps.entry as TimeEntryResource, schema);
+    popoverEl.setAttribute('align', 'start');
+    popoverEl.setAttribute('anchor', anchorId);
+    popoverEl.setAttribute('anchor-offset', 'condensed');
+    popoverEl.setAttribute('popover', 'hint');
+    popoverEl.setAttribute('side', 'outside-right');
 
-    event.el.appendChild(tooltip);
+    anchorEl.setAttribute('aria-haspopup', 'true');
+    anchorEl.setAttribute('popovertarget', popoverEl.id);
+
+    const showPopover = () => { popoverEl.showPopover(); };
+    const hidePopover = () => { popoverEl.hidePopover(); };
+
+    target(anchorEl).on('mouseenter.anchor', showPopover);
+    target(anchorEl).on('focus.anchor', showPopover);
+    target(anchorEl).on('mouseleave.anchor', hidePopover);
+    target(anchorEl).on('blur.anchor', hidePopover);
+
+    anchorEl.appendChild(popoverEl);
   }
 
-  private removeTooltip(event:CalendarViewEvent):void {
-    const forId = event.el.id;
-    if (!forId) {
+  private removePopover(event:CalendarViewEvent):void {
+    const anchorId = event.el.id;
+    const anchorEl = document.getElementById(anchorId);
+    if (!anchorEl) {
       return;
     }
 
-    document.querySelector(`tool-tip[for="${forId}"]`)?.remove();
+    target(anchorEl).off('.anchor');
+    anchorEl.removeAttribute('popovertarget');
+    anchorEl.removeAttribute('aria-haspopup');
+    anchorEl.removeAttribute('role');
+    document.querySelector(`anchored-position[anchor="${anchorId}"]`)?.remove();
   }
 
   private prependDuration(event:CalendarViewEvent):void {
@@ -605,7 +625,7 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    this.removeTooltip(event);
+    this.removePopover(event);
   }
 
   private entryName(entry:TimeEntryResource):string {
@@ -622,30 +642,34 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
     return `#${idFromLink(entity.href)}: ${entity.name}`;
   }
 
-  private tooltipContentString(entry:TimeEntryResource, schema:TimeEntrySchema):string {
+  private popoverContentString(entry:TimeEntryResource, schema:TimeEntrySchema):string {
     return `
-        <ul class="tooltip--map">
-          <li class="tooltip--map--item">
-            <span class="tooltip--map--key">${schema.project.name}:</span>
-            <span class="tooltip--map--value">${this.sanitizedValue(entry.project.name)}</span>
-          </li>
-          <li class="tooltip--map--item">
-            <span class="tooltip--map--key">${schema.entity.name}:</span>
-            <span class="tooltip--map--value">${entry.entity ? this.sanitizedValue(this.entityName(entry)) : this.i18n.t('js.placeholders.default')}</span>
-          </li>
-          <li class="tooltip--map--item">
-            <span class="tooltip--map--key">${schema.activity.name}:</span>
-            <span class="tooltip--map--value">${this.sanitizedValue(entry.activity?.name || '')}</span>
-          </li>
-          <li class="tooltip--map--item">
-            <span class="tooltip--map--key">${schema.hours.name}:</span>
-            <span class="tooltip--map--value">${this.timezone.formattedDuration(entry.hours as string)}</span>
-          </li>
-          <li class="tooltip--map--item">
-            <span class="tooltip--map--key">${schema.comment.name}:</span>
-            <span class="tooltip--map--value">${this.sanitizedValue(entry.comment.raw || this.i18n.t('js.placeholders.default'))}</span>
-          </li>
-        </ul>
+        <div class="Popover">
+          <div class="Box Popover-message Popover-message--left-top ml-2 mx-auto p-2 text-left text-small">
+            <ul class="list-style-none ml-0">
+              <li>
+                <span class="text-bold">${schema.project.name}:</span>
+                <span>${this.sanitizedValue(entry.project.name)}</span>
+              </li>
+              <li>
+                <span class="text-bold">${schema.entity.name}:</span>
+                <span>${entry.entity ? this.sanitizedValue(this.entityName(entry)) : this.i18n.t('js.placeholders.default')}</span>
+              </li>
+              <li>
+                <span class="text-bold">${schema.activity.name}:</span>
+                <span>${this.sanitizedValue(entry.activity?.name || '')}</span>
+              </li>
+              <li>
+                <span class="text-bold">${schema.hours.name}:</span>
+                <span>${this.timezone.formattedDuration(entry.hours as string)}</span>
+              </li>
+              <li>
+                <span class="text-bold">${schema.comment.name}:</span>
+                <span>${this.sanitizedValue(entry.comment.raw || this.i18n.t('js.placeholders.default'))}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
         `;
   }
 
