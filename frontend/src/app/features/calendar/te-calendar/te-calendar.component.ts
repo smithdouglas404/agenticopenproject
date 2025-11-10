@@ -57,6 +57,7 @@ import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { ensureId, generateId } from 'core-app/shared/helpers/dom-helpers';
 import { target } from 'core-app/shared/helpers/event-helpers';
+import { html, render } from 'lit-html';
 
 interface TimeEntrySchema extends SchemaResource {
   activity:IFieldSchema;
@@ -540,19 +541,15 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
     const anchorId = ensureId(anchorEl);
     anchorEl.role = 'button';
 
-    const popoverEl = document.createElement('anchored-position');
-    popoverEl.id = generateId('popover');
-    popoverEl.role = 'dialog';
-    popoverEl.innerHTML = this.popoverContentString(event.event.extendedProps.entry as TimeEntryResource, schema);
-    popoverEl.setAttribute('align', 'start');
-    popoverEl.setAttribute('anchor', anchorId);
-    popoverEl.setAttribute('anchor-offset', 'condensed');
-    popoverEl.setAttribute('popover', 'hint');
-    popoverEl.setAttribute('side', 'outside-right');
+    const popoverId = generateId('popover');
+    const popoverHtml = this.popoverHtml(popoverId, anchorId, event.event.extendedProps.entry as TimeEntryResource, schema);
+
+    render(popoverHtml, anchorEl);
 
     anchorEl.setAttribute('aria-haspopup', 'true');
-    anchorEl.setAttribute('popovertarget', popoverEl.id);
+    anchorEl.setAttribute('popovertarget', popoverId);
 
+    const popoverEl = document.getElementById(popoverId)!;
     const showPopover = () => { popoverEl.showPopover(); };
     const hidePopover = () => { popoverEl.hidePopover(); };
 
@@ -560,8 +557,6 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
     target(anchorEl).on('focus.anchor', showPopover);
     target(anchorEl).on('mouseleave.anchor', hidePopover);
     target(anchorEl).on('blur.anchor', hidePopover);
-
-    anchorEl.appendChild(popoverEl);
   }
 
   private removePopover(event:CalendarViewEvent):void {
@@ -642,8 +637,27 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
     return `#${idFromLink(entity.href)}: ${entity.name}`;
   }
 
-  private popoverContentString(entry:TimeEntryResource, schema:TimeEntrySchema):string {
-    return `
+  private popoverHtml(
+    popoverId:string,
+    anchorId:string,
+    entry:TimeEntryResource,
+    schema:TimeEntrySchema) {
+    return html`
+      <anchored-position
+        id="${popoverId}"
+        role="dialog"
+        align="start"
+        anchor="${anchorId}"
+        anchor-offset="condensed"
+        popover="hint"
+        side="outside-right">
+        ${this.popoverContentHtml(entry, schema)}
+      </anchored-position>
+    `;
+  }
+
+  private popoverContentHtml(entry:TimeEntryResource, schema:TimeEntrySchema) {
+    return html`
         <div class="Popover">
           <div class="Box Popover-message Popover-message--left-top ml-2 mx-auto p-2 text-left text-small">
             <ul class="list-style-none ml-0">
