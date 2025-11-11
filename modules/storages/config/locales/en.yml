@@ -123,7 +123,6 @@ en:
     errors:
       messages:
         error: An unexpected error occurred. Please check OpenProject logs for more information or contact an administrator
-        not_found: OpenProject could not find the file on the Storage Provider. Please check if it wasn't deleted.
         unauthorized: OpenProject could not authenticate with the Storage Provider. Please ensure that you have access to it.
       models:
         copy_project_folders_service:
@@ -161,6 +160,7 @@ en:
           group_does_not_exist: "%{group} does not exist. Check your Nextcloud instance configuration."
           insufficient_privileges: OpenProject does not have enough privileges to add %{user} to %{group}. Check you group settings in Nextcloud.
           not_allowed: Nextcloud block the request.
+          not_found: OpenProject could not find the file on the Nextcloud Storage Provider. Please check if it wasn't deleted.
           unauthorized: OpenProject could not sync with Nextcloud. Please check your storage and Nextcloud configuration.
           user_does_not_exist: "%{user} does not exist in Nextcloud."
         one_drive_sync_service:
@@ -180,6 +180,7 @@ en:
               permission_not_set: could not set permissions on %{path}.
           error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information
           not_allowed: OpenProject wasn't allowed to access your OneDrive drive. Please check the permissions set on the Azure Application.
+          not_found: OpenProject could not find the file on the OneDrive Storage Provider. Please check if it wasn't deleted.
           unauthorized: OpenProject could not sync with OneDrive. Please check your storage and Azure Application configuration.
           user_does_not_exist: "%{user} does not exist in Nextcloud."
         upload_link_service:
