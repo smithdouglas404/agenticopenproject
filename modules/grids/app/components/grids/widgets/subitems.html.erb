@@ -30,11 +30,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%=
   widget_wrapper do |container|
-    if has_no_subitems?
-      container.with_row do
-        render(Primer::Beta::Text.new(color: :subtle)) { t(".no_results") }
-      end
-    else
+    if can_view_subprojects? && !has_no_subitems?
       displayed_subitems.each do |child|
         container.with_row do
           flex_layout do |row|
@@ -65,6 +61,30 @@ See COPYRIGHT and LICENSE files for more details.
         container.with_row do
           render(Primer::Beta::Link.new(href: view_all_subitems_path)) { t(".view_all_subitems") }
         end
+      end
+
+    elsif can_view_subprojects?
+      render(Primer::Beta::Blankslate.new(test_selector: "widget-empty-subitems")) do |component|
+        component.with_visual_icon(icon: :workflow)
+        component.with_heading(tag: :h3).with_content(title)
+        component.with_description { t("js.grid.widgets.empty") }
+
+        if can_manage_subprojects?
+          component.with_primary_action(
+            tag: :a,
+            href: new_project_path(parent_id: project.id),
+            scheme: :secondary
+          ) do |button|
+            button.with_leading_visual_icon(icon: :plus)
+            t(".button_text")
+          end
+        end
+      end
+
+    else
+      render(Primer::Beta::Blankslate.new(test_selector: "widget-no-permission-subitems")) do |component|
+        component.with_heading(tag: :h3).with_content(title)
+        component.with_description { t("js.grid.widgets.not_available") }
       end
     end
   end

@@ -27,7 +27,6 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 # ++
-
 module Grids
   module Widgets
     class Subitems < Grids::WidgetComponent
@@ -38,7 +37,6 @@ module Grids
       private_constant :SUBITEMS_LIMIT
 
       param :project
-
       option :limit, default: -> { SUBITEMS_LIMIT }
 
       def title
@@ -61,15 +59,27 @@ module Grids
         { full_width: true }
       end
 
+      def render?
+        true
+      end
+
+      def can_view_subprojects?
+        current_user.allowed_in_project?(:view_project, project)
+      end
+
+      def can_manage_subprojects?
+        current_user.allowed_in_project?(:add_subprojects, project)
+      end
+
       private
 
       def subitems_with_more
         @subitems_with_more ||= project.children
-          .visible(current_user)
-          .unscope(:order)
-          .newest
-          .extending(FinderMethods::WithMore)
-          .first_with_more(limit)
+                                       .visible(current_user)
+                                       .unscope(:order)
+                                       .newest
+                                       .extending(FinderMethods::WithMore)
+                                       .first_with_more(limit)
       end
 
       def view_all_subitems_path
