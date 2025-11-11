@@ -147,7 +147,7 @@ export default function OpBlockNoteContainer({ inputField,
       attachmentsUploadUrl !== undefined &&
       attachmentsUploadUrl !== ''
     );
-}
+  }
   const fileToIUploadFile = (file:File):IUploadFile => ({
     file: file
   });

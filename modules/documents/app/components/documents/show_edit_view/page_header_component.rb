@@ -51,7 +51,14 @@ module Documents
       def breadcrumbs_items
         [{ href: project_overview_path(project.id), text: project.name },
          { href: project_documents_path(project), text: I18n.t(:label_document_plural) },
-         document.title]
+         document_title]
+      end
+
+      # FIXME: Truncation will soon be addressed globally via: https://community.openproject.org/wp/67724
+      def document_title
+        render(Primer::Beta::Truncate.new) do |truncate|
+          truncate.with_item(max_width: 200) { document.title }
+        end
       end
 
       def allowed_to_manage_documents?

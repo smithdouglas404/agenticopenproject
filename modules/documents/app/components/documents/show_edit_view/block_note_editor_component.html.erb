@@ -30,19 +30,32 @@
 %>
 
 <%=
-  render(Primer::Alpha::Layout.new(stacking_breakpoint: :md)) do |component|
-    component.with_main do
-      primer_form_with(
-        model: document,
-        url: document_path(document),
-        method: :patch,
-        data: { turbo: false }
-      ) do |form|
-        render Documents::BlockNoteEditorForm.new(form, oauth_token: @oauth_token)
+  render(Primer::Alpha::Layout.new(stacking_breakpoint: :md, classes: "op-document-view")) do |component|
+    component.with_main(classes: "op-document-view--main") do
+      flex_layout(align_items: :center) do |flex|
+        flex.with_row(classes: "op-document-view--header") do
+          render Documents::ShowEditView::PageHeaderComponent.new(document, project:)
+        end
+
+        flex.with_row(classes: "op-document-view--editor") do
+          primer_form_with(
+            model: document,
+            url: document_path(document),
+            method: :patch,
+            data: { turbo: false }
+          ) do |form|
+            render Documents::BlockNoteEditorForm.new(form, oauth_token: @oauth_token)
+          end
+        end
       end
     end
 
-    component.with_sidebar(row_placement: :start, col_placement: :end) do
+    component.with_sidebar(
+      row_placement: :end,
+      col_placement: :end,
+      px: 3,
+      classes: "op-document-view--sidebar"
+    ) do
       render(Primer::OpenProject::SidePanel.new) do |panel|
         panel.with_section do |section|
           section.with_title { t(:label_attachment_plural) }
