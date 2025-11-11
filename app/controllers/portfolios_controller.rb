@@ -89,7 +89,7 @@ class PortfoliosController < ApplicationController
   end
 
   def authorize_portfolio_access
-    deny_access unless User.current.allowed_globally?(:add_portfolios) ||
+    render_403 unless User.current.allowed_globally?(:add_portfolios) ||
                        Project.active.portfolio.allowed_to(User.current, :view_project).any?
   end
 
