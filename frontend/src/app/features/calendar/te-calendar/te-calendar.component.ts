@@ -55,6 +55,9 @@ import { DayResourceService } from 'core-app/core/state/days/day.service';
 import allLocales from '@fullcalendar/core/locales-all';
 import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { ensureId, generateId } from 'core-app/shared/helpers/dom-helpers';
+import { target } from 'core-app/shared/helpers/event-helpers';
+import { html, render } from 'lit-html';
 
 interface TimeEntrySchema extends SchemaResource {
   activity:IFieldSchema;
@@ -503,7 +506,7 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    void this.addTooltip(event);
+    void this.addPopover(event);
     this.prependDuration(event);
     this.appendFadeout(event);
   }
@@ -525,7 +528,7 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private async addTooltip(event:CalendarViewEvent):Promise<void> {
+  private async addPopover(event:CalendarViewEvent):Promise<void> {
     if (this.browserDetector.isMobile) {
       return;
     }
@@ -534,23 +537,40 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
 
     const schema = (await this.schemaCache.ensureLoaded(entry as TimeEntryResource)) as TimeEntrySchema;
 
-    const tooltip = document.createElement('tool-tip');
-    tooltip.textContent = this.tooltipContentString(event.event.extendedProps.entry as TimeEntryResource, schema);
-    event.el.appendChild(tooltip);
+    const anchorEl = event.el;
+    const anchorId = ensureId(anchorEl);
+    anchorEl.role = 'button';
 
-    // TODO: port tooltips
-    // jQuery(event.el).tooltip({
-    //   content: this.tooltipContentString(event.event.extendedProps.entry as TimeEntryResource, schema),
-    //   items: '.fc-event',
-    //   close() {
-    //     document.querySelectorAll('.ui-helper-hidden-accessible').forEach(element => element.remove());
-    //   },
-    //   track: true,
-    // });
+    const popoverId = generateId('popover');
+    const popoverHtml = this.popoverHtml(popoverId, anchorId, event.event.extendedProps.entry as TimeEntryResource, schema);
+
+    render(popoverHtml, anchorEl);
+
+    anchorEl.setAttribute('aria-haspopup', 'true');
+    anchorEl.setAttribute('popovertarget', popoverId);
+
+    const popoverEl = document.getElementById(popoverId)!;
+    const showPopover = () => { popoverEl.showPopover(); };
+    const hidePopover = () => { popoverEl.hidePopover(); };
+
+    target(anchorEl).on('mouseenter.anchor', showPopover);
+    target(anchorEl).on('focus.anchor', showPopover);
+    target(anchorEl).on('mouseleave.anchor', hidePopover);
+    target(anchorEl).on('blur.anchor', hidePopover);
   }
 
-  private removeTooltip(event:CalendarViewEvent):void {
-    // TODO: port tooltips
+  private removePopover(event:CalendarViewEvent):void {
+    const anchorId = event.el.id;
+    const anchorEl = document.getElementById(anchorId);
+    if (!anchorEl) {
+      return;
+    }
+
+    target(anchorEl).off('.anchor');
+    anchorEl.removeAttribute('popovertarget');
+    anchorEl.removeAttribute('aria-haspopup');
+    anchorEl.removeAttribute('role');
+    document.querySelector(`anchored-position[anchor="${anchorId}"]`)?.remove();
   }
 
   private prependDuration(event:CalendarViewEvent):void {
@@ -600,7 +620,7 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    this.removeTooltip(event);
+    this.removePopover(event);
   }
 
   private entryName(entry:TimeEntryResource):string {
@@ -609,7 +629,7 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
       name += ` - ${this.entityName(entry)}`;
     }
 
-    return name || '-';
+    return name ?? '-';
   }
 
   private entityName(entry:TimeEntryResource):string {
@@ -617,34 +637,58 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
     return `#${idFromLink(entity.href)}: ${entity.name}`;
   }
 
-  private tooltipContentString(entry:TimeEntryResource, schema:TimeEntrySchema):string {
-    return `
-        <ul class="tooltip--map">
-          <li class="tooltip--map--item">
-            <span class="tooltip--map--key">${schema.project.name}:</span>
-            <span class="tooltip--map--value">${this.sanitizedValue(entry.project.name)}</span>
-          </li>
-          <li class="tooltip--map--item">
-            <span class="tooltip--map--key">${schema.entity.name}:</span>
-            <span class="tooltip--map--value">${entry.entity ? this.sanitizedValue(this.entityName(entry)) : this.i18n.t('js.placeholders.default')}</span>
-          </li>
-          <li class="tooltip--map--item">
-            <span class="tooltip--map--key">${schema.activity.name}:</span>
-            <span class="tooltip--map--value">${this.sanitizedValue(entry.activity?.name || '')}</span>
-          </li>
-          <li class="tooltip--map--item">
-            <span class="tooltip--map--key">${schema.hours.name}:</span>
-            <span class="tooltip--map--value">${this.timezone.formattedDuration(entry.hours as string)}</span>
-          </li>
-          <li class="tooltip--map--item">
-            <span class="tooltip--map--key">${schema.comment.name}:</span>
-            <span class="tooltip--map--value">${this.sanitizedValue(entry.comment.raw || this.i18n.t('js.placeholders.default'))}</span>
-          </li>
+  private popoverHtml(
+    popoverId:string,
+    anchorId:string,
+    entry:TimeEntryResource,
+    schema:TimeEntrySchema) {
+    return html`
+      <anchored-position
+        id="${popoverId}"
+        role="dialog"
+        align="start"
+        anchor="${anchorId}"
+        anchor-offset="condensed"
+        popover="hint"
+        side="outside-right">
+        ${this.popoverContentHtml(entry, schema)}
+      </anchored-position>
+    `;
+  }
+
+  private popoverContentHtml(entry:TimeEntryResource, schema:TimeEntrySchema) {
+    return html`
+        <div class="Popover">
+          <div class="Box Popover-message Popover-message--left-top ml-2 mx-auto p-2 text-left text-small">
+            <ul class="list-style-none ml-0">
+              <li>
+                <span class="text-bold">${schema.project.name}:</span>
+                <span>${this.sanitizedValue(entry.project.name)}</span>
+              </li>
+              <li>
+                <span class="text-bold">${schema.entity.name}:</span>
+                <span>${entry.entity ? this.sanitizedValue(this.entityName(entry)) : this.i18n.t('js.placeholders.default')}</span>
+              </li>
+              <li>
+                <span class="text-bold">${schema.activity.name}:</span>
+                <span>${this.sanitizedValue(entry.activity?.name ?? '')}</span>
+              </li>
+              <li>
+                <span class="text-bold">${schema.hours.name}:</span>
+                <span>${this.timezone.formattedDuration(entry.hours as string)}</span>
+              </li>
+              <li>
+                <span class="text-bold">${schema.comment.name}:</span>
+                <span>${this.sanitizedValue(entry.comment.raw ?? this.i18n.t('js.placeholders.default'))}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
         `;
   }
 
   private sanitizedValue(value:string):string {
-    return this.sanitizer.sanitize(SecurityContext.HTML, value) || '';
+    return this.sanitizer.sanitize(SecurityContext.HTML, value) ?? '';
   }
 
   protected formatNumber(value:number):string {
@@ -682,7 +726,7 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
       void this.fetchTimeEntries(
         this.memoizedTimeEntries.start,
         this.memoizedTimeEntries.end,
-      ).then(async (collection) => {
+      ).then((collection) => {
         this.entries.emit(collection);
         this.ucCalendar.getApi().refetchEvents();
       });

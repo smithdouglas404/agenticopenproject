@@ -97,6 +97,20 @@ export function queryVisible<T extends HTMLElement = HTMLElement>(selector:strin
   return Array.from(node.querySelectorAll<T>(selector)).filter(isVisible);
 }
 
+const idSalt = Math.random().toString(36).slice(2, 6);
+let elementId = 0;
+
+/**
+ * Generates a unique and stable ID for use with `HTMLElement`.
+ *
+ * @param {string} [prefix='el'] - The prefix to use for the generated ID.
+ * @returns {string} The newly generated element ID.
+ */
+export function generateId(prefix = 'el'):string {
+  // eslint-disable-next-line no-plusplus
+  return `${prefix}-${idSalt}-${elementId++}`;
+}
+
 /**
  * Ensures that the given HTMLElement has a unique and stable `id` attribute.
  *
@@ -123,13 +137,9 @@ export function queryVisible<T extends HTMLElement = HTMLElement>(selector:strin
  * @param {string} [prefix='el'] - The prefix to use for the generated ID.
  * @returns {string} The existing or newly generated element ID.
  */
-const idSalt = Math.random().toString(36).slice(2, 6);
-let elementId = 0;
-
 export function ensureId(el:HTMLElement, prefix = 'el'):string {
   if (!el.id) {
-    // eslint-disable-next-line no-plusplus
-    el.id = `${prefix}-${idSalt}-${elementId++}`;
+    el.id = generateId(prefix);
   }
   return el.id;
 }
