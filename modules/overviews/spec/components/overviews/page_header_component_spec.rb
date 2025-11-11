@@ -135,7 +135,7 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
       expect(rendered_component).to have_element "action-menu", "data-select-variant": "none"
     end
 
-    context "without manage dashboard permissions" do
+    context "without view project permissions" do
       let(:user) { create(:user) }
 
       it "renders action menu items", :aggregate_failures do
@@ -146,7 +146,7 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
       end
     end
 
-    context "with manage dashboard permissions" do
+    context "with view project permissions" do
       let(:user) { build_stubbed(:admin) }
 
       it "renders action menu items", :aggregate_failures do
@@ -161,7 +161,7 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
   end
 
   describe "tab bar", with_flag: { new_project_overview: true } do
-    context "when user has permission to manage dashboard" do
+    context "when user has permission to view project" do
       let(:user) { build_stubbed(:admin) }
 
       it "renders a tab bar" do
@@ -189,8 +189,8 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
       end
     end
 
-    context "when user does NOT have permission to manage dashboard" do
-      let(:user) { create(:user, member_with_permissions: { project => %i[view_work_packages edit_work_packages] }) }
+    context "when user does NOT have permission to view project" do
+      let(:user) { create(:user) }
 
       it "renders only the Overview tab", :aggregate_failures do
         expect(rendered_component).to have_link "Overview"
