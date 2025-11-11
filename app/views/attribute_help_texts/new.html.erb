@@ -41,11 +41,11 @@ See COPYRIGHT and LICENSE files for more details.
   end
 %>
 
-<%= labelled_tabular_form_for @attribute_help_text,
+<%= settings_primer_form_with model: @attribute_help_text,
                               as: "attribute_help_text",
                               url: { action: :create },
                               html: { id: "attribute_help_text_form" } do |f| %>
-  <%= render partial: "form", locals: { f: f } %>
+  <%= render AttributeHelpTexts::NewForm.new(f) %>
   <%= f.hidden_field :type, value: @attribute_help_text.type %>
   <%= styled_button_tag t(:button_save), class: "-primary -with-icon icon-checkmark" %>
 <% end %>
