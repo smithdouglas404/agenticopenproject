@@ -57,6 +57,8 @@ RSpec.describe "Breadcrumbs (#63777)", :js do
         expect(page).to have_link href: "#", text: "My projects", aria: { current: "page" }
         expect(page).to have_link href: "/projects", text: "Projects"
       end
+
+      expect(page).to have_link href: "/projects", text: "Projects", class: "PageHeader-parentLink", visible: :hidden
     end
   end
 
