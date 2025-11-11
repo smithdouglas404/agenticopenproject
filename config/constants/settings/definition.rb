@@ -171,7 +171,8 @@ module Settings
       },
       avatar_link_expiration_seconds: {
         description: "Cache duration for avatar image API responses",
-        default: 24.hours.to_i
+        default: 24.hours.to_i,
+        env_alias: "OPENPROJECT_AVATAR__LINK__EXPIRY__SECONDS"
       },
       # Allow users with the required permissions to create backups via the web interface or API.
       backup_enabled: {
