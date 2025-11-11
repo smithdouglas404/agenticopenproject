@@ -35,7 +35,7 @@ See COPYRIGHT and LICENSE files for more details.
           params:
         )
       ) %>
-  <%= render(Portfolios::IndexSubHeaderComponent.new(query:, current_user:, disable_buttons: state === :rename)) %>
+  <%= render(Portfolios::IndexSubHeaderComponent.new(query:, current_user:, disable_buttons: false)) %>
   <%= render Portfolios::ListComponent.new(
         query:,
         current_user:
