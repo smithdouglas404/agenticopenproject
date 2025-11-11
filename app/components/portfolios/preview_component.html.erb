@@ -52,7 +52,7 @@
               "aria-label": "TODO",
               mr: 1
             )
-          ) + content_tag(:span, program_count_label)
+          ) + content_tag(:span, t("program.count", count: all_subprograms.count))
         end
 
         footer.with_column(mr: 3) do
@@ -63,7 +63,7 @@
               "aria-label": "TODO",
               mr: 1
             )
-          ) + content_tag(:span, project_count_label)
+          ) + content_tag(:span, t("project.count", count: all_subprojects.count))
         end
 
         # TODO: WP-68872 render budget
@@ -75,7 +75,7 @@
         #       "aria-label": "TODO",
         #       mr: 1
         #     )
-        #   ) + content_tag(:span, budget_label)
+        #   ) + content_tag(:span, "34,000 EUR budget - 12,000 EUR spent")
         # end
 
         footer.with_column do
@@ -85,7 +85,7 @@
               data: { test_selector: "op-portfolios--updated-at" }
             )
           ) do
-            updated_at_label
+            t(:label_updated_time, value: distance_of_time_in_words(Time.current, portfolio.updated_at))
           end
         end
       end

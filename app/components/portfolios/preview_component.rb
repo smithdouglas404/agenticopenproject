@@ -46,21 +46,12 @@ module Portfolios
       @currently_favorited ||= favorited_project_ids.include?(portfolio.id)
     end
 
-    def program_count_label
-      I18n.t("program.count", count: all_subprograms.count)
+    def all_subprograms
+      all_descendants.filter { it.workspace_type == "program" }
     end
 
-    def project_count_label
-      I18n.t("project.count", count: all_subprojects.count)
-    end
-
-    def budget_label
-      # TODO: WP-68872 replace dummy text
-      "34,000 EUR budget - 12,000 EUR spent"
-    end
-
-    def updated_at_label
-      I18n.t(:label_updated_time, value: distance_of_time_in_words(Time.current, portfolio.updated_at))
+    def all_subprojects
+      all_descendants.filter { it.workspace_type == "project" }
     end
 
     private
@@ -83,14 +74,6 @@ module Portfolios
       end
 
       @descendants
-    end
-
-    def all_subprograms
-      all_descendants.filter { it.workspace_type == "program" }
-    end
-
-    def all_subprojects
-      all_descendants.filter { it.workspace_type == "project" }
     end
   end
 end

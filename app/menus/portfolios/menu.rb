@@ -39,7 +39,7 @@ module Portfolios
       @controller_path = controller_path
       @current_user = current_user
 
-      super(view_type:, project:, params:)
+      super(view_type:, params:, project: nil)
     end
 
     def menu_items
@@ -64,10 +64,6 @@ module Portfolios
       end
     end
 
-    def favorited?(query_params)
-      query_params[:query_id].in?(favorited_ids)
-    end
-
     def query_path(query_params)
       portfolios_path(query_params)
     end
@@ -75,29 +71,20 @@ module Portfolios
     private
 
     def main_static_filters
-      static_filters [
+      main_filters = [
         ProjectQueries::Static::ACTIVE_PORTFOLIOS,
         current_user.logged? ? ProjectQueries::Static::MY_PORTFOLIOS : nil,
         current_user.logged? ? ProjectQueries::Static::FAVORITED_PORTFOLIOS : nil,
         current_user.admin? ? ProjectQueries::Static::ARCHIVED_PORTFOLIOS : nil
-      ].compact
+      ]
+
+      static_filters(main_filters.compact)
     end
 
     def static_filters(ids)
       ids.map do |id|
         menu_item(title: ::ProjectQueries::Static.query(id).name, query_params: { query_id: id })
       end
-    end
-
-    def persisted_filters
-      @persisted_filters ||= ::ProjectQuery
-        .visible(current_user)
-        .with_favorited_by_user(current_user)
-        .order(favorited: :desc, name: :asc)
-    end
-
-    def favorited_ids
-      @favorited_ids ||= persisted_filters.select(&:favorited).to_set(&:id)
     end
 
     def modification_params?

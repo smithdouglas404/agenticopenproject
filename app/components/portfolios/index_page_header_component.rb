@@ -31,7 +31,6 @@
 module Portfolios
   class IndexPageHeaderComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
-    include Primer::FetchOrFallbackHelper
     include OpTurbo::Streamable
 
     attr_accessor :current_user,

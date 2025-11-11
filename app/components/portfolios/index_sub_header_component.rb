@@ -29,9 +29,7 @@
 # ++
 
 module Portfolios
-  # rubocop:disable OpenProject/AddPreviewForViewComponent
   class IndexSubHeaderComponent < ApplicationComponent
-    # rubocop:enable OpenProject/AddPreviewForViewComponent
     include ApplicationHelper
     include OpTurbo::Streamable
 
@@ -69,10 +67,6 @@ module Portfolios
 
     def clear_button_id
       "portfolio-filters-form-clear-button"
-    end
-
-    def new_portfolio_label
-      I18n.t(:label_portfolio)
     end
   end
 end
