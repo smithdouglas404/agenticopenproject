@@ -17,6 +17,7 @@
     "@redocly/openapi-cli": "^1.0.0-beta.80"
   },
   "dependencies": {
+    "@github/catalyst": "^1.7.0",
     "@xeokit/xeokit-gltf-to-xkt": "^1.3.1"
   }
 }
