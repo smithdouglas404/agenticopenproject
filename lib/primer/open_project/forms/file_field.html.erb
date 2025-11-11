@@ -1,0 +1,7 @@
+<%= render(FormControl.new(input: @input, tag: :"primer-file-field-element2")) do %>
+  <%= content_tag(:div, **@field_wrap_arguments) do %>
+    <%= builder.file_field(@input.name, **@input.input_arguments) %>
+    <span class="file-label" data-target="primer-file-field-element2.label">Choose a file…</span>
+    <span class="file-button" data-target="primer-file-field-element2.button">Browse</span>
+  <% end %>
+<% end %>

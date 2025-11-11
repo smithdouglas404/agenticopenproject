@@ -506,9 +506,11 @@ en:
       header_details: Basic details
       header_status: Project status
       header_relations: Project relations
+      header_icon: Template icon
       button_update_details: Update details
       button_update_status_description: Update status description
       button_update_parent_project: Update parent project
+      button_update_icon: Update icon
       public_warning: >
         This project is public.
         Anyone who has access to this instance will be able to view and interact with this project depending on their role and associated permissions.
@@ -1995,6 +1997,7 @@ en:
     group: "Group"
     groups: "Groups"
     hexcode: "Hex code"
+    icon: "Icon"
     id: "ID"
     is_default: "Default value"
     is_for_all: "For all projects"

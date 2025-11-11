@@ -11,6 +11,9 @@ import { getMetaElement } from 'core-app/core/setup/globals/global-helpers';
 
 import 'core-app/core/setup/init-vendors';
 import 'core-app/core/setup/init-globals';
+
+import './custom-elements';
+
 import './stimulus/setup';
 import './turbo/setup';
 import { platformBrowser } from '@angular/platform-browser';
