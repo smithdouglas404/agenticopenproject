@@ -28,20 +28,22 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Controller for items of workspace_type portfolio.
-# Note that some actions (`new`) are handled by the project controller.
+# Controller for items of workspace_type portfolio. Contains special logic that is unique to portfolios.
+#
+# Note that _some_ actions (such as #new) are handled by the project controller since portfolios behave mostly like
+# projects in these cases.
 class PortfoliosController < ApplicationController
   include OpTurbo::ComponentStream
 
   include QueriesHelper
   include Queries::Loading
 
-  # FIXME: remove
-  no_authorization_required! :index
+  authorization_checked! :index
 
+  before_action :authorize_portfolio_access, only: %i[index]
+  before_action :not_authorized_on_feature_flag_inactive
   before_action :set_default_query, only: %i[index] # Must be called before `load_query_or_deny_access`
   before_action :load_query_or_deny_access, only: %i[index]
-  before_action :not_authorized_on_feature_flag_inactive
 
   current_menu_item :index do
     :portfolios
@@ -60,7 +62,7 @@ class PortfoliosController < ApplicationController
           component: Portfolios::IndexPageHeaderComponent.new(query: @query, current_user:, params:)
         )
         update_via_turbo_stream(
-          component: Filter::FilterButtonComponent.new(query: @query, disable_buttons: false)
+          component: Projects::ProjectFilterButtonComponent.new(query: @query, disable_buttons: false)
         )
         replace_via_turbo_stream(component: Portfolios::ListComponent.new(query: @query, current_user:))
 
@@ -81,7 +83,14 @@ class PortfoliosController < ApplicationController
   private
 
   def set_default_query
+    # When loading the default query (when users enter the page without making a query selection),
+    # we want to ensure that we get a portfolio query. Else, users would see a project query.
     params[:query_id] ||= ProjectQueries::Static::ACTIVE_PORTFOLIOS
+  end
+
+  def authorize_portfolio_access
+    deny_access unless User.current.allowed_globally?(:add_project) ||
+                       Project.active.portfolio.allowed_to(User.current, :view_project).any?
   end
 
   def not_authorized_on_feature_flag_inactive
