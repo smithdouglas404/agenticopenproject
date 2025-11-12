@@ -38,13 +38,13 @@ class DocumentForm < ApplicationForm
 
   form do |f|
     f.select_list(
-      name: :category_id,
-      label: I18n.t("label_document_category"),
+      name: :type_id,
+      label: I18n.t("label_document_type"),
       input_width: :medium,
       required: true
     ) do |select|
-      DocumentCategory.find_each do |category|
-        select.option(value: category.id, label: category.name)
+      DocumentType.find_each do |type|
+        select.option(value: type.id, label: type.name)
       end
     end
 
@@ -54,7 +54,7 @@ class DocumentForm < ApplicationForm
       required: true
     )
 
-    if OpenProject::FeatureDecisions.block_note_editor_active? && model.category&.name == "Experimental"
+    if OpenProject::FeatureDecisions.block_note_editor_active? && model.type&.name == "Experimental"
       f.block_note_editor(
         name: :content_binary,
         label: I18n.t("label_document_description"),
@@ -62,7 +62,9 @@ class DocumentForm < ApplicationForm
         value: model.content_binary,
         document_id: model.id,
         document_name: model.title,
-        oauth_token: @oauth_token
+        oauth_token: @oauth_token,
+        attachments_upload_url: uploads_url,
+        attachments_collection_key: ::API::V3::Utilities::PathHelper::ApiV3Path.attachments_by_document(model.id)
       )
     else
       f.rich_text_area(
@@ -101,6 +103,14 @@ class DocumentForm < ApplicationForm
       I18n.t("button_save")
     else
       I18n.t("button_create")
+    end
+  end
+
+  def uploads_url
+    if OpenProject::Configuration.direct_uploads?
+      ::API::V3::Utilities::PathHelper::ApiV3Path.prepare_attachments_by_document(model.id)
+    else
+      ::API::V3::Utilities::PathHelper::ApiV3Path.attachments_by_document(model.id)
     end
   end
 end

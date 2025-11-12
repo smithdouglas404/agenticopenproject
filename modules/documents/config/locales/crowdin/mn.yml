@@ -63,6 +63,7 @@ mn:
   label_document_title: "Title"
   label_document_description: "Description"
   label_document_category: "Category"
+  label_document_type: "Type"
   permission_manage_documents: "Баримт бичгүүдийг удирдах"
   permission_view_documents: "Баримт бичгүүдийг харах"
   project_module_documents: "Баримт бичгүүд"

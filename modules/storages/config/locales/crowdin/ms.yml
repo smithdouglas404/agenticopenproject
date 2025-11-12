@@ -119,6 +119,12 @@ ms:
         hide_inactive_folders: 'Langkah Sembunyikan Folder Tidak Aktif:'
         remote_folders: 'Baca kandungan folder kumpulan:'
         rename_project_folder: 'Namakan semula Folder projek yang telah diuruskan:'
+      sharepoint_sync_service:
+        create_folder: 'Penciptaan Folder Projek Terurus:'
+        ensure_root_folder_permissions: 'Tetapkan Kebenaran Folder Pangkalan:'
+        hide_inactive_folders: 'Langkah Sembunyikan Folder Tidak Aktif:'
+        remote_folders: 'Baca kandungan folder kumpulan:'
+        rename_project_folder: 'Namakan semula Folder projek yang telah diuruskan:'
     errors:
       messages:
         error: Ralat yang tidak dijangka berlaku. Sila semak log OpenProject untuk mendapatkan maklumat lanjut atau hubungi pentadbir
@@ -172,6 +178,23 @@ ms:
             remote_folders:
               request_error: OpenProject tidak dapat mengakses pemacu anda %{drive_id}. Sila semak sama ada konfigurasi storan anda betul.
             rename_project_folder:
+              conflict: OpenProject could not rename the folder %{current_path} to %{project_folder_name} as a folder with the same name already exists.
+              forbidden: OpenProject tidak mempunyai akses kepada %{current_path} untuk menamakan semula.
+              not_found: "%{current_path} tidak ditemui."
+            set_folders_permissions:
+              permission_not_set: tidak dapat menetapkan kebenaran pada %{path}.
+          error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information.
+          not_allowed: OpenProject tidak dibenarkan mengakses pemacu OneDrive anda. Sila semak kebenaran yang ditetapkan pada Aplikasi Azure.
+          unauthorized: OpenProject tidak dapat disegerakkan dengan OneDrive. Sila semak storan dan konfigurasi Aplikasi Azure anda.
+          user_does_not_exist: "%{user} tidak wujud dalam Nextcloud."
+        sharepoint_sync_service:
+          attributes:
+            create_folder:
+              conflict: '%{folder_name} sudah wujud di %{parent_location}.'
+              not_found: "%{parent_location} tidak ditemui."
+            hide_inactive_folders:
+              permission_not_set: tidak dapat menetapkan kebenaran pada %{path}.
+            rename_project_folder:
               conflict: OpenProject tidak dapat menamakan semula folder %{current_path} kepada %{project_folder_name} kerana folder dengan nama yang sama sudah wujud
               forbidden: OpenProject tidak mempunyai akses kepada %{current_path} untuk menamakan semula.
               not_found: "%{current_path} tidak ditemui."
@@ -179,7 +202,7 @@ ms:
               permission_not_set: tidak dapat menetapkan kebenaran pada %{path}.
           error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information
           not_allowed: OpenProject tidak dibenarkan mengakses pemacu OneDrive anda. Sila semak kebenaran yang ditetapkan pada Aplikasi Azure.
-          not_found: OpenProject could not find the file on the OneDrive Storage Provider. Please check if it wasn't deleted.
+          not_found: OpenProject could not access your library %{drive_name}. Please check you Sharepoint site document libraries.
           unauthorized: OpenProject tidak dapat disegerakkan dengan OneDrive. Sila semak storan dan konfigurasi Aplikasi Azure anda.
           user_does_not_exist: "%{user} tidak wujud dalam Nextcloud."
         upload_link_service:

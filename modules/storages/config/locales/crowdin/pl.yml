@@ -119,6 +119,12 @@ pl:
         hide_inactive_folders: 'Krok „Ukryj nieaktywne foldery”:'
         remote_folders: 'Odczytaj zawartość folderu grupy:'
         rename_project_folder: 'Zmień nazwę zarządzanego folderu projektu:'
+      sharepoint_sync_service:
+        create_folder: 'Utworzenie zarządzanego folderu projektu:'
+        ensure_root_folder_permissions: 'Ustaw podstawowe uprawnienia do folderu:'
+        hide_inactive_folders: 'Krok „Ukryj nieaktywne foldery”:'
+        remote_folders: 'Odczytaj zawartość folderu grupy:'
+        rename_project_folder: 'Zmień nazwę zarządzanego folderu projektu:'
     errors:
       messages:
         error: Wystąpił nieoczekiwany błąd. Sprawdź dzienniki OpenProject, aby uzyskać więcej informacji lub skontaktuj się z administratorem
@@ -172,6 +178,23 @@ pl:
             remote_folders:
               request_error: OpenProject nie mógł uzyskać dostępu do Twojego dysku %{drive_id}. Sprawdź, czy konfiguracja magazynu jest prawidłowa.
             rename_project_folder:
+              conflict: OpenProject nie może zmienić nazwy folderu %{current_path} na %{project_folder_name}, ponieważ istnieje już folder o tej samej nazwie.
+              forbidden: OpenProject nie ma dostępu do folderu %{current_path}, aby zmienić jego nazwę.
+              not_found: "Nie znaleziono lokalizacji %{current_path}."
+            set_folders_permissions:
+              permission_not_set: nie można ustawić uprawnień do lokalizacji %{path}.
+          error: Wystąpił nieoczekiwany błąd. Upewnij się, że usługa OneDrive jest osiągalna i sprawdź dzienniki pracowników OpenProject, aby uzyskać więcej informacji.
+          not_allowed: OpenProject nie mógł uzyskać dostępu do Twojego dysku w usłudze OneDrive. Sprawdź uprawnienia ustawione w aplikacji Azure.
+          unauthorized: OpenProject nie może zsynchronizować się z OneDrive. Sprawdź konfigurację magazynu i aplikacji Azure.
+          user_does_not_exist: "Użytkownik %{user} nie istnieje w Nextcloud."
+        sharepoint_sync_service:
+          attributes:
+            create_folder:
+              conflict: Folder %{folder_name} już istnieje w lokalizacji %{parent_location}.
+              not_found: "Nie znaleziono lokalizacji %{parent_location}."
+            hide_inactive_folders:
+              permission_not_set: nie można ustawić uprawnień do lokalizacji %{path}.
+            rename_project_folder:
               conflict: OpenProject nie mógł zmienić nazwy folderu %{current_path} na %{project_folder_name}, ponieważ istnieje już folder o tej samej nazwie.
               forbidden: OpenProject nie ma dostępu do folderu %{current_path}, aby zmienić jego nazwę.
               not_found: "Nie znaleziono lokalizacji %{current_path}."
@@ -179,7 +202,7 @@ pl:
               permission_not_set: nie można ustawić uprawnień do lokalizacji %{path}.
           error: Wystąpił nieoczekiwany błąd. Upewnij się, że usługa OneDrive jest osiągalna i sprawdź dzienniki pracowników OpenProject, aby uzyskać więcej informacji
           not_allowed: OpenProject nie mógł uzyskać dostępu do Twojego dysku w usłudze OneDrive. Sprawdź uprawnienia ustawione w aplikacji Azure.
-          not_found: OpenProject could not find the file on the OneDrive Storage Provider. Please check if it wasn't deleted.
+          not_found: OpenProject nie może uzyskać dostępu do Twojej biblioteki %{drive_name}. Sprawdź biblioteki dokumentów Twojej witryny Sharepoint.
           unauthorized: OpenProject nie może zsynchronizować się z OneDrive. Sprawdź konfigurację magazynu i aplikacji Azure.
           user_does_not_exist: "Użytkownik %{user} nie istnieje w Nextcloud."
         upload_link_service:

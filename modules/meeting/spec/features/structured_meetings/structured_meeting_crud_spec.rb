@@ -302,10 +302,9 @@ RSpec.describe "Meetings CRUD",
 
     wait_for_network_idle
 
-    # check for email notifications for creator & added participant
+    # check that no emails are sent out in draft mode
     perform_enqueued_jobs
-    expect(ActionMailer::Base.deliveries.size).to eq 2
-    ActionMailer::Base.deliveries.clear
+    expect(ActionMailer::Base.deliveries.size).to eq 0
 
     retry_block do
       click_on("op-meetings-header-action-trigger")
@@ -330,7 +329,7 @@ RSpec.describe "Meetings CRUD",
     # check for copied agenda items
     copied_meeting_page.expect_agenda_item title: "My agenda item"
 
-    copied_meeting_page.start_meeting
+    new_meeting.update!(state: "in_progress")
 
     # check for copied participants with attended status reset
     copied_meeting_page.open_participant_form
@@ -339,9 +338,9 @@ RSpec.describe "Meetings CRUD",
       copied_meeting_page.expect_participant(other_user)
     end
 
-    # check for email notifications for both participants
+    # check that no emails are sent out as the copied meeting is in draft mode
     perform_enqueued_jobs
-    expect(ActionMailer::Base.deliveries.size).to eq 2
+    expect(ActionMailer::Base.deliveries.size).to eq 0
   end
 
   context "with a work package reference to another" do

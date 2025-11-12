@@ -673,6 +673,57 @@ uk:
     memberships:
       no_results_title_text: Цей користувач наразі не є учасником проекту.
     open_profile: "Відкрити профіль"
+    invite_user_modal:
+      invite: "Запросити"
+      title:
+        invite: "Запросити користувача"
+        invite_to_project: "Запросити користувача «%{type}» у проєкт «%{project}» "
+        invite_principal_to_project: "Запросити користувача «%{principal}» у проєкт «%{project}»"
+      project:
+        label: "Проєкт"
+        required: "Виберіть проєкт"
+        next_button: "Далі"
+        no_results: "Жодних проєктів не знайдено"
+        no_invite_rights: "Ви не можете запрошувати учасників до цього проєкту"
+      type:
+        required: "Виберіть тип користувача, якого потрібно запросити"
+        user:
+          title: "Запросити користувача в проєкт «%{project_name}»"
+          description: "Дозволи, що ґрунтуються на призначеній ролі у вибраному проєкті"
+        group:
+          title: "Запросити групу в проєкт «%{project_name}»"
+          description: "Дозволи, що ґрунтуються на призначеній ролі у вибраному проєкті"
+        placeholder_user:
+          title: "Додати прототип користувача в проєкт «%{project_name}»"
+          title_no_ee: "Прототип користувача (лише у версії Enterprise)"
+          description: "Немає доступу до проєкту; електронні листи не відправляються."
+        already_member_message: "Уже учасник проєкту «%{project}»"
+      principal:
+        no_results_user: "Користувачів не знайдено"
+        invite_user: "Запросити:"
+        no_results_placeholder: "Прототипів не знайдено"
+        create_new_placeholder: "Створити новий прототип:"
+        no_results_group: "Груп не знайдено"
+        invite_to_project: "Запросити в проєкт «%{project_name}»"
+        required:
+          user: "Виберіть користувача"
+          placeholder: "Виберіть прототип"
+          group: "Виберіть групу"
+      role:
+        label: "Ролі у проєкті «%{project}»"
+        no_roles_found: "Ролей не знайдено"
+        description: >
+          Це роль, яку користувач отримає, коли приєднається до вашого проєкту. Роль визначає, що йому дозволено робити й переглядати. [Дізнайтеся більше про ролі й дозволи.](docs_url)
+        required: "Виберіть роль"
+      message:
+        label: "Повідомлення із запрошенням"
+        description: "Ми надішлемо електронний лист користувачу, у яке ви можете додати особисте повідомлення. Радимо додати пояснення про запрошення або, можливо, деяку інформацію про проєкт, щоб спростити користувачу початок роботи."
+      summary:
+        next_button: "Надіслати запрошення"
+      success_message:
+        user: "Користувач тепер може ввійти, щоб отримати доступ до проєкту %{project}. Тим часом ви вже можете включати цього користувача в план і призначати йому пакети робіт."
+        placeholder_user: "Прототип тепер може ввійти, щоб отримати доступ до проєкту «%{project}». Тим часом ви вже можете включати цього користувача в план і призначати йому пакети робіт."
+        group: "Ця група тепер входить у проєкт «%{project}». Тим часом ви вже можете включати її в план і призначати їй пакети робіт."
   page:
     text: "Текст"
   placeholder_users:
@@ -1254,6 +1305,9 @@ uk:
         mode_guideline: "Деякі режими перезаписують користувацькі кольори теми, щоб поліпшити доступність і читабельність. Виберіть світлий режим, якщо потрібна повна підтримка користувацької теми."
         daily_reminders: "Щоденні нагадування"
         workdays: "Робочі дні"
+      users/invitation/form_model:
+        principal_type: "Тип запрошення"
+        id_or_email: "Ім‘я або електронна адреса"
       version:
         effective_date: "Дата закінчення"
         sharing: "Поширення"
@@ -2611,7 +2665,7 @@ uk:
       attribute_not_found: "атрибут не знайдено: %{attribute}"
       model_not_found: "недійсна модель атрибута: %{model}"
       resource_not_found: "ресурс не знайдено: %{resource}"
-      rich_text_unsupported: "Вбудовування розширеного тексту наразі не підтримується у файлі експорту"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: г
       days: д
@@ -3107,7 +3161,7 @@ uk:
   label_index_by_title: "Індекс за назвою"
   label_information: "Інформація"
   label_information_plural: "Інформація"
-  label_installation_guides: "Інструкції із встановлення"
+  label_installation_guides: "Інструкції зі встановлення"
   label_integer: "Ціле число"
   label_interface: "Інтерфейс"
   label_internal: "Власне"
@@ -3866,6 +3920,9 @@ uk:
   permission_edit_wiki_pages: "Редагування wiki-сторінок"
   permission_export_work_packages: "Експорт робочих пакетів"
   permission_export_wiki_pages: "Експорт wiki-сторінок"
+  permission_invite_members_by_email: "Запрошення учасників електронною поштою"
+  permission_invite_members_by_email_explanation: >
+    Дозвольте запрошувати нових користувачів електронною поштою. Запрошені користувачі отримають лист із посиланням для встановлення пароля й активації облікового запису. На це налаштування впливає дозвіл на керування користувачами.
   permission_list_attachments: "Список вкладень"
   permission_log_own_time: "Реєструвати власний час"
   permission_log_time: "Реєструвати час для інших користувачів"
@@ -3895,6 +3952,9 @@ uk:
   permission_share_work_packages: "Надати доступ до пакетів робіт"
   permission_manage_types: "Виберіть типи"
   permission_manage_own_reminders: "Створюйте власні нагадування"
+  permission_view_all_principals: "Перегляд усіх користувачів і груп"
+  permission_view_all_principals_explanation: >
+    Дозволяє бачити всіх користувачів і групи, які є в системі, навіть якщо вони не учасники проєктів або груп, до яких приєднався користувач.
   permission_view_project: "Перегляд проєктів"
   permission_view_changesets: "Перегляд змін репозиторію (сховища) в OpenProject"
   permission_view_internal_comments: "Перегляд внутрішніх коментарів"
@@ -4255,7 +4315,7 @@ uk:
   setting_self_registration_manual_activation: "Ручна активація облікового запису"
   setting_self_registration_manual_activation_caption: >
     Користувачі можуть реєструватися самостійно. Їхні облікові записи активує адміністратор або користувач із глобальними дозволами на створення користувачів чи керування ними.
-  setting_session_ttl: "Сесії час після закінчення неактивність"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Значення нижче 5 працює як відключено"
   setting_session_ttl_enabled: "Сеанс закінчився"
   setting_start_of_week: "Тиждень починається"

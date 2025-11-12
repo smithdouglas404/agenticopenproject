@@ -88,6 +88,21 @@ class MeetingsController < ApplicationController
     end
   end
 
+  def new; end
+
+  def edit
+    respond_to do |format|
+      format.turbo_stream do
+        update_header_component_via_turbo_stream(state: :edit)
+
+        render turbo_stream: @turbo_streams
+      end
+      format.html do
+        render :edit
+      end
+    end
+  end
+
   def create # rubocop:disable Metrics/AbcSize
     call =
       if @copy_from
@@ -144,8 +159,6 @@ class MeetingsController < ApplicationController
     )
   end
 
-  def new; end
-
   current_menu_item :new do
     :meetings
   end
@@ -179,6 +192,20 @@ class MeetingsController < ApplicationController
     )
   end
 
+  def update
+    call = ::Meetings::UpdateService
+      .new(user: current_user, model: @meeting)
+      .call(@converted_params)
+
+    if call.success?
+      flash[:notice] = I18n.t(:notice_successful_update)
+      redirect_to action: "show", id: @meeting
+    else
+      @meeting = call.result
+      render action: :edit, status: :unprocessable_entity
+    end
+  end
+
   def destroy # rubocop:disable Metrics/AbcSize
     recurring = @meeting.recurring_meeting
 
@@ -197,19 +224,6 @@ class MeetingsController < ApplicationController
     end
   end
 
-  def edit
-    respond_to do |format|
-      format.turbo_stream do
-        update_header_component_via_turbo_stream(state: :edit)
-
-        render turbo_stream: @turbo_streams
-      end
-      format.html do
-        render :edit
-      end
-    end
-  end
-
   def history
     @events = get_events
   rescue ActiveRecord::RecordNotFound => e
@@ -221,20 +235,6 @@ class MeetingsController < ApplicationController
     update_header_component_via_turbo_stream(state: :show)
 
     respond_with_turbo_streams
-  end
-
-  def update
-    call = ::Meetings::UpdateService
-      .new(user: current_user, model: @meeting)
-      .call(@converted_params)
-
-    if call.success?
-      flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to action: "show", id: @meeting
-    else
-      @meeting = call.result
-      render action: :edit, status: :unprocessable_entity
-    end
   end
 
   def details_dialog; end
@@ -343,6 +343,26 @@ class MeetingsController < ApplicationController
     update_header_component_via_turbo_stream
 
     respond_with_turbo_streams
+  end
+
+  def exit_draft_mode_dialog
+    respond_with_dialog Meetings::ExitDraftModeDialogComponent.new(meeting: @meeting)
+  end
+
+  def exit_draft_mode
+    call = ::Meetings::UpdateService
+             .new(user: current_user, model: @meeting)
+             .call({ state: "open", notify: meeting_params[:notify] == "1" })
+
+    if call.success?
+      update_all_via_turbo_stream
+      update_backlog_via_turbo_stream(collapsed: nil)
+
+      respond_with_turbo_streams
+    else
+      @meeting = call.result
+      render action: :edit, status: :unprocessable_entity
+    end
   end
 
   private

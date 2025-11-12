@@ -43,7 +43,6 @@ export interface SharepointFileUploadResponse {
 }
 
 export class SharepointUploadStrategy implements IUploadStrategy {
-  // eslint-disable-next-line no-unused-vars
   constructor(private readonly http:HttpClient) { }
 
   public execute<T>(

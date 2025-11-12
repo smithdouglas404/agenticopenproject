@@ -121,8 +121,9 @@ See COPYRIGHT and LICENSE files for more details.
                                      (line_num == 1),
                                      id: "cb-#{line_num}" %>
                 <% csp_onclick(
-                     "jQuery('#cbto-#{line_num + 1}').attr('checked', true);",
-                     "cb-#{line_num}"
+                     "document.getElementById('cbto-#{line_num + 1}').checked = true;",
+                     "#cb-#{line_num}",
+                     prevent_default: false
                    ) %>
                 <% end %>
               </td>
@@ -134,8 +135,9 @@ See COPYRIGHT and LICENSE files for more details.
                                      (line_num == 2),
                                      id: "cbto-#{line_num}" %>
                   <% csp_onclick(
-                       "if (jQuery('#cb-#{line_num}').attr('checked')) {jQuery('#cb-#{line_num - 1}').attr('checked', true)}",
-                       "cbto-#{line_num}"
+                       "if (document.getElementById('cb-#{line_num}')?.checked) {document.getElementById('cb-#{line_num - 1}').checked = true;}",
+                       "#cbto-#{line_num}",
+                       prevent_default: false
                      ) %>
                 <% end %>
               </td>

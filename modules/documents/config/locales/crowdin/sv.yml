@@ -63,6 +63,7 @@ sv:
   label_document_title: "Titel"
   label_document_description: "Beskrivning"
   label_document_category: "Kategori"
+  label_document_type: "Type"
   permission_manage_documents: "Hantera dokument"
   permission_view_documents: "Visa dokument"
   project_module_documents: "Dokument"

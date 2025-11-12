@@ -63,6 +63,7 @@ sk:
   label_document_title: "Nadpis"
   label_document_description: "Popis"
   label_document_category: "Kategória"
+  label_document_type: "Type"
   permission_manage_documents: "Správa dokumentov"
   permission_view_documents: "Zobrazenie dokumentov"
   project_module_documents: "Dokumenty"

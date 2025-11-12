@@ -62,7 +62,7 @@ export class TimerAccountMenuComponent extends UntilDestroyedMixin implements On
   }
 
   ngOnInit() {
-    const parent = this.elementRef.nativeElement.parentElement as HTMLElement;
+    const parent = this.elementRef.nativeElement.parentElement!;
     parent.hidden = true;
 
     this.timer$
@@ -80,7 +80,6 @@ export class TimerAccountMenuComponent extends UntilDestroyedMixin implements On
     }
 
     return this.TurboRequests.request(
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this.PathHelper.timeEntryEditDialog(active.id!),
       { method: 'GET' },
     );

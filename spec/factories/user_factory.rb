@@ -79,6 +79,11 @@ FactoryBot.define do
       end
     end
 
+    trait :passwordless do
+      password { nil }
+      password_confirmation { nil }
+    end
+
     factory :admin, parent: :user, class: "User" do
       firstname { "OpenProject" }
       sequence(:lastname) { |n| "Admin#{n}" }

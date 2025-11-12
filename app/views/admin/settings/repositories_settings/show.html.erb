@@ -40,7 +40,16 @@ See COPYRIGHT and LICENSE files for more details.
   end
 %>
 
-<%= styled_form_tag(admin_settings_repositories_path, method: :patch) do %>
+<%=
+  styled_form_tag(
+    admin_settings_repositories_path,
+    method: :patch,
+    data: {
+      controller: "disable-when-checked show-when-checked",
+      disable_when_checked_reversed_value: true
+    }
+  ) do
+%>
   <section class="form--section">
     <div class="form--field">
       <%= setting_check_box :autofetch_changesets %>
@@ -58,12 +67,11 @@ See COPYRIGHT and LICENSE files for more details.
       </div>
     </div>
     <div class="form--field">
-      <%= setting_check_box :sys_api_enabled %>
-      <% csp_onclick(
-           "jQuery('#settings_sys_api_key').prop('disabled', !this.checked)",
-           "#settings_sys_api_enabled",
-           prevent_default: false
-         ) %>
+      <%= setting_check_box :sys_api_enabled,
+                            data: {
+                              disable_when_checked_target: "cause",
+                              target_name: "sys_api_key"
+                            } %>
       <div class="form--field-instructions">
         <%= t(:setting_sys_api_description) %>
       </div>
@@ -72,14 +80,35 @@ See COPYRIGHT and LICENSE files for more details.
                                                                   id: "settings_sys_api_key",
                                                                   disabled: !Setting.sys_api_enabled?,
                                                                   label: :setting_mail_handler_api_key,
-                                                                  container_class: "-middle" %>
+                                                                  container_class: "-middle",
+                                                                  data: {
+                                                                    disable_when_checked_target: "effect",
+                                                                    target_name: "sys_api_key"
+                                                                  } %>
     </div>
     <%
     available_scms = OpenProject::SCM::Manager.registered
-      .map { |vendor, klass| [klass.vendor_name, vendor.to_s] }
+      .map do |vendor, klass|
+        [
+          klass.vendor_name,
+          vendor.to_s,
+          {
+            data: { disable_when_checked_target: "cause", target_name: vendor.to_s }
+          }
+        ]
+      end
 
     manageable_scms = OpenProject::SCM::Manager.manageable
-      .map { |vendor, klass| [klass.vendor_name, vendor.to_s, { disabled: !klass.enabled? }] }
+      .map do |vendor, klass|
+        [
+          klass.vendor_name,
+          vendor.to_s,
+          {
+            disabled: !klass.enabled?,
+            data: { disable_when_checked_target: "effect", target_name: vendor.to_s }
+          }
+        ]
+      end
     %>
     <div class="form--field">
 
@@ -134,16 +163,20 @@ See COPYRIGHT and LICENSE files for more details.
       </div>
     </div>
     <div class="form--field">
-      <%= setting_check_box :commit_logtime_enabled %>
-      <% csp_onclick(
-           "jQuery('#settings_commit_logtime_activity_id').prop('disabled', !this.checked)",
-           "#setting_commit_logtime_enabled"
-         ) %>
+      <%= setting_check_box :commit_logtime_enabled,
+                            data: {
+                              disable_when_checked_target: "cause",
+                              target_name: "commit_logtime_activity_id"
+                            } %>
     </div>
     <div class="form--field"><%= setting_select :commit_logtime_activity_id,
                                                 [[t(:label_default), 0]] + TimeEntryActivity.shared.map { |activity| [activity.name, activity.id.to_s] },
                                                 disabled: !Setting.commit_logtime_enabled?,
-                                                container_class: "-middle" %></div>
+                                                container_class: "-middle",
+                                                data: {
+                                                  disable_when_checked_target: "effect",
+                                                  target_name: "commit_logtime_activity_id"
+                                                } %></div>
   </fieldset>
   <%= styled_button_tag t(:button_save), class: "-primary -with-icon icon-checkmark" %>
 <% end %>

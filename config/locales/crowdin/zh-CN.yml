@@ -87,7 +87,7 @@ zh-CN:
         token_placeholder: "在此处粘贴您的企业版支持令牌"
       add_token: "上传企业版支持令牌"
       replace_token: "替换您当前的支持令牌"
-      order: "订购本地部署版的 Enterprise edition"
+      order: "订购本地部署的 Enterprise edition"
       paste: "粘贴您企业版的支持令牌"
       required_for_feature: "此功能仅限具激活的企业版支持令牌的订阅者使用。"
       enterprise_link: "如需了解详细信息，请单击此处。"
@@ -655,6 +655,57 @@ zh-CN:
     memberships:
       no_results_title_text: 该用户当前非项目成员。
     open_profile: "人员详情"
+    invite_user_modal:
+      invite: "邀请"
+      title:
+        invite: "邀请用户"
+        invite_to_project: "邀请%{type}加入 %{project}"
+        invite_principal_to_project: "邀请 %{principal} 加入 %{project}"
+      project:
+        label: "项目"
+        required: "请选择一个项目"
+        next_button: "下一个"
+        no_results: "没有找到项目"
+        no_invite_rights: "您无权邀请成员加入此项目"
+      type:
+        required: "请选择要邀请的类型"
+        user:
+          title: "邀请用户访问 %{project_name}"
+          description: "基于所选项目中指定角色的权限"
+        group:
+          title: "邀请小组访问 %{project_name}"
+          description: "基于所选项目中指定角色的权限"
+        placeholder_user:
+          title: "将占位符用户添加到 %{project_name}"
+          title_no_ee: "占位符用户（Enterprise edition 附加功能）"
+          description: "无法访问该项目并且未发送电子邮件。"
+        already_member_message: "已经是 %{project} 的成员"
+      principal:
+        no_results_user: "没有找到用户"
+        invite_user: "邀请："
+        no_results_placeholder: "没有找到占位符"
+        create_new_placeholder: "创建新的占位符："
+        no_results_group: "没有找到组"
+        invite_to_project: "邀请访问 %{project_name}"
+        required:
+          user: "请选择一个用户"
+          placeholder: "请选择一个占位符"
+          group: "请选择一个组"
+      role:
+        label: "%{project} 中的角色"
+        no_roles_found: "没有找到角色"
+        description: >
+          这是用户在加入您的项目时将获得的角色。角色定义了允许其执行哪些操作以及允许其查看哪些信息。[详细了解角色和权限](docs_url)。
+        required: "请选择一个角色"
+      message:
+        label: "邀请消息"
+        description: "我们将向用户发送一封电子邮件，您可以在此处添加要向其发送的个人消息。提供邀请说明可能会很有用，您也可以添加一些有关该项目的信息以帮助他们开始。"
+      summary:
+        next_button: "发送邀请"
+      success_message:
+        user: "该用户现在可以登录以访问 %{project}。同时，您已经可以与该用户一起制定计划并分配工作包等。"
+        placeholder_user: "现在可以在 %{project} 中使用占位符。同时，您已经可以与该用户一起制定计划并分配工作包等。"
+        group: "该组现已加入 %{project}。同时，您已经可以与该组一起制定计划并分配工作包等。"
   page:
     text: "文本"
   placeholder_users:
@@ -1043,7 +1094,7 @@ zh-CN:
         page: "页"
         row_count: "行数"
         column_count: "列数"
-        widgets: "微件"
+        widgets: "小部件"
       journal:
         notes: "备注"
         cause_type: "Cause 类型"
@@ -1232,6 +1283,9 @@ zh-CN:
         mode_guideline: "某些模式将覆盖自定义主题颜色，以提升无障碍性和可读性。请选择“浅色”模式，以实现对自定义主题的全面支持。"
         daily_reminders: "每日提醒"
         workdays: "工作日"
+      users/invitation/form_model:
+        principal_type: "邀请类型"
+        id_or_email: "用户名或电子邮件地址"
       version:
         effective_date: "完成日期"
         sharing: "共享"
@@ -2478,7 +2532,7 @@ zh-CN:
       attribute_not_found: "属性未找到： %{attribute}"
       model_not_found: "属性模型无效： %{model}"
       resource_not_found: "未找到资源： %{resource}"
-      rich_text_unsupported: "导出时不支持富文本嵌入功能"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: 时
       days: 天
@@ -3223,7 +3277,7 @@ zh-CN:
   label_revision_id: "修订版本 %{value}"
   label_revision_plural: "修订"
   label_roadmap: "路线图"
-  label_roadmap_edit: "编辑路线图%{name}"
+  label_roadmap_edit: "编辑路线图 %{name}"
   label_roadmap_due_in: "%{value} 到期"
   label_roadmap_no_work_packages: "该版本没有工作包。"
   label_roadmap_overdue: "%{value} 超时"
@@ -3726,6 +3780,9 @@ zh-CN:
   permission_edit_wiki_pages: "编辑维基页面"
   permission_export_work_packages: "导出工作包"
   permission_export_wiki_pages: "导出维基页面"
+  permission_invite_members_by_email: "通过电子邮件邀请成员"
+  permission_invite_members_by_email_explanation: >
+    允许用户通过电子邮件邀请新会员。邀请用户将收到一封包含链接的电子邮件来设置密码并激活他们的帐户。 依赖于管理会员的权限
   permission_list_attachments: "列出附件"
   permission_log_own_time: "记录自己的时间"
   permission_log_time: "记录其他用户的时间"
@@ -3755,6 +3812,9 @@ zh-CN:
   permission_share_work_packages: "共享工作包"
   permission_manage_types: "选择类型"
   permission_manage_own_reminders: "创建个人提醒事项"
+  permission_view_all_principals: "查看所有用户和组"
+  permission_view_all_principals_explanation: >
+    允许用户在系统中查看所有用户和组，即使他们不是任何加入的项目或组的成员。
   permission_view_project: "查看项目"
   permission_view_changesets: "查看 OpenProject 存储库修订"
   permission_view_internal_comments: "查看内部评论"
@@ -3922,7 +3982,7 @@ zh-CN:
       managed: "在 OpenProject 中创建新的存储库"
     storage:
       not_available: "磁盘存储开销不可用于此存储库。"
-      update_timeout: "在 N 分钟内保留存储库最后所需的磁盘空间信息。由于计算存储库所需的磁盘空间可能增加系统开销，增加该值可以减少性能影响。"
+      update_timeout: "在 N 分钟内保留存储库最后所需磁盘空间的信息。由于计算存储库所需的磁盘空间可能增加系统开销，增加该值可以减少性能影响。"
       oauth_application_details: "关闭此窗口后，将无法再次访问客户端密钥值。请将这些值复制到 Nextcloud OpenProject 集成设置中："
       oauth_application_details_link_text: "转到设置页面"
       setup_documentation_details: "如果您在配置新文件存储方面需要帮助，请查看文档："
@@ -4113,11 +4173,11 @@ zh-CN:
   setting_self_registration_manual_activation: "自动激活帐户"
   setting_self_registration_manual_activation_caption: >
     用户可以自行注册。 他们的帐户会处于待处理状态，直到管理员或拥有全局权限的用户激活它们为止。
-  setting_session_ttl: "在处于非活动状态后会话过期时间"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "当设置的值低于5时，其作用类似于禁用。"
   setting_session_ttl_enabled: "会话过期"
   setting_start_of_week: "一周起始日"
-  setting_sys_api_enabled: "启用存储库管理网页服务"
+  setting_sys_api_enabled: "启用版本库管理 web 服务"
   setting_sys_api_description: "存储库管理网页服务提供了集成的，用户授权的存储库访问。"
   setting_time_format: "时间"
   setting_total_percent_complete_mode: "计算 完成% 层次结构总数"
@@ -4483,7 +4543,7 @@ zh-CN:
   warning_user_limit_reached_admin: >
     添加额外的用户将超出当前限制。请<a href="%{upgrade_url}">升级您的计划</a>，以确保外部用户能够访问此实例。
   warning_user_limit_reached_instructions: >
-    您已达到用户限制（%{current}/%{max} 活跃用户）。请联系 sales@openproject.com 升级您的企业版计划以添加额外用户。
+    您达到了用户限制（%{current}/%{max}活跃用户）。 请联系sales@openproject.com以升级您的Enterprise edition计划并添加其他用户。
   warning_protocol_mismatch_html: >
 
   warning_bar:

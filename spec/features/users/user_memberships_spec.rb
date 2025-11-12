@@ -65,5 +65,5 @@ RSpec.describe "user memberships through user page", :js, :selenium do
     end
   end
 
-  it_behaves_like "global user principal membership management flows", :manage_user
+  it_behaves_like "global user principal membership management flows", %i[manage_user view_all_principals]
 end

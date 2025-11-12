@@ -31,22 +31,51 @@
 module Grids
   module Widgets
     class Members < Grids::WidgetComponent
-      MEMBERS_LIMIT = 5
+      MEMBERS_LIMIT = 3
       private_constant :MEMBERS_LIMIT
 
       param :project
 
       option :limit, default: -> { MEMBERS_LIMIT }
 
-      def initialize(...)
-        super
-
-        @members = project.members.visible(current_user).newest_first
-        @newest_members = @members.limit(limit).to_a
-      end
-
       def title
         t(".title")
+      end
+
+      def members_by_role
+        @members_by_role ||= ProjectRole
+          .where(id: member_role_ids)
+          .order(name: :asc)
+          .map do |role|
+          members_query = members_for_role(role.id)
+          total_count = members_query.count
+          members = members_query.limit(limit).to_a.map(&:user)
+
+          {
+            role:,
+            members:,
+            total_count:,
+            remaining: [total_count - limit, 0].max,
+            has_more: total_count > limit
+          }
+        end
+      end
+
+      def members_for_role(role_id)
+        project
+          .members
+          .visible(current_user)
+          .joins(:member_roles)
+          .where(member_roles: { role_id: })
+          .includes(:principal)
+          .order(created_at: :desc)
+      end
+
+      def member_role_ids
+        MemberRole
+          .where(member_id: project.members.select(:id))
+          .select(:role_id)
+          .distinct
       end
 
       def render?

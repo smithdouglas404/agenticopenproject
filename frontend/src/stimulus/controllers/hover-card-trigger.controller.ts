@@ -51,7 +51,7 @@ export default class HoverCardTriggerController extends ApplicationController {
 
   // Track whether we currently show a hover card or not. It is important not to open multiple hover cards at
   // the same time, and refrain from closing the wrong kind of modal overlay.
-  private isShowingHoverCard:boolean = false;
+  private isShowingHoverCard = false;
 
   // The time you need to keep hovering over a trigger before the hover card is shown
   OPEN_DELAY_IN_MS = 1000;

@@ -296,7 +296,7 @@ sl:
       warning: "Please don't share this URL with other users. Anyone with this link will be able to view work package details without an account or password."
       token_name_label: "Where will you be using this?"
       token_name_placeholder: 'Type a name, e.g. "Phone"'
-      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="my/access_token", target="_blank">access tokens</a> list.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Copy URL"
       ical_generation_error_text: "An error occured while generating the calendar URL."
       success_message: 'The URL "%{name}" was successfully copied to your clipboard. Paste it in your calendar client to complete the subscription.'
@@ -1142,71 +1142,8 @@ sl:
       list: "Tabela"
       timeline: "Gant"
     invite_user_modal:
-      back: "Nazaj"
       invite: "Povabi"
-      title:
-        invite: "Povabi uporabnika"
-        invite_to_project: "Povabi %{type} na %{project}"
-        User: "uporabnik"
-        Group: "skupina"
-        PlaceholderUser: "nadomestni uporabnik"
-        invite_principal_to_project: "Povabi %{principal} na %{project}"
-      project:
-        label: "Projekt"
-        required: "Prosim izberi projekt"
-        lacking_permission: "Please select a different project since you lack permissions to assign users to the currently selected."
-        lacking_permission_info: "You lack the permission to assign users to the project you are currently in. You need to select a different one."
-        next_button: "Naprej"
-        no_results: "Nobeni projekti niso bili najdeni"
-        no_invite_rights: "Nimate dovoljenja za vabljenje članov v ta projekt"
-      type:
-        required: "Prosim izberi tip za povabilo"
-        user:
-          title: "Uporabnik"
-          description: "Dovoljenja glede na dodeljeno vlogo v izbranem projektu"
-        group:
-          title: "Skupina"
-          description: "Dovoljenja glede na dodeljeno vlogo v izbranem projektu"
-        placeholder:
-          title: "Nadomestni uporabnik"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "Nima dostopa do projekta in nobenih e-mailov ni bilo poslanih."
-          description_no_ee: 'Has no access to the project and no emails are sent out. <br>Check out the <a href="%{eeHref}" target="_blank">Enterprise edition</a>'
-      principal:
-        label:
-          name_or_email: "Ime ali e-mail naslov"
-          name: "Ime"
-        already_member_message: "Je že član %{project}"
-        no_results_user: "Nobenih uporabnikov ni bilo najdenih"
-        invite_user: "Povabi:"
-        no_results_placeholder: "Nobenih rezerviranih mest ni bilo najdenih"
-        create_new_placeholder: "Ustvari novo rezervirano mesto:"
-        no_results_group: "Nobenih skupin ni bilo najdenih"
-        next_button: "Naprej"
-        required:
-          user: "Izberite uporabnika"
-          placeholder: "Izberite rezervirano mesto"
-          group: "Izberite skupino."
-      role:
-        label: "Vloge v %{project}"
-        no_roles_found: "No roles were found"
-        description: >-
-          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. <a href="https://www.openproject.org/docs/system-admin-guide/users-permissions/roles-permissions/#roles-and-permissions" target="_blank"> Learn more about roles and permissions. </a>
-        required: "Izberite vlogo"
-        next_button: "Naprej"
-      message:
-        label: "Sporočilo s povabilom"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or prehaps a bit of information regarding the project to help them get started."
-        next_button: "Naprej"
-      summary:
-        next_button: "Pošlji povabilo"
-      success:
-        title: "%{principal} je bil povabljen!"
-        description:
-          user: "Uporabnik se lahko zdaj prijavi za dostop do %{project}. Medtem lahko planirate s tem uporabnikom in mu dodelite delovne naloge."
-          placeholder: "Rezervirano mesto se zdaj lahko uporabi v %{project}. Medtem lahko planirate s tem uporabnikom in mu dodelite delovne naloge."
-          group: "Skupina je zdaj del %{project}. Medtem lahko planirate s to skupino in ji dodelite delovne naloge."
-        next_button: "Nadaljuj"
+      placeholder_add_tag: "Create placeholder user"
     exclusion_info:
       modal:
         title: "Status excluded from hierarchy totals"

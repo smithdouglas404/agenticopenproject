@@ -208,6 +208,17 @@ class User < Principal
     end
   end
 
+  # Override acts_as_customizable to skip custom field validation for invited users
+  # since custom field values cannot be provided during the invitation process.
+  # We only skip the validation if no custom field changes are present.
+  def custom_values_to_validate
+    if invited? && custom_field_changes.empty?
+      []
+    else
+      super
+    end
+  end
+
   def self.search_in_project(query, options)
     options.fetch(:project).users.like(query)
   end
@@ -358,8 +369,8 @@ class User < Principal
 
   # Does the backend storage allow this user to change their password?
   def change_password_allowed?
-    return false if uses_external_authentication? ||
-      OpenProject::Configuration.disable_password_login?
+    return false if OpenProject::Configuration.disable_password_login?
+    return false if uses_external_authentication? && current_password.nil?
 
     ldap_auth_source_id.blank?
   end
@@ -559,8 +570,8 @@ class User < Principal
   end
 
   def scim_emails=(emails)
-    email = (emails.find { |email| email.primary == true }) ||
-            (emails.find { |email| email.type == "work" }) ||
+    email = emails.find { |email| email.primary == true } ||
+            emails.find { |email| email.type == "work" } ||
             emails.min
 
     self.mail = email&.value

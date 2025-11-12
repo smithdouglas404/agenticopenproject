@@ -265,7 +265,7 @@ export default class FiltersFormController extends Controller {
     // it is focused. This handler will find the sibling input of the clear button inside the
     // PrimerTextField and triggers the input in order to notify the auto-reloading filter mechanism.
     const element = event.currentTarget as HTMLElement;
-    const primerTextField = element.closest('primer-text-field') as PrimerTextFieldElement;
+    const primerTextField = element.closest('primer-text-field') as HTMLElement & { inputElement: HTMLInputElement };
     const inputElement = primerTextField.inputElement;
 
     const inputEvent = new Event('input', {
@@ -394,7 +394,7 @@ export default class FiltersFormController extends Controller {
     const filters:InternalFilterValue[] = [];
 
     advancedFilters.forEach((filter) => {
-      const filterName = filter.getAttribute('data-filter-name') as string;
+      const filterName = filter.getAttribute('data-filter-name')!;
       const filterType = filter.getAttribute('data-filter-type');
       const parsedOperator = this.findTargetByName(filterName, this.operatorTargets)?.value;
       const valueContainer = this.findTargetByName(filterName, this.filterValueContainerTargets);

@@ -61,6 +61,7 @@ zh-TW:
       meeting_participant:
         invited: "已邀請"
         attended: "已出席"
+        participation_status: "參與狀態"
     errors:
       models:
         meeting_participant:
@@ -124,7 +125,8 @@ zh-TW:
   label_meeting_date_time: "日期 / 時間"
   label_meeting_date_and_time: "日期和時間"
   label_meeting_diff: "比較"
-  label_meeting_send_updates: "透過電子郵件發送行事曆更新"
+  label_meeting_send_updates: "Send email calendar invite and updates"
+  label_meeting_send_updates_caption: "Send out email invites to all participants of this meeting"
   label_recurring_meeting: "重複性會議"
   label_recurring_meeting_part_of: "系列會議的一部分"
   label_recurring_meeting_new: "新的重複性會議"
@@ -328,9 +330,9 @@ zh-TW:
             電子郵件行事曆更新已停用。當您新增或移除參與者時，參與者將不會收到通知他們的電子郵件。
         onetime:
           enabled: >
-            所有參與者都會透過電子郵件收到更新的行事曆邀請，通知他們您的變更。
+            All participants will receive updated calendar invites via email when you add or remove participants.
           disabled: >
-            電子郵件行事曆更新已停用。參與者將不會收到通知您變更的電子郵件。
+            Participants will not receive an email informing them of changes to meeting date, time or participants.
         occurrence:
           enabled: >
             已啟用系列會議的電子郵件行事曆更新。所有與會者都會收到更新的行事曆邀請，通知他們您對此事件所做的變更。
@@ -341,6 +343,16 @@ zh-TW:
             已為會議系列啟用電子郵件行事曆更新。所有與會者都會收到更新的行事曆邀請，通知他們您對此範本或個別事件所做的變更。
           disabled: >
             會議系列的電子郵件行事曆更新已停用。與會者將不會收到電子郵件，通知他們您對此範本或個別事件所做的變更。
+    presentation_mode:
+      title: "Presentation Mode"
+      button_present: "Present"
+      exit: "Exit presentation"
+      current_item: "Current item"
+      total_items: "%{current} of %{total}"
+      previous: "Previous"
+      next: "Next"
+      no_items: "No agenda items"
+      no_items_flash: "There are no agenda items to present."
   meeting_section:
     untitled_title: "無標題章節"
     delete_confirmation: "刪除該章節也會刪除其所有的議程項目。您確定要這麼做？"
@@ -371,7 +383,9 @@ zh-TW:
       label_view_template: "查看範本"
       label_edit_template: "編輯範本"
       banner_html: >
-        您目前正在編輯會議系列的範本： %{link}。系列會議中的每次新會議都會使用此範本。變更不會影響過去或已建立的會議。
+        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings.
+      draft_banner_html: >
+        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings. No email invites will be sent in this current draft mode until you open the first meeting.
     frequency:
       x_daily:
         other: "每 %{count} 天"
@@ -491,6 +505,7 @@ zh-TW:
   label_agenda_item_work_package: "議程項目工作套件"
   label_section_rename: "重新命名區段"
   label_agenda_outcome: "結果"
+  label_agenda_new_outcome: "新結果"
   label_agenda_outcome_actions: "議程結果行動"
   label_agenda_outcome_edit: "編輯結果"
   label_agenda_outcome_delete: "移除結果"
@@ -519,6 +534,7 @@ zh-TW:
   label_meeting_series_details: "會議詳細資訊"
   label_meeting_details_edit: "編輯會議詳情"
   label_meeting_state: "會議狀態"
+  label_meeting_state_draft: "Draft"
   label_meeting_state_open: "開啟"
   label_meeting_state_closed: "關閉"
   label_meeting_state_agenda_created: "議程已建立"
@@ -529,12 +545,19 @@ zh-TW:
   label_meeting_reopen_action: "重新開啟會議"
   label_meeting_close_action: "關閉會議"
   label_meeting_in_progress_action: "會議開始"
+  label_meeting_open_action: "Open meeting"
+  text_meeting_draft_description: "Prepare your agenda in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
   text_meeting_open_description: "您可以新增/移除議程項目和與會者。一旦議程準備就緒，請將它標記為進行中，以記錄結果。"
   text_meeting_closed_description: "此會議已關閉。您不能再新增/移除議程項目。"
   text_meeting_in_progress_description: "您可以修改議程、記錄每個項目的結果，並追蹤與會者的出席率。會議結束後，您可以將會議標記為關閉，以鎖定會議。"
   text_meeting_open_dropdown_description: "任何現有的結果都會保留，但使用者將無法新增新的結果。"
   text_meeting_in_progress_dropdown_description: "記錄會議期間的結果，例如資訊需求或所做的決策。"
   text_meeting_closed_dropdown_description: "此會議已結束，您無法再修改議程項目或結果。"
+  text_meeting_draft_banner: "You are currently in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
+  text_exit_draft_mode_dialog_title: "Open this meeting and send invites?"
+  text_exit_draft_mode_dialog_subtitle: "You cannot return to draft mode once you schedule a meeting."
+  text_exit_draft_mode_dialog_template_title: "Open the first occurrence of this meeting series?"
+  text_exit_draft_mode_dialog_template_subtitle: "You cannot return to draft mode after this."
   text_meeting_not_editable_anymore: "本次會議已不可編輯。"
   text_meeting_not_present_anymore: "此次會議已被刪除。請選擇另一場會議。"
   label_add_work_package_to_meeting_dialog_title: "選擇會議"

@@ -42,11 +42,14 @@ module Primer
                     :open_project_url,
                     :document_name,
                     :document_id,
-                    :oauth_token
+                    :oauth_token,
+                    :attachments_upload_url,
+                    :attachments_collection_key
 
         delegate :name, to: :@input
 
-        def initialize(input:, value:, document_name:, document_id:, oauth_token: nil)
+        def initialize(input:, value:, document_name:, document_id:, attachments_upload_url: "",
+                       attachments_collection_key: "", oauth_token: nil)
           super()
           @input = input
           @value = value
@@ -59,6 +62,8 @@ module Primer
           @oauth_token = oauth_token
           @hocuspocus_url = Setting.collaborative_editing_hocuspocus_url
           @open_project_url = root_url
+          @attachments_upload_url = attachments_upload_url
+          @attachments_collection_key = attachments_collection_key
         end
       end
     end

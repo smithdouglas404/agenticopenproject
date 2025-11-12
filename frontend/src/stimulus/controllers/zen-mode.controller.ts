@@ -1,0 +1,62 @@
+import { ApplicationController } from 'stimulus-use';
+
+export default class OpZenModeController extends ApplicationController {
+  static values = {
+    autostart:Boolean,
+  };
+
+  declare readonly autostartValue:boolean;
+
+  inZenMode = false;
+
+  private boundHandler = this.fullscreenChangeEventHandler.bind(this);
+
+  connect() {
+    document.addEventListener('fullscreenchange', this.boundHandler);
+
+    if (this.autostartValue) {
+      setTimeout(() => this.activateZenMode(), 25);
+    }
+  }
+
+  disconnect() {
+    super.disconnect();
+    document.removeEventListener('fullscreenchange', this.boundHandler);
+  }
+
+  fullscreenChangeEventHandler() {
+    this.inZenMode = !this.inZenMode;
+    this.dispatchZenModeStatus();
+  }
+
+  dispatchZenModeStatus() {
+    // Create a new custom event
+    const event = new CustomEvent('zenModeToggled', {
+      detail: {
+        active: this.inZenMode,
+      },
+    });
+    // Dispatch the custom event
+    window.dispatchEvent(event);
+  }
+
+  private deactivateZenMode() {
+    if (document.exitFullscreen) {
+      void document.exitFullscreen();
+    }
+  }
+
+  private activateZenMode() {
+    if (document.documentElement.requestFullscreen) {
+      void document.documentElement.requestFullscreen();
+    }
+  }
+
+  public performAction() {
+    if (this.inZenMode) {
+      this.deactivateZenMode();
+    } else {
+      this.activateZenMode();
+    }
+  }
+}

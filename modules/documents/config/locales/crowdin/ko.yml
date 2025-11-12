@@ -63,6 +63,7 @@ ko:
   label_document_title: "제목"
   label_document_description: "설명"
   label_document_category: "카테고리"
+  label_document_type: "Type"
   permission_manage_documents: "문서 관리"
   permission_view_documents: "문서 보기"
   project_module_documents: "문서"
