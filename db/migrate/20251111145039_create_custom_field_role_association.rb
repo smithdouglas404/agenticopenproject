@@ -31,7 +31,7 @@
 class CreateCustomFieldRoleAssociation < ActiveRecord::Migration[8.0]
   def change
     create_table :custom_fields_roles do |t|
-      t.references :custom_field, null: false, foreign_key: true, index: true
+      t.references :custom_field, null: false, foreign_key: true, index: { unique: true }
       t.references :role, null: false, foreign_key: true, index: true
       t.timestamps
     end

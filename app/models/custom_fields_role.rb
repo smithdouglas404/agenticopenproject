@@ -32,4 +32,6 @@
 class CustomFieldsRole < ApplicationRecord
   belongs_to :role
   belongs_to :custom_field
+
+  validates :custom_field_id, uniqueness: true
 end

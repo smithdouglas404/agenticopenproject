@@ -39,6 +39,11 @@ class ProjectCustomField < CustomField
 
   after_save :activate_required_field_in_all_projects, if: :required?
 
+  # Relevant for user fields to allow membership assignment
+  has_one :custom_fields_role, foreign_key: :custom_field_id, dependent: :destroy, inverse_of: :custom_field
+  has_one :role, through: :custom_fields_role
+  accepts_nested_attributes_for :custom_fields_role, allow_destroy: true
+
   validates :custom_field_section_id, presence: true
 
   class << self
