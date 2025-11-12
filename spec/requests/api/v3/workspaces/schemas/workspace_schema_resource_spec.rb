@@ -43,7 +43,7 @@ RSpec.describe "API v3 Workspaces schema resource", content_type: :json do
 
   subject(:response) { last_response }
 
-  shared_examples_for "fetching the project schema" do
+  shared_examples_for "fetching the workspace schema" do
     before do
       get path
     end
@@ -62,16 +62,22 @@ RSpec.describe "API v3 Workspaces schema resource", content_type: :json do
       expect(subject.body)
         .not_to have_json_path("parent/_links/allowedValues")
     end
+
+    it "has the workspace route as its self link" do
+      expect(subject.body)
+        .to be_json_eql(api_v3_paths.workspace_schema.to_json)
+              .at_path "_links/self/href"
+    end
   end
 
   describe "GET /projects/schema" do
-    include_examples "fetching the project schema" do
+    include_examples "fetching the workspace schema" do
       let(:path) { api_v3_paths.project_schema }
     end
   end
 
   describe "GET /workspaces/schema" do
-    include_examples "fetching the project schema" do
+    include_examples "fetching the workspace schema" do
       let(:path) { api_v3_paths.workspace_schema }
     end
   end

@@ -34,7 +34,8 @@ module API
       module Schemas
         class WorkspaceSchemaAPI < ::API::OpenProjectAPI
           resources :schema do
-            get &::API::V3::Utilities::Endpoints::Schema.new(model: Project).mount
+            get &::API::V3::Utilities::Endpoints::Schema.new(model: Project,
+                                                             self_path: :workspace_schema).mount
           end
         end
       end
