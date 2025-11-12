@@ -42,7 +42,7 @@ import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
   standalone: false,
 })
 export class WorkPackageSubjectComponent extends UntilDestroyedMixin {
-  @Input('workPackage') workPackage:WorkPackageResource;
+  @Input() workPackage:WorkPackageResource;
 
   public readonly uniqueElementIdentifier = `work-packages--subject-type-row-${randomString(16)}`;
 

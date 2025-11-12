@@ -297,7 +297,7 @@ uk:
       warning: "Не передавайте нікому цю URL-адресу. Будь-хто із цим посиланням зможе переглянути інформацію про пакети робіт без облікового запису або пароля."
       token_name_label: "Де ви використовуватимете його?"
       token_name_placeholder: 'Введіть ім’я, наприклад «Телефон»'
-      token_name_description_text: 'Якщо ви підписані на цей календар із кількох пристроїв, це ім’я допоможе вам розрізняти їх у своєму списку <a href="my/access_token", target="_blank">маркерів доступу</a>.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Копіювати URL"
       ical_generation_error_text: "Під час створення URL-адреси календаря сталася помилка."
       success_message: 'URL-адресу «%{name}» скопійовано в буфер обміну. Вставте її в клієнт свого календаря, що завершити створення підписки.'

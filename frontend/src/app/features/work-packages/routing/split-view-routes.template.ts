@@ -58,7 +58,7 @@ export function makeSplitViewRoutes(baseRoute:string,
   showMobileAlternative = true,
   routeName = baseRoute):Ng2StateDeclaration[] {
   // makeFullWidth configuration
-  const views:{ [content:string]:{ component:ComponentType<unknown>; }; } = makeFullWidth
+  const views:Record<string, { component:ComponentType<unknown>; }> = makeFullWidth
     ? { 'content-left@^.^': { component: showComponent } }
     : { 'content-right@^.^': { component: showComponent } };
   const partition = makeFullWidth ? '-left-only' : '-split';

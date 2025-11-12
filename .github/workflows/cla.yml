@@ -28,6 +28,7 @@ jobs:
           # branch should not be protected
           branch: 'main'
           allowlist: >
+            Copilot,
             Daten-David,
             EinLama,
             HDinger,

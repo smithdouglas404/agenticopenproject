@@ -324,7 +324,7 @@
     placeholder_version_select: "Work package or project selection is required first"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources. Existing resources will not require a value when being updated."
+      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
       is_for_all: "Merk egendefinert felt som tilgjengelig for alle eksisterende og nye prosjekter."
       multi_select: "Allows the user to assign multiple values to this custom field."
@@ -1435,6 +1435,7 @@
               minimum: "må inkludere minst ett filter for prinsipp, kontekst eller id med '='-operatøren."
         custom_field:
           at_least_one_custom_option: "Minst ett alternativ må være tilgjengelig."
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             one: "%{name} is used in project attribute calculation %{links}."
             other: "%{name} is used in project attribute calculations: %{links}."
@@ -2579,7 +2580,7 @@
       attribute_not_found: "attributtet ble ikke funnet: %{attribute}"
       model_not_found: "ugyldig attributtmodell: %{model}"
       resource_not_found: "ressurs ikke funnet: %{resource}"
-      rich_text_unsupported: "Rik tekstinnebygging støttes ikke for eksport"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: t
       days: d
@@ -4227,7 +4228,7 @@
   setting_self_registration_manual_activation: "Manual account activation"
   setting_self_registration_manual_activation_caption: >
     Users can register on their own. Their accounts are in a pending state until an administrator or user with the global permission to create or manage users activates them.
-  setting_session_ttl: "Tidsavbrudd for sesjon etter inaktivitet"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Verdi under 5 fungerer som deaktivering"
   setting_session_ttl_enabled: "Sesjonen utløper"
   setting_start_of_week: "Uken starter på"

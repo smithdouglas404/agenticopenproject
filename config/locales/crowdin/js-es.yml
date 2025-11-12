@@ -297,7 +297,7 @@ es:
       warning: "No comparta esta URL con otros usuarios. Cualquiera que tenga este enlace podrá ver los detalles del paquete de trabajo sin necesidad de una cuenta o contraseña."
       token_name_label: "¿Dónde lo utilizará?"
       token_name_placeholder: 'Escriba un nombre, por ejemplo «Teléfono».'
-      token_name_description_text: 'Si se suscribe a este calendario desde varios dispositivos, este nombre le ayudará a distinguirlos en su lista de <a href="my/access_token", target="_blank">tokens de acceso</a>.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Copiar URL"
       ical_generation_error_text: "Se ha producido un error al generar la URL del calendario."
       success_message: 'La URL «%{name}» se ha copiado correctamente en su portapapeles. Péguela en su cliente de calendario para completar la suscripción.'

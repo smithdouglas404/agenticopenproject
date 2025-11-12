@@ -17,7 +17,7 @@ export function waitForElement(
   execFunction:(match:HTMLElement) => void,
   filterFunction:(match:HTMLElement) => boolean = () => true,
 ):void {
-  const container = document.querySelector(containerSelector) as HTMLElement;
+  const container = document.querySelector(containerSelector)!;
   // If the element is ready immediately
   const initial = matchingFilter(container.querySelectorAll<HTMLElement>(selector), filterFunction);
   if (initial) {

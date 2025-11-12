@@ -123,8 +123,8 @@ export class TeamPlannerPageComponent extends PartitionedQuerySpacePageComponent
 
   breadcrumbItems() {
     return [
-      { href: this.pathHelperService.projectPath(this.currentProject.identifier as string), text: (this.currentProject.name) },
-      { href: this.pathHelperService.projectTeamplannerPath(this.currentProject.identifier as string), text: this.I18n.t('js.team_planner.label_team_planner_plural') },
+      { href: this.pathHelperService.projectPath(this.currentProject.identifier!), text: (this.currentProject.name) },
+      { href: this.pathHelperService.projectTeamplannerPath(this.currentProject.identifier!), text: this.I18n.t('js.team_planner.label_team_planner_plural') },
       this.selectedTitle?? '',
     ];
   }

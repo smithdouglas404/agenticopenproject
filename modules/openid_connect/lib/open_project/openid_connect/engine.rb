@@ -61,8 +61,41 @@ module OpenProject::OpenIDConnect
     class_inflection_override("openid_connect" => "OpenIDConnect")
 
     register_auth_providers(persist: false) do
+      OmniAuth::OpenIDConnect::Providers.configure custom_options: %i[
+        display_name?
+        icon?
+        sso?
+        issuer?
+        check_session_iframe?
+        end_session_endpoint?
+        jwks_uri?
+        limit_self_registration?
+        use_graph_api?
+      ]
+
       strategy :openid_connect do
-        ::OpenIDConnect::Provider.where(available: true).map(&:to_h)
+        OpenProject::OpenIDConnect.providers.map(&:to_h).map do |h|
+          h[:single_sign_out_callback] = Proc.new do
+            next unless h[:end_session_endpoint]
+
+            redirect_to "#{omni_auth_start_path(h[:name])}/logout"
+          end
+
+          # Remember oidc session values when logging in user
+          h[:retain_from_session] = %w[
+            omniauth.oidc_sid
+            omniauth.oidc_access_token
+            omniauth.oidc_refresh_token
+            omniauth.oidc_expires_in
+            omniauth.oidc_groups
+          ]
+
+          h[:backchannel_logout_callback] = ->(logout_token) do
+            ::OpenProject::OpenIDConnect::SessionMapper.handle_logout(logout_token)
+          end
+
+          h
+        end
       end
     end
 

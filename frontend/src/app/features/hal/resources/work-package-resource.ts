@@ -59,9 +59,7 @@ export interface WorkPackageResourceEmbedded {
   author:HalResource|any;
   availableWatchers:HalResource|any;
   category:HalResource|any;
-  // eslint-disable-next-line no-use-before-define
   children:WorkPackageResource[];
-  // eslint-disable-next-line no-use-before-define
   parent:WorkPackageResource|null;
   priority:HalResource|any;
   project:HalResource|any;
@@ -137,7 +135,6 @@ export class WorkPackageBaseResource extends HalResource {
 
   public attachments:AttachmentCollectionResource;
 
-  // eslint-disable-next-line no-use-before-define
   private ancestors?:this[];
 
   public attributesByTimestamp?:IWorkPackageTimestamp[];
@@ -225,7 +222,7 @@ export class WorkPackageBaseResource extends HalResource {
    * Return a rejected promise, if the resource is not a property of the work package.
    */
   public updateLinkedResources(...resourceNames:string[]):Promise<any> {
-    const resources:{ [id:string]:Promise<HalResource> } = {};
+    const resources:Record<string, Promise<HalResource>> = {};
 
     resourceNames.forEach((name) => {
       const linked = this[name];

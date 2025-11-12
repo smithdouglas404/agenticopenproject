@@ -73,23 +73,27 @@ class WorkPackages::ActivitiesTab::Paginator::JournalChangesFilter
     def attachment_changes_condition_sql
       association_changes_condition_sql(
         table: Journal::AttachableJournal.table_name,
-        id_column: "attachment_id",
+        join_columns: ["attachment_id"],
         value_columns: ["filename"]
       )
     end
 
+    # Custom fields require special handling because of multi-value fields.
+    # For multi-value CFs (e.g., multi-select), we must join on BOTH custom_field_id AND value
+    # to prevent Cartesian products. This matches the behavior of:
+    # Acts::Journalized::Differ::Association with multiple_values: :joined
     def custom_field_changes_condition_sql
       association_changes_condition_sql(
         table: Journal::CustomizableJournal.table_name,
-        id_column: "custom_field_id",
-        value_columns: ["value"]
+        join_columns: %w[custom_field_id value],
+        value_columns: [] # Changes detected via join_columns, not value comparison
       )
     end
 
     def file_link_changes_condition_sql
       association_changes_condition_sql(
         table: Journal::StorableJournal.table_name,
-        id_column: "file_link_id",
+        join_columns: ["file_link_id"],
         value_columns: %w[link_name storage_name]
       )
     end
@@ -115,20 +119,37 @@ class WorkPackages::ActivitiesTab::Paginator::JournalChangesFilter
     end
 
     # Detect changes in association journals by checking for additions or removals.
-    def association_changes_condition_sql(table:, id_column:, value_columns:)
-      "#{association_items_added_sql(table:, id_column:, value_columns:)} " \
+    # join_columns: Array of column names to match predecessor and current records (e.g., ["attachment_id"])
+    #               For multi-value fields, use multiple columns (e.g., ["custom_field_id", "value"])
+    # value_columns: Array of column names to compare for modifications (e.g., ["filename"])
+    def association_changes_condition_sql(table:, join_columns:, value_columns:)
+      "#{association_items_added_sql(table:, join_columns:, value_columns:)} " \
         "UNION ALL " \
-        "#{association_items_removed_sql(table:, id_column:)}"
+        "#{association_items_removed_sql(table:, join_columns:)}"
     end
 
     # Detect added or modified association items by comparing with predecessor journal.
     # Returns SQL that finds items that either:
     # - Exist in current journal but not in predecessor (additions)
     # - Exist in both but have different values (modifications)
-    def association_items_added_sql(table:, id_column:, value_columns:)
-      value_changes = value_columns.map do |col|
-        "pred.#{col} IS DISTINCT FROM curr.#{col}"
-      end.join(" OR ")
+    def association_items_added_sql(table:, join_columns:, value_columns:)
+      join_conditions = join_columns.map do |col|
+        "pred.#{col} = curr.#{col}"
+      end.join(" AND ")
+
+      # No value columns means join_columns fully define identity
+      # (e.g., custom fields where custom_field_id + value is the composite key)
+      value_changes = if value_columns.any?
+                        value_columns.map do |col|
+                          "pred.#{col} IS DISTINCT FROM curr.#{col}"
+                        end.join(" OR ")
+                      end
+
+      where_clause = if value_changes
+                       "pred.id IS NULL OR (#{value_changes})"
+                     else
+                       "pred.id IS NULL"
+                     end
 
       <<~SQL.squish
         SELECT 1
@@ -139,15 +160,19 @@ class WorkPackages::ActivitiesTab::Paginator::JournalChangesFilter
             AND predecessor.version = (#{max_predecessor_version_sql})
           LEFT JOIN #{table} pred
             ON pred.journal_id = predecessor.id
-            AND pred.#{id_column} = curr.#{id_column}
+            AND #{join_conditions}
           WHERE curr.journal_id = journals.id
-            AND (pred.id IS NULL OR (#{value_changes}))
+            AND (#{where_clause})
       SQL
     end
 
     # Detect removed association items by comparing with predecessor journal.
     # Returns SQL that finds items that existed in predecessor but not in current journal.
-    def association_items_removed_sql(table:, id_column:)
+    def association_items_removed_sql(table:, join_columns:)
+      join_conditions = join_columns.map do |col|
+        "curr.#{col} = pred.#{col}"
+      end.join(" AND ")
+
       <<~SQL.squish
         SELECT 1
           FROM journals predecessor
@@ -155,7 +180,7 @@ class WorkPackages::ActivitiesTab::Paginator::JournalChangesFilter
             ON pred.journal_id = predecessor.id
           LEFT JOIN #{table} curr
             ON curr.journal_id = journals.id
-            AND curr.#{id_column} = pred.#{id_column}
+            AND #{join_conditions}
           WHERE predecessor.journable_id = journals.journable_id
             AND predecessor.journable_type = journals.journable_type
             AND predecessor.version = (#{max_predecessor_version_sql})

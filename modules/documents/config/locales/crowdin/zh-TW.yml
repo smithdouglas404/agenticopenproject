@@ -63,6 +63,7 @@ zh-TW:
   label_document_title: "標題"
   label_document_description: "說明"
   label_document_category: "類別"
+  label_document_type: "類型"
   permission_manage_documents: "管理文件"
   permission_view_documents: "檢視文件"
   project_module_documents: "文件"

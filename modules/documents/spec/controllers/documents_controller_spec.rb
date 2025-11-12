@@ -38,12 +38,12 @@ RSpec.describe DocumentsController do
   let(:user) { create(:user) }
   let(:role) { create(:project_role, permissions: [:view_documents]) }
 
-  let(:default_category) do
-    create(:document_category, project:, name: "Default Category")
+  let(:document_type) do
+    create(:document_type, name: "Default Type")
   end
 
   let!(:document) do
-    create(:document, title: "Sample Document", project:, category: default_category)
+    create(:document, title: "Sample Document", project:, type: document_type)
   end
 
   current_user { admin }
@@ -75,7 +75,7 @@ RSpec.describe DocumentsController do
       attributes_for(:document,
                      title: "New Document",
                      project_id: project.id,
-                     category_id: default_category.id)
+                     type_id: document_type.id)
     end
 
     before do
@@ -87,14 +87,10 @@ RSpec.describe DocumentsController do
         post :create,
              params: {
                project_id: project.identifier,
-               document: attributes_for(
-                 :document,
-                 title: "New Document",
-                 project_id: project.id,
-                 category_id: default_category.id
-               )
+               document: document_attributes
              }
-      end.to change(Document, :count).by 1
+      end.to change(Document, :count).by(1)
+      expect(Document.last.attributes).to include(document_attributes.stringify_keys)
     end
 
     it "does trigger a workflow job for the document" do
@@ -116,7 +112,7 @@ RSpec.describe DocumentsController do
                document: attributes_for(:document,
                                         title: "New Document",
                                         project_id: notify_project.id,
-                                        category_id: default_category.id),
+                                        type_id: document_type.id),
                attachments: { "1" => { id: uncontainered.id } }
              }
       end

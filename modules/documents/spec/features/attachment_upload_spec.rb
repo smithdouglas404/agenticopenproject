@@ -46,9 +46,7 @@ RSpec.describe "Upload attachment to documents",
            member_with_permissions: { project => %i[view_documents] },
            notification_settings: [build(:notification_setting, all: true)])
   end
-  let!(:category) do
-    create(:document_category)
-  end
+  let!(:document_type) { create(:document_type, :experimental) }
   let(:project) { create(:project) }
   let(:attachments) { Components::Attachments.new }
   let(:image_fixture) { UploadedFile.load_from("spec/fixtures/files/image.png") }
@@ -65,7 +63,7 @@ RSpec.describe "Upload attachment to documents",
 
       expect(page).to have_css('[data-test-selector="new-document"]', wait: 10)
       SeleniumHubWaiter.wait
-      select(category.name, from: "Category")
+      select(document_type.name, from: "Type")
       fill_in "Title", with: "New documentation"
 
       # adding an image via the attachments-list
@@ -215,12 +213,13 @@ RSpec.describe "Upload attachment to documents",
   end
 
   context "for collaborative documents", with_flag: { block_note_editor: true } do
-    let(:experimental_category) { create(:document_category, name: "Experimental", project:) }
-    let(:document) { create(:document, category: experimental_category, project:) }
+    let(:experimental_type) { create(:document_type, :experimental) }
+    let(:document) { create(:document, type: experimental_type, project:) }
     let(:editor) { FormFields::Primerized::BlockNoteEditorInput.new }
     let(:attachments_list) { Components::AttachmentsList.new }
 
     before do
+      DocumentType.destroy_all
       visit edit_document_path(document)
       expect(page).to have_css(".document-form--long-description") # rubocop:disable RSpec/ExpectInHook
       expect(page).not_to have_element("opce-ckeditor-augmented-textarea") # rubocop:disable RSpec/ExpectInHook

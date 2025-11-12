@@ -176,7 +176,7 @@ group :production do
   gem "redis", "~> 5.4.0"
 end
 
-gem "i18n-js", "~> 4.2.3"
+gem "i18n-js", "~> 4.2.4"
 gem "rails-i18n", "~> 8.0.0"
 
 gem "sprockets", "~> 3.7.2" # lock sprockets below 4.0
@@ -192,9 +192,9 @@ gem "carrierwave", "~> 1.3.4"
 gem "carrierwave_direct", "~> 2.1.0"
 gem "fog-aws"
 
-gem "aws-sdk-core", "~> 3.236"
+gem "aws-sdk-core", "~> 3.237"
 # File upload via fog + screenshots on travis
-gem "aws-sdk-s3", "~> 1.202"
+gem "aws-sdk-s3", "~> 1.203"
 
 gem "openproject-token", "~> 8.1.0"
 
@@ -225,10 +225,10 @@ gem "yabeda-rails"
 
 # opentelemetry
 gem "opentelemetry-exporter-otlp", "~> 0.31.0", require: false
-gem "opentelemetry-instrumentation-all", "~> 0.86.1", require: false
+gem "opentelemetry-instrumentation-all", "~> 0.87.0", require: false
 gem "opentelemetry-sdk", "~> 1.10", require: false
 
-gem "view_component", "~> 4.1.0"
+gem "view_component", "~> 4.1.1"
 # Lookbook
 gem "lookbook", "2.3.13"
 
@@ -242,7 +242,7 @@ gem "turbo-rails", "~> 2.0.20"
 
 # There is a problem with version 1.4.0. Do not update until you're sure there is no infinite hang
 # happenning in failing tests when WebMock or VCR stub cannot be found.
-gem "httpx", "~> 1.6.2"
+gem "httpx", "~> 1.6.3"
 
 # Brings actual deep freezing to most ruby objects
 gem "ice_nine"

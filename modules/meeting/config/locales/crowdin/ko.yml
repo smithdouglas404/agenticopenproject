@@ -125,7 +125,8 @@ ko:
   label_meeting_date_time: "날짜/시간"
   label_meeting_date_and_time: "날짜 및 시간"
   label_meeting_diff: "차이"
-  label_meeting_send_updates: "이메일 캘린더 업데이트 보내기"
+  label_meeting_send_updates: "Send email calendar invite and updates"
+  label_meeting_send_updates_caption: "Send out email invites to all participants of this meeting"
   label_recurring_meeting: "반복 미팅"
   label_recurring_meeting_part_of: "미팅 시리즈의 일부"
   label_recurring_meeting_new: "새로운 반복 미팅"
@@ -329,9 +330,9 @@ ko:
             이메일 캘린더 업데이트가 비활성화되었습니다. 참가자를 추가 또는 제거하는 경우 알려주는 이메일이 참가자에게 전송되지 않습니다.
         onetime:
           enabled: >
-            변경 사항을 알려주는 이메일을 통해 업데이트된 캘린더 초대장이 모든 참가자에게 전송됩니다.
+            All participants will receive updated calendar invites via email when you add or remove participants.
           disabled: >
-            이메일 캘린더 업데이트가 비활성화되었습니다. 변경 사항을 알려주는 이메일이 참가자에게 전송되지 않습니다.
+            Participants will not receive an email informing them of changes to meeting date, time or participants.
         occurrence:
           enabled: >
             미팅 시리즈에 대한 이메일 캘린더 업데이트가 활성화되었습니다. 이 항목에 대한 변경 사항을 알려주는 업데이트된 캘린더 초대장이 모든 참가자에게 전송됩니다.
@@ -342,6 +343,16 @@ ko:
             미팅 시리즈에 대한 이메일 캘린더 업데이트가 활성화되었습니다. 이 템플릿 또는 개별 항목에 대한 변경 사항을 알려주는 업데이트된 캘린더 초대장이 모든 참가자에게 전송됩니다.
           disabled: >
             미팅 시리즈에 대한 이메일 캘린더 업데이트가 비활성화되었습니다. 이 템플릿 또는 개별 항목에 대한 변경 사항을 알려주는 이메일이 참가자에게 전송되지 않습니다.
+    presentation_mode:
+      title: "Presentation Mode"
+      button_present: "Present"
+      exit: "Exit presentation"
+      current_item: "Current item"
+      total_items: "%{current} of %{total}"
+      previous: "Previous"
+      next: "Next"
+      no_items: "No agenda items"
+      no_items_flash: "There are no agenda items to present."
   meeting_section:
     untitled_title: "제목 없는 섹션"
     delete_confirmation: "이 섹션을 삭제하면 모든 의제 항목도 삭제됩니다. 계속하시겠습니까?"
@@ -372,7 +383,9 @@ ko:
       label_view_template: "템플릿 보기"
       label_edit_template: "템플릿 편집"
       banner_html: >
-        미팅 시리즈의 템플릿을 현재 편집하는 중입니다: %{link}. 시리즈에서 미팅의 모든 새로운 항목이 이 템플릿을 사용하게 됩니다. 변경 사항은 과거 또는 이미 생성된 미팅에 영향을 미치지 않습니다.
+        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings.
+      draft_banner_html: >
+        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings. No email invites will be sent in this current draft mode until you open the first meeting.
     frequency:
       x_daily:
         other: "%{count}일마다"
@@ -521,6 +534,7 @@ ko:
   label_meeting_series_details: "미팅 시리즈 세부 정보"
   label_meeting_details_edit: "미팅 세부 정보 편집"
   label_meeting_state: "미팅 상태"
+  label_meeting_state_draft: "Draft"
   label_meeting_state_open: "열기"
   label_meeting_state_closed: "닫음"
   label_meeting_state_agenda_created: "의제 생성됨"
@@ -531,12 +545,19 @@ ko:
   label_meeting_reopen_action: "미팅 다시 열기"
   label_meeting_close_action: "미팅 닫기"
   label_meeting_in_progress_action: "미팅 시작"
+  label_meeting_open_action: "Open meeting"
+  text_meeting_draft_description: "Prepare your agenda in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
   text_meeting_open_description: "의제 항목 및 참가자를 추가/제거할 수 있습니다. 의제가 준비되면 진행 중으로 표시하여 결과를 문서화하세요."
   text_meeting_closed_description: "이 미팅은 종료되었습니다. 더 이상 의제 항목을 추가/제거할 수 없습니다."
   text_meeting_in_progress_description: "의제를 수정하고, 각 항목의 결과를 문서화하고, 참가자의 참석을 추적할 수 있습니다. 미팅이 완료되면 종료됨으로 표시하여 잠글 수 있습니다."
   text_meeting_open_dropdown_description: "기존 결과는 그대로 유지되지만 사용자가 새로운 결과를 추가할 수 없게 됩니다."
   text_meeting_in_progress_dropdown_description: "미팅 중에 이루어진 결정 사항 또는 필요한 정보 등의 결과를 문서화합니다."
   text_meeting_closed_dropdown_description: "이 미팅은 종료되었습니다. 더 이상 의제 항목 또는 결과를 수정할 수 없습니다."
+  text_meeting_draft_banner: "You are currently in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
+  text_exit_draft_mode_dialog_title: "Open this meeting and send invites?"
+  text_exit_draft_mode_dialog_subtitle: "You cannot return to draft mode once you schedule a meeting."
+  text_exit_draft_mode_dialog_template_title: "Open the first occurrence of this meeting series?"
+  text_exit_draft_mode_dialog_template_subtitle: "You cannot return to draft mode after this."
   text_meeting_not_editable_anymore: "이 미팅은 더 이상 편집할 수 없습니다."
   text_meeting_not_present_anymore: "이 미팅은 삭제되었습니다. 다른 미팅을 선택해 주세요."
   label_add_work_package_to_meeting_dialog_title: "미팅 선택"

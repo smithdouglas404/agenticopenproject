@@ -3,7 +3,7 @@ import {
   ChangeDetectorRef,
   Directive,
   Input,
-  SimpleChanges,
+  SimpleChanges, OnInit, OnChanges,
 } from '@angular/core';
 import {
   WorkPackageTableConfiguration,
@@ -23,7 +23,7 @@ import { firstValueFrom } from 'rxjs';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 
 @Directive()
-export abstract class WorkPackageEmbeddedBaseComponent extends WorkPackagesViewBase implements AfterViewInit {
+export abstract class WorkPackageEmbeddedBaseComponent extends WorkPackagesViewBase implements AfterViewInit, OnInit, OnChanges {
   @Input('configuration') protected providedConfiguration:WorkPackageTableConfigurationObject;
 
   @Input() public uniqueEmbeddedTableName = `embedded-table-${Date.now()}`;
@@ -86,14 +86,14 @@ export abstract class WorkPackageEmbeddedBaseComponent extends WorkPackagesViewB
   }
 
   public buildQueryProps():object {
-    const query = this.querySpace.query.value as QueryResource;
+    const query = this.querySpace.query.value!;
     this.wpStatesInitialization.applyToQuery(query);
 
     return this.urlParamsHelper.buildV3GetQueryFromQueryResource(query) as object;
   }
 
   public buildUrlParams() {
-    const query = this.querySpace.query.value as QueryResource;
+    const query = this.querySpace.query.value!;
     this.wpStatesInitialization.applyToQuery(query);
 
     return this.urlParamsHelper.encodeQueryJsonParams(query);
@@ -105,7 +105,7 @@ export abstract class WorkPackageEmbeddedBaseComponent extends WorkPackagesViewB
   }
 
   public refresh(visible = true, firstPage = false):Promise<any> {
-    const query = this.querySpace.query.value as QueryResource;
+    const query = this.querySpace.query.value!;
     const pagination = this.wpTablePagination.paginationObject;
 
     if (firstPage) {

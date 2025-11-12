@@ -297,7 +297,7 @@ pl:
       warning: "Nie udostępniaj tego adresu URL innym użytkownikom. Każda osoba mająca ten link będzie mogła wyświetlić szczegóły pakietu roboczego bez konieczności posiadania konta lub hasła."
       token_name_label: "Gdzie będziesz go używać?"
       token_name_placeholder: 'Wpisz nazwę, np. „Telefon”'
-      token_name_description_text: 'Jeśli subskrybujesz ten kalendarz na wielu urządzeniach, nazwa ta pomoże Ci rozróżnić je na liście <a href="my/access_token", target="_blank">tokenów dostępu</a>.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Kopiuj adres URL"
       ical_generation_error_text: "Podczas generowania adresu URL kalendarza wystąpił błąd."
       success_message: 'Adres URL „%{name}” został skopiowany do schowka. Wklej go w kliencie kalendarza, aby dokonać subskrypcji.'

@@ -25,7 +25,7 @@ export class WpTabsComponent implements OnInit {
 
   @Input() view:'full'|'split';
 
-  @Input() routedFromAngular:boolean = true;
+  @Input() routedFromAngular = true;
 
   @Input() public currentTabId:string|null = null;
 

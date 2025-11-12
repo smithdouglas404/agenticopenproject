@@ -61,7 +61,7 @@ module CustomFields
       end
 
       if cf.field_format_calculated_value? && cf.is_required?
-        calculate_values(cf)
+        enqueue_recalculate_values(cf)
       end
 
       if cf.hierarchical_list?
@@ -73,19 +73,15 @@ module CustomFields
 
     private
 
-    def calculate_values(custom_field)
-      custom_field.class.customized_class.find_each do |customized|
-        # for create service maybe there is no need to determine affected_cfs and just use [custom_field]
-        affected_cfs = customized.available_custom_fields.affected_calculated_fields([custom_field.id])
-
-        customized.calculate_custom_fields(affected_cfs)
-
-        customized.save if customized.changed_for_autosave?
-      end
-    end
-
     def add_cf_to_visible_columns(custom_field)
       Setting.enabled_projects_columns |= [custom_field.column_name]
+    end
+
+    def enqueue_recalculate_values(custom_field)
+      CustomFields::RecalculateValuesJob.perform_later(
+        user: User.current,
+        custom_field_id: custom_field.id
+      )
     end
   end
 end

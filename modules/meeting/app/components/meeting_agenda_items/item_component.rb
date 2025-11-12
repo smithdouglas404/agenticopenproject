@@ -42,7 +42,8 @@ module MeetingAgendaItems
       container: nil,
       display_notes_input: nil,
       first_and_last: [],
-      current_occurrence: nil
+      current_occurrence: nil,
+      presentation_mode: false
     )
       super
 
@@ -52,6 +53,7 @@ module MeetingAgendaItems
       @container = container
       @first_and_last = first_and_last
       @current_occurrence = current_occurrence
+      @presentation_mode = presentation_mode
     end
 
     ##
@@ -80,7 +82,8 @@ module MeetingAgendaItems
       {
         meeting_agenda_item: @meeting_agenda_item,
         display_notes_input: (@display_notes_input if @state == :edit),
-        current_occurrence: @current_occurrence
+        current_occurrence: @current_occurrence,
+        presentation_mode: @presentation_mode
       }.compact
     end
 

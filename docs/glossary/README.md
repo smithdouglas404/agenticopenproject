@@ -93,6 +93,10 @@ A board in OpenProject is a view that allows you to see your work packages as ca
 
 ## C
 
+### Calculated value
+
+A Calculated value is a [project attribute](#project-attribute) in OpenProject and available as an [Enterprise add-on](#enterprise-add-on). It enables automatic computations based on formulas using numeric project attributes. This is very helpful for project scoring and evaluation. [Read more about calculated values in our system admin guide](../system-admin-guide/projects/project-attributes/#calculated-value-project-attribute-enterprise-add-on).
+
 ### CAPTCHA
 
 A CAPTCHA (Completely Automated Public Turing test to tell Computers and Humans Apart) is a security mechanism used on websites to determine whether the user is a human or a bot. OpenProject offers [reCAPTCHA](../system-admin-guide/authentication/recaptcha/) and [Cloudflare Turnstile](../system-admin-guide/authentication/recaptcha/#cloudflare-turnstile-configuration) that system administrators can configure for their instance.
@@ -494,6 +498,14 @@ The OpenProject [user guide](../user-guide/) is an in-depth guide of all feature
 Versions in OpenProject are defined as an attribute for [work packages](#work-package) or in the [Backlogs](#backlogs) module. Versions will be displayed in the [Roadmap](#roadmap). In the [Enterprise edition](#enterprise-add-on), you can also create a version [board](#board) to get an overview of the progress of your versions. [Read more about how to manage versions in OpenProject](../user-guide/projects/project-settings/versions/).
 
 ## W
+
+### Watcher
+
+In OpenProject, a watcher is a [user](#user) who receives [notifications](#notifications) about updates or changes to a specific [work package](#work-package), even if they are not the assignee or the accountable. Watching a work package helps users stay informed about its progress, comments, or status changes without actively participating in the task. Users can choose to watch a work package themselves or be added as watchers by other project members with sufficient permissions.
+
+### Weighted item list
+
+In OpenProject, a Weighted item list can be used both as a [custom field](#custom-field) and as a [project attribute](#project-attribute) and is available as an [Enterprise add-on](#enterprise-add-on). It allows adding items as a hierarchy, together with underlying numerical values. This can be helpful for project evaluation, but also used for other purposes.
 
 ### Widget
 

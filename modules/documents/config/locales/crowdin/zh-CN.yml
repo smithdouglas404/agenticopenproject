@@ -63,6 +63,7 @@ zh-CN:
   label_document_title: "标题"
   label_document_description: "描述"
   label_document_category: "类别"
+  label_document_type: "类型"
   permission_manage_documents: "管理文档"
   permission_view_documents: "查看文档"
   project_module_documents: "文档"

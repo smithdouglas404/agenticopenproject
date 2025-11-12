@@ -322,7 +322,7 @@ es:
     placeholder_version_select: "Primero debe seleccionar el paquete de trabajo o el proyecto"
     calculated_field_not_editable: "Atributo no editable. Este valor se calcula automáticamente."
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources. Existing resources will not require a value when being updated."
+      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
       is_for_all: "Marque el campo personalizado como disponible en todos los proyectos existentes y nuevos."
       multi_select: "Permite al usuario asignar varios valores a este campo personalizado."
@@ -1433,6 +1433,7 @@ es:
               minimum: "necesita incluir como mínimo un filtro de entidad de seguridad, contexto o identificador con el operador «=»."
         custom_field:
           at_least_one_custom_option: "Como mínimo, tiene que estar disponible una opción."
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             one: "%{name} se utiliza en el cálculo de atributos del proyecto %{links}."
             other: "%{name} se utiliza en los cálculos de atributos del proyecto: %{links}."
@@ -2577,7 +2578,7 @@ es:
       attribute_not_found: "atributo no encontrado: %{attribute}"
       model_not_found: "modelo de atributo no válido: %{model}"
       resource_not_found: "recurso no encontrado: %{resource}"
-      rich_text_unsupported: "Actualmente no se admite la incrustación de texto enriquecido en la exportación"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: h
       days: d
@@ -4224,7 +4225,7 @@ es:
   setting_self_registration_manual_activation: "Activación manual de la cuenta"
   setting_self_registration_manual_activation_caption: >
     Los usuarios pueden registrarse por su cuenta. Sus cuentas están en estado pendiente hasta que un administrador o un usuario con permiso global para crear o gestionar usuarios las activa.
-  setting_session_ttl: "Tiempo de expiración de sesión por inactividad"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Valor por debajo de 5 peticiones como desactivadas"
   setting_session_ttl_enabled: "La sesión expira"
   setting_start_of_week: "La semana empieza el"

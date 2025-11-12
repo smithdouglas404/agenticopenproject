@@ -322,7 +322,7 @@ ja:
     placeholder_version_select: "最初にワークパッケージまたはプロジェクトの選択が必要です"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources. Existing resources will not require a value when being updated."
+      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
       is_for_all: "既存および新規のすべてのプロジェクトで利用可能なカスタムフィールドとしてマークします。"
       multi_select: "ユーザーがこのカスタムフィールドに複数の値を割り当てることを許可します。"
@@ -1427,6 +1427,7 @@ ja:
               minimum: "プリンシパル、コンテキスト、または '= ' 演算子の id に少なくとも 1 つのフィルタを含める必要があります。"
         custom_field:
           at_least_one_custom_option: "少なくとも 1 つオプションが有効である必要があります。"
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             other: "%{name}はプロジェクト属性の計算に使用されます：%{links}。"
           attributes:
@@ -2534,7 +2535,7 @@ ja:
       attribute_not_found: "属性が見つかりません: %{attribute}"
       model_not_found: "不正な属性モデル: %{model}"
       resource_not_found: "リソースが見つかりません: %{resource}"
-      rich_text_unsupported: "リッチテキスト埋め込みは現在エクスポートではサポートされていません"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: 時間
       days: 日
@@ -4180,7 +4181,7 @@ ja:
   setting_self_registration_manual_activation: "手動アカウントの有効化"
   setting_self_registration_manual_activation_caption: >
     ユーザーは自分で登録することができます。ユーザーのアカウントは、管理者またはユーザーを作成または管理するグローバル権限を持つユーザーがアクティベートするまで保留状態になります。
-  setting_session_ttl: "無操作タイムアウト"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "5未満の値は無効にすると同様"
   setting_session_ttl_enabled: "セッションの有効期限"
   setting_start_of_week: "週の開始"

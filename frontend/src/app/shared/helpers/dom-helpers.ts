@@ -26,6 +26,8 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
+export const getNodeIndex = (element:Element) => Array.from(element.parentNode!.children).indexOf(element);
+
 /**
  * Toggles the visibility of an HTMLElement using `hidden` property.
  *
@@ -40,6 +42,10 @@ export function toggleElement(element:HTMLElement, value?:boolean) {
     element.hidden = !value;
   }
 };
+
+export const showElement = (element:HTMLElement) => toggleElement(element, true);
+
+export const hideElement = (element:HTMLElement) => toggleElement(element, false);
 
 /**
  * Toggles the visibility of an Element using a CSS class.
@@ -69,3 +75,71 @@ export function toggleElementByVisibility(element:HTMLElement, value?:boolean) {
   value ??= element.style.getPropertyValue('visibility') !== 'visible';
   element.style.setProperty('visibility', value ? 'visible' : 'hidden');
 };
+
+/**
+ * Mimics jQuery(':visible')
+ */
+export function isVisible(elem:HTMLElement|null) {
+  if (!elem) return false;
+
+  // Check if element is in the DOM
+  if (!document.contains(elem)) return false;
+
+  // Check if dimensions are visible
+  return !!(
+    elem.offsetWidth
+    || elem.offsetHeight
+    || elem.getClientRects().length
+  );
+}
+
+export function queryVisible<T extends HTMLElement = HTMLElement>(selector:string, node:Element|Document = document) {
+  return Array.from(node.querySelectorAll<T>(selector)).filter(isVisible);
+}
+
+const idSalt = Math.random().toString(36).slice(2, 6);
+let elementId = 0;
+
+/**
+ * Generates a unique and stable ID for use with `HTMLElement`.
+ *
+ * @param {string} [prefix='el'] - The prefix to use for the generated ID.
+ * @returns {string} The newly generated element ID.
+ */
+export function generateId(prefix = 'el'):string {
+  // eslint-disable-next-line no-plusplus
+  return `${prefix}-${idSalt}-${elementId++}`;
+}
+
+/**
+ * Ensures that the given HTMLElement has a unique and stable `id` attribute.
+ *
+ * - If the element already has an `id`, it is returned unchanged.
+ * - Otherwise, a new ID is generated using the provided prefix, a short random
+ *   session-specific salt, and an incrementing counter.
+ * - This guarantees uniqueness across multiple controller instances or scripts
+ *   on the same page, while remaining stable for the element’s lifetime.
+ *
+ * The generated ID is stable only within the current page session — it will be
+ * regenerated if the page is reloaded or the script is re-executed.
+ *
+ * @example
+ * ```ts
+ * const div = document.createElement('div');
+ * console.log(ensureId(div));       // "el-ab3f-0"
+ * console.log(ensureId(div));       // "el-ab3f-0" (same on subsequent calls)
+ *
+ * const span = document.createElement('span');
+ * console.log(ensureId(span, 'fx')); // "fx-ab3f-1"
+ * ```
+ *
+ * @param {HTMLElement} el - The element to ensure has an ID.
+ * @param {string} [prefix='el'] - The prefix to use for the generated ID.
+ * @returns {string} The existing or newly generated element ID.
+ */
+export function ensureId(el:HTMLElement, prefix = 'el'):string {
+  if (!el.id) {
+    el.id = generateId(prefix);
+  }
+  return el.id;
+}

@@ -43,9 +43,9 @@ import { CurrentUserService } from 'core-app/core/current-user/current-user.serv
   standalone: false,
 })
 export class WorkPackageCreateButtonComponent extends UntilDestroyedMixin implements OnInit, OnDestroy {
-  @Input('stateName$') stateName$:Observable<string>;
+  @Input() stateName$:Observable<string>;
 
-  @Input() routedFromAngular:boolean = true;
+  @Input() routedFromAngular = true;
 
   allowed:boolean;
 

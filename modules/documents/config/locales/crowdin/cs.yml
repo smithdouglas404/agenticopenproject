@@ -63,6 +63,7 @@ cs:
   label_document_title: "Název"
   label_document_description: "Popis"
   label_document_category: "Kategorie"
+  label_document_type: "Type"
   permission_manage_documents: "Spravovat dokumenty"
   permission_view_documents: "Zobrazit dokumenty"
   project_module_documents: "Dokumenty"

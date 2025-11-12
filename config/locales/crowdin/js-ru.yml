@@ -296,7 +296,7 @@ ru:
       warning: "Пожалуйста, не передайте этот URL другим пользователям. Любой пользователь с этой ссылкой сможет просматривать детали пакета работ без учетной записи или пароля."
       token_name_label: "Где вы будете использовать это?"
       token_name_placeholder: 'Введите имя, например «Телефон»'
-      token_name_description_text: 'Если вы подписаны на этот календарь с нескольких устройств, это имя поможет вам различать их в вашем списке <a href="my/access_token", target="_blank"> токенов доступа</a>.'
+      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
       copy_url_label: "Копировать URL"
       ical_generation_error_text: "Произошла ошибка при генерации URL-адреса календаря."
       success_message: 'URL-адрес "%{name}" был успешно скопирован в ваш буфер обмена. Вставьте его в свой клиент календаря, чтобы завершить подписку.'

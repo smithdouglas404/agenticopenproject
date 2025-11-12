@@ -369,8 +369,8 @@ class User < Principal
 
   # Does the backend storage allow this user to change their password?
   def change_password_allowed?
-    return false if uses_external_authentication? ||
-      OpenProject::Configuration.disable_password_login?
+    return false if OpenProject::Configuration.disable_password_login?
+    return false if uses_external_authentication? && current_password.nil?
 
     ldap_auth_source_id.blank?
   end

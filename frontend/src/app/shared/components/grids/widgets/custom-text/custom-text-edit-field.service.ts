@@ -155,7 +155,7 @@ export class CustomTextEditFieldService extends EditFieldHandler {
     };
 
     if (grid.prepareAttachment as { href?:string }) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       resourceSource._links.prepareAttachment = grid.prepareAttachment;
     }
 

@@ -144,7 +144,7 @@ export class WorkPackageListViewComponent extends UntilDestroyedMixin implements
 
         // The header of the table hides the scrolledIntoView element
         // so we scrollIntoView the previous element, if any
-        if (selectedRow && selectedRow.previousSibling) {
+        if (selectedRow?.previousSibling) {
           selectedRow.previousSibling.scrollIntoView({ block: 'start' });
         }
 

@@ -325,7 +325,7 @@ tr:
     placeholder_version_select: "Öncelikle iş paketi veya proje seçimi gereklidir"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources. Existing resources will not require a value when being updated."
+      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
       is_for_all: "Özel alanı tüm mevcut ve yeni projelerde kullanılabilir olarak işaretleyin."
       multi_select: "Kullanıcının bu özel alana birden fazla değer atamasına izin verir."
@@ -1436,6 +1436,7 @@ tr:
               minimum: "'=' işleci ile ilke, bağlam veya kimlik için en az bir filtre içermesi gerekir."
         custom_field:
           at_least_one_custom_option: "En az bir seçeneğin uygun olması gerekir."
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             one: "%{name} is used in project attribute calculation %{links}."
             other: "%{name} is used in project attribute calculations: %{links}."
@@ -2580,7 +2581,7 @@ tr:
       attribute_not_found: "öznitelik bulunamadı: %{attribute}"
       model_not_found: "geçersiz öznitelik modeli: %{model}"
       resource_not_found: "kaynak bulunamadı: %{resource}"
-      rich_text_unsupported: "Zengin metin yerleştirme şu anda dışa aktarmada desteklenmiyor"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: sa
       days: g
@@ -4226,7 +4227,7 @@ tr:
   setting_self_registration_manual_activation: "Elle hesap etkinleştirme"
   setting_self_registration_manual_activation_caption: >
     Kullanıcılar kendi başlarına kayıt olabilirler. Kullanıcı oluşturma veya yönetme genel iznine sahip bir yönetici veya kullanıcı onları etkinleştirene kadar hesapları beklemede durumundadır.
-  setting_session_ttl: "Hareketsizlikten sonra oturum son kullanma süresi"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "5'in altındaki değer, devre dışı gibi"
   setting_session_ttl_enabled: "Oturum sona eriyor"
   setting_start_of_week: "Hafta Başlangıcı"

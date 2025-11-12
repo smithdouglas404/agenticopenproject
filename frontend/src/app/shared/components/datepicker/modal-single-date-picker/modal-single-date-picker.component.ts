@@ -69,9 +69,9 @@ import {
   standalone: false,
 })
 export class OpModalSingleDatePickerComponent implements ControlValueAccessor, OnInit, AfterContentInit {
-  @Output('closed') closed = new EventEmitter();
+  @Output() closed = new EventEmitter();
 
-  @Output('valueChange') valueChange = new EventEmitter();
+  @Output() valueChange = new EventEmitter();
 
   private _value = '';
 

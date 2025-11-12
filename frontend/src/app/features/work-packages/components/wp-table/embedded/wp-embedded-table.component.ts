@@ -33,9 +33,9 @@ import { QueryRequestParams } from 'core-app/features/work-packages/components/w
   standalone: false,
 })
 export class WorkPackageEmbeddedTableComponent extends WorkPackageEmbeddedBaseComponent implements OnInit, AfterViewInit, OnDestroy {
-  @Input('queryId') public queryId?:string;
+  @Input() public queryId?:string;
 
-  @Input('queryProps') public queryProps:Partial<QueryRequestParams> = {};
+  @Input() public queryProps:Partial<QueryRequestParams> = {};
 
   @Input() public tableActions:OpTableActionFactory[] = [];
 

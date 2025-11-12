@@ -38,13 +38,13 @@ class DocumentForm < ApplicationForm
 
   form do |f|
     f.select_list(
-      name: :category_id,
-      label: I18n.t("label_document_category"),
+      name: :type_id,
+      label: I18n.t("label_document_type"),
       input_width: :medium,
       required: true
     ) do |select|
-      DocumentCategory.find_each do |category|
-        select.option(value: category.id, label: category.name)
+      DocumentType.find_each do |type|
+        select.option(value: type.id, label: type.name)
       end
     end
 
@@ -54,7 +54,7 @@ class DocumentForm < ApplicationForm
       required: true
     )
 
-    if OpenProject::FeatureDecisions.block_note_editor_active? && model.category&.name == "Experimental"
+    if OpenProject::FeatureDecisions.block_note_editor_active?
       f.block_note_editor(
         name: :content_binary,
         label: I18n.t("label_document_description"),

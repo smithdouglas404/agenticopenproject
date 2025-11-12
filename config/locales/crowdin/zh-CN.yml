@@ -321,7 +321,7 @@ zh-CN:
     placeholder_version_select: "需要先选择工作包或项目"
     calculated_field_not_editable: "不可编辑属性。此值是自动计算的。"
     instructions:
-      is_required: "将自定义字段标记为必填。这将在创建新资源或更新现有资源时，强制要求填写该字段。更新现有资源时，已存在的资源将无需填写该值。"
+      is_required: "将自定义字段标记为必填。这将在创建新资源时强制要求填写该字段。更新现有资源时，不会强制要求填写该值。"
       is_required_for_project: "勾选以启用此属性，并在所有项目中将其设为必填。该属性无法在单个项目中停用。更新现有项目时，已存在的项目将无需填写该值。"
       is_for_all: "将自定义字段标记为在所有现有项目和新项目中可用。"
       multi_select: "允许用户为该自定义字段赋予多个值。"
@@ -1424,6 +1424,7 @@ zh-CN:
               minimum: "需要包含至少一个采用“=”运算符的主体、上下文或 ID 筛选器。"
         custom_field:
           at_least_one_custom_option: "至少有需要一个可用选项。"
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             other: "%{name} 用于项目特性计算中：%{links}。"
           attributes:
@@ -2531,7 +2532,7 @@ zh-CN:
       attribute_not_found: "属性未找到： %{attribute}"
       model_not_found: "属性模型无效： %{model}"
       resource_not_found: "未找到资源： %{resource}"
-      rich_text_unsupported: "导出时不支持富文本嵌入功能"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: 时
       days: 天
@@ -4172,7 +4173,7 @@ zh-CN:
   setting_self_registration_manual_activation: "自动激活帐户"
   setting_self_registration_manual_activation_caption: >
     用户可以自行注册。 他们的帐户会处于待处理状态，直到管理员或拥有全局权限的用户激活它们为止。
-  setting_session_ttl: "在处于非活动状态后会话过期时间"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "当设置的值低于5时，其作用类似于禁用。"
   setting_session_ttl_enabled: "会话过期"
   setting_start_of_week: "一周起始日"

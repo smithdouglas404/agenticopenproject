@@ -66,7 +66,7 @@ export class WorkPackageWatchersTabComponent extends UntilDestroyedMixin impleme
 
   public availableWatchersPath:string;
 
-  private $element:JQuery;
+  private element:HTMLElement;
 
   public watching:any[] = [];
 
@@ -94,10 +94,9 @@ export class WorkPackageWatchersTabComponent extends UntilDestroyedMixin impleme
   }
 
   public ngOnInit() {
-    this.$element = jQuery(this.elementRef.nativeElement);
-
+    this.element = this.elementRef.nativeElement;
     const { workPackageId } = this.uiRouterGlobals.params as unknown as { workPackageId:string };
-    this.workPackageId = (this.workPackage.id as string) || workPackageId;
+    this.workPackageId = (this.workPackage.id!) || workPackageId;
 
     this
       .apiV3Service

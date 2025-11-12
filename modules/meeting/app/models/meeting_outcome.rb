@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 class MeetingOutcome < ApplicationRecord
-  belongs_to :meeting_agenda_item
+  belongs_to :meeting_agenda_item, touch: true
   belongs_to :work_package
   belongs_to :author, class_name: "User", optional: true
 

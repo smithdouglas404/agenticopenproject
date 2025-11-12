@@ -321,7 +321,7 @@ uk:
     placeholder_version_select: "Спочатку потрібно вибрати пакет робіт або проєкт"
     calculated_field_not_editable: "Атрибут не підлягає редагуванню. Його значення обчислюється автоматично."
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources. Existing resources will not require a value when being updated."
+      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
       is_for_all: "Позначте користувацьке поле як доступне в усіх наявних і нових проєктах."
       multi_select: "Дає змогу користувачу задавати кілька значень цього користувацького поля."
@@ -1446,6 +1446,7 @@ uk:
               minimum: "має містити принаймні один фільтр для адміністратора доступу, контексту або адміністратора з оператором «=»."
         custom_field:
           at_least_one_custom_option: "Необхідно мати принаймні один варіант."
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             one: "%{name} використовується при обчисленні атрибутів проєкту %{links}."
             few: "%{name} використовується при обчисленнях атрибутів проєкту: %{links}."
@@ -2664,7 +2665,7 @@ uk:
       attribute_not_found: "атрибут не знайдено: %{attribute}"
       model_not_found: "недійсна модель атрибута: %{model}"
       resource_not_found: "ресурс не знайдено: %{resource}"
-      rich_text_unsupported: "Вбудовування розширеного тексту наразі не підтримується у файлі експорту"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: г
       days: д
@@ -4314,7 +4315,7 @@ uk:
   setting_self_registration_manual_activation: "Ручна активація облікового запису"
   setting_self_registration_manual_activation_caption: >
     Користувачі можуть реєструватися самостійно. Їхні облікові записи активує адміністратор або користувач із глобальними дозволами на створення користувачів чи керування ними.
-  setting_session_ttl: "Сесії час після закінчення неактивність"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Значення нижче 5 працює як відключено"
   setting_session_ttl_enabled: "Сеанс закінчився"
   setting_start_of_week: "Тиждень починається"

@@ -32,7 +32,7 @@ import {
   Injector,
   Input,
   OnInit,
-  ViewChild,
+  ViewChild, OnDestroy,
 } from '@angular/core';
 import {
   StateService,
@@ -62,7 +62,7 @@ import { CurrentProjectService } from 'core-app/core/current-project/current-pro
 import { HalSource } from 'core-app/features/hal/interfaces';
 
 @Directive()
-export class WorkPackageCreateComponent extends UntilDestroyedMixin implements OnInit {
+export class WorkPackageCreateComponent extends UntilDestroyedMixin implements OnInit, OnDestroy {
   public successState:string = splitViewRoute(this.$state);
 
   public cancelState:string = this.$state?.current?.data?.baseRoute;
@@ -82,7 +82,7 @@ export class WorkPackageCreateComponent extends UntilDestroyedMixin implements O
     button_settings: this.I18n.t('js.button_settings'),
   };
 
-  @Input() public routedFromAngular:boolean = true;
+  @Input() public routedFromAngular = true;
 
   @ViewChild(EditFormComponent, { static: false }) protected editForm:EditFormComponent;
 

@@ -82,7 +82,7 @@ export class WorkPackageViewPageComponent extends PartitionedQuerySpacePageCompo
     },
     {
       component: WorkPackageFoldToggleButtonComponent,
-      show: () => !!(this.currentQuery && this.currentQuery.groupBy),
+      show: () => !!(this.currentQuery?.groupBy),
     },
     {
       component: WorkPackageDetailsViewButtonComponent,
@@ -115,7 +115,7 @@ export class WorkPackageViewPageComponent extends PartitionedQuerySpacePageCompo
     if (this.currentProject?.identifier) {
       items.push({
         href: this.pathHelperService.projectPath(this.currentProject.identifier),
-        text: this.currentProject.name as string,
+        text: this.currentProject.name!,
       });
     }
 
@@ -131,12 +131,12 @@ export class WorkPackageViewPageComponent extends PartitionedQuerySpacePageCompo
   breadcrumbModuleEntry():{ href:string, text:string } {
     if (this.isGantt) {
       return {
-        href: this.pathHelperService.ganttChartsPath(this.currentProject.identifier as string),
+        href: this.pathHelperService.ganttChartsPath(this.currentProject.identifier),
         text: this.I18n.t('js.work_packages.label_gantt_chart_plural'),
       };
     }
     return {
-      href: this.pathHelperService.workPackagesPath(this.currentProject.identifier as string),
+      href: this.pathHelperService.workPackagesPath(this.currentProject.identifier),
       text: this.I18n.t('js.label_work_package_plural'),
     };
   }

@@ -112,11 +112,11 @@ export abstract class WidgetTimeEntriesListComponent extends AbstractWidgetCompo
   }
 
   public entityName(entry:TimeEntryResource):string {
-    return `#${entry.entity.id as string}: ${entry.entity.name}`;
+    return `#${entry.entity.id!}: ${entry.entity.name}`;
   }
 
   public entityId(entry:TimeEntryResource):string {
-    return entry.entity.id as string;
+    return entry.entity.id!;
   }
 
   public comment(entry:TimeEntryResource):string | undefined {
@@ -143,7 +143,7 @@ export abstract class WidgetTimeEntriesListComponent extends AbstractWidgetCompo
 
   public editTimeEntry(entry:TimeEntryResource):void {
     void this.turboRequests.request(
-      `${this.pathHelper.timeEntryEditDialog(entry.id as string)}`,
+      `${this.pathHelper.timeEntryEditDialog(entry.id!)}`,
       { method: 'GET' },
     );
   }
@@ -175,11 +175,11 @@ export abstract class WidgetTimeEntriesListComponent extends AbstractWidgetCompo
       });
   }
 
-  protected abstract dmFilters():Array<[string, FilterOperator, [string]]>;
+  protected abstract dmFilters():[string, FilterOperator, [string]][];
 
   private buildEntries(entries:TimeEntryResource[]) {
     this.entries = entries;
-    const sumsByDateSpent:{ [key:string]:number } = {};
+    const sumsByDateSpent:Record<string, number> = {};
 
     entries.forEach((entry) => {
       const date = entry.spentOn;

@@ -323,7 +323,7 @@ zh-TW:
     placeholder_version_select: "需要先選擇工作套件或專案"
     calculated_field_not_editable: "不可編輯屬性。此值會自動計算。"
     instructions:
-      is_required: "將自訂欄位標記為必填。這將使您在建立新資源或更新現有資源時，必須填寫該欄位。更新現有資源時則不需要填寫值。"
+      is_required: "將自訂欄位標記為必填。這將使您在建立新資源時必須填寫該欄位。更新現有資源時則不需要填寫值。"
       is_required_for_project: "勾選以啟用此屬性，並使其成為所有專案的必要屬性。個別專案無法停用。現有專案更新時將不需要此值。"
       is_for_all: "將客製欄位標記為「所有現有專案」和「新專案」中可用。"
       multi_select: "允許使用者為此自訂欄位指定多個值。"
@@ -1424,6 +1424,7 @@ zh-TW:
               minimum: "需要為主體、上下文或 id 至少包含一個帶有“=”運算符的過濾器"
         custom_field:
           at_least_one_custom_option: "需要至少一個選項可用。"
+          previous_custom_field_recalculation_unprocessed: "尚未套用此自訂欄位先前變更的重新計算，請過幾分鐘再試一次。"
           referenced_in_other_fields_html:
             other: "%{name} 用於專案屬性計算： %{links}。"
           attributes:
@@ -2531,7 +2532,7 @@ zh-TW:
       attribute_not_found: "屬性未找到： %{attribute}"
       model_not_found: "屬性模型無效： %{model}"
       resource_not_found: "未找到資源： %{resource}"
-      rich_text_unsupported: "導出時不支持富文本嵌入功能"
+      nested_rich_text_unsupported: "目前匯出功能不支援巢狀豐富文字內嵌"
     units:
       hours: 小時
       days: 日
@@ -4175,7 +4176,7 @@ zh-TW:
   setting_self_registration_manual_activation: "手動啟用帳號"
   setting_self_registration_manual_activation_caption: >
     帳號註冊後為待審核，需由管理員或有權限的使用者進行啟用，方可生效。
-  setting_session_ttl: "非活躍使用後連線失效時間"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "低於5個工作同於停用"
   setting_session_ttl_enabled: "連線逾時"
   setting_start_of_week: "一週起始於"

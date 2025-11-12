@@ -77,17 +77,17 @@ module Storages
                 :non_provisioned_user,
                 :provisioned_user_provider,
                 :provider_capabilities,
+                :offline_access,
                 :token_negotiable,
-                :user_bound_request,
-                :offline_access
+                :user_bound_request
               )
 
               non_provisioned_user
               non_oidc_provisioned_user
               provider_capabilities
+              offline_access
               token_negotiable
               user_bound_request
-              offline_access
             end
 
             def non_provisioned_user
@@ -136,7 +136,7 @@ module Storages
             end
 
             def offline_access
-              if @user.authentication_provider.scopes.include?(:offline_access)
+              if @user.authentication_provider.scopes.include?("offline_access")
                 pass_check(:offline_access)
               else
                 warn_check(:offline_access, :offline_access_scope_missing)

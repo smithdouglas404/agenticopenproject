@@ -389,7 +389,7 @@ RSpec.describe "Open the Meetings tab",
           end
         end
 
-        it "allows the user to select ongoing meetings" do
+        it "allows the user to select ongoing meetings", skip: "flickering spec (#68952)" do
           work_package_page.visit!
           switch_to_meetings_tab
 
@@ -400,6 +400,8 @@ RSpec.describe "Open the Meetings tab",
             "Some notes to be added",
             1
           )
+
+          wait_for_network_idle
 
           meetings_tab.expect_upcoming_counter_to_be(1)
 

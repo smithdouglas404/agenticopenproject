@@ -66,7 +66,7 @@ import { TabComponent } from 'core-app/features/work-packages/components/wp-tabs
   standalone: false,
 })
 export class WorkPackageSplitViewComponent extends WorkPackageSingleViewBase implements OnInit {
-  hasState:boolean = !!this.$state.current;
+  hasState = !!this.$state.current;
   /** Reference to the base route e.g., work-packages.partitioned.list or bim.partitioned.split */
   private baseRoute:string = this.$state.current?.data?.baseRoute as string;
 
@@ -116,7 +116,7 @@ export class WorkPackageSplitViewComponent extends WorkPackageSingleViewBase imp
         const idSame = wpId.toString() === newId.toString();
         if (!idSame && this.$state.includes(`${this.baseRoute}.details`)) {
           this.$state.go(
-            (this.$state.current.name as string),
+            (this.$state.current.name!),
             { workPackageId: newId, focus: false },
           );
         }

@@ -35,7 +35,7 @@ export class InAppNotificationEntryComponent implements OnInit {
   loading$ = this.storeService.query.selectLoading();
 
   // The translated reason, if available
-  translatedReasons:{ [reason:string]:number };
+  translatedReasons:Record<string, number>;
 
   project?:{ href:string, title:string, showUrl:string };
 
@@ -126,7 +126,7 @@ export class InAppNotificationEntryComponent implements OnInit {
     e.stopPropagation();
   }
 
-  projectClicked(event:MouseEvent):void { // eslint-disable-line class-methods-use-this
+  projectClicked(event:MouseEvent):void {
     event.stopPropagation();
   }
 
@@ -140,7 +140,7 @@ export class InAppNotificationEntryComponent implements OnInit {
   }
 
   private buildTranslatedReason() {
-    const reasons:{ [reason:string]:number } = {};
+    const reasons:Record<string, number> = {};
 
     this
       .aggregatedNotifications

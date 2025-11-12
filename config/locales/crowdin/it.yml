@@ -322,7 +322,7 @@ it:
     placeholder_version_select: "Prima è necessario selezionare la macro-attività o il progetto"
     calculated_field_not_editable: "Attributo non modificabile. Questo valore viene calcolato automaticamente."
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources. Existing resources will not require a value when being updated."
+      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
       is_for_all: "Contrassegna il campo personalizzato come disponibile in tutti i progetti esistenti e nuovi."
       multi_select: "Consente all'utente di assegnare più valori a questo campo personalizzato."
@@ -1433,6 +1433,7 @@ it:
               minimum: "necessità di includere almeno un filtro per il principale, per il contesto o per l'id con l'operatore '='."
         custom_field:
           at_least_one_custom_option: "Deve essere disponibile almeno un'opzione."
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             one: "%{name} viene utilizzato nel calcolo degli attributi del progetto %{links}."
             other: "%{name} viene utilizzato nei calcoli degli attributi del progetto: %{links}."
@@ -2577,7 +2578,7 @@ it:
       attribute_not_found: "attributo non trovato: %{attribute}"
       model_not_found: "modello di attributo non valido: %{model}"
       resource_not_found: "risorsa non trovata: %{resource}"
-      rich_text_unsupported: "L'incorporazione di Rich text attualmente non è supportata nell'esportazione"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: o
       days: g
@@ -4225,7 +4226,7 @@ it:
   setting_self_registration_manual_activation: "Attivazione account manuale"
   setting_self_registration_manual_activation_caption: >
     Gli utenti possono registrarsi autonomamente. I loro account rimangono in sospeso finché un amministratore o un utente con autorizzazione globale per creare o gestire utenti non li attiva.
-  setting_session_ttl: "Intervallo di tempo al termine del quale scade la sessione per inattività"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Per valori inferiori a 5 è pari a disabilitato"
   setting_session_ttl_enabled: "La sessione scade"
   setting_start_of_week: "La settimana inizia da"

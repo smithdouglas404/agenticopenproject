@@ -30,8 +30,6 @@
 
 require_relative "../spec_helper"
 
-RSpec::Matchers.define_negated_matcher :not_change, :change
-
 RSpec.describe MeetingAgendaItem do
   let(:meeting_attributes) { {} }
   let(:meeting) { build_stubbed(:meeting, **meeting_attributes) }

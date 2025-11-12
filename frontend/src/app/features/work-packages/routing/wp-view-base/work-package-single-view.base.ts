@@ -71,11 +71,11 @@ import { StateService } from '@uirouter/angular';
 
 @Directive()
 export abstract class WorkPackageSingleViewBase extends UntilDestroyedMixin {
-  @Input() routedFromAngular:boolean = true;
+  @Input() routedFromAngular = true;
 
   @Input() workPackageId:string;
 
-  @Input() activeTab:string = 'activity';
+  @Input() activeTab = 'activity';
 
   @InjectField() states:States;
 
@@ -184,7 +184,7 @@ export abstract class WorkPackageSingleViewBase extends UntilDestroyedMixin {
     // lazy load the work package's project, needed when initializing
     // the work package resource from split view.
     this.projectsResourceService
-      .requireEntity((this.workPackage.$links.project as HalResource).href as string)
+      .requireEntity((this.workPackage.$links.project as HalResource).href!)
       .subscribe(
         () => {},
         (error:HttpErrorResponse) => {
@@ -193,7 +193,7 @@ export abstract class WorkPackageSingleViewBase extends UntilDestroyedMixin {
       );
 
     this.displayNotificationsButton$ = this.storeService.hasNotifications$;
-    this.storeService.setFilters(this.workPackage.id as string);
+    this.storeService.setFilters(this.workPackage.id!);
 
     // Set authorisation data
     this.authorisationService.initModelAuth('work_package', this.workPackage.$links);
@@ -203,7 +203,7 @@ export abstract class WorkPackageSingleViewBase extends UntilDestroyedMixin {
 
     // Fetch attachments of current work package
     if (this.workPackage.$links.attachments) {
-      this.attachmentsResourceService.fetchCollection(this.workPackage.$links.attachments.href as string).subscribe();
+      this.attachmentsResourceService.fetchCollection(this.workPackage.$links.attachments.href!).subscribe();
     }
 
     // Listen to tab changes to update the tab label

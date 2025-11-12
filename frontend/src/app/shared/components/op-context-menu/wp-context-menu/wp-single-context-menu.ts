@@ -51,6 +51,8 @@ export class WorkPackageSingleContextMenuDirective extends OpContextMenuTrigger 
 
   private closeDialogHandler:EventListener = this.handleTimeEntryDialogClose.bind(this);
 
+  override readonly placement = 'bottom-end';
+
   ngAfterViewInit():void {
     super.ngAfterViewInit();
     document.addEventListener('dialog:close', this.closeDialogHandler);
@@ -64,7 +66,7 @@ export class WorkPackageSingleContextMenuDirective extends OpContextMenuTrigger 
     document.removeEventListener('dialog:close', this.closeDialogHandler);
   }
 
-  protected open(evt:JQuery.TriggeredEvent) {
+  protected open(evt:Event) {
     this.workPackage.project.$load().then(() => {
       this.authorisationService.initModelAuth('work_package', this.workPackage.$links);
 
@@ -81,7 +83,6 @@ export class WorkPackageSingleContextMenuDirective extends OpContextMenuTrigger 
 
     switch (key) {
       case 'copy_to_other_project':
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         window.location.href = `${this.PathHelper.staticBase}/work_packages/move/new?copy=true&ids[]=${this.workPackage.id!}`;
         break;
       case 'start_timer':
@@ -99,10 +100,10 @@ export class WorkPackageSingleContextMenuDirective extends OpContextMenuTrigger 
         this.opModalService.show(WpDestroyModalComponent, this.injector, { workPackages: [this.workPackage] });
         break;
       case 'log_time':
-        void this.turboRequests.request(this.PathHelper.timeEntryWorkPackageDialog(this.workPackage.id as string), { method: 'GET' });
+        void this.turboRequests.request(this.PathHelper.timeEntryWorkPackageDialog(this.workPackage.id!), { method: 'GET' });
         break;
       case 'generate_pdf':
-        void this.turboRequests.requestStream(link as string);
+        void this.turboRequests.requestStream(link!);
         break;
       case 'copy_link_to_clipboard': {
         const url = new URL(String(link), window.location.origin);
@@ -113,23 +114,6 @@ export class WorkPackageSingleContextMenuDirective extends OpContextMenuTrigger 
         window.location.href = link!;
         break;
     }
-  }
-
-  /**
-   * Positioning args for jquery-ui position.
-   *
-   * @param {Event} openerEvent
-   */
-  public positionArgs(evt:JQuery.TriggeredEvent) {
-    const additionalPositionArgs = {
-      my: 'right top',
-      at: 'right bottom',
-    };
-
-    const position = super.positionArgs(evt);
-    _.assign(position, additionalPositionArgs);
-
-    return position;
   }
 
   private activeForWorkPackage(entry:TimeEntryResource|null):boolean {
@@ -196,9 +180,9 @@ export class WorkPackageSingleContextMenuDirective extends OpContextMenuTrigger 
         hidden: action.hidden === true,
         linkText: I18n.t(`js.button_${key}`),
         href: action.link,
-        icon: action.icon ?? `icon-${key}`,
-        onClick: ($event:JQuery.TriggeredEvent) => {
-          if (action.link && isClickedWithModifier($event)) {
+        icon: action.icon || `icon-${key}`,
+        onClick: (event:MouseEvent) => {
+          if (action.link && isClickedWithModifier(event)) {
             return false;
           }
 

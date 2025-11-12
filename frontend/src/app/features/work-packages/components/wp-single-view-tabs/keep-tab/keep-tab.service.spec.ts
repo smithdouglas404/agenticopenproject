@@ -104,6 +104,7 @@ describe('keepTab service', () => {
       };
 
       keepTab.observable.subscribe(cb);
+
       expect(cb).toHaveBeenCalledWith(expected);
     });
 
@@ -159,6 +160,7 @@ describe('keepTab service', () => {
       };
 
       keepTab.observable.subscribe(cb);
+
       expect(cb).toHaveBeenCalledWith(expected);
 
       keepTab.updateTabs();

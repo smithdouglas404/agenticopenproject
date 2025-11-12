@@ -321,7 +321,7 @@ de:
     placeholder_version_select: "Zunächst muss ein Arbeitspaket oder ein Projekt ausgewählt werden"
     calculated_field_not_editable: "Nicht editierbares Attribut. Dieser Wert wird automatisch berechnet."
     instructions:
-      is_required: "Markieren Sie das benutzerdefinierte Feld als erforderlich. Dadurch wird das Ausfüllen des Feldes bei der Erstellung neuer oder der Aktualisierung bestehender Felder obligatorisch. Bestehende Felder müssen bei einer Aktualisierung nicht ausgefüllt werden."
+      is_required: "Markieren Sie das benutzerdefinierte Feld als erforderlich. Dadurch wird das Ausfüllen des Feldes bei der Erstellung neuer Felder obligatorisch. Bei der Aktualisierung bestehender Felder wird kein Wert benötigt."
       is_required_for_project: "Aktivieren Sie dieses Attribut und machen Sie es in allen Projekten erforderlich. Es kann für einzelne Projekte nicht deaktiviert werden. Bestehende Projekte benötigen keinen Wert, wenn sie aktualisiert werden."
       is_for_all: "Markieren Sie das benutzerdefinierte Feld als verfügbar in allen bestehenden und neuen Projekten."
       multi_select: "Ermöglicht dem Benutzer, diesem benutzerdefinierten Feld mehrere Werte zuzuweisen."
@@ -1428,6 +1428,7 @@ de:
               minimum: "müssen mindestens einen Filter für Principal, Kontext oder ID mit dem '=' Operator enthalten."
         custom_field:
           at_least_one_custom_option: "Mindestens ein Wert muss verfügbar sein."
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             one: "%{name} wird bei der Berechnung eines Projektattributs verwendet %{links}."
             other: "%{name} wird bei der Berechnung von Projektattribute verwendet %{links}."
@@ -2572,7 +2573,7 @@ de:
       attribute_not_found: "Attribut nicht gefunden: %{attribute}"
       model_not_found: "ungültiges Attributmodell: %{model}"
       resource_not_found: "Ressource nicht gefunden: %{resource}"
-      rich_text_unsupported: "Rich-Text-Einbettung wird derzeit beim Export nicht unterstützt"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: h
       days: d
@@ -4220,7 +4221,7 @@ de:
   setting_self_registration_manual_activation: "Manuelle Kontoaktivierung"
   setting_self_registration_manual_activation_caption: >
     Benutzer können sich selbst anmelden. Ihre Konten sind noch nicht zugänglich, bis ein Administrator oder Benutzer mit der globalen Berechtigung zur Erstellung oder Verwaltung von Benutzern diese aktiviert.
-  setting_session_ttl: "Session-Ablaufzeit nach Inaktivität"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Wert kleiner 5 wirkt wie ausgeschaltet"
   setting_session_ttl_enabled: "Session läuft ab"
   setting_start_of_week: "Wochenanfang am"

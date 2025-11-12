@@ -63,6 +63,7 @@ describe('WpTabsComponent', () => {
 
   it('displays the visible tab', fakeAsync(() => {
     const tabLink:HTMLElement = fixture.debugElement.query(By.css('[data-qa-tab-id="displayable-test-tab"]')).nativeElement;
+
     expect(tabLink.innerText).toContain('Displayable TestTab');
   }));
 });

@@ -324,7 +324,7 @@ cs:
     placeholder_version_select: "Nejprve je nutné vybrat pracovní balíček nebo projekt"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources. Existing resources will not require a value when being updated."
+      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
       is_for_all: "Označit vlastní pole jako dostupné ve všech existujících a nových projektech."
       multi_select: "Umožňuje uživateli přiřadit tomuto vlastnímu poli více hodnot."
@@ -1452,6 +1452,7 @@ cs:
               minimum: "musí obsahovat alespoň jeden filtr pro hlavní, kontext nebo id operátora „=“."
         custom_field:
           at_least_one_custom_option: "Alespoň jedna možnost musí být k dispozici."
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             one: "%{name} is used in project attribute calculation %{links}."
             few: "%{name} is used in project attribute calculations: %{links}."
@@ -2670,7 +2671,7 @@ cs:
       attribute_not_found: "atribut nenalezen: %{attribute}"
       model_not_found: "neplatný atributový model: %{model}"
       resource_not_found: "zdroj nebyl nalezen: %{resource}"
-      rich_text_unsupported: "Vložení Rich textu v současné době není při exportu podporováno"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: h
       days: d
@@ -4321,7 +4322,7 @@ cs:
   setting_self_registration_manual_activation: "Manual account activation"
   setting_self_registration_manual_activation_caption: >
     Users can register on their own. Their accounts are in a pending state until an administrator or user with the global permission to create or manage users activates them.
-  setting_session_ttl: "Čas vypršení sezení při neaktivitě"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Hodnota menší než 5 funguje jako zakázáno"
   setting_session_ttl_enabled: "Platnost relace vyprší"
   setting_start_of_week: "Začátek týdne"

@@ -173,7 +173,7 @@ export class OpAttachmentListItemComponent extends UntilDestroyedMixin implement
 
   private get isImage():boolean {
     const ext = this.attachment.fileName.split('.').pop() || '';
-    return OpAttachmentListItemComponent.imageFileExtensions.indexOf(ext.toLowerCase()) > -1;
+    return OpAttachmentListItemComponent.imageFileExtensions.includes(ext.toLowerCase());
   }
 
   public confirmRemoveAttachment():void {

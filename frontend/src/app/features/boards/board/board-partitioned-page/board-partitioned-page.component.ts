@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Injector,
+  Injector, OnInit, OnDestroy,
 } from '@angular/core';
 import {
   DynamicComponentDefinition,
@@ -56,7 +56,7 @@ export function boardCardViewHandlerFactory(injector:Injector) {
   ],
   standalone: false,
 })
-export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
+export class BoardPartitionedPageComponent extends UntilDestroyedMixin implements OnInit, OnDestroy {
   text = {
     button_more: this.I18n.t('js.button_more'),
     delete: this.I18n.t('js.button_delete'),
@@ -198,8 +198,8 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
 
   breadcrumbItems() {
     return [
-      { href: this.pathHelperService.projectPath(this.currentProject.identifier as string), text: (this.currentProject.name) },
-      { href: this.pathHelperService.boardsPath(this.currentProject.identifier as string), text: this.I18n.t('js.label_board_plural') },
+      { href: this.pathHelperService.projectPath(this.currentProject.identifier!), text: (this.currentProject.name) },
+      { href: this.pathHelperService.boardsPath(this.currentProject.identifier), text: this.I18n.t('js.label_board_plural') },
       this.selectedTitle?? '',
     ];
   }
@@ -252,7 +252,7 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin {
    * @param state The current or entering state
    */
   protected setPartition(state:Ng2StateDeclaration) {
-    this.currentPartition = (state.data && state.data.partition) ? state.data.partition : '-split';
+    this.currentPartition = (state.data?.partition) ? state.data.partition : '-split';
   }
 
   private reloadSidemenu():void {

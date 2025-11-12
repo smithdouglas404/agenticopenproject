@@ -41,7 +41,7 @@ export class UiStateLinkBuilder {
           workPackageId,
           tab,
         },
-      )
+      );
     }
 
     a.href = href;

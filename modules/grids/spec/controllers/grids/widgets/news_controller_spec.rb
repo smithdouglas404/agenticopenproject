@@ -57,5 +57,17 @@ RSpec.describe Grids::Widgets::NewsController do
         expect(response).to render_template "show"
       end
     end
+
+    context "with project and news module disabled" do
+      before do
+        project.enabled_module_names -= %w[news]
+        get :show, params: { project_id: project }
+      end
+
+      it "renders show template", :aggregate_failures do
+        expect(response).to be_successful
+        expect(response).to render_template "show"
+      end
+    end
   end
 end

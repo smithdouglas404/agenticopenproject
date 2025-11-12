@@ -136,7 +136,7 @@ import {
 } from '@openproject/octicons-angular';
 
 export type TeamPlannerViewOptionKey = 'resourceTimelineWorkWeek'|'resourceTimelineWeek'|'resourceTimelineTwoWeeks'|'resourceTimelineFourWeeks'|'resourceTimelineEightWeeks';
-export type TeamPlannerViewOptions = { [K in TeamPlannerViewOptionKey]:RawOptionsFromRefiners<Required<ViewOptionRefiners>> };
+export type TeamPlannerViewOptions = Record<TeamPlannerViewOptionKey, RawOptionsFromRefiners<Required<ViewOptionRefiners>>>;
 
 @Component({
   selector: 'op-team-planner',
@@ -163,7 +163,7 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
 
   calendarOptions$ = new Subject<CalendarOptions>();
 
-  draggingItem$:BehaviorSubject<EventDragStartArg|undefined> = new BehaviorSubject(undefined);
+  private draggingItem$ = new BehaviorSubject<EventDragStartArg|undefined>(undefined);
 
   globalDraggingItem$ = combineLatest([
     this.draggingItem$,
@@ -175,7 +175,7 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
       }
 
       if (draggingItem !== undefined) {
-        return (draggingItem.event.extendedProps.workPackage as WorkPackageResource).id as string;
+        return (draggingItem.event.extendedProps.workPackage as WorkPackageResource).id!;
       }
 
       return undefined;
@@ -189,7 +189,7 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
     .pipe(
       filter((dragging) => !!dragging),
       map((dragging) => {
-        const workPackage = (dragging as EventDragStartArg).event.extendedProps.workPackage as WorkPackageResource;
+        const workPackage = (dragging).event.extendedProps.workPackage as WorkPackageResource;
         const dateEditable = this.workPackagesCalendar.dateEditable(workPackage);
         const resourceEditable = this.eventResourceEditable(workPackage);
         return dateEditable && resourceEditable;
@@ -231,16 +231,16 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
         ];
         const assigneeFilter = queryFilters.find((queryFilter) => queryFilter.id === 'assignee');
         if (assigneeFilter) {
-          const values = (assigneeFilter.values as HalResource[]).map((el:HalResource) => el.id as string);
+          const values = (assigneeFilter.values as HalResource[]).map((el:HalResource) => el.id!);
           filters.push(['principal', '=', values]);
         }
 
         const projectFilter = queryFilters.find((queryFilter) => queryFilter.id === 'project');
         if (projectFilter) {
-          const values = (projectFilter.values as HalResource[]).map((el:HalResource) => `p${el.id as string}`);
+          const values = (projectFilter.values as HalResource[]).map((el:HalResource) => `p${el.id!}`);
           filters.push(['context', '=', values]);
         } else {
-          filters.push(['context', '=', [`p${this.currentProject.id as string}`]]);
+          filters.push(['context', '=', [`p${this.currentProject.id!}`]]);
         }
 
         return this
@@ -251,7 +251,7 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
         ._embedded
         .elements
         .reduce(
-          (list:{ [projectId:string]:string[] }, cap:ICapability) => {
+          (list:Record<string, string[]>, cap:ICapability) => {
             const project = cap._links.context.href;
             const principal = cap._links.principal.href;
             const cur = list[project] || [];
@@ -262,7 +262,7 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
           },
           {},
         )),
-      startWith({} as { [projectId:string]:string[] }),
+      startWith({} as Record<string, string[]>),
       shareReplay(1),
     );
 
@@ -614,7 +614,7 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
                 return;
               }
               await this.updateEvent(dropInfo, true);
-              this.actions$.dispatch(teamPlannerEventAdded({ workPackage: wp.id as string }));
+              this.actions$.dispatch(teamPlannerEventAdded({ workPackage: wp.id! }));
             },
           } as CalendarOptions),
         );
@@ -691,7 +691,6 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
     this.showAddAssignee$.next(false);
 
     const modifyFilter = (assigneeFilter:QueryFilterInstanceResource) => {
-      // eslint-disable-next-line no-param-reassign
       assigneeFilter.values = [
         ...assigneeFilter.values as HalResource[],
         principal,
@@ -712,7 +711,6 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
       this.wpTableFilters.remove('assignee');
     } else {
       this.wpTableFilters.modify('assignee', (assigneeFilter:QueryFilterInstanceResource) => {
-        // eslint-disable-next-line no-param-reassign
         assigneeFilter.values = (assigneeFilter.values as HalResource[])
           .filter((filterValue) => filterValue.href !== href);
       });
@@ -773,12 +771,12 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
 
     await this.saveChangeset(changeset);
 
-    this.actions$.dispatch(teamPlannerEventRemoved({ workPackage: workPackage.id as string }));
+    this.actions$.dispatch(teamPlannerEventRemoved({ workPackage: workPackage.id! }));
   }
 
   private mapToCalendarEvents(
     workPackages:WorkPackageResource[],
-    projectAssignables:{ [projectId:string]:string[] },
+    projectAssignables:Record<string, string[]>,
   ):EventInput[] {
     return workPackages
       .map((workPackage:WorkPackageResource):EventInput|undefined => {
@@ -791,7 +789,7 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
         const resourceEditable = this.eventResourceEditable(workPackage);
 
         return {
-          id: `${workPackage.href as string}-${assignee}`,
+          id: `${workPackage.href!}-${assignee}`,
           resourceId: assignee,
           editable: durationEditable || resourceEditable,
           durationEditable,
@@ -806,7 +804,7 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
           workPackage,
         };
       })
-      .filter((event) => !!event) as EventInput[];
+      .filter((event) => !!event);
   }
 
   private handleDateClicked(info:DateSelectArg) {
@@ -905,9 +903,9 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
   // The WP then moves back to the original date when the calendar re-draws again. Also not optimal..
   private eventConstraints(
     wp:WorkPackageResource,
-    projectAssignables:{ [projectId:string]:string[] },
-  ):{ [key:string]:string|string[] } {
-    const constraints:{ [key:string]:string|string[] } = {};
+    projectAssignables:Record<string, string[]>,
+  ):Record<string, string|string[]> {
+    const constraints:Record<string, string|string[]> = {};
 
     if (!this.workPackagesCalendar.eventDurationEditable(wp) && !wp.date) {
       constraints.start = this.wpStartDate(wp);
@@ -919,7 +917,7 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
       return constraints;
     }
 
-    const assignables = projectAssignables[(wp.project as HalResource).href as string];
+    const assignables = projectAssignables[(wp.project as HalResource).href!];
     if (assignables) {
       constraints.resourceIds = [...assignables];
     }
@@ -937,7 +935,7 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
   }
 
   private wpAssignee(wp:WorkPackageResource):string {
-    return (wp.assignee as HalResource).href as string;
+    return (wp.assignee as HalResource).href!;
   }
 
   private toggleAddExistingPane():void {
@@ -965,7 +963,7 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
       .pipe(
         filter((el) => Object.keys(el).length > 0),
         take(1),
-        map((projectAssignables) => projectAssignables[(wp.project as HalResource).href as string]),
+        map((projectAssignables) => projectAssignables[(wp.project as HalResource).href!]),
         withLatestFrom(this.principals$),
       )
       .subscribe(([assignable, principals]) => {
@@ -981,7 +979,7 @@ export class TeamPlannerComponent extends UntilDestroyedMixin implements OnInit,
         principals.forEach((principal) => {
           const resourceId = principal._links.self.href;
 
-          if (!assignable || !assignable.includes(resourceId)) {
+          if (!assignable?.includes(resourceId)) {
             api.addEvent({ ...eventBase, resourceId }, 'background');
           }
         });

@@ -42,7 +42,7 @@ import { CurrentProjectService } from 'core-app/core/current-project/current-pro
 export class KeepTabService {
   protected currentTab = 'overview';
 
-  protected subject = new ReplaySubject<{ [tab:string]:string; }>(1);
+  protected subject = new ReplaySubject<Record<string, string>>(1);
 
   constructor(
     protected $state:StateService,

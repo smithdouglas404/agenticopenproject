@@ -323,7 +323,7 @@ ru:
     placeholder_version_select: "Сначала необходимо выбрать пакет работ или проект"
     calculated_field_not_editable: "Не редактируемый атрибут. Это значение рассчитывается автоматически."
     instructions:
-      is_required: "Отметьте настраиваемое поле как обязательное. Это сделает обязательным заполнение поля при создании новых или обновлении существующих ресурсов. Существующие ресурсы не будут требовать ввода значения при обновлении."
+      is_required: "Отметьте настраиваемое поле как обязательное. Это сделает обязательным его заполнение при создании новых ресурсов. Существующие ресурсы не будут требовать ввода значения при обновлении."
       is_required_for_project: "Отметьте, чтобы включить этот атрибут и сделать его необходимым во всех проектах. Это не может быть отменено для отдельных проектов. Существующие проекты не будут требовать этого значения при обновлении."
       is_for_all: "Отметьте пользовательское поле как доступное во всех существующих и новых проектах."
       multi_select: "Позволяет пользователю присвоить несколько значений этому пользовательскому полю."
@@ -968,15 +968,15 @@ ru:
       parent: "Родитель"
       parent_description: "Делает связанный с этим пакет работ родителем (потомка) пакета работ"
       label_closest: "Ближайший"
-      label_blocks_singular: "заблокирован"
-      label_blocks_plural: "заблокированы"
-      blocks_description: "Связанный пакет работ не может быть закрыт до тех пор, пока не будет закрыт этот пакет"
-      label_blocked_singular: "блокирует"
-      label_blocked_plural: "блокируют"
-      label_blocked_by_singular: "блокируют"
-      label_blocked__by_plural: "блокируют"
-      blocked_description: "Связанный пакет работ не может быть закрыт до тех пор, пока не будет закрыт связанный пакет"
-      blocked_by_description: "Связанный пакет работ не может быть закрыт до тех пор, пока не будет закрыт связанный пакет"
+      label_blocks_singular: "заблокированный"
+      label_blocks_plural: "заблокированые"
+      blocks_description: "Пакет работ, который вы укажете, нельзя будет закрыть, пока не будет закрыт этот пакет работ"
+      label_blocked_singular: "блокирующий"
+      label_blocked_plural: "блокирующие"
+      label_blocked_by_singular: "блокирущий"
+      label_blocked__by_plural: "блокирующие"
+      blocked_description: "Этот пакет работ нельзя будет закрыть, пока не будут закрыты пакеты работ, которые вы укажете"
+      blocked_by_description: "Этот пакет работ нельзя будет закрыть, пока не будут закрыты пакеты работ, которые вы укажете"
       label_duplicates_singular: "Дублирует"
       label_duplicates_plural: "Дублирует"
       duplicates_description: "Это копия связанного пакета работ"
@@ -1450,6 +1450,7 @@ ru:
               minimum: "необходимо включить хотя бы один фильтр для основного, контекста или id с оператором '='."
         custom_field:
           at_least_one_custom_option: "По крайней мере один параметр должен быть доступен."
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             one: "%{name} используется для расчета атрибута проекта %{links}."
             few: "%{name} is used in project attribute calculations: %{links}."
@@ -2668,7 +2669,7 @@ ru:
       attribute_not_found: "атрибут не найден: %{attribute}"
       model_not_found: "неверная модель атрибута: %{model}"
       resource_not_found: "ресурс не найден: %{resource}"
-      rich_text_unsupported: "Встраивание форматированного текста в настоящее время не поддерживается при экспорте."
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: ч
       days: д
@@ -4317,7 +4318,7 @@ ru:
   setting_self_registration_manual_activation: "Активация учётной записи вручную"
   setting_self_registration_manual_activation_caption: >
     Пользователи могут самостоятельно зарегистрироваться. Их учетные записи находятся в ожидании до тех пор, пока администратор или пользователь с общим разрешением на создание или управление пользователями не активирует их.
-  setting_session_ttl: "Срок действия сеанса при неактивности"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "При значении ниже 5-ти отключено"
   setting_session_ttl_enabled: "Сессия истекает"
   setting_start_of_week: "Начало недели в"

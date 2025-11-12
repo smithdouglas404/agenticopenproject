@@ -63,6 +63,7 @@ vi:
   label_document_title: "Tiêu đề"
   label_document_description: "Mô tả"
   label_document_category: "Thể loại"
+  label_document_type: "Type"
   permission_manage_documents: "Quản lý tài liệu"
   permission_view_documents: "Xem tài liệu"
   project_module_documents: "Tài liệu"

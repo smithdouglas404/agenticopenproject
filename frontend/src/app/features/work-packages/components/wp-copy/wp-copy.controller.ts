@@ -33,11 +33,11 @@ import { WorkPackageRelationsService } from 'core-app/features/work-packages/com
 
 import { HalResourceEditingService } from 'core-app/shared/components/fields/edit/services/hal-resource-editing.service';
 import { WorkPackageChangeset } from 'core-app/features/work-packages/components/wp-edit/work-package-changeset';
-import { Directive } from '@angular/core';
+import { Directive, OnInit } from '@angular/core';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 
 @Directive()
-export class WorkPackageCopyController extends WorkPackageCreateComponent {
+export class WorkPackageCopyController extends WorkPackageCreateComponent implements OnInit {
   private __initialized_at:number;
 
   private copiedWorkPackageId:string;

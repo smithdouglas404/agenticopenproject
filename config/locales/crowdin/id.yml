@@ -320,7 +320,7 @@ id:
     placeholder_version_select: "Work package or project selection is required first"
     calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
-      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources. Existing resources will not require a value when being updated."
+      is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new resources. Existing resources will not require a value when being updated."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects. Existing projects will not require a value when being updated."
       is_for_all: "Tandai bidang khusus sebagai tersedia di semua proyek yang sudah ada dan yang baru."
       multi_select: "Allows the user to assign multiple values to this custom field."
@@ -1424,6 +1424,7 @@ id:
               minimum: "perlu menyertakan setidaknya satu filter untuk prinsipal, konteks, atau id dengan operator '='."
         custom_field:
           at_least_one_custom_option: "Paling tidak, satu pilihan dibutuhkan untuk tersedia."
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             other: "%{name} is used in project attribute calculations: %{links}."
           attributes:
@@ -2531,7 +2532,7 @@ id:
       attribute_not_found: "attribute not found: %{attribute}"
       model_not_found: "invalid attribute model: %{model}"
       resource_not_found: "resource not found: %{resource}"
-      rich_text_unsupported: "Rich text embedding currently not supported in export"
+      nested_rich_text_unsupported: "Nested rich text embedding currently not supported in export"
     units:
       hours: j
       days: h
@@ -4174,7 +4175,7 @@ id:
   setting_self_registration_manual_activation: "Manual account activation"
   setting_self_registration_manual_activation_caption: >
     Users can register on their own. Their accounts are in a pending state until an administrator or user with the global permission to create or manage users activates them.
-  setting_session_ttl: "Sesi kadaluwarsa ketika tidak aktif"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Nilai di bawah 5 akan didisable"
   setting_session_ttl_enabled: "Sesi telah berakhir"
   setting_start_of_week: "Minggu dimulai pada"

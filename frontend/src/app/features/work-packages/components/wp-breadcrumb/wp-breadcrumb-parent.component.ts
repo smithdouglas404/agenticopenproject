@@ -44,9 +44,9 @@ import { PathHelperService } from 'core-app/core/path-helper/path-helper.service
   standalone: false,
 })
 export class WorkPackageBreadcrumbParentComponent {
-  @Input('workPackage') workPackage:WorkPackageResource;
+  @Input() workPackage:WorkPackageResource;
 
-  @Output('onSwitch') onSwitch = new EventEmitter<boolean>();
+  @Output() onSwitch = new EventEmitter<boolean>();
 
   public isSaving = false;
 
