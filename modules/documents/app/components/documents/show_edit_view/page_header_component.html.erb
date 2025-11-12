@@ -43,12 +43,6 @@
       ) do |item|
         item.with_leading_visual_icon(icon: :copy)
       end
-
-      if allowed_to_manage_documents?
-        menu.with_item(label: I18n.t("button_delete"), scheme: :danger) do |item|
-          item.with_leading_visual_icon(icon: :trash)
-        end
-      end
     end
   end
 %>

@@ -53,10 +53,6 @@ module Documents
          { href: project_documents_path(project), text: I18n.t(:label_document_plural) },
          document.title]
       end
-
-      def allowed_to_manage_documents?
-        User.current.allowed_in_project?(:manage_documents, project)
-      end
     end
   end
 end
