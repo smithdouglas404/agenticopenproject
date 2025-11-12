@@ -75,10 +75,7 @@ module Storages
             # rubocop:disable Metrics/AbcSize
             def requested_properties
               Nokogiri::XML::Builder.new do |xml|
-                xml["d"].propfind(
-                  "xmlns:d" => "DAV:",
-                  "xmlns:oc" => "http://owncloud.org/ns"
-                ) do
+                xml["d"].propfind("xmlns:d" => "DAV:", "xmlns:oc" => "http://owncloud.org/ns") do
                   xml["d"].prop do
                     xml["oc"].fileid
                     xml["oc"].size

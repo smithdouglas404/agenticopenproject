@@ -31,11 +31,11 @@
 module Storages
   module Adapters
     module Input
-      CreateFolder = Data.define(:folder_name, :parent_location) do
+      UploadFile = Data.define(:parent_location, :file_name, :io) do
         private_class_method :new
 
-        def self.build(folder_name:, parent_location:, contract: CreateFolderContract.new)
-          contract.call(folder_name:, parent_location:).to_monad.fmap { new(**it.to_h) }
+        def self.build(parent_location:, file_name:, io:, contract: UploadFileContract.new)
+          contract.call(parent_location:, file_name:, io:).to_monad.fmap { new(**it.to_h) }
         end
       end
     end
