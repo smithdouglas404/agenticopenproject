@@ -577,6 +577,9 @@ en:
         no_results_title_text: There is no additional recorded disk space consumed by this project.
       work_package_priorities:
         new_label: "New priority"
+      creation_wizard:
+        label_request_submission: "Request submission"
+        label_artefact_export: "Artifact export"
     status:
       button_edit: Edit project status
   lists:
@@ -2117,9 +2120,11 @@ en:
   button_delete_permanently: "Delete permanently"
   button_delete_watcher: "Delete watcher %{name}"
   button_download: "Download"
+  button_disable: "Disable"
   button_duplicate: "Duplicate"
   button_duplicate_and_follow: "Duplicate and follow"
   button_edit: "Edit"
+  button_enable: "Enable"
   button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Expand all"
   button_favorite: "Add to favorites"

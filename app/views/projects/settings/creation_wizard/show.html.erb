@@ -28,24 +28,19 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  render Primer::OpenProject::PageHeader.new do |header|
-    header.with_title { I18n.t("label_project_wizard") }
-    header.with_breadcrumbs(
-      [{ href: project_overview_path(@project.id), text: @project.name },
-       { href: project_settings_general_path(@project.id), text: I18n.t("label_project_settings") },
-       I18n.t("label_project_wizard")]
-    )
-  end
+  render Projects::Settings::CreationWizard::PageHeaderComponent.new(
+    project: @project
+  )
 %>
 
 <%= error_messages_for(@project) %>
 
 <%= labelled_tabular_form_for @project,
-                              url: project_settings_project_wizard_path(@project) do |form| %>
+                              url: project_settings_creation_wizard_path(@project) do |form| %>
 
   <fieldset class="form--fieldset">
     <div class="form--field">
-      <%= form.check_box :project_wizard_enabled, label: "Enable project wizard" %>
+      <%= form.check_box :project_creation_wizard_enabled, label: "Enable project wizard" %>
     </div>
   </fieldset>
 

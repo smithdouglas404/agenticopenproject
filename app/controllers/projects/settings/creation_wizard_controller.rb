@@ -28,12 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Projects::Settings::ProjectWizardController < Projects::SettingsController
-  menu_item :settings_project_wizard
+class Projects::Settings::CreationWizardController < Projects::SettingsController
+  menu_item :settings_creation_wizard
 
   before_action :check_feature_flag
 
   def show; end
+
+  def toggle
+    # TODO: confirmation dialog when disabling the wizard
+    @project.update(project_creation_wizard_enabled: !@project.project_creation_wizard_enabled)
+    redirect_to project_settings_creation_wizard_path(@project, tab: params[:tab]), status: :see_other
+  end
 
   def update # rubocop:disable Metrics/AbcSize
     call = Projects::UpdateService

@@ -1,0 +1,61 @@
+<%=
+  render Primer::OpenProject::PageHeader.new do |header|
+    header.with_title { I18n.t("label_project_wizard") }
+    header.with_breadcrumbs(
+      [{ href: project_overview_path(@project.id), text: @project.name },
+       { href: project_settings_general_path(@project.id), text: I18n.t("label_project_settings") },
+       I18n.t("label_project_wizard")]
+    )
+
+    enabled = @project.project_creation_wizard_enabled
+    label = if enabled
+              I18n.t(:button_disable)
+            else
+              I18n.t(:button_enable)
+            end
+    header.with_action_button(
+      scheme: enabled ? :danger : :primary,
+      mobile_icon: nil,
+      mobile_label: label,
+      aria: { label: },
+      title: label,
+      tag: :a,
+      href: helpers.toggle_project_settings_creation_wizard_path(@project),
+      data: {
+        turbo_method: :post
+      }
+    ) { label }
+
+    if @project.project_creation_wizard_enabled
+      header.with_tab_nav(label: nil) do |tab_nav|
+        tab_nav.with_tab(
+          selected: params[:tab] == "name" || params[:tab].blank?,
+          href: helpers.toggle_project_settings_creation_wizard_path(tab: :name),
+        ) do |t|
+          t.with_text { I18n.t(:label_name) }
+        end
+
+        tab_nav.with_tab(
+          selected: params[:tab] == "attributes",
+          href: helpers.toggle_project_settings_creation_wizard_path(tab: :attributes),
+        ) do |t|
+          t.with_text { I18n.t(:label_project_attribute_plural) }
+        end
+
+        tab_nav.with_tab(
+          selected: params[:tab] == "approval",
+          href: helpers.toggle_project_settings_creation_wizard_path(tab: :approval),
+        ) do |t|
+          t.with_text { I18n.t(:label_project_attribute_plural) }
+        end
+
+        tab_nav.with_tab(
+          selected: params[:tab] == "artifact_export",
+          href: helpers.toggle_project_settings_creation_wizard_path(tab: :artifact_export),
+        ) do |t|
+          t.with_text { I18n.t(:label_project_attribute_plural) }
+        end
+      end
+    end
+  end
+%>
