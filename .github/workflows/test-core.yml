@@ -34,7 +34,7 @@ jobs:
     steps:
     - uses: runs-on/action@v2
       with:
-        metrics: cpu,memory,disk,io,network
+        metrics: memory
     - uses: actions/checkout@v5
     - name: Cache DOCKER
       id: cache_docker
