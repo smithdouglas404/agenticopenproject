@@ -76,9 +76,7 @@ A community-developed tool, the [OpenProject Jira Importer](https://github.com/d
 
 Refer to the [Jira migration community development blog article](https://www.openproject.org/blog/jira-migration-community-development/) for background information and usage guidance.
 
-### 6. Partner support
 
-Our [partners at ALMToolbox](https://www.almtoolbox.com/) offer professional migration assistance for Jira and Confluence.  They can support complex migration projects and ensure data integrity during the transition.
 
 ## Recommended migration workflow
 
