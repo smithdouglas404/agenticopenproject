@@ -34,6 +34,7 @@ module API
       module Schemas
         class ProjectSchemaRepresenter < ::API::Decorators::SchemaRepresenter
           extend ::API::V3::Utilities::CustomFieldInjector::RepresenterClass
+
           custom_field_injector type: :schema_representer
 
           schema :id,
@@ -86,7 +87,7 @@ module API
                  writable: ->(*) { represented.writable?(:status_explanation) }
 
           schema_with_allowed_link :parent,
-                                   type: "Project",
+                                   type: "Workspace",
                                    required: ->(*) {
                                      # Users only having the add_subprojects permission need to provide
                                      # a parent when creating a new project.

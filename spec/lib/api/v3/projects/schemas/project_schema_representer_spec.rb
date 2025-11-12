@@ -318,7 +318,7 @@ RSpec.describe API::V3::Projects::Schemas::ProjectSchemaRepresenter do
 
       context "when having a new record" do
         it_behaves_like "has basic schema properties" do
-          let(:type) { "Project" }
+          let(:type) { "Workspace" }
           let(:name) { Project.human_attribute_name("parent") }
           let(:required) { false }
           let(:writable) { true }
@@ -346,7 +346,7 @@ RSpec.describe API::V3::Projects::Schemas::ProjectSchemaRepresenter do
           let(:global_permissions) { [] }
 
           it_behaves_like "has basic schema properties" do
-            let(:type) { "Project" }
+            let(:type) { "Workspace" }
             let(:name) { Project.human_attribute_name("parent") }
             # Required is different when the add_project permission is lacking
             let(:required) { true }
@@ -360,7 +360,7 @@ RSpec.describe API::V3::Projects::Schemas::ProjectSchemaRepresenter do
         let(:new_record) { false }
 
         it_behaves_like "has basic schema properties" do
-          let(:type) { "Project" }
+          let(:type) { "Workspace" }
           let(:name) { Project.human_attribute_name("parent") }
           let(:required) { false }
           let(:writable) { true }
