@@ -4227,7 +4227,7 @@ hu:
   setting_self_registration_manual_activation: "Manual account activation"
   setting_self_registration_manual_activation_caption: >
     Users can register on their own. Their accounts are in a pending state until an administrator or user with the global permission to create or manage users activates them.
-  setting_session_ttl: "Munkamenet lejárata ennyi tétlenség ideje után"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Érték alatt 5 működik, mint a letiltott"
   setting_session_ttl_enabled: "A munkamenet lejárt"
   setting_start_of_week: "Hét kezdőnapja"

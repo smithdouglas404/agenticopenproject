@@ -4227,7 +4227,7 @@ fr:
   setting_self_registration_manual_activation: "Activation manuelle du compte"
   setting_self_registration_manual_activation_caption: >
     Les utilisateurs peuvent s'inscrire eux-mêmes. Leurs comptes sont placés en attente jusqu'à ce qu'un administrateur ou un utilisateur ayant la permission globale de créer ou de gérer des utilisateurs les active.
-  setting_session_ttl: "Délai d'expiration de session après inactivité"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Une valeur inférieur à 5 désactive cette fonction"
   setting_session_ttl_enabled: "Session expirée"
   setting_start_of_week: "La semaine commence le"

@@ -4415,7 +4415,7 @@ ar:
   setting_self_registration_manual_activation: "Manual account activation"
   setting_self_registration_manual_activation_caption: >
     Users can register on their own. Their accounts are in a pending state until an administrator or user with the global permission to create or manage users activates them.
-  setting_session_ttl: "وقت انتهاء الدورة بعد الخمول"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "قيمة أدناه يعمل 5 مثل ا"
   setting_session_ttl_enabled: "انتهت الجلسة"
   setting_start_of_week: "Week starts on"

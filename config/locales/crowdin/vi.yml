@@ -4182,7 +4182,7 @@ vi:
   setting_self_registration_manual_activation: "Manual account activation"
   setting_self_registration_manual_activation_caption: >
     Users can register on their own. Their accounts are in a pending state until an administrator or user with the global permission to create or manage users activates them.
-  setting_session_ttl: "Thời gian hết hạn phiên sau khi không hoạt động"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Giá trị dưới 5 hoạt động như bị vô hiệu hóa"
   setting_session_ttl_enabled: "Phiên hết hạn"
   setting_start_of_week: "Tuần Bắt đầu"

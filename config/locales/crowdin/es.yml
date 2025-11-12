@@ -4225,7 +4225,7 @@ es:
   setting_self_registration_manual_activation: "Activación manual de la cuenta"
   setting_self_registration_manual_activation_caption: >
     Los usuarios pueden registrarse por su cuenta. Sus cuentas están en estado pendiente hasta que un administrador o un usuario con permiso global para crear o gestionar usuarios las activa.
-  setting_session_ttl: "Tiempo de expiración de sesión por inactividad"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Valor por debajo de 5 peticiones como desactivadas"
   setting_session_ttl_enabled: "La sesión expira"
   setting_start_of_week: "La semana empieza el"

@@ -4221,7 +4221,7 @@ de:
   setting_self_registration_manual_activation: "Manuelle Kontoaktivierung"
   setting_self_registration_manual_activation_caption: >
     Benutzer können sich selbst anmelden. Ihre Konten sind noch nicht zugänglich, bis ein Administrator oder Benutzer mit der globalen Berechtigung zur Erstellung oder Verwaltung von Benutzern diese aktiviert.
-  setting_session_ttl: "Session-Ablaufzeit nach Inaktivität"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Wert kleiner 5 wirkt wie ausgeschaltet"
   setting_session_ttl_enabled: "Session läuft ab"
   setting_start_of_week: "Wochenanfang am"

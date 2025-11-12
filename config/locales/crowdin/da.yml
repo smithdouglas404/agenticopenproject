@@ -4225,7 +4225,7 @@ da:
   setting_self_registration_manual_activation: "Manual account activation"
   setting_self_registration_manual_activation_caption: >
     Users can register on their own. Their accounts are in a pending state until an administrator or user with the global permission to create or manage users activates them.
-  setting_session_ttl: "Tid inden session udløber ved inaktivitet"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Værdi under 5 fungerer som deaktiveret"
   setting_session_ttl_enabled: "Session udløber"
   setting_start_of_week: "Week starts on"

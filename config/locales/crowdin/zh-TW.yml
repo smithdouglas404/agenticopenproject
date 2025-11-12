@@ -4176,7 +4176,7 @@ zh-TW:
   setting_self_registration_manual_activation: "手動啟用帳號"
   setting_self_registration_manual_activation_caption: >
     帳號註冊後為待審核，需由管理員或有權限的使用者進行啟用，方可生效。
-  setting_session_ttl: "非活躍使用後連線失效時間"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "低於5個工作同於停用"
   setting_session_ttl_enabled: "連線逾時"
   setting_start_of_week: "一週起始於"

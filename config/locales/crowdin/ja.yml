@@ -4181,7 +4181,7 @@ ja:
   setting_self_registration_manual_activation: "手動アカウントの有効化"
   setting_self_registration_manual_activation_caption: >
     ユーザーは自分で登録することができます。ユーザーのアカウントは、管理者またはユーザーを作成または管理するグローバル権限を持つユーザーがアクティベートするまで保留状態になります。
-  setting_session_ttl: "無操作タイムアウト"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "5未満の値は無効にすると同様"
   setting_session_ttl_enabled: "セッションの有効期限"
   setting_start_of_week: "週の開始"

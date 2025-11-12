@@ -4321,7 +4321,7 @@ sl:
   setting_self_registration_manual_activation: "Manual account activation"
   setting_self_registration_manual_activation_caption: >
     Users can register on their own. Their accounts are in a pending state until an administrator or user with the global permission to create or manage users activates them.
-  setting_session_ttl: "Čas poteka seje po neaktivnosti"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Vrednost pod 5 deluje kot onemogočena"
   setting_session_ttl_enabled: "Seja je potekla"
   setting_start_of_week: "Teden se začne na (Automatic Translation)"

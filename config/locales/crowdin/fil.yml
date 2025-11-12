@@ -4227,7 +4227,7 @@ fil:
   setting_self_registration_manual_activation: "Manual account activation"
   setting_self_registration_manual_activation_caption: >
     Users can register on their own. Their accounts are in a pending state until an administrator or user with the global permission to create or manage users activates them.
-  setting_session_ttl: "Oras ng pagkawalang -bisa pagkatapos ng hindi aktibo"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Ang halaga mababa sa 5 na trabaho ay tulad ng may kapansanan"
   setting_session_ttl_enabled: "Nag-expire na ang sesyon"
   setting_start_of_week: "Pagsisimula ng linggo sa"

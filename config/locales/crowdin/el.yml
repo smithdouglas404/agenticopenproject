@@ -4224,7 +4224,7 @@ el:
   setting_self_registration_manual_activation: "Manual account activation"
   setting_self_registration_manual_activation_caption: >
     Users can register on their own. Their accounts are in a pending state until an administrator or user with the global permission to create or manage users activates them.
-  setting_session_ttl: "Χρόνος λήξης της συνεδρίας μετά από αδράνεια"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Η τιμή κάτω του 5 λειτουργεί ως απενεργοποιημένη"
   setting_session_ttl_enabled: "Η συνεδρία λήγει"
   setting_start_of_week: "Η εβδομάδα ξεκινά από"

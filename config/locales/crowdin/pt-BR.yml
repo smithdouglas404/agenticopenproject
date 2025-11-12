@@ -4225,7 +4225,7 @@ pt-BR:
   setting_self_registration_manual_activation: "Ativação manual de conta"
   setting_self_registration_manual_activation_caption: >
     Os usuários podem se registrar sozinhos. As contas permanecerão pendentes até que um administrador ou um usuário com permissão global para criar ou gerenciar usuários as ative.
-  setting_session_ttl: "Tempo de expiração de sessão após inatividade"
+  setting_session_ttl: "Session expiration time after inactivity"
   setting_session_ttl_hint: "Valor abaixo de 5 funciona como desativado"
   setting_session_ttl_enabled: "Sessão expira"
   setting_start_of_week: "A semana começa em"
