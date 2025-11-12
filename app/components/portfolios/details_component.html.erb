@@ -49,7 +49,7 @@
             Primer::Beta::Octicon.new(
               icon: workspace_icon("program"),
               align_self: :center,
-              "aria-label": "TODO",
+              "aria-label": t("program.count", count: all_subprograms.count),
               mr: 1
             )
           ) + content_tag(:span, t("program.count", count: all_subprograms.count))
@@ -60,7 +60,7 @@
             Primer::Beta::Octicon.new(
               icon: workspace_icon("project"),
               align_self: :center,
-              "aria-label": "TODO",
+              "aria-label": t("project.count", count: all_subprojects.count),
               mr: 1
             )
           ) + content_tag(:span, t("project.count", count: all_subprojects.count))

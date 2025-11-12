@@ -25,7 +25,11 @@
           end
 
           portfolios.each do |portfolio|
-            component.with_row do
+            component.with_row(
+              data: {
+                test_selector: "op-portfolios--portfolio-#{portfolio.id}"
+              }
+            ) do
               render(Portfolios::DetailsComponent.new(portfolio:, current_user: @current_user))
             end
           end
