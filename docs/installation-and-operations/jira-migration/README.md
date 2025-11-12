@@ -51,8 +51,6 @@ Use the [OpenProject REST API](https://www.openproject.org/docs/api) to migrate 
 > [! NOTE]
 > The API-based approach requires technical expertise and scripting or integration development to map Jira and Confluence data structures to OpenProject.
 
-
-
 ### 3. Excel synchronization
 
 The [Excel synchronization integration](https://www.openproject.org/docs/system-admin-guide/integrations/excel-synchronization) allows you to import and export tabular data between Jira, Confluence, and OpenProject using spreadsheets.
@@ -72,11 +70,9 @@ This approach preserves most layout elements and is recommended for documentatio
 ### 5. Community-developed Jira importer
 
 A community-developed tool, the [OpenProject Jira Importer](https://github.com/dotnetfactory/openproject-jira-importer) provides additional import capabilities.
- It supports importing Jira issues into OpenProject and is available as open-source software.
+It supports importing Jira issues into OpenProject and is available as open-source software.
 
 Refer to the [Jira migration community development blog article](https://www.openproject.org/blog/jira-migration-community-development/) for background information and usage guidance.
-
-
 
 ## Recommended migration workflow
 
