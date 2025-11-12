@@ -76,7 +76,7 @@ http_interactions:
       - '265'
     body:
       encoding: UTF-8
-      string: '{"ocs":{"meta":{"status":"ok","statuscode":100,"message":"OK","totalitems":"","itemsperpage":""},"data":{"status":"OK","statuscode":200,"id":182,"name":"file_name_3.txt","mtime":1669880616,"ctime":0,"mimetype":"application\/gzip","size":982713473,"owner_name":"admin","owner_id":"admin","modifier_name":null,"modifier_id":null,"dav_permissions":"RGDNVW","path":"files\/My
+      string: '{"ocs":{"meta":{"status":"ok","statuscode":100,"message":"OK","totalitems":"","itemsperpage":""},"data":{"status":"OK","statuscode":200,"id":182,"name":"file_name_1.txt","mtime":1669880616,"ctime":0,"mimetype":"application\/gzip","size":982713473,"owner_name":"admin","owner_id":"admin","modifier_name":null,"modifier_id":null,"dav_permissions":"RGDNVW","path":"files\/My
         files\/file_name_1.txt"}}}'
   recorded_at: Mon, 08 Apr 2024 11:34:13 GMT
 - request:

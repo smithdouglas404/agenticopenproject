@@ -70,16 +70,14 @@ module Storages
             end
 
             def fetch_origin_name(input_data, auth_strategy)
-              file_info_result = FileInfoQuery.call(storage: @storage, auth_strategy:, input_data:)
-              return file_info_result unless file_info_result.success?
+              FileInfoQuery.call(storage: @storage, auth_strategy:, input_data:)
+                .bind do |file_info|
+                  file_name = file_info.name
+                  return Success(file_name) if file_name.present?
 
-              name = file_info_result.value!.name
-              if name.blank?
-                error = Results::Error.new(source: self.class, payload: file_info_result.value!)
-                Failure(error.with(code: :invalid_file_name))
-              else
-                Success(name)
-              end
+                  error = Results::Error.new(source: self.class, payload: file_info)
+                  Failure(error.with(code: :invalid_file_name))
+                end
             end
 
             def fetch_download_token(auth_strategy, file_id)

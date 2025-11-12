@@ -43,7 +43,7 @@ module Storages
             end
             let(:auth_strategy) { Registry["nextcloud.authentication.user_bound"].call(user, storage) }
 
-            let(:file_link) { create(:file_link, origin_id: "182") }
+            let(:file_link) { create(:file_link, origin_id: "182", origin_name: "file_name_1") }
             let(:not_existent_file_link) { create(:file_link, origin_id: "DeathStarNumberThree") }
             let(:input_data) { Input::DownloadLink.build(file_id: file_link.origin_id).value! }
 
