@@ -72,14 +72,9 @@ module Projects
     end
 
     def new_workspace_path(type)
-      case type
-      when Project.workspace_types[:project]
-        new_project_path
-      when Project.workspace_types[:portfolio]
-        new_portfolio_path
-      when Project.workspace_types[:program]
-        new_program_path
-      end
+      return unless Project.workspace_types.key?(type)
+
+      url_for([:new, type.to_sym])
     end
 
     def new_workspace_label(type)
@@ -89,10 +84,10 @@ module Projects
     def allowed_new_workspace_types
       @allowed_new_workspace_types ||= [].tap do |types|
         if OpenProject::FeatureDecisions.portfolio_models_active?
-          types << Project.workspace_types[:portfolio] if @current_user.allowed_globally?(:add_portfolios)
-          types << Project.workspace_types[:program] if @current_user.allowed_globally?(:add_programs)
+          types << "portfolio" if @current_user.allowed_globally?(:add_portfolios)
+          types << "program" if @current_user.allowed_globally?(:add_programs)
         end
-        types << Project.workspace_types[:project] if @current_user.allowed_globally?(:add_project)
+        types << "project" if @current_user.allowed_globally?(:add_project)
       end
     end
 

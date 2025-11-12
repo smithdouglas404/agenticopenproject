@@ -29,24 +29,18 @@
 #++
 
 module WorkspaceHelper
+  WORKSPACE_ICON_MAPPING = Hash.new(:project)
+    .with_indifferent_access
+    .merge(
+      portfolio: :briefcase,
+      program: :"project-roadmap"
+    )
+
   def new_workspace_title(workspace)
-    if workspace.project?
-      I18n.t(:label_project_new)
-    elsif workspace.portfolio?
-      I18n.t(:label_portfolio_new)
-    elsif workspace.program?
-      I18n.t(:label_program_new)
-    end
+    return unless Project.workspace_types.key?(workspace.workspace_type)
+
+    I18n.t(:"label_#{workspace.workspace_type}_new")
   end
 
-  def workspace_icon(type)
-    case type
-    when Project.workspace_types[:portfolio]
-      :briefcase
-    when Project.workspace_types[:program]
-      :"project-roadmap"
-    else
-      :project
-    end
-  end
+  def workspace_icon(type) = WORKSPACE_ICON_MAPPING[type]
 end
