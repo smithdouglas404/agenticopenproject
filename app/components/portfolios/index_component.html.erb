@@ -4,6 +4,7 @@
       index_container.with_row do
         render(
           border_box_container(
+            id: "portfolios-index-container",
             mb: 4,
             data: {
               "test-selector": "op-portfolios--portfolios"
@@ -26,6 +27,7 @@
 
           portfolios.each do |portfolio|
             component.with_row(
+              classes: "portfolio",
               data: {
                 test_selector: "op-portfolios--portfolio-#{portfolio.id}"
               }

@@ -5,6 +5,7 @@
         header.with_column do
           render(
             Primer::Beta::Link.new(
+              classes: "portfolio-name",
               href: project_overview_path(@portfolio),
               font_weight: :bold
             )
