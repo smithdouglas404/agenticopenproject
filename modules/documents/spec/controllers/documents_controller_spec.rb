@@ -70,6 +70,31 @@ RSpec.describe DocumentsController do
     end
   end
 
+  describe "edit" do
+    context "with a classic document" do
+      before do
+        document.update(kind: :classic)
+        get :edit, params: { id: document.id }
+      end
+
+      it "renders the edit-template successfully" do
+        expect(response).to be_successful
+        expect(response).to render_template("edit")
+      end
+    end
+
+    context "with a collaborative document" do
+      before do
+        document.update(kind: :collaborative)
+        get :edit, params: { id: document.id }
+      end
+
+      it "responds with a bad request" do
+        expect(response).to have_http_status(:bad_request)
+      end
+    end
+  end
+
   describe "create" do
     let(:document_attributes) do
       attributes_for(:document,

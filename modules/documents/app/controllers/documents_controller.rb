@@ -68,7 +68,7 @@ class DocumentsController < ApplicationController
   end
 
   def edit
-    @categories = DocumentCategory.all
+    render_400 unless @document.classic?
   end
 
   def edit_title
