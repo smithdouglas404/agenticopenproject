@@ -121,6 +121,8 @@ module Admin::Settings
     end
 
     def project_custom_field_section_params
+      # Set the sidebar as default
+      params.require(:project_custom_field_section)[:overview] ||= CustomFieldSection::OVERVIEW__SIDEBAR_KEY
       params.expect(project_custom_field_section: %i[name overview])
     end
   end

@@ -72,6 +72,26 @@ RSpec.describe "Show project custom fields on project overview page", :js, with_
         expect(page).to have_test_selector("section-position-selector", text: "Main section")
       end
     end
+
+    it "can add a new section which is shown per default in the sidebar" do
+      within "#settings-project-custom-fields-header-component" do
+        page.find_test_selector("project-attributes-add-menu-button").click
+        click_on("dialog-show-project-custom-field-section-dialog")
+      end
+
+      fill_in("project_custom_field_section_name", with: "An awesome new section")
+
+      click_on("Save")
+
+      expect(page).to have_text("An awesome new section")
+
+      # The section is shown in the sidebar per default
+      section = CustomFieldSection.last
+      expect(section.shown_in_overview_sidebar?).to be(true)
+      within_test_selector("project-custom-field-section-container-#{section.id}") do
+        expect(page).to have_test_selector("section-position-selector", text: "Side-panel")
+      end
+    end
   end
 
   describe "within the Overview page" do
