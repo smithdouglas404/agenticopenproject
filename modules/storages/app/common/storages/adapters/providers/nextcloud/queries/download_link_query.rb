@@ -76,7 +76,7 @@ module Storages
                   return Success(file_name) if file_name.present?
 
                   error = Results::Error.new(source: self.class, payload: file_info)
-                  Failure(error.with(code: :invalid_file_name))
+                  Failure(error.with(code: :not_found))
                 end
             end
 
