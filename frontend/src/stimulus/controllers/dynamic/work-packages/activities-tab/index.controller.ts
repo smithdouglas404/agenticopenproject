@@ -30,6 +30,7 @@
 
 import { Controller } from '@hotwired/stimulus';
 import { ViewPortService } from './services/view-port-service';
+import { LazyLoadQueueService } from './services/lazy-load-queue.service';
 
 export default class IndexController extends Controller<HTMLElement> {
   static values = {
@@ -51,16 +52,29 @@ export default class IndexController extends Controller<HTMLElement> {
   declare readonly hasJournalsContainerTarget:boolean;
 
   viewPortService:ViewPortService;
+  lazyLoadQueueService:LazyLoadQueueService;
 
   connect() {
     this.viewPortService = new ViewPortService(this.notificationCenterPathNameValue);
+    this.lazyLoadQueueService = new LazyLoadQueueService();
 
     this.markAsConnected();
     this.setCssClasses();
   }
 
   disconnect() {
+    this.lazyLoadQueueService.clear();
     this.markAsDisconnected();
+  }
+
+  // Called by lazy-page controllers to enqueue their load request
+  enqueueLazyLoad(controller:unknown, loadFn:() => Promise<void>):void {
+    this.lazyLoadQueueService.enqueue(controller, loadFn);
+  }
+
+  // Called by lazy-page controllers when they're cancelled or unloaded
+  dequeueLazyLoad(controller:unknown):void {
+    this.lazyLoadQueueService.dequeue(controller);
   }
 
   setFilterToOnlyComments() { this.filterValue = 'only_comments'; }

@@ -68,17 +68,26 @@ export default class LazyPageController extends BaseController {
 
     // Delay loading to allow rapid scrolling without triggering loads
     this.loadTimeout = window.setTimeout(() => {
-      void this.fetchPageStream()
-        .catch((error) => {
-          console.error('Error fetching next page:', error);
-        }).finally(() => {
-          this.isLoadedValue = true;
-        });
+      this.enqueueLoad();
     }, this.loadDelayMsValue);
   }
 
   disappear() {
     this.cancelPendingLoad(); // Cancel load if element leaves viewport before delay expires
+  }
+
+  private enqueueLoad():void {
+    this.indexOutlet.enqueueLazyLoad(this, () => this.performLoad());
+  }
+
+  private async performLoad():Promise<void> {
+    try {
+      await this.fetchPageStream();
+    } catch (error) {
+      console.error('Error fetching next page:', error);
+    } finally {
+      this.isLoadedValue = true;
+    }
   }
 
   private startObserving(root = this.scrollableContainer) {
@@ -116,5 +125,7 @@ export default class LazyPageController extends BaseController {
       window.clearTimeout(this.loadTimeout);
       this.loadTimeout = undefined;
     }
+
+    this.indexOutlet.dequeueLazyLoad(this);
   }
 }
