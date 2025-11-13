@@ -46,8 +46,16 @@ class AddUniqueIndexToUserPreferencesOnUserId < ActiveRecord::Migration[8.0]
       );
     SQL
 
-    say "Removing old non-unique index"
-    remove_index :user_preferences, name: "index_user_preferences_on_user_id", if_exists: true
+    old_index = ActiveRecord::Base
+      .connection
+      .indexes(:user_preferences)
+      .detect { |index| index.columns == ["user_id"] }
+      &.name
+
+    if old_index.present?
+      say "Removing old non-unique index"
+      remove_index :user_preferences, name: old_index
+    end
 
     say "Adding unique index on user_id"
     add_index :user_preferences, :user_id,
