@@ -1,8 +1,8 @@
 <%=
   flex_layout do |flex|
     flex.with_row(mb: 2) do
-      flex_layout do |header|
-        header.with_column do
+      flex_layout(align_items: :center) do |header|
+        header.with_column(mr: 2) do
           render(
             Primer::Beta::Link.new(
               classes: "portfolio-name",
@@ -14,7 +14,16 @@
           end
         end
 
-        # TODO: WP-68876 render status_code
+        header.with_column do
+          render(
+            Projects::StatusButtonComponent.new(
+              user: @current_user,
+              project: @portfolio,
+              hide_help_text: true,
+              size: :small
+            )
+          )
+        end
 
         # TODO: WP-68877 render progress bar
       end

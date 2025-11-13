@@ -81,6 +81,31 @@ module Pages
         expect(page).to have_css('[data-test-selector="portfolio-query-name"]', text: name)
       end
 
+      def expect_status_of(portfolio, status_text)
+        expect(page).to have_css("#projects-status-button-component-#{portfolio.id} .Button-label", text: status_text)
+      end
+
+      def click_status_button(portfolio)
+        page.find("#projects-status-button-component-#{portfolio.id} .op-status-button").click
+      end
+
+      def select_status_from_dropdown(portfolio, status_text)
+        click_status_button portfolio
+        page.find("#projects-status-button-component-#{portfolio.id} .op-status-button .ActionListItem",
+                  text: status_text,
+                  exact_text: true).click
+
+        wait_for_reload
+      end
+
+      def expect_filter_available(filter_name)
+        expect(page).to have_select("add_filter_select", with_options: [filter_name])
+      end
+
+      def expect_filter_not_available(filter_name)
+        expect(page).to have_no_select("add_filter_select", with_options: [filter_name])
+      end
+
       def filter_by_active(value)
         set_filter("active", "Active", "is", [value])
         wait_for_reload

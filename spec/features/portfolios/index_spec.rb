@@ -158,6 +158,16 @@ RSpec.describe "Portfolios", "index", :js do
       portfolios_page.expect_portfolios_not_listed(portfolio_a, portfolio_favorited)
     end
 
+    it "allows seeing and changing the status" do
+      portfolios_page.expect_status_of(portfolio_a, "Not set")
+      portfolios_page.expect_status_of(portfolio_favorited, "Not set")
+
+      portfolios_page.select_status_from_dropdown(portfolio_favorited, "At risk")
+
+      portfolios_page.expect_status_of(portfolio_favorited, "At risk")
+      portfolios_page.expect_status_of(portfolio_a, "Not set")
+    end
+
     context "when using the more menu" do
       it "offers the zen mode" do
         portfolios_page.expect_more_menu_item("Zen mode")
