@@ -39,7 +39,7 @@ Here's an example of a calculated value called 'Overall score (calculated)' with
 Together, these additions give project portfolio managers a flexible foundation for data-driven project evaluation and more transparent portfolio decisions. Of course, all project attributes, including calculated values, can be used for many other purposes.
 
 >[!NOTE]
-> Please note that these new project attributes are part of our [Enterprise add-ons in the Enterprise Professional plan](https://www.openproject.org/pricing/).
+> Please note that these new project attributes are part of our [Enterprise add-ons in the Enterprise Premium plan](https://www.openproject.org/pricing/).
 
 ![OpenProject 16.6: Project overview page showing three project attributes: Benefit = 10, Effort = 60, Overall Score (calculated) = automatically set to -1,2](openproject-16-6-project-attributes-overview-page.png)
 
