@@ -259,7 +259,7 @@ RSpec.describe WorkPackages::BulkController, with_settings: { journal_aggregatio
 
           subject do
             WorkPackage.where(id: work_package_ids)
-              .map { |w| w.custom_value_for(custom_field1.id).value }
+              .map { |w| w.custom_value_for(custom_field1).value }
               .uniq
           end
 
@@ -438,7 +438,7 @@ RSpec.describe WorkPackages::BulkController, with_settings: { journal_aggregatio
           end
 
           subject do
-            work_packages.map { |w| w.custom_value_for(custom_field1.id).value }
+            work_packages.map { |w| w.custom_value_for(custom_field1).value }
                          .uniq
           end
 

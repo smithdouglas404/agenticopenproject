@@ -82,8 +82,9 @@ class CustomField < ApplicationRecord
 
   validates :min_length, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :max_length, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-  validates :min_length, numericality: { less_than_or_equal_to: :max_length, message: :smaller_than_or_equal_to_max_length },
-                         unless: Proc.new { |cf| cf.max_length.blank? }
+  validates :min_length,
+            numericality: { less_than_or_equal_to: :max_length, message: :smaller_than_or_equal_to_max_length },
+            unless: Proc.new { |cf| cf.max_length.blank? }
 
   validates :multi_value, absence: true, unless: :multi_value_possible?
   validates :allow_non_open_versions, absence: true, unless: :allow_non_open_versions_possible?
@@ -189,6 +190,8 @@ class CustomField < ApplicationRecord
       possible_versions(obj).pluck(:id).map(&:to_s)
     when "list"
       custom_options
+    when "hierarchy", "weighted_item_list"
+      custom_field_hierarchy_items
     else
       read_attribute(:possible_values)
     end
@@ -210,6 +213,17 @@ class CustomField < ApplicationRecord
     end
 
     custom_options.where("position > ?", max_position).destroy_all
+  end
+
+  def custom_field_hierarchy_items
+    return [] if hierarchy_root.nil?
+
+    items = CustomFields::Hierarchy::HierarchicalItemService
+              .new
+              .get_descendants(item: hierarchy_root, include_self: false)
+              .fmap { |items| items.map { |item| [item.ancestry_path(include_shorts_and_weights: true), item.id] } }
+
+    items.value_or([])
   end
 
   def cast_value(value)
@@ -369,9 +383,10 @@ class CustomField < ApplicationRecord
   end
 
   def possible_version_values_options(obj, options: {})
-    possible_versions(obj, options:).references(:project)
-                          .sort
-                          .map { |u| [u.name, u.id.to_s, u.project.name] }
+    possible_versions(obj, options:)
+      .references(:project)
+      .sort
+      .map { |u| [u.name, u.id.to_s, u.project.name] }
   end
 
   def possible_users(obj)

@@ -428,6 +428,34 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
             expect(page).to have_no_text first_option
           end
         end
+
+        it "renders correctly when switching a multi select field to a single select" do
+          # Simulate a multi select field being switched to single select
+          # by having multiple custom values chosen.
+          create(:custom_value, customized: project, custom_field:, value: unused_selection)
+
+          overview_page.visit_page
+
+          # Do not show the second unused option as selected.
+          overview_page.within_custom_field_container(custom_field) do
+            expect(page).to have_text first_option
+            expect(page).to have_no_text unused_option
+          end
+
+          overview_page.open_edit_dialog_for_custom_field(custom_field)
+
+          # Choose the unused option as the new selection
+          field.select_option(unused_option)
+
+          dialog.submit
+          dialog.expect_closed
+
+          # Display the new selection in the sidebar
+          overview_page.within_custom_field_container(custom_field) do
+            expect(page).to have_text unused_option
+            expect(page).to have_no_text first_option
+          end
+        end
       end
 
       describe "with list CF" do
@@ -435,6 +463,8 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         let(:field) { FormFields::Primerized::AutocompleteField.new(custom_field) }
 
         let(:first_option) { custom_field.custom_options.first.value }
+        let(:unused_option) { custom_field.custom_options.second.value }
+        let(:unused_selection) { custom_field.custom_options.second }
 
         it_behaves_like "a select field"
       end
@@ -444,6 +474,8 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         let(:field) { FormFields::Primerized::AutocompleteField.new(custom_field) }
 
         let(:first_option) { first_version.name }
+        let(:unused_option) { second_version.name }
+        let(:unused_selection) { second_version }
 
         it_behaves_like "a select field"
       end
@@ -453,6 +485,8 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         let(:field) { FormFields::Primerized::AutocompleteField.new(custom_field) }
 
         let(:first_option) { member_in_project.name }
+        let(:unused_option) { another_member_in_project.name }
+        let(:unused_selection) { another_member_in_project }
 
         it_behaves_like "a select field"
 
