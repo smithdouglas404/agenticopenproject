@@ -13,7 +13,6 @@ keywords: SharePoint, file storage, integration
 | [Minimum requirements](#minimum-requirements)                | Minimum version requirements to enable the integration       |
 | [Set up the integration](#set-up-the-integration)            | Connect OpenProject and SharePoint instances as an administrator |
 | [Site guide](./site-guide)                                   | How to set the necessary permission on your SharePoint site  |
-
 | [Using the integration](#using-the-integration)              | How to use the SharePoint integration                        |
 | [Edit a SharePoint file storage](#edit-a-sharepoint-file-storage) | Edit a SharePoint file storage                               |
 | [Delete an SharePoint file storage](#delete-a-sharepoint-file-storage) | Delete a SharePoint file storage                             |
@@ -81,11 +80,11 @@ You will see the following message confirming the successful setup on top of the
 
 ## Enable SharePoint file storage in projects
 
-Now that the integration is set up, the next step is to make the SharePoint file storage you just created available to individual projects. This can be either done by you directly in the system administration under **Enabled in projects** tab of a specific file storage, or on a project level under **Project settings**.
+Now that the integration is set up, the next step is to make the SharePoint file storage you just created available to individual projects. This can be either done by you directly in the system administration under **Projects** tab of a specific file storage, or on a project level under **Project settings**.
 
 To add a SharePoint to a specific project on a project level, navigate to any existing project in your OpenProject instance and click on **Project settings** -> **Files** and follow the instructions in the [Project settings user guide](../../../user-guide/projects/project-settings/files/).
 
-To add a SharePoint storage to one or multiple projects on an instance level, click on a file storage under *Administration -> Files -> External file storages* and select **Enabled in projects** tab. You will see the list of all projects, for which the file storage was already activated. Click the **+Add projects** button.
+To add a SharePoint storage to one or multiple projects on an instance level, click on a file storage under *Administration -> Files -> External file storages* and select **Projects** tab. You will see the list of all projects, for which the file storage was already activated. Click the **+Add projects** button.
 
 
 ![Add SharePoint file storage to projects in OpenProject administration](openproject_system_guide_file_storages_add_projects_button_sharepoint.png)
@@ -123,7 +122,7 @@ Here you will be able to edit all the information you have specified when creati
 
 ## Delete a SharePoint file storage
 
-You can delete a SharePoint file storage either at a project level or at an instance-level.
+You can delete a SharePoint file storage either at a project level or at an instance level.
 
 Deleting a file storage at a project level simply makes it unavailable to that particular project, without affecting the integration for other projects. Project admins can do so by navigating to *Project settings -> Files* and clicking the **Delete** icon next to the file storage you would like to remove.
 
