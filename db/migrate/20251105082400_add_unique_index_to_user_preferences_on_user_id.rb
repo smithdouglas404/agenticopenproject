@@ -47,7 +47,7 @@ class AddUniqueIndexToUserPreferencesOnUserId < ActiveRecord::Migration[8.0]
     SQL
 
     say "Removing old non-unique index"
-    remove_index :user_preferences, name: "index_user_preferences_on_user_id"
+    remove_index :user_preferences, name: "index_user_preferences_on_user_id", if_exists: true
 
     say "Adding unique index on user_id"
     add_index :user_preferences, :user_id,
@@ -57,7 +57,7 @@ class AddUniqueIndexToUserPreferencesOnUserId < ActiveRecord::Migration[8.0]
 
   def down
     say "Removing unique index"
-    remove_index :user_preferences, name: "index_user_preferences_on_user_id"
+    remove_index :user_preferences, name: "index_user_preferences_on_user_id", if_exists: true
 
     say "Re-adding non-unique index"
     add_index :user_preferences, :user_id,
