@@ -12,7 +12,7 @@ keywords: SharePoint, file storage, integration
 | ------------------------------------------------------------ | :----------------------------------------------------------- |
 | [Minimum requirements](#minimum-requirements)                | Minimum version requirements to enable the integration       |
 | [Set up the integration](#set-up-the-integration)            | Connect OpenProject and SharePoint instances as an administrator |
-| [Site guide](./site-guide)                                   | How to set the necessary permission on your SharePoint site  |
+| [Sharepoint site setup guide](./site-guide)                                   | How to set the necessary permission on your SharePoint site  |
 | [Using the integration](#using-the-integration)              | How to use the SharePoint integration                        |
 | [Edit a SharePoint file storage](#edit-a-sharepoint-file-storage) | Edit a SharePoint file storage                               |
 | [Delete an SharePoint file storage](#delete-a-sharepoint-file-storage) | Delete a SharePoint file storage                             |
